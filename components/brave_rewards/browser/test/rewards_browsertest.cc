@@ -149,8 +149,7 @@ class RewardsBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
 };
 
-// https://github.com/brave/brave-browser/issues/12632
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_ActivateSettingsModal) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   rewards_browsertest_util::WaitForElementThenClick(
@@ -161,8 +160,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_ActivateSettingsModal) {
       "#modal");
 }
 
-// https://github.com/brave/brave-browser/issues/12988
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_ToggleAutoContribute) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ToggleAutoContribute) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
 
   // toggle auto contribute back on
@@ -224,9 +222,15 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
 }
 
-// Disabled in https://github.com/brave/brave-browser/issues/10789
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_NotVerifiedWallet) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_service_->FetchPromotions();
+  promotion_->WaitForPromotionInitialization();
+
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
+
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   contribution_->IsBalanceCorrect();
 
   // Click on verify button
@@ -335,9 +339,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
   run_loop.Run();
 }
 
-// https://github.com/brave/brave-browser/issues/12987
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
-                       DISABLED_BackupRestoreModalHasNotice) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNotice) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
@@ -408,8 +410,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
       "Your Rewards data will");
 }
 
-// https://github.com/brave/brave-browser/issues/12607
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_ResetRewardsWithBAT) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
@@ -431,8 +432,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_ResetRewardsWithBAT) {
       "Your 30 BAT and other Rewards");
 }
 
-// https://github.com/brave/brave-browser/issues/12704
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_UpholdLimitNoBAT) {
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, UpholdLimitNoBAT) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),

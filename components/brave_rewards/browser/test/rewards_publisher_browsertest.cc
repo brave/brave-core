@@ -96,10 +96,8 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
 };
 
-// https://github.com/brave/brave-browser/issues/12986
-IN_PROC_BROWSER_TEST_F(
-    RewardsPublisherBrowserTest,
-    DISABLED_PanelShowsCorrectPublisherData) {
+IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
+                       PanelShowsCorrectPublisherData) {
   // Navigate to a verified site in a new tab
   const std::string publisher = "duckduckgo.com";
   rewards_browsertest_util::NavigateToPublisherPage(

@@ -193,16 +193,13 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
   bool removed_ = false;
 };
 
-// https://github.com/brave/brave-browser/issues/12605
-IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
-                       DISABLED_ClaimViaSettingsPage) {
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaSettingsPage) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   double balance = ClaimPromotion(false);
   ASSERT_EQ(balance, 30.0);
 }
 
-// https://github.com/brave/brave-browser/issues/12605
-IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, DISABLED_ClaimViaPanel) {
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
   double balance = ClaimPromotion(true);
   ASSERT_EQ(balance, 30.0);
 }
@@ -229,10 +226,8 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
   CheckPromotionStatus("Over");
 }
 
-// https://github.com/brave/brave-browser/issues/12632
-IN_PROC_BROWSER_TEST_F(
-    RewardsPromotionBrowserTest,
-    DISABLED_PromotionRemovedFromEndpoint) {
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
+                       PromotionRemovedFromEndpoint) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   promotion_->WaitForPromotionInitialization();
   removed_ = true;
