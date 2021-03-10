@@ -129,7 +129,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     public static final String BRAVE_BETA_PACKAGE_NAME = "com.brave.browser_beta";
     public static final String BRAVE_NIGHTLY_PACKAGE_NAME = "com.brave.browser_nightly";
 
-    private static final int DAYS_3 = 3;
+    private static final int DAYS_1 = 1;
     private static final int DAYS_4 = 4;
     private static final int DAYS_5 = 5;
     private static final int DAYS_12 = 12;
@@ -457,7 +457,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             }
             if (shouldSetNextDate) {
                 Calendar calender = toDayCalendar;
-                calender.add(Calendar.DATE, DAYS_3);
+                calender.add(Calendar.DATE, DAYS_1);
                 BraveRewardsHelper.setNextBAPModalDate(calender.getTimeInMillis());
             }
         }
