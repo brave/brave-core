@@ -51,15 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     let iapObserver = IAPObserver()
 
     @discardableResult func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        //
-        // Determine if the application cleanly exited last time it was used. We default to true in
-        // case we have never done this before. Then check if the "ApplicationCleanlyBackgrounded" user
-        // default exists and whether was properly set to true on app exit.
-        //
-        // Then we always set the user default to false. It will be set to true when we the application
-        // is backgrounded.
-        //
-
         // Hold references to willFinishLaunching parameters for delayed app launch
         self.application = application
         self.launchOptions = launchOptions
@@ -96,17 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     @discardableResult fileprivate func startApplication(_ application: UIApplication, withLaunchOptions launchOptions: [AnyHashable: Any]?) -> Bool {
         log.info("startApplication begin")
         
-        // Set the Firefox UA for browsing.
+        // Set the Safari UA for browsing.
         setUserAgent()
-        
-        // An attempt to fix #2185.
-        // There's an unknown crash related to database creation, which happens when tabs are being restored.
-        // Our DataControllers uses a mix of static and lazy properties, there is a chance that some
-        // concurrency problems are occuring.
-        // This forces the database to initialize the most important lazy properties before doing any other
-        // database related code.
-        // Please note that this is called after bookmark and keychain restoration processes.
-        DataController.shared.lazyInitialization()
 
         // Start the keyboard helper to monitor and cache keyboard state.
         KeyboardHelper.defaultHelper.startObserving()
