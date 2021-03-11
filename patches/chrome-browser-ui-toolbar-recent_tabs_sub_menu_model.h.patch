@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
-index 4a9e55b4c8dc5f495058c6a6bdc4a0f9a20b88c5..ef4f8582761716ccfa1bba5d13435d5a57961653 100644
+index 340ff91a05d7c578aa247ce68dd00c114c252f6b..c0b4b25863dc8a927a29fd73340497e042e53365 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
 @@ -75,6 +75,7 @@ class RecentTabsSubMenuModel : public ui::SimpleMenuModel,
    bool GetURLAndTitleForItemAtIndex(int index,
                                      std::string* url,
-                                     base::string16* title);
+                                     std::u16string* title);
 +  BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_
  
   private:
