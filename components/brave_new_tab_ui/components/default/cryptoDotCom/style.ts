@@ -76,7 +76,7 @@ function getColor (p: any) {
   return colorNameToHex[colorName]
 }
 
-export const Text = styled<StyleProps, 'p'>('p')`
+export const Text = styled('p')<StyleProps>`
   color: ${p => getColor(p.textColor) || '#ffffff'};
   font-family: ${p => p.theme.fontFamily.heading};
   font-weight: ${p => (p.weight || (p.small ? '500' : 'normal'))};
@@ -120,7 +120,7 @@ export const Text = styled<StyleProps, 'p'>('p')`
     `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml}`}
  `
 
-export const BasicBox = styled<StyleProps, 'div'>('div')`
+export const BasicBox = styled('div')<StyleProps>`
   ${(p) =>
     p.$p &&
     `padding: ${typeof p.$p === 'number' ? `${p.$p}px` : p.$p}`}
@@ -154,7 +154,7 @@ export const BasicBox = styled<StyleProps, 'div'>('div')`
     `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml}`}
  `
 
-export const Box = styled<StyleProps>(BasicBox)`
+export const Box = styled(BasicBox)<StyleProps>`
   border: 1px solid rgba(79, 86, 97, 0.7);
   padding: ${p => (p.hasPadding ? '0.5em' : '0')};
   border-radius: 2px;
@@ -170,7 +170,7 @@ export const Box = styled<StyleProps>(BasicBox)`
     `}
  `
 
-export const FlexItem = styled<StyleProps, 'div'>('div')`
+export const FlexItem = styled('div')<StyleProps>`
   display: ${p => (p.isFlex ? 'flex' : 'block')};
   flex: ${p => p.flex || 'inherit'};
   text-align: ${p => p.textAlign || 'left'};
@@ -194,7 +194,7 @@ export const FlexItem = styled<StyleProps, 'div'>('div')`
     `padding-right: ${typeof p.$pr === 'number' ? `${p.$pr}px` : p.$pr}`}
  `
 
-export const PlainButton = styled<StyleProps, 'button'>('button')`
+export const PlainButton = styled('button')<StyleProps>`
   display: ${p => p.inline ? 'inline-block' : 'block'};
   background: none;
   border: none;
@@ -222,7 +222,7 @@ export const PlainButton = styled<StyleProps, 'button'>('button')`
     `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml}`}
  `
 
-export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
+export const WidgetWrapper = styled('div')<StyleProps>`
   color: white;
   padding: 6px 20px 30px 20px;
   border-radius: 6px;
@@ -235,12 +235,12 @@ export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   backdrop-filter: blur(16px);
  `
 
-export const Header = styled<StyleProps, 'div'>('div')`
+export const Header = styled('div')<StyleProps>`
   text-align: left;
   margin-bottom: ${p => (p.showContent ? '15' : '0')}px;
  `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   margin-top: 6px;
   display: flex;
   justify-content: flex-start;
@@ -251,7 +251,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.heading};
  `
 
-export const CryptoDotComIcon = styled<{}, 'div'>('div')`
+export const CryptoDotComIcon = styled('div')<{}>`
   width: 27px;
   height: 27px;
   margin-right: 7px;
@@ -263,16 +263,16 @@ export const CryptoDotComIcon = styled<{}, 'div'>('div')`
   }
  `
 
-export const StyledTitleText = styled<{}, 'div'>('div')``
+export const StyledTitleText = styled('div')<{}>``
 
-export const List = styled<StyleProps>(Box)`
+export const List = styled(Box)<StyleProps>`
   overflow-y: ${p => (p.hideOverflow ? 'hidden' : 'scroll')};
   height: 260px;
   padding: 0;
   margin: 0;
  `
 
-export const ListItem = styled<StyleProps, 'li'>('li')`
+export const ListItem = styled('li')<StyleProps>`
   border-bottom: 1px solid rgba(79, 86, 97, 0.7);
   padding: 5px;
   border-radius: 2px;
@@ -286,13 +286,13 @@ export const ListItem = styled<StyleProps, 'li'>('li')`
   `};
 `
 
-export const BackArrow = styled<StyleProps, 'div'>('div')`
+export const BackArrow = styled('div')<StyleProps>`
   width: 20px;
   cursor: pointer;
   margin-left: ${p => p.marketView ? 60 : 0}px;
  `
 
-export const ActionButton = styled<StyleProps, 'button'>('button')`
+export const ActionButton = styled('button')<StyleProps>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: ${p => (p.small ? '13px' : '15px')};
   font-weight: ${p => (p.small ? '500' : 'bold')};
@@ -323,7 +323,7 @@ export const ActionButton = styled<StyleProps, 'button'>('button')`
     `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml}`}
  `
 
-export const ActionAnchor = styled<StyleProps, 'span'>('span')`
+export const ActionAnchor = styled('span')<StyleProps>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: ${p => (p.small ? '13px' : '15px')};
   font-weight: ${p => (p.small ? '500' : 'bold')};
@@ -341,9 +341,9 @@ export const ActionAnchor = styled<StyleProps, 'span'>('span')`
   text-decoration: none;
  `
 
-export const UpperCaseText = styled<StyleProps, 'span'>('span')`
+export const UpperCaseText = styled('span')<StyleProps>`
   text-transform: uppercase;
 `
-export const SVG = styled<StyleProps, 'svg'>('svg')`
+export const SVG = styled('svg')<StyleProps>`
   margin: 1rem 0;
 `

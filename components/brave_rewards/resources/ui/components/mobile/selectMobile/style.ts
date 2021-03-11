@@ -4,7 +4,7 @@ interface StyleProps {
   floating?: boolean
 }
 
-export const StyledSelect = styled<StyleProps, 'select'>('select')`
+export const StyledSelect = styled('select')<StyleProps>`
   width: 100%;
   background: #fff;
   height: 34px;

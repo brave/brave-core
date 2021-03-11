@@ -30,7 +30,7 @@ function ListItem (props: ListItemProps) {
     item: props.item
   })
   return (
-    <Card.DealItem innerRef={cardRef} onClick={onClick} href={props.item.url}>
+    <Card.DealItem ref={cardRef} onClick={onClick} href={props.item.url}>
       <CardImage imageUrl={props.item.padded_img} />
       <Card.Text>{props.item.title}</Card.Text>
       <Card.DealDescription>{props.item.description}</Card.DealDescription>

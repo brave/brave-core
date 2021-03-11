@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux'
 
 // Components
 import App from './components/app'
-import { ThemeProvider } from 'brave-ui/theme'
+import { ThemeProvider } from 'styled-components'
 import Theme from 'brave-ui/theme/brave-default'
 
 // Utils

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import {
   Block as StandardBlock,
   Heading as StandardHeading,
@@ -28,7 +28,7 @@ export const Small = styled(StandardBlock.withComponent('article'))`
 export const DealsCard = styled(StandardBlock)`
 `
 
-export const Content = styled<{}, 'div'>('div')`
+export const Content = styled('div')<{}>`
   box-sizing: border-box;
   padding: 25px 35px;
   ${Small} & {
@@ -40,7 +40,7 @@ type ImageFrameProps = {
   isImageLoaded: boolean
 }
 
-export const ImageFrame = styled<ImageFrameProps, 'figure'>('figure')`
+export const ImageFrame = styled('figure')<ImageFrameProps>`
   opacity: ${p => p.isImageLoaded ? 1 : 0};
   margin: 0;
   width: 100%;
@@ -60,7 +60,7 @@ export const ListImageFrame = styled(ImageFrame)`
 type ImageProps = {
   isPromoted?: boolean
 }
-export const Image = styled<ImageProps, 'img'>('img')`
+export const Image = styled('img')<ImageProps>`
   box-sizing: border-box;
   display: block;
   position: absolute;
@@ -145,7 +145,7 @@ export const PromotedIcon = styled('div')`
   }
 `
 
-export const ContainerForTwo = styled<{}, 'div'>('div')`
+export const ContainerForTwo = styled('div')<{}>`
   width: 680px;
   display: grid;
   grid-template-columns: 1fr 1fr;

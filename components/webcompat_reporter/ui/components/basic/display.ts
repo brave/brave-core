@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import { TextSection } from './structure'
 import { CheckCircleIcon } from 'brave-ui/components/icons'
 import { Card } from 'brave-ui/components'
+import { CardProps } from 'brave-ui/components/layout/card'
 
 export const ModalTitle = styled(TextSection)`
   box-sizing: border-box;
@@ -36,7 +37,7 @@ export const DisclaimerText = styled(TextSection)`
   line-height: 1.2;
 `
 
-export const NonInteractiveURL = styled<{}, 'p'>('p')`
+export const NonInteractiveURL = styled('p')<{}>`
   box-sizing: border-box;
   color: ${p => p.theme.color.brandBrave};
   font-size: 14px;
@@ -52,6 +53,6 @@ export const SuccessIcon = styled(CheckCircleIcon)`
   margin-right: 10px;
 `
 
-export const RectangularCard = styled<any>(Card)`
+export const RectangularCard = styled(Card)<CardProps>`
   border-radius: 0;
 `

@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled, { css } from 'brave-ui/theme'
+import styled, { css } from 'styled-components'
 
-export const TileTitle = styled<{}, 'p'>('p')`
+export const TileTitle = styled('p')<{}>`
   margin: 0;
   font-family: Poppins;
   font-weight: 400;
@@ -20,7 +20,7 @@ export const TileTitle = styled<{}, 'p'>('p')`
   text-overflow: ellipsis;
 `
 
-export const AddSiteTileImage = styled<{}, 'div'>('div')`
+export const AddSiteTileImage = styled('div')<{}>`
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
   border-radius: 8px;
@@ -40,7 +40,7 @@ export interface AddSiteTileProps {
   isDragging: boolean
 }
 
-export const AddSiteTile = styled<AddSiteTileProps, 'button'>('button')`
+export const AddSiteTile = styled('button')<AddSiteTileProps>`
   background: transparent;
   width: 78px;
   height: 110px;
@@ -76,7 +76,7 @@ export interface ListProps {
   blockNumber: number
 }
 
-export const List = styled<ListProps, 'div'>('div')`
+export const List = styled('div')<ListProps>`
   justify-self: start;
   align-items: normal;
   height: 100%;
@@ -94,7 +94,7 @@ export const List = styled<ListProps, 'div'>('div')`
   }
 `
 
-export const TileActionsContainer = styled<{}, 'nav'>('nav')`
+export const TileActionsContainer = styled('nav')<{}>`
   box-sizing: border-box;
   opacity: 0;
   visibility: hidden;
@@ -108,7 +108,7 @@ export const TileActionsContainer = styled<{}, 'nav'>('nav')`
   display: flex;
 `
 
-export const TileMenu = styled<{}, 'div'>('div')`
+export const TileMenu = styled('div')<{}>`
   position: absolute;
   top: 15px;
   left: 80px;
@@ -127,7 +127,7 @@ export const TileMenu = styled<{}, 'div'>('div')`
   }
 `
 
-export const TileMenuItem = styled<{}, 'button'>('button')`
+export const TileMenuItem = styled('button')<{}>`
   width: 100%;
   height: 30px;
   font-family: Poppins;
@@ -155,7 +155,7 @@ export const TileMenuItem = styled<{}, 'button'>('button')`
   }
 `
 
-export const TileAction = styled<{}, 'button'>('button')`
+export const TileAction = styled('button')<{}>`
   -webkit-appearance: none;
   box-sizing: border-box;
   transition: color 0.1s linear;
@@ -182,7 +182,7 @@ export const TileAction = styled<{}, 'button'>('button')`
   }
 `
 
-export const TileFavicon = styled<{}, 'img'>('img')`
+export const TileFavicon = styled('img')<{}>`
   background-color: #ffffff;
   display: block;
   padding: 16px;
@@ -198,7 +198,7 @@ interface TileProps {
   isMenuShowing: boolean
 }
 
-export const Tile = styled<TileProps, 'a'>('a')`
+export const Tile = styled('a')<TileProps>`
   position: relative;
   text-decoration: none;
   display: flex;
@@ -210,7 +210,7 @@ export const Tile = styled<TileProps, 'a'>('a')`
   cursor: pointer;
   // Menu goes behind in other Tiles when tils has z-index.
   // Give z-index while dragging to make dragging tile moves over other tiles.
-  z-index: ${p => p.isDragging ? 3 : 'unset' }
+  z-index: ${p => p.isDragging ? 3 : 'unset'}
   outline: unset;
   gap: 8px;
 
@@ -223,7 +223,7 @@ export const Tile = styled<TileProps, 'a'>('a')`
         width: 78px;
         height: 78px;
         background-clip: padding-box;
-        border: 4px solid rgba(255, 255, 255, 0.6) ;
+        border: 4px solid rgba(255, 255, 255, 0.6);
       }
     }
   `}
@@ -236,7 +236,7 @@ export const Tile = styled<TileProps, 'a'>('a')`
       width: 78px;
       height: 78px;
       background-clip: padding-box;
-      border: 4px solid rgba(255, 255, 255, 0.6) ;
+      border: 4px solid rgba(255, 255, 255, 0.6);
     }
   }
 

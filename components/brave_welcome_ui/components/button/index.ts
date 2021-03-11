@@ -3,14 +3,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { ComponentType } from 'react'
-import styled, { css } from 'brave-ui/theme'
+import styled, { css } from '../../theme'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 
 interface BaseButtonProps {
   active?: boolean
 }
 
-const BaseButton = styled<BaseButtonProps, 'button'>('button')`
+const BaseButton = styled('button')<BaseButtonProps>`
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -91,7 +91,7 @@ export const Bullet = styled(BaseButton as ComponentType<any>)`
 /**
  * Button that look like link
  */
-export const Link = styled<{}, 'button'>('button')`
+export const Link = styled('button')<{}>`
   box-sizing: border-box;
   -webkit-appearance: none;
   color: ${p => p.theme.color.brandBrave};

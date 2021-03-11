@@ -2,13 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 
 interface PageProps {
   isPrivate: boolean
 }
 
-export const Page = styled<PageProps, 'div'>('div')`
+export const Page = styled('div')<PageProps>`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   background: linear-gradient(${p => p.isPrivate ? '#381980' : '#5F0C8A'}, #0C041E);
@@ -16,7 +16,7 @@ export const Page = styled<PageProps, 'div'>('div')`
   height: initial;
 `
 
-export const PageWrapper = styled<{}, 'main'>('main')`
+export const PageWrapper = styled('main')<{}>`
   box-sizing: border-box;
   padding: 85px 15px;
   max-width: 950px;

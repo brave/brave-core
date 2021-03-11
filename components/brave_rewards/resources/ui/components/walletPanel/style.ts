@@ -13,27 +13,27 @@ interface StyleProps {
   toggleTips?: boolean
 }
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   display: block;
 ` as any
 
-export const StyledProfileWrapper = styled<{}, 'div'>('div')`
+export const StyledProfileWrapper = styled('div')<{}>`
   margin-bottom: 15px;
 ` as any
 
-export const StyledContainer = styled<{}, 'div'>('div')`
+export const StyledContainer = styled('div')<{}>`
   min-height: 250px;
   padding: 15px 30px 20px 30px;
 ` as any
 
-export const StyledAttentionScore = styled<{}, 'span'>('span')`
+export const StyledAttentionScore = styled('span')<{}>`
   margin-left: 30px;
   font-weight: 500;
   color: #4B4C5C;
   font-size: 14px;
 ` as any
 
-export const StyledAttentionScoreTitle = styled<{}, 'span'>('span')`
+export const StyledAttentionScoreTitle = styled('span')<{}>`
   font-weight: 400;
   color: #4B4C5C;
   font-size: 14px;
@@ -41,17 +41,17 @@ export const StyledAttentionScoreTitle = styled<{}, 'span'>('span')`
   margin: 0 0 0 2px;
 ` as any
 
-export const StyledScoreWrapper = styled<{}, 'section'>('section')`
+export const StyledScoreWrapper = styled('section')<{}>`
   padding: 0 0px 6px;
 ` as any
 
-export const StyledControlsWrapper = styled<{}, 'section'>('section')`
+export const StyledControlsWrapper = styled('section')<{}>`
   padding: 5px 0px;
   border-top: 1px solid #DBDFE3;
   border-bottom: 1px solid #DBDFE3;
 ` as any
 
-export const StyledDonateText = styled<{}, 'span'>('span')`
+export const StyledDonateText = styled('span')<{}>`
   display: inline-block;
   font-size: 14px;
   font-weight: normal;
@@ -61,35 +61,35 @@ export const StyledDonateText = styled<{}, 'span'>('span')`
   color: ${p => p.theme.color.subtleInteracting};
 ` as any
 
-export const StyledDonateWrapper = styled<{}, 'div'>('div')`
+export const StyledDonateWrapper = styled('div')<{}>`
   text-align: center;
   padding: 15px 0 0;
   margin: 0 auto;
 ` as any
 
-export const StyledToggleWrapper = styled<{}, 'div'>('div')`
+export const StyledToggleWrapper = styled('div')<{}>`
   margin-top: 4px;
 ` as any
 
-export const StyledSelectWrapper = styled<{}, 'div'>('div')`
+export const StyledSelectWrapper = styled('div')<{}>`
   width: 87px;
   margin: 2px 0px 0px;
 ` as any
 
-export const StyledGrid = styled<{}, 'div'>('div')`
+export const StyledGrid = styled('div')<{}>`
   display: flex;
   flex-direction: row;
 `
 
-export const StyledColumn = styled<StyleProps, 'div'>('div')`
+export const StyledColumn = styled('div')<StyleProps>`
   flex: ${p => p.size} ${p => p.shrink || '0'} auto;
 `
 
-export const StyleToggleTips = styled<StyleProps, 'div'>('div')`
+export const StyleToggleTips = styled('div')<StyleProps>`
   display: ${p => p.toggleTips ? 'flex' : 'none'};
 `
 
-export const StyledNoticeWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledNoticeWrapper = styled('div')<StyleProps>`
   background: rgba(0, 0, 0, 0.04);
   color: #676283;
   font-size: 12px;
@@ -104,23 +104,23 @@ export const StyledNoticeWrapper = styled<StyleProps, 'div'>('div')`
   overflow-y: auto;
 `
 
-export const StyledNoticeLink = styled<StyleProps, 'a'>('a')`
+export const StyledNoticeLink = styled('a')<StyleProps>`
   color: ${palette.blue400};
   font-weight: bold;
   text-decoration: none;
   display: inline-block;
 `
 
-export const StyledMonthlyWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledMonthlyWrapper = styled('div')<StyleProps>`
   overflow-y: visible;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 14px;
-  color: ${p => p.theme.color.black};
+  color: ${p => p.theme.palette.black};
   line-height: 21px;
   height: 27px;
 `
 
-export const StyledMonthlyBorder = styled<StyleProps, 'div'>('div')`
+export const StyledMonthlyBorder = styled('div')<StyleProps>`
   border: solid 1px rgba(76, 84, 210, 0.55);
   border-radius: 12px;
   background: ${palette.white};
@@ -133,7 +133,7 @@ export const StyledMonthlyBorder = styled<StyleProps, 'div'>('div')`
   }
 `
 
-export const StyledMonthlyAmount = styled<StyleProps, 'div'>('div')`
+export const StyledMonthlyAmount = styled('div')<StyleProps>`
   button {
     background: none;
     border: none;
@@ -158,7 +158,7 @@ export const StyledMonthlyDownIcon = styled(CaratStrongDownIcon)`
   right: 7px;
 `
 
-export const StyledMonthlyActions = styled<StyleProps, 'div'>('div')`
+export const StyledMonthlyActions = styled('div')<StyleProps>`
   position: relative;
   margin-top: 5px;
   margin-bottom: 3px;
@@ -192,11 +192,11 @@ export const StyledMonthlyActions = styled<StyleProps, 'div'>('div')`
   }
 `
 
-export const StyledSetButtonContainer = styled<{}, 'div'>('div')`
+export const StyledSetButtonContainer = styled('div')<{}>`
   text-align: right;
 `
 
-export const StyledSetButton = styled<{}, 'button'>('button')`
+export const StyledSetButton = styled('button')<{}>`
   color: ${palette.blurple500};
   font-size: 13px;
   border: 1px solid ${palette.blurple500};

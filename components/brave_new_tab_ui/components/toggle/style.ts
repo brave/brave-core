@@ -2,10 +2,10 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'brave-ui/theme'
+import styled, { css } from 'styled-components'
 import { Props } from './index'
 
-export const StyledCheckbox = styled<{}, 'input'>('input')`
+export const StyledCheckbox = styled('input')<{}>`
   -webkit-appearance: none;
   position: absolute;
   z-index: 99999999;
@@ -26,7 +26,7 @@ export const StyledCheckbox = styled<{}, 'input'>('input')`
   }
 `
 
-export const StyledWrapper = styled<Props, 'div'>('div')`
+export const StyledWrapper = styled('div')<Props>`
   box-sizing: border-box;
   display: flex;
   position: relative;
@@ -35,7 +35,7 @@ export const StyledWrapper = styled<Props, 'div'>('div')`
   align-items: center;
 `
 
-export const StyleToggle = styled<Props, 'div'>('div')`
+export const StyleToggle = styled('div')<Props>`
   box-sizing: border-box;
   position: relative;
   display: block;
@@ -51,7 +51,7 @@ export const StyleToggle = styled<Props, 'div'>('div')`
   };
 `
 
-export const StyledSlider = styled<Props, 'label'>('label')`
+export const StyledSlider = styled('label')<Props>`
   box-sizing: border-box;
   background: ${(p) => p.disabled ? 'rgba(246,246,250,0.1)' : '#C4C7C9'};
   height: ${(p) => p.size === 'small' ? '6px' : '8px'};
@@ -74,7 +74,7 @@ const transform = (p: Props) => {
 
 const transformBullet = (p: Props) => `${transform(p).x}, calc(-50% - ${transform(p).y})`
 
-export const StyledBullet = styled<Props, 'label'>('label')`
+export const StyledBullet = styled('label')<Props>`
   box-sizing: border-box;
   position: relative;
   border-radius: 50%;

@@ -3,12 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { ComponentType } from 'react'
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import Heading from 'brave-ui/components/text/heading'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 import { DuckDuckGoIcon, TorLockIcon } from 'brave-ui/components/icons'
 
-export const Box = styled<{}, 'section'>('section')`
+export const Box = styled('section')<{}>`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   padding: 30px 30px 50px;
@@ -16,12 +16,12 @@ export const Box = styled<{}, 'section'>('section')`
   border: 1px solid rgba(255,255,255,0.25);
 `
 
-export const HeaderBox = styled<{}, 'section'>('section')`
+export const HeaderBox = styled('section')<{}>`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
 `
 
-export const Content = styled<{}, 'article'>('article')`
+export const Content = styled('article')<{}>`
   box-sizing: border-box;
   display: block;
   min-height: 285px;
@@ -41,7 +41,7 @@ export const TorLockImage = styled(TorLockIcon)`
   margin-bottom: 20px;
 `
 
-export const PrivateImage = styled<{}, 'img'>('img')`
+export const PrivateImage = styled('img')<{}>`
   box-sizing: border-box;
   display: block;
   width: 293px;
@@ -51,7 +51,7 @@ export const PrivateImage = styled<{}, 'img'>('img')`
   }
 `
 
-export const TorImage = styled<{}, 'img'>('img')`
+export const TorImage = styled('img')<{}>`
   box-sizing: border-box;
   display: block;
   width: 177px;
@@ -62,7 +62,7 @@ export const TorImage = styled<{}, 'img'>('img')`
   }
 `
 
-export const SubTitle = styled<{}, 'small'>('small')`
+export const SubTitle = styled('small')<{}>`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   display: block;
@@ -80,7 +80,7 @@ export const Title = styled(Heading)`
   color: #fff;
   margin: 0 0 0px;
 `
-export const Text = styled<{}, 'p'>('p')`
+export const Text = styled('p')<{}>`
   font-family: ${p => p.theme.fontFamily.body};
   letter-spacing: 0.19px;
   line-height: 26px;
@@ -89,7 +89,7 @@ export const Text = styled<{}, 'p'>('p')`
   color: #fff;
 `
 
-export const Separator = styled<{}, 'hr'>('hr')`
+export const Separator = styled('hr')<{}>`
   border: 1px solid rgba(255,255,255,0.10);
   height: 0;
   width: 100%;
@@ -103,7 +103,7 @@ export const PurpleButton = styled(Button as ComponentType<ButtonProps>)`
   padding: 14px 20px;
   margin: 25px 25px 0 0;
 `
-export const Link = styled<{}, 'a'>('a')`
+export const Link = styled('a')<{}>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 14px;
   color: #814EFF;
@@ -120,7 +120,7 @@ interface FakeButtonProps {
   withToggle?: boolean
 }
 
-export const FakeButton = styled<FakeButtonProps, 'a'>('a')`
+export const FakeButton = styled('a')<FakeButtonProps>`
   display: grid;
   height: 100%;
   grid-template-columns: ${p => p.settings ? 'auto 16px' : 'auto auto'};

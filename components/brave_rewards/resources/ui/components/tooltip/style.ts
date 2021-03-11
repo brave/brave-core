@@ -10,12 +10,12 @@ interface StyleProps {
   rightEdge?: boolean
 }
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   display: inline-block;
   position: relative;
 `
 
-export const StyledTooltip = styled<StyleProps, 'div'>('div')`
+export const StyledTooltip = styled('div')<StyleProps>`
   left: 50%;
   top: calc(100% + 10px);
   transform: ${p => p.rightEdge ? 'translateX(-80%);' : 'translateX(-50%);'};
@@ -29,14 +29,14 @@ export const StyledTooltip = styled<StyleProps, 'div'>('div')`
   box-shadow: 1px 1px 5px 0 rgba(34, 35, 38, 0.43);
   display: ${p => p.displayed ? 'inline-block' : 'none'};
 `
-export const StyledTooltipText = styled<{}, 'div'>('div')`
+export const StyledTooltipText = styled('div')<{}>`
   color: #FFFFFF;
   font-family: Muli, sans-serif;
   font-weight: 300;
   font-size: 14px;
 `
 
-export const StyledPointer = styled<StyleProps, 'div'>('div')`
+export const StyledPointer = styled('div')<StyleProps>`
   width: 0;
   height: 0;
   border-style: solid;
@@ -47,7 +47,7 @@ export const StyledPointer = styled<StyleProps, 'div'>('div')`
   border-color: transparent transparent #0C0D21 transparent;
 `
 
-export const StyledChildWrapper = styled<{}, 'div'>('div')`
+export const StyledChildWrapper = styled('div')<{}>`
   cursor: pointer;
   height: 24px;
 `

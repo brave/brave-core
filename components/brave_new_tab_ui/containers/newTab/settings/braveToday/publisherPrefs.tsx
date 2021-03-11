@@ -62,7 +62,7 @@ function ListItem (props: ListItemProps) {
 
   return (
     <s.PublisherListItem style={props.style}>
-      <SettingsRow innerRef={rowRoot} key={publisher.publisher_id} onClick={onChange} isInteractive={true}>
+      <SettingsRow ref={rowRoot} key={publisher.publisher_id} onClick={onChange} isInteractive={true}>
         <SettingsText>{publisher.publisher_name}</SettingsText>
         <Toggle
           checked={isChecked}
