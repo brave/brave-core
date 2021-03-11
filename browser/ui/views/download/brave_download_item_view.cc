@@ -232,9 +232,9 @@ void BraveDownloadItemView::SetMode(Mode mode) {
   if (!origin_url_text_.empty()) {
     base::string16 extra;
     if (!is_origin_url_secure_)
-      extra += base::char16(' ')
-                   + l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE);
-    extra += base::char16(' ') + origin_url_text_;
+      extra += char16_t(' ') +
+               l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE);
+    extra += char16_t(' ') + origin_url_text_;
     accessible_name_ += extra;
   }
 }
