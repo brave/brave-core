@@ -209,7 +209,6 @@ class BrowserViewController: UIViewController {
                 Preferences.Rewards.rewardsToggledOnce.value = true
             }
             // Update defaults
-            rewards.ads.adsPerDay = 2
             rewards.ledger.minimumVisitDuration = 8
             rewards.ledger.minimumNumberOfVisits = 1
             rewards.ledger.allowUnverifiedPublishers = false
@@ -223,7 +222,6 @@ class BrowserViewController: UIViewController {
         didInit()
         
         rewards.delegate = self
-        rewards.createWalletIfNeeded()
     }
     
     static func legacyWallet(for config: BraveRewardsConfiguration) -> BraveLedger? {
