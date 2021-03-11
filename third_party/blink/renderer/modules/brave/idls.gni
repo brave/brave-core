@@ -3,12 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-modules_idl_files = [
-  "brave.idl",
-  "ethereum.idl",
-]
+import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 
-modules_dependency_idl_files = [
-  "navigator_brave.idl",
-  "window_brave.idl"
-]
+modules_idl_files = [ "brave.idl" ]
+
+modules_dependency_idl_files = [ "window_brave.idl" ]
+
+if (brave_wallet_enabled) {
+    modules_idl_files += [ "ethereum.idl" ]
+
+    modules_dependency_idl_files += [ "window_brave.idl" ]
+}

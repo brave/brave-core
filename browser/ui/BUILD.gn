@@ -459,15 +459,16 @@ source_set("ui") {
     deps += [ "//brave/components/tor/resources:internals_generated_resources" ]
   }
 
-  if (brave_wallet_enabled && !is_android) {
-    sources += [
-      "webui/brave_wallet_ui.cc",
-      "webui/brave_wallet_ui.h",
-    ]
-    deps += [
-      "//brave/components/brave_wallet_ui:generated_resources",
-      "//brave/components/brave_wallet/resources:generated_resources",
-    ]
+  if (brave_wallet_enabled) {
+    if (!is_android) {
+      sources += [
+        "webui/brave_wallet_ui.cc",
+        "webui/brave_wallet_ui.h",
+      ]
+      deps += [ "//brave/components/brave_wallet_ui:generated_resources" ]
+    }
+
+    deps += [ "//brave/components/brave_wallet/resources:generated_resources" ]
   }
 
   if (toolkit_views) {

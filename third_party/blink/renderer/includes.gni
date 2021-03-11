@@ -1,3 +1,5 @@
+import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/core/BUILD.gn
 brave_blink_renderer_core_visibility = [
@@ -30,9 +32,7 @@ brave_idl_imports = [
 # third_party/blink/renderer/bindings/idl_in_modules.gni
 brave_static_idl_files_in_modules = [
   "//brave/third_party/blink/renderer/modules/brave/brave.idl",
-  "//brave/third_party/blink/renderer/modules/brave/ethereum.idl",
   "//brave/third_party/blink/renderer/modules/brave/navigator_brave.idl",
-  "//brave/third_party/blink/renderer/modules/brave/window_brave.idl",
   "//brave/third_party/blink/renderer/modules/global_privacy_control/navigator_global_privacy_control.idl",
 ]
 
@@ -41,6 +41,16 @@ brave_static_idl_files_in_modules = [
 brave_generated_interface_sources_in_modules = [
   "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.cc",
   "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.h",
-  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_ethereum.cc",
-  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_ethereum.h",
 ]
+
+if (brave_wallet_enabled) {
+  brave_static_idl_files_in_modules += [
+    "//brave/third_party/blink/renderer/modules/brave/ethereum.idl",
+    "//brave/third_party/blink/renderer/modules/brave/window_brave.idl",
+  ]
+
+  brave_generated_interface_sources_in_modules += [
+    "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_ethereum.cc",
+    "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_ethereum.h",
+  ]
+}

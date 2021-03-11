@@ -13,6 +13,7 @@
 #include "third_party/blink/public/platform/web_runtime_features.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/features.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_render_frame_observer.h"
 #endif
 
@@ -49,7 +50,10 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  new brave_wallet::BraveWalletRenderFrameObserver(render_frame);
+  if (base::FeatureList::IsEnabled(
+      brave_wallet::features::kNativeBraveWalletFeature)) {
+    new brave_wallet::BraveWalletRenderFrameObserver(render_frame);
+  }
 #endif
 }
 

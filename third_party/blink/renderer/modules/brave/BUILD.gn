@@ -3,21 +3,25 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//third_party/blink/renderer/modules/modules.gni")
 
 blink_modules_sources("brave") {
   sources = [
     "brave.cc",
     "brave.h",
-    "ethereum.cc",
-    "ethereum.h",
     "navigator_brave.cc",
     "navigator_brave.h",
-    "window_brave.cc",
-    "window_brave.h",
   ]
 
-  deps = [
-    "//brave/components/brave_wallet/common:mojom",
-  ]
+  if (brave_wallet_enabled) {
+    sources += [
+      "ethereum.cc",
+      "ethereum.h",
+      "window_brave.cc",
+      "window_brave.h",
+    ]
+
+    deps = [ "//brave/components/brave_wallet/common:mojom" ]
+  }
 }

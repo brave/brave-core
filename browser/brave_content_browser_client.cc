@@ -120,12 +120,13 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/gemini/gemini_protocol_handler.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/features.h"
 #endif
 
 #if !defined(OS_ANDROID)
@@ -311,8 +312,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       base::BindRepeating(&BindCosmeticFiltersResources));
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  map->Add<brave_wallet::mojom::BraveWalletProvider>(
-      base::BindRepeating(&BindBraveWalletProvider));
+  if (base::FeatureList::IsEnabled(
+      brave_wallet::features::kNativeBraveWalletFeature)) {
+    map->Add<brave_wallet::mojom::BraveWalletProvider>(
+        base::BindRepeating(&BindBraveWalletProvider));
+  }
 #endif
 }
 
