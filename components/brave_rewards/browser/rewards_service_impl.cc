@@ -323,19 +323,11 @@ RewardsServiceImpl::~RewardsServiceImpl() {
 }
 
 void RewardsServiceImpl::ConnectionClosed() {
-  auto callback = base::BindOnce(&RewardsServiceImpl::OnConnectionClosed,
-      AsWeakPtr());
-  base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(FROM_HERE,
-      base::BindOnce(&RewardsServiceImpl::StartLedger,
-          AsWeakPtr(),
-          std::move(callback)),
+  base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&RewardsServiceImpl::StartLedgerProcessIfNecessary,
+                     AsWeakPtr()),
       base::TimeDelta::FromSeconds(1));
-}
-
-void RewardsServiceImpl::OnConnectionClosed(const ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
-    BLOG(0, "Ledger process was not started successfully");
-  }
 }
 
 bool RewardsServiceImpl::IsInitialized() {
@@ -398,7 +390,7 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
 
   if (key == prefs::kAutoContributeEnabled) {
     if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
-      StartLedger(base::DoNothing());
+      StartLedgerProcessIfNecessary();
     }
 
     return;
@@ -412,14 +404,13 @@ void RewardsServiceImpl::CheckPreferences() {
       ads::prefs::kEnabled);
 
   if (is_ac_enabled || is_ads_enabled) {
-    StartLedger(base::DoNothing());
+    StartLedgerProcessIfNecessary();
   }
 }
 
-void RewardsServiceImpl::StartLedger(StartProcessCallback callback) {
+void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
   if (Connected()) {
     BLOG(1, "Ledger process is already running");
-    std::move(callback).Run(ledger::type::Result::LEDGER_OK);
     return;
   }
 
@@ -464,24 +455,20 @@ void RewardsServiceImpl::StartLedger(StartProcessCallback callback) {
   bat_ledger_service_->Create(
       bat_ledger_client_receiver_.BindNewEndpointAndPassRemote(),
       bat_ledger_.BindNewEndpointAndPassReceiver(),
-      base::BindOnce(&RewardsServiceImpl::OnCreate,
-          AsWeakPtr(),
-          std::move(callback)));
+      base::BindOnce(&RewardsServiceImpl::OnLedgerCreated, AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnCreate(StartProcessCallback callback) {
+void RewardsServiceImpl::OnLedgerCreated() {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
+    BLOG(0, "Ledger instance could not be created");
     return;
   }
 
   PrepareLedgerEnvForTesting();
 
-  auto init_callback = base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized,
-      AsWeakPtr(),
-      std::move(callback));
-
-  bat_ledger_->Initialize(false, std::move(init_callback));
+  bat_ledger_->Initialize(
+      false,
+      base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::OnResult(
@@ -811,9 +798,7 @@ void RewardsServiceImpl::Shutdown() {
   RewardsService::Shutdown();
 }
 
-void RewardsServiceImpl::OnLedgerInitialized(
-    StartProcessCallback callback,
-    const ledger::type::Result result) {
+void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
   if (result == ledger::type::Result::LEDGER_OK) {
     StartNotificationTimers();
   }
@@ -825,8 +810,6 @@ void RewardsServiceImpl::OnLedgerInitialized(
   for (auto& observer : observers_) {
     observer.OnRewardsInitialized(this);
   }
-
-  std::move(callback).Run(result);
 }
 
 void RewardsServiceImpl::OnGetAutoContributeProperties(
@@ -1943,11 +1926,8 @@ void RewardsServiceImpl::GetPublisherInfo(
     }
 
     StartProcess(
-        base::BindOnce(
-            &RewardsServiceImpl::OnStartProcessForGetPublisherInfo,
-            AsWeakPtr(),
-            publisher_key,
-            std::move(callback)));
+        base::BindOnce(&RewardsServiceImpl::OnStartProcessForGetPublisherInfo,
+                       AsWeakPtr(), publisher_key, std::move(callback)));
     return;
   }
 
@@ -1960,13 +1940,7 @@ void RewardsServiceImpl::GetPublisherInfo(
 
 void RewardsServiceImpl::OnStartProcessForGetPublisherInfo(
     const std::string& publisher_key,
-    GetPublisherInfoCallback callback,
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
-    std::move(callback).Run(result, nullptr);
-    return;
-  }
-
+    GetPublisherInfoCallback callback) {
   GetPublisherInfo(publisher_key, std::move(callback));
 }
 
@@ -2009,13 +1983,9 @@ void RewardsServiceImpl::SavePublisherInfo(
       return;
     }
 
-    StartProcess(
-        base::BindOnce(
-            &RewardsServiceImpl::OnStartProcessForSavePublisherInfo,
-            AsWeakPtr(),
-            window_id,
-            std::move(publisher_info),
-            std::move(callback)));
+    StartProcess(base::BindOnce(
+        &RewardsServiceImpl::OnStartProcessForSavePublisherInfo, AsWeakPtr(),
+        window_id, std::move(publisher_info), std::move(callback)));
     return;
   }
 
@@ -2028,15 +1998,9 @@ void RewardsServiceImpl::SavePublisherInfo(
 }
 
 void RewardsServiceImpl::OnStartProcessForSavePublisherInfo(
-    const uint64_t window_id,
+    uint64_t window_id,
     ledger::type::PublisherInfoPtr publisher_info,
-    SavePublisherInfoCallback callback,
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
-    std::move(callback).Run(result);
-    return;
-  }
-
+    SavePublisherInfoCallback callback) {
   SavePublisherInfo(window_id, std::move(publisher_info), std::move(callback));
 }
 
@@ -3363,27 +3327,20 @@ void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
   StopLedger(std::move(stop_callback));
 }
 
-void RewardsServiceImpl::OnCompleteReset(
-    SuccessCallback callback,
-    const bool success) {
+void RewardsServiceImpl::OnCompleteReset(SuccessCallback callback,
+                                         bool success) {
   resetting_rewards_ = false;
-
   StartProcess(
-      base::BindOnce(
-          &RewardsServiceImpl::OnCompleteResetProcess,
-          AsWeakPtr(),
-          std::move(callback)));
+      base::BindOnce(&RewardsServiceImpl::OnStartProcessForCompleteReset,
+                     AsWeakPtr(), std::move(callback), success));
 }
 
-void RewardsServiceImpl::OnCompleteResetProcess(
+void RewardsServiceImpl::OnStartProcessForCompleteReset(
     SuccessCallback callback,
-    const ledger::type::Result result) {
-  const bool success = result == ledger::type::Result::LEDGER_OK;
-
+    bool success) {
   for (auto& observer : observers_) {
     observer.OnCompleteReset(success);
   }
-
   std::move(callback).Run(success);
 }
 
@@ -3493,8 +3450,9 @@ void RewardsServiceImpl::OnGetBraveWallet(
   std::move(callback).Run(std::move(wallet));
 }
 
-void RewardsServiceImpl::StartProcess(StartProcessCallback callback) {
-  StartLedger(std::move(callback));
+void RewardsServiceImpl::StartProcess(base::OnceClosure callback) {
+  ready_->Post(FROM_HERE, std::move(callback));
+  StartLedgerProcessIfNecessary();
 }
 
 void RewardsServiceImpl::GetWalletPassphrase(
@@ -3517,10 +3475,8 @@ void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
   }
 
   if (!Connected()) {
-    StartProcess(
-        base::BindOnce(
-            &RewardsServiceImpl::OnStartProcessForSetAdsEnabled,
-            AsWeakPtr()));
+    StartProcess(base::BindOnce(
+        &RewardsServiceImpl::OnStartProcessForSetAdsEnabled, AsWeakPtr()));
     return;
   }
 
@@ -3543,13 +3499,7 @@ bool RewardsServiceImpl::IsRewardsEnabled() const {
   return false;
 }
 
-void RewardsServiceImpl::OnStartProcessForSetAdsEnabled(
-    const ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
-    BLOG(0, "Ledger process was not started successfully");
-    return;
-  }
-
+void RewardsServiceImpl::OnStartProcessForSetAdsEnabled() {
   SetAdsEnabled(true);
 }
 

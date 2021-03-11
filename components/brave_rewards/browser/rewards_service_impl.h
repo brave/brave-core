@@ -336,7 +336,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
-  void StartProcess(StartProcessCallback callback) override;
+  void StartProcess(base::OnceClosure callback) override;
 
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
 
@@ -364,7 +364,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void CheckPreferences();
 
-  void StartLedger(StartProcessCallback callback);
+  void StartLedgerProcessIfNecessary();
 
   void EnableGreaseLion();
 
@@ -382,7 +382,7 @@ class RewardsServiceImpl : public RewardsService,
 
   bool ResetOnFilesTaskRunner();
 
-  void OnCreate(StartProcessCallback callback);
+  void OnLedgerCreated();
 
   void OnResult(
       ledger::ResultCallback callback,
@@ -494,9 +494,7 @@ class RewardsServiceImpl : public RewardsService,
                              const bool exclude,
                              const ledger::type::Result result);
 
-  void OnLedgerInitialized(
-    StartProcessCallback callback,
-    const ledger::type::Result result);
+  void OnLedgerInitialized(ledger::type::Result result);
 
   void OnClaimPromotion(
       ClaimPromotionCallback callback,
@@ -523,7 +521,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRecoverWallet(const ledger::type::Result result);
 
-  void OnStartProcessForSetAdsEnabled(const ledger::type::Result result);
+  void OnStartProcessForSetAdsEnabled();
 
   void OnWalletCreatedForSetAdsEnabled(const ledger::type::Result result);
 
@@ -560,19 +558,16 @@ class RewardsServiceImpl : public RewardsService,
       GetPublisherInfoCallback callback,
       const ledger::type::Result result,
       ledger::type::PublisherInfoPtr info);
-  void OnStartProcessForGetPublisherInfo(
-      const std::string& publisher_key,
-      GetPublisherInfoCallback callback,
-      const ledger::type::Result result);
+  void OnStartProcessForGetPublisherInfo(const std::string& publisher_key,
+                                         GetPublisherInfoCallback callback);
   void OnPublisherPanelInfo(
       GetPublisherInfoCallback callback,
       const ledger::type::Result result,
       ledger::type::PublisherInfoPtr info);
   void OnStartProcessForSavePublisherInfo(
-      const uint64_t window_id,
+      uint64_t window_id,
       ledger::type::PublisherInfoPtr publisher_info,
-      SavePublisherInfoCallback callback,
-      const ledger::type::Result result);
+      SavePublisherInfoCallback callback);
   void OnSavePublisherInfo(
       SavePublisherInfoCallback callback,
       const ledger::type::Result result);
@@ -748,11 +743,9 @@ class RewardsServiceImpl : public RewardsService,
       GetAllPromotionsCallback callback,
       base::flat_map<std::string, ledger::type::PromotionPtr> promotions);
 
-  void OnCompleteReset(SuccessCallback callback, const bool success);
+  void OnCompleteReset(SuccessCallback callback, bool success);
 
-  void OnCompleteResetProcess(
-      SuccessCallback callback,
-      const ledger::type::Result result);
+  void OnStartProcessForCompleteReset(SuccessCallback callback, bool success);
 
   bool DeleteLogTaskRunner();
 
