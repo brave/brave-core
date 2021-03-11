@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.js b/chrome/browser/resources/settings/people_page/sync_controls.js
-index 663f8cda6cdcddd7b87e15f713ad3352f52d9629..3a0546e50532fda99bd248c3fc3873eeee8f3b94 100644
+index 37932cbc8c8d3962706a8ce436117d736440492f..a232e52bb4c74792f0dcc7ef646c6a536992af1e 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.js
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.js
-@@ -89,7 +89,7 @@ Polymer({
-         'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
- 
-     const router = settings.Router.getInstance();
--    if (router.getCurrentRoute() === router.getRoutes().SYNC_ADVANCED) {
-+    if (router.getCurrentRoute() === router.getRoutes().BRAVE_SYNC_SETUP) {
+@@ -108,7 +108,7 @@ Polymer({
+     const router = Router.getInstance();
+     if (router.getCurrentRoute() ===
+         /** @type {{ SYNC_ADVANCED: !Route }} */
+-        (router.getRoutes()).SYNC_ADVANCED) {
++        (router.getRoutes()).BRAVE_SYNC_SETUP) {
        this.browserProxy_.didNavigateToSyncPage();
      }
    },
-@@ -216,6 +216,7 @@ Polymer({
+@@ -241,6 +241,7 @@ Polymer({
     * @private
     */
    syncControlsHidden_() {
