@@ -218,6 +218,9 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     bool IsAnonWallet(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
 
+    bool IsRewardsEnabled(JNIEnv* env,
+                          const base::android::JavaParamRef<jobject>& jcaller);
+
     void OnClaimPromotion(
         const ledger::type::Result result,
         ledger::type::PromotionPtr promotion);

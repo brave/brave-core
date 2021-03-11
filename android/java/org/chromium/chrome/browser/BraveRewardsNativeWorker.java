@@ -371,6 +371,12 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public boolean isRewardsEnabled() {
+        synchronized (lock) {
+            return nativeIsRewardsEnabled(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public void GetExternalWallet() {
         synchronized (lock) {
             nativeGetExternalWallet(mNativeBraveRewardsNativeWorker);
@@ -624,6 +630,7 @@ public class BraveRewardsNativeWorker {
     private native int nativeGetAdsPerHour(long nativeBraveRewardsNativeWorker);
     private native void nativeSetAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
     private native boolean nativeIsAnonWallet(long nativeBraveRewardsNativeWorker);
+    private native boolean nativeIsRewardsEnabled(long nativeBraveRewardsNativeWorker);
     private native void nativeGetExternalWallet(long nativeBraveRewardsNativeWorker);
     private native void nativeDisconnectWallet(long nativeBraveRewardsNativeWorker);
     private native void nativeProcessRewardsPageUrl(long nativeBraveRewardsNativeWorker, String path, String query);
