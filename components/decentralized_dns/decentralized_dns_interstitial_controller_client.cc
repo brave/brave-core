@@ -11,6 +11,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/settings_page_helper.h"
 #include "components/security_interstitials/core/metrics_helper.h"
+#include "content/public/browser/web_contents.h"
 
 namespace decentralized_dns {
 
@@ -57,7 +58,8 @@ void DecentralizedDnsInterstitialControllerClient::SetResolveMethodAndReload(
                         ? kUnstoppableDomainsResolveMethod
                         : kENSResolveMethod;
   local_state_->SetInteger(pref_name, static_cast<int>(type));
-  Reload();
+  web_contents_->GetController().Reload(content::ReloadType::BYPASSING_CACHE,
+                                        true);
 }
 
 }  // namespace decentralized_dns
