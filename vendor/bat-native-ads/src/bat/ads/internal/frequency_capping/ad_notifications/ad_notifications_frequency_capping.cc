@@ -17,6 +17,7 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/split_test_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/transferred_frequency_cap.h"
@@ -161,6 +162,11 @@ bool FrequencyCapping::ShouldExcludeAd(const CreativeAdInfo& ad) {
 
   MarkedAsInappropriateFrequencyCap marked_as_inappropriate_frequency_cap;
   if (ShouldExclude(ad, &marked_as_inappropriate_frequency_cap)) {
+    should_exclude = true;
+  }
+
+  SplitTestFrequencyCap split_test_frequency_cap;
+  if (ShouldExclude(ad, &split_test_frequency_cap)) {
     should_exclude = true;
   }
 

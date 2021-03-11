@@ -38,8 +38,8 @@ class Dayparts : public Table {
   std::string BuildInsertOrUpdateQuery(DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void CreateTableV10(DBTransaction* transaction);
-  void MigrateToV10(DBTransaction* transaction);
+  void CreateTableV12(DBTransaction* transaction);
+  void MigrateToV12(DBTransaction* transaction);
 };
 
 }  // namespace table
