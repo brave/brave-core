@@ -172,6 +172,10 @@
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsMediator {
     public <init>(...);
+    *** mBottomControlsHeight;
+    *** mModel;
+    *** mBrowserControlsSizer;
+    *** updateCompositedViewVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
@@ -211,5 +215,18 @@
 }
 
 -keep class org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.IncognitoToggleTabLayout {
+    *** mIncognitoButtonIcon;
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.TabGroupUiCoordinator {
+    public <init>(...);
+    *** mToolbarView;
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabGroupUiCoordinator {
     public <init>(...);
 }

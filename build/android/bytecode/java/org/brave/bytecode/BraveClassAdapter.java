@@ -9,33 +9,35 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
-        chain = new BraveMainPreferenceBaseClassAdapter(chain);
+        chain = new BraveActivityClassAdapter(chain);
         chain = new BraveAndroidSyncSettingsClassAdapter(chain);
-        chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
-        chain = new BraveHomepageManagerClassAdapter(chain);
-        chain = new BraveManageSyncSettingsClassAdapter(chain);
-        chain = new BraveNewTabPageLayoutClassAdapter(chain);
-        chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
-        chain = new BraveNewTabPageClassAdapter(chain);
-        chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
-        chain = new BraveSearchEngineAdapterClassAdapter(chain);
-        chain = new BraveCommandLineInitUtilClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
+        chain = new BraveBookmarkUtilsClassAdapter(chain);
         chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
-        chain = new BraveToolbarManagerClassAdapter(chain);
-        chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
+        chain = new BraveBottomControlsMediatorClassAdapter(chain);
+        chain = new BraveCommandLineInitUtilClassAdapter(chain);
+        chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
+        chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
+        chain = new BraveHomepageManagerClassAdapter(chain);
+        chain = new BraveIncognitoToggleTabLayoutClassAdapter(chain);
+        chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
+        chain = new BraveMainPreferenceBaseClassAdapter(chain);
+        chain = new BraveManageSyncSettingsClassAdapter(chain);
+        chain = new BraveMimeUtilsClassAdapter(chain);
+        chain = new BraveNewTabPageClassAdapter(chain);
+        chain = new BraveNewTabPageLayoutClassAdapter(chain);
+        chain = new BravePasswordSettingsBaseClassAdapter(chain);
+        chain = new BraveQueryTileSectionClassAdapter(chain);
+        chain = new BraveSearchEngineAdapterClassAdapter(chain);
+        chain = new BraveSettingsLauncherImplClassAdapter(chain);
+        chain = new BraveTabbedActivityClassAdapter(chain);
+        chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTPhoneClassAdapter(chain);
-        chain = new BraveToolbarLayoutClassAdapter(chain);
         chain = new BraveTileViewClassAdapter(chain);
-        chain = new BraveMimeUtilsClassAdapter(chain);
-        chain = new BraveActivityClassAdapter(chain);
-        chain = new BraveTabbedActivityClassAdapter(chain);
-        chain = new BraveBookmarkUtilsClassAdapter(chain);
-        chain = new BraveSettingsLauncherImplClassAdapter(chain);
-        chain = new BraveBottomControlsMediatorClassAdapter(chain);
-        chain = new BraveQueryTileSectionClassAdapter(chain);
-        chain = new BravePasswordSettingsBaseClassAdapter(chain);
+        chain = new BraveToolbarLayoutClassAdapter(chain);
+        chain = new BraveToolbarManagerClassAdapter(chain);
+        chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
         return chain;
     }
 }
