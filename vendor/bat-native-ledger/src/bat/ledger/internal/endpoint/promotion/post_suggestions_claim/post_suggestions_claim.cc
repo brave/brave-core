@@ -72,22 +72,6 @@ type::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-mojo::StructPtr<type::UrlRequest> PostSuggestionsClaim::GetSuggestionRequest(
-    const type::BraveWalletPtr wallet,
-    const char* path,
-    const std::string& payload) {
-  auto headers = util::BuildSignHeaders(path, payload, wallet->payment_id,
-                                        wallet->recovery_seed);
-
-  auto request = type::UrlRequest::New();
-  request->url = GetUrl();
-  request->content = payload;
-  request->headers = headers;
-  request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::POST;
-  return request;
-}
-
 void PostSuggestionsClaim::Request(
     const credential::CredentialsRedeem& redeem,
     PostSuggestionsClaimCallback callback) {
@@ -103,8 +87,18 @@ void PostSuggestionsClaim::Request(
     return;
   }
 
-  auto request = GetSuggestionRequest(std::move(wallet),
-                                      "post v2/suggestions/claim", payload);
+  auto headers = util::BuildSignHeaders(
+      "post /v1/suggestions/claim",
+      payload,
+      wallet->payment_id,
+      wallet->recovery_seed);
+
+  auto request = type::UrlRequest::New();
+  request->url = GetUrl();
+  request->content = payload;
+  request->headers = headers;
+  request->content_type = "application/json; charset=utf-8";
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
@@ -121,21 +115,21 @@ void PostSuggestionsClaim::OnRequest(
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    callback(type::Result::RETRY, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    callback(type::Result::RETRY, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   auto* drain_id = dictionary->FindStringKey("drain_id");
   if (!drain_id) {
     BLOG(0, "Missing drain id");
-    callback(type::Result::RETRY, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
   callback(result, *drain_id);

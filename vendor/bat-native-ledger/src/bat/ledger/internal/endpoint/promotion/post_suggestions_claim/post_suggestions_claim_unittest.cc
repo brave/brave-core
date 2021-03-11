@@ -100,7 +100,7 @@ TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
 
   claim_->Request(*redeem_,
                   [](const type::Result result, std::string drain_id) {
-                    EXPECT_EQ(result, type::Result::RETRY);
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                     EXPECT_EQ(drain_id, "");
                   });
 }

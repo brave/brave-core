@@ -1,13 +1,10 @@
-// NOLINT(build/header_guard)
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_\
-POST_SUGGESTIONS_CLAIM_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_\
-POST_SUGGESTIONS_CLAIM_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_POST_SUGGESTIONS_CLAIM_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_POST_SUGGESTIONS_CLAIM_H_
 
 #include <string>
 
@@ -59,11 +56,6 @@ class PostSuggestionsClaim {
 
   type::Result CheckStatusCode(const int status_code);
 
-  mojo::StructPtr<type::UrlRequest> GetSuggestionRequest(
-      const type::BraveWalletPtr wallet,
-      const char* path,
-      const std::string& payload);
-
   void OnRequest(const type::UrlResponse& response,
                  PostSuggestionsClaimCallback callback);
 
@@ -74,5 +66,4 @@ class PostSuggestionsClaim {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_\
-// POST_SUGGESTIONS_CLAIM_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_POST_SUGGESTIONS_CLAIM_H_
