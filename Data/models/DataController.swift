@@ -19,7 +19,7 @@ public enum WriteContext {
     case existing(_ context: NSManagedObjectContext)
 }
 
-public class DataController: NSObject {
+public class DataController {
     private static let databaseName = "Brave.sqlite"
     private static let modelName = "Model"
     
@@ -40,34 +40,49 @@ public class DataController: NSObject {
         return mom
     }()
     
+    private let operationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+    
+    init() {
+        configureContainer(container, store: storeURL)
+        createOldDocumentStoreIfNeeded()
+    }
+    
     // MARK: - Public interface
     
     public static var shared: DataController = DataController()
     public static var sharedInMemory: DataController = InMemoryDataController()
     
-    /// A possible hacky solution to prevent  #2185 crashes.
-    public func lazyInitialization() {
-        _ = DataController.shared.container
-    }
-    
     public func storeExists() -> Bool {
         return FileManager.default.fileExists(atPath: storeURL.path)
     }
     
+    private let container = NSPersistentContainer(name: DataController.modelName,
+                                                  managedObjectModel: DataController.model)
+    
+    // MARK: - Old Database migration methods
+    
     /// Returns old pre 1.12 persistent container or nil if it doesn't exist on the device.
-    public var oldDocumentStore: NSPersistentContainer? {
+    public var oldDocumentStore: NSPersistentContainer?
+    private var migrationContainer: NSPersistentContainer?
+    
+    private func createOldDocumentStoreIfNeeded() {
         let fm = FileManager.default
         guard let urls = fm.urls(for: FileManager.SearchPathDirectory.documentDirectory,
-                                 in: .userDomainMask).last else { return nil }
+                                 in: .userDomainMask).last else { return }
         
         let name = DataController.databaseName
         let path = urls.appendingPathComponent(name).path
         
         if fm.fileExists(atPath: path) {
-            return migrationContainer
+            migrationContainer = NSPersistentContainer(name: DataController.modelName, managedObjectModel: DataController.model)
+            if let migrationContainer = migrationContainer {
+                configureContainer(migrationContainer, store: oldDocumentStoreURL)
+            }
         }
-        
-        return nil
     }
     
     public var newStoreExists: Bool {
@@ -106,6 +121,9 @@ public class DataController: NSObject {
         }
         
         // Going to attempt migration (#4 in some level)
+        guard let migrationContainer = migrationContainer else {
+            throw MigrationError.OldStoreMissing("Migration container missing")
+        }
         
         let coordinator = migrationContainer.persistentStoreCoordinator
 
@@ -148,10 +166,30 @@ public class DataController: NSObject {
         // At this point, everything was a pure success 👏
     }
     
+    /// Warning! Please use `storeURL`. This is for migration purpose only.
+    private var oldDocumentStoreURL: URL {
+        return storeURL(for: FileManager.SearchPathDirectory.documentDirectory)
+    }
+    
+    /// Warning! Please use `storeURL`. This is for migration purposes only.
+    private var supportStoreURL: URL {
+        return storeURL(for: FileManager.SearchPathDirectory.applicationSupportDirectory)
+    }
+    
+    private func storeURL(for directory: FileManager.SearchPathDirectory) -> URL {
+        let urls = FileManager.default.urls(for: directory, in: .userDomainMask)
+        guard let docURL = urls.last else {
+            log.error("Could not load url for: \(directory)")
+            fatalError()
+        }
+        
+        return docURL.appendingPathComponent(DataController.databaseName)
+    }
+    
     // MARK: - Data framework interface
     
-    public static func perform(context: WriteContext = .new(inMemory: false), save: Bool = true,
-                               task: @escaping (NSManagedObjectContext) -> Void) {
+    static func perform(context: WriteContext = .new(inMemory: false), save: Bool = true,
+                        task: @escaping (NSManagedObjectContext) -> Void) {
         
         switch context {
         case .existing(let existingContext):
@@ -227,39 +265,12 @@ public class DataController: NSObject {
         container.persistentStoreDescriptions = [storeDescription]
     }
     
-    // MARK: - Private
-    private lazy var migrationContainer: NSPersistentContainer = {
-        return createContainer(store: oldDocumentStoreURL)
-    }()
-    
-    private lazy var container: NSPersistentContainer = {
-        return createContainer(store: storeURL)
-    }()
-    
-    private lazy var operationQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
-    
-    /// Warning! Please use `storeURL`. This is for migration purpose only.
-    private lazy var oldDocumentStoreURL: URL = {
-        return createStoreURL(directory: FileManager.SearchPathDirectory.documentDirectory)
-    }()
-    
-    /// Warning! Please use `storeURL`. This is for migration purposes only.
-    private lazy var supportStoreURL: URL = {
-        return createStoreURL(directory: FileManager.SearchPathDirectory.applicationSupportDirectory)
-    }()
-    
     var storeURL: URL {
         let supportDirectory = Preferences.Database.DocumentToSupportDirectoryMigration.completed.value
         return supportDirectory ? supportStoreURL : oldDocumentStoreURL
     }
     
-    private func createContainer(store: URL) -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: DataController.modelName, managedObjectModel: DataController.model)
-        
+    private func configureContainer(_ container: NSPersistentContainer, store: URL) {
         addPersistentStore(for: container, store: store)
         
         // Dev note: This completion handler might be misleading: the persistent store is loaded synchronously by default.
@@ -270,17 +281,6 @@ public class DataController: NSObject {
         })
         // We need this so the `viewContext` gets updated on changes from background tasks.
         container.viewContext.automaticallyMergesChangesFromParent = true
-        return container
-    }
-    
-    private func createStoreURL(directory: FileManager.SearchPathDirectory) -> URL {
-        let urls = FileManager.default.urls(for: directory, in: .userDomainMask)
-        guard let docURL = urls.last else {
-            log.error("Could not load url for: \(directory)")
-            fatalError()
-        }
-        
-        return docURL.appendingPathComponent(DataController.databaseName)
     }
     
     static func newBackgroundContext() -> NSManagedObjectContext {
