@@ -13,6 +13,7 @@
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/url_constants.h"
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -25,6 +26,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_view_host.h"
+#include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
 namespace {
@@ -52,7 +54,12 @@ bool HandleIPFSURLRewrite(
        base::EndsWith(url->host_piece(), kIpnsLocalhost))) {
     return true;
   }
-
+  if (url->SchemeIs(content::kChromeUIScheme) && url->DomainIs(kIPFSScheme)) {
+    GURL::Replacements host_replacements;
+    host_replacements.SetHostStr(kIPFSWebUIHost);
+    *url = url->ReplaceComponents(host_replacements);
+    return true;
+  }
   if (!IsIpfsResolveMethodDisabled(browser_context) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
       // We instead will translate the URL later.
@@ -68,6 +75,10 @@ bool HandleIPFSURLRewrite(
 bool HandleIPFSURLReverseRewrite(
     GURL* url,
     content::BrowserContext* browser_context) {
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->DomainIs(kIPFSWebUIHost)) {
+    return true;
+  }
 
   std::size_t ipfs_pos = url->host_piece().find(kIpfsLocalhost);
   std::size_t ipns_pos = url->host_piece().find(kIpnsLocalhost);

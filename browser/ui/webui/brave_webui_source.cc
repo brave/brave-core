@@ -871,7 +871,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
 #if BUILDFLAG(IPFS_ENABLED)
-      std::string("ipfs"), {
+      std::string("ipfs-internals"), {
         { "connectedPeersTitle", IDS_IPFS_CONNECTED_PEERS_TITLE },
         { "addressesConfigTitle", IDS_IPFS_ADDRESSES_CONFIG_TITLE },
         { "repoStatsTitle", IDS_IPFS_REPO_STATS_TITLE },

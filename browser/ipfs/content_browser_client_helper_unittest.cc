@@ -11,6 +11,7 @@
 
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_ports.h"
@@ -90,6 +91,16 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
 
   content::BrowserContext* browser_context() {
     return web_contents()->GetBrowserContext();
+  }
+
+  bool RedirectedToInternalPage(IPFSResolveMethodTypes method) {
+    profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
+                                      static_cast<int>(method));
+    GURL ipfs_diagnostic("chrome://ipfs");
+    return ipfs::HandleIPFSURLRewrite(&ipfs_diagnostic, browser_context()) &&
+           ipfs_diagnostic.spec() == kIPFSWebUIURL &&
+           HandleIPFSURLReverseRewrite(&ipfs_diagnostic, browser_context()) &&
+           ipfs_diagnostic.spec() == kIPFSWebUIURL;
   }
 
  private:
@@ -207,6 +218,13 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
   ipns_uri = GURL("http://test.com.ipns.localhost:8080/");
   ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/");
+}
+
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteInternal) {
+  ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_LOCAL));
+  ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_GATEWAY));
+  ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_ASK));
+  ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_DISABLED));
 }
 
 }  // namespace ipfs

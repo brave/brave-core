@@ -87,6 +87,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #endif
 
