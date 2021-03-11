@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 8e0a06316edc946b6c2aa36294ecf5ae42f4f9dd..b9630df74c4d30b403fd5443db902c0342df0e10 100644
+index e0651bc60d9bbb52810c8ca1ab13398d7390ba80..1d0de5f66c2d6842bd9378f037fb569a1c46e33e 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
 @@ -13,6 +13,7 @@
@@ -7,10 +7,10 @@ index 8e0a06316edc946b6c2aa36294ecf5ae42f4f9dd..b9630df74c4d30b403fd5443db902c03
  #include "base/strings/string_util.h"
  #include "base/values.h"
 +#include "brave/common/extensions/brave_extensions_api_provider.h"
+ #include "chrome/common/chrome_resource_request_blocked_reason.h"
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/chrome_extensions_api_provider.h"
- #include "chrome/common/extensions/manifest_handlers/theme_handler.h"
-@@ -55,6 +56,7 @@ const char kThumbsWhiteListedExtension[] = "khopmbdjffemhegeeobelklnbglcdgfh";
+@@ -56,6 +57,7 @@ const char kThumbsWhiteListedExtension[] = "khopmbdjffemhegeeobelklnbglcdgfh";
  ChromeExtensionsClient::ChromeExtensionsClient() {
    AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());
    AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());

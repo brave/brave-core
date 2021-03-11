@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index c61701b6204e47fabdc92dcf9719c5d682617b62..6c44c633bb30a3831d1f054b407f342fb68159fc 100644
+index 3efee4084a45299fd94188f8f8c6ae5c37644a09..26541ddbb53d71aca48854cecab016b3bc79572c 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -581,6 +581,7 @@ class TabStripModel : public TabGroupController {
-   // current tree of openers).
-   bool ShouldResetOpenerOnActiveTabChange(content::WebContents* contents) const;
+@@ -585,6 +585,7 @@ class TabStripModel : public TabGroupController {
+   // Serialise this object into a trace.
+   void WriteIntoTracedValue(perfetto::TracedValue context) const;
  
 +  TAB_STRIP_MODEL_H_
   private:
