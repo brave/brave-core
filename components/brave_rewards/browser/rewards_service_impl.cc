@@ -1658,10 +1658,18 @@ bool RewardsServiceImpl::ShouldShowOnboarding() const {
 void RewardsServiceImpl::SaveOnboardingResult(OnboardingResult result) {
   PrefService* prefs = profile_->GetPrefs();
   prefs->SetTime(prefs::kOnboarded, base::Time::Now());
-  if (result == OnboardingResult::kOptedIn) {
-    SetAutoContributeEnabled(true);
-    SetAdsEnabled(true);
+
+  if (result != OnboardingResult::kOptedIn) {
+    return;
   }
+
+  StartProcess(base::BindOnce(&RewardsServiceImpl::OnStartProcessForOnboarding,
+                              AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnStartProcessForOnboarding() {
+  SetAutoContributeEnabled(true);
+  SetAdsEnabled(true);
 }
 
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
@@ -3512,7 +3520,7 @@ void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
 
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
   if (ads_service) {
-    ads_service->SetEnabled(true);
+    ads_service->SetEnabled(ads_service->IsSupportedLocale());
   }
 }
 

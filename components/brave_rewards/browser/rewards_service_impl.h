@@ -525,6 +525,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnWalletCreatedForSetAdsEnabled(const ledger::type::Result result);
 
+  void OnStartProcessForOnboarding();
+
   // ledger::LedgerClient
   void OnReconcileComplete(
       const ledger::type::Result result,
