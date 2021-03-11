@@ -5,7 +5,10 @@
 
 modules_idl_files = [
   "brave.idl",
-  "brave_wallet.idl",
+  "ethereum.idl",
 ]
 
-modules_dependency_idl_files = [ "navigator_brave.idl" ]
+modules_dependency_idl_files = [
+  "navigator_brave.idl",
+  "window_brave.idl"
+]

@@ -8,7 +8,6 @@
 #include "base/feature_list.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/renderer/brave_wallet_render_frame_observer.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
@@ -48,7 +47,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 #endif
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-  
+
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   new brave_wallet::BraveWalletRenderFrameObserver(render_frame);
 #endif

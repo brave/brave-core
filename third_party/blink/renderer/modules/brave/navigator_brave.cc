@@ -7,7 +7,6 @@
 
 #include "third_party/blink/renderer/core/frame/navigator.h"
 #include "brave/third_party/blink/renderer/modules/brave/brave.h"
-#include "brave/third_party/blink/renderer/modules/brave/brave_wallet.h"
 
 namespace blink {
 
@@ -38,20 +37,8 @@ Brave* NavigatorBrave::brave() {
   return brave_;
 }
 
-BraveWallet* NavigatorBrave::brave_wallet(Navigator& navigator) {
-  return NavigatorBrave::From(navigator).brave_wallet();
-}
-
-BraveWallet* NavigatorBrave::brave_wallet() {
-  if (!brave_wallet_) {
-    brave_wallet_ = MakeGarbageCollected<BraveWallet>();
-  }
-  return brave_wallet_;
-}
-
 void NavigatorBrave::Trace(blink::Visitor* visitor) const {
   visitor->Trace(brave_);
-  visitor->Trace(brave_wallet_);
   Supplement<Navigator>::Trace(visitor);
 }
 

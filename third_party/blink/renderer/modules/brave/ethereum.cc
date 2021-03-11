@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/blink/renderer/modules/brave/brave_wallet.h"
+#include "brave/third_party/blink/renderer/modules/brave/ethereum.h"
 
 #include <string>
 
@@ -15,7 +15,7 @@
 
 namespace blink {
 
-bool BraveWallet::EnsureConnected(ExecutionContext* execution_context) {
+bool Ethereum::EnsureConnected(ExecutionContext* execution_context) {
   if (!brave_wallet_provider_.is_bound()) {
     execution_context->GetBrowserInterfaceBroker().GetInterface(
         brave_wallet_provider_.BindNewPipeAndPassReceiver());
@@ -24,7 +24,7 @@ bool BraveWallet::EnsureConnected(ExecutionContext* execution_context) {
   return brave_wallet_provider_.is_bound();
 }
 
-ScriptPromise BraveWallet::request(ScriptState* script_state,
+ScriptPromise Ethereum::request(ScriptState* script_state,
                                    const String& input) {
   if (!EnsureConnected(ExecutionContext::From(script_state)))
     return ScriptPromise();
@@ -33,7 +33,7 @@ ScriptPromise BraveWallet::request(ScriptState* script_state,
   ScriptPromise promise = resolver->Promise();
 
   brave_wallet_provider_->Request(input.Utf8(), WTF::Bind(
-      [](ScriptPromiseResolver* resolver, BraveWallet* brave_wallet,
+      [](ScriptPromiseResolver* resolver, Ethereum* ethereum,
           const int status, const std::string& response) {
         DCHECK(resolver);
 

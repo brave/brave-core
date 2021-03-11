@@ -9,10 +9,12 @@ blink_modules_sources("brave") {
   sources = [
     "brave.cc",
     "brave.h",
-    "brave_wallet.cc",
-    "brave_wallet.h",
+    "ethereum.cc",
+    "ethereum.h",
     "navigator_brave.cc",
     "navigator_brave.h",
+    "window_brave.cc",
+    "window_brave.h",
   ]
 
   deps = [
