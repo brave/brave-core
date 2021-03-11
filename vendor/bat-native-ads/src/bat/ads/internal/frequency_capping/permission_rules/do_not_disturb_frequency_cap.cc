@@ -6,9 +6,9 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_frequency_cap.h"
 
 #include "base/time/time.h"
+#include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/tab_manager/tab_manager.h"
 
 namespace ads {
 
@@ -41,7 +41,7 @@ bool DoNotDisturbFrequencyCap::DoesRespectCap() {
     return true;
   }
 
-  if (TabManager::Get()->IsForegrounded()) {
+  if (BrowserManager::Get()->IsActive()) {
     return true;
   }
 
