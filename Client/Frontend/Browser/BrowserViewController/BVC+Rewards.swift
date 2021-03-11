@@ -284,7 +284,7 @@ extension Tab {
             if faviconURL == nil {
                 log.warning("No favicon found in \(self) to report to rewards panel")
             }
-            rewards.reportLoadedPage(url: url, faviconUrl: faviconURL, tabId: self.rewardsId, html: htmlBlob ?? "", adsInnerText: classifierText)
+            rewards.reportLoadedPage(url: url, redirectionURLs: [], faviconUrl: faviconURL, tabId: self.rewardsId, html: htmlBlob ?? "", adsInnerText: classifierText)
         }
     }
     
