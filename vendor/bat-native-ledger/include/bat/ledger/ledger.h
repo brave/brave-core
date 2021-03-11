@@ -105,6 +105,11 @@ using GetTransferableAmountCallback = std::function<void(double)>;
 using PostSuggestionsClaimCallback =
     std::function<void(const type::Result result, std::string drain_id)>;
 
+using GetDrainCallback =
+    std::function<void(const type::Result result,
+                       std::string drain_id,
+                       std::string status)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(
