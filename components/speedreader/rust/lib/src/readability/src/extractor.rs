@@ -8,7 +8,7 @@ use html5ever::{LocalName, QualName};
 use markup5ever_rcdom::RcDom;
 use markup5ever_rcdom::SerializableHandle;
 use scorer;
-use scorer::{Candidate, Title};
+use scorer::{Candidate, Title, TopCandidate};
 use std::cell::Cell;
 use std::collections::BTreeMap;
 use std::collections::HashMap;
@@ -18,6 +18,9 @@ use std::path::Path;
 use std::rc::Rc;
 use std::str::FromStr;
 use url::Url;
+use util;
+
+const NUM_TOP_CANDIDATES: usize = 5;
 
 #[derive(Debug)]
 pub struct Product {
@@ -69,7 +72,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
     let mut title = Title::default();
-    let mut candidates = BTreeMap::new();
+    let mut candidates: BTreeMap<String, Rc<Candidate>> = BTreeMap::new();
     let mut nodes = BTreeMap::new();
     let handle = dom.document.clone();
 
@@ -96,29 +99,52 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         ));
     }
 
-    let mut id: &str = "/";
+    let mut id: &Path = Path::new("/");
 
     // top candidate is the top scorer among the tree dom's candidates. this is
     // the subtree that will be considered for final rendering
-    let mut top_candidate: &Candidate = &Candidate {
+    let mut top_candidate: Rc<Candidate> = Rc::new(Candidate {
         node: handle,
         score: Cell::new(0.0),
-    };
+    });
 
     // scores all candidate nodes
+    let mut top_candidates: Vec<TopCandidate> = vec![];
     for (i, c) in candidates.iter() {
         let score = c.score.get() * (1.0 - scorer::get_link_density(&c.node));
         c.score.set(score);
-        if score <= top_candidate.score.get() {
-            continue;
+
+        if top_candidates.len() < NUM_TOP_CANDIDATES {
+            top_candidates.push(TopCandidate {
+                candidate: c.clone(),
+                id: i.to_string(),
+            });
+        } else {
+            let min_index = util::min_elem_index(&top_candidates);
+            let min = &mut top_candidates[min_index];
+            if score > min.candidate.score.get() {
+                *min = TopCandidate {
+                    candidate: c.clone(),
+                    id: i.to_string(),
+                }
+            }
         }
-        id = i;
-        top_candidate = c;
+    }
+
+    assert!(top_candidates.len() > 0);
+    let max_index = util::max_elem_index(&top_candidates);
+    top_candidates.swap(0, max_index);
+    if let Some(pid) = scorer::search_alternative_candidates(&top_candidates, &nodes) {
+        top_candidate = scorer::find_or_create_candidate(pid, &mut candidates, &nodes).unwrap();
+        id = pid;
+    } else {
+        top_candidate = top_candidates[0].candidate.clone();
+        id = Path::new(top_candidates[0].id.as_str());
     }
 
     scorer::clean(
         &mut dom,
-        Path::new(id),
+        id,
         top_candidate.node.clone(),
         url,
         &title.title,
@@ -164,6 +190,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use markup5ever_rcdom::Node;
     use std::io::Cursor;
 
     fn normalize_output(input: &str) -> String {
@@ -306,6 +333,72 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
-        assert_eq!(normalize_output(expected), normalize_output(&product.content));
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    fn make_test_candidate(
+        mut dom: &mut RcDom,
+        path: &str,
+        tag: &str,
+        score: f32,
+        nodes: &mut BTreeMap<String, Rc<Node>>,
+        top_candidates: &mut Vec<TopCandidate>,
+    ) {
+        let e0 = dom::simple_create_element(&mut dom, tag);
+        nodes.insert(path.to_string(), e0.clone());
+        let c = Candidate::new(e0, score);
+        top_candidates.push(TopCandidate {
+            id: path.to_string(),
+            candidate: c.clone(),
+        });
+    }
+
+    #[test]
+    fn alternative_candidates() {
+        let mut dom = RcDom::default();
+        let mut nodes = BTreeMap::new();
+        let mut top_candidates: Vec<TopCandidate> = vec![];
+
+        // First candidate. In the algorithm, this is the one with the higest score
+        make_test_candidate(
+            &mut dom,
+            "/1/1/0/1",
+            "div",
+            57.1,
+            &mut nodes,
+            &mut top_candidates,
+        );
+
+        // Remaining alternative candidates with scores close to the top scorer.
+        make_test_candidate(
+            &mut dom,
+            "/1/1/0",
+            "h1",
+            55.5,
+            &mut nodes,
+            &mut top_candidates,
+        );
+        make_test_candidate(
+            &mut dom,
+            "/1/1/0/2/0",
+            "div",
+            53.3,
+            &mut nodes,
+            &mut top_candidates,
+        );
+        make_test_candidate(
+            &mut dom,
+            "/1/1/0/3",
+            "div",
+            50.0,
+            &mut nodes,
+            &mut top_candidates,
+        );
+
+        let id = scorer::search_alternative_candidates(&top_candidates, &nodes).unwrap();
+        assert_eq!("/1/1/0", id.to_str().unwrap());
     }
 }

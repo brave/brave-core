@@ -1,5 +1,7 @@
 use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
+use html5ever::tree_builder::ElementFlags;
+use html5ever::tree_builder::TreeSink;
 use html5ever::{parse_document, ParseOpts};
 use html5ever::{Attribute, LocalName, QualName};
 use markup5ever_rcdom::NodeData::{Comment, Element, Text};
@@ -188,6 +190,11 @@ pub fn has_nodes(handle: &Handle, tag_names: &[&'static LocalName]) -> bool {
         }
     }
     false
+}
+
+pub fn simple_create_element(dom: &mut RcDom, tag: &str) -> Handle {
+    let name = QualName::new(None, ns!(), LocalName::from(tag));
+    dom.create_element(name, vec![], ElementFlags::default())
 }
 
 pub fn text_children_count(handle: &Handle) -> usize {
