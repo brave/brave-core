@@ -427,9 +427,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_ResetRewardsWithBAT) {
       "[data-test-id='settings-modal-tabs-2']");
 
   rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[data-test-id='reset-text']",
-      "Your 30 BATs and other Rewards");
+      contents(), "[data-test-id='reset-text']",
+      "Your 30 BAT and other Rewards");
 }
 
 // https://github.com/brave/brave-browser/issues/12704
