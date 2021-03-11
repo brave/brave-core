@@ -126,6 +126,12 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
         garbageCollectionStatus: action.payload.garbageCollectionStatus
       }
       break
+    case types.IPFS_ON_INSTALLATION_PROGRESS:
+      state = {
+        ...state,
+        installationProgress: action.payload.installationProgress
+      }
+      break
     case types.IPFS_RESTART_DAEMON:
       chrome.send('ipfs.restartDaemon')
       state = {

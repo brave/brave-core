@@ -67,6 +67,11 @@ window.cr.define('ipfs', function () {
     actions.onGetAddressesConfig(addressesConfig)
   }
 
+  function onInstallationProgress (installationProgress: IPFS.InstallationProgress) {
+    const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
+    actions.onInstallationProgress(installationProgress)
+  }
+
   function onGetDaemonStatus (daemonStatus: IPFS.DaemonStatus) {
     const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
     actions.onGetDaemonStatus(daemonStatus)
@@ -100,7 +105,8 @@ window.cr.define('ipfs', function () {
     onGetDaemonStatus,
     onGetRepoStats,
     onGetNodeInfo,
-    onGarbageCollection
+    onGarbageCollection,
+    onInstallationProgress
   }
 })
 

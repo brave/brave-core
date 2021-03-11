@@ -13,8 +13,10 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
+#include "chrome/browser/browser_process_impl.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/update_client/crx_update_item.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -190,7 +192,21 @@ void IPFSDOMHandler::OnIpfsLaunched(bool success, int64_t pid) {
 }
 
 void IPFSDOMHandler::OnInstallationEvent(ipfs::ComponentUpdaterEvents event) {
-  if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_ERROR) {
+  if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_DOWNLOADING) {
+    if (!g_browser_process->component_updater())
+      return;
+    auto* updater = g_browser_process->component_updater();
+    update_client::CrxUpdateItem item;
+    if (updater->GetComponentDetails(ipfs::kIpfsClientComponentId, &item)) {
+      if (item.downloaded_bytes > 0 && item.total_bytes > 0) {
+        base::Value value(base::Value::Type::DICTIONARY);
+        value.SetDoubleKey("total_bytes", item.total_bytes);
+        value.SetDoubleKey("downloaded_bytes", item.downloaded_bytes);
+        web_ui()->CallJavascriptFunctionUnsafe("ipfs.onInstallationProgress",
+                                               std::move(value));
+      }
+    }
+  } else if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_ERROR) {
     base::Value value(base::Value::Type::DICTIONARY);
     value.SetBoolKey("installed", false);
     value.SetStringKey(

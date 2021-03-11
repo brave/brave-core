@@ -82,7 +82,7 @@ export class IPFSPage extends React.Component<Props, {}> {
     return (
       <div id='ipfsPage'>
         {!this.props.ipfsData.daemonStatus.installed && (
-        <UninstalledView daemonStatus={this.props.ipfsData.daemonStatus} onInstall={this.installDaemon}/>
+        <UninstalledView daemonStatus={this.props.ipfsData.daemonStatus} installationProgress={this.props.ipfsData.installationProgress} onInstall={this.installDaemon}/>
         )}
         {this.props.ipfsData.daemonStatus.installed && (
         <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} addressesConfig={this.props.ipfsData.addressesConfig} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon} onRestart={this.restartDaemon} onOpenNodeWebUI={this.openNodeWebUI} />
