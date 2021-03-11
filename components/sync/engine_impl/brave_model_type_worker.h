@@ -20,6 +20,9 @@ class Cryptographer;
 class NudgeHandler;
 class ModelTypeProcessor;
 
+FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarker);
+FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod);
+
 class BraveModelTypeWorker : public ModelTypeWorker {
  public:
   BraveModelTypeWorker(ModelType type,
@@ -35,6 +38,10 @@ class BraveModelTypeWorker : public ModelTypeWorker {
   BraveModelTypeWorker& operator=(const BraveModelTypeWorker&) = delete;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest, ResetProgressMarker);
+  FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest,
+                           ResetProgressMarkerMaxPeriod);
+
   void OnCommitResponse(
       const CommitResponseDataList& committed_response_list,
       const FailedCommitResponseDataList& error_response_list) override;
@@ -45,6 +52,8 @@ class BraveModelTypeWorker : public ModelTypeWorker {
 
   size_t failed_commit_times_ = 0;
   base::Time last_reset_marker_time_;
+  static size_t GetFailuresToResetMarkerForTests();
+  static base::TimeDelta MinimalTimeBetweenResetForTests();
 };
 
 }  // namespace syncer

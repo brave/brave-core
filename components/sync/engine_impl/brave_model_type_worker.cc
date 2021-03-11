@@ -55,6 +55,16 @@ void BraveModelTypeWorker::OnCommitResponse(
   }
 }
 
+// static
+size_t BraveModelTypeWorker::GetFailuresToResetMarkerForTests() {
+  return kFailuresToResetMarker;
+}
+
+// static
+base::TimeDelta BraveModelTypeWorker::MinimalTimeBetweenResetForTests() {
+  return kMinimalTimeBetweenResetMarker;
+}
+
 bool BraveModelTypeWorker::IsResetProgressMarkerRequired(
     const FailedCommitResponseDataList& error_response_list) {
   if (!last_reset_marker_time_.is_null() &&

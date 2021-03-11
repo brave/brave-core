@@ -6,9 +6,22 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_MODEL_TYPE_WORKER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_MODEL_TYPE_WORKER_H_
 
-#define BRAVE_MODEL_TYPE_WORKER_H_ \
- private:                          \
-  friend class BraveModelTypeWorker;
+#include "base/gtest_prod_util.h"
+
+namespace syncer {
+
+FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarker);
+FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod);
+
+}  // namespace syncer
+
+#define BRAVE_MODEL_TYPE_WORKER_H_                                         \
+ private:                                                                  \
+  friend class BraveModelTypeWorker;                                       \
+  friend class BraveModelTypeWorkerTest;                                   \
+  FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest, ResetProgressMarker); \
+  FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest,                       \
+                           ResetProgressMarkerMaxPeriod);
 
 #define OnCommitResponse virtual OnCommitResponse
 

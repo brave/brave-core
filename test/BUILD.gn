@@ -417,6 +417,7 @@ test("brave_unit_tests") {
       "//brave/components/brave_sync:crypto",
       "//brave/components/brave_sync:network_time_helper",
       "//brave/components/sync/driver:unit_tests",
+      "//brave/components/sync/engine_impl:unit_tests",
       "//components/signin/public/identity_manager:test_support",
     ]
   }
