@@ -6,6 +6,7 @@
 source_set("renderer") {
   sources = [
     "brave_farbling_constants.h",
+    "brave_font_whitelist.h",
   ]
 
   deps = [

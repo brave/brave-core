@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/platform/fonts/font_selector.h b/third_party/blink/renderer/platform/fonts/font_selector.h
+index 5813628ae4a2d72f021dbc5da11dcae3718aba8d..abfe63e207ef690b15619f1db52e13875b1fa887 100644
+--- a/third_party/blink/renderer/platform/fonts/font_selector.h
++++ b/third_party/blink/renderer/platform/fonts/font_selector.h
+@@ -139,6 +139,7 @@ class PLATFORM_EXPORT FontSelector : public FontCacheClient {
+ 
+   void Trace(Visitor* visitor) const override;
+ 
++  BRAVE_FONT_SELECTOR_H
+  protected:
+   static AtomicString FamilyNameFromSettings(
+       const GenericFontFamilySettings&,
