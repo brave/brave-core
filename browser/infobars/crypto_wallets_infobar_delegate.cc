@@ -133,7 +133,7 @@ bool CryptoWalletsInfoBarDelegate::Cancel() {
       return true;
     }
     Browser* browser = chrome::FindBrowserWithWebContents(web_contents);
-    brave::ShowExtensionSettings(browser);
+    brave::ShowWalletSettings(browser);
   }
   return true;
 }
