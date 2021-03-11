@@ -63,13 +63,26 @@ source_set("brave_ads") {
       "padded_image.cc",
       "padded_image.h",
     ]
+
+    if (is_mac) {
+      sources += [ "message_popup_view_mac.mm" ]
+    }
+
+    if (is_win) {
+      sources += [ "message_popup_view_win.cc" ]
+    }
+
     deps += [
       "//ui/compositor",
       "//ui/events",
       "//ui/views",
     ]
   }
+
   if (is_mac) {
-    frameworks = [ "Foundation.framework" ]
+    frameworks = [
+      "AppKit.framework",
+      "Foundation.framework",
+    ]
   }
 }
