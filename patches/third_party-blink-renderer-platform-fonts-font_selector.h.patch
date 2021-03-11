@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/platform/fonts/font_selector.h b/third_party/blink/renderer/platform/fonts/font_selector.h
+index 78527192a2c80917145959554e3eb952d9aaa8c5..bc1620b30d56fb13e63494e9d8448e65ee37cc2f 100644
+--- a/third_party/blink/renderer/platform/fonts/font_selector.h
++++ b/third_party/blink/renderer/platform/fonts/font_selector.h
+@@ -133,6 +133,8 @@ class PLATFORM_EXPORT FontSelector : public FontCacheClient {
+       const FontDescription&,
+       const AtomicString& passed_family) = 0;
+ 
++  virtual bool AllowFontFamily(const AtomicString& family_name) = 0;
++
+   FontFallbackMap& GetFontFallbackMap();
+ 
+   void Trace(Visitor* visitor) const override;

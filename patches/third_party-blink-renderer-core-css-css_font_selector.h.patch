@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/css/css_font_selector.h b/third_party/blink/renderer/core/css/css_font_selector.h
+index bee4428dd0cf1316f724f8ec6a9a1dde653719fe..fbee03cee8cd2b15af4b814bb3ffef2d4e1933be 100644
+--- a/third_party/blink/renderer/core/css/css_font_selector.h
++++ b/third_party/blink/renderer/core/css/css_font_selector.h
+@@ -93,6 +93,7 @@ class CORE_EXPORT CSSFontSelector : public FontSelector {
+                     const FontDataForRangeSet&) override;
+   bool IsPlatformFamilyMatchAvailable(const FontDescription&,
+                                       const AtomicString& family) override;
++  bool AllowFontFamily(const AtomicString& family) override;
+ 
+   void FontFaceInvalidated(FontInvalidationReason) override;
+ 

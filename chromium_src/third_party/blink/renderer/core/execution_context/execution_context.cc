@@ -6,7 +6,10 @@
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 #include "base/command_line.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "crypto/hmac.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"
@@ -23,6 +26,142 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
 namespace {
+
+#if defined(OS_MAC)
+const bool kRestrictFontFamilies = true;
+constexpr auto kAllowedFontFamilies =
+    base::MakeFixedFlatSet<base::StringPiece>({".Helvetica Neue DeskInterface",
+                                               "AppleGothic",
+                                               "Apple Color Emoji",
+                                               "Arial",
+                                               "Courier",
+                                               "Geneva",
+                                               "Georgia",
+                                               "Heiti TC",
+                                               "Helvetica",
+                                               "Helvetica Neue",
+                                               "Hiragino Kaku Gothic ProN",
+                                               "Lucida Grande",
+                                               "Monaco",
+                                               "Noto Sans Armenian",
+                                               "Noto Sans Bengali",
+                                               "Noto Sans Buginese",
+                                               "Noto Sans Canadian Aboriginal",
+                                               "Noto Sans Cherokee",
+                                               "Noto Sans Devanagari",
+                                               "Noto Sans Ethiopic",
+                                               "Noto Sans Gujarati",
+                                               "Noto Sans Gurmukhi",
+                                               "Noto Sans Kannada",
+                                               "Noto Sans Khmer",
+                                               "Noto Sans Lao",
+                                               "Noto Sans Malayalam",
+                                               "Noto Sans Mongolian",
+                                               "Noto Sans Myanmar",
+                                               "Noto Sans Oriya",
+                                               "Noto Sans Sinhala",
+                                               "Noto Sans Tamil",
+                                               "Noto Sans Telugu",
+                                               "Noto Sans Thaana",
+                                               "Noto Sans Tibetan",
+                                               "Noto Sans Yi",
+                                               "STHeiti",
+                                               "STIX Math",
+                                               "Tahoma",
+                                               "Thonburi",
+                                               "Times",
+                                               "Times New Roman",
+                                               "Verdana"});
+constexpr auto kAdditionalFontFamilies =
+    base::MakeFixedFlatSet<base::StringPiece>({
+        "American Typewriter",
+        "Andale Mono",
+        "Apple Braille",
+        "Apple Chancery",
+        "Apple Color Emoji",
+        "Apple Symbols",
+        "AppleGothic",
+        "AppleMyungjo",
+        "Avenir",
+        "Avenir Next",
+        "Baskerville",
+        "Big Caslon",
+        "Bradley Hand",
+        "Chalkboard",
+        "Copperplate",
+        "Didot",
+    });
+#elif defined(OS_WIN)
+const bool kRestrictFontFamilies = true;
+constexpr auto kAllowedFontFamilies =
+    base::MakeFixedFlatSet<base::StringPiece>({"Arial",
+                                               "Batang",
+                                               "바탕",
+                                               "Cambria Math",
+                                               "Courier New",
+                                               "Euphemia",
+                                               "Gautami",
+                                               "Georgia",
+                                               "Gulim",
+                                               "굴림",
+                                               "GulimChe",
+                                               "굴림체",
+                                               "Iskoola Pota",
+                                               "Kalinga",
+                                               "Kartika",
+                                               "Latha",
+                                               "Lucida Console",
+                                               "MS Gothic",
+                                               "ＭＳ ゴシック",
+                                               "MS Mincho",
+                                               "ＭＳ 明朝",
+                                               "MS PGothic",
+                                               "ＭＳ Ｐゴシック",
+                                               "MS PMincho",
+                                               "ＭＳ Ｐ明朝",
+                                               "MV Boli",
+                                               "Malgun Gothic",
+                                               "Mangal",
+                                               "Meiryo",
+                                               "Meiryo UI",
+                                               "Microsoft Himalaya",
+                                               "Microsoft JhengHei",
+                                               "Microsoft JhengHei UI",
+                                               "Microsoft YaHei",
+                                               "微软雅黑",
+                                               "Microsoft YaHei UI",
+                                               "MingLiU",
+                                               "細明體",
+                                               "Noto Sans Buginese",
+                                               "Noto Sans Khmer",
+                                               "Noto Sans Lao",
+                                               "Noto Sans Myanmar",
+                                               "Noto Sans Yi",
+                                               "Nyala",
+                                               "PMingLiU",
+                                               "新細明體",
+                                               "Plantagenet Cherokee",
+                                               "Raavi",
+                                               "Segoe UI",
+                                               "Shruti",
+                                               "SimSun",
+                                               "宋体",
+                                               "Sylfaen",
+                                               "Tahoma",
+                                               "Times New Roman",
+                                               "Tunga",
+                                               "Verdana",
+                                               "Vrinda",
+                                               "Yu Gothic UI"});
+constexpr auto kAdditionalFontFamilies =
+    base::MakeFixedFlatSet<base::StringPiece>({});
+#else
+const bool kRestrictFontFamilies = false;
+constexpr auto kAllowedFontFamilies =
+    base::MakeFixedFlatSet<base::StringPiece>({});
+constexpr auto kAdditionalFontFamilies =
+    base::MakeFixedFlatSet<base::StringPiece>({});
+#endif
 
 const uint64_t zero = 0;
 
@@ -135,6 +274,13 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
   CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
+  if (kRestrictFontFamilies) {
+    std::mt19937_64 prng = MakePseudoRandomGenerator();
+    for (auto it : kAdditionalFontFamilies) {
+      if (prng() % 2 == 1)
+        additional_font_families_.insert(it);
+    }
+  }
   farbling_enabled_ = true;
 }
 
@@ -261,6 +407,26 @@ WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
   for (int i = 0; i < extra; i++)
     result.Append(" ");
   return result.ToString();
+}
+
+bool BraveSessionCache::AllowFontFamily(
+    blink::WebContentSettingsClient* settings,
+    const AtomicString& family_name) {
+  if (!kRestrictFontFamilies || !farbling_enabled_ || !settings)
+    return true;
+  switch (settings->GetBraveFarblingLevel()) {
+    case BraveFarblingLevel::OFF:
+      break;
+    case BraveFarblingLevel::BALANCED:
+    case BraveFarblingLevel::MAXIMUM: {
+      return kAllowedFontFamilies.contains(family_name.Utf8()) ||
+             additional_font_families_.contains(family_name.Utf8());
+      break;
+    }
+    default:
+      NOTREACHED();
+  }
+  return true;
 }
 
 std::mt19937_64 BraveSessionCache::MakePseudoRandomGenerator() {

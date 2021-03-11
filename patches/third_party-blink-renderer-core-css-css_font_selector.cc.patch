@@ -1,0 +1,32 @@
+diff --git a/third_party/blink/renderer/core/css/css_font_selector.cc b/third_party/blink/renderer/core/css/css_font_selector.cc
+index 2c0b865d5f3379c5936b67a42820908c385a4a04..739d7704f886eccdb7551c32a2d51b52d695be23 100644
+--- a/third_party/blink/renderer/core/css/css_font_selector.cc
++++ b/third_party/blink/renderer/core/css/css_font_selector.cc
+@@ -44,6 +44,9 @@
+ #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
+ #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+ 
++#include "third_party/blink/public/platform/web_content_settings_client.h"
++#include "third_party/blink/renderer/core/execution_context/execution_context.h"
++
+ namespace blink {
+ 
+ CSSFontSelector::CSSFontSelector(const TreeScope& tree_scope)
+@@ -155,6 +158,17 @@ bool CSSFontSelector::IsPlatformFamilyMatchAvailable(
+       font_description, family);
+ }
+ 
++bool CSSFontSelector::AllowFontFamily(const AtomicString& family_name) {
++  if (ExecutionContext* context = GetExecutionContext()) {
++    if (WebContentSettingsClient* settings =
++            brave::GetContentSettingsClientFor(context)) {
++      return brave::BraveSessionCache::From(*context).AllowFontFamily(
++          settings, family_name);
++    }
++  }
++  return true;
++}
++
+ void CSSFontSelector::UpdateGenericFontFamilySettings(Document& document) {
+   if (!document.GetSettings())
+     return;

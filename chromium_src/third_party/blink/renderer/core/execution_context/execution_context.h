@@ -12,6 +12,7 @@
 
 #include "base/callback.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "base/containers/flat_set.h"
 
 namespace blink {
 class WebContentSettingsClient;
@@ -51,12 +52,15 @@ class CORE_EXPORT BraveSessionCache final
                      size_t size);
   WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
   WTF::String FarbledUserAgent(WTF::String real_user_agent);
+  bool AllowFontFamily(blink::WebContentSettingsClient* settings,
+                       const AtomicString& family_name);
   std::mt19937_64 MakePseudoRandomGenerator();
 
  private:
   bool farbling_enabled_;
   uint64_t session_key_;
   uint8_t domain_key_[32];
+  base::flat_set<base::StringPiece> additional_font_families_;
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };

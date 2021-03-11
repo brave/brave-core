@@ -1,0 +1,34 @@
+diff --git a/third_party/blink/renderer/core/css/offscreen_font_selector.cc b/third_party/blink/renderer/core/css/offscreen_font_selector.cc
+index 443943370d21f70373a0c8f53293f8371bde32be..759e00e61a4b9fe4c2ab9d5790cc5fdb276d281d 100644
+--- a/third_party/blink/renderer/core/css/offscreen_font_selector.cc
++++ b/third_party/blink/renderer/core/css/offscreen_font_selector.cc
+@@ -5,9 +5,11 @@
+ #include "third_party/blink/renderer/core/css/offscreen_font_selector.h"
+ 
+ #include "build/build_config.h"
++#include "third_party/blink/public/platform/web_content_settings_client.h"
+ #include "third_party/blink/renderer/core/css/css_segmented_font_face.h"
+ #include "third_party/blink/renderer/core/css/css_value_list.h"
+ #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
++#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+ #include "third_party/blink/renderer/core/frame/local_frame.h"
+ #include "third_party/blink/renderer/core/frame/settings.h"
+ #include "third_party/blink/renderer/core/loader/frame_loader.h"
+@@ -99,6 +101,17 @@ bool OffscreenFontSelector::IsPlatformFamilyMatchAvailable(
+       font_description, family);
+ }
+ 
++bool OffscreenFontSelector::AllowFontFamily(const AtomicString& family_name) {
++  if (ExecutionContext* context = GetExecutionContext()) {
++    if (WebContentSettingsClient* settings =
++            brave::GetContentSettingsClientFor(context)) {
++      return brave::BraveSessionCache::From(*context).AllowFontFamily(
++          settings, family_name);
++    }
++  }
++  return true;
++}
++
+ void OffscreenFontSelector::ReportNotDefGlyph() const {}
+ 
+ void OffscreenFontSelector::ReportEmojiSegmentGlyphCoverage(

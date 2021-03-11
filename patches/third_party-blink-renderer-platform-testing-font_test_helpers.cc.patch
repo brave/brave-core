@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/platform/testing/font_test_helpers.cc b/third_party/blink/renderer/platform/testing/font_test_helpers.cc
+index f3fa3e42cc42c0ee58e771f60f19f40220797ad2..1c108af9c327b7c93b50da37663861302906c013 100644
+--- a/third_party/blink/renderer/platform/testing/font_test_helpers.cc
++++ b/third_party/blink/renderer/platform/testing/font_test_helpers.cc
+@@ -92,6 +92,9 @@ class TestFontSelector : public FontSelector {
+       const AtomicString& passed_family) override {
+     return false;
+   }
++  bool AllowFontFamily(const AtomicString& passed_family) override {
++    return true;
++  }
+ 
+  private:
+   scoped_refptr<FontCustomPlatformData> custom_platform_data_;
