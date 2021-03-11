@@ -96,7 +96,7 @@ pipeline {
                                                 credentials('brave-builds-github-token-for-pr-builder')
                                                 github('brave/devops', 'https')
                                             }
-                                            // FIXME: branch('master')
+                                            //FIXME: branch('master')
                                             branch('wknapik-pylint')
                                         }
                                     }
