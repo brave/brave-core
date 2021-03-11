@@ -139,6 +139,7 @@ class NewTabPageViewController: UIViewController, Themeable {
             sections.append(
                 BraveTodaySectionProvider(
                     dataSource: feedDataSource,
+                    ads: rewards.ads,
                     actionHandler: { [weak self] in
                         self?.handleBraveTodayAction($0)
                     }
@@ -504,6 +505,15 @@ class NewTabPageViewController: UIViewController, Themeable {
             )
         case .itemAction(.opened(let inNewTab, let switchingToPrivateMode), let context):
             guard let url = context.item.content.url else { return }
+            let item = context.item
+            if item.content.contentType == .partner,
+               let creativeInstanceID = item.content.creativeInstanceID {
+                rewards.ads.reportPromotedContentAdEvent(
+                    item.content.urlHash,
+                    creativeInstanceId: creativeInstanceID,
+                    eventType: .clicked
+                )
+            }
             delegate?.navigateToInput(
                 url.absoluteString,
                 inNewTab: inNewTab,

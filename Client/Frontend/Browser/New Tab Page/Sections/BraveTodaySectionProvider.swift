@@ -7,6 +7,7 @@ import Foundation
 import BraveUI
 import Shared
 import BraveShared
+import BraveRewards
 
 /// Additonal information related to an action performed on a feed item
 struct FeedItemActionContext {
@@ -37,12 +38,15 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     let dataSource: FeedDataSource
+    let ads: BraveAds
     var sectionDidChange: (() -> Void)?
     var actionHandler: (Action) -> Void
     
     init(dataSource: FeedDataSource,
+         ads: BraveAds,
          actionHandler: @escaping (Action) -> Void) {
         self.dataSource = dataSource
+        self.ads = ads
         self.actionHandler = actionHandler
         
         super.init()
@@ -113,6 +117,17 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveTodayWelcomeView> {
             cell.content.graphicAnimationView.play()
+        }
+        let indexDisplacement = isShowingIntroCard ? 1 : 0
+        if let card = dataSource.state.cards?[safe: indexPath.item - indexDisplacement] {
+            if case .partner(let item) = card,
+               let creativeInstanceID = item.content.creativeInstanceID {
+                ads.reportPromotedContentAdEvent(
+                    item.content.urlHash,
+                    creativeInstanceId: creativeInstanceID,
+                    eventType: .viewed
+                )
+            }
         }
     }
     
