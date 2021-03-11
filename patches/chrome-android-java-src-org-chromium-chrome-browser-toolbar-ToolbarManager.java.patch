@@ -1,27 +1,26 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 6fbf96c32c9dde96b8223e3111ac2670a1327b63..dcfce5aff3a4e1261e0e62e309ef170d62cd135c 100644
+index 4eb955bd30dd8b91b21ebdad560c2020a8a842f5..47b62a21926ace08f43ff870a6cebe52c8e5dbb5 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-@@ -453,14 +453,14 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
-         ThemeColorProvider overviewModeThemeColorProvider = mAppThemeColorProvider;
- 
-         Runnable requestFocusRunnable = compositorViewHolder::requestFocus;
+@@ -451,13 +451,13 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+         boolean isCustomTab = toolbarLayout instanceof CustomTabToolbar;
+         ThemeColorProvider menuButtonThemeColorProvider =
+                 isCustomTab ? mCustomTabThemeColorProvider : browsingModeThemeColorProvider;
 -        mMenuButtonCoordinator = new MenuButtonCoordinator(appMenuCoordinatorSupplier,
 +        mMenuButtonCoordinator = new org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator(appMenuCoordinatorSupplier,
                  mControlsVisibilityDelegate, mWindowAndroid,
                  (focus, type)
                          -> setUrlBarFocus(focus, type),
                  requestFocusRunnable, shouldShowUpdateBadge, isInOverviewModeSupplier,
-                 isCustomTab ? mCustomTabThemeColorProvider : browsingModeThemeColorProvider,
-                 R.id.menu_button_wrapper);
+                 menuButtonThemeColorProvider, R.id.menu_button_wrapper);
 -        MenuButtonCoordinator startSurfaceMenuButtonCoordinator = new MenuButtonCoordinator(
 +        MenuButtonCoordinator startSurfaceMenuButtonCoordinator = new org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator(
                  appMenuCoordinatorSupplier, mControlsVisibilityDelegate, mWindowAndroid,
                  (focus, type)
                          -> setUrlBarFocus(focus, type),
-@@ -897,7 +897,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
-             boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
-             boolean isTabGroupsAndroidContinuationEnabled) {
+@@ -870,7 +870,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+             OneshotSupplier<StartSurface> startSurfaceSupplier, boolean isGridTabSwitcherEnabled,
+             boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled) {
          // clang-format off
 -        TopToolbarCoordinator toolbar = new TopToolbarCoordinator(controlContainer, toolbarLayout,
 +        TopToolbarCoordinator toolbar = new org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator(controlContainer, toolbarLayout,
