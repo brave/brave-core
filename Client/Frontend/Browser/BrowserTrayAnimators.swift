@@ -342,7 +342,7 @@ private func transformToolbarsToFrame(_ toolbars: [UIView?], toRect endRect: CGR
 private func createTransitionCellFromTab(_ tab: Tab?, withFrame frame: CGRect) -> TabCell {
     let cell = TabCell(frame: frame)
     cell.screenshotView.image = tab?.screenshot
-    cell.titleText.text = tab?.displayTitle
+    cell.titleLabel.text = tab?.displayTitle
 
     if let favIcon = tab?.displayFavicon {
         cell.favicon.sd_setImage(with: URL(string: favIcon.url)!)
