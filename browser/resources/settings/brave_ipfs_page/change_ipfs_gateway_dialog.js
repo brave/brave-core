@@ -34,15 +34,6 @@ Polymer({
       notify: true,
     },
 
-    /**
-     * IPFS public gateway address input by the user.
-     * @private
-     */
-    url_: {
-      type: String,
-      observer: 'urlChanged_'
-    },
-
     isUrlValid_: Boolean,
     isSumitButtonEnabled_: Boolean,
 
@@ -55,9 +46,10 @@ Polymer({
 
   /** @private */
   urlChanged_: function() {
+    const url_ = this.$.url.value
     // Disable the submit button if input url is empty but don't show the URL
     // invalid error message.
-    if (this.url_.trim() == '') {
+    if (url_.trim() == '') {
       this.isUrlValid_ = true;
       this.isSubmitButtonEnabled_ = false;
       return;
@@ -65,7 +57,7 @@ Polymer({
 
     let url;
     try {
-      url = new URL(this.url_.trim());
+      url = new URL(url_.trim());
     } catch (e) {
       this.isUrlValid_ = false;
       this.isSubmitButtonEnabled_ = false;
