@@ -111,7 +111,7 @@ grit("strings") {
     "enable_sidebar=$enable_sidebar",
   ]
 
-  foreach(locale, locales_with_fake_bidi) {
+  foreach(locale, locales_with_pseudolocales) {
     outputs += [ "brave_components_strings_$locale.pak" ]
   }
 
