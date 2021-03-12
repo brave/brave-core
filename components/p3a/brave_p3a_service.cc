@@ -89,6 +89,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Today.WeeklyMaxCardViewsCount",
     "Brave.Today.WeeklyMaxCardVisitsCount",
     "Brave.Sync.Status",
+    "Brave.Sync.ProgressTokenEverReset",
     "Brave.Uptime.BrowserOpenMinutes",
     "Brave.Welcome.InteractionStatus",
 
