@@ -1,0 +1,12 @@
+diff --git a/net/dns/resolve_context.h b/net/dns/resolve_context.h
+index fc43188340e54dd509aa58f93a84ca6b770e5a6f..81fa236a973ae31f6ac165b14ee0cc7754253f03 100644
+--- a/net/dns/resolve_context.h
++++ b/net/dns/resolve_context.h
+@@ -176,6 +176,7 @@ class NET_EXPORT_PRIVATE ResolveContext : public base::CheckedObserver {
+   // (alternative service info if it supports QUIC, for instance).
+   const IsolationInfo& isolation_info() const { return isolation_info_; }
+ 
++  BRAVE_RESOLVE_CONTEXT_H
+  private:
+   friend DohDnsServerIterator;
+   friend ClassicDnsServerIterator;

@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 
@@ -18,6 +19,10 @@ class SkPath;
 
 #if BUILDFLAG(ENABLE_TOR)
 class OnionLocationView;
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+class IPFSLocationView;
 #endif
 
 // The purposes of this subclass are to:
@@ -33,6 +38,9 @@ class BraveLocationBarView : public LocationBarView {
   OnionLocationView* GetOnionLocationView() { return onion_location_view_; }
 #endif
 
+#if BUILDFLAG(IPFS_ENABLED)
+  IPFSLocationView* GetIPFSLocationView() { return ipfs_location_view_; }
+#endif
   // LocationBarView:
   std::vector<views::View*> GetTrailingViews() override;
 
@@ -52,6 +60,9 @@ class BraveLocationBarView : public LocationBarView {
   BraveActionsContainer* brave_actions_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)
   OnionLocationView* onion_location_view_ = nullptr;
+#endif
+#if BUILDFLAG(IPFS_ENABLED)
+  IPFSLocationView* ipfs_location_view_ = nullptr;
 #endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);

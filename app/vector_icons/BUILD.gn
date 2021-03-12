@@ -12,6 +12,7 @@ aggregate_vector_icons("brave_vector_icons") {
     "brave_ads_close_button.icon",
     "brave_ads_info.icon",
     "download_unlock.icon",
+    "open_in_ipfs.icon",
     "open_in_tor.icon",
     "speedreader.icon",
     "speedreader_on_active.icon",

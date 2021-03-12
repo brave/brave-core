@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BRAVE_WALLET_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BRAVE_WALLET_UTILS_H_
 
+#include <memory>
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_wallet/brave_wallet_types.h"
 
@@ -34,6 +36,20 @@ bool ConcatHexStrings(const std::string& hex_input1,
                       std::string* out);
 bool HexValueToUint256(const std::string& hex_input, uint256_t* out);
 std::string Uint256ValueToHex(uint256_t input);
+
+// Generate mnemonic from random entropy following BIP39.
+// |entropy_size| should be specify in bytes
+// If |entropy_size| is not in 16, 20, 24, 28, 32 range or allocation
+// failure, the empty string will be returned.
+std::string GenerateMnemonic(size_t entropy_size);
+// Testing specific entropy
+std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy);
+// Generate seed from mnemonic following BIP39.
+// If allocation failed, it would return nullptr. Otherwise 512 bits seed will
+// be returned.
+std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
+    const std::string& mnemonic,
+    const std::string& passphrase);
 
 }  // namespace brave_wallet
 

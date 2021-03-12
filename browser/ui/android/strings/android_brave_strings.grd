@@ -1541,10 +1541,16 @@ until they verify, or until 90 days have passed.
         You can change this later.
       </message>
       <message name="IDS_HOW_OFTEN_DO_YOU_SEE_ADS" desc="Brave rewards onboarding text">
-        How often do you want to see ads?\n(Ads per hour)
+        How often do you want to see ads?
+      </message>
+      <message name="IDS_ADS_PER_HOUR" desc="Brave rewards onboarding text">
+        (Ads per hour)
       </message>
       <message name="IDS_HOW_MUCH_SUPPORT" desc="Brave rewards onboarding text">
-        How much support do you want to give to your favorite creators?\n(from your ads earnings)
+        How much support do you want to give to your favorite creators?
+      </message>
+      <message name="IDS_FROM_YOUR_ADS_EARNINGS" desc="Brave rewards onboarding text">
+        (from your ads earnings)
       </message>
       <message name="IDS_YOU_ARE_DONE" desc="Brave rewards onboarding title">
         Woohoo, you’re all set!

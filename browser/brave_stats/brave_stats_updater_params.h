@@ -12,7 +12,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
-class BraveStatsUpdaterBrowserTest;
 class BraveStatsUpdaterTest;
 class PrefService;
 
@@ -44,7 +43,6 @@ class BraveStatsUpdaterParams {
   void SavePrefs();
 
  private:
-  friend class ::BraveStatsUpdaterBrowserTest;
   friend class ::BraveStatsUpdaterTest;
   PrefService* stats_pref_service_;
   PrefService* profile_pref_service_;

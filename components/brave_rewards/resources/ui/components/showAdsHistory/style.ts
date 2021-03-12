@@ -5,12 +5,12 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   padding-top: 10px;
   text-align: right;
 `
 
-export const StyledLink = styled<{}, 'a'>('a')`
+export const StyledLink = styled('a')<{}>`
   cursor: pointer;
   display: inline-block;
   color: ${p => p.theme.color.subtleActive};
@@ -19,7 +19,7 @@ export const StyledLink = styled<{}, 'a'>('a')`
   letter-spacing: 0;
 `
 
-export const StyledDisabledLink = styled<{}, 'span'>('span')`
+export const StyledDisabledLink = styled('span')<{}>`
   display: inline-block;
   color: ${p => p.theme.color.disabled};
   cursor: pointer;

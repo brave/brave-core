@@ -196,6 +196,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Translate is not available on Android
   registry->SetDefaultPrefValue(prefs::kOfferTranslateEnabled,
                                 base::Value(false));
+  // Explicitly disable safe browsing extended reporting by default in case they
+  // change it in upstream.
+  registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
+                                base::Value(false));
 #endif
 
   // Hangouts

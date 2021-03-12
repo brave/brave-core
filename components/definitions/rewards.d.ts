@@ -276,7 +276,6 @@ declare namespace Rewards {
   }
 
   export interface ExternalWallet {
-    token: string
     address: string
     status: WalletStatus
     type: WalletType

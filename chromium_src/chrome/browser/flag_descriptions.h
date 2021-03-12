@@ -21,6 +21,8 @@ extern const char kBraveAdblockCosmeticFilteringDescription[];
 extern const char kBraveAdblockCosmeticFilteringNativeDescription[];
 extern const char kBraveDomainBlockName[];
 extern const char kBraveDomainBlockDescription[];
+extern const char kBraveExtensionNetworkBlockingName[];
+extern const char kBraveExtensionNetworkBlockingDescription[];
 extern const char kBraveSidebarName[];
 extern const char kBraveSidebarDescription[];
 extern const char kBraveSpeedreaderName[];

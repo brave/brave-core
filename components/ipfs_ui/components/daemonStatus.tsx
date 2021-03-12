@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../common/locale'
 
-import { PaddedButton, Section, SideBySideButtons, Title } from '../style'
+import { PaddedButton, Section, SideBySideButtons, Title, Error } from '../style'
 
 interface Props {
   daemonStatus: IPFS.DaemonStatus
@@ -29,9 +29,16 @@ export class DaemonStatus extends React.Component<Props, {}> {
         <Title>
           {getLocale('daemonStatusTitle')}
         </Title>
+        {!this.props.daemonStatus.error.length && (
         <div>
-          {this.props.daemonStatus.launched ? getLocale('launched') : getLocale('notLaunched')}
-        </div>
+          {(this.props.daemonStatus.launched && !this.props.daemonStatus.error) ? getLocale('launched') : getLocale('notLaunched')}
+        </div>)}
+        {this.props.daemonStatus.error.length > 0 && (
+        <div
+          style={Error}
+        >
+          {this.props.daemonStatus.error}
+        </div>)}
         <SideBySideButtons>
           {(!this.props.daemonStatus.launched && !this.props.daemonStatus.restarting) && (<PaddedButton
             text={getLocale('launch')}

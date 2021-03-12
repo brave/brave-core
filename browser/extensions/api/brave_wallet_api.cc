@@ -119,8 +119,8 @@ BraveWalletLoadUIFunction::Run() {
   }
 
   profile->GetPrefs()->SetBoolean(kOptedIntoCryptoWallets, true);
-  service->LoadCryptoWalletsExtension(base::BindOnce(
-      &BraveWalletLoadUIFunction::OnLoaded, this));
+  service->MaybeLoadCryptoWalletsExtension(
+      base::BindOnce(&BraveWalletLoadUIFunction::OnLoaded, this));
   return RespondLater();
 }
 

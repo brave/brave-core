@@ -1,9 +1,11 @@
-use dom;
-use markup5ever_rcdom::{Handle, Node, RcDom};
-use markup5ever_rcdom::NodeData::{Comment, Doctype, Document, ProcessingInstruction, Element, Text};
+use crate::dom;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
+use markup5ever_rcdom::NodeData::{
+    Comment, Doctype, Document, Element, ProcessingInstruction, Text,
+};
+use markup5ever_rcdom::{Handle, Node, RcDom};
 use regex::Regex;
 use std::cell::Cell;
 use std::collections::{BTreeMap, HashMap};
@@ -54,11 +56,17 @@ pub struct Candidate {
     pub score: Cell<f32>,
 }
 
+#[derive(Default)]
+pub struct Title {
+    pub title: String,
+    pub is_meta: bool,
+}
+
 pub fn fix_img_path(handle: Handle, url: &Url) -> bool {
     if let Some(src) = dom::get_attr("src", &handle) {
         if !src.starts_with("//") && !src.starts_with("http://") && src.starts_with("https://") {
             if let Ok(new_url) = url.join(&src) {
-                dom::set_attr("src", new_url.as_str(), handle);
+                dom::set_attr("src", new_url.as_str(), handle, false);
                 true
             } else {
                 // failed to fix
@@ -166,7 +174,74 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
     weight
 }
 
-pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut String) -> bool {
+pub fn get_metadata(handle: &Handle, title: &mut Title) {
+    if title.is_meta {
+        // We already grabbed a title from the metadata earlier in the parse.
+        return;
+    }
+    if let Some(property) = dom::get_attr("property", &handle) {
+        // TODO(keur): grab author, description, site name, etc in here.
+        // For now we are just getting the title.
+        match property.as_ref() {
+            "dc:title"
+            | "dcterm:title"
+            | "og:title"
+            | "weibo:article:title"
+            | "weibo:webpage:title"
+            | "title"
+            | "twitter:title" => {
+                if let Some(content) = dom::get_attr("content", &handle) {
+                    title.title = content;
+                    title.is_meta = true;
+                }
+            }
+            _ => (),
+        }
+    }
+}
+
+fn get_inner_img(dom: &mut RcDom, handle: &Handle) -> Option<Handle> {
+    let children = handle.children.borrow();
+    let child = children.get(0)?;
+    if let Text { ref contents } = child.data {
+        let inner = dom::parse_inner(&contents.borrow())?;
+        if dom::is_single_image(&inner) {
+            if let Element {
+                ref name,
+                ref attrs,
+                ..
+            } = inner.data
+            {
+                let img = dom.create_element(
+                    name.clone(),
+                    attrs.borrow().to_vec(),
+                    ElementFlags::default(),
+                );
+                return Some(img);
+            }
+        }
+    }
+    None
+}
+
+fn unwrap_noscript(
+    dom: &mut RcDom,
+    handle: &Handle,
+    parent: &Handle,
+    useless_nodes: &mut Vec<Handle>,
+    new_children: &mut Vec<Handle>,
+) {
+    if let Some(img) = get_inner_img(dom, handle) {
+        new_children.push(img);
+        if let Some(prev) = dom::previous_element_sibling(handle, &parent.children.borrow()) {
+            if dom::is_single_image(prev) {
+                useless_nodes.push(prev.clone());
+            }
+        }
+    }
+}
+
+pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut Title) -> bool {
     if let Element {
         ref name,
         ref attrs,
@@ -174,8 +249,19 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut String) -
     } = handle.data
     {
         match name.local {
-            local_name!("script") | local_name!("link") | local_name!("style") => return true,
-            local_name!("title") => dom::extract_text(&handle, &mut title, true),
+            local_name!("script")
+            | local_name!("noscript")
+            | local_name!("link")
+            | local_name!("style") => return true,
+            local_name!("title") => {
+                if !title.is_meta && title.title.is_empty() {
+                    dom::extract_text(&handle, &mut title.title, true);
+                    title.is_meta = false;
+                }
+            }
+            local_name!("meta") => {
+                get_metadata(&handle, title);
+            }
             _ => (),
         }
         for attr_name in ["id", "class", "itemProp"].iter() {
@@ -190,6 +276,7 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut String) -
         }
     }
     let mut useless_nodes = vec![];
+    let mut new_children = vec![];
     let mut paragraph_nodes = vec![];
     let mut br_count = 0;
     for child in handle.children.borrow().iter() {
@@ -197,10 +284,21 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut String) -
             useless_nodes.push(child.clone());
         }
         match child.data {
-            Element { ref name, .. } => match name.local {
-                local_name!("br") => br_count += 1,
-                _ => br_count = 0,
-            },
+            Element { ref name, .. } => {
+                match name.local {
+                    local_name!("br") => br_count += 1,
+                    _ => br_count = 0,
+                }
+                if name.local == local_name!("noscript") {
+                    unwrap_noscript(
+                        &mut dom,
+                        &child,
+                        &handle,
+                        &mut useless_nodes,
+                        &mut new_children,
+                    );
+                }
+            }
             Text { ref contents } => {
                 let s = contents.borrow();
                 if br_count >= 2 && !s.trim().is_empty() {
@@ -210,6 +308,9 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut String) -
             }
             _ => (),
         }
+    }
+    for node in new_children.iter() {
+        dom.append(&handle, NodeOrText::AppendNode(node.clone()));
     }
     for node in useless_nodes.iter() {
         dom.remove_from_parent(node);

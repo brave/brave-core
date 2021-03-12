@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/base64url.h"
+#include "base/feature_list.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
@@ -20,6 +21,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
@@ -226,7 +228,9 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
 
   // Also, until a better solution is available, we explicitly allow any
   // request from an extension.
-  if (ctx->initiator_url.SchemeIs(kChromeExtensionScheme)) {
+  if (ctx->initiator_url.SchemeIs(kChromeExtensionScheme) &&
+      !base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveExtensionNetworkBlocking)) {
     return net::OK;
   }
 

@@ -24,12 +24,17 @@
         display: flex;
         padding: 8px 1em;
       }
+
+      .storage-input {
+        display: flex;
+      }
 	</style>
 	  <div class="settings-box first">
       <div class="start">$i18n{resolveIPFSURLDesc}</div>
       <settings-dropdown-menu id="ipfsResolveMethodType"
                               pref="{{prefs.brave.ipfs.resolve_method}}"
-                              menu-options="[[ipfsResolveMethod_]]">
+                              menu-options="[[ipfsResolveMethod_]]"
+                              on-settings-control-change="onChangeIpfsMethod_">
       </settings-dropdown-menu>
     </div>
     <div class="settings-box">
@@ -56,6 +61,13 @@
       label="$i18n{ipfsAutoRedirectGatewayLabel}"
       sub-label="$i18n{ipfsAutoRedirectGatewayDesc}">
     </settings-toggle-button>
+    <settings-toggle-button id="ipfsAutoRedirectDNSLink"
+      class="cr-row"
+      pref="{{prefs.brave.ipfs.auto_redirect_dnslink}}"
+      label="$i18n{ipfsAutoRedirectDNSLinkLabel}"
+      sub-label="$i18n{ipfsAutoRedirectDNSLinkDesc}"
+      learn-more-url="$i18n{ipfsDNSLinkLearnMoreURL}">
+    </settings-toggle-button>
 
     <settings-toggle-button id="ipfsCompanionEnabled"
       class="cr-row"
@@ -64,10 +76,26 @@
       sub-label="$i18n{ipfsCompanionEnabledDesc}"
       on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
     </settings-toggle-button>
+
+    <div class="settings-box" hidden="[[!isStorageMaxEnabled_]]">
+      <div class="flex cr-padded-text">
+        <div>$i18n{changeIpfsStorageMaxLabel}</div>
+        <div class="secondary">$i18n{changeIpfsStorageMaxDesc}</div>
+      </div>
+      <cr-input
+        id="ipfsStorageMax" type="number"
+        class="storage-input"
+        value="$i18n{ipfsStorageMaxValue}"
+        on-change=onChangeIpfsStorageMax_
+        min=1
+      >
+     </cr-input>
+    </div>
+
     <template is="dom-if" if="[[showChangeIPFSGatewayDialog_]]" restamp>
         <change-ipfs-gateway-dialog prefs="{{prefs}}" on-close="onChangeIPFSGatewayDialogClosed_">
         </change-ipfs-gateway-dialog>
     </template>
   </template>
   <script src="brave_ipfs_page.js"></script>
-</dom-module> 
+</dom-module>

@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledDateTH = styled<{}, 'th'>('th')`
+export const StyledDateTH = styled('th')<{}>`
   text-transform: uppercase;
   text-align: left;
   font-family: ${p => p.theme.fontFamily.body};
@@ -17,7 +17,7 @@ export const StyledDateTH = styled<{}, 'th'>('th')`
   min-width: 55px;
 `
 
-export const StyledAdTH = styled<{}, 'th'>('th')`
+export const StyledAdTH = styled('th')<{}>`
   text-transform: uppercase;
   text-align: left;
   font-family: ${p => p.theme.fontFamily.body};
@@ -30,7 +30,7 @@ export const StyledAdTH = styled<{}, 'th'>('th')`
   min-width: 550px;
 `
 
-export const StyledCategoryTH = styled<{}, 'th'>('th')`
+export const StyledCategoryTH = styled('th')<{}>`
   text-transform: uppercase;
   text-align: left;
   font-family: ${p => p.theme.fontFamily.body};
@@ -43,27 +43,27 @@ export const StyledCategoryTH = styled<{}, 'th'>('th')`
   min-width: 220px;
 `
 
-export const StyledOuterTD = styled<{}, 'td'>('td')`
+export const StyledOuterTD = styled('td')<{}>`
   width: 100%;
 `
 
-export const StyledTR = styled<{}, 'tr'>('tr')`
+export const StyledTR = styled('tr')<{}>`
   text-align: left;
 `
 
-export const StyledAdLink = styled<{}, 'a'>('a')`
+export const StyledAdLink = styled('a')<{}>`
   text-decoration: none;
   cursor: pointer;
   display: flex;
   color: ${p => p.theme.color.text};
 `
 
-export const StyledAdTable = styled<{}, 'table'>('table')`
+export const StyledAdTable = styled('table')<{}>`
   min-width: 100%;
   margin: 24px 0;
   padding-top: 15px;
 `
-export const StyledAdContentDiv = styled<{}, 'div'>('div')`
+export const StyledAdContentDiv = styled('div')<{}>`
   min-width: 550px;
   border: 1px solid;
   border-collapse: separate;
@@ -75,12 +75,12 @@ export const StyledAdContentDiv = styled<{}, 'div'>('div')`
   height: 85px;
 `
 
-export const StyledLogo = styled<{}, 'img'>('img') `
+export const StyledLogo = styled('img')<{}>`
   width: 64px;
   height: 64px;
 `
 
-export const StyledLogoDiv = styled<{}, 'div'>('div')`
+export const StyledLogoDiv = styled('div')<{}>`
   display: inline-block;
   width: 64px;
   height: 64px;
@@ -88,27 +88,27 @@ export const StyledLogoDiv = styled<{}, 'div'>('div')`
   padding-right: 10px;
 `
 
-export const StyledNoLogoDiv = styled<{}, 'div'>('div')`
+export const StyledNoLogoDiv = styled('div')<{}>`
   display: none;
 `
 
-export const StyledAdInfoDiv = styled<{}, 'div'>('div')`
+export const StyledAdInfoDiv = styled('div')<{}>`
   padding-left: 20px;
   display: inline-block;
 `
-export const StyledAdInfo = styled<{}, 'div'>('div')`
+export const StyledAdInfo = styled('div')<{}>`
   display: block;
-  color: ${p => p.theme.fontFamily.detailDescription};
+  color: ${p => p.theme.color.detailDescription};
   padding-bottom: 2px;
 `
 
-export const StyledAdBrand = styled<{}, 'div'>('div')`
+export const StyledAdBrand = styled('div')<{}>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-weight: 600;
   padding-bottom: 2px;
 `
 
-export const StyledAdStatDiv = styled<{}, 'div'>('div')`
+export const StyledAdStatDiv = styled('div')<{}>`
   margin-left: auto;
   height: 100%;
   display: flex;
@@ -117,15 +117,15 @@ export const StyledAdStatDiv = styled<{}, 'div'>('div')`
   padding-bottom: 5px;
 `
 
-export const StyledAdStat = styled<{}, 'div'>('div')`
+export const StyledAdStat = styled('div')<{}>`
   padding-left: 2px;
 `
 
-export const StyledAdStatActions = styled<{}, 'div'>('div')`
+export const StyledAdStatActions = styled('div')<{}>`
   margin-top: auto;
 `
 
-export const StyledCategoryContentDiv = styled<{}, 'div'>('div')`
+export const StyledCategoryContentDiv = styled('div')<{}>`
   display: flex;
   flex-direction: column;
   height: 85px;
@@ -133,24 +133,24 @@ export const StyledCategoryContentDiv = styled<{}, 'div'>('div')`
   padding: 15px;
 `
 
-export const StyledCategoryName = styled<{}, 'div'>('div')`
+export const StyledCategoryName = styled('div')<{}>`
   font-size: 16px;
   font-weight: 600;
   margin: auto;
 `
 
-export const StyledCategoryActions = styled<{}, 'div'>('div')`
+export const StyledCategoryActions = styled('div')<{}>`
   margin: auto;
 `
 
-export const StyledNoAdHistoryDiv = styled<{}, 'div'>('div')`
+export const StyledNoAdHistoryDiv = styled('div')<{}>`
   text-decoration: none;
   font-size: 16px;
   font-weight: 400;
   padding-top: 24px;
 `
 
-export const StyledTD = styled<{}, 'td'>('td')`
+export const StyledTD = styled('td')<{}>`
   width: 15%;
   border: 'none';
 `

@@ -2,10 +2,10 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import { Props } from './index'
 
-export const StyledWrapper = styled<Partial<Props>, 'button'>('button')`
+export const StyledWrapper = styled('button')<Partial<Props>>`
   user-select: none;
   font-family: ${p => p.theme.fontFamily.body};
   border: none;
@@ -17,7 +17,7 @@ export const StyledWrapper = styled<Partial<Props>, 'button'>('button')`
   margin: 0 0 8px 0;
 `
 
-export const StyledAmount = styled<Partial<Props>, 'div'>('div')`
+export const StyledAmount = styled('div')<Partial<Props>>`
   opacity: 1;
   border-radius: 20px;
   color: #fff;
@@ -33,7 +33,7 @@ export const StyledAmount = styled<Partial<Props>, 'div'>('div')`
   justify-content: center;
 `
 
-export const StyledTokens = styled<{}, 'div'>('div')`
+export const StyledTokens = styled('div')<{}>`
   margin-left: 5px;
 `
 
@@ -41,12 +41,12 @@ export const StyledNumber = styled.span`
   display: flex;
 `
 
-export const StyledLogo = styled<Partial<Props>, 'div'>('div')`
+export const StyledLogo = styled('div')<Partial<Props>>`
   margin-right: 6px;
   width: 23px;
 `
 
-export const StyledConverted = styled<Partial<Props>, 'div'>('div')`
+export const StyledConverted = styled('div')<Partial<Props>>`
   vertical-align: baseline;
   opacity: ${p => p.selected ? 1 : 0.4};
   font-size: ${p => p.type === 'big' ? '12px' : '10px'};

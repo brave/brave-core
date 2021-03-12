@@ -34,7 +34,7 @@ function generateTopSites (topSites: typeof defaultTopSitesData) {
   return staticTopSites
 }
 
-function shouldShowBrandedWallpaperData (shouldShow: boolean) {
+function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWallpaper {
   if (shouldShow === false) {
     return {
       wallpaperImageUrl: '',

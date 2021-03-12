@@ -4,11 +4,11 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   font-family: Poppins, sans-serif;
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   font-size: 20px;
   font-weight: 600;
   line-height: 2;
@@ -16,7 +16,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   margin-bottom: 20px;
   display: flex;
 `
-export const StyledRemoveAll = styled<{}, 'button'>('button')`
+export const StyledRemoveAll = styled('button')<{}>`
   display: inline-block;
   border: none;
   background: none;

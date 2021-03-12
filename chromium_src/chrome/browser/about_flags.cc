@@ -26,6 +26,7 @@
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
 using brave_shields::features::kBraveDomainBlock;
+using brave_shields::features::kBraveExtensionNetworkBlocking;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
@@ -134,6 +135,10 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveDomainBlockName,                             \
      flag_descriptions::kBraveDomainBlockDescription, kOsAll,              \
      FEATURE_VALUE_TYPE(kBraveDomainBlock)},                               \
+    {"brave-extension-network-blocking",                                   \
+     flag_descriptions::kBraveExtensionNetworkBlockingName,                \
+     flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll, \
+     FEATURE_VALUE_TYPE(kBraveExtensionNetworkBlocking)},                  \
     SPEEDREADER_FEATURE_ENTRIES                                            \
     BRAVE_SYNC_FEATURE_ENTRIES                                             \
     BRAVE_IPFS_FEATURE_ENTRIES                                             \

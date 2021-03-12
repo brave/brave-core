@@ -647,6 +647,15 @@ bool BraveRewardsNativeWorker::IsAnonWallet(JNIEnv* env,
   return false;
 }
 
+bool BraveRewardsNativeWorker::IsRewardsEnabled(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller) {
+  if (brave_rewards_service_) {
+    return brave_rewards_service_->IsRewardsEnabled();
+  }
+  return false;
+}
+
 void BraveRewardsNativeWorker::GetExternalWallet(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj) {

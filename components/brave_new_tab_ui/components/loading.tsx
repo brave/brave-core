@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 const Loading = styled('div')`

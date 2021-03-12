@@ -13,12 +13,14 @@
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "chrome/browser/profiles/profile_manager_observer.h"
 #include "url/gurl.h"
 
 class BraveStatsUpdaterBrowserTest;
 class PrefChangeRegistrar;
 class PrefRegistrySimple;
 class PrefService;
+class Profile;
 
 namespace base {
 class OneShotTimer;
@@ -37,10 +39,10 @@ namespace brave_stats {
 
 class BraveStatsUpdaterParams;
 
-class BraveStatsUpdater {
+class BraveStatsUpdater : public ProfileManagerObserver {
  public:
   explicit BraveStatsUpdater(PrefService* pref_service);
-  ~BraveStatsUpdater();
+  ~BraveStatsUpdater() override;
 
   void Start();
   void Stop();
@@ -52,6 +54,9 @@ class BraveStatsUpdater {
   void SetStatsThresholdCallback(StatsUpdatedCallback stats_threshold_callback);
 
  private:
+  // ProfileManagerObserver
+  void OnProfileAdded(Profile* profile) override;
+
   GURL BuildStatsEndpoint(const std::string& path);
   void OnThresholdLoaderComplete(scoped_refptr<net::HttpResponseHeaders>);
   // Invoked from SimpleURLLoader after download is complete.

@@ -1,3 +1,5 @@
+import("//extensions/buildflags/buildflags.gni")
+
 source_set("ipfs") {
   sources = [
     "addresses_config.cc",
@@ -52,8 +54,6 @@ source_set("ipfs") {
     "//components/version_info",
     "//content/public/browser",
     "//content/public/common",
-    "//extensions/browser",
-    "//extensions/common",
     "//net",
     "//services/network/public/cpp",
     "//third_party/re2",
@@ -61,4 +61,11 @@ source_set("ipfs") {
     "//ui/native_theme:native_theme",
     "//url",
   ]
+
+  if (enable_extensions) {
+    deps += [
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
 }

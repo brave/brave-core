@@ -16,7 +16,7 @@ require('../../../../ui/webui/resources/fonts/poppins.css')
 
 // Utils
 import store from './store'
-import { ThemeProvider } from 'brave-ui/theme'
+import { ThemeProvider } from 'styled-components'
 import Theme from 'brave-ui/theme/brave-default'
 import { getActions as getUtilActions, getCurrentBalanceReport, setActions } from './utils'
 import * as rewardsActions from './actions/rewards_actions'

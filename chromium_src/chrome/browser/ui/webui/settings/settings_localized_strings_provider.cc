@@ -10,6 +10,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/version_info.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/common/pref_names.h"
@@ -56,6 +57,7 @@ const char kBraveReleaseTagPrefix[] =
 const char kGoogleLoginLearnMoreURL[] =
     "https://github.com/brave/brave-browser/wiki/"
     "Allow-Google-login---Third-Parties-and-Extensions";
+const char kDNSLinkLearnMoreURL[] = "https://docs.ipfs.io/concepts/dnslink/";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -230,6 +232,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_TITLE},
     {"changeIpfsGatewayDialogLabel",
      IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_LABEL},
+    {"changeIpfsStorageMaxLabel", IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_LABEL},
+    {"changeIpfsStorageMaxDesc", IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_DESC},
     {"ipfsErrorInvalidAddress", IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS},
     {"ipfsAutoFallbackToGatewayLabel",
      IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_LABEL},
@@ -239,6 +243,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_LABEL},
     {"ipfsAutoRedirectGatewayDesc",
      IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_DESC},
+    {"ipfsAutoRedirectDNSLinkLabel",
+     IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_LABEL},
+    {"ipfsAutoRedirectDNSLinkDesc",
+     IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_DESC},
     {"ipfsCompanionEnabledDesc", IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC},
     {"mediaRouterEnabledDesc", IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC},
     {"torEnabledLabel", IDS_SETTINGS_ENABLE_TOR_TITLE},
@@ -263,6 +271,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                          base::ASCIIToUTF16(kWebRTCLearnMoreURL));
   html_source->AddString("googleLoginLearnMoreURL",
                          base::ASCIIToUTF16(kGoogleLoginLearnMoreURL));
+  html_source->AddString("ipfsDNSLinkLearnMoreURL",
+                         base::UTF8ToUTF16(kDNSLinkLearnMoreURL));
+
   html_source->AddString(
       "getMoreExtensionsUrl",
       base::ASCIIToUTF16(
@@ -270,6 +281,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
               GURL(extension_urls::GetWebstoreExtensionsCategoryURL()),
               g_browser_process->GetApplicationLocale())
               .spec()));
+  html_source->AddString(
+      "ipfsStorageMaxValue",
+      std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));
 }
 
 void BraveAddResources(content::WebUIDataSource* html_source,

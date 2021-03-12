@@ -58,9 +58,6 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
     SetBaseUpdateURLForTest();
-    // Simulate sentinel file creation as if chrome_browser_main.h was called,
-    // which reads in the sentinel value and caches it.
-    brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {

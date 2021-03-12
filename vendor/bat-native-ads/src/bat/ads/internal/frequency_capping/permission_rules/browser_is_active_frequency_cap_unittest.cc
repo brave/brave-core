@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/browser_is_active_frequency_cap.h"
 
-#include "bat/ads/internal/tab_manager/tab_manager.h"
+#include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
@@ -25,7 +25,8 @@ TEST_F(BatAdsBrowserIsActiveFrequencyCapTest, AllowAd) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
-  TabManager::Get()->OnForegrounded();
+  BrowserManager::Get()->OnActive();
+  BrowserManager::Get()->OnForegrounded();
 
   // Assert
   BrowserIsActiveFrequencyCap frequency_cap;
@@ -38,7 +39,8 @@ TEST_F(BatAdsBrowserIsActiveFrequencyCapTest, AlwaysAllowAdForAndroid) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
   // Act
-  TabManager::Get()->OnBackgrounded();
+  BrowserManager::Get()->OnInactive();
+  BrowserManager::Get()->OnBackgrounded();
 
   // Assert
   BrowserIsActiveFrequencyCap frequency_cap;
@@ -51,7 +53,38 @@ TEST_F(BatAdsBrowserIsActiveFrequencyCapTest, DoNotAllowAd) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
-  TabManager::Get()->OnBackgrounded();
+  BrowserManager::Get()->OnInactive();
+  BrowserManager::Get()->OnBackgrounded();
+
+  // Assert
+  BrowserIsActiveFrequencyCap frequency_cap;
+  const bool is_allowed = frequency_cap.ShouldAllow();
+  EXPECT_FALSE(is_allowed);
+}
+
+TEST_F(BatAdsBrowserIsActiveFrequencyCapTest,
+       DoNotAllowAdIfWindowIsActiveAndBrowserIsBackgrounded) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+
+  // Act
+  BrowserManager::Get()->OnActive();
+  BrowserManager::Get()->OnBackgrounded();
+
+  // Assert
+  BrowserIsActiveFrequencyCap frequency_cap;
+  const bool is_allowed = frequency_cap.ShouldAllow();
+  EXPECT_FALSE(is_allowed);
+}
+
+TEST_F(BatAdsBrowserIsActiveFrequencyCapTest,
+       DoNotAllowAdIfWindowIsInactiveAndBrowserIsForegrounded) {
+  // Arrange
+  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+
+  // Act
+  BrowserManager::Get()->OnInactive();
+  BrowserManager::Get()->OnForegrounded();
 
   // Assert
   BrowserIsActiveFrequencyCap frequency_cap;

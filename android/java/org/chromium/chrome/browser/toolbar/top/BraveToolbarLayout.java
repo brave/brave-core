@@ -843,6 +843,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     public void onUrlFocusChange(boolean hasFocus) {
         Context context = getContext();
         if (hasFocus && PackageUtils.isFirstInstall(context)
+                && BraveActivity.getBraveActivity() != null
+                && BraveActivity.getBraveActivity().getActivityTab() != null
                 && UrlUtilities.isNTPUrl(
                         BraveActivity.getBraveActivity().getActivityTab().getUrlString())
                 && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()

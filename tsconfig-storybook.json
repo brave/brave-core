@@ -3,8 +3,5 @@
   "include": [
     "./components/definitions/*",
     "./components/**/storybook"
-  ],
-  "exclude": [
-
   ]
 }

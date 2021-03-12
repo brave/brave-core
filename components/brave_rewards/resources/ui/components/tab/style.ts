@@ -29,12 +29,12 @@ const getMargin = (index?: number, size?: number) => {
   return 0
 }
 
-export const RewardsTabWrapper = styled<{}, 'div'>('div')`
+export const RewardsTabWrapper = styled('div')<{}>`
   display: flex;
   font-family: Poppins,sans-serif;
 `
 
-export const StyledSwitch = styled<{}, 'div'>('div')`
+export const StyledSwitch = styled('div')<{}>`
   position: relative;
   display: block;
   width: 100%;
@@ -42,7 +42,7 @@ export const StyledSwitch = styled<{}, 'div'>('div')`
   cursor: pointer;
 `
 
-export const StyledSlider = styled<{}, 'div'>('div')`
+export const StyledSlider = styled('div')<{}>`
   width: 100%;
   height: 100%;
   background: #DFDFE8;
@@ -50,7 +50,7 @@ export const StyledSlider = styled<{}, 'div'>('div')`
   display: flex;
 `
 
-export const StyledBullet = styled<StyleProps, 'div'>('div')`
+export const StyledBullet = styled('div')<StyleProps>`
   top: -17px;
   width: ${p => 100 / ((p && p.size) || 1)}%;
   height: 37px;
@@ -63,13 +63,13 @@ export const StyledBullet = styled<StyleProps, 'div'>('div')`
   margin-left: ${p => getMargin(p.tabIndexSelected, p.size)}px;
 `
 
-export const StyledTab = styled<StyleProps, 'div'>('div')`
+export const StyledTab = styled('div')<StyleProps>`
   display: block;
   height: 100%;
   flex-basis: 100%;
 `
 
-export const StyledText = styled<StyleProps, 'div'>('div')`
+export const StyledText = styled('div')<StyleProps>`
   z-index: 9;
   position: relative;
   font-size: 14px;

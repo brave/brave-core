@@ -4,33 +4,33 @@
 
 import styled from 'styled-components'
 
-export const StyledListContent = styled<{}, 'div'>('div')`
+export const StyledListContent = styled('div')<{}>`
   padding: 0 24px;
 `
 
-export const StyledSitesNum = styled<{}, 'div'>('div')`
+export const StyledSitesNum = styled('div')<{}>`
   padding: 24px;
 `
 
-export const StyledDisabledContent = styled<{}, 'div'>('div')`
+export const StyledDisabledContent = styled('div')<{}>`
   padding: 0px 5px;
 `
 
-export const StyledHeading = styled<{}, 'span'>('span')`
+export const StyledHeading = styled('span')<{}>`
   font-size: 22px;
   font-weight: normal;
   letter-spacing: 0;
   line-height: 28px;
 `
 
-export const StyledSitesLink = styled<{}, 'a'>('a')`
+export const StyledSitesLink = styled('a')<{}>`
   float: right;
   color: #4C54D2;
   font-size: 13px;
   letter-spacing: 0;
 `
 
-export const StyledText = styled<{}, 'p'>('p')`
+export const StyledText = styled('p')<{}>`
   color: #838391;
   font-size: 14px;
   font-family: ${p => p.theme.fontFamily.body};
@@ -39,7 +39,7 @@ export const StyledText = styled<{}, 'p'>('p')`
   line-height: 28px;
 `
 
-export const StyledTotalContent = styled<{}, 'div'>('div')`
+export const StyledTotalContent = styled('div')<{}>`
   position: relative;
   padding-right: 25px;
 
@@ -48,7 +48,7 @@ export const StyledTotalContent = styled<{}, 'div'>('div')`
   }
 `
 
-export const StyledWalletOverlay = styled<{}, 'div'>('div')`
+export const StyledWalletOverlay = styled('div')<{}>`
   display: flex;
   position: fixed;
   top: 0;
@@ -61,14 +61,14 @@ export const StyledWalletOverlay = styled<{}, 'div'>('div')`
   justify-content: center;
 `
 
-export const StyledWalletWrapper = styled<{}, 'div'>('div')`
+export const StyledWalletWrapper = styled('div')<{}>`
   height: 90vh;
   overflow-y: scroll;
   width: 90%;
   margin-top: 40px;
 `
 
-export const StyledWalletClose = styled<{}, 'div'>('div')`
+export const StyledWalletClose = styled('div')<{}>`
   top: 15px;
   right: 15px;
   position: fixed;

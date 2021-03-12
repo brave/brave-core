@@ -13,7 +13,8 @@ class BrowserContext;
 class BraveWalletDelegate {
  public:
   virtual ~BraveWalletDelegate() = default;
-  virtual void LoadCryptoWalletsExtension(content::BrowserContext* context) = 0;
+  virtual void MaybeLoadCryptoWalletsExtension(
+      content::BrowserContext* context) = 0;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BRAVE_WALLET_DELEGATE_H_

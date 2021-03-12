@@ -1052,7 +1052,6 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   base::Value data(base::Value::Type::DICTIONARY);
 
   data.SetStringKey("type", wallet->type);
-  data.SetStringKey("token", wallet->token);
   data.SetStringKey("address", wallet->address);
   data.SetIntKey("status", static_cast<int>(wallet->status));
   data.SetStringKey("verifyUrl", wallet->verify_url);

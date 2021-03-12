@@ -89,7 +89,6 @@ class TopSitesList extends React.PureComponent<Props, State> {
       <>
         <DynamicList
           blockNumber={maxGridSize}
-          isDragging={this.state.isDragging}
           updateBeforeSortStart={this.updateBeforeSortStart}
           onSortEnd={this.onSortEnd}
           axis='xy'
@@ -122,6 +121,7 @@ class TopSitesList extends React.PureComponent<Props, State> {
             <AddSiteTile
               index={gridSites.length}
               disabled={true}
+              isDragging={this.state.isDragging}
               showEditTopSite={onShowEditTopSite}
             />
           }

@@ -24,8 +24,14 @@ const char kIPFSAutoFallbackToGateway[] = "brave.ipfs.auto_fallback_to_gateway";
 // header to the configured Brave IPFS gateway.
 const char kIPFSAutoRedirectGateway[] = "brave.ipfs.auto_redirect_gateway";
 
+// Used to automatically redirect for DNSLink resources
+const char kIPFSAutoRedirectDNSLink[] = "brave.ipfs.auto_redirect_dnslink";
+
 // The number of times the infobar is shown to ask the user to install IPFS
 const char kIPFSInfobarCount[] = "brave.ipfs.infobar_count";
+
+// The number of storage used by IPFS Node
+const char kIpfsStorageMax[] = "brave.ipfs.storage_max";
 
 // Used to enable/disable IPFS via admin policy.
 const char kIPFSEnabled[] = "brave.ipfs.enabled";

@@ -3,18 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 
-export const Section = styled<{}, 'div'>('div')`
+export const Section = styled('div')<{}>`
   margin: 0 20px 10px;
 `
 
-export const Title = styled<{}, 'h4'>('h4')`
+export const Title = styled('h4')<{}>`
   margin: 15px 0 5px;
 `
 
-export const SideBySideButtons = styled<{}, 'div'>('div')`
+export const SideBySideButtons = styled('div')<{}>`
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -40,6 +40,6 @@ export const LearnMoreLink = {
   cursor: 'pointer'
 }
 
-export const GarbageError = {
+export const Error = {
   color: 'red'
 }

@@ -8,7 +8,7 @@ interface PropsStatus {
   isVerified: boolean
 }
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   position: absolute;
   top: 0;
   left: 0;
@@ -20,7 +20,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   overflow: hidden;
 `
 
-export const StyledDialog = styled<{}, 'div'>('div')`
+export const StyledDialog = styled('div')<{}>`
   margin: 52px auto;
   background: ${p => p.theme.palette.white};
   border-radius: 6px;
@@ -29,24 +29,24 @@ export const StyledDialog = styled<{}, 'div'>('div')`
   box-shadow: 0 0 12px 0 rgba(12, 13, 33, 0.44);
 `
 
-export const StyledContent = styled<{}, 'div'>('div')`
+export const StyledContent = styled('div')<{}>`
   padding: 20px;
 `
 
-export const StyledHeader = styled<{}, 'div'>('div')`
+export const StyledHeader = styled('div')<{}>`
   font-weight: bold;
   border-bottom: 1px solid ${p => p.theme.palette.grey400};
   padding-bottom: 5px;
   margin-bottom: 10px;
 `
 
-export const StyledStatus = styled<PropsStatus, 'div'>('div')`
+export const StyledStatus = styled('div')<PropsStatus>`
   font-weight: normal;
   float: right;
   color: ${p => p.isVerified ? p.theme.palette.green600 : p.theme.palette.black};
 `
 
-export const StyledIcon = styled<{}, 'span'>('span')`
+export const StyledIcon = styled('span')<{}>`
   vertical-align: middle;
   display: inline-block;
   width: 24px;

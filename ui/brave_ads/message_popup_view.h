@@ -35,6 +35,9 @@ class MessagePopupView : public views::WidgetDelegateView,
 
   Notification notification_;
 
+  // Return visible frame for primary display.
+  gfx::Rect GetVisibleFrameForPrimaryDisplay() const;
+
   // Return opacity of the widget.
   float GetOpacity() const;
 

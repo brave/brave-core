@@ -33,7 +33,7 @@ export default function IntroCard (props: Props) {
   }, [introElementRef.current, props.onRead])
 
   return (
-    <Card.Intro innerRef={introElementRef}>
+    <Card.Intro ref={introElementRef}>
       <Card.Image src={BraveTodayLogoUrl} />
       <Card.Heading>{getLocale('braveTodayIntroTitle')}</Card.Heading>
       <Card.Text>{getLocale('braveTodayIntroDescription')}</Card.Text>

@@ -17,6 +17,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/browser/render_frame_host.h"
+#include "extensions/buildflags/buildflags.h"
 #include "media/base/media_switches.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -50,7 +51,7 @@
 #include "chrome/browser/sync/profile_sync_service_factory.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(BRAVE_WALLET_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_system.h"
@@ -157,7 +158,7 @@ void BraveBrowserMainParts::PostProfileInit() {
   }
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(BRAVE_WALLET_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile())->extension_service();
   if (service) {

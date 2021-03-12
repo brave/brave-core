@@ -22,6 +22,10 @@ const base::Feature kBraveAdblockCosmeticFilteringNative{
 // ||ads.example.com^
 const base::Feature kBraveDomainBlock{"BraveDomainBlock",
                                       base::FEATURE_ENABLED_BY_DEFAULT};
+// When enabled, network requests initiated by extensions will be checked and
+// potentially blocked by Brave Shields.
+const base::Feature kBraveExtensionNetworkBlocking{
+    "BraveExtensionNetworkBlocking", base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace brave_shields

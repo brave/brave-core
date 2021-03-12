@@ -299,6 +299,8 @@ source_set("browser_process") {
     sources += [
       "ipfs/content_browser_client_helper.cc",
       "ipfs/content_browser_client_helper.h",
+      "ipfs/ipfs_host_resolver.cc",
+      "ipfs/ipfs_host_resolver.h",
       "ipfs/ipfs_service_factory.cc",
       "ipfs/ipfs_service_factory.h",
       "ipfs/ipfs_tab_helper.cc",

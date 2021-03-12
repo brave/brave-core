@@ -257,11 +257,15 @@ void IpfsNavigationThrottle::OnIpfsLaunched(bool result) {
   if (!resume_pending_)
     return;
 
-  resume_pending_ = false;
   if (!result) {
+    resume_pending_ = false;
     ShowInterstitial();
   } else {
-    Resume();
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&IpfsNavigationThrottle::GetConnectedPeers,
+                       weak_ptr_factory_.GetWeakPtr()),
+        CalculatePeersRetryTime());
   }
 }
 
