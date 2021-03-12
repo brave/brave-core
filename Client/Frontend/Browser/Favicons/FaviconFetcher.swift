@@ -353,7 +353,7 @@ class FaviconFetcher {
             // favicons
             var reloadUrl: URL?
             for meta in root.xpath("//head/meta") {
-                if let refresh = meta["http-equiv"], refresh == "Refresh",
+                if let refresh = meta["http-equiv"]?.lowercased(), refresh == "refresh",
                     let content = meta["content"],
                     let index = content.range(of: "URL="),
                     let url = NSURL(string: String(content.suffix(from: index.upperBound))) {

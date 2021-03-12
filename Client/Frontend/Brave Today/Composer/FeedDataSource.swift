@@ -8,6 +8,7 @@ import BraveUI
 import Data
 import Shared
 import BraveShared
+import FeedKit
 
 // Named `logger` because we are using math function `log`
 private let logger = Logger.browserLogger
@@ -302,6 +303,70 @@ class FeedDataSource {
         }
     }
     
+    /// Describes a single RSS feed's loaded data set converted into Brave Today based data
+    private struct RSSDataFeed {
+        var source: FeedItem.Source
+        var items: [FeedItem.Content]
+    }
+    
+    private func loadRSSLocation(_ location: RSSFeedLocation) -> Deferred<Result<RSSDataFeed, Error>> {
+        let deferred = Deferred<Result<RSSDataFeed, Error>>(value: nil, defaultQueue: .main)
+        let parser = FeedParser(URL: location.url)
+        parser.parseAsync { [weak self] result in
+            switch result {
+            case .success(let feed):
+                if let source = FeedItem.Source(from: feed, location: location) {
+                    var content: [FeedItem.Content] = []
+                    switch feed {
+                    case .atom(let atomFeed):
+                        if let feedItems = atomFeed.entries?.compactMap({ entry -> FeedItem.Content? in
+                            FeedItem.Content(from: entry, location: location)
+                        }) {
+                            content = feedItems
+                        }
+                    case .rss(let rssFeed):
+                        if let feedItems = rssFeed.items?.compactMap({ entry -> FeedItem.Content? in
+                            FeedItem.Content(from: entry, location: location)
+                        }) {
+                            content = feedItems
+                        }
+                    case .json(let jsonFeed):
+                        if let feedItems = jsonFeed.items?.compactMap({ entry -> FeedItem.Content? in
+                            FeedItem.Content(from: entry, location: location)
+                        }) {
+                            content = feedItems
+                        }
+                    }
+                    guard let self = self else { return }
+                    content = self.scored(rssItems: content)
+                    deferred.fill(.success(.init(source: source, items: content)))
+                }
+            case .failure(let error):
+                deferred.fill(.failure(error))
+            }
+        }
+        return deferred
+    }
+    
+    /// Load all RSS feeds that the user has enabled
+    private func loadRSSFeeds() -> Deferred<[Result<RSSDataFeed, Error>]> {
+        let locations = rssFeedLocations.filter(isRSSFeedEnabled)
+        return all(locations.map(loadRSSLocation))
+    }
+    
+    /// Scores RSS items similar to how the backend scores regular Brave Today sources
+    private func scored(rssItems: [FeedItem.Content]) -> [FeedItem.Content] {
+        var varianceBySource: [String: Double] = [:]
+        return rssItems.map {
+            var content = $0
+            let recency = log(max(1, -content.publishTime.timeIntervalSinceNow))
+            let variance = (varianceBySource[content.publisherID] ?? 1.0) * 2.0
+            varianceBySource[content.publisherID] = variance
+            content.baseScore = recency * variance
+            return content
+        }
+    }
+    
     /// Whether or not we should load content or just use what's in `state`.
     ///
     /// If the data source is already loading, returns `false`
@@ -346,7 +411,21 @@ class FeedDataSource {
             case (.success(let sources), .success(let items)):
                 self.sources = sources
                 self.items = items
-                self.reloadCards(from: items, sources: sources, completion: completion)
+                self.loadRSSFeeds().uponQueue(.main) { [weak self] results in
+                    guard let self = self else { return }
+                    for result in results {
+                        switch result {
+                        case .success(let feed):
+                            self.sources.append(feed.source)
+                            self.items.append(contentsOf: feed.items)
+                        case .failure:
+                            // At the moment we dont handle any load errors once the feed has been
+                            // added
+                            break
+                        }
+                    }
+                    self.reloadCards(from: self.items, sources: self.sources, completion: completion)
+                }
             }
         }
     }
@@ -429,6 +508,11 @@ class FeedDataSource {
     
     /// Whether or not cards need to be reloaded next time we attempt to request state data
     private var needsReloadCards = false
+    
+    /// Notify the feed data source that it needs to reload cards next time we request state data
+    func setNeedsReloadCards() {
+        needsReloadCards = true
+    }
     
     /// Scores and generates cards from a set of items and sources
     private func reloadCards(

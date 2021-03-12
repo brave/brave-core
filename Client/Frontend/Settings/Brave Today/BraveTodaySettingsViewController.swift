@@ -7,6 +7,7 @@ import UIKit
 import Static
 import Shared
 import BraveShared
+import Data
 
 /// Displays relevant Brave Today settings such as toggling the feature on/off, and selecting sources
 ///
@@ -40,10 +41,48 @@ class BraveTodaySettingsViewController: TableViewController {
             navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
         }
         
+        reloadSections()
+    }
+    
+    private func reloadSections() {
         dataSource.sections = [
             .init(
                 rows: [
                     .boolRow(title: Strings.BraveToday.isEnabledToggleLabel, option: Preferences.BraveToday.isEnabled)
+                ]
+            ),
+            .init(
+                header: .title(Strings.BraveToday.yourSources),
+                rows: feedDataSource.rssFeedLocations.map { location in
+                    let enabled = self.feedDataSource.isRSSFeedEnabled(location)
+                    return Row(
+                        text: location.title,
+                        detailText: location.url.absoluteString,
+                        accessory: .switchToggle(value: enabled, { [unowned self] newValue in
+                            self.feedDataSource.toggleRSSFeedEnabled(location, enabled: newValue)
+                        }),
+                        cellClass: SubtitleCell.self,
+                        editActions: [.init(title: Strings.BraveToday.deleteUserSourceTitle, style: .destructive, selection: { [unowned self] indexPath in
+                            guard let location = feedDataSource.rssFeedLocations[safe: indexPath.row] else { return }
+                            self.feedDataSource.removeRSSFeed(with: location.url)
+                            dataSource.sections[1].rows.remove(at: indexPath.row)
+                        })]
+                    )
+                } + [
+                    Row(text: Strings.BraveToday.addSource, selection: { [unowned self] in
+                        let controller = BraveTodayAddSourceViewController(dataSource: self.feedDataSource)
+                        controller.sourcesAdded = { [weak self] _ in
+                            self?.reloadSections()
+                        }
+                        let container = UINavigationController(rootViewController: controller)
+                        let idiom = UIDevice.current.userInterfaceIdiom
+                        if #available(iOS 13.0, *) {
+                            container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
+                        } else {
+                            container.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
+                        }
+                        self.present(container, animated: true)
+                    }, image: nil, accessory: .disclosureIndicator)
                 ]
             )
         ]
@@ -68,10 +107,6 @@ class BraveTodaySettingsViewController: TableViewController {
                 ])
             )
         }
-        
-        if !AppConstants.buildChannel.isPublic {
-            // TODO: Add debug settings here
-        }
     }
     
     private var categoryRows: [Row] {
@@ -90,6 +125,7 @@ class BraveTodaySettingsViewController: TableViewController {
         }
         rows.append(contentsOf:
             categories
+                .filter { !$0.isEmpty }
                 .sorted()
                 .map(row(for:))
         )

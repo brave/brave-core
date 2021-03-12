@@ -22,6 +22,7 @@ extension FeedItem {
         var isDefault: Bool
         var category: String
         var name: String
+        var isUserSource = false
         
         enum CodingKeys: String, CodingKey {
             case id = "publisher_id"

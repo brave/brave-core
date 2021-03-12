@@ -96,6 +96,16 @@ class BraveTodayDebugSettingsController: TableViewController {
                 rows: [
                     Row(text: "State", detailText: feedDataSource.description(of: feedDataSource.state)),
                 ] + feedDataSource.detailRows(for: feedDataSource.state)
+            ),
+            .init(
+                rows: [
+                    Row(text: "Disable All Default Sources", selection: { [unowned self] in
+                        let categories = Set(self.feedDataSource.sources.map(\.category))
+                        for category in categories where !category.isEmpty {
+                            self.feedDataSource.toggleCategory(category, enabled: false)
+                        }
+                    }, cellClass: ButtonCell.self)
+                ]
             )
         ]
     }
