@@ -253,8 +253,8 @@ public class BytecodeTest {
                 ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
                 OneshotSupplier.class, boolean.class, ObservableSupplier.class,
                 OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, WindowAndroid.class, Supplier.class, boolean.class,
-                Supplier.class, StatusBarColorController.class, AppMenuDelegate.class,
+                OneshotSupplier.class, WindowAndroid.class, Supplier.class, Supplier.class,
+                StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
