@@ -154,6 +154,11 @@ class BrowserViewController: UIViewController {
     
     /// Number of Ads/Trackers used a limit to show benchmark notification
     let benchmarkNumberOfTrackers = 10
+    
+    /// Used to determine when to present benchmark pop-overs
+    /// Current session ad count is compared with live ad count
+    /// So user will not be introduced with a pop-over directly
+    let benchmarkCurrentSessionAdCount = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
 
     init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {

@@ -57,11 +57,7 @@ class ShareTrackersController: UIViewController, Themeable {
     
     enum Action {
         case takeALookTapped
-        case dontShowAgainTapped
-        case shareEmailTapped
-        case shareTwitterTapped
-        case shareFacebookTapped
-        case shareMoreTapped
+        case shareTheNewsTapped
     }
     
     // MARK: Properties
@@ -113,14 +109,8 @@ class ShareTrackersController: UIViewController, Themeable {
             guard let self = self else { return }
             
             switch action {
-            case .didShareWithMailTapped:
-                self.actionHandler?(.takeALookTapped)
-            case .didShareWithTwitterTapped:
-                self.actionHandler?(.shareTwitterTapped)
-            case .didShareWithFacebookTapped:
-                self.actionHandler?(.shareFacebookTapped)
-            case .didShareWithDefaultTapped:
-                self.actionHandler?(.shareMoreTapped)
+            case .didShareTheNewsTapped:
+                self.actionHandler?(.shareTheNewsTapped)
             case .didTakeALookTapped:
                 self.actionHandler?(.takeALookTapped)
             }
@@ -162,7 +152,7 @@ class ShareTrackersController: UIViewController, Themeable {
 
 // MARK: - ShareTrackersView
 
-private class ShareTrackersView: UIView, ShareTrayViewDelegate, Themeable {
+private class ShareTrackersView: UIView, Themeable {
 
     // MARK: UX
     
@@ -174,18 +164,13 @@ private class ShareTrackersView: UIView, ShareTrayViewDelegate, Themeable {
     // MARK: Action
     
     enum Action {
-        case didShareWithMailTapped
-        case didShareWithTwitterTapped
-        case didShareWithFacebookTapped
-        case didShareWithDefaultTapped
+        case didShareTheNewsTapped
         case didTakeALookTapped
     }
     
     // MARK: Properties
     
     private let trackingType: TrackingType
-
-    private let shareTrayView = ShareTrayView()
     
     private let stackView = UIStackView().then {
         $0.axis = .vertical
@@ -205,9 +190,9 @@ private class ShareTrackersView: UIView, ShareTrayViewDelegate, Themeable {
         $0.numberOfLines = 0
     }
     
-    private lazy var actionButton: UIButton = {
+    private lazy var actionButton: InsetButton = {
         let actionButton = InsetButton()
-        actionButton.addTarget(self, action: #selector(tappedInformationAction), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(tappedActionButton), for: .touchUpInside)
 
         actionButton.contentEdgeInsets = UX.actionButtonInsets
         actionButton.layer.cornerRadius = 20
@@ -262,14 +247,11 @@ private class ShareTrackersView: UIView, ShareTrayViewDelegate, Themeable {
         )
         
         switch trackingType {
-            case .trackerCountShare:
-                stackView.addArrangedSubview(shareTrayView)
-            case .trackerAdWarning:
+            case .trackerCountShare, .trackerAdWarning:
                 stackView.addArrangedSubview(actionButton)
             default:
                 return
         }
-
     }
     
     private func setContent() {
@@ -289,29 +271,27 @@ private class ShareTrackersView: UIView, ShareTrayViewDelegate, Themeable {
         
         subtitleLabel.attributedText = NSAttributedString(string: trackingType.subTitle).withLineSpacing(2)
         
-        actionButton.setTitle(Strings.ShieldEducation.educationInspectTitle, for: .normal)
+        switch trackingType {
+            case .trackerAdWarning:
+                actionButton.setTitle(Strings.ShieldEducation.educationInspectTitle, for: .normal)
+            case .trackerCountShare:
+                actionButton.setTitle(Strings.ShieldEducation.shareTheNewsTitle, for: .normal)
+                actionButton.addTrailingImageIcon(image: #imageLiteral(resourceName: "shields-share"))
+            default:
+                return
+        }
     }
     
     // MARK: Action
-    @objc func tappedInformationAction() {
-        actionHandler?(.didTakeALookTapped)
-    }
-    
-    // MARK: ShareTrayViewDelegate
-    
-    func didShareWith(_ view: ShareTrayView, type: ShareTrayView.ViewType) {
-        switch type {
-            case .mail:
-                actionHandler?(.didShareWithMailTapped)
-            case .twitter:
-                actionHandler?(.didShareWithTwitterTapped)
-            case .facebook:
-                actionHandler?(.didShareWithFacebookTapped)
-            case .default:
-                actionHandler?(.didShareWithDefaultTapped)
+    @objc func tappedActionButton() {
+        switch trackingType {
+            case .trackerAdWarning:
+                actionHandler?(.didTakeALookTapped)
+            case .trackerCountShare:
+                actionHandler?(.didShareTheNewsTapped)
+            default:
+                return
         }
-        
-        actionHandler?(.didShareWithMailTapped)
     }
     
     // MARK: Themeable

@@ -92,7 +92,28 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return newImage
     }
+    
+    public func textToImage(drawText text: String, textFont: UIFont? = nil, textColor: UIColor? = nil, atPoint point: CGPoint) -> UIImage? {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        
+        let font = textFont ?? UIFont.systemFont(ofSize: 20, weight: .medium)
 
+        let fontAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: paragraphStyle,
+            .font: font,
+            .foregroundColor: textColor ?? UIColor.white
+        ]
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(in: CGRect(origin: CGPoint.zero, size: size))
+        let rect = CGRect(origin: point, size: size)
+        text.draw(in: rect.insetBy(dx: 15, dy: 0), withAttributes: fontAttributes)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
     // TESTING ONLY: not for use in release/production code.
     // PNG comparison can return false negatives, be very careful using for non-equal comparison.
     // PNG comparison requires UIImages to be constructed the same way in order for the metadata block to match,

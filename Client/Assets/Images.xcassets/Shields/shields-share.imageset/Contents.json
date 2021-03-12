@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "share-bubble-twitter.png",
+      "filename" : "shields-share.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "share-bubble-twitter@2x.png",
+      "filename" : "shields-share@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "share-bubble-twitter@3x.png",
+      "filename" : "share-shields@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

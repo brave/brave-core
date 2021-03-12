@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "share-bubble-facebook.png",
+      "filename" : "help.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "share-bubble-facebook@2x.png",
+      "filename" : "help@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "share-bubble-facebook@3x.png",
+      "filename" : "help@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
