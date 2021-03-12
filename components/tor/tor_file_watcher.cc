@@ -238,20 +238,24 @@ bool TorFileWatcher::EatControlPort(int& port, base::Time& mtime) {
   }
 
   // Read up to 27/28 octets, the maximum we will ever need.
-  const size_t kBufSiz = strlen(kControlPortMaxTmpl);
+  const size_t kBufSiz = sizeof(kControlPortMaxTmpl);
   char buf[kBufSiz];
   int nread = portfile.ReadAtCurrentPos(buf, sizeof buf);
   if (nread < 0) {
     VLOG(0) << "tor: failed to read control port";
     return false;
+  } else if (static_cast<size_t>(nread) >= sizeof buf) {
+    VLOG(0) << "tor: control port too long";
+    return false;
   }
+
   if (static_cast<size_t>(nread) < strlen(kControlPortMinTmpl)) {
     VLOG(0) << "tor: control port truncated";
     return false;
   }
-  DCHECK(static_cast<size_t>(nread) <= sizeof buf);
 
-  std::string text(buf, 0, nread);
+  buf[nread] = '\0';
+  std::string text(buf);
 
   // Sanity-check the content.
   if (!base::StartsWith(text, "PORT=", base::CompareCase::SENSITIVE) ||
