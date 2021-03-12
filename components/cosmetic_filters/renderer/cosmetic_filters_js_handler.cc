@@ -5,6 +5,8 @@
 
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
