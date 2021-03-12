@@ -27,8 +27,9 @@ export class UninstalledView extends React.Component<Props, {}> {
     }
     const bytes = this.props.installationProgress.downloaded_bytes
     const total = this.props.installationProgress.total_bytes
-    if (!total)
+    if (!total) {
       return ''
+    }
     const percentages = 100 * bytes / total
     return <span>{percentages.toFixed(2)}% </span>
   }
