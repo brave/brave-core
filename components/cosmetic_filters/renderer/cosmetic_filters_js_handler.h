@@ -55,8 +55,7 @@ class CosmeticFiltersJSHandler {
   void OnShouldDoCosmeticFiltering(base::OnceClosure callback,
                                    bool enabled,
                                    bool first_party_enabled);
-  void OnUrlCosmeticResources(base::OnceClosure callback,
-                              base::Value result);
+  void OnUrlCosmeticResources(base::OnceClosure callback, base::Value result);
   void CSSRulesRoutine(base::DictionaryValue* resources_dict);
   void OnHiddenClassIdSelectors(base::Value result);
 
