@@ -38,7 +38,7 @@ import {
 import { reloadTab } from '../api/tabsAPI'
 import {
   injectClassIdStylesheet,
-  applyAdblockCosmeticFilters,
+  applyAdblockCosmeticFilters
 } from '../api/cosmeticFilterAPI'
 
 // Helpers
