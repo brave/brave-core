@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "FeedKit",
+        "repositoryURL": "https://github.com/nmdias/FeedKit.git",
+        "state": {
+          "branch": null,
+          "revision": "68493a33d862c33c9a9f67ec729b3b7df1b20ade",
+          "version": "9.1.2"
+        }
+      },
+      {
         "package": "Fuzi",
         "repositoryURL": "https://github.com/cezheng/Fuzi",
         "state": {

@@ -5,6 +5,7 @@
 import Foundation
 import Static
 import BraveShared
+import BraveUI
 
 /// The same style switch accessory view as in Static framework, except will not be recreated each time the Cell
 /// is configured, since it will be stored as is in `Row.Accessory.view`
@@ -55,7 +56,7 @@ class MultilineButtonCell: ButtonCell {
     }
 }
 
-class CenteredButtonCell: ButtonCell {
+class CenteredButtonCell: ButtonCell, TableViewReusable {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         textLabel?.textAlignment = .center

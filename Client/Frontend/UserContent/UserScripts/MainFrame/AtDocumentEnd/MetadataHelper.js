@@ -49,7 +49,15 @@ function MetadataWrapper() {
       ],
       processors: customRuleSets.icon.processors
     };
-    return metadataparser(window.document, document.URL, customRuleSets);
+    const data = metadataparser(window.document, document.URL, customRuleSets);
+    // Since we want to obtain multiple feeds, we are doing a separate query. 
+    // `page-metadata-parser` only allows a single result from rules passed into `getMetadata`
+    data.feeds = function() {
+      const rules = 'link[type="application/rss+xml"], link[type="application/atom+xml"], link[rel="alternate"][type="application/json"]';
+      const nodes = window.document.querySelectorAll(rules);
+      return Array.from(nodes).map(link => {return {href: link.href, title: link.title};});
+    }();
+    return data
   };
 }
 

@@ -16,6 +16,7 @@ public struct PageMetadata: Decodable {
     public let largeIconURL: String?
     public let keywordsString: String?
     public let search: Link?
+    public let feeds: [Link]
     
     public var keywords: Set<String> {
         guard let string = keywordsString else {
@@ -37,6 +38,7 @@ public struct PageMetadata: Decodable {
         case largeIconURL = "largeIcon"
         case keywordsString = "keywords"
         case search
+        case feeds
     }
 
     public init(siteURL: String,
@@ -48,7 +50,8 @@ public struct PageMetadata: Decodable {
                 faviconURL: String? = nil,
                 largeIconURL: String? = nil,
                 keywords: String? = nil,
-                search: Link? = nil) {
+                search: Link? = nil,
+                feeds: [Link] = []) {
         self.siteURL = siteURL
         self.mediaURL = mediaURL
         self.title = title
@@ -59,6 +62,7 @@ public struct PageMetadata: Decodable {
         self.largeIconURL = largeIconURL
         self.keywordsString = keywords
         self.search = search
+        self.feeds = feeds
     }
     
     public struct Link: Decodable {

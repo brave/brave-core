@@ -41,6 +41,8 @@ class FeedSourceListViewController: UITableViewController {
         var list: [FeedItem.Source] = dataSource.sources
         if let category = category {
             list = list.filter { $0.category == category }
+        } else {
+            list = list.filter { !$0.isUserSource }
         }
         if !searchQuery.isEmpty {
             list = list

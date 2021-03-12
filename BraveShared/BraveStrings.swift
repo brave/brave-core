@@ -1703,7 +1703,7 @@ extension Strings {
         public static let settingsSourceHeaderTitle = NSLocalizedString(
             "today.settingsSourceHeaderTitle",
             bundle: .braveShared,
-            value: "Sources",
+            value: "Default Sources",
             comment: ""
         )
         public static let resetSourceSettingsButtonTitle = NSLocalizedString(
@@ -1735,6 +1735,102 @@ extension Strings {
             bundle: .braveShared,
             value: "Promoted",
             comment: "A button title that is placed on promoted cards"
+        )
+        public static let addSourceShareTitle = NSLocalizedString(
+            "today.addSourceShareTitle",
+            bundle: .braveShared,
+            value: "Add Source to Brave Today",
+            comment: "The action title displayed in the iOS share menu"
+        )
+        public static let addSourceFailureTitle = NSLocalizedString(
+            "today.addSourceFailureTitle",
+            bundle: .braveShared,
+            value: "Failed to Add Source",
+            comment: "The title in the alert when a source fails to add"
+        )
+        public static let addSourceNetworkFailureMessage = NSLocalizedString(
+            "today.addSourceNetworkFailureMessage",
+            bundle: .braveShared,
+            value: "Sorry, we couldn’t find that feed address.",
+            comment: ""
+        )
+        public static let addSourceInvalidDataMessage = NSLocalizedString(
+            "today.addSourceInvalidDataMessage",
+            bundle: .braveShared,
+            value: "Sorry, we couldn’t recognize that feed address.",
+            comment: ""
+        )
+        public static let addSourceNoFeedsFoundMessage = NSLocalizedString(
+            "today.addSourceNoFeedsFoundMessage",
+            bundle: .braveShared,
+            value: "Sorry, that feed address doesn’t have any content.",
+            comment: ""
+        )
+        public static let addSourceAddButtonTitle = NSLocalizedString(
+            "today.addSourceAddButtonTitle",
+            bundle: .braveShared,
+            value: "Add",
+            comment: "To add a list of 1 or more rss feeds"
+        )
+        public static let rssFeedLimitExceededAlertTitle = NSLocalizedString(
+            "today.rssFeedLimitExceededAlertTitle",
+            bundle: .braveShared,
+            value: "Feed limit exceeded",
+            comment: ""
+        )
+        public static let rssFeedLimitExceededAlertMessage = NSLocalizedString(
+            "today.rssFeedLimitExceededAlertMessage",
+            bundle: .braveShared,
+            value: "The free ad-supported version of Brave Today includes 5 RSS feeds. You can customize your feed selections from the Sources list.",
+            comment: ""
+        )
+        public static let rssFeedLimitRemainingFooter = NSLocalizedString(
+            "today.rssFeedLimitRemainingFooter",
+            bundle: .braveShared,
+            value: "You currently have %d RSS feeds in your Sources list. The free ad-supported version of Brave Today includes 5 RSS feeds. Support for unlimited feeds and OPML import will be coming soon. You can customize your feed selections from the Sources list.",
+            comment: "%d will be a number (i.e. 4)"
+        )
+        public static let insecureSourcesHeader = NSLocalizedString(
+            "today.insecureSourcesHeader",
+            bundle: .braveShared,
+            value: "Insecure Sources - Add at your own risk",
+            comment: "The header above the list of insecure sources"
+        )
+        public static let searchTextFieldPlaceholder = NSLocalizedString(
+            "today.searchTextFieldPlaceholder",
+            bundle: .braveShared,
+            value: "Feed or Site URL",
+            comment: "The placeholder displayed on the text field where a user is expected to type in a website URL"
+        )
+        public static let searchButtonTitle = NSLocalizedString(
+            "today.searchButtonTitle",
+            bundle: .braveShared,
+            value: "Search",
+            comment: "An action title where the user is executing a search based on inputted text"
+        )
+        public static let importOPML = NSLocalizedString(
+            "today.importOPML",
+            bundle: .braveShared,
+            value: "Import OPML",
+            comment: "\"OPML\" is a file extension that contains a list of rss feeds."
+        )
+        public static let yourSources = NSLocalizedString(
+            "today.yourSources",
+            bundle: .braveShared,
+            value: "Your Sources",
+            comment: "The header above a list of the users RSS feed sources"
+        )
+        public static let addSource = NSLocalizedString(
+            "today.addSource",
+            bundle: .braveShared,
+            value: "Add Source",
+            comment: "The button title for adding a user RSS feed"
+        )
+        public static let deleteUserSourceTitle = NSLocalizedString(
+            "today.deleteUserSourceTitle",
+            bundle: .braveShared,
+            value: "Delete",
+            comment: "A button title for an action that deletes a users custom source"
         )
     }
 }

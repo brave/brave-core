@@ -18,6 +18,7 @@ extension Theme {
         UIToolbar.appearance().barTintColor = colors.footer
         
         UINavigationBar.appearance().tintColor = colors.accent
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: colors.tints.home]
         UINavigationBar.appearance().appearanceBarTintColor = colors.header
         
         UISwitch.appearance().appearanceOnTintColor = colors.accent

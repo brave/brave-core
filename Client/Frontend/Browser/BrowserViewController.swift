@@ -21,6 +21,7 @@ import SafariServices
 import BraveUI
 import NetworkExtension
 import YubiKit
+import FeedKit
 
 private let log = Logger.browserLogger
 
@@ -1802,6 +1803,35 @@ class BrowserViewController: UIViewController {
             }
             activities.append(requestDesktopSiteActivity)
             
+            if let metadata = tab?.pageMetadata, !metadata.feeds.isEmpty {
+                let feeds: [RSSFeedLocation] = metadata.feeds.compactMap { feed in
+                    if let url = URL(string: feed.href) {
+                        return RSSFeedLocation(title: feed.title, url: url)
+                    }
+                    return nil
+                }
+                if !feeds.isEmpty {
+                    let addToBraveToday = AddFeedToBraveTodayActivity() { [weak self] in
+                        guard let self = self else { return }
+                        let controller = BraveTodayAddSourceResultsViewController(
+                            dataSource: self.feedDataSource,
+                            searchedURL: url,
+                            rssFeedLocations: feeds,
+                            sourcesAdded: nil
+                        )
+                        let container = UINavigationController(rootViewController: controller)
+                        let idiom = UIDevice.current.userInterfaceIdiom
+                        if #available(iOS 13.0, *) {
+                            container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
+                        } else {
+                            container.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
+                        }
+                        self.present(container, animated: true)
+                    }
+                    activities.append(addToBraveToday)
+                }
+            }
+            
             #if compiler(>=5.3)
             if #available(iOS 14.0, *), let webView = tab?.webView, tab?.temporaryDocument == nil {
                 let createPDFActivity = CreatePDFActivity(webView: webView) { [weak self] pdfData in
@@ -1831,6 +1861,33 @@ class BrowserViewController: UIViewController {
                 activities.append(createPDFActivity)
             }
             #endif
+        } else {
+            // Check if its a feed, url is a temp document file URL
+            if let selectedTab = tabManager.selectedTab,
+               (selectedTab.mimeType == "application/xml" || selectedTab.mimeType == "application/json"),
+               let tabURL = selectedTab.url {
+                let parser = FeedParser(URL: url)
+                if case .success(let feed) = parser.parse() {
+                    let addToBraveToday = AddFeedToBraveTodayActivity() { [weak self] in
+                        guard let self = self else { return }
+                        let controller = BraveTodayAddSourceResultsViewController(
+                            dataSource: self.feedDataSource,
+                            searchedURL: tabURL,
+                            rssFeedLocations: [.init(title: feed.title, url: tabURL)],
+                            sourcesAdded: nil
+                        )
+                        let container = UINavigationController(rootViewController: controller)
+                        let idiom = UIDevice.current.userInterfaceIdiom
+                        if #available(iOS 13.0, *) {
+                            container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
+                        } else {
+                            container.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
+                        }
+                        self.present(container, animated: true)
+                    }
+                    activities.append(addToBraveToday)
+                }
+            }
         }
         
         let controller = helper.createActivityViewController(items: activities) { [weak self] completed, _, documentUrl  in
