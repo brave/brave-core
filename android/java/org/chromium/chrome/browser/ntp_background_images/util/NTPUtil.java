@@ -120,6 +120,7 @@ public class NTPUtil {
         imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
 
         layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        layoutParams.setMargins(0, 0, 0, dpToPx(context, 5));
         sponsoredLogo.setLayoutParams(layoutParams);
     }
 
