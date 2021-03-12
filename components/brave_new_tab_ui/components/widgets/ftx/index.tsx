@@ -2,7 +2,7 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 import * as React from 'react'
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider, ThemeConsumer } from 'styled-components'
 
 import createWidget from '../../default/widget/index'
 import { StyledTitleTab } from '../../default/widgetTitleTab'
@@ -40,7 +40,7 @@ import {
 } from '../../default/exchangeWidget/shared-assets'
 import icons from '../shared/assets/icons'
 import ftxLogo from './ftx-logo.png'
-import ftxTheme from './theme'
+import customizeTheme from './theme'
 
 // Utils
 
@@ -376,7 +376,7 @@ class FTX extends React.PureComponent<Props, State> {
     )
   }
 
-  renderView () {   
+  renderView () {
     const { currentView, selectedAsset } = this.state
 
     if (selectedAsset) {
@@ -452,16 +452,20 @@ class FTX extends React.PureComponent<Props, State> {
     }
 
     return (
-      <ThemeProvider theme={ftxTheme}>
-        <WidgetWrapper tabIndex={0}>
-          {this.renderTitle()}
-          {(optedIntoMarkets) ? (
-            this.renderIndex()
-          ) : (
-            this.renderPreOptIn()
-          )}
-        </WidgetWrapper>
-      </ThemeProvider>
+      <ThemeConsumer>
+      {theme =>
+        <ThemeProvider theme={customizeTheme(theme)}>
+          <WidgetWrapper tabIndex={0}>
+            {this.renderTitle()}
+            {(optedIntoMarkets) ? (
+              this.renderIndex()
+            ) : (
+              this.renderPreOptIn()
+            )}
+          </WidgetWrapper>
+        </ThemeProvider>
+      }
+      </ThemeConsumer>
     )
   }
 }

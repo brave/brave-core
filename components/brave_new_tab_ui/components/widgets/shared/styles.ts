@@ -110,7 +110,7 @@ function getColor (p: any) {
   return colorNameToHex[colorName]
 }
 
-export const Text = styled<StyleProps, 'p'>('p')`
+export const Text = styled('p')<StyleProps>`
   color: ${p => getColor(p.textColor) || '#ffffff'};
   font-family: ${p => p.theme.fontFamily.heading};
   font-weight: ${p => (p.weight || (p.small ? '500' : 'normal'))};
@@ -126,7 +126,7 @@ export const Text = styled<StyleProps, 'p'>('p')`
   ${getBoxStyle}
 `
 
-export const BasicBox = styled<StyleProps, 'div'>('div')`
+export const BasicBox = styled('div')<StyleProps>`
   display: ${p => (p.isFlex ? 'flex' : 'block')};
   ${(p) =>
     p.isFlex &&
@@ -139,14 +139,14 @@ export const BasicBox = styled<StyleProps, 'div'>('div')`
     ${getBoxStyle}
 `
 
-export const Box = styled<StyleProps>(BasicBox)`
+export const Box = styled(BasicBox)<StyleProps>`
   border: 1px solid rgba(79, 86, 97, 0.7);
   padding: ${p => (p.hasPadding ? '0.5em' : '0')};
   border-radius: 2px;
   height: ${p => (p.$height ? `${p.$height}px` : 'auto')};
 `
 
-export const FlexItem = styled<StyleProps, 'div'>('div')`
+export const FlexItem = styled('div')<StyleProps>`
   display: ${p => (p.isFlex ? 'flex' : 'block')};
   flex: ${p => p.flex || 'inherit'};
   text-align: ${p => p.textAlign || 'left'};
@@ -164,7 +164,7 @@ export const FlexItem = styled<StyleProps, 'div'>('div')`
   ${getBoxStyle}
 `
 
-export const PlainButton = styled<StyleProps, 'button'>('button')`
+export const PlainButton = styled('button')<StyleProps>`
   display: ${p => p.inline ? 'inline-block' : 'block'};
   background: none;
   border: none;
@@ -180,7 +180,7 @@ export const PlainButton = styled<StyleProps, 'button'>('button')`
   ${getBoxStyle}
 `
 
-export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
+export const WidgetWrapper = styled('div')<StyleProps>`
   color: white;
   padding: 6px 20px 13px 20px;
   border-radius: 6px;
@@ -189,16 +189,16 @@ export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   font-size: 14px;
   overflow: hidden;
   min-width: 284px;
-  background: ${p => p.theme.secondary};
+  background: ${p => p.theme.color.secondaryBackground};
   backdrop-filter: blur(16px);
 `
 
-export const Header = styled<StyleProps, 'div'>('div')`
+export const Header = styled('div')<StyleProps>`
   text-align: left;
   margin-bottom: ${p => (p.showContent ? '15' : '0')}px;
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   margin-top: 6px;
   display: flex;
   justify-content: flex-start;
@@ -209,7 +209,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const WidgetIcon = styled<{}, 'div'>('div')`
+export const WidgetIcon = styled('div')<{}>`
   width: 27px;
   height: 27px;
   margin-right: 7px;
@@ -222,9 +222,9 @@ export const WidgetIcon = styled<{}, 'div'>('div')`
   }
 `
 
-export const StyledTitleText = styled<{}, 'div'>('div')``
+export const StyledTitleText = styled('div')<{}>``
 
-export const List = styled<StyleProps>(Box)`
+export const List = styled(Box)<StyleProps>`
   overflow-y: ${p => (p.hideOverflow ? 'hidden' : 'scroll')};
   height: 260px;
   padding: 0;
@@ -236,7 +236,7 @@ export const List = styled<StyleProps>(Box)`
   `}
 `
 
-export const ListItem = styled<StyleProps, 'li'>('li')`
+export const ListItem = styled('li')<StyleProps>`
   border-bottom: 1px solid rgba(79, 86, 97, 0.7);
   padding: 5px;
   border-radius: 2px;
@@ -250,19 +250,19 @@ export const ListItem = styled<StyleProps, 'li'>('li')`
   `};
 `
 
-export const BackArrow = styled<StyleProps, 'div'>('div')`
+export const BackArrow = styled('div')<StyleProps>`
   width: 20px;
   cursor: pointer;
   margin-left: ${p => p.marketView ? 60 : 0}px;
 `
 
-export const ActionButton = styled<StyleProps, 'button'>('button')`
+export const ActionButton = styled('button')<StyleProps>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: ${p => (p.small ? '13px' : '15px')};
   font-weight: ${p => (p.small ? '500' : 'bold')};
   border-radius: 20px;
   width: ${p => (p.inline ? 'auto' : '100%')};
-  background: ${p => (p.light ? 'rgba(255, 255, 255, 0.21)' : p.theme.primary)};
+  background: ${p => (p.light ? 'rgba(255, 255, 255, 0.21)' : p.theme.color.primaryBackground)};
   border: 0;
   padding: ${p => (p.small ? '6px 10px' : '10px 0px')};
   cursor: pointer;
@@ -273,13 +273,13 @@ export const ActionButton = styled<StyleProps, 'button'>('button')`
   ${getBoxStyle}
 `
 
-export const ActionAnchor = styled<StyleProps, 'span'>('span')`
+export const ActionAnchor = styled('span')<StyleProps>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: ${p => (p.small ? '13px' : '15px')};
   font-weight: ${p => (p.small ? '500' : 'bold')};
   border-radius: 20px;
   width: ${p => (p.inline ? 'auto' : '100%')};
-  background: ${p => (p.light ? 'rgba(255, 255, 255, 0.21)' : p.theme.primary)};
+  background: ${p => (p.light ? 'rgba(255, 255, 255, 0.21)' : p.theme.color.primaryBackground)};
   border: 0;
   padding: ${p => (p.small ? '6px 10px' : '10px 0px')};
   margin: 10px 0 15px;
@@ -291,23 +291,23 @@ export const ActionAnchor = styled<StyleProps, 'span'>('span')`
   text-decoration: none;
 `
 
-export const PlainAnchor = styled<StyleProps, 'a'>('a')`
-  color: ${p => p.theme.primary};
+export const PlainAnchor = styled('a')<StyleProps>`
+  color: ${p => p.theme.color.primaryBackground};
 
   &:hover {
     opacity: 0.7;
   }
 `
 
-export const UpperCaseText = styled<StyleProps, 'span'>('span')`
+export const UpperCaseText = styled('span')<StyleProps>`
   text-transform: uppercase;
 `
-export const SVG = styled<StyleProps, 'svg'>('svg')`
+export const SVG = styled('svg')<StyleProps>`
   margin: 1rem 0;
 `
 
-export const FilterOption = styled<StyleProps>(PlainButton)`
-    color: ${p => p.isActive ? p.theme.primary : getColor('light')};
+export const FilterOption = styled(PlainButton)<StyleProps>`
+    color: ${p => p.isActive ? p.theme.color.primaryBackground : getColor('light')};
     font-weight: 600;
     text-transform: uppercase;
     border-right: 1px solid rgba(255, 255, 255, 0.2);
@@ -317,7 +317,7 @@ export const FilterOption = styled<StyleProps>(PlainButton)`
     }
 `
 
-export const Filters = styled<StyleProps>(BasicBox)`
+export const Filters = styled(BasicBox)<StyleProps>`
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 2px;
   display: flex;
@@ -330,7 +330,7 @@ export const Filters = styled<StyleProps>(BasicBox)`
  * Dropdown styles
  */
 
-export const InputWrapper = styled<StyleProps>(BasicBox)`
+export const InputWrapper = styled(BasicBox)<StyleProps>`
   height: 30px;
   color: #000;
   background: #fff;
@@ -342,7 +342,7 @@ export const InputWrapper = styled<StyleProps>(BasicBox)`
   position: relative;
 `
 
-export const InputField = styled<{}, 'input'>('input')`
+export const InputField = styled('input')<{}>`
   display: inline-block;
   min-width: 215px;
   border: 0;
@@ -367,7 +367,7 @@ export const AmountInputField = styled(InputField)`
   border-bottom: 1px solid white;
 `
 
-export const Dropdown = styled<StyleProps, 'div'>('div')`
+export const Dropdown = styled('div')<StyleProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -378,15 +378,15 @@ export const Dropdown = styled<StyleProps, 'div'>('div')`
   cursor: ${p => p.disabled ? 'auto' : 'pointer'};
 `
 
-export const DropdownIcon = styled<StyleProps, 'span'>('span')`
+export const DropdownIcon = styled('span')<StyleProps>`
   margin-right: 10px;
 `
 
-export const AssetDropdownLabel = styled<{}, 'span'>('span')`
+export const AssetDropdownLabel = styled('span')<{}>`
   font-weight: bold;
 `
 
-export const CaratDropdown = styled<StyleProps, 'div'>('div')`
+export const CaratDropdown = styled('div')<StyleProps>`
   margin-left: auto;
   width: 14px;
   height: 14px;
@@ -394,7 +394,7 @@ export const CaratDropdown = styled<StyleProps, 'div'>('div')`
   visibility: ${p => p.hide ? 'hidden' : 'visible'};
 `
 
-export const AssetItems = styled<StyleProps, 'div'>('div')`
+export const AssetItems = styled('div')<StyleProps>`
   z-index: 1;
   background: #fff;
   color: #000;
@@ -411,27 +411,27 @@ export const AssetItems = styled<StyleProps, 'div'>('div')`
   top: 100%;
 `
 
-export const AssetItem = styled<StyleProps, 'div'>('div')`
+export const AssetItem = styled('div')<StyleProps>`
   padding: 3px 0px;
   font-weight: bold;
   cursor: pointer;
   border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70, 0.2)' : ''};
 `
 
-export const TradeWrapper = styled<{}, 'div'>('div')`
+export const TradeWrapper = styled('div')<{}>`
   margin-bottom: 20px;
 `
 
-export const ActionsWrapper = styled<StyleProps, 'div'>('div')`
+export const ActionsWrapper = styled('div')<StyleProps>`
   margin-bottom: ${p => p.isAuth ? 20 : 5}px;
   text-align: center;
 `
 
-export const Balance = styled<StyleProps, 'span'>('span')`
+export const Balance = styled('span')<StyleProps>`
   -webkit-filter: blur(${p => p.hideBalance ? 10 : 0}px);
 `
 
-export const BlurIcon = styled<{}, 'div'>('div')`
+export const BlurIcon = styled('div')<{}>`
   cursor: pointer;
   color: rgb(70, 70, 70);
 `

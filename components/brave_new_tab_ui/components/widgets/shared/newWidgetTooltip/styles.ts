@@ -11,10 +11,10 @@ interface StyledProps {
   src?: string
 }
 
-export const Wrapper = styled<{}, 'aside'>('aside')`
+export const Wrapper = styled('aside')<{}>`
   border-radius: 12px;
   position: relative;
-  background: ${p => p.theme.secondary};
+  background: ${p => p.theme.color.secondaryBackground};
   color: #212529;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 11px;
@@ -22,8 +22,8 @@ export const Wrapper = styled<{}, 'aside'>('aside')`
 
   &::after {
     content: '';
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
     border-top: 20px solid #FFFFFF;
@@ -33,11 +33,11 @@ export const Wrapper = styled<{}, 'aside'>('aside')`
   }
 `
 
-export const Content = styled<{}, 'div'>('div')`
+export const Content = styled('div')<{}>`
   padding: 12px 24px 24px;
 `
 
-export const Heading = styled<{}, 'div'>('div')`
+export const Heading = styled('div')<{}>`
   padding-bottom: 12px;
   font-weight: 600;
   font-size: 14px;
@@ -45,17 +45,17 @@ export const Heading = styled<{}, 'div'>('div')`
   letter-spacing: 0.01em;
 `
 
-export const Banner = styled<{}, 'div'>('div')`
+export const Banner = styled('div')<{}>`
   width: 100%;
   height: 100px;
   overflow: hidden;
   margin-bottom: 15px;
   position: relative;
-  
+
   & img {
     width: 100%;
   }
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -68,17 +68,17 @@ export const Banner = styled<{}, 'div'>('div')`
   }
 `
 
-export const Icon = styled<StyledProps, 'img'>('img')`
+export const Icon = styled('img')<StyledProps>`
   width: 15px;
   height: 15px;
   margin-right: 10px;
 `
 
-export const Body = styled<{}, 'div'>('div')`
+export const Body = styled('div')<{}>`
   padding-bottom: 12px;
 `
 
-export const CornerLabel = styled<{}, 'div'>('div')`
+export const CornerLabel = styled('div')<{}>`
   max-width: max-content;
   border-radius: 12px 0 0 0;
   background: url(${cornerBg});
@@ -93,7 +93,7 @@ export const CornerLabel = styled<{}, 'div'>('div')`
   font-weight: 600;
 `
 
-export const Button = styled<{}, 'button'>('button')`
+export const Button = styled('button')<{}>`
   display: block;
   width: 100%;
   background: #FB542B;
