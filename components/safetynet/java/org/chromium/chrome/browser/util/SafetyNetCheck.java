@@ -28,6 +28,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 
@@ -183,12 +184,12 @@ public class SafetyNetCheck {
             }
         }
         if (mNativeSafetyNetCheck == 0) return;
-        nativeclientAttestationResult(
+        SafetyNetCheckJni.get().clientAttestationResult(
                 mNativeSafetyNetCheck, tokenReceived, resultString, attestationPassed);
     }
 
     public String getApiKey() {
-        return nativeGetApiKey();
+        return SafetyNetCheckJni.get().getApiKey();
     }
 
     public static boolean updateSafetynetStatus(Callback<Boolean> safetyNetCheckCallback) {
@@ -196,7 +197,10 @@ public class SafetyNetCheck {
         return safetyNet.clientAttestation("", safetyNet.getApiKey(), true, true);
     }
 
-    private native void nativeclientAttestationResult(long nativeSafetyNetCheck,
-            boolean tokenReceived, String resultString, boolean attestationPassed);
-    private native String nativeGetApiKey();
+    @NativeMethods
+    interface Natives {
+        void clientAttestationResult(long nativeSafetyNetCheck, boolean tokenReceived,
+                String resultString, boolean attestationPassed);
+        String getApiKey();
+    }
 }
