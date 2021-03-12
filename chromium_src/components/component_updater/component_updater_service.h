@@ -6,10 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_
 
-#define BRAVE_COMPONENT_UPDATER_SERVICE_H_                \
- private:                                                 \
-  friend void BraveOnDemandUpdate(const std::string&);    \
-                                                          \
+class IPFSDOMHandler;
+
+#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ friend class ::IPFSDOMHandler;
+#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER \
+ private:                                                   \
+  friend void BraveOnDemandUpdate(const std::string&);      \
+                                                            \
  public:
 #include "../../../../components/component_updater/component_updater_service.h"
 

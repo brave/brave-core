@@ -38,6 +38,10 @@ export const defaultState: IPFS.State = {
   nodeInfo: {
     id: '',
     version: ''
+  },
+  installationProgress: {
+    total_bytes: -1,
+    downloaded_bytes: -1
   }
 }
 
