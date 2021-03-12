@@ -169,6 +169,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveIncognitoToggleTabLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomTabSwitcherActionMenuCoordinator.java",
@@ -250,3 +251,5 @@ brave_java_base_sources = [
   "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java",
   "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
 ]
+
+brave_android_features_tab_ui_java_sources = [ "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator.java" ]

@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.toolbar;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLayoutChangeListener;
 import android.view.ViewStub;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.Invalidator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
@@ -53,6 +55,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomTabSwitcherActionMenuCoo
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsCoordinator;
+import org.chromium.chrome.browser.toolbar.bottom.BraveScrollingBottomViewResourceFrameLayout;
 import org.chromium.chrome.browser.toolbar.bottom.ScrollingBottomViewResourceFrameLayout;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
@@ -105,6 +108,10 @@ public class BraveToolbarManager extends ToolbarManager {
     private AppCompatActivity mActivity;
     private WindowAndroid mWindowAndroid;
     private CompositorViewHolder mCompositorViewHolder;
+    private final Object mLock = new Object();
+    private boolean mBottomControlsEnabled;
+    private BraveScrollingBottomViewResourceFrameLayout mBottomControls;
+    private final BrowserControlsStateProvider.Observer mBraveBrowserControlsObserver;
 
     public BraveToolbarManager(AppCompatActivity activity, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ToolbarControlContainer controlContainer,
@@ -161,36 +168,58 @@ public class BraveToolbarManager extends ToolbarManager {
             }
         };
         HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
+
+        mBraveBrowserControlsObserver = new BrowserControlsStateProvider.Observer() {
+            @Override
+            public void onControlsOffsetChanged(int topOffset, int topControlsMinHeightOffset,
+                    int bottomOffset, int bottomControlsMinHeightOffset, boolean needsAnimate) {
+                updateBottomToolbarVisibility();
+            }
+        };
+        mBrowserControlsSizer.addObserver(mBraveBrowserControlsObserver);
     }
 
     @Override
     public void enableBottomControls() {
-        ViewStub viewStub = mActivity.findViewById(R.id.bottom_controls_stub);
-        if (!BottomToolbarConfiguration.isBottomToolbarEnabled() || viewStub == null) {
-            super.enableBottomControls();
-            return;
-        }
-        View root = viewStub.inflate();
-        if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled()
-                || TabUiFeatureUtilities.isConditionalTabStripEnabled()) {
-            mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(
-                    root.findViewById(R.id.bottom_container_slot), mAppThemeColorProvider,
-                    mScrimCoordinator, mOmniboxFocusStateSupplier);
-        }
         assert (mActivity instanceof ChromeActivity);
-        mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(
-                mLayoutStateProviderSupplier,
-                BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
-                        id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null)),
-                mActivityTabProvider, mToolbarTabController::openHomepage,
-                mCallbackController.makeCancelable((reason) -> setUrlBarFocus(true, reason)),
-                mMenuButtonCoordinator.getMenuButtonHelperSupplier(),
-                /* Below are parameters for BottomControlsCoordinator */
-                mActivity, mWindowAndroid, mLayoutManager,
-                mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
-                mFullscreenManager, (ScrollingBottomViewResourceFrameLayout) root,
-                mAppThemeColorProvider, mTabGroupUi, mOverlayPanelVisibilitySupplier));
-        updateBottomToolbarVisibility();
+        synchronized (mLock) {
+            if (mBottomControlsEnabled) {
+                return;
+            }
+            mBottomControlsEnabled = true;
+            if (!BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+                super.enableBottomControls();
+                return;
+            }
+            ViewStub bottomControlsStub =
+                    (ViewStub) mActivity.findViewById(R.id.bottom_controls_stub);
+            mBottomControls =
+                    (BraveScrollingBottomViewResourceFrameLayout) bottomControlsStub.inflate();
+            if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled()
+                    || TabUiFeatureUtilities.isConditionalTabStripEnabled()) {
+                mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(
+                        mBottomControls.findViewById(R.id.bottom_container_slot),
+                        mAppThemeColorProvider, mScrimCoordinator, mOmniboxFocusStateSupplier);
+            }
+            mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(
+                    mLayoutStateProviderSupplier,
+                    BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
+                            id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null)),
+                    mActivityTabProvider, mToolbarTabController::openHomepage,
+                    mCallbackController.makeCancelable((reason) -> setUrlBarFocus(true, reason)),
+                    mMenuButtonCoordinator.getMenuButtonHelperSupplier(),
+                    /* Below are parameters for BottomControlsCoordinator */
+                    mActivity, mWindowAndroid, mLayoutManager,
+                    mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
+                    mFullscreenManager, mBottomControls, mAppThemeColorProvider, mTabGroupUi,
+                    mOverlayPanelVisibilitySupplier));
+            mBottomControls.setBottomControlsCoordinatorSupplier(
+                    mBottomControlsCoordinatorSupplier);
+            updateBottomToolbarVisibility();
+            if (mIsBottomToolbarVisible) {
+                mBottomControls.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -283,14 +312,15 @@ public class BraveToolbarManager extends ToolbarManager {
 
     private void setBottomToolbarVisible(boolean visible) {
         mIsBottomToolbarVisible = visible;
-        Boolean isMenuFromBottom =
+        boolean isMenuFromBottom =
                 mIsBottomToolbarVisible && BottomToolbarConfiguration.isBottomToolbarEnabled();
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuFromBottom);
         if (mToolbar instanceof BraveTopToolbarCoordinator) {
             ((BraveTopToolbarCoordinator) mToolbar).onBottomToolbarVisibilityChanged(visible);
         }
-        if (mBottomControlsCoordinatorSupplier.get() != null) {
-            mBottomControlsCoordinatorSupplier.get().setBottomControlsVisible(visible);
+        if (mBottomControlsCoordinatorSupplier.get() instanceof BraveBottomControlsCoordinator) {
+            ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
+                    .setBottomToolbarVisible(visible);
         }
     }
 

@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
@@ -125,6 +126,14 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/toolbar/BraveIncognitoToggleTabLayout"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator"));
     }
 
     @Test
@@ -186,6 +195,9 @@ public class BytecodeTest {
                 "showBookmarkBottomSheet", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
                 "addBookmarkAndShowSnackbar", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                        "updateCompositedViewVisibility", false, null));
     }
 
     @Test
@@ -252,6 +264,11 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator",
+                ViewGroup.class, ThemeColorProvider.class, ScrimCoordinator.class,
+                ObservableSupplier.class));
     }
 
     @Test
@@ -358,6 +375,20 @@ public class BytecodeTest {
                         "mShouldShowNewTabVariation"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/app/ChromeActivity", "mTabModelProfileSupplier"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                        "mBottomControlsHeight"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator", "mModel"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                        "mBrowserControlsSizer"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout",
+                        "mIncognitoButtonIcon"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
+                "mToolbarView"));
     }
 
     private boolean classExists(String className) {

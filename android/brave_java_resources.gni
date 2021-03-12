@@ -545,6 +545,7 @@ brave_java_resources = [
   "java/res/drawable/brave_menu_set_as_default.xml",
   "java/res/drawable/brave_menu_settings.xml",
   "java/res/drawable/brave_modern_toolbar_text_box_background.xml",
+  "java/res/drawable/brave_new_group_tab.xml",
   "java/res/drawable/brave_rewards_circle.xml",
   "java/res/drawable/brave_rewards_not_verified_rectangle.xml",
   "java/res/drawable/brave_rewards_onboarding_default.xml",
