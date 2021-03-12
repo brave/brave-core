@@ -942,6 +942,12 @@ extension Strings {
                               value: "Take a look",
                               comment: "Action title for inspectable Education warnings")
         
+        public static let shareTheNewsTitle =
+            NSLocalizedString("shieldEducation.shareTheNewsTitle",
+                              bundle: .braveShared,
+                              value: "Share the news",
+                              comment: "Action title for actionable Share warnings")
+        
         public static let benchmarkSpecialTierTitle =
             NSLocalizedString("shieldEducation.benchmarkSpecialTierTitle",
                               bundle: .braveShared,
@@ -977,6 +983,12 @@ extension Strings {
                               bundle: .braveShared,
                               value: "Congratulations. You are legendary.",
                               comment: "Subtitle for tracker benchmark Share")
+        
+        public static let shareDescriptionTitle = NSLocalizedString(
+            "socialSharing.shareDescriptionTitle",
+            bundle: Bundle.shared,
+            value: "Everyday I save data by browsing the web with Brave.",
+            comment: "Text used shile sharing Brave Shield values")
     }
 }
 

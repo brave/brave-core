@@ -248,8 +248,10 @@ class ShieldsViewController: UIViewController, PopoverContentComponent, Themeabl
         shieldsView.advancedShieldView.globalControlsButton.addTarget(self, action: #selector(tappedGlobalShieldsButton), for: .touchUpInside)
         
         shieldsView.advancedControlsBar.addTarget(self, action: #selector(tappedAdvancedControlsBar), for: .touchUpInside)
-        shieldsView.simpleShieldView.blockCountView.infoButton.addTarget(self, action: #selector(tappedAboutShieldsButton), for: .touchUpInside)
         
+        shieldsView.simpleShieldView.blockCountView.infoButton.addTarget(self, action: #selector(tappedAboutShieldsButton), for: .touchUpInside)
+        shieldsView.simpleShieldView.blockCountView.shareButton.addTarget(self, action: #selector(tappedShareShieldsButton), for: .touchUpInside)
+
         shieldsView.simpleShieldView.reportSiteButton.addTarget(self, action: #selector(tappedReportSiteButton), for: .touchUpInside)
         shieldsView.reportBrokenSiteView.cancelButton.addTarget(self, action: #selector(tappedCancelReportingButton), for: .touchUpInside)
         shieldsView.reportBrokenSiteView.submitButton.addTarget(self, action: #selector(tappedSubmitReportingButton), for: .touchUpInside)
@@ -308,6 +310,14 @@ class ShieldsViewController: UIViewController, PopoverContentComponent, Themeabl
         aboutShields.preferredContentSize = preferredContentSize
         navigationController?.pushViewController(aboutShields, animated: true)
     }
+    
+    @objc private func tappedShareShieldsButton() {
+        let globalShieldsActivityController =
+            ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(theme: Theme.of(tab))
+        globalShieldsActivityController.popoverPresentationController?.sourceView = view
+        
+        present(globalShieldsActivityController, animated: true, completion: nil)
+     }
     
     @objc private func tappedReportSiteButton() {
         updateContentView(to: shieldsView.reportBrokenSiteView, animated: true)

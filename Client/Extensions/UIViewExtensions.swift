@@ -45,6 +45,13 @@ extension UIView {
 
         return screenshot(size, offset: offset, quality: quality)
     }
+   
+    /// Getting a snapshot from a view using image renderer
+    var snapshot: UIImage {
+        UIGraphicsImageRenderer(size: bounds.size).image { _ in
+            drawHierarchy(in: bounds, afterScreenUpdates: true)
+        }
+    }
 
     /**
      * rounds the requested corners of a view with the provided radius

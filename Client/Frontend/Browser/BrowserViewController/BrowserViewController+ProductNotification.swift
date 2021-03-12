@@ -11,6 +11,45 @@ import Shared
 
 extension BrowserViewController {
     
+    // MARK: BenchmarkTrackerCountTier
+        
+    enum BenchmarkTrackerCountTier: Int, Equatable, CaseIterable {
+        case specialTier = 1000
+        case newbieExclusiveTier = 5000
+        case casualExclusiveTier = 10_000
+        case regularExclusiveTier = 25_000
+        case expertExclusiveTier = 75_000
+        case professionalTier = 100_000
+        case primeTier = 250_000
+        case grandTier = 500_000
+        case legendaryTier = 1_000_000
+
+        var title: String {
+            switch self {
+                case .specialTier:
+                    return Strings.ShieldEducation.benchmarkSpecialTierTitle
+                case .newbieExclusiveTier, .casualExclusiveTier, .regularExclusiveTier, .expertExclusiveTier:
+                    return Strings.ShieldEducation.benchmarkExclusiveTierTitle
+                case .professionalTier:
+                    return Strings.ShieldEducation.benchmarkProfessionalTierTitle
+                case .primeTier:
+                    return Strings.ShieldEducation.benchmarkPrimeTierTitle
+                case .grandTier:
+                    return Strings.ShieldEducation.benchmarkGrandTierTitle
+                case .legendaryTier:
+                    return Strings.ShieldEducation.benchmarkLegendaryTierTitle
+            }
+        }
+
+        var nextTier: BenchmarkTrackerCountTier? {
+            guard let indexOfSelf = Self.allCases.firstIndex(where: { self == $0 }) else {
+                return nil
+            }
+
+            return Self.allCases[safe: indexOfSelf + 1]
+        }
+    }
+    
     // MARK: Internal
     
     @objc func updateShieldNotifications() {
@@ -43,7 +82,7 @@ extension BrowserViewController {
             
             return
         }
-        
+
         // Step 2: Load a video on a streaming site
         if !Preferences.ProductNotificationBenchmarks.videoAdBlockShown.value,
            selectedTab.url?.isVideoSteamingSiteURL == true {
@@ -73,20 +112,34 @@ extension BrowserViewController {
 
             return
         }
+        
+        // Step 5: Share Brave Benchmark Tiers
+        // Benchmark Tier Pop-Over only exist in JP locale
+        if Locale.current.regionCode == "JP" {
+            let numOfTrackerAds = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
+            guard numOfTrackerAds > benchmarkCurrentSessionAdCount + 20 else { return }
+                
+            let existingTierList = BenchmarkTrackerCountTier.allCases.filter({ Preferences.ProductNotificationBenchmarks.trackerTierCount.value < $0.rawValue})
+            
+            if !existingTierList.isEmpty {
+                guard let firstExistingTier = existingTierList.first else { return }
+                
+                Preferences.ProductNotificationBenchmarks.trackerTierCount.value = numOfTrackerAds
+                
+                if numOfTrackerAds > firstExistingTier.rawValue {
+                    notifyTrackerAdsCount(firstExistingTier.rawValue, theme: Theme.of(selectedTab))
+                }
+            }
+        }
     }
     
     private func notifyFirstTimeBlock(theme: Theme) {
         let shareTrackersViewController = ShareTrackersController(theme: theme, trackingType: .trackerAdWarning)
         
         shareTrackersViewController.actionHandler = { [weak self] action in
-            guard let self = self else { return }
+            guard let self = self, action == .takeALookTapped else { return }
             
-            switch action {
-                case .takeALookTapped:
-                    self.showShieldsScreen()
-                default:
-                    break
-            }
+            self.showShieldsScreen()
         }
         
         showBenchmarkNotificationPopover(controller: shareTrackersViewController)
@@ -111,6 +164,19 @@ extension BrowserViewController {
         showBenchmarkNotificationPopover(controller: shareTrackersViewController)
     }
     
+    private func notifyTrackerAdsCount(_ count: Int, theme: Theme) {
+        let shareTrackersViewController = ShareTrackersController(theme: theme, trackingType: .trackerCountShare(count: count))
+        dismiss(animated: true)
+
+        shareTrackersViewController.actionHandler = { [weak self] action in
+            guard let self = self, action == .shareTheNewsTapped else { return }
+
+            self.showShareScreen(with: theme)
+        }
+
+        showBenchmarkNotificationPopover(controller: shareTrackersViewController)
+    }
+    
     private func showBenchmarkNotificationPopover(controller: (UIViewController & PopoverContentComponent)) {
         benchmarkNotificationPresented = true
 
@@ -124,6 +190,16 @@ extension BrowserViewController {
     func showShieldsScreen() {
         dismiss(animated: true) {
             self.presentBraveShieldsViewController()
+        }
+    }
+    
+    func showShareScreen(with theme: Theme) {
+        dismiss(animated: true) {
+            let globalShieldsActivityController =
+                ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(theme: theme)
+            globalShieldsActivityController.popoverPresentationController?.sourceView = self.view
+    
+            self.present(globalShieldsActivityController, animated: true, completion: nil)
         }
     }
 }
