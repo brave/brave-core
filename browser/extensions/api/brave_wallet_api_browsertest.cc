@@ -9,6 +9,7 @@
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/pref_names.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -175,6 +176,11 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest,
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, DappDetectionTestAccept) {
+  if (brave_wallet::IsNativeWalletEnabled()) {
+    browser()->profile()->GetPrefs()->SetInteger(
+        kBraveWalletWeb3Provider,
+        static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+  }
   WaitForBraveExtensionAdded();
   InfoBarService* infobar_service =
       InfoBarService::FromWebContents(active_contents());
@@ -194,6 +200,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, DappDetectionTestAccept) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, InfoBarDontAsk) {
+  if (brave_wallet::IsNativeWalletEnabled()) {
+    browser()->profile()->GetPrefs()->SetInteger(
+        kBraveWalletWeb3Provider,
+        static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+  }
   // Navigate to dapp
   WaitForBraveExtensionAdded();
   InfoBarService* infobar_service =
@@ -219,6 +230,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, InfoBarDontAsk) {
 
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
     FakeInstallMetaMask) {
+  if (brave_wallet::IsNativeWalletEnabled()) {
+    browser()->profile()->GetPrefs()->SetInteger(
+        kBraveWalletWeb3Provider,
+        static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+  }
   WaitForBraveExtensionAdded();
   AddFakeMetaMaskExtension(false);
   // Should auto select MetaMask
@@ -235,7 +251,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   // Should revert back to Ask
   auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  ASSERT_EQ(provider, BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS);
+  if (brave_wallet::IsNativeWalletEnabled()) {
+    ASSERT_EQ(provider, BraveWalletWeb3ProviderTypes::BRAVE_WALLET);
+  } else {
+    ASSERT_EQ(provider, BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,

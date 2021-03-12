@@ -76,5 +76,11 @@
     "dependencies": [],
     "contexts": ["webui"],
     "component_extensions_auto_granted": false
+  },
+  "braveWallet.isNativeWalletEnabled": {
+    "channel": "stable",
+    "dependencies": [],
+    "contexts": ["webui"],
+    "component_extensions_auto_granted": false
   }
 }

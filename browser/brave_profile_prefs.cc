@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_wallet/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -299,7 +300,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
   registry->RegisterIntegerPref(
       kBraveWalletWeb3Provider,
-      static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
+                           ? BraveWalletWeb3ProviderTypes::BRAVE_WALLET
+                           : BraveWalletWeb3ProviderTypes::ASK));
   registry->RegisterBooleanPref(kLoadCryptoWalletsOnStartup, false);
   registry->RegisterBooleanPref(kOptedIntoCryptoWallets, false);
 #endif

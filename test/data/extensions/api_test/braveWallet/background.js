@@ -133,6 +133,20 @@ function testProviderIsNone() {
   ])
 }
 
+function testProviderIsBraveWallet() {
+  chrome.test.runTests([
+    function CryptoWalletsIsProvider() {
+      chrome.braveWallet.getWeb3Provider((provider) => {
+        if (provider === 'odbfpeeihdkbihmopkbjmoonfanlbfcl') {
+          chrome.test.succeed();
+        } else {
+          chrome.test.fail();
+        }
+      })
+    }
+  ])
+}
+
 function testBasics() {
   chrome.test.runTests([
     function braveWalletExtensionHasAccess() {
