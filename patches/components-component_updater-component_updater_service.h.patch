@@ -9,12 +9,12 @@ index 9de20a64577ba39d467207ef28058a03bc7fb218..53004cd57b593c5dc64081b8b446c397
 +  BRAVE_COMPONENT_UPDATER_SERVICE_H_
    FRIEND_TEST_ALL_PREFIXES(ComponentInstallerTest, RegisterComponent);
  };
-
+ 
 @@ -163,6 +164,7 @@ class OnDemandUpdater {
    enum class Priority { BACKGROUND = 0, FOREGROUND = 1 };
-
+ 
    virtual ~OnDemandUpdater() = default;
 +  BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER
-
+ 
   private:
    friend class OnDemandTester;
