@@ -59,6 +59,7 @@ constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 // TODO(iefremov): Provide moar histograms!
 // Whitelist for histograms that we collect. Will be replaced with something
 // updating on the fly.
+// clang-format off
 constexpr const char* kCollectedHistograms[] = {
     "Brave.Core.BookmarksCountOnProfileLoad.2",
     "Brave.Core.CrashReportsEnabled",
@@ -163,6 +164,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.P2A.AdImpressionsPerSegment.weather",
     "Brave.P2A.AdImpressionsPerSegment.untargeted"
 };
+// clang-format on
 
 bool IsSuspendedMetric(base::StringPiece metric_name,
                        uint64_t value_or_bucket) {
