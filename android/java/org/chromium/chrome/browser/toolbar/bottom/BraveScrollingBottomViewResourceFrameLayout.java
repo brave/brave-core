@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -43,6 +44,7 @@ public class BraveScrollingBottomViewResourceFrameLayout
         return handledEvent || super.onInterceptTouchEvent(event);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean handledEvent = false;

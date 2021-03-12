@@ -4,6 +4,8 @@
      found in the LICENSE file. -->
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/non_disruptive_banner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <TextView
                 android:id="@+id/ntp_banner_header"
@@ -24,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="16sp"
-                android:drawableStart="@drawable/bat_logo"
+                app:drawableStartCompat="@drawable/bat_logo"
                 android:drawablePadding="16dp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"

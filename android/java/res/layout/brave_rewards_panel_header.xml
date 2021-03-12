@@ -179,6 +179,7 @@
                         android:textColor="#FFFFFF"
                         android:drawableStart="@drawable/add_funds"
                         android:clickable="true"
+                        android:focusable="true"
                         android:drawablePadding="5sp"
                         android:visibility="gone"
                         tools:ignore="ButtonStyle"/>

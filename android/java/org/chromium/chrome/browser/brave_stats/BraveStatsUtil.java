@@ -19,6 +19,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class BraveStatsUtil {
     public static final short MILLISECONDS_PER_ITEM = 50;
@@ -88,7 +89,7 @@ public class BraveStatsUtil {
 
     public static String getCalculatedDate(String dateFormat, int days) {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat s = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat s = new SimpleDateFormat(dateFormat, Locale.getDefault());
         cal.add(Calendar.DAY_OF_YEAR, days);
         return s.format(new Date(cal.getTimeInMillis()));
     }

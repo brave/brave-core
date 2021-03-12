@@ -188,6 +188,7 @@
         android:src="@drawable/qrcode_light"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="16dp"
+        android:contentDescription="@null"
         android:visibility="gone"
         app:backgroundTint="@color/qr_button_color"/>
 

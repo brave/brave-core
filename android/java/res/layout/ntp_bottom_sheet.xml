@@ -6,6 +6,7 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ntp_content"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:drawableStart="@drawable/btn_bat"
+            app:drawableStartCompat="@drawable/btn_bat"
             android:drawablePadding="8dp"
             android:textSize="20sp"
             android:layout_margin="16dp"

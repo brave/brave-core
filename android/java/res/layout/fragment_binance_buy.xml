@@ -98,7 +98,8 @@
                     android:textColorHint="@color/white_alpha_50"
                     android:hint="@string/i_want_to_spend"
                     android:inputType="numberDecimal"
-                    android:background="@drawable/binance_edittext"/>
+                    android:background="@drawable/binance_edittext"
+                    tools:ignore="Autofill"/>
 
                 <Spinner
                     android:id="@+id/fiat_spinner"

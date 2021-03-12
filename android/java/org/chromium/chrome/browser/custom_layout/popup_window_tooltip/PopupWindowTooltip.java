@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.custom_layout.popup_window_tooltip;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -105,6 +106,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setTouchable(true);
         mPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int x = (int) event.getX();
