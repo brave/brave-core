@@ -15,7 +15,7 @@ BraveContentRendererClient::BraveContentRendererClient()
     : ChromeContentRendererClient() {}
 
 void BraveContentRendererClient::
-SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
+    SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
   ChromeContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
@@ -42,4 +42,10 @@ void BraveContentRendererClient::RenderFrameCreated(
 #endif
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+}
+
+void BraveContentRendererClient::RunScriptsAtDocumentStart(
+    content::RenderFrame* render_frame) {
+  cosmetic_filters::CosmeticFiltersJsRenderFrameObserver::Get(render_frame)
+      ->RunScriptsAtDocumentStart();
 }

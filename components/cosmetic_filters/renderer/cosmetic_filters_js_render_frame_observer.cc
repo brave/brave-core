@@ -47,7 +47,12 @@ CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
     content::RenderFrame* render_frame,
     const int32_t isolated_world_id)
     : RenderFrameObserver(render_frame),
-      isolated_world_id_(isolated_world_id) {}
+      RenderFrameObserverTracker<CosmeticFiltersJsRenderFrameObserver>(
+          render_frame),
+      isolated_world_id_(isolated_world_id),
+      native_javascript_handle_(
+          new CosmeticFiltersJSHandler(render_frame, isolated_world_id)),
+      ready_(new base::OneShotEvent()) {}
 
 CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 
@@ -57,29 +62,49 @@ void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
   url_ = url;
 }
 
-void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(
-    v8::Local<v8::Context> context,
-    int32_t world_id) {
-  if (!render_frame()->IsMainFrame() || world_id != isolated_world_id_ ||
-      !native_javascript_handle_)
-    return;
+void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
+    blink::WebDocumentLoader* document_loader) {
+  ready_.reset(new base::OneShotEvent());
 
-  native_javascript_handle_->AddJavaScriptObjectToFrame(context);
-}
-
-void CosmeticFiltersJsRenderFrameObserver::DidCreateNewDocument() {
   // There could be empty, invalid and "about:blank" URLs,
   // they should fallback to the main frame rules
   if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank")
     url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
                .GetURL();
 
-  if (!native_javascript_handle_) {
-    native_javascript_handle_.reset(
-        new CosmeticFiltersJSHandler(render_frame(), isolated_world_id_));
-    EnsureIsolatedWorldInitialized(isolated_world_id_);
-  }
-  native_javascript_handle_->ProcessURL(url_);
+  if (!url_.SchemeIsHTTPOrHTTPS())
+    return;
+
+  native_javascript_handle_->ProcessURL(
+      url_, base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::OnProcessURL,
+                           base::Unretained(this)));
+}
+
+void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {
+  ready_->Post(FROM_HERE,
+               base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::ApplyRules,
+                              base::Unretained(this)));
+}
+
+void CosmeticFiltersJsRenderFrameObserver::ApplyRules() {
+  native_javascript_handle_->ApplyRules();
+}
+
+void CosmeticFiltersJsRenderFrameObserver::OnProcessURL() {
+  ready_->Signal();
+}
+
+void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(
+    v8::Local<v8::Context> context,
+    int32_t world_id) {
+  if (!render_frame()->IsMainFrame() || world_id != isolated_world_id_)
+    return;
+
+  native_javascript_handle_->AddJavaScriptObjectToFrame(context);
+}
+
+void CosmeticFiltersJsRenderFrameObserver::DidCreateNewDocument() {
+  EnsureIsolatedWorldInitialized(isolated_world_id_);
 }
 
 void CosmeticFiltersJsRenderFrameObserver::OnDestruct() {

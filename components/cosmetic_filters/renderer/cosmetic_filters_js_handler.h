@@ -31,7 +31,8 @@ class CosmeticFiltersJSHandler {
   // Adds the "cs_worker" JavaScript object and its functions to the current
   // render_frame_.
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
-  void ProcessURL(const GURL& url);
+  void ProcessURL(const GURL& url, base::OnceClosure callback);
+  void ApplyRules();
 
  private:
   void BindFunctionsToObject(v8::Isolate* isolate,
@@ -50,8 +51,11 @@ class CosmeticFiltersJSHandler {
   // A function to be called from JS
   void HiddenClassIdSelectors(const std::string& input);
 
-  void OnShouldDoCosmeticFiltering(bool enabled, bool first_party_enabled);
-  void OnUrlCosmeticResources(base::Value result);
+  void OnShouldDoCosmeticFiltering(base::OnceClosure callback,
+                                   bool enabled,
+                                   bool first_party_enabled);
+  void OnUrlCosmeticResources(base::OnceClosure callback,
+                              base::Value result);
   void CSSRulesRoutine(base::DictionaryValue* resources_dict);
   void OnHiddenClassIdSelectors(base::Value result);
 
@@ -62,6 +66,7 @@ class CosmeticFiltersJSHandler {
   bool enabled_1st_party_cf_;
   std::vector<std::string> exceptions_;
   GURL url_;
+  std::unique_ptr<base::DictionaryValue> resources_dict_;
 };
 
 // static

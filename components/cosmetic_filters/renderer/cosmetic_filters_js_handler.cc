@@ -272,7 +272,9 @@ bool CosmeticFiltersJSHandler::EnsureConnected() {
   return cosmetic_filters_resources_.is_bound();
 }
 
-void CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
+void CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
+                                          base::OnceClosure callback) {
+  resources_dict_.reset();
   url_ = url;
   // Trivially, don't make exceptions for malformed URLs.
   if (!EnsureConnected() || url_.is_empty() || !url_.is_valid())
@@ -281,10 +283,11 @@ void CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
   cosmetic_filters_resources_->ShouldDoCosmeticFiltering(
       url_.spec(),
       base::BindOnce(&CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering,
-                     base::Unretained(this)));
+                     base::Unretained(this), std::move(callback)));
 }
 
 void CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering(
+    base::OnceClosure callback,
     bool enabled,
     bool first_party_enabled) {
   if (!enabled || !EnsureConnected())
@@ -294,17 +297,24 @@ void CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering(
   cosmetic_filters_resources_->UrlCosmeticResources(
       url_.spec(),
       base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
-                     base::Unretained(this)));
+                     base::Unretained(this), std::move(callback)));
 }
 
-void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
-  base::DictionaryValue* resources_dict;
+void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
+    base::OnceClosure callback,
+    base::Value result) {
+  resources_dict_ = base::DictionaryValue::From(
+      base::Value::ToUniquePtrValue(result.Clone()));
+  std::move(callback).Run();
+}
+
+void CosmeticFiltersJSHandler::ApplyRules() {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (!result.GetAsDictionary(&resources_dict) || web_frame->IsProvisional())
+  if (!resources_dict_ || web_frame->IsProvisional())
     return;
 
   std::string scriptlet_script;
-  base::Value* injected_script = resources_dict->FindPath("injected_script");
+  base::Value* injected_script = resources_dict_->FindPath("injected_script");
   if (injected_script &&
       base::JSONWriter::Write(*injected_script, &scriptlet_script)) {
     scriptlet_script =
@@ -319,7 +329,7 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
 
   // Working on css rules, we do that on a main frame only
   bool generichide = false;
-  resources_dict->GetBoolean("generichide", &generichide);
+  resources_dict_->GetBoolean("generichide", &generichide);
   std::string cosmetic_filtering_init_script = base::StringPrintf(
       kCosmeticFilteringInitScript, enabled_1st_party_cf_ ? "true" : "false",
       generichide ? "true" : "false");
@@ -331,7 +341,7 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
   web_frame->ExecuteScriptInIsolatedWorld(
       isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
 
-  CSSRulesRoutine(resources_dict);
+  CSSRulesRoutine(resources_dict_.get());
 }
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
