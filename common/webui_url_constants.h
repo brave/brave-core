@@ -25,6 +25,7 @@ extern const char kBraveUITipURL[];
 extern const char kBraveUIWalletURL[];
 extern const char kBraveUIWalletURL[];
 extern const char kExtensionSettingsURL[];
+extern const char kWalletSettingsURL[];
 extern const char kWalletHost[];
 extern const char kBraveSyncPath[];
 extern const char kBraveSyncSetupPath[];
