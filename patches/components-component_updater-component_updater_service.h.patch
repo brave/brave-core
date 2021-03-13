@@ -3,7 +3,7 @@ index 9de20a64577ba39d467207ef28058a03bc7fb218..53004cd57b593c5dc64081b8b446c397
 --- a/components/component_updater/component_updater_service.h
 +++ b/components/component_updater/component_updater_service.h
 @@ -150,6 +150,7 @@ class ComponentUpdateService {
-
+ 
    friend class speech::SodaInstallerImpl;
    friend class ::ComponentsHandler;
 +  BRAVE_COMPONENT_UPDATER_SERVICE_H_
