@@ -105,10 +105,8 @@ using GetTransferableAmountCallback = std::function<void(double)>;
 using PostSuggestionsClaimCallback =
     std::function<void(const type::Result result, std::string drain_id)>;
 
-using GetDrainCallback =
-    std::function<void(const type::Result result,
-                       std::string drain_id,
-                       std::string status)>;
+using GetDrainCallback = std::function<
+    void(const type::Result result, std::string drain_id, std::string status)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -400,6 +398,9 @@ class LEDGER_EXPORT Ledger {
 
   virtual void LinkBraveWallet(const std::string& destination_payment_id,
                                PostSuggestionsClaimCallback callback) = 0;
+
+  virtual void GetDrainID(const std::string& drain_id,
+                          ledger::GetDrainCallback callback) = 0;
 
   virtual void GetTransferableAmount(
       GetTransferableAmountCallback callback) = 0;
