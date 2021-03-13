@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 
+#include <cstdint>
 #include <memory>
 
 #include "bat/ads/internal/container_util.h"

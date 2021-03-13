@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 
 #include "bat/ads/internal/ml/ml_transformation_util.h"
-#include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 
 namespace ads {
 namespace ml {

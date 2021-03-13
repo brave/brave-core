@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/legacy_migration/legacy_conversion_migration.h"
 
+#include <cstdint>
 #include <string>
 
 #include "base/json/json_reader.h"

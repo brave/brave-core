@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_
 
-#include <stdint.h>
+#include <cstdint>
 
 #include <string>
 #include <vector>

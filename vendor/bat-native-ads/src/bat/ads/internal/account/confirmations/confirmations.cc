@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <functional>
 #include <vector>
 

@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "base/guid.h"
 #include "base/time/time.h"

@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <deque>
 
 #include "base/time/time.h"

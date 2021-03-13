@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
 
-#include <stdint.h>
-
 #include <algorithm>
 #include <limits>
 #include <map>

@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
+
 #include <algorithm>
-#include <memory>
 
 #include "base/values.h"
 #include "bat/ads/internal/ml/data/text_data.h"
@@ -14,7 +15,6 @@
 #include "bat/ads/internal/ml/model/linear/linear.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
-#include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 #include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
 #include "bat/ads/internal/ml/transformation/normalization_transformation.h"

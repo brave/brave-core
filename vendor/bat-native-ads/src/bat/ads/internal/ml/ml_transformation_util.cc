@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ads/internal/ml/ml_transformation_util.h"
+
 #include <algorithm>
 #include <cmath>
 #include <limits>
 #include <memory>
 
 #include "base/notreached.h"
-#include "bat/ads/internal/ml/ml_transformation_util.h"
 
 namespace ads {
 namespace ml {

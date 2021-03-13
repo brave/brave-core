@@ -6,8 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_HISTORY_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_HISTORY_INFO_H_
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <string>
 
 #include "bat/ads/ad_content_info.h"

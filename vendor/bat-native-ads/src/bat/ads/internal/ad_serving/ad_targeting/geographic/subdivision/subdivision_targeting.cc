@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <functional>
 #include <utility>
 

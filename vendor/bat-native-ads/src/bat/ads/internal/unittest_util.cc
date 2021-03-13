@@ -5,10 +5,7 @@
 
 #include "bat/ads/internal/unittest_util.h"
 
-#include <stdint.h>
-
 #include <limits>
-#include <vector>
 
 #include "base/base_paths.h"
 #include "base/containers/flat_map.h"

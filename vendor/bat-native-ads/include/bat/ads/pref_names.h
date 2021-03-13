@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_PREF_NAMES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_PREF_NAMES_H_
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace ads {
 

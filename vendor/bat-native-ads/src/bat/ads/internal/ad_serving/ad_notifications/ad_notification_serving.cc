@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <string>
 #include <vector>
 

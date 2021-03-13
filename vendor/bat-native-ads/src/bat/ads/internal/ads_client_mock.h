@@ -8,8 +8,7 @@
 
 #include "bat/ads/ads_client.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <string>
 
 #include "testing/gmock/include/gmock/gmock.h"

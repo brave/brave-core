@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <map>
 #include <string>
 #include <utility>

@@ -6,8 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TRANSFER_AD_TRANSFER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TRANSFER_AD_TRANSFER_H_
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <string>
 
 #include "bat/ads/ad_info.h"

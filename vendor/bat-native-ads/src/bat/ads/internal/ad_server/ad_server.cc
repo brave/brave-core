@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_server/ad_server.h"
 
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>

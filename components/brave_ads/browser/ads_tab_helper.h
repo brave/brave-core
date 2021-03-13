@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
 
-#include <stdint.h>
+#include <cstdint>
 
 #include <string>
 #include <vector>

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 
-#include <stdint.h>
+#include <cstdint>
 #include <map>
 #include <string>
 
