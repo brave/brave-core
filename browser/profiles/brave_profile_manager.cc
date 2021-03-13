@@ -55,6 +55,16 @@
 
 using content::BrowserThread;
 
+namespace {
+
+void AddBraveSharedResourcesDataSourceToProfile(Profile* profile) {
+  content::URLDataSource::Add(
+      profile,
+      std::make_unique<brave_content::BraveSharedResourcesDataSource>());
+}
+
+}  // namespace
+
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
   MigrateProfileNames();
@@ -182,9 +192,21 @@ void BraveProfileManager::MigrateProfileNames() {
 }
 
 void BraveProfileManager::OnProfileAdded(Profile* profile) {
-  content::URLDataSource::Add(
-      profile,
-      std::make_unique<brave_content::BraveSharedResourcesDataSource>());
+  // Observe new profiles for creation of OTR profiles so that we can add our
+  // shared resources to them.
+  observed_profiles_.Add(profile);
+  AddBraveSharedResourcesDataSourceToProfile(profile);
+}
+
+void BraveProfileManager::OnOffTheRecordProfileCreated(
+    Profile* off_the_record) {
+  AddBraveSharedResourcesDataSourceToProfile(off_the_record);
+}
+
+void BraveProfileManager::OnProfileWillBeDestroyed(Profile* profile) {
+  if (!profile->IsOffTheRecord()) {
+    observed_profiles_.Remove(profile);
+  }
 }
 
 BraveProfileManagerWithoutInit::BraveProfileManagerWithoutInit(
