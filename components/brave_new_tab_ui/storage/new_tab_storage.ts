@@ -50,7 +50,13 @@ export const defaultState: NewTab.State = {
   },
   togetherPromptDismissed: false,
   rewardsState: {
-    adsEstimatedEarnings: 0,
+    adsAccountStatement: {
+      estimatedPendingRewards: 0,
+      nextPaymentDate: '',
+      adsReceivedThisMonth: 0,
+      earningsThisMonth: 0,
+      earningsLastMonth: 0
+    },
     balance: {
       total: 0,
       wallets: {}
@@ -230,10 +236,6 @@ const cleanData = (state: NewTab.State) => {
   // We need to disable linter as we defined in d.ts that this values are number,
   // but we need this check to covert from old version to a new one
   /* tslint:disable */
-  if (typeof state.rewardsState.adsEstimatedEarnings === 'string') {
-    state.rewardsState.adsEstimatedEarnings = 0.0
-  }
-
   if (typeof state.rewardsState.totalContribution === 'string') {
     state.rewardsState.totalContribution = 0.0
   }

@@ -411,14 +411,15 @@ void AdsServiceImpl::GetAdsHistory(const uint64_t from_timestamp,
                                          AsWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImpl::GetStatement(GetStatementCallback callback) {
+void AdsServiceImpl::GetAccountStatement(GetAccountStatementCallback callback) {
   if (!connected()) {
     std::move(callback).Run(/* success */ false, 0.0, 0, 0, 0.0, 0.0);
     return;
   }
 
-  bat_ads_->GetStatement(base::BindOnce(&AdsServiceImpl::OnGetStatement,
-                                        AsWeakPtr(), std::move(callback)));
+  bat_ads_->GetAccountStatement(
+      base::BindOnce(&AdsServiceImpl::OnGetAccountStatement, AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void AdsServiceImpl::ToggleAdThumbUp(const std::string& creative_instance_id,
@@ -1233,9 +1234,9 @@ bool AdsServiceImpl::CanShowBackgroundNotifications() const {
   return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
 }
 
-void AdsServiceImpl::OnGetStatement(GetStatementCallback callback,
-                                    const bool success,
-                                    const std::string& json) {
+void AdsServiceImpl::OnGetAccountStatement(GetAccountStatementCallback callback,
+                                           const bool success,
+                                           const std::string& json) {
   if (!success) {
     std::move(callback).Run(success, 0.0, 0, 0, 0.0, 0.0);
     return;

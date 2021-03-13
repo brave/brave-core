@@ -11,10 +11,6 @@ export const onAdsEnabled = (enabled: boolean) => action(types.ON_ADS_ENABLED, {
   enabled
 })
 
-export const onAdsEstimatedEarnings = (amount: number) => action(types.ON_ADS_ESTIMATED_EARNINGS, {
-  amount
-})
-
 export const onBalanceReport = (properties: {month: number, year: number, report: NewTab.RewardsBalanceReport}) => action(types.ON_BALANCE_REPORT, {
   month: properties.month,
   year: properties.year,
@@ -32,6 +28,10 @@ export const dismissNotification = (id: string) => action(types.DISMISS_NOTIFICA
 
 export const onBalance = (balance: NewTab.RewardsBalance) => action(types.ON_BALANCE, {
   balance
+})
+
+export const onAdsAccountStatement = (adsAccountStatement: NewTab.AdsAccountStatement) => action(types.ON_ADS_ACCOUNT_STATEMENT, {
+  adsAccountStatement
 })
 
 export const setInitialRewardsData = (initialRewardsData: InitialRewardsData) => action(types.SET_INITIAL_REWARDS_DATA, initialRewardsData)

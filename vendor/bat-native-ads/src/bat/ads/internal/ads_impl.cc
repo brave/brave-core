@@ -327,20 +327,20 @@ AdsHistoryInfo AdsImpl::GetAdsHistory(
   return history::Get(filter_type, sort_type, from_timestamp, to_timestamp);
 }
 
-void AdsImpl::GetStatement(GetStatementCallback callback) {
-  StatementInfo statement_of_account;
+void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
+  StatementInfo statement;
 
   if (!IsInitialized()) {
-    callback(/* success */ false, statement_of_account);
+    callback(/* success */ false, statement);
     return;
   }
 
   const int64_t to_timestamp =
       static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
-  statement_of_account = account_->GetStatement(0, to_timestamp);
+  statement = account_->GetStatement(0, to_timestamp);
 
-  callback(/* success */ true, statement_of_account);
+  callback(/* success */ true, statement);
 }
 
 AdContentInfo::LikeAction AdsImpl::ToggleAdThumbUp(
