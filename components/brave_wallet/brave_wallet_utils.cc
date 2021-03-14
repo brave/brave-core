@@ -9,10 +9,12 @@
 #include <sstream>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_wallet/features.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "crypto/random.h"
@@ -33,6 +35,11 @@ std::string GenerateMnemonicInternal(uint8_t* entropy, size_t size) {
   return result;
 }
 }  // namespace
+
+bool IsNativeWalletEnabled() {
+  return base::FeatureList::IsEnabled(
+      brave_wallet::features::kNativeBraveWalletFeature);
+}
 
 std::string ToHex(const std::string& data) {
   if (data.empty()) {

@@ -17,6 +17,7 @@ Polymer({
   ],
 
   properties: {
+    isNativeWalletEnabled_: Boolean
   },
 
   /** @private {?settings.BraveWalletBrowserProxy} */
@@ -32,6 +33,9 @@ Polymer({
     this.onBraveWalletEnabledChange_ = this.onBraveWalletEnabledChange_.bind(this)
     this.browserProxy_.getWeb3ProviderList().then(list => {
       this.braveWeb3Providers_ = JSON.parse(list)
+    });
+    this.browserProxy_.isNativeWalletEnabled().then(val => {
+      this.isNativeWalletEnabled_ = val;
     });
   },
 
