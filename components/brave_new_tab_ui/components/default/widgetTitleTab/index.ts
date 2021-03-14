@@ -23,7 +23,7 @@ const getBackgroundRule = (position: number) => {
   }
 }
 
-export const StyledTitleTab = styled<StyleProps, 'div'>('div')`
+export const StyledTitleTab = styled('div')<StyleProps>`
   color: #fff;
   cursor: pointer;
   padding: 4px 20px 15px 20px;

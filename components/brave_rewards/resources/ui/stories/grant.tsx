@@ -3,9 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { withKnobs, text, select } from '@storybook/addon-knobs'
-import centered from '@storybook/addon-centered'
+import { text, select } from '@storybook/addon-knobs'
 
 // Components
 import GrantClaim from '../components/grantClaim'
@@ -20,61 +18,84 @@ const dummyClick = () => {
   console.log(dummyClick)
 }
 
-storiesOf('Rewards/Grant', module)
-  .addDecorator(withKnobs)
-  .addDecorator(centered)
-  .add('Grant claim', () => {
-    return (
-      <GrantClaim
-        type={select<any>('Type', { ugp: 'ugp', ads: 'ads' }, 'ugp')}
-        onClaim={dummyClick}
+export default {
+  title: 'Rewards/Grant',
+  parameters: {
+    layout: 'centered'
+  }
+}
+
+export const _GrantClaim = () => {
+  return (
+    <GrantClaim
+      type={select<any>('Type', { ugp: 'ugp', ads: 'ads' }, 'ugp')}
+      onClaim={dummyClick}
+    />
+  )
+}
+
+_GrantClaim.story = {
+  name: 'Grant claim'
+}
+
+export const _GrantWrapper = () => {
+  return (
+    <div style={{ width: '373px', height: '715px', position: 'relative' }}>
+      <GrantWrapper
+        onClose={dummyClick}
+        title={text('Title', 'Good news!')}
+        text={text(
+          'Text',
+          'Free 30 BAT have been awarded to you so you can support more publishers.'
+        )}
+      >
+        Content here
+      </GrantWrapper>
+    </div>
+  )
+}
+
+_GrantWrapper.story = {
+  name: 'Grant wrapper'
+}
+
+export const _GrantCaptcha = () => {
+  return (
+    <div style={{ width: '373px', height: '715px', position: 'relative' }}>
+      <GrantCaptcha onSolution={dummyClick} captchaImage={captchaDrop} hint={'blue'} />
+    </div>
+  )
+}
+
+_GrantCaptcha.story = {
+  name: 'Grant captcha'
+}
+
+export const _GrantComplete = () => {
+  return (
+    <div style={{ width: '373px', height: '715px', position: 'relative' }}>
+      <GrantComplete
+        onClose={dummyClick}
+        amount={'30.0'}
+        date={text('Date', '8/15/2018')}
+        tokenTitle={'Free token grant'}
       />
-    )
-  })
-  .add('Grant wrapper', () => {
-    return (
-      <div style={{ width: '373px', height: '715px', position: 'relative' }}>
-        <GrantWrapper
-          onClose={dummyClick}
-          title={text('Title', 'Good news!')}
-          text={text('Text', 'Free 30 BAT have been awarded to you so you can support more publishers.')}
-        >
-          Content here
-        </GrantWrapper>
-      </div>
-    )
-  })
-  .add('Grant captcha', () => {
-    return (
-      <div style={{ width: '373px', height: '715px', position: 'relative' }}>
-        <GrantCaptcha
-          onSolution={dummyClick}
-          captchaImage={captchaDrop}
-          hint={'blue'}
-        />
-      </div>
-    )
-  })
-  .add('Grant complete', () => {
-    return (
-      <div style={{ width: '373px', height: '715px', position: 'relative' }}>
-        <GrantComplete
-          onClose={dummyClick}
-          amount={'30.0'}
-          date={text('Date', '8/15/2018')}
-          tokenTitle={'Free token grant'}
-        />
-      </div>
-    )
-  })
-  .add('Grant Error', () => {
-    return (
-      <div style={{ width: '373px', height: '250px', position: 'relative', background: '#fff' }}>
-        <GrantError
-          onButtonClick={dummyClick}
-          buttonText={'ok'}
-          text={'The period for claiming this grant has ended'}
-        />
-      </div>
-    )
-  })
+    </div>
+  )
+}
+
+_GrantComplete.story = {
+  name: 'Grant complete'
+}
+
+export const _GrantError = () => {
+  return (
+    <div style={{ width: '373px', height: '250px', position: 'relative', background: '#fff' }}>
+      <GrantError
+        onButtonClick={dummyClick}
+        buttonText={'ok'}
+        text={'The period for claiming this grant has ended'}
+      />
+    </div>
+  )
+}

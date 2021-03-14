@@ -16,6 +16,7 @@
 #include "build/build_config.h"
 #include "ui/display/display.h"
 #include "ui/display/screen.h"
+#include "ui/gfx/geometry/rect.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/layout/fill_layout.h"
@@ -33,13 +34,6 @@
 namespace brave_ads {
 namespace {
 static std::map<std::string, MessagePopupView*> g_notifications_;
-#if defined(OS_WIN)
-static const int kPopupYDeltaWin = 138;
-#elif defined(OS_LINUX)
-static const int kPopupYDeltaLinux = 30;
-#else
-static const int kPopupYDeltaOther = 30;
-#endif
 static const int kPopupPadding = 10;
 static const int kPopupBaseWidth = 344;
 static const int kPopupBaseHeight = 88;
@@ -89,18 +83,30 @@ MessagePopupView::MessagePopupView(const Notification& notification)
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
-  const gfx::Size screen_size =
-      display::Screen::GetScreen()->GetPrimaryDisplay().size();
+
+  const gfx::Rect visible_frame = GetVisibleFrameForPrimaryDisplay();
+
+  const int x = visible_frame.right() - (kPopupBaseWidth + kPopupPadding);
+
+  const int width = kPopupBaseWidth;
+  const int height = kPopupBaseHeight + GetBodyHeight(notification.message());
+
 #if defined(OS_WIN)
-  const int screen_y = screen_size.height() - kPopupYDeltaWin;
+  const int y = visible_frame.bottom() - (height + kPopupPadding);
 #elif defined(OS_LINUX)
-  const int screen_y = kPopupYDeltaLinux;
+  static const int kLinuxPopupOffsetY = 20;
+  const int y = visible_frame.y() + kLinuxPopupOffsetY + kPopupPadding;
 #else
-  const int screen_y = kPopupYDeltaOther;
+  const int y = visible_frame.y() + kPopupPadding;
 #endif
-  params.bounds = {screen_size.width() - kPopupBaseWidth - kPopupPadding,
-                   screen_y, kPopupBaseWidth,
-                   kPopupBaseHeight + GetBodyHeight(notification.message())};
+
+  params.bounds = {
+    x,
+    y,
+    width,
+    height
+  };
+
 #if defined(OS_LINUX) && !defined(OS_CHROMEOS)
   // Make the widget explicitly activatable as TYPE_POPUP is not activatable by
   // default but we need focus for the inline reply textarea.
@@ -132,6 +138,12 @@ MessagePopupView::MessagePopupView(const Notification& notification)
 }
 
 MessagePopupView::~MessagePopupView() {}
+
+#if !defined(OS_WIN) && !defined(OS_MAC)
+gfx::Rect MessagePopupView::GetVisibleFrameForPrimaryDisplay() const {
+  return gfx::Rect(display::Screen::GetScreen()->GetPrimaryDisplay().size());
+}
+#endif
 
 #if !defined(OS_MAC)
 float MessagePopupView::GetOpacity() const {

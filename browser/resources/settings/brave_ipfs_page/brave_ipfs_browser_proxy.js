@@ -12,6 +12,7 @@ export class BraveIPFSBrowserProxy {
   setIPFSCompanionEnabled (value) {}
   getIPFSResolveMethodList () {}
   getIPFSEnabled () {}
+  setIPFSStorageMax (value) {}
 }
 
 /**
@@ -20,6 +21,10 @@ export class BraveIPFSBrowserProxy {
 export class BraveIPFSBrowserProxyImpl {
   setIPFSCompanionEnabled (value) {
     chrome.send('setIPFSCompanionEnabled', [value])
+  }
+
+  setIPFSStorageMax (value) {
+    chrome.send('setIPFSStorageMax', [value])
   }
 
   /** @override */

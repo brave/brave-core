@@ -5,14 +5,14 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   font-size: 14px;
   font-weight: normal;
   letter-spacing: 0;
   line-height: 18px;
 `
 
-export const StyledLink = styled<{}, 'a'>('a')`
+export const StyledLink = styled('a')<{}>`
   text-decoration: none;
   cursor: pointer;
   color: ${p => p.theme.palette.blurple500};

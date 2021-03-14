@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledAdMenuDropContent = styled<{}, 'div'>('div')`
+export const StyledAdMenuDropContent = styled('div')<{}>`
   display: block;
   position: absolute;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -17,7 +17,7 @@ export const StyledAdMenuDropContent = styled<{}, 'div'>('div')`
   min-width: 200px;
 `
 
-export const StyledAdStatBulletMenuIcon = styled<{}, 'div'>('div')`
+export const StyledAdStatBulletMenuIcon = styled('div')<{}>`
   width: 32px;
   height: 32px;
   display: inline-block;
@@ -27,7 +27,7 @@ export const StyledAdStatBulletMenuIcon = styled<{}, 'div'>('div')`
   outline: none;
 `
 
-export const StyledAdMenuOptionDropContent = styled<{}, 'div'>('div')`
+export const StyledAdMenuOptionDropContent = styled('div')<{}>`
   display: flex;
   align-items: center;
   height: 35px;
@@ -39,7 +39,7 @@ export const StyledAdMenuOptionDropContent = styled<{}, 'div'>('div')`
   }
 `
 
-export const StyledAdMenuOptionDropContentText = styled<{}, 'span'>('span')`
+export const StyledAdMenuOptionDropContentText = styled('span')<{}>`
   font-size: 16px;
   vertical-align: middle;
   font-weight: 600;

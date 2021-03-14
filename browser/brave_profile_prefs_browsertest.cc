@@ -5,6 +5,7 @@
 
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_wallet/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -81,7 +82,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_EQ(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider),
-      static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
+                           ? BraveWalletWeb3ProviderTypes::BRAVE_WALLET
+                           : BraveWalletWeb3ProviderTypes::ASK));
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
       kLoadCryptoWalletsOnStartup));
   EXPECT_FALSE(

@@ -31,7 +31,7 @@
                 android:layout_weight="0.75"
                 android:scaleType="fitXY"
                 android:src="@drawable/cover_photo"
-                tools:ignore="ContentDescription"/>
+                android:contentDescription="@null"/>
 
             <!-- Text-->
             <ScrollView
@@ -62,7 +62,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="12dp"
                             android:src="@drawable/icn_twitch"
-                            tools:ignore="ContentDescription" />
+                            android:contentDescription="@null" />
 
                         <ImageView
                             android:id="@+id/youtube_button"
@@ -71,7 +71,7 @@
                             android:layout_marginEnd="16dp"
                             android:layout_toStartOf="@id/chat_button"
                             android:src="@drawable/icn_youtube"
-                            tools:ignore="ContentDescription" />
+                            android:contentDescription="@null" />
 
                         <ImageView
                             android:id="@+id/twitter_button"
@@ -80,7 +80,7 @@
                             android:layout_marginEnd="16dp"
                             android:layout_toStartOf="@id/youtube_button"
                             android:src="@drawable/icn_twitter"
-                            tools:ignore="ContentDescription" />
+                            android:contentDescription="@null" />
                     </RelativeLayout>
 
                     <!-- Non verified warning-->
@@ -101,7 +101,7 @@
                             android:src="@drawable/icn_unverified_alert"
                             android:padding="10dp"
                             android:layout_gravity="center"
-                            tools:ignore="ContentDescription"/>
+                            android:contentDescription="@null"/>
                         <TextView
                             android:id="@+id/not_verified_warning_text"
                             android:layout_width="wrap_content"
@@ -225,7 +225,7 @@
             android:layout_height="8dp"
             android:background="@drawable/brave_gradient_shadow"
             android:layout_gravity="bottom"
-            tools:ignore="ContentDescription"/>
+            android:contentDescription="@null"/>
 
     </FrameLayout>
 
@@ -462,6 +462,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clickable="true"
+                    android:focusable="true"
                     android:orientation="horizontal"
                     android:visibility="visible"
                     android:background="#5e45d0"
@@ -473,7 +474,7 @@
                         android:layout_gravity="center_vertical|center"
                         android:src="@drawable/plane_small"
                         android:paddingEnd="12dp"
-                        tools:ignore="ContentDescription"/>
+                        android:contentDescription="@null"/>
 
                     <TextView
                         android:id="@+id/send_donation_text"
@@ -497,6 +498,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clickable="true"
+                    android:focusable="true"
                     android:orientation="horizontal"
                     android:visibility="invisible"
                     android:background="@android:color/black"

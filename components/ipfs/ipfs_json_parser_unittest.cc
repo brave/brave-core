@@ -132,5 +132,5 @@ TEST_F(IPFSJSONParserTest, GetGarbageCollectionFromJSON) {
   ASSERT_EQ(error, "");
   error.erase();
   ASSERT_FALSE(IPFSJSONParser::GetGarbageCollectionFromJSON(R"()", &error));
-  ASSERT_FALSE(error.empty());
+  ASSERT_TRUE(error.empty());
 }

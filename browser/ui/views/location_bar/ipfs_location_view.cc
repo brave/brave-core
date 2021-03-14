@@ -63,9 +63,10 @@ class HighlightPathGenerator : public views::HighlightPathGenerator {
 class IPFSLocationButtonView : public views::LabelButton {
  public:
   explicit IPFSLocationButtonView(Profile* profile)
-      : LabelButton(base::BindRepeating(&IPFSLocationButtonView::ButtonPressed,
-                                        base::Unretained(this)),
-                    l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_IPFS)),
+      : LabelButton(
+            base::BindRepeating(&IPFSLocationButtonView::ButtonPressed,
+                                base::Unretained(this)),
+            l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_USING_IPFS)),
         profile_(profile) {
     // Render vector icon
     const gfx::ImageSkia image =

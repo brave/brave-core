@@ -6,8 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_CUSTOM_FILTERS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_CUSTOM_FILTERS_SERVICE_H_
 
+#include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 
@@ -26,6 +28,8 @@ class AdBlockCustomFiltersService : public AdBlockBaseService {
 
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
+  bool MigrateLegacyCosmeticFilters(
+      const std::map<std::string, std::vector<std::string>> legacyFilters);
 
  protected:
   bool Init() override;

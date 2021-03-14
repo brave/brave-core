@@ -107,7 +107,7 @@ export default class EditTopSite extends React.PureComponent<Props, State> {
     return (
       <StyledDialogWrapper textDirection={textDirection}>
         <StyledDialog
-          innerRef={this.editTopSiteDialogRef}
+          ref={this.editTopSiteDialogRef}
           textDirection={textDirection}
         >
           <DialogTitle>

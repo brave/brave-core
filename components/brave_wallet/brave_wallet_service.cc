@@ -16,6 +16,7 @@
 #include "base/task_runner_util.h"
 #include "brave/components/brave_wallet/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/brave_wallet_delegate.h"
+#include "brave/components/brave_wallet/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -351,7 +352,9 @@ void BraveWalletService::OnExtensionUninstalled(
     if (provider == BraveWalletWeb3ProviderTypes::METAMASK)
       prefs->SetInteger(
           kBraveWalletWeb3Provider,
-          static_cast<int>(BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS));
+          static_cast<int>(brave_wallet::IsNativeWalletEnabled()
+                               ? BraveWalletWeb3ProviderTypes::BRAVE_WALLET
+                               : BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS));
     RemoveUnusedWeb3ProviderContentScripts();
   }
 }

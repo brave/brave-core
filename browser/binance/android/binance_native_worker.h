@@ -31,31 +31,23 @@ class BinanceNativeWorker {
   void Destroy(JNIEnv* env,
                const base::android::JavaParamRef<jobject>& jcaller);
 
-  base::android::ScopedJavaLocalRef<jstring> GetOAuthClientUrl(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller);
+  base::android::ScopedJavaLocalRef<jstring> GetOAuthClientUrl(JNIEnv* env);
 
-  void GetAccessToken(JNIEnv* env,
-                      const base::android::JavaParamRef<jobject>& jcaller);
+  void GetAccessToken(JNIEnv* env);
 
-  bool IsSupportedRegion(JNIEnv* env,
-                         const base::android::JavaParamRef<jobject>& jcaller);
+  bool IsSupportedRegion(JNIEnv* env);
 
-  base::android::ScopedJavaLocalRef<jstring> GetLocaleForURL(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller);
+  base::android::ScopedJavaLocalRef<jstring> GetLocaleForURL(JNIEnv* env);
 
   void OnGetAccessToken(bool success);
 
-  void GetAccountBalances(JNIEnv* env,
-                          const base::android::JavaParamRef<jobject>& jcaller);
+  void GetAccountBalances(JNIEnv* env);
 
   void OnGetAccountBalances(
       const std::map<std::string, std::vector<std::string>>& balances,
       bool success);
 
   void GetConvertQuote(JNIEnv* env,
-                       const base::android::JavaParamRef<jobject>& jcaller,
                        const base::android::JavaParamRef<jstring>& from,
                        const base::android::JavaParamRef<jstring>& to,
                        const base::android::JavaParamRef<jstring>& amount);
@@ -65,14 +57,12 @@ class BinanceNativeWorker {
                          const std::string& total_fee,
                          const std::string& total_amount);
 
-  void GetCoinNetworks(JNIEnv* env,
-                       const base::android::JavaParamRef<jobject>& jcaller);
+  void GetCoinNetworks(JNIEnv* env);
 
   void OnGetCoinNetworks(const std::map<std::string, std::string>& networks);
 
   void GetDepositInfo(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller,
       const base::android::JavaParamRef<jstring>& symbol,
       const base::android::JavaParamRef<jstring>& ticker_network);
 
@@ -81,25 +71,21 @@ class BinanceNativeWorker {
                         bool success);
 
   void ConfirmConvert(JNIEnv* env,
-                      const base::android::JavaParamRef<jobject>& jcaller,
                       const base::android::JavaParamRef<jstring>& quote_id);
 
   void OnConfirmConvert(bool success, const std::string& message);
 
-  void GetConvertAssets(JNIEnv* env,
-                        const base::android::JavaParamRef<jobject>& jcaller);
+  void GetConvertAssets(JNIEnv* env);
 
   void OnGetConvertAssets(
       const std::map<std::string,
                      std::vector<std::map<std::string, std::string>>>& assets);
 
-  void RevokeToken(JNIEnv* env,
-                   const base::android::JavaParamRef<jobject>& jcaller);
+  void RevokeToken(JNIEnv* env);
 
   void OnRevokeToken(bool success);
 
   void SetAuthToken(JNIEnv* env,
-                    const base::android::JavaParamRef<jobject>& jcaller,
                     const base::android::JavaParamRef<jstring>& auth_token);
 
  private:

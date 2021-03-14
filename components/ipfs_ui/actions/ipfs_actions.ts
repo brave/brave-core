@@ -29,6 +29,11 @@ export const onGetDaemonStatus = (daemonStatus: IPFS.DaemonStatus) =>
     daemonStatus
   })
 
+export const onInstallationProgress = (installationProgress: IPFS.InstallationProgress) =>
+  action(types.IPFS_ON_INSTALLATION_PROGRESS, {
+    installationProgress
+  })
+
 export const getRepoStats = () => action(types.IPFS_GET_REPO_STATS)
 
 export const onGetRepoStats = (repoStats: IPFS.RepoStats) =>

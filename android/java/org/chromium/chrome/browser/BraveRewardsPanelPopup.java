@@ -6,6 +6,7 @@
 
 package org.chromium.chrome.browser;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,6 +51,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -157,6 +159,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private String currentNotificationId;
     private TextView tvPublisherNotVerified;
     private TextView tvPublisherNotVerifiedSummary;
+    private TextView tvBrBatWallet;
     private boolean walletDetailsReceived;      //flag: wallet details received
     private boolean showRewardsSummary;        //flag: we don't want OnGetCurrentBalanceReport always opens up Rewards Summary window
     private BraveRewardsHelper mIconFetcher;
@@ -212,6 +215,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         mIconFetcher = new BraveRewardsHelper(BraveRewardsHelper.currentActiveChromeTabbedActivityTab());
 
         this.window.setTouchInterceptor(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
@@ -285,8 +289,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         btSendATip = (Button)root.findViewById(R.id.send_a_tip);
         tvPublisherNotVerified = (TextView)root.findViewById(R.id.publisher_not_verified);
         mTip_amount_spinner = root.findViewById(R.id.auto_tip_amount);
+
+        tvBrBatWallet = root.findViewById(R.id.br_bat_wallet);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initViewActionEvents() {
         if (tvPublisherNotVerifiedSummary != null) {
             tvPublisherNotVerifiedSummary.setOnTouchListener(new View.OnTouchListener() {
@@ -550,11 +557,13 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        TextView tosAndPpText = braveRewardsOptInView.findViewById(R.id.tos_pp_text);
+        TextView tosAndPpText =
+                braveRewardsOptInView.findViewById(R.id.brave_rewards_opt_in_tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
         tosAndPpText.setText(tosTextSS);
 
-        AppCompatImageView modalCloseButton = braveRewardsOptInView.findViewById(R.id.modal_close);
+        AppCompatImageView modalCloseButton =
+                braveRewardsOptInView.findViewById(R.id.brave_rewards_opt_in_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -603,7 +612,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(R.id.tos_pp_text);
+        TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(
+                R.id.brave_rewards_onboarding_modal_tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
         tosAndPpText.setText(tosTextSS);
 
@@ -625,7 +635,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 showBraveRewardsOnboarding(root, true);
             }
         }));
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(R.id.modal_close);
+        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(
+                R.id.brave_rewards_onboarding_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -677,7 +688,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         braveRewardsViewPager.setAdapter(braveRewardsOnboardingPagerAdapter);
         TabLayout braveRewardsTabLayout = braveRewardsOnboardingView.findViewById(R.id.brave_rewards_tab_layout);
         braveRewardsTabLayout.setupWithViewPager(braveRewardsViewPager, true);
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingView.findViewById(R.id.modal_close);
+        AppCompatImageView modalCloseButton = braveRewardsOnboardingView.findViewById(
+                R.id.brave_rewards_onboarding_layout_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -710,7 +722,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
         }));
         AppCompatImageView modalCloseButton =
-                braveRewardsWelcomeView.findViewById(R.id.modal_close);
+                braveRewardsWelcomeView.findViewById(R.id.brave_rewards_welcome_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -796,8 +808,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         btRewardsSummary.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.slide_down, 0);
         if (braveRewardsWelcomeView != null && braveRewardsWelcomeView.isShown()) {
             braveRewardsWelcomeView.setBackground(
-                    ContextUtils.getApplicationContext().getResources().getDrawable(
-                            R.drawable.bat_rewards_summary_gradient));
+                    ResourcesCompat.getDrawable(ContextUtils.getApplicationContext().getResources(),
+                            R.drawable.bat_rewards_summary_gradient, /* theme= */ null));
         }
     }
 
@@ -916,7 +928,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     }
 
     public void ShowWebSiteView() {
-        ((TextView)this.root.findViewById(R.id.br_bat_wallet)).setText(String.format(Locale.getDefault(), "%.3f", 0.0));
+        tvBrBatWallet.setText(String.format(Locale.getDefault(), "%.3f", 0.0));
         String usdText = String.format(this.root.getResources().getString(R.string.brave_ui_usd), "0.00");
         ((TextView)this.root.findViewById(R.id.br_usd_wallet)).setText(usdText);
         CreateUpdateBalanceTask();
@@ -1148,11 +1160,12 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 // 18 digits is a probi min digits count
                 if (splittedValue.length != 0 && splittedValue[0].length() >= 18) {
                     value = BraveRewardsHelper.probiToDouble(args[3]);
-                    valueString = Double.isNaN(value) ?
-                                  ERROR_CONVERT_PROBI : String.format("%.3f", value);
+                    valueString = Double.isNaN(value)
+                            ? ERROR_CONVERT_PROBI
+                            : String.format(Locale.getDefault(), "%.3f", value);
                 } else {
                     value = Double.parseDouble(args[3]);
-                    valueString = String.format("%.3f", value);
+                    valueString = String.format(Locale.getDefault(), "%.3f", value);
                 }
 
                 description = String.format(
@@ -1364,8 +1377,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
      * @param enable
      */
     private void EnableWalletDetails(boolean enable) {
-        View fadein  = enable ? root.findViewById(R.id.br_bat_wallet) : root.findViewById(R.id.progress_wallet_update);
-        View fadeout  = enable ? root.findViewById(R.id.progress_wallet_update) : root.findViewById(R.id.br_bat_wallet);
+        View progressWalletUpdate = root.findViewById(R.id.progress_wallet_update);
+        View fadein = enable ? tvBrBatWallet : progressWalletUpdate;
+        View fadeout = enable ? progressWalletUpdate : tvBrBatWallet;
         BraveRewardsHelper.crossfade(fadeout, fadein, View.GONE, 1f, BraveRewardsHelper.CROSS_FADE_DURATION);
 
         View usd = root.findViewById(R.id.br_usd_wallet_layout);
@@ -1586,10 +1600,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     public void OnGetPendingContributionsTotal(double amount) {
         if (amount > 0.0) {
             String non_verified_summary =
-                String.format(root.getResources().getString(
-                                  R.string.brave_ui_reserved_amount_text), String.format("%.3f", amount), batPointsText) +
-                " <font color=#73CBFF>" + root.getResources().getString(R.string.learn_more) +
-                ".</font>";
+                    String.format(
+                            root.getResources().getString(R.string.brave_ui_reserved_amount_text),
+                            String.format(Locale.getDefault(), "%.3f", amount), batPointsText)
+                    + " <font color=#73CBFF>" + root.getResources().getString(R.string.learn_more)
+                    + ".</font>";
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(non_verified_summary);
             tvPublisherNotVerifiedSummary.setText(toInsert);
             tvPublisherNotVerifiedSummary.setVisibility(View.VISIBLE);
@@ -1666,8 +1681,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 DecimalFormat df = new DecimalFormat("#.###");
                 df.setRoundingMode(RoundingMode.FLOOR);
                 df.setMinimumFractionDigits(3);
-                ((TextView) this.root.findViewById(R.id.br_bat_wallet))
-                .setText(df.format(walletBalance));
+                tvBrBatWallet.setText(df.format(walletBalance));
                 ((TextView) this.root.findViewById(R.id.br_bat)).setText(batPointsText);
                 double usdValue = walletBalance * mBraveRewardsNativeWorker.GetWalletRate();
                 String usdText =
@@ -1764,8 +1778,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 leftDrawable = R.drawable.uphold_white;
                 text = R.string.brave_ui_wallet_button_disconnected;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, 0, 0, 0);
-                btnVerifyWallet.setBackgroundDrawable(root.getResources().getDrawable(
-                        R.drawable.wallet_disconnected_button));
+                btnVerifyWallet.setBackgroundDrawable(ResourcesCompat.getDrawable(
+                        ContextUtils.getApplicationContext().getResources(),
+                        R.drawable.wallet_disconnected_button, /* theme= */ null));
                 break;
             default:
                 Log.e (TAG, "Unexpected external wallet status");

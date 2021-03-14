@@ -225,7 +225,6 @@ bool IPFSJSONParser::GetGarbageCollectionFromJSON(const std::string& json,
   if (!records_v) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
             << " error is:" << value_with_error.error_message;
-    *error = value_with_error.error_message;
     return false;
   }
 

@@ -72,7 +72,8 @@ void GetPublisherStatusFromMessage(
           info->status = ledger::type::PublisherStatus::UPHOLD_VERIFIED;
           info->address = wallet.uphold_wallet().address();
           return;
-        default: {}
+        default:
+          break;
       }
     }
   }

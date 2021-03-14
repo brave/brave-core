@@ -25,6 +25,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "net/test/url_request/url_request_failed_job.h"
 
 namespace ipfs {
 
@@ -53,6 +54,10 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     test_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(test_server_->Start());
     ipfs_service_->SetServerEndpointForTest(test_server_->base_url());
+  }
+
+  void ShutDownTestServer() {
+    ASSERT_TRUE(test_server_->ShutdownAndWaitUntilComplete());
   }
 
   GURL GetURL(const std::string& host, const std::string& path) {
@@ -305,6 +310,16 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(peers, std::vector<std::string>{});
   }
 
+  void OnGetConnectedPeersAfterRetry(bool success,
+                                     const std::vector<std::string>& peers) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    EXPECT_FALSE(success);
+    EXPECT_EQ(peers, std::vector<std::string>{});
+    EXPECT_EQ(ipfs_service()->GetLastPeersRetryForTest(), 0);
+  }
+
   void OnGetAddressesConfigSuccess(bool success,
                                    const AddressesConfig& config) {
     if (wait_for_request_) {
@@ -415,6 +430,19 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeersServerError) {
   ipfs_service()->GetConnectedPeers(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetConnectedPeersFail,
                      base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeersRetry) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
+                          base::Unretained(this)));
+  ipfs_service()->SetZeroPeersDeltaForTest(true);
+  ShutDownTestServer();
+  ipfs_service()->GetConnectedPeers(
+      base::BindOnce(&IpfsServiceBrowserTest::OnGetConnectedPeersAfterRetry,
+                     base::Unretained(this)),
+      4);
   WaitForRequest();
 }
 

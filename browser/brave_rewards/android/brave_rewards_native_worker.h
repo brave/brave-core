@@ -37,136 +37,102 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const base::android::JavaRef<jobject>& obj);
     ~BraveRewardsNativeWorker() override;
 
-    void Destroy(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+    void Destroy(JNIEnv* env);
 
-    void GetRewardsParameters(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+    void GetRewardsParameters(JNIEnv* env);
 
     void GetPublisherInfo(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller, int tabId,
-        const base::android::JavaParamRef<jstring>& host);
+                          int tabId,
+                          const base::android::JavaParamRef<jstring>& host);
 
-    base::android::ScopedJavaLocalRef<jstring> GetWalletBalance(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    base::android::ScopedJavaLocalRef<jstring> GetWalletBalance(JNIEnv* env);
 
-    double GetWalletRate(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    double GetWalletRate(JNIEnv* env);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherURL(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);
+                                                               uint64_t tabId);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherFavIconURL(
-        JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
+        JNIEnv* env,
         uint64_t tabId);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherName(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);
+                                                                uint64_t tabId);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherId(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);
-
-    int GetPublisherPercent(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
         uint64_t tabId);
 
-    bool GetPublisherExcluded(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);
+    int GetPublisherPercent(JNIEnv* env, uint64_t tabId);
 
-    int GetPublisherStatus(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);
+    bool GetPublisherExcluded(JNIEnv* env, uint64_t tabId);
 
-    void GetCurrentBalanceReport(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    int GetPublisherStatus(JNIEnv* env, uint64_t tabId);
 
-    void IncludeInAutoContribution(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj, uint64_t tabId,
-        bool exclude);
+    void GetCurrentBalanceReport(JNIEnv* env);
 
-    void RemovePublisherFromMap(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);
+    void IncludeInAutoContribution(JNIEnv* env, uint64_t tabId, bool exclude);
 
-    void Donate(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& publisher_key, int amount,
-        bool recurring);
+    void RemovePublisherFromMap(JNIEnv* env, uint64_t tabId);
 
-    void GetAllNotifications(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    void Donate(JNIEnv* env,
+                const base::android::JavaParamRef<jstring>& publisher_key,
+                int amount,
+                bool recurring);
+
+    void GetAllNotifications(JNIEnv* env);
 
     void DeleteNotification(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& notification_id);
 
-    void GetGrant(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& promotionId);
+    void GetGrant(JNIEnv* env,
+                  const base::android::JavaParamRef<jstring>& promotionId);
 
     base::android::ScopedJavaLocalRef<jobjectArray> GetCurrentGrant(
-        JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
+        JNIEnv* env,
         int position);
 
-    void GetPendingContributionsTotal(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    void GetPendingContributionsTotal(JNIEnv* env);
 
-    void GetRecurringDonations(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    void GetRecurringDonations(JNIEnv* env);
 
     bool IsCurrentPublisherInRecurrentDonations(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& publisher);
 
-    void GetAutoContributeProperties(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    void GetAutoContributeProperties(JNIEnv* env);
 
-    bool IsAutoContributeEnabled(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    bool IsAutoContributeEnabled(JNIEnv* env);
 
-    void GetReconcileStamp(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    void GetReconcileStamp(JNIEnv* env);
 
-    void ResetTheWholeState(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    void ResetTheWholeState(JNIEnv* env);
 
     double GetPublisherRecurrentDonationAmount(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& publisher);
 
     void RemoveRecurring(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& publisher);
 
-    void FetchGrants(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    void FetchGrants(JNIEnv* env);
 
-    int GetAdsPerHour(JNIEnv* env,
-                      const base::android::JavaParamRef<jobject>& obj);
+    int GetAdsPerHour(JNIEnv* env);
 
-    void SetAdsPerHour(JNIEnv* env,
-                       const base::android::JavaParamRef<jobject>& obj,
-                       jint value);
+    void SetAdsPerHour(JNIEnv* env, jint value);
 
-    void SetAutoContributionAmount(JNIEnv* env,
-                       const base::android::JavaParamRef<jobject>& obj,
-                       jdouble value);
+    void SetAutoContributionAmount(JNIEnv* env, jdouble value);
 
-    void GetExternalWallet(
-        JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    void GetExternalWallet(JNIEnv* env);
 
-    void DisconnectWallet(JNIEnv* env,
-                          const base::android::JavaParamRef<jobject>& obj);
+    void DisconnectWallet(JNIEnv* env);
 
     void ProcessRewardsPageUrl(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& path,
         const base::android::JavaParamRef<jstring>& query);
 
     void RecoverWallet(JNIEnv* env,
-                       const base::android::JavaParamRef<jobject>& obj,
                        const base::android::JavaParamRef<jstring>& pass_phrase);
 
     void RefreshPublisher(
         JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& publisher_key);
 
     void OnResetTheWholeState(const bool success);
@@ -215,8 +181,9 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnGetRecurringTips(ledger::type::PublisherInfoList list);
 
-    bool IsAnonWallet(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+    bool IsAnonWallet(JNIEnv* env);
+
+    bool IsRewardsEnabled(JNIEnv* env);
 
     void OnClaimPromotion(
         const ledger::type::Result result,
@@ -245,10 +212,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const std::string& publisher_key);
     void SetAutoContributeEnabled(
         JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
         bool isAutoContributeEnabled);
-    void StartProcess(JNIEnv* env,
-                      const base::android::JavaParamRef<jobject>& obj);
+    void StartProcess(JNIEnv* env);
     void OnStartProcess(const ledger::type::Result result);
  private:
     std::string StdStrStrMapToJsonString(

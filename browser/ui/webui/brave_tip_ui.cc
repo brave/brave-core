@@ -616,17 +616,8 @@ void TipMessageHandler::GetExternalWalletCallback(
   }
 
   base::Value data(base::Value::Type::DICTIONARY);
-
   if (wallet) {
     data.SetStringKey("type", wallet->type);
-    data.SetStringKey("token", wallet->token);
-    data.SetStringKey("address", wallet->address);
-    data.SetStringKey("verifyUrl", wallet->verify_url);
-    data.SetStringKey("addUrl", wallet->add_url);
-    data.SetStringKey("withdrawUrl", wallet->withdraw_url);
-    data.SetStringKey("userName", wallet->user_name);
-    data.SetStringKey("accountUrl", wallet->account_url);
-    data.SetStringKey("loginUrl", wallet->login_url);
     data.SetIntKey("status", static_cast<int>(wallet->status));
   }
 

@@ -135,7 +135,7 @@ class AdsServiceImpl : public AdsService,
                      const uint64_t to_timestamp,
                      OnGetAdsHistoryCallback callback) override;
 
-  void GetStatement(GetStatementCallback callback) override;
+  void GetAccountStatement(GetAccountStatementCallback callback) override;
 
   void ToggleAdThumbUp(const std::string& creative_instance_id,
                        const std::string& creative_set_id,
@@ -242,9 +242,9 @@ class AdsServiceImpl : public AdsService,
   void OnGetAdsHistory(OnGetAdsHistoryCallback callback,
                        const std::string& json);
 
-  void OnGetStatement(GetStatementCallback callback,
-                      const bool success,
-                      const std::string& json);
+  void OnGetAccountStatement(GetAccountStatementCallback callback,
+                             const bool success,
+                             const std::string& json);
 
   void OnRemoveAllHistory(const int32_t result);
 
@@ -285,7 +285,7 @@ class AdsServiceImpl : public AdsService,
   void MigratePrefsVersion6To7();
   void MigratePrefsVersion7To8();
   void MigratePrefsVersion8To9();
-  int GetPrefsVersion() const;
+  void MigratePrefsVersion9To10();
 
   bool IsUpgradingFromPreBraveAdsBuild();
 

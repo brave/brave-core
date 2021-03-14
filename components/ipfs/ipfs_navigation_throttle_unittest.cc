@@ -162,6 +162,15 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferMultipleUntilIpfsProcessLaunched) {
 
   service->SetAllowIpfsLaunchForTest(true);
   service->RunLaunchDaemonCallbackForTest(true);
+  EXPECT_FALSE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+  EXPECT_FALSE(was_navigation_resumed3);
+  auto peers = std::vector<std::string>{
+      "/ip4/101.101.101.101/tcp/4001/p2p/"
+      "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"};
+  throttle1->OnGetConnectedPeers(true, peers);
+  throttle2->OnGetConnectedPeers(true, peers);
+  throttle3->OnGetConnectedPeers(true, peers);
   EXPECT_TRUE(was_navigation_resumed1);
   EXPECT_TRUE(was_navigation_resumed2);
   EXPECT_TRUE(was_navigation_resumed3);
@@ -187,11 +196,23 @@ TEST_F(IpfsNavigationThrottleUnitTest, SequentialRequests) {
 
   service->SetAllowIpfsLaunchForTest(true);
   service->RunLaunchDaemonCallbackForTest(true);
+  throttle1->OnIpfsLaunched(true);
+  EXPECT_FALSE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
 
+  auto peers = std::vector<std::string>();
+  throttle1->OnGetConnectedPeers(true, peers);
+  EXPECT_FALSE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+
+  peers = std::vector<std::string>{
+      "/ip4/101.101.101.101/tcp/4001/p2p/"
+      "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"};
+  throttle1->OnGetConnectedPeers(true, peers);
   EXPECT_TRUE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+  throttle2->OnGetConnectedPeers(true, peers);
   EXPECT_TRUE(was_navigation_resumed2);
-  ASSERT_FALSE(service->WasConnectedPeersCalledForTest());
-
   auto throttle3 = CreateDeferredNavigation(service, base::RepeatingClosure());
 
   ASSERT_TRUE(service->WasConnectedPeersCalledForTest());
@@ -264,7 +285,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       << GetIPFSURL();
   service->SetAllowIpfsLaunchForTest(true);
   service->RunLaunchDaemonCallbackForTest(true);
-  EXPECT_TRUE(was_navigation_resumed);
+  EXPECT_FALSE(was_navigation_resumed);
 
   was_navigation_resumed = false;
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
@@ -280,7 +301,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       << GetIPNSURL();
   service->SetAllowIpfsLaunchForTest(true);
   service->RunLaunchDaemonCallbackForTest(true);
-  EXPECT_TRUE(was_navigation_resumed);
+  EXPECT_FALSE(was_navigation_resumed);
 
   was_navigation_resumed = false;
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())

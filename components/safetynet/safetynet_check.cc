@@ -15,8 +15,7 @@
 namespace safetynet_check {
 
 static base::android::ScopedJavaLocalRef<jstring> JNI_SafetyNetCheck_GetApiKey(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+    JNIEnv* env) {
   return base::android::ConvertUTF8ToJavaString(env, SAFETYNET_API_KEY);
 }
 
@@ -44,9 +43,8 @@ bool SafetyNetCheck::clientAttestation(const std::string& nonce,
     japiKey, perform_attestation_on_client);
 }
 
-void SafetyNetCheck::clientAttestationResult(
+void SafetyNetCheck::ClientAttestationResult(
     JNIEnv* env,
-    const base::android::JavaRef<jobject>& jobj,
     jboolean jtoken_received,
     const base::android::JavaParamRef<jstring>& jresult_string,
     jboolean jattestation_passed) {

@@ -102,7 +102,9 @@ base::FilePath BraveIpfsClientUpdater::GetExecutablePath() const {
 void BraveIpfsClientUpdater::OnEvent(Events event, const std::string& id) {
   if (id != kIpfsClientComponentId)
     return;
-
+  if (event == Events::COMPONENT_UPDATE_ERROR) {
+    registered_ = false;
+  }
   for (Observer& observer : observers_)
     observer.OnInstallationEvent(event);
 }

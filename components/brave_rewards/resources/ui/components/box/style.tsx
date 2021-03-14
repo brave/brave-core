@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import { Type } from './index'
 import Card, { CardProps } from 'brave-ui/components/layout/card'
 import TOSAndPP, { Props as TOSProps } from '../TOSAndPP'
@@ -21,7 +21,7 @@ const colors: Record<Type, string> = {
   donation: '#696FDC'
 }
 
-export const StyledWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledWrapper = styled('div')<StyleProps>`
   width: 100%;
   margin: 0 0 24px;
 `
@@ -34,19 +34,19 @@ export const StyledCard = styled(CustomCard)`
   box-shadow: 0 0;
 `
 
-export const StyledFlip = styled<StyleProps, 'div'>('div')`
+export const StyledFlip = styled('div')<StyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
 `
 
-export const StyledContentWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledContentWrapper = styled('div')<StyleProps>`
   display: ${p => p.open ? 'flex' : 'none'};
   flex-direction: column;
   width: 100%;
 `
 
-export const StyledTitle = styled<StyleProps, 'div'>('div')`
+export const StyledTitle = styled('div')<StyleProps>`
   display: flex;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 20px;
@@ -54,7 +54,7 @@ export const StyledTitle = styled<StyleProps, 'div'>('div')`
   color: ${p => p.type && colors[p.type] || '#4b4c5c'};
 `
 
-export const StyledDescription = styled<{}, 'div'>('div')`
+export const StyledDescription = styled('div')<{}>`
   width: 100%;
   font-size: 15px;
   color: ${p => p.theme.color.text};
@@ -62,7 +62,7 @@ export const StyledDescription = styled<{}, 'div'>('div')`
   line-height: 1.7;
 `
 
-export const StyledSettingsIcon = styled<StyleProps, 'button'>('button')`
+export const StyledSettingsIcon = styled('button')<StyleProps>`
   width: 24px;
   height: 24px;
   border: none;
@@ -72,19 +72,19 @@ export const StyledSettingsIcon = styled<StyleProps, 'button'>('button')`
   color: #A1A8F2;
 `
 
-export const StyledContent = styled<{}, 'div'>('div')`
+export const StyledContent = styled('div')<{}>`
   flex-basis: 100%;
   flex-grow: 1;
   margin-top: 25px;
 `
 
-export const StyledSettingsWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledSettingsWrapper = styled('div')<StyleProps>`
   background: #fff;
   display: ${p => p.open ? 'block' : 'none'};
   width: 100%;
 `
 
-export const StyledSettingsClose = styled<StyleProps, 'button'>('button')`
+export const StyledSettingsClose = styled('button')<StyleProps>`
   display: ${p => p.open ? 'block' : 'none'};
   position: absolute;
   right: 24px;
@@ -104,17 +104,17 @@ export const StyledSettingTitleWrapper = styled('div')`
   height: 100%;
 `
 
-export const StyledSettingsTitle = styled<{}, 'div'>('div')`
+export const StyledSettingsTitle = styled('div')<{}>`
   display: flex;
   margin: 0 0 24px;
 `
 
-export const StyledSettingsToggleContainer = styled<{}, 'div'>('div')`
+export const StyledSettingsToggleContainer = styled('div')<{}>`
   display: flex;
   align-items: center;
 `
 
-export const StyledSettingsText = styled<{}, 'div'>('div')`
+export const StyledSettingsText = styled('div')<{}>`
   font-size: 20px;
   font-weight: 600;
   font-family: ${p => p.theme.fontFamily.heading};

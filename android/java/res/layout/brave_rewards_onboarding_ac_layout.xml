@@ -33,7 +33,7 @@
         android:layout_marginBottom="16dp"
         android:textSize="14sp"
         android:text="@string/you_can_change_this_later"
-        android:textColor="@color/brave_rewards_modal_text_color"/>
+        android:textColor="@color/brave_rewards_tos_color"/>
 
       <TextView
         android:layout_width="wrap_content"
@@ -41,9 +41,18 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="14sp"
-        android:layout_marginBottom="8dp"
         android:text="@string/how_often_do_you_see_ads"
         android:textColor="@color/brave_rewards_modal_text_color"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/ads_per_hour"
+        android:textColor="@color/brave_rewards_tos_color"/>
 
       <RadioGroup
             android:id="@+id/hour_radio_group"
@@ -69,7 +78,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="1" />
+                android:text="@string/value_1" />
 
             <RadioButton
                 android:id="@+id/hour_2_radio"
@@ -84,7 +93,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="2" />
+                android:text="@string/value_2" />
 
               <RadioButton
                 android:id="@+id/hour_3_radio"
@@ -99,7 +108,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="3" />
+                android:text="@string/value_3" />
 
               <RadioButton
                 android:id="@+id/hour_4_radio"
@@ -114,7 +123,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="4" />
+                android:text="@string/value_4" />
 
               <RadioButton
                 android:id="@+id/hour_5_radio"
@@ -129,7 +138,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="5" />
+                android:text="@string/value_5" />
 
             </RadioGroup>
 
@@ -139,9 +148,18 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="14sp"
-        android:layout_marginBottom="8dp"
         android:text="@string/how_much_support"
         android:textColor="@color/brave_rewards_modal_text_color"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/from_your_ads_earnings"
+        android:textColor="@color/brave_rewards_tos_color"/>
 
       <RadioGroup
             android:id="@+id/contribute_radio_group"
@@ -165,7 +183,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="5 BAT" />
+                android:text="@string/value_5_bat" />
 
             <RadioButton
                 android:id="@+id/contribute_15_radio"
@@ -181,7 +199,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="15 BAT" />
+                android:text="@string/value_15_bat" />
 
               <RadioButton
                 android:id="@+id/contribute_25_radio"
@@ -196,7 +214,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="25 BAT" />
+                android:text="@string/value_25_bat" />
 
               <RadioButton
                 android:id="@+id/contribute_50_radio"
@@ -211,7 +229,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="50 BAT" />
+                android:text="@string/value_50_bat" />
 
             </RadioGroup>
 

@@ -1052,7 +1052,6 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   base::Value data(base::Value::Type::DICTIONARY);
 
   data.SetStringKey("type", wallet->type);
-  data.SetStringKey("token", wallet->token);
   data.SetStringKey("address", wallet->address);
   data.SetIntKey("status", static_cast<int>(wallet->status));
   data.SetStringKey("verifyUrl", wallet->verify_url);
@@ -1117,12 +1116,11 @@ BraveRewardsGetAdsEnabledFunction::Run() {
   return RespondNow(OneArgument(base::Value(enabled)));
 }
 
-BraveRewardsGetAdsEstimatedEarningsFunction::
-~BraveRewardsGetAdsEstimatedEarningsFunction() {
-}
+BraveRewardsGetAdsAccountStatementFunction::
+    ~BraveRewardsGetAdsAccountStatementFunction() {}
 
 ExtensionFunction::ResponseAction
-BraveRewardsGetAdsEstimatedEarningsFunction::Run() {
+BraveRewardsGetAdsAccountStatementFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   AdsService* ads_service_ =
       AdsServiceFactory::GetForProfile(profile);
@@ -1131,22 +1129,36 @@ BraveRewardsGetAdsEstimatedEarningsFunction::Run() {
     return RespondNow(Error("Ads service is not initialized"));
   }
 
-  AddRef();  // Balanced in OnAdsEstimatedEarnings().
+  AddRef();  // Balanced in OnGetAdsAccountStatement().
 
-  ads_service_->GetStatement(base::BindOnce(
-      &BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings,
+  ads_service_->GetAccountStatement(base::BindOnce(
+      &BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement,
       this));
   return RespondLater();
 }
 
-void BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings(
+void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     const bool success,
     const double estimated_pending_rewards,
-    const uint64_t next_payment_date,
-    const uint64_t ads_received_this_month,
+    const int64_t next_payment_date,
+    const int ads_received_this_month,
     const double earnings_this_month,
     const double earnings_last_month) {
-  Respond(OneArgument(base::Value(estimated_pending_rewards)));
+  if (!success) {
+    Respond(OneArgument(base::Value(success)));
+  } else {
+    base::Value statement(base::Value::Type::DICTIONARY);
+    statement.SetDoubleKey("estimatedPendingRewards",
+                           estimated_pending_rewards);
+    const std::string next_payment_date_as_string =
+        base::NumberToString(next_payment_date);
+    statement.SetStringKey("nextPaymentDate", next_payment_date_as_string);
+    statement.SetIntKey("adsReceivedThisMonth", ads_received_this_month);
+    statement.SetDoubleKey("earningsThisMonth", earnings_this_month);
+    statement.SetDoubleKey("earningsLastMonth", earnings_last_month);
+
+    Respond(TwoArguments(base::Value(success), std::move(statement)));
+  }
 
   Release();  // Balanced in Run()
 }

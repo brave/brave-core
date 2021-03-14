@@ -6,6 +6,7 @@
 
 package org.chromium.chrome.browser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +15,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import java.util.Locale;
 
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveUphold;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.R;
+
+import java.util.Locale;
 
 public class BraveRewardsVerifyWalletActivity extends Activity {
 
@@ -43,6 +45,7 @@ public class BraveRewardsVerifyWalletActivity extends Activity {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     void SetUpholdLinkHandler() {
         TextView uphold_link = (TextView)findViewById(R.id.service_provider_txt);
         final String part1 = getResources().getString(R.string.verify_wallet_service_note);

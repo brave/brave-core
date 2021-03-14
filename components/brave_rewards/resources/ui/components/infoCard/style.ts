@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledInfoCard = styled<{}, 'div'>('div')`
+export const StyledInfoCard = styled('div')<{}>`
   height: 290px;
   border-radius: 4px;
   text-align: center;
@@ -15,14 +15,14 @@ export const StyledInfoCard = styled<{}, 'div'>('div')`
   box-shadow: 0 2 4px  rgba(0,0,0,.2);
 `
 
-export const StyledTitle = styled<{}, 'strong'>('strong')`
+export const StyledTitle = styled('strong')<{}>`
   color: #222326;
   font-size: 18px;
   font-weight: 500;
   line-height: 28px;
 `
 
-export const StyledDesc = styled<{}, 'p'>('p')`
+export const StyledDesc = styled('p')<{}>`
   color: #686978;
   font-size: 16px;
   line-height: 22px;
@@ -32,7 +32,7 @@ export const StyledDesc = styled<{}, 'p'>('p')`
   font-weight: 400;
 `
 
-export const StyledFigure = styled<{}, 'figure'>('figure')`
+export const StyledFigure = styled('figure')<{}>`
   box-sizing: border-box;
   display: block;
   max-width: 100%;
@@ -40,7 +40,7 @@ export const StyledFigure = styled<{}, 'figure'>('figure')`
   height: 80px;
 `
 
-export const StyledGrid = styled<{}, 'div'>('div')`
+export const StyledGrid = styled('div')<{}>`
   display: grid;
   grid-gap: 0px;
   grid-template-columns: 1fr 1fr 1fr;
@@ -53,6 +53,6 @@ export const StyledGrid = styled<{}, 'div'>('div')`
   }
 `
 
-export const StyledColumn = styled<{}, 'div'>('div')`
+export const StyledColumn = styled('div')<{}>`
   padding: 0 10px;
 `

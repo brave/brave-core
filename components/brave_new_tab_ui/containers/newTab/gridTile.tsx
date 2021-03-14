@@ -133,7 +133,7 @@ class TopSite extends React.PureComponent<Props, State> {
           : null
         }
         { this.state.showMenu &&
-          <TileMenu innerRef={this.tileMenuRef}>
+          <TileMenu ref={this.tileMenuRef}>
             <TileMenuItem onClick={this.onEditTopSite.bind(this, siteData)}>
               <EditMenuIcon />
               {getLocale('editSiteTileMenuItem')}

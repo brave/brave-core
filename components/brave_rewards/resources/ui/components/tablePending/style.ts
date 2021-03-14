@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 import palette from 'brave-ui/theme/colors'
 
-export const StyledRemove = styled<{}, 'button'>('button')`
+export const StyledRemove = styled('button')<{}>`
   padding: 0;
   border: none;
   background: none;
@@ -14,7 +14,7 @@ export const StyledRemove = styled<{}, 'button'>('button')`
   width: 100%;
 `
 
-export const StyledRemoveIcon = styled<{}, 'span'>('span')`
+export const StyledRemoveIcon = styled('span')<{}>`
   vertical-align: middle;
   color: ${palette.grey400};
   width: 20px;
@@ -22,6 +22,6 @@ export const StyledRemoveIcon = styled<{}, 'span'>('span')`
   display: inline-block;
   margin-right: 4px;
 `
-export const StyledLink = styled<{}, 'a'>('a')`
+export const StyledLink = styled('a')<{}>`
   text-decoration: none;
 `

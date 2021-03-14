@@ -31,7 +31,8 @@
                 android:layout_weight="0.75"
                 android:scaleType="fitCenter"
                 android:src="@drawable/cover_photo"
-                android:background="@drawable/rounded_corners"/>
+                android:background="@drawable/rounded_corners"
+                android:contentDescription="@null"/>
 
             <!-- Text-->
             <ScrollView
@@ -61,7 +62,8 @@
                             android:layout_height="16dp"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="12dp"
-                            android:src="@drawable/icn_twitch" />
+                            android:src="@drawable/icn_twitch" 
+                            android:contentDescription="@null"/>
 
                         <ImageView
                             android:id="@+id/youtube_button"
@@ -69,7 +71,8 @@
                             android:layout_height="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_toStartOf="@id/chat_button"
-                            android:src="@drawable/icn_youtube" />
+                            android:src="@drawable/icn_youtube"
+                            android:contentDescription="@null" />
 
                         <ImageView
                             android:id="@+id/twitter_button"
@@ -77,7 +80,8 @@
                             android:layout_height="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_toStartOf="@id/youtube_button"
-                            android:src="@drawable/icn_twitter" />
+                            android:src="@drawable/icn_twitter"
+                            android:contentDescription="@null" />
                     </RelativeLayout>
 
                     <!-- Non verified warning-->
@@ -97,7 +101,8 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/icn_unverified_alert"
                             android:padding="10dp"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"/>
                         <TextView
                             android:id="@+id/not_verified_warning_text"
                             android:layout_width="wrap_content"
@@ -219,7 +224,8 @@
             android:layout_width="match_parent"
             android:layout_height="8dp"
             android:background="@drawable/brave_gradient_shadow"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:contentDescription="@null"/>
 
     </FrameLayout>
 
@@ -282,7 +288,7 @@
                     android:layout_gravity="start|bottom"
                     android:background="@android:color/transparent"
                     android:fontFamily="sans-serif"
-                    android:text="0.00 BAT"
+                    android:text="@string/value_0_bat"
                     android:textColor="@android:color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -317,8 +323,8 @@
                     android:paddingEnd="12dp"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textOff="1 BAT"
-                    android:textOn="1 BAT"
+                    android:textOff="@string/value_1_bat"
+                    android:textOn="@string/value_1_bat"
                     android:textSize="12sp" />
 
                 <TextView
@@ -332,7 +338,7 @@
                     android:background="@android:color/transparent"
                     android:fontFamily="sans-serif"
                     android:paddingTop="2dp"
-                    android:text="0.00 USD"
+                    android:text="@string/value_0_usd"
                     android:textSize="10sp" />
 
 
@@ -352,8 +358,8 @@
                     android:paddingEnd="12dp"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textOff="5 BAT"
-                    android:textOn="5 BAT"
+                    android:textOff="@string/value_5_bat"
+                    android:textOn="@string/value_5_bat"
                     android:textSize="12sp" />
 
                 <TextView
@@ -367,7 +373,7 @@
                     android:background="@android:color/transparent"
                     android:fontFamily="sans-serif"
                     android:paddingTop="2dp"
-                    android:text="0.00 USD"
+                    android:text="@string/value_0_usd"
                     android:textSize="10sp" />
 
                 <ToggleButton
@@ -386,8 +392,8 @@
                     android:paddingEnd="12dp"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textOff="10 BAT"
-                    android:textOn="10 BAT"
+                    android:textOff="@string/value_10_bat"
+                    android:textOn="@string/value_10_bat"
                     android:textSize="12sp" />
 
                 <TextView
@@ -401,7 +407,7 @@
                     android:background="@android:color/transparent"
                     android:fontFamily="sans-serif"
                     android:paddingTop="2dp"
-                    android:text="0.00 USD"
+                    android:text="@string/value_0_usd"
                     android:textSize="10sp" />
 
             </androidx.gridlayout.widget.GridLayout>
@@ -454,6 +460,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clickable="true"
+                    android:focusable="true"
                     android:orientation="horizontal"
                     android:visibility="visible"
                     android:background="#5e45d0"
@@ -464,6 +471,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|center"
                         android:src="@drawable/plane_small"
+                        android:contentDescription="@null"
                         android:paddingEnd="12dp"/>
 
                     <TextView
@@ -488,6 +496,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clickable="true"
+                    android:focusable="true"
                     android:orientation="horizontal"
                     android:visibility="invisible"
                     android:background="@android:color/black"
@@ -498,6 +507,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|center"
                         android:src="@drawable/icn_frowning_face"
+                        android:contentDescription="@null"
                         android:paddingEnd="12dp"/>
 
                     <TextView

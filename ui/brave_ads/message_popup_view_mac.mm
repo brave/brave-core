@@ -5,11 +5,18 @@
 
 #import "brave/ui/brave_ads/message_popup_view.h"
 
+#import <AppKit/AppKit.h>
 #import <Cocoa/Cocoa.h>
 
-#include "ui/views/widget/widget.h"
+#import "ui/gfx/mac/coordinate_conversion.h"
+#import "ui/views/widget/widget.h"
 
 namespace brave_ads {
+
+gfx::Rect MessagePopupView::GetVisibleFrameForPrimaryDisplay() const {
+  const NSRect visibleFrame = [[NSScreen mainScreen] visibleFrame];
+  return gfx::ScreenRectFromNSRect(visibleFrame);
+}
 
 float MessagePopupView::GetOpacity() const {
   if (!IsWidgetValid())

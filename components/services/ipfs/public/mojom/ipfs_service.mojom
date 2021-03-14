@@ -13,6 +13,7 @@ struct IpfsConfig {
   string gateway_port;
   string api_port;
   string swarm_port;
+  string storage_max;
 };
 
 interface IpfsService {

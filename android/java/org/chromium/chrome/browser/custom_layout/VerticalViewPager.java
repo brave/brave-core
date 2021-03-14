@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.custom_layout;
 
 // https://android.googlesource.com/platform/packages/apps/DeskClock/+/master/src/com/android/deskclock/VerticalViewPager.java
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -54,6 +55,7 @@ public class VerticalViewPager extends ViewPager {
         return toIntercept;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         final boolean toHandle = super.onTouchEvent(flipXY(ev));

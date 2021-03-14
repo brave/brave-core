@@ -1,4 +1,4 @@
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import oneTimeBgUrl from './assets/one-time-bg.svg'
 import monthlyBgUrl from './assets/monthly-bg.svg'
 import palette from 'brave-ui/theme/colors'
@@ -7,7 +7,7 @@ interface StyleProps {
   isMonthly?: boolean
 }
 
-export const StyledWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledWrapper = styled('div')<StyleProps>`
   height: 100%;
   color: #fff;
   min-height: 240px;
@@ -24,7 +24,7 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   background-position: bottom;
 `
 
-export const StyledTitle = styled<{}, 'span'>('span')`
+export const StyledTitle = styled('span')<{}>`
   display: block;
   font-size: 16px;
   font-weight: 600;
@@ -32,7 +32,7 @@ export const StyledTitle = styled<{}, 'span'>('span')`
   margin-top: 15px;
 `
 
-export const StyledSubTitle = styled<{}, 'span'>('span')`
+export const StyledSubTitle = styled('span')<{}>`
   display: block;
   font-size: 12px;
   font-weight: 400;
@@ -40,7 +40,7 @@ export const StyledSubTitle = styled<{}, 'span'>('span')`
   margin-top: 10px;
 `
 
-export const StyledTweet = styled<{}, 'div'>('div')`
+export const StyledTweet = styled('div')<{}>`
   border-radius: 50px;
   width: 96px;
   height: 96px;
@@ -49,17 +49,17 @@ export const StyledTweet = styled<{}, 'div'>('div')`
   cursor: pointer;
 `
 
-export const StyledTwitterIcon = styled<{}, 'div'>('div')`
+export const StyledTwitterIcon = styled('div')<{}>`
   height: 80px;
   padding-top: 16px;
   color: #fff;
 `
 
-export const StyledInfo = styled<{}, 'div'>('div')`
+export const StyledInfo = styled('div')<{}>`
   margin: 10px 0;
 `
 
-export const StyledInfoItem = styled<{}, 'span'>('span')`
+export const StyledInfoItem = styled('span')<{}>`
   display: block;
   margin-bottom: 5px;
   font-weight: 300;

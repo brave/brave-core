@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 
 interface WidgetPositionProps {
   menuPosition: 'right' | 'left'
@@ -24,7 +24,7 @@ const getWidgetPadding = (type: string) => {
   }
 }
 
-export const StyledWidgetContainer = styled<WidgetContainerProps, 'div'>('div')`
+export const StyledWidgetContainer = styled('div')<WidgetContainerProps>`
   display: inline-flex;
   /* For debug: */
   /* outline: 1px solid rgba(0, 185, 0, .6); */
@@ -35,7 +35,7 @@ export const StyledWidgetContainer = styled<WidgetContainerProps, 'div'>('div')`
   position: relative;
 `
 
-export const StyledWidgetMenuContainer = styled<WidgetPaddingProps, 'div'>('div')`
+export const StyledWidgetMenuContainer = styled('div')<WidgetPaddingProps>`
   position: absolute;
   top: ${({ paddingType }) => paddingType === 'right' ? 15 : 5}px;
   right: 5px;
@@ -53,7 +53,7 @@ interface WidgetPaddingProps {
   paddingType: 'none' | 'right' | 'default'
 }
 
-export const StyledWidget = styled<WidgetVisibilityProps & WidgetPaddingProps, 'div'>('div')`
+export const StyledWidget = styled('div')<WidgetVisibilityProps & WidgetPaddingProps>`
   padding: ${({ paddingType }) => getWidgetPadding(paddingType)};
   max-width: 100%;
   width: ${p => p.isCrypto ? '284px' : 'initial'};
@@ -76,7 +76,7 @@ interface WidgetMenuProps {
   textDirection: string
 }
 
-export const StyledWidgetMenu = styled<WidgetVisibilityProps & WidgetMenuProps, 'div'>('div')`
+export const StyledWidgetMenu = styled('div')<WidgetVisibilityProps & WidgetMenuProps>`
   position absolute;
   width: max-content;
   min-width: 166px;
@@ -117,7 +117,7 @@ export const StyledWidgetMenu = styled<WidgetVisibilityProps & WidgetMenuProps, 
 interface WidgetButtonProps {
   onClick: () => void
 }
-export const StyledWidgetButton = styled<WidgetButtonProps, 'button'>('button')`
+export const StyledWidgetButton = styled('button')<WidgetButtonProps>`
   border-style: none;
   background: transparent;
   padding: 0;
@@ -136,7 +136,7 @@ export const StyledWidgetButton = styled<WidgetButtonProps, 'button'>('button')`
   }
 `
 
-export const StyledWidgetLink = styled<WidgetButtonProps, 'a'>('a')`
+export const StyledWidgetLink = styled('a')<WidgetButtonProps>`
   border-style: none;
   background: transparent;
   padding: 0;
@@ -163,7 +163,7 @@ interface WidgetIconProps {
   isBinance?: boolean
 }
 
-export const StyledEllipsis = styled<WidgetVisibilityProps, 'div'>('div')`
+export const StyledEllipsis = styled('div')<WidgetVisibilityProps>`
   visibility: hidden;
   pointer-events: none;
 
@@ -178,7 +178,7 @@ export const StyledEllipsis = styled<WidgetVisibilityProps, 'div'>('div')`
   }
 `
 
-export const StyledWidgetIcon = styled<WidgetIconProps, 'div'>('div')`
+export const StyledWidgetIcon = styled('div')<WidgetIconProps>`
   height: 13px;
   width: 13px;
   margin: ${p => p.isBinance ? '0px 13px 0 12px' : '-7px 15px 0 10px'};
@@ -188,7 +188,7 @@ export const StyledWidgetIcon = styled<WidgetIconProps, 'div'>('div')`
     fill: ${p => p.theme.color.contextMenuForeground};
   }
 `
-export const StyledSpan = styled<{}, 'span'>('span')`
+export const StyledSpan = styled('span')<{}>`
   text-align: left;
   margin-right: 10px;
 `

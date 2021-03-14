@@ -4,30 +4,30 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   text-align: center;
   margin: 10px -32px 0;
   width: 333px;
 `
 
-export const StyledDropArea = styled<{}, 'img'>('img')`
+export const StyledDropArea = styled('img')<{}>`
   width: 333px;
   height: 296px;
 `
 
-export const StyledDrag = styled<{}, 'div'>('div')`
+export const StyledDrag = styled('div')<{}>`
   display: flex;
   justify-content: center;
 `
 
-export const StyledImageWrap = styled<{}, 'div'>('div')`
+export const StyledImageWrap = styled('div')<{}>`
   flex-basis: 80px;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
 `
 
-export const StyledText = styled<{}, 'div'>('div')`
+export const StyledText = styled('div')<{}>`
   flex-basis: 130px;
   font-family: Muli, sans-serif;
   font-size: 14px;
@@ -37,7 +37,7 @@ export const StyledText = styled<{}, 'div'>('div')`
   padding-left: 13px;
 `
 
-export const StyledImage = styled<{}, 'img'>('img')`
+export const StyledImage = styled('img')<{}>`
   width: 60px;
   height: 52px;
 `

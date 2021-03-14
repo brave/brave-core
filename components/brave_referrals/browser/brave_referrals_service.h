@@ -15,6 +15,7 @@
 #include "base/sequenced_task_runner.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "chrome/browser/profiles/profile_manager_observer.h"
 #include "url/gurl.h"
 
 #if defined(OS_ANDROID)
@@ -23,6 +24,7 @@
 
 class PrefRegistrySimple;
 class PrefService;
+class Profile;
 
 namespace network {
 class SimpleURLLoader;
@@ -32,12 +34,12 @@ namespace brave {
 
 std::string GetAPIKey();
 
-class BraveReferralsService {
+class BraveReferralsService : public ProfileManagerObserver {
  public:
   explicit BraveReferralsService(PrefService* pref_service,
                                  const std::string& platform,
                                  const std::string& api_key);
-  ~BraveReferralsService();
+  ~BraveReferralsService() override;
 
   void Start();
   void Stop();
@@ -56,6 +58,9 @@ class BraveReferralsService {
   static bool IsDefaultReferralCode(const std::string& code);
 
  private:
+  // ProfileManagerObserver
+  void OnProfileAdded(Profile* profile) override;
+
   void GetFirstRunTime();
   void GetFirstRunTimeDesktop();
   void PerformFinalizationChecks();

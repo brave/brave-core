@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 
-export const Grid = styled<{}, 'section'>('section')`
+export const Grid = styled('section')<{}>`
   box-sizing: border-box;
   display: grid;
   height: 100%;
@@ -45,7 +45,7 @@ export const Grid = styled<{}, 'section'>('section')`
   }
 `
 
-export const Grid2Columns = styled<{}, 'section'>('section')`
+export const Grid2Columns = styled('section')<{}>`
   box-sizing: border-box;
   display: grid;
   height: 100%;
@@ -81,7 +81,7 @@ export const Grid2Columns = styled<{}, 'section'>('section')`
   }
 `
 
-export const HeaderGrid = styled<{}, 'section'>('section')`
+export const HeaderGrid = styled('section')<{}>`
   box-sizing: border-box;
   display: grid;
   height: 100%;
@@ -110,7 +110,7 @@ export const HeaderGrid = styled<{}, 'section'>('section')`
   }
 `
 
-export const ButtonGroup = styled<{}, 'footer'>('footer')`
+export const ButtonGroup = styled('footer')<{}>`
   display: flex;
   flex: 1;
   justify-content: flex-start;

@@ -6,6 +6,7 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -88,7 +89,8 @@
         android:textColorHint="@color/onboarding_gray"
         android:textColor="@android:color/black"
         android:hint="@string/rate_feedback_hint"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="Autofill" />
 
     <LinearLayout
         android:id="@+id/brave_rate_action_layout"
@@ -105,11 +107,13 @@
             android:layout_weight="1"
             android:text="@string/never"
             android:clickable="true"
+            android:focusable="true"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackground"
             android:textColor="@color/onboarding_gray"
             android:textAllCaps="false"
             android:visibility="invisible"
+            style="?android:attr/buttonBarButtonStyle"
             android:gravity="center"/>
 
         <Button
@@ -119,10 +123,12 @@
             android:layout_weight="1"
             android:text="@string/maybe_later"
             android:clickable="true"
+            android:focusable="true"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackground"
             android:textColor="@color/onboarding_orange"
             android:textAllCaps="false"
+            style="?android:attr/buttonBarButtonStyle"
             android:gravity="center"/>
 
     </LinearLayout>

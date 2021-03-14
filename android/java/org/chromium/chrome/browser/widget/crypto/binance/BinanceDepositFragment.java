@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.widget.crypto.binance.CoinNetworkModel;
 import org.chromium.ui.widget.Toast;
 
 import java.util.List;
+import java.util.Locale;
 
 public class BinanceDepositFragment extends Fragment {
     private BinanceNativeWorker mBinanceNativeWorker;
@@ -97,7 +98,8 @@ public class BinanceDepositFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if (networksJson != null && !TextUtils.isEmpty(networksJson)) {
-                        showCoinList(networksJson, charSequence.toString().toLowerCase());
+                        showCoinList(networksJson,
+                                charSequence.toString().toLowerCase(Locale.getDefault()));
                     }
                 }
 
@@ -123,18 +125,25 @@ public class BinanceDepositFragment extends Fragment {
             }
             for (CoinNetworkModel coinNetworkModel : binanceCoinNetworks.getCoinNetworksList()) {
                 if (filterQuery == null
-                        || (coinNetworkModel.getCoin().toLowerCase().contains(filterQuery)
-                                || coinNetworkModel.getCoinDesc().toLowerCase().contains(
-                                        filterQuery))) {
+                        || (coinNetworkModel.getCoin()
+                                        .toLowerCase(Locale.getDefault())
+                                        .contains(filterQuery)
+                                || coinNetworkModel.getCoinDesc()
+                                           .toLowerCase(Locale.getDefault())
+                                           .contains(filterQuery))) {
                     final View view = inflater.inflate(R.layout.binance_deposit_item, null);
 
                     ImageView currencyImageView = view.findViewById(R.id.currency_image);
                     TextView currencyText = view.findViewById(R.id.currency_text);
 
-                    currencyText.setText(coinNetworkModel.getCoin()
-                            + (TextUtils.isEmpty(coinNetworkModel.getCoinDesc())
-                                            ? ""
-                                            : " (" + coinNetworkModel.getCoinDesc() + ")"));
+                    String currencyString =
+                            new StringBuilder(coinNetworkModel.getCoin())
+                                    .append((TextUtils.isEmpty(coinNetworkModel.getCoinDesc())
+                                                    ? ""
+                                                    : " (" + coinNetworkModel.getCoinDesc() + ")"))
+                                    .toString();
+
+                    currencyText.setText(currencyString);
                     if (coinNetworkModel.getCoinRes() == 0) {
                         currencyImageView.setImageResource(R.drawable.eth);
                         currencyImageView.setVisibility(View.INVISIBLE);
@@ -213,10 +222,15 @@ public class BinanceDepositFragment extends Fragment {
                 });
 
                 if (selectedCoinNetworkModel != null) {
-                    currencyTitleText.setText(selectedCoinNetworkModel.getCoin()
-                            + (TextUtils.isEmpty(selectedCoinNetworkModel.getCoinDesc())
-                                            ? ""
-                                            : " (" + selectedCoinNetworkModel.getCoinDesc() + ")"));
+                    String currencyTitleString =
+                            new StringBuilder(selectedCoinNetworkModel.getCoin())
+                                    .append((TextUtils.isEmpty(
+                                                     selectedCoinNetworkModel.getCoinDesc())
+                                                    ? ""
+                                                    : " (" + selectedCoinNetworkModel.getCoinDesc()
+                                                            + ")"))
+                                    .toString();
+                    currencyTitleText.setText(currencyTitleString);
                     currencyAddressText.setText(String.format(
                             getActivity().getResources().getString(R.string.currency_address_text),
                             selectedCoinNetworkModel.getCoin()));

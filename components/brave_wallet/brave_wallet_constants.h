@@ -6,7 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BRAVE_WALLET_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BRAVE_WALLET_CONSTANTS_H_
 
-enum class BraveWalletWeb3ProviderTypes { ASK, NONE, CRYPTO_WALLETS, METAMASK };
+enum class BraveWalletWeb3ProviderTypes {
+  ASK,
+  NONE,
+  CRYPTO_WALLETS,
+  METAMASK,
+  BRAVE_WALLET
+};
 
 extern const char ethereum_remote_client_extension_id[];
 extern const char ethereum_remote_client_extension_name[];

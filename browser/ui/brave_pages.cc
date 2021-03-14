@@ -55,6 +55,12 @@ void ShowExtensionSettings(Browser* browser) {
       GetSingletonTabNavigateParams(browser, GURL(kExtensionSettingsURL)));
 }
 
+void ShowWalletSettings(Browser* browser) {
+  ShowSingletonTabOverwritingNTP(
+      browser,
+      GetSingletonTabNavigateParams(browser, GURL(kWalletSettingsURL)));
+}
+
 void ShowIPFS(Browser* browser) {
   ShowSingletonTabOverwritingNTP(
       browser,

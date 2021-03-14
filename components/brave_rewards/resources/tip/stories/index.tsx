@@ -78,16 +78,8 @@ function createHostState (): HostState {
       wallets: {}
     },
     externalWalletInfo: {
-      token: '',
-      address: '1234',
       status: 0,
-      type: 'uphold',
-      verifyUrl: 'about:blank',
-      addUrl: 'about:blank',
-      withdrawUrl: 'about:blank',
-      userName: 'username',
-      accountUrl: 'about:blank',
-      loginUrl: 'about:blank'
+      type: 'uphold'
     },
     rewardsParameters: {
       tipChoices: [1, 2, 3],

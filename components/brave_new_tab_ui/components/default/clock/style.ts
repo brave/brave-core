@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 
-export const StyledClock = styled<{}, 'div'>('div')`
+export const StyledClock = styled('div')<{}>`
   color: #FFFFFF;
   box-sizing: border-box;
   line-height: 1;
@@ -15,7 +15,7 @@ export const StyledClock = styled<{}, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const StyledTime = styled<{}, 'span'>('span')`
+export const StyledTime = styled('span')<{}>`
   box-sizing: border-box;
   font-size: 78px;
   font-weight: 300;
@@ -23,7 +23,7 @@ export const StyledTime = styled<{}, 'span'>('span')`
   display: inline-flex;
 `
 
-export const StyledTimeSeparator = styled<{}, 'span'>('span')`
+export const StyledTimeSeparator = styled('span')<{}>`
   box-sizing: border-box;
   color: inherit;
   font-size: inherit;

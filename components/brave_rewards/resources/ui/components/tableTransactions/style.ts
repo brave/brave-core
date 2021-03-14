@@ -25,16 +25,16 @@ interface StyleProps {
   type: TransactionType
 }
 
-export const StyledTHLast = styled<{}, 'div'>('div')`
+export const StyledTHLast = styled('div')<{}>`
   text-align: right;
   padding-right: 14px;
 `
 
-export const StyledProvider = styled<{}, 'span'>('span')`
+export const StyledProvider = styled('span')<{}>`
   color: #9e9fab;
 `
 
-export const StyledType = styled<StyleProps, 'div'>('div')`
+export const StyledType = styled('div')<StyleProps>`
   ${getColor};
   color: var(--tableTransactions-type-color);
 `

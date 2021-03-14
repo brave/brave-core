@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import {
   Block as StandardBlock,
   Heading as StandardHeading,
@@ -21,7 +21,7 @@ export const List = styled('ul')`
   list-style: none;
 `
 
-export const ListItem = styled<{}, 'li'>('li')`
+export const ListItem = styled('li')<{}>`
   margin-bottom: 24px;
 
   a {
@@ -34,7 +34,7 @@ export const ListItem = styled<{}, 'li'>('li')`
   }
 `
 
-export const Content = styled<{}, 'div'>('div')`
+export const Content = styled('div')<{}>`
   height: auto;
   display: flex;
   flex-direction: column;

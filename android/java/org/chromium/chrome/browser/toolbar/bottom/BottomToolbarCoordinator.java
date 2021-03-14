@@ -88,14 +88,12 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private final Context mContext = ContextUtils.getApplicationContext();
 
     BottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout scrollingBottomView,
-            ViewStub stub, ActivityTabProvider tabProvider,
+            View root, ActivityTabProvider tabProvider,
             OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
             Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             BottomControlsMediator bottomControlsMediator) {
-        View root = stub.inflate();
-
         layoutStateProviderSupplier.onAvailable(
                 mCallbackController.makeCancelable(this::setLayoutStateProvider));
 

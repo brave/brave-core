@@ -109,8 +109,7 @@ class BatAdsImpl :
       const uint64_t to_timestamp,
       GetAdsHistoryCallback callback) override;
 
-  void GetStatement(
-      GetStatementCallback callback) override;
+  void GetAccountStatement(GetAccountStatementCallback callback) override;
 
   void ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -179,10 +178,10 @@ class BatAdsImpl :
       CallbackHolder<RemoveAllHistoryCallback>* holder,
       const int32_t result);
 
-  static void OnGetStatement(
-    CallbackHolder<GetStatementCallback>* holder,
-    const bool success,
-    const ads::StatementInfo& statement);
+  static void OnGetAccountStatement(
+      CallbackHolder<GetAccountStatementCallback>* holder,
+      const bool success,
+      const ads::StatementInfo& statement);
 
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
   std::unique_ptr<ads::Ads> ads_;

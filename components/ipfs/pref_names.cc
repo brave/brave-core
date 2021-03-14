@@ -30,6 +30,9 @@ const char kIPFSAutoRedirectDNSLink[] = "brave.ipfs.auto_redirect_dnslink";
 // The number of times the infobar is shown to ask the user to install IPFS
 const char kIPFSInfobarCount[] = "brave.ipfs.infobar_count";
 
+// The number of storage used by IPFS Node
+const char kIpfsStorageMax[] = "brave.ipfs.storage_max";
+
 // Used to enable/disable IPFS via admin policy.
 const char kIPFSEnabled[] = "brave.ipfs.enabled";
 

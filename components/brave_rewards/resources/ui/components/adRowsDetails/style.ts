@@ -4,36 +4,36 @@
 
 import styled from 'styled-components'
 
-export const StyledDateText = styled<{}, 'div'>('div')`
+export const StyledDateText = styled('div')<{}>`
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 14px;
   color: ${p => p.theme.color.text};
   display: inline-block;
 `
-export const StyledAdsDateRow = styled<{}, 'div'>('div')`
+export const StyledAdsDateRow = styled('div')<{}>`
   cursor: pointer;
   white-space: nowrap;
 `
 
-export const StyledAdsDetailRow = styled<{}, 'div'>('div')`
+export const StyledAdsDetailRow = styled('div')<{}>`
   text-align: left;
   padding-top: 15px;
 `
 
-export const StyledHRDiv = styled<{}, 'div'>('div')`
+export const StyledHRDiv = styled('div')<{}>`
   width: 94.5%;
   padding-left: 10px;
   display: inline-block;
 `
 
-export const StyledHR = styled<{}, 'hr'>('hr')`
+export const StyledHR = styled('hr')<{}>`
   color: ${p => p.theme.color.subtle};
   background-color: ${p => p.theme.color.subtle};
   height: 2px;
   border: none;
 `
 
-export const StyledCaratIcon = styled<{}, 'div'>('div')`
+export const StyledCaratIcon = styled('div')<{}>`
   margin: 0;
   background: none;
   border: none;
@@ -46,7 +46,7 @@ export const StyledCaratIcon = styled<{}, 'div'>('div')`
   text-align: center;
 `
 
-export const StyledAdPortionTD = styled<{}, 'td'>('td')`
+export const StyledAdPortionTD = styled('td')<{}>`
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 14px;
   font-weight: 500;
@@ -56,7 +56,7 @@ export const StyledAdPortionTD = styled<{}, 'td'>('td')`
   text-align: left;
 `
 
-export const StyledInnerStartTD = styled<{}, 'td'>('td')`
+export const StyledInnerStartTD = styled('td')<{}>`
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 14px;
   font-weight: 500;
@@ -67,6 +67,6 @@ export const StyledInnerStartTD = styled<{}, 'td'>('td')`
   height: 0%;
 `
 
-export const StyledSpaceDiv = styled<{}, 'div'>('div')`
+export const StyledSpaceDiv = styled('div')<{}>`
   min-width: 55px;
 `

@@ -5,21 +5,21 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   width: 100%;
   padding: 30px 25px 25px;
   font-family: Poppins, sans-serif;
   background-image: linear-gradient(140deg, #392DD1 0%, #8E2995 100%);
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   font-size: 16px;
   color: #F1F1F9;
   font-weight: 500;
   letter-spacing: 0;
 `
 
-export const StyledOff = styled<{}, 'div'>('div')`
+export const StyledOff = styled('div')<{}>`
   font-size: 16px;
   color: #FFFFFF;
   font-weight: 600;
@@ -27,7 +27,7 @@ export const StyledOff = styled<{}, 'div'>('div')`
   margin-left: 3px;
 `
 
-export const StyledText = styled<{}, 'div'>('div')`
+export const StyledText = styled('div')<{}>`
   color: #F1F1F9;
   font-size: 14px;
   font-family: Muli,sans-serif;
@@ -38,13 +38,13 @@ export const StyledText = styled<{}, 'div'>('div')`
   margin-top: 7px;
 `
 
-export const StyledLink = styled<{}, 'a'>('a')`
+export const StyledLink = styled('a')<{}>`
   cursor: pointer;
   margin-left: 4px;
   display: inline-block;
   color: #8D92E2;
 `
 
-export const StyledTitleWrapper = styled<{}, 'div'>('div')`
+export const StyledTitleWrapper = styled('div')<{}>`
   display: flex;
 `

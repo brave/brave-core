@@ -62,15 +62,11 @@ BraveSyncWorker::BraveSyncWorker(JNIEnv* env,
 
 BraveSyncWorker::~BraveSyncWorker() {}
 
-void BraveSyncWorker::Destroy(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BraveSyncWorker::Destroy(JNIEnv* env) {
   delete this;
 }
 
-static void JNI_BraveSyncWorker_DestroyV1LevelDb(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj) {
+static void JNI_BraveSyncWorker_DestroyV1LevelDb(JNIEnv* env) {
   base::FilePath app_data_path;
   base::PathService::Get(base::DIR_ANDROID_APP_DATA, &app_data_path);
   base::FilePath dbFilePath = app_data_path.Append(DB_FILE_NAME);
@@ -81,9 +77,7 @@ static void JNI_BraveSyncWorker_DestroyV1LevelDb(
           << status.ToString();
 }
 
-static void JNI_BraveSyncWorker_MarkSyncV1WasEnabledAndMigrated(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj) {
+static void JNI_BraveSyncWorker_MarkSyncV1WasEnabledAndMigrated(JNIEnv* env) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   Profile* profile =
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
@@ -94,8 +88,7 @@ static void JNI_BraveSyncWorker_MarkSyncV1WasEnabledAndMigrated(
 }
 
 base::android::ScopedJavaLocalRef<jstring> BraveSyncWorker::GetSyncCodeWords(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+    JNIEnv* env) {
   auto* sync_service = GetSyncService();
   std::string sync_code;
   if (sync_service)
@@ -106,7 +99,6 @@ base::android::ScopedJavaLocalRef<jstring> BraveSyncWorker::GetSyncCodeWords(
 
 void BraveSyncWorker::SaveCodeWords(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& passphrase) {
   std::string str_passphrase =
       base::android::ConvertJavaStringToUTF8(passphrase);
@@ -134,9 +126,7 @@ syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
 // Most of methods below were taken from by PeopleHandler class to
 // bring the logic of enabling / disabling sync from deskop to Android
 
-void BraveSyncWorker::RequestSync(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BraveSyncWorker::RequestSync(JNIEnv* env) {
   syncer::SyncService* service =
       ProfileSyncServiceFactory::GetForProfile(profile_);
 
@@ -175,23 +165,17 @@ void BraveSyncWorker::MarkFirstSetupComplete() {
       syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
 }
 
-void BraveSyncWorker::FinalizeSyncSetup(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BraveSyncWorker::FinalizeSyncSetup(JNIEnv* env) {
   MarkFirstSetupComplete();
 }
 
-bool BraveSyncWorker::IsFirstSetupComplete(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+bool BraveSyncWorker::IsFirstSetupComplete(JNIEnv* env) {
   syncer::SyncService* sync_service = GetSyncService();
   return sync_service &&
          sync_service->GetUserSettings()->IsFirstSetupComplete();
 }
 
-void BraveSyncWorker::ResetSync(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BraveSyncWorker::ResetSync(JNIEnv* env) {
   auto* sync_service = GetSyncService();
 
   if (!sync_service)
@@ -204,17 +188,13 @@ void BraveSyncWorker::ResetSync(
                                        weak_ptr_factory_.GetWeakPtr()));
 }
 
-bool BraveSyncWorker::GetSyncV1WasEnabled(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+bool BraveSyncWorker::GetSyncV1WasEnabled(JNIEnv* env) {
   brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   bool sync_v1_was_enabled = brave_sync_prefs.IsSyncV1Enabled();
   return sync_v1_was_enabled;
 }
 
-bool BraveSyncWorker::GetSyncV2MigrateNoticeDismissed(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+bool BraveSyncWorker::GetSyncV2MigrateNoticeDismissed(JNIEnv* env) {
   brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   bool sync_v2_migration_notice_dismissed =
       brave_sync_prefs.IsSyncMigrateNoticeDismissed();
@@ -223,7 +203,6 @@ bool BraveSyncWorker::GetSyncV2MigrateNoticeDismissed(
 
 void BraveSyncWorker::SetSyncV2MigrateNoticeDismissed(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     bool sync_v2_migration_notice_dismissed) {
   brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   brave_sync_prefs.SetDismissSyncMigrateNotice(
@@ -294,10 +273,9 @@ static void JNI_BraveSyncWorker_Init(
   new BraveSyncWorker(env, jcaller);
 }
 
-base::android::ScopedJavaLocalRef<jstring>
+static base::android::ScopedJavaLocalRef<jstring>
 JNI_BraveSyncWorker_GetSeedHexFromWords(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& seed_words) {
   std::string str_seed_words =
       base::android::ConvertJavaStringToUTF8(seed_words);
@@ -315,10 +293,9 @@ JNI_BraveSyncWorker_GetSeedHexFromWords(
   return base::android::ConvertUTF8ToJavaString(env, sync_code_hex);
 }
 
-base::android::ScopedJavaLocalRef<jstring>
+static base::android::ScopedJavaLocalRef<jstring>
 JNI_BraveSyncWorker_GetWordsFromSeedHex(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& seed_hex) {
   std::string str_seed_hex = base::android::ConvertJavaStringToUTF8(seed_hex);
   DCHECK(!str_seed_hex.empty());

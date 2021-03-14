@@ -9,6 +9,7 @@ package org.chromium.chrome.browser.widget.crypto.binance;
 
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class BinanceNativeWorker {
 
     private void Init() {
         if (mNativeBinanceNativeWorker == 0) {
-            nativeInit();
+            BinanceNativeWorkerJni.get().init(this);
         }
     }
 
@@ -49,7 +50,7 @@ public class BinanceNativeWorker {
 
     private void Destroy() {
         if (mNativeBinanceNativeWorker != 0) {
-            nativeDestroy(mNativeBinanceNativeWorker);
+            BinanceNativeWorkerJni.get().destroy(mNativeBinanceNativeWorker, this);
             mNativeBinanceNativeWorker = 0;
         }
     }
@@ -68,18 +69,18 @@ public class BinanceNativeWorker {
 
     public void getAccessToken() {
         synchronized (lock) {
-            nativeGetAccessToken(mNativeBinanceNativeWorker);
+            BinanceNativeWorkerJni.get().getAccessToken(mNativeBinanceNativeWorker);
         }
     }
 
     public boolean IsSupportedRegion() {
         synchronized(lock) {
-            return nativeIsSupportedRegion(mNativeBinanceNativeWorker);
+            return BinanceNativeWorkerJni.get().isSupportedRegion(mNativeBinanceNativeWorker);
         }
     }
 
     public String getLocaleForURL() {
-        return nativeGetLocaleForURL(mNativeBinanceNativeWorker);
+        return BinanceNativeWorkerJni.get().getLocaleForURL(mNativeBinanceNativeWorker);
     }
 
     @CalledByNative
@@ -146,55 +147,57 @@ public class BinanceNativeWorker {
     }
 
     public String getOAuthClientUrl() {
-        return nativeGetOAuthClientUrl(mNativeBinanceNativeWorker);
+        return BinanceNativeWorkerJni.get().getOAuthClientUrl(mNativeBinanceNativeWorker);
     }
 
     public void setAuthToken(String authToken) {
-        nativeSetAuthToken(mNativeBinanceNativeWorker, authToken);
+        BinanceNativeWorkerJni.get().setAuthToken(mNativeBinanceNativeWorker, authToken);
     }
 
     public void getAccountBalances() {
-        nativeGetAccountBalances(mNativeBinanceNativeWorker);
+        BinanceNativeWorkerJni.get().getAccountBalances(mNativeBinanceNativeWorker);
     }
 
     public void getConvertQuote(String from, String to, String amount) {
-        nativeGetConvertQuote(mNativeBinanceNativeWorker, from, to, amount);
+        BinanceNativeWorkerJni.get().getConvertQuote(mNativeBinanceNativeWorker, from, to, amount);
     }
 
     public void getCoinNetworks() {
-        nativeGetCoinNetworks(mNativeBinanceNativeWorker);
+        BinanceNativeWorkerJni.get().getCoinNetworks(mNativeBinanceNativeWorker);
     }
 
     public void getDepositInfo(String symbol, String tickerNetwork) {
-        nativeGetDepositInfo(mNativeBinanceNativeWorker, symbol, tickerNetwork);
+        BinanceNativeWorkerJni.get().getDepositInfo(
+                mNativeBinanceNativeWorker, symbol, tickerNetwork);
     }
 
     public void confirmConvert(String quoteId) {
-        nativeConfirmConvert(mNativeBinanceNativeWorker, quoteId);
+        BinanceNativeWorkerJni.get().confirmConvert(mNativeBinanceNativeWorker, quoteId);
     }
 
     public void getConvertAssets() {
-        nativeGetConvertAssets(mNativeBinanceNativeWorker);
+        BinanceNativeWorkerJni.get().getConvertAssets(mNativeBinanceNativeWorker);
     }
 
     public void revokeToken() {
-        nativeRevokeToken(mNativeBinanceNativeWorker);
+        BinanceNativeWorkerJni.get().revokeToken(mNativeBinanceNativeWorker);
     }
 
-    private native void nativeInit();
-    private native void nativeDestroy(long nativeBinanceNativeWorker);
-    private native String nativeGetOAuthClientUrl(long nativeBinanceNativeWorker);
-    private native void nativeGetAccessToken(long nativeBinanceNativeWorker);
-    private native boolean nativeIsSupportedRegion(long nativeBinanceNativeWorker);
-    private native String nativeGetLocaleForURL(long nativeBinanceNativeWorker);
-    private native void nativeSetAuthToken(long nativeBinanceNativeWorker, String authToken);
-    private native void nativeGetAccountBalances(long nativeBinanceNativeWorker);
-    private native void nativeGetConvertQuote(
-            long nativeBinanceNativeWorker, String from, String to, String amount);
-    private native void nativeGetCoinNetworks(long nativeBinanceNativeWorker);
-    private native void nativeGetDepositInfo(
-            long nativeBinanceNativeWorker, String symbol, String tickerNetwork);
-    private native void nativeConfirmConvert(long nativeBinanceNativeWorker, String quoteId);
-    private native void nativeGetConvertAssets(long nativeBinanceNativeWorker);
-    private native void nativeRevokeToken(long nativeBinanceNativeWorker);
+    @NativeMethods
+    interface Natives {
+        void init(BinanceNativeWorker caller);
+        void destroy(long nativeBinanceNativeWorker, BinanceNativeWorker caller);
+        String getOAuthClientUrl(long nativeBinanceNativeWorker);
+        void getAccessToken(long nativeBinanceNativeWorker);
+        boolean isSupportedRegion(long nativeBinanceNativeWorker);
+        String getLocaleForURL(long nativeBinanceNativeWorker);
+        void setAuthToken(long nativeBinanceNativeWorker, String authToken);
+        void getAccountBalances(long nativeBinanceNativeWorker);
+        void getConvertQuote(long nativeBinanceNativeWorker, String from, String to, String amount);
+        void getCoinNetworks(long nativeBinanceNativeWorker);
+        void getDepositInfo(long nativeBinanceNativeWorker, String symbol, String tickerNetwork);
+        void confirmConvert(long nativeBinanceNativeWorker, String quoteId);
+        void getConvertAssets(long nativeBinanceNativeWorker);
+        void revokeToken(long nativeBinanceNativeWorker);
+    }
 }
