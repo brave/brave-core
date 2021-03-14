@@ -6,6 +6,7 @@ const fs = require('fs-extra')
 const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
 const Log = require('./sync/logging')
+const os = require('os')
 
 const fixPywin32 = (options = {}) => {
   if (process.platform !== 'win32') {
@@ -473,12 +474,20 @@ const util = {
       util.run('goma_ctl', ['ensure_start'], options)
     }
 
+    const cpuCount = os.cpus().length
+    let jValue = cpuCount + 2
+    if (config.useGoma()) {
+      const coreMultiplier = 40
+      jValue = coreMultiplier * cpuCount
+    }
+
     let ninjaOpts = [
       '-C', config.outputDir, config.buildTarget,
       '-k', num_compile_failure,
+      '-j', jValue,
       ...config.extraNinjaOpts
     ]
-    util.run('autoninja', ninjaOpts, options)
+    util.run('ninja', ninjaOpts, options)
   },
 
   generateXcodeWorkspace: (options = config.defaultOptions) => {
