@@ -45,10 +45,41 @@ class BraveTodaySettingsViewController: TableViewController {
     }
     
     private func reloadSections() {
+        // If a user hasn't opted in, they must do so before using Brave Today's features
+        if !Preferences.BraveToday.userOptedIn.value {
+            dataSource.sections = [
+                .init(
+                    rows: [
+                        .init(
+                            text: Strings.BraveToday.braveToday,
+                            detailText: Strings.BraveToday.introCardBody,
+                            cellClass: MultilineSubtitleCell.self
+                        ),
+                        .init(
+                            text: Strings.BraveToday.turnOnBraveToday,
+                            selection: { [unowned self] in
+                                Preferences.BraveToday.isShowingOptIn.value = false
+                                Preferences.BraveToday.userOptedIn.value = true
+                                Preferences.BraveToday.isEnabled.value = true
+                                if self.feedDataSource.shouldLoadContent {
+                                    self.feedDataSource.load()
+                                }
+                                self.reloadSections()
+                            },
+                            cellClass: CenteredButtonCell.self
+                        )
+                    ]
+                )
+            ]
+            return
+        }
         dataSource.sections = [
             .init(
                 rows: [
-                    .boolRow(title: Strings.BraveToday.isEnabledToggleLabel, option: Preferences.BraveToday.isEnabled)
+                    .boolRow(
+                        title: Strings.BraveToday.isEnabledToggleLabel,
+                        option: Preferences.BraveToday.isEnabled
+                    )
                 ]
             ),
             .init(

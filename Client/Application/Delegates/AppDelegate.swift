@@ -123,10 +123,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         }
         
         #if !NO_BRAVE_TODAY
+        if Preferences.BraveToday.isEnabled.value && !Preferences.BraveToday.userOptedIn.value {
+            // Opt-out any user that has not explicitly opted-in
+            Preferences.BraveToday.isEnabled.value = false
+            // User now has to explicitly opt-in
+            Preferences.BraveToday.isShowingOptIn.value = true
+        }
+        
         if !Preferences.BraveToday.languageChecked.value,
            let languageCode = Locale.preferredLanguages.first?.prefix(2) {
             Preferences.BraveToday.languageChecked.value = true
-            Preferences.BraveToday.isEnabled.value = FeedDataSource.supportedLanguages.contains(String(languageCode))
+            // Base opt-in visibility on whether or not the user's language is supported in BT
+            Preferences.BraveToday.isShowingOptIn.value = FeedDataSource.supportedLanguages.contains(String(languageCode))
         }
         #endif
 

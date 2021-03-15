@@ -90,6 +90,16 @@ open class Button: UIButton {
     }
   }
   
+  public override var isHighlighted: Bool {
+    didSet {
+      if buttonType == .system { return }
+      UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1.0) {
+        self.alpha = self.isHighlighted ? 0.6 : 1.0
+      }
+      .startAnimation()
+    }
+  }
+  
   // MARK: - Image Placement
   
   open var flipImageOrigin: Bool = false
