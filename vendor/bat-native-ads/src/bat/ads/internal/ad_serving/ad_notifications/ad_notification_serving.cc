@@ -19,7 +19,6 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_values.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
@@ -29,8 +28,8 @@
 #include "bat/ads/internal/p2a/p2a.h"
 #include "bat/ads/internal/p2a/p2a_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
+#include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/internal/time_formatting_util.h"
-#include "bat/ads/pref_names.h"
 
 namespace ads {
 namespace ad_notifications {
@@ -326,8 +325,8 @@ void AdServing::DeliveredAd() {
     return;
   }
 
-  const int64_t seconds = base::Time::kSecondsPerHour /
-      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
+  const int64_t seconds =
+      base::Time::kSecondsPerHour / settings::GetAdsPerHour();
 
   const base::TimeDelta delay = base::TimeDelta::FromSeconds(seconds);
 

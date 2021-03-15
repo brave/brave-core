@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/containers/flat_map.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
@@ -21,6 +22,7 @@
 #include "base/guid.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/numerics/ranges.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
@@ -44,7 +46,6 @@
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/browser/prefs_util.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
@@ -515,9 +516,19 @@ bool AdsServiceImpl::IsEnabled() const {
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
-  return base::ClampToRange(GetUint64Pref(ads::prefs::kAdsPerHour),
-      static_cast<uint64_t>(ads::kMinimumAdNotificationsPerHour),
-          static_cast<uint64_t>(ads::kMaximumAdNotificationsPerHour));
+  uint64_t ads_per_hour = GetUint64Pref(ads::prefs::kAdsPerHour);
+  if (ads_per_hour == 0) {
+    const base::Feature kAdServing{"AdServing",
+                                   base::FEATURE_ENABLED_BY_DEFAULT};
+
+    ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
+        kAdServing, "default_ad_notifications_per_hour",
+        ads::kDefaultAdNotificationsPerHour);
+  }
+
+  return base::ClampToRange(
+      ads_per_hour, static_cast<uint64_t>(ads::kMinimumAdNotificationsPerHour),
+      static_cast<uint64_t>(ads::kMaximumAdNotificationsPerHour));
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
@@ -1335,7 +1346,7 @@ void AdsServiceImpl::MigratePrefs() {
     VLOG(1) << "Migrating ads preferences";
   }
 
-  auto source_version = GetPrefsVersion();
+  auto source_version = GetIntegerPref(prefs::kVersion);
   auto dest_version = prefs::kCurrentVersionNumber;
 
   if (!MigratePrefs(source_version, dest_version, true)) {
@@ -1357,6 +1368,8 @@ bool AdsServiceImpl::MigratePrefs(
   DCHECK(source_version <= dest_version) << "Invalid migration path";
 
   if (source_version == dest_version) {
+    SetIntegerPref(prefs::kVersion, dest_version);
+
     if (!is_dry_run) {
       VLOG(2) << "Ads preferences are up to date on version " << dest_version;
     }
@@ -1370,18 +1383,17 @@ bool AdsServiceImpl::MigratePrefs(
   //   {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
   //   {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
 
-  static std::map<std::pair<int, int>, void (AdsServiceImpl::*)()>
-      mappings {
-    // {{from version, to version}, function}
-    {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
-    {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
-    {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
-    {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
-    {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
-    {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
-    {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
-    {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9}
-  };
+  static std::map<std::pair<int, int>, void (AdsServiceImpl::*)()> mappings{
+      // {{from version, to version}, function}
+      {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
+      {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
+      {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
+      {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
+      {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
+      {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
+      {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
+      {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9},
+      {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10}};
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
   // should migrate version 2 to 3, then 3 to 4 and finally version 4 to 5
@@ -1588,8 +1600,19 @@ void AdsServiceImpl::MigratePrefsVersion8To9() {
   // deprecation of prefs::kAdsPerDay
 }
 
-int AdsServiceImpl::GetPrefsVersion() const {
-  return GetIntegerPref(prefs::kVersion);
+void AdsServiceImpl::MigratePrefsVersion9To10() {
+  const uint64_t ads_per_hour = GetUint64Pref(ads::prefs::kAdsPerHour);
+  if (ads_per_hour == 0) {
+    // Default value
+    return;
+  }
+
+  if (ads_per_hour != 2) {
+    // User changed ads per day from the legacy default value
+    return;
+  }
+
+  SetUint64Pref(ads::prefs::kAdsPerHour, 0);
 }
 
 bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
@@ -1990,16 +2013,8 @@ void AdsServiceImpl::Log(
   }
 }
 
-bool AdsServiceImpl::GetBooleanPref(
-    const std::string& path) const {
-  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
-  if (!value) {
-    return false;
-  }
-
-  DCHECK(value->is_bool());
-
-  return value->GetBool();
+bool AdsServiceImpl::GetBooleanPref(const std::string& path) const {
+  return profile_->GetPrefs()->GetBoolean(path);
 }
 
 void AdsServiceImpl::SetBooleanPref(
@@ -2008,16 +2023,8 @@ void AdsServiceImpl::SetBooleanPref(
   profile_->GetPrefs()->SetBoolean(path, value);
 }
 
-int AdsServiceImpl::GetIntegerPref(
-    const std::string& path) const {
-  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
-  if (!value) {
-    return 0;
-  }
-
-  DCHECK(value->is_int());
-
-  return value->GetInt();
+int AdsServiceImpl::GetIntegerPref(const std::string& path) const {
+  return profile_->GetPrefs()->GetInteger(path);
 }
 
 void AdsServiceImpl::SetIntegerPref(
@@ -2026,16 +2033,8 @@ void AdsServiceImpl::SetIntegerPref(
   profile_->GetPrefs()->SetInteger(path, value);
 }
 
-double AdsServiceImpl::GetDoublePref(
-    const std::string& path) const {
-  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
-  if (!value) {
-    return 0.0;
-  }
-
-  DCHECK(value->is_double() || value->is_int());
-
-  return value->GetDouble();
+double AdsServiceImpl::GetDoublePref(const std::string& path) const {
+  return profile_->GetPrefs()->GetDouble(path);
 }
 
 void AdsServiceImpl::SetDoublePref(
@@ -2044,16 +2043,8 @@ void AdsServiceImpl::SetDoublePref(
   profile_->GetPrefs()->SetDouble(path, value);
 }
 
-std::string AdsServiceImpl::GetStringPref(
-    const std::string& path) const {
-  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
-  if (!value) {
-    return "";
-  }
-
-  DCHECK(value->is_string());
-
-  return value->GetString();
+std::string AdsServiceImpl::GetStringPref(const std::string& path) const {
+  return profile_->GetPrefs()->GetString(path);
 }
 
 void AdsServiceImpl::SetStringPref(
@@ -2062,19 +2053,12 @@ void AdsServiceImpl::SetStringPref(
   profile_->GetPrefs()->SetString(path, value);
 }
 
-int64_t AdsServiceImpl::GetInt64Pref(
-    const std::string& path) const {
-  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
-  if (!value) {
-    return 0;
-  }
-
-  std::string string = "0";
-  bool success = value->GetAsString(&string);
-  DCHECK(success);
+int64_t AdsServiceImpl::GetInt64Pref(const std::string& path) const {
+  const std::string integer_as_string = profile_->GetPrefs()->GetString(path);
+  DCHECK(!integer_as_string.empty());
 
   int64_t integer;
-  base::StringToInt64(string, &integer);
+  base::StringToInt64(integer_as_string, &integer);
   return integer;
 }
 
@@ -2084,19 +2068,12 @@ void AdsServiceImpl::SetInt64Pref(
   profile_->GetPrefs()->SetInt64(path, value);
 }
 
-uint64_t AdsServiceImpl::GetUint64Pref(
-    const std::string& path) const {
-  const base::Value* value = prefs::GetValue(profile_->GetPrefs(), path);
-  if (!value) {
-    return 0;
-  }
-
-  std::string string = "0";
-  bool success = value->GetAsString(&string);
-  DCHECK(success);
+uint64_t AdsServiceImpl::GetUint64Pref(const std::string& path) const {
+  const std::string integer_as_string = profile_->GetPrefs()->GetString(path);
+  DCHECK(!integer_as_string.empty());
 
   uint64_t integer;
-  base::StringToUint64(string, &integer);
+  base::StringToUint64(integer_as_string, &integer);
   return integer;
 }
 
