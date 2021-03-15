@@ -7,6 +7,9 @@ include_rules = [
 
 # Existing exceptions
 specific_include_rules = {
+  "brave_referrals_service.h": [
+    "+chrome/browser/profiles/profile_manager_observer.h",
+  ],
   "brave_referrals_service.cc": [
     "+brave/common/network_constants.h",
     "+brave/common/pref_names.h",
