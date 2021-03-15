@@ -132,7 +132,6 @@ const Config = function () {
   this.braveAndroidKeystorePassword = getNPMConfig(['brave_android_keystore_password'])
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
   this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
-  this.dcheckAlwaysOn = getNPMConfig(['dcheck_always_on']) || true
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -197,7 +196,7 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild() && !this.isAsan(),
     is_debug: this.isDebug(),
-    dcheck_always_on: this.dcheckAlwaysOn,
+    dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.buildConfig !== 'Release',
     brave_channel: this.channel,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,
@@ -360,7 +359,10 @@ Config.prototype.buildArgs = function () {
     args.ios_deployment_target = '12.0'
     args.ios_enable_code_signing = false
     args.fatal_linker_warnings = !this.isComponentBuild()
-    args.dcheck_always_on = this.dcheckAlwaysOn
+    // DCHECK's crash on Static builds without allowing the debugger to continue
+    // Can be removed when approprioate DCHECK's have been fixed:
+    // https://github.com/brave/brave-browser/issues/10334
+    args.dcheck_always_on = this.isDebug()
 
     args.ios_enable_content_widget_extension = false
     args.ios_enable_search_widget_extension = false
