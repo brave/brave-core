@@ -35,6 +35,7 @@
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/client/client.h"
@@ -217,7 +218,7 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
 }
 
 void AdsImpl::OnForeground() {
-  TabManager::Get()->OnForegrounded();
+  BrowserManager::Get()->OnForegrounded();
 
   MaybeUpdateCatalog();
 
@@ -225,7 +226,7 @@ void AdsImpl::OnForeground() {
 }
 
 void AdsImpl::OnBackground() {
-  TabManager::Get()->OnBackgrounded();
+  BrowserManager::Get()->OnBackgrounded();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
@@ -243,6 +244,12 @@ void AdsImpl::OnTabUpdated(const int32_t tab_id,
                            const bool is_active,
                            const bool is_browser_active,
                            const bool is_incognito) {
+  if (is_browser_active) {
+    BrowserManager::Get()->OnActive();
+  } else {
+    BrowserManager::Get()->OnInactive();
+  }
+
   const bool is_visible = is_active && is_browser_active;
   TabManager::Get()->OnUpdated(tab_id, url, is_visible, is_incognito);
 }
@@ -320,20 +327,20 @@ AdsHistoryInfo AdsImpl::GetAdsHistory(
   return history::Get(filter_type, sort_type, from_timestamp, to_timestamp);
 }
 
-void AdsImpl::GetStatement(GetStatementCallback callback) {
-  StatementInfo statement_of_account;
+void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
+  StatementInfo statement;
 
   if (!IsInitialized()) {
-    callback(/* success */ false, statement_of_account);
+    callback(/* success */ false, statement);
     return;
   }
 
   const int64_t to_timestamp =
       static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
-  statement_of_account = account_->GetStatement(0, to_timestamp);
+  statement = account_->GetStatement(0, to_timestamp);
 
-  callback(/* success */ true, statement_of_account);
+  callback(/* success */ true, statement);
 }
 
 AdContentInfo::LikeAction AdsImpl::ToggleAdThumbUp(
@@ -445,6 +452,8 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   new_tab_page_ad_ = std::make_unique<NewTabPageAd>();
   new_tab_page_ad_->AddObserver(this);
+
+  browser_manager_ = std::make_unique<BrowserManager>();
 
   tab_manager_ = std::make_unique<TabManager>();
 
@@ -578,7 +587,7 @@ void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
     return;
   }
 
-  if (TabManager::Get()->IsForegrounded() ||
+  if (BrowserManager::Get()->IsActive() ||
       AdsClientHelper::Get()->CanShowBackgroundNotifications()) {
     ad_notification_serving_->ServeAtRegularIntervals();
   } else {

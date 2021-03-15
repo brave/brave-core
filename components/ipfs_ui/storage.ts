@@ -20,7 +20,8 @@ export const defaultState: IPFS.State = {
     installed: false,
     launched: false,
     restarting: false,
-    installing: false
+    installing: false,
+    error: ''
   },
   garbageCollectionStatus: {
     success: true,
@@ -37,6 +38,10 @@ export const defaultState: IPFS.State = {
   nodeInfo: {
     id: '',
     version: ''
+  },
+  installationProgress: {
+    total_bytes: -1,
+    downloaded_bytes: -1
   }
 }
 

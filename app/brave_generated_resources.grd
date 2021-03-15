@@ -170,7 +170,7 @@
         Sync
       </message>
       <message name="IDS_SHOW_BRAVE_WALLET" desc="The show Brave Wallet menu item (app menu)">
-        Crypto Wallets
+        Wallet
       </message>
       <message name="IDS_ADD_NEW_PROFILE" desc="The app menu item to create a new User Profile">
         Create a New Profile
@@ -340,8 +340,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_LOCATION_BAR_OPEN_IN_TOR" desc="Button in location bar to open onion available site in tor window.">
         Open in Tor
       </message>
-      <message name="IDS_LOCATION_BAR_OPEN_IN_IPFS" desc="Button in location bar to open ipfs available site.">
-        Open in IPFS
+      <message name="IDS_LOCATION_BAR_OPEN_USING_IPFS" desc="Button in location bar to open ipfs available site.">
+        Open using IPFS
       </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         Onion Available
@@ -676,6 +676,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
         Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
       </message>
+      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE" desc="Select control value for which web3 provider to use">
+        Brave Wallet
+      </message>
       <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_ASK" desc="Select control value for which web3 provider to use">
         Ask
       </message>
@@ -685,6 +688,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS" desc="Select control value for which web3 provider to use">
         Crypto Wallets
       </message>
+      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS_DEPRECATED" desc="Select control value for which web3 provider to use">
+        Deprecated Crypto Wallets extension
+      </message>
       <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_METAMASK" desc="Select control value for which web3 provider to use">
         MetaMask
       </message>
@@ -693,6 +699,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP" desc="The description for always loading the Crypto Wallets extension on startup">
         Load Crypto Wallets on startup
+      </message>
+      <message name="IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP_DEPRECATED" desc="The description for always loading the Crypto Wallets extension on startup">
+        Load deprecated Crypto Wallets extension on startup
       </message>
       <message name="IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS" desc="Label for a switch control which allows Google login for extension">
         Allow Google login for extensions
@@ -729,6 +738,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_LABEL" desc="The text label for IPFS gateway input field">
         Gateway address
+      </message>
+      <message name="IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_LABEL" desc="The text label for Maximum IPFS cache size field">
+        Maximum IPFS cache size (GB)
+      </message>
+      <message name="IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_DESC" desc="The text label for Maximum IPFS cache size field">
+        A soft upper limit for the size of the IPFS repository's datastore.
       </message>
       <message name="IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS" desc="The error message used when user input an invalid gateway address">
         Invalid gateway address
@@ -1015,8 +1030,8 @@ up to 6x faster on major news sites.
       <message name="IDS_BRAVE_CRYPTO_WALLETS_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
         Set up Crypto Wallets to interact with this app and others like it.
       </message>
-      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS" desc="Setup Crypto Wallets">
-        Setup Crypto Wallets
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS" desc="Set up Crypto Wallets">
+        Set up Crypto Wallets
       </message>
        <message name="IDS_BRAVE_CRYPTO_WALLETS_START_AND_RELOAD" desc="Start Crypto Wallets and reload">
         Start Crypto Wallets and reload

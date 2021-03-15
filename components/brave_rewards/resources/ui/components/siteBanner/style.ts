@@ -23,14 +23,14 @@ const getBgStyle = (monthly?: boolean) => {
   return `background-image: linear-gradient(180deg, #FF8907 0%, ${palette.orange500} 100%)`
 }
 
-export const StyledWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledWrapper = styled('div')<StyleProps>`
   overflow-y: auto;
   height: auto;
   padding: 0px;
   font-family: Poppins, sans-serif;
 `
 
-export const StyledContentWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledContentWrapper = styled('div')<StyleProps>`
   display: flex;
   justify-content: space-between;
   align-items: stretch;
@@ -40,7 +40,7 @@ export const StyledContentWrapper = styled<StyleProps, 'div'>('div')`
   margin: 0 auto;
 `
 
-export const StyledContent = styled<{}, 'div'>('div')`
+export const StyledContent = styled('div')<{}>`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: calc(100% - 336px);
@@ -51,7 +51,7 @@ export const StyledContent = styled<{}, 'div'>('div')`
   align-content: space-between;
 `
 
-export const StyledDonation = styled<StyleProps, 'div'>('div')`
+export const StyledDonation = styled('div')<StyleProps>`
   flex-basis: 336px;
   ${p => getBgStyle(p.monthly)};
   justify-content: space-between;
@@ -59,13 +59,13 @@ export const StyledDonation = styled<StyleProps, 'div'>('div')`
   flex-direction: column;
 `
 
-export const StyledBanner = styled<StyleProps, 'div'>('div')`
+export const StyledBanner = styled('div')<StyleProps>`
   position: relative;
   min-width: 900px;
   background: #DBE3F3;
 `
 
-export const StyledBannerImage = styled<Partial<Props>, 'div'>('div')`
+export const StyledBannerImage = styled('div')<Partial<Props>>`
   font-size: 38px;
   font-weight: 600;
   line-height: 0.74;
@@ -79,11 +79,11 @@ export const StyledBannerImage = styled<Partial<Props>, 'div'>('div')`
 `
 
 // 900:176 is the aspect ratio for banner images.
-export const StyledBannerFiller = styled<{}, 'div'>('div')`
+export const StyledBannerFiller = styled('div')<{}>`
   padding-top: calc(176 / 900 * 100%);
 `
 
-export const StyledClose = styled<{}, 'button'>('button')`
+export const StyledClose = styled('button')<{}>`
   top: 16px;
   right: 16px;
   position: absolute;
@@ -97,13 +97,13 @@ export const StyledClose = styled<{}, 'button'>('button')`
   filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, .4));
 `
 
-export const StyledLogoWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledLogoWrapper = styled('div')<StyleProps>`
   padding-left: 45px;
   flex-basis: 217px;
   position: relative;
 `
 
-export const StyledLogoText = styled<StyleProps, 'div'>('div')`
+export const StyledLogoText = styled('div')<StyleProps>`
   background: inherit;
   -webkit-background-clip: text;
   color: transparent;
@@ -118,7 +118,7 @@ export const StyledLogoText = styled<StyleProps, 'div'>('div')`
   margin-top: 0px;
 `
 
-export const StyledLogoBorder = styled<StyleProps, 'div'>('div')`
+export const StyledLogoBorder = styled('div')<StyleProps>`
   border: 6px solid #fff;
   border-radius: 50%;
   width: 160px;
@@ -129,13 +129,13 @@ export const StyledLogoBorder = styled<StyleProps, 'div'>('div')`
   overflow: hidden;
 `
 
-export const StyledTextWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledTextWrapper = styled('div')<StyleProps>`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: calc(100% - 217px);
 `
 
-export const StyledTitle = styled<StyleProps, 'div'>('div')`
+export const StyledTitle = styled('div')<StyleProps>`
   font-size: ${p => p.isTwitterTip ? 18 : 28}px;
   font-weight: 600;
   line-height: 1;
@@ -144,7 +144,7 @@ export const StyledTitle = styled<StyleProps, 'div'>('div')`
   padding-left: 0px;
 `
 
-export const StyledText = styled<StyleProps, 'div'>('div')`
+export const StyledText = styled('div')<StyleProps>`
   font-family: Muli, sans-serif;
   font-size: 16px;
   line-height: 1.5;
@@ -153,7 +153,7 @@ export const StyledText = styled<StyleProps, 'div'>('div')`
   padding-left: 0px;
 `
 
-export const StyledWallet = styled<StyleProps, 'div'>('div')`
+export const StyledWallet = styled('div')<StyleProps>`
   font-size: 12px;
   color: ${p => p.monthly ? '#fff' : '#afb2f1'};
   text-align: right;
@@ -161,22 +161,22 @@ export const StyledWallet = styled<StyleProps, 'div'>('div')`
   padding: 0 19px 0 55px;
 `
 
-export const StyledTokens = styled<{}, 'span'>('span')`
+export const StyledTokens = styled('span')<{}>`
   color: #fff;
 `
 
-export const StyledOption = styled<{}, 'span'>('span')`
+export const StyledOption = styled('span')<{}>`
   color: rgba(255, 255, 255, 0.65);
 `
 
-export const StyledCenter = styled<{}, 'div'>('div')`
+export const StyledCenter = styled('div')<{}>`
   max-width: 1024px;
   padding: 126px 0 0 238px;
   margin: 0 auto;
   user-select: none;
 `
 
-export const StyledUserName = styled<{}, 'div'>('div')`
+export const StyledUserName = styled('div')<{}>`
   font-size: 38px;
   color: #fff;
   max-width: 1024px;
@@ -185,7 +185,7 @@ export const StyledUserName = styled<{}, 'div'>('div')`
   user-select: none;
 `
 
-export const StyledScreenName = styled<{}, 'div'>('div')`
+export const StyledScreenName = styled('div')<{}>`
   font-size: 24px;
   font-weight: 400;
   color: #000;
@@ -195,7 +195,7 @@ export const StyledScreenName = styled<{}, 'div'>('div')`
   user-select: none;
 `
 
-export const StyledSocialItem = styled<{}, 'a'>('a')`
+export const StyledSocialItem = styled('a')<{}>`
   font-size: 12px;
   line-height: 2.5;
   letter-spacing: 0.2px;
@@ -205,7 +205,7 @@ export const StyledSocialItem = styled<{}, 'a'>('a')`
   margin: 0 8px;
 `
 
-export const StyledSocialIcon = styled<{}, 'span'>('span')`
+export const StyledSocialIcon = styled('span')<{}>`
   vertical-align: middle;
   display: inline-block;
   margin-right: 5px;
@@ -213,30 +213,30 @@ export const StyledSocialIcon = styled<{}, 'span'>('span')`
   height: 22px;
 `
 
-export const StyledSocialWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledSocialWrapper = styled('div')<StyleProps>`
   text-align: right;
   padding-right: 40px;
   margin-top: 15px;
 `
 
-export const StyledEmptyBox = styled<{}, 'div'>('div')`
+export const StyledEmptyBox = styled('div')<{}>`
   width: 100%;
   height: 39px;
 `
 
-export const StyledLogoImage = styled<StyleProps, 'div'>('div')`
+export const StyledLogoImage = styled('div')<StyleProps>`
   width: 148px;
   height: 148px;
   background: url(${p => p.bg}) no-repeat;
   background-size: cover;
 `
 
-export const StyledCheckbox = styled<StyleProps, 'div'>('div')`
+export const StyledCheckbox = styled('div')<StyleProps>`
   width: 180px;
   padding-left: 0px;
   margin: 15px 0 5px;
 `
-export const StyledNoticeWrapper = styled<{}, 'div'>('div')`
+export const StyledNoticeWrapper = styled('div')<{}>`
   background: #fff;
   border: 1px solid rgba(155, 157, 192, 0);
   border-radius: 4px;
@@ -245,13 +245,13 @@ export const StyledNoticeWrapper = styled<{}, 'div'>('div')`
   padding: 7px 15px;
   display: flex;
 `
-export const StyledNoticeIcon = styled<{}, 'div'>('div')`
+export const StyledNoticeIcon = styled('div')<{}>`
   width: 39px;
   height: 39px;
   color: #00AEFF;
   margin: -2px 6px 0 0;
 `
-export const StyledNoticeText = styled<{}, 'div'>('div')`
+export const StyledNoticeText = styled('div')<{}>`
   flex: 1;
   color: #67667D;
   font-size: 12px;
@@ -259,7 +259,7 @@ export const StyledNoticeText = styled<{}, 'div'>('div')`
   letter-spacing: 0;
   line-height: 18px;
 `
-export const StyledNoticeLink = styled<{}, 'a'>('a')`
+export const StyledNoticeLink = styled('a')<{}>`
   color: #0095FF;
   font-family: ${p => p.theme.fontFamily.body};
   font-weight: bold;
@@ -267,7 +267,7 @@ export const StyledNoticeLink = styled<{}, 'a'>('a')`
   text-decoration: none;
   margin-left: 4px;
 `
-export const StyledVerifiedIcon = styled<{}, 'div'>('div')`
+export const StyledVerifiedIcon = styled('div')<{}>`
   position: absolute;
   top: -60px;
   right: 12px;

@@ -13,14 +13,18 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
+#include "chrome/browser/browser_process_impl.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/update_client/crx_update_item.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
-void CallOnGetDaemonStatus(content::WebUI* web_ui) {
+void CallOnGetDaemonStatus(content::WebUI* web_ui, const std::string& error) {
   ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
       web_ui->GetWebContents()->GetBrowserContext());
   if (!service) {
@@ -30,6 +34,7 @@ void CallOnGetDaemonStatus(content::WebUI* web_ui) {
   base::Value value(base::Value::Type::DICTIONARY);
   value.SetBoolKey("installed", service->IsIPFSExecutableAvailable());
   value.SetBoolKey("launched", service->IsDaemonLaunched());
+  value.SetStringKey("error", error);
   web_ui->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
                                        std::move(value));
 }
@@ -156,7 +161,7 @@ void IPFSDOMHandler::HandleGetDaemonStatus(const base::ListValue* args) {
   if (!web_ui()->CanCallJavascript())
     return;
 
-  CallOnGetDaemonStatus(web_ui());
+  CallOnGetDaemonStatus(web_ui(), std::string());
 }
 
 void IPFSDOMHandler::HandleLaunchDaemon(const base::ListValue* args) {
@@ -172,18 +177,47 @@ void IPFSDOMHandler::LaunchDaemon() {
   if (!service) {
     return;
   }
-
   service->LaunchDaemon(base::NullCallback());
 }
 
 void IPFSDOMHandler::OnIpfsLaunched(bool success, int64_t pid) {
-  if (!web_ui()->CanCallJavascript() || !success)
+  if (!web_ui()->CanCallJavascript())
     return;
-  CallOnGetDaemonStatus(web_ui());
+  std::string error;
+  if (!success) {
+    error = l10n_util::GetStringUTF8(IDS_IPFS_NODE_LAUNCH_ERROR);
+  }
+
+  CallOnGetDaemonStatus(web_ui(), error);
+}
+
+void IPFSDOMHandler::OnInstallationEvent(ipfs::ComponentUpdaterEvents event) {
+  if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_DOWNLOADING) {
+    if (!g_browser_process->component_updater())
+      return;
+    auto* updater = g_browser_process->component_updater();
+    update_client::CrxUpdateItem item;
+    if (updater->GetComponentDetails(ipfs::kIpfsClientComponentId, &item)) {
+      if (item.downloaded_bytes > 0 && item.total_bytes > 0) {
+        base::Value value(base::Value::Type::DICTIONARY);
+        value.SetDoubleKey("total_bytes", item.total_bytes);
+        value.SetDoubleKey("downloaded_bytes", item.downloaded_bytes);
+        web_ui()->CallJavascriptFunctionUnsafe("ipfs.onInstallationProgress",
+                                               std::move(value));
+      }
+    }
+  } else if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_ERROR) {
+    base::Value value(base::Value::Type::DICTIONARY);
+    value.SetBoolKey("installed", false);
+    value.SetStringKey(
+        "error", l10n_util::GetStringUTF8(IDS_IPFS_NODE_INSTALLATION_ERROR));
+    web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
+                                           std::move(value));
+  }
 }
 
 void IPFSDOMHandler::OnIpfsShutdown() {
-  CallOnGetDaemonStatus(web_ui());
+  CallOnGetDaemonStatus(web_ui(), std::string());
 }
 
 void IPFSDOMHandler::HandleShutdownDaemon(const base::ListValue* args) {
@@ -210,19 +244,9 @@ void IPFSDOMHandler::HandleRestartDaemon(const base::ListValue* args) {
   if (!service) {
     return;
   }
-  auto launch_callback = base::BindOnce(&IPFSDOMHandler::LaunchDaemon,
-                                        weak_ptr_factory_.GetWeakPtr());
-  service->ShutdownDaemon(base::BindOnce(
-      [](base::OnceCallback<void()> launch_callback, const bool success) {
-        if (!success) {
-          VLOG(1) << "Unable to shutdown daemon";
-          return;
-        }
-        if (launch_callback) {
-          std::move(launch_callback).Run();
-        }
-      },
-      std::move(launch_callback)));
+  if (service->IsDaemonLaunched()) {
+    service->RestartDaemon();
+  }
 }
 
 void IPFSDOMHandler::HandleGetRepoStats(const base::ListValue* args) {

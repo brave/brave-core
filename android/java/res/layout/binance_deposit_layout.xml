@@ -5,7 +5,7 @@
      You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/binance_deposit_layout"
     android:layout_width="match_parent"
@@ -35,6 +35,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:contentDescription="@null"
 			        android:padding="8dp"
 			        app:tint="@android:color/white"
 			        app:srcCompat="@drawable/ic_back" />
@@ -44,6 +45,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:contentDescription="@null"
 			        android:padding="8dp"
 			        android:src="@drawable/eth" />
 
@@ -53,7 +55,6 @@
 			        android:layout_height="wrap_content"
 			        android:layout_weight="1"
 			        android:textSize="16sp"
-			        android:text="ETH (Ethereum)"
 			        android:layout_gravity="center_vertical"
 			        android:textColor="@android:color/white" />
 
@@ -62,6 +63,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:contentDescription="@null"
 			        android:padding="8dp"
 			        android:src="@drawable/qrcode_dark"/>
 
@@ -82,7 +84,7 @@
 	        		android:layout_width="0dp"
 		        	android:layout_height="wrap_content"
 		        	android:layout_weight="1"
-		        	android:layout_marginRight="8dp"
+		        	android:layout_marginEnd="8dp"
 		        	android:orientation="vertical">
 
 		        	<TextView
@@ -130,7 +132,7 @@
 	        		android:layout_width="0dp"
 		        	android:layout_height="wrap_content"
 		        	android:layout_weight="1"
-		        	android:layout_marginRight="8dp"
+		        	android:layout_marginEnd="8dp"
 		        	android:orientation="vertical">
 
 		        	<TextView
@@ -175,4 +177,4 @@
 
     </androidx.cardview.widget.CardView>
 
-</FrameLayout>
+</merge>

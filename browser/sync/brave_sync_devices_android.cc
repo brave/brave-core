@@ -51,8 +51,7 @@ BraveSyncDevicesAndroid::~BraveSyncDevicesAndroid() {
   // Observer will be removed by ScopedObserver
 }
 
-void BraveSyncDevicesAndroid::Destroy(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BraveSyncDevicesAndroid::Destroy(JNIEnv* env) {
   delete this;
 }
 
@@ -91,8 +90,7 @@ base::Value BraveSyncDevicesAndroid::GetSyncDeviceList() {
 }
 
 base::android::ScopedJavaLocalRef<jstring>
-    BraveSyncDevicesAndroid::GetSyncDeviceListJson(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+BraveSyncDevicesAndroid::GetSyncDeviceListJson(JNIEnv* env) {
   base::Value device_list = GetSyncDeviceList();
   std::string json_string;
   if (!base::JSONWriter::Write(device_list, &json_string)) {
@@ -114,7 +112,6 @@ syncer::BraveProfileSyncService* BraveSyncDevicesAndroid::GetSyncService()
 
 void BraveSyncDevicesAndroid::DeleteDevice(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& device_guid) {
   std::string str_device_guid =
       base::android::ConvertJavaStringToUTF8(device_guid);

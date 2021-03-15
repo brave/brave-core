@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -45,6 +46,7 @@ public class BrowsingModeBottomToolbarLinearLayout extends LinearLayout {
         return super.onInterceptTouchEvent(ev);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!mTouchEnabled) return true;

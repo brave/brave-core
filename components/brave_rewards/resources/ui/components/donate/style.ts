@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'brave-ui/theme'
+import styled, { css } from 'styled-components'
 import * as CSS from 'csstype'
 import { DonateType } from './index'
 import palette from 'brave-ui/theme/colors'
@@ -58,17 +58,17 @@ const getIconColor = (p: StyleProps) => {
   return palette.white
 }
 
-export const StyledWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledWrapper = styled('div')<StyleProps>`
   position: relative;
   font-family: ${p => p.theme.fontFamily.body};
   ${getStyle}
 `
 
-export const StyledContent = styled<StyleProps, 'div'>('div')`
+export const StyledContent = styled('div')<StyleProps>`
   padding: var(--donate-content-padding);
 `
 
-export const StyledDonationTitle = styled<StyleProps, 'div'>('div')`
+export const StyledDonationTitle = styled('div')<StyleProps>`
   font-size: 16px;
   font-weight: 600;
   line-height: 1.75;
@@ -80,7 +80,7 @@ export const StyledDonationTitle = styled<StyleProps, 'div'>('div')`
   max-width: 167px;
 `
 
-export const StyledSend = styled<StyleProps, 'div'>('div')`
+export const StyledSend = styled('div')<StyleProps>`
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.2px;
@@ -93,7 +93,7 @@ export const StyledSend = styled<StyleProps, 'div'>('div')`
   padding-bottom: 13px;
 `
 
-export const StyledSendButton = styled<StyleProps, 'button'>('button')`
+export const StyledSendButton = styled('button')<StyleProps>`
   display: block;
   border: none;
   font-size: 12px;
@@ -122,13 +122,13 @@ export const StyledMonthlySendButton = styled(StyledSendButton)`
   font-weight: bold;
 `
 
-export const StyledButtonWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledButtonWrapper = styled('div')<StyleProps>`
   display: block;
   width: 245px;
   margin: 0 auto;
 `
 
-export const StyledIconSend = styled<StyleProps, 'span'>('span')`
+export const StyledIconSend = styled('span')<StyleProps>`
   vertical-align: middle;
   display: inline-block;
   margin-right: 15px;
@@ -138,7 +138,7 @@ export const StyledIconSend = styled<StyleProps, 'span'>('span')`
   margin-left: -20px;
 `
 
-export const StyledFunds = styled<{}, 'div'>('div')`
+export const StyledFunds = styled('div')<{}>`
   font-family: Muli, sans-serif;
   font-size: 12px;
   font-weight: 300;
@@ -158,28 +158,28 @@ export const StyledFunds = styled<{}, 'div'>('div')`
   }
 `
 
-export const StyledIconFace = styled<{}, 'div'>('div')`
+export const StyledIconFace = styled('div')<{}>`
   flex-basis: 32px;
   margin: -7px 6px 0 0;
 `
 
-export const StyledFundsText = styled<{}, 'div'>('div')`
+export const StyledFundsText = styled('div')<{}>`
   flex: 1;
   margin-right: 9px;
 `
 
-export const StyledAmountsWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledAmountsWrapper = styled('div')<StyleProps>`
   width: 100%;
   display: block;
 `
 
-export const StyledContributionWrapper = styled<{}, 'div'>('div')`
+export const StyledContributionWrapper = styled('div')<{}>`
   float: right;
   color: ${palette.white};
   margin: -33px -35px 0px;
 `
 
-export const StyledContributionText = styled<{}, 'span'>('span')`
+export const StyledContributionText = styled('span')<{}>`
   font-size: 10px;
   font-weight: 300;
   text-align: right;

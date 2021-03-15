@@ -96,7 +96,7 @@ declare namespace chrome.braveRewards {
   }
   const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsSupported: (callback: (supported: boolean) => void) => {}
-  const getAdsEstimatedEarnings: (callback: (amount: number) => void) => {}
+  const getAdsAccountStatement: (callback: (success: boolean, adsAccountStatement: NewTab.AdsAccountStatement) => void) => {}
   const getWalletExists: (callback: (exists: boolean) => void) => {}
   const saveAdsSetting: (key: string, value: string) => {}
   const setAutoContributeEnabled: (enabled: boolean) => {}
@@ -299,6 +299,8 @@ declare namespace chrome.braveShields {
   }
   const urlCosmeticResources: (url: string, callback: (resources: UrlSpecificResources) => void) => void
   const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectors: string[], forceHideSelectors: string[]) => void) => void
+  const migrateLegacyCosmeticFilters: (legacyFilters: any, callback: (success: boolean) => void) => void
+  const addSiteCosmeticFilter: (origin: string, cssSelector: string) => void
 
   type BraveShieldsViewPreferences = {
     showAdvancedView: boolean

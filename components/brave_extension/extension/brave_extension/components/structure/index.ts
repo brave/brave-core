@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import { BlockedInfoRowStats, BlockedInfoRowText } from '../display'
 import { StyledWrapper as Toggle } from '../toggle/style'
 import dash from './dash.svg'
@@ -10,7 +10,7 @@ import dash from './dash.svg'
 /**
  * Main wrapper
  */
-export const ShieldsPanel = styled<{}, 'div'>('div')`
+export const ShieldsPanel = styled('div')<{}>`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   font-family: ${p => p.theme.fontFamily.heading};
@@ -26,7 +26,7 @@ interface ShieldsHeaderProps {
   status: 'enabled' | 'disabled'
 }
 
-export const ShieldsHeader = styled<ShieldsHeaderProps, 'header'>('header')`
+export const ShieldsHeader = styled('header')<ShieldsHeaderProps>`
   box-sizing: border-box;
   user-select: none;
   background: ${p => p.theme.color.panelBackgroundSecondary};
@@ -41,7 +41,7 @@ interface MainToggleProps {
   status: 'enabled' | 'disabled'
 }
 
-export const MainToggle = styled<MainToggleProps, 'section'>('section')`
+export const MainToggle = styled('section')<MainToggleProps>`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -63,7 +63,7 @@ interface SiteOverviewProps {
   status: 'enabled' | 'disabled'
 }
 
-export const SiteOverview = styled<SiteOverviewProps, 'div'>('div')`
+export const SiteOverview = styled('div')<SiteOverviewProps>`
   box-sizing: border-box;
   display: grid;
   align-items: center;
@@ -75,7 +75,7 @@ interface TotalBlockedStatsProps {
   size?: 'large'
 }
 
-export const TotalBlockedStats = styled<TotalBlockedStatsProps, 'section'>('section')`
+export const TotalBlockedStats = styled('section')<TotalBlockedStatsProps>`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: ${p => p.size === 'large' ? '80px 210px' : '80px 140px'};
@@ -84,7 +84,7 @@ export const TotalBlockedStats = styled<TotalBlockedStatsProps, 'section'>('sect
   grid-gap: 10px;
 `
 
-export const SiteInfo = styled<{}, 'div'>('div')`
+export const SiteInfo = styled('div')<{}>`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -101,7 +101,7 @@ interface BlockedInfoRowProps {
   extraColumn?: boolean
 }
 
-export const BlockedInfoRow = styled<BlockedInfoRowProps, 'div'>('div')`
+export const BlockedInfoRow = styled('div')<BlockedInfoRowProps>`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: ${p => p.extraColumn ? '1fr auto auto' : '1fr auto'};
@@ -126,7 +126,7 @@ export const BlockedInfoRow = styled<BlockedInfoRowProps, 'div'>('div')`
   }
 `
 
-export const BlockedInfoRowDetails = styled<BlockedInfoRowProps, 'details'>('details')`
+export const BlockedInfoRowDetails = styled('details')<BlockedInfoRowProps>`
   box-sizing: border-box;
 `
 
@@ -177,7 +177,7 @@ interface BlockedInfoRowDataProps {
   disabled?: boolean
 }
 
-export const BlockedInfoRowData = styled<BlockedInfoRowDataProps, 'div'>('div')`
+export const BlockedInfoRowData = styled('div')<BlockedInfoRowDataProps>`
   display: grid;
   grid-template-columns: auto 36px 1fr;
   padding: 8px 0 8px 20px;
@@ -232,7 +232,7 @@ export const BlockedInfoRowDataForSelect = styled(BlockedInfoRowData)`
 /**
  * Footer
  */
-export const MainFooter = styled<{}, 'div'>('div')`
+export const MainFooter = styled('div')<{}>`
   box-sizing: border-box;
   position: relative;
   display: grid;
@@ -243,7 +243,7 @@ export const MainFooter = styled<{}, 'div'>('div')`
 /**
  * Blocked Lists
  */
-export const BlockedListContent = styled<{}, 'div'>('div')`
+export const BlockedListContent = styled('div')<{}>`
   box-sizing: border-box;
   position: absolute;
   top: 0;
@@ -255,7 +255,7 @@ export const BlockedListContent = styled<{}, 'div'>('div')`
   cursor: default;
 `
 
-export const BlockedListHeader = styled<{}, 'div'>('div')`
+export const BlockedListHeader = styled('div')<{}>`
   display: grid;
   grid-template-columns: auto 1fr;
   grid-gap: 6px;
@@ -267,7 +267,7 @@ interface BlockedListSummaryProps {
   stats?: boolean
 }
 
-export const BlockedListSummary = styled<BlockedListSummaryProps, 'summary'>('summary')`
+export const BlockedListSummary = styled('summary')<BlockedListSummaryProps>`
   &::-webkit-details-marker {
     display: none;
   }
@@ -293,7 +293,7 @@ interface BlockedListStaticProps {
   fixedHeight?: boolean
 }
 
-export const BlockedListStatic = styled<BlockedListStaticProps, 'ul'>('ul')`
+export const BlockedListStatic = styled('ul')<BlockedListStaticProps>`
   box-sizing: border-box;
   list-style-type: none;
   height: ${p => p.fixedHeight && '358px'};
@@ -309,7 +309,7 @@ export const BlockedListDynamic = styled(BlockedListStatic)`
   padding: 0;
 `
 
-export const BlockedListItemHeader = styled<{}, 'li'>('li')`
+export const BlockedListItemHeader = styled('li')<{}>`
   box-sizing: border-box;
   position: sticky;
   top: 0;
@@ -326,7 +326,7 @@ export const BlockedListItemHeader = styled<{}, 'li'>('li')`
   }
 `
 
-export const BlockedListItem = styled<{}, 'li'>('li')`
+export const BlockedListItem = styled('li')<{}>`
   box-sizing: border-box;
   padding: 8px 0px;
   line-height: 1;
@@ -337,7 +337,7 @@ export const BlockedListItem = styled<{}, 'li'>('li')`
   color: ${p => p.theme.color.text}
 `
 
-export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
+export const BlockedListItemWithOptions = styled('li')<{}>`
   box-sizing: border-box;
   position: relative;
   display: grid;
@@ -359,7 +359,7 @@ export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
   }
 `
 
-export const BlockedListItemDetails = styled<{}, 'details'>('details')`
+export const BlockedListItemDetails = styled('details')<{}>`
   position: relative;
 
   &[open] summary:after {
@@ -408,14 +408,14 @@ export const BlockedListItemSummary = styled(BlockedListItemWithOptions.withComp
   }
 `
 
-export const BlockedListFooter = styled<{}, 'footer'>('footer')`
+export const BlockedListFooter = styled('footer')<{}>`
   box-sizing: border-box;
   padding: 8px 0px;
   display: flex;
   justify-content: center;
 `
 
-export const BlockedListFooterWithOptions = styled<{}, 'footer'>('footer')`
+export const BlockedListFooterWithOptions = styled('footer')<{}>`
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -425,7 +425,7 @@ export const BlockedListFooterWithOptions = styled<{}, 'footer'>('footer')`
 /**
  * Disabled content
  */
-export const DisabledContentView = styled<{}, 'section'>('section')`
+export const DisabledContentView = styled('section')<{}>`
   box-sizing: border-box;
   display: grid;
   grid-template-rows: auto auto;
@@ -438,19 +438,19 @@ export const DisabledContentView = styled<{}, 'section'>('section')`
 /**
  * Static panel (learn more overlay)
  */
-export const StaticHeader = styled<{}, 'header'>('header')`
+export const StaticHeader = styled('header')<{}>`
   padding: 0 20px 10px 24px;
   line-height: 18px;
 `
 
-export const StaticResourcesControls = styled<{}, 'div'>('div')`
+export const StaticResourcesControls = styled('div')<{}>`
   box-sizing: border-box;
   position: relative;
   height: 216px;
   overflow: auto;
 `
 
-export const StaticResourcesContainer = styled<{}, 'div'>('div')`
+export const StaticResourcesContainer = styled('div')<{}>`
   box-sizing: border-box;
   position: absolute;
   width: 100%;
@@ -459,7 +459,7 @@ export const StaticResourcesContainer = styled<{}, 'div'>('div')`
 /**
  * Modals and overlays
  */
-export const Overlay = styled<{}, 'div'>('div')`
+export const Overlay = styled('div')<{}>`
   box-sizing: border-box;
   position: absolute;
   z-index: 5;
@@ -473,13 +473,13 @@ export const Overlay = styled<{}, 'div'>('div')`
   padding: 0 44px;
   background-color: ${p => p.theme.color.modalOverlayBackground}
 `
-export const WarningText = styled<{}, 'p'>('p')`
+export const WarningText = styled('p')<{}>`
   margin: 0 0 24px;
   line-height: 18px;
   color: ${p => p.theme.color.text};
 `
 
-export const WarningModal = styled<{}, 'div'>('div')`
+export const WarningModal = styled('div')<{}>`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

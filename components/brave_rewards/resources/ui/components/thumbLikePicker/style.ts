@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledAdStatThumbUpIcon = styled<{}, 'div'>('div')`
+export const StyledAdStatThumbUpIcon = styled('div')<{}>`
   display: inline-block;
   width: 32px;
   height: 32px;
@@ -16,7 +16,7 @@ export const StyledAdStatThumbUpFilledIcon = styled(StyledAdStatThumbUpIcon)`
   color: ${p => p.theme.palette.green500};
 `
 
-export const StyledAdStatThumbDownIcon = styled<{}, 'div'>('div')`
+export const StyledAdStatThumbDownIcon = styled('div')<{}>`
   display: inline-block;
   width: 32px;
   height: 32px;

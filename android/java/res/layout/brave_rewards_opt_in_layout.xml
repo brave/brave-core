@@ -31,7 +31,7 @@
 	            android:layout_marginTop="16dp"
 	            android:layout_marginBottom="4dp"
 	            android:gravity="start|center_vertical"
-	            android:drawableStart="@drawable/btn_bat"
+	            app:drawableStartCompat="@drawable/btn_bat"
 	            android:drawablePadding="4dp"
 	            android:text="@string/earn_tokens_and_give_back"
 	            android:textSize="14sp"
@@ -67,7 +67,7 @@
 	            style="?android:attr/borderlessButtonStyle"/>
 
 	        <TextView
-	        	android:id="@+id/tos_pp_text"
+	        	android:id="@+id/brave_rewards_opt_in_tos_pp_text"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="center_horizontal"
@@ -79,7 +79,7 @@
 	    </LinearLayout>
 
 	    <androidx.appcompat.widget.AppCompatImageView
-	        android:id="@+id/modal_close"
+	        android:id="@+id/brave_rewards_opt_in_modal_close"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:contentDescription="@null"

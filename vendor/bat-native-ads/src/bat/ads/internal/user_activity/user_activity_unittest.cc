@@ -52,11 +52,11 @@ TEST_F(BatAdsUserActivityTest, RecordLaunchedBrowserEvent) {
   EXPECT_EQ(expected_events, events);
 }
 
-TEST_F(BatAdsUserActivityTest, RecordBrowserWindowDidBecomeActiveEvent) {
+TEST_F(BatAdsUserActivityTest, RecordBrowserDidBecomeActiveEvent) {
   // Arrange
 
   const UserActivityEventType event_type =
-      UserActivityEventType::kBrowserWindowDidBecomeActive;
+      UserActivityEventType::kBrowserDidBecomeActive;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -75,11 +75,11 @@ TEST_F(BatAdsUserActivityTest, RecordBrowserWindowDidBecomeActiveEvent) {
   EXPECT_EQ(expected_events, events);
 }
 
-TEST_F(BatAdsUserActivityTest, RecordBrowserWindowDidEnterBackgroundEvent) {
+TEST_F(BatAdsUserActivityTest, RecordBrowserDidEnterBackgroundEvent) {
   // Arrange
 
   const UserActivityEventType event_type =
-      UserActivityEventType::kBrowserWindowDidEnterBackground;
+      UserActivityEventType::kBrowserDidEnterBackground;
 
   // Act
   UserActivity::Get()->RecordEvent(event_type);
@@ -535,9 +535,9 @@ TEST_F(BatAdsUserActivityTest, GetHistoryForTimeWindow) {
   // Arrange
   UserActivity::Get()->RecordEvent(UserActivityEventType::kInitializedAds);
   UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kBrowserWindowDidBecomeActive);
+      UserActivityEventType::kBrowserDidBecomeActive);
   UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kBrowserWindowDidEnterBackground);
+      UserActivityEventType::kBrowserDidEnterBackground);
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kClickedBackOrForwardNavigationButtons);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClickedBookmark);

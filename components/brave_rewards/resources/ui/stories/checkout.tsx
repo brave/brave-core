@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { storiesOf } from '@storybook/react'
 import * as knobs from '@storybook/addon-knobs'
 
 import { LocaleContext } from '../components/checkout/localeContext'
@@ -73,113 +72,120 @@ const localeData = {
   }
 }
 
-storiesOf('Rewards/Checkout', module)
-  .addDecorator(knobs.withKnobs)
-  .add('Payment Method', () => {
-    const defaultDescription =
-      'Title of the selected item long title long ' +
-      'long title wrapped into second line'
+export default {
+  title: 'Rewards/Checkout'
+}
 
-    return (
-      <LocaleContext.Provider value={localeData}>
-        <DialogFrame showBackground={true} showTitle={true} onClose={onDialogClose}>
-          <PaymentMethodPanel
-            canUseCreditCard={knobs.boolean('canUseCreditCard', true)}
-            rewardsEnabled={knobs.boolean('rewardsEnabled', true)}
-            orderDescription={knobs.text('orderDescription', defaultDescription)}
-            orderTotal={knobs.text('orderTotal', '45.0')}
-            orderTotalConverted={knobs.text('orderTotalConverted', '$9.00')}
-            walletBalance={knobs.text('walletBalance', '100.0')}
-            walletBalanceConverted={knobs.text('walletBalanceConverted', '$20.00')}
-            walletLastUpdated={knobs.text('walletLastUpdated', 'Today at 11:38 am')}
-            walletVerified={knobs.boolean('walletVerified', true)}
-            hasSufficientFunds={knobs.boolean('hasSufficientFunds', true)}
-            onPayWithCreditCard={actionLogger('onPaymentWithCreditCard')}
-            onPayWithWallet={actionLogger('onPaymentWithWallet')}
-            onShowAddFunds={actionLogger('onShowAddFunds')}
-          />
-        </DialogFrame>
-      </LocaleContext.Provider>
-    )
-  })
-  .add('Add Funds', () => {
-    const defaultAmounts = [
-      {
-        amount: 30,
-        amountConverted: '$6.00',
-        transactionFeeRate: '3%',
-        transactionFee: '$0.18',
-        totalCharge: '$6.18'
-      },
-      {
-        amount: 50,
-        amountConverted: '$10.00',
-        transactionFeeRate: '3%',
-        transactionFee: '$0.18',
-        totalCharge: '$10.18'
-      },
-      {
-        amount: 100,
-        amountConverted: '$20.00',
-        transactionFeeRate: '3%',
-        transactionFee: '$0.18',
-        totalCharge: '$20.18'
-      }
-    ]
+export const paymentMethod = () => {
+  const defaultDescription =
+    'Title of the selected item long title long ' +
+    'long title wrapped into second line'
 
-    return (
-      <LocaleContext.Provider value={localeData}>
-        <DialogFrame showBackground={true} showTitle={true} onClose={onDialogClose}>
-          <AddFundsPanel
-            amountNeeded={knobs.text('amountNeeded', '30')}
-            walletBalance={knobs.text('walletBalance', '15.0')}
-            walletBalanceConverted={knobs.text('walletBalanceConverted', '$3.00')}
-            unitValueConverted={knobs.text('unitValueConverted', '$0.1873')}
-            amountOptions={knobs.object('amountOptions', defaultAmounts)}
-            onCancel={actionLogger('onCancel')}
-            onPayWithCreditCard={actionLogger('onPayWithCreditCard')}
-          />
-        </DialogFrame>
-      </LocaleContext.Provider>
-    )
-  })
-  .add('Processing', () => {
-    return (
-      <LocaleContext.Provider value={localeData}>
-        <DialogFrame showTitle={true} onClose={onDialogClose}>
-          <PaymentProcessing />
-        </DialogFrame>
-      </LocaleContext.Provider>
-    )
-  })
-  .add('Complete', () => {
-    return (
-      <LocaleContext.Provider value={localeData}>
-        <DialogFrame onClose={onDialogClose}>
-          <PaymentComplete />
-        </DialogFrame>
-      </LocaleContext.Provider>
-    )
-  })
-  .add('Enable Rewards', () => {
-    return (
-      <LocaleContext.Provider value={localeData}>
-        <DialogFrame showBackground={true} onClose={onDialogClose}>
-          <EnableRewardsPanel
-            onEnableRewards={actionLogger('onEnableRewards')}
-          />
-        </DialogFrame>
-      </LocaleContext.Provider>
-    )
-  })
-  .add('Loading', () => {
-    return (
-      <LocaleContext.Provider value={localeData}>
-        <DialogFrame showTitle={true} onClose={onDialogClose}>
-          <LoadingPanel
-            text={knobs.text('text', 'Loading')}
-          />
-        </DialogFrame>
-      </LocaleContext.Provider>
-    )
-  })
+  return (
+    <LocaleContext.Provider value={localeData}>
+      <DialogFrame showBackground={true} showTitle={true} onClose={onDialogClose}>
+        <PaymentMethodPanel
+          canUseCreditCard={knobs.boolean('canUseCreditCard', true)}
+          rewardsEnabled={knobs.boolean('rewardsEnabled', true)}
+          orderDescription={knobs.text('orderDescription', defaultDescription)}
+          orderTotal={knobs.text('orderTotal', '45.0')}
+          orderTotalConverted={knobs.text('orderTotalConverted', '$9.00')}
+          walletBalance={knobs.text('walletBalance', '100.0')}
+          walletBalanceConverted={knobs.text('walletBalanceConverted', '$20.00')}
+          walletLastUpdated={knobs.text('walletLastUpdated', 'Today at 11:38 am')}
+          walletVerified={knobs.boolean('walletVerified', true)}
+          hasSufficientFunds={knobs.boolean('hasSufficientFunds', true)}
+          onPayWithCreditCard={actionLogger('onPaymentWithCreditCard')}
+          onPayWithWallet={actionLogger('onPaymentWithWallet')}
+          onShowAddFunds={actionLogger('onShowAddFunds')}
+        />
+      </DialogFrame>
+    </LocaleContext.Provider>
+  )
+}
+
+export const addFunds = () => {
+  const defaultAmounts = [
+    {
+      amount: 30,
+      amountConverted: '$6.00',
+      transactionFeeRate: '3%',
+      transactionFee: '$0.18',
+      totalCharge: '$6.18'
+    },
+    {
+      amount: 50,
+      amountConverted: '$10.00',
+      transactionFeeRate: '3%',
+      transactionFee: '$0.18',
+      totalCharge: '$10.18'
+    },
+    {
+      amount: 100,
+      amountConverted: '$20.00',
+      transactionFeeRate: '3%',
+      transactionFee: '$0.18',
+      totalCharge: '$20.18'
+    }
+  ]
+
+  return (
+    <LocaleContext.Provider value={localeData}>
+      <DialogFrame showBackground={true} showTitle={true} onClose={onDialogClose}>
+        <AddFundsPanel
+          amountNeeded={knobs.text('amountNeeded', '30')}
+          walletBalance={knobs.text('walletBalance', '15.0')}
+          walletBalanceConverted={knobs.text('walletBalanceConverted', '$3.00')}
+          unitValueConverted={knobs.text('unitValueConverted', '$0.1873')}
+          amountOptions={knobs.object('amountOptions', defaultAmounts)}
+          onCancel={actionLogger('onCancel')}
+          onPayWithCreditCard={actionLogger('onPayWithCreditCard')}
+        />
+      </DialogFrame>
+    </LocaleContext.Provider>
+  )
+}
+
+export const processing = () => {
+  return (
+    <LocaleContext.Provider value={localeData}>
+      <DialogFrame showTitle={true} onClose={onDialogClose}>
+        <PaymentProcessing />
+      </DialogFrame>
+    </LocaleContext.Provider>
+  )
+}
+
+export const complete = () => {
+  return (
+    <LocaleContext.Provider value={localeData}>
+      <DialogFrame onClose={onDialogClose}>
+        <PaymentComplete />
+      </DialogFrame>
+    </LocaleContext.Provider>
+  )
+}
+
+export const enableRewards = () => {
+  return (
+    <LocaleContext.Provider value={localeData}>
+      <DialogFrame showBackground={true} onClose={onDialogClose}>
+        <EnableRewardsPanel
+          onEnableRewards={actionLogger('onEnableRewards')}
+        />
+      </DialogFrame>
+    </LocaleContext.Provider>
+  )
+}
+
+export const loading = () => {
+  return (
+    <LocaleContext.Provider value={localeData}>
+      <DialogFrame showTitle={true} onClose={onDialogClose}>
+        <LoadingPanel
+          text={knobs.text('text', 'Loading')}
+        />
+      </DialogFrame>
+    </LocaleContext.Provider>
+  )
+}

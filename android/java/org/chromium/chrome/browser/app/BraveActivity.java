@@ -36,6 +36,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -160,7 +161,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     @Override
     public void onResumeWithNative() {
         super.onResumeWithNative();
-        nativeRestartStatsUpdater();
+        BraveActivityJni.get().restartStatsUpdater();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             if (mBraveRewardsNativeWorker == null)
@@ -174,6 +175,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         if (mBraveRewardsNativeWorker != null) {
             mBraveRewardsNativeWorker.RemoveObserver(this);
         }
+        super.onPauseWithNative();
     }
 
     @Override
@@ -398,7 +400,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                     calender.getTimeInMillis());
         }
         checkSetDefaultBrowserModal();
-        if (mBraveRewardsNativeWorker != null
+        if (mBraveRewardsNativeWorker != null && mBraveRewardsNativeWorker.isRewardsEnabled()
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             mBraveRewardsNativeWorker.StartProcess();
@@ -776,8 +778,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 getSupportFragmentManager(), "DeprecateBAPModalDialogFragment");
     }
 
-    private native void nativeRestartStatsUpdater();
-
     static public ChromeTabbedActivity getChromeTabbedActivity() {
         for (Activity ref : ApplicationStatus.getRunningActivities()) {
             if (!(ref instanceof ChromeTabbedActivity)) continue;
@@ -878,5 +878,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
         editor.putLong(BravePreferenceKeys.BRAVE_MILLISECONDS_NAME, milliSeconds);
         editor.apply();
+    }
+
+    @NativeMethods
+    interface Natives {
+        void restartStatsUpdater();
     }
 }

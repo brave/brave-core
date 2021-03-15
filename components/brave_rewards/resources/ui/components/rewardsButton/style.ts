@@ -47,7 +47,7 @@ const getTypeStyle = (type?: Type, disabled?: boolean) => {
           background: ${p =>
             disabled
               ? p.theme.color.brandBrave
-              : p.theme.brandBraveInteracting
+              : p.theme.color.brandBraveInteracting
           };
         }
       `
@@ -57,7 +57,7 @@ const getTypeStyle = (type?: Type, disabled?: boolean) => {
   return typeCss
 }
 
-export const StyledButtonWrapper = styled<StyleProps, 'button'>('button')`
+export const StyledButtonWrapper = styled('button')<StyleProps>`
   width: 100%;
   display: flex;
   color: white;
@@ -74,7 +74,7 @@ export const StyledButtonWrapper = styled<StyleProps, 'button'>('button')`
   }
 `
 
-export const StyledButtonText = styled<StyleProps, 'span'>('span')`
+export const StyledButtonText = styled('span')<StyleProps>`
   font-family: Poppins, sans-serif;
   font-weight: 600;
   text-transform: uppercase;
@@ -82,7 +82,7 @@ export const StyledButtonText = styled<StyleProps, 'span'>('span')`
   margin: ${p => p.hasIcon ? '-3px auto 0px' : '0 auto'};
 `
 
-export const StyledIcon = styled<{}, 'div'>('div')`
+export const StyledIcon = styled('div')<{}>`
   display: inline-block;
   line-height: 0;
   height: 18px;

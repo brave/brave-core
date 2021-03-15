@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ThemeProvider } from 'brave-ui/theme'
+import { ThemeProvider } from 'styled-components'
 import IBraveTheme from 'brave-ui/theme/theme-interface'
 
 export type Props = {

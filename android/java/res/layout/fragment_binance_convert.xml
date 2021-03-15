@@ -280,7 +280,8 @@
                         android:textColor="@android:color/white"
                         android:textColorHint="@color/white_alpha_50"
                         android:hint="@string/i_want_to_convert"
-                        android:background="@drawable/binance_edittext"/>
+                        android:background="@drawable/binance_edittext"
+                        tools:ignore="Autofill"/>
 
                     <Spinner
                         android:id="@+id/crypto_spinner_1"

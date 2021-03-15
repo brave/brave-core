@@ -102,9 +102,7 @@ class BraveRewardsTipUserFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnTipUserStartProcess(
-      const std::string& publisher_key,
-      ledger::type::Result result);
+  void OnProcessStarted(const std::string& publisher_key);
   void OnTipUserGetPublisherInfo(
       const ledger::type::Result result,
       ledger::type::PublisherInfoPtr info);
@@ -405,24 +403,22 @@ class BraveRewardsGetAdsEnabledFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetAdsEstimatedEarningsFunction
-    : public ExtensionFunction {
+class BraveRewardsGetAdsAccountStatementFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsEstimatedEarnings", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsAccountStatement", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetAdsEstimatedEarningsFunction() override;
+  ~BraveRewardsGetAdsAccountStatementFunction() override;
 
   ResponseAction Run() override;
 
  private:
-  void OnAdsEstimatedEarnings(
-      const bool success,
-      const double estimated_pending_rewards,
-      const uint64_t next_payment_date,
-      const uint64_t ads_received_this_month,
-      const double earnings_this_month,
-      const double earnings_last_month);
+  void OnGetAdsAccountStatement(const bool success,
+                                const double estimated_pending_rewards,
+                                const int64_t next_payment_date,
+                                const int ads_received_this_month,
+                                const double earnings_this_month,
+                                const double earnings_last_month);
 };
 
 class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {

@@ -12,6 +12,7 @@ export class BraveWalletBrowserProxy {
    */
    setBraveWalletEnabled (value) {}
    getWeb3ProviderList () {}
+   isNativeWalletEnabled() {}
 }
 
 /**
@@ -26,6 +27,11 @@ export class BraveWalletBrowserProxyImpl {
   /** @override */
   getWeb3ProviderList () {
     return new Promise(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
+  }
+
+  /** @override */
+  isNativeWalletEnabled () {
+    return new Promise(resolve => chrome.braveWallet.isNativeWalletEnabled(resolve))
   }
 }
 

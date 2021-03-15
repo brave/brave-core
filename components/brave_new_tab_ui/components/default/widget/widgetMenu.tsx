@@ -113,7 +113,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
     const hideString = widgetTitle ? `${getLocale('hide')} ${widgetTitle}` : getLocale('hide')
 
     return (
-      <StyledWidgetMenuContainer innerRef={this.settingsMenuRef} paddingType={paddingType}>
+      <StyledWidgetMenuContainer ref={this.settingsMenuRef} paddingType={paddingType}>
         <StyledEllipsis widgetMenuPersist={widgetMenuPersist} isForeground={isForeground}>
           <IconButton isClickMenu={true} onClick={this.toggleMenu}>
             <EllipsisIcon lightWidget={lightWidget} />

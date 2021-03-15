@@ -33,6 +33,12 @@ constexpr char kControlportTooLong[] =
 #else
     "controlport_too_long";
 #endif
+constexpr char kControlportMax[] =
+#if defined(OS_WIN)
+    "controlport_max_win";
+#else
+    "controlport_max";
+#endif
 constexpr char kControlportOverflow[] =
 #if defined(OS_WIN)
     "controlport_overflow_win";
@@ -160,6 +166,13 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
 
   tor_file_watcher.reset(new TorFileWatcher(
       test_data_dir().AppendASCII(kValidControlportNotLocalhost)));
+  tor_file_watcher->polling_ = true;
+  EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
+  EXPECT_EQ(port, -1);
+  EXPECT_EQ(time.ToJsTime(), 0u);
+
+  tor_file_watcher.reset(
+      new TorFileWatcher(test_data_dir().AppendASCII(kControlportMax)));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);

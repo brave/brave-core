@@ -13,17 +13,18 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.lang.SecurityException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.chromium.base.ContextUtils;
 import org.chromium.base.FileUtils;
 import org.chromium.base.Log;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.SecurityException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class BraveDbUtil {
     private static final String TAG = "BraveDbUtil";
@@ -58,7 +59,8 @@ public class BraveDbUtil {
         mRewardsDstDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 .getAbsolutePath() + File.separator + REWARDS_DB_DST_DIR;
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("-yyyy-MM-dd-HHmmss");
+        SimpleDateFormat dateFormat =
+                new SimpleDateFormat("-yyyy-MM-dd-HHmmss", Locale.getDefault());
         mRewardsDst = mRewardsDstDir + File.separator + PUBLISHER_INFO_DB + dateFormat.format(new Date());
 
         copyRewardsDbThread(dlg, false);

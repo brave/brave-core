@@ -16,7 +16,10 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
-      'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src')
+      'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src'),
+      // Force same styled-components module for brave-core and brave-ui
+      // which ensure both repos code use the same singletons, e.g. ThemeContext.
+      'styled-components': path.resolve(__dirname, '../../node_modules/styled-components'),
     },
     // For explanation of "chromeapp", see:
     // https://github.com/brave/brave-browser/issues/5587

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 
 const Button = styled('button')`
   --outer-border-size: 0px;

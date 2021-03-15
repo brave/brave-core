@@ -164,6 +164,8 @@ void UnitTestBase::Initialize() {
   database_initialize_->CreateOrOpen(
       [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
 
+  browser_manager_ = std::make_unique<BrowserManager>();
+
   tab_manager_ = std::make_unique<TabManager>();
 
   user_activity_ = std::make_unique<UserActivity>();

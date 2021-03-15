@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 
 interface StyledDialogWrapperProps {
   textDirection: string
 }
 
-export const StyledDialogWrapper = styled<StyledDialogWrapperProps, 'div'>('div')`
+export const StyledDialogWrapper = styled('div')<StyledDialogWrapperProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -26,7 +26,7 @@ interface StyledDialogProps {
   textDirection: string
 }
 
-export const StyledDialog = styled<StyledDialogProps, 'div'>('div')`
+export const StyledDialog = styled('div')<StyledDialogProps>`
   position: relative;
   width: 437px;
   top: -50px;
@@ -39,7 +39,7 @@ export const StyledDialog = styled<StyledDialogProps, 'div'>('div')`
   box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.2);
 `
 
-export const DialogTitle = styled<{}, 'div'>('div')`
+export const DialogTitle = styled('div')<{}>`
   font-weight: 600;
   font-size: 15px;
   line-height: 20px;
@@ -83,7 +83,7 @@ export const CloseButton = styled('button')`
   }
 `
 
-export const StyledInputLabel = styled<{}, 'div'>('div')`
+export const StyledInputLabel = styled('div')<{}>`
   margin-top: 18px;
   font-weight: 500;
   font-size: 13px;
@@ -94,7 +94,7 @@ export const StyledInputLabel = styled<{}, 'div'>('div')`
   }
 `
 
-export const StyledInput = styled<{}, 'input'>('input')`
+export const StyledInput = styled('input')<{}>`
   outline: none;
   margin-top: 6px;
   width: 389px;
@@ -128,7 +128,7 @@ export const StyledInput = styled<{}, 'input'>('input')`
   }
 `
 
-export const StyledButtonsContainer = styled<{}, 'div'>('div')`
+export const StyledButtonsContainer = styled('div')<{}>`
   box-sizing: border-box;
   display: flex;
   flex-direction: row;

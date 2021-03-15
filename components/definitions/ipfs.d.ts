@@ -12,6 +12,7 @@ declare namespace IPFS {
     repoStats: RepoStats,
     nodeInfo: NodeInfo,
     garbageCollectionStatus: GarbageCollectionStatus,
+    installationProgress: InstallationProgress
   }
 
   export interface AddressesConfig {
@@ -25,6 +26,7 @@ declare namespace IPFS {
     launched: bool
     restarting: bool
     installing: bool
+    error: string
   }
 
   export interface GarbageCollectionStatus {
@@ -44,6 +46,11 @@ declare namespace IPFS {
   export interface NodeInfo {
     id: string
     version: string
+  }
+
+  export interface InstallationProgress {
+    total_bytes: number
+    downloaded_bytes: number
   }
 
 }

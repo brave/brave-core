@@ -18,6 +18,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
@@ -98,6 +99,7 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<Client> client_;
   std::unique_ptr<AdRewards> ad_rewards_;
   std::unique_ptr<AdNotifications> ad_notifications_;
+  std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ConfirmationsState> confirmations_state_;
   std::unique_ptr<database::Initialize> database_initialize_;
   std::unique_ptr<Database> database_;

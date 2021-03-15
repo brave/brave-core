@@ -130,9 +130,6 @@ using GetEventLogsCallback =
 using GetBraveWalletCallback =
     base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
 
-using StartProcessCallback =
-    base::OnceCallback<void(ledger::type::Result result)>;
-
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 
 enum class OnboardingResult {
@@ -365,7 +362,7 @@ class RewardsService : public KeyedService {
 
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 
-  virtual void StartProcess(StartProcessCallback callback) = 0;
+  virtual void StartProcess(base::OnceClosure callback) = 0;
 
   virtual void GetWalletPassphrase(GetWalletPassphraseCallback callback) = 0;
 

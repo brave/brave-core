@@ -194,6 +194,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kIPFSAutoRedirectDNSLink] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[kIpfsStorageMax] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif
   // Media Router Pref
   (*s_brave_allowlist)[kBraveEnabledMediaRouter] =

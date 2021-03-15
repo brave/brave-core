@@ -2,10 +2,10 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import palette from 'brave-ui/theme/colors'
 
-export const WidgetWrapper = styled<{}, 'div'>('div')`
+export const WidgetWrapper = styled('div')<{}>`
   color: white;
   padding: 6px 20px 12px 20px;
   border-radius: 6px;
@@ -18,17 +18,17 @@ export const WidgetWrapper = styled<{}, 'div'>('div')`
   background: rgba(33, 37, 41, 0.2);
 `
 
-export const Header = styled<{}, 'div'>('div')`
+export const Header = styled('div')<{}>`
   text-align: left;
 `
 
-export const Content = styled<{}, 'div'>('div')`
+export const Content = styled('div')<{}>`
   margin-top: 20px;
   margin-bottom: 10px;
   min-width: 200px;
 `
 
-export const WelcomeText = styled<{}, 'span'>('span')`
+export const WelcomeText = styled('span')<{}>`
   display: block;
   font-size: 14px;
   font-weight: 500;
@@ -38,11 +38,11 @@ export const WelcomeText = styled<{}, 'span'>('span')`
   margin: 0 auto;
 `
 
-export const ActionsWrapper = styled<{}, 'div'>('div')`
+export const ActionsWrapper = styled('div')<{}>`
   text-align: center;
 `
 
-export const CallButton = styled<{}, 'button'>('button')`
+export const CallButton = styled('button')<{}>`
   font-size: 14px;
   font-weight: bold;
   border-radius: 20px;
@@ -60,7 +60,7 @@ export const CallButton = styled<{}, 'button'>('button')`
   }
 `
 
-export const TogetherIcon = styled<{}, 'div'>('div')`
+export const TogetherIcon = styled('div')<{}>`
   width: 24px;
   height: 24px;
   margin-right: 7px;
@@ -68,7 +68,7 @@ export const TogetherIcon = styled<{}, 'div'>('div')`
   margin-top: 2px;
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   margin-top: 6px;
   display: flex;
   justify-content: flex-start;
@@ -79,12 +79,12 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const Privacy = styled<{}, 'div'>('div')`
+export const Privacy = styled('div')<{}>`
   width: 100%;
   text-align: center;
 `
 
-export const PrivacyLink = styled<{}, 'a'>('a')`
+export const PrivacyLink = styled('a')<{}>`
   font-style: normal;
   font-weight: 500;
   font-size: 13px;

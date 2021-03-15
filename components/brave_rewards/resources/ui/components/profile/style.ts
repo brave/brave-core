@@ -2,9 +2,8 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'brave-ui/theme'
+import styled, { css, keyframes } from 'styled-components'
 import { Props } from './index'
-import { keyframes } from 'styled-components'
 
 const fadeInOut = keyframes`
   0% {
@@ -57,14 +56,14 @@ const fadeOutToNull = keyframes`
   }
 `
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   position: relative;
   display: flex;
   align-items: center;
   font-family: ${p => p.theme.fontFamily.body};
 `
 
-export const StyledImageWrapper = styled<Partial<Props>, 'div'>('div')`
+export const StyledImageWrapper = styled('div')<Partial<Props>>`
   position: relative;
   display: flex;
 
@@ -87,7 +86,7 @@ export const StyledImage = styled.img`
   margin: auto;
 `
 
-export const StyledVerified = styled<{}, 'span'>('span')`
+export const StyledVerified = styled('span')<{}>`
   top: -6px;
   right: -8px;
   width: 16px;
@@ -109,24 +108,24 @@ export const StyledTitleWrap = styled.div`
   color: ${p => p.theme.palette.grey800};
 `
 
-export const StyledTitle = styled<Partial<Props>, 'span'>('span')`
+export const StyledTitle = styled('span')<Partial<Props>>`
   font-size: ${p => p.type === 'big' ? '18px' : null};
 `
 
-export const StyledProvider = styled<Partial<Props>, 'span'>('span')`
+export const StyledProvider = styled('span')<Partial<Props>>`
   padding-left: 4px;
   font-size: ${p => p.type === 'big' ? '16px' : null};
   font-weight: ${p => p.type === 'big' ? '400' : null};
 `
 
-export const StyledProviderWrap = styled<{}, 'div'>('div')`
+export const StyledProviderWrap = styled('div')<{}>`
   display: flex;
   align-items: center;
   font-size: 13px;
   margin: 4px 0;
 `
 
-export const StyledProviderWrapRefreshing = styled<{}, 'div'>('div')`
+export const StyledProviderWrapRefreshing = styled('div')`
   display: flex;
   align-items: center;
   font-size: 13px;
@@ -138,7 +137,7 @@ export const StyledProviderWrapRefreshing = styled<{}, 'div'>('div')`
   animation-fill-mode: forwards;
 `
 
-export const StyledProviderWrapRefreshFinished = styled<{}, 'div'>('div')`
+export const StyledProviderWrapRefreshFinished = styled('div')<{}>`
   display: flex;
   align-items: center;
   font-size: 13px;
@@ -151,11 +150,11 @@ export const StyledProviderWrapRefreshFinished = styled<{}, 'div'>('div')`
   animation-delay: 2250ms;
 `
 
-export const StyledVerifiedText = styled<{}, 'span'>('span')`
+export const StyledVerifiedText = styled('span')<{}>`
   color: ${p => p.theme.palette.grey800};
 `
 
-export const StyledVerifiedCheckLink = styled<{}, 'span'>('span')`
+export const StyledVerifiedCheckLink = styled('span')<{}>`
   color: ${p => p.theme.palette.blurple500};
   cursor: pointer;
   text-decoration: none;
@@ -166,7 +165,7 @@ export const StyledVerifiedCheckLink = styled<{}, 'span'>('span')`
     color: ${p => p.theme.palette.blurple400};
   }
 `
-export const StyledVerifiedCheckNoLink = styled<{}, 'span'>('span')`
+export const StyledVerifiedCheckNoLink = styled('span')<{}>`
   color: ${p => p.theme.palette.grey400};
   text-decoration: none;
   z-index: 1;
@@ -190,7 +189,7 @@ export const StyledInlineUnVerified = styled(StyledInlineVerified)`
   color: ${p => p.theme.palette.grey500};
 `
 
-export const StyledRefreshOverlay = styled<{}, 'div'>('div')`
+export const StyledRefreshOverlay = styled('div')<{}>`
   width: 100%;
   height: 100%;
   z-index: 1;
@@ -203,7 +202,7 @@ export const StyledRefreshOverlay = styled<{}, 'div'>('div')`
   margin-top: 25px;
 `
 
-export const StyledRefreshOverlayFinished = styled<{}, 'div'>('div')`
+export const StyledRefreshOverlayFinished = styled('div')<{}>`
   width: 100%;
   height: 100%;
   z-index: 2;
@@ -221,7 +220,7 @@ export const StyledRefreshOverlayFinished = styled<{}, 'div'>('div')`
   animation-fill-mode: forwards;
 `
 
-export const StyledRefreshCheckOverlayFinished = styled<{}, 'div'>('div')`
+export const StyledRefreshCheckOverlayFinished = styled('div')<{}>`
   width: 100%;
   height: 100%;
   z-index: 1;
@@ -257,7 +256,7 @@ export const StyledRefreshLoaderFinished = styled(StyledInlineVerified)`
   display: flex;
 `
 
-export const StyledRefreshFinished = styled<{}, 'span'>('span')`
+export const StyledRefreshFinished = styled('span')<{}>`
   position: absolute;
   height: 24px;
   width: 24px;

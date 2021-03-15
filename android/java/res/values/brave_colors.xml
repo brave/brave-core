@@ -33,8 +33,6 @@
     <color name="onboarding_indicator_selected_color">#FF7654</color>
     <color name="onboarding_indicator_default_color">#C2C4CF</color>
 
-    <color name="brave_shield_bg_color">@color/default_primary_color</color>
-
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@color/modern_grey_50</color>
     <color name="brave_sync_border_color">@color/modern_grey_50</color>
@@ -80,7 +78,6 @@
     <color name="section_divider_color">#c8c7cc</color>
     <color name="shield_title_color">@android:color/black</color>
     <color name="shield_text_color">#212529</color>
-    <color name="shield_advanced_controls_color">#222326</color>
 
     <color name="shield_bg_color">#FFFFFF</color>
     <color name="shield_back_button_tint">@color/brave_theme_color</color>
@@ -110,7 +107,6 @@
     <color name="brave_stats_empty_text_color">#339AF0</color>
     <color name="brave_stats_empty_bg_color">#335DB5FC</color>
     <color name="brave_stats_empty_border_color">#5DB5FC</color>
-    <color name="brave_stats_badge_tint_color">#495057</color>
     <color name="brave_stats_radio_button_active">@android:color/white</color>
 
     <color name="topsite_bg_color">#DADCE8</color>

@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../common/locale'
 
-import { Section, Title, PaddedButton, GarbageError } from '../style'
+import { Section, Title, PaddedButton, Error } from '../style'
 
 interface Props {
   repoStats: IPFS.RepoStats
@@ -50,7 +50,7 @@ export class RepoStats extends React.Component<Props, {}> {
         />
         {!this.props.garbageCollectionStatus.success && this.props.daemonStatus.launched && (
         <div
-          style={GarbageError}
+          style={Error}
         >
           {getLocale('gcError')}: {this.props.garbageCollectionStatus.error}
         </div>)}

@@ -92,7 +92,8 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
           installed: false,
           launched: false,
           restarting: false,
-          installing: true
+          installing: true,
+          error: ''
         }
       }
       break
@@ -125,6 +126,12 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
         garbageCollectionStatus: action.payload.garbageCollectionStatus
       }
       break
+    case types.IPFS_ON_INSTALLATION_PROGRESS:
+      state = {
+        ...state,
+        installationProgress: action.payload.installationProgress
+      }
+      break
     case types.IPFS_RESTART_DAEMON:
       chrome.send('ipfs.restartDaemon')
       state = {
@@ -133,7 +140,8 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
           installed: true,
           launched: false,
           restarting: true,
-          installing: false
+          installing: false,
+          error: ''
         }
       }
       break

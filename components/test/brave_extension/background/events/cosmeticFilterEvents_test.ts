@@ -2,7 +2,6 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as cosmeticFilterAPI from '../../../../brave_extension/extension/brave_extension/background/api/cosmeticFilterAPI'
 import * as cosmeticFilterEvents from '../../../../brave_extension/extension/brave_extension/background/events/cosmeticFilterEvents'
 
 let lastInputText: string
@@ -30,15 +29,16 @@ describe('cosmeticFilterEvents events', () => {
   describe('chrome.contextMenus.onClicked listener', () => {
     let contextMenuOnClickedSpy: jest.SpyInstance
     let chromeTabsQuerySpy: jest.SpyInstance
-    let resetSiteFilterSettingsSpy: jest.SpyInstance
-    let resetAllFilterSettingsSpy: jest.SpyInstance
     let chromeTabsSendMessageSpy: jest.SpyInstance
+    let chromeBraveShieldsAddSiteCosmeticFilterSpy: jest.SpyInstance
+    chrome.braveShields = {
+      addSiteCosmeticFilter: () => { /* stub */ }
+    }
     beforeEach(() => {
       contextMenuOnClickedSpy = jest.spyOn(chrome.tabs, 'create')
       chromeTabsQuerySpy = jest.spyOn(chrome.tabs, 'query')
-      resetSiteFilterSettingsSpy = jest.spyOn(cosmeticFilterAPI, 'removeSiteFilter')
-      resetAllFilterSettingsSpy = jest.spyOn(cosmeticFilterAPI, 'removeAllFilters')
       chromeTabsSendMessageSpy = jest.spyOn(chrome.tabs, 'sendMessage')
+      chromeBraveShieldsAddSiteCosmeticFilterSpy = jest.spyOn(chrome.braveShields, 'addSiteCosmeticFilter')
     })
     afterEach(() => {
       contextMenuOnClickedSpy.mockRestore()
@@ -80,44 +80,6 @@ describe('cosmeticFilterEvents events', () => {
         cosmeticFilterEvents.tabsCallback([myTab])
         expect(1).toBe(1)
         chrome.tabs.sendMessage(myTab.id, { type: 'getTargetSelector' }, cosmeticFilterEvents.onSelectorReturned)
-      })
-    })
-    describe('resetSiteFilterSettings', function () {
-      it('triggers `siteCosmeticFilterRemoved` action', function () {
-        const info: chrome.contextMenus.OnClickData = { menuItemId: 'resetSiteFilterSettings', editable: false, pageUrl: 'brave.com' }
-        const tab: chrome.tabs.Tab = {
-          id: 3,
-          index: 0,
-          pinned: false,
-          highlighted: false,
-          windowId: 1,
-          active: true,
-          incognito: false,
-          selected: true,
-          discarded: false,
-          autoDiscardable: false
-        }
-        cosmeticFilterEvents.onContextMenuClicked(info, tab)
-        expect(resetSiteFilterSettingsSpy).toBeCalled()
-      })
-    })
-    describe('resetAllFilterSettings', function () {
-      it('triggers `allCosmeticFiltersRemoved` action', function () {
-        const info: chrome.contextMenus.OnClickData = { menuItemId: 'resetAllFilterSettings', editable: false, pageUrl: 'brave.com' }
-        const tab: chrome.tabs.Tab = {
-          id: 3,
-          index: 0,
-          pinned: false,
-          highlighted: false,
-          windowId: 1,
-          active: true,
-          incognito: false,
-          selected: true,
-          discarded: false,
-          autoDiscardable: false
-        }
-        cosmeticFilterEvents.onContextMenuClicked(info, tab)
-        expect(resetAllFilterSettingsSpy).toBeCalled()
       })
     })
     describe('onSelectorReturned', function () {

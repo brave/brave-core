@@ -19,13 +19,6 @@ TabManager* g_tab_manager = nullptr;
 TabManager::TabManager() {
   DCHECK_EQ(g_tab_manager, nullptr);
   g_tab_manager = this;
-
-  is_foregrounded_ = AdsClientHelper::Get()->IsForeground();
-  if (is_foregrounded_) {
-    BLOG(1, "Browser window is active");
-  } else {
-    BLOG(1, "Browser window is inactive");
-  }
 }
 
 TabManager::~TabManager() {
@@ -42,36 +35,6 @@ TabManager* TabManager::Get() {
 // static
 bool TabManager::HasInstance() {
   return g_tab_manager;
-}
-
-bool TabManager::IsForegrounded() const {
-  return is_foregrounded_;
-}
-
-void TabManager::OnForegrounded() {
-  if (is_foregrounded_) {
-    return;
-  }
-
-  BLOG(1, "Browser window did become active");
-
-  is_foregrounded_ = true;
-
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kBrowserWindowDidBecomeActive);
-}
-
-void TabManager::OnBackgrounded() {
-  if (!is_foregrounded_) {
-    return;
-  }
-
-  BLOG(1, "Browser window did enter background");
-
-  is_foregrounded_ = false;
-
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kBrowserWindowDidEnterBackground);
 }
 
 bool TabManager::IsVisible(const int32_t id) const {

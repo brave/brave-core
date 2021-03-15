@@ -4,11 +4,11 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   font-size: 20px;
   font-weight: 600;
   line-height: 2;
@@ -17,13 +17,13 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   text-align: center;
 `
 
-export const StyledLoader = styled<{}, 'div'>('div')`
+export const StyledLoader = styled('div')<{}>`
   margin: 0 auto;
   width: 30px;
   height: 30px;
 `
 
-export const StyledError = styled<{}, 'div'>('div')`
+export const StyledError = styled('div')<{}>`
   text-align: center;
 
   a {
@@ -36,7 +36,7 @@ export const StyledError = styled<{}, 'div'>('div')`
   }
 `
 
-export const StyledButton = styled<{}, 'div'>('div')`
+export const StyledButton = styled('div')<{}>`
   display: flex;
   margin-top: 20px;
   flex-direction: column;

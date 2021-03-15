@@ -1,9 +1,5 @@
 import { getLocale } from '../api/localeAPI'
-import {
-  addSiteCosmeticFilter,
-  removeSiteFilter,
-  removeAllFilters
-} from '../api/cosmeticFilterAPI'
+import { addSiteCosmeticFilter } from '../api/cosmeticFilterAPI'
 import shieldsPanelActions from '../actions/shieldsPanelActions'
 
 export let rule = {
@@ -21,18 +17,6 @@ chrome.contextMenus.create({
 chrome.contextMenus.create({
   title: getLocale('addBlockElement'),
   id: 'addBlockElement',
-  parentId: 'brave',
-  contexts: ['all']
-})
-chrome.contextMenus.create({
-  title: getLocale('resetSiteFilterSettings'),
-  id: 'resetSiteFilterSettings',
-  parentId: 'brave',
-  contexts: ['all']
-})
-chrome.contextMenus.create({
-  title: getLocale('resetAllFilterSettings'),
-  id: 'resetAllFilterSettings',
   parentId: 'brave',
   contexts: ['all']
 })
@@ -89,14 +73,6 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
     case 'addBlockElement':
       query()
       break
-    case 'resetSiteFilterSettings': {
-      removeSiteFilter(rule.host)
-      break
-    }
-    case 'resetAllFilterSettings': {
-      removeAllFilters()
-      break
-    }
     default: {
       console.warn('[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
     }

@@ -121,13 +121,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetStatement(const base::ListValue* args);
   void GetExcludedSites(const base::ListValue* args);
 
-  void OnGetStatement(
-      const bool success,
-      const double estimated_pending_rewards,
-      const uint64_t next_payment_date,
-      const uint64_t ads_received_this_month,
-      const double earnings_this_month,
-      const double earnings_last_month);
+  void OnGetStatement(const bool success,
+                      const double estimated_pending_rewards,
+                      const int64_t next_payment_date,
+                      const int ads_received_this_month,
+                      const double earnings_this_month,
+                      const double earnings_last_month);
 
   void OnGetRecurringTips(ledger::type::PublisherInfoList list);
 
@@ -1376,18 +1375,16 @@ void RewardsDOMHandler::OnPublisherListNormalized(
 
 void RewardsDOMHandler::GetStatement(
     const base::ListValue* args) {
-  ads_service_->GetStatement(base::Bind(
-      &RewardsDOMHandler::OnGetStatement,
-      weak_factory_.GetWeakPtr()));
+  ads_service_->GetAccountStatement(base::Bind(
+      &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetStatement(
-    const bool success,
-    const double estimated_pending_rewards,
-    const uint64_t next_payment_date,
-    const uint64_t ads_received_this_month,
-    const double earnings_this_month,
-    const double earnings_last_month) {
+void RewardsDOMHandler::OnGetStatement(const bool success,
+                                       const double estimated_pending_rewards,
+                                       const int64_t next_payment_date,
+                                       const int ads_received_this_month,
+                                       const double earnings_this_month,
+                                       const double earnings_last_month) {
   if (!success) {
     return;
   }
@@ -1424,9 +1421,8 @@ void RewardsDOMHandler::OnStatementChanged(
 }
 
 void RewardsDOMHandler::OnAdRewardsChanged() {
-  ads_service_->GetStatement(base::Bind(
-      &RewardsDOMHandler::OnGetStatement,
-      weak_factory_.GetWeakPtr()));
+  ads_service_->GetAccountStatement(base::Bind(
+      &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnRecurringTipSaved(
@@ -1589,7 +1585,6 @@ void RewardsDOMHandler::OnGetExternalWallet(
 
     if (wallet) {
       wallet_dict.SetStringKey("type", wallet->type);
-      wallet_dict.SetStringKey("token", wallet->token);
       wallet_dict.SetStringKey("address", wallet->address);
       wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
       wallet_dict.SetStringKey("verifyUrl", wallet->verify_url);

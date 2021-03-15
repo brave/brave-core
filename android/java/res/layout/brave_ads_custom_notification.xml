@@ -35,6 +35,7 @@
             android:src="@drawable/bat_ads_logo_button"
             android:paddingTop="2dp"
             android:paddingEnd="2dp"
+            android:contentDescription="@null"
             android:id="@+id/brave_ads_logo"
             />
 
@@ -44,6 +45,7 @@
             android:layout_gravity="end"
             android:paddingTop="2dp"
             android:paddingEnd="2dp"
+            android:contentDescription="@null"
             android:src="@drawable/bat_ads_close_button"
             android:id="@+id/brave_ads_custom_notification_close_button"
             />

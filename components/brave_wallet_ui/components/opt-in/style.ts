@@ -9,13 +9,13 @@ const isDarkTheme = (p: any) => {
   return p.theme.name === 'Brave Dark'
 }
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   width: 100%;
   color: ${p => isDarkTheme(p) ? '#fff' : '#000'};
   background: ${p => isDarkTheme(p) ? '#1d2025' : '#fff'};
 `
 
-export const StyledInner = styled<{}, 'div'>('div')`
+export const StyledInner = styled('div')<{}>`
   margin: 75px auto;
   background: inherit;
   border-radius: 6px;
@@ -24,48 +24,48 @@ export const StyledInner = styled<{}, 'div'>('div')`
   max-width: 620px;
 `
 
-export const StyledContent = styled<{}, 'div'>('div')`
+export const StyledContent = styled('div')<{}>`
   max-width: 90%;
   margin: 0 auto;
   text-align: center;
 `
 
-export const StyledHeader = styled<{}, 'span'>('span')`
+export const StyledHeader = styled('span')<{}>`
   font-weight: bold;
   font-size: 21px;
 `
 
-export const StyledSeparator = styled<{}, 'div'>('div')`
+export const StyledSeparator = styled('div')<{}>`
   background: #d3d3d3;
   height: 1px;
   margin-top: 10px;
 `
 
-export const StyledDisclosure = styled<{}, 'div'>('div')`
+export const StyledDisclosure = styled('div')<{}>`
   font-size: 14px;
   margin-top: 15px;
   display: block;
   text-align: left;
 `
 
-export const StyledText = styled<{}, 'span'>('span')`
+export const StyledText = styled('span')<{}>`
   margin-top: 10px;
   display: block;
 `
 
-export const StyledRewards = styled<{}, 'span'>('span')`
+export const StyledRewards = styled('span')<{}>`
   color: #0076ff;
   font-size: 14px;
   cursor: pointer;
 `
 
-export const StyledButtonWrapper = styled<{}, 'div'>('div')`
+export const StyledButtonWrapper = styled('div')<{}>`
   width: 100%;
   margin-top: 50px;
   text-align: center;
 `
 
-export const StyledButton = styled<{}, 'button'>('button')`
+export const StyledButton = styled('button')<{}>`
   color: #fff;
   background: #0076ff;
   border-radius: 20px;

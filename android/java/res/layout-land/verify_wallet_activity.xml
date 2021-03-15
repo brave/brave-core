@@ -5,6 +5,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -56,6 +57,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
+        android:baselineAligned="false"
         android:layout_marginTop="@dimen/verify_wallet_margin1_land">
 
         <!--1st column -->
@@ -84,7 +86,7 @@
                 android:gravity="start"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="@dimen/verify_wallet_margin2_land"
-                android:drawableStart="@drawable/check"
+                app:drawableStartCompat="@drawable/check"
                 android:drawablePadding ="16dp"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"/>
@@ -98,7 +100,7 @@
                 android:gravity="start"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="@dimen/verify_wallet_margin2_land"
-                android:drawableStart="@drawable/check"
+                app:drawableStartCompat="@drawable/check"
                 android:drawablePadding ="16dp"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"/>
@@ -112,7 +114,7 @@
                 android:gravity="start"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="@dimen/verify_wallet_margin2_land"
-                android:drawableStart="@drawable/check"
+                app:drawableStartCompat="@drawable/check"
                 android:drawablePadding ="16dp"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"/>
@@ -149,7 +151,7 @@
                 android:layout_gravity="center"
                 android:gravity="center_vertical"
                 android:textColor="@color/user_wallet_dimmed_note"
-                android:drawableEnd="@drawable/uphold_green"
+                app:drawableEndCompat="@drawable/uphold_green"
                 android:drawablePadding="6dp"
                 android:layout_marginTop="@dimen/verify_wallet_margin2_land"/>
 
