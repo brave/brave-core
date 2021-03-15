@@ -24,7 +24,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     /// Set of actions that can occur from the Brave Today section
     enum Action {
         /// The user interacted with the welcome card
-        case welcomeCardAction(WelcomeCardAction)
+        case optInCardAction(OptInCardAction)
         /// The user tapped sources & settings on the empty card
         case emptyCardTappedSourcesAndSettings
         /// The user tapped refresh on the error card
@@ -53,7 +53,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func registerCells(to collectionView: UICollectionView) {
-        collectionView.register(FeedCardCell<BraveTodayWelcomeView>.self)
+        collectionView.register(FeedCardCell<BraveTodayOptInView>.self)
         collectionView.register(FeedCardCell<BraveTodayErrorView>.self)
         collectionView.register(FeedCardCell<BraveTodayEmptyFeedView>.self)
         collectionView.register(FeedCardCell<HeadlineCardView>.self)
@@ -70,11 +70,14 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         .fullWidth
     }
     
-    private var isShowingIntroCard: Bool {
-        Preferences.BraveToday.isShowingIntroCard.value
+    private var isShowingOptInCard: Bool {
+        Preferences.BraveToday.isShowingOptIn.value
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if isShowingOptInCard {
+            return 1
+        }
         if !Preferences.BraveToday.isEnabled.value {
             return 0
         }
@@ -87,7 +90,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             if cards.isEmpty {
                 return 1
             }
-            return cards.count + (isShowingIntroCard ? 1 : 0)
+            return cards.count
         }
     }
     
@@ -100,7 +103,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             if cards.isEmpty {
                 size.height = 300
             } else {
-                size.height = cards[safe: indexPath.item - (isShowingIntroCard ? 1 : 0)]?.estimatedHeight(for: size.width) ?? 300
+                size.height = cards[safe: indexPath.item]?.estimatedHeight(for: size.width) ?? 300
             }
         }
         return size
@@ -115,11 +118,10 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveTodayWelcomeView> {
+        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveTodayOptInView> {
             cell.content.graphicAnimationView.play()
         }
-        let indexDisplacement = isShowingIntroCard ? 1 : 0
-        if let card = dataSource.state.cards?[safe: indexPath.item - indexDisplacement] {
+        if let card = dataSource.state.cards?[safe: indexPath.item] {
             if case .partner(let item) = card,
                let creativeInstanceID = item.content.creativeInstanceID {
                 ads.reportPromotedContentAdEvent(
@@ -132,7 +134,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveTodayWelcomeView> {
+        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveTodayOptInView> {
             cell.content.graphicAnimationView.stop()
         }
     }
@@ -161,6 +163,17 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             return cell
         }
         
+        if isShowingOptInCard && indexPath.item == 0 {
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayOptInView>
+            cell.content.optInCardActionHandler = { [weak self] action in
+                if action == .turnOnBraveTodayButtonTapped && !cell.content.turnOnBraveTodayButton.isLoading {
+                    cell.content.turnOnBraveTodayButton.isLoading = true
+                }
+                self?.actionHandler(.optInCardAction(action))
+            }
+            return cell
+        }
+        
         if let cards = dataSource.state.cards, cards.isEmpty {
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayEmptyFeedView>
             cell.content.sourcesAndSettingsButtonTapped = { [weak self] in
@@ -169,16 +182,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             return cell
         }
         
-        if isShowingIntroCard && indexPath.item == 0 {
-            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayWelcomeView>
-            cell.content.introCardActionHandler = { [weak self] action in
-                self?.actionHandler(.welcomeCardAction(action))
-            }
-            return cell
-        }
-        
-        let indexDisplacement = isShowingIntroCard ? 1 : 0
-        guard let card = dataSource.state.cards?[safe: indexPath.item - indexDisplacement] else {
+        guard let card = dataSource.state.cards?[safe: indexPath.item] else {
             assertionFailure()
             return UICollectionViewCell()
         }

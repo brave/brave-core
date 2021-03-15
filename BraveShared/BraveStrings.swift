@@ -1598,6 +1598,12 @@ extension Strings {
             value: "Sources & Settings",
             comment: ""
         )
+        public static let turnOnBraveToday = NSLocalizedString(
+            "today.turnOnBraveToday",
+            bundle: .braveShared,
+            value: "Turn on Brave Today",
+            comment: ""
+        )
         public static let learnMoreTitle = NSLocalizedString(
             "today.learnMoreTitle",
             bundle: .braveShared,
@@ -1607,13 +1613,25 @@ extension Strings {
         public static let introCardTitle = NSLocalizedString(
             "today.introCardTitle",
             bundle: .braveShared,
-            value: "Brave Today shows top stories in a completely private feed, just for you.",
+            value: "Today's top stories in a completely private feed, just for you.",
             comment: ""
         )
         public static let introCardBody = NSLocalizedString(
             "today.introCardBody",
             bundle: .braveShared,
-            value: "Your interests are matched on your device so your personal information never leaves your browser. New content updated throughout the day.",
+            value: "Brave Today is ad-supported with completely private and anonymized ads matched on your device.",
+            comment: ""
+        )
+        public static let introCardNew = NSLocalizedString(
+            "today.introCardNew",
+            bundle: .braveShared,
+            value: "New",
+            comment: "\"New\" as in a new feature being introduced, displayed above a body of text explaining said feature"
+        )
+        public static let introCardNewTextBody = NSLocalizedString(
+            "today.introCardNewTextBody",
+            bundle: .braveShared,
+            value: "Customize Brave Today with up to 5 RSS feeds and get new content from your favorite publishers throughout the day.",
             comment: ""
         )
         public static let refresh = NSLocalizedString(

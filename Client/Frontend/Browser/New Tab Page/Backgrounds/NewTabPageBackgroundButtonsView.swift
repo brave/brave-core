@@ -109,7 +109,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         #else
         let braveTodayVisible =
             !PrivateBrowsingManager.shared.isPrivateBrowsing &&
-            Preferences.BraveToday.isEnabled.value
+            (Preferences.BraveToday.isEnabled.value || Preferences.BraveToday.isShowingOptIn.value)
         #endif
         
         imageCreditButton.snp.remakeConstraints {
