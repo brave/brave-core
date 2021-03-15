@@ -313,29 +313,20 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
       ->AddRewardsExtension();
 
   rewards_service->StartProcess(
-      base::BindOnce(
-          &BraveRewardsTipUserFunction::OnTipUserStartProcess,
-          this,
-          params->publisher_key));
+      base::BindOnce(&BraveRewardsTipUserFunction::OnProcessStarted, this,
+                     params->publisher_key));
 
   return RespondNow(NoArguments());
 }
 
-void BraveRewardsTipUserFunction::OnTipUserStartProcess(
-    const std::string& publisher_key,
-    ledger::type::Result result) {
-  if (result != ledger::type::Result::LEDGER_OK) {
-    Release();
-    return;
-  }
-
+void BraveRewardsTipUserFunction::OnProcessStarted(
+    const std::string& publisher_key) {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
     Release();
     return;
   }
-
   rewards_service->GetPublisherInfo(
       publisher_key,
       base::Bind(&BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
@@ -677,15 +668,15 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
-  AdsService* ads_service_ = AdsServiceFactory::GetForProfile(profile);
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
 
-  if (!rewards_service || !ads_service_) {
+  if (!rewards_service || !ads_service) {
     return RespondNow(Error("Service is not initialized"));
   }
 
   if (params->key == "adsEnabled") {
     const auto is_enabled =
-        params->value == "true" && ads_service_->IsSupportedLocale();
+        params->value == "true" && ads_service->IsSupportedLocale();
     rewards_service->SetAdsEnabled(is_enabled);
   }
 
@@ -1105,14 +1096,14 @@ BraveRewardsGetAdsEnabledFunction::
 ExtensionFunction::ResponseAction
 BraveRewardsGetAdsEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service_ =
+  AdsService* ads_service =
       AdsServiceFactory::GetForProfile(profile);
 
-  if (!ads_service_) {
+  if (!ads_service) {
     return RespondNow(Error("Ads service is not initialized"));
   }
 
-  const bool enabled = ads_service_->IsEnabled();
+  const bool enabled = ads_service->IsEnabled();
   return RespondNow(OneArgument(base::Value(enabled)));
 }
 
@@ -1122,16 +1113,16 @@ BraveRewardsGetAdsAccountStatementFunction::
 ExtensionFunction::ResponseAction
 BraveRewardsGetAdsAccountStatementFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service_ =
+  AdsService* ads_service =
       AdsServiceFactory::GetForProfile(profile);
 
-  if (!ads_service_) {
+  if (!ads_service) {
     return RespondNow(Error("Ads service is not initialized"));
   }
 
   AddRef();  // Balanced in OnGetAdsAccountStatement().
 
-  ads_service_->GetAccountStatement(base::BindOnce(
+  ads_service->GetAccountStatement(base::BindOnce(
       &BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement,
       this));
   return RespondLater();
@@ -1170,14 +1161,14 @@ BraveRewardsGetAdsSupportedFunction::
 ExtensionFunction::ResponseAction
 BraveRewardsGetAdsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  AdsService* ads_service_ =
+  AdsService* ads_service =
       AdsServiceFactory::GetForProfile(profile);
 
-  if (!ads_service_) {
+  if (!ads_service) {
     return RespondNow(Error("Ads service is not initialized"));
   }
 
-  const bool supported = ads_service_->IsSupportedLocale();
+  const bool supported = ads_service->IsSupportedLocale();
   return RespondNow(OneArgument(base::Value(supported)));
 }
 

@@ -214,7 +214,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         JNIEnv* env,
         bool isAutoContributeEnabled);
     void StartProcess(JNIEnv* env);
-    void OnStartProcess(const ledger::type::Result result);
+
  private:
     std::string StdStrStrMapToJsonString(
         const base::flat_map<std::string, std::string>& args);
@@ -222,6 +222,9 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnBalance(
         const ledger::type::Result result,
         ledger::type::BalancePtr balance);
+
+    void OnStartProcess();
+
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
     brave_rewards::RewardsService* brave_rewards_service_;
     ledger::type::RewardsParameters parameters_;

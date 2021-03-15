@@ -238,7 +238,7 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(CreateWallet, void(brave_rewards::CreateWalletCallback));
 
-  MOCK_METHOD1(StartProcess, void(brave_rewards::StartProcessCallback));
+  MOCK_METHOD1(StartProcess, void(base::OnceClosure));
 
   MOCK_METHOD1(GetWalletPassphrase,
                void(brave_rewards::GetWalletPassphraseCallback));
