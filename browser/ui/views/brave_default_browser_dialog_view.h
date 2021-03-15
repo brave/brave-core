@@ -11,6 +11,7 @@
 #include "ui/views/window/dialog_delegate.h"
 
 namespace views {
+class Checkbox;
 class Label;
 }  // namespace views
 
@@ -37,6 +38,7 @@ class BraveDefaultBrowserDialogView : public views::DialogDelegateView {
 
   views::Label* header_label_ = nullptr;
   views::Label* contents_label_ = nullptr;
+  views::Checkbox* dont_ask_again_checkbox_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_DEFAULT_BROWSER_DIALOG_VIEW_H_

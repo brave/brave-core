@@ -94,6 +94,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   BraveWindowTracker::RegisterPrefs(registry);
   BraveUptimeTracker::RegisterPrefs(registry);
   dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
+
+  registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

@@ -250,6 +250,7 @@ source_set("ui") {
     "//brave/ui/brave_ads/public/cpp",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
+    "//chrome/browser:browser_process",
     "//chrome/common",
     "//chrome/services/qrcode_generator",
     "//components/content_settings/browser",

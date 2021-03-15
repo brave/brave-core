@@ -967,9 +967,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
           Set Brave as your default browser
         </message>
         <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_CONTENTS_TEXT" desc="The contents for default browser dialog">
-          Brave browser is currently not set as your default browser.
-Set Brave as your default to keep browsing the web faster -
-up to 6x faster on major news sites.
+          Keep browsing the web faster - up to 6x faster on major news sites.
+        </message>
+        <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_DONT_ASK" desc="The text for diabling default browser dialog checkbox">
+          Don't ask again
         </message>
         <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_OK_BUTTON_LABEL" desc="The text for default browser dialog ok button">
           Set as default

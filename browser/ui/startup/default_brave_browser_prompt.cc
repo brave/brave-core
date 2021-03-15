@@ -139,14 +139,17 @@ void ShowDefaultBraveBrowserPrompt(Profile* profile) {
   return;
 #endif
 
+  PrefService* local_prefs = g_browser_process->local_state();
   // Do not check if Chrome is the default browser if there is a policy in
   // control of this setting.
-  if (g_browser_process->local_state()->IsManagedPreference(
-          prefs::kDefaultBrowserSettingEnabled)) {
+  if (local_prefs->IsManagedPreference(prefs::kDefaultBrowserSettingEnabled)) {
     // Handling of the browser.default_browser_setting_enabled policy setting is
     // taken care of in BrowserProcessImpl.
     return;
   }
+
+  if (!local_prefs->GetBoolean(kDefaultBrowserPromptEnabled))
+    return;
 
   PrefService* prefs = profile->GetPrefs();
   // Reset preferences if kResetCheckDefaultBrowser is true.

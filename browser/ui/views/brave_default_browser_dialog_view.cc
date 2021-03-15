@@ -10,12 +10,17 @@
 #include "base/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/shell_integration.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "components/constrained_window/constrained_window_views.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/bubble/bubble_frame_view.h"
+#include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/layout_provider.h"
@@ -105,7 +110,10 @@ void BraveDefaultBrowserDialogView::CreateChildViews() {
       contents_font));
   contents_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   contents_label_->SetMultiLine(true);
-  contents_label_->SetMaxLines(3);
+  contents_label_->SetMaximumWidth(350);
+
+  dont_ask_again_checkbox_ = AddChildView(std::make_unique<views::Checkbox>(
+      l10n_util::GetStringUTF16(IDS_BRAVE_DEFAULT_BROWSER_DIALOG_DONT_ASK)));
 }
 
 std::unique_ptr<views::NonClientFrameView>
@@ -143,7 +151,8 @@ void BraveDefaultBrowserDialogView::OnDialogInitialized() {
 }
 
 void BraveDefaultBrowserDialogView::OnCancelButtonClicked() {
-  // Do nothing.
+  g_browser_process->local_state()->SetBoolean(
+      kDefaultBrowserPromptEnabled, !dont_ask_again_checkbox_->GetChecked());
 }
 
 void BraveDefaultBrowserDialogView::OnAcceptButtonClicked() {
