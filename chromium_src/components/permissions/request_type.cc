@@ -9,7 +9,7 @@
   case RequestType::kWidevine:    \
     return vector_icons::kExtensionIcon;
 
-#if !defined(OS_ANDROID) && !defined(OS_IOS)
+#if BUILDFLAG(ENABLE_WIDEVINE)
 #define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE \
   case permissions::RequestType::kWidevine:   \
     return "widevine";
