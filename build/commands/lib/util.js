@@ -259,6 +259,9 @@ const util = {
     // Copy to make our ${branding_path_component}_behaviors.cc
     fileMap.add([path.join(config.braveCoreDir, 'chromium_src', 'chrome', 'installer', 'setup', 'brave_behaviors.cc'),
                  path.join(config.srcDir, 'chrome', 'installer', 'setup', 'brave_behaviors.cc')])
+    // Replace webui CSS to use our fonts.
+    fileMap.add([path.join(config.braveCoreDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css'),
+                 path.join(config.srcDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css')])
 
     for (const [source, output] of fileMap) {
       if (!fs.existsSync(source)) {
