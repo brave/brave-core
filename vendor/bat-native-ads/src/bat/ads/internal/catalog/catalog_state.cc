@@ -42,7 +42,7 @@ Result CatalogState::FromJson(const std::string& json,
   new_catalog_id = document["catalogId"].GetString();
 
   new_version = document["version"].GetInt();
-  if (new_version != 6) {
+  if (new_version != 7) {
     return FAILED;
   }
 
@@ -96,6 +96,11 @@ Result CatalogState::FromJson(const std::string& json,
       creative_set_info.per_day = creative_set["perDay"].GetUint();
 
       creative_set_info.total_max = creative_set["totalMax"].GetUint();
+
+      if (creative_set.HasMember("splitTestGroup")) {
+        creative_set_info.split_test_group =
+            creative_set["splitTestGroup"].GetString();
+      }
 
       // Segments
       auto segments = creative_set["segments"].GetArray();

@@ -136,6 +136,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_set.creative_set_id =
         "340c927f-696e-4060-9933-3eafc56c3f31";
     catalog_creative_set.per_day = 5;
+    catalog_creative_set.split_test_group = "GroupB";
     catalog_creative_set.total_max = 100;
     catalog_creative_set.segments = catalog_segments;
     catalog_creative_set.oses = catalog_oses;
@@ -451,7 +452,7 @@ TEST_F(BatAdsCatalogTest, GetVersion) {
   const int version = catalog.GetVersion();
 
   // Assert
-  EXPECT_EQ(6, version);
+  EXPECT_EQ(7, version);
 }
 
 TEST_F(BatAdsCatalogTest, GetPing) {

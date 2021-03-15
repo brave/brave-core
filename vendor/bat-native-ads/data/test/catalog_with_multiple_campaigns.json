@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "issuers": [
     {
       "name": "confirmation",
@@ -117,7 +117,11 @@
           ],
           "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
           "perDay": 5,
-          "totalMax": 100
+          "perMonth": 80,
+          "perWeek": 30,
+          "splitTestGroup": "GroupB",
+          "totalMax": 100,
+          "value": "0.05"
         }
       ],
       "dayParts": [
@@ -243,7 +247,10 @@
           ],
           "creativeSetId": "741cd2ba-3100-45f2-be1e-acedd24e0067",
           "perDay": 10,
-          "totalMax": 1000
+          "perMonth": 90,
+          "perWeek": 40,
+          "totalMax": 1000,
+          "value": "0.1"
         }
       ],
       "dayParts": [

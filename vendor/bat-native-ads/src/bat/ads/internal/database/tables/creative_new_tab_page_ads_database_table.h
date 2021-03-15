@@ -87,8 +87,8 @@ class CreativeNewTabPageAds : public Table {
 
   CreativeNewTabPageAdInfo GetFromRecord(DBRecord* record) const;
 
-  void CreateTableV10(DBTransaction* transaction);
-  void MigrateToV10(DBTransaction* transaction);
+  void CreateTableV12(DBTransaction* transaction);
+  void MigrateToV12(DBTransaction* transaction);
 
   int batch_size_;
 
