@@ -263,6 +263,9 @@ std::string BraveWalletService::GetBitGoSeed(std::vector<uint8_t> key) {
 }
 
 void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
+// We don't use ExtensionRegistryObserver and simply access the private methods
+// OnExtensionLoaded()/OnExtensionUnloaded() from UserScriptLoader instead since
+// we only want to load/unload the content scripts and not the extension.
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   auto* user_script_manager =
