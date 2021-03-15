@@ -56,8 +56,8 @@ void IPFSHostResolver::Resolve(const net::HostPortPair& host,
     return;
 
   if (host.host() == resolving_host_) {
-    if (callback && has_dnslink_) {
-      std::move(callback).Run(host.host());
+    if (callback) {
+      std::move(callback).Run(host.host(), dnslink_);
     }
     return;
   }
@@ -68,7 +68,7 @@ void IPFSHostResolver::Resolve(const net::HostPortPair& host,
 
   receiver_.reset();
   resolved_callback_ = std::move(callback);
-  has_dnslink_ = false;
+  dnslink_.erase();
   resolving_host_ = host.host();
   net::HostPortPair local_host_port(prefix_ + resolving_host_, host.port());
 
@@ -92,15 +92,10 @@ void IPFSHostResolver::OnComplete(
 void IPFSHostResolver::OnTextResults(const std::vector<std::string>& results) {
   VLOG(2) << results.size()
           << " TXT records resolved for host: " << prefix_ + resolving_host_;
-  std::string dnslink = GetDNSRecordValue(results, kDnsLinkHeader);
-  has_dnslink_ = !dnslink.empty();
-  // We intentionally ignore the value since only its presence is important
-  // to us. https://docs.ipfs.io/concepts/dnslink/#publish-using-a-subdomain
-  if (!has_dnslink_)
-    return;
+  dnslink_ = GetDNSRecordValue(results, kDnsLinkHeader);
 
   if (resolved_callback_)
-    std::move(resolved_callback_).Run(resolving_host_);
+    std::move(resolved_callback_).Run(resolving_host_, dnslink_);
 }
 
 }  // namespace ipfs

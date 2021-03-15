@@ -133,7 +133,8 @@ class IPFSHostResolverTest : public testing::Test {
 
   void HostResolvedCallback(base::OnceClosure callback,
                             const std::string& expected_host,
-                            const std::string& host) {
+                            const std::string& host,
+                            const std::string& dnslink) {
     EXPECT_EQ(expected_host, host);
     resolved_callback_called_++;
     if (callback)
@@ -179,6 +180,7 @@ TEST_F(IPFSHostResolverTest, PrefixRunSuccess) {
 
   run_loop.Run();
   EXPECT_EQ(ipfs_resolver.host(), host);
+  EXPECT_EQ(ipfs_resolver.dnslink(), "abc");
   EXPECT_EQ(fake_host_resolver_raw->resolve_host_called(), 1);
   EXPECT_EQ(resolved_callback_called(), 1);
 }
@@ -207,6 +209,7 @@ TEST_F(IPFSHostResolverTest, SuccessOnReuse) {
 
   run_loop.Run();
   EXPECT_EQ(ipfs_resolver.host(), host);
+  EXPECT_EQ(ipfs_resolver.dnslink(), "abc");
   EXPECT_EQ(fake_host_resolver_raw->resolve_host_called(), 1);
   EXPECT_EQ(resolved_callback_called(), 1);
 
@@ -214,12 +217,12 @@ TEST_F(IPFSHostResolverTest, SuccessOnReuse) {
       net::HostPortPair(host, 11), net::NetworkIsolationKey(),
       net::DnsQueryType::TXT,
       base::BindOnce(
-          [](const std::string& expected_host, const std::string& host) {
-            EXPECT_EQ(expected_host, host);
-          },
+          [](const std::string& expected_host, const std::string& host,
+             const std::string& dnslink) { EXPECT_EQ(expected_host, host); },
           host));
   EXPECT_EQ(fake_host_resolver_raw->resolve_host_called(), 1);
   EXPECT_EQ(resolved_callback_called(), 1);
+  EXPECT_EQ(ipfs_resolver.dnslink(), "abc");
 }
 
 TEST_F(IPFSHostResolverTest, ResolutionFailed) {
@@ -236,9 +239,12 @@ TEST_F(IPFSHostResolverTest, ResolutionFailed) {
   ipfs_resolver.Resolve(
       net::HostPortPair(host, 11), net::NetworkIsolationKey(),
       net::DnsQueryType::TXT,
-      base::BindOnce([](const std::string& host) { NOTREACHED(); }));
+      base::BindOnce([](const std::string& host, const std::string& dnslink) {
+        NOTREACHED();
+      }));
   run_loop.Run();
   EXPECT_EQ(ipfs_resolver.host(), host);
+  EXPECT_EQ(ipfs_resolver.dnslink(), "");
   EXPECT_EQ(fake_host_resolver_raw->resolve_host_called(), 1);
   EXPECT_EQ(resolved_callback_called(), 0);
 }
