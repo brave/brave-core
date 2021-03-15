@@ -46,6 +46,8 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 void BraveContentRendererClient::RunScriptsAtDocumentStart(
     content::RenderFrame* render_frame) {
+  // run this before any extensions
   cosmetic_filters::CosmeticFiltersJsRenderFrameObserver::Get(render_frame)
       ->RunScriptsAtDocumentStart();
+  ChromeContentRendererClient::RunScriptsAtDocumentStart(render_frame);
 }
