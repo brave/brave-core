@@ -19,7 +19,7 @@ TEST_F(AsyncResultTest, CompleteResultSentInFutureTurn) {
   AsyncResult<int>::Resolver resolver;
   resolver.Complete(10);
   int value = 0;
-  resolver.result().Listen(
+  resolver.result().Then(
       base::BindLambdaForTesting([&value](const int& v) { value = v; }));
   ASSERT_EQ(value, 0);
   task_environment_.RunUntilIdle();
@@ -29,7 +29,7 @@ TEST_F(AsyncResultTest, CompleteResultSentInFutureTurn) {
 TEST_F(AsyncResultTest, CompleteCallbacksExecutedInFutureTurn) {
   AsyncResult<int>::Resolver resolver;
   int value = 0;
-  resolver.result().Listen(
+  resolver.result().Then(
       base::BindLambdaForTesting([&value](const int& v) { value = v; }));
   resolver.Complete(1);
   ASSERT_EQ(value, 0);
