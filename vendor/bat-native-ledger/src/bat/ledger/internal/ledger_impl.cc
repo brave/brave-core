@@ -844,9 +844,9 @@ void LedgerImpl::GetTransferableAmount(GetTransferableAmountCallback callback) {
   promotion()->GetTransferableAmount(callback);
 }
 
-void LedgerImpl::GetDrainID(const std::string& drain_id,
-                            ledger::GetDrainCallback callback) {
-  promotion()->GetDrainID(drain_id, callback);
+void LedgerImpl::GetDrainStatus(const std::string& drain_id,
+                                ledger::GetDrainCallback callback) {
+  promotion()->GetDrainStatus(drain_id, callback);
 }
 
 }  // namespace ledger

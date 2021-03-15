@@ -71,13 +71,11 @@ TEST_F(GetDrainTest, DrainComplete) {
         callback(response);
       }));
 
-  drain_->Request(test_drain_id_,
-                  [this](const type::Result result, std::string drain_id,
-                         std::string status) {
-                    EXPECT_EQ(result, type::Result::LEDGER_OK);
-                    EXPECT_EQ(drain_id, test_drain_id_);
-                    EXPECT_EQ(status, "complete");
-                  });
+  drain_->Request(test_drain_id_, [](const type::Result result,
+                                     const type::DrainStatus status) {
+    EXPECT_EQ(result, type::Result::LEDGER_OK);
+    EXPECT_EQ(status, type::DrainStatus::COMPLETE);
+  });
 }
 
 TEST_F(GetDrainTest, DrainPending) {
@@ -91,13 +89,11 @@ TEST_F(GetDrainTest, DrainPending) {
         callback(response);
       }));
 
-  drain_->Request(test_drain_id_,
-                  [this](const type::Result result, std::string drain_id,
-                         std::string status) {
-                    EXPECT_EQ(result, type::Result::LEDGER_OK);
-                    EXPECT_EQ(drain_id, test_drain_id_);
-                    EXPECT_EQ(status, "pending");
-                  });
+  drain_->Request(test_drain_id_, [](const type::Result result,
+                                     const type::DrainStatus status) {
+    EXPECT_EQ(result, type::Result::LEDGER_OK);
+    EXPECT_EQ(status, type::DrainStatus::PENDING);
+  });
 }
 
 TEST_F(GetDrainTest, DrainInvalidResponse) {
@@ -107,15 +103,14 @@ TEST_F(GetDrainTest, DrainInvalidResponse) {
         type::UrlResponse response;
         response.status_code = 200;
         response.url = request->url;
-        response.body = MakeDrainBody(request->url, "invalid");
+        response.body = MakeDrainBody(request->url, "thisdoesnotexist");
         callback(response);
       }));
 
   drain_->Request(test_drain_id_, [](const type::Result result,
-                                     std::string drain_id, std::string status) {
+                                     const type::DrainStatus status) {
     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-    EXPECT_EQ(drain_id, "");
-    EXPECT_EQ(status, "");
+    EXPECT_EQ(status, type::DrainStatus::INVALID);
   });
 }
 

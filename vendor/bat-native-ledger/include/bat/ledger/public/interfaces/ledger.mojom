@@ -244,6 +244,14 @@ enum PublisherStatus {
   UPHOLD_VERIFIED = 2
 };
 
+enum DrainStatus {
+  INVALID = 0,
+  PENDING = 1,
+  IN_PROGRESS = 2,
+  DELAYED = 3,
+  COMPLETE = 4
+};
+
 struct ServerPublisherInfo {
   string publisher_key;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;

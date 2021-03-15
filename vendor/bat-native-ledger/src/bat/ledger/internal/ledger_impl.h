@@ -360,8 +360,8 @@ class LedgerImpl : public ledger::Ledger {
 
   void GetTransferableAmount(GetTransferableAmountCallback callback) override;
 
-  void GetDrainID(const std::string& drain_id,
-                  ledger::GetDrainCallback callback) override;
+  void GetDrainStatus(const std::string& drain_id,
+                      ledger::GetDrainCallback callback) override;
 
   // end ledger.h
 

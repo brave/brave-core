@@ -62,46 +62,54 @@ void GetDrain::OnRequest(const type::UrlResponse& response,
   ledger::LogUrlResponse(__func__, response);
   auto result = CheckStatusCode(response.status_code);
   if (result != type::Result::LEDGER_OK) {
-    callback(result, "", "");
+    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
     return;
   }
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    callback(type::Result::LEDGER_ERROR, "", "");
+    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    callback(type::Result::LEDGER_ERROR, "", "");
+    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
     return;
   }
 
   auto* drain_id = dictionary->FindStringKey("drainId");
   if (!drain_id) {
-    BLOG(0, "Missing drain id");
-    callback(type::Result::LEDGER_ERROR, "", "");
+    BLOG(0, "Missing key drain id");
+    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
     return;
   }
 
   auto* status = dictionary->FindStringKey("status");
   if (!status) {
-    BLOG(0, "Missing status");
-    callback(type::Result::LEDGER_ERROR, "", "");
+    BLOG(0, "Missing key status");
+    callback(type::Result::LEDGER_ERROR, type::DrainStatus::INVALID);
     return;
   }
 
-  if (*status != "complete" && *status != "pending" && *status != "delayed" &&
-      *status != "in-progress") {
+  auto drain_status = type::DrainStatus::INVALID;
+  if (*status == "complete") {
+    drain_status = type::DrainStatus::COMPLETE;
+  } else if (*status == "pending") {
+    drain_status = type::DrainStatus::PENDING;
+  } else if (*status == "delayed") {
+    drain_status = type::DrainStatus::DELAYED;
+  } else if (*status == "in-progress") {
+    drain_status = type::DrainStatus::IN_PROGRESS;
+  } else {
     BLOG(0, "Invalid drain status.");
-    callback(type::Result::LEDGER_ERROR, "", "");
+    callback(type::Result::LEDGER_ERROR, drain_status);
     return;
   }
 
-  callback(result, *drain_id, *status);
+  callback(result, drain_status);
 }
 
 }  // namespace promotion

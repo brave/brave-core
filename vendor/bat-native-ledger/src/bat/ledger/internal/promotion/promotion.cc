@@ -791,8 +791,8 @@ void Promotion::GetTransferableAmount(
   transfer_->GetAmount(callback);
 }
 
-void Promotion::GetDrainID(const std::string& drain_id,
-                           ledger::GetDrainCallback callback) {
+void Promotion::GetDrainStatus(const std::string& drain_id,
+                               ledger::GetDrainCallback callback) {
   promotion_server_->get_drain()->Request(drain_id, callback);
 }
 

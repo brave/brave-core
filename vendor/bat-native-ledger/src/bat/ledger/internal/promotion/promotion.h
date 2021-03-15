@@ -51,8 +51,8 @@ class Promotion {
 
   void GetTransferableAmount(ledger::GetTransferableAmountCallback callback);
 
-  void GetDrainID(const std::string& drain_id,
-                  ledger::GetDrainCallback callback);
+  void GetDrainStatus(const std::string& drain_id,
+                      ledger::GetDrainCallback callback);
 
  private:
   void OnFetch(
