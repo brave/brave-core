@@ -57,27 +57,18 @@ pub struct Candidate {
     pub score: Cell<f32>,
 }
 
-impl Candidate {
-    pub fn new(node: Rc<Node>, score: f32) -> Rc<Self> {
-        Rc::new(Candidate {
-            node: node,
-            score: Cell::new(score),
-        })
-    }
-}
-
-pub struct TopCandidate {
-    pub candidate: Rc<Candidate>,
+pub struct TopCandidate<'a> {
+    pub candidate: &'a Candidate,
     pub id: String,
 }
 
-impl Ord for TopCandidate {
+impl<'a> Ord for TopCandidate<'a> {
     fn cmp(&self, other: &Self) -> Ordering {
         self.partial_cmp(other).unwrap_or(Ordering::Equal)
     }
 }
 
-impl PartialOrd for TopCandidate {
+impl<'a> PartialOrd for TopCandidate<'a> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.candidate
             .score
@@ -86,13 +77,13 @@ impl PartialOrd for TopCandidate {
     }
 }
 
-impl PartialEq for TopCandidate {
+impl<'a> PartialEq for TopCandidate<'a> {
     fn eq(&self, other: &Self) -> bool {
         self.candidate.score.get() == other.candidate.score.get()
     }
 }
 
-impl Eq for TopCandidate {}
+impl<'a> Eq for TopCandidate<'a> {}
 
 #[derive(Default)]
 pub struct Title {
@@ -369,7 +360,7 @@ pub fn find_candidates(
     mut dom: &mut RcDom,
     id: &Path,
     handle: Handle,
-    candidates: &mut BTreeMap<String, Rc<Candidate>>,
+    candidates: &mut BTreeMap<String, Candidate>,
     nodes: &mut BTreeMap<String, Rc<Node>>,
 ) {
     // Id of a particular node maps to its position in the dom tree, represented
@@ -451,15 +442,18 @@ fn get_all_ancestor_paths(ps: &Path) -> Vec<&Path> {
 
 pub fn find_or_create_candidate<'a>(
     id: &Path,
-    candidates: &'a mut BTreeMap<String, Rc<Candidate>>,
+    candidates: &'a mut BTreeMap<String, Candidate>,
     nodes: &BTreeMap<String, Rc<Node>>,
-) -> Option<Rc<Candidate>> {
+) -> Option<&'a Candidate> {
     if let Some(id) = id.to_str().map(|id| id.to_string()) {
         if let Some(node) = nodes.get(&id) {
             if candidates.get(&id).is_none() {
                 candidates.insert(
                     id.clone(),
-                    Candidate::new(node.clone(), init_content_score(&node)),
+                    Candidate {
+                        node: node.clone(),
+                        score: Cell::new(init_content_score(&node)),
+                    },
                 );
             }
             return Some(candidates.get(&id)?.clone());
@@ -474,7 +468,7 @@ pub fn find_or_create_candidate<'a>(
 pub fn search_alternative_candidates<'a>(
     top_candidates: &'a Vec<TopCandidate>,
     nodes: &BTreeMap<String, Rc<Node>>,
-) -> Option<&'a Path> {
+) -> Option<&'a str> {
     const MIN_CANDIDATES: usize = 3;
 
     assert!(top_candidates.len() > 0);
@@ -506,7 +500,7 @@ pub fn search_alternative_candidates<'a>(
                 }
             }
             if lists_containing_ancestor >= MIN_CANDIDATES {
-                return Some(pid);
+                return Some(pid.to_str()?);
             }
             pid = pid.parent()?;
         }
@@ -522,7 +516,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     url: &Url,
     title: &str,
     features: &HashMap<String, u32, S>,
-    candidates: &BTreeMap<String, Rc<Candidate>>,
+    candidates: &BTreeMap<String, Candidate>,
 ) -> bool {
     let useless = match handle.data {
         Document => false,
@@ -585,11 +579,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     useless
 }
 
-pub fn is_useless(
-    id: &Path,
-    handle: &Handle,
-    candidates: &BTreeMap<String, Rc<Candidate>>,
-) -> bool {
+pub fn is_useless(id: &Path, handle: &Handle, candidates: &BTreeMap<String, Candidate>) -> bool {
     let tag_name = dom::get_tag_name(&handle);
     let weight = get_class_weight(&handle);
     let score = id

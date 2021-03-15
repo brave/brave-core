@@ -72,7 +72,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
     let mut title = Title::default();
-    let mut candidates: BTreeMap<String, Rc<Candidate>> = BTreeMap::new();
+    let mut candidates: BTreeMap<String, Candidate> = BTreeMap::new();
     let mut nodes = BTreeMap::new();
     let handle = dom.document.clone();
 
@@ -99,53 +99,55 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         ));
     }
 
-    let mut id: &Path = Path::new("/");
+    let mut id: String = "/".to_string();
 
     // top candidate is the top scorer among the tree dom's candidates. this is
     // the subtree that will be considered for final rendering
-    let mut top_candidate: Rc<Candidate> = Rc::new(Candidate {
-        node: handle,
-        score: Cell::new(0.0),
-    });
+    let mut top_candidate = handle;
 
-    // scores all candidate nodes
-    let mut top_candidates: Vec<TopCandidate> = vec![];
-    for (i, c) in candidates.iter() {
-        let score = c.score.get() * (1.0 - scorer::get_link_density(&c.node));
-        c.score.set(score);
+    {
+        // scores all candidate nodes
+        let mut top_candidates: Vec<TopCandidate> = vec![];
+        for (i, c) in candidates.iter() {
+            let score = c.score.get() * (1.0 - scorer::get_link_density(&c.node));
+            c.score.set(score);
 
-        if top_candidates.len() < NUM_TOP_CANDIDATES {
-            top_candidates.push(TopCandidate {
-                candidate: c.clone(),
-                id: i.to_string(),
-            });
-        } else {
-            let min_index = util::min_elem_index(&top_candidates);
-            let min = &mut top_candidates[min_index];
-            if score > min.candidate.score.get() {
-                *min = TopCandidate {
-                    candidate: c.clone(),
+            if top_candidates.len() < NUM_TOP_CANDIDATES {
+                top_candidates.push(TopCandidate {
+                    candidate: &c,
                     id: i.to_string(),
+                });
+            } else {
+                let min_index = util::min_elem_index(&top_candidates);
+                let min = &mut top_candidates[min_index];
+                if score > min.candidate.score.get() {
+                    *min = TopCandidate {
+                        candidate: &c,
+                        id: i.to_string(),
+                    }
                 }
             }
         }
+        debug_assert!(top_candidates.len() > 0);
+        let max_index = util::max_elem_index(&top_candidates);
+        top_candidates.swap(0, max_index);
+        if let Some(pid) = scorer::search_alternative_candidates(&top_candidates, &nodes) {
+            id = pid.to_string();
+        } else {
+            id = top_candidates[0].id.to_string();
+        }
     }
 
-    assert!(top_candidates.len() > 0);
-    let max_index = util::max_elem_index(&top_candidates);
-    top_candidates.swap(0, max_index);
-    if let Some(pid) = scorer::search_alternative_candidates(&top_candidates, &nodes) {
-        top_candidate = scorer::find_or_create_candidate(pid, &mut candidates, &nodes).unwrap();
-        id = pid;
-    } else {
-        top_candidate = top_candidates[0].candidate.clone();
-        id = Path::new(top_candidates[0].id.as_str());
+    {
+        let top = scorer::find_or_create_candidate(Path::new(id.as_str()), &mut candidates, &nodes)
+            .unwrap();
+        top_candidate = top.node.clone();
     }
 
     scorer::clean(
         &mut dom,
-        id,
-        top_candidate.node.clone(),
+        Path::new(id.as_str()),
+        top_candidate.clone(),
         url,
         &title.title,
         features,
@@ -153,7 +155,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     );
 
     // Our CSS formats based on id="article".
-    dom::set_attr("id", "article", top_candidate.node.clone(), true);
+    dom::set_attr("id", "article", top_candidate.clone(), true);
     let serialize_opts = serialize::SerializeOpts {
         traversal_scope: serialize::TraversalScope::IncludeNode,
         ..Default::default()
@@ -166,17 +168,15 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         NodeOrText::AppendText(StrTendril::from_str(&title.title).unwrap_or_default()),
     );
 
-    if let Some(first_child) = top_candidate.node.children.clone().borrow().iter().nth(0) {
+    if let Some(first_child) = top_candidate.children.clone().borrow().iter().nth(0) {
         // Kinda hacky, but it's possible the parent is a dangling pointer if it
         // was deleted during the preprocess or cleaning stages. This ensures we
         // don't panic in append_before_sibling().
-        first_child
-            .parent
-            .set(Some(Rc::downgrade(&top_candidate.node)));
+        first_child.parent.set(Some(Rc::downgrade(&top_candidate)));
         dom.append_before_sibling(&first_child.clone(), NodeOrText::AppendNode(header.clone()));
     }
 
-    let document: SerializableHandle = top_candidate.node.clone().into();
+    let document: SerializableHandle = top_candidate.clone().into();
     let mut bytes = vec![];
     serialize(&mut bytes, &document, serialize_opts)?;
     let content = String::from_utf8(bytes).unwrap_or_default();
