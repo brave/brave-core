@@ -179,7 +179,7 @@ class BATLedgerContext {
   //
   // Example:
   //   auto result = context()->StartTask<MyTask>("hello");
-  //   result.Listen(...);
+  //   result.Then(...);
   template <typename T, typename... Args>
   auto StartTask(Args&&... args) {
     std::unique_ptr<T> instance(new T(this));
@@ -192,11 +192,9 @@ class BATLedgerContext {
     auto result = ptr->result();
 
     using CompleteType = typename decltype(result)::CompleteType;
-    auto on_complete =
-        base::BindOnce(&BATLedgerContext::OnTaskCompleted<CompleteType>,
-                       weak_factory_.GetWeakPtr(), key);
+    result.Then(base::BindOnce(&BATLedgerContext::OnTaskCompleted<CompleteType>,
+                               weak_factory_.GetWeakPtr(), key));
 
-    result.Listen(std::move(on_complete));
     return result;
   }
 

@@ -20,7 +20,7 @@ TEST_F(BATLedgerTaskTest, StartTask) {
 
     void Start(int n) {
       AsyncResult<int>::Resolver resolver;
-      resolver.result().Listen(
+      resolver.result().Then(
           base::BindOnce(&Task::OnDone, weak_factory_.GetWeakPtr()));
       resolver.Complete(std::move(n));
     }
@@ -32,7 +32,7 @@ TEST_F(BATLedgerTaskTest, StartTask) {
   };
 
   bool value = false;
-  context()->StartTask<Task>(10).Listen(
+  context()->StartTask<Task>(10).Then(
       base::BindLambdaForTesting([&value](const bool& v) { value = v; }));
 
   task_environment()->RunUntilIdle();

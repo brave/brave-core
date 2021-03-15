@@ -23,7 +23,7 @@ namespace ledger {
 //   resolver.Complete(42);
 //
 //   AsyncResult<int> result = resolver.result();
-//   result.Listen(base::BindOnce([](const int& value) {}));
+//   result.Then(base::BindOnce([](const int& value) {}));
 //
 // Listeners are called on the current SequencedTaskRunner, and are guaranteed
 // to be called asynchronously. AsyncResult and Resolver objects are internally
@@ -35,7 +35,7 @@ class AsyncResult {
   using CompleteType = T;
   using CompleteCallback = base::OnceCallback<void(const T&)>;
 
-  void Listen(CompleteCallback on_complete) {
+  void Then(CompleteCallback on_complete) {
     Listener listener = {.on_complete = std::move(on_complete),
                          .task_runner = base::SequencedTaskRunnerHandle::Get()};
 

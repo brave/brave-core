@@ -77,7 +77,7 @@ TEST_F(BATLedgerContextTest, StartTask) {
   };
 
   int value = 0;
-  context()->StartTask<Task>(100).Listen(
+  context()->StartTask<Task>(100).Then(
       base::BindLambdaForTesting([&value](const int& v) { value = v; }));
 
   task_environment()->RunUntilIdle();
