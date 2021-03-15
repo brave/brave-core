@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 737d5ea55058d068a8cec6dd0d198b04c7807cac..4626cfc06c5949d5b35fe3802f3cf5554868bb3e 100644
+index eca8e93a83beeb2552b2d12b6109ec90126ec732..ee9703bd8723d510ef4c9079b8e606e23959c2e4 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -65,6 +65,7 @@ source_set("channel_info") {
@@ -12,7 +12,7 @@ index 737d5ea55058d068a8cec6dd0d198b04c7807cac..4626cfc06c5949d5b35fe3802f3cf555
      "//components/version_info",
 @@ -147,6 +148,7 @@ static_library("common") {
    ]
- 
+
    public_deps = [
 +    "//brave/common",
      ":available_offline_content_mojom",
@@ -24,5 +24,5 @@ index 737d5ea55058d068a8cec6dd0d198b04c7807cac..4626cfc06c5949d5b35fe3802f3cf555
    ]
 +  configs += [ "//brave/common:constants_configs" ]
  }
- 
+
  component("chrome_features") {

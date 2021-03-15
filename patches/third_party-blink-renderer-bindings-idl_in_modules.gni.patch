@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/bindings/idl_in_modules.gni b/third_party/blink/renderer/bindings/idl_in_modules.gni
-index 10169d8185a3334232fa2f0fa5f3409914ee8551..67e90a8d34fec712671b876e43ef99efa6726786 100644
+index 2b7365fb936de1b75d4c69251b48483016f97ae2..8ef4f32d105bc297c144936218b9e51d8a08f087 100644
 --- a/third_party/blink/renderer/bindings/idl_in_modules.gni
 +++ b/third_party/blink/renderer/bindings/idl_in_modules.gni
-@@ -1054,6 +1054,7 @@ static_idl_files_in_modules = get_path_info(
+@@ -1059,6 +1059,7 @@ static_idl_files_in_modules = get_path_info(
            "//third_party/blink/renderer/modules/xr/xr_webgl_layer_init.idl",
          ],
          "abspath")
 +static_idl_files_in_modules += get_path_info(brave_static_idl_files_in_modules, "abspath")
- 
+
  # Direct Sockets
  if (!is_android) {

@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index 1ccab44183bf3d47762cff2198231e3fda9c53fc..5b395427090e79fb1fa0bbd32134a811c8e4ac33 100644
+index d4441841239b18b5eae3b6dde6adc423bc9f969b..c0ff6d83fe1b6f226c656bc0cbe6c570a3e5ce64 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -697,6 +697,7 @@ class Browser : public TabStripModelObserver,
- 
+@@ -696,6 +696,7 @@ class Browser : public TabStripModelObserver,
+
    StatusBubble* GetStatusBubbleForTesting();
- 
+
 +  BRAVE_BROWSER_H
   private:
    friend class BrowserTest;

@@ -1,11 +1,11 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index c4fc708ab2789d2cf873bb8a5cff64259ab1d184..1ba2c377f5ca643fd93af279d2643cd241cf967f 100644
+index 13b956abbddaa89629d622458e9b62cfed745f70..99903425738351da744c8cb3c9af741bf6d4c522 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -1810,6 +1810,7 @@ class CONTENT_EXPORT ContentBrowserClient {
+@@ -1804,6 +1804,7 @@ class CONTENT_EXPORT ContentBrowserClient {
    virtual ui::AXMode GetAXModeForBrowserContext(
        BrowserContext* browser_context);
- 
+
 +  BRAVE_CONTENT_BROWSER_CLIENT_H
  #if defined(OS_ANDROID)
    // Defines the heuristics we can use to enable wide color gamut (WCG).

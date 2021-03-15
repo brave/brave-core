@@ -1,12 +1,11 @@
 diff --git a/chrome/browser/chrome_content_browser_client.h b/chrome/browser/chrome_content_browser_client.h
-index d6e0a910ef96d2d7d6b0f5434717346b515577e5..7312bc3b4b1517ef62d2dcd5b68f1d5af03e82fa 100644
+index 038aab99f967afd068f120b9dd275615b23eb1c8..bf7d6b6c1ba1c586170cb3d7b62685f2aecd31b2 100644
 --- a/chrome/browser/chrome_content_browser_client.h
 +++ b/chrome/browser/chrome_content_browser_client.h
-@@ -755,6 +755,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
+@@ -752,6 +752,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
    }
- 
+
   private:
 +  friend class BraveContentBrowserClient;
    friend class DisableWebRtcEncryptionFlagTest;
    friend class InProcessBrowserTest;
- 
