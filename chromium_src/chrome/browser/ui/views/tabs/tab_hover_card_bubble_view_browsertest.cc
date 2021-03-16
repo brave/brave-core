@@ -68,12 +68,12 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
     return hover_card->GetWidget();
   }
 
-  const base::string16& GetHoverCardTitle(
+  const std::u16string& GetHoverCardTitle(
       const TabHoverCardBubbleView* hover_card) {
     return hover_card->title_label_->GetText();
   }
 
-  const base::string16& GetHoverCardDomain(
+  const std::u16string& GetHoverCardDomain(
       const TabHoverCardBubbleView* hover_card) {
     return hover_card->domain_label_->GetText();
   }
@@ -118,9 +118,8 @@ IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest,
   TabStrip* tab_strip =
       BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
   TabRendererData new_tab_data = TabRendererData();
-  new_tab_data.title = base::UTF8ToUTF16("Settings - Addresses and more");
-  new_tab_data.last_committed_url =
-      GURL("chrome://settings/addresses");
+  new_tab_data.title = u"Settings - Addresses and more";
+  new_tab_data.last_committed_url = GURL("chrome://settings/addresses");
   tab_strip->AddTabAt(1, new_tab_data, false);
 
   ShowUi("default");
@@ -129,8 +128,6 @@ IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest,
   EXPECT_TRUE(widget != nullptr);
   EXPECT_TRUE(widget->IsVisible());
   HoverMouseOverTabAt(tab_strip, 1);
-  EXPECT_EQ(GetHoverCardTitle(hover_card),
-            base::UTF8ToUTF16("Settings - Addresses and more"));
-  EXPECT_EQ(GetHoverCardDomain(hover_card),
-            base::UTF8ToUTF16("brave://settings"));
+  EXPECT_EQ(GetHoverCardTitle(hover_card), u"Settings - Addresses and more");
+  EXPECT_EQ(GetHoverCardDomain(hover_card), u"brave://settings");
 }

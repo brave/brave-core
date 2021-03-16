@@ -54,7 +54,7 @@ const gfx::VectorIcon& CryptoWalletsInfoBarDelegate::GetVectorIcon() const {
 void CryptoWalletsInfoBarDelegate::InfoBarDismissed() {
 }
 
-base::string16 CryptoWalletsInfoBarDelegate::GetMessageText() const {
+std::u16string CryptoWalletsInfoBarDelegate::GetMessageText() const {
   if (subtype_ == InfobarSubType::LOAD_CRYPTO_WALLETS) {
     return l10n_util::GetStringUTF16(IDS_BRAVE_CRYPTO_WALLETS_LAZY_LOAD_TEXT);
   }
@@ -65,7 +65,7 @@ int CryptoWalletsInfoBarDelegate::GetButtons() const {
   return BUTTON_OK | BUTTON_CANCEL;
 }
 
-base::string16 CryptoWalletsInfoBarDelegate::GetButtonLabel(
+std::u16string CryptoWalletsInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
   if (subtype_ == InfobarSubType::LOAD_CRYPTO_WALLETS) {
     if (button == BUTTON_CANCEL) {
@@ -83,7 +83,7 @@ base::string16 CryptoWalletsInfoBarDelegate::GetButtonLabel(
       IDS_BRAVE_CRYPTO_WALLETS_SETUP_CRYPTO_WALLETS);
 }
 
-base::string16 CryptoWalletsInfoBarDelegate::GetLinkText() const {
+std::u16string CryptoWalletsInfoBarDelegate::GetLinkText() const {
   return l10n_util::GetStringUTF16(IDS_LEARN_MORE);
 }
 

@@ -282,14 +282,14 @@ class InstallStaticUtilTest
 
   void SetUp() override {
     ASSERT_TRUE(!system_level_ || mode_->supports_system_level);
-    base::string16 path;
+    std::u16string path;
     ASSERT_NO_FATAL_FAILURE(
         override_manager_.OverrideRegistry(root_key_, &path));
     nt::SetTestingOverride(nt_root_key_, path);
   }
 
   void TearDown() override {
-    nt::SetTestingOverride(nt_root_key_, base::string16());
+    nt::SetTestingOverride(nt_root_key_, std::u16string());
   }
 
   bool system_level() const { return system_level_; }

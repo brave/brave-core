@@ -117,7 +117,7 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
-    const base::string16& details) {
+    const std::u16string& details) {
   Send(new BraveViewHostMsg_JavaScriptBlocked(routing_id(), details));
 }
 
@@ -233,7 +233,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
 }
 
 void BraveContentSettingsAgentImpl::DidBlockFingerprinting(
-    const base::string16& details) {
+    const std::u16string& details) {
   Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
 }
 

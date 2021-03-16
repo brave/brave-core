@@ -60,14 +60,14 @@ void BraveIncognitoMenuView::BuildMenu() {
   int window_count = BrowserList::GetOffTheRecordBrowsersActiveForProfile(
       browser()->profile());
   SetProfileIdentityInfo(
-      /*profile_name=*/base::string16(),
+      /*profile_name=*/std::u16string(),
       /*background_color=*/SK_ColorTRANSPARENT,
       /*edit_button=*/base::nullopt,
       ui::ImageModel::FromVectorIcon(kIncognitoProfileIcon, icon_color),
       l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
       window_count > 1 ? l10n_util::GetPluralStringFUTF16(
                              IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, window_count)
-                       : base::string16());
+                       : std::u16string());
 
   AddTorButton();
 
@@ -93,7 +93,7 @@ void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
                                         ProfileManager::CreateCallback());
 }
 
-base::string16 BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
+std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
   return browser()->profile()->IsTor()
              ? l10n_util::GetStringUTF16(IDS_TOR_PROFILE_NAME)
              : IncognitoMenuView::GetAccessibleWindowTitle();

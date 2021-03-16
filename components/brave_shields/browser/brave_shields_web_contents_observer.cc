@@ -305,7 +305,7 @@ bool BraveShieldsWebContentsObserver::OnMessageReceived(
 
 void BraveShieldsWebContentsObserver::OnJavaScriptBlockedWithDetail(
     RenderFrameHost* render_frame_host,
-    const base::string16& details) {
+    const std::u16string& details) {
   WebContents* web_contents =
       WebContents::FromRenderFrameHost(render_frame_host);
   if (!web_contents) {
@@ -317,7 +317,7 @@ void BraveShieldsWebContentsObserver::OnJavaScriptBlockedWithDetail(
 
 void BraveShieldsWebContentsObserver::OnFingerprintingBlockedWithDetail(
     RenderFrameHost* render_frame_host,
-    const base::string16& details) {
+    const std::u16string& details) {
   WebContents* web_contents =
       WebContents::FromRenderFrameHost(render_frame_host);
   if (!web_contents) {

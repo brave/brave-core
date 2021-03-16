@@ -26,21 +26,21 @@ std::unique_ptr<brave_ads::Notification> CreateAdNotification(
     const ads::AdNotificationInfo& info) {
   brave_ads::RichNotificationData notification_data;
 
-  base::string16 title;
+  std::u16string title;
   if (base::IsStringUTF8(info.title)) {
     base::UTF8ToUTF16(info.title.c_str(), info.title.length(), &title);
   }
 
-  base::string16 body;
+  std::u16string body;
   if (base::IsStringUTF8(info.body)) {
     base::UTF8ToUTF16(info.body.c_str(), info.body.length(), &body);
   }
 
   // hack to prevent origin from showing in the notification
   // since we're using that to get the notification_id to OpenSettings
-  notification_data.context_message = base::ASCIIToUTF16(" ");
+  notification_data.context_message = u" ";
   auto notification = std::make_unique<brave_ads::Notification>(
-      info.uuid, title, body, base::string16(), GURL(info.uuid),
+      info.uuid, title, body, std::u16string(), GURL(info.uuid),
       notification_data, nullptr);
 
 #if !defined(OS_MAC) || defined(OFFICIAL_BUILD)
@@ -57,22 +57,22 @@ std::unique_ptr<message_center::Notification> CreateMessageCenterNotification(
     const ads::AdNotificationInfo& info) {
   message_center::RichNotificationData notification_data;
 
-  base::string16 title;
+  std::u16string title;
   if (base::IsStringUTF8(info.title)) {
     base::UTF8ToUTF16(info.title.c_str(), info.title.length(), &title);
   }
 
-  base::string16 body;
+  std::u16string body;
   if (base::IsStringUTF8(info.body)) {
     base::UTF8ToUTF16(info.body.c_str(), info.body.length(), &body);
   }
 
   // hack to prevent origin from showing in the notification
   // since we're using that to get the notification_id to OpenSettings
-  notification_data.context_message = base::ASCIIToUTF16(" ");
+  notification_data.context_message = u" ";
   auto notification = std::make_unique<message_center::Notification>(
       message_center::NOTIFICATION_TYPE_SIMPLE, info.uuid, title, body,
-      gfx::Image(), base::string16(), GURL(kBraveAdsUrlPrefix + info.uuid),
+      gfx::Image(), std::u16string(), GURL(kBraveAdsUrlPrefix + info.uuid),
       message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
                                  kNotifierId),
       notification_data, nullptr);

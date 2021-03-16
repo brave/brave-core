@@ -1920,7 +1920,7 @@ void AdsServiceImpl::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     ads::GetBrowsingHistoryCallback callback) {
-  base::string16 search_text;
+  std::u16string search_text;
   history::QueryOptions options;
   options.SetRecentDayRange(days_ago);
   options.max_count = max_count;

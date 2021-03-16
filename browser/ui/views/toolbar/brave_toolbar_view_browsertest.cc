@@ -103,7 +103,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   base::RunLoop run_loop;
   profile_manager->CreateProfileAsync(
       new_path, base::Bind(&OnUnblockOnProfileCreation, &run_loop),
-      base::string16(), std::string());
+      std::u16string(), std::string());
   run_loop.Run();
   ASSERT_EQ(2u, storage.GetNumberOfProfiles());
   Profile* new_profile = profile_manager->GetProfileByPath(new_path);

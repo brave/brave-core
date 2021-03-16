@@ -8,7 +8,6 @@
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
-#include "base/strings/string16.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "url/gurl.h"
 
@@ -28,10 +27,10 @@ class BraveConfirmP3AInfoBarDelegate : public ConfirmInfoBarDelegate {
   const gfx::VectorIcon& GetVectorIcon() const override;
   bool ShouldExpire(const NavigationDetails& details) const override;
   void InfoBarDismissed() override;
-  base::string16 GetMessageText() const override;
+  std::u16string GetMessageText() const override;
   int GetButtons() const override;
-  base::string16 GetButtonLabel(InfoBarButton button) const override;
-  base::string16 GetLinkText() const override;
+  std::u16string GetButtonLabel(InfoBarButton button) const override;
+  std::u16string GetLinkText() const override;
   GURL GetLinkURL() const override;
   bool Accept() override;
   bool Cancel() override;

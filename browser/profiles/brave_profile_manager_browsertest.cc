@@ -42,8 +42,8 @@ void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
 }
 
 struct TestProfileData {
-  base::string16 profile_name;
-  base::string16 profile_name_expected_after_migration;
+  std::u16string profile_name;
+  std::u16string profile_name_expected_after_migration;
   bool force_default_name;
   base::FilePath profile_path;
 };
@@ -51,21 +51,15 @@ struct TestProfileData {
 std::vector<TestProfileData> GetTestProfileData(
     ProfileManager* profile_manager) {
   const std::vector<TestProfileData> profile_data = {
-    {
-      base::ASCIIToUTF16("Person 1"),
-      base::ASCIIToUTF16("Profile 1"), true,
-      profile_manager->user_data_dir().Append(
-          profile_manager->GetInitialProfileDir())},
-    {
-      base::ASCIIToUTF16("Person 2"),
-      base::ASCIIToUTF16("Profile 2"), true,
-      profile_manager->user_data_dir().Append(
-          FILE_PATH_LITERAL("testprofile2"))},
-    {
-      base::ASCIIToUTF16("ZZCustom 3"),
-      base::ASCIIToUTF16("ZZCustom 3"), false,
-      profile_manager->user_data_dir().Append(
-          FILE_PATH_LITERAL("testprofile3"))},
+      {u"Person 1", u"Profile 1", true,
+       profile_manager->user_data_dir().Append(
+           profile_manager->GetInitialProfileDir())},
+      {u"Person 2", u"Profile 2", true,
+       profile_manager->user_data_dir().Append(
+           FILE_PATH_LITERAL("testprofile2"))},
+      {u"ZZCustom 3", u"ZZCustom 3", false,
+       profile_manager->user_data_dir().Append(
+           FILE_PATH_LITERAL("testprofile3"))},
   };
   return profile_data;
 }
@@ -110,7 +104,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
     base::RunLoop run_loop;
     profile_manager->CreateProfileAsync(
         profile_data[i].profile_path,
-        base::Bind(&OnUnblockOnProfileCreation, &run_loop), base::string16(),
+        base::Bind(&OnUnblockOnProfileCreation, &run_loop), std::u16string(),
         std::string());
     run_loop.Run();
     ProfileAttributesEntry* entry =

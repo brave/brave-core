@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TRACKING_PROTECTION_HELPER_H_
 
 #include "base/macros.h"
-#include "base/strings/string16.h"
 #include "base/synchronization/lock.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"

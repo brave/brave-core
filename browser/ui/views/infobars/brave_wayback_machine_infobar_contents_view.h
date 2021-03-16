@@ -48,7 +48,7 @@ class BraveWaybackMachineInfoBarContentsView
   void OnWaybackURLFetched(const GURL& latest_wayback_url) override;
 
   void InitializeChildren();
-  views::Label* CreateLabel(const base::string16& text);
+  views::Label* CreateLabel(const std::u16string& text);
   SkColor GetColor(int id) const;
   void UpdateChildrenVisibility(bool show_before_checking_views);
   void FetchWaybackURL();

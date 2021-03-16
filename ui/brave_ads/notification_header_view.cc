@@ -205,7 +205,7 @@ void NotificationHeaderView::ClearAdIcon() {
   using_default_ad_icon_ = true;
 }
 
-void NotificationHeaderView::SetAdName(const base::string16& name) {
+void NotificationHeaderView::SetAdName(const std::u16string& name) {
   ad_name_view_->SetText(name);
 }
 
@@ -247,7 +247,7 @@ void NotificationHeaderView::SetAdIconVisible(bool visible) {
   ad_icon_view_->SetVisible(visible);
 }
 
-const base::string16& NotificationHeaderView::ad_name_for_testing() const {
+const std::u16string& NotificationHeaderView::ad_name_for_testing() const {
   return ad_name_view_->GetText();
 }
 

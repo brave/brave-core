@@ -198,7 +198,7 @@ IN_PROC_BROWSER_TEST_P(SubresourceWebBundlesBrowserTest,
                      {kOriginTrialTestHostname, kOriginTrialPage}, "/"))));
 
   if (IsSubresourceWebBundlesEnabled()) {
-    base::string16 expected_title = base::ASCIIToUTF16("script loaded");
+    std::u16string expected_title(u"script loaded");
     content::TitleWatcher title_watcher(web_contents(), expected_title);
     EXPECT_EQ(true, content::EvalJs(main_frame(), kLoadPassJs));
     EXPECT_EQ(expected_title, title_watcher.WaitAndGetTitle());

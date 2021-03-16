@@ -70,7 +70,7 @@ class MessagePopupView : public views::WidgetDelegateView,
  private:
   // True if the view has a widget and the widget is not closed.
   bool IsWidgetValid() const;
-  int GetBodyHeight(const base::string16& message);
+  int GetBodyHeight(const std::u16string& message);
 
   // Owned by views hierarchy.
   NotificationView* message_view_;

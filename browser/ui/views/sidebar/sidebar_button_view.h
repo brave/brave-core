@@ -14,7 +14,7 @@ class SidebarButtonView : public views::ImageButton {
 
   class Delegate {
    public:
-    virtual base::string16 GetTooltipTextFor(const views::View* view) const = 0;
+    virtual std::u16string GetTooltipTextFor(const views::View* view) const = 0;
 
    protected:
     virtual ~Delegate() = default;
@@ -28,7 +28,7 @@ class SidebarButtonView : public views::ImageButton {
 
   // views::ImageButton overrides:
   gfx::Size CalculatePreferredSize() const override;
-  base::string16 GetTooltipText(const gfx::Point& p) const override;
+  std::u16string GetTooltipText(const gfx::Point& p) const override;
 
  private:
   Delegate* delegate_ = nullptr;
