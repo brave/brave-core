@@ -192,7 +192,7 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
 }
 
 views::Label* BraveWaybackMachineInfoBarContentsView::CreateLabel(
-    const base::string16& text) {
+    const std::u16string& text) {
   views::Label* label =
       new views::Label(text, views::style::CONTEXT_DIALOG_BODY_TEXT);
   labels_.push_back(label);

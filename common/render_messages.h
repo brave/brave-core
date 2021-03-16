@@ -6,7 +6,6 @@
 
 // Multiply-included file, no traditional include guard.
 
-#include "base/strings/string16.h"
 #include "ipc/ipc_message_macros.h"
 
 // The message starter should be declared in ipc/ipc_message_start.h. Since
@@ -17,7 +16,7 @@
 // Tells the browser that content in the current page was blocked due to the
 // user's content settings.
 IPC_MESSAGE_ROUTED1(BraveViewHostMsg_JavaScriptBlocked,
-                    base::string16 /* details on blocked content */)
+                    std::u16string /* details on blocked content */)
 
 IPC_MESSAGE_ROUTED1(BraveViewHostMsg_FingerprintingBlocked,
-                    base::string16 /* details on blocked content */)
+                    std::u16string /* details on blocked content */)

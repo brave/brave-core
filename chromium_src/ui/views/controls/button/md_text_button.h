@@ -29,7 +29,7 @@ namespace views {
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  public:
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
-                        const base::string16& text = base::string16(),
+                        const std::u16string& text = std::u16string(),
                         int button_context = style::CONTEXT_BUTTON_MD);
   ~MdTextButton() override;
 

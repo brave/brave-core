@@ -40,7 +40,7 @@ class BraveToolbarView : public ToolbarView,
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
-      const base::string16& profile_name) override;
+                           const std::u16string& profile_name) override;
 
   BookmarkButton* bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.

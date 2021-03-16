@@ -21,7 +21,7 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
                             bool for_restart);
   ~WidevinePermissionRequest() override;
 
-  base::string16 GetExplanatoryMessageText() const;
+  std::u16string GetExplanatoryMessageText() const;
   void set_dont_ask_widevine_install(bool dont_ask) {
     dont_ask_widevine_install_ = dont_ask;
   }
@@ -32,7 +32,7 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   static bool is_test_;
 
   // PermissionRequest overrides:
-  base::string16 GetMessageTextFragment() const override;
+  std::u16string GetMessageTextFragment() const override;
   GURL GetOrigin() const override;
   void PermissionGranted(bool is_one_time) override;
   void PermissionDenied() override;

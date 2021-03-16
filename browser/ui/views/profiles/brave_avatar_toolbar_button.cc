@@ -54,15 +54,15 @@ BraveAvatarToolbarButton::BraveAvatarToolbarButton(Browser* browser)
 }
 
 void BraveAvatarToolbarButton::SetHighlight(
-    const base::string16& highlight_text,
+    const std::u16string& highlight_text,
     base::Optional<SkColor> highlight_color) {
-  base::string16 revised_highlight_text;
+  std::u16string revised_highlight_text;
   if (browser_->profile()->IsTor()) {
     revised_highlight_text =
         l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL);
   } else if (browser_->profile()->IsGuestSession()) {
     // We only want the icon for Guest profiles.
-    revised_highlight_text = base::string16();
+    revised_highlight_text = std::u16string();
   } else {
     revised_highlight_text = highlight_text;
   }
@@ -120,7 +120,7 @@ ui::ImageModel BraveAvatarToolbarButton::GetAvatarIcon(
   return AvatarToolbarButton::GetAvatarIcon(state, gaia_account_image);
 }
 
-base::string16 BraveAvatarToolbarButton::GetAvatarTooltipText() const {
+std::u16string BraveAvatarToolbarButton::GetAvatarTooltipText() const {
   if (browser_->profile()->IsTor())
     return l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_TOOLTIP_TEXT);
 
