@@ -55,7 +55,7 @@ std::string BraveExtensionProvider::GetDebugPolicyProviderName() const {
 }
 
 bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
-                                         base::string16* error) const {
+                                         std::u16string* error) const {
   if (IsBlacklisted(extension)) {
     if (error) {
       *error = l10n_util::GetStringFUTF16(IDS_EXTENSION_CANT_INSTALL_ON_BRAVE,
@@ -71,7 +71,7 @@ bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
 }
 
 bool BraveExtensionProvider::MustRemainInstalled(const Extension* extension,
-                                                 base::string16* error) const {
+                                                 std::u16string* error) const {
   return extension->id() == brave_extension_id ||
          extension->id() == brave_rewards_extension_id;
 }

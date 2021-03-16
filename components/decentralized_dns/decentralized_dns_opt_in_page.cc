@@ -66,7 +66,7 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
     base::DictionaryValue* load_time_data) {
-  const std::vector<base::string16> message_params = {
+  const std::vector<std::u16string> message_params = {
       base::ASCIIToUTF16("<a "
                          "href='https://www.cloudflare.com/en-ca/"
                          "distributed-web-gateway-terms/' target='_blank' "
@@ -111,7 +111,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
       "dontProceedButtonText",
       l10n_util::GetStringUTF16(
           IDS_DECENTRALIZED_DNS_OPT_IN_DONT_PROCEED_BUTTON));
-  load_time_data->SetString("finalParagraph", base::string16());
+  load_time_data->SetString("finalParagraph", std::u16string());
 }
 
 int DecentralizedDnsOptInPage::GetHTMLTemplateId() {

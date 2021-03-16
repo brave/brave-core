@@ -413,7 +413,7 @@ void AdNotificationViewMD::CreateOrUpdateContextTitleView(
 
 void AdNotificationViewMD::CreateOrUpdateNotificationView(
     const Notification& notification) {
-  base::string16 text = gfx::TruncateString(
+  std::u16string text = gfx::TruncateString(
       notification.message(), kMessageCharacterLimitMD, gfx::WORD_BREAK);
 
   if (!message_view_) {

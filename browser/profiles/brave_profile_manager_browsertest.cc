@@ -42,8 +42,8 @@ void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
 }
 
 struct TestProfileData {
-  base::string16 profile_name;
-  base::string16 profile_name_expected_after_migration;
+  std::u16string profile_name;
+  std::u16string profile_name_expected_after_migration;
   bool force_default_name;
   base::FilePath profile_path;
 };
@@ -110,7 +110,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
     base::RunLoop run_loop;
     profile_manager->CreateProfileAsync(
         profile_data[i].profile_path,
-        base::Bind(&OnUnblockOnProfileCreation, &run_loop), base::string16(),
+        base::Bind(&OnUnblockOnProfileCreation, &run_loop), std::u16string(),
         std::string());
     run_loop.Run();
     ProfileAttributesEntry* entry =

@@ -9,13 +9,12 @@
 #include <vector>
 
 #include "base/optional.h"
-#include "base/strings/string16.h"
 #include "base/time/time.h"
 
 namespace permissions {
 
 struct PermissionLifetimeOption {
-  PermissionLifetimeOption(base::string16 label,
+  PermissionLifetimeOption(std::u16string label,
                            base::Optional<base::TimeDelta> lifetime);
   PermissionLifetimeOption(const PermissionLifetimeOption&);
   PermissionLifetimeOption& operator=(const PermissionLifetimeOption&);
@@ -24,7 +23,7 @@ struct PermissionLifetimeOption {
   ~PermissionLifetimeOption();
 
   // Text visible to the user.
-  base::string16 label;
+  std::u16string label;
   // If not set, lifetime will not be controlled (i.e. permanent). If set to
   // base::TimeDelta(), permission should be alive until eTLD+1 is closed.
   base::Optional<base::TimeDelta> lifetime;

@@ -95,9 +95,9 @@ ACMatchClassifications TopSitesProvider::StylesForSingleMatch(
   return styles;
 }
 
-void TopSitesProvider::AddMatch(const base::string16& match_string,
+void TopSitesProvider::AddMatch(const std::u16string& match_string,
                                const ACMatchClassifications& styles) {
-  static const base::string16 kScheme = base::ASCIIToUTF16("https://");
+  static const std::u16string kScheme = base::ASCIIToUTF16("https://");
   AutocompleteMatch match(this, kRelevance, false,
                           AutocompleteMatchType::NAVSUGGEST);
   match.fill_into_edit = match_string;

@@ -13,7 +13,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
-#include "base/strings/string16.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -43,12 +42,12 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
   bool UseEphemeralStorageSync(StorageType storage_type) override;
   bool AllowStorageAccessSync(StorageType storage_type) override;
 
-  void BraveSpecificDidBlockJavaScript(const base::string16& details);
+  void BraveSpecificDidBlockJavaScript(const std::u16string& details);
 
   bool AllowAutoplay(bool play_requested) override;
 
   bool AllowFingerprinting(bool enabled_per_settings) override;
-  void DidBlockFingerprinting(const base::string16& details);
+  void DidBlockFingerprinting(const std::u16string& details);
 
   BraveFarblingLevel GetBraveFarblingLevel() override;
 

@@ -68,12 +68,12 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
     return hover_card->GetWidget();
   }
 
-  const base::string16& GetHoverCardTitle(
+  const std::u16string& GetHoverCardTitle(
       const TabHoverCardBubbleView* hover_card) {
     return hover_card->title_label_->GetText();
   }
 
-  const base::string16& GetHoverCardDomain(
+  const std::u16string& GetHoverCardDomain(
       const TabHoverCardBubbleView* hover_card) {
     return hover_card->domain_label_->GetText();
   }

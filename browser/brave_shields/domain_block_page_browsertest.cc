@@ -129,7 +129,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndProceed) {
   // originally requested page.
   ClickAndWaitForNavigation("proceed-button");
   ASSERT_FALSE(IsShowingInterstitial());
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title = base::ASCIIToUTF16("OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
@@ -172,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedAndReload) {
   // originally requested page.
   ClickAndWaitForNavigation("proceed-button");
   ASSERT_FALSE(IsShowingInterstitial());
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title = base::ASCIIToUTF16("OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 
@@ -204,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
   // originally requested page.
   ClickAndWaitForNavigation("proceed-button");
   ASSERT_FALSE(IsShowingInterstitial());
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title = base::ASCIIToUTF16("OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 
@@ -243,7 +243,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
   ClickAndWaitForNavigation("proceed-button");
   WaitForAdBlockServiceThreads();
   ASSERT_FALSE(IsShowingInterstitial());
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title = base::ASCIIToUTF16("OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 
@@ -315,7 +315,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockDisabledTest, NoInterstitial) {
   ASSERT_FALSE(IsShowingInterstitial());
 
   // Ensure we ended up on the expected page.
-  base::string16 expected_title = base::ASCIIToUTF16("OK");
+  std::u16string expected_title = base::ASCIIToUTF16("OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }

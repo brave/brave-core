@@ -74,7 +74,7 @@ void SidebarController::AddItemWithCurrentTab() {
   auto* active_contents = browser_->tab_strip_model()->GetActiveWebContents();
   DCHECK(active_contents);
   const GURL url = active_contents->GetVisibleURL();
-  const base::string16 title = active_contents->GetTitle();
+  const std::u16string title = active_contents->GetTitle();
   GetSidebarService(browser_)->AddItem(
       SidebarItem::Create(url, title, SidebarItem::Type::kTypeWeb, false));
 }

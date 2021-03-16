@@ -26,7 +26,7 @@ BraveLocationBarModelDelegate::~BraveLocationBarModelDelegate() {}
 
 // static
 void BraveLocationBarModelDelegate::FormattedStringFromURL(const GURL& url,
-    base::string16* new_formatted_url) {
+    std::u16string* new_formatted_url) {
   if (url.SchemeIs("chrome")) {
     base::ReplaceFirstSubstringAfterOffset(
         new_formatted_url,
@@ -57,11 +57,11 @@ void BraveLocationBarModelDelegate::FormattedStringFromURL(const GURL& url,
 #endif
 }
 
-base::string16
+std::u16string
 BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
     const GURL& url,
-    const base::string16& formatted_url) const {
-  base::string16 new_formatted_url =
+    const std::u16string& formatted_url) const {
+  std::u16string new_formatted_url =
       BrowserLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
           url, formatted_url);
   BraveLocationBarModelDelegate::FormattedStringFromURL(url,

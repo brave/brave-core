@@ -64,7 +64,7 @@ void AdsNotificationHandler::OnClick(
     const GURL& origin,
     const std::string& id,
     const base::Optional<int>& action_index,
-    const base::Optional<base::string16>& reply,
+    const base::Optional<std::u16string>& reply,
     base::OnceClosure completed_closure) {
   if (!ads_service_) {
     auto notification = base::BindOnce(

@@ -76,8 +76,8 @@ void BraveBrowserMainParts::PostBrowserStart() {
     ProfileAttributesEntry* entry =
         storage.GetProfileAttributesWithPath(tor_legacy_path);
     if (!entry) {
-      storage.AddProfile(tor_legacy_path, base::string16(), std::string(),
-                         base::string16(),
+      storage.AddProfile(tor_legacy_path, std::u16string(), std::string(),
+                         std::u16string(),
                          /* is_consented_primary_account*/ false, 0,
                          std::string(), EmptyAccountId());
     }

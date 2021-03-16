@@ -14,7 +14,6 @@
 
 #include "base/memory/ref_counted.h"
 #include "base/optional.h"
-#include "base/strings/string16.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/ui/brave_ads/public/cpp/brave_ads_public_export.h"
@@ -35,14 +34,14 @@ namespace brave_ads {
 
 // Represents a button to be shown as part of a notification.
 struct BRAVE_ADS_PUBLIC_EXPORT ButtonInfo {
-  explicit ButtonInfo(const base::string16& title);
+  explicit ButtonInfo(const std::u16string& title);
   ButtonInfo(const ButtonInfo& other);
   ButtonInfo();
   ~ButtonInfo();
   ButtonInfo& operator=(const ButtonInfo& other);
 
   // Title that should be displayed on the notification button.
-  base::string16 title;
+  std::u16string title;
 
   // Icon that should be displayed on the notification button. Optional. On some
   // platforms, a mask will be applied to the icon, to match the visual
@@ -53,7 +52,7 @@ struct BRAVE_ADS_PUBLIC_EXPORT ButtonInfo {
   // The placeholder string that should be displayed in the input field for
   // text input type buttons until the user has entered a response themselves.
   // If the value is null, there is no input field associated with the button.
-  base::Optional<base::string16> placeholder;
+  base::Optional<std::u16string> placeholder;
 };
 
 // Represents rich features available for notifications.
@@ -72,7 +71,7 @@ class BRAVE_ADS_PUBLIC_EXPORT RichNotificationData {
 
   // Context message to display below the notification's content. Optional. May
   // not be used for notifications that have an explicit origin URL set.
-  base::string16 context_message;
+  std::u16string context_message;
 
   // Large image to display on the notification. Optional.
   gfx::Image image;
@@ -151,9 +150,9 @@ class BRAVE_ADS_PUBLIC_EXPORT Notification {
   // |delegate|: Delegate that will influence the behaviour of this notification
   //             and receives events on its behalf. May be omitted.
   Notification(const std::string& id,
-               const base::string16& title,
-               const base::string16& message,
-               const base::string16& display_source,
+               const std::u16string& title,
+               const std::u16string& message,
+               const std::u16string& display_source,
                const GURL& origin_url,
                const RichNotificationData& optional_fields,
                scoped_refptr<NotificationDelegate> delegate);
@@ -192,11 +191,11 @@ class BRAVE_ADS_PUBLIC_EXPORT Notification {
   // NotificationUIManager interface.
   const std::string& id() const { return id_; }
 
-  const base::string16& title() const { return title_; }
-  void set_title(const base::string16& title) { title_ = title; }
+  const std::u16string& title() const { return title_; }
+  void set_title(const std::u16string& title) { title_ = title; }
 
-  const base::string16& message() const { return message_; }
-  void set_message(const base::string16& message) { message_ = message; }
+  const std::u16string& message() const { return message_; }
+  void set_message(const std::u16string& message) { message_ = message; }
 
   // The origin URL of the script which requested the notification.
   // Can be empty if the notification is requested by an extension or
@@ -205,7 +204,7 @@ class BRAVE_ADS_PUBLIC_EXPORT Notification {
   void set_origin_url(const GURL& origin_url) { origin_url_ = origin_url; }
 
   // A display string for the source of the notification.
-  const base::string16& display_source() const { return display_source_; }
+  const std::u16string& display_source() const { return display_source_; }
 
   void set_profile_id(const std::string& profile_id) {}
 
@@ -234,11 +233,11 @@ class BRAVE_ADS_PUBLIC_EXPORT Notification {
     optional_fields_.timestamp = timestamp;
   }
 
-  const base::string16 context_message() const {
+  const std::u16string context_message() const {
     return optional_fields_.context_message;
   }
 
-  void set_context_message(const base::string16& context_message) {
+  void set_context_message(const std::u16string& context_message) {
     optional_fields_.context_message = context_message;
   }
 
@@ -326,8 +325,8 @@ class BRAVE_ADS_PUBLIC_EXPORT Notification {
 
  protected:
   std::string id_;
-  base::string16 title_;
-  base::string16 message_;
+  std::u16string title_;
+  std::u16string message_;
 
   // Image data for the associated icon, used by Ash when available.
   gfx::Image icon_;
@@ -335,7 +334,7 @@ class BRAVE_ADS_PUBLIC_EXPORT Notification {
   // The display string for the source of the notification.  Could be
   // the same as |origin_url_|, or the name of an extension.
   // Expected to be a localized user facing string.
-  base::string16 display_source_;
+  std::u16string display_source_;
 
  private:
   // The origin URL of the script which requested the notification.

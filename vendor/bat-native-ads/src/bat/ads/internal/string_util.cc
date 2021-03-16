@@ -28,7 +28,7 @@ std::string Strip(const std::string& value, const std::string& pattern) {
 
   RE2::GlobalReplace(&stripped_value, pattern, " ");
 
-  base::string16 stripped_value_string16 = base::UTF8ToUTF16(stripped_value);
+  std::u16string stripped_value_string16 = base::UTF8ToUTF16(stripped_value);
 
   stripped_value_string16 =
       base::CollapseWhitespace(stripped_value_string16, true);

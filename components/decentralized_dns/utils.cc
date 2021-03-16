@@ -22,7 +22,7 @@ namespace decentralized_dns {
 namespace {
 
 base::Value MakeSelectValue(ResolveMethodTypes value,
-                            const base::string16& name) {
+                            const std::u16string& name) {
   base::Value item(base::Value::Type::DICTIONARY);
   item.SetKey("value", base::Value(static_cast<int>(value)));
   item.SetKey("name", base::Value(name));

@@ -54,7 +54,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
 
   // Both mode should use same search engine if alternate pref is disabled.
-  base::string16 normal_search_engine =
+  std::u16string normal_search_engine =
       service->GetDefaultSearchProvider()->data().short_name();
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             incognito_service->GetDefaultSearchProvider()->data().short_name());
@@ -107,7 +107,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
 
   // Both mode should use same search engine.
-  base::string16 normal_search_engine =
+  std::u16string normal_search_engine =
       service->GetDefaultSearchProvider()->data().short_name();
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             incognito_service->GetDefaultSearchProvider()->data().short_name());

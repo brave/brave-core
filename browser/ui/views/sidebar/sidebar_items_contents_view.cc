@@ -90,13 +90,13 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   }
 }
 
-base::string16 SidebarItemsContentsView::GetTooltipTextFor(
+std::u16string SidebarItemsContentsView::GetTooltipTextFor(
     const views::View* view) const {
   int index = GetIndexOf(view);
   DCHECK_GE(index, 0);
 
   if (index == -1)
-    return base::string16();
+    return std::u16string();
 
   auto item = sidebar_model_->GetAllSidebarItems()[index];
   if (!item.title.empty())

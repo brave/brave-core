@@ -24,7 +24,7 @@ class NotificationHeaderView : public views::Button {
   explicit NotificationHeaderView(PressedCallback callback = PressedCallback());
   ~NotificationHeaderView() override;
   void SetAdIcon(const gfx::ImageSkia& img);
-  void SetAdName(const base::string16& name);
+  void SetAdName(const std::u16string& name);
   void SetAdNameElideBehavior(gfx::ElideBehavior elide_behavior);
   void SetOverflowIndicator(int count);
 
@@ -48,7 +48,7 @@ class NotificationHeaderView : public views::Button {
     return summary_text_view_;
   }
 
-  const base::string16& ad_name_for_testing() const;
+  const std::u16string& ad_name_for_testing() const;
 
   const gfx::ImageSkia& ad_icon_for_testing() const;
 

@@ -196,7 +196,7 @@ bool MessagePopupView::IsWidgetValid() const {
   return GetWidget() && !GetWidget()->IsClosed();
 }
 
-int MessagePopupView::GetBodyHeight(const base::string16& message) {
+int MessagePopupView::GetBodyHeight(const std::u16string& message) {
   return (kBodyPixelLineHeight * (message.size() / kBodyCharactersPerLine));
 }
 

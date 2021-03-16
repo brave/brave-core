@@ -25,11 +25,11 @@ class BraveDownloadItemModel {
   // a regular download, the tooltip is the filename and the origin URL with an
   // indicator if the URL is secure. For an interrupted download, falls back on
   // the base class behavior.
-  base::string16 GetTooltipText();
+  std::u16string GetTooltipText();
 
   // Returns a string suitable for use as the origin URL. |is_secure| is set to
   // true if the url is considered secure.
-  base::string16 GetOriginURLText(bool* is_secure);
+  std::u16string GetOriginURLText(bool* is_secure);
 
   // Encapsulated model.
   DownloadUIModel* model_;

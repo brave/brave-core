@@ -47,7 +47,7 @@ class AdsNotificationHandler : public NotificationHandler {
                const GURL& origin,
                const std::string& id,
                const base::Optional<int>& action_index,
-               const base::Optional<base::string16>& reply,
+               const base::Optional<std::u16string>& reply,
                base::OnceClosure completed_closure) override;
   void OpenSettings(Profile* profile, const GURL& origin) override;
 

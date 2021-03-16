@@ -136,9 +136,9 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
   return true;
 }
 
-base::string16 DecryptedCardFromColumn(const sql::Statement& s,
+std::u16string DecryptedCardFromColumn(const sql::Statement& s,
                                        int column_index) {
-  base::string16 credit_card_number;
+  std::u16string credit_card_number;
   int encrypted_number_len = s.ColumnByteLength(column_index);
   if (encrypted_number_len) {
     std::string encrypted_number;
@@ -291,8 +291,8 @@ void ChromeImporter::ImportBookmarks() {
   if (bookmark_dict->GetDictionary("roots", &roots)) {
     // Importing bookmark bar items
     if (roots->GetDictionary("bookmark_bar", &bookmark_bar)) {
-      std::vector<base::string16> path;
-      base::string16 name;
+      std::vector<std::u16string> path;
+      std::u16string name;
       bookmark_bar->GetString("name", &name);
 
       path.push_back(name);
@@ -300,8 +300,8 @@ void ChromeImporter::ImportBookmarks() {
     }
     // Importing other items
     if (roots->GetDictionary("other", &other)) {
-      std::vector<base::string16> path;
-      base::string16 name;
+      std::vector<std::u16string> path;
+      std::u16string name;
       other->GetString("name", &name);
 
       path.push_back(name);
@@ -310,7 +310,7 @@ void ChromeImporter::ImportBookmarks() {
   }
   // Write into profile.
   if (!bookmarks.empty() && !cancelled()) {
-    const base::string16& first_folder_name =
+    const std::u16string& first_folder_name =
       base::UTF8ToUTF16("Imported from Chrome");
     bridge_->AddBookmarks(bookmarks, first_folder_name);
   }
@@ -394,7 +394,7 @@ void ChromeImporter::LoadFaviconData(
 
 void ChromeImporter::RecursiveReadBookmarksFolder(
   const base::DictionaryValue* folder,
-  const std::vector<base::string16>& parent_path,
+  const std::vector<std::u16string>& parent_path,
   bool is_in_toolbar,
   std::vector<ImportedBookmarkEntry>* bookmarks) {
   const base::ListValue* children;
@@ -404,7 +404,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
       if (!value.GetAsDictionary(&dict))
         continue;
       std::string date_added, type, url;
-      base::string16 name;
+      std::u16string name;
       dict->GetString("date_added", &date_added);
       dict->GetString("name", &name);
       dict->GetString("type", &type);
@@ -425,7 +425,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
           bookmarks->push_back(entry);
         }
 
-        std::vector<base::string16> path = parent_path;
+        std::vector<std::u16string> path = parent_path;
         path.push_back(name);
         RecursiveReadBookmarksFolder(dict, path, is_in_toolbar, bookmarks);
       } else if (type == "url") {
@@ -508,7 +508,7 @@ void ChromeImporter::ImportPayments() {
   auto* brave_bridge =
       static_cast<BraveExternalProcessImporterBridge*>(bridge_.get());
   while (s.Step()) {
-    const base::string16 card_number = DecryptedCardFromColumn(s, 3);
+    const std::u16string card_number = DecryptedCardFromColumn(s, 3);
     // Empty means decryption is failed. Or chrome's data is invalid.
     // Skip it.
     if (card_number.empty())

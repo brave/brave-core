@@ -95,7 +95,7 @@ void SyncV2MigrateInfoBarDelegate::InfoBarDismissed() {
   brave_sync_prefs.SetDismissSyncMigrateNotice(true);
 }
 
-base::string16 SyncV2MigrateInfoBarDelegate::GetMessageText() const {
+std::u16string SyncV2MigrateInfoBarDelegate::GetMessageText() const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE);
 }
 
@@ -103,7 +103,7 @@ int SyncV2MigrateInfoBarDelegate::GetButtons() const {
   return BUTTON_OK;
 }
 
-base::string16 SyncV2MigrateInfoBarDelegate::GetButtonLabel(
+std::u16string SyncV2MigrateInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND);
 }

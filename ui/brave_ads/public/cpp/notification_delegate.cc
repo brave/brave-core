@@ -42,7 +42,7 @@ HandleNotificationClickDelegate::~HandleNotificationClickDelegate() {}
 
 void HandleNotificationClickDelegate::Click(
     const base::Optional<int>& button_index,
-    const base::Optional<base::string16>& reply) {
+    const base::Optional<std::u16string>& reply) {
   if (!callback_.is_null())
     callback_.Run(button_index);
 }

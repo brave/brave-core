@@ -69,7 +69,7 @@ class ChromeImporter : public Importer {
 
   void RecursiveReadBookmarksFolder(
     const base::DictionaryValue* folder,
-    const std::vector<base::string16>& parent_path,
+    const std::vector<std::u16string>& parent_path,
     bool is_in_toolbar,
     std::vector<ImportedBookmarkEntry>* bookmarks);
 

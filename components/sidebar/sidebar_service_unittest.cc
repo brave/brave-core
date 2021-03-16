@@ -100,7 +100,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   ClearState();
 
   const SidebarItem item2 =
-      SidebarItem::Create(GURL("https://www.brave.com/"), base::string16(),
+      SidebarItem::Create(GURL("https://www.brave.com/"), std::u16string(),
                           SidebarItem::Type::kTypeWeb, true);
   EXPECT_TRUE(IsWebType(item2));
   service_->AddItem(item2);

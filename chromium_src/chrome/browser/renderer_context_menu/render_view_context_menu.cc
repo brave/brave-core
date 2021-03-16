@@ -25,7 +25,7 @@
 
 namespace {
 
-GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
+GURL GetSelectionNavigationURL(Profile* profile, const std::u16string& text) {
   AutocompleteMatch match;
   AutocompleteClassifier classifier(
       std::make_unique<AutocompleteController>(

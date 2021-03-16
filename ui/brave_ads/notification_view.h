@@ -11,7 +11,6 @@
 
 #include "base/macros.h"
 #include "base/observer_list.h"
-#include "base/strings/string16.h"
 #include "brave/ui/brave_ads/public/cpp/notification.h"
 #include "brave/ui/brave_ads/public/cpp/notification_delegate.h"
 #include "third_party/skia/include/core/SkBitmap.h"

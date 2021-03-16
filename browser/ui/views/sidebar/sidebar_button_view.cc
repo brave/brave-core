@@ -21,7 +21,7 @@ gfx::Size SidebarButtonView::CalculatePreferredSize() const {
   return {kSidebarButtonSize, kSidebarButtonSize};
 }
 
-base::string16 SidebarButtonView::GetTooltipText(const gfx::Point& p) const {
+std::u16string SidebarButtonView::GetTooltipText(const gfx::Point& p) const {
   if (!delegate_)
     return views::ImageButton::GetTooltipText(p);
 
