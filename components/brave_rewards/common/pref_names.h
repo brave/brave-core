@@ -21,7 +21,6 @@ extern const char kNotificationStartupDelay[];
 extern const char kExternalWallets[];  // DEPRECATED
 extern const char kBadgeText[];
 extern const char kUseRewardsStagingServer[];
-extern const char kOnboarded[];
 
 // Defined in native-ledger
 extern const char kServerPublisherListStamp[];

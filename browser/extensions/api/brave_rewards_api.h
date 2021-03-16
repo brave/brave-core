@@ -465,12 +465,12 @@ class BraveRewardsShouldShowOnboardingFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsSaveOnboardingResultFunction : public ExtensionFunction {
+class BraveRewardsEnableRewardsFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.saveOnboardingResult", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.enableRewards", UNKNOWN)
 
  protected:
-  ~BraveRewardsSaveOnboardingResultFunction() override;
+  ~BraveRewardsEnableRewardsFunction() override;
 
   ResponseAction Run() override;
 };

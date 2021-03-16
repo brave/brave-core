@@ -91,7 +91,7 @@ class MockRewardsService : public RewardsService {
                void(brave_rewards::GetAutoContributeEnabledCallback));
   MOCK_METHOD1(SetAutoContributeEnabled, void(bool));
   MOCK_CONST_METHOD0(ShouldShowOnboarding, bool());
-  MOCK_METHOD1(SaveOnboardingResult, void(brave_rewards::OnboardingResult));
+  MOCK_METHOD0(EnableRewards, void());
   MOCK_METHOD2(SetTimer, void(uint64_t, uint32_t*));
   MOCK_METHOD4(GetPublisherActivityFromUrl,
                void(uint64_t,

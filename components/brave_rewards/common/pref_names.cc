@@ -28,7 +28,6 @@ const char kUpholdAnonAddress[] =
     "brave.rewards.uphold_anon_address";
 const char kBadgeText[] = "brave.rewards.badge_text";
 const char kUseRewardsStagingServer[] = "brave.rewards.use_staging_server";
-const char kOnboarded[] = "brave.rewards.onboarded";
 const char kPromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";
 const char kPromotionCorruptedMigrated[] =

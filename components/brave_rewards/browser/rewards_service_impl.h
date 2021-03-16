@@ -313,7 +313,7 @@ class RewardsServiceImpl : public RewardsService,
 
   bool ShouldShowOnboarding() const override;
 
-  void SaveOnboardingResult(OnboardingResult result) override;
+  void EnableRewards() override;
 
   void GetMonthlyReport(
       const uint32_t month,
@@ -528,7 +528,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnWalletCreatedForSetAdsEnabled(const ledger::type::Result result);
 
-  void OnStartProcessForOnboarding();
+  void OnStartProcessForEnableRewards();
+
+  void OnFetchBalanceForEnableRewards(ledger::type::Result result,
+                                      ledger::type::BalancePtr balance);
 
   // ledger::LedgerClient
   void OnReconcileComplete(

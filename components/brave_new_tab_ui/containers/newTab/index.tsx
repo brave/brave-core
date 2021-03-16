@@ -389,7 +389,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   startRewards = () => {
-    chrome.braveRewards.saveOnboardingResult('opted-in')
+    chrome.braveRewards.enableRewards()
   }
 
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
