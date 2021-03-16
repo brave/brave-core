@@ -21,7 +21,7 @@ import {assert} from 'chrome://resources/js/assert.m.js';
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
 
-import {Route, RouteObserverBehavior, Router} from '../router.m.js';
+import {Route, RouteObserverBehavior, Router} from '../router.js';
 import {SyncBrowserProxyImpl, StatusAction} from '../people_page/sync_browser_proxy.m.js';
 
 /**
