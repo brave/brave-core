@@ -29,7 +29,6 @@ void BraveContentRendererClient::
   ChromeContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
-  blink::WebRuntimeFeatures::EnableSharedArrayBuffer(false);
   blink::WebRuntimeFeatures::EnableWebNfc(false);
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
