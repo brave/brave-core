@@ -5,7 +5,7 @@
 
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {RegisterStyleOverride,RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
-import {Router} from '../router.m.js'
+import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {pageVisibility} from './page_visibility.js'
 
