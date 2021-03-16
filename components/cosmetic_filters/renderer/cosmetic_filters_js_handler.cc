@@ -306,7 +306,7 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
     base::OnceClosure callback,
     base::Value result) {
   resources_dict_ = base::DictionaryValue::From(
-      base::Value::ToUniquePtrValue(result.Clone()));
+      base::Value::ToUniquePtrValue(std::move(result)));
   std::move(callback).Run();
 }
 
