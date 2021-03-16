@@ -19,19 +19,17 @@ class WebContents;
 // distilled.
 class SpeedreaderButton : public ToolbarButton {
  public:
-  explicit SpeedreaderButton(PressedCallback callback, PrefService* prefs);
+  SpeedreaderButton(PressedCallback callback, PrefService* prefs);
   ~SpeedreaderButton() override;
 
   SpeedreaderButton(const SpeedreaderButton&) = delete;
   SpeedreaderButton& operator=(const SpeedreaderButton&) = delete;
 
   void Update(content::WebContents* active_contents);
-  void UpdateImage();
+  void UpdateImageAndText();
 
   // ToolbarButton:
-  base::string16 GetTooltipText(const gfx::Point& p) const override;
   const char* GetClassName() const override;
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
 
  private:
   // Highlights the ink drop for the icon, used when the corresponding widget

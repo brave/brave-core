@@ -10,16 +10,14 @@
 
 class BookmarkButton : public ToolbarButton {
  public:
-  BookmarkButton(PressedCallback callback);
+  explicit BookmarkButton(PressedCallback callback);
   ~BookmarkButton() override;
 
   void SetToggled(bool on);
-  void UpdateImage();
+  void UpdateImageAndText();
 
   // ToolbarButton:
-  base::string16 GetTooltipText(const gfx::Point& p) const override;
   const char* GetClassName() const override;
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
 
  private:
     bool active_ = false;
