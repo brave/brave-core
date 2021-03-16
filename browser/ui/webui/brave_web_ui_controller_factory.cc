@@ -68,7 +68,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
 #if BUILDFLAG(IPFS_ENABLED)
-  } else if (host == kIPFSHost &&
+  } else if (host == kIPFSWebUIHost &&
              ipfs::IsIpfsEnabled(
                  web_ui->GetWebContents()->GetBrowserContext())) {
     return new IPFSUI(web_ui, url.host());
@@ -111,7 +111,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   if (url.host_piece() == kAdblockHost ||
       url.host_piece() == kWebcompatReporterHost ||
 #if BUILDFLAG(IPFS_ENABLED)
-      (url.host_piece() == kIPFSHost &&
+      (url.host_piece() == kIPFSWebUIHost &&
        base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)

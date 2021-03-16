@@ -63,8 +63,7 @@ void ShowWalletSettings(Browser* browser) {
 
 void ShowIPFS(Browser* browser) {
   ShowSingletonTabOverwritingNTP(
-      browser,
-      GetSingletonTabNavigateParams(browser, GURL(kBraveUIIPFSURL)));
+      browser, GetSingletonTabNavigateParams(browser, GURL(kIPFSWebUIURL)));
 }
 
 }  // namespace brave

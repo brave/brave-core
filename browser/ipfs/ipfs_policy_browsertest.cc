@@ -118,15 +118,25 @@ IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, GetService) {
 
 IN_PROC_BROWSER_TEST_F(IpfsEnabledPolicyTest, IPFSPageAccess) {
   content::NavigationHandleObserver observer(web_contents(),
-                                             GURL("chrome://ipfs"));
-  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("chrome://ipfs")));
+                                             GURL("chrome://ipfs-internals"));
+  EXPECT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://ipfs-internals")));
   EXPECT_TRUE(observer.has_committed());
   EXPECT_FALSE(observer.is_error());
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, IPFSPageAccess) {
   content::NavigationHandleObserver observer(web_contents(),
-                                             GURL("chrome://ipfs"));
+                                             GURL("chrome://ipfs-internals"));
+  EXPECT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://ipfs-internals")));
+  EXPECT_TRUE(observer.has_committed());
+  EXPECT_TRUE(observer.is_error());
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, IPFSPageAccessWithRedirect) {
+  content::NavigationHandleObserver observer(web_contents(),
+                                             GURL("chrome://ipfs-internals"));
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("chrome://ipfs")));
   EXPECT_TRUE(observer.has_committed());
   EXPECT_TRUE(observer.is_error());
