@@ -291,6 +291,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     const GURL& url,
     content::WebContents::OnceGetter web_contents_getter,
     int child_id,
+    int frame_tree_node_id,
     content::NavigationUIData* navigation_data,
     bool is_main_frame,
     ui::PageTransition page_transition,
@@ -333,9 +334,9 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 #endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, std::move(web_contents_getter), child_id, navigation_data,
-      is_main_frame, page_transition, has_user_gesture, initiating_origin,
-      out_factory);
+      url, std::move(web_contents_getter), child_id, frame_tree_node_id,
+      navigation_data, is_main_frame, page_transition, has_user_gesture,
+      initiating_origin, out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
