@@ -10,9 +10,9 @@
 #include "ipc/ipc_message_macros.h"
 
 // The message starter should be declared in ipc/ipc_message_start.h. Since
-// we don't want to patch Chromium, we just pretend to be a frame.
+// we don't want to patch Chromium, we just pretend to be something else.
 
-#define IPC_MESSAGE_START FrameMsgStart
+#define IPC_MESSAGE_START TestMsgStart
 
 // Tells the browser that content in the current page was blocked due to the
 // user's content settings.
