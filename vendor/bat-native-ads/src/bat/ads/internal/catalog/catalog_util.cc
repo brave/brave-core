@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/catalog/catalog_util.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"

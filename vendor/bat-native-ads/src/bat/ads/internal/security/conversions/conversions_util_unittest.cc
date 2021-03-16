@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/security/conversions/conversions_util.h"
 
-#include <stdint.h>
+#include <cstdint>
 #include <vector>
 
 #include "bat/ads/internal/base64_util.h"

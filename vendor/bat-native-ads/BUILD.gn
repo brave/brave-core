@@ -429,6 +429,8 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/promoted_content_ad_uuid_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/promoted_content_ad_uuid_frequency_cap.h",
+    "src/bat/ads/internal/frequency_capping/exclusion_rules/split_test_frequency_cap.cc",
+    "src/bat/ads/internal/frequency_capping/exclusion_rules/split_test_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.cc",

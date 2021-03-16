@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/timer.h"
 
+#include <cstdint>
 #include <utility>
 
 #include "brave_base/random.h"

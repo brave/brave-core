@@ -6,8 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_FILTERS_ADS_HISTORY_DATE_RANGE_FILTER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_FILTERS_ADS_HISTORY_DATE_RANGE_FILTER_H_
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <deque>
 
 #include "bat/ads/ad_history_info.h"

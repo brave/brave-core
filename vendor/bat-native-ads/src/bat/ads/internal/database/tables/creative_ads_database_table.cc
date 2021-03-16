@@ -59,8 +59,8 @@ void CreativeAds::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
-    case 10: {
-      MigrateToV10(transaction);
+    case 12: {
+      MigrateToV12(transaction);
       break;
     }
 
@@ -84,6 +84,7 @@ int CreativeAds::BindParameters(DBCommand* command,
     BindBool(command, index++, creative_ad.conversion);
     BindInt(command, index++, creative_ad.per_day);
     BindInt(command, index++, creative_ad.total_max);
+    BindString(command, index++, creative_ad.split_test_group);
     BindString(command, index++, creative_ad.target_url);
 
     count++;
@@ -103,12 +104,13 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
       "conversion, "
       "per_day, "
       "total_max, "
+      "split_test_group, "
       "target_url) VALUES %s",
       get_table_name().c_str(),
-      BuildBindingParameterPlaceholders(5, count).c_str());
+      BuildBindingParameterPlaceholders(6, count).c_str());
 }
 
-void CreativeAds::CreateTableV10(DBTransaction* transaction) {
+void CreativeAds::CreateTableV12(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -118,6 +120,7 @@ void CreativeAds::CreateTableV10(DBTransaction* transaction) {
       "conversion INTEGER NOT NULL DEFAULT 0, "
       "per_day INTEGER NOT NULL DEFAULT 0, "
       "total_max INTEGER NOT NULL DEFAULT 0, "
+      "split_test_group TEXT, "
       "target_url TEXT NOT NULL)",
       get_table_name().c_str());
 
@@ -128,12 +131,12 @@ void CreativeAds::CreateTableV10(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAds::MigrateToV10(DBTransaction* transaction) {
+void CreativeAds::MigrateToV12(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV10(transaction);
+  CreateTableV12(transaction);
 }
 
 }  // namespace table

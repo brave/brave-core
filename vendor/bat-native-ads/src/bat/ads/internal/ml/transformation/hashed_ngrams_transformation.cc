@@ -3,16 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
+
 #include <algorithm>
 #include <map>
-#include <string>
-#include <vector>
 
 #include "base/values.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/transformation/hash_vectorizer.h"
-#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 
 namespace ads {
 namespace ml {

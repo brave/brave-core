@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_IMPL_H_
 
-#include <stdint.h>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>

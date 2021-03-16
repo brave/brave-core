@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
+
 #include "base/time/time.h"
 #include "bat/ads/internal/unittest_base.h"
 

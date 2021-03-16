@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_server/ad_server.h"
 
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <utility>
@@ -60,7 +61,7 @@ void AdServer::Fetch() {
   DCHECK(!is_processing_);
 
   BLOG(1, "Get catalog");
-  BLOG(2, "GET /v6/catalog");
+  BLOG(2, "GET /v7/catalog");
 
   is_processing_ = true;
 

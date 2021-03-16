@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/dismissed_frequency_cap.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"

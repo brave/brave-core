@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/bundle/bundle.h"
 
+#include <cstdint>
 #include <functional>
 #include <limits>
 #include <string>
@@ -156,6 +157,7 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         info.conversion = creative_set.conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
+        info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;
         info.title = creative.payload.title;

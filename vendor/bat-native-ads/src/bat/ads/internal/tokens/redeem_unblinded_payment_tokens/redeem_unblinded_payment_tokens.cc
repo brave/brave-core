@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <functional>
 #include <utility>
 

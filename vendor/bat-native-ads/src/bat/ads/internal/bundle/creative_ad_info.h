@@ -6,8 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_INFO_H_
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -32,6 +31,7 @@ struct CreativeAdInfo {
   bool conversion = false;
   unsigned int per_day = 0;
   unsigned int total_max = 0;
+  std::string split_test_group;
   std::string segment;
   std::vector<std::string> geo_targets;
   std::string target_url;

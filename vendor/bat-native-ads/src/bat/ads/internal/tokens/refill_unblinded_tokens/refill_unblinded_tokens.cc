@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <functional>
 #include <utility>
 

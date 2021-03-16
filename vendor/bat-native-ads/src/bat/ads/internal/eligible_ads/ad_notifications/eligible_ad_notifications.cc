@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <map>
 #include <string>
 

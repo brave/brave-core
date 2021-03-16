@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/promoted_content_ad_uuid_frequency_cap.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/ad_info.h"
