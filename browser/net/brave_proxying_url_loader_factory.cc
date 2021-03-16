@@ -217,6 +217,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     target_loader_->ResumeReadingBodyFromNet();
 }
 
+void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveEarlyHints(
+    network::mojom::EarlyHintsPtr early_hints) {}
+
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr head) {
   current_response_ = std::move(head);
