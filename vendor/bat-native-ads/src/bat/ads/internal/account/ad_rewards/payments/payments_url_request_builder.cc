@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/account/ad_rewards/payments/payments_url_request_builder.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"

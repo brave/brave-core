@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <deque>
 
 #include "base/strings/stringprintf.h"

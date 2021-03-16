@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
+#include <cstdint>
 #include <utility>
 
 #include "base/base64.h"

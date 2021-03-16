@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ad_events/ad_events.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
