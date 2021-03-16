@@ -23,6 +23,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/net/secure_dns_config.h"
+#include "chrome/browser/net/system_network_context_manager.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
@@ -84,7 +86,7 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
 
     g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-        ctx->request_url, ctx->resource_type, source_host, &did_match_rule,
+        canonical_url, ctx->resource_type, source_host, &did_match_rule,
         &did_match_exception, &did_match_important, &ctx->mock_data_url);
   }
 
@@ -118,6 +120,7 @@ void ShouldBlockAdWithOptionalCname(
 class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  private:
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
+  mojo::Remote<network::mojom::HostResolver> host_resolver_;
   base::OnceCallback<void(base::Optional<std::string>)> cb_;
   base::TimeTicks start_time_;
 
@@ -141,21 +144,33 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 
     const auto network_isolation_key = ctx->network_isolation_key;
 
-    network::mojom::ResolveHostParametersPtr optional_parameters =
-        network::mojom::ResolveHostParameters::New();
-    optional_parameters->include_canonical_name = true;
-    // Explicitly specify source to avoid using `HostResolverProc`
-    // which will be handled by system resolver
-    // See https://crbug.com/872665
-    optional_parameters->source = net::HostResolverSource::DNS;
-
     network::mojom::NetworkContext* network_context =
         content::BrowserContext::GetDefaultStoragePartition(context)
             ->GetNetworkContext();
 
     start_time_ = base::TimeTicks::Now();
 
-    network_context->ResolveHost(
+    SecureDnsConfig secure_dns_config =
+        SystemNetworkContextManager::GetStubResolverConfigReader()
+            ->GetSecureDnsConfiguration(false);
+
+    net::DnsConfigOverrides dns_config_overrides;
+    dns_config_overrides.secure_dns_mode = secure_dns_config.mode();
+    dns_config_overrides.dns_over_https_servers = secure_dns_config.servers();
+
+    network_context->CreateHostResolver(
+        dns_config_overrides, host_resolver_.BindNewPipeAndPassReceiver());
+
+    if (!host_resolver_) {
+      this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(), base::nullopt);
+      return;
+    }
+
+    network::mojom::ResolveHostParametersPtr optional_parameters =
+        network::mojom::ResolveHostParameters::New();
+    optional_parameters->include_canonical_name = true;
+
+    host_resolver_->ResolveHost(
         net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
         std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
 
