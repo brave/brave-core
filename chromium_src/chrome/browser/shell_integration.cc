@@ -19,7 +19,7 @@
 
 #if !defined(OS_WIN)
 namespace shell_integration {
-base::string16 GetAppShortcutsSubdirName() {
+std::u16string GetAppShortcutsSubdirName() {
   int id = IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_STABLE;
   switch (chrome::GetChannel()) {
     case version_info::Channel::STABLE:

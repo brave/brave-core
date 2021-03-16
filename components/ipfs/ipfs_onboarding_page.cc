@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/notreached.h"
-#include "base/strings/string16.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -79,7 +78,7 @@ void IPFSOnboardingPage::UseLocalNode() {
   if (!ipfs_service_->IsDaemonLaunched()) {
     ipfs_service_->LaunchDaemon(base::NullCallback());
   } else {
-    RespondToPage(LOCAL_NODE_LAUNCHED, base::string16());
+    RespondToPage(LOCAL_NODE_LAUNCHED, std::u16string());
     GetConnectedPeers();
   }
 }
@@ -158,7 +157,7 @@ void IPFSOnboardingPage::OnIpfsLaunched(bool result, int64_t pid) {
 
   if (!IsLocalNodeMode())
     return;
-  RespondToPage(LOCAL_NODE_LAUNCHED, base::string16());
+  RespondToPage(LOCAL_NODE_LAUNCHED, std::u16string());
   GetConnectedPeers();
 }
 
@@ -168,15 +167,14 @@ void IPFSOnboardingPage::Proceed() {
 }
 
 void IPFSOnboardingPage::RespondToPage(IPFSOnboardingResponse value,
-                                       const base::string16& text) {
+                                       const std::u16string& text) {
   auto* main_frame = web_contents()->GetMainFrame();
   DCHECK(main_frame);
 
-  base::string16 script(base::UTF8ToUTF16(kResponseScript));
-  base::ReplaceSubstringsAfterOffset(&script, 0, base::UTF8ToUTF16("{value}"),
+  std::u16string script(base::UTF8ToUTF16(kResponseScript));
+  base::ReplaceSubstringsAfterOffset(&script, 0, u"{value}",
                                      base::NumberToString16(value));
-  base::ReplaceSubstringsAfterOffset(&script, 0, base::UTF8ToUTF16("{text}"),
-                                     text);
+  base::ReplaceSubstringsAfterOffset(&script, 0, u"{text}", text);
   main_frame->ExecuteJavaScriptInIsolatedWorld(script, {},
                                                kOnboardingIsolatedWorldId);
 }

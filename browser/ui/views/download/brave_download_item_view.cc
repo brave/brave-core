@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/auto_reset.h"
-#include "base/strings/string16.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/views/download/download_shelf_view.h"
@@ -125,7 +124,7 @@ void BraveDownloadItemView::OnDownloadUpdated() {
     // as well.
     bool needs_repaint = false;
     bool new_is_secure = false;
-    base::string16 new_origin_url =
+    std::u16string new_origin_url =
         brave_model_.GetOriginURLText(&new_is_secure);
     if (new_origin_url != origin_url_text_ ||
       new_is_secure != is_origin_url_secure_) {
@@ -143,7 +142,7 @@ void BraveDownloadItemView::OnDownloadUpdated() {
   }
 
   // Update tooltip.
-  base::string16 new_tip = brave_model_.GetTooltipText();
+  std::u16string new_tip = brave_model_.GetTooltipText();
   if (new_tip != tooltip_text_) {
     tooltip_text_ = new_tip;
     TooltipTextChanged();
@@ -191,7 +190,7 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
     text_width -= dx;
   }
 
-  base::string16 originURL = gfx::ElideText(
+  std::u16string originURL = gfx::ElideText(
       origin_url_text_, origin_url_font_list_, text_width, gfx::ELIDE_TAIL);
   int mirrored_x = GetMirroredXWithWidthInView(x, text_width);
 
@@ -230,7 +229,7 @@ void BraveDownloadItemView::SetMode(Mode mode) {
     return;
 
   if (!origin_url_text_.empty()) {
-    base::string16 extra;
+    std::u16string extra;
     if (!is_origin_url_secure_)
       extra += char16_t(' ') +
                l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE);

@@ -199,7 +199,7 @@ void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
 }
 
 void BraveToolbarView::OnProfileWasRemoved(const base::FilePath& profile_path,
-                                           const base::string16& profile_name) {
+                                           const std::u16string& profile_name) {
   Update(nullptr);
 }
 

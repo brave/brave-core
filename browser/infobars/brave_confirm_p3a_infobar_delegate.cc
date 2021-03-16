@@ -66,7 +66,7 @@ void BraveConfirmP3AInfoBarDelegate::InfoBarDismissed() {
   }
 }
 
-base::string16 BraveConfirmP3AInfoBarDelegate::GetMessageText() const {
+std::u16string BraveConfirmP3AInfoBarDelegate::GetMessageText() const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_CONFIRM_P3A_INFO_BAR);
 }
 
@@ -74,7 +74,7 @@ int BraveConfirmP3AInfoBarDelegate::GetButtons() const {
   return BUTTON_OK | BUTTON_CANCEL;
 }
 
-base::string16 BraveConfirmP3AInfoBarDelegate::GetButtonLabel(
+std::u16string BraveConfirmP3AInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
   if (button == BUTTON_CANCEL) {
     return l10n_util::GetStringUTF16(IDS_BRAVE_CONFIRM_P3A_INFO_BAR_DISABLE);
@@ -82,7 +82,7 @@ base::string16 BraveConfirmP3AInfoBarDelegate::GetButtonLabel(
   return l10n_util::GetStringUTF16(IDS_BRAVE_CONFIRM_P3A_INFO_BAR_ACKNOWLEDGE);
 }
 
-base::string16 BraveConfirmP3AInfoBarDelegate::GetLinkText() const {
+std::u16string BraveConfirmP3AInfoBarDelegate::GetLinkText() const {
   return l10n_util::GetStringUTF16(IDS_LEARN_MORE);
 }
 

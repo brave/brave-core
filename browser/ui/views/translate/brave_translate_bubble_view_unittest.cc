@@ -53,12 +53,12 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
 
   int GetNumberOfTargetLanguages() const override { return 1000; }
 
-  base::string16 GetSourceLanguageNameAt(int index) const override {
-    return base::ASCIIToUTF16("English");
+  std::u16string GetSourceLanguageNameAt(int index) const override {
+    return u"English";
   }
 
-  base::string16 GetTargetLanguageNameAt(int index) const override {
-    return base::ASCIIToUTF16("Spanish");
+  std::u16string GetTargetLanguageNameAt(int index) const override {
+    return u"Spanish";
   }
 
   std::string GetSourceLanguageCode() const override {
@@ -212,8 +212,7 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
   }
 
   void PressButton(TranslateBubbleView::ButtonID id) {
-    views::LabelButton button(views::Button::PressedCallback(),
-                              base::ASCIIToUTF16("dummy"));
+    views::LabelButton button(views::Button::PressedCallback(), u"dummy");
     button.SetID(id);
 
     bubble_->ButtonPressed(id);

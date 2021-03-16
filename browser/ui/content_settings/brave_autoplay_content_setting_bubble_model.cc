@@ -62,7 +62,7 @@ void BraveAutoplayContentSettingBubbleModel::SetTitle() {
 
 void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
   GURL url = web_contents()->GetURL();
-  base::string16 display_host = url_formatter::FormatUrlForSecurityDisplay(url);
+  std::u16string display_host = url_formatter::FormatUrlForSecurityDisplay(url);
   if (display_host.empty())
     display_host = base::ASCIIToUTF16(url.spec());
 
@@ -74,9 +74,9 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
 
   RadioGroup radio_group;
   radio_group.url = url;
-  base::string16 radio_allow_label =
+  std::u16string radio_allow_label =
       l10n_util::GetStringFUTF16(IDS_BLOCKED_AUTOPLAY_UNBLOCK, display_host);
-  base::string16 radio_block_label =
+  std::u16string radio_block_label =
       l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_NO_ACTION);
   radio_group.radio_items.push_back(radio_allow_label);
   radio_group.radio_items.push_back(radio_block_label);

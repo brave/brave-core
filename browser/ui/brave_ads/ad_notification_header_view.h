@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_ADS_AD_NOTIFICATION_HEADER_VIEW_H_
 #define BRAVE_BROWSER_UI_BRAVE_ADS_AD_NOTIFICATION_HEADER_VIEW_H_
 
-#include "base/strings/string16.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
@@ -24,7 +23,7 @@ class AdNotificationHeaderView : public views::View {
   explicit AdNotificationHeaderView(const int width);
   ~AdNotificationHeaderView() override;
 
-  void SetTitle(const base::string16& name);
+  void SetTitle(const std::u16string& name);
   void SetTitleElideBehavior(gfx::ElideBehavior elide_behavior);
 
   void UpdateContent();

@@ -84,7 +84,7 @@ void BraveMockRenderViewContextMenu::ExecuteCommand(int command_id,
 // RenderViewContextMenuProxy implementation.
 
 void BraveMockRenderViewContextMenu::AddMenuItem(int command_id,
-                                                 const base::string16& title) {
+                                                 const std::u16string& title) {
   MockMenuItem item;
   item.command_id = command_id;
   item.enabled = observer_->IsCommandIdEnabled(command_id);
@@ -96,13 +96,13 @@ void BraveMockRenderViewContextMenu::AddMenuItem(int command_id,
 
 void BraveMockRenderViewContextMenu::AddMenuItemWithIcon(
     int command_id,
-    const base::string16& title,
+    const std::u16string& title,
     const ui::ImageModel& icon) {
   AddMenuItem(command_id, title);
 }
 
 void BraveMockRenderViewContextMenu::AddCheckItem(int command_id,
-                                                  const base::string16& title) {
+                                                  const std::u16string& title) {
   MockMenuItem item;
   item.command_id = command_id;
   item.enabled = observer_->IsCommandIdEnabled(command_id);
@@ -122,7 +122,7 @@ void BraveMockRenderViewContextMenu::AddSeparator() {
 }
 
 void BraveMockRenderViewContextMenu::AddSubMenu(int command_id,
-                                                const base::string16& label,
+                                                const std::u16string& label,
                                                 ui::MenuModel* model) {
   MockMenuItem item;
   item.command_id = command_id;
@@ -165,7 +165,7 @@ void BraveMockRenderViewContextMenu::UpdateMenuItem(
     int command_id,
     bool enabled,
     bool hidden,
-    const base::string16& title) {
+    const std::u16string& title) {
   for (auto& item : items_) {
     if (item.command_id == command_id) {
       item.enabled = enabled;

@@ -226,7 +226,7 @@ bool NotificationHelperWin::IsNotificationsEnabled() {
   }
 }
 
-base::string16 NotificationHelperWin::GetAppId() const {
+std::u16string NotificationHelperWin::GetAppId() const {
   return ShellUtil::GetBrowserModelId(InstallUtil::IsPerUserInstall());
 }
 

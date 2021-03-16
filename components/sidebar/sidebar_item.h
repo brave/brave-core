@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_ITEM_H_
 #define BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_ITEM_H_
 
-#include "base/strings/string16.h"
 #include "url/gurl.h"
 
 namespace sidebar {
@@ -18,7 +17,7 @@ struct SidebarItem {
   };
 
   static SidebarItem Create(const GURL& url,
-                            const base::string16& title,
+                            const std::u16string& title,
                             Type type,
                             bool open_in_panel);
 
@@ -27,7 +26,7 @@ struct SidebarItem {
 
   GURL url;
   Type type;
-  base::string16 title;
+  std::u16string title;
   // Set false to open this item in new tab.
   bool open_in_panel;
 };

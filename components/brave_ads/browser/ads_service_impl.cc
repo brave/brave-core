@@ -1743,12 +1743,12 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
     std::unique_ptr<AdNotificationPlatformBridge> platform_bridge =
         std::make_unique<AdNotificationPlatformBridge>(profile_);
 
-    base::string16 title;
+    std::u16string title;
     if (base::IsStringUTF8(info.title)) {
       title = base::UTF8ToUTF16(info.title);
     }
 
-    base::string16 body;
+    std::u16string body;
     if (base::IsStringUTF8(info.body)) {
       body = base::UTF8ToUTF16(info.body);
     }
@@ -1757,25 +1757,25 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
 
     platform_bridge->ShowAdNotification(ad_notification);
   } else {
-    base::string16 title;
+    std::u16string title;
     if (base::IsStringUTF8(info.title)) {
       title = base::UTF8ToUTF16(info.title);
     }
 
-    base::string16 body;
+    std::u16string body;
     if (base::IsStringUTF8(info.body)) {
       body = base::UTF8ToUTF16(info.body);
     }
 
     message_center::RichNotificationData notification_data;
-    notification_data.context_message = base::ASCIIToUTF16(" ");
+    notification_data.context_message = u" ";
 
     const std::string url = kAdNotificationUrlPrefix + info.uuid;
 
     std::unique_ptr<message_center::Notification> notification =
         std::make_unique<message_center::Notification>(
             message_center::NOTIFICATION_TYPE_SIMPLE, info.uuid, title, body,
-            gfx::Image(), base::string16(), GURL(url),
+            gfx::Image(), std::u16string(), GURL(url),
             message_center::NotifierId(
                 message_center::NotifierType::SYSTEM_COMPONENT,
                 "service.ads_service"),
@@ -1939,7 +1939,7 @@ void AdsServiceImpl::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     ads::GetBrowsingHistoryCallback callback) {
-  base::string16 search_text;
+  std::u16string search_text;
   history::QueryOptions options;
   options.SetRecentDayRange(days_ago);
   options.max_count = max_count;

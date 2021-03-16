@@ -57,7 +57,7 @@ class BraveDownloadItemView : public DownloadItemView {
   gfx::FontList origin_url_font_list_;
 
   // Origin url text.
-  base::string16 origin_url_text_;
+  std::u16string origin_url_text_;
   bool is_origin_url_secure_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDownloadItemView);

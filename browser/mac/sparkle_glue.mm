@@ -489,7 +489,7 @@ bool SparkleEnabled() {
   return [SparkleGlue sharedSparkleGlue] != nil;
 }
 
-base::string16 CurrentlyInstalledVersion() {
+std::u16string CurrentlyInstalledVersion() {
   SparkleGlue* sparkleGlue = [SparkleGlue sharedSparkleGlue];
   NSString* version = [sparkleGlue currentlyInstalledVersion];
   return base::SysNSStringToUTF16(version);
