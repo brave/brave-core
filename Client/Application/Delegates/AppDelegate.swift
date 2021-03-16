@@ -70,6 +70,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         // Must happen before passcode check, otherwise may unnecessarily reset keychain
         Migration.moveDatabaseToApplicationDirectory()
+        // We have to wait until pre1.12 migration is done until we proceed with database
+        // initialization. This is because Database container may change. See bugs #3416, #3377.
+        DataController.shared.initialize()
         
         // Passcode checking, must happen on immediate launch
         if !DataController.shared.storeExists() {

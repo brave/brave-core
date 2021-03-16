@@ -16,6 +16,7 @@ class CoreDataTestCase: XCTestCase {
                                                object: nil)
         
         DataController.shared = InMemoryDataController()
+        DataController.shared.initialize()
     }
     
     override func tearDown() {

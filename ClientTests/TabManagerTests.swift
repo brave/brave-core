@@ -505,6 +505,7 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         manager.addDelegate(delegate)
         DataController.shared = InMemoryDataController()
+        DataController.shared.initialize()
         
         delegate.expect([willAdd, didAdd])
         let tab = manager.addTab(isPrivate: false)
@@ -521,6 +522,7 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         manager.addDelegate(delegate)
         DataController.shared = InMemoryDataController()
+        DataController.shared.initialize()
         
         delegate.expect([willAdd, didAdd])
         manager.addTab(isPrivate: true)
@@ -535,6 +537,7 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         manager.addDelegate(delegate)
         DataController.shared = InMemoryDataController()
+        DataController.shared.initialize()
         
         delegate.expect([willAdd, didAdd, willAdd, didAdd])
         manager.addTab(isPrivate: true)
