@@ -146,10 +146,6 @@ Config.prototype.isDebug = function () {
   return this.buildConfig === 'Debug'
 }
 
-Config.prototype.isDcheckAlwaysOn = function () {
-  return this.buildConfig !== 'Release'
-}
-
 Config.prototype.enableCDMHostVerification = function () {
   const enable = this.buildConfig === 'Release' &&
                  process.platform !== 'linux' &&
@@ -200,7 +196,7 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild() && !this.isAsan(),
     is_debug: this.isDebug(),
-    dcheck_always_on: this.isDcheckAlwaysOn(),
+    dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.buildConfig !== 'Release',
     brave_channel: this.channel,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,
