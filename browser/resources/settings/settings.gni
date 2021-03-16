@@ -13,4 +13,4 @@ settings_namespace_rewrites += [
   "settings.Router|Router",
 ]
 
-settings_auto_imports += [ "chrome/browser/resources/settings/router.html|Router,Route,RouteObserverBehavior" ]
+settings_auto_imports = [ "chrome/browser/resources/settings/router.html|Router,Route,RouteObserverBehavior" ]
