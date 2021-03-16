@@ -454,6 +454,8 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_frequency_cap.h",
+    "src/bat/ads/internal/frequency_capping/permission_rules/full_screen_mode_frequency_cap.cc",
+    "src/bat/ads/internal/frequency_capping/permission_rules/full_screen_mode_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/permission_rules/media_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/permission_rules/media_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.cc",

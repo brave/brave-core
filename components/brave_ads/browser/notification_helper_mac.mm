@@ -14,10 +14,8 @@
 #include "base/logging.h"
 #include "base/mac/mac_util.h"
 #include "brave/common/brave_channel_info.h"
-#include "chrome/common/chrome_features.h"
-
 #include "brave/components/brave_ads/browser/notification_helper_mac.h"
-#include "chrome/browser/fullscreen.h"
+#include "chrome/common/chrome_features.h"
 
 namespace brave_ads {
 
@@ -26,11 +24,6 @@ NotificationHelperMac::NotificationHelperMac() = default;
 NotificationHelperMac::~NotificationHelperMac() = default;
 
 bool NotificationHelperMac::ShouldShowNotifications() {
-  if (IsFullScreenMode()) {
-    LOG(WARNING) << "Notification not made: Full screen mode";
-    return false;
-  }
-
   if (brave::IsNightlyOrDeveloperBuild()) {
     return true;
   }

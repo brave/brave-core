@@ -532,6 +532,11 @@ void MockIsForeground(const std::unique_ptr<AdsClientMock>& mock,
   ON_CALL(*mock, IsForeground()).WillByDefault(Return(is_foreground));
 }
 
+void MockIsFullScreen(const std::unique_ptr<AdsClientMock>& mock,
+                      const bool is_full_screen) {
+  ON_CALL(*mock, IsFullScreen()).WillByDefault(Return(is_full_screen));
+}
+
 void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
                                  const bool should_show) {
   ON_CALL(*mock, ShouldShowNotifications()).WillByDefault(Return(should_show));

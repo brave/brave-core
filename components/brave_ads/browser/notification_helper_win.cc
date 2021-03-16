@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <Windows.h>
-
 #include "brave/components/brave_ads/browser/notification_helper_win.h"
+
+#include <Windows.h>
 
 #include "base/feature_list.h"
 #include "base/logging.h"
@@ -13,7 +13,6 @@
 #include "base/win/scoped_hstring.h"
 #include "base/win/windows_version.h"
 #include "brave/common/brave_channel_info.h"
-#include "chrome/browser/fullscreen.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/installer/util/install_util.h"
@@ -66,11 +65,6 @@ NotificationHelperWin::NotificationHelperWin() = default;
 NotificationHelperWin::~NotificationHelperWin() = default;
 
 bool NotificationHelperWin::ShouldShowNotifications() {
-  if (IsFullScreenMode()) {
-    LOG(WARNING) << "Notification not made: Full screen mode";
-    return false;
-  }
-
   if (brave::IsNightlyOrDeveloperBuild()) {
     return true;
   }

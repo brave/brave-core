@@ -612,6 +612,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return UIApplication.sharedApplication.applicationState == UIApplicationStateActive;
 }
 
+- (bool)isFullScreen {
+  return true;
+}
+
 - (bool)canShowBackgroundNotifications
 {
   return false;

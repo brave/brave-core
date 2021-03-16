@@ -14,6 +14,7 @@
 - (bool)isAdsEnabled;
 - (bool)shouldAllowAdConversionTracking;
 - (bool)isForeground;
+- (bool)isFullScreen;
 - (bool)canShowBackgroundNotifications;
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;

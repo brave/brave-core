@@ -35,6 +35,8 @@ class BatAdsClientMojoBridge
 
   bool IsForeground() const override;
 
+  bool IsFullScreen() const override;
+
   void ShowNotification(
       const ads::AdNotificationInfo& ad_notification) override;
   bool ShouldShowNotifications() override;
