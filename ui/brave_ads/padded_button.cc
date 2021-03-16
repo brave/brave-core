@@ -10,6 +10,7 @@
 #include "brave/ui/brave_ads/public/cpp/constants.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/views/animation/flood_fill_ink_drop_ripple.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/background.h"
@@ -39,8 +40,9 @@ std::unique_ptr<views::InkDrop> PaddedButton::CreateInkDrop() {
 
 void PaddedButton::OnThemeChanged() {
   ImageButton::OnThemeChanged();
-  SetInkDropBaseColor(GetNativeTheme()->GetSystemColor(
-      ui::NativeTheme::kColorId_PaddedButtonInkDropColor));
+  SkColor background_color = GetNativeTheme()->GetSystemColor(
+      ui::NativeTheme::kColorId_WindowBackground);
+  SetInkDropBaseColor(color_utils::GetColorWithMaxContrast(background_color));
 }
 
 }  // namespace brave_ads
