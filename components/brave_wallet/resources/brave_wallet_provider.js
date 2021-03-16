@@ -4,5 +4,11 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 (function() {
-    // We need to add methods to window.ethereum object like sendasync
+    if (!window.ethereum) {
+      return
+    }
+
+    // TODO: fill window.ethereum object with functions
+    // window.ethereum.sendAsync = function(obj) {
+    // }
 })()

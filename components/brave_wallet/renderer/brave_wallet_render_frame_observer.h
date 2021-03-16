@@ -28,6 +28,8 @@ class BraveWalletRenderFrameObserver
       const GURL& url,
       base::Optional<blink::WebNavigationType> navigation_type) override;
   void DidCreateNewDocument() override;
+  void DidCreateScriptContext(v8::Local<v8::Context> context,
+                              int32_t world_id) override;
 
  private:
   // RenderFrameObserver implementation.

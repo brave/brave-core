@@ -13,15 +13,4 @@ blink_modules_sources("brave") {
     "navigator_brave.cc",
     "navigator_brave.h",
   ]
-
-  if (brave_wallet_enabled) {
-    sources += [
-      "ethereum.cc",
-      "ethereum.h",
-      "window_brave.cc",
-      "window_brave.h",
-    ]
-
-    deps = [ "//brave/components/brave_wallet/common:mojom" ]
-  }
 }

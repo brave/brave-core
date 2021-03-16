@@ -23,6 +23,15 @@ void BraveWalletRenderFrameObserver::DidStartNavigation(
   url_ = url;
 }
 
+void BraveWalletRenderFrameObserver::DidCreateScriptContext(
+    v8::Local<v8::Context> context,
+    int32_t world_id) {
+  if (!native_javascript_handle_)
+    return;
+
+  native_javascript_handle_->AddJavaScriptObjectToFrame(context);
+}
+
 void BraveWalletRenderFrameObserver::DidCreateNewDocument() {
   if (!native_javascript_handle_) {
     native_javascript_handle_.reset(
