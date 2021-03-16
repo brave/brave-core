@@ -1,0 +1,4 @@
+.DS_Store
+/target/
+**/*.rs.bk
+.gdb_history
