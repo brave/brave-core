@@ -37,10 +37,10 @@ import { BatColorIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
 export interface RewardsProps {
   enabledAds: boolean
   balance: NewTab.RewardsBalance
+  adsAccountStatement: NewTab.AdsAccountStatement
   parameters: NewTab.RewardsParameters
   promotions: NewTab.Promotion[]
   totalContribution: number
-  adsEstimatedEarnings: number
   onlyAnonWallet?: boolean
   adsSupported?: boolean
   isShowingBrandedWallpaper: boolean
@@ -61,14 +61,14 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const {
       parameters,
       enabledAds,
-      adsEstimatedEarnings,
+      adsAccountStatement,
       onlyAnonWallet,
       adsSupported
     } = this.props
 
     const rate = parameters.rate || 0.0
     const showEnableAds = !enabledAds && adsSupported
-    const amount = adsEstimatedEarnings
+    const amount = adsAccountStatement ? adsAccountStatement.estimatedPendingRewards : 0
     const converted = convertBalance(amount, rate)
     const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
 
