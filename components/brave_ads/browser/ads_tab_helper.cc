@@ -79,25 +79,14 @@ void AdsTabHelper::RunIsolatedJavaScript(
   DCHECK(render_frame_host);
 
   dom_distiller::RunIsolatedJavaScript(
-      render_frame_host, "document.body.innerText",
-      base::BindOnce(&AdsTabHelper::OnJavaScriptContentResult,
-                     weak_factory_.GetWeakPtr()));
-
-  dom_distiller::RunIsolatedJavaScript(
       render_frame_host, "new XMLSerializer().serializeToString(document)",
       base::BindOnce(&AdsTabHelper::OnJavaScriptHtmlResult,
                      weak_factory_.GetWeakPtr()));
-}
 
-void AdsTabHelper::OnJavaScriptContentResult(base::Value value) {
-  DCHECK(ads_service_ && ads_service_->IsEnabled());
-
-  DCHECK(value.is_string());
-  std::string text;
-  value.GetAsString(&text);
-
-  ads_service_->OnTextLoaded(tab_id_, page_transition_, has_user_gesture_,
-                             redirect_chain_, text);
+  dom_distiller::RunIsolatedJavaScript(
+      render_frame_host, "document.body.innerText",
+      base::BindOnce(&AdsTabHelper::OnJavaScriptTextResult,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
@@ -110,6 +99,16 @@ void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
   ads_service_->OnHtmlLoaded(tab_id_, redirect_chain_, html);
 }
 
+void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
+  DCHECK(ads_service_ && ads_service_->IsEnabled());
+
+  DCHECK(value.is_string());
+  std::string text;
+  value.GetAsString(&text);
+
+  ads_service_->OnTextLoaded(tab_id_, redirect_chain_, text);
+}
+
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   DCHECK(navigation_handle);
@@ -119,14 +118,14 @@ void AdsTabHelper::DidFinishNavigation(
     return;
   }
 
+  if (navigation_handle->HasUserGesture()) {
+    const int32_t page_transition =
+        static_cast<int32_t>(navigation_handle->GetPageTransition());
+
+    ads_service_->OnUserGesture(page_transition);
+  }
+
   redirect_chain_ = navigation_handle->GetRedirectChain();
-
-  const ui::PageTransition page_transition =
-      navigation_handle->GetPageTransition();
-
-  page_transition_ = static_cast<int32_t>(page_transition);
-
-  has_user_gesture_ = navigation_handle->HasUserGesture();
 
   if (!navigation_handle->IsSameDocument()) {
     should_process_ = navigation_handle->GetRestoreType() ==

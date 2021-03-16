@@ -301,24 +301,6 @@ void AdsServiceImpl::ChangeLocale(const std::string& locale) {
   bat_ads_->ChangeLocale(locale);
 }
 
-void AdsServiceImpl::OnTextLoaded(const SessionID& tab_id,
-                                  const int32_t page_transition_type,
-                                  const bool has_user_gesture,
-                                  const std::vector<GURL>& redirect_chain,
-                                  const std::string& text) {
-  if (!connected()) {
-    return;
-  }
-
-  std::vector<std::string> redirect_chain_as_strings;
-  for (const auto& url : redirect_chain) {
-    redirect_chain_as_strings.push_back(url.spec());
-  }
-
-  bat_ads_->OnTextLoaded(tab_id.id(), page_transition_type, has_user_gesture,
-                         redirect_chain_as_strings, text);
-}
-
 void AdsServiceImpl::OnHtmlLoaded(const SessionID& tab_id,
                                   const std::vector<GURL>& redirect_chain,
                                   const std::string& html) {
@@ -332,6 +314,29 @@ void AdsServiceImpl::OnHtmlLoaded(const SessionID& tab_id,
   }
 
   bat_ads_->OnHtmlLoaded(tab_id.id(), redirect_chain_as_strings, html);
+}
+
+void AdsServiceImpl::OnTextLoaded(const SessionID& tab_id,
+                                  const std::vector<GURL>& redirect_chain,
+                                  const std::string& text) {
+  if (!connected()) {
+    return;
+  }
+
+  std::vector<std::string> redirect_chain_as_strings;
+  for (const auto& url : redirect_chain) {
+    redirect_chain_as_strings.push_back(url.spec());
+  }
+
+  bat_ads_->OnTextLoaded(tab_id.id(), redirect_chain_as_strings, text);
+}
+
+void AdsServiceImpl::OnUserGesture(const int32_t page_transition_type) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->OnUserGesture(page_transition_type);
 }
 
 void AdsServiceImpl::OnMediaStart(const SessionID& tab_id) {

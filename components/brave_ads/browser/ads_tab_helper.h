@@ -61,9 +61,9 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   void RunIsolatedJavaScript(content::RenderFrameHost* render_frame_host);
 
-  void OnJavaScriptContentResult(base::Value value);
-
   void OnJavaScriptHtmlResult(base::Value value);
+
+  void OnJavaScriptTextResult(base::Value value);
 
   // content::WebContentsObserver overrides
   void DidFinishNavigation(
@@ -91,8 +91,6 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool is_active_;
   bool is_browser_active_;
   std::vector<GURL> redirect_chain_;
-  int32_t page_transition_;
-  bool has_user_gesture_;
   bool should_process_;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;

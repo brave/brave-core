@@ -54,7 +54,6 @@
 #include "bat/ads/internal/url_util.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
 #include "bat/ads/new_tab_page_ad_info.h"
-#include "bat/ads/page_transition_types.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/statement_info.h"
@@ -151,20 +150,12 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
 }
 
 void AdsImpl::OnTextLoaded(const int32_t tab_id,
-                           const int32_t page_transition_type,
-                           const bool has_user_gesture,
                            const std::vector<std::string>& redirect_chain,
                            const std::string& text) {
   DCHECK(!redirect_chain.empty());
 
   if (!IsInitialized()) {
     return;
-  }
-
-  if (has_user_gesture) {
-    const PageTransitionType cast_page_transition_type =
-        static_cast<PageTransitionType>(page_transition_type);
-    user_activity_->RecordEventForPageTransition(cast_page_transition_type);
   }
 
   const std::string url = redirect_chain.back();
@@ -186,6 +177,10 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
     const std::string stripped_text = StripNonAlphaCharacters(text);
     text_classification_processor_->Process(stripped_text);
   }
+}
+
+void AdsImpl::OnUserGesture(const int32_t page_transition_type) {
+  user_activity_->RecordEventForPageTransitionFromInt(page_transition_type);
 }
 
 void AdsImpl::OnIdle() {
