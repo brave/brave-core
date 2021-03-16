@@ -6,6 +6,7 @@
 #include "bat/ads/internal/catalog/catalog_state.h"
 
 #include "base/time/time.h"
+#include "bat/ads/internal/catalog/catalog_version.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "url/gurl.h"
@@ -42,7 +43,7 @@ Result CatalogState::FromJson(const std::string& json,
   new_catalog_id = document["catalogId"].GetString();
 
   new_version = document["version"].GetInt();
-  if (new_version != 7) {
+  if (new_version != kCurrentCatalogVersion) {
     return FAILED;
   }
 
