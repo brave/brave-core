@@ -15,7 +15,7 @@ import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bun
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
 import {WebUIListenerBehavior} from 'chrome://resources/js/web_ui_listener_behavior.m.js';
 
-import {Router} from '../router.m.js';
+import {Router} from '../router.js';
 import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
 
 Polymer({
