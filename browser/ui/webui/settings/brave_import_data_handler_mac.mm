@@ -46,10 +46,10 @@ class FullDiskAccessConfirmDialogDelegate
 
  private:
   // TabModalConfirmDialogDelegate overrides:
-  base::string16 GetTitle() override;
-  base::string16 GetDialogMessage() override;
-  base::string16 GetLinkText() const override;
-  base::string16 GetAcceptButtonTitle() override;
+  std::u16string GetTitle() override;
+  std::u16string GetDialogMessage() override;
+  std::u16string GetLinkText() const override;
+  std::u16string GetAcceptButtonTitle() override;
   void OnAccepted() override;
   void OnLinkClicked(WindowOpenDisposition disposition) override;
 
@@ -65,19 +65,19 @@ FullDiskAccessConfirmDialogDelegate::FullDiskAccessConfirmDialogDelegate(
 FullDiskAccessConfirmDialogDelegate::
     ~FullDiskAccessConfirmDialogDelegate() = default;
 
-base::string16 FullDiskAccessConfirmDialogDelegate::GetTitle() {
+std::u16string FullDiskAccessConfirmDialogDelegate::GetTitle() {
   return l10n_util::GetStringUTF16(IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_TITLE);
 }
 
-base::string16 FullDiskAccessConfirmDialogDelegate::GetDialogMessage() {
+std::u16string FullDiskAccessConfirmDialogDelegate::GetDialogMessage() {
   return l10n_util::GetStringUTF16(IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_MESSAGE);
 }
 
-base::string16 FullDiskAccessConfirmDialogDelegate::GetLinkText() const {
+std::u16string FullDiskAccessConfirmDialogDelegate::GetLinkText() const {
   return l10n_util::GetStringUTF16(IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_LINK_TEXT);
 }
 
-base::string16 FullDiskAccessConfirmDialogDelegate::GetAcceptButtonTitle() {
+std::u16string FullDiskAccessConfirmDialogDelegate::GetAcceptButtonTitle() {
   return l10n_util::GetStringUTF16(
       IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_OPEN_PREFS_BUTTON_TEXT);
 }

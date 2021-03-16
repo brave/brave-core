@@ -13,7 +13,6 @@
 
 #include "base/macros.h"
 #include "base/synchronization/lock.h"
-#include "base/strings/string16.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -80,10 +79,10 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
       content::RenderFrameHost* render_frame_host) override;
   void OnJavaScriptBlockedWithDetail(
       content::RenderFrameHost* render_frame_host,
-      const base::string16& details);
+      const std::u16string& details);
   void OnFingerprintingBlockedWithDetail(
       content::RenderFrameHost* render_frame_host,
-      const base::string16& details);
+      const std::u16string& details);
 
   // TODO(iefremov): Refactor this away or at least put into base::NoDestructor.
   // Protects global maps below from being concurrently written on the UI thread

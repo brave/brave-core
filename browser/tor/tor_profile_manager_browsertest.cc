@@ -103,7 +103,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
 
   // Add a bookmark in parent profile.
-  const base::string16 title(base::ASCIIToUTF16("Test"));
+  const std::u16string title(u"Test");
   const GURL url1("https://www.test1.com");
   bookmarks::BookmarkModel* parent_bookmark_model =
       BookmarkModelFactory::GetForBrowserContext(parent_profile);

@@ -30,8 +30,7 @@ constexpr int kBookmarkBarTextContext = views::style::CONTEXT_BUTTON;
 
 // Horizontal padding, in pixels, between the link and label.
 int GetViewPadding() {
-  static int space_width =
-      views::Label(base::ASCIIToUTF16(" ")).GetPreferredSize().width();
+  static int space_width = views::Label(u" ").GetPreferredSize().width();
   return space_width;
 }
 

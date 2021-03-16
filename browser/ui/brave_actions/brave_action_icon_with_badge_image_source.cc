@@ -64,7 +64,7 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   ui::ResourceBundle* rb = &ui::ResourceBundle::GetSharedInstance();
   gfx::FontList base_font = rb->GetFontList(ui::ResourceBundle::BaseFont)
                                 .DeriveWithHeightUpperBound(kTextHeightTarget);
-  base::string16 utf16_text = base::UTF8ToUTF16(badge_->text);
+  std::u16string utf16_text = base::UTF8ToUTF16(badge_->text);
 
   // Calculate best font size to fit maximum Width and constant Height
   int text_height = 0;

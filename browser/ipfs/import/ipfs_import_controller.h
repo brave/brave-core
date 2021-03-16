@@ -71,8 +71,8 @@ class IpfsImportController : public ui::SelectFileDialog::Listener {
                           download::DownloadItem* download);
 
   void SaveWebPage(const base::FilePath& directory);
-  void PushNotification(const base::string16& title,
-                        const base::string16& body,
+  void PushNotification(const std::u16string& title,
+                        const std::u16string& body,
                         const GURL& link);
   GURL CreateAndCopyShareableLink(const ipfs::ImportedData& data);
   void OnImportCompleted(const ipfs::ImportedData& data);

@@ -58,7 +58,7 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
     : LabelButton(
           base::BindRepeating(&BraveRewardsActionStubView::ButtonPressed,
                               base::Unretained(this)),
-          base::string16()),
+          std::u16string()),
       profile_(profile),
       delegate_(delegate) {
   SetInkDropMode(InkDropMode::ON);

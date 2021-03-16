@@ -122,7 +122,7 @@ void AdNotificationView::CreateView() {
 }
 
 void AdNotificationView::MaybeNotifyAccessibilityEvent() {
-  const base::string16 accessible_name = ad_notification_.accessible_name();
+  const std::u16string accessible_name = ad_notification_.accessible_name();
   if (accessible_name == accessible_name_) {
     return;
   }

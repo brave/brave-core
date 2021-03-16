@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/memory/ref_counted.h"
-#include "base/strings/string16.h"
 #include "brave/browser/ui/brave_ads/ad_notification_delegate.h"
 
 namespace brave_ads {
@@ -21,8 +20,8 @@ class AdNotification {
   // |delegate| will influence the behaviour of this ad notification and
   // receives events on its behalf. The delegate may be omitted
   AdNotification(const std::string& id,
-                 const base::string16& title,
-                 const base::string16& body,
+                 const std::u16string& title,
+                 const std::u16string& body,
                  scoped_refptr<AdNotificationDelegate> delegate);
 
   // Creates a copy of the |other| ad notification. The delegate, if any, will
@@ -45,13 +44,13 @@ class AdNotification {
 
   const std::string& id() const { return id_; }
 
-  const base::string16& title() const { return title_; }
-  void set_title(const base::string16& title) { title_ = title; }
+  const std::u16string& title() const { return title_; }
+  void set_title(const std::u16string& title) { title_ = title; }
 
-  const base::string16& body() const { return body_; }
-  void set_body(const base::string16& body) { body_ = body; }
+  const std::u16string& body() const { return body_; }
+  void set_body(const std::u16string& body) { body_ = body; }
 
-  base::string16 accessible_name() const;
+  std::u16string accessible_name() const;
 
   AdNotificationDelegate* delegate() const { return delegate_.get(); }
 
@@ -63,8 +62,8 @@ class AdNotification {
  protected:
   std::string id_;
 
-  base::string16 title_;
-  base::string16 body_;
+  std::u16string title_;
+  std::u16string body_;
 
  private:
   // A proxy object that allows access back to the JavaScript object that
