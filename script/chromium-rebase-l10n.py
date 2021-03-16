@@ -50,6 +50,11 @@ def generate_overrides_and_replace_strings(source_string_path):
     parts = modified_xml_tree.xpath('//part')
     for part in parts:
         override_file = get_override_file_path(part.attrib['file'])
+        # Check for the special case of brave_stings.grd:
+        if (os.path.basename(source_string_path) == 'brave_strings.grd'
+                and override_file == 'settings_chromium_strings_override.grdp'):
+            override_file = 'settings_brave_strings_override.grdp'
+
         if os.path.exists(os.path.join(os.path.dirname(source_string_path), override_file)):
             part.attrib['file'] = override_file
         else:

@@ -87,7 +87,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
       <if expr="not is_android">
-        </if>
+        <part file="settings_brave_strings_override.grdp" />
+      </if>
 
       <if expr="is_win">
         </if>
