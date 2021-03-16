@@ -74,6 +74,37 @@ BraveReferralsService::ReferralInitializedCallback
 
 base::FilePath g_promo_file_path;
 
+void DeletePromoCodeFile(const base::FilePath& promo_code_file) {
+  if (!base::DeleteFile(promo_code_file)) {
+    LOG(ERROR) << "Failed to delete referral promo code file "
+               << promo_code_file.value().c_str();
+    return;
+  }
+}
+
+std::string ReadPromoCode(const base::FilePath& promo_code_file) {
+  std::string promo_code;
+
+  if (!base::PathExists(promo_code_file)) {
+    return kDefaultPromoCode;
+  }
+
+  if (!base::ReadFileToString(promo_code_file, &promo_code)) {
+    LOG(ERROR) << "Failed to read referral promo code from "
+               << promo_code_file.value().c_str();
+    return "";
+  }
+
+  base::TrimWhitespaceASCII(promo_code, base::TRIM_ALL, &promo_code);
+  if (promo_code.empty()) {
+    LOG(ERROR) << "Promo code file " << promo_code_file.value().c_str()
+               << " is empty";
+    return "";
+  }
+
+  return promo_code;
+}
+
 std::string BuildReferralEndpoint(const std::string& path) {
   std::unique_ptr<base::Environment> env(base::Environment::Create());
   std::string referral_server;
@@ -159,11 +190,10 @@ void BraveReferralsService::Start() {
       pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
   std::string download_id = pref_service_->GetString(kReferralDownloadID);
   if (!checked_for_promo_code_file && !has_initialized && download_id.empty())
-    task_runner_->PostTaskAndReply(
+    task_runner_->PostTaskAndReplyWithResult(
         FROM_HERE,
-        base::Bind(&BraveReferralsService::ReadPromoCode,
-                   base::Unretained(this)),
-        base::Bind(&BraveReferralsService::OnReadPromoCodeComplete,
+        base::BindOnce(&ReadPromoCode, GetPromoCodeFileName()),
+        base::BindOnce(&BraveReferralsService::OnReadPromoCodeComplete,
                    weak_factory_.GetWeakPtr()));
 
   initialized_ = true;
@@ -334,9 +364,8 @@ void BraveReferralsService::OnReferralInitLoadComplete(
 #endif
   }
 
-  task_runner_->PostTask(FROM_HERE,
-                         base::Bind(&BraveReferralsService::DeletePromoCodeFile,
-                                    base::Unretained(this)));
+  task_runner_->PostTask(
+      FROM_HERE, base::Bind(&DeletePromoCodeFile, GetPromoCodeFileName()));
 }
 
 void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
@@ -378,7 +407,9 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
   pref_service_->ClearPref(kReferralAttemptCount);
 }
 
-void BraveReferralsService::OnReadPromoCodeComplete() {
+void BraveReferralsService::OnReadPromoCodeComplete(
+    const std::string& promo_code) {
+  promo_code_ = promo_code;
   if (!promo_code_.empty() && !IsDefaultReferralCode(promo_code_)) {
     pref_service_->SetString(kReferralPromoCode, promo_code_);
     DCHECK(!initialization_timer_);
@@ -400,24 +431,26 @@ void BraveReferralsService::GetFirstRunTime() {
 #if defined(OS_ANDROID)
   // Android doesn't use a sentinel to track first run, so we use a
   // preference instead.
-  first_run_timestamp_ =
+  base::Time first_run_timestamp =
       pref_service_->GetTime(kReferralAndroidFirstRunTimestamp);
-  if (first_run_timestamp_.is_null()) {
-    first_run_timestamp_ = base::Time::Now();
+  if (first_run_timestamp.is_null()) {
+    first_run_timestamp = base::Time::Now();
     pref_service_->SetTime(kReferralAndroidFirstRunTimestamp,
-                           first_run_timestamp_);
+                           first_run_timestamp);
   }
-  PerformFinalizationChecks();
+  SetFirstRunTime(first_run_timestamp);
 #else
-  task_runner_->PostTask(
-      FROM_HERE, base::Bind(&BraveReferralsService::GetFirstRunTimeDesktop,
-                            base::Unretained(this)));
+  task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&first_run::GetFirstRunSentinelCreationTime),
+      base::BindOnce(&BraveReferralsService::SetFirstRunTime,
+                     weak_factory_.GetWeakPtr()));
 #endif
 }
 
-void BraveReferralsService::GetFirstRunTimeDesktop() {
+void BraveReferralsService::SetFirstRunTime(
+    const base::Time& first_run_timestamp) {
 #if !defined(OS_ANDROID)
-  first_run_timestamp_ = first_run::GetFirstRunSentinelCreationTime();
+  first_run_timestamp_ = first_run_timestamp;
   if (first_run_timestamp_.is_null())
     return;
 #endif
@@ -429,13 +462,14 @@ void BraveReferralsService::PerformFinalizationChecks() {
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&BraveReferralsService::MaybeDeletePromoCodePref,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 
   // Check for referral finalization, if appropriate.
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&BraveReferralsService::MaybeCheckForReferralFinalization,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
+}
 
 // static
 void BraveReferralsService::SetPromoFilePathForTesting(
@@ -450,34 +484,6 @@ base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   return user_data_dir.AppendASCII("promoCode");
-}
-
-void BraveReferralsService::ReadPromoCode() {
-  base::FilePath promo_code_file = GetPromoCodeFileName();
-  if (!base::PathExists(promo_code_file)) {
-    promo_code_ = kDefaultPromoCode;
-    return;
-  }
-  if (!base::ReadFileToString(promo_code_file, &promo_code_)) {
-    LOG(ERROR) << "Failed to read referral promo code from "
-               << promo_code_file.value().c_str();
-    return;
-  }
-  base::TrimWhitespaceASCII(promo_code_, base::TRIM_ALL, &promo_code_);
-  if (promo_code_.empty()) {
-    LOG(ERROR) << "Promo code file " << promo_code_file.value().c_str()
-               << " is empty";
-    return;
-  }
-}
-
-void BraveReferralsService::DeletePromoCodeFile() const {
-  base::FilePath promo_code_file = GetPromoCodeFileName();
-  if (!base::DeleteFile(promo_code_file)) {
-    LOG(ERROR) << "Failed to delete referral promo code file "
-               << promo_code_file.value().c_str();
-    return;
-  }
 }
 
 void BraveReferralsService::MaybeCheckForReferralFinalization() {

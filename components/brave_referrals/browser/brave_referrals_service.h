@@ -64,11 +64,9 @@ class BraveReferralsService : public ProfileManagerObserver {
   void OnProfileAdded(Profile* profile) override;
 
   void GetFirstRunTime();
-  void GetFirstRunTimeDesktop();
+  void SetFirstRunTime(const base::Time& first_run_timestamp);
   void PerformFinalizationChecks();
   base::FilePath GetPromoCodeFileName() const;
-  void ReadPromoCode();
-  void DeletePromoCodeFile() const;
   void MaybeCheckForReferralFinalization();
   void MaybeDeletePromoCodePref() const;
   void InitReferral();
@@ -101,7 +99,7 @@ class BraveReferralsService : public ProfileManagerObserver {
       std::unique_ptr<std::string> response_body);
 
   // Invoked after reading contents of promo code file.
-  void OnReadPromoCodeComplete();
+  void OnReadPromoCodeComplete(const std::string& promo_code);
 
 #if defined(OS_ANDROID)
   void GetSafetynetStatusResult(const bool token_received,
