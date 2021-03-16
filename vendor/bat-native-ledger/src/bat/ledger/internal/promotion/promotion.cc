@@ -210,7 +210,10 @@ void Promotion::OnGetAllPromotions(
     if (it != promotions.end()) {
       const auto status = it->second->status;
       promotions.erase(item->id);
-      if (status != type::PromotionStatus::ACTIVE) {
+      // Skip any promotions that are in the database and have been processed
+      // in some way.
+      if (status != type::PromotionStatus::ACTIVE &&
+          status != type::PromotionStatus::OVER) {
         continue;
       }
     }
@@ -241,7 +244,7 @@ void Promotion::OnGetAllPromotions(
   // but are not available on the server anymore
   for (const auto& promotion : promotions) {
     if (promotion.second->status != type::PromotionStatus::ACTIVE) {
-      break;
+      continue;
     }
 
     bool found =
