@@ -69,6 +69,16 @@ bool HandleIPFSURLRewrite(
         *url, url, GetDefaultIPFSLocalGateway(chrome::GetChannel()), false);
   }
 
+  if (url->DomainIs(kLocalhostIP)) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(kLocalhostDomain);
+    if (IsDefaultGatewayURL(url->ReplaceComponents(replacements),
+                            browser_context)) {
+      *url = url->ReplaceComponents(replacements);
+      return true;
+    }
+  }
+
   return false;
 }
 

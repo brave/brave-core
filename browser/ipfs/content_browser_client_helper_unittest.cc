@@ -42,6 +42,11 @@ const GURL& GetIPFSURI() {
   return ipfs_url;
 }
 
+const GURL& GetLocalhostIPGatewayURI() {
+  static const GURL ipfs_url("http://127.0.0.1:8080/ipfs/QmV4FVfWR");
+  return ipfs_url;
+}
+
 const GURL& GetIPNSURI() {
   static const GURL ipns_url(
       "ipns://tr.wikipedia-on-ipfs.org/wiki/Anasayfa.html");  // NOLINT
@@ -127,6 +132,30 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteAsk) {
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
   GURL ipfs_uri(GetIPFSURI());
   ASSERT_FALSE(HandleIPFSURLRewrite(&ipfs_uri, browser_context()));
+}
+
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteGatewayIP) {
+  profile()->GetPrefs()->SetString(kIPFSPublicGatewayAddress,
+                                   "http://127.0.0.1:8080/gateway");
+
+  const GURL& localhostGateway = GetLocalhostIPGatewayURI();
+  GURL ipfs_uri = localhostGateway;
+  ASSERT_TRUE(HandleIPFSURLRewrite(&ipfs_uri, browser_context()));
+  GURL::Replacements replacements;
+  replacements.SetHostStr(kLocalhostDomain);
+  EXPECT_EQ(ipfs_uri, localhostGateway.ReplaceComponents(replacements));
+}
+
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteGatewayIPSkip) {
+  profile()->GetPrefs()->SetString(kIPFSPublicGatewayAddress,
+                                   "http://dweb.link/gateway");
+
+  const GURL& localhostGateway = GetLocalhostIPGatewayURI();
+  GURL ipfs_uri = localhostGateway;
+  ASSERT_FALSE(HandleIPFSURLRewrite(&ipfs_uri, browser_context()));
+  GURL::Replacements replacements;
+  replacements.SetHostStr(kLocalhostDomain);
+  EXPECT_NE(ipfs_uri, localhostGateway.ReplaceComponents(replacements));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteGateway) {
