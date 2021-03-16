@@ -83,6 +83,7 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
 
   // network::mojom::URLLoaderClient implementation (called from the source of
   // the response):
+  void OnReceiveEarlyHints(network::mojom::EarlyHintsPtr early_hints) override;
   void OnReceiveResponse(
       network::mojom::URLResponseHeadPtr response_head) override;
   void OnReceiveRedirect(

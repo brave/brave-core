@@ -81,6 +81,9 @@ void SpeedReaderURLLoader::Start(
                                    task_runner_);
 }
 
+void SpeedReaderURLLoader::OnReceiveEarlyHints(
+    network::mojom::EarlyHintsPtr early_hints) {}
+
 void SpeedReaderURLLoader::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr response_head) {
   // OnReceiveResponse() shouldn't be called because SpeedReaderURLLoader is
