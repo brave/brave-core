@@ -336,14 +336,8 @@ source_set("browser_process") {
   }
 
   if (enable_brave_referrals) {
-    sources += [
-      "brave_referrals/brave_referrals_service_factory.cc",
-      "brave_referrals/brave_referrals_service_factory.h",
-    ]
     deps += [
       "//brave/components/brave_referrals/browser",
-      "//brave/components/brave_referrals/common",
-      "//brave/components/brave_stats/browser",
     ]
   }
 

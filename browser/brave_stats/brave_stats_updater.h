@@ -50,8 +50,10 @@ class BraveStatsUpdater : public ProfileManagerObserver {
 
   using StatsUpdatedCallback = base::RepeatingCallback<void(const GURL& url)>;
 
-  void SetStatsUpdatedCallback(StatsUpdatedCallback stats_updated_callback);
-  void SetStatsThresholdCallback(StatsUpdatedCallback stats_threshold_callback);
+  static void SetStatsUpdatedCallbackForTesting(
+      StatsUpdatedCallback stats_updated_callback);
+  static void SetStatsThresholdCallbackForTesting(
+      StatsUpdatedCallback stats_threshold_callback);
 
  private:
   // ProfileManagerObserver
@@ -102,10 +104,6 @@ class BraveStatsUpdater : public ProfileManagerObserver {
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdater);
 };
-
-// Creates the BraveStatsUpdater
-std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(
-    PrefService* pref_service);
 
 // Registers the preferences used by BraveStatsUpdater
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);

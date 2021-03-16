@@ -47,8 +47,10 @@ class BraveReferralsService : public ProfileManagerObserver {
   using ReferralInitializedCallback =
       base::RepeatingCallback<void(const std::string& download_id)>;
 
-  void SetReferralInitializedCallbackForTest(
-                  ReferralInitializedCallback referral_initialized_callback);
+  static void SetReferralInitializedCallbackForTesting(
+      ReferralInitializedCallback referral_initialized_callback);
+
+  static void SetPromoFilePathForTesting(const base::FilePath& path);
 
   static bool GetMatchingReferralHeaders(
       const base::ListValue& referral_headers_list,

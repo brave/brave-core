@@ -101,6 +101,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater();
 #endif
   brave::BraveP3AService* brave_p3a_service();
+  brave::BraveReferralsService* brave_referrals_service();
   brave_stats::BraveStatsUpdater* brave_stats_updater();
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service();

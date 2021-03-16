@@ -65,7 +65,14 @@ const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 // run.
 const char kDefaultPromoCode[] = "BRV001";
 
+namespace brave {
+
 namespace {
+
+BraveReferralsService::ReferralInitializedCallback
+    g_testing_referral_initialized_callback;
+
+base::FilePath g_promo_file_path;
 
 std::string BuildReferralEndpoint(const std::string& path) {
   std::unique_ptr<base::Environment> env(base::Environment::Create());
@@ -83,8 +90,6 @@ std::string BuildReferralEndpoint(const std::string& path) {
 }
 
 }  // namespace
-
-namespace brave {
 
 BraveReferralsService::BraveReferralsService(PrefService* pref_service,
                                              const std::string& api_key,
@@ -171,9 +176,10 @@ void BraveReferralsService::Stop() {
   initialized_ = false;
 }
 
-void BraveReferralsService::SetReferralInitializedCallbackForTest(
+// static
+void BraveReferralsService::SetReferralInitializedCallbackForTesting(
     ReferralInitializedCallback referral_initialized_callback) {
-  referral_initialized_callback_ = std::move(referral_initialized_callback);
+  g_testing_referral_initialized_callback = referral_initialized_callback;
 }
 // static
 bool BraveReferralsService::IsDefaultReferralCode(const std::string& code) {
@@ -305,8 +311,9 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   pref_service_->SetBoolean(kReferralInitialization, true);
   if (initialization_timer_)
     initialization_timer_.reset();
-  if (!referral_initialized_callback_.is_null())
-    referral_initialized_callback_.Run(download_id->GetString());
+  if (g_testing_referral_initialized_callback) {
+    g_testing_referral_initialized_callback.Run(download_id->GetString());
+  }
 
   const base::Value* offer_page_url = root.value->FindKey("offer_page_url");
   if (offer_page_url) {
@@ -383,8 +390,9 @@ void BraveReferralsService::OnReadPromoCodeComplete() {
     }
     // No referral code or it's the default, no point of reporting it.
     pref_service_->SetBoolean(kReferralInitialization, true);
-    if (!referral_initialized_callback_.is_null())
-      referral_initialized_callback_.Run(std::string());
+    if (g_testing_referral_initialized_callback) {
+      g_testing_referral_initialized_callback.Run(std::string());
+    }
   }
 }
 
@@ -428,9 +436,17 @@ void BraveReferralsService::PerformFinalizationChecks() {
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&BraveReferralsService::MaybeCheckForReferralFinalization,
                      base::Unretained(this)));
+
+// static
+void BraveReferralsService::SetPromoFilePathForTesting(
+    const base::FilePath& path) {
+  g_promo_file_path = path;
 }
 
 base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
+  if (!g_promo_file_path.empty())
+    return g_promo_file_path;
+
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   return user_data_dir.AppendASCII("promoCode");
