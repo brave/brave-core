@@ -1,19 +1,16 @@
 use crate::dom;
+use html5ever::serialize;
 use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
-use html5ever::{parse_document, serialize};
 use html5ever::{LocalName, QualName};
 use markup5ever_rcdom::RcDom;
 use markup5ever_rcdom::SerializableHandle;
-use scorer;
-use scorer::{Candidate, Title, TopCandidate};
-use std::cell::Cell;
+use scorer::{self, Candidate, Title, TopCandidate};
 use std::collections::BTreeMap;
 use std::collections::HashMap;
 use std::default::Default;
-use std::io::Read;
 use std::path::Path;
 use std::rc::Rc;
 use std::str::FromStr;
@@ -26,44 +23,6 @@ const NUM_TOP_CANDIDATES: usize = 5;
 pub struct Product {
     pub title: String,
     pub content: String,
-}
-
-pub fn extract<R>(input: &mut R, website: Option<&str>) -> Result<Product, std::io::Error>
-where
-    R: Read,
-{
-    let url: Url;
-    if let Some(website) = website {
-        url = Url::parse(website).unwrap();
-    } else {
-        url = Url::parse("https://example.com").unwrap();
-    }
-    let mut dom = parse_document(RcDom::default(), Default::default())
-        .from_utf8()
-        .read_from(input)?;
-
-    extract_dom(&mut dom, &url, &HashMap::new())
-}
-
-pub fn preprocess<R>(input: &mut R) -> Result<Product, std::io::Error>
-where
-    R: Read,
-{
-    let mut dom = parse_document(RcDom::default(), Default::default())
-        .from_utf8()
-        .read_from(input)?;
-
-    let mut title = Title::default();
-    let handle = dom.document.clone();
-    scorer::preprocess(&mut dom, handle, &mut title);
-    let mut bytes = vec![];
-    let document: SerializableHandle = dom.document.clone().into();
-    serialize(&mut bytes, &document, serialize::SerializeOpts::default())?;
-    let content = String::from_utf8(bytes).unwrap_or_default();
-    Ok(Product {
-        title: title.title,
-        content,
-    })
 }
 
 pub fn extract_dom<S: ::std::hash::BuildHasher>(
@@ -139,9 +98,14 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     }
 
     {
-        let top = scorer::find_or_create_candidate(Path::new(id.as_str()), &mut candidates, &nodes)
-            .unwrap();
-        top_candidate = top.node.clone();
+        let top = scorer::find_or_create_candidate(Path::new(id.as_str()), &mut candidates, &nodes);
+        if top.is_none() {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "No candidates found.",
+            ));
+        }
+        top_candidate = top.unwrap().node.clone();
     }
 
     scorer::clean(
@@ -190,8 +154,10 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use html5ever::parse_document;
     use markup5ever_rcdom::Node;
     use std::io::Cursor;
+    use std::io::Read;
 
     fn normalize_output(input: &str) -> String {
         return input
@@ -199,6 +165,44 @@ mod tests {
             .map(|line| line.trim())
             .filter(|line| !line.is_empty())
             .collect();
+    }
+
+    fn extract<R>(input: &mut R, website: Option<&str>) -> Result<Product, std::io::Error>
+    where
+        R: Read,
+    {
+        let url: Url;
+        if let Some(website) = website {
+            url = Url::parse(website).unwrap();
+        } else {
+            url = Url::parse("https://example.com").unwrap();
+        }
+        let mut dom = parse_document(RcDom::default(), Default::default())
+            .from_utf8()
+            .read_from(input)?;
+
+        extract_dom(&mut dom, &url, &HashMap::new())
+    }
+
+    fn preprocess<R>(input: &mut R) -> Result<Product, std::io::Error>
+    where
+        R: Read,
+    {
+        let mut dom = parse_document(RcDom::default(), Default::default())
+            .from_utf8()
+            .read_from(input)?;
+
+        let mut title = Title::default();
+        let handle = dom.document.clone();
+        scorer::preprocess(&mut dom, handle, &mut title);
+        let mut bytes = vec![];
+        let document: SerializableHandle = dom.document.clone().into();
+        serialize(&mut bytes, &document, serialize::SerializeOpts::default())?;
+        let content = String::from_utf8(bytes).unwrap_or_default();
+        Ok(Product {
+            title: title.title,
+            content,
+        })
     }
 
     #[test]
@@ -337,68 +341,5 @@ mod tests {
             normalize_output(expected),
             normalize_output(&product.content)
         );
-    }
-
-    fn make_test_candidate(
-        mut dom: &mut RcDom,
-        path: &str,
-        tag: &str,
-        score: f32,
-        nodes: &mut BTreeMap<String, Rc<Node>>,
-        top_candidates: &mut Vec<TopCandidate>,
-    ) {
-        let e0 = dom::simple_create_element(&mut dom, tag);
-        nodes.insert(path.to_string(), e0.clone());
-        let c = Candidate::new(e0, score);
-        top_candidates.push(TopCandidate {
-            id: path.to_string(),
-            candidate: c.clone(),
-        });
-    }
-
-    #[test]
-    fn alternative_candidates() {
-        let mut dom = RcDom::default();
-        let mut nodes = BTreeMap::new();
-        let mut top_candidates: Vec<TopCandidate> = vec![];
-
-        // First candidate. In the algorithm, this is the one with the higest score
-        make_test_candidate(
-            &mut dom,
-            "/1/1/0/1",
-            "div",
-            57.1,
-            &mut nodes,
-            &mut top_candidates,
-        );
-
-        // Remaining alternative candidates with scores close to the top scorer.
-        make_test_candidate(
-            &mut dom,
-            "/1/1/0",
-            "h1",
-            55.5,
-            &mut nodes,
-            &mut top_candidates,
-        );
-        make_test_candidate(
-            &mut dom,
-            "/1/1/0/2/0",
-            "div",
-            53.3,
-            &mut nodes,
-            &mut top_candidates,
-        );
-        make_test_candidate(
-            &mut dom,
-            "/1/1/0/3",
-            "div",
-            50.0,
-            &mut nodes,
-            &mut top_candidates,
-        );
-
-        let id = scorer::search_alternative_candidates(&top_candidates, &nodes).unwrap();
-        assert_eq!("/1/1/0", id.to_str().unwrap());
     }
 }

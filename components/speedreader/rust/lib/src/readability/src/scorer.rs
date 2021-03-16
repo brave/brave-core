@@ -462,16 +462,16 @@ pub fn find_or_create_candidate<'a>(
     None
 }
 
-// This function expects an array of top candidates to be considered for
-// the new root of the DOM. It is assumed that the first element is the
-// candidate with the highest score.
+/// This function expects an array of top candidates to be considered for
+/// the new root of the DOM. It is assumed that the first element is the
+/// candidate with the highest score.
 pub fn search_alternative_candidates<'a>(
     top_candidates: &'a Vec<TopCandidate>,
     nodes: &BTreeMap<String, Rc<Node>>,
 ) -> Option<&'a str> {
     const MIN_CANDIDATES: usize = 3;
 
-    assert!(top_candidates.len() > 0);
+    debug_assert!(top_candidates.len() > 0);
     let top = &top_candidates[0];
     if top_candidates.len() < MIN_CANDIDATES
         || Some(&local_name!("body")) == dom::get_tag_name(&top.candidate.node)
