@@ -315,6 +315,7 @@ source_set("ads") {
     "src/bat/ads/internal/catalog/catalog_type_info.h",
     "src/bat/ads/internal/catalog/catalog_util.cc",
     "src/bat/ads/internal/catalog/catalog_util.h",
+    "src/bat/ads/internal/catalog/catalog_version.h",
     "src/bat/ads/internal/client/client.cc",
     "src/bat/ads/internal/client/client.h",
     "src/bat/ads/internal/client/client_info.cc",
