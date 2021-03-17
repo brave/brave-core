@@ -36,6 +36,10 @@ bool BrowserManager::HasInstance() {
   return g_browser_manager;
 }
 
+void BrowserManager::SetActive(const bool is_active) {
+  is_active_ = is_active;
+}
+
 bool BrowserManager::IsActive() const {
   return is_active_ && IsForegrounded();
 }
@@ -64,6 +68,10 @@ void BrowserManager::OnInactive() {
 
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kBrowserWindowIsInactive);
+}
+
+void BrowserManager::SetForegrounded(const bool is_foregrounded) {
+  is_foregrounded_ = is_foregrounded;
 }
 
 bool BrowserManager::IsForegrounded() const {

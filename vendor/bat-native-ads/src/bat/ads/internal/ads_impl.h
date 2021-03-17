@@ -220,6 +220,7 @@ class AdsImpl : public Ads,
 
   void set(privacy::TokenGeneratorInterface* token_generator);
 
+  void InitializeBrowserManager();
   void InitializeDatabase(InitializeCallback callback);
   void MigrateConversions(InitializeCallback callback);
   void LoadClientState(InitializeCallback callback);

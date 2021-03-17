@@ -32,10 +32,11 @@ TEST_F(BatAdsBrowserManagerTest, HasInstance) {
 
 TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActive) {
   // Arrange
+  BrowserManager::Get()->SetForegrounded(true);
+  BrowserManager::Get()->SetActive(false);
 
   // Act
   BrowserManager::Get()->OnActive();
-  BrowserManager::Get()->OnForegrounded();
 
   // Assert
   EXPECT_TRUE(BrowserManager::Get()->IsActive());
@@ -43,10 +44,10 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActive) {
 
 TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActiveUserActivityEvent) {
   // Arrange
+  BrowserManager::Get()->SetActive(false);
 
   // Act
   BrowserManager::Get()->OnActive();
-  BrowserManager::Get()->OnForegrounded();
 
   // Assert
   const UserActivityEvents events =
@@ -56,9 +57,6 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActiveUserActivityEvent) {
   UserActivityEvents expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsActive;
-  event.time = base::Time::Now();
-  expected_events.push_back(event);
-  event.type = UserActivityEventType::kBrowserDidBecomeActive;
   event.time = base::Time::Now();
   expected_events.push_back(event);
 
@@ -67,10 +65,10 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActiveUserActivityEvent) {
 
 TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactive) {
   // Arrange
+  BrowserManager::Get()->SetActive(true);
 
   // Act
   BrowserManager::Get()->OnInactive();
-  BrowserManager::Get()->OnForegrounded();
 
   // Assert
   EXPECT_FALSE(BrowserManager::Get()->IsActive());
@@ -78,11 +76,10 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactive) {
 
 TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactiveUserActivityEvent) {
   // Arrange
-  BrowserManager::Get()->OnActive();
+  BrowserManager::Get()->SetActive(true);
 
   // Act
   BrowserManager::Get()->OnInactive();
-  BrowserManager::Get()->OnForegrounded();
 
   // Assert
   const UserActivityEvents events =
@@ -91,13 +88,7 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactiveUserActivityEvent) {
 
   UserActivityEvents expected_events;
   UserActivityEventInfo event;
-  event.type = UserActivityEventType::kBrowserWindowIsActive;
-  event.time = base::Time::Now();
-  expected_events.push_back(event);
   event.type = UserActivityEventType::kBrowserWindowIsInactive;
-  event.time = base::Time::Now();
-  expected_events.push_back(event);
-  event.type = UserActivityEventType::kBrowserDidBecomeActive;
   event.time = base::Time::Now();
   expected_events.push_back(event);
 
@@ -116,10 +107,10 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActive) {
 
 TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActiveUserActivityEvent) {
   // Arrange
+  BrowserManager::Get()->SetActive(false);
 
   // Act
   BrowserManager::Get()->OnActive();
-  BrowserManager::Get()->OnForegrounded();
 
   // Assert
   const UserActivityEvents events =
@@ -131,15 +122,13 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActiveUserActivityEvent) {
   event.type = UserActivityEventType::kBrowserWindowIsActive;
   event.time = base::Time::Now();
   expected_events.push_back(event);
-  event.type = UserActivityEventType::kBrowserDidBecomeActive;
-  event.time = base::Time::Now();
-  expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
 }
 
 TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackground) {
   // Arrange
+  BrowserManager::Get()->SetForegrounded(true);
 
   // Act
   BrowserManager::Get()->OnBackgrounded();
@@ -150,10 +139,9 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackground) {
 
 TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackgroundUserActivityEvent) {
   // Arrange
-  BrowserManager::Get()->OnForegrounded();
+  BrowserManager::Get()->SetForegrounded(true);
 
   // Act
-  BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnBackgrounded();
 
   // Assert
@@ -163,12 +151,6 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackgroundUserActivityEvent) {
 
   UserActivityEvents expected_events;
   UserActivityEventInfo event;
-  event.type = UserActivityEventType::kBrowserDidBecomeActive;
-  event.time = base::Time::Now();
-  expected_events.push_back(event);
-  event.type = UserActivityEventType::kBrowserWindowIsActive;
-  event.time = base::Time::Now();
-  expected_events.push_back(event);
   event.type = UserActivityEventType::kBrowserDidEnterBackground;
   event.time = base::Time::Now();
   expected_events.push_back(event);

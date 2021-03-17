@@ -21,10 +21,12 @@ class BrowserManager {
 
   static bool HasInstance();
 
+  void SetActive(const bool is_active);
   bool IsActive() const;
   void OnActive();
   void OnInactive();
 
+  void SetForegrounded(const bool is_foregrounded);
   bool IsForegrounded() const;
   void OnForegrounded();
   void OnBackgrounded();
