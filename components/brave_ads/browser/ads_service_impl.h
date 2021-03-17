@@ -315,6 +315,8 @@ class AdsServiceImpl : public AdsService,
 
   bool IsForeground() const override;
 
+  bool IsFullScreen() const override;
+
   bool ShouldShowNotifications() override;
 
   bool CanShowBackgroundNotifications() const override;

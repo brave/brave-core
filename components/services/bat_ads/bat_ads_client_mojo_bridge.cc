@@ -62,6 +62,16 @@ bool BatAdsClientMojoBridge::IsForeground() const {
   return is_foreground;
 }
 
+bool BatAdsClientMojoBridge::IsFullScreen() const {
+  if (!connected()) {
+    return false;
+  }
+
+  bool is_full_screen;
+  bat_ads_client_->IsFullScreen(&is_full_screen);
+  return is_full_screen;
+}
+
 void BatAdsClientMojoBridge::ShowNotification(
     const ads::AdNotificationInfo& ad_notification) {
   if (!connected()) {

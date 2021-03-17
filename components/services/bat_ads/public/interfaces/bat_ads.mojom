@@ -23,6 +23,8 @@ interface BatAdsClient {
   [Sync]
   IsForeground() => (bool is_foreground);
   [Sync]
+  IsFullScreen() => (bool is_full_screen);
+  [Sync]
   ShouldShowNotifications() => (bool should_show);
   [Sync]
   CanShowBackgroundNotifications() => (bool can_show);

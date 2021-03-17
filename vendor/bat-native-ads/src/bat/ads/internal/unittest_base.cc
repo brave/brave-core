@@ -120,6 +120,8 @@ void UnitTestBase::Initialize() {
 
   MockIsForeground(ads_client_mock_, true);
 
+  MockIsFullScreen(ads_client_mock_, false);
+
   MockShouldShowNotifications(ads_client_mock_, true);
   MockShowNotification(ads_client_mock_);
   MockCloseNotification(ads_client_mock_);

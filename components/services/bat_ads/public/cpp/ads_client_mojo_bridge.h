@@ -35,6 +35,8 @@ class AdsClientMojoBridge
       bool* out_is_foreground) override;
   void IsForeground(
       IsForegroundCallback callback) override;
+  bool IsFullScreen(bool* out_is_full_screen) override;
+  void IsFullScreen(IsFullScreenCallback callback) override;
   bool IsNetworkConnectionAvailable(
       bool* out_available) override;
   void IsNetworkConnectionAvailable(

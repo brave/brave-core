@@ -23,6 +23,10 @@ bool NativeAdsClient::IsForeground() const {
   return [bridge_ isForeground];
 }
 
+bool NativeAdsClient::IsFullScreen() const {
+  return [bridge_ isFullScreen];
+}
+
 bool NativeAdsClient::CanShowBackgroundNotifications() const {
     return [bridge_ canShowBackgroundNotifications];
 }

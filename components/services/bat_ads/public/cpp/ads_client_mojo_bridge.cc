@@ -41,6 +41,16 @@ void AdsClientMojoBridge::IsForeground(
   std::move(callback).Run(ads_client_->IsForeground());
 }
 
+bool AdsClientMojoBridge::IsFullScreen(bool* out_is_full_screen) {
+  DCHECK(out_is_full_screen);
+  *out_is_full_screen = ads_client_->IsFullScreen();
+  return true;
+}
+
+void AdsClientMojoBridge::IsFullScreen(IsFullScreenCallback callback) {
+  std::move(callback).Run(ads_client_->IsFullScreen());
+}
+
 bool AdsClientMojoBridge::CanShowBackgroundNotifications(
     bool* out_can_show) {
   DCHECK(out_can_show);

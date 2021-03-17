@@ -105,6 +105,9 @@ void MockIsNetworkConnectionAvailable(
 void MockIsForeground(const std::unique_ptr<AdsClientMock>& mock,
                       const bool is_foreground);
 
+void MockIsFullScreen(const std::unique_ptr<AdsClientMock>& mock,
+                      const bool is_full_screen);
+
 void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
                                  const bool should_show);
 

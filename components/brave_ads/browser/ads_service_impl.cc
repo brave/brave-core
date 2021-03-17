@@ -60,6 +60,7 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/fullscreen.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -1718,6 +1719,10 @@ bool AdsServiceImpl::IsNetworkConnectionAvailable() const {
 
 bool AdsServiceImpl::IsForeground() const {
   return BackgroundHelper::GetInstance()->IsForeground();
+}
+
+bool AdsServiceImpl::IsFullScreen() const {
+  return IsFullScreenMode();
 }
 
 std::string AdsServiceImpl::GetLocale() const {

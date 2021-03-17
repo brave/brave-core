@@ -37,6 +37,9 @@ class ADS_EXPORT AdsClient {
   // false
   virtual bool IsForeground() const = 0;
 
+  // Return true if the browser is full screen otherwise return false
+  virtual bool IsFullScreen() const = 0;
+
   // Return true if notifications should be displayed otherwise return false
   virtual bool ShouldShowNotifications() = 0;
 
