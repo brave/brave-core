@@ -8,7 +8,7 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_referrals/brave_referrals_service_factory.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/switches.h"
@@ -52,12 +52,20 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequestForStats(
 
 class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
  public:
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-    brave_stats::RegisterLocalStatePrefs(testing_local_state_.registry());
-    brave::RegisterPrefsForBraveReferralsService(
-        testing_local_state_.registry());
-    SetBaseUpdateURLForTest();
+  void SetUp() override {
+    brave::BraveReferralsService::SetReferralInitializedCallbackForTesting(
+        base::BindRepeating(
+            &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
+            base::Unretained(this)));
+    brave_stats::BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(
+        base::BindRepeating(
+            &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
+            base::Unretained(this)));
+    brave_stats::BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
+        base::BindRepeating(
+            &BraveStatsUpdaterBrowserTest::OnThresholdStatsUpdated,
+            base::Unretained(this)));
+    InProcessBrowserTest::SetUp();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -67,6 +75,7 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
     command_line->AppendSwitchASCII(
         brave_stats::switches::kBraveStatsUpdaterServer,
         embedded_test_server()->base_url().spec());
+    SetBaseUpdateURLForTest();
   }
 
   void SetBaseUpdateURLForTest() {
@@ -76,187 +85,117 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
     env->SetVar("BRAVE_REFERRALS_LOCAL", "1");  // use http for local testing
   }
 
-  PrefService* GetLocalState() { return &testing_local_state_; }
-
   std::string GetUpdateURL() const { return update_url_; }
 
-  int WritePromoCodeFile(const std::string& referral_code) {
-    base::ScopedAllowBlockingForTesting allow_blocking;
+  void OnReferralInitialized(const std::string& referral_code) {
+    if (wait_for_referral_initialized_loop_) {
+      wait_for_referral_initialized_loop_->Quit();
+    }
 
-    base::FilePath user_data_dir;
-    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-
-    const base::FilePath promo_code_file =
-        user_data_dir.AppendASCII("promoCode");
-    return base::WriteFile(promo_code_file, referral_code.c_str(),
-                           referral_code.size());
-  }
-
-  void OnReferralInitialized(const std::string& download_id) {
-    referral_was_initialized_ = true;
-    // TODO(keur): Maybe do something with the download id
-    wait_for_callback_loop_->Quit();
+    on_referral_initialized_ = true;
+    referral_code_ = referral_code;
   }
 
   void WaitForReferralInitializeCallback() {
-    if (referral_was_initialized_)
+    if (wait_for_referral_initialized_loop_ || on_referral_initialized_) {
       return;
-    wait_for_callback_loop_.reset(new base::RunLoop);
-    wait_for_callback_loop_->Run();
+    }
+
+    wait_for_referral_initialized_loop_.reset(new base::RunLoop);
+    wait_for_referral_initialized_loop_->Run();
   }
 
   void OnStandardStatsUpdated(const GURL& update_url) {
-    stats_standard_endpoint_was_called_ = true;
+    if (wait_for_standard_stats_updated_loop_) {
+      wait_for_standard_stats_updated_loop_->Quit();
+    }
+
+    on_standard_stats_updated_ = true;
+
     // We get //1/usage/brave-core here, so ignore the first slash.
     EXPECT_STREQ(update_url.path().c_str() + 1, "/1/usage/brave-core");
     update_url_ = update_url.spec();
-    wait_for_callback_loop_->Quit();
   }
 
   void WaitForStandardStatsUpdatedCallback() {
-    if (stats_standard_endpoint_was_called_)
+    if (wait_for_standard_stats_updated_loop_ || on_standard_stats_updated_) {
       return;
-    wait_for_callback_loop_.reset(new base::RunLoop);
-    wait_for_callback_loop_->Run();
+    }
+
+    wait_for_standard_stats_updated_loop_.reset(new base::RunLoop);
+    wait_for_standard_stats_updated_loop_->Run();
   }
 
   void OnThresholdStatsUpdated(const GURL& update_url) {
-    stats_threshold_endpoint_was_called_ = true;
+    if (wait_for_threshold_stats_updated_loop_) {
+      wait_for_threshold_stats_updated_loop_->Quit();
+    }
+
+    on_threshold_stats_updated_ = true;
+
     // We get //1/usage/brave-core-threshold here, so ignore the first slash.
     EXPECT_STREQ(update_url.path().c_str() + 1,
                  "/1/usage/brave-core-threshold");
     update_url_ = update_url.spec();
-    wait_for_callback_loop_->Quit();
   }
 
   void WaitForThresholdStatsUpdatedCallback() {
-    if (stats_threshold_endpoint_was_called_)
+    if (wait_for_threshold_stats_updated_loop_ || on_threshold_stats_updated_) {
       return;
-    wait_for_callback_loop_.reset(new base::RunLoop);
-    wait_for_callback_loop_->Run();
-  }
+    }
 
-  bool StandardStatsEndpointWasCalled() {
-    return stats_standard_endpoint_was_called_;
+    wait_for_threshold_stats_updated_loop_.reset(new base::RunLoop);
+    wait_for_threshold_stats_updated_loop_->Run();
   }
 
  private:
-  TestingPrefServiceSimple testing_local_state_;
-  std::unique_ptr<base::RunLoop> wait_for_callback_loop_;
-  bool stats_standard_endpoint_was_called_ = false;
-  bool stats_threshold_endpoint_was_called_ = false;
-  bool referral_was_initialized_ = false;
+  std::unique_ptr<base::RunLoop> wait_for_referral_initialized_loop_;
+  std::unique_ptr<base::RunLoop> wait_for_standard_stats_updated_loop_;
+  std::unique_ptr<base::RunLoop> wait_for_threshold_stats_updated_loop_;
+
+  std::string referral_code_;
   std::string update_url_;
+
+  bool on_referral_initialized_ = false;
+  bool on_standard_stats_updated_ = false;
+  bool on_threshold_stats_updated_ = false;
 };
 
 // Run the stats updater and verify that it sets the first check preference
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        StatsUpdaterSetsFirstCheckPreference) {
-  // Ensure that first check preference is false
-  ASSERT_FALSE(GetLocalState()->GetBoolean(kFirstCheckMade));
-
-  // Start the referrals service, since the stats updater's startup
-  // ping only occurs after the referrals service checks for the promo
-  // code file
-  auto referrals_service =
-      brave::BraveReferralsServiceFactory::GetInstance()->GetForPrefs(
-          GetLocalState());
-  referrals_service->SetReferralInitializedCallbackForTest(
-      base::BindRepeating(&BraveStatsUpdaterBrowserTest::OnReferralInitialized,
-                          base::Unretained(this)));
-  referrals_service->Start();
   WaitForReferralInitializeCallback();
-
-  // Start the stats updater, wait for it to perform its startup ping,
-  // and then shut it down
-  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
-  stats_updater.SetStatsUpdatedCallback(
-      base::BindRepeating(&BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
-                          base::Unretained(this)));
-  stats_updater.Start();
   WaitForStandardStatsUpdatedCallback();
-  // Normal usage ping is _always_ sent before the threshold ping.
-  EXPECT_TRUE(StandardStatsEndpointWasCalled());
-  stats_updater.Stop();
-
-  // Stop the referrals service
-  referrals_service->Stop();
 
   // First check preference should now be true
-  EXPECT_TRUE(GetLocalState()->GetBoolean(kFirstCheckMade));
+  EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
 }
 
 // Run the stats updater and verify the threshold endpoint is reached
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        StatsUpdaterThresholdSetsFirstCheckPreference) {
-  // Ensure that first check preference is false
-  ASSERT_FALSE(GetLocalState()->GetBoolean(kFirstCheckMade));
+  EXPECT_TRUE(
+      g_brave_browser_process->brave_stats_updater()->MaybeDoThresholdPing(3));
 
-  // Start the referrals service, since the stats updater's startup
-  // ping only occurs after the referrals service checks for the promo
-  // code file
-  auto referrals_service =
-      brave::BraveReferralsServiceFactory::GetInstance()->GetForPrefs(
-          GetLocalState());
-  referrals_service->SetReferralInitializedCallbackForTest(
-      base::BindRepeating(&BraveStatsUpdaterBrowserTest::OnReferralInitialized,
-                          base::Unretained(this)));
-  referrals_service->Start();
   WaitForReferralInitializeCallback();
-
-  // Start the stats updater, wait for it to perform its startup ping,
-  // and then shut it down
-  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
-  stats_updater.SetStatsThresholdCallback(base::BindRepeating(
-      &BraveStatsUpdaterBrowserTest::OnThresholdStatsUpdated,
-      base::Unretained(this)));
-  stats_updater.Start();
-  EXPECT_TRUE(stats_updater.MaybeDoThresholdPing(3));
   WaitForThresholdStatsUpdatedCallback();
-  stats_updater.Stop();
-
-  // Stop the referrals service
-  referrals_service->Stop();
 
   // First check and Threshold check should be set.
-  EXPECT_TRUE(GetLocalState()->GetBoolean(kFirstCheckMade));
-  EXPECT_TRUE(GetLocalState()->GetBoolean(kThresholdCheckMade));
+  EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
+  EXPECT_TRUE(
+      g_browser_process->local_state()->GetBoolean(kThresholdCheckMade));
 }
 
 // Run the stats updater with no active referral and verify that the
 // update url specifies the default referral code
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        StatsUpdaterStartupPingWithDefaultReferralCode) {
-  // Ensure that checked for promo code file preference is false
-  ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralInitialization));
-
-  // Start the referrals service, since the stats updater's startup
-  // ping only occurs after the referrals service checks for the promo
-  // code file
-  auto referrals_service =
-      brave::BraveReferralsServiceFactory::GetInstance()->GetForPrefs(
-          GetLocalState());
-  referrals_service->SetReferralInitializedCallbackForTest(
-      base::BindRepeating(&BraveStatsUpdaterBrowserTest::OnReferralInitialized,
-                          base::Unretained(this)));
-  referrals_service->Start();
   WaitForReferralInitializeCallback();
-
-  // Start the stats updater, wait for it to perform its startup ping,
-  // and then shut it down
-  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
-  stats_updater.SetStatsUpdatedCallback(
-      base::BindRepeating(&BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
-                          base::Unretained(this)));
-  stats_updater.Start();
   WaitForStandardStatsUpdatedCallback();
-  stats_updater.Stop();
-
-  // Stop the referrals service
-  referrals_service->Stop();
 
   // Promo code file preference should now be true
-  EXPECT_TRUE(GetLocalState()->GetBoolean(kReferralInitialization));
+  EXPECT_TRUE(
+      g_browser_process->local_state()->GetBoolean(kReferralInitialization));
 
   // Verify that update url is valid
   const GURL update_url(GetUpdateURL());
@@ -272,41 +211,19 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   EXPECT_STREQ(query_value.c_str(), "BRV001");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterMigration) {
+// TODO - convert to a unit test
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
+                       DISABLED_StatsUpdaterMigration) {
   // Create a pre 1.19 user.
   // Has a download_id, kReferralCheckedForPromoCodeFile is set, has promo code.
-  ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralInitialization));
-  GetLocalState()->SetString(kReferralDownloadID, "migration");
-  GetLocalState()->SetString(kReferralPromoCode, "BRV001");
-  GetLocalState()->SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  ASSERT_FALSE(
+      g_browser_process->local_state()->GetBoolean(kReferralInitialization));
+  g_browser_process->local_state()->SetString(kReferralDownloadID, "migration");
+  g_browser_process->local_state()->SetString(kReferralPromoCode, "BRV001");
+  g_browser_process->local_state()->SetBoolean(kReferralCheckedForPromoCodeFile,
+                                               true);
 
-  // Start the referrals service, since the stats updater's startup
-  // ping only occurs after the referrals service checks for the promo
-  // code file
-  auto referrals_service =
-      brave::BraveReferralsServiceFactory::GetInstance()->GetForPrefs(
-          GetLocalState());
-  referrals_service->SetReferralInitializedCallbackForTest(
-      base::BindRepeating(&BraveStatsUpdaterBrowserTest::OnReferralInitialized,
-                          base::Unretained(this)));
-  referrals_service->Start();
-  // NOTE: Don't call WaitForReferralInitializeCallback(); since a user
-  // migrating from an earlier version is aleady initialized, and that will
-  // never trigger.
-
-  // Start the stats updater, wait for it to perform its startup ping,
-  // and then shut it down
-  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
-  stats_updater.SetStatsUpdatedCallback(
-      base::BindRepeating(&BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
-                          base::Unretained(this)));
-  stats_updater.Start();
   WaitForStandardStatsUpdatedCallback();
-  stats_updater.Stop();
-
-  // Stop the referrals service
-  referrals_service->Stop();
-
   // Verify that update url is valid
   const GURL update_url(GetUpdateURL());
   EXPECT_TRUE(update_url.is_valid());
@@ -320,46 +237,42 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterMigration) {
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
   EXPECT_STREQ(query_value.c_str(), "BRV001");
 }
+
+class BraveStatsUpdaterReferralCodeBrowserTest
+    : public BraveStatsUpdaterBrowserTest {
+ public:
+  void SetUp() override {
+    ASSERT_TRUE(dir.CreateUniqueTempDir());
+    const base::FilePath promo_code_file =
+        dir.GetPath().AppendASCII("promoCode");
+    WritePromoCodeFile(promo_code_file, referral_code());
+    brave::BraveReferralsService::SetPromoFilePathForTesting(promo_code_file);
+    BraveStatsUpdaterBrowserTest::SetUp();
+  }
+
+  int WritePromoCodeFile(const base::FilePath& promo_code_file,
+                         const std::string& referral_code) {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    return base::WriteFile(promo_code_file, referral_code.c_str(),
+                           referral_code.size());
+  }
+
+  const std::string referral_code() { return "FOO123"; }
+
+ private:
+  base::ScopedTempDir dir;
+};
 
 // Run the stats updater with an active referral and verify that the
 // update url includes the referral code
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterReferralCodeBrowserTest,
                        StatsUpdaterStartupPingWithReferralCode) {
-  // Ensure that checked for promo code file preference is false
-  ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralInitialization));
-
-  // Write the promo code file out to the user data directory
-  const std::string referral_code = "FOO123";
-  ASSERT_EQ(WritePromoCodeFile(referral_code),
-            base::checked_cast<int>(referral_code.size()));
-
-  // Start the referrals service, since the stats updater's startup
-  // ping only occurs after the referrals service checks for the promo
-  // code file
-  auto referrals_service =
-      brave::BraveReferralsServiceFactory::GetInstance()->GetForPrefs(
-          GetLocalState());
-  referrals_service->SetReferralInitializedCallbackForTest(
-      base::BindRepeating(&BraveStatsUpdaterBrowserTest::OnReferralInitialized,
-                          base::Unretained(this)));
-  referrals_service->Start();
   WaitForReferralInitializeCallback();
-
-  // Start the stats updater, wait for it to perform its startup ping,
-  // and then shut it down
-  brave_stats::BraveStatsUpdater stats_updater(GetLocalState());
-  stats_updater.SetStatsUpdatedCallback(
-      base::BindRepeating(&BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
-                          base::Unretained(this)));
-  stats_updater.Start();
   WaitForStandardStatsUpdatedCallback();
-  stats_updater.Stop();
-
-  // Stop the referrals service
-  referrals_service->Stop();
 
   // Promo code file preference should now be true
-  EXPECT_TRUE(GetLocalState()->GetBoolean(kReferralInitialization));
+  EXPECT_TRUE(
+      g_browser_process->local_state()->GetBoolean(kReferralInitialization));
 
   // Verify that update url is valid
   const GURL update_url(GetUpdateURL());
@@ -372,5 +285,5 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 
   // Verify that the expected referral code is present
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
-  EXPECT_STREQ(query_value.c_str(), referral_code.c_str());
+  EXPECT_STREQ(query_value.c_str(), referral_code().c_str());
 }

@@ -20,6 +20,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -50,7 +51,6 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/browser/brave_referrals/brave_referrals_service_factory.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #endif
 
@@ -117,11 +117,10 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   g_brave_browser_process = this;
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  brave_referrals_service_ =
-      brave::BraveReferralsServiceFactory::GetInstance()->GetForPrefs(
-          local_state());
+  // early initialize referrals
+  brave_referrals_service();
 #endif
-  // initialize brave stats
+  // early initialize brave stats
   brave_stats_updater();
 
   // Disabled on mobile platforms, see for instance issues/6176
@@ -330,9 +329,19 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   return brave_p3a_service_.get();
 }
 
+brave::BraveReferralsService*
+BraveBrowserProcessImpl::brave_referrals_service() {
+  if (!brave_referrals_service_)
+    brave_referrals_service_ = std::make_unique<brave::BraveReferralsService>(
+        local_state(), brave_stats::GetAPIKey(),
+        brave_stats::GetPlatformIdentifier());
+  return brave_referrals_service_.get();
+}
+
 brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_)
-    brave_stats_updater_ = brave_stats::BraveStatsUpdaterFactory(local_state());
+    brave_stats_updater_ =
+        std::make_unique<brave_stats::BraveStatsUpdater>(local_state());
   return brave_stats_updater_.get();
 }
 

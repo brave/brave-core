@@ -43,6 +43,10 @@
 namespace brave_stats {
 
 namespace {
+
+BraveStatsUpdater::StatsUpdatedCallback g_testing_stats_updated_callback;
+BraveStatsUpdater::StatsUpdatedCallback g_testing_stats_threshold_callback;
+
 // Ping the update server shortly after startup.
 static constexpr int kUpdateServerStartupPingDelaySeconds = 3;
 
@@ -181,14 +185,16 @@ bool BraveStatsUpdater::MaybeDoThresholdPing(int score) {
   return false;
 }
 
-void BraveStatsUpdater::SetStatsUpdatedCallback(
+// static
+void BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(
     StatsUpdatedCallback stats_updated_callback) {
-  stats_updated_callback_ = std::move(stats_updated_callback);
+  g_testing_stats_updated_callback = stats_updated_callback;
 }
 
-void BraveStatsUpdater::SetStatsThresholdCallback(
+// static
+void BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
     StatsUpdatedCallback stats_threshold_callback) {
-  stats_threshold_callback_ = std::move(stats_threshold_callback);
+  g_testing_stats_threshold_callback = stats_threshold_callback;
 }
 
 GURL BraveStatsUpdater::BuildStatsEndpoint(const std::string& path) {
@@ -228,8 +234,8 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
   stats_updater_params->SavePrefs();
 
   // Inform the client that the stats ping completed, if requested.
-  if (!stats_updated_callback_.is_null())
-    stats_updated_callback_.Run(final_url);
+  if (g_testing_stats_updated_callback)
+    g_testing_stats_updated_callback.Run(final_url);
 
   // In case the first call was blocked by our timer.
   (void)MaybeDoThresholdPing(0);
@@ -255,8 +261,8 @@ void BraveStatsUpdater::OnThresholdLoaderComplete(
   }
 
   // Inform the client that the threshold ping completed, if requested.
-  if (!stats_threshold_callback_.is_null())
-    stats_threshold_callback_.Run(final_url);
+  if (g_testing_stats_threshold_callback)
+    g_testing_stats_threshold_callback.Run(final_url);
 
   // We only send this query once.
   DisableThresholdPing();
@@ -419,11 +425,6 @@ void BraveStatsUpdater::SendUserTriggeredPing() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(
-    PrefService* pref_service) {
-  return std::make_unique<BraveStatsUpdater>(pref_service);
-}
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kFirstCheckMade, false);
