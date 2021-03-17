@@ -332,15 +332,16 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
 brave::BraveReferralsService*
 BraveBrowserProcessImpl::brave_referrals_service() {
   if (!brave_referrals_service_)
-    brave_referrals_service_.reset(new brave::BraveReferralsService(
+    brave_referrals_service_ = std::make_unique<brave::BraveReferralsService>(
         local_state(), brave_stats::GetAPIKey(),
-        brave_stats::GetPlatformIdentifier()));
+        brave_stats::GetPlatformIdentifier());
   return brave_referrals_service_.get();
 }
 
 brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_)
-    brave_stats_updater_.reset(new brave_stats::BraveStatsUpdater(local_state()));
+    brave_stats_updater_ =
+        std::make_unique<brave_stats::BraveStatsUpdater>(local_state());
   return brave_stats_updater_.get();
 }
 

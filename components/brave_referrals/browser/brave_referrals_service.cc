@@ -77,8 +77,7 @@ base::FilePath g_promo_file_path;
 void DeletePromoCodeFile(const base::FilePath& promo_code_file) {
   if (!base::DeleteFile(promo_code_file)) {
     LOG(ERROR) << "Failed to delete referral promo code file "
-               << promo_code_file.value().c_str();
-    return;
+               << promo_code_file.value();
   }
 }
 
@@ -91,13 +90,13 @@ std::string ReadPromoCode(const base::FilePath& promo_code_file) {
 
   if (!base::ReadFileToString(promo_code_file, &promo_code)) {
     LOG(ERROR) << "Failed to read referral promo code from "
-               << promo_code_file.value().c_str();
+               << promo_code_file.value();
     return "";
   }
 
   base::TrimWhitespaceASCII(promo_code, base::TRIM_ALL, &promo_code);
   if (promo_code.empty()) {
-    LOG(ERROR) << "Promo code file " << promo_code_file.value().c_str()
+    LOG(ERROR) << "Promo code file " << promo_code_file.value()
                << " is empty";
     return "";
   }

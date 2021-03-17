@@ -94,8 +94,6 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   bool stats_startup_complete_ = false;
   PrefService* pref_service_;
   std::string usage_server_;
-  StatsUpdatedCallback stats_updated_callback_;
-  StatsUpdatedCallback stats_threshold_callback_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
