@@ -25,6 +25,29 @@ class PrivateCDNTests: BraveSharedTests {
         XCTAssertNil(PrivateCDN.unpadded(data: data))
     }
     
+    func testZeroLength() throws {
+        let length = UInt32(0)
+        let raw = "ABCDEFG"
+        let lengthData = withUnsafePointer(to: length) {
+            Data(bytes: $0, count: 4)
+        }
+        let rawData = try XCTUnwrap(raw.data(using: .ascii))
+        let data = lengthData + rawData
+        XCTAssertNil(PrivateCDN.unpadded(data: data))
+    }
+    
+    func testNoPadding() throws {
+        let raw = "ABCDEFG"
+        let rawData = try XCTUnwrap(raw.data(using: .ascii))
+        let length = UInt32(rawData.count).bigEndian
+        let lengthData = withUnsafePointer(to: length) {
+            Data(bytes: $0, count: 4)
+        }
+        let data = lengthData + rawData
+        let unpadded = try XCTUnwrap(PrivateCDN.unpadded(data: data))
+        XCTAssertEqual(rawData, unpadded)
+    }
+    
     func testValidData() throws {
         let raw = "ABCDEFG"
         let rawData = try XCTUnwrap(raw.data(using: .ascii))
