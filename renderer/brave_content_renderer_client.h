@@ -14,6 +14,7 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
   ~BraveContentRendererClient() override;
   void SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() override;
   void RenderFrameCreated(content::RenderFrame* render_frame) override;
+  void RunScriptsAtDocumentStart(content::RenderFrame* render_frame) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentRendererClient);
