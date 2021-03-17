@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 971034d8fc2a9b50000136cffd312def5bc0df0c..dff2ab08e05fa42b5cb53fd2d0de250aeb655a2e 100644
+index b20b829650c3bc744ac0494fd98585ecc03c2cbf..5763f4ad4a3f2901542f5a153c84a187d91c6694 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2501,6 +2501,7 @@ static_library("browser") {

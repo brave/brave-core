@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index db8fa431cb86ceab8605f62e57df79740daf271d..7b0249071aa35792cd6ccd177ee4541261fe7211 100644
+index b067a3f7af514bc48632365427ba8ecffa4885df..dadadab8dd95e47bc228053bd1335cbd6d87e3b6 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -235,6 +235,7 @@ android_resources("chrome_app_java_resources") {
+@@ -236,6 +236,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/androidx:androidx_preference_preference_java",
      "//third_party/androidx:androidx_recyclerview_recyclerview_java",
    ]
@@ -10,7 +10,7 @@ index db8fa431cb86ceab8605f62e57df79740daf271d..7b0249071aa35792cd6ccd177ee45412
  }
  
  if (enable_vr) {
-@@ -550,6 +551,7 @@ android_library("chrome_java") {
+@@ -551,6 +552,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -18,7 +18,7 @@ index db8fa431cb86ceab8605f62e57df79740daf271d..7b0249071aa35792cd6ccd177ee45412
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -581,6 +583,7 @@ android_library("chrome_java") {
+@@ -583,6 +585,7 @@ android_library("chrome_java") {
      "//components/ui_metrics:ui_metrics_enums_java",
      "//net:effective_connection_type_java",
    ]
@@ -26,7 +26,7 @@ index db8fa431cb86ceab8605f62e57df79740daf271d..7b0249071aa35792cd6ccd177ee45412
  
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -704,6 +707,7 @@ group("jni_headers") {
+@@ -710,6 +713,7 @@ group("jni_headers") {
      "//chrome/browser/webauthn/android:jni_headers",
      "//components/media_router/browser/android:jni_headers",
    ]
@@ -34,7 +34,7 @@ index db8fa431cb86ceab8605f62e57df79740daf271d..7b0249071aa35792cd6ccd177ee45412
  }
  
  # TODO(crbug.com/1112471): Get this to run cleanly under Python 3.
-@@ -1891,6 +1895,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1897,6 +1901,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index cfb5d65a9be8a11ff2c5bdeb35b097629063b99c..87258cc2c8d09cb26ae206eeac58b8a631a1dd99 100644
+index 9b7bfb89b7352aec772c04e71d078f5bc61f4ac0..696c7729d60380e9f42cea77ae04e91025910334 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -59,7 +59,7 @@ import java.util.Collection;
+@@ -60,7 +60,7 @@ import java.util.Collection;
   * The Toolbar object for Tablet screens.
   */
  @SuppressLint("Instantiatable")
@@ -11,7 +11,7 @@ index cfb5d65a9be8a11ff2c5bdeb35b097629063b99c..87258cc2c8d09cb26ae206eeac58b8a6
          implements OnClickListener, View.OnLongClickListener, TabCountObserver {
      private HomeButton mHomeButton;
      private ImageButton mBackButton;
-@@ -314,10 +314,12 @@ public class ToolbarTablet extends ToolbarLayout
+@@ -315,10 +315,12 @@ public class ToolbarTablet extends ToolbarLayout
              DownloadUtils.downloadOfflinePage(getContext(), getToolbarDataProvider().getTab());
              RecordUserAction.record("MobileToolbarDownloadPage");
          }
@@ -24,7 +24,7 @@ index cfb5d65a9be8a11ff2c5bdeb35b097629063b99c..87258cc2c8d09cb26ae206eeac58b8a6
          String description = null;
          Context context = getContext();
          Resources resources = context.getResources();
-@@ -383,6 +385,7 @@ public class ToolbarTablet extends ToolbarLayout
+@@ -384,6 +386,7 @@ public class ToolbarTablet extends ToolbarLayout
                  textBoxColor, PorterDuff.Mode.SRC_IN);
  
          mLocationBar.updateVisualsForState();
