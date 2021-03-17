@@ -285,6 +285,11 @@ bool FTXService::NetworkRequest(const GURL& url,
                                 URLRequestCallback callback,
                                 bool set_auth_header) {
   auto request = std::make_unique<network::ResourceRequest>();
+  if (set_auth_header) {
+    std::string header = GetTokenHeader();
+    request->headers.SetHeader(net::HttpRequestHeaders::kAuthorization,
+         base::StringPrintf("%s", header.c_str()));
+  }
   request->url = url;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -293,18 +298,10 @@ bool FTXService::NetworkRequest(const GURL& url,
 
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
-
   if (!post_data.empty()) {
     url_loader->AttachStringForUpload(post_data,
                                       "application/x-www-form-urlencoded");
   }
-
-  if (set_auth_header) {
-    std::string header = GetTokenHeader();
-    request->headers.SetHeader(net::HttpRequestHeaders::kAuthorization,
-                               base::StringPrintf("%s", header.c_str()));
-  }
-
   url_loader->SetRetryOptions(
       kRetriesCountOnNetworkChange,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
