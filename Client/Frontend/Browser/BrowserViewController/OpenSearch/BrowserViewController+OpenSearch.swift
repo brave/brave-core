@@ -167,6 +167,7 @@ extension BrowserViewController {
             
             do {
                 try self.profile.searchEngines.addSearchEngine(engine)
+                self.view.endEditing(true)
                 
                 let toast = SimpleToast()
                 toast.showAlertWithText(Strings.CustomSearchEngine.thirdPartySearchEngineAddedToastTitle, bottomContainer: self.webViewContainer)
