@@ -542,13 +542,20 @@ class NewTabPageViewController: UIViewController, Themeable {
                 )
                 alert.present(on: self)
             }
-        case .itemAction(.longPressed(let context), _):
+        case .itemAction(.longPressed(let longPressInfo), let context):
             let alertController = UIAlertController(
-                title: context.title,
-                message: context.message,
+                title: longPressInfo.title,
+                message: longPressInfo.message,
                 preferredStyle: .actionSheet
             )
-            for action in context.actions {
+            if let cell = collectionView.cellForItem(at: context.indexPath)?.subviews.first?.subviews.first {
+                alertController.popoverPresentationController?.sourceView = cell
+                alertController.popoverPresentationController?.sourceRect = cell.bounds
+            } else {
+                alertController.popoverPresentationController?.sourceView = view
+                alertController.popoverPresentationController?.sourceRect = view.bounds
+            }
+            for action in longPressInfo.actions {
                 alertController.addAction(action)
             }
             present(alertController, animated: true)
