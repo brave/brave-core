@@ -51,7 +51,7 @@ enum TrackingType: Equatable {
 
 // MARK: - ShareTrackersController
 
-class ShareTrackersController: UIViewController, Themeable {
+class ShareTrackersController: UIViewController, Themeable, PopoverContentComponent {
     
     // MARK: Action
     
@@ -301,10 +301,4 @@ private class ShareTrackersView: UIView, Themeable {
         subtitleLabel.appearanceTextColor = .white
         actionButton.appearanceTextColor = .white
     }
-}
-
-// MARK: - PopoverContentComponent
-
-extension ShareTrackersController: PopoverContentComponent {
-    var isPanToDismissEnabled: Bool { return false }
 }

@@ -67,7 +67,8 @@ extension BrowserViewController {
     private func presentEducationalProductNotifications() {
         guard let selectedTab = tabManager.selectedTab,
               !benchmarkNotificationPresented,
-              !topToolbar.inOverlayMode else {
+              !topToolbar.inOverlayMode,
+              selectedTab.webView?.scrollView.isDragging == false else {
             return
         }
         
