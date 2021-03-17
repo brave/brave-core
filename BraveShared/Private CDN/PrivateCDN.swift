@@ -29,8 +29,8 @@ public class PrivateCDN {
         let length = data.withUnsafeBytes {
             return UInt32(bigEndian: $0.load(as: UInt32.self)).hostEndian
         }
-        guard data.count > length else {
-            // Payload shorter than expected length
+        guard data.count >= length + 4, length != 0 else {
+            // Payload shorter than expected length, incorrect or malformed
             return nil
         }
         return length
