@@ -60,13 +60,13 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/fullscreen.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/chrome_paths.h"
 #if !defined(OS_ANDROID)
 #include "brave/ui/brave_ads/message_popup_view.h"
+#include "chrome/browser/fullscreen.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #endif
@@ -1727,7 +1727,11 @@ bool AdsServiceImpl::IsForeground() const {
 }
 
 bool AdsServiceImpl::IsFullScreen() const {
+#if !defined(OS_ANDROID)
   return IsFullScreenMode();
+#else
+  return true;
+#endif
 }
 
 std::string AdsServiceImpl::GetLocale() const {
