@@ -71,7 +71,7 @@ class SearchSettingsTableViewController: UITableViewController {
     }
     
     private var customSearchEngines: [OpenSearchEngine] {
-        searchEngines.quickSearchEngines.filter { $0.isCustomEngine }
+        searchEngines.orderedEngines.filter { $0.isCustomEngine }
     }
     
     // MARK: Lifecycle
@@ -279,8 +279,7 @@ class SearchSettingsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let index = indexPath.row
-            let engine = customSearchEngines[index]
+            guard let engine = customSearchEngines[safe: indexPath.row] else { return }
             
             do {
                 try searchEngines.deleteCustomEngine(engine)
@@ -289,6 +288,15 @@ class SearchSettingsTableViewController: UITableViewController {
                 log.error("Search Engine Error while deleting")
             }
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if let engine = customSearchEngines[safe: indexPath.row],
+           engine == searchEngines.defaultEngine(forType: .standard) {
+            return false
+        }
+        
+        return true
     }
 }
 
