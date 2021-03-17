@@ -25,16 +25,19 @@ class OpenSearchEngineButton: Button {
             switch action {
             case .disabled:
                 isLoading = false
+                setImage(#imageLiteral(resourceName: "AddSearch").template, for: .normal)
                 appearanceTintColor = UIColor.Photon.grey50
                 appearanceTextColor = UIColor.Photon.grey50
                 isUserInteractionEnabled = false
             case .enabled:
                 isLoading = false
+                setImage(#imageLiteral(resourceName: "AddSearch").template, for: .normal)
                 appearanceTintColor = BraveUX.braveOrange
                 appearanceTextColor = BraveUX.braveOrange
                 isUserInteractionEnabled = true
             case .loading:
                 isLoading = true
+                setImage(nil, for: .normal)
             }
         }
     }
