@@ -45,8 +45,8 @@ LedgerImpl::LedgerImpl(LedgerClient* client)
 
 LedgerImpl::~LedgerImpl() = default;
 
-BATLedgerContext* LedgerImpl::context() const {
-  return context_.get();
+BATLedgerContext& LedgerImpl::context() {
+  return *context_;
 }
 
 LedgerClient* LedgerImpl::ledger_client() const {
