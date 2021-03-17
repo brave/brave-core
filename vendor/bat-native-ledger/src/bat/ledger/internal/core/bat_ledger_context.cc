@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -7,44 +7,63 @@
 
 #include <utility>
 
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
+#include "bat/ledger/option_keys.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
 
 namespace {
 
-size_t g_next_component_key = 0;
+BATLedgerContext::Environment GetEnvironment() {
+  switch (ledger::_environment) {
+    case mojom::Environment::DEVELOPMENT:
+      return BATLedgerContext::Environment::kDevelopment;
+    case mojom::Environment::STAGING:
+      return BATLedgerContext::Environment::kStaging;
+    case mojom::Environment::PRODUCTION:
+      return BATLedgerContext::Environment::kProduction;
+  }
+}
+
+BATLedgerContext::Options GetOptions(LedgerClient* ledger_client) {
+  DCHECK(ledger_client);
+  BATLedgerContext::Options options;
+  options.environment = GetEnvironment();
+  return options;
+}
 
 }  // namespace
 
 BATLedgerContext::BATLedgerContext(LedgerImpl* ledger_impl)
-    : ledger_client_(ledger_impl->ledger_client()), ledger_impl_(ledger_impl) {
+    : ledger_client_(ledger_impl->ledger_client()),
+      ledger_impl_(ledger_impl),
+      options_(GetOptions(ledger_client_)) {
   DCHECK(ledger_client_);
 }
 
 BATLedgerContext::BATLedgerContext(LedgerClient* ledger_client)
-    : ledger_client_(ledger_client) {
+    : ledger_client_(ledger_client), options_(GetOptions(ledger_client_)) {
   DCHECK(ledger_client_);
 }
 
 BATLedgerContext::~BATLedgerContext() = default;
 
-using Component = BATLedgerContext::Component;
-using ComponentKey = BATLedgerContext::ComponentKey;
+BATLedgerContext::Object::Object() = default;
 
-ComponentKey::ComponentKey() : value_(g_next_component_key++) {}
-
-Component::Component(BATLedgerContext* context) : context_(context) {}
-
-Component::~Component() = default;
+BATLedgerContext::Object::~Object() = default;
 
 using LogStream = BATLedgerContext::LogStream;
 
 LogStream::LogStream(BATLedgerContext* context,
                      base::Location location,
                      LogLevel log_level)
-    : context_(context), location_(location), log_level_(log_level) {}
+    : context_(context), location_(location), log_level_(log_level) {
+  DCHECK(context);
+}
 
 LogStream::LogStream(LogStream&& other)
     : context_(other.context_),
