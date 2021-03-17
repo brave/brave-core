@@ -50,10 +50,6 @@ double CalculateScore(const UserActivityTriggers& triggers,
                       const std::string& events) {
   std::string mutable_events = events;
 
-#if defined(DEBUG)
-  BLOG(6, "Triggered events: " << events);
-#endif
-
   double score = 0.0;
 
   for (const auto& trigger : triggers) {
@@ -65,10 +61,11 @@ double CalculateScore(const UserActivityTriggers& triggers,
         break;
       }
 
-#if defined(DEBUG)
-      BLOG(6, "Found event sequence: " << trigger.event_sequence << " ("
-                                       << trigger.score << ")");
-#endif
+      if (pos % 2 != 0) {
+        // Event sequences start on hex/byte character boundaries
+        pos++;
+        continue;
+      }
 
       mutable_events.erase(pos, trigger.event_sequence.length());
       score += trigger.score;

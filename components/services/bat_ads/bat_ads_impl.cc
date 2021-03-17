@@ -70,19 +70,20 @@ void BatAdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
   ads_->OnAdsSubdivisionTargetingCodeHasChanged();
 }
 
-void BatAdsImpl::OnTextLoaded(const int32_t tab_id,
-                              const int32_t page_transition_type,
-                              const bool has_user_gesture,
-                              const std::vector<std::string>& redirect_chain,
-                              const std::string& text) {
-  ads_->OnTextLoaded(tab_id, page_transition_type, has_user_gesture,
-                     redirect_chain, text);
-}
-
 void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,
                               const std::vector<std::string>& redirect_chain,
                               const std::string& html) {
   ads_->OnHtmlLoaded(tab_id, redirect_chain, html);
+}
+
+void BatAdsImpl::OnTextLoaded(const int32_t tab_id,
+                              const std::vector<std::string>& redirect_chain,
+                              const std::string& text) {
+  ads_->OnTextLoaded(tab_id, redirect_chain, text);
+}
+
+void BatAdsImpl::OnUserGesture(const int32_t page_transition_type) {
+  ads_->OnUserGesture(page_transition_type);
 }
 
 void BatAdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {

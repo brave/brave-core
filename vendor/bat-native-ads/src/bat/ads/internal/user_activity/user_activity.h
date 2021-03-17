@@ -30,6 +30,7 @@ class UserActivity {
 
   void RecordEvent(const UserActivityEventType event_type);
   void RecordEventForPageTransition(const PageTransitionType type);
+  void RecordEventForPageTransitionFromInt(const int32_t type);
 
   UserActivityEvents GetHistoryForTimeWindow(
       const base::TimeDelta time_window) const;
