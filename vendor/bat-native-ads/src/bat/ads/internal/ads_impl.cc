@@ -103,6 +103,8 @@ void AdsImpl::Initialize(InitializeCallback callback) {
     return;
   }
 
+  InitializeBrowserManager();
+
   InitializeDatabase(callback);
 }
 
@@ -458,6 +460,13 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   tab_manager_ = std::make_unique<TabManager>();
 
   user_activity_ = std::make_unique<UserActivity>();
+}
+
+void AdsImpl::InitializeBrowserManager() {
+  const bool is_foreground = AdsClientHelper::Get()->IsForeground();
+
+  BrowserManager::Get()->SetForegrounded(is_foreground);
+  BrowserManager::Get()->SetActive(is_foreground ? true : false);
 }
 
 void AdsImpl::InitializeDatabase(InitializeCallback callback) {
