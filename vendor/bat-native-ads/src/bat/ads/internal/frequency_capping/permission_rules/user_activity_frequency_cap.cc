@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h"
 
+#include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/user_activity/user_activity_scoring_util.h"
 
 namespace ads {
@@ -27,6 +28,10 @@ std::string UserActivityFrequencyCap::get_last_message() const {
 }
 
 bool UserActivityFrequencyCap::DoesRespectCap() {
+  if (PlatformHelper::GetInstance()->GetPlatform() == PlatformType::kIOS) {
+    return true;
+  }
+
   return WasUserActive();
 }
 

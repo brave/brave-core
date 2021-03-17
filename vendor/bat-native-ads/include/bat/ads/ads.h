@@ -85,22 +85,24 @@ class ADS_EXPORT Ads {
   virtual void OnAdsSubdivisionTargetingCodeHasChanged() = 0;
 
   // Should be called when a page has loaded and the content is available for
-  // analysis. |page_transition_type| contains the page transition type between
-  // pages, otherwise should be set to |-1|. |has_user_gesture| returns true if
-  // the navigation was initiated by a user gesture, otherwise should be set to
-  // false. |redirect_chain| contains the chain of redirects, including
-  // client-side redirect and the current URL. |text| will contain the HTML
-  // page content
-  virtual void OnTextLoaded(const int32_t tab_id,
-                            const int32_t page_transition_type,
-                            const bool has_user_gesture,
-                            const std::vector<std::string>& redirect_chain,
-                            const std::string& text) = 0;
-
-  // Similar to |OnTextLoaded| but instead of inner text it keeps the html
+  // analysis. |redirect_chain| contains the chain of redirects, including
+  // client-side redirect and the current URL. |html| will contain the page
+  // content as HTML
   virtual void OnHtmlLoaded(const int32_t tab_id,
                             const std::vector<std::string>& redirect_chain,
                             const std::string& html) = 0;
+
+  // Should be called when a page has loaded and the content is available for
+  // analysis. |redirect_chain| contains the chain of redirects, including
+  // client-side redirect and the current URL. |text| will contain the page
+  // content as text
+  virtual void OnTextLoaded(const int32_t tab_id,
+                            const std::vector<std::string>& redirect_chain,
+                            const std::string& text) = 0;
+
+  // Should be called when the navigation was initiated by a user gesture.
+  // |page_transition_type| contains the page transition type
+  virtual void OnUserGesture(const int32_t page_transition_type) = 0;
 
   // Should be called when a user is no longer idle. |idle_time| returns the
   // idle time in seconds. |was_locked| returns true if the screen is locked,
