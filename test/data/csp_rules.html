@@ -1,0 +1,60 @@
+<html>
+<head>
+<script nonce="abcdef">
+    window.loadedNonceScript = true;
+
+    eval('window.loadedEvalScript = true');
+
+    const samePartyScriptPromise = new Promise(resolve => {
+        const samePartyScript = document.createElement('script');
+        samePartyScript.src = '/adbanner.js';
+        samePartyScript.onload = (r) => {
+            window.loadedSamePartyScript = true;
+            resolve();
+        }
+        samePartyScript.onerror = (r) => {
+            resolve();
+        }
+        document.documentElement.appendChild(samePartyScript);
+    });
+
+    const thirdPartyScriptPromise = new Promise(resolve => {
+        const thirdPartyScript = document.createElement('script');
+        thirdPartyScript.src = 'https://thirdparty.com/adbanner.js';
+        thirdPartyScript.onload = (r) => {
+            window.loadedThirdPartyScript = true;
+            resolve();
+        }
+        thirdPartyScript.onerror = (r) => {
+            resolve();
+        }
+        document.documentElement.appendChild(thirdPartyScript);
+    });
+
+    const unsafeInlineScript = document.createElement('script');
+    unsafeInlineScript.text = 'window.loadedUnsafeInlineScript = true';
+    document.documentElement.appendChild(unsafeInlineScript);
+
+    const dataImagePromise = new Promise(resolve => {
+        const dataImage = document.createElement('img');
+        // transparent 1x1 pixel
+        dataImage.src = '/ad_banner.png';
+        dataImage.onload = (r) => {
+            console.error(dataImage.height)
+            if (dataImage.height == 212) {
+                window.loadedDataImage = true;
+            }
+            resolve();
+        }
+        dataImage.onerror = (r) => {
+            resolve();
+        }
+        document.documentElement.appendChild(dataImage);
+    });
+
+    window.allLoaded = Promise.all([samePartyScriptPromise, thirdPartyScriptPromise, dataImagePromise]);
+</script>
+</head>
+<body>
+</body>
+</html>

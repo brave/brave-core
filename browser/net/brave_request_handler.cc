@@ -122,6 +122,10 @@ void BraveRequestHandler::SetupCallbacks() {
       base::Bind(webtorrent::OnHeadersReceived_TorrentRedirectWork);
   headers_received_callbacks_.push_back(headers_received_callback);
 #endif
+
+  brave::OnHeadersReceivedCallback headers_received_callback2 =
+      base::Bind(brave::OnHeadersReceived_AdBlockCspWork);
+  headers_received_callbacks_.push_back(headers_received_callback2);
 }
 
 void BraveRequestHandler::InitPrefChangeRegistrar() {

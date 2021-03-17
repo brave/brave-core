@@ -98,6 +98,38 @@ pub unsafe extern "C" fn engine_match(
     };
 }
 
+/// Returns any CSP directives that should be added to a subdocument or document request's response
+/// headers.
+#[no_mangle]
+pub unsafe extern "C" fn engine_get_csp_directives(
+    engine: *mut Engine,
+    url: *const c_char,
+    host: *const c_char,
+    tab_host: *const c_char,
+    third_party: bool,
+    resource_type: *const c_char,
+) -> *mut c_char {
+    let url = CStr::from_ptr(url).to_str().unwrap();
+    let host = CStr::from_ptr(host).to_str().unwrap();
+    let tab_host = CStr::from_ptr(tab_host).to_str().unwrap();
+    let resource_type = CStr::from_ptr(resource_type).to_str().unwrap();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    if let Some(directive) = engine.get_csp_directives(url, host, tab_host, resource_type, Some(third_party)) {
+        let ptr = CString::new(directive)
+            .expect("Error: CString::new()")
+            .into_raw();
+        std::mem::forget(ptr);
+        ptr
+    } else {
+        let ptr = CString::new("")
+            .expect("Error: CString::new()")
+            .into_raw();
+        std::mem::forget(ptr);
+        ptr
+    }
+}
+
 /// Adds a tag to the engine for consideration
 #[no_mangle]
 pub unsafe extern "C" fn engine_add_tag(engine: *mut Engine, tag: *const c_char) {

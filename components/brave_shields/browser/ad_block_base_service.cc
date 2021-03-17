@@ -141,6 +141,30 @@ void AdBlockBaseService::ShouldStartRequest(
   //  << ", url.spec(): " << url.spec();
 }
 
+base::Optional<std::string> AdBlockBaseService::GetCspDirectives(
+    const GURL& url,
+    blink::mojom::ResourceType resource_type,
+    const std::string& tab_host) {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  // Determine third-party here so the library doesn't need to figure it out.
+  // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
+  // a URL or origin and not a string to a host name.
+  bool is_third_party = !SameDomainOrHost(
+      url,
+      url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
+      INCLUDE_PRIVATE_REGISTRIES);
+  const std::string result = ad_block_client_->getCspDirectives(
+      url.spec(), url.host(), tab_host, is_third_party,
+      ResourceTypeToString(resource_type));
+
+  if (result.empty()) {
+    return base::nullopt;
+  } else {
+    return base::Optional<std::string>(result);
+  }
+}
+
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
   if (BrowserThread::CurrentlyOn(BrowserThread::UI)) {
     GetTaskRunner()->PostTask(
