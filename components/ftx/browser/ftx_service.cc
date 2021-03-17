@@ -184,8 +184,12 @@ void FTXService::OnGetAccessToken(
     const std::map<std::string, std::string>& headers) {
   std::string access_token;
   if (status >= 200 && status <= 299) {
-    FTXJSONParser::GetAccessTokenFromJSON(body, &access_token);
-    SetAccessToken(access_token);
+    if (FTXJSONParser::GetAccessTokenFromJSON(body, &access_token)) {
+      LOG(ERROR) << "going to set access token: " << access_token;
+      SetAccessToken(access_token);
+    } else {
+      LOG(ERROR) << "bad access token, body: " << body;
+    }
   }
   std::move(callback).Run(!access_token.empty());
 }

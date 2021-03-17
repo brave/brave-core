@@ -131,7 +131,7 @@ bool FTXJSONParser::GetAccessTokenFromJSON(const std::string& json,
   }
 
   const base::Value* token = result->FindKey("access_token");
-  if (!(token || token->is_string())) {
+  if (!(token && token->is_string())) {
     return false;
   }
 
