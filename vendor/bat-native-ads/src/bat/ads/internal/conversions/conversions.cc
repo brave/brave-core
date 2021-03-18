@@ -51,6 +51,38 @@ bool HasObservationWindowForAdEventExpired(const int observation_window,
   return true;
 }
 
+bool DoesConfirmationTypeMatchConversionType(
+    const ConfirmationType& confirmation_type,
+    const std::string& conversion_type) {
+  switch (confirmation_type.value()) {
+    case ConfirmationType::kViewed: {
+      if (conversion_type == "postview") {
+        return true;
+      }
+
+      return false;
+    }
+
+    case ConfirmationType::kClicked: {
+      if (conversion_type == "postclick") {
+        return true;
+      }
+
+      return false;
+    }
+
+    case ConfirmationType::kUndefined:
+    case ConfirmationType::kDismissed:
+    case ConfirmationType::kTransferred:
+    case ConfirmationType::kFlagged:
+    case ConfirmationType::kUpvoted:
+    case ConfirmationType::kDownvoted:
+    case ConfirmationType::kConversion: {
+      return false;
+    }
+  }
+}
+
 std::string ExtractVerifiableConversionIdFromHtml(const std::string& html) {
   re2::StringPiece text_string_piece(html);
   RE2 r("<meta.*name=\"ad-conversion-id\".*content=\"(.*)\".*>");
@@ -77,6 +109,34 @@ std::set<std::string> GetConvertedCreativeSets(const AdEventList& ad_events) {
   }
 
   return creative_set_ids;
+}
+
+AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
+                                        const ConversionInfo& conversion) {
+  AdEventList filtered_ad_events = ad_events;
+
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [&conversion](const AdEventInfo& ad_event) {
+        if (ad_event.creative_set_id != conversion.creative_set_id) {
+          return true;
+        }
+
+        if (!DoesConfirmationTypeMatchConversionType(ad_event.confirmation_type,
+                                                     conversion.type)) {
+          return true;
+        }
+
+        if (HasObservationWindowForAdEventExpired(conversion.observation_window,
+                                                  ad_event)) {
+          return true;
+        }
+
+        return false;
+      });
+  filtered_ad_events.erase(iter, filtered_ad_events.end());
+
+  return filtered_ad_events;
 }
 
 }  // namespace
@@ -179,32 +239,11 @@ void Conversions::CheckRedirectChain(
 
       bool converted = false;
 
-      // Check if ad events match conversions for views/clicks, expire timestamp
-      // and creative set id
+      // Check for conversions
       for (const auto& conversion : filtered_conversions) {
-        AdEventList filtered_ad_events = ad_events;
-        const auto iter = std::remove_if(
-            filtered_ad_events.begin(), filtered_ad_events.end(),
-            [&conversion](const AdEventInfo& ad_event) {
-              if (ad_event.creative_set_id != conversion.creative_set_id) {
-                return true;
-              }
+        const AdEventList filtered_ad_events =
+            FilterAdEventsForConversion(ad_events, conversion);
 
-              if (ad_event.confirmation_type != ConfirmationType::kViewed &&
-                  ad_event.confirmation_type != ConfirmationType::kClicked) {
-                return true;
-              }
-
-              if (HasObservationWindowForAdEventExpired(
-                      conversion.observation_window, ad_event)) {
-                return true;
-              }
-
-              return false;
-            });
-        filtered_ad_events.erase(iter, filtered_ad_events.end());
-
-        // Check if already converted
         for (const auto& ad_event : filtered_ad_events) {
           if (creative_set_ids.find(conversion.creative_set_id) !=
               creative_set_ids.end()) {
