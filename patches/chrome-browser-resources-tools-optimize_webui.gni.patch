@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.gni b/chrome/browser/resources/tools/optimize_webui.gni
-index 5bcdb42a7d8f1443fefa4c81eb7e9757bc45eaa0..9e7ab09670452b3a9db5b768edc6696076b14ba6 100644
+index 88d4b6fde396442bcb3284451552382ec9146890..8c52b570ff74541600e91e805c5fd2af1f19235e 100644
 --- a/chrome/browser/resources/tools/optimize_webui.gni
 +++ b/chrome/browser/resources/tools/optimize_webui.gni
-@@ -78,6 +78,7 @@ template("optimize_webui") {
+@@ -73,6 +73,7 @@ template("optimize_webui") {
        "chrome://resources/polymer/v3_0/|$polymer_path",
        "chrome://resources/|$resources_path",
      ]

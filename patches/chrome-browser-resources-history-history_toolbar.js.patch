@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/history_toolbar.js b/chrome/browser/resources/history/history_toolbar.js
-index b32eebcf69cd42e72ad7231c4623209c188de23e..37a9bcf669d2242aabd5b3513308ff4485e0fda2 100644
+index 0e5a49f707bf49f40b726f2bc3e8de629354acff..32af7450688ac1538ccc0f35aa2ed567e79c2f15 100644
 --- a/chrome/browser/resources/history/history_toolbar.js
 +++ b/chrome/browser/resources/history/history_toolbar.js
 @@ -3,7 +3,7 @@
@@ -9,5 +9,5 @@ index b32eebcf69cd42e72ad7231c4623209c188de23e..37a9bcf669d2242aabd5b3513308ff44
 -import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
 +import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js'
  import './shared_style.js';
- import './strings.js';
+ import './strings.m.js';
  

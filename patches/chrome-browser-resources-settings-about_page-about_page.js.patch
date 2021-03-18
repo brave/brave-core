@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/about_page/about_page.js b/chrome/browser/resources/settings/about_page/about_page.js
-index 05ca4e7b79b61bf3252803192349cf6904d1fa97..f4356921b6ca25620caa90b63f337c73ad59930c 100644
+index 0ad751db704a7abe32753d4c367cc25bc9a61b45..597bee123d6da7cb5608fd364173cd548a465a5a 100644
 --- a/chrome/browser/resources/settings/about_page/about_page.js
 +++ b/chrome/browser/resources/settings/about_page/about_page.js
 @@ -213,7 +213,14 @@ Polymer({

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
-index 9ca4772b70486dae09089e43a9ac3ca40a4e035f..033320a8498b9fdd5cdbac361c51abd772f24d79 100644
+index 06b3138bfcd167651c01b2782e1a4df7f411f297..cd913c6e36fea67b1da5c8a9695129b600c65457 100644
 --- a/third_party/blink/common/client_hints/client_hints.cc
 +++ b/third_party/blink/common/client_hints/client_hints.cc
 @@ -127,6 +127,7 @@ base::Optional<std::vector<network::mojom::WebClientHintsType>> FilterAcceptCH(
