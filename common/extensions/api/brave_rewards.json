@@ -394,7 +394,7 @@
                     "type": "number"
                   },
                   "excluded": {
-                    "type": "number"
+                    "type": "boolean"
                   },
                   "url": {
                     "type": "string"
@@ -438,7 +438,7 @@
                     "description": "publisher attention score"
                   },
                   "excluded": {
-                    "type": "number",
+                    "type": "boolean",
                     "description": "is site excluded from auto contribute"
                   },
                   "provider": {
