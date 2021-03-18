@@ -84,7 +84,6 @@ extension ContentBlockerHelper: TabContentScript {
                 case .https: stats.httpse += 1
                 case .tracker: stats.trackingProtection += 1
                 case .image: stats.images += 1
-                case .https: stats.httpse += 1
                 default:
                     // TODO: #97 Add fingerprinting count here when it is integrated
                     break
