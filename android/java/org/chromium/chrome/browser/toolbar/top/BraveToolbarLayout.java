@@ -860,11 +860,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         super.onUrlFocusChange(hasFocus);
     }
 
-    public void populateUrlAnimatorSet(boolean hasFocus, int urlFocusToolbarButtonsDuration,
-            int urlClearFocusTabStackDelayMs, List<Animator> animators) {
+    public void populateUrlAnimatorSet(boolean showExpandedState,
+            int urlFocusToolbarButtonsDuration, int urlClearFocusTabStackDelayMs,
+            List<Animator> animators) {
         if (mBraveShieldsButton != null) {
             Animator animator;
-            if (hasFocus) {
+            if (showExpandedState) {
                 float density = getContext().getResources().getDisplayMetrics().density;
                 boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
                 float toolbarButtonTranslationX =
