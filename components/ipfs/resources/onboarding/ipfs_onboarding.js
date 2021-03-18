@@ -27,13 +27,7 @@ const setTheme = (theme) => {
   document.body.className = `${theme.toLowerCase()}`;
 }
 
-function setup() {
-  // No local node option on Android
-  if (navigator.userAgent.match(/Android/i)) {
-    $('local-node-box').style.display = 'none'
-    $('footer').style.display = 'none'
-  }
-
+function setupEvents() {
   $('local-node-button').addEventListener('click', function() {
     $('local-node-button').textContent = '$i18nRaw{installationText}'
     $('error-container').className = 'error-container-hidden'
@@ -54,7 +48,7 @@ function setup() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', setup);
+document.addEventListener('DOMContentLoaded', setupEvents);
 
 function showErrorMessage(text) {
   $('error-container').textContent = text

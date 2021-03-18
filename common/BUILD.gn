@@ -93,10 +93,8 @@ source_set("common") {
         "//brave/components/external_intents/android",
         "//brave/components/webcompat_reporter/browser",
         "//brave/chromium_src/third_party/blink/renderer/modules:browser_tests",
+        "//brave/components/ipfs/test:brave_ipfs_browser_tests",
       ]
-  if (!is_android && !is_ios) {
-    visibility += [ "//brave/components/ipfs/test:brave_ipfs_browser_tests" ]
-  }
 
   # Remove when https://github.com/brave/brave-browser/issues/10653 is resolved
   check_includes = false

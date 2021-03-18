@@ -44,7 +44,6 @@ source_set("ipfs") {
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//brave/components/services/ipfs/public/mojom",
-    "//brave/extensions:common",
     "//components/component_updater:component_updater",
     "//components/infobars/core",
     "//components/keyed_service/core",
@@ -55,7 +54,6 @@ source_set("ipfs") {
     "//components/version_info",
     "//content/public/browser",
     "//content/public/common",
-    "//extensions/buildflags",
     "//net",
     "//services/network/public/cpp",
     "//third_party/re2",
@@ -65,6 +63,9 @@ source_set("ipfs") {
   ]
 
   if (enable_extensions) {
-    deps += [ "//extensions/browser" ]
+    deps += [
+      "//extensions/browser",
+      "//extensions/common",
+    ]
   }
 }
