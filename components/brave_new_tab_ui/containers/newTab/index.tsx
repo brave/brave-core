@@ -487,10 +487,6 @@ class NewTabPage extends React.Component<Props, State> {
   setGeminiAssetDepositQRCodeSrc = (asset: string, src: string) => {
     this.props.actions.onGeminiDepositQRForAsset(asset, src)
   }
-  setConvertableAssets = (asset: string, assets: string[]) => {
-    this.props.actions.onConvertableAssets(asset, assets)
-  }
-
   setBinanceSelectedView = (view: string) => {
     this.props.actions.setBinanceSelectedView(view)
   }
@@ -630,12 +626,8 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   getConvertAssets = () => {
-    chrome.binance.getConvertAssets((assets: any) => {
-      for (let asset in assets) {
-        if (assets[asset]) {
-          this.setConvertableAssets(asset, assets[asset])
-        }
-      }
+    chrome.binance.getConvertAssets((assets) => {
+      this.props.actions.onConvertableAssets(assets)
     })
   }
 

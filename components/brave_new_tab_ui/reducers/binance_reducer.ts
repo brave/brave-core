@@ -185,16 +185,20 @@ const binanceReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       break
 
     case types.ON_CONVERTABLE_ASSETS:
-      const { convertAsset, assets } = payload
-      if (!convertAsset || !assets) {
+      type Payload = {
+         assets: chrome.binance.ConvertAssets
+      }
+      const { assets }: Payload = payload
+      if (!assets) {
         break
       }
-
-      state = { ...state }
-      if (!state.binanceState.convertAssets) {
-        state.binanceState.convertAssets = {}
+      state = {
+        ...state,
+        binanceState: {
+          ...state.binanceState,
+          convertAssets: assets
+        }
       }
-      state.binanceState.convertAssets[convertAsset] = assets
       break
 
     case types.SET_DISCONNECT_IN_PROGRESS:

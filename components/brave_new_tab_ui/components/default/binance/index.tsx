@@ -133,7 +133,7 @@ interface Props {
   binanceClientUrl: string
   assetDepositInfo: Record<string, any>
   assetDepoitQRCodeSrcs: Record<string, string>
-  convertAssets: Record<string, Record<string, string>[]>
+  convertAssets: Record<string, chrome.binance.ConvertSubAsset[]>
   accountBTCValue: string
   accountBTCUSDValue: string
   disconnectInProgress: boolean
@@ -274,6 +274,8 @@ class Binance extends React.PureComponent<Props, State> {
         if (success) {
           this.props.onValidAuthCode()
           this.props.onUpdateActions()
+        } else {
+          console.warn('Backend indicated there was a problem retrieving and storing binance access token.')
         }
       })
     }
@@ -484,12 +486,12 @@ class Binance extends React.PureComponent<Props, State> {
       currentConvertAmount
     } = this.state
 
-    const subSelector = convertAssets[currentConvertFrom].find((item: any) => {
-      return item.asset === currentConvertTo
+    const subSelector = convertAssets[currentConvertFrom].find((item: chrome.binance.ConvertSubAsset) => {
+      return item.assetName === currentConvertTo
     })
 
-    const minAmount = (subSelector && subSelector['minAmount']) || '0.00'
-    const meetsMinimum = parseFloat(currentConvertAmount) >= parseFloat(minAmount)
+    const minAmount = (subSelector && subSelector.minAmount) || 0
+    const meetsMinimum = parseFloat(currentConvertAmount) >= minAmount
 
     return {
       success: meetsMinimum,
@@ -785,12 +787,16 @@ class Binance extends React.PureComponent<Props, State> {
     )
   }
 
-  formatCryptoBalance = (balance: string) => {
+  formatCryptoBalance = (balance: number | string) => {
     if (!balance) {
       return '0.000000'
     }
 
-    return parseFloat(balance).toFixed(6)
+    if (typeof balance === 'string') {
+      balance = parseFloat(balance)
+    }
+
+    return balance.toFixed(6)
   }
 
   renderCurrentDepositAsset = () => {
@@ -1128,23 +1134,26 @@ class Binance extends React.PureComponent<Props, State> {
           {
             convertToShowing
             ? <AssetItems>
-                {compatibleCurrencies.map((item: Record<string, string>, i: number) => {
-                  const { asset } = item
+                {compatibleCurrencies.map((item, i: number) => {
+                  if (!item) {
+                    console.warn('binance bad asset', item)
+                    return null
+                  }
 
-                  if (asset === currentConvertTo) {
+                  if (item.assetName === currentConvertTo) {
                     return null
                   }
 
                   return (
                     <AssetItem
-                      key={`choice-${asset}`}
+                      key={`choice-${item.assetName}`}
                       isLast={i === (compatibleCurrencies.length - 1)}
-                      onClick={this.setCurrentConvertAsset.bind(this, asset)}
+                      onClick={this.setCurrentConvertAsset.bind(this, item.assetName)}
                     >
                       <DropdownIcon>
-                        {this.renderIconAsset(asset.toLowerCase())}
+                        {this.renderIconAsset(item.assetName.toLowerCase())}
                       </DropdownIcon>
-                      {asset}
+                      {item.assetName}
                     </AssetItem>
                   )
                 })}

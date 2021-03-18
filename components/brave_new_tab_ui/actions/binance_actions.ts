@@ -61,8 +61,7 @@ export const onDepositQRForAsset = (asset: string, imageSrc: string) => action(t
   imageSrc
 })
 
-export const onConvertableAssets = (convertAsset: string, assets: string[]) => action(types.ON_CONVERTABLE_ASSETS, {
-  convertAsset,
+export const onConvertableAssets = (assets: chrome.binance.ConvertAssets) => action(types.ON_CONVERTABLE_ASSETS, {
   assets
 })
 

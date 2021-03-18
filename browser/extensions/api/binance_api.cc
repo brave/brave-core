@@ -249,15 +249,13 @@ BinanceGetConvertAssetsFunction::Run() {
 void BinanceGetConvertAssetsFunction::OnGetConvertAssets(
     const BinanceConvertAsserts& assets) {
   base::Value result(base::Value::Type::DICTIONARY);
-
   for (const auto& asset : assets) {
     base::ListValue sub_selectors;
     for (const auto& sub : asset.second) {
       auto sub_selector = std::make_unique<base::Value>(
           base::Value::Type::DICTIONARY);
-      for (const auto& att : sub) {
-        sub_selector->SetStringKey(att.first, att.second);
-      }
+      sub_selector->SetStringKey("assetName", sub.assetName);
+      sub_selector->SetDoubleKey("minAmount", sub.minAmount);
       sub_selectors.Append(std::move(sub_selector));
     }
     result.SetKey(asset.first, std::move(sub_selectors));

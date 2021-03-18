@@ -165,7 +165,7 @@ declare namespace NewTab {
     binanceClientUrl: string
     assetDepositInfo: Record<string, any>
     assetDepoitQRCodeSrcs: Record<string, string>
-    convertAssets: Record<string, Record<string, string>[]>
+    convertAssets: Record<string, chrome.binance.ConvertSubAsset[]>
     accountBTCValue: string
     accountBTCUSDValue: string
     disconnectInProgress: boolean

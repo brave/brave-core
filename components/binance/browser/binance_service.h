@@ -50,9 +50,14 @@ const char binance_com_refcode[] = "39346846";
 const char gateway_path_networks[] =
     "/gateway-api/v1/public/capital/getNetworkCoinAll";
 
+struct BinanceConvertSubAsset {
+  std::string assetName;
+  double minAmount;
+};
+
 typedef std::map<std::string, std::string> BinanceCoinNetworks;
 typedef std::map<std::string, std::vector<std::string>> BinanceAccountBalances;
-typedef std::map<std::string, std::vector<std::map<std::string, std::string>>>
+typedef std::map<std::string, std::vector<BinanceConvertSubAsset>>
     BinanceConvertAsserts;
 
 class BinanceService : public KeyedService {
