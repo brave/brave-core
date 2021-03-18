@@ -8,10 +8,12 @@
 
 #include <memory>
 
+#include "base/one_shot_event.h"
 #include "base/optional.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "content/public/renderer/render_frame_observer_tracker.h"
 #include "third_party/blink/public/web/web_navigation_type.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
@@ -21,7 +23,9 @@ namespace cosmetic_filters {
 // CosmeticFiltersJsRenderFrame observer waits for a page to be loaded and then
 // adds the Javascript worker object.
 class CosmeticFiltersJsRenderFrameObserver
-    : public content::RenderFrameObserver {
+    : public content::RenderFrameObserver,
+      public content::RenderFrameObserverTracker<
+          CosmeticFiltersJsRenderFrameObserver> {
  public:
   CosmeticFiltersJsRenderFrameObserver(content::RenderFrame* render_frame,
                                        const int32_t isolated_world_id);
@@ -31,11 +35,19 @@ class CosmeticFiltersJsRenderFrameObserver
   void DidStartNavigation(
       const GURL& url,
       base::Optional<blink::WebNavigationType> navigation_type) override;
+  void ReadyToCommitNavigation(
+      blink::WebDocumentLoader* document_loader) override;
+
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
   void DidCreateNewDocument() override;
 
+  void RunScriptsAtDocumentStart();
+
  private:
+  void OnProcessURL();
+  void ApplyRules();
+
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
@@ -46,6 +58,8 @@ class CosmeticFiltersJsRenderFrameObserver
   std::unique_ptr<CosmeticFiltersJSHandler> native_javascript_handle_;
 
   GURL url_;
+
+  std::unique_ptr<base::OneShotEvent> ready_;
 };
 
 }  // namespace cosmetic_filters

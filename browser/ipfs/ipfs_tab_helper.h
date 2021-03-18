@@ -48,7 +48,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
   bool IsDNSLinkCheckEnabled() const;
-  void DNSLinkHostResolved(const std::string& host);
+  void IPFSLinkResolved(const GURL& ipfs);
   void MaybeShowDNSLinkButton(content::NavigationHandle* handle);
   void UpdateDnsLinkButtonState();
 
@@ -60,11 +60,12 @@ class IPFSTabHelper : public content::WebContentsObserver,
   void UpdateLocationBar();
 
   void ResolveIPFSLink();
-  void HostResolvedCallback(const std::string& host);
+  void HostResolvedCallback(const std::string& host,
+                            const std::string& dnslink);
 
   PrefService* pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
-  std::string ipfs_resolved_host_;
+  GURL ipfs_resolved_url_;
   std::unique_ptr<IPFSHostResolver> resolver_;
   base::WeakPtrFactory<IPFSTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

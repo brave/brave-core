@@ -14,6 +14,7 @@
 #include "base/containers/contains.h"
 #include "base/location.h"
 #include "base/single_thread_task_runner.h"
+#include "base/strings/string_split.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
@@ -39,6 +40,44 @@ namespace {
 // We have to check both domain and _dnslink.domain
 // https://dnslink.io/#can-i-use-dnslink-in-non-dns-systems
 const char kDnsDomainPrefix[] = "_dnslink.";
+
+// IPFS HTTP gateways can return an x-ipfs-path header with each response.
+// The value of the header is the IPFS path of the returned payload.
+const char kIfpsPathHeader[] = "x-ipfs-path";
+
+// /ipfs/{cid}/path → ipfs://{cid}/path
+// query and fragment are taken from source page url
+GURL ParseURLFromHeader(const std::string& value) {
+  if (value.empty())
+    return GURL();
+  std::vector<std::string> parts = base::SplitString(
+      value, "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  // Default length of header is /[scheme]/cid so we have 3 parts after split.
+  const int minimalPartsRequired = 3;
+  if (parts.size() < minimalPartsRequired || !parts.front().empty())
+    return GURL();
+  std::string scheme = parts[1];
+  if (scheme != ipfs::kIPFSScheme && scheme != ipfs::kIPNSScheme)
+    return GURL();
+  std::string cid = parts[2];
+  if (scheme.empty() || cid.empty())
+    return GURL();
+  std::string path;
+  // Add all other parts to url path.
+  if (parts.size() > minimalPartsRequired) {
+    for (size_t i = minimalPartsRequired; i < parts.size(); i++) {
+      if (parts[i].empty())
+        continue;
+      if (!path.empty())
+        path += "/";
+      path += parts[i];
+    }
+  }
+  std::string spec = scheme + "://" + cid;
+  if (!path.empty())
+    spec += "/" + path;
+  return GURL(spec);
+}
 
 // Sets current executable as default protocol handler in a system.
 void SetupIPFSProtocolHandler(const std::string& protocol) {
@@ -94,8 +133,8 @@ bool IPFSTabHelper::MaybeCreateForWebContents(
   return true;
 }
 
-void IPFSTabHelper::DNSLinkHostResolved(const std::string& host) {
-  ipfs_resolved_host_ = host;
+void IPFSTabHelper::IPFSLinkResolved(const GURL& ipfs) {
+  ipfs_resolved_url_ = ipfs;
   if (pref_service_->GetBoolean(kIPFSAutoRedirectDNSLink)) {
     content::OpenURLParams params(GetIPFSResolvedURL(), content::Referrer(),
                                   WindowOpenDisposition::CURRENT_TAB,
@@ -106,11 +145,18 @@ void IPFSTabHelper::DNSLinkHostResolved(const std::string& host) {
   UpdateLocationBar();
 }
 
-void IPFSTabHelper::HostResolvedCallback(const std::string& host) {
+void IPFSTabHelper::HostResolvedCallback(const std::string& host,
+                                         const std::string& dnslink) {
   GURL current = web_contents()->GetURL();
   if (current.host() != host || !current.SchemeIsHTTPOrHTTPS())
     return;
-  DNSLinkHostResolved(host);
+  if (dnslink.empty())
+    return;
+  GURL::Replacements replacements;
+  replacements.SetSchemeStr(kIPNSScheme);
+  GURL resolved_url(current.ReplaceComponents(replacements));
+  if (resolved_url.is_valid())
+    IPFSLinkResolved(resolved_url);
 }
 
 void IPFSTabHelper::UpdateLocationBar() {
@@ -120,17 +166,18 @@ void IPFSTabHelper::UpdateLocationBar() {
 }
 
 GURL IPFSTabHelper::GetIPFSResolvedURL() const {
-  if (ipfs_resolved_host_.empty())
+  if (!ipfs_resolved_url_.is_valid())
     return GURL();
   GURL current = web_contents()->GetURL();
   GURL::Replacements replacements;
-  replacements.SetSchemeStr(kIPNSScheme);
-  return current.ReplaceComponents(replacements);
+  replacements.SetQueryStr(current.query_piece());
+  replacements.SetRefStr(current.ref_piece());
+  return ipfs_resolved_url_.ReplaceComponents(replacements);
 }
 
 void IPFSTabHelper::ResolveIPFSLink() {
   GURL current = web_contents()->GetURL();
-  if (!current.SchemeIsHTTPOrHTTPS() || ipfs_resolved_host_ == current.host())
+  if (!current.SchemeIsHTTPOrHTTPS())
     return;
 
   const auto& host_port_pair = net::HostPortPair::FromURL(current);
@@ -155,16 +202,16 @@ bool IPFSTabHelper::IsDNSLinkCheckEnabled() const {
 
 void IPFSTabHelper::UpdateDnsLinkButtonState() {
   if (!IsDNSLinkCheckEnabled()) {
-    if (!ipfs_resolved_host_.empty()) {
-      ipfs_resolved_host_.erase();
+    if (ipfs_resolved_url_.is_valid()) {
+      ipfs_resolved_url_ = GURL();
       UpdateLocationBar();
     }
     return;
   }
 
   GURL current = web_contents()->GetURL();
-  if (!ipfs_resolved_host_.empty() && resolver_->host() != current.host()) {
-    ipfs_resolved_host_.erase();
+  if (ipfs_resolved_url_.is_valid() && resolver_->host() != current.host()) {
+    ipfs_resolved_url_ = GURL();
     UpdateLocationBar();
   }
 }
@@ -174,15 +221,21 @@ void IPFSTabHelper::MaybeShowDNSLinkButton(content::NavigationHandle* handle) {
   if (!IsDNSLinkCheckEnabled() || !handle->GetResponseHeaders())
     return;
   GURL current = web_contents()->GetURL();
-  if (!ipfs_resolved_host_.empty() || !current.SchemeIsHTTPOrHTTPS() ||
+  if (ipfs_resolved_url_.is_valid() || !current.SchemeIsHTTPOrHTTPS() ||
       IsDefaultGatewayURL(current, web_contents()->GetBrowserContext()))
     return;
   int response_code = handle->GetResponseHeaders()->response_code();
   if (response_code >= net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR &&
       response_code <= net::HttpStatusCode::HTTP_VERSION_NOT_SUPPORTED) {
     ResolveIPFSLink();
-  } else if (handle->GetResponseHeaders()->HasHeader("x-ipfs-path")) {
-    DNSLinkHostResolved(current.host());
+  } else if (handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
+    std::string ipfs_path_value;
+    if (!handle->GetResponseHeaders()->GetNormalizedHeader(kIfpsPathHeader,
+                                                           &ipfs_path_value))
+      return;
+    GURL resolved_url = ParseURLFromHeader(ipfs_path_value);
+    if (resolved_url.is_valid())
+      IPFSLinkResolved(resolved_url);
   }
 }
 
@@ -208,7 +261,7 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
     return;
   }
   if (handle->GetResponseHeaders() &&
-      handle->GetResponseHeaders()->HasHeader("x-ipfs-path")) {
+      handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
     MaybeSetupIpfsProtocolHandlers(handle->GetURL());
   }
   MaybeShowDNSLinkButton(handle);
