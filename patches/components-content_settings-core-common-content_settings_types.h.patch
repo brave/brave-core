@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index a7ea788112619bf5e21009aab6ca254cf2a96b44..b3b2eb28a2e27ba4e99de6b55f4f43513332d24d 100644
+index 1c12667a0c0cc688e1c8be23631d4a63e65e2c7b..62042cb9deff7e587bf944f8257ea489ec4c7abb 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -237,6 +237,7 @@ enum class ContentSettingsType : int32_t {
+@@ -236,6 +236,7 @@ enum class ContentSettingsType : int32_t {
    // register the PermissionContext.
    DISPLAY_CAPTURE,
  

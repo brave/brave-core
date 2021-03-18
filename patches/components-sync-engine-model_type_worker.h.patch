@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine/model_type_worker.h b/components/sync/engine/model_type_worker.h
-index 549122b3ea45468ed2eb5f97bdedf5a7c1e230e6..872982146113613ca8c1128eff6cdd751bb256ff 100644
+index e14a3bdcb4bfe4efd627a98d8861aceb0de4ee63..d42a3cfae10d9a9d8c2b34ed7f92e6c94295d17e 100644
 --- a/components/sync/engine/model_type_worker.h
 +++ b/components/sync/engine/model_type_worker.h
-@@ -128,6 +128,7 @@ class ModelTypeWorker : public UpdateHandler,
+@@ -141,6 +141,7 @@ class ModelTypeWorker : public UpdateHandler,
      min_gu_responses_to_ignore_key_ = min_gu_responses_to_ignore_key;
    }
  

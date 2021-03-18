@@ -1,10 +1,10 @@
 diff --git a/chrome/installer/mac/signing/config_factory.py b/chrome/installer/mac/signing/config_factory.py
-index 0689fb6476e741b711454aeaf4ac7c20d5e4f989..c303bb474dcf4036fc1e8d8b6985af20ae2e4f62 100644
+index d4e2ce7eb5231574962e57e6e3fb8ee7115a21bf..77ab1a0f57b235e6a3765dd8bf79ee26999c6163 100644
 --- a/chrome/installer/mac/signing/config_factory.py
 +++ b/chrome/installer/mac/signing/config_factory.py
 @@ -8,6 +8,8 @@ def get_class():
      # First look up the processed Chromium config.
-     from chromium_config import ChromiumCodeSignConfig
+     from .chromium_config import ChromiumCodeSignConfig
      config_class = ChromiumCodeSignConfig
 +    from signing_helper import GetBraveSigningConfig
 +    config_class = GetBraveSigningConfig(config_class)

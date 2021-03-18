@@ -1,8 +1,8 @@
 diff --git a/components/update_client/updater_state_win.cc b/components/update_client/updater_state_win.cc
-index 565073acfa1b1bfc09d18e0b88dba67b5d1714fe..152442fabbfe14474aef6f023ed33769f51a87c3 100644
+index 102029a0fe62122f761c4703a15483641caa38c1..61e7fcdf0767b4b5eb9a933912dbf3eb8dbf56b8 100644
 --- a/components/update_client/updater_state_win.cc
 +++ b/components/update_client/updater_state_win.cc
-@@ -25,20 +25,32 @@ namespace {
+@@ -24,20 +24,32 @@ namespace {
  
  // Google Update group policy settings.
  const wchar_t kGoogleUpdatePoliciesKey[] =

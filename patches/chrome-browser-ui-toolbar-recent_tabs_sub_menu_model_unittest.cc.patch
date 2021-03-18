@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index fa7f59a62b1e3bee61cd70d9fd57a79cf0682b3d..eee70892ca304840e5ca4efede7d5ae552f651a9 100644
+index 9c8501fdad6d21934952a3a16af96a1a8c33fd62..8f966f150dadc589945b21d73fb2e20c5584829d 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 @@ -675,6 +675,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
@@ -9,4 +9,4 @@ index fa7f59a62b1e3bee61cd70d9fd57a79cf0682b3d..eee70892ca304840e5ca4efede7d5ae5
 +  BRAVE_MAX_TABS_PER_SESSION_AND_RECENCY
    EXPECT_EQ(9, num_items);
  
-   std::vector<base::string16> tab_titles =
+   std::vector<std::u16string> tab_titles =
