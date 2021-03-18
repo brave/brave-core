@@ -62,6 +62,10 @@ bool BinanceJSONParser::GetTokensFromJSON(
 //    ]
 // }
 //
+// or
+//
+// {"code":"000000","message":null,"data":[],"success":true}
+
 bool BinanceJSONParser::GetAccountBalancesFromJSON(
     const std::string& json, BinanceAccountBalances* balances) {
   if (!balances) {
@@ -90,18 +94,18 @@ bool BinanceJSONParser::GetAccountBalancesFromJSON(
     const base::Value* fiat_val = val.FindKey("fiatValuation");
 
     bool has_asset = asset && asset->is_string();
-    bool has_free = free_amount && free_amount->is_string();
-    bool has_btc_val = btc_val && btc_val->is_string();
-    bool has_fiat_val = fiat_val && fiat_val->is_string();
+    bool has_free = free_amount && free_amount->is_double();
+    bool has_btc_val = btc_val && btc_val->is_double();
+    bool has_fiat_val = fiat_val && fiat_val->is_double();
 
     if (!has_asset || !has_free || !has_btc_val || !has_fiat_val) {
       continue;
     }
 
-    std::vector<std::string> balance_data;
-    balance_data.push_back(free_amount->GetString());
-    balance_data.push_back(btc_val->GetString());
-    balance_data.push_back(fiat_val->GetString());
+    std::vector<double> balance_data;
+    balance_data.push_back(free_amount->GetDouble());
+    balance_data.push_back(btc_val->GetDouble());
+    balance_data.push_back(fiat_val->GetDouble());
 
     balances->insert({asset->GetString(), balance_data});
   }
