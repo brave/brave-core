@@ -1,10 +1,12 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include <assert.h>
 #include <cstring>
 #include <iostream>
 #include "wrapper.h"
-
-using namespace std;
-using namespace adblock;
 
 size_t num_passed = 0;
 size_t num_failed = 0;
@@ -41,8 +43,8 @@ const unsigned char ad_banner_with_resources_abc_dat_buffer[] = {
 
 void Assert(bool value, const std::string& message) {
   if (!value) {
-    cout << "Failed!" << endl;
-    cout << message << endl;
+    std::cout << "Failed!" << std::endl;
+    std::cout << message << std::endl;
   }
   assert(value);
 }
@@ -52,7 +54,7 @@ void Check(bool expected_result,
            bool expected_did_match_important,
            std::string expected_redirect,
            const std::string& test_description,
-           Engine& engine,
+           adblock::Engine* engine,
            const std::string& url,
            const std::string& host,
            const std::string& tab_host,
@@ -62,24 +64,25 @@ void Check(bool expected_result,
   bool did_match_important = false;
   bool did_match_rule = false;
   std::string redirect;
-  engine.matches(url, host, tab_host, third_party, resource_type,
-                 &did_match_rule, &did_match_exception, &did_match_important,
-                 &redirect);
-  cout << test_description << "... ";
+  engine->matches(url, host, tab_host, third_party, resource_type,
+                  &did_match_rule, &did_match_exception, &did_match_important,
+                  &redirect);
+  std::cout << test_description << "... ";
   if (expected_result != did_match_rule) {
-    cout << "Failed!" << endl;
-    cout << "Unexpected result: " << url << " in " << tab_host << endl;
+    std::cout << "Failed!" << std::endl;
+    std::cout << "Unexpected result: " << url << " in " << tab_host
+              << std::endl;
     num_failed++;
   } else if (did_match_exception != expected_did_match_exception) {
-    cout << "Failed!" << endl;
-    cout << "Unexpected did match exception value: " << url << " in "
-         << tab_host << endl;
+    std::cout << "Failed!" << std::endl;
+    std::cout << "Unexpected did match exception value: " << url << " in "
+              << tab_host << std::endl;
   } else if (did_match_important != expected_did_match_important) {
-    cout << "Failed!" << endl;
-    cout << "Unexpected did match important value: " << url << " in "
-         << tab_host << endl;
+    std::cout << "Failed!" << std::endl;
+    std::cout << "Unexpected did match important value: " << url << " in "
+              << tab_host << std::endl;
   } else {
-    cout << "Passed!" << endl;
+    std::cout << "Passed!" << std::endl;
     num_passed++;
   }
   assert(expected_result == did_match_rule);
@@ -89,33 +92,33 @@ void Check(bool expected_result,
 }
 
 void TestBasics() {
-  Engine engine(
+  adblock::Engine engine(
       "-advertisement-icon.\n"
       "-advertisement-management\n"
       "-advertisement.\n"
       "-advertisement/script.\n"
       "@@good-advertisement\n");
-  Check(true, false, false, "", "Basic match", engine,
+  Check(true, false, false, "", "Basic match", &engine,
         "http://example.com/-advertisement-icon.", "example.com", "example.com",
         false, "image");
-  Check(false, false, false, "", "Basic not match", engine,
+  Check(false, false, false, "", "Basic not match", &engine,
         "https://brianbondy.com", "brianbondy.com", "example.com", true,
         "image");
-  Check(false, true, false, "", "Basic saved from exception", engine,
+  Check(false, true, false, "", "Basic saved from exception", &engine,
         "http://example.com/good-advertisement-icon.", "example.com",
         "example.com", false, "image");
 }
 
 void TestDeserialization() {
-  Engine engine("");
+  adblock::Engine engine("");
   engine.deserialize(
       reinterpret_cast<const char*>(ad_banner_dat_buffer),
       sizeof(ad_banner_dat_buffer) / sizeof(ad_banner_dat_buffer[0]));
-  Check(true, false, false, "", "Basic match after deserialization", engine,
+  Check(true, false, false, "", "Basic match after deserialization", &engine,
         "http://example.com/ad-banner.gif", "example.com", "example.com", false,
         "image");
 
-  Engine engine2("");
+  adblock::Engine engine2("");
   engine2.deserialize(
       reinterpret_cast<const char*>(ad_banner_with_tag_abc_dat_buffer),
       sizeof(ad_banner_with_tag_abc_dat_buffer) /
@@ -123,17 +126,17 @@ void TestDeserialization() {
   Check(false, false, false, "",
         "Basic match after deserialization for a buffer with tags and no tag "
         "match",
-        engine2, "http://example.com/ad-banner.gif", "example.com",
+        &engine2, "http://example.com/ad-banner.gif", "example.com",
         "example.com", false, "image");
   engine2.addTag("abc");
   Check(true, false, false, "",
         "Basic match after deserialization for a buffer with tags and a tag "
         "match",
-        engine2, "http://example.com/ad-banner.gif", "example.com",
+        &engine2, "http://example.com/ad-banner.gif", "example.com",
         "example.com", false, "image");
 
   // Deserialize after adding tag still works
-  Engine engine3("");
+  adblock::Engine engine3("");
   engine3.addTag("abc");
   engine3.deserialize(
       reinterpret_cast<const char*>(ad_banner_with_tag_abc_dat_buffer),
@@ -142,48 +145,48 @@ void TestDeserialization() {
   Check(true, false, false, "",
         "Basic match after deserialization with resources with a tag on the "
         "engine before",
-        engine3, "http://example.com/ad-banner.gif", "example.com",
+        &engine3, "http://example.com/ad-banner.gif", "example.com",
         "example.com", false, "image");
 
-  Engine engine4("");
+  adblock::Engine engine4("");
   engine4.deserialize(
       reinterpret_cast<const char*>(ad_banner_with_resources_abc_dat_buffer),
       sizeof(ad_banner_with_resources_abc_dat_buffer) /
           sizeof(ad_banner_with_resources_abc_dat_buffer[0]));
   Check(true, false, false, "data:text/plain;base64,",
-        "Basic match after deserialization with resources", engine4,
+        "Basic match after deserialization with resources", &engine4,
         "http://example.com/ad-banner.gif", "example.com", "example.com", false,
         "image");
 }
 
 void TestTags() {
-  Engine engine(
+  adblock::Engine engine(
       "-advertisement-icon.$tag=abc\n"
       "-advertisement-management$tag=abc\n"
       "-advertisement.$tag=abc\n"
       "-advertisement/script.$tag=abc\n");
-  Check(false, false, false, "", "Without needed tags", engine,
+  Check(false, false, false, "", "Without needed tags", &engine,
         "http://example.com/-advertisement-icon.", "example.com", "example.com",
         false, "image");
   engine.addTag("abc");
   Assert(engine.tagExists("abc"), "abc tag should exist");
   Assert(!engine.tagExists("abcd"), "abcd should not exist");
-  Check(true, false, false, "", "With needed tags", engine,
+  Check(true, false, false, "", "With needed tags", &engine,
         "http://example.com/-advertisement-icon.", "example.com", "example.com",
         false, "image");
   // Adding a second tag doesn't clear the first.
   engine.addTag("hello");
-  Check(true, false, false, "", "With extra unneeded tags", engine,
+  Check(true, false, false, "", "With extra unneeded tags", &engine,
         "http://example.com/-advertisement-icon.", "example.com", "example.com",
         false, "image");
   engine.removeTag("abc");
-  Check(false, false, false, "", "With removed tags", engine,
+  Check(false, false, false, "", "With removed tags", &engine,
         "http://example.com/-advertisement-icon.", "example.com", "example.com",
         false, "image");
 }
 
 void TestRedirects() {
-  Engine engine("-advertisement-$redirect=1x1-transparent.gif\n");
+  adblock::Engine engine("-advertisement-$redirect=1x1-transparent.gif\n");
   engine.addResources(
       "[{\"name\": \"1x1-transparent.gif\","
       "\"aliases\": [],"
@@ -192,67 +195,56 @@ void TestRedirects() {
   Check(true, false, false,
         "data:image/"
         "gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==",
-        "Testing redirects match", engine,
+        "Testing redirects match", &engine,
         "http://example.com/-advertisement-icon.", "example.com", "example.com",
         false, "image");
 }
 
 void TestRedirect() {
-  Engine engine("-advertisement-$redirect=test\n");
+  adblock::Engine engine("-advertisement-$redirect=test\n");
   engine.addResource("test", "application/javascript", "YWxlcnQoMSk=");
   Check(true, false, false, "data:application/javascript;base64,YWxlcnQoMSk=",
-        "Testing single redirect match", engine,
+        "Testing single redirect match", &engine,
         "http://example.com/-advertisement-icon.", "example.com", "example.com",
         false, "image");
 }
 
-/*void TestExplicitCancel() {
-  Engine engine("-advertisement-icon$explicitcancel\n"
-                "@@-advertisement-icon-good\n");
-  Check(true, false, "", "Without needed tags", engine,
-      "http://example.com/-advertisement-icon", "example.com", "example.com",
-      false, "image");
-  Check(false, true, "", "Without needed tags", engine,
-      "http://example.com/-advertisement-icon-good", "example.com",
-"example.com", false, "image");
-}*/
-
 void TestThirdParty() {
-  Engine engine("-advertisement-icon$third-party");
-  Check(true, false, false, "", "Without needed tags", engine,
+  adblock::Engine engine("-advertisement-icon$third-party");
+  Check(true, false, false, "", "Without needed tags", &engine,
         "http://example.com/-advertisement-icon", "example.com",
         "brianbondy.com", true, "image");
-  Check(false, false, false, "", "Without needed tags", engine,
+  Check(false, false, false, "", "Without needed tags", &engine,
         "http://example.com/-advertisement-icon", "example.com", "example.com",
         false, "image");
 }
 
 void TestImportant() {
-  Engine engine(
+  adblock::Engine engine(
       "-advertisement-icon$important\n"
       "@@-advertisement-icon-good\n");
-  Check(true, false, true, "", "Exactly matching important rule", engine,
+  Check(true, false, true, "", "Exactly matching important rule", &engine,
         "http://example.com/-advertisement-icon", "example.com", "example.com",
         false, "image");
   Check(true, false, true, "", "Matching exception rule and important rule",
-        engine, "http://example.com/-advertisement-icon-good", "example.com",
+        &engine, "http://example.com/-advertisement-icon-good", "example.com",
         "example.com", false, "image");
 }
 
 void TestException() {
-  Engine engine("*banner.png\n");
-  Check(true, false, false, "", "Without exception", engine,
+  adblock::Engine engine("*banner.png\n");
+  Check(true, false, false, "", "Without exception", &engine,
         "http://example.com/ad_banner.png", "example.com", "example.com", false,
         "image");
 
-  Engine engine2("@@*ad_banner.png\n");
-  Check(false, true, false, "", "With exception", engine2,
+  adblock::Engine engine2("@@*ad_banner.png\n");
+  Check(false, true, false, "", "With exception", &engine2,
         "http://example.com/ad_banner.png", "example.com", "example.com", false,
         "image");
 }
 
 void TestClassId() {
-  Engine engine(
+  adblock::Engine engine(
       "###element\n"
       "##.ads\n"
       "##.element\n"
@@ -290,7 +282,7 @@ void TestClassId() {
 }
 
 void TestUrlCosmetics() {
-  Engine engine(
+  adblock::Engine engine(
       "a.com###element\n"
       "b.com##.ads\n"
       "##.block\n"
@@ -325,7 +317,7 @@ void TestUrlCosmetics() {
 }
 
 void TestSubdomainUrlCosmetics() {
-  Engine engine(
+  adblock::Engine engine(
       "a.co.uk##.element\n"
       "good.a.*#@#.element\n");
 
@@ -354,7 +346,7 @@ void TestSubdomainUrlCosmetics() {
 }
 
 void TestCosmeticScriptletResources() {
-  Engine engine(
+  adblock::Engine engine(
       "a.com##+js(scriptlet1)\n"
       "2.a.com##+js(scriptlet2.js, argument)\n");
 
@@ -380,7 +372,7 @@ void TestCosmeticScriptletResources() {
 }
 
 void TestGenerichide() {
-  Engine engine(
+  adblock::Engine engine(
       "##a[href=\"generic.com\"]\n"
       "@@||b.com$generichide\n"
       "b.com##.block\n"
@@ -431,7 +423,7 @@ void domainResolverImpl(const char* host, uint32_t* start, uint32_t* end) {
 }
 
 int main() {
-  SetDomainResolver(domainResolverImpl);
+  adblock::SetDomainResolver(domainResolverImpl);
 
   TestBasics();
   TestDeserialization();
@@ -446,7 +438,8 @@ int main() {
   TestSubdomainUrlCosmetics();
   TestGenerichide();
   TestCosmeticScriptletResources();
-  cout << num_passed << " passed, " << num_failed << " failed" << endl;
-  cout << "Success!";
+  std::cout << num_passed << " passed, " << num_failed << " failed"
+            << std::endl;
+  std::cout << "Success!";
   return 0;
 }
