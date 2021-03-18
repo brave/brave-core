@@ -91,6 +91,8 @@ include_rules = [
   "+components/autofill/core/browser",
   "+components/bookmarks/browser",
   "+components/component_updater",
+  "+components/feed/buildflags.h",
+  "+components/feed/feed_feature_list.h",
   "+components/gcm_driver/gcm_buildflags.h",
   "+components/grit/brave_components_resources.h",
   "+components/grit/brave_components_strings.h",
