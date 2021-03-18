@@ -1,5 +1,5 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index 15bf6b003892f39d4946ccfad7d630db19751d1b..5988642823db876c86f71168b396aa25cb51e7c3 100644
+index 973ae603889b8f7077618aa4720dd0eac48b31ab..20be1adb27cde782426ff9970f5746b82661c61a 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
 @@ -44,6 +44,7 @@ grit("components_strings") {
@@ -17,5 +17,5 @@ index 15bf6b003892f39d4946ccfad7d630db19751d1b..5988642823db876c86f71168b396aa25
 -  source = "../components_chromium_strings.grd"
 +  source = "../components_${branding_path_component}_strings.grd"
    outputs = [ "grit/components_chromium_strings.h" ]
-   foreach(locale, locales_with_fake_bidi) {
+   foreach(locale, locales_with_pseudolocales) {
      outputs += [ "components_chromium_strings_$locale.pak" ]

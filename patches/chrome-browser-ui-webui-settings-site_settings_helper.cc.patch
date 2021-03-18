@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index af39c4566688786bb0a71dbec44c1a5dd8fdb435..2b7dd3d629dd0d64419ee94337416125ff9bf464 100644
+index b495bc6568057aaed58075da3995ec08e2a043a8..f44a9e01d6a2d8661e84513f19d9d4518c45f7b4 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -149,6 +149,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+@@ -148,6 +148,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::PERMISSION_AUTOREVOCATION_DATA, nullptr},
      {ContentSettingsType::FILE_SYSTEM_LAST_PICKED_DIRECTORY, nullptr},
      {ContentSettingsType::DISPLAY_CAPTURE, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
- // TODO(crbug.com/1149878): After removing
-@@ -378,6 +379,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+ static_assert(base::size(kContentSettingsTypeGroupNames) ==
+@@ -375,6 +376,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {
