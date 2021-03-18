@@ -64,7 +64,9 @@ IPFSOnboardingPage::IPFSOnboardingPage(
                                                        std::move(controller)),
       ipfs_service_(ipfs_service) {
   service_observer_.Observe(ipfs_service_);
+#if !defined(OS_ANDROID)
   theme_observer_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
+#endif
 }
 
 IPFSOnboardingPage::~IPFSOnboardingPage() = default;
@@ -250,8 +252,12 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
   load_time_data->SetString(
       "tryAgainText", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_TRY_AGAIN));
 
+#if !defined(OS_ANDROID)
   load_time_data->SetString(
       "braveTheme", GetThemeType(ui::NativeTheme::GetInstanceForNativeUi()));
+#else
+  load_time_data->SetString("braveTheme", "light");
+#endif
 }
 
 int IPFSOnboardingPage::GetHTMLTemplateId() {
