@@ -69,6 +69,10 @@ bool AdBlockCustomFiltersService::MigrateLegacyCosmeticFilters(
     const std::vector<std::string>& hostSelectors = hostEntry.second;
 
     for (const auto& selector : hostSelectors) {
+      if (selector.empty()) {
+        continue;
+      }
+
       const std::string rule = '\n' + host + "##" + selector;
 
       filters_update += rule;

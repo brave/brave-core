@@ -96,12 +96,16 @@ export async function onSelectorReturned (response: any) {
     rule.selector = window.prompt('CSS selector:', `${response}`) || ''
   }
 
-  if (rule.selector && rule.selector.length > 0) {
-    chrome.tabs.insertCSS({
-      code: `${rule.selector} {display: none !important;}`,
-      cssOrigin: 'user'
-    })
-  }
+  if (rule.selector) {
+    const selector: string = rule.selector.trim()
 
-  await addSiteCosmeticFilter(rule.host, rule.selector)
+    if (selector.length > 0) {
+      chrome.tabs.insertCSS({
+        code: `${selector} {display: none !important;}`,
+        cssOrigin: 'user'
+      })
+
+      await addSiteCosmeticFilter(rule.host, selector)
+    }
+  }
 }
