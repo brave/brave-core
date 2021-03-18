@@ -113,7 +113,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="847561904663814268">Någon har tidigare loggat in i Brave som <ph name="ACCOUNT_EMAIL_LAST"/> på den här datorn. Skapa en ny Brave-användare så att dina uppgifter hålls separat.</translation>
 <translation id="3834935463915107022">Vill du avsluta Brave ändå?</translation>
 <translation id="8668413672647811944">En särskild säkerhetsuppdatering för Brave installerades precis. Starta om webbläsaren nu. Flikarna återställs efteråt.</translation>
-<translation id="7914115000169617076">Uppdateringen är snart klar! Starta Brave igen för att avsluta uppdateringen. Inkognitofönster öppnas inte igen.</translation>
 <translation id="4823369970559443694">Brave kan inte kontrollera dina lösenord. Försök igen om 24 timmar eller <ph name="BEGIN_LINK"/>kontrollera lösenorden i ditt Brave-konto<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Detta använder samma stavningskontroll som Brave Sök. Text som du skriver i webbläsaren skickas till Brave. Du kan när som helst ändra detta i inställningarna.</translation>
 <translation id="2899369907387169108">Använd Brave utan konto</translation>
@@ -284,4 +283,5 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Det finns en ny Brave-uppdatering som tillämpas så snart du startar om.}=1{Det finns en ny Brave-uppdatering som tillämpas så snart du startar om. Inkognitofönstret öppnas inte igen.}other{Det finns en ny Brave-uppdatering som tillämpas så snart du startar om. De # inkognitofönstren öppnas inte igen.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratören meddelar att du bör starta om Brave så att uppdateringen tillämpas}=1{Administratören meddelar att du bör starta om Brave så att uppdateringen tillämpas. Inkognitofönstret öppnas inte igen.}other{Administratören meddelar att du bör starta om Brave så att uppdateringen tillämpas. De # inkognitofönstren öppnas inte igen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratören meddelar att du måste starta om Brave så att en uppdatering tillämpas}=1{Administratören meddelar att du måste starta om Brave så att en uppdatering tillämpas. Inkognitofönstret öppnas inte igen.}other{Administratören meddelar att du måste starta om Brave så att en uppdatering tillämpas. De # inkognitofönstren öppnas inte igen.}}</translation>
+<translation id="7914115000169617076">Uppdateringen är snart klar! Starta Brave igen för att avsluta uppdateringen. Privata fönster öppnas inte igen.</translation>
 </translationbundle>

@@ -785,7 +785,7 @@
 <translation id="6560414384669816528">Пребарување со Sogou</translation>
 <translation id="656065428026159829">Прикажи повеќе</translation>
 <translation id="6565959834589222080">Се користи Wi-Fi кога е достапна</translation>
-<translation id="5813223329348543512">Brave ви заштеди <ph name="GIGABYTES"/> гб</translation>
+<translation id="5813223329348543512">Brave ви заштеди <ph name="GIGABYTES"/> GB</translation>
 <translation id="6573096386450695060">Секогаш дозволувај</translation>
 <translation id="5157964048453367290">Картичките што сте ги отвориле во Brave на другите уреди ќе се појават тука.</translation>
 <translation id="6583199322650523874">Ставете обележувач на тековната страница</translation>
@@ -1122,7 +1122,7 @@
 <translation id="6894658278639191411">За да ви помогне да завршувате задачи, Brave ќе ги добива URL-адресите и содржините на сајтовите на коишто го користите „Помошникот“, како и податоците што ги испраќате преку него. Податоциве може да се зачуваат во вашата сметка на Brave. Може да го исклучите „Помошникот“ во поставките за Brave.</translation>
 <translation id="1174893863889683998">Да се отстрани вашата активност на Brave од „Дигитална благосостојба“?</translation>
 <translation id="8942627711005830162">Отвори во друг прозорец</translation>
-<translation id="3257320067425202300">Brave ви заштеди <ph name="MEGABYTES"/> мб</translation>
+<translation id="3257320067425202300">Brave ви заштеди <ph name="MEGABYTES"/> MB</translation>
 <translation id="8965591936373831584">чека на ред</translation>
 <translation id="8970887620466824814">Нешто тргна наопаку.</translation>
 <translation id="8972098258593396643">Дали да се преземе во стандардната папка?</translation>

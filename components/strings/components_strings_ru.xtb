@@ -1318,7 +1318,7 @@
 <translation id="6328784461820205019">"Подключение не защищено", "&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;", "&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;", "&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;", "&lt;span class="error-code"&gt;ERR_CERT_SYMANTEC_LEGACY&lt;/span&gt;" или "Ошибка сертификата SSL"</translation>
 <translation id="6328786501058569169">Это поддельный сайт</translation>
 <translation id="6337133576188860026">Освободится менее <ph name="SIZE"/> пространства. После этого некоторые веб-страницы могут загружаться дольше обычного.</translation>
-<translation id="6337534724793800597">Фильтровать политики по названию</translation>
+<translation id="6337534724793800597">Фильтровать правила по названию</translation>
 <translation id="6349101878882523185">Установить приложение "<ph name="APP_NAME"/>"</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Нет}=1{1 пароль (для <ph name="DOMAIN_LIST"/>, синхронизировано)}=2{2 пароля (для <ph name="DOMAIN_LIST"/>, синхронизировано)}one{# пароль (для <ph name="DOMAIN_LIST"/>, синхронизировано)}few{# пароля (для <ph name="DOMAIN_LIST"/>, синхронизировано)}many{# паролей (для <ph name="DOMAIN_LIST"/>, синхронизировано)}other{# пароля (для <ph name="DOMAIN_LIST"/>, синхронизировано)}}</translation>
 <translation id="6358450015545214790">Что это значит?</translation>
@@ -2048,8 +2048,8 @@
 <translation id="6771143571626203666">Из Brave Pay</translation>
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="8362995731815961365">Тот, кто настраивал компьютер, заблокировал этот сайт.</translation>
-<translation id="4075123085690634698">Открыть страницу в новом окне в режиме инкогнито (⇧ + ⌘ + N)</translation>
-<translation id="2388886110302389394">Открыть страницу в новом окне в режиме инкогнито (Ctrl + Shift + N)</translation>
+<translation id="4075123085690634698">Открыть страницу в новом Приватном окне (⇧ + ⌘ + N)</translation>
+<translation id="2388886110302389394">Открыть страницу в новом Приватном окне (Ctrl + Shift + N)</translation>
 <translation id="6957624206566198865">Открыть страницу в новой вкладке инкогнито</translation>
 <translation id="2378238891085281592">Вы работаете в режиме инкогнито</translation>
 <translation id="3774752171665127360">Страницы, открытые в этом окне, не останутся в истории браузера или поиска. Они не оставят на компьютере следов, таких как файлы cookie, после того как вы закроете все вкладки инкогнито. Скачанные вами файлы и добавленные закладки будут сохранены.</translation>
@@ -2067,8 +2067,8 @@
     &lt;li&gt;Перейдите на сайт, адрес которого начинается с &lt;code&gt;http://&lt;/code&gt;, например &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;Чтобы получить доступ к Интернету, выполните вход на открывшейся странице.&lt;/li&gt;
     &lt;/ol&gt;
-    &lt;h4&gt;Шаг 2. Откройте веб-страницу в режиме инкогнито (только на компьютере)&lt;/h4&gt;
-    &lt;p&gt;Откройте нужную страницу в режиме инкогнито.&lt;/p&gt;
+    &lt;h4&gt;Шаг 2. Откройте веб-страницу в Приватном окне  (только на компьютере)&lt;/h4&gt;
+    &lt;p&gt;Откройте нужную страницу в Приватном окне.&lt;/p&gt;
     &lt;p&gt;Если это помогло, ошибка вызвана расширением Brave. Чтобы устранить проблему, отключите его.&lt;/p&gt;
     &lt;h4&gt;Шаг 3. Обновите операционную систему&lt;/h4&gt;
     &lt;p&gt;Убедитесь, что на устройстве установлена последняя версия операционной системы.&lt;/p&gt;

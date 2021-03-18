@@ -113,7 +113,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="847561904663814268">Someone previously signed in to Brave on this computer as <ph name="ACCOUNT_EMAIL_LAST"/>. Please create a new Brave user to keep your information separate.</translation>
 <translation id="3834935463915107022">Quit Brave anyway?</translation>
 <translation id="8668413672647811944">A special security update for Brave was just applied. Restart now and we'll restore your tabs.</translation>
-<translation id="7914115000169617076">Nearly up to date! Relaunch Brave to finish updating. Incognito windows won't reopen.</translation>
 <translation id="4823369970559443694">Brave can't check your passwords. Try again after 24 hours or <ph name="BEGIN_LINK"/>check passwords in your Brave sync chain<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">This uses the same spell checker that's used in Brave search. Text that you type in the browser is sent to Brave. You can always change this behaviour in settings.</translation>
 <translation id="2899369907387169108">Use Brave without an account</translation>
@@ -284,4 +283,5 @@ Brave is unable to recover your settings.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{A new update for Brave is available and will be applied as soon as you relaunch.}=1{A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}other{A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Your administrator asks that you relaunch Brave to apply this update}=1{Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}other{Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Your administrator requires that you relaunch Brave to apply an update}=1{Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}other{Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}</translation>
+<translation id="7914115000169617076">Nearly up to date! Relaunch Brave to finish updating. Private windows won't reopen.</translation>
 </translationbundle>

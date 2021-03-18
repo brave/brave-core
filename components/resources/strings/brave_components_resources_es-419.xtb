@@ -35,8 +35,23 @@
 <translation id="604124094241169006">Automático</translation>
 <translation id="867722069064361487">Reloj de 12 horas</translation>
 <translation id="4064062743338217840">Reloj de 24 horas</translation>
-<translation id="8643377320501056697">Mostrar sitios populares</translation>
-<translation id="7176563092712682575">Personalizar sitios populares</translation>
+<translation id="5313967007315987356">Agregar sitio</translation>
+<translation id="5052499409147950210">Editar sitio</translation>
+<translation id="1181037720776840403">Quitar</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">Dirección del sitio web</translation>
+<translation id="5327248766486351172">Nombre</translation>
+<translation id="6916084277913254682">Título del sitio web</translation>
+<translation id="5317780077021120954">Guardar</translation>
+<translation id="7658239707568436148">Cancelar</translation>
+<translation id="4643117005422448078">Sitios populares</translation>
+<translation id="6307720725257444819">Favoritos</translation>
+<translation id="81774600964978477">Tú seleccionas los sitios populares</translation>
+<translation id="5439599923922718668">Los más visitados</translation>
+<translation id="430556192781857057">Los sitios populares se sugieren en base a sitios web que visitas a menudo</translation>
+<translation id="8037713009824540257">Agregar sitio</translation>
+<translation id="1773147648972887693">Mostrar los más visitados</translation>
+<translation id="4546260624932151782">Mostrar favoritos</translation>
 <translation id="3446024864193919737">Mostrar recompensas de Brave</translation>
 <translation id="6274899614137380422">Mostrar Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">Desactivar contenido de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promocionado</translation>
 <translation id="1776831331757823105">Reloj</translation>
-<translation id="4643117005422448078">Sitios populares</translation>
 <translation id="7791543448312431591">Agregar</translation>
 <translation id="7679334366167089823">Gana tokens por ver anuncios que respetan la privacidad.</translation>
 <translation id="1531133232292396145">Opera con criptomonedas en Binance directamente en tu navegador.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">Esto es un(a)</translation>
 <translation id="2055363275850890030">Ventana privada</translation>
 <translation id="9133213713928851646">Brave no registra su actividad en una ventana privada. Los sitios que visite en ella no aparecerán en el historial, y las cookies desaparecerán cuando finalice la navegación. A pesar de ello,  las ventanas privadas no garantizan su completo anonimato durante su actividad en línea.</translation>
-<translation id="8760415064721320867">Ventana privada con Tor</translation>
-<translation id="4844209912525464363">Brave nunca registra lo que usted hace en una ventana privada. Con Tor, sus datos de navegación también permanecerán ocultos de su proveedor de servicios Internet o empleador y, al mismo tiempo, su dirección IP permanecerá oculta de los sitios que visite.</translation>
+<translation id="3546750666732517156">Ventana de incógnito con conectividad Tor</translation>
+<translation id="5383068818957293256">Brave nunca registra lo que haces en una ventana de incógnito. Con conectividad Tor, tu dirección IP también se mantiene oculta cuando visitas sitios. Sin embargo, si tu seguridad personal depende de mantener el anonimato, directamente deberías usar el navegador Tor.</translation>
 <translation id="778096729652828897">Obtenga más información sobre las ventanas privadas con Tor</translation>
 <translation id="7919374705736538787">Realice una búsqueda privada con</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Para la búsqueda privada, Brave usará DuckDuckGo para realizar las búsquedas en las ventanas privadas. DuckDuckGo no registra su historial de búsqueda, por lo que le permite mantener la privacidad de sus búsquedas.</translation>
 <translation id="1925197199485958903">En las ventanas privadas con Tor, DuckDuckGo es el motor de búsqueda predeterminado. Algunos de los motores de búsqueda más conocidos son difíciles de usar con Tor. DuckDuckGo no registrará su historial de búsqueda; con Tor, ni siquiera sabrán su dirección IP.</translation>
 <translation id="4371533307685765155">Buscar con DuckDuckGo</translation>
-<translation id="5576876180131651996">Haga que las ventanas privadas sean mucho más seguras</translation>
-<translation id="1129265576134014816">Esta ventana privada es mucho más segura</translation>
-<translation id="805807983419360524">con Tor</translation>
-<translation id="8958799246752641148">Tor oculta su dirección IP de los sitios que visita mediante el enrutamiento de su navegación a través de múltiples servidores de Tor antes de alcanzar el destino. Estas conexiones están cifradas, por lo que su ISP o empleador tampoco podrán ver los sitios que visita. La actividad de Tor puede ralentizar la navegación o inhabilitar el funcionamiento de ciertos sitios.</translation>
-<translation id="520608572871993342">El uso de ventanas privadas solo modifica la acción de Brave en su dispositivo — no modifica la acción de otros agentes. Tor oculta su dirección IP de los sitios que visita y, al mismo tiempo, oculta los sitios que visita de su proveedor de servicios de Internet o empleador. Abra una ventana privada con Tor desde el menú o con {{ key }}.</translation>
+<translation id="548478195417408221">Aumenta la privacidad de las ventanas de incógnito</translation>
+<translation id="3294503279952534143">Esta ventana de incógnito es aún más privada</translation>
+<translation id="4644024131266615376">con conectividad Tor</translation>
+<translation id="8541421872680304667">Tor oculta su dirección IP de los sitios que visitas mediante el enrutamiento de tu navegación a través de múltiples servidores de Tor antes de llegar a destino. La actividad de Tor puede ralentizar la navegación o inhabilitar el funcionamiento de ciertos sitios.</translation>
+<translation id="7030950080800709999">Usar ventanas de incógnito solo cambia lo que Brave hace en tu dispositivo. No cambia el comportamiento de nadie más. Tor le oculta tu dirección IP a los sitios que visitas y hace que sea más difícil, pero no imposible, que tu proveedor de Internet o empleador vea los sitios que visitas. Abre una ventana de incógnito con Tor desde el menú o con {{ key }}.</translation>
 <translation id="6975708438781948564">Obtenga más información sobre Tor en Brave</translation>
 <translation id="4712050378540986986">Estado de Tor</translation>
 <translation id="3368922792935385530">Conectado</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">Informar sobre un sitio roto</translation>
 <translation id="8510478288840333677">Informa a los desarrolladores de Brave de que los escudos no funcionan como es debido.</translation>
 <translation id="6013164422534859494">Nota: La dirección de este sitio se enviará junto con el número de la versión de Brave que usas y tu dirección IP (que no quedará almacenada).</translation>
-<translation id="7658239707568436148">Cancelar</translation>
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="5299848999918506028">¡Gracias!</translation>
 <translation id="76550953340008122">Gracias por informar a los desarrolladores de Brave de que hay un problema en este sitio. Haremos todo lo posible por solucionarlo.</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">Próxima fecha de contribución mensual</translation>
 <translation id="6231182869178328516">Recién le di una propina a <ph name="NAME"/> usando el navegador Brave. Aquí hay más información: https://brave.com/tips.</translation>
 <translation id="8404935570206006581">PropinaconBrave</translation>
-<translation id="2876191400747549936">Lo sentimos, pero hubo un problema al procesar tu solicitud. Vuelve a intentarlo.</translation>
+<translation id="3113653894794167793">Lo sentimos, pero hubo un problema al procesar tu solicitud. Vuelve a intentarlo.</translation>
 <translation id="3082557070674409251">Cliqueado</translation>
 <translation id="7119308337584989771">Descartado</translation>
 <translation id="6805660603861526473">Visto</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">Los Brave Private Ads te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.</translation>
 <translation id="6973095375773523904">¿Dónde se muestran los anuncios?</translation>
 <translation id="7556325460112047619">Los Brave Private Ads se mostrarán como una notificación normal. Puedes controlar con qué frecuencia deseas ver estos anuncios en la configuración.</translation>
-<translation id="5816125157889950051">¿Cuándo recibes recompensas?</translation>
+<translation id="6897083627729802351">¿Cuándo recibes recompensas?</translation>
 <translation id="310863932297733723">Recibirás los tokens que ganaste de los Brave Private Ads durante el mes actual el día 5 del mes siguiente.</translation>
 <translation id="7712287524451429139">Retribuye sin demasiado esfuerzo</translation>
 <translation id="105037569026952831">Los creadores reciben tus contribuciones de tokens de forma automática en función de tus niveles de participación que medimos como ‘Atención’.</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">Marcar como inapropiado ✓</translation>
 <translation id="8988332871810963281">Actualmente no hay ningún historial de anuncios de Brave disponible.</translation>
 <translation id="5345727496083327478">Ya no recibirás anuncios de esta categoría.</translation>
-<translation id="5317780077021120954">Guardar</translation>
 <translation id="2827387977307390755">Permitir propinas en</translation>
 <translation id="3819257035322786455">Copia de seguridad</translation>
 <translation id="1312977698678162065">Gana dinero por mirar publicidades relevantes que respetan tu privacidad.</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">Sus sitios anclados se han trasladado a</translation>
 <translation id="6803187280799213426">Los fondos en tu billetera Brave son virtuales y no requieren una copia de seguridad. Está disponible para usar exclusivamente en este navegador.</translation>
 <translation id="5290348443732633227">Si quieres asegurar todos tus fondos en caso de instalar por completo un navegador o de cambiar a un nuevo dispositivo y tener otros beneficios como agregar, retirar y transferir fondos, recomendamos</translation>
-<translation id="6733942359297688714">conectar a una billetera de Uphold verificada.</translation>
+<translation id="467041382895390784">conectando con una billetera de <ph name="PROVIDER"/> verificada.</translation>
 <translation id="5717619667204259673">Guarde esta clave de recuperación en un lugar seguro.</translation>
 <translation id="4699702339303280827">Siempre puedes usar esta clave para recuperar tu billetera si algo le sucede a tu navegador o a tu computadora. Pero asegúrate de protegerla; cualquier persona que sepa esta clave podría robar tu billetera. Probablemente, lo más seguro sea escribirla en un papel o donde guardes información importante.</translation>
 <translation id="8979401359137062629">Nota:</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">A veces, te ofrecerán donaciones gratis de tokens de Brave. ¡Asegúrate de estar atento a la alerta!</translation>
 <translation id="2185598236335233939">Busca notificaciones de anuncios sin salir de Brave. Tu saldo de puntos BAT aumentará con cada anuncio que veas.</translation>
 <translation id="1370034647041840967">¡Obtén tokens por la atención que les prestas a las publicidades y paga para apoyar a los creadores de contenido que valoras!</translation>
-<translation id="4600224932216165965">Agrega, retira y administra fondos en <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
-<translation id="3580616436301227919">Tu billetera de Brave cuenta con tecnología de <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="4919888432594361029">Agrega, retira y administra fondos en <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">Tu billetera de Brave cuenta con tecnología de <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Las Recompensas Brave están creadas en función del Basic Attention Token. Obtén más información sobre el BAT</translation>
 <translation id="7823359893981882407">aquí</translation>
 <translation id="4483635855837696643">Recuperar tu Billetera</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">Ingrese su clave de recuperación o</translation>
 <translation id="6548189695918108191">Realiza una copia de seguridad de tu billetera antes de reemplazar o perderás los fondos, {{funds}}, en tu billetera actual.</translation>
 <translation id="5423214929210538027">¿Estás seguro de que deseas restablecer tu billetera de Recompensas?</translation>
-<translation id="7428521340740703492">Tus <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> y otros datos de Recompensas se perderán para siempre si restableces tu billetera. Asegúrate de haber verificado tu billetera con Uphold para conservar tus BAT.</translation>
+<translation id="8683358891240311475">Tus <ph name="BAT_AMOUNT"/> y otros datos de Recompensas se perderán para siempre si restableces tu billetera. Asegúrate de haber verificado tu billetera con <ph name="PROVIDER"/> para conservar tus BAT.</translation>
 <translation id="2028613172174411919">Tus datos de Recompensas se perderán de forma permanente si restableces tu billetera.</translation>
 <translation id="4914597931214386232">Donaciones de tokens reclamadas</translation>
 <translation id="3494964159182650590">Resumen de recompensas</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">verificar</translation>
 <translation id="8267327690882073581">Verificar billetera</translation>
 <translation id="543510923939676996">Billetera verificada</translation>
-<translation id="7591798679868259510">Ir a mi cuenta de Uphold</translation>
+<translation id="2659764755126740206">Ir a mi cuenta de <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Completar verificación de billetera</translation>
 <translation id="9200453331904391567">Desconectar de Recompensas Brave</translation>
 <translation id="46988480989545156">Verificar billetera</translation>
-<translation id="160145159036553575">Nuestro servicio de billetera lo facilita <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="5796169459825124737">Nuestro servicio de billetera lo facilita <ph name="PROVIDER"/>.</translation>
 <translation id="6771734945114850124">Ten a mano tu identificación emitida por el gobierno.</translation>
 <translation id="8697510149346635496">Retira BAT que ganes por mirar anuncios que respetan la privacidad.</translation>
 <translation id="1481480653609649134">Compra BAT adicional con tarjetas de crédito y otros medios.</translation>
 <translation id="9096003370755878766">Retira BAT que hayas agregado previamente a tu billetera de Recompensas Brave.</translation>
 <translation id="8558636200953226885">Si verificas tu cuenta, puedes…</translation>
 <translation id="3354315693758743702">Verificar la billetera es opcional.</translation>
-<translation id="8465442795593991224">Uphold puede solicitarte que verifiques tu identidad según los servicios requeridos.</translation>
-<translation id="723054503945711909">Cuando creas una cuenta con Uphold, Brave Software Inc. no procesa ni almacena la información personal que les proporcionas, así como tampoco accede a esta.</translation>
-<translation id="7677480094678113476">Nota: Uphold tendrá visibilidad de tus transacciones cuando des tu autorización. Por ejemplo, podrá ver el destinatario y el importe de tus propinas.</translation>
+<translation id="4872388810065331182">Es posible que <ph name="PROVIDER"/> te pida que verifiques tu identidad en función de los servicios que solicites.</translation>
+<translation id="6938217233488972952">Brave Software Inc. no procesa, almacena ni accede a ningún dato personal que le facilitas a <ph name="PROVIDER"/> cuando abres una cuenta con ellos.</translation>
+<translation id="2415586822982819406">Nota: <ph name="PROVIDER"/> podrá acceder a tus transacciones una vez que lo autorices. Por ejemplo, podrá ver el destinatario y el importe de tus propinas.</translation>
 <translation id="7404779623219601861">Canjea BAT por tarjetas de regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puedes canjear tus BAT por tarjetas de regalo de marcas populares.</translation>
 <translation id="6915065518766963119">* Requiere la verificación de Uphold.</translation>
@@ -722,12 +734,36 @@
 <translation id="8327818101454798856">Por lo tanto, dirígete allí si buscabas apoyar tus sitios favoritos.</translation>
 <translation id="412480955826088549">Descargando componente...</translation>
 <translation id="4894106830958548828">Lo comprendo</translation>
-<translation id="7701466644604753106">Activar Speedreader</translation>
-<translation id="763042262431778831">Desactivar Speedreader</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Ver mercados y comprar criptomonedas de crypto.com.</translation>
+<translation id="4292334826913000023">Mostrar precio</translation>
+<translation id="5001098083058405168">Consigue una bonificación del 2 % en depósitos</translation>
+<translation id="7336377875970208451">Dejar de pagar comisiones de transacción</translation>
+<translation id="5889002303959545585">Comprar Bitcoin</translation>
+<translation id="7243082596932212589">Ver mercados de Crypto.com</translation>
+<translation id="2258222996838418990">7d Graph</translation>
+<translation id="5337526542182802976">Pares compatibles</translation>
+<translation id="1164622162816276433">Volumen de 24 h</translation>
+<translation id="7534079972563542000">Dominios imparables</translation>
+<translation id="4492298165410552103">¿Quieres activar dominios imparables en Brave?</translation>
+<translation id="3470923752115324276">Brave puede permitir que visites dominios .crypto usando Cloudflare para resolver solicitudes de búsqueda de nombres de dominio .crypto usando DNS en HTTPS. Si activas esto, Cloudflare verá el dominio .crypto que intentas visitar, pero no podrá ver otros dominios. Consulta las <ph name="BEGIN_CF_TOU_LINK"/>condiciones de uso<ph name="END_CF_TOU_LINK"/> y la <ph name="BEGIN_CF_PRIVACY_LINK"/>política de privacidad<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="4335039108389860301">¿Quieres activar la compatibilidad de Ethereum Name Service (ENS) en Brave?</translation>
+<translation id="618766505813078707">Brave puede permitir que visites dominios .eth usando Cloudflare para resolver solicitudes de búsqueda de nombres de dominio .eth usando DNS en HTTPS. Si activas esto, Cloudflare verá el dominio .eth que intentas visitar, pero no podrá ver otros dominios. Consulta las <ph name="BEGIN_CF_TOU_LINK"/>condiciones de uso<ph name="END_CF_TOU_LINK"/> y la <ph name="BEGIN_CF_PRIVACY_LINK"/>política de privacidad<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
+<translation id="5636651007798897342">Continuar usando el servidor Cloudflare</translation>
+<translation id="2468755552460246661">Dominio bloqueado</translation>
+<translation id="6631469728138660166">Sitio sospechoso</translation>
+<translation id="983774928604730749">Brave ha evitado que se cargue el siguiente sitio:</translation>
+<translation id="8250033559824599347">Este sitio puede ser fraudulento, llevarte de un sitio a otro para instalar cookies de rastreo o realizar otras acciones que invadan tu privacidad.</translation>
+<translation id="2459038234784107183">No volver a advertirme de este sitio</translation>
+<translation id="8242426110754782860">Continuar</translation>
+<translation id="2501278716633472235">Ir atrás</translation>
 <translation id="9020818404803201080">Peers conectados:</translation>
 <translation id="2903493209154104877">Direcciones</translation>
 <translation id="3207122385716480167">Estadísticas de repositorio</translation>
 <translation id="2595187693729756455">Información de nodo</translation>
+<translation id="8999763401170835879">Ocurrió un error. Prueba a iniciar de nuevo.</translation>
+<translation id="5433704526290922623">Ocurrió un error. Prueba a instalar el nodo de nuevo.</translation>
 <translation id="5789886980848929155">Estado del nodo de IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Puerta de enlace</translation>
@@ -769,20 +805,20 @@
 <translation id="3977809385703587108">Puedes cambiar tus preferencias de nuevo dentro de</translation>
 <translation id="3340978935015468852">configuración</translation>
 <translation id="4148957013307229264">Instalando...</translation>
-<translation id="6057992164469678163">Esperando a pares...</translation>
+<translation id="4219228508273972445">Buscando pares...</translation>
 <translation id="1902096227388293745">No hay pares disponibles, por lo que se está intentando nuevamente... (<ph name="ATTEMPTS_NUMBER"/> intentos restantes)</translation>
 <translation id="1675751799495331928">Hemos superado el límite de intentos. Inténtalo de nuevo más tarde.</translation>
 <translation id="4499666752625407848">Ocurrió un error durante una actualización.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Ver mercados y comprar criptomonedas de crypto.com.</translation>
-<translation id="4292334826913000023">Mostrar precio</translation>
-<translation id="5001098083058405168">Consigue una bonificación del 2 % en depósitos</translation>
-<translation id="7336377875970208451">Dejar de pagar comisiones de transacción</translation>
-<translation id="5889002303959545585">Comprar Bitcoin</translation>
-<translation id="7243082596932212589">Ver mercados de Crypto.com</translation>
-<translation id="2258222996838418990">7d Graph</translation>
-<translation id="5337526542182802976">Pares compatibles</translation>
-<translation id="1164622162816276433">Volumen de 24 h</translation>
+<translation id="7789840864192026963">Dar permiso</translation>
+<translation id="8092074243456635562">hasta que cierre la página</translation>
+<translation id="3523195733429162409">durante 24 horas</translation>
+<translation id="2373264732659722940">durante 1 semana</translation>
+<translation id="6318437367327684789">para siempre</translation>
+<translation id="7463327191540031132">Bloquear para siempre</translation>
+<translation id="8797999629784150206">Puedes cambiar los <ph name="SITE_PERMISSIONS"/> en cualquier momento. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">permiso del sitio</translation>
+<translation id="7701466644604753106">Activar Speedreader</translation>
+<translation id="763042262431778831">Desactivar Speedreader</translation>
 <translation id="3155170474926428993">Selector de Tor</translation>
 <translation id="3745016858329272300">Información general</translation>
 <translation id="4045404575593562245">Eventos de control de Tor</translation>

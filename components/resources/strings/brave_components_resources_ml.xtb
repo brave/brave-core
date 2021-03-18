@@ -5,6 +5,13 @@
 <translation id="6040143037577758943">അവസാനിപ്പിക്കുക</translation>
 <translation id="7108338896283013870">മറയ്ക്കുക</translation>
 <translation id="604124094241169006">സ്വപ്രേരിതം</translation>
+<translation id="5313967007315987356">സൈറ്റ് ചേർക്കുക</translation>
+<translation id="5052499409147950210">സൈറ്റ് എഡിറ്റുചെയ്യുക</translation>
+<translation id="1181037720776840403">നീക്കംചെയ്യൂ</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="5327248766486351172">പേര്</translation>
+<translation id="5317780077021120954">സംരക്ഷിക്കുക</translation>
+<translation id="7658239707568436148">റദ്ദാക്കൂ</translation>
 <translation id="385051799172605136">പിന്നോട്ട്</translation>
 <translation id="8890516388109605451">ഉറവിടങ്ങള്‍</translation>
 <translation id="7791543448312431591">ചേര്‍ക്കൂ</translation>
@@ -14,7 +21,6 @@
 <translation id="8730621377337864115">പൂർത്തിയാക്കി</translation>
 <translation id="6248988683584659830">തിരയൽ സജ്ജീകരണങ്ങള്‍</translation>
 <translation id="3368922792935385530">ബന്ധിപ്പിച്ചു</translation>
-<translation id="7658239707568436148">റദ്ദാക്കൂ</translation>
 <translation id="2653659639078652383">സമര്‍പ്പിക്കൂ</translation>
 <translation id="3958088479270651626">ബുക്ക്മാർക്കുകളും ക്രമീകരണവും ഇംപോർട്ട് ചെയ്യുക</translation>
 <translation id="8275038454117074363">ഇറക്കുമതിചെയ്യുക</translation>
@@ -45,7 +51,6 @@
 <translation id="4918086044614829423">സ്വീകരിക്കുക</translation>
 <translation id="3587482841069643663">എല്ലാം</translation>
 <translation id="2631006050119455616">സംരക്ഷിച്ചു</translation>
-<translation id="5317780077021120954">സംരക്ഷിക്കുക</translation>
 <translation id="3819257035322786455">ബാക്കപ്പ്</translation>
 <translation id="6896758677409633944">പകര്‍ത്തുക</translation>
 <translation id="3866249974567520381">വിവരണം</translation>
@@ -60,6 +65,7 @@
 <translation id="1963227389609234879">എല്ലാം നീക്കംചെയ്യൂ</translation>
 <translation id="923467487918828349">എല്ലാം കാണിക്കുക</translation>
 <translation id="7352651011704765696">എന്തോ കുഴപ്പം സംഭവിച്ചു</translation>
+<translation id="2501278716633472235">പിന്നോട്ട് പോകുക</translation>
 <translation id="2903493209154104877">വിലാസങ്ങള്‍‌</translation>
 <translation id="1327977588028644528">ഗേറ്റ്‌വേ</translation>
 <translation id="8028993641010258682">വലുപ്പം</translation>
