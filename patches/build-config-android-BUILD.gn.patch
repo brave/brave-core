@@ -1,5 +1,5 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 78c7983a71a0d550567e463d0d9d0ad5fa951d93..36c398457409e7ebfbb4e5f857751573b982c442 100644
+index 8cfe7a0c34f0d3000ff3305a2b7930569880865c..0752af7d5ed1d9a3ff42ee17848408bc52e95e4b 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
 @@ -50,6 +50,7 @@ config("compiler") {
@@ -8,5 +8,5 @@ index 78c7983a71a0d550567e463d0d9d0ad5fa951d93..36c398457409e7ebfbb4e5f857751573
    ]
 +  ldflags += ["-Wl,--allow-multiple-definition"] # Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
  
-   # $compile_api_level corresponds to the API level used for the sysroot path
-   # calculation in //build/config/android/config.gni
+   # TODO(crbug.com/1184398): Move to compiler-rt when we are ready.
+   ldflags += [ "--rtlib=libgcc" ]

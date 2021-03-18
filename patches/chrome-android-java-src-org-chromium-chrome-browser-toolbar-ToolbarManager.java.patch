@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 4eb955bd30dd8b91b21ebdad560c2020a8a842f5..47b62a21926ace08f43ff870a6cebe52c8e5dbb5 100644
+index 70e532a0e73bd07615a872e25e7b80e54317287d..10236d76fa5ca071768b47d15cd9d45d650426d4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 @@ -451,13 +451,13 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
@@ -18,12 +18,12 @@ index 4eb955bd30dd8b91b21ebdad560c2020a8a842f5..47b62a21926ace08f43ff870a6cebe52
                  appMenuCoordinatorSupplier, mControlsVisibilityDelegate, mWindowAndroid,
                  (focus, type)
                          -> setUrlBarFocus(focus, type),
-@@ -870,7 +870,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+@@ -879,7 +879,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
              OneshotSupplier<StartSurface> startSurfaceSupplier, boolean isGridTabSwitcherEnabled,
              boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled) {
          // clang-format off
 -        TopToolbarCoordinator toolbar = new TopToolbarCoordinator(controlContainer, toolbarLayout,
 +        TopToolbarCoordinator toolbar = new org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator(controlContainer, toolbarLayout,
                  mLocationBarModel, mToolbarTabController,
-                 new UserEducationHelper(mActivity, mHandler, TrackerFactory::getTrackerForProfile),
+                 new UserEducationHelper(mActivity, mHandler),
                  buttonDataProviders, mLayoutStateProviderSupplier, browsingModeThemeColorProvider,

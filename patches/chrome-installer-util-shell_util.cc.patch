@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index d33b1bcb081c2fc2952455012a07d593687308b8..f31de7a11686a4eec809f9760baff92a22192425 100644
+index 581e0e6342dd8f177deefe04fd1bbda01496d7a6..502e7d3a044250bda484f9ef936f681681bdd2b1 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
 @@ -746,6 +746,7 @@ std::wstring GetTargetForDefaultAppsSettings(const wchar_t* protocol) {
