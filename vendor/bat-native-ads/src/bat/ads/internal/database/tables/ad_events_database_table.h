@@ -57,6 +57,9 @@ class AdEvents : public Table {
 
   void CreateTableV5(DBTransaction* transaction);
   void MigrateToV5(DBTransaction* transaction);
+
+  void CreateTableV13(DBTransaction* transaction);
+  void MigrateToV13(DBTransaction* transaction);
 };
 
 }  // namespace table

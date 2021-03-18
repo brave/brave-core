@@ -127,6 +127,7 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         info.creative_instance_id = creative.creative_instance_id;
         info.creative_set_id = creative_set.creative_set_id;
         info.campaign_id = campaign.campaign_id;
+        info.advertiser_id = campaign.advertiser_id;
 
         base::Time start_at_time;
         if (base::Time::FromUTCString(campaign.start_at.c_str(),
@@ -208,6 +209,7 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         info.creative_instance_id = creative.creative_instance_id;
         info.creative_set_id = creative_set.creative_set_id;
         info.campaign_id = campaign.campaign_id;
+        info.advertiser_id = campaign.advertiser_id;
 
         base::Time start_at_time;
         if (base::Time::FromUTCString(campaign.start_at.c_str(),
@@ -288,6 +290,7 @@ BundleState Bundle::FromCatalog(const Catalog& catalog) const {
         info.creative_instance_id = creative.creative_instance_id;
         info.creative_set_id = creative_set.creative_set_id;
         info.campaign_id = campaign.campaign_id;
+        info.advertiser_id = campaign.advertiser_id;
 
         base::Time start_at_time;
         if (base::Time::FromUTCString(campaign.start_at.c_str(),

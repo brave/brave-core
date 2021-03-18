@@ -48,6 +48,7 @@ const char kNotificationUuidKey[] = "id";
 const char kNotificationCreativeInstanceIdKey[] = "uuid";
 const char kNotificationCreativeSetIdKey[] = "creative_set_id";
 const char kNotificationCampaignIdKey[] = "campaign_id";
+const char kNotificationAdvertiserIdKey[] = "advertiser_id";
 const char kNotificationSegmentKey[] = "segment";
 const char kNotificationTitleKey[] = "advertiser";
 const char kNotificationBodyKey[] = "text";
@@ -278,6 +279,12 @@ bool AdNotifications::GetNotificationFromDictionary(
     new_ad_notification.campaign_id = "";
   }
 
+  if (!GetAdvertiserIdFromDictionary(dictionary,
+                                     &new_ad_notification.advertiser_id)) {
+    // Migrate for legacy notifications
+    new_ad_notification.advertiser_id = "";
+  }
+
   if (!GetSegmentFromDictionary(dictionary, &new_ad_notification.segment)) {
     // Migrate for legacy notifications
     if (!GetStringFromDictionary("category", dictionary,
@@ -327,6 +334,13 @@ bool AdNotifications::GetCampaignIdFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
   return GetStringFromDictionary(kNotificationCampaignIdKey, dictionary, value);
+}
+
+bool AdNotifications::GetAdvertiserIdFromDictionary(
+    base::DictionaryValue* dictionary,
+    std::string* value) const {
+  return GetStringFromDictionary(kNotificationAdvertiserIdKey, dictionary,
+                                 value);
 }
 
 bool AdNotifications::GetSegmentFromDictionary(
@@ -491,6 +505,8 @@ base::Value AdNotifications::GetAsList() {
                       base::Value(ad_notification.creative_set_id));
     dictionary.SetKey(kNotificationCampaignIdKey,
                       base::Value(ad_notification.campaign_id));
+    dictionary.SetKey(kNotificationAdvertiserIdKey,
+                      base::Value(ad_notification.advertiser_id));
     dictionary.SetKey(kNotificationSegmentKey,
                       base::Value(ad_notification.segment));
     dictionary.SetKey(kNotificationTitleKey,
