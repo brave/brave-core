@@ -30,7 +30,7 @@ export const localeStrings = {
   onboardingPanelWelcomeText: 'Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.',
   onboardingPanelAdsHeader: 'Where do ads show up?',
   onboardingPanelAdsText: 'Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.',
-  onboardingPanelScheduleHeader: 'When do you receive rewards',
+  onboardingPanelScheduleHeader: 'When do you receive rewards?',
   onboardingPanelScheduleText: 'Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.',
   onboardingPanelAcHeader: 'Giving back made effortless',
   onboardingPanelAcText: 'Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.',

@@ -618,7 +618,7 @@
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT" desc="">Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER" desc="">Where do ads show up?</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT" desc="">Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER" desc="">When do you receive rewards</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER" desc="">When do you receive rewards?</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT" desc="">Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER" desc="">Giving back made effortless</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT" desc="">Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.</message>

@@ -59,6 +59,11 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "J9HIuxTzVft5v5Ys0S0Kqorn2xo+lFpVzZT7sV2orDHaLiVB5uqCMWhXehVixfRp"
     "BuPGdwSuzJsNkV5aGOObKfoLr1zUgstJYMLB0uWNXTfuKM4EibWUMLMqlCYVzs2R"
     "ewIDAQAB";
+#elif defined(OS_ANDROID)
+// Not used yet
+static const char kIpfsClientComponentName[] = "";
+static const char kIpfsClientComponentId[] = "";
+static const char kIpfsClientComponentBase64PublicKey[] = "";
 #endif
 
 class BraveIpfsClientUpdater : public BraveComponent,
