@@ -29,6 +29,7 @@
     <message name="IDS_IPFS_GC_ERROR" desc="Text of garbage collection error">Garbage collection error</message>
     <message name="IDS_UTILITY_PROCESS_IPFS_NAME" desc="The utility process which manages IPFS daemon">IPFS Service</message>
     <message name="IDS_IPFS_OPEN_WEBUI" desc="Title of brave://ipfs webui button">My Node</message>
+    <message name="IDS_IPFS_BADGE_TITLE" desc="Title of page info badge in location bar">IPFS</message>
     <message name="IDS_IPFS_PEERS_DETAILS_LINK" desc="Link to open details about peers on brave://ipfs.">
       (details)
     </message>
