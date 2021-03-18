@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 #include <algorithm>
+#include <cmath>
 #include <sstream>
 #include <utility>
 
@@ -189,4 +190,77 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
   return rv == 1 ? std::move(seed) : nullptr;
 }
 
+bool EncodeString(const std::string& input, std::string* output) {
+  if (!base::IsStringUTF8(input))
+    return false;
+
+  if (input.empty()) {
+    *output =
+        "0x0000000000000000000000000000000000000000000000000000000000000000";
+    return true;
+  }
+
+  // Encode count for this string
+  bool success =
+      PadHexEncodedParameter(Uint256ValueToHex(input.size()), output);
+  if (!success)
+    return false;
+
+  // Encode string.
+  *output += base::ToLowerASCII(base::HexEncode(input.data(), input.size()));
+
+  // Pad 0 to right.
+  size_t last_row_len = input.size() % 32;
+  if (last_row_len == 0) {
+    return true;
+  }
+
+  size_t padding_len = (32 - last_row_len) * 2;
+  *output += std::string(padding_len, '0');
+  return true;
+}
+
+bool EncodeStringArray(const std::vector<std::string>& input,
+                       std::string* output) {
+  // Write count of elements.
+  bool success = PadHexEncodedParameter(
+      Uint256ValueToHex(static_cast<uint256_t>(input.size())), output);
+  if (!success)
+    return false;
+
+  // Write offsets to array elements.
+  size_t data_offset = input.size() * 32;  // Offset to first element.
+  std::string encoded_offset;
+  success =
+      PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
+  if (!success)
+    return false;
+  *output += encoded_offset.substr(2, encoded_offset.size() - 2);
+
+  for (size_t i = 1; i < input.size(); i++) {
+    // Offset for ith element =
+    //     offset for i-1th + 32 * (count for i-1th) +
+    //     32 * ceil(i-1th.size() / 32.0) (length of encoding for i-1th).
+    std::string encoded_offset;
+    size_t rows = std::ceil(input[i - 1].size() / 32.0);
+    data_offset += (rows + 1) * 32;
+
+    success =
+        PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
+    if (!success)
+      return false;
+    *output += encoded_offset.substr(2, encoded_offset.size() - 2);
+  }
+
+  // Write count and encoding for array elements.
+  for (size_t i = 0; i < input.size(); i++) {
+    std::string encoded_string;
+    success = EncodeString(input[i], &encoded_string);
+    if (!success)
+      return false;
+    *output += encoded_string.substr(2, encoded_string.size() - 2);
+  }
+
+  return true;
+}
 }  // namespace brave_wallet
