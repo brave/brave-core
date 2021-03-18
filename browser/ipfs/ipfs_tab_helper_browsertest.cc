@@ -43,8 +43,8 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
 
     embedded_test_server()->ServeFilesFromSourceDirectory("content/test/data");
     https_server_.ServeFilesFromSourceDirectory("content/test/data");
-    https_server_.RegisterRequestHandler(
-        base::BindRepeating(&IpfsTabHelperBrowserTest::ResponseHandler));
+    https_server_.RegisterRequestHandler(base::BindRepeating(
+        &IpfsTabHelperBrowserTest::ResponseHandler, base::Unretained(this)));
     ASSERT_TRUE(https_server_.Start());
     ASSERT_TRUE(embedded_test_server()->Start());
   }
@@ -59,18 +59,23 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
     return current.ReplaceComponents(replacements);
   }
 
-  static std::unique_ptr<net::test_server::HttpResponse> ResponseHandler(
+  std::unique_ptr<net::test_server::HttpResponse> ResponseHandler(
       const net::test_server::HttpRequest& request) {
     std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
         new net::test_server::BasicHttpResponse);
 
-    bool respond_error = (request.relative_url == "/5xx.html");
-    auto code = respond_error ? net::HTTP_INTERNAL_SERVER_ERROR : net::HTTP_OK;
-    http_response->set_code(code);
-    if (!respond_error)
-      http_response->AddCustomHeader("x-ipfs-path", "test");
+    http_response->set_code(code_);
+    if (code_ == net::HTTP_OK)
+      http_response->AddCustomHeader("x-ipfs-path", x_ipfs_path_);
     return std::move(http_response);
   }
+
+  void SetXIpfsPathHeader(const std::string& value) { x_ipfs_path_ = value; }
+
+  void SetHttpStatusCode(net::HttpStatusCode code) { code_ = code; }
+
+  net::HttpStatusCode code_ = net::HTTP_OK;
+  std::string x_ipfs_path_;
   net::EmbeddedTestServer https_server_;
 };
 
@@ -85,13 +90,16 @@ class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
                HostTextResultsCallback callback) override {
     resolve_called_++;
     if (callback)
-      std::move(callback).Run(host.host());
+      std::move(callback).Run(host.host(), dnslink_);
   }
 
   bool resolve_called() const { return resolve_called_ == 1; }
 
+  void SetDNSLinkToResopnd(const std::string& dnslink) { dnslink_ = dnslink; }
+
  private:
   int resolve_called_ = 0;
+  std::string dnslink_;
 };
 
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkLocal) {
@@ -112,12 +120,13 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkLocal) {
   prefs->SetInteger(kIPFSResolveMethod,
                     static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
 
-  const GURL test_url = https_server_.GetURL("/empty.html");
+  SetXIpfsPathHeader("/ipfs/bafybeiemx/empty.html");
+  const GURL test_url = https_server_.GetURL("/empty.html?query#ref");
   ui_test_utils::NavigateToURL(browser(), test_url);
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
   ASSERT_FALSE(resolver_raw->resolve_called());
-  GURL ipns = ReplaceScheme(test_url, ipfs::kIPNSScheme);
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), ipns.spec());
+  std::string result = "ipfs://bafybeiemx/empty.html?query#ref";
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkGateway) {
@@ -138,13 +147,14 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkGateway) {
   prefs->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
-
+  SetXIpfsPathHeader("/ipfs/bafybeiemx/empty.html");
   const GURL test_url = https_server_.GetURL("/empty.html");
   ui_test_utils::NavigateToURL(browser(), test_url);
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
   ASSERT_FALSE(resolver_raw->resolve_called());
   GURL ipns = ReplaceScheme(test_url, ipfs::kIPNSScheme);
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), ipns.spec());
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(),
+            "ipfs://bafybeiemx/empty.html");
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, NoResolveIPFSLinkCalledMode) {
@@ -164,7 +174,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, NoResolveIPFSLinkCalledMode) {
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
   prefs->SetInteger(kIPFSResolveMethod,
                     static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
-
+  SetXIpfsPathHeader("/ipfs/bafybeiemx/empty.html");
   GURL test_url = https_server_.GetURL("/empty.html");
   ui_test_utils::NavigateToURL(browser(), test_url);
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
@@ -219,6 +229,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveIPFSLinkCalled5xx) {
   std::unique_ptr<FakeIPFSHostResolver> resolver(
       new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
   FakeIPFSHostResolver* resolver_raw = resolver.get();
+  resolver_raw->SetDNSLinkToResopnd("/ipfs/QmXoypiz");
   helper->SetResolverForTesting(std::move(resolver));
   auto* prefs =
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
@@ -227,15 +238,43 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveIPFSLinkCalled5xx) {
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
   ASSERT_FALSE(resolver_raw->resolve_called());
-  const GURL test_url = https_server_.GetURL("/5xx.html");
+  SetHttpStatusCode(net::HTTP_INTERNAL_SERVER_ERROR);
+  const GURL test_url = https_server_.GetURL("/5xx.html?query#fragment");
   ui_test_utils::NavigateToURL(browser(), test_url);
   ASSERT_FALSE(WaitForLoadStop(active_contents()));
   ASSERT_TRUE(resolver_raw->resolve_called());
   GURL ipns = ReplaceScheme(test_url, ipfs::kIPNSScheme);
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), ipns.spec());
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), ipns);
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveNotCalled5xx) {
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_contents());
+  if (!helper)
+    return;
+  auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
+      active_contents()->GetBrowserContext());
+  std::unique_ptr<FakeIPFSHostResolver> resolver(
+      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+  FakeIPFSHostResolver* resolver_raw = resolver.get();
+  SetHttpStatusCode(net::HTTP_INTERNAL_SERVER_ERROR);
+  helper->SetResolverForTesting(std::move(resolver));
+  auto* prefs =
+      user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
+  prefs->SetInteger(kIPFSResolveMethod,
+                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  const GURL test_url = https_server_.GetURL("/5xx.html");
+  ui_test_utils::NavigateToURL(browser(), test_url);
+  ASSERT_FALSE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkBad) {
   ASSERT_TRUE(
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
   ipfs::IPFSTabHelper* helper =
@@ -251,12 +290,13 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveNotCalled5xx) {
   auto* prefs =
       user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
   prefs->SetInteger(kIPFSResolveMethod,
-                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
-  ASSERT_FALSE(resolver_raw->resolve_called());
-  const GURL test_url = https_server_.GetURL("/5xx.html");
+                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  SetXIpfsPathHeader("/http/bafybeiemx/empty.html");
+  const GURL test_url = https_server_.GetURL("/empty.html");
   ui_test_utils::NavigateToURL(browser(), test_url);
-  ASSERT_FALSE(WaitForLoadStop(active_contents()));
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
   ASSERT_FALSE(resolver_raw->resolve_called());
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
+  std::string result = "";
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
 }
