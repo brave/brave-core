@@ -79,6 +79,7 @@ IpfsNavigationThrottle::MaybeCreateThrottleFor(
     const std::string& locale) {
   if (!ipfs_service)
     return nullptr;
+
   return std::make_unique<IpfsNavigationThrottle>(navigation_handle,
                                                   ipfs_service, locale);
 }
@@ -106,9 +107,8 @@ IpfsNavigationThrottle::WillStartRequest() {
       pref_service_->GetInteger(kIPFSResolveMethod) ==
           static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK);
 
-  if (IsIPFSScheme(url) && should_ask) {
+  if (IsIPFSScheme(url) && should_ask)
     return ShowIPFSOnboardingInterstitial();
-  }
 
   if (!IsLocalGatewayURL(url)) {
     return content::NavigationThrottle::PROCEED;

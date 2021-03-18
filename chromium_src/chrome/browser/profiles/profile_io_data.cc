@@ -15,8 +15,6 @@
 bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
   if (scheme == kBraveUIScheme)
     return true;
-  if (scheme == "ipfs" || scheme == "ipns")
-    return true;
   return IsHandledProtocol_ChromiumImpl(scheme);
 }
 

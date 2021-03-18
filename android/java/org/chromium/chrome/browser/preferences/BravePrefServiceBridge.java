@@ -35,13 +35,6 @@ public class BravePrefServiceBridge {
     }
 
     /**
-     * @param whether the IPFS gateway should be enabled.
-     */
-    public void setIpfsGatewayEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setIpfsGatewayEnabled(enabled);
-    }
-
-    /**
      * @param whether google login is enabled on third party sites.
      */
     public void setThirdPartyGoogleLoginEnabled(boolean enabled) {
@@ -205,7 +198,6 @@ public class BravePrefServiceBridge {
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
-        void setIpfsGatewayEnabled(boolean enabled);
         void setAdBlockEnabled(boolean enabled);
         void setFingerprintingProtectionEnabled(boolean enabled);
 

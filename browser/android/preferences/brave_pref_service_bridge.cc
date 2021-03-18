@@ -5,6 +5,7 @@
 
 #include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 
+#include "build/build_config.h"
 #include "base/android/jni_string.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
@@ -12,11 +13,9 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/buildflags.h"
-#include "build/build_config.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -29,11 +28,6 @@
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
 #include "brave/components/p3a/pref_names.h"
-#endif
-
-#if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/pref_names.h"
 #endif
 
 using base::android::ConvertUTF8ToJavaString;
@@ -61,17 +55,6 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(
       enabled,
       GURL(),
       g_browser_process->local_state());
-}
-
-void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
-                                                      jboolean enabled) {
-#if BUILDFLAG(IPFS_ENABLED)
-  ipfs::IPFSResolveMethodTypes type =
-      enabled ? ipfs::IPFSResolveMethodTypes::IPFS_ASK
-              : ipfs::IPFSResolveMethodTypes::IPFS_DISABLED;
-  GetOriginalProfile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
-                                               static_cast<int>(type));
-#endif
 }
 
 void JNI_BravePrefServiceBridge_SetThirdPartyGoogleLoginEnabled(
