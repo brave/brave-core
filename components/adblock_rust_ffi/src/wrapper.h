@@ -15,7 +15,7 @@ extern "C" {
 #else
 #define ADBLOCK_EXPORT __declspec(dllimport)
 #endif  // defined(ADBLOCK_IMPLEMENTATION)
-#else  // defined(WIN32)
+#else   // defined(WIN32)
 #if defined(ADBLOCK_IMPLEMENTATION)
 #define ADBLOCK_EXPORT __attribute__((visibility("default")))
 #else
@@ -54,7 +54,7 @@ class ADBLOCK_EXPORT FilterList {
   const std::string base64_public_key;
   const std::string desc;
 
-private:
+ private:
   static std::vector<FilterList> default_list;
   static std::vector<FilterList> regional_list;
 };
@@ -63,16 +63,20 @@ class ADBLOCK_EXPORT Engine {
  public:
   Engine();
   Engine(const std::string& rules);
-  void matches(const std::string& url, const std::string& host,
-      const std::string& tab_host, bool is_third_party,
-      const std::string& resource_type, bool* did_match_rule,
-      bool* did_match_exception, bool* did_match_important,
-      std::string* redirect);
+  void matches(const std::string& url,
+               const std::string& host,
+               const std::string& tab_host,
+               bool is_third_party,
+               const std::string& resource_type,
+               bool* did_match_rule,
+               bool* did_match_exception,
+               bool* did_match_important,
+               std::string* redirect);
   bool deserialize(const char* data, size_t data_size);
   void addTag(const std::string& tag);
   void addResource(const std::string& key,
-      const std::string& content_type,
-      const std::string& data);
+                   const std::string& content_type,
+                   const std::string& data);
   void addResources(const std::string& resources);
   void removeTag(const std::string& tag);
   bool tagExists(const std::string& tag);
@@ -80,8 +84,7 @@ class ADBLOCK_EXPORT Engine {
   const std::string hiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
-      const std::vector<std::string>& exceptions
-  );
+      const std::vector<std::string>& exceptions);
   ~Engine();
 
  private:
