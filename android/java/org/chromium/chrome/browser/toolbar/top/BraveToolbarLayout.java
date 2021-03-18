@@ -1192,6 +1192,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         if (BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class)
                 || BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarPhone.class)) {
             updateMenuButtonState();
+            if (getToolbarDataProvider() != null && getToolbarDataProvider().getTab() != null) {
+                updateBraveShieldsButtonState(getToolbarDataProvider().getTab());
+            }
         }
         super.onDraw(canvas);
     }
