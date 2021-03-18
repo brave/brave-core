@@ -18,5 +18,35 @@
     "channel": "stable",
     "contexts": ["blessed_extension"],
     "allowlist": ["780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63", "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"]
+  }],
+  "ipfs.resolveIPFSURI": [{
+    "channel": "stable",
+    "contexts": ["blessed_extension"],
+    "dependencies": ["permission:ipfs"]
+  },{
+    "channel": "stable",
+    "contexts": ["blessed_extension"],
+    "dependencies": [],
+    "allowlist": ["780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63", "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"]
+  }],
+  "ipfs.getIPFSEnabled": [{
+    "channel": "stable",
+    "contexts": ["blessed_extension"],
+    "dependencies": ["permission:ipfs"]
+  },{
+    "channel": "stable",
+    "contexts": ["blessed_extension"],
+    "dependencies": [],
+    "allowlist": ["780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63", "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"]
+  }],
+  "ipfs.getResolveMethodType": [{
+    "channel": "stable",
+    "contexts": ["blessed_extension"],
+    "dependencies": ["permission:ipfs"]
+  },{
+    "channel": "stable",
+    "contexts": ["blessed_extension"],
+    "dependencies": [],
+    "allowlist": ["780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63", "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"]
   }]
 }
