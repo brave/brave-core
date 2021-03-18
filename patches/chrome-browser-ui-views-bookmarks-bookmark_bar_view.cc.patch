@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
-index 371bcf5d3c4b7225c2fccffed59a5d1747289e62..83141e0e413864d05f21970a5dcc78cae392a85c 100644
+index d5e00c1b683a024f63aa4ad19772fa9e98000904..370284f5e3fc87839d36533608ac8726f6bf5833 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
 @@ -862,6 +862,7 @@ void BookmarkBarView::Layout() {
@@ -7,6 +7,6 @@ index 371bcf5d3c4b7225c2fccffed59a5d1747289e62..83141e0e413864d05f21970a5dcc78ca
      }
    }
 +  BRAVE_LAYOUT
- 
+
    // Layout the right side buttons.
    x = max_x + bookmark_bar_button_padding;
