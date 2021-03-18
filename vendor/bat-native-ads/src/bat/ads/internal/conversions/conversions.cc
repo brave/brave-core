@@ -241,7 +241,7 @@ void Conversions::Convert(
   const std::string advertiser_id = ad_event.advertiser_id;
 
   const base::Time time = base::Time::Now();
-  const std::string friendly_date_and_time = FriendlyDateAndTime(time);
+  const std::string friendly_date_and_time = LongFriendlyDateAndTime(time);
 
   BLOG(1, "Conversion for campaign id "
               << campaign_id << ", creative set id " << creative_set_id
@@ -362,6 +362,7 @@ void Conversions::ProcessQueueItem(
                 << ", creative instance id " << creative_instance_id
                 << " and advertiser id " << advertiser_id << " "
                 << friendly_date_and_time);
+
     NotifyConversionFailed(conversion_queue_item);
   } else {
     BLOG(1, "Successfully converted ad with campaign id "
