@@ -898,7 +898,7 @@ extension TabManagerDataSource: UICollectionViewDropDelegate {
             return
         }
 
-        coordinator.drop(dragItem, toItemAt: destinationIndexPath)
+        _ = coordinator.drop(dragItem, toItemAt: destinationIndexPath)
         isDragging = false
 
         let destinationIndex = destinationIndexPath.item

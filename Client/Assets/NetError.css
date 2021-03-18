@@ -13,17 +13,17 @@ body {
     background-color: white;
     padding: 0 65px;
     color: #333;
-    font-size: 16px;
     -webkit-text-size-adjust: none;
     font: -apple-system-body;
+    font-size: 16px;
 }
 
 h1 {
     color: #333;
-    font-size: 16px;
     -webkit-text-size-adjust: none;
     font: -apple-system-body;
     font-weight: 300;
+    font-size: 16px;
 }
 
 /* Add a set of stripes at the top of pages */
