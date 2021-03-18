@@ -82,7 +82,7 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
 
     g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-        ctx->request_url, ctx->resource_type, source_host, &did_match_rule,
+        canonical_url, ctx->resource_type, source_host, &did_match_rule,
         &did_match_exception, &did_match_important, &ctx->mock_data_url);
   }
 
