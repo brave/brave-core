@@ -92,6 +92,7 @@ void AdServing::MaybeServe() {
                 << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
                 << "  creativeSetId: " << ad.creative_set_id << "\n"
                 << "  campaignId: " << ad.campaign_id << "\n"
+                << "  advertiserId: " << ad.advertiser_id << "\n"
                 << "  segment: " << ad.segment << "\n"
                 << "  title: " << ad.title << "\n"
                 << "  body: " << ad.body << "\n"
@@ -275,6 +276,7 @@ void AdServing::MaybeDeliverAd(const CreativeAdNotificationInfo& ad,
   ad_notification.creative_instance_id = ad.creative_instance_id;
   ad_notification.creative_set_id = ad.creative_set_id;
   ad_notification.campaign_id = ad.campaign_id;
+  ad_notification.advertiser_id = ad.advertiser_id;
   ad_notification.segment = ad.segment;
   ad_notification.title = ad.title;
   ad_notification.body = ad.body;

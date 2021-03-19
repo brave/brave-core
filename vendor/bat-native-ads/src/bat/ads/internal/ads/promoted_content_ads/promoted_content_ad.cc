@@ -27,6 +27,7 @@ PromotedContentAdInfo CreatePromotedContentAd(
   promoted_content_ad.creative_instance_id = ad.creative_instance_id;
   promoted_content_ad.creative_set_id = ad.creative_set_id;
   promoted_content_ad.campaign_id = ad.campaign_id;
+  promoted_content_ad.advertiser_id = ad.advertiser_id;
   promoted_content_ad.segment = ad.segment;
   promoted_content_ad.target_url = ad.target_url;
   promoted_content_ad.title = ad.title;

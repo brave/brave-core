@@ -341,8 +341,8 @@ void CreativeNewTabPageAds::Migrate(DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 10: {
-      MigrateToV12(transaction);
+    case 13: {
+      MigrateToV13(transaction);
       break;
     }
 
@@ -514,7 +514,7 @@ CreativeNewTabPageAdInfo CreativeNewTabPageAds::GetFromRecord(
   return creative_new_tab_page_ad;
 }
 
-void CreativeNewTabPageAds::CreateTableV12(DBTransaction* transaction) {
+void CreativeNewTabPageAds::CreateTableV13(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -534,12 +534,12 @@ void CreativeNewTabPageAds::CreateTableV12(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeNewTabPageAds::MigrateToV12(DBTransaction* transaction) {
+void CreativeNewTabPageAds::MigrateToV13(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV12(transaction);
+  CreateTableV13(transaction);
 }
 
 }  // namespace table

@@ -343,8 +343,8 @@ void CreativePromotedContentAds::Migrate(DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 10: {
-      MigrateToV12(transaction);
+    case 13: {
+      MigrateToV13(transaction);
       break;
     }
 
@@ -518,7 +518,7 @@ CreativePromotedContentAdInfo CreativePromotedContentAds::GetFromRecord(
   return creative_promoted_content_ad;
 }
 
-void CreativePromotedContentAds::CreateTableV12(DBTransaction* transaction) {
+void CreativePromotedContentAds::CreateTableV13(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -538,12 +538,12 @@ void CreativePromotedContentAds::CreateTableV12(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativePromotedContentAds::MigrateToV12(DBTransaction* transaction) {
+void CreativePromotedContentAds::MigrateToV13(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV12(transaction);
+  CreateTableV13(transaction);
 }
 
 }  // namespace table
