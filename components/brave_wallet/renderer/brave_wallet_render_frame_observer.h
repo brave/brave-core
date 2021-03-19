@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -17,10 +18,11 @@
 
 namespace brave_wallet {
 
-class BraveWalletRenderFrameObserver
-    : public content::RenderFrameObserver {
+class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
  public:
-  explicit BraveWalletRenderFrameObserver(content::RenderFrame* render_frame);
+  explicit BraveWalletRenderFrameObserver(
+      content::RenderFrame* render_frame,
+      brave::mojom::DynamicParams dynamic_params);
   ~BraveWalletRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
@@ -39,6 +41,7 @@ class BraveWalletRenderFrameObserver
   std::unique_ptr<BraveWalletJSHandler> native_javascript_handle_;
 
   GURL url_;
+  const brave::mojom::DynamicParams dynamic_params_;
 };
 
 }  // namespace brave_wallet

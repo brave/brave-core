@@ -5,15 +5,17 @@
 
 #include "brave/components/brave_wallet/renderer/brave_wallet_render_frame_observer.h"
 
-#include "base/bind.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
 namespace brave_wallet {
 
 BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
-    content::RenderFrame* render_frame)
-    : RenderFrameObserver(render_frame) {}
+    content::RenderFrame* render_frame,
+    brave::mojom::DynamicParams dynamic_params)
+    : RenderFrameObserver(render_frame), dynamic_params_(dynamic_params) {
+  native_javascript_handle_.reset(new BraveWalletJSHandler(render_frame));
+}
 
 BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() {}
 
@@ -26,17 +28,16 @@ void BraveWalletRenderFrameObserver::DidStartNavigation(
 void BraveWalletRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
-  if (!native_javascript_handle_)
+  if (!dynamic_params_.brave_use_native_wallet || !native_javascript_handle_)
     return;
 
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
 }
 
 void BraveWalletRenderFrameObserver::DidCreateNewDocument() {
-  if (!native_javascript_handle_) {
-    native_javascript_handle_.reset(
-        new BraveWalletJSHandler(render_frame()));
-  }
+  if (!dynamic_params_.brave_use_native_wallet || !native_javascript_handle_)
+    return;
+
   native_javascript_handle_->InjectScript();
 }
 

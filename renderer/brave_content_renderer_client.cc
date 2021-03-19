@@ -9,7 +9,9 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
+#include "brave/renderer/brave_render_thread_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -38,6 +40,13 @@ void BraveContentRendererClient::
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;
 
+void BraveContentRendererClient::RenderThreadStarted() {
+  ChromeContentRendererClient::RenderThreadStarted();
+
+  brave_observer_ = std::make_unique<BraveRenderThreadObserver>();
+  content::RenderThread::Get()->AddObserver(brave_observer_.get());
+}
+
 void BraveContentRendererClient::RenderFrameCreated(
     content::RenderFrame* render_frame) {
   ChromeContentRendererClient::RenderFrameCreated(render_frame);
@@ -51,8 +60,9 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (base::FeatureList::IsEnabled(
-      brave_wallet::features::kNativeBraveWalletFeature)) {
-    new brave_wallet::BraveWalletRenderFrameObserver(render_frame);
+          brave_wallet::features::kNativeBraveWalletFeature)) {
+    new brave_wallet::BraveWalletRenderFrameObserver(
+        render_frame, BraveRenderThreadObserver::GetDynamicParams());
   }
 #endif
 }

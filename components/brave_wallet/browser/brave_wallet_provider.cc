@@ -12,8 +12,7 @@
 namespace brave_wallet {
 
 BraveWalletProvider::BraveWalletProvider(BraveWalletService* wallet_service)
-    : wallet_service_(wallet_service),
-      weak_factory_(this) {}
+    : wallet_service_(wallet_service), weak_factory_(this) {}
 
 BraveWalletProvider::~BraveWalletProvider() {}
 
@@ -23,15 +22,17 @@ void BraveWalletProvider::Request(const std::string& json_payload,
     return;
 
   auto* controller = wallet_service_->controller();
-  controller->Request(json_payload,
-                      base::BindOnce(&BraveWalletProvider::OnResponse,
-                                     weak_factory_.GetWeakPtr(),
-                                     std::move(callback)),
-                      true);
+  controller->Request(
+      json_payload,
+      base::BindOnce(&BraveWalletProvider::OnResponse,
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
+      true);
 }
 
 void BraveWalletProvider::OnResponse(
-    RequestCallback callback, const int status, const std::string& response,
+    RequestCallback callback,
+    const int status,
+    const std::string& response,
     const std::map<std::string, std::string>& headers) {
   // Do we need to pass headers map to a renderer? We would need to convert
   // it to base::flat_map in that case

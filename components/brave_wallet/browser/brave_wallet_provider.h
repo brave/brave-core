@@ -31,6 +31,7 @@ class BraveWalletProvider final
                   const int status,
                   const std::string& response,
                   const std::map<std::string, std::string>& headers);
+
  private:
   BraveWalletService* wallet_service_;
 

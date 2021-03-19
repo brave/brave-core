@@ -2,6 +2,8 @@ include_rules = [
   "+brave/common",
   "+chrome/common",
   "+chrome/renderer",
+  "+content/public/renderer",
+  "+mojo/public/cpp/bindings",
   "+third_party/blink/public/common",
   "+third_party/blink/public/platform",
   "+third_party/blink/public/public_buildflags.h",

@@ -19,6 +19,8 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
+#include "brave/browser/profiles/brave_renderer_updater.h"
+#include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -242,17 +244,16 @@ void BindCosmeticFiltersResources(
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 void BindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider>
-        receiver) {
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
   auto* web_contents = content::WebContents::FromRenderFrameHost(frame_host);
-  if (!web_contents)
+  if (!web_contents && web_contents->GetBrowserContext()->IsTor())
     return;
 
   auto* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   BraveWalletService* service =
-        BraveWalletServiceFactory::GetInstance()->GetForProfile(
-            Profile::FromBrowserContext(profile));
+      BraveWalletServiceFactory::GetInstance()->GetForProfile(
+          Profile::FromBrowserContext(profile));
 
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::BraveWalletProvider>(service),
@@ -295,6 +296,16 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }
 
+void BraveContentBrowserClient::RenderProcessWillLaunch(
+    content::RenderProcessHost* host) {
+  Profile* profile = Profile::FromBrowserContext(host->GetBrowserContext());
+  Profile* original_profile = profile->GetOriginalProfile();
+  BraveRendererUpdaterFactory::GetForProfile(original_profile)
+      ->InitializeRenderer(host);
+
+  ChromeContentBrowserClient::RenderProcessWillLaunch(host);
+}
+
 content::ContentBrowserClient::AllowWebBluetoothResult
 BraveContentBrowserClient::AllowWebBluetooth(
     content::BrowserContext* browser_context,
@@ -313,7 +324,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (base::FeatureList::IsEnabled(
-      brave_wallet::features::kNativeBraveWalletFeature)) {
+          brave_wallet::features::kNativeBraveWalletFeature)) {
     map->Add<brave_wallet::mojom::BraveWalletProvider>(
         base::BindRepeating(&BindBraveWalletProvider));
   }

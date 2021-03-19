@@ -36,8 +36,7 @@ std::string LoadDataResource(const int id) {
 
 namespace brave_wallet {
 
-BraveWalletJSHandler::BraveWalletJSHandler(
-    content::RenderFrame* render_frame)
+BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame)
     : render_frame_(render_frame) {
   if (g_provider_script->empty()) {
     *g_provider_script = LoadDataResource(kBraveWalletScriptGenerated[0].value);
@@ -67,9 +66,8 @@ void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
   CreateWorkerObject(isolate, context);
 }
 
-void BraveWalletJSHandler::CreateWorkerObject(
-    v8::Isolate* isolate,
-    v8::Local<v8::Context> context) {
+void BraveWalletJSHandler::CreateWorkerObject(v8::Isolate* isolate,
+                                              v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> cosmetic_filters_obj;
   v8::Local<v8::Value> cosmetic_filters_value;
@@ -89,11 +87,9 @@ void BraveWalletJSHandler::BindFunctionsToObject(
     v8::Isolate* isolate,
     v8::Local<v8::Context> context,
     v8::Local<v8::Object> javascript_object) {
-  BindFunctionToObject(
-      isolate, javascript_object, "request",
-      base::BindRepeating(&BraveWalletJSHandler::Request,
-                          base::Unretained(this),
-                          isolate));
+  BindFunctionToObject(isolate, javascript_object, "request",
+                       base::BindRepeating(&BraveWalletJSHandler::Request,
+                                           base::Unretained(this), isolate));
 }
 
 template <typename Sig>
@@ -112,8 +108,8 @@ void BraveWalletJSHandler::BindFunctionToObject(
       .Check();
 }
 
-v8::Local<v8::Promise> BraveWalletJSHandler::Request(
-    v8::Isolate* isolate, const std::string& input) {
+v8::Local<v8::Promise> BraveWalletJSHandler::Request(v8::Isolate* isolate,
+                                                     const std::string& input) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -126,12 +122,10 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
     auto context_old = std::make_unique<v8::Global<v8::Context>>(
         isolate, isolate->GetCurrentContext());
     brave_wallet_provider_->Request(
-      input,
-      base::BindOnce(&BraveWalletJSHandler::OnRequest,
-                     base::Unretained(this),
-                     std::move(promise_resolver),
-                     isolate,
-                     std::move(context_old)));
+        input,
+        base::BindOnce(&BraveWalletJSHandler::OnRequest, base::Unretained(this),
+                       std::move(promise_resolver), isolate,
+                       std::move(context_old)));
 
     return resolver.ToLocalChecked()->GetPromise();
   }
