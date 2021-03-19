@@ -226,7 +226,7 @@ bool NotificationHelperWin::IsNotificationsEnabled() {
   }
 }
 
-std::u16string NotificationHelperWin::GetAppId() const {
+std::wstring NotificationHelperWin::GetAppId() const {
   return ShellUtil::GetBrowserModelId(InstallUtil::IsPerUserInstall());
 }
 
@@ -260,7 +260,7 @@ HRESULT NotificationHelperWin::CreateActivationFactory(
     wchar_t const (&class_name)[size],
     T** object) const {
   auto ref_class_name = base::win::ScopedHString::Create(
-      base::StringPiece16(class_name, size - 1));
+      base::WStringPiece(class_name, size - 1));
 
   return base::win::RoGetActivationFactory(ref_class_name.get(),
                                            IID_PPV_ARGS(object));
