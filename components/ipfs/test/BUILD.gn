@@ -43,9 +43,10 @@ source_set("brave_ipfs_unit_tests") {
   }  # if (ipfs_enabled)
 }  # source_set("brave_ipfs_unit_tests")
 
+# TODO(bbondy) Remove this, it doesn't belong in components
 source_set("brave_ipfs_browser_tests") {
   testonly = true
-  if (ipfs_enabled) {
+  if (ipfs_enabled && !is_android) {
     sources = [
       "//brave/components/ipfs/brave_ipfs_client_updater_browsertest.cc",
       "//brave/components/ipfs/ipfs_navigation_throttle_browsertest.cc",
@@ -65,5 +66,5 @@ source_set("brave_ipfs_browser_tests") {
       "//net:test_support",
     ]
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  }  # if (ipfs_enabled)
+  }  # if (ipfs_enabled && !is_android)
 }  # source_set("brave_ipfs_browser_tests")

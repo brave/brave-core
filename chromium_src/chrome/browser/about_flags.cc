@@ -78,7 +78,8 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_IPFS_FEATURE_ENTRIES                                         \
     {"brave-ipfs",                                                         \
      flag_descriptions::kBraveIpfsName,                                    \
-     flag_descriptions::kBraveIpfsDescription, kOsDesktop,                 \
+     flag_descriptions::kBraveIpfsDescription,                             \
+     kOsDesktop | kOsAndroid,                                              \
      FEATURE_VALUE_TYPE(ipfs::features::kIpfsFeature)},
 #else
 #define BRAVE_IPFS_FEATURE_ENTRIES

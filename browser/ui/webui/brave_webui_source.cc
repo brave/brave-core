@@ -1070,7 +1070,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletStatusPending", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_PENDING },    // NOLINT
       }
     }, {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_TOR)
       std::string("tor-internals"), {
         { "tabGeneralInfo", IDS_TOR_INTERNALS_TAB_GENERAL_INFO },
         { "tabLogs", IDS_TOR_INTERNALS_TAB_LOGS },
