@@ -5,13 +5,16 @@
 
 package org.chromium.chrome.browser.tabmodel;
 
+import android.app.Activity;
 import android.os.Build;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.init.StartupTabPreloader;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
@@ -25,12 +28,15 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveTabCreator extends ChromeTabCreator {
-
-    public BraveTabCreator(ChromeActivity activity, WindowAndroid nativeWindow,
+    public BraveTabCreator(Activity activity, WindowAndroid nativeWindow,
             StartupTabPreloader startupTabPreloader,
             Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito,
-            OverviewNTPCreator overviewNTPCreator, AsyncTabParamsManager asyncTabParamsManager) {
-        super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito, overviewNTPCreator, asyncTabParamsManager);
+            OverviewNTPCreator overviewNTPCreator, AsyncTabParamsManager asyncTabParamsManager,
+            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier) {
+        super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito,
+                overviewNTPCreator, asyncTabParamsManager, tabModelSelectorSupplier,
+                compositorViewHolderSupplier);
     }
 
     @Override
