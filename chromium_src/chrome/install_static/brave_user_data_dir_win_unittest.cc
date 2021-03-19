@@ -43,7 +43,7 @@ class ScopedNTRegistryTestingOverride {
     EXPECT_TRUE(nt::SetTestingOverride(root_, path));
   }
   ~ScopedNTRegistryTestingOverride() {
-    nt::SetTestingOverride(root_, std::u16string());
+    nt::SetTestingOverride(root_, std::wstring());
   }
 
  private:
@@ -74,7 +74,7 @@ TEST(UserDataDir, RegistrySettingsInHKLMOverrides) {
   // Override the registry to say one value in HKLM, and confirm it takes
   // precedence over the command line in both implementations.
   registry_util::RegistryOverrideManager override_manager;
-  std::u16string temp;
+  std::wstring temp;
   ASSERT_NO_FATAL_FAILURE(
       override_manager.OverrideRegistry(HKEY_LOCAL_MACHINE, &temp));
   ScopedNTRegistryTestingOverride nt_override(nt::HKLM, temp);
@@ -96,7 +96,7 @@ TEST(UserDataDir, RegistrySettingsInHKCUOverrides) {
   // Override the registry to say one value in HKCU, and confirm it takes
   // precedence over the command line in both implementations.
   registry_util::RegistryOverrideManager override_manager;
-  std::u16string temp;
+  std::wstring temp;
   ASSERT_NO_FATAL_FAILURE(
       override_manager.OverrideRegistry(HKEY_CURRENT_USER, &temp));
   ScopedNTRegistryTestingOverride nt_override(nt::HKCU, temp);
@@ -118,7 +118,7 @@ TEST(UserDataDir, RegistrySettingsInHKLMTakesPrecedenceOverHKCU) {
   // Override the registry in both HKLM and HKCU, and confirm HKLM takes
   // precedence.
   registry_util::RegistryOverrideManager override_manager;
-  std::u16string temp;
+  std::wstring temp;
   ASSERT_NO_FATAL_FAILURE(
       override_manager.OverrideRegistry(HKEY_LOCAL_MACHINE, &temp));
   ScopedNTRegistryTestingOverride nt_override(nt::HKLM, temp);
@@ -145,7 +145,7 @@ TEST(UserDataDir, RegistrySettingWithPathExpansionHKCU) {
   std::wstring result, invalid;
 
   registry_util::RegistryOverrideManager override_manager;
-  std::u16string temp;
+  std::wstring temp;
   ASSERT_NO_FATAL_FAILURE(
       override_manager.OverrideRegistry(HKEY_CURRENT_USER, &temp));
   ScopedNTRegistryTestingOverride nt_override(nt::HKCU, temp);

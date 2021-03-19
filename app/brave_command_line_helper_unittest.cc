@@ -22,7 +22,7 @@ int CountA(const base::CommandLine::StringVector& sv) {
   for (const auto& argv : sv) {
     std::string value;
 #if defined(OS_WIN)
-    value = base::UTF16ToASCII(argv);
+    value = base::WideToUTF8(argv);
 #else
     value = argv;
 #endif
