@@ -34,7 +34,7 @@ class NotificationHelperWin
 
   bool IsNotificationsEnabled();
 
-  std::u16string GetAppId() const;
+  std::wstring GetAppId() const;
 
   HRESULT InitializeToastNotifier();
 
