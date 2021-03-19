@@ -151,13 +151,27 @@ extension BrowserViewController {
            let iconURL = URL(string: faviconURLString) {
             
             // Try to fetch Engine Icon using cache manager
-            WebImageCacheManager.shared.load(from: iconURL, completion: { [weak self] (image, _, _, _, _) in
-                // In case fetch fails use default icon and do not block addition of this engine
-                if let favIcon = image {
-                    searchEngineIcon = favIcon
+            WebImageCacheManager.shared.load(from: iconURL, completion: { [weak self] (image, _, error, _, _) in
+                if error != nil {
+                    URLSession.shared.dataTask(with: iconURL, completionHandler: { [weak self] data, response, error in
+                        guard let data = data else { return }
+                        
+                        if let downloadedImage = UIImage(data: data) {
+                            searchEngineIcon = downloadedImage
+                            WebImageCacheManager.shared.cacheImage(image: downloadedImage, data: data, url: iconURL)
+                        }
+                        
+                        self?.createSearchEngine(url, reference: reference, icon: searchEngineIcon)
+                    }).resume()
+                } else {
+                    // In case fetch fails use default icon and do not block addition of this engine
+                    if let favIcon = image {
+                        searchEngineIcon = favIcon
+                    }
+                    
+                    self?.createSearchEngine(url, reference: reference, icon: searchEngineIcon)
                 }
-                
-                self?.createSearchEngine(url, reference: reference, icon: searchEngineIcon)
+                 
             })
         } else {
             createSearchEngine(url, reference: reference, icon: searchEngineIcon)
