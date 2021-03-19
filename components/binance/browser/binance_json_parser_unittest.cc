@@ -25,11 +25,11 @@ std::string GetValueFromStringMap(
   return value;
 }
 
-std::vector<std::string> GetVectorFromStringMap(
-    const std::map<std::string, std::vector<std::string>>& map,
+std::vector<std::string> GetVectorFromDoubleMap(
+    const std::map<std::string, std::vector<double>>& map,
     const std::string& key) {
   std::vector<std::string> value;
-  std::map<std::string, std::vector<std::string>>::const_iterator it =
+  std::map<std::string, std::vector<double>>::const_iterator it =
       map.find(key);
   if (it != map.end()) {
     value = it->second;
@@ -37,13 +37,11 @@ std::vector<std::string> GetVectorFromStringMap(
   return value;
 }
 
-std::vector<std::map<std::string, std::string>> GetVectorFromStringRecordMap(
-    const std::map<std::string, std::vector<
-    std::map<std::string, std::string>>>& map,
+std::vector<BinanceConvertSubAsset> GetSubAssetsFromBinanceConvertAssets(
+    const BinanceConvertAsserts& map,
     const std::string& key) {
-  std::vector<std::map<std::string, std::string>> value;
-  std::map<std::string, std::vector<
-      std::map<std::string, std::string>>>::const_iterator it =
+  std::vector<BinanceConvertSubAsset> value;
+  BinanceConvertAsserts::const_iterator it =
       map.find(key);
   if (it != map.end()) {
     value = it->second;
@@ -62,29 +60,29 @@ TEST_F(BinanceJSONParserTest, GetAccountBalancesFromJSON) {
         "data": [
           {
             "asset": "BNB",
-            "free": "10114.00000000",
+            "free": 10114.00000000,
             "locked": "0.00000000",
             "freeze": "999990.00000000",
             "withdrawing": "0.00000000",
-            "btcValuation": "2.000000",
-            "fiatValuation": "17.500000"
+            "btcValuation": 2.000000,
+            "fiatValuation": 17.500000
           },
           {
             "asset": "BTC",
-            "free": "2.45000000",
+            "free": 2.45000000,
             "locked": "0.00000000",
             "freeze": "999990.00000000",
             "withdrawing": "0.00000000",
-            "btcValuation": "2.45000000",
-            "fiatValuation": "20000.0000"
+            "btcValuation": 2.45000000,
+            "fiatValuation": 20000.0000
           }
         ]
       })", &balances));
 
   std::vector<std::string>
-      bnb_balance = GetVectorFromStringMap(balances, "BNB");
+      bnb_balance = GetVectorFromDoubleMap(balances, "BNB");
   std::vector<std::string>
-      btc_balance = GetVectorFromStringMap(balances, "BTC");
+      btc_balance = GetVectorFromDoubleMap(balances, "BTC");
 
   const uint64_t three = 3;
 
@@ -323,16 +321,16 @@ TEST_F(BinanceJSONParserTest, GetConvertAssetsFromJSON) {
                 "logoUrl":"https://bin.bnbstatic.com/images/fake.png",
                 "size":"2",
                 "order":1,
-                "perTimeMinLimit":"0.00200000",
-                "perTimeMaxLimit":"1.00000000",
-                "dailyMaxLimit":"10.00000000",
+                "perTimeMinLimit":0.00200000,
+                "perTimeMaxLimit":1.00000000,
+                "dailyMaxLimit":10.00000000,
                 "hadDailyLimit":"0",
                 "needMarket":true,
                 "feeType":1,
-                "feeRate":"0.00050000",
+                "feeRate":0.00050000,
                 "fixFee":"1.00000000",
                 "feeCoin":"BTC",
-                "forexRate":"1.00000000",
+                "forexRate":1.00000000,
                 "expireTime":30
               },
               {
@@ -341,35 +339,35 @@ TEST_F(BinanceJSONParserTest, GetConvertAssetsFromJSON) {
                 "logoUrl":"https://bin.bnbstatic.com/images/fake.png",
                 "size":"2",
                 "order":1,
-                "perTimeMinLimit":"0.00500000",
-                "perTimeMaxLimit":"1.00000000",
-                "dailyMaxLimit":"10.00000000",
+                "perTimeMinLimit":0.00500000,
+                "perTimeMaxLimit":1.00000000,
+                "dailyMaxLimit":10.00000000,
                 "hadDailyLimit":"0",
                 "needMarket":true,
                 "feeType":1,
-                "feeRate":"0.00050000",
+                "feeRate":0.00050000,
                 "fixFee":"1.00000000",
                 "feeCoin":"BTC",
-                "forexRate":"1.00000000",
+                "forexRate":1.00000000,
                 "expireTime":30
               }
             ]
         }]
       })", &assets));
-  std::vector<std::map<std::string, std::string>> sub =
-      GetVectorFromStringRecordMap(assets, "BTC");
+  std::vector<BinanceConvertSubAsset> sub =
+      GetSubAssetsFromBinanceConvertAssets(assets, "BTC");
 
-  std::map<std::string, std::string> bnb_sub = sub.front();
-  std::string bnb_name = GetValueFromStringMap(bnb_sub, "asset");
-  std::string bnb_min = GetValueFromStringMap(bnb_sub, "minAmount");
+  BinanceConvertSubAsset bnb_sub = sub.front();
+  std::string bnb_name = bnb_sub.assetName;
+  double bnb_min = bnb_sub.minAmount;
   ASSERT_EQ(bnb_name, "BNB");
-  ASSERT_EQ(bnb_min, "0.00200000");
+  ASSERT_EQ(bnb_min, 0.00200000);
 
-  std::map<std::string, std::string> eth_sub = sub.back();
-  std::string eth_name = GetValueFromStringMap(eth_sub, "asset");
-  std::string eth_min = GetValueFromStringMap(eth_sub, "minAmount");
+  BinanceConvertSubAsset eth_sub = sub.back();
+  std::string eth_name = eth_sub.asset);
+  double eth_min = eth_sub.minAmount);
   ASSERT_EQ(eth_name, "ETH");
-  ASSERT_EQ(eth_min, "0.00500000");
+  ASSERT_EQ(eth_min, 0.00500000);
 }
 
 }  // namespace
