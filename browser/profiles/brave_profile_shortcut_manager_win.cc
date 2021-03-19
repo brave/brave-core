@@ -17,7 +17,7 @@ BraveProfileShortcutManagerWin::BraveProfileShortcutManagerWin(
 void BraveProfileShortcutManagerWin::GetShortcutProperties(
     const base::FilePath& profile_path,
     base::CommandLine* command_line,
-    std::u16string* name,
+    std::wstring* name,
     base::FilePath* icon_path) {
   // Session profiles are currently not added into storage because they will
   // return early in ProfileManager::AddProfileToStorage because of the profile
