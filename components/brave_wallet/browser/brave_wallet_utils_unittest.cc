@@ -397,4 +397,34 @@ TEST(BraveWalletUtilsUnitTest, EncodeStringArray) {
             "7468726565000000000000000000000000000000000000000000000000000000");
 }
 
+TEST(BraveWalletUtilsUnitTest, Namehash) {
+  EXPECT_EQ(
+      Namehash(""),
+      "0x0000000000000000000000000000000000000000000000000000000000000000");
+  EXPECT_EQ(
+      Namehash("eth"),
+      "0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae");
+  EXPECT_EQ(
+      Namehash("foo.eth"),
+      "0xde9b09fd7c5f901e23a3f19fecc54828e9c848539801e86591bd9801b019f84f");
+  EXPECT_EQ(
+      Namehash("."),
+      "0x0000000000000000000000000000000000000000000000000000000000000000");
+  EXPECT_EQ(
+      Namehash("crypto"),
+      "0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f");
+  EXPECT_EQ(
+      Namehash("example.crypto"),
+      "0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e");
+  EXPECT_EQ(
+      Namehash("www.example.crypto"),
+      "0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1");
+  EXPECT_EQ(
+      Namehash("a.b.c.crypto"),
+      "0x353ea3e0449067382e0ea7934767470170dcfa9c49b1be0fe708adc4b1f9cf13");
+  EXPECT_EQ(
+      Namehash("brave.crypto"),
+      "0x77252571a99feee8f5e6b2f0c8b705407d395adc00b3c8ebcc7c19b2ea850013");
+}
+
 }  // namespace brave_wallet

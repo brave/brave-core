@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -51,12 +52,13 @@ std::string ToHex(const std::string& data) {
       base::ToLowerASCII(base::HexEncode(data.data(), data.size())).c_str());
 }
 
-std::string KeccakHash(const std::string& input) {
+std::string KeccakHash(const std::string& input, bool to_hex) {
   auto hash = ethash_keccak256(
       reinterpret_cast<uint8_t*>(const_cast<char*>(input.data())),
       input.size());
   std::string result(hash.str, sizeof(hash.str) / sizeof(hash.str[0]));
-  return ToHex(result);
+
+  return to_hex ? ToHex(result) : result;
 }
 
 std::string GetFunctionHash(const std::string& input) {
@@ -263,4 +265,18 @@ bool EncodeStringArray(const std::vector<std::string>& input,
 
   return true;
 }
+
+std::string Namehash(const std::string& name) {
+  std::string hash(32, '\0');
+  std::vector<std::string> labels =
+      SplitString(name, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  for (auto rit = labels.rbegin(); rit != labels.rend(); rit++) {
+    std::string label_hash = KeccakHash(*rit, false);
+    hash = KeccakHash(hash + label_hash, false);
+  }
+
+  return ToHex(hash);
+}
+
 }  // namespace brave_wallet
