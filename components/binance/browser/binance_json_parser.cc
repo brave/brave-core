@@ -52,12 +52,12 @@ bool BinanceJSONParser::GetTokensFromJSON(
 //    "data": [
 //        {
 //            "asset": "ADA",
-//            "free": "0.00000000",
+//            "free": 0.00000000,
 //            "locked": "0.00000000",
 //            "freeze": "1.00000000",
 //            "withdrawing": "0.00000000",
-//            "btcValuation": "0.00000000",
-//            "fiatValuation": "0.00000000"
+//            "btcValuation": 0.00000000,
+//            "fiatValuation": 0.00000000
 //        }
 //    ]
 // }

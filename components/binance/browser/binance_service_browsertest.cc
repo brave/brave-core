@@ -61,12 +61,12 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       "message": null,
       "data": [{
         "asset": "BAT",
-        "free": "1000.00000",
+        "free": 1000.00000,
         "locked": "0.00000000",
         "freeze": "0.00000000",
         "withdrawing": "0.00000000",
-        "btcValuation": "0.021100",
-        "fiatValuation": "20000.00000"
+        "btcValuation": 0.021100,
+        "fiatValuation": 20000.00000
       }]
     })");
   } else if (request_path == oauth_path_deposit_info) {
@@ -119,16 +119,16 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
           "logoUrl":"https://bin.bnbstatic.com/images/fake.png",
           "size":"2",
           "order":1,
-          "perTimeMinLimit":"0.00200000",
-          "perTimeMaxLimit":"1.00000000",
-          "dailyMaxLimit":"10.00000000",
-          "hadDailyLimit":"0",
+          "perTimeMinLimit":0.00200000,
+          "perTimeMaxLimit":1.00000000,
+          "dailyMaxLimit":10.00000000,
+          "hadDailyLimit":0,
           "needMarket":true,
           "feeType":1,
-          "feeRate":"0.00050000",
-          "fixFee":"1.00000000",
+          "feeRate":0.00050000,
+          "fixFee":1.00000000,
           "feeCoin":"BTC",
-          "forexRate":"1.00000000",
+          "forexRate":1.00000000,
           "expireTime":30
         }]
       }],
@@ -562,7 +562,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccountBalances) {
           base::Unretained(this))));
   WaitForGetAccountBalances(
       BinanceAccountBalances {
-          {"BAT", {"1000.00000", "0.021100", "20000.00000"}}
+          {"BAT", {1000.00000, 0.021100, 20000.00000}}
       }, true);
 }
 
@@ -664,11 +664,11 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssets) {
       base::BindOnce(
           &BinanceAPIBrowserTest::OnGetConvertAssets,
           base::Unretained(this))));
-  std::map<std::string, std::string> inner_sub {
-    { "asset", "BNB", },
-    { "minAmount", "0.00200000" }
+  BinanceConvertSubAsset inner_sub {
+    "BNB",
+    0.00200000
   };
-  std::vector<std::map<std::string, std::string>> sub {inner_sub};
+  std::vector<BinanceConvertSubAsset> sub {inner_sub};
   BinanceConvertAsserts assets {{"BTC", sub}};
   WaitForGetConvertAssets(assets);
 }

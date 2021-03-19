@@ -57,6 +57,7 @@ struct BinanceConvertSubAsset {
 
 typedef std::map<std::string, std::string> BinanceCoinNetworks;
 typedef std::map<std::string, std::vector<double>> BinanceAccountBalances;
+// TODO(petemill): s/BinanceConvertAsserts/BinanceConvertAssets
 typedef std::map<std::string, std::vector<BinanceConvertSubAsset>>
     BinanceConvertAsserts;
 
