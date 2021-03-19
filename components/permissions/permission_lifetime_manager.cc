@@ -88,7 +88,7 @@ void PermissionLifetimeManager::PermissionDecided(
            << " seconds";
 
   permission_expirations_.AddExpiringPermission(
-      content_type, expiration_time,
+      content_type, PermissionExpirationKey(expiration_time),
       PermissionOrigins(requesting_origin, embedding_origin));
 
   UpdateExpirationTimer();
@@ -154,12 +154,13 @@ void PermissionLifetimeManager::RestartExpirationTimerForTesting() {
 void PermissionLifetimeManager::UpdateExpirationTimer() {
   base::Time nearest_expiration_time(base::Time::Max());
   for (const auto& type_expirations : permission_expirations_.expirations()) {
-    const auto& time_expirations_map = type_expirations.second;
-    if (time_expirations_map.empty()) {
+    const auto& key_expirations_map = type_expirations.second;
+    if (key_expirations_map.empty() ||
+        !key_expirations_map.begin()->first.IsTimeKey()) {
       continue;
     }
-    nearest_expiration_time =
-        std::min(nearest_expiration_time, time_expirations_map.begin()->first);
+    nearest_expiration_time = std::min(
+        nearest_expiration_time, key_expirations_map.begin()->first.time());
   }
 
   if (nearest_expiration_time == base::Time::Max()) {

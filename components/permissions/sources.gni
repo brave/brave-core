@@ -1,4 +1,6 @@
 brave_components_permissions_sources = [
+  "//brave/components/permissions/permission_expiration_key.cc",
+  "//brave/components/permissions/permission_expiration_key.h",
   "//brave/components/permissions/permission_expirations.cc",
   "//brave/components/permissions/permission_expirations.h",
   "//brave/components/permissions/permission_lifetime_manager.cc",
