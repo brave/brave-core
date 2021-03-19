@@ -435,6 +435,7 @@
 		2C49854E206173C800893DAE /* photon-colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C49854D206173C800893DAE /* photon-colors.swift */; };
 		2F098F8B255F2D730084FB37 /* BrowserViewController+ReaderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F098F8A255F2D730084FB37 /* BrowserViewController+ReaderMode.swift */; };
 		2F13E79B1AC0C02700D75081 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F13E79A1AC0C02700D75081 /* StringExtensionsTests.swift */; };
+		2F198EE82603FDD900945AB3 /* AddSearchEngineActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F198EE72603FDD900945AB3 /* AddSearchEngineActivity.swift */; };
 		2F44FA1B1A9D426A00FD20CC /* TestHashExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F44FA1A1A9D426A00FD20CC /* TestHashExtensions.swift */; };
 		2F44FB2D1A9D5D8500FD20CC /* FiraSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4B7B7421A793CF20022C5E0 /* FiraSans-BoldItalic.ttf */; };
 		2F44FC721A9E840300FD20CC /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F44FC711A9E840300FD20CC /* SettingsNavigationController.swift */; };
@@ -1913,6 +1914,7 @@
 		2C49854D206173C800893DAE /* photon-colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "photon-colors.swift"; sourceTree = "<group>"; };
 		2F098F8A255F2D730084FB37 /* BrowserViewController+ReaderMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+ReaderMode.swift"; sourceTree = "<group>"; };
 		2F13E79A1AC0C02700D75081 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
+		2F198EE72603FDD900945AB3 /* AddSearchEngineActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSearchEngineActivity.swift; sourceTree = "<group>"; };
 		2F44FA1A1A9D426A00FD20CC /* TestHashExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHashExtensions.swift; sourceTree = "<group>"; };
 		2F44FC711A9E840300FD20CC /* SettingsNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
 		2F44FCC41A9E85E900FD20CC /* SettingsTableSectionHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableSectionHeaderFooterView.swift; sourceTree = "<group>"; };
@@ -4888,6 +4890,7 @@
 				D3972BF21C22412B00035B87 /* TitleActivityItemProvider.swift */,
 				2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */,
 				2760056525D1FFF500D47A75 /* AddFeedToBraveTodayActivity.swift */,
+				2F198EE72603FDD900945AB3 /* AddSearchEngineActivity.swift */,
 			);
 			path = Share;
 			sourceTree = "<group>";
@@ -7134,7 +7137,6 @@
 				A9072B801D07B34100459960 /* NoImageModeHelper.swift in Sources */,
 				4422D4EB21BFFB7600BF1855 /* filename.cc in Sources */,
 				2726636924944BFA0056CFE1 /* BraveTodayOptInView.swift in Sources */,
-				2FE5B4542582BEF500BFDDB8 /* ShareTrayView.swift in Sources */,
 				2755EABD255323C60033C43F /* PublisherInfoExtensions.swift in Sources */,
 				2746D28324A4FB7400E38852 /* RewardsInternalsSharable.swift in Sources */,
 				44331DDA22552313007E3E93 /* LocationContainerView.swift in Sources */,
@@ -7236,6 +7238,7 @@
 				27B68E9425C8911D002D0826 /* BraveTodayAddSourceViewController.swift in Sources */,
 				D0625C98208E87F10081F3B2 /* DownloadQueue.swift in Sources */,
 				4422D54621BFFB7E00BF1855 /* rune.cc in Sources */,
+				2F198EE82603FDD900945AB3 /* AddSearchEngineActivity.swift in Sources */,
 				EB11A1052044A90E0018F749 /* TrackingProtectionPageStats.swift in Sources */,
 				0A93F1802264C2D200A3571B /* FolderDetailsView.swift in Sources */,
 				0A0A07CE247518B100591DFB /* BraveVPNContactFormViewController.swift in Sources */,

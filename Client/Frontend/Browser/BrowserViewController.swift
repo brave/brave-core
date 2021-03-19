@@ -1895,6 +1895,15 @@ class BrowserViewController: UIViewController {
             }
         }
         
+        if let webView = tabManager.selectedTab?.webView,
+           evaluateWebsiteSupportOpenSearchEngine(webView) {
+            let addSearchEngineActivity = AddSearchEngineActivity() { [weak self] in
+                self?.addCustomSearchEngineForFocusedElement()
+            }
+                
+            activities.append(addSearchEngineActivity)
+        }
+
         let controller = helper.createActivityViewController(items: activities) { [weak self] completed, _, documentUrl  in
             guard let self = self else { return }
             
