@@ -40,17 +40,17 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
 
     @Override
     public void setBottomControlsVisible(boolean visible) {
-        mTabGroupUiVisibleSupplier.set(visible);
-        updateBottomControlsHeight();
+        updateBottomControlsHeight(mBottomToolbarVisibleSupplier.get() && visible);
         // We should keep it visible if bottom toolbar is visible.
         super.setBottomControlsVisible(mBottomToolbarVisibleSupplier.get() || visible);
+        mTabGroupUiVisibleSupplier.set(visible);
     }
 
     public void setBottomToolbarVisible(boolean visible) {
-        mBottomToolbarVisibleSupplier.set(visible);
-        updateBottomControlsHeight();
+        updateBottomControlsHeight(mTabGroupUiVisibleSupplier.get() && visible);
         // We should keep it visible if tag group UI is visible.
         super.setBottomControlsVisible(mTabGroupUiVisibleSupplier.get() || visible);
+        mBottomToolbarVisibleSupplier.set(visible);
     }
 
     public ObservableSupplierImpl<Boolean> getBottomToolbarVisibleSupplier() {
@@ -61,21 +61,9 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
         return mTabGroupUiVisibleSupplier;
     }
 
-    private void updateBottomControlsHeight() {
-        if (mBottomToolbarVisibleSupplier.get() && mTabGroupUiVisibleSupplier.get()) {
-            // Double the height if both bottom controls are visible
-            mBottomControlsHeight = mBottomControlsHeightDouble;
-        } else {
-            mBottomControlsHeight = mBottomControlsHeightSingle;
-        }
-    }
-
-    public void updateCompositedViewVisibility() {
-        final boolean isCompositedViewVisible = isCompositedViewVisible();
-        mModel.set(BottomControlsProperties.COMPOSITED_VIEW_VISIBLE, isCompositedViewVisible);
-        mBrowserControlsSizer.setBottomControlsHeight(isCompositedViewVisible
-                        ? mBottomControlsHeight
-                        : (mBottomControlsHeight - mBottomControlsHeightSingle),
-                mBrowserControlsSizer.getBottomControlsMinHeight());
+    private void updateBottomControlsHeight(boolean bothBottomControlsVisible) {
+        // Double the height if both bottom controls are visible
+        mBottomControlsHeight = bothBottomControlsVisible ? mBottomControlsHeightDouble
+                                                          : mBottomControlsHeightSingle;
     }
 }

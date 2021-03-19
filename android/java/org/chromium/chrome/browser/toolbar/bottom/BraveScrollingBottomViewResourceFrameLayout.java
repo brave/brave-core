@@ -23,12 +23,23 @@ public class BraveScrollingBottomViewResourceFrameLayout
     private SwipeGestureListener mSwipeGestureListener;
     private Supplier<BottomControlsCoordinator> mBottomControlsCoordinatorSupplier;
     private final CallbackController mCallbackController;
-    private boolean mIsBottomToolbarVisible;
-    private boolean mIsTabGroupUiVisible;
+    View mBottomToolbar;
+    View mBottomContainerSlot;
 
     public BraveScrollingBottomViewResourceFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mCallbackController = new CallbackController();
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+        mBottomToolbar = findViewById(R.id.bottom_toolbar);
+        assert mBottomToolbar != null : "Something has changed in upstream!";
+
+        mBottomContainerSlot = findViewById(R.id.bottom_container_slot);
+        assert mBottomContainerSlot != null : "Something has changed in upstream!";
     }
 
     /**
@@ -61,21 +72,6 @@ public class BraveScrollingBottomViewResourceFrameLayout
         return handledEvent || super.onTouchEvent(event);
     }
 
-    private void updateBottomControlsVisibility() {
-        if (braveBottomControlsCoordinator() != null) {
-            View bottomToolbar = findViewById(R.id.bottom_toolbar);
-            assert (bottomToolbar != null);
-            if (bottomToolbar != null) {
-                bottomToolbar.setVisibility(mIsBottomToolbarVisible ? View.VISIBLE : View.GONE);
-            }
-            View bottomContainerSlot = findViewById(R.id.bottom_container_slot);
-            assert (bottomContainerSlot != null);
-            if (bottomContainerSlot != null) {
-                bottomContainerSlot.setVisibility(mIsTabGroupUiVisible ? View.VISIBLE : View.GONE);
-            }
-        }
-    }
-
     public void setBottomControlsCoordinatorSupplier(
             Supplier<BottomControlsCoordinator> bottomControlsCoordinatorSupplier) {
         if (mBottomControlsCoordinatorSupplier != null) {
@@ -85,13 +81,17 @@ public class BraveScrollingBottomViewResourceFrameLayout
         mBottomControlsCoordinatorSupplier = bottomControlsCoordinatorSupplier;
         braveBottomControlsCoordinator().getBottomToolbarVisibleSupplier().addObserver(
                 mCallbackController.makeCancelable((visible) -> {
-                    mIsBottomToolbarVisible = visible;
-                    updateBottomControlsVisibility();
+                    if (mBottomToolbar != null) {
+                        mBottomToolbar.setVisibility(visible ? View.VISIBLE : View.GONE);
+                        getResourceAdapter().dropCachedBitmap();
+                    }
                 }));
         braveBottomControlsCoordinator().getTabGroupUiVisibleSupplier().addObserver(
                 mCallbackController.makeCancelable((visible) -> {
-                    mIsTabGroupUiVisible = visible;
-                    updateBottomControlsVisibility();
+                    if (mBottomContainerSlot != null) {
+                        mBottomContainerSlot.setVisibility(visible ? View.VISIBLE : View.GONE);
+                        getResourceAdapter().dropCachedBitmap();
+                    }
                 }));
     }
 

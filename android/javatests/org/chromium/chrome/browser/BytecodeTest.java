@@ -196,9 +196,6 @@ public class BytecodeTest {
                 "showBookmarkBottomSheet", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
                 "addBookmarkAndShowSnackbar", false, null));
-        Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
-                        "updateCompositedViewVisibility", false, null));
     }
 
     @Test

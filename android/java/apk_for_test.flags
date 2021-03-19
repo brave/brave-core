@@ -175,7 +175,6 @@
     *** mBottomControlsHeight;
     *** mModel;
     *** mBrowserControlsSizer;
-    *** updateCompositedViewVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
