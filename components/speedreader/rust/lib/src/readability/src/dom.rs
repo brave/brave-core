@@ -150,6 +150,13 @@ pub fn text_len(handle: &Handle) -> usize {
     len
 }
 
+#[inline]
+pub fn find_nodes_with_tag(handle: &Handle, tags: &[&str], nodes: &mut Vec<Rc<Node>>) {
+    for tag in tags {
+        find_node(handle, tag, nodes);
+    }
+}
+
 pub fn find_node(handle: &Handle, tag_name: &str, nodes: &mut Vec<Rc<Node>>) {
     for child in handle.children.borrow().iter() {
         if let Element { ref name, .. } = child.data {
