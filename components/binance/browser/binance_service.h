@@ -53,6 +53,14 @@ const char gateway_path_networks[] =
 struct BinanceConvertSubAsset {
   std::string assetName;
   double minAmount;
+  bool operator ==(BinanceConvertSubAsset& b) {
+    return (assetName == b.assetName) &&
+        (minAmount == b.minAmount);
+  }
+  bool operator ==(const BinanceConvertSubAsset& b) const {
+    return (assetName == b.assetName) &&
+        (minAmount == b.minAmount);
+  }
 };
 
 typedef std::map<std::string, std::string> BinanceCoinNetworks;

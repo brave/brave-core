@@ -25,10 +25,10 @@ std::string GetValueFromStringMap(
   return value;
 }
 
-std::vector<std::string> GetVectorFromDoubleMap(
+std::vector<double> GetVectorFromDoubleMap(
     const std::map<std::string, std::vector<double>>& map,
     const std::string& key) {
-  std::vector<std::string> value;
+  std::vector<double> value;
   std::map<std::string, std::vector<double>>::const_iterator it =
       map.find(key);
   if (it != map.end()) {
@@ -79,9 +79,9 @@ TEST_F(BinanceJSONParserTest, GetAccountBalancesFromJSON) {
         ]
       })", &balances));
 
-  std::vector<std::string>
+  std::vector<double>
       bnb_balance = GetVectorFromDoubleMap(balances, "BNB");
-  std::vector<std::string>
+  std::vector<double>
       btc_balance = GetVectorFromDoubleMap(balances, "BTC");
 
   const uint64_t three = 3;
@@ -89,14 +89,14 @@ TEST_F(BinanceJSONParserTest, GetAccountBalancesFromJSON) {
   ASSERT_EQ(bnb_balance.size(), three);
   ASSERT_EQ(btc_balance.size(), three);
 
-  ASSERT_EQ(bnb_balance[0], "10114.00000000");
-  ASSERT_EQ(btc_balance[0], "2.45000000");
+  ASSERT_EQ(bnb_balance[0], 10114.00000000);
+  ASSERT_EQ(btc_balance[0], 2.45000000);
 
-  ASSERT_EQ(bnb_balance[1], "2.000000");
-  ASSERT_EQ(btc_balance[1], "2.45000000");
+  ASSERT_EQ(bnb_balance[1], 2.000000);
+  ASSERT_EQ(btc_balance[1], 2.45000000);
 
-  ASSERT_EQ(bnb_balance[2], "17.500000");
-  ASSERT_EQ(btc_balance[2], "20000.0000");
+  ASSERT_EQ(bnb_balance[2], 17.500000);
+  ASSERT_EQ(btc_balance[2], 20000.0000);
 }
 
 TEST_F(BinanceJSONParserTest, GetTokensFromJSON) {
@@ -364,8 +364,8 @@ TEST_F(BinanceJSONParserTest, GetConvertAssetsFromJSON) {
   ASSERT_EQ(bnb_min, 0.00200000);
 
   BinanceConvertSubAsset eth_sub = sub.back();
-  std::string eth_name = eth_sub.asset);
-  double eth_min = eth_sub.minAmount);
+  std::string eth_name = eth_sub.assetName;
+  double eth_min = eth_sub.minAmount;
   ASSERT_EQ(eth_name, "ETH");
   ASSERT_EQ(eth_min, 0.00500000);
 }
