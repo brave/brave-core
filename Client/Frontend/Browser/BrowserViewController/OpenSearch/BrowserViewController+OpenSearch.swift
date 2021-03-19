@@ -29,17 +29,23 @@ extension BrowserViewController {
     
     /// Adding Toolbar button over the keyboard for adding Open Search Engine
     /// - Parameter webView: webview triggered open seach engine
-    func evaluateWebsiteSupportOpenSearchEngine(_ webView: WKWebView) {
+    @discardableResult
+    func evaluateWebsiteSupportOpenSearchEngine(_ webView: WKWebView) -> Bool {
         if let tab = tabManager[webView],
            let openSearchMetaData = tab.pageMetadata?.search,
            let url = webView.url,
            url.isSecureWebPage() {
-            updateAddOpenSearchEngine(
+            return updateAddOpenSearchEngine(
                 webView, referenceObject: OpenSearchReference(reference: openSearchMetaData.href, title: openSearchMetaData.title))
         }
+        
+        return false
     }
     
-    private func updateAddOpenSearchEngine(_ webView: WKWebView, referenceObject: OpenSearchReference) {
+    @discardableResult
+    private func updateAddOpenSearchEngine(_ webView: WKWebView, referenceObject: OpenSearchReference) -> Bool {
+        var supportsAutoAdd = true
+            
         // Add Reference Object as Open Search Engine
         openSearchEngine = referenceObject
         
@@ -57,8 +63,10 @@ extension BrowserViewController {
 
         if searchEngineExists {
             self.customSearchEngineButton.action = .disabled
+            supportsAutoAdd = false
         } else {
             self.customSearchEngineButton.action = .enabled
+            supportsAutoAdd = true
         }
         
         /*
@@ -72,30 +80,38 @@ extension BrowserViewController {
              In some cases the URL bar can trigger the keyboard notification. In that case the webview isnt the first responder
              and a search button should not be added.
              */
-            return
+            return supportsAutoAdd
         }
         
-        let argumentNextItem: [Any] = ["_n", "extI", "tem"]
-        let argumentView: [Any] = ["v", "ie", "w"]
-        
-        let valueKeyNextItem = argumentNextItem.compactMap { $0 as? String }.joined()
-        let valueKeyView = argumentView.compactMap { $0 as? String }.joined()
+        if UIDevice.isIpad {
+            webContentView.inputAssistantItem.trailingBarButtonGroups +=
+                [UIBarButtonItemGroup(barButtonItems: [UIBarButtonItem(customView: customSearchEngineButton)], representativeItem: nil)]
 
-        guard let input = webContentView.perform(#selector(getter: UIResponder.inputAccessoryView)),
-              let inputView = input.takeUnretainedValue() as? UIInputView,
-              let nextButton = inputView.value(forKey: valueKeyNextItem) as? UIBarButtonItem,
-              let nextButtonView = nextButton.value(forKey: valueKeyView) as? UIView else {
-            return
+        } else {
+            let argumentNextItem: [Any] = ["_n", "extI", "tem"]
+            let argumentView: [Any] = ["v", "ie", "w"]
+            
+            let valueKeyNextItem = argumentNextItem.compactMap { $0 as? String }.joined()
+            let valueKeyView = argumentView.compactMap { $0 as? String }.joined()
+
+            guard let input = webContentView.perform(#selector(getter: UIResponder.inputAccessoryView)),
+                  let inputView = input.takeUnretainedValue() as? UIInputView,
+                  let nextButton = inputView.value(forKey: valueKeyNextItem) as? UIBarButtonItem,
+                  let nextButtonView = nextButton.value(forKey: valueKeyView) as? UIView else {
+                return supportsAutoAdd
+            }
+            
+            inputView.addSubview(customSearchEngineButton)
+            
+            customSearchEngineButton.snp.remakeConstraints { make in
+                make.leading.equalTo(nextButtonView.snp.trailing).offset(20)
+                make.width.equalTo(inputView.snp.height)
+                make.top.equalTo(nextButtonView.snp.top)
+                make.height.equalTo(inputView.snp.height)
+            }
         }
         
-        inputView.addSubview(customSearchEngineButton)
-        
-        customSearchEngineButton.snp.remakeConstraints { make in
-            make.leading.equalTo(nextButtonView.snp.trailing).offset(20)
-            make.width.equalTo(inputView.snp.height)
-            make.top.equalTo(nextButtonView.snp.top)
-            make.height.equalTo(inputView.snp.height)
-        }
+        return supportsAutoAdd
     }
 
     @objc func addCustomSearchEngineForFocusedElement() {
