@@ -129,11 +129,11 @@ class MakeProductDetailsTest : public testing::TestWithParam<TestData> {
   }
 
   ~MakeProductDetailsTest() {
-    nt::SetTestingOverride(nt_root_key_, std::u16string());
+    nt::SetTestingOverride(nt_root_key_, std::wstring());
   }
 
   void SetUp() override {
-    std::u16string path;
+    std::wstring path;
     ASSERT_NO_FATAL_FAILURE(
         override_manager_.OverrideRegistry(root_key_, &path));
     nt::SetTestingOverride(nt_root_key_, path);
