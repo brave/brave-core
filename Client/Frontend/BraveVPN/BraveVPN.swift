@@ -35,6 +35,12 @@ class BraveVPN {
                 logAndStoreError("Failed to load vpn conection: \(error)")
             }
             
+            if case .notPurchased = state {
+                // Unlikely if user has never bought the vpn, we clear vpn config here for safety.
+                BraveVPN.clearConfiguration()
+                return
+            }
+            
             // We validate the current receipt at the start to know if the subscription has expirerd.
             BraveVPN.validateReceipt() { expired in
                 if expired == true {
