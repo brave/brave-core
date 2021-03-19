@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.test.filters.SmallTest;
 import android.view.View;
@@ -237,12 +238,12 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
-                OneshotSupplier.class, ObservableSupplier.class, ModalDialogManager.class,
-                WebFeedBridge.class));
+                OneshotSupplier.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
-                "org/chromium/chrome/browser/tabmodel/BraveTabCreator", ChromeActivity.class,
+                "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
                 WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
-                ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class));
+                ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class,
+                ObservableSupplier.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
                 BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
@@ -266,7 +267,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
-                ObservableSupplier.class, ModalDialogManager.class, WebFeedBridge.class));
+                ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
