@@ -10,6 +10,7 @@
 
 #include "bat/ledger/internal/endpoint/promotion/get_available/get_available.h"
 #include "bat/ledger/internal/endpoint/promotion/get_captcha/get_captcha.h"
+#include "bat/ledger/internal/endpoint/promotion/get_drain/get_drain.h"
 #include "bat/ledger/internal/endpoint/promotion/get_recover_wallet/get_recover_wallet.h"
 #include "bat/ledger/internal/endpoint/promotion/get_signed_creds/get_signed_creds.h"
 #include "bat/ledger/internal/endpoint/promotion/get_wallet_balance/get_wallet_balance.h"
@@ -77,6 +78,8 @@ class PromotionServer {
 
   promotion::PostClaimBrave* post_claim_brave() const;
 
+  promotion::GetDrain* get_drain() const;
+
  private:
   std::unique_ptr<promotion::GetAvailable> get_available_;
   std::unique_ptr<promotion::PostCreds> post_creds_;
@@ -97,6 +100,7 @@ class PromotionServer {
   std::unique_ptr<promotion::PostSuggestions> post_suggestions_;
   std::unique_ptr<promotion::PostSuggestionsClaim> post_suggestions_claim_;
   std::unique_ptr<promotion::PostClaimBrave> post_claim_brave_;
+  std::unique_ptr<promotion::GetDrain> get_drain_;
 };
 
 }  // namespace endpoint
