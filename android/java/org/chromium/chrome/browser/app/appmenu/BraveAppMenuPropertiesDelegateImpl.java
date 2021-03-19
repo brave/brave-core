@@ -32,11 +32,9 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
             TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
             @Nullable OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
-            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
-            ModalDialogManager modalDialogManager, WebFeedBridge webFeedBridge) {
+            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
-                toolbarManager, decorView, overviewModeBehaviorSupplier, bookmarkBridgeSupplier,
-                modalDialogManager, webFeedBridge);
+                toolbarManager, decorView, overviewModeBehaviorSupplier, bookmarkBridgeSupplier);
     }
 
     @Override
