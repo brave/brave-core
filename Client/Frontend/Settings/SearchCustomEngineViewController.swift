@@ -334,7 +334,15 @@ extension SearchCustomEngineViewController {
             return
         }
         
-        let searchEngineExists = profile.searchEngines.orderedEngines.contains(where: {$0.referenceURL == openSearchEngine.reference})
+        let searchEngineExists = profile.searchEngines.orderedEngines.contains(where: {
+            let nameExists = $0.shortName.lowercased() == openSearchEngine.title?.lowercased() ?? ""
+            
+            if let referenceURL =  $0.referenceURL {
+                return openSearchEngine.reference.contains(referenceURL) || nameExists
+            }
+            
+            return nameExists
+        })
         
         if searchEngineExists {
             changeAddButton(for: .disabled)
