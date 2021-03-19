@@ -48,6 +48,10 @@ extension BrowserViewController {
 
             return Self.allCases[safe: indexOfSelf + 1]
         }
+        
+        var value: Int {
+            AppConstants.buildChannel.isPublic ? self.rawValue : self.rawValue / 10
+        }
     }
     
     // MARK: Internal
@@ -120,15 +124,15 @@ extension BrowserViewController {
             let numOfTrackerAds = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
             guard numOfTrackerAds > benchmarkCurrentSessionAdCount + 20 else { return }
                 
-            let existingTierList = BenchmarkTrackerCountTier.allCases.filter({ Preferences.ProductNotificationBenchmarks.trackerTierCount.value < $0.rawValue})
+            let existingTierList = BenchmarkTrackerCountTier.allCases.filter({ Preferences.ProductNotificationBenchmarks.trackerTierCount.value < $0.value})
             
             if !existingTierList.isEmpty {
                 guard let firstExistingTier = existingTierList.first else { return }
                 
                 Preferences.ProductNotificationBenchmarks.trackerTierCount.value = numOfTrackerAds
                 
-                if numOfTrackerAds > firstExistingTier.rawValue {
-                    notifyTrackerAdsCount(firstExistingTier.rawValue, theme: Theme.of(selectedTab))
+                if numOfTrackerAds > firstExistingTier.value {
+                    notifyTrackerAdsCount(firstExistingTier.value, theme: Theme.of(selectedTab))
                 }
             }
         }
