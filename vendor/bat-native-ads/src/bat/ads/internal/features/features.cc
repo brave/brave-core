@@ -72,10 +72,8 @@ void Log() {
   BLOG(1, "Ad serving feature is "
               << (IsAdServingEnabled() ? "enabled" : "disabled"));
 
-#if defined(DEBUG)
   BLOG(1, "User activity feature is "
-              << (IsUserActivityEnabled() ? "enabled" : "disabled"));
-#endif
+              << (user_activity::IsEnabled() ? "enabled" : "disabled"));
 }
 
 }  // namespace features
