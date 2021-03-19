@@ -32,7 +32,9 @@ class IpfsServiceImpl : public mojom::IpfsService {
   mojo::Receiver<mojom::IpfsService> receiver_;
   SetCrashHandlerCallback crash_handler_callback_;
   std::unique_ptr<base::Thread> child_monitor_thread_;
+#if !defined(OS_ANDROID)
   bool in_shutdown_ = false;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(IpfsServiceImpl);
 };

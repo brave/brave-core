@@ -13,10 +13,14 @@
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry_factory.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/extension_system_provider.h"
 #include "extensions/browser/extensions_browser_client.h"
+#endif
 
 namespace ipfs {
 
@@ -39,9 +43,11 @@ IpfsServiceFactory::IpfsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "IpfsService",
           BrowserContextDependencyManager::GetInstance()) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   DependsOn(extensions::ExtensionRegistryFactory::GetInstance());
   DependsOn(
       extensions::ExtensionsBrowserClient::Get()->GetExtensionSystemFactory());
+#endif
 }
 
 IpfsServiceFactory::~IpfsServiceFactory() {}
