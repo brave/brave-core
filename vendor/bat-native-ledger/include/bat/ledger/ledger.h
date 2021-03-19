@@ -102,6 +102,12 @@ using GetBraveWalletCallback = std::function<void(type::BraveWalletPtr)>;
 
 using GetTransferableAmountCallback = std::function<void(double)>;
 
+using PostSuggestionsClaimCallback =
+    std::function<void(const type::Result result, std::string drain_id)>;
+
+using GetDrainCallback = std::function<void(const type::Result result,
+                                            const type::DrainStatus status)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(
@@ -390,9 +396,11 @@ class LEDGER_EXPORT Ledger {
 
   virtual std::string GetWalletPassphrase() const = 0;
 
-  virtual void LinkBraveWallet(
-      const std::string& destination_payment_id,
-      ResultCallback callback) = 0;
+  virtual void LinkBraveWallet(const std::string& destination_payment_id,
+                               PostSuggestionsClaimCallback callback) = 0;
+
+  virtual void GetDrainStatus(const std::string& drain_id,
+                              ledger::GetDrainCallback callback) = 0;
 
   virtual void GetTransferableAmount(
       GetTransferableAmountCallback callback) = 0;

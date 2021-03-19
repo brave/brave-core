@@ -21,9 +21,7 @@ namespace promotion {
 
 PromotionTransfer::PromotionTransfer(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
-  credentials_ = credential::CredentialsFactory::Create(
-      ledger_,
-      type::CredsBatchType::PROMOTION);
+  credentials_ = std::make_unique<credential::CredentialsPromotion>(ledger_);
   DCHECK(credentials_);
 }
 
@@ -42,13 +40,10 @@ void PromotionTransfer::GetAmount(
 
 void PromotionTransfer::GetEligibleTokens(GetEligibleTokensCallback callback) {
   auto tokens_callback = std::bind(&PromotionTransfer::OnGetEligiblePromotions,
-      this,
-      _1,
-      callback);
+                                   this, _1, callback);
 
-  ledger_->database()->GetPromotionListByType(
-      GetEligiblePromotions(),
-      tokens_callback);
+  ledger_->database()->GetPromotionListByType(GetEligiblePromotions(),
+                                              tokens_callback);
 }
 
 void PromotionTransfer::OnGetEligiblePromotions(
@@ -68,18 +63,16 @@ void PromotionTransfer::OnGetEligiblePromotions(
       callback);
 }
 
-void PromotionTransfer::Start(ledger::ResultCallback callback) {
-  auto tokens_callback = std::bind(&PromotionTransfer::OnGetEligibleTokens,
-      this,
-      _1,
-      callback);
+void PromotionTransfer::Start(ledger::PostSuggestionsClaimCallback callback) {
+  auto tokens_callback =
+      std::bind(&PromotionTransfer::OnGetEligibleTokens, this, _1, callback);
 
   GetEligibleTokens(tokens_callback);
 }
 
 void PromotionTransfer::OnGetEligibleTokens(
     type::UnblindedTokenList list,
-    ledger::ResultCallback callback) {
+    ledger::PostSuggestionsClaimCallback callback) {
   std::vector<type::UnblindedToken> token_list;
   for (auto& item : list) {
     token_list.push_back(*item);
@@ -91,15 +84,14 @@ void PromotionTransfer::OnGetEligibleTokens(
   redeem.token_list = token_list;
 
   const double transfer_amount = token_list.size() * constant::kVotePrice;
-  credentials_->RedeemTokens(
-      redeem,
-      [this, transfer_amount, callback](const type::Result result) {
+  credentials_->DrainTokens(
+      redeem, [this, transfer_amount, callback](const type::Result result,
+                                                std::string drain_id) {
         if (result == type::Result::LEDGER_OK) {
-            ledger_->database()->SaveEventLog(
-                log::kPromotionsClaimed,
-                std::to_string(transfer_amount));
+          ledger_->database()->SaveEventLog(log::kPromotionsClaimed,
+                                            std::to_string(transfer_amount));
         }
-        callback(result);
+        callback(result, drain_id);
       });
 }
 

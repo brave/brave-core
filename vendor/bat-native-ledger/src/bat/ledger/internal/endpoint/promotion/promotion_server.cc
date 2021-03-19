@@ -112,5 +112,9 @@ promotion::PostClaimBrave* PromotionServer::post_claim_brave() const {
   return post_claim_brave_.get();
 }
 
+promotion::GetDrain* PromotionServer::get_drain() const {
+  return get_drain_.get();
+}
+
 }  // namespace endpoint
 }  // namespace ledger
