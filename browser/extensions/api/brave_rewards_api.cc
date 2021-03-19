@@ -142,7 +142,8 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
   dict.SetStringKey("name", info->name);
   dict.SetIntKey("percentage", info->percent);
   dict.SetIntKey("status", static_cast<int>(info->status));
-  dict.SetIntKey("excluded", static_cast<int>(info->excluded));
+  dict.SetIntKey("excluded",
+                 info->excluded == ledger::type::PublisherExclude::EXCLUDED);
   dict.SetStringKey("url", info->url);
   dict.SetStringKey("provider", info->provider);
   dict.SetStringKey("favIconUrl", info->favicon_url);
@@ -189,7 +190,8 @@ void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
   dict.SetStringKey("name", info->name);
   dict.SetIntKey("percentage", info->percent);
   dict.SetIntKey("status", static_cast<int>(info->status));
-  dict.SetIntKey("excluded", static_cast<int>(info->excluded));
+  dict.SetIntKey("excluded",
+                 info->excluded == ledger::type::PublisherExclude::EXCLUDED);
   dict.SetStringKey("url", info->url);
   dict.SetStringKey("provider", info->provider);
   dict.SetStringKey("favIconUrl", info->favicon_url);

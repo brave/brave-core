@@ -170,12 +170,6 @@ declare namespace Rewards {
     promotion?: Promotion
   }
 
-  export enum ExcludeStatus {
-    DEFAULT = 0,
-    EXCLUDED = 1,
-    INCLUDED = 2
-  }
-
   export enum PublisherStatus {
     NOT_VERIFIED = 0,
     CONNECTED = 1,
@@ -186,7 +180,7 @@ declare namespace Rewards {
     publisherKey: string
     percentage: number
     status: PublisherStatus
-    excluded: ExcludeStatus
+    excluded: boolean
     url: string
     name: string
     provider: string
