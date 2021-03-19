@@ -10,6 +10,7 @@ import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
@@ -143,6 +144,7 @@ source_set("browser_process") {
     "//brave/components/cosmetic_filters/browser",
     "//brave/components/cosmetic_filters/common:mojom",
     "//brave/components/crypto_dot_com/browser/buildflags",
+    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/gemini/browser/buildflags",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/buildflags",
@@ -287,6 +289,10 @@ source_set("browser_process") {
       "//brave/components/crypto_dot_com/common",
       "//components/keyed_service/content",
     ]
+  }
+
+  if (decentralized_dns_enabled) {
+    deps += [ "//brave/browser/decentralized_dns" ]
   }
 
   if (ipfs_enabled) {

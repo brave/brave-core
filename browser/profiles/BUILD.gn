@@ -33,8 +33,8 @@ source_set("profiles") {
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_wallet/buildflags",
-    "//brave/components/brave_wallet/buildflags",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ntp_background_images/common",
     "//brave/components/tor",
@@ -52,5 +52,9 @@ source_set("profiles") {
 
   if (enable_tor) {
     deps += [ "//brave/browser/tor" ]
+  }
+
+  if (decentralized_dns_enabled) {
+    deps += [ "//brave/browser/decentralized_dns" ]
   }
 }

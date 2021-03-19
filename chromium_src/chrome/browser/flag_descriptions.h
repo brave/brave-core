@@ -29,6 +29,8 @@ extern const char kBraveIpfsName[];
 extern const char kBraveIpfsDescription[];
 extern const char kNativeBraveWalletName[];
 extern const char kNativeBraveWalletDescription[];
+extern const char kBraveDecentralizedDnsName[];
+extern const char kBraveDecentralizedDnsDescription[];
 extern const char kBraveSuperReferralName[];
 extern const char kBraveSuperReferralDescription[];
 extern const char kBraveEphemeralStorageName[];

@@ -31,6 +31,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
@@ -86,6 +87,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
+#endif
+
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+#include "brave/components/decentralized_dns/decentralized_dns_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -585,7 +590,8 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
 
-#if BUILDFLAG(ENABLE_TOR) ||BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_TOR) || BUILDFLAG(IPFS_ENABLED) || \
+    BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   content::BrowserContext* context =
       handle->GetWebContents()->GetBrowserContext();
 #endif
@@ -616,6 +622,16 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
           g_brave_browser_process->GetApplicationLocale());
   if (ipfs_navigation_throttle)
     throttles.push_back(std::move(ipfs_navigation_throttle));
+#endif
+
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  std::unique_ptr<content::NavigationThrottle>
+      decentralized_dns_navigation_throttle = decentralized_dns::
+          DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
+              handle, g_brave_browser_process->local_state(),
+              g_brave_browser_process->GetApplicationLocale());
+  if (decentralized_dns_navigation_throttle)
+    throttles.push_back(std::move(decentralized_dns_navigation_throttle));
 #endif
 
   return throttles;

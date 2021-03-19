@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
@@ -48,6 +49,10 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#endif
+
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+#include "brave/browser/decentralized_dns/decentralized_dns_service_factory.h"
 #endif
 
 using content::BrowserThread;
@@ -107,6 +112,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
   ipfs::IpfsServiceFactory::GetForContext(profile);
+#endif
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  decentralized_dns::DecentralizedDnsServiceFactory::GetForContext(profile);
 #endif
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   gcm::BraveGCMChannelStatus* status =
