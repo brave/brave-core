@@ -3,10 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_\
-POST_SUGGESTIONS_CLAIM_H_
-#define BRAVELEDGER_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_\
-POST_SUGGESTIONS_CLAIM_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_POST_SUGGESTIONS_CLAIM_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_POST_SUGGESTIONS_CLAIM_H_
 
 #include <string>
 
@@ -43,29 +41,23 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostSuggestionsClaimCallback = std::function<void(
-    const type::Result result)>;
-
 class PostSuggestionsClaim {
  public:
   explicit PostSuggestionsClaim(LedgerImpl* ledger);
   ~PostSuggestionsClaim();
 
-  void Request(
-      const credential::CredentialsRedeem& redeem,
-      PostSuggestionsClaimCallback callback);
+  void Request(const credential::CredentialsRedeem& redeem,
+               PostSuggestionsClaimCallback callback);
 
  private:
   std::string GetUrl();
 
-  std::string GeneratePayload(
-      const credential::CredentialsRedeem& redeem);
+  std::string GeneratePayload(const credential::CredentialsRedeem& redeem);
 
   type::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostSuggestionsClaimCallback callback);
+  void OnRequest(const type::UrlResponse& response,
+                 PostSuggestionsClaimCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -74,5 +66,4 @@ class PostSuggestionsClaim {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_\
-// POST_SUGGESTIONS_CLAIM_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_POST_SUGGESTIONS_CLAIM_H_

@@ -449,6 +449,8 @@ void CredentialsPromotion::Completed(
 void CredentialsPromotion::RedeemTokens(
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
+  DCHECK(redeem.type != type::RewardsType::TRANSFER);
+
   if (redeem.token_list.empty()) {
     BLOG(0, "Token list empty");
     callback(type::Result::LEDGER_ERROR);
@@ -456,28 +458,20 @@ void CredentialsPromotion::RedeemTokens(
   }
 
   std::vector<std::string> token_id_list;
-  for (const auto & item : redeem.token_list) {
+  for (const auto& item : redeem.token_list) {
     token_id_list.push_back(base::NumberToString(item.id));
   }
 
-  auto url_callback = std::bind(&CredentialsPromotion::OnRedeemTokens,
-      this,
-      _1,
-      token_id_list,
-      redeem,
-      callback);
+  auto url_callback = std::bind(&CredentialsPromotion::OnRedeemTokens, this, _1,
+                                token_id_list, redeem, callback);
 
-  if (redeem.type == type::RewardsType::TRANSFER) {
-    promotion_server_->post_suggestions_claim()->Request(redeem, url_callback);
-  } else {
-    if (redeem.publisher_key.empty()) {
-      BLOG(0, "Publisher key is empty");
-      callback(type::Result::LEDGER_ERROR);
-      return;
-    }
-
-    promotion_server_->post_suggestions()->Request(redeem, url_callback);
+  if (redeem.publisher_key.empty()) {
+    BLOG(0, "Publisher key is empty");
+    callback(type::Result::LEDGER_ERROR);
+    return;
   }
+
+  promotion_server_->post_suggestions()->Request(redeem, url_callback);
 }
 
 void CredentialsPromotion::OnRedeemTokens(
@@ -496,11 +490,60 @@ void CredentialsPromotion::OnRedeemTokens(
     id = redeem.contribution_id;
   }
 
+  ledger_->database()->MarkUnblindedTokensAsSpent(token_id_list, redeem.type,
+                                                  id, callback);
+}
+
+void CredentialsPromotion::DrainTokens(
+    const CredentialsRedeem& redeem,
+    ledger::PostSuggestionsClaimCallback callback) {
+  DCHECK(redeem.type == type::RewardsType::TRANSFER);
+
+  if (redeem.token_list.empty()) {
+    BLOG(0, "Token list empty");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  std::vector<std::string> token_id_list;
+  for (const auto& item : redeem.token_list) {
+    token_id_list.push_back(base::NumberToString(item.id));
+  }
+
+  auto url_callback = std::bind(&CredentialsPromotion::OnDrainTokens, this, _1,
+                                _2, token_id_list, redeem, callback);
+
+  promotion_server_->post_suggestions_claim()->Request(redeem, url_callback);
+}
+
+void CredentialsPromotion::OnDrainTokens(
+    const type::Result result,
+    std::string drain_id,
+    const std::vector<std::string>& token_id_list,
+    const CredentialsRedeem& redeem,
+    ledger::PostSuggestionsClaimCallback callback) {
+  if (result != type::Result::LEDGER_OK) {
+    BLOG(0, "Failed to parse drain tokens response");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  std::string id;
+  if (!redeem.contribution_id.empty()) {
+    id = redeem.contribution_id;
+  }
+
+  DCHECK(redeem.type == type::RewardsType::TRANSFER);
   ledger_->database()->MarkUnblindedTokensAsSpent(
-      token_id_list,
-      redeem.type,
-      id,
-      callback);
+      token_id_list, type::RewardsType::TRANSFER, id,
+      [drain_id, callback](const type::Result result) {
+        if (result != type::Result::LEDGER_OK) {
+          BLOG(0, "Failed to mark tokens as spent");
+          callback(type::Result::LEDGER_ERROR, "");
+        } else {
+          callback(type::Result::LEDGER_OK, drain_id);
+        }
+      });
 }
 
 }  // namespace credential

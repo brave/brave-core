@@ -28,7 +28,6 @@ import org.chromium.components.user_prefs.UserPrefs;
 
 public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_HTTPSE = "httpse";
-    private static final String PREF_IPFS_GATEWAY = "ipfs_gateway";
     private static final String PREF_AD_BLOCK = "ad_block";
     private static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
@@ -51,7 +50,6 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mAutocompleteBraveSuggestedSites;
     private ChromeBaseCheckBoxPreference mHttpsePref;
-    private ChromeBaseCheckBoxPreference mIpfsGatewayPref;
     private ChromeBaseCheckBoxPreference mAdBlockPref;
     private ChromeBaseCheckBoxPreference mFingerprintingProtectionPref;
     private ChromeBaseCheckBoxPreference mCloseTabsOnExitPref;
@@ -70,9 +68,6 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mHttpsePref = (ChromeBaseCheckBoxPreference) findPreference(PREF_HTTPSE);
         mHttpsePref.setOnPreferenceChangeListener(this);
-
-        mIpfsGatewayPref = (ChromeBaseCheckBoxPreference) findPreference(PREF_IPFS_GATEWAY);
-        mIpfsGatewayPref.setOnPreferenceChangeListener(this);
 
         mAdBlockPref = (ChromeBaseCheckBoxPreference) findPreference(PREF_AD_BLOCK);
         mAdBlockPref.setOnPreferenceChangeListener(this);
@@ -124,8 +119,6 @@ public class BravePrivacySettings extends PrivacySettings {
         String key = preference.getKey();
         if (PREF_HTTPSE.equals(key)) {
             BravePrefServiceBridge.getInstance().setHTTPSEEnabled((boolean) newValue);
-        } else if (PREF_IPFS_GATEWAY.equals(key)) {
-            BravePrefServiceBridge.getInstance().setIpfsGatewayEnabled((boolean) newValue);
         } else if (PREF_AD_BLOCK.equals(key)) {
             BravePrefServiceBridge.getInstance().setAdBlockEnabled((boolean) newValue);
         } else if (PREF_FINGERPRINTING_PROTECTION.equals(key)) {
@@ -180,7 +173,6 @@ public class BravePrivacySettings extends PrivacySettings {
             getPreferenceScreen().removePreference(mSendP3A);
         }
         mHttpsePref.setOrder(++order);
-        mIpfsGatewayPref.setOrder(++order);
         mAdBlockPref.setOrder(++order);
         mFingerprintingProtectionPref.setOrder(++order);
         mSearchSuggestions.setOrder(++order);
