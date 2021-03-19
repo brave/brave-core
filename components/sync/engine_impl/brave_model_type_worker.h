@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/feature_list.h"
 #include "components/sync/base/model_type.h"
 #include "components/sync/base/passphrase_enums.h"
 #include "components/sync/engine/commit_and_get_updates_types.h"
@@ -20,8 +21,16 @@ class Cryptographer;
 class NudgeHandler;
 class ModelTypeProcessor;
 
+namespace features {
+
+extern const base::Feature kBraveSyncResetProgressMarker;
+
+}  // namespace features
+
 FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarker);
 FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod);
+FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest,
+                     ResetProgressMarkerDisabledFeature);
 
 class BraveModelTypeWorker : public ModelTypeWorker {
  public:
@@ -41,6 +50,8 @@ class BraveModelTypeWorker : public ModelTypeWorker {
   FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest, ResetProgressMarker);
   FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest,
                            ResetProgressMarkerMaxPeriod);
+  FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest,
+                           ResetProgressMarkerDisabledFeature);
 
   void OnCommitResponse(
       const CommitResponseDataList& committed_response_list,

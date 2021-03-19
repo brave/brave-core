@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time_override.h"
 #include "components/sync/engine_impl/cancelation_signal.h"
 #include "components/sync/nigori/cryptographer_impl.h"
@@ -189,6 +190,26 @@ TEST_F(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod) {
   }
 
   // Expect reset progress marker types not happened
+  worker()->OnCommitResponse(CommitResponseDataList(), error_response_list);
+  EXPECT_FALSE(IsProgressMarkerEmpty());
+}
+
+TEST_F(BraveModelTypeWorkerTest, ResetProgressMarkerDisabledFeature) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(features::kBraveSyncResetProgressMarker);
+
+  NormalInitialize();
+  auto error_response_list =
+      MakeErrorResponseList(CommitResponse_ResponseType_CONFLICT);
+
+  for (size_t i = 0;
+       i < BraveModelTypeWorker::GetFailuresToResetMarkerForTests() - 1; ++i) {
+    worker()->OnCommitResponse(CommitResponseDataList(), error_response_list);
+    EXPECT_FALSE(IsProgressMarkerEmpty());
+  }
+
+  // Expect reset progress marker types does not happened, because
+  // we have disabled feature
   worker()->OnCommitResponse(CommitResponseDataList(), error_response_list);
   EXPECT_FALSE(IsProgressMarkerEmpty());
 }

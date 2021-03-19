@@ -7,11 +7,20 @@
 
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "components/sync/engine/model_type_processor.h"
 
 namespace syncer {
+
+namespace features {
+
+// Enables the option of resetting progress marker.
+const base::Feature kBraveSyncResetProgressMarker{
+    "ResetProgressMarkerOnCommitFailures", base::FEATURE_ENABLED_BY_DEFAULT};
+
+}  // namespace features
 
 namespace {
 // Between each failed commit the timeout is randomly increased,
@@ -50,6 +59,10 @@ void BraveModelTypeWorker::OnCommitResponse(
     const FailedCommitResponseDataList& error_response_list) {
   ModelTypeWorker::OnCommitResponse(committed_response_list,
                                     error_response_list);
+
+  if (!base::FeatureList::IsEnabled(features::kBraveSyncResetProgressMarker)) {
+    return;
+  }
 
   if (IsResetProgressMarkerRequired(error_response_list)) {
     ResetProgressMarker();
