@@ -65,6 +65,11 @@ final class WebImageCache: ImageCacheProtocol {
         return imageOperation
     }
     
+    func cacheImage(image: UIImage, data: Data, url: URL) {
+        let key = self.webImageManager.cacheKey(for: url)
+        webImageManager.imageCache.store(image, imageData: data, forKey: key, cacheType: .all)
+    }
+    
     func isCached(_ url: URL) -> Bool {
         return webImageManager.cacheKey(for: url) != nil
     }
