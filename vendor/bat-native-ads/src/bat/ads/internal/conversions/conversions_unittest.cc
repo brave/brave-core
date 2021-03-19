@@ -302,6 +302,39 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
       });
 }
 
+TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
+  // Arrange
+  ConversionList conversions;
+
+  ConversionInfo conversion;
+  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.type = "postclick";
+  conversion.url_pattern = "https://www.foo.com/bar";
+  conversion.observation_window = 3;
+  conversion.expiry_timestamp =
+      CalculateExpiryTimestamp(conversion.observation_window);
+  conversions.push_back(conversion);
+
+  SaveConversions(conversions);
+
+  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+
+  // Act
+  conversions_->MaybeConvert({"https://www.foo.com/bar"}, "");
+
+  // Assert
+  const std::string condition = base::StringPrintf(
+      "creative_set_id = '%s' AND confirmation_type = 'conversion'",
+      conversion.creative_set_id.c_str());
+
+  ad_events_database_table_->GetIf(
+      condition, [](const Result result, const AdEventList& ad_events) {
+        ASSERT_EQ(Result::SUCCESS, result);
+
+        EXPECT_TRUE(ad_events.empty());
+      });
+}
+
 TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
   // Arrange
   const std::string creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
