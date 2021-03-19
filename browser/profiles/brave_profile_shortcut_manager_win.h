@@ -15,7 +15,7 @@ class BraveProfileShortcutManagerWin : public ProfileShortcutManagerWin {
 
   void GetShortcutProperties(const base::FilePath& profile_path,
                              base::CommandLine* command_line,
-                             std::u16string* name,
+                             std::wstring* name,
                              base::FilePath* icon_path) override;
 
  private:
