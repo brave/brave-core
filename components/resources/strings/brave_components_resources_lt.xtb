@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">„Tor“ tarpinio serverio URL</translation>
 <translation id="1671503397662036257">„Tor“ ryšio būsena</translation>
 <translation id="6024292492796847324">„Tor“ inicijavimo pažanga</translation>
+<translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
+<translation id="7176563092712682575">Tinkinti populiarias svetaines</translation>
+<translation id="8760415064721320867">Privatusd langas su „Tor“</translation>
+<translation id="4844209912525464363">„Brave“ niekada neįsimena, ką veikiate privačiame lange. Naudojant „Tor“ jūsų naršymas taip pat slepiamas nuo jūsų interneto paslaugų teikėjo ar darbdavio, o IP adresas slepiamas nuo svetainių, kuriose lankotės.</translation>
+<translation id="5576876180131651996">Privačius langus padarykite daug privatesnius</translation>
+<translation id="1129265576134014816">Šis privatus langas yra daug privatesnis</translation>
+<translation id="805807983419360524">su „Tor“</translation>
+<translation id="8958799246752641148">„Tor“ slepia jūsų IP adresą nuo svetainių, kuriose lankotės, nukreipdama jūsų naršymą per kelis „Tor“ serverius ir tik po to nuvesdama į paskirties vietą. Šie ryšiai yra šifruoti, todėl jūsų interneto paslaugų teikėjas ar darbdavys taip pat nemato, kokiose svetainėse lankotės. Dėl „Tor“ naršymas gali sulėtėti, o kai kurios svetainės gali visai neveikti.</translation>
+<translation id="520608572871993342">Naudojant privačius langus keičiasi tik tai, ką „Brave“ atlieka jūsų įrenginyje — niekieno kito elgesys nepasikeičia. „Tor“ paslepia jūsų IP adresą nuo svetainių, kuriose lankotės, taip pat paslepia svetaines, kuriose lankotės, nuo jūsų interneto paslaugų teikėjo ar darbdavio. Privatų langą galite atverti su „Tor“ per meniu arba naudodami {{ key }}.</translation>
+<translation id="2876191400747549936">Apgailestaujame, apdorojant jūsų užklausą iškilo problema, bandykite dar kartą.</translation>
+<translation id="5816125157889950051">Kada gaunate atlygį</translation>
+<translation id="6733942359297688714">prisijungti prie patvirtintos „Uphold“ piniginės.</translation>
+<translation id="4600224932216165965">Įneškite, išsiimkite ir valdykite lėšas su <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Jūsų „Brave“ piniginę sukūrė <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Jei iš naujo nustatysite piniginę, jūsų <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami „Uphold“, kad neprarastumėte BAT.</translation>
+<translation id="7591798679868259510">Eiti į mano „Uphold“ paskyrą</translation>
+<translation id="160145159036553575">Mūsų piniginės paslaugą teikia <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/>.</translation>
+<translation id="8465442795593991224">Atsižvelgiant į prašomas paslaugas, „Uphold“ gali pareikalauti jūsų patvirtinti savo tapatybę.</translation>
+<translation id="723054503945711909">„Brave Software Inc.“ netvarko, nelaiko ir nepasiekia jokios asmeninės informacijos, kurią teikiate „Uphold“, kai ten susikuriate paskyrą.</translation>
+<translation id="7677480094678113476">Pastaba. Jūsų operacijos „Uphold“  bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų gavėjas ir arbatpinigių suma.</translation>
+<translation id="6057992164469678163">Laukiama kolegų...</translation>
 </translationbundle>

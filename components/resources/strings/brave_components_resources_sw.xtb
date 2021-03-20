@@ -823,4 +823,25 @@
 <translation id="6951743416068151209">Tor Wakala URI</translation>
 <translation id="1671503397662036257">Tor Hali ya Uunganisho</translation>
 <translation id="6024292492796847324">Tor Maendeleo ya Uanzishaji</translation>
+<translation id="8643377320501056697">Onyesha Tovuti Bora</translation>
+<translation id="7176563092712682575">Badilisha Tovuti Bora Zikufae</translation>
+<translation id="8760415064721320867">Dirisha Binafsi na Tor</translation>
+<translation id="4844209912525464363">Brave haikumbuki kamwe kile unachofanya kwenye Dirisha Binafsi. Ukiwa na Tor, taarifa zako za kuperuzi pia hufichwa dhidi ya ISP au mwajiri wako, na anuani yako ya IP hufichwa dhidi ya tovuti unazozitembelea.</translation>
+<translation id="5576876180131651996">Fanya Dirisha Binafsi kuwa la faragha zaidi</translation>
+<translation id="1129265576134014816">Dirisha hili Binafsi ni la faragha zaidi</translation>
+<translation id="805807983419360524">ukiwa na Tor</translation>
+<translation id="8958799246752641148">Tor huficha anwani yako ya IP dhidi ya tovuti unazotembelea, kwa kuwinga kuperuzi kwako kupitia seva kadhaa za Tor kabla haijafikia kituo chako cha mwisho. Miunganisho hii imefichwa, kiasi kwamba ISP na mwajiri wako hawezi kuona ni tovuti gani unayotembelea. Tor huweza kupunguza kasi ya kuperuzi na baadhi ya tovuti zinaweza zisifanye kazi kabisa.</translation>
+<translation id="520608572871993342">Kutumia Madirisha Binafsi hubdailisha tu kile ambacho Brave hufanya kwenye kifaa chako — hiabadilishi tabia ya mtu yeyote. Tor huficha anuani yako ya IP dhidi ya tovuti unazozitembelea, na huficha tovuti unazozitembelea dhidi ISP yako au mwajiri wako. Fungua Dirisha Binafsi kwa Tor kutoka kwenye menyu, au kwa {{ key }}.</translation>
+<translation id="2876191400747549936">Samahani, kulikuwa na tatizo wakati wa kuchakata ombi lako, tafadhali jaribu tena.</translation>
+<translation id="5816125157889950051">Je, unazipokea zawadi lini</translation>
+<translation id="6733942359297688714">uunganishe kwenye kipochi kinachothibitishwa cha Uphold.</translation>
+<translation id="4600224932216165965">Ongeza, toa na udhibiti fedha kwenye <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Pochi yako ya Brave inaendeshwa na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> na data zako nyingine za Rewards zitapotea kabisa ukibadilisha pochi yako. Tafadhali hakikisha kuwa una pochi iliyothibitishwa yenye Uphold ili uendelee kuwa na BAT yako.</translation>
+<translation id="7591798679868259510">Nenda kwenye akaunti yangu ya Uphold</translation>
+<translation id="160145159036553575">Huduma yetu ya pochi inatolewa na <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Huenda Uphold ikakuhitaji kuthibitisha utambulisho wako kulingana na huduma zilizoombwa.</translation>
+<translation id="723054503945711909">Brave Software Inc. haichakati, kuhifadhi wala kufikia taarifa yoyote ya binafsi unayoipa Uphold unapofungua akaunti nao.</translation>
+<translation id="7677480094678113476">Dokezo: Miamala yako itaonekana kwa Uphold mara unapoidhinisha; kwa mfano, wataweza kuona mpokeaji na kiasi cha vidokezo vyako.</translation>
+<translation id="6057992164469678163">Inasubiri wenzao ...</translation>
 </translationbundle>

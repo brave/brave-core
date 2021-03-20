@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor-forbindelsesstatus</translation>
 <translation id="6024292492796847324">Tor initialiseringsfremgang</translation>
+<translation id="8643377320501056697">Vis topsider</translation>
+<translation id="7176563092712682575">Tilpas tophjemmesider</translation>
+<translation id="8760415064721320867">Privat vindue med Tor</translation>
+<translation id="4844209912525464363">Brave husker aldrig hvad du laver i et privat vindue. Med Tor er din browsing også skjult fra din ISP eller arbejdsgiver, og din IP-adresse bliver skjult for de sider du besøger.</translation>
+<translation id="5576876180131651996">Gør dit Private Windows meget mere privat</translation>
+<translation id="1129265576134014816">Dette private vindue er meget mere privat</translation>
+<translation id="805807983419360524">med Tor</translation>
+<translation id="8958799246752641148">Tor skjuler din IP adresse på siderne du besøger, ved at route din browsing igennem adskillige Tor servere før den når din destination. Disse forbindelser er krypterede, så din internetudbyder eller arbejdsgiver kan heller ikke se hvilke sider du besøger. Tor kan nedsætte hastigheden på browsing, og der kan være visse sider som ikke fungerer.</translation>
+<translation id="520608572871993342">Når du bruger private vinduer, ændrer det kun hvad Brave gør på din enhed — det ændrer ikke andres adfærd. Tor skjuler din IP-adresse for de sider du besøger og skjuler siderne du besøger for din ISP eller din arbejdsgiver. Åbn et privat vindue med Tor fra menuen eller med {{ key }}.</translation>
+<translation id="2876191400747549936">Beklager, der opstod et problem med behandling af din anmodning. Prøv igen.</translation>
+<translation id="5816125157889950051">Når du modtager belønninger</translation>
+<translation id="6733942359297688714">forbinder til en verificeret Uphold-tegnebog.</translation>
+<translation id="4600224932216165965">Tilføj, hæv og administrer midler på <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Din Brave-tegnebog er drevet af <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Dit <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> og andre belønningsdata går permanent tabt, hvis du nulstiller din tegnebog. Sørg for, at du har verificeret din tegnebog med Uphold, så du kan beholde din BAT.</translation>
+<translation id="7591798679868259510">Gå til min Uphold-konto</translation>
+<translation id="160145159036553575">Vores tegnebogsservice leveres af <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold vil muligvis bede dig om at bekræfte din identitet, baseret på hvilke tjenester der bruges.</translation>
+<translation id="723054503945711909">Brave Software Inc. hverken behandler, opbevarer, eller benytter sig af den personlige information som du overlader til Uphold når du opretter en konto ved dem.</translation>
+<translation id="7677480094678113476">Bemærk: Dine transaktioner vil være synlige for Uphold, når du har godkendt det. De vil eksempelvis kunne se modtageren og beløbet på dine drikkepenge.</translation>
+<translation id="6057992164469678163">Venter på peers...</translation>
 </translationbundle>

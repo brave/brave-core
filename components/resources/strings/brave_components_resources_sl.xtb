@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Tor strežnik URI</translation>
 <translation id="1671503397662036257">Stanje povezave Tor</translation>
 <translation id="6024292492796847324">Napredek pri inicializaciji Tor</translation>
+<translation id="8643377320501056697">Prikaži najbolj priljubljena spletna mesta</translation>
+<translation id="7176563092712682575">Prilagodite najboljša spletna mesta</translation>
+<translation id="8760415064721320867">Zasebno okno v brskalniku Tor</translation>
+<translation id="4844209912525464363">Brave nikoli ne beleži, kaj počnete v zasebnem oknu. V brskalniku Tor je brskanje skrito tudi vašemu ponudniku internetnih storitev ali delodajalcu, vaš naslov IP pa je skrit stranem, ki jih obiščete.</translation>
+<translation id="5576876180131651996">Zasebno okno je lahko še bolj zasebno</translation>
+<translation id="1129265576134014816">To zasebno okno je veliko bolj zasebno</translation>
+<translation id="805807983419360524">z brskalnikom Tor</translation>
+<translation id="8958799246752641148">Tor skrije vaš naslov IP na straneh, ki jih obiščete, in sicer tako, da vaše brskanje, še preden to doseže cilj, usmeri na več strežnikov Tor. Te povezave so šifrirane, zato vaš ponudnik internetnih storitev ali delodajalec ne more videti, katere spletne strani obiskujete. Tor lahko upočasni brskanje in nekatera spletna mesta morda sploh ne delujejo.</translation>
+<translation id="520608572871993342">Uporaba zasebnega okna spremeni samo način delovanja Brave na vaši napravi, ničesar drugega. Tor skrije vaš naslov IP na straneh, ki jih obiščete, pri vašem ponudniku internetnih storitev ali delodajalcu pa skrije strani, ki jih obiščete. Odprite zasebno okno v brskalniku Tor v meniju ali s {{key}}.</translation>
+<translation id="2876191400747549936">Žal je prišlo do težave pri obdelavi vaše zahteve, poskusite znova.</translation>
+<translation id="5816125157889950051">Kdaj prejmete nagrade</translation>
+<translation id="6733942359297688714">se povežete s preverjeno podprto denarnico.</translation>
+<translation id="4600224932216165965">Dodajte, dvignite in upravljajte sredstva na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Vašo Brave denarnico poganja <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Vašii <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> in drugi podatki o nagradah bodo trajno izgubljeni, če ponastavite denarnico. Prepričajte se, da ste denarnico potrdili z Uphold, da boste lahko obdržali BAT.</translation>
+<translation id="7591798679868259510">Pojdi na moj račun Uphold</translation>
+<translation id="160145159036553575">Naše denarnice zagotavlja <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Platforma Uphold lahko zahteva, da preverite svojo identiteto na podlagi zahtevanih storitev.</translation>
+<translation id="723054503945711909">Družba Brave Software Inc. ne obdeluje, hrani ali dostopa do nobenih osebnih podatkov, ki jih posredujete prek platforme Uphold, ko z njimi vzpostavite račun.</translation>
+<translation id="7677480094678113476">Opomba: Vaše transakcije bo podjetje Uphold videlo, ko to sami odobrite; na primer, lahko bodo videli prejemnika in količino vaših prispevkov.</translation>
+<translation id="6057992164469678163">Čakam na uporabnike...</translation>
 </translationbundle>

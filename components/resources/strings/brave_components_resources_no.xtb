@@ -789,4 +789,23 @@
 <translation id="6951743416068151209">Tor-mellomtjener-URI</translation>
 <translation id="1671503397662036257">Tor-tilkoblingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialiseringsprosess</translation>
+<translation id="8643377320501056697">Vis toppnettsteder</translation>
+<translation id="7176563092712682575">Egendefiner toppnettsteder</translation>
+<translation id="8760415064721320867">Privat vindu med Tor</translation>
+<translation id="4844209912525464363">Brave husker aldri hva du har gjort i et privatvindu. Med Tor vil nettlesingen også skjules fra internettleverandøren eller sjefen din. IP-adressen din er også skjult for sidene du besøker.</translation>
+<translation id="5576876180131651996">Gjør private vinduer enda mer private</translation>
+<translation id="1129265576134014816">Dette private vinduet er enda mer privat</translation>
+<translation id="805807983419360524">med Tor</translation>
+<translation id="8958799246752641148">Tor gjemmer IP-adresser fra nettsteder du besøker ved å dirigere nettlesingen din gjennom flere Tor-servere før det når destinasjonen din. Disse forbindelsene er krypterte, så nettleverandøren eller arbeidsgiveren din kan ikke se hvilke nettsteder du besøker heller. Tor kan gjøre nettlesingen tregere, og noen nettsteder vil kanskje ikke fungere i det hele tatt.</translation>
+<translation id="520608572871993342">Bruk av Private vinduer endrer kun hva Brave gjør på enheten din — det endrer ikke hva andre gjør. Tor gjemmer IP-adressen din fra nettstedene du besøker, og nettstedene du besøker fra internettleverandøren din eller arbeidsgiveren din. Åpne et Privat vindu med Tor fra menyen eller med {{ key }}.</translation>
+<translation id="2876191400747549936">Beklager, det var problemer med å behandle forespørselen. Prøv på nytt.</translation>
+<translation id="5816125157889950051">Når mottar du belønninger</translation>
+<translation id="4600224932216165965">Fyll på, ta ut og administrer penger hos <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Brave-lommeboken din driftes av <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7591798679868259510">Gå til Uphold-kontoen min</translation>
+<translation id="160145159036553575">Lommeboktjenesten vår tilbys av <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold kan kreve at du verifiserer identiteten din basert på tjenestene du har forespurt.</translation>
+<translation id="723054503945711909">Brave Software Inc. verken behandler, lagrer eller bruker noen av de personlige opplysningene som du gir til Uphold når du oppretter konto hos dem.</translation>
+<translation id="7677480094678113476">Merk: Transaksjonene dine er synlige for Uphold så snart du autoriserer. De kan for eksempel se kvitteringen og tipsbeløpet ditt.</translation>
+<translation id="6057992164469678163">Venter på tjenere …</translation>
 </translationbundle>

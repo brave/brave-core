@@ -823,4 +823,25 @@
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor kapcsolat állapota</translation>
 <translation id="6024292492796847324">Tor inicializálási állapot</translation>
+<translation id="8643377320501056697">Legjobb oldalak mutatása</translation>
+<translation id="7176563092712682575">Top oldalak testreszabása</translation>
+<translation id="8760415064721320867">Privát ablak Tor-ral</translation>
+<translation id="4844209912525464363">A Brave nem jegyzi meg, hogy mit csinálsz egy Privát ablakban. A Torral a böngészésed is rejtve marad az internetszolgáltatód vagy a munkaadód előtt, és IP-címed rejtve marad a felkeresett oldalak előtt.</translation>
+<translation id="5576876180131651996">Tegye a Privát Ablakokat sokkal privátabbá</translation>
+<translation id="1129265576134014816">Ez a Privát Ablak sokkal titkosabb</translation>
+<translation id="805807983419360524">Tor-ral</translation>
+<translation id="8958799246752641148">A Tor elrejti IP címét az ön által meglátogatott oldalak elől azáltal, hogy böngészési tevékenységét több Tor szerveren is átirányítja, mielőtt az a célhoz eljutna. Ezek a kapcsolatok titkosítottak, így internetszolgáltatója vagy munkáltatója sem láthatja, milyen oldalakat látogat. A Tor lelassíthatja a böngészést, és egyes oldalak esetleg egyáltalán nem fognak működni.</translation>
+<translation id="520608572871993342">A Privát Ablakok használatával csak az változik, amit a Brave tesz készülékeden, mások viselkedésére nincs hatással. A Tor elrejti IP címedet a felkeresett oldalak elöl, és elrejti a felkeresett oldalakat az ISP vagy munkaadó elöl. Nyiss meg Privát Ablakot a Torral a menüből vagy  a {{ key }} gombbal.</translation>
+<translation id="2876191400747549936">Sajnáljuk, hiba történt kérésed feldolgozása közben. Kérünk, próbáld újra.</translation>
+<translation id="5816125157889950051">Mikor kapja meg a jutalmakat</translation>
+<translation id="6733942359297688714">csatlakozás egy ellenőrzött Uphold pénztárcához.</translation>
+<translation id="4600224932216165965">Adjon hozzá, vegyen ki és kezelje a pénzét az <ph name="BEGIN_BOLD"/>Uphold-ban<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">A Brawe pénztárcáját az <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> üzemelteti.</translation>
+<translation id="7428521340740703492">Az Ön <ph name="BEGIN_BOLD"/>{{amount}} BAT-je<ph name="END_BOLD"/> és egyéb díjai elvesznek, ha visszaállítja a pénztárcáját. Kérjük, ellenőrizze, hogy igazolta-e pénztárcáját az Uphold segítségével, hogy megőrizhesse BAT-ját.</translation>
+<translation id="7591798679868259510">Ugrás Uphold fiókomba</translation>
+<translation id="160145159036553575">A pénztárca szolgáltatója az <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">A kért szolgáltatások alapján szükség lehet rá, hogy az Uphold felé igazolja személyazonosságát .</translation>
+<translation id="723054503945711909">A Brave Software Inc. nem kezeli, nem  tárolja, valamint nem nem fér hozzá az Uphold számára a fiók létesítésekor megadott személyes adatai egyikéhez sem.</translation>
+<translation id="7677480094678113476">Figyelem: Tranzakcióid az engedélyezés után láthatók lesznek az Uphold számára; például látni fogják a címzettet és a borravalóid mértékét.</translation>
+<translation id="6057992164469678163">Várakozás a társakra...</translation>
 </translationbundle>

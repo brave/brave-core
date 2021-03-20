@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Tor Proxy-URI</translation>
 <translation id="1671503397662036257">Tor-verbindingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialisatievoortgang</translation>
+<translation id="8643377320501056697">Topsites Weergeven</translation>
+<translation id="7176563092712682575">Topsites aanpassen</translation>
+<translation id="8760415064721320867">Privévenster met Tor</translation>
+<translation id="4844209912525464363">Brave onthoudt nooit wat je doet in een Privévenster. Met Tor wordt je browse activiteit ook verborgen gehouden voor je internetprovider of werkgever en wordt je IP-adres verborgen gehouden voor de websites die je bezoekt.</translation>
+<translation id="5576876180131651996">Maak Privévensters veel meer privé.</translation>
+<translation id="1129265576134014816">Deze Privévenster biedt veel meer privacy.</translation>
+<translation id="805807983419360524">met Tor</translation>
+<translation id="8958799246752641148">Tor verbergt je IP-adres voor de websites die je bezoekt, door het browsen via verschillende Tor-servers om te leiden voordat deze zijn bestemming bereikt. Deze verbindingen zijn versleuteld, dus je internetprovider of werkgever kan ’ ook niet zien welke websites je ’ bezoekt. Tor kan echter het browsen vertragen en sommige websites werken mogelijk helemaal niet.</translation>
+<translation id="520608572871993342">Het gebruik van Privévensters verandert alleen wat Brave op je apparaat — doet - het verandert niets aan het gedrag van een ander. Tor verbergt je IP-adres voor de websites die je bezoekt en verbergt de websites die je bezoekt voor je internetprovider of je werkgever. Open vanuit het menu of met {{ key }} een Privévenster met Tor.</translation>
+<translation id="2876191400747549936">Er is helaas een probleem opgetreden bij het verwerken van je verzoek. Probeer het opnieuw.</translation>
+<translation id="5816125157889950051">Wanneer ontvangt u beloningen</translation>
+<translation id="6733942359297688714">verbinding maken met een geverifieerde Uphold wallet</translation>
+<translation id="4600224932216165965">Leg geld in, neem geld op en beheer uw middelen met <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Uw Brave-portemonnee wordt mogelijk gemaakt door <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Uw<ph name="BEGIN_BOLD"/>{{amount}} BAT's<ph name="END_BOLD"/> en andere Beloningen gaan permanent verloren als u uw portemonnee reset. Zorg ervoor dat u uw portemonnee met Uphold hebt geverifieerd zodat u uw BAT kunt behouden.</translation>
+<translation id="7591798679868259510">Ga naar mijn Uphold-account</translation>
+<translation id="160145159036553575">Onze portemonnee-service wordt aangeboden door <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
+<translation id="723054503945711909">Brave Software Inc. verwerkt, bewaart of heeft geen toegang tot de persoonlijke informatie die je verstrekt aan Uphold wanneer je een account bij hen aanmaakt.</translation>
+<translation id="7677480094678113476">Let op: Uw transacties zullen zichtbaar zijn voor Uphold zodra u toestemming geeft, ze zullen bijvoorbeeld de ontvanger en het bedrag van uw tips zien.</translation>
+<translation id="6057992164469678163">Wachten op peers...</translation>
 </translationbundle>

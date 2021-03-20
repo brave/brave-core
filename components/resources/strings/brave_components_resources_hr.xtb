@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">URI proxya Tor</translation>
 <translation id="1671503397662036257">Stanje povezanosti Tor</translation>
 <translation id="6024292492796847324">Napredak pokretanja Tor</translation>
+<translation id="8643377320501056697">Prikaži glavna mrežna mjesta</translation>
+<translation id="7176563092712682575">Prilagodi najpopularnija mrežna mjesta</translation>
+<translation id="8760415064721320867">Privatni prozor s funkcijom Tor</translation>
+<translation id="4844209912525464363">Brave nikada ne pamti što radite u privatnom prozoru. Uz Tor, vaše je pregledavanje skriveno i od vašeg pružatelja internetskih usluga i poslodavca, a IP adresa skrivena je od mrežnih mjesta koja posjećujete.</translation>
+<translation id="5576876180131651996">Učinite privatne prozore mnogo privatnijima</translation>
+<translation id="1129265576134014816">Ovaj je privatni prozor mnogo privatniji</translation>
+<translation id="805807983419360524">uz Tor</translation>
+<translation id="8958799246752641148">Tor skriva vašu IP adresu od mrežnih mjesta koja posjećujete usmjeravanjem vašeg pregledavanja preko nekoliko poslužitelja Tor prije nego što dođe do vašeg odredišta. Te su veze kriptirane, pa ni vaš pružatelj internetskih usluga ni poslodavac ne može vidjeti koja mrežna mjesta posjećujete. Tor može usporiti pregledavanje, a neka mrežna mjesta možda uopće neće raditi.</translation>
+<translation id="520608572871993342">Uporabom privatnih kartica mijenja se samo ono što Brave radi na vašem uređaju — ne mijenja se ponašanje drugih. Tor skriva vašu IP adresu od mjesta koja posjećujete, a ta mjesta skriva od vašeg pružatelja internetskih usluga ili poslodavca. Otvorite privatni prozor funkcijom Tor iz izbornika ili pomoću {{key}}.</translation>
+<translation id="2876191400747549936">Ispričavamo se, ali nastao je problem tijekom obrađivanja vašeg zahtjeva. Pokušajte ponovo.</translation>
+<translation id="5816125157889950051">Kada primate nagrade</translation>
+<translation id="6733942359297688714">se povežete na provjereni novčanik Uphold.</translation>
+<translation id="4600224932216165965">Dodajte, podignite i upravljajte sredstvima na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Vaš novčanik Brave pruža <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Vaših <ph name="BEGIN_BOLD"/>;{{amount}} BATs<ph name="END_BOLD"/> i ostali podatci za Rewards trajno će se izgubiti ako ponovno postavite svoj novčanik. Pobrinite se da ste potvrdili svoj  novčanik s uslugom Uphold tako da možete zadržati BAT.</translation>
+<translation id="7591798679868259510">Idi na moj račun Uphold</translation>
+<translation id="160145159036553575">Našu uslugu novčanika pruža <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uslugom se Uphold može zahtijevati provjera vašeg identiteta na temelju traženih usluga.</translation>
+<translation id="723054503945711909">Poduzeće Brave Software Inc. ne obrađuje, ne pohranjuje niti pristupa nijednom osobnom podatku koji ste ustupili usluzi Uphold prilikom stvaranja računa na navedenoj usluzi.</translation>
+<translation id="7677480094678113476">Napomena: Vaše će transakcije biti vidljive usluzi Uphold nakon autorizacije; na primjer, bit će vidljiv primatelj i iznos vaših napojnica.</translation>
+<translation id="6057992164469678163">Čekanje na ravnopravne članove...</translation>
 </translationbundle>

@@ -828,4 +828,25 @@ ažuriranja.</translation>
 <translation id="6951743416068151209">URI Tor proksija</translation>
 <translation id="1671503397662036257">Status Tor veze</translation>
 <translation id="6024292492796847324">Napredovanje pokretanja Tora</translation>
+<translation id="8643377320501056697">Prikaži najposećenije lokacije</translation>
+<translation id="7176563092712682575">Prilagodite najposećenije lokacije</translation>
+<translation id="8760415064721320867">Privatni prozor sa Tor-om</translation>
+<translation id="4844209912525464363">Brave nikad ne pamti šta radite u privatnom prozoru. Sa Tor-om, vaše pregledanje je takođe sakriveno od vašeg internet provajdera ili poslodavca i vaša IP adresa je sakrivena od veb lokacija koje posećujete.</translation>
+<translation id="5576876180131651996">Učinite privatni Vindous još privatnijim</translation>
+<translation id="1129265576134014816">Ovaj privatni prozor je mnogo privatniji</translation>
+<translation id="805807983419360524">sa Tor-om</translation>
+<translation id="8958799246752641148">Tor krije vašu IP adresu od veb lokacija koje posećujete, tako što provlači vaše surfovanje kroz nekoliko Tor servera pre nego što dostigne vašu destinaciju. Ove konekcije su šifrovane, tako da vaš provajder i vaš poslodavac ne mogu’ da vide koje veb lokacije vi’ posećujete. Tor može da uspori pregledanje i neke veb lokacije mogu uopšte da ne rade.</translation>
+<translation id="520608572871993342">Korišćenje privatnih prozora samo menja šta Brave radi na vašem uređaju— ne menja ponašanje bilo koga drugog. Tor krije vašu IP adresu od veb lokacija koje ste posetili, i krije veb lokacije koje ste posetili od vašeg provajdera ili vašeg poslodavca. Otvorite privatni prozor sa Torom iz menija, ili sa {{ key }}.</translation>
+<translation id="2876191400747549936">Žao nam je što je došlo do problema sa obradom Vašeg zahteva, molimo Vas pokušajte ponovo.</translation>
+<translation id="5816125157889950051">Kada dobijate nagrade</translation>
+<translation id="6733942359297688714">konektuje sa na verifikovan Uphold novčanik</translation>
+<translation id="4600224932216165965">Dodajte, povucite i upravljajte sredstvima na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Vaš Brave novčanik pokreće <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Vaš <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> i drugi podaci o Nagradama trajno će se izgubiti ako novčanik vratite na početna podešavanja. Uverite se da ste verifikovali novčanik pomoću Uphold-a kako biste mogli da zadržite svoj BAT.</translation>
+<translation id="7591798679868259510">Idi na moj Uphold nalog</translation>
+<translation id="160145159036553575">Naša usluga novčanika je obezbeđena od strane <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">„Uphold” će možda zahtevati da potvrdite svoj identitet na osnovu traženih usluga.</translation>
+<translation id="723054503945711909">„Brave Software Inc.” ne obrađuje, ne čuva, niti pristupa bilo kojim ličnim podacima koje dajete „Uphold-u” pri otvaranju naloga kod njih.</translation>
+<translation id="7677480094678113476">Napomena: Vaše transakcije će biti vidljive Uphold-u čim budete dali ovlašćenje; na primer, moći će da se vidi primalac i iznos napojnice.</translation>
+<translation id="6057992164469678163">Čekanje na ravnopravne uređaje...</translation>
 </translationbundle>

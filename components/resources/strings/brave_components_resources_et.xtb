@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Tori puhverserveri URI</translation>
 <translation id="1671503397662036257">Tori ühenduse olek</translation>
 <translation id="6024292492796847324">Tori lähtestamise edenemine</translation>
+<translation id="8643377320501056697">Kuva popid saidid</translation>
+<translation id="7176563092712682575">Poppide saitide kohandamine</translation>
+<translation id="8760415064721320867">Tor'iga privaatne aken</translation>
+<translation id="4844209912525464363">Brave ei jäta kunagi meelde, mida privaatses aknas teete. Tor'iga on sirvimine varjatud ka interneti teenusepakkuja või tööandja eest ning IP-aadress on varjatud külastatavate saitide eest.</translation>
+<translation id="5576876180131651996">Muuda privaatsed aknad palju privaatsemaks</translation>
+<translation id="1129265576134014816">See privaatne aken on palju privaatsem</translation>
+<translation id="805807983419360524">Tor'i abil</translation>
+<translation id="8958799246752641148">See peidab teie IP-aadressi saitide eest, mida külastate, juhtides teie sirvimise läbi mitme Tor'i serveri, enne kui see jõuab sihtkohta. Need ühendused on krüpteeritud, nii et teie Interneti-teenuse pakkuja või tööandja ei näe, milliseid saite külastate. Tor võib aeglustada sirvimist ja mõned saidid võivad üldse mitte töötada.</translation>
+<translation id="520608572871993342">Privaatsete akende kasutamine muudab vaid seda, mida Brave teeb teie seadmes, see ei muuda kellegi teise käitumist. Tor peidab IP-aadressi külastatud saitide eest ja külastatud saidid interneti teenusepakkuja või tööandja eest. Avage Tor'iga privaatne aken menüüst või nupust {{ key }}.</translation>
+<translation id="2876191400747549936">Kahjuks ilmnes teie päringu töötlemisel probleem, proovige uuesti.</translation>
+<translation id="5816125157889950051">Millal preemiaid saab?</translation>
+<translation id="6733942359297688714">kinnitatud Uphold rahakotiga ühenduse loomine.</translation>
+<translation id="4600224932216165965">Lisa, võta välja ja kinnita raha aadressil <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Brave’i rahakotti toetab <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Sinu <ph name="BEGIN_BOLD"/>{{amount}} BAT-id<ph name="END_BOLD"/> ja muud Rewardsi andmed lähevad rahakoti lähtestamisel jäädavalt kaduma. Veendu, et oled oma rahakoti Upholdiga kinnitanud, et saaksid oma BATi säilitada.</translation>
+<translation id="7591798679868259510">Ava minu Upholdi konto</translation>
+<translation id="160145159036553575">Meie rahakotiteenust pakub <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold võib olenevalt taotletud teenustest nõuda teie identiteedi kinnitamist</translation>
+<translation id="723054503945711909">Brave Software Inc. ei töötle, talleta ega pääse juurde isikuandmetele, mille annata Upholdile, kui loote selle juures konto.</translation>
+<translation id="7677480094678113476">Märkus. Kui annate volituse, näeb Uphold teie tehinguid. Näiteks näeb ta saajat ja preemiate summat.</translation>
+<translation id="6057992164469678163">Ootan kaaskasutajaid...</translation>
 </translationbundle>

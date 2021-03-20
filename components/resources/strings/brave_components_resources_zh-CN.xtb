@@ -828,4 +828,25 @@
 <translation id="6951743416068151209">Tor 代理 URI</translation>
 <translation id="1671503397662036257">Tor 连接状态</translation>
 <translation id="6024292492796847324">Tor 的初始化进度</translation>
+<translation id="8643377320501056697">显示热门网站</translation>
+<translation id="7176563092712682575">自定义热门网站</translation>
+<translation id="8760415064721320867">用 Tor 打开私人窗口</translation>
+<translation id="4844209912525464363">您在私人窗口中的操作不会在Brave中留下记录。使用Tor，您的浏览记录也会对您的ISP或雇主隐藏，且会您在访问网站时隐藏您的的IP地址。</translation>
+<translation id="5576876180131651996">使私人窗口更具私密性</translation>
+<translation id="1129265576134014816">此私人窗口更具私密性</translation>
+<translation id="805807983419360524">用Tor</translation>
+<translation id="8958799246752641148">Tor通过在您进入网站之前将浏览内容路由到多个Tor服务器来隐藏您访问网站的IP地址。这些连接是加密的，因此您的ISP或雇主无’法查看您正’在访问的网站。Tor会减慢浏览速度，有些网站可能根本无法运行。</translation>
+<translation id="520608572871993342">使用私人窗口只会更改Brave在您的设备上所进行的操作— - 不会更改您设备上的其他操作。Tor会在您访问网站时隐藏您的IP地址，并对您的ISP或雇主隐藏您访问的网站。在菜单中通过Tor的打开私人窗口，或使用{{key}}。</translation>
+<translation id="2876191400747549936">抱歉，处理您的请求时出错，请重试。</translation>
+<translation id="5816125157889950051">您什么时候获得奖励</translation>
+<translation id="6733942359297688714">连接到验证托管钱包。</translation>
+<translation id="4600224932216165965">在<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>中添加、提取和管理资金。</translation>
+<translation id="3580616436301227919">您的 Brave 钱包由<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>提供技术支持。</translation>
+<translation id="7428521340740703492">如果您重置了您的钱包，则您的 <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/>及其它奖励数据将永远丢失。请确保您已经验证过您的钱包，并托管，以便保留您的 BAT。</translation>
+<translation id="7591798679868259510">转至我的 Uphold 账户</translation>
+<translation id="160145159036553575">我们的钱包服务由<ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/>提供技术支持</translation>
+<translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
+<translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
+<translation id="7677480094678113476">注意：授权后，您的交易将对“Uphold”可见；例如，他们将能够看到收件人和您的打赏金额。</translation>
+<translation id="6057992164469678163">等待对等项...</translation>
 </translationbundle>

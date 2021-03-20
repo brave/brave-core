@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Tor 代理伺服器 URI</translation>
 <translation id="1671503397662036257">Tor 連線狀態</translation>
 <translation id="6024292492796847324">Tor 初始化進度</translation>
+<translation id="8643377320501056697">顯示頂部網站</translation>
+<translation id="7176563092712682575">自訂熱門網站</translation>
+<translation id="8760415064721320867">使用 Tor 的隱私視窗</translation>
+<translation id="4844209912525464363">Brave 不會記得您在使用 Tor 的隱私視窗裡做了什麼。因為使用了 Tor，您的瀏覽也會自您的網際網路服務提供者與雇主處隱藏，而您的 IP 也會對您造訪的網站隱藏。</translation>
+<translation id="5576876180131651996">讓隱私視窗更隱密</translation>
+<translation id="1129265576134014816">這個隱私視窗更隱密了</translation>
+<translation id="805807983419360524">使用 Tor</translation>
+<translation id="8958799246752641148">Tor 會對您造訪的網站隱藏您的 IP 位置，方法是在到達您的目的地前先經由許多的 Tor 伺服器。這些連線是加密的，所以您的網際網路服務提供者或雇主都無法看到您正在造訪哪個網站。Tor 可能會拖慢瀏覽速度，而且某些網站可能沒辦法正常運作。</translation>
+<translation id="520608572871993342">使用隱私視窗只會改變 Brave 在您的裝置上所做的事情──它不會改變其他人的行為。Tor 會從對您造訪的網站隱藏您的 IP 位置，並對 ISP 或您的雇主隱藏造訪過這個網站的痕跡。從選單中以 Tor 打開隱私視窗，或使用 {{ key }}。</translation>
+<translation id="2876191400747549936">抱歉，處理您的請求時遇到問題，請再試一次。</translation>
+<translation id="5816125157889950051">您何時獲得獎勵</translation>
+<translation id="6733942359297688714">連結至已認證的 Uphold 錢包。</translation>
+<translation id="4600224932216165965">在 <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> 增加、提領和管理資金。</translation>
+<translation id="3580616436301227919">您的 Brave 錢包由 <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> 提供。</translation>
+<translation id="7428521340740703492">如果您重設錢包，您的 <ph name="BEGIN_BOLD"/>{{amount}} 個 BAT<ph name="END_BOLD"/> 和其他獎勵資料將永久遺失。 請確認您已用 Uphold 驗證您的錢包，以保留您的 BAT。</translation>
+<translation id="7591798679868259510">到我的 Uphold 帳號</translation>
+<translation id="160145159036553575">我們的錢包服務由 <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> 提供。</translation>
+<translation id="8465442795593991224">根據服務要求，Uphold 可能需要您驗證身分識別</translation>
+<translation id="723054503945711909">當您建立您的帳號時，Brave 軟體公司不會處理、儲存或存取您提供給 Uphold 的任何個人資料。</translation>
+<translation id="7677480094678113476">注意：在您授權後，您的交易將對 Uphold 可見；舉例來說，他們可以看見您小費的收受人與金額。</translation>
+<translation id="6057992164469678163">正在等待同儕節點...</translation>
 </translationbundle>

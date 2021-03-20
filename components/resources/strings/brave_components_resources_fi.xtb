@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Torin välityspalvelimen URI</translation>
 <translation id="1671503397662036257">Tor-yhteyden tila</translation>
 <translation id="6024292492796847324">Torin käynnistymisen edistyminen</translation>
+<translation id="8643377320501056697">Näytä kärkisivustot</translation>
+<translation id="7176563092712682575">Muokkaa kärkisivustoja</translation>
+<translation id="8760415064721320867">Tor-yksityisikkuna</translation>
+<translation id="4844209912525464363">Brave ei muista mitä teet yksityisessä ikkunassa. Tor-verkon avulla selauksesi piilotetaan palveluntarjoajalta ja työnantajaltasi. Myös IP-osoitteesi piilotetaan vierailemiltasi sivustoilta.</translation>
+<translation id="5576876180131651996">Tee yksityisistä ikkunoista paljon yksityisempiä</translation>
+<translation id="1129265576134014816">Tämä yksityinen ikkuna on paljon yksityisempi</translation>
+<translation id="805807983419360524">Tor-verkossa</translation>
+<translation id="8958799246752641148">Tor piilottaa IP-osoitteesi vierailemiltasi sivuilta ohjaamalla selaustietosi useiden Tor-palvelimien läpi ennen määränpäänsä saavuttamista. Nämä ovat salattuja yhteyksiä, joten palveluntarjoajasi tai työnantajasi eivät näe millä sivustoilla vierailet. Tor voi hidastaa selausta ja jotkut sivustot eivät välttämättä toimi lainkaan.</translation>
+<translation id="520608572871993342">Yksityisten ikkunoiden käyttö muuttaa vain Braven toimintaa laitteellasi — se ei muuta kenenkään muun käytöstä. Tor piilottaa IP-osoitteesi vierailemiltasi sivustoilta ja piilottaa selaustietosi palveluntarjoajalta ja työnantajalta. Avaa yksityinen ikkunan Tor-valikosta tai  {{ key }}-näppäimellä.</translation>
+<translation id="2876191400747549936">Ikävä kyllä pyyntösi käsittelyssä oli ongelmia. Ole hyvä ja yritä uudestaan.</translation>
+<translation id="5816125157889950051">Milloin saat palkintosi</translation>
+<translation id="6733942359297688714">yhdistetään vahvistettuun Uphold-lompakkoon.</translation>
+<translation id="4600224932216165965">Lisää, nosta ja hallitse saldoa <ph name="BEGIN_BOLD"/>Upholdissa<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Brave-kukkarosi toiminnasta vastaa <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BAT:si<ph name="END_BOLD"/> ja muut Rewards-tietosi menetetään pysyvästi, jos nollaat kukkarosi. Varmista, että olet vahvistanut Upholdille kukkarosi, jotta voit pitää BAT:si.</translation>
+<translation id="7591798679868259510">Siirry Uphold-tiliini</translation>
+<translation id="160145159036553575">Verkkokukkaropalvelumme tarjoaa <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Ylläpito saattaa vaatia sinua vahvistamaan henkilöllisyytesi pyydetyistä palveluista riippuen.</translation>
+<translation id="723054503945711909">Brave Software Inc. ei käsittele, tallenna tai käytä mitään henkilökohtaisia tietoja, joita luovutit Upholdille luodessasi heidän käyttäjätilinsä.</translation>
+<translation id="7677480094678113476">Huomio: siirtosi näkyvät Uphold-palvelulle, kun vahvistat. He näkevät esimerkiksi vastaanottajan ja tippiesi määrän.</translation>
+<translation id="6057992164469678163">Vertaisia odotetaan...</translation>
 </translationbundle>

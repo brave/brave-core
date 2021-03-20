@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">Stav pripojenia Tor</translation>
 <translation id="6024292492796847324">Priebeh inicializácie Tor</translation>
+<translation id="8643377320501056697">Zobraziť top stránky</translation>
+<translation id="7176563092712682575">Personalizovať top stránky</translation>
+<translation id="8760415064721320867">Súkromné okno s Torom</translation>
+<translation id="4844209912525464363">Brave si nikdy nepamätá, čo robíte v súkromnom okne. S Torom je vaše prehliadanie taktiež skryté pred poskytovateľom internetových služieb alebo zamestnávateľom a vaša IP adresa zostáva ukrytá pred stránkami, ktoré navštívite.</translation>
+<translation id="5576876180131651996">Urobte súkromné okná ešte omnoho viac súkromnými</translation>
+<translation id="1129265576134014816">Toto súkromné okno je omnoho viac súkromné</translation>
+<translation id="805807983419360524">s Torom</translation>
+<translation id="8958799246752641148">Tor ukrýva vašu IP adresu pred vašimi navštevovanými stránkami tým, že presmeruje vaše vyhľadávanie cez viacero Tor severov predtým, ako dosiahne vaše miesto určenia. Tieto spojenia sú šifrované, takže váš internetový poskytovateľ či zamestnávateľ nemôže viedieť aké stánky navštevujete. Tor môže spomaliť vyhľadávanie a niektoré stránky nemusia fungovať vôbec.</translation>
+<translation id="520608572871993342">Používanie súkromného okna mení len to, čo prehliadač Brave robí na vašom zariadení, nemení správanie nikoho. Tor skrýva vašu IP adresu pred stránkami, ktoré navštevujete a tieto stránky skrýva pred vaším internetovým poskytovateľom alebo zamestnávateľom. Otvorte súkromné okno s Torom cez ponuku alebo s tlačidlom {{ key }}.</translation>
+<translation id="2876191400747549936">Je nám ľúto, ale pri spracovaní vašej požiadavky sa vyskytli problémy. Skúste to ešte raz.</translation>
+<translation id="5816125157889950051">Kedy dostávate odmeny</translation>
+<translation id="6733942359297688714">spájanie s overenou peňaženkou Uphold.</translation>
+<translation id="4600224932216165965">Pridávajte, vyberajte a spravujte fondy pomocou <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Vašu peňaženku Brave podporuje <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Vaše <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> a ďalšie dáta Odmien budú natrvalo stratené, ak resetujete svoju peňaženku. Na ponechanie si svojich BAT sa uistite, že ste svoju peňaženku overili u Uphold.</translation>
+<translation id="7591798679868259510">Prejsť na účet Uphold</translation>
+<translation id="160145159036553575">Naše služby peňaženky poskytuje <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Ak požiadate o nejaké služby, Uphold vás môže požiadať o potvrdenie identity.</translation>
+<translation id="723054503945711909">Brave Software Inc. nespracováva, neukladá a nesnaží sa dostať k žiadnym osobným údajom, ktoré Upholdu poskytujete pri zakladaní účtu.</translation>
+<translation id="7677480094678113476">Poznámka: Po povolení budú vaše transakcie  viditeľné pre Uphold. Uvidia napríklad príjemcu a množstvo vašich príspevkov.</translation>
+<translation id="6057992164469678163">Čaká sa na peerov...</translation>
 </translationbundle>

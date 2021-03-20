@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">URI ng Proxy ng Tor</translation>
 <translation id="1671503397662036257">Status ng Koneksyon ng Tor</translation>
 <translation id="6024292492796847324">Pag-usad ng Pagsisimula ng Tor</translation>
+<translation id="8643377320501056697">Ipakita ang Mga Nangungunang Site</translation>
+<translation id="7176563092712682575">I-customize ang Mga Nangungunang Site</translation>
+<translation id="8760415064721320867">Pribadong Window na may Tor</translation>
+<translation id="4844209912525464363">Hindi tinatandaan ng Brave kung anong ginagawa mo sa isang Pribadong Window. Gamit ang Tor, itinatago rin ang iyong pagba-browse sa iyong ISP o employer, at nakatago ang iyong IP address sa mga site na binibisita mo.</translation>
+<translation id="5576876180131651996">Gawing mas pribado pa ang mga Pribadong Window</translation>
+<translation id="1129265576134014816">Mas pribado pa ang Pribadong Window na ito</translation>
+<translation id="805807983419360524">may Tor</translation>
+<translation id="8958799246752641148">Itinatago ng Tor ang iyong IP address sa mga site na binibisita mo sa pamamagitan ng pagruruta ng iyong pagba-browse sa ilang Tor server bago ito makarating sa iyong destinasyon. Naka-encrypt ang mga koneksyong ito nang sa gayon ay hindi rin makikita ng iyong ISP o employer kung aling mga site ang binibisita mo. Maaaring mapabagal ng Tor ang pagba-browse at maaaring hindi gumana ang ilang site.</translation>
+<translation id="520608572871993342">Kapag gumagamit ng mga Pribadong Window, nababago lang kung anong ginagawa ng Brave sa iyong device — hindi nito binabago ang pagkilos ng ibang tao. Itinatago ng Tor ang iyong IP address mula sa mga site na binibisita mo, at itinatago nito ang mga site na binibisita mo sa iyong ISP o sa iyong employer. Magbukas ng Pribadong Window na may Tor sa menu, o gamit ang {{ key }}.</translation>
+<translation id="2876191400747549936">Paumanhin, nagkaproblema sa pagproseso ng iyong kahilingan, pakisubukan ulit.</translation>
+<translation id="5816125157889950051">Kailan ka makakatanggap ng mga reward</translation>
+<translation id="6733942359297688714">kumokonekta sa isang verified na Uphold wallet.</translation>
+<translation id="4600224932216165965">Magdagdag, mag-withdraw, at mamahala ng pondo sa <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Ang iyong Brave wallet ay pinapagana ng <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Permanenteng mawawala ang iyong <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> at iba pang Rewards data kung ire-reset mo ang wallet mo. Pakitiyak na na-verify mo ang iyong wallet sa Uphold upang mapanatili mo ang BAT mo.</translation>
+<translation id="7591798679868259510">Pumunta sa aking Uphold account</translation>
+<translation id="160145159036553575">Ang aming serbisyong wallet ay ibinibigay ng <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Puwedeng hilingin sa iyo ng Uphold na i-verify mo ang iyong pagkakakilanlan batay sa mga hiniling na serbisyo.</translation>
+<translation id="723054503945711909">Hindi pinoproseso, sino-store, o ina-access ng Brave Software Inc. ang anuman sa personal na impormasyon na ibinigay mo sa Uphold noong gumawa ka ng account sa kanila.</translation>
+<translation id="7677480094678113476">Tandaan: Makikita ang iyong mga transaksyon sa Uphold kapag nagbigay ka ng pahintulot; halimbawa, makikita nila ang recipient at halaga ng mga tip mo.</translation>
+<translation id="6057992164469678163">Naghihintay ng mga peer...</translation>
 </translationbundle>

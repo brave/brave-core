@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Tor Proxy URL</translation>
 <translation id="1671503397662036257">Tor Verbindungsstatus</translation>
 <translation id="6024292492796847324">Tor Initialisierung Fortschritt</translation>
+<translation id="8643377320501056697">Die führenden Seiten anzeigen</translation>
+<translation id="7176563092712682575">Top-Seiten anpassen</translation>
+<translation id="8760415064721320867">Privates Fenster mit Tor</translation>
+<translation id="4844209912525464363">Brave speichert nie, was Sie in einem Privaten Fenster tun. Mit Tor bleibt Ihr Surfverhalten auch vor Ihrem Internetanbieter oder Arbeitgeber verborgen, und die von Ihnen besuchten Seiten können Ihre IP-Adresse nicht sehen.</translation>
+<translation id="5576876180131651996">Machen Sie Private Fenster noch viel privater</translation>
+<translation id="1129265576134014816">Dieses private Fenster ist viel privater.</translation>
+<translation id="805807983419360524">mit Tor</translation>
+<translation id="8958799246752641148">Tor versteckt Ihre IP-Adresse vor den Seiten, die Sie besuchen, indem es Ihre Aufrufe und die angeforderten Daten über mehrere Tor-Server umleitet. Diese Verbindungen sind verschlüsselt, so dass Ihr Internetanbieter oder Arbeitgeber ebenfalls nicht sehen können, welche Seiten Sie besuchen. Tor kann das Surfen ausbremsen und manche Seiten funktionieren möglicherweise gar nicht.</translation>
+<translation id="520608572871993342">Das Surfen mit Privaten Fenstern ändert nur, was Brave auf Ihrem Gerät tut – es ändert nicht das Verhalten von allen anderen. Tor versteckt Ihre IP-Adresse vor den Seiten, die Sie besuchen, und die von Ihnen besuchten Seiten vor Ihrem Internetanbieter und Arbeitgeber. Ein Privates Tor-Fenster können Sie aus dem Menü oder mit {{ key }} öffnen.</translation>
+<translation id="2876191400747549936">Entschuldigung, bei der Bearbeitung Ihrer Anfrage ist ein Problem aufgetreten. Versuchen Sie es bitte erneut.</translation>
+<translation id="5816125157889950051">Wann Sie Belohnungen erhalten</translation>
+<translation id="6733942359297688714">Verbindung zu einer bestätigten Uphold-Wallet.</translation>
+<translation id="4600224932216165965">Nutzen Sie <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>, um Geld einzuzahlen, abzuheben und zu verwalten.</translation>
+<translation id="3580616436301227919">Ihr Brave Wallet wird von <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> bereitgestellt.</translation>
+<translation id="7428521340740703492">Ihre <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> und andere Lohn-Informationen werden unwiderruflich gelöscht, wenn Sie Ihr Wallet zurücksetzen. Bitte stellen Sie sicher, dass Sie Ihr Wallet bei Uphold verifiziert haben, damit Sie Ihr BAT behalten können.</translation>
+<translation id="7591798679868259510">Zu meinem Uphold-Account gehen</translation>
+<translation id="160145159036553575">Unser Wallet-Service wird von <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> bereitgestellt.</translation>
+<translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
+<translation id="723054503945711909">Brave Software Inc. verarbeitet, speichert oder greift nicht auf persönliche Informationen zu, die Sie Uphold zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
+<translation id="7677480094678113476">Bemerkung: Ihre Transaktionen werden auf Uphold sichtbar sein, sobald Sie es autorisiert haben; zum Beispiel wird es möglich sein, den Empfänger und die Menge Ihrer Trinkgelder zu sehen.</translation>
+<translation id="6057992164469678163">Auf Peers warten ...</translation>
 </translationbundle>

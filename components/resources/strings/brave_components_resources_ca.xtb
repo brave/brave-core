@@ -828,4 +828,25 @@
 <translation id="6951743416068151209">URI del proxy de Tor</translation>
 <translation id="1671503397662036257">Estat de la connexió de Tor</translation>
 <translation id="6024292492796847324">Progrés d'inicialització de Tor</translation>
+<translation id="8643377320501056697">Mostrar llocs destacats</translation>
+<translation id="7176563092712682575">Personalitzeu els Llocs Principals</translation>
+<translation id="8760415064721320867">Finestra Privada amb Tor</translation>
+<translation id="4844209912525464363">Brave mai no recorda el que fas en una Finestra Privada. Amb Tor, la teva navegació també queda amagada del teu ISP o de l'empresari, i la teva adreça IP està oculta als llocs que visites.</translation>
+<translation id="5576876180131651996">Fes les Finestres Privades molt més privades</translation>
+<translation id="1129265576134014816">Aquesta Finestra Privada és molt més privada</translation>
+<translation id="805807983419360524">amb Tor</translation>
+<translation id="8958799246752641148">Tor oculta la teva adreça IP als llocs que visites, encaminant la teva navegació a través de diversos servidors Tor abans d'arribar a la teva destinació. Aquestes connexions es xifren, de manera que el teu ISP o empresari no pot veure quins llocs estàs visitant. Tor pot frenar la navegació i és possible que alguns llocs no funcionin.</translation>
+<translation id="520608572871993342">L'ús de Finestres privades només canvia el que fa el Brave al teu dispositiu: no canvia el comportament de ningú altre. Tor oculta la teva adreça IP als llocs que visites i oculta els llocs que visites al teu ISP o al teu empresari. Obri una finestra privada amb Tor des del menú o amb {{key}}.</translation>
+<translation id="2876191400747549936">Dispensa, hi ha hagut un problema en processar la teva petició, si us plau prova una altra vegada</translation>
+<translation id="5816125157889950051">Quan rebeu recompenses</translation>
+<translation id="6733942359297688714">conectant amb una cartera Uphold verificada.</translation>
+<translation id="4600224932216165965">Afegiu, retireu i gestioneu els dipositis a <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">La vostra cartera de Brave funciona gràcies a <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Si restabliu la cartera, es perdran permanentment les vostres dades de <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> i altres recompenses. Si us plau, assegureu-vos que heu verificat la vostra cartera amb Uphold per poder conservar els vostres BAT.</translation>
+<translation id="7591798679868259510">Anar al meu compte d'Uphold</translation>
+<translation id="160145159036553575">El nostre servei de carteres el proporciona <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold et pot demanar que verifiquis la teva identitat en funció dels serveis demanats.</translation>
+<translation id="723054503945711909">Brave Software Inc. no processa, emmagatzema, o accedeix a cap informació personal que proporcionis a UPhold quan estableixis un compte amb ells.</translation>
+<translation id="7677480094678113476">Nota: Les vostres transaccions estaran visibles per a Uphold un cop ho autoritzeu; per exemple, podran veure el destinatari i la quantitat de les vostres propines.</translation>
+<translation id="6057992164469678163">A l'espera dels companys...</translation>
 </translationbundle>

@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">URI Tor Proxy</translation>
 <translation id="1671503397662036257">Status połączenia z siecią Tor</translation>
 <translation id="6024292492796847324">Postęp inicjalizacji sieci Tor</translation>
+<translation id="8643377320501056697">Pokaż popularne strony</translation>
+<translation id="7176563092712682575">Dostosuj popularne strony</translation>
+<translation id="8760415064721320867">Okno prywatne z obsługą sieci Tor</translation>
+<translation id="4844209912525464363">Brave nigdy nie zapamiętuje tego, co robisz w oknie prywatnym. Dzięki zintegrowanemu klientowi sieci Tor, nie tylko dostawca Internetu czy Twój pracodawca nie mogą podejrzeć, jakie strony odwiedzasz, ale też same strony docelowe nie poznają Twojego adresu IP.</translation>
+<translation id="5576876180131651996">Spraw, aby okno prywatne zapewniało jeszcze więcej prywatności</translation>
+<translation id="1129265576134014816">Od teraz przeglądanie w Trybie Prywatnym gwarantuje jeszcze więcej prywatności</translation>
+<translation id="805807983419360524">z obsługą sieci Tor</translation>
+<translation id="8958799246752641148">Sieć Tor ukrywa Twój adres IP przed stronami, które odwiedzasz, przekierowując Cię przez kilka serwerów w sieci Tor, zanim ostatecznie dotrze do celu. Połączenia te są szyfrowane, więc Twój dostawca usług internetowych lub pracodawca nie zobaczy, jakie strony odwiedzasz. Sieć Tor może spowolnić przeglądanie stron, a niektóre z nich mogą w ogóle nie działać.</translation>
+<translation id="520608572871993342">Korzystanie z trybu prywatnego zmienia tylko to, jak Brave zachowuje się na Twoim urządzeniu; nie zmienia zachowań innych użytkowników.  Sieć Tor ukrywa Twój adres IP przed odwiedzanymi stronami i ukrywa odwiedzane strony przed Twoim dostawcą Internetu lub pracodawcą. Otwórz tryb prywatny z obsługą sieci Tor z menu lub klawiszem {{key}}.</translation>
+<translation id="2876191400747549936">Przepraszamy, wystąpił problem z przetworzeniem żądania. Spróbuj ponownie.</translation>
+<translation id="5816125157889950051">Kiedy przekazywane są nagrody</translation>
+<translation id="6733942359297688714">połączenie ze zweryfikowanym portfelem Uphold.</translation>
+<translation id="4600224932216165965">Dokonuj wpłat i wypłat oraz zarządzaj środkami na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Twój portfel Brave korzysta z technologii <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Twoje saldo <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> i inne dane dotyczące Nagród zostaną trwale utracone, jeśli zresetujesz swój portfel. Upewnij się, że Twój portfel został zweryfikowany za pomocą Uphold, aby zachować BAT.</translation>
+<translation id="7591798679868259510">Przejdź do mojego konta Uphold</translation>
+<translation id="160145159036553575">Nasza usługa portfela jest świadczona przez <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold może wymagać weryfikacji Twojej tożsamości w zależności od żądanych usług.</translation>
+<translation id="723054503945711909">Brave Software Inc. nie przetwarza, nie przechowuje ani nie uzyskuje dostępu do żadnych danych osobowych, które podajesz Uphold, zakładając konto w tym serwisie.</translation>
+<translation id="7677480094678113476">Uwaga: Twoje transakcje będą widoczne dla platformy Uphold po autoryzacji, na przykład widoczne będą odbiorca oraz kwota napiwków.</translation>
+<translation id="6057992164469678163">Trwa oczekiwanie na „peerów”.</translation>
 </translationbundle>

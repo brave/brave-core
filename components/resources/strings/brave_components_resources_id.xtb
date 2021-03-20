@@ -823,4 +823,25 @@
 <translation id="6951743416068151209">URI Proksi Tor</translation>
 <translation id="1671503397662036257">Status Koneksi Tor</translation>
 <translation id="6024292492796847324">Proses Inisialisasi Tor</translation>
+<translation id="8643377320501056697">Tampilkan Situs Teratas</translation>
+<translation id="7176563092712682575">Kustomisasikan Situs Teratas</translation>
+<translation id="8760415064721320867">Jendela Pribadi dengan Tor</translation>
+<translation id="4844209912525464363">Brave tidak pernah mengingat yang Anda lakukan di Jendela Pribadi. Dengan Tor, penjelajahan Anda juga tersembunyi dari ISP atau bos Anda, dan alamat IP Anda tersembunyi dari situs yang Anda kunjungi.</translation>
+<translation id="5576876180131651996">Buat Jendela Pribadi lebih pribadi</translation>
+<translation id="1129265576134014816">Jendela Pribadi ini lebih pribadi</translation>
+<translation id="805807983419360524">dengan Tor</translation>
+<translation id="8958799246752641148">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi dengan mengirim rute penjelajahan Anda melalui beberapa peladen Tor sebelum mencapai tujuan Anda. Sambungan ini dienkripsi, jadi penyedia layanan Internet atau bos Anda tidak dapat melihat situs yang Anda kunjungi. Tor dapat memperlambat penjelajahan dan beberapa situs mungkin tidak bekerja sama sekali.</translation>
+<translation id="520608572871993342">Menggunakan Jendela Pribadi hanya mengubah apa yang Brave lakukan pada perangkat Anda — dan tidak mengubah perilaku aplikasi lainnya. Tor menyembunyikan alamat IP Anda dari situs yang dikunjungi, dan menyembunyikan situs yang Anda kunjungi dari ISP atau kantor Anda. Buka Jendela Pribadi dengan Tor dari menu, atau dengan {{ key }}.</translation>
+<translation id="2876191400747549936">Maaf, terjadi masalah saat memproses permintaan Anda, harap coba kembali.</translation>
+<translation id="5816125157889950051">Kapan Anda menerima imbalan</translation>
+<translation id="6733942359297688714">menghubungkan ke dompet Uphold terverifikasi.</translation>
+<translation id="4600224932216165965">Tambah, tarik, dan kelola dana di <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Dompet Brave Anda dijalankan oleh <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">BAT milik Anda sebanyak <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> dan data Imbalan lainnya akan hilang secara permanen jika Anda mereset dompet Anda. Harap memastikan bahwa Anda telah memverifikasi dompet Anda pada Uphold sehingga Anda dapat menyimpan BAT Anda.</translation>
+<translation id="7591798679868259510">Ke akun Uphold saya</translation>
+<translation id="160145159036553575">Layanan dompet kami disediakan oleh <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold mungkin memerlukan verifikasi identitas Anda berdasarkan layanan yang diminta.</translation>
+<translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda berikan kepada Uphold ketika Anda membuat akun dengan mereka.</translation>
+<translation id="7677480094678113476">Catatan: Transaksi Anda akan terlihat untuk Dijalankan setelah Anda mengotorisasi; misalnya, Mereka akan dapat melihat penerima dan jumlah tip Anda.</translation>
+<translation id="6057992164469678163">Menunggu rekan...</translation>
 </translationbundle>

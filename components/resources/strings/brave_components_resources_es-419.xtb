@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">URI de proxy de Tor</translation>
 <translation id="1671503397662036257">Estado de conexión de Tor</translation>
 <translation id="6024292492796847324">Progreso de inicialización de Tor</translation>
+<translation id="8643377320501056697">Mostrar sitios populares</translation>
+<translation id="7176563092712682575">Personalizar sitios populares</translation>
+<translation id="8760415064721320867">Ventana privada con Tor</translation>
+<translation id="4844209912525464363">Brave nunca registra lo que usted hace en una ventana privada. Con Tor, sus datos de navegación también permanecerán ocultos de su proveedor de servicios Internet o empleador y, al mismo tiempo, su dirección IP permanecerá oculta de los sitios que visite.</translation>
+<translation id="5576876180131651996">Haga que las ventanas privadas sean mucho más seguras</translation>
+<translation id="1129265576134014816">Esta ventana privada es mucho más segura</translation>
+<translation id="805807983419360524">con Tor</translation>
+<translation id="8958799246752641148">Tor oculta su dirección IP de los sitios que visita mediante el enrutamiento de su navegación a través de múltiples servidores de Tor antes de alcanzar el destino. Estas conexiones están cifradas, por lo que su ISP o empleador tampoco podrán ver los sitios que visita. La actividad de Tor puede ralentizar la navegación o inhabilitar el funcionamiento de ciertos sitios.</translation>
+<translation id="520608572871993342">El uso de ventanas privadas solo modifica la acción de Brave en su dispositivo — no modifica la acción de otros agentes. Tor oculta su dirección IP de los sitios que visita y, al mismo tiempo, oculta los sitios que visita de su proveedor de servicios de Internet o empleador. Abra una ventana privada con Tor desde el menú o con {{ key }}.</translation>
+<translation id="2876191400747549936">Lo sentimos, pero hubo un problema al procesar tu solicitud. Vuelve a intentarlo.</translation>
+<translation id="5816125157889950051">¿Cuándo recibes recompensas?</translation>
+<translation id="6733942359297688714">conectar a una billetera de Uphold verificada.</translation>
+<translation id="4600224932216165965">Agrega, retira y administra fondos en <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Tu billetera de Brave cuenta con tecnología de <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Tus <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> y otros datos de Recompensas se perderán para siempre si restableces tu billetera. Asegúrate de haber verificado tu billetera con Uphold para conservar tus BAT.</translation>
+<translation id="7591798679868259510">Ir a mi cuenta de Uphold</translation>
+<translation id="160145159036553575">Nuestro servicio de billetera lo facilita <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold puede solicitarte que verifiques tu identidad según los servicios requeridos.</translation>
+<translation id="723054503945711909">Cuando creas una cuenta con Uphold, Brave Software Inc. no procesa ni almacena la información personal que les proporcionas, así como tampoco accede a esta.</translation>
+<translation id="7677480094678113476">Nota: Uphold tendrá visibilidad de tus transacciones cuando des tu autorización. Por ejemplo, podrá ver el destinatario y el importe de tus propinas.</translation>
+<translation id="6057992164469678163">Esperando a pares...</translation>
 </translationbundle>

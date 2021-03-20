@@ -823,4 +823,25 @@
 <translation id="6951743416068151209">Tor Proxy URL'si</translation>
 <translation id="1671503397662036257">Tor Bağlantı Durumu</translation>
 <translation id="6024292492796847324">Tor Başlatma İlerlemesi</translation>
+<translation id="8643377320501056697">En Popüler Siteleri Göster</translation>
+<translation id="7176563092712682575">En İyi Siteleri Özelleştir</translation>
+<translation id="8760415064721320867">Tor içeren Özel Pencere</translation>
+<translation id="4844209912525464363">Brave, Özel bir Pencerede ne yaptığınızı asla hatırlamaz. Tor ile görüntülemeleriniz İnternet Servis Sağlayıcılarınızdan ve işvereninizden de gizlenir ve IP adresiniz ziyaret ettiğiniz sitelerden gizlenir.</translation>
+<translation id="5576876180131651996">Özel Pencereleri daha fazla özel yapın</translation>
+<translation id="1129265576134014816">Bu Özel Pencere çok daha özel</translation>
+<translation id="805807983419360524">Tor ile</translation>
+<translation id="8958799246752641148">Tor, hedefinize ulaşmadan önce tarayıcınızı birçok Tor sunucuları aracılığıyla yönlendirerek IP adresinizi ziyaret ettiğiniz sitelerden gizler. Bu bağlantılar şifrelenmiştir, bu yüzden İnternet Servis Sağlayıcınız veya işvereniniz de hangi siteyi ziyaret ettiğinizi göremez. Tor görüntülemeyi yavaşlatabilir ve bazı siteler tamamıyla çalışmayabilir.</translation>
+<translation id="520608572871993342">Özel Pencere kullanma Brave'in sadece sizin cihazınızdaki değişikliklerdir; başka birisinin hareketlerini değiştirmez. Tor, IP adresinizi ziyaret ettiğiniz sitelerden gizler ve siteleri İnternet Servis Sağlayıcınızdan ve işvereninizden gizler. {{ key }} ile veya menüden Tor ile Özel Pencere Açın.</translation>
+<translation id="2876191400747549936">Üzgünüz ki isteminizin işlenmesinde bir sorun oluştu, lütfen tekrar deneyin.</translation>
+<translation id="5816125157889950051">Ödülleri ne zaman alırsınız</translation>
+<translation id="6733942359297688714">Doğrulanmış bir Uphold cüzdanına bağlanılıyor.</translation>
+<translation id="4600224932216165965"><ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>. içinden fonlar ekleyin, çekin ve yönetin.</translation>
+<translation id="3580616436301227919">Brave cüzdanınız <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> tarafından sağlanmaktadır.</translation>
+<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> ve diğer Ödül verileriniz, cüzdanınızı sıfırlamanız durumunda kalıcı olarak kaybolacaktır. BAT'nizi koruyabilmeniz için lütfen cüzdanınızı Uphold ile doğruladığınızdan emin olun.</translation>
+<translation id="7591798679868259510">Uphold hesabıma git</translation>
+<translation id="160145159036553575">Cüzdan hizmetimiz <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/> tarafından sağlanmaktadır</translation>
+<translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
+<translation id="723054503945711909">Brave Software Inc. onlarla bir hesap oluştururken, onaylama için verdiğiniz kişisel bilgilerin hiçbirini işlemez, saklamaz veya erişemez.</translation>
+<translation id="7677480094678113476">Not: Yetki verdiğinizde işlemleriniz Uphold'a görünür olacak; örneğin, alıcıyı ve bahşişlerinizin miktarını görebilecekler.</translation>
+<translation id="6057992164469678163">Eşler bekleniyor...</translation>
 </translationbundle>

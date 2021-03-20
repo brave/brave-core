@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">URI de Proxy Tor</translation>
 <translation id="1671503397662036257">Status de Conexão do Tor</translation>
 <translation id="6024292492796847324">Progresso de Inicialização do Tor</translation>
+<translation id="8643377320501056697">Mostrar os Melhores Sites</translation>
+<translation id="7176563092712682575">Personalizar sites mais acessados</translation>
+<translation id="8760415064721320867">Janela Privada com o Tor</translation>
+<translation id="4844209912525464363">O Brave nunca registra o que você faz em uma janela privada. Com o Tor, sua navegação também é ocultada do seu ISP ou empregador, e o seu endereço IP é ocultado dos sites que você visita.</translation>
+<translation id="5576876180131651996">Torne as Janelas Privadas muito mais privadas</translation>
+<translation id="1129265576134014816">Esta Janela Privada é muito mais privada</translation>
+<translation id="805807983419360524">com o Tor</translation>
+<translation id="8958799246752641148">O Tor esconde seu endereço IP dos sites que você visita roteando sua navegação por vários servidores Tor antes de chegar ao seu destino. Essas conexões são criptografadas, então seu ISP ou seu empregador também não’ podem ver quais sites você’está visitando. O Tor pode reduzir a velocidade da navegação e alguns sites podem não funcionar.</translation>
+<translation id="520608572871993342">Usar a Janela Privada apenas altera o que o Brave faz em seu dispositivo — isso não altera o comportamento de mais ninguém. O Tor esconde o seu endereço IP dos sites que você visita, e esconde os sites que você visita do seu ISP ou seu empregador. Abra uma Janela Privada com o Tor a partir do menu, ou com {{ key }}.</translation>
+<translation id="2876191400747549936">Desculpe, houve um problema ao processar o seu pedido. Por favor, tente novamente.</translation>
+<translation id="5816125157889950051">Quando você ganha recompensas</translation>
+<translation id="6733942359297688714">conectando a uma carteira Uphold verificada.</translation>
+<translation id="4600224932216165965">Deposite, saque e gerencie valores em <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Sua carteira Brave foi desenvolvida por <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Seus <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> e outros dados de recompensas serão permanentemente perdidos se você reiniciar a sua carteira. Assegure-se de ter sua carteira na condição de verificada por parte da Uphold a fim de conservar o seu BAT.</translation>
+<translation id="7591798679868259510">Ir para a minha conta Uphold</translation>
+<translation id="160145159036553575">Nosso serviço de carteira foi desenvolvido por <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">A Uphold pode exigir que você verifique sua identidade com base nos serviços solicitados.</translation>
+<translation id="723054503945711909">A Brave Software Inc. não processa, armazena ou acessa quaisquer informações pessoais que você fornece à Uphold quando estabelece uma conta com eles.</translation>
+<translation id="7677480094678113476">Observação: as suas transações estarão visíveis para o Uphold quando você autorizar; por exemplo, eles poderão ver o beneficiário e a quantia das suas gorjetas.</translation>
+<translation id="6057992164469678163">Aguardando pares...</translation>
 </translationbundle>

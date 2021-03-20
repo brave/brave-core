@@ -827,4 +827,25 @@ startar du upp med nya
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor anslutningsstatus</translation>
 <translation id="6024292492796847324">Tor Initieringsförlopp</translation>
+<translation id="8643377320501056697">Visa populäraste webbplatser</translation>
+<translation id="7176563092712682575">Anpassa toppwebbplatser</translation>
+<translation id="8760415064721320867">Privat fönster med Tor</translation>
+<translation id="4844209912525464363">Brave kommer aldrig ihåg vad du gör i ett privat fönster. Med Tor döljs även din webbtrafik från din internetleverantör eller arbetsgivare, samtidigt som din IP-adress är dold för sidorna du besöker.</translation>
+<translation id="5576876180131651996">Gör privata fönster ännu mer anonyma</translation>
+<translation id="1129265576134014816">Detta privata fönster är ännu mer anonymt</translation>
+<translation id="805807983419360524">med Tor</translation>
+<translation id="8958799246752641148">Tor döljer din IP-adress från de webbplatser du besöker genom att dirigera din surfning genom flera Tor-servrar innan den når din destination. Dessa anslutningar är krypterade, så din internetleverantör eller arbetsgivare kan inte se vilka webbplatser du besöker. Tor kan göra att det går långsammare och vissa webbplatser kanske inte fungerar alls.</translation>
+<translation id="520608572871993342">Att använda privata fönster ändrar bara vad Brave gör på din enhet — det förändrar inte någon annans beteende. Tor döljer din IP-adress för de webbsidor du besöker och döljer de webbplatser du besöker för din internetleverantör eller din arbetsgivare. Öppna ett privat fönster med Tor från menyn eller med {{ key }}.</translation>
+<translation id="2876191400747549936">Det gick inte att behandla din förfrågan. Försök igen.</translation>
+<translation id="5816125157889950051">När får du belöningar</translation>
+<translation id="6733942359297688714">Ansluter till en verifierad Uphold-plånbok.</translation>
+<translation id="4600224932216165965">Lägg till, ta ut och hantera medel på <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Din Brave-plånbok drivs av <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Dina <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> och andra Rewards-data kommer permanent att gå förlorade om du återställer din plånbok. Se till att du har verifierat din plånbok med Uphold så att du kan behålla dina BAT.</translation>
+<translation id="7591798679868259510">Gå till mitt Uphold-konto</translation>
+<translation id="160145159036553575">Vår plånbokstjänst tillhandahålls av <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold kan kräva att du verifierar din identitet baserat på begärda tjänster.</translation>
+<translation id="723054503945711909">Brave Software Inc. bearbetar inte, lagrar eller får tillgång till några av de personuppgifter som du tillhandahåller Uphold när du skapar ett konto hos dem.</translation>
+<translation id="7677480094678113476">Obs! Dina transaktioner är synliga för Uphold när du godkänner det. Till exempel kommer de att kunna se mottagaren och mängden dricks.</translation>
+<translation id="6057992164469678163">Väntar på peers...</translation>
 </translationbundle>

@@ -825,4 +825,25 @@
 <translation id="6951743416068151209">Tor 프록시 URI</translation>
 <translation id="1671503397662036257">Tor 연결 상태</translation>
 <translation id="6024292492796847324">토르 초기화 진행률</translation>
+<translation id="8643377320501056697">탑 사이트 보기</translation>
+<translation id="7176563092712682575">탑 사이트 사용자 지정</translation>
+<translation id="8760415064721320867">Tor와 함께하는 비공개 윈도우</translation>
+<translation id="4844209912525464363">Brave는 당신이 비공개 윈도우에서 하는 활동을 기억하지 않습니다. Tor와 함께하면, 당신의 ISP나 고용주로부터 검색 내역이 표시되지 않으며, 방문한 사이트로부터 당신의 IP 주소가 표시되지 않습니다.</translation>
+<translation id="5576876180131651996">비공개 윈도우를 훨씬 더 은밀하게 만들기</translation>
+<translation id="1129265576134014816">이 비공개 윈도우는 훨씬 더 은밀합니다</translation>
+<translation id="805807983419360524">Tor와 함께</translation>
+<translation id="8958799246752641148">Tor는 여러분을 목적지에 도달시키기 전 여러 Tor 서버를 거쳐 라우팅함으로써, 방문 사이트들로부터 여러분의 IP주소를 숨겨 줍니다. 이러한 연결은 암호화되어 있으므로, 여러분의 인터넷 공급자나 고용주 또한 여러분#8217;께서 어떤 사이트를 방문하시는지 볼 수’없습니다. Tor는 인터넷을 느리게 만들 수 있으며 일부 사이트는 아예 작동하지 않을 수도 있습니다.</translation>
+<translation id="520608572871993342">비공개 윈도우 사용은 당신의 기기상 Brave 작동에만 영향을 미칩니다. — 다른 사람들에게는 영향을 미치지 않습니다. Tor가 당신이 방문한 사이트로부터 IP 주소를 숨기고, ISP 혹은 고용주로부터 방문한 사이트를 숨깁니다. 메뉴에서 혹은 {{ key }}로 Tor 비공개 윈도우를 여세요.</translation>
+<translation id="2876191400747549936">죄송합니다, 귀하의 요청 처리 중에 문제가 발생했습니다, 다시 시도해 주십시오.</translation>
+<translation id="5816125157889950051">언제 보상을 받습니까</translation>
+<translation id="6733942359297688714">인증된 Uphold 지갑에 연결 중입니다.</translation>
+<translation id="4600224932216165965"><ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>에서 자금을 추가, 인출 및 관리하세요.</translation>
+<translation id="3580616436301227919">Brave 지갑은 <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>가 제공합니다.</translation>
+<translation id="7428521340740703492">지갑에 있는 <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/>와 다른 리워드 데이터가 영구적으로 삭제됩니다. Uphold를 통해 지갑을 인증해서 BAT가 보관되고 있는지 확인해주세요.</translation>
+<translation id="7591798679868259510">내 Uphold 계정으로 이동</translation>
+<translation id="160145159036553575">지갑 서비스는 <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>가 제공합니다.</translation>
+<translation id="8465442795593991224">Uphold가 요청된 서비스에 기반하여 귀하의 신원 확인을 요구할 수도 있습니다.</translation>
+<translation id="723054503945711909">Brave Software Inc.는 계정을 만들 때 Uphold에 제공된 개인 정보를 처리, 저장, 또는 액세스하지 않습니다.</translation>
+<translation id="7677480094678113476">참고: 사용자가 승인하면 거래 내용이 Uphold에 표시됩니다. 예를 들어, 수취인과 팁의 액수를 볼 수 있습니다.</translation>
+<translation id="6057992164469678163">피어를 기다리는 중...</translation>
 </translationbundle>

@@ -828,4 +828,25 @@ Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph na
 <translation id="6951743416068151209">URI Proksi Tor</translation>
 <translation id="1671503397662036257">Status Sambungan Tor</translation>
 <translation id="6024292492796847324">Kemajuan Permulaan Tor</translation>
+<translation id="8643377320501056697">Tunjukkan Tapak Teratas</translation>
+<translation id="7176563092712682575">Gubah Laman Top</translation>
+<translation id="8760415064721320867">Tetingkap Peribadi dengan Tor</translation>
+<translation id="4844209912525464363">Brave tidak pernah ingat apa yang anda lakukan dalam Tetingkap Peribadi. Dengan Tor, pelayaran anda juga disembunyikan daripada ISP atau majikan anda, dan alamat IP anda disembunyikan daripada laman yang anda kunjungi.</translation>
+<translation id="5576876180131651996">Jadikan Tetingkap Peribadi lebih persendirian</translation>
+<translation id="1129265576134014816">Tetingkap Peribadi ini lebih sulit</translation>
+<translation id="805807983419360524">dengan Tor</translation>
+<translation id="8958799246752641148">Tor menyembunyikan alamat IP anda dariapada laman yang anda kunjungi, dengan menghala pelayaran anada menerusi beberapa pelayan Tor sebelum ia sampai ke destinasi anda. Hubungan ini adalah tersulit, jadi ISP atau majikan anda boleh’t lihat laman mana anda #8217;re lawati. Tor boleh memperlahan pelayaran dan sesetengah laman tidak dapat berfungsi langsung.</translation>
+<translation id="520608572871993342">Penggunaan Tetingkap Peribadi hanya mengubah apa yang dilakukan Brave pada peranti anda — ia tidak mengubah tingkah laku orang lain. Tor menyembunyikan alamat IP anda dari laman yang anda lawati, dan menyembunyikan laman yang anda lawati dari ISP atau majikan anda. Buka Tetingkap Peribadi menggunakan Tor dari menu atau dengan {{ key }}.</translation>
+<translation id="2876191400747549936">Maaf ada masalah memproses permintaan anda, sila cuba lagi.</translation>
+<translation id="5816125157889950051">BIla anda menerima ganjaran</translation>
+<translation id="6733942359297688714">menyambung ke sebuah dompet Uphold yang ditentusahkan.</translation>
+<translation id="4600224932216165965">Tambah, keluarkan dan uruskan dana di <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Dompet Brave anda dijana oleh <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> anda dan data Ganjaran lain akan hilang secara kekal jika anda mengeset semula dompet anda. Sila pastikan anda telah mengesahkan dompet anda dengan Uphold supaya anda boleh mengekalkan BAT anda.</translation>
+<translation id="7591798679868259510">Pergi ke akaun Uphold saya</translation>
+<translation id="160145159036553575">Perkhidmatan dompet kami disediakan oleh <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold mungkin memerlukan anda untuk mengesahkan identiti anda berdasarkan perkhidmatan yang diminta.</translation>
+<translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses sebarang maklumat peribadi yang anda berikan kepada Uphold apabila anda mencipta akaun dengan mereka.</translation>
+<translation id="7677480094678113476">Nota: Transaksi anda akan tertera di Uphold sebaik sahaja anda beri keizinan; contohnya, mereka boleh melihat penerima dan jumlah tip anda.</translation>
+<translation id="6057992164469678163">Menunggu rakan sebaya...</translation>
 </translationbundle>

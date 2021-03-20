@@ -827,4 +827,25 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="6951743416068151209">URI proxy Tor</translation>
 <translation id="1671503397662036257">Stato della connessione Tor</translation>
 <translation id="6024292492796847324">Progresso dell'inizializzazione di Tor</translation>
+<translation id="8643377320501056697">Mostra i Siti Principali</translation>
+<translation id="7176563092712682575">Personalizza i siti principali</translation>
+<translation id="8760415064721320867">Finestra privata con Tor</translation>
+<translation id="4844209912525464363">Brave non terrà mai traccia di quello che fai in una finestra privata. Con Tor, la tua navigazione è nascosta anche al tuo Internet Service Provider o al tuo datore di lavoro, e il tuo indirizzo IP non è visibile ai siti che visiti.</translation>
+<translation id="5576876180131651996">Rendi le finestre private molto più riservate</translation>
+<translation id="1129265576134014816">Questa finestra privata è molto più riservata</translation>
+<translation id="805807983419360524">con Tor</translation>
+<translation id="8958799246752641148">Tor nasconde il tuo indirizzo IP ai siti che visiti, instradando la tua navigazione attraverso diversi server Tor prima di raggiungere la destinazione. Queste connessioni sono crittografate, quindi il tuo Internet Service Provider o il tuo datore di lavoro non possono neppure vedere quali siti stai visitando. Tor può rallentare la navigazione e alcuni siti potrebbero non funzionare affatto.</translation>
+<translation id="520608572871993342">L'utilizzo di una finestra privata ha effetto soltanto sul comportamento di Brave sul tuo dispositivo, non modifica il comportamento degli altri. Tor rende invisibile il tuo indirizzo IP ai siti che visiti e nasconde i siti a cui accedi al tuo Internet Service Provider o al tuo datore di lavoro. Apri una finestra privata con Tor dal menu o con {{key}}.</translation>
+<translation id="2876191400747549936">Spiacenti, si è verificato un problema durante l'elaborazione della tua richiesta, ti preghiamo di riprovare.</translation>
+<translation id="5816125157889950051">Quando ricevi premi</translation>
+<translation id="6733942359297688714">collegare un portafoglio Uphold verificato.</translation>
+<translation id="4600224932216165965">Aggiungi, revoca e gestisci fondi a <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Il tuo portafoglio Brave è fornito da Your Brave wallet is powered by <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Il tuo <ph name="BEGIN_BOLD"/>{{quantità}} BATs<ph name="END_BOLD"/> e altri dati Ricompensa verranno persi permanentemente se ripristini il tuo portafoglio. Per favore assicurati di aver verificato il tuo portafoglio con Uphold così che tu possa tenere i tuoi BAT.</translation>
+<translation id="7591798679868259510">Vai al mio account Uphold</translation>
+<translation id="160145159036553575">Il nostro servizio di portafoglio è fornito da <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold potrebbe richiedere di verificare la tua identità in base ai servizi richiesti.</translation>
+<translation id="723054503945711909">Brave Software Inc. non elabora, conserva oppure accede a nessun dato personale che fornisci a Uphold quando crei un account con loro.</translation>
+<translation id="7677480094678113476">Nota: le tue transazioni saranno visibili ad Uphold dopo la tua autorizzazione; ad esempio, potranno vedere il destinatario e l'importo della tua donazione.</translation>
+<translation id="6057992164469678163">In attesa dei peer...</translation>
 </translationbundle>

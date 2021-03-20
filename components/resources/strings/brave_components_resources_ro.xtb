@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">URI proxy Tor</translation>
 <translation id="1671503397662036257">Stare conexiune Tor</translation>
 <translation id="6024292492796847324">Progres inițializare Tor</translation>
+<translation id="8643377320501056697">Afișare site-uri de top</translation>
+<translation id="7176563092712682575">Particularizați siteurile de top</translation>
+<translation id="8760415064721320867">Fereastră Privată cu Tor</translation>
+<translation id="4844209912525464363">Brave nu reține niciodată ceea ce faceți într-o Fereastră Privată. Cu Tor, navigarea este întotdeauna ascunsă pentru ISP sau angajator și adresa IP este ascunsă pentru siteurile pe care le vizitați.</translation>
+<translation id="5576876180131651996">Faceți Ferestrele Private mult mai private</translation>
+<translation id="1129265576134014816">Fereastra Privată este mult mai privată</translation>
+<translation id="805807983419360524">cu Tor</translation>
+<translation id="8958799246752641148">Tor vă ascunde adresa IP de pe site-urile pe care le vizitați, rutând browserul prin mai multe servere Tor înainte de a ajunge la destinația dvs. Aceste conexiuni sunt criptate, astfel că nici furnizorul dvs. de servicii de internet, nici angajatorul dvs. nu poate vedea ce site-uri vizitați. Tor vă poate încetini navigarea și unele site-uri ar putea să nu funcționeze deloc.</translation>
+<translation id="520608572871993342">Utilizarea Ferestrelor Private modifică doar ceea ce Brave efectuează pe dispozitivul dumneavoastră — nu schimbă și comportamentul altcuiva. Tor vă ascunde adresa IP pe siteurile pe care le vizitați și ascunde siteurile pe care le vizitați de ISP sau angajatorul dumneavoastră. Deschideți o Fereastră Privată cu Tor din meniu sau cu {{ key }}.</translation>
+<translation id="2876191400747549936">Ne pare rău, dar a avut loc o problemă în timpul procesării cererii dvs. Vă rugăm să încercați din nou.</translation>
+<translation id="5816125157889950051">Când primiți recompensele</translation>
+<translation id="6733942359297688714">se conectează la un portofel Uphold verificat.</translation>
+<translation id="4600224932216165965">Adaugă, retrage și administrează fonduri pe <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Portofelul tău Brave este susținut de <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> și alte date legate de recompensele tale se vor pierde definitv dacă îți resetezi portofelul. Te rugăm să te asiguri că ți-ai verificat portofelul cu Uphold pentru a-ți păstra BAT.</translation>
+<translation id="7591798679868259510">Mergi la contul meu Uphold</translation>
+<translation id="160145159036553575">Serviciul nostru portofel este oferit de <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold s-ar putea să solicite să vă verificați identitatea pe baza serviciilor solicitate.</translation>
+<translation id="723054503945711909">Brave Software Inc. nu procesează, nu stochează sau nu accesează nicio informație personală pe care o furnizați Uphold când creați un cont.</translation>
+<translation id="7677480094678113476">Notă: Tranzacțiile dumneavoastră vor fi vizibile Uphold după autorizare; de exemplu, aceștia vor putea să vadă destinatarul și sumele plătite.</translation>
+<translation id="6057992164469678163">Se așteaptă perechile...</translation>
 </translationbundle>

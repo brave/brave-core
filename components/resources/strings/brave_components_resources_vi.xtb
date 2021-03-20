@@ -823,4 +823,25 @@
 <translation id="6951743416068151209">URI Proxy Tor</translation>
 <translation id="1671503397662036257">Trạng thái Kết nối Tor</translation>
 <translation id="6024292492796847324">Quá trình Khởi tạo Tor</translation>
+<translation id="8643377320501056697">Hiển thị Các trang Hàng đầu</translation>
+<translation id="7176563092712682575">Tùy chính Trang Hàng đầu</translation>
+<translation id="8760415064721320867">Cửa sổ Riêng tư với Tor</translation>
+<translation id="4844209912525464363">Brave không bao giờ nhớ những gì bạn làm trong Cửa sổ Riêng tư. Với Tor, việc duyệt web của bạn cũng được ẩn khỏi ISP hoặc chủ của bạn, và địa chỉ IP của bạn được ẩn khỏi các trang web mà bạn truy cập.</translation>
+<translation id="5576876180131651996">Làm cho Cửa sổ Riêng tư trở nên riêng tư hơn nhiều</translation>
+<translation id="1129265576134014816">Cửa sổ Riêng tư này riêng tư hơn nhiều</translation>
+<translation id="805807983419360524">cùng Tor</translation>
+<translation id="8958799246752641148">Tor ẩn địa chỉ IP của bạn khỏi các trang web bạn truy cập, bằng cách định tuyến việc duyệt web của bạn thông qua một số máy chủ Tor trước khi truy cập trang đích của bạn. Các kết nối này được mã hóa, do đó, ISP hoặc chủ của bạn không thể xem trang web nào bạn đang truy cập. Tor có thể làm chậm việc duyệt web và một số trang web có thể không hoạt động được.</translation>
+<translation id="520608572871993342">Sử dụng Cửa số Riêng tư chỉ thay đổi những gì Brave thực hiện trên thiết bị của bạn mà không thay đổi hành vi của bất kỳ điều gì khác. Tor ẩn địa chỉ IP của bạn khỏi những trang web mà bạn truy cập, và ẩn những trang web bạn truy cập khỏi ISP hoặc chủ của bạn. Mở Cửa sổ Riêng tư với Tor từ menu, hoặc với {{ key }}.</translation>
+<translation id="2876191400747549936">Rất tiếc, đã xảy ra trục trặc khi xử lý yêu cầu của bạn, vui lòng thử lại.</translation>
+<translation id="5816125157889950051">Khi nào bạn nhận được phần thưởng</translation>
+<translation id="6733942359297688714">đang kết nối với ví Uphold đã được xác minh.</translation>
+<translation id="4600224932216165965">Nạp tiền, rút tiền và quản lý vốn tại <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Ví Brave của bạn được cung cấp bởi <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> và dữ liệu Phần thưởng khác của bạn sẽ bị mất vĩnh viễn nếu bạn thiết lập lại ví. Hãy đảm bảo bạn đã xác thực ví với Uphold để có thể giữ BAT của mình.</translation>
+<translation id="7591798679868259510">Truy cập tài khoản Uphold của tôi</translation>
+<translation id="160145159036553575">Dịch vụ ví của chúng tôi được cung cấp bởi <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
+<translation id="723054503945711909">Công ty Brave Software Inc. không xử lý, lưu trữ hay truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho Uphold khi bạn thiết lập tài khoản với họ.</translation>
+<translation id="7677480094678113476">Lưu ý: Các giao dịch của bạn sẽ hiển thị với Uphold khi bạn cho phép; chẳng hạn, họ sẽ có thể thấy người nhận và số tiền tip của bạn.</translation>
+<translation id="6057992164469678163">Đang chờ các nút ngang hàng...</translation>
 </translationbundle>

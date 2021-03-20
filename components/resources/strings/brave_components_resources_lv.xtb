@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Tor starpniekservera URL</translation>
 <translation id="1671503397662036257">Tor savienojuma statuss</translation>
 <translation id="6024292492796847324">Tor inicializēšanas progress</translation>
+<translation id="8643377320501056697">Rādīt populāras vietnes</translation>
+<translation id="7176563092712682575">Pielāgot populāras vietnes</translation>
+<translation id="8760415064721320867">Inkognito logs ar Tor</translation>
+<translation id="4844209912525464363">Brave nekad nesaglabā jūsu veiktās darbības inkognito logā. Ar Tor jūsu pārlūkošanas vēsture nav redzama jūsu ISP un darba devējam, un jūsu IP adrese nav redzama vietnēm, ko apmeklējat.</translation>
+<translation id="5576876180131651996">Padariet inkognito logus vēl privātākus</translation>
+<translation id="1129265576134014816">Šis inkognito logs ir daudz privātāks</translation>
+<translation id="805807983419360524">ar Tor</translation>
+<translation id="8958799246752641148">Tor nerāda jūsu IP adresi vietnēm, ko apmeklējat, pārsūtot jūsu pārlūka datus caur vairākiem Tor serveriem, pirms tie sasniedz galamērķi. Šie savienojumi ir šifrēti, tāpēc jūsu ISP vai darba devējs nevar redzēt, kuras vietnes jūs apmeklējat. Tor var palēnināt pārlūkošanu, un atsevišķas vietnes var nestrādāt vispār.</translation>
+<translation id="520608572871993342">Inkognito loga izmantošana maina to, ko Brave dara jūsu ierīcē —, bet nemaina citu uzvedību. Tor slēpj jūsu IP adresi no vietnēm, ko apmeklējat, un slēpj vietnes no jūsu ISP vai jūsu darba devēja. Atveriet inkognito logu ar Tor no izvēlnes vai ar {{ key }}.</translation>
+<translation id="2876191400747549936">Atvainojiet, apstrādājot jūsu pieprasījumu, radās kļūda, lūdzu, mēģiniet vēlreiz.</translation>
+<translation id="5816125157889950051">Kad jūs saņemat balvas</translation>
+<translation id="6733942359297688714">veidot savienojumu ar verificētu Uphold maku.</translation>
+<translation id="4600224932216165965">Pievienojiet, izņemiet un pārvaldiet līdzekļus <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Jūsu Brave maka darbību nodrošina <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Ja atiestatīsiet maku, jūsu <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> un citi Rewards dati tiks neatgriezeniski zaudēti. Lūdzu, pārliecinieties, ka esat verificējis savu maku ar Uphold, lai saglabātu savus BAT.</translation>
+<translation id="7591798679868259510">Doties uz manu Uphold kontu</translation>
+<translation id="160145159036553575">Jūsu Brave maka darbību nodrošina <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="8465442795593991224">Atkarībā no pieprasītajiem pakalpojumiem Uphold var lūgt jums apliecināt savu identitāti.</translation>
+<translation id="723054503945711909">Brave Software Inc. neapstrādā, neuzglabā un nepiekļūst personīgajai informācijai, kuru jūs sniedzat Uphold, izveidojot savu Uphold kontu.</translation>
+<translation id="7677480094678113476">Piezīme: jūsu darījumi būs redzami Uphold, kad autorizēsieties; piemēram, būs redzami jūsu dzeramnaudu saņēmēji un summas.</translation>
+<translation id="6057992164469678163">Gaida vienādranga pieslēgumus...</translation>
 </translationbundle>

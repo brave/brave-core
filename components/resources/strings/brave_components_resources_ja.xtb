@@ -826,4 +826,25 @@
 <translation id="6951743416068151209">TorプロキシURI</translation>
 <translation id="1671503397662036257">Tor接続ステータス</translation>
 <translation id="6024292492796847324">Tor初期化の進行状況</translation>
+<translation id="8643377320501056697">トップサイトを表示</translation>
+<translation id="7176563092712682575">トップサイトをカスタマイズ</translation>
+<translation id="8760415064721320867">プライベートウィンドウ+Tor</translation>
+<translation id="4844209912525464363">Braveは、あなたがプライベートウィンドウで行った操作を記憶することはありません。さらにトールを使用することで、あなたのISPや雇用者が、あなたのブラウジング履歴を見ることができなくなります。またあなたが訪問したサイトは、あなたのIPアドレスを見ることができません。</translation>
+<translation id="5576876180131651996">プライベートウィンドウをさらにプライベートにする</translation>
+<translation id="1129265576134014816">このプライベートウィンドウはよりブライベートです</translation>
+<translation id="805807983419360524">+Tor</translation>
+<translation id="8958799246752641148">Torはあなたがサイトを訪れる際、複数のTorサーバーを経由させることで、訪問サイトからあなたのIPアドレスを秘匿化します。この接続は暗号化されているため、インターネットサービスプロバイダも雇用者もあなたの訪れているサイトを知ることはできません。Torによりブラウジングが遅くなることがあり、一部のサイトで機能しないことがあります。</translation>
+<translation id="520608572871993342">プライベートウィンドウを使用すると、あなたのデバイスでBraveに関することだけが変更されます。— 他のものの動作は何も変更されません。TorはあなたのIPアドレスを訪れるサイトに対して秘匿し、訪れたサイトをあなたのISPや雇用者からも秘匿します。プライベートウィンドウ+Torはメニューから、または{{ key }}で開きます。</translation>
+<translation id="2876191400747549936">申し訳ありませんがリクエストの処理中に問題が発生しました。もう一度お試しください。</translation>
+<translation id="5816125157889950051">報酬を受け取るタイミング</translation>
+<translation id="6733942359297688714">認証済みのUpholdウォレットに接続しています。</translation>
+<translation id="4600224932216165965"><ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>で資金を追加、引き出し、管理しましょう</translation>
+<translation id="3580616436301227919">お使いのBraveウォレットは、<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>が提供しています</translation>
+<translation id="7428521340740703492">ウォレットをリセットすると、あなたの<ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/>とその他の報酬データは恒久的に失われます。ご自身のBATを喪失することのないよう、必ずUpholdでのウォレット認証が完了しているかをご確認ください。</translation>
+<translation id="7591798679868259510">Upholdのアカウントに移動</translation>
+<translation id="160145159036553575">当ウォレットサービスは、<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>によって提供されています。</translation>
+<translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を行う必要性がある場合があります。</translation>
+<translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報について処理、保存、アクセスすることはありません。</translation>
+<translation id="7677480094678113476">注：承認するとトランザクションはUpholdに表示されます。たとえば、受信者とチップの金額などを確認できます。</translation>
+<translation id="6057992164469678163">ピアを待っています…</translation>
 </translationbundle>

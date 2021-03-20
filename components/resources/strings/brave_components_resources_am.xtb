@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">የ ቶር ፕሮክሲ URI</translation>
 <translation id="1671503397662036257">የ ቶር ግንኙነት ሁኔታ</translation>
 <translation id="6024292492796847324">የ ቶር መነሻ እድገት</translation>
+<translation id="8643377320501056697">ከፍተኛ ጣቢያዎችን አሳይ</translation>
+<translation id="7176563092712682575">ከፍተኛ ጣቢያዎች ያበጁ</translation>
+<translation id="8760415064721320867">የግል መስኮት በ Tor</translation>
+<translation id="4844209912525464363">ብሬቭ በግል መስኮቶ የሰሩትን ስራ በጭራሽ አያስታውስም፤ ከቶር ጋር የጉብኝት ታሪኮም ከአይኤስፒ ወይም ከቀጣሪዎ የተደበቀ ነው እንዲሁም የእርሶ አይፒ ከሚጎበኙአቸው ገፆች የተደበቀ ነው፡፡</translation>
+<translation id="5576876180131651996">የግልዎን  መስኮት የበለጠ የግሎ ያድርጉ</translation>
+<translation id="1129265576134014816">ይህ የግል መስኮት የበለጠ ግላዊ ነው</translation>
+<translation id="805807983419360524">ከቶር ጋር</translation>
+<translation id="8958799246752641148">ቶር ከሚፈልጉበት ከመድረስዎ በፊት ፍለጋዎን በበርካታ የቶር ሰርቨሮች ውስጥ በማሳለፍ የእርሶን አይፒ ከሚጎበኟቸው ገፆች ይደብቃል፡፡ እነዚህ ግንኙነቶች ተመሳጥረዋል ስለዚህ የእርሶ ኤይኤስፒ ወይም ቀጣሪ ’ እና ’ ምን አይነት ገፆችን እንደጎበኙ ማየት አይችሉም፡፡ ቶር ያዘገየዋል እንዲሁም አንዳንድ ገፆች ጭራሽ ላይሰሩም ይችላሉ፡፡</translation>
+<translation id="520608572871993342">የግል መስኮትን መጠቀሞ ብሬቭ በመሳሪያዎ — ላይ የሚያደርገውን ብቻ ይቀይራል፤ የሌላ የማንንም ባህሪ አይቀይርም፡፡ ቶር የእርሶን አይፒ ከሚጎበኟቸው ገፆች ይደብቃል እንዲሁም የጎበኟቸውን ገፆች ከአይኤስፒ ወይም ከቀጣሪዎ ይደብቃል፡፡ ከቶር ጋር  ወይም ከ{{ key }} ጋር የግሎን መስኮት ከምናሌ ውስጥ ይክፈቱ፡፡</translation>
+<translation id="2876191400747549936">ይቅርታ፣ ጥያቄዎን ለማስኬድ ችግር ነበር እባከዎ እንደገና ይሞክሩ።</translation>
+<translation id="5816125157889950051">ሽልማቶችን መቼ ይቀበላሉ</translation>
+<translation id="6733942359297688714">ከተረጋገጠ የተጠባባቂ ቦርሳ ጋር መገናኘት።</translation>
+<translation id="4600224932216165965">ገንዘቦችን በ <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> ያስገቡ፣ ያውጡ እና ያስተዳድሩ።</translation>
+<translation id="3580616436301227919">የ Brave ዋሌት የጎለበተው በ <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> ነው።</translation>
+<translation id="7428521340740703492">የእርስዎ <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> ዋሌት እንደገና ካስተካከሉ የእርስዎ እና ሌሎች የሽልማቶች ውሂብ እስከመጨረሻው ይጠፋሉ። የእርስዎን BAT ለመጠበቅ እንዲችሉ እባክዎ ዋሌትዎን ከመያዣ ጋር ማረጋገጥዎን ያረጋግጡ።</translation>
+<translation id="7591798679868259510">ወደ የኔ አፕሆልድ መለያ ሂድ</translation>
+<translation id="160145159036553575">የእኛ Brave ዋሌት የጎለበተው በ <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/> ነው</translation>
+<translation id="8465442795593991224">በተጠየቁ አገልግሎቶች ላይ ተመስርተው ማንነትዎን እንዲያረጋግጡ ድጋፍ ሊጠይቅዎ ይችላል፡፡</translation>
+<translation id="723054503945711909">ከእነሱ ጋር አካውንት ሲያበቁ Brave Software Inc. ለሚደግፉት የሰጡትን ማንኛውንም መረጃ አይሠራም ፣ አያከማችም ወይም አይደርስበትም።</translation>
+<translation id="7677480094678113476">ማስታወሻ: እርስዎ ከፈቀዱ በኋላ የእርስዎ ግብይቶች ለማቆየት ይታያሉ፤ ለምሳሌ የርስዎን ምክሮች ተቀባዩ እና መጠን ማየት ይችላሉ።</translation>
+<translation id="6057992164469678163">እኩዮችን በመጠበቅ ላይ...</translation>
 </translationbundle>

@@ -823,4 +823,25 @@
 <translation id="6951743416068151209">URL du proxy Tor</translation>
 <translation id="1671503397662036257">État de la connexion à Tor</translation>
 <translation id="6024292492796847324">Progrès de l'initialisation de Tor</translation>
+<translation id="8643377320501056697">Afficher les sites principaux</translation>
+<translation id="7176563092712682575">Personnaliser les sites principaux</translation>
+<translation id="8760415064721320867">Fenêtre privée avec Tor</translation>
+<translation id="4844209912525464363">Brave ne se souvient jamais de ce que vous faites dans une fenêtre privée. Avec Tor, votre navigation est également cachée à votre FAI ou employeur, et votre adresse IP est cachée des sites que vous visitez.</translation>
+<translation id="5576876180131651996">Rendre les fenêtres privées beaucoup plus privées</translation>
+<translation id="1129265576134014816">Cette fenêtre privée est beaucoup plus privée</translation>
+<translation id="805807983419360524">avec Tor</translation>
+<translation id="8958799246752641148">Tor cache votre adresse IP des sites que vous visitez, en acheminant votre navigation à travers plusieurs serveurs de Tor avant qu'elle n'atteigne votre destination. Ces connexions sont chiffrées, de sorte que votre FAI ou votre employeur ne peuvent pas non plus voir quels sites vous visitez. Tor peut ralentir la navigation et certains sites peuvent ne pas fonctionner du tout.</translation>
+<translation id="520608572871993342">Utiliser des fenêtres privées ne change que ce que Brave fait sur votre appareil — cela ne change le comportement de personne d'autre. Tor cache votre adresse IP des sites que vous visitez, et cache les sites que vous visitez de votre FAI ou de votre employeur. Ouvrez une fenêtre privée avec Tor à partir du menu, ou avec {{ key }}.</translation>
+<translation id="2876191400747549936">Désolé, un problème est survenu lors du traitement de votre demande. Veuillez réessayer.</translation>
+<translation id="5816125157889950051">Quand vous recevrez des récompenses</translation>
+<translation id="6733942359297688714">connexion à un portefeuille Uphold vérifié</translation>
+<translation id="4600224932216165965">Ajoutez, retirez et gérez vos fonds sur <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Votre portefeuille Brave est développé par <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Vos <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> et autres données relatives aux récompenses seront définitivement perdus si vous réinitialisez votre portefeuille. Veuillez vous assurer d'avoir vérifié votre portefeuille auprès de Uphold afin de pouvoir conserver vos jetons BAT.</translation>
+<translation id="7591798679868259510">Accéder à mon compte Uphold</translation>
+<translation id="160145159036553575">Notre service de portefeuille est fourni par <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold peut vous demander de vérifier votre identité en fonction des services demandés.</translation>
+<translation id="723054503945711909">Brave Software Inc. ne traite pas, ne stocke pas et n'accède à aucun des renseignements personnels que vous transmettez à Uphold lorsque vous créez un compte chez eux.</translation>
+<translation id="7677480094678113476">Note : vos transactions seront visibles par Uphold une fois que vous les aurez autorisées ; par exemple, ils pourront voir le destinataire et le montant de vos pourboires.</translation>
+<translation id="6057992164469678163">En attendant les pairs...</translation>
 </translationbundle>

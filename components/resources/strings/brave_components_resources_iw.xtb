@@ -824,4 +824,25 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">סטטוס חיבור Tor</translation>
 <translation id="6024292492796847324">התקדמות אתחול Tor</translation>
+<translation id="8643377320501056697">הצג אתרים מובילים</translation>
+<translation id="7176563092712682575">התאם אישית אתרים מובילים</translation>
+<translation id="8760415064721320867">חלון גלישה פרטי עם תור</translation>
+<translation id="4844209912525464363">Brave לעולם לא זוכרת מה שעשיתם בחלונות פרטיים. עם Tor, הגלישה שלכם מוסתרת גם מספק האינטרנט שלכם או המעסיק, וכתובת ה-IP שלכם אינה נגישה לאתרים בהם אתם גולשים.</translation>
+<translation id="5576876180131651996">הפכו את החלונות הפרטיים להרבה יותר פרטיים</translation>
+<translation id="1129265576134014816">חלון הגלישה הפרטי הזה הינו הרבה יותר פרטי</translation>
+<translation id="805807983419360524">עם Tor</translation>
+<translation id="8958799246752641148">Tor מסתיר את כתובת ה-IP שלכם מהאתרים שבהם אתם מבקרים, על-ידי ניתוב הגלישה שלכם דרך מספר שרתי Tor לפני שהיא מגיעה ליעד שלך. חיבורים אלה מוצפנים, ולכן ספק שירותי האינטרנט או המעסיק שלכם לא יכולים לראות באילו אתרים אתם מבקרים. Tor יכול להאט את הגלישה וייתכן שחלק מהאתרים לא יפעלו כלל.</translation>
+<translation id="520608572871993342">השימוש בחלון פרטי משנה רק את מה ש-Brave עושה במכשיר שלכם —. הוא לא משנה את ההתנהגות של אף אחד. Tor מסתיר את כתובת ה-IP שלכם מפני האתרים שבהם אתם מבקרים, ומסתיר את האתרים שבהם אתם מבקרים מפני ספק האינטרנט או המעסיק שלכם. פתחו חלון פרטי עם Tor מתוך התפריט, או בעזרת {{ key }}.</translation>
+<translation id="2876191400747549936">אנו מצטערים, הייתה בעיה בעיבוד הבקשה שלך, נא לנסות שוב.</translation>
+<translation id="5816125157889950051">מתי אתם מקבלים תגמולים</translation>
+<translation id="6733942359297688714">מתחבר לארנק Uphold מאומת.</translation>
+<translation id="4600224932216165965">הוספה, משיכה וניהול כספים ב-at <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">ארנק Brave שלך מופעל על ידי <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> שלך ונתונים אחרים לגבי תגמולים יאבדו לצמיתות אם תאפסי את הארנק שלך. נא לודא שאימתת את הארנק באמצעות Uphold כדי שתוכלי לשמור את ה-BAT שלך.</translation>
+<translation id="7591798679868259510">עבור לחשבון Uphold שלי</translation>
+<translation id="160145159036553575">שירות הארנק שלנו מסופק על ידי <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold עשויה לדרוש ממך לאמת את זהותך על בסיס השירותים המבוקשים.</translation>
+<translation id="723054503945711909">חברת .Brave Software Inc אינה מעבדת, מאחסנת או ניגשת לשום מידע אישי שהנך מוסר/ת ל-Uphold בעת פתיחת חשבון אצלם.</translation>
+<translation id="7677480094678113476">תשומת לבכם: העסקאות שלכם יהיו גלויות בפני Uphold ברגע שתאשרו; למשל, הם יוכלו לראות את הנמען ואת סכום הטיפים שלכם.</translation>
+<translation id="6057992164469678163">מחכה לעמיתים...</translation>
 </translationbundle>

@@ -827,4 +827,25 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">Tor connection status</translation>
 <translation id="6024292492796847324">Tor initialization progress</translation>
+<translation id="8643377320501056697">Show Top Sites</translation>
+<translation id="7176563092712682575">Customise Top Sites</translation>
+<translation id="8760415064721320867">Private Window with Tor</translation>
+<translation id="4844209912525464363">Brave never remembers what you do in a Private Window. With Tor, your browsing is also hidden from your ISP or employer, and your IP address is hidden from the sites you visit.</translation>
+<translation id="5576876180131651996">Make Private Windows much more private</translation>
+<translation id="1129265576134014816">This Private Window is much more private</translation>
+<translation id="805807983419360524">with Tor</translation>
+<translation id="8958799246752641148">Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. These connections are encrypted, so your ISP or employer can't see which sites you're visiting either. Tor can slow down browsing and some sites might not work at all.</translation>
+<translation id="520608572871993342">Using Private Windows only changes what Brave does on your device ― it doesn't change anyone else's behaviour. Tor hides your IP address from the sites you visit, and hides the sites you visit from your ISP or your employer. Open a Private Window with Tor from the menu, or with {{ key }}.</translation>
+<translation id="2876191400747549936">Sorry there was problem processing your request, please try again.</translation>
+<translation id="5816125157889950051">When do you receive rewards</translation>
+<translation id="6733942359297688714">connecting to a verified Uphold wallet.</translation>
+<translation id="4600224932216165965">Add, withdraw and manage funds at <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Your Brave wallet is powered by <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Your <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with Uphold so you can keep your BAT.</translation>
+<translation id="7591798679868259510">Go to my Uphold account</translation>
+<translation id="160145159036553575">Our wallet service is provided by <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold may require you to verify your identity based on services requested.</translation>
+<translation id="723054503945711909">Brave Software Inc. does not process, store or access any of the personal information that you provide to Uphold when you create an account with them.</translation>
+<translation id="7677480094678113476">Note: Your transactions will be visible to Uphold once you authorise; for instance, they will be able to see the recipient and amount of your tips.</translation>
+<translation id="6057992164469678163">Waiting for peers ...</translation>
 </translationbundle>

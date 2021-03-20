@@ -349,12 +349,12 @@ måned...</translation>
 <translation id="7427567994475794038">Aktivér Databeskyttelsesrapporter for at se hvor mange trackere og rekalmer der er blevet blokeret de sidste tre timer.</translation>
 <translation id="2053891538879944400">Du sparede <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave-browseren.</translation>
 <translation id="8640064498452534195">Aktivér databeskyttelsesrapporter for at se hvor meget data du har sparet</translation>
-<translation id="2252497442547961651">Modig browser bruger i gennemsnit 40% mindre batteri. &#128267;</translation>
+<translation id="2252497442547961651">Modig browser bruger i gennemsnit 40% mindre batteri. 🔋</translation>
 <translation id="1945330434665345785">Du blokerede <ph name="COUNT"/> trackere og reklamer med Brave-browseren sidste uge.</translation>
 <translation id="2883868922264431515">Optjen tokens ved at se datarespekterende reklamer og støtte dine yndlingshjemmesider.</translation>
-<translation id="5678925890616256956">Nice! Du har blokeret 250 trackere&amp; annoncer med Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Pæn! Du har sparet 10 MB med Brave browser.&#128267;</translation>
-<translation id="1880168210969863408">Nice! Du har sparet 10 min. Indlæsningstid med Brave browser.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Nice! Du har blokeret 250 trackere&amp; annoncer med Brave browser.🔥</translation>
+<translation id="9199047775708635708">Pæn! Du har sparet 10 MB med Brave browser.🔋</translation>
+<translation id="1880168210969863408">Nice! Du har sparet 10 min. Indlæsningstid med Brave browser.💨💨</translation>
 <translation id="7408493389591475748">Begynd at browse for at se databeskyttelsesrapportering</translation>
 <translation id="9080777565335515917">Indstil Brave som din standardbrowser for privat og sikker browsing.</translation>
 <translation id="7801488941710395275">Tillader Brave at vise dine databeskyttelsesstatistikker</translation>
@@ -483,4 +483,41 @@ måned...</translation>
 <translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0.00 BAT</translation>
 <translation id="4193129043743994339">0.00 USD</translation>
+<translation id="6303294677342628402">Afskærmning</translation>
+<translation id="6132506775968708399">Bloker cookies fra tredjeparter</translation>
+<translation id="7835726359440951858">Blokér reklamer og sporing</translation>
+<translation id="6754976710186182237">Fingeraftryksmetoder</translation>
+<translation id="2313532038420432247">HTTPS Opgraderinger</translation>
+<translation id="7461425058443653485">Scripts blokeret</translation>
+<translation id="3834924998750356151">Blokeringsmonitor</translation>
+<translation id="1713450908129883784">Individuelle Kontroller</translation>
+<translation id="316832010181763471">Introduktionsservice til søgemaskiner</translation>
+<translation id="7053983685419859001">Bloker</translation>
+<translation id="2880356288762235261">privatlivsinvaderende annoncer og trackere, så du kan browse uden at blive fulgt på nettet.</translation>
+<translation id="821707262661492716">til at se annoncer, der respekterer privatlivets fred.</translation>
+<translation id="4930714375720679147">Aktivér</translation>
+<translation id="2453860139492968684">Udfør</translation>
+<translation id="1916285746997567466">Gør dig klar til at opleve det næste Internet.</translation>
+<translation id="3540580927110899945">Du kan nu tjene penge på <ph name="TOKEN"/>s at se reklamer som respekterer dit privatliv.</translation>
+<translation id="1327938628925645979">DELTAG I BELØNNINGER</translation>
+<translation id="5567439033041178034">LÆR MERE</translation>
+<translation id="2104073734684466851">Bevillinger</translation>
+<translation id="2012723204723845092">Velkommen tilbage!</translation>
+<translation id="7669994301500276741">Bliv belønnet for browsing.</translation>
+<translation id="8203529727745387785">Tjen ved at se privatlivsrespekterende annoncer, og betal det videre ved at støtte
+indholdsskabere, du elsker.</translation>
+<translation id="5148719990624240755">AKTIVER BRAVE BELØNNINGER</translation>
+<translation id="7530570094705720669">Opretter tegnebog</translation>
+<translation id="7117228822971127758">Prøv igen senere</translation>
+<translation id="3068742524072211213">udløber den <ph name="DATE"/></translation>
+<translation id="4292832015778676417">tjent på reklamer</translation>
+<translation id="4162066325465825185">Vi beklager, det ser ud til, at Brave-belønninger ikke er tilgængelige på din enhed</translation>
+<translation id="1872784258300710671">Brave bruger fuldstændig private produktanalyser til at anslå det generelle forbrug af visse funktioner</translation>
+<translation id="8712637175834984815">Forstået</translation>
+<translation id="4394049700291259645">Deaktiver</translation>
+<translation id="4522570452068850558">Detaljer</translation>
+<translation id="5963670684159057574">Bloker cross-site-fingeraftryk</translation>
+<translation id="6462814326662189004">Hvor ofte vil du se annoncer?\n(Annoncer i timen)</translation>
+<translation id="2134244432345596331">Hvor meget støtte vil du give til dine yndlingsskabere?\n(fra dine annonceindtægter)</translation>
+<translation id="1622983732360473885">Hjælper Brave</translation>
 </translationbundle>

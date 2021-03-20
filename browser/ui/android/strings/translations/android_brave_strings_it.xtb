@@ -349,12 +349,12 @@ attività in questo mese...</translation>
 <translation id="7427567994475794038">Attiva il Report Privacy per vedere quanti tracker &amp;ad sono state bloccate nelle ultime 3 ore.</translation>
 <translation id="2053891538879944400">Hai risparmiato <ph name="DATA"/> <ph name="DATA_TEXT"/> dati con Brave browser.</translation>
 <translation id="8640064498452534195">Attiva il Report Privacy per vedere quanti dati hai risparmiato.</translation>
-<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.&#128267;</translation>
+<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.🔋</translation>
 <translation id="1945330434665345785">Hai bloccato <ph name="COUNT"/> tracker &amp; ad con Brave browser la scorsa settimana.</translation>
 <translation id="2883868922264431515">Guadagna token guardando ad tutela-privacy e supporta i tuoi siti preferiti.</translation>
-<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.&#128293;</translation>
-<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.&#128267;</translation>
-<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.🔥</translation>
+<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.🔋</translation>
+<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.💨💨</translation>
 <translation id="7408493389591475748">Comincia a navigare per visualizzare il report sulla privacy</translation>
 <translation id="9080777565335515917">Imposta Brave come browser di default per una navigazione privata e sicura.</translation>
 <translation id="7801488941710395275">Permetti a Brave di mostrare le tue statistiche privacy</translation>
@@ -482,4 +482,41 @@ attività in questo mese...</translation>
 <translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0,00 BAT</translation>
 <translation id="4193129043743994339">0,00 USD</translation>
+<translation id="6303294677342628402">Protezioni</translation>
+<translation id="6132506775968708399">Blocca i cookie di terze parti</translation>
+<translation id="7835726359440951858">Blocca gli annunci e il monitoraggio</translation>
+<translation id="6754976710186182237">Metodi dell'impronta digitale</translation>
+<translation id="2313532038420432247">Aggiornamenti HTTPS</translation>
+<translation id="7461425058443653485">Script bloccati</translation>
+<translation id="3834924998750356151">Blocco del monitor</translation>
+<translation id="1713450908129883784">Controlli individuali</translation>
+<translation id="316832010181763471">Onboarding del motore di ricerca</translation>
+<translation id="7053983685419859001">Blocca</translation>
+<translation id="2880356288762235261">gli annunci e i localizzatori che invadono la privacy perché tu possa navigare senza essere seguito su Internet.</translation>
+<translation id="821707262661492716">per vedere annunci che rispettano la privacy.</translation>
+<translation id="4930714375720679147">Attiva</translation>
+<translation id="2453860139492968684">Termina</translation>
+<translation id="1916285746997567466">Preparati a provare 
+il nuovo Internet.</translation>
+<translation id="3540580927110899945">Ora puoi guadagnare <ph name="TOKEN"/>s visionando pubblicità rispettose della tua privacy.</translation>
+<translation id="1327938628925645979">UNISCITI ALLE RICOMPENSE</translation>
+<translation id="5567439033041178034">SCOPRI DI PIÙ</translation>
+<translation id="2104073734684466851">Contributi</translation>
+<translation id="2012723204723845092">Bentornato!</translation>
+<translation id="7669994301500276741">Ricevi delle ricompense per la navigazione.</translation>
+<translation id="8203529727745387785">Guadagna visualizzando annunci che rispettano la privacy, e paga in avanti per sostenere i creatori di contenuti che ti piacciono.</translation>
+<translation id="5148719990624240755">ATTIVA LE RICOMPENSE DI BRAVE</translation>
+<translation id="7530570094705720669">Creazione del portafoglio</translation>
+<translation id="7117228822971127758">Riprova più tardi</translation>
+<translation id="3068742524072211213">scade il <ph name="DATE"/></translation>
+<translation id="4292832015778676417">guadagnati dagli annunci pubblicitari</translation>
+<translation id="4162066325465825185">Siamo spiacenti ma sembra che le Ricompense di Brave non siano disponibile sul tuo dispositivo.</translation>
+<translation id="1872784258300710671">Brave utilizza analisi di prodotto completamente private per stimare l'utilizzo complessivo di alcune funzioni.</translation>
+<translation id="8712637175834984815">Fatto</translation>
+<translation id="4394049700291259645">Disabilita</translation>
+<translation id="4522570452068850558">Dettagli</translation>
+<translation id="5963670684159057574">Blocca l'analisi delle impronte cross-site</translation>
+<translation id="6462814326662189004">Quanto spesso vuoi vedere la pubblicità?\n(pubblicità per ora)</translation>
+<translation id="2134244432345596331">Quanto supporto vuoi lasciare ai tuoi creatori preferiti?\n(dai tuoi guadagni degli annunci)</translation>
+<translation id="1622983732360473885">Supporta Brave</translation>
 </translationbundle>

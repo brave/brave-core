@@ -349,12 +349,12 @@
 <translation id="7427567994475794038">개인정보 보고서를 켜서 지난 3시간 동안 얼마나 많은 추적기 및 광고가 차단되었는지 확인하십시오.</translation>
 <translation id="2053891538879944400">Brave 브라우저로 <ph name="DATA"/> <ph name="DATA_TEXT"/> 데이터를 절약하셨습니다.</translation>
 <translation id="8640064498452534195">절약한 데이터 양을 보려면 개인정보 보고서를 켜십시오.</translation>
-<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.&#128267;</translation>
+<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.🔋</translation>
 <translation id="1945330434665345785">지난주 Brave 브라우저로 <ph name="COUNT"/> 추적기 및 광고를 차단하셨습니다.</translation>
 <translation id="2883868922264431515">개인정보 존중 광고를 시청하여 토큰을 획득하고 즐겨찾는 웹사이트를 지원하십시오.</translation>
-<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.&#128293;</translation>
-<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.&#128267;</translation>
-<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. &#128168; &#128168;</translation>
+<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.🔥</translation>
+<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.🔋</translation>
+<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. 💨 💨</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
 <translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
 <translation id="7801488941710395275">Brave가 개인정보 통계를 표시하도록 허용</translation>
@@ -482,4 +482,43 @@
 <translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0.00 BAT</translation>
 <translation id="4193129043743994339">0.00 USD</translation>
+<translation id="6303294677342628402">보호</translation>
+<translation id="6132506775968708399">제 3자 쿠키 차단하기</translation>
+<translation id="7835726359440951858">광고 및 추적 차단</translation>
+<translation id="6754976710186182237">지문 방식</translation>
+<translation id="2313532038420432247">HTTPS 업그레이드</translation>
+<translation id="7461425058443653485">차단된 스크립트</translation>
+<translation id="3834924998750356151">모니터 차단</translation>
+<translation id="1713450908129883784">개별 제어</translation>
+<translation id="316832010181763471">검색 엔진 온보딩</translation>
+<translation id="7053983685419859001">차단하기</translation>
+<translation id="2880356288762235261">개인 정보를 침해하는 광고와 추적기를 차단해 추적당하지 않고 웹을 탐색할 수 있습니다.</translation>
+<translation id="821707262661492716">개인 정보를 존중하는 광고를 시청해 받습니다.</translation>
+<translation id="4930714375720679147">사용 설정</translation>
+<translation id="2453860139492968684">완료</translation>
+<translation id="1916285746997567466">다음 세대의 인터넷을
+경험할 준비를 하세요.</translation>
+<translation id="3540580927110899945">이제 개인정보를 보호하는 광고를 시청하고 <ph name="TOKEN"/>을 얻을 수 있습니다.</translation>
+<translation id="1327938628925645979">Rewards 가입</translation>
+<translation id="5567439033041178034">더 알아보기</translation>
+<translation id="2104073734684466851">보조금</translation>
+<translation id="2012723204723845092">돌아오신 것을 환영합니다!</translation>
+<translation id="7669994301500276741">브라우징하고 보상을 받으세요.</translation>
+<translation id="8203529727745387785">개인 정보를 존중하는 광고를 시청해
+토큰을 받고 좋아하는 콘텐츠
+크리에이터에게 지불해 후원하세요.</translation>
+<translation id="5148719990624240755">BRAVE 리워드 활성화</translation>
+<translation id="7530570094705720669">월렛 생성 중</translation>
+<translation id="7117228822971127758">나중에 다시 시도해 주세요</translation>
+<translation id="3068742524072211213">만료일 <ph name="DATE"/></translation>
+<translation id="4292832015778676417">광고로부터 수입</translation>
+<translation id="4162066325465825185">죄송합니다. 귀하의 기기에서는 Brave Rewards를 사용할 수 없는 것 같습니다.</translation>
+<translation id="1872784258300710671">Brave는 비밀이 완전히 보장되는 제품 애널리틱스를 사용하여 특정 기능의 전체 사용량을 추정합니다</translation>
+<translation id="8712637175834984815">확인</translation>
+<translation id="4394049700291259645">사용 중지</translation>
+<translation id="4522570452068850558">세부 정보</translation>
+<translation id="5963670684159057574">사이트 간 지문 인식 차단</translation>
+<translation id="6462814326662189004">얼마나 자주 광고를 보고 싶으십니까?\n(시간당 광고)</translation>
+<translation id="2134244432345596331">좋아하는 크리에이터에게 얼마나 많은 지원을 하고 싶으신가요?\n(광고 수익에서)</translation>
+<translation id="1622983732360473885">Brave 지원</translation>
 </translationbundle>
