@@ -1,4 +1,5 @@
 use crate::dom;
+use crate::scorer;
 use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::TreeSink;
@@ -7,7 +8,6 @@ use html5ever::{parse_document, serialize};
 use html5ever::{LocalName, QualName};
 use markup5ever_rcdom::RcDom;
 use markup5ever_rcdom::SerializableHandle;
-use scorer;
 use scorer::{Candidate, Title};
 use std::cell::Cell;
 use std::collections::BTreeMap;

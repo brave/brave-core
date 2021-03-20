@@ -8,6 +8,7 @@ repository = "https://github.com/kumabook/readability.git"
 description = "Port of arc90's readability project to rust"
 keywords = ["readability"]
 categories = []
+edition = "2018"
 
 [dependencies]
 regex            = "1"
