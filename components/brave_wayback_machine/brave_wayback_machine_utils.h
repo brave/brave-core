@@ -9,5 +9,6 @@
 class GURL;
 
 bool IsWaybackMachineDisabledFor(const GURL& url);
+GURL FixupWaybackQueryURL(const GURL& url);
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_UTILS_H_
