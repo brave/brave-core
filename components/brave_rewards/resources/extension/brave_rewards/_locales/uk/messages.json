@@ -235,6 +235,18 @@
     "message": "Будь ласка, зробіть резервну копію гаманця Brave.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Докладніше",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Досягнуто ліміт кількості пристроїв",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Ваш гаманець не може бути перевірений, оскільки ви досягли максимального ліміту підтверджених пристроїв.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Ваш обліковий запис Винагород Brave Rewards очікує на депозит.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Гаманець підтверджено",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Перейти до мого облікового запису Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Перейти до мого облікового запису $provider$",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Від'єднатись від Винагород Brave",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Зауважте: Ваші транзакції будуть видимі для Uphold, щойно ви надасте дозвіл; наприклад, вони зможуть бачити отримувача та суму ваших чайових.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Примітка: Ваші транзакції будуть видимими для $provider$ щойно ви авторизуєтесь; наприклад, вони зможуть побачити одержувача та кількість ваших чайових.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Заробляйте токени та допомагайте іншим",

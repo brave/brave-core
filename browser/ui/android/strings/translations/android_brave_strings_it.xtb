@@ -2,23 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="it">
 <translation id="7307834434086582547">Abilita/disabilita scudi di Brave</translation>
-<translation id="6303294677342628402">Protezioni</translation>
-<translation id="6132506775968708399">Blocca i cookie di terze parti</translation>
-<translation id="7835726359440951858">Blocca gli annunci e il monitoraggio</translation>
 <translation id="3570081523466826008">Aggiorna le connessioni a HTTPS</translation>
 <translation id="94154759592465111">Blocca gli Script</translation>
-<translation id="7458422973722236530">Protezione con le Impronte Digitali</translation>
 <translation id="5709627087332022422">Blocca tracker cross-site</translation>
-<translation id="6754976710186182237">Metodi dell'impronta digitale</translation>
-<translation id="2313532038420432247">Aggiornamenti HTTPS</translation>
-<translation id="7461425058443653485">Script bloccati</translation>
 <translation id="6052725679982758334">Blocco dei social media</translation>
 <translation id="7498695072878479744">Permetti pulsante di accesso Google su siti di terze parti</translation>
 <translation id="863171915776379000">Consenti accessi a Facebook e post incorporati</translation>
 <translation id="5165042248369837294">Consenti tweet incorporati su Twitter</translation>
 <translation id="958971637207126733">Permetti i post integrati di LinkedIn</translation>
-<translation id="3834924998750356151">Blocco del monitor</translation>
-<translation id="1713450908129883784">Controlli individuali</translation>
 <translation id="6302422639282249274">Gestisci le Ricompense di Brave</translation>
 <translation id="1506061864768559482">Motore di ricerca</translation>
 <translation id="1468415711258933398">Scheda standard</translation>
@@ -28,12 +19,12 @@
 <translation id="8710614491157212477">Apre i siti compatibili utilizzando HTTPS invece di HTTP quando è possibile.</translation>
 <translation id="8387201461264842096">Blocco degli annunci</translation>
 <translation id="1934885595886623674">Impedisce il caricamento di pubblicità</translation>
+<translation id="7458422973722236530">Protezione con le Impronte Digitali</translation>
 <translation id="5787084571334399599">Impedisce al browser di rilevare le impronte digitali</translation>
 <translation id="7459000603787995422">Chiudi le schede quando esci</translation>
 <translation id="1680858055899097121">Non rimanere nelle schede tra una sessione di navigazione e l'altra</translation>
 <translation id="6469509880167172749">Invia automaticamente analisi di prodotto completamente private a Brave</translation>
 <translation id="7090566321964540749">Queste informazioni anonime consentono a Brave di stimare solo l'utilizzo complessivo di alcune funzioni.</translation>
-<translation id="453601949003770390">Tracker e annunci bloccati</translation>
 <translation id="347604927162577559">Dati\nRisparmiati</translation>
 <translation id="9008534313521214777">Tempo stimato\nRisparmiato</translation>
 <translation id="6572660632052512096">Modalità Desktop</translation>
@@ -58,17 +49,13 @@
 <translation id="8701563696941209024">RILANCIA ORA</translation>
 <translation id="834487290629916192">PIÙ TARDI</translation>
 <translation id="8281886186245836920">Salta</translation>
-<translation id="316832010181763471">Onboarding del motore di ricerca</translation>
 <translation id="986879628471635371">Fase iniziale della risoluzione dei problemi</translation>
 <translation id="5808759341041733958">Scegli motore di ricerca predefinito</translation>
 <translation id="1331593888918588693">Puoi sempre cambiare le preferenze in seguito nelle impostazioni dell'app.</translation>
-<translation id="7053983685419859001">Blocca</translation>
 <translation id="5806601733251372221">Scudi di Brave</translation>
-<translation id="2880356288762235261">gli annunci e i localizzatori che invadono la privacy perché tu possa navigare senza essere seguito su Internet.</translation>
 <translation id="8537217141725709400">Guadagna <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Ricompense Brave</translation>
 <translation id="5870330605209713397">visualizzando annunci rispettosi della privacy e supportando i tuoi siti e creatori preferiti per impostazione predefinita.</translation>
-<translation id="821707262661492716">per vedere annunci che rispettano la privacy.</translation>
 <translation id="5302488867897327287">Cliccando su Inizia a usare Brave Rewards, dai il tuo consenso a</translation>
 <translation id="4281844954008187215">Termini di Servizio</translation>
 <translation id="6871397658902960384">Comincia a navigare</translation>
@@ -76,8 +63,6 @@
 <translation id="1448877943847791441">Brave mostrerà il tuo primo annuncio in</translation>
 <translation id="4410793187232041318">Ora guadagnerai token dagli annunci Brave.</translation>
 <translation id="6511854390690723657">Questo è il tuo primo annuncio di Brave. Tocca per saperne di più.</translation>
-<translation id="4930714375720679147">Attiva</translation>
-<translation id="2453860139492968684">Termina</translation>
 <translation id="2070991379950719711">Inizia a usare Brave Rewards</translation>
 <translation id="48520986898237073">Prosegui per il portafoglio</translation>
 <translation id="3570367516044491911">Imposta come browser predefinito</translation>
@@ -117,22 +102,12 @@
 <translation id="8220228041552340594">OTTOBRE</translation>
 <translation id="8280223431922155812">NOVEMBRE</translation>
 <translation id="4254029385847607686">DICEMBRE</translation>
-<translation id="1916285746997567466">Preparati a provare 
-il nuovo Internet.</translation>
-<translation id="3540580927110899945">Ora puoi guadagnare <ph name="TOKEN"/>s visionando pubblicità rispettose della tua privacy.</translation>
-<translation id="1327938628925645979">UNISCITI ALLE RICOMPENSE</translation>
-<translation id="5567439033041178034">SCOPRI DI PIÙ</translation>
 <translation id="3780605330121608425">Il tuo portafoglio</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
-<translation id="2104073734684466851">Contributi</translation>
 <translation id="1165667598801520610">Aggiungi fondi</translation>
 <translation id="8428213095426709021">Impostazioni</translation>
-<translation id="2012723204723845092">Bentornato!</translation>
-<translation id="7669994301500276741">Ricevi delle ricompense per la navigazione.</translation>
-<translation id="8203529727745387785">Guadagna visualizzando annunci che rispettano la privacy, e paga in avanti per sostenere i creatori di contenuti che ti piacciono.</translation>
-<translation id="5148719990624240755">ATTIVA LE RICOMPENSE DI BRAVE</translation>
 <translation id="8772672608371898774">Editore Verificato di Brave</translation>
 <translation id="1397683270551078781">Non ancora verificato</translation>
 <translation id="5727208111992260840">Questo creatore non si è ancora iscritto per ricevere contributi da utenti di Brave.
@@ -150,7 +125,6 @@ attività in questo mese...</translation>
 <translation id="13853865024308201">Riscuoti</translation>
 <translation id="7335371657242627509">Includi in Auto-contributo</translation>
 <translation id="5463954686005964104">Fai una donazione a questo sito ogni mese</translation>
-<translation id="7530570094705720669">Creazione del portafoglio</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
 <translation id="4751553692764711651">Hai contribuito <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/></translation>
 <translation id="7997676409547731821">Il tuo pagamento mensile programmato per il contributo automatico e le mance mensili non hanno potuto essere completati a causa di fondi insufficienti. Proveremo di nuovo in 30 giorni.</translation>
@@ -166,9 +140,6 @@ attività in questo mese...</translation>
 <translation id="1713542052890184975">Per favore, effettua il backup del tuo portafoglio Brave.</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">Il server di Brave Rewards non risponde. Sistemeremo il problema il prima possibile.</translation>
-<translation id="7117228822971127758">Riprova più tardi</translation>
-<translation id="3068742524072211213">scade il <ph name="DATE"/></translation>
-<translation id="4292832015778676417">guadagnati dagli annunci pubblicitari</translation>
 <translation id="683765328936486920">su YouTube</translation>
 <translation id="8969049974285901797">su Twitch</translation>
 <translation id="4376933248999950592">Hai predisposto <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> per creatori che non hanno ancora effettuato l'iscrizione per ricevere contributi. Il tuo browser continuerà a provare a contribuire fino alla loro verifica, o fino a che non saranno passati 90 giorni.</translation>
@@ -176,9 +147,7 @@ attività in questo mese...</translation>
 <translation id="6940273954212603510">per favore</translation>
 <translation id="1036277985068412734">aggiungi fondi</translation>
 <translation id="3492491948683276944">imposta la mancia mensile</translation>
-<translation id="4162066325465825185">Siamo spiacenti ma sembra che le Ricompense di Brave non siano disponibile sul tuo dispositivo.</translation>
 <translation id="8038539967102225446">Gli annunci Brave sono qui!</translation>
-<translation id="8985635554450124959">Non è stato possibile impostare la sincronizzazione</translation>
 <translation id="222883304157347087">(questo dispositivo)</translation>
 <translation id="4157741509680155021">CATENA DEI DISPOSITIVI IN SINCRONIZZAZIONE</translation>
 <translation id="279635009973773843">CARICAMENTO DEI DISPOSITIVI...</translation>
@@ -231,10 +200,7 @@ attività in questo mese...</translation>
 <translation id="6810078320346589989">Crea un segnalibro</translation>
 <translation id="3396347744975515056">Brave Sync è stato aggiornato e deve essere configurato</translation>
 <translation id="7473245612074035141">Inizia configurazione</translation>
-<translation id="1872784258300710671">Brave utilizza analisi di prodotto completamente private per stimare l'utilizzo complessivo di alcune funzioni.</translation>
-<translation id="8712637175834984815">Fatto</translation>
-<translation id="4394049700291259645">Disabilita</translation>
-<translation id="8446884382197647889">Ulteriori informazioni</translation>
+<translation id="8985635554450124959">Non è stato possibile impostare la sincronizzazione</translation>
 <translation id="2514300153301737214">Abbiamo notato che hai attivato Brave Sync, ma la sincronizzazione del tuo sistema è disattivata, il che impedisce a Brave di sincronizzarsi. Premi per aprire le impostazioni.</translation>
 <translation id="7173114856073700355">Apri Impostazioni</translation>
 <translation id="6965382102122355670">OK</translation>
@@ -255,7 +221,6 @@ attività in questo mese...</translation>
 <translation id="1081826981536899387">Punti BAT</translation>
 <translation id="9212459913845238740">Point Grants Richiesti</translation>
 <translation id="2132683977638223450">Point Grant Gratis</translation>
-<translation id="4522570452068850558">Dettagli</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="8713995420537272453">punto</translation>
 <translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
@@ -322,7 +287,6 @@ attività in questo mese...</translation>
 <translation id="614747795780742163">Impedisce ai siti web di memorizzare informazioni sulle visite precedenti</translation>
 <translation id="6883611015375728278">Blocca tutti i cookie</translation>
 <translation id="5657156137487675418">Consenti tutti i cookie</translation>
-<translation id="5963670684159057574">Blocca l'analisi delle impronte cross-site</translation>
 <translation id="3895527457258986253">Blocca le impronte digitali</translation>
 <translation id="184568144098869637">Impedisce al browser di riconoscere il dispositivo</translation>
 <translation id="7396366757003005317">Impronta digitale bloccata(stretto, potrebbe interferire con le funzionalità dei siti)</translation>
@@ -371,6 +335,7 @@ attività in questo mese...</translation>
 <translation id="4302754476737420523">3 Mesi</translation>
 <translation id="8248593573177859437">Report Privacy</translation>
 <translation id="1274039301958114163">Notifiche Report Privacy</translation>
+<translation id="453601949003770390">Tracker e annunci bloccati</translation>
 <translation id="1581614543353331529">Nessun dato ancora da mostrare</translation>
 <translation id="2401984885421380890">Tracker &amp; Ad\nBloccate</translation>
 <translation id="2662183408296991265">Dati Risparmiati\n(<ph name="DATA_SAVED"/>)</translation>
@@ -402,6 +367,7 @@ attività in questo mese...</translation>
 <translation id="1383876407941801731">Ricerca</translation>
 <translation id="1972589975368876259">Modifica stack</translation>
 <translation id="2490330380242414851">Rimuovi il widget</translation>
+<translation id="8446884382197647889">Ulteriori informazioni</translation>
 <translation id="7384441892795736634">Aggiorna i dati</translation>
 <translation id="4804818685124855865">Scollegati</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -459,8 +425,10 @@ attività in questo mese...</translation>
 <translation id="5876169128756792273">I token possono essere utilizzati in vari modi, oltre a supportare i creatori. Puoi acquistare contenuti digitali e altri beni man mano che si aggiungono altri venditori.</translation>
 <translation id="1402530520078693620">Infine, spieghiamoti due cose sulle impostazioni</translation>
 <translation id="3494356595346329740">Puoi modificarlo in seguito</translation>
-<translation id="6462814326662189004">Quanto spesso vuoi vedere la pubblicità?\n(pubblicità per ora)</translation>
-<translation id="2134244432345596331">Quanto supporto vuoi lasciare ai tuoi creatori preferiti?\n(dai tuoi guadagni degli annunci)</translation>
+<translation id="3115702351969988294">Quanto spesso vuoi vedere gli annunci?</translation>
+<translation id="3474670199029510295">(Annunci pubblicitari all'ora)</translation>
+<translation id="66599604460581068">Quanto supporto vuoi offrire ai tuoi creatori preferiti?</translation>
+<translation id="3164498053837913829">(dai tuoi guadagni con gli annunci)</translation>
 <translation id="827315274423079662">Evviva, sei a posto!</translation>
 <translation id="3895246934788932488">Scegliendo di utilizzare Brave Rewards, stai proteggendo la tua privacy e contribuisci a rendere il Web un posto migliore per tutti. E questo è fantastico!</translation>
 <translation id="5705882733397021510">Vai indietro</translation>
@@ -476,7 +444,6 @@ attività in questo mese...</translation>
 <translation id="7889432931837317731">Apri automaticamente quando possibile</translation>
 <translation id="8967385052772844086">Visualizza il rapporto completo sulla privacy</translation>
 <translation id="6864343534748973390">Più popolare</translation>
-<translation id="1622983732360473885">Supporta Brave</translation>
 <translation id="4608192160278975831">Privato e senza tracciamento</translation>
 <translation id="7208522820527289601">Privato e senza tracciamento, con sede nell'UE</translation>
 <translation id="1161008391729450974">I risultati di Google senza essere tracciati</translation>
@@ -502,4 +469,17 @@ attività in questo mese...</translation>
         tuo browser saranno temporaneamente non disponibili dal 13 marzo e
         il tuo saldo BAP sarà 0,0 finché non passerai al nuovo sistema
         ad aprile. Quando passerai al nuovo sistema, inizierai con i nuovi token!</translation>
+<translation id="4956847150856741762">1</translation>
+<translation id="5196716972587102051">2</translation>
+<translation id="7839580021124293374">3</translation>
+<translation id="2918322085844739869">4</translation>
+<translation id="7267186368513450821">5</translation>
+<translation id="6972003925509023890">1 BAT</translation>
+<translation id="8867821173176188875">5 BAT</translation>
+<translation id="8762169086048682708">10 BAT</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="4548973860489847866">0,00 BAT</translation>
+<translation id="4193129043743994339">0,00 USD</translation>
 </translationbundle>

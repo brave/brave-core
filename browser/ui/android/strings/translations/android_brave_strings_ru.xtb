@@ -2,23 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
 <translation id="7307834434086582547">Включить/Отключить Защиту Brave</translation>
-<translation id="6303294677342628402">Защита</translation>
-<translation id="6132506775968708399">Блокировать сторонние файлы cookie</translation>
-<translation id="7835726359440951858">Блокировать рекламу и отслеживание</translation>
 <translation id="3570081523466826008">Переключаться на HTTPS</translation>
 <translation id="94154759592465111">Блокировать скрипты</translation>
-<translation id="7458422973722236530">Защита от определения отпечатков</translation>
 <translation id="5709627087332022422">Блокировать межсайтовые трекеры</translation>
-<translation id="6754976710186182237">Методов определения отпечатков</translation>
-<translation id="2313532038420432247">Переключений на HTTPS</translation>
-<translation id="7461425058443653485">Заблокированных скриптов</translation>
 <translation id="6052725679982758334">Блокировка соцсетей</translation>
 <translation id="7498695072878479744">Разрешить кнопки входа через Google на сторонних сайтах</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
 <translation id="958971637207126733">Разрешить встроенные посты LinkedIn</translation>
-<translation id="3834924998750356151">Монитор блокировок</translation>
-<translation id="1713450908129883784">Индивидуальное управление</translation>
 <translation id="6302422639282249274">Управление Brave Rewards</translation>
 <translation id="1506061864768559482">Поисковая система</translation>
 <translation id="1468415711258933398">Стандартная вкладка</translation>
@@ -28,12 +19,12 @@
 <translation id="8710614491157212477">По возможности открывает поддерживаемые сайты, используя HTTPS вместо HTTP.</translation>
 <translation id="8387201461264842096">Блокировка рекламы</translation>
 <translation id="1934885595886623674">Предотвращает загрузку рекламы</translation>
+<translation id="7458422973722236530">Защита от определения отпечатков</translation>
 <translation id="5787084571334399599">Защищает от определения отпечатка браузера</translation>
 <translation id="7459000603787995422">Закрывать вкладки при выходе</translation>
 <translation id="1680858055899097121">Не сохранять вкладки между сеансами</translation>
 <translation id="6469509880167172749">Автоматически отправлять полностью конфиденциальную аналитику в Brave</translation>
 <translation id="7090566321964540749">Эта анонимная информация позволяет Brave оценить, как люди используют определенные функции.</translation>
-<translation id="453601949003770390">Заблокировано трекеров и рекламы</translation>
 <translation id="347604927162577559">Сохранено\nданных</translation>
 <translation id="9008534313521214777">Сохранено\nвремени</translation>
 <translation id="6572660632052512096">Режим компьютера</translation>
@@ -58,17 +49,13 @@
 <translation id="8701563696941209024">ПЕРЕЗАПУСТИТЬ СЕЙЧАС</translation>
 <translation id="834487290629916192">ПОЗЖЕ</translation>
 <translation id="8281886186245836920">Пропустить</translation>
-<translation id="316832010181763471">Включаемая поисковая система</translation>
 <translation id="986879628471635371">Устранение неполадок при включении</translation>
 <translation id="5808759341041733958">Выберите поисковую систему по умолчанию</translation>
 <translation id="1331593888918588693">Вы всегда сможете изменить свои предпочтения позже в настройках приложения.</translation>
-<translation id="7053983685419859001">Блокировать</translation>
 <translation id="5806601733251372221">Защита Brave</translation>
-<translation id="2880356288762235261">нарушающие конфиденциальность реклама и трекеры, так что вы можете просматривать контент без слежки за вашими действиями.</translation>
 <translation id="8537217141725709400">Заработать <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="5870330605209713397">посредством просмотра рекламы, соответствующей принципам уважения конфиденциальности, и поддержки ваших любимых сайтов и авторов по умолчанию.</translation>
-<translation id="821707262661492716">за просмотр уважающей частную жизнь рекламы.</translation>
 <translation id="5302488867897327287">Кликнув на Начать использовать Brave Rewards, вы соглашаетесь с</translation>
 <translation id="4281844954008187215">Условия использования</translation>
 <translation id="6871397658902960384">Начать просмотр</translation>
@@ -76,8 +63,6 @@
 <translation id="1448877943847791441">Brave покажет вашу первую рекламу через</translation>
 <translation id="4410793187232041318">Сейчас вы заработаете токен от Brave Ads.</translation>
 <translation id="6511854390690723657">Это ваша первая реклама Brave. Нажмите, чтобы узнать больше.</translation>
-<translation id="4930714375720679147">Включить</translation>
-<translation id="2453860139492968684">Закрыть</translation>
 <translation id="2070991379950719711">Начать использовать Brave Rewards</translation>
 <translation id="48520986898237073">Перейти в кошелек</translation>
 <translation id="3570367516044491911">Установить в качестве браузера по умолчанию</translation>
@@ -117,25 +102,12 @@
 <translation id="8220228041552340594">ОКТЯБРЬ</translation>
 <translation id="8280223431922155812">НОЯБРЬ</translation>
 <translation id="4254029385847607686">ДЕКАБРЬ</translation>
-<translation id="1916285746997567466">Приготовьтесь испытать
-новый интернет.</translation>
-<translation id="3540580927110899945">Теперь вы можете зарабатывать <ph name="TOKEN"/>s за
-просмотр рекламы, уважающей вашу конфиденциальность.</translation>
-<translation id="1327938628925645979">ПРИСОЕДИНИТЬСЯ К BRAVE REWARDS</translation>
-<translation id="5567439033041178034">ПОДРОБНЕЕ</translation>
 <translation id="3780605330121608425">Ваш кошелек</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
-<translation id="2104073734684466851">Гранты</translation>
 <translation id="1165667598801520610">Добавить средства</translation>
 <translation id="8428213095426709021">Настройки</translation>
-<translation id="2012723204723845092">С возвращением!</translation>
-<translation id="7669994301500276741">Получайте вознаграждения за просмотр.</translation>
-<translation id="8203529727745387785">Зарабатывайте, просматривая ориентированную на приватность
-рекламу, и платите другим, чтобы поддержать
-создателей контента, который вам нравится.</translation>
-<translation id="5148719990624240755">АКТИВИРОВАТЬ BRAVE REWARDS</translation>
 <translation id="8772672608371898774">Издатель, верифицированный Brave</translation>
 <translation id="1397683270551078781">Верификация не пройдена</translation>
 <translation id="5727208111992260840">Этот создатель еще не подписался на получение взносов от пользователей Brave.
@@ -153,7 +125,6 @@
 <translation id="13853865024308201">Утвердить</translation>
 <translation id="7335371657242627509">Включить в автоматический взнос</translation>
 <translation id="5463954686005964104">Чаевые этому сайту ежемесячно</translation>
-<translation id="7530570094705720669">Создание кошелька</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
 <translation id="4751553692764711651">Вы пожертвовали <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Запланированный вами ежемесячный платеж на автоматические взносы и ежемесячные чаевые не может быть выплачен из-за недостатка средств. Мы попробуем еще раз через 30 дней.</translation>
@@ -169,9 +140,6 @@
 <translation id="1713542052890184975">Пожалуйста, создайте резервную копию вашего кошелька Brave.</translation>
 <translation id="2323069945529668668">Ой!</translation>
 <translation id="7510166204621526816">Сервер Brave Rewards не отвечает. Мы устраним проблему как можно скорее.</translation>
-<translation id="7117228822971127758">Повторите попытку позже.</translation>
-<translation id="3068742524072211213">истекает <ph name="DATE"/></translation>
-<translation id="4292832015778676417">заработано на рекламе</translation>
 <translation id="683765328936486920">на YouTube</translation>
 <translation id="8969049974285901797">на Twitch</translation>
 <translation id="4376933248999950592">Вы выделили <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> авторам, которые пока не зарегистрировались для получения пожертвований. Ваш браузер будет пытаться сделать пожертвование, пока они не будут верифицированы либо пока не пройдет 90 дней.</translation>
@@ -179,9 +147,7 @@
 <translation id="6940273954212603510">пожалуйста</translation>
 <translation id="1036277985068412734">добавить средства</translation>
 <translation id="3492491948683276944">установить ежемесячные чаевые</translation>
-<translation id="4162066325465825185">Нам очень жаль, но Brave Rewards недоступны на вашем устройстве.</translation>
 <translation id="8038539967102225446">Brave Ads уже здесь!</translation>
-<translation id="8985635554450124959">Синхронизация не может быть настроена</translation>
 <translation id="222883304157347087">(это устройство)</translation>
 <translation id="4157741509680155021">УСТРОЙСТВА В ЦЕПОЧКЕ СИНХРОНИЗАЦИИ</translation>
 <translation id="279635009973773843">ЗАГРУЖАЕМ УСТРОЙСТВА...</translation>
@@ -234,10 +200,7 @@
 <translation id="6810078320346589989">Создать закладку</translation>
 <translation id="3396347744975515056">Brave Sync обновлена и требует настройки</translation>
 <translation id="7473245612074035141">Начать настройку</translation>
-<translation id="1872784258300710671">Brave использует полностью конфиденциальную аналитику для оценки общего использования определенных функций</translation>
-<translation id="8712637175834984815">Готово</translation>
-<translation id="4394049700291259645">Отключить</translation>
-<translation id="8446884382197647889">Подробнее…</translation>
+<translation id="8985635554450124959">Не удалось настроить синхронизацию</translation>
 <translation id="2514300153301737214">Мы определили, что вы включили синхронизацию Brave, однако ваша системная синхронизация отключена и не позволяет Brave синхронизироваться. Нажмите, чтобы открыть настройки</translation>
 <translation id="7173114856073700355">Открыть настройки</translation>
 <translation id="6965382102122355670">ОК</translation>
@@ -258,7 +221,6 @@
 <translation id="1081826981536899387">Баллы BAT</translation>
 <translation id="9212459913845238740">Утвержденные гранты баллов</translation>
 <translation id="2132683977638223450">Бесплатный грант баллов</translation>
-<translation id="4522570452068850558">Сведения</translation>
 <translation id="1486343603936278248">токен</translation>
 <translation id="8713995420537272453">балл</translation>
 <translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
@@ -325,7 +287,6 @@
 <translation id="614747795780742163">Запрещает веб-сайтам сохранять информацию о ваших предыдущих посещениях</translation>
 <translation id="6883611015375728278">Блокировать все cookie</translation>
 <translation id="5657156137487675418">Разрешить все cookie</translation>
-<translation id="5963670684159057574">Блокировать межсайтовые отпечатки</translation>
 <translation id="3895527457258986253">Блокировать определение отпечатков</translation>
 <translation id="184568144098869637">Предотвращает распознавание вашего устройства браузером</translation>
 <translation id="7396366757003005317">Определение отпечатков блокируется(строго, может нарушить работу сайтов)</translation>
@@ -374,6 +335,7 @@
 <translation id="4302754476737420523">3 месяца</translation>
 <translation id="8248593573177859437">Отчет о конфиденциальности</translation>
 <translation id="1274039301958114163">Уведомление о конфиденциальности</translation>
+<translation id="453601949003770390">Заблокировано трекеров и рекламы</translation>
 <translation id="1581614543353331529">Нет данных для отображения</translation>
 <translation id="2401984885421380890">заблокировано\nтрекеров и рекламы</translation>
 <translation id="2662183408296991265">сэкономлено данных\n(<ph name="DATA_SAVED"/>)</translation>
@@ -405,6 +367,7 @@
 <translation id="1383876407941801731">Поиск</translation>
 <translation id="1972589975368876259">Редактировать набор</translation>
 <translation id="2490330380242414851">Удалить виджет</translation>
+<translation id="8446884382197647889">Подробнее…</translation>
 <translation id="7384441892795736634">Обновить данные</translation>
 <translation id="4804818685124855865">Отключиться</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -462,8 +425,10 @@
 <translation id="5876169128756792273">Токены можно использовать не только для поддержки создателей контента. Вы сможете покупать цифровой контент и другие товары по мере прихода на платформу продавцов.</translation>
 <translation id="1402530520078693620">В заключение, давайте настроим основные параметры</translation>
 <translation id="3494356595346329740">Вы сможете поменять это позже.</translation>
-<translation id="6462814326662189004">Как часто вы хотите видеть рекламу?\n(Количество рекламных объявлений в час)</translation>
-<translation id="2134244432345596331">Сколько вы хотите передать на поддержку ваших любимых авторов?\n(из ваших заработков за рекламу)</translation>
+<translation id="3115702351969988294">Как часто вы хотите видеть рекламу?</translation>
+<translation id="3474670199029510295">(Объявлений в час)</translation>
+<translation id="66599604460581068">Насколько сильно вы хотите поддержать своих любимых авторов?</translation>
+<translation id="3164498053837913829">(из ваших заработков за рекламу)</translation>
 <translation id="827315274423079662">Ура, всё готово к работе!</translation>
 <translation id="3895246934788932488">Используя Brave Rewards, вы сохраняете свою конфиденциальность и помогаете сделать Интернет лучшим местом для всех. И это потрясающе!</translation>
 <translation id="5705882733397021510">Назад</translation>
@@ -479,7 +444,6 @@
 <translation id="7889432931837317731">Открывать автоматически, когда возможно</translation>
 <translation id="8967385052772844086">Просмотреть полный отчет о конфиденциальности</translation>
 <translation id="6864343534748973390">Самый популярный</translation>
-<translation id="1622983732360473885">Поддерживает Brave</translation>
 <translation id="4608192160278975831">Приватный и без трекеров</translation>
 <translation id="7208522820527289601">Приватный и без трекеров, работает из ЕС</translation>
 <translation id="1161008391729450974">Результаты Google без трекеров</translation>
@@ -501,4 +465,17 @@
 <translation id="6232491755501685494">Brave Rewards в Японии переходит на новую систему!</translation>
 <translation id="7444515017164572362">Начиная с 13 марта Вы не сможете пользоваться своими BAP. Однако после перехода на новую систему в апреле у Вас появятся новые токены!</translation>
 <translation id="8587285254008006694">Из-за данного перехода функции чаевых и взносов в Вашем браузере будут временно недоступны начиная с 13 марта, а Ваш баланс BAP будет показывать 0.0, пока Вы не перейдете на новую систему в апреле. После перехода у Вас появятся новые токены!</translation>
+<translation id="4956847150856741762">1</translation>
+<translation id="5196716972587102051">2</translation>
+<translation id="7839580021124293374">3</translation>
+<translation id="2918322085844739869">4</translation>
+<translation id="7267186368513450821">5</translation>
+<translation id="6972003925509023890">1 BAT</translation>
+<translation id="8867821173176188875">5 BAT</translation>
+<translation id="8762169086048682708">10 BAT</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="4548973860489847866">0,00 BAT</translation>
+<translation id="4193129043743994339">0,00 USD</translation>
 </translationbundle>

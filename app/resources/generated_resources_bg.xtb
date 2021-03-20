@@ -7234,7 +7234,7 @@
 <translation id="1985165269306590797">Отваряне в поверителен прозорец</translation>
 <translation id="4680518314108745448">&amp;Показване на лентата на отметките</translation>
 <translation id="642436385689435488">Отваряне на всички в поверителен прозорец</translation>
-<translation id="5074021236879527611">Отворете всички (<ph name="URL_COUNT"/>) в частен прозорец</translation>
+<translation id="5074021236879527611">Отворете всички (<ph name="URL_COUNT"/>) в поверителен прозорец</translation>
 <translation id="5463021359602611602">Отваряне в поверителен прозорец</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Поверителен}

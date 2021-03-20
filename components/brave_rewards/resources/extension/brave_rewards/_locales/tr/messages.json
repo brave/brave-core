@@ -235,6 +235,18 @@
     "message": "Lütfen Brave cüzdanınızı yedekleyin.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Daha Fazla Bilgi Edinin",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Cihaz Limitine Erişildi",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Cüzdanınız doğrulanamaz çünkü en fazla doğrulanmış cihaz limitine ulaştınız.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Brave Ödülleri hesabınız para yatırmayı bekliyor.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Cüzdan Onaylandı",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Uphold hesabıma git",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "$provider$ hesabıma git",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Brave Ödüllerden Ayrıl",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Not: Yetki verdiğinizde işlemleriniz Uphold'a görünür olacak; örneğin, alıcıyı ve bahşişlerinizin miktarını görebilecekler.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Not: Yetkilendirdiğinizde işlemleriniz  $provider$ için görülebilir olacak; örneğin, alıcıyı ve bahşişlerinizin miktarını görebilecek.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Jeton Kazanın ve Geri Verin",

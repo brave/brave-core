@@ -235,6 +235,18 @@
     "message": "Veuillez sauvegarder votre portefeuille Brave.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "En savoir plus",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Limite d'appareils atteinte",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Votre portefeuille ne peut pas être vérifié, car vous avez atteint le nombre maximum d'appareils autorisé.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Votre compte Brave Rewards attend un dépôt.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Portefeuille vérifié",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Accéder à mon compte Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Accéder à mon compte $provider$",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Déconnexion des primes Brave",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Remarque : vos transactions seront visibles par Uphold une fois que vous les aurez autorisées ; par exemple, le destinataire et le montant de vos contributions leur seront visibles.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Remarque : vos transactions seront visibles par $provider$ une fois votre autorisation accordée. Par exemple, ils seront en mesure de voir le destinataire et le montant de vos contributions.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Gagner des Jetons & Redonner",

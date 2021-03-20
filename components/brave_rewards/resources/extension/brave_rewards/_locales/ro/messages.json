@@ -235,6 +235,18 @@
     "message": "Vă rugăm efectuați o copie de rezervă pentru portofelul Brave.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Aflați mai multe",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Limita dispozitivului a fost atinsă",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Portofelul dvs. nu poate fi confirmat deoarece ați atins limita maximă de dispozitive confirmate.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Contul tău Brave Rewards așteaptă o depunere.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Portofelul a fost verificat",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Mergi la contul meu Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Accesați contul meu $provider$",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Deconectare de la Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Notă: Tranzacțiile dumneavoastră vor fi vizibile Uphold după autorizare; de exemplu, aceștia vor putea să vadă destinatarul și sumele plătite.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Notă: tranzacțiile dvs. vor fi vizibile pentru $provider$ după ce autorizați; de exemplu, vor putea vedea destinatarul și suma bacșișurilor.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Câștigați tokenuri și dăruiți",

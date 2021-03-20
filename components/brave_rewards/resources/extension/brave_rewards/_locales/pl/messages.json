@@ -235,6 +235,18 @@
     "message": "Utwórz kopię zapasową portfela.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Dowiedz się więcej",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Osiągnięto limit urządzeń",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Nie można zweryfikować portfela, ponieważ osiągnięto limit zweryfikowanych urządzeń.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Twoje konto nagród Brave czeka na depozyt.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Portfel zweryfikowany",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Przejdź do mojego konta Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Przejdź do mojego konta $provider$",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Rozłącz Nagrody Brave",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Uwaga: Twoje transakcje będą widoczne dla platformy Uphold po autoryzacji, na przykład widoczne będą odbiorca oraz kwota napiwków.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Uwaga: po autoryzacji Twoje transakcje będą widoczne dla $provider$; serwis będzie mógł na przykład zobaczyć dane odbiorcy i kwotę Twoich napiwków.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Zarabiaj tokeny i obdarowuj innych",

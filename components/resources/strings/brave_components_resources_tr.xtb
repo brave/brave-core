@@ -35,8 +35,23 @@
 <translation id="604124094241169006">Otomatik</translation>
 <translation id="867722069064361487">12 saat formatı</translation>
 <translation id="4064062743338217840">24 saat formatı</translation>
-<translation id="8643377320501056697">En Popüler Siteleri Göster</translation>
-<translation id="7176563092712682575">En İyi Siteleri Özelleştir</translation>
+<translation id="5313967007315987356">Site ekle</translation>
+<translation id="5052499409147950210">Siteyi düzenle</translation>
+<translation id="1181037720776840403">Kaldır</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">Web site adresi</translation>
+<translation id="5327248766486351172">Ad</translation>
+<translation id="6916084277913254682">Web sitesi başlığı</translation>
+<translation id="5317780077021120954">Kaydet</translation>
+<translation id="7658239707568436148">İptal et</translation>
+<translation id="4643117005422448078">En İyi Siteler</translation>
+<translation id="6307720725257444819">Favoriler</translation>
+<translation id="81774600964978477">En iyi siteler tarafınızca düzenlenir</translation>
+<translation id="5439599923922718668">Sık Ziyaret Edilenler</translation>
+<translation id="430556192781857057">En iyi siteler sık ziyaret ettiğiniz web sitelerine göre önerilir</translation>
+<translation id="8037713009824540257">Site Ekle</translation>
+<translation id="1773147648972887693">Sık ziyaret edilenleri göster</translation>
+<translation id="4546260624932151782">Favorileri göster</translation>
 <translation id="3446024864193919737">Brave Ödüllerini Göster</translation>
 <translation id="6274899614137380422">Bakiyeyi Göster</translation>
 <translation id="5551238871320268996">Birlikte Brave</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>'den içeriği devre dışı bırakın</translation>
 <translation id="3189348785087463371">Tanıtılan</translation>
 <translation id="1776831331757823105">Saat</translation>
-<translation id="4643117005422448078">En İyi Siteler</translation>
 <translation id="7791543448312431591">Ekle</translation>
 <translation id="7679334366167089823">Gizlilik dostu reklamlar izleyerek token kazanın.</translation>
 <translation id="1531133232292396145">Doğrudan tarayıcınızdan, Binance'da Kripto alım satımı yapın.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">Bu bir</translation>
 <translation id="2055363275850890030">Özel Pencere</translation>
 <translation id="9133213713928851646">Brave, Özel bir Pencerede ne yaptığınızı hatırlamaz. Ziyaret ettiğiniz siteler geçmişinizde gözükmez ve işiniz bittiğinde çerezler ortadan kaybolur. Yine de Özel Pencere sizi çevrimiçi olarak tamamen kimliği belirsiz yapmaz.</translation>
-<translation id="8760415064721320867">Tor içeren Özel Pencere</translation>
-<translation id="4844209912525464363">Brave, Özel bir Pencerede ne yaptığınızı asla hatırlamaz. Tor ile görüntülemeleriniz İnternet Servis Sağlayıcılarınızdan ve işvereninizden de gizlenir ve IP adresiniz ziyaret ettiğiniz sitelerden gizlenir.</translation>
+<translation id="3546750666732517156">Tor Bağlantısına sahip Gizli Pencere</translation>
+<translation id="5383068818957293256">Bir Gizli Pencerede ne yaptığınızı Brave asla hatırlamaz. Tor bağlantısıyla, IP adresiniz de ziyaret ettiğiniz sitelerden gizlenir. Fakat, kişisel güvenliğiniz isimsiz kalmanıza bağlıysa, bunun yerine Tor Browser kullanın.</translation>
 <translation id="778096729652828897">Tor ile Özel Pencere hakkında daha fazla bilgi edin</translation>
 <translation id="7919374705736538787">Şununla Gizli arayın:</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Brave, özel aramayla Özel Pencerelerdeki aramalar için DuckDuckGo'yu kullanır. DuckDuckGo arama geçmişinizi izlemez, böylece gizli biçimde arama yapabilirsiniz.</translation>
 <translation id="1925197199485958903">Tor ile Özel Pencere için DuckDuckGo varsayılan arama motorudur. Diğer bazı popüler arama motorlarının Tor ile kullanımları daha zordur. DuckDuckGo arama geçmişinizi izlemez; Tor ile IP adresinizi bile bilemezler.</translation>
 <translation id="4371533307685765155">DuckDuckGo ile Ara</translation>
-<translation id="5576876180131651996">Özel Pencereleri daha fazla özel yapın</translation>
-<translation id="1129265576134014816">Bu Özel Pencere çok daha özel</translation>
-<translation id="805807983419360524">Tor ile</translation>
-<translation id="8958799246752641148">Tor, hedefinize ulaşmadan önce tarayıcınızı birçok Tor sunucuları aracılığıyla yönlendirerek IP adresinizi ziyaret ettiğiniz sitelerden gizler. Bu bağlantılar şifrelenmiştir, bu yüzden İnternet Servis Sağlayıcınız veya işvereniniz de hangi siteyi ziyaret ettiğinizi göremez. Tor görüntülemeyi yavaşlatabilir ve bazı siteler tamamıyla çalışmayabilir.</translation>
-<translation id="520608572871993342">Özel Pencere kullanma Brave'in sadece sizin cihazınızdaki değişikliklerdir; başka birisinin hareketlerini değiştirmez. Tor, IP adresinizi ziyaret ettiğiniz sitelerden gizler ve siteleri İnternet Servis Sağlayıcınızdan ve işvereninizden gizler. {{ key }} ile veya menüden Tor ile Özel Pencere Açın.</translation>
+<translation id="548478195417408221">Gizli Pencereleri daha gizli yapın</translation>
+<translation id="3294503279952534143">Bu Gizli Pencere daha gizli</translation>
+<translation id="4644024131266615376">Tor Bağlantısı ile</translation>
+<translation id="8541421872680304667">Tor, gözatmanızı hedefinize ulaşmadan önce birçok Tor sunucusundan yönlendirerek IP adresinizi ziyaret ettiğiniz sitelerden gizler. Tor gözatmayı yavaşlatabilir ve bazı siteler hiç çalışmayabilir.</translation>
+<translation id="7030950080800709999">Gizli Pencereler kullanmak yalnızca cihazınız üzerinde Brave'in ne yaptığını değiştirir; başka kimsenin davranışını değiştirmez. Tor, ziyaret ettiğiniz sitelerden IP adresinizi gizler ve İSS veya iş vereninizin ziyaret ettiğiniz siteleri görmesini biraz daha zor, fakat imkansız değil, hale getirir. Menüden veya {{ key }} ile Tor ile Gizli Pencere açın.</translation>
 <translation id="6975708438781948564">Brave'in Tor'u hakkında daha fazla bilgi edin</translation>
 <translation id="4712050378540986986">Tor Durumu</translation>
 <translation id="3368922792935385530">Bağlı</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
 <translation id="8510478288840333677">Bu sitenin Kalkanlar'la düzgün çalışmadığını Brave geliştiricilerine bildirin:</translation>
 <translation id="6013164422534859494">Not: Bu site adresi, Brave versiyon numaranız ve IP adresiniz (kaydedilmeyecek) ile birlikte gönderilecektir.</translation>
-<translation id="7658239707568436148">Vazgeç</translation>
 <translation id="2653659639078652383">Gönder</translation>
 <translation id="5299848999918506028">Teşekkür ederiz!</translation>
 <translation id="76550953340008122">Bu sitede yanlış bir şeyler olduğunu Brave geliştiricilerine bildirdiğiniz için teşekkür ederiz. Düzeltmek için elimizden geleni yapacağız!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">Sonraki aylık bağış tarihi</translation>
 <translation id="6231182869178328516">Az önce Brave Tarayıcısı'nı kullanarak <ph name="NAME"/>'a bahşiş verdim. https://brave.com/tips 'ten göz at.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">Üzgünüz ki isteminizin işlenmesinde bir sorun oluştu, lütfen tekrar deneyin.</translation>
+<translation id="3113653894794167793">Üzgünüz, isteğinizi işlemekle ilgili bir sorun oluştu, lütfen tekrar deneyin.</translation>
 <translation id="3082557070674409251">Tıklandı</translation>
 <translation id="7119308337584989771">Görevden alındı</translation>
 <translation id="6805660603861526473">Görüldü</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">Brave Private Ads, geleneksel reklamlardan farklı olarak, sizi içerik üreticilerini desteklemeniz için jetonlarla ödüllendirir, bu sırada kişisel bilgilerinizi gizli tutar.</translation>
 <translation id="6973095375773523904">Reklamlar nerede çıkıyor?</translation>
 <translation id="7556325460112047619">Brave Private Ads normal bir bildirim gibi gözükecektir. Bu reklamları ne sıklıkta göreceğinizi ayarlardan kontrol edersiniz.</translation>
-<translation id="5816125157889950051">Ödülleri ne zaman alırsınız</translation>
+<translation id="6897083627729802351">Ödülleri ne zaman alırsınız</translation>
 <translation id="310863932297733723">Mevcut ay boyunca Brave Private Ads'ten kazanılan jetonlarınız sonraki ayın 5'inde gelecektir.</translation>
 <translation id="7712287524451429139">Geri vermek zahmetsiz hale geldi</translation>
 <translation id="105037569026952831">İçerik üreticiler, ‘Dikkat’ olarak ölçtüğümüz etkileşim düzeylerinize göre jeton katkılarınızı otomatik olarak alır</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">Uygunsuz Olarak İşaretle ✓</translation>
 <translation id="8988332871810963281">Şu anda hiçbir Brave Reklam geçmişi yok</translation>
 <translation id="5345727496083327478">Artık bu kategoriden reklam almayacaksınız</translation>
-<translation id="5317780077021120954">Kaydet</translation>
 <translation id="2827387977307390755">Şunda bahşişlere izin ver</translation>
 <translation id="3819257035322786455">Yedekle</translation>
 <translation id="1312977698678162065">Gizliliğinize saygılı ve alakalı reklamlar görüntüleyerek ödeme alın.</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">Sabitlenmiş siteleriniz şuraya taşındı:</translation>
 <translation id="6803187280799213426">Brave cüzdanınızdaki meblağlar sanaldır ve yedeklenmesi gerekmez. Özellikle bu tarayıcıda harcama yapmanız mümkündür.</translation>
 <translation id="5290348443732633227">Tarayıcının temiz kurulumu veya yeni bir cihaza geçme durumunda tüm paranızı güvence altına almak ve para ekleme, çekme ve transfer etme gibi imkanlardan faydalanmak istiyorsanız, şunu öneriyoruz:</translation>
-<translation id="6733942359297688714">Doğrulanmış bir Uphold cüzdanına bağlanılıyor.</translation>
+<translation id="467041382895390784">doğrulanmış bir <ph name="PROVIDER"/> cüzdanına bağlanılıyor</translation>
 <translation id="5717619667204259673">Bu kurtarma anahtarını güvenli bir yerde tutun.</translation>
 <translation id="4699702339303280827">Tarayıcınıza veya bilgisayarınıza bir şey olursa, cüzdanınızı geri almak için her zaman bu anahtarı kullanabilirsiniz. Ama onu koruduğunuzdan emin olun — bu anahtarı ele geçiren herhangi biri cüzdanınızı çalabilir. Muhtemelen en güvenilir olanı#8217; bir kağıda ya da önemli bilgileri sakladığınız herhangi bir yere yazmak olacaktır.</translation>
 <translation id="8979401359137062629">Not:</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">Bazen Brave'den size ücretsiz yardım jetonları sunulacaktır. Uyarılara karşı dikkatli olmayı unutmayın!</translation>
 <translation id="2185598236335233939">Brave'i kullanmaya devam ederken reklam bildirimleri arayın. BAT puanı bakiyeniz, görüntülediğiniz her reklamla birlikte artacaktır.</translation>
 <translation id="1370034647041840967">Reklamlara olan dikkatiniz için token kazanın ve kazandığınız tokenleri değer verdiğiniz içerik oluşturuculara yönlendirin!</translation>
-<translation id="4600224932216165965"><ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>. içinden fonlar ekleyin, çekin ve yönetin.</translation>
-<translation id="3580616436301227919">Brave cüzdanınız <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> tarafından sağlanmaktadır.</translation>
+<translation id="4919888432594361029"><ph name="PROVIDER"/>  ile para yatırın, çekin ve yönetin.</translation>
+<translation id="3092054349246483285">Brave cüzdanınız <ph name="PROVIDER"/> tarafından desteklenmektedir.</translation>
 <translation id="6401272292123354754">Brave Ödülleri Basic Attention Token üzerine kurulmuştur. BAT hakkında daha fazlasını öğrenin</translation>
 <translation id="7823359893981882407">burada</translation>
 <translation id="4483635855837696643">Cüzdanınızı geri yükleyin</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">Kurtarma anahtarınızı girin veya</translation>
 <translation id="6548189695918108191">Yenileme öncesi cüzdanınızı yedekleyin. Yoksa mevcut cüzdanınızdaki {{funds]] meblağını kaybedersiniz.</translation>
 <translation id="5423214929210538027">Kazanç Cüzdanını sıfırlamak istediğinize emin misiniz?</translation>
-<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> ve diğer Ödül verileriniz, cüzdanınızı sıfırlamanız durumunda kalıcı olarak kaybolacaktır. BAT'nizi koruyabilmeniz için lütfen cüzdanınızı Uphold ile doğruladığınızdan emin olun.</translation>
+<translation id="8683358891240311475">Cüzdanınızı sıfırlarsanız <ph name="BAT_AMOUNT"/> ve diğer Rewards verileriniz kalıcı olarak kaybolacak. BAT'inizi tutabilmek için cüzdanınızı <ph name="PROVIDER"/> ile doğruladığınıza emin olun.</translation>
 <translation id="2028613172174411919">Cüzdanınızı sıfırlarsanız Kazanç verileriniz kalıcı olarak kaybedilecektir.</translation>
 <translation id="4914597931214386232">Token Bağışları Talep Edildi</translation>
 <translation id="3494964159182650590">Ödüller Özeti</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">doğrula</translation>
 <translation id="8267327690882073581">Cüzdanı Doğrula</translation>
 <translation id="543510923939676996">Cüzdan Onaylandı</translation>
-<translation id="7591798679868259510">Uphold hesabıma git</translation>
+<translation id="2659764755126740206"><ph name="PROVIDER"/> hesabıma git</translation>
 <translation id="3699674790322420653">Tam cüzdan onayı</translation>
 <translation id="9200453331904391567">Brave Ödüllerden Ayrıl</translation>
 <translation id="46988480989545156">Cüzdanı doğrula</translation>
-<translation id="160145159036553575">Cüzdan hizmetimiz <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/> tarafından sağlanmaktadır</translation>
+<translation id="5796169459825124737">Cüzdan hizmetimiz <ph name="PROVIDER"/> tarafından sağlanmaktadır.</translation>
 <translation id="6771734945114850124">Lütfen devlet tarafından verilmiş kimliğinizi hazır tutun.</translation>
 <translation id="8697510149346635496">Gizliliğe saygı duyan reklamları görüntüleyerek kazandığınız BAT’ı geri çekin</translation>
 <translation id="1481480653609649134">Kredi kartları ve diğer kaynaklar ile ek BAT satın alın</translation>
 <translation id="9096003370755878766">Brave Rewards cüzdanınıza daha önce eklemiş olabileceğiniz BAT'ı geri çekin</translation>
 <translation id="8558636200953226885">Ama eğer doğrulayabilirseniz,</translation>
 <translation id="3354315693758743702">Cüzdanınızın doğrulanması isteğe bağlıdır.</translation>
-<translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
-<translation id="723054503945711909">Brave Software Inc. onlarla bir hesap oluştururken, onaylama için verdiğiniz kişisel bilgilerin hiçbirini işlemez, saklamaz veya erişemez.</translation>
-<translation id="7677480094678113476">Not: Yetki verdiğinizde işlemleriniz Uphold'a görünür olacak; örneğin, alıcıyı ve bahşişlerinizin miktarını görebilecekler.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> talep edilen hizmetlere göre kimliğinizi doğrulamanızı isteyebilir.</translation>
+<translation id="6938217233488972952">Brave Software A.Ş., <ph name="PROVIDER"/> için onunla bir hesap oluşturduğunuzda verdiğiniz kişisel bilgilerin hiçbirini işlemez, kaydetmez veya onlara erişmez.</translation>
+<translation id="2415586822982819406">Not: Yetkilendirdiğinizde işlemleriniz <ph name="PROVIDER"/> için görülebilir olacak; örneğin, alıcıyı ve bahşişlerinizin miktarını görebilecek.</translation>
 <translation id="7404779623219601861">Hediye Kartları için BAT Kullanın</translation>
 <translation id="6215565499749144110">TAP Ağı ile, BAT'nizi popüler isim yapmış markalı hediye kartları için kullanabilirsiniz.</translation>
 <translation id="6915065518766963119">* Uphold Doğrulaması Gerekir</translation>
@@ -718,12 +730,36 @@
 <translation id="8327818101454798856">Favori sitelerinizi desteklemek istediyseniz, o sitelere yönelin.</translation>
 <translation id="412480955826088549">Bileşen İndiriliyor...</translation>
 <translation id="4894106830958548828">Anladım</translation>
-<translation id="7701466644604753106">Speedreader'ı Aç</translation>
-<translation id="763042262431778831">Speedreader'ı Kapat</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Piyasaları görüntüle ve crypto.com'dan kripto al.</translation>
+<translation id="4292334826913000023">Fiyat göster</translation>
+<translation id="5001098083058405168">Mevduatlarda 2% bonus al</translation>
+<translation id="7336377875970208451">Alım satım ücretlerini ödemeyi bırakın</translation>
+<translation id="5889002303959545585">Bitcoin al</translation>
+<translation id="7243082596932212589">Crypto.com Piyasaları görüntüle</translation>
+<translation id="2258222996838418990">7d Grafik</translation>
+<translation id="5337526542182802976">Desteklenen Çiftler</translation>
+<translation id="1164622162816276433">24saat Hacim</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="4492298165410552103">Brave'de Unstoppable Domains desteği etkinleştirilsin mi?</translation>
+<translation id="3470923752115324276">Brave, .crypto etki alanı adı arama isteklerini HTTPS üzerinden DNS kullanarak çözmek için Cloudflare kullanarak .crypto etki alanlarını ziyaret etmenize imkan sağlayabilir. Bunu etkinleştirirseniz, Cloudflare ziyaret etmeyi denediğiniz .crypto etki alanını görecek fakat diğer etki alanlarını göremeyecek. Cloudflare'in <ph name="BEGIN_CF_TOU_LINK"/>kullanım koşullarını<ph name="END_CF_TOU_LINK"/> ve <ph name="BEGIN_CF_PRIVACY_LINK"/>gizlilik politikasını<ph name="END_CF_PRIVACY_LINK"/> görün.</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="4335039108389860301">Brave'de Ethereum Name Service (ENS) desteği etkinleştirilsin mi?</translation>
+<translation id="618766505813078707">Brave, .eth etki alanı adı arama isteklerini HTTPS üzerinden DNS kullanarak çözmek için Cloudflare kullanarak .eth etki alanlarını ziyaret etmenize imkan sağlayabilir. Bunu etkinleştirirseniz, Cloudflare ziyaret etmeyi denediğiniz .eth etki alanını görecek fakat diğer etki alanlarını göremeyecek. Cloudflare'in <ph name="BEGIN_CF_TOU_LINK"/>kullanım koşullarını<ph name="END_CF_TOU_LINK"/> ve <ph name="BEGIN_CF_PRIVACY_LINK"/>gizlilik politikasını<ph name="END_CF_PRIVACY_LINK"/> görün.</translation>
+<translation id="5636651007798897342">Cloudflare sunucusu kullanarak ilerleyin</translation>
+<translation id="2468755552460246661">Etki Alanı Engellendi</translation>
+<translation id="6631469728138660166">Şüpheli site ileride</translation>
+<translation id="983774928604730749">Brave şu sitenin yüklenmesini engelledi:</translation>
+<translation id="8250033559824599347">Bu site dolandırıcı olabilir, izleyici çerezler koymak veya diğer gizliliği ihlal edici eylemler gerçekleştirmek için sizi çeşitli siteler arasında gezdirebilir.</translation>
+<translation id="2459038234784107183">Beni bu site hakkında tekrar uyarma</translation>
+<translation id="8242426110754782860">İlerle</translation>
+<translation id="2501278716633472235">Geri dön</translation>
 <translation id="9020818404803201080">Bağlı eşler:</translation>
 <translation id="2903493209154104877">Adresler</translation>
 <translation id="3207122385716480167">Depo İstatistikleri</translation>
 <translation id="2595187693729756455">Düğüm bilgisi</translation>
+<translation id="8999763401170835879">Bir hata oluştu, lütfen tekrar başlatmayı deneyin</translation>
+<translation id="5433704526290922623">Bir hata oluştu, lütfen düğümü tekrar kurmayı deneyin</translation>
 <translation id="5789886980848929155">IPFS düğümü durumu</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Ağ geçidi</translation>
@@ -765,20 +801,20 @@
 <translation id="3977809385703587108">Tercihlerinizi şu süre içinde tekrar değiştirebilirsiniz:</translation>
 <translation id="3340978935015468852">ayarlar</translation>
 <translation id="4148957013307229264">Yükleniyor...</translation>
-<translation id="6057992164469678163">Eşler bekleniyor...</translation>
+<translation id="4219228508273972445">Eşler aranıyor...</translation>
 <translation id="1902096227388293745">Kullanılabilir eş yok, tekrar deneniyor... (<ph name="ATTEMPTS_NUMBER"/> deneme kaldı)</translation>
 <translation id="1675751799495331928">Deneme limitini aştık, daha sonra deneyin.</translation>
 <translation id="4499666752625407848">Bir güncelleme sırasında hata oluştu.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Piyasaları görüntüle ve crypto.com'dan kripto al.</translation>
-<translation id="4292334826913000023">Fiyat göster</translation>
-<translation id="5001098083058405168">Mevduatlarda 2% bonus al</translation>
-<translation id="7336377875970208451">Alım satım ücretlerini ödemeyi bırakın</translation>
-<translation id="5889002303959545585">Bitcoin al</translation>
-<translation id="7243082596932212589">Crypto.com Piyasaları görüntüle</translation>
-<translation id="2258222996838418990">7d Grafik</translation>
-<translation id="5337526542182802976">Desteklenen Çiftler</translation>
-<translation id="1164622162816276433">24saat Hacim</translation>
+<translation id="7789840864192026963">İzin ver</translation>
+<translation id="8092074243456635562">ben bu sayfayı kapatana kadar</translation>
+<translation id="3523195733429162409">24 saat için</translation>
+<translation id="2373264732659722940">1 hafta için</translation>
+<translation id="6318437367327684789">hep</translation>
+<translation id="7463327191540031132">Hep engelle</translation>
+<translation id="8797999629784150206"><ph name="SITE_PERMISSIONS"/> istediğiniz zaman değiştirebilirsiniz. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">site izni</translation>
+<translation id="7701466644604753106">Speedreader'ı Aç</translation>
+<translation id="763042262431778831">Speedreader'ı Kapat</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>

@@ -109,7 +109,6 @@
 <translation id="847561904663814268">Alguien accedió anteriormente a Brave en esta computadora como <ph name="ACCOUNT_EMAIL_LAST"/>. Crea un usuario de Brave nuevo para mantener tu información por separado.</translation>
 <translation id="3834935463915107022">¿Deseas salir de Brave de todos modos?</translation>
 <translation id="8668413672647811944">Se acaba de instalar una actualización de seguridad especial para Brave. Reinícialo ahora (se restablecerán tus pestañas).</translation>
-<translation id="7914115000169617076">Falta poco para finalizar el proceso. Reinicia Brave para completar la actualización. No se volverán a abrir las ventanas de incógnito.</translation>
 <translation id="4823369970559443694">Brave no puede revisar las contraseñas. Vuelve a intentarlo dentro de 24 horas o <ph name="BEGIN_LINK"/>revisa las contraseñas en tu Cuenta de Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Se usará el mismo corrector ortográfico que se emplea en la Búsqueda de Brave. El texto que escribes en el navegador se envía a Brave. Puedes modificar este comportamiento en la configuración en cualquier momento.</translation>
 <translation id="2899369907387169108">Usar Brave sin una cuenta</translation>
@@ -276,4 +275,5 @@
 <translation id="8274659559228306809">{COUNT,plural, =0{Hay una nueva actualización disponible para Brave que se aplicará cuando lo reinicies.}=1{Hay una nueva actualización disponible para Brave que se aplicará cuando lo reinicies. No se volverá a abrir la ventana de incógnito.}other{Hay una nueva actualización disponible para Brave que se aplicará cuando lo reinicies. No se volverán a abrir las # ventanas de incógnito.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Tu administrador solicita que reinicies Brave para aplicar esta actualización}=1{Tu administrador solicita que reinicies Brave para aplicar esta actualización. No se volverá a abrir la ventana de incógnito.}other{Tu administrador solicita que reinicies Brave para aplicar esta actualización. No se volverán a abrir las # ventanas de incógnito.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Tu administrador necesita que reinicies Brave para aplicar una actualización}=1{Tu administrador necesita que reinicies Brave para aplicar una actualización. No se volverá a abrir la ventana de incógnito.}other{Tu administrador necesita que reinicies Brave para aplicar una actualización. No se volverán a abrir las # ventanas de incógnito.}}</translation>
+<translation id="7914115000169617076">Falta poco para finalizar el proceso. Reinicia Brave para completar la actualización. No se volverán a abrir las ventanas privadas.</translation>
 </translationbundle>
