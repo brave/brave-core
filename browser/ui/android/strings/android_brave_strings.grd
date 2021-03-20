@@ -148,6 +148,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
         Upgrade connections to HTTPS
       </message>
+      <message name="IDS_BRAVE_SHIELDS_BLOCK_3RD_PARTY_COOKIES_SWITCH" desc="BRAVE_SHIELDS_BLOCK_3RD_PARTY_COOKIES_SWITCH">
+        BRAVE_SHIELDS_BLOCK_3RD_PARTY_COOKIES_SWITCH
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_ADS_TRACKING_SWITCH" desc="BRAVE_SHIELDS_ADS_TRACKING_SWITCH">
+        BRAVE_SHIELDS_ADS_TRACKING_SWITCH
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTS_SWITCH" desc="BRAVE_SHIELDS_BLOCK_FINGERPRINTS_SWITCH">
+        BRAVE_SHIELDS_BLOCK_FINGERPRINTS_SWITCH
+      </message>
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SWITCH" desc="Switch for Block Scripts.">
         Block Scripts
       </message>
