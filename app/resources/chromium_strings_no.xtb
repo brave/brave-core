@@ -111,7 +111,6 @@
 <translation id="847561904663814268">Noen har tidligere logget på Brave på denne datamaskinen som <ph name="ACCOUNT_EMAIL_LAST"/>. Opprett en ny Brave-bruker for å holde informasjonen din atskilt.</translation>
 <translation id="3834935463915107022">Vil du avslutte Brave likevel?</translation>
 <translation id="8668413672647811944">En spesiell sikkerhetsoppdatering for Brave ble nettopp installert. Start på nytt nå, så gjenoppretter vi fanene dine.</translation>
-<translation id="7914115000169617076">Nesten ferdig oppdatert! Start Brave på nytt for å fullføre oppdateringen. Inkognitovinduer blir ikke gjenåpnet.</translation>
 <translation id="4823369970559443694">Brave kan ikke sjekke passordene dine. Prøv på nytt om 24 timer, eller <ph name="BEGIN_LINK"/>sjekk passordene i Brave-kontoen din<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Denne funksjonen bruker den samme stavekontrollen som Brave Søk. Tekst du skriver inn i nettleseren, sendes til Brave. Du kan når som helst endre dette i innstillingene.</translation>
 <translation id="2899369907387169108">Bruk Brave uten noen konto</translation>
@@ -282,4 +281,5 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt.}=1{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt. Inkognitovinduet ditt blir ikke gjenåpnet.}other{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen}=1{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering}=1{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
+<translation id="7914115000169617076">Nesten ferdig oppdatert! Start Brave på nytt for å fullføre oppdateringen. Private vinduer blir ikke gjenåpnet.</translation>
 </translationbundle>

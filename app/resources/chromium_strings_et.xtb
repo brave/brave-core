@@ -111,7 +111,6 @@
 <translation id="847561904663814268">Keegi on varem selles arvutis Bravei sisse loginud kasutajana <ph name="ACCOUNT_EMAIL_LAST"/>. Looge uus Bravei kasutaja, et oma teave eraldi hoida.</translation>
 <translation id="3834935463915107022">Kas väljuda Braveist ikkagi?</translation>
 <translation id="8668413672647811944">Äsja rakendati Bravei spetsiaalne turvavärskendus. Taaskäivitage brauser, misjärel teie vahelehed taastatakse.</translation>
-<translation id="7914115000169617076">Peaaegu värskendatud! Värskendamise lõpuleviimiseks taaskäivitage Brave. Inkognito aknaid ei avata uuesti.</translation>
 <translation id="4823369970559443694">Brave ei saa teie paroole kontrollida. Proovige uuesti 24 tunni pärast või <ph name="BEGIN_LINK"/>kontrollige oma Brave'i kontol paroole<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">See kasutab sama õigekirjakontrolli, mida kasutatakse Brave'i otsingus. Brauseris sisestatav tekst saadetakse Brave'ile. Seda käitumist saab seadetes alati muuta.</translation>
 <translation id="2899369907387169108">Kasuta Braveit ilma kontota</translation>
@@ -282,4 +281,5 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Saadaval on uus Bravei värskendus, mis rakendatakse taaskäivitamisel.}=1{Saadaval on uus Bravei värskendus, mis rakendatakse taaskäivitamisel. Teie inkognito akent ei avata uuesti.}other{Saadaval on uus Bravei värskendus, mis rakendatakse taaskäivitamisel. Teie # inkognito akent ei avata uuesti.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada}=1{Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada. Teie inkognito akent ei avata uuesti.}other{Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada. Teie # inkognito akent ei avata uuesti.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti}=1{Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti. Teie inkognito akent ei avata uuesti.}other{Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti. Teie # inkognito akent ei avata uuesti.}}</translation>
+<translation id="7914115000169617076">Peaaegu värskendatud! Värskendamise lõpuleviimiseks taaskäivitage Brave. Privaatsed aknad ei avata uuesti.</translation>
 </translationbundle>

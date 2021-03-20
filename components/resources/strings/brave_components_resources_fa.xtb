@@ -35,8 +35,23 @@
 <translation id="604124094241169006">خودکار</translation>
 <translation id="867722069064361487">ساعت 12 ساعته</translation>
 <translation id="4064062743338217840">ساعت 24 ساعته</translation>
-<translation id="8643377320501056697">نمایش سایت‌های برتر</translation>
-<translation id="7176563092712682575">سایت‌های برتر را سفارشی کنید</translation>
+<translation id="5313967007315987356">افزودن سایت</translation>
+<translation id="5052499409147950210">ویرایش سایت</translation>
+<translation id="1181037720776840403">حذف</translation>
+<translation id="7400418766976504921">نشانی وب</translation>
+<translation id="6678563120789955720">نشانی وب‌سایت</translation>
+<translation id="5327248766486351172">نام</translation>
+<translation id="6916084277913254682">عنوان وب‌سایت</translation>
+<translation id="5317780077021120954">ذخیره</translation>
+<translation id="7658239707568436148">لغو</translation>
+<translation id="4643117005422448078">سایت‌های برتر</translation>
+<translation id="6307720725257444819">موارد دلخواه</translation>
+<translation id="81774600964978477">سایت‌های برتر برای شما گلچین شده‌اند</translation>
+<translation id="5439599923922718668">اغلب بازدیدشده</translation>
+<translation id="430556192781857057">سایت‌های برتر براساس وب‌سایت‌هایی پیشنهاد می‌شوند که اغلب بازدید می‌کنید</translation>
+<translation id="8037713009824540257">افزودن سایت</translation>
+<translation id="1773147648972887693">نمایش اغلب بازدیدشده</translation>
+<translation id="4546260624932151782">نمایش موارد دلخواه</translation>
 <translation id="3446024864193919737">نشان دادن «پاداش‌های Brave»</translation>
 <translation id="6274899614137380422">نمایش Binance</translation>
 <translation id="5551238871320268996">Brave در کنار هم</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">محتوا از <ph name="PUBLISHER_NAME"/> غیرفعال شود</translation>
 <translation id="3189348785087463371">ارتقایافته</translation>
 <translation id="1776831331757823105">ساعت</translation>
-<translation id="4643117005422448078">سایت‌های برتر</translation>
 <translation id="7791543448312431591">افزودن</translation>
 <translation id="7679334366167089823">برای تماشای آگهی‌هایی که به حریم‌خصوصی احترام می‌گذارند، توکن کسب کنید.</translation>
 <translation id="1531133232292396145">رمزارز در Binance را مستقیماً در مرورگر خود معامله کنید.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">این یک</translation>
 <translation id="2055363275850890030">پنجره خصوصی</translation>
 <translation id="9133213713928851646">Brave آنچه را در «پنجره خصوصی» انجام می‌دهید به‌خاطر نمی‌سپارد. سایت‌هایی که بازدید می‌کنید در سابقه‌تان نشان داده نخواهند شد و وقتی کارتان تمام شد، کوکی‌ها پاک خواهند شد. با این حال، «پنجره خصوصی» به‌طور کامل شما را درحالت آنلاین ناشناس نمی‌کند.</translation>
-<translation id="8760415064721320867">پنجره خصوصی با Tor</translation>
-<translation id="4844209912525464363">Brave هیچ‌گاه آنچه را در «پنجره خصوصی» انجام می‌دهید به‌خاطر نمی‌سپارد. با Tor، مرورتان از ISP یا کارفرمای شما نیز پنهان می‌شود و نشانی IP شما از سایت‌هایی که بازدید می‌کنید پنهان می‌شود.</translation>
+<translation id="3546750666732517156">«پنجره خصوصی» با اتصال Tor</translation>
+<translation id="5383068818957293256">Brave هیچ‌گاه آنچه را در «پنجره خصوصی» انجام می‌دهید به‌خاطر نمی‌سپارد. با اتصال Tor، نشانی IP شما از سایت‌هایی که بازدید می‌کنید پنهان می‌شود. درهرصورت، اگر امنیت شخصی‌تان به ناشناس ماندن بستگی دارد، درعوض از «مرورگر Tor» استفاده کنید.</translation>
 <translation id="778096729652828897">درباره «پنجره‌های خصوصی با Tor» بیشتر بدانید</translation>
 <translation id="7919374705736538787">جستجوی خصوصی با</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">با جستجوی خصوصی، Brave از DuckDuckGo برای جستجو در «پنجره‌های خصوصی» استفاده خواهد کرد. DuckDuckGo سابقه جستجویتان را ردیابی نمی‌کند، بنابراین می‌توانید به‌طور خصوصی جستجو کنید.</translation>
 <translation id="1925197199485958903">در «پنجره‌های خصوصی با Tor»، ‏DuckDuckGo موتور جستجوی پیش‌فرض است. استفاده از بعضی موتورهای جستجوی پرطرفدار دیگر با Tor دشوار است. DuckDuckGo سابقه جستجویتان را با Tor ردیابی نمی‌کند و حتی نشانی IP‌ شما را نیز شناسایی نمی‌کند.</translation>
 <translation id="4371533307685765155">جستجو با DuckDuckGo</translation>
-<translation id="5576876180131651996">خصوصی‌تر کردن «پنجره‌های خصوصی»</translation>
-<translation id="1129265576134014816">این «پنجره خصوصی» بسیار خصوصی‌تر است</translation>
-<translation id="805807983419360524">با Tor</translation>
-<translation id="8958799246752641148">Tor با مرور کردن ازطریق چند سرور Tor قبل از رسیدن به مقصدتان، نشانی IP‌ شما را از سایت‌هایی که بازدید می‌کنید پنهان می‌کند. این اتصال‌ها رمزگذاری‌شده هستند، بنابراین ISP یا کارفرمای شما نمی‌توانند ببینند که از چه سایت‌هایی بازدید کرده‌اید. Tor می‌تواند مرور کردن را آهسته کند و شاید بعضی از سایت‌ها اصلاً کار نکنند.</translation>
-<translation id="520608572871993342">استفاده از «پنجره خصوصی»، فقط آنچه را Brave در دستگاهتان انجام می‌دهد تغییر می‌دهد — این کار رفتار هیچ‌کس را تغییر نمی‌دهد. Tor نشانی IP شما را از سایت‌هایی که بازدید می‌کنید پنهان می‌کند و سایت‌هایی را که بازدید می‌کنید از ISP یا کارفرمای شما پنهان می‌کند. «پنجره خصوصی با Tor» را از منو یا با {{ key }} باز کنید.</translation>
+<translation id="548478195417408221">«پنجره‌های خصوصی» را خصوصی‌تر کنید</translation>
+<translation id="3294503279952534143">این «پنجره خصوصی» خصوصی‌تر است</translation>
+<translation id="4644024131266615376">با اتصال Tor</translation>
+<translation id="8541421872680304667">Tor با هدایت مرور کردن از بین چند سرور Tor قبل از رسیدن به مقصدتان، نشانی IP‌ شما را از سایت‌هایی که بازدید می‌کنید پنهان می‌کند. Tor می‌تواند باعث کاهش سرعت مرور کردن شود و شاید بعضی از سایت‌ها اصلاً کار نکنند.</translation>
+<translation id="7030950080800709999">استفاده از «پنجره خصوصی»، فقط آنچه را Brave در دستگاهتان انجام می‌دهد تغییر می‌دهد — این کار رفتار هیچ‌کس را تغییر نمی‌دهد. Tor نشانی IP شما را از سایت‌هایی که بازدید می‌کنید پنهان می‌کند و کاری می‌کند که دیدن سایت‌هایی که بازدید می‌کنید برای ISP یا کارفرمای شما دشوار، نه غیرممکن، شود. «پنجره خصوصی با Tor» را از منو یا با {{ key }} باز کنید.</translation>
 <translation id="6975708438781948564">با Tor در Brave بیشتر آشنا شوید</translation>
 <translation id="4712050378540986986">وضعیت Tor</translation>
 <translation id="3368922792935385530">متصل</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">گزارش خرابی سایت</translation>
 <translation id="8510478288840333677">به توسعه‌دهندگان Brave اطلاع دهید که «سپرهای ایمنی» در این سایت به‌خوبی کار نمی‌کند.</translation>
 <translation id="6013164422534859494">توجه: نشانی این سایت به‌همراه شماره نسخه Brave شما و نشانی IP شما (که ذخیره نخواهد شد) ارسال می‌شود.</translation>
-<translation id="7658239707568436148">لغو</translation>
 <translation id="2653659639078652383">ارائه</translation>
 <translation id="5299848999918506028">متشکریم!</translation>
 <translation id="76550953340008122">متشکریم که وجود مشکل در این سایت را به توسعه‌دهندگان Brave اطلاع دادید. تمام تلاشمان را برای رفع مشکل آن به کار می‌گیریم.</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">تاریخ کمک ماهانه بعدی</translation>
 <translation id="6231182869178328516">به‌تازگی با استفاده از مرورگر Brave، به <ph name="NAME"/> انعام دادم. این مورد را در https://brave.com/tips بررسی کنید.</translation>
 <translation id="8404935570206006581">انعام با Brave</translation>
-<translation id="2876191400747549936">متأسفیم مشکلی در پردازش درخواستتان وجود داشت، لطفاً دوباره امتحان کنید.</translation>
+<translation id="3113653894794167793">متأسفیم، مشکلی در پردازش درخواستتان وجود داشت، لطفاً دوباره امتحان کنید.</translation>
 <translation id="3082557070674409251">کلیک شده</translation>
 <translation id="7119308337584989771">نادیده گرفته شده</translation>
 <translation id="6805660603861526473">مشاهده شده</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">Brave Private Ads به شما توکن جایزه می‌دهد تا از سازندگان محتوا پشتیبانی شود (کاملاً برعکس آگهی‌های قدیمی)، همه این کارها را در حالی انجام می‌دهد که اطلاعات شخصی شما را خصوصی نگه می‌دارد.</translation>
 <translation id="6973095375773523904">آگهی‌ها کجا نمایش داده می‌شوند؟</translation>
 <translation id="7556325460112047619">Brave Private Ads به‌عنوان اعلانی معمولی نشان داده خواهد شد. شما می‌توانید تعداد دفعات مشاهده این آگهی‌ها را در تنظیمات کنترل کنید.</translation>
-<translation id="5816125157889950051">چه زمانی پاداش دریافت می‌کنید</translation>
+<translation id="6897083627729802351">چه زمانی پاداش دریافت می‌کنید</translation>
 <translation id="310863932297733723">توکن‌های به‌دست‌آمده از Brave Private Ads در ماه فعلی، در 5ام ماه بعدی دریافت خواهند شد.</translation>
 <translation id="7712287524451429139">برگرداندن بی‌دردسر شده است</translation>
 <translation id="105037569026952831">سازندگان همیاری‌های توکن شما را به‌طور خودکار بر اساس سطح مشارکتتان دریافت می‌کنند که ما آن را به‌عنوان ‘توجه’ می‌سنجیم.</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">علامت‌گذاری به عنوان نامناسب ✓</translation>
 <translation id="8988332871810963281">در حال حاضر تاریخچه تبلیغات Brave وجود ندارد</translation>
 <translation id="5345727496083327478">دیگر تبلیغاتی از این دسته‌بندی دریافت نخواهید کرد</translation>
-<translation id="5317780077021120954">ذخیره</translation>
 <translation id="2827387977307390755">اجازه ارائه انعام به</translation>
 <translation id="3819257035322786455">پشتیبان‌گیری</translation>
 <translation id="1312977698678162065">با تماشای آگهی‌های مرتبطی که به حریم خصوصی‌تان احترام می‌گذارند پاداش دریافت کنید.</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">سایت‌های پین‌شده شما به اینجا منتقل شدند</translation>
 <translation id="6803187280799213426">وجوه موجود در کیف پول Brave شما مجازی است و نیاز به پشتیبان ندارد. این وجوه منحصراً برای خرج کردن در این مرورگر موجود است.</translation>
 <translation id="5290348443732633227">اگر مایل هستید در صورت نصب تمیز مرورگر یا جابه‌جایی به دستگاهی جدید، همه وجوه شما محفوظ نگه داشته شود و مزایای دیگری مانند افزودن، برداشت و انتقال وجه را داشته باشید، توصیه می‌کنیم</translation>
-<translation id="6733942359297688714">در حال اتصال به کیف پول تأییدشده Uphold.</translation>
+<translation id="467041382895390784">اتصال به کیف پول <ph name="PROVIDER"/> تأییدشده.</translation>
 <translation id="5717619667204259673">این کلید بازیابی را ایمن نگه‌دارید.</translation>
 <translation id="4699702339303280827">همیشه می‌توانید از این کلید برای برگرداندن کیف پولتان در شرایطی که مشکلی برای مرورگر یا رایانه‌تان پیش بیاید استفاده کنید. اما حتماً از آن محافظت کنید — هر فردی که به این کلید دسترسی داشته باشد، می‌تواند کیف پولتان را به سرقت ببرد. شاید امن‌ترین روش، نوشتن آن روی تکه‌ای کاغذ، یا هرجای دیگری که اطلاعات مهمتان را نگه می‌دارید باشد.</translation>
 <translation id="8979401359137062629">توجه:</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">گاهی اوقات، امتیازهای توکن رایگان از Brave دریافت می‌کنید. حتماً مراقب چنین اعلامی باشید!</translation>
 <translation id="2185598236335233939">همراه با استفاده از Brave، اعلان‌های آگهی را جستجو کنید. با هر بار مشاهده آگهی، موجودی امتیازهای BAT شما افزایش می‌یابد.</translation>
 <translation id="1370034647041840967">بابت توجهتان به آگهی‌ها توکن دریافت کنید و با بازارسال آن (pay it forward) از پدیدآورندگانی که برایتان مهم هستند حمایت کنید!</translation>
-<translation id="4600224932216165965">سرمایه‌ها را در <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> اضافه، برداشت، و مدیریت کنید.</translation>
-<translation id="3580616436301227919">کیف پول Brave شما توسط <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> ارائه می‌شود.</translation>
+<translation id="4919888432594361029">سرمایه‌ها را در <ph name="PROVIDER"/> اضافه، برداشت و مدیریت کنید.</translation>
+<translation id="3092054349246483285">کیف پول Brave شما توسط <ph name="PROVIDER"/> ارائه می‌شود.</translation>
 <translation id="6401272292123354754">«پاداش‌های Brave» برپایه «توکن توجه پایه» (Basic Attention Token) ساخته شده است. درباره BAT بیشتر بدانید</translation>
 <translation id="7823359893981882407">اینجا</translation>
 <translation id="4483635855837696643">بازیابی کیف پول</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">کلید بازیابی را وارد کنید یا</translation>
 <translation id="6548189695918108191">پیش از تعویض کیف پول خود، از آن پشتیبان بگیرید. در غیر این صورت، وجه، {{funds}}، موجود در کیف پول فعلی خود را از دست می‌دهید.</translation>
 <translation id="5423214929210538027">مطمئن هستید که می‌خواهید «کیف پول پاداش‌ها»ی خود را بازنشانی کنید؟</translation>
-<translation id="7428521340740703492">اگر کیف پول خود را بازنشانی کنید، داده‌های <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> و پاداش‌های دیگر شما به‌طور دائمی از بین خواهد رفت. لطفاً مطمئن شوید که کیف پول خود را با Uphold تأیید کرده‌اید تا بتوانید BAT خود را حفظ کنید.</translation>
+<translation id="8683358891240311475">اگر کیف پول خود را بازنشانی کنید، داده‌های <ph name="BAT_AMOUNT"/> و پاداش‌های دیگر شما به‌طور دائمی از بین خواهد رفت. لطفاً مطمئن شوید که کیف پول خود را با <ph name="PROVIDER"/> تأیید کرده‌اید تا بتوانید BAT خود را حفظ کنید.</translation>
 <translation id="2028613172174411919">اگر کیف پول خود را بازنشانی کنید، داده‌های پاداش‌های شما به‌طور دائمی از بین می‌رود.</translation>
 <translation id="4914597931214386232">امتیازهای توکن مطالبه شد</translation>
 <translation id="3494964159182650590">خلاصه پاداش‌ها</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">تأیید</translation>
 <translation id="8267327690882073581">تأیید کیف پول</translation>
 <translation id="543510923939676996">کیف پول تأیید شد!‍</translation>
-<translation id="7591798679868259510">رفتن به حساب Uphold من</translation>
+<translation id="2659764755126740206">رفتن به حساب <ph name="PROVIDER"/> من</translation>
 <translation id="3699674790322420653">تکمیل تأیید کیف پول</translation>
 <translation id="9200453331904391567">قطع ارتباط از پاداش‌های Brave</translation>
 <translation id="46988480989545156">تأیید کیف پول</translation>
-<translation id="160145159036553575">کیف پول ما توسط <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/> ارائه می‌شود</translation>
+<translation id="5796169459825124737">سرویس کیف پول ما توسط <ph name="PROVIDER"/> ارائه می‌شود.</translation>
 <translation id="6771734945114850124">لطفاً شناسه صادرشده دولتی خود را در اختیار داشته باشید.</translation>
 <translation id="8697510149346635496">BAT را برداشت کنید که از مشاهده تبلیغاتی به دست آمده‌اند که به حریم خصوصی احترام می‌گذارند</translation>
 <translation id="1481480653609649134">با کارت اعتباری و سایر منابع، BAT اضافی خریداری کنید</translation>
 <translation id="9096003370755878766">BAT را که قبلاً به کیف پاداش‌های Brave خود اضافه کرده‌اید، برداشت کنید</translation>
 <translation id="8558636200953226885">اما درصورت تأیید، می‌توانید...</translation>
 <translation id="3354315693758743702">تأیید کیف پول شما اختیاری است.</translation>
-<translation id="8465442795593991224">ممکن است Uphold شما را ملزم به تأیید هویتتان بر اساس خدمات درخواستی کند.</translation>
-<translation id="723054503945711909">Brave Software Inc.اطلاعات شخصی را که در زمان ایجاد یک حساب با Uphold در اختیار آنها قرار داده‌اید، پردازش و ذخیره‌سازی نخواهد کرد و به آنها دسترسی نخواهد داشت.</translation>
-<translation id="7677480094678113476">توجه: تراکنش‌های شما به‌محض این‌که اجازه دهید برای Uphold قابل‌مشاهده خواهد بود؛ برای مثال، آن‌ها قادر به دیدن گیرنده و مقدار انعام‌های شما خواهند بود.</translation>
+<translation id="4872388810065331182">ممکن است <ph name="PROVIDER"/> بخواهد هویتتان را براساس سرویس‌های درخواست‌شده تأیید کنید.</translation>
+<translation id="6938217233488972952">وقتی حسابی  در Brave Software Inc.‎ ایجاد می‌کنید، این شرکت هیچ‌کدام از اطلاعات شخصی را که شما به <ph name="PROVIDER"/> ارائه می‌دهید پردازش نمی‌کند، ذخیره نمی‌کند یا نمی‌تواند به آن‌ها دسترسی پیدا کند.</translation>
+<translation id="2415586822982819406">توجه: بعدازاینکه مجوز دهید، تراکنش‌هایتان برای <ph name="PROVIDER"/> قابل مشاهده خواهند بود؛ برای مثال، Uphold می‌تواند گیرنده و مقدار انعام را ببیند.</translation>
 <translation id="7404779623219601861">نقد کردن BAT برای کارت‌های هدیه</translation>
 <translation id="6215565499749144110">با شبکه TAP، می‌توانید BAT خود را برای کارت‌های هدیه با برند معروف نقد کنید.</translation>
 <translation id="6915065518766963119">* به تأیید نگهداری نیاز دارد.</translation>
@@ -722,12 +734,36 @@
 <translation id="8327818101454798856">بنابراین، اگر به دنبال پشتیبانی برای سایت‌های دلخواهتان هستید، در عوض، به آنجا بروید.</translation>
 <translation id="412480955826088549">در حال بارگیری مؤلفه...</translation>
 <translation id="4894106830958548828">متوجه هستم</translation>
-<translation id="7701466644604753106">روشن کردن تندخوان</translation>
-<translation id="763042262431778831">خاموش کردن تندخوان</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">بازارها را مشاهده کنید و از crypto.com کریپتو بخرید.</translation>
+<translation id="4292334826913000023">نمایش قیمت</translation>
+<translation id="5001098083058405168">دریافت 2٪ سود روی سپرده‌ها</translation>
+<translation id="7336377875970208451">توقف پرداخت هزینه‌های معامله</translation>
+<translation id="5889002303959545585">خرید بیت‌کوین</translation>
+<translation id="7243082596932212589">مشاهده بازارهای Crypto.com</translation>
+<translation id="2258222996838418990">نمودار 7d</translation>
+<translation id="5337526542182802976">جفت‌های پشتیبانی‌شده</translation>
+<translation id="1164622162816276433">حجم 24 ساعته</translation>
+<translation id="7534079972563542000">دامنه‌های توقف‌ناپذیر</translation>
+<translation id="4492298165410552103">پشتیبانی از «دامنه‌های توقف‌ناپذیر» در Brave فعال شود؟</translation>
+<translation id="3470923752115324276">Brave می‌تواند با استفاده از Cloudflare به شما امکان دهد از دامنه‌های ‎.crypto بازدید کنید تا بتوانید درخواست‌های جستجوی نام دامنه ‎.crypto را با استفاده از DNS ازطریق HTTPS تحلیل کنید. اگر این مورد را فعال کنید، Cloudflare دامنه ‎crypto را که درحال تلاش برای بازدید از آن هستید خواهد دید اما نمی‌تواند دیگر دامنه‌ها را ببیند. به <ph name="BEGIN_CF_TOU_LINK"/>شرایط استفاده<ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>خط‌مشی رازداری<ph name="END_CF_PRIVACY_LINK"/> ‏Cloudflare بروید.</translation>
+<translation id="6513892817556267573">سرویس نام اتریوم</translation>
+<translation id="4335039108389860301">پشتیبانی از «سروبی نام اتریوم» (ENS) در Brave فعال شود؟</translation>
+<translation id="618766505813078707">Brave می‌تواند با استفاده از Cloudflare به شما امکان دهد از دامنه‌های ‎.eth بازدید کنید تا بتوانید درخواست‌های جستجوی نام دامنه ‎.eth را با استفاده از DNS ازطریق HTTPS تحلیل کنید. اگر این مورد را فعال کنید، Cloudflare دامنه ‎.eth را که درحال تلاش برای بازدید از آن هستید خواهد دید اما نمی‌تواند دیگر دامنه‌ها را ببیند. به <ph name="BEGIN_CF_TOU_LINK"/>شرایط استفاده<ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>خط‌مشی رازداری<ph name="END_CF_PRIVACY_LINK"/> ‏Cloudflare بروید.</translation>
+<translation id="5636651007798897342">ادامه با استفاده از سرور Cloudflare</translation>
+<translation id="2468755552460246661">دامنه مسدود شد</translation>
+<translation id="6631469728138660166">سایت مشکوکی پیش‌رو است</translation>
+<translation id="983774928604730749">Brave مانع از بار کردن سایت زیر شده است:</translation>
+<translation id="8250033559824599347">این سایت ممکن است کلاهبرداری باشد، شما را بین سایت‌های مختلف جابه‌جا کند تا ردیابی کوکی تنظیم کند یا کنش‌های تهاجمی دیگری نسبت به حریم خصوصی انجام دهد.</translation>
+<translation id="2459038234784107183">درباره این سایت دوباره به من هشدار داده نشود</translation>
+<translation id="8242426110754782860">ادامه دادن</translation>
+<translation id="2501278716633472235">بازگشت</translation>
 <translation id="9020818404803201080">همتایان متصل‌شده:</translation>
 <translation id="2903493209154104877">آدرس‌ها</translation>
 <translation id="3207122385716480167">آمار مخزن</translation>
 <translation id="2595187693729756455">اطلاعات گره</translation>
+<translation id="8999763401170835879">خطایی روی داد، لطفاً سعی کنید دوباره راه‌اندازی کنید</translation>
+<translation id="5433704526290922623">خطایی روی داد، لطفاً سعی کنید گره را دوباره نصب کنید</translation>
 <translation id="5789886980848929155">وضعیت گره IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">دروازه</translation>
@@ -769,20 +805,20 @@
 <translation id="3977809385703587108">می‌توانید اولویت‌هایتان را اینجا دوباره تغییر دهید</translation>
 <translation id="3340978935015468852">تنظیمات</translation>
 <translation id="4148957013307229264">در حال نصب…</translation>
-<translation id="6057992164469678163">در انتظار همتایان…</translation>
+<translation id="4219228508273972445">در جستجوی همتایان…</translation>
 <translation id="1902096227388293745">هیچ همتایی در دسترس نیست، در حال امتحان مجدد... (<ph name="ATTEMPTS_NUMBER"/> فرصت دیگر دارید)</translation>
 <translation id="1675751799495331928">تعداد تلاش‌ها به حداکثر مجاز رسیده است، دوباره بعداً امتحان کنید.</translation>
 <translation id="4499666752625407848">در طول به‌روزرسانی خطایی رخ داد.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">بازارها را مشاهده کنید و از crypto.com کریپتو بخرید.</translation>
-<translation id="4292334826913000023">نمایش قیمت</translation>
-<translation id="5001098083058405168">دریافت 2٪ سود روی سپرده‌ها</translation>
-<translation id="7336377875970208451">توقف پرداخت هزینه‌های معامله</translation>
-<translation id="5889002303959545585">خرید بیت‌کوین</translation>
-<translation id="7243082596932212589">مشاهده بازارهای Crypto.com</translation>
-<translation id="2258222996838418990">نمودار 7d</translation>
-<translation id="5337526542182802976">جفت‌های پشتیبانی‌شده</translation>
-<translation id="1164622162816276433">حجم 24 ساعته</translation>
+<translation id="7789840864192026963">مجوز دادن</translation>
+<translation id="8092074243456635562">تا وقتی این صفحه را ببندم</translation>
+<translation id="3523195733429162409">برای 24 ساعت</translation>
+<translation id="2373264732659722940">برای 1 هفته</translation>
+<translation id="6318437367327684789">همیشه</translation>
+<translation id="7463327191540031132">مسدود برای همیشه</translation>
+<translation id="8797999629784150206">هرزمان خواستید، می‌توانید <ph name="SITE_PERMISSIONS"/> را تغییر دهید. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">مجوز سایت</translation>
+<translation id="7701466644604753106">روشن کردن تندخوان</translation>
+<translation id="763042262431778831">خاموش کردن تندخوان</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>

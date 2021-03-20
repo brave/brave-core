@@ -7195,10 +7195,10 @@ Pressione um interruptor atribuído para remover a atribuição.</translation>
 <translation id="996250603853062861">Estabelecendo conexão segura...</translation>
 <translation id="3285581355655524751">Ative a <ph name="LINK1_BEGIN"/>Sincronização do Brave<ph name="LINK1_END"/> para usar o recurso Sincronizar Wi-Fi. <ph name="LINK2_BEGIN"/>Saiba mais<ph name="LINK2_END"/></translation>
 <translation id="998747458861718449">I&amp;nspecionar</translation>
-<translation id="658539216370629794">Abrir link em janela &amp;anônima</translation>
-<translation id="1432267168815937878">Abrir link na janela &amp;anônima</translation>
-<translation id="6516243500644829484">Nova janela &amp;anônima</translation>
-<translation id="7973394300052703468">Nova janela &amp;anônima</translation>
+<translation id="658539216370629794">Abrir link em janela &amp;privada</translation>
+<translation id="1432267168815937878">Abrir link na Janela &amp;Privada</translation>
+<translation id="6516243500644829484">Nova janela &amp;privada</translation>
+<translation id="7973394300052703468">Nova janela &amp;privada</translation>
 <translation id="6395403722585816044">Download feito no modo anônimo</translation>
 <translation id="203837651858678035">Sair do modo de navegação anônima mesmo assim?</translation>
 <translation id="7376221878517288144">Sair do modo de navegação anônima mesmo assim?</translation>
@@ -7211,17 +7211,17 @@ Pressione um interruptor atribuído para remover a atribuição.</translation>
 <translation id="5097649414558628673">Ferramenta: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="8261378640211443080">Esta extensão não está listada na <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e pode ter sido adicionada sem seu conhecimento.</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Modo anônimo)</translation>
-<translation id="4369414322596874629">Você pode navegar com privacidade usando uma janela anônima</translation>
-<translation id="3772947852642271642">Use a Web sem salvar seu histórico de navegação com uma janela anônima</translation>
-<translation id="3871738366246972820">Está usando um computador compartilhado? Tente abrir uma janela anônima.</translation>
-<translation id="5808622652939943719">Para navegar com privacidade, clique no menu de ícone de pontos para abrir uma janela anônima</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privado)</translation>
+<translation id="4369414322596874629">Você pode navegar com privacidade usando uma janela privada</translation>
+<translation id="3772947852642271642">Use a Web sem salvar seu histórico de navegação com uma janela privada</translation>
+<translation id="3871738366246972820">Está usando um computador compartilhado? Tente abrir uma janela privada.</translation>
+<translation id="5808622652939943719">Para navegar com privacidade, clique no menu de ícone de pontos para abrir uma janela privada</translation>
 <translation id="9079153198295609735">Envia estatísticas de uso e relatórios de erros ao Brave automaticamente</translation>
 <translation id="8839398440242019256">Não foi feita a partir da Brave Web Store.</translation>
 <translation id="6945695820322143954">Esta extensão viola a política da Brave Web Store.</translation>
-<translation id="1676595396635191120">Nova janela anônima</translation>
+<translation id="1676595396635191120">Nova janela privada</translation>
 <translation id="5094764494104066239">Sempre mostrar a barra de favoritos</translation>
-<translation id="4471385409549756595">Nova janela anônima</translation>
+<translation id="4471385409549756595">Nova janela privada</translation>
 <translation id="7618452966706304788">Quer usar o Touch ID com <ph name="APP_NAME"/> no modo de navegação anônima?</translation>
 <translation id="3098826269712097986">Os dados de login serão armazenados no Brave depois que você sair do modo de navegação anônima. Isso permitirá utilizar o Touch ID nesse site novamente.</translation>
 <translation id="5186185447130319458">Modo anônimo</translation>
@@ -7231,20 +7231,20 @@ Pressione um interruptor atribuído para remover a atribuição.</translation>
           =0 {Abrir tudo em uma &amp;janela privada}
           =1 {Abrir em uma &amp;janela privada}
           other {Abrir todas as ({COUNT}) em uma &amp;janela privada}}</translation>
-<translation id="2431625704210501303">Abrir em &amp;janela anônima</translation>
+<translation id="2431625704210501303">Abrir em &amp;janela privada</translation>
 <translation id="4620367155626060530">&amp;Exibir barra de favoritos</translation>
 <translation id="1448315815373449655">{COUNT, plural,
-          =0 {Abrir tudo em uma &amp;janela privada}
-          =1 {Abrir em uma &amp;janela privada}
-          other {Abrir todas as ({COUNT}) em uma &amp;janela privada}}</translation>
-<translation id="1985165269306590797">Abrir em &amp;janela anônima</translation>
+          =0 {Abrir tudo em uma &amp;Janela Privada}
+          =1 {Abrir em uma &amp;Janela Privada}
+          other {Abrir todas as ({COUNT}) em uma &amp;Janela Privada}}</translation>
+<translation id="1985165269306590797">Abrir em &amp;Janela Privada</translation>
 <translation id="4680518314108745448">&amp;Exibir barra de favoritos</translation>
-<translation id="642436385689435488">Abrir todos em uma janela anônima</translation>
+<translation id="642436385689435488">Abrir todos em uma janela privada</translation>
 <translation id="5074021236879527611">Abrir tudo (<ph name="URL_COUNT"/>) em uma janela privada</translation>
-<translation id="5463021359602611602">Abrir em uma janela anônima</translation>
-<translation id="1850357845349976573">{0,plural, =1{Anônima}one{# janela anônima aberta}other{# janelas anônimas abertas}}</translation>
+<translation id="5463021359602611602">Abrir em uma janela privada</translation>
+<translation id="1850357845349976573">{0,plural, =1{Privada}one{# janela privada aberta}other{# janelas privadas abertas}}</translation>
 <translation id="8773965542687789581">{0,plural, =1{Anônima}one{Anônima (#)}other{Anônimas (#)}}</translation>
-<translation id="5070556616376997776">Você está no modo anônimo</translation>
+<translation id="5070556616376997776">Você está no modo privado</translation>
 <translation id="5832813618714645810">Pessoas</translation>
 <translation id="7171000599584840888">Adicionar pessoa...</translation>
 <translation id="2005199804247617997">Outras pessoas</translation>

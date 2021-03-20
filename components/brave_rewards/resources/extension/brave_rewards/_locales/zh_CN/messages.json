@@ -235,6 +235,18 @@
     "message": "请备份您的 Brave 钱包。",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "详细了解",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "已达到设备限量",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "无法验证您的钱包，因为您已达到验证设备的最大限量。",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "您的 Brave 奖励账户正在等待存款。",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "钱包已验证",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "转至我的 Uphold 账户",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "转到我的 $provider$ 帐户",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "与 Brave 奖励断开连接",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "注意：授权后，您的交易将对“Uphold”可见；例如，他们将能够看到收件人和您的打赏金额。",
-    "description": "Displayed in login modal for uphold"
+    "message": "注意：授权后，您的交易将对$provider$ 可见。例如，一旦您授权，他们将能够看到收件人和您的提示数量。",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "赚取代币并给予回馈",
