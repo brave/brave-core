@@ -235,6 +235,18 @@
     "message": "Prosím, zálohujte svoju peňaženku Brave.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Ďalšie informácie",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Dosiahnutý počet zariadení",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Peňaženku nie je možné overiť, pretože ste dosiahli maximálny počet overených zariadení.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Na vašom účte Brave odmeny sa očakáva vklad.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Peňaženka verifikovaná",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Prejsť na účet Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Prejsť na môj účet $provider$",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Odpojiť sa od Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Poznámka: Po povolení budú vaše transakcie  viditeľné pre Uphold. Uvidia napríklad príjemcu a množstvo vašich príspevkov.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Poznámka: Vaše transakcie budú viditeľné pre $provider$ po autorizácii. Uvidí napríklad príjemcu a množstvo vašich tipov.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Zarábajte žetóny a dávajte späť",

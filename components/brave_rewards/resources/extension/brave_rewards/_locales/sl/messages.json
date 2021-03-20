@@ -235,6 +235,18 @@
     "message": "Prosimo, da varnostno kopirate svojo denarnico Brave.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Več informacij",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Dosežena omejitev naprave",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Denarnice ni mogoče preveriti, ker ste dosegli največjo dovoljeno omejitev naprave.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Vaš račun za nagrade Brave Rewards čaka na polog.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Denarnica preverjena",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Pojdi na moj račun Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Pojdni na moj $provider$ račun",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Prekinite povezavo z Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Opomba: Vaše transakcije bo podjetje Uphold videlo, ko to sami odobrite; na primer, lahko bodo videli prejemnika in količino vaših prispevkov.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Opomba: Vaše transakcije bodo po odobritvi vidne na $provider$; na primer, lahko bodo videli prejemnika in količino vaših nasvetov.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Prejmite žetone & Podpirajte",

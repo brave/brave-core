@@ -111,7 +111,6 @@
 <translation id="847561904663814268">先前已有其他使用者使用 <ph name="ACCOUNT_EMAIL_LAST"/> 在這部電腦上登入 Brave。請建立新的 Brave 使用者，以便另行保存你的資訊。</translation>
 <translation id="3834935463915107022">確定要關閉 Brave 嗎？</translation>
 <translation id="8668413672647811944">Brave 剛才套用了特殊的安全性更新。請立即重新啟動，系統會恢復你原先開啟的分頁。</translation>
-<translation id="7914115000169617076">即將更新為最新版本！重新啟動 Brave 即可完成更新程序。無痕式視窗不會重新開啟。</translation>
 <translation id="4823369970559443694">Brave 無法檢查你的密碼，請於 24 小時後再試，或<ph name="BEGIN_LINK"/>檢查 Brave 帳戶中的密碼<ph name="END_LINK"/>。</translation>
 <translation id="215320507915280336">這會使用與 Brave 搜尋相同的拼字檢查工具。系統會將你在瀏覽器中輸入的文字傳送給 Brave。你隨時可以在設定中變更這項行為。</translation>
 <translation id="2899369907387169108">不登入帳戶使用 Brave</translation>
@@ -282,4 +281,5 @@ Brave 無法復原你的設定。</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave 有可用的更新，重新啟動後即可套用。}=1{Brave 有可用的更新，重新啟動後即可套用。你的無痕式視窗不會重新開啟。}other{Brave 有可用的更新，重新啟動後即可套用。你的 # 個無痕式視窗不會重新開啟。}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{系統管理員要求你重新啟動 Brave，以套用這項更新}=1{系統管理員要求你重新啟動 Brave，以套用這項更新。你的無痕式視窗不會重新開啟。}other{系統管理員要求你重新啟動 Brave，以套用這項更新。你的 # 個無痕式視窗不會重新開啟。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{系統管理員要求你重新啟動 Brave，以套用更新}=1{系統管理員要求你重新啟動 Brave，以套用更新。你的無痕式視窗不會重新開啟。}other{系統管理員要求你重新啟動 Brave，以套用更新。你的 # 個無痕式視窗不會重新開啟。}}</translation>
+<translation id="7914115000169617076">即將更新為最新版本！重新啟動 Brave 即可完成更新程序。私人窗戶不會重新打開。</translation>
 </translationbundle>

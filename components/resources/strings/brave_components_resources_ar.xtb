@@ -35,8 +35,23 @@
 <translation id="604124094241169006">تلقائي</translation>
 <translation id="867722069064361487">تنسيق 12 ساعة</translation>
 <translation id="4064062743338217840">تنسيق 24 ساعة</translation>
-<translation id="8643377320501056697">عرض أهم المواقع</translation>
-<translation id="7176563092712682575">تخصيص أفضل المواقع</translation>
+<translation id="5313967007315987356">إضافة موقع ويب</translation>
+<translation id="5052499409147950210">تعديل موقع ويب</translation>
+<translation id="1181037720776840403">إزالة</translation>
+<translation id="7400418766976504921">‏عنوان URL</translation>
+<translation id="6678563120789955720">عنوان الموقع الإلكتروني</translation>
+<translation id="5327248766486351172">الاسم</translation>
+<translation id="6916084277913254682">عنوان الموقع الإلكتروني</translation>
+<translation id="5317780077021120954">حفظ</translation>
+<translation id="7658239707568436148">إلغاء</translation>
+<translation id="4643117005422448078">المواقع الأولى</translation>
+<translation id="6307720725257444819">قائمة التفضيلات</translation>
+<translation id="81774600964978477">أفضل المواقع التي تم تصميمها بواسطتك</translation>
+<translation id="5439599923922718668">المواقع التي تمت زيارتها بشكل متكرر</translation>
+<translation id="430556192781857057">يتم اقتراح أفضل المواقع بناءً على المواقع الإلكترونية التي تقوم بزبارتها كثيراً</translation>
+<translation id="8037713009824540257">إضافة موقع إلكتروني</translation>
+<translation id="1773147648972887693">عرض المواقع التي تمت زيارتها بشكل متكرر</translation>
+<translation id="4546260624932151782">عرض قائمة التفضيلات</translation>
 <translation id="3446024864193919737">عرض مكافآت Brave</translation>
 <translation id="6274899614137380422">أظهر تبادل العملات المشفرة</translation>
 <translation id="5551238871320268996">Brave Together</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">قم بتعطيل المحتوى المُنشأ من قبل <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">تمت ترقيته</translation>
 <translation id="1776831331757823105">الساعة</translation>
-<translation id="4643117005422448078">المواقع الأولى</translation>
 <translation id="7791543448312431591">إضافة</translation>
 <translation id="7679334366167089823">اربح عملات رمزية عند مشاهدة إعلانات تحترم الخصوصية.</translation>
 <translation id="1531133232292396145">تداول العملات المشفرة على Binance مباشرة في متصفحك.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">هذا</translation>
 <translation id="2055363275850890030">نافذة خاصة</translation>
 <translation id="9133213713928851646">لا يتذكر Brave أبدا ما تفعله أنت في نافذة خاصة. لن تظهر المواقع التي تزورها في سجلك، وتختفي ملفات تعريف الارتباط عند الانتهاء. رغم ذلك، فإن النوافذ الخاصة لا تجعلك مجهول الهوية تماما على الإنترنت.</translation>
-<translation id="8760415064721320867">نافذة خاصة مع Tor</translation>
-<translation id="4844209912525464363">لا يتذكر Brave أبدا ما تفعله أنت في نافذة خاصة. مع Tor، يتم إخفاء التصفح أيضًا من مزود خدمة الإنترنت أو صاحب العمل، ويتم إخفاء عنوان IP الخاص بك من المواقع التي تزورها.</translation>
+<translation id="3546750666732517156">نافذة خاصة مزودة باتصال بشبكة Tor</translation>
+<translation id="5383068818957293256">لا يقوم Brave أبداً بحفظ ما تفعله في نافذة خاصة. باستخدام اتصال بشبكة Tor، يكون عنوان الـ IP الخاص بك مخفياً أيضاً عن المواقع التي تقوم بزيارتها. ومع ذلك، إذا كان أمنك الشخصي يعتمد على كون هويتك مخفية، فاستخدم متصفح Tor بدلاً من ذلك.</translation>
 <translation id="778096729652828897">تعرف على المزيد حول النوافذ الخاصة مع Tor</translation>
 <translation id="7919374705736538787">بحث خاص باستخدام</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">بالبحث الخاص، ستستخدم Brave DuckDuckGo للبحث في النوافذ الخاصة. DuckDuckGo لا يتتبع سجل البحث الخاص بك، حتى تتمكن من البحث بشكل خاص.</translation>
 <translation id="1925197199485958903">في النوافذ الخاصة مع Tor، DuckDuckGo هو محرك البحث الافتراضي. من الصعب استخدام بعض محركات البحث الشائعة الأخرى مع Tor. DuckDuckGo لا يتبع سجل البحث الخاص بك ؛ ومع Tor، لا يعرف عنوان IP الخاص بك.</translation>
 <translation id="4371533307685765155">بحث بـ DuckDuckGo</translation>
-<translation id="5576876180131651996">اجعل النوافذ الخاصة أكثر خصوصية</translation>
-<translation id="1129265576134014816">اجعل النافذة الخاصة أكثر خصوصية</translation>
-<translation id="805807983419360524">مع Tor</translation>
-<translation id="8958799246752641148">يخفي Tor عنوان IP الخاص بك من المواقع التي تزورها، عن طريق توجيه التصفح عبر عدة خوادم Tor قبل أن يصل إلى وجهتك. يتم تشفير هذه الاتصالات، بحيث يتعذر على موفر خدمة الإنترنت أو صاحب العمل معرفة المواقع التي تزورها. يمكن أن يبطئ Tor التصفح، وقد لا تعمل بعض المواقع على الإطلاق.</translation>
-<translation id="520608572871993342">يؤدي استخدام النوافذ الخاصة فقط إلى تغيير ما يفعله Brave على جهازك - فهو لا يغير سلوك أي شخص آخر. يخفي Tor عنوان IP الخاص بك من المواقع التي تزورها، ويخفي المواقع التي تزورها من مزود خدمة الإنترنت أو صاحب العمل الخاص بك. افتح نافذة خاصة مع Tor من القائمة، أو باستخدام {{key}}.</translation>
+<translation id="548478195417408221">اجعل النوافذ الخاصة أكثر خصوصية</translation>
+<translation id="3294503279952534143">هذه النافذة الخاصة أكثر خصوصية</translation>
+<translation id="4644024131266615376">مزود باتصال بشبكة Tor</translation>
+<translation id="8541421872680304667">يقوم Tor بإخفاء عنوان الـ IP الخاص بك عن المواقع التي تقوم بزيارتها، عن طريق توجيه تصفحك عبر عدة خوادم خاصة بشبكة Tor قبل أن يصل إلى وجهتك. يمكن أن يقوم Tor بإبطاء التصفح وقد يقوم بمنع بعض المواقع من العمل على الإطلاق.</translation>
+<translation id="7030950080800709999">يؤدي استخدام النوافذ الخاصة فقط إلى تغيير ما يقوم به Brave في جهازك — لا يغير سلوك أي شخص آخر. يقوم Tor بإخفاء عنوان الـ IP الخاص بك عن المواقع التي تقوم بزياراتها ويجعل الأمر أكثر صعوبةً إلى حدٍ ما، ولكنه ليس أمراً مستحيلاً، بالنسبة لمزود خدمة الإنترنت أو صاحب العمل لمعرفة المواقع التي تقوم بزيارتها. افتح نافذة خاصة باستخدام Tor من القائمة، أو باستخدام {{key}}.</translation>
 <translation id="6975708438781948564">اعرف المزيد عن Tor في Brave</translation>
 <translation id="4712050378540986986">حالة متصفّح Tor</translation>
 <translation id="3368922792935385530">متصل</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="8510478288840333677">إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
 <translation id="6013164422534859494">ملاحظة: سيتم تقديم عنوان الموقع هذا مع ما يخصك من رقم إصدار Brave وعنوان IP (والذي لن يتم تخزينه).</translation>
-<translation id="7658239707568436148">إلغاء</translation>
 <translation id="2653659639078652383">إرسال</translation>
 <translation id="5299848999918506028">شكراً لك!</translation>
 <translation id="76550953340008122">شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">تاريخ المساهمة الشهرية التالية</translation>
 <translation id="6231182869178328516">لقد أعطيت إكرامية لـ <ph name="NAME"/> باستخدام متصفح Brave. يمكنك التحقق من ذلك في https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">عذرًا، حدثت مشكلة أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.</translation>
+<translation id="3113653894794167793">عذراً، كانت هناك مشكلة في معالجة طلبك، يرجى المحاولة مرة أخرى.</translation>
 <translation id="3082557070674409251">تم النقر عليه</translation>
 <translation id="7119308337584989771">تم رفضه</translation>
 <translation id="6805660603861526473">تمت مشاهدته</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">تكافئك Brave Private Ads بعملات رمزية لدعم منشئي المحتوى على عكس الإعلانات التقليدية، كل ذلك مع الحفاظ على خصوصية معلوماتك الشخصية.</translation>
 <translation id="6973095375773523904">أين تظهر الإعلانات؟</translation>
 <translation id="7556325460112047619">ستظهر Brave Private Ads كإشعار عادي. يمكنك التحكم في عدد المرات التي تشاهد فيها هذه الإعلانات في الإعدادات.</translation>
-<translation id="5816125157889950051">متى تحصل على المكافآت</translation>
+<translation id="6897083627729802351">متى تحصل على المكافآت</translation>
 <translation id="310863932297733723">ستصل الرموز المميزة المكتسبة من Brave Private Ads طوال الشهر الحالي في الخامس من الشهر التالي.</translation>
 <translation id="7712287524451429139">أصبح العطاء أمراً هيناً</translation>
 <translation id="105037569026952831">يتلقى منشئو المحتوى مساهماتك الرمزية تلقائياً بناءً على مستويات المشاركة التي نقيسها كـ‘انتباه’.</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">ضع علامة كإعلان غير لائق ✓</translation>
 <translation id="8988332871810963281">لا يوجد حالياً أي سجل إعلانات Brave</translation>
 <translation id="5345727496083327478">لن تتلقى إعلانات من هذه الفئة بعد الآن</translation>
-<translation id="5317780077021120954">حفظ</translation>
 <translation id="2827387977307390755">السماح بالنصائح عن</translation>
 <translation id="3819257035322786455">الاحتفاظ بنسخة احتياطية</translation>
 <translation id="1312977698678162065">احصل على المال مقابل مشاهدة الإعلانات ذات الصلة التي تحترم خصوصيتك.</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">تم نقل مواقعك المثبّتة إلى</translation>
 <translation id="6803187280799213426">الأموال الموجودة في محفظة Brave الخاصة بك هي أموال افتراضية وليست مطلوبة لعمل نسخ احتياطي. إنها متاحة لك لتنفقها حصرياً عبر هذا المتصفح.</translation>
 <translation id="5290348443732633227">إذا كنت ترغب في تأمين جميع أموالك في حالة التثبيت النظيف للمتصفح أو التبديل إلى جهاز جديد ، ولديك مزايا أخرى مثل إضافة وسحب وتحويل الأموال ، فإننا نوصي</translation>
-<translation id="6733942359297688714">جارِ الاتصال بمحفظة Uphold التي تم التحقق منها.</translation>
+<translation id="467041382895390784">جارٍ الاتصال بمحفظة <ph name="PROVIDER"/> wallet. التي تم التحقق منها.</translation>
 <translation id="5717619667204259673">حافظ على أمان مفتاح الاسترداد هذا.</translation>
 <translation id="4699702339303280827">يمكنك دومًا استخدام هذا المفتاح لتستعيد محفظتك إذا حدث شيء ما لمتصفحك أو حاسوبك. ولكن تأكد من حمايته، فأي شخص يحصل على هذا المفتاح يمكنه سرقة محفظتك. ربما قد يكون أكثر أمانًا أن تدونه لديك على ورقة صغيرة، أو في أي مكان تحتفظ فيه بالمعلومات الهامة.</translation>
 <translation id="8979401359137062629">ملحوظة:</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">من حين لآخر، ستحصل على منح رمزية مجانية من Brave. تأكد من ترقب التنبيه!</translation>
 <translation id="2185598236335233939">ابحث عن إشعارات الإعلانات بينما تستمر في استخدام Brave. سيزداد رصيدك من نقاط BAT مع كل إعلان تشاهده.</translation>
 <translation id="1370034647041840967">اربح رموزًا مميزة مقابل انتباهك إلى الإعلانات وادفعها لدعم منشئي المحتوى الذين تقدّرهم!</translation>
-<translation id="4600224932216165965">قم بإضافة وسحب وإدارة الأموال في <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
-<translation id="3580616436301227919">إنّ محفظة Brave الخاصة بك مدعومة بواسطة <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="4919888432594361029">إضافة وسحب وإدارة الأموال على <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">يتم دعم محفظة Brave الخاصة بك من قِبل <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">تم إنشاء مكافآت Brave بناءً على Basic Attention Token. اعرف المزيد حول BAT</translation>
 <translation id="7823359893981882407">هنا</translation>
 <translation id="4483635855837696643">استعادة محفظتك</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">أدخِل مفتاح الاسترداد أو</translation>
 <translation id="6548189695918108191">قم بعمل نسخة احتياطية من محفظتك قبل استبدالها. أو ستفقد الأموال {{funds}}، الموجودة في محفظتك الحالية.</translation>
 <translation id="5423214929210538027">هل أنت متأكد من أنك تريد إعادة تعيين محفظة المكافآت الخاصة بك؟</translation>
-<translation id="7428521340740703492">سيتم فقدان مبلغ<ph name="BEGIN_BOLD"/>{{amount}} من عملة BAT<ph name="END_BOLD"/> الرمزية وبيانات Rewards الأخرى الخاصة بك بشكلٍ دائم إذا قمت بتصفير محفظتك. يُرجى التأكد من أنك قد قمت بالتحقق من فعالية محفظتك باستخدام Uphold حتى تتمكن من الاحتفاظ برصيدك من عملة BAT الرمزية.</translation>
+<translation id="8683358891240311475">إذا قمت بإعادة ضبط محفظتك فسوف تفقد بشكل نهائي <ph name="BAT_AMOUNT"/> الخاصة بك ومكافآتك الأخرى. يرجى التأكد من التحقق من محفظتك من خلال <ph name="PROVIDER"/> حتى تتمكن من الاحتفاظ بالـBAT الخاصة بك.</translation>
 <translation id="2028613172174411919">ستفقد بيانات المكافآت الخاصة بك نهائياً إذا قمت بإعادة ضبط محفظتك.</translation>
 <translation id="4914597931214386232">تم جمع المكافأة المالية التي منحت لك</translation>
 <translation id="3494964159182650590">ملخص المكافآت</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">تحقق</translation>
 <translation id="8267327690882073581">التحقق من المحفظة</translation>
 <translation id="543510923939676996">تمَّ التحقق من المحفظة</translation>
-<translation id="7591798679868259510">الانتقال إلى حساب Uphold الخاص بي</translation>
+<translation id="2659764755126740206">انتقل إلى <ph name="PROVIDER"/> حسابي</translation>
 <translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
 <translation id="46988480989545156">التحقق من المحفظة</translation>
-<translation id="160145159036553575">خدمة المحفظة لدينا مدعومة بواسطة <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="5796169459825124737">يتم توفير خدمة المحفظة الخاصة بنا من قِبل <ph name="PROVIDER"/>.</translation>
 <translation id="6771734945114850124">يرجى أن تكون هويتك الصادرة من الحكومة متاحة.</translation>
 <translation id="8697510149346635496">اسحب رموز BAT التي تكسبها من عرض الإعلانات التي تحترم الخصوصية</translation>
 <translation id="1481480653609649134">قم بشراء رموز BAT إضافية بواسطة بطاقات الائتمان وغيرها من المصادر</translation>
 <translation id="9096003370755878766">اسحب رموز BAT التي قد تكون أضفتها سابقاً في محفظة مكافآت Brave الخاصة بك</translation>
 <translation id="8558636200953226885">لكن إذا قمت بالتحقق فسيمكنك...</translation>
 <translation id="3354315693758743702">التحقق من محفظتك خطوة اختيارية.</translation>
-<translation id="8465442795593991224">قد يتطلب منك Uphold التحقق من هويتك بناءً على الخدمات المطلوبة.</translation>
-<translation id="723054503945711909">لا تقوم شركة Brave Software Inc بمعالجة أو تخزين أو الوصول إلى أي من المعلومات الشخصية التي تقدمها إلى Uphold عند إنشاء حساب معهم.</translation>
-<translation id="7677480094678113476">ملاحظة: ستكون معاملاتك مرئية لـ Uphold بمجرد منح الإذن؛ على سبيل المثال، سيتمكنون من رؤية المرسل إليه ومبالغ الإكراميات التي تدفعها.</translation>
+<translation id="4872388810065331182">قد يطلب <ph name="PROVIDER"/> منك تأكيد هويتك بناءً على الخدمات المطلوبة.</translation>
+<translation id="6938217233488972952">لا تقوم شركة برمجيات Brave بمعالجة أو تخزين أو الوصول إلى أي من المعلومات الشخصية التي تقدمها إلى <ph name="PROVIDER"/> عند إنشاء حساب بواسطتها.</translation>
+<translation id="2415586822982819406">ملاحظة: ستكون معاملاتك ظاهرة لـ <ph name="PROVIDER"/> بمجرد أن تقوم بالتفويض؛ على سبيل المثال، سيتمكنون من رؤية المستلم وقيمة عمولاتك.</translation>
 <translation id="7404779623219601861">تبديل BAT ببطاقات هدايا</translation>
 <translation id="6215565499749144110">مع شبكة TAP فبإمكانك تبديل BAT ببطاقات هدايا ذات علامات تجارية شهيرة.</translation>
 <translation id="6915065518766963119">* يتطلب التحقق من Uphold.</translation>
@@ -722,12 +734,36 @@
 <translation id="8327818101454798856">لذا فإذا كنت تنوي دعم مواقعك المفضلة فانتقل إلى هناك فضلاً عن ذلك.</translation>
 <translation id="412480955826088549">جاري تحميل المكون ...</translation>
 <translation id="4894106830958548828">أفهم</translation>
-<translation id="7701466644604753106">تشغيل قارئ السرعة</translation>
-<translation id="763042262431778831">أوقف قارئ السرعة</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">قم باستعراض الأسواق وشراء العملات المشفرة من crypto.com.</translation>
+<translation id="4292334826913000023">عرض السعر</translation>
+<translation id="5001098083058405168">احصل على 2% مكافأة على الودائع</translation>
+<translation id="7336377875970208451">التوقف عن دفع رسوم التداول</translation>
+<translation id="5889002303959545585">اشترِ بيتكوين</translation>
+<translation id="7243082596932212589">استعراض أسواق Crypto.com</translation>
+<translation id="2258222996838418990">رسم بياني 7d</translation>
+<translation id="5337526542182802976">الأزواج المدعومة</translation>
+<translation id="1164622162816276433">حجم المعاملات خلال 24 ساعة</translation>
+<translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
+<translation id="4492298165410552103">هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Brave؟</translation>
+<translation id="3470923752115324276">يمكّنك Brave من زيارة نطاقات crypto. باستخدام كلاود فلير لمعالجة طلبات البحث عن اسم نطاق crypto. باستخدام DNS عبر HTTPS. إذا قمت بتمكين هذا، فسوف يتعرف خادم كلاود فلير على نطاق crypto. الذي تحاول زيارته ولكن لن يتمكن من التعرف على النطاقات الأخرى. راجع شروط استخدام كلاود فلير <ph name="BEGIN_CF_TOU_LINK"/><ph name="END_CF_TOU_LINK"/> و <ph name="BEGIN_CF_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="6513892817556267573">خدمة اسم إيثريوم</translation>
+<translation id="4335039108389860301">هل تريد تمكين دعم خدمة اسم إيثريوم (ENS) في متصفح Brave؟</translation>
+<translation id="618766505813078707">يمكّنك Brave من زيارة نطاقات eth. باستخدام كلاود فلير لمعالجة طلبات البحث عن اسم المجال باستخدام DNS عبر HTTPS. إذا قمت بتمكين هذا، فسيتمكن خادم كلاود فلير من التعرف على نطاق .eth.الذي تحاول زيارته ولكن لن يتمكن من التعرف على النطاقات الأخرى. راجع شروط استخدام <ph name="BEGIN_CF_TOU_LINK"/> كلاود فلير <ph name="END_CF_TOU_LINK"/> aو<ph name="BEGIN_CF_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">تابع باستخدام خادم كلاود فلير</translation>
+<translation id="2468755552460246661">نطاق تم حظره</translation>
+<translation id="6631469728138660166">أمامك موقع إلكتروني مريب</translation>
+<translation id="983774928604730749">قام Brave بمنع الموقع التالي من التحميل:</translation>
+<translation id="8250033559824599347">قد يكون هذا الموقع احتيالياً، أو قد يقوم بالتنقل بك بين مواقع مختلفة لتثبيت ملفات تعريف الارتباط من أجل لتتبع، أو لتنفيذ إجراءات أخرى تخترق الخصوصية.</translation>
+<translation id="2459038234784107183">لا تحذرني من هذا الموقع مرة أخرى</translation>
+<translation id="8242426110754782860">متابعة</translation>
+<translation id="2501278716633472235">الرجوع</translation>
 <translation id="9020818404803201080">الأقران المتصلون:</translation>
 <translation id="2903493209154104877">العناوين</translation>
 <translation id="3207122385716480167">إحصائيات Repo</translation>
 <translation id="2595187693729756455">معلومات العقدة</translation>
+<translation id="8999763401170835879">لقد حدث خطأ ما، يرجى إعادة البدء مرة أخرى</translation>
+<translation id="5433704526290922623">لقد حدث خطأ ما، يرجى محاولة تثبيت العقدة مرة أخرى</translation>
 <translation id="5789886980848929155">حالة عقدة IPFS</translation>
 <translation id="6599816589121202398">واجهة برمجة التطبيقات</translation>
 <translation id="1327977588028644528">المدخل</translation>
@@ -769,20 +805,20 @@
 <translation id="3977809385703587108">يمكنك تغيير تفضيلاتك مرة أخرى في</translation>
 <translation id="3340978935015468852">الإعدادات</translation>
 <translation id="4148957013307229264">جارِ التثبيت ...</translation>
-<translation id="6057992164469678163">في انتظار اتصال النظراء...</translation>
+<translation id="4219228508273972445">جارٍ البحث عن أقران ...</translation>
 <translation id="1902096227388293745">لا يوجد نظراء متاحون، جارِ إعادة المحاولة ...(<ph name="ATTEMPTS_NUMBER"/> محاولات متبقية)</translation>
 <translation id="1675751799495331928">لقد تجاوزنا الحد الأقصى للمحاولات، حاول مرة أخرى لاحقاً.</translation>
 <translation id="4499666752625407848">حدث خطأ أثناء التحديث.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">قم باستعراض الأسواق وشراء العملات المشفرة من crypto.com.</translation>
-<translation id="4292334826913000023">عرض السعر</translation>
-<translation id="5001098083058405168">احصل على 2% مكافأة على الودائع</translation>
-<translation id="7336377875970208451">التوقف عن دفع رسوم التداول</translation>
-<translation id="5889002303959545585">اشترِ بيتكوين</translation>
-<translation id="7243082596932212589">استعراض أسواق Crypto.com</translation>
-<translation id="2258222996838418990">رسم بياني 7d</translation>
-<translation id="5337526542182802976">الأزواج المدعومة</translation>
-<translation id="1164622162816276433">حجم المعاملات خلال 24 ساعة</translation>
+<translation id="7789840864192026963">منح إذن</translation>
+<translation id="8092074243456635562">حتى أقوم بغلق هذه الصفحة</translation>
+<translation id="3523195733429162409">لمدة 24 ساعة</translation>
+<translation id="2373264732659722940">لمدة أسبوع واحد</translation>
+<translation id="6318437367327684789">للأبد</translation>
+<translation id="7463327191540031132">حظر للأبد</translation>
+<translation id="8797999629784150206">يمكنك تغيير <ph name="SITE_PERMISSIONS"/> في أي وقت. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">إذن الموقع</translation>
+<translation id="7701466644604753106">تشغيل قارئ السرعة</translation>
+<translation id="763042262431778831">أوقف قارئ السرعة</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>

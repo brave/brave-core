@@ -2,23 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="kn">
 <translation id="7307834434086582547">ಬ್ರೇವ್‌ ಶೀಲ್ಡ್‌ಗಳ ಸಕ್ರಿಯ/ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುವಿಕೆ</translation>
-<translation id="6303294677342628402">ಶೀಲ್ಡ್‌ಗಳು</translation>
-<translation id="6132506775968708399">3ನೇ ವ್ಯಕ್ತಿಯ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
-<translation id="7835726359440951858">ಜಾಹೀರಾತು ನಿಷೇದ ಮತ್ತು ಟ್ರ್ಯಾಕಿಂಗ್‌</translation>
 <translation id="3570081523466826008">HTTPS ಗೆ ಸಂಪರ್ಕಗಳನ್ನು ಮೇಲ್ದರ್ಜೆಗೇರಿಸಿ</translation>
 <translation id="94154759592465111">ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
-<translation id="7458422973722236530">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ಸಂರಕ್ಷಣೆ</translation>
 <translation id="5709627087332022422">ಕ್ರಾಸ್-ಸೈಟ್ ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
-<translation id="6754976710186182237">ಫಿಂಗರ್‌ಪ್ರಿಂಟ್‌ ಮಾದರಿ</translation>
-<translation id="2313532038420432247">HTTPS ಅಪ್‌ಗ್ರೇಡ್‌ಗಳು</translation>
-<translation id="7461425058443653485">ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="6052725679982758334">ಸಾಮಾಜಿಕ ಮಾಧ್ಯಮ ನಿರ್ಬಂಧಿಸುವಿಕೆ</translation>
 <translation id="7498695072878479744">Google ಲಾಗಿನ್ ಬಟನ್‌ಗಳನ್ನು ತೃತೀಯ ಪಕ್ಷದ ಸೈಟ್‌ಗಳಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="863171915776379000">ಫೇಸ್‌ಬುಕ್ ಲಾಗಿನ್‌ಗಳನ್ನು ಮತ್ತು ಎಂಬೆಡ್ ಮಾಡಿದ ಪೋಸ್ಟ್‌ಗಳನ್ಮು ಅನುಮತಿಸಿ</translation>
 <translation id="5165042248369837294">ಎಂಬೆಡ್ ಮಾಡಿದ ಟ್ವೀಟ್‌ಗಳನ್ನು ಟ್ವಿಟರ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="958971637207126733">ಎಂಬೆಡ್ ಮಾಡಲಾದ ಫೋಸ್ಟ್‌ಗಳನ್ನು LinkedIn ನಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
-<translation id="3834924998750356151">ಮಾನಿಟರ್‌ ಬ್ಲಾಕಿಂಗ್‌</translation>
-<translation id="1713450908129883784">ವೈಯಕ್ತಿಕ ಕಂಟ್ರೋಲ್‌ಗಳು</translation>
 <translation id="6302422639282249274">ಬ್ರೇವ್‌ ರಿವಾರ್ಡ್‌ ನಿರ್ವಹಣೆ</translation>
 <translation id="1506061864768559482">ಹುಡುಕಾಟ ಎಂಜಿನ್</translation>
 <translation id="1468415711258933398">ಸ್ಟಾಂಡರ್ಡ್‌ ಟ್ಯಾಬ್‌</translation>
@@ -28,12 +19,12 @@
 <translation id="8710614491157212477">ಸಾಧ್ಯವಿದ್ದಾಗ HTTP ಬದಲಿಗೆ  HTTPS  ಬಳಸಿಕೊಂಡು ಬೆಂಬಲಿತ ಸೈಟ್‌ಗಳು ತೆರೆದುಕೊಳ್ಳುತ್ತವೆ</translation>
 <translation id="8387201461264842096">ಜಾಹೀರಾತು ನಿಷೇಧ</translation>
 <translation id="1934885595886623674">ಲೋಡಿಂಗ್‌ನಿಂದ ಜಾಹೀರಾತುಗಳನ್ನು ರಕ್ಷಿಸಿ</translation>
+<translation id="7458422973722236530">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ಸಂರಕ್ಷಣೆ</translation>
 <translation id="5787084571334399599">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್‌ನಿಂದ ಬ್ರೌಸರ್‌ ಅನ್ನು ತಡೆಗಟ್ಟಿ</translation>
 <translation id="7459000603787995422">ನಿರ್ಗಮಿಸಲು ಟ್ಯಾಬ್‌ ಕ್ಲೋಸ್‌ ಮಾಡಿ</translation>
 <translation id="1680858055899097121">ಬ್ರೌಸಿಂಗ್‌ ಅವಧಿಯಲ್ಲಿ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಹಿಡಿದಿಟ್ಟುಕೊಳ್ಳಬೇಡಿ</translation>
 <translation id="6469509880167172749">ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಉತ್ಪನ್ನ ವಿಶ್ಲೇಷಣೆಯನ್ನು Brave ಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸಿ</translation>
 <translation id="7090566321964540749">ಈ ಅನಾಮಧೇಯ ಮಾಹಿತಿಯು ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳ ಒಟ್ಟಾರೆ ಬಳಕೆಯನ್ನು ಅಂದಾಜು ಮಾಡಲು ಮಾತ್ರ Brave ಗೆ ಅನುಮತಿಸುತ್ತದೆ.</translation>
-<translation id="453601949003770390">ಟ್ರ್ಯಾಕ್‌ಗಳು &amp; ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="347604927162577559">ಡೇಟಾ\nಉಳಿಸಲಾಗಿದೆ</translation>
 <translation id="9008534313521214777">ಉಳಿಸಲಾದ ನಿರೀಕ್ಷಿತ\nಸಮಯ</translation>
 <translation id="6572660632052512096">ಡೆಸ್ಕ್‌ಟಾಪ್‌ ಮೋಡ್‌</translation>
@@ -57,22 +48,16 @@
 <translation id="8701563696941209024">ಈಗ ರೀಲಾಂಚ್‌ ಮಾಡಿ</translation>
 <translation id="834487290629916192">ನಂತರ</translation>
 <translation id="8281886186245836920">ಸ್ಕಿಪ್‌</translation>
-<translation id="316832010181763471">ಆನ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿ ಸರ್ಚ್‌ ಎಂಜಿನ್‌</translation>
 <translation id="986879628471635371">ಟ್ರಬಲ್‌ ಶೂಟಿಂಗ್‌ ಚಾಲ್ತಿಯಲ್ಲಿದೆ</translation>
 <translation id="5808759341041733958">ಡೀಫಾಲ್ಟ್ ಸರ್ಚ್ ಎಂಜಿನ್ ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="1331593888918588693">ನೀವು ನಂತರದಲ್ಲಿ ಆ್ಯಪ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ನಿಮ್ಮ ಆದ್ಯತೆಯನ್ನು ಯಾವಾಗಲೂ ಬದಲಿಸಬಹುದು.</translation>
-<translation id="7053983685419859001">ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="5806601733251372221">ಬ್ರೇವ್‌ ಶೀಲ್ಡ್ಸ್‌</translation>
-<translation id="2880356288762235261">ಗೌಪ್ಯತೆ-ಆಕ್ರಮಣಕಾರಿ ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಟ್ರ್ಯಾಕರ್‌ಗಳು ಆದ್ದರಿಂದ ನೀವು ವೆಬ್‌ನಾದ್ಯಂತ ಅನುಸರಿಸದೆ ಬ್ರೌಸ್ ಮಾಡಬಹುದು.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="821707262661492716">ಖಾಸಗಿತನ ಗೌರವಿಸುವ ಜಾಹೀರಾತು ನೋಡಲು</translation>
 <translation id="4281844954008187215">ಸೇವೆಯ ನಿಯಮಗಳು</translation>
 <translation id="6871397658902960384">ಬ್ರೌಸಿಂಗ್‌ ಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="454386012157232640">ನಾನು ಆ ಒಂದು ಜಾಹೀರಾತು ನೋಡಲಿಲ್ಲ</translation>
 <translation id="1448877943847791441">ಬ್ರೇವ್‌ ನಿಮ್ಮ ಮೊದಲ ಜಾಹೀರಾತನ್ನು ತೋರಿಸುತ್ತದೆ</translation>
 <translation id="6511854390690723657">ಇದು ನಿಮ್ಮ ಮೊದಲ ಬ್ರೇವ್‌ ಜಾಹೀರಾತು. ಹೆಚ್ಚು ತಿಳಿಯಲು ಟ್ಯಾಪ್‌ ಮಾಡಿ</translation>
-<translation id="4930714375720679147">ಆನ್ ಮಾಡಿ</translation>
-<translation id="2453860139492968684">ಪೂರ್ಣಗೊಳಿಸು</translation>
 <translation id="2070991379950719711">Brave Rewards ಬಳಸಲು ಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="48520986898237073">ವ್ಯಾಲೆಟ್‌ಗೆ ಮುಂದುವರಿಸಿ</translation>
 <translation id="3570367516044491911">ಡಿಫಾಲ್ಟ್‌ ಬ್ರೌಸರ್‌ ಆಗಿ ಸೆಟ್‌ ಮಾಡಿ</translation>
@@ -111,21 +96,11 @@
 <translation id="8220228041552340594">ಅಕ್ಟೋಬರ್‌</translation>
 <translation id="8280223431922155812">ನವೆಂಬರ್‌</translation>
 <translation id="4254029385847607686">ಡಿಸೆಂಬರ್‌</translation>
-<translation id="1916285746997567466">ಮುಂದಿನ ಇಂಟರ್‌ನೆಟ್‌ ಅನುಭವ ಪಡೆಯಲು ಸಿದ್ಧರಾಗಿರಿ</translation>
-<translation id="1327938628925645979">ರಿವಾರ್ಡ್‌ಗೆ ಸೇರಿ</translation>
-<translation id="5567439033041178034">ಹೆಚ್ಚು ಕಲಿಯಿರಿ</translation>
 <translation id="3780605330121608425">ನಿಮ್ಮ ವಾಲೆಟ್</translation>
 <translation id="8845154268466251503">ಬಿಎಟಿ</translation>
 <translation id="3826081199286264109">USD</translation>
-<translation id="2104073734684466851">ಅನುದಾನಗಳು</translation>
 <translation id="1165667598801520610">ಹಣ ಜಮೆಮಾಡಿ</translation>
 <translation id="8428213095426709021">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
-<translation id="2012723204723845092">ಮರಳಿ ಸ್ವಾಗತ</translation>
-<translation id="7669994301500276741">ಬ್ರೌಸಿಂಗ್‌ಗಾಗಿ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ</translation>
-<translation id="8203529727745387785">ಸಂಬಂಧಿತ ಜಾಹೀರಾತಿನ ಗೌಪ್ಯತೆಯನ್ನು ನೋಡುವ ಮೂಲಕ ಸಂಪಾದಿಸಿ, 
-ಮತ್ತು ನೀವು ಇಷ್ಟಪಡುವ ಕಂಟೆಂಟ್‌ ಸೃಷ್ಟಿಕರ್ತರ ಬೆಂಬಲಕ್ಕೆ 
-ಪಾವತಿಸಿ.</translation>
-<translation id="5148719990624240755">ಬ್ರೇವ್‌ ರಿವಾರ್ಡ್‌ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="8772672608371898774">ಬ್ರೇವ್  ಪರಿಶೀಲಿಸಿದ ಪ್ರಕಾಶಕರು</translation>
 <translation id="1397683270551078781">ಇನ್ನೂ ಪರಿಶೀಲಿಸಿಲ್ಲ</translation>
 <translation id="5727208111992260840">ಬ್ರೇವ್ ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ಕ್ರಿಯೇಟರ್‌ ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಆಗಿಲ್ಲ.  
@@ -143,7 +118,6 @@
 <translation id="13853865024308201">ಕ್ಲೈಮ್ ಮಾಡಿ</translation>
 <translation id="7335371657242627509">ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿ</translation>
 <translation id="5463954686005964104">ಈ ಸೈಟ್‌ಗೆ ಮಾಸಿಕವಾಗಿ ಟಿಪ್ ನೀಡಿ</translation>
-<translation id="7530570094705720669">ವಾಲೆಟ್ ರಚಿಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
 <translation id="7997676409547731821">ಸಾಕಷ್ಟು ಹಣವಿಲ್ಲದ ಕಾರಣ ಸ್ವಯಂ-ಕೊಡುಗೆ ಮತ್ತು ಮಾಸಿಕ ಉಡುಗೊರೆಗಳಿಗಾಗಿ ನಿಮ್ಮ ನಿಗದಿತ ಮಾಸಿಕ ಪಾವತಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಲಿಲ್ಲ. ನಾವು 30 ದಿನಗಳಲ್ಲಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸುತ್ತೇವೆ</translation>
 <translation id="5306913077198665897">ನಿಮ್ಮ ಉಡುಗೊರೆ ಸಕ್ರಿಯಗೊಳಿಸುವಲ್ಲಿ ಸಮಸ್ಯೆಯಿದೆ, ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -158,17 +132,12 @@
 <translation id="1713542052890184975">ದಯವಿಟ್ಟು ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ.</translation>
 <translation id="2323069945529668668">ಓಹೋ!</translation>
 <translation id="7510166204621526816">Brave Rewards ಸರ್ವರ್ ಪ್ರತಿಕ್ರಿಯೆ ನೀಡುತ್ತಿಲ್ಲ. ನಾವು ಈ ಸಮಸ್ಯೆಯನ್ನು ಆದಷ್ಟು ಬೇಗ ಸರಿಪಡಿಸುತ್ತೇವೆ.</translation>
-<translation id="7117228822971127758">ನಂತರ ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</translation>
-<translation id="3068742524072211213">ಮುಗಿಯುತ್ತಿದೆ <ph name="DATE"/></translation>
-<translation id="4292832015778676417">ಜಾಹೀರಾತುಗಳಿಂದ ಗಳಿಸಲಾಗಿದೆ</translation>
 <translation id="683765328936486920">ಯೂಟ್ಯೂಬ್‌ನಲ್ಲಿ</translation>
 <translation id="8969049974285901797">ಟ್ವಿಚ್‌ ಮೇಲೆ</translation>
 <translation id="6940273954212603510">ದಯವಿಟ್ಟು</translation>
 <translation id="1036277985068412734">ಮೊತ್ತ ಜಮೆ ಮಾಡಿ</translation>
 <translation id="3492491948683276944">ಮಾಸಿಕ ಟಿಪ್‌ ಅನ್ನು ಸೆಟ್‌ ಮಾಡಿ</translation>
-<translation id="4162066325465825185">ಕ್ಷಮಿಸಿ, ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್ ಲಭ್ಯವಿಲ್ಲ</translation>
 <translation id="8038539967102225446">ಬ್ರೇವ್‌ ಜಾಹೀರಾತುಗಳು ಇಲ್ಲಿವೆ!</translation>
-<translation id="8985635554450124959">ಸಿಂಕ್ ಅನ್ನು ಸೆಟಪ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ</translation>
 <translation id="222883304157347087">(ಈ ಸಾಧನ)</translation>
 <translation id="279635009973773843">ಸಾಧನ ಲೋಡಿಂಗ್‌ ಆಗುತ್ತಿದೆ</translation>
 <translation id="6394333525003604181">ಸಿಂಕ್ ಚೈನ್ ಅನ್ನು ಬಿಡಲಾಗುತ್ತಿದೆ...</translation>
@@ -216,10 +185,7 @@
 <translation id="6810078320346589989">ಬೂಕ್‌ಮಾರ್ಕ್‌ ಸೃಷ್ಟಿಸಿ</translation>
 <translation id="3396347744975515056">Brave ಸಿಂಕ್ ಅನ್ನು ನವೀಕರಿಸಲಾಗಿದೆ ಮತ್ತು ಸೆಟಪ್ ಅಗತ್ಯವಿದೆ</translation>
 <translation id="7473245612074035141">ಸೆಟಪ್ ಆರಂಭಿಸಿ</translation>
-<translation id="1872784258300710671">ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳ ಒಟ್ಟಾರೆ ಬಳಕೆಯನ್ನು ಅಂದಾಜು ಮಾಡಲು Brave ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಉತ್ಪನ್ನ ವಿಶ್ಲೇಷಣೆಯನ್ನು ಬಳಸುತ್ತದೆ</translation>
-<translation id="8712637175834984815">ಅರ್ಥವಾಯಿತು</translation>
-<translation id="4394049700291259645">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="8446884382197647889">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
+<translation id="8985635554450124959">ಸಿಂಕ್ ಅನ್ನು ಸೆಟಪ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ</translation>
 <translation id="2514300153301737214">ನೀವು Brave ಸಿಂಕ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದ್ದೀರಿ ಎಂದು ನಾವು ಪತ್ತೆ ಮಾಡಿದ್ದೇವೆ, ಹಾಗಿದ್ದರೂ ನಿಮ್ಮ ಸಿಸ್ಟಮ್ ಸಿಂಕ್ ಆಫ್ ಮಾಡಲಾಗಿದೆ ಮತ್ತು ಅದು Brave ಅನ್ನು ಸಿಂಕ್ ಮಾಡಲು ಅನುಮತಿಸುವುದಿಲ್ಲ. ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯುವುದಕ್ಕಾಗಿ ಒತ್ತಿ.</translation>
 <translation id="7173114856073700355">ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="6965382102122355670">ಸರಿ</translation>
@@ -240,7 +206,6 @@
 <translation id="1081826981536899387">BAT ಪಾಯಿಂಟ್‌‌ಗಳು</translation>
 <translation id="9212459913845238740">ಪಾಯಿಂಟ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು</translation>
 <translation id="2132683977638223450">ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ</translation>
-<translation id="4522570452068850558">ವಿವರಗಳು</translation>
 <translation id="1486343603936278248">ಟೋಕನ್‌</translation>
 <translation id="8713995420537272453">ಪಾಯಿಂಟ್‌ಗಳು</translation>
 <translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
@@ -307,7 +272,6 @@
 <translation id="614747795780742163">ನಿಮ್ಮ ಹಿಂದಿನ ಭೇಟಿಗಳ ಬಗ್ಗೆ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸುವುದರಿಂದ ವೆಬ್‌ಸೈಟ್‌ಗಳನ್ನು ತಡೆಯುತ್ತದೆ</translation>
 <translation id="6883611015375728278">ಎಲ್ಲಾ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="5657156137487675418">ಎಲ್ಲಾ ಕುಕೀಗಳನ್ನು ಅನುಮತಿಸಿ</translation>
-<translation id="5963670684159057574">ಕ್ರಾಸ್-ಸೈಟ್ ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ಅನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="3895527457258986253">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="184568144098869637">ನಿಮ್ಮ ಸಾಧನವನ್ನು ಗುರುತಿಸುವುದನ್ನು ಬ್ರೌಸರ್ ತಡೆಯುತ್ತದೆ</translation>
 <translation id="7396366757003005317">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ(ಕಟ್ಟುನಿಟ್ಟಾದ, ಸೈಟ್‌ಗಳನ್ನು ಬ್ರೇಕ್ ಮಾಡಬಹುದು)</translation>
@@ -356,6 +320,7 @@
 <translation id="4302754476737420523">3 ತಿಂಗಳುಗಳು</translation>
 <translation id="8248593573177859437">ಗೌಪ್ಯತೆ ವರದಿ</translation>
 <translation id="1274039301958114163">ಗೌಪ್ಯತೆ ವರದಿ ಅಧಿಸೂಚನೆ</translation>
+<translation id="453601949003770390">ಟ್ರ್ಯಾಕ್‌ಗಳು &amp; ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="1581614543353331529">ತೋರಿಸಲು ಇನ್ನೂ ಯಾವುದೇ ಡೇಟಾ ಇಲ್ಲ</translation>
 <translation id="2401984885421380890">ಟ್ರ್ಯಾಕರ್‌ಗಳು ಮತ್ತು ಜಾಹೀರಾತುಗಳನ್ನು\nನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="2662183408296991265">ಡೇಟಾ ಉಳಿಸಿರುವುದು\n(<ph name="DATA_SAVED"/>)</translation>
@@ -387,6 +352,7 @@
 <translation id="1383876407941801731">ಹುಡುಕಿ</translation>
 <translation id="1972589975368876259">ಸ್ಟ್ಯಾಕ್ ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="2490330380242414851">ವಿಜೆಟ್ ತೆಗೆದುಹಾಕಿ</translation>
+<translation id="8446884382197647889">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
 <translation id="7384441892795736634">ಡೇಟಾ ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
 <translation id="4804818685124855865">ಡಿಸ್‌ಕನೆಕ್ಟ್ ಮಾಡಿ</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -444,8 +410,10 @@
 <translation id="5876169128756792273">ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸುವುದನ್ನು ಮೀರಿ ಟೋಕನ್‌ಗಳನ್ನು ಬಳಸಬಹುದು. ವ್ಯಾಪಾರಿಗಳು ನಮ್ಮ ವೇದಿಕೆಯನ್ನು ಸೇರಿಕೊಂಡಂತೆಲ್ಲಾ ನೀವು ಡಿಜಿಟಲ್ ವಿಷಯ ಮತ್ತು ಇತರ ಸರಕುಗಳನ್ನು ಖರೀದಿಸಬಹುದು.</translation>
 <translation id="1402530520078693620">ಕೊನೆಯದಾಗಿ, ಮೂಲ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ನಿಮ್ಮನ್ನು ಹೊಂದಿಸಲು ಅವಕಾಶ ಮಾಡಿಕೊಡಿ</translation>
 <translation id="3494356595346329740">ನೀವು ಇದನ್ನು ನಂತರ ಬದಲಾಯಿಸಬಹುದು.</translation>
-<translation id="6462814326662189004">ನೀವು ಎಷ್ಟು ಬಾರಿ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡಲು ಬಯಸುತ್ತೀರಿ?\n(ಗಂಟೆಗೆ ಜಾಹೀರಾತುಗಳು)</translation>
-<translation id="2134244432345596331">ನಿಮ್ಮ ಮೆಚ್ಚಿನ ರಚಿಸುವವರಿಗೆ ನೀವು ಎಷ್ಟು ಬೆಂಬಲವನ್ನು ನೀಡಲು ಬಯಸುತ್ತೀರಿ?\n(ನಿಮ್ಮ ಜಾಹೀರಾತು ಗಳಿಕೆಯಿಂದ)</translation>
+<translation id="3115702351969988294">ನೀವು ಎಷ್ಟು ಬಾರಿ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡಲು ಬಯಸುತ್ತೀರಿ?</translation>
+<translation id="3474670199029510295">(ಪ್ರತಿ ಗಂಟೆಯ ಜಾಹೀರಾತುಗಳು)</translation>
+<translation id="66599604460581068">ನಿಮ್ಮ ನೆಚ್ಚಿನ ರಚನೆಕಾರರಿಗೆ ಎಷ್ಟು ಬೆಂಬಲ ನೀಡಲು ಬಯಸುತ್ತೀರಿ?</translation>
+<translation id="3164498053837913829">(ನಿಮ್ಮ ಜಾಹೀರಾತು ಗಳಿಕೆಗಳಿಂದ)</translation>
 <translation id="827315274423079662">ಓಹೋ, ನೀವು’ ಸಿದ್ಧರಾಗಿರುವಿರಿ!</translation>
 <translation id="3895246934788932488">Brave Rewards ಬಳಸುವ ಮೂಲಕ, ನಿಮ್ಮ ಗೌಪ್ಯತೆಯನ್ನು ನೀವು ರಕ್ಷಿಸುತ್ತಿದ್ದೀರಿ ಮತ್ತು ಎಲ್ಲರಿಗೂ ವೆಬ್ ಅನ್ನು ಉತ್ತಮ ಸ್ಥಳವನ್ನಾಗಿ ಮಾಡಲು ಸಹಾಯ ಮಾಡುತ್ತಿದ್ದೀರಿ ಮತ್ತು ಅದು ಅದ್ಭುತವಾಗಿದೆ!</translation>
 <translation id="5705882733397021510">ಹಿಂತಿರುಗಿ</translation>
@@ -461,7 +429,6 @@
 <translation id="7889432931837317731">ಸಾಧ್ಯವಿರುವಾಗ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ತೆರೆಯಿರಿ</translation>
 <translation id="8967385052772844086">ಪೂರ್ಣ ಗೌಪ್ಯತೆ ವರದಿಯನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="6864343534748973390">ಹೆಚ್ಚು ಜನಪ್ರಿಯ</translation>
-<translation id="1622983732360473885">Brave ಬೆಂಬಲಿಸುತ್ತದೆ</translation>
 <translation id="4608192160278975831">ಗೌಪ್ಯತೆ ಮತ್ತು ಯಾವುದೇ ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ</translation>
 <translation id="7208522820527289601">ಖಾಸಗಿ ಮತ್ತು ಯಾವುದೇ ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ, EU-ಆಧಾರಿತ</translation>
 <translation id="1161008391729450974">ಟ್ರ್ಯಾಕರ್‌ಗಳಿಲ್ಲದೇ Google ಫಲಿತಾಂಶಗಳು</translation>
@@ -488,4 +455,17 @@
 ನೀವು ಏಪ್ರಿಲ್‌ನಲ್ಲಿ ಹೊಸ ಸಿಸ್ಟಮ್‌ನಲ್ಲಿ ನವೀಕರಿಸುವವರೆಗೆ 
 ನಿಮ್ಮ BAP ಬ್ಯಾಲೆನ್ಸ್ 0.0 ಅನ್ನು ತೋರಿಸುತ್ತದೆ. ಒಮ್ಮೆ ನೀವು ಹೊಸ ಸಿಸ್ಟಮ್ ಅನ್ನು 
 ಪ್ರಾರಂಭಿಸಿದ ನಂತರ, ನೀವು ಹೊಸ ಟೋಕನ್‌ಗಳೊಂದಿಗೆ ಪ್ರಾರಂಭಿಸುತ್ತೀರಿ!</translation>
+<translation id="4956847150856741762">1</translation>
+<translation id="5196716972587102051">2</translation>
+<translation id="7839580021124293374">3</translation>
+<translation id="2918322085844739869">4</translation>
+<translation id="7267186368513450821">5</translation>
+<translation id="6972003925509023890">1 BAT</translation>
+<translation id="8867821173176188875">5 BAT</translation>
+<translation id="8762169086048682708">10 BAT</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="4548973860489847866">0.00 BAT</translation>
+<translation id="4193129043743994339">0.00 USD</translation>
 </translationbundle>

@@ -7190,10 +7190,10 @@ Prima um comutador atribuído para remover a atribuição.</translation>
 <translation id="996250603853062861">A estabelecer ligação segura...</translation>
 <translation id="3285581355655524751">Ative a <ph name="LINK1_BEGIN"/>Sincronização do Brave<ph name="LINK1_END"/> para utilizar o Sync Wi-Fi. <ph name="LINK2_BEGIN"/>Saiba mais<ph name="LINK2_END"/></translation>
 <translation id="998747458861718449">I&amp;nspecionar</translation>
-<translation id="658539216370629794">Abrir link numa janela sem re&amp;gisto</translation>
-<translation id="1432267168815937878">Abrir Link numa Janela de Nave&amp;gação Anónima</translation>
-<translation id="6516243500644829484">&amp;Nova janela sem registo</translation>
-<translation id="7973394300052703468">Nova Janela de Navegação Anón&amp;ima</translation>
+<translation id="658539216370629794">Abrir link numa janela &amp;privada</translation>
+<translation id="1432267168815937878">Abrir Link numa Janela de Nave&amp;gação Privada</translation>
+<translation id="6516243500644829484">&amp;Nova janela privada</translation>
+<translation id="7973394300052703468">Nova Janela de Navegação &amp;Privada</translation>
 <translation id="6395403722585816044">Transferido em modo de navegação anónima</translation>
 <translation id="203837651858678035">Pretende sair do modo de navegação anónima mesmo assim?</translation>
 <translation id="7376221878517288144">Pretende sair do modo de navegação anónima mesmo assim?</translation>
@@ -7206,17 +7206,17 @@ Prima um comutador atribuído para remover a atribuição.</translation>
 <translation id="5097649414558628673">Ferramenta: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="8261378640211443080">Esta extensão não está listada no <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e é possível que tenha sido adicionada sem o seu conhecimento.</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Navegação anónima)</translation>
-<translation id="4369414322596874629">Pode navegar em privado com uma janela de navegação anónima</translation>
-<translation id="3772947852642271642">Navegue na Web sem guardar o seu histórico de navegação com uma janela de navegação anónima</translation>
-<translation id="3871738366246972820">Está a utilizar um computador partilhado? Experimente abrir uma janela de navegação anónima.</translation>
-<translation id="5808622652939943719">Para navegar em privado, clique no menu dos três pontos de forma a abrir uma janela de navegação anónima</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Navegação privada)</translation>
+<translation id="4369414322596874629">Pode navegar em privado com uma janela de navegação privada</translation>
+<translation id="3772947852642271642">Navegue na Web sem guardar o seu histórico de navegação com uma janela de navegação privada</translation>
+<translation id="3871738366246972820">Está a utilizar um computador partilhado? Experimente abrir uma janela de navegação privada.</translation>
+<translation id="5808622652939943719">Para navegar em privado, clique no menu dos três pontos de forma a abrir uma janela de navegação privada</translation>
 <translation id="9079153198295609735">Enviar automaticamente estatísticas de utilização e relatórios de falhas para a Brave</translation>
 <translation id="8839398440242019256">Não é da Brave Web Store</translation>
 <translation id="6945695820322143954">Esta extensão viola a política da Brave Web Store.</translation>
-<translation id="1676595396635191120">Nova janela de navegação anónima</translation>
+<translation id="1676595396635191120">Nova janela de navegação privada</translation>
 <translation id="5094764494104066239">Mostrar Sempre a Barra de Marcadores</translation>
-<translation id="4471385409549756595">Nova janela de navegação anónima</translation>
+<translation id="4471385409549756595">Nova janela de navegação privada</translation>
 <translation id="7618452966706304788">Pretende utilizar o Touch ID com a aplicação <ph name="APP_NAME"/> no modo de navegação anónima?</translation>
 <translation id="3098826269712097986">Os dados de início de sessão são armazenados no Brave depois de sair do modo de navegação anónima. Isto permite-lhe utilizar novamente o Touch ID neste Website mais tarde.</translation>
 <translation id="5186185447130319458">Navegação anónima</translation>
@@ -7226,20 +7226,20 @@ Prima um comutador atribuído para remover a atribuição.</translation>
           =0 {Abrir tudo em in &amp;janela privada}
           =1 {Abrir em &amp;janela privada}
           outro {Abrir tudo ({COUNT}) em &amp;janela privada}}</translation>
-<translation id="2431625704210501303">Abrir na janela de &amp;navegação anónima</translation>
+<translation id="2431625704210501303">Abrir na janela de &amp;navegação privada</translation>
 <translation id="4620367155626060530">&amp;Mostrar barra de marcadores</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Abrir tudo em &amp;Janela Privada}
           =1 {Abrir em &amp;Janela Privada}
           outro {Abrir Tudo ({COUNT}) em &amp;Janela Privada}}</translation>
-<translation id="1985165269306590797">Abrir na Janela de &amp;Navegação Anónima</translation>
+<translation id="1985165269306590797">Abrir na Janela de &amp;Navegação Privada</translation>
 <translation id="4680518314108745448">&amp;Mostrar Barra de Marcadores</translation>
-<translation id="642436385689435488">Abrir tudo numa janela de navegação anónima</translation>
+<translation id="642436385689435488">Abrir tudo numa janela de navegação privada</translation>
 <translation id="5074021236879527611">Abrir tudo (<ph name="URL_COUNT"/>) em janela privada</translation>
-<translation id="5463021359602611602">Abrir na janela de navegação anónima</translation>
-<translation id="1850357845349976573">{0,plural, =1{Navegação anónima}other{# janelas de navegação anónima abertas}}</translation>
+<translation id="5463021359602611602">Abrir na janela de navegação privada</translation>
+<translation id="1850357845349976573">{0,plural, =1{Navegação anónima}other{# janelas de navegação privada abertas}}</translation>
 <translation id="8773965542687789581">{0,plural, =1{Navegação anónima}other{Navegação anónima (#)}}</translation>
-<translation id="5070556616376997776">Está em modo anónimo.</translation>
+<translation id="5070556616376997776">Está em modo privado.</translation>
 <translation id="5832813618714645810">Pessoas</translation>
 <translation id="7171000599584840888">Adicionar pessoa...</translation>
 <translation id="2005199804247617997">Outras pessoas</translation>

@@ -235,6 +235,18 @@
     "message": "Bitte erstellen Sie ein Backup Ihrer Brave-Wallet.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Mehr...",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Gerätelimit erreicht",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Ihre Wallet kann nicht verifiziert werden, da Sie das maximale Limit für verifizierte Geräte erreicht haben.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Ihr Brave-Rewards-Konto wartet auf eine Einzahlung.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Wallet verifiziert",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Zu meinem Uphold-Account gehen",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Zu meinem $provider$-Konto wechseln ",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Verbindung zu Brave Rewards trennen",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Bemerkung: Ihre Transaktionen werden auf Uphold sichtbar sein, sobald Sie es autorisiert haben; zum Beispiel wird es möglich sein, den Empfänger und die Menge Ihrer Trinkgelder zu sehen.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Hinweis: Ihre Transaktionen werden sichtbar für $provider$, sobald Sie dies autorisieren. Zum Beispiel werden ihr Empfänger und die Höhe Ihrer vergebenen Trinkgelder sichtbar. ",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Token verdienen & andere fördern",

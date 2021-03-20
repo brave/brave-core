@@ -235,6 +235,18 @@
     "message": "Пожалуйста, создайте резервную копию вашего кошелька Brave.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Подробнее…",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Достигнуто ограничение на число устройств",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Ваш кошелек не может быть подтвержден, потому что вы достигли максимального количества подтвержденных устройств.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Ваш аккаунт Brave Rewards ожидает внесения депозита.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Кошелек верифицирован",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Перейти к моей учетной записи Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Перейти в мой аккаунт $provider$",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Отключиться от Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Примечание: ваши транзакции будут видимы для Uphold с момента вашей авторизации; например, они смогут просмотреть получателя и сумму ваших чаевых.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Внимание: ваши транзакции будут видны $provider$ после авторизации; например, они смогут увидеть получателя и сумму чаевых.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Зарабатывайте жетоны и выражайте благодарность",

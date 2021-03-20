@@ -109,7 +109,6 @@
 <translation id="847561904663814268">Oldinroq Brave profiliga kimdir bu kompyuterdan <ph name="ACCOUNT_EMAIL_LAST"/> sifatida kirgan. Ma’lumotlaringizni alohida saqlash uchun yangi Brave profilini yarating.</translation>
 <translation id="3834935463915107022">Brave baribir yopilsinmi?</translation>
 <translation id="8668413672647811944">Brave xavfsizlik tizimiga maxsus yangilanish oʻrnatildi. Qayta ishga tushiring va ochiq sahifalarni tiklang.</translation>
-<translation id="7914115000169617076">Deyarli yangilandi! Yangilash tugashi uchun Brave brauzerini qayta ishga tushiring. Inkognito oynalar qayta ochilmaydi.</translation>
 <translation id="4823369970559443694">Brave parollaringizni tekshira olmadi. 24 soatdan keyin qayta urining yoki <ph name="BEGIN_LINK"/>Brave hisobingizdagi parollarni tekshiring<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Brave qidiruvida ishlatiladigan imlo tekshiruvi vositasidan foydalanadi. Brauzerda kiritiladigan matn Brave serverlariga yuboriladi. Buni istalgan vaqtda sozlamalar orqali oʻzgartirish mumkin.</translation>
 <translation id="2899369907387169108">Brave brauzeridan hisobsiz foydalanish</translation>
@@ -280,4 +279,5 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi.}=1{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi. Inkognito oynalar qayta ochilmaydi.}other{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi. # ta inkognito oyna qayta ochilmaydi.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda}=1{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda Inkognito oynalar qayta ochilmaydi.}other{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda # ta inkognito oyna qayta ochilmaydi.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda}=1{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda Inkognito oynalar qayta ochilmaydi.}other{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda # ta inkognito oyna qayta ochilmaydi.}}</translation>
+<translation id="7914115000169617076">Deyarli yangilandi! Yangilash tugashi uchun Brave brauzerini qayta ishga tushiring. Inkognito oynalar qayta ochilmaydi.</translation>
 </translationbundle>

@@ -111,7 +111,6 @@
 <translation id="847561904663814268">Algú ha iniciat anteriorment la sessió a Brave en aquest ordinador com a <ph name="ACCOUNT_EMAIL_LAST"/>. Crea un usuari de Brave per mantenir la informació separada.</translation>
 <translation id="3834935463915107022">Vols sortir de Brave igualment?</translation>
 <translation id="8668413672647811944">S'acaba d'aplicar una actualització de seguretat especial per a Brave. Reinicia el navegador i restaurarem les pestanyes.</translation>
-<translation id="7914115000169617076">Gairebé has acabat amb l'actualització. Reinicia Brave per completar-la. Les finestres d'incògnit no es tornaran a obrir.</translation>
 <translation id="4823369970559443694">Brave no pot comprovar les teves contrasenyes. Torna-ho a provar al cap de 24 hores o <ph name="BEGIN_LINK"/>comprova les contrasenyes desades al teu Compte de Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Fa servir el mateix corrector ortogràfic que s'utilitza a la Cerca de Brave. El text que escrius al navegador s'envia a Brave. Pots canviar aquest comportament sempre que vulguis a la configuració.</translation>
 <translation id="2899369907387169108">Fes servir Brave sense cap compte</translation>
@@ -281,4 +280,5 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Hi ha una actualització nova de Brave disponible i s'aplicarà tan aviat com el reiniciïs.}=1{Hi ha una actualització nova de Brave disponible i s'aplicarà tan aviat com el reiniciïs. La finestra d'incògnit no es tornarà a obrir.}other{Hi ha una actualització nova de Brave disponible i s'aplicarà tan aviat com el reiniciïs. Les # finestres d'incògnit no es tornaran a obrir.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització}=1{L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització. La finestra d'incògnit no es tornarà a obrir.}other{L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització. Les # finestres d'incògnit no es tornaran a obrir.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{L'administrador necessita que reiniciïs Brave per aplicar una actualització}=1{L'administrador necessita que reiniciïs Brave per aplicar una actualització. La finestra d'incògnit no es tornarà a obrir.}other{L'administrador necessita que reiniciïs Brave per aplicar una actualització. Les # finestres d'incògnit no es tornaran a obrir.}}</translation>
+<translation id="7914115000169617076">Gairebé has acabat amb l'actualització. Reinicia Brave per completar-la. Les Finestres Privades no es tornaran a obrir.</translation>
 </translationbundle>
