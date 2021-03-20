@@ -235,18 +235,6 @@
     "message": "Vui lòng sao lưu ví Brave của bạn.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Tìm hiểu thêm",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Đã đến Giới hạn về Thiết bị",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Không thể xác thực ví của bạn vì bạn đã dùng hết giới hạn tối đa thiết bị được xác thực.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Tài khoản Tiền thưởng Brave của bạn đang chờ khoản tiền gửi.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Ví đã được xác thực.",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Đến tài khoản $provider$ của tôi",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Truy cập tài khoản Uphold của tôi",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Ngắt kết nối với Brave Rewards",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Lưu ý: $provider$ sẽ có thể thấy được các giao dịch của bạn sau khi bạn cho phép; ví dụ như họ sẽ có thể thấy người nhận cũng như số tiền boa của bạn.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Lưu ý: Các giao dịch của bạn sẽ hiển thị với Uphold khi bạn cho phép; chẳng hạn, họ sẽ có thể thấy người nhận và số tiền tip của bạn.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Kiếm Token & Tặng Lại",

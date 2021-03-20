@@ -235,18 +235,6 @@
     "message": "لطفاً از کیف پول Brave‌ خود پشتیبان‌گیری کنید.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "بیشتر بدانید",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "دستگاه به حداکثر مجاز رسیده است",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "کیف پول شما تأیید نشد زیرا به حداکثر مجاز دستگاه تأییدشده رسیده‌اید.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "حساب «پاداش‌های Brave» منتظر سپرده است.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "کیف پول تأیید شد!‍",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "رفتن به حساب $provider$ من",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "رفتن به حساب Uphold من",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "قطع ارتباط از پاداش‌های Brave",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "توجه: بعدازاینکه مجوز دهید، تراکنش‌هایتان برای $provider$ قابل مشاهده خواهند بود؛ برای مثال، Uphold می‌تواند گیرنده و مقدار انعام را ببیند.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "توجه: تراکنش‌های شما به‌محض این‌که اجازه دهید برای Uphold قابل‌مشاهده خواهد بود؛ برای مثال، آن‌ها قادر به دیدن گیرنده و مقدار انعام‌های شما خواهند بود.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "کسب توکن و برگرداندن",

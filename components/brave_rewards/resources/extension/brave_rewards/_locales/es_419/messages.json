@@ -235,18 +235,6 @@
     "message": "Haz una copia de seguridad de tu billetera de Brave.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Más información",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Se alcanzó el límite del dispositivo",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "No se pudo verificar tu billetera porque has llegado al límite máximo de dispositivos verificados.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Tu cuenta de Recompensas Brave está esperando un depósito.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Billetera verificada",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Ir a mi cuenta de $provider$",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Ir a mi cuenta de Uphold",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Desconectar de Recompensas Brave",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Nota: $provider$ podrá acceder a tus transacciones cuando des tu autorización. Por ejemplo, podrá ver el destinatario y el importe de tus propinas.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Nota: Uphold tendrá visibilidad de tus transacciones cuando des tu autorización. Por ejemplo, podrá ver el destinatario y el importe de tus propinas.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Gana tokens y retribuye",

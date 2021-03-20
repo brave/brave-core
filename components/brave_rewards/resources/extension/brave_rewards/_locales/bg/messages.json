@@ -235,18 +235,6 @@
     "message": "Моля, направете архивно копие на вашия Brave портфейл.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Научете повече",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Достигнато ограничение на устройството",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Портфейлът Ви не може да бъде потвърден, защото сте достигнали максималния лимит за потвърдени устройства.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Вашият акаунт за Brave награди очаква депозит.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Портфейлът е проверен",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Отидете в моя акаунт в $provider$",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Отидете на своя Uphold акаунт",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Разкачане от Brave награди",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Забележка: Вашите транзакции ще бъдат видими за $provider$, след като упълномощите; например, те ще могат да видят получателя и сумата на Вашите бакшиши.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Забележка: Вашите транзакции ще бъдат видими в Uphold, след като предоставите одобрение; например, те ще могат да видят получателя и сумата на Вашите бакшиши.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Печелете токени и върнете обратно",

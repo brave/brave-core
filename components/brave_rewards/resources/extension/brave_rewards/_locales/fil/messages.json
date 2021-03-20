@@ -235,18 +235,6 @@
     "message": "Paki-back up ang iyong wallet sa Brave.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Matuto Pa",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Naabot na ang Limitasyon sa Device",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Hindi ma-verify ang iyong wallet dahil naabot mo na ang maximum na limitasyon sa na-verify na device.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Naghihintay ng deposito ang iyong Brave Rewards account.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Na-verify ang Wallet",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Pumunta sa aking $provider$ account",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Pumunta sa aking Uphold account",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Idiskonekta mula sa Mga Reward ng Brave",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Tandaan: Makikita ang iyong mga transaksyon sa $provider$ kapag nagbigay ka ng pahintulot; halimbawa, makikita nila ang tatanggap at halaga ng mga tip mo.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Tandaan: Makikita ang iyong mga transaksyon sa Uphold kapag nagbigay ka ng pahintulot; halimbawa, makikita nila ang recipient at halaga ng mga tip mo.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Makakuha ng Mga Token at Gumanti ng Tulong",

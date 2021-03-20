@@ -235,18 +235,6 @@
     "message": "ウォレットをバックアップしてください。",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "詳しく知る",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "デバイスの上限に達しました",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "検証済みのデバイスの上限に達したため、あなたのウォレットを確認できません。",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Brave Rewardsアカウントは入金を待っています。",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "ウォレットが認証済み",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "私の$provider$アカウントに移動する",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Upholdのアカウントに移動",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Brave Rewardとの接続を解除する",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "注意： 承認すると、あなたのトランザクションは$provider$に表示されます。例えば、チップの受取人と金額を見ることができるようになります。",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "ご注意：承認するとトランザクションは「Uphold 」に表示されます。 たとえば、受信者とチップの金額を確認できます。",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "トークンを獲得して還元する",

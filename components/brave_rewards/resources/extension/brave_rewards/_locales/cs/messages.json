@@ -235,18 +235,6 @@
     "message": "Zálohujte, prosím, svoji Brave peněženku.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Zjistit více",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Bylo dosaženo limitu zařízení",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Vaši peněženku nelze ověřit, protože jste dosáhli maximálního počtu ověřených zařízení.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Váš účet Brave Rewards čeká na převod prostředků.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Ověřená peněženka",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Přejít na můj účet $provider$",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Přejít na můj Uphold účet",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Odpojit od Brave Rewards",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Poznámka: Po provedení autorizace budou vaše transakce viditelné pro službu $provider$; uvidí například příjemce a částku spropitného.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Poznámka: Jakmile provedete ověření, transakce budou pro Uphold viditelné; například uvidí příjemce a částky vašich příspěvků.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Vydělejte tokeny a odvděčte se",

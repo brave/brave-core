@@ -235,18 +235,6 @@
     "message": "Sikkerhedskopiér venligst din Brave Tegnebog. ",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Få mere at vide",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Enhedsgrænse nået",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Din wallet kunne ikke verificeres, da du har nået den maksimalt verificerede enhedsgrænse.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Din Brave Rewards-konto venter på en indbetaling.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Tegnebog verificeret",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Gå til min $provider$-konto",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Gå til min Uphold-konto",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Afbryd forbindelsen fra Brave Belønninger",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Bemærk: Dine transaktioner vil være synlige for $provider$, når du autoriserer udbyderen; for eksempel vil de kunne se modtageren og mængden af ​​dine drikkepenge.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Bemærk: Dine transaktioner vil være synlige for Uphold, når du har godkendt det. De vil eksempelvis kunne se modtageren og beløbet på dine drikkepenge.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Optjen tokens og giv tilbage",

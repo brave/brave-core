@@ -235,18 +235,6 @@
     "message": "অনুগ্রহ করে আপনার Brave ওয়ালেটটিতে ব্যাকআপ নিন।",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "আরও জানুন",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "ডিভাইসের সীমায় পৌঁছেছে",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "আপনি যাচাইকৃত ডিভাইসের সংখ্যার সর্বোচ্চ সীমায় পৌঁছেছেন বিধায় আপনার ওয়ালেটটি ভেরিফাই করা যাবে না।",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "আপনার Brave পুরস্কারের অ্যাকাউন্ট একটি জমার জন্য অপেক্ষা করছে।",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "ওয়ালেট যাচাই করা হয়েছে",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "আমার $provider$ অ্যাকাউন্টে যান",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "আমার আপহোল্ড অ্যাকাউন্টে যান",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "দ্রষ্টব্য: আপনি অনুমোদন দেওয়ার পর আপনার লেনদেনটি $provider$ এর কাছে দৃশ্যমান হবে; যেমন, তারা আপনার বখশিশের পরিমাণ কত এবং এর প্রাপক কে তা দেখতে পারবে।",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "নোট: আপনি একবার অনুমোদন করলে আপনার লেনদেনগুলি Uphold এ দেখা যাবে; উদাহরণস্বরূপ, সেগুলি আপনার পরামর্শের প্রাপক এবং অর্থরাশি দেখতে পাবেন।",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "টোকেন উপার্জন করুন এবং ফিরিয়ে দিন",

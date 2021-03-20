@@ -235,18 +235,6 @@
     "message": "Si et plau, fes una còpia de seguretat del teu moneder.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Més informació",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "S'ha assolit el límit del dispositiu",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "La teva cartera no es pot verificar perquè has assolit el límit màxim de dispositius verificats.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "El teu compte de Premis de Brave està esperant un dipòsit.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Moneder Verificat",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Anar al meu compte de $provider$",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Anar al meu compte d'Uphold",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Desconnectar de Gratificacions Brave",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Nota: $provider$ podrà veure les teves transaccions un cop ho autoritzis; per exemple, podrà veure el destinatari i l'import de les teves propines.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Nota: Les vostres transaccions estaran visibles per a Uphold un cop ho autoritzeu; per exemple, podran veure el destinatari i la quantitat de les vostres propines. ",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Guanyey & Torneu Fitxes",

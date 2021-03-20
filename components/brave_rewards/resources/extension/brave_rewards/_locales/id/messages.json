@@ -235,18 +235,6 @@
     "message": "Harap buat cadangan dompet Brave Anda.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Pelajari Selengkapnya",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Batas Peranti Tercapai",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Dompet Anda tidak dapat diverifikasi karena Anda telah mencapai batas maksimal perangkat terverifikasi.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Akun Brave Rewards Anda menunggu deposit.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Dompet Terverifikasi",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Masuk ke akun $provider$ saya",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Ke akun Uphold saya",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Putuskan dari Brave Reward",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Catatan: transaksi Anda akan terlihat oleh $provider$ setelah Anda mengotorisasi; yakni, mereka akan dapat melihat penerima dan jumlah tip Anda.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Catatan: Transaksi Anda akan terlihat untuk Dijalankan setelah Anda mengotorisasi; misalnya, mereka akan dapat melihat penerima dan jumlah tip Anda.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Dapatkan Token & Berikan Balik\n",

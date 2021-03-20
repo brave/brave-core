@@ -235,18 +235,6 @@
     "message": "कृपया अपने Brave बटुए को बैकअप करें।",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "अधिक जानकारी प्राप्त करें",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "डिवाइस की सीमा तक पहुँच गये",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "आपके वॉलेट को सत्यापित नहीं किया जा सकता है क्योंकि आप अधिकतम सत्यापित डिवाइस सीमा पर पहुँच गए हैं।\n",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "आपका Brave Rewards खाता धनराशि की प्रतीक्षा कर रहा है।",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "वॉलेट सत्यापन पूरा हुआ",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "मेरे $provider$ अकाउंट पर जाएँ",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "मेरे मान्य खाते पर जाएँ",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Brave Rewards से डिसकनेक्ट करें",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "नोट: आपके अधिकृत करने के बाद $provider$ को आपके लेनदेन दिखाई देगें; उदाहरण के लिए, वे आपकी टिप्स के प्राप्तकर्ता और राशि देख पाएंगे।\n",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "ध्यान दें: आपके द्वारा एकबार अधिकृत किए जाने पर अपहोल्ड के लिए आपका लेनदेन दिखाई देगा; उदाहरण के लिए, वे आपकी टिप्स की रसीद और राशि को देखने में सक्षम होंगे।",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "टोकन कमाएँ और वापस दें",

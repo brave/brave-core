@@ -235,18 +235,6 @@
     "message": "โปรดสำรองข้อมูล Brave วอลเล็ทของคุณ",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "เรียนรู้เพิ่มเติม",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "ถึงขีดจำกัดอุปกรณ์",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "ไม่สามารถยืนยันตัวตนของวอลเล็ทได้เนื่องจากคุณมีจำนวนอุปกรณ์ที่ผ่านการยืนยันตัวตนถึงขีดจำกัดสูงสุดแล้ว",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "บัญชี Brave Rewards ของคุณกำลังรอเงินฝาก",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "ยืนยันวอลเล็ตแล้ว",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "ไปยังบัญชี $provider$ ของฉัน",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "ไปที่บัญชี Uphold ของฉัน",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "ยกเลิกการเชื่อมต่อกับ Brave Rewards",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "หมายเหตุ: $provider$ จะดูรายการธุรกรรมของคุณได้หลังจากที่คุณให้สิทธิ์ เช่น จะสามารถดูชื่อผู้รับและจำนวนเงินทิปของคุณ",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "หมายเหตุ: ธุรกรรมของคุณจะปรากฏแก่ Uphold เมื่อคุณอนุญาต ยกตัวอย่างเช่น พวกเขาจะสามารถเห็นจำนวนและผู้รับทิปได้",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "รับโทเค็นเพื่อนำไปตอบแทน",

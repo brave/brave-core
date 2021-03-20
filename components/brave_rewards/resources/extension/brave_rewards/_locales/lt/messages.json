@@ -235,18 +235,6 @@
     "message": "Sukurkite savo „Brave“ piniginės atsarginę kopiją.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Sužinokite daugiau",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Pasiektas įrenginių limitas",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Jūsų piniginės nebuvo galima patvirtinti, nes pasiekėte maksimalų patvirtintų įrenginių limitą.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Jūsų „Brave Rewards“ paskyroje laukiama įnašo.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Piniginė patvirtinta",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Eiti į mano $provider$ paskyrą",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Eiti į mano „Uphold“ paskyrą",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Atsijungti nuo „Brave Rewards“",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Pastaba. Jūsų operacijos $provider$ bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų arbatpinigių gavėjas ir suma.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Pastaba. Jūsų operacijos „Uphold“  bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų gavėjas ir arbatpinigių suma.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Gaukite žetonų ir atsilyginkite",

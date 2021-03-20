@@ -235,18 +235,6 @@
     "message": "Varundage oma Brave'i rahakotti",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Rohkem teavet",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Jõuti seadmete ülemmäärani",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Rahakotti ei saa kinnitada, sest olete jõudnud kinnitatud seadmete ülemmäärani.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Teie Brave Rewardsi konto ootab sissemakset.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Rahakott on kinnitatud",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Ava minu konto: $provider$",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Ava minu Upholdi konto",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Katkesta Brave Rewardsi ühendus",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Märkus. Kui annate volituse, näeb $provider$ teie tehinguid. Näiteks näeb ta saajat ja preemiate summat.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Märkus. Kui annate volituse, näeb Uphold teie tehinguid. Näiteks näeb ta saajat ja preemiate summat.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Teenige ja andke tokeneid",

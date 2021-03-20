@@ -235,18 +235,6 @@
     "message": "ದಯವಿಟ್ಟು ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "ಸಾಧನ ಮಿತಿ ತಲುಪಿದೆ",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗುವುದಿಲ್ಲ, ಏಕೆಂದರೆ ನೀವು ಗರಿಷ್ಠ ದೃಢೀಕೃತ ಸಾಧನ ಮಿತಿಯನ್ನು ಈಗಾಗಲೇ ತಲುಪಿದ್ದೀರಿ.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "ನಿಮ್ಮ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಖಾತೆ ಡೆಪಾಸಿಟ್‌ಗೆ ನಿರೀಕ್ಷಿಸುತ್ತಿದೆ.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "ನನ್ನ $provider$ ಖಾತೆಗೆ ಹೋಗಿ",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "ನನ್ನ ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಗೆ ಹೋಗಿ",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "ಗಮನಿಸಿ: ನೀವು ಒಮ್ಮೆ ದೃಢೀಕರಿಸಿದರೆ ನಿಮ್ಮ ವಹಿವಾಟುಗಳು $provider$ ಗೆ ಕಾಣುತ್ತವೆ; ಉದಾಹರಣೆಗೆ, ಅವರಿಗೆ ಸ್ವೀಕೃತದಾರರು ಮತ್ತು ನಿಮ್ಮ ಟಿಪ್ಸ್ ಮೊತ್ತವನ್ನು ನೋಡಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "ಗಮನಿಸಿ: ಒಮ್ಮೆ ನೀವು ದೃಢೀಕರಿಸಿದಾಗ ನಿಮ್ಮ ವಹಿವಾಟು Uphold ಗೆ ಲಭ್ಯವಿರುತ್ತದೆ; ಉದಾಹರಣೆಗೆ, ಸ್ವೀಕೃತದಾರರನ್ನು ಮತ್ತು ನಿಮ್ಮ ಸಲಹೆಗಳ ಮೊತ್ತವನ್ನು ನೋಡಲು ಅವುಗಳಿಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ಹಿಂತಿರುಗಿ",

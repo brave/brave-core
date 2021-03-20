@@ -235,18 +235,6 @@
     "message": "Crie uma cópia de segurança da sua carteira Brave.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Obter mais informações",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Limite do Dispositivo Alcançado ",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Não é possível verificar a sua wallet, porque atingiu limite máximo verificado de dispositivos.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "A sua conta de «Recompensas Brave» está à espera de um depósito.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Wallet Verificada",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Ir para a minha conta $provider$ ",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Aceder à minha conta Upload",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Desligar de «Recompensas Brave»",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Nota: Assim que autorizar, as suas transições ficarão visíveis para $provider$; por exemplo, poderão ver o destinatário e o valor das suas gorjetas.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Nota: As suas transações serão visíveis para a Uphold assim que autorizar; poderão, por exemplo, ver o destinatário e o valor das suas contribuições.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Ganhe Tokens & Contribua",

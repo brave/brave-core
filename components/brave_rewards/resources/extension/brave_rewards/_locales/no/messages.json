@@ -235,18 +235,6 @@
     "message": "Sikkerhetskopier Brave-lommeboken din.",
     "description": "Description for backup wallet notification"
   },
-  "deviceLimitReachedLearnMore": {
-    "message": "Les mer",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Enhetsgrensen er nådd",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Lommeboken kan ikke verifiseres, ettersom du har nådd den øvre enhetsgrensen for verifisering.",
-    "description": "Description for device limit reached notification"
-  },
   "insufficientFundsNotification": {
     "message": "Brave Rewards-kontoen din venter på et innskudd.",
     "description": "Description for new insufficient funds notification"
@@ -527,15 +515,9 @@
     "message": "Lommeboken er verifisert",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToProvider":  {
-    "message": "Gå til $provider$-kontoen min",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+  "walletGoToUphold":  {
+    "message": "Gå til Uphold-kontoen min",
+    "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
     "message": "Koble fra Brave Rewards",
@@ -642,14 +624,8 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Merk: Transaksjonene dine kommer til å være synlige for $provider$ når du autoriserer dem. De kan for eksempel se mottakeren og beløpet du tipser.",
-    "description": "Displayed in login modal for external wallet providers",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
+    "message": "Merk: Transaksjonene dine er synlige for Uphold så snart du autoriserer. De kan for eksempel se kvitteringen og tipsbeløpet ditt.",
+    "description": "Displayed in login modal for uphold"
   },
   "onboardingEarnHeader": {
     "message": "Tjen tokener og gi tilbake",
