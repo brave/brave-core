@@ -1,13 +1,12 @@
 use crate::dom;
 use crate::scorer;
+use html5ever::parse_document;
 use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
-use html5ever::{parse_document, serialize};
 use html5ever::{LocalName, QualName};
-use markup5ever_rcdom::RcDom;
-use markup5ever_rcdom::SerializableHandle;
+use kuchiki::Sink;
 use scorer::{Candidate, Title};
 use std::cell::Cell;
 use std::collections::BTreeMap;
@@ -15,7 +14,6 @@ use std::collections::HashMap;
 use std::default::Default;
 use std::io::Read;
 use std::path::Path;
-use std::rc::Rc;
 use std::str::FromStr;
 use url::Url;
 
@@ -29,7 +27,7 @@ pub fn extract<R>(input: &mut R, url: &Url) -> Result<Product, std::io::Error>
 where
     R: Read,
 {
-    let mut dom = parse_document(RcDom::default(), Default::default())
+    let mut dom: Sink = parse_document(Sink::default(), Default::default())
         .from_utf8()
         .read_from(input)?;
 
@@ -40,17 +38,14 @@ pub fn preprocess<R>(input: &mut R) -> Result<Product, std::io::Error>
 where
     R: Read,
 {
-    let mut dom = parse_document(RcDom::default(), Default::default())
+    let mut dom: Sink = parse_document(Sink::default(), Default::default())
         .from_utf8()
         .read_from(input)?;
 
     let mut title = Title::default();
-    let handle = dom.document.clone();
+    let handle = dom.document_node.clone();
     scorer::preprocess(&mut dom, handle, &mut title);
-    let mut bytes = vec![];
-    let document: SerializableHandle = dom.document.clone().into();
-    serialize(&mut bytes, &document, serialize::SerializeOpts::default())?;
-    let content = String::from_utf8(bytes).unwrap_or_default();
+    let content = dom.document_node.to_string();
     Ok(Product {
         title: title.title,
         content,
@@ -58,14 +53,14 @@ where
 }
 
 pub fn extract_dom<S: ::std::hash::BuildHasher>(
-    mut dom: &mut RcDom,
+    mut dom: &mut Sink,
     url: &Url,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
     let mut title = Title::default();
     let mut candidates = BTreeMap::new();
     let mut nodes = BTreeMap::new();
-    let handle = dom.document.clone();
+    let handle = dom.document_node.clone();
 
     // extracts title (if it exists) pre-processes the DOM by removing script
     // tags, css, links
@@ -110,8 +105,6 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         top_candidate = c;
     }
 
-    let mut bytes = vec![];
-
     scorer::clean(
         &mut dom,
         Path::new(id),
@@ -124,10 +117,6 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 
     // Our CSS formats based on id="article".
     dom::set_attr("id", "article", top_candidate.node.clone(), true);
-    let serialize_opts = serialize::SerializeOpts {
-        traversal_scope: serialize::TraversalScope::IncludeNode,
-        ..Default::default()
-    };
 
     let name = QualName::new(None, ns!(), LocalName::from("h1"));
     let header = dom.create_element(name, vec![], ElementFlags::default());
@@ -136,20 +125,18 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         NodeOrText::AppendText(StrTendril::from_str(&title.title).unwrap_or_default()),
     );
 
-    if let Some(first_child) = top_candidate.node.children.clone().borrow().iter().nth(0) {
+    if let Some(first_child) = top_candidate.node.first_child() {
         // Kinda hacky, but it's possible the parent is a dangling pointer if it
         // was deleted during the preprocess or cleaning stages. This ensures we
         // don't panic in append_before_sibling().
-        first_child
-            .parent
-            .set(Some(Rc::downgrade(&top_candidate.node)));
+        //first_child
+        //    .parent
+        //    .set(Some(Rc::downgrade(&top_candidate.node)));
         dom.append_before_sibling(&first_child.clone(), NodeOrText::AppendNode(header.clone()));
     }
 
-    let document: SerializableHandle = top_candidate.node.clone().into();
-    serialize(&mut bytes, &document, serialize_opts)?;
-    let content = String::from_utf8(bytes).unwrap_or_default();
-
+    // Calls html5ever::serialize() with IncludeNode for us.
+    let content: String = top_candidate.node.to_string();
     Ok(Product {
         title: title.title,
         content,

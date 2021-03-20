@@ -1,16 +1,18 @@
 use crate::dom;
+use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
-use markup5ever_rcdom::NodeData::{
-    Comment, Doctype, Document, Element, ProcessingInstruction, Text,
+use kuchiki::NodeData::{
+    Comment, Doctype, Document, DocumentFragment, Element, ProcessingInstruction, Text,
 };
-use markup5ever_rcdom::{Handle, Node, RcDom};
+use kuchiki::NodeRef as Handle;
+use kuchiki::{ElementData, NodeRef, Sink};
 use regex::Regex;
 use std::cell::Cell;
 use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
-use std::rc::Rc;
+use std::str::FromStr;
 use url::Url;
 
 pub static PUNCTUATIONS_REGEX: &str = r"([,]\?)";
@@ -52,7 +54,7 @@ lazy_static! {
 }
 
 pub struct Candidate {
-    pub node: Rc<Node>,
+    pub node: Handle,
     pub score: Cell<f32>,
 }
 
@@ -62,22 +64,17 @@ pub struct Title {
     pub is_meta: bool,
 }
 
-pub fn fix_img_path(handle: Handle, url: &Url) -> bool {
-    if let Some(src) = dom::get_attr("src", &handle) {
+pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
+    if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
         if !src.starts_with("//") && !src.starts_with("http://") && src.starts_with("https://") {
-            if let Ok(new_url) = url.join(&src) {
-                dom::set_attr("src", new_url.as_str(), handle, false);
-                true
-            } else {
-                // failed to fix
-                false
-            }
+            let new_url = url.join(&src);
+            new_url.ok()
         } else {
             // all OK
-            true
+            None
         }
     } else {
-        false
+        None
     }
 }
 
@@ -87,7 +84,7 @@ pub fn get_link_density(handle: &Handle) -> f32 {
         return 0.0;
     }
     let mut link_length = 0.0;
-    let mut links: Vec<Rc<Node>> = vec![];
+    let mut links: Vec<Handle> = vec![];
     dom::find_node(&handle, "a", &mut links);
     for link in links.iter() {
         link_length += dom::text_len(&link) as f32;
@@ -103,8 +100,8 @@ pub fn is_candidate(handle: &Handle) -> bool {
     if text_len < 20 {
         return false;
     }
-    match handle.data {
-        Element { ref name, .. } => match name.local {
+    match handle.data() {
+        Element(ref data) => match data.name.local {
             local_name!("p") => true,
             local_name!("div")
             | local_name!("article")
@@ -120,8 +117,8 @@ pub fn is_candidate(handle: &Handle) -> bool {
 }
 
 pub fn init_content_score(handle: &Handle) -> f32 {
-    let score = match handle.data {
-        Element { ref name, .. } => match name.local {
+    let score = match handle.data() {
+        Element(ref data) => match data.name.local {
             local_name!("article") => 10.0,
             local_name!("div") => 5.0,
             local_name!("h1") | local_name!("h2") | local_name!("h3") | local_name!("h4") => 5.0,
@@ -156,9 +153,9 @@ pub fn calc_content_score(handle: &Handle) -> f32 {
 
 pub fn get_class_weight(handle: &Handle) -> f32 {
     let mut weight: f32 = 0.0;
-    if let Element { ref attrs, .. } = handle.data {
+    if let Some(data) = handle.as_element() {
         for name in ["id", "class"].iter() {
-            if let Some(val) = dom::attr(name, &attrs.borrow()) {
+            if let Some(val) = data.attributes.borrow().get(*name) {
                 if val == "" {
                     weight -= 3.0
                 }
@@ -174,12 +171,12 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
     weight
 }
 
-pub fn get_metadata(handle: &Handle, title: &mut Title) {
+pub fn get_metadata(data: &ElementData, title: &mut Title) {
     if title.is_meta {
         // We already grabbed a title from the metadata earlier in the parse.
         return;
     }
-    if let Some(property) = dom::get_attr("property", &handle) {
+    if let Some(property) = data.attributes.borrow().get(local_name!("property")) {
         // TODO(keur): grab author, description, site name, etc in here.
         // For now we are just getting the title.
         match property.as_ref() {
@@ -190,8 +187,8 @@ pub fn get_metadata(handle: &Handle, title: &mut Title) {
             | "weibo:webpage:title"
             | "title"
             | "twitter:title" => {
-                if let Some(content) = dom::get_attr("content", &handle) {
-                    title.title = content;
+                if let Some(content) = data.attributes.borrow().get(local_name!("content")) {
+                    title.title = content.to_string();
                     title.is_meta = true;
                 }
             }
@@ -200,23 +197,14 @@ pub fn get_metadata(handle: &Handle, title: &mut Title) {
     }
 }
 
-fn get_inner_img(dom: &mut RcDom, handle: &Handle) -> Option<Handle> {
-    let children = handle.children.borrow();
-    let child = children.get(0)?;
-    if let Text { ref contents } = child.data {
+fn get_inner_img(handle: &Handle) -> Option<Handle> {
+    let child = handle.first_child()?;
+    if let Some(contents) = child.as_text() {
         let inner = dom::parse_inner(&contents.borrow())?;
         if dom::is_single_image(&inner) {
-            if let Element {
-                ref name,
-                ref attrs,
-                ..
-            } = inner.data
-            {
-                let img = dom.create_element(
-                    name.clone(),
-                    attrs.borrow().to_vec(),
-                    ElementFlags::default(),
-                );
+            if let Some(data) = inner.as_element() {
+                let img =
+                    NodeRef::new_element(data.name.clone(), data.attributes.borrow().map.clone());
                 return Some(img);
             }
         }
@@ -225,30 +213,23 @@ fn get_inner_img(dom: &mut RcDom, handle: &Handle) -> Option<Handle> {
 }
 
 fn unwrap_noscript(
-    dom: &mut RcDom,
     handle: &Handle,
-    parent: &Handle,
     useless_nodes: &mut Vec<Handle>,
     new_children: &mut Vec<Handle>,
 ) {
-    if let Some(img) = get_inner_img(dom, handle) {
+    if let Some(img) = get_inner_img(handle) {
         new_children.push(img);
-        if let Some(prev) = dom::previous_element_sibling(handle, &parent.children.borrow()) {
-            if dom::is_single_image(prev) {
-                useless_nodes.push(prev.clone());
+        if let Some(prev) = dom::previous_element_sibling(handle) {
+            if dom::is_single_image(&prev) {
+                useless_nodes.push(prev);
             }
         }
     }
 }
 
-pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut Title) -> bool {
-    if let Element {
-        ref name,
-        ref attrs,
-        ..
-    } = handle.data
-    {
-        match name.local {
+pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> bool {
+    if let Some(data) = handle.as_element() {
+        match data.name.local {
             local_name!("script")
             | local_name!("noscript")
             | local_name!("link")
@@ -260,13 +241,13 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut Title) ->
                 }
             }
             local_name!("meta") => {
-                get_metadata(&handle, title);
+                get_metadata(&data, title);
             }
             _ => (),
         }
         for attr_name in ["id", "class", "itemProp"].iter() {
-            if let Some(val) = dom::attr(attr_name, &attrs.borrow()) {
-                if name.local != local_name!("body")
+            if let Some(val) = data.attributes.borrow().get(*attr_name) {
+                if data.name.local != local_name!("body")
                     && UNLIKELY.is_match(&val)
                     && !LIKELY.is_match(&val)
                 {
@@ -279,27 +260,21 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut Title) ->
     let mut new_children = vec![];
     let mut paragraph_nodes = vec![];
     let mut br_count = 0;
-    for child in handle.children.borrow().iter() {
+    for child in handle.children() {
         if preprocess(&mut dom, child.clone(), &mut title) {
             useless_nodes.push(child.clone());
         }
-        match child.data {
-            Element { ref name, .. } => {
-                match name.local {
+        match child.data() {
+            Element(data) => {
+                match data.name.local {
                     local_name!("br") => br_count += 1,
                     _ => br_count = 0,
                 }
-                if name.local == local_name!("noscript") {
-                    unwrap_noscript(
-                        &mut dom,
-                        &child,
-                        &handle,
-                        &mut useless_nodes,
-                        &mut new_children,
-                    );
+                if data.name.local == local_name!("noscript") {
+                    unwrap_noscript(&child, &mut useless_nodes, &mut new_children);
                 }
             }
-            Text { ref contents } => {
+            Text(ref contents) => {
                 let s = contents.borrow();
                 if br_count >= 2 && !s.trim().is_empty() {
                     paragraph_nodes.push(child.clone());
@@ -320,19 +295,22 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut Title) ->
         let p = dom.create_element(name, vec![], ElementFlags::default());
         dom.append_before_sibling(node, NodeOrText::AppendNode(p.clone()));
         dom.remove_from_parent(node);
-        if let Text { ref contents } = node.data {
-            dom.append(&p, NodeOrText::AppendText(contents.borrow().clone()))
+        if let Some(contents) = node.as_text() {
+            match StrTendril::from_str(&contents.borrow()) {
+                Ok(tendril) => dom.append(&p, NodeOrText::AppendText(tendril)),
+                _ => return false,
+            }
         }
     }
     false
 }
 
 pub fn find_candidates(
-    mut dom: &mut RcDom,
+    mut dom: &mut Sink,
     id: &Path,
     handle: Handle,
     candidates: &mut BTreeMap<String, Candidate>,
-    nodes: &mut BTreeMap<String, Rc<Node>>,
+    nodes: &mut BTreeMap<String, Handle>,
 ) {
     // Id of a particular node maps to its position in the dom tree, represented
     // as std::path::Path data structure
@@ -391,7 +369,7 @@ pub fn find_candidates(
     }
 
     // for all the current child's node, execute recursively find_candidates()
-    for (i, child) in handle.children.borrow().iter().enumerate() {
+    for (i, child) in handle.children().enumerate() {
         find_candidates(
             &mut dom,
             id.join(i.to_string()).as_path(),
@@ -414,7 +392,7 @@ fn get_all_ancestor_paths(ps: &Path) -> Vec<&Path> {
 fn find_or_create_candidate<'a>(
     id: &Path,
     candidates: &'a mut BTreeMap<String, Candidate>,
-    nodes: &BTreeMap<String, Rc<Node>>,
+    nodes: &BTreeMap<String, Handle>,
 ) -> Option<&'a Candidate> {
     if let Some(id) = id.to_str().map(|id| id.to_string()) {
         if let Some(node) = nodes.get(&id) {
@@ -435,7 +413,7 @@ fn find_or_create_candidate<'a>(
 
 // decides whether the handle node is useless (should be dropped) or not.
 pub fn clean<S: ::std::hash::BuildHasher>(
-    mut dom: &mut RcDom,
+    mut dom: &mut Sink,
     id: &Path,
     handle: Handle,
     url: &Url,
@@ -443,10 +421,11 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     features: &HashMap<String, u32, S>,
     candidates: &BTreeMap<String, Candidate>,
 ) -> bool {
-    let useless = match handle.data {
-        Document => false,
-        Doctype { .. } => false,
-        Text { ref contents } => {
+    let useless = match handle.data() {
+        Document(_) => false,
+        DocumentFragment => false,
+        Doctype(_) => false,
+        Text(ref contents) => {
             let s = contents.borrow();
             if s.trim().is_empty() {
                 true
@@ -454,13 +433,9 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 false
             }
         }
-        Comment { .. } => true,
-        Element {
-            ref name,
-            // ref attrs,
-            ..
-        } => {
-            match name.local {
+        Comment(_) => true,
+        Element(ref data) => {
+            match data.name.local {
                 local_name!("script")
                 | local_name!("link")
                 | local_name!("style")
@@ -475,7 +450,14 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("table")
                 | local_name!("ul")
                 | local_name!("div") => is_useless(id, &handle, candidates),
-                local_name!("img") => !fix_img_path(handle.clone(), url),
+                local_name!("img") => {
+                    if let Some(fixed_url) = fix_img_path(data, url) {
+                        dom::set_attr("src", fixed_url.as_str(), handle.clone(), false);
+                        false
+                    } else {
+                        true
+                    }
+                }
                 _ => false,
             }
 
@@ -484,11 +466,11 @@ pub fn clean<S: ::std::hash::BuildHasher>(
             // dom::clean_attr("class", &mut *attrs.borrow_mut());
             // dom::clean_attr("style", &mut *attrs.borrow_mut());
         }
-        ProcessingInstruction { .. } => unreachable!(),
+        ProcessingInstruction(_) => unreachable!(),
     };
 
     let mut useless_nodes = vec![];
-    for (i, child) in handle.children.borrow().iter().enumerate() {
+    for (i, child) in handle.children().enumerate() {
         let pid = id.join(i.to_string());
         if clean(
             &mut dom,

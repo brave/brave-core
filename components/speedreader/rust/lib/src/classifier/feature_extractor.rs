@@ -1,9 +1,9 @@
 use html5ever::driver::{ParseOpts, Parser};
-use kuchiki::{NodeData, ElementData, Sink};
-use kuchiki::NodeRef as Handle;
 use html5ever::tendril::*;
 use html5ever::tree_builder::{AppendText, ElementFlags, NodeOrText, QuirksMode, TreeSink};
 use html5ever::{Attribute, ExpandedName, QualName};
+use kuchiki::NodeRef as Handle;
+use kuchiki::{ElementData, Sink};
 use std::borrow::Cow;
 use std::clone::Clone;
 use std::collections::HashMap;
