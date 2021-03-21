@@ -235,6 +235,18 @@
     "message": "Izradite sigurnosnu kopiju novčanika Brave.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Saznajte više",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Dosegnulo se ograničenje uređaja",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Nije moguće potvrditi vaš novčanik jer ste dosegnuli najveće potvrđeno ograničenje uređaja.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Na vašem se računu za Brave Rewards očekuje depozit.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Provjeren novčanik",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Idi na moj račun Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Idi na moj račun $provider$ ",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Poništi vezu s Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Napomena: Vaše će transakcije biti vidljive usluzi Uphold nakon autorizacije; na primjer, bit će vidljiv primatelj i iznos vaših napojnica.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Napomena: vaše su transakcije vidljive za $provider$ nakon autorizacije, na primjer, postaje vidljiv primatelj i iznos vaših napojnica.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Zaradi tokene i oduži se",

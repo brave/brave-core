@@ -2,23 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="iw">
 <translation id="7307834434086582547">הפעל / כבה את Brave Shields</translation>
-<translation id="6303294677342628402">הגנות</translation>
-<translation id="6132506775968708399">חסימת כל קבצי עוגיות צד שלישי</translation>
-<translation id="7835726359440951858">חסום פרסומות ועקיבה</translation>
 <translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="94154759592465111">חסמו תסריטים</translation>
-<translation id="7458422973722236530">הגנת טביעות אצבע</translation>
 <translation id="5709627087332022422">חסום עוקבים מרובי-אתרים (cross-site)</translation>
-<translation id="6754976710186182237">שיטות טביעת אצבע</translation>
-<translation id="2313532038420432247">שדרוגי HTTPS</translation>
-<translation id="7461425058443653485">סקריפטים חסומים</translation>
 <translation id="6052725679982758334">חסימת מדיה חברתית</translation>
 <translation id="7498695072878479744">אפשר לחצני כניסה של גוגל באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
-<translation id="3834924998750356151">מוניטור חסימה</translation>
-<translation id="1713450908129883784">אמצעי בקרה פרטניים</translation>
 <translation id="6302422639282249274">נהל את Brave Rewards</translation>
 <translation id="1506061864768559482">מנוע חיפוש</translation>
 <translation id="1468415711258933398">כרטיסייה רגילה</translation>
@@ -28,12 +19,12 @@
 <translation id="8710614491157212477">פותח אתרים נתמכים באמצעות HTTPS במקום HTTP במידת האפשר</translation>
 <translation id="8387201461264842096">Ad Block</translation>
 <translation id="1934885595886623674">מונע טעינת פרסומות</translation>
+<translation id="7458422973722236530">הגנת טביעות אצבע</translation>
 <translation id="5787084571334399599">מונע מהדפדפן ליצור טביעת אצבע</translation>
 <translation id="7459000603787995422">סגור כרטיסיות ביציאה</translation>
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
 <translation id="6469509880167172749">שלח באופן אוטומטי אנליטיקות מוצר פרטיות לחלוטין אל Brave</translation>
 <translation id="7090566321964540749">מידע אנונימי זה רק מאפשר ל-Brave להעריך את השימוש הכולל בתכונות מסוימות.</translation>
-<translation id="453601949003770390">עוקבים &amp; פרסומות חסומים</translation>
 <translation id="347604927162577559">מידע\nנשמר</translation>
 <translation id="9008534313521214777">זמן מוערך\nשנחסך</translation>
 <translation id="6572660632052512096">מצב שולחן עבודה</translation>
@@ -58,17 +49,13 @@
 <translation id="8701563696941209024">הפעל שנית עכשיו</translation>
 <translation id="834487290629916192">אחר כך</translation>
 <translation id="8281886186245836920">דלג</translation>
-<translation id="316832010181763471">צירוף מנוע חיפוש</translation>
 <translation id="986879628471635371">פתרון תקלות מובנה</translation>
 <translation id="5808759341041733958">בחר מנוע חיפוש ברירת מחדל</translation>
 <translation id="1331593888918588693">תמיד תוכלו לשנות את העדפתכם בהמשך דרך הגדרות האפליקציה.</translation>
-<translation id="7053983685419859001">חסום</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="2880356288762235261">מודעות ועוקבים החודרים לפרטיות, כך באפשרותך לגלוש מבלי שיעקבו אחריך ברחבי האינטרנט.</translation>
 <translation id="8537217141725709400">הרווח/י <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="5870330605209713397">על ידי צפייה בפרסומות השומרות על הפרטיות ותמיכה באתרים והיוצרים המועדפים עליך כברירת מחדל.</translation>
-<translation id="821707262661492716">עבור צפייה במודעות השומרות על הפרטיות.</translation>
 <translation id="5302488867897327287">על ידי לחיצה על התחל להשתמש ב-Brave Rewards, הנך מסכימ/ה ל-</translation>
 <translation id="4281844954008187215">תנאי שירות</translation>
 <translation id="6871397658902960384">התחל גלישה</translation>
@@ -76,8 +63,6 @@
 <translation id="1448877943847791441">Brave יציג את המודעה הראשונה שלך ב-</translation>
 <translation id="4410793187232041318">עכשיו תרוויח/י טוקן מ-Brave Ads.</translation>
 <translation id="6511854390690723657">זה פרסומת Brave הראשון שלך. נא להקיש כדי ללמוד עוד.</translation>
-<translation id="4930714375720679147">הפעלה</translation>
-<translation id="2453860139492968684">סיום</translation>
 <translation id="2070991379950719711">התחל להשתמש ב-Brave Rewards</translation>
 <translation id="48520986898237073">המשך לארנק</translation>
 <translation id="3570367516044491911">הגדר כדפדפן ברירת המחדל</translation>
@@ -117,22 +102,12 @@
 <translation id="8220228041552340594">אוקטובר</translation>
 <translation id="8280223431922155812">נובמבר</translation>
 <translation id="4254029385847607686">דצמבר</translation>
-<translation id="1916285746997567466">התכוננ/י לחוות את
-האינטרנט הבא.</translation>
-<translation id="3540580927110899945">באפשרותך להרוויח עתה  <ph name="TOKEN"/> עבור צפייה בפרסומות השומרות על הפרטיות.</translation>
-<translation id="1327938628925645979">הצטרפ/י ל-REWARDS</translation>
-<translation id="5567439033041178034">למד/י עוד</translation>
 <translation id="3780605330121608425">הארנק שלך</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">דולר אמריקאי</translation>
-<translation id="2104073734684466851">מענקים</translation>
 <translation id="1165667598801520610">הוספת כספים</translation>
 <translation id="8428213095426709021">הגדרות</translation>
-<translation id="2012723204723845092">ברוך שובך!</translation>
-<translation id="7669994301500276741">קבל/י תגמולים עבור גלישה.</translation>
-<translation id="8203529727745387785">הרווח/י על ידי צפייה בפרסומות השומרות על הפרטיות, והעבר/י את זה הלאה כדי לתמוך ביוצרי התוכן האהובים עליך.</translation>
-<translation id="5148719990624240755">הפעל את BRAVE REWARDS</translation>
 <translation id="8772672608371898774">מפרסם מאומת של Brave</translation>
 <translation id="1397683270551078781">טרם אומת</translation>
 <translation id="5727208111992260840">יוצר זה טרם נרשם לקבלת תרומות ממשתמשי Brave.
@@ -150,7 +125,6 @@
 <translation id="13853865024308201">תביעה</translation>
 <translation id="7335371657242627509">כלול בתרומות העצמיות</translation>
 <translation id="5463954686005964104">תגמלו אתר זה מדי חודש</translation>
-<translation id="7530570094705720669">יצירת ארנק</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
 <translation id="4751553692764711651">תרמת <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">לא ניתן היה להשלים את התשלום החודשי המתוכנן שלך עבור Auto-Contribute ואת הטיפים החודשיים בגלל מחסור בכסף. אנו ננסה שוב בעוד 30 יום.</translation>
@@ -166,9 +140,6 @@
 <translation id="1713542052890184975">אנא גבו את ארנק ה-Brave שלכם.</translation>
 <translation id="2323069945529668668">אוי לא!</translation>
 <translation id="7510166204621526816">שרת Brave Rewards אינו מגיב. אנו נתקן זאת בהקדם האפשרי.</translation>
-<translation id="7117228822971127758">אפשר לנסות שוב מאוחר יותר</translation>
-<translation id="3068742524072211213">פג תוקף בתאריך <ph name="DATE"/></translation>
-<translation id="4292832015778676417">סכום שהתקבל מפרסומות</translation>
 <translation id="683765328936486920">ביוטיוב</translation>
 <translation id="8969049974285901797">ב-Twitch</translation>
 <translation id="4376933248999950592">ייעדת You've designated <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> עבור יוצרים שעדיין לא נרשמו לקבלת תרומות. הדפדפן שלך ימשיך לנסות לתרום עד אשר הם יאומתו, או עד שיחלפו 90 יום.</translation>
@@ -176,9 +147,7 @@
 <translation id="6940273954212603510">אנא</translation>
 <translation id="1036277985068412734">הוסיפו כסף</translation>
 <translation id="3492491948683276944">הגדר טיפ חודשי</translation>
-<translation id="4162066325465825185">אנו מצטערים, נראה ש-Brave Rewards אינו זמין במכשירך</translation>
 <translation id="8038539967102225446">Brave Ads כבר כאן!</translation>
-<translation id="8985635554450124959">לא ניתן להגדיר סנכרון</translation>
 <translation id="222883304157347087">(מכשיר זה)</translation>
 <translation id="4157741509680155021">מכשירים בשרשרת הסנכרון</translation>
 <translation id="279635009973773843">טוען מכשירים...</translation>
@@ -232,10 +201,7 @@
 <translation id="6810078320346589989">צור סימניה</translation>
 <translation id="3396347744975515056">Brave Sync שודרג ודורש התקנה</translation>
 <translation id="7473245612074035141">התחל התקנה</translation>
-<translation id="1872784258300710671">Brave משתמש באנליטיקות מוצר פרטיות לחלוטין כדי להעריך את השימוש הכולל בתכונות מסוימות</translation>
-<translation id="8712637175834984815">הבנתי</translation>
-<translation id="4394049700291259645">השבת</translation>
-<translation id="8446884382197647889">למידע נוסף</translation>
+<translation id="8985635554450124959">לא ניתן להגדיר סנכרון</translation>
 <translation id="2514300153301737214">זיהינו שה-Brave שלך זמין, אך סנכרון המערכת שלך מכובה ולא יאפשר ל-Brave להסתנכרן. נא ללחוץ לפתיחת ההגדרות</translation>
 <translation id="7173114856073700355">פתיחת ההגדרות</translation>
 <translation id="6965382102122355670">אישור</translation>
@@ -256,7 +222,6 @@
 <translation id="1081826981536899387">נקודות BAT</translation>
 <translation id="9212459913845238740">מענקי נקודות נתבעו</translation>
 <translation id="2132683977638223450">מענק נקודות חינם</translation>
-<translation id="4522570452068850558">פרטים</translation>
 <translation id="1486343603936278248">טוקן</translation>
 <translation id="8713995420537272453">נקודה</translation>
 <translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
@@ -323,7 +288,6 @@
 <translation id="614747795780742163">מונע מאתרים לאחסן מידע אודות הביקורים הקודמים שלך</translation>
 <translation id="6883611015375728278">חסימת כל העוגיות</translation>
 <translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
-<translation id="5963670684159057574">חסום לקיחת טביעות אצבע בכל האתר</translation>
 <translation id="3895527457258986253">חסום טביעות אצבע</translation>
 <translation id="184568144098869637">מונע מהדפדפן לזהות את המכשיר שלך</translation>
 <translation id="7396366757003005317">טביעות אצבע חסומות (מחמיר, עלול לקלקל אתרים)</translation>
@@ -372,6 +336,7 @@
 <translation id="4302754476737420523">3 חודשים</translation>
 <translation id="8248593573177859437">דוח פרטיות</translation>
 <translation id="1274039301958114163">הודעת דוח פרטיות</translation>
+<translation id="453601949003770390">עוקבים &amp; פרסומות חסומים</translation>
 <translation id="1581614543353331529">אין עדיין נתונים שניתן להציג</translation>
 <translation id="2401984885421380890">עוקבים &amp; פרסומות\nשנחסמו</translation>
 <translation id="2662183408296991265">נתונים שנחסכו\n(<ph name="DATA_SAVED"/>)</translation>
@@ -403,6 +368,7 @@
 <translation id="1383876407941801731">חיפוש</translation>
 <translation id="1972589975368876259">ערוך ערימה</translation>
 <translation id="2490330380242414851">הסר ווידג'ט</translation>
+<translation id="8446884382197647889">למידע נוסף</translation>
 <translation id="7384441892795736634">רענון נתונים</translation>
 <translation id="4804818685124855865">התנתקות</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -460,8 +426,10 @@
 <translation id="5876169128756792273">ניתן להשתמש בטוקנים מעבר לתמיכה ביוצרים. באפשרותכם לקנות תוכן דיגיטלי וסחורות אחרות כאשר הסוחרים מצטרפים.</translation>
 <translation id="1402530520078693620">לבסוף, בואו’ נקבע את ההגדרות הבסיסיות</translation>
 <translation id="3494356595346329740">תוכלו לשנות זאת בהמשך.</translation>
-<translation id="6462814326662189004">באיזו תדירות ברצונך לראות פרסומות?\n(פרסומות לשעה)</translation>
-<translation id="2134244432345596331">כמה תמיכה תרצו לתת ליוצרים האהובים עליכם?\n(מהרווחים שלכם מפרסומות)</translation>
+<translation id="3115702351969988294">באיזו תדירות תרצו לראות פרסומות?</translation>
+<translation id="3474670199029510295">(פרסומות בשעה)</translation>
+<translation id="66599604460581068">כמה תמיכה ברצונך לתת ליוצרים החביבים עליך?</translation>
+<translation id="3164498053837913829">(מרווחי הפרסומות שלך)</translation>
 <translation id="827315274423079662">ווהו, אתם’ מוכנים!</translation>
 <translation id="3895246934788932488">באמצעות שימוש ב- Brave Rewards אתם מגנים על פרטיותכם ועוזרים להפוך את האינטרנט למקום טוב יותר עבור כולם. וזה’ מדהים!</translation>
 <translation id="5705882733397021510">חזור</translation>
@@ -477,7 +445,6 @@
 <translation id="7889432931837317731">פתח אוטומטית כאשר ניתן</translation>
 <translation id="8967385052772844086">הצג דוח פרטיות מלא</translation>
 <translation id="6864343534748973390">הכי פופולרי</translation>
-<translation id="1622983732360473885">תומך ב-Brave</translation>
 <translation id="4608192160278975831">פרטי וללא מעקב</translation>
 <translation id="7208522820527289601">פרטי וללא מעקב, ממוקם באיחוד האירופי</translation>
 <translation id="1161008391729450974">תוצאות גוגל ללא עוקבים</translation>
@@ -499,4 +466,17 @@
 <translation id="6232491755501685494">Brave Rewards ביפן עובר למערכת חדשה!</translation>
 <translation id="7444515017164572362">מ-13במרץ, לא ניתן יהיה להשתמש ב-BAP שלך. לאחר עדכון למערכת החדשה באפריל, תתחילו מחדש עם אסימונים חדשים!</translation>
 <translation id="8587285254008006694">במהלך מהמעבר, תכונות מתן הטיפים והתרומות בדפדפן יושבתו זמנית מ-13 במרץ, ויתרת ה-BAP שלכם תהיה 0.0 עד שתעודכנו למערכת החדשה באפריל. ברגע שתהיו במערכת החדשה, תתחילו מחדש עם אסימונים חדשים!</translation>
+<translation id="4956847150856741762">1</translation>
+<translation id="5196716972587102051">2</translation>
+<translation id="7839580021124293374">3</translation>
+<translation id="2918322085844739869">4</translation>
+<translation id="7267186368513450821">5</translation>
+<translation id="6972003925509023890">BAT 1</translation>
+<translation id="8867821173176188875">5 BAT</translation>
+<translation id="8762169086048682708">10 BAT</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="4548973860489847866">0.00 BAT</translation>
+<translation id="4193129043743994339">0.00 דולר</translation>
 </translationbundle>

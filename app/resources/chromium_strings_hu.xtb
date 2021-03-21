@@ -111,7 +111,6 @@
 <translation id="847561904663814268">Valaki korábban <ph name="ACCOUNT_EMAIL_LAST"/> néven bejelentkezett a Braveba erről a számítógépről. Az adatai elkülönítéséhez hozzon létre új Brave-felhasználót.</translation>
 <translation id="3834935463915107022">Biztosan kilép a Braveból?</translation>
 <translation id="8668413672647811944">A rendszer egy speciális biztonsági frissítést alkalmazott a Braveon. Indítsa újra a számítógépet, a lapokat majd mi visszaállítjuk.</translation>
-<translation id="7914115000169617076">Már majdnem naprakész! Indítsa újra a Braveot a frissítés befejezéséhez. Az inkognitó ablakok nem fognak újra megnyílni.</translation>
 <translation id="4823369970559443694">A Brave nem tudja ellenőrizni a jelszavait. Próbálja újra 24 óra múlva, vagy <ph name="BEGIN_LINK"/>ellenőrizze jelszavait a Brave-fiókjában<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">A szolgáltatás ugyanazt a helyesírás-ellenőrzést használja, mint a Brave Kereső. A begépelt szöveget a böngésző elküldi a Brave-nak. A beállítások között ezt bármikor módosíthatja.</translation>
 <translation id="2899369907387169108">Brave használata fiók nélkül</translation>
@@ -279,4 +278,5 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Új Brave-frissítés jelent meg, amely az újraindítás után azonnal érvénybe lép.}=1{Új Brave-frissítés jelent meg, amely az újraindítás után azonnal érvénybe lép. Az inkognitóablak nem fog újra megnyílni.}other{Új Brave-frissítés jelent meg, amely az újraindítás után azonnal érvénybe lép. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához.}=1{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához. Az inkognitóablak nem fog újra megnyílni.}other{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához.}=1{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához. Az inkognitóablak nem fog újra megnyílni.}other{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
+<translation id="7914115000169617076">Már majdnem naprakész! Indítsa újra a Braveot a frissítés befejezéséhez. A privát ablakok nem fognak újra megnyílni.</translation>
 </translationbundle>

@@ -35,8 +35,23 @@
 <translation id="604124094241169006">Tự động</translation>
 <translation id="867722069064361487">Đồng hồ 12 giờ</translation>
 <translation id="4064062743338217840">Đồng hồ 24 giờ</translation>
-<translation id="8643377320501056697">Hiển thị Các trang Hàng đầu</translation>
-<translation id="7176563092712682575">Tùy chính Trang Hàng đầu</translation>
+<translation id="5313967007315987356">Thêm trang web</translation>
+<translation id="5052499409147950210">Chỉnh sửa trang web</translation>
+<translation id="1181037720776840403">Xóa</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">Địa chỉ website</translation>
+<translation id="5327248766486351172">Tên</translation>
+<translation id="6916084277913254682">Tiêu đề website</translation>
+<translation id="5317780077021120954">Lưu</translation>
+<translation id="7658239707568436148">Hủy</translation>
+<translation id="4643117005422448078">Các trang Hàng đầu</translation>
+<translation id="6307720725257444819">Yêu thích</translation>
+<translation id="81774600964978477">Các website hàng đầu do bạn tuyển chọn</translation>
+<translation id="5439599923922718668">Thường xuyên Truy cập</translation>
+<translation id="430556192781857057">Các trang mạng hàng đầu được đề xuất dựa trên các website bạn thường truy cập</translation>
+<translation id="8037713009824540257">Thêm Website</translation>
+<translation id="1773147648972887693">Hiển thị các trang thường truy cập</translation>
+<translation id="4546260624932151782">Hiển thị các trang yêu thích</translation>
 <translation id="3446024864193919737">Hiện Brave Rewards</translation>
 <translation id="6274899614137380422">Hiển thị Binance</translation>
 <translation id="5551238871320268996">Brave Cùng nhau</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">Vô hiệu hóa nội dung từ <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Được quảng bá</translation>
 <translation id="1776831331757823105">Đồng hồ</translation>
-<translation id="4643117005422448078">Các trang Hàng đầu</translation>
 <translation id="7791543448312431591">Thêm</translation>
 <translation id="7679334366167089823">Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư.</translation>
 <translation id="1531133232292396145">Mua bán Tiền ảo trên Binance ngay trong trình duyệt của bạn.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">Đây là một</translation>
 <translation id="2055363275850890030">Cửa sổ Riêng tư</translation>
 <translation id="9133213713928851646">Brave không nhớ những gì bạn làm trong Cửa sổ Riêng tư. Các trang web bạn truy cập sẽ không hiển thị trong lịch sử của bạn, và các cookie sẽ bị xóa khi bạn duyệt xong. Mặc dù vậy, Cửa sổ Riêng tư không làm cho bạn hoàn toàn ẩn danh khi trực tuyến.</translation>
-<translation id="8760415064721320867">Cửa sổ Riêng tư với Tor</translation>
-<translation id="4844209912525464363">Brave không bao giờ nhớ những gì bạn làm trong Cửa sổ Riêng tư. Với Tor, việc duyệt web của bạn cũng được ẩn khỏi ISP hoặc chủ của bạn, và địa chỉ IP của bạn được ẩn khỏi các trang web mà bạn truy cập.</translation>
+<translation id="3546750666732517156">Cửa sổ Riêng tư với Kết nối Tor</translation>
+<translation id="5383068818957293256">Brave không bao giờ ghi nhớ những hoạt động của bạn trong một Cửa sổ Riêng tư. Với kết nối Tor, địa chỉ IP của bạn cũng được ẩn khỏi các website bạn truy cập. Tuy nhiên, nếu an toàn cá nhân của bạn phụ thuộc vào việc duy trì sự ẩn danh, hãy dùng Trình duyệt Tor để thay thế.</translation>
 <translation id="778096729652828897">Tìm hiểu thêm về Cửa sổ Riêng tư với Tor</translation>
 <translation id="7919374705736538787">Tìm kiếm Riêng tư với</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Với tìm kiếm riêng tư, Brave sẽ sử dụng DuckDuckGo để tìm kiếm trong Cửa sổ Riêng tư. DuckDuckGo không theo dõi lịch sử tìm kiếm của bạn, vì vậy bạn có thể tìm kiếm một cách riêng tư.</translation>
 <translation id="1925197199485958903">Trong Cửa số Riêng tư với Tor, công cụ tìm kiếm mặc định là DuckDuckGo. Một số công cụ tìm kiếm phổ biến khác khó sử dụng với Tor hơn. DuckDuckGo không theo dõi lịch sử tìm kiếm của bạn; và với Tor, DuckDuckGo thậm chí còn không biết địa chỉ IP của bạn.</translation>
 <translation id="4371533307685765155">Tìm kiếm với DuckDuckGo</translation>
-<translation id="5576876180131651996">Làm cho Cửa sổ Riêng tư trở nên riêng tư hơn nhiều</translation>
-<translation id="1129265576134014816">Cửa sổ Riêng tư này riêng tư hơn nhiều</translation>
-<translation id="805807983419360524">cùng Tor</translation>
-<translation id="8958799246752641148">Tor ẩn địa chỉ IP của bạn khỏi các trang web bạn truy cập, bằng cách định tuyến việc duyệt web của bạn thông qua một số máy chủ Tor trước khi truy cập trang đích của bạn. Các kết nối này được mã hóa, do đó, ISP hoặc chủ của bạn không thể xem trang web nào bạn đang truy cập. Tor có thể làm chậm việc duyệt web và một số trang web có thể không hoạt động được.</translation>
-<translation id="520608572871993342">Sử dụng Cửa số Riêng tư chỉ thay đổi những gì Brave thực hiện trên thiết bị của bạn mà không thay đổi hành vi của bất kỳ điều gì khác. Tor ẩn địa chỉ IP của bạn khỏi những trang web mà bạn truy cập, và ẩn những trang web bạn truy cập khỏi ISP hoặc chủ của bạn. Mở Cửa sổ Riêng tư với Tor từ menu, hoặc với {{ key }}.</translation>
+<translation id="548478195417408221">Tăng thêm sự riêng tư cho các Cửa sổ Riêng tư</translation>
+<translation id="3294503279952534143">Cửa sổ Riêng tư này có tính riêng tư hơn</translation>
+<translation id="4644024131266615376">với Kết nối Tor</translation>
+<translation id="8541421872680304667">Tor giúp ẩn địa chỉ IP của bạn khỏi các website bạn truy cập, bằng cách gửi thông tin hoạt động duyệt web của bạn qua một số máy chủ Tor trước khi chúng đến được trang đích bạn muốn. Tor có thể làm chậm hoạt động duyệt web và một số website có thể sẽ không hoạt động.</translation>
+<translation id="7030950080800709999">Việc dùng Cửa sổ Riêng tư chỉ thay đổi những gì mà Brave thực hiện trên thiết bị của bạn — nó không làm thay đổi hành vi của bất kỳ ai khác. Tor giúp ẩn địa chỉ IP của bạn khỏi các website bạn truy cập và khiến ISP hoặc chủ lao động của bạn phần nào khó biết hơn về những website bạn đang truy cập, nhưng không phải là không thể biết. Mở một Cửa sổ Riêng tư bằng Tor từ trình đơn, hoặc bằng phím {{ key }}.</translation>
 <translation id="6975708438781948564">Tìm hiểu thêm về Tor trong Brave</translation>
 <translation id="4712050378540986986">Trạng thái Tor</translation>
 <translation id="3368922792935385530">Đã kết nối</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">Báo cáo trang web bị hỏng</translation>
 <translation id="8510478288840333677">Hãy thông báo cho các nhà phát triển của Brave biết trang web này không hoạt động đúng cách với Shields:</translation>
 <translation id="6013164422534859494">Lưu ý: Trang web này sẽ được gửi cùng với số phiên bản Brave và địa chỉ IP của bạn (chúng tôi sẽ không lưu trữ thông tin này).</translation>
-<translation id="7658239707568436148">Hủy</translation>
 <translation id="2653659639078652383">Gửi đi</translation>
 <translation id="5299848999918506028">Cảm ơn bạn!</translation>
 <translation id="76550953340008122">Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">Ngày đóng góp hàng tháng tiếp theo</translation>
 <translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME"/> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">Rất tiếc, đã xảy ra trục trặc khi xử lý yêu cầu của bạn, vui lòng thử lại.</translation>
+<translation id="3113653894794167793">Rất tiếc, đã xảy ra sự cố khi xử lý yêu cầu của bạn, xin vui lòng thử lại.</translation>
 <translation id="3082557070674409251">Đã nhấp</translation>
 <translation id="7119308337584989771">Đã loại bỏ</translation>
 <translation id="6805660603861526473">Đã xem</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">Brave Private Ads thưởng cho bạn các token để ủng hộ những nhà sáng tạo nội dung không giống như các quảng cáo truyền thống, đồng thời giữ bí mật thông tin cá nhân của bạn.</translation>
 <translation id="6973095375773523904">Quảng cáo hiển thị ở đâu?</translation>
 <translation id="7556325460112047619">Brave Private Ads sẽ hiển thị như một thông báo thông thường. Bạn kiểm soát tần suất bạn nhìn thấy các quảng cáo này trong phần cài đặt.</translation>
-<translation id="5816125157889950051">Khi nào bạn nhận được phần thưởng</translation>
+<translation id="6897083627729802351">Khi nào bạn nhận được phần thưởng</translation>
 <translation id="310863932297733723">Các token mà bạn kiếm được từ Brave Private Ads trong suốt tháng này sẽ đến vào ngày 5 của tháng sau.</translation>
 <translation id="7712287524451429139">Tặng lại một cách dễ dàng</translation>
 <translation id="105037569026952831">Người sáng tạo tự động nhận được các khoản đóng góp token của bạn dựa trên mức độ tương tác của bạn mà chúng tôi đo lường là "Sự chú ý".</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">Đánh dấu Là Không phù hợp ✓</translation>
 <translation id="8988332871810963281">Hiện không có lịch sử Quảng cáo Brave</translation>
 <translation id="5345727496083327478">Bạn sẽ không nhận được quảng cáo từ danh mục này nữa</translation>
-<translation id="5317780077021120954">Lưu</translation>
 <translation id="2827387977307390755">Cho phép tiền boa</translation>
 <translation id="3819257035322786455">Sao lưu</translation>
 <translation id="1312977698678162065">Được trả tiền khi xem các quảng cáo liên quan và tôn trọng sự riêng tư của bạn.</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">Các trang ghim của bạn đã được chuyển đến</translation>
 <translation id="6803187280799213426">Tiền trong ví Brave của bạn là ảo và không bắt buộc phải sao lưu. Số tiền đó có sẵn để bạn chi tiêu riêng trên trình duyệt này.</translation>
 <translation id="5290348443732633227">Nếu bạn muốn bảo vệ tất cả số tiền của mình trong trường hợp cài đặt mới trình duyệt hoặc chuyển sang thiết bị mới, và có các lợi ích khác như thêm, rút và chuyển tiền, chúng tôi khuyên bạn nên</translation>
-<translation id="6733942359297688714">đang kết nối với ví Uphold đã được xác minh.</translation>
+<translation id="467041382895390784">đang kết nối với một ví <ph name="PROVIDER"/> đã xác thực.</translation>
 <translation id="5717619667204259673">Giữ an toàn khóa khôi phục này.</translation>
 <translation id="4699702339303280827">Bạn luôn có thể sử dụng khóa này để lấy lại ví nếu có chuyện gì xảy ra với trình duyệt hoặc máy tính của bạn. Nhưng hãy đảm bảo bảo vệ khóa này — bất kỳ ai có được khóa này đều có thể đánh cắp ví của bạn. Có lẽ an toàn nhất là viết khóa này ra một tờ giấy, hoặc bất cứ nơi nào mà bạn giữ thông tin quan trọng.</translation>
 <translation id="8979401359137062629">Lưu ý:</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">Thỉnh thoảng, Brave sẽ cho bạn các khoản thưởng token miễn phí. Bạn hãy chú ý các thông báo nhé!</translation>
 <translation id="2185598236335233939">Hãy chờ nhận thông báo quảng cáo khi bạn tiếp tục sử dụng Brave. Số dư Điểm BAT của bạn sẽ tăng lên với mỗi quảng cáo mà bạn xem.</translation>
 <translation id="1370034647041840967">Nhận token cho sự chú ý của bạn đến quảng cáo và thanh toán để ủng hộ những nhà chế tác nội dung có giá trị với bạn!</translation>
-<translation id="4600224932216165965">Nạp tiền, rút tiền và quản lý vốn tại <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
-<translation id="3580616436301227919">Ví Brave của bạn được cung cấp bởi <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="4919888432594361029">Thêm, rút ​​và quản lý tiền tại <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">Ví Brave của bạn do <ph name="PROVIDER"/> cung cấp.</translation>
 <translation id="6401272292123354754">Phần thưởng Brave được dựng trên Basic Attention Token. Tìm hiểu thêm về BAT</translation>
 <translation id="7823359893981882407">ở đây</translation>
 <translation id="4483635855837696643">Phục hồi Ví của bạn</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">Nhập khoá khôi phục của bạn hoặc</translation>
 <translation id="6548189695918108191">Sao lưu ví của bạn trước khi thay thế. Nếu không, bạn sẽ mất số tiền {{funds}} trong ví hiện tại của bạn.</translation>
 <translation id="5423214929210538027">Bạn có chắc chắn muốn đặt lại Ví Phần thưởng của mình không?</translation>
-<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> và dữ liệu Phần thưởng khác của bạn sẽ bị mất vĩnh viễn nếu bạn thiết lập lại ví. Hãy đảm bảo bạn đã xác thực ví với Uphold để có thể giữ BAT của mình.</translation>
+<translation id="8683358891240311475"><ph name="BAT_AMOUNT"/> và những dữ liệu Phần thưởng khác của bạn sẽ bị mất vĩnh viễn nếu bạn thiết lập lại ví của mình. Vui lòng đảm bảo rằng bạn đã xác thực ví với <ph name="PROVIDER"/> để có thể tiếp tục giữ BAT của mình.</translation>
 <translation id="2028613172174411919">Dữ liệu Phần thưởng của bạn sẽ bị mất vĩnh viễn nếu bạn đặt lại ví của mình.</translation>
 <translation id="4914597931214386232">Khoản thưởng Token Đã nhận</translation>
 <translation id="3494964159182650590">Tóm tắt Tiền thưởng</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">xác thực</translation>
 <translation id="8267327690882073581">Xác thực Ví</translation>
 <translation id="543510923939676996">Ví đã được xác thực.</translation>
-<translation id="7591798679868259510">Truy cập tài khoản Uphold của tôi</translation>
+<translation id="2659764755126740206">Đến tài khoản <ph name="PROVIDER"/> của tôi</translation>
 <translation id="3699674790322420653">Hoàn thành xác thực ví</translation>
 <translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
 <translation id="46988480989545156">Xác thực ví</translation>
-<translation id="160145159036553575">Dịch vụ ví của chúng tôi được cung cấp bởi <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="5796169459825124737">Dịch vụ ví điện tử của chúng tôi <ph name="PROVIDER"/> cung cấp.</translation>
 <translation id="6771734945114850124">Vui lòng chuẩn bị sẵn sàng căn cước công dân của bạn.</translation>
 <translation id="8697510149346635496">Rút BAT mà bạn kiếm được nhờ xem các quảng cáo tôn trọng quyền riêng tư</translation>
 <translation id="1481480653609649134">Mua thêm BAT bằng thẻ tín dụng và các nguồn tiền khác</translation>
 <translation id="9096003370755878766">Rút BAT mà trước đó có thể bạn đã thêm vào ví Phần thưởng Brave của mình</translation>
 <translation id="8558636200953226885">Nhưng nếu xác minh, bạn có thể...</translation>
 <translation id="3354315693758743702">Không bắt buộc phải xác minh ví của bạn.</translation>
-<translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
-<translation id="723054503945711909">Công ty Brave Software Inc. không xử lý, lưu trữ hay truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho Uphold khi bạn thiết lập tài khoản với họ.</translation>
-<translation id="7677480094678113476">Lưu ý: Các giao dịch của bạn sẽ hiển thị với Uphold khi bạn cho phép; chẳng hạn, họ sẽ có thể thấy người nhận và số tiền tip của bạn.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> có thể sẽ yêu cầu bạn xác thực danh tính dựa trên các dịch vụ được yêu cầu.</translation>
+<translation id="6938217233488972952">Brave Software Inc. không xử lý, lưu trữ hay truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho <ph name="PROVIDER"/> khi bạn lập tài khoản với họ.</translation>
+<translation id="2415586822982819406">Lưu ý: <ph name="PROVIDER"/> sẽ có thể thấy được các giao dịch của bạn sau khi bạn cho phép; ví dụ như họ sẽ có thể thấy người nhận cũng như số tiền boa của bạn.</translation>
 <translation id="7404779623219601861">Đổi BAT lấy Thẻ quà tặng</translation>
 <translation id="6215565499749144110">Với Mạng TAP, bạn có thể đổi BAT của mình lấy các thẻ quà tặng nhãn hiệu nổi tiếng.</translation>
 <translation id="6915065518766963119">* Cần phải Xác thực Uphold.</translation>
@@ -718,12 +730,36 @@
 <translation id="8327818101454798856">Vì vậy, nếu bạn đang tìm cách hỗ trợ các trang web yêu thích của mình, hãy truy cập các trang đó.</translation>
 <translation id="412480955826088549">Đang tải xuống Thành phần...</translation>
 <translation id="4894106830958548828">Tôi hiểu</translation>
-<translation id="7701466644604753106">BẬT Trình đọc tốc độ</translation>
-<translation id="763042262431778831">TẮT Trình đọc tốc độ</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Xem thị trường và mua tiền điện tử từ crypto.com.</translation>
+<translation id="4292334826913000023">Hiển thị Giá</translation>
+<translation id="5001098083058405168">Được thưởng 2% khi nạp tiền</translation>
+<translation id="7336377875970208451">Dừng thanh toán phí giao dịch</translation>
+<translation id="5889002303959545585">Mua Bitcoin</translation>
+<translation id="7243082596932212589">Xem Thị trường Crypto.com</translation>
+<translation id="2258222996838418990">Biểu đồ 7 ngày</translation>
+<translation id="5337526542182802976">Cặp tiền Được hỗ trợ</translation>
+<translation id="1164622162816276433">Khối lượng 24 giờ</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="4492298165410552103">Bật hỗ trợ Unstoppable Domains trong Brave?</translation>
+<translation id="3470923752115324276">Brave có thể cho phép bạn truy cập các tên miền ".crypto" bằng cách dùng Cloudflare để xử lý các yêu cầu tra cứu tên miền ".crypto" bằng DNS qua giao thức HTTPS. Nếu bạn bật mục này, Cloudflare sẽ thấy được miền ".crypto" mà bạn đang cố truy cập nhưng sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_CF_TOU_LINK"/>các điều khoản sử dụng<ph name="END_CF_TOU_LINK"/> và<ph name="BEGIN_CF_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_CF_PRIVACY_LINK"/> của Cloudflare.</translation>
+<translation id="6513892817556267573">Dịch vụ Cung cấp Tên miền Ethereum</translation>
+<translation id="4335039108389860301">Bật hỗ trợ Dịch vụ Cung cấp Tên miền Ethereum (ENS) trong Brave?</translation>
+<translation id="618766505813078707">Brave có thể cho phép bạn truy cập các tên miền ".crypto" bằng cách dùng Cloudflare để xử lý các yêu cầu tra cứu tên miền ".crypto" bằng DNS qua giao thức HTTPS. Nếu bạn bật mục này, Cloudflare sẽ thấy được miền ".crypto" mà bạn đang cố truy cập nhưng sẽ không thể thấy các tên miền khác. Xem <ph name="BEGIN_CF_TOU_LINK"/>các điều khoản sử dụng<ph name="END_CF_TOU_LINK"/> và <ph name="BEGIN_CF_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_CF_PRIVACY_LINK"/> của Cloudflare.</translation>
+<translation id="5636651007798897342">Tiếp tục dùng máy chủ Cloudflare</translation>
+<translation id="2468755552460246661">Tên miền Đã chặn</translation>
+<translation id="6631469728138660166">Website đáng ngờ phía trước</translation>
+<translation id="983774928604730749">Brave đã ngăn không cho website sau đây được tải:</translation>
+<translation id="8250033559824599347">Website này có thể là lừa đảo, chuyển bạn qua lại giữa các website khác nhau để đặt cookie theo dõi, hoặc thực hiện các hành động xâm phạm quyền riêng tư khác.</translation>
+<translation id="2459038234784107183">Không cảnh báo tôi về website này một lần nữa</translation>
+<translation id="8242426110754782860">Tiến hành</translation>
+<translation id="2501278716633472235">Quay lại</translation>
 <translation id="9020818404803201080">Đồng đẳng đã kết nối:</translation>
 <translation id="2903493209154104877">Địa chỉ</translation>
 <translation id="3207122385716480167">Thống kê Repo</translation>
 <translation id="2595187693729756455">Thông tin nút</translation>
+<translation id="8999763401170835879">Đã xảy ra lỗi, xin hãy cố khởi động lại</translation>
+<translation id="5433704526290922623">Đã xảy ra lỗi, xin hãy cố gắng cài đặt lại nút</translation>
 <translation id="5789886980848929155">Trạng thái nút IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Cổng vào</translation>
@@ -765,20 +801,20 @@
 <translation id="3977809385703587108">Bạn có thể thay đổi tùy chọn của mình một lần nữa sau</translation>
 <translation id="3340978935015468852">cài đặt</translation>
 <translation id="4148957013307229264">Đang cài đặt...</translation>
-<translation id="6057992164469678163">Đang chờ các nút ngang hàng...</translation>
+<translation id="4219228508273972445">Đang tìm kiếm người tham gia...</translation>
 <translation id="1902096227388293745">Không có nút ngang hàng nào, đang thử lại... (còn lại <ph name="ATTEMPTS_NUMBER"/> lần thử)</translation>
 <translation id="1675751799495331928">Chúng tôi đã vượt quá giới hạn số lần thử, xin vui lòng thử lại sau.</translation>
 <translation id="4499666752625407848">Đã xảy ra lỗi khi cập nhật.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Xem thị trường và mua tiền điện tử từ crypto.com.</translation>
-<translation id="4292334826913000023">Hiển thị Giá</translation>
-<translation id="5001098083058405168">Được thưởng 2% khi nạp tiền</translation>
-<translation id="7336377875970208451">Dừng thanh toán phí giao dịch</translation>
-<translation id="5889002303959545585">Mua Bitcoin</translation>
-<translation id="7243082596932212589">Xem Thị trường Crypto.com</translation>
-<translation id="2258222996838418990">Biểu đồ 7 ngày</translation>
-<translation id="5337526542182802976">Cặp tiền Được hỗ trợ</translation>
-<translation id="1164622162816276433">Khối lượng 24 giờ</translation>
+<translation id="7789840864192026963">Cấp quyền</translation>
+<translation id="8092074243456635562">cho đến khi tôi đóng trang này</translation>
+<translation id="3523195733429162409">trong 24 giờ</translation>
+<translation id="2373264732659722940">trong 1 tuần</translation>
+<translation id="6318437367327684789">vĩnh viễn</translation>
+<translation id="7463327191540031132">Chặn vĩnh viễn</translation>
+<translation id="8797999629784150206">Bạn có thể thay đổi <ph name="SITE_PERMISSIONS"/> của mình bất cứ lúc nào. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">cấp quyền website</translation>
+<translation id="7701466644604753106">BẬT Trình đọc tốc độ</translation>
+<translation id="763042262431778831">TẮT Trình đọc tốc độ</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>

@@ -35,8 +35,23 @@
 <translation id="604124094241169006">자동</translation>
 <translation id="867722069064361487">12시간 시계</translation>
 <translation id="4064062743338217840">24시간 시계</translation>
-<translation id="8643377320501056697">탑 사이트 보기</translation>
-<translation id="7176563092712682575">탑 사이트 사용자 지정</translation>
+<translation id="5313967007315987356">사이트 추가</translation>
+<translation id="5052499409147950210">사이트 수정</translation>
+<translation id="1181037720776840403">삭제</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">웹 사이트 주소</translation>
+<translation id="5327248766486351172">이름</translation>
+<translation id="6916084277913254682">웹 사이트 제목</translation>
+<translation id="5317780077021120954">저장</translation>
+<translation id="7658239707568436148">취소</translation>
+<translation id="4643117005422448078">탑 사이트</translation>
+<translation id="6307720725257444819">즐겨찾기</translation>
+<translation id="81774600964978477">상위 사이트는 사용자가 선별할 수 있습니다</translation>
+<translation id="5439599923922718668">자주 방문하는 사이트</translation>
+<translation id="430556192781857057">상위 사이트는 자주 방문하는 웹 사이트를 기반으로 제안됩니다</translation>
+<translation id="8037713009824540257">사이트 추가</translation>
+<translation id="1773147648972887693">자주 방문하는 사이트 표시</translation>
+<translation id="4546260624932151782">즐겨찾기 표시</translation>
 <translation id="3446024864193919737">Brave (브레이브) 리워드 표시</translation>
 <translation id="6274899614137380422">Binance 표시</translation>
 <translation id="5551238871320268996">Brave Together</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/> 콘텐츠 비활성화</translation>
 <translation id="3189348785087463371">촉진됨</translation>
 <translation id="1776831331757823105">시계</translation>
-<translation id="4643117005422448078">탑 사이트</translation>
 <translation id="7791543448312431591">추가</translation>
 <translation id="7679334366167089823">개인정보 존중 광고를 시청하여 토큰을 획득하십시오.</translation>
 <translation id="1531133232292396145">브라우저의 바이낸스에서 크립토를 직접 거래하십시오.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">이것은</translation>
 <translation id="2055363275850890030">비공개 윈도우</translation>
 <translation id="9133213713928851646">Brave는 당신이 비공개 윈도우에서 하는 활동을 기억하지 않습니다. 방문한 사이트는 검색 내역에 나타나지 않으며, 검색을 끝내면 쿠기도 사라집니다. 비공개 윈도우는 온라인상에서 당신을 완벽한 익명으로 만들어 줍니다.</translation>
-<translation id="8760415064721320867">Tor와 함께하는 비공개 윈도우</translation>
-<translation id="4844209912525464363">Brave는 당신이 비공개 윈도우에서 하는 활동을 기억하지 않습니다. Tor와 함께하면, 당신의 ISP나 고용주로부터 검색 내역이 표시되지 않으며, 방문한 사이트로부터 당신의 IP 주소가 표시되지 않습니다.</translation>
+<translation id="3546750666732517156">Tor 연결이 제공되는 Private Window</translation>
+<translation id="5383068818957293256">Brave는 사용자가 Private Window에서 무엇을 하는지 기억하지 않습니다. Tor 연결을 이용하면, 방문하는 사이트에서 사용자의 IP 주소도 숨겨집니다. 다만, 신변의 안전이 익명 유지에 달려 있다면, 대신 Tor 브라우저를 사용하십시오.</translation>
 <translation id="778096729652828897">Tor를 이용한 비공개 창에 관하여 자세히 알아보십시오</translation>
 <translation id="7919374705736538787">다음으로 비공개 검색하기:</translation>
 <translation id="3135655280958284640">DuckDuckGo (덕덕고)</translation>
 <translation id="218839872518145456">비공개 검색에선, Brave가 검색을 위해 비공개 윈도우에서 DuckDuckGo를 사용합니다. DuckDuckGo는 검색 내역을 추적하지 않기에, 비공개로 검색할 수 있습니다.</translation>
 <translation id="1925197199485958903">Tor와 함께하는 비공개 윈도우에선, DuckDuckGo가 기본 설정 검색 엔진입니다. 기타 몇몇 인기 있는 검색 엔진은 Tor와 함께 사용하기가 더 어렵습니다. DuckDuckGo는 검색 내역을 추적하지 않습니다. Tor와 함께라면, IP 주소도 알 수 없습니다.</translation>
 <translation id="4371533307685765155">DuckDuckGo로 검색하기</translation>
-<translation id="5576876180131651996">비공개 윈도우를 훨씬 더 은밀하게 만들기</translation>
-<translation id="1129265576134014816">이 비공개 윈도우는 훨씬 더 은밀합니다</translation>
-<translation id="805807983419360524">Tor와 함께</translation>
-<translation id="8958799246752641148">Tor는 여러분을 목적지에 도달시키기 전 여러 Tor 서버를 거쳐 라우팅함으로써, 방문 사이트들로부터 여러분의 IP주소를 숨겨 줍니다. 이러한 연결은 암호화되어 있으므로, 여러분의 인터넷 공급자나 고용주 또한 여러분#8217;께서 어떤 사이트를 방문하시는지 볼 수’없습니다. Tor는 인터넷을 느리게 만들 수 있으며 일부 사이트는 아예 작동하지 않을 수도 있습니다.</translation>
-<translation id="520608572871993342">비공개 윈도우 사용은 당신의 기기상 Brave 작동에만 영향을 미칩니다. — 다른 사람들에게는 영향을 미치지 않습니다. Tor가 당신이 방문한 사이트로부터 IP 주소를 숨기고, ISP 혹은 고용주로부터 방문한 사이트를 숨깁니다. 메뉴에서 혹은 {{ key }}로 Tor 비공개 윈도우를 여세요.</translation>
+<translation id="548478195417408221">Private Windows에 대해 추가로 비공개로 설정</translation>
+<translation id="3294503279952534143">이 Private Window는 비공개에 더욱 철저합니다</translation>
+<translation id="4644024131266615376">Tor 연결과 함께</translation>
+<translation id="8541421872680304667">Tor는 목적지에 도달하기 전에 여러 Tor 서버를 통해 브라우징을 라우팅하는 방식으로 방문하는 사이트에 대해 사용자의 IP 주소를 숨깁니다. Tor를 이용함으로써 브라우징 속도가 느려질 수 있으며, 일부 사이트는 전혀 동작하지 않을 수 있습니다.</translation>
+<translation id="7030950080800709999">Private Windows를 사용하면 기기에서 Brave가 수행하는 작업만 변경합니다. — 다른 사람의 조작은 변경하지 않습니다. Tor는 사용자가 방문하는 사이트에서 사용자의 IP 주소를 숨기며, 사용자가 방문하는 사이트를 ISP나 고용주가 알기 다소 어렵게 만듭니다(불가능하지는 않습니다). 메뉴에서 Tor, 또는 {{ key }}(와)과 함께 Private Window를 여십시오.</translation>
 <translation id="6975708438781948564">Brave에서 Tor에 대해 더 알아보기</translation>
 <translation id="4712050378540986986">Tor 상태</translation>
 <translation id="3368922792935385530">연결됨</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
 <translation id="6013164422534859494">참고: 이 사이트 주소는 Brave  (브레이브) 버전 번호 및 귀하의 IP 주소 (저장되지 않음)와 함께 제출됩니다.</translation>
-<translation id="7658239707568436148">취소</translation>
 <translation id="2653659639078652383">제출</translation>
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">다음 월 기부금 날짜</translation>
 <translation id="6231182869178328516">Brave 브라우저를 이용해 <ph name="NAME"/>에게 팁으로 주었습니다. https://brave.com/tips에서 확인해 보세요.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">죄송합니다, 귀하의 요청 처리 중에 문제가 발생했습니다, 다시 시도해 주십시오.</translation>
+<translation id="3113653894794167793">죄송하지만 요청을 처리하는 중에 문제가 발생했습니다. 다시 시도하시기 바랍니다.</translation>
 <translation id="3082557070674409251">클릭됨</translation>
 <translation id="7119308337584989771">기각됨</translation>
 <translation id="6805660603861526473">조회됨</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">Brave 프라이빗 광고는 종전의 광고와는 달리 콘텐츠 제작자를 지원할 수 있도록 여러분께 토큰을 리워드로 지급하며, 이 과정에서 여러분의 개인 정보는 안전하게 보호됩니다.</translation>
 <translation id="6973095375773523904">광고는 어디에 표시됩니까?</translation>
 <translation id="7556325460112047619">Brave 프라이빗 광고는 일반 알림의 형태로 나타나게 됩니다. 설정에서 이 광고를 얼마나 자주 볼 것인지에 대해 조정할 수 있습니다.</translation>
-<translation id="5816125157889950051">언제 보상을 받습니까</translation>
+<translation id="6897083627729802351">언제 보상을 받습니까</translation>
 <translation id="310863932297733723">이번 달 동안 Brave 프라이빗 광고를 통해 획득하신 토큰은 다음 달 5일에 지급됩니다.</translation>
 <translation id="7712287524451429139">쉽게 돌려주기</translation>
 <translation id="105037569026952831">크리에이터는 ‘관심’으로 측정한 참여 수준에 따라 자동으로 토큰 기여금을 받습니다.</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">부적절한 것으로 표시 ✓</translation>
 <translation id="8988332871810963281">현재 Brave Ads 기록이 없습니다</translation>
 <translation id="5345727496083327478">더는 이 카테고리에서 광고를 받지 않습니다</translation>
-<translation id="5317780077021120954">저장</translation>
 <translation id="2827387977307390755">팁 허용</translation>
 <translation id="3819257035322786455">백업</translation>
 <translation id="1312977698678162065">귀하의 개인 정보를 존중하는 관련 광고를 보고 보상을 받으세요.</translation>
@@ -506,7 +518,6 @@
 <translation id="1797334173232638045">고정된 사이트가 다음으로 이동됨</translation>
 <translation id="6803187280799213426">Brave 지갑에 있는 잔고는 가상이며 백업할 수 없습니다. 이 브라우저에서만 독점적으로 사용할 수 있습니다.</translation>
 <translation id="5290348443732633227">브라우저를 새로 설치하거나 새 기기로 전환할 때 모든 자금을 확보하고 자금 추가, 인출 및 이전과 같은 다른 혜택을 받고 싶다면 추천합니다</translation>
-<translation id="6733942359297688714">인증된 Uphold 지갑에 연결 중입니다.</translation>
 <translation id="5717619667204259673">이 복구 키를 안전하게 보관하세요.</translation>
 <translation id="4699702339303280827">귀하께서는 브라우저나 컴퓨터에 이상 발생 시 항상 이 열쇠를 사용하여 귀하의 지갑을 돌려받으실 수 있습니다. 하지만 안전하게 보호하셔서 — 이 키를 가진 사람이 귀하의 지갑을 훔치지 못하도록 주의하세요. 아마도’ 종이에 적어두시거나, 혹은 중요한 정보를 보관하는 곳에 적어 두시는 것이 가장 안전할 것입니다.</translation>
 <translation id="8979401359137062629">참고:</translation>
@@ -526,8 +537,8 @@
 <translation id="8014425282125849700">가끔 Brave에서 무료 토큰 보조금이 제공됩니다. 그 알림을 눈여겨보세요!</translation>
 <translation id="2185598236335233939">Brave (브레이브)를 계속 사용할 때 광고 알림을 찾으십시오. 귀하의 BAT 포인트 잔액은 귀하가 보는 각 광고와 함께  증가할 것입니다.</translation>
 <translation id="1370034647041840967">광고에 관심을 보이고 토큰을 벌어 가치 있게 여기는 콘텐츠 제작자에게 보내 지원하세요.</translation>
-<translation id="4600224932216165965"><ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>에서 자금을 추가, 인출 및 관리하세요.</translation>
-<translation id="3580616436301227919">Brave 지갑은 <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>가 제공합니다.</translation>
+<translation id="4919888432594361029">자금을 추가, 인출하고 관리하세요 <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">Brave 월렛은 <ph name="PROVIDER"/> 기반으로 동작합니다.</translation>
 <translation id="6401272292123354754">Brave Rewards는 Basic Attention Token을 바탕으로 설계되었습니다. BAT에 관해 자세히 알아보세요</translation>
 <translation id="7823359893981882407">여기</translation>
 <translation id="4483635855837696643">지갑 복구</translation>
@@ -536,7 +547,6 @@
 <translation id="3267911153934785912">복구 키를 입력하거나</translation>
 <translation id="6548189695918108191">교체하기 전에 지갑을 백업하세요. 그렇지 않을경우 현재 지갑의 잔고, {{funds}}을/를 잃어버릴 수도 있습니다.</translation>
 <translation id="5423214929210538027">정말로 리워드 월랫을 초기화하실건가요?</translation>
-<translation id="7428521340740703492">지갑에 있는 <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/>와 다른 리워드 데이터가 영구적으로 삭제됩니다. Uphold를 통해 지갑을 인증해서 BAT가 보관되고 있는지 확인해주세요.</translation>
 <translation id="2028613172174411919">지갑을 초기화하면 리워드 데이터가 영구적으로 삭제됩니다.</translation>
 <translation id="4914597931214386232">토큰 승인 요청됨</translation>
 <translation id="3494964159182650590">보상 요약</translation>
@@ -611,20 +621,20 @@
 <translation id="7512440811010447157">검증</translation>
 <translation id="8267327690882073581">월렛 검증하기</translation>
 <translation id="543510923939676996">지갑 인증됨</translation>
-<translation id="7591798679868259510">내 Uphold 계정으로 이동</translation>
+<translation id="2659764755126740206">내 <ph name="PROVIDER"/> 계정으로 가기</translation>
 <translation id="3699674790322420653">지갑 인증 완료</translation>
 <translation id="9200453331904391567">Brave Rewards에서 접속 해제됨.</translation>
 <translation id="46988480989545156">월렛 검증하기</translation>
-<translation id="160145159036553575">지갑 서비스는 <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>가 제공합니다.</translation>
+<translation id="5796169459825124737">당사의 월렛 서비스는 <ph name="PROVIDER"/>에 의해 제공됩니다.</translation>
 <translation id="6771734945114850124">정부에서 발급한 유효한 신분증을 준비해 주세요.</translation>
 <translation id="8697510149346635496">개인 정보를 존중하는 광고를 본 것으로 획득하는 BAT 중단</translation>
 <translation id="1481480653609649134">신용 카드 및 기타 자원으로 추가 BAT 구매</translation>
 <translation id="9096003370755878766">이전에 Brave Rewards 월렛에 추가했을 수 있는 BAT를 중단하세요</translation>
 <translation id="8558636200953226885">하지만 확인하시면, 귀하는...</translation>
 <translation id="3354315693758743702">귀하 월렛 확인은 선택 사항입니다.</translation>
-<translation id="8465442795593991224">Uphold가 요청된 서비스에 기반하여 귀하의 신원 확인을 요구할 수도 있습니다.</translation>
-<translation id="723054503945711909">Brave Software Inc.는 계정을 만들 때 Uphold에 제공된 개인 정보를 처리, 저장, 또는 액세스하지 않습니다.</translation>
-<translation id="7677480094678113476">참고: 사용자가 승인하면 거래 내용이 Uphold에 표시됩니다. 예를 들어, 수취인과 팁의 액수를 볼 수 있습니다.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/>에 의해 요청된 서비스에 따라 신원 확인이 요구될 수 있습니다.</translation>
+<translation id="6938217233488972952">Brave Software Inc.는 사용자가 계정을 생성할 때 <ph name="PROVIDER"/>에 제공하는 개인 정보를 처리, 저장 또는 액세스하지 않습니다.</translation>
+<translation id="2415586822982819406">주의: 한 번 승인하면 <ph name="PROVIDER"/> 측에서 귀하의 거래를 볼 수 있게 됩니다. 예를 들어, 수취인과 팁의 금액을 볼 수 있습니다.</translation>
 <translation id="7404779623219601861">BAT와 기프트 카드 교환</translation>
 <translation id="6215565499749144110">TAP 네트워크를 사용하면 인기 있는 유명 브랜드 기프트 카드와 BAT를 교환할 수 있습니다.</translation>
 <translation id="6915065518766963119">* Uphold 검증이 필요합니다.</translation>
@@ -722,12 +732,36 @@
 <translation id="8327818101454798856">가장 좋아하는 사이트를 지원하고자 한다면, 대신 그쪽으로 가세요.</translation>
 <translation id="412480955826088549">구성 요소를 다운로드하고 있습니다...</translation>
 <translation id="4894106830958548828">이해했습니다</translation>
-<translation id="7701466644604753106">스피드리더 켜기</translation>
-<translation id="763042262431778831">스피드리더 끄기</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">crypto.com에서 시장을 보고 암호화폐를 구매하세요.</translation>
+<translation id="4292334826913000023">가격 표시</translation>
+<translation id="5001098083058405168">입금에 대한 2% 보너스 받기</translation>
+<translation id="7336377875970208451">거래 수수료 지급 중지</translation>
+<translation id="5889002303959545585">비트코인 구매</translation>
+<translation id="7243082596932212589">Crypto.com 시장 보기</translation>
+<translation id="2258222996838418990">7d 그래프</translation>
+<translation id="5337526542182802976">지원되는 페어</translation>
+<translation id="1164622162816276433">24시간 거래량</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="4492298165410552103">Brave에서 Unstoppable Domains 지원을 활성화할까요?</translation>
+<translation id="3470923752115324276">Brave를 사용하면 HTTPS를 통해 DNS를 사용하는 .crypto 도메인명 조회 요청을 해결하도록 Cloudflare를 사용하여 .crypto 도메인에 방문할 수 있습니다. 이를 활성화하면 Cloudflare 측에서 사용자가 방문하려는 .crypto 도메인을 볼 수 있지만, 다른 도메인은 볼 수 없습니다. Cloudflare의 <ph name="BEGIN_CF_TOU_LINK"/>이용 약관<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>개인 정보 보호 정책<ph name="END_CF_PRIVACY_LINK"/> 보기.</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="4335039108389860301">Brave에서 Ethereum Name Service(ENS) 지원을 활성화할까요?</translation>
+<translation id="618766505813078707">Brave를 사용하면 HTTPS를 통해 DNS를 사용하는 .eth 도메인명 조회 요청을 해결하도록 Cloudflare를 사용하여 .eth 도메인에 방문할 수 있습니다. 이를 활성화하면 Cloudflare 측에서 사용자가 방문하려는 .eth 도메인을 볼 수 있지만, 다른 도메인은 볼 수 없습니다. Cloudflare의 <ph name="BEGIN_CF_TOU_LINK"/>이용 약관<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>개인 정보 보호 정책<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Cloudflare 서버를 이용하여 계속 진행</translation>
+<translation id="2468755552460246661">도메인 차단</translation>
+<translation id="6631469728138660166">앞쪽에 의심스러운 사이트</translation>
+<translation id="983774928604730749">Brave는 다음 사이트의 로드를 차단했습니다:</translation>
+<translation id="8250033559824599347">이 사이트는 사기성 사이트일 수 있으며, 추적 쿠키를 설정하기 위해 여러 사이트 사이를 이동하게 하거나 그 밖의 개인 정보를 침해할 수 있습니다.</translation>
+<translation id="2459038234784107183">이 사이트에 대해 다시 경고하지 않음</translation>
+<translation id="8242426110754782860">계속</translation>
+<translation id="2501278716633472235">뒤로 이동</translation>
 <translation id="9020818404803201080">연결된 피어:</translation>
 <translation id="2903493209154104877">주소</translation>
 <translation id="3207122385716480167">레포 통계</translation>
 <translation id="2595187693729756455">노드 정보</translation>
+<translation id="8999763401170835879">오류가 발생했습니다, 다시 시작하십시오</translation>
+<translation id="5433704526290922623">오류가 발생했습니다, 노드를 다시 설치하시기 바랍니다</translation>
 <translation id="5789886980848929155">IPFS 노드 상태</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">게이트웨이</translation>
@@ -769,20 +803,20 @@
 <translation id="3977809385703587108">다음에서 기본 환경 설정을 다시 변경할 수 있습니다:</translation>
 <translation id="3340978935015468852">설정</translation>
 <translation id="4148957013307229264">설치 중...</translation>
-<translation id="6057992164469678163">피어를 기다리는 중...</translation>
+<translation id="4219228508273972445">피어 탐색 중...</translation>
 <translation id="1902096227388293745">사용 가능한 피어가 없습니다. 다시 시도 중... (<ph name="ATTEMPTS_NUMBER"/> 시도 남음)</translation>
 <translation id="1675751799495331928">시도 제한을 초과했습니다. 나중에 다시 시도하세요.</translation>
 <translation id="4499666752625407848">업데이트 중에 오류가 발생했습니다.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">crypto.com에서 시장을 보고 암호화폐를 구매하세요.</translation>
-<translation id="4292334826913000023">가격 표시</translation>
-<translation id="5001098083058405168">입금에 대한 2% 보너스 받기</translation>
-<translation id="7336377875970208451">거래 수수료 지급 중지</translation>
-<translation id="5889002303959545585">비트코인 구매</translation>
-<translation id="7243082596932212589">Crypto.com 시장 보기</translation>
-<translation id="2258222996838418990">7d 그래프</translation>
-<translation id="5337526542182802976">지원되는 페어</translation>
-<translation id="1164622162816276433">24시간 거래량</translation>
+<translation id="7789840864192026963">권한 부여</translation>
+<translation id="8092074243456635562">이 페이지를 닫을 때까지</translation>
+<translation id="3523195733429162409">24시간 동안</translation>
+<translation id="2373264732659722940">1주 동안</translation>
+<translation id="6318437367327684789">영구적</translation>
+<translation id="7463327191540031132">영구적으로 차단</translation>
+<translation id="8797999629784150206">언제든 <ph name="SITE_PERMISSIONS"/>을 변경할 수 있습니다. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">사이트 권한</translation>
+<translation id="7701466644604753106">스피드리더 켜기</translation>
+<translation id="763042262431778831">스피드리더 끄기</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>

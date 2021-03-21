@@ -235,6 +235,18 @@
     "message": "Maak een back-up van je Brave-wallet.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Meer informatie",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Apparaat limiet bereikt",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Uw wallet kan niet worden geverifieerd omdat u de maximale limiet aan geverifieerde apparaten heeft bereikt.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Je Brave Rewards-account wacht op een storting.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Wallet geverifieerd",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Ga naar mijn Uphold-account",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Ga naar mijn $provider$ account",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Verbreek de verbinding met Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Let op: Uw transacties zullen zichtbaar zijn voor Uphold zodra u toestemming geeft, ze zullen bijvoorbeeld de ontvanger en het bedrag van uw tips zien.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Opmerking: uw transacties zijn zichtbaar voor $provider$ zodra u toestemming geeft; Ze kunnen bijvoorbeeld de ontvanger en de hoeveelheid fooi zien.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Tokens verdienen en ze weer terugschenken",

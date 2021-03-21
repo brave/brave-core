@@ -2,23 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="bn">
 <translation id="7307834434086582547">Brave শিল্ড সক্ষম/অক্ষম করুন</translation>
-<translation id="6303294677342628402">শিল্ড</translation>
-<translation id="6132506775968708399">3য় পক্ষের কুকিগুলি অবরুদ্ধ করুন</translation>
-<translation id="7835726359440951858">বিজ্ঞাপন এবং ট্র্যাকিং ব্লক করুন</translation>
 <translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
 <translation id="94154759592465111">স্ক্রিপ্টগুলি অবরুদ্ধ করুন</translation>
-<translation id="7458422973722236530">আঙ্গুলের ছাপ নেওয়ার সুরক্ষা</translation>
 <translation id="5709627087332022422">ক্রশ-সাইট ট্র্যাকারগুলিকে ব্লক করুন</translation>
-<translation id="6754976710186182237">ফিঙ্গারপ্রিন্ট পদ্ধতিসমূহ</translation>
-<translation id="2313532038420432247">HTTPS আপগ্রেডসমূহ</translation>
-<translation id="7461425058443653485">অবরুদ্ধ স্ক্রিপ্ট</translation>
 <translation id="6052725679982758334">সামাজিক মিডিয়া রোধক</translation>
 <translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে গুগল লগইন বোতামগুলিকে মঞ্জুর করুন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
-<translation id="3834924998750356151">মনিটর ব্লক করা হচ্ছে</translation>
-<translation id="1713450908129883784">স্বতন্ত্র নিয়ন্ত্রণ</translation>
 <translation id="6302422639282249274">Brave রিওয়ার্ড পরিচালনা করুন</translation>
 <translation id="1506061864768559482">সার্চ ইঞ্জিন</translation>
 <translation id="1468415711258933398">স্ট্যান্ডার্ড ট্যাব</translation>
@@ -28,12 +19,12 @@
 <translation id="8710614491157212477">সম্ভব হলে HTTP এর পরিবর্তে HTTPS ব্যবহার করে সমর্থিত সাইটগুলি খুলুন</translation>
 <translation id="8387201461264842096">বিজ্ঞাপন ব্লক করা</translation>
 <translation id="1934885595886623674">বিজ্ঞাপনগুলি লোড হওয়া থেকে বাধা দেয়</translation>
+<translation id="7458422973722236530">আঙ্গুলের ছাপ নেওয়ার সুরক্ষা</translation>
 <translation id="5787084571334399599">ফিঙ্গারপ্রিন্টিং থেকে ব্রাউজারকে বাধা দেয়</translation>
 <translation id="7459000603787995422">প্রস্থানে ট্যাবগুলি বন্ধ করুন</translation>
 <translation id="1680858055899097121">ব্রাউজিং সেশন চলাকালীন ট্যাবগুলি অবিচল রাখবেন না</translation>
 <translation id="6469509880167172749">সম্পূর্ণভাবে ব্যক্তিগত পণ্যের বিশ্লেষকগুলি স্বয়ংক্রিয়ভাবে Brave এ পাঠান</translation>
 <translation id="7090566321964540749">এই নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে দেয়।</translation>
-<translation id="453601949003770390">ট্র্যাকারগুলি &amp; বিজ্ঞাপনগুলি অবরুদ্ধ করা হয়েছে</translation>
 <translation id="347604927162577559">ডেটা\nসংরক্ষিত হয়েছে</translation>
 <translation id="9008534313521214777">আনুমানিক সময় \ এবং সংরক্ষণ</translation>
 <translation id="6572660632052512096">ডেস্কটপ মোড</translation>
@@ -58,17 +49,13 @@
 <translation id="8701563696941209024">এখনই পুনরায় চালু করুন</translation>
 <translation id="834487290629916192">পরে</translation>
 <translation id="8281886186245836920">ছেড়ে যান</translation>
-<translation id="316832010181763471">সার্চ ইঞ্জিন অনবোর্ডিং</translation>
 <translation id="986879628471635371">অনবোর্ডের সমস্যা সমাধান</translation>
 <translation id="5808759341041733958">ডিফল্ট সার্চ ইঞ্জিন বেছে নিন</translation>
 <translation id="1331593888918588693">অ্যাপ সেটিংসে আপনি পরে সবসময় আপনার পছন্দ পরিবর্তন করতে পারবেন।</translation>
-<translation id="7053983685419859001">ব্লক করুন</translation>
 <translation id="5806601733251372221">Brave শিল্ড</translation>
-<translation id="2880356288762235261">আপনি যাতে ওয়েবটির চারপাশে অনুসরণ না করে ব্রাউজ করতে পারেন তার জন্য গোপনীয়তা-আক্রমণকারী বিজ্ঞাপন এবং ট্র্যাকারসমূহ।</translation>
 <translation id="8537217141725709400">উপার্জন <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
 <translation id="5870330605209713397">গোপনীয়তা-সম্মানজনক বিজ্ঞাপনগুলি দেখে এবং আপনার প্রিয় সাইটগুলি এবং নির্মাতাদের ডিফল্টরূপে সমর্থন করে।</translation>
-<translation id="821707262661492716">গোপনীয়তা-সম্মানজনক বিজ্ঞাপনগুলি দেখার জন্য।</translation>
 <translation id="5302488867897327287">Brave Rewards  ব্যবহার শুরু করতে চাপ দিয়ে, আপনি এর সাথে সম্মত হন</translation>
 <translation id="4281844954008187215">পরিষেবার শর্তাবলী</translation>
 <translation id="6871397658902960384">ব্রাউজিং শুরু করুন</translation>
@@ -76,8 +63,6 @@
 <translation id="1448877943847791441">Brave এতে আপনার প্রথম বিজ্ঞাপনটি প্রদর্শন করবে</translation>
 <translation id="4410793187232041318">Brave Ads থেকে এখন আপনি টোকেন উপার্জন করবেন</translation>
 <translation id="6511854390690723657">এটি হল আপনার প্রথম Brave বিজ্ঞাপন। আরও জানতে আলতো চাপুন।</translation>
-<translation id="4930714375720679147">চালু করুন</translation>
-<translation id="2453860139492968684">সমাপ্ত করুন</translation>
 <translation id="2070991379950719711">Brave Rewards ব্যবহার শুরু করা হল</translation>
 <translation id="48520986898237073">ওয়ালেটে চালিয়ে যান</translation>
 <translation id="3570367516044491911">ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
@@ -117,25 +102,12 @@
 <translation id="8220228041552340594">অক্টোবর</translation>
 <translation id="8280223431922155812">নভেম্বর</translation>
 <translation id="4254029385847607686">ডিসেম্বর</translation>
-<translation id="1916285746997567466">পরবর্তী ইন্টারনেটটির
-অভিজ্ঞতা পেতে প্রস্তুত হোন।</translation>
-<translation id="3540580927110899945">আপনি এখন উপার্জন করতে পারেন <ph name="TOKEN"/> এর জন্য
-গোপনীয়তা-সম্মানজনক বিজ্ঞাপনগুলি দেখছেন।</translation>
-<translation id="1327938628925645979">রিওয়ার্ডে যোগদান করুন</translation>
-<translation id="5567439033041178034">আরও জানুন</translation>
 <translation id="3780605330121608425">আপনার ওয়ালেট</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
-<translation id="2104073734684466851">মঞ্জুরিসমূহ</translation>
 <translation id="1165667598801520610">অর্থ যোগ করুন</translation>
 <translation id="8428213095426709021">সেটিংস</translation>
-<translation id="2012723204723845092">আবার স্বাগতম!</translation>
-<translation id="7669994301500276741">ব্রাউজ করার জন্য রিওয়ার্ড পান।</translation>
-<translation id="8203529727745387785">গোপনীয়তা-সম্মানজনক বিজ্ঞাপনগুলি দেখার মাধ্যমে
-এবং আপনার পছন্দের সামগ্রী নির্মাতাদের সমর্থন করতে
-এগিয়ে গিয়ে অর্থপ্রদান করুন।</translation>
-<translation id="5148719990624240755">BRAVE রিওয়ার্ড সক্ষম করুন</translation>
 <translation id="8772672608371898774">Brave দ্বারা যাচাই করা প্রকাশক</translation>
 <translation id="1397683270551078781">এখনও যাচাই করা হয়নি</translation>
 <translation id="5727208111992260840">এই নির্মাতাটি এখনও পর্যন্ত Brave ব্যবহারকারীদের থেকে অবদান গ্রহণ করতে সাইন আপ করেননি।
@@ -153,7 +125,6 @@
 <translation id="13853865024308201">দাবি</translation>
 <translation id="7335371657242627509">স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন</translation>
 <translation id="5463954686005964104">প্রতি মাসে সাইটে টিপ দিন</translation>
-<translation id="7530570094705720669">ওয়ালেট তৈরি করা হচ্ছে</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
 <translation id="4751553692764711651">আপনি অবদান রেখেছেন <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">স্বতঃ-অবদান এবং মাসিক পরামর্শের জন্য আপনার সময়সূচিত মাসিক পেমেন্ট পর্যাপ্ত ফান্ড না থাকায় সম্পূর্ণ করা যাবে না। আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।</translation>
@@ -169,9 +140,6 @@
 <translation id="1713542052890184975">অনুগ্রহ করে আপনার Brave ওয়ালেটটিতে ব্যাকআপ নিন।</translation>
 <translation id="2323069945529668668">ওহহো!</translation>
 <translation id="7510166204621526816">Brave পুরস্কারের সার্ভারটি কাজ করছে না। আমরা যত তাড়াতাড়ি সম্ভব এটির সমাধান করব।</translation>
-<translation id="7117228822971127758">পরে আবার চেষ্টা করুন</translation>
-<translation id="3068742524072211213"><ph name="DATE"/> এ মেয়াদ শেষ হয়</translation>
-<translation id="4292832015778676417">বিজ্ঞাপন থেকে অর্জিত</translation>
 <translation id="683765328936486920">YouTube এ</translation>
 <translation id="8969049974285901797">Twitch এ</translation>
 <translation id="4376933248999950592">আপনি মনোনীত করেছেন <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> অবদান গ্রহণের জন্য এখনও সাইন আপ করেন নি এমন স্রষ্টাদের জন্য।আপনার ব্রাউজারটি যাচাই না করা অবধি অবদান রাখার চেষ্টা করবে বা যতক্ষণ না 90 দিন কাটছে।</translation>
@@ -179,9 +147,7 @@
 <translation id="6940273954212603510">অনুগ্রহ করে</translation>
 <translation id="1036277985068412734">অর্থ যোগ করুন</translation>
 <translation id="3492491948683276944">মাসিক পরামর্শ সেট করুন</translation>
-<translation id="4162066325465825185">আমরা দুঃখিত যে আপনার ডিভাইসে Brave রিওয়ার্ড উপলব্ধ নয়</translation>
 <translation id="8038539967102225446">Brave বিজ্ঞাপনগুলি এখানে রয়েছে!</translation>
-<translation id="8985635554450124959">সিঙ্ক সেট আপ করা যাবে না</translation>
 <translation id="222883304157347087">(এই ডিভাইসটি)</translation>
 <translation id="4157741509680155021">সিঙ্ক চেইন ডিভাইসগুলি</translation>
 <translation id="279635009973773843">ডিভাইস লোড করা হচ্ছে...</translation>
@@ -234,10 +200,7 @@
 <translation id="6810078320346589989">একটি বুকমার্ক তৈরি করুন</translation>
 <translation id="3396347744975515056">Brave সিঙ্ক আপগ্রেড করা হয়েছে এবং সেটআপ করা প্রয়োজন</translation>
 <translation id="7473245612074035141">সেটআপ আরম্ভ করুন</translation>
-<translation id="1872784258300710671">নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে Brave সম্পূর্ণরূপে ব্যক্তিগত পণ্য বিশ্লেষক ব্যবহার করে</translation>
-<translation id="8712637175834984815">বুঝেছি</translation>
-<translation id="4394049700291259645">অক্ষম</translation>
-<translation id="8446884382197647889">আরও জানুন</translation>
+<translation id="8985635554450124959">সিঙ্ক সেট আপ করা যাবে না</translation>
 <translation id="2514300153301737214">আমরা সনাক্ত করেছি যে আপনার Brave টি সিঙ্ক সক্ষম হয়েছে, তবে আপনার সিস্টেম সিঙ্কটি বন্ধ রয়েছে এবং Brave টি সিঙ্ক করার অনুমতি দেবে না।  খোলার জন্য সেটিংস টিপুন</translation>
 <translation id="7173114856073700355">সেটিংস খুলুন</translation>
 <translation id="6965382102122355670">ঠিক আছে</translation>
@@ -258,7 +221,6 @@
 <translation id="1081826981536899387">BAT পয়েন্টগুলি</translation>
 <translation id="9212459913845238740">অনুদানজনিত পয়েন্ট দাবি করা হয়েছে</translation>
 <translation id="2132683977638223450">অনুদানজনিত পয়েন্ট বিনামূল্যে</translation>
-<translation id="4522570452068850558">বিস্তারিত বিবরণগুলি</translation>
 <translation id="1486343603936278248">স্মারক</translation>
 <translation id="8713995420537272453">পয়েন্ট</translation>
 <translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
@@ -325,7 +287,6 @@
 <translation id="614747795780742163">ওয়েবসাইটগুলি আপনার আগের সাক্ষাৎগুলি সম্পর্কে তথ্য সংরক্ষণ করে রাখা থেকে প্রতিরোধ করে</translation>
 <translation id="6883611015375728278">সমস্ত কুকি অবরুদ্ধ করুন</translation>
 <translation id="5657156137487675418">সমস্ত কুকির জন্য অনুমতি দিন</translation>
-<translation id="5963670684159057574">ক্রশ-সাইট ফিঙ্গারপ্রিন্টিং ব্লক করুন</translation>
 <translation id="3895527457258986253">আঙুলের ছাপ দেওয়া অবরুদ্ধ করুন</translation>
 <translation id="184568144098869637">আপনার ডিভাইসটি ব্রাউজারটিকে শনাক্ত করতে বাধা দেয়</translation>
 <translation id="7396366757003005317">ফ্রিঙ্গারপ্রিন্টিং ব্লক করা হয়েছে (কঠোর, সাইটগুলিকে ভাঙ্গতে পারে)</translation>
@@ -374,6 +335,7 @@
 <translation id="4302754476737420523">3 মাস</translation>
 <translation id="8248593573177859437">গোপনীয়তার রিপোর্ট</translation>
 <translation id="1274039301958114163">গোপনীয়তার রিপোর্টের নোটিফিকেশন</translation>
+<translation id="453601949003770390">ট্র্যাকারগুলি &amp; বিজ্ঞাপনগুলি অবরুদ্ধ করা হয়েছে</translation>
 <translation id="1581614543353331529">দেখানোর মতো এখনও কোনো ডেটা নেই</translation>
 <translation id="2401984885421380890">ট্র্যাকার &amp; বিজ্ঞাপনগুলি\nব্লক করা হয়েছে</translation>
 <translation id="2662183408296991265">ডেটা সংরক্ষণ করা হয়েছে\n(<ph name="DATA_SAVED"/>)</translation>
@@ -405,6 +367,7 @@
 <translation id="1383876407941801731">সার্চ করুন</translation>
 <translation id="1972589975368876259">স্ট্যাক সম্পাদনা করুন</translation>
 <translation id="2490330380242414851">উইজেট সরান</translation>
+<translation id="8446884382197647889">আরও জানুন</translation>
 <translation id="7384441892795736634">ডেটা রিফ্রেশ করুন</translation>
 <translation id="4804818685124855865">সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -462,8 +425,10 @@
 <translation id="5876169128756792273">টোকেনগুলি স্রষ্টাদের সহায়তার বাইরেও ব্যবহার করা যেতে পারে।বণিকরা জাহাজে আসার সাথে সাথে আপনি ডিজিটাল সামগ্রী এবং অন্যান্য পণ্য কিনতে পারেন।</translation>
 <translation id="1402530520078693620">শেষ অবধি, let’s আপনাকে বেসিক সেটিংসে সেট আপ করুন</translation>
 <translation id="3494356595346329740">আপনি এটি পরে পরিবর্তন করতে পারেন।</translation>
-<translation id="6462814326662189004">আপনি কত ঘন ঘন বিজ্ঞাপন দেখতে চান?\ এবং (প্রতি ঘন্টা বিজ্ঞাপন)</translation>
-<translation id="2134244432345596331">আপনি আপনার প্রিয় নির্মাতাদের কতটা সমর্থন দিতে চান?\ এবং (আপনার বিজ্ঞাপন উপার্জন থেকে)</translation>
+<translation id="3115702351969988294">আপনি কত ঘন ঘন বিজ্ঞাপন দেখতে চান?</translation>
+<translation id="3474670199029510295">(ঘণ্টা প্রতি বিজ্ঞাপন)</translation>
+<translation id="66599604460581068">আপনার প্রিয় নির্মাতাদের আপনি কতটুকু সমর্থন দিতে চান?</translation>
+<translation id="3164498053837913829">(আপনার বিজ্ঞাপন উপার্জন থেকে)</translation>
 <translation id="827315274423079662">ওহু, আপনি সব ঠিক আছে!</translation>
 <translation id="3895246934788932488">Brave Rewards ব্যাবহার করে, আপনি নিজের গোপনীয়তা রক্ষা করছেন এবং ওয়েবকে সবার জন্য আরও ভাল জায়গা করতে সহায়তা করছেন।এবং এটি ’s দুর্দান্ত!</translation>
 <translation id="5705882733397021510">ফিরে যাও</translation>
@@ -479,7 +444,6 @@
 <translation id="7889432931837317731">সম্ভব হলে স্বয়ংক্রিয়ভাবে খুলুন</translation>
 <translation id="8967385052772844086">সম্পূর্ণ গোপনীয়তা প্রতিবেদন দেখুন</translation>
 <translation id="6864343534748973390">সবচেয়ে জনপ্রিয়</translation>
-<translation id="1622983732360473885">Brave কে সমর্থন করে</translation>
 <translation id="4608192160278975831">ব্যক্তিগত এবং কোনও ট্র্যাকিং নেই</translation>
 <translation id="7208522820527289601">প্রাইভেট এবং কোনও ট্র্যাকিং নয়, EU-ভিত্তিক</translation>
 <translation id="1161008391729450974">ট্র্যাকার ছাড়াই গুগলের ফলাফল</translation>
@@ -501,4 +465,17 @@
 <translation id="6232491755501685494">জাপানে Brave পুরষ্কারগুলি একটি নতুন সিস্টেমে স্যুইচ করছে!</translation>
 <translation id="7444515017164572362">13 ই মার্চ,আপনি জিতেছেন, আপনি আপনার BAP ব্যবহার করতে সক্ষম হবেন না। তবে একবার এপ্রিলে, আপনি নতুন সিস্টেমে আপডেট করার পরে আপনি নতুন টোকেন দিয়ে শুরু করবেন!</translation>
 <translation id="8587285254008006694">এই রূপান্তরটির অংশ হিসাবে, আপনার ব্রাউজারে টিপিং এবং অবদানের বৈশিষ্ট্য 13 ই মার্চ থেকে অস্থায়ীভাবে অনুপলব্ধ হবে এবং আপনি এপ্রিল মাসে নতুন সিস্টেমে আপডেট না হওয়া পর্যন্ত আপনার বিএপি ব্যালেন্স 0.0 দেখতে পাবেন। একবার আপনি ’ নতুন সিস্টেমে ফিরে আসার পরে আপনি’ নতুন টোকেন দিয়ে শুরু করবেন!</translation>
+<translation id="4956847150856741762">1</translation>
+<translation id="5196716972587102051">2</translation>
+<translation id="7839580021124293374">3</translation>
+<translation id="2918322085844739869">4</translation>
+<translation id="7267186368513450821">5</translation>
+<translation id="6972003925509023890">1 BAT</translation>
+<translation id="8867821173176188875">5 BAT</translation>
+<translation id="8762169086048682708">10 BAT</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="4548973860489847866">0.00 BAT</translation>
+<translation id="4193129043743994339">0.00 USD</translation>
 </translationbundle>

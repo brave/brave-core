@@ -2060,18 +2060,18 @@ Detalhes adicionais:
 <translation id="6771143571626203666">Do Brave Pay</translation>
 <translation id="8820817407110198400">Barra de marcadores</translation>
 <translation id="8362995731815961365">A pessoa que configurou este computador optou por bloquear este site.</translation>
-<translation id="4075123085690634698">Abrir a página numa nova janela de navegação anónima (⇧⌘N)</translation>
-<translation id="2388886110302389394">Abrir a página numa nova janela de navegação anónima (Ctrl-Shift-N)</translation>
+<translation id="4075123085690634698">Abrir a página numa nova janela de Navegação Privada (⇧⌘N)</translation>
+<translation id="2388886110302389394">Abrir a página numa nova janela de Navegação Privada (Ctrl-Shift-N)</translation>
 <translation id="6957624206566198865">Abrir página num novo separador anónimo</translation>
 <translation id="2378238891085281592">Está anónimo</translation>
 <translation id="3774752171665127360">As páginas que visualizar em separadores de navegação anónima não são memorizadas no histórico do navegador, no armazenamento de cookies ou no histórico de pesquisas depois de fechar todos os separadores de navegação anónima. Todos os ficheiros transferidos ou os marcadores criados são guardados.</translation>
 <translation id="9177896974490719854">No entanto, a navegação não é invisível. Passar para o modo de navegação anónima não oculta a navegação do empregador ou do fornecedor de serviços de Internet, nem dos Sites que visitar.</translation>
 <translation id="5673623523506565506">Presentemente, é-lhe possível navegar confidencialmente, e a outros perfis que utilizam este dispositivo não lhes será possível visualizar a sua atividade.  No entanto, downloads e marcadores serão guardados.</translation>
 <translation id="3812568169637430422">Presentemente, é-lhe possível navegar confidencialmente, e a outros perfis que utilizam este dispositivo não lhes será possível visualizar a sua atividade.  Todavia, downloads, marcadores e itens da lista de leitura serão guardados.</translation>
-<translation id="5549245478906381817">Abrir janela de navegação anónima</translation>
-<translation id="5497977785983089120">Abrir uma nova janela de navegação anónima para navegar anonimamente.</translation>
+<translation id="5549245478906381817">Abrir janela de Navegação Privada</translation>
+<translation id="5497977785983089120">Abrir uma nova janela de Navegação Privada para navegar anonimamente.</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pressione a tecla de tabulação e depois Enter para abrir uma nova janela de navegação privada para navegar anonimamente</translation>
-<translation id="2418728264526266844">Botão de abertura de janela de navegação anónima, pressione Enter para abrir uma nova janela de navegação anónima para navegar anonimamente</translation>
+<translation id="2418728264526266844">Botão de abertura de janela de navegação anónima, pressione Enter para abrir uma nova janela de navegação privada para navegar anonimamente</translation>
 <translation id="6984479912851154518">Está a sair do modo de navegação anónima para pagar através de uma aplicação externa. Pretende continuar?</translation>
 <translation id="7243899945709472787">&lt;h4&gt;Passo 1: inicie sessão no portal&lt;/h4&gt;
     &lt;p&gt;As redes Wi-Fi em locais como cafés ou aeroportos necessitam que inicie sessão. Para ver a página de início de sessão, aceda a uma página cujo endereço contenha o código &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
@@ -2079,8 +2079,8 @@ Detalhes adicionais:
     &lt;li&gt;Aceda a qualquer Website que comece por &lt;code&gt;http://&lt;/code&gt;, como &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;Na página de início de sessão apresentada, inicie sessão para utilizar a Internet.&lt;/li&gt;
     &lt;/ol&gt;
-    &lt;h4&gt;Passo 2: abra a página no modo de navegação anónima (apenas no computador)&lt;/h4&gt;
-    &lt;p&gt;Abra a página que estava a visitar numa janela de navegação anónima.&lt;/p&gt;
+    &lt;h4&gt;Passo 2: abra a página no modo de navegação privada (apenas no computador)&lt;/h4&gt;
+    &lt;p&gt;Abra a página que estava a visitar numa janela de Navegação Privada.&lt;/p&gt;
     &lt;p&gt;Se conseguir abrir a página, significa que uma extensão do Brave não está a funcionar corretamente. Para corrigir o erro, desative a extensão.&lt;/p&gt;
     &lt;h4&gt;Passo 3: atualize o sistema operativo&lt;/h4&gt;
     &lt;p&gt;Certifique-se de que o seu dispositivo está atualizado.&lt;/p&gt;
