@@ -14,6 +14,5 @@ edition = "2018"
 html5ever        = "0.25.1"
 kuchiki = { git = "https://github.com/keur/kuchiki", branch = "expose_sink_api" }
 lazy_static      = "1.4"
-markup5ever_rcdom = "0.1.0"
 regex            = "1"
 url              = "1.7"
