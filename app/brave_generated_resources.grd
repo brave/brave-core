@@ -633,6 +633,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok to delete other device from the chain">
         Are you sure you want to delete selected device from sync chain?
       </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_UNUPDATED_DEVICE_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok to delete other device from the chain (device  has old version of browser and does not support self delete)">
+        The device you are attempting to delete has an older browser version that does not support self-delete. You should only delete this device from the chain if you are sure it will not reactivate.  Otherwise that device may rejoin the sync chain, while not appearing in your device list.
+Are you sure you want to delete selected device from sync chain?
+      </message>
       <!-- Sync Infobar -->
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Brave Sync has been upgraded and requires setup
