@@ -425,14 +425,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
         Document(_) => false,
         DocumentFragment => false,
         Doctype(_) => false,
-        Text(ref contents) => {
-            let s = contents.borrow();
-            if s.trim().is_empty() {
-                true
-            } else {
-                false
-            }
-        }
+        Text(_) => false,
         Comment(_) => true,
         Element(ref data) => {
             match data.name.local {

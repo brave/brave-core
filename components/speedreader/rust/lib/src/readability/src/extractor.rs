@@ -1,8 +1,6 @@
 use crate::dom;
 use crate::scorer;
-use html5ever::parse_document;
 use html5ever::tendril::StrTendril;
-use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
@@ -12,7 +10,6 @@ use std::cell::Cell;
 use std::collections::BTreeMap;
 use std::collections::HashMap;
 use std::default::Default;
-use std::io::Read;
 use std::path::Path;
 use std::str::FromStr;
 use url::Url;
@@ -21,35 +18,6 @@ use url::Url;
 pub struct Product {
     pub title: String,
     pub content: String,
-}
-
-pub fn extract<R>(input: &mut R, url: &Url) -> Result<Product, std::io::Error>
-where
-    R: Read,
-{
-    let mut dom: Sink = parse_document(Sink::default(), Default::default())
-        .from_utf8()
-        .read_from(input)?;
-
-    extract_dom(&mut dom, url, &HashMap::new())
-}
-
-pub fn preprocess<R>(input: &mut R) -> Result<Product, std::io::Error>
-where
-    R: Read,
-{
-    let mut dom: Sink = parse_document(Sink::default(), Default::default())
-        .from_utf8()
-        .read_from(input)?;
-
-    let mut title = Title::default();
-    let handle = dom.document_node.clone();
-    scorer::preprocess(&mut dom, handle, &mut title);
-    let content = dom.document_node.to_string();
-    Ok(Product {
-        title: title.title,
-        content,
-    })
 }
 
 pub fn extract_dom<S: ::std::hash::BuildHasher>(
@@ -140,7 +108,10 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use html5ever::parse_document;
+    use html5ever::tendril::TendrilSink;
     use std::io::Cursor;
+    use std::io::Read;
 
     fn normalize_output(input: &str) -> String {
         return input
@@ -148,6 +119,39 @@ mod tests {
             .map(|line| line.trim())
             .filter(|line| !line.is_empty())
             .collect();
+    }
+
+    fn preprocess<R>(input: &mut R) -> Result<Product, std::io::Error>
+    where
+        R: Read,
+    {
+        let mut dom: Sink = parse_document(Sink::default(), Default::default())
+            .from_utf8()
+            .read_from(input)?;
+
+        let mut title = Title::default();
+        let handle = dom.document_node.clone();
+        scorer::preprocess(&mut dom, handle, &mut title);
+        let content = dom.document_node.to_string();
+        Ok(Product {
+            title: title.title,
+            content,
+        })
+    }
+
+    fn extract<R>(input: &mut R, url: Option<&str>) -> Result<Product, std::io::Error>
+    where
+        R: Read,
+    {
+        let url = url
+            .and_then(|url| Url::parse(url).ok())
+            .unwrap_or_else(|| Url::parse("https://example.com").unwrap());
+
+        let mut dom: Sink = parse_document(Sink::default(), Default::default())
+            .from_utf8()
+            .read_from(input)?;
+
+        extract_dom(&mut dom, &url, &HashMap::new())
     }
 
     #[test]
@@ -249,6 +253,39 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn preserve_spaces() {
+        let input = r#"
+        <body>
+          <p>
+            <strong>
+              <a href="example.com/example.png">Some Link</a>
+              &nbsp;
+            </strong>
+            this text should have a space between the link.
+          </p>
+        </body>
+        "#;
+        let expected = r#"
+        <body id="article">
+          <h1></h1>
+          <p>
+            <strong>
+              <a href="example.com/example.png">Some Link</a>
+              &nbsp;
+            </strong>
+            this text should have a space between the link.
+          </p>
+        </body>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = extract(&mut cursor, None).unwrap();
         assert_eq!(
             normalize_output(expected),
             normalize_output(&product.content)
