@@ -35,8 +35,23 @@
 <translation id="604124094241169006">อัตโนมัติ</translation>
 <translation id="867722069064361487">นาฬิกา 12 ชั่วโมง</translation>
 <translation id="4064062743338217840">นาฬิกา 24 ชั่วโมง</translation>
-<translation id="8643377320501056697">แสดงเว็บไซต์ยอดนิยม</translation>
-<translation id="7176563092712682575">ปรับแต่งส่วนเว็บไซต์ยอดนิยม</translation>
+<translation id="5313967007315987356">เพิ่มเว็บไซต์</translation>
+<translation id="5052499409147950210">แก้ไขเว็บไซต์</translation>
+<translation id="1181037720776840403">นำออก</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">ที่อยู่เว็บไซต์</translation>
+<translation id="5327248766486351172">ชื่อ</translation>
+<translation id="6916084277913254682">ชื่อเว็บไซต์</translation>
+<translation id="5317780077021120954">บันทึก</translation>
+<translation id="7658239707568436148">ยกเลิก</translation>
+<translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
+<translation id="6307720725257444819">รายการโปรด</translation>
+<translation id="81774600964978477">เว็บไซต์เด่นที่ปรับแต่งโดยคุณเอง</translation>
+<translation id="5439599923922718668">เข้าชมบ่อย</translation>
+<translation id="430556192781857057">แนะนำเว็บไซต์เด่นโดยอิงตามเว็บไซต์ที่คุณเข้าชมบ่อย</translation>
+<translation id="8037713009824540257">เพิ่มเว็บไซต์</translation>
+<translation id="1773147648972887693">แสดงรายการที่เข้าชมบ่อย</translation>
+<translation id="4546260624932151782">แสดงรายการโปรด</translation>
 <translation id="3446024864193919737">แสดง Brave Rewards</translation>
 <translation id="6274899614137380422">แสดง Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">ปิดใช้งานเนื้อหาจาก <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">โปรโมทแล้ว</translation>
 <translation id="1776831331757823105">นาฬิกา</translation>
-<translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
 <translation id="7791543448312431591">เพิ่ม</translation>
 <translation id="7679334366167089823">รับโทเคนจากการชมโฆษณาที่เคารพความเป็นส่วนตัว</translation>
 <translation id="1531133232292396145">เทรด Crypto บน Binance ในเบราว์เซอร์ของคุณได้โดยตรง</translation>
@@ -78,8 +92,8 @@
 <translation id="730042046912793465">นี่คือ</translation>
 <translation id="2055363275850890030">วินโดว์ส่วนบุคคล</translation>
 <translation id="9133213713928851646">Brave ไม่จดจำสิ่งที่คุณทำในหน้าต่างส่วนตัว ไซต์ที่คุณเยี่ยมชมจะไม่แสดงในประวัติของคุณ และคุ้กกี้จะหายไปทันทีที่คุณเลิกใช้งาน แต่หน้าต่างส่วนตัวไม่ได้ทำให้คุณเป็นบุคคลนิรนามออนไลน์โดยสิ้นเชิง</translation>
-<translation id="8760415064721320867">หน้าต่างส่วนตัว พร้อม Tor</translation>
-<translation id="4844209912525464363">Brave ไม่เคยจดจำสิ่งที่คุณทำในหน้าต่างส่วนตัว เมื่อใช้ Tor การเรียกดูของคุณยังได้รับการซ่อนจาก ISP หรือนายจ้างของคุณ และที่อยู่ IP ของคุณก็ถูกซ่อนจากไซต์ที่คุณเข้าเยี่ยมชม</translation>
+<translation id="3546750666732517156">ฟังก์ชันเปิดหน้าต่างส่วนตัวโดยเชื่อมต่อผ่าน Tor</translation>
+<translation id="5383068818957293256">Brave ไม่เคยเก็บบันทึกสิ่งที่คุณดำเนินการในหน้าต่างส่วนตัว เมื่อใช้ฟังก์ชันเชื่อมต่อผ่าน Tor ที่อยู่ไอพีของคุณจะถูกซ่อนจากเว็บไซต์ที่คุณเข้าชมด้วย อย่างไรก็ตาม ในกรณีที่ความปลอดภัยส่วนบุคคลยังต้องอาศัยการคงสถานะ "ไม่ระบุชื่อ" ไว้ โปรดใช้เบราว์เซอร์ Tor แทน</translation>
 <translation id="778096729652828897">เรียนรู้เพิ่มเติมเกี่ยวกับวินโดว์ส่วนบุคคลกับทอร์</translation>
 <translation id="7919374705736538787">ค้นหาอย่างเป็นการส่วนตัวด้วย</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
@@ -87,11 +101,11 @@
 DuckDuckGo ไม่บันทึกประวัติการค้นหาของคุณ ดังนั้น คุณจึงสามารถค้นหาได้อย่างเป็นส่วนตัว</translation>
 <translation id="1925197199485958903">ในหน้าต่างส่วนตัวพร้อม Tor, DuckDuckGo คือเครื่องมือค้นหาเริ่มต้น ใช้เครื่องมือค้นหายอดนิยมอื่นพร้อม Tor ได้ยากกว่า DuckDuckGo ไม่บันทึกประวัติการค้นหาของคุณ; เมื่อใช้ร่วมกับ Tor จะถึงกับไม่รู้แม้แต่ที่อยู่ IP ของคุณ</translation>
 <translation id="4371533307685765155">ค้นหาด้วย DuckDuckGo</translation>
-<translation id="5576876180131651996">ทำให้หน้าต่างส่วนตัวมีความเป็นส่วนตัวมากขึ้นกว่านี้มาก ๆ</translation>
-<translation id="1129265576134014816">วินโดว์ส่วนบุคคลนี้มีความเป็นส่วนตัวมากกว่าอย่างมาก</translation>
-<translation id="805807983419360524">พร้อม Tor</translation>
-<translation id="8958799246752641148">Tor ซ่อนที่อยู่ IP ของคุณจากไซต์ที่คุณเยี่ยมชม โดยนำทางการเรียกดูของคุณผ่านหลายเซิร์ฟเวอร์ของ Tor ก่อนไปถึงปลายทางของคุณ การเชื่อมต่อเหล่านี้มีการเข้ารหัส ISP หรือนายจ้างของคุณจึงไม่สามารถรับรู้ว่าคุณเข้าไซต์ใดบ้างด้วย Tor อาจทำให้การเรียกดูช้าลง และบางไซต์อาจไม่ทำงานเลย</translation>
-<translation id="520608572871993342">การใช้หน้าต่างส่วนตัวเพียงแต่เปลี่ยนแปลงสิ่งที่ Brave ทำบนอุปกรณ์ของคุณ — แต่ไม่ได้เปลี่ยนพฤติกรรมของคนอื่น Tor ซ่อนที่อยู่ IP ของคุณจากไซต์ที่คุณเยี่ยมชม และซ่อนไซต์ที่คุณเยี่ยมชมจาก ISP ของคุณ หรือนายจ้างของคุณ เปิดหน้าต่างส่วนตัวพร้อม Tor จากเมนู หรือด้วย {{ key }}</translation>
+<translation id="548478195417408221">ทำให้หน้าต่างส่วนตัวมีความส่วนตัวยิ่งขึ้นอีก</translation>
+<translation id="3294503279952534143">หน้าต่างส่วนตัวนี้เป็นส่วนตัวยิ่งขึ้นแล้ว</translation>
+<translation id="4644024131266615376">โดยเชื่อมต่อผ่าน Tor</translation>
+<translation id="8541421872680304667">Tor จะซ่อนที่อยู่ไอพีของคุณจากเว็บไซต์ที่คุณเข้าชม โดยการกำหนดเส้นทางการท่องเว็บให้ผ่านเซิร์ฟเวอร์ต่างๆ มากมายของ Tor ก่อนที่จะถึงปลายทางที่คุณต้องการ ทั้งนี้ Tor อาจทำให้การท่องเว็บทำงานช้าลง และบางเว็บไซต์อาจไม่ทำงานเลย</translation>
+<translation id="7030950080800709999">การใช้ "หน้าต่างส่วนตัว" จะเปลี่ยนแปลงเฉพาะสิ่งที่ Brave ดำเนินการบนอุปกรณ์ของคุณเท่านั้น ไม่ได้มีผลให้รูปแบบการทำงานของบุคคลอื่นเปลี่ยนแปลงไปด้วย เบราว์เซอร์ Tor จะซ่อนที่อยู่ไอพีของคุณจากเว็บไซต์ที่คุณเข้าชม รวมถึงทำให้ผู้ให้บริการ ISP หรือนายจ้างของคุณดูเว็บไซต์ที่คุณเข้าชมได้ยากขึ้น แต่ไม่ใช่ไม่สามารถทำได้ กรุณาเปิดหน้าต่างส่วนตัวโดยใช้ Tor จากเมนู หรือใช้ {{ key }}</translation>
 <translation id="6975708438781948564">เรียนรู้เกี่ยวกับ Tor ใน Brave เพิ่มเติม</translation>
 <translation id="4712050378540986986">สถานะ Tor</translation>
 <translation id="3368922792935385530">เชื่อมต่อแล้ว</translation>
@@ -105,7 +119,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="8510478288840333677">แจ้งให้ผู้พัฒนา Brave ทราบว่าเว็บไซต์นี้ทำงานไม่ถูกต้องเมื่อเปิดระบบปกป้อง:</translation>
 <translation id="6013164422534859494">หมายเหตุ: ที่อยู่ของเว็บไซต์นี้จะถูกส่งพร้อมเลขที่เวอร์ชัน Brave และไอพีแอดเดรสของคุณ (ซึ่งจะไม่ได้รับการจัดเก็บไว้)</translation>
-<translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="2653659639078652383">ตกลง</translation>
 <translation id="5299848999918506028">ขอบคุณค่ะ</translation>
 <translation id="76550953340008122">ขอบคุณที่แจ้งให้ผู้พัฒนา Brave ทราบว่ามีข้อผิดพลาดในเว็บไซต์นี้ เราจะพยายามแก้ไขปัญหานี้อย่างเต็มที่</translation>
@@ -218,7 +231,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5549059668721746831">วันที่ให้เงินสนับสนุนรายเดือนครั้งถัดไป</translation>
 <translation id="6231182869178328516">ฉันเพิ่งให้ทิป <ph name="NAME"/> ผ่านเบราว์เซอร์ Brave ลองเข้าไปดูได้ที่ https://brave.com/tips</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">ขออภัย การดำเนินการคำขอของคุณมีปัญหา โปรดลองใหม่อีกครั้ง</translation>
+<translation id="3113653894794167793">ขออภัย เกิดปัญหาในการดำเนินการตามคำขอ โปรดลองอีกครั้ง</translation>
 <translation id="3082557070674409251">คลิกแล้ว</translation>
 <translation id="7119308337584989771">ปิด</translation>
 <translation id="6805660603861526473">ดูแล้ว</translation>
@@ -352,7 +365,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3477340970981564961">โฆษณาส่วนตัวของ Brave ให้ Reward เป็นโทเค็นสำหรับนำไปสนับสนุนผู้สร้างคอนเทนต์ ซึ่งจะต่างจากโฆษณาทั่วไป แต่ยังคงรักษาความเป็นส่วนตัวให้กับข้อมูลส่วนตัวของคุณไว้ในทุกๆ ส่วน</translation>
 <translation id="6973095375773523904">โฆษณาจะปรากฏที่ใด</translation>
 <translation id="7556325460112047619">โฆษณาส่วนตัวของ Brave จะปรากฏในรูปการแจ้งเตือนตามปกติ คุณสามารถควบคุมความถี่ในการเห็นโฆษณาเหล่านี้ได้ในการตั้งค่า</translation>
-<translation id="5816125157889950051">คุณจะได้รับ Reward เมื่อใด</translation>
+<translation id="6897083627729802351">คุณจะได้รับ Reward เมื่อใด</translation>
 <translation id="310863932297733723">โทเค็นที่คุณได้รับจากโฆษณาส่วนตัวของ Brave ตลอดทั้งเดือนนี้จะเข้าบัญชีในวันที่ 5 ของเดือนถัดไป</translation>
 <translation id="7712287524451429139">การตอบแทนจะกลายเป็นเรื่องง่าย</translation>
 <translation id="105037569026952831">ผู้สร้างเนื้อหาจะได้รับโทเค็นสนับสนุนจากคุณโดยอัตโนมัติตามระดับการมีส่วนร่วมของคุณที่เราตรวจวัดได้ในรูป ‘การให้ความสนใจ’</translation>
@@ -380,7 +393,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2111256234277361810">ทำเครื่องหมายว่าไม่เหมาะสม ✓</translation>
 <translation id="8988332871810963281">ขณะนี้ไม่มีประวัติ Brave Ads</translation>
 <translation id="5345727496083327478">คุณจะไม่ได้รับโฆษณาจากหมวดหมู่นี้อีกต่อไป</translation>
-<translation id="5317780077021120954">บันทึก</translation>
 <translation id="2827387977307390755">อนุญาตเปิดทิป</translation>
 <translation id="3819257035322786455">การสำรองข้อมูล</translation>
 <translation id="1312977698678162065">รับเงินจากการดูโฆษณาที่เกี่ยวข้องที่เคารพความเป็นส่วนตัวของคุณ</translation>
@@ -507,7 +519,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1797334173232638045">ไซต์ที่คุณปักหมุดไว้ได้ถูกย้ายไปยัง</translation>
 <translation id="6803187280799213426">เงินใน Brave wallet ของคุณเป็นเงินเสมือนและไม่จำเป็นต้องสำรองข้อมูลไว้ เงินนี้มีให้คุณใช้งานเฉพาะบนเบราว์เซอร์นี้เท่านั้น</translation>
 <translation id="5290348443732633227">หากคุณต้องการเก็บรักษาเงินของคุณในกรณีที่ต้องติดตั้งเบราว์เซอร์ใหม่หมดหรือเปลี่ยนไปใช้อุปกรณ์ใหม่ และรับสิทธิประโยชน์อื่น ๆ เช่นการเพิ่ม ถอน และโอนเงิน เราขอแนะนำ</translation>
-<translation id="6733942359297688714">กำลังเชื่อมต่อไปยัง Uphold wallet ที่ได้รับการยืนยันแล้ว</translation>
+<translation id="467041382895390784">กำลังเชื่อมต่อวอลเล็ทที่ยืนยันตัวตนผ่าน <ph name="PROVIDER"/> แล้ว</translation>
 <translation id="5717619667204259673">เก็บรักษาคีย์กู้คืนนี้ไว้ให้ปลอดภัย</translation>
 <translation id="4699702339303280827">คุณสามารถใช้คีย์นี้ในการกู้คืนวอลเล็ทของคุณได้ตลอดเวลาหากมีอะไรเกิดขึ้นกับเบราว์เซอร์หรือคอมพิวเตอร์ของคุณ ทั้งนี้ โปรดดูแลรักษาคีย์นี้ให้ดี เพราะผู้ใดที่มีคีย์นี้จะสามารถขโมยวอลเล็ทของคุณไปได้ เพื่อให้ปลอดภัยที่สุด ควรจดคีย์ดังกล่าวลงในกระดาษ หรือลงในที่ใดก็ได้ที่คุณเอาไว้เก็บข้อมูลสำคัญ</translation>
 <translation id="8979401359137062629">หมายเหตุ:</translation>
@@ -527,8 +539,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8014425282125849700">ตัวคุณเองจะได้รับการเสนอโทเค็นจาก Brave ในแบบฟรีเป็นครั้งคราว อย่าลืมคอยดูการแจ้งเตือนนั้น!</translation>
 <translation id="2185598236335233939">คอยมองหาการแจ้งเตือนโฆษณาในระหว่างที่ใช้ Brave ต่อไป ยอดสะสมคะแนน BAT จะเพิ่มขึ้นตามโฆษณาทุกตัวที่คุณรับชม</translation>
 <translation id="1370034647041840967">รับโทเคนสำหรับการดูโฆษณาและจ่ายต่อไปเพื่อสนับสนุนนักสร้างคอนเทนท์ที่คุณให้ค่า!</translation>
-<translation id="4600224932216165965">เติม ถอน และจัดการเงินที่ <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/></translation>
-<translation id="3580616436301227919">Brave วอลเล็ทของคุณดำเนินการโดย <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/></translation>
+<translation id="4919888432594361029">เติม ถอน และจัดการเงินใน <ph name="PROVIDER"/></translation>
+<translation id="3092054349246483285">บริการ Brave wallet ได้รับการสนับสนุนโดย <ph name="PROVIDER"/></translation>
 <translation id="6401272292123354754">Brave Rewards ถูกสร้างบน  Basic Attention Token. เรียนรู้เพิ่มเติมเกี่ยวกับ BAT</translation>
 <translation id="7823359893981882407">ที่นี่</translation>
 <translation id="4483635855837696643">กู้คืน Wallet คุณ</translation>
@@ -537,7 +549,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3267911153934785912">ป้อนคีย์กู้คืนของคุณหรือ</translation>
 <translation id="6548189695918108191">สำรองข้อมูลกระเป๋าเงินของคุณก่อนแทนที่ ไม่เช่นนั้นคุณจะเสียเงิน {{funds}} ในกระเป๋าเงินปัจจุบันของคุณไป</translation>
 <translation id="5423214929210538027">แน่ใจว่าต้องการรีเซ็ต Rewards Wallet?</translation>
-<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> และข้อมูล Rewards อื่นๆ จะหายไปอย่างถาวรหากคุณรีเซ็ตวอลเล็ทของคุณ โปรดตรวจสอบให้แน่ใจว่าคุณได้ยืนยันวอลเล็ทของคุณด้วย Uphold เพื่อให้คุณสามารถเก็บ BAT ของคุณได้</translation>
+<translation id="8683358891240311475">หากคุณรีเซ็ตวอลเล็ท จำนวนเงิน <ph name="BAT_AMOUNT"/> ของคุณและข้อมูลรางวัลอื่นๆ จะหายไปโดยถาวร โปรดตรวจสอบให้แน่ใจว่าคุณยืนยันวอลเล็ทผ่านทาง <ph name="PROVIDER"/> แล้ว เพื่อให้เงิน BAT ของคุณไม่หายไป</translation>
 <translation id="2028613172174411919">ข้อมูลรางวัลของคุณจะสูญหายถาวรหากคุณรีเซ็ตกระเป๋าเงินของคุณ</translation>
 <translation id="4914597931214386232">โทเค็นเงินบริจาคที่เบิกแล้ว</translation>
 <translation id="3494964159182650590">สรุปรางวัล</translation>
@@ -612,20 +624,20 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7512440811010447157">ยืนยัน</translation>
 <translation id="8267327690882073581">ยืนยันวอลเล็ท</translation>
 <translation id="543510923939676996">ยืนยันวอลเล็ตแล้ว</translation>
-<translation id="7591798679868259510">ไปที่บัญชี Uphold ของฉัน</translation>
+<translation id="2659764755126740206">ไปยังบัญชี <ph name="PROVIDER"/> ของฉัน</translation>
 <translation id="3699674790322420653">ยืนยันวอลเล็ตให้เสร็จสิ้น</translation>
 <translation id="9200453331904391567">ยกเลิกการเชื่อมต่อกับ Brave Rewards</translation>
 <translation id="46988480989545156">ยืนยันวอลเล็ท</translation>
-<translation id="160145159036553575">บริการวอลเล็ทของเราให้บริการโดย <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="5796169459825124737">บริการวอลเล็ทของเราดำเนินการโดย <ph name="PROVIDER"/></translation>
 <translation id="6771734945114850124">โปรดเตรียมเอกสารแสดงตัวที่ออกโดยหน่วยงานรัฐให้พร้อม</translation>
 <translation id="8697510149346635496">ถอน BAT ที่คุณได้รับจากการดูโฆษณาที่เคารพความเป็นส่วนตัว</translation>
 <translation id="1481480653609649134">ซื้อ BAT เพิ่มด้วยบัตรเครดิตและแหล่งอื่น ๆ</translation>
 <translation id="9096003370755878766">ถอน BAT ที่คุณอาจเพิ่มเข้าไปในกระเป๋าเงิน Brave Rewards ของคุณก่อนหน้านี้</translation>
 <translation id="8558636200953226885">แต่หากยืนยัน คุณจะสามารถ...</translation>
 <translation id="3354315693758743702">การยืนยันกระเป๋าสตางค์เป็นตัวเลือกเสริม</translation>
-<translation id="8465442795593991224">Uphold อาจกำหนดให้คุณยืนยันตัวตนของคุณตามบริการที่ร้องขอ</translation>
-<translation id="723054503945711909">Brave Software Inc. จะไม่ประมวลผล เก็บบันทึก หรือเข้าถึงข้อมูลส่วนบุคคลใด ๆ ที่คุณให้ไว้กับ Uphold เมื่อคุณสร้างบัญชีกับทางนั้น</translation>
-<translation id="7677480094678113476">หมายเหตุ: ธุรกรรมของคุณจะปรากฏแก่ Uphold เมื่อคุณอนุญาต ยกตัวอย่างเช่น พวกเขาจะสามารถเห็นจำนวนและผู้รับทิปได้</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> อาจกำหนดให้คุณต้องยืนยันตัวตนตามบริการที่ขอใช้</translation>
+<translation id="6938217233488972952">Brave Software Inc. ไม่ได้ประมวลผล จัดเก็บ หรือเข้าถึงข้อมูลส่วนตัวใดๆ ที่คุณให้แก่ <ph name="PROVIDER"/> เมื่อจัดทำบัญชีด้วยข้อมูลเหล่านี้</translation>
+<translation id="2415586822982819406">หมายเหตุ: <ph name="PROVIDER"/> จะดูรายการธุรกรรมของคุณได้หลังจากที่คุณให้สิทธิ์ เช่น จะสามารถดูชื่อผู้รับและจำนวนเงินทิปของคุณ</translation>
 <translation id="7404779623219601861">แลก BAT เป็นบัตรของขวัญ</translation>
 <translation id="6215565499749144110">การใช้เครือข่าย TAP จะทำให้คุณแลก BAT เป็นบัตรของขวัญจากสินค้าแบรนด์เนมยอดนิยมได้</translation>
 <translation id="6915065518766963119">* ต้องตรวจสอบความถูกต้องกับ Uphold</translation>
@@ -723,12 +735,36 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8327818101454798856">ดังนั้นหากคุณกำลังจะสนับสนุนเว็บโปรดของคุณ ให้ไปที่นั่นแทน</translation>
 <translation id="412480955826088549">กำลังดาวน์โหลดส่วนประกอบ...</translation>
 <translation id="4894106830958548828">ฉันเข้าใจ</translation>
-<translation id="7701466644604753106">เปิด Speedreader</translation>
-<translation id="763042262431778831">ปิด Speedreader</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">ดูตลาดแล้วซื้อเงินคริปโตจาก crypto.com</translation>
+<translation id="4292334826913000023">แสดงราคา</translation>
+<translation id="5001098083058405168">รับโบนัสเงินฝาก 2%</translation>
+<translation id="7336377875970208451">หยุดจ่ายค่าบริการแลกเปลี่ยน</translation>
+<translation id="5889002303959545585">ซื้อ Bitcoin</translation>
+<translation id="7243082596932212589">ดูตลาดของ Crypto.com</translation>
+<translation id="2258222996838418990">กราฟ 7วัน</translation>
+<translation id="5337526542182802976">คู่ที่ได้รับการสนับสนุน</translation>
+<translation id="1164622162816276433">ระดับช่วง 24่ชม.</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="4492298165410552103">เปิดใช้การรองรับ Unstoppable Domains ใน Brave หรือไม่</translation>
+<translation id="3470923752115324276">Brave ทำให้คุณเข้าชมโดเมน .crypto ได้โดยใช้ Cloudflare ในการแปลงที่อยู่ตามคำขอค้นหาชื่อโดเมน .crypto โดยใช้ DNS ผ่านทาง HTTPS หากคุณเปิดใช้ฟังก์ชันนี้ Cloudflare จะเห็นโดเมน .crypto ที่คุณพยายามเข้าชม แต่จะไม่สามารถดูโดเมนอื่นได้ กรุณาดู<ph name="BEGIN_CF_TOU_LINK"/>ข้อตกลงในการใช้งาน<ph name="END_CF_TOU_LINK"/>และ<ph name="BEGIN_CF_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_CF_PRIVACY_LINK"/>ของ Cloudflare</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="4335039108389860301">เปิดใช้การรองรับ Ethereum Name Service (ENS) ใน Brave หรือไม่</translation>
+<translation id="618766505813078707">Brave ทำให้คุณเข้าชมโดเมน .eth ได้โดยใช้ Cloudflare ในการแปลงที่อยู่ตามคำขอค้นหาชื่อโดเมน .eth โดยใช้ DNS ผ่านทาง HTTPS หากคุณเปิดใช้ฟังก์ชันนี้ Cloudflare จะเห็นโดเมน .eth ที่คุณพยายามเข้าชม แต่จะไม่สามารถดูโดเมนอื่นได้ กรุณาดู<ph name="BEGIN_CF_TOU_LINK"/>ข้อตกลงในการใช้งาน<ph name="END_CF_TOU_LINK"/>และ<ph name="BEGIN_CF_PRIVACY_LINK"/>นโยบายความเป็นส่วนตัว<ph name="END_CF_PRIVACY_LINK"/>ของ Cloudflare</translation>
+<translation id="5636651007798897342">ดำเนินการโดยใช้เซิร์ฟเวอร์ Cloudflare</translation>
+<translation id="2468755552460246661">โดเมนถูกบล็อค</translation>
+<translation id="6631469728138660166">เว็บไซต์น่าสงสัยที่กำลังจะเข้า</translation>
+<translation id="983774928604730749">Brave ได้ยับยั้งการโหลดเว็บไซต์ต่อไปนี้:</translation>
+<translation id="8250033559824599347">เว็บไซต์นี้อาจมีการหลอกลวง สลับเส้นทางของคุณไปมาระหว่างเว็บไซต์ต่างๆ เพื่อสร้างคุกกี้ติดตามข้อมูล หรือละเมิดความเป็นส่วนตัวด้วยการกระทำอื่นๆ</translation>
+<translation id="2459038234784107183">ไม่ต้องแจ้งเตือนเกี่ยวกับเว็บไซต์นี้อีก</translation>
+<translation id="8242426110754782860">ดำเนินการต่อ</translation>
+<translation id="2501278716633472235">ย้อนกลับ</translation>
 <translation id="9020818404803201080">เพื่อนที่เชื่อมต่อ:</translation>
 <translation id="2903493209154104877">ที่อยู่</translation>
 <translation id="3207122385716480167">สถิติ Repo</translation>
 <translation id="2595187693729756455">ข้อมูลโหนด</translation>
+<translation id="8999763401170835879">เกิดข้อผิดพลาด โปรดลองเปิดใหม่อีกครั้ง</translation>
+<translation id="5433704526290922623">เกิดข้อผิดพลาด โปรดลองติดตั้งโหนดใหม่อีกครั้ง</translation>
 <translation id="5789886980848929155">สถานะโหนด IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">เกตเวย์</translation>
@@ -770,20 +806,20 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3977809385703587108">คุณสามารถเปลี่ยนการตั้งค่าของคุณได้อีกครั้งใน</translation>
 <translation id="3340978935015468852">การตั้งค่า</translation>
 <translation id="4148957013307229264">กำลังติดตั้ง...</translation>
-<translation id="6057992164469678163">กำลังรอเพียร์...</translation>
+<translation id="4219228508273972445">กำลังค้นหาเพียร์...</translation>
 <translation id="1902096227388293745">ไม่มีเพียร์ กำลังลองใหม่ ... (ลองได้อีก <ph name="ATTEMPTS_NUMBER"/> ครั้ง)</translation>
 <translation id="1675751799495331928">เราลองเกินจำนวนครั้งที่จำกัดแล้ว โปรดลองอีกครั้งในภายหลัง</translation>
 <translation id="4499666752625407848">เกิดข้อผิดพลาดระหว่างการอัปเดต</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">ดูตลาดแล้วซื้อเงินคริปโตจาก crypto.com</translation>
-<translation id="4292334826913000023">แสดงราคา</translation>
-<translation id="5001098083058405168">รับโบนัสเงินฝาก 2%</translation>
-<translation id="7336377875970208451">หยุดจ่ายค่าบริการแลกเปลี่ยน</translation>
-<translation id="5889002303959545585">ซื้อ Bitcoin</translation>
-<translation id="7243082596932212589">ดูตลาดของ Crypto.com</translation>
-<translation id="2258222996838418990">กราฟ 7วัน</translation>
-<translation id="5337526542182802976">คู่ที่ได้รับการสนับสนุน</translation>
-<translation id="1164622162816276433">ระดับช่วง 24่ชม.</translation>
+<translation id="7789840864192026963">ให้สิทธิ์</translation>
+<translation id="8092074243456635562">จนกว่าฉันจะปิดหน้านี้</translation>
+<translation id="3523195733429162409">เป็นเวลา 24 ชั่วโมง</translation>
+<translation id="2373264732659722940">เป็นเวลา 1 สัปดาห์</translation>
+<translation id="6318437367327684789">ทุกครั้ง</translation>
+<translation id="7463327191540031132">บล็อคทุกครั้ง</translation>
+<translation id="8797999629784150206">คุณสามารถเปลี่ยนแปลง<ph name="SITE_PERMISSIONS"/>ได้ทุกเมื่อ <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">การให้สิทธิ์แก่เว็บไซต์</translation>
+<translation id="7701466644604753106">เปิด Speedreader</translation>
+<translation id="763042262431778831">ปิด Speedreader</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
 <translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>
@@ -792,4 +828,25 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">สถานะการเชื่อมต่อ Tor</translation>
 <translation id="6024292492796847324">ความคืบหน้าการเริ่มต้น Tor</translation>
+<translation id="8643377320501056697">แสดงเว็บไซต์ยอดนิยม</translation>
+<translation id="7176563092712682575">ปรับแต่งส่วนเว็บไซต์ยอดนิยม</translation>
+<translation id="8760415064721320867">หน้าต่างส่วนตัว พร้อม Tor</translation>
+<translation id="4844209912525464363">Brave ไม่เคยจดจำสิ่งที่คุณทำในหน้าต่างส่วนตัว เมื่อใช้ Tor การเรียกดูของคุณยังได้รับการซ่อนจาก ISP หรือนายจ้างของคุณ และที่อยู่ IP ของคุณก็ถูกซ่อนจากไซต์ที่คุณเข้าเยี่ยมชม</translation>
+<translation id="5576876180131651996">ทำให้หน้าต่างส่วนตัวมีความเป็นส่วนตัวมากขึ้นกว่านี้มาก ๆ</translation>
+<translation id="1129265576134014816">วินโดว์ส่วนบุคคลนี้มีความเป็นส่วนตัวมากกว่าอย่างมาก</translation>
+<translation id="805807983419360524">พร้อม Tor</translation>
+<translation id="8958799246752641148">Tor ซ่อนที่อยู่ IP ของคุณจากไซต์ที่คุณเยี่ยมชม โดยนำทางการเรียกดูของคุณผ่านหลายเซิร์ฟเวอร์ของ Tor ก่อนไปถึงปลายทางของคุณ การเชื่อมต่อเหล่านี้มีการเข้ารหัส ISP หรือนายจ้างของคุณจึงไม่สามารถรับรู้ว่าคุณเข้าไซต์ใดบ้างด้วย Tor อาจทำให้การเรียกดูช้าลง และบางไซต์อาจไม่ทำงานเลย</translation>
+<translation id="520608572871993342">การใช้หน้าต่างส่วนตัวเพียงแต่เปลี่ยนแปลงสิ่งที่ Brave ทำบนอุปกรณ์ของคุณ — แต่ไม่ได้เปลี่ยนพฤติกรรมของคนอื่น Tor ซ่อนที่อยู่ IP ของคุณจากไซต์ที่คุณเยี่ยมชม และซ่อนไซต์ที่คุณเยี่ยมชมจาก ISP ของคุณ หรือนายจ้างของคุณ เปิดหน้าต่างส่วนตัวพร้อม Tor จากเมนู หรือด้วย {{ key }}</translation>
+<translation id="2876191400747549936">ขออภัย การดำเนินการคำขอของคุณมีปัญหา โปรดลองใหม่อีกครั้ง</translation>
+<translation id="5816125157889950051">คุณจะได้รับ Reward เมื่อใด</translation>
+<translation id="6733942359297688714">กำลังเชื่อมต่อไปยัง Uphold wallet ที่ได้รับการยืนยันแล้ว</translation>
+<translation id="4600224932216165965">เติม ถอน และจัดการเงินที่ <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/></translation>
+<translation id="3580616436301227919">Brave วอลเล็ทของคุณดำเนินการโดย <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/></translation>
+<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> และข้อมูล Rewards อื่นๆ จะหายไปอย่างถาวรหากคุณรีเซ็ตวอลเล็ทของคุณ โปรดตรวจสอบให้แน่ใจว่าคุณได้ยืนยันวอลเล็ทของคุณด้วย Uphold เพื่อให้คุณสามารถเก็บ BAT ของคุณได้</translation>
+<translation id="7591798679868259510">ไปที่บัญชี Uphold ของฉัน</translation>
+<translation id="160145159036553575">บริการวอลเล็ทของเราให้บริการโดย <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold อาจกำหนดให้คุณยืนยันตัวตนของคุณตามบริการที่ร้องขอ</translation>
+<translation id="723054503945711909">Brave Software Inc. จะไม่ประมวลผล เก็บบันทึก หรือเข้าถึงข้อมูลส่วนบุคคลใด ๆ ที่คุณให้ไว้กับ Uphold เมื่อคุณสร้างบัญชีกับทางนั้น</translation>
+<translation id="7677480094678113476">หมายเหตุ: ธุรกรรมของคุณจะปรากฏแก่ Uphold เมื่อคุณอนุญาต ยกตัวอย่างเช่น พวกเขาจะสามารถเห็นจำนวนและผู้รับทิปได้</translation>
+<translation id="6057992164469678163">กำลังรอเพียร์...</translation>
 </translationbundle>

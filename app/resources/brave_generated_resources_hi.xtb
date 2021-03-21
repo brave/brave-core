@@ -5,7 +5,7 @@
 <translation id="7942180974165298215">Brave विज्ञापन बाधा</translation>
 <translation id="4615489450165434530">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
 <translation id="6406506848690869874">सिंक</translation>
-<translation id="5655621391922317800">क्रिप्टो वॉलेट</translation>
+<translation id="1544192797660353713">वॉलेट</translation>
 <translation id="2445484935443597917">नई प्रोफ़ाइल बनाएं</translation>
 <translation id="2666990579225592931">मेहमान विंडो खोलें</translation>
 <translation id="8275068909952022340">और…</translation>
@@ -93,6 +93,7 @@ Binance
 <translation id="1970435562892104727">यह टोर के साथ एक निजी विंडो है</translation>
 <translation id="1037341607922068025">टोर के साथ निजी विंडो खोलें</translation>
 <translation id="1725356094208762656">Tor में खोलें</translation>
+<translation id="7643538479215207633">IPFS का उपयोग करके खोलें</translation>
 <translation id="1672270084584211506">Onion उपलब्ध है</translation>
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
@@ -190,12 +191,18 @@ Binance
 <translation id="1336940801687497203">Windows के जैसे ही</translation>
 <translation id="8721331068159819483">MacOS के जैसे ही</translation>
 <translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
+<translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="7701040980221191251">कुछ नहीं</translation>
+<translation id="5655621391922317800">क्रिप्टो वॉलेट</translation>
+<translation id="1696548911367097044">डेप्रीकेटेड Crypto Wallets एक्सटेंशन</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7090046810227878892">Dapps का उपयोग करने के लिए एथेरियम प्रदाता</translation>
 <translation id="5913089932885076110">शुरुआत में क्रिप्टो वॉलेट लोड करें</translation>
+<translation id="757886143331967039">स्टार्टअप पर डेप्रीकेटेड क्रिप्टो वॉलेट के एक्सटेंशन लोड करें</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
+<translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
+<translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
 <translation id="9170907049676078643">IPFS संसाधनों को सुलझाने की विधि</translation>
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="80225669816651290">लोकल नोड</translation>
@@ -203,11 +210,15 @@ Binance
 <translation id="8425213833346101688">बदलें</translation>
 <translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
 <translation id="8571837315037233299">गेटवे पता</translation>
+<translation id="1251574393468476924">IPFS कैच का अधिकतम आकार (GB)</translation>
+<translation id="2503497578400410320">IPFS रिपॉजिटरी के डेटास्टोर के आकार के लिए एक नरम ऊपरी सीमा।</translation>
 <translation id="7703184801853248830">अमान्य गेटवे पता</translation>
 <translation id="585868419599255817">IPFS पब्लिक गेटवे फ़ॉलबैक</translation>
 <translation id="207763736230883589">यदि आपके स्थानीय नोड तक नहीं पहुँच सकता है, तो स्वचालित रूप से सार्वजनिक IPFS गेटवे पर वापस जाए।</translation>
 <translation id="4107552920076294723">IPFS संसाधनों को कॉन्फ़िगर किए गए IPFS गेटवे पर पुनर्निर्देशित करें</translation>
 <translation id="6494857428933042381">जब IPFS गेटवे संसाधन की जानकारी होती है, तो IPFS प्रस्तावों के लिए कॉन्फ़िगर किए गए गेटवे का स्वचालित रूप से उपयोग करता है।</translation>
+<translation id="8655170717758778983">जब संभव हो तो DNSLink के माध्यम से IPFS पृष्ठों पर स्वचालित रूप से रीडायरेक्ट करें</translation>
+<translation id="2233724520223030977">जब भी संभव हो, वेबसाइट के IPFS संस्करण में नेविगेट करने के लिए DNSLink का स्वचालित रूप से उपयोग करता है</translation>
 <translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
 <translation id="1765684547504191670">ब्राउज़र में क्रोमकास्ट को सक्रीय करने के लिए मीडिया राउटर घटक का उपयोग करता है।</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
@@ -288,11 +299,10 @@ Binance
 <translation id="7090566321964540749">यह अज्ञात जानकारी केवल Brave को कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने देती है.</translation>
 <translation id="1947672064022327074">क्या आप एथेरियम सहायता के लिए क्रिप्टो वॉलेट शुरू करना चाहते हैं?</translation>
 <translation id="7583735190612229830">इस ऐप और इसके जैसे अन्य ऐप के साथ जुड़ने के लिए क्रिप्टो वॉलेट सेट करें।</translation>
-<translation id="4823406846571523661">क्रिप्टो वॉलेट सेट करें</translation>
+<translation id="8731422418734770661">क्रिप्टो वॉलेट् सेट करें</translation>
 <translation id="8199661191594897555">क्रिप्टो वॉलेट शुरू करें और पुनः लोड करें</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
-<translation id="1664718502100303670">वालेट सेटिंग्स</translation>
-<translation id="965566669123544695">आईएफपीएस सेटिंग्स</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">IPFS और गोपनीयता के बारे में और जानें</translation>
 <translation id="4552520379838695057">क्षमा करें, वह पेज गायब है।</translation>
 <translation id="2609895996619941644">क्या आप जांचना चाहते हैं कि क्या वेबैक मशीन पर सेव किया गया संस्करण उपलब्ध है?</translation>
@@ -313,4 +323,7 @@ Binance
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="1224064034972923114">अपने आप क्रैश रिपोर्ट भेजकर ब्रेव को सुधारने में मदद करें</translation>
 <translation id="3738833060602717053">अपने आप क्रैश रिपोर्ट्स भेजकर <ph name="PRODUCT_NAME"/> को बेहतर करने में मदद करें</translation>
+<translation id="4823406846571523661">क्रिप्टो वॉलेट सेट करें</translation>
+<translation id="1664718502100303670">वालेट सेटिंग्स</translation>
+<translation id="965566669123544695">आईएफपीएस सेटिंग्स</translation>
 </translationbundle>

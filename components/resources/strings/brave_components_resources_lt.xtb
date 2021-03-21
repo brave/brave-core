@@ -35,8 +35,23 @@
 <translation id="604124094241169006">Automatinis</translation>
 <translation id="867722069064361487">12 val. laikrodis</translation>
 <translation id="4064062743338217840">24 val. laikrodis</translation>
-<translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
-<translation id="7176563092712682575">Tinkinti populiarias svetaines</translation>
+<translation id="5313967007315987356">Pridėti svetainę</translation>
+<translation id="5052499409147950210">Svetainės redagavimas</translation>
+<translation id="1181037720776840403">Pašalinti</translation>
+<translation id="7400418766976504921">URL adresas</translation>
+<translation id="6678563120789955720">Svetainės adresas</translation>
+<translation id="5327248766486351172">Pavadinimas</translation>
+<translation id="6916084277913254682">Svetainės pavadinimas</translation>
+<translation id="5317780077021120954">Išsaugoti</translation>
+<translation id="7658239707568436148">Atšaukti</translation>
+<translation id="4643117005422448078">Populiariausios svetainės</translation>
+<translation id="6307720725257444819">Mėgstamiausi</translation>
+<translation id="81774600964978477">Pagrindines svetaines kuruojate jūs</translation>
+<translation id="5439599923922718668">Dažnai lankomos</translation>
+<translation id="430556192781857057">Pagrindinės svetainės siūlomos pagal tai, kurias svetaines dažnai lankote</translation>
+<translation id="8037713009824540257">Pridėti svetainę</translation>
+<translation id="1773147648972887693">Rodyti dažnai lankomas</translation>
+<translation id="4546260624932151782">Rodyti mėgstamiausius</translation>
 <translation id="3446024864193919737">Rodyti „Brave Rewards“</translation>
 <translation id="6274899614137380422">Rodyti „Binance“</translation>
 <translation id="5551238871320268996">„Brave Together“</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">Išjungti turinį iš <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Reklamuojama</translation>
 <translation id="1776831331757823105">Laikrodis</translation>
-<translation id="4643117005422448078">Populiariausios svetainės</translation>
 <translation id="7791543448312431591">Pridėti</translation>
 <translation id="7679334366167089823">Gaukite žetonų už privatumo nepažeidžiančių reklamų peržiūrą.</translation>
 <translation id="1531133232292396145">Prekiaukite kriptovaliutomis per „Binance“ tiesiai savo naršyklėje.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">Tai yra</translation>
 <translation id="2055363275850890030">Privatus langas</translation>
 <translation id="9133213713928851646">„Brave“ neįsimena, ką veikiate privačiame lange. Svetainės, kuriose lankotės, nerodomos jūsų istorijoje, o baigus slapukai dingsta. Vis dėlto, privatūs langai visiškai nenuslepia jūsų tapatybės internete.</translation>
-<translation id="8760415064721320867">Privatusd langas su „Tor“</translation>
-<translation id="4844209912525464363">„Brave“ niekada neįsimena, ką veikiate privačiame lange. Naudojant „Tor“ jūsų naršymas taip pat slepiamas nuo jūsų interneto paslaugų teikėjo ar darbdavio, o IP adresas slepiamas nuo svetainių, kuriose lankotės.</translation>
+<translation id="3546750666732517156">Privatus langas su „Tor“ prisijungimu</translation>
+<translation id="5383068818957293256">„Brave“ niekada nekaupia atmintyje jokių jūsų veiksmų privačiame lange. „Tor“ prisijungimas taip pat leidžia paslėpti jūsų IP adresą nuo jūsų lankomų svetainių. Tačiau jei nuo anonimiškumo priklauso jūsų asmeninis saugumas, geriau naudokite „Tor“ naršyklę.</translation>
 <translation id="778096729652828897">Daugiau sužinokite apie privačius langus su „Tor“</translation>
 <translation id="7919374705736538787">Ieškokite privačiai su</translation>
 <translation id="3135655280958284640">„DuckDuckGo“</translation>
 <translation id="218839872518145456">Pasirinkus privačią paiešką, „Brave“ naudos „DuckDuckGo“ paieškai privačiuose languose. „DuckDuckGo“ neseka jūsų paieškos istorijos, todėl galite ieškoti privačiai.</translation>
 <translation id="1925197199485958903">Naudojant privačius langus su „Tor“, „DuckDuckGo“ yra numatytasis paieškos modulis. Kai kuriuos kitus populiarius paieškos modulius su „Tor“ naudoti sunkiau. „DuckDuckGo“ neseka jūsų paieškos istorijos; su „Tor“ jis netgi nežino jūsų IP adreso.</translation>
 <translation id="4371533307685765155">Paieška su „DuckDuckGo“</translation>
-<translation id="5576876180131651996">Privačius langus padarykite daug privatesnius</translation>
-<translation id="1129265576134014816">Šis privatus langas yra daug privatesnis</translation>
-<translation id="805807983419360524">su „Tor“</translation>
-<translation id="8958799246752641148">„Tor“ slepia jūsų IP adresą nuo svetainių, kuriose lankotės, nukreipdama jūsų naršymą per kelis „Tor“ serverius ir tik po to nuvesdama į paskirties vietą. Šie ryšiai yra šifruoti, todėl jūsų interneto paslaugų teikėjas ar darbdavys taip pat nemato, kokiose svetainėse lankotės. Dėl „Tor“ naršymas gali sulėtėti, o kai kurios svetainės gali visai neveikti.</translation>
-<translation id="520608572871993342">Naudojant privačius langus keičiasi tik tai, ką „Brave“ atlieka jūsų įrenginyje — niekieno kito elgesys nepasikeičia. „Tor“ paslepia jūsų IP adresą nuo svetainių, kuriose lankotės, taip pat paslepia svetaines, kuriose lankotės, nuo jūsų interneto paslaugų teikėjo ar darbdavio. Privatų langą galite atverti su „Tor“ per meniu arba naudodami {{ key }}.</translation>
+<translation id="548478195417408221">Padarykite privačius langus dar privatesnius</translation>
+<translation id="3294503279952534143">Šis privatus langas yra dar privatesnis</translation>
+<translation id="4644024131266615376">su „Tor“ prisijungimu</translation>
+<translation id="8541421872680304667">„Tor“ slepia jūsų IP adresą nuo svetainių, kuriose lankotės, nukreipdama jūsų naršymą per kelis „Tor“ serverius ir tik po to nuvesdama į paskirties vietą. Dėl „Tor“ naršymas gali sulėtėti, o kai kurios svetainės gali visai neveikti.</translation>
+<translation id="7030950080800709999">Naudojant privačius langus keičiasi tik tai, ką „Brave“ atlieka jūsų įrenginyje — niekieno kito elgesys nepasikeičia. „Tor“ paslepia jūsų IP adresą nuo svetainių, kuriose lankotės, bei apsunkina (tačiau visiškai nepanaikina) galimybę jūsų interneto paslaugų teikėjui ar darbdaviui matyti svetaines, kuriose lankotės. Privatų langą galite atverti su „Tor“ per meniu arba naudodami {{ key }}.</translation>
 <translation id="6975708438781948564">Daugiau sužinokite apie „Tor“ naršyklėje „Brave“</translation>
 <translation id="4712050378540986986">„Tor“ būsena</translation>
 <translation id="3368922792935385530">Prijungta</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">Pranešti apie neveikiančią svetainę</translation>
 <translation id="8510478288840333677">Praneškite „Brave“ kūrėjams, kad ši svetainė neveikia tinkamai su skydais:</translation>
 <translation id="6013164422534859494">Pastaba: šios svetainės adresas bus pateiktas su „Brave“ versijos numeriu ir jūsų IP adresu (kuris nebus saugomas).</translation>
-<translation id="7658239707568436148">Atšaukti</translation>
 <translation id="2653659639078652383">Pateikti</translation>
 <translation id="5299848999918506028">Dėkojame!</translation>
 <translation id="76550953340008122">Dėkojame, kad pranešėte „Brave“ kūrėjams, jog su šia svetaine kažkas negerai. Pasistengsime ją sutvarkyti!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">Kito mėnesinio indėlio data</translation>
 <translation id="6231182869178328516">Naudodamasis „Brave“ naršykle ką tik daviau arbatpinigių <ph name="NAME"/>. Daugiau apie tai galite sužinoti adresu https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">Apgailestaujame, apdorojant jūsų užklausą iškilo problema, bandykite dar kartą.</translation>
+<translation id="3113653894794167793">Apgailestaujame, apdorojant jūsų užklausą iškilo problema, bandykite dar kartą.</translation>
 <translation id="3082557070674409251">Spustelėta</translation>
 <translation id="7119308337584989771">Atsisakyta</translation>
 <translation id="6805660603861526473">Žiūrėta</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">„Brave Private Ads“, skirtingai nuo įprastinių reklamų, skiria jums žetonų, kuriais galite paremti turinio kūrėjus. Visa tai vyksta saugant jūsų asmens duomenų privatumą.</translation>
 <translation id="6973095375773523904">Kur rodomos reklamos?</translation>
 <translation id="7556325460112047619">„Brave Private Ads“ rodomos kaip įprastas pranešimas. Nuostatų skiltyje galite pasirinkti, kaip dažnai norite matyti šias reklamas.</translation>
-<translation id="5816125157889950051">Kada gaunate atlygį</translation>
+<translation id="6897083627729802351">Kada gaunate atlygį</translation>
 <translation id="310863932297733723">Žetonai, kuriuos iš „Brave Private Ads“ gavote per einamąjį mėnesį, jus pasieks kito mėnesio 5 dieną.</translation>
 <translation id="7712287524451429139">Atsilyginti dabar paprasta</translation>
 <translation id="105037569026952831">Kūrėjai jūsų skiriamus žetonus gauna automatiškai pagal jūsų susidomėjimo lygį, kurį matuojame kaip „dėmesį“.</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">Pažymėti kaip netinkamą ✓</translation>
 <translation id="8988332871810963281">Šiuo metu nėra „Brave“ reklamų istorijos</translation>
 <translation id="5345727496083327478">Nebegausite šios kategorijos reklamų</translation>
-<translation id="5317780077021120954">Išsaugoti</translation>
 <translation id="2827387977307390755">Leisti arbatpinigius</translation>
 <translation id="3819257035322786455">Kurti atsarginę kopiją</translation>
 <translation id="1312977698678162065">Gaukite užmokestį už privatumo nepažeidžiančių susijusių reklamų peržiūrą.</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">Jūsų prisegtos svetainės perkeltos į</translation>
 <translation id="6803187280799213426">Lėšos jūsų „Brave“ piniginėje yra virtualios, todėl sukurti atsarginės kopijos nereikalaujama. Galite jas išleisti išimtinai šioje naršyklėje.</translation>
 <translation id="5290348443732633227">Norint apsaugoti visas savo lėšas tuo atveju, jei iš naujo įdiegtumėte naršyklę arba pradėtumėte naudotis nauju įrenginiu, taip pat turėti kitų privilegijų, pvz., pridėti, išsiimti ar pervesti lėšas, rekomenduojame</translation>
-<translation id="6733942359297688714">prisijungti prie patvirtintos „Uphold“ piniginės.</translation>
+<translation id="467041382895390784">prisijungiama prie patvirtintos <ph name="PROVIDER"/> piniginės.</translation>
 <translation id="5717619667204259673">Saugokite šį atkūrimo kodą.</translation>
 <translation id="4699702339303280827">Su šiuo raktu visada gali susigrąžinti savo piniginę, jei kas nors nutiks naršyklei ar kompiuteriui. Todėl gerai saugok jį, nes kas gaus raktą, gali pasisavinti ir tavo piniginę. Saugiausia jį užsirašyti ant popieriaus ar ten, kur paprastai laikai savo svarbią informaciją.</translation>
 <translation id="8979401359137062629">Pastaba.</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">Retkarčiais „Brave“ jums pasiūlys nemokamų žetonų išmokų. Nepražiopsokite pranešimo!</translation>
 <translation id="2185598236335233939">Toliau naudodami „Brave“, ieškokite pranešimų apie reklamas. Jūsų BAT taškų likutis padidės su kiekviena peržiūrėta reklama.</translation>
 <translation id="1370034647041840967">Gaukite žetonų už dėmesį reklamai ir perveskite šiuos pinigus, kad paremtumėte turinio kūrėjus, kuriuos vertinate!</translation>
-<translation id="4600224932216165965">Įneškite, išsiimkite ir valdykite lėšas su <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
-<translation id="3580616436301227919">Jūsų „Brave“ piniginę sukūrė <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="4919888432594361029">Įneškite, išsiimkite ir valdykite lėšas su <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">Jūsų „Brave“ piniginę sukūrė <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">„Brave Rewards“ atlygio pagrindas – kriptovaliuta „Basic Attention Token“. Sužinokite daugiau apie BAT</translation>
 <translation id="7823359893981882407">čia</translation>
 <translation id="4483635855837696643">Atkurti piniginę</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">Įveskite atkūrimo kodą arba</translation>
 <translation id="6548189695918108191">Prieš pakeisdami sukurkite piniginės atsarginę kopiją. Antraip prarasite pinigus, {{funds}}, esančius dabartinėje piniginėje.</translation>
 <translation id="5423214929210538027">Ar tikrai norite iš naujo nustatyti „Rewards“ piniginę?</translation>
-<translation id="7428521340740703492">Jei iš naujo nustatysite piniginę, jūsų <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami „Uphold“, kad neprarastumėte BAT.</translation>
+<translation id="8683358891240311475">Jei iš naujo nustatysite piniginę, jūsų <ph name="BAT_AMOUNT"/> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami <ph name="PROVIDER"/>, kad neprarastumėte BAT.</translation>
 <translation id="2028613172174411919">Jei iš naujo nustatysite piniginę, jūsų „Rewards“ duomenys bus prarasti visam laikui.</translation>
 <translation id="4914597931214386232">Atsiimtos žetonų išmokos</translation>
 <translation id="3494964159182650590">„Rewards“ suvestinė</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">patvirtinti</translation>
 <translation id="8267327690882073581">Patvirtinti piniginę</translation>
 <translation id="543510923939676996">Piniginė patvirtinta</translation>
-<translation id="7591798679868259510">Eiti į mano „Uphold“ paskyrą</translation>
+<translation id="2659764755126740206">Eiti į mano <ph name="PROVIDER"/> paskyrą</translation>
 <translation id="3699674790322420653">Baigti piniginės patvirtinimą</translation>
 <translation id="9200453331904391567">Atsijungti nuo „Brave Rewards“</translation>
 <translation id="46988480989545156">Patvirtinti piniginę</translation>
-<translation id="160145159036553575">Mūsų piniginės paslaugą teikia <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/>.</translation>
+<translation id="5796169459825124737">Mūsų piniginės paslaugą teikia <ph name="PROVIDER"/>.</translation>
 <translation id="6771734945114850124">Pasiruoškite valdžios institucijos išduotą asmens tapatybės dokumentą.</translation>
 <translation id="8697510149346635496">Išmokėti BAT, kuriuos pelnėte už privatumą gerbiančių reklamų peržiūrą</translation>
 <translation id="1481480653609649134">Įsigyti papildomų BAT, sumokant kreditine kortele ir iš kitų šaltinių</translation>
 <translation id="9096003370755878766">Išmokėti BAT, kuriuos anksčiau pridėjote į savo „Brave Rewards“ piniginę</translation>
 <translation id="8558636200953226885">Tačiau patvirtinę galite...</translation>
 <translation id="3354315693758743702">Piniginės patvirtinimas neprivalomas.</translation>
-<translation id="8465442795593991224">Atsižvelgiant į prašomas paslaugas, „Uphold“ gali pareikalauti jūsų patvirtinti savo tapatybę.</translation>
-<translation id="723054503945711909">„Brave Software Inc.“ netvarko, nelaiko ir nepasiekia jokios asmeninės informacijos, kurią teikiate „Uphold“, kai ten susikuriate paskyrą.</translation>
-<translation id="7677480094678113476">Pastaba. Jūsų operacijos „Uphold“  bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų gavėjas ir arbatpinigių suma.</translation>
+<translation id="4872388810065331182">Atsižvelgiant į prašomas paslaugas, <ph name="PROVIDER"/> gali pareikalauti jūsų patvirtinti savo tapatybę.</translation>
+<translation id="6938217233488972952">„Brave Software Inc.“ netvarko, nelaiko ir nepasiekia jokios asmeninės informacijos, kurią teikiate <ph name="PROVIDER"/>, kai ten susikuriate paskyrą.</translation>
+<translation id="2415586822982819406">Pastaba. Jūsų operacijos <ph name="PROVIDER"/> bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų gavėjas ir arbatpinigių suma.</translation>
 <translation id="7404779623219601861">Iškeisti BAT į dovanų korteles</translation>
 <translation id="6215565499749144110">TAP tinkle savo BAT galite iškeisti į populiarių prekių ženklų dovanų korteles.</translation>
 <translation id="6915065518766963119">* Reikia „Uphold“ patvirtinimo.</translation>
@@ -722,12 +734,36 @@
 <translation id="8327818101454798856">Jei ketinote paremti savo mėgstamiausias svetaines, keliaukite ten.</translation>
 <translation id="412480955826088549">Atsisiunčiamas komponentas...</translation>
 <translation id="4894106830958548828">Suprantu</translation>
-<translation id="7701466644604753106">ĮJUNGTI spartųjį skaitlį</translation>
-<translation id="763042262431778831">IŠJUNGTI spartųjį skaitlį</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Peržiūrėkite rinkas ir nusipirkite kriptovaliutų svetainėje crypto.com.</translation>
+<translation id="4292334826913000023">Rodyti kainą</translation>
+<translation id="5001098083058405168">Gaukite 2 % premiją už indėlius</translation>
+<translation id="7336377875970208451">Nebemokėkite mokesčių už prekybą</translation>
+<translation id="5889002303959545585">Pirkti bitkoinų</translation>
+<translation id="7243082596932212589">Peržiūrėkite Crypto.com rinkas</translation>
+<translation id="2258222996838418990">7d schema</translation>
+<translation id="5337526542182802976">Remiamos poros</translation>
+<translation id="1164622162816276433">24 val. apimtis</translation>
+<translation id="7534079972563542000">„Unstoppable Domains“</translation>
+<translation id="4492298165410552103">Įjungti „Unstoppable Domains“ palaikymą „Brave“ naršyklėje?</translation>
+<translation id="3470923752115324276">„Brave“ gali leisti apsilankyti .crypto domenuose naudojant „Cloudflare“, kai reikia spręsti .crypto domeno vardo paieškos užklausas naudojant DNS per HTTPS. Jei tai įjungsite, „Cloudflare“ matys .crypto domeną, kurį bandote aplankyti, bet negalės matyti kitų domenų. Žr. „Cloudflare“ <ph name="BEGIN_CF_TOU_LINK"/>naudojimo sąlygas<ph name="END_CF_TOU_LINK"/> ir <ph name="BEGIN_CF_PRIVACY_LINK"/>privatumo politiką<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="6513892817556267573">Eterio pavadinimų paslauga</translation>
+<translation id="4335039108389860301">Įjungti eterio pavadinimų paslaugos (ENS) palaikymą „Brave“ naršyklėje?</translation>
+<translation id="618766505813078707">„Brave“ gali leisti apsilankyti .eth domenuose naudojant „Cloudflare“, kai reikia spręsti .eth domeno vardo paieškos užklausas naudojant DNS per HTTPS. Jei tai įjungsite, „Cloudflare“ matys .eth domeną, kurį bandote aplankyti, bet negalės matyti kitų domenų. Žr. „Cloudflare“ <ph name="BEGIN_CF_TOU_LINK"/>naudojimo sąlygas<ph name="END_CF_TOU_LINK"/> ir <ph name="BEGIN_CF_PRIVACY_LINK"/>privatumo politiką<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Toliau naudoti „Cloudflare“ serverį</translation>
+<translation id="2468755552460246661">Domenas užblokuotas</translation>
+<translation id="6631469728138660166">Įtartina svetainė</translation>
+<translation id="983774928604730749">„Brave“ neleido užkrauti šios svetainės:</translation>
+<translation id="8250033559824599347">Ši svetainė gali būti apgavikiška, permesti jus nuo vienos svetainės prie kitos, kad įkeltų slapukus, arba atlikti kitus privatumą pažeidžiančius veiksmus.</translation>
+<translation id="2459038234784107183">Nebeperspėti manęs apie šią svetainę</translation>
+<translation id="8242426110754782860">Tęsti</translation>
+<translation id="2501278716633472235">Grįžti</translation>
 <translation id="9020818404803201080">Prisijungę kolegos:</translation>
 <translation id="2903493209154104877">Adresai</translation>
 <translation id="3207122385716480167">Saugyklos statistiniai duomenys</translation>
 <translation id="2595187693729756455">Mazgo informacija</translation>
+<translation id="8999763401170835879">Įvyko klaida, bandykite paleisti dar kartą</translation>
+<translation id="5433704526290922623">Įvyko klaida, bandykite įdiegti mazgą dar kartą</translation>
 <translation id="5789886980848929155">IPFS mazgo būsena</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Tinklų sietuvas</translation>
@@ -769,20 +805,20 @@
 <translation id="3977809385703587108">Savo nuostatas vėl galėsite pakeisti dalyje</translation>
 <translation id="3340978935015468852">nustatymų</translation>
 <translation id="4148957013307229264">Diegiama...</translation>
-<translation id="6057992164469678163">Laukiama kolegų...</translation>
+<translation id="4219228508273972445">Ieškoma kolegų...</translation>
 <translation id="1902096227388293745">Galimų kolegų nėra, bandoma iš naujo... (<ph name="ATTEMPTS_NUMBER"/> likę bandymai)</translation>
 <translation id="1675751799495331928">Viršijome leidžiamą bandymų skaičių, vėliau pabandykite dar kartą.</translation>
 <translation id="4499666752625407848">Atnaujinant įvyko klaida.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Peržiūrėkite rinkas ir nusipirkite kriptovaliutų svetainėje crypto.com.</translation>
-<translation id="4292334826913000023">Rodyti kainą</translation>
-<translation id="5001098083058405168">Gaukite 2 % premiją už indėlius</translation>
-<translation id="7336377875970208451">Nebemokėkite mokesčių už prekybą</translation>
-<translation id="5889002303959545585">Pirkti bitkoinų</translation>
-<translation id="7243082596932212589">Peržiūrėkite Crypto.com rinkas</translation>
-<translation id="2258222996838418990">7d schema</translation>
-<translation id="5337526542182802976">Remiamos poros</translation>
-<translation id="1164622162816276433">24 val. apimtis</translation>
+<translation id="7789840864192026963">Duoti leidimą</translation>
+<translation id="8092074243456635562">kol neuždarysiu šio puslapio</translation>
+<translation id="3523195733429162409">24 valandoms</translation>
+<translation id="2373264732659722940">1 savaitei</translation>
+<translation id="6318437367327684789">visam laikui</translation>
+<translation id="7463327191540031132">Užblokuoti visam laikui</translation>
+<translation id="8797999629784150206">Savo <ph name="SITE_PERMISSIONS"/> galite pakeisti bet kuriuo metu. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">svetainės leidimas</translation>
+<translation id="7701466644604753106">ĮJUNGTI spartųjį skaitlį</translation>
+<translation id="763042262431778831">IŠJUNGTI spartųjį skaitlį</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="3745016858329272300">Bendroji informacija</translation>
 <translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>
@@ -791,4 +827,25 @@
 <translation id="6951743416068151209">„Tor“ tarpinio serverio URL</translation>
 <translation id="1671503397662036257">„Tor“ ryšio būsena</translation>
 <translation id="6024292492796847324">„Tor“ inicijavimo pažanga</translation>
+<translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
+<translation id="7176563092712682575">Tinkinti populiarias svetaines</translation>
+<translation id="8760415064721320867">Privatusd langas su „Tor“</translation>
+<translation id="4844209912525464363">„Brave“ niekada neįsimena, ką veikiate privačiame lange. Naudojant „Tor“ jūsų naršymas taip pat slepiamas nuo jūsų interneto paslaugų teikėjo ar darbdavio, o IP adresas slepiamas nuo svetainių, kuriose lankotės.</translation>
+<translation id="5576876180131651996">Privačius langus padarykite daug privatesnius</translation>
+<translation id="1129265576134014816">Šis privatus langas yra daug privatesnis</translation>
+<translation id="805807983419360524">su „Tor“</translation>
+<translation id="8958799246752641148">„Tor“ slepia jūsų IP adresą nuo svetainių, kuriose lankotės, nukreipdama jūsų naršymą per kelis „Tor“ serverius ir tik po to nuvesdama į paskirties vietą. Šie ryšiai yra šifruoti, todėl jūsų interneto paslaugų teikėjas ar darbdavys taip pat nemato, kokiose svetainėse lankotės. Dėl „Tor“ naršymas gali sulėtėti, o kai kurios svetainės gali visai neveikti.</translation>
+<translation id="520608572871993342">Naudojant privačius langus keičiasi tik tai, ką „Brave“ atlieka jūsų įrenginyje — niekieno kito elgesys nepasikeičia. „Tor“ paslepia jūsų IP adresą nuo svetainių, kuriose lankotės, taip pat paslepia svetaines, kuriose lankotės, nuo jūsų interneto paslaugų teikėjo ar darbdavio. Privatų langą galite atverti su „Tor“ per meniu arba naudodami {{ key }}.</translation>
+<translation id="2876191400747549936">Apgailestaujame, apdorojant jūsų užklausą iškilo problema, bandykite dar kartą.</translation>
+<translation id="5816125157889950051">Kada gaunate atlygį</translation>
+<translation id="6733942359297688714">prisijungti prie patvirtintos „Uphold“ piniginės.</translation>
+<translation id="4600224932216165965">Įneškite, išsiimkite ir valdykite lėšas su <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Jūsų „Brave“ piniginę sukūrė <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Jei iš naujo nustatysite piniginę, jūsų <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami „Uphold“, kad neprarastumėte BAT.</translation>
+<translation id="7591798679868259510">Eiti į mano „Uphold“ paskyrą</translation>
+<translation id="160145159036553575">Mūsų piniginės paslaugą teikia <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/>.</translation>
+<translation id="8465442795593991224">Atsižvelgiant į prašomas paslaugas, „Uphold“ gali pareikalauti jūsų patvirtinti savo tapatybę.</translation>
+<translation id="723054503945711909">„Brave Software Inc.“ netvarko, nelaiko ir nepasiekia jokios asmeninės informacijos, kurią teikiate „Uphold“, kai ten susikuriate paskyrą.</translation>
+<translation id="7677480094678113476">Pastaba. Jūsų operacijos „Uphold“  bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų gavėjas ir arbatpinigių suma.</translation>
+<translation id="6057992164469678163">Laukiama kolegų...</translation>
 </translationbundle>

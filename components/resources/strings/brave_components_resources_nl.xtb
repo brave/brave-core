@@ -35,8 +35,23 @@
 <translation id="604124094241169006">Automatisch</translation>
 <translation id="867722069064361487">klok met 12 uur</translation>
 <translation id="4064062743338217840">klok met 24 uur</translation>
-<translation id="8643377320501056697">Topsites Weergeven</translation>
-<translation id="7176563092712682575">Topsites aanpassen</translation>
+<translation id="5313967007315987356">Site toevoegen</translation>
+<translation id="5052499409147950210">Site bewerken</translation>
+<translation id="1181037720776840403">Verwijderen</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">Website adres</translation>
+<translation id="5327248766486351172">Naam</translation>
+<translation id="6916084277913254682">Website titel</translation>
+<translation id="5317780077021120954">Opslaan</translation>
+<translation id="7658239707568436148">Annuleren</translation>
+<translation id="4643117005422448078">Top websites</translation>
+<translation id="6307720725257444819">Favorieten</translation>
+<translation id="81774600964978477">Top sites worden door u samengesteld</translation>
+<translation id="5439599923922718668">Vaak bezocht</translation>
+<translation id="430556192781857057">Top sites worden voorgesteld op basis van websites die u vaak bezoekt</translation>
+<translation id="8037713009824540257">Website toevoegen</translation>
+<translation id="1773147648972887693">Toon veel bezocht</translation>
+<translation id="4546260624932151782">Toon favorieten</translation>
 <translation id="3446024864193919737">Brave Rewards tonen</translation>
 <translation id="6274899614137380422">Binance weergeven</translation>
 <translation id="5551238871320268996">Brave Together</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">Inhoud van <ph name="PUBLISHER_NAME"/> uitschakelen</translation>
 <translation id="3189348785087463371">Gepromote inhoud</translation>
 <translation id="1776831331757823105">Klok</translation>
-<translation id="4643117005422448078">Top websites</translation>
 <translation id="7791543448312431591">Toevoegen</translation>
 <translation id="7679334366167089823">Verdien tokens voor het bekijken van privacy-respecterende advertenties.</translation>
 <translation id="1531133232292396145">Rechtstreeks in uw browser in crypto handelen op Binance.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">Dit is een</translation>
 <translation id="2055363275850890030">Privévenster</translation>
 <translation id="9133213713928851646">Brave onthoudt niet ’ wat je in een Privévenster doet. Websites die je bezoekt, worden niet in je geschiedenis weergegeven en cookies verdwijnen wanneer ’ je afsluit. Echter, door Privévensters te gebruiken ben je online niet ’ helemaal anoniem.</translation>
-<translation id="8760415064721320867">Privévenster met Tor</translation>
-<translation id="4844209912525464363">Brave onthoudt nooit wat je doet in een Privévenster. Met Tor wordt je browse activiteit ook verborgen gehouden voor je internetprovider of werkgever en wordt je IP-adres verborgen gehouden voor de websites die je bezoekt.</translation>
+<translation id="3546750666732517156">Privévenster met Tor connectiviteit</translation>
+<translation id="5383068818957293256">Brave herinnert zich nooit wat u doet in een privévenster. Met Tor-connectiviteit is uw IP-adres ook verborgen voor de sites die u bezoekt. Als uw persoonlijke veiligheid echter afhangt van uw anonimiteit, gebruikt u dan de Tor-browser.</translation>
 <translation id="778096729652828897">Krijg meer informatie over Privévensters met Tor.</translation>
 <translation id="7919374705736538787">Zoek Privé met</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Voor privé-zoekopdrachten zal Brave DuckDuckGo gebruiken voor zoekopdrachten met het Privévenster. DuckDuckGo houdt’ je zoekgeschiedenis niet bij. Dus je kan privé zoeken.</translation>
 <translation id="1925197199485958903">In Privévensters met Tor is DuckDuckGo de standaardzoekmachine. Sommige van de andere populaire zoekmachines zijn moeilijker te gebruiken met Tor. DuckDuckGo houdt ’ je zoekgeschiedenis niet bij; met Tor weten ze niet eens wat je IP-adres is.</translation>
 <translation id="4371533307685765155">Zoek met DuckDuckGo.</translation>
-<translation id="5576876180131651996">Maak Privévensters veel meer privé.</translation>
-<translation id="1129265576134014816">Deze Privévenster biedt veel meer privacy.</translation>
-<translation id="805807983419360524">met Tor</translation>
-<translation id="8958799246752641148">Tor verbergt je IP-adres voor de websites die je bezoekt, door het browsen via verschillende Tor-servers om te leiden voordat deze zijn bestemming bereikt. Deze verbindingen zijn versleuteld, dus je internetprovider of werkgever kan ’ ook niet zien welke websites je ’ bezoekt. Tor kan echter het browsen vertragen en sommige websites werken mogelijk helemaal niet.</translation>
-<translation id="520608572871993342">Het gebruik van Privévensters verandert alleen wat Brave op je apparaat — doet - het verandert niets aan het gedrag van een ander. Tor verbergt je IP-adres voor de websites die je bezoekt en verbergt de websites die je bezoekt voor je internetprovider of je werkgever. Open vanuit het menu of met {{ key }} een Privévenster met Tor.</translation>
+<translation id="548478195417408221">Maak privévensters meer privé</translation>
+<translation id="3294503279952534143">Dit privévenster is meer privé</translation>
+<translation id="4644024131266615376">met Tor Connectiviteit</translation>
+<translation id="8541421872680304667">Tor verbergt uw IP-adres voor de sites die u bezoekt, door uw handelen door verschillende Tor-servers te leiden voordat het uw bestemming bereikt. Tor kan het browsen vertragen en sommige sites werken mogelijk helemaal niet.</translation>
+<translation id="7030950080800709999">Het gebruik van privévensters verandert alleen wat Brave op uw apparaat doet — het verandert het gedrag van iemand anders niet. Tor verbergt uw IP-adres voor de sites die u bezoekt en maakt het iets moeilijker, maar niet onmogelijk, voor uw internetprovider of werkgever om te zien welke sites u bezoekt. Open een privévenster met Tor vanuit het menu, of met {{key}}.</translation>
 <translation id="6975708438781948564">Leer meer over Tor in Brave</translation>
 <translation id="4712050378540986986">Tor-status</translation>
 <translation id="3368922792935385530">Verbonden</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
 <translation id="6013164422534859494">Opmerking: dit siteadres wordt verzonden met uw Brave-versienummer en uw IP-adres (dat niet wordt opgeslagen).</translation>
-<translation id="7658239707568436148">Annuleer</translation>
 <translation id="2653659639078652383">voorleggen</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
 <translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">Datum volgende maandelijkse bijdrage</translation>
 <translation id="6231182869178328516">Ik heb <ph name="NAME"/> zojuist een fooi gegeven via de Brave Browser. Ontdek meer op https://brave.com/tips.</translation>
 <translation id="8404935570206006581">FooiVanBrave</translation>
-<translation id="2876191400747549936">Er is helaas een probleem opgetreden bij het verwerken van je verzoek. Probeer het opnieuw.</translation>
+<translation id="3113653894794167793">Sorry, er is een probleem opgetreden bij het verwerken van uw verzoek. Probeer het opnieuw.</translation>
 <translation id="3082557070674409251">Geklikt</translation>
 <translation id="7119308337584989771">Afgewezen</translation>
 <translation id="6805660603861526473">Bekeken</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">Brave Private Ads beloont u met tokens om de makers van content te ondersteunten, in tegenstelling tot traditionele advertenties, terwijl je persoonlijke informatie privé blijft.</translation>
 <translation id="6973095375773523904">Waar verschijnen de advertenties?</translation>
 <translation id="7556325460112047619">Brave Private Ads zullen verschijnen als een normale notificatie. U bepaalt zelf hoe vaak u deze advertenties ziet in instellingen.</translation>
-<translation id="5816125157889950051">Wanneer ontvangt u beloningen</translation>
+<translation id="6897083627729802351">Wanneer ontvangt u beloningen</translation>
 <translation id="310863932297733723">U verdiende tokens van Brave Private Ads gedurende de hele lopende maand zullen op de 5e van de volgende maand aankomen.</translation>
 <translation id="7712287524451429139">Moeiteloos terugschenken</translation>
 <translation id="105037569026952831">Makers ontvangen de door u geschonken tokens automatisch, op basis van uw niveau van betrokkenheid, dat we meten als ‘Aandacht’.</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">Markeren als ongepast ✓</translation>
 <translation id="8988332871810963281">Er is momenteel geen geschiedenis van Brave Ads</translation>
 <translation id="5345727496083327478">Je ontvangt niet langer advertenties uit deze categorie</translation>
-<translation id="5317780077021120954">Opslaan</translation>
 <translation id="2827387977307390755">Sta fooi toe op</translation>
 <translation id="3819257035322786455">Back-up maken</translation>
 <translation id="1312977698678162065">Word betaald door het kijken van relevante advertenties die je privacy respecteren</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">Je vastgepinde sites zijn verplaatst naar</translation>
 <translation id="6803187280799213426">Het geld in uw Brave wallet is virtueel en u hoeft geen back-up te maken. U kunt deze exclusief in deze browser besteden.</translation>
 <translation id="5290348443732633227">Als u al uw geld wilt beveiligen in het geval van een clean installatie van de browser of bij het overschakelen naar een nieuw apparaat, en andere voordelen zoals het storten, opnemen en overboeken van geld, bevelen wij aan</translation>
-<translation id="6733942359297688714">verbinding maken met een geverifieerde Uphold wallet</translation>
+<translation id="467041382895390784">Verbinding maken met een geverifieerde <ph name="PROVIDER"/>wallet.</translation>
 <translation id="5717619667204259673">Bewaar deze herstelsleutel op een veilige plek.</translation>
 <translation id="4699702339303280827">Je kunt altijd deze sleutel gebruiken om je wallet terug te krijgen als er iets met je browser of computer gebeurt. Zorg er wel voor dat je je sleutel goed bewaard, want wie je sleutel heeft, kan je wallet stelen. Het is waarschijnlijk het veiligst om de sleutel ergens op te schrijven of te bewaren bij andere belangrijke gegevens.</translation>
 <translation id="8979401359137062629">Opmerking:</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">Af en toe krijg je gratis tokens aangeboden door Brave. Houd de meldingen in de gaten!</translation>
 <translation id="2185598236335233939">Zoek naar advertentiemeldingen terwijl u Brave gebruikt. Uw BAT-puntensaldo neemt toe met elke advertentie die u bekijkt.</translation>
 <translation id="1370034647041840967">Verdien tokens met je aandacht voor advertenties en betaal het aan content creators die jij waardeert om hen te ondersteunen!</translation>
-<translation id="4600224932216165965">Leg geld in, neem geld op en beheer uw middelen met <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
-<translation id="3580616436301227919">Uw Brave-portemonnee wordt mogelijk gemaakt door <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="4919888432594361029">Geld toevoegen, opnemen en beheren bij <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">Uw Brave wallet wordt mogelijk gemaakt door <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards is gebaseerd op Basic Attention Token. Meer informatie over BAT</translation>
 <translation id="7823359893981882407">hier</translation>
 <translation id="4483635855837696643">Herstel je Wallet</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">Voer de herstelsleutel in of</translation>
 <translation id="6548189695918108191">Maak een back-up van uw wallet voordat u deze vervangt. Anders verliest u het geld in uw huidige wallet.</translation>
 <translation id="5423214929210538027">Weet u zeker dat u uw Rewards Wallet wilt resetten?</translation>
-<translation id="7428521340740703492">Uw<ph name="BEGIN_BOLD"/>{{amount}} BAT's<ph name="END_BOLD"/> en andere Beloningen gaan permanent verloren als u uw portemonnee reset. Zorg ervoor dat u uw portemonnee met Uphold hebt geverifieerd zodat u uw BAT kunt behouden.</translation>
+<translation id="8683358891240311475">Uw <ph name="BAT_AMOUNT"/> en andere Rewards gegevens gaan permanent verloren als u uw wallet opnieuw instelt. Zorg ervoor dat u uw wallet heeft geverifieerd met <ph name="PROVIDER"/> zodat u uw BAT kunt houden</translation>
 <translation id="2028613172174411919">Uw Rewards-gegevens zullen permanent verloren gaan als u uw wallet reset.</translation>
 <translation id="4914597931214386232">Geclaimde giften</translation>
 <translation id="3494964159182650590">Overzicht van de Beloningen</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">Verifiëren</translation>
 <translation id="8267327690882073581">Verifieer Wallet</translation>
 <translation id="543510923939676996">Wallet geverifieerd</translation>
-<translation id="7591798679868259510">Ga naar mijn Uphold-account</translation>
+<translation id="2659764755126740206">Ga naar mijn <ph name="PROVIDER"/> account</translation>
 <translation id="3699674790322420653">Rond walletverificatie af</translation>
 <translation id="9200453331904391567">Verbreek de verbinding met Brave Rewards</translation>
 <translation id="46988480989545156">Verifieer wallet</translation>
-<translation id="160145159036553575">Onze portemonnee-service wordt aangeboden door <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="5796169459825124737">Onze wallet service wordt geleverd door <ph name="PROVIDER"/>.</translation>
 <translation id="6771734945114850124">Houd je door de overheid uitgegeven ID bij de hand.</translation>
 <translation id="8697510149346635496">Neem BAT op die je verdient door het bekijken van advertenties die privacy respecteren</translation>
 <translation id="1481480653609649134">Koop extra BAT met creditcards en andere bronnen</translation>
 <translation id="9096003370755878766">Neem BAT op die je mogelijk eerder aan je Brave Rewards-portemonnee hebt toegevoegd</translation>
 <translation id="8558636200953226885">Maar als u verifieert, kunt u...</translation>
 <translation id="3354315693758743702">Verificatie van uw portemonnee is optioneel.</translation>
-<translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
-<translation id="723054503945711909">Brave Software Inc. verwerkt, bewaart of heeft geen toegang tot de persoonlijke informatie die je verstrekt aan Uphold wanneer je een account bij hen aanmaakt.</translation>
-<translation id="7677480094678113476">Let op: Uw transacties zullen zichtbaar zijn voor Uphold zodra u toestemming geeft, ze zullen bijvoorbeeld de ontvanger en het bedrag van uw tips zien.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> vereist mogelijk dat u uw identiteit verifieert op basis van de verzochte diensten</translation>
+<translation id="6938217233488972952">Brave Software Inc. verwerkt noch bewaart en heeft geen toegang tot de persoonlijke informatie die u verstrekt aan <ph name="PROVIDER"/> wanneer u een account bij hen aanmaakt.</translation>
+<translation id="2415586822982819406">Opmerking: uw transacties zijn zichtbaar voor <ph name="PROVIDER"/>zodra u toestemming geeft; Ze kunnen bijvoorbeeld de ontvanger en de hoeveelheid fooi zien.</translation>
 <translation id="7404779623219601861">BAT inwisselen voor cadeaubonnen</translation>
 <translation id="6215565499749144110">Met TAP Network kun je je BAT inwisselen voor populaire cadeaubonnen van bekende merken.</translation>
 <translation id="6915065518766963119">* Vereist verdere verificatie.</translation>
@@ -722,12 +734,36 @@
 <translation id="8327818101454798856">Dus als je je favoriete sites wilt ondersteunen, ga dan daarheen.</translation>
 <translation id="412480955826088549">Onderdeel downloaden...</translation>
 <translation id="4894106830958548828">Ik begrijp het</translation>
-<translation id="7701466644604753106">Schakel Speedreader in</translation>
-<translation id="763042262431778831">Schakel Speedreader UIT</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Bekijk markten en koop crypto op crypto.com</translation>
+<translation id="4292334826913000023">Toon prijs</translation>
+<translation id="5001098083058405168">Krijg 2% bonus op stortingen.</translation>
+<translation id="7336377875970208451">Stop met het betalen van handelskosten</translation>
+<translation id="5889002303959545585">Bicoin kopen</translation>
+<translation id="7243082596932212589">Bekijk de markten van Crypto.com</translation>
+<translation id="2258222996838418990">7d grafiek</translation>
+<translation id="5337526542182802976">Gesteunde koppels</translation>
+<translation id="1164622162816276433">24U Volume</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="4492298165410552103">Ondersteuning voor Unstoppable Domains inschakelen in Brave?</translation>
+<translation id="3470923752115324276">Brave maakt het mogelijk om .crypto domeinen te bezoeken door Cloudflare te gebruiken om opgevraagde .crypto domeinnamen op te lossen met behulp van DNS over HTTPS. Als u dit inschakelt, ziet Cloudflare het .crypto domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Zie Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_CF_TOU_LINK"/> en <ph name="BEGIN_CF_PRIVACY_LINK"/>privacyverklaring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="4335039108389860301">Ondersteuning voor Ethereum Name Service (ENS) inschakelen in Brave?</translation>
+<translation id="618766505813078707">Brave maakt het mogelijk om .eth domeinen te bezoeken door Cloudflare te gebruiken om opgevraagde .eth domeinnamen op te lossen met behulp van DNS over HTTPS. Als u dit inschakelt, ziet Cloudflare het .eth-domein dat u probeert te bezoeken, maar kunnen ze geen andere domeinen zien. Zie Cloudflare's <ph name="BEGIN_CF_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_CF_TOU_LINK"/> en <ph name="BEGIN_CF_PRIVACY_LINK"/>privacyverklaring<ph name="END_CF_PRIVACY_LINK"/>.</translation>
+<translation id="5636651007798897342">Ga verder met de Cloudflare server</translation>
+<translation id="2468755552460246661">Domein geblokkeerd</translation>
+<translation id="6631469728138660166">Verdachte site op komst</translation>
+<translation id="983774928604730749">Brave heeft voorkomen dat de volgende site wordt geladen:</translation>
+<translation id="8250033559824599347">Deze site kan frauduleus zijn, u tussen verschillende sites laten op en neer sturen om tracking cookies in te stellen of andere handelingen die inbreuk maken op uw privacy uit te voeren.</translation>
+<translation id="2459038234784107183">Waarschuw me niet opnieuw voor deze site</translation>
+<translation id="8242426110754782860">Doorgaan</translation>
+<translation id="2501278716633472235">Terug</translation>
 <translation id="9020818404803201080">Verbonden peers:</translation>
 <translation id="2903493209154104877">Adressen</translation>
 <translation id="3207122385716480167">Repo-statistieken</translation>
 <translation id="2595187693729756455">Node-info</translation>
+<translation id="8999763401170835879">Er is een fout opgetreden, probeer opnieuw te starten</translation>
+<translation id="5433704526290922623">Er is een fout opgetreden, probeer de node opnieuw te installeren</translation>
 <translation id="5789886980848929155">Status IPFS-knooppunt</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Gateway</translation>
@@ -769,20 +805,20 @@
 <translation id="3977809385703587108">U kunt uw voorkeuren opnieuw wijzigen in</translation>
 <translation id="3340978935015468852">instellingen</translation>
 <translation id="4148957013307229264">Bezig mer installeren...</translation>
-<translation id="6057992164469678163">Wachten op peers...</translation>
+<translation id="4219228508273972445">Op zoek naar peers...</translation>
 <translation id="1902096227388293745">Geen peers beschikbaar, bezig met opnieuw proberen... (<ph name="ATTEMPTS_NUMBER"/> attemps left)</translation>
 <translation id="1675751799495331928">We hebben het maximum aantal pogingen overschreden, probeer het later nog eens.</translation>
 <translation id="4499666752625407848">Er is een fout opgetreden tijdens een update.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Bekijk markten en koop crypto op crypto.com</translation>
-<translation id="4292334826913000023">Toon prijs</translation>
-<translation id="5001098083058405168">Krijg 2% bonus op stortingen.</translation>
-<translation id="7336377875970208451">Stop met het betalen van handelskosten</translation>
-<translation id="5889002303959545585">Bicoin kopen</translation>
-<translation id="7243082596932212589">Bekijk de markten van Crypto.com</translation>
-<translation id="2258222996838418990">7d grafiek</translation>
-<translation id="5337526542182802976">Gesteunde koppels</translation>
-<translation id="1164622162816276433">24U Volume</translation>
+<translation id="7789840864192026963">Toestemming geven</translation>
+<translation id="8092074243456635562">totdat ik de pagina sluit</translation>
+<translation id="3523195733429162409">voor 24 uur</translation>
+<translation id="2373264732659722940">voor 1 week</translation>
+<translation id="6318437367327684789">voor altijd</translation>
+<translation id="7463327191540031132">Blokkeer voor altijd</translation>
+<translation id="8797999629784150206">U kunt uw <ph name="SITE_PERMISSIONS"/> op ieder moment wijzigen. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">site rechten</translation>
+<translation id="7701466644604753106">Schakel Speedreader in</translation>
+<translation id="763042262431778831">Schakel Speedreader UIT</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -791,4 +827,25 @@
 <translation id="6951743416068151209">Tor Proxy-URI</translation>
 <translation id="1671503397662036257">Tor-verbindingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialisatievoortgang</translation>
+<translation id="8643377320501056697">Topsites Weergeven</translation>
+<translation id="7176563092712682575">Topsites aanpassen</translation>
+<translation id="8760415064721320867">Privévenster met Tor</translation>
+<translation id="4844209912525464363">Brave onthoudt nooit wat je doet in een Privévenster. Met Tor wordt je browse activiteit ook verborgen gehouden voor je internetprovider of werkgever en wordt je IP-adres verborgen gehouden voor de websites die je bezoekt.</translation>
+<translation id="5576876180131651996">Maak Privévensters veel meer privé.</translation>
+<translation id="1129265576134014816">Deze Privévenster biedt veel meer privacy.</translation>
+<translation id="805807983419360524">met Tor</translation>
+<translation id="8958799246752641148">Tor verbergt je IP-adres voor de websites die je bezoekt, door het browsen via verschillende Tor-servers om te leiden voordat deze zijn bestemming bereikt. Deze verbindingen zijn versleuteld, dus je internetprovider of werkgever kan ’ ook niet zien welke websites je ’ bezoekt. Tor kan echter het browsen vertragen en sommige websites werken mogelijk helemaal niet.</translation>
+<translation id="520608572871993342">Het gebruik van Privévensters verandert alleen wat Brave op je apparaat — doet - het verandert niets aan het gedrag van een ander. Tor verbergt je IP-adres voor de websites die je bezoekt en verbergt de websites die je bezoekt voor je internetprovider of je werkgever. Open vanuit het menu of met {{ key }} een Privévenster met Tor.</translation>
+<translation id="2876191400747549936">Er is helaas een probleem opgetreden bij het verwerken van je verzoek. Probeer het opnieuw.</translation>
+<translation id="5816125157889950051">Wanneer ontvangt u beloningen</translation>
+<translation id="6733942359297688714">verbinding maken met een geverifieerde Uphold wallet</translation>
+<translation id="4600224932216165965">Leg geld in, neem geld op en beheer uw middelen met <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Uw Brave-portemonnee wordt mogelijk gemaakt door <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Uw<ph name="BEGIN_BOLD"/>{{amount}} BAT's<ph name="END_BOLD"/> en andere Beloningen gaan permanent verloren als u uw portemonnee reset. Zorg ervoor dat u uw portemonnee met Uphold hebt geverifieerd zodat u uw BAT kunt behouden.</translation>
+<translation id="7591798679868259510">Ga naar mijn Uphold-account</translation>
+<translation id="160145159036553575">Onze portemonnee-service wordt aangeboden door <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
+<translation id="723054503945711909">Brave Software Inc. verwerkt, bewaart of heeft geen toegang tot de persoonlijke informatie die je verstrekt aan Uphold wanneer je een account bij hen aanmaakt.</translation>
+<translation id="7677480094678113476">Let op: Uw transacties zullen zichtbaar zijn voor Uphold zodra u toestemming geeft, ze zullen bijvoorbeeld de ontvanger en het bedrag van uw tips zien.</translation>
+<translation id="6057992164469678163">Wachten op peers...</translation>
 </translationbundle>

@@ -5,7 +5,7 @@
 <translation id="7942180974165298215">Brave Advertentieblokkeerder</translation>
 <translation id="4615489450165434530">Meld een gebroken site</translation>
 <translation id="6406506848690869874">Sync</translation>
-<translation id="5655621391922317800">Crypto Wallets</translation>
+<translation id="1544192797660353713">Wallet</translation>
 <translation id="2445484935443597917">Een nieuw profiel maken</translation>
 <translation id="2666990579225592931">Gastvenster openen</translation>
 <translation id="8275068909952022340">Meer</translation>
@@ -60,6 +60,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1970435562892104727">Dit is een privévenster met Tor</translation>
 <translation id="1037341607922068025">Private Window openen met Tor</translation>
 <translation id="1725356094208762656">In Tor openen</translation>
+<translation id="7643538479215207633">Openen met IPFS</translation>
 <translation id="1672270084584211506">Onion beschikbaar</translation>
 <translation id="1434416574322382019">Nieuw Privévenster in Tor</translation>
 <translation id="4703780849509456860">Open Link in Privévenster in Tor</translation>
@@ -157,12 +158,18 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1336940801687497203">Hetzelfde als Windows</translation>
 <translation id="8721331068159819483">Zelfde als macOS</translation>
 <translation id="2896916411183256228">Gebruikt WebTorrent om torrents rechtstreeks in je browser weer te geven. Ondersteunt torrentbestanden en magnetlinks.</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="7701040980221191251">Geen</translation>
+<translation id="5655621391922317800">Crypto Wallets</translation>
+<translation id="1696548911367097044">Verouderde Crypto Wallets extensie</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7090046810227878892">Ethereum-provider voor het gebruik van Dapps</translation>
 <translation id="5913089932885076110">Laad Crypto Wallets bij het opstarten</translation>
+<translation id="757886143331967039">Laad de verouderde Crypto Wallets extensie bij het opstarten</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
+<translation id="5927916530277631319">Methode om Unstoppable Domains op te lossen</translation>
+<translation id="5248318250177143470">Methode om Ethereum Name Service (ENS) op te lossen</translation>
 <translation id="9170907049676078643">Methode voor het oplossen van IPFS-bronnen</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokale node</translation>
@@ -170,11 +177,15 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="8425213833346101688">Wijzigen</translation>
 <translation id="557281710253742286">Stel IPFS-gateway in</translation>
 <translation id="8571837315037233299">Gateway-adres</translation>
+<translation id="1251574393468476924">Maximale grootte IPFS cache (GB)</translation>
+<translation id="2503497578400410320">Een zachte bovengrens voor de grootte van de data opslag van de IPFS repository.</translation>
 <translation id="7703184801853248830">Ongeldig gateway-adres</translation>
 <translation id="585868419599255817">Terugvallen op de publieke IPFS-poort</translation>
 <translation id="207763736230883589">Val automatisch terug naar de openbare IPFS-gateway als uw lokale knooppunt niet kan worden bereikt.</translation>
 <translation id="4107552920076294723">IPFS-bronnen omleiden naar de geconfigureerde IPFS-gateway</translation>
 <translation id="6494857428933042381">Gebruikt automatisch de geconfigureerde gateway voor IPFS-resoluties wanneer een IPFS-gatewaybron is aangetroffen.</translation>
+<translation id="8655170717758778983">Indien mogelijk automatisch omleiden naar IPFS-pagina's via DNSLink</translation>
+<translation id="2233724520223030977">Gebruikt automatisch DNSLink om indien mogelijk naar een IPFS-versie van een website te navigeren</translation>
 <translation id="6554397389149987360">Gebruikt een Hangouts-component om het delen van het scherm en andere functies in de browser mogelijk te maken.</translation>
 <translation id="1765684547504191670">Gebruikt Media Router-component om Chromecast in de browser in te schakelen.</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
@@ -255,11 +266,10 @@ tot 6x sneller op de grote nieuwssites.</translation>
 <translation id="7090566321964540749">Met deze anonieme info kan Brave alleen het algehele gebruik van bepaalde functies schatten.</translation>
 <translation id="1947672064022327074">Wilt u de ondersteuning voor crypto-portemonnee voor Ethereum starten?</translation>
 <translation id="7583735190612229830">Stel Crypto Wallets in om te communiceren met deze en vergelijkbare apps.</translation>
-<translation id="4823406846571523661">Crypto Wallets instellen</translation>
+<translation id="8731422418734770661">Crypto wallets instellen</translation>
 <translation id="8199661191594897555">Start Crypto Wallets en herlaad</translation>
 <translation id="8428213095426709021">Instellingen</translation>
-<translation id="1664718502100303670">Wallet-instellingen</translation>
-<translation id="965566669123544695">IPFS-instellingen</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Meer informatie over IPFS en privacy</translation>
 <translation id="4552520379838695057">Sorry, deze pagina bestaat niet.</translation>
 <translation id="2609895996619941644">Wil je bekijken of er een opgeslagen versie beschikbaar is op de Wayback Machine?</translation>
@@ -280,4 +290,7 @@ tot 6x sneller op de grote nieuwssites.</translation>
 <translation id="2808630562319398131">Brave Rewards-gegevens resetten...</translation>
 <translation id="1224064034972923114">Help Brave te verbeteren door automatisch crash-rapporten te sturen</translation>
 <translation id="3738833060602717053">Help met het verbeteren van <ph name="PRODUCT_NAME"/> door automatisch crash-rapporten te verzenden</translation>
+<translation id="4823406846571523661">Crypto Wallets instellen</translation>
+<translation id="1664718502100303670">Wallet-instellingen</translation>
+<translation id="965566669123544695">IPFS-instellingen</translation>
 </translationbundle>

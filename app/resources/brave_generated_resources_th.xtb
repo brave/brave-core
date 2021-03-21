@@ -5,7 +5,7 @@
 <translation id="7942180974165298215">Brave Ad Block</translation>
 <translation id="4615489450165434530">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="6406506848690869874">ซิงค์</translation>
-<translation id="5655621391922317800">คริปโตวอลเล็ท</translation>
+<translation id="1544192797660353713">วอลเล็ท</translation>
 <translation id="2445484935443597917">สร้างโปรไฟล์ใหม่</translation>
 <translation id="2666990579225592931">เปิดหน้าต่างผู้มาเยือน</translation>
 <translation id="8275068909952022340">เพิ่มเติม…</translation>
@@ -59,6 +59,7 @@
 <translation id="1970435562892104727">นี่เป็นหน้าต่างส่วนตัวที่เชื่อมต่อผ่าน Tor</translation>
 <translation id="1037341607922068025">เปิดหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="1725356094208762656">เปิดใน Tor</translation>
+<translation id="7643538479215207633">เปิดด้วย IPFS</translation>
 <translation id="1672270084584211506">บริการหัวหอมพร้อมใช้งาน</translation>
 <translation id="1434416574322382019">การสร้างวินโดว์ส่วนบุคคลกับทอร์</translation>
 <translation id="4703780849509456860">เปิดลิงก์ในหน้าต่างส่วนตัวพร้อม Tor</translation>
@@ -156,12 +157,18 @@
 <translation id="1336940801687497203">เหมือน Windows</translation>
 <translation id="8721331068159819483">เหมือนกับ macOS</translation>
 <translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="7701040980221191251">ไม่มี</translation>
+<translation id="5655621391922317800">คริปโตวอลเล็ท</translation>
+<translation id="1696548911367097044">ส่วนขยายกระเป๋าเงินดิจิตอลที่เลิกใช้แล้ว</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7090046810227878892">ผู้ให้บริการ Ethereum สำหรับใช้งาน Dapps</translation>
 <translation id="5913089932885076110">โหลด Crypto Wallets เมื่อเริ่มต้น</translation>
+<translation id="757886143331967039">โหลดส่วนขยายกระเป๋าเงินดิจิตอลที่เลิกใช้แล้วเมื่อเริ่มต้นระบบ</translation>
 <translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
+<translation id="5927916530277631319">วิธีการแปลงที่อยู่ของ Unstoppable Domains</translation>
+<translation id="5248318250177143470">วิธีการแปลงที่อยู่ของ Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">วิธีแก้ปัญหาเกี่ยวกับทรัพยากร IPFS</translation>
 <translation id="1327977588028644528">เกตเวย์</translation>
 <translation id="80225669816651290">โหนดภายใน</translation>
@@ -169,11 +176,15 @@
 <translation id="8425213833346101688">เปลี่ยน</translation>
 <translation id="557281710253742286">ตั้งค่าเกตเวย์ IPFS</translation>
 <translation id="8571837315037233299">ที่อยู่เกตเวย์</translation>
+<translation id="1251574393468476924">ขนาดแคชสูงสุดสำหรับ IPFS (GB)</translation>
+<translation id="2503497578400410320">ขีดจำกัดบนแบบซอฟต์สำหรับขนาดการจัดเก็บข้อมูลในที่เก็บ IPFS</translation>
 <translation id="7703184801853248830">ที่อยู่เกตเวย์ไม่ถูกต้อง</translation>
 <translation id="585868419599255817">ถอยกลับไปที่เกตเวย์สาธารนะ IPFS</translation>
 <translation id="207763736230883589">ย้อนกลับไปยังเกตเวย์ IPFS สาธารณะโดยอัตโนมัติเมื่อไม่สามารถเข้าถึงโหนดเฉพาะที่ของคุณ</translation>
 <translation id="4107552920076294723">เปลี่ยนเส้นทางทรัพยากร IPFS ไปยังเกตเวย์ IPFS ที่กำหนดค่าไว้</translation>
 <translation id="6494857428933042381">ใช้เกตเวย์ที่กำหนดค่าไว้โดยอัตโนมัติในการแก้ปัญหา IPFS เมื่อพบทรัพยากรเกตเวย์ IPFS</translation>
+<translation id="8655170717758778983">เปลี่ยนเส้นทางไปยังหน้า IPFS ผ่าน DNSLink โดยอัตโนมัติทุกครั้งที่ทำได้</translation>
+<translation id="2233724520223030977">ใช้ DNSLink โดยอัตโนมัติเพื่อนำทางไปยังเวอร์ชัน IPFS ของเว็บไซต์ทุกครั้งที่ทำได้</translation>
 <translation id="6554397389149987360">ใช้ส่วนประกอบ Hangouts เพื่อเปิดใช้งานการแชร์หน้าจอและฟีเจอร์อื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="1765684547504191670">ใช้คอมโพเนนต์ Media Router เพื่อเปิดใช้งาน Chromecast ในเบราว์เซอร์</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
@@ -254,11 +265,10 @@
 <translation id="7090566321964540749">ข้อมูลแบบไม่ระบุตัวตนนี้จะช่วยให้ Brave คาดคะเนการใช้งานโดยรวมของฟีเจอร์บางอย่างได้เท่านั้น</translation>
 <translation id="1947672064022327074">คุณต้องการเริ่มต้น Crypto Wallets สำหรับรองรับ Ethereum หรือไม่</translation>
 <translation id="7583735190612229830">ตั้งค่ากระเป๋าสตางค์ดิจิตอลเพื่อโต้ตอบกับแอปนี้และแอปอื่นๆ ที่คล้ายกันนี้</translation>
-<translation id="4823406846571523661">ติดตั้ง Crypto Wallets</translation>
+<translation id="8731422418734770661">ตั้งค่ากระเป๋าเงินดิจิตอล</translation>
 <translation id="8199661191594897555">เริ่ม Crypto Wallets และโหลดใหม่</translation>
 <translation id="8428213095426709021">การตั้งค่า</translation>
-<translation id="1664718502100303670">การตั้งค่ากระเป๋าเงิน</translation>
-<translation id="965566669123544695">การตั้งค่า IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">ดูข้อมูลเพิ่มเติมเกี่ยวกับ IPFS และความเป็นส่วนตัว</translation>
 <translation id="4552520379838695057">ขออภัย หน้านั้นหายไปแล้ว</translation>
 <translation id="2609895996619941644">คุณต้องการตรวจสอบไหมว่ามีเวอร์ชันที่บันทึกไว้ใน Wayback Machine หรือไม่</translation>
@@ -279,4 +289,7 @@
 <translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
 <translation id="1224064034972923114">ช่วยปรับปรุง Brave ด้วยการส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
 <translation id="3738833060602717053">ช่วยปรับปรุง <ph name="PRODUCT_NAME"/>โดยส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
+<translation id="4823406846571523661">ติดตั้ง Crypto Wallets</translation>
+<translation id="1664718502100303670">การตั้งค่ากระเป๋าเงิน</translation>
+<translation id="965566669123544695">การตั้งค่า IPFS</translation>
 </translationbundle>

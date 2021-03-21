@@ -5,7 +5,7 @@
 <translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
 <translation id="4615489450165434530">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="6406506848690869874">সিঙ্ক করুন</translation>
-<translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
+<translation id="1544192797660353713">ওয়ালেট</translation>
 <translation id="2445484935443597917">একটি নতুন প্রোফাইল তৈরি করুন</translation>
 <translation id="2666990579225592931">গেস্ট উইন্ডো খুলুন</translation>
 <translation id="8275068909952022340">অনেক…</translation>
@@ -59,6 +59,7 @@
 <translation id="1970435562892104727">এটি টর সহ একটি ব্যক্তিগত উইন্ডো</translation>
 <translation id="1037341607922068025">টর দিয়ে প্রাইভেট উইন্ডো খুলুন</translation>
 <translation id="1725356094208762656">Tor এ খুলুন</translation>
+<translation id="7643538479215207633">IPFS ব্যবহার করে খুলুন</translation>
 <translation id="1672270084584211506">অনিয়ন উপলব্ধ</translation>
 <translation id="1434416574322382019">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="4703780849509456860">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
@@ -156,12 +157,18 @@
 <translation id="1336940801687497203">Windows এর মতো</translation>
 <translation id="8721331068159819483">macOS এর মত একইরকমের</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
+<translation id="8488282162676695335">Brave ওয়ালেট</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="7701040980221191251">কিছুই নয়</translation>
+<translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
+<translation id="1696548911367097044">অবমানিত ক্রিপ্টো ওয়ালেটগুলোর এক্সটেনশন</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7090046810227878892">ড্যাপস ব্যবহারের জন্য ইথেরিয়াম সরবরাহকারী</translation>
 <translation id="5913089932885076110">শুরু করার সময়ে ক্রিপ্টো ওয়ালেটগুলি লোড করুন</translation>
+<translation id="757886143331967039">অবমানিত ক্রিপ্টো ওয়ালেটগুলোর এক্সটেনশন স্টার্টআপ-এ লোড করুন</translation>
 <translation id="6864914031231797928">এক্সটেনশনগুলির জন্য Google লগইন এর অনুমতি দিন</translation>
+<translation id="5927916530277631319">অপ্রতিরোধ্য ডোমেইনগুলোর সমস্যা সমাধানের উপায়</translation>
+<translation id="5248318250177143470">Ethereum Name Service (ENS) সমাধানের উপায়</translation>
 <translation id="9170907049676078643">IPFS সংস্থানগুলি সমাধান করার পদ্ধতি</translation>
 <translation id="1327977588028644528">গেটওয়ে</translation>
 <translation id="80225669816651290">স্থানীয় নোড</translation>
@@ -169,11 +176,15 @@
 <translation id="8425213833346101688">পরিবর্তন</translation>
 <translation id="557281710253742286">IPFS গেটওয়ে সেট করুন</translation>
 <translation id="8571837315037233299">গেটওয়ের ঠিকানা</translation>
+<translation id="1251574393468476924">সর্বোচ্চ IPFS ক্যাশ সাইজ (GB)</translation>
+<translation id="2503497578400410320">IPFS ভাণ্ডারের ডেটাস্টোর-এর নমনীয় ঊর্ধ্বসীমা।</translation>
 <translation id="7703184801853248830">অবৈধ গেটওয়ে ঠিকানা</translation>
 <translation id="585868419599255817">IPFS পাবলিক গেটওয়ে ফলব্যাক</translation>
 <translation id="207763736230883589">আপনার স্থানীয় নোড পৌঁছাতে না পারলে স্বয়ংক্রিয়ভাবে সর্বজনীন IPFS গেটওয়েতে ফিরে যান।</translation>
 <translation id="4107552920076294723">কনফিগার করা  IPFS গেটওয়েতে  IPFS সংস্থানগুলি পুনর্নির্দেশ করুন</translation>
 <translation id="6494857428933042381">যখন একটি IPFS গেটওয়ে সংস্থান সম্মুখীন হয় তখন স্বয়ংক্রিয়ভাবে IPFS রেজোলিউশনের জন্য কনফিগার করা গেটওয়ে ব্যবহার করে।</translation>
+<translation id="8655170717758778983">যখন সম্ভব DNSLink এর মাধ্যমে IPFS পেজগুলোতে স্বয়ংক্রিয়ভাবে পুনঃনির্দেশ (রিডাইরেক্ট) করুন</translation>
+<translation id="2233724520223030977">কোন ওয়েবসাইটের IPFS সংস্করণে নিয়ে যেতে যখনই সম্ভব স্বয়ংক্রিয়ভাবে DNSLink ব্যবহার করে</translation>
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
 <translation id="1765684547504191670">ব্রাউজারে Chromecast সক্ষম করতে মিডিয়া রাউটার উপাদান ব্যবহার করে।</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
@@ -254,11 +265,10 @@
 <translation id="7090566321964540749">এই নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে দেয়।</translation>
 <translation id="1947672064022327074">আপনি কি ইথেরিয়াম সমর্থনের জন্য Crypto ওয়ালেটগুলি শুরু করতে চান?</translation>
 <translation id="7583735190612229830">এই অ্যাপটি এবং এটির মতন অন্যান্য অ্যাপের সাথে ইন্টারঅ্যাক্ট করতে Crypto Wallets সেট আপ করুন৷</translation>
-<translation id="4823406846571523661">ক্রিপ্টো ওয়ালেট-গুলি সেটআপ করুন</translation>
+<translation id="8731422418734770661">ক্রিপ্টো ওয়ালেট সেট আপ করুন</translation>
 <translation id="8199661191594897555">ক্রিপ্টো ওয়ালেটগুলি শুরু করুন এবং আবার লোড করুন</translation>
 <translation id="8428213095426709021">সেটিংস</translation>
-<translation id="1664718502100303670">ওয়ালেট সেটিংস</translation>
-<translation id="965566669123544695">IPFS সেটিংস</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">IPFS এবং গোপনীয়তা সম্পর্কে আরও জানুন</translation>
 <translation id="4552520379838695057">দুঃখিত, ঐ পৃষ্ঠাটি পাওয়া যাচ্ছে না।</translation>
 <translation id="2609895996619941644">ওয়েব্যাক মেশিনে একটি সংরক্ষিত সংস্করণ উপলভ্য কিনা তা কি আপনি পরীক্ষা করতে চান?</translation>
@@ -279,4 +289,7 @@
 <translation id="2808630562319398131">Brave Rewards এর ডেটা রিসেট করুন...</translation>
 <translation id="1224064034972923114">স্বয়ংক্রিয়ভাবে ক্র্যাশ প্রতিবেদনগুলি পাঠিয়ে সাহসী উন্নত করতে সহায়তা করুন</translation>
 <translation id="3738833060602717053">উন্নতিতে সহায়তা করুন <ph name="PRODUCT_NAME"/> স্বয়ংক্রিয়ভাবে ক্র্যাশ রিপোর্ট পাঠিয়ে</translation>
+<translation id="4823406846571523661">ক্রিপ্টো ওয়ালেট-গুলি সেটআপ করুন</translation>
+<translation id="1664718502100303670">ওয়ালেট সেটিংস</translation>
+<translation id="965566669123544695">IPFS সেটিংস</translation>
 </translationbundle>

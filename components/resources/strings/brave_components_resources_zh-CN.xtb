@@ -35,8 +35,23 @@
 <translation id="604124094241169006">自动</translation>
 <translation id="867722069064361487">12 小时制</translation>
 <translation id="4064062743338217840">24 小时制</translation>
-<translation id="8643377320501056697">显示热门网站</translation>
-<translation id="7176563092712682575">自定义热门网站</translation>
+<translation id="5313967007315987356">添加网站</translation>
+<translation id="5052499409147950210">修改网站</translation>
+<translation id="1181037720776840403">删除</translation>
+<translation id="7400418766976504921">网址</translation>
+<translation id="6678563120789955720">网站地址</translation>
+<translation id="5327248766486351172">名称</translation>
+<translation id="6916084277913254682">网站标题</translation>
+<translation id="5317780077021120954">保存</translation>
+<translation id="7658239707568436148">取消</translation>
+<translation id="4643117005422448078">热门网站</translation>
+<translation id="6307720725257444819">收藏夹</translation>
+<translation id="81774600964978477">热门网站由您策划</translation>
+<translation id="5439599923922718668">显示经常访问的网址</translation>
+<translation id="430556192781857057">根据您经常访问的网站推荐热门网站</translation>
+<translation id="8037713009824540257">添加网站</translation>
+<translation id="1773147648972887693">显示经常访问的菜单</translation>
+<translation id="4546260624932151782">显示收藏夹</translation>
 <translation id="3446024864193919737">显示 Brave 奖励</translation>
 <translation id="6274899614137380422">显示 Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">禁用来自<ph name="PUBLISHER_NAME"/>的内容</translation>
 <translation id="3189348785087463371">已宣传</translation>
 <translation id="1776831331757823105">时钟</translation>
-<translation id="4643117005422448078">热门网站</translation>
 <translation id="7791543448312431591">添加</translation>
 <translation id="7679334366167089823">通过观看尊重隐私的广告赢得代币。</translation>
 <translation id="1531133232292396145">在浏览器中直接在 Binance 上进行加密货币交易。</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">这是一个</translation>
 <translation id="2055363275850890030">私人窗口</translation>
 <translation id="9133213713928851646">您在私人窗口中的操作不’会在Brave中留下记录。您访问的网站将不会显示在您的历史记录中，并且当您’结束访问后，Cookie就会消失。不过，私人窗口不会允许您完全匿名在线。</translation>
-<translation id="8760415064721320867">用 Tor 打开私人窗口</translation>
-<translation id="4844209912525464363">您在私人窗口中的操作不会在Brave中留下记录。使用Tor，您的浏览记录也会对您的ISP或雇主隐藏，且会您在访问网站时隐藏您的的IP地址。</translation>
+<translation id="3546750666732517156">带有 Tor 连接的私人窗户</translation>
+<translation id="5383068818957293256">Brave 永远不会记住您在私人窗口中执行的操作。通过 Tor 连接，您访问的站点还会隐藏您的 IP 地址。但是，如果您的人身安全取决于是否保持匿名，那就请使用 Tor 浏览器。</translation>
 <translation id="778096729652828897">了解有关用 Tor 打开私人窗口的更多信息</translation>
 <translation id="7919374705736538787">私密搜索</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">’进行私人搜索时，Brave将使用DuckDuckGo在私人窗口中进行搜索。DuckDuckGo不会跟踪您的搜索历史记录，因此您的搜索操作具有私密性。</translation>
 <translation id="1925197199485958903">在用Tor打开私人窗口中，DuckDuckGo是默认搜索引擎。因为一些其他流行的搜索引擎更难与Tor一起使用。DuckDuckGo不’会跟踪您的搜索记录; 且在使用Tor时，他们甚至不’会获悉您的IP地址。</translation>
 <translation id="4371533307685765155">用 DuckDuckGo 搜索</translation>
-<translation id="5576876180131651996">使私人窗口更具私密性</translation>
-<translation id="1129265576134014816">此私人窗口更具私密性</translation>
-<translation id="805807983419360524">用Tor</translation>
-<translation id="8958799246752641148">Tor通过在您进入网站之前将浏览内容路由到多个Tor服务器来隐藏您访问网站的IP地址。这些连接是加密的，因此您的ISP或雇主无’法查看您正’在访问的网站。Tor会减慢浏览速度，有些网站可能根本无法运行。</translation>
-<translation id="520608572871993342">使用私人窗口只会更改Brave在您的设备上所进行的操作— - 不会更改您设备上的其他操作。Tor会在您访问网站时隐藏您的IP地址，并对您的ISP或雇主隐藏您访问的网站。在菜单中通过Tor的打开私人窗口，或使用{{key}}。</translation>
+<translation id="548478195417408221">使私有窗口更加隐秘</translation>
+<translation id="3294503279952534143">此私有窗口更加隐秘</translation>
+<translation id="4644024131266615376">带有 Tor 连接</translation>
+<translation id="8541421872680304667">Tor 通过在您进入网站之前将浏览内容路由到多个 Tor 服务器来隐藏您访问网站的IP地址。Tor 会减慢浏览速度，有些网站可能根本无法运行。</translation>
+<translation id="7030950080800709999">使用私人 Windows 仅会更改 Brave 在设备上执行的操作＆＃8212;它不会改变其他任何人的行为。Tor 将您的 IP 地址隐藏起来，而不显示在您访问的站点上，这使得您的 ISP 或雇主很难（但并非完全不可能）看到您正在访问的站点。使用菜单中的 Tor 或使用{{键}}打开“私人窗口”。</translation>
 <translation id="6975708438781948564">了解有关Brave中Tor的更多信息</translation>
 <translation id="4712050378540986986">Tor 状态</translation>
 <translation id="3368922792935385530">已连接</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="8510478288840333677">让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：</translation>
 <translation id="6013164422534859494">注意：此站点地址将与您的 Brave 版本号和 IP 地址一起提交，我们不会存储您的 IP 地址。</translation>
-<translation id="7658239707568436148">取消</translation>
 <translation id="2653659639078652383">提交</translation>
 <translation id="5299848999918506028">谢谢！</translation>
 <translation id="76550953340008122">感谢您让 Brave 的开发人员知道此站点出了问题。我们会尽力解决问题！</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">下一个每月捐赠日期</translation>
 <translation id="6231182869178328516">我最近使用 Brave 浏览器打赏了 <ph name="NAME"/>。快来 https://brave.com/tips 看看吧。</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">抱歉，处理您的请求时出错，请重试。</translation>
+<translation id="3113653894794167793">抱歉，无法处理您的请求，请重试。</translation>
 <translation id="3082557070674409251">已单击</translation>
 <translation id="7119308337584989771">已放弃</translation>
 <translation id="6805660603861526473">已查看</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">与传统广告不同的是，Brave 的私人广告会奖励您代币以支持内容创作者，同时还会将您的个人信息保密。</translation>
 <translation id="6973095375773523904">广告在哪里显示？</translation>
 <translation id="7556325460112047619">Brave 的私人广告将以常规通知的形式显示。您可以在设置中控制看到这些广告的频率。</translation>
-<translation id="5816125157889950051">您什么时候获得奖励</translation>
+<translation id="6897083627729802351">您什么时候获得奖励</translation>
 <translation id="310863932297733723">您本月从 Brave ads 获得的代币将在下个月的 5 号到账。</translation>
 <translation id="7712287524451429139">给予回馈变得毫不费力了</translation>
 <translation id="105037569026952831">创建者会根据您的参与度（我们将其衡量为“ #Attention”）来自动接收您的代币捐款。</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">标记为不适用✓</translation>
 <translation id="8988332871810963281">当前没有 Brave 广告历史记录</translation>
 <translation id="5345727496083327478">您将不会收到此类广告</translation>
-<translation id="5317780077021120954">保存</translation>
 <translation id="2827387977307390755">允许打赏</translation>
 <translation id="3819257035322786455">备份</translation>
 <translation id="1312977698678162065">付费浏览尊重您隐私的相关广告。</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">您的固定网站已移至</translation>
 <translation id="6803187280799213426">在您的 Brave 钱包中的资金为虚拟资金，无需进行备份。它仅能供您在本浏览器中使用。</translation>
 <translation id="5290348443732633227">如果您想在全新安装浏览器，或是切换到新设备上时，确保你所有资金的安全，并拥有其他权益，比如入资、提取和资金转账等等，我们建议</translation>
-<translation id="6733942359297688714">连接到验证托管钱包。</translation>
+<translation id="467041382895390784">正在连接到已验证的 <ph name="PROVIDER"/> 钱包。</translation>
 <translation id="5717619667204259673">保持此恢复密钥的安全性。</translation>
 <translation id="4699702339303280827">如果您的浏览器或电脑出现问题，您可以随时使用此密钥找回您的钱包。请妥善保管，取得密钥的人可盗窃您的钱包。最安全的办法是把它记在纸上，或保存在您保管重要信息的地方。</translation>
 <translation id="8979401359137062629">备注：</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">偶尔，您将获得 Brave 的免费代币补助金。请务必注意提醒！</translation>
 <translation id="2185598236335233939">一边继续使用 Brave，一边寻找广告通知。您的 BAT 点数余额将随着您查看的每个广告而增加。</translation>
 <translation id="1370034647041840967">通过观看广告赚取代币并付费以支持您喜爱的内容创作者！</translation>
-<translation id="4600224932216165965">在<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>中添加、提取和管理资金。</translation>
-<translation id="3580616436301227919">您的 Brave 钱包由<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>提供技术支持。</translation>
+<translation id="4919888432594361029">以 <ph name="PROVIDER"/>来添加、提取和管理资金。</translation>
+<translation id="3092054349246483285">您的 Brave 钱包的技术支持由 <ph name="PROVIDER"/> 提供。</translation>
 <translation id="6401272292123354754">Brave 奖励建立在注意力币基础上。了解更多有关BAT的信息</translation>
 <translation id="7823359893981882407">此处</translation>
 <translation id="4483635855837696643">恢复您的钱包</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">输入恢复密钥或</translation>
 <translation id="6548189695918108191">请在更换前为您的钱包进行备份。否则您可能会丢失您目前钱包中的资金{{funds}}。</translation>
 <translation id="5423214929210538027">您确定要重置您的奖励钱包吗？</translation>
-<translation id="7428521340740703492">如果您重置了您的钱包，则您的 <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/>及其它奖励数据将永远丢失。请确保您已经验证过您的钱包，并托管，以便保留您的 BAT。</translation>
+<translation id="8683358891240311475">您的 <ph name="BAT_AMOUNT"/> 如果重置您的钱包，其他奖励数据将永久丢失。请确保您已使用 <ph name="PROVIDER"/> 验证了您的钱包。这样您就可以保留 BAT 了。</translation>
 <translation id="2028613172174411919">如果您重置钱包，则将永久失去您的奖励数据。</translation>
 <translation id="4914597931214386232">已领取代币补助</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">验证</translation>
 <translation id="8267327690882073581">验证钱包</translation>
 <translation id="543510923939676996">钱包已验证</translation>
-<translation id="7591798679868259510">转至我的 Uphold 账户</translation>
+<translation id="2659764755126740206">前往我的 <ph name="PROVIDER"/> 帐户</translation>
 <translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
 <translation id="46988480989545156">验证钱包</translation>
-<translation id="160145159036553575">我们的钱包服务由<ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/>提供技术支持</translation>
+<translation id="5796169459825124737">我们的钱包服务由 <ph name="PROVIDER"/>提供。</translation>
 <translation id="6771734945114850124">请准备好政府发放的 ID 证件。</translation>
 <translation id="8697510149346635496">提现您查看尊重隐私的广告所赚取的 BAT</translation>
 <translation id="1481480653609649134">使用信用卡和其他资源购买更多 BAT</translation>
 <translation id="9096003370755878766">提现您之前添加到 Brave Rewards 钱包中的 BAT</translation>
 <translation id="8558636200953226885">但如果您进行验证，则可以...</translation>
 <translation id="3354315693758743702">验证您的钱包为可选项。</translation>
-<translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
-<translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
-<translation id="7677480094678113476">注意：授权后，您的交易将对“Uphold”可见；例如，他们将能够看到收件人和您的打赏金额。</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> 可能会要求您根据请求的服务来验证您的身份。</translation>
+<translation id="6938217233488972952">当您在供应商那里设立帐户时，Brave Software Inc. 不会处理、存储或访问您提供给 <ph name="PROVIDER"/> 的任何个人信息。</translation>
+<translation id="2415586822982819406">注意：您的交易将对 <ph name="PROVIDER"/> 可见。例如，一旦您授权，他们将能够看到收件人和您的提示数量。</translation>
 <translation id="7404779623219601861">将 BAT 兑换为礼品卡</translation>
 <translation id="6215565499749144110">使用 TAP 网络，您可以将 BAT 兑换成流行的名牌礼品卡。</translation>
 <translation id="6915065518766963119">* 需要维护验证。</translation>
@@ -723,12 +735,36 @@
 <translation id="8327818101454798856">所以如果您想支持你最喜欢的网站，那就去那里吧。</translation>
 <translation id="412480955826088549">正在下载组件...</translation>
 <translation id="4894106830958548828">我理解</translation>
-<translation id="7701466644604753106">开启 Speedreader</translation>
-<translation id="763042262431778831">关闭 Speedreader</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">查看市场并从 crypto.com 购买加密货币。</translation>
+<translation id="4292334826913000023">显示价格</translation>
+<translation id="5001098083058405168">获得存款的 2％ 作为奖金</translation>
+<translation id="7336377875970208451">停止支付交易费</translation>
+<translation id="5889002303959545585">购买比特币</translation>
+<translation id="7243082596932212589">查看 Crypto.com 市场</translation>
+<translation id="2258222996838418990">7d 图形</translation>
+<translation id="5337526542182802976">受支持的货币对</translation>
+<translation id="1164622162816276433">24HR 音量</translation>
+<translation id="7534079972563542000">不可阻挡的域名</translation>
+<translation id="4492298165410552103">是否在 Brave 中启用对不可阻挡域的支持？</translation>
+<translation id="3470923752115324276">Brave 可以让您用 Cloudflare 访问  .crypto 域 ，以便能够用 HTTPS 上的 DNS 来解析 .crypto 域名查找请求。如果启用此功能，Cloudflare 将看到您尝试访问的 .crypto 域，但他们将无法看到其他域。请查看 Cloudflare 的 <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>。</translation>
+<translation id="6513892817556267573">以太坊名称服务</translation>
+<translation id="4335039108389860301">是否在 Brave 中启用对 以太坊名称服务（ENS）的支持？</translation>
+<translation id="618766505813078707">Brave 可以让您用 Cloudflare 访问.eth域 ，以便能够用 HTTPS 上的 DNS 来解析.eth 域名查找请求。如果启用此功能，Cloudflare 将看到您尝试访问的 .eth域，但他们将无法看到其他域。请查看 Cloudflare 的 <ph name="BEGIN_CF_TOU_LINK"/>terms of use<ph name="END_CF_TOU_LINK"/> and <ph name="BEGIN_CF_PRIVACY_LINK"/>privacy policy<ph name="END_CF_PRIVACY_LINK"/>。</translation>
+<translation id="5636651007798897342">使用 Cloudflare 服务器继续</translation>
+<translation id="2468755552460246661">已被阻止的域</translation>
+<translation id="6631469728138660166">前面有可疑网站</translation>
+<translation id="983774928604730749">Brave 已阻止以下站点加载：</translation>
+<translation id="8250033559824599347">该站点可能是个欺诈网站，可能会让你在各个站点之间往返以设置跟踪 cookie 或执行其他侵犯隐私的操作。</translation>
+<translation id="2459038234784107183">不要再发送与此网站有关的警告给我</translation>
+<translation id="8242426110754782860">继续</translation>
+<translation id="2501278716633472235">返回</translation>
 <translation id="9020818404803201080">连接的对等方：</translation>
 <translation id="2903493209154104877">地址</translation>
 <translation id="3207122385716480167">回购统计数据</translation>
 <translation id="2595187693729756455">节点信息</translation>
+<translation id="8999763401170835879">发生错误了，请尝试重启</translation>
+<translation id="5433704526290922623">发生错误，请尝试重新安装该节点</translation>
 <translation id="5789886980848929155">IPFS 节点状态</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">网关</translation>
@@ -770,20 +806,20 @@
 <translation id="3977809385703587108">您可以再次更改您的首选项：</translation>
 <translation id="3340978935015468852">设置</translation>
 <translation id="4148957013307229264">正在安装...</translation>
-<translation id="6057992164469678163">等待对等项...</translation>
+<translation id="4219228508273972445">寻找对等体....</translation>
 <translation id="1902096227388293745">没有可用的对等项，正在重试... (<ph name="ATTEMPTS_NUMBER"/> attemps left)</translation>
 <translation id="1675751799495331928">我们已超出尝试次数的上限，请稍后再试。</translation>
 <translation id="4499666752625407848">更新期间出错。</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">查看市场并从 crypto.com 购买加密货币。</translation>
-<translation id="4292334826913000023">显示价格</translation>
-<translation id="5001098083058405168">获得存款的 2％ 作为奖金</translation>
-<translation id="7336377875970208451">停止支付交易费</translation>
-<translation id="5889002303959545585">购买比特币</translation>
-<translation id="7243082596932212589">查看 Crypto.com 市场</translation>
-<translation id="2258222996838418990">7d 图形</translation>
-<translation id="5337526542182802976">受支持的货币对</translation>
-<translation id="1164622162816276433">24HR 音量</translation>
+<translation id="7789840864192026963">授予权限</translation>
+<translation id="8092074243456635562">直到我关闭此页面</translation>
+<translation id="3523195733429162409">24 小时</translation>
+<translation id="2373264732659722940">1 周</translation>
+<translation id="6318437367327684789">始终</translation>
+<translation id="7463327191540031132">始终被阻止</translation>
+<translation id="8797999629784150206">你可以随时更改你的 <ph name="SITE_PERMISSIONS"/> 。<ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">网站许可</translation>
+<translation id="7701466644604753106">开启 Speedreader</translation>
+<translation id="763042262431778831">关闭 Speedreader</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -792,4 +828,25 @@
 <translation id="6951743416068151209">Tor 代理 URI</translation>
 <translation id="1671503397662036257">Tor 连接状态</translation>
 <translation id="6024292492796847324">Tor 的初始化进度</translation>
+<translation id="8643377320501056697">显示热门网站</translation>
+<translation id="7176563092712682575">自定义热门网站</translation>
+<translation id="8760415064721320867">用 Tor 打开私人窗口</translation>
+<translation id="4844209912525464363">您在私人窗口中的操作不会在Brave中留下记录。使用Tor，您的浏览记录也会对您的ISP或雇主隐藏，且会您在访问网站时隐藏您的的IP地址。</translation>
+<translation id="5576876180131651996">使私人窗口更具私密性</translation>
+<translation id="1129265576134014816">此私人窗口更具私密性</translation>
+<translation id="805807983419360524">用Tor</translation>
+<translation id="8958799246752641148">Tor通过在您进入网站之前将浏览内容路由到多个Tor服务器来隐藏您访问网站的IP地址。这些连接是加密的，因此您的ISP或雇主无’法查看您正’在访问的网站。Tor会减慢浏览速度，有些网站可能根本无法运行。</translation>
+<translation id="520608572871993342">使用私人窗口只会更改Brave在您的设备上所进行的操作— - 不会更改您设备上的其他操作。Tor会在您访问网站时隐藏您的IP地址，并对您的ISP或雇主隐藏您访问的网站。在菜单中通过Tor的打开私人窗口，或使用{{key}}。</translation>
+<translation id="2876191400747549936">抱歉，处理您的请求时出错，请重试。</translation>
+<translation id="5816125157889950051">您什么时候获得奖励</translation>
+<translation id="6733942359297688714">连接到验证托管钱包。</translation>
+<translation id="4600224932216165965">在<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>中添加、提取和管理资金。</translation>
+<translation id="3580616436301227919">您的 Brave 钱包由<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>提供技术支持。</translation>
+<translation id="7428521340740703492">如果您重置了您的钱包，则您的 <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/>及其它奖励数据将永远丢失。请确保您已经验证过您的钱包，并托管，以便保留您的 BAT。</translation>
+<translation id="7591798679868259510">转至我的 Uphold 账户</translation>
+<translation id="160145159036553575">我们的钱包服务由<ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/>提供技术支持</translation>
+<translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
+<translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
+<translation id="7677480094678113476">注意：授权后，您的交易将对“Uphold”可见；例如，他们将能够看到收件人和您的打赏金额。</translation>
+<translation id="6057992164469678163">等待对等项...</translation>
 </translationbundle>

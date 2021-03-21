@@ -35,8 +35,23 @@
 <translation id="604124094241169006">Automatski</translation>
 <translation id="867722069064361487">12-satni sat</translation>
 <translation id="4064062743338217840">24-satni sat</translation>
-<translation id="8643377320501056697">Prikaži glavna mrežna mjesta</translation>
-<translation id="7176563092712682575">Prilagodi najpopularnija mrežna mjesta</translation>
+<translation id="5313967007315987356">Dodaj web-lokaciju</translation>
+<translation id="5052499409147950210">Uređivanje web-lokacije</translation>
+<translation id="1181037720776840403">Ukloni</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">Adresa mrežnog mjesta</translation>
+<translation id="5327248766486351172">Naziv</translation>
+<translation id="6916084277913254682">Naslov mrežnog mjesta</translation>
+<translation id="5317780077021120954">Spremi</translation>
+<translation id="7658239707568436148">Odustani</translation>
+<translation id="4643117005422448078">Najpopularnija mrežna mjesta</translation>
+<translation id="6307720725257444819">Omiljeni</translation>
+<translation id="81774600964978477">Vi priređujete najpopularnija mrežna mjesta</translation>
+<translation id="5439599923922718668">Često posjećeno</translation>
+<translation id="430556192781857057">Najpopularnija mrežna mjesta predlažu se na temelju mrežnih mjesta koja često posjećujete</translation>
+<translation id="8037713009824540257">Dodaj mrežno mjesto</translation>
+<translation id="1773147648972887693">Prikaži često posjećeno</translation>
+<translation id="4546260624932151782">Prikaži omiljene</translation>
 <translation id="3446024864193919737">Prikaži nagrade Brave</translation>
 <translation id="6274899614137380422">Prikaži Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">Onemogući sadržaj izdavača <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promovirano</translation>
 <translation id="1776831331757823105">Sat</translation>
-<translation id="4643117005422448078">Najpopularnija mrežna mjesta</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="7679334366167089823">Zaradite tokene gledanje oglasa kojima se poštuje privatnost.</translation>
 <translation id="1531133232292396145">Trgujte kriptovalutama na burzi Binance izravno u svojem pregledniku.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">Ovo je</translation>
 <translation id="2055363275850890030">Privatni prozor</translation>
 <translation id="9133213713928851646">Brave ne pamti što radite u privatnom prozoru. Mrežna mjesta koja posjetite neće se prikazati u vašoj povijesti, a kolačići nestaju kad završite s radom. Međutim, privatni prozori ne osiguravaju vam potpunu anonimnost na internetu.</translation>
-<translation id="8760415064721320867">Privatni prozor s funkcijom Tor</translation>
-<translation id="4844209912525464363">Brave nikada ne pamti što radite u privatnom prozoru. Uz Tor, vaše je pregledavanje skriveno i od vašeg pružatelja internetskih usluga i poslodavca, a IP adresa skrivena je od mrežnih mjesta koja posjećujete.</translation>
+<translation id="3546750666732517156">Privatni prozor s povezivosti s funkcijom Tor</translation>
+<translation id="5383068818957293256">Preglednikom Brave nikada se ne pamti što radite u privatnom prozoru s povezivosti s funkcijom Tor. Uz povezivost s funkcijom Tor, vaša IP adresa skriva se i od mrežnih mjesta koja posjećujete. No, ako vaša osobna sigurnost ovisi o zadržavanju anonimnosti, koristite se preglednikom Tor.</translation>
 <translation id="778096729652828897">Saznajte više o privatnim prozorima s funkcijom Tor</translation>
 <translation id="7919374705736538787">Pretražujte privatno uz</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Uz privatno pretraživanje Brave će upotrebljavati DuckDuckGo za pretrage u privatnim prozorima. DuckDuckGo ne prati vašu povijest pregledavanja, pa možete pregledavati u privatnosti.</translation>
 <translation id="1925197199485958903">U privatnim prozorima s funkcijom Tor DuckDuckGo je zadana tražilica. Neke druge popularne tražilice teže je upotrebljavati s funkcijom Tor, DuckDuckGo ne prati vašu povijest pregledavanja; uz Tor, oni ne znaju ni vašu IP adresu.</translation>
 <translation id="4371533307685765155">Pretraži tražilicom DuckDuckGo</translation>
-<translation id="5576876180131651996">Učinite privatne prozore mnogo privatnijima</translation>
-<translation id="1129265576134014816">Ovaj je privatni prozor mnogo privatniji</translation>
-<translation id="805807983419360524">uz Tor</translation>
-<translation id="8958799246752641148">Tor skriva vašu IP adresu od mrežnih mjesta koja posjećujete usmjeravanjem vašeg pregledavanja preko nekoliko poslužitelja Tor prije nego što dođe do vašeg odredišta. Te su veze kriptirane, pa ni vaš pružatelj internetskih usluga ni poslodavac ne može vidjeti koja mrežna mjesta posjećujete. Tor može usporiti pregledavanje, a neka mrežna mjesta možda uopće neće raditi.</translation>
-<translation id="520608572871993342">Uporabom privatnih kartica mijenja se samo ono što Brave radi na vašem uređaju — ne mijenja se ponašanje drugih. Tor skriva vašu IP adresu od mjesta koja posjećujete, a ta mjesta skriva od vašeg pružatelja internetskih usluga ili poslodavca. Otvorite privatni prozor funkcijom Tor iz izbornika ili pomoću {{key}}.</translation>
+<translation id="548478195417408221">Učini privatne prozore privatnijima</translation>
+<translation id="3294503279952534143">Ovaj je privatni prozor privatniji</translation>
+<translation id="4644024131266615376">s povezivosti s funkcijom Tor</translation>
+<translation id="8541421872680304667">Funkcijom Tor skriva se vaša IP adresa od mrežnih mjesta koje posjećujete usmjeravanjem vašeg pregledavanja preko nekoliko poslužitelja Tor prije nego što dođe do vašeg odredišta. Funkcijom Tor može se usporiti pregledavanje, a nek mrežna mjesta možda neće uopće raditi.</translation>
+<translation id="7030950080800709999">Uporabom privatnih kartica mijenja se samo ono što se preglednikom Brave obavlja na vašem uređaju — ne mijenja se ponašanje drugih. Funkcijom Tor skriva se vaša IP adresa od mrežnih mjesta koje posjećujete i otežava, ali ne i onemogućava da vaš pružatelj internetskih usluga ili poslodavac vidi mrežna mjesta koje posjećujete. Otvorite privatni prozor s funkcijom Tor putem izbornika ili pomoću {{key}}.</translation>
 <translation id="6975708438781948564">Saznajte više o funkciji Tor u pregledniku Brave</translation>
 <translation id="4712050378540986986">Status funkcije Tor</translation>
 <translation id="3368922792935385530">Spojeno</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">Prijavi nevaljano mjesto</translation>
 <translation id="8510478288840333677">Javite razvojnim inženjerima preglednika Brave da ovo mjesto ne radi ispravno prilikom korištenja značajke Štitovi:</translation>
 <translation id="6013164422534859494">Napomena: Adresa se ovog mjesta šalje zajedno s vašim brojem inačice preglednika Brave i vašom adresom IP (koja se ne pohranjuje).</translation>
-<translation id="7658239707568436148">Odustani</translation>
 <translation id="2653659639078652383">Pošalji</translation>
 <translation id="5299848999918506028">Hvala vam!</translation>
 <translation id="76550953340008122">Hvala vam što se javili razvojnim inženjerima preglednika Brave da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">Datum sljedećeg mjesečnog doprinosa</translation>
 <translation id="6231182869178328516">Upravo sam dao/la napojnicu <ph name="NAME"/> uporabom preglednika Brave. Provjerite na mrežnoj stranici: https://brave.com/tips.</translation>
 <translation id="8404935570206006581">Nagradite uslugom Brave</translation>
-<translation id="2876191400747549936">Ispričavamo se, ali nastao je problem tijekom obrađivanja vašeg zahtjeva. Pokušajte ponovo.</translation>
+<translation id="3113653894794167793">Ispričavamo se, ali nastao je problem tijekom obrađivanja vašeg zahtjeva. Pokušajte ponovo.</translation>
 <translation id="3082557070674409251">Kliknuto</translation>
 <translation id="7119308337584989771">Odbačeno</translation>
 <translation id="6805660603861526473">Pregledano</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">Putem privatnih oglasa preglednika Brave dobivate tokene za pružanje podrške autorima sadržaja za razliku od tradicionalnih oglasa, a istovremeno vaši osobni podatci ostaju privatni.</translation>
 <translation id="6973095375773523904">Gdje se pojavljuju oglasi?</translation>
 <translation id="7556325460112047619">Privatni Brave Ads pojavljuju se kao normalna obavijest. U postavkama možete odrediti koliko se često prikazuju ovi oglasi.</translation>
-<translation id="5816125157889950051">Kada primate nagrade</translation>
+<translation id="6897083627729802351">Kada primate nagrade</translation>
 <translation id="310863932297733723">Vaši tokeni koji se zarade putem privatnih Brave Ads tijekom trenutačnog mjeseca dostupni su 5. dan u sljedećem mjesecu.</translation>
 <translation id="7712287524451429139">Jednostavno oduživanje</translation>
 <translation id="105037569026952831">Autori automatski dobivaju vaše doprinose u obliku tokena na temelju vaših razina sudjelovanja koje mjerimo kao  ‘Pažnja’.</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">Označi kao neprikladno ✓</translation>
 <translation id="8988332871810963281">Trenutačno nema povijest oglasa Brave</translation>
 <translation id="5345727496083327478">Više nećete primati oglase iz ove kategorije</translation>
-<translation id="5317780077021120954">Spremi</translation>
 <translation id="2827387977307390755">Omogući napojnice na</translation>
 <translation id="3819257035322786455">Sigurnosna kopija</translation>
 <translation id="1312977698678162065">Budite plaćeni za gledanje relevantnih oglasa kojima se poštuje vaša privatnost.</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">Vaša prikvačena mrežna mjesta premještena su u</translation>
 <translation id="6803187280799213426">Raspoloživa su sredstva u vašem novčaniku Brave virtualna i ne trebaju se sigurnosno kopirati. Navedena sredstva možete trošiti isključivo u ovom pregledniku.</translation>
 <translation id="5290348443732633227">Ako želite osigurati sva raspoloživa sredstva ako ponovno instalirate preglednik ili zamijenite uređaj da biste uživali u drugim prednostima poput dodavanja, povlačenja i prenošenja sredstava, preporučujemo vam da</translation>
-<translation id="6733942359297688714">se povežete na provjereni novčanik Uphold.</translation>
+<translation id="467041382895390784">povezivanje s potvrđenim novčanikom <ph name="PROVIDER"/>.</translation>
 <translation id="5717619667204259673">Čuvajte ovaj ključ za oporavak na sigurnom.</translation>
 <translation id="4699702339303280827">Ovaj ključ uvijek možete upotrijebiti kako biste vratili svoj novčanik ako se nešto dogodi vašem pregledniku ili računalu. No pobrinite se da bude zaštićen — svatko tko dobije taj ključ može ukrasti vaš novčanik. Vjerojatno je najsigurnije zapisati ga na komad papira ili gdje god čuvate važne informacije.</translation>
 <translation id="8979401359137062629">Napomena:</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">Društvo Brave će vam povremeno nuditi besplatne dodjele tokena. Pratite obavijesti o tome!</translation>
 <translation id="2185598236335233939">Pregledajte obavijesti o reklamama dok se koristite preglednikom Brave. Raspoloživi se iznos bodova BAT povećava svakim pregledom reklame.</translation>
 <translation id="1370034647041840967">Zaradite tokene za pažnju koju pridajete oglasima i njima platite autore sadržaja koje cijenite!</translation>
-<translation id="4600224932216165965">Dodajte, podignite i upravljajte sredstvima na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
-<translation id="3580616436301227919">Vaš novčanik Brave pruža <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="4919888432594361029">Dodajte, podignite i upravljajte sredstvima na <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">Vaš novčanik Brave pruža <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards temelji se na valuti Basic Attention Token. Saznajte više o valuti BAT</translation>
 <translation id="7823359893981882407">ovdje</translation>
 <translation id="4483635855837696643">Vratite svoj novčanik</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">Upišite svoj ključ za oporavak ili</translation>
 <translation id="6548189695918108191">Sigurnosno kopirajte svoj novčanik prije zamjene. Ili gubite raspoloživa sredstva {{funds}} u svojem trenutačnom novčaniku.</translation>
 <translation id="5423214929210538027">Sigurno želite poništiti svoj novčanik za nagrade?</translation>
-<translation id="7428521340740703492">Vaših <ph name="BEGIN_BOLD"/>;{{amount}} BATs<ph name="END_BOLD"/> i ostali podatci za Rewards trajno će se izgubiti ako ponovno postavite svoj novčanik. Pobrinite se da ste potvrdili svoj  novčanik s uslugom Uphold tako da možete zadržati BAT.</translation>
+<translation id="8683358891240311475">Vaš <ph name="BAT_AMOUNT"/> i ostali podatci za značajku Rewards trajno se gube ako ponovno postavite svoj novčanik. Pobrinite se da ste potvrdili svoj novčanik s <ph name="PROVIDER"/> tako da možete zadržati BAT.</translation>
 <translation id="2028613172174411919">Vaši se podatci o nagradama trajno gube ako poništite svoj novčanik.</translation>
 <translation id="4914597931214386232">Zatražena odobrenja za token</translation>
 <translation id="3494964159182650590">Sažetak o nagradama</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">provjeri</translation>
 <translation id="8267327690882073581">Provjeri Novčanik</translation>
 <translation id="543510923939676996">Provjeren novčanik</translation>
-<translation id="7591798679868259510">Idi na moj račun Uphold</translation>
+<translation id="2659764755126740206">Idi na moj račun <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Završi provjeru novčanika</translation>
 <translation id="9200453331904391567">Poništi vezu s nagradama Brave</translation>
 <translation id="46988480989545156">Provjeri novčanik</translation>
-<translation id="160145159036553575">Našu uslugu novčanika pruža <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="5796169459825124737">Našu uslugu novčanika pruža <ph name="PROVIDER"/>.</translation>
 <translation id="6771734945114850124">Pripremite identifikacijski dokument koji je izdalo vladino tijelo.</translation>
 <translation id="8697510149346635496">Provucite sredstva koja zaradite pregledavanjem oglasa o poštovanju privatnosti</translation>
 <translation id="1481480653609649134">Kupite dodatna sredstva kreditnim karticama ili drugim načinima</translation>
 <translation id="9096003370755878766">Povucite sredstva koja ste prethodno dodali u svoj novčanik Brave za nagrade</translation>
 <translation id="8558636200953226885">Ako provjerite, možete...</translation>
 <translation id="3354315693758743702">Provjera je vašeg novčanika neobavezna.</translation>
-<translation id="8465442795593991224">Uslugom se Uphold može zahtijevati provjera vašeg identiteta na temelju traženih usluga.</translation>
-<translation id="723054503945711909">Poduzeće Brave Software Inc. ne obrađuje, ne pohranjuje niti pristupa nijednom osobnom podatku koji ste ustupili usluzi Uphold prilikom stvaranja računa na navedenoj usluzi.</translation>
-<translation id="7677480094678113476">Napomena: Vaše će transakcije biti vidljive usluzi Uphold nakon autorizacije; na primjer, bit će vidljiv primatelj i iznos vaših napojnica.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> može zatražiti od vas da potvrdite svoj identitet na temelju zatraženih usluga.</translation>
+<translation id="6938217233488972952">Poduzeće Brave Software Inc. ne obrađuje, pohranjuje ili pristupa osobnim informacijama koje dajete <ph name="PROVIDER"/> kada otvarate račun.</translation>
+<translation id="2415586822982819406">Napomena: vaše transakcije može vidjeti <ph name="PROVIDER"/> nakon što vi to odobrite; na primjer, može vidjeti primatelja i iznos vaših napojnica.</translation>
 <translation id="7404779623219601861">Zatraži BAT za darovne kartice</translation>
 <translation id="6215565499749144110">Uz mrežu TAP možete zatražiti svoje BAT-ove za darovne kartice popularnih trgovačkih marki.</translation>
 <translation id="6915065518766963119">* Zahtijeva se podržana provjera.</translation>
@@ -722,12 +734,36 @@
 <translation id="8327818101454798856">Ako tražite podršku za svoja omiljena mrežna mjesta, idite tamo.</translation>
 <translation id="412480955826088549">Preuzimanje komponente...</translation>
 <translation id="4894106830958548828">Shvaćam</translation>
-<translation id="7701466644604753106">UKLJUČI mjerač brzine</translation>
-<translation id="763042262431778831">ISKLJUČI mjerač brzine</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Pregledajte tržišta i kupite kriptovalute putem crypto.com.</translation>
+<translation id="4292334826913000023">Prikaži cijenu</translation>
+<translation id="5001098083058405168">Ostvarite bonus od 2 % za pologe</translation>
+<translation id="7336377875970208451">Prestanite plaćati trgovinske naknade</translation>
+<translation id="5889002303959545585">Kupi Bitcoin</translation>
+<translation id="7243082596932212589">Prikaži tržišta Crypto.com</translation>
+<translation id="2258222996838418990">Grafikon 7d</translation>
+<translation id="5337526542182802976">Podržani parovi</translation>
+<translation id="1164622162816276433">Volumen u 24 h</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="4492298165410552103">Omogući podršku za značajku Unstoppable Domains u pregledniku Brave?</translation>
+<translation id="3470923752115324276">Preglednikom Brave može vam se omogućiti posjećivanje domena .crypto uporabom poslužitelja Cloudflare radi rješavanja zahtjeva traženja naziva domena .crypto uporabom protokola DNS umjesto protokola HTTPS. Ako to omogućite, poduzeće Cloudflare može vidjeti domenu .crypto koju pokušavate posjetiti, ali ne može vidjeti ostale domene. Pogledajte <ph name="BEGIN_CF_TOU_LINK"/>uvjete uporabe<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>pravilnik privatnosti<ph name="END_CF_PRIVACY_LINK"/> poduzeća Cloudflare.</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="4335039108389860301">Omogući podršku za sustav Ethereum Name Service (ENS) u pregledniku Brave?</translation>
+<translation id="618766505813078707">Preglednikom Brave može vam se omogućiti posjećivanje domena .eth uporabom poslužitelja Cloudflare radi rješavanja zahtjeva traženja naziva domena .eth uporabom protokola DNS umjesto protokola HTTPS. Ako to omogućite, poduzeće Cloudflare može vidjeti domenu .eth koju pokušavate posjetiti, ali ne može vidjeti ostale domene. Pogledajte <ph name="BEGIN_CF_TOU_LINK"/>uvjete uporabe<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>pravilnik privatnosti<ph name="END_CF_PRIVACY_LINK"/> poduzeća Cloudflare.</translation>
+<translation id="5636651007798897342">Nastavi služeći se poslužiteljem Cloudflare</translation>
+<translation id="2468755552460246661">Blokirana domena</translation>
+<translation id="6631469728138660166">U nastavku je sumnjivo mrežno mjesto</translation>
+<translation id="983774928604730749">Preglednikom Brave spriječilo se učitavanje sljedećeg mrežnog mjesta:</translation>
+<translation id="8250033559824599347">Ovo mrežno mjesto može biti prijevarno, njime se može provoditi prebacivanje između različitih mrežnih mjesta radi postavljanja kolačića za praćenje ili se mogu obavljati druge radnje kojima se krši privatnost.</translation>
+<translation id="2459038234784107183">Ne upozoravaj me više na ovo mrežno mjesto</translation>
+<translation id="8242426110754782860">Nastavi</translation>
+<translation id="2501278716633472235">Natrag</translation>
 <translation id="9020818404803201080">Povezani ravnopravni članovi:</translation>
 <translation id="2903493209154104877">Adrese</translation>
 <translation id="3207122385716480167">Izvješće o izvješćima</translation>
 <translation id="2595187693729756455">Informacije o čvoru</translation>
+<translation id="8999763401170835879">Došlo je do greške, pokušajte ponovno pokrenuti</translation>
+<translation id="5433704526290922623">Došlo je do greške, pokušajte ponovno instalirati čvor</translation>
 <translation id="5789886980848929155">Stanje čvora IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Pristupnik</translation>
@@ -769,20 +805,20 @@
 <translation id="3977809385703587108">Svoje osobne postavke možete promijeniti ponovno u</translation>
 <translation id="3340978935015468852">postavke</translation>
 <translation id="4148957013307229264">Instaliranje...</translation>
-<translation id="6057992164469678163">Čekanje na ravnopravne članove...</translation>
+<translation id="4219228508273972445">Traženje ravnopravnih članova...</translation>
 <translation id="1902096227388293745">Nema dostupnih ravnopravnih članova, ponovni pokušaj... (<ph name="ATTEMPTS_NUMBER"/> preostala/ih pokušaja)</translation>
 <translation id="1675751799495331928">Prekoračili smo ograničenje pokušaja, pokušajte kasnije.</translation>
 <translation id="4499666752625407848">Nastala je greška tijekom ažuriranja.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Pregledajte tržišta i kupite kriptovalute putem crypto.com.</translation>
-<translation id="4292334826913000023">Prikaži cijenu</translation>
-<translation id="5001098083058405168">Ostvarite bonus od 2 % za pologe</translation>
-<translation id="7336377875970208451">Prestanite plaćati trgovinske naknade</translation>
-<translation id="5889002303959545585">Kupi Bitcoin</translation>
-<translation id="7243082596932212589">Prikaži tržišta Crypto.com</translation>
-<translation id="2258222996838418990">Grafikon 7d</translation>
-<translation id="5337526542182802976">Podržani parovi</translation>
-<translation id="1164622162816276433">Volumen u 24 h</translation>
+<translation id="7789840864192026963">Daj dopuštenje</translation>
+<translation id="8092074243456635562">dok ne zatvorim ovu stranicu</translation>
+<translation id="3523195733429162409">na 24 sata</translation>
+<translation id="2373264732659722940">na 1 tjedan</translation>
+<translation id="6318437367327684789">zauvijek</translation>
+<translation id="7463327191540031132">Blokiraj zauvijek</translation>
+<translation id="8797999629784150206">Možete promijeniti <ph name="SITE_PERMISSIONS"/> u bilo kojem trenutku. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">dopuštenje za mrežno mjesto</translation>
+<translation id="7701466644604753106">UKLJUČI mjerač brzine</translation>
+<translation id="763042262431778831">ISKLJUČI mjerač brzine</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
 <translation id="3745016858329272300">Opće informacije</translation>
 <translation id="4045404575593562245">Događaji kontrole Tor</translation>
@@ -791,4 +827,25 @@
 <translation id="6951743416068151209">URI proxya Tor</translation>
 <translation id="1671503397662036257">Stanje povezanosti Tor</translation>
 <translation id="6024292492796847324">Napredak pokretanja Tor</translation>
+<translation id="8643377320501056697">Prikaži glavna mrežna mjesta</translation>
+<translation id="7176563092712682575">Prilagodi najpopularnija mrežna mjesta</translation>
+<translation id="8760415064721320867">Privatni prozor s funkcijom Tor</translation>
+<translation id="4844209912525464363">Brave nikada ne pamti što radite u privatnom prozoru. Uz Tor, vaše je pregledavanje skriveno i od vašeg pružatelja internetskih usluga i poslodavca, a IP adresa skrivena je od mrežnih mjesta koja posjećujete.</translation>
+<translation id="5576876180131651996">Učinite privatne prozore mnogo privatnijima</translation>
+<translation id="1129265576134014816">Ovaj je privatni prozor mnogo privatniji</translation>
+<translation id="805807983419360524">uz Tor</translation>
+<translation id="8958799246752641148">Tor skriva vašu IP adresu od mrežnih mjesta koja posjećujete usmjeravanjem vašeg pregledavanja preko nekoliko poslužitelja Tor prije nego što dođe do vašeg odredišta. Te su veze kriptirane, pa ni vaš pružatelj internetskih usluga ni poslodavac ne može vidjeti koja mrežna mjesta posjećujete. Tor može usporiti pregledavanje, a neka mrežna mjesta možda uopće neće raditi.</translation>
+<translation id="520608572871993342">Uporabom privatnih kartica mijenja se samo ono što Brave radi na vašem uređaju — ne mijenja se ponašanje drugih. Tor skriva vašu IP adresu od mjesta koja posjećujete, a ta mjesta skriva od vašeg pružatelja internetskih usluga ili poslodavca. Otvorite privatni prozor funkcijom Tor iz izbornika ili pomoću {{key}}.</translation>
+<translation id="2876191400747549936">Ispričavamo se, ali nastao je problem tijekom obrađivanja vašeg zahtjeva. Pokušajte ponovo.</translation>
+<translation id="5816125157889950051">Kada primate nagrade</translation>
+<translation id="6733942359297688714">se povežete na provjereni novčanik Uphold.</translation>
+<translation id="4600224932216165965">Dodajte, podignite i upravljajte sredstvima na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Vaš novčanik Brave pruža <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">Vaših <ph name="BEGIN_BOLD"/>;{{amount}} BATs<ph name="END_BOLD"/> i ostali podatci za Rewards trajno će se izgubiti ako ponovno postavite svoj novčanik. Pobrinite se da ste potvrdili svoj  novčanik s uslugom Uphold tako da možete zadržati BAT.</translation>
+<translation id="7591798679868259510">Idi na moj račun Uphold</translation>
+<translation id="160145159036553575">Našu uslugu novčanika pruža <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uslugom se Uphold može zahtijevati provjera vašeg identiteta na temelju traženih usluga.</translation>
+<translation id="723054503945711909">Poduzeće Brave Software Inc. ne obrađuje, ne pohranjuje niti pristupa nijednom osobnom podatku koji ste ustupili usluzi Uphold prilikom stvaranja računa na navedenoj usluzi.</translation>
+<translation id="7677480094678113476">Napomena: Vaše će transakcije biti vidljive usluzi Uphold nakon autorizacije; na primjer, bit će vidljiv primatelj i iznos vaših napojnica.</translation>
+<translation id="6057992164469678163">Čekanje na ravnopravne članove...</translation>
 </translationbundle>

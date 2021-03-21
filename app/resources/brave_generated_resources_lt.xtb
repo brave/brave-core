@@ -5,7 +5,7 @@
 <translation id="7942180974165298215">„Brave Ad Block“</translation>
 <translation id="4615489450165434530">Pranešti apie neveikiančią svetainę</translation>
 <translation id="6406506848690869874">Sinchronizavimas</translation>
-<translation id="5655621391922317800">Kriptovaliutų piniginės</translation>
+<translation id="1544192797660353713">Piniginė</translation>
 <translation id="2445484935443597917">Kurti naują profilį</translation>
 <translation id="2666990579225592931">Atidaryti svečio langą</translation>
 <translation id="8275068909952022340">Daugiau…</translation>
@@ -59,6 +59,7 @@
 <translation id="1970435562892104727">Tai yra inkognito langas su „Tor“</translation>
 <translation id="1037341607922068025">Atverti inkognito langą su „Tor“</translation>
 <translation id="1725356094208762656">Atverti „Tor“ lange</translation>
+<translation id="7643538479215207633">Atidaryti naudojant IPFS</translation>
 <translation id="1672270084584211506">Galimas „Onion“</translation>
 <translation id="1434416574322382019">Naujas inkognito langas su „Tor“</translation>
 <translation id="4703780849509456860">Atverti nuorodą inkognito lange su „Tor“</translation>
@@ -156,12 +157,18 @@
 <translation id="1336940801687497203">Atitinka „Windows“</translation>
 <translation id="8721331068159819483">Atitinka „MacOS“</translation>
 <translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
+<translation id="8488282162676695335">„Brave“ piniginė</translation>
 <translation id="2356070529366658676">Paklausti</translation>
 <translation id="7701040980221191251">Nieko</translation>
+<translation id="5655621391922317800">Kriptovaliutų piniginės</translation>
+<translation id="1696548911367097044">Nebenaudojamų kriptovaliutų piniginių plėtinys</translation>
 <translation id="1085027414516521238">„MetaMask“</translation>
 <translation id="7090046810227878892">Decentralizuotų programėlių „Ethereum“ teikėjas</translation>
 <translation id="5913089932885076110">Užkrauti kriptovaliutų pinigines paleidus kompiuterį</translation>
+<translation id="757886143331967039">Užkrauti nebenaudojamų kriptovaliutų piniginių plėtinį paleidžiant</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
+<translation id="5927916530277631319">„Unstoppable Domains“ sprendimo būdas</translation>
+<translation id="5248318250177143470">Eterio pavadinimų paslaugos (ENS) sprendimo būdas</translation>
 <translation id="9170907049676078643">IPFS išteklių nustatymo metodas</translation>
 <translation id="1327977588028644528">Tinklų sietuvas</translation>
 <translation id="80225669816651290">Vietinis mazgas</translation>
@@ -169,11 +176,15 @@
 <translation id="8425213833346101688">Keisti</translation>
 <translation id="557281710253742286">Nustatyti IPFS tinklų sietuvą</translation>
 <translation id="8571837315037233299">Tinklų sietuvo adresas</translation>
+<translation id="1251574393468476924">Maksimalus IPFS talpyklos dydis (GB)</translation>
+<translation id="2503497578400410320">IPFS duomenų saugyklos dydžio lanksti viršutinė riba.</translation>
 <translation id="7703184801853248830">Netinkamas tinklų sietuvo adresas</translation>
 <translation id="585868419599255817">IPFS atsarginis viešasis tinklų sietuvas</translation>
 <translation id="207763736230883589">Automatiškai grįžti prie viešojo IPFS tinklų sietuvo, jei vietinio mazgo pasiekti neįmanoma.</translation>
 <translation id="4107552920076294723">Nukreipti IPFS išteklius į sukonfigūruotą IPFS tinklų sietuvą</translation>
 <translation id="6494857428933042381">Kai sutinkamas IPFS tinklų sietuvo išteklius, IPFS nustatymo operacijoms automatiškai naudojamas sukonfigūruotas tinklų sietuvas.</translation>
+<translation id="8655170717758778983">Kai įmanoma, automatiškai nukreipti į IPFS puslapius per „DNSLink“</translation>
+<translation id="2233724520223030977">Kai įmanoma, automatiškai naudoja „DNSLink“ pereiti prie IPFS svetainės versijos</translation>
 <translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
 <translation id="1765684547504191670">Naudojamas medijos maršruto parinktuvo komponentas, kad naršyklėje būtų įgalintas „Chromecast“</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
@@ -254,11 +265,10 @@ pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="7090566321964540749">Ši anoniminė informacija leidžia „Brave“ įvertinti tik bendrą tam tikrų funkcijų naudojimą.</translation>
 <translation id="1947672064022327074">Ar norėtumėte paleisti kriptovaliutų pinigines „Ethereum“ palaikyti?</translation>
 <translation id="7583735190612229830">Nustatykite, kad kriptovaliutų piniginės sąveikautų su šia programa ir kitomis panašiomis programomis.</translation>
-<translation id="4823406846571523661">Nustatyti kriptovaliutų pinigines</translation>
+<translation id="8731422418734770661">Nustatyti kriptovaliutų pinigines</translation>
 <translation id="8199661191594897555">Paleisti kriptovaliutų pinigines ir užkrauti iš naujo</translation>
 <translation id="8428213095426709021">Nustatymai</translation>
-<translation id="1664718502100303670">Piniginės nustatymai</translation>
-<translation id="965566669123544695">IPFS nustatymai</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Daugiau informacijos apie IPFS ir privatumą</translation>
 <translation id="4552520379838695057">Deja, šio puslapio nėra.</translation>
 <translation id="2609895996619941644">Gal norite patikrinti, ar per „Wayback Machine“ pasiekiama įrašyta versija?</translation>
@@ -279,4 +289,7 @@ pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="2808630562319398131">Iš naujo nustatyti „Brave Rewards“ duomenis...</translation>
 <translation id="1224064034972923114">Padėkite tobulinti „Brave“, automatiškai siųsdami strigčių ataskaitas</translation>
 <translation id="3738833060602717053">Padėkite tobulinti <ph name="PRODUCT_NAME"/>, automatiškai siųsdami strigčių ataskaitas</translation>
+<translation id="4823406846571523661">Nustatyti kriptovaliutų pinigines</translation>
+<translation id="1664718502100303670">Piniginės nustatymai</translation>
+<translation id="965566669123544695">IPFS nustatymai</translation>
 </translationbundle>

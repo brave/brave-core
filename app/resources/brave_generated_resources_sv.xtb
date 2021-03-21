@@ -5,7 +5,7 @@
 <translation id="7942180974165298215">Brave annonsblockerare</translation>
 <translation id="4615489450165434530">Rapportera en trasig webbplats</translation>
 <translation id="6406506848690869874">Synka</translation>
-<translation id="5655621391922317800">Kryptoplånböcker</translation>
+<translation id="1544192797660353713">Plånbok</translation>
 <translation id="2445484935443597917">Skapa en ny profil</translation>
 <translation id="2666990579225592931">Öppna ett gästfönster</translation>
 <translation id="8275068909952022340">Mer</translation>
@@ -59,6 +59,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1970435562892104727">Detta är ett privat fönster med Tor</translation>
 <translation id="1037341607922068025">Öppna ett privat fönster med Tor</translation>
 <translation id="1725356094208762656">Öppna i Tor</translation>
+<translation id="7643538479215207633">Öppna med IPFS</translation>
 <translation id="1672270084584211506">Onion tillgänglig</translation>
 <translation id="1434416574322382019">Nytt privat fönster med Tor</translation>
 <translation id="4703780849509456860">Öppna länk i privat fönster med Tor</translation>
@@ -156,12 +157,18 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1336940801687497203">Samma som Windows</translation>
 <translation id="8721331068159819483">Samma som MacOS</translation>
 <translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="7701040980221191251">Inget</translation>
+<translation id="5655621391922317800">Kryptoplånböcker</translation>
+<translation id="1696548911367097044">Föråldrat Crypto Wallets-tillägg</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7090046810227878892">Ethereum-leverantör för användning av Dapps</translation>
 <translation id="5913089932885076110">Ladda Crypto Wallets vid start</translation>
+<translation id="757886143331967039">Ladda föråldrat Crypto Wallets-tillägg vid start</translation>
 <translation id="6864914031231797928">Tillåt Google-inloggning för tillägg</translation>
+<translation id="5927916530277631319">Metod för att lösa ostoppbara domäner</translation>
+<translation id="5248318250177143470">Metod för att lösa Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Metod för att lösa IPFS-resurser</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal nod</translation>
@@ -169,11 +176,15 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="8425213833346101688">Ändra</translation>
 <translation id="557281710253742286">Ställ in IPFS gateway</translation>
 <translation id="8571837315037233299">Gateway-adress</translation>
+<translation id="1251574393468476924">Maximal IPFS-cachestorlek (GB)</translation>
+<translation id="2503497578400410320">En mjuk övre gräns för storleken på IPFS-katalogens datalager.</translation>
 <translation id="7703184801853248830">Ogiltig gateway-adress</translation>
 <translation id="585868419599255817">IPFS public gateway fallback</translation>
 <translation id="207763736230883589">Återgår automatiskt till publik IPFS gateway om din lokala nod inte kan nås.</translation>
 <translation id="4107552920076294723">Omdirigera IPFS-resurser till konfigurerad IPFS gateway</translation>
 <translation id="6494857428933042381">Använder konfigurerad gateway automatiskt för IPFS-lösningar när en IPFS-gatewayresurs påträffas.</translation>
+<translation id="8655170717758778983">Omdirigera automatiskt till IPFS-sidor via DNSLink när det är möjligt</translation>
+<translation id="2233724520223030977">Använder automatiskt DNSLink för att navigera till en IPFS-version av en webbplats när det är möjligt</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
 <translation id="1765684547504191670">Använder komponenten Media Router för att aktivera Chromecast i webbläsaren.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
@@ -254,11 +265,10 @@ upp till 6 x snabbare på ledande nyhetssajter.</translation>
 <translation id="7090566321964540749">Denna anonyma information används endast för att Brave ska kunna uppskatta generella användningen av vissa funktioner.</translation>
 <translation id="1947672064022327074">Vill du starta kryptoplånböcker för Ethereum-support?</translation>
 <translation id="7583735190612229830">Ställ in Crypto Wallets för att interagera med denna app och andra som den.</translation>
-<translation id="4823406846571523661">Installera kryptoplånböcker</translation>
+<translation id="8731422418734770661">Ställ in Crypto Wallets</translation>
 <translation id="8199661191594897555">Starta Crypto Wallets och ladda om</translation>
 <translation id="8428213095426709021">Inställningar</translation>
-<translation id="1664718502100303670">Plånboksinställningar</translation>
-<translation id="965566669123544695">IPFS-inställningar</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Läs mer om IPFS och sekretess</translation>
 <translation id="4552520379838695057">Tyvärr, den sidan saknas.</translation>
 <translation id="2609895996619941644">Vill du kolla om det finns en sparad version tillgänglig på Wayback Machine?</translation>
@@ -279,4 +289,7 @@ upp till 6 x snabbare på ledande nyhetssajter.</translation>
 <translation id="2808630562319398131">Återställ data för Brave Rewards...</translation>
 <translation id="1224064034972923114">Hjälp till att förbättra Brave genom att skicka kraschrapporter automatiskt</translation>
 <translation id="3738833060602717053">Hjälp till att förbättra <ph name="PRODUCT_NAME"/> genom att skicka kraschrapporter automatiskt</translation>
+<translation id="4823406846571523661">Installera kryptoplånböcker</translation>
+<translation id="1664718502100303670">Plånboksinställningar</translation>
+<translation id="965566669123544695">IPFS-inställningar</translation>
 </translationbundle>

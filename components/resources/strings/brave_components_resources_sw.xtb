@@ -35,8 +35,23 @@
 <translation id="604124094241169006">Otomatiki</translation>
 <translation id="867722069064361487">Mfumo wa saa 12</translation>
 <translation id="4064062743338217840">Mfumo wa saa 24</translation>
-<translation id="8643377320501056697">Onyesha Tovuti Bora</translation>
-<translation id="7176563092712682575">Badilisha Tovuti Bora Zikufae</translation>
+<translation id="5313967007315987356">Ongeza tovuti</translation>
+<translation id="5052499409147950210">Badilisha tovuti</translation>
+<translation id="1181037720776840403">Ondoa</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">Anwani ya tovuti</translation>
+<translation id="5327248766486351172">Jina</translation>
+<translation id="6916084277913254682">Kichwa cha tovuti</translation>
+<translation id="5317780077021120954">Hifadhi</translation>
+<translation id="7658239707568436148">Ghairi</translation>
+<translation id="4643117005422448078">Tovuti Maarufu</translation>
+<translation id="6307720725257444819">Vipendwa</translation>
+<translation id="81774600964978477">Tovuti maarufu zinachakuliwa na wewe</translation>
+<translation id="5439599923922718668">Zinazotembelewa Mara kwa Mara</translation>
+<translation id="430556192781857057">Tovuti maarufu zinapendekezwa kulingana na tovuti unazotembelea mara kwa mara</translation>
+<translation id="8037713009824540257">Ongeza Tovuti</translation>
+<translation id="1773147648972887693">Onyesha zinazotembelewa mara kwa mara</translation>
+<translation id="4546260624932151782">Onyesha vipendwa</translation>
 <translation id="3446024864193919737">Onyesha Brave Rewards</translation>
 <translation id="6274899614137380422">Onyesha Binance</translation>
 <translation id="5551238871320268996">Brave Pamoja</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">Lemaza maudhui kutoka <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Imekuzwa</translation>
 <translation id="1776831331757823105">Saa</translation>
-<translation id="4643117005422448078">Tovuti Maarufu</translation>
 <translation id="7791543448312431591">Ongeza</translation>
 <translation id="7679334366167089823">Pata tokeni kwa kutazama matangazo yanayoheshimu faragha.</translation>
 <translation id="1531133232292396145">Uza Crypto kwenye Binance katika kivinjari chako moja kwa moja.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">Hili ni</translation>
 <translation id="2055363275850890030">Dirisha Binafsi</translation>
 <translation id="9133213713928851646">Brave hai’kumbuki kile unachofanya kwenye Dirisha Binafsi. Tovuti unazozitembelea hazitaonekana kwenye historia yako, na vidakuzi vinapotea unapokuwa ume’maliza. Madirisha Binafsi hata hivyo haya’kufanyi usitambulike kabisa mtandaoni.</translation>
-<translation id="8760415064721320867">Dirisha Binafsi na Tor</translation>
-<translation id="4844209912525464363">Brave haikumbuki kamwe kile unachofanya kwenye Dirisha Binafsi. Ukiwa na Tor, taarifa zako za kuperuzi pia hufichwa dhidi ya ISP au mwajiri wako, na anuani yako ya IP hufichwa dhidi ya tovuti unazozitembelea.</translation>
+<translation id="3546750666732517156">Dirisha la Faragha lenye Muunganisho wa Tor</translation>
+<translation id="5383068818957293256">Brave haikumbuki kamwe unachofanya katika Dirisha la Faragha. Ukiwa na muunganisho wa Tor, anwani yako ya IP pia inafichwa ili kutofikiwa na tovuti unazotembelea. Hata hivyo, ikiwa usalama wako binafsi unategemea kuendelea kutojulikana, tumia Kivinjari cha Tor badala yake.</translation>
 <translation id="778096729652828897">Jifunze zaidi kuhusu Dirisha Binafsi na Tor</translation>
 <translation id="7919374705736538787">Vinjari kwa Usiri na</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Kwa kuvinjari kwa faragha, Brave itatumia DuckDuckGo kwa vivinjari katika Dirisha Binafsi. DuckDuckGo hakifuatilii historia yako ya kuvinjari, hivyo unaweza kuvinjari kwa faragha.</translation>
 <translation id="1925197199485958903">Katika Dirisha Binafsi na Tor, DuckDuckGo ni kivinjari chaguo msingi. Badhi ya vivinjari maarufu ni vigumu kutumia ukiwa na Tor. DuckDuckGo haifuatilii historia yako ya kuvinjari; na Tor, havijui hata anwani yako ya IP.</translation>
 <translation id="4371533307685765155">Vinjari na DuckDuckGo</translation>
-<translation id="5576876180131651996">Fanya Dirisha Binafsi kuwa la faragha zaidi</translation>
-<translation id="1129265576134014816">Dirisha hili Binafsi ni la faragha zaidi</translation>
-<translation id="805807983419360524">ukiwa na Tor</translation>
-<translation id="8958799246752641148">Tor huficha anwani yako ya IP dhidi ya tovuti unazotembelea, kwa kuwinga kuperuzi kwako kupitia seva kadhaa za Tor kabla haijafikia kituo chako cha mwisho. Miunganisho hii imefichwa, kiasi kwamba ISP na mwajiri wako hawezi kuona ni tovuti gani unayotembelea. Tor huweza kupunguza kasi ya kuperuzi na baadhi ya tovuti zinaweza zisifanye kazi kabisa.</translation>
-<translation id="520608572871993342">Kutumia Madirisha Binafsi hubdailisha tu kile ambacho Brave hufanya kwenye kifaa chako — hiabadilishi tabia ya mtu yeyote. Tor huficha anuani yako ya IP dhidi ya tovuti unazozitembelea, na huficha tovuti unazozitembelea dhidi ISP yako au mwajiri wako. Fungua Dirisha Binafsi kwa Tor kutoka kwenye menyu, au kwa {{ key }}.</translation>
+<translation id="548478195417408221">Fanya Madirisha ya Faragha kuwa ya faragha zaidi</translation>
+<translation id="3294503279952534143">Dirisha hili la Faragha ni la faragha zaidi</translation>
+<translation id="4644024131266615376">na Muunganisho wa Tor</translation>
+<translation id="8541421872680304667">Tor huficha anwani yako ya IP isifikiwe na tovuti unazotembelea, kwa kupeleka uvinjari wako kupitia seva mbalimbali kabla haijafikia eneo lako. Tor inaweza kupunguza kasi ya uvinjari wako na baadhi ya tovuti huenda zisifanye kazi kabisa.</translation>
+<translation id="7030950080800709999">Kutumia Madirisha ya Faragha hubadilisha tu kile ambacho Brave inafanya kwenye kifaa chako — hakubadilishi tabia ya mtu yeyote. Tor huficha anwani yako ya IP dhidi ya tovuti nyingine unazotembelea na kwa kiasi fulani hufanya kuwa vigumu zaidi, lakini si kutowezekana, kwa ISP au mwajiri wako kuona tovuti unazotembelea. Fungua Dirisha la Faragha lenye Tor kutoka kwenye menyu, au kwa {{ key }}.</translation>
 <translation id="6975708438781948564">Jifunze zaidi kuhusu Tor kwenye Brave</translation>
 <translation id="4712050378540986986">Hali ya Tor</translation>
 <translation id="3368922792935385530">Umeunganishwa</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">Ripoti tovuti yenye hitilafu</translation>
 <translation id="8510478288840333677">Wafahamishe wasanidi programu wa Brave kuwa tovuti hii haifanyi kazi vizuri kwa Shields:</translation>
 <translation id="6013164422534859494">Dokezo: Anwani hii ya tovuti itawasilishwa pamoja na nambari yako ya toleo la Brave na anwani yako ya IP (ambayo haitahifadhiwa).</translation>
-<translation id="7658239707568436148">Ghairi</translation>
 <translation id="2653659639078652383">Wasilisha</translation>
 <translation id="5299848999918506028">Asante!</translation>
 <translation id="76550953340008122">Asante kwa kufahamisha wasanidi programu wa Brave kuwa kuna tatizo kwenye tovuti hii. Tutajitahidi kulitatua!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">Tarehe inayofuata ya mchango wa kila mwezi</translation>
 <translation id="6231182869178328516">Nimemzawadia <ph name="NAME"/> kwa kutumia Kisakuzi cha Brave. Angalia kwenye https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">Samahani, kulikuwa na tatizo wakati wa kuchakata ombi lako, tafadhali jaribu tena.</translation>
+<translation id="3113653894794167793">Samahani, kulikuwa na tatizo wakati wa kuchakata ombi lako, tafadhali jaribu tena.</translation>
 <translation id="3082557070674409251">Umebofya</translation>
 <translation id="7119308337584989771">Umepuuza</translation>
 <translation id="6805660603861526473">Umetazama</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">Brave Private Ads hukuzawidi tokeni ili kusaidia waundaji maudhui kinyume na matangazo ya jadi, yote huku ukidumisha faragha ya taarifa zako binafsi.</translation>
 <translation id="6973095375773523904">Je, matangazo yanaonekana wapi?</translation>
 <translation id="7556325460112047619">Brave Private Ads itaonekana kama arifa ya kawaida. Huwezi kudhibiti mara ambazo unaona matangazo haya katika mipangilio.</translation>
-<translation id="5816125157889950051">Je, unazipokea zawadi lini</translation>
+<translation id="6897083627729802351">Je, unazipokea zawadi lini</translation>
 <translation id="310863932297733723">Tokeni ulizopata kutoka Brave Private Ads mwezi mzima wa sasa zitawasili tarehe 5 mwezi ujao.</translation>
 <translation id="7712287524451429139">Kutoa shukrani kumerahisishwa</translation>
 <translation id="105037569026952831">Waundaji wanapokea michango yako ya tokeni kiotomatiki kulingana na viwango vya ushirikishaji tunavyopima kuwa ‘Attention’.</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">Tia Alama Kuwa Haifai ✓</translation>
 <translation id="8988332871810963281">Hakuna historia ya Matangazo ya Brave kwa sasa</translation>
 <translation id="5345727496083327478">Hutapokea tena matangazo kutoka kwenye kategoria hii</translation>
-<translation id="5317780077021120954">Hifadhi</translation>
 <translation id="2827387977307390755">Ruhusu michango katika</translation>
 <translation id="3819257035322786455">Hifadhi Mbadala</translation>
 <translation id="1312977698678162065">Lipwa kwa kutazama matangazo muafaka ambayo yanaheshimu faragha yako.</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">Tovuti zako zilizobanwa zimehamishwa kwenda</translation>
 <translation id="6803187280799213426">Pesa zilizo kwenye kipochi chako cha Brave ni pepe na huhitaji kuhifadhi nakala. Kinapatikana ili ukitumie kwa njia ya kipekee kwenye kivinjari hiki.</translation>
 <translation id="5290348443732633227">Iwapo ungependa kulinda usalama wa pesa zako zote iwapo unasafisha kivinjari kwa kukisakinisha upya au unaanza kutumia kifaa kipya na una manufaa mengine kama vile kuongeza, kutoa na kuhamisha pesa, tunapendekeza</translation>
-<translation id="6733942359297688714">uunganishe kwenye kipochi kinachothibitishwa cha Uphold.</translation>
+<translation id="467041382895390784">inaunganisha kwenye pochi iliyothibitishwa ya <ph name="PROVIDER"/>.</translation>
 <translation id="5717619667204259673">Utunze salama ufunguo huu wa urejeshaji.</translation>
 <translation id="4699702339303280827">Daima unaweza kutumia ufunguo huu kurejesha waleti yako ikiwa kitu kitatokea kwenye kisakuzi chako au kompyuta. Lakini hakikisha unaulinda — yeyote atakayeupata ufunguo huu anaweza kuiba waleti yako. Pengine’ ni salama zaidi kuuandika kwenye karatasi, au mahali pengine popote unapotunza taarifa muhimu.</translation>
 <translation id="8979401359137062629">Kumbuka:</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">Mara moja moja, utakuwa unapewa ruzuku ya kianzio kutioka Brave. Hakikisha upo tayari kwa ofa hiyo!</translation>
 <translation id="2185598236335233939">Tafuta arifa unapoendelea kutumia Brave. Salio lako la BAT Points litaongezeka kwa kila tangazo unalotazama.</translation>
 <translation id="1370034647041840967">Pata kianzio kwa umakini wako kwenye matangazo na walipe moja kwa moja watengeneza maudhui unaowathamini!</translation>
-<translation id="4600224932216165965">Ongeza, toa na udhibiti fedha kwenye <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
-<translation id="3580616436301227919">Pochi yako ya Brave inaendeshwa na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="4919888432594361029">Ongeza, toa na udhibiti fedha kwenye <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">Pochi yako ya Brave inaendeshwa na <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards imejengwa kwenye Basic Attention Token. jifunze Zaidi kuhusu BAT</translation>
 <translation id="7823359893981882407">hapa</translation>
 <translation id="4483635855837696643">Rejesha Wallet Yako</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">Ingiza ufunguo wako wa urejeshaji au</translation>
 <translation id="6548189695918108191">Hifadhi nakala ya kipochi chako kabla ya kubadilisha. La sivyo, utapoteza pesa, {{funds}}, zilizo kwenye mfuko wako wa sasa.</translation>
 <translation id="5423214929210538027">Je, una uhakika kuwa ungependa kubadilisha Kipochi chako cha Zawadi?</translation>
-<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> na data zako nyingine za Rewards zitapotea kabisa ukibadilisha pochi yako. Tafadhali hakikisha kuwa una pochi iliyothibitishwa yenye Uphold ili uendelee kuwa na BAT yako.</translation>
+<translation id="8683358891240311475"><ph name="BAT_AMOUNT"/> yako na data nyingine za Zawadi zitapotea kabisa ukibadilisha mipangilio ya pochi yako. Tafadhali hakikisha kuwa umethibitisha pochi yako na <ph name="PROVIDER"/> ili uhifadhi BAT yako.</translation>
 <translation id="2028613172174411919">Data yako ya Zawadi itapotea kabisa ukibadilisha kipochi chako.</translation>
 <translation id="4914597931214386232">Ruzuku za Kianzio Zilizoombwa</translation>
 <translation id="3494964159182650590">Muhtasari wa Zawadi</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">thibitisha</translation>
 <translation id="8267327690882073581">Thibitisha Pochi</translation>
 <translation id="543510923939676996">Pochi Imethibitishwa</translation>
-<translation id="7591798679868259510">Nenda kwenye akaunti yangu ya Uphold</translation>
+<translation id="2659764755126740206">Nenda kwenye akaunti yangu ya <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Kamilisha uthibitishaji pochi</translation>
 <translation id="9200453331904391567">Ondoa kwenye Brave Rewards</translation>
 <translation id="46988480989545156">Thibitisha pochi</translation>
-<translation id="160145159036553575">Huduma yetu ya pochi inatolewa na <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="5796169459825124737">Huduma zetu za pochi zinatolewa na <ph name="PROVIDER"/>.</translation>
 <translation id="6771734945114850124">Tafadhali kuwa na kitambulisho chako kinachotolewa na serikali.</translation>
 <translation id="8697510149346635496">Toa BAT unayopata kwa kutazama matangazo yanayoheshimu faragha</translation>
 <translation id="1481480653609649134">Nunua BAT ya ziada kwa kadi za mikopo na vyanzo vingine</translation>
 <translation id="9096003370755878766">Toa BAT ambayo huenda uliongeza awali kwenye pochi yako ya Brave Rewards</translation>
 <translation id="8558636200953226885">Lakini ukithibitisha, unaweza...</translation>
 <translation id="3354315693758743702">Kuthibitisha pochi lako ni kwa hiari.</translation>
-<translation id="8465442795593991224">Huenda Uphold ikakuhitaji kuthibitisha utambulisho wako kulingana na huduma zilizoombwa.</translation>
-<translation id="723054503945711909">Brave Software Inc. haichakati, kuhifadhi wala kufikia taarifa yoyote ya binafsi unayoipa Uphold unapofungua akaunti nao.</translation>
-<translation id="7677480094678113476">Dokezo: Miamala yako itaonekana kwa Uphold mara unapoidhinisha; kwa mfano, wataweza kuona mpokeaji na kiasi cha vidokezo vyako.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> inaweza kuhitaji kuthibitisha utambulisho wako kulingana na huduma zilizoombwa.</translation>
+<translation id="6938217233488972952">Brave Software Inc. haichakati, kuhifadhi wala kufikia taarifa binafsi yoyote unayompa <ph name="PROVIDER"/> unapofungua akaunti naye.</translation>
+<translation id="2415586822982819406">Kumbuka: Miamala yako itaonekana na <ph name="PROVIDER"/> pindi unapoidhinisha; kwa mfano, ataweza kuona mpokeaji na kiasi cha bahshishi zako.</translation>
 <translation id="7404779623219601861">Tumia BAT upate Kadi za Zawadi</translation>
 <translation id="6215565499749144110">Unaweza kurudisha BAT yako kwa kadi za zawadi za chapa ya jina maarufu ukiwa na Mtandao wa TAP.</translation>
 <translation id="6915065518766963119">* Inahitaji Uthibitisho wa Kudumisha.</translation>
@@ -718,12 +730,36 @@
 <translation id="8327818101454798856">Kwa hivyo ikiwa ulikuwa ukisubiri kutvovuti zao uzipendazo, nenda hapo badala yake.</translation>
 <translation id="412480955826088549">Inapakua Kipengele...</translation>
 <translation id="4894106830958548828">Ninaelewa</translation>
-<translation id="7701466644604753106">WASHA Speedreader</translation>
-<translation id="763042262431778831">ZIMA Speedreader</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Tazama masoko na ununue crypto kutoka crypto.com.</translation>
+<translation id="4292334826913000023">Onyesha Bei</translation>
+<translation id="5001098083058405168">Pata bonasi ya 2% kwenye amana</translation>
+<translation id="7336377875970208451">Acha kulipia ada za kuuza</translation>
+<translation id="5889002303959545585">Nunua Bitcoin</translation>
+<translation id="7243082596932212589">Tazama Masoko ya Crypto.com</translation>
+<translation id="2258222996838418990">Grafu ya 7d</translation>
+<translation id="5337526542182802976">Jozi Zinazotumika</translation>
+<translation id="1164622162816276433">Kiwango cha Saa 24</translation>
+<translation id="7534079972563542000">Vikoa Visivyoweza Kusimamishwa</translation>
+<translation id="4492298165410552103">Wezesha utumiaji wa Vikoa Visivyoweza Kusimamishwa katika Brave?</translation>
+<translation id="3470923752115324276">Brave inaweza kukuwezesha kutembelea vikoa vya .crypto kwa kutumia Cloudflare kusuluhisha maombi ya lookup ya jina la kikoa la .crypto kwa kutumia DNS badala ya HTTPS. Ukiwezesha hii, Cloudflare itaona kikoa cha .crypto unachojaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_CF_TOU_LINK"/>sheria na masharti<ph name="END_CF_TOU_LINK"/> na <ph name="BEGIN_CF_PRIVACY_LINK"/>sera ya faragha<ph name="END_CF_PRIVACY_LINK"/> ya Cloudflare.</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="4335039108389860301">Wezesha utumiaji wa Ethereum Name Service (ENS) katika Brave?</translation>
+<translation id="618766505813078707">Brave inaweza kukuwezesha kutembelea vikoa vya .eth kwa kutumia Cloudflare kusuluhisha maombi ya lookup ya jina la kikoa la .eth kwa kutumia DNS badala ya HTTPS. Ukiwezesha hii, Cloudflare itaona kikoa cha .eth unachojaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_CF_TOU_LINK"/>sheria na masharti<ph name="END_CF_TOU_LINK"/> na <ph name="BEGIN_CF_PRIVACY_LINK"/>sera ya faragha<ph name="END_CF_PRIVACY_LINK"/> ya Cloudflare.</translation>
+<translation id="5636651007798897342">Endelea kutumia seva ya Cloudflare</translation>
+<translation id="2468755552460246661">Kikoa Kimezuiwa</translation>
+<translation id="6631469728138660166">Tovuti ya kutiliwa shaka ipo imbele</translation>
+<translation id="983774928604730749">Brave imezuia tovuti ifuatayo kupakia:</translation>
+<translation id="8250033559824599347">Tovuti hii inaweza kuwa danganyifu, kukupeleka baina ya tovuti mbalimbali ili kuweka vidakuzi vya kufuatilia, au kutekeleza vitendo vingine vya faragha.</translation>
+<translation id="2459038234784107183">Usinionye kuhusu tovuti hii tena</translation>
+<translation id="8242426110754782860">Endelea</translation>
+<translation id="2501278716633472235">Rudi nyuma</translation>
 <translation id="9020818404803201080">Marika waliojiunga:</translation>
 <translation id="2903493209154104877">Anwani</translation>
 <translation id="3207122385716480167">Takwimu za Repo</translation>
 <translation id="2595187693729756455">Maelezo ya nodi</translation>
+<translation id="8999763401170835879">Hitilafu imetokea, tafadhali jaribu kufungua tena</translation>
+<translation id="5433704526290922623">Hitilafu imetokea, tafadhali jaribu kusakinisha kifundo</translation>
 <translation id="5789886980848929155">Hali ya nodi ya IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Lango</translation>
@@ -765,20 +801,20 @@
 <translation id="3977809385703587108">Unaweza kubadilisha mapendeleo yako tena katika</translation>
 <translation id="3340978935015468852">mipangilio</translation>
 <translation id="4148957013307229264">Inasakinisha ...</translation>
-<translation id="6057992164469678163">Inasubiri wenzao ...</translation>
+<translation id="4219228508273972445">Inatafuta marika...</translation>
 <translation id="1902096227388293745">Hakuna rika inayopatikana, inajaribu tena ... (<ph name="ATTEMPTS_NUMBER"/> attemps left)</translation>
 <translation id="1675751799495331928">Tumezidi kikomo cha vielelezo, jaribu tena baadaye.</translation>
 <translation id="4499666752625407848">Error ocurred during an update.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Tazama masoko na ununue crypto kutoka crypto.com.</translation>
-<translation id="4292334826913000023">Onyesha Bei</translation>
-<translation id="5001098083058405168">Pata bonasi ya 2% kwenye amana</translation>
-<translation id="7336377875970208451">Acha kulipia ada za kuuza</translation>
-<translation id="5889002303959545585">Nunua Bitcoin</translation>
-<translation id="7243082596932212589">Tazama Masoko ya Crypto.com</translation>
-<translation id="2258222996838418990">Grafu ya 7d</translation>
-<translation id="5337526542182802976">Jozi Zinazotumika</translation>
-<translation id="1164622162816276433">Kiwango cha Saa 24</translation>
+<translation id="7789840864192026963">Toa ruhusa</translation>
+<translation id="8092074243456635562">hadi nifunge ukurasa huu</translation>
+<translation id="3523195733429162409">kwa saa 24</translation>
+<translation id="2373264732659722940">kwa wiki 1</translation>
+<translation id="6318437367327684789">milele</translation>
+<translation id="7463327191540031132">Zuia milele</translation>
+<translation id="8797999629784150206">Unaweza kubadilisha <ph name="SITE_PERMISSIONS"/> wakati wowote. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">ruhusa ya tovuti</translation>
+<translation id="7701466644604753106">WASHA Speedreader</translation>
+<translation id="763042262431778831">ZIMA Speedreader</translation>
 <translation id="3155170474926428993">Kifungua Tor</translation>
 <translation id="3745016858329272300">Maelezo ya Jumla</translation>
 <translation id="4045404575593562245">Matukio ya Udhibiti wa Tor</translation>
@@ -787,4 +823,25 @@
 <translation id="6951743416068151209">Tor Wakala URI</translation>
 <translation id="1671503397662036257">Tor Hali ya Uunganisho</translation>
 <translation id="6024292492796847324">Tor Maendeleo ya Uanzishaji</translation>
+<translation id="8643377320501056697">Onyesha Tovuti Bora</translation>
+<translation id="7176563092712682575">Badilisha Tovuti Bora Zikufae</translation>
+<translation id="8760415064721320867">Dirisha Binafsi na Tor</translation>
+<translation id="4844209912525464363">Brave haikumbuki kamwe kile unachofanya kwenye Dirisha Binafsi. Ukiwa na Tor, taarifa zako za kuperuzi pia hufichwa dhidi ya ISP au mwajiri wako, na anuani yako ya IP hufichwa dhidi ya tovuti unazozitembelea.</translation>
+<translation id="5576876180131651996">Fanya Dirisha Binafsi kuwa la faragha zaidi</translation>
+<translation id="1129265576134014816">Dirisha hili Binafsi ni la faragha zaidi</translation>
+<translation id="805807983419360524">ukiwa na Tor</translation>
+<translation id="8958799246752641148">Tor huficha anwani yako ya IP dhidi ya tovuti unazotembelea, kwa kuwinga kuperuzi kwako kupitia seva kadhaa za Tor kabla haijafikia kituo chako cha mwisho. Miunganisho hii imefichwa, kiasi kwamba ISP na mwajiri wako hawezi kuona ni tovuti gani unayotembelea. Tor huweza kupunguza kasi ya kuperuzi na baadhi ya tovuti zinaweza zisifanye kazi kabisa.</translation>
+<translation id="520608572871993342">Kutumia Madirisha Binafsi hubdailisha tu kile ambacho Brave hufanya kwenye kifaa chako — hiabadilishi tabia ya mtu yeyote. Tor huficha anuani yako ya IP dhidi ya tovuti unazozitembelea, na huficha tovuti unazozitembelea dhidi ISP yako au mwajiri wako. Fungua Dirisha Binafsi kwa Tor kutoka kwenye menyu, au kwa {{ key }}.</translation>
+<translation id="2876191400747549936">Samahani, kulikuwa na tatizo wakati wa kuchakata ombi lako, tafadhali jaribu tena.</translation>
+<translation id="5816125157889950051">Je, unazipokea zawadi lini</translation>
+<translation id="6733942359297688714">uunganishe kwenye kipochi kinachothibitishwa cha Uphold.</translation>
+<translation id="4600224932216165965">Ongeza, toa na udhibiti fedha kwenye <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Pochi yako ya Brave inaendeshwa na <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492"><ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> na data zako nyingine za Rewards zitapotea kabisa ukibadilisha pochi yako. Tafadhali hakikisha kuwa una pochi iliyothibitishwa yenye Uphold ili uendelee kuwa na BAT yako.</translation>
+<translation id="7591798679868259510">Nenda kwenye akaunti yangu ya Uphold</translation>
+<translation id="160145159036553575">Huduma yetu ya pochi inatolewa na <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Huenda Uphold ikakuhitaji kuthibitisha utambulisho wako kulingana na huduma zilizoombwa.</translation>
+<translation id="723054503945711909">Brave Software Inc. haichakati, kuhifadhi wala kufikia taarifa yoyote ya binafsi unayoipa Uphold unapofungua akaunti nao.</translation>
+<translation id="7677480094678113476">Dokezo: Miamala yako itaonekana kwa Uphold mara unapoidhinisha; kwa mfano, wataweza kuona mpokeaji na kiasi cha vidokezo vyako.</translation>
+<translation id="6057992164469678163">Inasubiri wenzao ...</translation>
 </translationbundle>

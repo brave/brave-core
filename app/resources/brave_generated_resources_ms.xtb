@@ -5,7 +5,7 @@
 <translation id="7942180974165298215">Sekatan Iklan Brave</translation>
 <translation id="4615489450165434530">Laporkan Laman yang Terputus-putus</translation>
 <translation id="6406506848690869874">Segerak</translation>
-<translation id="5655621391922317800">Dompet Crypto</translation>
+<translation id="1544192797660353713">Dompet</translation>
 <translation id="2445484935443597917">Buat Profil Baharu</translation>
 <translation id="2666990579225592931">Buka Tetingkap Tetamu</translation>
 <translation id="8275068909952022340">Lebih banyak…</translation>
@@ -59,6 +59,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1970435562892104727">Ini tetingkap peribadi dengan Tor</translation>
 <translation id="1037341607922068025">Buka Tetingkap Peribadi dengan Tor</translation>
 <translation id="1725356094208762656">Buka dalam Tor</translation>
+<translation id="7643538479215207633">Buka menggunakan IPFS</translation>
 <translation id="1672270084584211506">Onion Tersedia</translation>
 <translation id="1434416574322382019">Tetingkap Peribadi baru dengan Tor</translation>
 <translation id="4703780849509456860">Buka Pautan dalam Tetingkap Peribadi dengan Tor</translation>
@@ -156,12 +157,18 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1336940801687497203">Sama seperti Windows</translation>
 <translation id="8721331068159819483">Sama seperti macOS</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk memaparkan torrent secara langsung dalam penyemak imbas. Menyokong fail torrent dan pautan magnet.</translation>
+<translation id="8488282162676695335">Dompet Brave</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="7701040980221191251">Tiada</translation>
+<translation id="5655621391922317800">Dompet Crypto</translation>
+<translation id="1696548911367097044">Sambungan Dompet Kripto yang tidak digunakan</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7090046810227878892">Penyedia Ethereum untuk menggunakan Dapps</translation>
 <translation id="5913089932885076110">Muatkan Dompet Kripto ketika bermula</translation>
+<translation id="757886143331967039">Memuatkan sambungan Dompet Kripto yang tidak digunakan pada permulaan</translation>
 <translation id="6864914031231797928">Benarkan log masuk Google untuk sambungan</translation>
+<translation id="5927916530277631319">Kaedah untuk menyelesaikan Domain yang tidak dapat Dihentikan</translation>
+<translation id="5248318250177143470">Kaedah untuk menyelesaikan Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Kaedah untuk menyelesaikan sumber IPFS</translation>
 <translation id="1327977588028644528">Get Laluan</translation>
 <translation id="80225669816651290">Nod tempatan</translation>
@@ -169,11 +176,15 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8425213833346101688">Tukar</translation>
 <translation id="557281710253742286">Tetapkan gerbang IPFS</translation>
 <translation id="8571837315037233299">Alamat gerbang</translation>
+<translation id="1251574393468476924">Saiz cache IPFS maksimum (GB)</translation>
+<translation id="2503497578400410320">Had atas yang lembut untuk saiz datastore repositori IPFS.</translation>
 <translation id="7703184801853248830">Alamat gerbang tidak sah</translation>
 <translation id="585868419599255817">Undur balik get laluan awam IPFS</translation>
 <translation id="207763736230883589">Kembali ke gerbang IPFS awam secara automatik apabila nod tempatan anda tidak boleh dicapai.</translation>
 <translation id="4107552920076294723">Halakan semula sumber IPFS kepada gerbang IPFS yang dikonfigurasi</translation>
 <translation id="6494857428933042381">Menggunakan gerbang yang dikonfigurasi secara automatik untuk resolusi IPFS apabila sesebuah sumber gerbang IPFS ditemui.</translation>
+<translation id="8655170717758778983">Ubah hala ke halaman IPFS secara automatik melalui DNSLink apabila mungkin</translation>
+<translation id="2233724520223030977">Mengunakan DNSLink secara automatik untuk menavigasi ke versi IPFS laman web apabila mungkin</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mendayakan perkongsian skrin dan lain-lain ciri dalam pelayar.</translation>
 <translation id="1765684547504191670">Menggunakan komponen Media Router untuk membolehkan Chromecast dalam pelayar.</translation>
 <translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
@@ -254,11 +265,10 @@ sehingga 6 x lebih pantas pada laman berita utama.</translation>
 <translation id="7090566321964540749">Maklumat awanama ini hanya membolehkan Brave menganggarkan penggunaan keseluruhan ciri-ciri tertentu.</translation>
 <translation id="1947672064022327074">Adakah anda ingin memulakan Dompet Kripto untuk sokongan Ethereum?</translation>
 <translation id="7583735190612229830">Sediakan Dompet Crypto untuk berinteraksi dengan aplikasi ini dan aplikasi lain sepertinya.</translation>
-<translation id="4823406846571523661">Tetapkan Dompet Kripto</translation>
+<translation id="8731422418734770661">Menetapkan Dompet Kripto</translation>
 <translation id="8199661191594897555">Mulakan Dompet Kripto dan tambah nilai</translation>
 <translation id="8428213095426709021">Tetapan</translation>
-<translation id="1664718502100303670">Tetapan Dompet</translation>
-<translation id="965566669123544695">Tetapan IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Ketahui selanjutnya mengenai IPFS dan privasi</translation>
 <translation id="4552520379838695057">Maaf, laman tiada.</translation>
 <translation id="2609895996619941644">Adakah anda ingin memeriksa jika ada versi tersimpan di Wayback Machine?</translation>
@@ -279,4 +289,7 @@ sehingga 6 x lebih pantas pada laman berita utama.</translation>
 <translation id="2808630562319398131">Setkan semula data Ganjaran Brave...</translation>
 <translation id="1224064034972923114">Bantu menambah baik Brave dengan menghantar laporan kerosakan secara automatik</translation>
 <translation id="3738833060602717053">Bantu menambah baik <ph name="PRODUCT_NAME"/> dengan menghantar laporan kerosakan secara automatik</translation>
+<translation id="4823406846571523661">Tetapkan Dompet Kripto</translation>
+<translation id="1664718502100303670">Tetapan Dompet</translation>
+<translation id="965566669123544695">Tetapan IPFS</translation>
 </translationbundle>

@@ -35,8 +35,23 @@
 <translation id="604124094241169006">Otomatis</translation>
 <translation id="867722069064361487">Tampilan 12 jam</translation>
 <translation id="4064062743338217840">Tampilan 24 jam</translation>
-<translation id="8643377320501056697">Tampilkan Situs Teratas</translation>
-<translation id="7176563092712682575">Kustomisasikan Situs Teratas</translation>
+<translation id="5313967007315987356">Tambahkan situs</translation>
+<translation id="5052499409147950210">Edit situs</translation>
+<translation id="1181037720776840403">Hapus</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">Alamat situs web</translation>
+<translation id="5327248766486351172">Nama</translation>
+<translation id="6916084277913254682">Nama situs web</translation>
+<translation id="5317780077021120954">Simpan</translation>
+<translation id="7658239707568436148">Batal</translation>
+<translation id="4643117005422448078">Situs Teratas</translation>
+<translation id="6307720725257444819">Favorit</translation>
+<translation id="81774600964978477">Situs Teratas yang Anda seleksi sendiri</translation>
+<translation id="5439599923922718668">Sering Dikunjungi</translation>
+<translation id="430556192781857057">Situs teratas diusulkan berdasarkan situs web yang sering Anda kunjungi</translation>
+<translation id="8037713009824540257">Tambah Situs</translation>
+<translation id="1773147648972887693">Tampilkan situs yang sering dikunjungi</translation>
+<translation id="4546260624932151782">Tampilkan favorit</translation>
 <translation id="3446024864193919737">Tampilkan Brave Rewards</translation>
 <translation id="6274899614137380422">Tampilkan Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">Nonaktifkan konten dari <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Dipromosikan</translation>
 <translation id="1776831331757823105">Jam</translation>
-<translation id="4643117005422448078">Situs Teratas</translation>
 <translation id="7791543448312431591">Tambahkan</translation>
 <translation id="7679334366167089823">Dapatkan token dengan menyaksikan iklan yang menghormati privasi.</translation>
 <translation id="1531133232292396145">Berdagang Kripto di Binance langsung di peramban Anda.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">Ini adalah</translation>
 <translation id="2055363275850890030">Jendela Pribadi</translation>
 <translation id="9133213713928851646">Brave tidak mengingat apa yang Anda lakukan di Jendela Pribadi. Situs-situs yang Anda kunjungi tidak akan muncul di riwayat, dan kuki menghilang saat Anda selesai. Namun Jendela Pribadi tidak menjadikan Anda sepenuhnya anonim saat daring.</translation>
-<translation id="8760415064721320867">Jendela Pribadi dengan Tor</translation>
-<translation id="4844209912525464363">Brave tidak pernah mengingat yang Anda lakukan di Jendela Pribadi. Dengan Tor, penjelajahan Anda juga tersembunyi dari ISP atau bos Anda, dan alamat IP Anda tersembunyi dari situs yang Anda kunjungi.</translation>
+<translation id="3546750666732517156">Jendela Pribadi dengan Koneksi Tor</translation>
+<translation id="5383068818957293256">Brave tidak akan pernah mengingat apa yang Anda lakukan di Jendela Pribadi. Dengan koneksi Tor, alamat IP Anda juga disembunyikan dari situs yang Anda kunjungi. Namun, jika untuk keselamatan pribadi Anda harus tetap anonim, lebih baik gunakan Tor Browser.</translation>
 <translation id="778096729652828897">Pelajari lebih lanjut tentang Jendela Pribadi dengan Tor</translation>
 <translation id="7919374705736538787">Pencarian Pribadi dengan</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Dengan pencarian pribadi, Brave akan menggunakan DuckDuckGo untuk pencarian di Jendela Pribadi. DuckDuckGo tidak melacak riwayat pencarian Anda, sehingga Anda dapat melakukan pencarian secara pribadi.</translation>
 <translation id="1925197199485958903">DuckDuckGo adalah mesin pencari baku untuk Jendela Pribadi dengan Tor. Beberapa mesin pencari populer lainnya cukup sulit untuk digunakan dengan Tor. DuckDuckGo tidak melacak riwayat pencarian Anda; dengan Tor, mereka bahkan tidak tahu alamat IP Anda.</translation>
 <translation id="4371533307685765155">Pencarian dengan DuckDuckGo</translation>
-<translation id="5576876180131651996">Buat Jendela Pribadi lebih pribadi</translation>
-<translation id="1129265576134014816">Jendela Pribadi ini lebih pribadi</translation>
-<translation id="805807983419360524">dengan Tor</translation>
-<translation id="8958799246752641148">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi dengan mengirim rute penjelajahan Anda melalui beberapa peladen Tor sebelum mencapai tujuan Anda. Sambungan ini dienkripsi, jadi penyedia layanan Internet atau bos Anda tidak dapat melihat situs yang Anda kunjungi. Tor dapat memperlambat penjelajahan dan beberapa situs mungkin tidak bekerja sama sekali.</translation>
-<translation id="520608572871993342">Menggunakan Jendela Pribadi hanya mengubah apa yang Brave lakukan pada perangkat Anda — dan tidak mengubah perilaku aplikasi lainnya. Tor menyembunyikan alamat IP Anda dari situs yang dikunjungi, dan menyembunyikan situs yang Anda kunjungi dari ISP atau kantor Anda. Buka Jendela Pribadi dengan Tor dari menu, atau dengan {{ key }}.</translation>
+<translation id="548478195417408221">Buat Jendela Pribadi makin privat</translation>
+<translation id="3294503279952534143">Jendela Pribadi ini lebih pribadi</translation>
+<translation id="4644024131266615376">dengan Koneksi Tor</translation>
+<translation id="8541421872680304667">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi, dengan memutar rute penelusuran Anda melalui beberapa server Tor sebelum mencapai tujuan Anda. Tor dapat memperlambat penelusuran web dan beberapa situs mungkin sama sekali tak dapat berfungsi.</translation>
+<translation id="7030950080800709999">Menggunakan Jendela Pribadi hanya mengubah apa yang dilakukan oleh Brave pada perangkat Anda – namun tidak mengubah perilaku pihak lain. Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi dan mempersulit, namun bukan mustahil, ISP atau majikan Anda mengetahui situs apa yang Anda kunjungi. Buka Jendela Pribadi dengan Tor dari menu, atau dengan {{ key }}.</translation>
 <translation id="6975708438781948564">Pelajari lebih lanjut tentang Tor di Brave</translation>
 <translation id="4712050378540986986">Status Tor</translation>
 <translation id="3368922792935385530">Tersambung</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">Laporkan situs rusak</translation>
 <translation id="8510478288840333677">Beri tahu pengembang Brave bahwa situs ini tidak berfungsi dengan baik saat Perisai aktif:</translation>
 <translation id="6013164422534859494">Catatan: Alamat situs ini akan dikirimkan beserta nomor versi Brave dan alamat IP Anda (tidak akan kami simpan).</translation>
-<translation id="7658239707568436148">Batal</translation>
 <translation id="2653659639078652383">Kirim</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">Tanggal kontribusi bulanan berikutnya</translation>
 <translation id="6231182869178328516">Saya baru saja memberi tip untuk <ph name="NAME"/> melalui Brave Browser. Simak di https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipDenganBrave</translation>
-<translation id="2876191400747549936">Maaf, terjadi masalah saat memproses permintaan Anda, harap coba kembali.</translation>
+<translation id="3113653894794167793">Maaf ada masalah dalam memroses permintaan Anda. Silakan coba lagi.</translation>
 <translation id="3082557070674409251">Diklik</translation>
 <translation id="7119308337584989771">Diabaikan</translation>
 <translation id="6805660603861526473">Dilihat</translation>
@@ -351,7 +364,7 @@
 <translation id="3477340970981564961">Berbeda dengan iklan tradisional, Iklan Privat Brave menghadiahi Anda token untuk mendukung kreator konten, sembari menjaga informasi personal Anda tetap privat.</translation>
 <translation id="6973095375773523904">Di mana iklan muncul?</translation>
 <translation id="7556325460112047619">Iklan Privat Brave akan muncul sebagai pemberitahuan normal. Anda mengontrol seberapa sering Anda melihat iklan-iklan ini di pengaturan.</translation>
-<translation id="5816125157889950051">Kapan Anda menerima imbalan</translation>
+<translation id="6897083627729802351">Kapan Anda menerima imbalan</translation>
 <translation id="310863932297733723">Token yang Anda peroleh dari Iklan Privat Brave sepanjang bulan ini akan tiba tanggal 5 bulan berikutnya.</translation>
 <translation id="7712287524451429139">Jadi mudah untuk memberi balik</translation>
 <translation id="105037569026952831">Pencipta menerima kontribusi token Anda secara otomatis berdasarkan tingkat interaksi Anda yang kami ukur sebagai ‘Perhatian’.</translation>
@@ -379,7 +392,6 @@
 <translation id="2111256234277361810">Tandai Sebagai Tidak Pantas ✓</translation>
 <translation id="8988332871810963281">Saat ini tidak ada riwayat iklan Brave</translation>
 <translation id="5345727496083327478">Anda tidak akan lagi menerima iklan dari kategori ini</translation>
-<translation id="5317780077021120954">Simpan</translation>
 <translation id="2827387977307390755">Izinkan tip pada</translation>
 <translation id="3819257035322786455">Cadangkan</translation>
 <translation id="1312977698678162065">Dapatkan bayaran untuk melihat iklan relevan yang menghormati privasi Anda.</translation>
@@ -506,7 +518,7 @@
 <translation id="1797334173232638045">Situs tersemat Anda telah dialihkan ke</translation>
 <translation id="6803187280799213426">Dana di dompet Brave Anda adalah virtual dan tidak perlu dicadangkan. Dana tersedia untuk Anda gunakan secara eksklusif di peramban ini.</translation>
 <translation id="5290348443732633227">Jika Anda ingin mengamankan semua dana sebelum menginstal bersih peramban atau berganti ke perangkat baru, dan memiliki manfaat lain seperti menambahkan, menarik dan mentransfer dana, kami sarankan</translation>
-<translation id="6733942359297688714">menghubungkan ke dompet Uphold terverifikasi.</translation>
+<translation id="467041382895390784">menghubungkan ke dompet <ph name="PROVIDER"/> terverifikasi.</translation>
 <translation id="5717619667204259673">Selalu simpan kunci pemulihan ini secara aman.</translation>
 <translation id="4699702339303280827">Anda selalu dapat menggunakan kunci ini untuk memulihkan dompet Anda kembali jika terjadi sesuatu pada peramban atau komputer Anda. Tetapi pastikan untuk melindunginya — siapa pun yang mendapatkan kunci ini dapat mencuri dompet Anda. Mungkin paling aman adalah menuliskannya di selembar kertas, atau di mana pun Anda menyimpan informasi penting.</translation>
 <translation id="8979401359137062629">Catatan:</translation>
@@ -526,8 +538,8 @@
 <translation id="8014425282125849700">Kadang, Anda akan ditawarkan hibah token gratis dari Brave. Pastikan Anda memperhatikan pemberitahuannya!</translation>
 <translation id="2185598236335233939">Carilah pemberitahuan iklan sambil terus menggunakan Brave. Saldo Poin BAT Anda akan bertambah setiap melihat iklan.</translation>
 <translation id="1370034647041840967">Dapatkan token untuk atensi Anda terhadap iklan dan menggunakannya untuk mendukung pembuat konten yang Anda hargai!</translation>
-<translation id="4600224932216165965">Tambah, tarik, dan kelola dana di <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
-<translation id="3580616436301227919">Dompet Brave Anda dijalankan oleh <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="4919888432594361029">Tambah, tarik, dan kelola dana di <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">Dompet Brave Anda didukung oleh <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Brave Rewards dibangun berdasarkan Basic Attention Token. Pelajari lebih lanjut tentang BAT</translation>
 <translation id="7823359893981882407">di sini</translation>
 <translation id="4483635855837696643">Pulihkan Dompet Anda</translation>
@@ -536,7 +548,7 @@
 <translation id="3267911153934785912">Masukkan kunci pemulihan atau</translation>
 <translation id="6548189695918108191">Cadangkan dompet Anda sebelum mengganti. Atau Anda akan kehilangan dana, {{funds}}, di dompet saat ini.</translation>
 <translation id="5423214929210538027">Yakin ingin mengatur ulang Dompet Reward?</translation>
-<translation id="7428521340740703492">BAT milik Anda sebanyak <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> dan data Imbalan lainnya akan hilang secara permanen jika Anda mereset dompet Anda. Harap memastikan bahwa Anda telah memverifikasi dompet Anda pada Uphold sehingga Anda dapat menyimpan BAT Anda.</translation>
+<translation id="8683358891240311475">Milik Anda sebanyak <ph name="BAT_AMOUNT"/> dan Imbalan lainnya akan hilang secara permanen jika Anda mereset dompet. Harap memastikan Anda telah memverifikasi dompet Anda dengan <ph name="PROVIDER"/> sehingga Anda dapat tetap menyimpan BAT Anda.</translation>
 <translation id="2028613172174411919">Data Reward akan hilang permanen jika Anda mengatur ulang dompet.</translation>
 <translation id="4914597931214386232">Hibah Token Diklaim</translation>
 <translation id="3494964159182650590">Ringkasan Rewards</translation>
@@ -611,20 +623,20 @@
 <translation id="7512440811010447157">verifikasi</translation>
 <translation id="8267327690882073581">Verifikasi Dompet</translation>
 <translation id="543510923939676996">Dompet Terverifikasi</translation>
-<translation id="7591798679868259510">Ke akun Uphold saya</translation>
+<translation id="2659764755126740206">Masuk ke akun <ph name="PROVIDER"/> saya</translation>
 <translation id="3699674790322420653">Selesaikan verifikasi dompet</translation>
 <translation id="9200453331904391567">Putuskan dari Brave Reward</translation>
 <translation id="46988480989545156">Verifikasi dompet</translation>
-<translation id="160145159036553575">Layanan dompet kami disediakan oleh <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="5796169459825124737">Layanan dompet kami disediakan oleh <ph name="PROVIDER"/>.</translation>
 <translation id="6771734945114850124">Harap siapkan ID resmi Anda.</translation>
 <translation id="8697510149346635496">Tarik BAT yang Anda dapat dari melihat iklan yang menghormati privasi</translation>
 <translation id="1481480653609649134">Beli BAT tambahan dengan kartu kredit dan sumber lain</translation>
 <translation id="9096003370755878766">Tarik BAT yang mungkin sudah pernah Anda masukkan ke dompet Imbalan Brave Anda</translation>
 <translation id="8558636200953226885">Tetapi dengan memverifikasi, Anda bisa...</translation>
 <translation id="3354315693758743702">Memverifikasi dompet Anda adalah bersifat opsional.</translation>
-<translation id="8465442795593991224">Uphold mungkin memerlukan verifikasi identitas Anda berdasarkan layanan yang diminta.</translation>
-<translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda berikan kepada Uphold ketika Anda membuat akun dengan mereka.</translation>
-<translation id="7677480094678113476">Catatan: Transaksi Anda akan terlihat untuk Dijalankan setelah Anda mengotorisasi; misalnya, Mereka akan dapat melihat penerima dan jumlah tip Anda.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> mungkin meminta Anda untuk memverifikasi identitas berdasarkan layanan yang diminta.</translation>
+<translation id="6938217233488972952">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda berikan kepada <ph name="PROVIDER"/> saat Anda membuat akun dengan mereka.</translation>
+<translation id="2415586822982819406">Catatan: Transaksi Anda akan terlihat oleh <ph name="PROVIDER"/> setelah Anda memberi otorisasi; yakni, mereka akan dapat melihat penerima dan jumlah tip Anda.</translation>
 <translation id="7404779623219601861">Tukar BAT dengan Kartu Hadiah</translation>
 <translation id="6215565499749144110">Dengan jaringan TAP, Anda bisa menukar BAT dengan kartu hadiah dari barang-barang merek terkenal.</translation>
 <translation id="6915065518766963119">* Harus Lolos Verifikasi</translation>
@@ -718,12 +730,36 @@
 <translation id="8327818101454798856">Jadi jika Anda ingin mendukung situs favorit, berkunjunglah ke sana.</translation>
 <translation id="412480955826088549">Mengunduh Komponen...</translation>
 <translation id="4894106830958548828">Saya paham</translation>
-<translation id="7701466644604753106">NYALAKAN Speedreader</translation>
-<translation id="763042262431778831">MATIKAN Speedreader</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Lihat bursa dan beli crypto dari crypto.com</translation>
+<translation id="4292334826913000023">Tampilkan Harga</translation>
+<translation id="5001098083058405168">Dapatkan bonus 2% untuk deposit</translation>
+<translation id="7336377875970208451">Berhenti membayar biaya perdagangan</translation>
+<translation id="5889002303959545585">Beli Bitcoin</translation>
+<translation id="7243082596932212589">Lihat Bursa Crypto.com</translation>
+<translation id="2258222996838418990">Grafik 7d</translation>
+<translation id="5337526542182802976">Pasangan yang Didukung</translation>
+<translation id="1164622162816276433">Volume 24 JAM</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="4492298165410552103">Aktifkan dukungan Unstoppable Domains di Brave?</translation>
+<translation id="3470923752115324276">Brave dapat memungkinkan Anda mengunjungi domain .eth dengan menggunakan Cloudflare untuk menelusuri permintaan pencarian nama domain .crypto menggunakan DNS di atas HTTPS. Jika Anda mengaktifkan ini, Cloudflare akan melihat domain .crypto yang ingin Anda kunjungi tetapi mereka tidak akan dapat melihat domain lain. Baca <ph name="BEGIN_CF_TOU_LINK"/>ketentuan penggunaan<ph name="END_CF_TOU_LINK"/> dan <ph name="BEGIN_CF_PRIVACY_LINK"/>kebijakan privasi<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="4335039108389860301">Aktifkan dukungan dari Ethereum Name Service (ENS) di Brave?</translation>
+<translation id="618766505813078707">Brave dapat memungkinkan Anda mengunjungi domain .eth dengan menggunakan Cloudflare untuk menelusuri permintaan pencarian nama domain .eth menggunakan DNS di atas HTTPS. Jika Anda mengaktifkan ini, Cloudflare akan melihat domain .eth yang ingin Anda kunjungi tetapi mereka tidak akan dapat melihat domain lain. Baca <ph name="BEGIN_CF_TOU_LINK"/>ketentuan penggunaan<ph name="END_CF_TOU_LINK"/> dan <ph name="BEGIN_CF_PRIVACY_LINK"/>kebijakan privasi<ph name="END_CF_PRIVACY_LINK"/> Cloudflare.</translation>
+<translation id="5636651007798897342">Lanjutkan menggunakan server Cloudflare</translation>
+<translation id="2468755552460246661">Domain Diblokir</translation>
+<translation id="6631469728138660166">Situs mencurigakan</translation>
+<translation id="983774928604730749">Brave telah mencegah pemuatan situs berikut:</translation>
+<translation id="8250033559824599347">Situs ini mungkin curang, melempar Anda ke berbagai situs untuk mengatur kuki pelacakan, atau melakukan tindakan pelanggaran privasi lainnya.</translation>
+<translation id="2459038234784107183">Jangan peringatkan saya lagi tentang situs ini</translation>
+<translation id="8242426110754782860">Lanjutkan</translation>
+<translation id="2501278716633472235">Kembali</translation>
 <translation id="9020818404803201080">Sejawat terhubung:</translation>
 <translation id="2903493209154104877">Alamat</translation>
 <translation id="3207122385716480167">Statistik Repo</translation>
 <translation id="2595187693729756455">Info Node</translation>
+<translation id="8999763401170835879">Terjadi kesalahan, silakan mencoba meluncurkan ulang</translation>
+<translation id="5433704526290922623">Terjadi kesalahan, cobalah menginstal node kembali</translation>
 <translation id="5789886980848929155">Status nodus IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Gerbang</translation>
@@ -765,20 +801,20 @@
 <translation id="3977809385703587108">Anda dapat mengubah preferensi Anda lagi pada</translation>
 <translation id="3340978935015468852">setelan</translation>
 <translation id="4148957013307229264">Menginstal...</translation>
-<translation id="6057992164469678163">Menunggu rekan...</translation>
+<translation id="4219228508273972445">Mencari rekan...</translation>
 <translation id="1902096227388293745">Tidak ada rekan yang tersedia, mencoba lagi... (<ph name="ATTEMPTS_NUMBER"/> upaya tersisa)</translation>
 <translation id="1675751799495331928">Kami telah melampaui batas percobaan, coba lagi nanti.</translation>
 <translation id="4499666752625407848">Terjadi kesalahan saat pembaruan.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Lihat bursa dan beli crypto dari crypto.com</translation>
-<translation id="4292334826913000023">Tampilkan Harga</translation>
-<translation id="5001098083058405168">Dapatkan bonus 2% untuk deposit</translation>
-<translation id="7336377875970208451">Berhenti membayar biaya perdagangan</translation>
-<translation id="5889002303959545585">Beli Bitcoin</translation>
-<translation id="7243082596932212589">Lihat Bursa Crypto.com</translation>
-<translation id="2258222996838418990">Grafik 7d</translation>
-<translation id="5337526542182802976">Pasangan yang Didukung</translation>
-<translation id="1164622162816276433">Volume 24 JAM</translation>
+<translation id="7789840864192026963">Beri izin</translation>
+<translation id="8092074243456635562">sampai saya menutup halaman ini</translation>
+<translation id="3523195733429162409">selama 24 jam</translation>
+<translation id="2373264732659722940">selama 1 minggu</translation>
+<translation id="6318437367327684789">selamanya</translation>
+<translation id="7463327191540031132">Blokir selamanya</translation>
+<translation id="8797999629784150206">Anda dapat mengubah <ph name="SITE_PERMISSIONS"/> Anda kapan saja. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">izin situs</translation>
+<translation id="7701466644604753106">NYALAKAN Speedreader</translation>
+<translation id="763042262431778831">MATIKAN Speedreader</translation>
 <translation id="3155170474926428993">Peluncur Tor</translation>
 <translation id="3745016858329272300">Info Umum</translation>
 <translation id="4045404575593562245">Peristiwa Kendali Tor</translation>
@@ -787,4 +823,25 @@
 <translation id="6951743416068151209">URI Proksi Tor</translation>
 <translation id="1671503397662036257">Status Koneksi Tor</translation>
 <translation id="6024292492796847324">Proses Inisialisasi Tor</translation>
+<translation id="8643377320501056697">Tampilkan Situs Teratas</translation>
+<translation id="7176563092712682575">Kustomisasikan Situs Teratas</translation>
+<translation id="8760415064721320867">Jendela Pribadi dengan Tor</translation>
+<translation id="4844209912525464363">Brave tidak pernah mengingat yang Anda lakukan di Jendela Pribadi. Dengan Tor, penjelajahan Anda juga tersembunyi dari ISP atau bos Anda, dan alamat IP Anda tersembunyi dari situs yang Anda kunjungi.</translation>
+<translation id="5576876180131651996">Buat Jendela Pribadi lebih pribadi</translation>
+<translation id="1129265576134014816">Jendela Pribadi ini lebih pribadi</translation>
+<translation id="805807983419360524">dengan Tor</translation>
+<translation id="8958799246752641148">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi dengan mengirim rute penjelajahan Anda melalui beberapa peladen Tor sebelum mencapai tujuan Anda. Sambungan ini dienkripsi, jadi penyedia layanan Internet atau bos Anda tidak dapat melihat situs yang Anda kunjungi. Tor dapat memperlambat penjelajahan dan beberapa situs mungkin tidak bekerja sama sekali.</translation>
+<translation id="520608572871993342">Menggunakan Jendela Pribadi hanya mengubah apa yang Brave lakukan pada perangkat Anda — dan tidak mengubah perilaku aplikasi lainnya. Tor menyembunyikan alamat IP Anda dari situs yang dikunjungi, dan menyembunyikan situs yang Anda kunjungi dari ISP atau kantor Anda. Buka Jendela Pribadi dengan Tor dari menu, atau dengan {{ key }}.</translation>
+<translation id="2876191400747549936">Maaf, terjadi masalah saat memproses permintaan Anda, harap coba kembali.</translation>
+<translation id="5816125157889950051">Kapan Anda menerima imbalan</translation>
+<translation id="6733942359297688714">menghubungkan ke dompet Uphold terverifikasi.</translation>
+<translation id="4600224932216165965">Tambah, tarik, dan kelola dana di <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="3580616436301227919">Dompet Brave Anda dijalankan oleh <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="7428521340740703492">BAT milik Anda sebanyak <ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/> dan data Imbalan lainnya akan hilang secara permanen jika Anda mereset dompet Anda. Harap memastikan bahwa Anda telah memverifikasi dompet Anda pada Uphold sehingga Anda dapat menyimpan BAT Anda.</translation>
+<translation id="7591798679868259510">Ke akun Uphold saya</translation>
+<translation id="160145159036553575">Layanan dompet kami disediakan oleh <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="8465442795593991224">Uphold mungkin memerlukan verifikasi identitas Anda berdasarkan layanan yang diminta.</translation>
+<translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda berikan kepada Uphold ketika Anda membuat akun dengan mereka.</translation>
+<translation id="7677480094678113476">Catatan: Transaksi Anda akan terlihat untuk Dijalankan setelah Anda mengotorisasi; misalnya, Mereka akan dapat melihat penerima dan jumlah tip Anda.</translation>
+<translation id="6057992164469678163">Menunggu rekan...</translation>
 </translationbundle>

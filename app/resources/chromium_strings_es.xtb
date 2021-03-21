@@ -113,7 +113,6 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="847561904663814268">Otro usuario ha iniciado sesión anteriormente en Brave con la cuenta <ph name="ACCOUNT_EMAIL_LAST"/> a través de este ordenador. Debes crear un usuario de Brave para proteger tu información.</translation>
 <translation id="3834935463915107022">¿Quieres cerrar Brave de todas formas?</translation>
 <translation id="8668413672647811944">Se acaba de instalar una actualización de seguridad especial para Brave. Reinicia ahora y restauraremos las pestañas.</translation>
-<translation id="7914115000169617076">La actualización ya casi ha terminado. Reinicia Brave para completar la actualización. Las ventanas de incógnito no se volverán a abrir.</translation>
 <translation id="4823369970559443694">Brave no puede comprobar tus contraseñas. Vuelve a intentarlo en 24 horas o <ph name="BEGIN_LINK"/>comprueba las contraseñas en tu cuenta de Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Utiliza el mismo corrector ortográfico que se usa en la Búsqueda de Brave. El texto que escribas en el navegador se enviará a Brave. Puedes cambiar esta opción en cualquier momento desde los ajustes.</translation>
 <translation id="2899369907387169108">Usar Brave sin una cuenta</translation>
@@ -293,4 +292,5 @@ Brave no puede recuperar tu configuración.</translation>
               =0 {Tu administrador requiere que reinicies Brave para aplicar una actualización}
               =1 {Tu administrador requiere que reinicies Brave para aplicar una actualización. Tu ventana privada no volverá a abrirse.}
               other {Tu administrador requiere que reinicies Brave para aplicar una actualización. Tus # ventanas privadas no volverán a abrirse.}}</translation>
+<translation id="7914115000169617076">La actualización ya casi ha terminado. Reinicia Brave para completar la actualización. Las ventanas privadas no se volverán a abrir.</translation>
 </translationbundle>

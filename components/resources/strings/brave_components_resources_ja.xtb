@@ -38,8 +38,23 @@
 <translation id="604124094241169006">自動設定</translation>
 <translation id="867722069064361487">12時間表示</translation>
 <translation id="4064062743338217840">24時間表示</translation>
-<translation id="8643377320501056697">トップサイトを表示</translation>
-<translation id="7176563092712682575">トップサイトをカスタマイズ</translation>
+<translation id="5313967007315987356">サイトを追加</translation>
+<translation id="5052499409147950210">サイトの編集</translation>
+<translation id="1181037720776840403">削除</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">ウェブサイトのアドレス</translation>
+<translation id="5327248766486351172">名前</translation>
+<translation id="6916084277913254682">ウェブサイトのタイトル</translation>
+<translation id="5317780077021120954">保存</translation>
+<translation id="7658239707568436148">キャンセル</translation>
+<translation id="4643117005422448078">トップサイト</translation>
+<translation id="6307720725257444819">お気に入り</translation>
+<translation id="81774600964978477">トップサイトはあなたがキュレートします</translation>
+<translation id="5439599923922718668">よく閲覧するサイト</translation>
+<translation id="430556192781857057">トップサイトは、頻繁にアクセスするウェブサイトに基づいて推奨されます</translation>
+<translation id="8037713009824540257">サイトを追加</translation>
+<translation id="1773147648972887693">よく閲覧するメニュー項目を表示</translation>
+<translation id="4546260624932151782">お気に入りを表示</translation>
 <translation id="3446024864193919737">Brave Rewardsを表示する</translation>
 <translation id="6274899614137380422">Binanceを表示する</translation>
 <translation id="5551238871320268996">Brave Together</translation>
@@ -54,8 +69,8 @@
 <translation id="9024104284526126630">Braveでプライベート通話を開始できます。</translation>
 <translation id="5735801688206890393">「Brave Together」で友人や同僚と無制限の通話を開始します。</translation>
 <translation id="7115051913071512405">お試しください</translation>
-<translation id="7415602225677446066">完全にプライベートなフィードで今日のトップ記事を、あなたのためだけに。</translation>
-<translation id="8607689491789524900">Brave Todayは、お使いのデバイス上であなたの興味と一致するので、あなたの個人情報はブラウザーから決して離れることはありません。新しいコンテンツは1日中更新されます。</translation>
+<translation id="7415602225677446066">Brave Todayは、読みたい記事が上がってくるプライベート・ニュースリーダー。</translation>
+<translation id="8607689491789524900">300以上のメディアから、コンテンツの追加が可能です。あなたの興味とのマッチングはデバイス上で完結するため、個人情報は一切、外に出ません。記事は1日中、更新されます。</translation>
 <translation id="9164544612367905452">フェッチしています…</translation>
 <translation id="1276592121036104130">新しいコンテンツを読み込む</translation>
 <translation id="4210987321913275328">Brave Todayのスクロール</translation>
@@ -66,7 +81,6 @@
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>のコンテンツを無効にする</translation>
 <translation id="3189348785087463371">プロモートされました</translation>
 <translation id="1776831331757823105">時刻表示</translation>
-<translation id="4643117005422448078">トップサイト</translation>
 <translation id="7791543448312431591">追加</translation>
 <translation id="7679334366167089823">プライバシーを尊重する広告を見てトークンを獲得しましょう。</translation>
 <translation id="1531133232292396145">ブラウザで、直接Binanceで暗号通貨を取引します。</translation>
@@ -81,19 +95,19 @@
 <translation id="730042046912793465">これは</translation>
 <translation id="2055363275850890030">プライベートウィンドウ</translation>
 <translation id="9133213713928851646">Braveはあなたがプライベートウィンドウで行ったことを記録しません。匿名通信システムTorにより、インターネットサービスプロバイダや雇用者が、あなたのサイト閲覧履歴を見ることができなくなります。同時に訪問中のサイトにあなたのIPアドレスを晒すことなくブラウジングすることができます。</translation>
-<translation id="8760415064721320867">プライベートウィンドウ+Tor</translation>
-<translation id="4844209912525464363">Braveは、あなたがプライベートウィンドウで行った操作を記憶することはありません。さらにトールを使用することで、あなたのISPや雇用者が、あなたのブラウジング履歴を見ることができなくなります。またあなたが訪問したサイトは、あなたのIPアドレスを見ることができません。</translation>
+<translation id="3546750666732517156">Tor接続を搭載したプライベートウィンドウ</translation>
+<translation id="5383068818957293256">Braveは、プライベートウィンドウで行ったことを記憶することは決してありません。Tor接続を使用すると、IPアドレスもアクセスしたサイトから隠されます。ただし、個人の安全が匿名のままでいることに依存している場合は、代わりにTorブラウザーを使用してください。</translation>
 <translation id="778096729652828897">プライベートウィンドウ+Tor の詳細について</translation>
 <translation id="7919374705736538787">プライベート検索 with</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">プライベートサーチの場合、Braveはプライベートウィンドウでの検索にDuck DuckGoを使います。DuckDuckGoはあなたの検索履歴を追跡しないので、匿名性を保ったまま検索ができます</translation>
 <translation id="1925197199485958903">プライベートウィンドウ+TorではDuckDuckGoがデフォルトの検索エンジンになっています。多くの検索エンジンではTorを利用することが難しいためです。DuckDuckGoは元々あなたの検索履歴を追跡しませんが、さらにTorによりIPアドレスすら伝えることなく検索することができます。</translation>
 <translation id="4371533307685765155">DuckDuckGoで検索</translation>
-<translation id="5576876180131651996">プライベートウィンドウをさらにプライベートにする</translation>
-<translation id="1129265576134014816">このプライベートウィンドウはよりブライベートです</translation>
-<translation id="805807983419360524">+Tor</translation>
-<translation id="8958799246752641148">Torはあなたがサイトを訪れる際、複数のTorサーバーを経由させることで、訪問サイトからあなたのIPアドレスを秘匿化します。この接続は暗号化されているため、インターネットサービスプロバイダも雇用者もあなたの訪れているサイトを知ることはできません。Torによりブラウジングが遅くなることがあり、一部のサイトで機能しないことがあります。</translation>
-<translation id="520608572871993342">プライベートウィンドウを使用すると、あなたのデバイスでBraveに関することだけが変更されます。— 他のものの動作は何も変更されません。TorはあなたのIPアドレスを訪れるサイトに対して秘匿し、訪れたサイトをあなたのISPや雇用者からも秘匿します。プライベートウィンドウ+Torはメニューから、または{{ key }}で開きます。</translation>
+<translation id="548478195417408221">プライベートウィンドウをよりプライベートにする</translation>
+<translation id="3294503279952534143">このプライベートウィンドウはよりプライベートです</translation>
+<translation id="4644024131266615376">Tor接続を搭載した</translation>
+<translation id="8541421872680304667">Torは、目的地に到達する前に複数のTorサーバーを介してあなたのブラウジングをルーティングすることで、あなたのIPアドレスを訪問先のサイトから隠します。Torを使用すると、ブラウジングが遅くなることがあり、一部のサイトはまったく機能しない可能性があります。</translation>
+<translation id="7030950080800709999">プライベートウィンドウを使用すると、Braveがお使いのデバイス上で行うことだけが変更され、他のユーザーの動作は変更されません。Torは、あなたのIPアドレスをアクセスしたサイトから隠し、そしてあなたがどのサイトにアクセスしているかをISPや雇用主が確認することを、不可能ではありませんが、より難しくします。 メニューからTorで、または{{ key }}でプライベートウィンドウを開きます。</translation>
 <translation id="6975708438781948564">BraveにおけるTorの詳細を表示</translation>
 <translation id="4712050378540986986">Torステータス</translation>
 <translation id="3368922792935385530">接続済み</translation>
@@ -107,7 +121,6 @@
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
 <translation id="6013164422534859494">注記：このサイトのアドレスは、お使いのBraveバージョンとIPアドレス（保存はされません）とともに送信されます。</translation>
-<translation id="7658239707568436148">キャンセル</translation>
 <translation id="2653659639078652383">送信</translation>
 <translation id="5299848999918506028">ありがとうございます！</translation>
 <translation id="76550953340008122">このサイトの問題をBraveの開発者にお知らせいただき、ありがとうございます。最善を尽くしてその修正を行います！</translation>
@@ -159,7 +172,7 @@
 <translation id="8010081455002666927">自動検出</translation>
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="4176463684765177261">無効</translation>
-<translation id="4434663852465709809">BATを送金するiOSリワードユーザーのためのQRコード</translation>
+<translation id="4434663852465709809">BATを移行するiOSリワードユーザーのためのQRコード</translation>
 <translation id="2175927920773552910">QR コード</translation>
 <translation id="8845154268466251503">BAP</translation>
 <translation id="6160106411363856968">BAP</translation>
@@ -220,7 +233,7 @@
 <translation id="5549059668721746831">次の毎月の支援日</translation>
 <translation id="6231182869178328516">Braveでチップを送りました！ <ph name="NAME"/> https://brave.com/ja/tips/</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">申し訳ありませんがリクエストの処理中に問題が発生しました。もう一度お試しください。</translation>
+<translation id="3113653894794167793">申し訳ありませんが、リクエストの処理中に問題が発生しました。再試行してください。</translation>
 <translation id="3082557070674409251">クリック済み</translation>
 <translation id="7119308337584989771">却下済み</translation>
 <translation id="6805660603861526473">表示済み</translation>
@@ -312,14 +325,14 @@
 <translation id="1969724076378550685">毎月のキャンセルを確認</translation>
 <translation id="6238322297266927861">寄付額：</translation>
 <translation id="1723857724166389190">このクリエイターへの毎月の寄付はキャンセルされました。</translation>
-<translation id="534368327994110883">あなたは’現在このクリエイターをサポートしています</translation>
+<translation id="534368327994110883">あなたは現在このクリエイターをサポートしています</translation>
 <translation id="2621124276654521177">現在の月の寄付</translation>
 <translation id="3084276630953238154">ワイルドバグが現れました</translation>
 <translation id="3263379510325043678">サーバー接続エラー</translation>
 <translation id="8994556588732085585">再試行するには、チッピングバナーを閉じてから再度開いてください。</translation>
 <translation id="4371618764691059036">毎月の寄付が設定されています。</translation>
 <translation id="6356822617569064293">次の寄付日：</translation>
-<translation id="4622723187300249546">一度だけのヒント</translation>
+<translation id="4622723187300249546">一度だけチップを送る</translation>
 <translation id="5268142130226208198">1回のチップ額：</translation>
 <translation id="3669086939205397942">ちょっと待ってください、まだチップを渡すことはできません</translation>
 <translation id="1142440886533556131">{{user}}’の投稿</translation>
@@ -354,7 +367,7 @@
 <translation id="3477340970981564961">Braveプライベート広告は、従来の広告とは異なり、コンテンツクリエイターをサポートするためのトークンで報酬がもらえ、すべては個人情報を非公開にして行われます。</translation>
 <translation id="6973095375773523904">広告はどこに表示されますか？</translation>
 <translation id="7556325460112047619">Braveプライベート広告は通常の通知として表示されます。これらの広告をどのくらいの頻度で表示するかは設定で操作します。</translation>
-<translation id="5816125157889950051">報酬を受け取るタイミング</translation>
+<translation id="6897083627729802351">報酬を受け取るタイミング</translation>
 <translation id="310863932297733723">当月中にBraveプライベート広告から獲得したトークンは、翌月の5日に届きます。</translation>
 <translation id="7712287524451429139">クリエイターへの支援がもっと簡単に</translation>
 <translation id="105037569026952831">クリエイターは、私たちが「アテンション」として測定するあなたのエンゲージメントに基づいて、トークンの寄付を自動的に受け取ります。</translation>
@@ -382,7 +395,6 @@
 <translation id="2111256234277361810">不適切 ✓ としてマーク</translation>
 <translation id="8988332871810963281">現在のところBrave Adsの履歴はありません</translation>
 <translation id="5345727496083327478">今後、このカテゴリーから広告を受け取ることはありません</translation>
-<translation id="5317780077021120954">保存</translation>
 <translation id="2827387977307390755">以下でチップを許可：</translation>
 <translation id="3819257035322786455">バックアップ</translation>
 <translation id="1312977698678162065">プライバシー重視型広告を閲覧して報酬を得る。</translation>
@@ -508,13 +520,13 @@
 <translation id="3157931365184549694">復元</translation>
 <translation id="1797334173232638045">固定されたサイトはこちらに移動しました</translation>
 <translation id="6803187280799213426">Brave Wallet内の資金はネット上に存在するのでバックアップの必要はありません。このブラウザ上でのみ利用可能です。</translation>
-<translation id="5290348443732633227">ブラウザーをクリーンインストールしたりデバイスを乗り換えたりする場合に備えて全資金の安全性を確保したり、資金の追加・引き落とし・送金といった他の機能をご利用になりたい場合、お勧めです</translation>
-<translation id="6733942359297688714">認証済みのUpholdウォレットに接続しています。</translation>
+<translation id="5290348443732633227">ブラウザーをクリーンインストールしたりデバイスを乗り換えたりする場合に備えて全資金の安全性を確保したり、資金の追加・引き落とし・送金といった他の機能をご利用になりたい場合にはこちらがおすすめです：</translation>
+<translation id="467041382895390784">検証済みの<ph name="PROVIDER"/>ウォレットに接続します。</translation>
 <translation id="5717619667204259673">この回復キーは安全な場所に保管してください。</translation>
 <translation id="4699702339303280827">あなたのブラウザやコンピューターに問題が発生した場合、いつでもこのキーを使用して、ウォレットを元に戻すことができます。しかし、このキーを持っていれば誰でもあなたのウォレットを手に入れることができるため、しっかりと保管しておいてください。紙に書き写すか、普段大切な情報を保管する場所にしまっておくのが一番安全かもしれません。</translation>
 <translation id="8979401359137062629">注記：</translation>
 <translation id="7934806082615382155">資金の一部はBraveが提供する場合もあり、これはバックアップデータに含まれません。バックアップは任意だからです。この資金はBraveでのみ利用可能です。</translation>
-<translation id="7354412786785889047">素晴らしいコンテンツを作成してくれた感謝を込めて、チップを贈ることでこのサイトを支援できます。認証されたコンテンツクリエイターは、毎月第1週目にチップを受け取ります。</translation>
+<translation id="7354412786785889047">素晴らしいコンテンツを作成してくれた感謝を込めて、チップを送ることでこのサイトを支援できます。認証されたコンテンツクリエイターは、毎月第1週目にチップを受け取ります。</translation>
 <translation id="972846019534552366">また、Braveの報酬パネルから、毎月繰り返す支援を設定することもできます。</translation>
 <translation id="3074127054582480056">アテンション</translation>
 <translation id="5010112177773747965">あなたの同意を取ることもなく。</translation>
@@ -529,8 +541,8 @@
 <translation id="8014425282125849700">Braveからの無料ポイントを受け取る (通知をお見逃しなく！)</translation>
 <translation id="2185598236335233939">Braveを使用しているとき広告の通知表示されます。広告が表示されるたびにBATポイントの残高が増えます。</translation>
 <translation id="1370034647041840967">広告に閲覧することでポイントを獲得し、あなたがサポートしたいコンテンツクリエイターに支援しましょう！</translation>
-<translation id="4600224932216165965"><ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>で資金を追加、引き出し、管理しましょう</translation>
-<translation id="3580616436301227919">お使いのBraveウォレットは、<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>が提供しています</translation>
+<translation id="4919888432594361029"><ph name="PROVIDER"/>で資金を追加、引き出し、管理します。</translation>
+<translation id="3092054349246483285">Braveウォレットは<ph name="PROVIDER"/>を利用しています。</translation>
 <translation id="6401272292123354754">Brave RewardsはBasic Attention Token(BAT)で構築されています。BATの詳細をもっと知る</translation>
 <translation id="7823359893981882407">こちら</translation>
 <translation id="4483635855837696643">ウォレットを復元する</translation>
@@ -539,7 +551,7 @@
 <translation id="3267911153934785912">回復キーを入力</translation>
 <translation id="6548189695918108191">移行する前にウォレットをバックアップしてください。そうしないと現在のウォレットにある資金が失われます。</translation>
 <translation id="5423214929210538027">本当にRewards Walletをリセットしてよろしいですか？</translation>
-<translation id="7428521340740703492">ウォレットをリセットすると、あなたの<ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/>とその他の報酬データは恒久的に失われます。ご自身のBATを喪失することのないよう、必ずUpholdでのウォレット認証が完了しているかをご確認ください。</translation>
+<translation id="8683358891240311475">ウォレットをリセットすると、<ph name="BAT_AMOUNT"/>およびその他のリワードデータは永久に失われます。BATを保持できるように、<ph name="PROVIDER"/>でウォレットを検証したことを確認してください。</translation>
 <translation id="2028613172174411919">ウォレットをリセットすると、あなたが受け取った報酬のデータが永久に失われます。</translation>
 <translation id="4914597931214386232">取得済のポイント付与</translation>
 <translation id="3494964159182650590">Rewardsのサマリ</translation>
@@ -612,22 +624,22 @@
 <translation id="5030988785798407804">あなたの{{currency}}は処理中です。</translation>
 <translation id="2132683977638223450">無料のポイント付与</translation>
 <translation id="7512440811010447157">確認</translation>
-<translation id="8267327690882073581">ウォレットを確認</translation>
-<translation id="543510923939676996">ウォレットが検証済み</translation>
-<translation id="7591798679868259510">Upholdのアカウントに移動</translation>
-<translation id="3699674790322420653">ウォレットの検証を完了</translation>
+<translation id="8267327690882073581">ウォレットを認証</translation>
+<translation id="543510923939676996">ウォレットが認証済み</translation>
+<translation id="2659764755126740206">私の<ph name="PROVIDER"/>アカウントに移動する</translation>
+<translation id="3699674790322420653">ウォレットの認証を完了</translation>
 <translation id="9200453331904391567">Braveの報酬から切断</translation>
-<translation id="46988480989545156">ウォレットを確認</translation>
-<translation id="160145159036553575">当ウォレットサービスは、<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>によって提供されています。</translation>
+<translation id="46988480989545156">ウォレットを認証</translation>
+<translation id="5796169459825124737">弊社のウォレットサービスは、<ph name="PROVIDER"/>を利用しています。</translation>
 <translation id="6771734945114850124">政府発行の身分証明書をご用意ください。</translation>
 <translation id="8697510149346635496">プライバシーを尊重する広告表示で獲得したBAPを引き出す</translation>
 <translation id="1481480653609649134">クレジットカードやその他の資金源で追加のBAPを購入する</translation>
 <translation id="9096003370755878766">過去に追加したBrave Rewardsウォレットに追加した可能性のあるBAPを引き出す</translation>
 <translation id="8558636200953226885">しかし、確認を行うと、次のことが可能です...</translation>
-<translation id="3354315693758743702">ウォレットの確認はオプションです。</translation>
-<translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を行う必要性がある場合があります。</translation>
-<translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報について処理、保存、アクセスすることはありません。</translation>
-<translation id="7677480094678113476">注：承認するとトランザクションはUpholdに表示されます。たとえば、受信者とチップの金額などを確認できます。</translation>
+<translation id="3354315693758743702">ウォレットの認証は任意です。</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/>では、要求されたサービスに基づいてあなたの身元確認が必要になる場合があります。</translation>
+<translation id="6938217233488972952">Brave Software社は、 お客様が<ph name="PROVIDER"/>にアカウントを開設したときにお客様から提供されたいかなる個人情報も処理、保存、またはアクセスすることはありません。</translation>
+<translation id="2415586822982819406">注意： 承認すると、あなたのトランザクションは<ph name="PROVIDER"/>に表示されます。例えば、チップの受取人と金額を見ることができるようになります。</translation>
 <translation id="7404779623219601861">BATをギフトカードと交換する</translation>
 <translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
 <translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>
@@ -721,12 +733,36 @@
 <translation id="8327818101454798856">サポートするサイトを自分で選ぶことももちろん可能です。</translation>
 <translation id="412480955826088549">コンポーネントをダウンロード中...</translation>
 <translation id="4894106830958548828">了解しました</translation>
-<translation id="7701466644604753106">Speedreaderをオンにする</translation>
-<translation id="763042262431778831">Speedreaderをオフにする</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">市場を表示し、crypto.comから暗号通貨を購入してください。</translation>
+<translation id="4292334826913000023">価格を表示</translation>
+<translation id="5001098083058405168">デポジットで2%のボーナスを獲得</translation>
+<translation id="7336377875970208451">取引手数料の支払いをやめる</translation>
+<translation id="5889002303959545585">ビットコインを購入</translation>
+<translation id="7243082596932212589">Crypto.comのマーケットを見る</translation>
+<translation id="2258222996838418990">7日間のグラフ</translation>
+<translation id="5337526542182802976">サポートされているペア</translation>
+<translation id="1164622162816276433">24時間のボリューム</translation>
+<translation id="7534079972563542000">Unstoppable Domains（アンストッパブル・ドメインズ）</translation>
+<translation id="4492298165410552103">Braveで「Unstoppable Domains」のサポートを有効にしますか？</translation>
+<translation id="3470923752115324276">Braveは、「DNS over HTTPS（DoH）」を使用する.cryptoドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.cryptoドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.cryptoドメインを見ることができますが、他のドメインを見ることができなくなります。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
+<translation id="6513892817556267573">イーサリアムネームサービス</translation>
+<translation id="4335039108389860301">Braveでイーサリアムネームサービス（ENS）のサポートを有効にしますか？</translation>
+<translation id="618766505813078707">Braveは、「DNS over HTTPS（DoH）」を使用する.ethドメイン名ルックアップ要求を解決するためにCloudflareを使用することで、.ethドメインへのアクセスを可能にすることができます。これを有効にすると、Cloudflareはあなたがアクセスしようとしている.ethドメインを見ることができますが、他のドメインを見ることができなくなります。Cloudflareの<ph name="BEGIN_CF_TOU_LINK"/>利用規約<ph name="END_CF_TOU_LINK"/>および<ph name="BEGIN_CF_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_CF_PRIVACY_LINK"/>をご覧ください。</translation>
+<translation id="5636651007798897342">Cloudflareサーバーを使用して続行する</translation>
+<translation id="2468755552460246661">ドメインがブロックされました</translation>
+<translation id="6631469728138660166">この先に疑わしいサイトあり</translation>
+<translation id="983774928604730749">Braveは、次のサイトの読み込みを防止しました：</translation>
+<translation id="8250033559824599347">このサイトは詐欺的なものであるか、さまざまなサイト間をあちこち移動して追跡Cookieを設定するか、またはその他のプライバシー侵害行為を実行する可能性があります。</translation>
+<translation id="2459038234784107183">今後このサイトに関する警告を表示しない</translation>
+<translation id="8242426110754782860">続行する</translation>
+<translation id="2501278716633472235">戻る</translation>
 <translation id="9020818404803201080">接続されたピア：</translation>
 <translation id="2903493209154104877">住所</translation>
 <translation id="3207122385716480167">報告統計</translation>
 <translation id="2595187693729756455">ノード情報</translation>
+<translation id="8999763401170835879">エラーが発生しました。もう一度起動してみてください</translation>
+<translation id="5433704526290922623">エラーが発生しました。ノードのインストールを再試行してください</translation>
 <translation id="5789886980848929155">IPFSノードのステータス</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">ゲートウェイ</translation>
@@ -768,20 +804,20 @@
 <translation id="3977809385703587108">以下で設定を再度変更できます:</translation>
 <translation id="3340978935015468852">設定</translation>
 <translation id="4148957013307229264">インストール中…</translation>
-<translation id="6057992164469678163">ピアを待っています…</translation>
+<translation id="4219228508273972445">ピアを探しています…</translation>
 <translation id="1902096227388293745">利用可能なピアがありません、再試行中です…(残り<ph name="ATTEMPTS_NUMBER"/>回の試行)</translation>
 <translation id="1675751799495331928">試行回数の上限を超過しました。後ほど再度お試しください。</translation>
 <translation id="4499666752625407848">アップデート中、エラーが発生しました。</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">市場を表示し、crypto.comから暗号通貨を購入してください。</translation>
-<translation id="4292334826913000023">価格を表示</translation>
-<translation id="5001098083058405168">デポジットで2%のボーナスを獲得</translation>
-<translation id="7336377875970208451">取引手数料の支払いをやめる</translation>
-<translation id="5889002303959545585">ビットコインを購入</translation>
-<translation id="7243082596932212589">Crypto.comのマーケットを見る</translation>
-<translation id="2258222996838418990">7日間のグラフ</translation>
-<translation id="5337526542182802976">サポートされているペア</translation>
-<translation id="1164622162816276433">24時間のボリューム</translation>
+<translation id="7789840864192026963">許可を与える</translation>
+<translation id="8092074243456635562">私がこのページを閉じるまで</translation>
+<translation id="3523195733429162409">24時間</translation>
+<translation id="2373264732659722940">1週間</translation>
+<translation id="6318437367327684789">永久に</translation>
+<translation id="7463327191540031132">永久にブロックする</translation>
+<translation id="8797999629784150206"><ph name="SITE_PERMISSIONS"/>をいつでも変更できます。 <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">サイトのアクセス許可</translation>
+<translation id="7701466644604753106">Speedreaderをオンにする</translation>
+<translation id="763042262431778831">Speedreaderをオフにする</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -790,4 +826,25 @@
 <translation id="6951743416068151209">TorプロキシURI</translation>
 <translation id="1671503397662036257">Tor接続ステータス</translation>
 <translation id="6024292492796847324">Tor初期化の進行状況</translation>
+<translation id="8643377320501056697">トップサイトを表示</translation>
+<translation id="7176563092712682575">トップサイトをカスタマイズ</translation>
+<translation id="8760415064721320867">プライベートウィンドウ+Tor</translation>
+<translation id="4844209912525464363">Braveは、あなたがプライベートウィンドウで行った操作を記憶することはありません。さらにトールを使用することで、あなたのISPや雇用者が、あなたのブラウジング履歴を見ることができなくなります。またあなたが訪問したサイトは、あなたのIPアドレスを見ることができません。</translation>
+<translation id="5576876180131651996">プライベートウィンドウをさらにプライベートにする</translation>
+<translation id="1129265576134014816">このプライベートウィンドウはよりブライベートです</translation>
+<translation id="805807983419360524">+Tor</translation>
+<translation id="8958799246752641148">Torはあなたがサイトを訪れる際、複数のTorサーバーを経由させることで、訪問サイトからあなたのIPアドレスを秘匿化します。この接続は暗号化されているため、インターネットサービスプロバイダも雇用者もあなたの訪れているサイトを知ることはできません。Torによりブラウジングが遅くなることがあり、一部のサイトで機能しないことがあります。</translation>
+<translation id="520608572871993342">プライベートウィンドウを使用すると、あなたのデバイスでBraveに関することだけが変更されます。— 他のものの動作は何も変更されません。TorはあなたのIPアドレスを訪れるサイトに対して秘匿し、訪れたサイトをあなたのISPや雇用者からも秘匿します。プライベートウィンドウ+Torはメニューから、または{{ key }}で開きます。</translation>
+<translation id="2876191400747549936">申し訳ありませんがリクエストの処理中に問題が発生しました。もう一度お試しください。</translation>
+<translation id="5816125157889950051">報酬を受け取るタイミング</translation>
+<translation id="6733942359297688714">認証済みのUpholdウォレットに接続しています。</translation>
+<translation id="4600224932216165965"><ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>で資金を追加、引き出し、管理しましょう</translation>
+<translation id="3580616436301227919">お使いのBraveウォレットは、<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>が提供しています</translation>
+<translation id="7428521340740703492">ウォレットをリセットすると、あなたの<ph name="BEGIN_BOLD"/>{{amount}} BAT<ph name="END_BOLD"/>とその他の報酬データは恒久的に失われます。ご自身のBATを喪失することのないよう、必ずUpholdでのウォレット認証が完了しているかをご確認ください。</translation>
+<translation id="7591798679868259510">Upholdのアカウントに移動</translation>
+<translation id="160145159036553575">当ウォレットサービスは、<ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>によって提供されています。</translation>
+<translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を行う必要性がある場合があります。</translation>
+<translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報について処理、保存、アクセスすることはありません。</translation>
+<translation id="7677480094678113476">注：承認するとトランザクションはUpholdに表示されます。たとえば、受信者とチップの金額などを確認できます。</translation>
+<translation id="6057992164469678163">ピアを待っています…</translation>
 </translationbundle>

@@ -5,7 +5,7 @@
 <translation id="7942180974165298215">Blokiranje oglasov Brave Ad Block</translation>
 <translation id="4615489450165434530">Prijavite nedelujočo spletno stran</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
-<translation id="5655621391922317800">Kripto denarnice</translation>
+<translation id="1544192797660353713">Denarnica</translation>
 <translation id="2445484935443597917">Ustvari nov profil</translation>
 <translation id="2666990579225592931">Odpri okno načina za goste</translation>
 <translation id="8275068909952022340">Več…</translation>
@@ -59,6 +59,7 @@
 <translation id="1970435562892104727">To je zasebno okno s Tor-om</translation>
 <translation id="1037341607922068025">Odprite zasebno okno s Tor-om</translation>
 <translation id="1725356094208762656">Odpri v Tor-u</translation>
+<translation id="7643538479215207633">Odpri z IPFS</translation>
 <translation id="1672270084584211506">Na voljo je Onion</translation>
 <translation id="1434416574322382019">Novo zasebno okno v brskalniku Tor</translation>
 <translation id="4703780849509456860">Odpri povezavo v zasebnem oknu v brskalniku Tor</translation>
@@ -156,12 +157,18 @@
 <translation id="1336940801687497203">Enako kot Windows</translation>
 <translation id="8721331068159819483">Enako kot MacOs</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
+<translation id="8488282162676695335">Denarnica Brave</translation>
 <translation id="2356070529366658676">Vprašaj</translation>
 <translation id="7701040980221191251">Brez</translation>
+<translation id="5655621391922317800">Kripto denarnice</translation>
+<translation id="1696548911367097044">Zastarela razširitev kripto denarnice</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7090046810227878892">Ponudnik Ethereum za uporabo storitve Dapps</translation>
 <translation id="5913089932885076110">Kripto denarnice naloži ob zagonu</translation>
+<translation id="757886143331967039">Ob zagonu naložite zastarelo razširitev kripto denarnice</translation>
 <translation id="6864914031231797928">Dovoli Googlovo prijavo za razširitve</translation>
+<translation id="5927916530277631319">Način za reševanje neustavljivih domen</translation>
+<translation id="5248318250177143470">Metoda za razrešitev imenske storitve Ethereum (ENS)</translation>
 <translation id="9170907049676078643">Metoda za reševanje virov IPFS</translation>
 <translation id="1327977588028644528">Prehod</translation>
 <translation id="80225669816651290">Lokalno vozlišče</translation>
@@ -169,11 +176,15 @@
 <translation id="8425213833346101688">Spremeni</translation>
 <translation id="557281710253742286">Nastavite prehod IPFS</translation>
 <translation id="8571837315037233299">Naslov prehoda</translation>
+<translation id="1251574393468476924">Največja velikost predpomnilnika IPFS (GB)</translation>
+<translation id="2503497578400410320">Mehka zgornja meja za velikost shrambe podatkov repozitorija IPFS.</translation>
 <translation id="7703184801853248830">Neveljaven naslov prehoda</translation>
 <translation id="585868419599255817">Nadomestni javni prehod IPFS</translation>
 <translation id="207763736230883589">Če vašega lokalnega vozlišča ni mogoče doseči, se samodejno vrnite na javni prehod IPFS.</translation>
 <translation id="4107552920076294723">Preusmerite vire IPFS na konfigurirani prehod IPFS</translation>
 <translation id="6494857428933042381">Ko naleti na vir prehoda IPFS, samodejno uporabi konfigurirani prehod za ločljivosti IPFS.</translation>
+<translation id="8655170717758778983">Če je mogoče, samodejno preusmerite na strani IPFS prek DNSLink</translation>
+<translation id="2233724520223030977">Če je mogoče, samodejno uporabi DNSLink za navigacijo do različice spletnega mesta IPFS</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
 <translation id="1765684547504191670">Uporablja komponento Media Router, da omogoči Chromecast v brskalniku.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
@@ -254,11 +265,10 @@ do 6x hitreje na glavnih spletnih mestih z novicami .</translation>
 <translation id="7090566321964540749">Ta anonimna informacija programski opremi Brave samo omogoča, da oceni splošno uporabo nekaterih funkcij.</translation>
 <translation id="1947672064022327074">Želite zagnati denarnico Crypto Wallets za podporo Ethereumu?</translation>
 <translation id="7583735190612229830">Nastavite kripto denarnice za interakcijo s to aplikacijo in drugimi podobnimi.</translation>
-<translation id="4823406846571523661">Nastavi kripto denarnice</translation>
+<translation id="8731422418734770661">Nastavite kripto denarnice</translation>
 <translation id="8199661191594897555">Zaženi kripto denarnice in znova naloži</translation>
 <translation id="8428213095426709021">Nastavitve</translation>
-<translation id="1664718502100303670">Nastavitve denarnice</translation>
-<translation id="965566669123544695">Nastavitve IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Preberite več o IPFS in zasebnosti</translation>
 <translation id="4552520379838695057">Ta stran manjka.</translation>
 <translation id="2609895996619941644">Želite preveriti, ali je na računalniku Wayback na voljo shranjena različica?</translation>
@@ -279,4 +289,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2808630562319398131">Ponastavi podatke Brave Rewards ...</translation>
 <translation id="1224064034972923114">Pomagajte izboljšati Brave s samodejnim pošiljanjem poročil o zrušitvah</translation>
 <translation id="3738833060602717053">Pomagajte izboljšati <ph name="PRODUCT_NAME"/> s samodejnim pošiljanjem poročil o zrušitvah</translation>
+<translation id="4823406846571523661">Nastavi kripto denarnice</translation>
+<translation id="1664718502100303670">Nastavitve denarnice</translation>
+<translation id="965566669123544695">Nastavitve IPFS</translation>
 </translationbundle>

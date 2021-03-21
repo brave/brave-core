@@ -2,24 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
 <translation id="7307834434086582547">Brave Shieldsを有効/無効にします</translation>
-<translation id="6303294677342628402">Shields</translation>
-<translation id="6132506775968708399">第三者によるクッキーをブロックする</translation>
-<translation id="7835726359440951858">広告とトラッキングをブロックします</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="94154759592465111">スクリプトをブロックする</translation>
-<translation id="7458422973722236530">フィンガープリント対策</translation>
 <translation id="5709627087332022422">クロスサイトのトラッカーをブロックする</translation>
-<translation id="6754976710186182237">フィンガープリント手法</translation>
-<translation id="2313532038420432247">HTTPSアップグレード</translation>
-<translation id="7461425058443653485">ブロック済み
-のスクリプト</translation>
 <translation id="6052725679982758334">ソーシャルメディアのブロック</translation>
 <translation id="7498695072878479744">第三者サイトのGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
-<translation id="3834924998750356151">ブロッキングモニター</translation>
-<translation id="1713450908129883784">個別設定</translation>
 <translation id="6302422639282249274">Brave Rewardsの管理</translation>
 <translation id="1506061864768559482">検索エンジン</translation>
 <translation id="1468415711258933398">通常タブ</translation>
@@ -29,12 +19,12 @@
 <translation id="8710614491157212477">利用可能な場合、HTTPではなくHTTPSを使用してサイトを開きます</translation>
 <translation id="8387201461264842096">広告ブロック</translation>
 <translation id="1934885595886623674">広告を読み込まない</translation>
+<translation id="7458422973722236530">フィンガープリント防止</translation>
 <translation id="5787084571334399599">フィンガープリントを防止します</translation>
 <translation id="7459000603787995422">終了時にタブを閉じる</translation>
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="6469509880167172749">Braveに完全に匿名の製品分析データを自動的に送信する</translation>
 <translation id="7090566321964540749">この匿名の情報は、Braveの特定の機能が全体でどの程度使われるか、予測するためにのみ使われます。</translation>
-<translation id="453601949003770390">ブロック済みのトラッカーと広告</translation>
 <translation id="347604927162577559">節約された\n通信量</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
 <translation id="6572660632052512096">デスクトップモード</translation>
@@ -59,17 +49,13 @@
 <translation id="8701563696941209024">今すぐ再起動</translation>
 <translation id="834487290629916192">後で</translation>
 <translation id="8281886186245836920">スキップ</translation>
-<translation id="316832010181763471">検索エンジンのチュートリアル</translation>
 <translation id="986879628471635371">トラブルシューティングのチュートリアル</translation>
 <translation id="5808759341041733958">既定の検索エンジンを選択してください</translation>
 <translation id="1331593888918588693">アプリの設定で、後からいつでも設定を変更することができます。</translation>
-<translation id="7053983685419859001">ブロック</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="2880356288762235261">プライバシーを侵害する広告やトラッカーをブロックするため、ウェブで追跡されることなくブラウジングできます。</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/>を獲得</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="5870330605209713397">プライバシーを侵害しない広告を閲覧して、お気に入りのサイトやクリエイターをデフォルト設定でサポートしましょう。</translation>
-<translation id="821707262661492716">プライバシーを重視する広告を表示することによって</translation>
 <translation id="5302488867897327287">「Brave Rewardsの使用を開始」をタップすると、あなたは以下の内容に同意したことになります</translation>
 <translation id="4281844954008187215">利用規約</translation>
 <translation id="6871397658902960384">ブラウジングを開始します</translation>
@@ -77,8 +63,6 @@
 <translation id="1448877943847791441">これから最初の広告を表示します</translation>
 <translation id="4410793187232041318">これでBrave Adsを表示させBATポイントを獲得できるようになりました。</translation>
 <translation id="6511854390690723657">これは初めてのBrave広告です。タップして詳細をご覧ください。</translation>
-<translation id="4930714375720679147">ON にする</translation>
-<translation id="2453860139492968684">終了</translation>
 <translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
 <translation id="48520986898237073">引き続きウォレットに進む</translation>
 <translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
@@ -118,23 +102,12 @@
 <translation id="8220228041552340594">10月</translation>
 <translation id="8280223431922155812">11月</translation>
 <translation id="4254029385847607686">12月</translation>
-<translation id="1916285746997567466">全く新しいインターネットを
-体験しましょう！</translation>
-<translation id="3540580927110899945">プライバシーを重視する広告を表示すると<ph name="TOKEN"/>が支払われます。</translation>
-<translation id="1327938628925645979">Brave Rewards に参加</translation>
-<translation id="5567439033041178034">詳しく</translation>
 <translation id="3780605330121608425">ウォレット</translation>
 <translation id="8845154268466251503">BAP</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">米ドル</translation>
-<translation id="2104073734684466851">付与ポイント</translation>
 <translation id="1165667598801520610">資金を追加する</translation>
 <translation id="8428213095426709021">設定</translation>
-<translation id="2012723204723845092">お帰りなさい！</translation>
-<translation id="7669994301500276741">ブラウジングしながら報酬を受け取る</translation>
-<translation id="8203529727745387785">プライバシーを重視する広告を表示して報酬を獲得し、
-大好きなクリエイターたちを応援しましょう！</translation>
-<translation id="5148719990624240755">Brave Rewards を有効にします</translation>
 <translation id="8772672608371898774">Brave認証済みパブリッシャー</translation>
 <translation id="1397683270551078781">認証が完了していません</translation>
 <translation id="5727208111992260840">このクリエイターは、Braveユーザーからの応援を受け取る設定がまだ完了していません
@@ -152,7 +125,6 @@
 <translation id="13853865024308201">取得</translation>
 <translation id="7335371657242627509">自動支援の対象にする</translation>
 <translation id="5463954686005964104">毎月このサイトにチップを払う</translation>
-<translation id="7530570094705720669">ウォレットの作成</translation>
 <translation id="937392350501765664"><ph name="MONTH"/><ph name="YEAR"/></translation>
 <translation id="4751553692764711651"><ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>分の自動支援を行いました。</translation>
 <translation id="7997676409547731821">予定されていた自動支援とチップは、残高不足のため完了できませんでした。30日後に再試行します。</translation>
@@ -168,9 +140,6 @@
 <translation id="1713542052890184975">ウォレットをバックアップしてください。</translation>
 <translation id="2323069945529668668">おっと！</translation>
 <translation id="7510166204621526816">Brave Rewardsサーバーが応答しません。可能な限り早く回復いたします。</translation>
-<translation id="7117228822971127758">しばらくしてからもう一度お試しください</translation>
-<translation id="3068742524072211213"><ph name="DATE"/>に期限が切れます</translation>
-<translation id="4292832015778676417">広告からの収入</translation>
 <translation id="683765328936486920">YouTubeで</translation>
 <translation id="8969049974285901797">Twitchで</translation>
 <translation id="4376933248999950592">応援を受け取るため設定が完了していないクリエイターに、<ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>を送りました。クリエイターが設定を完了するか90日が経過するまで、繰り返し実行を試みます。</translation>
@@ -178,9 +147,7 @@
 <translation id="6940273954212603510">お願いします</translation>
 <translation id="1036277985068412734">資金を追加する</translation>
 <translation id="3492491948683276944">毎月のチップを設定します</translation>
-<translation id="4162066325465825185">申し訳ございません、お使いの機器ではBrave Rewardsを利用できないようです。</translation>
 <translation id="8038539967102225446">Brave広告はここにあります！</translation>
-<translation id="8985635554450124959">同期を設定できませんでした</translation>
 <translation id="222883304157347087">（このデバイス）</translation>
 <translation id="4157741509680155021">同期チェーン上のデバイス</translation>
 <translation id="279635009973773843">デバイスを読み込んでいます…</translation>
@@ -233,10 +200,7 @@
 <translation id="6810078320346589989">ブックマークを作成します</translation>
 <translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
 <translation id="7473245612074035141">セットアップ開始</translation>
-<translation id="1872784258300710671">Braveは完全に匿名の製品分析を使い、特定の機能が全体でどの程度使われているか予測します</translation>
-<translation id="8712637175834984815">閉じる</translation>
-<translation id="4394049700291259645">無効にする</translation>
-<translation id="8446884382197647889">詳しく知る</translation>
+<translation id="8985635554450124959">同期を設定できませんでした</translation>
 <translation id="2514300153301737214">Braveの同期が有効になっていることが検出されましたが、お使いのシステムの同期がオフになっており、Braveの同期が許可されません。押して設定を開きます。</translation>
 <translation id="7173114856073700355">設定を開く</translation>
 <translation id="6965382102122355670">OK</translation>
@@ -257,7 +221,6 @@
 <translation id="1081826981536899387">BATポイント</translation>
 <translation id="9212459913845238740">獲得したポイント付与</translation>
 <translation id="2132683977638223450">無料のポイント付与</translation>
-<translation id="4522570452068850558">詳細</translation>
 <translation id="1486343603936278248">トークン</translation>
 <translation id="8713995420537272453">ポイント</translation>
 <translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
@@ -324,7 +287,6 @@
 <translation id="614747795780742163">以前の訪問に関する情報を、ウェブサイトが保存しないようにします</translation>
 <translation id="6883611015375728278">すべてのクッキーをブロック</translation>
 <translation id="5657156137487675418">すべてのクッキーを許可する</translation>
-<translation id="5963670684159057574">フィンガープリントをブロック</translation>
 <translation id="3895527457258986253">フィンガープリントをブロック</translation>
 <translation id="184568144098869637">ブラウザがお使いのデバイスを認識しないようにする</translation>
 <translation id="7396366757003005317">フィンガープリントをブロック（強、サイト破損の可能性あり）</translation>
@@ -373,6 +335,7 @@
 <translation id="4302754476737420523">3か月</translation>
 <translation id="8248593573177859437">プライバシーレポート</translation>
 <translation id="1274039301958114163">プライバシーレポートの通知</translation>
+<translation id="453601949003770390">トラッカーと広告をブロック済み</translation>
 <translation id="1581614543353331529">まだ表示するデータがありません</translation>
 <translation id="2401984885421380890">トラッカーと広告が\nブロックされました</translation>
 <translation id="2662183408296991265">節約済の通信量\n(<ph name="DATA_SAVED"/>)</translation>
@@ -386,12 +349,12 @@
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
-<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。&#128267;</translation>
+<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。🔋</translation>
 <translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
-<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。&#128293;</translation>
-<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。&#128267;</translation>
-<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。🔥</translation>
+<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。🔋</translation>
+<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。💨💨</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
 <translation id="9080777565335515917">プライベートで安全なブラウジングのため、Braveをデフォルトのブラウザとして設定します。</translation>
 <translation id="7801488941710395275">Braveが、プライバシー統計を表示できるようにする</translation>
@@ -404,6 +367,7 @@
 <translation id="1383876407941801731">検索</translation>
 <translation id="1972589975368876259">スタックを編集</translation>
 <translation id="2490330380242414851">ウィジェットを削除</translation>
+<translation id="8446884382197647889">詳しく知る</translation>
 <translation id="7384441892795736634">データを更新する</translation>
 <translation id="4804818685124855865">接続を切断する</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -461,8 +425,10 @@
 <translation id="5876169128756792273">トークンはクリエイターをサポートする以外にも使用できます。加盟店が参加すると、デジタルコンテンツやその他の商品を購入することができます。</translation>
 <translation id="1402530520078693620">最後に、基本設定を設定しましょう</translation>
 <translation id="3494356595346329740">これを後で変更できます。</translation>
-<translation id="6462814326662189004">どのくらいの頻度で広告を見たいですか？\n（1時間当たりの広告数）</translation>
-<translation id="2134244432345596331">お気に入りのクリエイターにどれくらいの支援をしたいですか？\n（あなたの広告収入から）</translation>
+<translation id="3115702351969988294">どれくらいの頻度で広告を見たいですか。</translation>
+<translation id="3474670199029510295">（1時間あたりの広告数）</translation>
+<translation id="66599604460581068">お気に入りのクリエイターにどれくらいの支援をしたいですか？</translation>
+<translation id="3164498053837913829">(広告収入から)</translation>
 <translation id="827315274423079662">やったー、準備完了です！</translation>
 <translation id="3895246934788932488">Brave Rewardsを使用することで、あなたは自分のプライバシーを保護し、ウェブを誰にとってもより良い場所にするお手伝いをしています。そして、それは素晴らしいことです！</translation>
 <translation id="5705882733397021510">戻る</translation>
@@ -478,7 +444,6 @@
 <translation id="7889432931837317731">可能な場合は自動的に開きます</translation>
 <translation id="8967385052772844086">完全なプライバシーレポートを表示します</translation>
 <translation id="6864343534748973390">最も人気のある</translation>
-<translation id="1622983732360473885">Braveをサポート</translation>
 <translation id="4608192160278975831">プライベートでトラッキングなし</translation>
 <translation id="7208522820527289601">プライベートでトラッキングなし、EUベース</translation>
 <translation id="1161008391729450974">トラッカーのないGoogleの検索結果</translation>
@@ -501,4 +466,56 @@
 <translation id="6232491755501685494">日本の「Brave Rewards」は新しいシステムに移行を予定しています！</translation>
 <translation id="7444515017164572362">3月13日以降、BAPを使用できなくなります。ただし、4月に新しいシステムにアップデートを行えば、新しいトークンを利用開始することができます。</translation>
 <translation id="8587285254008006694">この移行の一環として、ブラウザのチップ機能と寄付機能が3月13日から一時的に使用できなくなり、あなたが4月に新しいシステムにアップデートするまであなたのBAP残高は0.0と表示されます。新しいシステムに移行次第、新しいトークンを利用開始できます！</translation>
+<translation id="4956847150856741762">1</translation>
+<translation id="5196716972587102051">2</translation>
+<translation id="7839580021124293374">3</translation>
+<translation id="2918322085844739869">4</translation>
+<translation id="7267186368513450821">5</translation>
+<translation id="6972003925509023890">1 BAT</translation>
+<translation id="8867821173176188875">5 BAT</translation>
+<translation id="8762169086048682708">10 BAT</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="4548973860489847866">0.00 BAT</translation>
+<translation id="4193129043743994339">0.00米ドル</translation>
+<translation id="6303294677342628402">Shields</translation>
+<translation id="6132506775968708399">第三者によるクッキーをブロックする</translation>
+<translation id="7835726359440951858">広告とトラッキングをブロックします</translation>
+<translation id="6754976710186182237">フィンガープリント手法</translation>
+<translation id="2313532038420432247">HTTPSアップグレード</translation>
+<translation id="7461425058443653485">ブロック済み
+のスクリプト</translation>
+<translation id="3834924998750356151">ブロッキングモニター</translation>
+<translation id="1713450908129883784">個別設定</translation>
+<translation id="316832010181763471">検索エンジンのチュートリアル</translation>
+<translation id="7053983685419859001">ブロック</translation>
+<translation id="2880356288762235261">プライバシーを侵害する広告やトラッカーをブロックするため、ウェブで追跡されることなくブラウジングできます。</translation>
+<translation id="821707262661492716">プライバシーを重視する広告を表示することによって</translation>
+<translation id="4930714375720679147">ON にする</translation>
+<translation id="2453860139492968684">終了</translation>
+<translation id="1916285746997567466">全く新しいインターネットを
+体験しましょう！</translation>
+<translation id="3540580927110899945">プライバシーを重視する広告を表示すると<ph name="TOKEN"/>が支払われます。</translation>
+<translation id="1327938628925645979">Brave Rewards に参加</translation>
+<translation id="5567439033041178034">詳しく</translation>
+<translation id="2104073734684466851">付与ポイント</translation>
+<translation id="2012723204723845092">お帰りなさい！</translation>
+<translation id="7669994301500276741">ブラウジングしながら報酬を受け取る</translation>
+<translation id="8203529727745387785">プライバシーを重視する広告を表示して報酬を獲得し、
+大好きなクリエイターたちを応援しましょう！</translation>
+<translation id="5148719990624240755">Brave Rewards を有効にします</translation>
+<translation id="7530570094705720669">ウォレットの作成</translation>
+<translation id="7117228822971127758">しばらくしてからもう一度お試しください</translation>
+<translation id="3068742524072211213"><ph name="DATE"/>に期限が切れます</translation>
+<translation id="4292832015778676417">広告からの収入</translation>
+<translation id="4162066325465825185">申し訳ございません、お使いの機器ではBrave Rewardsを利用できないようです。</translation>
+<translation id="1872784258300710671">Braveは完全に匿名の製品分析を使い、特定の機能が全体でどの程度使われているか予測します</translation>
+<translation id="8712637175834984815">閉じる</translation>
+<translation id="4394049700291259645">無効にする</translation>
+<translation id="4522570452068850558">詳細</translation>
+<translation id="5963670684159057574">フィンガープリントをブロック</translation>
+<translation id="6462814326662189004">どのくらいの頻度で広告を見たいですか？\n（1時間当たりの広告数）</translation>
+<translation id="2134244432345596331">お気に入りのクリエイターにどれくらいの支援をしたいですか？\n（あなたの広告収入から）</translation>
+<translation id="1622983732360473885">Braveをサポート</translation>
 </translationbundle>

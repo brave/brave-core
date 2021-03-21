@@ -2,23 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="vi">
 <translation id="7307834434086582547">Bật/Tắt Khiên Brave</translation>
-<translation id="6303294677342628402">Lá chắn</translation>
-<translation id="6132506775968708399">Chặn cookie của bên thứ 3</translation>
-<translation id="7835726359440951858">Chặn quảng cáo và theo dõi</translation>
 <translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="94154759592465111">Chặn Kịch bản</translation>
-<translation id="7458422973722236530">Bảo vệ bằng dấu vân tay</translation>
 <translation id="5709627087332022422">Chặn các bộ theo dõi trên mọi website</translation>
-<translation id="6754976710186182237">Phương pháp dấu vân tay</translation>
-<translation id="2313532038420432247">HTTPS Upgrades</translation>
-<translation id="7461425058443653485">Đã chặn Tập lệnh</translation>
 <translation id="6052725679982758334">Chặn Mạng Xã hội</translation>
 <translation id="7498695072878479744">Cho phép các nút đăng nhập Google trên các website bên thứ ba</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
-<translation id="3834924998750356151">Màn hình chặn</translation>
-<translation id="1713450908129883784">Kiểm soát riêng</translation>
 <translation id="6302422639282249274">Quản lý Phần thưởng Brave</translation>
 <translation id="1506061864768559482">Công cụ tìm kiếm</translation>
 <translation id="1468415711258933398">Tab tiêu chuẩn</translation>
@@ -28,12 +19,12 @@
 <translation id="8710614491157212477">Mở các trang web được hỗ trợ bằng HTTPS thay vì HTTP khi có thể</translation>
 <translation id="8387201461264842096">Chặn quảng cáo</translation>
 <translation id="1934885595886623674">Ngăn quảng cáo tải</translation>
+<translation id="7458422973722236530">Bảo vệ bằng dấu vân tay</translation>
 <translation id="5787084571334399599">Ngăn chặn trình duyệt lấy dấu vân tay</translation>
 <translation id="7459000603787995422">Đóng tab khi thoát</translation>
 <translation id="1680858055899097121">Đừng giữ nguyên các tab giữa các phiên duyệt</translation>
 <translation id="6469509880167172749">Tự động gửi dữ liệu phân tích sản phẩm hoàn toàn riêng tư đến Brave</translation>
 <translation id="7090566321964540749">Thông tin ẩn danh này chỉ cho phép Brave ước tính mức độ sử dụng tổng thể của một số tính năng nhất định.</translation>
-<translation id="453601949003770390">Trình theo dõi &amp; Quảng cáo Đã chặn</translation>
 <translation id="347604927162577559">Dữ liệu\nTiết kiệm được</translation>
 <translation id="9008534313521214777">Thời gian Ước tính\nTiết kiệm được</translation>
 <translation id="6572660632052512096">Chế độ cho máy tính để bàn</translation>
@@ -58,17 +49,13 @@
 <translation id="8701563696941209024">KHỞI CHẠY LẠI NGAY</translation>
 <translation id="834487290629916192">ĐỂ SAU</translation>
 <translation id="8281886186245836920">Bỏ qua</translation>
-<translation id="316832010181763471">Bắt đầu sử dụng công cụ tìm kiếm</translation>
 <translation id="986879628471635371">Bắt đầu sử dụng công cụ khắc phục sự cố</translation>
 <translation id="5808759341041733958">Chọn công cụ tìm kiếm mặc định</translation>
 <translation id="1331593888918588693">Bạn có thể thay đổi tùy chọn của mình trong phần cài đặt của ứng dụng bất cứ lúc nào.</translation>
-<translation id="7053983685419859001">Chặn</translation>
 <translation id="5806601733251372221">Khiên Brave</translation>
-<translation id="2880356288762235261">các trình theo dõi và quảng cáo xâm phạm quyền riêng tư để bạn có thể duyệt mà không bị theo dõi trên các web.</translation>
 <translation id="8537217141725709400">Kiếm <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
 <translation id="5870330605209713397">bằng cách xem quảng cáo tôn trọng quyền riêng tư và hỗ trợ các website và người sáng tạo yêu thích của bạn theo mặc định.</translation>
-<translation id="821707262661492716">nhờ xem các quảng cáo tôn trọng quyền riêng tư.</translation>
 <translation id="5302488867897327287">Bằng cách nhấn vào Bắt đầu sử dụng Brave Rewards, bạn đồng ý với</translation>
 <translation id="4281844954008187215">Điều khoản Dịch vụ</translation>
 <translation id="6871397658902960384">Bắt đầu duyệt</translation>
@@ -76,8 +63,6 @@
 <translation id="1448877943847791441">Brave sẽ hiển thị quảng cáo đầu tiên của bạn trong</translation>
 <translation id="4410793187232041318">Giờ đây, bạn sẽ kiếm được token từ Brave Ads.</translation>
 <translation id="6511854390690723657">Đây là quảng cáo Brave đầu tiên của bạn. Nhấn để tìm hiểu thêm.</translation>
-<translation id="4930714375720679147">Bật</translation>
-<translation id="2453860139492968684">Kết thúc</translation>
 <translation id="2070991379950719711">Bắt đầu sử dụng Brave Rewards</translation>
 <translation id="48520986898237073">Tiếp tục đến ví</translation>
 <translation id="3570367516044491911">Đặt thành trình duyệt mặc định</translation>
@@ -117,22 +102,12 @@
 <translation id="8220228041552340594">THÁNG 10</translation>
 <translation id="8280223431922155812">THÁNG 11</translation>
 <translation id="4254029385847607686">THÁNG 12</translation>
-<translation id="1916285746997567466">Sẵn sàng trải nghiệm
-mạng Internet mới.</translation>
-<translation id="3540580927110899945">Giờ đây bạn có thể kiếm <ph name="TOKEN"/>s khi xem các quảng cáo tôn trọng quyền riêng tư.</translation>
-<translation id="1327938628925645979">THAM GIA PHẦN THƯỞNG</translation>
-<translation id="5567439033041178034">TÌM HIỂU THÊM</translation>
 <translation id="3780605330121608425">Ví của bạn</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
-<translation id="2104073734684466851">Cấp</translation>
 <translation id="1165667598801520610">Thêm Nguồn tiền</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
-<translation id="2012723204723845092">Chào mừng bạn trở lại!</translation>
-<translation id="7669994301500276741">Nhận phần thưởng khi duyệt.</translation>
-<translation id="8203529727745387785">Kiếm tiền bằng cách xem các quảng cáo tôn trọng quyền riêng tư và trả tiền để hỗ trợ các nhà sáng tạo nội dung mà bạn yêu thích.</translation>
-<translation id="5148719990624240755">BẬT PHẦN THƯỞNG BRAVE</translation>
 <translation id="8772672608371898774">Nhà sản xuất Chứng thực bởi Brave</translation>
 <translation id="1397683270551078781">Vẫn chưa được xác minh</translation>
 <translation id="5727208111992260840">Người tạo này chưa đăng ký nhận đóng góp từ người dùng Brave.
@@ -150,7 +125,6 @@ tháng này...</translation>
 <translation id="13853865024308201">Nhận</translation>
 <translation id="7335371657242627509">Bao gồm trong Tự động Đóng góp</translation>
 <translation id="5463954686005964104">Gửi tiền boa cho trang web này hàng tháng</translation>
-<translation id="7530570094705720669">Tạo ví</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
 <translation id="4751553692764711651">Bạn đã đóng góp <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Giao dịch thanh toán hàng tháng đã lên lịch của bạn cho Đóng góp tự động và tip hàng tháng không thể được hoàn thành do không đủ tiền. Chúng tôi sẽ thử lại sau 30 ngày.</translation>
@@ -166,9 +140,6 @@ tháng này...</translation>
 <translation id="1713542052890184975">Vui lòng sao lưu ví Brave của bạn.</translation>
 <translation id="2323069945529668668">Ối trời!</translation>
 <translation id="7510166204621526816">Máy chủ Phần Thưởng Brave không phản hồi. Chúng tôi sẽ khắc phục vấn đề này càng sớm càng tốt.</translation>
-<translation id="7117228822971127758">Vui lòng thử lại sau</translation>
-<translation id="3068742524072211213">hết hạn vào <ph name="DATE"/></translation>
-<translation id="4292832015778676417">thu được từ quảng cáo</translation>
 <translation id="683765328936486920">trên YouTube</translation>
 <translation id="8969049974285901797">trên Twitch</translation>
 <translation id="4376933248999950592">Bạn đã chỉ định góp <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> cho các nhà sáng tạo chưa đăng ký nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục cố gửi đóng góp cho đến khi họ xác nhận, hoặc khi hết thời hạn 90 ngày.</translation>
@@ -176,9 +147,7 @@ tháng này...</translation>
 <translation id="6940273954212603510">vui lòng</translation>
 <translation id="1036277985068412734">thêm tiền</translation>
 <translation id="3492491948683276944">đặt tip hàng tháng</translation>
-<translation id="4162066325465825185">Chúng tôi rất tiếc. Có vẻ như Phần thưởng Brave không có sẵn trên thiết bị của bạn</translation>
 <translation id="8038539967102225446">Đây là Quảng cáo Brave!</translation>
-<translation id="8985635554450124959">Không thể thiết lập đồng bộ hóa</translation>
 <translation id="222883304157347087">(thiết bị này)</translation>
 <translation id="4157741509680155021">THIẾT BỊ TRÊN CHUỖI ĐỒNG BỘ</translation>
 <translation id="279635009973773843">ĐANG TẢI THIẾT BỊ...</translation>
@@ -231,10 +200,7 @@ tháng này...</translation>
 <translation id="6810078320346589989">Tạo một dấu trang</translation>
 <translation id="3396347744975515056">Brave Sync đã được nâng cấp và cần phải thiết lập</translation>
 <translation id="7473245612074035141">Bắt đầu Thiết lập</translation>
-<translation id="1872784258300710671">Brave sử dụng dữ liệu phân tích sản phẩm hoàn toàn riêng tư để ước tính mức độ sử dụng tổng thể của một số tính năng nhất định</translation>
-<translation id="8712637175834984815">Bỏ qua</translation>
-<translation id="4394049700291259645">Vô hiệu hóa</translation>
-<translation id="8446884382197647889">Tìm hiểu thêm</translation>
+<translation id="8985635554450124959">Không thể thiết lập đồng bộ hóa</translation>
 <translation id="2514300153301737214">Chúng tôi nhận thấy bạn đã bật Brave Sync. Tuy nhiên, tính năng đồng bộ hóa hệ thống của bạn đã tắt và không cho phép Brave đồng bộ hóa. Hãy nhấn để mở phần cài đặt</translation>
 <translation id="7173114856073700355">Mở phần Cài đặt</translation>
 <translation id="6965382102122355670">OK</translation>
@@ -255,7 +221,6 @@ tháng này...</translation>
 <translation id="1081826981536899387">Điểm BAT</translation>
 <translation id="9212459913845238740">Điểm Tặng Đã Nhận</translation>
 <translation id="2132683977638223450">Tặng Điểm Miễn phí</translation>
-<translation id="4522570452068850558">Thông tin chi tiết</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="8713995420537272453">điểm</translation>
 <translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
@@ -322,7 +287,6 @@ tháng này...</translation>
 <translation id="614747795780742163">Ngăn chặn các trang web lưu trữ thông tin về các lần truy cập trước của bạn</translation>
 <translation id="6883611015375728278">Chặn tất cả cookie</translation>
 <translation id="5657156137487675418">Cho phép mọi cookie.</translation>
-<translation id="5963670684159057574">Chặn dấu vân tay chéo trang</translation>
 <translation id="3895527457258986253">Chặn Vân tay</translation>
 <translation id="184568144098869637">Ngăn trình duyệt nhận ra thiết bị của bạn</translation>
 <translation id="7396366757003005317">Dấu vân tay bị chặn (nghiêm ngặt, có thể phá vỡ các trang)</translation>
@@ -371,6 +335,7 @@ tháng này...</translation>
 <translation id="4302754476737420523">3 Tháng</translation>
 <translation id="8248593573177859437">Báo cáo Quyền riêng tư</translation>
 <translation id="1274039301958114163">Thông báo về Báo cáo Quyền riêng tư</translation>
+<translation id="453601949003770390">Trình theo dõi &amp; Quảng cáo Đã chặn</translation>
 <translation id="1581614543353331529">Chưa có dữ liệu nào để hiển thị</translation>
 <translation id="2401984885421380890">Trình theo dõi &amp; Quảng cáo\Bị chặn</translation>
 <translation id="2662183408296991265">Dữ liệu Tiết kiệm được\n(<ph name="DATA_SAVED"/>)</translation>
@@ -384,12 +349,12 @@ tháng này...</translation>
 <translation id="7427567994475794038">Hãy bật Báo cáo Quyền riêng tư để xem số lượng trình theo dõi &amp; quảng cáo đã bị chặn trong 3 giờ qua.</translation>
 <translation id="2053891538879944400">Bạn đã tiết kiệm <ph name="DATA"/> <ph name="DATA_TEXT"/> dữ liệu bằng trình duyệt Brave.</translation>
 <translation id="8640064498452534195">Bật Báo cáo Quyền riêng tư để xem lượng dữ liệu mà bạn đã tiết kiệm được.</translation>
-<translation id="2252497442547961651">Trình duyệt Brave có mức sử dụng pin trung bình ít hơn 40%.&#128267;</translation>
+<translation id="2252497442547961651">Trình duyệt Brave có mức sử dụng pin trung bình ít hơn 40%.🔋</translation>
 <translation id="1945330434665345785">Tuần trước, bạn đã chặn <ph name="COUNT"/> trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.</translation>
 <translation id="2883868922264431515">Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư và hỗ trợ các trang web yêu thích của bạn.</translation>
-<translation id="5678925890616256956">Tuyệt! Bạn đã chặn 250 trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.&#128293;</translation>
-<translation id="9199047775708635708">Tuyệt! Bạn đã tiết kiệm được 10MB với trình duyệt Brave.&#128267;</translation>
-<translation id="1880168210969863408">Tuyệt! Bạn đã tiết kiệm được 10 Phút thời gian tải với trình duyệt Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Tuyệt! Bạn đã chặn 250 trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.🔥</translation>
+<translation id="9199047775708635708">Tuyệt! Bạn đã tiết kiệm được 10MB với trình duyệt Brave.🔋</translation>
+<translation id="1880168210969863408">Tuyệt! Bạn đã tiết kiệm được 10 Phút thời gian tải với trình duyệt Brave.💨💨</translation>
 <translation id="7408493389591475748">Bắt đầu duyệt web để xem báo cáo quyền riêng tư</translation>
 <translation id="9080777565335515917">Đặt Brave làm trình duyệt mặc định của bạn để duyệt web an toàn và bảo mật.</translation>
 <translation id="7801488941710395275">Cho phép Brave hiển thị số liệu thống kê về quyền riêng tư của bạn</translation>
@@ -402,6 +367,7 @@ tháng này...</translation>
 <translation id="1383876407941801731">Tìm kiếm</translation>
 <translation id="1972589975368876259">Chỉnh sửa Ngăn xếp</translation>
 <translation id="2490330380242414851">Xóa Tiện ích</translation>
+<translation id="8446884382197647889">Tìm hiểu thêm</translation>
 <translation id="7384441892795736634">Làm mới Dữ liệu</translation>
 <translation id="4804818685124855865">Ngắt kết nối</translation>
 <translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
@@ -459,8 +425,10 @@ tháng này...</translation>
 <translation id="5876169128756792273">Bạn có thể sử dụng các token ngoài việc ủng hộ các nhà sáng tạo. Bạn có thể mua nội dung kỹ thuật số và các hàng hóa khác khi các thương gia tham gia.</translation>
 <translation id="1402530520078693620">Cuối cùng, bạn hãy thiết lập các cài đặt cơ bản</translation>
 <translation id="3494356595346329740">Bạn có thể thay đổi điều này sau.</translation>
-<translation id="6462814326662189004">Bạn muốn xem quảng cáo bao lâu một lần?\n(Quảng cáo mỗi giờ)</translation>
-<translation id="2134244432345596331">Bạn muốn hỗ trợ bao nhiêu cho những người sáng tạo mà bạn yêu thích?\n(từ thu nhập xem quảng cáo của bạn)</translation>
+<translation id="3115702351969988294">Bạn muốn xem quảng cáo bao lâu một lần?</translation>
+<translation id="3474670199029510295">(Số quảng cáo mỗi giờ)</translation>
+<translation id="66599604460581068">Bạn muốn hỗ trợ bao nhiêu cho những người sáng tạo nội dung mà mình yêu thích?</translation>
+<translation id="3164498053837913829">(từ thu nhập xem quảng cáo của bạn)</translation>
 <translation id="827315274423079662">Tuyệt vời, tất cả đã sẵn sàng rồi!</translation>
 <translation id="3895246934788932488">Bằng cách sử dụng Brave Rewards, bạn đang bảo vệ quyền riêng tư của mình, đồng thời giúp cho mạng toàn cầu trở thành một nơi tốt hơn cho mọi người. Và điều đó thật tuyệt vời!</translation>
 <translation id="5705882733397021510">Quay Lại</translation>
@@ -476,7 +444,6 @@ tháng này...</translation>
 <translation id="7889432931837317731">Tự động mở khi có thể</translation>
 <translation id="8967385052772844086">Xem toàn văn Báo cáo Quyền riêng tư</translation>
 <translation id="6864343534748973390">Phổ biến nhất</translation>
-<translation id="1622983732360473885">Ủng hộ Brave</translation>
 <translation id="4608192160278975831">Riêng tư và không theo dõi</translation>
 <translation id="7208522820527289601">Riêng tư và không theo dõi, có căn cứ ở Liên minh Châu Âu</translation>
 <translation id="1161008391729450974">Kết quả của Google mà không có trình theo dõi</translation>
@@ -498,4 +465,54 @@ tháng này...</translation>
 <translation id="6232491755501685494">Brave Rewards ở Nhật Bản hiện đang chuyển sang hệ thống mới!</translation>
 <translation id="7444515017164572362">Bắt đầu từ ngày 13 tháng 3, bạn sẽ không thể sử dụng BAP của mình. Nhưng khi bạn cập nhật lên hệ thống mới vào tháng 4, bạn sẽ bắt đầu với các token mới!</translation>
 <translation id="8587285254008006694">Nằm trong quá trình chuyển đổi này, các tính năng tặng tiền thưởng và đóng góp trong trình duyệt của bạn sẽ tạm thời không thể sử dụng kể từ ngày 13 tháng 3, đồng thời số dư BAP của bạn sẽ hiển thị 0,0 cho đến khi bạn cập nhật lên hệ thống mới vào tháng 4. Khi bạn sử dụng hệ thống mới, bạn sẽ bắt đầu với các token mới!</translation>
+<translation id="4956847150856741762">1</translation>
+<translation id="5196716972587102051">2</translation>
+<translation id="7839580021124293374">3</translation>
+<translation id="2918322085844739869">4</translation>
+<translation id="7267186368513450821">5</translation>
+<translation id="6972003925509023890">1 BAT</translation>
+<translation id="8867821173176188875">5 BAT</translation>
+<translation id="8762169086048682708">10 BAT</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="4548973860489847866">0.00 BAT</translation>
+<translation id="4193129043743994339">0.00 USD</translation>
+<translation id="6303294677342628402">Lá chắn</translation>
+<translation id="6132506775968708399">Chặn cookie của bên thứ 3</translation>
+<translation id="7835726359440951858">Chặn quảng cáo và theo dõi</translation>
+<translation id="6754976710186182237">Phương pháp dấu vân tay</translation>
+<translation id="2313532038420432247">HTTPS Upgrades</translation>
+<translation id="7461425058443653485">Đã chặn Tập lệnh</translation>
+<translation id="3834924998750356151">Màn hình chặn</translation>
+<translation id="1713450908129883784">Kiểm soát riêng</translation>
+<translation id="316832010181763471">Bắt đầu sử dụng công cụ tìm kiếm</translation>
+<translation id="7053983685419859001">Chặn</translation>
+<translation id="2880356288762235261">các trình theo dõi và quảng cáo xâm phạm quyền riêng tư để bạn có thể duyệt mà không bị theo dõi trên các web.</translation>
+<translation id="821707262661492716">nhờ xem các quảng cáo tôn trọng quyền riêng tư.</translation>
+<translation id="4930714375720679147">Bật</translation>
+<translation id="2453860139492968684">Kết thúc</translation>
+<translation id="1916285746997567466">Sẵn sàng trải nghiệm
+mạng Internet mới.</translation>
+<translation id="3540580927110899945">Giờ đây bạn có thể kiếm <ph name="TOKEN"/>s khi xem các quảng cáo tôn trọng quyền riêng tư.</translation>
+<translation id="1327938628925645979">THAM GIA PHẦN THƯỞNG</translation>
+<translation id="5567439033041178034">TÌM HIỂU THÊM</translation>
+<translation id="2104073734684466851">Cấp</translation>
+<translation id="2012723204723845092">Chào mừng bạn trở lại!</translation>
+<translation id="7669994301500276741">Nhận phần thưởng khi duyệt.</translation>
+<translation id="8203529727745387785">Kiếm tiền bằng cách xem các quảng cáo tôn trọng quyền riêng tư và trả tiền để hỗ trợ các nhà sáng tạo nội dung mà bạn yêu thích.</translation>
+<translation id="5148719990624240755">BẬT PHẦN THƯỞNG BRAVE</translation>
+<translation id="7530570094705720669">Tạo ví</translation>
+<translation id="7117228822971127758">Vui lòng thử lại sau</translation>
+<translation id="3068742524072211213">hết hạn vào <ph name="DATE"/></translation>
+<translation id="4292832015778676417">thu được từ quảng cáo</translation>
+<translation id="4162066325465825185">Chúng tôi rất tiếc. Có vẻ như Phần thưởng Brave không có sẵn trên thiết bị của bạn</translation>
+<translation id="1872784258300710671">Brave sử dụng dữ liệu phân tích sản phẩm hoàn toàn riêng tư để ước tính mức độ sử dụng tổng thể của một số tính năng nhất định</translation>
+<translation id="8712637175834984815">Bỏ qua</translation>
+<translation id="4394049700291259645">Vô hiệu hóa</translation>
+<translation id="4522570452068850558">Thông tin chi tiết</translation>
+<translation id="5963670684159057574">Chặn dấu vân tay chéo trang</translation>
+<translation id="6462814326662189004">Bạn muốn xem quảng cáo bao lâu một lần?\n(Quảng cáo mỗi giờ)</translation>
+<translation id="2134244432345596331">Bạn muốn hỗ trợ bao nhiêu cho những người sáng tạo mà bạn yêu thích?\n(từ thu nhập xem quảng cáo của bạn)</translation>
+<translation id="1622983732360473885">Ủng hộ Brave</translation>
 </translationbundle>

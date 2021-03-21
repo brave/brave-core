@@ -111,7 +111,6 @@
 <translation id="847561904663814268">Joku on jo kirjautunut tällä tietokoneella Braveiin käyttäjätilillä <ph name="ACCOUNT_EMAIL_LAST"/>. Luo uusi Brave-käyttäjä, jos haluat pitää tiedot erillään.</translation>
 <translation id="3834935463915107022">Suljetaanko Brave silti?</translation>
 <translation id="8668413672647811944">Bravein tärkeä tietoturvapäivitys on asennettu. Käynnistä selain uudelleen – palautamme avoimet välilehdet.</translation>
-<translation id="7914115000169617076">Melkein ajan tasalla. Viimeistele päivitys käynnistämällä Brave uudelleen. Incognito-ikkunoita ei avata uudelleen.</translation>
 <translation id="4823369970559443694">Brave ei voi tarkistaa salasanojasi. Yritä uudelleen 24 tunnin kuluttua tai <ph name="BEGIN_LINK"/>tarkista salasanat Brave-tililtä<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Tämä käyttää samaa oikeinkirjoituksen tarkistusta kuin Brave Haku. Selaimeen kirjoittamasi teksti lähetetään Bravelle. Voit vaihtaa valintasi milloin tahansa asetuksista.</translation>
 <translation id="2899369907387169108">Käytä Braveia ilman tiliä</translation>
@@ -282,4 +281,5 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen.}=1{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen. Incognito-ikkunaasi ei avata uudelleen.}other{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
+<translation id="7914115000169617076">Melkein ajan tasalla. Viimeistele päivitys käynnistämällä Brave uudelleen. Yksityiset ikkunat ei avata uudelleen.</translation>
 </translationbundle>

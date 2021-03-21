@@ -97,7 +97,7 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="2871190378186459992">Ezagutu Brave-erako aplikazio, joko, luzapen eta gai bikainak.</translation>
 <translation id="5757460455745382269">Hizkuntza honetan dago Brave-en erabiltzaile-interfazea</translation>
 <translation id="1853997773668795891">Brave datuak kontu honekin lotu nahi dituzu?</translation>
-<translation id="8923080813984421771">Gailua erabili aurretik, <ph name="MANAGER"/> kudeatzaileak jarraian azalduko diren Zerbitzu-baldintzak irakurtzeko eta onartzeko eskatzen dizu. Baldintzok ez dituzte hedatuko, aldatuko edo mugatuko Chrome OS-ren Baldintzak.</translation>
+<translation id="8923080813984421771">Gailua erabili aurretik, <ph name="MANAGER"/> kudeatzaileak jarraian azalduko diren Zerbitzu-baldintzak irakurtzeko eta onartzeko eskatzen dizu. Baldintzok ez dituzte hedatuko, aldatuko edo mugatuko Chrome OS-en Baldintzak.</translation>
 <translation id="3262506503470845422">Lortu Brave erabiltzeko laguntza</translation>
 <translation id="7691786510374174420">Instalazioak huts egin du zehaztu gabeko errore batengatik. Brave abian bada, itxi eta ireki berriro.</translation>
 <translation id="9183662282810237335">Brave-etik irten nahi duzu hala ere?</translation>
@@ -113,7 +113,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="847561904663814268">Norbaitek <ph name="ACCOUNT_EMAIL_LAST"/> gisa hasi du saioa Brave-en ordenagailu hau erabilita. Zure informazioa bereizita izateko, sortu beste Brave erabiltzaile bat.</translation>
 <translation id="3834935463915107022">Brave-etik irten nahi duzu hala ere?</translation>
 <translation id="8668413672647811944">Brave-en segurtasun-eguneratze berezi bat aplikatu berri da. Berrabiarazi gailua, eta fitxak leheneratuko dizkizugu.</translation>
-<translation id="7914115000169617076">Ia amaitu dugu eguneratzen. Abiarazi berriro Brave eguneratzen amaitzeko. Ezkutuko moduko leihoak ez dira berriro irekiko.</translation>
 <translation id="4823369970559443694">Brave-ek ezin ditu egiaztatu pasahitzak. Saiatu berriro 24 ordu barru edo <ph name="BEGIN_LINK"/>egiaztatu pasahitzak Brave-ko kontuan<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Brave Bilaketa zerbitzuan erabiltzen den ortografia-zuzentzaile bera erabiltzen da. Arakatzailean idazten duzun testua Brave-ri bidaltzen zaio. Aukera horiek aldatzeko, joan ezarpenetara.</translation>
 <translation id="2899369907387169108">Erabili Brave saioa hasi gabe</translation>
@@ -284,4 +283,5 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave-en eguneratze bat erabilgarri dago eta sistema eragilea berrabiarazten duzunean aplikatuko da.}=1{Brave-en eguneratze bat erabilgarri dago eta sistema eragilea berrabiarazten duzunean aplikatuko da. Ezkutuko moduko leihoa ez da berriro irekiko.}other{Brave-en eguneratze bat erabilgarri dago eta sistema eragilea berrabiarazten duzunean aplikatuko da. Ezkutuko moduko # leihoak ez dira berriro irekiko.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Brave berrabiarazteko eskatu dizu administratzaileak, eguneratzea aplikatzeko}=1{Brave berrabiarazteko eskatu dizu administratzaileak, eguneratzea aplikatzeko. Ezkutuko moduko leihoa ez da berriro irekiko.}other{Brave berrabiarazteko eskatu dizu administratzaileak, eguneratzea aplikatzeko. Ezkutuko moduko # leihoak ez dira berriro irekiko.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Brave berrabiaraz dezazun behar du administratzaileak, eguneratzea aplikatzeko}=1{Brave berrabiaraz dezazun behar du administratzaileak, eguneratzea aplikatzeko. Ezkutuko moduko leihoa ez da berriro irekiko.}other{Brave berrabiaraz dezazun behar du administratzaileak, eguneratzea aplikatzeko. Ezkutuko moduko # leihoak ez dira berriro irekiko.}}</translation>
+<translation id="7914115000169617076">Ia amaitu dugu eguneratzen. Abiarazi berriro Brave eguneratzen amaitzeko. Ezkutuko moduko leihoak ez dira berriro irekiko.</translation>
 </translationbundle>
