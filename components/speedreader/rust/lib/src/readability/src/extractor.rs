@@ -126,12 +126,6 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     );
 
     if let Some(first_child) = top_candidate.node.first_child() {
-        // Kinda hacky, but it's possible the parent is a dangling pointer if it
-        // was deleted during the preprocess or cleaning stages. This ensures we
-        // don't panic in append_before_sibling().
-        //first_child
-        //    .parent
-        //    .set(Some(Rc::downgrade(&top_candidate.node)));
         dom.append_before_sibling(&first_child.clone(), NodeOrText::AppendNode(header.clone()));
     }
 
