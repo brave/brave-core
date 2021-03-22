@@ -278,6 +278,10 @@ bool WriteOnFileTaskRunner(const base::FilePath& file_path,
                                   first_write);
 }
 
+bool DeleteOnFileTaskRunner(const base::FilePath& file_path) {
+  return base::DeleteFile(file_path);
+}
+
 }  // namespace
 
 namespace brave_rewards {
@@ -308,7 +312,7 @@ void DiagnosticLog::ReadLastNLines(int num_lines, ReadCallback callback) {
 }
 
 void DiagnosticLog::Write(const std::string& log_entry,
-                          WriteCallback callback) {
+                          StatusCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
@@ -324,7 +328,7 @@ void DiagnosticLog::Write(const std::string& log_entry,
                           const std::string& file,
                           int line,
                           int verbose_level,
-                          WriteCallback callback) {
+                          StatusCallback callback) {
   const std::string formatted_time = FormatTime(time);
 
   const std::string verbose_level_name = GetLogVerboseLevelName(verbose_level);
@@ -339,13 +343,26 @@ void DiagnosticLog::Write(const std::string& log_entry,
   Write(formatted_log_entry, std::move(callback));
 }
 
+void DiagnosticLog::Delete(StatusCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  file_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&DeleteOnFileTaskRunner, file_path_),
+      base::BindOnce(&DiagnosticLog::OnDelete, AsWeakPtr(),
+                     std::move(callback)));
+}
+
 void DiagnosticLog::OnReadLastNLines(ReadCallback callback,
                                      const std::string& data) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(data);
 }
 
-void DiagnosticLog::OnWrite(WriteCallback callback, bool result) {
+void DiagnosticLog::OnWrite(StatusCallback callback, bool result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::move(callback).Run(result);
+}
+
+void DiagnosticLog::OnDelete(StatusCallback callback, bool result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(result);
 }

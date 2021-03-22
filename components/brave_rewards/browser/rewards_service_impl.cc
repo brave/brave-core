@@ -1372,20 +1372,26 @@ void RewardsServiceImpl::OnStopLedgerForCompleteReset(
     const ledger::type::Result result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently(pref_prefix);
+  diagnostic_log_->Delete(base::BindOnce(
+      &RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset, AsWeakPtr(),
+      std::move(callback)));
+}
 
+void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
+    SuccessCallback callback,
+    bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const std::vector<base::FilePath> paths = {
     ledger_state_path_,
     publisher_state_path_,
     publisher_info_db_path_,
-    diagnostic_log_path_,
     publisher_list_path_,
   };
-
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
-      base::BindOnce(&RewardsServiceImpl::OnFilesDeletedForReset, AsWeakPtr(),
-                     std::move(callback)));
+      base::BindOnce(&RewardsServiceImpl::OnFilesDeletedForCompleteReset,
+                     AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::Reset() {
@@ -2255,15 +2261,7 @@ void RewardsServiceImpl::OnDiagnosticLogLoaded(
 
 void RewardsServiceImpl::ClearDiagnosticLog(
     ClearDiagnosticLogCallback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  const std::vector<base::FilePath> paths = {
-      diagnostic_log_path_,
-  };
-
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
+  diagnostic_log_->Delete(
       base::BindOnce(&RewardsServiceImpl::OnDiagnosticLogCleared, AsWeakPtr(),
                      std::move(callback)));
 }
@@ -2271,7 +2269,6 @@ void RewardsServiceImpl::ClearDiagnosticLog(
 void RewardsServiceImpl::OnDiagnosticLogCleared(
     ClearDiagnosticLogCallback callback,
     const bool success) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(success);
 }
 
@@ -3235,8 +3232,9 @@ void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
   StopLedger(std::move(stop_callback));
 }
 
-void RewardsServiceImpl::OnFilesDeletedForReset(SuccessCallback callback,
-                                                const bool success) {
+void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
+    SuccessCallback callback,
+    const bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   resetting_rewards_ = false;
   StartProcess(
@@ -3258,22 +3256,13 @@ void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
 }
 
 void RewardsServiceImpl::DeleteLog(ledger::ResultCallback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  const std::vector<base::FilePath> paths = {
-      diagnostic_log_path_,
-  };
-
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
+  diagnostic_log_->Delete(
       base::BindOnce(&RewardsServiceImpl::OnDiagnosticLogDeleted, AsWeakPtr(),
                      std::move(callback)));
 }
 
 void RewardsServiceImpl::OnDiagnosticLogDeleted(ledger::ResultCallback callback,
                                                 const bool success) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const auto result = success
       ? ledger::type::Result::LEDGER_OK
       : ledger::type::Result::LEDGER_ERROR;

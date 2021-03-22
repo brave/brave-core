@@ -380,6 +380,9 @@ class RewardsServiceImpl : public RewardsService,
       SuccessCallback callback,
       const ledger::type::Result result);
 
+  void OnDiagnosticLogDeletedForCompleteReset(SuccessCallback callback,
+                                              bool success);
+
   void Reset();
 
   void OnLedgerCreated();
@@ -723,7 +726,8 @@ class RewardsServiceImpl : public RewardsService,
       GetAllPromotionsCallback callback,
       base::flat_map<std::string, ledger::type::PromotionPtr> promotions);
 
-  void OnFilesDeletedForReset(SuccessCallback callback, const bool success);
+  void OnFilesDeletedForCompleteReset(SuccessCallback callback,
+                                      const bool success);
 
   void OnStartProcessForCompleteReset(SuccessCallback callback, bool success);
 

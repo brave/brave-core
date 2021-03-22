@@ -28,7 +28,7 @@ class DiagnosticLog : public base::SupportsWeakPtr<DiagnosticLog> {
   ~DiagnosticLog();
 
   using ReadCallback = base::OnceCallback<void(const std::string& data)>;
-  using WriteCallback = base::OnceCallback<void(bool result)>;
+  using StatusCallback = base::OnceCallback<void(bool result)>;
 
   // Reads last |num_lines| lines of file. If |num_lines| is -1, reads
   // the entire file.
@@ -37,17 +37,21 @@ class DiagnosticLog : public base::SupportsWeakPtr<DiagnosticLog> {
   // Appends |log_entry| to end of file. If file doesn't exist, it is
   // created. If total file size exceeds |max_file_size|, removes all
   // but the last |keep_num_lines| lines.
-  void Write(const std::string& log_entry, WriteCallback callback);
+  void Write(const std::string& log_entry, StatusCallback callback);
   void Write(const std::string& log_entry,
              const base::Time& time,
              const std::string& file,
              int line,
              int verbose_level,
-             WriteCallback callback);
+             StatusCallback callback);
+
+  // Deletes the file.
+  void Delete(StatusCallback callback);
 
  private:
   void OnReadLastNLines(ReadCallback callback, const std::string& data);
-  void OnWrite(WriteCallback callback, bool result);
+  void OnWrite(StatusCallback callback, bool result);
+  void OnDelete(StatusCallback callback, bool result);
 
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   base::FilePath file_path_;
