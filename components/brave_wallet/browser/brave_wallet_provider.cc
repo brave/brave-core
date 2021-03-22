@@ -11,7 +11,8 @@
 
 namespace brave_wallet {
 
-BraveWalletProvider::BraveWalletProvider(BraveWalletService* wallet_service)
+BraveWalletProvider::BraveWalletProvider(
+    base::WeakPtr<BraveWalletService> wallet_service)
     : wallet_service_(wallet_service), weak_factory_(this) {}
 
 BraveWalletProvider::~BraveWalletProvider() {}

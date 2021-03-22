@@ -128,7 +128,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_wallet/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/features.h"
+#include "brave/components/brave_wallet/brave_wallet_utils.h"
 #endif
 
 #if !defined(OS_ANDROID)
@@ -242,21 +242,21 @@ void BindCosmeticFiltersResources(
 }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-void BindBraveWalletProvider(
+void MaybeBindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
-  auto* web_contents = content::WebContents::FromRenderFrameHost(frame_host);
-  if (!web_contents && web_contents->GetBrowserContext()->IsTor())
+  if (frame_host->GetBrowserContext()->IsTor())
     return;
 
   auto* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+      Profile::FromBrowserContext(frame_host->GetBrowserContext());
   BraveWalletService* service =
       BraveWalletServiceFactory::GetInstance()->GetForProfile(
           Profile::FromBrowserContext(profile));
 
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_wallet::BraveWalletProvider>(service),
+      std::make_unique<brave_wallet::BraveWalletProvider>(
+          service->AsWeakPtr()),
       std::move(receiver));
 }
 #endif
@@ -323,10 +323,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       base::BindRepeating(&BindCosmeticFiltersResources));
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (base::FeatureList::IsEnabled(
-          brave_wallet::features::kNativeBraveWalletFeature)) {
+  if (brave_wallet::IsNativeWalletEnabled()) {
     map->Add<brave_wallet::mojom::BraveWalletProvider>(
-        base::BindRepeating(&BindBraveWalletProvider));
+        base::BindRepeating(&MaybeBindBraveWalletProvider));
   }
 #endif
 }

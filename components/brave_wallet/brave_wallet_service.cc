@@ -48,8 +48,7 @@ BraveWalletService::BraveWalletService(
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      weak_factory_(this) {
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
   pref_change_registrar_->Init(user_prefs::UserPrefs::Get(context_));
   pref_change_registrar_->Add(

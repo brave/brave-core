@@ -9,14 +9,18 @@
 
 #include "base/bind.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
-#include "brave/components/brave_wallet/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/pref_names.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/signin/identity_manager_factory.h"
 #include "chrome/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/pref_names.h"
+#endif
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
     : profile_(profile),
@@ -28,10 +32,12 @@ BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
   brave_wallet_web3_provider_.Init(kBraveWalletWeb3Provider, pref_service);
 
   pref_change_registrar_.Init(pref_service);
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   pref_change_registrar_.Add(
       kBraveWalletWeb3Provider,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
+#endif
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() {}
@@ -100,6 +106,7 @@ void BraveRendererUpdater::UpdateAllRenderers() {
 void BraveRendererUpdater::UpdateRenderer(
     mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
         renderer_configuration) {
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   bool use_brave_web3_provider = (static_cast<BraveWalletWeb3ProviderTypes>(
                                       brave_wallet_web3_provider_.GetValue()) ==
                                   BraveWalletWeb3ProviderTypes::BRAVE_WALLET) &&
@@ -108,4 +115,5 @@ void BraveRendererUpdater::UpdateRenderer(
   (*renderer_configuration)
       ->SetConfiguration(
           brave::mojom::DynamicParams::New(use_brave_web3_provider));
+#endif
 }

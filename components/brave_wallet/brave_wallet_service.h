@@ -44,12 +44,11 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
 class BraveWalletService : public KeyedService,
-                           public extensions::ExtensionRegistryObserver {
-#else
-class BraveWalletService : public KeyedService {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+                           public extensions::ExtensionRegistryObserver,
 #endif
+                           public base::SupportsWeakPtr<BraveWalletService> {
  public:
   explicit BraveWalletService(
       content::BrowserContext* context,
@@ -120,7 +119,6 @@ class BraveWalletService : public KeyedService {
 #endif
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   LoadUICallback load_ui_callback_;
-  base::WeakPtrFactory<BraveWalletService> weak_factory_;
   DISALLOW_COPY_AND_ASSIGN(BraveWalletService);
 };
 

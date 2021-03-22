@@ -22,7 +22,7 @@ class BraveWalletProvider final
  public:
   BraveWalletProvider(const BraveWalletProvider&) = delete;
   BraveWalletProvider& operator=(const BraveWalletProvider&) = delete;
-  explicit BraveWalletProvider(BraveWalletService* wallet_service);
+  explicit BraveWalletProvider(base::WeakPtr<BraveWalletService> wallet_service);
   ~BraveWalletProvider() override;
 
   void Request(const std::string& json_payload,
@@ -33,7 +33,7 @@ class BraveWalletProvider final
                   const std::map<std::string, std::string>& headers);
 
  private:
-  BraveWalletService* wallet_service_;
+  base::WeakPtr<BraveWalletService> wallet_service_;
 
   base::WeakPtrFactory<BraveWalletProvider> weak_factory_;
 };
