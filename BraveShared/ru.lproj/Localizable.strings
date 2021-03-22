@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Brave Shields: чтобы переключить, нажмите дважды";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Добавить";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Введите URL поисковой системы и смените запрос на %1$s.\nПример: https://youtube.com/search?q=%2$s.\nЕсли ресурс поддерживает OpenSearch, можно воспользоваться автодобавлением.";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Добавить автоматически";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Добавить поисковую систему";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Нажмите, чтобы получить бесплатные баллы.";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Устаревшие бонусы";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Есть средства, доступные для переноса.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "Сведения об устаревшем кошельке";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "Показано журналов: %d";
 
@@ -451,8 +469,11 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "Платежный идентификатор кошелька";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Добавление системы пользовательского поиска";
+
 /* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkExclusiveTierTitle" = "Поздравляем! Вы теперь с нами!";
+"shieldEducation.benchmarkExclusiveTierTitle" = "Поздравляем с вступлением в клуб!";
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkGrandTierTitle" = "Поздравляем! Вы — мастер блокировки!";
@@ -477,6 +498,9 @@
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Посмотрите";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Поделиться новостями";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields защищает вашу конфиденциальность на каждом сайте.";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Спасибо!";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Пользуясь браузером Brave каждый день, я защищаю свои данные.";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Закладки";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "Перемещение закладок";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "Добавить источник";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Добавить";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Ошибка при добавлении источника";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Не удалось распознать адрес фида.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Не удалось найти адрес фида.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "По адресу фида не найдено контента.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Добавить источник в Brave Today";
+
 /* No comment provided by engineer. */
 "today.allSources" = "Все источники";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "Сделки";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "Удалить";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "Отключить всё";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ошибочка…";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Сервис подбирает статьи по вашим интересам прямо на устройстве, поэтому ваши персональные данные надежно защищены. Новый контент появляется в течение дня.";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Импортировать OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Небезопасные источники (добавьте на ваше усмотрение)";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Будьте в курсе событий! Brave Today показывает новости в полностью приватной ленте";
+"today.introCardBody" = "Brave Today содержит рекламу, не нарушающую конфиденциальность ваших данных. Она подбирается прямо на вашем устройстве.";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "Новинка";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "Выберите в Brave Today до пяти RSS-фидов и получайте контент от любимых издателей. Новые материалы появляются в течение дня.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Читайте и смотрите главные новости дня в полностью приватной ленте.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Показать Brave Today";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "Возврат к исходным настройкам источника";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Источники";
+"today.rssFeedLimitExceededAlertMessage" = "В бесплатной версии Brave Today доступно до пяти RSS-фидов. Выберите их в списке источников.";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "Лимит превышен";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "Вы выбрали несколько RSS-фидов (%d). В бесплатной версии Brave Today доступно до пяти RSS-фидов, которые можно добавить в список источников. Хорошая новость: скоро появится импорт файлов в формате OPML и возможность выбирать неограниченное число фидов.";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "Найти";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "URL фида или сайта";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Источники по умолчанию";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Источники и настройки";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "Поиск";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Включить Brave Today";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "Ваши источники";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Включить подсказки при поиске?";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "При поддержке";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Ближайшие к вам серверы будут выбраны автоматически. Они определятся по часовому поясу вашей системы, и это поможет установить высокую скорость интернет-соединения.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Автоматически";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Не удалось изменить серверы. Повторите попытку позже.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Ошибка сервера";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Местонахождение серверов";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Местонахождение серверов изменено.";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Не удалось сбросить настройки VPN. Повторите попытку позже.";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Чтобы защищать соединение и блокировать трекеры на всех сайтах, вы можете приобрести VPN.";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "Изменить";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Обратиться в службу технической поддержки";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Не удалось получить список серверов. Повторите попытку позже.";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Справочная информация в отношении VPN";

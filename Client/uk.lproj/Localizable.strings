@@ -4,6 +4,9 @@
 /* Message for touch key modal. */
 "insertKeyMessage" = "Вставте ваш ключ безпеки для";
 
+/* No comment provided by engineer. */
+"No server found" = "Сервер не знайдено";
+
 /* Placeholder text for PIN */
 "pinPlaceholder" = "Уведіть PIN-код";
 

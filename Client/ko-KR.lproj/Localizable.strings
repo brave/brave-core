@@ -4,6 +4,9 @@
 /* Message for touch key modal. */
 "insertKeyMessage" = "보안 키 삽입 -";
 
+/* No comment provided by engineer. */
+"No server found" = "서버를 찾을 수 없음";
+
 /* Placeholder text for PIN */
 "pinPlaceholder" = "PIN 입력";
 

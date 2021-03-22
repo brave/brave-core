@@ -170,7 +170,7 @@
 "BlockScripts" = "スクリプトをブロック";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Javascriptをブロック (サイトが機能しなくなる可能性があります)";
+"BlockScriptsDescription" = "JavaScriptをブロック（サイトが正常に表示できなくなる可能性があります）";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "ブックマークフォルダ";
@@ -321,6 +321,9 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "カスタム検索エンジン";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "節約できた\nデータ量(推定)";
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "サイトがあなたのデバイスの特徴を識別しにくくします";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "外部アプリを開くユニバーサルリンクを許可する";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "おやっ！うまく行かなかったようです。もう一度やり直してください。";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "テーマ";
+
+/* No comment provided by engineer. */
+"Title" = "タイトル";
 
 /* History tableview section header */
 "Today" = "今日";

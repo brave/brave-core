@@ -170,7 +170,7 @@
 "BlockScripts" = "Sekat Skrip";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Menyekat Javascript (mungkin memecahkan tapak)";
+"BlockScriptsDescription" = "Menyekat JavaScript  (mungkin merosakkan tapak)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Folder Penanda Buku";
@@ -321,6 +321,9 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Enjin carian yang digunakan sekarang";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Enjin Carian Tersuai";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Data Jangkaan \nDisimpan";
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Menjadikannya lebih sukar untuk tapak mengecam ciri tersendiri peranti anda.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Benarkan pautan universal untuk dibuka dalam aplikasi luaran";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Oops! Ralat telah berlaku. Sila cuba lagi.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "Tema";
+
+/* No comment provided by engineer. */
+"Title" = "Tajuk";
 
 /* History tableview section header */
 "Today" = "Hari Ini";

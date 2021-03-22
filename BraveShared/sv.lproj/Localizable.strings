@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dubbeltryck för att växla Brave Shields";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Lägg till";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Skriv sökadressen och ersätt frågan med %1$s.\nExempelvis: https://youtube.com/search?q=%2$s \n(Om webbplatsen stöder OpenSearch kommer ett alternativ att läggas till automatiskt när du redigerar detta fält.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Auto lägg till";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Lägg till sökmotor";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Tryck för att göra anspråk på dina gratis tokens.";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Äldre marknadsföring";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Har överförbar balans";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "Legacy Wallet Info";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d loggar visas";
 
@@ -451,6 +469,9 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "Plånboksbetalning-ID";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Lägg till anpassad sökmotor";
+
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Grattis. Du är en del av en exklusiv klubb.";
 
@@ -477,6 +498,9 @@
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Ta en titt";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Dela nyheterna";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields skyddar din integritet online på alla webbplatser.";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Tack!";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Varje dag sparar jag data genom att surfa på webben med Brave.";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Bokmärken";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "Migrering av bokmärken";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "Lägg till källa";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Lägg till";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Det gick inte att lägga till källan";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Vi kunde tyvärr inte känna igen den flödesadressen.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Vi kunde tyvärr inte hitta den flödesadressen.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "Tyvärr har den flödesadressen inget innehåll.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Lägg till källa till Brave Today";
+
 /* No comment provided by engineer. */
 "today.allSources" = "Alla källor";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "Erbjudanden";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "Ta bort";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "Inaktivera alla";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hoppsan ...";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Dina intressen matchas på din enhet så att din personliga information aldrig lämnar din webbläsare. Nytt innehåll uppdateras under dagen.";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Importera OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Osäkra källor - Lägg till på egen risk";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Today visar toppnyheter i en helt privat feed, bara för dig.";
+"today.introCardBody" = "Brave Today stöds av annonsörer med helt privata och anonymiserade annonser som är matchade på din enhet.";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "Nytt";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "Anpassa Brave Today med upp till 5 RSS flöden och få nytt innehåll från dina favoritpublicerare under hela dagen.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Dagens topphistorier i ett helt privat flöde, endast för dig.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Visa Brave Today";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "Återställ källor till standardinställningen";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Källor";
+"today.rssFeedLimitExceededAlertMessage" = "Den gratis annonsstödda versionen av Brave Today innehåller 5 RSS flöden. Du kan anpassa dina flödesval från källlistan.";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "Flödesbegränsningen har överskridits";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "Du har för närvarande %d RSS flöden i din källlista. Den gratis annonsstödda versionen av Brave Today innehåller 5 RSS flöden. Stöd för obegränsade flöden och OPML import kommer snart. Du kan anpassa dina flödesval från källlistan.";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "Sök";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "Flöde eller webbadress";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Standardkällor";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Källor och inställningar";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "Sök";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Starta Brave Today";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "Dina källor";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Sätt på sökförslag?";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "Nätverkstyp";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Skicka";
+"vpn.contactFormSendButton" = "Fortsätt till e-post";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Prenumerationstyp";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Drivs av";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "En serverregion som ligger närmast dig väljs automatiskt baserat på systemets tidszon. Detta rekommenderas för att säkerställa snabba internethastigheter.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Automatisk";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Det gick inte att byta servrar, vänligen försök igen senare.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Serverfel";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Serverregion";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN region ändrades.";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Misslyckades med att återställa VPN-konfiguration, vänligen försök igen senare.";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Uppgradera till VPN för att skydda din anslutning och blockera invasiva spårare överallt.";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "Byt plats";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakta teknisk support";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Det gick inte att hämta serverlistan, vänligen försök igen senare.";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN-support";

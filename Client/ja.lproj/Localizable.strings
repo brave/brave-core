@@ -4,6 +4,9 @@
 /* Message for touch key modal. */
 "insertKeyMessage" = "セキュリティーキーを入力する";
 
+/* No comment provided by engineer. */
+"No server found" = "サーバーが見つかりません";
+
 /* Placeholder text for PIN */
 "pinPlaceholder" = "PINを入力";
 

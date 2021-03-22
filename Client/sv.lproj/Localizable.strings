@@ -4,6 +4,9 @@
 /* Message for touch key modal. */
 "insertKeyMessage" = "För in din säkerhetsnyckel för";
 
+/* No comment provided by engineer. */
+"No server found" = "Ingen server hittades";
+
 /* Placeholder text for PIN */
 "pinPlaceholder" = "Ange din PIN";
 

@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Obecnie wykorzystywane wyszukiwarki";
 
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Niestandardowe wyszukiwarki";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Szacunkowe dane\nzapisane";
 
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Utrudnia stronom rozpoznawanie charakterystycznych cech Twojego urządzenia.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Zezwalaj na otwieranie uniwersalnych łączy w zewnętrznych aplikacjach";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Ups! Coś poszło nie tak. Spróbuj ponownie.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "Tematy";
+
+/* No comment provided by engineer. */
+"Title" = "Nazwa";
 
 /* History tableview section header */
 "Today" = "Dzisiaj";

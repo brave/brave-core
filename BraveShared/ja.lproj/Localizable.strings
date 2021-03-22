@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "ダブルタップでBrave Shieldを切り替える";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "追加する";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "検索URLを入力しクエリを %1$s に置き換えてください。\n例: https://youtube.com/search?q=%2$s \n(サイトがOpenSearchをサポートしている場合、このフィールドを編集している際に、自動で追加する選択肢が与えられます)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "自動で追加する";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "検索エンジンを追加する";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "タップしてTAPポイントを受け取る";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "過去のプロモーション";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "移行可能な残高があります";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "旧ウォレットの情報";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "ログが%d 件表示中";
 
@@ -451,6 +469,9 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "ウォレットペイメントID";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "カスタム検索エンジンを追加する";
+
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "おめでとうございます。あなたはもう上級者クラブの一員です。";
 
@@ -477,6 +498,9 @@
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "見てみる";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "お知らせをシェアする";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shieldsはすべてのサイトであなたのオンラインでのプライバシーを保護します。";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "ありがとうございます";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Braveでwebを閲覧してデータを節約しています";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "ブックマーク";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "ブックマークの新形式への移行";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "ソースを追加する";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "追加する";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "ソースの追加に失敗しました";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "すみません、フィードアドレスが認識できませんでした。";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "すみません、そのフィードアドレスを見つけられませんでした。";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "すみません、そのフィードアドレスにはコンテンツがありません。";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Brave Todayにソースを追加する";
+
 /* No comment provided by engineer. */
 "today.allSources" = "全てのソース";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "お得な情報";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "削除する";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "全て無効にする";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "うーん...";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "あなたの関心はあなたのデバイス上で最適化されるため、個人情報がブラウザからどこかに送られることはありません。コンテンツは随時更新されます。";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "OPMLをインポートする";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "安全でないソースです - ユーザー自身の責任で追加してください";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Todayは今日の注目記事を、あなた専用のプライベートなフィードにお届けいたします。";
+"today.introCardBody" = "Brave Todayは広告に支えられています。完全にプライベートで個人を特定しない広告があなたのデバイス内で選択されます。";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "新機能";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "RSSフィードを最大5つ追加してBrave Todayをカスタマイズすれば、お気に入りのサイトから常に新しいコンテンツを受信することができます。";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Brave Todayは、読みたい記事が上がってくるプライベート・ニュースリーダー。";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Brave Todayを表示";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "ソースの設定をデフォルトにリセット";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "ソース";
+"today.rssFeedLimitExceededAlertMessage" = "広告が表示される無料のBrave TodayはRSSフィードを5つまで追加できます。「ソースリスト」からあなたのフィードをカスタマイズすることができます。";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "フィードの上限を超えました";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "あたたはすでに%dつのRSSフィードをソースリストに追加しました。広告が表示される無料のBrave TodayではRSSフィードは5つまで追加できます。無制限のフィード追加とOPMLのインポートは近い将来サポートされます。フィードはソースリストからカスタマイズ可能です。";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "検索";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "フィードまたはサイトのURL";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "デフォルトのソース";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "ソースと設定";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "検索";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Brave Todayをオンにする";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "あなたのソース";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "検索候補をオンにしますか？";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "ネットワークタイプ";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "送信";
+"vpn.contactFormSendButton" = "メールを送る";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "購読タイプ";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Powered by";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "あなたのシステムのタイムゾーンに基づいて、あなたに最も近接したサーバーリージョンが自動で選択されます。インターネットの速さを損なわないために推奨されています。";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "自動";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "サーバーの切り替えに失敗しました。後ほど再試行ください";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "サーバーエラー";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "サーバーリージョン";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPNのリージョンが変更されました。";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "VPN設定のリセットに失敗しました。もう一度お試しください。";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "VPN接続にアップグレードして接続を保護し、デバイス全体で広告やトラッカーをブロックします。";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "ロケーションを変更する";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "テクニカルサポートへのお問い合わせ";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "サーバーリストの取得に失敗しました。再試行してください";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPNサポート";

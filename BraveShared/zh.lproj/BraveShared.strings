@@ -170,7 +170,7 @@
 "BlockScripts" = "拦截脚本";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "屏蔽 Javascript（可能会破坏站点）";
+"BlockScriptsDescription" = "阻止 JavaScript（可能会破坏站点）";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "书签文件夹";
@@ -321,6 +321,9 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "当前使用的搜索引擎";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "自定义搜索引擎";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "估算数据 \n已保存";
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "使站点更难识别设备的独特特征。";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "允许在外部应用程序中打开通用链接";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "糟糕！出问题了。请再试一次。";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "主题";
+
+/* No comment provided by engineer. */
+"Title" = "标题";
 
 /* History tableview section header */
 "Today" = "今天";

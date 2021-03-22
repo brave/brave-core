@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "두 번 탭하여 Brave Shields 토글";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "추가";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "검색 URL을 기입하고 검색어를 %1$s(으)로 대체하세요.\n예: https://youtube.com/search?q=%2$s \n(사이트에서 OpenSearch를 지원하는 경우 이 필드를 편집할 때 자동 추가 옵션이 제공됩니다.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "자동 추가";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "검색 엔진 추가";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "무료 토큰을 받으려면 탭하세요.";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "레거시 프로모션";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "이전 가능한 잔액 있음";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "레거시 월렛 정보";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "로그 %d개 표시됨 ";
 
@@ -451,6 +469,9 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "월렛 결제 ID";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "맞춤 검색 엔진 추가";
+
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "축하합니다. 익스클루시브 클럽원이십니다.";
 
@@ -477,6 +498,9 @@
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "살펴보기";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "뉴스 공유";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields가 모든 사이트에서 온라인 프라이버시를 보호해드립니다.";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "감사합니다.";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "매일 Brave를 사용하여 웹 브라우징하여 데이터를 절약합니다.";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "북마크";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "북마크 마이그레이션";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "출처 추가";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "추가";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "출처 추가 실패";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "피드 주소를 인식할 수 없습니다.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "피드 주소를 찾을 수 없습니다.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "피드 주소에 아무런 내용도 없습니다.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Brave Today에 출처 추가";
+
 /* No comment provided by engineer. */
 "today.allSources" = "모든 출처";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "딜";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "삭제";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "모두 비활성화";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "죄송합니다...";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "관심사가 기기에 매칭되므로 어떠한 개인정보도 브라우저에 남지 않습니다. 새 콘텐츠가 하루 종일 업데이트됩니다.";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "OPML 가져오기";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "비보안 출처 - 위험을 감수하고 추가";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Today에는 인기 스토리가 완전한 비공개 맞춤 피드로 표시됩니다.";
+"today.introCardBody" = "Brave Today는 기기 기반 정보를 토대로 완전히 익명화된 비공개 광고의 지원으로 제공됩니다.";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "신규";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "Brave Today는 최대 5개의 RSS 피드로 맞춤 설정하여 마음에 드는 게시자의 신규 콘텐츠를 하루 종일 받아볼 수 있습니다.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "오늘의 인기 스토리는 맞춤형 완전 비공개 피드입니다.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Brave Today 표시";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "출처 설정을 기본값으로 초기화";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "출처";
+"today.rssFeedLimitExceededAlertMessage" = "광고의 지원으로 제공되는 Brave Today 무료 버전에는 5개의 RSS 피드가 포함됩니다. 내 출처 목록에서 피드를 선택하여 맞춤 설정할 수 있습니다.";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "피드 한도 초과";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "현재 출처 목록에서 %d개의 RSS 피드를 선택하셨습니다. 광고의 지원으로 제공되는 Brave Today 무료 버전에는 5개의 RSS 피드가 포함됩니다. 무제한 피드 및 OPML 가져오기는 곧 지원될 예정입니다. 내 출처 목록에서 피드를 선택하여 맞춤 설정할 수 있습니다.";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "검색";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "피드 또는 사이트 URL";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "기본 출처";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "출처 및 설정";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "검색";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Brave Today 켜기";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "내 출처";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "네트워크 유형";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "보내기";
+"vpn.contactFormSendButton" = "이메일로 계속";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "구독 유형";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "제공:";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "가장 근접한 서버 지역이 시스템 시간대를 기반으로 자동 선택됩니다. 인터넷 속도를 빠르게 하려면 이 설정을 유지하는 것이 좋습니다.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "자동";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "서버를 전환하지 못했습니다. 나중에 다시 시도하세요.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "서버 오류";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "서버 지역";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN 지역이 변경되었습니다.";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "VPN 구성을 재설정하지 못했습니다. 나중에 다시 시도하세요.";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "VPN으로 업그레이드하면 연결을 보호하고 침입성 트래커를 차단합니다.";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "위치 변경";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "기술 지원에 문의";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "서버 목록을 가져오지 못했습니다. 나중에 다시 시도하세요.";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN 지원";

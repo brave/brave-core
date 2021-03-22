@@ -4,6 +4,9 @@
 /* Message for touch key modal. */
 "insertKeyMessage" = "Insérez votre clé de sécurité pour";
 
+/* No comment provided by engineer. */
+"No server found" = "Aucun serveur trouvé";
+
 /* Placeholder text for PIN */
 "pinPlaceholder" = "Saisissez votre code PIN";
 

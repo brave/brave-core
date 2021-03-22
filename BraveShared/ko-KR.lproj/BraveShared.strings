@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "현재 사용 중인 검색 엔진";
 
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "맞춤 검색 엔진";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "절약된 \n예상 데이터";
 
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "기기의 고유한 특성을 사이트가 인식하기 어렵게 만듭니다.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "유니버설 링크로 외부 앱을 열 수 있게 허용";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "앗! 문제가 발생했습니다. 다시 시도하세요.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "테마";
+
+/* No comment provided by engineer. */
+"Title" = "제목";
 
 /* History tableview section header */
 "Today" = "오늘";

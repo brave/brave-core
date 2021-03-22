@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Торкніться двічі, щоб увімкнути Brave Shields";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Додати";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Напишіть URL-адресу для пошуку та замініть запит таким: %1$s.\nНаприклад: https://youtube.com/search?q=%2$s\n(Якщо сайт підтримує OpenSearch, під час редагування цього поля ви зможете автоматично додати необхідне значення.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Автоматичне додавання";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Додати пошукову систему";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Торкніться, щоб отримати безкоштовні токени.";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Застаріла промоакція";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Має доступні для переказу кошти";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "Інформація про застарілий гаманець";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "Показано журналів: %d";
 
@@ -451,6 +469,9 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "Платіжний ідентифікатор гаманця";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Додавання користувацької пошукової системи";
+
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Вітаємо! Ви стали учасником ексклюзивного клубу.";
 
@@ -473,10 +494,13 @@
 "shieldEducation.encryptedConnectionWarningSubtitle" = "За можливості бразуер Brave автоматично збільшить рівень безпеки підключення.";
 
 /* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "Ваше з’єднання зашифровано.";
+"shieldEducation.encryptedConnectionWarningTitle" = "Ваше з’єднання зашифровано";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Зверніть увагу";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Поділитися новинами";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields захищає вашу конфіденційність на кожному вебсайті.";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Дякуємо";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Закладки";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "Перенесення закладок";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "Додати джерело";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Додати";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Не вдалося додати джерело";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "На жаль, не вдалося розпізнати цю адресу стрічки.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "На жаль, не вдалося знайти цю адресу стрічки.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "На жаль, за цією адресою стрічки немає вмісту.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Додати джерело до Brave Today";
+
 /* No comment provided by engineer. */
 "today.allSources" = "Усі джерела";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "Акції";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "Видалити";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "Вимкнути все";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ой…";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Ваші інтереси підібрано за інформацією на вашому пристрої, тож персональна інформація залишається лише у вашому браузері. Контент оновлюється протягом дня.";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Імпорт OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Небезпечні джерела — додавайте лише на власний розсуд";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Найпопулярніші історії за сьогодні в персональній стрічці Brave Today, яку підібрано спеціально для вас.";
+"today.introCardBody" = "У Brave Today відображається повністю приватна та анонімна реклама, що відповідає вашому пристрою.";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "Новинка";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "Налаштуйте в Brave Today до 5 RSS-каналів, щоб переглядати новий вміст від улюблених авторів протягом дня.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Найпопулярніші історії за сьогодні в повністю приватній стрічці, яку підібрано лише для вас.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Показати Brave Today";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "Скиньте налаштування джерел до значень за замовчуванням";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Джерела";
+"today.rssFeedLimitExceededAlertMessage" = "У безкоштовній версії Brave Today із рекламою можна налаштувати до 5 RSS-каналів. Канали можна вибрати зі списку «Джерела».";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "Досягнуто обмеження на кількість стрічок";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "Наразі до вашого списку джерел додано таку кількість RSS-каналів: %d. У безкоштовній версії Brave Today із рекламою можна налаштувати до 5 RSS-каналів. Незабаром буде прибрано обмеження на кількість каналів і додано функцію імпорту OPML. Канали можна вибрати зі списку «Джерела».";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "Пошук";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "URL-адреса каналу або сайту";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Джерела за замовчуванням";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Джерела й налаштування";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "Пошук";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Увімкнути Brave Today";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "Ваші джерела";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "Тип мережі";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Надіслати";
+"vpn.contactFormSendButton" = "Надіслати на електронну пошту";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Тип підписки";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "За підтримки";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "На основі часового поясу вашої системи буде автоматично обрано сервер у найближчому до вас регіоні. Це забезпечить високу швидкість підключення до Інтернету.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Автоматично";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Не вдалося змінити сервер. Спробуйте ще раз пізніше.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Помилка сервера";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Регіон сервера";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Регіон VPN змінено.";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Не вдалося скинути налаштування VPN. Cпробуйте пізніше.";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Перейдіть на режим VPN, щоб захистити ваше з’єднання й блокувати небезпечні засоби відстеження вашої активності.";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "Змінити розташування";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Звернутися до служби технічної підтримки";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Не вдалося отримати список серверів. Спробуйте ще раз пізніше.";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Довідкова інформація щодо VPN";

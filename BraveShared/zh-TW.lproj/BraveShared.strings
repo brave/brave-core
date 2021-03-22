@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "目前使用的搜尋引擎";
 
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "自訂搜尋引擎";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "預計節省\n數據量";
 
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "使網站不易識別裝置的特徵。 ";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "允許所有連結在外部應用程式中開啟";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "糟糕！ 出問題了。 請再試一次。";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "主題";
+
+/* No comment provided by engineer. */
+"Title" = "標題";
 
 /* History tableview section header */
 "Today" = "今天";

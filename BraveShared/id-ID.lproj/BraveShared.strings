@@ -170,7 +170,7 @@
 "BlockScripts" = "Blokir Skrip";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Memblokir Javascript (mungkin merusak situs)";
+"BlockScriptsDescription" = "Blokir JavaScript (dapat membatasi akses ke situs web)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Folder Markah";
@@ -321,6 +321,9 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Mesin pencari yang digunakan saat ini";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Mesin Pencari Ubahsuaian";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Perkiraan Data \nTersimpan";
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Mempersulit bagi situs untuk mengenali karakteristik unik perangkat Anda.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Izinkan tautan universal membuka di aplikasi eksternal";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Ups! Terjadi kesalahan. Silakan coba lagi.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "Tema";
+
+/* No comment provided by engineer. */
+"Title" = "Judul";
 
 /* History tableview section header */
 "Today" = "Hari Ini";

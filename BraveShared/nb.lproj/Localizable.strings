@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dobbeltklikk for å skru av og på Brave Shields";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Legg til";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Skriv søkeadressen og erstatt spørringen med %1$s.\nFor eksempel: https://youtube.com/search?q=%2$s \n(Hvis nettstedet støtter OpenSearch, vil det gis et alternativ for å legge til automatisk når du redigerer dette feltet.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Legg til automatisk";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Legg til søkemotor";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Trykk for å gjøre krav på dine gratis tokener.";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Legacy-kampanje";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Har overførbar saldo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "Informasjon om Legacy-lommebok";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d logger vist";
 
@@ -443,13 +461,16 @@
 "RewardsInternalsVersion" = "Versjon";
 
 /* No comment provided by engineer. */
-"RewardsInternalsWalletCreationDate" = "Lommebokens opprettelsesdato";
+"RewardsInternalsWalletCreationDate" = "Opprettelsesdato for lommebok";
 
 /* No comment provided by engineer. */
 "RewardsInternalsWalletInfoHeader" = "Informasjon om lommebok";
 
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "Lommebokens betalings-ID";
+
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Legg til tilpasset søkemotor";
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Gratulerer. Du er en del av en eksklusiv klubb.";
@@ -477,6 +498,9 @@
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Ta en titt";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Del nyhetene";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields beskytter personvernet ditt på hvert nettsted.";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Takk skal du ha";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Hver dag lagrer jeg data ved å surfe på nettet med Brave.";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Bokmerker";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "Flytting av bokmerker";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "Legg til kilde";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Legg til";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Kunne ikke legge til kilde";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Beklager, vi kunne ikke kjenne igjen den feed-adressen.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Beklager, vi kunne ikke finne den feed-adressen.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "Beklager, den feed-adressen er uten innhold.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Legg til kilde i Brave Today";
+
 /* No comment provided by engineer. */
 "today.allSources" = "Alle kilder";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "Tilbud";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "Slett";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "Deaktiver alle";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Oops …";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Interessene dine samsvares på enheten din, slik at din personlige informasjon aldri forlater nettleseren din. Nytt innhold oppdatert gjennom dagen.";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Importer OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Usikre kilder – legg til på egen risiko";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Today viser topphistorier i en helt privat feed, kun for deg.";
+"today.introCardBody" = "Brave Today er annonsestøttet med helt private og anonymiserte annonser matchet på enheten din.";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "Ny";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "Tilpass Brave Today med opptil 5 RSS-feeder og få nytt innhold fra favorittutgiverne dine gjennom hele dagen.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Dagens topphistorier i en helt privat feed, kun til deg.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Vis Brave Today";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "Tilbakestill kildeinnstillinger til standard";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Kilder";
+"today.rssFeedLimitExceededAlertMessage" = "Den gratis annonsestøttede versjonen av Brave Today inkluderer 5 RSS-feeder. Du kan tilpasse feed-valgene dine fra kildelisten.";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "Feed-grense overskredet";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "Du har for øyeblikket %d RSS-feeder i kildelisten din. Den gratis annonsestøttede versjonen av Brave Today inkluderer 5 RSS-feeder. Støtte av ubegrenset innmating og OPML-importering kommer snart. Du kan tilpasse feed-valgene dine fra kildelisten.";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "Søk";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "Feed- eller nettadresse";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Standard kilder";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Kilder og innstillinger";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "Søk";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Slå på Brave-annonser";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "Alle kilder";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Slå på søkeforslag?";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "Nettverkstype";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Send";
+"vpn.contactFormSendButton" = "Fortsett til e-post";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Abonnementstype";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Drevet av";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Serverregionen som er nærmest deg blir automatisk valgt, basert på tidssonen til systemet ditt. Dette anbefales for å sikre rask Internett-hastighet.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Automatisk";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Kunne ikke bytte servere, prøv igjen senere.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Serverfeil";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Serverområde";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN-område endret.";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Kunne ikke tilbakestille VPN-konfigurasjonen. Prøv igjen senere.";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Oppgrader til en VPN for å beskytte forbindelsen din og blokkere invasive sporere overalt.";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "Endre plassering";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakt teknisk kundestøtte";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Kunne ikke hente serverlisten, prøv igjen senere.";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN-kundestøtte";
@@ -797,7 +905,7 @@
 "vpn.settingsServerHost" = "Vert";
 
 /* Table cell title for vpn's server location */
-"vpn.settingsServerLocation" = "Plassering";
+"vpn.settingsServerLocation" = "Sted";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "Server";
