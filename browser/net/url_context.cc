@@ -86,8 +86,6 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
       true;
 #endif
 
-  ctx->render_frame_id = request.render_frame_id;
-  ctx->render_process_id = render_process_id;
   ctx->frame_tree_node_id = frame_tree_node_id;
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
@@ -108,9 +106,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   // (See |BraveProxyingWebSocket|).
   if (ctx->tab_origin.is_empty()) {
     ctx->tab_origin = brave_shields::BraveShieldsWebContentsObserver::
-                          GetTabURLFromRenderFrameInfo(ctx->render_process_id,
-                                                       ctx->render_frame_id,
-                                                       ctx->frame_tree_node_id)
+                          GetTabURLFromRenderFrameInfo(ctx->frame_tree_node_id)
                               .GetOrigin();
   }
 
