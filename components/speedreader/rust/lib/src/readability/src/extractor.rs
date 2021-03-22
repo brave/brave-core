@@ -5,13 +5,11 @@ use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
-use kuchiki::Sink;
 use kuchiki::NodeRef as Handle;
-use scorer::{Candidate, Title, TopCandidate};
-use std::collections::BTreeMap;
+use kuchiki::Sink;
+use scorer::{Title, TopCandidate};
 use std::collections::HashMap;
 use std::default::Default;
-use std::path::Path;
 use std::str::FromStr;
 use url::Url;
 
@@ -29,8 +27,6 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
     let mut title = Title::default();
-    let mut candidates: BTreeMap<String, Candidate> = BTreeMap::new();
-    let mut nodes = BTreeMap::new();
     let handle = dom.document_node.clone();
 
     // extracts title (if it exists) pre-processes the DOM by removing script
@@ -41,23 +37,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     // candidates and their scoring. a candidate contains the node parent of the
     // dom tree branch and its score. in practice, this function will go through
     // the dom and populate `candidates` data structure
-    scorer::find_candidates(
-        &mut dom,
-        Path::new("/"),
-        handle.clone(),
-        &mut candidates,
-        &mut nodes,
-    );
-
-    if candidates.iter().count() == 0 {
-        return Err(std::io::Error::new(
-            std::io::ErrorKind::InvalidInput,
-            "No candidates found.",
-        ));
-    }
-
-
-    let id: String;
+    scorer::find_candidates(&mut dom, handle.clone());
 
     // top candidate is the top scorer among the tree dom's candidates. this is
     // the subtree that will be considered for final rendering
@@ -66,22 +46,21 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     {
         // scores all candidate nodes
         let mut top_candidates: Vec<TopCandidate> = vec![];
-        for (i, c) in candidates.iter() {
-            let score = c.score.get() * (1.0 - scorer::get_link_density(&c.node));
-            c.score.set(score);
+        for node in dom.document_node.descendants() {
+            if let Some(elem) = node.as_element() {
+                if !elem.is_candidate.get() {
+                    continue;
+                }
+                let score = elem.score.get() * (1.0 - scorer::get_link_density(&node));
+                elem.score.set(score);
 
-            if top_candidates.len() < NUM_TOP_CANDIDATES {
-                top_candidates.push(TopCandidate {
-                    candidate: &c,
-                    id: i.to_string(),
-                });
-            } else {
-                let min_index = util::min_elem_index(&top_candidates);
-                let min = &mut top_candidates[min_index];
-                if score > min.candidate.score.get() {
-                    *min = TopCandidate {
-                        candidate: &c,
-                        id: i.to_string(),
+                if top_candidates.len() < NUM_TOP_CANDIDATES {
+                    top_candidates.push(TopCandidate { node });
+                } else {
+                    let min_index = util::min_elem_index(&top_candidates);
+                    let min = &mut top_candidates[min_index];
+                    if score > min.score() {
+                        *min = TopCandidate { node }
                     }
                 }
             }
@@ -89,34 +68,14 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         debug_assert!(top_candidates.len() > 0);
         let max_index = util::max_elem_index(&top_candidates);
         top_candidates.swap(0, max_index);
-        if let Some(pid) = scorer::search_alternative_candidates(&top_candidates, &nodes) {
-            id = pid.to_string();
+        if let Some(new_top) = scorer::search_alternative_candidates(&top_candidates) {
+            top_candidate = new_top;
         } else {
-            id = top_candidates[0].id.to_string();
+            top_candidate = top_candidates[0].node.clone();
         }
     }
 
-    {
-        let top = scorer::find_or_create_candidate(Path::new(id.as_str()), &mut candidates, &nodes);
-        if top.is_none() {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidInput,
-                "No candidates found.",
-            ));
-        }
-        top_candidate = top.unwrap().node.clone();
-    }
-
-    scorer::clean(
-        &mut dom,
-        Path::new(id.as_str()),
-        top_candidate.clone(),
-        url,
-        &title.title,
-        features,
-        &candidates,
-    );
-
+    scorer::clean(&mut dom, top_candidate.clone(), url, &title.title, features);
 
     // Our CSS formats based on id="article".
     dom::set_attr("id", "article", top_candidate.clone(), true);

@@ -9,10 +9,8 @@ use kuchiki::NodeData::{
 use kuchiki::NodeRef as Handle;
 use kuchiki::{ElementData, NodeRef, Sink};
 use regex::Regex;
-use std::cell::Cell;
 use std::cmp::Ordering;
-use std::collections::{BTreeMap, HashMap};
-use std::path::Path;
+use std::collections::HashMap;
 use std::str::FromStr;
 use url::Url;
 
@@ -54,41 +52,40 @@ lazy_static! {
     static ref NEGATIVE: Regex = Regex::new(NEGATIVE_CANDIDATES).unwrap();
 }
 
-// NOTE(keur): Since we now have our own DOM fork, maybe consider moving
-// the score into node data structure. This library uses the Candidates
-// map to hack around that lack of API extensibility.
-pub struct Candidate {
+pub struct TopCandidate {
     pub node: Handle,
-    pub score: Cell<f32>,
 }
 
-pub struct TopCandidate<'a> {
-    pub candidate: &'a Candidate,
-    pub id: String,
+impl TopCandidate {
+    #[inline]
+    pub fn score(&self) -> f32 {
+        if let Some(elem) = self.node.as_element() {
+            elem.score.get()
+        } else {
+            0.0
+        }
+    }
 }
 
-impl<'a> Ord for TopCandidate<'a> {
+impl Ord for TopCandidate {
     fn cmp(&self, other: &Self) -> Ordering {
         self.partial_cmp(other).unwrap_or(Ordering::Equal)
     }
 }
 
-impl<'a> PartialOrd for TopCandidate<'a> {
+impl PartialOrd for TopCandidate {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.candidate
-            .score
-            .get()
-            .partial_cmp(&other.candidate.score.get())
+        self.score().partial_cmp(&other.score())
     }
 }
 
-impl<'a> PartialEq for TopCandidate<'a> {
+impl PartialEq for TopCandidate {
     fn eq(&self, other: &Self) -> bool {
-        self.candidate.score.get() == other.candidate.score.get()
+        self.score() == other.score()
     }
 }
 
-impl<'a> Eq for TopCandidate<'a> {}
+impl Eq for TopCandidate {}
 
 #[derive(Default)]
 pub struct Title {
@@ -349,24 +346,15 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
     false
 }
 
-pub fn find_candidates(
-    mut dom: &mut Sink,
-    id: &Path,
-    handle: Handle,
-    candidates: &mut BTreeMap<String, Candidate>,
-    nodes: &mut BTreeMap<String, Handle>,
-) {
-    // Id of a particular node maps to its position in the dom tree, represented
-    // as std::path::Path data structure
-    if let Some(id) = id.to_str().map(|id| id.to_string()) {
-        nodes.insert(id, handle.clone());
-    }
-
+pub fn find_candidates(mut dom: &mut Sink, handle: Handle) {
     // is candidate iif length of the text in handle is larger than 20 words AND
     // its tag is `div`, `article`, `center`, `section` while not in containing
     // nodes in BLOCK_CHILD_TAGS
 
     if is_candidate(&handle) {
+        debug_assert!(handle.as_element().is_some());
+
+        initialize_candidate(&handle);
         // calculates the content score of the current candidate
         let score = calc_content_score(&handle);
 
@@ -378,124 +366,89 @@ pub fn find_candidates(
         //   subsequent parent nodes: level * DECAY_FACTOR (3)
 
         // parent
-        if let Some(c) = id
-            .parent()
-            .and_then(|pid| find_or_create_candidate(pid, candidates, nodes))
-        {
-            c.score.set(c.score.get() + score)
-        }
+        if let Some(parent) = handle.parent().as_ref() {
+            if let Some(elem) = parent.as_element() {
+                initialize_candidate(parent);
+                elem.score.set(elem.score.get() + score);
+            }
 
-        // grandparent
-        if let Some(c) = id
-            .parent()
-            .and_then(|pid| pid.parent())
-            .and_then(|gpid| find_or_create_candidate(gpid, candidates, nodes))
-        {
-            c.score.set(c.score.get() + (score / 2.0))
-        }
+            // grandparent
+            if let Some(gparent) = parent.parent().as_ref() {
+                if let Some(elem) = gparent.as_element() {
+                    initialize_candidate(gparent);
+                    elem.score.set(elem.score.get() + (score / 2.0));
+                }
 
-        // subsequent nodes scored based on the level in the DOM
-        if let Some(distant_ancs) = id
-            .parent()
-            .and_then(|pid| pid.parent())
-            .and_then(|gpid| gpid.parent())
-        {
-            let paths = get_all_ancestor_paths(distant_ancs);
-            let mut level = 2.0;
-            for p in paths {
-                let add_score = score / (level * DECAY_FACTOR);
-                if let Some(c) = find_or_create_candidate(p, candidates, nodes) {
-                    c.score.set(c.score.get() + add_score);
-                    level += 1.0;
+                // subsequent nodes scored based on the level in the DOM
+                let mut level = 2.0;
+                for ancestor in gparent.ancestors() {
+                    if let Some(elem) = ancestor.as_element() {
+                        initialize_candidate(&ancestor);
+                        let add_score = score / (level * DECAY_FACTOR);
+                        elem.score.set(elem.score.get() + add_score);
+                        level += 1.0;
+                    }
                 }
             }
         }
     }
 
     // for all the current child's node, execute recursively find_candidates()
-    for (i, child) in handle.children().enumerate() {
-        find_candidates(
-            &mut dom,
-            id.join(i.to_string()).as_path(),
-            child.clone(),
-            candidates,
-            nodes,
-        )
+    for child in handle.children() {
+        find_candidates(&mut dom, child.clone());
     }
 }
 
-fn get_all_ancestor_paths(ps: &Path) -> Vec<&Path> {
-    let mut paths = Vec::new();
-    for p in ps.ancestors() {
-        paths.push(p);
+#[inline]
+pub fn initialize_candidate(handle: &Handle) {
+    debug_assert!(handle.as_element().is_some());
+    let elem = handle.as_element().unwrap();
+    if !elem.is_candidate.get() {
+        elem.is_candidate.set(true);
+        elem.score.set(init_content_score(handle));
     }
-    paths.pop(); // removes last element "/"
-    paths
-}
-
-pub fn find_or_create_candidate<'a>(
-    id: &Path,
-    candidates: &'a mut BTreeMap<String, Candidate>,
-    nodes: &BTreeMap<String, Handle>,
-) -> Option<&'a Candidate> {
-    if let Some(id) = id.to_str().map(|id| id.to_string()) {
-        if let Some(node) = nodes.get(&id) {
-            if candidates.get(&id).is_none() {
-                candidates.insert(
-                    id.clone(),
-                    Candidate {
-                        node: node.clone(),
-                        score: Cell::new(init_content_score(&node)),
-                    },
-                );
-            }
-            return candidates.get(&id);
-        }
-    }
-    None
 }
 
 /// This function expects an array of top candidates to be considered for
 /// the new root of the DOM. It is assumed that the first element is the
 /// candidate with the highest score.
-pub fn search_alternative_candidates<'a>(
-    top_candidates: &'a Vec<TopCandidate>,
-    nodes: &BTreeMap<String, Handle>,
-) -> Option<&'a str> {
+pub fn search_alternative_candidates<'a>(top_candidates: &'a Vec<TopCandidate>) -> Option<Handle> {
     const MIN_CANDIDATES: usize = 3;
 
     debug_assert!(top_candidates.len() > 0);
     let top = &top_candidates[0];
     if top_candidates.len() < MIN_CANDIDATES
-        || Some(&local_name!("body")) == dom::get_tag_name(&top.candidate.node)
+        || Some(&local_name!("body")) == dom::get_tag_name(&top.node)
     {
         return None;
     }
-    let mut alternative_nodes: Vec<&'a Path> = vec![];
+    let mut alternative_nodes = vec![];
     for i in 1..top_candidates.len() {
         let c = &top_candidates[i];
-        if c.candidate.score.get() / top.candidate.score.get() >= 0.75 {
-            alternative_nodes.push(Path::new(&c.id));
+        if c.score() / top.score() >= 0.75 {
+            alternative_nodes.push(c.node.clone());
         }
     }
     if alternative_nodes.len() >= MIN_CANDIDATES {
-        let mut pid = Path::new(&top.id).parent()?;
+        let mut cur = top.node.clone();
         loop {
-            let parent = nodes.get(pid.to_str()?)?;
-            if Some(&local_name!("body")) == dom::get_tag_name(parent) {
+            cur = cur.parent()?.clone();
+            if Some(&local_name!("body")) == dom::get_tag_name(&cur) {
                 break;
             }
 
             let mut lists_containing_ancestor = 0;
             for alt in alternative_nodes.iter() {
-                if alt.starts_with(pid) {
-                    lists_containing_ancestor += 1;
+                for ancestor in alt.ancestors() {
+                    if cur == ancestor {
+                        lists_containing_ancestor += 1;
+                        break;
+                    }
                 }
             }
             if lists_containing_ancestor >= MIN_CANDIDATES {
-                return Some(pid.to_str()?);
+                return Some(cur);
             }
-            pid = pid.parent()?;
         }
     }
     None
@@ -504,12 +457,10 @@ pub fn search_alternative_candidates<'a>(
 // decides whether the handle node is useless (should be dropped) or not.
 pub fn clean<S: ::std::hash::BuildHasher>(
     mut dom: &mut Sink,
-    id: &Path,
     handle: Handle,
     url: &Url,
     title: &str,
     features: &HashMap<String, u32, S>,
-    candidates: &BTreeMap<String, Candidate>,
 ) -> bool {
     let useless = match handle.data() {
         Document(_) => false,
@@ -533,7 +484,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 local_name!("form")
                 | local_name!("table")
                 | local_name!("ul")
-                | local_name!("div") => is_useless(id, &handle, candidates),
+                | local_name!("div") => is_useless(&handle),
                 local_name!("img") => {
                     if let Some(fixed_url) = fix_img_path(data, url) {
                         dom::set_attr("src", fixed_url.as_str(), handle.clone(), false);
@@ -554,17 +505,8 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     };
 
     let mut useless_nodes = vec![];
-    for (i, child) in handle.children().enumerate() {
-        let pid = id.join(i.to_string());
-        if clean(
-            &mut dom,
-            pid.as_path(),
-            child.clone(),
-            url,
-            title,
-            features,
-            candidates,
-        ) {
+    for child in handle.children() {
+        if clean(&mut dom, child.clone(), url, title, features) {
             useless_nodes.push(child.clone());
         }
     }
@@ -577,14 +519,10 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     useless
 }
 
-pub fn is_useless(id: &Path, handle: &Handle, candidates: &BTreeMap<String, Candidate>) -> bool {
+pub fn is_useless(handle: &Handle) -> bool {
     let tag_name = dom::get_tag_name(&handle);
     let weight = get_class_weight(&handle);
-    let score = id
-        .to_str()
-        .and_then(|id| candidates.get(id))
-        .map(|c| c.score.get())
-        .unwrap_or(0.0);
+    let score = handle.as_element().map(|e| e.score.get()).unwrap_or(0.0);
     if weight + score < 0.0 {
         return true;
     }
