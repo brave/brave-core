@@ -7240,14 +7240,8 @@ Appuyez sur un contacteur associé à l'action pour supprimer l'association.</tr
 <translation id="642436385689435488">Tout ouvrir dans une fenêtre privée</translation>
 <translation id="5074021236879527611">Ouvrir tout (<ph name="URL_COUNT"/>) dans une fenêtre privée</translation>
 <translation id="5463021359602611602">Ouvrir dans une fenêtre privée</translation>
-<translation id="1850357845349976573">{0, plural,
-        =1 {Private}
-        other {# open private windows}
-      }</translation>
-<translation id="8773965542687789581">{0, plural,
-      =1 {Private}
-      other {Private (#)}
-    }</translation>
+<translation id="1850357845349976573">{0,plural, =1{Navigation privée}one{# fenêtre de navigation privée ouverte}other{# fenêtres de navigation privée ouvertes}}</translation>
+<translation id="8773965542687789581">{0,plural, =1{Navigation privée}one{Navigation privée (#)}other{Navigation privée (#)}}</translation>
 <translation id="5070556616376997776">Ceci est une fenêtre privée</translation>
 <translation id="5832813618714645810">Profils</translation>
 <translation id="7171000599584840888">Ajouter un profil...</translation>
