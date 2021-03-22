@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/optional.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
@@ -30,6 +31,11 @@ class CosmeticFiltersJsRenderFrameObserver
   CosmeticFiltersJsRenderFrameObserver(content::RenderFrame* render_frame,
                                        const int32_t isolated_world_id);
   ~CosmeticFiltersJsRenderFrameObserver() override;
+
+  CosmeticFiltersJsRenderFrameObserver(
+      const CosmeticFiltersJsRenderFrameObserver&) = delete;
+  CosmeticFiltersJsRenderFrameObserver& operator=(
+      const CosmeticFiltersJsRenderFrameObserver&) = delete;
 
   // RenderFrameObserver implementation.
   void DidStartNavigation(
