@@ -35,35 +35,16 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
       const std::string& block_type,
       const std::string& subresource,
       content::WebContents* web_contents);
-  static void DispatchBlockedEvent(
-      std::string block_type,
-      std::string subresource,
-      int render_process_id,
-      int render_frame_id, int frame_tree_node_id);
-  static GURL GetTabURLFromRenderFrameInfo(int render_process_id,
-                                           int render_frame_id,
-                                           int render_frame_tree_node_id);
+  static void DispatchBlockedEvent(std::string block_type,
+                                   std::string subresource,
+                                   int frame_tree_node_id);
+  static GURL GetTabURLFromRenderFrameInfo(int render_frame_tree_node_id);
   void AllowScriptsOnce(const std::vector<std::string>& origins,
                         content::WebContents* web_contents);
   bool IsBlockedSubresource(const std::string& subresource);
   void AddBlockedSubresource(const std::string& subresource);
 
  protected:
-    // A set of identifiers that uniquely identifies a RenderFrame.
-  struct RenderFrameIdKey {
-    RenderFrameIdKey();
-    RenderFrameIdKey(int render_process_id, int frame_routing_id);
-
-    // The process ID of the renderer that contains the RenderFrame.
-    int render_process_id;
-
-    // The routing ID of the RenderFrame.
-    int frame_routing_id;
-
-    bool operator<(const RenderFrameIdKey& other) const;
-    bool operator==(const RenderFrameIdKey& other) const;
-  };
-
   // content::WebContentsObserver overrides.
   void RenderFrameCreated(content::RenderFrameHost* host) override;
   void RenderFrameDeleted(content::RenderFrameHost* render_frame_host) override;
@@ -88,7 +69,6 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   // Protects global maps below from being concurrently written on the UI thread
   // and read on the IO thread.
   static base::Lock frame_data_map_lock_;
-  static std::map<RenderFrameIdKey, GURL> frame_key_to_tab_url_;
   static std::map<int, GURL> frame_tree_node_id_to_tab_url_;
 
  private:

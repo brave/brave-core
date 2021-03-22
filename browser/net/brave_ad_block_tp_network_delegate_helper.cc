@@ -39,27 +39,6 @@
 
 namespace brave {
 
-namespace {
-
-content::WebContents* GetWebContents(int render_process_id,
-                                     int render_frame_id,
-                                     int frame_tree_node_id) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  content::WebContents* web_contents =
-      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
-  if (!web_contents) {
-    content::RenderFrameHost* rfh =
-        content::RenderFrameHost::FromID(render_process_id, render_frame_id);
-    if (!rfh) {
-      return nullptr;
-    }
-    web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  }
-  return web_contents;
-}
-
-}  // namespace
-
 void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
                                base::Optional<std::string> canonical_name) {
   bool did_match_rule = false;
@@ -101,8 +80,7 @@ void OnShouldBlockAdResult(const ResponseCallback& next_callback,
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx->blocked_by == kAdBlocked) {
     brave_shields::DispatchBlockedEvent(
-        ctx->request_url, ctx->render_frame_id, ctx->render_process_id,
-        ctx->frame_tree_node_id, brave_shields::kAds);
+        ctx->request_url, ctx->frame_tree_node_id, brave_shields::kAds);
   }
   next_callback.Run();
 }
@@ -132,8 +110,8 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     cb_ = base::BindOnce(&ShouldBlockAdWithOptionalCname, task_runner,
                          std::move(next_callback), ctx);
 
-    auto* web_contents = GetWebContents(
-        ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id);
+    auto* web_contents =
+        content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
     if (!web_contents) {
       start_time_ = base::TimeTicks::Now();
       this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(), base::nullopt);
