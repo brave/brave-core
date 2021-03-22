@@ -19,13 +19,14 @@ void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,
                 AdEventCallback callback) {
   AdEventInfo ad_event;
-  ad_event.type = ad.type;
   ad_event.uuid = ad.uuid;
-  ad_event.creative_instance_id = ad.creative_instance_id;
-  ad_event.creative_set_id = ad.creative_set_id;
-  ad_event.campaign_id = ad.campaign_id;
-  ad_event.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  ad_event.type = ad.type;
   ad_event.confirmation_type = confirmation_type;
+  ad_event.campaign_id = ad.campaign_id;
+  ad_event.creative_set_id = ad.creative_set_id;
+  ad_event.creative_instance_id = ad.creative_instance_id;
+  ad_event.advertiser_id = ad.advertiser_id;
+  ad_event.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
   LogAdEvent(ad_event, callback);
 }

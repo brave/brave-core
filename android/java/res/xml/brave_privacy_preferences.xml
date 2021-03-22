@@ -22,6 +22,11 @@
         android:summary="@string/httpse_summary"
         android:defaultValue="true" />
     <org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference
+        android:key="ipfs_gateway"
+        android:title="@string/ipfs_gateway_title"
+        android:summary="@string/ipfs_gateway_summary"
+        android:defaultValue="true" />
+    <org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference
         android:key="ad_block"
         android:title="@string/ad_block_title"
         android:summary="@string/ad_block_summary"

@@ -2,6 +2,7 @@ include_rules = [
   "+../../../../chrome/browser",
   "+../../../../../chrome/browser/android",
   "+../../../../../../chrome/browser/android/browsing_data",
+  "+../../../../../../chrome/browser/android/omnibox",
   "+../../../../../../chrome/browser/android/preferences",
   "+../../../../../../chrome/browser/android/signin",
   "+../../../../../chrome/browser/autocomplete",

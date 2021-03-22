@@ -26,6 +26,7 @@ NewTabPageAdInfo CreateNewTabPageAd(const std::string& uuid,
   new_tab_page_ad.creative_instance_id = ad.creative_instance_id;
   new_tab_page_ad.creative_set_id = ad.creative_set_id;
   new_tab_page_ad.campaign_id = ad.campaign_id;
+  new_tab_page_ad.advertiser_id = ad.advertiser_id;
   new_tab_page_ad.segment = ad.segment;
   new_tab_page_ad.target_url = ad.target_url;
   new_tab_page_ad.company_name = ad.company_name;

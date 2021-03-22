@@ -235,6 +235,18 @@
     "message": "Ole hyvä ja tee Brave-lompakostasi varmuuskopio.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Lue lisää",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Laiteraja saavutettu",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Lompakkoasi ei voida vahvistaa, sillä olet saavuttanut sallitun vahvistettujen laitteiden ylärajan.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Brave Rewards -tilisi odottaa talletusta",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Lompakko vahvistettu",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Siirry Uphold-tiliini",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Siirry $provider$ -tiliini",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Katkaise yhteys Brave-palkintoihin",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Huomio: siirtosi näkyvät Uphold-palvelulle, kun vahvistat. He näkevät esimerkiksi vastaanottajan ja tippiesi määrän.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Huomio: $provider$ näkee maksusuorituksesi valtuuttamisen jälkeen; he näkevät esimerkiksi tippiesi vastaanottajan sekä niiden suuruuden.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Ansaitse maksutunnuksia & osoita anteliaisuutta",

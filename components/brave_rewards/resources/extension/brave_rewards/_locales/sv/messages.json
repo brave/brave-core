@@ -235,6 +235,18 @@
     "message": "Säkerhetskopiera din Brave-plånbok.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Läs mer",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Enhetsgräns uppnådd",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Din plånbok kan inte verifieras eftersom du har nått maxgränsen för verifierade enheter.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Det återstår att sätta in pengar på ditt Brave Rewards-konto. ",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Plånbok verifierad",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Gå till mitt Uphold-konto",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Gå till mitt $provider$-konto",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Frånkoppla Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Obs! Dina transaktioner är synliga för Uphold när du godkänner det. Till exempel kommer de att kunna se mottagaren och mängden dricks.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Obs! Dina transaktioner blir synliga för $provider$ när du auktoriserar. Till exempel kommer de att kunna se mottagaren och beloppet för dina tips.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Tjäna tokens och ge tillbaka",

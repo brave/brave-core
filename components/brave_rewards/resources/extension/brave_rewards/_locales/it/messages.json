@@ -235,6 +235,18 @@
     "message": "Per favore, effettua il backup del tuo portafoglio Brave.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Ulteriori informazioni",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Limite di dispositivi raggiunto",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Il tuo portafoglio non può essere verificato perché hai raggiunto il limite massimo di dispositivi verificati.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Il tuo account Brave Rewards è in attesa di un deposito.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Portafoglio verificato",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Vai al mio account Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Vai al mio account su $provider$",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Scollegati da Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Nota: le tue transazioni saranno visibili ad Uphold dopo la tua autorizzazione; ad esempio, potranno vedere il destinatario e l'importo della tua donazione.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Nota: le tue transazioni saranno visibili a $provider$ una volta autorizzato. Ad esempio, potrà vedere il destinatario e l'ammontare delle tue donazioni.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Guadagna Gettoni e dai indietro",

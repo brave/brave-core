@@ -11,6 +11,7 @@
 @property (nonatomic, copy) NSString *creativeInstanceID;
 @property (nonatomic, copy) NSString *creativeSetID;
 @property (nonatomic, copy) NSString *campaignID;
+@property (nonatomic, copy) NSString *advertiserID;
 @property (nonatomic, copy) NSString *segment;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *body;
@@ -26,6 +27,7 @@
     self.creativeInstanceID = [NSString stringWithUTF8String:info.creative_instance_id.c_str()];
     self.creativeSetID = [NSString stringWithUTF8String:info.creative_set_id.c_str()];
     self.campaignID = [NSString stringWithUTF8String:info.campaign_id.c_str()];
+    self.advertiserID = [NSString stringWithUTF8String:info.advertiser_id.c_str()];
     self.segment = [NSString stringWithUTF8String:info.segment.c_str()];
     self.title = [NSString stringWithUTF8String:info.title.c_str()];
     self.body = [NSString stringWithUTF8String:info.body.c_str()];

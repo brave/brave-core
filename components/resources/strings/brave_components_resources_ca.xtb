@@ -35,8 +35,23 @@
 <translation id="604124094241169006">Automàtic</translation>
 <translation id="867722069064361487">Rellotge de 12 hores</translation>
 <translation id="4064062743338217840">Rellotge de 24 hores</translation>
-<translation id="8643377320501056697">Mostrar llocs destacats</translation>
-<translation id="7176563092712682575">Personalitzeu els Llocs Principals</translation>
+<translation id="5313967007315987356">Afegeix un lloc web</translation>
+<translation id="5052499409147950210">Edita el lloc</translation>
+<translation id="1181037720776840403">Suprimeix</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6678563120789955720">Adreça web</translation>
+<translation id="5327248766486351172">Nom</translation>
+<translation id="6916084277913254682">Títol del lloc web</translation>
+<translation id="5317780077021120954">Desa</translation>
+<translation id="7658239707568436148">Cancel·lar</translation>
+<translation id="4643117005422448078">Principals llocs</translation>
+<translation id="6307720725257444819">Preferits</translation>
+<translation id="81774600964978477">Els millors llocs són seleccionats per tu</translation>
+<translation id="5439599923922718668">Visitats amb freqüència</translation>
+<translation id="430556192781857057">Els llocs principals es suggereixen en funció dels llocs web que visites sovint</translation>
+<translation id="8037713009824540257">Afegir un lloc</translation>
+<translation id="1773147648972887693">Mostra els visitats freqüentment</translation>
+<translation id="4546260624932151782">Mostra els preferits</translation>
 <translation id="3446024864193919737">Mostra les recompenses de Brave</translation>
 <translation id="6274899614137380422">Mostra Binance</translation>
 <translation id="5551238871320268996">Brave Junts</translation>
@@ -63,7 +78,6 @@
 <translation id="5158129253322921540">Deshabiliteu el contingut de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promocionat</translation>
 <translation id="1776831331757823105">Rellotge</translation>
-<translation id="4643117005422448078">Principals llocs</translation>
 <translation id="7791543448312431591">Afegeix</translation>
 <translation id="7679334366167089823">Guanyeu tokens per veure anuncis que respectin la privadesa.</translation>
 <translation id="1531133232292396145">Comercialitzeu criptomonedes amb Binance directament al vostre navegador.</translation>
@@ -78,19 +92,19 @@
 <translation id="730042046912793465">Això és un</translation>
 <translation id="2055363275850890030">Finestra privada</translation>
 <translation id="9133213713928851646">Brave no recorda el que fas en una Finestra Privada. Els llocs que visites no es mostraran al teu historial i les galetes desapareixeran quan hagis acabat. Les Finestres Privades no et fan completament anònim en línia.</translation>
-<translation id="8760415064721320867">Finestra Privada amb Tor</translation>
-<translation id="4844209912525464363">Brave mai no recorda el que fas en una Finestra Privada. Amb Tor, la teva navegació també queda amagada del teu ISP o de l'empresari, i la teva adreça IP està oculta als llocs que visites.</translation>
+<translation id="3546750666732517156">Finestra privada amb connectivitat Tor</translation>
+<translation id="5383068818957293256">Brave no recorda mai el que fas en una finestra privada. Amb la connectivitat Tor, també s'amaga la teva adreça IP als llocs que visites. Tot i això, si la teva seguretat personal depèn de mantenir l'anonimat, utilitza el navegador Tor.</translation>
 <translation id="778096729652828897">Saber més sobre Finestres Privades amb Tor</translation>
 <translation id="7919374705736538787">Cerca Privadament amb</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Amb la cerca privada, Brave utilitzarà DuckDuckGo per a cerques en Finestres Privades. DuckDuckGo no fa un seguiment del teu historial de cerca, de manera que pots cercar de manera privada.</translation>
 <translation id="1925197199485958903">En finestres privades amb Tor, DuckDuckGo és el motor de cerca predeterminat. Alguns dels altres cercadors populars són més difícils d'utilitzar amb Tor. DuckDuckGo no fa un seguiment de l'historial de cerca; amb Tor, ni tan sols saben la teva adreça IP.</translation>
 <translation id="4371533307685765155">Cerca amb DuckDuckGo</translation>
-<translation id="5576876180131651996">Fes les Finestres Privades molt més privades</translation>
-<translation id="1129265576134014816">Aquesta Finestra Privada és molt més privada</translation>
-<translation id="805807983419360524">amb Tor</translation>
-<translation id="8958799246752641148">Tor oculta la teva adreça IP als llocs que visites, encaminant la teva navegació a través de diversos servidors Tor abans d'arribar a la teva destinació. Aquestes connexions es xifren, de manera que el teu ISP o empresari no pot veure quins llocs estàs visitant. Tor pot frenar la navegació i és possible que alguns llocs no funcionin.</translation>
-<translation id="520608572871993342">L'ús de Finestres privades només canvia el que fa el Brave al teu dispositiu: no canvia el comportament de ningú altre. Tor oculta la teva adreça IP als llocs que visites i oculta els llocs que visites al teu ISP o al teu empresari. Obri una finestra privada amb Tor des del menú o amb {{key}}.</translation>
+<translation id="548478195417408221">Fes que les finestres privades siguin més privades</translation>
+<translation id="3294503279952534143">Aquesta finestra privada és més privada</translation>
+<translation id="4644024131266615376">amb Connectivitat Tor</translation>
+<translation id="8541421872680304667">Tor amaga la teva adreça IP dels llocs que visites, encaminant la teva navegació per diversos servidors Tor abans d'arribar a la teva destinació. Tor pot frenar la navegació i és possible que alguns llocs web no funcionin gens.</translation>
+<translation id="7030950080800709999">L'ús de finestres privades només canvia el que Brave fa al teu dispositiu — no canvia el comportament de ningú més. Tor amaga la teva adreça IP dels llocs que visites i fa que sigui més difícil, però no impossible, que el teu proveïdor d'Internet o el teu cap vegi els llocs que visites. Obra una finestra privada amb Tor des del menú o amb {{ key }}.</translation>
 <translation id="6975708438781948564">Saber més sobre Tor a Brave</translation>
 <translation id="4712050378540986986">Estat de Tor</translation>
 <translation id="3368922792935385530">Connectat</translation>
@@ -104,7 +118,6 @@
 <translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
 <translation id="8510478288840333677">Fes saber als desenvolupadors de Brace que aquesta web no funciona de forma adequada amb els Escuts:</translation>
 <translation id="6013164422534859494">Nota: aquesta adreça web s'enviarà amb el teu número de la versió de Brave i la teva adreça IP (que no es guardarà).</translation>
-<translation id="7658239707568436148">Cancel·la</translation>
 <translation id="2653659639078652383">Envia</translation>
 <translation id="5299848999918506028">Gràcies!</translation>
 <translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Brave que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
@@ -217,7 +230,7 @@
 <translation id="5549059668721746831">Data de la propera contribució mensual</translation>
 <translation id="6231182869178328516">He donat una propina a <ph name="NAME"/> amb el navegador Brave. Comprova-ho a https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="2876191400747549936">Dispensa, hi ha hagut un problema en processar la teva petició, si us plau prova una altra vegada</translation>
+<translation id="3113653894794167793">Ho sentim, hi ha hagut un problema en processar la teva sol·licitud; torna-ho a provar.</translation>
 <translation id="3082557070674409251">Clicat</translation>
 <translation id="7119308337584989771">Descartat</translation>
 <translation id="6805660603861526473">Vist</translation>
@@ -352,7 +365,7 @@
 <translation id="3477340970981564961">Els Brave Private Ads, a diferència dels anuncis tradicionals, us recompensen amb tokens per a sostenir creadors de contingut, tot mantenint la privacitat de la vostra informació personal.</translation>
 <translation id="6973095375773523904">A on es mostren els anuncis?</translation>
 <translation id="7556325460112047619">Els Brave Private Ads apareixeran com una notificació normal. Podeu controlar cada quant voleu veure aquests anuncis a les opcions.</translation>
-<translation id="5816125157889950051">Quan rebeu recompenses</translation>
+<translation id="6897083627729802351">Quan rebeu recompenses</translation>
 <translation id="310863932297733723">Els tokens dels Brave Private Ads que heu guanyat al llarg d'aquest mes arribaran el dia 5 del mes següent.</translation>
 <translation id="7712287524451429139">Retornat sense esforç</translation>
 <translation id="105037569026952831">Els creadors reben les vostres fitxes de manera automàtica segons el vostre nivell d'interacció que mesurem com a ‘Atenció’.</translation>
@@ -380,7 +393,6 @@
 <translation id="2111256234277361810">Marcar com a inapropiat ✓</translation>
 <translation id="8988332871810963281">En aquest moment no hi ha historial d'Anuncis Brave</translation>
 <translation id="5345727496083327478">Ja no rebràs anuncis d'aquesta categoria</translation>
-<translation id="5317780077021120954">Desa</translation>
 <translation id="2827387977307390755">Permet Propines</translation>
 <translation id="3819257035322786455">Còpia de seguretat</translation>
 <translation id="1312977698678162065">Cobra per veure anuncis rellevants que respecten la teva intimitat.</translation>
@@ -507,7 +519,7 @@
 <translation id="1797334173232638045">Els llocs fixats s'han traslladat a</translation>
 <translation id="6803187280799213426">Els fons a la cartera de Brave són virtuals i no cal incloure'ls a la còpia de seguretat. Els Podeu gastar exclusivament en aquest navegador.</translation>
 <translation id="5290348443732633227">Si voleu assegurar tots els fons en cas d'instal·lar net el navegador o canviar a un dispositiu nou, i obtenir altres beneficis com afegir, retirar i transferir fons, us recomanem</translation>
-<translation id="6733942359297688714">conectant amb una cartera Uphold verificada.</translation>
+<translation id="467041382895390784">connectant-se a una cartera verificada de <ph name="PROVIDER"/> .</translation>
 <translation id="5717619667204259673">Desa aquesta clau de recuperació en un lloc segur.</translation>
 <translation id="4699702339303280827">Sempre pots fer servir aquesta clau d'accés per recuperar el teu moneder si li passa res al teu navegador o al teu ordinador. Però assegura't que no la perds — qualsevol persona que tingui aquesta clau d'accés podria robar-te el moneder. El més segur és’ que l'escriguis en un paper o on sigui que guardes la informació important.</translation>
 <translation id="8979401359137062629">Nota:</translation>
@@ -527,8 +539,8 @@
 <translation id="8014425282125849700">Ocasionalment t'oferirem ajuts de tokens des de Brave. Estigués atent a l'alerta!</translation>
 <translation id="2185598236335233939">Busca notificacions d'anuncis mentre utilitzes Brave. El saldo dels teus punts BAT augmentarà per cada anunci que visualitzis.</translation>
 <translation id="1370034647041840967">Guanya tokens per la teva atenció als anuncis i utilitza'ls per donar suport als creadors de contingut que t'agraden!</translation>
-<translation id="4600224932216165965">Afegiu, retireu i gestioneu els dipositis a <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
-<translation id="3580616436301227919">La vostra cartera de Brave funciona gràcies a <ph name="BEGIN_BOLD"/>Uphold<ph name="END_BOLD"/>.</translation>
+<translation id="4919888432594361029">Afegeix, retira i gestiona fons a <ph name="PROVIDER"/>.</translation>
+<translation id="3092054349246483285">La teva cartera Brave funciona amb <ph name="PROVIDER"/>.</translation>
 <translation id="6401272292123354754">Els Premis de Brave són creats per Basic Attention Token. Saber més de BAT</translation>
 <translation id="7823359893981882407">aquí</translation>
 <translation id="4483635855837696643">Restaura la teva cartera</translation>
@@ -537,7 +549,7 @@
 <translation id="3267911153934785912">Introdueix la clau de recuperació o</translation>
 <translation id="6548189695918108191">Feu una còpia de seguretat de la cartera abans de reemplaçar-la. O perdreu els fons, {{funds}}, a la cartera actual.</translation>
 <translation id="5423214929210538027">Esteu segurs que voleu restablir la Cartera de Recompenses?</translation>
-<translation id="7428521340740703492">Si restabliu la cartera, es perdran permanentment les vostres dades de <ph name="BEGIN_BOLD"/>{{amount}} BATs<ph name="END_BOLD"/> i altres recompenses. Si us plau, assegureu-vos que heu verificat la vostra cartera amb Uphold per poder conservar els vostres BAT.</translation>
+<translation id="8683358891240311475">Les dades dels teus <ph name="BAT_AMOUNT"/> i les altres recompenses es perdran per sempre si restableixes la teva cartera. Assegura't d'haver verificat la teva cartera amb <ph name="PROVIDER"/> per poder conservar els teus BAT.</translation>
 <translation id="2028613172174411919">Les dades de Recompenses es perdran permanentment si restabliu la cartera.</translation>
 <translation id="4914597931214386232">Donacions sol·licitades</translation>
 <translation id="3494964159182650590">Resum de recompenses</translation>
@@ -612,20 +624,20 @@
 <translation id="7512440811010447157">verificar</translation>
 <translation id="8267327690882073581">Verificar el moneder</translation>
 <translation id="543510923939676996">Moneder Verificat</translation>
-<translation id="7591798679868259510">Anar al meu compte d'Uphold</translation>
+<translation id="2659764755126740206">Anar al meu compte <ph name="PROVIDER"/></translation>
 <translation id="3699674790322420653">Completeu la verificació del moneder</translation>
 <translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
 <translation id="46988480989545156">Verificar el moneder</translation>
-<translation id="160145159036553575">El nostre servei de carteres el proporciona <ph name="BEGIN_BOLD"/>Uphold.<ph name="END_BOLD"/></translation>
+<translation id="5796169459825124737"><ph name="PROVIDER"/> proporciona el nostre servei de carteres.</translation>
 <translation id="6771734945114850124">Si us plau, tingues a mà el teu  document d'identitat.</translation>
 <translation id="8697510149346635496">Retirar BAT que guanyis per veure anuncis respectuosos amb la privacitat</translation>
 <translation id="1481480653609649134">Comprar BAT addicional amb targetes de crèdit o altres mètodes</translation>
 <translation id="9096003370755878766">Retirar BAT que hagis afegit al teu moneder de Gratificacions Brave</translation>
 <translation id="8558636200953226885">Però si ho verifiques, pots...</translation>
 <translation id="3354315693758743702">Verificar el teu moneder és opcional.</translation>
-<translation id="8465442795593991224">Uphold et pot demanar que verifiquis la teva identitat en funció dels serveis demanats.</translation>
-<translation id="723054503945711909">Brave Software Inc. no processa, emmagatzema, o accedeix a cap informació personal que proporcionis a UPhold quan estableixis un compte amb ells.</translation>
-<translation id="7677480094678113476">Nota: Les vostres transaccions estaran visibles per a Uphold un cop ho autoritzeu; per exemple, podran veure el destinatari i la quantitat de les vostres propines.</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/> pot ser que et demani que verifiquis la teva identitat en funció dels serveis sol·licitats.</translation>
+<translation id="6938217233488972952">Brave Software Inc. no processa, emmagatzema ni accedeix a cap informació personal que proporciones a <ph name="PROVIDER"/> quan obres un compte amb ells.</translation>
+<translation id="2415586822982819406">Nota: <ph name="PROVIDER"/> podrà veure les teves transaccions un cop ho autoritzis; per exemple, podrà veure el destinatari i l'import de les teves propines.</translation>
 <translation id="7404779623219601861">Bescanvieu BAT per Targetes Regal</translation>
 <translation id="6215565499749144110">Amb TAP Network, podeu bescanviar els vostres BAT per targetes regal de marques populars.</translation>
 <translation id="6915065518766963119">* Requereix Verificació Uphold.</translation>
@@ -723,12 +735,36 @@
 <translation id="8327818101454798856">Així, si estaveu buscant la manera de donar suport a les vostres llocs preferits, millor aneu-hi.</translation>
 <translation id="412480955826088549">Baixant component...</translation>
 <translation id="4894106830958548828">Ho entenc</translation>
-<translation id="7701466644604753106">Activar el lector de velocitat</translation>
-<translation id="763042262431778831">Desactivar el lector de velocitat</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Mireu els mercats i compreu crypto de crypto.com</translation>
+<translation id="4292334826913000023">Mostrar el Preu</translation>
+<translation id="5001098083058405168">Aconseguiu 2% de bonus en dipòsits</translation>
+<translation id="7336377875970208451">Deixeu de pagar comissions per operacions</translation>
+<translation id="5889002303959545585">Comprar Bitcoin</translation>
+<translation id="7243082596932212589">Mireu els Mercats Crypto.com</translation>
+<translation id="2258222996838418990">Gràfic 7d</translation>
+<translation id="5337526542182802976">Parells Compatibles</translation>
+<translation id="1164622162816276433">Volum 24HR</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="4492298165410552103">Vols activar el suport de Unstoppable Domains a Brave?</translation>
+<translation id="3470923752115324276">Brave et pot permetre visitar dominis .crypto mitjançant Cloudflare per resoldre sol·licituds de cerca de noms de domini .crypto utilitzant DNS per sobre de HTTPS. Si ho actives, Cloudflare veurà el domini .crypto que intentes visitar, però no podras veure els altres dominis. Consulta <ph name="BEGIN_CF_TOU_LINK"/>les condicions d'ús<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>la política de privadesa<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
+<translation id="6513892817556267573">Servei de noms Ethereum</translation>
+<translation id="4335039108389860301">Vols activar el suport del servei de noms Ethereum (ENS) a Brave?</translation>
+<translation id="618766505813078707">Brave et pot permetre visitar dominis .eth mitjançant Cloudflare per resoldre sol·licituds de cerca de noms de domini .eth utilitzant DNS per sobre de HTTPS. Si ho actives, Cloudflare veurà el domini .eth que intentes visitar, però no podras veure els altres dominis. Consulta <ph name="BEGIN_CF_TOU_LINK"/>les condicions d'ús<ph name="END_CF_TOU_LINK"/> i <ph name="BEGIN_CF_PRIVACY_LINK"/>la política de privadesa<ph name="END_CF_PRIVACY_LINK"/> de Cloudflare.</translation>
+<translation id="5636651007798897342">Continua utilitzant el servidor Cloudflare</translation>
+<translation id="2468755552460246661">Domini bloquejat</translation>
+<translation id="6631469728138660166">Lloc sospitós a continuació</translation>
+<translation id="983774928604730749">Brave ha impedit que es carregui el lloc següent:</translation>
+<translation id="8250033559824599347">És possible que aquest lloc sigui fraudulent, que reboti entre diversos llocs per establir galetes de seguiment o que faci altres accions invasives de privadesa.</translation>
+<translation id="2459038234784107183">No em tornis a avisar sobre aquest lloc</translation>
+<translation id="8242426110754782860">Continuar</translation>
+<translation id="2501278716633472235">Torna</translation>
 <translation id="9020818404803201080">Parells connectats:</translation>
 <translation id="2903493209154104877">Adreces</translation>
 <translation id="3207122385716480167">Estadístiques del repositori</translation>
 <translation id="2595187693729756455">Informació del node</translation>
+<translation id="8999763401170835879">S'ha produït un error; intenta iniciar-ho de nou</translation>
+<translation id="5433704526290922623">S'ha produït un error, si us plau, intenta instal·lar el node de nou</translation>
 <translation id="5789886980848929155">Estat del node IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Passarel·la</translation>
@@ -770,20 +806,20 @@
 <translation id="3977809385703587108">Podeu canviar de nou les vostres preferències a</translation>
 <translation id="3340978935015468852">configuració</translation>
 <translation id="4148957013307229264">S'està instal·lant ...</translation>
-<translation id="6057992164469678163">A l'espera dels companys...</translation>
+<translation id="4219228508273972445">Cercant companys de xarxa...</translation>
 <translation id="1902096227388293745">No hi ha companys disponibles, tornant-ho a provar... (<ph name="ATTEMPTS_NUMBER"/> intents restants)</translation>
 <translation id="1675751799495331928">Hem superat el límit d'intents. Torneu-ho a provar més tard.</translation>
 <translation id="4499666752625407848">S'ha produït un error durant una actualització.</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Mireu els mercats i compreu crypto de crypto.com</translation>
-<translation id="4292334826913000023">Mostrar el Preu</translation>
-<translation id="5001098083058405168">Aconseguiu 2% de bonus en dipòsits</translation>
-<translation id="7336377875970208451">Deixeu de pagar comissions per operacions</translation>
-<translation id="5889002303959545585">Comprar Bitcoin</translation>
-<translation id="7243082596932212589">Mireu els Mercats Crypto.com</translation>
-<translation id="2258222996838418990">Gràfic 7d</translation>
-<translation id="5337526542182802976">Parells Compatibles</translation>
-<translation id="1164622162816276433">Volum 24HR</translation>
+<translation id="7789840864192026963">Dóna permís</translation>
+<translation id="8092074243456635562">fins que tanqui aquesta pàgina</translation>
+<translation id="3523195733429162409">durant 24 hores</translation>
+<translation id="2373264732659722940">durant 1 setmana</translation>
+<translation id="6318437367327684789">per sempre</translation>
+<translation id="7463327191540031132">Bloqueja per sempre</translation>
+<translation id="8797999629784150206">Pots canviar <ph name="SITE_PERMISSIONS"/> en qualsevol moment. <ph name="LEARN_MORE"/></translation>
+<translation id="581582843259146919">permís del lloc</translation>
+<translation id="7701466644604753106">Activar el lector de velocitat</translation>
+<translation id="763042262431778831">Desactivar el lector de velocitat</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="3745016858329272300">Informació general</translation>
 <translation id="4045404575593562245">Esdeveniments de control de Tor</translation>

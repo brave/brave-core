@@ -66,6 +66,10 @@ Result PromotedContentAdInfo::FromJson(const std::string& json) {
     campaign_id = document["campaign_id"].GetString();
   }
 
+  if (document.HasMember("advertiser_id")) {
+    advertiser_id = document["advertiser_id"].GetString();
+  }
+
   if (document.HasMember("segment")) {
     segment = document["segment"].GetString();
   }
@@ -103,6 +107,9 @@ void SaveToJson(JsonWriter* writer, const PromotedContentAdInfo& info) {
 
   writer->String("campaign_id");
   writer->String(info.campaign_id.c_str());
+
+  writer->String("advertiser_id");
+  writer->String(info.advertiser_id.c_str());
 
   writer->String("segment");
   writer->String(info.segment.c_str());

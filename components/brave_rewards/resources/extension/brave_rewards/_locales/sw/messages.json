@@ -235,6 +235,18 @@
     "message": "Tafadhali hifadhi kwa njia mbadala wallet yako ya Brave.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Jifunze Zaidi",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Kikomo ch Kifaa Kimefikishwa",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Pochi yako haiwezi kuthibitishwa kwa sababu umefikisha kikomo cha kifaa kilichothibitishwa cha juu zaidi.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Akaunto yako ya Brave Rewards inasubiri amana.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Pochi Imethibitishwa",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Nenda kwenye akaunti yangu ya Uphold",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Nenda kwenye akaunti yangu ya $provider$",
+    "description": "CTA to open an external wallet account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Ondoa kwenye Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Dokezo: Miamala yako itaonekana kwa Uphold mara unapoidhinisha; kwa mfano, wataweza kuona mpokeaji na kiasi cha vidokezo vyako.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Dokezo: Miamala yako itaonekana kwa $provider$ mara unapoidhinisha; kwa mfano, wataweza kuona mpokeaji na kiasi cha bahshishi yako.",
+    "description": "Displayed in login modal for external wallet providers",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Pata Tokeni na Utoe Shukrani",

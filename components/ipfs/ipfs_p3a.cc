@@ -11,7 +11,11 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry.h"
+#endif
 
 namespace ipfs {
 
@@ -20,11 +24,13 @@ constexpr size_t kP3ATimerInterval = 1;
 // IPFS companion installed?
 // i) No, ii) Yes
 void RecordIPFSCompanionInstalled(content::BrowserContext* context) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
   auto* registry = extensions::ExtensionRegistry::Get(context);
   bool installed =
       registry->enabled_extensions().Contains(ipfs_companion_extension_id);
   UMA_HISTOGRAM_BOOLEAN("Brave.IPFS.IPFSCompanionInstalled", installed);
+#endif
 }
 
 int GetIPFSDetectionPromptBucket(PrefService* prefs) {

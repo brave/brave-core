@@ -113,7 +113,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="847561904663814268">Iemand het voorheen op hierdie rekenaar as <ph name="ACCOUNT_EMAIL_LAST"/> by Brave aangemeld. Skep asseblief 'n nuwe Brave-gebruiker om jou inligting apart te hou.</translation>
 <translation id="3834935463915107022">Verlaat Brave in elk geval?</translation>
 <translation id="8668413672647811944">'n Spesiale sekuriteitopdatering vir Brave is sopas toegepas. Herbegin nou en ons sal jou oortjies teruglaai.</translation>
-<translation id="7914115000169617076">Amper op datum! Herbegin Brave om opdatering te voltooi. Incognitovensters sal nie weer oopgemaak word nie.</translation>
 <translation id="4823369970559443694">Brave kan nie jou wagwoorde nagaan nie. Probeer ná 24 uur weer of <ph name="BEGIN_LINK"/>gaan wagwoorde in jou Brave-rekening na<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Dit gebruik dieselfde speltoetser wat in Brave-soektog gebruik word. Teks wat jy in die blaaier tik, word na Brave toe gestuur. Jy kan altyd hierdie gedrag in instellings verander.</translation>
 <translation id="2899369907387169108">Gebruik Brave sonder 'n rekening</translation>
@@ -284,4 +283,5 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin.}=1{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin. Jou incognitovenster sal nie weer oopgemaak word nie.}other{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas}=1{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas. Jou incognitovenster sal nie weer oopgemaak word nie.}other{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas}=1{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas. Jou incognitovenster sal nie weer oopgemaak word nie.}other{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
+<translation id="7914115000169617076">Amper op datum! Herbegin Brave om opdatering te voltooi. Incognitovensters sal nie weer oopgemaak word nie.</translation>
 </translationbundle>

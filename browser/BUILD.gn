@@ -308,13 +308,21 @@ source_set("browser_process") {
     ]
 
     deps += [
-      "//brave/browser/infobars",
       "//brave/components/ipfs",
       "//brave/components/services/ipfs/public/mojom",
       "//components/user_prefs",
-      "//extensions/browser",
-      "//extensions/common",
     ]
+
+    if (enable_extensions) {
+      deps += [
+        "//extensions/browser",
+        "//extensions/common",
+      ]
+    }
+
+    if (!is_android) {
+      deps += [ "//brave/browser/infobars" ]
+    }
   }
 
   if (brave_together_enabled) {
@@ -336,9 +344,7 @@ source_set("browser_process") {
   }
 
   if (enable_brave_referrals) {
-    deps += [
-      "//brave/components/brave_referrals/browser",
-    ]
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   if (brave_ads_enabled) {

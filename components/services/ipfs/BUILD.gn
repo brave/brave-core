@@ -1,8 +1,10 @@
 source_set("ipfs") {
-  sources = [
-    "ipfs_service_impl.cc",
-    "ipfs_service_impl.h",
-  ]
+  sources = [ "ipfs_service_impl.h" ]
+  if (!is_android) {
+    sources += [ "ipfs_service_impl.cc" ]
+  } else {
+    sources += [ "ipfs_service_impl_android.cc" ]
+  }
 
   deps = [
     "//base",

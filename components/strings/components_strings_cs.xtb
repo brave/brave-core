@@ -2063,8 +2063,8 @@ Další podrobnosti:
     &lt;li&gt;Přejděte na libovolný web začínající schématem &lt;code&gt;http://&lt;/code&gt;, například &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;Na přihlašovací stránce, která se otevře, se přihlaste, abyste mohli používat internet.&lt;/li&gt;
     &lt;/ol&gt;
-    &lt;h4&gt;Krok 2: Otevřete stránku v anonymním režimu (pouze na počítači)&lt;/h4&gt;
-    &lt;p&gt;V anonymním okně otevřete stránku, na kterou chcete přejít.&lt;/p&gt;
+    &lt;h4&gt;Krok 2: Otevřete stránku v soukromém režimu (pouze na počítači)&lt;/h4&gt;
+    &lt;p&gt;V soukromém okně otevřete stránku, na kterou chcete přejít.&lt;/p&gt;
     &lt;p&gt;Pokud se otevře, znamená to, že chybu způsobuje některé rozšíření Chromu. Odstraníte ji vypnutím příslušného rozšíření.&lt;/p&gt;
     &lt;h4&gt;Krok 3: Aktualizujte operační systém&lt;/h4&gt;
     &lt;p&gt;Zkontrolujte, zda je vaše zařízení aktuální.&lt;/p&gt;
