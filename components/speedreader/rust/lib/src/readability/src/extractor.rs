@@ -6,6 +6,7 @@ use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
 use kuchiki::Sink;
+use kuchiki::NodeRef as Handle;
 use scorer::{Candidate, Title, TopCandidate};
 use std::collections::BTreeMap;
 use std::collections::HashMap;
@@ -56,11 +57,11 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     }
 
 
-    let mut id: String = "/".to_string();
+    let id: String;
 
     // top candidate is the top scorer among the tree dom's candidates. this is
     // the subtree that will be considered for final rendering
-    let mut top_candidate = handle;
+    let top_candidate: Handle;
 
     {
         // scores all candidate nodes

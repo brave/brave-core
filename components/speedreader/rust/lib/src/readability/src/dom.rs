@@ -7,6 +7,7 @@ use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use std::str::FromStr;
 
+#[inline]
 pub fn get_tag_name<'a>(handle: &'a Handle) -> Option<&'a LocalName> {
     match handle.data() {
         Element(ref value) => Some(&value.name.local),
@@ -14,6 +15,7 @@ pub fn get_tag_name<'a>(handle: &'a Handle) -> Option<&'a LocalName> {
     }
 }
 
+#[inline]
 pub fn set_attr<S>(attr_name: &str, attr_value: S, handle: Handle, create_if_missing: bool)
 where
     S: Into<String>,
@@ -30,6 +32,7 @@ where
     }
 }
 
+#[inline]
 pub fn append_attr(attr_name: &str, value: &str, attrs: &mut Vec<Attribute>) {
     if let Ok(value) = StrTendril::from_str(value) {
         let new_attr = Attribute {
@@ -40,6 +43,7 @@ pub fn append_attr(attr_name: &str, value: &str, attrs: &mut Vec<Attribute>) {
     }
 }
 
+#[inline]
 pub fn clean_attr(attr_name: &str, attrs: &mut Vec<Attribute>) {
     if let Some(index) = attrs.iter().position(|attr| {
         let name = attr.name.local.as_ref();
@@ -127,6 +131,13 @@ pub fn text_len(handle: &Handle) -> usize {
     len
 }
 
+#[inline]
+pub fn find_nodes_with_tag(handle: &Handle, tags: &[&str], nodes: &mut Vec<Handle>) {
+    for tag in tags {
+        find_node(handle, tag, nodes);
+    }
+}
+
 pub fn find_node(handle: &Handle, tag_name: &str, nodes: &mut Vec<Handle>) {
     for child in handle.children() {
         if let Some(data) = child.as_element() {
@@ -185,6 +196,7 @@ pub fn text_children_count(handle: &Handle) -> usize {
     count
 }
 
+#[inline]
 pub fn previous_element_sibling(handle: &Handle) -> Option<Handle> {
     let mut curr = handle.previous_sibling()?;
     loop {
@@ -195,6 +207,7 @@ pub fn previous_element_sibling(handle: &Handle) -> Option<Handle> {
     }
 }
 
+#[inline]
 pub fn parse_inner(contents: &str) -> Option<Handle> {
     let dom = parse_document(Sink::default(), ParseOpts::default()).one(contents);
     let html = dom.document_node.first_child()?;

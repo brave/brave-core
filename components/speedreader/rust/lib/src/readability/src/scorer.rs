@@ -115,13 +115,25 @@ pub fn get_link_density(handle: &Handle) -> f32 {
     if text_length == 0.0 {
         return 0.0;
     }
-    let mut link_length = 0.0;
     let mut links: Vec<Handle> = vec![];
     dom::find_node(&handle, "a", &mut links);
-    for link in links.iter() {
-        link_length += dom::text_len(&link) as f32;
-    }
+    let link_length = links
+        .iter()
+        .fold(0.0, |acc, link| acc + dom::text_len(&link) as f32);
     link_length / text_length
+}
+
+pub fn get_text_density(handle: &Handle, tags: &[&str]) -> f32 {
+    let text_length = dom::text_len(&handle) as f32;
+    if text_length == 0.0 {
+        return 0.0;
+    }
+    let mut nodes: Vec<Handle> = vec![];
+    dom::find_nodes_with_tag(&handle, tags, &mut nodes);
+    let children_length = nodes
+        .iter()
+        .fold(0.0, |acc, child| acc + dom::text_len(&child) as f32);
+    children_length / text_length as f32
 }
 
 // is candidate iif lenght of the text is larger than 20 words AND its tag is
@@ -129,7 +141,7 @@ pub fn get_link_density(handle: &Handle) -> f32 {
 // BLOCK_CHILD_TAGS
 pub fn is_candidate(handle: &Handle) -> bool {
     let text_len = dom::text_len(&handle);
-    if text_len < 20 {
+    if text_len < 25 {
         return false;
     }
     match handle.data() {
@@ -153,7 +165,7 @@ pub fn init_content_score(handle: &Handle) -> f32 {
         Element(ref data) => match data.name.local {
             local_name!("article") => 10.0,
             local_name!("div") => 5.0,
-            local_name!("h1") | local_name!("h2") | local_name!("h3") | local_name!("h4") => 5.0,
+            local_name!("h1") | local_name!("h2") | local_name!("h3") | local_name!("h4") => -5.0,
             local_name!("blockquote") => 3.0,
             local_name!("pre") => 3.0,
             local_name!("td") => 3.0,
@@ -516,6 +528,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("object")
                 | local_name!("header")
                 | local_name!("footer")
+                | local_name!("embed")
                 | local_name!("aside") => true,
                 local_name!("form")
                 | local_name!("table")
@@ -576,15 +589,22 @@ pub fn is_useless(id: &Path, handle: &Handle, candidates: &BTreeMap<String, Cand
         return true;
     }
 
+    let content_length = dom::text_len(&handle);
     let para_count =
         dom::count_nodes(&handle, &local_name!("p")) + dom::text_children_count(&handle) as u32;
-    let li_count = dom::count_nodes(&handle, &local_name!("li")) as i32 - 100;
 
-    if tag_name != Some(&local_name!("ul"))
-        && tag_name != Some(&local_name!("ol"))
-        && li_count > para_count as i32
-    {
-        return true;
+    let mut is_list = tag_name == Some(&local_name!("ul")) || tag_name == Some(&local_name!("ol"));
+    if !is_list {
+        let mut list_nodes: Vec<Handle> = vec![];
+        dom::find_nodes_with_tag(handle, &["ul", "ol"], &mut list_nodes);
+
+        let mut list_length = 0.0;
+        for node in list_nodes {
+            let mut text = String::new();
+            dom::extract_text(&node, &mut text, true);
+            list_length += text.chars().count() as f32;
+        }
+        is_list = list_length / content_length as f32 > 0.9;
     }
 
     let input_count = dom::count_nodes(&handle, &local_name!("input"));
@@ -592,20 +612,31 @@ pub fn is_useless(id: &Path, handle: &Handle, candidates: &BTreeMap<String, Cand
         return true;
     }
 
-    let img_count = dom::count_nodes(&handle, &local_name!("img"));
-    let content_length = dom::text_len(&handle);
-
-    if content_length < 10 && (img_count == 0 || img_count > 2) {
+    let link_density = get_link_density(handle);
+    if weight >= 25.0 && link_density > 0.5 {
         return true;
+    }
+
+    let img_count = dom::count_nodes(&handle, &local_name!("img"));
+
+    if !is_list {
+        let li_count = dom::count_nodes(&handle, &local_name!("li")) as i32 - 100;
+        if li_count > para_count as i32 {
+            return true;
+        }
+
+        if weight < 25.0 && link_density > 0.2 {
+            return true;
+        }
+
+        let heading_density = get_text_density(&handle, &["h1", "h2", "h3", "h4", "h5", "h6"]);
+        if heading_density < 0.9 && content_length < 25 && (img_count == 0 || img_count > 2) {
+            return true;
+        }
     }
 
     let embed_count = dom::count_nodes(&handle, &local_name!("embed"));
-    if (embed_count == 1 && content_length < 35) || embed_count > 1 {
-        return true;
-    }
-
-    let link_density = get_link_density(handle);
-    if weight < 10.0 && link_density > 0.1 {
+    if (embed_count == 1 && content_length < 75) || embed_count > 1 {
         return true;
     }
     false
