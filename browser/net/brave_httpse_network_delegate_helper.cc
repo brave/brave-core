@@ -37,8 +37,8 @@ void OnBeforeURLRequest_HttpsePostFileWork(
 
   if (!ctx->new_url_spec.empty() &&
     ctx->new_url_spec != ctx->request_url.spec()) {
-    brave_shields::DispatchBlockedEvent(ctx->request_url,
-        ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
+    brave_shields::DispatchBlockedEvent(
+        ctx->request_url, ctx->frame_tree_node_id,
         brave_shields::kHTTPUpgradableResources);
   }
 
@@ -84,9 +84,8 @@ int OnBeforeURLRequest_HttpsePreFileWork(
       return net::ERR_IO_PENDING;
     } else {
       if (!ctx->new_url_spec.empty()) {
-        brave_shields::DispatchBlockedEvent(ctx->request_url,
-            ctx->render_frame_id, ctx->render_process_id,
-            ctx->frame_tree_node_id,
+        brave_shields::DispatchBlockedEvent(
+            ctx->request_url, ctx->frame_tree_node_id,
             brave_shields::kHTTPUpgradableResources);
       }
     }
