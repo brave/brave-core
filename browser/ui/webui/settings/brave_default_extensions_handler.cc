@@ -93,6 +93,10 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setIPFSStorageMax",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetIPFSStorageMax,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "launchIPFSService",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::LaunchIPFSService,
+                          base::Unretained(this)));
 
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
@@ -362,6 +366,17 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
 #endif
     OnRestartNeededChanged();
   }
+}
+
+void BraveDefaultExtensionsHandler::LaunchIPFSService(
+    const base::ListValue* args) {
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(profile_);
+  if (!service) {
+    return;
+  }
+  if (!service->IsDaemonLaunched())
+    service->LaunchDaemon(base::NullCallback());
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSStorageMax(

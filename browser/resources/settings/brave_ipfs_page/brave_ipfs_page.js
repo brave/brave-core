@@ -18,11 +18,22 @@ Polymer({
     WebUIListenerBehavior,
     PrefsBehavior
   ],
-
+  
+  /** 
+   * Keep it same as in IPFSResolveMethodTypes
+   * in brave\components\ipfs\ipfs_constants.h */
+  IPFSResolveMethodTypes: {
+    IPFS_ASK: 0,
+    IPFS_GATEWAY: 1,
+    IPFS_LOCAL: 2,
+    IPFS_DISABLED: 3
+  },
+  
   properties: {
     ipfsEnabled_: Boolean,
     showChangeIPFSGatewayDialog_: Boolean,
-    isStorageMaxEnabled_: Boolean
+    isStorageMaxEnabled_: Boolean,
+    showIPFSLearnMoreLink_: Boolean
   },
 
   /** @private {?settings.BraveIPFSBrowserProxy} */
@@ -51,7 +62,12 @@ Polymer({
 
   onLoad_: function() {
     this.isStorageMaxEnabled_ =
-      this.getPref('brave.ipfs.resolve_method').value == 2;
+      this.getPref('brave.ipfs.resolve_method').value ==
+        this.IPFSResolveMethodTypes.IPFS_LOCAL;
+    // Check if IPFS method is ASK
+    this.showIPFSLearnMoreLink_ =
+      this.getPref('brave.ipfs.resolve_method').value ==
+        this.IPFSResolveMethodTypes.IPFS_ASK;
 
     this.$.ipfsStorageMax.value =
       this.getPref('brave.ipfs.storage_max').value;
@@ -59,8 +75,18 @@ Polymer({
 
   onChangeIpfsMethod_: function() {
     // Check if IPFS method is LOCAL_NODE
-    this.isStorageMaxEnabled_ =
-      this.getPref('brave.ipfs.resolve_method').value == 2;
+    const local_node_enabled =
+      this.getPref('brave.ipfs.resolve_method').value ==
+        this.IPFSResolveMethodTypes.IPFS_LOCAL;
+    // Check if IPFS method is ASK
+    this.showIPFSLearnMoreLink_ =
+      this.getPref('brave.ipfs.resolve_method').value ==
+        this.IPFSResolveMethodTypes.IPFS_ASK;
+
+    this.isStorageMaxEnabled_ = local_node_enabled;
+    if (local_node_enabled)
+      this.browserProxy_.launchIPFSService();
+      
   },
 
   onChangeIpfsStorageMax_: function() {

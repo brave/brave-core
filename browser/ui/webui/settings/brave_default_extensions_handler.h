@@ -35,6 +35,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetIPFSCompanionEnabled(const base::ListValue* args);
   void SetMediaRouterEnabled(const base::ListValue* args);
   void SetIPFSStorageMax(const base::ListValue* args);
+  void LaunchIPFSService(const base::ListValue* args);
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   void SetBraveWalletEnabled(const base::ListValue* args);
 #endif

@@ -26,6 +26,8 @@ extern const char kLocalhostIP[];
 extern const char kLocalhostDomain[];
 extern const char kGarbageCollectionPath[];
 
+// Keep it synced with IPFSResolveMethodTypes in
+// browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js
 enum class IPFSResolveMethodTypes {
   IPFS_ASK,
   IPFS_GATEWAY,
