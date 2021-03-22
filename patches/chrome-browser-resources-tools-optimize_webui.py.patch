@@ -1,25 +1,22 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.py b/chrome/browser/resources/tools/optimize_webui.py
-index ddada8e57bc4148cbe0fcbb55ede7535d7e96b0e..1efbab0eb71d34ccb211ccc913fa8369a47365d8 100755
+index f41a89bf816fe8cdba73d3700399ce55e94a7e99..956560289e04efc5678be2e7c392b4a0c60a3059 100755
 --- a/chrome/browser/resources/tools/optimize_webui.py
 +++ b/chrome/browser/resources/tools/optimize_webui.py
-@@ -56,8 +56,12 @@ _POLYMER_PATH = os.path.join(
-     '').replace('\\', '/')
+@@ -26,6 +26,7 @@ import node_modules
  
- 
-+_BR_RESOURCES_PATH = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources','').replace('\\', '/')
-+
  # These files are already combined and minified.
- _BASE_EXCLUDES = [
-+  'chrome://brave-resources/fonts/muli.css',
-+  'chrome://brave-resources/fonts/poppins.css'
-   # Excludes applying only to Polymer 2.
-   'chrome://resources/html/polymer.html',
-   'chrome://resources/polymer/v1_0/polymer/polymer.html',
-@@ -102,6 +106,7 @@ for (redirect_url, file_path) in [
-     ('resources/js/', _JS_RESOURCES_PATH),
-     ('resources/polymer/v1_0/', _POLYMER_PATH),
-     ('resources/images/', _IMAGES_RESOURCES_PATH),
-+    ('brave-resources/', _BR_RESOURCES_PATH)
- ]:
-   # Redirect both the chrome://resources form and the scheme-relative form.
-   _URL_MAPPINGS.append(('chrome://' + redirect_url, file_path))
+ _BASE_EXCLUDES = []
++_BASE_EXCLUDES += [ 'chrome://brave-resources/fonts/muli.css', 'chrome://brave-resources/fonts/poppins.css' ]
+ for excluded_file in [
+   'resources/polymer/v1_0/web-animations-js/web-animations-next-lite.min.js',
+   'resources/css/roboto.css',
+@@ -70,6 +71,9 @@ def _update_dep_file(in_folder, args, manifest):
+   # that we can map it to the correct source file path below.
+   request_list = map(lambda dep: _get_dep_path(dep, args.host_url, in_path),
+                      request_list)
++  _BR_RESOURCES_PATH = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources','').replace('\\', '/')
++  for (redirect_url, file_path) in [ ('chrome://brave-resources/', _BR_RESOURCES_PATH), ('//brave-resources/', _BR_RESOURCES_PATH) ]:
++    request_list = map(lambda dep: _get_dep_path(dep, redirect_url, file_path), request_list)
+ 
+   deps = map(os.path.normpath, request_list)
+ 
