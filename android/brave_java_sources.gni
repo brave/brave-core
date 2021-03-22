@@ -162,6 +162,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/ShieldsTooltipEnum.java",
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
+  "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/DesktopModePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/PlayYTVideoInBrowserPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveTileView.java",

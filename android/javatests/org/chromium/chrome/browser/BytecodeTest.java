@@ -134,7 +134,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator"));
         Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator"));
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator")); 
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate"));        
+
     }
 
     @Test
@@ -268,6 +271,11 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator",
                 ViewGroup.class, ThemeColorProvider.class, ScrimCoordinator.class,
                 ObservableSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch("org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
+                "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate",
+                Context.class, BrowserContextHandle.class
+                ));
     }
 
     @Test

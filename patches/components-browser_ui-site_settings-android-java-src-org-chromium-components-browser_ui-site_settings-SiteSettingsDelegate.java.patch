@@ -1,0 +1,10 @@
+diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsDelegate.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsDelegate.java
+index d3ee6e055a77c1a75e6eef28d7ddbe5c4213f469..1480e843aa7ec4ace919387691b3f217195c4ba4 100644
+--- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsDelegate.java
++++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsDelegate.java
+@@ -123,4 +123,5 @@ public interface SiteSettingsDelegate {
+      * Dismisses the Privacy Sandbox snackbar, if active.
+      */
+     void dismissPrivacySandboxSnackbar();
++    void closeButton();
+ }
