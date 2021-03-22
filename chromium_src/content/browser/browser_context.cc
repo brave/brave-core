@@ -11,7 +11,9 @@
 #include "base/optional.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"
 #include "content/browser/dom_storage/session_storage_namespace_impl.h"
+#include "content/browser/renderer_host/navigation_controller_impl.h"
 #include "content/browser/renderer_host/render_view_host_delegate.h"
+#include "content/browser/site_instance_impl.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
@@ -37,9 +39,12 @@ scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
 }
 
 std::string GetSessionStorageNamespaceId(WebContents* web_contents) {
-  return web_contents->GetRenderViewHost()
-      ->GetDelegate()
-      ->GetSessionStorageNamespace(web_contents->GetSiteInstance())
+  SiteInstanceImpl* site_instance_impl =
+      static_cast<SiteInstanceImpl*>(web_contents->GetSiteInstance());
+  DCHECK(site_instance_impl);
+
+  return static_cast<NavigationControllerImpl&>(web_contents->GetController())
+      .GetSessionStorageNamespace(site_instance_impl->GetSiteInfo())
       ->id();
 }
 
