@@ -12,7 +12,7 @@
 #include "components/sync/base/model_type.h"
 #include "components/sync/base/passphrase_enums.h"
 #include "components/sync/engine/commit_and_get_updates_types.h"
-#include "components/sync/engine_impl/model_type_worker.h"
+#include "components/sync/engine/model_type_worker.h"
 
 namespace syncer {
 
