@@ -41,5 +41,11 @@ export const localeStrings = {
   onboardingPanelSetupHeader: 'Lastly, let’s get you set up on the basic settings',
   onboardingPanelSetupText: 'You can change this later.',
   onboardingPanelCompleteHeader: 'Woohoo, you’re all set!',
-  onboardingPanelCompleteText: 'By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!'
+  onboardingPanelCompleteText: 'By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!',
+  onboardingPanelVerifyHeader: 'Verify your wallet',
+  onboardingPanelVerifySubtext: 'In order to withdraw the tokens you earn for viewing ads, you’ll need to verify your wallet.',
+  onboardingPanelVerifyLater: 'Do it later',
+  onboardingPanelVerifyNow: 'Verify my wallet',
+  onboardingPanelBitflyerNote: 'The bitFlyer wallet is a service managed by bitFlyer, Inc.',
+  onboardingPanelBitflyerText: 'By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily'
 }

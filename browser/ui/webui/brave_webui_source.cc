@@ -682,6 +682,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "onboardingPanelSetupText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT },  // NOLINT
         { "onboardingPanelCompleteHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER },  // NOLINT
         { "onboardingPanelCompleteText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT },  // NOLINT
+        { "onboardingPanelVerifyHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_HEADER },  // NOLINT
+        { "onboardingPanelVerifySubtext", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_SUBTEXT },  // NOLINT
+        { "onboardingPanelVerifyLater", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER },  // NOLINT
+        { "onboardingPanelVerifyNow", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW },  // NOLINT
+        { "onboardingPanelBitflyerNote", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE },  // NOLINT
+        { "onboardingPanelBitflyerText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT },  // NOLINT
         { "oneTime", IDS_BRAVE_UI_ONE_TIME },
         { "oneTimeDonation", IDS_BRAVE_UI_ONE_TIME_DONATION },
         { "openBalance", IDS_BRAVE_UI_OPEN_BALANCE },

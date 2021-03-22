@@ -10,12 +10,15 @@ import { SetupForm } from './setup_form'
 
 import * as style from './rewards_tour_panels.style'
 
-type TourPanelFunction = (locale: Locale, props: RewardsTourProps) => ({
+interface TourPanel {
   id: string
   heading: React.ReactNode
   text: React.ReactNode
   content?: React.ReactNode
-})
+  actions?: React.ReactNode
+}
+
+type TourPanelFunction = (locale: Locale, props: RewardsTourProps) => TourPanel
 
 function panelWelcome (locale: Locale) {
   const { getString } = locale
@@ -93,14 +96,64 @@ function panelComplete (locale: Locale) {
 }
 
 export function getTourPanels (props: RewardsTourProps): TourPanelFunction[] {
+  const canAutoContribute = props.autoContributeAmountOptions.length > 0
+
   return [
     panelWelcome,
     panelAds,
     panelSchedule,
-    panelAC,
+    ...(canAutoContribute ? [panelAC] : []),
     panelTipping,
     panelRedeem,
-    ...(props.firstTimeSetup ? [panelSetup] : []),
+    ...(props.firstTimeSetup && canAutoContribute ? [panelSetup] : []),
     panelComplete
   ]
+}
+
+export function getVerifyWalletPanel (
+  locale: Locale,
+  props: RewardsTourProps
+): TourPanel | null {
+  if (!props.firstTimeSetup) {
+    return null
+  }
+
+  let textKey = ''
+  let noteKey = ''
+  switch (props.externalWalletProvider) {
+    case 'bitflyer':
+      textKey = 'onboardingPanelBitflyerText'
+      noteKey = 'onboardingPanelBitflyerNote'
+      break
+    default:
+      return null
+  }
+
+  const { getString } = locale
+
+  return {
+    id: props.externalWalletProvider,
+    heading: getString('onboardingPanelVerifyHeader'),
+    text: (
+      <>
+        {getString(textKey)}
+        <style.verifySubtext>
+          {getString('onboardingPanelVerifySubtext')}
+          <style.verifyNote>
+            {getString(noteKey)}
+          </style.verifyNote>
+        </style.verifySubtext>
+      </>
+    ),
+    actions: (
+      <style.verifyActions>
+        <button className='verify-later' onClick={props.onDone}>
+          {getString('onboardingPanelVerifyLater')}
+        </button>
+        <button className='verify-now' onClick={props.onVerifyWalletClick}>
+          {getString('onboardingPanelVerifyNow')}
+        </button>
+      </style.verifyActions>
+    )
+  }
 }
