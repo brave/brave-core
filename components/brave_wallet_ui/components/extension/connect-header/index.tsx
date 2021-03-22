@@ -1,27 +1,21 @@
 import * as React from 'react'
 
 // Styled Components
-import {
-  StyledWrapper,
-  ProfileCircle,
-  URLText,
-  PanelTitle,
-  Details
-} from './style'
+import { StyledWrapper, FavIcon, URLText, PanelTitle } from './style'
 
 export interface Props {
-  detailText: string
+  url: string
 }
 
 export default class ConnectHeader extends React.PureComponent<Props, {}> {
   render () {
-    const { detailText } = this.props
+    const { url } = this.props
     return (
       <StyledWrapper>
-        <ProfileCircle />
-        <URLText>{detailText}</URLText>
+        {/* FavIcon is a temp fill in until we add logic to fetch site metadata to display fav icons.*/}
+        <FavIcon />
+        <URLText>{url}</URLText>
         <PanelTitle>Connect With Brave Wallet</PanelTitle>
-        <Details>Select accounts(s)</Details>
       </StyledWrapper>
     )
   }

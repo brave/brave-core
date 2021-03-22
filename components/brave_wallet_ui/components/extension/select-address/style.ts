@@ -1,8 +1,6 @@
 import styled from 'styled-components'
-
-interface StyleProps {
-  isSelected: boolean
-}
+import CheckIcon from '../assets/filled-checkmark.svg'
+import Blockies from '../assets/blockies-temp.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -31,28 +29,35 @@ export const LeftSide = styled.div`
 `
 // Need to add blockies package
 export const AccountCircle = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  background-color: ${(p) => p.theme.palette.blurple500};
+	width: 40px;
+	height: 40px;
+	border-radius: 100%;
+	background: url(${Blockies});
 `
 
 export const AccountNameText = styled.span`
-  font-size: 13px;
-  line-height: 20px;
-  font-weight: 600;
+	font-family: Poppins;
+	font-size: 13px;
+	line-height: 20px;
+	font-weight: 600;
 `
 
 export const AccountAddressText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
+	font-family: Poppins;
+	font-size: 12px;
+	line-height: 18px;
+	font-weight: 400;
 `
-// Need to add Checkmark from brave-ui
-export const SelectedCircle = styled.div<StyleProps>`
-  width: 24px;
-  height: 24px;
-  border-radius: 24px;
-  background-color: ${(p) => (p.isSelected ? '#12a378' : 'none')};
-  border: ${(p) => p.isSelected ? 'none' : `1px solid ${p.theme.color.inputBorder}`};
+
+export const UnSelectedCircle = styled.div`
+	width: 24px;
+	height: 24px;
+	border-radius: 24px;
+	border: 1px solid ${(p) => p.theme.color.inputBorder};
+`
+// I added this SVG icon for now, will change once added to brave-ui
+export const SelectedIcon = styled.div`
+	width: 24px;
+	height: 24px;
+	background: url(${CheckIcon});
 `

@@ -9,8 +9,12 @@ import {
   NameAndAddressColumn,
   AccountCircle,
   LeftSide,
-  SelectedCircle
+  UnSelectedCircle,
+  SelectedIcon
 } from './style'
+
+// Utils
+import { reduceAddress } from '../../../utils/reduce-address'
 
 export interface Props {
   account: WalletAccountType
@@ -19,12 +23,6 @@ export interface Props {
 }
 
 export default class SelectAddress extends React.PureComponent<Props> {
-  reduceAddress = (address: string) => {
-    const firstHalf = address.slice(0, 6)
-    const secondHalf = address.slice(-4)
-    return firstHalf.concat('***', secondHalf)
-  }
-
   render () {
     const { account, isSelected, action } = this.props
     return (
@@ -34,11 +32,11 @@ export default class SelectAddress extends React.PureComponent<Props> {
           <NameAndAddressColumn>
             <AccountNameText>{account.name}</AccountNameText>
             <AccountAddressText>
-              {this.reduceAddress(account.address)}
+              {reduceAddress(account.address)}
             </AccountAddressText>
           </NameAndAddressColumn>
         </LeftSide>
-        <SelectedCircle isSelected={isSelected} />
+        {isSelected ? <SelectedIcon /> : <UnSelectedCircle />}
       </StyledWrapper>
     )
   }

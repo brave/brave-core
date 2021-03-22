@@ -1,21 +1,22 @@
 import * as React from 'react'
 
 // Styled Components
-import { StyledWrapper, ButtonText } from './style'
+import { StyledButton, ButtonText } from './style'
 
 export interface Props {
   buttonType: 'primary' | 'secondary'
   text: string
   onSubmit: () => void
+  disabled?: boolean
 }
 
 export default class NavButton extends React.PureComponent<Props, {}> {
   render () {
-    const { onSubmit, text, buttonType } = this.props
+    const { onSubmit, text, buttonType, disabled } = this.props
     return (
-      <StyledWrapper buttonType={buttonType} onClick={onSubmit}>
+      <StyledButton disabled={disabled} buttonType={buttonType} onClick={onSubmit}>
         <ButtonText buttonType={buttonType}>{text}</ButtonText>
-      </StyledWrapper>
+      </StyledButton>
     )
   }
 }

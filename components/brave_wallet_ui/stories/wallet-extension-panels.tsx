@@ -20,6 +20,7 @@ export const _ConnectWithSite = () => {
       address: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'
     }
   ])
+  const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
   const url = 'https://app.uniswap.org'
   const accounts: WalletAccountType[] = [
     {
@@ -49,19 +50,30 @@ export const _ConnectWithSite = () => {
     setSelectedAccounts(newList)
   }
   const onSubmit = () => {
-    alert('You Clicked The Next Button!')
+    alert(`Connecting to ${url} using: ${JSON.stringify(selectedAccounts)}`)
   }
-  const onCancel = () => {
-    alert('You Clicked The Canel Button!')
+  const primaryAction = () => {
+    if (!readyToConnect) {
+      setReadyToConnect(true)
+    } else {
+      onSubmit()
+    }
+  }
+  const secondaryAction = () => {
+    if (readyToConnect) {
+      setReadyToConnect(false)
+    } else {
+      alert('You Clicked The Cancel Button!')
+    }
   }
   return (
     <StyledExtensionWrapper>
       <ConnectWithSite
         siteURL={url}
+        isReady={readyToConnect}
         accounts={accounts}
-        onSubmit={onSubmit}
-        onCancel={onCancel}
-        actionButtonText='Next'
+        primaryAction={primaryAction}
+        secondaryAction={secondaryAction}
         selectAccount={selectAccount}
         removeAccount={removeAccount}
         selectedAccounts={selectedAccounts}
