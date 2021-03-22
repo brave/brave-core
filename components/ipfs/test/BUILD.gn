@@ -50,6 +50,8 @@ source_set("brave_ipfs_browser_tests") {
     sources = [
       "//brave/components/ipfs/brave_ipfs_client_updater_browsertest.cc",
       "//brave/components/ipfs/ipfs_navigation_throttle_browsertest.cc",
+      "//brave/components/ipfs/ipfs_not_connected_page_browsertest.cc",
+      "//brave/components/ipfs/ipfs_onboarding_page_browsertest.cc",
       "//brave/components/ipfs/ipfs_service_browsertest.cc",
     ]
 
