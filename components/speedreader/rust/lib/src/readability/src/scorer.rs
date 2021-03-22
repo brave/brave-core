@@ -10,6 +10,7 @@ use kuchiki::NodeRef as Handle;
 use kuchiki::{ElementData, NodeRef, Sink};
 use regex::Regex;
 use std::cell::Cell;
+use std::cmp::Ordering;
 use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
 use std::str::FromStr;
@@ -53,10 +54,41 @@ lazy_static! {
     static ref NEGATIVE: Regex = Regex::new(NEGATIVE_CANDIDATES).unwrap();
 }
 
+// NOTE(keur): Since we now have our own DOM fork, maybe consider moving
+// the score into node data structure. This library uses the Candidates
+// map to hack around that lack of API extensibility.
 pub struct Candidate {
     pub node: Handle,
     pub score: Cell<f32>,
 }
+
+pub struct TopCandidate<'a> {
+    pub candidate: &'a Candidate,
+    pub id: String,
+}
+
+impl<'a> Ord for TopCandidate<'a> {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.partial_cmp(other).unwrap_or(Ordering::Equal)
+    }
+}
+
+impl<'a> PartialOrd for TopCandidate<'a> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.candidate
+            .score
+            .get()
+            .partial_cmp(&other.candidate.score.get())
+    }
+}
+
+impl<'a> PartialEq for TopCandidate<'a> {
+    fn eq(&self, other: &Self) -> bool {
+        self.candidate.score.get() == other.candidate.score.get()
+    }
+}
+
+impl<'a> Eq for TopCandidate<'a> {}
 
 #[derive(Default)]
 pub struct Title {
@@ -389,7 +421,7 @@ fn get_all_ancestor_paths(ps: &Path) -> Vec<&Path> {
     paths
 }
 
-fn find_or_create_candidate<'a>(
+pub fn find_or_create_candidate<'a>(
     id: &Path,
     candidates: &'a mut BTreeMap<String, Candidate>,
     nodes: &BTreeMap<String, Handle>,
@@ -406,6 +438,52 @@ fn find_or_create_candidate<'a>(
                 );
             }
             return candidates.get(&id);
+        }
+    }
+    None
+}
+
+/// This function expects an array of top candidates to be considered for
+/// the new root of the DOM. It is assumed that the first element is the
+/// candidate with the highest score.
+pub fn search_alternative_candidates<'a>(
+    top_candidates: &'a Vec<TopCandidate>,
+    nodes: &BTreeMap<String, Handle>,
+) -> Option<&'a str> {
+    const MIN_CANDIDATES: usize = 3;
+
+    debug_assert!(top_candidates.len() > 0);
+    let top = &top_candidates[0];
+    if top_candidates.len() < MIN_CANDIDATES
+        || Some(&local_name!("body")) == dom::get_tag_name(&top.candidate.node)
+    {
+        return None;
+    }
+    let mut alternative_nodes: Vec<&'a Path> = vec![];
+    for i in 1..top_candidates.len() {
+        let c = &top_candidates[i];
+        if c.candidate.score.get() / top.candidate.score.get() >= 0.75 {
+            alternative_nodes.push(Path::new(&c.id));
+        }
+    }
+    if alternative_nodes.len() >= MIN_CANDIDATES {
+        let mut pid = Path::new(&top.id).parent()?;
+        loop {
+            let parent = nodes.get(pid.to_str()?)?;
+            if Some(&local_name!("body")) == dom::get_tag_name(parent) {
+                break;
+            }
+
+            let mut lists_containing_ancestor = 0;
+            for alt in alternative_nodes.iter() {
+                if alt.starts_with(pid) {
+                    lists_containing_ancestor += 1;
+                }
+            }
+            if lists_containing_ancestor >= MIN_CANDIDATES {
+                return Some(pid.to_str()?);
+            }
+            pid = pid.parent()?;
         }
     }
     None

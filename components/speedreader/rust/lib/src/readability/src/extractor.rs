@@ -1,18 +1,20 @@
 use crate::dom;
 use crate::scorer;
+use crate::util;
 use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
 use kuchiki::Sink;
-use scorer::{Candidate, Title};
-use std::cell::Cell;
+use scorer::{Candidate, Title, TopCandidate};
 use std::collections::BTreeMap;
 use std::collections::HashMap;
 use std::default::Default;
 use std::path::Path;
 use std::str::FromStr;
 use url::Url;
+
+const NUM_TOP_CANDIDATES: usize = 5;
 
 #[derive(Debug)]
 pub struct Product {
@@ -26,7 +28,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
     let mut title = Title::default();
-    let mut candidates = BTreeMap::new();
+    let mut candidates: BTreeMap<String, Candidate> = BTreeMap::new();
     let mut nodes = BTreeMap::new();
     let handle = dom.document_node.clone();
 
@@ -53,38 +55,70 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         ));
     }
 
-    let mut id: &str = "/";
+
+    let mut id: String = "/".to_string();
 
     // top candidate is the top scorer among the tree dom's candidates. this is
     // the subtree that will be considered for final rendering
-    let mut top_candidate: &Candidate = &Candidate {
-        node: handle,
-        score: Cell::new(0.0),
-    };
+    let mut top_candidate = handle;
 
-    // scores all candidate nodes
-    for (i, c) in candidates.iter() {
-        let score = c.score.get() * (1.0 - scorer::get_link_density(&c.node));
-        c.score.set(score);
-        if score <= top_candidate.score.get() {
-            continue;
+    {
+        // scores all candidate nodes
+        let mut top_candidates: Vec<TopCandidate> = vec![];
+        for (i, c) in candidates.iter() {
+            let score = c.score.get() * (1.0 - scorer::get_link_density(&c.node));
+            c.score.set(score);
+
+            if top_candidates.len() < NUM_TOP_CANDIDATES {
+                top_candidates.push(TopCandidate {
+                    candidate: &c,
+                    id: i.to_string(),
+                });
+            } else {
+                let min_index = util::min_elem_index(&top_candidates);
+                let min = &mut top_candidates[min_index];
+                if score > min.candidate.score.get() {
+                    *min = TopCandidate {
+                        candidate: &c,
+                        id: i.to_string(),
+                    }
+                }
+            }
         }
-        id = i;
-        top_candidate = c;
+        debug_assert!(top_candidates.len() > 0);
+        let max_index = util::max_elem_index(&top_candidates);
+        top_candidates.swap(0, max_index);
+        if let Some(pid) = scorer::search_alternative_candidates(&top_candidates, &nodes) {
+            id = pid.to_string();
+        } else {
+            id = top_candidates[0].id.to_string();
+        }
+    }
+
+    {
+        let top = scorer::find_or_create_candidate(Path::new(id.as_str()), &mut candidates, &nodes);
+        if top.is_none() {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "No candidates found.",
+            ));
+        }
+        top_candidate = top.unwrap().node.clone();
     }
 
     scorer::clean(
         &mut dom,
-        Path::new(id),
-        top_candidate.node.clone(),
+        Path::new(id.as_str()),
+        top_candidate.clone(),
         url,
         &title.title,
         features,
         &candidates,
     );
 
+
     // Our CSS formats based on id="article".
-    dom::set_attr("id", "article", top_candidate.node.clone(), true);
+    dom::set_attr("id", "article", top_candidate.clone(), true);
 
     let name = QualName::new(None, ns!(), LocalName::from("h1"));
     let header = dom.create_element(name, vec![], ElementFlags::default());
@@ -93,12 +127,12 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         NodeOrText::AppendText(StrTendril::from_str(&title.title).unwrap_or_default()),
     );
 
-    if let Some(first_child) = top_candidate.node.first_child() {
+    if let Some(first_child) = top_candidate.first_child() {
         dom.append_before_sibling(&first_child.clone(), NodeOrText::AppendNode(header.clone()));
     }
 
     // Calls html5ever::serialize() with IncludeNode for us.
-    let content: String = top_candidate.node.to_string();
+    let content: String = top_candidate.to_string();
     Ok(Product {
         title: title.title,
         content,
