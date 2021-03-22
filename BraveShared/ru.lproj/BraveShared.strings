@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Используемые поисковые системы";
 
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Системы пользовательского поиска";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Прим. данных\nСохранено";
 
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Усложняет для сайтов определение отличительных характеристик вашего устройства.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Разрешить открывать ссылки во внешних приложениях";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Что-то пошло не так. Повторите попытку.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "Темы";
+
+/* No comment provided by engineer. */
+"Title" = "Название";
 
 /* History tableview section header */
 "Today" = "Сегодня";

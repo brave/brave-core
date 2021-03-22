@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "轻击两次即可切换 Brave Shields";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "添加";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "编写搜索 URL，并将查询替换为 %1$s。\n例如： https://youtube.com/search?q=%2$s \n（如果站点支持 OpenSearch，则系统会在编辑此字段时会提供一个自动添加的选项。）";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "自动添加";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "添加搜索引擎";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "点按以领取免费代币。";
 
@@ -149,7 +161,7 @@
 "OnboardingSkipButton" = "跳过";
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
-"OnProviderText" = "（在 %@ 上）";
+"OnProviderText" = "在 %@ 上";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "关闭 Context 菜单";
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "旧的促销活动";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "有可转让余额";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "旧版钱包信息";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "显示了 %d 个日志";
 
@@ -451,6 +469,9 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "钱包付款 ID";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "添加自定义搜索引擎";
+
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "您是独家奖励俱乐部的成员了。恭喜您！";
 
@@ -473,10 +494,13 @@
 "shieldEducation.encryptedConnectionWarningSubtitle" = "如果可用，Brave 会自动将您升级到安全连接。";
 
 /* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "您的连接现已加密。";
+"shieldEducation.encryptedConnectionWarningTitle" = "您的连接现已加密";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "看一看";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "分享消息";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields 保护您在每个站点上的在线隐私。";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "谢谢您！";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "每天，我都会通过用 Brave 浏览网络来保存数据。";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "书签";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "书签迁移";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "添加源";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "添加";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "无法添加源";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "抱歉，我们无法识别该提要地址。";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "抱歉，我们找不到该提要地址。";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "抱歉，该提要地址没有任何内容。";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "将源添加到 Brave Today";
+
 /* No comment provided by engineer. */
 "today.allSources" = "所有来源";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "交易";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "删除";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "全部禁用";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "哎呀...";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "您的兴趣在您的设备上进行匹配的，因此您的个人信息永远不会离开浏览器。全天更新新内容。";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "导入 OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "不安全源 - 如果添加，风险自负";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Today 专为您而打造，以完全私密的状态显示热门新闻。";
+"today.introCardBody" = "Brave Today 受您的设备上匹配的私人和匿名广告支持。";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "新增";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "最多可用 5 个 RSS 提要来自定义 Brave Today，并全天候从您喜爱的发布商那里获取新内容。";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "今日热门故事，专属于您的私人提要。";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "显示今日 Brave";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "将来源设置重置为默认";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "来源";
+"today.rssFeedLimitExceededAlertMessage" = "免费的、广告支持版的 Brave Today 包含 5 个 RSS 提要。您可以从“源”列表中自定义提要选项。";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "提要限量已超过";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "目前在您的“来源”列表中有 %d 个 RSS 提要。免费的、广告支持版的 Brave Today 含有 5 个 RSS 提要。即将推出对无限量提要和 OPML 导入的支持。您可以从“源”列表中自定义提要选项。";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "搜索";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "提要或网站 URL";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "默认源";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "来源和设置";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "搜索";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "立即开启 Brave";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "您的 RSS 提要源";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "开启搜索建议功能？";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "网络类型";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "发送";
+"vpn.contactFormSendButton" = "继续发送电子邮件";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "订阅类型";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "支持提供方：";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "系统会根据您的系统时区自动选择最接近您的服务器的区域。我们建议这样做是为了确保快速的互联网速度。";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "自动选择器";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "切换服务器失败，请稍后再试。";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "服务器错误";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "服务器区域";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN 区域已更改。";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "无法重置 VPN 配置，请稍后重试。";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "升级到 VPN，以保护您的连接并在各处阻止侵入式跟踪器。";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "更改地点";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "联系技术支持部门";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "无法检索服务器列表，请稍后再试。";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN 支持";

@@ -170,7 +170,7 @@
 "BlockScripts" = "Skripte blockieren";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blockiert Javascript (beeinträchtigt möglicherweise bestimmte Seiten)";
+"BlockScriptsDescription" = "Blockiert Javascript (beeinträchtigt möglicherweise bestimmte Sites)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Lesezeichenordner";
@@ -321,6 +321,9 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Derzeit verwendete Suchmaschinen";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Benutzerdefinierte Suchmaschinen";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Geschätzte \nDatenersparnis";
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Erschwert es Seiten, die charakteristischen Merkmale Ihres Geräts zu erkennen.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Erlauben, dass universelle Links in externen Apps geöffnet werden";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Hoppla! Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "Designs";
+
+/* No comment provided by engineer. */
+"Title" = "Titel";
 
 /* History tableview section header */
 "Today" = "Heute";

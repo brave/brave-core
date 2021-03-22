@@ -170,7 +170,7 @@
 "BlockScripts" = "Блокування скриптів";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Блокує Javascript (може порушити роботу вебсайтів)";
+"BlockScriptsDescription" = "Блокує JavaScript (може порушити роботу вебсайтів)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Папка із закладками";
@@ -321,6 +321,9 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Нещодавно використані пошукові системи";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Користувацькі пошукові системи";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Заощаджено\nданих (приблизно)";
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Вебсайтам буде складніше розпізнавати відмінні риси вашого пристрою.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Дозволити відкривати універсальні посилання в зовнішніх додатках";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Сталася помилка. Спробуйте ще раз.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "Теми";
+
+/* No comment provided by engineer. */
+"Title" = "Заголовок";
 
 /* History tableview section header */
 "Today" = "Сьогодні";

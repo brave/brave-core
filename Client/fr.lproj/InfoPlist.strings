@@ -22,6 +22,9 @@
 "NSPhotoLibraryAddUsageDescription" = "Cette option vous permet d'enregistrer des photos.";
 
 /* (No Comment) */
+"OPML File" = "Fichier OPML";
+
+/* (No Comment) */
 "ShortcutItemTitleNewPrivateTab" = "Nouvel onglet privé";
 
 /* (No Comment) */

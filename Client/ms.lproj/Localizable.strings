@@ -4,6 +4,9 @@
 /* Message for touch key modal. */
 "insertKeyMessage" = "Masukkan kunci keselamatan anda untuk";
 
+/* No comment provided by engineer. */
+"No server found" = "Tiada pelayan ditemui";
+
 /* Placeholder text for PIN */
 "pinPlaceholder" = "Masukkan PIN anda";
 

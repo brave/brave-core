@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Moteurs de recherches actuellement utilisés";
 
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Moteurs de recherche personnalisés";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Données économisées \nest.";
 
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Empêche les sites de reconnaître facilement les caractéristiques uniques de votre appareil.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Permet aux liens universels de s'ouvrir dans des applications externes";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Oups ! Un problème est survenu. Veuillez réessayer.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "Thèmes";
+
+/* No comment provided by engineer. */
+"Title" = "Titre";
 
 /* History tableview section header */
 "Today" = "Aujourd'hui";

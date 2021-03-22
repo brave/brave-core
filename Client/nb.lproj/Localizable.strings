@@ -4,6 +4,9 @@
 /* Message for touch key modal. */
 "insertKeyMessage" = "Skriv inn sikkerhetsnøkkel for";
 
+/* No comment provided by engineer. */
+"No server found" = "Ingen server funnet";
+
 /* Placeholder text for PIN */
 "pinPlaceholder" = "Skriv inn PIN-kode";
 

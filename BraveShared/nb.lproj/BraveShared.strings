@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Søkemotorer som for tiden er i bruk";
 
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Tilpassede søkemotorer";
+
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Est. data \nlagret";
 
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Gjør det vanskeligere for nettsteder å gjenkjenne enhetens særegne egenskaper.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Tillat at universelle lenker åpnes i eksterne apper";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Auda! Noe gikk galt. Prøv på nytt.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "Temaer";
+
+/* No comment provided by engineer. */
+"Title" = "Tittel";
 
 /* History tableview section header */
 "Today" = "I dag";

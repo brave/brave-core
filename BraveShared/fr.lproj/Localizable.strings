@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Appuyez deux fois pour activer ou désactiver Brave Shields";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Ajouter";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Saisissez l'URL de recherche et remplacez la requête par %1$s.\nPar exemple : https://youtube.com/search?q=%2$s \n(Si le site prend en charge OpenSearch, une option permettant l'ajout automatique est fournie lors de la modification de ce champ.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Ajouter automatiquement";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Ajouter un moteur de recherche";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Appuyez ici pour récupérer vos jetons gratuits.";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Ancienne promotion";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Dispose d'un solde transférable";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "Informations de l'ancien portefeuille";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d journaux affichés";
 
@@ -451,8 +469,11 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "Identifiant de paiement du portefeuille";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Ajouter un moteur de recherche personnalisé";
+
 /* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkExclusiveTierTitle" = "Félicitations, vous avez rejoint le club exclusif.";
+"shieldEducation.benchmarkExclusiveTierTitle" = "Félicitations, vous avez rejoint un club exclusif.";
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkGrandTierTitle" = "Félicitations, vous êtes passé grand maître.";
@@ -477,6 +498,9 @@
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Jetez-y un coup d'œil";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Partager les nouveautés";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields protège votre confidentialité en ligne sur chaque site.";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Merci";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Brave.";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Marque-pages";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "Migration des marque-pages";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "Ajouter une source";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Ajouter";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Échec de l'ajout de la source";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Désolé, nous n'avons pas pu reconnaître cette adresse de flux.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Désolés, impossible de trouver cette adresse de flux.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "Désolé, cette adresse de flux n'a pas de contenu.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Ajouter la source à Brave Today";
+
 /* No comment provided by engineer. */
 "today.allSources" = "Toutes les sources";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "Offres";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "Supprimer";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "Tout désactiver";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Oups…";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Vos centres d'intérêt sont pris en compte sur votre appareil. Vos informations personnelles ne quittent donc jamais votre navigateur. Le contenu nouveau s'actualise tout au long de la journée.";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Importer OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Sources non sécurisées. Ajoutez-la à vos risques et périls";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Today affiche les meilleurs articles du jour dans un fil entièrement privé, rien que pour vous.";
+"today.introCardBody" = "Brave Today est financé par des publicités totalement privées et anonymes, optimisées pour votre appareil.";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "Nouveauté";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "Personnalisez Brave Today avec jusqu'à 5 flux RSS et recevez du nouveau contenu de vos diffuseurs préférés tout au long de la journée.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Les meilleurs articles du jour dans un fil entièrement privé, rien que pour vous.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Afficher Brave Today";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "Rétablir les paramètres de la source par défaut";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Sources";
+"today.rssFeedLimitExceededAlertMessage" = "La version Brave Today gratuite financée par la publicité comprend 5 flux RSS. Vous pouvez personnaliser vos sélections de flux dans la liste de Sources.";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "Limit du flux dépassée";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "Vous avez actuellement %d flux RSS dans votre liste Sources. La version Brave Today gratuite financée par la publicité comprend 5 flux RSS et prendra bientôt en charge un nombre illimité de flux et l'importation de fichiers OPML. Vous pouvez personnaliser vos sélections de flux dans la liste de Sources.";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "Rechercher";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "URL du site ou du flux";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Sources par défaut";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Sources et paramètres";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "Rechercher";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Activer Brave Today";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "Vos sources";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Activer les suggestions de recherche ?";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "Type de réseau";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Envoyer";
+"vpn.contactFormSendButton" = "Continuer pour envoyer par e-mail";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Type d'abonnement";
@@ -749,7 +833,7 @@
 "vpn.installTitle" = "Installer le VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Essayer GRATUITEMENT";
+"vpn.learnMore" = "Essai GRATUIT";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Renouvelé chaque mois";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Proposé par";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "La région du serveur la plus proche de votre emplacement sera automatiquement choisie en fonction de votre fuseau horaire. Cette fonction est recommandée pour garantir une vitesse de navigation élevée.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Automatique";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Échec lors du changement de serveur, réessayez ultérieurement.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Erreur de serveur";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Région du serveur";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Région VPN modifiée.";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Impossible de réinitialiser la configuration du VPN. Veuillez réessayer plus tard.";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Passez à un VPN pour protéger votre connexion et bloquer les traceurs invasifs partout où vous allez.";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "Changer l'emplacement";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Contacter l'assistance technique";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Échec lors de la récupération de la liste de serveurs, réessayez ultérieurement.";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Assistance VPN";

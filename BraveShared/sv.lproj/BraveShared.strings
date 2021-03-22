@@ -170,7 +170,7 @@
 "BlockScripts" = "Blockera skript";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blockerar Javascript (kan få webbplatser att sluta fungera)";
+"BlockScriptsDescription" = "Blockerar JavaScript (kan skada webbplatser)";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Bokmärkesmapp";
@@ -321,6 +321,9 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Sökmotorer som används för närvarande";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Anpassade sökmotorer";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Uppskattade data\nsparade";
@@ -522,6 +525,9 @@
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Gör det svårare för webbplatser att känna igen enhetens utmärkande egenskaper.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Tillåt att universella länkar öppnas i externa appar";
 
 /* No comment provided by engineer. */
 "genericErrorBody" = "Någonting gick fel. Vänligen försök igen.";
@@ -1275,6 +1281,9 @@
 
 /* Name for app theme settings */
 "themesSettings" = "Teman";
+
+/* No comment provided by engineer. */
+"Title" = "Rubrik";
 
 /* History tableview section header */
 "Today" = "Idag";

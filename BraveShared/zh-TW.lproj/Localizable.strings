@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "點兩下即可切換 Brave Shields";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "新增";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "輸入搜尋網址，並將查詢內容改成「%1$s」。\n例如：https://youtube.com/search?q=%2$s \n(如果網站支援 OpenSearch，在您編輯此欄位時，畫面會顯示自動新增搜尋引擎的選項。)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "自動新增";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "新增搜尋引擎";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "輕觸即可免費領取代幣。";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "舊行銷活動";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "有餘額可供轉帳";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "舊版錢包資訊";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "顯示 %d 筆記錄";
 
@@ -451,6 +469,9 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "錢包付款 ID";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "新增自訂搜尋引擎";
+
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "恭喜，您已加入獨家社團。";
 
@@ -473,10 +494,13 @@
 "shieldEducation.encryptedConnectionWarningSubtitle" = "如果條件允許，Brave 會自動將您升級為安全連線。";
 
 /* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "您的連線現已加密。";
+"shieldEducation.encryptedConnectionWarningTitle" = "您的連線現已加密";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "立即查看";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "分享消息";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields 會在每個網站上保護您線上活動的隱私。";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "謝謝";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "我每天使用 Brave 瀏覽網頁來節省數據用量。";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "書籤";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "書籤移轉";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "新增來源";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "新增";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "無法新增來源";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "很抱歉，系統無法辨識該摘要網址。";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "很抱歉，系統找不到該摘要網址。";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "很抱歉，該摘要網址沒有任何內容。";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "在 Brave Today 新增來源";
+
 /* No comment provided by engineer. */
 "today.allSources" = "所有來源";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "優惠";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "刪除";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "停用全部";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "糟糕…";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "系統會在您的裝置上比對您感興趣的主題，因此您的個人資訊不會傳送至瀏覽器以外的地方。全天候更新，為您提供最新內容。";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "匯入 OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "來源不安全 - 新增後需自行承擔風險";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Today 會根據您的個人喜好，在完全私密的摘要中顯示專屬的熱門內容。";
+"today.introCardBody" = "Brave Today 支援廣告功能，能在裝置上提供符合個人喜好的廣告，且內容完全保密並匿名處理。";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "全新";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "以最多 5 項 RSS 摘要打造個人化 Brave Today，隨時接收您喜愛的發佈者所發佈的內容。";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Today 以完全保密的摘要形式，提供符合您個人喜好的熱門內容。";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "顯示 Brave Today";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "將來源設定重設為預設";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "來源";
+"today.rssFeedLimitExceededAlertMessage" = "支援廣告的免費版 Brave Today 最多可容納 5 項 RSS 摘要。您可以前往「來源」清單自訂摘要內容。";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "摘要數已超過上限";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "目前，您的「來源」清單共有 %d 項 RSS 摘要。支援廣告的免費版 Brave Today 可容納 5 項 RSS 摘要。即將支援無上限的摘要和 OPML 匯入功能。您可以前往「來源」清單自訂摘要內容。";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "搜尋";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "摘要或網站網址";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "預設來源";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "來源與設定";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "搜尋";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "開啟 Brave Today";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "您的來源";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "開啟搜尋建議？";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "網路類型";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "傳送";
+"vpn.contactFormSendButton" = "繼續寄送電子郵件";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "訂閱類型";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "技術提供：";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "系統會根據您所設定的時區，自動為您選取最靠近的伺服器區域。這項建議功能旨在確保網際網路的速度不受影響。";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "自動";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "無法切換伺服器，請稍後再試。";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "發生伺服器錯誤";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "伺服器區域";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN 區域已完成變更。";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "無法重設 VPN 組態，請稍後再試。";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "升級為 VPN 以保護您的連線，並封鎖無所不在的追蹤程式，捍衛個人隱私。";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "變更位置";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "與技術支援人員聯絡";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "無法擷取伺服器清單，請稍後再試。";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "VPN 支援";

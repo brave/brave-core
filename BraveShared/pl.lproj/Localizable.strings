@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dotknij dwukrotnie, aby włączyć lub wyłączyć Brave Shields";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Dodaj";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Wpisz adres url do wyszukiwania i zamień zapytanie na%1$s.\nNa przykład: https://youtube.com/search?q=%2$s\n(Jeśli witryna obsługuje OpenSearch, opcja automatycznego dodania zostanie udostępniona podczas edycji tego pola).";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Automatyczne dodawanie";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Dodaj wyszukiwarkę";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Dotknij, aby otrzymać bezpłatne tokeny.";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Promocja w starszej wersji";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Ma zbywalne saldo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "Informacje o starszym portfelu";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "Wyświetlanie %d logów";
 
@@ -451,6 +469,9 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "Identyfikator płatności portfela";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Dodaj niestandardową wyszukiwarkę";
+
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Gratulacje. Należysz do ekskluzywnego klubu.";
 
@@ -477,6 +498,9 @@
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Zobacz";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Udostępnij wiadomości";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields chroni Twoją prywatność w każdej witrynie.";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Dziękujemy";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Każdego dnia zapisuję dane, przeglądając Internet z Brave.";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Zakładki";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "Migracja zakładek";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "Dodaj źródło";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Dodaj";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Nie udało się dodać źródła";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Przykro nam, nie udało się rozpoznać adresu tego kanału.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Przykro nam, nie udało się znaleźć adresu tego kanału.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "Przykro nam, adres tego kanału nie ma zawartości.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Dodaj źródło do Brave Today";
+
 /* No comment provided by engineer. */
 "today.allSources" = "Wszystkie źródła";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "Oferty";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "Usuń";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "Wyłącz wszystko";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ups…";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Uwzględniane są zainteresowania na Twoim urządzeniu, dzięki czemu Twoje dane osobowe nigdy nie opuszczą przeglądarki. Nowe treści aktualizowane przez cały dzień.";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Importuj OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Niepewne źródła – dodajesz na własną odpowiedzialność";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Today prezentuje najlepsze historie w całkowicie prywatnym kanale specjalnie dla Ciebie.";
+"today.introCardBody" = "Brave Today wspierają w pełni prywatne i anonimizowane reklamy dopasowane na Twoim urządzeniu.";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "Nowość";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "Dostosuj Brave Today dzięki 5 kanałom RSS i otrzymuj w ciągu dnia nowe treści od Twoich ulubionych wydawców.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Najlepsze historie danego dnia w zupełnie prywatnym kanale, wyłącznie dla Ciebie.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Wyświetl Brave Today";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "Przywróć domyślne ustawienia źródła";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Źródła";
+"today.rssFeedLimitExceededAlertMessage" = "Darmowa, wspierana reklamami wersja Brave Today zawiera 5 kanałów RSS. Możesz dostosować wybór kanałów w liście źródeł.";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "Przekroczono limit kanałów";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "%d – tyle masz obecnie kanałów RSS w liście źródeł. Darmowa, wspierana reklamami wersja Brave Today zawiera 5 kanałów RSS. Obsługa nieograniczonej liczby kanałów i import OPML będą dostępne już niedługo. Możesz dostosować wybór kanałów w liście źródeł.";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "Szukaj";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "URL kanału lub strony";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Domyślne źródła";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Źródła i ustawienia";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "Szukaj";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Włącz Brave Today";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "Twoje źródła";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Czy włączyć sugestie wyszukiwania?";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "Typ sieci";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Wyślij";
+"vpn.contactFormSendButton" = "Przejdź do adresu e-mail";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Typ subskrypcji";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Obsługiwane przez";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Region serwera znajdujący się najbliżej Ciebie zostanie wybrany automatycznie w oparciu o strefę czasową Twojego systemu. Jest to zalecane w celu zapewnienia szybkich prędkości internetowych.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Automatycznie";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Nie udało się przełączyć serwerów. Spróbuj ponownie później.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Błąd serwera";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Region serwera";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Zmieniono region VPN.";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Nie udało się zresetować konfiguracji VPN. Spróbuj ponownie później.";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Rozszerz do VPN, aby chronić połączenie i blokować inwazyjne programy śledzące.";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "Zmień lokalizację";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Skontaktuj się z pomocą techniczną";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Nie udało się odebrać listy serwerów. Spróbuj ponownie później.";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Obsługa techniczna VPN";

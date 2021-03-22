@@ -4,6 +4,9 @@
 /* Message for touch key modal. */
 "insertKeyMessage" = "插入安全密钥";
 
+/* No comment provided by engineer. */
+"No server found" = "找不到服务器";
+
 /* Placeholder text for PIN */
 "pinPlaceholder" = "输入 PIN 码";
 

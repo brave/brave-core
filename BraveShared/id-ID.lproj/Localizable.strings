@@ -40,6 +40,18 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Ketuk dua kali untuk mengalihkan Brave Shields";
 
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Tambahkan";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Tuliskan url pencarian dan ubah kuerinya dengan %1$s.\nContoh: https://youtube.com/search?q=%2$s\n(Jika situs mendukung OpenSearch, pilihan untuk menambahkan secara otomatis akan tersedia saat menyunting bidang tersebut.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Tambahkan Secara Otomatis";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Tambahkan Mesin Pencari";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Ketuk untuk mengklaim token gratis Anda.";
 
@@ -331,6 +343,12 @@
 /* No comment provided by engineer. */
 "RewardsInternalsLegacyPromotion" = "Promosi Dasar";
 
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletHasTransferrableBalance" = "Memiliki Saldo Yang Dapat Dipindahtangankan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyWalletInfoHeader" = "Info Dompet Legacy";
+
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d log ditampilkan";
 
@@ -451,6 +469,9 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "ID Pembayaran Dompet";
 
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Tambahkan Mesin Pencari Ubahsuaian";
+
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkExclusiveTierTitle" = "Selamat. Anda menjadi bagian klub eksklusif.";
 
@@ -473,10 +494,13 @@
 "shieldEducation.encryptedConnectionWarningSubtitle" = "Jika tersedia, Brave membawa Anda pada tingkat koneksi paling aman secara otomatis.";
 
 /* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "Koneksi Anda sedang dienkripsi.";
+"shieldEducation.encryptedConnectionWarningTitle" = "Koneksi Anda kini dienkripsi.";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Tengok";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Bagikan berita";
 
 /* Subtitle for Shield Education Tracker Ad Count Block */
 "shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields menjaga privasi online Anda di setiap situs.";
@@ -511,6 +535,9 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Terima Kasih";
 
+/* Text used shile sharing Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Tiap hari saya menghemat data karena melakukan penelusuran web dengan Brave.";
+
 /* Title of the bookmark import popup. */
 "sync.bookmarksImportPopupErrorTitle" = "Markah buku";
 
@@ -529,6 +556,27 @@
 /* Bookmarks migration website title */
 "sync.v2MigrationInterstitialTitle" = "Migrasi markah buku";
 
+/* The button title for adding a user RSS feed */
+"today.addSource" = "Tambahkan Sumber";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Tambahkan";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Gagal Menambahkan Sumber";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Maaf, alamat umpan tersebut tidak dapat dikenali.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Maaf, alamat umpan tersebut tidak dapat ditemukan.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "Maaf, alamat umpan tersebut tidak memiliki konten.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Tambahkan Sumber kepada Brave Today";
+
 /* No comment provided by engineer. */
 "today.allSources" = "Semua Sumber";
 
@@ -540,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "today.deals" = "Penawaran Khusus";
+
+/* A button title for an action that deletes a users custom source */
+"today.deleteUserSourceTitle" = "Hapus";
 
 /* No comment provided by engineer. */
 "today.disableAll" = "Nonaktifkan Semua";
@@ -571,11 +622,23 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Aduh...";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Selera Anda disesuaikan dengan perangkat Anda, sehingga informasi pribadi Anda tersimpan pada peramban. Konten baru akan diperbarui setiap hari.";
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Impor OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Sumber Tidak Aman - Risiko Tanggung Sendiri";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Brave Today menampilkan cerita terpopuler dalam daftar konten yang sangat rahasia, hanya untuk Anda.";
+"today.introCardBody" = "Brave Today didukung oleh iklan yang sepenuhnya privat dan anonim dan disesuaikan dengan perangkat Anda. ";
+
+/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
+"today.introCardNew" = "Baru";
+
+/* No comment provided by engineer. */
+"today.introCardNewTextBody" = "Ubahsuaikan Brave Today hingga 5 umpan RSS dan dapatkan konten baru dari penerbit favorit Anda sepanjang hari.";
+
+/* No comment provided by engineer. */
+"today.introCardTitle" = "Berita teratas hari ini melalui umpan yang sepenuhnya privat, hanya untuk Anda. ";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Tunjukkan Brave Hari Ini";
@@ -602,13 +665,34 @@
 "today.resetSourceSettingsButtonTitle" = "Atur Ulang Pengaturan Sumber ke Pengaturan Bawaan";
 
 /* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Sumber";
+"today.rssFeedLimitExceededAlertMessage" = "Brave Today versi gratis masih menampilkan iklan dan berisi 5 umpan RSS. Anda dapat mengubahsuaikan pilihan umpan dari daftar Sumber. ";
+
+/* No comment provided by engineer. */
+"today.rssFeedLimitExceededAlertTitle" = "Batas umpan terlampaui";
+
+/* %d will be a number (i.e. 4) */
+"today.rssFeedLimitRemainingFooter" = "Anda saat ini memiliki %d umpan RSS di daftar Sumber. Brave Today versi gratis berisi 5 umpan RSS. Dukungan untuk umpan tak terbatas dan impor OPML akan menyusul segera. Anda dapat mengubahsuaikan pilihan umpan dari daftar Sumber. ";
+
+/* An action title where the user is executing a search based on inputted text */
+"today.searchButtonTitle" = "Cari";
+
+/* The placeholder displayed on the text field where a user is expected to type in a website URL */
+"today.searchTextFieldPlaceholder" = "Umpan atau URL Situs";
+
+/* No comment provided by engineer. */
+"today.settingsSourceHeaderTitle" = "Sumber Default";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Sumber & Pengaturan";
 
 /* No comment provided by engineer. */
 "today.sourceSearchPlaceholder" = "Pencarian";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Aktifkan Brave Today";
+
+/* The header above a list of the users RSS feed sources */
+"today.yourSources" = "Sumber Anda";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Aktifkan saran pencarian?";
@@ -704,7 +788,7 @@
 "vpn.contactFormNetworkType" = "Jenis jaringan";
 
 /* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Kirim";
+"vpn.contactFormSendButton" = "Lanjut ke Email";
 
 /* Subscription Type field for customer support contact form. */
 "vpn.contactFormSubscriptionType" = "Jenis Langganan";
@@ -769,6 +853,24 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Didukung oleh";
 
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Kawasan server yang terdekat dengan lokasi Anda akan dipilih secara otomatis berdasar zona waktu sistem Anda. Ini direkomendasikan demi menjamin kecepatan internet yang tinggi. ";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Otomatis";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Gagal beralih server, harap coba lagi nanti. ";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Server mengalami error";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Server Kawasan";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN kawasan berubah";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Gagal mengatur ulang konfigurasi vpn, silakan coba lagi nanti.";
 
@@ -781,8 +883,14 @@
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Tingkatkan dengan VPN untuk mejaga koneksi Anda dan memblokir serangan pelacak di mana pun.";
 
+/* Button to change VPN server location */
+"vpn.settingsChangeLocation" = "Ubah Lokasi";
+
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Hubungi Dukungan Teknis";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Gagal menarik daftar server, harap coba lagi nanti. ";
 
 /* Button for FAQ */
 "vpn.settingsFAQ" = "Dukungan VPN";
