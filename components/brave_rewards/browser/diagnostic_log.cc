@@ -329,6 +329,7 @@ void DiagnosticLog::Write(const std::string& log_entry,
                           int line,
                           int verbose_level,
                           StatusCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const std::string formatted_time = FormatTime(time);
 
   const std::string verbose_level_name = GetLogVerboseLevelName(verbose_level);
