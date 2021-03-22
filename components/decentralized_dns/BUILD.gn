@@ -32,6 +32,7 @@ source_set("decentralized_dns") {
     "//components/user_prefs",
     "//content/public/browser",
     "//net",
+    "//ui/base",
     "//url",
   ]
 }
