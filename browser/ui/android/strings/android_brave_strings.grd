@@ -628,6 +628,10 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_SYNC_DELETE_DEVICE" desc="Text for Brave Sync delete device message.">
 	Are you sure you want to delete device '<ph name="DEVICE_NAME">%1$s</ph>'?
       </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_UNUPDATED_DEVICE" desc="Text for Brave Sync delete device message.">
+  The device you are attempting to delete has an older browser version that does not support self-delete.  You should only delete this device from the chain if you are sure it will not reactivate.  Otherwise that device may rejoin the sync chain, while not appearing in your device list.
+Are you sure you want to delete device '<ph name="DEVICE_NAME">%1$s</ph>'?
+      </message>
       <message name="IDS_BRAVE_SYNC_SCAN_CHAIN_CODE" desc="Text for Brave Sync chain code message.">
 	Scan or enter sync code
       </message>

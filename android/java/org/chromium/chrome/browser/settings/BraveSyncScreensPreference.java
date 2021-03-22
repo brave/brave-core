@@ -312,16 +312,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                             AppCompatImageView deleteButton =
                                     (AppCompatImageView) listItemView.findViewById(
                                             R.id.brave_sync_remove_device);
-                            if (device.mSupportsSelfDelete || device.mIsCurrentDevice) {
-                                deleteButton.setTag(device);
-                                deleteButton.setOnClickListener(v -> {
-                                    BraveSyncDevices.SyncDeviceInfo deviceToDelete =
-                                            (BraveSyncDevices.SyncDeviceInfo) v.getTag();
-                                    deleteDeviceDialog(deviceToDelete);
-                                });
-                            } else {
-                                deleteButton.setVisibility(View.GONE);
-                            }
+
+                            deleteButton.setTag(device);
+                            deleteButton.setOnClickListener(v -> {
+                                BraveSyncDevices.SyncDeviceInfo deviceToDelete =
+                                        (BraveSyncDevices.SyncDeviceInfo) v.getTag();
+                                deleteDeviceDialog(deviceToDelete);
+                            });
 
                             insertPoint.addView(separator, index++);
                             insertPoint.addView(listItemView, index++);
@@ -1000,8 +997,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
         AlertDialog alertDialog =
                 alert.setTitle(getResources().getString(R.string.brave_sync_remove_device_text))
-                        .setMessage(
-                                getString(R.string.brave_sync_delete_device, deviceNameToDisplay))
+                        .setMessage(getString(device.mSupportsSelfDelete
+                                        ? R.string.brave_sync_delete_device
+                                        : R.string.brave_sync_delete_unupdated_device,
+                                deviceNameToDisplay))
                         .setPositiveButton(R.string.ok, onClickListener)
                         .setNegativeButton(R.string.cancel, onClickListener)
                         .create();
