@@ -60,6 +60,9 @@ class CosmeticFiltersJsRenderFrameObserver
   GURL url_;
 
   std::unique_ptr<base::OneShotEvent> ready_;
+
+  base::WeakPtrFactory<CosmeticFiltersJsRenderFrameObserver> weak_factory_{
+      this};
 };
 
 }  // namespace cosmetic_filters

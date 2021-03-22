@@ -83,7 +83,7 @@ void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
 void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {
   ready_->Post(FROM_HERE,
                base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::ApplyRules,
-                              base::Unretained(this)));
+                              weak_factory_.GetWeakPtr()));
 }
 
 void CosmeticFiltersJsRenderFrameObserver::ApplyRules() {
