@@ -1,21 +1,3 @@
-source_set("permissions") {
-  check_includes = false
-  sources = [
-    "permission_lifetime_manager_factory.cc",
-    "permission_lifetime_manager_factory.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/components/permissions",
-    "//components/keyed_service/content",
-    "//components/permissions",
-    "//components/pref_registry",
-    "//components/prefs",
-    "//content/public/browser",
-  ]
-}
-
 if (!is_android) {
   source_set("browser_tests") {
     testonly = true
@@ -30,7 +12,6 @@ if (!is_android) {
     ]
 
     deps = [
-      ":permissions",
       "//brave/browser:browser_process",
       "//brave/components/permissions",
       "//chrome/browser",
