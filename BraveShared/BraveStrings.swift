@@ -987,8 +987,8 @@ extension Strings {
         public static let shareDescriptionTitle = NSLocalizedString(
             "socialSharing.shareDescriptionTitle",
             bundle: Bundle.shared,
-            value: "Everyday I save data by browsing the web with Brave.",
-            comment: "Text used shile sharing Brave Shield values")
+            value: "Every day I save data by browsing the web with Brave.",
+            comment: "Text used for social sharing together with Brave Shield values")
     }
 }
 
