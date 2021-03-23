@@ -22,7 +22,7 @@ namespace ipfs {
 bool IsIpfsEnabled(content::BrowserContext* context);
 bool IsIpfsResolveMethodDisabled(content::BrowserContext* context);
 bool IsIpfsDisabledByPolicy(content::BrowserContext* context);
-
+bool IsValidCID(const std::string& cid);
 bool HasIPFSPath(const GURL& url);
 bool IsDefaultGatewayURL(const GURL& url, content::BrowserContext* context);
 bool IsLocalGatewayURL(const GURL& url);

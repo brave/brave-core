@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -29,9 +30,27 @@ GURL AppendLocalPort(const std::string& port) {
   return gateway.ReplaceComponents(replacements);
 }
 
+// Valid CID multibase prefix, "code" character
+// from https://github.com/multiformats/multibase/blob/master/multibase.csv
+const char kCIDv1Codes[] = "079fFvVtTbBcChkKzZmMuU";
+const char kCIDv0Prefix[] = "Qm";
+
 }  // namespace
 
 namespace ipfs {
+
+// Simple CID validation based on multibase table.
+bool IsValidCID(const std::string& cid) {
+  if (!cid.size())
+    return false;
+  if (!std::all_of(cid.begin(), cid.end(), [loc = std::locale{}](char c) {
+        return std::isalnum(c, loc);
+      }))
+    return false;
+  if (std::string(kCIDv1Codes).find(cid.at(0)) != std::string::npos)
+    return true;
+  return base::StartsWith(cid, kCIDv0Prefix);
+}
 
 bool IsIpfsDisabledByPolicy(content::BrowserContext* context) {
   DCHECK(context);

@@ -201,8 +201,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
 
   ipns_uri = GURL("http://test.com.ipns.localhost/");
   ipns_uri = ipns_uri.ReplaceComponents(replacements);
-  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
-  ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/");
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
@@ -244,9 +243,26 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), source);
 
-  ipns_uri = GURL("http://test.com.ipns.localhost:8080/");
+  source = "http://test.com.ipns.localhost:8080/";
+  ipns_uri = GURL(source);
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
+
+  ipns_uri = GURL(
+      "https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+      ".ipns.localhost:8080/");
   ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
-  ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/");
+  ASSERT_EQ(
+      ipns_uri.spec(),
+      "ipns://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/");
+
+  ipns_uri = GURL(
+      "https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+      ".ipfs.localhost:8080/");
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(
+      ipns_uri.spec(),
+      "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/");
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteInternal) {

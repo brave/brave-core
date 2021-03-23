@@ -96,6 +96,10 @@ bool HandleIPFSURLReverseRewrite(
   if (ipfs_pos == std::string::npos && ipns_pos == std::string::npos)
     return false;
 
+  auto cid_end = (ipfs_pos == std::string::npos) ? ipns_pos : ipfs_pos;
+  if (!ipfs::IsValidCID(url->host().substr(0, cid_end)))
+    return false;
+
   GURL configured_gateway =
       GetConfiguredBaseGateway(browser_context, chrome::GetChannel());
   if (configured_gateway.port() != url->port())
