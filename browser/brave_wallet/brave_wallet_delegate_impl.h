@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_DELEGATE_IMPL_H_
 
-#include "brave/components/brave_wallet/brave_wallet_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_delegate.h"
 
 class BraveWalletDelegateImpl : public BraveWalletDelegate {
  public:

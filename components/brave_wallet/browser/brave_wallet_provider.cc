@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_wallet/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 namespace brave_wallet {
 

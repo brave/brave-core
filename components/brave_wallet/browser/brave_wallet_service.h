@@ -21,7 +21,7 @@
 #include "base/observer_list.h"
 #include "base/scoped_observer.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"

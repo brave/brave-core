@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 
 #include <utility>
 
 #include "base/environment.h"
-#include "brave/components/brave_wallet/eth_call_data_builder.h"
-#include "brave/components/brave_wallet/eth_requests.h"
-#include "brave/components/brave_wallet/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
+#include "brave/components/brave_wallet/browser/eth_requests.h"
+#include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/load_flags.h"

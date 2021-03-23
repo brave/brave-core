@@ -9,7 +9,7 @@
 
 #include "base/bind.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
-#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/signin/identity_manager_factory.h"
 #include "chrome/common/pref_names.h"
@@ -18,8 +18,8 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/pref_names.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)

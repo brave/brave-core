@@ -90,7 +90,7 @@ source_set("common") {
         "//brave/components/brave_webtorrent/browser",
         "//brave/components/brave_referrals/browser",
         "//brave/components/brave_ads/browser",
-        "//brave/components/brave_wallet/renderer:renderer",
+        "//brave/components/brave_wallet/renderer",
         "//brave/components/content_settings/renderer",
         "//brave/components/external_intents/android",
         "//brave/components/webcompat_reporter/browser",

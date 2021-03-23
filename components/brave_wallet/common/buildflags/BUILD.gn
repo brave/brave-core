@@ -1,4 +1,4 @@
-import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {

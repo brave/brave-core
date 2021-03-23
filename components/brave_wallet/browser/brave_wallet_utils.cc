@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 #include <algorithm>
 #include <sstream>
@@ -14,7 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_wallet/features.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "crypto/random.h"

@@ -8,11 +8,11 @@
 #undef CanAddURLToHistory
 
 #include "brave/common/url_constants.h"
-#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #endif
 
 bool CanAddURLToHistory(const GURL& url) {

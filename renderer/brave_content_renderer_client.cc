@@ -7,7 +7,7 @@
 
 #include "base/feature_list.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -15,7 +15,7 @@
 #include "third_party/blink/public/platform/web_runtime_features.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/features.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_render_frame_observer.h"
 #endif
 

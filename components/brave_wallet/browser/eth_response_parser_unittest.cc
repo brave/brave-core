@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {

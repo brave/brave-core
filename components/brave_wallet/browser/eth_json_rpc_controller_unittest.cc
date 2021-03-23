@@ -6,8 +6,8 @@
 #include <memory>
 #include <vector>
 
-#include "brave/components/brave_wallet/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
 #include "testing/gtest/include/gtest/gtest.h"

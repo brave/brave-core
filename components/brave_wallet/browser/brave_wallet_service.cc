@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include <string>
 #include <utility>
@@ -15,10 +15,10 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
-#include "brave/components/brave_wallet/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/brave_wallet_delegate.h"
-#include "brave/components/brave_wallet/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/pref_names.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 
 const char kBraveWalletAES256GCMSivNonce[] =
     "brave.wallet.aes_256_gcm_siv_nonce";
