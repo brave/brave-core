@@ -27,6 +27,10 @@ export class BraveIPFSBrowserProxyImpl {
     chrome.send('setIPFSStorageMax', [value])
   }
 
+  launchIPFSService (value) {
+    chrome.send('launchIPFSService', [value])
+  }
+
   /** @override */
   getIPFSResolveMethodList () {
     return new Promise(resolve => {

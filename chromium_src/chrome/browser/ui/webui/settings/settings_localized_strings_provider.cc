@@ -10,6 +10,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/version_info.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/webui_util.h"
@@ -275,7 +276,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                          base::ASCIIToUTF16(kGoogleLoginLearnMoreURL));
   html_source->AddString("ipfsDNSLinkLearnMoreURL",
                          base::UTF8ToUTF16(kDNSLinkLearnMoreURL));
-
   html_source->AddString(
       "getMoreExtensionsUrl",
       base::ASCIIToUTF16(
@@ -286,6 +286,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString(
       "ipfsStorageMaxValue",
       std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));
+
+  base::string16 ipfs_method_desc =
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_IPFS_METHOD_DESC,
+                                 base::ASCIIToUTF16(ipfs::kIPFSLearnMoreURL));
+  html_source->AddString("ipfsMethodDesc", ipfs_method_desc);
 }
 
 void BraveAddResources(content::WebUIDataSource* html_source,

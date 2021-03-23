@@ -53,12 +53,10 @@ ExtensionFunction::ResponseAction IpfsGetResolveMethodListFunction::Run() {
       l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_GATEWAY),
       IPFSResolveMethodTypes::IPFS_GATEWAY));
 
-  if (GetIpfsService(browser_context()) &&
-      GetIpfsService(browser_context())->IsIPFSExecutableAvailable()) {
-    list.Append(MakeSelectValue(
-        l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_LOCAL),
-        IPFSResolveMethodTypes::IPFS_LOCAL));
-  }
+  list.Append(
+      MakeSelectValue(l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_LOCAL),
+                      IPFSResolveMethodTypes::IPFS_LOCAL));
+
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_DISABLED),
       IPFSResolveMethodTypes::IPFS_DISABLED));

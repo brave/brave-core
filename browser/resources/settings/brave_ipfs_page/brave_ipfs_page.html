@@ -28,15 +28,21 @@
       .storage-input {
         display: flex;
       }
-	</style>
-	  <div class="settings-box first">
-      <div class="start">$i18n{resolveIPFSURLDesc}</div>
+    </style>
+    <div class="settings-box first">
+      <div class="flex cr-padded-text">
+        <div class="start">$i18n{resolveIPFSURLDesc}</div>
+        <div class="secondary" id="defaultIPFSGateway">
+          $i18nRaw{ipfsMethodDesc}
+        </div>
+      </div>
       <settings-dropdown-menu id="ipfsResolveMethodType"
                               pref="{{prefs.brave.ipfs.resolve_method}}"
                               menu-options="[[ipfsResolveMethod_]]"
                               on-settings-control-change="onChangeIpfsMethod_">
       </settings-dropdown-menu>
     </div>
+        
     <div class="settings-box">
       <div class="flex cr-padded-text">
         <div>$i18n{ipfsPublicGatewayDesc}</div>
