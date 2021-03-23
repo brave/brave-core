@@ -9,9 +9,10 @@
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "net/base/load_flags.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -52,14 +53,12 @@ WaybackMachineURLFetcher::WaybackMachineURLFetcher(
       url_loader_factory_(std::move(url_loader_factory)) {
 }
 
-WaybackMachineURLFetcher::~WaybackMachineURLFetcher() {
-}
+WaybackMachineURLFetcher::~WaybackMachineURLFetcher() = default;
 
 void WaybackMachineURLFetcher::Fetch(const GURL& url) {
   auto request = std::make_unique<network::ResourceRequest>();
-  std::string wayback_fetch_url =
-      std::string(kWaybackQueryURL) + url.spec();
-  request->url = GURL(wayback_fetch_url);
+  const GURL wayback_fetch_url(std::string(kWaybackQueryURL) + url.spec());
+  request->url = FixupWaybackQueryURL(wayback_fetch_url);
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
   wayback_url_loader_ = network::SimpleURLLoader::Create(
