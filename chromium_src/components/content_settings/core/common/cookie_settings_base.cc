@@ -30,6 +30,8 @@ constexpr char kGoogle[] = "https://[*.]google.com/*";
 constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
 constexpr char kFacebook[] = "https://[*.]facebook.com/*";
 constexpr char kInstagram[] = "https://[*.]instagram.com/*";
+constexpr char kSanitystudio[] = "https://[*.]sanity.studio/*";
+constexpr char kSanityio[] = "https://[*.]sanity.io/*";
 
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
@@ -50,6 +52,10 @@ bool BraveIsAllowedThirdParty(const GURL& url,
             ContentSettingsPattern::FromString(kFacebook)},
            {ContentSettingsPattern::FromString(kFacebook),
             ContentSettingsPattern::FromString(kInstagram)},
+           {ContentSettingsPattern::FromString(kSanitystudio),
+            ContentSettingsPattern::FromString(kSanityio)},
+           {ContentSettingsPattern::FromString(kSanityio),
+            ContentSettingsPattern::FromString(kSanitystudio)},
            {ContentSettingsPattern::FromString(kPlaystation),
             ContentSettingsPattern::FromString(kSonyentertainmentnetwork)},
            {ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
