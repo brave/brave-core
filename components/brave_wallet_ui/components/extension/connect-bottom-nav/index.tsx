@@ -5,20 +5,38 @@ import { NavButton } from '../'
 import { StyledWrapper, ButtonRow, DisclaimerText } from './style'
 
 export interface Props {
-  onSubmit: () => void
-  onCancel: () => void
-  actionText: string
+  primaryAction: () => void
+  secondaryAction: () => void
+  primaryText: string
+  secondaryText: string
+  disabled?: boolean
 }
 
 export default class ConnectBottomNav extends React.PureComponent<Props> {
   render () {
-    const { onSubmit, onCancel, actionText } = this.props
+    const {
+      primaryAction,
+      secondaryAction,
+      primaryText,
+      secondaryText,
+      disabled
+    } = this.props
     return (
       <StyledWrapper>
         <DisclaimerText>Only connect with sites you trust.</DisclaimerText>
         <ButtonRow>
-          <NavButton text='Cancel' onSubmit={onCancel} buttonType='secondary' />
-          <NavButton text={actionText} onSubmit={onSubmit} buttonType='primary' />
+          <NavButton
+            text={secondaryText}
+            onSubmit={secondaryAction}
+            buttonType='secondary'
+          />
+          <NavButton
+            disabled={disabled}
+            text={primaryText}
+            onSubmit={primaryAction}
+            buttonType='primary'
+
+          />
         </ButtonRow>
       </StyledWrapper>
     )

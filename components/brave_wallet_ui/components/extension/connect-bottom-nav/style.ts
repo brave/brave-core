@@ -18,7 +18,8 @@ export const ButtonRow = styled.div`
 `
 
 export const DisclaimerText = styled.span`
-  font-size: 11px;
-  line-height: 17px;
-  font-weight: 400;
+	font-family: Poppins;
+	font-size: 11px;
+	line-height: 17px;
+	font-weight: 400;
 `
