@@ -45,6 +45,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void IsWidevineEnabled(const base::ListValue* args);
   void OnWidevineEnabledChanged();
   void IsDecentralizedDnsEnabled(const base::ListValue* args);
+  void GetDecentralizedDnsResolveMethodList(const base::ListValue* args);
 
   void InitializePrefCallbacks();
 

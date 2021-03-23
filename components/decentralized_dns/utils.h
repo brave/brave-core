@@ -9,6 +9,10 @@
 class GURL;
 class PrefService;
 
+namespace base {
+class Value;
+}
+
 namespace decentralized_dns {
 
 bool IsDecentralizedDnsEnabled();
@@ -20,6 +24,8 @@ bool IsUnstoppableDomainsResolveMethodDoH(PrefService* local_state);
 bool IsENSTLD(const GURL& url);
 bool IsENSResolveMethodAsk(PrefService* local_state);
 bool IsENSResolveMethodDoH(PrefService* local_state);
+
+base::Value GetResolveMethodList();
 
 }  // namespace decentralized_dns
 
