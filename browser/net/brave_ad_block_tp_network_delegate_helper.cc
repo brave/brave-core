@@ -30,6 +30,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/network_context.h"
@@ -226,9 +227,10 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
                                         std::shared_ptr<BraveRequestInfo> ctx) {
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
-  if (ctx->request_url.is_empty() || ctx->initiator_url.is_empty() ||
-      !ctx->initiator_url.has_host() || !ctx->allow_brave_shields ||
-      ctx->allow_ads ||
+  if (ctx->request_url.is_empty() ||
+      ctx->request_url.SchemeIs(content::kChromeDevToolsScheme) ||
+      ctx->initiator_url.is_empty() || !ctx->initiator_url.has_host() ||
+      !ctx->allow_brave_shields || ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
     return net::OK;
   }
