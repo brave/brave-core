@@ -903,7 +903,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             mShieldsLayout.setBackgroundColor(
                     ChromeColors.getDefaultThemeColor(getContext().getResources(), isIncognito()));
         }
-        if (mCurrentToolbarColor == color) return;
         mCurrentToolbarColor = color;
         if (mShieldsLayout != null) {
             mShieldsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
