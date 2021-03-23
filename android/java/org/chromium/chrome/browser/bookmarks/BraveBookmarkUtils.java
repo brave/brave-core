@@ -61,12 +61,7 @@ public class BraveBookmarkUtils extends BookmarkUtils {
             return;
         }
 
-        boolean isAddToOptionVariation =
-                CachedFeatureFlags.isEnabled(
-                        ChromeFeatureList.TABBED_APP_OVERFLOW_MENU_THREE_BUTTON_ACTIONBAR)
-                && AppMenuPropertiesDelegateImpl.THREE_BUTTON_ACTION_BAR_VARIATION.getValue()
-                           .equals("add_to_option");
-        if (CachedFeatureFlags.isEnabled(ChromeFeatureList.READ_LATER) && !isAddToOptionVariation) {
+        if (CachedFeatureFlags.isEnabled(ChromeFeatureList.READ_LATER)) {
             // Show a bottom sheet to let the user select target bookmark folder.
             showBookmarkBottomSheet(bookmarkModel, tab, snackbarManager, bottomSheetController,
                     activity, fromCustomTab, callback);
