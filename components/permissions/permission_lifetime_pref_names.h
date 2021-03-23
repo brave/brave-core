@@ -9,8 +9,10 @@
 namespace permissions {
 namespace prefs {
 
-extern const char kPermissionLifetimeRoot[];
-extern const char kPermissionLifetimeExpirations[];
+// General pref for all permission lifetime logic.
+constexpr char kPermissionLifetimeRoot[] = "permission_lifetime";
+// Expiration pref to store currently expiring permissions.
+constexpr char kPermissionLifetimeExpirations[] = "permission_lifetime.expirations";
 
 }  // namespace prefs
 }  // namespace permissions

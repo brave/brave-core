@@ -33,7 +33,7 @@ class MockPermissionLifetimePromptFactory {
       const MockPermissionLifetimePromptFactory&) = delete;
   ~MockPermissionLifetimePromptFactory();
 
-  // Create method called by the PBM to show a bubble.
+  // Create method called by the PRM to show a bubble.
   std::unique_ptr<PermissionPrompt> Create(
       content::WebContents* web_contents,
       PermissionPrompt::Delegate* delegate);

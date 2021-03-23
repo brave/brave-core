@@ -6,7 +6,6 @@ source_set("permissions") {
     "permission_lifetime_manager.h",
     "permission_lifetime_options.cc",
     "permission_lifetime_options.h",
-    "permission_lifetime_pref_names.cc",
     "permission_lifetime_pref_names.h",
     "permission_lifetime_utils.cc",
     "permission_lifetime_utils.h",

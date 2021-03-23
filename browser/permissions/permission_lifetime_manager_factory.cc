@@ -35,7 +35,7 @@ PermissionLifetimeManagerFactory::PermissionLifetimeManagerFactory()
   DependsOn(HostContentSettingsMapFactory::GetInstance());
 }
 
-PermissionLifetimeManagerFactory::~PermissionLifetimeManagerFactory() {}
+PermissionLifetimeManagerFactory::~PermissionLifetimeManagerFactory() = default;
 
 KeyedService* PermissionLifetimeManagerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
