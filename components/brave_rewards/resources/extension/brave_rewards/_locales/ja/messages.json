@@ -244,7 +244,7 @@
     "description": "Title for device limit reached notification"
   },
   "deviceLimitReachedNotification": {
-    "message": "検証済みのデバイスの上限に達したため、あなたのウォレットを確認できません。",
+    "message": "　認証済みのデバイスの上限に達したため、あなたのウォレットを確認できません。",
     "description": "Description for device limit reached notification"
   },
   "insufficientFundsNotification": {
@@ -642,7 +642,7 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "注意： 承認すると、あなたのトランザクションは$provider$に表示されます。例えば、チップの受取人と金額を見ることができるようになります。",
+    "message": "注意： 承認すると、あなたのトランザクションは$provider$から閲覧可能になります。。例えば、彼らはチップの受取人と金額を見ることができるようになります。",
     "description": "Displayed in login modal for external wallet providers",
     "placeholders": {
       "provider": {
