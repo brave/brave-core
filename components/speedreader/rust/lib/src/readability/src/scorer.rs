@@ -41,6 +41,12 @@ static BLOCK_CHILD_TAGS: [&LocalName; 9] = [
     &local_name!("ul"),
     &local_name!("select"),
 ];
+static ALTER_TO_DIV_EXCEPTIONS: [&LocalName; 3] = [
+    //&local_name!("div"),
+    &local_name!("article"),
+    &local_name!("section"),
+    &local_name!("p"),
+];
 
 static DECAY_FACTOR: f32 = 3.0;
 
@@ -107,6 +113,7 @@ pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
     }
 }
 
+#[inline]
 pub fn get_link_density(handle: &Handle) -> f32 {
     let text_length = dom::text_len(&handle) as f32;
     if text_length == 0.0 {
@@ -120,6 +127,7 @@ pub fn get_link_density(handle: &Handle) -> f32 {
     link_length / text_length
 }
 
+#[inline]
 pub fn get_text_density(handle: &Handle, tags: &[&str]) -> f32 {
     let text_length = dom::text_len(&handle) as f32;
     if text_length == 0.0 {
@@ -452,6 +460,62 @@ pub fn search_alternative_candidates<'a>(top_candidates: &'a Vec<TopCandidate>) 
         }
     }
     None
+}
+
+pub fn append_related_siblings(top_candidate: Handle) {
+    if let Some(top_elem) = top_candidate.as_element() {
+        if let Some(parent) = top_candidate.parent() {
+            let mut related_siblings = vec![];
+            let top_attrs = top_elem.attributes.borrow();
+            let top_class = top_attrs.get("class");
+            let content_bonus = top_elem.score.get() * 0.2;
+            for sibling in parent.children() {
+                if let Some(elem) = sibling.as_element() {
+                    top_class
+                        .and_then(|top_class| {
+                            elem.attributes.borrow().get("class").and_then(|class| {
+                                if class == top_class {
+                                    Some(content_bonus)
+                                } else {
+                                    None
+                                }
+                            })
+                        })
+                        .unwrap_or(0.0);
+
+                    let mut append = false;
+                    if Some(&local_name!("p")) == dom::get_tag_name(&sibling) {
+                        let link_density = get_link_density(&sibling);
+                        let content_length = dom::text_len(&sibling);
+                        if content_length > 80 && link_density < 0.25 {
+                            append = true;
+                        } else if content_length > 0 && content_length < 80 && link_density == 0.0 {
+                            // NOTE: leaving out the condition for excluding for /\.( |$)/
+                            append = true;
+                        }
+                    }
+
+                    if append {
+                        if ALTER_TO_DIV_EXCEPTIONS
+                            .iter()
+                            .any(|&tag| tag == &elem.name.local)
+                        {
+                            related_siblings.push(NodeRef::new_element(
+                                QualName::new(None, ns!(), LocalName::from("div")),
+                                elem.attributes.borrow().map.clone(),
+                            ));
+                        } else {
+                            related_siblings.push(sibling);
+                        }
+                    }
+                }
+            }
+
+            for sibling in related_siblings {
+                top_candidate.append(sibling);
+            }
+        }
+    }
 }
 
 // decides whether the handle node is useless (should be dropped) or not.
