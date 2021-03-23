@@ -22,28 +22,7 @@ Polymer({
     widevineEnabled_: Boolean,
     disableTorOption_: Boolean,
     decentralizedDnsEnabled_: Boolean,
-    unstoppableDomainsResolveMethod_: {
-      readOnly: true,
-      type: Array,
-      value() {
-        return [
-          {value:0, name: "Ask"},
-          {value:1, name: "Disabled"},
-          {value:2, name: "Public DNS over HTTPS server"},
-        ];
-      },
-    },
-    ensResolveMethod_: {
-      readOnly: true,
-      type: Array,
-      value() {
-        return [
-          {value:0, name: "Ask"},
-          {value:1, name: "Disabled"},
-          {value:2, name: "Public DNS over HTTPS server"},
-        ];
-      },
-    },
+    decentralizedDnsResolveMethod_: Array,
   },
 
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
@@ -88,7 +67,10 @@ Polymer({
     })
     this.browserProxy_.isDecentralizedDnsEnabled().then(enabled => {
       this.decentralizedDnsEnabled_ = enabled
-    });
+    })
+    this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
+      this.decentralizedDnsResolveMethod_ = list
+    })
   },
 
   onWebTorrentEnabledChange_: function() {
