@@ -37,7 +37,7 @@ class BraveModelTypeWorker : public ModelTypeWorker {
   BraveModelTypeWorker(ModelType type,
                        const sync_pb::ModelTypeState& initial_state,
                        bool trigger_initial_sync,
-                       std::unique_ptr<Cryptographer> cryptographer,
+                       Cryptographer* cryptographer,
                        PassphraseType passphrase_type,
                        NudgeHandler* nudge_handler,
                        std::unique_ptr<ModelTypeProcessor> model_type_processor,
