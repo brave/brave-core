@@ -248,7 +248,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, LearnMore) {
   // Send Proceed command and check if we fallback to gateway and pref is set.
   EXPECT_TRUE(ExecuteScript(web_contents, "$('learn-more').click();"));
   EXPECT_EQ(GetPrefs()->GetInteger(kIPFSResolveMethod),
-      static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
+            static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
 
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
   web_contents = browser()->tab_strip_model()->GetWebContentsAt(1);

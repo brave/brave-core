@@ -5,7 +5,6 @@
 
 import("//brave/build/config.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/tor/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("brave_ipfs_unit_tests") {
@@ -14,7 +13,6 @@ source_set("brave_ipfs_unit_tests") {
     sources = [
       "//brave/components/ipfs/ipfs_cookie_store_unittest.cc",
       "//brave/components/ipfs/ipfs_json_parser_unittest.cc",
-      "//brave/components/ipfs/ipfs_navigation_throttle_unittest.cc",
       "//brave/components/ipfs/ipfs_p3a_unittest.cc",
       "//brave/components/ipfs/ipfs_ports_unittest.cc",
       "//brave/components/ipfs/ipfs_utils_unittest.cc",
@@ -22,12 +20,9 @@ source_set("brave_ipfs_unit_tests") {
 
     deps = [
       "//base/test:test_support",
-      "//brave/browser:browser_process",
       "//brave/components/ipfs",
-      "//brave/components/tor/buildflags",
-      "//chrome:browser_dependencies",
-      "//chrome/test:test_support",
       "//components/prefs",
+      "//components/prefs:test_support",
       "//components/user_prefs",
       "//components/version_info",
       "//content/public/browser",
@@ -37,36 +32,5 @@ source_set("brave_ipfs_unit_tests") {
       "//testing/gtest",
       "//url",
     ]
-    if (enable_tor) {
-      deps += [ "//brave/browser/tor" ]
-    }
   }  # if (ipfs_enabled)
 }  # source_set("brave_ipfs_unit_tests")
-
-# TODO(bbondy) Remove this, it doesn't belong in components
-source_set("brave_ipfs_browser_tests") {
-  testonly = true
-  if (ipfs_enabled && !is_android) {
-    sources = [
-      "//brave/components/ipfs/brave_ipfs_client_updater_browsertest.cc",
-      "//brave/components/ipfs/ipfs_navigation_throttle_browsertest.cc",
-      "//brave/components/ipfs/ipfs_not_connected_page_browsertest.cc",
-      "//brave/components/ipfs/ipfs_onboarding_page_browsertest.cc",
-      "//brave/components/ipfs/ipfs_service_browsertest.cc",
-    ]
-
-    deps = [
-      "//base/test:test_support",
-      "//brave/browser:browser_process",
-      "//brave/common",
-      "//brave/components/ipfs",
-      "//chrome/browser",
-      "//chrome/test:test_support",
-      "//chrome/test:test_support_ui",
-      "//components/security_interstitials/content:security_interstitial_page",
-      "//content/test:test_support",
-      "//net:test_support",
-    ]
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  }  # if (ipfs_enabled && !is_android)
-}  # source_set("brave_ipfs_browser_tests")

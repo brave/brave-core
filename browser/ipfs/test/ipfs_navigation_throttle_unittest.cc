@@ -394,13 +394,13 @@ TEST_F(IpfsNavigationThrottleUnitTest, Instantiation) {
 #if BUILDFLAG(ENABLE_TOR)
 TEST_F(IpfsNavigationThrottleUnitTest, NotInstantiatedInTor) {
   Profile* tor_profile =
-    TorProfileManager::GetInstance().GetTorProfile(profile());
+      TorProfileManager::GetInstance().GetTorProfile(profile());
   ASSERT_TRUE(tor_profile->IsTor());
   ASSERT_TRUE(tor_profile->IsOffTheRecord());
   ASSERT_EQ(tor_profile->GetOriginalProfile(), profile());
 
-  auto tor_web_contents = content::WebContentsTester::CreateTestWebContents(
-      tor_profile, nullptr);
+  auto tor_web_contents =
+      content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
   content::MockNavigationHandle tor_test_handle(tor_web_contents.get());
   auto throttle_in_tor = IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &tor_test_handle, ipfs_service(tor_profile), locale());

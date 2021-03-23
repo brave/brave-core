@@ -449,14 +449,8 @@ test("brave_unit_tests") {
 
     deps += [ "//brave/components/speedreader" ]
   }
-
   if (ipfs_enabled) {
-    sources += [
-      "//brave/browser/ipfs/content_browser_client_helper_unittest.cc",
-      "//brave/browser/ipfs/ipfs_host_resolver_unittest.cc",
-      "//brave/browser/net/ipfs_redirect_network_delegate_helper_unittest.cc",
-    ]
-    deps += [ "//brave/components/ipfs" ]
+    deps += [ "//brave/browser/ipfs/test:unittests" ]
   }
 }
 
@@ -642,9 +636,6 @@ if (!is_android) {
     if (decentralized_dns_enabled) {
       deps += [ "//brave/browser/decentralized_dns/test:browser_tests" ]
     }
-    if (!is_android && !is_ios) {
-      deps += [ "//brave/components/ipfs/test:brave_ipfs_browser_tests" ]
-    }
 
     if (enable_brave_perf_predictor) {
       sources += [ "//brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper_browsertest.cc" ]
@@ -749,16 +740,6 @@ if (!is_android) {
       deps += [ "//brave/components/speedreader" ]
     }
 
-    if (ipfs_enabled) {
-      sources += [
-        "//brave/browser/extensions/api/ipfs_apitest.cc",
-        "//brave/browser/ipfs/ipfs_policy_browsertest.cc",
-        "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
-        "//brave/browser/net/ipfs_redirect_network_delegate_helper_browsertest.cc",
-      ]
-      deps += [ "//brave/components/ipfs" ]
-    }
-
     if (is_win || is_linux) {
       sources += [ "//brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer_browsertest.cc" ]
       deps += [
@@ -855,7 +836,12 @@ if (!is_android) {
       "//ui/compositor:test_support",
       "//ui/views",
     ]
-
+    if (ipfs_enabled) {
+      deps += [
+        "//brave/browser/ipfs/test:browsertests",
+        "//brave/components/ipfs:ipfs",
+      ]
+    }
     public_deps = [ ":browser_tests_runner" ]
   }
 } else {  # if (!is_android) {
