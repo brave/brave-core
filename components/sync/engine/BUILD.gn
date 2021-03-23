@@ -6,9 +6,8 @@
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "//brave/components/sync/engine/brave_model_type_worker_unittest.cc",
-  ]
+  sources =
+      [ "//brave/components/sync/engine/brave_model_type_worker_unittest.cc" ]
 
   deps = [
     "//base",

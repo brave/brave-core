@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_ENGINE_IMPL_BRAVE_SYNC_MANAGER_IMPL_H_
-#define BRAVE_COMPONENTS_SYNC_ENGINE_IMPL_BRAVE_SYNC_MANAGER_IMPL_H_
+#ifndef BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_SYNC_MANAGER_IMPL_H_
+#define BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_SYNC_MANAGER_IMPL_H_
 
 #include <string>
 
@@ -27,4 +27,4 @@ class BraveSyncManagerImpl : public SyncManagerImpl {
 
 }  // namespace syncer
 
-#endif  // BRAVE_COMPONENTS_SYNC_ENGINE_IMPL_BRAVE_SYNC_MANAGER_IMPL_H_
+#endif  // BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_SYNC_MANAGER_IMPL_H_

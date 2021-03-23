@@ -10,7 +10,7 @@ namespace syncer {
 BraveSyncManagerImpl::BraveSyncManagerImpl(
     const std::string& name,
     network::NetworkConnectionTracker* network_connection_tracker)
-  : SyncManagerImpl(name, network_connection_tracker) {}
+    : SyncManagerImpl(name, network_connection_tracker) {}
 
 BraveSyncManagerImpl::~BraveSyncManagerImpl() {}
 
