@@ -518,7 +518,7 @@ class NewTabPageViewController: UIViewController, Themeable {
         case .itemAction(.opened(let inNewTab, let switchingToPrivateMode), let context):
             guard let url = context.item.content.url else { return }
             let item = context.item
-            if item.content.contentType == .partner,
+            if !switchingToPrivateMode, item.content.contentType == .partner,
                let creativeInstanceID = item.content.creativeInstanceID {
                 rewards.ads.reportPromotedContentAdEvent(
                     item.content.urlHash,
