@@ -43,19 +43,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #endif
 
-namespace {
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-void OverridePrefsForPrivateProfileUserPrefs(Profile* profile) {
-  if (brave::IsRegularProfile(profile))
-    return;
-
-  // rewards button should be hidden on guest and tor profile.
-  PrefService* pref_service = profile->GetPrefs();
-  pref_service->SetBoolean(brave_rewards::prefs::kHideButton, true);
-}
-#endif
-}  // namespace
-
 namespace brave_rewards {
 
 RewardsService* testing_service_;
@@ -89,18 +76,6 @@ RewardsServiceFactory::RewardsServiceFactory()
 #endif
 #if BUILDFLAG(ENABLE_GREASELION)
   DependsOn(greaselion::GreaselionServiceFactory::GetInstance());
-#endif
-
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OS_ANDROID)
-  if (g_browser_process && g_browser_process->profile_manager())
-    g_browser_process->profile_manager()->AddObserver(this);
-#endif
-}
-
-RewardsServiceFactory::~RewardsServiceFactory() {
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OS_ANDROID)
-  if (g_browser_process && g_browser_process->profile_manager())
-    g_browser_process->profile_manager()->RemoveObserver(this);
 #endif
 }
 
@@ -145,12 +120,6 @@ void RewardsServiceFactory::SetServiceForTesting(RewardsService* service) {
 
 bool RewardsServiceFactory::ServiceIsNULLWhileTesting() const {
   return false;
-}
-
-void RewardsServiceFactory::OnProfileAdded(Profile* profile) {
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  OverridePrefsForPrivateProfileUserPrefs(profile);
-#endif
 }
 
 }  // namespace brave_rewards

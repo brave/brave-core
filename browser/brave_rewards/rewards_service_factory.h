@@ -17,8 +17,7 @@ namespace brave_rewards {
 class RewardsService;
 
 // Singleton that owns all RewardsService and associates them with Profiles.
-class RewardsServiceFactory : public BrowserContextKeyedServiceFactory,
-                              public ProfileManagerObserver {
+class RewardsServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   RewardsServiceFactory(const RewardsServiceFactory&) = delete;
   RewardsServiceFactory& operator=(const RewardsServiceFactory&) = delete;
@@ -33,15 +32,12 @@ class RewardsServiceFactory : public BrowserContextKeyedServiceFactory,
   friend struct base::DefaultSingletonTraits<RewardsServiceFactory>;
 
   RewardsServiceFactory();
-  ~RewardsServiceFactory() override;
+  ~RewardsServiceFactory() override = default;
 
   // BrowserContextKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
-
-  // ProfileManagerObserver:
-  void OnProfileAdded(Profile* profile) override;
 };
 
 }  // namespace brave_rewards

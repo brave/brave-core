@@ -13,6 +13,7 @@
 #include "base/one_shot_event.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
@@ -184,6 +185,10 @@ bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
+    return false;
+  }
+
+  if (!brave::IsRegularProfile(browser_->profile())) {
     return false;
   }
 
