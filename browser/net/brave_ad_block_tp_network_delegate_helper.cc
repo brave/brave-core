@@ -21,8 +21,6 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/net/secure_dns_config.h"
-#include "chrome/browser/net/system_network_context_manager.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
@@ -144,15 +142,10 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
     optional_parameters->include_canonical_name = true;
-
-    SecureDnsConfig secure_dns_config =
-        SystemNetworkContextManager::GetStubResolverConfigReader()
-            ->GetSecureDnsConfiguration(false);
-    // Explicitly specify source when DNS over HTTPS is enabled to avoid
-    // using `HostResolverProc` which will be handled by system resolver
+    // Explicitly specify source to avoid using `HostResolverProc`
+    // which will be handled by system resolver
     // See https://crbug.com/872665
-    if (secure_dns_config.mode() == net::SecureDnsMode::kSecure)
-      optional_parameters->source = net::HostResolverSource::DNS;
+    optional_parameters->source = net::HostResolverSource::DNS;
 
     network::mojom::NetworkContext* network_context =
         content::BrowserContext::GetDefaultStoragePartition(context)
