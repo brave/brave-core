@@ -7,13 +7,19 @@ use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
 use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
+use regex::Regex;
 use scorer::{Title, TopCandidate};
 use std::collections::HashMap;
 use std::default::Default;
 use std::str::FromStr;
 use url::Url;
+use util::StringUtils;
 
 const NUM_TOP_CANDIDATES: usize = 5;
+
+lazy_static! {
+    static ref SEPARATORS: Regex = Regex::new(r#"[\|\-\\/>»]"#).unwrap();
+}
 
 #[derive(Debug)]
 pub struct Product {
@@ -32,6 +38,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     // extracts title (if it exists) pre-processes the DOM by removing script
     // tags, css, links
     scorer::preprocess(&mut dom, handle.clone(), &mut title);
+    title.title = clean_title(title.title);
 
     // now that the dom has been preprocessed, get the set of potential dom
     // candidates and their scoring. a candidate contains the node parent of the
@@ -100,6 +107,36 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         title: title.title,
         content,
     })
+}
+
+pub fn clean_title(title: String) -> String {
+    if let Some(m) = SEPARATORS.find(&title) {
+        let mut cur_title = title.substring(0, m.start());
+        if cur_title.split_whitespace().count() < 3 {
+            cur_title = title.substring(m.end(), title.len());
+        }
+        cur_title.trim().to_string()
+    } else {
+        title
+            .find(": ")
+            .and_then(|_| {
+                let mut cur_title = title.substring(title.rfind(':').unwrap() + 1, title.len());
+
+                // Less than 3 words in the title. Try first colon.
+                if cur_title.split_whitespace().count() < 3 {
+                    cur_title = title.substring(title.find(':').unwrap() + 1, title.len());
+                } else if title
+                    .substring(0, title.find(':').unwrap_or(0))
+                    .split_whitespace()
+                    .count()
+                    > 5
+                {
+                    return None;
+                }
+                Some(cur_title.trim().to_string())
+            })
+            .unwrap_or(title)
+    }
 }
 
 #[cfg(test)]
@@ -287,5 +324,29 @@ mod tests {
             normalize_output(expected),
             normalize_output(&product.content)
         );
+    }
+
+    #[test]
+    fn test_clean_title_colon() {
+        let input = "The SoCal Weekly Digest: Welcome to our wonderful page";
+        let expected = "Welcome to our wonderful page";
+        let output = clean_title(input.to_string());
+        assert_eq!(expected, output);
+    }
+
+    #[test]
+    fn test_clean_title_separator_left() {
+        let input = "Príncipe Harry asegura que su padre y hermano están \"atrapados\" en la monarquía: \"Siento compasión\" | Príncipe Carlos | Príncipe William | Meghan Markle | Duques de Sussex | Oprah Winfrey";
+        let expected = "Príncipe Harry asegura que su padre y hermano están \"atrapados\" en la monarquía: \"Siento compasión\"";
+        let output = clean_title(input.to_string());
+        assert_eq!(expected, output);
+    }
+
+    #[test]
+    fn test_clean_title_separator_right() {
+        let input = "Short Title | How Cats Can Save the Planet";
+        let expected = "How Cats Can Save the Planet";
+        let output = clean_title(input.to_string());
+        assert_eq!(expected, output);
     }
 }
