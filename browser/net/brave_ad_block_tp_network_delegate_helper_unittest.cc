@@ -32,3 +32,14 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
   EXPECT_TRUE(request_info->new_url_spec.empty());
   EXPECT_EQ(rc, net::OK);
 }
+
+TEST(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
+  const GURL url("devtools://devtools/");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  request_info->initiator_url =
+      GURL("devtools://devtools/bundled/root/root.js");
+  int rc =
+      OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(), request_info);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(rc, net::OK);
+}
