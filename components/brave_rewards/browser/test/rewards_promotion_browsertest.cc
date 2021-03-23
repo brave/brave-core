@@ -245,4 +245,22 @@ IN_PROC_BROWSER_TEST_F(
   CheckPromotionStatus("Over");
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionNotQuiteOver) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_service_->FetchPromotions();
+  promotion_->WaitForPromotionInitialization();
+
+  removed_ = true;
+  rewards_service_->FetchPromotions();
+  promotion_->WaitForPromotionInitialization();
+
+  CheckPromotionStatus("Over");
+
+  removed_ = false;
+  rewards_service_->FetchPromotions();
+  promotion_->WaitForPromotionInitialization();
+
+  CheckPromotionStatus("Active");
+}
+
 }  // namespace rewards_browsertest
