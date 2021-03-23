@@ -321,16 +321,5 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
                                                 false);
   EXPECT_TRUE(extensions::util::IsIncognitoEnabled(component_extension->id(),
                                                    tor_profile));
-
-  // "not_allowed" mode will also disable extension in Tor
-  const extensions::Extension* incognito_not_allowed_ext =
-      InstallExtension(incognito_not_allowed_ext_path(), 1);
-  const std::string incognito_not_allowed_id = incognito_not_allowed_ext->id();
-  parent_extension_prefs->SetIsIncognitoEnabled(incognito_not_allowed_id, true);
-  Profile* primary_otr_profile = parent_profile->GetPrimaryOTRProfile();
-  EXPECT_FALSE(extensions::util::IsIncognitoEnabled(incognito_not_allowed_id,
-                                                    primary_otr_profile));
-  EXPECT_FALSE(extensions::util::IsIncognitoEnabled(incognito_not_allowed_id,
-                                                    tor_profile));
 }
 #endif
