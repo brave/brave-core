@@ -75,6 +75,7 @@ class BraveMockRenderViewContextMenu : public ui::SimpleMenuModel::Delegate,
   void UpdateMenuIcon(int command_id, const ui::ImageModel& image) override;
   void RemoveMenuItem(int command_id) override;
   void RemoveAdjacentSeparators() override;
+  void RemoveSeparatorBeforeMenuItem(int command_id) override;
   void AddSpellCheckServiceItem(bool is_checked) override;
   void AddAccessibilityLabelsServiceItem(bool is_checked) override;
   content::RenderViewHost* GetRenderViewHost() const override;
