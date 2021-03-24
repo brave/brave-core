@@ -88,7 +88,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     }
 
     // Append siblings of the new root with related content.
-    scorer::append_related_siblings(top_candidate.clone());
+    scorer::append_related_siblings(&mut dom, top_candidate.clone());
 
     scorer::clean(&mut dom, top_candidate.clone(), url, &title.title, features);
 

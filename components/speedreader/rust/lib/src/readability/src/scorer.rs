@@ -473,10 +473,11 @@ pub fn search_alternative_candidates<'a>(top_candidates: &'a Vec<TopCandidate>) 
     None
 }
 
-pub fn append_related_siblings(top_candidate: Handle) {
+pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
     if let Some(top_elem) = top_candidate.as_element() {
         if let Some(parent) = top_candidate.parent() {
             let mut related_siblings = vec![];
+            let mut useless_nodes = vec![];
             let top_attrs = top_elem.attributes.borrow();
             let top_class = top_attrs.get("class");
             let content_bonus = top_elem.score.get() * 0.2;
@@ -511,10 +512,15 @@ pub fn append_related_siblings(top_candidate: Handle) {
                             .iter()
                             .any(|&tag| tag == &elem.name.local)
                         {
-                            related_siblings.push(NodeRef::new_element(
-                                QualName::new(None, ns!(), LocalName::from("div")),
-                                elem.attributes.borrow().map.clone(),
-                            ));
+                            if let Some(replacement) =
+                                dom::clone_element_steal_children(dom, &sibling, local_name!("div"))
+                            {
+                                dom.append_before_sibling(
+                                    &sibling,
+                                    NodeOrText::AppendNode(replacement),
+                                );
+                                useless_nodes.push(sibling);
+                            }
                         } else {
                             related_siblings.push(sibling);
                         }
@@ -524,6 +530,10 @@ pub fn append_related_siblings(top_candidate: Handle) {
 
             for sibling in related_siblings {
                 top_candidate.append(sibling);
+            }
+
+            for node in useless_nodes.iter() {
+                dom.remove_from_parent(node);
             }
         }
     }
