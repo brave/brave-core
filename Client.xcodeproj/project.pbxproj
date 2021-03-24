@@ -95,6 +95,7 @@
 		0A66550A23E9D9750047EF2A /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A66550923E9D9750047EF2A /* UserAgent.swift */; };
 		0A66550C23E9E04F0047EF2A /* UserAgentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A66550B23E9E04F0047EF2A /* UserAgentTests.swift */; };
 		0A6BEF6624FCF23C0057A166 /* NewTabCenteredCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6BEF6524FCF23C0057A166 /* NewTabCenteredCollectionViewCell.swift */; };
+		0A6E20492608D7E200575798 /* DebugFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E20482608D7E200575798 /* DebugFlag.swift */; };
 		0A6F957624044F070098217F /* NTPLearnMoreContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F957524044F070098217F /* NTPLearnMoreContentView.swift */; };
 		0A764F31230EE5CA003A1D9B /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A764F30230EE5CA003A1D9B /* OnboardingState.swift */; };
 		0A7B5D6722689C5D00AADF22 /* AddEditHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B5D6622689C5D00AADF22 /* AddEditHeaderView.swift */; };
@@ -1475,6 +1476,7 @@
 		0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0A6BEF6524FCF23C0057A166 /* NewTabCenteredCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabCenteredCollectionViewCell.swift; sourceTree = "<group>"; };
 		0A6E095E230E05BC00AB3F19 /* onboarding-shields.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-shields.json"; sourceTree = "<group>"; };
+		0A6E20482608D7E200575798 /* DebugFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFlag.swift; sourceTree = "<group>"; };
 		0A6F957524044F070098217F /* NTPLearnMoreContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPLearnMoreContentView.swift; sourceTree = "<group>"; };
 		0A75A3BD23571F2B00013540 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Storage.strings"; sourceTree = "<group>"; };
 		0A764F30230EE5CA003A1D9B /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
@@ -5344,6 +5346,7 @@
 				A13AC72420EC12360040D4BB /* Migration.swift */,
 				0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */,
 				0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */,
+				0A6E20482608D7E200575798 /* DebugFlag.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -6857,6 +6860,7 @@
 				4422D4E621BFFB7600BF1855 /* two_level_iterator.cc in Sources */,
 				27FCA8E72447BCFE00A8CA48 /* DuckDuckGoCalloutSectionProvider.swift in Sources */,
 				D3B6923F1B9F9A58004B87A4 /* FindInPageHelper.swift in Sources */,
+				0A6E20492608D7E200575798 /* DebugFlag.swift in Sources */,
 				2F098F8B255F2D730084FB37 /* BrowserViewController+ReaderMode.swift in Sources */,
 				4422D57421BFFB7F00BF1855 /* prog.cc in Sources */,
 				4422D42F21BFCF8900BF1855 /* HttpsEverywhereObjC.mm in Sources */,
