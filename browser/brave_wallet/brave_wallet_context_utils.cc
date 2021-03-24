@@ -3,13 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_TYPES_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_TYPES_H_
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "chrome/browser/profiles/profile.h"
 
 namespace brave_wallet {
 
-typedef unsigned _ExtInt(256) uint256_t;
+bool IsAllowedForProfile(Profile* profile) {
+  if (profile && profile->IsTor())
+    return false;
+
+  return true;
+}
 
 }  // namespace brave_wallet
-
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_TYPES_H_

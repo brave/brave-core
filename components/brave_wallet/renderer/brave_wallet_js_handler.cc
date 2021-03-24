@@ -9,7 +9,6 @@
 
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated_map.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
@@ -17,31 +16,12 @@
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
-#include "ui/base/resource/resource_bundle.h"
 
-namespace {
-
-static base::NoDestructor<std::string> g_provider_script("");
-
-std::string LoadDataResource(const int id) {
-  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  if (resource_bundle.IsGzipped(id)) {
-    return resource_bundle.LoadDataResourceString(id);
-  }
-
-  return resource_bundle.GetRawDataResource(id).as_string();
-}
-
-}  // namespace
 
 namespace brave_wallet {
 
 BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame)
-    : render_frame_(render_frame) {
-  if (g_provider_script->empty()) {
-    *g_provider_script = LoadDataResource(kBraveWalletScriptGenerated[0].value);
-  }
-}
+    : render_frame_(render_frame) {}
 
 BraveWalletJSHandler::~BraveWalletJSHandler() = default;
 
@@ -63,11 +43,11 @@ void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
 
   v8::Context::Scope context_scope(context);
 
-  CreateWorkerObject(isolate, context);
+  CreateEthereumObject(isolate, context);
 }
 
-void BraveWalletJSHandler::CreateWorkerObject(v8::Isolate* isolate,
-                                              v8::Local<v8::Context> context) {
+void BraveWalletJSHandler::CreateEthereumObject(
+    v8::Isolate* isolate, v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> cosmetic_filters_obj;
   v8::Local<v8::Value> cosmetic_filters_value;
@@ -152,14 +132,6 @@ void BraveWalletJSHandler::OnRequest(
   } else {
     ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
   }
-}
-
-void BraveWalletJSHandler::InjectScript() {
-  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (web_frame->IsProvisional())
-    return;
-
-  web_frame->ExecuteScript(blink::WebString::FromUTF8(*g_provider_script));
 }
 
 }  // namespace brave_wallet

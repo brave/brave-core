@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_ETH_RESPONSE_PARSER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_ETH_RESPONSE_PARSER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_RESPONSE_PARSER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_RESPONSE_PARSER_H_
 
 #include <string>
 #include "base/values.h"
@@ -17,4 +17,4 @@ bool ParseEthCall(const std::string& json, std::string* result);
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_ETH_RESPONSE_PARSER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_RESPONSE_PARSER_H_

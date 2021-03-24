@@ -18,6 +18,9 @@ source_set("renderer") {
   ]
 
   if (brave_wallet_enabled) {
-    deps += [ "//brave/components/brave_wallet/renderer" ]
+    deps += [
+      "//brave/components/brave_wallet/renderer",
+      "//brave/renderer/brave_wallet/",
+    ]
   }
 }

@@ -19,12 +19,12 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
     : profile_(profile),
-      is_tor_profile_(false),
       identity_manager_observer_(this) {
   identity_manager_ = IdentityManagerFactory::GetForProfile(profile);
   identity_manager_observer_.Add(identity_manager_);
@@ -49,7 +49,6 @@ void BraveRendererUpdater::Shutdown() {
 
 void BraveRendererUpdater::InitializeRenderer(
     content::RenderProcessHost* render_process_host) {
-  is_tor_profile_ = render_process_host->GetBrowserContext()->IsTor();
   auto renderer_configuration = GetRendererConfiguration(render_process_host);
   UpdateRenderer(&renderer_configuration);
 }
@@ -110,7 +109,7 @@ void BraveRendererUpdater::UpdateRenderer(
   bool use_brave_web3_provider = (static_cast<BraveWalletWeb3ProviderTypes>(
                                       brave_wallet_web3_provider_.GetValue()) ==
                                   BraveWalletWeb3ProviderTypes::BRAVE_WALLET) &&
-                                 !is_tor_profile_;
+                                 brave_wallet::IsAllowedForProfile(profile_);
 
   (*renderer_configuration)
       ->SetConfiguration(

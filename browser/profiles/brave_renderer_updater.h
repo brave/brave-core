@@ -61,7 +61,6 @@ class BraveRendererUpdater : public KeyedService,
 
   // Prefs that we sync to the renderers.
   IntegerPrefMember brave_wallet_web3_provider_;
-  bool is_tor_profile_;
 
   ScopedObserver<signin::IdentityManager, signin::IdentityManager::Observer>
       identity_manager_observer_;

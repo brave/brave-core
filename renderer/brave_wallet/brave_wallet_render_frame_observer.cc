@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/renderer/brave_wallet_render_frame_observer.h"
+#include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -28,17 +28,17 @@ void BraveWalletRenderFrameObserver::DidStartNavigation(
 void BraveWalletRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
-  if (!dynamic_params_.brave_use_native_wallet || !native_javascript_handle_)
+  // There could be empty, invalid and "about:blank" URLs,
+  // they should fallback to the main frame rules
+  if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank")
+    url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
+               .GetURL();
+
+  if (!dynamic_params_.brave_use_native_wallet || !native_javascript_handle_ ||
+      !url_.SchemeIsHTTPOrHTTPS())
     return;
 
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
-}
-
-void BraveWalletRenderFrameObserver::DidCreateNewDocument() {
-  if (!dynamic_params_.brave_use_native_wallet || !native_javascript_handle_)
-    return;
-
-  native_javascript_handle_->InjectScript();
 }
 
 void BraveWalletRenderFrameObserver::OnDestruct() {

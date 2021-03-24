@@ -16,7 +16,7 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/brave_wallet/renderer/brave_wallet_render_frame_observer.h"
+#include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #endif
 
 BraveContentRendererClient::BraveContentRendererClient()

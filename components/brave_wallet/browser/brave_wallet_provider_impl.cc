@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/brave_wallet_provider.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 
 #include <utility>
 
@@ -11,26 +11,26 @@
 
 namespace brave_wallet {
 
-BraveWalletProvider::BraveWalletProvider(
+BraveWalletProviderImpl::BraveWalletProviderImpl(
     base::WeakPtr<BraveWalletService> wallet_service)
     : wallet_service_(wallet_service), weak_factory_(this) {}
 
-BraveWalletProvider::~BraveWalletProvider() {}
+BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
 
-void BraveWalletProvider::Request(const std::string& json_payload,
-                                  RequestCallback callback) {
+void BraveWalletProviderImpl::Request(const std::string& json_payload,
+                                      RequestCallback callback) {
   if (!wallet_service_)
     return;
 
   auto* controller = wallet_service_->controller();
   controller->Request(
       json_payload,
-      base::BindOnce(&BraveWalletProvider::OnResponse,
+      base::BindOnce(&BraveWalletProviderImpl::OnResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)),
       true);
 }
 
-void BraveWalletProvider::OnResponse(
+void BraveWalletProviderImpl::OnResponse(
     RequestCallback callback,
     const int status,
     const std::string& response,

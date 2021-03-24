@@ -21,7 +21,6 @@ class BraveWalletJSHandler {
   explicit BraveWalletJSHandler(content::RenderFrame* render_frame);
   ~BraveWalletJSHandler();
 
-  void InjectScript();
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
 
  private:
@@ -35,7 +34,8 @@ class BraveWalletJSHandler {
                             v8::Local<v8::Object> javascript_object,
                             const std::string& name,
                             const base::RepeatingCallback<Sig>& callback);
-  void CreateWorkerObject(v8::Isolate* isolate, v8::Local<v8::Context> context);
+  void CreateEthereumObject(v8::Isolate* isolate,
+                            v8::Local<v8::Context> context);
   bool EnsureConnected();
 
   // A function to be called from JS

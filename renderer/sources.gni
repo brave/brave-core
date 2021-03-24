@@ -21,6 +21,8 @@ brave_chrome_renderer_public_deps = [
 ]
 
 if (brave_wallet_enabled) {
-  brave_chrome_renderer_public_deps +=
-      [ "//brave/components/brave_wallet/renderer" ]
+  brave_chrome_renderer_public_deps += [
+        "//brave/components/brave_wallet/renderer",
+        "//brave/renderer/brave_wallet",
+      ]
 }

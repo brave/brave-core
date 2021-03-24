@@ -42,6 +42,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
@@ -123,9 +124,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -245,17 +247,17 @@ void BindCosmeticFiltersResources(
 void MaybeBindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
-  if (frame_host->GetBrowserContext()->IsTor())
-    return;
-
   auto* profile =
       Profile::FromBrowserContext(frame_host->GetBrowserContext());
+  if (!brave_wallet::IsAllowedForProfile(profile))
+    return;
+
   BraveWalletService* service =
       BraveWalletServiceFactory::GetInstance()->GetForProfile(
           Profile::FromBrowserContext(profile));
 
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_wallet::BraveWalletProvider>(
+      std::make_unique<brave_wallet::BraveWalletProviderImpl>(
           service->AsWeakPtr()),
       std::move(receiver));
 }
@@ -298,9 +300,10 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
 
 void BraveContentBrowserClient::RenderProcessWillLaunch(
     content::RenderProcessHost* host) {
-  Profile* profile = Profile::FromBrowserContext(host->GetBrowserContext());
-  Profile* original_profile = profile->GetOriginalProfile();
-  BraveRendererUpdaterFactory::GetForProfile(original_profile)
+  Profile* profile = Profile::FromBrowserContext(
+      chrome::GetBrowserContextRedirectedInIncognito(
+          host->GetBrowserContext()));
+  BraveRendererUpdaterFactory::GetForProfile(profile)
       ->InitializeRenderer(host);
 
   ChromeContentBrowserClient::RenderProcessWillLaunch(host);

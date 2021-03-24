@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BRAVE_WALLET_CONSTANTS_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BRAVE_WALLET_CONSTANTS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_
 
 enum class BraveWalletWeb3ProviderTypes {
   ASK,
@@ -37,4 +37,4 @@ enum class Network {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BRAVE_WALLET_CONSTANTS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

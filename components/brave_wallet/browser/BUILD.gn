@@ -13,8 +13,8 @@ source_set("browser") {
     "brave_wallet_constants.cc",
     "brave_wallet_constants.h",
     "brave_wallet_delegate.h",
-    "brave_wallet_provider.cc",
-    "brave_wallet_provider.h",
+    "brave_wallet_provider_impl.cc",
+    "brave_wallet_provider_impl.h",
     "brave_wallet_service.cc",
     "brave_wallet_service.h",
     "brave_wallet_utils.cc",
@@ -33,6 +33,8 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
     "//brave/third_party/ethash",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/content_settings/core/browser",

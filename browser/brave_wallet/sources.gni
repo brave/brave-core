@@ -13,6 +13,8 @@ brave_browser_wallet_deps = []
 
 if (brave_wallet_enabled) {
   brave_browser_wallet_sources += [
+    "//brave/browser/brave_wallet/brave_wallet_context_utils.cc",
+    "//brave/browser/brave_wallet/brave_wallet_context_utils.h",
     "//brave/browser/brave_wallet/brave_wallet_service_factory.cc",
     "//brave/browser/brave_wallet/brave_wallet_service_factory.h",
   ]

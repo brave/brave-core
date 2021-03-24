@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_IMPL_H_
 
 #include <map>
 #include <memory>
@@ -17,13 +17,14 @@ class BraveWalletService;
 
 namespace brave_wallet {
 
-class BraveWalletProvider final
+class BraveWalletProviderImpl final
     : public brave_wallet::mojom::BraveWalletProvider {
  public:
-  BraveWalletProvider(const BraveWalletProvider&) = delete;
-  BraveWalletProvider& operator=(const BraveWalletProvider&) = delete;
-  explicit BraveWalletProvider(base::WeakPtr<BraveWalletService> wallet_service);
-  ~BraveWalletProvider() override;
+  BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
+  BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
+  explicit BraveWalletProviderImpl(
+      base::WeakPtr<BraveWalletService> wallet_service);
+  ~BraveWalletProviderImpl() override;
 
   void Request(const std::string& json_payload,
                RequestCallback callback) override;
@@ -35,9 +36,9 @@ class BraveWalletProvider final
  private:
   base::WeakPtr<BraveWalletService> wallet_service_;
 
-  base::WeakPtrFactory<BraveWalletProvider> weak_factory_;
+  base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PROVIDER_IMPL_H_
