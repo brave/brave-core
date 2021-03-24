@@ -56,6 +56,10 @@ bool EncodeString(const std::string& input, std::string* output);
 bool EncodeStringArray(const std::vector<std::string>& input,
                        std::string* output);
 
+bool DecodeString(size_t offset, const std::string& input, std::string* output);
+bool DecodeStringArray(const std::string& input,
+                       std::vector<std::string>* output);
+
 // Implement namehash algorithm based on EIP-137 spec.
 // Used for converting domain names in the classic format (ex: brave.crypto) to
 // an ERC-721 token for ENS and Unstoppable Domains.

@@ -266,6 +266,62 @@ bool EncodeStringArray(const std::vector<std::string>& input,
   return true;
 }
 
+bool DecodeString(size_t offset,
+                  const std::string& input,
+                  std::string* output) {
+  if (!output->empty())
+    return false;
+
+  // Decode count.
+  uint256_t count = 0;
+  if (!HexValueToUint256("0x" + input.substr(offset, 64), &count)) {
+    return false;
+  }
+
+  // Empty string case.
+  if (!count) {
+    *output = "";
+    return true;
+  }
+
+  offset += 64;
+
+  // Decode string.
+  bool success = base::HexStringToString(
+      input.substr(offset, static_cast<size_t>(count) * 2), output);
+  return success;
+}
+
+bool DecodeStringArray(const std::string& input,
+                       std::vector<std::string>* output) {
+  // Get count of array.
+  uint256_t count = 0;
+  if (!HexValueToUint256("0x" + input.substr(0, 64), &count)) {
+    return false;
+  }
+
+  // Decode count and string for each array element.
+  *output = std::vector<std::string>(static_cast<size_t>(count), "");
+  size_t offset = 64;  // Offset to count of first element.
+  for (size_t i = 0; i < static_cast<size_t>(count); i++) {
+    // Get the starting data offset for each string element.
+    uint256_t data_offset;
+    if (!HexValueToUint256("0x" + input.substr(offset, 64), &data_offset)) {
+      return false;
+    }
+
+    // Decode each string.
+    if (!DecodeString(64 /* count */ + static_cast<size_t>(data_offset) * 2,
+                      input, &output->at(i))) {
+      return false;
+    }
+
+    offset += 64;  // Offset for next count.
+  }
+
+  return true;
+}
+
 std::string Namehash(const std::string& name) {
   std::string hash(32, '\0');
   std::vector<std::string> labels =
