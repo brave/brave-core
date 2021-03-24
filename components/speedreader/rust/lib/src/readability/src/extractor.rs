@@ -53,26 +53,31 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     {
         // scores all candidate nodes
         let mut top_candidates: Vec<TopCandidate> = vec![];
-        for node in dom.document_node.descendants() {
-            if let Some(elem) = node.as_element() {
-                if !elem.is_candidate.get() {
-                    continue;
-                }
-                let score = elem.score.get() * (1.0 - scorer::get_link_density(&node));
-                elem.score.set(score);
+        for node in dom.document_node.descendants().filter(|d| {
+            d.as_element()
+                .and_then(|e| Some(e.is_candidate.get()))
+                .unwrap_or(false)
+        }) {
+            let elem = node.as_element().unwrap();
+            let score = elem.score.get() * (1.0 - scorer::get_link_density(&node));
+            elem.score.set(score);
 
-                if top_candidates.len() < NUM_TOP_CANDIDATES {
-                    top_candidates.push(TopCandidate { node });
-                } else {
-                    let min_index = util::min_elem_index(&top_candidates);
-                    let min = &mut top_candidates[min_index];
-                    if score > min.score() {
-                        *min = TopCandidate { node }
-                    }
+            if top_candidates.len() < NUM_TOP_CANDIDATES {
+                top_candidates.push(TopCandidate { node });
+            } else {
+                let min_index = util::min_elem_index(&top_candidates);
+                let min = &mut top_candidates[min_index];
+                if score > min.score() {
+                    *min = TopCandidate { node }
                 }
             }
         }
-        debug_assert!(top_candidates.len() > 0);
+        if top_candidates.len() == 0 {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "No candidates found.",
+            ));
+        }
         let max_index = util::max_elem_index(&top_candidates);
         top_candidates.swap(0, max_index);
         if let Some(new_top) = scorer::search_alternative_candidates(&top_candidates) {
@@ -285,6 +290,34 @@ mod tests {
         </html>
         "#;
 
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn rewrite_divs_single_p() {
+        let input = r#"
+        <body>
+          <div>
+            <p>This is paragraph one!</p>
+          </div>
+          <div>
+            <p>This is paragraph two!!</p>
+          </div>
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+          <p>This is paragraph one!</p>
+          <p>This is paragraph two!!</p>
+        </body>
+        </html>
+        "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
         assert_eq!(

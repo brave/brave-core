@@ -310,7 +310,8 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
     let mut paragraph_nodes = vec![];
     let mut br_count = 0;
     for child in handle.children() {
-        if preprocess(&mut dom, child.clone(), &mut title) {
+        let pending_removal = preprocess(&mut dom, child.clone(), &mut title);
+        if pending_removal {
             useless_nodes.push(child.clone());
         }
         match child.data() {
@@ -321,6 +322,16 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
                 }
                 if data.name.local == local_name!("noscript") {
                     unwrap_noscript(&child, &mut useless_nodes, &mut new_children);
+                } else if !pending_removal && data.name.local == local_name!("div") {
+                    if let Some(replacement) =
+                        dom::has_single_tag_inside_element(&child, &local_name!("p"))
+                    {
+                        let link_density = get_link_density(&child);
+                        if link_density < 0.25 {
+                            dom.append_before_sibling(&child, NodeOrText::AppendNode(replacement));
+                            useless_nodes.push(child.clone());
+                        }
+                    }
                 }
             }
             Text(ref contents) => {

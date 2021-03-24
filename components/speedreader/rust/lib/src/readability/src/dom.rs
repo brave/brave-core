@@ -1,3 +1,4 @@
+use crate::html5ever::tree_builder::TreeSink;
 use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
 use html5ever::{parse_document, ParseOpts};
@@ -12,6 +13,24 @@ pub fn get_tag_name<'a>(handle: &'a Handle) -> Option<&'a LocalName> {
     match handle.data() {
         Element(ref value) => Some(&value.name.local),
         _ => None,
+    }
+}
+
+#[inline]
+pub fn clone_element_steal_children(
+    sink: &mut Sink,
+    node: &Handle,
+    tag: LocalName,
+) -> Option<Handle> {
+    if let Some(old_elem) = node.as_element() {
+        let new_elem = Handle::new_element(
+            QualName::new(None, ns!(), tag),
+            old_elem.attributes.borrow().map.clone(),
+        );
+        sink.reparent_children(node, &new_elem);
+        Some(new_elem)
+    } else {
+        None
     }
 }
 
@@ -178,6 +197,20 @@ pub fn has_nodes(handle: &Handle, tag_names: &[&'static LocalName]) -> bool {
         }
     }
     false
+}
+
+#[inline]
+pub fn has_single_tag_inside_element(handle: &Handle, tag: &LocalName) -> Option<Handle> {
+    let mut elems = handle
+        .children()
+        .filter(|child| child.as_element().is_some());
+    if elems.clone().count() == 1 {
+        let only_child = elems.nth(0)?;
+        if get_tag_name(&only_child) == Some(tag) {
+            return Some(only_child);
+        }
+    }
+    None
 }
 
 pub fn text_children_count(handle: &Handle) -> usize {
