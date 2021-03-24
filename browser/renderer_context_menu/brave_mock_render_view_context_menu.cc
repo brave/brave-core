@@ -211,6 +211,9 @@ void BraveMockRenderViewContextMenu::RemoveMenuItem(int command_id) {
 
 void BraveMockRenderViewContextMenu::RemoveAdjacentSeparators() {}
 
+void BraveMockRenderViewContextMenu::RemoveSeparatorBeforeMenuItem(
+    int command_id) {}
+
 void BraveMockRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
   // Call the static method of RenderViewContextMenu which should our override
   // that doesn't add the item.
