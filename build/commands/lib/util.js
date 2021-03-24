@@ -443,18 +443,10 @@ const util = {
         '--private_key_passphrase=' + passwd])
   },
 
-  buildRedirectCCTool: () => {
-    // Expected path to redirect-cc.exe
-    const redirectCCExe = path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
-    // Only build if missing
-    if (fs.existsSync(redirectCCExe)) {
-      return
-    }
-    
-    console.log('building redirect-cc.exe...')
-    // Determine Visual Studio path and version
+  getVisualStudioInfo: () => {
+    // Determine Visual Studio path and version using Chromium's script.
     const vsToolchainPath = path.join(config.srcDir, 'build', 'vs_toolchain.py')
-    // Don't update depot_tools while checking
+    // Prevent depot_tools from checking for an update.
     const depotToolsWinToolchain = process.env.DEPOT_TOOLS_WIN_TOOLCHAIN
     process.env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
     const vsInfo = util.run('python', [vsToolchainPath, 'get_toolchain_dir']).stdout.toString()
@@ -465,7 +457,20 @@ const util = {
     }
     const vsPath = vsInfo.split('\n', 1)[0].split('=', 2)[1].trim().replace(/"/g, '')
     const vsVersion = vsInfo.split('\n', 3)[2].split('=', 2)[1].trim().replace(/"/g, '')
+    return { vsPath, vsVersion }
+  },
+
+  buildRedirectCCTool: () => {
+    // Expected path to redirect-cc.exe
+    const redirectCCExe = path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
+    // Only build if missing
+    if (fs.existsSync(redirectCCExe)) {
+      return
+    }
+
+    console.log('building redirect-cc.exe...')
     // Path to MSBuild.exe
+    const { vsPath, vsVersion } = util.getVisualStudioInfo()
     let msBuild = ''
     if (vsVersion === '2017') {
       msBuild = path.join(vsPath, 'MSBuild', '15.0', 'Bin', 'MSBuild.exe')
@@ -474,10 +479,18 @@ const util = {
     } else {
       throw 'Error: unexpected version of Visual Studio: ' + vsVersion
     }
+
     // Build redirect-cc.sln
-    const redirectCCSln = path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'redirect-cc.sln')
     const arch = process.arch === 'x32' ? 'x86' : process.arch
-    util.run(msBuild, [redirectCCSln, '/p:Configuration=Release', '/p:Platform=' + arch, '/verbosity:quiet'])
+    const toolset = vsVersion === '2017' ? 'v141' : 'v142'
+    const msBuildArgs = [
+      path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'redirect-cc.sln'),
+      '/p:Configuration=Release',
+      '/p:Platform=' + arch,
+      '/p:PlatformToolset=' + toolset,
+      '/verbosity:quiet'
+    ]
+    util.run(msBuild, msBuildArgs)
   },
 
   buildTarget: (options = config.defaultOptions) => {
