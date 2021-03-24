@@ -702,7 +702,6 @@
 		5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DB474F0237F4CC9007B7652 /* ntp-data.json */; };
 		5DE5250D218CE92C000DFAA6 /* block-ads.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE52508218CE92B000DFAA6 /* block-ads.json */; };
 		5DE5250E218CE92C000DFAA6 /* block-images.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE52509218CE92B000DFAA6 /* block-images.json */; };
-		5DE5250F218CE92C000DFAA6 /* upgrade-http.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE5250A218CE92B000DFAA6 /* upgrade-http.json */; };
 		5DE52511218CE92C000DFAA6 /* block-trackers.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE5250C218CE92C000DFAA6 /* block-trackers.json */; };
 		5DE7688D20B3456E00FF5533 /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; };
 		5DE7689420B3456E00FF5533 /* BraveSharedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE7689320B3456E00FF5533 /* BraveSharedTests.swift */; };
@@ -996,6 +995,7 @@
 		F84B21DA1A090F8100AAB793 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B21D91A090F8100AAB793 /* ClientTests.swift */; };
 		F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B21E51A0910F600AAB793 /* AppDelegate.swift */; };
 		F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F84B21EF1A0910F600AAB793 /* Images.xcassets */; };
+		F908653325F993C1006B3035 /* upgrade-http.json in Resources */ = {isa = PBXBuildFile; fileRef = F908653225F993C0006B3035 /* upgrade-http.json */; };
 		F91785DB255F38D6002976F2 /* WKWebViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91785DA255F38D6002976F2 /* WKWebViewExtensions.swift */; };
 		F926074B25B230EC000E659A /* gpc.js in Resources */ = {isa = PBXBuildFile; fileRef = F926074A25B230EC000E659A /* gpc.js */; };
 		F930CDAC227000F200A23FE1 /* U2F.js in Resources */ = {isa = PBXBuildFile; fileRef = F930CDAB227000F200A23FE1 /* U2F.js */; };
@@ -2379,7 +2379,6 @@
 		5DB474F0237F4CC9007B7652 /* ntp-data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ntp-data.json"; sourceTree = "<group>"; };
 		5DE52508218CE92B000DFAA6 /* block-ads.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "block-ads.json"; sourceTree = "<group>"; };
 		5DE52509218CE92B000DFAA6 /* block-images.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "block-images.json"; sourceTree = "<group>"; };
-		5DE5250A218CE92B000DFAA6 /* upgrade-http.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "upgrade-http.json"; sourceTree = "<group>"; };
 		5DE5250C218CE92C000DFAA6 /* block-trackers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "block-trackers.json"; sourceTree = "<group>"; };
 		5DE7687120B3417A00FF5533 /* SharedExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedExtensions.swift; sourceTree = "<group>"; };
 		5DE7687C20B342E600FF5533 /* BraveStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveStrings.swift; sourceTree = "<group>"; };
@@ -2692,6 +2691,7 @@
 		F84B21E51A0910F600AAB793 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F84B21EF1A0910F600AAB793 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F84B22431A09165600AAB793 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F908653225F993C0006B3035 /* upgrade-http.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "upgrade-http.json"; sourceTree = "<group>"; };
 		F91785DA255F38D6002976F2 /* WKWebViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewExtensions.swift; sourceTree = "<group>"; };
 		F91EAD56256C90720056C8CC /* BraveGetUA.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = BraveGetUA.js; sourceTree = "<group>"; };
 		F926074A25B230EC000E659A /* gpc.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = gpc.js; sourceTree = "<group>"; };
@@ -5174,8 +5174,8 @@
 				5DE52508218CE92B000DFAA6 /* block-ads.json */,
 				5DE52509218CE92B000DFAA6 /* block-images.json */,
 				5DE5250C218CE92C000DFAA6 /* block-trackers.json */,
-				5DE5250A218CE92B000DFAA6 /* upgrade-http.json */,
 				59871C1821E4D83900316590 /* block-cookies.json */,
+				F908653225F993C0006B3035 /* upgrade-http.json */,
 			);
 			path = Lists;
 			sourceTree = "<group>";
@@ -6323,7 +6323,6 @@
 				595E0EDB21CAD97C00813D49 /* CookieControl.js in Resources */,
 				0A0D3D3C21A4BE6400BEE65B /* adblock-list.txt in Resources */,
 				27658272217130D900754B2F /* GlobalSign_r3.cer in Resources */,
-				5DE5250F218CE92C000DFAA6 /* upgrade-http.json in Resources */,
 				0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */,
 				0A0D3D3E21A4BE6C00BEE65B /* simple_malware.txt in Resources */,
 				0AA21E4B2302C4CC00358988 /* webauth_insert_key.json in Resources */,
@@ -6397,6 +6396,7 @@
 				E4424B3C1AC71FB400F44C38 /* FiraSans-Book.ttf in Resources */,
 				0AA21E4C2302C4CC00358988 /* webauth_touch_key.json in Resources */,
 				0A64384E24FD4E43000E80A3 /* ArchiveIsCompat.js in Resources */,
+				F908653325F993C1006B3035 /* upgrade-http.json in Resources */,
 				5DE52511218CE92C000DFAA6 /* block-trackers.json in Resources */,
 				39A35AED1C0662A3006B9E87 /* SpotlightHelper.js in Resources */,
 				2F44FB2D1A9D5D8500FD20CC /* FiraSans-BoldItalic.ttf in Resources */,
