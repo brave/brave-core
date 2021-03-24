@@ -66,33 +66,10 @@ extension Theme {
         
         InsetButton.appearance(whenContainedInInstancesOf: [SearchSuggestionPromptView.self]).appearanceTextColor = colors.tints.home
         
-        if #available(iOS 13.0, *) {
-            // Overrides all views inside of itself
-            // According to docs, UIWindow override should be enough, but some labels on iOS 13 are still messed up without UIView override as well
-            // (e.g. shields panel)
-            UIWindow.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
-            UIView.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
-        } else {
-            // iOS 12 fixes, many styling items do not work properly in iOS 12
-            UILabel.appearance().appearanceTextColor = colors.tints.home
-            
-            // iOS 12 does not allow in-line color overrides :/
-            // These UI components are currently non-themed
-            // AlertPopupView
-            UILabel.appearance(whenContainedInInstancesOf: [AlertPopupView.self]).appearanceTextColor = BraveUX.greyJ
-            UIButton.appearance(whenContainedInInstancesOf: [AlertPopupView.self]).tintColor = .white
-            
-            // EmptyPrivateTabsView
-            UILabel.appearance(whenContainedInInstancesOf: [EmptyPrivateTabsView.self]).appearanceTextColor = UIColor.Photon.grey10
-            
-            // See #1548.
-            // Using tint color of iOS 13 UISwitch to match better with our light theme
-            UISwitch.appearance().tintColor = #colorLiteral(red: 0.8392156863, green: 0.8392156863, blue: 0.8431372549, alpha: 1)
-            
-            // See #3250.
-            // Default Text attributes have to be changed in order to textfield text visible
-            UITextField.appearance(whenContainedInInstancesOf: [UIAlertController.self]).defaultTextAttributes =
-                                        [.foregroundColor: UIColor.black]
-        }
+        // Overrides all views inside of itself
+        // According to docs, UIWindow override should be enough, but some labels on iOS 13 are still messed up without UIView override as well
+        // (e.g. shields panel)
+        UIWindow.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
+        UIView.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
     }
 }

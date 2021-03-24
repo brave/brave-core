@@ -27,11 +27,7 @@ class FeedSectionHeaderView: UIView {
     }
     
     override init(frame: CGRect) {
-        if #available(iOS 13.0, *) {
-            backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterialDark))
-        } else {
-            backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        }
+        backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterialDark))
         
         super.init(frame: frame)
         

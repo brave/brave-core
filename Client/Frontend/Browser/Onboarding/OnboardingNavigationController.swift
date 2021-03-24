@@ -124,10 +124,8 @@ class OnboardingNavigationController: UINavigationController {
 
         modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .phone ? .fullScreen : .formSheet
         
-        if #available(iOS 13.0, *) {
-            // Prevent dismissing the modal by swipe
-            isModalInPresentation = true
-        }
+        // Prevent dismissing the modal by swipe
+        isModalInPresentation = true
         preferredContentSize = UX.preferredModalSize
         
         let backgroundView = UIView().then {

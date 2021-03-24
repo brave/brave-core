@@ -93,20 +93,13 @@ public class PinningCertificateEvaluator: NSObject, URLSessionDelegate {
                 throw error(reason: "Trust Set Policies Failed")
             }
             
-            if #available(iOS 13, *) {
-                var err: CFError?
-                if !SecTrustEvaluateWithError(trust, &err) {
-                    if let err = err as Error? {
-                        throw error(reason: "Trust Evaluation Failed: \(err)")
-                    }
-                    
-                    throw error(reason: "Unable to Evaluate Trust")
+            var err: CFError?
+            if !SecTrustEvaluateWithError(trust, &err) {
+                if let err = err as Error? {
+                    throw error(reason: "Trust Evaluation Failed: \(err)")
                 }
-            } else {
-                var result: SecTrustResultType = .invalid
-                guard SecTrustEvaluate(trust, &result) == errSecSuccess, result == .unspecified || result == .proceed else {
-                    throw error(reason: "Trust Evaluation Failed")
-                }
+                
+                throw error(reason: "Unable to Evaluate Trust")
             }
         }
         
@@ -116,20 +109,13 @@ public class PinningCertificateEvaluator: NSObject, URLSessionDelegate {
                 throw error(reason: "Trust Set Policies for Host Failed")
             }
             
-            if #available(iOS 13, *) {
-                var err: CFError?
-                if !SecTrustEvaluateWithError(trust, &err) {
-                    if let err = err as Error? {
-                        throw error(reason: "Trust Evaluation Failed: \(err)")
-                    }
-                    
-                    throw error(reason: "Unable to Evaluate Trust")
+            var err: CFError?
+            if !SecTrustEvaluateWithError(trust, &err) {
+                if let err = err as Error? {
+                    throw error(reason: "Trust Evaluation Failed: \(err)")
                 }
-            } else {
-                var result: SecTrustResultType = .invalid
-                guard SecTrustEvaluate(trust, &result) == errSecSuccess, result == .unspecified || result == .proceed else {
-                    throw error(reason: "Trust Evaluation Failed")
-                }
+                
+                throw error(reason: "Unable to Evaluate Trust")
             }
         }
         

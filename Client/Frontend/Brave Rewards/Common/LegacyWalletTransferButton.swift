@@ -49,9 +49,7 @@ class LegacyWalletTransferButton: UIControl, Themeable {
         accessibilityTraits.insert(.button)
         
         layer.cornerRadius = 8
-        if #available(iOS 13, *) {
-            layer.cornerCurve = .continuous
-        }
+        layer.cornerCurve = .continuous
         
         backgroundColor = UIColor(rgb: 0x339AF0)
         

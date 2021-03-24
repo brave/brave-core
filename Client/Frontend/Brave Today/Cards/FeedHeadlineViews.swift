@@ -25,21 +25,16 @@ class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
         
         addTarget(self, action: #selector(tappedSelf), for: .touchUpInside)
         
-        if #available(iOS 13.0, *) {
-            let contextMenuDelegate = FeedContextMenuDelegate(
-                performedPreviewAction: { [weak self] in
-                    self?.actionHandler?(0, .opened())
-                },
-                menu: { [weak self] in
-                    return self?.contextMenu?.menu?(0)
-                }
-            )
-            addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
-            self.contextMenuDelegate = contextMenuDelegate
-        } else {
-            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
-            addGestureRecognizer(longPress)
-        }
+        let contextMenuDelegate = FeedContextMenuDelegate(
+            performedPreviewAction: { [weak self] in
+                self?.actionHandler?(0, .opened())
+            },
+            menu: { [weak self] in
+                return self?.contextMenu?.menu?(0)
+            }
+        )
+        addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
+        self.contextMenuDelegate = contextMenuDelegate
         
         isAccessibilityElement = true
     }
@@ -51,12 +46,6 @@ class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
     
     @objc private func tappedSelf() {
         actionHandler?(0, .opened())
-    }
-    
-    @objc private func longPressed(_ gesture: UILongPressGestureRecognizer) {
-        if gesture.state == .began, let legacyContext = contextMenu?.legacyMenu?(0) {
-            actionHandler?(0, .longPressed(legacyContext))
-        }
     }
 }
 
@@ -98,21 +87,12 @@ class SmallHeadlinePairCardView: UIView, FeedCardContent {
         smallHeadelineCardViews.right.actionHandler = { [weak self] _, action in
             self?.actionHandler?(1, action)
         }
-        if #available(iOS 13.0, *) {
-            smallHeadelineCardViews.left.contextMenu = FeedItemMenu({ [weak self] _ -> UIMenu? in
-                return self?.contextMenu?.menu?(0)
-            })
-            smallHeadelineCardViews.right.contextMenu = FeedItemMenu({ [weak self] _ -> UIMenu? in
-                return self?.contextMenu?.menu?(1)
-            })
-        } else {
-            smallHeadelineCardViews.left.contextMenu = FeedItemMenu({ [weak self] _ -> FeedItemMenu.LegacyContext? in
-                return self?.contextMenu?.legacyMenu?(0)
-            })
-            smallHeadelineCardViews.right.contextMenu = FeedItemMenu({ [weak self] _ -> FeedItemMenu.LegacyContext? in
-                return self?.contextMenu?.legacyMenu?(1)
-            })
-        }
+        smallHeadelineCardViews.left.contextMenu = FeedItemMenu({ [weak self] _ -> UIMenu? in
+            return self?.contextMenu?.menu?(0)
+        })
+        smallHeadelineCardViews.right.contextMenu = FeedItemMenu({ [weak self] _ -> UIMenu? in
+            return self?.contextMenu?.menu?(1)
+        })
         
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()

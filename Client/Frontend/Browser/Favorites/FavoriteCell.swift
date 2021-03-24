@@ -27,11 +27,6 @@ class FavoriteCell: UICollectionViewCell {
     var imageInsets: UIEdgeInsets = UIEdgeInsets.zero
     var cellInsets: UIEdgeInsets = UIEdgeInsets.zero
     
-    /// Legacy long press gesture handler.
-    /// Only is excecuted when user is running
-    /// on iOS 12
-    var longPressHandler: ((FavoriteCell) -> Void)?
-    
     let textLabel = UILabel().then {
         $0.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
         $0.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
@@ -81,13 +76,6 @@ class FavoriteCell: UICollectionViewCell {
         if #available(iOS 13.4, *) {
             addInteraction(UIPointerInteraction(delegate: self))
         }
-        
-        if #available(iOS 13.0, *) {
-        } else {
-            // iOS 12 long-press support
-            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
-            addGestureRecognizer(longPress)
-        }
     }
     
     deinit {
@@ -102,12 +90,6 @@ class FavoriteCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         backgroundColor = UIColor.clear
-    }
-    
-    @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
-        if gesture.state == .began {
-            longPressHandler?(self)
-        }
     }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

@@ -20,11 +20,7 @@ class BraveRewardsSettingsViewController: TableViewController {
         self.rewards = rewards
         self.legacyWallet = legacyWallet
         
-        if #available(iOS 13.0, *) {
-            super.init(style: .insetGrouped)
-        } else {
-            super.init(style: .grouped)
-        }
+        super.init(style: .insetGrouped)
     }
     
     @available(*, unavailable)

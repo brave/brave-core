@@ -462,12 +462,7 @@ class BrowserViewController: UIViewController {
         }
         
         // Light content, so using other status bar options
-        
-        if #available(iOS 13.0, *) {
-            return .darkContent
-        }
-        
-        return .default
+        return .darkContent
     }
 
     func shouldShowFooterForTraitCollection(_ previousTraitCollection: UITraitCollection) -> Bool {
@@ -541,11 +536,9 @@ class BrowserViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-                // Reload UI
-                applyTheme(Theme.of(tabManager.selectedTab))
-            }
+        if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            // Reload UI
+            applyTheme(Theme.of(tabManager.selectedTab))
         }
     }
 
@@ -1096,9 +1089,7 @@ class BrowserViewController: UIViewController {
         }
         
         let popup = EnableVPNPopupViewController().then {
-            if #available(iOS 13.0, *) {
-                $0.isModalInPresentation = true
-            }
+            $0.isModalInPresentation = true
             $0.modalPresentationStyle = .overFullScreen
         }
         
@@ -1121,11 +1112,7 @@ class BrowserViewController: UIViewController {
         
         UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
         
-        if #available(iOS 13.0, *) {
-            nav.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
-        } else {
-            nav.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
-        }
+        nav.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
         present(nav, animated: true)
     }
     
@@ -1143,11 +1130,7 @@ class BrowserViewController: UIViewController {
         
         let vc = DefaultBrowserIntroCalloutViewController(theme: Theme.of(tabManager.selectedTab)) 
         let idiom = UIDevice.current.userInterfaceIdiom
-        if #available(iOS 13.0, *) {
-            vc.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
-        } else {
-            vc.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
-        }
+        vc.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
         present(vc, animated: true)
     }
 
@@ -1515,11 +1498,6 @@ class BrowserViewController: UIViewController {
         guard let kp = keyPath, let path = KVOConstants(rawValue: kp) else {
             assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
             return
-        }
-        
-        if let helper = tab.getContentScript(name: ContextMenuHelper.name()) as? ContextMenuHelper {
-            // This is zero-cost if already installed. It needs to be checked frequently (hence every event here triggers this function), as when a new tab is created it requires multiple attempts to setup the handler correctly.
-            helper.replaceGestureHandlerIfNeeded()
         }
         
         switch path {
@@ -2421,14 +2399,9 @@ extension BrowserViewController: TopToolbarDelegate {
                     feedDataSource: self.feedDataSource
                 )
                 let container = SettingsNavigationController(rootViewController: shieldsAndPrivacy)
-                if #available(iOS 13.0, *) {
-                    container.isModalInPresentation = true
-                    container.modalPresentationStyle =
-                        UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
-                } else {
-                    container.modalPresentationStyle =
-                        UIDevice.current.userInterfaceIdiom == .phone ? .fullScreen : .formSheet
-                }
+                container.isModalInPresentation = true
+                container.modalPresentationStyle =
+                    UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
                 shieldsAndPrivacy.navigationItem.rightBarButtonItem = .init(
                     barButtonSystemItem: .done,
                     target: container,
@@ -2641,10 +2614,6 @@ extension BrowserViewController: TabDelegate {
             let logins = LoginsHelper(tab: tab, profile: profile)
             tab.addContentScript(logins, name: LoginsHelper.name(), sandboxed: false)
         }
-
-        let contextMenuHelper = ContextMenuHelper(tab: tab)
-        contextMenuHelper.delegate = self
-        tab.addContentScript(contextMenuHelper, name: ContextMenuHelper.name())
 
         let errorHelper = ErrorPageHelper()
         tab.addContentScript(errorHelper, name: ErrorPageHelper.name(), sandboxed: false)
@@ -3093,7 +3062,6 @@ extension BrowserViewController: WKUIDelegate {
         }
     }
     
-    @available(iOS 13.0, *)
     func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
         
         guard let url = elementInfo.linkURL else { return completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)) }
@@ -3173,7 +3141,6 @@ extension BrowserViewController: WKUIDelegate {
         completionHandler(config)
     }
     
-    @available(iOS 13.0, *)
     func webView(_ webView: WKWebView, contextMenuForElement elementInfo: WKContextMenuElementInfo, willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating) {
         guard let url = elementInfo.linkURL else { return }
         webView.load(URLRequest(url: url))
@@ -3210,169 +3177,6 @@ extension BrowserViewController: UIAdaptivePresentationControllerDelegate {
     // not as a full-screen modal, which is the default on compact device classes.
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
-    }
-}
-
-extension BrowserViewController: ContextMenuHelperDelegate {
-    @objc
-    private func image(image: UIImage, didFinishSavingwithError error: NSError?, contextInfo: UnsafeRawPointer?) {
-        
-        if error == nil {
-            return
-        }
-        
-        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
-        
-        let accessDenied = UIAlertController(title: Strings.accessPhotoDeniedAlertTitle, message: Strings.accessPhotoDeniedAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .default, handler: nil)
-        accessDenied.addAction(dismissAction)
-        let settingsAction = UIAlertAction(title: Strings.openPhoneSettingsActionTitle, style: .default ) { _ in
-            UIApplication.shared.open(settingsUrl, options: [:])
-        }
-        accessDenied.addAction(settingsAction)
-        self.present(accessDenied, animated: true, completion: nil)
-    }
-    
-    func contextMenuHelper(_ contextMenuHelper: ContextMenuHelper, didLongPressElements elements: ContextMenuHelper.Elements, gestureRecognizer: UIGestureRecognizer) {
-        // locationInView can return (0, 0) when the long press is triggered in an invalid page
-        // state (e.g., long pressing a link before the document changes, then releasing after a
-        // different page loads).
-        let touchPoint = gestureRecognizer.location(in: view)
-        guard touchPoint != CGPoint.zero else { return }
-
-        let touchSize = CGSize(width: 0, height: 16)
-
-        let actionSheetController = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        var dialogTitle: String?
-
-        if let url = elements.link, let currentTab = tabManager.selectedTab {
-            dialogTitle = url.absoluteString
-            let tabType = currentTab.type
-
-            if !tabType.isPrivate {
-                let openNewTabAction =  UIAlertAction(title: Strings.openNewTabButtonTitle, style: .default) { _ in
-                    self.addTab(url: url, inPrivateMode: false, currentTab: currentTab)
-                }
-                actionSheetController.addAction(openNewTabAction, accessibilityIdentifier: "linkContextMenu.openInNewTab")
-            }
-           
-            let openNewPrivateTabAction =  UIAlertAction(title: Strings.openNewPrivateTabButtonTitle, style: .default) { _ in
-                self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
-            }
-            actionSheetController.addAction(openNewPrivateTabAction, accessibilityIdentifier: "linkContextMenu.openInNewPrivateTab")
-
-            let copyAction = UIAlertAction(title: Strings.copyLinkActionTitle, style: .default) { _ in
-                UIPasteboard.general.url = url as URL
-            }
-            actionSheetController.addAction(copyAction, accessibilityIdentifier: "linkContextMenu.copyLink")
-
-            let shareAction = UIAlertAction(title: Strings.shareLinkActionTitle, style: .default) { _ in
-                self.presentActivityViewController(url as URL, sourceView: self.view, sourceRect: CGRect(origin: touchPoint, size: touchSize), arrowDirection: .any)
-            }
-            actionSheetController.addAction(shareAction, accessibilityIdentifier: "linkContextMenu.share")
-        }
-
-        if let url = elements.image {
-            let imageTitle = (elements.title ?? "").isEmpty ? nil : elements.title
-            let imageText = imageTitle.map { "\n\n\($0)" } ?? ""
-            // If the image is a link, show the link's URL. Otherwise, show the image's source URL.
-            let urlText = elements.link?.absoluteString ?? url.absoluteString
-            // Too long text can make the action sheet to cover whole screen, therefore it needs to be truncated.
-            dialogTitle = "\(urlText)\(imageText)".truncate(length: 200)
-            
-            let openInNewTabAction = UIAlertAction(title: Strings.openImageInNewTabActionTitle, style: .default) { _ in
-                let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
-                self.tabManager.addTab(URLRequest(url: url), afterTab: self.tabManager.selectedTab, isPrivate: isPrivate)
-                self.scrollController.showToolbars(animated: true)
-            }
-            actionSheetController.addAction(openInNewTabAction, accessibilityIdentifier: "linkContextMenu.openImageInNewTab")
-
-            let saveImageAction = UIAlertAction(title: Strings.saveImageActionTitle, style: .default) { _ in
-                self.getData(url) { [weak self] data in
-                    guard let self = self, let image = UIImage(data: data, scale: UIScreen.main.scale) else {
-                        return
-                    }
-                    
-                    UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(image:didFinishSavingwithError:contextInfo:)), nil)
-                }
-            }
-            actionSheetController.addAction(saveImageAction, accessibilityIdentifier: "linkContextMenu.saveImage")
-
-            let copyAction = UIAlertAction(title: Strings.copyImageActionTitle, style: .default) { _ in
-                // put the actual image on the clipboard
-                // do this asynchronously just in case we're in a low bandwidth situation
-                let pasteboard = UIPasteboard.general
-                pasteboard.url = url as URL
-                let changeCount = pasteboard.changeCount
-                let application = UIApplication.shared
-                var taskId: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
-                taskId = application.beginBackgroundTask(expirationHandler: {
-                    application.endBackgroundTask(taskId)
-                })
-                
-                URLSession(configuration: .default, delegate: nil, delegateQueue: .main).dataTask(with: url, completionHandler: { data, response, error in
-                    
-                    if let response = response as? HTTPURLResponse {
-                        if !(200..<300).contains(response.statusCode) {
-                            return application.endBackgroundTask(taskId)
-                        }
-                    }
-                    
-                    // Only set the image onto the pasteboard if the pasteboard hasn't changed since
-                    // fetching the image; otherwise, in low-bandwidth situations,
-                    // we might be overwriting something that the user has subsequently added.
-                    if changeCount == pasteboard.changeCount, let imageData = data, error == nil {
-                        pasteboard.addImageWithData(imageData, forURL: url)
-                    }
-                    
-                    application.endBackgroundTask(taskId)
-                }).resume()
-            }
-            actionSheetController.addAction(copyAction, accessibilityIdentifier: "linkContextMenu.copyImage")
-        }
-        
-        let setupPopover = { [unowned self] in
-            // If we're showing an arrow popup, set the anchor to the long press location.
-            if let popoverPresentationController = actionSheetController.popoverPresentationController {
-                popoverPresentationController.sourceView = self.view
-                popoverPresentationController.sourceRect = CGRect(origin: touchPoint, size: touchSize)
-                popoverPresentationController.permittedArrowDirections = .any
-                popoverPresentationController.delegate = self
-            }
-        }
-        setupPopover()
-
-        if actionSheetController.popoverPresentationController != nil {
-            displayedPopoverController = actionSheetController
-            updateDisplayedPopoverProperties = setupPopover
-        }
-
-        actionSheetController.title = dialogTitle
-        let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
-        actionSheetController.addAction(cancelAction)
-        self.present(actionSheetController, animated: true, completion: nil)
-    }
-
-    private func getData(_ url: URL, success: @escaping (Data) -> Void) {
-        URLSession(configuration: .default, delegate: nil, delegateQueue: .main).dataTask(with: url) { data, response, _ in
-            if let response = response as? HTTPURLResponse {
-                if !(200..<300).contains(response.statusCode) {
-                    return
-                }
-            }
-            
-            if let data = data {
-                success(data)
-            }
-        }.resume()
-    }
-
-    func contextMenuHelper(_ contextMenuHelper: ContextMenuHelper, didCancelGestureRecognizer: UIGestureRecognizer) {
-        displayedPopoverController?.dismiss(animated: true) {
-            self.displayedPopoverController = nil
-        }
     }
 }
 

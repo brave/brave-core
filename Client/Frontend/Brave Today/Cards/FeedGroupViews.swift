@@ -50,9 +50,7 @@ class FeedGroupView: UIView {
         feedViews = (0..<numberOfFeeds).map { _ in
             FeedItemView(layout: feedLayout).then {
                 $0.thumbnailImageView.layer.cornerRadius = 4
-                if #available(iOS 13.0, *) {
-                    $0.thumbnailImageView.layer.cornerCurve = .continuous
-                }
+                $0.thumbnailImageView.layer.cornerCurve = .continuous
                 $0.isUserInteractionEnabled = false
             }
         }
@@ -62,22 +60,17 @@ class FeedGroupView: UIView {
         
         zip(buttons.indices, buttons).forEach { (index, button) in
             button.addTarget(self, action: #selector(tappedButton(_:)), for: .touchUpInside)
-            if #available(iOS 13.0, *) {
-                let contextMenuDelegate = FeedContextMenuDelegate(
-                    performedPreviewAction: { [weak self] in
-                        self?.actionHandler?(index, .opened())
-                    },
-                    menu: { [weak self] in
-                        return self?.contextMenu?.menu?(index)
-                    },
-                    padPreview: true
-                )
-                button.addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
-                contextMenuDelegates.append(contextMenuDelegate)
-            } else {
-                let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
-                button.addGestureRecognizer(longPress)
-            }
+            let contextMenuDelegate = FeedContextMenuDelegate(
+                performedPreviewAction: { [weak self] in
+                    self?.actionHandler?(index, .opened())
+                },
+                menu: { [weak self] in
+                    return self?.contextMenu?.menu?(index)
+                },
+                padPreview: true
+            )
+            button.addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
+            contextMenuDelegates.append(contextMenuDelegate)
         }
         let stackView = UIStackView().then {
             $0.axis = .vertical
@@ -118,15 +111,6 @@ class FeedGroupView: UIView {
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
-    }
-    
-    @objc private func longPressed(_ gesture: UILongPressGestureRecognizer) {
-        if gesture.state == .began {
-            if let index = buttons.firstIndex(where: { gesture.view === $0 }),
-                let legacyContext = contextMenu?.legacyMenu?(index) {
-                actionHandler?(index, .longPressed(legacyContext))
-            }
-        }
     }
     
     @objc private func tappedButton(_ sender: SpringButton) {

@@ -22,9 +22,7 @@ class DefaultBrowserIntroCalloutViewController: UIViewController, Themeable {
         }
         $0.contentEdgeInsets = .init(top: 0, left: 25, bottom: 0, right: 25)
         $0.layer.cornerRadius = 22
-        if #available(iOS 13.0, *) {
-            $0.layer.cornerCurve = .continuous
-        }
+        $0.layer.cornerCurve = .continuous
     }
     
     private let cancelButton = UIButton(type: .system).then {

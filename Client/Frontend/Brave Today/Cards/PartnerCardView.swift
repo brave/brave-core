@@ -28,21 +28,16 @@ class PartnerCardView: FeedCardBackgroundButton, FeedCardContent {
         addTarget(self, action: #selector(tappedSelf), for: .touchUpInside)
         feedView.promotedButton.addTarget(self, action: #selector(tappedPromotedButton), for: .touchUpInside)
         
-        if #available(iOS 13.0, *) {
-            let contextMenuDelegate = FeedContextMenuDelegate(
-                performedPreviewAction: { [weak self] in
-                    self?.actionHandler?(0, .opened())
-                },
-                menu: { [weak self] in
-                    return self?.contextMenu?.menu?(0)
-                }
-            )
-            addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
-            self.contextMenuDelegate = contextMenuDelegate
-        } else {
-            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
-            addGestureRecognizer(longPress)
-        }
+        let contextMenuDelegate = FeedContextMenuDelegate(
+            performedPreviewAction: { [weak self] in
+                self?.actionHandler?(0, .opened())
+            },
+            menu: { [weak self] in
+                return self?.contextMenu?.menu?(0)
+            }
+        )
+        addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
+        self.contextMenuDelegate = contextMenuDelegate
         
         isAccessibilityElement = false
         accessibilityElements = [feedView, feedView.promotedButton]
@@ -57,12 +52,6 @@ class PartnerCardView: FeedCardBackgroundButton, FeedCardContent {
     
     @objc private func tappedSelf() {
         actionHandler?(0, .opened())
-    }
-    
-    @objc private func longPressed(_ gesture: UILongPressGestureRecognizer) {
-        if gesture.state == .began, let legacyContext = contextMenu?.legacyMenu?(0) {
-            actionHandler?(0, .longPressed(legacyContext))
-        }
     }
     
     @objc private func tappedPromotedButton() {

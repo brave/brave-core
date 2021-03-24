@@ -26,12 +26,7 @@ class AdContentButton: UIControl {
   }
   
   private let backgroundView: UIVisualEffectView = {
-    let backgroundView: UIVisualEffectView
-    if #available(iOS 13.0, *) {
-      backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
-      } else {
-      backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
-    }
+    let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
     backgroundView.isUserInteractionEnabled = false
     backgroundView.contentView.backgroundColor = UIColor.white.withAlphaComponent(0.7)
     backgroundView.layer.cornerRadius = 10

@@ -242,13 +242,9 @@ class UserTextInputAlert {
     private func textFieldConfig(text: String?, placeholder: String?, keyboardType: UIKeyboardType?, forcedInput: Bool)
         -> (UITextField) -> Void {
             return { textField in
-                if #available(iOS 13.0, *) {
-                    textField.attributedPlaceholder = NSAttributedString(
-                        string: placeholder ?? "",
-                        attributes: [.foregroundColor: UIColor.placeholderText])
-                } else {
-                    textField.placeholder = placeholder
-                }
+                textField.attributedPlaceholder = NSAttributedString(
+                    string: placeholder ?? "",
+                    attributes: [.foregroundColor: UIColor.placeholderText])
                 
                 textField.keyboardAppearance = .default
 

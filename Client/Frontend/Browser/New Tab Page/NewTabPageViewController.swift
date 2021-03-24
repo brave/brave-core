@@ -237,8 +237,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
-        if #available(iOS 13.0, *),
-            UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+        if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
             // Reload UI
             applyTheme(Theme.of(tab))
         }
@@ -542,23 +541,6 @@ class NewTabPageViewController: UIViewController, Themeable {
                 )
                 alert.present(on: self)
             }
-        case .itemAction(.longPressed(let longPressInfo), let context):
-            let alertController = UIAlertController(
-                title: longPressInfo.title,
-                message: longPressInfo.message,
-                preferredStyle: .actionSheet
-            )
-            if let cell = collectionView.cellForItem(at: context.indexPath)?.subviews.first?.subviews.first {
-                alertController.popoverPresentationController?.sourceView = cell
-                alertController.popoverPresentationController?.sourceRect = cell.bounds
-            } else {
-                alertController.popoverPresentationController?.sourceView = view
-                alertController.popoverPresentationController?.sourceRect = view.bounds
-            }
-            for action in longPressInfo.actions {
-                alertController.addAction(action)
-            }
-            present(alertController, animated: true)
         }
     }
     
@@ -885,25 +867,21 @@ extension NewTabPageViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         sections[indexPath.section].collectionView?(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath) ?? UICollectionReusableView()
     }
-    @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         sections[indexPath.section].collectionView?(collectionView, contextMenuConfigurationForItemAt: indexPath, point: point)
     }
-    @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
         guard let indexPath = configuration.identifier as? IndexPath else {
             return nil
         }
         return sections[indexPath.section].collectionView?(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
     }
-    @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
         guard let indexPath = configuration.identifier as? IndexPath else {
             return nil
         }
         return sections[indexPath.section].collectionView?(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
     }
-    @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         guard let indexPath = configuration.identifier as? IndexPath else {
             return

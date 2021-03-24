@@ -100,26 +100,6 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
             cell.imageView.loadFavicon(siteURL: url, domain: domain, monogramFallbackCharacter: fav.title?.first)
         }
         cell.accessibilityLabel = cell.textLabel.text
-        cell.longPressHandler = { [weak self] cell in
-            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            
-            let edit = UIAlertAction(title: Strings.editBookmark, style: .default) { (action) in
-                self?.action(fav, .edited)
-            }
-            let delete = UIAlertAction(title: Strings.removeFavorite, style: .destructive) { (action) in
-                fav.delete()
-            }
-            
-            alert.addAction(edit)
-            alert.addAction(delete)
-            
-            alert.popoverPresentationController?.sourceView = cell
-            alert.popoverPresentationController?.permittedArrowDirections = [.down, .up]
-            alert.addAction(UIAlertAction(title: Strings.close, style: .cancel, handler: nil))
-            
-            UIImpactFeedbackGenerator(style: .medium).bzzt()
-            self?.legacyLongPressAction(alert)
-        }
         return cell
     }
     
@@ -162,7 +142,6 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
         return floor((width - (size.width * CGFloat(numberOfItems))) / (CGFloat(numberOfItems) - 1))
     }
     
-    @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let favourite = frc.fetchedObjects?[indexPath.item] else { return nil }
         return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ -> UIMenu? in
@@ -190,7 +169,6 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
         }
     }
     
-    @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
         guard let indexPath = configuration.identifier as? IndexPath,
             let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell else {
@@ -199,7 +177,6 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
         return UITargetedPreview(view: cell.imageView)
     }
     
-    @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
         guard let indexPath = configuration.identifier as? IndexPath,
             let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell else {

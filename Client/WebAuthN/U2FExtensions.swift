@@ -205,9 +205,7 @@ class U2FExtensions: NSObject {
         if keyType == .accessory {
             return YubiKitManager.shared.accessorySession.fido2Service
         } else {
-            if #available(iOS 13.0, *) {
-                return YubiKitManager.shared.nfcSession.fido2Service
-            }
+            return YubiKitManager.shared.nfcSession.fido2Service
         }
         return nil
     }
@@ -216,9 +214,7 @@ class U2FExtensions: NSObject {
         if keyType == .accessory {
             return YubiKitManager.shared.accessorySession.u2fService
         } else {
-            if #available(iOS 13.0, *) {
-                return YubiKitManager.shared.nfcSession.u2fService
-            }
+            return YubiKitManager.shared.nfcSession.u2fService
         }
         return nil
     }
@@ -825,7 +821,7 @@ class U2FExtensions: NSObject {
     // This modal is presented when FIDO/FIDO2 APIs are waiting for the security key
     private func presentInsertKeyModal() {
         let currentURL = self.tab?.url?.host ?? ""
-        if #available(iOS 13.0, *), YubiKitDeviceCapabilities.supportsISO7816NFCTags {
+        if YubiKitDeviceCapabilities.supportsISO7816NFCTags {
             YubiKitExternalLocalization.nfcScanAlertMessage = Strings.selectKey + currentURL
             nfcActive = true
             keyType = .nfc

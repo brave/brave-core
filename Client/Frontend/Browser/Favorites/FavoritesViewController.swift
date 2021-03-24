@@ -214,27 +214,6 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
             cell.imageView.loadFavicon(siteURL: url, domain: domain, monogramFallbackCharacter: fav.title?.first)
         }
         cell.accessibilityLabel = cell.textLabel.text
-        cell.longPressHandler = { [weak self] cell in
-            guard let self = self else { return }
-            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            
-            let edit = UIAlertAction(title: Strings.editBookmark, style: .default) { (action) in
-                self.action(fav, .edited)
-            }
-            let delete = UIAlertAction(title: Strings.removeFavorite, style: .destructive) { (action) in
-                fav.delete()
-            }
-            
-            alert.addAction(edit)
-            alert.addAction(delete)
-            
-            alert.popoverPresentationController?.sourceView = cell
-            alert.popoverPresentationController?.permittedArrowDirections = [.down, .up]
-            alert.addAction(UIAlertAction(title: Strings.close, style: .cancel, handler: nil))
-            
-            UIImpactFeedbackGenerator(style: .medium).bzzt()
-            self.present(alert, animated: true)
-        }
         return cell
     }
     
@@ -250,7 +229,6 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
         Favorite.reorder(sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
     }
     
-    @available(iOS 13, *)
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let bookmark = frc.fetchedObjects?[indexPath.item] else { return nil }
         return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ -> UIMenu? in
@@ -278,7 +256,6 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
         }
     }
     
-    @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
         guard let indexPath = configuration.identifier as? IndexPath,
             let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell else {
@@ -287,7 +264,6 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
         return UITargetedPreview(view: cell.imageView)
     }
     
-    @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
         guard let indexPath = configuration.identifier as? IndexPath,
             let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell else {

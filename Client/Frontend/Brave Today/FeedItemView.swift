@@ -165,9 +165,7 @@ extension FeedItemView {
             
             backgroundColor = UIColor(white: 0.0, alpha: 0.2)
             layer.cornerRadius = 4
-            if #available(iOS 13, *) {
-                layer.cornerCurve = .continuous
-            }
+            layer.cornerCurve = .continuous
             
             let stackView = UIStackView().then {
                 $0.spacing = 4

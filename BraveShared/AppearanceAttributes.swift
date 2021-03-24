@@ -48,18 +48,8 @@ public extension UISwitch {
 
 public extension UIView {
     @objc dynamic var appearanceOverrideUserInterfaceStyle: UIUserInterfaceStyle {
-        get {
-            if #available(iOS 13.0, *) {
-                return self.overrideUserInterfaceStyle
-            }
-            return .unspecified
-        }
-        set {
-            if #available(iOS 13.0, *) {
-                self.overrideUserInterfaceStyle = newValue
-            }
-            // Ignore
-        }
+        get { self.overrideUserInterfaceStyle }
+        set { self.overrideUserInterfaceStyle = newValue }
     }
 }
 
@@ -80,12 +70,7 @@ public extension UIToolbar {
 public extension UIButton {
     @objc dynamic var appearanceTextColor: UIColor! {
         get { return self.titleColor(for: .normal) }
-        set {
-            self.setTitleColor(newValue, for: .normal)
-            // iOS 12 has many problems with overwriting color values.
-            // We have to set text color directly to the label as well.
-            if #available(iOS 13.0, *) { } else { titleLabel?.appearanceTextColor = newValue }
-        }
+        set { self.setTitleColor(newValue, for: .normal) }
     }
     
     @objc dynamic var appearanceTintColor: UIColor! {

@@ -6,7 +6,6 @@
 import Foundation
 import UIKit
 
-@available(iOS 13.0, *)
 extension UIAction {
     /// An action handler to use for a UIAction when you need to wait until the context menu finished the
     /// dismissal animation.

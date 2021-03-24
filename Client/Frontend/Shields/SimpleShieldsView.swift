@@ -14,9 +14,7 @@ class SimpleShieldsView: UIView, Themeable {
             $0.size.equalTo(24)
         }
         $0.layer.cornerRadius = 4
-        if #available(iOS 13.0, *) {
-            $0.layer.cornerCurve = .continuous
-        }
+        $0.layer.cornerCurve = .continuous
         $0.clipsToBounds = true
     }
     
