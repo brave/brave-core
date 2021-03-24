@@ -981,6 +981,8 @@ class BrowserViewController: UIViewController {
     }
     
     func presentOnboardingIntro() {
+        if Preferences.DebugFlag.skipOnboardingIntro == true { return }
+        
         // 1. Existing user.
         // 2. User already completed onboarding.
         if Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
@@ -1079,6 +1081,8 @@ class BrowserViewController: UIViewController {
     }
     
     private func presentVPNCallout() {
+        if Preferences.DebugFlag.skipNTPCallouts == true { return }
+        
         let onboardingNotCompleted =
             Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue
         let notEnoughAppLaunches = Preferences.VPN.appLaunchCountForVPNPopup.value < BraveVPN.appLaunchesToShowVPNPopup
@@ -1129,6 +1133,8 @@ class BrowserViewController: UIViewController {
     var shouldShowIntroScreen = false
 
     private func presentDefaultBrowserIntroScreen() {
+        if Preferences.DebugFlag.skipNTPCallouts == true { return }
+        
         if !shouldShowIntroScreen {
             return
         }
@@ -2052,6 +2058,8 @@ class BrowserViewController: UIViewController {
     
     private var duckDuckGoPopup: AlertPopupView?
     func presentDuckDuckGoCallout(force: Bool = false) {
+        if Preferences.DebugFlag.skipNTPCallouts == true { return }
+        
         // Don't show when onboarding is showing
         if let presentedViewController = self.presentedViewController, presentedViewController.isKind(of: OnboardingNavigationController.self) {
             return

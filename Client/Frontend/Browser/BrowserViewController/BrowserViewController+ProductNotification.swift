@@ -69,6 +69,8 @@ extension BrowserViewController {
     }
     
     private func presentEducationalProductNotifications() {
+        if Preferences.DebugFlag.skipEduPopups == true { return }
+        
         guard let selectedTab = tabManager.selectedTab,
               !benchmarkNotificationPresented,
               !topToolbar.inOverlayMode,
