@@ -114,6 +114,29 @@ bool ConcatHexStrings(const std::string& hex_input1,
   return true;
 }
 
+bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
+                      std::string* out) {
+  if (!out) {
+    return false;
+  }
+  if (hex_inputs.empty()) {
+    return false;
+  }
+  if (!IsValidHexString(hex_inputs[0])) {
+    return false;
+  }
+
+  *out = hex_inputs[0];
+  for (size_t i = 1; i < hex_inputs.size(); i++) {
+    if (!IsValidHexString(hex_inputs[i])) {
+      return false;
+    }
+    *out += hex_inputs[i].substr(2, hex_inputs[i].size() - 2);
+  }
+
+  return true;
+}
+
 // Takes a hex string as input and converts it to a uint256_t
 bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
   if (!out) {
