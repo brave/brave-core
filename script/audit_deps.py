@@ -50,6 +50,7 @@ def main():
     return errors > 0
 
 
+# The path argument may be a relative, or absolute path to a directory.
 def audit_path(path, args):
     full_path = os.path.join(os.path.abspath(path), "")
     if os.path.isfile(os.path.join(path, 'package.json')) and \
