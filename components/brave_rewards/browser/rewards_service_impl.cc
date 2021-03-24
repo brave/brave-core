@@ -16,6 +16,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/i18n/time_formatting.h"
@@ -48,6 +49,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
@@ -2861,7 +2863,7 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
     query_map[it.GetKey()] = it.GetUnescapedValue();
   }
 
-  if (action == "authorization") {
+  if (action == "authorization" && !OnlyAnonWallet()) {
     if (wallet_type == ledger::constant::kWalletUphold ||
         wallet_type == ledger::constant::kWalletBitflyer) {
       ExternalWalletAuthorization(
@@ -2927,11 +2929,12 @@ void RewardsServiceImpl::ShowNotification(
 // JP to show "BAP" instead of "BAT". When we are sure that those branches are
 // no longer needed, this function should be removed.
 bool RewardsServiceImpl::OnlyAnonWallet() const {
-#if defined(OS_ANDROID)
-  return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
-#else
-  return false;
+#if !defined(OS_ANDROID)
+  if (base::FeatureList::IsEnabled(features::kBitflyerFeature))
+    return false;
 #endif
+
+  return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
 }
 
 void RewardsServiceImpl::RecordBackendP3AStats() {

@@ -1,8 +1,19 @@
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
 source_set("common") {
   sources = [
     "pref_names.cc",
     "pref_names.h",
     "url_constants.cc",
-    "url_constants.h"
+    "url_constants.h",
   ]
+
+  deps = [ ":features" ]
 }

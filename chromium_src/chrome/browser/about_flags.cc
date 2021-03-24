@@ -9,6 +9,7 @@
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/features.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -158,7 +159,11 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     {"brave-permission-lifetime",                                          \
      flag_descriptions::kBravePermissionLifetimeName,                      \
      flag_descriptions::kBravePermissionLifetimeDescription, kOsAll,       \
-     FEATURE_VALUE_TYPE(permissions::features::kPermissionLifetime)},
+     FEATURE_VALUE_TYPE(permissions::features::kPermissionLifetime)},      \
+    {"brave-rewards-bitflyer",                                             \
+     flag_descriptions::kBraveRewardsBitflyerName,                         \
+     flag_descriptions::kBraveRewardsBitflyerDescription, kOsDesktop,      \
+     FEATURE_VALUE_TYPE(brave_rewards::features::kBitflyerFeature)},
 
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
