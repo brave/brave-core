@@ -97,7 +97,7 @@
   </if>
 
   <!-- Main Page -->
-  <if expr="chromeos">
+  <if expr="chromeos or lacros">
     <!-- No target="_blank" because OS settings opens its own window. -->
     <message name="IDS_SETTINGS_OS_SETTINGS_BANNER" desc="Banner displayed in browser settings page that links to OS settings.">
       If a setting doesn't show on this page, look in your <ph name="LINK_BEGIN">&lt;a href="$1<ex>https://google.com/</ex>"&gt;</ph>
@@ -153,11 +153,11 @@
     This will delete your browsing data from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>.
   </message>
 <if expr="not chromeos">
-  <message name="IDS_SETTINGS_PROFILE_NAME_AND_PICTURE" desc="Label of the link that takes you to the page to edit your name and picture for your chrome profile.">
-    Brave name and picture
-  </message>
   <message name="IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE" desc="Label of the link that takes you to the page to customize your chrome profile.">
     Customize your Brave profile
+  </message>
+  <message name="IDS_SETTING_NAME_YOUR_PROFILE" desc="Title of the edit local profile name section on the manage profile page.">
+    Name your Brave profile
   </message>
 </if>
   <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT" desc="The secondary text displayed to prompt users to enable sync for an account that is alredy present in Brave.">
@@ -165,7 +165,7 @@
   </message>
 <if expr="chromeos">
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION_V2" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
-    If you have multiple Brave sync chains, you can add them to your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Your accounts will be available in Brave browser and Play Store, as well as services like Gmail, Drive, and YouTube. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This page allows you to manage your signed-in Brave accounts. These accounts will be available in Brave browser and Play Store apps, as well as services like Gmail, Drive, and YouTube. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 </if>
 

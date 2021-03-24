@@ -2,25 +2,26 @@ import("//build/config/android/rules.gni")
 
 group("android_deps") {
   public_deps = [
-    ":google_play_services_safetynet_java",
-    ":com_android_installreferrer_java",
     ":com_airbnb_android_java",
+    ":com_android_installreferrer_java",
+    ":google_play_services_safetynet_java",
   ]
 }
 
-android_aar_prebuilt("google_play_services_safetynet_java") { 
-  aar_path = "libs/com_google_android_gms_play_services_safetynet/play-services-safetynet-15.0.1.aar"  
-  info_path = "libs/com_google_android_gms_play_services_safetynet/com_google_android_gms_play_services_safetynet.info" 
-  deps = ["$google_play_services_package:google_play_services_base_java"]
+android_aar_prebuilt("google_play_services_safetynet_java") {
+  aar_path = "libs/com_google_android_gms_play_services_safetynet/play-services-safetynet-15.0.1.aar"
+  info_path = "libs/com_google_android_gms_play_services_safetynet/com_google_android_gms_play_services_safetynet.info"
+  deps = [ "$google_play_services_package:google_play_services_base_java" ]
 }
 
 android_aar_prebuilt("com_android_installreferrer_java") {
   aar_path = "libs/com_android_installreferrer/installreferrer-1.1.2.aar"
-  info_path = "libs/com_android_installreferrer/com_android_installreferrer.info"
+  info_path =
+      "libs/com_android_installreferrer/com_android_installreferrer.info"
 }
 
 android_aar_prebuilt("com_airbnb_android_java") {
   aar_path = "libs/com_airbnb_android/lottie-3.0.3.aar"
   info_path = "libs/com_airbnb_android/com_airbnb_android.info"
-  deps = ["//third_party/android_deps:androidx_appcompat_appcompat_java"]
+  deps = [ "//third_party/androidx:androidx_appcompat_appcompat_java" ]
 }

@@ -29,6 +29,7 @@ if (!is_android) {
       "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/embedder_support:browser_util",
       "//components/permissions:permissions",
       "//content/test:test_support",
     ]

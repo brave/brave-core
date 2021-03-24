@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
-index d61e45c197252bbf9ac6b87362e3b7244dd32de2..e2cf89068373705397b634eaf4e2fb347431d676 100644
+index 9651761b73fc891066cb42f239f275a18a2856c6..b26a3d61c13e5b33d577c55f5027a24e0a044dd8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
-@@ -76,7 +76,7 @@ import org.chromium.ui.widget.ButtonCompat;
- /**
-  * Settings fragment to enable Sync and other services that communicate with Google.
+@@ -82,7 +82,7 @@ import org.chromium.ui.widget.ButtonCompat;
+  * feature, this view disappears and the "Sync" and "Google services" sections are split into
+  * separate views, accessible directly from top-level settings. The "User" section disappears.
   */
 -public class SyncAndServicesSettings extends PreferenceFragmentCompat
 +public class SyncAndServicesSettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment

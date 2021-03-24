@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string>
+
 #include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
 #include "base/test/scoped_feature_list.h"
 #include "chrome/test/views/chrome_views_test_base.h"
@@ -47,10 +49,20 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
     view_state_transition_.GoBackFromAdvanced();
   }
 
-  int GetNumberOfLanguages() const override { return 1000; }
+  int GetNumberOfSourceLanguages() const override { return 1000; }
 
-  base::string16 GetLanguageNameAt(int index) const override {
+  int GetNumberOfTargetLanguages() const override { return 1000; }
+
+  base::string16 GetSourceLanguageNameAt(int index) const override {
     return base::ASCIIToUTF16("English");
+  }
+
+  base::string16 GetTargetLanguageNameAt(int index) const override {
+    return base::ASCIIToUTF16("Spanish");
+  }
+
+  std::string GetOriginalLanguageCode() const override {
+    return std::string("en-US");
   }
 
   int GetOriginalLanguageIndex() const override {

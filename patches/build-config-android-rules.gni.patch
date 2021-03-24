@@ -1,5 +1,5 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index 784e39ee221e0014967b90ae6cb8dea5112afcf9..a95fc5b508ea26f75d4d8ec0b7ec1a037a9887e4 100644
+index 2b2adf64a06d87b060ee6c6d34ce68185a3fb9c6..4cc7a930f067f2042c60e9148dd100409224f99e 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
 @@ -476,6 +476,7 @@ if (enable_java_templates) {
@@ -16,5 +16,5 @@ index 784e39ee221e0014967b90ae6cb8dea5112afcf9..a95fc5b508ea26f75d4d8ec0b7ec1a03
    template("jinja_template") {
 +    if (defined(invoker.includes)) { invoker.includes += brave_android_manifest_includes } else { invoker.includes = brave_android_manifest_includes }
      action_with_pydeps(target_name) {
-       # TODO(crbug.com/1112471): Get this to run cleanly under Python 3.
-       run_under_python2 = true
+       forward_variables_from(invoker, TESTONLY_AND_VISIBILITY + [ "deps" ])
+       inputs = [ invoker.input ]

@@ -7,8 +7,8 @@
 
 #define BRAVE_RESOURCES_UTIL                              \
   for (size_t i = 0; i < kBraveThemeResourcesSize; ++i) { \
-    storage.emplace_back(kBraveThemeResources[i].name,    \
-                         kBraveThemeResources[i].value);  \
+    storage.emplace_back(kBraveThemeResources[i].path,    \
+                         kBraveThemeResources[i].id);     \
   }
 
 #include "../../../../chrome/browser/resources_util.cc"

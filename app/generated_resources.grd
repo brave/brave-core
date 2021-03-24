@@ -41,6 +41,9 @@ are declared in tools/grit/grit_rule.gni.
       <output filename="generated_resources_zh-HK.pak" type="data_package" lang="zh-HK" />
       <output filename="generated_resources_zu.pak" type="data_package" lang="zu" />
     </if>
+    <if expr="chromeos or lacros">
+      <output filename="generated_resources_is.pak" type="data_package" lang="is" />
+    </if>
     <output filename="generated_resources_am.pak" type="data_package" lang="am" />
     <output filename="generated_resources_ar.pak" type="data_package" lang="ar" />
     <output filename="generated_resources_bg.pak" type="data_package" lang="bg" />
@@ -56,7 +59,6 @@ are declared in tools/grit/grit_rule.gni.
     <output filename="generated_resources_es-419.pak" type="data_package" lang="es-419" />
     <output filename="generated_resources_et.pak" type="data_package" lang="et" />
     <output filename="generated_resources_fa.pak" type="data_package" lang="fa" />
-    <output filename="generated_resources_fake-bidi.pak" type="data_package" lang="fake-bidi" />
     <output filename="generated_resources_fi.pak" type="data_package" lang="fi" />
     <output filename="generated_resources_fil.pak" type="data_package" lang="fil" />
     <output filename="generated_resources_fr.pak" type="data_package" lang="fr" />
@@ -183,6 +185,10 @@ are declared in tools/grit/grit_rule.gni.
       <output filename="java/res/values-zh-rTW/generated_resources.xml" lang="zh-TW" type="android" context="android_java" />
       <output filename="java/res/values-zu/generated_resources.xml" lang="zu" type="android" context="android_java" />
     </if>
+
+    <!-- Pseudolocales -->
+    <output filename="generated_resources_ar-XB.pak" type="data_package" lang="ar-XB" />
+    <output filename="generated_resources_en-XA.pak" type="data_package" lang="en-XA" />
   </outputs>
   <translations>
     <file path="resources/generated_resources_af.xtb" lang="af" />
@@ -267,7 +273,7 @@ are declared in tools/grit/grit_rule.gni.
     <file path="resources/generated_resources_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/generated_resources_zu.xtb" lang="zu" />
   </translations>
-  <release seq="1" allow_pseudo="false">
+  <release seq="1">
     <messages fallback_to_english="true">
       <!-- Bookmarks specific strings -->
       <part file="bookmarks_strings.grdp" />
@@ -365,6 +371,21 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
 
+      <if expr="chromeos">
+        <message name="IDS_PERMISSIONS_REQUESTED_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on BraveOS when permission is requested to inform users of how to focus the permission UI.">
+          Permission requested, press Ctrl + Forward to respond
+        </message>
+      </if>
+      <if expr="is_macosx">
+        <message name="IDS_PERMISSIONS_REQUESTED_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on MacOS when permission is requested to inform users of how to focus the permission UI.">
+          Permission requested, press ⌘ + Option + Down arrow to respond
+        </message>
+      </if>
+      <if expr="is_win or desktop_linux">
+        <message name="IDS_PERMISSIONS_REQUESTED_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on Windows or Linux when permission is requested to inform users of how to focus the permission UI.">
+          Permission requested, press F6 to respond
+        </message>
+      </if>
       <message name="IDS_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> wants to
       </message>
@@ -581,8 +602,8 @@ are declared in tools/grit/grit_rule.gni.
             Copy link te&amp;xt
           </message>
 
-          <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT" desc="The name of the Copy Link to Text command in the content area context menu">
-            Copy link to text
+          <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT" desc="The name of the Copy Link to Highlight command in the content area context menu">
+            Copy link to highlight
           </message>
 
           <message name="IDS_CONTENT_CONTEXT_SAVEIMAGEAS" desc="The name of the Save Image As command in the content area context menu">
@@ -703,6 +724,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFORIMAGE" desc="The name of the Search For Image command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for image
           </message>
+          <message name="IDS_CONTENT_CONTEXT_SEARCHLENSFORIMAGE" desc="The name of the Search Lens for Image command in the content area context menu">
+            Search image with Brave Lens
+          </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="The name of the Go to 'url' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
           </message>
@@ -803,8 +827,8 @@ are declared in tools/grit/grit_rule.gni.
             Copy Link Te&amp;xt
           </message>
 
-          <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT" desc="In Title Case: The name of the Copy Link to Text command in the content area context menu">
-            Copy Link to Text
+          <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT" desc="In Title Case: The name of the Copy Link to Highlight command in the content area context menu">
+            Copy Link to Highlight
           </message>
 
           <message name="IDS_CONTENT_CONTEXT_SAVEIMAGEAS" desc="In Title Case: The name of the Save Image As command in the content area context menu">
@@ -936,6 +960,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFORIMAGE" desc="In Title Case: The name of the Search For Image command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for Image
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_SEARCHLENSFORIMAGE" desc="In Title Case: The name of the Search Lens for Image command in the content area context menu">
+            Search Image with Brave Lens
           </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="In Title Case: The name of the Go to url for 'string' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
@@ -1284,6 +1311,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_MANAGED_BY" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users. MANAGER can be a domain or an email address.">
         Managed by <ph name="MANAGER">$1<ex>example.com</ex></ph>
+      </message>
+      <message name="IDS_CHROME_TIPS" desc="The text label of the Help menu item which takes the user to the Brave Tips page.">
+        Tips for Brave
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_IMPORT_SETTINGS_MENU_LABEL" desc="In sentence case: The app menu label to import bookmarks and settings.">
@@ -2558,6 +2588,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_ABUSIVE_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave because the site is known to employ dark patterns to trick users into accepting the permission.">
         This site may be trying to trick you into allowing intrusive notifications
       </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_PREDICTION_SERVICE_DESCRIPTION" desc="Text used as notification message when requesting permission for Web Notifications via a notification. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
+        Notifications were automatically blocked because you usually don't allow them
+      </message>
 
       <!-- Cookie controls strings. -->
       <message name="IDS_COOKIE_CONTROLS_DIALOG_TITLE" desc="Title of the dialog that allows users to control cookie blocking.">
@@ -2565,6 +2598,12 @@ are declared in tools/grit/grit_rule.gni.
               =0 {No third-party cookies}
               =1 {1 third-party cookie is blocked}
               other {# third-party cookies are blocked}}
+      </message>
+      <message name="IDS_COOKIE_CONTROLS_DIALOG_TITLE_ALL_BLOCKED" desc="Title of the dialog that allows users to control cookie blocking. Shown when all cookies (as opposed to only third-party ones) are blocked.">
+        {COUNT, plural,
+              =0 {No cookies}
+              =1 {1 cookie is blocked}
+              other {# cookies are blocked}}
       </message>
       <message name="IDS_COOKIE_CONTROLS_DIALOG_TITLE_OFF" desc="Text shown in the dialog that allows users to control cookie blocking. Shown when cookie blocking was disabled for this specific site.">
         Third-party cookies are allowed on this site
@@ -3991,9 +4030,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_USERS_PRIVATE" desc="Permission string for access to user accounts.">
           Read and change allowlisted users
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_DISPLAY_SOURCE" desc="Permission string for access to Display Source API.">
-          Send audio and video to displays on the local network
-        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_NEW_TAB_PAGE_OVERRIDE" desc="Permission string for extensions that override the new tab page.">
           Replace the page you see when opening a new tab
         </message>
@@ -4966,43 +5002,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         You are using an unsupported environment variable: <ph name="BAD_VAR">$1<ex>SSLKEYLOGFILE</ex></ph>. Stability and security will suffer.
       </message>
 
-      <!-- Pepper Broker Infobar -->
-      <if expr="enable_plugins">
-        <message name="IDS_PEPPER_BROKER_MESSAGE" desc="Message shown when a pepper plugin wants to launch its broker. This message is followed by a 'Learn more' link.">
-          <ph name="PEPPER_PLUGIN_NAME">$1<ex>Flash</ex></ph> on <ph name="PEPPER_PLUGIN_DOMAIN">$2<ex>example.com</ex></ph> wants to access your computer
-        </message>
-        <message name="IDS_PEPPER_BROKER_ALLOW_BUTTON" desc="Text for the allow button on the pepper broker launch prompt">
-          Allow
-        </message>
-        <message name="IDS_PEPPER_BROKER_DENY_BUTTON" desc="Text for the deny button on the pepper broker launch prompt">
-          Deny
-        </message>
-        <message name="IDS_BLOCKED_PPAPI_BROKER_TITLE" desc="Title for the page action when Pepper sandbox access was blocked.">
-          Unsandboxed plugin blocked
-        </message>
-        <message name="IDS_ALLOWED_PPAPI_BROKER_TITLE" desc="Title for the page action when Pepper sandbox access was allowed.">
-          Unsandboxed plugin allowed
-        </message>
-        <message name="IDS_BLOCKED_PPAPI_BROKER_MESSAGE" desc="Message for the page action when Pepper broker access was blocked">
-          An unsandboxed plugin was prevented from running on this page.
-        </message>
-        <message name="IDS_ALLOWED_PPAPI_BROKER_MESSAGE" desc="Message for the page action when Pepper broker access was allowed">
-          An unsandboxed plugin was allowed to run on this page.
-        </message>
-        <message name="IDS_BLOCKED_PPAPI_BROKER_UNBLOCK" desc="Radio button to unblock the Pepper broker">
-          Always allow unsandboxed plugins on <ph name="HOST">$1<ex>example.com</ex></ph>
-        </message>
-        <message name="IDS_BLOCKED_PPAPI_BROKER_NO_ACTION" desc="Radio button to keep blocking the Pepper broker">
-          Continue blocking unsandboxed plugins
-        </message>
-        <message name="IDS_ALLOWED_PPAPI_BROKER_NO_ACTION" desc="Radio button to keep allowing the Pepper broker">
-          Continue allowing unsandboxed plugins
-        </message>
-        <message name="IDS_ALLOWED_PPAPI_BROKER_BLOCK" desc="Radio button to block the Pepper broker">
-          Always block unsandboxed plugins on <ph name="HOST">$1<ex>example.com</ex></ph>
-        </message>
-      </if>
-
       <!-- Blocked Displaying/Running Insecure Content bubble -->
       <message name="IDS_BLOCKED_DISPLAYING_INSECURE_CONTENT_TITLE" desc="Title of the bubble shown when a message has asked Brave to display mixed content.">
         Insecure content blocked
@@ -5370,8 +5369,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_MY_SHORTCUTS_DESC" desc="The description for the option to show most visited sites in the customization menu on the New Tab Page">
         Shortcuts are curated by you
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_SHOW_MODULES_LABEL" desc="The label for the option to show modules in the customization menu on the New Tab Page">
-        Show cards
+      <message name="IDS_NTP_CUSTOMIZE_HIDE_ALL_CARDS_LABEL" desc="The label for the option to hide all cards in the customization menu on the New Tab Page">
+        Hide all cards
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_CUSTOMIZE_CARDS_LABEL" desc="The label for the option to customize cards in the customization menu on the New Tab Page">
+        Customize cards
       </message>
       <message name="IDS_NTP_CUSTOMIZE_3PT_THEME_DESC" desc="The description for the installed third-party themes in the customization menu on the New Tab Page">
         Current theme you have installed
@@ -5383,7 +5385,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Custom color
       </message>
       <message name="IDS_NTP_CUSTOMIZE_DEFAULT_LABEL" desc="The label for the Default theme in the customization menu on the New Tab Page">
-        Default
+        Default color
       </message>
       <message name="IDS_NTP_COLORS_WARM_GREY" desc="A color option in the customization menu on the New Tab Page.">
         Warm grey
@@ -5451,22 +5453,66 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COLORS_DARK_PURPLE" desc="A color option in the customization menu on the New Tab Page.">
         Dark purple
       </message>
+
+      <!-- NTP Modules -->
       <message name="IDS_NTP_MODULES_INFO_BUTTON_TITLE" desc="Text shown in tooltip of info button of an NTP module.">
         Why am I seeing this?
       </message>
-      <message name="IDS_NTP_MODULES_DISMISS_BUTTON_TITLE" desc="Text shown in tooltip of dismiss button of an NTP module.">
-        Remove
-      </message>
       <message name="IDS_NTP_MODULES_DISMISS_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been dismissed.">
-        Removed <ph name="MODULE_TITLE">$1<ex>Office and Desk Chairs</ex></ph>
+        <ph name="MODULE_TITLE">$1<ex>Office Chairs</ex></ph> hidden
       </message>
-      <message name="IDS_NTP_MODULES_DUMMY_TITLE" translateable="false" desc="Title shown in the header of the dummy module.">
+      <message name="IDS_NTP_MODULES_DISABLE_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been disabled.">
+        You won't see <ph name="MODULE_NAME">$1<ex>shopping suggestions</ex></ph> again on this page
+      </message>
+      <message name="IDS_NTP_MODULES_DISMISS_BUTTON_TEXT" desc="Text shown on the disable button of an NTP module.">
+        Hide <ph name="MODULE_TITLE">$1<ex>Office Chairs</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULES_DISABLE_BUTTON_TEXT" desc="Text shown on the dismiss button of an NTP module.">
+        Don't show <ph name="MODULE_NAME">$1<ex>shopping suggestions</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULES_CUSTOMIZE_BUTTON_TEXT" desc="Text shown on the customize button of an NTP module.">
+        Customize cards
+      </message>
+      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_SENTENCE" desc="Name of the shopping tasks module in sentence case shown in various UIs.">
+        Shopping suggestions
+      </message>
+      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_LOWER" desc="Name of the shopping tasks module in lowercase shown in various UIs.">
+        shopping suggestions
+      </message>
+      <message name="IDS_NTP_MODULES_RECIPE_TASKS_SENTENCE" desc="Name of the recipe tasks module in sentence case shown in various UIs.">
+        Recipe ideas
+      </message>
+      <message name="IDS_NTP_MODULES_RECIPE_TASKS_LOWER" desc="Name of the recipe tasks module in lowercase shown in various UIs.">
+        recipe ideas
+      </message>
+      <message name="IDS_NTP_MODULES_RECIPE_TASKS_LOWER_THESE" desc="Name of the recipe tasks module in lowercase shown in various UIs.">
+        these recipe ideas
+      </message>
+      <message name="IDS_NTP_MODULES_CART_SENTENCE" desc="Name of the chrome cart module in sentence case shown in various UIs.">
+        Your carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_LOWER" desc="Name of the chrome cart module in lowercase shown in various UIs.">
+        carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_LOWER_THESE" desc="Name of the chrome cart module in lowercase shown in various UIs.">
+        these carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_LOWER_YOUR" desc="Name of the chrome cart module in lowercase shown in various UIs.">
+        your carts
+      </message>
+      <message name="IDS_NTP_MODULES_DRIVE_SENTENCE" desc="Name of the Drive module in sentence case shown in various UIs.">
+        Drive files
+      </message>
+      <message name="IDS_NTP_MODULES_DUMMY_LOWER" translateable="false" desc="Name of the dummy module in lowercase shown in various UIs.">
+        this module
+      </message>
+      <message name="IDS_NTP_MODULES_DUMMY_TITLE" translateable="false" desc="Title shown in the header of the dummy module and various other UIs.">
         Super Duper Module
       </message>
-      <message name="IDS_NTP_MODULES_DUMMY2_TITLE" translateable="false" desc="Title shown in the header of the dummy 2 module.">
+      <message name="IDS_NTP_MODULES_DUMMY2_TITLE" translateable="false" desc="Title shown in the header of the dummy 2 module and various other UIs.">
         Even Better Module
       </message>
-      <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module.">
+      <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module and various other UIs.">
         Recently from Google Drive
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
@@ -5487,23 +5533,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_CART_HEADER_CHIP_NEW" desc="Text shown on the header chip of chrome cart module.">
         New
       </message>
-      <message name="IDS_NTP_MODULES_CART_TITLE" desc="Title shown in the header of the chrome cart module.">
-        Your carts
-      </message>
       <message name="IDS_NTP_MODULES_CART_WARM_WELCOME" desc="Text shown in the module header when module shows for the first couple of times. This is served as welcome message and user education.">
         Find what you added to shopping carts and check out when you're ready
       </message>
-      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_HIDE" desc="An option in the chrome cart module action menu to temporarily hide the module.">
-        Hide these carts
-      </message>
       <message name="IDS_NTP_MODULES_CART_MODULE_MENU_HIDE_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart module has been temporarily hidden.">
         Carts hidden. They’ll reappear when you make changes.
-      </message>
-      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_REMOVE" desc="An option in the chrome cart module action menu to permanently remove the module.">
-        Never show carts
-      </message>
-      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_REMOVE_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart module has been permanently removed.">
-        You won’t see your carts again on this page
       </message>
       <message name="IDS_NTP_MODULES_CART_CART_MENU_HIDE_MERCHANT" desc="An option in the action menu of one cart in the chrome cart module. When clicked, cart from that merchant will be temporarily hidden. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com). ">
         Hide <ph name="MERCHANT">$1<ex>Amazon</ex></ph>
@@ -5600,6 +5634,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCDESCRIPTION_BACK" desc="Help text that explains to keyboard users how to interact with the back button, similar to the tooltip presented to mouse users.">
         Press to go back, context menu to see history
+      </message>
+      <message name="IDS_TOOLTIP_CHROMELABS_BUTTON" desc="The tooltip for the Brave Labs button in the toolbar">
+      Experiments
       </message>
       <message name="IDS_TOOLTIP_FORWARD" desc="The tooltip for forward button">
         Click to go forward, hold to see history
@@ -5819,6 +5856,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NEWTAB_PROMO_2" desc="Variations option 3. Text shown on promotional UI appearing next to the New Tab button, which encourages users to use it.">
         Open a new tab to browse two sites at once
+      </message>
+      <message name="IDS_READING_LIST_DISCOVERY_PROMO" desc="Text shown on promotional UI appearing next to the reading list button">
+        When you're ready, find your reading list here
       </message>
       <message name="IDS_REOPEN_TAB_PROMO" desc="Text shown on promotional UI appearing next to the app menu button">
         Reopen a tab if you accidentally closed it
@@ -8396,9 +8436,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
             Page Language to Translate
           </message>
         </if>
-        <message name="IDS_TRANSLATE_BUBBLE_UNKNOWN_LANGUAGE" desc="Text to show for the translate bubble link label when the page source language cannot be determined. Used in place of a language name, so should be capitalized as such (e.g. &quot;Unknown&quot; for English, &quot;sconosciuto&quot; for Italian)" meaning="Noun to use in place of a language name in part of a translate bubble message.">
-          Unknown
-        </message>
         <message name="IDS_TRANSLATE_BUBBLE_RESET" desc="Text to show for the language combobox to revert to its original state in the advanced view under TAB UI">
             Reset
         </message>
@@ -9499,7 +9536,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <!-- Desktop media picker UI for Desktop Capture API -->
       <message name="IDS_DESKTOP_MEDIA_PICKER_TITLE" desc="Title for the window picker dialog shown when desktop capture is requested by an app.">
-        Share your screen
+        Choose what to share
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TITLE_SCREEN_ONLY" desc="Title for the window picker dialog shown when desktop capture of the entire screen is requested by an app.">
         Share your entire screen
@@ -9508,26 +9545,34 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Share an application window
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TEXT" desc="Text for the window picker dialog shown when desktop capture is requested by an app to be used by the app itself.">
-        <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen. Choose what you'd like to share.
+        <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen.
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TEXT_DELEGATED" desc="Text for the window picker dialog shown when desktop capture is requested by an app to be used by a tab.">
-        <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen with <ph name="TARGET_NAME">$2<ex>https://google.com</ex></ph>. Choose what you'd like to share.
+        <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen with <ph name="TARGET_NAME">$2<ex>https://google.com</ex></ph>.
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_AUDIO_SHARE" desc="Text for the checkbox on the window picker dialog, when checked, audio will be shared, otherwise just video sharing">
         Share audio
       </message>
-      <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_SCREEN" desc="Text for the button on the window picker dialog, clicking which takes one to full screen sharing">
-        Your Entire Screen
+      <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_SCREEN" desc="Text for the button on the window picker dialog, clicking which takes one to full screen sharing" meaning="Refers to the device's entire screen. Short for 'share the entire screen'.">
+        Entire Screen
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_WINDOW" desc="Text for the button on the window picker dialog, clicking which takes one to window sharing">
-        Application Window
+        Window
       </message>
-      <message name="IDS_DESKTOP_MEDIA_PICKER_SINGLE_SCREEN_NAME" desc="Name for screens in the desktop media picker UI when there is only one monitor.">
+      <message name="IDS_DESKTOP_MEDIA_PICKER_SINGLE_SCREEN_NAME" desc="Name for screens in the desktop media picker UI when there is only one monitor." meaning="Refers to the device's entire screen. Short for 'share the entire screen'.">
         Entire screen
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_MULTIPLE_SCREEN_NAME" desc="Name for screens in the desktop media picker UI when there are multiple monitors.">
         {SCREEN_INDEX, plural, =1{Screen #} other{Screen #}}
       </message>
+      <if expr="toolkit_views">
+        <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_THIS_TAB" desc="Text for one of the dialog-tabs on the media picker dialog. This dialog-tab controls sharing the current tab.">
+          This Tab
+        </message>
+        <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_OTHER_TAB" desc="Text for one of the dialog-tabs on the media picker dialog. This dialog-tab controls sharing the any tab. ('Any' is inaccurate, but preferred by our writer.)">
+          Other Tab
+        </message>
+      </if>
 
       <!-- Confirmation dialog for getCurrentBrowsingContextMedia API -->
       <message name="IDS_GET_CURRENT_BROWSING_CONTEXT_MEDIA_DIALOG_TITLE" desc="Title for the confirmation dialog shown when getCurrentBrowsingContextMedia is requested by an app.">
@@ -9660,6 +9705,21 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_LABEL_NAMED_GROUP_FORMAT" desc="Accessibility label text for a tab, when it is in a group that has been named by the user. Example: 'Brave Search - Part of group MyGroupName'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Part of group <ph name="GROUP_NAME">$2</ph>
       </message>
+      <if expr="chromeos">
+        <message name="IDS_TAB_AX_LABEL_PERMISSION_REQUESTED_FORMAT" desc="Accessibility label text for BraveOS, when a tab has a pending request. Example: 'Brave Search - Permission requested, press F6 to respond'.">
+          <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Permission requested, press Ctrl + Forward to respond
+        </message>
+      </if>
+      <if expr="is_macosx">
+        <message name="IDS_TAB_AX_LABEL_PERMISSION_REQUESTED_FORMAT" desc="Accessibility label text for MacOS, when a tab has a pending request. Example: 'Brave Search - Permission requested, press F6 to respond'.">
+          <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Permission requested, press ⌘ + Option + Up arrow to respond
+        </message>
+      </if>
+      <if expr="is_win or desktop_linux">
+        <message name="IDS_TAB_AX_LABEL_PERMISSION_REQUESTED_FORMAT" desc="Accessibility label text for Windows or Linux, when a tab has a pending request. Example: 'Brave Search - Permission requested, press F6 to respond'.">
+          <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Permission requested, press F6 to respond
+        </message>
+      </if>
       <message name="IDS_GROUP_AX_LABEL_UNNAMED_GROUP_FORMAT" desc="Spoken by screen readers when a tab group header that has not been named by the user gets focused but is not visually rendered. Example: 'Unnamed group - Brave Search and 3 other tabs - Expanded'">
       Unnamed group - <ph name="GROUP_CONTENTS">$2<ex>Brave Search and 3 other tabs</ex></ph> - <ph name="COLLAPSED_STATE">$1</ph>
       </message>
@@ -9888,6 +9948,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_TURN_ON_BLUETOOTH_LINK_TEXT" desc="Text of the 'Turn on Bluetooth' link when Bluetooth adapter is turned off.">
         Turn on Bluetooth
+      </message>
+      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK_TEXT" desc="Text of the 'Open Preferences' link when browser does not have Bluetooth permission.">
+        Open System Preferences
       </message>
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_RE_SCAN" desc="Text of a button the user can click to start a new scan for Bluetooth devices.">
         Re-scan
@@ -10193,130 +10256,130 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Upload
     </message>
 
-    <!-- Native File System permission dialog -->
-    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_TITLE" desc="Title of dialog for confirming write access to a file, or a directory and the files it contains, using the Native File System API">
+    <!-- File System Access permission dialog -->
+    <message name="IDS_FILE_SYSTEM_ACCESS_WRITE_PERMISSION_TITLE" desc="Title of dialog for confirming write access to a file, or a directory and the files it contains, using the File System Access API">
       Save changes to <ph name="FILE_OR_FOLDER_NAME">$1<ex>README.md</ex></ph>?
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to files or directories using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_WRITE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to files or directories using the File System Access API">
       Save changes
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_ORIGIN_SCOPED_WRITE_PERMISSION_FILE_TEXT" desc="Text of the dialog for confirming origin scoped write access to files using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_ORIGIN_SCOPED_WRITE_PERMISSION_FILE_TEXT" desc="Text of the dialog for confirming origin scoped write access to files using the File System Access API">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit <ph name="FILENAME">$2<ex>README.md</ex></ph> until you close all tabs for this site
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_ORIGIN_SCOPED_WRITE_PERMISSION_DIRECTORY_TEXT" desc="Text of the dialog for confirming origin scoped write access to a directory using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_ORIGIN_SCOPED_WRITE_PERMISSION_DIRECTORY_TEXT" desc="Text of the dialog for confirming origin scoped write access to a directory using the File System Access API">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph> until you close all tabs for this site
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_ORIGIN_SCOPED_READ_PERMISSION_FILE_TEXT" desc="Text of dialog for confirming read access to files using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_ORIGIN_SCOPED_READ_PERMISSION_FILE_TEXT" desc="Text of dialog for confirming read access to files using the File System Access API">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view <ph name="FILENAME">$2<ex>README.md</ex></ph> until you close all tabs for this site
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_ORIGIN_SCOPED_READ_PERMISSION_DIRECTORY_TEXT" desc="Text of dialog asking user if they intended to share a particular directory">
+    <message name="IDS_FILE_SYSTEM_ACCESS_ORIGIN_SCOPED_READ_PERMISSION_DIRECTORY_TEXT" desc="Text of dialog asking user if they intended to share a particular directory">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph> until you close all tabs for this site
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_EDIT_FILE_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read and write access to a file using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_EDIT_FILE_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read and write access to a file using the File System Access API">
       Let site edit <ph name="FILE_NAME">$1<ex>README.md</ex></ph>?
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_EDIT_DIRECTORY_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read and write access to (files in) a directory using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_EDIT_DIRECTORY_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read and write access to (files in) a directory using the File System Access API">
       Let site edit files?
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_READ_FILE_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read access to a file using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_READ_FILE_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read access to a file using the File System Access API">
       Let site view <ph name="FILE_NAME">$1<ex>README.md</ex></ph>?
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_READ_DIRECTORY_PERMISSION_TITLE" desc="Title of dialog asking user if they intended to share a particular directory">
+    <message name="IDS_FILE_SYSTEM_ACCESS_READ_DIRECTORY_PERMISSION_TITLE" desc="Title of dialog asking user if they intended to share a particular directory">
       Let site view files?
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_EDIT_FILE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to a file using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_EDIT_FILE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to a file using the File System Access API">
       Edit file
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_EDIT_DIRECTORY_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to a directory (and the files in it) using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_EDIT_DIRECTORY_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to a directory (and the files in it) using the File System Access API">
       Edit files
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_VIEW_FILE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming read access to a file using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_VIEW_FILE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming read access to a file using the File System Access API">
       View file
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_VIEW_DIRECTORY_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming read access to a directory (and the files in it) using the Native File System API">
+    <message name="IDS_FILE_SYSTEM_ACCESS_VIEW_DIRECTORY_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming read access to a directory (and the files in it) using the File System Access API">
       View files
     </message>
 
-    <!-- Native File System usage indicator -->
-    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_USAGE_TOOLTIP" desc="Tooltip for the omnibox Native File System API file write access usage indicator.">
+    <!-- File System Access usage indicator -->
+    <message name="IDS_FILE_SYSTEM_ACCESS_WRITE_USAGE_TOOLTIP" desc="Tooltip for the omnibox File System Access API file write access usage indicator.">
       This page is allowed to edit files
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_USAGE_TOOLTIP" desc="Tooltip for the omnibox Native File System API directory read access usage indicator.">
+    <message name="IDS_FILE_SYSTEM_ACCESS_DIRECTORY_USAGE_TOOLTIP" desc="Tooltip for the omnibox File System Access API directory read access usage indicator.">
       This page is allowed to view files
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_WRITABLE_FILE_TEXT" desc="Text of the bubble showing what file an origin can currently write to">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_SINGLE_WRITABLE_FILE_TEXT" desc="Text of the bubble showing what file an origin can currently write to">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit <ph name="FILENAME">$2<ex>README.md</ex></ph>
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_FILES_TEXT" desc="Text of the bubble showing what files an origin can currently write to">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_WRITABLE_FILES_TEXT" desc="Text of the bubble showing what files an origin can currently write to">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit the following files
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_WRITABLE_DIRECTORY_TEXT" desc="Text of the bubble showing what file an origin can currently write to">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_SINGLE_WRITABLE_DIRECTORY_TEXT" desc="Text of the bubble showing what file an origin can currently write to">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_DIRECTORIES_TEXT" desc="Text of the bubble showing what files an origin can currently write to">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_WRITABLE_DIRECTORIES_TEXT" desc="Text of the bubble showing what files an origin can currently write to">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit files in the following folders
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_FILES_AND_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently write to">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_WRITABLE_FILES_AND_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently write to">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit the following files and folders
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_READABLE_FILE_TEXT" desc="Text of the bubble showing what file an origin can currently access">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_SINGLE_READABLE_FILE_TEXT" desc="Text of the bubble showing what file an origin can currently access">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view <ph name="FILENAME">$2<ex>README.md</ex></ph>
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READABLE_FILES_TEXT" desc="Text of the bubble showing what files an origin can currently access">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_READABLE_FILES_TEXT" desc="Text of the bubble showing what files an origin can currently access">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view the following files
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_READABLE_DIRECTORY_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_SINGLE_READABLE_DIRECTORY_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READABLE_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_READABLE_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view files in the following folders
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READABLE_FILES_AND_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_READABLE_FILES_AND_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view the following files and folders
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READ_AND_WRITE" desc="Text of the bubble showing what files and directories an origin can currently read and write to">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_READ_AND_WRITE" desc="Text of the bubble showing what files and directories an origin can currently read and write to">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view and edit the following files and folders
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SAVE_CHANGES" desc="Sub-heading for the files and directories with write access in the bubble showing what files and directories an origin can currently read and write to">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_SAVE_CHANGES" desc="Sub-heading for the files and directories with write access in the bubble showing what files and directories an origin can currently read and write to">
       Save changes
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_VIEW_CHANGES" desc="Sub-heading for the files and directories with read access in the bubble showing what files and directories an origin can currently read and write to">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_VIEW_CHANGES" desc="Sub-heading for the files and directories with read access in the bubble showing what files and directories an origin can currently read and write to">
       View changes
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_FILES_TEXT" desc="Text to display a list of files in the native file system usage bubble">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_BUBBLE_FILES_TEXT" desc="Text to display a list of files in the File System Access usage bubble">
       {0, plural, offset:2
         =1 {<ph name="FILE1">{1}<ex>README.md</ex></ph>}
         =2 {<ph name="FILE1">{1}<ex>README.md</ex></ph>, <ph name="FILE2">{2}<ex>Brave.png</ex></ph>}
         other {<ph name="FILE1">{1}<ex>README.md</ex></ph>, <ph name="FILE2">{2}<ex>Brave.png</ex></ph>, and # more}
       }
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_EXPAND" desc="Tooltip for and name of a button that shows (expands) a detailed list of files and directories">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_EXPAND" desc="Tooltip for and name of a button that shows (expands) a detailed list of files and directories">
       Expand...
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_COLLAPSE" desc="Tooltip for and name of a button that hides (collapses) a detailed list of files and directories">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_COLLAPSE" desc="Tooltip for and name of a button that hides (collapses) a detailed list of files and directories">
       Collapse...
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_REMOVE_ACCESS" desc="Text of button in the bubble showing what files and directories an origin can currently access that removes all such access">
+    <message name="IDS_FILE_SYSTEM_ACCESS_USAGE_REMOVE_ACCESS" desc="Text of button in the bubble showing what files and directories an origin can currently access that removes all such access">
       Remove access
     </message>
 
-    <!-- Native File System restricted directory and file dialogs. -->
-    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_DIRECTORY_TITLE" desc="Title of dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
+    <!-- File System Access restricted directory and file dialogs. -->
+    <message name="IDS_FILE_SYSTEM_ACCESS_RESTRICTED_DIRECTORY_TITLE" desc="Title of dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
       Can't open this folder
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_DIRECTORY_TEXT" desc="Text of dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
+    <message name="IDS_FILE_SYSTEM_ACCESS_RESTRICTED_DIRECTORY_TEXT" desc="Text of dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can’t open this folder because it contains system files
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_DIRECTORY_BUTTON" desc="Text of the button in dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
+    <message name="IDS_FILE_SYSTEM_ACCESS_RESTRICTED_DIRECTORY_BUTTON" desc="Text of the button in dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
       Choose a different folder
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_FILE_TITLE" desc="Title of dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
+    <message name="IDS_FILE_SYSTEM_ACCESS_RESTRICTED_FILE_TITLE" desc="Title of dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
       Can't open this file
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_FILE_TEXT" desc="Text of dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
+    <message name="IDS_FILE_SYSTEM_ACCESS_RESTRICTED_FILE_TEXT" desc="Text of dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
       <ph name="ORIGIN">$1<ex>example.com</ex></ph> can’t open files in this folder because it contains system files
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_FILE_BUTTON" desc="Text of the button in dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
+    <message name="IDS_FILE_SYSTEM_ACCESS_RESTRICTED_FILE_BUTTON" desc="Text of the button in dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
       Choose a different file
     </message>
 
@@ -10342,7 +10405,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_GENERIC_TITLE" desc="Title of most dialogs shown while the user is authenticating on a web site using a security key.">
         Use your security key with <ph name="APP_NAME">$1<ex>google.com</ex></ph>
       </message>
-      <message name="IDS_WEBAUTHN_WELCOME_SCREEN_NEXT" desc="Button text to continue using a security key for authentication on the web for the very first time.">
+      <message name="IDS_WEBAUTHN_CONTINUE" desc="Label of a button to continue in the dialog shown when using a security key.">
         Continue
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_SELECTION_TITLE" desc="Title of the dialog instructing the user to choose how they want to connect their security key with their computer, e.g. USB or Bluetooth.">
@@ -10358,7 +10421,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         NFC security key
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_INTERNAL" desc="Menu item text. The user selects this to use a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader.">
-        Built-in sensor
+        This device
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_CABLE" desc="Menu item text. The user selects this to use their phone, once connected to their computer over Bluetooth Low Energy, to sign in to web site on their computer.">
         Your phone
@@ -10427,7 +10490,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Verify via NFC
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_INTERNAL" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader.">
-        Verify via built-in sensor
+        Use this device
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_CABLE" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using their phone. They wirelessly connect their phone to their computer over Bluetooth Low Energy, and then use the phone to sign in to web sites on their computer.">
         Verify via your phone
@@ -10438,6 +10501,23 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
         A notification was sent to your phone to confirm it's you.
       </message>
+
+      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key. The second placeholder will be replaced by the contents of the translated string IDS_WEBAUTHN_CABLEV2_SERVERLINK_TROUBLE. A placeholder is used for this because that link will be styled as a clickable link. The word 'Yes' will appear on the phone and is TC ID 6139894934866548097.">
+        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. Tap Yes to confirm it's you. <ph name="LINK"><ex>Didn't get it?</ex>$2</ph>
+      </message>
+      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_TROUBLE" desc="This message is shown as a link inside of IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION and replaces placeholder two. The 'it' referenced here is the notification mentioned in that message.">
+        Didn't get it?
+      </message>
+      <message name="IDS_WEBAUTHN_CABLEV2_AOA_TITLE" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key. The 'cable' is a physical USB cable.">
+        Connect your phone with a cable
+      </message>
+      <message name="IDS_WEBAUTHN_CABLEV2_AOA_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
+        Use a USB cable to connect your phone to your computer. If your phone is already connected, unplug it and plug it back in.
+      </message>
+      <message name="IDS_WEBAUTHN_CABLEV2_AOA_REQUEST_DESCRIPTION" desc="Potentially displayed in a permissions dialog on Android to describe the type of request that a computer, that is connected over USB, is making. In this context the request from the computer is to use the Android device as a security key. A 'security key' is typically a physical USB token used for authentication (e.g. a gNubby) but in this case the phone is acting as one. The translation of 'security key' should match the phrase used in TC IDs such as 1685482178220389035 and 7775033610159191691">
+        Security key request
+      </message>
+
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
         Unlock your phone and confirm it's you
       </message>
@@ -10543,6 +10623,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_RESIDENT_KEY_PRIVACY" desc="A message included in dialogs when activating a security key (an external physical device for user authentication) may cause information about a site visit to be recorded on that security key. Since this is a privacy concern, a message is shown to the user.">
         A record of your visit to this site will be kept on your security key.
       </message>
+      <message name="IDS_WEBAUTHN_RESIDENT_KEY_PREFERRED_PRIVACY" desc="A message included in dialogs when activating a security key (an external physical device for user authentication) may cause information about a site visit to be recorded on that security key. Since this is a privacy concern, a message is shown to the user. Whether the information is actually kept depends on which type of security key the user presents in response to this prompt. The translation of this message should mirror TC ID 6581223593622729386 (but 'may' replaces 'will').">
+        A record of your visit to this site may be kept on your security key.
+      </message>
       <message name="IDS_WEBAUTHN_ERROR_MISSING_CAPABILITY_TITLE" desc="Title of the dialog informing the user that the security key (an external physical device for user authentication) that they selected does not support some capability that the site requested.">
         Your security key can't be used with this site
       </message>
@@ -10558,23 +10641,30 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_REQUEST_ATTESTATION_PERMISSION_DESC" desc="The description on a dialog informing the user that the website wants to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
         <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> wants to see the make and model of your security key
       </message>
+      <message name="IDS_WEBAUTHN_REQUEST_ENTERPRISE_ATTESTATION_PERMISSION_TITLE" desc="Title of a dialog informing the user that the website wants to read the serial number of the user's security key. A security key is a physical device used for authentication.">
+        Allow this site to identify your security key?
+      </message>
+      <message name="IDS_WEBAUTHN_REQUEST_ENTERPRISE_ATTESTATION_PERMISSION_DESC" desc="The description on a dialog informing the user that the website wants to wants to read the serial number of the user's security key. A security key is a physical device used for authentication. The word 'issued' here means that the company linked to the website had the security key specially manufactured and, typically, the user is an employee of that company who received the security key as part of their employment.">
+        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> issued your security key and wants to learn its ID number. The site will know exactly which security key you're using.
+      </message>
       <message name="IDS_WEBAUTHN_ALLOW_ATTESTATION" desc="Label on button to allow a website to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
         Allow
+      </message>
+      <message name="IDS_WEBAUTHN_DENY_ATTESTATION" desc="Label on button to deny a website's request to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key. This was previously the word 'Block', but that is used in contexts where the decision is persistent so we wanted a different word for this because it is a one-time decision: the user will be asked again if the website requests again. Thus the translation would hopefully be distinct from the translation for 'Block' as used, for example, in IDS_COLLECTED_COOKIES_BLOCK_BUTTON.">
+        Skip
       </message>
       <message name="IDS_WEBAUTHN_RETRY" desc="Button text. The user clicks this to retry the authentication flow after an error happened, e.g. to try with a different Security Key.">
         Try again
       </message>
-   </if>
-   <if expr="is_macosx">
-     <message name="IDS_WEBAUTHN_TOUCH_ID_INCOGNITO_BUMP_TITLE" desc="Title of the dialog shown when the user attempts to set up sign-in with Touch ID on a website in private mode." meaning="'Touch ID' is the fingerprint recognition feature in macOS. Try to refer Apple support documentation in the target language for the appropriate product name translation.">
-       Do you want to use Touch ID with <ph name="APP_NAME">$1<ex>example.com</ex></ph> in Private mode?
-     </message>
-     <message name="IDS_WEBAUTHN_TOUCH_ID_INCOGNITO_BUMP_DESCRIPTION" desc="Description of the dialog shown when the user attempts to set up sign-in with Touch ID on a website in private mode." meaning="'Touch ID' is the fingerprint recognition feature in macOS. Try to refer Apple support documentation in the target language for the appropriate product name translation.">
-       Sign-in data will be stored in Brave after you exit Private mode. This will let you use Touch ID with this website again later.
-     </message>
-     <message name="IDS_WEBAUTHN_TOUCH_ID_INCOGNITO_BUMP_CONTINUE" desc="Label of the button to continue from a dialog shown when the user attempts to set up sign-in with Touch ID on a website in private mode." meaning="'Touch ID' is the fingerprint recognition feature in macOS. Try to refer Apple support documentation in the target language for the appropriate product name translation.">
-       Continue
-     </message>
+      <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_TITLE" desc="Title of a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
+         Use your device to sign in to <ph name="APP_NAME">$1<ex>example.com</ex></ph>?
+      </message>
+      <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_DESCRIPTION" desc="Description of a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
+         Sign-in data will be stored on this device after you exit Private mode. You'll be able to sign in to this website with your device again later.
+      </message>
+      <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_DENY" desc="Button label on a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
+         No thanks
+      </message>
    </if>
 
    <!-- Private Profile Menu bubble. -->
@@ -10683,6 +10773,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       {NUM_FILES, plural,
         =1 {This file is encrypted. Ask its owner to decrypt.}
       other {Some of these files are encrypted. Ask their owner to decrypt.}}
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_CUSTOM_MESSAGE" desc="Message shown around the custom message provided by the administrator when deep scanning returns a failure.">
+      Your administrator says "<ph name="CUSTOM_MESSAGE">$1<ex>Please don't upload this type of data.</ex></ph>".
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_CUSTOM_MESSAGE_LEARN_MORE_LINK" desc="Text value of the link passed for the custom message set by the administrator when deep scanning returns a failure.">
+      Learn more
     </message>
 
 
@@ -10812,27 +10908,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <if expr="is_macosx">
-      <!-- These strings are placeholders for strings that are filled in via
-           field trials, so they are *not* used as-is except in tests. -->
-      <message name="IDS_MAC_SYSTEM_INFOBAR_TEXT_ARM" desc="Mac system-specific infobar text for Arm64-on-Arm64." translateable="false">
-        Brave can’t play premium videos or music on this device yet. Brave will update automatically when this issue is fixed.
-      </message>
-      <message name="IDS_MAC_SYSTEM_INFOBAR_TEXT_ROSETTA" desc="Mac system-specific infobar text for Intel-on-Arm64." translateable="false">
-        This is an x86-64 Brave on Arm64, so things might not work quite right yet!
-      </message>
-      <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_TEXT_ARM" desc="Mac system-specific infobar link text for Arm64-on-Arm64." translateable="false">
-        Learn more
-      </message>
-      <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_URL_ARM" desc="Mac system-specific infobar link for Arm64-on-Arm64." translateable="false">
-        https://support.google.com/chrome/?p=mac_ARM
-      </message>
-      <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_TEXT_ROSETTA" desc="Mac system-specific infobar link text for Intel-on-Arm64." translateable="false">
-        Learn more
-      </message>
-      <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_URL_ROSETTA" desc="Mac system-specific infobar link for Intel-on-Arm64." translateable="false">
-        https://support.google.com/chrome/?p=mac_ARM
-      </message>
-
       <!-- The Rosetta is required infobar -->
       <message name="IDS_ROSETTA_REQUIRED_INFOBAR_TEXT" desc="The infobar text when installation of Rosetta is required">
         To play protected media on this page, you need to install Rosetta.
@@ -10852,10 +10927,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <message name="IDS_NAME_WINDOW_PROMPT_TITLE" desc="Title of the prompt to choose a new name for a window.">
-      Set Window Name
-    </message>
-    <message name="IDS_NAME_WINDOW_PROMPT_WINDOW_NAME" desc="Label of the textfield to choose a new name for a window.">
-      Window name
+      Name this window
     </message>
     <message name="IDS_COMMANDER_LABEL" desc="Label to identify the Commander feature in Task Manager">
       Commander

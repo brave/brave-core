@@ -100,10 +100,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   // in correct order.
   // One profile with a custom name to check that it is not renamed.
   // First is the existing default profile.
-  ProfileAttributesEntry* entry1;
-  bool has_entry1 = storage.GetProfileAttributesWithPath(
-      profile_data[0].profile_path, &entry1);
-  ASSERT_EQ(has_entry1, true);
+  ProfileAttributesEntry* entry1 =
+      storage.GetProfileAttributesWithPath(profile_data[0].profile_path);
+  ASSERT_NE(entry1, nullptr);
   entry1->SetLocalProfileName(profile_data[0].profile_name,
                               profile_data[0].force_default_name);
   // Rest are generated
@@ -111,13 +110,12 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
     base::RunLoop run_loop;
     profile_manager->CreateProfileAsync(
         profile_data[i].profile_path,
-        base::Bind(&OnUnblockOnProfileCreation, &run_loop),
-        base::string16(), std::string());
+        base::Bind(&OnUnblockOnProfileCreation, &run_loop), base::string16(),
+        std::string());
     run_loop.Run();
-    ProfileAttributesEntry* entry;
-    bool has_entry = storage.GetProfileAttributesWithPath(
-        profile_data[i].profile_path, &entry);
-    ASSERT_EQ(has_entry, true);
+    ProfileAttributesEntry* entry =
+        storage.GetProfileAttributesWithPath(profile_data[i].profile_path);
+    ASSERT_NE(entry, nullptr);
     entry->SetLocalProfileName(profile_data[i].profile_name,
                                profile_data[i].force_default_name);
   }

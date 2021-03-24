@@ -20,10 +20,11 @@ void BraveAvatarToolbarButtonDelegate::Init(AvatarToolbarButton* button,
 AvatarToolbarButton::State BraveAvatarToolbarButtonDelegate::GetState() const {
   AvatarToolbarButton::State state = AvatarToolbarButtonDelegate::GetState();
   if (state == AvatarToolbarButton::State::kGenericProfile) {
-    ProfileAttributesEntry* entry;
-    if (g_browser_process->profile_manager()
+    ProfileAttributesEntry* entry =
+        g_browser_process->profile_manager()
             ->GetProfileAttributesStorage()
-            .GetProfileAttributesWithPath(profile_->GetPath(), &entry) &&
+            .GetProfileAttributesWithPath(profile_->GetPath());
+    if (entry &&
         entry->GetAvatarIconIndex() == profiles::GetPlaceholderAvatarIndex()) {
       return AvatarToolbarButton::State::kNormal;
     }

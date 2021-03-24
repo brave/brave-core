@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/update_package_provides.py b/chrome/installer/linux/rpm/update_package_provides.py
-index f6ea0bfbf8692a4c67ac542de22206c472b04f74..8abdeed98b1c9085ac341d484ceb538943741f5d 100755
+index 5225e3ef93dd137e6a8a12329d9aac49cc8b51e8..cd509fd3e2103c8015f36bb0817e156f3bfd63d9 100755
 --- a/chrome/installer/linux/rpm/update_package_provides.py
 +++ b/chrome/installer/linux/rpm/update_package_provides.py
 @@ -33,6 +33,7 @@ LIBRARY_FILTER = set([
@@ -10,7 +10,7 @@ index f6ea0bfbf8692a4c67ac542de22206c472b04f74..8abdeed98b1c9085ac341d484ceb5389
      "libcups.so",
      "libdbus-1.so",
      "libdrm.so.2",
-@@ -53,7 +54,10 @@ LIBRARY_FILTER = set([
+@@ -52,7 +53,10 @@ LIBRARY_FILTER = set([
      "libnssutil3.so",
      "libpango-1.0.so",
      "libpangocairo-1.0.so",
@@ -21,7 +21,7 @@ index f6ea0bfbf8692a4c67ac542de22206c472b04f74..8abdeed98b1c9085ac341d484ceb5389
      "librt.so",
      "libsmime3.so",
      "libstdc++.so",
-@@ -62,6 +66,7 @@ LIBRARY_FILTER = set([
+@@ -61,6 +65,7 @@ LIBRARY_FILTER = set([
      "libxcb-dri3.so.0",
      "libxkbcommon.so.0",
      "libxshmfence.so.1",

@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettings.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettings.java
-index a056976a73c031db1a78c95358fddbb1a859abcc..c0426690a6396283669e630ae9d4a857dfc2ad09 100644
+index 3a3019fddf6168107ffa121edb892e1ea4b7e1ae..60ca66002e28e3e5731ed9afe4afdb5bf64074e6 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettings.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettings.java
 @@ -24,7 +24,7 @@ import org.chromium.components.user_prefs.UserPrefs;

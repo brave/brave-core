@@ -24,6 +24,7 @@ source_set("android_browser_process") {
     "//components/flags_ui",
     "//components/ntp_tiles",
     "//components/translate/core/browser",
+    "//url",
   ]
 
   if (brave_ads_enabled) {

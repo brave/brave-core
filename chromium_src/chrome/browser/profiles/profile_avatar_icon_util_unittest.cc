@@ -22,30 +22,17 @@ TEST(ProfileUtilTest, KeepChromiumChoice) {
 }
 
 TEST(ProfileUtilTest, BraveAvatarIconChoices) {
-  // Test that the avatar icon choices presented to the user
-  // are brave's and include the placeholder so that
-  // it can be re-selected, unlike chromium.
+  // Test that the avatar icon choices presented to the user are brave's.
   std::unique_ptr<base::ListValue> avatars(
       profiles::GetCustomProfileAvatarIconsAndLabels(0));
 
   const size_t expected_selectable_avatar_count =
-      profiles::kBraveDefaultAvatarIconsCount + 1;
+      profiles::kBraveDefaultAvatarIconsCount;
   const size_t actual_selectable_avatar_count = avatars->GetSize();
 
   // Avatars are Brave's, not Chromium's
   EXPECT_EQ(actual_selectable_avatar_count,
       expected_selectable_avatar_count);
-
-  // Avatars has the placeholder item put back in
-  const std::string* actual_first_url =
-      avatars->GetList()[0].FindStringKey("url");
-  auto expected_placeholder_url = profiles::GetPlaceholderAvatarIconUrl();
-  EXPECT_EQ(*actual_first_url, expected_placeholder_url);
-
-  // The placeholder was not duplicated as a result of injection.
-  const std::string* actual_second_url =
-      avatars->GetList()[1].FindStringKey("url");
-  EXPECT_NE(*actual_second_url, expected_placeholder_url);
 }
 
 TEST(ProfileUtilTest, RandomIconNeverFirstIcon) {

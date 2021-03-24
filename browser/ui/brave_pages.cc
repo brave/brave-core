@@ -16,22 +16,21 @@
 namespace brave {
 
 void ShowBraveRewards(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(
-      browser,
+  NavigateParams params(
       GetSingletonTabNavigateParams(browser, GURL(kBraveUIRewardsURL)));
+  ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
 void ShowBraveAdblock(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(
-      browser,
+  NavigateParams params(
       GetSingletonTabNavigateParams(browser, GURL(kBraveUIAdblockURL)));
+  ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
 void ShowSync(Browser* browser) {
   auto url = chrome::GetSettingsUrl(chrome::kSyncSetupSubPage);
-  ShowSingletonTabOverwritingNTP(
-      browser,
-      GetSingletonTabNavigateParams(browser, url));
+  NavigateParams params(GetSingletonTabNavigateParams(browser, url));
+  ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
 void ShowWebcompatReporter(Browser* browser) {
@@ -44,26 +43,27 @@ void ShowWebcompatReporter(Browser* browser) {
 }
 
 void ShowBraveWallet(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(
-      browser,
+  NavigateParams params(
       GetSingletonTabNavigateParams(browser, GURL(kBraveUIWalletURL)));
+  ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
 void ShowExtensionSettings(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(
-      browser,
+  NavigateParams params(
       GetSingletonTabNavigateParams(browser, GURL(kExtensionSettingsURL)));
+  ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
 void ShowWalletSettings(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(
-      browser,
+  NavigateParams params(
       GetSingletonTabNavigateParams(browser, GURL(kWalletSettingsURL)));
+  ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
 void ShowIPFS(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(
-      browser, GetSingletonTabNavigateParams(browser, GURL(kIPFSWebUIURL)));
+  NavigateParams params(
+      GetSingletonTabNavigateParams(browser, GURL(kIPFSWebUIURL)));
+  ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
 }  // namespace brave

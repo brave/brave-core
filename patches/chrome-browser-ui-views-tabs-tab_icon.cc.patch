@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_icon.cc b/chrome/browser/ui/views/tabs/tab_icon.cc
-index ff46096cb62b343d1d5f716ab88bd971906ecafb..47f49e6ff14a684e4eeab07036696ba18b201196 100644
+index 8829e1b7a1c4529cb244216f5caf39ebb9724c0c..1124a2d73775cbcf29849f08074d9aad92857f68 100644
 --- a/chrome/browser/ui/views/tabs/tab_icon.cc
 +++ b/chrome/browser/ui/views/tabs/tab_icon.cc
-@@ -365,7 +365,7 @@ void TabIcon::SetIcon(const GURL& url, const gfx::ImageSkia& icon) {
+@@ -367,7 +367,7 @@ void TabIcon::SetIcon(const GURL& url, const gfx::ImageSkia& icon) {
  
    favicon_ = icon;
  
--  if (!HasNonDefaultFavicon() || ShouldThemifyFaviconForUrl(url)) {
-+  if (!HasNonDefaultFavicon() || BraveShouldThemifyFaviconForUrl(url)) {
+-  if (!GetNonDefaultFavicon() || ShouldThemifyFaviconForUrl(url)) {
++  if (!GetNonDefaultFavicon() || BraveShouldThemifyFaviconForUrl(url)) {
      themed_favicon_ = ThemeImage(icon);
    } else {
      themed_favicon_ = gfx::ImageSkia();
