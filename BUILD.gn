@@ -483,7 +483,7 @@ action("audit_deps") {
   args = [
     "--source_root=" + rebase_path("//brave"),
     "--rustup_path=" + rustup_path,
-    "--cargo_path=" + rebase_path("//brave/build/rust/"),
+    "--cargo_path=" + rustup_path,
   ]
 
   if (defined(rustc_toolchain)) {

@@ -13,12 +13,18 @@ import sys
 
 from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
 
-
+# Exclude these paths (and their subdirectories) from auditing (npm and cargo).
 EXCLUDE_PATHS = [
     'build',
     os.path.join('components', 'brave_sync', 'extension', 'brave-sync', 'node_modules'),
     os.path.join('node_modules'),
     os.path.join('vendor', 'brave-extension', 'node_modules'),
+]
+
+# Only inspect these paths (and their subdirectories) in cargo_audit_deps().
+# The exclusions above take precedence over these inclusions.
+CARGO_INCLUDE_PATHS = [
+    os.path.join('build', 'rust'),
 ]
 
 # Ping security team before adding to ignored_npm_advisories
@@ -53,19 +59,17 @@ def main():
 
 
 def audit_path(path, args):
+    return npm_audit_deps(path, args) and cargo_audit_deps(path, args)
+
+
+def npm_audit_deps(path, args):
     if os.path.isfile(os.path.join(path, 'package.json')) and \
        os.path.isfile(os.path.join(path, 'package-lock.json')) and \
        os.path.isdir(os.path.join(path, 'node_modules')):
         print('Auditing (npm) %s' % path)
-        return npm_audit_deps(path, args)
-    elif os.path.isfile(os.path.join(path, 'Cargo.toml')) and os.path.isfile(os.path.join(path, 'Cargo.lock')):
-        print('Auditing (cargo) %s' % path)
-        return cargo_audit_deps(path, args)
+    else:
+        return 0
 
-    return 0
-
-
-def npm_audit_deps(path, args):
     npm_cmd = 'npm'
     if sys.platform.startswith('win'):
         npm_cmd = 'npm.cmd'
@@ -101,6 +105,14 @@ def npm_audit_deps(path, args):
 
 
 def cargo_audit_deps(path, args):
+    full_path = os.path.join(args.source_root, path)
+    if os.path.isfile(os.path.join(path, 'Cargo.toml')) and \
+         os.path.isfile(os.path.join(path, 'Cargo.lock')) and \
+         any(full_path.startswith(p) for p in CARGO_INCLUDE_PATHS):
+        print('Auditing (cargo) %s' % path)
+    else:
+        return 0
+
     rustup_path = args.rustup_path
     cargo_path = args.cargo_path
 
