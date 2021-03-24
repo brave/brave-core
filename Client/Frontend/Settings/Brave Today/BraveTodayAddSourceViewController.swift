@@ -165,7 +165,9 @@ class BraveTodayAddSourceViewController: UITableViewController {
                 completion(.failure(.dataTaskError(error)))
                 return
             }
-            guard let data = data, let root = try? HTMLDocument(data: data) else {
+            guard let data = data,
+                  let root = try? HTMLDocument(data: data),
+                  let url = response?.url else {
                 completion(.failure(.invalidData))
                 return
             }

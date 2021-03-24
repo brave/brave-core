@@ -345,7 +345,9 @@ class FaviconFetcher {
     private func parseHTMLForFavicons(for url: URL, _ completion: @escaping (FaviconAttributes) -> Void) {
         let pageTask = session.dataTask(with: url) { [weak self] (data, response, error) in
             guard let self = self else { return }
-            guard let data = data, error == nil, let root = try? HTMLDocument(data: data) else {
+            guard let data = data, error == nil,
+                  let root = try? HTMLDocument(data: data),
+                  let url = response?.url else {
                 completion(self.monogramFavicon)
                 return
             }
