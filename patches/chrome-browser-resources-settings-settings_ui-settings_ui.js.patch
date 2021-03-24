@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/settings/settings_ui/settings_ui.js b/chrome/browser/resources/settings/settings_ui/settings_ui.js
-index 9216415a0b2ad96e098672454ee09671a736aa9b..076c845668774de2b0a4e1dbe34aa522e0a91aed 100644
+index f6382e83ac0ba2e4f244f5c0658b19e3a09232a3..6eadfa1fc42ae763b0001da2185584d3a891af6c 100644
 --- a/chrome/browser/resources/settings/settings_ui/settings_ui.js
 +++ b/chrome/browser/resources/settings/settings_ui/settings_ui.js
 @@ -12,7 +12,7 @@
   */
- import 'chrome://resources/cr_elements/cr_drawer/cr_drawer.m.js';
+ import 'chrome://resources/cr_elements/cr_drawer/cr_drawer.js';
  import 'chrome://resources/cr_elements/cr_page_host_style_css.m.js';
 -import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
 +import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js';
