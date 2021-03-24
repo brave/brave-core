@@ -6,13 +6,14 @@
 
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -21,8 +22,8 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl* ledger):
-    ledger_(ledger) {
+PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl* ledger)
+    : ledger_(ledger) {
   DCHECK(ledger_);
 }
 
@@ -41,10 +42,8 @@ std::string PostSuggestionsClaim::GeneratePayload(
   }
 
   base::Value credentials(base::Value::Type::LIST);
-  credential::GenerateCredentials(
-      redeem.token_list,
-      wallet->payment_id,
-      &credentials);
+  credential::GenerateCredentials(redeem.token_list, wallet->payment_id,
+                                  &credentials);
 
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetStringKey("paymentId", wallet->payment_id);
@@ -76,17 +75,15 @@ type::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
 void PostSuggestionsClaim::Request(
     const credential::CredentialsRedeem& redeem,
     PostSuggestionsClaimCallback callback) {
-  auto url_callback = std::bind(&PostSuggestionsClaim::OnRequest,
-      this,
-      _1,
-      callback);
+  auto url_callback =
+      std::bind(&PostSuggestionsClaim::OnRequest, this, _1, callback);
 
   const std::string payload = GeneratePayload(redeem);
 
-  const auto wallet = ledger_->wallet()->GetWallet();
+  auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -109,7 +106,33 @@ void PostSuggestionsClaim::OnRequest(
     const type::UrlResponse& response,
     PostSuggestionsClaimCallback callback) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  auto result = CheckStatusCode(response.status_code);
+  if (result != type::Result::LEDGER_OK) {
+    callback(result, "");
+    return;
+  }
+
+  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
+  if (!value || !value->is_dict()) {
+    BLOG(0, "Invalid JSON");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(0, "Invalid JSON");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  auto* drain_id = dictionary->FindStringKey("drain_id");
+  if (!drain_id) {
+    BLOG(0, "Missing drain id");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+  callback(result, *drain_id);
 }
 
 }  // namespace promotion

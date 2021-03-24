@@ -144,7 +144,7 @@ void Wallet::ClaimFunds(ledger::ResultCallback callback) {
 
     // tokens claim
     ledger_->promotion()->TransferTokens(
-        [callback](const type::Result result) {
+        [callback](const type::Result result, std::string drain_id) {
           if (result != type::Result::LEDGER_OK) {
             BLOG(0, "Claiming tokens failed");
             callback(type::Result::CONTINUE);
@@ -241,8 +241,8 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
   const std::string seed_string = base::Base64Encode(wallet->recovery_seed);
   std::string event_string;
   if (wallet->recovery_seed.size() > 1) {
-    event_string = std::to_string(
-        wallet->recovery_seed[0] + wallet->recovery_seed[1]);
+    event_string =
+        std::to_string(wallet->recovery_seed[0] + wallet->recovery_seed[1]);
   }
 
   base::Value new_wallet(base::Value::Type::DICTIONARY);
@@ -264,15 +264,13 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
   return success;
 }
 
-void Wallet::LinkBraveWallet(
-    const std::string& destination_payment_id,
-    ledger::ResultCallback callback) {
+void Wallet::LinkBraveWallet(const std::string& destination_payment_id,
+                             ledger::PostSuggestionsClaimCallback callback) {
   promotion_server_->post_claim_brave()->Request(
-      destination_payment_id,
-      [this, callback](const type::Result result) {
+      destination_payment_id, [this, callback](const type::Result result) {
         if (result != type::Result::LEDGER_OK &&
             result != type::Result::ALREADY_EXISTS) {
-          callback(result);
+          callback(result, "");
           return;
         }
 

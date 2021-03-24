@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ledger/internal/credentials/credentials_factory.h"
+#include "bat/ledger/internal/credentials/credentials_promotion.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -29,7 +29,7 @@ class PromotionTransfer {
 
   void GetAmount(ledger::GetTransferableAmountCallback callback);
 
-  void Start(ledger::ResultCallback callback);
+  void Start(ledger::PostSuggestionsClaimCallback callback);
 
  private:
   void GetEligibleTokens(GetEligibleTokensCallback callback);
@@ -38,14 +38,13 @@ class PromotionTransfer {
       type::PromotionList promotions,
       GetEligibleTokensCallback callback);
 
-  void OnGetEligibleTokens(
-      type::UnblindedTokenList list,
-      ledger::ResultCallback callback);
+  void OnGetEligibleTokens(type::UnblindedTokenList list,
+                           ledger::PostSuggestionsClaimCallback callback);
 
   std::vector<type::PromotionType> GetEligiblePromotions();
 
   LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<credential::Credentials> credentials_;
+  std::unique_ptr<credential::CredentialsPromotion> credentials_;
 };
 
 }  // namespace promotion

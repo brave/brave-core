@@ -774,7 +774,7 @@ void Promotion::ErrorCredsStatusSaved(const type::Result result) {
   ledger_->database()->GetAllPromotions(retry_callback);
 }
 
-void Promotion::TransferTokens(ledger::ResultCallback callback) {
+void Promotion::TransferTokens(ledger::PostSuggestionsClaimCallback callback) {
   transfer_->Start(callback);
 }
 
@@ -789,6 +789,11 @@ void Promotion::OnLastCheckTimerElapsed() {
 void Promotion::GetTransferableAmount(
     ledger::GetTransferableAmountCallback callback) {
   transfer_->GetAmount(callback);
+}
+
+void Promotion::GetDrainStatus(const std::string& drain_id,
+                               ledger::GetDrainCallback callback) {
+  promotion_server_->get_drain()->Request(drain_id, callback);
 }
 
 }  // namespace promotion
