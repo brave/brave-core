@@ -33,6 +33,8 @@ class EphemeralStorageTabHelper
   explicit EphemeralStorageTabHelper(content::WebContents* web_contents);
   ~EphemeralStorageTabHelper() override;
 
+  static void SetKeepAliveTimeDelayForTesting(const base::TimeDelta& time);
+
  protected:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;

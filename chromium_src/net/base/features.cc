@@ -9,5 +9,8 @@ namespace net {
 namespace features {
 const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
                                            base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kBraveEphemeralStorageKeepAlive{
+    "BraveEphemeralStorageKeepAlive",
+    base::FEATURE_DISABLED_BY_DEFAULT};
 }  // namespace features
 }  // namespace net

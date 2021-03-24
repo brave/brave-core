@@ -13,6 +13,7 @@ namespace net {
 namespace features {
 
 NET_EXPORT extern const base::Feature kBraveEphemeralStorage;
+NET_EXPORT extern const base::Feature kBraveEphemeralStorageKeepAlive;
 
 }  // namespace features
 }  // namespace net

@@ -62,6 +62,11 @@ const char kBraveSuperReferralDescription[] =
 const char kBraveEphemeralStorageName[] = "Enable Ephemeral Storage";
 const char kBraveEphemeralStorageDescription[] =
     "Use ephemeral storage for third-party frames";
+const char kBraveEphemeralStorageKeepAliveName[] =
+    "Ephermal Storage Keep Alive";
+const char kBraveEphemeralStorageKeepAliveDescription[] =
+    "Keep ephermal storage partitions alive for 30 seconds after last tab "
+    "close";
 const char kBravePermissionLifetimeName[] = "Permission Lifetime";
 const char kBravePermissionLifetimeDescription[] =
     "Enables the option to choose a time period after which a permission will "
