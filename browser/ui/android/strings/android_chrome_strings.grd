@@ -2302,9 +2302,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Download UI -->
-      <message name="IDS_DOWNLOAD_NOTIFICATION_COMPLETED" desc="Download notification to be displayed when a download completes.">
-        Download complete
-      </message>
       <message name="IDS_DOWNLOAD_NOTIFICATION_PENDING" desc="Download notification to be displayed when a download has been scheduled but has not started being fetched from the network.">
         Download pending…
       </message>
@@ -3991,6 +3988,14 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Send text to Your Devices
       </message>
 
+      <!-- Sms Fetcher -->
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TITLE" translateable="false" desc="Title text shown when the browser has received an SMS on the user's behalf.">
+        Tap to verify your phone number on desktop
+      </message>
+      <message name="IDS_SMS_FETCHER_NOTIFICATION_TEXT" translateable="false" desc="Content text shown when the browser has received an SMS on the user's behalf.">
+        <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> is your code for <ph name="ORIGIN">%2$s<ex>example.com</ex></ph>
+      </message>
+
       <!-- Interventions -->
       <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
          Redirect blocked:
@@ -4134,6 +4139,26 @@ Data from your Private session will only be cleared from Brave when you <ph name
 
       <message name="IDS_CABLEV2_SERVERLINK_STATUS_PROCESSING" desc="A small subheader on a screen that is shown when a user is connecting their phone to a desktop or laptop computer in order to sign in with it. (In the attached image, this text will appear in place of the text 'This may take a minute'.) This text is shown once a challenge from the desktop/laptop has been received.">
         Processing request
+      </message>
+
+      <message name="IDS_CABLEV2_ERROR_TITLE" desc="The title of an error screen shown when the user is trying to use their phone to sign into a website on a laptop, but something (probably out of their control) went wrong">
+        Something went wrong
+      </message>
+
+      <message name="IDS_CABLEV2_ERROR_TIMEOUT" desc="The description of an error shown when the user is trying to use their phone to sign into a website on a laptop, but the phone was until to contact the laptop within a reasonable amount of time.">
+        Can’t connect to your computer. Try another verification option.
+      </message>
+
+      <message name="IDS_CABLEV2_ERROR_GENERIC" desc="The description of an error shown when the user is trying to use their phone to sign into a website on a laptop, but some generic error occured.">
+        Try another verification option
+      </message>
+
+      <message name="IDS_CABLEV2_ERROR_CODE" desc="A line of text on an error screen that is shown with lower contrast in order to include a numeric error code to aid in debugging.">
+        (Error <ph name="error_code">%1$d<ex>104</ex></ph>)
+      </message>
+
+      <message name="IDS_CABLEV2_ERROR_CLOSE" desc="A button at the bottom on an error screen to dismiss it">
+        Close
       </message>
 
       <!-- QR Code -->
