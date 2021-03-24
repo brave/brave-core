@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index fa88280ce6389391134ed927f5a21b30e27f6b5d..c222f0114f67fafcc8c3096b5c063cff15f0f399 100644
+index b004715304b2ee370efe80eb0bbd3b5f0c73ff58..5e34ced8aa72754c2cdc77f494c11a567d5f3f80 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -408,6 +408,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -26,7 +26,7 @@ index fa88280ce6389391134ed927f5a21b30e27f6b5d..c222f0114f67fafcc8c3096b5c063cff
          return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
      }
  
-@@ -2112,6 +2115,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2113,6 +2116,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }

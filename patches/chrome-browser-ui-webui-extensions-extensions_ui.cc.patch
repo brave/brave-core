@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index bc380760dcde83084ac15c503e8cfacea7798d17..18007820fb21a570e7fba51389e7e324538f1e8e 100644
+index 6caf61fd40184e8ed19fd69eae2ef1a994f6e0f9..8b5b661c1e0e22b55051c5365302cc5a3c64a26e 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
 @@ -344,6 +344,8 @@ content::WebUIDataSource* CreateMdExtensionsSource(Profile* profile,
