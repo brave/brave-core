@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { WalletAccountType } from '../connect-with-site-panel'
+import { WalletAccountType } from '../../../constants/types'
 
 // Styled Components
 import {
