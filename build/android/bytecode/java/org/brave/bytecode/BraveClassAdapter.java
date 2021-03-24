@@ -9,7 +9,7 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
-        chain = new BraveActivityClassAdapter(chain);
+        chain = new BraveActivityClassAdapter(chain);   
         chain = new BraveAndroidSyncSettingsClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
         chain = new BraveBookmarkUtilsClassAdapter(chain);
@@ -38,6 +38,8 @@ public class BraveClassAdapter {
         chain = new BraveToolbarLayoutClassAdapter(chain);
         chain = new BraveToolbarManagerClassAdapter(chain);
         chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
+        chain = new BraveSiteSettingsDelegateAdapter(chain);
+        chain = new BraveSingleCategorySettingsAdapter(chain);
         return chain;
     }
 }
