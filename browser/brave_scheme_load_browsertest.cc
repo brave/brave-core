@@ -203,15 +203,15 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 
 // Check renderer crash happened by observing related notification.
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, CrashURLTest) {
-  content::WindowedNotificationObserver observer(
-      content::NOTIFICATION_WEB_CONTENTS_DISCONNECTED,
-      content::NotificationService::AllSources());
+  content::RenderProcessHostWatcher crash_observer(
+      browser()->tab_strip_model()->GetActiveWebContents(),
+      content::RenderProcessHostWatcher::WATCH_FOR_PROCESS_EXIT);
   content::ScopedAllowRendererCrashes allow_renderer_crashes(active_contents());
   browser()->OpenURL(
       content::OpenURLParams(GURL("brave://crash/"), content::Referrer(),
                              WindowOpenDisposition::CURRENT_TAB,
                              ui::PAGE_TRANSITION_TYPED, false));
-  observer.Wait();
+  crash_observer.Wait();
 }
 
 // Some webuis are not allowed to load in private window.

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
-index 219aad30b54a4cdbd9530b7f908ec07c4910b174..0da272b2d5c151302c42a61b1fe24484f4a532ea 100644
+index 8851486e8bd107f05cb1026ba268cb0256530c76..796277b07d3a21b17039e6cd6e7d835d70fb0809 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
 @@ -75,6 +75,7 @@ public class SuggestionsTileView extends TileView {
@@ -8,5 +8,5 @@ index 219aad30b54a4cdbd9530b7f908ec07c4910b174..0da272b2d5c151302c42a61b1fe24484
                      resources.getDimensionPixelSize(R.dimen.tile_view_icon_margin_top_modern);
 +            params.width = resources.getDimensionPixelSize(R.dimen.brave_tile_view_icon_size_modern);params.height=resources.getDimensionPixelSize(R.dimen.brave_tile_view_icon_size_modern);params.topMargin=resources.getDimensionPixelSize(R.dimen.brave_tile_view_icon_margin_top_modern);
          }
-         mIconView.setLayoutParams(params);
+         getIconView().setLayoutParams(params);
      }

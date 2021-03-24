@@ -1,9 +1,9 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index ef410e799aff8363450ca2122f282a68309b8ce7..39cc5f5cf9c44d3ce54db99e9a88408c83e4efbb 100644
+index 764c726b9889e39787d6fdf53db5d9fd450341b5..dcbb79371a0e5204a2c1bc165bf2ac4dd9a33a1f 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -62,6 +62,7 @@ static_library("browser") {
-     "//services/preferences/public/cpp",
+@@ -63,6 +63,7 @@ static_library("browser") {
+     "//services/tracing/public/cpp",
      "//url",
    ]
 +  deps += [ "//brave/components/content_settings/core/browser" ]

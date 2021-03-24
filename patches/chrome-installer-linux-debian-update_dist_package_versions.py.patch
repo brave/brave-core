@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/update_dist_package_versions.py b/chrome/installer/linux/debian/update_dist_package_versions.py
-index 00bccb4cc7e13290f04af322e3868131567a16b1..44cd896b1a0129e1669432d20b553f28d0357cde 100755
+index 90a32b8e2418da86efe019ccf6e2c23da4205213..d0acee31a30c708f40bb202528b36f610b48e481 100755
 --- a/chrome/installer/linux/debian/update_dist_package_versions.py
 +++ b/chrome/installer/linux/debian/update_dist_package_versions.py
 @@ -42,6 +42,7 @@ PACKAGE_FILTER = set([
@@ -10,7 +10,7 @@ index 00bccb4cc7e13290f04af322e3868131567a16b1..44cd896b1a0129e1669432d20b553f28
      "libcups2",
      "libdbus-1-3",
      "libdrm2",
-@@ -73,6 +74,7 @@ PACKAGE_FILTER = set([
+@@ -72,6 +73,7 @@ PACKAGE_FILTER = set([
      "libxshmfence1",
      "libxss1",
      "libxtst6",

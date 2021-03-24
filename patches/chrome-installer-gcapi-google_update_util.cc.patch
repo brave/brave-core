@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/gcapi/google_update_util.cc b/chrome/installer/gcapi/google_update_util.cc
-index 53a42d799992b4530c8a78513350cf501bcd0e97..ca86637e93e635c6e251e3e24a5e13731aec0eca 100644
+index e927c346623b3be564778d12d2ef28aa9f450365..1319910bc4eed406cd7dd7eca9ce5395155fbf37 100644
 --- a/chrome/installer/gcapi/google_update_util.cc
 +++ b/chrome/installer/gcapi/google_update_util.cc
 @@ -11,6 +11,17 @@
@@ -27,4 +27,4 @@ index 53a42d799992b4530c8a78513350cf501bcd0e97..ca86637e93e635c6e251e3e24a5e1373
 +#endif
  
  // Mirror the strategy used by GoogleUpdateSettings::GetBrand.
- bool GetBrand(base::string16* value) {
+ bool GetBrand(std::wstring* value) {

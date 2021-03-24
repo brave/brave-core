@@ -255,9 +255,13 @@ const util = {
     fileMap.add([path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'), path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg'), path.join(chromeBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'settings', 'images'), path.join(chromeBrowserResourcesDir, 'settings', 'images')])
+    fileMap.add([path.join(braveBrowserResourcesDir, 'signin', 'profile_picker', 'images'), path.join(chromeBrowserResourcesDir, 'signin', 'profile_picker', 'images')])
     // Copy to make our ${branding_path_component}_behaviors.cc
     fileMap.add([path.join(config.braveCoreDir, 'chromium_src', 'chrome', 'installer', 'setup', 'brave_behaviors.cc'),
                  path.join(config.srcDir, 'chrome', 'installer', 'setup', 'brave_behaviors.cc')])
+    // Replace webui CSS to use our fonts.
+    fileMap.add([path.join(config.braveCoreDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css'),
+                 path.join(config.srcDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css')])
 
     for (const [source, output] of fileMap) {
       if (!fs.existsSync(source)) {
@@ -345,6 +349,10 @@ const util = {
       const androidContentPublicResDest = path.join(config.srcDir, 'content', 'public', 'android', 'java', 'res')
       const androidTouchtoFillResSource = path.join(config.braveCoreDir, 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
       const androidTouchtoFillResDest = path.join(config.srcDir, 'chrome', 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
+      const androidToolbarResSource = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
+      const androidToolbarResDest = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
+      const androidComponentsResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+      const androidComponentsResDest = path.join(config.srcDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
 
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
@@ -353,7 +361,9 @@ const util = {
         [androidResSource]: [androidResDest],
         [androidResTemplateSource]: [androidResTemplateDest],
         [androidContentPublicResSource]: [androidContentPublicResDest],
-        [androidTouchtoFillResSource]: [androidTouchtoFillResDest]
+        [androidTouchtoFillResSource]: [androidTouchtoFillResDest],
+        [androidToolbarResSource]: [androidToolbarResDest],
+        [androidComponentsResSource]: [androidComponentsResDest]
       }
 
       console.log('copy Android app icons and app resources')
@@ -433,24 +443,49 @@ const util = {
         '--private_key_passphrase=' + passwd])
   },
 
-  copyRedirectCC: () => {
-    // On Windows copy redirect-cc.py to the output dir so we can execute it
-    // from there to shorten the command line in brave/script/redirect-cc.cmd
-    console.log('Copying redirect-cc.py...')
-    const src = path.join(config.braveCoreDir, 'script', 'redirect-cc.py')
-    const dst = path.join(config.outputDir, 'redirect.py')
-    if (!fs.existsSync(config.outputDir)) {
-      fs.mkdirSync(config.outputDir);
+  buildRedirectCCTool: () => {
+    // Expected path to redirect-cc.exe
+    const redirectCCExe = path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
+    // Only build if missing
+    if (fs.existsSync(redirectCCExe)) {
+      return
     }
-    fs.copyFileSync(src, dst)
+    
+    console.log('building redirect-cc.exe...')
+    // Determine Visual Studio path and version
+    const vsToolchainPath = path.join(config.srcDir, 'build', 'vs_toolchain.py')
+    // Don't update depot_tools while checking
+    const depotToolsWinToolchain = process.env.DEPOT_TOOLS_WIN_TOOLCHAIN
+    process.env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
+    const vsInfo = util.run('python', [vsToolchainPath, 'get_toolchain_dir']).stdout.toString()
+    if (depotToolsWinToolchain) {
+      process.env.DEPOT_TOOLS_WIN_TOOLCHAIN = depotToolsWinToolchain
+    } else {
+      delete process.env.DEPOT_TOOLS_WIN_TOOLCHAIN
+    }
+    const vsPath = vsInfo.split('\n', 1)[0].split('=', 2)[1].trim().replace(/"/g, '')
+    const vsVersion = vsInfo.split('\n', 3)[2].split('=', 2)[1].trim().replace(/"/g, '')
+    // Path to MSBuild.exe
+    let msBuild = ''
+    if (vsVersion === '2017') {
+      msBuild = path.join(vsPath, 'MSBuild', '15.0', 'Bin', 'MSBuild.exe')
+    } else if (vsVersion === '2019') {
+      msBuild = path.join(vsPath, 'MSBuild', 'Current', 'Bin', 'MSBuild.exe')
+    } else {
+      throw 'Error: unexpected version of Visual Studio: ' + vsVersion
+    }
+    // Build redirect-cc.sln
+    const redirectCCSln = path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'redirect-cc.sln')
+    const arch = process.arch === 'x32' ? 'x86' : process.arch
+    util.run(msBuild, [redirectCCSln, '/p:Configuration=Release', '/p:Platform=' + arch, '/verbosity:quiet'])
   },
 
   buildTarget: (options = config.defaultOptions) => {
     console.log('building ' + config.buildTarget + '...')
 
     if (process.platform === 'win32') {
-      util.copyRedirectCC()
       util.updateOmahaMidlFiles()
+      util.buildRedirectCCTool()
     }
 
     let num_compile_failure = 1

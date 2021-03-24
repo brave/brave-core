@@ -65,8 +65,8 @@
   <message name="IDS_AUTOFILL_CC_ELO" desc="Elo credit card name.">
     Elo
   </message>
-  <message name="IDS_AUTOFILL_CC_GOOGLE_ISSUED" desc="Brave issued card name" formatter_data="android_java">
-    Brave
+  <message name="IDS_AUTOFILL_CC_GOOGLE_ISSUED" desc="Prefix for the Brave Plex card" formatter_data="android_java">
+    Plex
   </message>
   <message name="IDS_AUTOFILL_CC_GOOGLE_PAY" desc="Brave pay brand name">
     Brave Pay

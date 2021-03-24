@@ -190,7 +190,7 @@ CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
       isolated_world_id_(isolated_world_id),
       enabled_1st_party_cf_(false) {
   if (g_observing_script->empty()) {
-    *g_observing_script = LoadDataResource(kCosmeticFiltersGenerated[0].value);
+    *g_observing_script = LoadDataResource(kCosmeticFiltersGenerated[0].id);
   }
   EnsureConnected();
 }

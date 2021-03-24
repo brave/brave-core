@@ -6,9 +6,10 @@
 #include "components/permissions/permission_uma_util.h"
 
 #include "build/build_config.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 // Since we don't do UMA just reuse an existing UMA type instead of adding one.
-#if !defined(OS_ANDROID) && !defined(OS_IOS)
+#if BUILDFLAG(ENABLE_WIDEVINE)
 #define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE \
   case RequestType::kWidevine:               \
     return RequestTypeForUma::PERMISSION_WINDOW_PLACEMENT;

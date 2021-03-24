@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/browser_actions_container.h b/chrome/browser/ui/views/toolbar/browser_actions_container.h
-index c48a0f45febd38254cd157467d3b5697bcadb26b..17263d3b821b8cdf3788dc507f990deb7da42b0d 100644
+index 82b54ed855ff670d558e55cd686106ace88128eb..a5e88d9715baa3abd58bec57d3fb57dc3ae82e8f 100644
 --- a/chrome/browser/ui/views/toolbar/browser_actions_container.h
 +++ b/chrome/browser/ui/views/toolbar/browser_actions_container.h
-@@ -260,6 +260,7 @@ class BrowserActionsContainer : public views::View,
+@@ -262,6 +262,7 @@ class BrowserActionsContainer : public views::View,
    static views::FlexRule GetFlexRule();
  
   protected:

@@ -30,6 +30,7 @@ source_set("brave_rewards_unit_tests") {
       "//brave/vendor/bat-native-ledger:publishers_proto",
       "//brave/vendor/bat-native-rapidjson",
       "//chrome/browser:browser",
+      "//chrome/browser/profiles:profile",
       "//content/test:test_support",
       "//net:net",
       "//ui/base:base",

@@ -39,5 +39,6 @@ void BraveWaybackMachineInfoBarView::Layout() {
   // Don't adjust child view's height. Just use their preferred height.
   // It can cause infinite Layout loop because of infobar's height
   // re-calculation during the animation.
-  sub_views_->SetBounds(0, OffsetY(sub_views_), EndX(), sub_views_->height());
+  sub_views_->SetBounds(0, OffsetY(sub_views_), GetEndX(),
+                        sub_views_->height());
 }

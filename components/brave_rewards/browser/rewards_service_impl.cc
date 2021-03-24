@@ -3219,14 +3219,11 @@ void RewardsServiceImpl::RunDBTransaction(
     ledger::client::RunDBTransactionCallback callback) {
   DCHECK(ledger_database_);
   base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnFileTaskRunner,
-          base::Passed(std::move(transaction)),
-          ledger_database_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction,
-          AsWeakPtr(),
-          std::move(callback)));
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
+                     ledger_database_.get()),
+      base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::OnRunDBTransaction(

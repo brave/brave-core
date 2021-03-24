@@ -146,10 +146,6 @@ std::string BraveComponentInstallerPolicy::GetName() const {
   return name_;
 }
 
-std::vector<std::string> BraveComponentInstallerPolicy::GetMimeTypes() const {
-  return std::vector<std::string>();
-}
-
 update_client::InstallerAttributes
 BraveComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();

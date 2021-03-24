@@ -5,7 +5,7 @@
  */
 
 /* This is a replacement for:
- * chromium/ui/webui/resources/css/text_defaults.css
+ * chromium/ui/webui/resources/css/text_defaults_md.css
  * An alternative approach would be to patch that file
  * to import this file, which could mark as !important
  * anything to take precedence.

@@ -14,6 +14,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
+#include "url/gurl.h"
 
 using brave_shields::ControlType;
 using brave_shields::ControlTypeFromString;

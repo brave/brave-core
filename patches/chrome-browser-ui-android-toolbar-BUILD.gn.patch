@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index abd6f292fd90d245a499a6227b2b40a1c2939b19..4ef5c825677f7c5776de9556104fd7ed35b36c3e 100644
+index 55c37bed11334204f80f9a55ce7bf5de35724145..45e42f20ffa931d6259169b583a8eb48329f44cc 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
-@@ -30,6 +30,7 @@ android_library("java") {
-     "java/src/org/chromium/chrome/browser/toolbar/top/ToolbarActionModeCallback.java",
+@@ -60,6 +60,7 @@ android_library("java") {
+     "java/src/org/chromium/chrome/browser/toolbar/top/TopToolbarSceneLayer.java",
      "java/src/org/chromium/chrome/browser/toolbar/top/ViewShiftingActionBarDelegate.java",
    ]
 +  sources += brave_browser_ui_android_toolbar_sources

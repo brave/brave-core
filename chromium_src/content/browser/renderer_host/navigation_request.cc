@@ -21,7 +21,7 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
   // On Android, a base URL can be set for the frame. If this the case, it is
   // the URL to use for cookies.
   content::NavigationEntry* last_committed_entry =
-      frame_tree_node->navigator().GetController()->GetLastCommittedEntry();
+      frame_tree_node->navigator().controller().GetLastCommittedEntry();
   if (last_committed_entry)
     gurl = last_committed_entry->GetBaseURLForDataURL();
 #endif
@@ -32,11 +32,11 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
 
 }  // namespace
 
-#define BRAVE_ONREQUESTREDIRECTED_MAYBEHIDEREFERRER                       \
-  BrowserContext* browser_context =                                       \
-      frame_tree_node_->navigator().GetController()->GetBrowserContext(); \
-  GetContentClient()->browser()->MaybeHideReferrer(                       \
-      browser_context, common_params_->url,                               \
+#define BRAVE_ONREQUESTREDIRECTED_MAYBEHIDEREFERRER                   \
+  BrowserContext* browser_context =                                   \
+      frame_tree_node_->navigator().controller().GetBrowserContext(); \
+  GetContentClient()->browser()->MaybeHideReferrer(                   \
+      browser_context, common_params_->url,                           \
       GetTopDocumentGURL(frame_tree_node_), &common_params_->referrer);
 
 #define BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER \
@@ -47,9 +47,9 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
 #define BRAVE_NAVIGATION_REQUEST_ADD_ADDITIONAL_REQUEST_HEADERS \
   ? GetContentClient()->browser()->GetEffectiveUserAgent(browser_context, url)
 
-#define BRAVE_NAVIGATION_REQUEST_SET_IS_OVERRIDING_USERAGENT                \
-  ? GetContentClient()->browser()->GetEffectiveUserAgent(                   \
-        frame_tree_node_->navigator().GetController()->GetBrowserContext(), \
+#define BRAVE_NAVIGATION_REQUEST_SET_IS_OVERRIDING_USERAGENT            \
+  ? GetContentClient()->browser()->GetEffectiveUserAgent(               \
+        frame_tree_node_->navigator().controller().GetBrowserContext(), \
         GetURL())
 
 #include "../../../../../content/browser/renderer_host/navigation_request.cc"

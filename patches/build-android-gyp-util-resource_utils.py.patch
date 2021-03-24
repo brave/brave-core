@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/util/resource_utils.py b/build/android/gyp/util/resource_utils.py
-index 7b83981c32a00f9a86e9b40b6a91a5d9cea44404..46d022cdf9487a5e1f1caa774cea27f37a51f33f 100644
+index d8015326691d9338c7100ebfcea770ffe48b62cb..ff3a3c52d1671d04b9dc3f25c89daf52d84d5f69 100644
 --- a/build/android/gyp/util/resource_utils.py
 +++ b/build/android/gyp/util/resource_utils.py
 @@ -257,6 +257,7 @@ class ResourceInfoFile(object):

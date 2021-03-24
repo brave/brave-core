@@ -3,11 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "base/values.h"
-#include "brave/grit/brave_theme_resources.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
+
+#include "base/values.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "brave/grit/brave_theme_resources.h"
 #include "chrome/grit/theme_resources.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/native_theme/native_theme.h"
 
 // First, define anything that patches will rely on.
@@ -43,17 +45,20 @@ size_t GetBraveAvatarIconStartIndex();
 }  // namespace profiles
 
 // Override some functions (see implementations for details).
-#define GetCustomProfileAvatarIconsAndLabels \
-  GetCustomProfileAvatarIconsAndLabels_ChromiumImpl
 #define IsDefaultAvatarIconUrl IsDefaultAvatarIconUrl_ChromiumImpl
 #define GetGuestAvatar GetGuestAvatar_ChromiumImpl
+#define GetPlaceholderAvatarIconWithColors \
+  GetPlaceholderAvatarIconWithColors_ChromiumImpl
+#define GetDefaultProfileAvatarIconAndLabel \
+  GetDefaultProfileAvatarIconAndLabel_ChromiumImpl
 
 #include "../../../../../chrome/browser/profiles/profile_avatar_icon_util.cc"
 #undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
 #undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
-#undef GetCustomProfileAvatarIconsAndLabels
 #undef IsDefaultAvatarIconUrl
 #undef GetGuestAvatar
+#undef GetPlaceholderAvatarIconWithColors
+#undef GetDefaultProfileAvatarIconAndLabel
 
 namespace profiles {
 
@@ -155,23 +160,6 @@ const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
 #endif
 }
 
-std::unique_ptr<base::ListValue> GetCustomProfileAvatarIconsAndLabels(
-    size_t selected_avatar_idx) {
-  auto avatars =
-      GetCustomProfileAvatarIconsAndLabels_ChromiumImpl(selected_avatar_idx);
-#if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
-  //  Insert the 'placeholder' item, so it is still selectable
-  //  in the Settings and Profile Manager WebUI.
-  avatars->Insert(
-      0, GetAvatarIconAndLabelDict(
-             profiles::GetPlaceholderAvatarIconUrl(),
-             l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER),
-             GetPlaceholderAvatarIndex(),
-             selected_avatar_idx == GetPlaceholderAvatarIndex(), false));
-#endif
-  return avatars;
-}
-
 bool IsDefaultAvatarIconUrl(const std::string& url, size_t* icon_index) {
   // Brave supports user choosing the placeholder avatar, Chromium does not.
   if (url.compare(GetPlaceholderAvatarIconUrl()) == 0) {
@@ -187,6 +175,32 @@ ui::ImageModel GetGuestAvatar(int size) {
       ui::NativeTheme::GetInstanceForNativeUi()->GetSystemColor(
           ui::NativeTheme::kColorId_DefaultIconColor),
       size);
+}
+
+gfx::Image GetPlaceholderAvatarIconWithColors(SkColor fill_color,
+                                              SkColor stroke_color,
+                                              int size) {
+  return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+      GetPlaceholderAvatarIconResourceID());
+}
+
+// Have to redo implementation here because of the re-definition of the
+// GetPlaceholderAvatarIconWithColors function above which is used in this
+// function. Also, changes the label from "Default Avatar" to our placeholder
+// avatar name.
+std::unique_ptr<base::DictionaryValue> GetDefaultProfileAvatarIconAndLabel(
+    SkColor fill_color,
+    SkColor stroke_color,
+    bool selected) {
+  std::unique_ptr<base::DictionaryValue> avatar_info(
+      new base::DictionaryValue());
+  gfx::Image icon = profiles::GetPlaceholderAvatarIconWithColors(
+      fill_color, stroke_color, kAvatarIconSize);
+  size_t index = profiles::GetPlaceholderAvatarIndex();
+  return GetAvatarIconAndLabelDict(
+      webui::GetBitmapDataUrl(icon.AsBitmap()),
+      l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER), index,
+      selected, /*is_gaia_avatar=*/false);
 }
 
 }  // namespace profiles

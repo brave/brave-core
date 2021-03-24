@@ -95,6 +95,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         removePreferenceIfPresent(MainSettings.PREF_SEARCH_ENGINE);
         removePreferenceIfPresent(MainSettings.PREF_UI_THEME);
         removePreferenceIfPresent(MainSettings.PREF_DOWNLOADS);
+        removePreferenceIfPresent(MainSettings.PREF_SAFETY_CHECK);
         removePreferenceIfPresent(PREF_LANGUAGES);
 
         updateSearchEnginePreference();

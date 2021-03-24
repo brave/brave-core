@@ -1,5 +1,5 @@
 diff --git a/components/update_client/updater_state_win.cc b/components/update_client/updater_state_win.cc
-index 89c2c186f9c095d6c2a9210ca2c4e8a94ee64b98..7aa7afec5dc013785973a5ef2d13bf8367ebe5d6 100644
+index 565073acfa1b1bfc09d18e0b88dba67b5d1714fe..152442fabbfe14474aef6f023ed33769f51a87c3 100644
 --- a/components/update_client/updater_state_win.cc
 +++ b/components/update_client/updater_state_win.cc
 @@ -25,20 +25,32 @@ namespace {

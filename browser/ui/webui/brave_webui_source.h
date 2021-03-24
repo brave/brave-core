@@ -8,18 +8,20 @@
 
 #include <string>
 
-struct GritResourceMap;
-
 namespace content {
 class WebUI;
 class WebUIDataSource;
 }  // namespace content
 
+namespace webui {
+struct ResourcePath;
+}  // namespace webui
+
 // Add brave resource path mapping and localized strings to new data source.
 content::WebUIDataSource* CreateAndAddWebUIDataSource(
     content::WebUI* web_ui,
     const std::string& name,
-    const GritResourceMap* resource_map,
+    const webui::ResourcePath* resource_map,
     size_t resouece_map_size,
     int html_resource_id,
     bool disable_trusted_types_csp = false);

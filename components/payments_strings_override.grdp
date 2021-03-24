@@ -32,4 +32,6 @@
   <if expr="not is_android">
     </if>
 
-  </grit-part>
+  <if expr="not is_win">
+    </if>  <if expr="is_win">
+    </if>  </grit-part>
