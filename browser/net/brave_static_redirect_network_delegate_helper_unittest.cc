@@ -270,6 +270,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
 
 TEST(BraveStaticRedirectNetworkDelegateHelperTest,
      ModifySafeBrowsingFileCheckURL) {
+  brave::SetSafeBrowsingEndpointForTesting(true);
   const GURL url(
       "https://sb-ssl.google.com/safebrowsing/clientreport/download?"
       "key=DUMMY_KEY");
