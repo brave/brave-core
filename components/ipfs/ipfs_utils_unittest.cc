@@ -53,6 +53,28 @@ class IpfsUtilsUnitTest : public testing::Test {
   GURL public_gateway_;
 };
 
+TEST_F(IpfsUtilsUnitTest, CIDValidation) {
+  ASSERT_TRUE(ipfs::IsValidCID(
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+  ASSERT_TRUE(
+      ipfs::IsValidCID("QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+  ASSERT_TRUE(
+      ipfs::IsValidCID("zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn93bA"));
+  ASSERT_TRUE(ipfs::IsValidCID("bafkqaaa"));
+  ASSERT_TRUE(ipfs::IsValidCID("k51qzi5uqu5dgutdk6i1ynyzg"));
+  ASSERT_TRUE(ipfs::IsValidCID("7testtesttest"));
+
+  ASSERT_FALSE(
+      ipfs::IsValidCID("zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn=3bA"));
+  ASSERT_FALSE(ipfs::IsValidCID("brantly.eth"));
+  ASSERT_FALSE(ipfs::IsValidCID(
+      "ba.ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+  ASSERT_FALSE(ipfs::IsValidCID(
+      "ba-ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+  ASSERT_FALSE(ipfs::IsValidCID(
+      "ba%ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+}
+
 TEST_F(IpfsUtilsUnitTest, HasIPFSPath) {
   std::vector<GURL> ipfs_urls(
       {GURL("http://localhost:48080/ipfs/"
