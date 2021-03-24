@@ -183,7 +183,6 @@ export const TileAction = styled('button')<{}>`
 `
 
 export const TileFavicon = styled('img')<{}>`
-  background-color: #ffffff;
   display: block;
   padding: 16px;
   width: 70px;
@@ -191,6 +190,11 @@ export const TileFavicon = styled('img')<{}>`
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   object-fit: contain;
+
+  background: ${p => p.theme.palette.white};
+  @media (prefers-color-scheme: dark) {
+    background: ${p => p.theme.palette.black};
+  }
 `
 
 interface TileProps {
