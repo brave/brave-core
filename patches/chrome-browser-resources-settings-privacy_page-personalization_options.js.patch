@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index 5b3bfa1df6f878745d372bd72787c01c0fcb165b..c9350cfefe0947e2063cf3226eab6674c6520d2c 100644
+index 868be6eab0d36ea429d474852aa631a77e14eb1d..26e2be6a3b71ca4ccfad4f2919658f3cd577391c 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
 @@ -54,7 +54,7 @@ Polymer({
@@ -11,7 +11,7 @@ index 5b3bfa1df6f878745d372bd72787c01c0fcb165b..c9350cfefe0947e2063cf3226eab6674
      // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
      // (but handled differently in C++).
      /** @private {chrome.settingsPrivate.PrefObject} */
-@@ -97,7 +97,7 @@ Polymer({
+@@ -105,7 +105,7 @@ Polymer({
    ready() {
      this.browserProxy_ = PrivacyPageBrowserProxyImpl.getInstance();
  
@@ -20,7 +20,7 @@ index 5b3bfa1df6f878745d372bd72787c01c0fcb165b..c9350cfefe0947e2063cf3226eab6674
      const setMetricsReportingPref = this.setMetricsReportingPref_.bind(this);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
      this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
-@@ -128,7 +128,7 @@ Polymer({
+@@ -136,7 +136,7 @@ Polymer({
      return /** @type {?CrToggleElement} */ (this.$$('#driveSuggestControl'));
    },
  
@@ -29,7 +29,7 @@ index 5b3bfa1df6f878745d372bd72787c01c0fcb165b..c9350cfefe0947e2063cf3226eab6674
    /** @private */
    onMetricsReportingChange_() {
      const enabled = this.$.metricsReportingControl.checked;
-@@ -178,6 +178,7 @@ Polymer({
+@@ -186,6 +186,7 @@ Polymer({
    },
    // </if>
  
@@ -37,7 +37,7 @@ index 5b3bfa1df6f878745d372bd72787c01c0fcb165b..c9350cfefe0947e2063cf3226eab6674
    /**
     * @return {boolean}
     * @private
-@@ -226,6 +227,7 @@ Polymer({
+@@ -234,6 +235,7 @@ Polymer({
      }
      this.showSignoutDialog_ = false;
    },
