@@ -31,12 +31,15 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
+#include "extensions/common/mojom/manifest.mojom.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/extensions/brave_wallet_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
+
+using extensions::mojom::ManifestLocation;
 
 namespace extensions {
 
@@ -84,11 +87,11 @@ void BraveComponentLoader::ReinstallAsNonComponent(
       extensions::ExtensionRegistry::Get(profile_);
   const Extension* extension = registry->GetInstalledExtension(extension_id);
   DCHECK(extension);
-  if (extension->location() == Manifest::COMPONENT) {
+  if (extension->location() == ManifestLocation::kComponent) {
     service->RemoveComponentExtension(extension_id);
     std::string error;
     scoped_refptr<Extension> normal_extension = Extension::Create(
-        extension->path(), Manifest::EXTERNAL_PREF,
+        extension->path(), ManifestLocation::kExternalPref,
         *extension->manifest()->value(), extension->creation_flags(), &error);
     service->AddExtension(normal_extension.get());
   }
