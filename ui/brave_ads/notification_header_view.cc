@@ -48,7 +48,7 @@ constexpr int kInnerHeaderHeight = kHeaderHeight - kHeaderOuterPadding.height();
 constexpr gfx::Insets kTextViewPaddingDefault(9, 12, 6, 0);
 
 // Bullet character. The divider symbol between different parts of the header.
-constexpr wchar_t kNotificationHeaderDivider[] = L" \u2022 ";
+constexpr char16_t kNotificationHeaderDivider[] = u" \u2022 ";
 
 constexpr int kHeaderTextFontSize = 14;
 
@@ -174,7 +174,7 @@ NotificationHeaderView::NotificationHeaderView(PressedCallback callback)
 
   // Summary text divider
   summary_text_divider_ = create_label();
-  summary_text_divider_->SetText(base::WideToUTF16(kNotificationHeaderDivider));
+  summary_text_divider_->SetText(kNotificationHeaderDivider);
   summary_text_divider_->SetVisible(false);
   detail_views_->AddChildView(summary_text_divider_);
 
