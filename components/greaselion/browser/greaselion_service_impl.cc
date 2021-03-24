@@ -41,10 +41,11 @@
 #include "extensions/common/extension.h"
 #include "extensions/common/file_util.h"
 #include "extensions/common/manifest_constants.h"
+#include "extensions/common/mojom/manifest.mojom.h"
 #include "url/gurl.h"
 
 using extensions::Extension;
-using extensions::Manifest;
+using extensions::mojom::ManifestLocation;
 
 namespace {
 
@@ -175,7 +176,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
 
   std::string error;
   scoped_refptr<Extension> extension = extensions::file_util::LoadExtension(
-      temp_dir.GetPath(), Manifest::COMPONENT, Extension::NO_FLAGS, &error);
+      temp_dir.GetPath(), ManifestLocation::kComponent, Extension::NO_FLAGS, &error);
   if (!extension.get()) {
     LOG(ERROR) << "Could not load Greaselion extension";
     LOG(ERROR) << error;
