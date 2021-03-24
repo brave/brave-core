@@ -23,9 +23,7 @@ class SyncWelcomeViewController: SyncViewController {
             navigationItem.rightBarButtonItem?.isEnabled = !isLoading
             
             // Prevent dismissing the modal by swipe when migration happens.
-            if #available(iOS 13.0, *) {
-                navigationController?.isModalInPresentation = isLoading == true
-            }
+            navigationController?.isModalInPresentation = isLoading == true
             
             if !isLoading { return }
             

@@ -13,9 +13,7 @@ import BraveUI
 class FeedActionAlertView: UIView {
     private let baseView = UIVisualEffectView(effect: UIBlurEffect(style: .dark)).then {
         $0.layer.cornerRadius = 10.0
-        if #available(iOS 13.0, *) {
-            $0.layer.cornerCurve = .continuous
-        }
+        $0.layer.cornerCurve = .continuous
         $0.clipsToBounds = true
     }
     

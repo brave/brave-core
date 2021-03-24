@@ -22,14 +22,6 @@ class UserAgentBuilderTests: XCTestCase {
     private let iPad = MockPadDevice()
     
     func testDesktopUA() {
-        let iOS12DesktopUA =
-        """
-        Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) \
-        AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/12.1.2 \
-        Safari/605.1.15
-        """
-        
         let iOS13DesktopUA =
         """
         Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) \
@@ -45,16 +37,6 @@ class UserAgentBuilderTests: XCTestCase {
         Version/14.0.2 \
         Safari/605.1.15
         """
-        
-        let iOS12 = OperatingSystemVersion(majorVersion: 12, minorVersion: 0, patchVersion: 0)
-        
-        XCTAssertEqual(iOS12DesktopUA,
-                       UserAgentBuilder(device: iPhone, iOSVersion: iOS12).build(desktopMode: true),
-                       "iOS 12 desktop User Agent on iPhone doesn't match")
-        
-        XCTAssertEqual(iOS12DesktopUA,
-                       UserAgentBuilder(device: iPad, iOSVersion: iOS12).build(desktopMode: true),
-                       "iOS 12 desktop User Agent on iPad doesn't match")
         
         let iOS13 = OperatingSystemVersion(majorVersion: 13, minorVersion: 0, patchVersion: 0)
         
@@ -161,43 +143,6 @@ class UserAgentBuilderTests: XCTestCase {
         XCTAssertEqual(iPad_safari_13_UA,
                        UserAgentBuilder(device: iPad, iOSVersion: ios13_7).build(desktopMode: false),
                        "User agent for iOS 13.7 iPad doesn't match.")
-        
-        // MARK: - iOS 12
-        let iPhone_safari_12_UA = """
-        Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/12.1.2 \
-        Mobile/15E148 \
-        Safari/604.1
-        """
-        
-        let iPad_safari_12_4_UA = """
-        Mozilla/5.0 (iPad; CPU OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/12.1.2 \
-        Mobile/15E148 \
-        Safari/604.1
-        """
-        
-        // MARK: 12.4
-        let ios12_4 = OperatingSystemVersion(majorVersion: 12, minorVersion: 4, patchVersion: 0)
-        
-        XCTAssertEqual(iPhone_safari_12_UA,
-                       UserAgentBuilder(device: iPhone, iOSVersion: ios12_4).build(desktopMode: false),
-                       "User agent for iOS 12.4 iPhone doesn't match.")
-        
-        XCTAssertEqual(iPad_safari_12_4_UA,
-                       UserAgentBuilder(device: iPad, iOSVersion: ios12_4).build(desktopMode: false),
-                       "User agent for iOS 12.4 iPad doesn't match.")
-        
-        // MARK: 12.2.1
-        let ios12_2_1 = OperatingSystemVersion(majorVersion: 12, minorVersion: 2, patchVersion: 1)
-        
-        XCTAssertEqual(iPhone_safari_12_UA,
-                       UserAgentBuilder(device: iPhone, iOSVersion: ios12_2_1).build(desktopMode: false),
-                       "User agent for iOS 12.2.1 iPhone doesn't match.")
-        
-        XCTAssertEqual(iPad_safari_12_4_UA,
-                       UserAgentBuilder(device: iPad, iOSVersion: ios12_2_1).build(desktopMode: false),
-                       "User agent for iOS 12.2.1 iPad doesn't match.")
     }
     
     func testFutureProofDesktopUA() {

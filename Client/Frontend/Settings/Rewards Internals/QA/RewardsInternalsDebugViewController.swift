@@ -18,11 +18,7 @@ class RewardsInternalsDebugViewController: TableViewController {
     
     init(ledger: BraveLedger) {
         self.ledger = ledger
-        if #available(iOS 13.0, *) {
-            super.init(style: .insetGrouped)
-        } else {
-            super.init(style: .grouped)
-        }
+        super.init(style: .insetGrouped)
         ledger.rewardsInternalInfo { info in
             self.internalsInfo = info
         }

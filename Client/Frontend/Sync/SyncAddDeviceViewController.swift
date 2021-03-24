@@ -129,11 +129,7 @@ class SyncAddDeviceViewController: SyncViewController {
         modeControl.isHidden = deviceType == .computer
         modeControl.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         
-        if #available(iOS 13.0, *) {
-            modeControl.selectedSegmentTintColor = BraveUX.braveOrange
-        } else {
-            modeControl.tintColor = BraveUX.braveOrange
-        }
+        modeControl.selectedSegmentTintColor = BraveUX.braveOrange
         stackView.addArrangedSubview(modeControl)
         
         let titleDescriptionStackView = UIStackView()

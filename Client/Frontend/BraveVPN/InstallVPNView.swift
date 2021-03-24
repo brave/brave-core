@@ -98,9 +98,7 @@ extension InstallVPNViewController {
             }
             $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
             $0.layer.cornerRadius = 22
-            if #available(iOS 13.0, *) {
-                $0.layer.cornerCurve = .continuous
-            }
+            $0.layer.cornerCurve = .continuous
             
             $0.loaderView = LoaderView(size: .small)
         }
@@ -114,9 +112,7 @@ extension InstallVPNViewController {
             }
             $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
             $0.layer.cornerRadius = 22
-            if #available(iOS 13.0, *) {
-                $0.layer.cornerCurve = .continuous
-            }
+            $0.layer.cornerCurve = .continuous
             $0.loaderView = LoaderView(size: .small)
         }
         

@@ -53,11 +53,7 @@ class BraveTodayDebugSettingsController: TableViewController {
     
     init(dataSource: FeedDataSource) {
         feedDataSource = dataSource
-        if #available(iOS 13.0, *) {
-            super.init(style: .insetGrouped)
-        } else {
-            super.init(style: .grouped)
-        }
+        super.init(style: .insetGrouped)
     }
     
     @available(*, unavailable)
@@ -122,11 +118,7 @@ private class TodayEnvironmentPicker: TableViewController {
          environmentUpdated: @escaping (FeedDataSource.Environment) -> Void) {
         self.selectedEnvironment = selectedEnvironment
         self.environmentUpdated = environmentUpdated
-        if #available(iOS 13.0, *) {
-            super.init(style: .insetGrouped)
-        } else {
-            super.init(style: .grouped)
-        }
+        super.init(style: .insetGrouped)
     }
     
     @available(*, unavailable)

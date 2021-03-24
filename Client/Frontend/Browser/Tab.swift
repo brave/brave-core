@@ -225,11 +225,7 @@ class Tab: NSObject {
 
             webView.accessibilityLabel = Strings.webContentAccessibilityLabel
             webView.allowsBackForwardNavigationGestures = true
-            if #available(iOS 13, *) {
-                webView.allowsLinkPreview = true
-            } else {
-                webView.allowsLinkPreview = false
-            }
+            webView.allowsLinkPreview = true
 
             // Turning off masking allows the web content to flow outside of the scrollView's frame
             // which allows the content appear beneath the toolbars in the BrowserViewController

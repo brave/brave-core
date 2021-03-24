@@ -25,21 +25,16 @@ class SponsorCardView: FeedCardBackgroundButton, FeedCardContent {
         
         addTarget(self, action: #selector(tappedSelf), for: .touchUpInside)
         
-        if #available(iOS 13.0, *) {
-            let contextMenuDelegate = FeedContextMenuDelegate(
-                performedPreviewAction: { [weak self] in
-                    self?.actionHandler?(0, .opened())
-                },
-                menu: { [weak self] in
-                    return self?.contextMenu?.menu?(0)
-                }
-            )
-            addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
-            self.contextMenuDelegate = contextMenuDelegate
-        } else {
-            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
-            addGestureRecognizer(longPress)
-        }
+        let contextMenuDelegate = FeedContextMenuDelegate(
+            performedPreviewAction: { [weak self] in
+                self?.actionHandler?(0, .opened())
+            },
+            menu: { [weak self] in
+                return self?.contextMenu?.menu?(0)
+            }
+        )
+        addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
+        self.contextMenuDelegate = contextMenuDelegate
         
         isAccessibilityElement = true
     }
@@ -51,11 +46,5 @@ class SponsorCardView: FeedCardBackgroundButton, FeedCardContent {
     
     @objc private func tappedSelf() {
         actionHandler?(0, .opened())
-    }
-    
-    @objc private func longPressed(_ gesture: UILongPressGestureRecognizer) {
-        if gesture.state == .began, let legacyMenu = self.contextMenu?.legacyMenu?(0) {
-            actionHandler?(0, .longPressed(legacyMenu))
-        }
     }
 }

@@ -8,16 +8,10 @@ import BraveUI
 /// The background component for each card
 class FeedCardBackgroundView: UIVisualEffectView {
     init() {
-        if #available(iOS 13.0, *) {
-            super.init(effect: UIBlurEffect(style: .systemThinMaterialDark))
-        } else {
-            super.init(effect: UIBlurEffect(style: .dark))
-        }
+        super.init(effect: UIBlurEffect(style: .systemThinMaterialDark))
         
         layer.cornerRadius = 10
-        if #available(iOS 13.0, *) {
-            layer.cornerCurve = .continuous
-        }
+        layer.cornerCurve = .continuous
         clipsToBounds = true
         isUserInteractionEnabled = false
         isAccessibilityElement = false
@@ -45,9 +39,7 @@ class FeedCardBackgroundButton: SpringButton {
         }
         
         layer.cornerRadius = backgroundView.layer.cornerRadius
-        if #available(iOS 13.0, *) {
-            layer.cornerCurve = backgroundView.layer.cornerCurve
-        }
+        layer.cornerCurve = backgroundView.layer.cornerCurve
         clipsToBounds = true
     }
     

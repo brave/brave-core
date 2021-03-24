@@ -77,9 +77,7 @@ class BraveRewardsStatusView: UIView, Themeable {
         super.init(frame: frame)
         
         layer.cornerRadius = 8
-        if #available(iOS 13.0, *) {
-            layer.cornerCurve = .continuous
-        }
+        layer.cornerCurve = .continuous
         
         addSubview(stackView)
         stackView.snp.makeConstraints {

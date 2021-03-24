@@ -38,26 +38,15 @@ class Theme: Equatable, Decodable {
            return Theme.from(id: self.rawValue)
         }
         
-        static var normalThemesOptions: [DefaultTheme] {
-            if #available(iOS 13.0, *) {
-                return [DefaultTheme.system, DefaultTheme.light, DefaultTheme.dark]
-            } else {
-                // iOS 12 .system is treated as .light
-                return [DefaultTheme.system, DefaultTheme.dark]
-            }
-        }
+        static var normalThemesOptions = [
+            DefaultTheme.system,
+            DefaultTheme.light,
+            DefaultTheme.dark
+        ]
         
         public var displayString: String {
             // Due to translations needs, titles are hardcoded here, ideally they would be pulled from the
             //  theme files themselves.
-            
-            if #available(iOS 13.0, *) {
-                // continue
-            } else if self == .system {
-                // iOS 12 .system is treated as .light
-                return Strings.themesLightOption
-            }
-            
             switch self {
             case .system: return Strings.themesAutomaticOption
             case .light: return Strings.themesLightOption
@@ -249,11 +238,8 @@ class Theme: Equatable, Decodable {
         // Should really be based off of preferences, a dark theme and light theme preference
         
         let fallback = DefaultTheme.light.rawValue
-        if #available(iOS 13.0, *) {
-            let isDark = UITraitCollection.current.userInterfaceStyle == .dark
-            return isDark ? DefaultTheme.dark.rawValue : fallback
-        }
-        return fallback
+        let isDark = UITraitCollection.current.userInterfaceStyle == .dark
+        return isDark ? DefaultTheme.dark.rawValue : fallback
     }
     
     static let allThemes: [Theme] = {

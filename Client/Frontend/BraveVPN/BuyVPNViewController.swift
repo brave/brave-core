@@ -31,9 +31,7 @@ class BuyVPNViewController: UIViewController {
             navigationItem.rightBarButtonItem?.isEnabled = !isLoading
             
             // Prevent dismissing the modal by swipe when the VPN is being configured
-            if #available(iOS 13.0, *) {
-                navigationController?.isModalInPresentation = isLoading == true
-            }
+            navigationController?.isModalInPresentation = isLoading == true
             
             if !isLoading { return }
             
@@ -75,24 +73,12 @@ class BuyVPNViewController: UIViewController {
         Preferences.VPN.popupShowed.value = true
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // iOS 12 bug, navigation bar color doesn't update in `viewWillAppear`.
-        if #available(iOS 13.0, *) {
-        } else {
-            styleNavigationBar()
-        }
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // For some reason setting `barTintColor` for `formSheet` type of modal doesn't work
         // in `viewDidLoad` method, doing it later as a workaround.
-        if #available(iOS 13.0, *) {
-            styleNavigationBar()
-        }
+        styleNavigationBar()
     }
     
     private func styleNavigationBar() {

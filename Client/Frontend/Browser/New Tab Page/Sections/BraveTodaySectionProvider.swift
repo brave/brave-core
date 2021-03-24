@@ -302,109 +302,53 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             itemActionHandler(.toggledSource, context)
         }
         
-        if #available(iOS 13.0, *) {
-            return .init { [weak self] index -> UIMenu? in
-                guard let self = self else { return nil }
-                let item = feedList(index)
-                let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
-                
-                func mapDeferredHandler(_ handler: @escaping MenuActionHandler) -> UIActionHandler {
-                    return UIAction.deferredActionHandler { _ in
-                        handler(context)
-                    }
-                }
-                
-                var openInNewTab: UIAction {
-                    .init(title: Strings.openNewTabButtonTitle, image: UIImage(named: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
-                }
-                
-                var openInNewPrivateTab: UIAction {
-                    .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(named: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
-                }
-                
-                var disableSource: UIAction {
-                    .init(title: String(format: Strings.BraveToday.disablePublisherContent, item.source.name), image: UIImage(named: "disable.feed.source"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
-                }
-                
-                var enableSource: UIAction {
-                    .init(title: String(format: Strings.BraveToday.enablePublisherContent, item.source.name), image: UIImage(named: "enable.feed.source"), handler: mapDeferredHandler(toggleSourceHandler))
-                }
-                
-                let openActions: [UIAction] = [
-                    openInNewTab,
-                    // Brave Today is only available in normal tabs, so this isn't technically required
-                    // but good to be on the safe side
-                    !PrivateBrowsingManager.shared.isPrivateBrowsing ?
-                        openInNewPrivateTab :
-                    nil
-                    ].compactMap({ $0 })
-                
-                let manageActions = [
-                    self.dataSource.isSourceEnabled(item.source) ? disableSource : enableSource
-                ]
-                
-                var children: [UIMenu] = [
-                    UIMenu(title: "", options: [.displayInline], children: openActions),
-                ]
-                if context.item.content.contentType != .sponsor {
-                    children.append(UIMenu(title: "", options: [.displayInline], children: manageActions))
-                }
-                return UIMenu(title: item.content.url?.absoluteString ?? "", children: children)
-            }
-        }
-        return .init { [weak self] index -> FeedItemMenu.LegacyContext? in
+        return .init { [weak self] index -> UIMenu? in
             guard let self = self else { return nil }
             let item = feedList(index)
             let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
             
-            func mapHandler(_ handler: @escaping MenuActionHandler) -> UIAlertActionCallback {
-                return { _ in
+            func mapDeferredHandler(_ handler: @escaping MenuActionHandler) -> UIActionHandler {
+                return UIAction.deferredActionHandler { _ in
                     handler(context)
                 }
             }
             
-            var openInNewTab: UIAlertAction {
-                .init(title: Strings.openNewTabButtonTitle, style: .default, handler: mapHandler(openInNewTabHandler))
+            var openInNewTab: UIAction {
+                .init(title: Strings.openNewTabButtonTitle, image: UIImage(named: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
             }
             
-            var openInNewPrivateTab: UIAlertAction {
-                .init(title: Strings.openNewPrivateTabButtonTitle, style: .default, handler: mapHandler(openInNewPrivateTabHandler))
+            var openInNewPrivateTab: UIAction {
+                .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(named: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
             }
             
-            var disableSource: UIAlertAction {
-                .init(title: String(format: Strings.BraveToday.disablePublisherContent, item.source.name), style: .destructive, handler: mapHandler(toggleSourceHandler))
+            var disableSource: UIAction {
+                .init(title: String(format: Strings.BraveToday.disablePublisherContent, item.source.name), image: UIImage(named: "disable.feed.source"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
             }
             
-            var enableSource: UIAlertAction {
-                .init(title: String(format: Strings.BraveToday.enablePublisherContent, item.source.name), style: .default, handler: mapHandler(toggleSourceHandler))
+            var enableSource: UIAction {
+                .init(title: String(format: Strings.BraveToday.enablePublisherContent, item.source.name), image: UIImage(named: "enable.feed.source"), handler: mapDeferredHandler(toggleSourceHandler))
             }
             
-            let cancel = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
-            
-            var actions: [UIAlertAction?] = [
+            let openActions: [UIAction] = [
                 openInNewTab,
                 // Brave Today is only available in normal tabs, so this isn't technically required
                 // but good to be on the safe side
                 !PrivateBrowsingManager.shared.isPrivateBrowsing ?
                     openInNewPrivateTab :
-                nil
+                    nil
+            ].compactMap({ $0 })
+            
+            let manageActions = [
+                self.dataSource.isSourceEnabled(item.source) ? disableSource : enableSource
             ]
             
+            var children: [UIMenu] = [
+                UIMenu(title: "", options: [.displayInline], children: openActions),
+            ]
             if context.item.content.contentType != .sponsor {
-                if self.dataSource.isSourceEnabled(context.item.source) {
-                    actions.append(disableSource)
-                } else {
-                    actions.append(enableSource)
-                }
+                children.append(UIMenu(title: "", options: [.displayInline], children: manageActions))
             }
-            
-            actions.append(cancel)
-            
-            return .init(
-                title: item.content.url?.absoluteString,
-                message: nil,
-                actions: actions.compactMap { $0 }
-            )
+            return UIMenu(title: item.content.url?.absoluteString ?? "", children: children)
         }
     }
     
@@ -416,17 +360,10 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
 extension FeedItemView {
     func setupWithItem(_ feedItem: FeedItem, isBrandVisible: Bool = true) {
         titleLabel.text = feedItem.content.title
-        if #available(iOS 13, *) {
-            dateLabel.text = RelativeDateTimeFormatter().localizedString(
-                for: feedItem.content.publishTime,
-                relativeTo: Date()
-            )
-        } else {
-            dateLabel.text = LegacyRelativeDateTimeFormatter().localizedString(
-                for: feedItem.content.publishTime,
-                relativeTo: Date()
-            )
-        }
+        dateLabel.text = RelativeDateTimeFormatter().localizedString(
+            for: feedItem.content.publishTime,
+            relativeTo: Date()
+        )
         if feedItem.content.imageURL == nil {
             thumbnailImageView.isHidden = true
         } else {

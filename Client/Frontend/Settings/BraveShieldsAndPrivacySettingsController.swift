@@ -19,11 +19,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         self.profile = profile
         self.tabManager = tabManager
         self.feedDataSource = feedDataSource
-        if #available(iOS 13.0, *) {
-            super.init(style: .insetGrouped)
-        } else {
-            super.init(style: .grouped)
-        }
+        super.init(style: .insetGrouped)
     }
     
     @available(*, unavailable)

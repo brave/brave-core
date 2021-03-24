@@ -27,7 +27,6 @@ class SceneObserver: NSObject {
     private var sceneActivationClosure: () -> Void
     
     // MARK: - Object lifecycle
-    @available(iOS 13.0, *)
     init(sceneActivationClosure: @escaping () -> Void) {
         self.window = SceneObserver.applicationWindow
         self.sceneActivationClosure = sceneActivationClosure
@@ -49,18 +48,16 @@ class SceneObserver: NSObject {
         }
         let center = NotificationCenter.default
         let mainQueue = OperationQueue.main
-                        
-        if #available(iOS 13.0, *) {
-            sceneDidActivateNotificationToken = center.addObserver(forName: UIScene.didActivateNotification, object: nil, queue: mainQueue) { [weak self] notification in
-                guard let self = self else {
-                    return
-                }
-                guard let scene = notification.object as? UIScene else {
-                    return
-                }
-                if self.window.windowScene == scene {
-                    self.sceneActivationClosure()
-                }
+        
+        sceneDidActivateNotificationToken = center.addObserver(forName: UIScene.didActivateNotification, object: nil, queue: mainQueue) { [weak self] notification in
+            guard let self = self else {
+                return
+            }
+            guard let scene = notification.object as? UIScene else {
+                return
+            }
+            if self.window.windowScene == scene {
+                self.sceneActivationClosure()
             }
         }
     }

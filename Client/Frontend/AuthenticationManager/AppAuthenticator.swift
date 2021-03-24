@@ -182,10 +182,8 @@ extension AppAuthenticator {
             navController.modalPresentationStyle = .formSheet
         }
         
-        if #available(iOS 13.0, *) {
-            // Prevent dismissing the modal by swipe
-            navController.isModalInPresentation = true
-        }
+        // Prevent dismissing the modal by swipe
+        navController.isModalInPresentation = true
         
         controller.present(navController, animated: true, completion: nil)
     }

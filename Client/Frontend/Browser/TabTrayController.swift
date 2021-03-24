@@ -334,16 +334,12 @@ class TabTrayController: UIViewController, Themeable {
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .dynamicFontChanged, object: nil)
         
-        if #available(iOS 13.0, *) {
-            /// At this point in time the `UITraitCollection.current` is not correct so the theme
-            /// that `Theme.of(_:)` gets does not get the current theme in automatic-theme mode
-            let oldTraitCollection = UITraitCollection.current
-            UITraitCollection.current = traitCollection
-            applyTheme(Theme.of(tabManager.selectedTab))
-            UITraitCollection.current = oldTraitCollection
-        } else {
-            applyTheme(Theme.of(tabManager.selectedTab))
-        }
+        /// At this point in time the `UITraitCollection.current` is not correct so the theme
+        /// that `Theme.of(_:)` gets does not get the current theme in automatic-theme mode
+        let oldTraitCollection = UITraitCollection.current
+        UITraitCollection.current = traitCollection
+        applyTheme(Theme.of(tabManager.selectedTab))
+        UITraitCollection.current = oldTraitCollection
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -360,10 +356,8 @@ class TabTrayController: UIViewController, Themeable {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
-        if #available(iOS 13.0, *) {
-            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-                applyTheme(Theme.of(tabManager.selectedTab))
-            }
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            applyTheme(Theme.of(tabManager.selectedTab))
         }
 
         // Update the trait collection we reference in our layout delegate
@@ -993,8 +987,7 @@ private struct EmptyPrivateTabsViewUX {
 }
 
 // View we display when there are no private tabs created
-// Need access for iOS 12 appearance adjustments
-/*fileprivate*/ class EmptyPrivateTabsView: UIView {
+fileprivate class EmptyPrivateTabsView: UIView {
     
     let scrollView = UIScrollView().then {
         $0.alwaysBounceVertical = true

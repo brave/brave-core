@@ -1044,7 +1044,6 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
         decisionHandler(res)
     }
     
-    @available(iOS 13.0, *)
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
         
         var res = defaultAllowPolicy()

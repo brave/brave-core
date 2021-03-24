@@ -36,6 +36,4 @@ enum FeedItemAction: Equatable {
     case opened(inNewTab: Bool = false, switchingToPrivateMode: Bool = false)
     /// Toggle the enabled status for the source of the feed item
     case toggledSource
-    /// Handle a long press initiated by the user for legacy menus
-    case longPressed(_ legacyContext: FeedItemMenu.LegacyContext)
 }

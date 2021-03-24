@@ -288,15 +288,10 @@ class MenuViewController: UITableViewController {
         // All menu views should be opened in portrait on iPhones.
         UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
         
-        if #available(iOS 13.0, *) {
-            nav.isModalInPresentation = !allowSwipeToDismiss
-            
-            nav.modalPresentationStyle =
-                UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
-        } else {
-            nav.modalPresentationStyle =
-                UIDevice.current.userInterfaceIdiom == .phone ? .fullScreen : .formSheet
-        }
+        nav.isModalInPresentation = !allowSwipeToDismiss
+        
+        nav.modalPresentationStyle =
+            UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
         
         let button = UIBarButtonItem(barButtonSystemItem: doneButton.style, target: nav, action: #selector(nav.done))
         

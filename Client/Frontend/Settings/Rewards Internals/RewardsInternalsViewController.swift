@@ -36,11 +36,7 @@ class RewardsInternalsViewController: TableViewController {
     init(ledger: BraveLedger, legacyLedger: BraveLedger?) {
         self.ledger = ledger
         self.legacyLedger = legacyLedger
-        if #available(iOS 13.0, *) {
-            super.init(style: .insetGrouped)
-        } else {
-            super.init(style: .grouped)
-        }
+        super.init(style: .insetGrouped)
         let group = DispatchGroup()
         group.enter()
         ledger.rewardsInternalInfo { [weak self] info in
@@ -200,11 +196,6 @@ private class PaymentIDCell: SubtitleCell {
     
     func showMenu() {
         becomeFirstResponder()
-        if #available(iOS 13.0, *) {
-            UIMenuController.shared.showMenu(from: self, rect: bounds)
-        } else {
-            UIMenuController.shared.setTargetRect(bounds, in: self)
-            UIMenuController.shared.setMenuVisible(true, animated: true)
-        }
+        UIMenuController.shared.showMenu(from: self, rect: bounds)
     }
 }
