@@ -198,7 +198,7 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
   // Force lookup to erase the old circuit and also get a callback
   // so we know when it is safe to reload the tab
   auto* storage_partition =
-      BrowserContext::GetStoragePartitionForSite(context_, url, false);
+      BrowserContext::GetStoragePartitionForUrl(context_, url, false);
   if (!storage_partition) {
     storage_partition =
         content::BrowserContext::GetDefaultStoragePartition(context_);
