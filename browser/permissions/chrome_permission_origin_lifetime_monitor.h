@@ -1,0 +1,43 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_PERMISSIONS_CHROME_PERMISSION_ORIGIN_LIFETIME_MONITOR_H_
+#define BRAVE_BROWSER_PERMISSIONS_CHROME_PERMISSION_ORIGIN_LIFETIME_MONITOR_H_
+
+#include "base/containers/flat_set.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/permissions/permission_origin_lifetime_monitor.h"
+
+class Profile;
+
+namespace permissions {
+
+class ChromePermissionOriginLifetimeMonitor
+    : public PermissionOriginLifetimeMonitor {
+ public:
+  ChromePermissionOriginLifetimeMonitor(Profile* profile);
+  ~ChromePermissionOriginLifetimeMonitor() override;
+
+  void SetOnPermissionOriginDestroyedCallback(
+      base::RepeatingCallback<void(const std::string&)> callback) override;
+  std::string SubscribeToPermissionOriginDestruction(
+      const GURL& requesting_origin) override;
+
+ private:
+  void OnEphemeralTLDDestroyed(const std::string& storage_domain);
+
+  Profile* const profile_ = nullptr;
+
+  base::RepeatingCallback<void(const std::string&)>
+      permission_destroyed_callback_;
+  base::flat_set<std::string> active_subscriptions_;
+
+  base::WeakPtrFactory<ChromePermissionOriginLifetimeMonitor> weak_ptr_factory_{
+      this};
+};
+
+}  // namespace permissions
+
+#endif  // BRAVE_BROWSER_PERMISSIONS_CHROME_PERMISSION_ORIGIN_LIFETIME_MONITOR_H_

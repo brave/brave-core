@@ -9,9 +9,11 @@
 #include <map>
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/util/timer/wall_clock_timer.h"
 #include "brave/components/permissions/permission_expirations.h"
+#include "brave/components/permissions/permission_origin_lifetime_monitor.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -35,7 +37,9 @@ class PermissionLifetimeManager : public KeyedService,
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   PermissionLifetimeManager(HostContentSettingsMap* host_content_settings_map,
-                            PrefService* prefs);
+                            PrefService* prefs,
+                            std::unique_ptr<PermissionOriginLifetimeMonitor>
+                                permission_origin_lifetime_monitor);
   PermissionLifetimeManager(const PermissionLifetimeManager&) = delete;
   PermissionLifetimeManager& operator=(const PermissionLifetimeManager&) =
       delete;
@@ -71,9 +75,18 @@ class PermissionLifetimeManager : public KeyedService,
   void OnExpirationTimer();
   void ResetExpiredPermissionsAndUpdateTimer(
       base::Time current_expiration_time);
+  // Resets permission, updates pref.
+  void OnPermissionOriginDestroyed(const std::string& origin_key);
+  void ResetAllDomainPermissions();
+  void ResetPermission(ContentSettingsType content_type,
+                       const GURL& requesting_origin,
+                       const GURL& embedding_origin);
 
   HostContentSettingsMap* const host_content_settings_map_ = nullptr;
   PrefService* const prefs_ = nullptr;
+  // Origin lifetime monitor enables origin-based permission lifetime support.
+  std::unique_ptr<PermissionOriginLifetimeMonitor>
+      permission_origin_lifetime_monitor_;
   // Expirations data from prefs used at runtime. Kept in sync with prefs.
   PermissionExpirations permission_expirations_;
   // WallClockTimer to reset permissions properly even if a machine was put in
@@ -89,6 +102,8 @@ class PermissionLifetimeManager : public KeyedService,
   // Flag to ignore notifications from HostContentSettingsMap when a permission
   // reset is in progress.
   bool is_currently_removing_permissions_ = false;
+
+  base::WeakPtrFactory<PermissionLifetimeManager> weak_ptr_factory_{this};
 };
 
 }  // namespace permissions

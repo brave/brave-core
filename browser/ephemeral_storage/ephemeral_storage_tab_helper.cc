@@ -82,7 +82,7 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
   if (new_domain == previous_domain)
     return;
 
-  CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
+  CreateEphemeralStorageAreasForDomainAndURL(std::move(new_domain), new_url);
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
@@ -145,7 +145,7 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
   }
 
   tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
-      browser_context, partition, new_domain);
+      browser_context, partition, std::move(new_domain));
 }
 
 // static

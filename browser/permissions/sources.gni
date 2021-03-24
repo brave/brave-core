@@ -1,4 +1,6 @@
 brave_browser_permissions_sources = [
+  "//brave/browser/permissions/chrome_permission_origin_lifetime_monitor.cc",
+  "//brave/browser/permissions/chrome_permission_origin_lifetime_monitor.h",
   "//brave/browser/permissions/permission_lifetime_manager_factory.cc",
   "//brave/browser/permissions/permission_lifetime_manager_factory.h",
 ]
