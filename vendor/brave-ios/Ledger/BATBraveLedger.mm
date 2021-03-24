@@ -559,10 +559,18 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
   });
 }
 
-- (void)linkBraveWalletToPaymentId:(NSString *)paymentId completion:(void (^)(BATResult result))completion
+- (void)linkBraveWalletToPaymentId:(NSString *)paymentId completion:(void (^)(BATResult result, NSString *drainID))completion
 {
-  ledger->LinkBraveWallet(paymentId.UTF8String, ^(ledger::type::Result result) {
-    completion(static_cast<BATResult>(result));
+  ledger->LinkBraveWallet(paymentId.UTF8String, ^(ledger::type::Result result, std::string drain_id) {
+    completion(static_cast<BATResult>(result), [NSString stringWithUTF8String:drain_id.c_str()]);
+  });
+}
+
+- (void)drainStatusForDrainId:(NSString *)drainId completion:(void (^)(BATResult result, BATDrainStatus status))completion
+{
+  ledger->GetDrainStatus(drainId.UTF8String, ^(ledger::type::Result result, ledger::type::DrainStatus status) {
+    completion(static_cast<BATResult>(result),
+               static_cast<BATDrainStatus>(status));
   });
 }
 

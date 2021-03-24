@@ -116,8 +116,14 @@ NS_SWIFT_NAME(BraveLedger)
 
 /// Links a desktop brave wallet given some payment ID
 - (void)linkBraveWalletToPaymentId:(NSString *)paymentId
-                        completion:(void (^)(BATResult result))completion
+                        completion:(void (^)(BATResult result, NSString *drainID))completion
     NS_SWIFT_NAME(linkBraveWallet(paymentId:completion:));
+
+/// Obtain a drain status given some drain ID previously obtained from
+/// `linkBraveWalletToPaymentId:completion:`
+- (void)drainStatusForDrainId:(NSString *)drainId
+                   completion:(void (^)(BATResult result, BATDrainStatus status))completion
+    NS_SWIFT_NAME(drainStatus(for:completion:));
 
 /// Get the amount of BAT that is transferrable via wallet linking
 - (void)transferrableAmount:(void (^)(double amount))completion;

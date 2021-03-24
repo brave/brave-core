@@ -79,6 +79,8 @@ using CredsBatchType = mojom::CredsBatchType;
 
 using CredsBatchStatus = mojom::CredsBatchStatus;
 
+using DrainStatus = mojom::DrainStatus;
+
 using EventLog = mojom::EventLog;
 using EventLogPtr = mojom::EventLogPtr;
 using EventLogs = std::vector<EventLogPtr>;

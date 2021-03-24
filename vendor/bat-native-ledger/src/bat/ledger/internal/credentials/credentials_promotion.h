@@ -26,9 +26,11 @@ class CredentialsPromotion : public Credentials {
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
-  void RedeemTokens(
-      const CredentialsRedeem& redeem,
-      ledger::ResultCallback callback) override;
+  void RedeemTokens(const CredentialsRedeem& redeem,
+                    ledger::ResultCallback callback) override;
+
+  void DrainTokens(const CredentialsRedeem& redeem,
+                   ledger::PostSuggestionsClaimCallback callback);
 
  private:
   void OnStart(
@@ -109,11 +111,16 @@ class CredentialsPromotion : public Credentials {
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
-  void OnRedeemTokens(
-      const type::Result result,
-      const std::vector<std::string>& token_id_list,
-      const CredentialsRedeem& redeem,
-      ledger::ResultCallback callback);
+  void OnRedeemTokens(const type::Result result,
+                      const std::vector<std::string>& token_id_list,
+                      const CredentialsRedeem& redeem,
+                      ledger::ResultCallback callback);
+
+  void OnDrainTokens(const type::Result result,
+                     std::string drain_id,
+                     const std::vector<std::string>& token_id_list,
+                     const CredentialsRedeem& redeem,
+                     ledger::PostSuggestionsClaimCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;

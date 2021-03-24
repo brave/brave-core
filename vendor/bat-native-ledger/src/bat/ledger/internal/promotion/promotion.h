@@ -47,9 +47,12 @@ class Promotion {
 
   void Refresh(const bool retry_after_error);
 
-  void TransferTokens(ledger::ResultCallback callback);
+  void TransferTokens(ledger::PostSuggestionsClaimCallback callback);
 
   void GetTransferableAmount(ledger::GetTransferableAmountCallback callback);
+
+  void GetDrainStatus(const std::string& drain_id,
+                      ledger::GetDrainCallback callback);
 
  private:
   void OnFetch(

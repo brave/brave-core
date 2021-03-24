@@ -58,9 +58,8 @@ class Wallet {
 
   bool SetWallet(type::BraveWalletPtr wallet);
 
-  void LinkBraveWallet(
-    const std::string& destination_payment_id,
-    ledger::ResultCallback callback);
+  void LinkBraveWallet(const std::string& destination_payment_id,
+                       ledger::PostSuggestionsClaimCallback callback);
 
  private:
   void AuthorizeWallet(
