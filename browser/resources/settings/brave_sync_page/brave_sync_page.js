@@ -20,7 +20,7 @@ import {WebUIListenerBehavior} from 'chrome://resources/js/web_ui_listener_behav
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import {Router} from '../router.js';
-import {SyncBrowserProxyImpl} from '../people_page/sync_browser_proxy.m.js';
+import {SyncBrowserProxyImpl} from '../people_page/sync_browser_proxy.js';
 import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
 
 Polymer({
