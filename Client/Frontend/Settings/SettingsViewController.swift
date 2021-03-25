@@ -488,6 +488,9 @@ class SettingsViewController: TableViewController {
                 Row(text: "View Brave Today Debug Menu", selection: { [unowned self] in
                     self.displayBraveTodayDebugMenu()
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+                Row(text: "VPN Logs", selection: { [unowned self] in
+                    self.navigationController?.pushViewController(VPNLogsViewController(), animated: true)
+                }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "Load all QA Links", selection: { [unowned self] in
                     let url = URL(string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json")!
                     let string = try? String(contentsOf: url)

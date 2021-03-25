@@ -35,7 +35,7 @@ class BraveVPN {
                 logAndStoreError("Failed to load vpn conection: \(error)")
             }
             
-            if case .notPurchased = state {
+            if case .notPurchased = vpnState {
                 // Unlikely if user has never bought the vpn, we clear vpn config here for safety.
                 BraveVPN.clearConfiguration()
                 return
@@ -207,7 +207,7 @@ class BraveVPN {
     }
     
     /// Stores a in-memory list of vpn errors encountered during current browsing session.
-    private(set) static var errorLog = [(Date, String)]()
+    private(set) static var errorLog = [(date: Date, message: String)]()
     private static let errorLogQueue = DispatchQueue(label: "com.brave.errorLogQueue")
     
     /// Prints out the error to the logger and stores it in a in memory array.
