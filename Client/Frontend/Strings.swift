@@ -28,6 +28,8 @@ extension Strings {
     public static let settingsSearchEditButton = NSLocalizedString("SettingsSearchEditButton", bundle: Bundle.shared, value: "Edit", comment: "Button displayed at the top of the search settings.")
     public static let useTouchID = NSLocalizedString("UseTouchID", bundle: Bundle.shared, value: "Use Touch ID", comment: "List section title for when to use Touch ID")
     public static let useFaceID = NSLocalizedString("UseFaceID", bundle: Bundle.shared, value: "Use Face ID", comment: "List section title for when to use Face ID")
+    
+    public static let bookmarksLastVisitedFolderTitle = NSLocalizedString("BookmarksLastVisitedFolderTitle", bundle: Bundle.shared, value: "Show Last Visited Bookmarks", comment: "General settings bookmarks last visited folder toggle title")
 }
 
 // Logins Helper.

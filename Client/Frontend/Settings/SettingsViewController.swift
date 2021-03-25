@@ -234,7 +234,8 @@ class SettingsViewController: TableViewController {
                         self.navigationController?.pushViewController(SyncWelcomeViewController(), animated: true)
                     }
                     }, image: #imageLiteral(resourceName: "settings-sync").template, accessory: .disclosureIndicator,
-                       cellClass: MultilineValue1Cell.self)
+                       cellClass: MultilineValue1Cell.self),
+                .boolRow(title: Strings.bookmarksLastVisitedFolderTitle, option: Preferences.General.showLastVisitedBookmarksFolder, image: #imageLiteral(resourceName: "menu_folder_open").template)
             ]
         )
         
