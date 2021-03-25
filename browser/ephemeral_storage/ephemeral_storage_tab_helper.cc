@@ -12,7 +12,7 @@
 #include "base/hash/md5.h"
 #include "base/no_destructor.h"
 #include "base/optional.h"
-#include "base/threading/thread_task_runner_handle.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
@@ -135,7 +135,7 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
     // keep the ephemeral storage alive for some time to handle redirects
     // including meta refresh or other page driven "redirects" that end up back
     // at the original origin
-    base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce([](scoped_refptr<content::TLDEphemeralLifetime>
                               tld_ephemeral_lifetime) {},
