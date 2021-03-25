@@ -114,5 +114,20 @@
     <message name="IDS_IPFS_ONBOARDING_INSTALLATION_ERROR" desc="Error message about installation error for IPFS interstitial page.">
       Error ocurred during an update.
     </message>
+    <message name="IDS_PAGE_INFO_IPFS_BUBBLE_TITTLE" desc="The title for ips page info bubble.">
+      This content was loaded over the <ph name="IPFS_SETTINGS">$1<ex>IPFS protocol</ex></ph>
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_BUBBLE_TEXT_IPFS_PROTOCOL" desc="The IPFS Protocol text for ips page info bubble.">
+      IPFS protocol
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_BUBBLE_TEXT" desc="The text for ips page info bubble.">
+      InterPlanetary File System (IPFS) is a public network for peer-to-peer data storage and delivery. You can <ph name="LEARN_MORE">$1<ex>learn more</ex></ph> about Brave's integration or configure your <ph name="IPFS_SETTINGS">$2<ex>IPFS settings</ex></ph> at any time.
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_BUBBLE_TEXT_LEARN_MORE" desc="The learn more text for ips page info bubble.">
+      learn more
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_BUBBLE_TEXT_IPFS_SETTINGS" desc="The IPFS Settings text for ips page info bubble.">
+      IPFS settings
+    </message>
   </if>
 </grit-part>

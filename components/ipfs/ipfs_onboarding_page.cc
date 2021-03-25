@@ -32,7 +32,6 @@ namespace {
 const char kResponseScript[] =
     "window.postMessage({command: 'ipfs', value: {value}, text: '{text}'}, "
     "'*')";
-const char kBraveSettingsURL[] = "brave://settings/ipfs";
 constexpr int kOnboardingIsolatedWorldId =
     content::ISOLATED_WORLD_ID_CONTENT_END + 1;
 
@@ -204,7 +203,7 @@ void IPFSOnboardingPage::CommandReceived(const std::string& command) {
       controller()->OpenUrlInNewForegroundTab(GURL(kIPFSLearnMoreURL));
       break;
     case IPFSOnboardingCommandId::OPEN_SETTINGS:
-      controller()->OpenUrlInNewForegroundTab(GURL(kBraveSettingsURL));
+      controller()->OpenUrlInNewForegroundTab(GURL(ipfs::kIPFSSettingsURL));
       break;
     default:
       NOTREACHED() << "Unsupported command: " << command;

@@ -13,8 +13,6 @@
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -22,7 +20,6 @@
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
-#include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
 #include "chrome/grit/chromium_strings.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
@@ -37,7 +34,10 @@
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ui/views/ipfs_page_info/ipfs_page_info_bubble_view.h"
 #include "brave/browser/ui/views/location_bar/ipfs_location_view.h"
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #endif
 
 namespace {
@@ -106,11 +106,38 @@ void BraveLocationBarView::Init() {
 }
 
 bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
+#if BUILDFLAG(IPFS_ENABLED)
   const GURL& url = GetLocationBarModel()->GetURL();
   if (!ipfs::IsIPFSScheme(url) || !ipfs::IsIpfsEnabled(profile_) ||
       !ipfs::IsLocalGatewayConfigured(profile_))
     return false;
 
+  return true;
+#else
+  return false;
+#endif
+}
+
+bool BraveLocationBarView::ShowPageInfoDialog() {
+  if (!ShouldShowIPFSLocationView())
+    return LocationBarView::ShowPageInfoDialog();
+  content::WebContents* contents = GetWebContents();
+  if (!contents)
+    return false;
+
+  content::NavigationEntry* entry = contents->GetController().GetVisibleEntry();
+  if (!entry)
+    return false;
+
+  DCHECK(GetWidget());
+  views::BubbleDialogDelegateView* bubble =
+      IpfsPageInfoBubbleView::CreatePageInfoBubble(
+          this, gfx::Rect(), GetWidget()->GetNativeWindow(), profile_, contents,
+          entry->GetVirtualURL(),
+          base::BindOnce(&LocationBarView::OnPageInfoBubbleClosed,
+                         weak_factory_.GetWeakPtr()));
+  bubble->SetHighlightedButton(location_icon_view_);
+  bubble->GetWidget()->Show();
   return true;
 }
 

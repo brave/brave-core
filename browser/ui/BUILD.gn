@@ -399,6 +399,8 @@ source_set("ui") {
 
     if (ipfs_enabled) {
       sources += [
+        "views/ipfs_page_info/ipfs_page_info_bubble_view.cc",
+        "views/ipfs_page_info/ipfs_page_info_bubble_view.h",
         "views/location_bar/ipfs_location_view.cc",
         "views/location_bar/ipfs_location_view.h",
       ]
