@@ -466,6 +466,8 @@ source_set("ui") {
 
   if (brave_wallet_enabled && !is_android) {
     sources += [
+      "views/toolbar/wallet_button.cc",
+      "views/toolbar/wallet_button.h",
       "webui/brave_wallet_ui.cc",
       "webui/brave_wallet_ui.h",
     ]

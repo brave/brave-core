@@ -4,6 +4,7 @@
 
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//components/vector_icons/vector_icons.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 aggregate_vector_icons("brave_vector_icons") {
   icon_directory = "."
@@ -33,6 +34,10 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_settings.icon",
       "sidebar_trash.icon",
     ]
+  }
+
+  if (brave_wallet_enabled) {
+    sources += [ "wallet_toolbar_button.icon" ]
   }
 }
 
