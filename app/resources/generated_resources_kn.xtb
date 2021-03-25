@@ -7241,11 +7241,11 @@
 <translation id="5463021359602611602">ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {ಖಾಸಗಿ}
-        ಇತರೆ {# ಖಾಸಗಿ ವಿಂಡೋಗಳಲ್ಲಿ ತೆರೆಯಿರಿ}
+        other {# ಖಾಸಗಿ ವಿಂಡೋಗಳಲ್ಲಿ ತೆರೆಯಿರಿ}
       }</translation>
 <translation id="8773965542687789581">{0, plural,
       =1 {ಖಾಸಗಿ}
-      ಇತರೆ {ಖಾಸಗಿ (#)}
+      other {ಖಾಸಗಿ (#)}
     }</translation>
 <translation id="5070556616376997776">ಇದು ಖಾಸಗಿ ವಿಂಡೋ ಆಗಿದೆ</translation>
 <translation id="5832813618714645810">ಪ್ರೊಫೈಲ್‌ಗಳು</translation>
