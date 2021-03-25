@@ -9,9 +9,9 @@ source_set("tor") {
     ":*",
     "//brave/browser:browser_process",
     "//brave/browser/decentralized_dns/test:unit_tests",
+    "//brave/browser/ipfs/test:*",
     "//brave/browser/profiles",
     "//brave/browser/ui",
-    "//brave/components/ipfs/test:*",
     "//brave/test:*",
   ]
 
