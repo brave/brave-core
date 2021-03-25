@@ -1865,8 +1865,7 @@ BATLedgerBridge(BOOL,
   base::PostTaskAndReplyWithResult(
       databaseQueue.get(),
       FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnTaskRunner,
-          base::Passed(std::move(transaction)),
+      base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
           rewardsDatabase),
       base::BindOnce(^(ledger::type::DBCommandResponsePtr response) {
         if (weakSelf)

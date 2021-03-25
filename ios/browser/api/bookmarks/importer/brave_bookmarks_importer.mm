@@ -150,7 +150,7 @@
         // Import into the Profile/ChromeBrowserState on the main-thread.
         base::PostTask(
             FROM_HERE, {web::WebThread::UI},
-            base::BindOnce(complete_import, base::Passed(std::move(bookmarks)),
+            base::BindOnce(complete_import, std::move(bookmarks),
                            top_level_folder_name, listener));
       } else {
         listener(BraveBookmarksImporterStateCompleted,
