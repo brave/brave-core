@@ -5,11 +5,11 @@
 
 package org.brave.bytecode;
 
-import org.objectweb.asm.ClassVisitor; 
+import org.objectweb.asm.ClassVisitor;
 
 public class BraveSingleCategorySettingsAdapter extends BraveClassVisitor {
     static String sSingleCategorySettingsClassName = "org/chromium/components/browser_ui/site_settings/SingleCategorySettings";
-    static String sBraveSingleCategorySettingsClassName = "org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings";
+    static String sBraveSingleCategorySettingsClassName = "org/chromium/chrome/browser/site_settings/BraveSingleCategorySettings";
 
     public BraveSingleCategorySettingsAdapter(ClassVisitor visitor) {
         super(visitor);
