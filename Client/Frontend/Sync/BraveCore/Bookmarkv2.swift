@@ -109,7 +109,8 @@ class Bookmarkv2: WebsitePresentable {
     // If no folder was visited, returns the mobile bookmarks folder
     // If the root folder was visited, returns nil
     public static func lastVisitedFolder() -> Bookmarkv2? {
-        guard let nodeId = Preferences.Chromium.lastBookmarksFolderNodeId.value else {
+        guard Preferences.General.showLastVisitedBookmarksFolder.value,
+              let nodeId = Preferences.Chromium.lastBookmarksFolderNodeId.value else {
             // Default folder is the mobile node..
             if let mobileNode = bookmarksAPI.mobileNode {
                 return Bookmarkv2(mobileNode)

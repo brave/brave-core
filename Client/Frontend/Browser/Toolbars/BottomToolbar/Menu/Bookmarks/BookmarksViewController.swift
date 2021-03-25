@@ -85,7 +85,9 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         setUpToolbar()
         updateEditBookmarksButtonStatus()
         
-        self.showLastVisitedFolder()
+        if Preferences.General.showLastVisitedBookmarksFolder.value {
+            self.showLastVisitedFolder()
+        }
     }
     
     private func updateEditBookmarksButtonStatus() {
