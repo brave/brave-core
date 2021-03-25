@@ -1159,8 +1159,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   base::PostTaskAndReplyWithResult(
       databaseQueue.get(),
       FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnTaskRunner,
-          base::Passed(std::move(transaction)),
+      base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
           adsDatabase),
       base::BindOnce(^(ads::DBCommandResponsePtr response) {
         const auto strongSelf = weakSelf;
