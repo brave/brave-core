@@ -46,23 +46,25 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             MenuButtonCoordinator overviewModeMenuButtonCoordinator,
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            ObservableSupplier<Boolean> homeButtonVisibilitySupplier,
+            ObservableSupplier<Boolean> homepageEnabledSupplier,
+            ObservableSupplier<Boolean> startSurfaceAsHomepageSupplier,
             ObservableSupplier<Boolean> homepageManagedByPolicySupplier,
             ObservableSupplier<Boolean> identityDiscStateSupplier,
             Callback<Runnable> invalidatorCallback, Supplier<ButtonData> identityDiscButtonSupplier,
             OneshotSupplier<StartSurface> startSurfaceSupplier,
             Supplier<ResourceManager> resourceManagerSupplier, BooleanSupplier isInVrSupplier,
             boolean isGridTabSwitcherEnabled, boolean isTabToGtsAnimationEnabled,
-            boolean isStartSurfaceEnabled) {
+            boolean isStartSurfaceEnabled, boolean isTabGroupsAndroidContinuationEnabled) {
         super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
                 userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
                 normalThemeColorProvider, overviewThemeColorProvider,
                 browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
-                appMenuButtonHelperSupplier, tabModelSelectorSupplier, homeButtonVisibilitySupplier,
-                homepageManagedByPolicySupplier, identityDiscStateSupplier, invalidatorCallback,
-                identityDiscButtonSupplier, startSurfaceSupplier, resourceManagerSupplier,
-                isInVrSupplier, isGridTabSwitcherEnabled, isTabToGtsAnimationEnabled,
-                isStartSurfaceEnabled);
+                appMenuButtonHelperSupplier, tabModelSelectorSupplier, homepageEnabledSupplier,
+                startSurfaceAsHomepageSupplier, homepageManagedByPolicySupplier,
+                identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier,
+                startSurfaceSupplier, resourceManagerSupplier, isInVrSupplier,
+                isGridTabSwitcherEnabled, isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
+                isTabGroupsAndroidContinuationEnabled);
 
         mBraveToolbarLayout = toolbarLayout;
 
