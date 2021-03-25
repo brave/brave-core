@@ -234,6 +234,7 @@ export const Tile = styled('a')<TileProps>`
 
   &:focus-visible {
     gap: 4px;
+    outline: none;
 
     ${TileFavicon} {
       margin-top: -4px;
