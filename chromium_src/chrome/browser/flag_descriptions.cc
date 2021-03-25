@@ -63,9 +63,9 @@ const char kBraveEphemeralStorageName[] = "Enable Ephemeral Storage";
 const char kBraveEphemeralStorageDescription[] =
     "Use ephemeral storage for third-party frames";
 const char kBraveEphemeralStorageKeepAliveName[] =
-    "Ephermal Storage Keep Alive";
+    "Ephemeral Storage Keep Alive";
 const char kBraveEphemeralStorageKeepAliveDescription[] =
-    "Keep ephermal storage partitions alive for 30 seconds after last tab "
+    "Keep ephemeral storage partitions alive for 30 seconds after last tab "
     "close";
 const char kBravePermissionLifetimeName[] = "Permission Lifetime";
 const char kBravePermissionLifetimeDescription[] =
