@@ -1072,6 +1072,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (bool)getBooleanPref:(const std::string&)path
 {
   const auto key = [NSString stringWithUTF8String:path.c_str()];
+  if (path == ads::prefs::kShouldAllowConversionTracking) {
+    return [self shouldAllowAdConversionTracking];
+  }
   return [self.prefs[key] boolValue];
 }
 
