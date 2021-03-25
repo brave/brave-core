@@ -11,7 +11,6 @@
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/signin/identity_manager_factory.h"
 #include "chrome/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
@@ -24,10 +23,7 @@
 #endif
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
-    : profile_(profile),
-      identity_manager_observer_(this) {
-  identity_manager_ = IdentityManagerFactory::GetForProfile(profile);
-  identity_manager_observer_.Add(identity_manager_);
+    : profile_(profile) {
   PrefService* pref_service = profile->GetPrefs();
   brave_wallet_web3_provider_.Init(kBraveWalletWeb3Provider, pref_service);
 
@@ -41,11 +37,6 @@ BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() {}
-
-void BraveRendererUpdater::Shutdown() {
-  identity_manager_observer_.RemoveAll();
-  identity_manager_ = nullptr;
-}
 
 void BraveRendererUpdater::InitializeRenderer(
     content::RenderProcessHost* render_process_host) {
@@ -85,15 +76,6 @@ BraveRendererUpdater::GetRendererConfiguration(
   channel->GetRemoteAssociatedInterface(&renderer_configuration);
 
   return renderer_configuration;
-}
-
-void BraveRendererUpdater::OnPrimaryAccountChanged(
-    const signin::PrimaryAccountChangeEvent& event) {
-  if (event.GetEventTypeFor(signin::ConsentLevel::kSync) ==
-      signin::PrimaryAccountChangeEvent::Type::kNone) {
-    return;
-  }
-  UpdateAllRenderers();
 }
 
 void BraveRendererUpdater::UpdateAllRenderers() {

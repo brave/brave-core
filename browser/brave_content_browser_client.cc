@@ -42,7 +42,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
@@ -300,9 +299,7 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
 
 void BraveContentBrowserClient::RenderProcessWillLaunch(
     content::RenderProcessHost* host) {
-  Profile* profile = Profile::FromBrowserContext(
-      chrome::GetBrowserContextRedirectedInIncognito(
-          host->GetBrowserContext()));
+  Profile* profile = Profile::FromBrowserContext(host->GetBrowserContext());
   BraveRendererUpdaterFactory::GetForProfile(profile)
       ->InitializeRenderer(host);
 

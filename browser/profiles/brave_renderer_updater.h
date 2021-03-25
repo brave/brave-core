@@ -13,7 +13,6 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
-#include "components/signin/public/identity_manager/identity_manager.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -23,16 +22,12 @@ namespace content {
 class RenderProcessHost;
 }
 
-class BraveRendererUpdater : public KeyedService,
-                             public signin::IdentityManager::Observer {
+class BraveRendererUpdater : public KeyedService {
  public:
   explicit BraveRendererUpdater(Profile* profile);
   BraveRendererUpdater(const BraveRendererUpdater&) = delete;
   BraveRendererUpdater& operator=(const BraveRendererUpdater&) = delete;
   ~BraveRendererUpdater() override;
-
-  // KeyedService:
-  void Shutdown() override;
 
   // Initialize a newly-started renderer process.
   void InitializeRenderer(content::RenderProcessHost* render_process_host);
@@ -43,10 +38,6 @@ class BraveRendererUpdater : public KeyedService,
 
   mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>
   GetRendererConfiguration(content::RenderProcessHost* render_process_host);
-
-  // IdentityManager::Observer:
-  void OnPrimaryAccountChanged(
-      const signin::PrimaryAccountChangeEvent& event) override;
 
   // Update all renderers due to a configuration change.
   void UpdateAllRenderers();
@@ -61,10 +52,6 @@ class BraveRendererUpdater : public KeyedService,
 
   // Prefs that we sync to the renderers.
   IntegerPrefMember brave_wallet_web3_provider_;
-
-  ScopedObserver<signin::IdentityManager, signin::IdentityManager::Observer>
-      identity_manager_observer_;
-  signin::IdentityManager* identity_manager_;
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_RENDERER_UPDATER_H_

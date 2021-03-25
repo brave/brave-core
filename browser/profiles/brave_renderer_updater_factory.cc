@@ -6,16 +6,14 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 
 #include "brave/browser/profiles/brave_renderer_updater.h"
+#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/signin/identity_manager_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 BraveRendererUpdaterFactory::BraveRendererUpdaterFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveRendererUpdater",
-          BrowserContextDependencyManager::GetInstance()) {
-  DependsOn(IdentityManagerFactory::GetInstance());
-}
+          BrowserContextDependencyManager::GetInstance()) {}
 
 BraveRendererUpdaterFactory::~BraveRendererUpdaterFactory() {}
 
@@ -38,4 +36,9 @@ KeyedService* BraveRendererUpdaterFactory::BuildServiceInstanceFor(
 
 bool BraveRendererUpdaterFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
+}
+
+content::BrowserContext* BraveRendererUpdaterFactory::GetBrowserContextToUse(
+    content::BrowserContext* context) const {
+  return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

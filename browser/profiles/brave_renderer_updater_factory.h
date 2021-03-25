@@ -35,6 +35,9 @@ class BraveRendererUpdaterFactory : public BrowserContextKeyedServiceFactory {
  private:
   friend struct base::DefaultSingletonTraits<BraveRendererUpdaterFactory>;
 
+  content::BrowserContext* GetBrowserContextToUse(
+      content::BrowserContext* context) const override;
+
   BraveRendererUpdaterFactory();
   ~BraveRendererUpdaterFactory() override;
 };
