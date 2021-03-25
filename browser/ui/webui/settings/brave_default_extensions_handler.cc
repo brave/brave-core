@@ -126,6 +126,11 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getDecentralizedDnsResolveMethodList",
+      base::BindRepeating(
+          &BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList,
+          base::Unretained(this)));
 
   // Can't call this in ctor because it needs to access web_ui().
   InitializePrefCallbacks();
@@ -441,5 +446,18 @@ void BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled(
       base::Value(decentralized_dns::IsDecentralizedDnsEnabled()));
 #else
       base::Value(false));
+#endif
+}
+
+void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  AllowJavascript();
+
+  ResolveJavascriptCallback(args->GetList()[0],
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+                            decentralized_dns::GetResolveMethodList());
+#else
+                            base::Value(base::Value::Type::LIST));
 #endif
 }

@@ -25,5 +25,14 @@
     <message name="IDS_DECENTRALIZED_DNS_OPT_IN_DONT_PROCEED_BUTTON" desc="The text for the don't proceed button in decentralized DNS opt-in interstitial page.">
       Disable
     </message>
+    <message name="IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ASK" desc="Select control value for which decentralized DNS resolve method to use">
+      Ask
+    </message>
+    <message name="IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DISABLED" desc="Select control value for which decentralized DNS resolve method to use">
+      Disabled
+    </message>
+    <message name="IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DNS_OVER_HTTPS" desc="Select control value for which decentralized DNS resolve method to use">
+      DNS over HTTPS
+    </message>
   </if>
 </grit-part>

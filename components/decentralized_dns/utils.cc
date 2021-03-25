@@ -7,14 +7,29 @@
 
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
+#include "base/values.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/features.h"
 #include "brave/components/decentralized_dns/pref_names.h"
 #include "brave/net/decentralized_dns/constants.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 namespace decentralized_dns {
+
+namespace {
+
+base::Value MakeSelectValue(ResolveMethodTypes value,
+                            const base::string16& name) {
+  base::Value item(base::Value::Type::DICTIONARY);
+  item.SetKey("value", base::Value(static_cast<int>(value)));
+  item.SetKey("name", base::Value(name));
+  return item;
+}
+
+}  // namespace
 
 bool IsDecentralizedDnsEnabled() {
   return base::FeatureList::IsEnabled(features::kDecentralizedDns);
@@ -62,6 +77,22 @@ bool IsENSResolveMethodDoH(PrefService* local_state) {
 
   return local_state->GetInteger(kENSResolveMethod) ==
          static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS);
+}
+
+base::Value GetResolveMethodList() {
+  base::Value list(base::Value::Type::LIST);
+  list.Append(MakeSelectValue(
+      ResolveMethodTypes::ASK,
+      l10n_util::GetStringUTF16(IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ASK)));
+  list.Append(
+      MakeSelectValue(ResolveMethodTypes::DISABLED,
+                      l10n_util::GetStringUTF16(
+                          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DISABLED)));
+  list.Append(MakeSelectValue(
+      ResolveMethodTypes::DNS_OVER_HTTPS,
+      l10n_util::GetStringUTF16(
+          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DNS_OVER_HTTPS)));
+  return list;
 }
 
 }  // namespace decentralized_dns
