@@ -9,14 +9,14 @@
 
 #include "base/stl_util.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
-#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/common/constants.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #endif
 
 namespace extensions {

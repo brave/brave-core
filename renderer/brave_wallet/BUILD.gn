@@ -1,0 +1,27 @@
+import("//build/config/features.gni")
+
+source_set("brave_wallet") {
+  visibility = [
+    "//brave:child_dependencies",
+    "//brave/renderer/*",
+    "//chrome/renderer/*",
+  ]
+
+  sources = [
+    "brave_wallet_render_frame_observer.cc",
+    "brave_wallet_render_frame_observer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common:common",
+    "//brave/common:mojo_bindings",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/renderer",
+    "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//v8",
+  ]
+}

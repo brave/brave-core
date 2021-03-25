@@ -13,6 +13,10 @@ source_set("profiles") {
     "brave_profile_impl.h",
     "brave_profile_manager.cc",
     "brave_profile_manager.h",
+    "brave_renderer_updater.cc",
+    "brave_renderer_updater.h",
+    "brave_renderer_updater_factory.cc",
+    "brave_renderer_updater_factory.h",
     "profile_util.cc",
     "profile_util.h",
   ]
@@ -32,7 +36,7 @@ source_set("profiles") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_wallet/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
@@ -41,8 +45,12 @@ source_set("profiles") {
     "//brave/content:browser",
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
     "//components/prefs",
     "//components/search_engines",
+    "//components/signin/public/identity_manager",
+    "//mojo/public/cpp/bindings",
     "//ui/base",
   ]
 

@@ -1,5 +1,5 @@
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -34,9 +34,10 @@ source_set("infobars") {
     ]
 
     deps += [
-      "//brave/browser/brave_wallet:brave_wallet",
+      "//brave/browser/brave_wallet",
       "//brave/common:pref_names",
-      "//brave/components/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common",
       "//components/user_prefs:user_prefs",
       "//extensions/common:common_constants",
     ]

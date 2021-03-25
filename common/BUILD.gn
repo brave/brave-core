@@ -1,5 +1,6 @@
 import("//build/util/branding.gni")
 import("//extensions/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 
 brave_common_visibility_targets = [
   ":*",
@@ -89,6 +90,7 @@ source_set("common") {
         "//brave/components/brave_webtorrent/browser",
         "//brave/components/brave_referrals/browser",
         "//brave/components/brave_ads/browser",
+        "//brave/components/brave_wallet/renderer",
         "//brave/components/content_settings/renderer",
         "//brave/components/external_intents/android",
         "//brave/components/webcompat_reporter/browser",
@@ -141,6 +143,7 @@ source_set("common") {
   }
 
   deps += [
+    ":mojo_bindings",
     ":network_constants",
     ":pref_names",
     ":switches",
@@ -176,4 +179,10 @@ config("constants_configs") {
   if (is_mac) {
     defines += [ "BRAVE_PRODUCT_STRING=\"$chrome_product_full_name\"" ]
   }
+}
+
+mojom("mojo_bindings") {
+  sources = [ "brave_renderer_configuration.mojom" ]
+
+  deps = [ "//mojo/public/mojom/base" ]
 }

@@ -7,7 +7,7 @@
 
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
@@ -27,7 +27,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)

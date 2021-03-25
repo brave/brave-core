@@ -11,7 +11,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -86,7 +86,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/features.h"
+#include "brave/components/brave_wallet/common/features.h"
 
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                  \
     {"native-brave-wallet",                                                  \

@@ -7,7 +7,7 @@ import(
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
@@ -150,8 +150,8 @@ test("brave_unit_tests") {
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
-    "//brave/components/brave_wallet/buildflags",
-    "//brave/components/brave_wallet/test:brave_wallet_unit_tests",
+    "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",
@@ -388,7 +388,8 @@ test("brave_unit_tests") {
     deps += [
       "//brave/browser/brave_wallet",
       "//brave/common:pref_names",
-      "//brave/components/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common",
     ]
   }
 
@@ -665,7 +666,8 @@ if (!is_android) {
 
       deps += [
         "//brave/browser/infobars",
-        "//brave/components/brave_wallet",
+        "//brave/components/brave_wallet/browser",
+        "//brave/components/brave_wallet/common",
       ]
     }
 
@@ -794,7 +796,7 @@ if (!is_android) {
       "//brave/components/brave_shields/common",
       "//brave/components/brave_sync:prefs",
       "//brave/components/brave_sync/buildflags",
-      "//brave/components/brave_wallet/buildflags",
+      "//brave/components/brave_wallet/common/buildflags",
       "//brave/components/brave_wayback_machine",
       "//brave/components/brave_wayback_machine:buildflags",
       "//brave/components/content_settings/renderer",

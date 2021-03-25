@@ -44,7 +44,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

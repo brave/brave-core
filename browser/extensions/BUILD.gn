@@ -1,8 +1,8 @@
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/config.gni")
+import("//brave/components/brave_wallet/browser/config.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
@@ -102,7 +102,10 @@ source_set("extensions") {
       ":infura_config",
       ":brave_services_config",
     ]
-    deps += [ "//brave/components/brave_wallet" ]
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common",
+    ]
   }
 
   if (ipfs_enabled) {

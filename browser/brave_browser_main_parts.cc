@@ -11,7 +11,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/features.h"
-#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_service.h"

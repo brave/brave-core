@@ -4,7 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_browser_wallet_sources = []
@@ -13,6 +13,8 @@ brave_browser_wallet_deps = []
 
 if (brave_wallet_enabled) {
   brave_browser_wallet_sources += [
+    "//brave/browser/brave_wallet/brave_wallet_context_utils.cc",
+    "//brave/browser/brave_wallet/brave_wallet_context_utils.h",
     "//brave/browser/brave_wallet/brave_wallet_service_factory.cc",
     "//brave/browser/brave_wallet/brave_wallet_service_factory.h",
   ]

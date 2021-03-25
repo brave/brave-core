@@ -8,7 +8,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,7 +16,7 @@
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #endif
 
 BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(Browser* browser) :

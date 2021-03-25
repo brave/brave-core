@@ -19,6 +19,8 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
+#include "brave/browser/profiles/brave_renderer_updater.h"
+#include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -28,7 +30,7 @@
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
@@ -120,10 +122,14 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/gemini/gemini_protocol_handler.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
 
 #if !defined(OS_ANDROID)
@@ -236,6 +242,26 @@ void BindCosmeticFiltersResources(
       std::move(receiver));
 }
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+void MaybeBindBraveWalletProvider(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
+  auto* profile =
+      Profile::FromBrowserContext(frame_host->GetBrowserContext());
+  if (!brave_wallet::IsAllowedForProfile(profile))
+    return;
+
+  BraveWalletService* service =
+      BraveWalletServiceFactory::GetInstance()->GetForProfile(
+          Profile::FromBrowserContext(profile));
+
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_wallet::BraveWalletProviderImpl>(
+          service->AsWeakPtr()),
+      std::move(receiver));
+}
+#endif
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -271,6 +297,15 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }
 
+void BraveContentBrowserClient::RenderProcessWillLaunch(
+    content::RenderProcessHost* host) {
+  Profile* profile = Profile::FromBrowserContext(host->GetBrowserContext());
+  BraveRendererUpdaterFactory::GetForProfile(profile)
+      ->InitializeRenderer(host);
+
+  ChromeContentBrowserClient::RenderProcessWillLaunch(host);
+}
+
 content::ContentBrowserClient::AllowWebBluetoothResult
 BraveContentBrowserClient::AllowWebBluetooth(
     content::BrowserContext* browser_context,
@@ -286,6 +321,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       render_frame_host, map);
   map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
       base::BindRepeating(&BindCosmeticFiltersResources));
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  if (brave_wallet::IsNativeWalletEnabled()) {
+    map->Add<brave_wallet::mojom::BraveWalletProvider>(
+        base::BindRepeating(&MaybeBindBraveWalletProvider));
+  }
+#endif
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(

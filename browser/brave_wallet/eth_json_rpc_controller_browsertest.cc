@@ -8,7 +8,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_wallet/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"

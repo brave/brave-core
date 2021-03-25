@@ -22,6 +22,7 @@ class PrefChangeRegistrar;
 
 namespace content {
 class BrowserContext;
+class RenderProcessHost;
 }
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
@@ -33,6 +34,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   std::unique_ptr<content::BrowserMainParts> CreateBrowserMainParts(
       const content::MainFunctionParams& parameters) override;
   void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
+  void RenderProcessWillLaunch(content::RenderProcessHost* host) override;
 
   bool HandleExternalProtocol(
       const GURL& url,

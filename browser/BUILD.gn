@@ -6,7 +6,7 @@ import(
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
@@ -138,7 +138,7 @@ source_set("browser_process") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync",
     "//brave/components/brave_together/browser",
-    "//brave/components/brave_wallet/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
@@ -201,7 +201,8 @@ source_set("browser_process") {
   if (brave_wallet_enabled) {
     deps += [
       "brave_wallet",
-      "//brave/components/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common",
     ]
   }
 

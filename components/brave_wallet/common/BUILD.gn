@@ -1,0 +1,17 @@
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("common") {
+  public_deps = [ "buildflags" ]
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+  deps = [ ":mojom" ]
+}
+
+mojom("mojom") {
+  sources = [ "brave_wallet.mojom" ]
+
+  deps = [ "//mojo/public/mojom/base" ]
+}

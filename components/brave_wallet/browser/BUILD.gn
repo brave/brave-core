@@ -1,0 +1,60 @@
+import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/browser/config.gni")
+import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+assert(brave_wallet_enabled)
+
+source_set("browser") {
+  configs += [ ":infura_config" ]
+  include_dirs = [ "//brave/third_party/ethash/src/include" ]
+
+  sources = [
+    "brave_wallet_constants.cc",
+    "brave_wallet_constants.h",
+    "brave_wallet_delegate.h",
+    "brave_wallet_provider_impl.cc",
+    "brave_wallet_provider_impl.h",
+    "brave_wallet_service.cc",
+    "brave_wallet_service.h",
+    "brave_wallet_utils.cc",
+    "brave_wallet_utils.h",
+    "eth_call_data_builder.cc",
+    "eth_call_data_builder.h",
+    "eth_json_rpc_controller.cc",
+    "eth_json_rpc_controller.h",
+    "eth_requests.cc",
+    "eth_requests.h",
+    "eth_response_parser.cc",
+    "eth_response_parser.h",
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/third_party/ethash",
+    "//brave/vendor/bip39wally-core-native:bip39wally-core",
+    "//components/content_settings/core/browser",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//crypto",
+    "//extensions/buildflags",
+    "//services/network/public/cpp",
+    "//third_party/boringssl",
+    "//url",
+  ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/browser" ]
+  }
+}
+
+config("infura_config") {
+  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
+}

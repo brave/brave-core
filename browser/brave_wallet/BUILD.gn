@@ -1,4 +1,4 @@
-import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 assert(brave_wallet_enabled)
@@ -9,7 +9,8 @@ source_set("brave_wallet") {
     "brave_wallet_delegate_impl.h",
   ]
   deps = [
-    "//brave/components/brave_wallet:brave_wallet",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
     "//content/public/browser",
     "//extensions/buildflags",
   ]
