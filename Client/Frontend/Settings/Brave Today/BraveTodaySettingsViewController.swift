@@ -92,7 +92,7 @@ class BraveTodaySettingsViewController: TableViewController {
                         editActions: [.init(title: Strings.BraveToday.deleteUserSourceTitle, style: .destructive, selection: { [unowned self] indexPath in
                             guard let location = feedDataSource.rssFeedLocations[safe: indexPath.row] else { return }
                             self.feedDataSource.removeRSSFeed(with: location.url)
-                            dataSource.sections[1].rows.remove(at: indexPath.row)
+                            self.reloadSections()
                         })]
                     )
                 } + [
