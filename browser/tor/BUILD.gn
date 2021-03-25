@@ -125,7 +125,10 @@ source_set("browser_tests") {
     }
 
     if (brave_ads_enabled) {
-      deps += [ "//brave/components/brave_ads/browser" ]
+      deps += [
+        "//brave/browser/brave_ads",
+        "//brave/components/brave_ads/browser",
+      ]
     }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

@@ -53,9 +53,9 @@ class UserModelFileService : public BraveComponent {
       const base::FilePath& install_dir,
       const std::string& manifest) override;
 
-  void OnGetManifest(
-      const base::FilePath& install_dir,
-      const std::string& json);
+  void OnGetManifest(const std::string& component_id,
+                     const base::FilePath& install_dir,
+                     const std::string& json);
 
   std::map<std::string, UserModelInfo> user_models_;
   base::ObserverList<Observer> observers_;

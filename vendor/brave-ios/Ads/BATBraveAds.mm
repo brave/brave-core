@@ -878,6 +878,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }];
 }
 
+- (void)getBrowsingHistory:(const int)max_count
+                   forDays:(const int)days_ago
+                  callback:(ads::GetBrowsingHistoryCallback)callback {
+  // To be implemented https://github.com/brave/brave-ios/issues/3499
+  callback({});
+}
+
 - (void)loadUserModelForId:(const std::string &)id callback:(ads::LoadCallback)callback
 {
   NSString *bridgedId = [NSString stringWithUTF8String:id.c_str()];

@@ -55,6 +55,13 @@ void NativeAdsClient::LoadUserModelForId(const std::string & id, ads::LoadCallba
   [bridge_ loadUserModelForId:id callback:callback];
 }
 
+void NativeAdsClient::GetBrowsingHistory(
+    const int max_count,
+    const int days_ago,
+    ads::GetBrowsingHistoryCallback callback) {
+  [bridge_ getBrowsingHistory:max_count forDays:days_ago callback:callback];
+}
+
 void NativeAdsClient::Load(const std::string & name, ads::LoadCallback callback) {
   [bridge_ load:name callback:callback];
 }

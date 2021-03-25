@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
+#include "bat/ads/internal/ad_targeting/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
@@ -37,9 +38,11 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
       : ad_targeting_(std::make_unique<AdTargeting>()),
         subdivision_targeting_(
             std::make_unique<ad_targeting::geographic::SubdivisionTargeting>()),
+        anti_targeting_resource_(std::make_unique<resource::AntiTargeting>()),
         ad_serving_(std::make_unique<ad_notifications::AdServing>(
             ad_targeting_.get(),
-            subdivision_targeting_.get())) {}
+            subdivision_targeting_.get(),
+            anti_targeting_resource_.get())) {}
 
   ~BatAdsAdNotificationPacingTest() override = default;
 
@@ -94,6 +97,7 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
   std::unique_ptr<AdTargeting> ad_targeting_;
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
+  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<ad_notifications::AdServing> ad_serving_;
 
   std::vector<CreativeAdNotificationInfo> test_creative_notifications_;

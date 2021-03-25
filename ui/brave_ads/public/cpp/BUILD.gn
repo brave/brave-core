@@ -18,9 +18,10 @@ component("cpp") {
 
   defines = [ "BRAVE_ADS_UI_PUBLIC_IMPLEMENTATION" ]
 
+  public_deps = [ "//skia" ]
+
   deps = [
     "//base",
-    "//skia",
     "//ui/gfx",
     "//ui/strings",
     "//url",

@@ -13,7 +13,6 @@
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
-namespace ad_targeting {
 namespace resource {
 
 TextClassification::TextClassification() {
@@ -70,5 +69,4 @@ ml::pipeline::TextProcessing* TextClassification::get() const {
 }
 
 }  // namespace resource
-}  // namespace ad_targeting
 }  // namespace ads

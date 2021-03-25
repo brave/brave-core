@@ -722,6 +722,7 @@ if (!is_android) {
       ]
 
       deps += [
+        "//brave/browser/brave_ads",
         "//brave/components/brave_ads/browser",
         "//brave/components/brave_ads/common",
         "//brave/components/brave_rewards/browser",

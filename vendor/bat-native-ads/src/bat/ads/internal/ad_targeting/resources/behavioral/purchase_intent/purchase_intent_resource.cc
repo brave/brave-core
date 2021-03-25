@@ -15,7 +15,6 @@
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
-namespace ad_targeting {
 namespace resource {
 
 namespace {
@@ -233,5 +232,4 @@ bool PurchaseIntent::FromJson(const std::string& json) {
 }
 
 }  // namespace resource
-}  // namespace ad_targeting
 }  // namespace ads
