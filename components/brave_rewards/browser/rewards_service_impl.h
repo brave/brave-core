@@ -760,7 +760,6 @@ class RewardsServiceImpl : public RewardsService,
   mojo::Remote<bat_ledger::mojom::BatLedgerService> bat_ledger_service_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
-  const base::FilePath diagnostic_log_path_;
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;

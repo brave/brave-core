@@ -314,14 +314,14 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      diagnostic_log_path_(profile_->GetPath().Append(kDiagnosticLogPath)),
       ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
       publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
-      diagnostic_log_(new DiagnosticLog(diagnostic_log_path_,
-                                        kDiagnosticLogMaxFileSize,
-                                        kDiagnosticLogKeepNumLines)),
+      diagnostic_log_(
+          new DiagnosticLog(profile_->GetPath().Append(kDiagnosticLogPath),
+                            kDiagnosticLogMaxFileSize,
+                            kDiagnosticLogKeepNumLines)),
       notification_service_(new RewardsNotificationServiceImpl(profile)),
       next_timer_id_(0) {
   // Set up the rewards data source
