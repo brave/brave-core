@@ -33,8 +33,7 @@ namespace {
 constexpr char kSessionStorageSuffix[] = "/ephemeral-session-storage";
 constexpr char kLocalStorageSuffix[] = "/ephemeral-local-storage";
 
-const base::TimeDelta kStorageKeepAliveDelay =
-    net::features::kTimeoutTcpConnectAttemptMax.Get();
+const base::TimeDelta kStorageKeepAliveDelay = base::TimeDelta::FromSeconds(30);
 
 base::TimeDelta g_storage_keep_alive_for_testing = base::TimeDelta::Min();
 
