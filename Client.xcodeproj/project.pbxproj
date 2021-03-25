@@ -58,6 +58,7 @@
 		0A4214E921A6EBCF006B8E39 /* SafeBrowsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4214E821A6EBCF006B8E39 /* SafeBrowsingTests.swift */; };
 		0A4214FF21AC0D6C006B8E39 /* TimeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4214F621AC0AFF006B8E39 /* TimeExtensions.swift */; };
 		0A42150121AC0E8E006B8E39 /* TimeExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A42150021AC0E8E006B8E39 /* TimeExtensionTests.swift */; };
+		0A42BC43260CEDA3007EBBF3 /* VPNLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A42BC42260CEDA3007EBBF3 /* VPNLogs.swift */; };
 		0A42F3BD25B5CFAE00BD370B /* DefaultBrowserIntroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A42F3BC25B5CFAE00BD370B /* DefaultBrowserIntroTests.swift */; };
 		0A43293021B1C7F50041625B /* AdBlockStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43292F21B1C7F50041625B /* AdBlockStats.swift */; };
 		0A43293B21B1C8D10041625B /* FifoDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43293A21B1C8D10041625B /* FifoDict.swift */; };
@@ -1429,6 +1430,7 @@
 		0A4214E821A6EBCF006B8E39 /* SafeBrowsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBrowsingTests.swift; sourceTree = "<group>"; };
 		0A4214F621AC0AFF006B8E39 /* TimeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeExtensions.swift; sourceTree = "<group>"; };
 		0A42150021AC0E8E006B8E39 /* TimeExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeExtensionTests.swift; sourceTree = "<group>"; };
+		0A42BC42260CEDA3007EBBF3 /* VPNLogs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNLogs.swift; sourceTree = "<group>"; };
 		0A42F3BC25B5CFAE00BD370B /* DefaultBrowserIntroTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBrowserIntroTests.swift; sourceTree = "<group>"; };
 		0A43292F21B1C7F50041625B /* AdBlockStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBlockStats.swift; sourceTree = "<group>"; };
 		0A43293A21B1C8D10041625B /* FifoDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FifoDict.swift; sourceTree = "<group>"; };
@@ -4001,6 +4003,7 @@
 				27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */,
 				27D114D52358FCA400166534 /* SettingsRowViews.swift */,
 				278C700924F96D7000A246C8 /* BraveShieldsAndPrivacySettingsController.swift */,
+				0A42BC42260CEDA3007EBBF3 /* VPNLogs.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -7102,6 +7105,7 @@
 				E65075511E37F6D1006961AC /* NSURLExtensionsMailTo.swift in Sources */,
 				D83822001FC7961D00303C12 /* DispatchQueueExtensions.swift in Sources */,
 				D03F8EB22004014E003C2224 /* FaviconHandler.swift in Sources */,
+				0A42BC43260CEDA3007EBBF3 /* VPNLogs.swift in Sources */,
 				78A9D0962407B4A90077576C /* BraveGetUA.swift in Sources */,
 				0AC77600242A282C00139377 /* BuyVPNViewController.swift in Sources */,
 				0AB2442C22AA789B00B4D9DD /* ReaderModeButton.swift in Sources */,
