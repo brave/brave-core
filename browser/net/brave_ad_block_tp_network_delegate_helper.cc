@@ -21,11 +21,14 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/net/secure_dns_config.h"
+#include "chrome/browser/net/system_network_context_manager.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/network_context.h"
@@ -142,10 +145,15 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
     optional_parameters->include_canonical_name = true;
-    // Explicitly specify source to avoid using `HostResolverProc`
-    // which will be handled by system resolver
+
+    SecureDnsConfig secure_dns_config =
+        SystemNetworkContextManager::GetStubResolverConfigReader()
+            ->GetSecureDnsConfiguration(false);
+    // Explicitly specify source when DNS over HTTPS is enabled to avoid
+    // using `HostResolverProc` which will be handled by system resolver
     // See https://crbug.com/872665
-    optional_parameters->source = net::HostResolverSource::DNS;
+    if (secure_dns_config.mode() == net::SecureDnsMode::kSecure)
+      optional_parameters->source = net::HostResolverSource::DNS;
 
     network::mojom::NetworkContext* network_context =
         content::BrowserContext::GetDefaultStoragePartition(context)
@@ -217,9 +225,10 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
                                         std::shared_ptr<BraveRequestInfo> ctx) {
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
-  if (ctx->request_url.is_empty() || ctx->initiator_url.is_empty() ||
-      !ctx->initiator_url.has_host() || !ctx->allow_brave_shields ||
-      ctx->allow_ads ||
+  if (ctx->request_url.is_empty() ||
+      ctx->request_url.SchemeIs(content::kChromeDevToolsScheme) ||
+      ctx->initiator_url.is_empty() || !ctx->initiator_url.has_host() ||
+      !ctx->allow_brave_shields || ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
     return net::OK;
   }
