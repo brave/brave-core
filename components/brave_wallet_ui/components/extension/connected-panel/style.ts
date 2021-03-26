@@ -6,6 +6,7 @@ import {
   CaratCircleODownIcon
 } from 'brave-ui/components/icons'
 
+// This gradient will be generated using blockies package in the future.
 export const StyledWrapper = styled.div`
   display: flex;
   height: 100%;
@@ -13,6 +14,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  background: linear-gradient(180deg, #CF4A89 0%, #9E5EB2 100%);
 `
 
 export const CenterColumn = styled.div`
