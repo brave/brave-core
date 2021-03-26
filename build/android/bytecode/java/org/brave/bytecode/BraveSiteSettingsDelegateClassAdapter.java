@@ -7,12 +7,12 @@ package org.brave.bytecode;
 
 import org.objectweb.asm.ClassVisitor;
 
-public class BraveSiteSettingsDelegateAdapter extends BraveClassVisitor {
+public class BraveSiteSettingsDelegateClassAdapter extends BraveClassVisitor {
 
     static String sChromeSiteSettingsDelegateClassName = "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate";
     static String sBraveSiteSettingsDelegateClassName = "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate";
 
-    public BraveSiteSettingsDelegateAdapter(ClassVisitor visitor) {
+    public BraveSiteSettingsDelegateClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
         redirectConstructor(sChromeSiteSettingsDelegateClassName, sBraveSiteSettingsDelegateClassName);

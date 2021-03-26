@@ -137,7 +137,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator")); 
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate"));        
-
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate"));
     }
 
     @Test

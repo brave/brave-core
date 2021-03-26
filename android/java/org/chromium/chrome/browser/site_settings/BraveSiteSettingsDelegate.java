@@ -25,6 +25,5 @@ public class BraveSiteSettingsDelegate extends ChromeSiteSettingsDelegate {
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);    
         BraveActivity.getChromeTabbedActivity().startActivity(intent);
     }
-
 }
  

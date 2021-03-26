@@ -20,8 +20,6 @@ public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment 
         if (item.getItemId() == R.id.close_menu_id) {
             getSiteSettingsDelegate().closeButton();
         }
-
 		return super.onOptionsItemSelected(item);
     }
-
 }
