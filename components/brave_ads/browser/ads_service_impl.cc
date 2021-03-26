@@ -1975,18 +1975,18 @@ void AdsServiceImpl::OnAdRewardsChanged() {
   }
 }
 
-void AdsServiceImpl::DiagnosticLog(const std::string& file,
-                                   const int line,
-                                   const int verbose_level,
-                                   const std::string& message) {
-  rewards_service_->DiagnosticLog(file, line, verbose_level, message);
+void AdsServiceImpl::WriteDiagnosticLog(const std::string& file,
+                                        const int line,
+                                        const int verbose_level,
+                                        const std::string& message) {
+  rewards_service_->WriteDiagnosticLog(file, line, verbose_level, message);
 }
 
 void AdsServiceImpl::Log(const char* file,
                          const int line,
                          const int verbose_level,
                          const std::string& message) {
-  DiagnosticLog(file, line, verbose_level, message);
+  WriteDiagnosticLog(file, line, verbose_level, message);
 
   const int vlog_level = ::logging::GetVlogLevelHelper(file, strlen(file));
   if (verbose_level <= vlog_level) {

@@ -349,10 +349,10 @@ class AdsServiceImpl : public AdsService,
                       const ads::P2AEventType type,
                       const std::string& value) override;
 
-  void DiagnosticLog(const std::string& file,
-                     const int line,
-                     const int verbose_level,
-                     const std::string& message);
+  void WriteDiagnosticLog(const std::string& file,
+                          const int line,
+                          const int verbose_level,
+                          const std::string& message);
 
   void Log(const char* file,
            const int line,
