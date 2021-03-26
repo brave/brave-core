@@ -5,7 +5,7 @@
 
 package org.chromium.components.browser_ui.site_settings;
 
-import android.os.Bundle;	
+import android.os.Bundle;
 import android.view.MenuItem;
 
 import org.chromium.components.browser_ui.site_settings.SiteSettingsPreferenceFragment;
