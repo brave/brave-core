@@ -29,17 +29,13 @@ class BraveSearchJSHandler {
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
 
  private:
-  void BindFunctionsToObject(v8::Isolate* isolate,
-                             v8::Local<v8::Context> context,
-                             v8::Local<v8::Object> javascript_object);
-
   // Adds a function to the provided object.
   template <typename Sig>
   void BindFunctionToObject(v8::Isolate* isolate,
                             v8::Local<v8::Object> javascript_object,
                             const std::string& name,
                             const base::RepeatingCallback<Sig>& callback);
-  void CreateAFallbackObject(v8::Isolate* isolate,
+  void BindFunctionsToObject(v8::Isolate* isolate,
                              v8::Local<v8::Context> context);
   bool EnsureConnected();
 

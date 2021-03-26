@@ -67,7 +67,8 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 #endif
 
-  new brave_search::BraveSearchRenderFrameObserver(render_frame);
+  new brave_search::BraveSearchRenderFrameObserver(
+      render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
 }
 
 void BraveContentRendererClient::RunScriptsAtDocumentStart(

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_FALLBACK_H_
-#define BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_FALLBACK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_HOST_H_
+#define BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_HOST_H_
 
 #include <memory>
 #include <string>
@@ -14,13 +14,13 @@
 
 namespace brave_search {
 
-class BraveSearchFallback final
+class BraveSearchHost final
     : public brave_search::mojom::BraveSearchFallback {
  public:
-  BraveSearchFallback(const BraveSearchFallback&) = delete;
-  BraveSearchFallback& operator=(const BraveSearchFallback&) = delete;
-  BraveSearchFallback();
-  ~BraveSearchFallback() override;
+  BraveSearchHost(const BraveSearchHost&) = delete;
+  BraveSearchHost& operator=(const BraveSearchHost&) = delete;
+  BraveSearchHost();
+  ~BraveSearchHost() override;
 
   void FetchBackupResults(const std::string& query_string,
                           const std::string& lang,
@@ -31,9 +31,9 @@ class BraveSearchFallback final
                             const std::string& response);
 
  private:
-  base::WeakPtrFactory<BraveSearchFallback> weak_factory_;
+  base::WeakPtrFactory<BraveSearchHost> weak_factory_;
 };
 
 }  // namespace brave_search
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_FALLBACK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_BRAVE_SEARCH_HOST_H_

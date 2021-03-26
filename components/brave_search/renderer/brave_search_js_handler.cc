@@ -42,10 +42,10 @@ void BraveSearchJSHandler::AddJavaScriptObjectToFrame(
 
   v8::Context::Scope context_scope(context);
 
-  CreateAFallbackObject(isolate, context);
+  BindFunctionsToObject(isolate, context);
 }
 
-void BraveSearchJSHandler::CreateAFallbackObject(
+void BraveSearchJSHandler::BindFunctionsToObject(
     v8::Isolate* isolate,
     v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
@@ -53,19 +53,12 @@ void BraveSearchJSHandler::CreateAFallbackObject(
   if (global->Get(context, gin::StringToV8(isolate, "chrome"))
           .ToLocal(&chrome_value) &&
       chrome_value->IsObject()) {
-    BindFunctionsToObject(isolate, context,
-                          chrome_value->ToObject(context).ToLocalChecked());
-  }
-}
-
-void BraveSearchJSHandler::BindFunctionsToObject(
-    v8::Isolate* isolate,
-    v8::Local<v8::Context> context,
-    v8::Local<v8::Object> javascript_object) {
-  BindFunctionToObject(
-      isolate, javascript_object, "fetchBackupResults",
+    BindFunctionToObject(
+      isolate, chrome_value->ToObject(context).ToLocalChecked(),
+      "fetchBackupResults",
       base::BindRepeating(&BraveSearchJSHandler::FetchBackupResults,
                           base::Unretained(this), isolate));
+  }
 }
 
 template <typename Sig>

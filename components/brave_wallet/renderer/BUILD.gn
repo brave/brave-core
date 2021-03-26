@@ -1,13 +1,4 @@
-import("//build/config/features.gni")
-
 source_set("renderer") {
-  visibility = [
-    "//brave:child_dependencies",
-    "//brave/renderer/*",
-    "//chrome/renderer/*",
-    "//components/content_settings/renderer/*",
-  ]
-
   sources = [
     "brave_wallet_js_handler.cc",
     "brave_wallet_js_handler.h",
