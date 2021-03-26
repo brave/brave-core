@@ -1,0 +1,10 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate.java b/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate.java
+index f488483e0329069786f2660c41fd6a1aa44f9c5d..701ddbdfb8efd6bf98fa1d6ce51c90a0c8aa2b34 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate.java
+@@ -253,4 +253,5 @@ public class ChromeSiteSettingsDelegate implements SiteSettingsDelegate {
+             mPrivacySandboxController.dismissSnackbar();
+         }
+     }
++    @Override public void closeButton(){}
+ }
