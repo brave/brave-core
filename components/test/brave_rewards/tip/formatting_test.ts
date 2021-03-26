@@ -27,15 +27,15 @@ describe('Rewards Tip Dialog - formatting', () => {
   describe('formatLocaleTemplate', () => {
     it('replaces named tokens in text', () => {
       expect(
-        formatLocaleTemplate('a {{a}} b {{ b}} c {{ c }} d', {
+        formatLocaleTemplate('a [[a]] b [[ b]] c [[ c ]] d', {
           a: '1',
           b: '2',
           c: '3'
         }))
         .toBe('a 1 b 2 c 3 d')
       expect(
-        formatLocaleTemplate('a {{a}} b', {}))
-        .toBe('a {{a}} b')
+        formatLocaleTemplate('a [[a]] b', {}))
+        .toBe('a [[a]] b')
     })
   })
 

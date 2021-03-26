@@ -15,7 +15,7 @@ export function formatLocaleTemplate (
   data: Record<string, string>
 ) {
   for (const [key, value] of Object.entries(data)) {
-    const pattern = new RegExp(`{{\\s*${key}\\s*}}`)
+    const pattern = new RegExp(String.raw`\[\[\s*${key}\s*\]\]`)
     localeString = localeString.replace(pattern, value)
   }
   return localeString
