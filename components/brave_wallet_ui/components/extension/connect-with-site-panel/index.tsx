@@ -25,12 +25,7 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-
-export interface WalletAccountType {
-  id: string
-  name: string
-  address: string
-}
+import { WalletAccountType } from '../../../constants/types'
 
 export interface Props {
   siteURL: string
