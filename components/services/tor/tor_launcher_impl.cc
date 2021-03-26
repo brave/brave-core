@@ -101,8 +101,7 @@ void TorLauncherImpl::Cleanup() {
     base::PostTask(
         FROM_HERE,
         {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT},
-        base::BindOnce(&base::EnsureProcessTerminated,
-                       std::move(&tor_process_)));
+        base::BindOnce(&base::EnsureProcessTerminated, std::move(tor_process_)));
 #else
     base::EnsureProcessTerminated(std::move(tor_process_));
 #endif
