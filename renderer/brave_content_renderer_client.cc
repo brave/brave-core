@@ -43,5 +43,6 @@ void BraveContentRendererClient::RenderFrameCreated(
 #endif
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-  new brave_search::BraveSearchRenderFrameObserver(render_frame);
+  new brave_search::BraveSearchRenderFrameObserver(
+      render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
 }

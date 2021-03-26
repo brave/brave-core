@@ -23,7 +23,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_search/browser/brave_search_fallback.h"
+#include "brave/components/brave_search/browser/brave_search_host.h"
 #include "brave/components/brave_search/common/brave_search.mojom.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -238,11 +238,11 @@ void BindCosmeticFiltersResources(
       std::move(receiver));
 }
 
-void BindBraveSearchFallback(
+void BindBraveSearchHost(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_search::BraveSearchFallback>(),
+      std::make_unique<brave_search::BraveSearchHost>(),
       std::move(receiver));
 }
 
@@ -297,7 +297,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
       base::BindRepeating(&BindCosmeticFiltersResources));
   map->Add<brave_search::mojom::BraveSearchFallback>(
-      base::BindRepeating(&BindBraveSearchFallback));
+      base::BindRepeating(&BindBraveSearchHost));
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(

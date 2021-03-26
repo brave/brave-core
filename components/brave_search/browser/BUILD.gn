@@ -2,8 +2,8 @@ import("//build/config/features.gni")
 
 source_set("browser") {
   sources = [
-    "brave_search_fallback.cc",
-    "brave_search_fallback.h",
+    "brave_search_host.cc",
+    "brave_search_host.h",
   ]
 
   deps = [

@@ -1,10 +1,4 @@
 source_set("renderer") {
-  visibility = [
-    "//brave:child_dependencies",
-    "//brave/renderer/*",
-    "//chrome/renderer/*",
-  ]
-
   sources = [
     "brave_search_js_handler.cc",
     "brave_search_js_handler.h",
