@@ -99,6 +99,7 @@ pub struct Title {
     pub is_meta: bool,
 }
 
+/// Add https:// to the img src, if missing.
 pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
     if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
         if !src.starts_with("//") && !src.starts_with("http://") && src.starts_with("https://") {
@@ -113,6 +114,7 @@ pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
     }
 }
 
+/// Returns the proportion of links an element contains with the amount of text in the subtree.
 #[inline]
 pub fn get_link_density(handle: &Handle) -> f32 {
     let text_length = dom::text_len(&handle) as f32;
@@ -127,23 +129,23 @@ pub fn get_link_density(handle: &Handle) -> f32 {
     link_length / text_length
 }
 
+/// Returns the proportion of children an element has with the amount of text in the subtree.
 #[inline]
 pub fn get_text_density(handle: &Handle, tags: &[&str]) -> f32 {
     let text_length = dom::text_len(&handle) as f32;
     if text_length == 0.0 {
         return 0.0;
     }
-    let mut nodes: Vec<Handle> = vec![];
-    dom::find_nodes_with_tag(&handle, tags, &mut nodes);
+    let nodes = dom::find_nodes_with_tag(&handle, tags);
     let children_length = nodes
         .iter()
         .fold(0.0, |acc, child| acc + dom::text_len(&child) as f32);
     children_length / text_length as f32
 }
 
-// is candidate iif lenght of the text is larger than 20 words AND its tag is
-// is `div`, `article`, `center`, `section` while not in containing nodes in
-// BLOCK_CHILD_TAGS
+/// is candidate iif length of the text is larger than 20 words AND its tag is
+/// is `div`, `article`, `center`, `section` while not in containing nodes in
+/// BLOCK_CHILD_TAGS
 pub fn is_candidate(handle: &Handle) -> bool {
     let text_len = dom::text_len(&handle);
     if text_len < 25 {
@@ -165,6 +167,7 @@ pub fn is_candidate(handle: &Handle) -> bool {
     }
 }
 
+/// Initialize an element's score based off it's tag.
 pub fn init_content_score(handle: &Handle) -> f32 {
     let score = match handle.data() {
         Element(ref data) => match data.name.local {
@@ -190,6 +193,7 @@ pub fn init_content_score(handle: &Handle) -> f32 {
     score + get_class_weight(handle)
 }
 
+/// Calculate the "readable" content in an element.
 pub fn calc_content_score(handle: &Handle) -> f32 {
     let mut score: f32 = 1.0;
     let mut text = String::new();
@@ -200,6 +204,7 @@ pub fn calc_content_score(handle: &Handle) -> f32 {
     score
 }
 
+/// Score class and id names against a set of widely used heuristics.
 pub fn get_class_weight(handle: &Handle) -> f32 {
     let mut weight: f32 = 0.0;
     if let Some(data) = handle.as_element() {
@@ -220,6 +225,7 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
     weight
 }
 
+/// Uses the <meta> elements to extract the article title.
 pub fn get_metadata(data: &ElementData, title: &mut Title) {
     if title.is_meta {
         // We already grabbed a title from the metadata earlier in the parse.
@@ -246,7 +252,9 @@ pub fn get_metadata(data: &ElementData, title: &mut Title) {
     }
 }
 
-fn get_inner_img(handle: &Handle) -> Option<Handle> {
+/// Do a subparse. The data inside of a noscript element is text. Send it through the parser and
+/// return the result if it is one img element.
+fn get_inner_img_from_noscript(handle: &Handle) -> Option<Handle> {
     let child = handle.first_child()?;
     if let Some(contents) = child.as_text() {
         let inner = dom::parse_inner(&contents.borrow())?;
@@ -261,12 +269,15 @@ fn get_inner_img(handle: &Handle) -> Option<Handle> {
     None
 }
 
+/// Unwrap a <noscript><img src=".."/></noscript> element to just be an img element. Sites like
+/// Medium and BBC wrap img elements in a noscript on page load, and do this same process in
+/// Javascript.
 fn unwrap_noscript(
     handle: &Handle,
     useless_nodes: &mut Vec<Handle>,
     new_children: &mut Vec<Handle>,
 ) {
-    if let Some(img) = get_inner_img(handle) {
+    if let Some(img) = get_inner_img_from_noscript(handle) {
         new_children.push(img);
         if let Some(prev) = dom::previous_element_sibling(handle) {
             if dom::is_single_image(&prev) {
@@ -276,6 +287,8 @@ fn unwrap_noscript(
     }
 }
 
+/// Prepare the DOM for the candidate and cleaning steps. Delete "noisy" nodes and do small
+/// transformations.
 pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> bool {
     if let Some(data) = handle.as_element() {
         match data.name.local {
@@ -314,6 +327,9 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
         if pending_removal {
             useless_nodes.push(child.clone());
         }
+
+        // These are pre-processing steps that don't just delete nodes, but also append nodes to
+        // their parent.
         match child.data() {
             Element(data) => {
                 match data.name.local {
@@ -323,8 +339,10 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
                 if data.name.local == local_name!("noscript") {
                     unwrap_noscript(&child, &mut useless_nodes, &mut new_children);
                 } else if !pending_removal && data.name.local == local_name!("div") {
-                    if let Some(replacement) =
-                        dom::has_single_tag_inside_element(&child, &local_name!("p"))
+                    // This is handling for sites like mobile.slate.com, where every paragraph
+                    // element is wrapped in a single div. Since this can confuse the scoring
+                    // algorithm, we delete the outer divs.
+                    if let Some(replacement) = dom::get_only_child_by_tag(&child, &local_name!("p"))
                     {
                         let link_density = get_link_density(&child);
                         if link_density < 0.25 {
@@ -365,6 +383,7 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
     false
 }
 
+/// Walk the DOM and mark all candidate nodes.
 pub fn find_candidates(mut dom: &mut Sink, handle: Handle) {
     // is candidate iif length of the text in handle is larger than 20 words AND
     // its tag is `div`, `article`, `center`, `section` while not in containing
@@ -473,11 +492,12 @@ pub fn search_alternative_candidates<'a>(top_candidates: &'a Vec<TopCandidate>) 
     None
 }
 
+/// Iterates through the siblings of the top candidate and appends related content. Having the same
+/// class name as the parent is a bonus, same with dense text nodes.
 pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
     if let Some(top_elem) = top_candidate.as_element() {
         if let Some(parent) = top_candidate.parent() {
             let mut related_siblings = vec![];
-            let mut useless_nodes = vec![];
             let top_attrs = top_elem.attributes.borrow();
             let top_class = top_attrs.get("class");
             let content_bonus = top_elem.score.get() * 0.2;
@@ -512,15 +532,12 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
                             .iter()
                             .any(|&tag| tag == &elem.name.local)
                         {
-                            if let Some(replacement) =
-                                dom::clone_element_steal_children(dom, &sibling, local_name!("div"))
-                            {
-                                dom.append_before_sibling(
-                                    &sibling,
-                                    NodeOrText::AppendNode(replacement),
-                                );
-                                useless_nodes.push(sibling);
-                            }
+                            let new_elem = Handle::new_element(
+                                QualName::new(None, ns!(), local_name!("div")),
+                                elem.attributes.borrow().map.clone(),
+                            );
+                            dom.reparent_children(&sibling, &new_elem);
+                            related_siblings.push(new_elem);
                         } else {
                             related_siblings.push(sibling);
                         }
@@ -531,15 +548,11 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
             for sibling in related_siblings {
                 top_candidate.append(sibling);
             }
-
-            for node in useless_nodes.iter() {
-                dom.remove_from_parent(node);
-            }
         }
     }
 }
 
-// decides whether the handle node is useless (should be dropped) or not.
+/// decides whether the handle node is useless (should be dropped) or not.
 pub fn clean<S: ::std::hash::BuildHasher>(
     mut dom: &mut Sink,
     handle: Handle,
@@ -604,6 +617,8 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     useless
 }
 
+/// Using content score and other heuristics, determine if the handle should be marked for
+/// deletion.
 pub fn is_useless(handle: &Handle) -> bool {
     let tag_name = dom::get_tag_name(&handle);
     let weight = get_class_weight(&handle);
@@ -618,8 +633,7 @@ pub fn is_useless(handle: &Handle) -> bool {
 
     let mut is_list = tag_name == Some(&local_name!("ul")) || tag_name == Some(&local_name!("ol"));
     if !is_list {
-        let mut list_nodes: Vec<Handle> = vec![];
-        dom::find_nodes_with_tag(handle, &["ul", "ol"], &mut list_nodes);
+        let list_nodes = dom::find_nodes_with_tag(handle, &["ul", "ol"]);
 
         let mut list_length = 0.0;
         for node in list_nodes {

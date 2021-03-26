@@ -18,6 +18,10 @@ use std::str::FromStr;
 use url::Url;
 use util::StringUtils;
 
+// The number of candidates to consider when choosing the "top" candidate. These
+// top candidates are used in the alternative candidates part of the algorithm.
+// This number is taken from the Mozilla implementation.
+// https://github.com/mozilla/readability/blob/e2aea3121a9bb6e05478edc1596026c41c782779/Readability.js#L111
 const NUM_TOP_CANDIDATES: usize = 5;
 
 lazy_static! {
@@ -64,7 +68,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     // candidates and their scoring. a candidate contains the node parent of the
     // dom tree branch and its score. in practice, this function will go through
     // the dom and populate `candidates` data structure
-    scorer::find_candidates(&mut dom, handle.clone());
+    scorer::find_candidates(&mut dom, handle);
 
     // top candidate is the top scorer among the tree dom's candidates. this is
     // the subtree that will be considered for final rendering
