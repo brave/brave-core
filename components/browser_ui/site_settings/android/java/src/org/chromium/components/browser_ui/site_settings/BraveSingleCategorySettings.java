@@ -12,7 +12,6 @@ import org.chromium.components.browser_ui.site_settings.SiteSettingsPreferenceFr
 
 public class BraveSingleCategorySettings extends SiteSettingsPreferenceFragment {
 
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) { }
 
