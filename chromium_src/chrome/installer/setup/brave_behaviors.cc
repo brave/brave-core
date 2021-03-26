@@ -12,7 +12,7 @@ namespace installer {
 
 void DoPostUninstallOperations(const base::Version& version,
                                const base::FilePath& local_data_path,
-                               const std::u16string& distribution_data) {
+                               const std::wstring& distribution_data) {
   // Brave browser doesn't launch uninstall survey page.
 }
 
