@@ -46,7 +46,7 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
     // @pes mentioned we might want to experiment with several backends, so this
     // will give us the most flexibility.
     std::string backend = cmd_line.GetSwitchValueASCII(kSpeedreaderBackend);
-    if (backend == "heuristics") {
+    if (backend == "classify-all") {
       backend_ = RewriterType::RewriterHeuristics;
     }
   }
