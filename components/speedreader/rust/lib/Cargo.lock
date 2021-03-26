@@ -906,7 +906,7 @@ dependencies = [
 [[package]]
 name = "kuchiki"
 version = "0.8.1"
-source = "git+https://github.com/keur/kuchiki?branch=speedreader#589eadca2c1d06ddda2919354590bfe1ace88a43"
+source = "git+https://github.com/brave/kuchiki?branch=speedreader#589eadca2c1d06ddda2919354590bfe1ace88a43"
 dependencies = [
  "cssparser 0.27.2",
  "html5ever",
