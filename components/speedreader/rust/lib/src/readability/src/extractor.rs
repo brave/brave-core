@@ -1,7 +1,9 @@
 use crate::dom;
 use crate::scorer;
 use crate::util;
+use html5ever::parse_document;
 use html5ever::tendril::StrTendril;
+use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
@@ -11,6 +13,7 @@ use regex::Regex;
 use scorer::{Title, TopCandidate};
 use std::collections::HashMap;
 use std::default::Default;
+use std::io::Read;
 use std::str::FromStr;
 use url::Url;
 use util::StringUtils;
@@ -25,6 +28,23 @@ lazy_static! {
 pub struct Product {
     pub title: String,
     pub content: String,
+}
+
+// NOTE: Only used in document tests, but exposed publicly for callers to test
+// the feature extractor.
+pub fn extract<R>(input: &mut R, url: Option<&str>) -> Result<Product, std::io::Error>
+where
+    R: Read,
+{
+    let url = url
+        .and_then(|url| Url::parse(url).ok())
+        .unwrap_or_else(|| Url::parse("https://example.com").unwrap());
+
+    let mut dom: Sink = parse_document(Sink::default(), Default::default())
+        .from_utf8()
+        .read_from(input)?;
+
+    extract_dom(&mut dom, &url, &HashMap::new())
 }
 
 pub fn extract_dom<S: ::std::hash::BuildHasher>(
@@ -147,10 +167,7 @@ pub fn clean_title(title: String) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use html5ever::parse_document;
-    use html5ever::tendril::TendrilSink;
     use std::io::Cursor;
-    use std::io::Read;
 
     fn normalize_output(input: &str) -> String {
         return input
@@ -176,21 +193,6 @@ mod tests {
             title: title.title,
             content,
         })
-    }
-
-    fn extract<R>(input: &mut R, url: Option<&str>) -> Result<Product, std::io::Error>
-    where
-        R: Read,
-    {
-        let url = url
-            .and_then(|url| Url::parse(url).ok())
-            .unwrap_or_else(|| Url::parse("https://example.com").unwrap());
-
-        let mut dom: Sink = parse_document(Sink::default(), Default::default())
-            .from_utf8()
-            .read_from(input)?;
-
-        extract_dom(&mut dom, &url, &HashMap::new())
     }
 
     #[test]

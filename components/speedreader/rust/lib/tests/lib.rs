@@ -12,9 +12,9 @@ use std::io::Read;
 use url::Url;
 
 use distance::damerau_levenshtein;
-use markup5ever_rcdom::NodeData::{Element, Text};
-use markup5ever_rcdom::{Handle, Node};
-use std::rc::Rc;
+use html5ever::LocalName;
+use kuchiki::NodeData::{Element, Text};
+use kuchiki::NodeRef as Handle;
 use std::vec::Vec;
 
 static SAMPLES_PATH: &str = "data/tests-samples/";
@@ -22,30 +22,23 @@ static SAMPLES_PATH: &str = "data/tests-samples/";
 pub fn extract_flattened_tree(
     handle: Handle,
     tags_attrs: Vec<(&str, &str)>,
-    flattened_nodes: &mut Vec<Rc<Node>>,
-) -> Vec<Rc<Node>> {
-    for child in handle.children.borrow().iter() {
+    flattened_nodes: &mut Vec<Handle>,
+) -> Vec<Handle> {
+    for child in handle.children() {
         let c = child.clone();
-        match c.data {
-            Text { .. } => {
+        match c.data() {
+            Text(_) => {
                 flattened_nodes.push(c.clone());
             }
-            Element {
-                ref name,
-                ref attrs,
-                ..
-            } => {
-                let t = name.local.as_ref();
-                for a in attrs.borrow().iter() {
-                    let t = t.to_lowercase();
-                    let a = a.value.to_string().to_lowercase();
+            Element(ref data) => {
+                let t = data.name.local.as_ref();
+                let attrs_borrow = data.attributes.borrow();
 
-                    // check if current node name and attr match expected
-                    for ta in tags_attrs.clone() {
-                        let (tag_name, attr_name): (&str, &str) = ta;
-                        if t == tag_name && a == attr_name {
-                            flattened_nodes.push(c.clone());
-                        }
+                // check if current node name and attr match expected
+                for ta in tags_attrs.clone() {
+                    let (tag_name, attr_name): (&str, &str) = ta;
+                    if t == tag_name && attrs_borrow.get(LocalName::from(attr_name)).is_some() {
+                        flattened_nodes.push(c.clone());
                     }
                 }
                 // if type Element, traverse to children in next iteration
@@ -59,13 +52,13 @@ pub fn extract_flattened_tree(
 
 // recursively extracts all text of leaf nodes into a string for comparison
 pub fn extract_text(handle: Handle, text: &mut String) {
-    for child in handle.children.borrow().iter() {
+    for child in handle.children() {
         let c = child.clone();
-        match c.data {
-            Text { ref contents } => {
+        match c.data() {
+            Text(ref contents) => {
                 text.push_str(contents.borrow().trim());
             }
-            Element { .. } => {
+            Element(_) => {
                 extract_text(child.clone(), text);
             }
             _ => (),
@@ -79,24 +72,17 @@ fn stripped_content(
     handle: Handle,
     tag_name: &str,
     attr_name: &str,
-    nodes: &mut Vec<Rc<Node>>,
+    nodes: &mut Vec<Handle>,
     values: &mut Vec<String>,
 ) {
-    for child in handle.children.borrow().iter() {
-        if let Element {
-            ref name,
-            ref attrs,
-            ..
-        } = child.data
-        {
-            let t = name.local.as_ref();
+    for child in handle.children() {
+        if let Element(ref data) = child.data() {
+            let t = data.name.local.as_ref();
             if t.to_lowercase() == tag_name {
                 nodes.push(child.clone());
 
-                for attr in attrs.borrow().iter() {
-                    if attr.name.local.as_ref() == attr_name {
-                        values.push(attr.value.to_string());
-                    }
+                if let Some(value) = data.attributes.borrow().get(LocalName::from(attr_name)) {
+                    values.push(value.to_string());
                 }
             };
             stripped_content(child.clone(), tag_name, attr_name, nodes, values);
@@ -195,7 +181,7 @@ mod test {
 
                 // uses the mapper build the mapper based on the source HTML
                 // document
-                let product = extract(&mut source_f, &url).unwrap();
+                let product = extract(&mut source_f, Some(url.as_str())).unwrap();
                 let mut feature_extractor = FeatureExtractorStreamer::try_new(&url).unwrap();
                 feature_extractor
                     .write(&mut product.content.as_bytes())
@@ -215,8 +201,8 @@ mod test {
                 //assert!(flattened_tree_match, "Full flattened trees do not strictly match");
 
                 let atags_match = tags_match_approx(
-                    expected.rcdom.document.clone(),
-                    result.rcdom.document.clone(),
+                    expected.rcdom.document_node.clone(),
+                    result.rcdom.document_node.clone(),
                     "a",
                     "href",
                     5,
@@ -228,8 +214,8 @@ mod test {
                 );
 
                 let imgtags_match = tags_match_approx(
-                    expected.rcdom.document.clone(),
-                    result.rcdom.document.clone(),
+                    expected.rcdom.document_node.clone(),
+                    result.rcdom.document_node.clone(),
                     "img",
                     "src",
                     5,
@@ -247,9 +233,9 @@ mod test {
                 // compares full flattened text nodes
                 let levenstein_threshold = 900;
                 let mut text_result = String::new();
-                extract_text(result.rcdom.document.clone(), &mut text_result);
+                extract_text(result.rcdom.document_node.clone(), &mut text_result);
                 let mut text_expected = String::new();
-                extract_text(expected.rcdom.document.clone(), &mut text_expected);
+                extract_text(expected.rcdom.document_node.clone(), &mut text_expected);
 
                 let strings_approx =
                     strings_match_approx(&text_result, &text_expected, levenstein_threshold);
