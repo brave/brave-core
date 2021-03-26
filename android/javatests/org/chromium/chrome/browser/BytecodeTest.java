@@ -138,7 +138,9 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate"));        
         Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate"));
+                "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate"));       
+        Assert.assertTrue(classExists(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings"));
     }
 
     @Test
