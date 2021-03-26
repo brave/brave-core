@@ -238,7 +238,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
-                OneshotSupplier.class, ObservableSupplier.class));
+                OneshotSupplier.class, ObservableSupplier.class, WebFeedBridge.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
                 WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
