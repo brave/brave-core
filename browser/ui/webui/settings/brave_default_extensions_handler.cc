@@ -97,6 +97,10 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "launchIPFSService",
       base::BindRepeating(&BraveDefaultExtensionsHandler::LaunchIPFSService,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "shutdownIPFSService",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::ShutdownIPFSService,
+                          base::Unretained(this)));
 
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
@@ -366,6 +370,17 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
 #endif
     OnRestartNeededChanged();
   }
+}
+
+void BraveDefaultExtensionsHandler::ShutdownIPFSService(
+    const base::ListValue* args) {
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(profile_);
+  if (!service) {
+    return;
+  }
+  if (service->IsDaemonLaunched())
+    service->ShutdownDaemon(base::NullCallback());
 }
 
 void BraveDefaultExtensionsHandler::LaunchIPFSService(

@@ -39,6 +39,9 @@ Polymer({
   /** @private {?settings.BraveIPFSBrowserProxy} */
   browserProxy_: null,
 
+  /** @private {?IPFSResolveMethodTypes} */
+  lastUsedMethod_: null,
+
   /** @override */
   created: function() {
     this.browserProxy_ = settings.BraveIPFSBrowserProxyImpl.getInstance();
@@ -61,32 +64,35 @@ Polymer({
   },
 
   onLoad_: function() {
+    const resolve_method = this.getPref('brave.ipfs.resolve_method').value;
+    this.lastUsedMethod_ = resolve_method;
     this.isStorageMaxEnabled_ =
-      this.getPref('brave.ipfs.resolve_method').value ==
-        this.IPFSResolveMethodTypes.IPFS_LOCAL;
-    // Check if IPFS method is ASK
+      (resolve_method ==
+        this.IPFSResolveMethodTypes.IPFS_LOCAL);
     this.showIPFSLearnMoreLink_ =
-      this.getPref('brave.ipfs.resolve_method').value ==
-        this.IPFSResolveMethodTypes.IPFS_ASK;
+      (resolve_method ==
+        this.IPFSResolveMethodTypes.IPFS_ASK);
 
     this.$.ipfsStorageMax.value =
       this.getPref('brave.ipfs.storage_max').value;
   },
 
   onChangeIpfsMethod_: function() {
+    const resolve_method = this.getPref('brave.ipfs.resolve_method').value;
     // Check if IPFS method is LOCAL_NODE
-    const local_node_enabled =
-      this.getPref('brave.ipfs.resolve_method').value ==
-        this.IPFSResolveMethodTypes.IPFS_LOCAL;
+    const local_node = (resolve_method == this.IPFSResolveMethodTypes.IPFS_LOCAL);
     // Check if IPFS method is ASK
     this.showIPFSLearnMoreLink_ =
-      this.getPref('brave.ipfs.resolve_method').value ==
-        this.IPFSResolveMethodTypes.IPFS_ASK;
+      (resolve_method ==
+        this.IPFSResolveMethodTypes.IPFS_ASK);
 
-    this.isStorageMaxEnabled_ = local_node_enabled;
-    if (local_node_enabled)
+    this.isStorageMaxEnabled_ = local_node;
+    if (local_node) {
       this.browserProxy_.launchIPFSService();
-      
+    } else if (this.lastUsedMethod_ == this.IPFSResolveMethodTypes.IPFS_LOCAL) {
+      this.browserProxy_.shutdownIPFSService();
+    }
+    this.lastUsedMethod_ = resolve_method;
   },
 
   onChangeIpfsStorageMax_: function() {
