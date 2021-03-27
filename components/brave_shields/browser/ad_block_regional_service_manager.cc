@@ -36,15 +36,6 @@ AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
 AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
 }
 
-bool AdBlockRegionalServiceManager::Init() {
-  DCHECK(!initialized_);
-  base::PostTask(
-      FROM_HERE, {content::BrowserThread::UI},
-      base::BindOnce(&AdBlockRegionalServiceManager::StartRegionalServices,
-                     base::Unretained(this)));
-  return true;
-}
-
 void AdBlockRegionalServiceManager::StartRegionalServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   PrefService* local_state = g_browser_process->local_state();
