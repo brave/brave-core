@@ -58,16 +58,19 @@ repack("resources") {
   public_deps = [
     ":page_generated_resources",
     ":internals_generated_resources",
-    ":tip_generated_resources",
     ":static_resources",
   ]
 
   sources = [
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_page_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_internals_generated.pak",
-    "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_tip_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_static.pak",
   ]
+
+  if (!is_android) {
+    sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_tip_generated.pak" ]
+    public_deps += [ ":tip_generated_resources" ]
+  }
 
   output = "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak"
 }
