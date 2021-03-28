@@ -10,7 +10,9 @@
     <includes>
       <!-- WebUI Brave Rewards Page resources -->
       <include name="IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML" file="android_page/brave_rewards_page.html" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_PAGE_HTML" file="page/brave_rewards_page.html" type="BINDATA" />
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_REWARDS_PAGE_HTML" file="page/brave_rewards_page.html" type="BINDATA" />
+      </if>
       <include name="IDR_BRAVE_REWARDS_IMG_WALLET_BG" file="page/img/wallet_bg.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="page/img/captcha_bat.png" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_WELCOME_BG" file="page/img/welcome_bg.svg" type="BINDATA" />
@@ -20,8 +22,10 @@
       <!-- WebUI Brave Rewards Internals resources -->
       <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="internals/brave_rewards_internals.html" type="BINDATA" />
 
-      <!-- WebUI Brave Rewards Tip resources -->
-      <include name="IDR_BRAVE_REWARDS_TIP_HTML" file="tip/index.html" type="BINDATA" />
+      <if expr="not is_android">
+        <!-- WebUI Brave Rewards Tip resources -->
+        <include name="IDR_BRAVE_REWARDS_TIP_HTML" file="tip/index.html" type="BINDATA" />
+      </if>
     </includes>
   </release>
 </grit>
