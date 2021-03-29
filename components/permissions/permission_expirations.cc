@@ -149,7 +149,8 @@ PermissionExpirations::RemoveExpiredPermissions(base::Time current_time) {
         // expirations will also be active (map is sorted).
         break;
       }
-      expired_permissions[content_type] = std::move(expiring_permissions);
+      std::move(expiring_permissions.begin(), expiring_permissions.end(),
+                std::back_inserter(expired_permissions[content_type]));
       time_items_to_clear_prefs.push_back(expiration_time);
     }
     time_expirations_map.erase(time_expirations_map.begin(),

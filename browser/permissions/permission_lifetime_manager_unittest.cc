@@ -441,7 +441,7 @@ TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
   browser_task_environment_.FastForwardBy(kLifetime);
   // This will create a new PermissionLifetimeManager instance.
   ASSERT_TRUE(manager());
-  // Timer should not be running.
+  // Timer should be running.
   EXPECT_TRUE(timer().IsRunning());
 
   // Check data stored in prefs.
@@ -487,6 +487,33 @@ TEST_F(PermissionLifetimeManagerTest, ExternalContentSettingChange) {
     // Prefs data should be empty.
     CheckExpirationsPref(FROM_HERE, "{}");
   }
+}
+
+TEST_F(PermissionLifetimeManagerTest, ClearAllExpiredAfterRestart) {
+  auto request(CreateRequestAndAllowContentSetting(
+      kOrigin, ContentSettingsType::NOTIFICATIONS, kOneSecond));
+  manager()->PermissionDecided(*request, kOrigin, kOrigin,
+                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+
+  auto request2(CreateRequestAndAllowContentSetting(
+      kOrigin2, ContentSettingsType::NOTIFICATIONS, kLifetime));
+  manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
+                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+
+  ResetManager();
+  browser_task_environment_.FastForwardBy(kLifetime);
+  // This will create a new PermissionLifetimeManager instance.
+  ASSERT_TRUE(manager());
+  // Timer should not be running.
+  EXPECT_FALSE(timer().IsRunning());
+
+  // Check data stored in prefs.
+  CheckExpirationsPref(FROM_HERE, "{}");
+
+  ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_DEFAULT);
+  ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_DEFAULT);
 }
 
 }  // namespace permissions
