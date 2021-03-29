@@ -12,7 +12,7 @@ import Shared
 // MARK: TrackingType
  
 enum TrackingType: Equatable {
-    case trackerCountShare(count: Int)
+    case trackerCountShare(count: Int, description: String)
     case trackerAdWarning
     case videoAdBlock
     case trackerAdCountBlock(count: Int)
@@ -20,7 +20,7 @@ enum TrackingType: Equatable {
     
     var title: String {
         switch self {
-            case .trackerCountShare(let count):
+            case .trackerCountShare(let count, _):
                 return String(format: Strings.ShieldEducation.trackerCountShareTitle, count)
             case .trackerAdWarning:
                 return Strings.ShieldEducation.trackerAdWarningTitle
@@ -35,8 +35,8 @@ enum TrackingType: Equatable {
     
     var subTitle: String {
         switch self {
-            case .trackerCountShare:
-                return Strings.ShieldEducation.trackerCountShareSubtitle
+            case .trackerCountShare(_, let description):
+                return description
             case .trackerAdWarning:
                 return Strings.ShieldEducation.trackerAdWarningSubtitle
             case .videoAdBlock:
@@ -197,6 +197,8 @@ private class ShareTrackersView: UIView, Themeable {
         actionButton.clipsToBounds = true
         actionButton.layer.borderWidth = 1
         actionButton.layer.borderColor = UIColor.white.cgColor
+        actionButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        actionButton.titleLabel?.allowsDefaultTighteningForTruncation = true
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         return actionButton
     }()
