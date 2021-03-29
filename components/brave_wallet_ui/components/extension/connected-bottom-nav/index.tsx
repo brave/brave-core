@@ -10,13 +10,15 @@ import {
   NavOutline
 } from './style'
 
+import { PanelTypes } from '../../../constants/types'
+
 export interface Props {
-  action: (path: string) => void
+  action: (path: PanelTypes) => void
 }
 
 export default class ConnectedBottomNav extends React.PureComponent<Props> {
 
-  navigate = (path: string) => () => {
+  navigate = (path: PanelTypes) => () => {
     this.props.action(path)
   }
 

@@ -27,18 +27,18 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { WalletAccountType } from '../../../constants/types'
+import { WalletAccountType, PanelTypes } from '../../../constants/types'
 
 export interface Props {
   selectedAccount: WalletAccountType
   isConnected: boolean
   connectAction: () => void
-  navAction: (path: string) => void
+  navAction: (path: PanelTypes) => void
 }
 
 export default class ConnectedPanel extends React.PureComponent<Props> {
 
-  navigate = (path: string) => () => {
+  navigate = (path: PanelTypes) => () => {
     this.props.navAction(path)
   }
 

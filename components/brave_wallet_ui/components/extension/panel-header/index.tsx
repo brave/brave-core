@@ -4,28 +4,28 @@ import * as React from 'react'
 import {
   HeaderTitle,
   HeaderWrapper,
-  ActionIcon,
-  ExpandIcon
+  CloseButton
 } from './style'
 
 import { PanelTypes } from '../../../constants/types'
 
 export interface Props {
+  title: string
   action: (path: PanelTypes) => void
 }
 
-export default class ConnectedHeader extends React.PureComponent<Props> {
+export default class PanelHeader extends React.PureComponent<Props> {
 
   navigate = (path: PanelTypes) => () => {
     this.props.action(path)
   }
 
   render () {
+    const { title } = this.props
     return (
       <HeaderWrapper>
-        <ExpandIcon onClick={this.navigate('expanded')} />
-        <HeaderTitle>Brave Web 3 Connect</HeaderTitle>
-        <ActionIcon onClick={this.navigate('settings')} />
+        <HeaderTitle>{title}</HeaderTitle>
+        <CloseButton onClick={this.navigate('main')} />
       </HeaderWrapper>
     )
   }

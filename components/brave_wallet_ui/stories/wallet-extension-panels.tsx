@@ -1,9 +1,9 @@
 import * as React from 'react'
 
 // Components
-import { ConnectWithSite, ConnectedPanel } from '../components/extension'
-import { WalletAccountType } from '../constants/types'
-import { StyledExtensionWrapper, StyledConnectedExtensionWrapper } from './style'
+import { ConnectWithSite, ConnectedPanel, Panel } from '../components/extension'
+import { WalletAccountType, PanelTypes } from '../constants/types'
+import { StyledExtensionWrapper, ChildComponentWrapper } from './style'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -90,6 +90,8 @@ _ConnectWithSite.story = {
 }
 
 export const _ConnectedPanel = () => {
+  const [selectedPanel, setSelectedPanel] = React.useState<PanelTypes>('main')
+  const [panelTitle, setPanelTitle] = React.useState<string>('main')
   const [selectedAccount] = React.useState<WalletAccountType>(
     accounts[0]
   )
@@ -99,19 +101,44 @@ export const _ConnectedPanel = () => {
     setWalletConnected(!walletConnected)
   }
 
-  const navigateTo = (path: string) => {
-    alert(`Will navigate to ${path}.`)
+  const getTitle = (path: PanelTypes) => {
+    if (path === 'networks') {
+      setPanelTitle('Select Network')
+    } else {
+      setPanelTitle(path)
+    }
+  }
+
+  const navigateTo = (path: PanelTypes) => {
+    if (path === 'expanded') {
+      alert('This will expand to main wallet!')
+    } else {
+      setSelectedPanel(path)
+    }
+    getTitle(path)
   }
 
   return (
-    <StyledConnectedExtensionWrapper>
-      <ConnectedPanel
-        selectedAccount={selectedAccount}
-        isConnected={walletConnected}
-        connectAction={toggleConnected}
-        navAction={navigateTo}
-      />
-    </StyledConnectedExtensionWrapper>
+    <StyledExtensionWrapper>
+      {selectedPanel === 'main' ? (
+        <ConnectedPanel
+          selectedAccount={selectedAccount}
+          isConnected={walletConnected}
+          connectAction={toggleConnected}
+          navAction={navigateTo}
+        />
+      ) : (
+        <Panel
+          navAction={navigateTo}
+          title={panelTitle}
+        >
+          <ChildComponentWrapper>
+            <span>Child component for {selectedPanel} panel!</span>
+          </ChildComponentWrapper>
+        </Panel>
+      )
+      }
+    </StyledExtensionWrapper>
   )
 }
 

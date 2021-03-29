@@ -5,3 +5,13 @@ export interface WalletAccountType {
   balance: number
   asset: string
 }
+
+export type PanelTypes =
+  | 'main'
+  | 'buy'
+  | 'send'
+  | 'swap'
+  | 'apps'
+  | 'networks'
+  | 'settings'
+  | 'expanded'
