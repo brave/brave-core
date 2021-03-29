@@ -31,11 +31,15 @@ bool IsWaybackMachineDisabledFor(const GURL& url) {
 
 GURL FixupWaybackQueryURL(const GURL& url) {
   // Get latest page always from wayback machine by invalidating timestamp
-  // value in query string.
+  // and callback parameters in query string.
   GURL fixed_url = url;
   std::string unused;
   if (net::GetValueForKeyInQuery(fixed_url, "timestamp", &unused)) {
     fixed_url = net::AppendOrReplaceQueryParameter(fixed_url, "timestamp", "");
+  }
+
+  if (net::GetValueForKeyInQuery(fixed_url, "callback", &unused)) {
+    fixed_url = net::AppendOrReplaceQueryParameter(fixed_url, "callback", "");
   }
 
   return fixed_url;
