@@ -59,6 +59,8 @@ double Statement::GetEarningsForLastMonth() const {
     exploded.year--;
   }
 
+  exploded.day_of_month = 1;
+
   base::Time last_month;
   const bool success = base::Time::FromUTCExploded(exploded, &last_month);
   DCHECK(success);
