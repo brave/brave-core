@@ -126,7 +126,7 @@ void PostSuggestionsClaim::OnRequest(
     return;
   }
 
-  auto* drain_id = dictionary->FindStringKey("drain_id");
+  auto* drain_id = dictionary->FindStringKey("drainId");
   if (!drain_id) {
     BLOG(0, "Missing drain id");
     callback(type::Result::LEDGER_ERROR, "");
