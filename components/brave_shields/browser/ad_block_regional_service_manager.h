@@ -67,7 +67,6 @@ class AdBlockRegionalServiceManager {
 
  private:
   friend class ::AdBlockServiceTest;
-  bool Init();
   void StartRegionalServices();
   void UpdateFilterListPrefs(const std::string& uuid, bool enabled);
 
