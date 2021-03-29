@@ -1546,6 +1546,7 @@ class BrowserViewController: UIViewController {
             guard let title = (webView.title?.isEmpty == true ? webView.url?.absoluteString : webView.title) else { break }
             if !title.isEmpty && title != tab.lastTitle {
                 navigateInTab(tab: tab)
+                tabsBar.updateSelectedTabTitle()
             }
         case .canGoBack:
             guard tab === tabManager.selectedTab, let canGoBack = change?[.newKey] as? Bool else {

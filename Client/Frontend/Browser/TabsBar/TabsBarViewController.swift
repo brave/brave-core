@@ -157,15 +157,34 @@ class TabsBarViewController: UIViewController {
         reloadDataAndRestoreSelectedTab()
     }
     
+    func updateSelectedTabTitle() {
+        guard let selectedTabIndex = selectedTabIndexPath,
+              let tab = tabList[selectedTabIndex.row] else { return }
+        if let cell = collectionView.cellForItem(at: selectedTabIndex) as? TabBarCell {
+            cell.titleLabel.text = tab.displayTitle
+        }
+        
+    }
+    
     func reloadDataAndRestoreSelectedTab() {
         collectionView.reloadData()
         
-        if let tabManager = tabManager, let selectedTab = tabManager.selectedTab {
-            let selectedIndex = tabList.index(of: selectedTab) ?? 0
-            if selectedIndex < tabList.count() {
-                collectionView.selectItem(at: IndexPath(row: selectedIndex, section: 0), animated: (!tabManager.isRestoring), scrollPosition: .centeredHorizontally)
-            }
+        guard let tabManager = tabManager, let selectedTabIndex = selectedTabIndexPath else {
+            return
         }
+        
+        if selectedTabIndex.row < tabList.count() {
+            collectionView.selectItem(at: selectedTabIndex,
+                                      animated: (!tabManager.isRestoring),
+                                      scrollPosition: .centeredHorizontally)
+        }
+    }
+    
+    private var selectedTabIndexPath: IndexPath? {
+        guard let tabManager = tabManager, let selectedTab = tabManager.selectedTab,
+              let selectedIndex = tabList.index(of: selectedTab) else { return nil }
+        
+        return IndexPath(row: selectedIndex, section: 0)
     }
     
     @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
