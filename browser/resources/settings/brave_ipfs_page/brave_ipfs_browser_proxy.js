@@ -31,6 +31,10 @@ export class BraveIPFSBrowserProxyImpl {
     chrome.send('launchIPFSService', [value])
   }
 
+  shutdownIPFSService () {
+    chrome.send('shutdownIPFSService', [])
+  }
+
   /** @override */
   getIPFSResolveMethodList () {
     return new Promise(resolve => {
