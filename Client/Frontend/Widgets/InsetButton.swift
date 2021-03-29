@@ -12,18 +12,26 @@ class InsetButton: UIButton {
             height: size.height + titleEdgeInsets.top + titleEdgeInsets.bottom)
     }
     
-    func addTrailingImageIcon(image: UIImage, offset: CGFloat = 15) {
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+    func addTrailingImageIcon(image: UIImage, inset: CGFloat = 15) {
+        let imageView = UIImageView(image: image).then {
+            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        }
 
         addSubview(imageView)
-        titleEdgeInsets.right += offset
-
-        NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: titleLabel?.trailingAnchor ?? trailingAnchor, constant: offset),
-            imageView.centerYAnchor.constraint(equalTo: titleLabel?.centerYAnchor ?? centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: offset),
-            imageView.heightAnchor.constraint(equalToConstant: offset)
-        ])
+        titleEdgeInsets.right += inset
+        
+        imageView.snp.makeConstraints {
+            if let titleView = titleLabel {
+                $0.leading.equalTo(titleView.snp.trailing).inset(-inset)
+                $0.centerY.equalTo(titleView.snp.centerY)
+            } else {
+                $0.leading.equalToSuperview().inset(inset)
+                $0.centerY.equalToSuperview()
+            }
+            
+            $0.trailing.equalToSuperview().inset(inset)
+            $0.width.equalTo(inset)
+            $0.height.equalTo(inset)
+        }
     }
 }
