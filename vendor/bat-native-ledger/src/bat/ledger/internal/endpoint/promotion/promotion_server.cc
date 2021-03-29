@@ -30,8 +30,8 @@ PromotionServer::PromotionServer(LedgerImpl* ledger):
     post_suggestions_(std::make_unique<promotion::PostSuggestions>(ledger)),
     post_suggestions_claim_(
         std::make_unique<promotion::PostSuggestionsClaim>(ledger)),
-    get_drain_(std::make_unique<promotion::GetDrain>(ledger)),
-    post_claim_brave_(std::make_unique<promotion::PostClaimBrave>(ledger)) {
+    post_claim_brave_(std::make_unique<promotion::PostClaimBrave>(ledger)),
+    get_drain_(std::make_unique<promotion::GetDrain>(ledger)) {
 }
 
 PromotionServer::~PromotionServer() = default;
