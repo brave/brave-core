@@ -51,6 +51,7 @@ static_library("brave_test_support_unit") {
   deps = [
     "//brave/browser/profiles",
     "//brave/common:pref_names",
+    "//components/embedder_support/android:browser_context_java",
     "//components/gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
     "//mojo/core/embedder",
