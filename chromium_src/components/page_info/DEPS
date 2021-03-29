@@ -1,4 +1,5 @@
 include_rules = [
   "+../../../../components/page_info",
   "+components/page_info",
+  "+components/grit/brave_components_strings.h",
 ]

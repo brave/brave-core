@@ -34,7 +34,6 @@
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/browser/ui/views/ipfs_page_info/ipfs_page_info_bubble_view.h"
 #include "brave/browser/ui/views/location_bar/ipfs_location_view.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -116,29 +115,6 @@ bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
 #else
   return false;
 #endif
-}
-
-bool BraveLocationBarView::ShowPageInfoDialog() {
-  if (!ShouldShowIPFSLocationView())
-    return LocationBarView::ShowPageInfoDialog();
-  content::WebContents* contents = GetWebContents();
-  if (!contents)
-    return false;
-
-  content::NavigationEntry* entry = contents->GetController().GetVisibleEntry();
-  if (!entry)
-    return false;
-
-  DCHECK(GetWidget());
-  views::BubbleDialogDelegateView* bubble =
-      IpfsPageInfoBubbleView::CreatePageInfoBubble(
-          this, gfx::Rect(), GetWidget()->GetNativeWindow(), profile_, contents,
-          entry->GetVirtualURL(),
-          base::BindOnce(&LocationBarView::OnPageInfoBubbleClosed,
-                         weak_factory_.GetWeakPtr()));
-  bubble->SetHighlightedButton(location_icon_view_);
-  bubble->GetWidget()->Show();
-  return true;
 }
 
 void BraveLocationBarView::Update(content::WebContents* contents) {

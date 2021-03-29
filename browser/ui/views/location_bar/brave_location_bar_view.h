@@ -43,7 +43,7 @@ class BraveLocationBarView : public LocationBarView {
 #endif
   // LocationBarView:
   std::vector<views::View*> GetTrailingViews() override;
-  bool ShowPageInfoDialog() override;
+
   ui::ImageModel GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
                                      on_icon_fetched) const override;
 
