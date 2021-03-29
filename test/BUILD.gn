@@ -821,6 +821,7 @@ if (!is_android) {
       "//chrome/app:command_ids",
       "//chrome/browser:browser_process",
       "//chrome/browser:theme_properties",
+      "//chrome/browser/media/router:media_router_feature",
       "//chrome/browser/ui",
       "//chrome/browser/web_applications/components",
       "//chrome/test:test_support_ui",
