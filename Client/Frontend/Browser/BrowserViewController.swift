@@ -1792,7 +1792,8 @@ class BrowserViewController: UIViewController {
             }
             activities.append(requestDesktopSiteActivity)
             
-            if let metadata = tab?.pageMetadata, !metadata.feeds.isEmpty {
+            if Preferences.BraveToday.isEnabled.value, let metadata = tab?.pageMetadata,
+               !metadata.feeds.isEmpty {
                 let feeds: [RSSFeedLocation] = metadata.feeds.compactMap { feed in
                     if let url = URL(string: feed.href) {
                         return RSSFeedLocation(title: feed.title, url: url)
