@@ -30,6 +30,8 @@ public class BraveClassAdapter {
         chain = new BraveQueryTileSectionClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveSettingsLauncherImplClassAdapter(chain);
+        chain = new BraveSingleCategorySettingsClassAdapter(chain);
+        chain = new BraveSiteSettingsDelegateClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);

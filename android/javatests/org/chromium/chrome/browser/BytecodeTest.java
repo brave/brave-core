@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.components.embedder_support.browser_context.BrowserContextHandle;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -135,6 +136,12 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate"));
+        Assert.assertTrue(classExists(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings"));
     }
 
     @Test
@@ -268,6 +275,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator",
                 ViewGroup.class, ThemeColorProvider.class, ScrimCoordinator.class,
                 ObservableSupplier.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
+                "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate",
+                Context.class, BrowserContextHandle.class));
     }
 
     @Test

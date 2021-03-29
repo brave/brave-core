@@ -229,3 +229,19 @@
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabGroupUiCoordinator {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.site_settings.BraveSiteSettingsDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.site_settings.BraveSingleCategorySettings {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SingleCategorySettings {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.site_settings.ChromeSiteSettingsDelegate {
+    public <init>(...);
+}
