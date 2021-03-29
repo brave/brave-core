@@ -1,0 +1,11 @@
+declare_args() {
+  uphold_client_id = ""
+  uphold_client_secret = ""
+  uphold_staging_client_id = ""
+  uphold_staging_client_secret = ""
+}
+
+if (is_official_build && !is_ios) {
+  assert(uphold_client_id != "")
+  assert(uphold_client_secret != "")
+}

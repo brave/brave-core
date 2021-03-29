@@ -1,10 +1,18 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/vendor/bat-native-ledger/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 source_set("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10618 is resolved
   check_includes = false
   public_deps = [ "buildflags" ]
+
+  defines = [
+    "UPHOLD_CLIENT_ID=\"$uphold_client_id\"",
+    "UPHOLD_CLIENT_SECRET=\"$uphold_client_secret\"",
+    "UPHOLD_STAGING_CLIENT_ID=\"$uphold_staging_client_id\"",
+    "UPHOLD_STAGING_CLIENT_SECRET=\"$uphold_staging_client_secret\"",
+  ]
 
   sources = [
     "android_util.cc",
