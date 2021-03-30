@@ -12,6 +12,7 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -278,7 +279,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         Rect bgPadding = new Rect();
-        popupWindow.getBackground().getPadding(bgPadding);
+        // is this neccesary for something?
+        // popupWindow.getBackground().getPadding(bgPadding);
 
         int popupWidth = wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
                          + bgPadding.left + bgPadding.right;
@@ -343,10 +345,11 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     return;
                 }
                 try {
-                    mSiteBlockCounterText.setText(String.valueOf(fadsAndTrackers
-                                                  + fhttpsUpgrades
-                                                  + fscriptsBlocked
-                                                  + ffingerprintsBlocked));
+                    // mSiteBlockCounterText.setText(String.valueOf(fadsAndTrackers
+                    //                               + fhttpsUpgrades
+                    //                               + fscriptsBlocked
+                    //                               + ffingerprintsBlocked));
+                    mSiteBlockCounterText.setText("1000");
                 } catch (NullPointerException exc) {
                     // It means that the Bravery Panel was destroyed during the update, we just do nothing
                 }
@@ -404,16 +407,37 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 mAboutLayout.setVisibility(View.VISIBLE);
                 setUpAboutLayout();
             }
+        };        
+
+        ClickableSpan mClickableShareSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                mMainLayout.setVisibility(View.GONE);
+                // mAboutLayout.setVisibility(View.VISIBLE);
+                // setUpAboutLayout();
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                mContext.startActivity(shareIntent);
+            }
         };
 
         TextView mSiteBlockText = mMainLayout.findViewById(R.id.site_block_text);
         mSiteBlockText.setMovementMethod(LinkMovementMethod.getInstance());
-        String mBlockText = mContext.getResources().getString(R.string.ads_and_other_things_blocked) + "   ";
+        String mBlockText = mContext.getResources().getString(R.string.ads_and_other_things_blocked) + "     ";
         SpannableString mSpannableString = new SpannableString(mBlockText);
         ImageSpan mImageSpan = new ImageSpan(mContext, R.drawable.ic_help);
-        mSpannableString.setSpan(mImageSpan, mBlockText.length() - 1, mBlockText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ImageSpan mShareImageSpan = new ImageSpan(mContext, R.drawable.ic_share);
+        mSpannableString.setSpan(mImageSpan, mBlockText.length() - 4, mBlockText.length() - 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mSpannableString.setSpan(mShareImageSpan, mBlockText.length() - 2, mBlockText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mSpannableString.setSpan(mClickableSpan, mSpannableString.getSpanStart(mImageSpan), mSpannableString.getSpanEnd(mImageSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mSpannableString.setSpan(mClickableShareSpan, mSpannableString.getSpanStart(mShareImageSpan), mSpannableString.getSpanEnd(mShareImageSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mSiteBlockText.setText(mSpannableString);
+
+
 
         mToggleIcon.setColorFilter(mContext.getResources().getColor(R.color.shield_toggle_button_tint));
         mToggleLayout.setOnClickListener(new View.OnClickListener() {

@@ -596,6 +596,7 @@ brave_java_resources = [
   "java/res/drawable/ic_phone.xml",
   "java/res/drawable/ic_setbraveasdefault.xml",
   "java/res/drawable/ic_setbraveasdefault_dark.xml",
+  "java/res/drawable/ic_share.xml",
   "java/res/drawable/ic_shield_done_filled.xml",
   "java/res/drawable/ic_shield_done_filled_20dp.xml",
   "java/res/drawable/ic_sort.xml",
