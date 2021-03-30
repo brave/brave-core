@@ -26,6 +26,7 @@ class BraveVPNRegionPickerViewController: UIViewController {
     
     /// This group monitors vpn connection status.
     private var dispatchGroup: DispatchGroup?
+    private var vpnRegionChangeSuccess = false
     
     private var isLoading: Bool = false {
         didSet {
@@ -94,6 +95,8 @@ class BraveVPNRegionPickerViewController: UIViewController {
         
         if connection.status == .connected {
             dispatchGroup?.leave()
+            self.vpnRegionChangeSuccess = true
+            dispatchGroup = nil
         }
     }
     
@@ -190,17 +193,24 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
             // Changing vpn server settings takes lot of time,
             // and nothing we can do about it as it relies on Apple apis.
             // Here we observe vpn status and we show success alert if it connected,
-            // otherwise an error alert is show if it did not manage to connect in 30 seconds.
+            // otherwise an error alert is show if it did not manage to connect in 60 seconds.
             self.dispatchGroup?.enter()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 60) {
+                self.vpnRegionChangeSuccess = false
+                self.dispatchGroup?.leave()
                 self.dispatchGroup = nil
-                _showError()
             }
             
-            self.dispatchGroup?.notify(queue: .main) {
-                self.dismiss(animated: true) {
-                    self.showSuccessAlert()
+            self.dispatchGroup?.notify(queue: .main) { [weak self] in
+                guard let self = self else { return }
+                if self.vpnRegionChangeSuccess {
+                    
+                    self.dismiss(animated: true) {
+                        self.showSuccessAlert()
+                    }
+                } else {
+                    _showError()
                 }
             }
         }
