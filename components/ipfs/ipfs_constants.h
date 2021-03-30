@@ -18,6 +18,7 @@ extern const char kIPNSScheme[];
 extern const char kDefaultIPFSGateway[];
 extern const char kDefaultIPFSLocalGateway[];
 extern const char kIPFSLearnMoreURL[];
+extern const char kIPFSSettingsURL[];
 extern const char kRepoStatsPath[];
 extern const char kRepoStatsHumanReadableParamName[];
 extern const char kRepoStatsHumanReadableParamValue[];
