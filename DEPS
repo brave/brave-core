@@ -74,6 +74,7 @@ include_rules = [
   "-brave/renderer",
   "-brave/services",
   "-ios",
+  "-brave/third_party/bitcoin-core",
 ]
 
 # Temporary workaround for massive nummber of incorrect test includes

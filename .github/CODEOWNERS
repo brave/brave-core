@@ -72,3 +72,6 @@ components/brave_perf_predictor/ @iefremov
 # Java patching
 build/android/bytecode/ @samartnik
 patches/*.java.patch @samartnik
+
+# Bitcoin-core
+third_party/bitcoin-core/BUILD.gn @orspetol

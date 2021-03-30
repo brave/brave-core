@@ -6,28 +6,49 @@ config("warnings") {
   }
 }
 
-config("bitcoin-core_config") {
-  include_dirs = [ "src/src" ]
+config("external_config") {
+  # Use full path for the override location because the include looks in the
+  # root
+  include_dirs = [
+    "//brave/chromium_src/brave/third_party/bitcoin-core/src/src",
+    "src/src",
+  ]
 }
 
 static_library("bitcoin-core") {
   configs -= [ "//build/config/compiler:chromium_code" ]
   configs += [
     "//build/config/compiler:no_chromium_code",
-    "//build/config/compiler:exceptions",
     ":warnings",
   ]
 
-  public_configs = [ ":bitcoin-core_config" ]
+  public_configs = [ ":external_config" ]
 
+  visibility = [ "//brave/components/brave_wallet/browser" ]
+
+  # Do NOT add any files here without security review
   sources = [
     "src/src/base58.cpp",
     "src/src/base58.h",
     "src/src/crypto/ripemd160.cpp",
     "src/src/crypto/ripemd160.h",
+  ]
+
+  sources += [
+    "//brave/chromium_src/brave/third_party/bitcoin-core/src/src/serialize.h",
+    "src/src/attributes.h",
+    "src/src/crypto/common.h",
+    "src/src/crypto/hmac_sha512.cpp",
+    "src/src/crypto/hmac_sha512.h",
     "src/src/crypto/sha256.cpp",
     "src/src/crypto/sha256.h",
+    "src/src/hash.cpp",
+    "src/src/hash.h",
+    "src/src/span.h",
+    "src/src/util/strencodings.h",
   ]
+
+  deps = [ "//base" ]
 }
 
 static_library("secp256k1") {
@@ -46,9 +67,44 @@ static_library("secp256k1") {
     "ECMULT_GEN_PREC_BITS=4",
   ]
 
+  visibility = [ "//brave/components/brave_wallet/browser" ]
+
+  # Do NOT add any files here without security review
   sources = [
     "src/src/secp256k1/include/secp256k1.h",
     "src/src/secp256k1/include/secp256k1_preallocated.h",
     "src/src/secp256k1/src/secp256k1.c",
+  ]
+
+  sources += [
+    "src/src/secp256k1/src/assumptions.h",
+    "src/src/secp256k1/src/ecdsa.h",
+    "src/src/secp256k1/src/ecdsa_impl.h",
+    "src/src/secp256k1/src/eckey.h",
+    "src/src/secp256k1/src/eckey_impl.h",
+    "src/src/secp256k1/src/ecmult.h",
+    "src/src/secp256k1/src/ecmult_const.h",
+    "src/src/secp256k1/src/ecmult_const_impl.h",
+    "src/src/secp256k1/src/ecmult_gen.h",
+    "src/src/secp256k1/src/ecmult_gen_impl.h",
+    "src/src/secp256k1/src/ecmult_impl.h",
+    "src/src/secp256k1/src/field.h",
+    "src/src/secp256k1/src/field_10x26.h",
+    "src/src/secp256k1/src/field_10x26_impl.h",
+    "src/src/secp256k1/src/field_impl.h",
+    "src/src/secp256k1/src/group.h",
+    "src/src/secp256k1/src/group_impl.h",
+    "src/src/secp256k1/src/hash.h",
+    "src/src/secp256k1/src/hash_impl.h",
+    "src/src/secp256k1/src/num.h",
+    "src/src/secp256k1/src/num_impl.h",
+    "src/src/secp256k1/src/scalar.h",
+    "src/src/secp256k1/src/scalar_8x32.h",
+    "src/src/secp256k1/src/scalar_8x32_impl.h",
+    "src/src/secp256k1/src/scalar_impl.h",
+    "src/src/secp256k1/src/scratch.h",
+    "src/src/secp256k1/src/scratch_impl.h",
+    "src/src/secp256k1/src/selftest.h",
+    "src/src/secp256k1/src/util.h",
   ]
 }
