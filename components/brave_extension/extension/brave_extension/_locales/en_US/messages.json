@@ -183,6 +183,10 @@
     "message": "Clear CSS rules for all sites",
     "description": "Message for context menu that resets all cosmetic filters"
   },
+  "manageCustomFilters": {
+    "message": "Manage custom filters",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "Advanced View",
     "description": "Message for the advanced view option"

@@ -98,6 +98,10 @@ export const addSiteCosmeticFilter = async (host: string, cssSelector: string) =
   chrome.braveShields.addSiteCosmeticFilter(host, cssSelector)
 }
 
+export const openFilterManagementPage = () => {
+  chrome.braveShields.openFilterManagementPage()
+}
+
 // Attempt to run the legacy filters migration during brave_extension
 // initialization.
 tryMigratingLegacyCosmeticFilters()
