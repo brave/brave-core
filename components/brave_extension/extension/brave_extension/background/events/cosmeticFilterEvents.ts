@@ -98,7 +98,7 @@ export function tabsCallback (tabs: any) {
   chrome.tabs.sendMessage(tabs[0].id, { type: 'getTargetSelector' }, onSelectorReturned)
 }
 
-export async function onSelectorReturned (response: any) {
+export function onSelectorReturned (response: any) {
   if (!response) {
     rule.selector = window.prompt('We were unable to automatically populate a correct CSS selector for you. Please manually enter a CSS selector to block:') || ''
   } else {
@@ -114,7 +114,7 @@ export async function onSelectorReturned (response: any) {
         cssOrigin: 'user'
       })
 
-      await addSiteCosmeticFilter(rule.host, selector)
+      addSiteCosmeticFilter(rule.host, selector)
     }
   }
 }

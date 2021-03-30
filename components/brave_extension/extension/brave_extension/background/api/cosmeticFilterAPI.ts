@@ -94,7 +94,7 @@ const tryMigratingLegacyCosmeticFilters = () => {
   })
 }
 
-export const addSiteCosmeticFilter = async (host: string, cssSelector: string) => {
+export const addSiteCosmeticFilter = (host: string, cssSelector: string) => {
   chrome.braveShields.addSiteCosmeticFilter(host, cssSelector)
 }
 
