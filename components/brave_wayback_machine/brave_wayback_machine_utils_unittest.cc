@@ -29,16 +29,26 @@ TEST(BraveWaybackMachineUtilsTest, LocalHostDisabledTest) {
 }
 
 TEST(BraveWaybackMachineUtilsTest, FixupQueryURLTest) {
-  GURL wayback_fetch_url(std::string(kWaybackQueryURL) +
-                         "https://www.example.com?&timestamp=20160101");
+  constexpr char kTestURL[] =
+      R"(https://www.example.com?&timestamp=20160101&callback={"archived_snapshots":{"closest":{"url":"https://example.com/favicon.ico"}}}//)";  // NOLINT
+  constexpr char kCallbackParameter[] =
+      R"({"archived_snapshots":{"closest":{"url":"https://example.com/favicon.ico"}}}//)";  // NOLINT
+  GURL wayback_fetch_url(std::string(kWaybackQueryURL) + kTestURL);
   std::string timestamp_value;
   EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, "timestamp",
                                          &timestamp_value));
+  std::string callback_value;
+  EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, "callback",
+                                         &callback_value));
   EXPECT_EQ("20160101", timestamp_value);
+  EXPECT_EQ(kCallbackParameter, callback_value);
 
   wayback_fetch_url = FixupWaybackQueryURL(wayback_fetch_url);
   EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, "timestamp",
                                          &timestamp_value));
+  EXPECT_TRUE(net::GetValueForKeyInQuery(wayback_fetch_url, "callback",
+                                         &callback_value));
   // Check value is empty.
   EXPECT_EQ("", timestamp_value);
+  EXPECT_EQ("", callback_value);
 }
