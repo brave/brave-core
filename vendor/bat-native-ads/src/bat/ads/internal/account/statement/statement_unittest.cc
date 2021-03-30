@@ -336,7 +336,7 @@ TEST_F(BatAdsStatementTest, GetForPastTwoMonths) {
 
   AdvanceClock(TimeFromDateString("21 October 2020"));
   AddTransactions(14);
-  AdvanceClock(TimeFromDateString("18 November 2020"));
+  AdvanceClock(TimeFromDateString("30 November 2020"));
   AddTransactions(7);
 
   // Act
