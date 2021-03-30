@@ -647,6 +647,8 @@ void BraveReferralsService::InitReferral() {
   referral_init_loader_->SetAllowHttpErrorResults(true);
   referral_init_loader_->AttachStringForUpload(BuildReferralInitPayload(),
                                                "application/json");
+  referral_init_loader_->SetRetryOptions(
+      1, network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   referral_init_loader_->DownloadToString(
       loader_factory,
       base::BindOnce(&BraveReferralsService::OnReferralInitLoadComplete,
