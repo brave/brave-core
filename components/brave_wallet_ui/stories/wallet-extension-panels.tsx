@@ -2,8 +2,14 @@ import * as React from 'react'
 
 // Components
 import { ConnectWithSite, ConnectedPanel, Panel } from '../components/extension'
-import { WalletAccountType, PanelTypes } from '../constants/types'
-import { StyledExtensionWrapper, ChildComponentWrapper } from './style'
+import { AppList } from '../components/shared'
+import { WalletAccountType, PanelTypes, AppObjectType, AppsListType } from '../constants/types'
+import { AppsList } from '../mock-data/apps-list'
+import locale from '../mock-data/mock-locale'
+import {
+  StyledExtensionWrapper,
+  ScrollContainer
+} from './style'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -95,8 +101,11 @@ export const _ConnectedPanel = () => {
   const [selectedAccount] = React.useState<WalletAccountType>(
     accounts[0]
   )
+  const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
+    AppsList[0].appList[0]
+  ])
+  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
-
   const toggleConnected = () => {
     setWalletConnected(!walletConnected)
   }
@@ -118,6 +127,44 @@ export const _ConnectedPanel = () => {
     getTitle(path)
   }
 
+  const browseMore = () => {
+    alert('Will expand to view more!')
+  }
+
+  const addToFavorites = (app: AppObjectType) => {
+    const newList = [...favoriteApps, app]
+    setFavoriteApps(newList)
+  }
+  const removeFromFavorites = (app: AppObjectType) => {
+    const newList = favoriteApps.filter(
+      (fav) => fav.name !== app.name
+    )
+    setFavoriteApps(newList)
+  }
+
+  const filterAppList = (event: any) => {
+    const search = event.target.value
+    if (search === '') {
+      setFilteredAppsList(AppsList)
+    } else {
+      const mergedList = AppsList.map(category => category.appList).flat()
+      const filteredList = mergedList.filter((app) => {
+        return (
+          app.name.toLowerCase() === search.toLowerCase() ||
+          app.name.toLowerCase().startsWith(search.toLowerCase()) ||
+          app.name.toLowerCase().includes(search.toLowerCase())
+        )
+      })
+      const newList = [
+        {
+          category: locale.searchCategory,
+          appList: filteredList
+        }
+      ]
+      setFilteredAppsList(newList)
+    }
+  }
+
   return (
     <StyledExtensionWrapper>
       {selectedPanel === 'main' ? (
@@ -131,10 +178,20 @@ export const _ConnectedPanel = () => {
         <Panel
           navAction={navigateTo}
           title={panelTitle}
+          useSearch={selectedPanel === 'apps'}
+          searchAction={selectedPanel === 'apps' ? filterAppList : undefined}
         >
-          <ChildComponentWrapper>
-            <span>Child component for {selectedPanel} panel!</span>
-          </ChildComponentWrapper>
+          {selectedPanel === 'apps' &&
+            <ScrollContainer>
+              <AppList
+                list={filteredAppsList}
+                favApps={favoriteApps}
+                addToFav={addToFavorites}
+                removeFromFav={removeFromFavorites}
+                action={browseMore}
+              />
+            </ScrollContainer>
+          }
         </Panel>
       )
       }

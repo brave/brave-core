@@ -15,7 +15,7 @@ export const StyledButton = styled.button<StyleProps>`
 	padding: 10px 22px;
   outline: none;
 	background-color: ${(p) =>
-    p.buttonType === 'primary' ? `${p.theme.palette.blurple500}` : 'white'};
+    p.buttonType === 'primary' ? `${p.theme.palette.blurple500}` : 'transparent'};
 	border: ${(p) =>
     p.buttonType === 'primary'
       ? 'none'
