@@ -175,14 +175,6 @@
     "message": "Zuia kipengele kupitia kichaguzi",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Futa kanuni za CSS kwa tovuti hii",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Futa kanuni za CSS kwa tovuti zote",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Mwonekano Mahiri",
     "description": "Message for the advanced view option"

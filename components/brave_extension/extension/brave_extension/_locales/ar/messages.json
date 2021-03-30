@@ -175,14 +175,6 @@
     "message": "حظر العنصر عبر المحدد",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "مسح قواعد CSS لهذا الموقع",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "مسح قواعد CSS لجميع المواقع",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "عرض متقدم",
     "description": "Message for the advanced view option"

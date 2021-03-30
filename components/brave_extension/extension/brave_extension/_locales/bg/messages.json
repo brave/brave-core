@@ -175,14 +175,6 @@
     "message": "Блокиране на елемента чрез селектор",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Изчистване на правилата за CSS за този сайт",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Изчистване на CSS правилата за всички сайтове",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Допълнителен изглед",
     "description": "Message for the advanced view option"

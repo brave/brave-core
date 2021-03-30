@@ -175,14 +175,6 @@
     "message": "Αποκλείστε το στοιχείο μέσω του επιλογέα",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Καθαρίστε τους κανόνες CSS για αυτόν τον ιστότοπο",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Καθαρίστε τους κανόνες CSS για όλους τους ιστότοπους",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Εμφάνιση για Προχωρημένους",
     "description": "Message for the advanced view option"

@@ -175,14 +175,6 @@
     "message": "Blokeeri element valija kaudu",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Kustuta CSS-i reeglid selle saidi jaoks",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Kustuta CSS-i reeglid kõigi saitide jaoks",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Täpsem vaade",
     "description": "Message for the advanced view option"

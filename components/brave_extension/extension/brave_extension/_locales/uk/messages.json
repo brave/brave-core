@@ -175,14 +175,6 @@
     "message": "Блокувати елемент через перемикач",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Стерти правила CSS для цього сайту",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Стерти правила CSS для всіх сайтів",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Розширений вигляд",
     "description": "Message for the advanced view option"

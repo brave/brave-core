@@ -175,14 +175,6 @@
     "message": "Zablokuj element za pomocą selektora",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Wyczyść reguły CSS dla tej strony",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Wyczyść reguły CSS dla wszystkich stron",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Widok zaawansowany",
     "description": "Message for the advanced view option"

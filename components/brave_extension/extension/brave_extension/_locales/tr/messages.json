@@ -175,14 +175,6 @@
     "message": "Seçici aracılığıyla element engelleyin",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Bu site için CSS kurallarını temizle",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Tüm siteler için CSS kurallarını temizle",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Gelişmiş Görünüm",
     "description": "Message for the advanced view option"

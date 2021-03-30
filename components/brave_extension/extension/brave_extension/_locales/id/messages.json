@@ -175,14 +175,6 @@
     "message": "Blokir elemen lewat pemilih",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Kosongkan aturan CSS untuk situs ini",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Kosongkan aturan CSS untuk semua situs",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Tampilan Lanjutan",
     "description": "Message for the advanced view option"

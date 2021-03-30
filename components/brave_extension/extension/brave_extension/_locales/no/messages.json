@@ -175,14 +175,6 @@
     "message": "Blokker element via velger",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Fjern CSS-regler for denne siden",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Fjern CSS-regler for alle sider",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Avansert visning",
     "description": "Message for the advanced view option"

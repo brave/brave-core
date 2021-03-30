@@ -175,14 +175,6 @@
     "message": "Block element via selector",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Clear CSS rules for this site",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Clear CSS rules for all sites",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "manageCustomFilters": {
     "message": "Manage custom filters",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"

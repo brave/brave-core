@@ -175,14 +175,6 @@
     "message": "Bloquear elemento via seletor",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Limpar regras de CSS para este site",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Limpar regras de CSS para todos os sites",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Visualização Avançada",
     "description": "Message for the advanced view option"
