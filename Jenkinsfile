@@ -97,7 +97,6 @@ pipeline {
                                                 github('brave/devops', 'https')
                                             }
                                             //FIXME: branch('master')
-
                                             branch('wknapik-pylint-feedback')
                                         }
                                     }
