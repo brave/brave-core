@@ -10,6 +10,7 @@ namespace speedreader {
 
 constexpr char kSpeedreaderWhitelist[] = "speedreader-whitelist";
 constexpr char kSpeedreaderWhitelistPath[] = "speedreader-whitelist-path";
+constexpr char kSpeedreaderBackend[] = "speedreader-backend";
 
 }  // namespace speedreader
 
