@@ -26,7 +26,8 @@ fn main() {
     let url = Url::parse(article_url).unwrap();
 
     let client = reqwest::blocking::Client::new();
-    let data = client.get(article_url)
+    let data = client
+        .get(article_url)
         .header(reqwest::header::COOKIE, "")
         .send()
         .unwrap()

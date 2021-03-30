@@ -1,6 +1,6 @@
+use core::any::Any;
 use lol_html::Selector;
 use serde::{Deserialize, Serialize};
-use core::any::Any;
 use thiserror::Error;
 use url::Url;
 
@@ -114,7 +114,7 @@ impl Default for RewriteRules {
             delazify: true,
             fix_embeds: false,
             content_script: None,
-            preprocess: vec![]
+            preprocess: vec![],
         }
     }
 }

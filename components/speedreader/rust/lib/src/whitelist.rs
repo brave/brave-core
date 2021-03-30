@@ -1,7 +1,7 @@
+use flate2::read::GzDecoder;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::io::prelude::*;
-use flate2::read::GzDecoder;
 
 use crate::speedreader::{SpeedReaderConfig, SpeedReaderError};
 
