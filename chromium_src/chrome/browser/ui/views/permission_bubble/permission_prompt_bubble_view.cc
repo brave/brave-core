@@ -133,8 +133,6 @@ class PermissionLifetimeCombobox : public views::Combobox,
     const auto& lifetime = lifetime_options_[GetSelectedIndex()].lifetime;
     DLOG(INFO) << "Set permission lifetime "
                << (lifetime ? lifetime->InSeconds() : -1);
-    // TODO(https://github.com/brave/brave-browser/issues/14126): Set the
-    // lifetime for all current requests.
     for (auto* request : delegate_->Requests()) {
       request->SetLifetime(lifetime);
     }
