@@ -448,11 +448,9 @@ void BraveReferralsService::GetFirstRunTime() {
 
 void BraveReferralsService::SetFirstRunTime(
     const base::Time& first_run_timestamp) {
-#if !defined(OS_ANDROID)
   first_run_timestamp_ = first_run_timestamp;
   if (first_run_timestamp_.is_null())
     return;
-#endif
   PerformFinalizationChecks();
 }
 
