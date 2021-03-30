@@ -22,3 +22,13 @@ rule-based rewriting (using [lol_html](https://github.com/cloudflare/lol-html)
 to support output streaming), or heuristics approach loosely based on [Mozilla's
 Readability](https://github.com/mozilla/readability) and Rust implementation
 improved from https://github.com/kumabook/readability.
+
+## Running the tests
+
+You need to clone the speedreader test data to the
+`components/speedreader/rust/lib` directory.
+
+```
+$ git@github.com:brave-experiments/speedreader-test-data.git data
+$ cargo test
+```

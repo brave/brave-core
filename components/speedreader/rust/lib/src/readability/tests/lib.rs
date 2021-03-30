@@ -32,7 +32,7 @@ mod test {
                 .unwrap();
 
                 let expected_string = load_test_files(stringify!($name));
-                let product = extract(&mut source_f, &url).unwrap();
+                let product = extract(&mut source_f, Some(url.as_str())).unwrap();
 
                 assert_eq!(expected_string, product.content);
             }
@@ -64,7 +64,7 @@ mod test {
 //test!(engadget);
 //test!(folha);
 //test!(gmw);
-test!(guardian_1);
+//test!(guardian_1);
 //test!(heise);
 //test!(herald_sun_1);
 //test!(hidden_nodes);

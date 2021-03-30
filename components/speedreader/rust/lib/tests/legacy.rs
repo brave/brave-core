@@ -19,11 +19,10 @@ use std::fs::File;
 use std::io::Read;
 use url::Url;
 
-use markup5ever_rcdom::NodeData::{Element, Text};
-use markup5ever_rcdom::RcDom;
-use markup5ever_rcdom::{Handle, Node};
+use kuchiki::NodeData::{Element, Text};
+use kuchiki::NodeRef as Handle;
+use kuchiki::Sink;
 use regex::Regex;
-use std::rc::Rc;
 use std::vec::Vec;
 
 static SAMPLES_PATH: &str = "data/tests-samples/";
@@ -38,16 +37,16 @@ fn load_test_files(test_name: &str) -> String {
 pub fn extract_flattened_tree<S: ::std::hash::BuildHasher>(
     handle: Handle,
     tags_extracted: &HashSet<String, S>,
-    flattened_nodes: &mut Vec<Rc<Node>>,
-) -> Vec<Rc<Node>> {
-    for child in handle.children.borrow().iter() {
+    flattened_nodes: &mut Vec<Handle>,
+) -> Vec<Handle> {
+    for child in handle.children() {
         let c = child.clone();
-        match c.data {
-            Text { .. } => {
+        match c.data() {
+            Text(_) => {
                 flattened_nodes.push(c.clone());
             }
-            Element { ref name, .. } => {
-                let tag = name.local.as_ref();
+            Element(ref data) => {
+                let tag = data.name.local.as_ref();
                 let tag_name = tag.to_lowercase();
 
                 if tags_extracted.contains(&tag_name) {
@@ -64,31 +63,21 @@ pub fn extract_flattened_tree<S: ::std::hash::BuildHasher>(
 }
 
 pub fn extract_text(handle: &Handle) -> String {
-    let node_text = match handle.data {
-        Text { ref contents } => Some(contents.borrow().trim().to_string()),
-        Element {
-            ref name,
-            ref attrs,
-            ..
-        } if name.local == local_name!("img") => {
-            let attrs_borrow = attrs.borrow();
-            let attr = attrs_borrow
-                .iter()
-                .find(|attr| attr.name.local == local_name!("src"));
-            let attr_value: Option<String> = attr.map(|a| a.value.to_string());
-            Some(format!("<img src='{:?}'/>", attr_value))
-        }
-        Element {
-            ref name,
-            ref attrs,
-            ..
-        } if name.local == local_name!("a") => {
-            let attrs_borrow = attrs.borrow();
-            let attr = attrs_borrow
-                .iter()
-                .find(|attr| attr.name.local == local_name!("href"));
-            let attr_value: Option<String> = attr.map(|a| a.value.to_string());
-            Some(format!("<a href='{:?}'/>", attr_value))
+    let node_text = match handle.data() {
+        Text(ref contents) => Some(contents.borrow().trim().to_string()),
+        Element(ref data) => {
+            if data.name.local == local_name!("img") {
+                let attrs_borrow = data.attributes.borrow();
+                let attr = attrs_borrow.get(local_name!("src"));
+                let attr_value: Option<String> = attr.map(|a| a.to_string());
+                Some(format!("<img src='{:?}'/>", attr_value));
+            } else if data.name.local == local_name!("a") {
+                let attrs_borrow = data.attributes.borrow();
+                let attr = attrs_borrow.get(local_name!("href"));
+                let attr_value: Option<String> = attr.map(|a| a.to_string());
+                Some(format!("<a href='{:?}'/>", attr_value));
+            }
+            None
         }
         _ => None,
     };
@@ -138,14 +127,14 @@ fn lcs(left: &[String], right: &[String]) -> (usize, Vec<String>) {
     (table[total_rows - 1][total_columns - 1], common_seq)
 }
 
-fn get_flat_dom_nodes(dom: &RcDom) -> Vec<String> {
+fn get_flat_dom_nodes(dom: &Sink) -> Vec<String> {
     let mut expected_nodes = Vec::new();
     // checks full flattened tree for a subset of (tags, attrs)
     let mut tags = HashSet::new();
     // #TODO: check a tags and imgs too, but for now focus on text
     tags.insert("a".to_owned());
     //tags.insert("img".to_owned());
-    extract_flattened_tree(dom.document.clone(), &tags, &mut expected_nodes);
+    extract_flattened_tree(dom.document_node.clone(), &tags, &mut expected_nodes);
 
     lazy_static! {
         static ref WHITESPACE: Regex = Regex::new(r"(\s\s+)").unwrap();
@@ -240,7 +229,7 @@ fn test_contents(name: &str) {
 
     // uses the mapper build the mapper based on the source HTML
     // document
-    let product = extractor::extract(&mut source_f, &url).unwrap();
+    let product = extractor::extract(&mut source_f, Some(url.as_str())).unwrap();
     let mut feature_extractor = FeatureExtractorStreamer::try_new(&url).unwrap();
     feature_extractor
         .write(&mut product.content.as_bytes())

@@ -1,8 +1,9 @@
 use html5ever::driver::{ParseOpts, Parser};
-use markup5ever_rcdom::{Handle, NodeData, RcDom};
 use html5ever::tendril::*;
 use html5ever::tree_builder::{AppendText, ElementFlags, NodeOrText, QuirksMode, TreeSink};
 use html5ever::{Attribute, ExpandedName, QualName};
+use kuchiki::NodeRef as Handle;
+use kuchiki::{ElementData, Sink};
 use std::borrow::Cow;
 use std::clone::Clone;
 use std::collections::HashMap;
@@ -54,33 +55,14 @@ fn url_depth(url: &Url) -> Result<usize, SpeedReaderError> {
 
 pub struct FeaturisingTreeSink {
     pub features: HashMap<String, u32>,
-    pub rcdom: RcDom,
-}
-
-impl Clone for FeaturisingTreeSink {
-    fn clone(&self) -> Self {
-        let mut cloned_f = HashMap::new();
-        for (k, v) in self.features.iter() {
-            cloned_f.insert(k.to_string(), *v);
-        }
-        let cloned_r = RcDom {
-            document: self.rcdom.document.clone(),
-            errors: self.rcdom.errors.clone(),
-            quirks_mode: self.rcdom.quirks_mode,
-        };
-
-        FeaturisingTreeSink {
-            features: cloned_f,
-            rcdom: cloned_r,
-        }
-    }
+    pub rcdom: Sink,
 }
 
 impl Default for FeaturisingTreeSink {
     fn default() -> FeaturisingTreeSink {
         FeaturisingTreeSink {
             features: HashMap::new(),
-            rcdom: RcDom::default(),
+            rcdom: Sink::default(),
         }
     }
 }
@@ -169,7 +151,7 @@ impl TreeSink for FeaturisingTreeSink {
     //    and update the feature list accordingly.
     fn append(&mut self, parent: &Handle, child: NodeOrText<Handle>) {
         if let AppendText(text) = &child {
-            if let NodeData::Element { name, .. } = &parent.data {
+            if let Some(ElementData { name, .. }) = parent.as_element() {
                 let parent_name = name.local.to_string();
 
                 if parent_name == "p" {
@@ -274,12 +256,8 @@ fn node_depth(node: &Handle, max_depth: usize, current_depth: usize) -> usize {
     if current_depth > max_depth {
         return current_depth;
     }
-    if let Some(parent) = node.parent.take() {
-        if let Some(strong_parent) = parent.upgrade() {
-            node_depth(&strong_parent, max_depth, current_depth + 1)
-        } else {
-            current_depth
-        }
+    if let Some(parent) = node.parent().take() {
+        node_depth(&parent, max_depth, current_depth + 1)
     } else {
         current_depth
     }

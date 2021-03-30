@@ -19,6 +19,11 @@ fn main() {
     streamer.write(&mut frag3.as_bytes()).unwrap();
 
     let sink = streamer.end();
+    sink.rcdom.on_parse_error = Some(Box::new(|errors| {
+        // parsing errors may happen due to malformed HTML, but it will not affect
+        // parsing itself or the DOM tree building
+        println!("Errors: {:?}", errors);
+    }));
 
     println!("======\n Features returned sink:");
     let result = sink.features.clone();
@@ -28,7 +33,4 @@ fn main() {
 
     let product = extract_dom(&mut sink.rcdom, &url, &sink.features).unwrap();
     println!(">> Read mode:\n {:?}", product);
-    // parsing errors may happen due to malformed HTML, but it will not affect
-    // parsing itself or the DOM tree building
-    println!("Errors: {:?}", sink.rcdom.errors);
 }
