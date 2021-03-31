@@ -1523,6 +1523,12 @@ extension Strings {
                               bundle: .braveShared,
                               value: "Failed to retrieve server list, please try again later.",
                               comment: "Error message shown if we failed to retrieve vpn server list.")
+        
+        public static let contactFormEmailNotConfiguredBody =
+            NSLocalizedString("vpn.contactFormEmailNotConfiguredBody",
+                              bundle: .braveShared,
+                              value: "Can't send email. Please check your email configuration.",
+                              comment: "Button name to send contact form.")
     }
 }
 
