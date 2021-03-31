@@ -75,7 +75,7 @@ TEST_F(PostSuggestionsClaimTest, ServerOK) {
             response.status_code = 200;
             response.url = request->url;
             response.body = R"(
-              {"drain_id": "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b"}
+              {"drainId": "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b"}
             )";
             callback(response);
           }));
