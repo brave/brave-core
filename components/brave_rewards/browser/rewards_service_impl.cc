@@ -2819,13 +2819,6 @@ void RewardsServiceImpl::OnProcessExternalWalletAuthorization(
     ProcessRewardsPageUrlCallback callback,
     const ledger::type::Result result,
     const base::flat_map<std::string, std::string>& args) {
-  if (result == ledger::type::Result::ALREADY_EXISTS) {
-    notification_service_->AddNotification(
-        RewardsNotificationService::REWARDS_NOTIFICATION_DEVICE_LIMIT_REACHED,
-        RewardsNotificationService::RewardsNotificationArgs(),
-        "rewards_notification_device_limit_reached");
-  }
-
   std::move(callback).Run(result, wallet_type, action, args);
 }
 

@@ -451,9 +451,7 @@ export class Panel extends React.Component<Props, State> {
           break
         }
 
-        const type = args[0]
-
-        switch (type) {
+        switch (args[0]) {
           case 'wallet_new_verified': {
             text = (
               <>
@@ -474,16 +472,16 @@ export class Panel extends React.Component<Props, State> {
             isAlert = 'error'
             break
           }
+          case 'wallet_device_limit_reached':
+            type = 'deviceLimitReached'
+            text = getMessage('deviceLimitReachedNotification')
+            break
           default:
             break
         }
 
         break
       }
-      case RewardsNotificationType.REWARDS_NOTIFICATION_DEVICE_LIMIT_REACHED:
-        type = 'deviceLimitReached'
-        text = getMessage('deviceLimitReachedNotification')
-        break
       default:
         type = ''
         break

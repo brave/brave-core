@@ -14,6 +14,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 using std::placeholders::_1;
@@ -87,6 +88,15 @@ void WalletClaim::OnTransferFunds(
 
   if (result == type::Result::ALREADY_EXISTS) {
     ledger_->state()->SetAnonTransferChecked(true);
+    ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached",
+                                               {}, [](type::Result) {});
+
+    std::string event_text = "uphold";
+    if (auto wallet_ptr = uphold::GetWallet(ledger_))
+      event_text += "/" + wallet_ptr->address.substr(0, 5);
+
+    ledger_->database()->SaveEventLog(log::kDeviceLimitReached, event_text);
+
     callback(type::Result::ALREADY_EXISTS);
     return;
   }
