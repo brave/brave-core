@@ -54,10 +54,10 @@ void BraveSearchJSHandler::BindFunctionsToObject(
           .ToLocal(&chrome_value) &&
       chrome_value->IsObject()) {
     BindFunctionToObject(
-      isolate, chrome_value->ToObject(context).ToLocalChecked(),
-      "fetchBackupResults",
-      base::BindRepeating(&BraveSearchJSHandler::FetchBackupResults,
-                          base::Unretained(this), isolate));
+        isolate, chrome_value->ToObject(context).ToLocalChecked(),
+        "fetchBackupResults",
+        base::BindRepeating(&BraveSearchJSHandler::FetchBackupResults,
+                            base::Unretained(this), isolate));
   }
 }
 

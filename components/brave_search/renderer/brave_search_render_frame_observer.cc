@@ -33,9 +33,9 @@ bool IsAllowedHost(const GURL& url) {
 namespace brave_search {
 
 BraveSearchRenderFrameObserver::BraveSearchRenderFrameObserver(
-    content::RenderFrame* render_frame, int32_t world_id)
-    : RenderFrameObserver(render_frame),
-      world_id_(world_id) {
+    content::RenderFrame* render_frame,
+    int32_t world_id)
+    : RenderFrameObserver(render_frame), world_id_(world_id) {
   native_javascript_handle_.reset(new BraveSearchJSHandler(render_frame));
 }
 
@@ -47,8 +47,8 @@ void BraveSearchRenderFrameObserver::DidCreateScriptContext(
   if (!render_frame()->IsMainFrame() || world_id_ != world_id)
     return;
 
-  GURL url = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
-             .GetURL();
+  GURL url =
+      url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin()).GetURL();
 
   if (!url.is_valid() || !url.SchemeIsHTTPOrHTTPS() ||
       !native_javascript_handle_ || !IsAllowedHost(url))

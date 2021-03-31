@@ -267,9 +267,8 @@ void MaybeBindBraveWalletProvider(
 void BindBraveSearchHost(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_search::BraveSearchHost>(),
-      std::move(receiver));
+  mojo::MakeSelfOwnedReceiver(std::make_unique<brave_search::BraveSearchHost>(),
+                              std::move(receiver));
 }
 
 }  // namespace
