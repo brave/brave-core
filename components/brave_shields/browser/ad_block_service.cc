@@ -273,6 +273,7 @@ void AdBlockService::OnComponentReady(const std::string& component_id,
                                       const std::string& manifest) {
   // Regional service manager depends on regional catalog loading
   custom_filters_service()->Start();
+  subscription_service_manager()->Start();
 
   base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
   GetDATFileData(dat_file_path);
