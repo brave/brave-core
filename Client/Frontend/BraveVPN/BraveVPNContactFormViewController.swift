@@ -188,6 +188,12 @@ class BraveVPNContactFormViewController: TableViewController {
             guard let self = self else { return }
             if !MFMailComposeViewController.canSendMail() {
                 log.error("Can't send email on this device")
+                let alert = UIAlertController(title: Strings.genericErrorTitle,
+                                              message: Strings.VPN.contactFormEmailNotConfiguredBody,
+                                              preferredStyle: .alert)
+                let okAction = UIAlertAction(title: Strings.OKString, style: .default)
+                alert.addAction(okAction)
+                self.present(alert, animated: true)
                 return
             }
             
