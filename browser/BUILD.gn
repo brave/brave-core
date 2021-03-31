@@ -134,6 +134,8 @@ source_set("browser_process") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
     "//brave/components/brave_referrals/buildflags",
+    "//brave/components/brave_search/browser",
+    "//brave/components/brave_search/common:mojom",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync",

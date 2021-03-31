@@ -1,12 +1,14 @@
 source_set("renderer") {
   sources = [
-    "brave_wallet_js_handler.cc",
-    "brave_wallet_js_handler.h",
+    "brave_search_js_handler.cc",
+    "brave_search_js_handler.h",
+    "brave_search_render_frame_observer.cc",
+    "brave_search_render_frame_observer.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_search/common:mojom",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

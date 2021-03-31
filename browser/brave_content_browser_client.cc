@@ -25,6 +25,8 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_search/browser/brave_search_host.h"
+#include "brave/components/brave_search/common/brave_search.mojom.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
@@ -266,6 +268,13 @@ void MaybeBindBraveWalletProvider(
 }
 #endif
 
+void BindBraveSearchHost(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
+  mojo::MakeSelfOwnedReceiver(std::make_unique<brave_search::BraveSearchHost>(),
+                              std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -332,6 +341,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&MaybeBindBraveWalletProvider));
   }
 #endif
+
+  map->Add<brave_search::mojom::BraveSearchFallback>(
+      base::BindRepeating(&BindBraveSearchHost));
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
