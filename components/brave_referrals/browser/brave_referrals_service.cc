@@ -583,6 +583,8 @@ void BraveReferralsService::FetchReferralHeaders() {
   referral_headers_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
   referral_headers_loader_->SetAllowHttpErrorResults(true);
+  referral_headers_loader_->SetRetryOptions(
+      1, network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   referral_headers_loader_->DownloadToString(
       loader_factory,
       base::BindOnce(&BraveReferralsService::OnReferralHeadersLoadComplete,
@@ -626,6 +628,8 @@ void BraveReferralsService::InitReferral() {
   referral_init_loader_->SetAllowHttpErrorResults(true);
   referral_init_loader_->AttachStringForUpload(BuildReferralInitPayload(),
                                                "application/json");
+  referral_init_loader_->SetRetryOptions(
+      1, network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   referral_init_loader_->DownloadToString(
       loader_factory,
       base::BindOnce(&BraveReferralsService::OnReferralInitLoadComplete,
@@ -694,6 +698,8 @@ void BraveReferralsService::CheckForReferralFinalization() {
   referral_finalization_check_loader_->SetAllowHttpErrorResults(true);
   referral_finalization_check_loader_->AttachStringForUpload(
       BuildReferralFinalizationCheckPayload(), "application/json");
+  referral_finalization_check_loader_->SetRetryOptions(
+      1, network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   referral_finalization_check_loader_->DownloadToString(
       loader_factory,
       base::BindOnce(
