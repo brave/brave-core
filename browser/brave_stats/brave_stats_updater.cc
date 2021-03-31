@@ -388,6 +388,8 @@ void BraveStatsUpdater::SendServerPing() {
           ->GetURLLoaderFactory();
   simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
+  simple_url_loader_->SetRetryOptions(
+      1, network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE);
   simple_url_loader_->DownloadHeadersOnly(
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnSimpleLoaderComplete,
@@ -418,6 +420,8 @@ void BraveStatsUpdater::SendUserTriggeredPing() {
           ->GetURLLoaderFactory();
   simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
+  simple_url_loader_->SetRetryOptions(
+      1, network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE);
   simple_url_loader_->DownloadHeadersOnly(
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnThresholdLoaderComplete,
