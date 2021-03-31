@@ -5,26 +5,90 @@
 
 #include "brave/components/brave_search/browser/brave_search_host.h"
 
-#include <utility>
+#include "base/strings/stringprintf.h"
+#include "chrome/browser/browser_process.h"
+#include "net/base/load_flags.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
+
+namespace {
+net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("brave_search_host", R"(
+      semantics {
+        sender: "Brave Search Host Controller"
+        description:
+          "This controller is used as a backup search "
+          "provider for users that have opted into this feature."
+        trigger:
+          "Triggered by Brave search if a user has opted in."
+        data:
+          "Local backup provider results."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "You can enable or disable this feature on chrome://flags."
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
+}
+
+const unsigned int kRetriesCountOnNetworkChange = 1;
+static GURL backup_provider_for_test;
+}  // namespace
 
 namespace brave_search {
+
+void BraveSearchHost::SetBackupProviderForTest(const GURL& backup_provider) {
+  backup_provider_for_test = backup_provider;
+}
 
 BraveSearchHost::BraveSearchHost() : weak_factory_(this) {}
 
 BraveSearchHost::~BraveSearchHost() {}
 
-void BraveSearchHost::FetchBackupResults(const std::string& query_string,
+void BraveSearchHost::FetchBackupResults(const std::string& query,
                                          const std::string& lang,
                                          const std::string& country,
                                          const std::string& geo,
                                          FetchBackupResultsCallback callback) {
-  // TODO(sergz): make a call to fetch a response and remove that callback call
-  OnFetchBackupResults(std::move(callback), "response");
+  auto request = std::make_unique<network::ResourceRequest>();
+
+  if (backup_provider_for_test.is_empty()) {
+    std::string spec(
+        base::StringPrintf("https://www.google.com/search?q=%s&hl=%s&c=%s",
+                           query.c_str(), lang.c_str(), country.c_str()));
+    request->url = GURL(spec);
+  } else {
+    request->url = backup_provider_for_test;
+  }
+  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
+  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
+  request->method = "GET";
+  request->headers.SetHeaderIfMissing("x-geo", geo);
+
+  auto url_loader = network::SimpleURLLoader::Create(
+      std::move(request), GetNetworkTrafficAnnotationTag());
+  url_loader->SetRetryOptions(
+      kRetriesCountOnNetworkChange,
+      network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      g_browser_process->shared_url_loader_factory().get(),
+      base::BindOnce(&BraveSearchHost::OnURLLoaderComplete,
+                     weak_factory_.GetWeakPtr(), std::move(iter),
+                     std::move(callback)));
 }
 
-void BraveSearchHost::OnFetchBackupResults(FetchBackupResultsCallback callback,
-                                           const std::string& response) {
-  std::move(callback).Run(response);
+void BraveSearchHost::OnURLLoaderComplete(
+    SimpleURLLoaderList::iterator iter,
+    BraveSearchHost::FetchBackupResultsCallback callback,
+    const std::unique_ptr<std::string> response_body) {
+  url_loaders_.erase(iter);
+  std::move(callback).Run(*response_body);
 }
 
 }  // namespace brave_search
