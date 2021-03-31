@@ -19,6 +19,7 @@
 node_modules/
 patches/**/*.patchinfo
 /third_party/ethash/src
+/third_party/bitcoin-core/src
 *.xcodeproj
 *.swp
 *.pyc

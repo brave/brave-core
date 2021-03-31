@@ -1,0 +1,5 @@
+Name: bitcoin-core
+URL: https://github.com/bitcoin/bitcoin
+License: MIT License
+License File: /brave/third_party/bitcoin-core/src/COPYING
+
