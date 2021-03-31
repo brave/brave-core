@@ -5,6 +5,8 @@
 
 import("//third_party/protobuf/proto_library.gni")
 
+import("//brave/vendor/bat-native-ledger/config.gni")
+
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
@@ -25,6 +27,12 @@ config("internal_config") {
     "//brave/components/brave_rewards/test:*",
     "//brave/test:*",
     "//brave/vendor/bat-native-ledger/test:*",
+  ]
+  defines = [
+    "UPHOLD_CLIENT_ID=\"$uphold_client_id\"",
+    "UPHOLD_CLIENT_SECRET=\"$uphold_client_secret\"",
+    "UPHOLD_STAGING_CLIENT_ID=\"$uphold_staging_client_id\"",
+    "UPHOLD_STAGING_CLIENT_SECRET=\"$uphold_staging_client_secret\"",
   ]
   include_dirs = [
     "src",

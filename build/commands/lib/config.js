@@ -95,6 +95,10 @@ const Config = function () {
   this.binanceClientId = getNPMConfig(['binance_client_id']) || ''
   this.geminiClientId = getNPMConfig(['gemini_client_id']) || ''
   this.geminiClientSecret = getNPMConfig(['gemini_client_secret']) || ''
+  this.upholdClientId = getNPMConfig(['uphold_client_id']) || ''
+  this.upholdClientSecret = getNPMConfig(['uphold_client_secret']) || ''
+  this.upholdStagingClientId = getNPMConfig(['uphold_staging_client_id']) || ''
+  this.upholdStagingClientSecret = getNPMConfig(['uphold_staging_client_secret']) || ''
   this.braveSyncEndpoint = getNPMConfig(['brave_sync_endpoint']) || ''
   this.safeBrowsingApiEndpoint = getNPMConfig(['safebrowsing_api_endpoint']) || ''
   this.updaterProdEndpoint = getNPMConfig(['updater_prod_endpoint']) || ''
@@ -209,6 +213,10 @@ Config.prototype.buildArgs = function () {
     binance_client_id: this.binanceClientId,
     gemini_client_id: this.geminiClientId,
     gemini_client_secret: this.geminiClientSecret,
+    uphold_client_id: this.upholdClientId,
+    uphold_client_secret: this.upholdClientSecret,
+    uphold_staging_client_id: this.upholdStagingClientId,
+    uphold_staging_client_secret: this.upholdStagingClientSecret,
     brave_product_name: getNPMConfig(['brave_product_name']) || "brave-core",
     brave_project_name: getNPMConfig(['brave_project_name']) || "brave-core",
     brave_version_major: version_parts[0],
@@ -387,6 +395,10 @@ Config.prototype.buildArgs = function () {
     delete args.binance_client_id
     delete args.gemini_client_id
     delete args.gemini_client_secret
+    delete args.uphold_client_id
+    delete args.uphold_client_secret
+    delete args.uphold_staging_client_id
+    delete args.uphold_staging_client_secret
     delete args.webcompat_report_api_endpoint
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
@@ -545,6 +557,22 @@ Config.prototype.update = function (options) {
 
   if (options.gemini_client_secret) {
     this.geminiClientSecret = options.gemini_client_secret
+  }
+
+  if (options.uphold_client_id) {
+    this.upholdClientId = options.uphold_client_id
+  }
+
+  if (options.uphold_client_secret) {
+    this.upholdClientSecret = options.uphold_client_secret
+  }
+
+  if (options.uphold_staging_client_id) {
+    this.upholdStagingClientId = options.uphold_staging_client_id
+  }
+
+  if (options.uphold_staging_client_secret) {
+    this.upholdStagingClientSecret = options.uphold_staging_client_secret
   }
 
   if (options.safebrowsing_api_endpoint) {

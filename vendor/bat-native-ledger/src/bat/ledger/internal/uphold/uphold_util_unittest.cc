@@ -44,12 +44,24 @@ TEST_F(UpholdUtilTest, GetClientId) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = uphold::GetClientId();
-  ASSERT_EQ(result, kClientIdProduction);
+  ASSERT_EQ(result, UPHOLD_CLIENT_ID);
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = uphold::GetClientId();
-  ASSERT_EQ(result, kClientIdStaging);
+  ASSERT_EQ(result, UPHOLD_STAGING_CLIENT_ID);
+}
+
+TEST_F(UpholdUtilTest, GetClientSecret) {
+  // production
+  ledger::_environment = type::Environment::PRODUCTION;
+  std::string result = uphold::GetClientSecret();
+  ASSERT_EQ(result, UPHOLD_CLIENT_SECRET);
+
+  // staging
+  ledger::_environment = type::Environment::STAGING;
+  result = uphold::GetClientSecret();
+  ASSERT_EQ(result, UPHOLD_STAGING_CLIENT_SECRET);
 }
 
 TEST_F(UpholdUtilTest, GetFeeAddress) {
@@ -70,45 +82,46 @@ TEST_F(UpholdUtilTest, GetAuthorizeUrl) {
   std::string result =
       uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
   ASSERT_EQ(result,
-      "https://uphold.com/authorize/"
-      "6d8d9473ed20be627f71ed46e207f40c004c5b1a?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=kyc&state=rdfdsfsdfsdf");
+            "https://uphold.com/authorize/" UPHOLD_CLIENT_ID
+            "?scope=accounts:read "
+            "accounts:write cards:read cards:write user:read "
+            "transactions:deposit transactions:read "
+            "transactions:transfer:application transactions:transfer:others"
+            "&intention=kyc&state=rdfdsfsdfsdf");
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
   ASSERT_EQ(result,
-      "https://sandbox.uphold.com/authorize/"
-      "4c2b665ca060d912fec5c735c734859a06118cc8?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=kyc&state=rdfdsfsdfsdf");
+            "https://sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
+            "?scope=accounts:read "
+            "accounts:write cards:read cards:write user:read "
+            "transactions:deposit transactions:read "
+            "transactions:transfer:application transactions:transfer:others"
+            "&intention=kyc&state=rdfdsfsdfsdf");
+
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   result =
       uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
   ASSERT_EQ(result,
-      "https://uphold.com/authorize/"
-      "6d8d9473ed20be627f71ed46e207f40c004c5b1a?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=login&state=rdfdsfsdfsdf");
+            "https://uphold.com/authorize/" UPHOLD_CLIENT_ID
+            "?scope=accounts:read "
+            "accounts:write cards:read cards:write user:read "
+            "transactions:deposit transactions:read "
+            "transactions:transfer:application transactions:transfer:others"
+            "&intention=login&state=rdfdsfsdfsdf");
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
   ASSERT_EQ(result,
-      "https://sandbox.uphold.com/authorize/"
-      "4c2b665ca060d912fec5c735c734859a06118cc8?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=login&state=rdfdsfsdfsdf");
+            "https://sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
+            "?scope=accounts:read "
+            "accounts:write cards:read cards:write user:read "
+            "transactions:deposit transactions:read "
+            "transactions:transfer:application transactions:transfer:others"
+            "&intention=login&state=rdfdsfsdfsdf");
 }
 
 TEST_F(UpholdUtilTest, GetAddUrl) {
@@ -125,7 +138,7 @@ TEST_F(UpholdUtilTest, GetAddUrl) {
   ledger::_environment = type::Environment::STAGING;
   result = uphold::GetAddUrl("9324i5i32459i");
   ASSERT_EQ(result,
-      "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/add");
+            "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/add");
 }
 
 TEST_F(UpholdUtilTest, GetWithdrawUrl) {
@@ -142,7 +155,7 @@ TEST_F(UpholdUtilTest, GetWithdrawUrl) {
   ledger::_environment = type::Environment::STAGING;
   result = uphold::GetWithdrawUrl("9324i5i32459i");
   ASSERT_EQ(result,
-      "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/use");
+            "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/use");
 }
 
 TEST_F(UpholdUtilTest, GetSecondStepVerify) {
@@ -150,15 +163,15 @@ TEST_F(UpholdUtilTest, GetSecondStepVerify) {
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = uphold::GetSecondStepVerify();
   ASSERT_EQ(result,
-      "https://uphold.com/signup/step2?"
-      "application_id=6d8d9473ed20be627f71ed46e207f40c004c5b1a&intention=kyc");
+            "https://uphold.com/signup/step2"
+            "?application_id=" UPHOLD_CLIENT_ID "&intention=kyc");
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = uphold::GetSecondStepVerify();
   ASSERT_EQ(result,
-      "https://sandbox.uphold.com/signup/step2?"
-      "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&intention=kyc");
+            "https://sandbox.uphold.com/signup/step2"
+            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
 }
 
 TEST_F(UpholdUtilTest, GetWallet) {
@@ -168,7 +181,7 @@ TEST_F(UpholdUtilTest, GetWallet) {
   auto result = uphold::GetWallet(mock_ledger_impl_.get());
   ASSERT_TRUE(!result);
 
-  const std::string wallet =R"({
+  const std::string wallet = R"({
     "account_url":"https://sandbox.uphold.com/dashboard",
     "add_url":"https://sandbox.uphold.com/dashboard/cards/asadasdasd/add",
     "address":"2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
@@ -217,12 +230,12 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(result->verify_url,
-      "https://sandbox.uphold.com/authorize/4c2b665ca060d912fec5c735c734859a06"
-      "118cc8?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=kyc&state=");
+            "https://sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
+            "?scope=accounts:read "
+            "accounts:write cards:read cards:write user:read "
+            "transactions:deposit transactions:read "
+            "transactions:transfer:application transactions:transfer:others"
+            "&intention=kyc&state=");
   ASSERT_EQ(result->account_url, "https://sandbox.uphold.com/dashboard");
 
   // Connected
@@ -231,19 +244,21 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->add_url,
       "https://sandbox.uphold.com/dashboard/cards/123123123124234234234/add");
   ASSERT_EQ(result->withdraw_url,
-      "https://sandbox.uphold.com/signup/step2?application_id="
-      "4c2b665ca060d912fec5c735c734859a06118cc8&intention=kyc");
+            "https://sandbox.uphold.com/signup/step2"
+            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
   ASSERT_EQ(result->verify_url,
-      "https://sandbox.uphold.com/signup/step2?application_id="
-      "4c2b665ca060d912fec5c735c734859a06118cc8&intention=kyc");
+            "https://sandbox.uphold.com/signup/step2"
+            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
   ASSERT_EQ(result->account_url, "https://sandbox.uphold.com/dashboard");
 
   // Verified
   wallet->status = type::WalletStatus::VERIFIED;
   result = uphold::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url,
+  ASSERT_EQ(
+      result->add_url,
       "https://sandbox.uphold.com/dashboard/cards/123123123124234234234/add");
-  ASSERT_EQ(result->withdraw_url,
+  ASSERT_EQ(
+      result->withdraw_url,
       "https://sandbox.uphold.com/dashboard/cards/123123123124234234234/use");
   ASSERT_EQ(result->verify_url, "");
   ASSERT_EQ(result->account_url, "https://sandbox.uphold.com/dashboard");
@@ -253,10 +268,10 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url,
-      "https://sandbox.uphold.com/authorize/4c2b665ca060d912fec5c735c734859a0"
-      "6118cc8?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
+  ASSERT_EQ(
+      result->verify_url,
+      "https://sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
+      "?scope=accounts:read accounts:write cards:read cards:write user:read "
       "transactions:deposit transactions:read "
       "transactions:transfer:application transactions:transfer:others"
       "&intention=kyc&state=");
@@ -268,29 +283,26 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(result->verify_url,
-      "https://sandbox.uphold.com/authorize/4c2b665ca060d912fec5c735c734859a0"
-      "6118cc8?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=kyc&state=");
+            "https://sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
+            "?scope=accounts:read "
+            "accounts:write cards:read cards:write user:read "
+            "transactions:deposit transactions:read "
+            "transactions:transfer:application transactions:transfer:others"
+            "&intention=kyc&state=");
   ASSERT_EQ(result->account_url, "https://sandbox.uphold.com/dashboard");
 
   // Pending
   wallet->status = type::WalletStatus::PENDING;
   result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url,
-          "https://sandbox.uphold.com/signup/step2?"
-          "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
-          "intention=kyc");
+            "https://sandbox.uphold.com/signup/step2"
+            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
   ASSERT_EQ(result->withdraw_url,
-          "https://sandbox.uphold.com/signup/step2?"
-          "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
-          "intention=kyc");
+            "https://sandbox.uphold.com/signup/step2"
+            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
   ASSERT_EQ(result->verify_url,
-          "https://sandbox.uphold.com/signup/step2?"
-          "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
-          "intention=kyc");
+            "https://sandbox.uphold.com/signup/step2"
+            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
   ASSERT_EQ(result->account_url, "https://sandbox.uphold.com/dashboard");
 }
 
@@ -304,19 +316,19 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
   wallet->status = type::WalletStatus::NOT_CONNECTED;
   auto result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
-      "https://sandbox.uphold.com/authorize/4c2b665ca060d912fec5c735c734859a06"
-      "118cc8?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=kyc&state=123123123124234234234");
+            "https://sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
+            "?scope=accounts:read "
+            "accounts:write cards:read cards:write user:read "
+            "transactions:deposit transactions:read "
+            "transactions:transfer:application transactions:transfer:others"
+            "&intention=kyc&state=123123123124234234234");
 
   // Connected
   wallet->status = type::WalletStatus::CONNECTED;
   result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
-      "https://sandbox.uphold.com/signup/step2?application_id="
-      "4c2b665ca060d912fec5c735c734859a06118cc8&intention=kyc");
+            "https://sandbox.uphold.com/signup/step2"
+            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
 
   // Verified
   wallet->status = type::WalletStatus::VERIFIED;
@@ -327,31 +339,30 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
   wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
   result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
-      "https://sandbox.uphold.com/authorize/4c2b665ca060d912fec5c735c734859a06"
-      "118cc8?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=kyc&state=123123123124234234234");
+            "https://sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
+            "?scope=accounts:read "
+            "accounts:write cards:read cards:write user:read "
+            "transactions:deposit transactions:read "
+            "transactions:transfer:application transactions:transfer:others"
+            "&intention=kyc&state=123123123124234234234");
 
   // Disconnected Verified
   wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
   result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
-      "https://sandbox.uphold.com/authorize/4c2b665ca060d912fec5c735c734859a06"
-      "118cc8?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=kyc&state=123123123124234234234");
+            "https://sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
+            "?scope=accounts:read "
+            "accounts:write cards:read cards:write user:read "
+            "transactions:deposit transactions:read "
+            "transactions:transfer:application transactions:transfer:others"
+            "&intention=kyc&state=123123123124234234234");
 
   // Pending
   wallet->status = type::WalletStatus::PENDING;
   result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
-          "https://sandbox.uphold.com/signup/step2?"
-          "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
-          "intention=kyc");
+            "https://sandbox.uphold.com/signup/step2"
+            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
 }
 
 }  // namespace uphold

@@ -21,8 +21,14 @@ namespace uphold {
 
 std::string GetClientId() {
   return ledger::_environment == type::Environment::PRODUCTION
-      ? kClientIdProduction
-      : kClientIdStaging;
+             ? UPHOLD_CLIENT_ID
+             : UPHOLD_STAGING_CLIENT_ID;
+}
+
+std::string GetClientSecret() {
+  return ledger::_environment == type::Environment::PRODUCTION
+             ? UPHOLD_CLIENT_SECRET
+             : UPHOLD_STAGING_CLIENT_SECRET;
 }
 
 std::string GetUrl() {

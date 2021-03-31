@@ -16,14 +16,13 @@ namespace uphold {
 
 const char kStaging[] = "https://api-sandbox.uphold.com";
 const char kProduction[] = "https://api.uphold.com";
-const char kClientSecretStaging[] = "67bf87da096748c5bc1e195cfbdd59db006618a0";
-const char kClientSecretProduction[] =
-    "de1aa4196c8d4aa50c6bc1371734e3f57f781f72";
+
+std::string GetClientId() {
+  return ::ledger::uphold::GetClientId();
+}
 
 std::string GetClientSecret() {
-  return ledger::_environment == type::Environment::PRODUCTION
-      ? kClientSecretProduction
-      : kClientSecretStaging;
+  return ::ledger::uphold::GetClientSecret();
 }
 
 std::vector<std::string> RequestAuthorization(const std::string& token) {
@@ -34,7 +33,7 @@ std::vector<std::string> RequestAuthorization(const std::string& token) {
     return headers;
   }
 
-  const std::string id = ::ledger::uphold::GetClientId();
+  const std::string id = GetClientId();
   const std::string secret = GetClientSecret();
 
   std::string user;
