@@ -9,5 +9,8 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/components/brave_search/common:mojom",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
   ]
 }

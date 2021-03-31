@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_search/browser/brave_search_host.h"
 
+#include <utility>
+
 #include "base/strings/stringprintf.h"
-#include "chrome/browser/browser_process.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -45,7 +46,9 @@ void BraveSearchHost::SetBackupProviderForTest(const GURL& backup_provider) {
   backup_provider_for_test = backup_provider;
 }
 
-BraveSearchHost::BraveSearchHost() : weak_factory_(this) {}
+BraveSearchHost::BraveSearchHost(
+    scoped_refptr<network::SharedURLLoaderFactory> factory)
+    : shared_url_loader_factory_(std::move(factory)), weak_factory_(this) {}
 
 BraveSearchHost::~BraveSearchHost() {}
 
@@ -77,7 +80,7 @@ void BraveSearchHost::FetchBackupResults(const std::string& query,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      g_browser_process->shared_url_loader_factory().get(),
+      shared_url_loader_factory_.get(),
       base::BindOnce(&BraveSearchHost::OnURLLoaderComplete,
                      weak_factory_.GetWeakPtr(), std::move(iter),
                      std::move(callback)));
