@@ -353,7 +353,7 @@ void TipMessageHandler::OnTip(const base::ListValue* args) {
 
   if (recurring && amount <= 0) {
     rewards_service_->RemoveRecurringTip(publisher_key);
-  } else if (amount >= 1) {
+  } else if (amount > 0) {
     rewards_service_->OnTip(publisher_key, amount, recurring);
   }
 }
