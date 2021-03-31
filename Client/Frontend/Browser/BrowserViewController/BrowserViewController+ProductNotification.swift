@@ -50,7 +50,7 @@ extension BrowserViewController {
         }
         
         var value: Int {
-            AppConstants.buildChannel.isPublic ? self.rawValue : self.rawValue / 10
+            AppConstants.buildChannel.isPublic ? self.rawValue : self.rawValue / 100
         }
     }
     
@@ -74,7 +74,8 @@ extension BrowserViewController {
         guard let selectedTab = tabManager.selectedTab,
               !benchmarkNotificationPresented,
               !topToolbar.inOverlayMode,
-              selectedTab.webView?.scrollView.isDragging == false else {
+              selectedTab.webView?.scrollView.isDragging == false,
+              tabManager.selectedTab?.url?.isAboutHomeURL == false else {
             return
         }
         
