@@ -14,8 +14,7 @@
 
 namespace brave_search {
 
-class BraveSearchHost final
-    : public brave_search::mojom::BraveSearchFallback {
+class BraveSearchHost final : public brave_search::mojom::BraveSearchFallback {
  public:
   BraveSearchHost(const BraveSearchHost&) = delete;
   BraveSearchHost& operator=(const BraveSearchHost&) = delete;
