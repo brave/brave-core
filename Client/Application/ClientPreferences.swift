@@ -183,6 +183,7 @@ extension Preferences {
             Option<Bool>(key: "vpn.vpn-header-dismissed", default: false)
         /// User can decide to choose their vpn region manually. If nil, automatic mode is used based on device timezone.
         static let vpnRegionOverride = Option<String?>(key: "vpn.region-override", default: nil)
+        static let vpnHostDisplayName = Option<String?>(key: "vpn.host-location", default: nil)
     }
     
     final class Chromium {

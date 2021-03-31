@@ -182,7 +182,8 @@ class BraveVPN {
     /// Location of last used server for the vpn configuration.
     static var serverLocation: String? {
         guard let serverHostname = hostname else { return nil }
-        return GRDVPNHelper.serverLocation(forHostname: serverHostname)
+        return Preferences.VPN.vpnHostDisplayName.value
+            ?? GRDVPNHelper.serverLocation(forHostname: serverHostname)
     }
     
     /// Name of the purchased vpn plan.
@@ -373,7 +374,7 @@ class BraveVPN {
                 return
             }
             
-            saveHostname(host)
+            saveHostname(host, displayName: location)
             
             createNewSubscriberCredential(for: host) { status in
                 firstTimeUserConfigPending = false
@@ -461,34 +462,35 @@ class BraveVPN {
     static func reconfigureVPN(completion: ((Bool) -> Void)? = nil) {
         disconnect()
         GRDKeychain.removeGuardianKeychainItems()
+        Preferences.VPN.vpnHostDisplayName.value = nil
         
         // Small delay to disconnect the vpn.
         // Otherwise we might end up with 'no internet connection' error.
         DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: {
             // Region selected manually by the user.
             if let regionOverride = Preferences.VPN.vpnRegionOverride.value {
-                serverManager.findBestHost(inRegion: regionOverride) { host, _, error in
+                serverManager.findBestHost(inRegion: regionOverride) { host, location, error in
                     guard let host = host, error == nil else {
                         completion?(false)
                         logAndStoreError("reconfigureVPN findBestHost host error")
                         return
                     }
                     
-                    reconfigure(with: host) { success in
+                    reconfigure(with: host, location: location) { success in
                         completion?(success)
                     }
                 }
             }
             // Default behavior, automatic mode, chooses location based on device's timezone.
             else {
-                serverManager.selectGuardianHost { host, _, error in
+                serverManager.selectGuardianHost { host, location, error in
                     guard let host = host, error == nil else {
                         completion?(false)
                         logAndStoreError("reconfigureVPN selectGuardianHost host error")
                         return
                     }
                     
-                    reconfigure(with: host) { success in
+                    reconfigure(with: host, location: location) { success in
                         completion?(success)
                     }
                 }
@@ -497,7 +499,7 @@ class BraveVPN {
         })
     }
     
-    private static func reconfigure(with host: String, completion: ((Bool) -> Void)? = nil) {
+    private static func reconfigure(with host: String, location: String?, completion: ((Bool) -> Void)? = nil) {
         guard let credentialString =
             GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) else {
             logAndStoreError("reconfigureVPN failed to retrieve subscriber credentials")
@@ -505,7 +507,7 @@ class BraveVPN {
             return
         }
         
-        saveHostname(host)
+        saveHostname(host, displayName: location)
         
         helper.createFreshUser(withSubscriberCredential: credentialString) { status, createError in
             if status != .success {
@@ -530,6 +532,8 @@ class BraveVPN {
     /// This method does not clear keychain items and jwt token.
     private static func clearConfiguration() {
         GRDVPNHelper.clearVpnConfiguration()
+        Preferences.VPN.vpnRegionOverride.value = nil
+        Preferences.VPN.vpnHostDisplayName.value = nil
         
         NEVPNManager.shared().removeFromPreferences { error in
             if let error = error {
@@ -595,9 +599,10 @@ class BraveVPN {
         }
     }
     
-    private static func saveHostname(_ hostname: String) {
+    private static func saveHostname(_ hostname: String, displayName: String?) {
         GRDVPNHelper.saveAll(inOneBoxHostname: hostname)
         GRDGatewayAPI.shared().apiHostname = hostname
+        Preferences.VPN.vpnHostDisplayName.value = displayName
     }
     
     // MARK: - Server selection
