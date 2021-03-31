@@ -18,6 +18,7 @@
 #include "services/metrics/public/cpp/ukm_source_id.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
 
+class BraveNavigatorUserAgentFarblingBrowserTest;
 class PrefChangeRegistrar;
 
 namespace content {
@@ -102,10 +103,11 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;
-  static bool HandleURLOverrideRewrite(GURL* url,
+  static bool HandleURLOverrideRewrite(
+      GURL* url,
       content::BrowserContext* browser_context);
   std::vector<std::unique_ptr<content::NavigationThrottle>>
-      CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
+  CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
 
   std::string GetEffectiveUserAgent(content::BrowserContext* browser_context,
                                     const GURL& url) override;
@@ -115,10 +117,13 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::RenderProcessHost* render_process_host) override;
 
  private:
+  friend class ::BraveNavigatorUserAgentFarblingBrowserTest;
+
   uint64_t session_token_;
   uint64_t incognito_session_token_;
 
   void OnAllowGoogleAuthChanged();
+  std::string GetMinimalUserAgent();
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;

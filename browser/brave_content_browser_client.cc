@@ -179,7 +179,11 @@ std::string GetUserAgentPlatform() {
 }
 
 std::string GetMinimalProduct() {
-  return version_info::GetProductNameAndVersionForUserAgent();
+  std::string product = version_info::GetProductNameAndVersionForUserAgent();
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(switches::kUseMobileUserAgent))
+    product += " Mobile";
+  return product;
 }
 
 std::string GetMinimalOSVersion() {
@@ -503,6 +507,16 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   }
 }
 
+std::string BraveContentBrowserClient::GetMinimalUserAgent() {
+  std::string minimal_os_info;
+  base::StringAppendF(&minimal_os_info, "%s%s", GetUserAgentPlatform().c_str(),
+                      content::BuildOSCpuInfoFromOSVersionAndCpuType(
+                          GetMinimalOSVersion(), content::BuildCpuInfo())
+                          .c_str());
+  return content::BuildUserAgentFromOSAndProduct(minimal_os_info,
+                                                 GetMinimalProduct());
+}
+
 std::string BraveContentBrowserClient::GetEffectiveUserAgent(
     content::BrowserContext* browser_context,
     const GURL& url) {
@@ -518,16 +532,8 @@ std::string BraveContentBrowserClient::GetEffectiveUserAgent(
     // respect it.
     if (GetBraveShieldsEnabled(map, url) &&
         (GetFingerprintingControlType(map, url) != ControlType::ALLOW) &&
-        (ua == content::BuildUserAgentFromProduct(
-                   version_info::GetProductNameAndVersionForUserAgent()))) {
-      std::string minimal_os_info;
-      base::StringAppendF(&minimal_os_info, "%s%s",
-                          GetUserAgentPlatform().c_str(),
-                          content::BuildOSCpuInfoFromOSVersionAndCpuType(
-                              GetMinimalOSVersion(), content::BuildCpuInfo())
-                              .c_str());
-      ua = content::BuildUserAgentFromOSAndProduct(minimal_os_info,
-                                                   GetMinimalProduct());
+        (ua == content::BuildUserAgentFromProduct(GetMinimalProduct()))) {
+      ua = GetMinimalUserAgent();
     }
   }
   return ua;
