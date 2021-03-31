@@ -361,6 +361,10 @@ class BraveVPN {
         if firstTimeUserConfigPending { return }
         firstTimeUserConfigPending = true
         
+        // Make sure region override is nil on new user creation.
+        // This can happen if the vpn has expired and a user has to buy it again.
+        Preferences.VPN.vpnRegionOverride.value = nil
+        
         serverManager.selectGuardianHost { host, location, error in
             guard let host = host, error == nil else {
                 firstTimeUserConfigPending = false
