@@ -19,3 +19,16 @@ export const ChildComponentWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `
+
+export const ScrollContainer = styled.div`
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  padding: 0px 12px;
+  box-sizing: border-box;
+`

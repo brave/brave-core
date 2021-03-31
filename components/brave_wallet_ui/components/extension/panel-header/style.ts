@@ -13,13 +13,21 @@ export const HeaderTitle = styled.span`
 
 export const HeaderWrapper = styled.div`
   display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: ${(p) => `1px solid ${p.theme.color.separatorLine}`};
+  padding: 0px 12px;
+`
+
+export const TopRow = styled.div`
+  display: flex;
   height: 54px;
   width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.separatorLine}`};
-  padding: 0px 12px;
 `
 
 export const CloseButton = styled.button`

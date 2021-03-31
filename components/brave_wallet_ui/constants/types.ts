@@ -15,3 +15,16 @@ export type PanelTypes =
   | 'networks'
   | 'settings'
   | 'expanded'
+
+export interface AppObjectType {
+  name: string
+  description: string
+  url: string
+  icon: string
+}
+
+export interface AppsListType {
+  category: string
+  categoryButtonText?: string
+  appList: AppObjectType[]
+}

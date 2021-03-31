@@ -5,7 +5,7 @@ import { StyledButton, ButtonText } from './style'
 
 export interface Props {
   buttonType: 'primary' | 'secondary'
-  text: string
+  text: string | undefined
   onSubmit: () => void
   disabled?: boolean
 }
