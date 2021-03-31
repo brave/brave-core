@@ -57,6 +57,7 @@
 #if defined(OS_ANDROID)
 #include "base/android/jni_android.h"
 #include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
+#include "components/signin/public/base/account_consistency_method.h"
 #endif
 
 namespace {
@@ -233,6 +234,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     feed::kInterestFeedContentSuggestions.name,
     feed::kInterestFeedV2.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
+    signin::kMobileIdentityConsistency.name,
     translate::kTranslate.name,
 #endif
   };
