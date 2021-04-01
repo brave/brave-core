@@ -1726,6 +1726,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_PROMPT_APP_DEEP_SCANNING" desc="Message shown in the download shelf when Brave recommends uploading the file for additional scanning">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning?
       </message>
+        <message name="IDS_PROMPT_DEEP_SCANNING" desc="Message shown in the download shelf for all Advanced Protection and Enhanced Safe Browsing users when Brave recommends uploading the file for additional scanning.">
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous. Send to Brave for scanning?
+      </message>
       <message name="IDS_BLOCK_REASON_UNCOMMON_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is uncommon.">
         This file is not commonly downloaded and may be dangerous.
       </message>
@@ -1771,6 +1774,13 @@ are declared in tools/grit/grit_rule.gni.
           Dangerous download blocked
         </message>
       </if>
+
+      <if expr="chromeos">
+        <message name="IDS_PROMPT_SEND_TO_SAFEBROWSING_DOWNLOAD_TITLE" desc="In the download notification, a title of message shown indicating that the file may be malicious and Safe Browsing recommends sending the file to Brave">
+          Scan file before opening?
+        </message>
+      </if>
+
       <message name="IDS_CONFIRM_KEEP_DANGEROUS_DOWNLOAD_TITLE" desc="Title for the confirmation dialog asking whether the user really meant to keep a dangerous download">
         Confirm download
       </message>
@@ -1938,13 +1948,25 @@ are declared in tools/grit/grit_rule.gni.
       </if>
       <if expr="is_macosx">
         <then>
-          <message name="IDS_PROMPT_APP_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
+          <message name="IDS_PROMPT_APP_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification indicating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
             <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning?
           </message>
         </then>
         <else>
-          <message name="IDS_PROMPT_APP_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
+          <message name="IDS_PROMPT_APP_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification indicating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
             <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning? Press Shift+F6 to cycle to the downloads bar area.
+          </message>
+        </else>
+      </if>
+      <if expr="is_macosx">
+        <then>
+          <message name="IDS_PROMPT_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification indicating that the file may be malicious and Safe Browsing recommends sending the file to Brave. This message is for screen reader users">
+            <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> may be dangerous. Send to Brave for scanning?
+          </message>
+        </then>
+        <else>
+          <message name="IDS_PROMPT_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification indicating that the file may be malicious and Safe Browsing recommends sending the file to Brave. This message is for screen reader users">
+            <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> may be dangerous. Send to Brave for scanning? Press Shift+F6 to cycle to the downloads bar area.
           </message>
         </else>
       </if>
@@ -4789,9 +4811,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_GOOGLE_ACCOUNT" desc="The description of save password message when the user is signed in.">
         <ph name="USERNAME">$1<ex>Username</ex></ph> <ph name="MASKED_PASSWORD">$2<ex>*****</ex></ph> will be saved to your Brave sync chain, <ph name="ACCOUNT">$3<ex>user@gmail.com</ex></ph>
       </message>
-      <message name="IDS_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION" desc="The alternative description of save password message when the user is signed in.">
-        <ph name="USERNAME">$1<ex>Username</ex></ph> <ph name="MASKED_PASSWORD">$2<ex>*****</ex></ph> will be saved to <ph name="ACCOUNT">$3<ex>user@gmail.com</ex></ph>
-      </message>
       <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
         Passwords are saved in your Brave sync chain so you can use them on any device
       </message>
@@ -5312,9 +5331,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_DOODLE_SHARE_DIALOG_LINK_LABEL" desc="The text label for the share link text area on the doodle sharing dialog.">
         Doodle Link
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_BUTTON_LABEL" desc="The label for customize button on the New Tab Page.">
-        Customize
-      </message>
       <message name="IDS_NTP_CUSTOMIZE_MENU_BACKGROUND_LABEL" desc="The label for the backgrounds option in the customization menu on the New Tab Page.">
         Background
       </message>
@@ -5330,8 +5346,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_MENU_COLOR_LABEL" desc="The label for the colors and themes option in the customization menu on the New Tab Page">
         Color and theme
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_NO_BACKGROUND_LABEL" desc="The label for the 'No background' tile in the customization menu on the New Tab Page">
-        No background
+      <message name="IDS_NTP_CUSTOMIZE_NO_BACKGROUND_LABEL" desc="The label for the 'Classic Brave' tile in the customization menu on the New Tab Page">
+        Classic Brave
       </message>
       <message name="IDS_NTP_CUSTOMIZE_UPLOAD_FROM_DEVICE_LABEL" desc="The label for the 'Upload from device' tile in the customization menu on the New Tab Page">
         Upload from device
@@ -5368,6 +5384,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOMIZE_COLOR_PICKER_LABEL" desc="The label for the color picker in the customization menu on the New Tab Page">
         Custom color
+      </message>
+      <message name="IDS_NTP_THEME_MANAGED_DIALOG_TITLE" desc="Title text for the dialog informing users that their theme is managed when they try selecting a theme on the New Tab Page.">
+        Theme is set by your Organization
+      </message>
+      <message name="IDS_NTP_THEME_MANAGED_DIALOG_BODY" desc="Body text for the dialog informing users that their theme is managed when they try selecting a theme on the New Tab Page.">
+        Your administrator has set a default theme which cannot be changed.
       </message>
       <message name="IDS_NTP_CUSTOMIZE_DEFAULT_LABEL" desc="The label for the Default theme in the customization menu on the New Tab Page">
         Default color
@@ -5621,10 +5643,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Press to go back, context menu to see history
       </message>
       <message name="IDS_TOOLTIP_CHROMELABS_BUTTON" desc="The tooltip for the Brave Labs button in the toolbar">
-        Experiments
+        Enable featured experiments
       </message>
       <message name="IDS_TOOLTIP_CHROMELABS_COMBOBOX" desc="The tooltip for the Brave Labs combobox to select between experiment states">
-        Select experiment state
+        Select experiment state for <ph name="EXPERIMENT_NAME">$1<ex>Tab Scrolling</ex></ph>
       </message>
       <message name="IDS_TOOLTIP_CHROMELABS_FEEDBACK_BUTTON" desc="The tooltip for the Brave Labs Send Feedback button">
         Send feedback for <ph name="EXPERIMENT_NAME">$1<ex>Tab Scrolling</ex></ph>
@@ -5753,6 +5775,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_BOOKMARK_FOLDER_BUTTON_ROLE_DESCRIPTION" desc="The accessible role description for bookmark folders.">
         Bookmark folder button
+      </message>
+      <message name="IDS_ACCNAME_CHROMELABS_BUTTON" desc="The accessible name for the Brave Labs experiments button">
+        Experiments
+      </message>
+      <message name="IDS_ACCESSIBLE_TEXT_CHROMELABS_BUTTON_ADDED_BY_ENTERPRISE_POLICY" desc="The text read out by the screen reader when the Brave Labs experiments button is added to the toolbar by an enterprise policy change.">
+        Enterprise policy changed. Experiments button added to toolbar. Click the button to open a dialog to enable experiments.
+      </message>
+      <message name="IDS_ACCESSIBLE_TEXT_CHROMELABS_BUTTON_REMOVED_BY_ENTERPRISE_POLICY" desc="The text read out by the screen reader when the Brave Labs experiments button is removed from the toolbar by an enterprise policy change.">
+        Enterprise policy changed. Experiments button removed from toolbar.
+      </message>
+      <message name="IDS_ACCNAME_CHROMELABS_COMBOBOX" desc="The accessible name for the experiment's combobox to select between experiment states. ">
+        Select experiment state for the <ph name="EXPERIMENT_NAME">$1<ex>Tab Scrolling</ex></ph> experiment. Experiment description: <ph name="EXPERIMENT_DESCRIPTION">$2<ex>Enables tab strip to scroll left and right when full.</ex></ph>
       </message>
       <message name="IDS_ACCNAME_SEPARATOR" desc="The accessible name for a separator.">
         Separator
@@ -6705,6 +6739,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS_FOR" desc="Plural form of a11y message after user changes search field when search filed is not empty.">
         Found <ph name="NUM">$1<ex>2</ex></ph> Tabs For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
+      </message>
+      <message name="IDS_TAB_SEARCH_OPEN_TABS" desc="The label on the tab search list section corresponding to open tabs.">
+        Open Tabs
+      </message>
+      <message name="IDS_TAB_SEARCH_RECENTLY_CLOSED_TABS" desc="The label on the tab search list section corresponding to recently closed tabs.">
+        Recently Closed Tabs
       </message>
 
       <!-- Strings for Window Titles in Menus -->
@@ -10784,8 +10824,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_TITLE" desc="Title shown in tab modal dialog when the user opens a download that recommends deep scanning">
       Scan file before opening?
     </message>
-    <message name="IDS_DEEP_SCANNING_INFO_DIALOG_MESSAGE" desc="Message shown in tab modal dialog when the user opens a download that recommends deep scanning">
+    <message name="IDS_APP_DEEP_SCANNING_INFO_DIALOG_MESSAGE" desc="Message shown in tab modal dialog when the user opens a download that recommends deep scanning">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous. Send to Brave Advanced Protection for scanning?
+    </message>
+    <message name="IDS_DEEP_SCANNING_INFO_DIALOG_MESSAGE" desc="Message shown in tab modal dialog when the user opens a download that recommends deep scanning">
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous. Send to Google Safe Browsing for scanning?
     </message>
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_ACCEPT_BUTTON" desc="The text on the accept button in tab modal dialog when the user opens a download that recommends deep scanning">
       Send
@@ -10891,25 +10934,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         {NUM_EXTENSIONS, plural,
           =1 {Click to view the extension}
           other {Click to view these extensions}}
-      </message>
-    </if>
-
-    <if expr="is_macosx">
-      <!-- The Rosetta is required infobar -->
-      <message name="IDS_ROSETTA_REQUIRED_INFOBAR_TEXT" desc="The infobar text when installation of Rosetta is required">
-        To play protected media on this page, you need to install Rosetta.
-      </message>
-      <message name="IDS_ROSETTA_REQUIRED_INFOBAR_LINK_TEXT" desc="The learn more text when installation of Rosetta is required.">
-        Learn more
-      </message>
-      <message name="IDS_ROSETTA_REQUIRED_INFOBAR_BUTTON_TEXT" desc="The button text when installation of Rosetta is required.">
-        Install Rosetta
-      </message>
-      <message name="IDS_ROSETTA_INSTALL_RESTART_DIALOG_NOW" desc="The 'restart now' button in the dialog once Rosetta is installed.">
-        Restart Now
-      </message>
-      <message name="IDS_ROSETTA_INSTALL_RESTART_DIALOG_LATER" desc="The 'restart later' button in the dialog once Rosetta is installed.">
-        Restart Later
       </message>
     </if>
 

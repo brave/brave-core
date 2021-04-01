@@ -705,6 +705,11 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
+      <!-- NTP strings -->
+      <message name="IDS_NTP_CUSTOMIZE_BUTTON_LABEL" desc="Label for button on the New Tab Page that opens dialog to customize Brave browser.">
+        Customize Brave
+      </message>
+
       <!-- Signin Email Confirmation tab modal dialog -->
       <if expr="not chromeos">
         <message name="IDS_SIGNIN_EMAIL_CONFIRMATION_TITLE" desc="Title of the signin email confirmation tab modal dialog.">
@@ -1187,19 +1192,6 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_PROFILE_PICKER_PROFILE_SWITCH_SUBTITLE" desc="Profile picker profile switch subtitle">
           A Brave profile with this account already exists on this device
-        </message>
-      </if>
-
-      <!-- Rosetta installation for protected media -->
-      <if expr="is_macosx">
-        <message name="IDS_ROSETTA_INSTALL_TITLE" desc="Title of the 'do you want to install Rosetta' dialog. Used when there is a page title.">
-          To enable Brave to play protected media, you need to install Rosetta. Do you want to install it now?
-        </message>
-        <message name="IDS_ROSETTA_INSTALL_BODY" desc="Body text of the 'do you want to install Rosetta' dialog.">
-          Rosetta enables Brave to play the protected media on this page.
-        </message>
-        <message name="IDS_ROSETTA_INSTALL_RESTART_DIALOG" desc="Title text of the dialog once Rosetta is installed.">
-          To use Rosetta to play protected media, you must restart Brave.
         </message>
       </if>
 
