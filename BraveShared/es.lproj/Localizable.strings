@@ -52,6 +52,36 @@
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Añadir buscador";
 
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "El nuevo buscador aparecerá en la barra de búsqueda rápida.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "¿Añadir motor de búsqueda?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "No se ha podido añadir el buscador personalizado. Vuelve a intentarlo más tarde.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Error del buscador personalizado";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Ya hay añadido un buscador con este título o URL.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Escribe la url de búsqueda y sustituye la consulta por %s. ";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Error de consulta de la URL de búsqueda";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "El texto copiado debe ser una URL segura y válida que comience por \"https://\"";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Rellena los campos de título y URL.";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "¡Buscador añadido!";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Toca para reclamar tus tokens gratuitos.";
 
@@ -535,7 +565,7 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Gracias";
 
-/* Text used shile sharing Brave Shield values */
+/* Text used for social sharing together with Brave Shield values */
 "socialSharing.shareDescriptionTitle" = "Todos los días ahorro datos al navegar con Brave.";
 
 /* Title of the bookmark import popup. */

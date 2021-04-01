@@ -322,7 +322,66 @@ extension Strings {
             bundle: Bundle.braveShared,
             value: "Add",
             comment: "Button title for Adding Engine in navigation Bar")
+        
+        public static let thirdPartySearchEngineAddErrorTitle = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineAddErrorTitle",
+            bundle: .braveShared,
+            value: "Custom Search Engine Error",
+            comment: "A title explaining that there is error while adding a search engine")
+        
+        public static let thirdPartySearchEngineAddErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineAddErrorDescription",
+            bundle: .braveShared,
+            value: "The custom search engine could not be added. Please try again later.",
+            comment: "A descriotion explaining that there is error while adding a search engine")
+        
+        public static let thirdPartySearchEngineMissingInfoErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription",
+            bundle: .braveShared,
+            value: "Please fill both Title and URL fields.",
+            comment: "A descriotion explaining that the fields must filled while adding a search engine. ")
+        
+        public static let thirdPartySearchEngineIncorrectFormErrorTitle = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle",
+            bundle: .braveShared,
+            value: "Search URL Query Error ",
+            comment: "A title explaining that there is a formatting error in URL field")
+        
+        public static let thirdPartySearchEngineIncorrectFormErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription",
+            bundle: .braveShared,
+            value: "Write the search url and replace the query with %s. ",
+            comment: "A description explaining that there is a formatting error in URL field")
+        
+        public static let thirdPartySearchEngineDuplicateErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription",
+            bundle: .braveShared,
+            value: "A search engine with this title or URL has already been added.",
+            comment: "A message explaining a replica search engine is already added")
+        
+        public static let thirdPartySearchEngineInsecureURLErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription",
+            bundle: .braveShared,
+            value: "The copied text should be a valid secure URL which starts with 'https://'",
+            comment: "A description explaining the copied url should be secure")
+        
+        public static let thirdPartySearchEngineAddedToastTitle = NSLocalizedString(
+            "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle",
+            bundle: .braveShared,
+            value: "Added Search engine!",
+            comment: "The success message that appears after a user sucessfully adds a new search engine")
+        
+        public static let thirdPartySearchEngineAddAlertTitle = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineAddAlertTitle",
+            bundle: .braveShared,
+            value: "Add Search Provider?",
+            comment: "The title that asks the user to Add the search provider")
 
+        public static let thirdPartySearchEngineAddAlertDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineAddAlertDescription",
+            bundle: .braveShared,
+            value: "The new search engine will appear in the quick search bar.",
+            comment: "The message that asks the user to Add the search provider explaining where the search engine will appear")
     }
 }
 

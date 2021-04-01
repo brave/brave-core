@@ -52,6 +52,36 @@
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Ajouter un moteur de recherche";
 
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Le nouveau moteur de recherche s'affichera dans la barre de recherche rapide.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Ajouter le moteur de recherche ?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Impossible d'ajouter le moteur de recherche personnalisé. Réessayez ultérieurement.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Erreur du moteur de recherche personnalisé";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Un moteur de recherche avec ce titre ou cette URL a déjà été ajouté.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Saisissez l'URL de recherche et remplacez la requête par %s. ";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Erreur de la requête d'URL de recherche";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "Le texte copié doit être une URL sécurisée valide qui commence par « https:// ».";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Merci de remplir les champs Titre et URL.";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Moteur de recherche ajouté.";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Appuyez ici pour récupérer vos jetons gratuits.";
 
@@ -535,7 +565,7 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Merci";
 
-/* Text used shile sharing Brave Shield values */
+/* Text used for social sharing together with Brave Shield values */
 "socialSharing.shareDescriptionTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Brave.";
 
 /* Title of the bookmark import popup. */

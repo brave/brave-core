@@ -52,6 +52,36 @@
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Tambahkan Mesin Pencari";
 
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Mesin pencari yang baru akan muncul pada bilah pencarian cepat.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Tambahkan Penyedia Pencarian?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Mesin pencari ubahsuai tidak bisa ditambahkan. Harap coba lagi nanti.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Mesin Pencari Ubahsuai Error";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Mesin pencari dengan judul atau URL ini telah ditambahkan.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Tulis url pencarian dan ganti kueri dengan %s.";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Kueri URL Pencarian Error";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "Teks yang disalin harus berasal dari URL aman dan valid yang dimulai dengan 'https://'";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Harap isi kedua bidang Judul dan URL.";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Mesin Pencari sudah ditambahkan!";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Ketuk untuk mengklaim token gratis Anda.";
 
@@ -535,7 +565,7 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Terima Kasih";
 
-/* Text used shile sharing Brave Shield values */
+/* Text used for social sharing together with Brave Shield values */
 "socialSharing.shareDescriptionTitle" = "Tiap hari saya menghemat data karena melakukan penelusuran web dengan Brave.";
 
 /* Title of the bookmark import popup. */

@@ -52,6 +52,36 @@
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Додати пошукову систему";
 
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Нова пошукова система буде відображатися на панелі швидкого пошуку.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Додати пошукову службу?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Не вдалося додати користувацьку пошукову систему. Спробуйте ще раз пізніше.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Помилка користувацької пошукової системи";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Пошукову систему з цією назвою або URL-адресою вже додано.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Уведіть URL-адресу пошуку та замініть запит таким: %s.";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Помилка запиту URL-адреси пошуку";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "Можна використовувати лише дійсну захищену URL-адресу, яка починається на «https://»";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Будь ласка, заповніть поля «Заголовок» і «URL-адреса».";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Пошукову систему додано.";
+
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationBody" = "Торкніться, щоб отримати безкоштовні токени.";
 
@@ -535,7 +565,7 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Дякуємо";
 
-/* Text used shile sharing Brave Shield values */
+/* Text used for social sharing together with Brave Shield values */
 "socialSharing.shareDescriptionTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
 
 /* Title of the bookmark import popup. */
