@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <ctype.h>
 #include <string>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -18,10 +19,10 @@ base::Value RLPTestStringToValue(const std::string& s, std::string* remaining) {
   size_t list_depth = 0;
   State state = Start;
   while (*p != '\0') {
-    if (*p >= '0' && *p <= '9' && state == Start) {
+    if (isdigit(*p) && state == Start) {
       state = InNumber;
       start = p;
-      while (*(p + 1) >= '0' && *(p + 1) <= '9') {
+      while (isdigit(*(p + 1))) {
         ++p;
       }
       size_t len = p - start + 1;
@@ -381,6 +382,12 @@ TEST(RLPEncodeTest, ComplexStructure) {
   ASSERT_EQ(ToHex(v),
             "0xe383636174ca85707570707983636f7785686f727365c1c083706967c1808573"
             "68656570");
+}
+
+TEST(RLPEncodeTest, DictionaryValueNotSupported) {
+  base::DictionaryValue d;
+  d.SetBoolean("test", true);
+  ASSERT_TRUE(brave_wallet::RLPEncode(std::move(d)).empty());
 }
 
 }  // namespace brave_wallet
