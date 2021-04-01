@@ -30,7 +30,7 @@ PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl* ledger)
 PostSuggestionsClaim::~PostSuggestionsClaim() = default;
 
 std::string PostSuggestionsClaim::GetUrl() {
-  return GetServerUrl("/v1/suggestions/claim");
+  return GetServerUrl("/v2/suggestions/claim");
 }
 
 std::string PostSuggestionsClaim::GeneratePayload(
@@ -88,7 +88,7 @@ void PostSuggestionsClaim::Request(
   }
 
   auto headers = util::BuildSignHeaders(
-      "post /v1/suggestions/claim",
+      "post /v2/suggestions/claim",
       payload,
       wallet->payment_id,
       wallet->recovery_seed);
@@ -126,7 +126,7 @@ void PostSuggestionsClaim::OnRequest(
     return;
   }
 
-  auto* drain_id = dictionary->FindStringKey("drain_id");
+  auto* drain_id = dictionary->FindStringKey("drainId");
   if (!drain_id) {
     BLOG(0, "Missing drain id");
     callback(type::Result::LEDGER_ERROR, "");
