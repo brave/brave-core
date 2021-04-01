@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index 952120b2bb7d659bf556178f86e70b7a701cf459..786416de151e974d898a6a58ca67bf1b1c62a8b6 100644
+index 6c0e23d193d63c3527afaacfa1793c7b59fb8a30..671c8a19559977737c0142c28b5de298d58f4f6b 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
 @@ -294,6 +294,7 @@ class ProfileManager : public content::NotificationObserver,

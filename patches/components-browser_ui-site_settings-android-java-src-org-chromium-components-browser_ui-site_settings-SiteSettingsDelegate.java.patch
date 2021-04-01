@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsDelegate.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsDelegate.java
-index d3ee6e055a77c1a75e6eef28d7ddbe5c4213f469..8e1c88a9d4b32a76bba0d421c9e38300325684c1 100644
+index cb6442bd0567a271bfc03396b7899eba5a317b81..cc6dd463303cef72169ef8130637a0e8e9b64730 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsDelegate.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsDelegate.java
-@@ -123,4 +123,5 @@ public interface SiteSettingsDelegate {
+@@ -118,4 +118,5 @@ public interface SiteSettingsDelegate {
       * Dismisses the Privacy Sandbox snackbar, if active.
       */
      void dismissPrivacySandboxSnackbar();

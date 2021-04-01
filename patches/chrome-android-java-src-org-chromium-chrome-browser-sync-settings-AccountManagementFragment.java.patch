@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java
-index e5e1352a03b360e4de1c056da9643d9735cf9065..086a3c26df524c2ad434532d0ce5f05d0c309eb7 100644
+index a9433a30740619f53bbe9bff8244b86deb00a47a..f2aebe7a98c96e0c22969e5a8e877e2aefff2165 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java
 @@ -61,7 +61,7 @@ import java.util.List;

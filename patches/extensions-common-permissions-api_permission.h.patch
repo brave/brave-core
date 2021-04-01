@@ -1,8 +1,8 @@
 diff --git a/extensions/common/permissions/api_permission.h b/extensions/common/permissions/api_permission.h
-index 886adb61d224a1db57f38844748ddcf163840b18..2f6d333899b6cc49206de56ef4562a8b5c8d958a 100644
+index c7a05eb7587bb8e252424d5dfe0074e7ff6e59ee..1f048e3e64202361109f453008de3124bc1e6a91 100644
 --- a/extensions/common/permissions/api_permission.h
 +++ b/extensions/common/permissions/api_permission.h
-@@ -272,6 +272,7 @@ class APIPermission {
+@@ -273,6 +273,7 @@ class APIPermission {
      kSearch = 228,
      kTabGroups = 229,
      kScripting = 230,
