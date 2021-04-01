@@ -19,6 +19,9 @@
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;
 - (void)loadUserModelForId:(const std::string &)id callback:(ads::LoadCallback)callback;
+- (void)getBrowsingHistory:(const int)max_count
+                   forDays:(const int)days_ago
+                  callback:(ads::GetBrowsingHistoryCallback)callback;
 - (void)load:(const std::string &)name callback:(ads::LoadCallback)callback;
 - (std::string)loadResourceForId:(const std::string &)id;
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;

@@ -1,0 +1,3 @@
+group("search_engines") {
+  deps = [ "//components/search_engines" ]
+}

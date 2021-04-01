@@ -13,7 +13,6 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 
 namespace ads {
-namespace ad_targeting {
 namespace resource {
 
 class TextClassification : public Resource<ml::pipeline::TextProcessing*> {
@@ -35,7 +34,6 @@ class TextClassification : public Resource<ml::pipeline::TextProcessing*> {
 };
 
 }  // namespace resource
-}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_

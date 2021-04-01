@@ -9,6 +9,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/ad_targeting/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -23,8 +24,10 @@ class BatAdsEligibleAdNotificationsTest : public UnitTestBase {
   BatAdsEligibleAdNotificationsTest()
       : subdivision_targeting_(
             std::make_unique<ad_targeting::geographic::SubdivisionTargeting>()),
+        anti_targeting_(std::make_unique<resource::AntiTargeting>()),
         eligible_ads_(
-            std::make_unique<EligibleAds>(subdivision_targeting_.get())) {}
+            std::make_unique<EligibleAds>(subdivision_targeting_.get(),
+                                          anti_targeting_.get())) {}
 
   ~BatAdsEligibleAdNotificationsTest() override = default;
 
@@ -52,6 +55,7 @@ class BatAdsEligibleAdNotificationsTest : public UnitTestBase {
   }
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
+  std::unique_ptr<resource::AntiTargeting> anti_targeting_;
   std::unique_ptr<EligibleAds> eligible_ads_;
 };
 
@@ -63,7 +67,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, NoSeenAdvertisersOrAds) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   const CreativeAdNotificationList expected_ads = ads;
@@ -84,7 +88,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAd) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   CreativeAdNotificationInfo ad;
@@ -109,7 +113,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAds) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   CreativeAdNotificationInfo ad_1;
@@ -140,7 +144,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAdsRoundRobin) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   const CreativeAdNotificationList expected_ads = ads;
@@ -158,7 +162,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAdvertiser) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   CreativeAdNotificationInfo ad_1;
@@ -184,7 +188,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAdvertisers) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   CreativeAdNotificationInfo ad_1;
@@ -220,7 +224,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAdvertisersRoundRobin) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   const CreativeAdNotificationList expected_ads = ads;
@@ -245,7 +249,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, RoundRobin) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   const CreativeAdNotificationList expected_ads = ads;
@@ -262,7 +266,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, LastDeliveredAd) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   CreativeAdNotificationInfo ad;
@@ -284,7 +288,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest, LastDeliveredAdForSingleAd) {
 
   // Act
   const CreativeAdNotificationList eligible_ads =
-      eligible_ads_->Get(ads, last_delivered_ad, {});
+      eligible_ads_->Get(ads, last_delivered_ad, {}, {});
 
   // Assert
   CreativeAdNotificationInfo ad;

@@ -14,7 +14,6 @@
 #include "bat/ads/pref_names.h"
 
 namespace ads {
-namespace ad_targeting {
 namespace resource {
 
 namespace {
@@ -72,5 +71,4 @@ SegmentList EpsilonGreedyBandit::get() const {
 }
 
 }  // namespace resource
-}  // namespace ad_targeting
 }  // namespace ads

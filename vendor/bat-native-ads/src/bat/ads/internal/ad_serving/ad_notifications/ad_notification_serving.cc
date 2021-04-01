@@ -14,10 +14,13 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_delivery/ad_notifications/ad_notification_delivery.h"
 #include "bat/ads/internal/ad_pacing/ad_notifications/ad_notification_pacing.h"
+#include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_features.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_values.h"
+#include "bat/ads/internal/ad_targeting/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
@@ -35,11 +38,14 @@ namespace ad_notifications {
 
 AdServing::AdServing(
     AdTargeting* ad_targeting,
-    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting)
+    ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+    resource::AntiTargeting* anti_targeting)
     : ad_targeting_(ad_targeting),
-      subdivision_targeting_(subdivision_targeting) {
+      subdivision_targeting_(subdivision_targeting),
+      anti_targeting_resource_(anti_targeting) {
   DCHECK(ad_targeting_);
   DCHECK(subdivision_targeting_);
+  DCHECK(anti_targeting_resource_);
 }
 
 AdServing::~AdServing() = default;
@@ -132,27 +138,36 @@ void AdServing::MaybeServeAdForSegments(
       return;
     }
 
-    FrequencyCapping frequency_capping(subdivision_targeting_, ad_events);
+    const int max_count = features::GetBrowsingHistoryMaxCount();
+    const int days_ago = features::GetBrowsingHistoryDaysAgo();
+    AdsClientHelper::Get()->GetBrowsingHistory(
+        max_count, days_ago, [=](const BrowsingHistoryList history) {
+          FrequencyCapping frequency_capping(subdivision_targeting_,
+                                             anti_targeting_resource_,
+                                             ad_events, history);
 
-    if (!frequency_capping.IsAdAllowed()) {
-      BLOG(1, "Ad notification not served: Not allowed");
-      callback(Result::FAILED, AdNotificationInfo());
-      return;
-    }
+          if (!frequency_capping.IsAdAllowed()) {
+            BLOG(1, "Ad notification not served: Not allowed");
+            callback(Result::FAILED, AdNotificationInfo());
+            return;
+          }
 
-    RecordAdOpportunityForSegments(segments);
+          RecordAdOpportunityForSegments(segments);
 
-    MaybeServeAdForParentChildSegments(segments, ad_events, callback);
+          MaybeServeAdForParentChildSegments(segments, ad_events, history,
+                                             callback);
+        });
   });
 }
 
 void AdServing::MaybeServeAdForParentChildSegments(
     const SegmentList& segments,
     const AdEventList& ad_events,
+    const BrowsingHistoryList& history,
     MaybeServeAdForSegmentsCallback callback) {
   if (segments.empty()) {
     BLOG(1, "No segments to serve targeted ads");
-    MaybeServeAdForUntargeted(ad_events, callback);
+    MaybeServeAdForUntargeted(ad_events, history, callback);
     return;
   }
 
@@ -165,15 +180,15 @@ void AdServing::MaybeServeAdForParentChildSegments(
   database_table.GetForSegments(
       segments, [=](const Result result, const SegmentList& segments,
                     const CreativeAdNotificationList& ads) {
-        EligibleAds eligible_ad_notifications(subdivision_targeting_);
+        EligibleAds eligible_ad_notifications(subdivision_targeting_,
+                                              anti_targeting_resource_);
 
         const CreativeAdNotificationList eligible_ads =
             eligible_ad_notifications.Get(ads, last_delivered_creative_ad_,
-                                          ad_events);
-
+                                          ad_events, history);
         if (eligible_ads.empty()) {
           BLOG(1, "No eligible ads found for segments");
-          MaybeServeAdForParentSegments(segments, ad_events, callback);
+          MaybeServeAdForParentSegments(segments, ad_events, history, callback);
           return;
         }
 
@@ -184,6 +199,7 @@ void AdServing::MaybeServeAdForParentChildSegments(
 void AdServing::MaybeServeAdForParentSegments(
     const SegmentList& segments,
     const AdEventList& ad_events,
+    const BrowsingHistoryList& history,
     MaybeServeAdForSegmentsCallback callback) {
   const SegmentList parent_segments = GetParentSegments(segments);
 
@@ -196,15 +212,15 @@ void AdServing::MaybeServeAdForParentSegments(
   database_table.GetForSegments(
       parent_segments, [=](const Result result, const SegmentList& segments,
                            const CreativeAdNotificationList& ads) {
-        EligibleAds eligible_ad_notifications(subdivision_targeting_);
+        EligibleAds eligible_ad_notifications(subdivision_targeting_,
+                                              anti_targeting_resource_);
 
         const CreativeAdNotificationList eligible_ads =
             eligible_ad_notifications.Get(ads, last_delivered_creative_ad_,
-                                          ad_events);
-
+                                          ad_events, history);
         if (eligible_ads.empty()) {
           BLOG(1, "No eligible ads found for parent segments");
-          MaybeServeAdForUntargeted(ad_events, callback);
+          MaybeServeAdForUntargeted(ad_events, history, callback);
           return;
         }
 
@@ -214,6 +230,7 @@ void AdServing::MaybeServeAdForParentSegments(
 
 void AdServing::MaybeServeAdForUntargeted(
     const AdEventList& ad_events,
+    const BrowsingHistoryList& history,
     MaybeServeAdForSegmentsCallback callback) {
   BLOG(1, "Serve untargeted ad");
 
@@ -223,11 +240,12 @@ void AdServing::MaybeServeAdForUntargeted(
   database_table.GetForSegments(
       segments, [=](const Result result, const SegmentList& segments,
                     const CreativeAdNotificationList& ads) {
-        EligibleAds eligible_ad_notifications(subdivision_targeting_);
+        EligibleAds eligible_ad_notifications(subdivision_targeting_,
+                                              anti_targeting_resource_);
 
         const CreativeAdNotificationList eligible_ads =
             eligible_ad_notifications.Get(ads, last_delivered_creative_ad_,
-                                          ad_events);
+                                          ad_events, history);
 
         if (eligible_ads.empty()) {
           BLOG(1, "No eligible ads found for untargeted segment");

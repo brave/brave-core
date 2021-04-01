@@ -49,6 +49,7 @@ interface BatAdsClient {
   Save(string name, string value) => (int32 result);
   Load(string name) => (int32 result, string value);
   LoadUserModelForId(string id) => (int32 result, string value);
+  GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<string> history);
   RunDBTransaction(ads_database.mojom.DBTransaction transaction) => (ads_database.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
   RecordP2AEvent(string name, ads.mojom.BraveAdsP2AEventType type, string value);

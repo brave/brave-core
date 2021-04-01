@@ -14,6 +14,7 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
+#include "bat/ads/internal/ad_targeting/resources/frequency_capping/anti_targeting_info.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
@@ -32,12 +33,6 @@ class AdServing;
 
 namespace ad_targeting {
 
-namespace resource {
-class EpsilonGreedyBandit;
-class PurchaseIntent;
-class TextClassification;
-}  // namespace resource
-
 namespace processor {
 class EpsilonGreedyBandit;
 class PurchaseIntent;
@@ -49,6 +44,13 @@ class SubdivisionTargeting;
 }  // namespace geographic
 
 }  // namespace ad_targeting
+
+namespace resource {
+class AntiTargeting;
+class EpsilonGreedyBandit;
+class PurchaseIntent;
+class TextClassification;
+}  // namespace resource
 
 namespace database {
 class Initialize;
@@ -191,16 +193,15 @@ class AdsImpl : public Ads,
   std::unique_ptr<Account> account_;
   std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
       epsilon_greedy_bandit_processor_;
-  std::unique_ptr<ad_targeting::resource::EpsilonGreedyBandit>
+  std::unique_ptr<resource::EpsilonGreedyBandit>
       epsilon_greedy_bandit_resource_;
-  std::unique_ptr<ad_targeting::resource::TextClassification>
-      text_classification_resource_;
+  std::unique_ptr<resource::TextClassification> text_classification_resource_;
   std::unique_ptr<ad_targeting::processor::TextClassification>
       text_classification_processor_;
-  std::unique_ptr<ad_targeting::resource::PurchaseIntent>
-      purchase_intent_resource_;
+  std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
   std::unique_ptr<ad_targeting::processor::PurchaseIntent>
       purchase_intent_processor_;
+  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
   std::unique_ptr<AdTargeting> ad_targeting_;

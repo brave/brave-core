@@ -55,6 +55,10 @@ class BatAdsClientMojoBridge
       const std::string& id,
       ads::LoadCallback callback) override;
 
+  void GetBrowsingHistory(const int max_count,
+                          const int days_ago,
+                          ads::GetBrowsingHistoryCallback callback) override;
+
   void RecordP2AEvent(
       const std::string& name,
       const ads::P2AEventType type,

@@ -5,29 +5,25 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 source_set("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
   check_includes = false
-  public_deps = [ "buildflags" ]
+  public_deps = [
+    "buildflags",
+    "//brave/components/brave_rewards/browser",
+  ]
 
   sources = [
     "ads_service.cc",
     "ads_service.h",
-    "ads_service_factory.cc",
-    "ads_service_factory.h",
     "ads_service_observer.h",
-    "ads_tab_helper.cc",
-    "ads_tab_helper.h",
   ]
 
   deps = [
     "//base",
     "//brave/common",
     "//brave/components/brave_ads/common",
-    "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/l10n/browser",
     "//brave/components/rpill/common",
     "//chrome/common:buildflags",
-    "//components/dom_distiller/content/browser",
-    "//components/dom_distiller/core",
 
     # for profile.h
     "//components/domain_reliability",
@@ -56,12 +52,13 @@ source_set("browser") {
       "notification_helper.h",
     ]
 
+    public_deps += [ "//brave/vendor/bat-native-ads" ]
+
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/notifications",
       "//brave/components/brave_ads/resources",
       "//brave/components/services/bat_ads/public/cpp",
-      "//brave/vendor/bat-native-ads",
       "//components/history/core/browser",
       "//components/history/core/common",
       "//components/wifi",
@@ -128,6 +125,7 @@ source_set("testutil") {
   deps = [
     ":browser",
     "//base",
+    "//brave/browser/brave_ads",
     "//brave/components/brave_rewards/browser:browser",
     "//chrome/test:test_support",
     "//content/public/browser",

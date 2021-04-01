@@ -11,7 +11,6 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 
 namespace ads {
-namespace ad_targeting {
 namespace resource {
 
 class EpsilonGreedyBandit : public Resource<SegmentList> {
@@ -31,7 +30,6 @@ class EpsilonGreedyBandit : public Resource<SegmentList> {
 };
 
 }  // namespace resource
-}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_RESOURCES_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_H_

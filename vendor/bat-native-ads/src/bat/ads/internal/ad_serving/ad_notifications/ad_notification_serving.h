@@ -11,6 +11,7 @@
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/result.h"
 
@@ -24,6 +25,10 @@ class SubdivisionTargeting;
 }  // namespace geographic
 }  // namespace ad_targeting
 
+namespace resource {
+class AntiTargeting;
+}  // namespace resource
+
 namespace ad_notifications {
 
 using MaybeServeAdForSegmentsCallback =
@@ -33,7 +38,8 @@ class AdServing {
  public:
   AdServing(
       AdTargeting* ad_targeting,
-      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting);
+      ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
+      resource::AntiTargeting* anti_targeting);
 
   ~AdServing();
 
@@ -66,13 +72,16 @@ class AdServing {
   void MaybeServeAdForParentChildSegments(
       const SegmentList& segments,
       const AdEventList& ad_events,
+      const BrowsingHistoryList& history,
       MaybeServeAdForSegmentsCallback callback);
 
   void MaybeServeAdForParentSegments(const SegmentList& segments,
                                      const AdEventList& ad_events,
+                                     const BrowsingHistoryList& history,
                                      MaybeServeAdForSegmentsCallback callback);
 
   void MaybeServeAdForUntargeted(const AdEventList& ad_events,
+                                 const BrowsingHistoryList& history,
                                  MaybeServeAdForSegmentsCallback callback);
 
   void MaybeServeAd(const CreativeAdNotificationList& ads,
@@ -97,6 +106,8 @@ class AdServing {
 
   ad_targeting::geographic::SubdivisionTargeting*
       subdivision_targeting_;  // NOT OWNED
+
+  resource::AntiTargeting* anti_targeting_resource_;  // NOT OWNED
 };
 
 }  // namespace ad_notifications

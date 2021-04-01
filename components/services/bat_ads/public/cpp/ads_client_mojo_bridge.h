@@ -64,6 +64,10 @@ class AdsClientMojoBridge
       const std::string& id,
       LoadCallback callback) override;
 
+  void GetBrowsingHistory(const int max_count,
+                          const int days_ago,
+                          GetBrowsingHistoryCallback callback) override;
+
   void RecordP2AEvent(
       const std::string& name,
       const ads::P2AEventType type,
@@ -157,6 +161,10 @@ class AdsClientMojoBridge
       CallbackHolder<LoadCallback>* holder,
       const ads::Result result,
       const std::string& value);
+
+  static void OnGetBrowsingHistory(
+      CallbackHolder<GetBrowsingHistoryCallback>* holder,
+      const std::vector<std::string>& history);
 
   static void OnLoad(
       CallbackHolder<LoadCallback>* holder,

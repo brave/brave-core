@@ -28,6 +28,9 @@ class NativeAdsClient : public ads::AdsClient {
   void Save(const std::string & name, const std::string & value, ads::ResultCallback callback) override;
   void Load(const std::string & name, ads::LoadCallback callback) override;
   void LoadUserModelForId(const std::string & id, ads::LoadCallback callback) override;
+  void GetBrowsingHistory(const int max_count,
+                          const int days_ago,
+                          ads::GetBrowsingHistoryCallback callback) override;
   std::string LoadResourceForId(const std::string & id) override;
   void Log(const char * file, const int line, const int verbose_level, const std::string & message) override;
   void RunDBTransaction(ads::DBTransactionPtr transaction, ads::RunDBTransactionCallback callback) override;

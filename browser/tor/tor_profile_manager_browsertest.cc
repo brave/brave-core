@@ -5,12 +5,12 @@
 
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
 #include "brave/components/tor/tor_constants.h"

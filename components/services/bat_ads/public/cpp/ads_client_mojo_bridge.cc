@@ -133,6 +133,31 @@ void AdsClientMojoBridge::LoadUserModelForId(
       id, std::bind(AdsClientMojoBridge::OnLoadUserModelForId, holder, _1, _2));
 }
 
+// static
+void AdsClientMojoBridge::OnGetBrowsingHistory(
+    CallbackHolder<GetBrowsingHistoryCallback>* holder,
+    const std::vector<std::string>& history) {
+  DCHECK(holder);
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(history));
+  }
+
+  delete holder;
+}
+
+void AdsClientMojoBridge::GetBrowsingHistory(
+    const int max_count,
+    const int days_ago,
+    GetBrowsingHistoryCallback callback) {
+  // this gets deleted in OnGetBrowsingHistory
+  auto* holder = new CallbackHolder<GetBrowsingHistoryCallback>(
+      AsWeakPtr(), std::move(callback));
+  ads_client_->GetBrowsingHistory(
+      max_count, days_ago,
+      std::bind(AdsClientMojoBridge::OnGetBrowsingHistory, holder, _1));
+}
+
 void AdsClientMojoBridge::RecordP2AEvent(
     const std::string& name,
     const ads::P2AEventType type,

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
+#include <algorithm>
 #include <limits>
 #include <utility>
 
@@ -74,6 +75,7 @@
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_constants.h"
+#include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/wifi/wifi_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -197,8 +199,10 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 }  // namespace
 
-AdsServiceImpl::AdsServiceImpl(Profile* profile)
+AdsServiceImpl::AdsServiceImpl(Profile* profile,
+                               history::HistoryService* history_service)
     : profile_(profile),
+      history_service_(history_service),
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
@@ -210,6 +214,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       rewards_service_(
           brave_rewards::RewardsServiceFactory::GetForProfile(profile_)),
       bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
+  DCHECK(profile_);
+  DCHECK(history_service_);
   DCHECK(brave::IsRegularProfile(profile_));
 
   MigratePrefs();
@@ -1899,6 +1905,40 @@ void AdsServiceImpl::LoadUserModelForId(const std::string& id,
       base::BindOnce(&LoadOnFileTaskRunner, path.value()),
       base::BindOnce(&AdsServiceImpl::OnLoaded, AsWeakPtr(),
                      std::move(callback)));
+}
+
+void AdsServiceImpl::GetBrowsingHistory(
+    const int max_count,
+    const int days_ago,
+    ads::GetBrowsingHistoryCallback callback) {
+  base::string16 search_text;
+  history::QueryOptions options;
+  options.SetRecentDayRange(days_ago);
+  options.max_count = max_count;
+  options.duplicate_policy = history::QueryOptions::REMOVE_ALL_DUPLICATES;
+  history_service_->QueryHistory(
+      search_text, options,
+      base::BindOnce(&AdsServiceImpl::OnBrowsingHistorySearchComplete,
+                     AsWeakPtr(), std::move(callback)),
+      &task_tracker_);
+}
+
+void AdsServiceImpl::OnBrowsingHistorySearchComplete(
+    ads::GetBrowsingHistoryCallback callback,
+    history::QueryResults results) {
+  if (!connected()) {
+    return;
+  }
+
+  std::vector<std::string> history;
+  for (const auto& result : results) {
+    history.push_back(result.url().GetWithEmptyPath().spec());
+  }
+
+  std::sort(history.begin(), history.end());
+  history.erase(std::unique(history.begin(), history.end()), history.end());
+
+  callback(history);
 }
 
 void AdsServiceImpl::RecordP2AEvent(const std::string& name,

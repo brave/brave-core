@@ -7,7 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_RESOURCES_RESOURCE_H_
 
 namespace ads {
-namespace ad_targeting {
 namespace resource {
 
 template <class T>
@@ -21,7 +20,6 @@ class Resource {
 };
 
 }  // namespace resource
-}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_RESOURCES_RESOURCE_H_
