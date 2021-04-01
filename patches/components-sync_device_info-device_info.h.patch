@@ -1,13 +1,12 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index ae651863878e07695c22d9263d4a6ed054ecb720..dc5e0f831575a543f989b4ad973555ceb7a948f6 100644
+index 76a950ec2685f93556cafa440776429f3a0e0192..eafb992ef0f9561a8a0515e5b1e266f73e170da7 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -77,7 +77,7 @@ class DeviceInfo {
-              const base::Optional<SharingInfo>& sharing_info,
+@@ -104,6 +104,7 @@ class DeviceInfo {
+              const base::Optional<PhoneAsASecurityKeyInfo>& paask_info,
               const std::string& fcm_registration_token,
               const ModelTypeSet& interested_data_types);
--  ~DeviceInfo();
-+  virtual ~DeviceInfo();
++  virtual
+   ~DeviceInfo();
  
    // Sync specific unique identifier for the device. Note if a device
-   // is wiped and sync is set up again this id WILL be different.
