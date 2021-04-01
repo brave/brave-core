@@ -1,12 +1,12 @@
 diff --git a/media/blink/key_system_config_selector.cc b/media/blink/key_system_config_selector.cc
-index 6d3ddff733b8d58bc8ac498c764ca097fc310207..c937d37652a36964f4724250b1fc7b94a687ca4f 100644
+index 57f3fb5392772fb21052e6d9ec4ee28d23597137..0f72795383926410a8817fe4e1c0fb2b93bf0006 100644
 --- a/media/blink/key_system_config_selector.cc
 +++ b/media/blink/key_system_config_selector.cc
-@@ -974,6 +974,7 @@ void KeySystemConfigSelector::SelectConfig(
+@@ -967,6 +967,7 @@ void KeySystemConfigSelector::SelectConfig(
  
    key_systems_->UpdateIfNeeded();
  
 +  KeySystems::GetInstance();
    std::string key_system_ascii = key_system.Ascii();
    if (!key_systems_->IsSupportedKeySystem(key_system_ascii)) {
- #if defined(OS_MAC) && defined(ARCH_CPU_ARM_FAMILY)
+     std::move(cb).Run(Status::kUnsupportedKeySystem, nullptr, nullptr);
