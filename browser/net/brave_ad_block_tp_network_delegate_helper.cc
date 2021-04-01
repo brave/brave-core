@@ -243,6 +243,13 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
     return net::OK;
   }
 
+  // Requests for main frames are handled by DomainBlockNavigationThrottle,
+  // which can display a custom interstitial with an option to proceed if a
+  // block is made. We don't need to check these twice.
+  if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame) {
+    return net::OK;
+  }
+
   OnBeforeURLRequestAdBlockTP(next_callback, ctx);
 
   return net::ERR_IO_PENDING;
