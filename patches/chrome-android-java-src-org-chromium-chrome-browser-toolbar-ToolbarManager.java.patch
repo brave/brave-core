@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 25871c2bfea81bbcab0fa31456ad2db33bbbb82c..a7f66b5fa8ec356913062841e32e0c34eff22fbb 100644
+index 78f45a0fbbb8b1f4f1013a29fc635b07d75ef21f..362bd776110dd3e079ba4ab4f925fb133abe982f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-@@ -453,13 +453,13 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+@@ -455,13 +455,13 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
          boolean isCustomTab = toolbarLayout instanceof CustomTabToolbar;
          ThemeColorProvider menuButtonThemeColorProvider =
                  isCustomTab ? mCustomTabThemeColorProvider : browsingModeThemeColorProvider;
@@ -18,7 +18,7 @@ index 25871c2bfea81bbcab0fa31456ad2db33bbbb82c..a7f66b5fa8ec356913062841e32e0c34
                  appMenuCoordinatorSupplier, mControlsVisibilityDelegate, mWindowAndroid,
                  (focus, type)
                          -> setUrlBarFocus(focus, type),
-@@ -886,7 +886,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+@@ -891,7 +891,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
              boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
              boolean isTabGroupsAndroidContinuationEnabled) {
          // clang-format off
