@@ -586,6 +586,9 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PASSWORD_ENTRY_VIEWER_PASSWORD" desc="Title preceding password on password entry viewer.">
         Password
       </message>
+      <message name="IDS_PASSWORD_VIA_FEDERATION" desc="Text for federated credential's value.">
+        with <ph name="PROVIDER">%1$s<ex>example.com</ex></ph>
+      </message>
       <message name="IDS_PASSWORD_ENTRY_VIEWER_COPY_STORED_SITE" desc="Content description for the button that copies the stored site.">
         Copy URL
       </message>
@@ -741,24 +744,9 @@ CHAR-LIMIT guidelines:
         Darken websites
       </message>
 
-      <!-- Privacy preferences -->
-      <message name="IDS_PREFS_PRIVACY" desc="Title for the Privacy preferences. [CHAR-LIMIT=32]">
-        Privacy
-      </message>
+      <!-- Privacy and security preferences -->
       <message name="IDS_PREFS_PRIVACY_SECURITY" desc="Title for the Privacy and Security preferences. [CHAR-LIMIT=32]">
         Privacy and security
-      </message>
-      <message name="IDS_SAFE_BROWSING_SCOUT_REPORTING_TITLE" desc="Title for checkbox that controls reporting data to detect bad apps/sites. Please ensure ‘Safe Browsing’ in this message matches the ‘Safe Browsing’ settings title.">
-        Help improve Brave security
-      </message>
-      <message name="IDS_SAFE_BROWSING_SCOUT_REPORTING_SUMMARY" desc="Body text for Brave setting under 'Help Improve Safe Browsing'. This feature sends small amounts of data to Brave about potentially-dangerous pages to help Safe Browsing improve Brave's protection against malware and phishing.">
-        To detect dangerous apps and sites, Brave sends URLs of some pages you visit, limited system information, and some page content to Brave
-      </message>
-      <message name="IDS_SAFE_BROWSING_TITLE" desc="Title for safe browsing.">
-        Google Safe Browsing (protects you and your device from dangerous sites)
-      </message>
-      <message name="IDS_SAFE_BROWSING_SUMMARY" desc="Summary for safe browsing.">
-        Sends URLs of some pages you visit to Google, when your security is at risk
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_TITLE" desc="Name for the Contextual Search feature, which allows users to search for a term in a web page by tapping on it.">
         Touch to Search
@@ -1233,6 +1221,21 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_LANGUAGES_EXPLICIT_ASK_TITLE" desc="Title of the dialog that explicitly asks the user which languages they can read.">
         What languages do you read?
+      </message>
+      <message name="IDS_LANGUAGES_SRP_TITLE" desc="Title of the dialog that explicitly asks the user what language they want Brave on Android to be in.">
+        Pick Brave’s language
+      </message>
+      <message name="IDS_LANGUAGES_SRP_SUBTITLE" desc="Subtitle warning a user that the language of their keyboard will not change if they change the application language of Brave on Android.">
+        Your keyboard won’t change
+      </message>
+      <message name="IDS_LANGUAGES_SRP_CANCEL_TITLE" desc="Text on button to cancel the language picker dialog and not change the application language of Brave on Android.">
+        No thanks
+      </message>
+      <message name="IDS_LANGUAGES_SRP_ACCEPT_TITLE" desc="Text on button to confirm changing the application language of Brave on Android.">
+        Change language
+      </message>
+      <message name="IDS_LANGUAGES_SRP_LOADING_TEXT" desc="Text to display while a language pack is being downloaded.">
+        Loading <ph name="LANG">%1$s<ex>Hindi</ex></ph>
       </message>
       <message name="IDS_LANGUAGES_SPLIT_DOWNLOADING" desc="Text to display next to a language when it is being downloaded to use as Brave's UI. [CHAR-LIMIT=32]">
         Downloading…
@@ -2239,20 +2242,20 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_IPH_PWA_INSTALL_AVAILABLE_TEXT" desc="The in-product-help message for PWAs that can be installed to the device.">
         Install this app
       </message>
-      <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN" desc="The in-product-help message encouraging users to add a commonly visited webpage to the home screen.">
+      <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN" desc="The in-product-help text bubble message encouraging users to add a commonly visited webpage to the home screen.">
         To get here quicker, add this page to your Home screen
       </message>
-      <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN_ACCESSIBILITY" desc="The in-product-help message encouraging users to add a commonly visited webpage to the home screen. Used when a screen reader is turned. 'More options' should match TC ID 8110367050267853536.">
+      <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN_ACCESSIBILITY" desc="The in-product-help text bubble message encouraging users to add a commonly visited webpage to the home screen. Used when a screen reader is turned. 'More options' should match TC ID 8110367050267853536.">
         To get here quicker, add this page to your Home screen from the More options button
       </message>
-      <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_TITLE" desc="The title of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen.">
-        Get to this site quicker
+      <message name="IDS_IPH_MESSAGE_ADD_TO_HOME_SCREEN_TITLE" desc="The title of in-product-help message encouraging users to add a commonly visited webpage to the home screen.">
+        Add to Home screen
       </message>
-      <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_DESCRIPTION" desc="The description of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen. Shown on phones.">
-        Add this site to your phone’s Home screen so you can get here more easily
+      <message name="IDS_IPH_MESSAGE_ADD_TO_HOME_SCREEN_DESCRIPTION" desc="The description of in-product-help message encouraging users to add a commonly visited webpage to the home screen.">
+        Get to this site quicker next time
       </message>
-      <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_DESCRIPTION_TABLET" desc="The description of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen. Shown on tablets.">
-        Add this site to your tablet’s Home screen so you can get here more easily
+      <message name="IDS_IPH_MESSAGE_ADD_TO_HOME_SCREEN_ACTION" desc="The Add button in the in-product help message encouraging users to add a commonly visited webpage to the home screen.">
+        Add
       </message>
       <message name="IDS_PWA_INSTALL_BOTTOM_SHEET_ACCESSIBILITY" desc="The content description for the bottom sheet install UI.">
         Install this app
@@ -3524,6 +3527,27 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_WEB_FEED_FOLLOW_LOADING_DESCRIPTION" desc="The content description of the loading spinner after the user presses Follow and is waiting for a response.">
         Following...
       </message>
+      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed follow.">
+        Followed <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed follow.">
+        Go to feed
+      </message>
+      <message name="IDS_WEB_FEED_FOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed follow.">
+        Can’t follow. Something went wrong.
+      </message>
+      <message name="IDS_WEB_FEED_UNFOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed unfollow.">
+        Can’t unfollow. Something went wrong.
+      </message>
+      <message name="IDS_WEB_FEED_GENERIC_FAILURE_SNACKBAR_ACTION" desc="The snackbar action after an unsuccessful Web Feed follow/unfollow.">
+        Try again
+      </message>
+      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_MESSAGE" desc="The snackbar message after a successful Web Feed unfollow.">
+        Unfollowed <ph name="SITE_NAME">%1$s<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_WEB_FEED_UNFOLLOW_SUCCESS_SNACKBAR_ACTION" desc="The snackbar action after a successful Web Feed unfollow.">
+        Refollow
+      </message>
 
       <!-- Storage Preference UI strings for clearing storage. -->
       <message name="IDS_STORAGE_MANAGEMENT_ACTIVITY_LABEL" desc="Title for Brave's Manage Space Activity.">
@@ -3800,6 +3824,18 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_IPH_IDENTITY_DISC_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text prompting the user that tapping identity disc will navigate to 'Sync and Brave services' settings page.">
         To manage your Brave account, tap the "Manage account" button
+      </message>
+      <message name="IDS_IPH_MIC_TOOLBAR_GENERIC_MESSAGE_TEXT" desc="The in-product-help message encouraging to execute a voice search.">
+        Search with your voice
+      </message>
+      <message name="IDS_IPH_MIC_TOOLBAR_GENERIC_MESSAGE_ACCESSIBILITY_TEXT" desc="The in-product-help message encouraging to execute a voice search.">
+        Tap the mic to search with your voice
+      </message>
+      <message name="IDS_IPH_MIC_TOOLBAR_EXAMPLE_QUERY_TEXT" desc="The in-product-help message encouraging to execute a voice search by giving an example command to try.">
+        Try “What’s the weather today?”
+      </message>
+      <message name="IDS_IPH_MIC_TOOLBAR_EXAMPLE_QUERY_ACCESSIBILITY_TEXT" desc="The in-product-help message encouraging to execute a voice search by giving an example command to try.">
+        To check the weather, tap the mic and say “What’s the weather today?”
       </message>
       <message name="IDS_IPH_NTP_WITHOUT_FEED_TEXT" desc="The in-product-help message to open the new tab page with personalized top sites.">
         See your top sites
