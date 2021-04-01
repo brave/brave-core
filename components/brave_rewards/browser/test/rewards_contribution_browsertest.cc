@@ -772,6 +772,10 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(statuses[0], ledger::type::Result::LEDGER_OK);
   ASSERT_EQ(statuses[1], ledger::type::Result::LEDGER_OK);
 
+  // Wait for UI to update with contribution
+  rewards_browsertest_util::WaitForElementToContain(
+      contents(), "[color=contribute]", "-50.000BAT");
+
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
       "[data-test-id='showMonthlyReport']");
@@ -789,12 +793,6 @@ IN_PROC_BROWSER_TEST_F(
       contents(),
       "#transactionTable",
       "-20.000BAT");
-
-  // Check that summary table shows the appropriate contribution
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[color=contribute]",
-      "-50.000BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -883,6 +881,10 @@ IN_PROC_BROWSER_TEST_F(
 
   // Load rewards page
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+
+  // Wait for UI to update with contribution
+  rewards_browsertest_util::WaitForElementToContain(
+      contents(), "[color='contribute']", "-50.000BAT");
 
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
