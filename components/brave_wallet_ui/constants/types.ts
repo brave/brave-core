@@ -16,6 +16,22 @@ export type PanelTypes =
   | 'settings'
   | 'expanded'
 
+export type NavTypes =
+  | 'crypto'
+  | 'rewards'
+  | 'cards'
+  | 'linked_accounts'
+  | 'gemini'
+  | 'creators'
+  | 'lock_wallet'
+
+export interface NavObjectType {
+  name: string
+  primaryIcon: string
+  secondaryIcon: string
+  id: NavTypes
+}
+
 export interface AppObjectType {
   name: string
   description: string
