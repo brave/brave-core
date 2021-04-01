@@ -10935,9 +10935,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_SHOW_KALEIDOSCOPE" desc="Menu item to launch the Brave watch feature">
       Watch
     </message>
-    <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS" desc="Permisson string for access to ipfs api.">
-      Publish and retrieve files from IPFS
-    </message>
 
     <!-- BraveLabs bubble -->
     <message name="IDS_CHROMELABS_RELAUNCH_BUTTON_LABEL" desc="Label on the button in the footer of the Brave Labs bubble which will relaunch the browser.">
