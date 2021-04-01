@@ -15,6 +15,8 @@ import NavigateBack from '../../../../components/default/settings/navigateBack'
 import { Props } from './'
 import PublisherPrefs from './publisherPrefs'
 import * as Styled from './style'
+import { Toggle } from '../../../../components/toggle'
+import { isPublisherContentAllowed } from '../../../../../common/braveToday'
 
 type CategoryListProps = {
   categories: string[]
@@ -55,11 +57,28 @@ type CategoryProps = {
 }
 
 function Category (props: CategoryProps) {
+  const toggleAll = (checked: boolean) => {
+    props.publishers.forEach((publisher) => {
+      props.setPublisherPref(publisher.publisher_id, checked)
+    })
+  }
+
+  const allChecked = () =>
+    props.publishers.every((publisher) => isPublisherContentAllowed(publisher))
+
   return (
     <Styled.Section>
       <Styled.StaticPrefs>
         <NavigateBack onBack={props.onBack} />
-        <SettingsSectionTitle>{props.category}</SettingsSectionTitle>
+        <SettingsSectionTitle>
+          <SettingsRow>
+            {props.category}
+            <Toggle
+              onChange={() => toggleAll(!allChecked())}
+              checked={allChecked()}
+            />
+          </SettingsRow>
+        </SettingsSectionTitle>
       </Styled.StaticPrefs>
       <Styled.PublisherList>
         <PublisherPrefs
