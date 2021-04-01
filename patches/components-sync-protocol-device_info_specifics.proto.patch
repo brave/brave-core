@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/device_info_specifics.proto b/components/sync/protocol/device_info_specifics.proto
-index da74199a29a033e9159f2b30293b3f86778db7f2..8def3120dc6ec75804d5f28dbd39e50bb080ad75 100644
+index a2843e31040aed602253077f5b5d5a810fee22ae..97517405250431ae362e8daafd27d388b9114460 100644
 --- a/components/sync/protocol/device_info_specifics.proto
 +++ b/components/sync/protocol/device_info_specifics.proto
 @@ -17,6 +17,7 @@ option optimize_for = LITE_RUNTIME;
@@ -10,10 +10,10 @@ index da74199a29a033e9159f2b30293b3f86778db7f2..8def3120dc6ec75804d5f28dbd39e50b
  
  // Information about a device that is running a sync-enabled Chrome browser.  We
  // are mapping the per-client cache guid to more specific information about the
-@@ -74,6 +75,7 @@ message DeviceInfoSpecifics {
- 
-   // Device specific information for Sync invalidations.
-   optional InvalidationSpecificFields invalidation_fields = 14;
+@@ -78,6 +79,7 @@ message DeviceInfoSpecifics {
+   // Information for contacting this device in order to perform security key
+   // operations.
+   optional PhoneAsASecurityKeySpecificFields paask_fields = 15;
 +  optional BraveSpecificFields brave_fields = 1000;
  }
  
