@@ -7222,28 +7222,28 @@ Atamayı kaldırmak için atanmış anahtara basın.</translation>
 <translation id="5186185447130319458">Kişisel</translation>
 <translation id="2579188629646253712">Kişiselden Çık</translation>
 <translation id="1001131747196960052">Özeli Kapat</translation>
-<translation id="7475335772460644497">{SAY, .çoğul,
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {Tümünü &amp; özel pencerede aç}
           =1 {Özel pencerede &amp;aç}
-          diğer {Tümünü ({SAY}) özel pencerede &amp;aç}}</translation>
+          other {Tümünü ({COUNT}) özel pencerede &amp;aç}}</translation>
 <translation id="2431625704210501303">&amp;kişisel pencerede aç</translation>
 <translation id="4620367155626060530">Yer işaretleri ç&amp;ubuğunu göster</translation>
-<translation id="1448315815373449655">{SAY, .çoğul,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {Tümünü &amp;Özel Pencerede aç}
           =1 {Özel pencerede &amp;aç}
-          diğer {Tümünü ({SAY}) özel pencerede &amp;aç}}</translation>
+          other {Tümünü ({COUNT}) özel pencerede &amp;aç}}</translation>
 <translation id="1985165269306590797">&amp;Kişisel Pencerede Aç</translation>
 <translation id="4680518314108745448">Yer İşaretleri Ç&amp;ubuğunu Göster</translation>
 <translation id="642436385689435488">Tümünü kişisel pencerede aç</translation>
 <translation id="5074021236879527611">Tümünü (<ph name="URL_COUNT"/>) özel pencerede aç</translation>
 <translation id="5463021359602611602">Kişisel pencerede aç</translation>
-<translation id="1850357845349976573">{0, çoğul,
+<translation id="1850357845349976573">{0, plural,
       =1 {Kişisel}
-      diğer {# kişisel pencereleri aç}
+      other {# kişisel pencereleri aç}
      }</translation>
-<translation id="8773965542687789581">{0, çoğul,
+<translation id="8773965542687789581">{0, plural,
       =1 {Kişisel}
-      diğer {Kişisel (#)}
+      other {Kişisel (#)}
      }</translation>
 <translation id="5070556616376997776">Bu kişisel bir penceredir</translation>
 <translation id="5832813618714645810">Profiller</translation>
