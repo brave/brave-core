@@ -25,6 +25,19 @@ export type NavTypes =
   | 'creators'
   | 'lock_wallet'
 
+export type TopTabNavTypes =
+  | 'portfolio'
+  | 'nfts'
+  | 'invest'
+  | 'lending'
+  | 'apps'
+  | 'accounts'
+
+export interface TopTabNavObjectType {
+  name: string
+  id: TopTabNavTypes
+}
+
 export interface NavObjectType {
   name: string
   primaryIcon: string

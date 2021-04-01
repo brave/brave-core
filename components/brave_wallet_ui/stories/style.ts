@@ -41,3 +41,13 @@ export const DesktopComponentWrapper = styled.div`
   background-color: white;
   padding: 20px;
 `
+
+export const DesktopComponentWrapperRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  width: 800px;
+  padding: 20px;
+`
