@@ -139,7 +139,6 @@ export function OneTimeTipForm () {
 
   const tipAmountOptions = tipOptions.map((value) => ({
     value,
-    amount: value.toFixed(0),
     currency: <BatString />,
     exchangeAmount: formatExchangeAmount(value, rewardsParameters.rate)
   }))

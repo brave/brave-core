@@ -65,7 +65,7 @@ function createHostState (): HostState {
         'ecosystem of rewards. Join us. It’s time to fix the web together!',
       background: '',
       logo: 'https://rewards.brave.com/LH3yQwkb78iP28pJDSSFPJwU',
-      amounts: [1, 10, 100],
+      amounts: [0.25, 2, 10],
       provider: '',
       links: {
         twitter: 'https://twitter.com/brave',
@@ -82,8 +82,8 @@ function createHostState (): HostState {
       type: 'uphold'
     },
     rewardsParameters: {
-      tipChoices: [1, 2, 3],
-      monthlyTipChoices: [1, 2, 3],
+      tipChoices: [0.25, 2, 10],
+      monthlyTipChoices: [0.25, 2, 10],
       rate: 0.333,
       autoContributeChoices: [5, 15, 25, 50]
     },
@@ -92,7 +92,7 @@ function createHostState (): HostState {
     adsPerHour: 3,
     autoContributeAmount: 15,
     onlyAnonWallet: false,
-    showOnboarding: true,
+    showOnboarding: false,
     tipProcessed: false,
     currentMonthlyTip: 0
   }
