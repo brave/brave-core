@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_service.h b/chrome/browser/extensions/extension_service.h
-index 88c7c5968f59ee0dc87781bbce9763afd1e4d84b..79f5383d5f11312d665e25ed161dafae65af23cd 100644
+index 42979fd0c3db83991e4af4bd6d5ca47e27c81d46..195e152a14dc67bd59de61728139ccc7b5e384f6 100644
 --- a/chrome/browser/extensions/extension_service.h
 +++ b/chrome/browser/extensions/extension_service.h
 @@ -460,6 +460,7 @@ class ExtensionService : public ExtensionServiceInterface,

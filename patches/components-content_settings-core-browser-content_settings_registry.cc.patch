@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
-index b871384241909b36c92aa2209336be3857557087..b7f03415e2611482c16f649fc18dfd7a05433d09 100644
+index 491923d887b9ed7adab0d948d307d0e9fe6f23ac..199350ab9383239c5b398622dc6f8ac05fd568d2 100644
 --- a/components/content_settings/core/browser/content_settings_registry.cc
 +++ b/components/content_settings/core/browser/content_settings_registry.cc
 @@ -598,6 +598,7 @@ void ContentSettingsRegistry::Init() {

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
-index bcb4c4fe7651798ef6161101377b0234260010e0..41eda618c507873035eb519c7c8ed2245cd73844 100644
+index 43186aa3972f18ac6f9a94a4a141dfaa7896b359..a1c27b60ed563debb26bc6f722f323b1a068b18c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
-@@ -81,7 +81,7 @@ import org.chromium.ui.widget.ButtonCompat;
+@@ -79,7 +79,7 @@ import org.chromium.ui.widget.ButtonCompat;
   * feature, this view disappears and the "Sync" and "Google services" sections are split into
   * separate views, accessible directly from top-level settings. The "User" section disappears.
   */
