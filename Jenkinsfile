@@ -96,7 +96,6 @@ pipeline {
                                                 credentials('brave-builds-github-token-for-pr-builder')
                                                 github('brave/devops', 'https')
                                             }
-
                                             branch('mplesa-jenkins-pre-init-pylint-changed-files')
                                         }
                                     }
