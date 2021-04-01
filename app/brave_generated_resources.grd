@@ -346,6 +346,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_LOCATION_BAR_OPEN_USING_IPFS" desc="Button in location bar to open ipfs available site.">
         Open using IPFS
       </message>
+      <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS" desc="Permisson string for access to ipfs api.">
+        Publish and retrieve files from IPFS
+      </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         Onion Available
       </message>
