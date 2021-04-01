@@ -58,9 +58,9 @@ pipeline {
                         }
                     }
 
-                    if (SKIP) {
+                    if (SKIP && PLATFORM != 'pre-init' && PLATFORM != 'post-init' ) {
                         echo "Aborting build as PRs are either in draft or have a skip label (CI/skip or CI/skip-${PLATFORM})"
-                        currentBuild.result = 'ABORTED'
+                        currentBuild.result = 'SUCCESS'
                         return
                     }
 
