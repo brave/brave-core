@@ -3,4 +3,9 @@ brave_browser_permissions_sources = [
   "//brave/browser/permissions/permission_lifetime_manager_factory.h",
 ]
 
-brave_browser_permissions_deps = [ "//base" ]
+brave_browser_permissions_deps = [
+  "//base",
+  "//brave/components/permissions",
+  "//components/keyed_service/content",
+  "//components/permissions",
+]

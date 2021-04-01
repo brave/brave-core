@@ -1,4 +1,7 @@
 include_rules = [
+  "+components/content_settings/core",
+  "+components/keyed_service/core",
   "+components/permissions",
+  "+components/pref_registry",
   "+services/preferences/public/cpp",
 ]
