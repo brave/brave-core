@@ -25,7 +25,7 @@ use util::StringUtils;
 const NUM_TOP_CANDIDATES: usize = 5;
 
 lazy_static! {
-    static ref SEPARATORS: Regex = Regex::new(r#"[\|\-\\/>»]"#).unwrap();
+    static ref SEPARATORS: Regex = Regex::new(r#"\s+[\|\-\\/>»]\s+"#).unwrap();
 }
 
 #[derive(Debug)]
@@ -387,5 +387,12 @@ mod tests {
         let expected = "How Cats Can Save the Planet";
         let output = clean_title(input.to_string());
         assert_eq!(expected, output);
+    }
+
+    #[test]
+    fn test_clean_title_preserve_hyphen() {
+        let input = "Just-released Minecraft exploit makes it easy to crash game servers";
+        let output = clean_title(input.to_string());
+        assert_eq!(input, output);
     }
 }
