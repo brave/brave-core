@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index e4521ff80ef6cdaa06524c8714774d8cea237568..8449d55b1aaf5a0b9c5a83cdeb7d55bbba0f2ec6 100644
+index f64a099146f77563ec1280b2bdd22f23bd0a734e..f5aa739d8a32bbbaad96cb22bffd3a2944b9bc64 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 @@ -369,7 +369,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
