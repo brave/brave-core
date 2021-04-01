@@ -62,7 +62,6 @@ std::string RLPEncode(base::Value val) {
   } else if (val.is_string()) {
     std::string s;
     val.GetAsString(&s);
-    base::Value::BlobStorage blob(s.begin(), s.end());
     return RLPEncode(base::Value(base::Value::BlobStorage(s.begin(), s.end())));
   } else if (val.is_list()) {
     std::string output;

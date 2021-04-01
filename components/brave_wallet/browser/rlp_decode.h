@@ -13,6 +13,7 @@
 namespace brave_wallet {
 
 // Recursive Length Prefix (RLP) decoding of arbitrarily nested arrays of data
+// Input string should be a hex string but without the 0x prefix
 bool RLPDecode(const std::string& s, base::Value* output);
 
 }  // namespace brave_wallet

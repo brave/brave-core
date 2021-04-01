@@ -58,15 +58,12 @@ bool RLPDecodeLength(const std::string& s,
   }
 
   size_t i;
-  if (1 + prefix - 0xb7 <= length && RLPToInteger(s.substr(1, prefix - 0xb7), &i)) {
+  if (1 + prefix - 0xb7 <= length &&
+      RLPToInteger(s.substr(1, prefix - 0xb7), &i)) {
     if (prefix <= 0xbf && length > prefix - 0xb7 &&
         length > prefix - 0xb7 + i) {
-      size_t lenOfStrLen = prefix - 0xb7;
-      size_t strLen;
-      if (1 + lenOfStrLen > length || !RLPToInteger(s.substr(1, lenOfStrLen), &strLen)) {
-        return false;
-      }
-      *offset = 1 + lenOfStrLen;
+      size_t strLen = i;
+      *offset = 1 + prefix - 0xb7;
       *data_len = strLen;
       if (*offset + *data_len > length) {
         return false;
@@ -85,17 +82,10 @@ bool RLPDecodeLength(const std::string& s,
     return true;
   }
 
-  if (prefix - 0xf7 < 1 ||
-      1 + prefix - 0xf7 > length || !RLPToInteger(s.substr(1, prefix - 0xf7), &i)) {
-    return false;
-  }
-  if (prefix <= 0xff && length >= prefix - 0xf7 && length >= prefix - 0xf7 + i) {
-    size_t lenOfListLen = prefix - 0xf7;
-    size_t listLen;
-    if (1 + lenOfListLen > length || !RLPToInteger(s.substr(1, lenOfListLen), &listLen)) {
-      return false;
-    }
-    *offset = 1 + lenOfListLen;
+  if (prefix <= 0xff && length >= 1 + prefix - 0xf7 &&
+      RLPToInteger(s.substr(1, prefix - 0xf7), &i)) {
+    size_t listLen = i;
+    *offset = 1 + prefix - 0xf7;
     *data_len = listLen;
     *value = base::ListValue();
     return true;
@@ -106,9 +96,9 @@ bool RLPDecodeLength(const std::string& s,
 
 // Decodes a string and gives the result, an offset, and a data_len
 bool RLPDecodeInternal(const std::string& s,
-               base::Value* output,
-               size_t* offset,
-               size_t* data_len) {
+                       base::Value* output,
+                       size_t* offset,
+                       size_t* data_len) {
   size_t length = s.length();
   if (!RLPDecodeLength(s, offset, data_len, output)) {
     return false;
@@ -154,6 +144,9 @@ bool RLPDecodeInternal(const std::string& s,
 namespace brave_wallet {
 
 bool RLPDecode(const std::string& s, base::Value* output) {
+  if (!output) {
+    return false;
+  }
   size_t offset;
   size_t data_len;
   return RLPDecodeInternal(s, output, &offset, &data_len);
