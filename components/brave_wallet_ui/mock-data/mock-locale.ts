@@ -34,7 +34,16 @@ const locale = {
   raribleUrl: 'https://rarible.com/',
 
   // Search Text
-  searchText: 'Search'
+  searchText: 'Search',
+
+  // Side Nav Buttons
+  sideNavCrypto: 'Crypto',
+  sideNavRewards: 'Rewards',
+  sideNavCards: 'Cards',
+  sideNavLinkedAccounts: 'Linked Accounts',
+  sideNavLockWallet: 'Lock Wallet',
+  sideNavGemini: 'Gemini',
+  sideNavCreators: 'Creators'
 }
 
 export default locale

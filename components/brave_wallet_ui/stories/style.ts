@@ -32,3 +32,12 @@ export const ScrollContainer = styled.div`
   padding: 0px 12px;
   box-sizing: border-box;
 `
+
+export const DesktopComponentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 20px;
+`
