@@ -35,6 +35,7 @@ class DomainBlockTestBase : public AdBlockServiceTest {
         [&](const net::test_server::HttpRequest& request) {
           request_count_ += 1;
         }));
+    content::SetupCrossSiteRedirector(embedded_test_server());
     AdBlockServiceTest::SetUp();
   }
 
@@ -297,6 +298,37 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
 
   // Should be zero network traffic (not even a favicon fetch).
   ASSERT_EQ(0, request_count_);
+}
+
+IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoThirdPartyInterstitial) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("||b.com^$third-party"));
+
+  GURL url = embedded_test_server()->GetURL("a.com", "/simple_link.html");
+  GURL cross_url =
+      embedded_test_server()->GetURL("a.com", "/cross-site/b.com/simple.html");
+
+  // Navigate to a page on a.com. This should work normally.
+  NavigateTo(url);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Navigate to a page on the third-party b.com. There should be no
+  // interstitial shown.
+  EXPECT_EQ(true,
+            EvalJs(web_contents(), "clickLink('" + cross_url.spec() + "')"));
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+
+  // No interstitial should be shown, since top-level requests are never
+  // third-party.
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // The default "blocked by an extension" interstitial also should not be
+  // shown. This would appear if the request was blocked by the network delegate
+  // helper.
+  const std::string location =
+      EvalJs(web_contents(), "window.location.href").ExtractString();
+  ASSERT_STRNE("chrome-error://chromewebdata/", location.c_str());
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockDisabledTest, NoInterstitial) {
