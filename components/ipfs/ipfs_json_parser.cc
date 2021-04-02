@@ -238,3 +238,41 @@ bool IPFSJSONParser::GetGarbageCollectionFromJSON(const std::string& json,
     *error = *error_message;
   return true;
 }
+
+// static
+// Response Format for /api/v0/add
+// {
+//   \"Name\":\"yandex.ru\",
+//   \"Hash\":\"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU\",
+//   \"Size\":\"567857\"
+// }
+bool IPFSJSONParser::GetImportResponseFromJSON(const std::string& json,
+                                               ipfs::ImportedData* data) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
+            << " error is:" << value_with_error.error_message;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+  const std::string* name = response_dict->FindStringKey("Name");
+  if (name)
+    data->filename = *name;
+
+  const std::string* hash = response_dict->FindStringKey("Hash");
+  if (hash)
+    data->hash = *hash;
+
+  const std::string* size_value = response_dict->FindStringKey("Size");
+  if (size_value)
+    data->size = std::stoll(*size_value);
+  return true;
+}

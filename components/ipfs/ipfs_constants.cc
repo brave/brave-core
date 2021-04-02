@@ -27,5 +27,9 @@ const char kNodeInfoPath[] = "/api/v0/id";
 const char kLocalhostIP[] = "127.0.0.1";
 const char kLocalhostDomain[] = "localhost";
 const char kGarbageCollectionPath[] = "/api/v0/repo/gc";
+const char kImportAddPath[] = "/api/v0/add";
+const char kImportMakeDirectoryPath[] = "/api/v0/files/mkdir";
+const char kImportCopyPath[] = "/api/v0/files/cp";
+const char kImportDirectory[] = "/brave-imports/";
 
 }  // namespace ipfs

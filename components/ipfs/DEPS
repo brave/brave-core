@@ -6,6 +6,8 @@ include_rules = [
   "+extensions/common",
   "+third_party/re2",
   "+services/network/public",
+  "+storage/browser",
+  "+third_party/blink/public/mojom",
   "+ui/base",
   "+ui/native_theme",
 ]

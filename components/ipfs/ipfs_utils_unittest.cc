@@ -535,3 +535,12 @@ TEST_F(IpfsUtilsUnitTest,
                  "yavhwq.ipfs.localhost:48080/wiki/Vincent_van_Gogh.html"
                  "?test=true#test"));
 }
+
+TEST_F(IpfsUtilsUnitTest, ResolveWebUIFilesLocation) {
+  GURL url = ipfs::ResolveWebUIFilesLocation("/test_directory",
+                                             version_info::Channel::UNKNOWN);
+  GURL api_server = ipfs::GetAPIServer(version_info::Channel::UNKNOWN);
+  EXPECT_EQ(url.host(), api_server.host());
+  EXPECT_EQ(url.path(), "/webui/");
+  EXPECT_EQ(url.ref(), "/files/test_directory");
+}

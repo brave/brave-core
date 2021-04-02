@@ -45,6 +45,8 @@ void SetIPFSDefaultGatewayForTest(const GURL& url);
 GURL GetDefaultIPFSLocalGateway(version_info::Channel channel);
 GURL GetDefaultIPFSGateway(content::BrowserContext* context);
 GURL GetAPIServer(version_info::Channel channel);
+GURL ResolveWebUIFilesLocation(const std::string& directory,
+                               version_info::Channel channel);
 bool TranslateIPFSURI(const GURL& url,
                       GURL* new_url,
                       const GURL& gateway_url,

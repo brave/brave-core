@@ -273,4 +273,14 @@ bool TranslateIPFSURI(const GURL& url,
   return false;
 }
 
+GURL ResolveWebUIFilesLocation(const std::string& directory,
+                               version_info::Channel channel) {
+  GURL url = GetAPIServer(channel);
+  GURL::Replacements replacements;
+  replacements.SetPathStr("/webui/");
+  std::string webui_files_ref = std::string("/files") + directory;
+  replacements.SetRefStr(webui_files_ref);
+  return url.ReplaceComponents(replacements);
+}
+
 }  // namespace ipfs
