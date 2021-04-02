@@ -24,6 +24,7 @@
 #include "base/single_thread_task_runner.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/threading/thread.h"
 #include "base/threading/thread_task_runner_handle.h"
 
@@ -98,10 +99,10 @@ void TorLauncherImpl::Cleanup() {
     TearDownPipeHack();
 #endif
 #if defined(OS_MAC)
-    base::PostTask(
-        FROM_HERE,
-        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT},
-        base::BindOnce(&base::EnsureProcessTerminated, std::move(tor_process_)));
+    base::ThreadPool::PostTask(
+        FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
+        base::BindOnce(&base::EnsureProcessTerminated,
+                       std::move(tor_process_)));
 #else
     base::EnsureProcessTerminated(std::move(tor_process_));
 #endif

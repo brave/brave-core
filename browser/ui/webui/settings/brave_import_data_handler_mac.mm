@@ -12,7 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/mac/foundation_util.h"
 #include "base/task/post_task.h"
-#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/common/url_constants.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
@@ -143,12 +143,12 @@ void BraveImportDataHandler::StartImport(
   if (source_profile.importer_type == importer::TYPE_SAFARI) {
     // Start import if Brave has full disk access permission.
     // If not, show dialog that has infos about that permission.
-    base::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::MayBlock()},
         base::BindOnce(&HasProperDiskAccessPermission, imported_items),
         base::BindOnce(&BraveImportDataHandler::OnGetDiskAccessPermission,
-                       weak_factory_.GetWeakPtr(),
-                       source_profile, imported_items));
+                       weak_factory_.GetWeakPtr(), source_profile,
+                       imported_items));
     return;
   }
 

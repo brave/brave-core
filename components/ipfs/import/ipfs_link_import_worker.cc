@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ipfs/import/import_utils.h"
 #include "content/public/browser/browser_context.h"
@@ -81,9 +82,8 @@ void IpfsLinkImportWorker::OnImportDataAvailable(base::FilePath path) {
   if (filename.empty())
     filename = import_url_.host();
 
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(&CalculateFileSize, path),
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()}, base::BindOnce(&CalculateFileSize, path),
       base::BindOnce(&IpfsLinkImportWorker::CreateRequestWithFile,
                      weak_factory_.GetWeakPtr(), path, mime_type, filename));
 }

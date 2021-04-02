@@ -17,12 +17,13 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/token.h"
-#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 #include "brave/components/gemini/browser/gemini_json_parser.h"
 #include "brave/components/gemini/browser/pref_names.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -515,8 +516,8 @@ void GeminiService::OnURLLoaderComplete(
 
 base::SequencedTaskRunner* GeminiService::io_task_runner() {
   if (!io_task_runner_) {
-    io_task_runner_ = base::CreateSequencedTaskRunner(
-        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+    io_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return io_task_runner_.get();

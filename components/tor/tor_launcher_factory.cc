@@ -12,6 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/sequenced_task_runner.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/tor/service_sandbox_type.h"
 #include "brave/components/tor/tor_file_watcher.h"
@@ -164,9 +165,8 @@ void TorLauncherFactory::GetTorLog(GetLogCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::FilePath tor_log_path = config_.tor_data_path.AppendASCII("tor.log");
   scoped_refptr<base::SequencedTaskRunner> file_task_runner(
-      base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock(),
-           base::TaskPriority::BEST_EFFORT,
+      base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN}));
   base::PostTaskAndReplyWithResult(
       file_task_runner.get(), FROM_HERE,

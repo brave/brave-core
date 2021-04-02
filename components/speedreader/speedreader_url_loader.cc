@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
@@ -245,8 +246,8 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
 
   if (bytes_remaining_in_buffer_ > 0) {
     // Offload heavy distilling to another thread.
-    base::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::ThreadPool(), base::TaskPriority::USER_BLOCKING},
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::TaskPriority::USER_BLOCKING},
         base::BindOnce(
             [](std::string data, std::unique_ptr<Rewriter> rewriter,
                const std::string& stylesheet) -> auto {
