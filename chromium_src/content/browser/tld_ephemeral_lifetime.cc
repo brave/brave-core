@@ -53,12 +53,14 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   active_tld_storage_areas().erase(key_);
 }
 
+// static
 TLDEphemeralLifetime* TLDEphemeralLifetime::Get(BrowserContext* browser_context,
                                                 std::string storage_domain) {
   const TLDEphemeralLifetimeKey key(browser_context, std::move(storage_domain));
   return Get(key);
 }
 
+// static
 scoped_refptr<TLDEphemeralLifetime> TLDEphemeralLifetime::GetOrCreate(
     BrowserContext* browser_context,
     StoragePartition* storage_partition,
