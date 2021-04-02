@@ -74,7 +74,6 @@ if (is_win) {
   }
   brave_installer_exe = "brave_installer$brave_underline_full_version.exe"
   brave_stub_installer_exe = "BraveBrowser$_channel" + "Setup$_arch$brave_underline_full_version.exe"
-  brave_silent_stub_installer_exe = "BraveBrowserSilent$_channel" + "Setup$_arch$brave_underline_full_version.exe"
   brave_untagged_stub_installer_exe = "BraveBrowserUntagged$_channel" + "Setup$_arch$brave_underline_full_version.exe"
   brave_standalone_installer_exe = "BraveBrowserStandalone$_channel" + "Setup$_arch$brave_underline_full_version.exe"
   brave_silent_installer_exe = "BraveBrowserStandaloneSilent$_channel" + "Setup$_arch$brave_underline_full_version.exe"

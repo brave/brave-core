@@ -242,7 +242,6 @@ class TestGetBravePackages(unittest.TestCase):
         self.assertEquals(
             pkgs, sorted(['brave_installer-x64.exe',
                           'BraveBrowserNightlySetup.exe',
-                          'BraveBrowserSilentNightlySetup.exe',
                           'BraveBrowserStandaloneNightlySetup.exe',
                           'BraveBrowserStandaloneSilentNightlySetup.exe',
                           'BraveBrowserStandaloneUntaggedNightlySetup.exe',
@@ -255,7 +254,6 @@ class TestGetBravePackages(unittest.TestCase):
         self.assertEquals(
             pkgs, sorted(['brave_installer-ia32.exe',
                           'BraveBrowserNightlySetup32.exe',
-                          'BraveBrowserSilentNightlySetup32.exe',
                           'BraveBrowserStandaloneNightlySetup32.exe',
                           'BraveBrowserStandaloneSilentNightlySetup32.exe',
                           'BraveBrowserStandaloneUntaggedNightlySetup32.exe',
@@ -268,7 +266,6 @@ class TestGetBravePackages(unittest.TestCase):
         self.assertEquals(
             pkgs, sorted(['brave_installer-ia32.exe',
                           'BraveBrowserNightlySetup32.exe',
-                          'BraveBrowserSilentNightlySetup32.exe',
                           'BraveBrowserStandaloneNightlySetup32.exe',
                           'BraveBrowserStandaloneSilentNightlySetup32.exe',
                           'BraveBrowserStandaloneUntaggedNightlySetup32.exe',
@@ -281,7 +278,6 @@ class TestGetBravePackages(unittest.TestCase):
         self.assertEquals(
             pkgs, sorted(['brave_installer-x64.exe',
                           'BraveBrowserDevSetup.exe',
-                          'BraveBrowserSilentDevSetup.exe',
                           'BraveBrowserStandaloneDevSetup.exe',
                           'BraveBrowserStandaloneSilentDevSetup.exe',
                           'BraveBrowserStandaloneUntaggedDevSetup.exe',
@@ -294,7 +290,6 @@ class TestGetBravePackages(unittest.TestCase):
         self.assertEquals(
             pkgs, sorted(['brave_installer-ia32.exe',
                           'BraveBrowserDevSetup32.exe',
-                          'BraveBrowserSilentDevSetup32.exe',
                           'BraveBrowserStandaloneDevSetup32.exe',
                           'BraveBrowserStandaloneSilentDevSetup32.exe',
                           'BraveBrowserStandaloneUntaggedDevSetup32.exe',
@@ -307,7 +302,6 @@ class TestGetBravePackages(unittest.TestCase):
         self.assertEquals(
             pkgs, sorted(['brave_installer-ia32.exe',
                           'BraveBrowserDevSetup32.exe',
-                          'BraveBrowserSilentDevSetup32.exe',
                           'BraveBrowserStandaloneDevSetup32.exe',
                           'BraveBrowserStandaloneSilentDevSetup32.exe',
                           'BraveBrowserStandaloneUntaggedDevSetup32.exe',
@@ -321,7 +315,6 @@ class TestGetBravePackages(unittest.TestCase):
         self.assertEquals(
             pkgs, sorted(['brave_installer-x64.exe',
                           'BraveBrowserBetaSetup.exe',
-                          'BraveBrowserSilentBetaSetup.exe',
                           'BraveBrowserStandaloneBetaSetup.exe',
                           'BraveBrowserStandaloneSilentBetaSetup.exe',
                           'BraveBrowserStandaloneUntaggedBetaSetup.exe',
@@ -335,7 +328,6 @@ class TestGetBravePackages(unittest.TestCase):
         self.assertEquals(
             pkgs, sorted(['brave_installer-ia32.exe',
                           'BraveBrowserBetaSetup32.exe',
-                          'BraveBrowserSilentBetaSetup32.exe',
                           'BraveBrowserStandaloneBetaSetup32.exe',
                           'BraveBrowserStandaloneSilentBetaSetup32.exe',
                           'BraveBrowserStandaloneUntaggedBetaSetup32.exe',
@@ -349,7 +341,6 @@ class TestGetBravePackages(unittest.TestCase):
         self.assertEquals(
             pkgs, sorted(['brave_installer-ia32.exe',
                           'BraveBrowserBetaSetup32.exe',
-                          'BraveBrowserSilentBetaSetup32.exe',
                           'BraveBrowserStandaloneBetaSetup32.exe',
                           'BraveBrowserStandaloneSilentBetaSetup32.exe',
                           'BraveBrowserStandaloneUntaggedBetaSetup32.exe',
@@ -362,7 +353,6 @@ class TestGetBravePackages(unittest.TestCase):
             'release', '1.5.8', 'win32'))
         self.assertEquals(pkgs, sorted(['brave_installer-x64.exe',
                                         'BraveBrowserSetup.exe',
-                                        'BraveBrowserSilentSetup.exe',
                                         'BraveBrowserStandaloneSetup.exe',
                                         'BraveBrowserStandaloneSilentSetup.exe',
                                         'BraveBrowserStandaloneUntaggedSetup.exe',
@@ -375,7 +365,6 @@ class TestGetBravePackages(unittest.TestCase):
             'release', '1.5.8', 'win32', 'ia32'))
         self.assertEquals(pkgs, sorted(['brave_installer-ia32.exe',
                                         'BraveBrowserSetup32.exe',
-                                        'BraveBrowserSilentSetup32.exe',
                                         'BraveBrowserStandaloneSetup32.exe',
                                         'BraveBrowserStandaloneSilentSetup32.exe',
                                         'BraveBrowserStandaloneUntaggedSetup32.exe',
@@ -388,7 +377,6 @@ class TestGetBravePackages(unittest.TestCase):
             'release', '1.5.8', 'win32', 'x86'))
         self.assertEquals(pkgs, sorted(['brave_installer-ia32.exe',
                                         'BraveBrowserSetup32.exe',
-                                        'BraveBrowserSilentSetup32.exe',
                                         'BraveBrowserStandaloneSetup32.exe',
                                         'BraveBrowserStandaloneSilentSetup32.exe',
                                         'BraveBrowserStandaloneUntaggedSetup32.exe',
