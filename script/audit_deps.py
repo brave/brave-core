@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""This script runs `npm audit' and `cargo audit' on relevant paths in the repo."""
+
 # Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -33,6 +35,8 @@ ignored_npm_advisories = [
 
 
 def main():
+    """Audit a specified path, or the whole project."""
+
     args = parse_args()
     errors = 0
 
@@ -50,18 +54,22 @@ def main():
     return errors > 0
 
 
-# The path argument may be a relative, or absolute path to a directory.
 def audit_path(path, args):
+    """Audit the specified path (relative, or absolute)."""
+
     full_path = os.path.join(os.path.abspath(path), "")
     if os.path.isfile(os.path.join(path, 'package.json')) and \
        os.path.isfile(os.path.join(path, 'package-lock.json')) and \
        os.path.isdir(os.path.join(path, 'node_modules')) and \
-       not any(full_path.startswith(os.path.join(args.source_root, p, "")) for p in NPM_EXCLUDE_PATHS):
+       not any(full_path.startswith(os.path.join(args.source_root, p, "")) \
+               for p in NPM_EXCLUDE_PATHS):
         print('Auditing (npm) %s' % path)
         return npm_audit_deps(path, args)
-    elif os.path.isfile(os.path.join(path, 'Cargo.toml')) and \
+
+    if os.path.isfile(os.path.join(path, 'Cargo.toml')) and \
          os.path.isfile(os.path.join(path, 'Cargo.lock')) and \
-         any(full_path.startswith(os.path.join(args.source_root, p, "")) for p in CARGO_INCLUDE_PATHS):
+         any(full_path.startswith(os.path.join(args.source_root, p, "")) \
+             for p in CARGO_INCLUDE_PATHS):
         print('Auditing (cargo) %s' % path)
         return cargo_audit_deps(path, args)
 
@@ -69,6 +77,8 @@ def audit_path(path, args):
 
 
 def npm_audit_deps(path, args):
+    """Run `npm audit' in the specified path."""
+
     npm_cmd = 'npm'
     if sys.platform.startswith('win'):
         npm_cmd = 'npm.cmd'
@@ -78,7 +88,7 @@ def npm_audit_deps(path, args):
         npm_args.append('--production')
         print('WARNING: Ignoring npm devDependencies')
     audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE, cwd=path)
-    output, error_data = audit_process.communicate()
+    output, _ = audit_process.communicate()
 
     try:
         # results from audit
@@ -89,7 +99,7 @@ def npm_audit_deps(path, args):
         print('Audit failed to return valid json')
         return 1
 
-    if len(ignored_npm_advisories):
+    if len(ignored_npm_advisories) > 0:
         print('Ignoring NPM advisories ' + ','.join(map(str, ignored_npm_advisories)))
 
     resolutions = extract_resolutions(result)
@@ -104,6 +114,8 @@ def npm_audit_deps(path, args):
 
 
 def cargo_audit_deps(path, args):
+    """Run `cargo audit' in the specified path."""
+
     rustup_path = args.rustup_path
     cargo_path = args.cargo_path
 
@@ -134,6 +146,8 @@ def cargo_audit_deps(path, args):
 
 
 def extract_resolutions(result):
+    """Extract resolutions from advisories present in the result."""
+
     if 'advisories' not in result:
         return {}
     advisories = result['advisories']
@@ -143,6 +157,8 @@ def extract_resolutions(result):
 
 
 def parse_args():
+    """Parse command line arguments."""
+
     parser = argparse.ArgumentParser(description='Audit brave-core npm deps')
     parser.add_argument('input_dir', nargs='?', help='Directory to check')
     parser.add_argument('--source_root', required=True,
