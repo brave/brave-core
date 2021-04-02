@@ -361,7 +361,7 @@ const util = {
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
         [androidIconSource]: [androidIconDest],
-        [androidIconBaseSource]: [androidIconBaseDest, androidIconDest],
+        [androidIconBaseSource]: [androidIconBaseDest],
         [androidResSource]: [androidResDest],
         [androidResTemplateSource]: [androidResTemplateDest],
         [androidContentPublicResSource]: [androidContentPublicResDest],
