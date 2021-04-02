@@ -276,4 +276,124 @@ TEST(RLPDecodeTest, ComplexStructure) {
             RLPTestValueToString(val));
 }
 
+TEST(RLPDecodeTest, InvalidInputInt32Overflow) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0xbf0f000000000000021111"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputInt32Overflow2) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0xff0f000000000000021111"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputWrongSizeList) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0xf80180"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputwrongSizeList2) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0xf80100"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputIncorrectLengthInArray) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0xb9002100dc2b275d0f74e8a53e6f4ec61b27f242788"
+                                 "20be3f82ea2110e582081b0565df0"),
+                         &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputRandomRLP) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(
+      FromHex(
+          "0xf861f83eb9002100dc2b275d0f74e8a53e6f4ec61b27f24278820be3f82ea2110e"
+          "582081b0565df027b90015002d5ef8325ae4d034df55d4b58d0dfba64d61ddd17be0"
+          "0000b9001a00dae30907045a2f66fa36f2bb8aa9029cbb0b8a7b3b5c435ab331"),
+      &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputBytesShouldBeSingleByte00) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0x8100"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputBytesShouldBeSingleByte01) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0x8101"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputBytesShouldBeSingleByte7F) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0x817F"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputEmptyEncoding) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode("", &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputLessThanShortLengthArray1) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0x81"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputLessThanShortLengthArray2) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(
+      FromHex(
+          "0xa0000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e"),
+      &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputLessThanShortLengthList1) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0xc5010203"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputLessThanShortLengthList2) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0xe201020304050607"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputLessThanLongLengthArray1) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0xba010000aabbccddeeff"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputLessThanLongLengthArray2) {
+  base::Value val;
+  ASSERT_FALSE(
+      RLPDecode(FromHex("0xb840ffeeddccbbaa99887766554433221100"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputLessThanLongLengthList1) {
+  base::Value val;
+  ASSERT_FALSE(RLPDecode(FromHex("0xf90180"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
+TEST(RLPDecodeTest, InvalidInputLessThanLongLengthList2) {
+  base::Value val;
+  ASSERT_FALSE(
+      RLPDecode(FromHex("0xffffffffffffffffff0001020304050607"), &val));
+  ASSERT_TRUE(val.is_none());
+}
+
 }  // namespace brave_wallet

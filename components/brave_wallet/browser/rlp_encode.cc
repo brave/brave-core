@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 
 #include <algorithm>
+#include <utility>
 
 namespace {
 

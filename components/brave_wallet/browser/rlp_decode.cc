@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/rlp_decode.h"
 
+#include <utility>
+
 namespace {
 
 // Decodes an integer
@@ -25,6 +27,11 @@ bool RLPToInteger(const std::string& s, size_t* val) {
   }
   *val = static_cast<size_t>(static_cast<uint8_t>(s[length - 1]) + v2 * 256);
   return true;
+}
+
+bool IsWithinBounds(size_t offset, size_t data_len, size_t length) {
+  // This seems redundant but it is resistant to overflows
+  return offset <= length && data_len <= length && offset + data_len <= length;
 }
 
 // Decodes an offset, length, and value
@@ -49,7 +56,12 @@ bool RLPDecodeLength(const std::string& s,
     size_t strLen = prefix - 0x80;
     *offset = 1;
     *data_len = strLen;
-    if (*offset + *data_len > length) {
+    if (!IsWithinBounds(*offset, *data_len, length)) {
+      return false;
+    }
+    // If a string length is 1 it should have been handled by the single byte
+    // clause above.
+    if (*data_len == 1) {
       return false;
     }
     std::string str = s.substr(*offset, *data_len);
@@ -65,9 +77,16 @@ bool RLPDecodeLength(const std::string& s,
       size_t strLen = i;
       *offset = 1 + prefix - 0xb7;
       *data_len = strLen;
-      if (*offset + *data_len > length) {
+      if (!IsWithinBounds(*offset, *data_len, length)) {
         return false;
       }
+      // If a list contains 0-55 bytes, it should have been handled above by
+      // the RLP encoding spec.  So this input should never happen, even though
+      // it could in theory decode properly.
+      if (*data_len <= 55) {
+        return false;
+      }
+
       std::string str = s.substr(*offset, *data_len);
       *value = base::Value(str);
       return true;
@@ -75,18 +94,29 @@ bool RLPDecodeLength(const std::string& s,
   }
 
   if (prefix <= 0xf7 && length > prefix - 0xc0) {
-    size_t listLen = prefix - 0xc0;
     *offset = 1;
-    *data_len = listLen;
+    *data_len = prefix - 0xc0;
     *value = base::ListValue();
     return true;
   }
 
+  // The data is a list if the range of the first byte is [0xf8, 0xff], and the
+  // total payload of the list whose length is equal to the first byte minus
+  // 0xf7 follows the first byte, and the concatenation of the RLP encodings
+  // of all items of the list follows the total payload of the list;
+  size_t list_data_len;
+  size_t list_len_length = prefix - 0xf7;
   if (prefix <= 0xff && length >= 1 + prefix - 0xf7 &&
-      RLPToInteger(s.substr(1, prefix - 0xf7), &i)) {
-    size_t listLen = i;
-    *offset = 1 + prefix - 0xf7;
-    *data_len = listLen;
+      RLPToInteger(s.substr(1, list_len_length), &list_data_len)) {
+    // Skip past the prefix and the list len length
+    *offset = 1 + list_len_length;
+    *data_len = list_data_len;
+    // If a list contains 0-55 elements, it should have been handled above by
+    // the RLP encoding spec.  So this input should never happen, even though
+    // it could in theory decode properly.
+    if (*data_len <= 55 || !IsWithinBounds(*offset, *data_len, length)) {
+      return false;
+    }
     *value = base::ListValue();
     return true;
   }
@@ -105,7 +135,7 @@ bool RLPDecodeInternal(const std::string& s,
   }
 
   if (output->is_string()) {
-    if (*offset + *data_len > length) {
+    if (!IsWithinBounds(*offset, *data_len, length)) {
       return false;
     }
     std::string str = s.substr(*offset, *data_len);
@@ -116,7 +146,7 @@ bool RLPDecodeInternal(const std::string& s,
     if (!output->GetAsList(&output_list)) {
       return false;
     }
-    if (*offset + *data_len > length) {
+    if (!IsWithinBounds(*offset, *data_len, length)) {
       return false;
     }
     std::string sub = s.substr(*offset, *data_len);
@@ -129,7 +159,7 @@ bool RLPDecodeInternal(const std::string& s,
       output_list->Append(std::move(v));
       *offset += data_len2 + offset2;
       *data_len -= data_len2 + offset2;
-      if (*offset + *data_len > length) {
+      if (!IsWithinBounds(*offset, *data_len, length)) {
         return false;
       }
       sub = s.substr(*offset, *data_len);
@@ -149,7 +179,11 @@ bool RLPDecode(const std::string& s, base::Value* output) {
   }
   size_t offset;
   size_t data_len;
-  return RLPDecodeInternal(s, output, &offset, &data_len);
+  bool result = RLPDecodeInternal(s, output, &offset, &data_len);
+  if (!result) {
+    *output = base::Value();
+  }
+  return result;
 }
 
 }  // namespace brave_wallet

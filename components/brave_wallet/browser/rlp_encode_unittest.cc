@@ -5,6 +5,7 @@
 
 #include <ctype.h>
 #include <string>
+#include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
