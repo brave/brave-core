@@ -43,7 +43,7 @@ std::string GetChannelName(WithExtendedStable with_extended_stable) {
 }
 
 void CacheChannelInfo() {
-  ignore_result(GetChannelName());
+  ignore_result(GetChannelName(chrome::WithExtendedStable(false)));
 }
 
 version_info::Channel GetChannelByName(const std::string& channel) {
@@ -63,7 +63,7 @@ version_info::Channel GetChannelByName(const std::string& channel) {
 }
 
 version_info::Channel GetChannel() {
-  return GetChannelByName(GetChannelName());
+  return GetChannelByName(GetChannelName(chrome::WithExtendedStable(false)));
 }
 
 bool IsExtendedStableChannel() {

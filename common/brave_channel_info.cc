@@ -12,7 +12,8 @@ namespace brave {
 
 std::string GetChannelName() {
 #if defined(OFFICIAL_BUILD)
-  std::string channel_name = chrome::GetChannelName();
+  std::string channel_name =
+      chrome::GetChannelName(chrome::WithExtendedStable(false));
   if (channel_name.empty()) {
     channel_name = "release";
   }
