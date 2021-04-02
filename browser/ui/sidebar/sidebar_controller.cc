@@ -12,6 +12,8 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -52,12 +54,15 @@ void SidebarController::ActivateItemAt(int index) {
     return;
   }
 
-  // If an item targets in new tab, it should not be an active item.
-  if (IsBuiltInType(item)) {
-    // Should we also always open built-in type in new tab?
-    ShowSingletonTab(browser_, item.url);
+  auto params = GetSingletonTabNavigateParams(browser_, item.url);
+  int tab_index = GetIndexOfExistingTab(browser_, params);
+  // If browser has a tab that already loaded |item.url|, just activate it.
+  if (tab_index >= 0) {
+    browser_->tab_strip_model()->ActivateTabAt(tab_index);
   } else {
-    chrome::AddTabAt(browser_, item.url, -1, true);
+    // Load on current tab.
+    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    Navigate(&params);
   }
 }
 
