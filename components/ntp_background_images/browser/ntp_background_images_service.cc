@@ -10,11 +10,12 @@
 
 #include "base/bind.h"
 #include "base/command_line.h"
-#include "base/json/json_reader.h"
 #include "base/files/file_util.h"
+#include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
@@ -336,8 +337,8 @@ void NTPBackgroundImagesService::OnMappingTableComponentReady(
     return;
   }
 
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
       base::BindOnce(&GetMappingTableData, installed_dir),
       base::BindOnce(&NTPBackgroundImagesService::OnGetMappingTableData,
                      weak_factory_.GetWeakPtr()));
@@ -432,12 +433,11 @@ void NTPBackgroundImagesService::OnComponentReady(
   DVLOG(2) << __func__ << (is_super_referral ? ": NPT SR Component is ready"
                                              : ": NTP SI Component is ready");
 
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
       base::BindOnce(&HandleComponentData, installed_dir),
       base::BindOnce(&NTPBackgroundImagesService::OnGetComponentJsonData,
-                     weak_factory_.GetWeakPtr(),
-                     is_super_referral));
+                     weak_factory_.GetWeakPtr(), is_super_referral));
 }
 
 void NTPBackgroundImagesService::OnGetComponentJsonData(

@@ -80,8 +80,8 @@
 
     // Create worker thread in which importer runs.
     // In Chromium, this is created with `base::Thread("import_thread")`
-    import_thread_ = base::CreateSequencedTaskRunner(
-        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+    import_thread_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   }
   return self;
@@ -148,10 +148,9 @@
             };
 
         // Import into the Profile/ChromeBrowserState on the main-thread.
-        base::PostTask(
-            FROM_HERE, {web::WebThread::UI},
-            base::BindOnce(complete_import, std::move(bookmarks),
-                           top_level_folder_name, listener));
+        base::PostTask(FROM_HERE, {web::WebThread::UI},
+                       base::BindOnce(complete_import, std::move(bookmarks),
+                                      top_level_folder_name, listener));
       } else {
         listener(BraveBookmarksImporterStateCompleted,
                  [importer convertToIOSImportedBookmarks:bookmarks]);

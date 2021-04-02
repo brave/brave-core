@@ -19,6 +19,7 @@
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
@@ -125,8 +126,8 @@ BraveReferralsService::BraveReferralsService(PrefService* pref_service,
                                              const std::string& api_key,
                                              const std::string& platform)
     : initialized_(false),
-      task_runner_(base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock()})),
+      task_runner_(
+          base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()})),
       pref_service_(pref_service),
       api_key_(api_key),
       platform_(platform),

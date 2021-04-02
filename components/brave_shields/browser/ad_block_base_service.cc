@@ -17,6 +17,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
@@ -218,8 +219,8 @@ base::Optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
 }
 
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::LoadDATFileData<adblock::Engine>,
                      dat_file_path),
       base::BindOnce(&AdBlockBaseService::OnGetDATFileData,

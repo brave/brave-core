@@ -13,6 +13,7 @@
 #include "base/guid.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/ipfs/import/save_package_observer.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/webui_url_constants.h"
@@ -139,9 +140,8 @@ IpfsImportController::IpfsImportController(content::WebContents* web_contents)
     : web_contents_(web_contents),
       ipfs_service_(ipfs::IpfsServiceFactory::GetForContext(
           web_contents->GetBrowserContext())),
-      file_task_runner_(base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock(),
-           base::TaskPriority::BEST_EFFORT,
+      file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
   DCHECK(web_contents_);
   DCHECK(ipfs_service_);

@@ -32,12 +32,13 @@
 #import "base/strings/sys_string_conversions.h"
 #import "components/os_crypt/os_crypt.h"
 
-#import "base/i18n/icu_util.h"
-#import "base/ios/ios_util.h"
 #import "base/base64.h"
 #import "base/command_line.h"
+#import "base/i18n/icu_util.h"
+#import "base/ios/ios_util.h"
 #include "base/sequenced_task_runner.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 
 #import "RewardsLogging.h"
@@ -188,9 +189,8 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
       argv[i] = args[i].UTF8String;
     }
 
-    databaseQueue = base::CreateSequencedTaskRunner(
-        {base::ThreadPool(), base::MayBlock(),
-         base::TaskPriority::USER_VISIBLE,
+    databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 
     const auto* dbPath = [self rewardsDatabasePath].UTF8String;
@@ -1869,10 +1869,9 @@ BATLedgerBridge(BOOL,
 {
   __weak BATBraveLedger* weakSelf = self;
   base::PostTaskAndReplyWithResult(
-      databaseQueue.get(),
-      FROM_HERE,
+      databaseQueue.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
-          rewardsDatabase),
+                     rewardsDatabase),
       base::BindOnce(^(ledger::type::DBCommandResponsePtr response) {
         if (weakSelf)
           callback(std::move(response));

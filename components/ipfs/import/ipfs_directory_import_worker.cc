@@ -14,6 +14,7 @@
 #include "base/files/file_util.h"
 #include "base/guid.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "content/public/browser/browser_context.h"
@@ -108,9 +109,8 @@ IpfsDirectoryImportWorker::IpfsDirectoryImportWorker(
     const base::FilePath& source_path)
     : IpfsImportWorkerBase(context, endpoint, std::move(callback)),
       source_path_(source_path),
-      file_task_runner_(base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock(),
-           base::TaskPriority::BEST_EFFORT,
+      file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       weak_factory_(this) {
   std::string mime_boundary = net::GenerateMimeMultipartBoundary();
