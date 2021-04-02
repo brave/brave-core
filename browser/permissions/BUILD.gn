@@ -13,7 +13,6 @@ if (!is_android) {
 
     deps = [
       "//brave/browser:browser_process",
-      "//brave/components/permissions",
       "//chrome/browser",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
@@ -31,7 +30,6 @@ source_set("unit_tests") {
   sources = [ "permission_lifetime_manager_unittest.cc" ]
 
   deps = [
-    "//brave/components/permissions",
     "//chrome/browser",
     "//chrome/test:test_support",
     "//components/content_settings/core/browser",
