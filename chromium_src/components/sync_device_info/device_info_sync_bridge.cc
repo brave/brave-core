@@ -41,8 +41,8 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
       GetPulseIntervalFromSpecifics(specifics),
       specifics.feature_fields().send_tab_to_self_receiving_enabled(),
       SpecificsToSharingInfo(specifics),
-      specifics.invalidation_fields().instance_id_token(),
-      data_types,
+      SpecificsToPhoneAsASecurityKeyInfo(specifics),
+      specifics.invalidation_fields().instance_id_token(), data_types,
       specifics.has_brave_fields() &&
           specifics.brave_fields().has_is_self_delete_supported() &&
           specifics.brave_fields().is_self_delete_supported());
