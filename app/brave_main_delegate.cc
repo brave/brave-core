@@ -38,7 +38,6 @@
 #include "components/offline_pages/core/offline_page_feature.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
-#include "components/safe_browsing/core/features.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -228,8 +227,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     federated_learning::kFlocIdSortingLshBasedComputation.name,
     kSharingQRCodeGenerator.name,
     network_time::kNetworkTimeServiceQuerying.name,
-    safe_browsing::kEnhancedProtection.name,
-    safe_browsing::kEnhancedProtectionMessageInInterstitials.name,
 #if defined(OS_ANDROID)
     features::kWebNfc.name,
     feed::kInterestFeedContentSuggestions.name,
