@@ -15,6 +15,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #import "brave/browser/mac/su_updater.h"
 #include "brave/browser/update_util.h"
 #include "chrome/common/channel_info.h"
@@ -45,10 +46,10 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
     DCHECK(sel);
 
     scoped_refptr<PerformBridge> op = new PerformBridge(target, sel, arg);
-    base::PostTask(
+    base::ThreadPool::PostTask(
         FROM_HERE,
-        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+         base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
         base::Bind(&PerformBridge::Run, op.get()));
   }
 
