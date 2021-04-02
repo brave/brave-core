@@ -21,9 +21,7 @@ def main():
   args = argument_parser.parse_args()
 
   with tempfile.NamedTemporaryFile() as staging_file:
-    print(args.unsigned_apk_path)
     for unsigned_apk_path in args.unsigned_apk_path:
-        print(unsigned_apk_path)
         subprocess.check_output([
             args.zipalign_path, '-p', '-f', '4',
             unsigned_apk_path, staging_file.name])
@@ -50,7 +48,6 @@ def main():
                 '-signedjar', unsigned_apk_path,
                 args.key_name,
             ]
-        print(cmd_args)
         subprocess.check_output(cmd_args)
 
 if __name__ == '__main__':

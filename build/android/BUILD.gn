@@ -10,33 +10,25 @@ action("sign_app") {
 
   deps = [ "//brave/app/android:create_dist_zips" ]
 
-  #target_sign_app_path_1 = "$root_out_dir/apks/TrichromeChrome.aab"
-  #target_sign_app_path_2 = "$root_out_dir/apks/TrichromeLibrary.apk"
-  #target_sign_app_path = [
-      #rebase_path(target_sign_app_path_1, root_out_dir),
-      #rebase_path(target_sign_app_path_2, root_out_dir)
-  #]
-  if (target_cpu == "arm64" || target_cpu == "x64" ||
-      target_apk_base == "mono") {
-    #target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
-    target_sign_app_path = "$root_out_dir/apks/MonochromePublic.aab"
+  if (target_cpu == "arm64" || target_cpu == "x64") {
+    target_sign_app_path = "$root_out_dir/apks/MonochromePublic6432.aab"
   } else {
-    #target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
-    target_sign_app_path = "$root_out_dir/apks/ChromePublic.aab"
+    if (target_apk_base == "mono") {
+      #target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
+      target_sign_app_path = "$root_out_dir/apks/MonochromePublic.aab"
+    } else {
+      #target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
+      target_sign_app_path = "$root_out_dir/apks/ChromeModernPublic.aab"
+    }
   }
 
   outputs = [ "$target_sign_app_path-signed" ]
-  #outputs = [
-      #"$target_sign_app_path_1-signed",
-      #"$target_sign_app_path_2-signed"
-  #]
   args = []
   args += [
     rebase_path(_zipalign, root_out_dir),
     rebase_path(_apksigner, root_out_dir),
     rebase_path(_jarsigner, root_out_dir),
   ]
-  #args += target_sign_app_path
   args += [
     rebase_path(target_sign_app_path, root_out_dir),
     rebase_path("$brave_android_keystore_path", root_out_dir),
@@ -50,29 +42,23 @@ copy("brave") {
   visibility = [ "*" ]
   deps = []
   sources = []
-  if (target_cpu == "arm64" || target_cpu == "x64" ||
-      target_apk_base == "mono") {
-    #deps += [ "//chrome/android:monochrome_public_apk" ]
-    #sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
+  if (target_cpu == "arm64" || target_cpu == "x64") {
     deps += [ "//chrome/android:monochrome_64_32_public_bundle" ]
     sources += [ "$root_out_dir/apks/MonochromePublic6432.aab" ]
   } else {
-    #deps += [ "//chrome/android:chrome_public_apk" ]
-    #sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
-    deps += [ "//chrome/android:chrome_modern_public_bundle" ]
-    sources += [ "$root_out_dir/apks/ChromeModernPublic.aab" ]
-    # TriChrome
-    #deps += [
-        #"//chrome/android:trichrome_chrome_bundle",
-        #"//chrome/android:trichrome_library_apk"
-    #]
-    #sources += [
-        #"$root_out_dir/apks/TrichromeChrome.aab",
-        #"$root_out_dir/apks/TrichromeLibrary.apk"
-    #]
+    if (target_apk_base == "mono") {
+      #deps += [ "//chrome/android:monochrome_public_apk" ]
+      #sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
+      deps += [ "//chrome/android:monochrome_public_bundle" ]
+      sources += [ "$root_out_dir/apks/MonochromePublic.aab" ]
+    } else {
+      #deps += [ "//chrome/android:chrome_public_apk" ]
+      #sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
+      deps += [ "//chrome/android:chrome_modern_public_bundle" ]
+      sources += [ "$root_out_dir/apks/ChromeModernPublic.aab" ]
+    }
   }
   outputs = [ brave_apk_output ]
-  #outputs = [ "$root_out_dir/apks/Brave{{source_file_part}}" ]
 }
 
 java_strings_grd("android_brave_strings_grd") {
