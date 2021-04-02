@@ -173,11 +173,10 @@ pub fn init_content_score(handle: &Handle) -> f32 {
         Element(ref data) => match data.name.local {
             local_name!("article") => 10.0,
             local_name!("div") => 5.0,
-            local_name!("h1") | local_name!("h2") | local_name!("h3") | local_name!("h4") => -5.0,
+            local_name!("h1") | local_name!("h2") | local_name!("h3") | local_name!("h4") | local_name!("th") => -5.0,
             local_name!("blockquote") => 3.0,
             local_name!("pre") => 3.0,
             local_name!("td") => 3.0,
-            local_name!("th") => 5.0,
             local_name!("address") => -3.0,
             local_name!("ol") => -3.0,
             local_name!("ul") => -3.0,
@@ -582,6 +581,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 local_name!("form")
                 | local_name!("table")
                 | local_name!("ul")
+                | local_name!("section")
                 | local_name!("div") => is_useless(&handle),
                 local_name!("img") => {
                     if let Some(fixed_url) = fix_img_path(data, url) {
@@ -602,6 +602,9 @@ pub fn clean<S: ::std::hash::BuildHasher>(
         ProcessingInstruction(_) => unreachable!(),
     };
 
+    if useless {
+        return true;
+    }
     let mut useless_nodes = vec![];
     for child in handle.children() {
         if clean(&mut dom, child.clone(), url, title, features) {
@@ -614,7 +617,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     if dom::is_empty(&handle) {
         return true;
     }
-    useless
+    false
 }
 
 /// Using content score and other heuristics, determine if the handle should be marked for

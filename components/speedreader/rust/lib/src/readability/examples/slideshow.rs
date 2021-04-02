@@ -136,7 +136,7 @@ fn main() {
     extract_wrap("kotaku_1", &mut files, &css);
     extract_wrap("atlantic_1", &mut files, &css);
     extract_wrap("huffingtonpost_1", &mut files, &css);
-    extract_wrap("rpppe_1", &mut files, &css);
+    extract_wrap("rpp_1", &mut files, &css);
     extract_wrap("aclu", &mut files, &css);
     extract_wrap("ars_1", &mut files, &css);
     extract_wrap("bbc_1", &mut files, &css);
