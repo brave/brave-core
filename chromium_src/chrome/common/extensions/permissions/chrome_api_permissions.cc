@@ -13,7 +13,7 @@ namespace chrome_api_permissions {
 namespace {
 
 constexpr APIPermissionInfo::InitInfo brave_permissions_to_register[] = {
-    {APIPermission::kIpfs, "ipfs",
+    {APIPermissionID::kIpfs, "ipfs",
      APIPermissionInfo::kFlagImpliesFullURLAccess}};
 
 // Merges Brave and Chrormium constant arrays to final list of permissions.
