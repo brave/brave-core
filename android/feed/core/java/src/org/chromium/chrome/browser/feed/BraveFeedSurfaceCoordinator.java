@@ -76,4 +76,8 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mScrollViewForPolicy.setFillViewport(true);
         mScrollViewForPolicy.requestFocus();
     }
+
+    public boolean isEnhancedProtectionPromoEnabled() {
+        return false;
+    }
 }

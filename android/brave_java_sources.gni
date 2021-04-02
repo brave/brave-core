@@ -273,3 +273,5 @@ brave_java_base_module_deps =
     [ "//third_party/androidx:androidx_core_core_java" ]
 
 brave_android_features_tab_ui_java_sources = [ "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator.java" ]
+
+brave_browser_safe_browsing_android_sources = [ "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings/BraveRadioButtonGroupSafeBrowsingPreference.java" ]
