@@ -281,7 +281,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
     return;
   }
 
-  channel_ = chrome::GetChannelName();
+  channel_ = chrome::GetChannelName(chrome::WithExtendedStable(false));
   appPath_ = [appPath retain];
   url_ = [url retain];
 }
