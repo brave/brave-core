@@ -12,7 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/task/post_task.h"
-#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "brave/common/importer/importer_constants.h"
@@ -72,9 +72,9 @@ void BraveExternalProcessImporterHost::LaunchExtensionsImport() {
 
   const base::FilePath pref_file = source_profile_.source_path.AppendASCII(
       kChromeExtensionsPreferencesFile);
-  base::PostTaskAndReplyWithResult(
+  base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      {base::ThreadPool(), base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::BindOnce(&GetChromeExtensionsList, pref_file),
       base::BindOnce(
