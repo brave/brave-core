@@ -20,6 +20,7 @@ BraveDeviceInfo::BraveDeviceInfo(
     base::TimeDelta pulse_interval,
     bool send_tab_to_self_receiving_enabled,
     const base::Optional<DeviceInfo::SharingInfo>& sharing_info,
+    const base::Optional<PhoneAsASecurityKeyInfo>& paask_info,
     const std::string& fcm_registration_token,
     const ModelTypeSet& interested_data_types,
     bool is_self_delete_supported)
@@ -35,6 +36,7 @@ BraveDeviceInfo::BraveDeviceInfo(
                  pulse_interval,
                  send_tab_to_self_receiving_enabled,
                  sharing_info,
+                 paask_info,
                  fcm_registration_token,
                  interested_data_types),
       is_self_delete_supported_(is_self_delete_supported) {}
