@@ -903,6 +903,7 @@ if (is_android) {
       "//brave/android/javatests/org/chromium/chrome/browser/BravePrivateTabTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/safe_browsing/settings/BraveSafeBrowsingSettingsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/safety_check/BraveSafetyCheckSettingsFragmentTest.java",
     ]
 
@@ -918,6 +919,7 @@ if (is_android) {
       "//chrome/browser/fullscreen/android:java",
       "//chrome/browser/password_manager/android:java",
       "//chrome/browser/preferences:java",
+      "//chrome/browser/safe_browsing/android:java",
       "//chrome/browser/safety_check/android:java",
       "//chrome/browser/settings:test_support_java",
       "//chrome/browser/tab:java",
@@ -925,6 +927,7 @@ if (is_android) {
       "//chrome/browser/ui/android/appmenu:java",
       "//chrome/browser/ui/android/theme:java",
       "//chrome/browser/ui/android/toolbar:java",
+      "//chrome/browser/ui/messages/android:java",
       "//chrome/test/android:chrome_java_test_support",
       "//components/browser_ui/widget/android:java",
       "//components/embedder_support/android:browser_context_java",

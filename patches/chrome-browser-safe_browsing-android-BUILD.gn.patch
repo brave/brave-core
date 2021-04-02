@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/safe_browsing/android/BUILD.gn b/chrome/browser/safe_browsing/android/BUILD.gn
+index a2edc70556e9ac331758dfd4017d1e11a2b78b80..5211c15f00fe115015a8045616d8151f9edb6ad2 100644
+--- a/chrome/browser/safe_browsing/android/BUILD.gn
++++ b/chrome/browser/safe_browsing/android/BUILD.gn
+@@ -31,6 +31,7 @@ android_library("java") {
+     "java/src/org/chromium/chrome/browser/safe_browsing/settings/SafeBrowsingSettingsFragmentBase.java",
+     "java/src/org/chromium/chrome/browser/safe_browsing/settings/StandardProtectionSettingsFragment.java",
+   ]
++  sources += brave_browser_safe_browsing_android_sources
+   deps = [
+     ":java_resources",
+     "//base:base_java",
