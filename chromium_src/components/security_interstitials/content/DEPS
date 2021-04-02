@@ -1,0 +1,4 @@
+include_rules = [
+  "+../../../../../components/security_interstitials/content",
+  "+components/security_interstitials/content",
+]
