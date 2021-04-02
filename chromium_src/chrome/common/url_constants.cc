@@ -57,15 +57,13 @@ const char kChromeHelpViaWebUIURL[] =
 const char kChromeNativeScheme[] = "chrome-native";
 
 const char kChromeSearchLocalNtpHost[] = "local-ntp";
-const char kChromeSearchLocalNtpUrl[] =
-    "chrome-search://local-ntp/local-ntp.html";
 
 const char kChromeSearchMostVisitedHost[] = "most-visited";
 const char kChromeSearchMostVisitedUrl[] = "chrome-search://most-visited/";
 
-const char kChromeSearchLocalNtpBackgroundUrl[] =
-    "chrome-search://local-ntp/background.jpg";
-const char kChromeSearchLocalNtpBackgroundFilename[] = "background.jpg";
+const char kChromeUIUntrustedNewTabPageBackgroundUrl[] =
+    "chrome-untrusted://background.jpg";
+const char kChromeUIUntrustedNewTabPageBackgroundFilename[] = "background.jpg";
 
 const char kChromeSearchRemoteNtpHost[] = "remote-ntp";
 
