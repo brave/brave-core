@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/permissions/chrome_permission_origin_lifetime_monitor.h"
+#include "brave/browser/permissions/brave_permission_origin_lifetime_monitor.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
@@ -48,14 +48,14 @@ KeyedService* PermissionLifetimeManagerFactory::BuildServiceInstanceFor(
           permissions::features::kPermissionLifetime)) {
     return nullptr;
   }
-  auto* profile = Profile::FromBrowserContext(context);
   std::unique_ptr<permissions::PermissionOriginLifetimeMonitor>
       permission_origin_lifetime_monitor;
   if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
     permission_origin_lifetime_monitor =
-        std::make_unique<permissions::ChromePermissionOriginLifetimeMonitor>(
-            profile);
+        std::make_unique<permissions::BravePermissionOriginLifetimeMonitor>(
+            context);
   }
+  auto* profile = Profile::FromBrowserContext(context);
   return new permissions::PermissionLifetimeManager(
       HostContentSettingsMapFactory::GetForProfile(context),
       profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),
