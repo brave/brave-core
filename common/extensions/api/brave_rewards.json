@@ -1222,15 +1222,10 @@
         ]
       },
       {
-        "name": "saveOnboardingResult",
+        "name": "enableRewards",
         "type": "function",
-        "description": "Saves the rewards user onboarding result.",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "result"
-          }
-        ]
+        "description": "Enables rewards for the current profile.",
+        "parameters": []
       },
       {
         "name": "getPrefs",

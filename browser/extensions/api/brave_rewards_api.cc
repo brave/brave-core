@@ -1230,31 +1230,16 @@ BraveRewardsShouldShowOnboardingFunction::Run() {
   return RespondNow(OneArgument(base::Value(should_show)));
 }
 
-BraveRewardsSaveOnboardingResultFunction::
-~BraveRewardsSaveOnboardingResultFunction() = default;
+BraveRewardsEnableRewardsFunction::~BraveRewardsEnableRewardsFunction() =
+    default;
 
-ExtensionFunction::ResponseAction
-BraveRewardsSaveOnboardingResultFunction::Run() {
-  using ::brave_rewards::OnboardingResult;
-
-  std::unique_ptr<brave_rewards::SaveOnboardingResult::Params> params(
-      brave_rewards::SaveOnboardingResult::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
+ExtensionFunction::ResponseAction BraveRewardsEnableRewardsFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
+  if (!rewards_service)
     return RespondNow(Error("Rewards service is not initialized"));
-  }
 
-  if (params->result == "opted-in") {
-    rewards_service->SaveOnboardingResult(OnboardingResult::kOptedIn);
-  } else if (params->result == "dismissed") {
-    rewards_service->SaveOnboardingResult(OnboardingResult::kDismissed);
-  } else {
-    NOTREACHED();
-  }
-
+  rewards_service->EnableRewards();
   return RespondNow(NoArguments());
 }
 

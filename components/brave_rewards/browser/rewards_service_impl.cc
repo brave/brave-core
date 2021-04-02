@@ -1647,7 +1647,7 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
 }
 
 bool RewardsServiceImpl::ShouldShowOnboarding() const {
-  const bool legacy_enabled = profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
+  const bool enabled = profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
 
   bool ads_enabled = false;
   bool ads_supported = true;
@@ -1657,24 +1657,39 @@ bool RewardsServiceImpl::ShouldShowOnboarding() const {
     ads_supported = ads_service->IsSupportedLocale();
   }
 
-  return !legacy_enabled && !ads_enabled && ads_supported;
+  return !enabled && !ads_enabled && ads_supported;
 }
 
-void RewardsServiceImpl::SaveOnboardingResult(OnboardingResult result) {
-  PrefService* prefs = profile_->GetPrefs();
-  prefs->SetTime(prefs::kOnboarded, base::Time::Now());
+void RewardsServiceImpl::EnableRewards() {
+  StartProcess(base::BindOnce(
+      &RewardsServiceImpl::OnStartProcessForEnableRewards, AsWeakPtr()));
+}
 
-  if (result != OnboardingResult::kOptedIn) {
-    return;
+void RewardsServiceImpl::OnStartProcessForEnableRewards() {
+  auto* prefs = profile_->GetPrefs();
+  if (!prefs->GetBoolean(prefs::kEnabled)) {
+    // Store the user's opt-in in prefs. The enabled pref was discontinued after
+    // 1.18 when the Rewards toggle was removed from the UI. However, this
+    // created problems in scenarios where we need to know whether the user
+    // has previously consented to background Rewards functionality.
+    prefs->SetBoolean(prefs::kEnabled, true);
+
+    // If Rewards are not currently enabled, fetch the user's balance before
+    // turning on AC.
+    FetchBalance(base::BindOnce(
+        &RewardsServiceImpl::OnFetchBalanceForEnableRewards, AsWeakPtr()));
   }
 
-  StartProcess(base::BindOnce(&RewardsServiceImpl::OnStartProcessForOnboarding,
-                              AsWeakPtr()));
+  SetAdsEnabled(true);
 }
 
-void RewardsServiceImpl::OnStartProcessForOnboarding() {
-  SetAutoContributeEnabled(true);
-  SetAdsEnabled(true);
+void RewardsServiceImpl::OnFetchBalanceForEnableRewards(
+    ledger::type::Result result,
+    ledger::type::BalancePtr balance) {
+  // Do not enable AC on Rewards opt-in if the user has a non-zero balance, as
+  // this could result in unintentional BAT transfers.
+  if (balance && balance->total == 0)
+    SetAutoContributeEnabled(true);
 }
 
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
@@ -3372,9 +3387,9 @@ void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
 }
 
 bool RewardsServiceImpl::IsRewardsEnabled() const {
-  if (profile_->GetPrefs()->GetBoolean(prefs::kEnabled))
-    return true;
-
+  // This method will return true if either Ads or AC are enabled. We do not
+  // currently check the value of the "enabled" pref because users do not have
+  // a way to set that pref to false.
   if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled))
     return true;
 

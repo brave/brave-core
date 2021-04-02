@@ -155,7 +155,8 @@ declare namespace chrome.braveRewards {
   }
   const isInitialized: (callback: (initialized: boolean) => void) => {}
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
-  const saveOnboardingResult: (result: 'opted-in' | 'dismissed') => {}
+
+  function enableRewards (): void
 
   interface RewardsPrefs {
     adsEnabled: boolean

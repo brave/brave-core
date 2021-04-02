@@ -555,4 +555,25 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BAPReporting) {
   EXPECT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kBAPReported));
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {
+  // Make sure rewards, ads, and AC prefs are off
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  prefs->SetBoolean(brave_rewards::prefs::kAutoContributeEnabled, false);
+
+  // Load a balance into the user's wallet
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_service_->FetchPromotions();
+  promotion_->WaitForPromotionInitialization();
+  promotion_->ClaimPromotionViaCode();
+
+  rewards_service_->EnableRewards();
+  base::RunLoop().RunUntilIdle();
+
+  // Ensure that AC is not enabled
+  EXPECT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kEnabled));
+  EXPECT_FALSE(prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled));
+}
+
 }  // namespace rewards_browsertest

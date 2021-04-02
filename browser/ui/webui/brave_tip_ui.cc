@@ -324,21 +324,12 @@ void TipMessageHandler::GetOnboardingStatus(const base::ListValue* args) {
 }
 
 void TipMessageHandler::SaveOnboardingResult(const base::ListValue* args) {
-  using brave_rewards::OnboardingResult;
-
   CHECK_EQ(1U, args->GetSize());
-  if (!rewards_service_) {
+  if (!rewards_service_)
     return;
-  }
 
-  const std::string result_type = args->GetList()[0].GetString();
-  if (result_type == "opted-in") {
-    rewards_service_->SaveOnboardingResult(OnboardingResult::kOptedIn);
-  } else if (result_type == "dismissed") {
-    rewards_service_->SaveOnboardingResult(OnboardingResult::kDismissed);
-  } else {
-    NOTREACHED();
-  }
+  if (args->GetList()[0].GetString() == "opted-in")
+    rewards_service_->EnableRewards();
 }
 
 void TipMessageHandler::OnTip(const base::ListValue* args) {
