@@ -82,7 +82,8 @@ EphemeralStorageNamespaces::EphemeralStorageNamespaces(
     StorageController* controller,
     const String& session_storage_id,
     const String& local_storage_id)
-    : session_storage_(
+    : Supplement(nullptr),
+      session_storage_(
           MakeGarbageCollected<StorageNamespace>(controller,
                                                  session_storage_id)),
       local_storage_(MakeGarbageCollected<StorageNamespace>(controller,
