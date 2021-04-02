@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"

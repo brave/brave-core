@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_PERMISSIONS_PERMISSION_EXPIRATIONS_H_
 
 #include <map>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "base/callback.h"

@@ -5,6 +5,9 @@
 
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 
+#include <memory>
+#include <utility>
+
 #include "brave/browser/permissions/chrome_permission_origin_lifetime_monitor.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

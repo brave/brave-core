@@ -6,6 +6,8 @@
 #include "brave/components/permissions/permission_expirations.h"
 
 #include <algorithm>
+#include <memory>
+#include <utility>
 
 #include "base/stl_util.h"
 #include "base/strings/strcat.h"

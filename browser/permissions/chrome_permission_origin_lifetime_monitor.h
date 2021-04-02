@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_PERMISSIONS_CHROME_PERMISSION_ORIGIN_LIFETIME_MONITOR_H_
 #define BRAVE_BROWSER_PERMISSIONS_CHROME_PERMISSION_ORIGIN_LIFETIME_MONITOR_H_
 
+#include <string>
+
 #include "base/containers/flat_set.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/permissions/permission_origin_lifetime_monitor.h"

@@ -6,6 +6,7 @@
 #include "brave/components/permissions/permission_lifetime_manager.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/auto_reset.h"
 #include "base/stl_util.h"

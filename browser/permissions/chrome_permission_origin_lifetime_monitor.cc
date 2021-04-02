@@ -5,6 +5,8 @@
 
 #include "brave/browser/permissions/chrome_permission_origin_lifetime_monitor.h"
 
+#include <utility>
+
 #include "base/stl_util.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "chrome/browser/profiles/profile.h"
