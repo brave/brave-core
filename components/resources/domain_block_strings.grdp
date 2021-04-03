@@ -10,7 +10,7 @@
     Brave has prevented the following site from loading:
   </message>
   <message name="IDS_DOMAIN_BLOCK_EXPLANATION" desc="Second paragraph of domain block interstitial page.">
-    This site may be fraudulent, bounce you between various sites to set tracking cookies, or perform other privacy invasive actions.
+    This site may be fraudulent, bounce you between various sites to set tracking cookies, or perform other privacy-invasive actions.
   </message>
   <message name="IDS_DOMAIN_BLOCK_DONT_WARN_AGAIN_BUTTON" desc="The text for the domain block interstitial don't warn again checkbox.">
     Don't warn me about this site again
