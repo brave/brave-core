@@ -37,6 +37,9 @@ struct FilterListSubscriptionInfo {
   bool enabled;
 };
 
+FilterListSubscriptionInfo BuildInfoFromDict(const GURL& list_url,
+                                             const base::Value* dict);
+
 // The brave shields service in charge of ad-block checking and init
 // for a custom filter list subscription.
 class AdBlockSubscriptionService : public AdBlockBaseService {

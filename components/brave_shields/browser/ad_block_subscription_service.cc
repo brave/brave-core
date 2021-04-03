@@ -26,6 +26,28 @@
 
 namespace brave_shields {
 
+FilterListSubscriptionInfo BuildInfoFromDict(const GURL& list_url,
+                                             const base::Value* dict) {
+  DCHECK(dict);
+  DCHECK(dict->is_dict());
+
+  FilterListSubscriptionInfo info;
+
+  info.list_url = list_url;
+
+  double last_update_attempt = *dict->FindDoubleKey("last_update_attempt");
+  info.last_update_attempt = base::Time::FromJsTime(last_update_attempt);
+
+  double last_successful_update_attempt =
+      *dict->FindDoubleKey("last_successful_update_attempt");
+  info.last_successful_update_attempt =
+      base::Time::FromJsTime(last_successful_update_attempt);
+
+  info.enabled = *dict->FindBoolKey("enabled");
+
+  return info;
+}
+
 // Constructor for a new subscription
 AdBlockSubscriptionService::AdBlockSubscriptionService(
     const GURL& list_url,

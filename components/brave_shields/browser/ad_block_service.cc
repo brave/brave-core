@@ -327,6 +327,7 @@ std::unique_ptr<AdBlockService> AdBlockServiceFactory(
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
   registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
+  registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
 }
 
