@@ -43,7 +43,15 @@ const locale = {
   sideNavLinkedAccounts: 'Linked Accounts',
   sideNavLockWallet: 'Lock Wallet',
   sideNavGemini: 'Gemini',
-  sideNavCreators: 'Creators'
+  sideNavCreators: 'Creators',
+
+  // Top Nav Tab Buttons
+  topNavPortfolio: 'Portfolio',
+  topNavNFTS: 'NFTs',
+  topNavInvest: 'Invest',
+  topNavLending: 'Lending',
+  topNavApps: 'Apps',
+  topNavAccounts: 'Accounts'
 }
 
 export default locale
