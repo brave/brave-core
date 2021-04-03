@@ -47,6 +47,7 @@ static ALTER_TO_DIV_EXCEPTIONS: [&LocalName; 3] = [
     &local_name!("section"),
     &local_name!("p"),
 ];
+static LOADABLE_IMG_SUFFIX: [&str; 4] = [".jpg", ".jpeg", ".png", ".webp"];
 
 static DECAY_FACTOR: f32 = 3.0;
 
@@ -114,6 +115,75 @@ pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
     }
 }
 
+/// Returns true if the image src loads without JavaScript logic. Some sites like Kotaku and The
+/// Atlantic try and get fancy with this. Our simple heuristic is to check if src is set something
+/// reasonable or srcset is set at all. Some things we've seen in the wild are srcset being left
+/// out in favor of data-srcset, and src being base64 encoded.
+#[inline]
+fn img_is_loaded(data: &ElementData) -> bool {
+    let mut loaded = false;
+    if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
+        for suffix in LOADABLE_IMG_SUFFIX.iter() {
+            if src.ends_with(suffix) {
+                loaded = true;
+                break;
+            }
+        }
+        if !loaded {
+            // Try parsing the URL to ignore url params
+            match Url::parse(src) {
+                Ok(url) => {
+                    for suffix in LOADABLE_IMG_SUFFIX.iter() {
+                        if url.path().ends_with(suffix) {
+                            loaded = true;
+                            break;
+                        }
+                    }
+                }
+                _ => (),
+            }
+        }
+    } else if data
+        .attributes
+        .borrow()
+        .get(local_name!("srcset"))
+        .is_some()
+    {
+        loaded = true;
+    }
+    loaded
+}
+
+/// Contains metadata about how to load a lazy loaded image.
+struct LazyImage {
+    local: LocalName,
+    value: String,
+}
+
+/// Try and find attributes corresponding to a lazy loaded image and return the new attribute
+/// metadata. Look for anything ending in *srcset (data-srcset is fairly common) or any element
+/// with image suffixes.
+fn try_lazy_img(data: &ElementData) -> Option<LazyImage> {
+    for (name, value) in &data.attributes.borrow().map {
+        if name.local.as_ref().ends_with("-srcset") {
+            return Some(LazyImage {
+                local: local_name!("srcset"),
+                value: value.value.clone(),
+            });
+        }
+        if LOADABLE_IMG_SUFFIX
+            .iter()
+            .any(|suffix| value.value.ends_with(suffix))
+        {
+            return Some(LazyImage {
+                local: local_name!("src"),
+                value: value.value.clone(),
+            });
+        }
+    }
+    None
+}
+
 /// Returns the proportion of links an element contains with the amount of text in the subtree.
 #[inline]
 pub fn get_link_density(handle: &Handle) -> f32 {
@@ -173,7 +243,11 @@ pub fn init_content_score(handle: &Handle) -> f32 {
         Element(ref data) => match data.name.local {
             local_name!("article") => 10.0,
             local_name!("div") => 5.0,
-            local_name!("h1") | local_name!("h2") | local_name!("h3") | local_name!("h4") | local_name!("th") => -5.0,
+            local_name!("h1")
+            | local_name!("h2")
+            | local_name!("h3")
+            | local_name!("h4")
+            | local_name!("th") => -5.0,
             local_name!("blockquote") => 3.0,
             local_name!("pre") => 3.0,
             local_name!("td") => 3.0,
@@ -584,12 +658,14 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("section")
                 | local_name!("div") => is_useless(&handle),
                 local_name!("img") => {
-                    if let Some(fixed_url) = fix_img_path(data, url) {
-                        dom::set_attr("src", fixed_url.as_str(), handle.clone(), false);
-                        false
-                    } else {
-                        true
+                    let mut loaded = img_is_loaded(data);
+                    if !loaded {
+                        if let Some(img) = try_lazy_img(data) {
+                            dom::set_attr(img.local.as_ref(), img.value, handle.clone(), true);
+                            loaded = true
+                        }
                     }
+                    !loaded
                 }
                 _ => false,
             }
@@ -680,4 +756,38 @@ pub fn is_useless(handle: &Handle) -> bool {
         return true;
     }
     false
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_load_lazy_images_data_srcset() {
+        // This is a truncated <img> tag taken from Kotaku.
+        let input = r#"
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Wipe that paint outta your eyes, 60 fps is on the way."
+     data-srcset="https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_80,pg_1,q_80,w_80/d3xoltqrhfcqilnauamm.jpg 80w"
+     data-format="jpg" data-alt="Wipe that paint outta your eyes, 60 fps is on the way."
+/>"#;
+        let handle = dom::parse_inner(input).unwrap();
+        let elem = handle.as_element().unwrap();
+        assert_eq!(elem.name.local, local_name!("img"));
+        assert!(!img_is_loaded(elem));
+        assert!(try_lazy_img(elem).is_some());
+    }
+
+    #[test]
+    fn test_loaded_image_url_params() {
+        // This is a truncated <img> tag taken from Kotaku.
+        let input = r#"
+<img alt="Hori Parata at his Pātaua farm, the place where he was born and grew up."
+     class="gu-image" itemprop="contentUrl"
+     src="https://i.guim.co.uk/img/media/ff786/master/4800.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=575838a657b26493e956c7f84b058080">
+"#;
+        let handle = dom::parse_inner(input).unwrap();
+        let elem = handle.as_element().unwrap();
+        assert_eq!(elem.name.local, local_name!("img"));
+        assert!(img_is_loaded(elem));
+    }
 }
