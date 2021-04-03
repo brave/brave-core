@@ -48,6 +48,20 @@ static ALTER_TO_DIV_EXCEPTIONS: [&LocalName; 3] = [
     &local_name!("p"),
 ];
 static LOADABLE_IMG_SUFFIX: [&str; 4] = [".jpg", ".jpeg", ".png", ".webp"];
+static PRESENTATIONAL_ATTRIBUTES: [&LocalName; 12] = [
+    &local_name!("align"),
+    &local_name!("background"),
+    &local_name!("bgcolor"),
+    &local_name!("border"),
+    &local_name!("cellpadding"),
+    &local_name!("cellspacing"),
+    &local_name!("frame"),
+    &local_name!("hspace"),
+    &local_name!("rules"),
+    &local_name!("style"),
+    &local_name!("valign"),
+    &local_name!("vspace"),
+];
 
 static DECAY_FACTOR: f32 = 3.0;
 
@@ -640,7 +654,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
         Text(_) => false,
         Comment(_) => true,
         Element(ref data) => {
-            match data.name.local {
+            let delete = match data.name.local {
                 local_name!("script")
                 | local_name!("link")
                 | local_name!("style")
@@ -668,12 +682,16 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     !loaded
                 }
                 _ => false,
+            };
+            if !delete {
+                // Delete style, align, and other elements that will conflict with the Speedreader
+                // stylesheet.
+                let mut attrs = data.attributes.borrow_mut();
+                for attr in PRESENTATIONAL_ATTRIBUTES.iter() {
+                    attrs.remove(*attr);
+                }
             }
-
-            // // cleans all ids, classes and styles in node
-            // dom::clean_attr("id", &mut *attrs.borrow_mut());
-            // dom::clean_attr("class", &mut *attrs.borrow_mut());
-            // dom::clean_attr("style", &mut *attrs.borrow_mut());
+            delete
         }
         ProcessingInstruction(_) => unreachable!(),
     };
