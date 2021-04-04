@@ -175,14 +175,6 @@
     "message": "Blokiraj element preko birača",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Ukloni CSS pravila za ovu lokaciju",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Ukloni CSS pravila za sve lokacije",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Više opcija prikaza",
     "description": "Message for the advanced view option"

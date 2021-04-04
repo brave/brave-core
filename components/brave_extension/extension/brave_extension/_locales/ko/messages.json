@@ -175,14 +175,6 @@
     "message": "선택기를 통한 요소 차단",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "이 사이트의 CSS 규칙 삭제",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "모든 사이트의 CSS 규칙 삭제",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "고급 뷰",
     "description": "Message for the advanced view option"

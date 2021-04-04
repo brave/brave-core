@@ -175,14 +175,6 @@
     "message": "مسدود کردن عناصر به‌وسیله انتخابگر",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "پاک کردن قوانین CSS برای این سایت",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "پاک کردن قوانین CSS برای همه سایت‌ها",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "نمای پیشرفته",
     "description": "Message for the advanced view option"

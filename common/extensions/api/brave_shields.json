@@ -187,6 +187,12 @@
         ]
       },
       {
+        "name": "openFilterManagementPage",
+        "type": "function",
+        "description": "Opens brave://adblock for the purpose of adding, editing, or removing custom filters",
+        "parameters": []
+      },
+      {
         "name": "getBraveShieldsEnabled",
         "type": "function",
         "description": "Get brave shields control type for a url",

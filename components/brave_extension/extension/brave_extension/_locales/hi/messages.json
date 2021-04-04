@@ -175,14 +175,6 @@
     "message": "चयनकर्ता द्वारा एलिमेंट को ब्लॉक करें",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "इस साइट के लिए CSS नियम हटाएँ",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "सभी साइटों के लिए CSS नियम हटाएँ",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "उन्नत दृश्य",
     "description": "Message for the advanced view option"

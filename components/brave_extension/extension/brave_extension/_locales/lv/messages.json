@@ -175,14 +175,6 @@
     "message": "Bloķēt elementu, izmantojot atlasītāju",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Dzēst šai vietnei CSS noteikumus",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Visām vietnēm dzēst CSS noteikumus",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Paplašinātais skatījums",
     "description": "Message for the advanced view option"

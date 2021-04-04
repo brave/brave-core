@@ -11,6 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
+#include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
@@ -26,6 +27,7 @@
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
@@ -157,6 +159,16 @@ BraveShieldsAddSiteCosmeticFilterFunction::Run() {
   custom_filters_service->UpdateCustomFilters(custom_filters + '\n' +
                                               params->host + "##" +
                                               params->css_selector + '\n');
+
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+BraveShieldsOpenFilterManagementPageFunction::Run() {
+  Browser* browser = chrome::FindLastActive();
+  if (browser) {
+    brave::ShowBraveAdblock(browser);
+  }
 
   return RespondNow(NoArguments());
 }

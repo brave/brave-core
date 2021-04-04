@@ -175,14 +175,6 @@
     "message": "Blokovat prvky přes přepínač",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Vymazat pravidla CSS pro tuto stránku",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Vyčistit pravidla CSS pro všechny stránky",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Pokročilé zobrazení",
     "description": "Message for the advanced view option"

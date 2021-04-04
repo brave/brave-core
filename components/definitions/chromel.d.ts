@@ -302,6 +302,7 @@ declare namespace chrome.braveShields {
   const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectors: string[], forceHideSelectors: string[]) => void) => void
   const migrateLegacyCosmeticFilters: (legacyFilters: any, callback: (success: boolean) => void) => void
   const addSiteCosmeticFilter: (origin: string, cssSelector: string) => void
+  const openFilterManagementPage: () => void
 
   type BraveShieldsViewPreferences = {
     showAdvancedView: boolean
