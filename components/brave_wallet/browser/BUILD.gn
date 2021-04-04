@@ -31,6 +31,10 @@ source_set("browser") {
     "hd_key.h",
     "pref_names.cc",
     "pref_names.h",
+    "rlp_decode.cc",
+    "rlp_decode.h",
+    "rlp_encode.cc",
+    "rlp_encode.h",
   ]
 
   deps = [

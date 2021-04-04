@@ -18,6 +18,8 @@ source_set("brave_wallet_unit_tests") {
       "//brave/components/brave_wallet/browser/eth_requests_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_response_parser_unittest.cc",
       "//brave/components/brave_wallet/browser/hd_key_unittest.cc",
+      "//brave/components/brave_wallet/browser/rlp_decode_unittest.cc",
+      "//brave/components/brave_wallet/browser/rlp_encode_unittest.cc",
     ]
 
     deps = [
