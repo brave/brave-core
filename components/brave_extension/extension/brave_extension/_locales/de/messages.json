@@ -175,14 +175,6 @@
     "message": "Element per Wahlschalter blockieren",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "CSS-Regeln für diese Website löschen",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "CSS-Regeln für alle Websites löschen",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Erweiterte Ansicht",
     "description": "Message for the advanced view option"

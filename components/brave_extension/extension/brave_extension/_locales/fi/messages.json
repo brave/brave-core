@@ -175,14 +175,6 @@
     "message": "Estä elementti valitsimen kautta",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Tyhjennä tämän sivun CSS-säännöt",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Tyhjennä kaikkien sivustojen CSS-säännöt",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Tarkennettu näkymä",
     "description": "Message for the advanced view option"

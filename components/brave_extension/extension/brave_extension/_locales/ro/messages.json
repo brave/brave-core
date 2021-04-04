@@ -175,14 +175,6 @@
     "message": "Blocați elementul prin selector",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Ștergeți regulile CSS pentru acest site",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Ștergeți regulile CSS pentru toate site-urile",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Vizualizare avansată",
     "description": "Message for the advanced view option"

@@ -175,14 +175,6 @@
     "message": "አንድን ጉዳይ በመምረጫው አማካይነት አግድ ",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "ለዚህ ድረ ገጽ የ CSS ደንቦችን አጥራ ",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "ለሁሉም ድረ ገጾች የ CSS ደንቦችን አጥራ ",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "የላቀ እይታ",
     "description": "Message for the advanced view option"

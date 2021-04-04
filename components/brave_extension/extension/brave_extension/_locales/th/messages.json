@@ -175,14 +175,6 @@
     "message": "บล็อกองค์ประกอบผ่านตัวเลือก",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "ล้างกฎ CSS สำหรับไซต์นี้",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "ล้างกฎ CSS สำหรับไซต์ทั้งหมด",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "มุมมองขั้นสูง",
     "description": "Message for the advanced view option"

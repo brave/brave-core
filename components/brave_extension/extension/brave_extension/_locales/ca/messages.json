@@ -175,14 +175,6 @@
     "message": "Bloqueja l'element a través del selector",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Esborra les regles de CSS per a aquest lloc",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Esborra les regles de CSS per a tots els llocs",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Vista avançada",
     "description": "Message for the advanced view option"

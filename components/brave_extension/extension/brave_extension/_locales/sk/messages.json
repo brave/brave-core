@@ -175,14 +175,6 @@
     "message": "Blokovať element pomocou selektora",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Vymazať CSS pravidlá pre túto stránku",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Vymazať CSS pravidlá pre všetky stránky",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Rozšírené zobrazenie",
     "description": "Message for the advanced view option"

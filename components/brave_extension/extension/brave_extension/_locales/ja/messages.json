@@ -175,14 +175,6 @@
     "message": "セレクターを使って要素をブロックする",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "このサイトのCSSルールを消去する",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "すべてのサイトのCSSルールを消去する",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "詳細表示",
     "description": "Message for the advanced view option"
