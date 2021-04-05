@@ -41,14 +41,14 @@ std::set<std::string> FeaturesToSet(const std::string& features) {
   return result;
 }
 
-void CheckEnabledFeatures(base::CommandLine& command_line,
+void CheckEnabledFeatures(const base::CommandLine& command_line,
                           const std::string& expected) {
   EXPECT_EQ(FeaturesToSet(
                 command_line.GetSwitchValueASCII(switches::kEnableFeatures)),
             FeaturesToSet(expected));
 }
 
-void CheckDisabledFeatures(base::CommandLine& command_line,
+void CheckDisabledFeatures(const base::CommandLine& command_line,
                            const std::string& expected) {
   EXPECT_EQ(FeaturesToSet(
                 command_line.GetSwitchValueASCII(switches::kDisableFeatures)),
