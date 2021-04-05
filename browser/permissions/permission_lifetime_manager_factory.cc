@@ -8,8 +8,8 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/permissions/brave_permission_origin_lifetime_monitor.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
+#include "brave/components/permissions/permission_origin_lifetime_monitor_impl.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -52,7 +52,7 @@ KeyedService* PermissionLifetimeManagerFactory::BuildServiceInstanceFor(
       permission_origin_lifetime_monitor;
   if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
     permission_origin_lifetime_monitor =
-        std::make_unique<permissions::BravePermissionOriginLifetimeMonitor>(
+        std::make_unique<permissions::PermissionOriginLifetimeMonitorImpl>(
             context);
   }
   auto* profile = Profile::FromBrowserContext(context);

@@ -24,9 +24,9 @@ class PermissionOriginLifetimeMonitor {
   virtual void SetOnPermissionOriginDestroyedCallback(
       base::RepeatingCallback<void(const std::string&)> callback) = 0;
 
-  // Subscribe to a permission origin destruction. Returns a string key which
-  // will be used in a callback. An empty key can be returned if a permission
-  // origin can not be observed.
+  // Subscribe to a permission origin destruction. Returns an ephemeral storage
+  // domain or an empty string if a storage partition for |requesting_origin|
+  // doesn't exist. Returned string will be used in a callback.
   virtual std::string SubscribeToPermissionOriginDestruction(
       const GURL& requesting_origin) = 0;
 };

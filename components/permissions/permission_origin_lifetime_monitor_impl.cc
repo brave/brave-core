@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/permissions/brave_permission_origin_lifetime_monitor.h"
+#include "brave/components/permissions/permission_origin_lifetime_monitor_impl.h"
 
 #include <utility>
 
@@ -14,24 +14,24 @@
 
 namespace permissions {
 
-BravePermissionOriginLifetimeMonitor::BravePermissionOriginLifetimeMonitor(
+PermissionOriginLifetimeMonitorImpl::PermissionOriginLifetimeMonitorImpl(
     content::BrowserContext* browser_context)
     : browser_context_(browser_context) {
   DCHECK(browser_context_);
   DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 }
 
-BravePermissionOriginLifetimeMonitor::~BravePermissionOriginLifetimeMonitor() =
+PermissionOriginLifetimeMonitorImpl::~PermissionOriginLifetimeMonitorImpl() =
     default;
 
-void BravePermissionOriginLifetimeMonitor::
+void PermissionOriginLifetimeMonitorImpl::
     SetOnPermissionOriginDestroyedCallback(
         base::RepeatingCallback<void(const std::string&)> callback) {
   permission_destroyed_callback_ = std::move(callback);
 }
 
 std::string
-BravePermissionOriginLifetimeMonitor::SubscribeToPermissionOriginDestruction(
+PermissionOriginLifetimeMonitorImpl::SubscribeToPermissionOriginDestruction(
     const GURL& requesting_origin) {
   DCHECK(permission_destroyed_callback_);
   std::string storage_domain =
@@ -39,6 +39,7 @@ BravePermissionOriginLifetimeMonitor::SubscribeToPermissionOriginDestruction(
   auto* tld_ephemeral_lifetime =
       content::TLDEphemeralLifetime::Get(browser_context_, storage_domain);
   if (!tld_ephemeral_lifetime) {
+    DCHECK(!base::Contains(active_subscriptions_, storage_domain));
     // If an ephemeral lifetime object doesn't exist, treat a permission origin
     // as an already destroyed one.
     return std::string();
@@ -46,14 +47,14 @@ BravePermissionOriginLifetimeMonitor::SubscribeToPermissionOriginDestruction(
 
   if (!base::Contains(active_subscriptions_, storage_domain)) {
     tld_ephemeral_lifetime->RegisterOnDestroyCallback(base::BindOnce(
-        &BravePermissionOriginLifetimeMonitor::OnEphemeralTLDDestroyed,
+        &PermissionOriginLifetimeMonitorImpl::OnEphemeralTLDDestroyed,
         weak_ptr_factory_.GetWeakPtr()));
     active_subscriptions_.insert(storage_domain);
   }
   return storage_domain;
 }
 
-void BravePermissionOriginLifetimeMonitor::OnEphemeralTLDDestroyed(
+void PermissionOriginLifetimeMonitorImpl::OnEphemeralTLDDestroyed(
     const std::string& storage_domain) {
   DCHECK(base::Contains(active_subscriptions_, storage_domain));
   active_subscriptions_.erase(storage_domain);

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PERMISSIONS_BRAVE_PERMISSION_ORIGIN_LIFETIME_MONITOR_H_
-#define BRAVE_BROWSER_PERMISSIONS_BRAVE_PERMISSION_ORIGIN_LIFETIME_MONITOR_H_
+#ifndef BRAVE_COMPONENTS_PERMISSIONS_PERMISSION_ORIGIN_LIFETIME_MONITOR_IMPL_H_
+#define BRAVE_COMPONENTS_PERMISSIONS_PERMISSION_ORIGIN_LIFETIME_MONITOR_IMPL_H_
 
 #include <string>
 
@@ -19,21 +19,19 @@ class BrowserContext;
 namespace permissions {
 
 // Uses TLDEphemeralLifetime to observe a permission origin destruction.
-class BravePermissionOriginLifetimeMonitor
+class PermissionOriginLifetimeMonitorImpl
     : public PermissionOriginLifetimeMonitor {
  public:
-  BravePermissionOriginLifetimeMonitor(
+  explicit PermissionOriginLifetimeMonitorImpl(
       content::BrowserContext* browser_context);
-  BravePermissionOriginLifetimeMonitor(
-      const BravePermissionOriginLifetimeMonitor&) = delete;
-  BravePermissionOriginLifetimeMonitor& operator=(
-      const BravePermissionOriginLifetimeMonitor&) = delete;
-  ~BravePermissionOriginLifetimeMonitor() override;
+  PermissionOriginLifetimeMonitorImpl(
+      const PermissionOriginLifetimeMonitorImpl&) = delete;
+  PermissionOriginLifetimeMonitorImpl& operator=(
+      const PermissionOriginLifetimeMonitorImpl&) = delete;
+  ~PermissionOriginLifetimeMonitorImpl() override;
 
   void SetOnPermissionOriginDestroyedCallback(
       base::RepeatingCallback<void(const std::string&)> callback) override;
-  // Returns an ephemeral storage domain or an empty string if a storage
-  // partition for |requesting_origin| doesn't exist.
   std::string SubscribeToPermissionOriginDestruction(
       const GURL& requesting_origin) override;
 
@@ -46,10 +44,10 @@ class BravePermissionOriginLifetimeMonitor
       permission_destroyed_callback_;
   base::flat_set<std::string> active_subscriptions_;
 
-  base::WeakPtrFactory<BravePermissionOriginLifetimeMonitor> weak_ptr_factory_{
+  base::WeakPtrFactory<PermissionOriginLifetimeMonitorImpl> weak_ptr_factory_{
       this};
 };
 
 }  // namespace permissions
 
-#endif  // BRAVE_BROWSER_PERMISSIONS_BRAVE_PERMISSION_ORIGIN_LIFETIME_MONITOR_H_
+#endif  // BRAVE_COMPONENTS_PERMISSIONS_PERMISSION_ORIGIN_LIFETIME_MONITOR_IMPL_H_
