@@ -63,9 +63,8 @@ bool Open(const base::FilePath& file_path, base::File* file) {
 
   file->Initialize(file_path, base::File::FLAG_OPEN | base::File::FLAG_READ |
                                   base::File::FLAG_WRITE);
-  DCHECK(file->IsValid());
 
-  return true;
+  return file->IsValid();
 }
 
 bool CreateOrOpen(const base::FilePath& file_path, base::File* file) {
@@ -79,9 +78,7 @@ bool CreateOrOpen(const base::FilePath& file_path, base::File* file) {
     return false;
   }
 
-  DCHECK(file->IsValid());
-
-  return true;
+  return file->IsValid();
 }
 
 int64_t SeekFromEnd(base::File* file, int num_lines) {
