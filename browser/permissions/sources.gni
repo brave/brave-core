@@ -5,7 +5,6 @@ brave_browser_permissions_sources = [
 
 brave_browser_permissions_deps = [
   "//base",
-  "//brave/components/permissions",
   "//components/keyed_service/content",
   "//components/permissions",
 ]

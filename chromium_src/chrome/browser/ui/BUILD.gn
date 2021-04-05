@@ -6,10 +6,7 @@
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 
 group("ui") {
-  deps = [
-    "//brave/components/permissions",
-    "//brave/components/sidebar/buildflags",
-  ]
+  deps = [ "//brave/components/sidebar/buildflags" ]
 
   if (enable_brave_webtorrent) {
     deps += [
