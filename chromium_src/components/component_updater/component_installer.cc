@@ -53,5 +53,4 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
   Register_ChromiumImpl(std::move(register_callback), std::move(callback));
 }
 
-
 }  // namespace component_updater

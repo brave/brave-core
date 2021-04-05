@@ -5,6 +5,8 @@
 
 #include "brave/components/permissions/permission_lifetime_options.h"
 
+#include <utility>
+
 namespace permissions {
 
 PermissionLifetimeOption::PermissionLifetimeOption(

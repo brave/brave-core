@@ -176,7 +176,8 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
 
   std::string error;
   scoped_refptr<Extension> extension = extensions::file_util::LoadExtension(
-      temp_dir.GetPath(), ManifestLocation::kComponent, Extension::NO_FLAGS, &error);
+      temp_dir.GetPath(), ManifestLocation::kComponent, Extension::NO_FLAGS,
+      &error);
   if (!extension.get()) {
     LOG(ERROR) << "Could not load Greaselion extension";
     LOG(ERROR) << error;
