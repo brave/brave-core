@@ -20,6 +20,7 @@ bool IsDecentralizedDnsEnabled();
 bool IsUnstoppableDomainsTLD(const GURL& url);
 bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state);
 bool IsUnstoppableDomainsResolveMethodDoH(PrefService* local_state);
+bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state);
 
 bool IsENSTLD(const GURL& url);
 bool IsENSResolveMethodAsk(PrefService* local_state);

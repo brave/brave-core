@@ -1,6 +1,8 @@
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -54,7 +56,9 @@ source_set("net") {
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
+    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
@@ -110,6 +114,18 @@ source_set("net") {
     sources += [
       "brave_translate_redirect_network_delegate_helper.cc",
       "brave_translate_redirect_network_delegate_helper.h",
+    ]
+  }
+
+  if (decentralized_dns_enabled && brave_wallet_enabled) {
+    sources += [
+      "decentralized_dns_network_delegate_helper.cc",
+      "decentralized_dns_network_delegate_helper.h",
+    ]
+
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/decentralized_dns",
     ]
   }
 }

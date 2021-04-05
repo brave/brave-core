@@ -12,7 +12,30 @@ enum class ResolveMethodTypes {
   ASK,
   DISABLED,
   DNS_OVER_HTTPS,
+  ETHEREUM,
 };
+
+enum class RecordKeys {
+  DWEB_IPFS_HASH,
+  IPFS_HTML_VALUE,
+  DNS_A,
+  DNS_AAAA,
+  BROWSER_REDIRECT_URL,
+  IPFS_REDIRECT_DOMAIN_VALUE,
+  MAX_RECORD_KEY = IPFS_REDIRECT_DOMAIN_VALUE,
+};
+
+// Need to match RecordKeys above.
+const constexpr char* const kRecordKeys[] = {
+    "dweb.ipfs.hash", "ipfs.html.value",      "dns.A",
+    "dns.AAAA",       "browser.redirect_url", "ipfs.redirect_domain.value"};
+
+static_assert(static_cast<size_t>(RecordKeys::MAX_RECORD_KEY) + 1u ==
+                  sizeof(kRecordKeys) / sizeof(kRecordKeys[0]),
+              "Size should match between RecordKeys and kRecordKeys.");
+
+constexpr char kProxyReaderContractAddress[] =
+    "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5";
 
 }  // namespace decentralized_dns
 
