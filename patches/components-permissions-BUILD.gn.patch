@@ -1,5 +1,5 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 799755985b575a7464897d0969bf383c386d267c..80a7190f344b27a58c8c05b710a1b19b292031eb 100644
+index 799755985b575a7464897d0969bf383c386d267c..736acd4686d8cc47f09b5859b9ef78644c73d3c1 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
 @@ -2,6 +2,8 @@
@@ -11,12 +11,11 @@ index 799755985b575a7464897d0969bf383c386d267c..80a7190f344b27a58c8c05b710a1b19b
  source_set("permissions_common") {
    sources = [
      "features.cc",
-@@ -89,6 +91,8 @@ source_set("permissions") {
+@@ -89,6 +91,7 @@ source_set("permissions") {
      "//ui/base",
      "//url",
    ]
-+  sources += brave_components_permissions_sources
-+  deps += brave_components_permissions_deps
++  sources += brave_components_permissions_sources deps += brave_components_permissions_deps
    if (is_android) {
      sources += [
        "android/android_permission_util.cc",
