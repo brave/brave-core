@@ -61,10 +61,14 @@ async function applyPatches() {
 
 const util = {
 
+  runProcess: (cmd, args = [], options = {}) => {
+    Log.command(options.cwd, cmd, args)
+    return spawnSync(cmd, args, options)
+  },
+
   run: (cmd, args = [], options = {}) => {
     const { continueOnFail, ...cmdOptions } = options
-    Log.command(cmdOptions.cwd, cmd, args)
-    const prog = spawnSync(cmd, args, cmdOptions)
+    const prog = util.runProcess(cmd, args, cmdOptions)
     if (prog.status !== 0) {
       if (!continueOnFail) {
         console.log(prog.stdout && prog.stdout.toString())
@@ -465,6 +469,17 @@ const util = {
       '-k', num_compile_failure,
       ...config.extraNinjaOpts
     ]
+
+    if (config.use_goma) {
+      const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
+      if (gomaLoginInfo.status !== 0) {
+        console.log('Login required for using Goma. This is only needed once')
+        util.run('goma_auth', ['login'], options)
+      }
+      util.run('goma_ctl', ['ensure_start'], options)
+      ninjaOpts.push('-j', config.gomaJValue)
+    }
+
     util.run('ninja', ninjaOpts, options)
   },
 

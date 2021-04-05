@@ -2,6 +2,7 @@
 
 const path = require('path')
 const fs = require('fs')
+const os = require('os')
 const assert = require('assert')
 const { spawnSync } = require('child_process')
 const rootDir = require('./root')
@@ -56,8 +57,8 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
       separatorIndex = input.length
     }
 
-    const key = input.substring(0, separatorIndex);
-    const value = input.substring(separatorIndex + 1);
+    const key = input.substring(0, separatorIndex)
+    const value = input.substring(separatorIndex + 1)
     callback(accumulator, key, value)
   }
 }
@@ -115,6 +116,8 @@ const Config = function () {
   this.channel = 'development'
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
+  this.gomaServerHost = getNPMConfig(['goma_server_host'])
+  this.gomaJValue = (os.cpus().length + 1) * 3
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
@@ -407,7 +410,7 @@ Config.prototype.shouldSign = function () {
   if (this.skip_signing ||
       this.buildConfig !== 'Release' ||
       this.targetOS === 'ios') {
-    return false;
+    return false
   }
 
   if (this.targetOS === 'android') {
@@ -423,7 +426,7 @@ Config.prototype.shouldSign = function () {
            process.env.SIGNTOOL_ARGS !== undefined
   }
 
-  return false;
+  return false
 }
 
 Config.prototype.prependPath = function (oldPath, addPath) {
@@ -507,6 +510,12 @@ Config.prototype.update = function (options) {
     this.is_asan = false
   }
 
+  if (options.use_goma) {
+    this.use_goma = true
+  } else {
+    this.use_goma = false
+  }
+
   if (options.C) {
     this.__outputDir = options.C
   }
@@ -520,7 +529,7 @@ Config.prototype.update = function (options) {
   }
 
   if (options.brave_safetynet_api_key) {
-    this.braveSafetyNetApiKey = options.brave_safetynet_api_key;
+    this.braveSafetyNetApiKey = options.brave_safetynet_api_key
   }
 
   if (options.brave_google_api_endpoint) {
@@ -666,8 +675,13 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
-    if (this.sccache) {
+    if (this.use_goma && this.gomaServerHost) {
+      env.CC_WRAPPER = path.join(this.depotToolsDir, '.cipd_bin', 'gomacc')
+      env.GOMA_SERVER_HOST = this.gomaServerHost
+      console.log('using goma with j value of ' + this.gomaJValue + ' at ' + this.gomaServerHost)
+    } else if (this.sccache) {
       env.CC_WRAPPER = this.sccache
+      console.log('using cc wrapper ' + path.basename(this.sccache))
       if (path.basename(this.sccache) === 'ccache') {
         console.log('using ccache')
         env.CCACHE_CPP2 = 'yes'
