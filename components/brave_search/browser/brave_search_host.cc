@@ -61,7 +61,7 @@ void BraveSearchHost::FetchBackupResults(const std::string& query,
 
   if (backup_provider_for_test.is_empty()) {
     std::string spec(
-        base::StringPrintf("https://www.google.com/search?q=%s&hl=%s&c=%s",
+        base::StringPrintf("https://www.google.com/search?q=%s&hl=%s&gl=%s",
                            query.c_str(), lang.c_str(), country.c_str()));
     request->url = GURL(spec);
   } else {
