@@ -13,7 +13,6 @@
 #include "ui/aura/window.h"
 #include "ui/aura/window_tree_host.h"
 #include "ui/base/x/x11_util.h"
-#include "ui/base/x/x11_window.h"
 #include "ui/gfx/x/x11_atom_cache.h"
 #include "ui/gfx/x/xproto_util.h"
 
