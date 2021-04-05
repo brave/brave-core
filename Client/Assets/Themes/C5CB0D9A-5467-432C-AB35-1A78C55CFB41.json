@@ -3,25 +3,25 @@
     "title": "Default private",
     "url": "www.brave.com",
     "description": "The standard default private theme",
-    "thumbnail": "https://www.google.com",
+    "thumbnail": "https://www.brave.com",
     "isDark": true,
     "enabled": true,
     
     "colors": {
-        "header": "0x1B0C32",
-        "footer": "0x1B0C32",
-        "home": "0x301B5A",
-        "addressBar": "0x3D2742",
+        "header": "0x381E85",
+        "footer": "0x381E85",
+        "home": "0x17171F",
+        "addressBar": "0x000000",
         "border": "0xffffff",
-        "accent": "0xcf68ff",
+        "accent": "0x6845D1",
         "tints": {
-            "home": "0xE7E6E9",
-            "header": "0xE7E6E9",
-            "footer": "0xE7E6E9",
-            "addressBar": "0xE7E6E9"
+            "home": "0xF0F2FF",
+            "header": "0xF0F2FF",
+            "footer": "0xF0F2FF",
+            "addressBar": "0xF0F2FF"
         },
         "transparencies": {
-            "addressBarAlpha": 1.0,
+            "addressBarAlpha": 0.8,
             "borderAlpha": 0.2,
         },
         "stats": {
