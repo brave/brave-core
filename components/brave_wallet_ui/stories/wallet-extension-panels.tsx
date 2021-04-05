@@ -5,7 +5,7 @@ import { ConnectWithSite, ConnectedPanel, Panel } from '../components/extension'
 import { AppList } from '../components/shared'
 import { WalletAccountType, PanelTypes, AppObjectType, AppsListType } from '../constants/types'
 import { AppsList } from '../mock-data/apps-list'
-import locale from '../mock-data/mock-locale'
+import { filterAppList } from '../utils/filter-app-list'
 import {
   StyledExtensionWrapper,
   ScrollContainer
@@ -142,27 +142,8 @@ export const _ConnectedPanel = () => {
     setFavoriteApps(newList)
   }
 
-  const filterAppList = (event: any) => {
-    const search = event.target.value
-    if (search === '') {
-      setFilteredAppsList(AppsList)
-    } else {
-      const mergedList = AppsList.map(category => category.appList).flat()
-      const filteredList = mergedList.filter((app) => {
-        return (
-          app.name.toLowerCase() === search.toLowerCase() ||
-          app.name.toLowerCase().startsWith(search.toLowerCase()) ||
-          app.name.toLowerCase().includes(search.toLowerCase())
-        )
-      })
-      const newList = [
-        {
-          category: locale.searchCategory,
-          appList: filteredList
-        }
-      ]
-      setFilteredAppsList(newList)
-    }
+  const filterList = (event: any) => {
+    filterAppList(event, AppsList, setFilteredAppsList)
   }
 
   return (
@@ -179,7 +160,7 @@ export const _ConnectedPanel = () => {
           navAction={navigateTo}
           title={panelTitle}
           useSearch={selectedPanel === 'apps'}
-          searchAction={selectedPanel === 'apps' ? filterAppList : undefined}
+          searchAction={selectedPanel === 'apps' ? filterList : undefined}
         >
           {selectedPanel === 'apps' &&
             <ScrollContainer>
