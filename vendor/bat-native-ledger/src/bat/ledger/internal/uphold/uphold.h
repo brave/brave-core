@@ -94,16 +94,18 @@ class Uphold {
 
   void SaveTransferFee(const std::string& contribution_id, const double amount);
 
-  void StartTransferFeeTimer(const std::string& fee_id);
+  void StartTransferFeeTimer(const std::string& fee_id, int attempts);
 
-  void OnTransferFeeCompleted(
-      const type::Result result,
-      const std::string& transaction_id,
-      const std::string& contribution_id);
+  void OnTransferFeeCompleted(const type::Result result,
+                              const std::string& transaction_id,
+                              const std::string& contribution_id,
+                              int attempts);
 
-  void TransferFee(const std::string& contribution_id, const double amount);
+  void TransferFee(const std::string& contribution_id,
+                   const double amount,
+                   int attempts);
 
-  void OnTransferFeeTimerElapsed(const std::string& id);
+  void OnTransferFeeTimerElapsed(const std::string& id, int attempts);
 
   void RemoveTransferFee(const std::string& contribution_id);
 
