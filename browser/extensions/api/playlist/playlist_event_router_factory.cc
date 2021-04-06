@@ -11,7 +11,7 @@
 
 #include "base/scoped_observer.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/common/extensions/api/brave_playlist.h"
+#include "brave/common/extensions/api/playlist.h"
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/playlist_service_observer.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -19,7 +19,7 @@
 #include "extensions/browser/event_router.h"
 
 namespace OnPlaylistItemStatusChanged =
-    extensions::api::brave_playlist::OnPlaylistItemStatusChanged;
+    extensions::api::playlist::OnPlaylistItemStatusChanged;
 
 namespace playlist {
 
@@ -60,7 +60,7 @@ class PlaylistEventRouterFactory::PlaylistEventRouter
   void OnPlaylistItemStatusChanged(
       const PlaylistChangeParams& params) override {
     auto event = std::make_unique<extensions::Event>(
-        extensions::events::BRAVE_PLAYLIST_ON_PLAYLIST_ITEM_STATUS_CHANGED,
+        extensions::events::PLAYLIST_ON_PLAYLIST_ITEM_STATUS_CHANGED,
         OnPlaylistItemStatusChanged::kEventName,
         OnPlaylistItemStatusChanged::Create(
             PlaylistChangeParams::GetPlaylistChangeTypeAsString(

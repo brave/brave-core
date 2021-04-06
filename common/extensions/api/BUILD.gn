@@ -42,7 +42,7 @@ json_features("api_features") {
   }
 
   if (enable_playlist) {
-    sources += [ "_brave_playlist_api_features.json" ]
+    sources += [ "_playlist_api_features.json" ]
   }
 }
 
@@ -106,7 +106,7 @@ if (brave_together_enabled) {
 }
 
 if (enable_playlist) {
-  brave_extensions_api_schema_sources += [ "brave_playlist.json" ]
+  brave_extensions_api_schema_sources += [ "playlist.json" ]
 }
 
 brave_extensions_api_uncompiled_sources = []

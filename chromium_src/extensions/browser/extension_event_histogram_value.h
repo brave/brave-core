@@ -22,7 +22,7 @@
   BRAVE_REWARDS_GET_NOTIFICATION,                                            \
   BRAVE_REWARDS_GET_ALL_NOTIFICATIONS,                                       \
   BRAVE_WALLET_FAILED,                                                       \
-  BRAVE_PLAYLIST_ON_PLAYLIST_ITEM_STATUS_CHANGED,
+  PLAYLIST_ON_PLAYLIST_ITEM_STATUS_CHANGED,
 
 // clang-format on
 

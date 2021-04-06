@@ -326,7 +326,7 @@ declare namespace chrome.test {
   const sendMessage: (message: string) => {}
 }
 
-declare namespace chrome.bravePlaylist {
+declare namespace chrome.playlist {
   type PlaylistType = { id: string, playlistName: string, titles: string[], thumbnailPath: string, videoMediaFilePath: string, audioMediaFilePath: string, partialReady: boolean }
   type PlaylistsChangeType = 'added' | 'deleted' | 'all_deleted' | 'aborted' | 'thumbnail_ready' | 'thumbnail_failed' | 'play_ready' | 'play_ready_partial'
 

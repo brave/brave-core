@@ -14,7 +14,7 @@
 #include "base/notreached.h"
 #include "brave/browser/playlist/desktop_playlist_player.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/common/extensions/api/brave_playlist.h"
+#include "brave/common/extensions/api/playlist.h"
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/playlist_types.h"
 
@@ -22,13 +22,11 @@ using playlist::CreatePlaylistParams;
 using playlist::PlaylistService;
 using playlist::PlaylistServiceFactory;
 
-namespace GetPlaylistItem = extensions::api::brave_playlist::GetPlaylistItem;
-namespace DeletePlaylistItem =
-    extensions::api::brave_playlist::DeletePlaylistItem;
-namespace RecoverPlaylistItem =
-    extensions::api::brave_playlist::RecoverPlaylistItem;
-namespace PlayItem = extensions::api::brave_playlist::PlayItem;
-namespace RequestDownload = extensions::api::brave_playlist::RequestDownload;
+namespace GetPlaylistItem = extensions::api::playlist::GetPlaylistItem;
+namespace DeletePlaylistItem = extensions::api::playlist::DeletePlaylistItem;
+namespace RecoverPlaylistItem = extensions::api::playlist::RecoverPlaylistItem;
+namespace PlayItem = extensions::api::playlist::PlayItem;
+namespace RequestDownload = extensions::api::playlist::RequestDownload;
 
 namespace {
 
@@ -44,8 +42,7 @@ PlaylistService* GetPlaylistService(content::BrowserContext* context) {
 namespace extensions {
 namespace api {
 
-ExtensionFunction::ResponseAction
-BravePlaylistGetAllPlaylistItemsFunction::Run() {
+ExtensionFunction::ResponseAction PlaylistGetAllPlaylistItemsFunction::Run() {
   auto* service = GetPlaylistService(browser_context());
   if (!service) {
     return RespondNow(Error(kFeatureDisabled));
@@ -54,7 +51,7 @@ BravePlaylistGetAllPlaylistItemsFunction::Run() {
   return RespondNow(OneArgument(service->GetAllPlaylistItems()));
 }
 
-ExtensionFunction::ResponseAction BravePlaylistGetPlaylistItemFunction::Run() {
+ExtensionFunction::ResponseAction PlaylistGetPlaylistItemFunction::Run() {
   auto* service = GetPlaylistService(browser_context());
   if (!service) {
     return RespondNow(Error(kFeatureDisabled));
@@ -73,8 +70,7 @@ ExtensionFunction::ResponseAction BravePlaylistGetPlaylistItemFunction::Run() {
   return RespondNow(OneArgument(std::move(playlist)));
 }
 
-ExtensionFunction::ResponseAction
-BravePlaylistRecoverPlaylistItemFunction::Run() {
+ExtensionFunction::ResponseAction PlaylistRecoverPlaylistItemFunction::Run() {
   auto* service = GetPlaylistService(browser_context());
   if (!service) {
     return RespondNow(Error(kFeatureDisabled));
@@ -88,8 +84,7 @@ BravePlaylistRecoverPlaylistItemFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction
-BravePlaylistDeletePlaylistItemFunction::Run() {
+ExtensionFunction::ResponseAction PlaylistDeletePlaylistItemFunction::Run() {
   auto* service = GetPlaylistService(browser_context());
   if (!service) {
     return RespondNow(Error(kFeatureDisabled));
@@ -104,7 +99,7 @@ BravePlaylistDeletePlaylistItemFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BravePlaylistDeleteAllPlaylistItemsFunction::Run() {
+PlaylistDeleteAllPlaylistItemsFunction::Run() {
   auto* service = GetPlaylistService(browser_context());
   if (!service) {
     return RespondNow(Error(kFeatureDisabled));
@@ -114,7 +109,7 @@ BravePlaylistDeleteAllPlaylistItemsFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction BravePlaylistRequestDownloadFunction::Run() {
+ExtensionFunction::ResponseAction PlaylistRequestDownloadFunction::Run() {
   auto* service = GetPlaylistService(browser_context());
   if (!service) {
     return RespondNow(Error(kFeatureDisabled));
@@ -129,7 +124,7 @@ ExtensionFunction::ResponseAction BravePlaylistRequestDownloadFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction BravePlaylistPlayItemFunction::Run() {
+ExtensionFunction::ResponseAction PlaylistPlayItemFunction::Run() {
   auto* service = GetPlaylistService(browser_context());
   if (!service) {
     return RespondNow(Error(kFeatureDisabled));
@@ -138,7 +133,7 @@ ExtensionFunction::ResponseAction BravePlaylistPlayItemFunction::Run() {
   std::unique_ptr<PlayItem::Params> params(PlayItem::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  playlist::DesktopPlaylistPlayer player(browser_context());
+  ::playlist::DesktopPlaylistPlayer player(browser_context());
   player.Play(params->id);
   return RespondNow(NoArguments());
 }

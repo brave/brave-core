@@ -13,79 +13,79 @@
 namespace extensions {
 namespace api {
 
-class BravePlaylistGetAllPlaylistItemsFunction : public ExtensionFunction {
+class PlaylistGetAllPlaylistItemsFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("bravePlaylist.getAllPlaylistItems", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("playlist.getAllPlaylistItems", UNKNOWN)
 
  protected:
-  ~BravePlaylistGetAllPlaylistItemsFunction() override {}
+  ~PlaylistGetAllPlaylistItemsFunction() override {}
 
   // ExtensionFunction:
   ResponseAction Run() override;
 };
 
-class BravePlaylistGetPlaylistItemFunction : public ExtensionFunction {
+class PlaylistGetPlaylistItemFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("bravePlaylist.getPlaylistItem", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("playlist.getPlaylistItem", UNKNOWN)
 
  protected:
-  ~BravePlaylistGetPlaylistItemFunction() override {}
+  ~PlaylistGetPlaylistItemFunction() override {}
 
   // ExtensionFunction:
   ResponseAction Run() override;
 };
 
-class BravePlaylistRecoverPlaylistItemFunction : public ExtensionFunction {
+class PlaylistRecoverPlaylistItemFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("bravePlaylist.recoverPlaylistItem", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("playlist.recoverPlaylistItem", UNKNOWN)
 
  protected:
-  ~BravePlaylistRecoverPlaylistItemFunction() override {}
+  ~PlaylistRecoverPlaylistItemFunction() override {}
 
   // ExtensionFunction:
   ResponseAction Run() override;
 };
 
-class BravePlaylistDeletePlaylistItemFunction : public ExtensionFunction {
+class PlaylistDeletePlaylistItemFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("bravePlaylist.deletePlaylistItem", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("playlist.deletePlaylistItem", UNKNOWN)
 
  protected:
-  ~BravePlaylistDeletePlaylistItemFunction() override {}
+  ~PlaylistDeletePlaylistItemFunction() override {}
 
   // ExtensionFunction:
   ResponseAction Run() override;
 };
 
-class BravePlaylistDeleteAllPlaylistItemsFunction : public ExtensionFunction {
+class PlaylistDeleteAllPlaylistItemsFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("bravePlaylist.deleteAllPlaylistItems", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("playlist.deleteAllPlaylistItems", UNKNOWN)
 
  protected:
-  ~BravePlaylistDeleteAllPlaylistItemsFunction() override {}
+  ~PlaylistDeleteAllPlaylistItemsFunction() override {}
 
   // ExtensionFunction:
   ResponseAction Run() override;
 };
 
 // TODO(simonhong): Rename this api to CreatePlaylistItem.
-class BravePlaylistRequestDownloadFunction : public ExtensionFunction {
+class PlaylistRequestDownloadFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("bravePlaylist.requestDownload", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("playlist.requestDownload", UNKNOWN)
 
  protected:
-  ~BravePlaylistRequestDownloadFunction() override {}
+  ~PlaylistRequestDownloadFunction() override {}
 
   // ExtensionFunction:
   ResponseAction Run() override;
 };
 
-class BravePlaylistPlayItemFunction : public ExtensionFunction {
+class PlaylistPlayItemFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("bravePlaylist.playItem", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("playlist.playItem", UNKNOWN)
 
  protected:
-  ~BravePlaylistPlayItemFunction() override {}
+  ~PlaylistPlayItemFunction() override {}
 
   // ExtensionFunction:
   ResponseAction Run() override;
