@@ -8,10 +8,10 @@
     "enabled": true,
     
     "colors": {
-        "header": "0x381E85",
-        "footer": "0x381E85",
-        "home": "0x17171F",
-        "addressBar": "0x000000",
+        "header": "0x2C2153",
+        "footer": "0x2C2153",
+        "home": "0x181629",
+        "addressBar": "0x0D0920",
         "border": "0xffffff",
         "accent": "0x6845D1",
         "tints": {
@@ -21,7 +21,7 @@
             "addressBar": "0xF0F2FF"
         },
         "transparencies": {
-            "addressBarAlpha": 0.8,
+            "addressBarAlpha": 1.0,
             "borderAlpha": 0.2,
         },
         "stats": {

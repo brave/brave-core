@@ -25,13 +25,15 @@ class TabBarCell: UICollectionViewCell {
     
     private lazy var separatorLine: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+        let theme = Theme.of(nil)
+        view.backgroundColor = theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
         return view
     }()
     
     lazy var separatorLineRight: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+        let theme = Theme.of(nil)
+        view.backgroundColor = theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
         view.isHidden = true
         return view
     }()
