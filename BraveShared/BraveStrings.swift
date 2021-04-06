@@ -2058,7 +2058,7 @@ extension Strings {
         public static let walletTransferTitle = NSLocalizedString(
             "rewards.walletTransferTitle",
             bundle: .braveShared,
-            value: "Wallet Transfer",
+            value: "Wallet Transfer Status",
             comment: "Title of the legacy wallet transfer screen"
         )
         public static let walletTransferFailureAlertTitle = NSLocalizedString(
@@ -2132,6 +2132,126 @@ extension Strings {
             "rewards.transferNoLongerAvailableWarningMessage",
             bundle: .braveShared,
             value: "Please use the wallet transfer by March 13, 2021. Wallet transfer will no longer be available after March 13.",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusShortformInvalid = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusShortformInvalid",
+            bundle: .braveShared,
+            value: "Invalid",
+            comment: "Invalid as in: stating that the status of the users transfer is invalid"
+        )
+        public static let legacyWalletTransferStatusButtonInvalidTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusButtonInvalidTitle",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer is invalid",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusInvalidTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusInvalidTitle",
+            bundle: .braveShared,
+            value: "Transfer Invalid",
+            comment: "Title shown above body of text explaining that their transfer is invalid"
+        )
+        public static let legacyWalletTransferStatusInvalidBody = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusInvalidBody",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer is invalid and cannot be completed",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusShortformPending = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusShortformPending",
+            bundle: .braveShared,
+            value: "Pending",
+            comment: "Pending as in: stating that the status of the users transfer is pending"
+        )
+        public static let legacyWalletTransferStatusButtonPendingTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusButtonPendingTitle",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer status is pending",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusPendingTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusPendingTitle",
+            bundle: .braveShared,
+            value: "Transfer Pending",
+            comment: "Title shown above body of text explaining that their transfer is pending"
+        )
+        public static let legacyWalletTransferStatusPendingBody = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusPendingBody",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer status is pending and should begin processing shortly.",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusShortformInProgress = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusShortformInProgress",
+            bundle: .braveShared,
+            value: "In Progress",
+            comment: "In Progress as in: stating that the status of the users transfer is in progress"
+        )
+        public static let legacyWalletTransferStatusButtonInProgressTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusButtonInProgressTitle",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer is in progress",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusInProgressTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusInProgressTitle",
+            bundle: .braveShared,
+            value: "Transfer In-Progress",
+            comment: "Title shown above body of text explaining that their transfer is in progress"
+        )
+        public static let legacyWalletTransferStatusInProgressBody = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusInProgressBody",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer is in-progress and may take several minutes to complete.",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusShortformDelayed = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusShortformDelayed",
+            bundle: .braveShared,
+            value: "Delayed",
+            comment: "Delayed as in: stating that the status of the users transfer is in delayed"
+        )
+        public static let legacyWalletTransferStatusButtonDelayedTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusButtonDelayedTitle",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer has been delayed…",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusDelayedTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusDelayedTitle",
+            bundle: .braveShared,
+            value: "Transfer Delayed",
+            comment: "Title shown above body of text explaining that their transfer is delayed"
+        )
+        public static let legacyWalletTransferStatusDelayedBody = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusDelayedBody",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer has been delayed and may take several minutes to resume.",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusShortformCompleted = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusShortformCompleted",
+            bundle: .braveShared,
+            value: "Completed!",
+            comment: "Completed as in: stating that the status of the users transfer is in completed"
+        )
+        public static let legacyWalletTransferStatusButtonCompletedTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusButtonCompletedTitle",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer has completed!",
+            comment: ""
+        )
+        public static let legacyWalletTransferStatusCompletedTitle = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusCompletedTitle",
+            bundle: .braveShared,
+            value: "Transfer Completed!",
+            comment: "Title shown above body of text explaining that their transfer is completed"
+        )
+        public static let legacyWalletTransferStatusCompletedBody = NSLocalizedString(
+            "rewards.legacyWalletTransferStatusCompletedBody",
+            bundle: .braveShared,
+            value: "Your legacy wallet transfer is done! Your existing balance may still take several minutes to appear on your desktop Brave Rewards wallet.",
             comment: ""
         )
     }

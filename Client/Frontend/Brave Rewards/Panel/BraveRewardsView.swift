@@ -32,6 +32,9 @@ extension BraveRewardsViewController {
         let publisherView = BraveRewardsPublisherView()
         let statusView = BraveRewardsStatusView()
         let legacyWalletTransferButton = LegacyWalletTransferButton()
+        let legacyWalletTransferStatusButton = LegacyWalletTransferStatusButton().then {
+            $0.isHidden = true
+        }
         
         override init(frame: CGRect) {
             super.init(frame: frame)
@@ -62,6 +65,7 @@ extension BraveRewardsViewController {
                     $0.spacing = 8
                     $0.addStackViewItems(
                         .view(legacyWalletTransferButton),
+                        .view(legacyWalletTransferStatusButton),
                         .view(statusView)
                     )
                 }),

@@ -6,6 +6,7 @@
 import Foundation
 import BraveRewards
 import Shared
+import BraveShared
 
 class WalletTransferViewController: UIViewController, Themeable {
     
@@ -42,7 +43,7 @@ class WalletTransferViewController: UIViewController, Themeable {
         transferView.cameraView.scanCallback = { [weak self] paymentId in
             guard let self = self, !paymentId.isEmpty, !self.isTransferring else { return }
             self.isTransferring = true
-            self.legacyWallet.linkBraveWallet(paymentId: paymentId) { [weak self] result in
+            self.legacyWallet.linkBraveWallet(paymentId: paymentId) { [weak self] result, drainID in
                 guard let self = self else { return }
                 if result != .ledgerOk {
                     let alert = UIAlertController(title: Strings.Rewards.walletTransferFailureAlertTitle, message: "\(Strings.Rewards.walletTransferFailureAlertMessage) (\(result.rawValue))", preferredStyle: .alert)
@@ -52,8 +53,11 @@ class WalletTransferViewController: UIViewController, Themeable {
                     self.present(alert, animated: true)
                     return
                 }
-                let completedVC = WalletTransferCompleteViewController()
-                self.navigationController?.pushViewController(completedVC, animated: true)
+                Preferences.Rewards.transferDrainID.value = drainID
+                self.legacyWallet.updateDrainStatus { status in
+                    let completedVC = WalletTransferCompleteViewController(status: status)
+                    self.navigationController?.pushViewController(completedVC, animated: true)
+                }
             }
         }
         transferView.learnMoreButton.addTarget(self, action: #selector(tappedLearnMoreButton), for: .touchUpInside)

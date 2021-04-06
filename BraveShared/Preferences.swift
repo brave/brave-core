@@ -124,7 +124,12 @@ extension Preferences {
         public static let seenDataMigrationFailureError = Option<Bool>(key: "rewards.seen-data-migration-failure-error", default: false)
         public static let migratedLegacyWallet = Option<Bool>(key: "rewards.migrated-legacy-wallet", default: false)
         public static let dismissedLegacyWalletTransfer = Option<Bool>(key: "rewards.dismissed-legacy-wallet-transfer", default: false)
+        public static let transferDrainID = Option<String?>(key: "rewards.legacy-wallet-transfer-drain-id", default: nil)
+        public static let lastTransferStatus = Option<Int?>(key: "rewards.legacy-wallet-transfer-status", default: nil)
+        public static let lastTransferStatusDismissed = Option<Int?>(key: "rewards.legacy-wallet-transfer-last-dismissed-status", default: nil)
+        public static let transferCompletionAcknowledged = Option<Bool>(key: "rewards.legacy-wallet-transfer-completion-acknowledged", default: false)
         public static let transferUnavailableLastSeen = Option<TimeInterval?>(key: "rewards.transfer-unavailable-warning-last-seen-date", default: nil)
+        public static let drainStatusOverride = Option<Int?>(key: "rewards.drain-status-override", default: nil)
         
         public enum EnvironmentOverride: Int {
             case none
@@ -162,7 +167,7 @@ extension Preferences {
     /// An entry in the `Preferences`
     ///
     /// `ValueType` defines the type of value that will stored in the UserDefaults object
-    public class Option<ValueType: UserDefaultsEncodable & Equatable> {
+    public class Option<ValueType: UserDefaultsEncodable & Equatable>: ObservableObject {
         /// The list of observers for this option
         private let observers = WeakList<PreferencesObserver>()
         /// The UserDefaults container that you wish to save to
@@ -170,7 +175,7 @@ extension Preferences {
         /// The current value of this preference
         ///
         /// Upon setting this value, UserDefaults will be updated and any observers will be called
-        public var value: ValueType {
+        @Published public var value: ValueType {
             didSet {
                 if value == oldValue { return }
                 

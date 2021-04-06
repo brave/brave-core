@@ -16,12 +16,13 @@ extension WalletTransferCompleteViewController {
             $0.layoutMargins = UIEdgeInsets(equalInset: 16)
             $0.isLayoutMarginsRelativeArrangement = true
         }
-        private let titleLabel = UILabel().then {
+        let titleLabel = UILabel().then {
             $0.text = Strings.Rewards.walletTransferCompleteTitle
             $0.numberOfLines = 0
             $0.font = .systemFont(ofSize: 17, weight: .semibold)
+            $0.appearanceTextColor = UIColor(rgb: 0x339AF0)
         }
-        private let bodyLabel = UILabel().then {
+        let bodyLabel = UILabel().then {
             $0.text = Strings.Rewards.walletTransferCompleteBody
             $0.numberOfLines = 0
             $0.font = .systemFont(ofSize: 17)

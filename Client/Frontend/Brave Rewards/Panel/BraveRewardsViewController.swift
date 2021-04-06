@@ -8,6 +8,7 @@ import BraveRewards
 import BraveUI
 import BraveShared
 import Shared
+import Combine
 
 private let log = Logger.rewardsLogger
 
@@ -21,6 +22,8 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
     let rewards: BraveRewards
     let legacyWallet: BraveLedger?
     var actionHandler: ((Action) -> Void)?
+    private var drainStatus: DrainStatus?
+    private var prefsCancellable: AnyCancellable?
     
     private var ledgerObserver: LedgerObserver?
     private var publisher: PublisherInfo? {
@@ -63,6 +66,16 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
                 self.publisher = publisher
             }
         }
+        
+        prefsCancellable = Preferences.Rewards.transferCompletionAcknowledged
+            .$value
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] acknowledged in
+                guard let self = self else { return }
+                if !self.rewardsView.legacyWalletTransferStatusButton.isHidden && acknowledged {
+                    self.rewardsView.legacyWalletTransferStatusButton.isHidden = true
+                }
+            })
     }
     
     @available(*, unavailable)
@@ -116,14 +129,28 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
         }
         
         rewardsView.legacyWalletTransferButton.isHidden = true
-        if !Preferences.Rewards.dismissedLegacyWalletTransfer.value {
-            if let legacyWallet = legacyWallet, !legacyWallet.isLedgerTransferExpired {
-                legacyWallet.transferrableAmount({ [weak self] total in
-                    guard let self = self else { return }
-                    if total > 0 {
-                        self.rewardsView.legacyWalletTransferButton.isHidden = false
+        rewardsView.legacyWalletTransferStatusButton.isHidden = true
+        if let _ = Preferences.Rewards.transferDrainID.value,
+           let legacyWallet = legacyWallet {
+            legacyWallet.updateDrainStatus { status in
+                self.drainStatus = status
+                self.rewardsView.legacyWalletTransferStatusButton.titleLabel.text = status?.statusButtonTitle
+                if Preferences.Rewards.lastTransferStatusDismissed.value != status?.rawValue {
+                    UIView.animate(withDuration: 0.1) {
+                        self.rewardsView.legacyWalletTransferStatusButton.isHidden = false
                     }
-                })
+                }
+            }
+        } else {
+            if !Preferences.Rewards.dismissedLegacyWalletTransfer.value {
+                if let legacyWallet = legacyWallet, !legacyWallet.isLedgerTransferExpired {
+                    legacyWallet.transferrableAmount({ [weak self] total in
+                        guard let self = self else { return }
+                        if total > 0 {
+                            self.rewardsView.legacyWalletTransferButton.isHidden = false
+                        }
+                    })
+                }
             }
         }
         
@@ -137,6 +164,8 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
         rewardsView.rewardsToggle.addTarget(self, action: #selector(rewardsToggleValueChanged), for: .valueChanged)
         rewardsView.legacyWalletTransferButton.addTarget(self, action: #selector(tappedRewardsTransfer), for: .touchUpInside)
         rewardsView.legacyWalletTransferButton.dismissButton.addTarget(self, action: #selector(tappedDismissRewardsTransfer), for: .touchUpInside)
+        rewardsView.legacyWalletTransferStatusButton.addTarget(self, action: #selector(tappedRewardsStatusButton), for: .touchUpInside)
+        rewardsView.legacyWalletTransferStatusButton.dismissButton.addTarget(self, action: #selector(tappedDismissTransferStatus), for: .touchUpInside)
         
         view.snp.makeConstraints {
             $0.width.equalTo(360)
@@ -188,6 +217,24 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
     
     @objc private func tappedUnverifiedPubLearnMore() {
         actionHandler?(.unverifiedPublisherLearnMoreTapped)
+    }
+    
+    @objc private func tappedDismissTransferStatus() {
+        Preferences.Rewards.lastTransferStatusDismissed.value =
+            Preferences.Rewards.lastTransferStatus.value
+        UIView.animate(withDuration: 0.15, animations: {
+            self.rewardsView.legacyWalletTransferStatusButton.alpha = 0.0
+            self.rewardsView.legacyWalletTransferStatusButton.isHidden = true
+        }, completion: { _ in
+            self.rewardsView.legacyWalletTransferStatusButton.alpha = 1.0
+        })
+    }
+    
+    @objc private func tappedRewardsStatusButton() {
+        let controller = WalletTransferCompleteViewController(status: drainStatus)
+        let container = UINavigationController(rootViewController: controller)
+        container.modalPresentationStyle = .formSheet
+        self.present(container, animated: true)
     }
     
     // MARK: - Debug Actions
