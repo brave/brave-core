@@ -9,18 +9,27 @@ import BraveShared
 import BraveRewards
 import BraveUI
 import DeviceCheck
+import Combine
 
 class BraveRewardsSettingsViewController: TableViewController {
     
     let rewards: BraveRewards
     let legacyWallet: BraveLedger?
     var walletTransferLearnMoreTapped: (() -> Void)?
+    private var prefsCancellable: AnyCancellable?
     
     init(_ rewards: BraveRewards, legacyWallet: BraveLedger?) {
         self.rewards = rewards
         self.legacyWallet = legacyWallet
         
         super.init(style: .insetGrouped)
+        
+        prefsCancellable = Preferences.Rewards.transferCompletionAcknowledged
+            .objectWillChange
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] in
+                self?.reloadSections()
+            })
     }
     
     @available(*, unavailable)
@@ -28,11 +37,7 @@ class BraveRewardsSettingsViewController: TableViewController {
         fatalError()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        title = Strings.braveRewardsTitle
-        
+    private func reloadSections() {
         dataSource.sections = [
             .init(
                 rows: [
@@ -47,25 +52,53 @@ class BraveRewardsSettingsViewController: TableViewController {
             )
         ]
         
-        if let legacyWallet = legacyWallet, !legacyWallet.isLedgerTransferExpired {
-            legacyWallet.transferrableAmount({ [weak self] total in
-                guard let self = self, total > 0 else { return }
-                self.dataSource.sections.insert(.init(
-                    header: .title(Strings.Rewards.walletTransferTitle),
-                    rows: [
-                        Row(text: Strings.Rewards.legacyWalletTransfer, selection: { [unowned self] in
-                            guard let legacyWallet = self.legacyWallet else { return }
-                            let controller = WalletTransferViewController(legacyWallet: legacyWallet)
-                            controller.learnMoreHandler = { [weak self] in
-                                self?.walletTransferLearnMoreTapped?()
-                            }
-                            let container = UINavigationController(rootViewController: controller)
-                            container.modalPresentationStyle = .formSheet
-                            self.present(container, animated: true)
-                        }, image: UIImage(imageLiteralResourceName: "rewards-qr-code").template)
-                    ]
-                ), at: 1)
-            })
+        if let legacyWallet = legacyWallet {
+            if Preferences.Rewards.transferDrainID.value == nil {
+                if !legacyWallet.isLedgerTransferExpired {
+                    legacyWallet.transferrableAmount({ [weak self] total in
+                        guard let self = self, total > 0 else { return }
+                        self.dataSource.sections.insert(.init(
+                            header: .title(Strings.Rewards.walletTransferTitle),
+                            rows: [
+                                Row(text: Strings.Rewards.legacyWalletTransfer,
+                                    detailText: Preferences.Rewards.lastTransferStatus.value.map(DrainStatus.init)??.displayString,
+                                    selection: { [unowned self] in
+                                        guard let legacyWallet = self.legacyWallet else { return }
+                                        let controller = WalletTransferViewController(legacyWallet: legacyWallet)
+                                        controller.learnMoreHandler = { [weak self] in
+                                            self?.walletTransferLearnMoreTapped?()
+                                        }
+                                        let container = UINavigationController(rootViewController: controller)
+                                        container.modalPresentationStyle = .formSheet
+                                        self.present(container, animated: true)
+                                    }, image: UIImage(imageLiteralResourceName: "rewards-qr-code").template)
+                            ]
+                        ), at: 1)
+                    })
+                }
+            } else {
+                // Check to see if the transfer already completed and was acknowledged by the user,
+                // so we dont show the row for wallet transfer anymore
+                if !Preferences.Rewards.transferCompletionAcknowledged.value {
+                    legacyWallet.updateDrainStatus { status in
+                        if let status = status {
+                            self.dataSource.sections.insert(.init(
+                                header: .title(Strings.Rewards.walletTransferTitle),
+                                rows: [
+                                    Row(text: Strings.Rewards.legacyWalletTransfer,
+                                        detailText: status.displayString,
+                                        selection: { [unowned self] in
+                                            let controller = WalletTransferCompleteViewController(status: status)
+                                            let container = UINavigationController(rootViewController: controller)
+                                            container.modalPresentationStyle = .formSheet
+                                            self.present(container, animated: true)
+                                        }, image: UIImage(imageLiteralResourceName: "rewards-qr-code").template)
+                                ]
+                            ), at: 1)
+                        }
+                    }
+                }
+            }
         }
         
         rewards.ledger.rewardsInternalInfo { info in
@@ -80,5 +113,13 @@ class BraveRewardsSettingsViewController: TableViewController {
                 ]
             }
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        title = Strings.braveRewardsTitle
+     
+        reloadSections()
     }
 }

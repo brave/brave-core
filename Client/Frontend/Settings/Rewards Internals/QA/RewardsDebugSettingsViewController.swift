@@ -42,6 +42,8 @@ class RewardsDebugSettingsViewController: TableViewController {
         let overrideForIndex = EnvironmentOverride.sortedCases[value]
         Preferences.Rewards.environmentOverride.value = overrideForIndex.rawValue
         self.rewards.reset()
+        Preferences.Rewards.transferDrainID.value = nil
+        Preferences.Rewards.transferCompletionAcknowledged.value = false
         self.showResetRewardsAlert()
     }
     
@@ -148,6 +150,44 @@ class RewardsDebugSettingsViewController: TableViewController {
         reloadSections()
     }
     
+    private var drainOverrideStatusRow: Row {
+        enum DrainStatusOverride: Int, CaseIterable, RepresentableOptionType {
+            case none = -1
+            case invalid
+            case pending
+            case inProgress
+            case delayed
+            case complete
+            
+            var status: DrainStatus? {
+                switch self {
+                case .none: return nil
+                case .invalid: return .invalid
+                case .pending: return .pending
+                case .inProgress: return .inProgress
+                case .delayed: return .delayed
+                case .complete: return .complete
+                }
+            }
+            var displayString: String {
+                status?.displayString ?? "None"
+            }
+        }
+        var selected: DrainStatusOverride = .none
+        if let override = Preferences.Rewards.drainStatusOverride.value,
+           let status = DrainStatusOverride(rawValue: override) {
+            selected = status
+        }
+        return Row(text: "Drain Status Override", detailText: selected.displayString, selection: { [unowned self] in
+            let options = OptionSelectionViewController(
+                options: DrainStatusOverride.allCases,
+                selectedOption: selected) { _, option in
+                Preferences.Rewards.drainStatusOverride.value = option.status?.rawValue
+            }
+            self.navigationController?.pushViewController(options, animated: true)
+        }, accessory: .disclosureIndicator)
+    }
+    
     private func reloadSections() {
         let isDefaultEnvironmentProd = AppConstants.buildChannel != .debug
         
@@ -187,7 +227,8 @@ class RewardsDebugSettingsViewController: TableViewController {
                     }, accessory: .disclosureIndicator),
                     Row(text: "Create Legacy Wallet", selection: { [unowned self] in
                         self.createLegacyLedger()
-                    }, cellClass: ButtonCell.self)
+                    }, cellClass: ButtonCell.self),
+                    drainOverrideStatusRow
                 ]
             ),
             Section(
@@ -324,6 +365,8 @@ class RewardsDebugSettingsViewController: TableViewController {
     
     @objc private func tappedReset() {
         rewards.reset()
+        Preferences.Rewards.transferDrainID.value = nil
+        Preferences.Rewards.transferCompletionAcknowledged.value = false
         showResetRewardsAlert()
     }
     

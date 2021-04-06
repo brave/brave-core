@@ -5,8 +5,26 @@
 
 import UIKit
 import Shared
+import BraveRewards
+import BraveShared
 
 class WalletTransferCompleteViewController: UIViewController, Themeable {
+    
+    private let status: DrainStatus?
+    
+    init(status: DrainStatus?) {
+        self.status = status
+        super.init(nibName: nil, bundle: nil)
+        if status == .complete {
+            // Require user to acknowledge by tapping done
+            isModalInPresentation = true
+        }
+    }
+    
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+        fatalError()
+    }
     
     private var transferCompleteView: WalletTransferCompleteView {
         view as! WalletTransferCompleteView // swiftlint:disable:this force_cast
@@ -23,6 +41,11 @@ class WalletTransferCompleteViewController: UIViewController, Themeable {
         navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
         title = Strings.Rewards.walletTransferTitle
+        
+        if let status = status {
+            transferCompleteView.titleLabel.text = status.transferStatusTitle
+            transferCompleteView.bodyLabel.text = status.transferStatusBody
+        }
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -38,6 +61,7 @@ class WalletTransferCompleteViewController: UIViewController, Themeable {
     }
     
     @objc private func tappedDone() {
+        Preferences.Rewards.transferCompletionAcknowledged.value = true
         dismiss(animated: true)
     }
 }
