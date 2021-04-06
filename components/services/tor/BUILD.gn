@@ -10,8 +10,8 @@ source_set("tor") {
   ]
 
   deps = [
+    "public/interfaces",
     "//base",
     "//mojo/public/cpp/bindings",
-    "public/interfaces",
   ]
 }

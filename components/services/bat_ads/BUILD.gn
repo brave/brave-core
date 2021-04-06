@@ -14,8 +14,8 @@ static_library("lib") {
   ]
 
   public_deps = [
-    "//brave/vendor/bat-native-ads",
     "public/interfaces",
+    "//brave/vendor/bat-native-ads",
   ]
 
   deps = [
