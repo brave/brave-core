@@ -408,7 +408,7 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
     let mut useless_nodes = vec![];
     let mut new_children = vec![];
     let mut paragraph_nodes = vec![];
-    let mut br_count = 0;
+    let mut brs = vec![];
     for child in handle.children() {
         let pending_removal = preprocess(&mut dom, child.clone(), &mut title);
         if pending_removal {
@@ -420,8 +420,13 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
         match child.data() {
             Element(data) => {
                 match data.name.local {
-                    local_name!("br") => br_count += 1,
-                    _ => br_count = 0,
+                    local_name!("br") => brs.push(child.clone()),
+                    _ => {
+                        if brs.len() >= 2 {
+                            useless_nodes.extend(brs);
+                        }
+                        brs = Vec::new();
+                    }
                 }
                 if data.name.local == local_name!("noscript") {
                     unwrap_noscript(&child, &mut useless_nodes, &mut new_children);
@@ -441,9 +446,11 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
             }
             Text(ref contents) => {
                 let s = contents.borrow();
-                if br_count >= 2 && !s.trim().is_empty() {
-                    paragraph_nodes.push(child.clone());
-                    br_count = 0
+                if !s.trim().is_empty() {
+                    if brs.len() >= 2 {
+                        paragraph_nodes.push(child.clone());
+                    }
+                    brs = Vec::new();
                 }
             }
             _ => (),
@@ -465,6 +472,38 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
                 Ok(tendril) => dom.append(&p, NodeOrText::AppendText(tendril)),
                 _ => return false,
             }
+        }
+        for sibling in p.preceding_siblings() {
+            if !dom::is_whitespace(&sibling) {
+                break;
+            }
+            dom.remove_from_parent(&sibling);
+        }
+        for sibling in p.following_siblings() {
+            // If we approach another <br><br> chain, we are encroaching on another paragraph.
+            if dom::get_tag_name(&sibling) == Some(&local_name!("br")) {
+                if let Some(next) = sibling.next_sibling() {
+                    if dom::get_tag_name(&next) == Some(&local_name!("br")) {
+                        break;
+                    }
+                }
+            }
+            if paragraph_nodes.contains(&sibling) {
+                break;
+            }
+            if !dom::is_phrasing_content(&sibling) {
+                break;
+            }
+            dom.remove_from_parent(&sibling);
+            if let Some(a) = dom::node_or_text(sibling.clone()) {
+                dom.append(&p, a);
+            }
+        }
+        while let Some(child) = p.last_child() {
+            if !dom::is_whitespace(&child) {
+                break;
+            }
+            dom.remove_from_parent(&child);
         }
     }
     false
@@ -671,6 +710,14 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("ul")
                 | local_name!("section")
                 | local_name!("div") => is_useless(&handle),
+                local_name!("br") => {
+                    if let Some(sibling) = handle.next_sibling() {
+                        if dom::get_tag_name(&sibling) == Some(&local_name!("p")) {
+                            return true;
+                        }
+                    }
+                    false
+                }
                 local_name!("img") => {
                     let mut loaded = img_is_loaded(data);
                     if !loaded {

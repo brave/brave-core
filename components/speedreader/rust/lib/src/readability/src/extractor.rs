@@ -333,6 +333,50 @@ mod tests {
     }
 
     #[test]
+    fn br_chain_to_p_simple() {
+        let input = r#"
+        <body>
+        foo<br>bar<br> <br><br>abc
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+        foo<br>bar<p>abc</p>
+        </body>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content),
+        );
+    }
+
+    #[test]
+    fn br_chain_to_p_include_phrasing_elements() {
+        let input = r#"
+        </body>
+        <br><br>Some super<a href="https://baz.com">cool website</a> and more text.
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+        <p>Some super<a href="https://baz.com">cool website</a> and more text.</p>
+        </body>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content),
+        );
+    }
+
+    #[test]
     fn preserve_spaces() {
         let input = r#"
         <body>
