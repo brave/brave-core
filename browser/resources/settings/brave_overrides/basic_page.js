@@ -147,7 +147,7 @@ RegisterPolymerTemplateModifications({
       const sectionIPFS = document.createElement('template')
       sectionIPFS.setAttribute('is', 'dom-if')
       sectionIPFS.setAttribute('restamp', true)
-      sectionIPFS.setAttribute('if', '[[showPage_(pageVisibility.ipfs)]]')
+      sectionIPFS.setAttribute('if', '[[showPage_(pageVisibility.braveIPFS)]]')
       sectionIPFS.content.appendChild(createSectionElement(
         'ipfs',
         'braveIPFS',
@@ -159,7 +159,7 @@ RegisterPolymerTemplateModifications({
       const sectionWallet = document.createElement('template')
       sectionWallet.setAttribute('is', 'dom-if')
       sectionWallet.setAttribute('restamp', true)
-      sectionWallet.setAttribute('if', '[[showPage_(pageVisibility.wallet)]]')
+      sectionWallet.setAttribute('if', '[[showPage_(pageVisibility.braveWallet)]]')
       sectionWallet.content.appendChild(createSectionElement(
         'wallet',
         'braveWallet',
