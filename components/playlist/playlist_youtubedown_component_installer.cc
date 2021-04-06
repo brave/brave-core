@@ -66,7 +66,6 @@ class PlaylistYoutubeDownComponentInstallerPolicy
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
-  std::vector<std::string> GetMimeTypes() const override;
 
  private:
   const std::string component_id_;
@@ -142,11 +141,6 @@ std::string PlaylistYoutubeDownComponentInstallerPolicy::GetName() const {
 update_client::InstallerAttributes
 PlaylistYoutubeDownComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
-}
-
-std::vector<std::string>
-PlaylistYoutubeDownComponentInstallerPolicy::GetMimeTypes() const {
-  return std::vector<std::string>();
 }
 
 void OnRegistered(const std::string& component_id) {
