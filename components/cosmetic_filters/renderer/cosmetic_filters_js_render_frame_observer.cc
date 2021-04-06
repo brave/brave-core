@@ -65,6 +65,8 @@ void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
 void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
     blink::WebDocumentLoader* document_loader) {
   ready_.reset(new base::OneShotEvent());
+  // invalidate weak pointers on navigation so we don't get callbacks from the
+  // previous url load
   weak_factory_.InvalidateWeakPtrs();
 
   // There could be empty, invalid and "about:blank" URLs,
