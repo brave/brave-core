@@ -65,6 +65,7 @@ void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
 void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
     blink::WebDocumentLoader* document_loader) {
   ready_.reset(new base::OneShotEvent());
+  weak_factory_.InvalidateWeakPtrs();
 
   // There could be empty, invalid and "about:blank" URLs,
   // they should fallback to the main frame rules
@@ -77,7 +78,7 @@ void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
 
   native_javascript_handle_->ProcessURL(
       url_, base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::OnProcessURL,
-                           base::Unretained(this)));
+                           weak_factory_.GetWeakPtr()));
 }
 
 void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {
