@@ -12,6 +12,7 @@
 #include "base/hash/md5.h"
 #include "base/no_destructor.h"
 #include "base/optional.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
@@ -31,6 +32,10 @@ namespace {
 // TODO(bridiver) - share these constants with DOMWindowStorage
 constexpr char kSessionStorageSuffix[] = "/ephemeral-session-storage";
 constexpr char kLocalStorageSuffix[] = "/ephemeral-local-storage";
+
+const base::TimeDelta kStorageKeepAliveDelay = base::TimeDelta::FromSeconds(30);
+
+base::TimeDelta g_storage_keep_alive_for_testing = base::TimeDelta::Min();
 
 // Session storage ids are expected to be 36 character long GUID strings. Since
 // we are constructing our own ids, we convert our string into a 32 character
@@ -124,8 +129,29 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
                 kSessionStorageSuffix))
           : base::nullopt);
 
+  if (base::FeatureList::IsEnabled(
+          net::features::kBraveEphemeralStorageKeepAlive)) {
+    // keep the ephemeral storage alive for some time to handle redirects
+    // including meta refresh or other page driven "redirects" that end up back
+    // at the original origin
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce([](scoped_refptr<content::TLDEphemeralLifetime>
+                              tld_ephemeral_lifetime) {},
+                       tld_ephemeral_lifetime_),
+        g_storage_keep_alive_for_testing.is_min()
+            ? kStorageKeepAliveDelay
+            : g_storage_keep_alive_for_testing);
+  }
+
   tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
       browser_context, partition, new_domain);
+}
+
+// static
+void EphemeralStorageTabHelper::SetKeepAliveTimeDelayForTesting(
+    const base::TimeDelta& time) {
+  g_storage_keep_alive_for_testing = time;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper)

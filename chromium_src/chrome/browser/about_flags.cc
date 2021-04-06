@@ -156,6 +156,10 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveEphemeralStorageName,                        \
      flag_descriptions::kBraveEphemeralStorageDescription, kOsAll,         \
      FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},           \
+    {"brave-ephemeral-storage-keep-alive",                                 \
+     flag_descriptions::kBraveEphemeralStorageKeepAliveName,               \
+     flag_descriptions::kBraveEphemeralStorageKeepAliveDescription, kOsAll,\
+     FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},           \
     {"brave-permission-lifetime",                                          \
      flag_descriptions::kBravePermissionLifetimeName,                      \
      flag_descriptions::kBravePermissionLifetimeDescription, kOsAll,       \

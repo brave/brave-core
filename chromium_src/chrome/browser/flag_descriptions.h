@@ -41,6 +41,8 @@ extern const char kBraveSuperReferralName[];
 extern const char kBraveSuperReferralDescription[];
 extern const char kBraveEphemeralStorageName[];
 extern const char kBraveEphemeralStorageDescription[];
+extern const char kBraveEphemeralStorageKeepAliveName[];
+extern const char kBraveEphemeralStorageKeepAliveDescription[];
 extern const char kBravePermissionLifetimeName[];
 extern const char kBravePermissionLifetimeDescription[];
 }  // namespace flag_descriptions
