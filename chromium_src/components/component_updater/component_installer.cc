@@ -34,6 +34,7 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
     "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
     "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
     "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
+    "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets
 #if defined(OS_ANDROID)
     "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
     "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
