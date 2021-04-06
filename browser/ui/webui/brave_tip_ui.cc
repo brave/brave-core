@@ -423,10 +423,8 @@ void TipMessageHandler::TweetTip(const base::ListValue* args) {
   share_url_args["tweet_id"] = tweet_id;
 
   rewards_service_->GetShareURL(
-      share_url_args,
-      base::BindOnce(
-          &TipMessageHandler::GetShareURLCallback,
-          base::Unretained(this)));
+      share_url_args, base::BindOnce(&TipMessageHandler::GetShareURLCallback,
+                                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::FetchBalance(const base::ListValue* args) {
