@@ -5,8 +5,16 @@
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/grit/generated_resources.h"
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/grit/brave_theme_resources.h"
+#include "ui/base/resource/resource_bundle.h"
+#include "ui/gfx/image/image_skia.h"
+#include "ui/gfx/paint_vector_icon.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -89,7 +97,11 @@ BraveAppMenuModel::BraveAppMenuModel(
     ui::AcceleratorProvider* provider,
     Browser* browser,
     AppMenuIconController* app_menu_icon_controller)
-    : AppMenuModel(provider, browser, app_menu_icon_controller) {}
+    : AppMenuModel(provider, browser, app_menu_icon_controller)
+#if BUILDFLAG(IPFS_ENABLED)
+    , ipfs_submenu_model_(this)
+#endif
+    {}
 
 BraveAppMenuModel::~BraveAppMenuModel() = default;
 
@@ -186,6 +198,24 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_ABOUT),
                            IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
                            IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER);
+
+#if BUILDFLAG(IPFS_ENABLED)
+  if (IsCommandIdEnabled(IDC_APP_MENU_IPFS)) {
+    ipfs_submenu_model_.AddItemWithStringId(
+        IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE,
+        IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE);
+    const int zoom_index = GetIndexOfCommandId(IDC_ZOOM_MENU);
+    const int index = zoom_index - 1;
+    InsertSubMenuWithStringIdAt(
+        index, IDC_APP_MENU_IPFS, IDS_APP_MENU_IPFS, &ipfs_submenu_model_);
+    auto& bundle = ui::ResourceBundle::GetSharedInstance();
+    const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
+    ui::ImageModel model = ui::ImageModel::FromImageSkia(ipfs_logo);
+    SetIcon(index, model);
+
+    InsertSeparatorAt(index, ui::MenuSeparatorType::NORMAL_SEPARATOR);
+  }
+#endif
 }
 
 void BraveAppMenuModel::InsertAlternateProfileItems() {

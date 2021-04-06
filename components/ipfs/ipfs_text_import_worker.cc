@@ -13,6 +13,7 @@
 #include "base/guid.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/mime_util.h"
 #include "storage/browser/blob/blob_data_builder.h"
@@ -20,29 +21,11 @@
 
 namespace {
 
-const char kIPFSImportMultipartContentType[] = "multipart/form-data;";
 const char kIPFSImportTextMimeType[] = "application/octet-stream";
 const char kFileValueName[] = "file";
 
 using BlobBuilderCallback =
     base::OnceCallback<std::unique_ptr<storage::BlobDataBuilder>()>;
-
-void AddMultipartHeaderForUploadWithFileName(const std::string& value_name,
-                                             const std::string& file_name,
-                                             const std::string& mime_boundary,
-                                             const std::string& content_type,
-                                             std::string* post_data) {
-  DCHECK(post_data);
-  // First line is the boundary.
-  post_data->append("--" + mime_boundary + "\r\n");
-  // Next line is the Content-disposition.
-  post_data->append("Content-Disposition: form-data; name=\"" + value_name +
-                    "\"; filename=\"" + file_name + "\"\r\n");
-  // If Content-type is specified, the next line is that.
-  post_data->append("Content-Type: " + content_type + "\r\n");
-  // Empty string before next content
-  post_data->append("\r\n");
-}
 
 std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithText(
     const std::string& text,
@@ -52,11 +35,9 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithText(
   auto blob_builder =
       std::make_unique<storage::BlobDataBuilder>(base::GenerateGUID());
   std::string post_data_header;
-  AddMultipartHeaderForUploadWithFileName(
-      kFileValueName, filename, mime_boundary, mime_type, &post_data_header);
+  net::AddMultipartValueForUploadWithFileName(
+      kFileValueName, filename, text, mime_boundary, mime_type, &post_data_header);
   blob_builder->AppendData(post_data_header);
-
-  blob_builder->AppendData(text);
 
   std::string post_data_footer = "\r\n";
   net::AddMultipartFinalDelimiterForUpload(mime_boundary, &post_data_footer);
@@ -92,7 +73,7 @@ void IpfsTextImportWorker::StartImportText(const std::string& text,
   auto blob_builder_callback =
       base::BindOnce(&BuildBlobWithText, text, kIPFSImportTextMimeType,
                      filename, mime_boundary);
-  std::string content_type = kIPFSImportMultipartContentType;
+  std::string content_type = ipfs::kIPFSImportMultipartContentType;
   content_type += " boundary=";
   content_type += mime_boundary;
   StartImport(std::move(blob_builder_callback), content_type, filename);

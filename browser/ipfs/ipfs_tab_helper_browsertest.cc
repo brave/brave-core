@@ -329,6 +329,35 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkBad) {
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
 }
 
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ImportFileToIpfs) {
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_contents());
+  if (!helper)
+    return;
+  base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+  auto* context = active_contents()->GetBrowserContext();
+  std::unique_ptr<FakeIpfsService> ipfs_service(
+      new FakeIpfsService(context, nullptr, user_dir, chrome::GetChannel()));
+  ipfs::ImportedData data;
+  data.hash = "QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU";
+  data.filename = "google.com";
+  data.size = 111;
+  data.directory = "/brave/imports/";
+  data.state = ipfs::IPFS_IMPORT_SUCCESS;
+  ipfs_service->SetImportData(data);
+  helper->SetIpfsServiceForTesting(ipfs_service.get());
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  helper->ImportTextToIpfs("test");
+  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
+  auto* web_content = browser()->tab_strip_model()->GetWebContentsAt(1);
+  ASSERT_TRUE(web_content);
+  GURL url =
+      ipfs::ResolveWebUIFilesLocation(data.directory, chrome::GetChannel());
+  EXPECT_EQ(web_content->GetURL().spec(), url.spec());
+}
+
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ImportTextToIpfs) {
   ASSERT_TRUE(
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));

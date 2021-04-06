@@ -30,6 +30,7 @@ extern const char kImportAddPath[];
 extern const char kImportMakeDirectoryPath[];
 extern const char kImportCopyPath[];
 extern const char kImportDirectory[];
+extern const char kIPFSImportMultipartContentType[];
 
 // Keep it synced with IPFSResolveMethodTypes in
 // browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js

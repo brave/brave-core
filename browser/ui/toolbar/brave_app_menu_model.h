@@ -9,8 +9,10 @@
 #include <memory>
 #include <vector>
 
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
+#include "ui/base/models/simple_menu_model.h"
 
 class BraveAppMenuModel : public AppMenuModel {
  public:
@@ -34,7 +36,9 @@ class BraveAppMenuModel : public AppMenuModel {
 #if BUILDFLAG(ENABLE_SIDEBAR)
   int GetIndexOfBraveSidebarItem() const;
 #endif
-
+#if BUILDFLAG(IPFS_ENABLED)
+  ui::SimpleMenuModel ipfs_submenu_model_;
+#endif
   std::vector<std::unique_ptr<ui::SimpleMenuModel>> sub_menus_;
 };
 
