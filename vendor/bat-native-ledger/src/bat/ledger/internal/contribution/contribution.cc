@@ -628,9 +628,7 @@ void Contribution::OnResult(
     return;
   }
 
-  ledger_->contribution()->ContributionCompleted(
-      result,
-      std::move(contribution));
+  ContributionCompleted(result, std::move(contribution));
 }
 
 void Contribution::SetRetryTimer(
@@ -673,9 +671,8 @@ void Contribution::SetRetryCounter(type::ContributionInfoPtr contribution) {
   if (contribution->retry_count == 3 &&
       contribution->step != type::ContributionStep::STEP_PREPARE) {
     BLOG(0, "Contribution failed after 3 retries");
-    ledger_->contribution()->ContributionCompleted(
-        type::Result::TOO_MANY_RESULTS,
-        std::move(contribution));
+    ContributionCompleted(type::Result::TOO_MANY_RESULTS,
+                          std::move(contribution));
     return;
   }
 
@@ -722,9 +719,8 @@ void Contribution::Retry(
   if ((*shared_contribution)->type == type::RewardsType::AUTO_CONTRIBUTE &&
       !ledger_->state()->GetAutoContributeEnabled()) {
     BLOG(1, "AC is disabled, completing contribution");
-    ledger_->contribution()->ContributionCompleted(
-        type::Result::AC_OFF,
-        std::move(*shared_contribution));
+    ContributionCompleted(type::Result::AC_OFF,
+                          std::move(*shared_contribution));
     return;
   }
 
