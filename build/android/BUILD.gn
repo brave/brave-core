@@ -23,8 +23,7 @@ action("sign_app") {
   }
 
   outputs = [ "$target_sign_app_path-signed" ]
-  args = []
-  args += [
+  args = [
     rebase_path(_zipalign, root_out_dir),
     rebase_path(_apksigner, root_out_dir),
     rebase_path(_jarsigner, root_out_dir),
@@ -58,7 +57,7 @@ copy("brave") {
       sources += [ "$root_out_dir/apks/ChromeModernPublic.aab" ]
     }
   }
-  outputs = [ brave_apk_output ]
+  outputs = [ brave_aab_output ]
 }
 
 java_strings_grd("android_brave_strings_grd") {
