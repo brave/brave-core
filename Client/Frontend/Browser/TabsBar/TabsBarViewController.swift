@@ -136,6 +136,14 @@ class TabsBarViewController: UIViewController {
         overflowIndicators()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            applyTheme(Theme.of(nil))
+        }
+    }
+    
     @objc func addTabPressed() {
         tabManager?.addTabAndSelect(isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
