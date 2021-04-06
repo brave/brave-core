@@ -539,7 +539,7 @@ if (!is_android) {
       "//brave/app/brave_main_delegate_browsertest.cc",
       "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
       "//brave/browser/brave_content_browser_client_browsertest.cc",
-      "//brave/browser/brave_profile_prefs_browsertest.cc",
+      "//brave/browser/brave_prefs_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",
       "//brave/browser/brave_scheme_load_browsertest.cc",
       "//brave/browser/brave_search/brave_search_browsertest.cc",

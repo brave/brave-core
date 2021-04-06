@@ -9,6 +9,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -36,6 +37,7 @@
 #endif
 
 using BraveProfilePrefsBrowserTest = InProcessBrowserTest;
+using BraveLocalStatePrefsBrowserTest = InProcessBrowserTest;
 
 // Check download prompt preference is set to true by default.
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DownloadPromptDefault) {
@@ -122,4 +124,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       prefs::kNtpUseMostVisitedTiles));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(prefs::kHideWebStoreIcon));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveLocalStatePrefsBrowserTest, DefaultLocalStateTest) {
+  EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(
+      kDefaultBrowserPromptEnabled));
 }
