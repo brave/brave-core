@@ -175,14 +175,6 @@
     "message": "Blokuoti elementą per išrinkiklį",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Išvalyti šios svetainės CSS taisykles",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Išvalyti visų svetainių CSS taisykles",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Išplėstinis rodinys",
     "description": "Message for the advanced view option"

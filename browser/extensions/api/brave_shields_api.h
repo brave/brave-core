@@ -70,6 +70,16 @@ class BraveShieldsAddSiteCosmeticFilterFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveShieldsOpenFilterManagementPageFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.openFilterManagementPage", UNKNOWN)
+
+ protected:
+  ~BraveShieldsOpenFilterManagementPageFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 class BraveShieldsAllowScriptsOnceFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.allowScriptsOnce", UNKNOWN)

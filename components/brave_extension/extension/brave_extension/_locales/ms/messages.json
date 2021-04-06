@@ -175,14 +175,6 @@
     "message": "Sekat unsur melalui pemilih",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Buang peraturan CSS untuk laman ini",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Buang peraturan CSS untuk semua laman",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Pandangan Lanjutan",
     "description": "Message for the advanced view option"

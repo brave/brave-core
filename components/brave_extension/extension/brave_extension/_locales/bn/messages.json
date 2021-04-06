@@ -175,14 +175,6 @@
     "message": "নির্বাচকের মাধ্যমে উপকরণ ব্লক করুন",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "এই সাইটের জন্য CSS নিয়মগুলি পরিস্কার করুন",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "সমস্ত সাইটের জন্য CSS নিয়মগুলি পরিস্কার করুন",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "উন্নত ভিউ",
     "description": "Message for the advanced view option"

@@ -175,14 +175,6 @@
     "message": "Blokkeer element met behulp van selectietool",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Wis CSS-regels voor deze site",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Wis CSS-regels van alle sites",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Geavanceerde Weergave",
     "description": "Message for the advanced view option"

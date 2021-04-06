@@ -175,14 +175,6 @@
     "message": "I-block ang element sa pamamagitan ng selector",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "I-clear ang CSS rules para sa site na ito",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "I-clear ang CSS rules para sa lahat ng siteI",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Advanced na View",
     "description": "Message for the advanced view option"

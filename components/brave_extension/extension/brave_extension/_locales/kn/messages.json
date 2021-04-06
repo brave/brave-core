@@ -175,14 +175,6 @@
     "message": "ಸೆಲೆಕ್ಟರ್ ಮೂಲಕ ಅಂಶ ನಿರ್ಬಂಧಿಸಿ",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "ಈ ಸೈಟಿಗಾಗಿ CSS ನಿಯಮಗಳು",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "ಎಲ್ಲ ಸೈಟಿಗಾಗಿ CSS ನಿಯಮಗಳು",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "ಸುಧಾರಿತ ವೀಕ್ಷಣೆ",
     "description": "Message for the advanced view option"

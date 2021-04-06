@@ -175,14 +175,6 @@
     "message": "Blockera element via väljare",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Återställ CSS-regler för denna webbplats",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Återställ CSS-regler för alla webbplatser",
-    "description": "Message for context menu that resets all cosmetic filters"
-  },
   "advancedView": {
     "message": "Avancerad vy",
     "description": "Message for the advanced view option"

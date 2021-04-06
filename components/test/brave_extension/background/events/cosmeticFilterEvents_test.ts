@@ -86,17 +86,15 @@ describe('cosmeticFilterEvents events', () => {
       describe('when prompting user with selector', function () {
         describe('when a selector is returned', function () {
           it('calls window.prompt with selector as input', function () {
-            return cosmeticFilterEvents.onSelectorReturned('abc').then(() => {
-              expect(lastInputText).toBe('CSS selector:')
-              expect(lastPromptText).toBe('abc')
-            })
+            cosmeticFilterEvents.onSelectorReturned('abc')
+            expect(lastInputText).toBe('CSS selector:')
+            expect(lastPromptText).toBe('abc')
           })
         })
         describe('when a selector is not returned', function () {
           it('calls window.prompt with `not found` message', function () {
-            return cosmeticFilterEvents.onSelectorReturned(null).then(() => {
-              expect(lastInputText.indexOf('We were unable to automatically populat') > -1).toBe(true)
-            })
+            cosmeticFilterEvents.onSelectorReturned(null)
+            expect(lastInputText.indexOf('We were unable to automatically populat') > -1).toBe(true)
           })
         })
       })
@@ -110,25 +108,22 @@ describe('cosmeticFilterEvents events', () => {
         })
         it('calls `chrome.tabs.insertCSS` when selector is NOT null/undefined', function () {
           selectorToReturn = '#test_selector'
-          return cosmeticFilterEvents.onSelectorReturned(selectorToReturn).then(() => {
-            let returnObj = {
-              'code': '#test_selector {display: none !important;}',
-              'cssOrigin': 'user'
-            }
-            expect(insertCssSpy).toBeCalledWith(returnObj)
-          })
+          cosmeticFilterEvents.onSelectorReturned(selectorToReturn)
+          let returnObj = {
+            'code': '#test_selector {display: none !important;}',
+            'cssOrigin': 'user'
+          }
+          expect(insertCssSpy).toBeCalledWith(returnObj)
         })
         it('does NOT call `chrome.tabs.insertCSS` when selector is undefined', function () {
           selectorToReturn = undefined
-          return cosmeticFilterEvents.onSelectorReturned(undefined).then(() => {
-            expect(insertCssSpy).not.toBeCalled()
-          })
+          cosmeticFilterEvents.onSelectorReturned(undefined)
+          expect(insertCssSpy).not.toBeCalled()
         })
         it('does NOT call `chrome.tabs.insertCSS` when selector is null', function () {
           selectorToReturn = null
-          return cosmeticFilterEvents.onSelectorReturned(null).then(() => {
-            expect(insertCssSpy).not.toBeCalled()
-          })
+          cosmeticFilterEvents.onSelectorReturned(null)
+          expect(insertCssSpy).not.toBeCalled()
         })
       })
     })
