@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PLAYLIST_DESKTOP_PLAYLIST_PLAYER_H_
-#define BRAVE_BROWSER_PLAYLIST_DESKTOP_PLAYLIST_PLAYER_H_
+#ifndef BRAVE_BROWSER_UI_PLAYLIST_DESKTOP_PLAYLIST_PLAYER_H_
+#define BRAVE_BROWSER_UI_PLAYLIST_DESKTOP_PLAYLIST_PLAYER_H_
 
 #include <string>
 
@@ -14,7 +14,7 @@ class BrowserContext;
 
 namespace playlist {
 
-// Demo purpose player on desktop.
+// Demo player on desktop.
 class DesktopPlaylistPlayer {
  public:
   explicit DesktopPlaylistPlayer(content::BrowserContext* context);
@@ -31,4 +31,4 @@ class DesktopPlaylistPlayer {
 
 }  // namespace playlist
 
-#endif  // BRAVE_BROWSER_PLAYLIST_DESKTOP_PLAYLIST_PLAYER_H_
+#endif  // BRAVE_BROWSER_UI_PLAYLIST_DESKTOP_PLAYLIST_PLAYER_H_

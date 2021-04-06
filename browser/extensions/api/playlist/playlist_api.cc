@@ -12,11 +12,15 @@
 
 #include "base/bind.h"
 #include "base/notreached.h"
-#include "brave/browser/playlist/desktop_playlist_player.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/common/extensions/api/playlist.h"
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/playlist_types.h"
+
+#if !defined(OS_ANDROID)
+// This is desktop specific demo player.
+#include "brave/browser/ui/playlist/desktop_playlist_player.h"
+#endif
 
 using playlist::CreatePlaylistParams;
 using playlist::PlaylistService;
@@ -130,11 +134,14 @@ ExtensionFunction::ResponseAction PlaylistPlayItemFunction::Run() {
     return RespondNow(Error(kFeatureDisabled));
   }
 
+#if !defined(OS_ANDROID)
   std::unique_ptr<PlayItem::Params> params(PlayItem::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   ::playlist::DesktopPlaylistPlayer player(browser_context());
   player.Play(params->id);
+#endif
+
   return RespondNow(NoArguments());
 }
 

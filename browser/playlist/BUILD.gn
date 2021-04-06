@@ -4,9 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 source_set("playlist") {
-  # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
-  check_includes = false
-
   sources = [
     "playlist_service_factory.cc",
     "playlist_service_factory.h",
@@ -14,18 +11,10 @@ source_set("playlist") {
 
   deps = [
     "//base",
+    "//brave/browser/profiles:util",
     "//brave/components/playlist",
+    "//chrome/browser:browser_process",
     "//chrome/common",
     "//components/keyed_service/content",
-    "//content/public/browser",
   ]
-
-  if (!is_android) {
-    sources += [
-      "desktop_playlist_player.cc",
-      "desktop_playlist_player.h",
-    ]
-
-    deps += [ "//net" ]
-  }
 }
