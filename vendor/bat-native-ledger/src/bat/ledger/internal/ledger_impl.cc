@@ -36,6 +36,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client)
       state_(std::make_unique<state::State>(this)),
       api_(std::make_unique<api::API>(this)),
       recovery_(std::make_unique<recovery::Recovery>(this)),
+      bitflyer_(std::make_unique<bitflyer::Bitflyer>(this)),
       uphold_(std::make_unique<uphold::Uphold>(this)),
       initialized_task_scheduler_(false),
       initializing_(false),
@@ -115,6 +116,10 @@ api::API* LedgerImpl::api() const {
 
 database::Database* LedgerImpl::database() const {
   return database_.get();
+}
+
+bitflyer::Bitflyer* LedgerImpl::bitflyer() const {
+  return bitflyer_.get();
 }
 
 uphold::Uphold* LedgerImpl::uphold() const {
@@ -712,6 +717,20 @@ void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
       }
 
       auto wallet = uphold()->GetWallet();
+      callback(type::Result::LEDGER_OK, std::move(wallet));
+    });
+    return;
+  }
+
+  if (wallet_type == constant::kWalletBitflyer) {
+    bitflyer()->GenerateWallet([this, callback](const type::Result result) {
+      if (result != type::Result::LEDGER_OK &&
+          result != type::Result::CONTINUE) {
+        callback(result, nullptr);
+        return;
+      }
+
+      auto wallet = bitflyer()->GetWallet();
       callback(type::Result::LEDGER_OK, std::move(wallet));
     });
     return;

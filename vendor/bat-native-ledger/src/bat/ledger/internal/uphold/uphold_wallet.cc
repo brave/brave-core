@@ -7,6 +7,7 @@
 
 #include "base/json/json_reader.h"
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -34,7 +35,7 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) {
   }
 
   if (wallet->one_time_string.empty()) {
-    wallet->one_time_string = GenerateRandomString(ledger::is_testing);
+    wallet->one_time_string = util::GenerateRandomHexString();
   }
 
   if (wallet->token.empty() &&

@@ -14,6 +14,7 @@ interface Props {
   currentStep: number
   firstTimeSetup: boolean
   layout?: 'narrow' | 'wide'
+  postTourContent?: boolean
   onSelectStep: (step: number) => void
   onSkip: () => void
   onDone: () => void
@@ -76,7 +77,9 @@ export function TourNavigation (props: Props) {
     : stepCallback(props.currentStep + 1)
 
   const forwardContent = isLast
-    ? getString('onboardingTourDone')
+    ? getString(props.postTourContent
+        ? 'onboardingTourContinue'
+        : 'onboardingTourDone')
     : <>{getString('onboardingTourContinue')}<CaretIcon direction='right' /></>
 
   return (

@@ -45,9 +45,10 @@ void DatabasePendingContribution::InsertOrUpdateList(
   const uint64_t now = util::GetCurrentTimeStamp();
 
   const std::string query = base::StringPrintf(
-    "INSERT INTO %s (pending_contribution_id, publisher_id, amount, "
-    "added_date, viewing_id, type) VALUES (?, ?, ?, ?, ?, ?)",
-    kTableName);
+      "INSERT INTO %s (pending_contribution_id, publisher_id, amount, "
+      "added_date, viewing_id, type, processor) "
+      "VALUES (?, ?, ?, ?, ?, ?, ?)",
+      kTableName);
 
   for (const auto& item : list) {
     auto command = type::DBCommand::New();
@@ -60,6 +61,7 @@ void DatabasePendingContribution::InsertOrUpdateList(
     BindInt64(command.get(), 3, now);
     BindString(command.get(), 4, item->viewing_id);
     BindInt(command.get(), 5, static_cast<int>(item->type));
+    BindInt(command.get(), 6, static_cast<int>(item->processor));
 
     transaction->commands.push_back(std::move(command));
   }
@@ -125,33 +127,32 @@ void DatabasePendingContribution::GetAllRecords(
     ledger::PendingContributionInfoListCallback callback) {
   auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
-    "SELECT pc.pending_contribution_id, pi.publisher_id, pi.name, "
-    "pi.url, pi.favIcon, spi.status, spi.updated_at, pi.provider, "
-    "pc.amount, pc.added_date, pc.viewing_id, pc.type "
-    "FROM %s as pc "
-    "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
-    "LEFT JOIN server_publisher_info AS spi "
-    "ON spi.publisher_key = pi.publisher_id",
-    kTableName);
+      "SELECT pc.pending_contribution_id, pi.publisher_id, pi.name, "
+      "pi.url, pi.favIcon, spi.status, spi.updated_at, pi.provider, "
+      "pc.amount, pc.added_date, pc.viewing_id, pc.type, pc.processor "
+      "FROM %s as pc "
+      "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
+      "LEFT JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = pi.publisher_id",
+      kTableName);
 
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::READ;
   command->command = query;
 
-  command->record_bindings = {
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      type::DBCommand::RecordBindingType::INT64_TYPE,
-      type::DBCommand::RecordBindingType::STRING_TYPE,
-      type::DBCommand::RecordBindingType::INT_TYPE
-  };
+  command->record_bindings = {type::DBCommand::RecordBindingType::INT64_TYPE,
+                              type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::INT64_TYPE,
+                              type::DBCommand::RecordBindingType::INT64_TYPE,
+                              type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+                              type::DBCommand::RecordBindingType::INT64_TYPE,
+                              type::DBCommand::RecordBindingType::STRING_TYPE,
+                              type::DBCommand::RecordBindingType::INT_TYPE,
+                              type::DBCommand::RecordBindingType::INT_TYPE};
 
   transaction->commands.push_back(std::move(command));
 
@@ -198,6 +199,8 @@ void DatabasePendingContribution::OnGetAllRecords(
     info->expiration_date =
         info->added_date +
         constant::kPendingContributionExpirationInterval;
+    info->processor = static_cast<type::ContributionProcessor>(
+        GetIntColumn(record_pointer, 12));
 
     list.push_back(std::move(info));
   }

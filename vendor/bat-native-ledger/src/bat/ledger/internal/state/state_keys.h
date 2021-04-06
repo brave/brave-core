@@ -41,9 +41,9 @@ const char kParametersMonthlyTipChoices[] =
     "parameters.tip.monthly_choices";
 const char kFetchOldBalance[] = "fetch_old_balance";
 const char kEmptyBalanceChecked[] = "empty_balance_checked";
-const char kBAPReported[] = "bap_reported";
 const char kWalletBrave[]  ="wallets.brave";
 const char kWalletUphold[] = "wallets.uphold";
+const char kWalletBitflyer[] = "wallets.bitflyer";
 
 }  // namespace state
 }  // namespace ledger

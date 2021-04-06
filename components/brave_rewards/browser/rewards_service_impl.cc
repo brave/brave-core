@@ -16,6 +16,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/i18n/time_formatting.h"
@@ -48,6 +49,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
@@ -1475,6 +1477,9 @@ void RewardsServiceImpl::ClearState(const std::string& name) {
 bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
   DCHECK(!name.empty());
 
+  if (name == ledger::option::kIsBitflyerRegion)
+    return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
+
   if (name == ledger::option::kContributionsDisabledForBAPMigration) {
     if (OnlyAnonWallet()) {
       base::Time::Exploded cutoff_exploded{
@@ -1488,9 +1493,6 @@ bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
     }
     return false;
   }
-
-  if (name == ledger::option::kShouldReportBAPAmount)
-    return OnlyAnonWallet();
 
   const auto it = kBoolOptions.find(name);
   DCHECK(it != kBoolOptions.end());
@@ -2861,8 +2863,9 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
     query_map[it.GetKey()] = it.GetUnescapedValue();
   }
 
-  if (action == "authorization") {
-    if (wallet_type == ledger::constant::kWalletUphold) {
+  if (action == "authorization" && !OnlyAnonWallet()) {
+    if (wallet_type == ledger::constant::kWalletUphold ||
+        wallet_type == ledger::constant::kWalletBitflyer) {
       ExternalWalletAuthorization(
           wallet_type,
           query_map,
@@ -2921,27 +2924,17 @@ void RewardsServiceImpl::ShowNotification(
     callback(ledger::type::Result::LEDGER_OK);
 }
 
+// OnlyAnonWallet is used to indicate that a particular region does not support
+// external wallets, and specifically it was used to modify the UI for users in
+// JP to show "BAP" instead of "BAT". When we are sure that those branches are
+// no longer needed, this function should be removed.
 bool RewardsServiceImpl::OnlyAnonWallet() const {
-  int32_t current_country = country_id_;
-  if (!current_country) {
-    current_country =
-        country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
-  }
+#if !defined(OS_ANDROID)
+  if (base::FeatureList::IsEnabled(features::kBitflyerFeature))
+    return false;
+#endif
 
-  for (const auto& country : kOnlyAnonWalletCountries) {
-    if (country.length() != 2) {
-      continue;
-    }
-
-    const int id = country_codes::CountryCharsToCountryID(
-        country.at(0), country.at(1));
-
-    if (id == current_country) {
-      return true;
-    }
-  }
-
-  return false;
+  return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
 }
 
 void RewardsServiceImpl::RecordBackendP3AStats() {
@@ -3418,6 +3411,23 @@ void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
 }
 
 std::string RewardsServiceImpl::GetExternalWalletType() const {
+  int32_t current_country = country_id_;
+
+  if (!current_country) {
+    current_country =
+        country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
+  }
+
+  for (const auto& country : kBitflyerCountries) {
+    if (country.length() == 2) {
+      const int id =
+          country_codes::CountryCharsToCountryID(country.at(0), country.at(1));
+
+      if (id == current_country)
+        return ledger::constant::kWalletBitflyer;
+    }
+  }
+
   return ledger::constant::kWalletUphold;
 }
 

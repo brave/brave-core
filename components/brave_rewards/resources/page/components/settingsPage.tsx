@@ -345,11 +345,18 @@ class SettingsPage extends React.Component<Props, State> {
     const {
       adsData,
       contributionMonthly,
+      externalWallet,
       parameters,
       ui
     } = this.props.rewardsData
 
-    const { autoContributeChoices } = parameters
+    const externalWalletType = externalWallet ? externalWallet.type : ''
+
+    // Hide AC options in rewards onboarding for bitFlyer-associated regions.
+    let { autoContributeChoices } = parameters
+    if (externalWalletType === 'bitflyer') {
+      autoContributeChoices = []
+    }
 
     const onDone = () => {
       this.setState({ showRewardsTour: false, firstTimeSetup: false })
@@ -363,6 +370,12 @@ class SettingsPage extends React.Component<Props, State> {
       this.actions.onSettingSave('contributionMonthly', amount)
     }
 
+    const onVerifyClick = () => {
+      if (externalWallet && externalWallet.verifyUrl) {
+        window.open(externalWallet.verifyUrl, '_self')
+      }
+    }
+
     return (
       <RewardsTourModal
         layout='wide'
@@ -371,8 +384,10 @@ class SettingsPage extends React.Component<Props, State> {
         adsPerHour={adsData.adsPerHour}
         autoContributeAmount={contributionMonthly}
         autoContributeAmountOptions={autoContributeChoices}
+        externalWalletProvider={externalWalletType}
         onAdsPerHourChanged={onAdsPerHourChanged}
         onAutoContributeAmountChanged={onAcAmountChanged}
+        onVerifyWalletClick={onVerifyClick}
         onDone={onDone}
         onClose={onDone}
       />

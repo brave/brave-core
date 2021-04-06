@@ -157,6 +157,45 @@ void WalletBalance::OnFetchBalanceUphold(type::Balance info,
     BLOG(0, "Can't get uphold balance");
   }
 
+  FetchBalanceBitflyer(std::move(info_ptr), callback);
+}
+
+void WalletBalance::FetchBalanceBitflyer(
+    type::BalancePtr balance,
+    ledger::FetchBalanceCallback callback) {
+  if (!balance) {
+    BLOG(0, "Balance is null");
+    callback(type::Result::LEDGER_ERROR, std::move(balance));
+    return;
+  }
+
+  auto balance_callback = std::bind(&WalletBalance::OnFetchBalanceBitflyer,
+                                    this, *balance, callback, _1, _2);
+
+  auto wallet = ledger_->bitflyer()->GetWallet();
+  if (!wallet) {
+    balance_callback(type::Result::LEDGER_OK, 0);
+    return;
+  }
+
+  ledger_->bitflyer()->FetchBalance(balance_callback);
+}
+
+void WalletBalance::OnFetchBalanceBitflyer(
+    type::Balance info,
+    ledger::FetchBalanceCallback callback,
+    type::Result result,
+    double balance) {
+  type::BalancePtr info_ptr = type::Balance::New(info);
+
+  if (result == type::Result::LEDGER_OK) {
+    info_ptr->wallets.insert(
+        std::make_pair(constant::kWalletBitflyer, balance));
+    info_ptr->total += balance;
+  } else {
+    BLOG(0, "Can't get bitflyer balance");
+  }
+
   callback(result, std::move(info_ptr));
 }
 

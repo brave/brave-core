@@ -632,6 +632,8 @@ export class Panel extends React.Component<Props, State> {
         return nonUserFunds === 0
       case 2: // UPHOLD_VERIFIED
         return walletType !== 'uphold'
+      case 3: // BITFLYER_VERIFIED
+        return walletType !== 'bitflyer'
       default:
         return false
     }
@@ -690,13 +692,21 @@ export class Panel extends React.Component<Props, State> {
 
   showOnboarding () {
     const {
+      balance,
       showOnboarding,
       parameters,
+      externalWallet,
       adsPerHour,
       autoContributeAmount
     } = this.props.rewardsPanelData
 
-    const { autoContributeChoices } = parameters
+    const externalWalletType = externalWallet ? externalWallet.type : ''
+
+    // Hide AC options in rewards onboarding for bitFlyer-associated regions.
+    let { autoContributeChoices } = parameters
+    if (externalWalletType === 'bitflyer') {
+      autoContributeChoices = []
+    }
 
     if (this.state.showRewardsTour) {
       const onDone = () => {
@@ -718,6 +728,10 @@ export class Panel extends React.Component<Props, State> {
         this.actions.updatePrefs({ autoContributeAmount })
       }
 
+      const onVerifyClick = () => {
+        utils.handleExternalWalletLink(balance, externalWallet)
+      }
+
       return (
         <style.rewardsTourSpacer>
           <RewardsTourModal
@@ -726,8 +740,10 @@ export class Panel extends React.Component<Props, State> {
             adsPerHour={adsPerHour}
             autoContributeAmount={autoContributeAmount}
             autoContributeAmountOptions={autoContributeChoices}
+            externalWalletProvider={externalWalletType}
             onAdsPerHourChanged={onAdsPerHourChanged}
             onAutoContributeAmountChanged={onAcAmountChanged}
+            onVerifyWalletClick={onVerifyClick}
             onDone={onDone}
             onClose={onClose}
           />

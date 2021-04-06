@@ -9,30 +9,33 @@
 namespace ledger {
 namespace endpoint {
 
-PromotionServer::PromotionServer(LedgerImpl* ledger):
-    get_available_(std::make_unique<promotion::GetAvailable>(ledger)),
-    post_creds_(std::make_unique<promotion::PostCreds>(ledger)),
-    get_signed_creds_(std::make_unique<promotion::GetSignedCreds>(ledger)),
-    post_clobbered_claims_(
-        std::make_unique<promotion::PostClobberedClaims>(ledger)),
-    post_bat_loss_(std::make_unique<promotion::PostBatLoss>(ledger)),
-    post_wallet_brave_(std::make_unique<promotion::PostWalletBrave>(ledger)),
-    get_recover_wallet_(std::make_unique<promotion::GetRecoverWallet>(ledger)),
-    post_claim_uphold_(std::make_unique<promotion::PostClaimUphold>(ledger)),
-    get_wallet_balance_(std::make_unique<promotion::GetWalletBalance>(ledger)),
-    post_captcha_(std::make_unique<promotion::PostCaptcha>(ledger)),
-    get_captcha_(std::make_unique<promotion::GetCaptcha>(ledger)),
-    put_captcha_(std::make_unique<promotion::PutCaptcha>(ledger)),
-    post_safetynet_(std::make_unique<promotion::PostSafetynet>(ledger)),
-    put_safetynet_(std::make_unique<promotion::PutSafetynet>(ledger)),
-    post_devicecheck_(std::make_unique<promotion::PostDevicecheck>(ledger)),
-    put_devicecheck_(std::make_unique<promotion::PutDevicecheck>(ledger)),
-    post_suggestions_(std::make_unique<promotion::PostSuggestions>(ledger)),
-    post_suggestions_claim_(
-        std::make_unique<promotion::PostSuggestionsClaim>(ledger)),
-    post_claim_brave_(std::make_unique<promotion::PostClaimBrave>(ledger)),
-    get_drain_(std::make_unique<promotion::GetDrain>(ledger)) {
-}
+PromotionServer::PromotionServer(LedgerImpl* ledger)
+    : get_available_(std::make_unique<promotion::GetAvailable>(ledger)),
+      post_creds_(std::make_unique<promotion::PostCreds>(ledger)),
+      get_signed_creds_(std::make_unique<promotion::GetSignedCreds>(ledger)),
+      post_clobbered_claims_(
+          std::make_unique<promotion::PostClobberedClaims>(ledger)),
+      post_bat_loss_(std::make_unique<promotion::PostBatLoss>(ledger)),
+      post_wallet_brave_(std::make_unique<promotion::PostWalletBrave>(ledger)),
+      get_recover_wallet_(
+          std::make_unique<promotion::GetRecoverWallet>(ledger)),
+      post_claim_bitflyer_(
+          std::make_unique<promotion::PostClaimBitflyer>(ledger)),
+      post_claim_uphold_(std::make_unique<promotion::PostClaimUphold>(ledger)),
+      get_wallet_balance_(
+          std::make_unique<promotion::GetWalletBalance>(ledger)),
+      post_captcha_(std::make_unique<promotion::PostCaptcha>(ledger)),
+      get_captcha_(std::make_unique<promotion::GetCaptcha>(ledger)),
+      put_captcha_(std::make_unique<promotion::PutCaptcha>(ledger)),
+      post_safetynet_(std::make_unique<promotion::PostSafetynet>(ledger)),
+      put_safetynet_(std::make_unique<promotion::PutSafetynet>(ledger)),
+      post_devicecheck_(std::make_unique<promotion::PostDevicecheck>(ledger)),
+      put_devicecheck_(std::make_unique<promotion::PutDevicecheck>(ledger)),
+      post_suggestions_(std::make_unique<promotion::PostSuggestions>(ledger)),
+      post_suggestions_claim_(
+          std::make_unique<promotion::PostSuggestionsClaim>(ledger)),
+      post_claim_brave_(std::make_unique<promotion::PostClaimBrave>(ledger)),
+      get_drain_(std::make_unique<promotion::GetDrain>(ledger)) {}
 
 PromotionServer::~PromotionServer() = default;
 
@@ -62,6 +65,10 @@ promotion::PostWalletBrave* PromotionServer::post_wallet_brave() const {
 
 promotion::GetRecoverWallet* PromotionServer::get_recover_wallet() const {
   return get_recover_wallet_.get();
+}
+
+promotion::PostClaimBitflyer* PromotionServer::post_claim_bitflyer() const {
+  return post_claim_bitflyer_.get();
 }
 
 promotion::PostClaimUphold* PromotionServer::post_claim_uphold() const {

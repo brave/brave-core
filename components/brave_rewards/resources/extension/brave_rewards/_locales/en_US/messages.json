@@ -789,6 +789,30 @@
     "message": "By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!",
     "description": ""
   },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verify your wallet",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "In order to withdraw the tokens you earn for viewing ads, you’ll need to verify your wallet.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Do it later",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verify my wallet",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "The bitFlyer wallet is a service managed by bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily",
+    "description": ""
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards in Japan is switching to a new system!",
     "description": "Header text for BAP deprecation warning message"
