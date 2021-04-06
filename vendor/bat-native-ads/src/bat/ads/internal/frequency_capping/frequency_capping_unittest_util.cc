@@ -6,13 +6,15 @@
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 
 #include <cstdint>
+#include <string>
 
 #include "base/guid.h"
 #include "base/time/time.h"
+#include "bat/ads/internal/ads_client_helper.h"
 
 namespace ads {
 
-AdEventInfo GenerateAdEvent(const AdType type,
+AdEventInfo GenerateAdEvent(const AdType& type,
                             const CreativeAdInfo& ad,
                             const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
@@ -29,7 +31,7 @@ AdEventInfo GenerateAdEvent(const AdType type,
   return ad_event;
 }
 
-AdEventInfo GenerateAdEvent(const AdType type,
+AdEventInfo GenerateAdEvent(const AdType& type,
                             const AdInfo& ad,
                             const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
@@ -44,6 +46,30 @@ AdEventInfo GenerateAdEvent(const AdType type,
   ad_event.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
   return ad_event;
+}
+
+void RecordAdEvents(const AdType& type,
+                    const ConfirmationType& confirmation_type,
+                    const int count) {
+  DCHECK_GT(count, 0);
+
+  const std::string ad_type_as_string = std::string(type);
+
+  const std::string confirmation_type_as_string =
+      std::string(confirmation_type);
+
+  const uint64_t timestamp =
+      static_cast<int64_t>(base::Time::Now().ToDoubleT());
+
+  for (int i = 0; i < count; i++) {
+    AdsClientHelper::Get()->RecordAdEvent(
+        ad_type_as_string, confirmation_type_as_string, timestamp);
+  }
+}
+
+void RecordAdEvent(const AdType& type,
+                   const ConfirmationType& confirmation_type) {
+  RecordAdEvents(type, confirmation_type, 1);
 }
 
 }  // namespace ads

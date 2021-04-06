@@ -48,6 +48,8 @@ source_set("browser") {
       "ads_service_impl.h",
       "background_helper.cc",
       "background_helper.h",
+      "frequency_capping_helper.cc",
+      "frequency_capping_helper.h",
       "notification_helper.cc",
       "notification_helper.h",
     ]
