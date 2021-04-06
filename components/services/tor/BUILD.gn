@@ -1,7 +1,7 @@
 source_set("tor") {
   visibility = [
-    "//brave/utility:*",
-    "//brave/test:*"
+    "//brave/test:*",
+    "//chrome/utility:*",
   ]
 
   sources = [
