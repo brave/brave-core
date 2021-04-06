@@ -226,6 +226,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     federated_learning::kFlocIdComputedEventLogging.name,
     federated_learning::kFlocIdSortingLshBasedComputation.name,
     kSharingQRCodeGenerator.name,
+    net::features::kFirstPartySets.name,
     network_time::kNetworkTimeServiceQuerying.name,
 #if defined(OS_ANDROID)
     features::kWebNfc.name,
