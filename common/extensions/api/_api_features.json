@@ -20,8 +20,8 @@
   "braveSync": {
     "channel": "stable",
     "dependencies": [],
-    "contexts": ["blessed_extension"],
-    "whitelist": [
+    "contexts": [ "blessed_extension" ],
+    "allowlist": [
       "ACA6385EDA662A28A9B48E83A69CA85CB65DA263"
     ]
   },
