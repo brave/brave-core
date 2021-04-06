@@ -87,8 +87,12 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   if (!ad_block_service_->IsInitialized())
     return content::NavigationThrottle::PROCEED;
 
-  // Don't bother checking non-HTTP(S) pages
+  // Don't block subframes
   content::NavigationHandle* handle = navigation_handle();
+  if (!handle->IsInMainFrame())
+    return content::NavigationThrottle::PROCEED;
+
+  // Don't bother checking non-HTTP(S) pages
   GURL request_url = handle->GetURL();
   if (!request_url.SchemeIsHTTPOrHTTPS())
     return content::NavigationThrottle::PROCEED;
