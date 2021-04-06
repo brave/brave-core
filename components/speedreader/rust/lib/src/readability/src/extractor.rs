@@ -305,7 +305,7 @@ mod tests {
     }
 
     #[test]
-    fn rewrite_divs_single_p() {
+    fn rewrite_divs_single_p_child_as_p() {
         let input = r#"
         <body>
           <div>
@@ -321,6 +321,32 @@ mod tests {
         <body>
           <p>This is paragraph one!</p>
           <p>This is paragraph two!!</p>
+        </body>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn rewrite_div_phrasing_only_as_p() {
+        let input = r#"
+        <body>
+          <div>
+            Here is some text, and <a>A link</a> too!<br> <br>
+          </div>
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+          <p>
+            Here is some text, and <a>A link</a> too!
+          </p>
         </body>
         </html>
         "#;

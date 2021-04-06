@@ -392,6 +392,46 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
             local_name!("meta") => {
                 get_metadata(&data, title);
             }
+            local_name!("div") => {
+                // Convert all divs whose children contains only phrasing
+                // content to paragraphs. An example would look like this:
+                //      <div>Here is a <a>link</a> <br></div>
+                //      <p>Here is a <a>link</a> <br></p>
+                let trim_whitespace = |dom: &mut Sink, p: &Handle| {
+                    while let Some(child) = p.last_child() {
+                        if !dom::is_whitespace(&child) {
+                            break;
+                        }
+                        dom.remove_from_parent(&child);
+                    }
+                };
+                let mut last_p: Option<Handle> = None;
+                for child in handle.children() {
+                    if dom::is_phrasing_content(&child) {
+                        if let Some(ref p) = last_p {
+                            if let Some(replacement) = dom::node_or_text(child.clone()) {
+                                dom.remove_from_parent(&child);
+                                dom.append(&p, replacement);
+                            }
+                        } else if !dom::is_whitespace(&child) {
+                            let name = QualName::new(None, ns!(), LocalName::from("p"));
+                            let p = dom.create_element(name, vec![], ElementFlags::default());
+                            dom.append_before_sibling(&child, NodeOrText::AppendNode(p.clone()));
+                            dom.remove_from_parent(&child);
+                            if let Some(replacement) = dom::node_or_text(child.clone()) {
+                                dom.append(&p, replacement);
+                            }
+                            last_p = Some(p);
+                        }
+                    } else if let Some(ref p) = last_p {
+                        trim_whitespace(dom, p);
+                        last_p = None;
+                    }
+                }
+                if let Some(ref p) = last_p {
+                    trim_whitespace(dom, p);
+                }
+            }
             _ => (),
         }
         for attr_name in ["id", "class", "itemProp"].iter() {
