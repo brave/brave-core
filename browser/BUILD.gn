@@ -130,9 +130,6 @@ source_set("browser_process") {
     "//brave/browser/net",
     "//brave/browser/translate/buildflags",
 
-    # //chrome/browser depends on //brave/browser:browser_process, add this target here
-    # to pull in dependencies needed for the overwrite codes in chromium_src/chrome/browser
-    "//brave/chromium_src/chrome/browser",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/binance/browser/buildflags",
