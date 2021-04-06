@@ -15,7 +15,7 @@ struct PreloadedFavorites {
             var list = [FavoriteSite]()
             
             if let url = URL(string: "https://m.youtube.com") {
-                list.append(FavoriteSite(url: url, title: "Youtube"))
+                list.append(FavoriteSite(url: url, title: "YouTube"))
             }
             
             if let url = URL(string: "https://www.amazon.com/") {
