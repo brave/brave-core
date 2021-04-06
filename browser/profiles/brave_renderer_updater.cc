@@ -91,7 +91,7 @@ void BraveRendererUpdater::UpdateRenderer(
   bool use_brave_web3_provider = (static_cast<BraveWalletWeb3ProviderTypes>(
                                       brave_wallet_web3_provider_.GetValue()) ==
                                   BraveWalletWeb3ProviderTypes::BRAVE_WALLET) &&
-                                 brave_wallet::IsAllowedForProfile(profile_);
+                                 brave_wallet::IsAllowedForContext(profile_);
 
   (*renderer_configuration)
       ->SetConfiguration(

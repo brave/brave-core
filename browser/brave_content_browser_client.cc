@@ -252,14 +252,12 @@ void BindCosmeticFiltersResources(
 void MaybeBindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
-  auto* profile =
-      Profile::FromBrowserContext(frame_host->GetBrowserContext());
-  if (!brave_wallet::IsAllowedForProfile(profile))
+  auto* context = frame_host->GetBrowserContext();
+  if (!brave_wallet::IsAllowedForContext(context))
     return;
 
   BraveWalletService* service =
-      BraveWalletServiceFactory::GetInstance()->GetForProfile(
-          Profile::FromBrowserContext(profile));
+      BraveWalletServiceFactory::GetInstance()->GetForContext(context);
 
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
@@ -608,8 +606,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
   // If the Crypto Wallets extension is loaded, then it replaces the WebUI
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  auto* service = BraveWalletServiceFactory::GetForProfile(profile);
+  auto* service = BraveWalletServiceFactory::GetForContext(browser_context);
   if (service->IsCryptoWalletsReady() &&
       url->SchemeIs(content::kChromeUIScheme) &&
       url->host() == ethereum_remote_client_host) {
