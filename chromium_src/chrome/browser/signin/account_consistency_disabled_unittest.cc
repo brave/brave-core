@@ -31,6 +31,7 @@ TEST(AccountConsistencyDisabledTest, NewProfile) {
   // turned on to 100% of the user base and is no longer needed.
   // See 36417aa39a5e8484b23f1ec927bfda23465f4f21
   TestingProfile::Builder profile_builder;
+  profile_builder.SetIsNewProfile(true);
   {
     TestingPrefStore* user_prefs = new TestingPrefStore();
 
@@ -84,19 +85,6 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
     profile_builder.SetGuestSession();
     std::unique_ptr<Profile> profile = profile_builder.Build();
     ASSERT_TRUE(profile->IsGuestSession());
-    EXPECT_FALSE(
-        AccountConsistencyModeManager::IsDiceEnabledForProfile(profile.get()));
-    EXPECT_EQ(
-        signin::AccountConsistencyMethod::kDisabled,
-        AccountConsistencyModeManager::GetMethodForProfile(profile.get()));
-  }
-
-  {
-    // Legacy supervised profile.
-    TestingProfile::Builder profile_builder;
-    profile_builder.SetSupervisedUserId("supervised_id");
-    std::unique_ptr<Profile> profile = profile_builder.Build();
-    ASSERT_TRUE(profile->IsLegacySupervised());
     EXPECT_FALSE(
         AccountConsistencyModeManager::IsDiceEnabledForProfile(profile.get()));
     EXPECT_EQ(

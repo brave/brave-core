@@ -3,6 +3,7 @@
   <!-- Polymer 3.0 Elements -->
   <include name="IDR_BRAVE_WEBUI_PAGE_SPECIFIC_BRAVE_HISTORY_ITEM_M_JS"
            file="${root_gen_dir}/brave/ui/webui/resources/page_specific/history/brave_history_item.m.js"
+           resource_path="page_specific/history/brave_history_item.m.js"
            use_base_dir="false"
            type="BINDATA"
            compress="gzip" />

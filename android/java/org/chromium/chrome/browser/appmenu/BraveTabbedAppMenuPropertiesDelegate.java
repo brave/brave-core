@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
+import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
@@ -47,10 +48,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             AppMenuDelegate appMenuDelegate,
             OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
-            ModalDialogManager modalDialogManager) {
+            ModalDialogManager modalDialogManager, WebFeedBridge webFeedBridge) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
                 toolbarManager, decorView, appMenuDelegate, overviewModeBehaviorSupplier,
-                bookmarkBridgeSupplier, modalDialogManager);
+                bookmarkBridgeSupplier, modalDialogManager, webFeedBridge);
 
         mAppMenuDelegate = appMenuDelegate;
     }

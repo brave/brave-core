@@ -76,9 +76,5 @@ static NotificationTimeoutMac*
 #define BRAVE_DISPLAY_ \
   [g_notification_platform_bridge_notification_timeout startTimer:toast];
 
-#define BRAVE_SUPPORTSALERTSIMPL_ \
-  return true;
-
 #include "../../../../../chrome/browser/notifications/notification_platform_bridge_mac.mm"  // NOLINT
-#undef BRAVE_SUPPORTSALERTSIMPL_
 #undef BRAVE_DISPLAY_

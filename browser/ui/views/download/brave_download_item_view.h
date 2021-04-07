@@ -48,7 +48,7 @@ class BraveDownloadItemView : public DownloadItemView {
   gfx::ImageSkia GetLockIcon(int height);
 
   // Overrides the accessible name construction to reflect the origin URL.
-  void UpdateMode(Mode mode) override;
+  void SetMode(Mode mode) override;
 
   // Brave download item model.
   BraveDownloadItemModel brave_model_;

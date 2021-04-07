@@ -20,7 +20,7 @@ export const getLocale = (key: string, replacements?: Record<string, string>) =>
 
   if (replacements) {
     for (let item in replacements) {
-      returnVal = returnVal.replace(new RegExp('{{\\s*' + item + '\\s*}}'), replacements[item].toString())
+      returnVal = returnVal.replace(new RegExp('\\[\\[\\s*' + item + '\\s*\\]\\]'), replacements[item].toString())
     }
   }
 

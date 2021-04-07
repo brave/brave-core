@@ -291,7 +291,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
   throttle_->Resume();
   mojo::ScopedDataPipeConsumerHandle body_to_send;
   MojoResult result =
-      mojo::CreateDataPipe(nullptr, &body_producer_handle_, &body_to_send);
+      mojo::CreateDataPipe(nullptr, body_producer_handle_, body_to_send);
   if (result != MOJO_RESULT_OK) {
     Abort();
     return;

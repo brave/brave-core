@@ -1,8 +1,8 @@
 diff --git a/net/base/host_port_pair.cc b/net/base/host_port_pair.cc
-index 68c2d5a0c745bec1acb16d827d0e5214bf1f5dda..f10a642ca83f6b46f15b3d6735ba2d2b9e5391b8 100644
+index f24ac7b0d34ca997f9a57ee82ad9cf2a9baed3e3..487f46cb0d79cc0e0d16149116e1b29a56fe6bb3 100644
 --- a/net/base/host_port_pair.cc
 +++ b/net/base/host_port_pair.cc
-@@ -24,6 +24,7 @@ HostPortPair::HostPortPair(const std::string& in_host, uint16_t in_port)
+@@ -25,6 +25,7 @@ HostPortPair::HostPortPair(const std::string& in_host, uint16_t in_port)
  
  // static
  HostPortPair HostPortPair::FromURL(const GURL& url) {
@@ -10,7 +10,7 @@ index 68c2d5a0c745bec1acb16d827d0e5214bf1f5dda..f10a642ca83f6b46f15b3d6735ba2d2b
    return HostPortPair(url.HostNoBrackets(),
                        static_cast<uint16_t>(url.EffectiveIntPort()));
  }
-@@ -35,6 +36,7 @@ HostPortPair HostPortPair::FromIPEndPoint(const IPEndPoint& ipe) {
+@@ -36,6 +37,7 @@ HostPortPair HostPortPair::FromIPEndPoint(const IPEndPoint& ipe) {
  
  // static
  HostPortPair HostPortPair::FromString(const std::string& str) {
@@ -18,7 +18,7 @@ index 68c2d5a0c745bec1acb16d827d0e5214bf1f5dda..f10a642ca83f6b46f15b3d6735ba2d2b
    std::vector<base::StringPiece> key_port = base::SplitStringPiece(
        str, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
    if (key_port.size() != 2)
-@@ -54,6 +56,7 @@ std::string HostPortPair::ToString() const {
+@@ -55,6 +57,7 @@ std::string HostPortPair::ToString() const {
    std::string ret(HostForURL());
    ret += ':';
    ret += base::NumberToString(port_);

@@ -20,7 +20,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/resources/grit/webui_resources_map.h"
+#include "ui/base/webui/resource_path.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
@@ -1103,7 +1103,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
 
 content::WebUIDataSource* CreateWebUIDataSource(
     const std::string& name,
-    const GritResourceMap* resource_map,
+    const webui::ResourcePath* resource_map,
     size_t resource_map_size,
     int html_resource_id,
     bool disable_trusted_types_csp) {
@@ -1128,7 +1128,7 @@ content::WebUIDataSource* CreateWebUIDataSource(
   source->SetDefaultResource(html_resource_id);
   // Add generated resource paths
   for (size_t i = 0; i < resource_map_size; ++i) {
-    source->AddResourcePath(resource_map[i].name, resource_map[i].value);
+    source->AddResourcePath(resource_map[i].path, resource_map[i].id);
   }
   CustomizeWebUIHTMLSource(name, source);
   return source;
@@ -1139,7 +1139,7 @@ content::WebUIDataSource* CreateWebUIDataSource(
 content::WebUIDataSource* CreateAndAddWebUIDataSource(
     content::WebUI* web_ui,
     const std::string& name,
-    const GritResourceMap* resource_map,
+    const webui::ResourcePath* resource_map,
     size_t resource_map_size,
     int html_resource_id,
     bool disable_trusted_types_csp) {

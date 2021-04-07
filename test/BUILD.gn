@@ -107,7 +107,6 @@ test("brave_unit_tests") {
     "//brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth_unittest.cc",
     "//brave/components/ntp_widget_utils/browser/ntp_widget_utils_region_unittest.cc",
     "//brave/components/p3a/brave_p2a_protocols_unittest.cc",
-    "//brave/components/rappor/log_uploader_unittest.cc",
     "//brave/components/translate/core/browser/translate_language_list_unittest.cc",
     "//brave/components/weekly_storage/weekly_storage_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
@@ -196,6 +195,7 @@ test("brave_unit_tests") {
     "//google_apis/gcm",
     "//google_apis/gcm:test_support",
     "//mojo/core/embedder",
+    "//services/device/public/cpp:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//services/preferences/public/cpp",
@@ -416,6 +416,7 @@ test("brave_unit_tests") {
     deps += [
       "//brave/components/brave_sync:crypto",
       "//brave/components/brave_sync:network_time_helper",
+      "//brave/components/signin/public/identity_manager:unit_tests",
       "//brave/components/sync/driver:unit_tests",
       "//components/signin/public/identity_manager:test_support",
     ]
@@ -897,6 +898,7 @@ if (is_android) {
       "//brave/android/javatests/org/chromium/chrome/browser/BravePrivateTabTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/safety_check/BraveSafetyCheckSettingsFragmentTest.java",
     ]
 
     deps = [
@@ -906,9 +908,12 @@ if (is_android) {
       "//chrome/android:chrome_public_base_module_java_for_test",
       "//chrome/browser/android/lifecycle:java",
       "//chrome/browser/browser_controls/android:java",
+      "//chrome/browser/feed/android:java",
+      "//chrome/browser/flags:java",
       "//chrome/browser/fullscreen/android:java",
       "//chrome/browser/password_manager/android:java",
       "//chrome/browser/preferences:java",
+      "//chrome/browser/safety_check/android:java",
       "//chrome/browser/settings:test_support_java",
       "//chrome/browser/tab:java",
       "//chrome/browser/tabmodel:java",
@@ -920,8 +925,9 @@ if (is_android) {
       "//components/password_manager/core/browser:password_manager_java_enums",
       "//components/search_engines/android:java",
       "//components/sync/android:sync_java",
-      "//third_party/android_deps:androidx_appcompat_appcompat_java",
       "//third_party/android_support_test_runner:runner_java",
+      "//third_party/androidx:androidx_appcompat_appcompat_java",
+      "//third_party/androidx:androidx_preference_preference_java",
       "//third_party/junit",
       "//ui/android:ui_no_recycler_view_java",
     ]

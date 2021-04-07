@@ -1,8 +1,8 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index c0d6d512e08bf2d9382f562592b1f9bbef63c439..d2a4eb628c33826fc2a93a2e0ed78f2bdf4c67d9 100644
+index b0fb39f024edf7204305f7c70e25138eafbe31ee..d313cbdeb80ad9aa7e6f813b4142585de91ee57b 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
-@@ -102,6 +102,7 @@ const gfx::VectorIcon& GetIconIdDesktop(RequestType type) {
+@@ -103,6 +103,7 @@ const gfx::VectorIcon& GetIconIdDesktop(RequestType type) {
        return vector_icons::kCookieIcon;
      case RequestType::kWindowPlacement:
        return vector_icons::kSelectWindowIcon;
@@ -10,3 +10,11 @@ index c0d6d512e08bf2d9382f562592b1f9bbef63c439..d2a4eb628c33826fc2a93a2e0ed78f2b
    }
    NOTREACHED();
    return gfx::kNoneIcon;
+@@ -229,6 +230,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
+     case permissions::RequestType::kWindowPlacement:
+       return "window_placement";
+ #endif
++    BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
+   }
+ 
+   return nullptr;

@@ -12,21 +12,29 @@
 
 #include "chrome/browser/notifications/alert_dispatcher_mac.h"
 
+// clang-format off
 @interface BraveAlertDispatcherMac : NSObject<AlertDispatcher>
 
 - (void)dispatchNotification:(NSDictionary *)data;                               // NOLINT
 
 - (void)closeNotificationWithId:(NSString *)notificationId                       // NOLINT
-                  withProfileId:(NSString *)profileId;                           // NOLINT
+                  profileId:(NSString *)profileId                                // NOLINT
+                  incognito:(BOOL)incognito;                                     // NOLINT
+
+-(void)closeNotificationsWithProfileId:(NSString*)profileId                      // NOLINT
+                             incognito : (BOOL)incognito;                        // NOLINT
 
 - (void)closeAllNotifications;
 
 - (void)
 getDisplayedAlertsForProfileId:(NSString *)profileId                             // NOLINT
                      incognito:(BOOL)incognito
-            notificationCenter:(NSUserNotificationCenter *)notificationCenter    // NOLINT
                       callback:(GetDisplayedNotificationsCallback)callback;      // NOLINT
 
+- (void)getAllDisplayedAlertsWithCallback:                                       // NOLINT
+    (GetAllDisplayedNotificationsCallback)callback;                              // NOLINT
+
 @end
+// clang-format on
 
 #endif  // BRAVE_BROWSER_NOTIFICATIONS_BRAVE_ALERT_DISPATCHER_MAC_H_

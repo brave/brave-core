@@ -1,16 +1,16 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index bdc34e6e959ed5d1b5519ccd8d82423c52a7762c..809d70d8656ba8a4eb720be1b6aeb3d94e93fdb8 100644
+index a9652ed1c3f4f4fe8c47a55320b0a34fa62017a0..d40afa33b298b775e432f4167a979c579db2686c 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -235,6 +235,7 @@ android_resources("chrome_app_java_resources") {
-     "//third_party/android_deps:androidx_recyclerview_recyclerview_java",
-     "//third_party/android_deps:material_design_java",
+@@ -236,6 +236,7 @@ android_resources("chrome_app_java_resources") {
+     "//third_party/androidx:androidx_preference_preference_java",
+     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
  }
  
  if (enable_vr) {
-@@ -542,6 +543,7 @@ android_library("chrome_java") {
+@@ -552,6 +553,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -18,7 +18,7 @@ index bdc34e6e959ed5d1b5519ccd8d82423c52a7762c..809d70d8656ba8a4eb720be1b6aeb3d9
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -571,6 +573,7 @@ android_library("chrome_java") {
+@@ -584,6 +586,7 @@ android_library("chrome_java") {
      "//components/ui_metrics:ui_metrics_enums_java",
      "//net:effective_connection_type_java",
    ]
@@ -26,7 +26,7 @@ index bdc34e6e959ed5d1b5519ccd8d82423c52a7762c..809d70d8656ba8a4eb720be1b6aeb3d9
  
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -692,6 +695,7 @@ group("jni_headers") {
+@@ -712,6 +715,7 @@ group("jni_headers") {
      "//chrome/browser/webauthn/android:jni_headers",
      "//components/media_router/browser/android:jni_headers",
    ]
@@ -34,7 +34,7 @@ index bdc34e6e959ed5d1b5519ccd8d82423c52a7762c..809d70d8656ba8a4eb720be1b6aeb3d9
  }
  
  # TODO(crbug.com/1112471): Get this to run cleanly under Python 3.
-@@ -1857,6 +1861,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1900,6 +1904,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]

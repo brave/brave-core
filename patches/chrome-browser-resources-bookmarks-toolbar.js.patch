@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/resources/bookmarks/toolbar.js b/chrome/browser/resources/bookmarks/toolbar.js
-index ea0ec8712710d19509f39fc218817dc2e68657e0..2b85ecc56921af457abe4e7047a3b349e22936b6 100644
+index 1969d05e733cd8571297523ad48c87ff62456b74..7da7ebc56e8308bd3c0f42051128826198421ad6 100644
 --- a/chrome/browser/resources/bookmarks/toolbar.js
 +++ b/chrome/browser/resources/bookmarks/toolbar.js
 @@ -3,7 +3,7 @@
  // found in the LICENSE file.
  
  import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.m.js';
--import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.m.js';
+-import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
 +import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js';
  import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.m.js';
- import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.m.js';
+ import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.js';
  import 'chrome://resources/cr_elements/icons.m.js';

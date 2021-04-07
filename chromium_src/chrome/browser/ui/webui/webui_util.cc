@@ -18,7 +18,7 @@ constexpr char kBraveCSP[] =
 }  // namespace
 
 void SetupWebUIDataSource(content::WebUIDataSource* source,
-                          base::span<const GritResourceMap> resources,
+                          base::span<const webui::ResourcePath> resources,
                           int default_resource) {
   SetupWebUIDataSource_ChromiumImpl(source, resources, default_resource);
   source->OverrideContentSecurityPolicy(

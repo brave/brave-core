@@ -36,4 +36,7 @@ public class SearchEngineTabModelSelectorObserver implements TabModelSelectorObs
 
     @Override
     public void onTabStateInitialized() {}
+
+    @Override
+    public void onTabHidden(Tab tab) {}
 }

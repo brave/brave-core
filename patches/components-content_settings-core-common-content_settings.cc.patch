@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index b76c3410b56f117d12d4639af48280a81765b7d3..aa572ffd561d78cb6bdcf2d83617105d3456fad7 100644
+index 51f992cd3d168feb4670d0c9e42683d9a696b56e..aa00a147e716696a49f3581222481d9c1b5ed36a 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -94,6 +94,7 @@ constexpr HistogramValue kHistogramValue[] = {
+@@ -93,6 +93,7 @@ constexpr HistogramValue kHistogramValue[] = {
      {ContentSettingsType::PERMISSION_AUTOREVOCATION_DATA, 72},
      {ContentSettingsType::FILE_SYSTEM_LAST_PICKED_DIRECTORY, 73},
      {ContentSettingsType::DISPLAY_CAPTURE, 74},
@@ -10,7 +10,7 @@ index b76c3410b56f117d12d4639af48280a81765b7d3..aa572ffd561d78cb6bdcf2d83617105d
  };
  
  }  // namespace
-@@ -180,6 +181,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
+@@ -179,6 +180,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
           content_type == ContentSettingsType::JAVASCRIPT ||
           content_type == ContentSettingsType::CLIENT_HINTS ||
           content_type == ContentSettingsType::POPUPS ||

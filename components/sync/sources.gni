@@ -4,6 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 brave_components_sync_sources = [
-  "//brave/components/sync/engine_impl/brave_sync_manager_impl.cc",
-  "//brave/components/sync/engine_impl/brave_sync_manager_impl.h",
+  "//brave/components/sync/engine/brave_sync_manager_impl.cc",
+  "//brave/components/sync/engine/brave_sync_manager_impl.h",
 ]

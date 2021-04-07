@@ -26,7 +26,7 @@ bool IsBraveExtension(extensions::ExtensionViewHost* host) {
 #define BRAVE_ADDED_TO_WIDGET                      \
   const int radius = IsBraveExtension(host_.get()) \
                          ? 0                       \
-                         : GetBubbleFrameView()->corner_radius();
+                         : GetBubbleFrameView()->GetCornerRadius();
 
 #include "../../../../../../../chrome/browser/ui/views/extensions/extension_popup.cc"
 #undef BRAVE_ADDED_TO_WIDGET

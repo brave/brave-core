@@ -1,10 +1,10 @@
 diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
-index 83a46645ee08815fe8f41da81d0a753480f8192e..cf720327932f3f2b300f1f5adb33b89d616ab6b0 100644
+index 5ba05a7aebc8fb3e1b6e48843e9e44a460e7a780..c3e9c766de71caefd9734778b6ab4fc4772d5566 100644
 --- a/components/sync/driver/profile_sync_service.h
 +++ b/components/sync/driver/profile_sync_service.h
-@@ -254,6 +254,7 @@ class ProfileSyncService : public SyncService,
+@@ -247,6 +247,7 @@ class ProfileSyncService : public SyncService,
  
-   static std::string GenerateCacheGUIDForTest();
+   SyncClient* GetSyncClientForTest();
  
 + BRAVE_PROFILE_SYNC_SERVICE_H_
   private:

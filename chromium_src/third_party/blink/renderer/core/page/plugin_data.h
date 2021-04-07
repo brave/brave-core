@@ -6,12 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_PLUGIN_DATA_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_PLUGIN_DATA_H_
 
-#define BRAVE_PLUGIN_DATA_H                                  \
-  void SetName(const String& new_name) { name_ = new_name; } \
-  void SetFilename(const String& new_filename) { filename_ = new_filename; }
+#define AddMimeType                                                          \
+  SetName(const String& new_name) { name_ = new_name; }                      \
+  void SetFilename(const String& new_filename) { filename_ = new_filename; } \
+  void AddMimeType
 
 #include "../../../../../../../third_party/blink/renderer/core/page/plugin_data.h"
 
-#undef BRAVE_PLUGIN_DATA_H
+#undef AddMimeType
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_PLUGIN_DATA_H_

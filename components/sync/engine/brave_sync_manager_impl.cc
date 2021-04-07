@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/sync/engine_impl/brave_sync_manager_impl.h"
+#include "brave/components/sync/engine/brave_sync_manager_impl.h"
 
 namespace syncer {
 
 BraveSyncManagerImpl::BraveSyncManagerImpl(
     const std::string& name,
     network::NetworkConnectionTracker* network_connection_tracker)
-  : SyncManagerImpl(name, network_connection_tracker) {}
+    : SyncManagerImpl(name, network_connection_tracker) {}
 
 BraveSyncManagerImpl::~BraveSyncManagerImpl() {}
 

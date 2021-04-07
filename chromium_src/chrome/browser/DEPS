@@ -69,6 +69,7 @@ include_rules = [
   "+../../../../../../../chrome/browser/ui/webui/extensions",
   "+../../../../../../../chrome/browser/ui/webui/history",
   "+../../../../../../../chrome/browser/ui/webui/settings",
+  "+../../../../../../../chrome/browser/ui/webui/signin",
   "+../../../../../../../chrome/browser/ui/webui/version",
   "+../../../../../../chrome/browser/web_applications/components",
   "+../../../../../chrome/browser/webauthn",

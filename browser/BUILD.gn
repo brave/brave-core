@@ -130,6 +130,7 @@ source_set("browser_process") {
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/binance/browser/buildflags",
+    "//brave/components/brave_ads/browser/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
     "//brave/components/brave_referrals/buildflags",

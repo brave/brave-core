@@ -1944,8 +1944,8 @@ void AdsServiceImpl::RunDBTransaction(ads::DBTransactionPtr transaction,
                                       ads::RunDBTransactionCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnFileTaskRunner,
-                     base::Passed(std::move(transaction)), database_.get()),
+      base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
+                     database_.get()),
       base::BindOnce(&AdsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
                      std::move(callback)));
 }

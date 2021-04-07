@@ -1,9 +1,9 @@
 diff --git a/ios/chrome/browser/sync/profile_sync_service_factory.cc b/ios/chrome/browser/sync/profile_sync_service_factory.cc
-index 3507452e0b266a4719164ce767f0ffe902565d45..1152500b048f653ca4b38657d23a6db3a1b89b74 100644
+index 1729fca2683944213c17d656568d7dd0e1bbc4d5..985d4c4d0df4a6377c4efec248832ddb42a34d4d 100644
 --- a/ios/chrome/browser/sync/profile_sync_service_factory.cc
 +++ b/ios/chrome/browser/sync/profile_sync_service_factory.cc
-@@ -183,7 +183,7 @@ ProfileSyncServiceFactory::BuildServiceInstanceFor(
-   }
+@@ -172,7 +172,7 @@ ProfileSyncServiceFactory::BuildServiceInstanceFor(
+       policy_connector ? policy_connector->GetPolicyService() : nullptr;
  
    auto pss =
 -      std::make_unique<syncer::ProfileSyncService>(std::move(init_params));

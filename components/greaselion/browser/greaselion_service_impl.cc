@@ -301,10 +301,9 @@ void GreaselionServiceImpl::PostConvert(
     greaselion_extensions_.push_back(converted_extension->first->id());
     extension_dirs_.push_back(std::move(converted_extension->second));
     extension_system_->ready().Post(
-        FROM_HERE,
-        base::BindOnce(&GreaselionServiceImpl::Install,
-                       weak_factory_.GetWeakPtr(),
-                       base::Passed(&converted_extension->first)));
+        FROM_HERE, base::BindOnce(&GreaselionServiceImpl::Install,
+                                  weak_factory_.GetWeakPtr(),
+                                  std::move(converted_extension->first)));
   }
 }
 

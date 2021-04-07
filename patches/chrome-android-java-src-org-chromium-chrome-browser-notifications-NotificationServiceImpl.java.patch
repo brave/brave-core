@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
-index 58f28a1e8f3c30bae90144b14d4614c1fd5f2364..4570f9a020202ab951a300f8d1a812c08b182a33 100644
+index 3c06d1607ea9596860a4a700c75c38849b864a24..c55867b306314329e1d31c1057b4434e8feb348f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
-@@ -110,7 +110,7 @@ public class NotificationServiceImpl extends NotificationService.Impl {
+@@ -112,7 +112,7 @@ public class NotificationServiceImpl extends NotificationService.Impl {
  
          // Now that the browser process is initialized, we pass forward the call to the
          // NotificationPlatformBridge which will take care of delivering the appropriate events.

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/pdf/manifest.json b/chrome/browser/resources/pdf/manifest.json
-index 6c3b296b945034786037f26342fd92b0826ca400..09d2424c4d9be6fe1efd1f08090d0875a2d16ccc 100644
+index bd9d36beddbde98d349fd121fe3a95d11f5e68f3..fc4e94967a1f68ee168226497bb88316e1c82ed7 100644
 --- a/chrome/browser/resources/pdf/manifest.json
 +++ b/chrome/browser/resources/pdf/manifest.json
 @@ -8,6 +8,7 @@
@@ -14,7 +14,7 @@ index 6c3b296b945034786037f26342fd92b0826ca400..09d2424c4d9be6fe1efd1f08090d0875
    "mime_types": [
      "application/pdf"
    ],
--  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://resources; object-src * blob: externalfile: file: filesystem: data:; plugin-types application/x-google-chrome-pdf",
-+  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://brave-resources chrome://resources; object-src * blob: externalfile: file: filesystem: data:; plugin-types application/x-google-chrome-pdf",
+-  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://resources; object-src * blob: externalfile: file: filesystem: data:",
++  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://brave-resources chrome://resources; object-src * blob: externalfile: file: filesystem: data:",
    "mime_types_handler": "index.html"
  }

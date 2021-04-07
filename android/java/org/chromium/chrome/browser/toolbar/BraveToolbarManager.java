@@ -35,7 +35,6 @@ import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
-import org.chromium.chrome.browser.intent.IntentMetadata;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.night_mode.NightModeStateProvider;
@@ -131,7 +130,7 @@ public class BraveToolbarManager extends ToolbarManager {
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             OneshotSupplier<StartSurface> startSurfaceSupplier,
             ObservableSupplier<Boolean> omniboxFocusStateSupplier,
-            OneshotSupplier<IntentMetadata> intentMetadataOneshotSupplier,
+            OneshotSupplier<ToolbarIntentMetadata> intentMetadataOneshotSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier, WindowAndroid windowAndroid,
             Supplier<Boolean> isInOverviewModeSupplier, boolean isCustomTab,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,

@@ -18,6 +18,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
@@ -44,7 +45,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
 #include "chrome/browser/notifications/notification_platform_bridge.h"
 #include "brave/browser/notifications/brave_notification_platform_bridge.h"
 #endif
@@ -79,7 +80,6 @@
 
 #if defined(OS_ANDROID)
 #include "chrome/browser/flags/android/chrome_feature_list.h"
-#include "chrome/browser/android/component_updater/background_task_update_scheduler.h"
 #else
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -350,7 +350,7 @@ BraveBrowserProcessImpl::notification_platform_bridge() {
 #if !defined(OS_MAC)
   return BrowserProcessImpl::notification_platform_bridge();
 #else
-#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
   if (!created_notification_bridge_)
     CreateNotificationPlatformBridge();
   return notification_bridge_.get();
@@ -362,7 +362,7 @@ BraveBrowserProcessImpl::notification_platform_bridge() {
 
 void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
 #if defined(OS_MAC)
-#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
   DCHECK(!notification_bridge_);
   notification_bridge_ = BraveNotificationPlatformBridge::Create();
   created_notification_bridge_ = true;

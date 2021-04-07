@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources_util.cc b/chrome/browser/resources_util.cc
-index 88e0b09142bd973658d4c7a4e77a92b7dfa6b6bf..de67ae17e7385e6a53d100bd0ff34fddc02beebf 100644
+index 5c15c999788f6ecc421b7766ebbeac95a96a4ac9..5ce35d92b52739bcd42d8cd745db48e005652cf4 100644
 --- a/chrome/browser/resources_util.cc
 +++ b/chrome/browser/resources_util.cc
 @@ -50,6 +50,7 @@ class ThemeMap {
      for (size_t i = 0; i < kUiResourcesSize; ++i) {
-       storage.emplace_back(kUiResources[i].name, kUiResources[i].value);
+       storage.emplace_back(kUiResources[i].path, kUiResources[i].id);
      }
 +    BRAVE_RESOURCES_UTIL
  #if BUILDFLAG(IS_CHROMEOS_ASH)
      for (size_t i = 0; i < kUiChromeosResourcesSize; ++i) {
-       storage.emplace_back(kUiChromeosResources[i].name,
+       storage.emplace_back(kUiChromeosResources[i].path,

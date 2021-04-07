@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js
+index f1c5345ec0b62325e5829325723c90b6a5de30c1..6b392a9882925c09fde10ce45e8db41d96fee11b 100644
+--- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js
++++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.js
+@@ -87,6 +87,7 @@ Polymer({
+ 
+     this.manageProfilesBrowserProxy_ =
+         ManageProfilesBrowserProxyImpl.getInstance();
++    this.$$('#addProfile').style.borderRadius = '8px';
+   },
+ 
+   /** @override */

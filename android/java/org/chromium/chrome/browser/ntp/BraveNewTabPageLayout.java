@@ -111,6 +111,7 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -503,14 +504,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
             boolean searchProviderIsGoogle, ScrollDelegate scrollDelegate,
             ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
-            ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma) {
+            ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma, boolean isIncognito,
+            WindowAndroid windowAndroid) {
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
                 searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
-                lifecycleDispatcher, uma);
+                lifecycleDispatcher, uma, isIncognito, windowAndroid);
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
-        ((BraveActivity)mActivity).dismissShieldsTooltip();
+        ((BraveActivity) mActivity).dismissShieldsTooltip();
     }
 
     private void showNTPImage(NTPImage ntpImage) {

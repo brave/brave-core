@@ -27,10 +27,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 #include "chrome/grit/generated_resources.h"
 #include "extensions/common/extension_urls.h"
 
-#undef IDS_SETTINGS_EDIT_PERSON
-#define IDS_SETTINGS_EDIT_PERSON IDS_SETTINGS_BRAVE_EDIT_PROFILE
-#undef IDS_SETTINGS_PROFILE_NAME_AND_PICTURE
-#define IDS_SETTINGS_PROFILE_NAME_AND_PICTURE IDS_SETTINGS_BRAVE_EDIT_PROFILE
+#undef IDS_SETTINGS_CUSTOMIZE_PROFILE
+#define IDS_SETTINGS_CUSTOMIZE_PROFILE IDS_SETTINGS_BRAVE_EDIT_PROFILE
+#undef IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE
+#define IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE \
+  IDS_SETTINGS_BRAVE_EDIT_PROFILE
 #undef IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO
 #define IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO \
   IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_BULLET_TWO
@@ -268,7 +269,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
     {"showFullUrls", IDS_CONTEXT_MENU_SHOW_FULL_URLS},
   };
-  AddLocalizedStringsBulk(html_source, localized_strings);
+  html_source->AddLocalizedStrings(localized_strings);
   html_source->AddString("webRTCLearnMoreURL",
                          base::ASCIIToUTF16(kWebRTCLearnMoreURL));
   html_source->AddString("googleLoginLearnMoreURL",

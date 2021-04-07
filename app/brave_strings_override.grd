@@ -84,7 +84,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <file path="resources/chromium_strings_override_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/chromium_strings_override_zu.xtb" lang="zu" />
   </translations>
-  <release seq="1" allow_pseudo="false">
+  <release seq="1">
     <messages fallback_to_english="true">
       <if expr="not is_android">
         </if>
@@ -258,9 +258,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="is_linux">
-        </if>
-
       <if expr="is_android">
         </if>
 
@@ -271,9 +268,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
 
       <if expr="not chromeos and not is_android">
-        </if>
-
-      <if expr="chromeos">
         </if>
 
       <if expr="is_win">
