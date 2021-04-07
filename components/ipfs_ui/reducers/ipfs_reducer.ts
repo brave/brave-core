@@ -11,8 +11,8 @@ import { types } from '../constants/ipfs_types'
 // Utils
 import * as storage from '../storage'
 
-const kNodeWebUIUrl = 'http://127.0.0.1:{api-port}/webui'
-const kPeersWebUIUrl = 'http://127.0.0.1:{api-port}/webui/#/peers'
+const kNodeWebUIUrl = 'http://localhost:{api-port}/webui'
+const kPeersWebUIUrl = 'http://localhost:{api-port}/webui/#/peers'
 
 // api param is expected in format like /ip4/127.0.0.1/tcp/45001
 // where 45001 will be used as {api-port} value for target
