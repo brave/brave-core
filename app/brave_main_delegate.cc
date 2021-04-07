@@ -164,15 +164,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kNoPings);
 
-  // Setting these to default values in Chromium to maintain parity
-  // See: ChromeContentVerifierDelegate::GetDefaultMode for ContentVerification
-  // See: GetStatus in install_verifier.cc for InstallVerification
-  command_line.AppendSwitchASCII(
-      switches::kExtensionContentVerification,
-      switches::kExtensionContentVerificationEnforceStrict);
-  command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
-                                 "enforce");
-
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
           embedder_support::kOriginTrialPublicKey)) {
     command_line.AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,
