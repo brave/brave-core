@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../common/locale'
 
-import { PaddedButton, Section, SideBySideButtons, Title, Error } from '../style'
+import { PaddedButton, BorderlessButton, Section, SideBySideButtons, Title, Error } from '../style'
 
 interface Props {
   daemonStatus: IPFS.DaemonStatus
@@ -57,7 +57,7 @@ export class DaemonStatus extends React.Component<Props, {}> {
           />
           )}
           {this.props.addressesConfig.api && !this.props.daemonStatus.restarting && (
-          <PaddedButton
+          <BorderlessButton
             text={getLocale('openWebUI')}
             size={'small'}
             onClick={this.props.onOpenNodeWebUI}
