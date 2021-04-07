@@ -2,7 +2,7 @@ import * as React from 'react'
 import { AppObjectType, AppsListType } from '../../../constants/types'
 import { NavButton } from '../../extension/'
 import { AppListItem } from '../'
-import locale from '../../../mock-data/mock-locale'
+import locale from '../../../constants/locale'
 // Styled Components
 import {
   StyledWrapper,

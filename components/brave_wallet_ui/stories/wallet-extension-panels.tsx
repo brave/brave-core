@@ -4,7 +4,7 @@ import * as React from 'react'
 import { ConnectWithSite, ConnectedPanel, Panel } from '../components/extension'
 import { AppList } from '../components/shared'
 import { WalletAccountType, PanelTypes, AppObjectType, AppsListType } from '../constants/types'
-import { AppsList } from '../mock-data/apps-list'
+import { AppsList } from '../options/apps-list-options'
 import { filterAppList } from '../utils/filter-app-list'
 import {
   StyledExtensionWrapper,

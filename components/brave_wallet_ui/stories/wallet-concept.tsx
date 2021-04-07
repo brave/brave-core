@@ -10,7 +10,7 @@ import {
   NavTypes,
   NavObjectType
 } from '../constants/types'
-import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../mock-data/side-nav-options'
+import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
 
 export default {
   title: 'Wallet/Desktop'

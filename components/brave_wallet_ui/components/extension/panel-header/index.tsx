@@ -9,7 +9,7 @@ import {
   TopRow,
   CloseButton
 } from './style'
-import locale from '../../../mock-data/mock-locale'
+import locale from '../../../constants/locale'
 import { PanelTypes } from '../../../constants/types'
 
 export interface Props {

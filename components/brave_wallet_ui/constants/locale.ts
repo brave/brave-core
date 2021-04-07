@@ -51,7 +51,20 @@ const locale = {
   topNavInvest: 'Invest',
   topNavLending: 'Lending',
   topNavApps: 'Apps',
-  topNavAccounts: 'Accounts'
+  topNavAccounts: 'Accounts',
+
+  // Chart Timeline Buttons
+  chartLive: 'LIVE',
+  chartOneDay: '1D',
+  chartOneWeek: '1W',
+  chartOneMonth: '1M',
+  chartThreeMonths: '3M',
+  chartOneYear: '1Y',
+  chartAllTime: 'All',
+
+  // Portfolio View
+  addCoin: 'Add Coin',
+  balance: 'Balance'
 }
 
 export default locale

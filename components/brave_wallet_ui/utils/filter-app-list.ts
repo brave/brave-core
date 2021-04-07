@@ -1,4 +1,4 @@
-import locale from '../mock-data/mock-locale'
+import locale from '../constants/locale'
 import { AppsListType } from '../constants/types'
 
 export const filterAppList = (event: any, AppsList: AppsListType[], updateList: (AppsList: AppsListType[]) => void) => {

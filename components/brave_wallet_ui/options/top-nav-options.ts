@@ -1,5 +1,5 @@
 import { TopTabNavObjectType } from '../constants/types'
-import locale from './mock-locale'
+import locale from '../constants/locale'
 
 export const TopNavOptions: TopTabNavObjectType[] = [
   {

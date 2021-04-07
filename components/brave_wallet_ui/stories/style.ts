@@ -42,6 +42,16 @@ export const DesktopComponentWrapper = styled.div`
   padding: 20px;
 `
 
+export const LineChartWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 20px;
+  width: 80vw;
+`
+
 export const DesktopComponentWrapperRow = styled.div`
   display: flex;
   flex-direction: row;
