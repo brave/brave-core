@@ -27,6 +27,8 @@ extern const char kBraveSidebarName[];
 extern const char kBraveSidebarDescription[];
 extern const char kBraveSpeedreaderName[];
 extern const char kBraveSpeedreaderDescription[];
+extern const char kBraveSpeedreaderReadabilityName[];
+extern const char kBraveSpeedreaderReadabilityDescription[];
 extern const char kBraveSyncName[];
 extern const char kBraveSyncDescription[];
 extern const char kBraveIpfsName[];
