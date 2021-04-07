@@ -44,6 +44,7 @@ include_rules = [
   "+../../../../../../chrome/browser/flags/android",
   "+../../../../../../chrome/browser/media/router",
   "+../../../../../../chrome/browser/safe_browsing/download_protection",
+  "+../../../../../../chrome/browser/sharing/click_to_call",
   "+../../../../../../chrome/browser/ui/bookmarks",
   "+../../../../../../chrome/browser/ui/cocoa",
   "+../../../../../../chrome/browser/ui/content_settings",
