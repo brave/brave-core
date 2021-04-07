@@ -54,7 +54,11 @@ void SidebarController::ActivateItemAt(int index) {
     return;
   }
 
-  auto params = GetSingletonTabNavigateParams(browser_, item.url);
+  LoadAtTab(item.url);
+}
+
+void SidebarController::LoadAtTab(const GURL& url) {
+  auto params = GetSingletonTabNavigateParams(browser_, url);
   int tab_index = GetIndexOfExistingTab(browser_, params);
   // If browser has a tab that already loaded |item.url|, just activate it.
   if (tab_index >= 0) {
