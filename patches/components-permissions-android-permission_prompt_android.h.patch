@@ -1,0 +1,12 @@
+diff --git a/components/permissions/android/permission_prompt_android.h b/components/permissions/android/permission_prompt_android.h
+index f4fdd7dd0500165d715f655d837d15a7d484fd49..8ee71c317f61c9929336319ce24dd0e66f2c8497 100644
+--- a/components/permissions/android/permission_prompt_android.h
++++ b/components/permissions/android/permission_prompt_android.h
+@@ -54,6 +54,7 @@ class PermissionPromptAndroid : public permissions::PermissionPrompt,
+   void OnInfoBarRemoved(infobars::InfoBar* infobar, bool animate) override;
+   void OnManagerShuttingDown(infobars::InfoBarManager* manager) override;
+ 
++  BRAVE_PERMISSION_PROMPT_ANDROID_H_
+  private:
+   // PermissionPromptAndroid is owned by PermissionRequestManager, so it should
+   // be safe to hold a raw WebContents pointer here because this class is

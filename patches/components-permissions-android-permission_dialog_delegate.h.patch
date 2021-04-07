@@ -1,0 +1,12 @@
+diff --git a/components/permissions/android/permission_dialog_delegate.h b/components/permissions/android/permission_dialog_delegate.h
+index 5b4ff0e8a4d99d1303b826d172f18fd17eb173b4..a69037cf678f530c98375531b6e4e0c9c2e092f5 100644
+--- a/components/permissions/android/permission_dialog_delegate.h
++++ b/components/permissions/android/permission_dialog_delegate.h
+@@ -42,6 +42,7 @@ class PermissionDialogDelegate : public content::WebContentsObserver {
+   // responded to.
+   void Destroy(JNIEnv* env, const JavaParamRef<jobject>& obj);
+ 
++  BRAVE_PERMISSION_DIALOG_DELEGATE_H_
+  private:
+   PermissionDialogDelegate(content::WebContents* web_contents,
+                            PermissionPromptAndroid* permission_prompt);

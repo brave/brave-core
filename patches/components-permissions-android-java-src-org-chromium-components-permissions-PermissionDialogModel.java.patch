@@ -1,0 +1,12 @@
+diff --git a/components/permissions/android/java/src/org/chromium/components/permissions/PermissionDialogModel.java b/components/permissions/android/java/src/org/chromium/components/permissions/PermissionDialogModel.java
+index 9df6b9e12deb0a83f98a674f560778b2a07ed90e..3be308b20e0dcd27bdba05274945e6f0546c7384 100644
+--- a/components/permissions/android/java/src/org/chromium/components/permissions/PermissionDialogModel.java
++++ b/components/permissions/android/java/src/org/chromium/components/permissions/PermissionDialogModel.java
+@@ -25,6 +25,7 @@ class PermissionDialogModel {
+         Context context = delegate.getWindow().getContext().get();
+         assert context != null;
+         View customView = loadDialogView(context);
++        BravePermissionDialogModelUtils.addLifetimeSpinner(context, customView, delegate);
+ 
+         String messageText = delegate.getMessageText();
+         assert !TextUtils.isEmpty(messageText);

@@ -1,0 +1,17 @@
+diff --git a/components/permissions/android/permission_dialog_delegate.cc b/components/permissions/android/permission_dialog_delegate.cc
+index 19905a0a9f24afdfe4bd6f78d03be2a633d18cba..c23e1979383c9bb0f68f89774598e9aec0a44228 100644
+--- a/components/permissions/android/permission_dialog_delegate.cc
++++ b/components/permissions/android/permission_dialog_delegate.cc
+@@ -63,10 +63,12 @@ void PermissionDialogDelegate::CreateJavaDelegate(
+           permission_prompt_->GetIconId()),
+       ConvertUTF16ToJavaString(env, permission_prompt_->GetMessageText()),
+       primaryButtonText, secondaryButtonText));
++  BRAVE_PERMISSION_DIALOG_DELEGATE_CREATE_JAVA_DELEGATE
+ }
+ 
+ void PermissionDialogDelegate::Accept(JNIEnv* env,
+                                       const JavaParamRef<jobject>& obj) {
++  BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT
+   permission_prompt_->Accept();
+ }
+ 
