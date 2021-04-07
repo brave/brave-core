@@ -275,7 +275,7 @@ TEST(BraveWalletUtilsUnitTest, Mnemonic) {
 
 TEST(BraveWalletUtilsUnitTest, EncodeString) {
   std::string output;
-  EncodeString("one", &output);
+  EXPECT_TRUE(EncodeString("one", &output));
   EXPECT_EQ(output,
             // Count for input string.
             "0x0000000000000000000000000000000000000000000000000000000000000003"
@@ -283,10 +283,10 @@ TEST(BraveWalletUtilsUnitTest, EncodeString) {
             "6f6e650000000000000000000000000000000000000000000000000000000000");
 
   output.clear();
-  EncodeString(
+  EXPECT_TRUE(EncodeString(
       "oneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneoneon"
       "e",
-      &output);
+      &output));
   EXPECT_EQ(
       output,
       // Count for input string.
@@ -297,10 +297,15 @@ TEST(BraveWalletUtilsUnitTest, EncodeString) {
       "6e65000000000000000000000000000000000000000000000000");
 
   output.clear();
-  EncodeString("", &output);
+  EXPECT_TRUE(EncodeString("", &output));
   EXPECT_EQ(
       output,
       "0x0000000000000000000000000000000000000000000000000000000000000000");
+
+  output.clear();
+  std::string invalid_input = "\xF0\x8F\xBF\xBE";
+  EXPECT_FALSE(base::IsStringUTF8(invalid_input));
+  EXPECT_FALSE(EncodeString(invalid_input, &output));
 }
 
 TEST(BraveWalletUtilsUnitTest, EncodeStringArray) {
@@ -395,6 +400,10 @@ TEST(BraveWalletUtilsUnitTest, EncodeStringArray) {
             "0000000000000000000000000000000000000000000000000000000000000005"
             // encoding for "three"
             "7468726565000000000000000000000000000000000000000000000000000000");
+
+  input = {"one", "\xF0\x8F\xBF\xBE"};
+  output.clear();
+  EXPECT_FALSE(EncodeStringArray(input, &output));
 }
 
 TEST(BraveWalletUtilsUnitTest, DecodeString) {
@@ -426,6 +435,44 @@ TEST(BraveWalletUtilsUnitTest, DecodeString) {
       "0000000000000000000000000000000000000000000000000000000000000000",
       &output));
   EXPECT_EQ(output, "");
+
+  // Test invalid inputs.
+  output.clear();
+  EXPECT_FALSE(DecodeString(0, "", &output));
+  EXPECT_FALSE(DecodeString(0, "invalid string", &output));
+  EXPECT_FALSE(DecodeString(
+      0,
+      // invalid count
+      "6f6e650000000000000000000000000000000000000000000000000000000000",
+      &output));
+
+  EXPECT_FALSE(DecodeString(
+      0,
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // invalid encoding for "one": len < expected len of encoding for "one"
+      "6f6e",
+      &output));
+
+  EXPECT_FALSE(DecodeString(
+      0,
+      // count for "one" without encoding of string
+      "0000000000000000000000000000000000000000000000000000000000000003",
+      &output));
+
+  EXPECT_FALSE(DecodeString(
+      64,  // out-of-bound offset
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &output));
+
+  EXPECT_FALSE(DecodeString(
+      999999,  // out-of-bound invalid offset
+      // count for "one two three four five six seven eight nine"
+      "000000000000000000000000000000000000000000000000000000000000002c"
+      // encoding for "one two three four five six seven eight nine"
+      "6f6e652074776f20746872656520666f75722066697665207369782073657665"
+      "6e206569676874206e696e650000000000000000000000000000000000000000",
+      &output));
 }
 
 TEST(BraveWalletUtilsUnitTest, DecodeStringArray) {
@@ -521,6 +568,92 @@ TEST(BraveWalletUtilsUnitTest, DecodeStringArray) {
       &output));
   expected_output = {"", "one", "", "two", "", "three"};
   EXPECT_EQ(output, expected_output);
+
+  // Test invalid input.
+  output.clear();
+  EXPECT_FALSE(DecodeStringArray("", &output));
+  EXPECT_FALSE(DecodeStringArray("1", &output));
+  EXPECT_FALSE(DecodeStringArray("z", &output));
+  EXPECT_FALSE(DecodeStringArray("\xF0\x8F\xBF\xBE", &output));
+  EXPECT_FALSE(DecodeStringArray(
+      // count of array elements
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // invalid data offset to string element.
+      "0000000000000000000000000000000000000000000000000000000000001",
+      &output));
+  EXPECT_FALSE(DecodeStringArray(
+      // count of array elements
+      "0000000000000000000000000000000000000000000000000000000000000002"
+      // out-of-bound offset to array element
+      "00000000000000000000000000000000000000000000000000000000000001e0",
+      &output));
+
+  EXPECT_FALSE(DecodeStringArray(
+      // Mismatched count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // offsets to array elements
+      "0000000000000000000000000000000000000000000000000000000000000060"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000"
+      // count for "two"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "two"
+      "74776f0000000000000000000000000000000000000000000000000000000000",
+      &output));
+
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // offsets to array elements, last offset point to non-existed data
+      "0000000000000000000000000000000000000000000000000000000000000060"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000"
+      // count for "two"
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // encoding for "two"
+      "74776f0000000000000000000000000000000000000000000000000000000000",
+      &output));
+
+  // Missing data offset and data.
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &output));
+
+  // Missing data.
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // offset for "one", data missing
+      "0000000000000000000000000000000000000000000000000000000000000020",
+      &output));
+
+  // Missing count.
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // offset for "one"
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      // encoding for "one"
+      "6f6e650000000000000000000000000000000000000000000000000000000000",
+      &output));
+
+  // Missing encoding of string.
+  EXPECT_FALSE(DecodeStringArray(
+      // count of elements in input array
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // offset for "one"
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      // count for "one"
+      "0000000000000000000000000000000000000000000000000000000000000003",
+      &output));
 }
 
 TEST(BraveWalletUtilsUnitTest, Namehash) {

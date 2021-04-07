@@ -297,7 +297,9 @@ bool DecodeString(size_t offset,
 
   // Decode count.
   uint256_t count = 0;
-  if (!HexValueToUint256("0x" + input.substr(offset, 64), &count)) {
+  size_t len = 64;
+  if (offset + len > input.size() ||
+      !HexValueToUint256("0x" + input.substr(offset, len), &count)) {
     return false;
   }
 
@@ -307,12 +309,11 @@ bool DecodeString(size_t offset,
     return true;
   }
 
-  offset += 64;
-
   // Decode string.
-  bool success = base::HexStringToString(
-      input.substr(offset, static_cast<size_t>(count) * 2), output);
-  return success;
+  offset += len;
+  len = static_cast<size_t>(count) * 2;
+  return offset + len <= input.size() &&
+         base::HexStringToString(input.substr(offset, len), output);
 }
 
 bool DecodeStringArray(const std::string& input,
@@ -329,13 +330,16 @@ bool DecodeStringArray(const std::string& input,
   for (size_t i = 0; i < static_cast<size_t>(count); i++) {
     // Get the starting data offset for each string element.
     uint256_t data_offset;
-    if (!HexValueToUint256("0x" + input.substr(offset, 64), &data_offset)) {
+    if (offset + 64 > input.size() ||
+        !HexValueToUint256("0x" + input.substr(offset, 64), &data_offset)) {
       return false;
     }
 
     // Decode each string.
-    if (!DecodeString(64 /* count */ + static_cast<size_t>(data_offset) * 2,
-                      input, &output->at(i))) {
+    size_t string_offset =
+        64 /* count */ + static_cast<size_t>(data_offset) * 2;
+    if (string_offset > input.size() ||
+        !DecodeString(string_offset, input, &output->at(i))) {
       return false;
     }
 
