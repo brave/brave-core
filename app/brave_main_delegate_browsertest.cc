@@ -14,6 +14,7 @@
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/embedder_support/switches.h"
+#include "components/federated_learning/features/features.h"
 #include "components/language/core/common/language_experiments.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
@@ -66,6 +67,8 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
       &autofill::features::kAutofillEnableAccountWalletStorage,
       &autofill::features::kAutofillServerCommunication,
+      &blink::features::kInterestCohortAPIOriginTrial,
+      &blink::features::kInterestCohortFeaturePolicy,
       &blink::features::kTextFragmentAnchor,
       &features::kDirectSockets,
       &features::kIdleDetection,
@@ -76,6 +79,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kSubresourceWebBundles,
       &features::kTabHoverCards,
       &features::kWebOTP,
+      &federated_learning::kFederatedLearningOfCohorts,
+      &federated_learning::kFlocIdComputedEventLogging,
+      &federated_learning::kFlocIdSortingLshBasedComputation,
       &kSharingQRCodeGenerator,
       &network_time::kNetworkTimeServiceQuerying,
       &safe_browsing::kEnhancedProtection,
