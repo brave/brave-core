@@ -4,7 +4,7 @@
 
 # Contains flags that should be applied only to brave_public_apk_for_test.
 
-# Do not obfuscate class names, methods and fields that are 
+# Do not obfuscate class names, methods and fields that are
 # needed for checking of existence for bytecode manipulation
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
@@ -244,4 +244,12 @@
 
 -keep class org.chromium.chrome.browser.site_settings.ChromeSiteSettingsDelegate {
     public <init>(...);
+}
+
+-keep class org.chromium.components.permissions.BravePermissionDialogModel {
+    *** getModel(...);
+}
+
+-keep class org.chromium.components.permissions.PermissionDialogModel {
+    *** getModel(...);
 }
