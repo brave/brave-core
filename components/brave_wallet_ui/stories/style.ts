@@ -51,3 +51,14 @@ export const DesktopComponentWrapperRow = styled.div`
   width: 800px;
   padding: 20px;
 `
+
+export const WalletWidgetStandIn = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #E9E9F4;
+  border-radius: 8px;
+  width: 285px;
+  height: 500px;
+`

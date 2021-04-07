@@ -2,9 +2,8 @@ import styled from 'styled-components'
 
 export const StyledWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
-  margin-bottom: 20px;
 `
