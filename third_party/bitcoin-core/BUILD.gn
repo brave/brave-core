@@ -42,6 +42,8 @@ static_library("bitcoin-core") {
     "src/src/crypto/hmac_sha512.h",
     "src/src/crypto/sha256.cpp",
     "src/src/crypto/sha256.h",
+    "src/src/crypto/sha512.cpp",
+    "src/src/crypto/sha512.h",
     "src/src/hash.cpp",
     "src/src/hash.h",
     "src/src/span.h",
