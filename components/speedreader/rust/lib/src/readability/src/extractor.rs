@@ -25,7 +25,7 @@ use util::StringUtils;
 const NUM_TOP_CANDIDATES: usize = 5;
 
 lazy_static! {
-    static ref SEPARATORS: Regex = Regex::new(r#"[\|\-\\/>»]"#).unwrap();
+    static ref SEPARATORS: Regex = Regex::new(r#"\s+[\|\-\\/>»]\s+"#).unwrap();
 }
 
 #[derive(Debug)]
@@ -305,7 +305,7 @@ mod tests {
     }
 
     #[test]
-    fn rewrite_divs_single_p() {
+    fn rewrite_divs_single_p_child_as_p() {
         let input = r#"
         <body>
           <div>
@@ -329,6 +329,76 @@ mod tests {
         assert_eq!(
             normalize_output(expected),
             normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn rewrite_div_phrasing_only_as_p() {
+        let input = r#"
+        <body>
+          <div>
+            Here is some text, and <a>A link</a> too!<br> <br>
+          </div>
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+          <p>
+            Here is some text, and <a>A link</a> too!
+          </p>
+        </body>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn br_chain_to_p_simple() {
+        let input = r#"
+        <body>
+        foo<br>bar<br> <br><br>abc
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+        foo<br>bar<p>abc</p>
+        </body>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content),
+        );
+    }
+
+    #[test]
+    fn br_chain_to_p_include_phrasing_elements() {
+        let input = r#"
+        </body>
+        <br><br>Some super<a href="https://baz.com">cool website</a> and more text.
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+        <p>Some super<a href="https://baz.com">cool website</a> and more text.</p>
+        </body>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content),
         );
     }
 
@@ -387,5 +457,12 @@ mod tests {
         let expected = "How Cats Can Save the Planet";
         let output = clean_title(input.to_string());
         assert_eq!(expected, output);
+    }
+
+    #[test]
+    fn test_clean_title_preserve_hyphen() {
+        let input = "Just-released Minecraft exploit makes it easy to crash game servers";
+        let output = clean_title(input.to_string());
+        assert_eq!(input, output);
     }
 }

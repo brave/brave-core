@@ -1,11 +1,25 @@
 use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
+use html5ever::tree_builder::NodeOrText;
 use html5ever::{parse_document, ParseOpts};
 use html5ever::{Attribute, LocalName, QualName};
 use kuchiki::NodeData::{Comment, Element, Text};
 use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use std::str::FromStr;
+
+/// A small wrapper function that creates a NodeOrText from a Text handle or an Element handle.
+#[inline]
+pub fn node_or_text(handle: Handle) -> Option<NodeOrText<Handle>> {
+    match handle.data() {
+        Text(ref data) => match StrTendril::from_str(&data.borrow()) {
+            Ok(tendril) => Some(NodeOrText::AppendText(tendril)),
+            _ => None,
+        },
+        Element(_) => Some(NodeOrText::AppendNode(handle)),
+        _ => None,
+    }
+}
 
 /// Returns the tag name of a DOM element.
 #[inline]
@@ -88,6 +102,14 @@ pub fn is_empty(handle: &Handle) -> bool {
         | Some(&local_name!("p"))
         | Some(&local_name!("div"))
         | Some(&local_name!("canvas")) => true,
+        _ => false,
+    }
+}
+
+pub fn is_whitespace(handle: &Handle) -> bool {
+    match handle.data() {
+        Text(ref text) => text.borrow().trim().len() == 0,
+        Element(ref data) => data.name.local == local_name!("br"),
         _ => false,
     }
 }
@@ -199,9 +221,7 @@ pub fn has_nodes(handle: &Handle, tag_names: &[&'static LocalName]) -> bool {
 /// anything. This is usually used for unwrapping divs.
 #[inline]
 pub fn get_only_child_by_tag(handle: &Handle, tag: &LocalName) -> Option<Handle> {
-    let mut elems = handle
-        .children()
-        .filter(|child| child.as_element().is_some());
+    let mut elems = handle.children().filter(|child| !is_whitespace(&child));
     if elems.clone().count() == 1 {
         let only_child = elems.nth(0)?;
         if get_tag_name(&only_child) == Some(tag) {
@@ -265,5 +285,79 @@ pub fn is_single_image(handle: &Handle) -> bool {
         return is_single_image(first);
     } else {
         return false;
+    }
+}
+
+// The commented out elements qualify as phrasing content but tend to be
+// removed by readability when put into paragraphs, so we ignore them here.
+static PHRASING_ELEMS: [&LocalName; 39] = [
+    // "canvas", "iframe", "svg", "video",
+    &local_name!("abbr"),
+    &local_name!("audio"),
+    &local_name!("b"),
+    &local_name!("bdo"),
+    &local_name!("br"),
+    &local_name!("button"),
+    &local_name!("cite"),
+    &local_name!("code"),
+    &local_name!("data"),
+    &local_name!("datalist"),
+    &local_name!("dfn"),
+    &local_name!("em"),
+    &local_name!("embed"),
+    &local_name!("i"),
+    &local_name!("img"),
+    &local_name!("input"),
+    &local_name!("kbd"),
+    &local_name!("label"),
+    &local_name!("mark"),
+    &local_name!("math"),
+    &local_name!("meter"),
+    &local_name!("noscript"),
+    &local_name!("object"),
+    &local_name!("output"),
+    &local_name!("progress"),
+    &local_name!("q"),
+    &local_name!("ruby"),
+    &local_name!("samp"),
+    &local_name!("script"),
+    &local_name!("select"),
+    &local_name!("small"),
+    &local_name!("span"),
+    &local_name!("strong"),
+    &local_name!("sub"),
+    &local_name!("sup"),
+    &local_name!("textarea"),
+    &local_name!("time"),
+    &local_name!("var"),
+    &local_name!("wbr"),
+];
+
+/// Returns true if a handle qualifies as phrasing content.
+/// https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Content_categories#Phrasing_content
+pub fn is_phrasing_content(handle: &Handle) -> bool {
+    match handle.data() {
+        Text(_) => return true,
+        Element(ref data) => {
+            let tag = &data.name.local;
+            if PHRASING_ELEMS.iter().any(|&t| t == tag) {
+                return true;
+            }
+
+            // We can't include these in PHRASING_ELEMS because they can contain
+            // non-pharsing elements inside of them, so we search recursively.
+            if tag == &local_name!("a") || tag == &local_name!("del") || tag == &local_name!("ins")
+            {
+                for c in handle.children() {
+                    if !is_phrasing_content(&c) {
+                        return false;
+                    }
+                }
+                true
+            } else {
+                false
+            }
+        }
+        _ => false,
     }
 }
