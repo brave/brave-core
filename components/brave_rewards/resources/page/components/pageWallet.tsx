@@ -676,8 +676,8 @@ class PageWallet extends React.Component<Props, State> {
     const { monthlyReportIds } = this.props.rewardsData
 
     const ids = [
-      ...monthlyReportIds || [],
-      `${new Date().getFullYear()}_${new Date().getMonth() + 1}`
+      `${new Date().getFullYear()}_${new Date().getMonth() + 1}`,
+      ...monthlyReportIds || []
     ]
 
     let result: Record<string, string> = {}
@@ -692,6 +692,11 @@ class PageWallet extends React.Component<Props, State> {
 
       // we only want to show reports from version 1.3 (Feb 2020) up
       if (year < 2020 || (year === 2020 && month === 0)) {
+        return
+      }
+
+      // Don't show drop-down items for a future month
+      if (new Date(year, month).getTime() > Date.now()) {
         return
       }
 
