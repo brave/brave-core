@@ -10,6 +10,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/callback.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"

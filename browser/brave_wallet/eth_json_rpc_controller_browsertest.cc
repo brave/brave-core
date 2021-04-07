@@ -26,6 +26,20 @@
 
 namespace {
 
+std::unique_ptr<net::test_server::HttpResponse> HandleUnstoppableDomainsRequest(
+    const net::test_server::HttpRequest& request) {
+  std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
+      new net::test_server::BasicHttpResponse());
+  http_response->set_code(net::HTTP_OK);
+  http_response->set_content_type("text/html");
+
+  http_response->set_content(R"({
+    "jsonrpc":"2.0",
+    "id": "0",
+    "result": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002e516d5772644e4a574d62765278787a4c686f6a564b614244737753344b4e564d374c766a734e3751624472766b6100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"})");
+  return std::move(http_response);
+}
+
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request) {
   std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
@@ -115,6 +129,15 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
       wait_for_request_->Quit();
     }
     ASSERT_EQ(expected_response_, hex_balance);
+    ASSERT_EQ(expected_success_, success);
+  }
+
+  void OnUnstoppableDomainsProxyReaderGetMany(bool success,
+                                              const std::string& result) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    ASSERT_EQ(expected_response_, result);
     ASSERT_EQ(expected_success_, success);
   }
 
@@ -214,4 +237,49 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetERC20TokenBalance) {
   WaitForResponse(
       "0x00000000000000000000000000000000000000000000000166e12cfce39a0000",
       true);
+}
+
+IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest,
+                       UnstoppableDomainsProxyReaderGetMany) {
+  ResetHTTPSServer(base::BindRepeating(&HandleUnstoppableDomainsRequest));
+  auto* controller = GetEthJsonRpcController();
+  controller->UnstoppableDomainsProxyReaderGetMany(
+      "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
+      "brave.crypto" /* domain */,
+      {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
+       "ipfs.redirect_domain.value"} /* keys */,
+      base::BindOnce(
+          &EthJsonRpcBrowserTest::OnUnstoppableDomainsProxyReaderGetMany,
+          base::Unretained(this)));
+
+  WaitForResponse(
+      "0x0000000000000000000000000000000000000000000000000000000000000020"
+      "0000000000000000000000000000000000000000000000000000000000000004"
+      "0000000000000000000000000000000000000000000000000000000000000080"
+      "00000000000000000000000000000000000000000000000000000000000000a0"
+      "0000000000000000000000000000000000000000000000000000000000000100"
+      "0000000000000000000000000000000000000000000000000000000000000120"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000002e"
+      "516d5772644e4a574d62765278787a4c686f6a564b614244737753344b4e564d"
+      "374c766a734e3751624472766b61000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      true);
+}
+
+IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest,
+                       UnstoppableDomainsProxyReaderGetManyServerError) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
+  auto* controller = GetEthJsonRpcController();
+  controller->UnstoppableDomainsProxyReaderGetMany(
+      "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
+      "brave.crypto" /* domain */,
+      {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
+       "ipfs.redirect_domain.value"} /* keys */,
+      base::BindOnce(
+          &EthJsonRpcBrowserTest::OnUnstoppableDomainsProxyReaderGetMany,
+          base::Unretained(this)));
+
+  WaitForResponse("", false);
 }
