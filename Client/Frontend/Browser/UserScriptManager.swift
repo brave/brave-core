@@ -108,6 +108,7 @@ class UserScriptManager {
     private let packedUserScripts: [WKUserScript] = {
         [(WKUserScriptInjectionTime.atDocumentStart, mainFrameOnly: false, sandboxed: false),
          (WKUserScriptInjectionTime.atDocumentEnd, mainFrameOnly: false, sandboxed: false),
+         (WKUserScriptInjectionTime.atDocumentStart, mainFrameOnly: false, sandboxed: true),
          (WKUserScriptInjectionTime.atDocumentEnd, mainFrameOnly: false, sandboxed: true),
          (WKUserScriptInjectionTime.atDocumentStart, mainFrameOnly: true, sandboxed: false),
          (WKUserScriptInjectionTime.atDocumentEnd, mainFrameOnly: true, sandboxed: false)].compactMap { arg in
