@@ -13,10 +13,16 @@
 #include "base/guid.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/task/post_task.h"
+#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "build/build_config.h"
 #include "components/download/public/background_service/download_service.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "storage/browser/blob/blob_data_handle.h"
+#include "storage/browser/blob/write_blob_to_file.h"
 
 namespace brave_shields {
 
@@ -54,10 +60,12 @@ const net::NetworkTrafficAnnotationTag
 
 AdBlockSubscriptionDownloadManager::AdBlockSubscriptionDownloadManager(
     download::DownloadService* download_service,
+    AdBlockSubscriptionServiceManager* subscription_manager,
     scoped_refptr<base::SequencedTaskRunner> background_task_runner)
     : download_service_(download_service),
       is_available_for_downloads_(true),
-      background_task_runner_(background_task_runner) {}
+      background_task_runner_(background_task_runner),
+      subscription_manager_(subscription_manager) {}
 
 AdBlockSubscriptionDownloadManager::~AdBlockSubscriptionDownloadManager() =
     default;
@@ -146,6 +154,12 @@ void AdBlockSubscriptionDownloadManager::OnDownloadSucceeded(
   base::UmaHistogramBoolean(
       "BraveShields.AdBlockSubscriptionDownloadManager.DownloadSucceeded",
       true);
+
+  background_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockSubscriptionDownloadManager::EnsureDirExists,
+                     base::Unretained(this), download_url,
+                     std::move(data_handle)));
 }
 
 void AdBlockSubscriptionDownloadManager::OnDownloadFailed(
@@ -155,6 +169,51 @@ void AdBlockSubscriptionDownloadManager::OnDownloadFailed(
   base::UmaHistogramBoolean(
       "BraveShields.AdBlockSubscriptionDownloadManager.DownloadSucceeded",
       false);
+}
+
+void AdBlockSubscriptionDownloadManager::EnsureDirExists(
+    const GURL download_url,
+    std::unique_ptr<storage::BlobDataHandle> data_handle) {
+  DCHECK(background_task_runner_->RunsTasksInCurrentSequence());
+
+  base::FilePath destination_dir = DirForCustomSubscription(download_url);
+  if (!base::CreateDirectory(destination_dir)) {
+    // TODO handle failure gracefully, cleanup original file
+    /*RecordCustomSubscriptionDownloadStatus(
+        CustomSubscriptionDownloadStatus::kFailedUnzipDirectoryCreation);*/
+    DCHECK(false);
+  }
+
+  content::GetIOThreadTaskRunner({})->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockSubscriptionDownloadManager::WriteBlobOnIOThread,
+                     base::Unretained(this), download_url,
+                     std::move(data_handle), destination_dir));
+}
+
+void AdBlockSubscriptionDownloadManager::WriteBlobOnIOThread(
+    const GURL& download_url,
+    std::unique_ptr<storage::BlobDataHandle> data_handle,
+    const base::FilePath destination_dir) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  base::FilePath list_text_dest =
+      destination_dir.AppendASCII(kCustomSubscriptionListText);
+
+  WriteBlobToFile(std::move(data_handle), list_text_dest, true, base::nullopt,
+                  base::BindRepeating(
+                      &AdBlockSubscriptionDownloadManager::WriteResultCallback,
+                      ui_weak_ptr_factory_.GetWeakPtr(), download_url));
+}
+
+void AdBlockSubscriptionDownloadManager::WriteResultCallback(
+    const GURL& download_url,
+    storage::mojom::WriteBlobToFileResult result) {
+  if (result != storage::mojom::WriteBlobToFileResult::kSuccess) {
+    // TODO gracefully handle failure here
+    DCHECK(false);
+  }
+
+  subscription_manager_->OnNewListDownloaded(download_url);
 }
 
 }  // namespace brave_shields

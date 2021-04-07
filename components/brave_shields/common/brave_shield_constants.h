@@ -7,6 +7,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_COMMON_BRAVE_SHIELD_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_COMMON_BRAVE_SHIELD_CONSTANTS_H_
 
+#include "base/files/file_path.h"
+
+#define FPL FILE_PATH_LITERAL
+
 namespace brave_shields {
 
 const char kAds[] = "shieldsAds";
@@ -29,6 +33,10 @@ const char kObsoleteCookies[] = "cookies";
 
 // Some users were not properly migrated from fingerprinting V1.
 const char kObsoleteFingerprinting[] = "fingerprinting";
+
+// Filename for cached text from a custom filter list subscription
+const base::FilePath::CharType kCustomSubscriptionListText[] =
+    FPL("list_text.txt");
 
 }  // namespace brave_shields
 

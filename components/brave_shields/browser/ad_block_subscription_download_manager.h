@@ -26,6 +26,8 @@ class DownloadService;
 
 namespace brave_shields {
 
+class AdBlockSubscriptionServiceManager;
+
 class AdBlockSubscriptionDownloadClient;
 
 // Manages the downloads of filter lists for custom subscriptions.
@@ -33,6 +35,7 @@ class AdBlockSubscriptionDownloadManager {
  public:
   AdBlockSubscriptionDownloadManager(
       download::DownloadService* download_service,
+      AdBlockSubscriptionServiceManager* subscription_manager,
       scoped_refptr<base::SequencedTaskRunner> background_task_runner);
   virtual ~AdBlockSubscriptionDownloadManager();
   AdBlockSubscriptionDownloadManager(
@@ -81,6 +84,21 @@ class AdBlockSubscriptionDownloadManager {
   // Invoked when the download as specified by |failed_download_guid| failed.
   void OnDownloadFailed(const std::string& failed_download_guid);
 
+  // Invoked after OnDownloadSucceeded to create the directory the download will
+  // be saved to, if necessary. Must be called on the background thread, as it
+  // performs file I/O.
+  void EnsureDirExists(const GURL download_url,
+                       std::unique_ptr<storage::BlobDataHandle> data_handle);
+  // Invoked after EnsureDirExists to write the newly downloaded blob to disk in
+  // |destination_dir|. Must run on the browser's IO thread.
+  void WriteBlobOnIOThread(const GURL& download_url,
+                           std::unique_ptr<storage::BlobDataHandle> data_handle,
+                           const base::FilePath destination_dir);
+  // Invoked after WriteBlobOnIOThread to report the status of writing the blob
+  // to disk.
+  void WriteResultCallback(const GURL& download_url,
+                           storage::mojom::WriteBlobToFileResult result);
+
   // GUIDs that are still pending download, mapped to the corresponding URLs of
   // their subscription services.
   std::map<std::string, GURL> pending_download_guids_;
@@ -99,6 +117,9 @@ class AdBlockSubscriptionDownloadManager {
   // Sequence checker used to verify all public API methods are called on the
   // UI thread.
   SEQUENCE_CHECKER(sequence_checker_);
+
+  // Will be notified of success or failure of downloads.
+  AdBlockSubscriptionServiceManager* subscription_manager_;  // NOT OWNED
 
   // Used to get weak ptr to self on the UI thread.
   base::WeakPtrFactory<AdBlockSubscriptionDownloadManager> ui_weak_ptr_factory_{

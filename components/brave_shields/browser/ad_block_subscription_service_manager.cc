@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/files/file_util.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
@@ -107,7 +108,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   subscription_services_.insert(
       std::make_pair(list_url, std::move(subscription_service)));
 
-  // TODO start download
+  download_manager_->StartDownload(list_url, true);
 }
 
 std::vector<FilterListSubscriptionInfo>
@@ -145,6 +146,11 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&AdBlockSubscriptionServiceManager::ClearFilterListPrefs,
                      base::Unretained(this), id));
+
+  delegate_->GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(base::IgnoreResult(&base::DeletePathRecursively),
+                     DirForCustomSubscription(id)));
 }
 
 void AdBlockSubscriptionServiceManager::RefreshSubscription(
@@ -161,7 +167,7 @@ void AdBlockSubscriptionServiceManager::InitializeDownloadManager(
   auto* profile_key = system_profile->GetProfileKey();
 
   download_manager_ = std::make_unique<AdBlockSubscriptionDownloadManager>(
-      BraveDownloadServiceFactory::GetForKey(profile_key),
+      BraveDownloadServiceFactory::GetForKey(profile_key), this,
       base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT}));
 }
@@ -329,6 +335,31 @@ AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
   }
 
   return first_value;
+}
+
+void AdBlockSubscriptionServiceManager::OnNewListDownloaded(
+    const SubscriptionIdentifier& id) {
+  delegate_->GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &AdBlockSubscriptionServiceManager::OnNewListDownloadedOnTaskRunner,
+          base::Unretained(this), id));
+}
+
+void AdBlockSubscriptionServiceManager::OnNewListDownloadedOnTaskRunner(
+    const SubscriptionIdentifier& id) {
+  DCHECK(delegate_->GetTaskRunner()->RunsTasksInCurrentSequence());
+  auto it = subscription_services_.find(id);
+  if (it == subscription_services_.end()) {
+    return;
+  }
+
+  it->second->OnSuccessfulDownload();
+
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&AdBlockSubscriptionServiceManager::UpdateFilterListPrefs,
+                     base::Unretained(this), id, it->second->GetInfo()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

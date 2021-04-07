@@ -79,6 +79,8 @@ class AdBlockSubscriptionServiceManager : public ProfileManagerObserver {
     return download_manager_.get();
   }
 
+  void OnNewListDownloaded(const SubscriptionIdentifier& id);
+
  private:
   friend class ::AdBlockServiceTest;
   bool Init();
@@ -90,6 +92,8 @@ class AdBlockSubscriptionServiceManager : public ProfileManagerObserver {
 
   void InitializeSystemProfile();
   void OnSystemProfileCreated(Profile* profile, Profile::CreateStatus status);
+
+  void OnNewListDownloadedOnTaskRunner(const SubscriptionIdentifier& id);
 
   brave_component_updater::BraveComponent::Delegate* delegate_;  // NOT OWNED
   bool initialized_;

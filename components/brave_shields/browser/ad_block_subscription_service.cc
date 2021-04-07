@@ -12,6 +12,7 @@
 
 #include "base/base_paths.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
@@ -19,10 +20,13 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/common/pref_names.h"
-//#include "brave/components/adblock_rust_ffi/src/wrapper.h"
+#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 
 namespace brave_shields {
 
@@ -63,7 +67,11 @@ AdBlockSubscriptionService::AdBlockSubscriptionService(
       enabled_(cached_info.enabled),
       last_update_attempt_(cached_info.last_update_attempt),
       last_successful_update_attempt_(
-          cached_info.last_successful_update_attempt) {}
+          cached_info.last_successful_update_attempt) {
+  GetTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&AdBlockSubscriptionService::ReloadFilters,
+                                base::Unretained(this)));
+}
 
 AdBlockSubscriptionService::~AdBlockSubscriptionService() {}
 
@@ -84,6 +92,28 @@ bool AdBlockSubscriptionService::Init() {
   AdBlockBaseService::Init();
 
   return true;
+}
+
+void AdBlockSubscriptionService::ReloadFilters() {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  base::FilePath list_location =
+      DirForCustomSubscription(list_url_).AppendASCII(
+          kCustomSubscriptionListText);
+
+  std::string filters;
+  if (base::ReadFileToString(list_location, &filters)) {
+    ad_block_client_.reset(new adblock::Engine(filters.c_str()));
+  }
+}
+
+void AdBlockSubscriptionService::OnSuccessfulDownload() {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  last_update_attempt_ = base::Time::Now();
+  last_successful_update_attempt_ = last_update_attempt_;
+
+  ReloadFilters();
 }
 
 void AdBlockSubscriptionService::OnComponentReady(

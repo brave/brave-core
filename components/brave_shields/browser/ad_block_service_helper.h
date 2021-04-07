@@ -10,8 +10,10 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 
 namespace brave_shields {
 
@@ -29,6 +31,8 @@ void MergeCspDirectiveInto(absl::optional<std::string> from,
                            absl::optional<std::string>* into);
 
 void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide);
+
+base::FilePath DirForCustomSubscription(const SubscriptionIdentifier id);
 
 }  // namespace brave_shields
 
