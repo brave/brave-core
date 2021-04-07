@@ -10,17 +10,16 @@
 #if defined(OFFICIAL_BUILD)
 
 TEST(ChromeContentVerifierDelegateUnitTest, TestShouldEnforce) {
-  EXPECT_EQ(
-      extensions::ChromeContentVerifierDelegate::GetDefaultMode(),
-      extensions::ChromeContentVerifierDelegate::VerifyInfo::Mode::ENFORCE_STRICT);
+  EXPECT_EQ(extensions::ChromeContentVerifierDelegate::GetDefaultMode(),
+            extensions::ChromeContentVerifierDelegate::VerifyInfo::Mode::
+                ENFORCE_STRICT);
 }
 
 #else
 
 TEST(ChromeContentVerifierDelegateUnitTest, TestShouldNotEnforce) {
-  EXPECT_EQ(
-      extensions::ChromeContentVerifierDelegate::GetDefaultMode(),
-      extensions::ChromeContentVerifierDelegate::VerifyInfo::Mode::NONE);
+  EXPECT_EQ(extensions::ChromeContentVerifierDelegate::GetDefaultMode(),
+            extensions::ChromeContentVerifierDelegate::VerifyInfo::Mode::NONE);
 }
 
 #endif  // defined(OFFICIAL_BUILD)
