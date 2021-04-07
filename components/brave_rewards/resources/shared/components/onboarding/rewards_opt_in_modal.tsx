@@ -6,8 +6,8 @@ import * as React from 'react'
 
 import { LocaleContext } from '../../lib/locale_context'
 import { Modal, ModalCloseButton } from '../modal'
+import { TermsOfService } from '../terms_of_service'
 import { BatIcon } from '../icons/bat_icon'
-import { TermsOfService } from './terms_of_service'
 import { MainButton } from './main_button'
 
 import * as style from './rewards_opt_in_modal.style'

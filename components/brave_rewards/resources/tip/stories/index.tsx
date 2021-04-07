@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { storiesOf } from '@storybook/react'
 
 import { App } from '../components/app'
 import { DialogArgs, Host, HostState, MediaMetaData } from '../lib/interfaces'
@@ -139,14 +138,17 @@ function createHost (): Host {
   }
 }
 
-storiesOf('Rewards/Tip', module)
-  .add('Tip Dialog', () => {
-    const host = createHost()
-    return (
-      <HostContext.Provider value={host}>
-        <LocaleContext.Provider value={host}>
-          <App />
-        </LocaleContext.Provider>
-      </HostContext.Provider>
-    )
-  })
+export default {
+  title: 'Rewards'
+}
+
+export const TipDialog = () => {
+  const host = createHost()
+  return (
+    <HostContext.Provider value={host}>
+      <LocaleContext.Provider value={host}>
+        <App />
+      </LocaleContext.Provider>
+    </HostContext.Provider>
+  )
+}

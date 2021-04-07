@@ -36,11 +36,11 @@ class RewardsBrowserTestContribution
       const int32_t number_of_contributions = 0,
       const bool recurring = false);
 
-  void TipPublisher(
-      const GURL& url,
-      rewards_browsertest_util::TipAction tip_action,
-      const int32_t number_of_contributions = 0,
-      const int32_t selection = 0);
+  void TipPublisher(const GURL& url,
+                    rewards_browsertest_util::TipAction tip_action,
+                    const int32_t number_of_contributions = 0,
+                    const int32_t selection = 0,
+                    double custom_amount = 0.0);
 
   void VerifyTip(
       const double amount,

@@ -7,8 +7,8 @@ import * as React from 'react'
 import { BatColorIcon } from 'brave-ui/components/icons'
 
 import { PaymentKind } from '../lib/interfaces'
-import { formatTokenAmount } from '../lib/formatting'
 
+import { TokenAmount } from './token_amount'
 import { ButtonSwitch, ButtonSwitchOption } from './button_switch'
 import { BatString } from './bat_string'
 
@@ -30,9 +30,7 @@ export function PaymentKindSwitch (props: Props) {
           <BatString stringKey='batFunds' />
         </>
       ),
-      caption: (
-        <>{formatTokenAmount(props.userBalance)} <BatString /></>
-      )
+      caption: <TokenAmount amount={props.userBalance} />
     }
   ]
 
