@@ -116,7 +116,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  BraveWalletServiceFactory::GetForProfile(profile);
+  BraveWalletServiceFactory::GetForContext(profile);
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
   ipfs::IpfsServiceFactory::GetForContext(profile);

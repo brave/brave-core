@@ -135,8 +135,8 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
 
   BraveWalletService* GetBraveWalletService() {
     BraveWalletService* service =
-        BraveWalletServiceFactory::GetInstance()->GetForProfile(
-            Profile::FromBrowserContext(browser()->profile()));
+        BraveWalletServiceFactory::GetInstance()->GetForContext(
+            browser()->profile());
     EXPECT_TRUE(service);
     return service;
   }

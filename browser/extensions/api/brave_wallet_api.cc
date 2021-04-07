@@ -34,8 +34,7 @@ namespace {
 
 BraveWalletService* GetBraveWalletService(
     content::BrowserContext* context) {
-  return BraveWalletServiceFactory::GetInstance()
-      ->GetForProfile(Profile::FromBrowserContext(context));
+  return BraveWalletServiceFactory::GetInstance()->GetForContext(context);
 }
 
 base::Value MakeSelectValue(const  base::string16& name,
@@ -135,7 +134,7 @@ void BraveWalletLoadUIFunction::OnLoaded() {
 ExtensionFunction::ResponseAction
 BraveWalletShouldPromptForSetupFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* service = BraveWalletServiceFactory::GetForProfile(profile);
+  auto* service = GetBraveWalletService(browser_context());
   bool should_prompt = !service->IsCryptoWalletsSetup() &&
       !profile->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets);
   return RespondNow(OneArgument(base::Value(should_prompt)));

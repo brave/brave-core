@@ -16,7 +16,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/grit/chromium_strings.h"
 #include "components/infobars/core/infobar.h"
@@ -98,8 +97,7 @@ bool CryptoWalletsInfoBarDelegate::Accept() {
       InfoBarService::WebContentsFromInfoBar(infobar());
     if (web_contents) {
       auto* browser_context = web_contents->GetBrowserContext();
-      Profile* profile = Profile::FromBrowserContext(browser_context);
-      auto* service = BraveWalletServiceFactory::GetForProfile(profile);
+      auto* service = BraveWalletServiceFactory::GetForContext(browser_context);
       service->MaybeLoadCryptoWalletsExtension(
           base::BindOnce(&CryptoWalletsInfoBarDelegate::OnCryptoWalletsLoaded,
                          base::Unretained(this), web_contents));

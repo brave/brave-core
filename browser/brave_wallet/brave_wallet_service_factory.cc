@@ -10,7 +10,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -27,9 +26,10 @@ BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
 }
 
 // static
-BraveWalletService* BraveWalletServiceFactory::GetForProfile(Profile* profile) {
+BraveWalletService* BraveWalletServiceFactory::GetForContext(
+    content::BrowserContext* context) {
   return static_cast<BraveWalletService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
+      GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 BraveWalletServiceFactory::BraveWalletServiceFactory()
@@ -47,7 +47,7 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() {}
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new BraveWalletService(Profile::FromBrowserContext(context),
+  return new BraveWalletService(context,
                                 std::make_unique<BraveWalletDelegateImpl>());
 }
 
