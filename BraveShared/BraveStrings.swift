@@ -1538,7 +1538,7 @@ extension Strings {
         public static let vpnIAPBoilerPlate =
             NSLocalizedString("vpn.vpnIAPBoilerPlate",
                               bundle: .braveShared,
-                              value: "Subscriptions will be charged via your iTunes account.\n\nAny unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.",
+                              value: "Subscriptions will be charged via your iTunes account.\n\nAny unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.",
                               comment: "Disclaimer for user purchasing the VPN plan.")
         
         public static let regionPickerTitle =
