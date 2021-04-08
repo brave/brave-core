@@ -16,6 +16,7 @@ import { RewardsOptInModal, RewardsTourModal } from '../../../shared/components/
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
 import * as utils from '../utils'
+import { upholdMinimumBalance } from '../../../shared/lib/uphold'
 
 import * as style from './panel.style'
 
@@ -686,7 +687,7 @@ export class Panel extends React.Component<Props, State> {
       (!walletStatus || walletStatus === 'unverified') &&
       walletType === 'uphold' &&
       balance &&
-      balance.total < 25
+      balance.total < upholdMinimumBalance
     )
   }
 
