@@ -59,6 +59,9 @@ NS_SWIFT_NAME(BraveRewardsDelegate)
                      verbosity:(int)verbosity
                        message:(NSString *)message;
 
+/// A notification that the ledger service did start
+- (void)ledgerServiceDidStart:(BATBraveLedger *)ledger;
+
 /// Obtain the favicon URL given some page's URL. The client can then choose
 /// to download said favicon and cache it for later when `retrieveFavicon` is
 /// called.
@@ -78,7 +81,7 @@ NS_SWIFT_NAME(BraveRewards)
 @property (nonatomic, readonly) BATBraveAds *ads;
 /// Whether or not Brave Ads is enabled
 @property (nonatomic, assign, getter=isAdsEnabled) BOOL adsEnabled;
-@property (nonatomic, readonly) BATBraveLedger *ledger;
+@property (nonatomic, readonly, nullable) BATBraveLedger *ledger;
 @property (nonatomic, weak) id<BATBraveRewardsDelegate> delegate;
 
 /// Resets the ads & ledger (by purging its data). This should likely never be used in production.
@@ -92,6 +95,10 @@ NS_SWIFT_NAME(BraveRewards)
                           ledgerClass:(nullable Class)ledgerClass
                              adsClass:(nullable Class)adsClass NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
+
+/// Starts the ledger service if it hadn't already been started and calls a completion handler
+/// after it has been initialized
+- (void)startLedgerService:(nullable void (^)())completion;
 
 @end
 
