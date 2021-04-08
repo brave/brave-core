@@ -32,6 +32,7 @@ source_set("unit_tests") {
   sources = [
     "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_unittest.cc",
     "//brave/browser/decentralized_dns/test/utils_unittest.cc",
+    "//brave/browser/net/decentralized_dns_network_delegate_helper_unittest.cc",
     "//brave/net/dns/brave_resolve_context_unittest.cc",
     "//brave/net/dns/dns_transaction_unittest.cc",
   ]
@@ -39,6 +40,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/net",
     "//brave/components/decentralized_dns",
     "//brave/components/tor/buildflags",
     "//chrome/test:test_support",
