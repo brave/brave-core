@@ -61,6 +61,8 @@ TEST(BraveWalletUtilsUnitTest, IsValidHexString) {
   ASSERT_FALSE(IsValidHexString("123"));
   ASSERT_FALSE(IsValidHexString("0"));
   ASSERT_FALSE(IsValidHexString(""));
+  ASSERT_FALSE(IsValidHexString("0xBraVe"));
+  ASSERT_FALSE(IsValidHexString("0x12$$"));
 }
 
 TEST(BraveWalletUtilsUnitTest, ConcatHexStrings) {
