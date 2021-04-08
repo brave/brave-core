@@ -36,7 +36,6 @@ def main():
                     '--key-pass', 'pass:' + args.prvt_key_passwd,
                 ]
             else:
-                # jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore xample.jks bundle.aab keystoreAlias
                 cmd_args = [
                     args.jarsigner_path, '-verbose',
                     '-sigalg', 'SHA256withRSA',

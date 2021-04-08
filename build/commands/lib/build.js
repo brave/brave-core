@@ -41,8 +41,7 @@ const touchOverriddenFiles = () => {
 
   const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
   var sourceFiles = util.walkSync(chromiumSrcDir, applyFileFilter)
-//   const additionalGen = getAdditionalGenLocation()
-  const additionalGen = undefined
+  const additionalGen = getAdditionalGenLocation()
 
   // Touch original files by updating mtime.
   const chromiumSrcDirLen = chromiumSrcDir.length
