@@ -28,12 +28,12 @@ bool FrequencyCapping::IsAdAllowed() {
     return false;
   }
 
-  NewTabPageAdsPerDayFrequencyCap ads_per_day_frequency_cap(ad_events_);
+  NewTabPageAdsPerDayFrequencyCap ads_per_day_frequency_cap;
   if (!ShouldAllow(&ads_per_day_frequency_cap)) {
     return false;
   }
 
-  NewTabPageAdsPerHourFrequencyCap ads_per_hour_frequency_cap(ad_events_);
+  NewTabPageAdsPerHourFrequencyCap ads_per_hour_frequency_cap;
   if (!ShouldAllow(&ads_per_hour_frequency_cap)) {
     return false;
   }

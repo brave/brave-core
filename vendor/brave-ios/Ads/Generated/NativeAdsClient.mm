@@ -43,6 +43,20 @@ void NativeAdsClient::CloseNotification(const std::string & uuid) {
   [bridge_ closeNotification:uuid];
 }
 
+void NativeAdsClient::RecordAdEvent(const std::string& ad_type,
+                                    const std::string& confirmation_type,
+                                    const uint64_t timestamp) const {
+  [bridge_ recordAdEvent:ad_type
+        confirmationType:confirmation_type
+               timestamp:timestamp];
+}
+
+std::vector<uint64_t> NativeAdsClient::GetAdEvents(
+    const std::string& ad_type,
+    const std::string& confirmation_type) const {
+  return [bridge_ getAdEvents:ad_type confirmationType:confirmation_type];
+}
+
 void NativeAdsClient::UrlRequest(ads::UrlRequestPtr url_request, ads::UrlRequestCallback callback) {
   [bridge_ UrlRequest:std::move(url_request) callback:callback];
 }

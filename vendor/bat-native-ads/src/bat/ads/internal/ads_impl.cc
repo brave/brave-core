@@ -478,6 +478,8 @@ void AdsImpl::InitializeDatabase(InitializeCallback callback) {
       return;
     }
 
+    RebuildAdEventsFromDatabase();
+
     MigrateConversions(callback);
   });
 }

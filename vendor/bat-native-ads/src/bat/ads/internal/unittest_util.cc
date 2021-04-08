@@ -40,6 +40,8 @@ namespace {
 
 static std::map<std::string, uint16_t> g_url_endpoint_indexes;
 
+static std::map<std::string, std::vector<uint64_t>> g_ad_events;
+
 static std::map<std::string, std::string> g_prefs;
 
 const char kNowTagValue[] = "now";
@@ -550,6 +552,46 @@ void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock) {
 void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, CloseNotification(_))
       .WillByDefault(Invoke([](const std::string& uuid) {}));
+}
+
+void MockRecordAdEvent(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, RecordAdEvent(_, _, _))
+      .WillByDefault(Invoke([](const std::string& ad_type,
+                               const std::string& confirmation_type,
+                               const uint64_t timestamp) {
+        DCHECK(!ad_type.empty());
+        DCHECK(!confirmation_type.empty());
+
+        const std::string name = ad_type + confirmation_type;
+        const std::string uuid = GetUuid(name);
+
+        const auto iter = g_ad_events.find(uuid);
+        if (iter == g_ad_events.end()) {
+          g_ad_events.insert({uuid, {timestamp}});
+        } else {
+          iter->second.push_back(timestamp);
+        }
+      }));
+}
+
+void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, GetAdEvents(_, _))
+      .WillByDefault(Invoke(
+          [](const std::string& ad_type,
+             const std::string& confirmation_type) -> std::vector<uint64_t> {
+            DCHECK(!ad_type.empty());
+            DCHECK(!confirmation_type.empty());
+
+            const std::string name = ad_type + confirmation_type;
+            const std::string uuid = GetUuid(name);
+
+            const auto iter = g_ad_events.find(uuid);
+            if (iter == g_ad_events.end()) {
+              return {};
+            }
+
+            return iter->second;
+          }));
 }
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock) {

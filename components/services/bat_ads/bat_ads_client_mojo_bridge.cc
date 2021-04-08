@@ -5,8 +5,6 @@
 
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
-#include <map>
-#include <memory>
 #include <utility>
 
 #include "mojo/public/cpp/bindings/interface_request.h"
@@ -98,6 +96,28 @@ void BatAdsClientMojoBridge::CloseNotification(
   }
 
   bat_ads_client_->CloseNotification(uuid);
+}
+
+void BatAdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
+                                           const std::string& confirmation_type,
+                                           const uint64_t timestamp) const {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
+}
+
+std::vector<uint64_t> BatAdsClientMojoBridge::GetAdEvents(
+    const std::string& ad_type,
+    const std::string& confirmation_type) const {
+  if (!connected()) {
+    return {};
+  }
+
+  std::vector<uint64_t> ad_events;
+  bat_ads_client_->GetAdEvents(ad_type, confirmation_type, &ad_events);
+  return ad_events;
 }
 
 void OnUrlRequest(

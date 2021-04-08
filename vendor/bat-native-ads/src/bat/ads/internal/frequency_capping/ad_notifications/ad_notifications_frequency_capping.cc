@@ -102,17 +102,17 @@ bool FrequencyCapping::IsAdAllowed() {
     return false;
   }
 
-  AdsPerDayFrequencyCap ads_per_day_frequency_cap(ad_events_);
+  AdsPerDayFrequencyCap ads_per_day_frequency_cap;
   if (!ShouldAllow(&ads_per_day_frequency_cap)) {
     return false;
   }
 
-  AdsPerHourFrequencyCap ads_per_hour_frequency_cap(ad_events_);
+  AdsPerHourFrequencyCap ads_per_hour_frequency_cap;
   if (!ShouldAllow(&ads_per_hour_frequency_cap)) {
     return false;
   }
 
-  MinimumWaitTimeFrequencyCap minimum_wait_time_frequency_cap(ad_events_);
+  MinimumWaitTimeFrequencyCap minimum_wait_time_frequency_cap;
   if (!ShouldAllow(&minimum_wait_time_frequency_cap)) {
     return false;
   }

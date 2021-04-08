@@ -29,6 +29,11 @@
 - (void)setIdleThreshold:(const int)threshold;
 - (void)showNotification:(const ads::AdNotificationInfo &)info;
 - (void)closeNotification:(const std::string&)id;
+- (void)recordAdEvent:(const std::string&)ad_type
+     confirmationType:(const std::string&)confirmation_type
+            timestamp:(const uint64_t)timestamp;
+- (std::vector<uint64_t>)getAdEvents:(const std::string&)ad_type
+                    confirmationType:(const std::string&)confirmation_type;
 - (void)UrlRequest:(ads::UrlRequestPtr)url_request callback:(ads::UrlRequestCallback)callback;
 - (bool)shouldAllowAdsSubdivisionTargeting;
 - (void)setAllowAdsSubdivisionTargeting:(const bool)should_allow;
