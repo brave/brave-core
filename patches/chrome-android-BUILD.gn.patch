@@ -8,7 +8,7 @@ index 38c40cd243dcdd7440f8884f2081e0b01bb56da0..21fd63d3c264f37799b8136955e788c7
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
  }
-
+ 
  if (enable_vr) {
 @@ -552,6 +553,7 @@ android_library("chrome_java") {
    ]
