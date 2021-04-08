@@ -4,9 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//components/gcm_driver/config.gni")
-
-# Fix: Added import loop. Need this import for using |enable_widevine| vars.
-# import("//third_party/widevine/cdm/widevine.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 brave_chromium_src_chrome_browser_prefs_deps = [
   "//brave/common:pref_names",
@@ -16,9 +14,7 @@ brave_chromium_src_chrome_browser_prefs_deps = [
   "//third_party/widevine/cdm:buildflags",
 ]
 
-# |is_android| is used instead of |enable_widevine|. See above comment.
-# We enable widevine except android.
-if (!is_android) {
+if (enable_widevine) {
   brave_chromium_src_chrome_browser_prefs_deps += [ "//brave/browser/widevine" ]
 }
 
