@@ -38,6 +38,11 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Initialization
 
+/// Initialize the ledger service.
+///
+/// This must be called before other methods on this class are called
+- (void)initializeLedgerService:(nullable void (^)())completion;
+
 /// Whether or not the ledger service has been initialized already
 @property (nonatomic, readonly, getter=isInitialized) BOOL initialized;
 
