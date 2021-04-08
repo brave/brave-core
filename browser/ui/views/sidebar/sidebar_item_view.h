@@ -8,9 +8,11 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 
+class SidebarItemController;
+
 class SidebarItemView : public SidebarButtonView {
  public:
-  using SidebarButtonView::SidebarButtonView;
+  SidebarItemView(Delegate* delegate, SidebarItemController* controller);
   ~SidebarItemView() override;
 
   SidebarItemView(const SidebarItemView&) = delete;
@@ -25,10 +27,15 @@ class SidebarItemView : public SidebarButtonView {
   // views::ImageButton overrides:
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnPaintBorder(gfx::Canvas* canvas) override;
+  bool OnMousePressed(const ui::MouseEvent& event) override;
+  bool OnMouseDragged(const ui::MouseEvent& event) override;
+  void OnMouseReleased(const ui::MouseEvent& event) override;
+  void OnMouseCaptureLost() override;
 
  private:
   bool draw_highlight_ = false;
   bool paint_background_on_hovered_ = false;
+  SidebarItemController* controller_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_VIEW_H_
