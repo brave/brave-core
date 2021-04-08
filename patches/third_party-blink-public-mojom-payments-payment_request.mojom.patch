@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/public/mojom/payments/payment_request.mojom b/third_party/blink/public/mojom/payments/payment_request.mojom
+index 0935f62ffbae4f6e1d7fb30aa39300f3fecaa7b0..fef755b22612b0f116c0eb0c0641656d83344e00 100644
+--- a/third_party/blink/public/mojom/payments/payment_request.mojom
++++ b/third_party/blink/public/mojom/payments/payment_request.mojom
+@@ -88,6 +88,7 @@ interface PaymentRequestClient {
+ struct PaymentItem {
+   string label;
+   PaymentCurrencyAmount amount;
++  string? sku;
+   bool pending;
+ };
+ 

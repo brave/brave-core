@@ -76,6 +76,7 @@ source_set("headers") {
     "//brave/components/brave_rewards/browser:browser",
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/vendor/brave-ios:rewards_db",
+    "//chrome/browser"
   ]
 
   public_configs = [ ":external_config" ]

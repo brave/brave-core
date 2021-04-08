@@ -25,7 +25,7 @@ SKUBrave::SKUBrave(LedgerImpl* ledger) :
 SKUBrave::~SKUBrave() = default;
 
 void SKUBrave::Process(
-    const std::vector<type::SKUOrderItem>& items,
+    std::vector<mojom::SKUOrderItemPtr> items,
     const std::string& wallet_type,
     ledger::SKUOrderCallback callback,
     const std::string& contribution_id) {
@@ -37,7 +37,7 @@ void SKUBrave::Process(
       contribution_id,
       callback);
 
-  common_->CreateOrder(items, create_callback);
+  common_->CreateOrder(std::move(items), create_callback);
 }
 
 void SKUBrave::OrderCreated(

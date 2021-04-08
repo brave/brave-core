@@ -25,6 +25,9 @@
       <if expr="not is_android">
         <!-- WebUI Brave Rewards Tip resources -->
         <include name="IDR_BRAVE_REWARDS_TIP_HTML" file="tip/index.html" type="BINDATA" />
+
+        <!-- WebUI Brave BAT checkout dialog resources -->
+        <include name="IDR_BRAVE_REWARDS_CHECKOUT_HTML" file="checkout/brave_rewards_checkout.html" type="BINDATA" />
       </if>
     </includes>
   </release>

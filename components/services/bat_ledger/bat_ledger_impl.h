@@ -54,6 +54,10 @@ class BatLedgerImpl :
       GetAutoContributeEnabledCallback callback) override;
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
 
+  void ProcessSKU(std::vector<::ledger::mojom::SKUOrderItemPtr> items,
+                  const std::string& wallet_type,
+                  ProcessSKUCallback callback) override;
+
   void OnLoad(
       ledger::type::VisitDataPtr
       visit_data,
@@ -414,6 +418,11 @@ class BatLedgerImpl :
   static void OnGetContributionReport(
       CallbackHolder<GetContributionReportCallback>* holder,
       ledger::type::ContributionReportInfoList list);
+
+  static void OnSKUProcessed(
+      CallbackHolder<ProcessSKUCallback>* holder,
+      const ledger::type::Result result,
+      const std::string& wallet_type);
 
   static void OnGetAllContributions(
       CallbackHolder<GetAllContributionsCallback>* holder,

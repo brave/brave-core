@@ -67,6 +67,10 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_tip/brave_rewards_tip.grd": {
     "includes": [38800],
   },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_checkout/brave_rewards_checkout.grd": {
+    "includes": [38880],
+  },
   "brave/components/resources/brave_components_strings.grd": {
     "messages": [39000]
   },

@@ -160,16 +160,17 @@ void ContributionSKU::GetContributionInfo(
       contribution->contribution_id,
       complete_callback);
 
-  type::SKUOrderItem new_item = item;
-  new_item.quantity = GetVotesFromAmount(contribution->amount);
-  new_item.type = type::SKUOrderItemType::SINGLE_USE;
-  new_item.price = constant::kVotePrice;
+  mojom::SKUOrderItemPtr new_item = mojom::SKUOrderItem::New();
+  new_item->sku = item.sku;
+  new_item->quantity = GetVotesFromAmount(contribution->amount);
+  new_item->type = mojom::SKUOrderItemType::SINGLE_USE;
+  new_item->price = constant::kVotePrice;
 
-  std::vector<type::SKUOrderItem> items;
-  items.push_back(new_item);
+  std::vector<mojom::SKUOrderItemPtr> items;
+  items.push_back(std::move(new_item));
 
   sku_->Process(
-      items,
+      std::move(items),
       wallet_type,
       process_callback,
       contribution->contribution_id);

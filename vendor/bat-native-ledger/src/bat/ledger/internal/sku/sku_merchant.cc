@@ -25,7 +25,7 @@ SKUMerchant::SKUMerchant(LedgerImpl* ledger) :
 SKUMerchant::~SKUMerchant() = default;
 
 void SKUMerchant::Process(
-    const std::vector<type::SKUOrderItem>& items,
+    std::vector<mojom::SKUOrderItemPtr> items,
     const std::string& wallet_type,
     ledger::SKUOrderCallback callback,
     const std::string& contribution_id) {
@@ -36,7 +36,7 @@ void SKUMerchant::Process(
       wallet_type,
       callback);
 
-  common_->CreateOrder(items, create_callback);
+  common_->CreateOrder(std::move(items), create_callback);
 }
 
 void SKUMerchant::OrderCreated(
@@ -79,7 +79,7 @@ void SKUMerchant::OnOrder(
           callback);
 
     ledger_->publisher()->GetServerPublisherInfo(
-        order->merchant_id,
+        order->location,
         publisher_callback);
     return;
   }

@@ -1103,6 +1103,48 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "confirmationNotice",
             IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE },
       }
+    }, {
+      std::string("checkout"), {
+        { "bat", IDS_BRAVE_UI_BAT_TEXT },
+        { "off", IDS_BRAVE_UI_OFF },
+        { "addFundsTitle", IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_TITLE },
+        { "addFundsSubtitle", IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_SUBTITLE },
+        { "currentBalance", IDS_BRAVE_REWARDS_CHECKOUT_CURRENT_BALANCE },
+        { "batNeeded", IDS_BRAVE_REWARDS_CHECKOUT_BAT_NEEDED },
+        { "selectAmountToAdd", IDS_BRAVE_REWARDS_CHECKOUT_SELECT_AMOUNT },
+        { "transactionFee", IDS_BRAVE_REWARDS_CHECKOUT_TRANSACTION_FEE },
+        { "orderTotal",  IDS_BRAVE_REWARDS_CHECKOUT_ORDER_TOTAL },
+        { "enterCreditCardInfo", IDS_BRAVE_REWARDS_CHECKOUT_ENTER_CARD_INFO },
+        { "addFundsLinkText", IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_LINK_TEXT },
+        { "addFundsButtonText", IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_BUTTON_TEXT },  // NOLINT
+        { "addFundsTermsOfSale", IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_TOS },
+        { "cardNumber", IDS_BRAVE_REWARDS_CHECKOUT_CARD_NUMBER },
+        { "expiration", IDS_BRAVE_REWARDS_CHECKOUT_EXPIRATION },
+        { "securityCode", IDS_BRAVE_REWARDS_CHECKOUT_SECURITY_CODE },
+        { "saveThisCard", IDS_BRAVE_REWARDS_CHECKOUT_SAVE_CARD },
+        { "checkout", IDS_BRAVE_REWARDS_CHECKOUT_TITLE },
+        { "goBack", IDS_BRAVE_REWARDS_CHECKOUT_GO_BACK },
+        { "itemSelected", IDS_BRAVE_REWARDS_CHECKOUT_ITEM_SELECTED },
+        { "goodToGo", IDS_BRAVE_REWARDS_CHECKOUT_GOOD_TO_GO },
+        { "enjoyYourPurchase", IDS_BRAVE_REWARDS_CHECKOUT_ENJOY_PURCHASE },
+        { "paymentMethodTitle", IDS_BRAVE_REWARDS_CHECKOUT_PAYMENT_METHOD_TITLE },  // NOLINT
+        { "paymentProcessing", IDS_BRAVE_REWARDS_CHECKOUT_PAYMENT_PROCESSING },
+        { "confirmButtonText", IDS_BRAVE_REWARDS_CHECKOUT_CONFIRM_BUTTON_TEXT },
+        { "confirmTermsOfSale", IDS_BRAVE_REWARDS_CHECKOUT_CONFIRM_TOS },
+        { "useCreditCard", IDS_BRAVE_REWARDS_CHECKOUT_USE_CARD },
+        { "continueWithCreditCard", IDS_BRAVE_REWARDS_CHECKOUT_CONTINUE_WITH_CARD },  // NOLINT
+        { "continueWithCreditCardMessage", IDS_BRAVE_REWARDS_CHECKOUT_CONTINUE_WITH_CARD_SUBTEXT },  // NOLINT
+        { "payWithBat", IDS_BRAVE_REWARDS_CHECKOUT_PAY_WITH_BAT_BUTTON_TEXT },
+        { "payWithBatTermsOfSale", IDS_BRAVE_REWARDS_CHECKOUT_PAY_WITH_BAT_TOS },  // NOLINT
+        { "notEnoughFunds", IDS_BRAVE_REWARDS_CHECKOUT_NOT_ENOUGH_FUNDS },
+        { "unverifiedMerchant", IDS_BRAVE_REWARDS_CHECKOUT_UNVERIFIED_MERCHANT },  // NOLINT
+        { "unverifiedWalletMessage", IDS_BRAVE_REWARDS_CHECKOUT_UNVERIFIED_WALLET_MESSAGE },  // NOLINT
+        { "unverifiedWalletTitle", IDS_BRAVE_REWARDS_CHECKOUT_UNVERIFIED_WALLET_TITLE },  // NOLINT
+        { "connectWalletPrefix", IDS_BRAVE_REWARDS_CHECKOUT_CONNECT_WALLET_PREFIX },  // NOLINT
+        { "connectWalletSuffix", IDS_BRAVE_REWARDS_CHECKOUT_CONNECT_WALLET_SUFFIX },  // NOLINT
+        { "useTokenBalance", IDS_BRAVE_REWARDS_CHECKOUT_USE_TOKEN_BALANCE },
+        { "updated", IDS_BRAVE_REWARDS_CHECKOUT_UPDATED },
+      }
     }
   };
   // clang-format on

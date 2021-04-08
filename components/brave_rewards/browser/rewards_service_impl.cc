@@ -468,7 +468,17 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
     std::string options = command_line.GetSwitchValueASCII(switches::kRewards);
 
     if (!options.empty()) {
-      HandleFlags(options);
+      HandleFlags(switches::kRewards, options);
+    }
+  }
+
+  // TODO(@jumde) - Remove when brave/brave-browser/issues/15075 is resolved
+  if (command_line.HasSwitch(switches::kPaymentServiceUrl)) {
+    std::string options = command_line.GetSwitchValueASCII(
+        switches::kPaymentServiceUrl);
+
+    if (!options.empty()) {
+      HandleFlags(switches::kPaymentServiceUrl, options);
     }
   }
 
@@ -1518,6 +1528,10 @@ double RewardsServiceImpl::GetDoubleOption(const std::string& name) const {
 std::string RewardsServiceImpl::GetStringOption(const std::string& name) const {
   DCHECK(!name.empty());
 
+  if (name == ledger::option::kPaymentServiceURL) {
+    return payment_service_url_;
+  }
+
   const auto it = kStringOptions.find(name);
   DCHECK(it != kStringOptions.end());
 
@@ -2308,8 +2322,21 @@ void RewardsServiceImpl::Log(
   }
 }
 
-// static
-void RewardsServiceImpl::HandleFlags(const std::string& options) {
+void RewardsServiceImpl::HandleFlags(const std::string& flag,
+                                     const std::string& options) {
+  if (flag == switches::kRewards) {
+    HandleRewardsFlag(options);
+  } else if (flag == switches::kPaymentServiceUrl) {
+    HandlePaymentServiceUrlFlag(options);
+  }
+}
+
+void RewardsServiceImpl::HandlePaymentServiceUrlFlag(
+    const std::string& options) {
+  payment_service_url_ = options;
+}
+
+void RewardsServiceImpl::HandleRewardsFlag(const std::string& options) {
   std::vector<std::string> flags = base::SplitString(
       options, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
@@ -3434,6 +3461,22 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
   }
 
   return ledger::constant::kWalletUphold;
+}
+
+void RewardsServiceImpl::ProcessSKU(
+    std::vector<ledger::mojom::SKUOrderItemPtr> items,
+    const std::string& wallet_type,
+    ProcessSKUCallback callback) {
+  bat_ledger_->ProcessSKU(std::move(items),
+                           wallet_type,
+                           std::move(callback));
+}
+
+void RewardsServiceImpl::OnSKUProcessed(
+    ProcessSKUCallback callback,
+    const ledger::mojom::Result result,
+    const std::string& order_id) {
+  std::move(callback).Run(result, order_id);
 }
 
 }  // namespace brave_rewards

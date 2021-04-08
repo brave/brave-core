@@ -639,6 +639,44 @@
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW" desc="">Verify my wallet</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE" desc="">The bitFlyer wallet is a service managed by bitFlyer, Inc.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT" desc="">By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily</message>
+      <!-- WebUI brave rewards checkout resources -->
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_TITLE" desc="">Add Funds</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_SUBTITLE" desc="">Add BAT to your wallet using your credit card</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CURRENT_BALANCE" desc="">Current Balance</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_BAT_NEEDED" desc="">BAT needed</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_SELECT_AMOUNT" desc="">Select amount to add</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_TRANSACTION_FEE" desc="">Transaction Fee</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ORDER_TOTAL" desc="">Order Total</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ENTER_CARD_INFO" desc="">Enter credit card info</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_LINK_TEXT" desc="">Add Funds</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_BUTTON_TEXT" desc="">Add Funds &amp; Purchase</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_TOS" desc="">By clicking Add Funds &amp; Purchase, you agree to &lt;a href="javascript:void 0">Brave’s Terms of Sale&lt;/a&gt;.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CARD_NUMBER" desc="">Card number</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_EXPIRATION" desc="">Expiration</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_SECURITY_CODE" desc="">Security code</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_SAVE_CARD" desc="">Save this card</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_TITLE" desc="">Checkout</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_GO_BACK" desc="">Go Back</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ITEM_SELECTED" desc="">Item Selected</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_GOOD_TO_GO" desc="">You’re good to go!</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ENJOY_PURCHASE" desc="">Enjoy your purchase.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_PAYMENT_METHOD_TITLE" desc="">Payment Method</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_PAYMENT_PROCESSING" desc="">Your payment is being processed…</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONFIRM_BUTTON_TEXT" desc="">Confirm</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONFIRM_TOS" desc="">By clicking Confirm, you agree to &lt;a href="javascript:void 0">Brave’s Terms of Sale&lt;/a&gt;.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_USE_CARD" desc="">Use credit card</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONTINUE_WITH_CARD" desc="">Continue with credit card</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONTINUE_WITH_CARD_SUBTEXT" desc="">Make a one-time purchase using a credit card instead.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_PAY_WITH_BAT_BUTTON_TEXT" desc="">Pay with BAT</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_PAY_WITH_BAT_TOS" desc="">By clicking Pay with BAT, you agree to Brave’s Terms of Sale.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_NOT_ENOUGH_FUNDS" desc="">You don't have enough tokens to buy this item.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_UNVERIFIED_MERCHANT" desc=""> is not verified.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_UNVERIFIED_WALLET_TITLE" desc="">Sorry...</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_UNVERIFIED_WALLET_MESSAGE" desc="">This item is only available to users with a verified wallet for now. This is a seller's preference and may not apply to all sellers.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONNECT_WALLET_PREFIX" desc="">If you want to buy this item,</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONNECT_WALLET_SUFFIX" desc=""> connect to a wallet and verify</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_USE_TOKEN_BALANCE" desc="">Use your token balance</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_UPDATED" desc="">Updated</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>

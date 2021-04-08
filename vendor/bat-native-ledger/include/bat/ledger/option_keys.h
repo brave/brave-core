@@ -16,6 +16,7 @@ const char kClaimUGP[] = "claim_ugp";
 const char kContributionsDisabledForBAPMigration[] =
     "contributions_disabled_for_bap_migration";
 const char kIsBitflyerRegion[] = "is_bitflyer_region";
+const char kPaymentServiceURL[] = "payment-service-url";
 
 }  // namespace option
 }  // namespace ledger

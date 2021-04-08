@@ -5,50 +5,35 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  padding: 7px 15px 28px;
+  padding: 15px 0px 15px;
   border-top: solid 1px ${p => p.theme.color.separatorLine};
   border-bottom: solid 1px ${p => p.theme.color.separatorLine};
 `
-
-export const StyledTable = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-`
-
-export const StyledTableHeader = styled.th`
-  padding: 4px 0 0 0;
+export const OrderTotal = styled.span`
+  font-size: 20px;
   text-align: left;
-  vertical-align: top;
-  line-height: 22px;
-  min-width: 96px;
+  vertical-align: center;
   color: ${p => p.theme.palette.blurple600};
   font-weight: 500;
 `
 
-export const StyledTableCell = styled.td`
-  padding: 8px 0 0 0;
-  text-align: left;
-  vertical-align: top;
-  line-height: 22px;
-  min-width: 96px;
-`
-
-export const Description = styled.div`
-  padding-right: 4em;
-`
-
 export const BatAmount = styled.span`
-  font-size: 18px;
+  float: right;
+  color: #000000;
+  font-size: 20px;
   font-weight: 500;
 `
 
 export const BatSymbol = styled.span`
+  text-align: right;
   padding-left: 5px;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: normal;
 `
 
 export const ExchangeAmount = styled.span`
-  display: block;
+  float: right;
+  margin: 1px 0px 0px 5px;
+  font-size: 18px;
   color: ${p => p.theme.palette.grey600};
 `

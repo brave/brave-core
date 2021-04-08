@@ -34,6 +34,7 @@
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/ui/webui/brave_tip_ui.h"
+#include "brave/browser/ui/webui/brave_checkout_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #endif
@@ -85,6 +86,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if !defined(OS_ANDROID)
   } else if (host == kTipHost) {
     return new BraveTipUI(web_ui, url.host());
+  } else if (host == kBraveUICheckoutHost) {
+    return new BraveCheckoutUI(web_ui, url.host());
 #endif  // !defined(OS_ANDROID)
 #endif  // BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #if !defined(OS_ANDROID)
@@ -121,6 +124,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||
       url.host_piece() == kTipHost ||
+      url.host_piece() == kBraveUICheckoutHost ||
 #endif
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||

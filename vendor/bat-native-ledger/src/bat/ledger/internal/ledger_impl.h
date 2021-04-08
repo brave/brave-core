@@ -346,7 +346,7 @@ class LedgerImpl : public ledger::Ledger {
       ledger::GetAllMonthlyReportIdsCallback callback) override;
 
   void ProcessSKU(
-      const std::vector<type::SKUOrderItem>& items,
+      std::vector<mojom::SKUOrderItemPtr> items,
       const std::string& wallet_type,
       ledger::SKUOrderCallback callback) override;
 

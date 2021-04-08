@@ -5,6 +5,7 @@
 
 #include "bat/ledger/internal/endpoint/payment/post_order/post_order.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -29,26 +30,7 @@ PostOrder::PostOrder(LedgerImpl* ledger):
 PostOrder::~PostOrder() = default;
 
 std::string PostOrder::GetUrl() {
-  return GetServerUrl("/v1/orders");
-}
-
-std::string PostOrder::GeneratePayload(
-    const std::vector<type::SKUOrderItem>& items) {
-  base::Value order_items(base::Value::Type::LIST);
-  for (const auto& item : items) {
-    base::Value order_item(base::Value::Type::DICTIONARY);
-    order_item.SetStringKey("sku", item.sku);
-    order_item.SetIntKey("quantity", item.quantity);
-    order_items.Append(std::move(order_item));
-  }
-
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetKey("items", std::move(order_items));
-
-  std::string json;
-  base::JSONWriter::Write(body, &json);
-
-  return json;
+  return GetServerUrl(ledger_, "/v1/orders");
 }
 
 type::Result PostOrder::CheckStatusCode(const int status_code) {
@@ -71,7 +53,7 @@ type::Result PostOrder::CheckStatusCode(const int status_code) {
 
 type::Result PostOrder::ParseBody(
     const std::string& body,
-    const std::vector<type::SKUOrderItem>& order_items,
+    std::vector<mojom::SKUOrderItemPtr> order_items,
     type::SKUOrder* order) {
   DCHECK(order);
 
@@ -126,8 +108,8 @@ type::Result PostOrder::ParseBody(
   for (auto& item : items->GetList()) {
     auto order_item = type::SKUOrderItem::New();
     order_item->order_id = order->order_id;
-    order_item->sku = order_items[count].sku;
-    order_item->type = order_items[count].type;
+    order_item->sku = order_items[count]->sku;
+    order_item->type = order_items[count]->type;
 
     const auto* id = item.FindStringKey("id");
     if (id) {
@@ -166,25 +148,47 @@ type::Result PostOrder::ParseBody(
 }
 
 void PostOrder::Request(
-    const std::vector<type::SKUOrderItem>& items,
+    std::vector<mojom::SKUOrderItemPtr> items,
     PostOrderCallback callback) {
-  auto url_callback = std::bind(&PostOrder::OnRequest,
-      this,
-      _1,
-      items,
-      callback);
+  if (items.empty()) {
+    BLOG(0, "List is empty");
+    callback(type::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl();
-  request->content = GeneratePayload(items);
+
+  base::Value order_items(base::Value::Type::LIST);
+  for (size_t i = 0; i < items.size(); i++) {
+    base::Value order_item(base::Value::Type::DICTIONARY);
+    order_item.SetStringKey("sku", items[i]->sku);
+    order_item.SetIntKey("quantity", items[i]->quantity);
+    order_items.Append(std::move(order_item));
+  }
+
+  base::Value body(base::Value::Type::DICTIONARY);
+  body.SetKey("items", std::move(order_items));
+
+  std::string json;
+  base::JSONWriter::Write(body, &json);
+
+  request->content = json;
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
+
+  auto url_callback = std::bind(&PostOrder::OnRequest,
+      this,
+      _1,
+      std::make_shared<std::vector<mojom::SKUOrderItemPtr>>(std::move(items)),
+      callback);
+
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostOrder::OnRequest(
     const type::UrlResponse& response,
-    const std::vector<type::SKUOrderItem>& items,
+    std::shared_ptr<std::vector<mojom::SKUOrderItemPtr>> items,
     PostOrderCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
@@ -196,7 +200,7 @@ void PostOrder::OnRequest(
   }
 
   auto order = type::SKUOrder::New();
-  result = ParseBody(response.body, items, order.get());
+  result = ParseBody(response.body, std::move(*items), order.get());
   callback(result, std::move(order));
 }
 

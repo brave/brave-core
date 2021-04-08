@@ -384,7 +384,7 @@ class LEDGER_EXPORT Ledger {
       GetAllMonthlyReportIdsCallback callback) = 0;
 
   virtual void ProcessSKU(
-      const std::vector<type::SKUOrderItem>& items,
+      std::vector<mojom::SKUOrderItemPtr> items,
       const std::string& wallet_type,
       SKUOrderCallback callback) = 0;
 

@@ -27,7 +27,7 @@ SKUOrder::SKUOrder(LedgerImpl* ledger) :
 SKUOrder::~SKUOrder() = default;
 
 void SKUOrder::Create(
-    const std::vector<type::SKUOrderItem>& items,
+    std::vector<mojom::SKUOrderItemPtr> items,
     ledger::SKUOrderCallback callback) {
   if (items.empty()) {
     BLOG(0, "List is empty");
@@ -41,7 +41,8 @@ void SKUOrder::Create(
       _2,
       callback);
 
-  payment_server_->post_order()->Request(items, url_callback);
+  payment_server_->post_order()->Request(std::move(items),
+                                         url_callback);
 }
 
 void SKUOrder::OnCreate(
