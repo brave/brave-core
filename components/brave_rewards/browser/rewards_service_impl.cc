@@ -869,6 +869,10 @@ void RewardsServiceImpl::OnReconcileComplete(
     MaybeShowNotificationTipsPaid();
   }
 
+  if (result == ledger::type::Result::LEDGER_OK) {
+    RecordBackendP3AStats();
+  }
+
   for (auto& observer : observers_)
     observer.OnReconcileComplete(
         this,
@@ -2977,7 +2981,7 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
   int tips = 0;
   int queued_recurring = 0;
 
-  for (auto& contribution : list) {
+  for (const auto& contribution : list) {
     switch (contribution->type) {
     case ledger::type::RewardsType::AUTO_CONTRIBUTE: {
       auto_contributions += 1;
