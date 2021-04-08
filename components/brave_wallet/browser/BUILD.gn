@@ -29,6 +29,8 @@ source_set("browser") {
     "eth_requests.h",
     "eth_response_parser.cc",
     "eth_response_parser.h",
+    "eth_transaction.cc",
+    "eth_transaction.h",
     "hd_key.cc",
     "hd_key.h",
     "pref_names.cc",
