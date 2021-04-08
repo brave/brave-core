@@ -19,6 +19,7 @@ FORWARD_DECLARE_TEST(HDKeyUnitTest, GenerateFromExtendedKey);
 FORWARD_DECLARE_TEST(HDKeyUnitTest, SetPrivateKey);
 FORWARD_DECLARE_TEST(HDKeyUnitTest, SetPublicKey);
 FORWARD_DECLARE_TEST(HDKeyUnitTest, DeriveChildFromPath);
+FORWARD_DECLARE_TEST(HDKeyUnitTest, SignAndVerifyAndRecover);
 
 // This class implement basic functionality of bip32 spec
 class HDKey {
@@ -41,6 +42,7 @@ class HDKey {
   void SetPublicKey(const std::vector<uint8_t>& value);
   // base58 encoded of hash160 of public key
   std::string GetPublicExtendedKey() const;
+  std::vector<uint8_t> GetUncompressedPublicKey() const;
 
   void SetChainCode(const std::vector<uint8_t>& value);
 
@@ -56,17 +58,27 @@ class HDKey {
 
   // Sign the message using private key. The msg has to be exactly 32 bytes
   // Return 64 bytes ECDSA signature when succeed, otherwise empty vector
-  std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg);
+  // if recid is not null, recovery id will be filled.
+  std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg,
+                            int* recid = nullptr);
   // Verify the ECDSA signature using public key. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return true when successfully verified, false otherwise.
   bool Verify(const std::vector<uint8_t>& msg, const std::vector<uint8_t>& sig);
+
+  // Recover public key from signature and message. The msg has to be exactly 32
+  // bytes and the sig has to be 64 bytes.
+  // Return valid public key when succeed, all zero vector otherwise
+  std::vector<uint8_t> Recover(const std::vector<uint8_t>& msg,
+                               const std::vector<uint8_t>& sig,
+                               int recid);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, GenerateFromExtendedKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPrivateKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPublicKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, DeriveChildFromPath);
+  FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SignAndVerifyAndRecover);
 
   void GeneratePublicKey();
   const std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input);
