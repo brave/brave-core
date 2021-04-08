@@ -307,19 +307,25 @@ int OnHeadersReceived_AdBlockCspWork(
 
   if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame ||
       ctx->resource_type == blink::mojom::ResourceType::kSubFrame) {
+    // If the override_response_headers have already been populated, we should
+    // use those directly.  Otherwise, we populate them from the original
+    // headers.
+    if (!*override_response_headers) {
+      *override_response_headers =
+          new net::HttpResponseHeaders(response_headers->raw_headers());
+    }
 
     scoped_refptr<base::SequencedTaskRunner> task_runner =
         g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
     std::string original_csp_string;
     base::Optional<std::string> original_csp = base::nullopt;
-    if (response_headers->GetNormalizedHeader("Content-Security-Policy",
-                                              &original_csp_string)) {
+    if ((*override_response_headers)
+            ->GetNormalizedHeader("Content-Security-Policy",
+                                  &original_csp_string)) {
       original_csp = base::Optional<std::string>(original_csp_string);
     }
 
-    *override_response_headers =
-        new net::HttpResponseHeaders(response_headers->raw_headers());
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
     task_runner->PostTaskAndReplyWithResult(
