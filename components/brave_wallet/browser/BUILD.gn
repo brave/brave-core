@@ -33,6 +33,8 @@ source_set("browser") {
     "eth_transaction.h",
     "hd_key.cc",
     "hd_key.h",
+    "hd_keyring.cc",
+    "hd_keyring.h",
     "pref_names.cc",
     "pref_names.h",
     "rlp_decode.cc",
