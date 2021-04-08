@@ -40,6 +40,9 @@ class SidebarController : public SidebarService::Observer {
   void ActivateItemAt(int index);
   void AddItemWithCurrentTab();
   void RemoveItemAt(int index);
+  // If current browser doesn't have a tab for |url|, active tab will load
+  // |url|. Otherwise, existing tab will be activated.
+  void LoadAtTab(const GURL& url);
 
   bool IsActiveIndex(int index) const;
 
