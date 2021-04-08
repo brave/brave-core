@@ -1,4 +1,5 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/vendor/bat-native-ledger/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -84,6 +85,10 @@ source_set("browser") {
       "//services/service_manager/public/cpp",
       "//url",
     ]
+
+    if (ipfs_enabled) {
+      deps += [ "//brave/components/ipfs" ]
+    }
 
     public_deps += [ "//brave/vendor/bat-native-ledger:headers" ]
 
