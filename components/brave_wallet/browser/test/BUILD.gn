@@ -13,6 +13,7 @@ source_set("brave_wallet_unit_tests") {
     sources = [
       "//brave/components/brave_wallet/browser/brave_wallet_types_unittest.cc",
       "//brave/components/brave_wallet/browser/brave_wallet_utils_unittest.cc",
+      "//brave/components/brave_wallet/browser/eth_address_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_call_data_builder_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_json_rpc_controller_unittest.cc",
       "//brave/components/brave_wallet/browser/eth_requests_unittest.cc",
