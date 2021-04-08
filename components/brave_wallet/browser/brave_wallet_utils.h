@@ -18,7 +18,7 @@ bool IsNativeWalletEnabled();
 // Equivalent to web3.utils.toHex(string);
 std::string ToHex(const std::string& data);
 // Equivalent to web3.utils.keccak256(string)
-std::string KeccakHash(const std::string& input);
+std::string KeccakHash(const std::string& input, bool to_hex = true);
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')
 std::string GetFunctionHash(const std::string& input);
@@ -35,6 +35,9 @@ bool IsValidHexString(const std::string& hex_input);
 bool ConcatHexStrings(const std::string& hex_input1,
                       const std::string& hex_input2,
                       std::string* out);
+bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
+                      std::string* out);
+
 bool HexValueToUint256(const std::string& hex_input, uint256_t* out);
 std::string Uint256ValueToHex(uint256_t input);
 
@@ -51,6 +54,19 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy);
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
     const std::string& passphrase);
+
+bool EncodeString(const std::string& input, std::string* output);
+bool EncodeStringArray(const std::vector<std::string>& input,
+                       std::string* output);
+
+bool DecodeString(size_t offset, const std::string& input, std::string* output);
+bool DecodeStringArray(const std::string& input,
+                       std::vector<std::string>* output);
+
+// Implement namehash algorithm based on EIP-137 spec.
+// Used for converting domain names in the classic format (ex: brave.crypto) to
+// an ERC-721 token for ENS and Unstoppable Domains.
+std::string Namehash(const std::string& name);
 
 }  // namespace brave_wallet
 
