@@ -8,6 +8,11 @@
 
 namespace decentralized_dns {
 
+enum class Provider {
+  UNSTOPPABLE_DOMAINS,
+  ENS,
+};
+
 enum class ResolveMethodTypes {
   ASK,
   DISABLED,

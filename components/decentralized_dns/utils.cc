@@ -88,7 +88,7 @@ bool IsENSResolveMethodDoH(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS);
 }
 
-base::Value GetResolveMethodList() {
+base::Value GetResolveMethodList(Provider provider) {
   base::Value list(base::Value::Type::LIST);
   list.Append(MakeSelectValue(
       ResolveMethodTypes::ASK,
@@ -101,10 +101,14 @@ base::Value GetResolveMethodList() {
       ResolveMethodTypes::DNS_OVER_HTTPS,
       l10n_util::GetStringUTF16(
           IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DNS_OVER_HTTPS)));
-  list.Append(
-      MakeSelectValue(ResolveMethodTypes::ETHEREUM,
-                      l10n_util::GetStringUTF16(
-                          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM)));
+
+  if (provider == Provider::UNSTOPPABLE_DOMAINS) {
+    list.Append(
+        MakeSelectValue(ResolveMethodTypes::ETHEREUM,
+                        l10n_util::GetStringUTF16(
+                            IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM)));
+  }
+
   return list;
 }
 
