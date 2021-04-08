@@ -828,6 +828,7 @@ if (!is_android) {
       "//components/content_settings/renderer",
       "//components/crx_file",
       "//components/embedder_support",
+      "//components/federated_learning:federated_learning",
       "//components/language/core/common",
       "//components/network_time",
       "//components/permissions",
