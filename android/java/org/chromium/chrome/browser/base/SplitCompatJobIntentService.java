@@ -49,7 +49,8 @@ public class SplitCompatJobIntentService extends JobIntentService {
     }
 
     /**
-     * Holds the implementation of service logic. Will be called by {@link SplitCompatJobIntentService}.
+     * Holds the implementation of service logic. Will be called by {@link
+     * SplitCompatJobIntentService}.
      */
     public abstract static class Impl {
         private SplitCompatJobIntentService mService;
@@ -62,9 +63,8 @@ public class SplitCompatJobIntentService extends JobIntentService {
             return mService;
         }
 
-        public static void enqueueWork (Context context,
-                Class<?> cls,  int jobId,  Intent work) {
-                JobIntentService.enqueueWork(context, cls,  jobId,  work);
+        public static void enqueueWork (Context context, Class<?> cls,  int jobId,  Intent work) {
+            JobIntentService.enqueueWork(context, cls,  jobId,  work);
         }
 
         protected abstract void onHandleWork(Intent intent);

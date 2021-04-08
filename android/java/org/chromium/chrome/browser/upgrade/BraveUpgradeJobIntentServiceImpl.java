@@ -31,7 +31,8 @@ public class BraveUpgradeJobIntentServiceImpl extends BraveUpgradeJobIntentServi
     }
 
     private static void enqueueWork(Context context, Intent work) {
-        BraveUpgradeJobIntentService.Impl.enqueueWork(context, BraveUpgradeJobIntentService.class, JOB_ID, work);
+        BraveUpgradeJobIntentService.Impl.enqueueWork(
+                context, BraveUpgradeJobIntentService.class, JOB_ID, work);
     }
 
     @Override

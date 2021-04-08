@@ -1,12 +1,12 @@
 import("//brave/build/config.gni")
 
-group("symbol_dist_resources") {}
-group("dist_resources") {}
+group("symbol_dist_resources") {
+}
+group("dist_resources") {
+}
 
 group("create_dist_zips") {
-  deps = [
-    ":create_symbol_archive"
-  ]
+  deps = [ ":create_symbol_archive" ]
 }
 
 action("create_symbol_archive") {

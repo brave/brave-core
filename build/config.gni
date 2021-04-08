@@ -140,7 +140,7 @@ if (is_android) {
     assert(target_cpu != "arm64" && target_cpu != "x64")
     brave_aab_output += "Modern"
   } else if (target_cpu == "arm64" || target_cpu == "x64" ||
-      target_apk_base == "mono") {
+             target_apk_base == "mono") {
     brave_aab_output += "Mono"
   }
 

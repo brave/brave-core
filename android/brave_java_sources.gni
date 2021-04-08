@@ -257,12 +257,11 @@ brave_java_base_sources = [
 ]
 
 brave_java_base_module_sources = [
-    "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
-    "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
+  "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
+  "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
 ]
 
-brave_java_base_module_deps = [
-    "//third_party/androidx:androidx_core_core_java",
-]
+brave_java_base_module_deps =
+    [ "//third_party/androidx:androidx_core_core_java" ]
 
 brave_android_features_tab_ui_java_sources = [ "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator.java" ]
