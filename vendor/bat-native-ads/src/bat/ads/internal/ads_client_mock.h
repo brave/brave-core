@@ -8,8 +8,8 @@
 
 #include "bat/ads/ads_client.h"
 
-#include <cstdint>
 #include <string>
+#include <vector>
 
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -35,6 +35,16 @@ class AdsClientMock : public AdsClient {
                void(const AdNotificationInfo& ad_notification));
 
   MOCK_METHOD1(CloseNotification, void(const std::string& uuid));
+
+  MOCK_CONST_METHOD3(RecordAdEvent,
+                     void(const std::string& type,
+                          const std::string& confirmation_type,
+                          const uint64_t timestamp));
+
+  MOCK_CONST_METHOD2(
+      GetAdEvents,
+      std::vector<uint64_t>(const std::string& ad_type,
+                            const std::string& confirmation_type));
 
   MOCK_METHOD2(UrlRequest,
                void(UrlRequestPtr url_request, UrlRequestCallback callback));

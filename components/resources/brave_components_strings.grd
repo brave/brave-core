@@ -479,7 +479,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE" desc="">Close</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET" desc="">Error creating Brave Browser BAT card</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TITLE" desc="">You need a verified wallet to Login</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TEXT" desc="">You need a minimum of 25 BAT to create an Uphold wallet. Please try again after you have verified your wallet with Uphold.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TEXT" desc="">You need a minimum of <ph name="AMOUNT">$1<ex>15</ex></ph> BAT to create an Uphold wallet. Please try again after you have verified your wallet with Uphold.</message>
 
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
@@ -730,7 +730,7 @@
       <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>
       <message name="IDS_BRAVE_UI_LOGIN" desc="">Login</message>
       <message name="IDS_BRAVE_UI_LOGIN_MESSAGE_TITLE" desc="">Verifying wallet allows you to manage your funds more efficiently.</message>
-      <message name="IDS_BRAVE_UI_LOGIN_MESSAGE_TEXT" desc="">You need to have minimum 25 BAT to create an Uphold account. Please try again later. <ph name="NEWLINE">$1</ph>If you already have a verified Uphold account, continue to login.</message>
+      <message name="IDS_BRAVE_UI_LOGIN_MESSAGE_TEXT" desc="">You need to have minimum <ph name="AMOUNT">$1<ex>15</ex></ph> BAT to create an Uphold account. If you already have a verified Uphold account, continue to login.</message>
       <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="">Make this monthly</message>
       <message name="IDS_BRAVE_UI_MANAGE_WALLET" desc="">Manage Your Wallet</message>
       <message name="IDS_BRAVE_UI_MONTH_APR" desc="">Apr</message>

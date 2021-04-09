@@ -100,7 +100,4 @@ SearchEngineProviderServiceFactory::ServiceIsCreatedWithBrowserContext() const {
 void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
-  registry->RegisterIntegerPref(
-      kAlternativeSearchEngineProviderInTor,
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
 }

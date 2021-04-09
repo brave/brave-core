@@ -6,12 +6,14 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 #include <algorithm>
+#include <cmath>
 #include <sstream>
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -50,12 +52,13 @@ std::string ToHex(const std::string& data) {
       base::ToLowerASCII(base::HexEncode(data.data(), data.size())).c_str());
 }
 
-std::string KeccakHash(const std::string& input) {
+std::string KeccakHash(const std::string& input, bool to_hex) {
   auto hash = ethash_keccak256(
       reinterpret_cast<uint8_t*>(const_cast<char*>(input.data())),
       input.size());
   std::string result(hash.str, sizeof(hash.str) / sizeof(hash.str[0]));
-  return ToHex(result);
+
+  return to_hex ? ToHex(result) : result;
 }
 
 std::string GetFunctionHash(const std::string& input) {
@@ -108,6 +111,29 @@ bool ConcatHexStrings(const std::string& hex_input1,
   *out =
       base::StringPrintf("%s%s", hex_input1.c_str(),
                          hex_input2.substr(2, hex_input2.length() - 2).c_str());
+  return true;
+}
+
+bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
+                      std::string* out) {
+  if (!out) {
+    return false;
+  }
+  if (hex_inputs.empty()) {
+    return false;
+  }
+  if (!IsValidHexString(hex_inputs[0])) {
+    return false;
+  }
+
+  *out = hex_inputs[0];
+  for (size_t i = 1; i < hex_inputs.size(); i++) {
+    if (!IsValidHexString(hex_inputs[i])) {
+      return false;
+    }
+    *out += hex_inputs[i].substr(2, hex_inputs[i].size() - 2);
+  }
+
   return true;
 }
 
@@ -187,6 +213,153 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
                              salt.length(), 2048, EVP_sha512(), seed->size(),
                              seed->data());
   return rv == 1 ? std::move(seed) : nullptr;
+}
+
+bool EncodeString(const std::string& input, std::string* output) {
+  if (!base::IsStringUTF8(input))
+    return false;
+
+  if (input.empty()) {
+    *output =
+        "0x0000000000000000000000000000000000000000000000000000000000000000";
+    return true;
+  }
+
+  // Encode count for this string
+  bool success =
+      PadHexEncodedParameter(Uint256ValueToHex(input.size()), output);
+  if (!success)
+    return false;
+
+  // Encode string.
+  *output += base::ToLowerASCII(base::HexEncode(input.data(), input.size()));
+
+  // Pad 0 to right.
+  size_t last_row_len = input.size() % 32;
+  if (last_row_len == 0) {
+    return true;
+  }
+
+  size_t padding_len = (32 - last_row_len) * 2;
+  *output += std::string(padding_len, '0');
+  return true;
+}
+
+bool EncodeStringArray(const std::vector<std::string>& input,
+                       std::string* output) {
+  // Write count of elements.
+  bool success = PadHexEncodedParameter(
+      Uint256ValueToHex(static_cast<uint256_t>(input.size())), output);
+  if (!success)
+    return false;
+
+  // Write offsets to array elements.
+  size_t data_offset = input.size() * 32;  // Offset to first element.
+  std::string encoded_offset;
+  success =
+      PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
+  if (!success)
+    return false;
+  *output += encoded_offset.substr(2, encoded_offset.size() - 2);
+
+  for (size_t i = 1; i < input.size(); i++) {
+    // Offset for ith element =
+    //     offset for i-1th + 32 * (count for i-1th) +
+    //     32 * ceil(i-1th.size() / 32.0) (length of encoding for i-1th).
+    std::string encoded_offset;
+    size_t rows = std::ceil(input[i - 1].size() / 32.0);
+    data_offset += (rows + 1) * 32;
+
+    success =
+        PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
+    if (!success)
+      return false;
+    *output += encoded_offset.substr(2, encoded_offset.size() - 2);
+  }
+
+  // Write count and encoding for array elements.
+  for (size_t i = 0; i < input.size(); i++) {
+    std::string encoded_string;
+    success = EncodeString(input[i], &encoded_string);
+    if (!success)
+      return false;
+    *output += encoded_string.substr(2, encoded_string.size() - 2);
+  }
+
+  return true;
+}
+
+bool DecodeString(size_t offset,
+                  const std::string& input,
+                  std::string* output) {
+  if (!output->empty())
+    return false;
+
+  // Decode count.
+  uint256_t count = 0;
+  size_t len = 64;
+  if (offset + len > input.size() ||
+      !HexValueToUint256("0x" + input.substr(offset, len), &count)) {
+    return false;
+  }
+
+  // Empty string case.
+  if (!count) {
+    *output = "";
+    return true;
+  }
+
+  // Decode string.
+  offset += len;
+  len = static_cast<size_t>(count) * 2;
+  return offset + len <= input.size() &&
+         base::HexStringToString(input.substr(offset, len), output);
+}
+
+bool DecodeStringArray(const std::string& input,
+                       std::vector<std::string>* output) {
+  // Get count of array.
+  uint256_t count = 0;
+  if (!HexValueToUint256("0x" + input.substr(0, 64), &count)) {
+    return false;
+  }
+
+  // Decode count and string for each array element.
+  *output = std::vector<std::string>(static_cast<size_t>(count), "");
+  size_t offset = 64;  // Offset to count of first element.
+  for (size_t i = 0; i < static_cast<size_t>(count); i++) {
+    // Get the starting data offset for each string element.
+    uint256_t data_offset;
+    if (offset + 64 > input.size() ||
+        !HexValueToUint256("0x" + input.substr(offset, 64), &data_offset)) {
+      return false;
+    }
+
+    // Decode each string.
+    size_t string_offset =
+        64 /* count */ + static_cast<size_t>(data_offset) * 2;
+    if (string_offset > input.size() ||
+        !DecodeString(string_offset, input, &output->at(i))) {
+      return false;
+    }
+
+    offset += 64;  // Offset for next count.
+  }
+
+  return true;
+}
+
+std::string Namehash(const std::string& name) {
+  std::string hash(32, '\0');
+  std::vector<std::string> labels =
+      SplitString(name, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  for (auto rit = labels.rbegin(); rit != labels.rend(); rit++) {
+    std::string label_hash = KeccakHash(*rit, false);
+    hash = KeccakHash(hash + label_hash, false);
+  }
+
+  return ToHex(hash);
 }
 
 }  // namespace brave_wallet

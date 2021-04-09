@@ -47,6 +47,21 @@ static ALTER_TO_DIV_EXCEPTIONS: [&LocalName; 3] = [
     &local_name!("section"),
     &local_name!("p"),
 ];
+static LOADABLE_IMG_SUFFIX: [&str; 4] = [".jpg", ".jpeg", ".png", ".webp"];
+static PRESENTATIONAL_ATTRIBUTES: [&LocalName; 12] = [
+    &local_name!("align"),
+    &local_name!("background"),
+    &local_name!("bgcolor"),
+    &local_name!("border"),
+    &local_name!("cellpadding"),
+    &local_name!("cellspacing"),
+    &local_name!("frame"),
+    &local_name!("hspace"),
+    &local_name!("rules"),
+    &local_name!("style"),
+    &local_name!("valign"),
+    &local_name!("vspace"),
+];
 
 static DECAY_FACTOR: f32 = 3.0;
 
@@ -114,6 +129,75 @@ pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
     }
 }
 
+/// Returns true if the image src loads without JavaScript logic. Some sites like Kotaku and The
+/// Atlantic try and get fancy with this. Our simple heuristic is to check if src is set something
+/// reasonable or srcset is set at all. Some things we've seen in the wild are srcset being left
+/// out in favor of data-srcset, and src being base64 encoded.
+#[inline]
+fn img_is_loaded(data: &ElementData) -> bool {
+    let mut loaded = false;
+    if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
+        for suffix in LOADABLE_IMG_SUFFIX.iter() {
+            if src.ends_with(suffix) {
+                loaded = true;
+                break;
+            }
+        }
+        if !loaded {
+            // Try parsing the URL to ignore url params
+            match Url::parse(src) {
+                Ok(url) => {
+                    for suffix in LOADABLE_IMG_SUFFIX.iter() {
+                        if url.path().ends_with(suffix) {
+                            loaded = true;
+                            break;
+                        }
+                    }
+                }
+                _ => (),
+            }
+        }
+    } else if data
+        .attributes
+        .borrow()
+        .get(local_name!("srcset"))
+        .is_some()
+    {
+        loaded = true;
+    }
+    loaded
+}
+
+/// Contains metadata about how to load a lazy loaded image.
+struct LazyImage {
+    local: LocalName,
+    value: String,
+}
+
+/// Try and find attributes corresponding to a lazy loaded image and return the new attribute
+/// metadata. Look for anything ending in *srcset (data-srcset is fairly common) or any element
+/// with image suffixes.
+fn try_lazy_img(data: &ElementData) -> Option<LazyImage> {
+    for (name, value) in &data.attributes.borrow().map {
+        if name.local.as_ref().ends_with("-srcset") {
+            return Some(LazyImage {
+                local: local_name!("srcset"),
+                value: value.value.clone(),
+            });
+        }
+        if LOADABLE_IMG_SUFFIX
+            .iter()
+            .any(|suffix| value.value.ends_with(suffix))
+        {
+            return Some(LazyImage {
+                local: local_name!("src"),
+                value: value.value.clone(),
+            });
+        }
+    }
+    None
+}
+
 /// Returns the proportion of links an element contains with the amount of text in the subtree.
 #[inline]
 pub fn get_link_density(handle: &Handle) -> f32 {
@@ -173,11 +257,14 @@ pub fn init_content_score(handle: &Handle) -> f32 {
         Element(ref data) => match data.name.local {
             local_name!("article") => 10.0,
             local_name!("div") => 5.0,
-            local_name!("h1") | local_name!("h2") | local_name!("h3") | local_name!("h4") => -5.0,
+            local_name!("h1")
+            | local_name!("h2")
+            | local_name!("h3")
+            | local_name!("h4")
+            | local_name!("th") => -5.0,
             local_name!("blockquote") => 3.0,
             local_name!("pre") => 3.0,
             local_name!("td") => 3.0,
-            local_name!("th") => 5.0,
             local_name!("address") => -3.0,
             local_name!("ol") => -3.0,
             local_name!("ul") => -3.0,
@@ -305,6 +392,46 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
             local_name!("meta") => {
                 get_metadata(&data, title);
             }
+            local_name!("div") => {
+                // Convert all divs whose children contains only phrasing
+                // content to paragraphs. An example would look like this:
+                //      <div>Here is a <a>link</a> <br></div>
+                //      <p>Here is a <a>link</a> <br></p>
+                let trim_whitespace = |dom: &mut Sink, p: &Handle| {
+                    while let Some(child) = p.last_child() {
+                        if !dom::is_whitespace(&child) {
+                            break;
+                        }
+                        dom.remove_from_parent(&child);
+                    }
+                };
+                let mut last_p: Option<Handle> = None;
+                for child in handle.children() {
+                    if dom::is_phrasing_content(&child) {
+                        if let Some(ref p) = last_p {
+                            if let Some(replacement) = dom::node_or_text(child.clone()) {
+                                dom.remove_from_parent(&child);
+                                dom.append(&p, replacement);
+                            }
+                        } else if !dom::is_whitespace(&child) {
+                            let name = QualName::new(None, ns!(), LocalName::from("p"));
+                            let p = dom.create_element(name, vec![], ElementFlags::default());
+                            dom.append_before_sibling(&child, NodeOrText::AppendNode(p.clone()));
+                            dom.remove_from_parent(&child);
+                            if let Some(replacement) = dom::node_or_text(child.clone()) {
+                                dom.append(&p, replacement);
+                            }
+                            last_p = Some(p);
+                        }
+                    } else if let Some(ref p) = last_p {
+                        trim_whitespace(dom, p);
+                        last_p = None;
+                    }
+                }
+                if let Some(ref p) = last_p {
+                    trim_whitespace(dom, p);
+                }
+            }
             _ => (),
         }
         for attr_name in ["id", "class", "itemProp"].iter() {
@@ -321,7 +448,7 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
     let mut useless_nodes = vec![];
     let mut new_children = vec![];
     let mut paragraph_nodes = vec![];
-    let mut br_count = 0;
+    let mut brs = vec![];
     for child in handle.children() {
         let pending_removal = preprocess(&mut dom, child.clone(), &mut title);
         if pending_removal {
@@ -333,8 +460,13 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
         match child.data() {
             Element(data) => {
                 match data.name.local {
-                    local_name!("br") => br_count += 1,
-                    _ => br_count = 0,
+                    local_name!("br") => brs.push(child.clone()),
+                    _ => {
+                        if brs.len() >= 2 {
+                            useless_nodes.extend(brs);
+                        }
+                        brs = Vec::new();
+                    }
                 }
                 if data.name.local == local_name!("noscript") {
                     unwrap_noscript(&child, &mut useless_nodes, &mut new_children);
@@ -354,9 +486,11 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
             }
             Text(ref contents) => {
                 let s = contents.borrow();
-                if br_count >= 2 && !s.trim().is_empty() {
-                    paragraph_nodes.push(child.clone());
-                    br_count = 0
+                if !s.trim().is_empty() {
+                    if brs.len() >= 2 {
+                        paragraph_nodes.push(child.clone());
+                    }
+                    brs = Vec::new();
                 }
             }
             _ => (),
@@ -378,6 +512,38 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
                 Ok(tendril) => dom.append(&p, NodeOrText::AppendText(tendril)),
                 _ => return false,
             }
+        }
+        for sibling in p.preceding_siblings() {
+            if !dom::is_whitespace(&sibling) {
+                break;
+            }
+            dom.remove_from_parent(&sibling);
+        }
+        for sibling in p.following_siblings() {
+            // If we approach another <br><br> chain, we are encroaching on another paragraph.
+            if dom::get_tag_name(&sibling) == Some(&local_name!("br")) {
+                if let Some(next) = sibling.next_sibling() {
+                    if dom::get_tag_name(&next) == Some(&local_name!("br")) {
+                        break;
+                    }
+                }
+            }
+            if paragraph_nodes.contains(&sibling) {
+                break;
+            }
+            if !dom::is_phrasing_content(&sibling) {
+                break;
+            }
+            dom.remove_from_parent(&sibling);
+            if let Some(a) = dom::node_or_text(sibling.clone()) {
+                dom.append(&p, a);
+            }
+        }
+        while let Some(child) = p.last_child() {
+            if !dom::is_whitespace(&child) {
+                break;
+            }
+            dom.remove_from_parent(&child);
         }
     }
     false
@@ -567,7 +733,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
         Text(_) => false,
         Comment(_) => true,
         Element(ref data) => {
-            match data.name.local {
+            let delete = match data.name.local {
                 local_name!("script")
                 | local_name!("link")
                 | local_name!("style")
@@ -582,26 +748,44 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 local_name!("form")
                 | local_name!("table")
                 | local_name!("ul")
+                | local_name!("section")
                 | local_name!("div") => is_useless(&handle),
-                local_name!("img") => {
-                    if let Some(fixed_url) = fix_img_path(data, url) {
-                        dom::set_attr("src", fixed_url.as_str(), handle.clone(), false);
-                        false
-                    } else {
-                        true
+                local_name!("br") => {
+                    if let Some(sibling) = handle.next_sibling() {
+                        if dom::get_tag_name(&sibling) == Some(&local_name!("p")) {
+                            return true;
+                        }
                     }
+                    false
+                }
+                local_name!("img") => {
+                    let mut loaded = img_is_loaded(data);
+                    if !loaded {
+                        if let Some(img) = try_lazy_img(data) {
+                            dom::set_attr(img.local.as_ref(), img.value, handle.clone(), true);
+                            loaded = true
+                        }
+                    }
+                    !loaded
                 }
                 _ => false,
+            };
+            if !delete {
+                // Delete style, align, and other elements that will conflict with the Speedreader
+                // stylesheet.
+                let mut attrs = data.attributes.borrow_mut();
+                for attr in PRESENTATIONAL_ATTRIBUTES.iter() {
+                    attrs.remove(*attr);
+                }
             }
-
-            // // cleans all ids, classes and styles in node
-            // dom::clean_attr("id", &mut *attrs.borrow_mut());
-            // dom::clean_attr("class", &mut *attrs.borrow_mut());
-            // dom::clean_attr("style", &mut *attrs.borrow_mut());
+            delete
         }
         ProcessingInstruction(_) => unreachable!(),
     };
 
+    if useless {
+        return true;
+    }
     let mut useless_nodes = vec![];
     for child in handle.children() {
         if clean(&mut dom, child.clone(), url, title, features) {
@@ -614,7 +798,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     if dom::is_empty(&handle) {
         return true;
     }
-    useless
+    false
 }
 
 /// Using content score and other heuristics, determine if the handle should be marked for
@@ -677,4 +861,38 @@ pub fn is_useless(handle: &Handle) -> bool {
         return true;
     }
     false
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_load_lazy_images_data_srcset() {
+        // This is a truncated <img> tag taken from Kotaku.
+        let input = r#"
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Wipe that paint outta your eyes, 60 fps is on the way."
+     data-srcset="https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_80,pg_1,q_80,w_80/d3xoltqrhfcqilnauamm.jpg 80w"
+     data-format="jpg" data-alt="Wipe that paint outta your eyes, 60 fps is on the way."
+/>"#;
+        let handle = dom::parse_inner(input).unwrap();
+        let elem = handle.as_element().unwrap();
+        assert_eq!(elem.name.local, local_name!("img"));
+        assert!(!img_is_loaded(elem));
+        assert!(try_lazy_img(elem).is_some());
+    }
+
+    #[test]
+    fn test_loaded_image_url_params() {
+        // This is a truncated <img> tag taken from Kotaku.
+        let input = r#"
+<img alt="Hori Parata at his Pātaua farm, the place where he was born and grew up."
+     class="gu-image" itemprop="contentUrl"
+     src="https://i.guim.co.uk/img/media/ff786/master/4800.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=575838a657b26493e956c7f84b058080">
+"#;
+        let handle = dom::parse_inner(input).unwrap();
+        let elem = handle.as_element().unwrap();
+        assert_eq!(elem.name.local, local_name!("img"));
+        assert!(img_is_loaded(elem));
+    }
 }

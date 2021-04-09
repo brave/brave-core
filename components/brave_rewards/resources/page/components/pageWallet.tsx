@@ -25,6 +25,7 @@ import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
+import { upholdMinimumBalance } from '../../shared/lib/uphold'
 
 interface State {
   activeTabId: number
@@ -325,7 +326,8 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    if (balance.total < 25 && externalWallet.type === 'uphold') {
+    if (balance.total < upholdMinimumBalance &&
+        externalWallet.type === 'uphold') {
       window.open(externalWallet.loginUrl, '_self')
       return
     }
@@ -676,8 +678,8 @@ class PageWallet extends React.Component<Props, State> {
     const { monthlyReportIds } = this.props.rewardsData
 
     const ids = [
-      ...monthlyReportIds || [],
-      `${new Date().getFullYear()}_${new Date().getMonth() + 1}`
+      `${new Date().getFullYear()}_${new Date().getMonth() + 1}`,
+      ...monthlyReportIds || []
     ]
 
     let result: Record<string, string> = {}
@@ -692,6 +694,11 @@ class PageWallet extends React.Component<Props, State> {
 
       // we only want to show reports from version 1.3 (Feb 2020) up
       if (year < 2020 || (year === 2020 && month === 0)) {
+        return
+      }
+
+      // Don't show drop-down items for a future month
+      if (new Date(year, month).getTime() > Date.now()) {
         return
       }
 
@@ -769,7 +776,7 @@ class PageWallet extends React.Component<Props, State> {
       (!walletStatus || walletStatus === 'unverified') &&
       walletType === 'uphold' &&
       balance &&
-      balance.total < 25
+      balance.total < upholdMinimumBalance
     )
   }
 

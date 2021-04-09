@@ -47,6 +47,7 @@
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
+#include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
@@ -1834,6 +1835,20 @@ void AdsServiceImpl::CloseNotification(const std::string& uuid) {
 #endif
     display_service_->Close(NotificationHandler::Type::BRAVE_ADS, uuid);
   }
+}
+
+void AdsServiceImpl::RecordAdEvent(const std::string& ad_type,
+                                   const std::string& confirmation_type,
+                                   const uint64_t timestamp) const {
+  FrequencyCappingHelper::GetInstance()->RecordAdEvent(
+      ad_type, confirmation_type, timestamp);
+}
+
+std::vector<uint64_t> AdsServiceImpl::GetAdEvents(
+    const std::string& ad_type,
+    const std::string& confirmation_type) const {
+  return FrequencyCappingHelper::GetInstance()->GetAdEvents(ad_type,
+                                                            confirmation_type);
 }
 
 void AdsServiceImpl::UrlRequest(ads::UrlRequestPtr url_request,

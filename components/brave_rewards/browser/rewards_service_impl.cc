@@ -52,6 +52,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
@@ -84,7 +85,9 @@
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
-
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/ipfs_utils.h"
+#endif
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -1740,7 +1743,15 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   if (!parsed_url.is_valid() || !ProcessPublisher(parsed_url)) {
     return;
   }
-
+#if BUILDFLAG(IPFS_ENABLED)
+  if (ipfs::IsIpfsEnabled(profile_) &&
+      ipfs::IsDefaultGatewayURL(parsed_url, profile_)) {
+    ledger::type::PublisherInfoPtr info;
+    OnPanelPublisherInfo(ledger::type::Result::NOT_FOUND, std::move(info),
+                         windowId);
+    return;
+  }
+#endif
   auto origin = parsed_url.GetOrigin();
   std::string baseDomain =
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);

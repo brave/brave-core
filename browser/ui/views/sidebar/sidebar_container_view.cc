@@ -14,6 +14,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model_data.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "content/public/browser/browser_context.h"
 #include "ui/base/theme_provider.h"
 #include "ui/views/border.h"
@@ -82,7 +83,8 @@ void SidebarContainerView::Layout() {
 }
 
 gfx::Size SidebarContainerView::CalculatePreferredSize() const {
-  if (!initialized_ || !sidebar_control_view_->GetVisible())
+  if (!initialized_ || !sidebar_control_view_->GetVisible() ||
+      browser_->window()->IsFullscreen())
     return View::CalculatePreferredSize();
 
   const int control_view_preferred_width =

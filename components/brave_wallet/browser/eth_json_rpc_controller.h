@@ -10,6 +10,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/callback.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -47,6 +48,14 @@ class EthJsonRpcController {
                             const std::string& address,
                             GetERC20TokenBalanceCallback callback);
 
+  using UnstoppableDomainsProxyReaderGetManyCallback =
+      base::OnceCallback<void(bool status, const std::string& result)>;
+  bool UnstoppableDomainsProxyReaderGetMany(
+      const std::string& contract_address,
+      const std::string& domain,
+      const std::vector<std::string>& keys,
+      UnstoppableDomainsProxyReaderGetManyCallback callback);
+
   Network GetNetwork() const;
   GURL GetNetworkURL() const;
   void SetNetwork(Network network);
@@ -68,6 +77,12 @@ class EthJsonRpcController {
                     const std::map<std::string, std::string>& headers);
   void OnGetERC20TokenBalance(
       GetERC20TokenBalanceCallback callback,
+      const int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
+
+  void OnUnstoppableDomainsProxyReaderGetMany(
+      UnstoppableDomainsProxyReaderGetManyCallback callback,
       const int status,
       const std::string& body,
       const std::map<std::string, std::string>& headers);

@@ -56,6 +56,7 @@ import {
 } from 'brave-ui/components/icons'
 
 import { BitflyerIcon } from '../../../shared/components/icons/bitflyer_icon'
+import { upholdMinimumBalance } from '../../../shared/lib/uphold'
 
 import giftIconUrl from './assets/gift.svg'
 import loveIconUrl from './assets/love.svg'
@@ -619,8 +620,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const walletVerified = walletState === 'verified' || walletState === 'disconnected_verified'
     const connectedVerified = walletState === 'verified'
     const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
-
-    const upholdLoginText = getLocale('loginMessageText').split('$1')
     const rewardsText1 = getLocale('rewardsPanelText1').split(/\$\d/g)
     const rewardsText2 = getLocale('rewardsPanelText2').split(/\$\d/g)
 
@@ -696,9 +695,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                   <LoginMessageText>
                     <b>{getLocale('loginMessageTitle')}</b>
                     <p>
-                      {upholdLoginText[0]}
-                      <br />
-                      {upholdLoginText[1]}
+                      {
+                        getLocale('loginMessageText')
+                          .replace('$1', String(upholdMinimumBalance))
+                      }
                     </p>
                     <br/>
                     {getLocale('walletVerificationNote3').replace('$1', walletProvider)}

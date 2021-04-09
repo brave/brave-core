@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -266,6 +267,20 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         if (BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarPhone.class)) {
             if (getMenuButtonCoordinator() != null && isMenuButtonOnBottom()) {
                 getMenuButtonCoordinator().setVisibility(false);
+            }
+        }
+
+        if (BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class)) {
+            LinearLayout customActionButtons = findViewById(R.id.action_buttons);
+            assert customActionButtons != null : "Something has changed in the upstream!";
+            if (customActionButtons != null && mBraveShieldsButton != null) {
+                ViewGroup.MarginLayoutParams braveShieldsButtonLayout =
+                        (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
+                ViewGroup.MarginLayoutParams actionButtonsLayout =
+                        (ViewGroup.MarginLayoutParams) customActionButtons.getLayoutParams();
+                actionButtonsLayout.setMarginEnd(actionButtonsLayout.getMarginEnd()
+                        + braveShieldsButtonLayout.getMarginEnd());
+                customActionButtons.setLayoutParams(actionButtonsLayout);
             }
         }
     }

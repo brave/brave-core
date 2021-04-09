@@ -198,24 +198,10 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
-
-    self.migrationType = BATLedgerDatabaseMigrationTypeDefault;
-    [self databaseNeedsMigration:^(BOOL needsMigration) {
-      if (needsMigration) {
-        [BATLedgerDatabase deleteCoreDataServerPublisherList:nil];
-      }
-      [self initializeLedgerService:needsMigration];
-    }];
-
+    
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
-
-    [self getRewardsParameters:nil];
-    [self fetchBalance:nil];
-    [self fetchUpholdWallet:nil];
-
-    [self readNotificationsFromDisk];
   }
   return self;
 }
@@ -232,7 +218,18 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
   delete ledgerClient;
 }
 
-- (void)initializeLedgerService:(BOOL)executeMigrateScript
+- (void)initializeLedgerService:(nullable void (^)())completion
+{
+  self.migrationType = BATLedgerDatabaseMigrationTypeDefault;
+  [self databaseNeedsMigration:^(BOOL needsMigration) {
+    if (needsMigration) {
+      [BATLedgerDatabase deleteCoreDataServerPublisherList:nil];
+    }
+    [self initializeLedgerService:needsMigration completion:completion];
+  }];
+}
+
+- (void)initializeLedgerService:(BOOL)executeMigrateScript completion:(nullable void (^)())completion
 {
   if (self.initialized || self.initializing) {
     return;
@@ -249,6 +246,12 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
       self.prefs[kMigrationSucceeded] = @(YES);
       [self savePrefs];
 
+      [self getRewardsParameters:nil];
+      [self fetchBalance:nil];
+      [self fetchUpholdWallet:nil];
+      
+      [self readNotificationsFromDisk];
+      
       [self.ads initializeIfAdsEnabled];
     } else {
       BLOG(0, @"Ledger Initialization Failed with error: %d", result);
@@ -261,7 +264,7 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
             self.migrationType = BATLedgerDatabaseMigrationTypeTokensOnly;
             [self resetRewardsDatabase];
             // attempt re-initialize without other data
-            [self initializeLedgerService:YES];
+            [self initializeLedgerService:YES completion:completion];
             return;
           case BATLedgerDatabaseMigrationTypeTokensOnly:
             BLOG(0, @"DB: BAT only migration failed. Initializing without migration.");
@@ -269,7 +272,7 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
             self.migrationType = BATLedgerDatabaseMigrationTypeNone;
             [self resetRewardsDatabase];
             // attempt initialize without migrating at all
-            [self initializeLedgerService:NO];
+            [self initializeLedgerService:NO completion:completion];
             return;
           default:
             break;
@@ -277,6 +280,9 @@ ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
       }
     }
     self.initializationResult = static_cast<BATResult>(result);
+    if (completion) {
+      completion();
+    }
     for (BATBraveLedgerObserver *observer in [self.observers copy]) {
       if (observer.walletInitalized) {
         observer.walletInitalized(self.initializationResult);

@@ -31,6 +31,7 @@
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/embedder_support/switches.h"
+#include "components/federated_learning/features/features.h"
 #include "components/feed/feed_feature_list.h"
 #include "components/language/core/common/language_experiments.h"
 #include "components/network_time/network_time_tracker.h"
@@ -164,15 +165,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kNoPings);
 
-  // Setting these to default values in Chromium to maintain parity
-  // See: ChromeContentVerifierDelegate::GetDefaultMode for ContentVerification
-  // See: GetStatus in install_verifier.cc for InstallVerification
-  command_line.AppendSwitchASCII(
-      switches::kExtensionContentVerification,
-      switches::kExtensionContentVerificationEnforceStrict);
-  command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
-                                 "enforce");
-
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
           embedder_support::kOriginTrialPublicKey)) {
     command_line.AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,
@@ -216,6 +208,8 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   std::unordered_set<const char*> disabled_features = {
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
+    blink::features::kInterestCohortAPIOriginTrial.name,
+    blink::features::kInterestCohortFeaturePolicy.name,
     blink::features::kTextFragmentAnchor.name,
     features::kDirectSockets.name,
     features::kIdleDetection.name,
@@ -226,6 +220,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kSubresourceWebBundles.name,
     features::kTabHoverCards.name,
     features::kWebOTP.name,
+    federated_learning::kFederatedLearningOfCohorts.name,
+    federated_learning::kFlocIdComputedEventLogging.name,
+    federated_learning::kFlocIdSortingLshBasedComputation.name,
     kSharingQRCodeGenerator.name,
     network_time::kNetworkTimeServiceQuerying.name,
     safe_browsing::kEnhancedProtection.name,

@@ -335,6 +335,8 @@ test("brave_unit_tests") {
   if (enable_extensions) {
     sources += [
       "//brave/browser/extensions/api/brave_extensions_api_client_unittest.cc",
+      "//brave/browser/extensions/chrome_content_verifier_delegate_unittest.cc",
+      "//brave/browser/extensions/install_verifier_unittest.cc",
       "//brave/chromium_src/extensions/browser/sandboxed_unpacker_unittest.cc",
       "//brave/common/importer/chrome_importer_utils_unittest.cc",
       "//chrome/browser/extensions/extension_service_test_base.cc",
@@ -344,6 +346,7 @@ test("brave_unit_tests") {
     deps += [
       "//brave/browser/extensions",
       "//brave/common/importer",
+      "//chrome/browser/extensions",
       "//components/crx_file",
       "//components/policy/core/common:test_support",
       "//extensions/browser:test_support",
@@ -825,6 +828,7 @@ if (!is_android) {
       "//components/content_settings/renderer",
       "//components/crx_file",
       "//components/embedder_support",
+      "//components/federated_learning:federated_learning",
       "//components/language/core/common",
       "//components/network_time",
       "//components/permissions",

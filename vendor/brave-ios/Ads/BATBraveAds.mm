@@ -9,6 +9,7 @@
 #import "BATAdNotification.h"
 #import "BATBraveLedger.h"
 
+#import "bat/ads/ad_event_history.h"
 #import "bat/ads/ads.h"
 #import "bat/ads/database.h"
 #import "bat/ads/pref_names.h"
@@ -75,6 +76,7 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
   NativeAdsClient *adsClient;
   ads::Ads *ads;
   ads::Database *adsDatabase;
+  ads::AdEventHistory* adEventHistory;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
 
   nw_path_monitor_t networkMonitor;
@@ -99,6 +101,7 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
     self.storagePath = path;
     self.commonOps = [[BATCommonOperations alloc] initWithStoragePath:path];
     adsDatabase = nullptr;
+    adEventHistory = nullptr;
 
     self.prefsWriteThread = dispatch_queue_create("com.rewards.ads.prefs", DISPATCH_QUEUE_SERIAL);
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
@@ -146,6 +149,7 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
     delete adsClient;
     ads = nil;
     adsClient = nil;
+    adEventHistory = nil;
   }
 }
 
@@ -228,6 +232,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     const auto* dbPath = [self adsDatabasePath].UTF8String;
     adsDatabase = new ads::Database(base::FilePath(dbPath));
 
+    adEventHistory = new ads::AdEventHistory();
+
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
 
@@ -277,9 +283,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       if (adsDatabase != nil) {
         delete adsDatabase;
       }
+      if (adEventHistory != nil) {
+        delete adEventHistory;
+      }
       ads = nil;
       adsClient = nil;
       adsDatabase = nil;
+      adEventHistory = nil;
       if (completion) {
         completion();
       }
@@ -1014,6 +1024,25 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 {
   const auto bridgedId = [NSString stringWithUTF8String:id.c_str()];
   [self.notificationsHandler clearNotificationWithIdentifier:bridgedId];
+}
+
+- (void)recordAdEvent:(const std::string&)ad_type
+     confirmationType:(const std::string&)confirmation_type
+            timestamp:(const uint64_t)timestamp {
+  if (!adEventHistory) {
+    return;
+  }
+
+  adEventHistory->Record(ad_type, confirmation_type, timestamp);
+}
+
+- (std::vector<uint64_t>)getAdEvents:(const std::string&)ad_type
+                    confirmationType:(const std::string&)confirmation_type {
+  if (!adEventHistory) {
+    return {};
+  }
+
+  return adEventHistory->Get(ad_type, confirmation_type);
 }
 
 - (bool)shouldAllowAdsSubdivisionTargeting {

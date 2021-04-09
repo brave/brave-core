@@ -640,11 +640,8 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
 
-#if BUILDFLAG(ENABLE_TOR) || BUILDFLAG(IPFS_ENABLED) || \
-    BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   content::BrowserContext* context =
       handle->GetWebContents()->GetBrowserContext();
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
@@ -689,6 +686,8 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
           brave_shields::DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
               handle, g_brave_browser_process->ad_block_service(),
               g_brave_browser_process->ad_block_custom_filters_service(),
+              HostContentSettingsMapFactory::GetForProfile(
+                  Profile::FromBrowserContext(context)),
               g_brave_browser_process->GetApplicationLocale()))
     throttles.push_back(std::move(domain_block_navigation_throttle));
 

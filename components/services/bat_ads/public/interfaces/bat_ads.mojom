@@ -29,6 +29,8 @@ interface BatAdsClient {
   [Sync]
   CanShowBackgroundNotifications() => (bool can_show);
   [Sync]
+  GetAdEvents(string ad_type, string confirmation_type) => (array<uint64> ad_events);
+  [Sync]
   LoadResourceForId(string id) => (string value);
   [Sync]
   GetBooleanPref(string path) => (bool value);
@@ -45,6 +47,7 @@ interface BatAdsClient {
 
   ShowNotification(string json);
   CloseNotification(string uuid);
+  RecordAdEvent(string ad_type, string confirmation_type, uint64 timestamp);
   UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
   Save(string name, string value) => (int32 result);
   Load(string name) => (int32 result, string value);

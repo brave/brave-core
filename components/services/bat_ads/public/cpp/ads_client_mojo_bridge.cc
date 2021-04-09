@@ -87,6 +87,20 @@ void AdsClientMojoBridge::ShouldShowNotifications(
   std::move(callback).Run(ads_client_->ShouldShowNotifications());
 }
 
+bool AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
+                                      const std::string& confirmation_type,
+                                      std::vector<uint64_t>* out_ad_events) {
+  DCHECK(out_ad_events);
+  *out_ad_events = ads_client_->GetAdEvents(ad_type, confirmation_type);
+  return true;
+}
+
+void AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
+                                      const std::string& confirmation_type,
+                                      GetAdEventsCallback callback) {
+  std::move(callback).Run(ads_client_->GetAdEvents(ad_type, confirmation_type));
+}
+
 bool AdsClientMojoBridge::LoadResourceForId(
     const std::string& id,
     std::string* out_value) {
@@ -250,6 +264,12 @@ void AdsClientMojoBridge::ShowNotification(
 void AdsClientMojoBridge::CloseNotification(
     const std::string& uuid) {
   ads_client_->CloseNotification(uuid);
+}
+
+void AdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
+                                        const std::string& confirmation_type,
+                                        const uint64_t timestamp) {
+  ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
 }
 
 // static

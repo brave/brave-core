@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CLIENT_H_
 
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -56,6 +57,17 @@ class ADS_EXPORT AdsClient {
 
   // Close notification
   virtual void CloseNotification(const std::string& uuid) = 0;
+
+  // Record an ad event for the specified |ad_type|, |confirmation_type| and
+  // specified |timestamp|
+  virtual void RecordAdEvent(const std::string& ad_type,
+                             const std::string& confirmation_type,
+                             const uint64_t timestamp) const = 0;
+
+  // Get a list of ad events for the specified |ad_type| and |confirmation_type|
+  virtual std::vector<uint64_t> GetAdEvents(
+      const std::string& ad_type,
+      const std::string& confirmation_type) const = 0;
 
   // Fetch and return data. Loading should be performed asynchronously, so that
   // the app remains responsive and should handle incoming data or errors as

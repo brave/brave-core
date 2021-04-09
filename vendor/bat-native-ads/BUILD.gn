@@ -57,6 +57,7 @@ source_set("headers") {
 
   sources = [
     "include/bat/ads/ad_content_info.h",
+    "include/bat/ads/ad_event_history.h",
     "include/bat/ads/ad_history_info.h",
     "include/bat/ads/ad_info.h",
     "include/bat/ads/ad_notification_info.h",
@@ -90,6 +91,7 @@ source_set("ads") {
 
   sources = [
     "src/bat/ads/ad_content_info.cc",
+    "src/bat/ads/ad_event_history.cc",
     "src/bat/ads/ad_history_info.cc",
     "src/bat/ads/ad_info.cc",
     "src/bat/ads/ad_notification_info.cc",
