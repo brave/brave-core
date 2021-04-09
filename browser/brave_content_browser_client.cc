@@ -265,16 +265,6 @@ void MaybeBindBraveWalletProvider(
       std::move(receiver));
 }
 #endif
-
-void BindBraveSearchHost(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_search::BraveSearchHost>(
-          g_brave_browser_process->shared_url_loader_factory()),
-      std::move(receiver));
-}
-
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -327,6 +317,14 @@ BraveContentBrowserClient::AllowWebBluetooth(
   return ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
 }
 
+void BraveContentBrowserClient::BindBraveSearchHost(
+    mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_search::BraveSearchHost>(
+          g_brave_browser_process->shared_url_loader_factory()),
+      std::move(receiver));
+}
+
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RenderFrameHost* render_frame_host,
     mojo::BinderMapWithContext<content::RenderFrameHost*>* map) {
@@ -341,9 +339,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&MaybeBindBraveWalletProvider));
   }
 #endif
-
-  map->Add<brave_search::mojom::BraveSearchFallback>(
-      base::BindRepeating(&BindBraveSearchHost));
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(

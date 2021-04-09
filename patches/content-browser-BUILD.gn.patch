@@ -1,0 +1,12 @@
+diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
+index b3dc555c9961cad0d8ced6f77bbfd9e8a319e4bf..a8667365deba67c63dc5ee7a167e7dba43335201 100644
+--- a/content/browser/BUILD.gn
++++ b/content/browser/BUILD.gn
+@@ -254,6 +254,7 @@ source_set("browser") {
+     "//ui/touch_selection",
+     "//v8:v8_version",
+   ]
++  deps += brave_content_deps
+ 
+   if (is_chromeos_ash) {
+     deps += [

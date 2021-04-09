@@ -1,0 +1,12 @@
+diff --git a/content/browser/browser_interface_binders.cc b/content/browser/browser_interface_binders.cc
+index 158b443d3e4aff914997183b2f9d009f4d9d3178..a6caed6111903ee02a7273bee2b984cf71823660 100644
+--- a/content/browser/browser_interface_binders.cc
++++ b/content/browser/browser_interface_binders.cc
+@@ -1240,6 +1240,7 @@ void PopulateBinderMapWithContext(
+ void PopulateBinderMap(ServiceWorkerHost* host, mojo::BinderMap* map) {
+   DCHECK_CURRENTLY_ON(ServiceWorkerContext::GetCoreThreadId());
+   PopulateServiceWorkerBinders(host, map);
++  PopulateServiceWorkerBindersBrave(host, map);
+ }
+ 
+ // AgentSchedulingGroup
