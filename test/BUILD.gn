@@ -816,6 +816,7 @@ if (!is_android) {
       "//brave/components/ipfs/buildflags",
       "//brave/components/l10n/browser",
       "//brave/components/tor",
+      "//brave/components/tor:utils",
       "//brave/components/tor/buildflags",
       "//build:chromeos_buildflags",
       "//chrome/app:command_ids",
