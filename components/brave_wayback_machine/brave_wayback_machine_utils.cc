@@ -6,11 +6,15 @@
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 
 #include <string>
+#include <vector>
 
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
+#include "url/url_util.h"
 
 bool IsWaybackMachineDisabledFor(const GURL& url) {
   if (net::IsLocalhost(url))
@@ -30,17 +34,33 @@ bool IsWaybackMachineDisabledFor(const GURL& url) {
 }
 
 GURL FixupWaybackQueryURL(const GURL& url) {
-  // Get latest page always from wayback machine by invalidating timestamp
-  // and callback parameters in query string.
-  GURL fixed_url = url;
-  std::string unused;
-  if (net::GetValueForKeyInQuery(fixed_url, "timestamp", &unused)) {
-    fixed_url = net::AppendOrReplaceQueryParameter(fixed_url, "timestamp", "");
+  constexpr char kTimeStampKey[] = "timestamp";
+  constexpr char kCallbackKey[] = "callback";
+
+  // Get latest page always from wayback machine by deleting timestamp and
+  // callback keys in query string.
+  // To find encoded key, compares keys after decoding.
+  std::vector<std::string> query_parts;
+  std::string fragment;
+  for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
+    std::string key = it.GetKey();
+    url::RawCanonOutputW<1024> canonOutput;
+    url::DecodeURLEscapeSequences(key.c_str(), key.length(),
+                                  url::DecodeURLMode::kUTF8OrIsomorphic,
+                                  &canonOutput);
+    const std::string decoded_key = base::UTF16ToUTF8(
+        base::StringPiece16(canonOutput.data(), canonOutput.length()));
+    // Skip target keys.
+    if (decoded_key == kTimeStampKey || decoded_key == kCallbackKey)
+      continue;
+
+    query_parts.push_back(base::StringPrintf("%s=%s", it.GetKey().c_str(),
+                                             it.GetValue().c_str()));
   }
 
-  if (net::GetValueForKeyInQuery(fixed_url, "callback", &unused)) {
-    fixed_url = net::AppendOrReplaceQueryParameter(fixed_url, "callback", "");
-  }
+  std::string query = base::JoinString(query_parts, "&");
 
-  return fixed_url;
+  GURL::Replacements replacements;
+  replacements.SetQueryStr(query);
+  return url.ReplaceComponents(replacements);
 }
