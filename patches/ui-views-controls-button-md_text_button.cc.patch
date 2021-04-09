@@ -1,0 +1,12 @@
+diff --git a/ui/views/controls/button/md_text_button.cc b/ui/views/controls/button/md_text_button.cc
+index ed3f0387b6b42d657d288463168f88307639d825..633a8c88980449488190557bd9a3f653df6e2895 100644
+--- a/ui/views/controls/button/md_text_button.cc
++++ b/ui/views/controls/button/md_text_button.cc
+@@ -256,6 +256,7 @@ void MdTextButton::UpdateColors() {
+   UpdateTextColor();
+   UpdateBackgroundColor();
+   SchedulePaint();
++  BRAVE_MD_TEXT_BUTTON_UPDATE_COLORS
+ }
+ 
+ BEGIN_METADATA(MdTextButton, LabelButton)
