@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Requirements: bash, coreutils, git, pylint.
+# This is called via `npm run pylint' with the top of the brave-core repo as $PWD.
 
 # Fail on any error.
-set -eEo pipefail
 shopt -s inherit_errexit
+set -eEo pipefail
 
 # Defaults.
 check_folders=(build components installer script tools)
@@ -32,6 +33,7 @@ help() {
 }
 
 # Print an error message, followed by the help message and exit.
+# $@ := message
 error() { printf "%s\n\n" "ERROR: $*" >&2; help; }
 
 # Parse command line arguments.
@@ -48,16 +50,20 @@ for ((i=1; i <= $#; ++i)); do
 done
 
 # Print a tab-delimited list of python scripts changed since $base_branch.
+# $@ := ""
 get_changed_files() {
-    git diff --name-only --diff-filter drt "origin/${base_branch:?}" -- "${check_folders[@]/%/\/\*.py}"|tr '\n' '\t'
+    git diff --name-only --diff-filter drt "origin/${base_branch:?}" -- \
+        "${check_folders[@]/%/\/\*.py}"|tr '\n' '\t'
 }
 
 # Execute pylint (if necessary) and print info messages.
+# $@ := message
 check() {
     if (("${#check_files[@]}" > 0)); then
         echo "Checking for $*" >&2
         case "${report:?}" in
-           1) exec pylint "${pylint_options[@]}" -fparseable --exit-zero "${check_files[@]}" >"${report_file:?}";;
+           1) exec pylint "${pylint_options[@]}" -fparseable --exit-zero \
+               "${check_files[@]}" >"${report_file:?}";;
            *) exec pylint "${pylint_options[@]}" "${check_files[@]}";;
         esac
     else
@@ -68,12 +74,12 @@ check() {
 
 # Validate options and decide which files to check.
 case "$only_new,$base_branch" in
-    1,) error "ERROR: The --only-new options is only valid with --compare-with";;
+    1,)  error "ERROR: The --only-new options is only valid with --compare-with";;
     1,*) #read -ra check_files <<<"$(get_changed_files)"
          #check "new pylint findings compared with $base_branch in: ${check_folders[*]}"
-         error "The --only-new option is Not implemented yet";;
-    0,) check_files=("${check_folders[@]}")
-        check "pylint findings in: ${check_folders[*]}";;
+         error "The --only-new option is not implemented yet";;
+    0,)  check_files=("${check_folders[@]}")
+         check "pylint findings in: ${check_folders[*]}";;
     0,*) read -ra check_files <<<"$(get_changed_files)"
          check "pylint findings compared with $base_branch in: ${check_folders[*]}";;
 esac
