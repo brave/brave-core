@@ -5,7 +5,6 @@ import shutil
 import sys
 import string
 
-
 def main():
     args = parse_args()
     compile_model(args.model[0], args.output[0])
