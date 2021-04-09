@@ -6,7 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_MANAGER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_MANAGER_H_
 
-#define GetLastUsedProfileName virtual GetLastUsedProfileName
 #define InitProfileUserPrefs virtual InitProfileUserPrefs
 #define DoFinalInitForServices virtual DoFinalInitForServices
 #define SetNonPersonalProfilePrefs virtual SetNonPersonalProfilePrefs

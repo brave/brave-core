@@ -95,19 +95,6 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
 }
 
-std::string BraveProfileManager::GetLastUsedProfileName() {
-  PrefService* local_state = g_browser_process->local_state();
-  DCHECK(local_state);
-  const std::string last_used_profile_name =
-      local_state->GetString(prefs::kProfileLastUsed);
-  // Keep this for legacy tor profile migration because tor profile might be
-  // last active profile before upgrading
-  if (last_used_profile_name ==
-      base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
-    return chrome::kInitialProfile;
-  return ProfileManager::GetLastUsedProfileName();
-}
-
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
                                                  bool go_off_the_record) {
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
