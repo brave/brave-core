@@ -7,6 +7,13 @@
 #define BRAVE_RENDERER_BRAVE_CONTENT_RENDERER_CLIENT_H_
 
 #include "chrome/renderer/chrome_content_renderer_client.h"
+#include "v8/include/v8.h"
+
+class GURL;
+
+namespace blink {
+class WebServiceWorkerContextProxy;
+}
 
 class BraveContentRendererClient : public ChromeContentRendererClient {
  public:
@@ -14,6 +21,17 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
   ~BraveContentRendererClient() override;
   void SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() override;
   void RenderFrameCreated(content::RenderFrame* render_frame) override;
+  void WillEvaluateServiceWorkerOnWorkerThread(
+      blink::WebServiceWorkerContextProxy* context_proxy,
+      v8::Local<v8::Context> v8_context,
+      int64_t service_worker_version_id,
+      const GURL& service_worker_scope,
+      const GURL& script_url) override;
+  void WillDestroyServiceWorkerContextOnWorkerThread(
+      v8::Local<v8::Context> v8_context,
+      int64_t service_worker_version_id,
+      const GURL& service_worker_scope,
+      const GURL& script_url) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentRendererClient);

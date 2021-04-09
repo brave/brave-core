@@ -6,7 +6,7 @@
 #include "brave/renderer/brave_content_renderer_client.h"
 
 #include "base/feature_list.h"
-#include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
+#include "brave/components/brave_search/renderer/brave_search_sw_holder.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -43,6 +43,32 @@ void BraveContentRendererClient::RenderFrameCreated(
 #endif
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-  new brave_search::BraveSearchRenderFrameObserver(
-      render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
+}
+
+void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
+    blink::WebServiceWorkerContextProxy* context_proxy,
+    v8::Local<v8::Context> v8_context,
+    int64_t service_worker_version_id,
+    const GURL& service_worker_scope,
+    const GURL& script_url) {
+  brave_search::BraveSearchSWHolder::GetInstance()
+      ->WillEvaluateServiceWorkerOnWorkerThread(
+          context_proxy, v8_context, service_worker_version_id,
+          service_worker_scope, script_url);
+  ChromeContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
+      context_proxy, v8_context, service_worker_version_id,
+      service_worker_scope, script_url);
+}
+
+void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
+    v8::Local<v8::Context> v8_context,
+    int64_t service_worker_version_id,
+    const GURL& service_worker_scope,
+    const GURL& script_url) {
+  brave_search::BraveSearchSWHolder::GetInstance()
+      ->WillDestroyServiceWorkerContextOnWorkerThread(
+          v8_context, service_worker_version_id, service_worker_scope,
+          script_url);
+  ChromeContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
+      v8_context, service_worker_version_id, service_worker_scope, script_url);
 }

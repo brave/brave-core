@@ -54,7 +54,7 @@ class BraveSearchTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, DISABLED_CheckForAFunction) {
   GURL url = https_server()->GetURL(kAllowedDomain, "/simple.html");
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
@@ -73,7 +73,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, DISABLED_CheckForAFunctionDev) {
   GURL url = https_server()->GetURL(kAllowedDomainDev, "/simple.html");
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
@@ -92,7 +92,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, DISABLED_CheckForAnUndefinedFunction) {
   GURL url = https_server()->GetURL(kNotAllowedDomain, "/simple.html");
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
