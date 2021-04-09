@@ -29,7 +29,7 @@ const setTheme = (theme) => {
 
 function setup() {
   // No local node option on Android
-  if (navigator.userAgent.match(/Android/i)) {
+  if ('$i18nRaw{os}' == 'Android') {
     $('local-node-box').style.display = 'none'
     $('footer').style.display = 'none'
   }
