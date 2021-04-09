@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">[[title]] öğesini açarak <ph name="BEGIN_LINK1"/>Hizmet Koşullarını<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>Gizlilik Politikasını<ph name="END_LINK2"/> kabul edersiniz.</translation>
 <translation id="2564425876266960486">Brave Browser BAT kartı yaratma hatası</translation>
 <translation id="6473583070570450185">Giriş yapabilmek için onaylanmış bir cüzdana ihtiyacınız var</translation>
-<translation id="5949995321533425416">Bir Uphold cüzdanı açabilmek için en az 25 BAT'ınızın olması gerekiyor. Lütfen Uphold cüzdanınızı onaylattıktan sonra tekrar deneyin.</translation>
+<translation id="5949995321533425416">Bir Uphold cüzdanı açabilmek için en az <ph name="AMOUNT"/> BAT'ınızın olması gerekiyor. Lütfen Uphold cüzdanınızı onaylattıktan sonra tekrar deneyin.</translation>
 <translation id="7422678632904904341">Tutar:</translation>
 <translation id="6969783933307596818">5 saniyede bir otomatik yenile</translation>
 <translation id="5025866799968038247">Bakiye bilgisi</translation>
@@ -457,7 +457,7 @@
 <translation id="7335371657242627509">Otomatik-Katkıya Dahil</translation>
 <translation id="1864111464094315414">Oturum Aç</translation>
 <translation id="4556504723624686474">Cüzdanın onaylanması, paranızı daha etkili bir biçimde yönetmenize imkan verir.</translation>
-<translation id="5461792966682693675">Bir Uphold hesabı yaratmak için en az 25 BAT'ye sahip olmalısınız. Lütfen daha sonra tekrar deneyin. <ph name="NEWLINE"/>Eğer zaten doğrulanmış bir Uphold hesabına sahipseniz, oturum açmak için devam edin.</translation>
+<translation id="5461792966682693675">Bir Uphold hesabı yaratmak için en az <ph name="AMOUNT"/> BAT'ye sahip olmalısınız. Eğer zaten doğrulanmış bir Uphold hesabına sahipseniz, oturum açmak için devam edin.</translation>
 <translation id="3250511771491660127">Bunu aylık yap</translation>
 <translation id="6028954173739504682">Cüzdanınızı Yönetin</translation>
 <translation id="7886389832052393750">Yıllık bileşik faiz</translation>

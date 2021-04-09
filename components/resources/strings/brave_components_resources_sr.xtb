@@ -239,7 +239,7 @@ ažuriranja.</translation>
 <translation id="1737873393693460829">Uključivanjem [[title]], prihvatate <ph name="BEGIN_LINK1"/>Uslove korišćenja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politiku privatnosti<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Greška prilikom kreiranja Brave Browser BAT kartice</translation>
 <translation id="6473583070570450185">Potreban vam je verifikovani novčanik za prijavu</translation>
-<translation id="5949995321533425416">Treba vam najmanje 25 BAT-a da biste kreirali Uphold novčanik. Pokušajte ponovo nakon što verifikujete svoj novčanik pomoću Uphold-a.</translation>
+<translation id="5949995321533425416">Treba vam najmanje <ph name="AMOUNT"/> BAT-a da biste kreirali Uphold novčanik. Pokušajte ponovo nakon što verifikujete svoj novčanik pomoću Uphold-a.</translation>
 <translation id="7422678632904904341">Iznos:</translation>
 <translation id="6969783933307596818">Automatski osvežite svakih 5 sekundi</translation>
 <translation id="5025866799968038247">Informacije o bilansu</translation>
@@ -458,7 +458,7 @@ ažuriranja.</translation>
 <translation id="7335371657242627509">Uključi u Samo-doprinos</translation>
 <translation id="1864111464094315414">Пријављивање</translation>
 <translation id="4556504723624686474">Verifikacija novčanika vam omogućava efikasnije upravljanje sredstvima.</translation>
-<translation id="5461792966682693675">Potrebno je da imate minimalno 25 BAT-a da biste napravili nalog na Uphold-u. Pokušajte ponovo kasnije. <ph name="NEWLINE"/>Ako već imate verifikovani nalog na Uphold-u, nastavite da biste se prijavili.</translation>
+<translation id="5461792966682693675">Potrebno je da imate minimalno <ph name="AMOUNT"/> BAT-a da biste napravili nalog na Uphold-u. Ako već imate verifikovani nalog na Uphold-u, nastavite da biste se prijavili.</translation>
 <translation id="3250511771491660127">Učini da se ovo dešava na mesečnom nivou</translation>
 <translation id="6028954173739504682">Upravljanje novčanikom</translation>
 <translation id="7886389832052393750">Apr</translation>

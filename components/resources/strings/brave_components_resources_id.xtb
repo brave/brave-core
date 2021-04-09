@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">Dengan mengaktifkan [[title]], Anda setuju dengan <ph name="BEGIN_LINK1"/>Syarat Layanan<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Kebijakan Privasi<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Eror saat membuat kartu BAT Brave Browser</translation>
 <translation id="6473583070570450185">Anda butuh dompet yang terverifikasi untuk Masuk</translation>
-<translation id="5949995321533425416">Anda perlu minimal 25 BAT untuk membuat dompet Uphold. Silakan coba kembali setelah Anda sudah memverifikasi dompet dengan Uphold.</translation>
+<translation id="5949995321533425416">Anda perlu minimal <ph name="AMOUNT"/> BAT untuk membuat dompet Uphold. Silakan coba kembali setelah Anda sudah memverifikasi dompet dengan Uphold.</translation>
 <translation id="7422678632904904341">Jumlah:</translation>
 <translation id="6969783933307596818">Segarkan otomatis setiap 5 detik</translation>
 <translation id="5025866799968038247">Info saldo</translation>
@@ -457,7 +457,7 @@
 <translation id="7335371657242627509">Sertakan dalam Kontribusi Otomatis</translation>
 <translation id="1864111464094315414">Masuk</translation>
 <translation id="4556504723624686474">Memverifikasi dompet mengizinkan Anda mengelola dana dengan lebih efisien.</translation>
-<translation id="5461792966682693675">Anda harus memiliki minimal 25 BAT untuk membuat akun Uphold. Silakan coba lagi nanti. <ph name="NEWLINE"/>Jika Anda sudah memiliki akun Uphold yang diverifikasi, lanjutkan untuk login.</translation>
+<translation id="5461792966682693675">Anda harus memiliki minimal <ph name="AMOUNT"/> BAT untuk membuat akun Uphold. Jika Anda sudah memiliki akun Uphold yang diverifikasi, lanjutkan untuk login.</translation>
 <translation id="3250511771491660127">Jadikan ini bulanan</translation>
 <translation id="6028954173739504682">Kelola Dompet</translation>
 <translation id="7886389832052393750">April</translation>

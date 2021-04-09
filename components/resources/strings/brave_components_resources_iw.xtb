@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">על ידי הפעלת [[title]], הנכם מסכימים ל-<ph name="BEGIN_LINK1"/>תנאי השירות<ph name="END_LINK1"/> ו-<ph name="BEGIN_LINK2"/>ומדיניות הפרטיות<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">אירעה שגיאה ביצירת כרטיס BAT של דפדפן Brave</translation>
 <translation id="6473583070570450185">נדרש לכם ארנק מאומת כדי להתחבר</translation>
-<translation id="5949995321533425416">נדרשים לכם מינימום של 25 BAT כדי ליצור ארנק Uphold. נא לנסות שוב לאחר שאימתתם את הארנק שלכם באמצעות Uphold.</translation>
+<translation id="5949995321533425416">נדרשים לכם מינימום של <ph name="AMOUNT"/> BAT כדי ליצור ארנק Uphold. נא לנסות שוב לאחר שאימתתם את הארנק שלכם באמצעות Uphold.</translation>
 <translation id="7422678632904904341">סכום:</translation>
 <translation id="6969783933307596818">רענן אוטומטית כל 5 שניות</translation>
 <translation id="5025866799968038247">מידע על יתרה</translation>
@@ -457,7 +457,7 @@
 <translation id="7335371657242627509">כלול בתרומות העצמיות</translation>
 <translation id="1864111464094315414">התחבר</translation>
 <translation id="4556504723624686474">אימות הארנק מאפשר לכם לנהל את הכספים שלכם בצורה יעילה יותר.</translation>
-<translation id="5461792966682693675">דרוש לכם מינימום של 25 BAT כדי ליצור חשבון Uphold. נא לנסות שוב מאוחר יותר. <ph name="NEWLINE"/>אם כבר יש לכם חשבון Uphold מאומת, המשיכו להתחברות.</translation>
+<translation id="5461792966682693675">דרוש לכם מינימום של <ph name="AMOUNT"/> BAT כדי ליצור חשבון Uphold. אם כבר יש לכם חשבון Uphold מאומת, המשיכו להתחברות.</translation>
 <translation id="3250511771491660127">הפוך את זה חודשי</translation>
 <translation id="6028954173739504682">ניהול הארנק שלכם</translation>
 <translation id="7886389832052393750">אפריל</translation>

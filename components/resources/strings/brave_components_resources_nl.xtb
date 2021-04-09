@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">Door [[title]] in the schakelen, ga je akkoord met de <ph name="BEGIN_LINK1"/>Servicevoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fout tijdens het aanmaken van de Brave Browser BAT-kaart</translation>
 <translation id="6473583070570450185">U heeft een geverifieerde portemonnee nodig om in te loggen</translation>
-<translation id="5949995321533425416">U moet minimaal 25 BAT hebben om een Uphold portemonnee aan te maken. Probeer het later opnieuw nadat u uw portemonnee met Uphold hebt geverifieerd.</translation>
+<translation id="5949995321533425416">U moet minimaal <ph name="AMOUNT"/> BAT hebben om een Uphold portemonnee aan te maken. Probeer het later opnieuw nadat u uw portemonnee met Uphold hebt geverifieerd.</translation>
 <translation id="7422678632904904341">Bedrag:</translation>
 <translation id="6969783933307596818">Automatisch elke 5 seconden ververst</translation>
 <translation id="5025866799968038247">Saldo info</translation>
@@ -457,7 +457,7 @@
 <translation id="7335371657242627509">Deelname aan Auto-Contribute</translation>
 <translation id="1864111464094315414">Aanmelden</translation>
 <translation id="4556504723624686474">Door uw portemonnee te verifiëren, kunt u uw geld efficiënter beheren.</translation>
-<translation id="5461792966682693675">U moet minimaal 25 BAT hebben om een Uphold-account aan te maken. <ph name="NEWLINE"/> Probeer het alstublieft later nogmaals. Als u reeds een geverifieerd Uphold-account heeft, ga dan door naar het inloggen.</translation>
+<translation id="5461792966682693675">U moet minimaal <ph name="AMOUNT"/> BAT hebben om een Uphold-account aan te maken. Als u reeds een geverifieerd Uphold-account heeft, ga dan door naar het inloggen.</translation>
 <translation id="3250511771491660127">Laat dit maandelijks plaatsvinden</translation>
 <translation id="6028954173739504682">Je wallet beheren</translation>
 <translation id="7886389832052393750">Apr</translation>

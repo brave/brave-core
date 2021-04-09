@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">En activar [[title]], acceptes les <ph name="BEGIN_LINK1"/>Condicions del servei<ph name="END_LINK1"/> i la <ph name="BEGIN_LINK2"/>Política de privacitat<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Error en crear la targeta Brave Browser BAT</translation>
 <translation id="6473583070570450185">Necessiteu una cartera verificada per accedir</translation>
-<translation id="5949995321533425416">Necessiteu un mínim de 25 BAT per crear una cartera de Uphold. Si us plau, torneu-ho a provar després d'haver verificat la seva cartera amb Uphold.</translation>
+<translation id="5949995321533425416">Necessiteu un mínim de <ph name="AMOUNT"/> BAT per crear una cartera de Uphold. Si us plau, torneu-ho a provar després d'haver verificat la seva cartera amb Uphold.</translation>
 <translation id="7422678632904904341">Quantitat:</translation>
 <translation id="6969783933307596818">Actualitzeu automaticament cada 5 segons</translation>
 <translation id="5025866799968038247">Informació del Saldo</translation>
@@ -458,7 +458,7 @@
 <translation id="7335371657242627509">Inclou a Auto-Contribució</translation>
 <translation id="1864111464094315414">Inicia la sessió</translation>
 <translation id="4556504723624686474">La verificació de la cartera us permet gestionar els vostres fons de manera més eficient.</translation>
-<translation id="5461792966682693675">Necessiteu tenir com a mínim 25 BAT per a crear un compte Uphold. Si us plau torneu-ho a provar més tard. <ph name="NEWLINE"/>Si ja teniu un compte Uphold verificat, continueu a iniciar sessió</translation>
+<translation id="5461792966682693675">Necessiteu tenir com a mínim <ph name="AMOUNT"/> BAT per a crear un compte Uphold. Si ja teniu un compte Uphold verificat, continueu a iniciar sessió</translation>
 <translation id="3250511771491660127">Fes això mensualment</translation>
 <translation id="6028954173739504682">Gestiona la teva cartera</translation>
 <translation id="7886389832052393750">abril</translation>

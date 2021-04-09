@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">Če vklopite [[title]], se strinjate s <ph name="BEGIN_LINK1"/>pogoji storitve<ph name="END_LINK1"/> in <ph name="BEGIN_LINK2"/>s politiko zasebnosti<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Napaka pri ustvarjanju kartice BAT brskalnika Brave</translation>
 <translation id="6473583070570450185">Za prijavo potrebujete potrjeno denarnico</translation>
-<translation id="5949995321533425416">Za denarnico Uphold potrebujete vsaj 25 BAT. Potrdite svojo denarnico na spletnem mestu Uphold in poskusite znova.</translation>
+<translation id="5949995321533425416">Za denarnico Uphold potrebujete vsaj <ph name="AMOUNT"/> BAT. Potrdite svojo denarnico na spletnem mestu Uphold in poskusite znova.</translation>
 <translation id="7422678632904904341">Znesek:</translation>
 <translation id="6969783933307596818">Samodejno osveži vsakih 5 sekund</translation>
 <translation id="5025866799968038247">Infromacije o stanju</translation>
@@ -457,7 +457,7 @@
 <translation id="7335371657242627509">Vključi v samodejno doniranje</translation>
 <translation id="1864111464094315414">Prijava</translation>
 <translation id="4556504723624686474">Potrditev denarnice vam omogoča, da s svojim sredstvi upravljate učinkoviteje.</translation>
-<translation id="5461792966682693675">Za ustvarjanje računa Uphold morate imeti najmanj 25 BAT. Prosimo, poskusite kasneje. <ph name="NEWLINE"/>Če že imate preverjen račun Uphold, se še naprej prijavljajte.</translation>
+<translation id="5461792966682693675">Za ustvarjanje računa Uphold morate imeti najmanj <ph name="AMOUNT"/> BAT. Če že imate preverjen račun Uphold, se še naprej prijavljajte.</translation>
 <translation id="3250511771491660127">Izvedi vsak mesec</translation>
 <translation id="6028954173739504682">Upravljanje denarnice</translation>
 <translation id="7886389832052393750">Apr</translation>

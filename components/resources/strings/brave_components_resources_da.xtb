@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">Ved at aktivere [[title]] accepterer du <ph name="BEGIN_LINK1"/>Brugsvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>Databeskyttelsespolitikken<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Fejl ved oprettelse af Brave Browser BAT-kort</translation>
 <translation id="6473583070570450185">Du skal have en bekræftet wallet for at logge ind</translation>
-<translation id="5949995321533425416">Du skal bruge minimum 25 BAT for at oprette en Uphold-wallet. Prøv venligst igen, efter du har bekræftet din wallet hos Uphold.</translation>
+<translation id="5949995321533425416">Du skal bruge minimum <ph name="AMOUNT"/> BAT for at oprette en Uphold-wallet. Prøv venligst igen, efter du har bekræftet din wallet hos Uphold.</translation>
 <translation id="7422678632904904341">Beløb:</translation>
 <translation id="6969783933307596818">Opdater automatisk hver 5. sekund</translation>
 <translation id="5025866799968038247">Saldo-oplysninger</translation>
@@ -457,7 +457,7 @@
 <translation id="7335371657242627509">Inkluder i Auto-Bidrag</translation>
 <translation id="1864111464094315414">Login</translation>
 <translation id="4556504723624686474">Bekræftelse af en wallet giver dig mulighed for at administrere dine midler mere effektivt.</translation>
-<translation id="5461792966682693675">Du skal have mindst 25 BAT for at oprette en Uphold-konto. Prøv igen senere. <ph name="NEWLINE"/>Hvis du allerede har en bekræftet Uphold-konto, skal du fortsætte for at logge ind.</translation>
+<translation id="5461792966682693675">Du skal have mindst <ph name="AMOUNT"/> BAT for at oprette en Uphold-konto. Hvis du allerede har en bekræftet Uphold-konto, skal du fortsætte for at logge ind.</translation>
 <translation id="3250511771491660127">Gør dette månedligt</translation>
 <translation id="6028954173739504682">Administrer din tegnebog</translation>
 <translation id="7886389832052393750">Apr</translation>

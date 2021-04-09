@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">Prin activarea [[title]], acceptați <ph name="BEGIN_LINK1"/>Termenii de utilizare<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>Politica de confidențialitate<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">A avut loc o eroare la crearea cardului BAT Brave Browser</translation>
 <translation id="6473583070570450185">Aveți nevoie de un portofel verificat pentru a vă conecta</translation>
-<translation id="5949995321533425416">Aveți nevoie de minimum 25 BAT pentru a crea un portofel Uphold. Încercați din nou după ce v-ați confirmat portofelul la Uphold.</translation>
+<translation id="5949995321533425416">Aveți nevoie de minimum <ph name="AMOUNT"/> BAT pentru a crea un portofel Uphold. Încercați din nou după ce v-ați confirmat portofelul la Uphold.</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="6969783933307596818">Se actualizează automat la fiecare 5 secunde</translation>
 <translation id="5025866799968038247">Informații sold</translation>
@@ -457,7 +457,7 @@
 <translation id="7335371657242627509">Includeți în contribuție automată</translation>
 <translation id="1864111464094315414">Conectați-vă</translation>
 <translation id="4556504723624686474">Dacă vă confirmați portofelul, puteți să vă gestionați fondurile mai eficient.</translation>
-<translation id="5461792966682693675">Trebuie să aveți minimum 25 BAT pentru a crea un cont Uphold. Vă rugăm să încercați din nou mai târziu. <ph name="NEWLINE"/>Dacă aveți deja un cont Uphold verificat, continuați cu conectarea.</translation>
+<translation id="5461792966682693675">Trebuie să aveți minimum <ph name="AMOUNT"/> BAT pentru a crea un cont Uphold. Dacă aveți deja un cont Uphold verificat, continuați cu conectarea.</translation>
 <translation id="3250511771491660127">Faceți asta lunar</translation>
 <translation id="6028954173739504682">Administrați-vă portofelul</translation>
 <translation id="7886389832052393750">Aprilie</translation>

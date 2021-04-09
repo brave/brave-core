@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">[[title]] 기능을 켜면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
 <translation id="2564425876266960486">Brave Browser BAT 카드 생성 오류</translation>
 <translation id="6473583070570450185">로그인하려면 인증된 지갑이 필요합니다</translation>
-<translation id="5949995321533425416">Uphold 지갑을 만들려면 최소 25 BAT가 있어야 합니다. Uphold로 지갑을 인증한 후에 다시 시도하십시오.</translation>
+<translation id="5949995321533425416">Uphold 지갑을 만들려면 최소 <ph name="AMOUNT"/> BAT가 있어야 합니다. Uphold로 지갑을 인증한 후에 다시 시도하십시오.</translation>
 <translation id="7422678632904904341">금액:</translation>
 <translation id="6969783933307596818">5초마다 자동으로 새로고침</translation>
 <translation id="5025866799968038247">잔액 정보</translation>
@@ -456,7 +456,7 @@
 <translation id="7335371657242627509">자동 기부에 포함하기</translation>
 <translation id="1864111464094315414">로그인</translation>
 <translation id="4556504723624686474">지갑을 인증하면 자금을 보다 효율적으로 관리할 수 있습니다.</translation>
-<translation id="5461792966682693675">Uphold 계정을 만들려면 최소 25 BAT가 있어야 합니다. 나중에 다시 시도하세요. <ph name="NEWLINE"/>인증된 Uphold 계정이 이미 있는 경우 계속해서 로그인하세요.</translation>
+<translation id="5461792966682693675">Uphold 계정을 만들려면 최소 <ph name="AMOUNT"/> BAT가 있어야 합니다. 인증된 Uphold 계정이 이미 있는 경우 계속해서 로그인하세요.</translation>
 <translation id="3250511771491660127">이것을 매달 하기</translation>
 <translation id="6028954173739504682">월렛 관리</translation>
 <translation id="7886389832052393750">4월</translation>

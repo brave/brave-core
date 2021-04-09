@@ -236,7 +236,7 @@
 <translation id="1737873393693460829">Ved å skru på [[title]], samtykker du til <ph name="BEGIN_LINK1"/>bruksvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>retningslinjene for personvern<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Feil ved oppretting av BAT-kort for Brave-nettleseren</translation>
 <translation id="6473583070570450185">Du må ha en verifisert lommebok for å Logge inn</translation>
-<translation id="5949995321533425416">Du må ha minst 25 BAT for å opprette en Uphold-lommebok. Vennligst prøv igjen etter at du har verifisert lommeboken din med Uphold.</translation>
+<translation id="5949995321533425416">Du må ha minst <ph name="AMOUNT"/> BAT for å opprette en Uphold-lommebok. Vennligst prøv igjen etter at du har verifisert lommeboken din med Uphold.</translation>
 <translation id="7422678632904904341">Beløp:</translation>
 <translation id="5025866799968038247">Saldoinformasjon</translation>
 <translation id="6073289164268847023">Lommebok opprettet:</translation>
@@ -432,7 +432,7 @@
 <translation id="7335371657242627509">Inkluder i auto-bidrag</translation>
 <translation id="1864111464094315414">Pålogging</translation>
 <translation id="4556504723624686474">Når du verifiserer lommeboken din, kan du administere midlene dine mer effektivt.</translation>
-<translation id="5461792966682693675">Du må ha minst 25 BAT for å opprette en Uphold-konto. Prøv på nytt senere. <ph name="NEWLINE"/>Hvis du allerede har en bekreftet Uphold-konto, kan du logge på.</translation>
+<translation id="5461792966682693675">Du må ha minst <ph name="AMOUNT"/> BAT for å opprette en Uphold-konto. Hvis du allerede har en bekreftet Uphold-konto, kan du logge på.</translation>
 <translation id="3250511771491660127">Gjør dette månedlig</translation>
 <translation id="6028954173739504682">Administrer lommeboken din</translation>
 <translation id="7886389832052393750">apr</translation>

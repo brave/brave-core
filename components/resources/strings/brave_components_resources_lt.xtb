@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">Įjungdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Kuriant „Brave“ naršyklės BAT kortelę, įvyko klaida</translation>
 <translation id="6473583070570450185">Jums reikia patvirtintos piniginės, kad galėtumėte prisijungti</translation>
-<translation id="5949995321533425416">Jums reikia mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ piniginę. Patvirtinę savo piniginę su „Uphold“ bandykite dar kartą.</translation>
+<translation id="5949995321533425416">Jums reikia mažiausiai <ph name="AMOUNT"/> BAT, kad galėtumėte susikurti „Uphold“ piniginę. Patvirtinę savo piniginę su „Uphold“ bandykite dar kartą.</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="6969783933307596818">Automatiškai atnaujinti kas 5 sekundes</translation>
 <translation id="5025866799968038247">Likučio informacija</translation>
@@ -457,7 +457,7 @@
 <translation id="7335371657242627509">Įtraukti į automatinį indėlį</translation>
 <translation id="1864111464094315414">Prisijungimas</translation>
 <translation id="4556504723624686474">Kai jūsų piniginė bus patvirtinta, galėsite efektyviau tvarkyti savo pinigus.</translation>
-<translation id="5461792966682693675">Jums reikia turėti mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Bandykite dar kartą vėliau. <ph name="NEWLINE"/>Jei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.</translation>
+<translation id="5461792966682693675">Jums reikia turėti mažiausiai <ph name="AMOUNT"/> BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Jei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.</translation>
 <translation id="3250511771491660127">Padaryti mėnesinį</translation>
 <translation id="6028954173739504682">Valdyti piniginę</translation>
 <translation id="7886389832052393750">Bal</translation>

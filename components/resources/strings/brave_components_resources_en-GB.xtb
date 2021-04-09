@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Error creating Brave Browser BAT card</translation>
 <translation id="6473583070570450185">You need a verified wallet to login</translation>
-<translation id="5949995321533425416">You need a minimum of 25 BAT to create an Uphold wallet. Please try again after you have verified your wallet with Uphold.</translation>
+<translation id="5949995321533425416">You need a minimum of <ph name="AMOUNT"/> BAT to create an Uphold wallet. Please try again after you have verified your wallet with Uphold.</translation>
 <translation id="7422678632904904341">Amount:</translation>
 <translation id="6969783933307596818">Automatically refresh every 5 seconds</translation>
 <translation id="5025866799968038247">Balance info</translation>
@@ -457,7 +457,7 @@
 <translation id="7335371657242627509">Include in Auto-Contribute</translation>
 <translation id="1864111464094315414">Login</translation>
 <translation id="4556504723624686474">Verifying wallet allows you to manage your funds more efficiently.</translation>
-<translation id="5461792966682693675">You need to have minimum 25 BAT to create an Uphold account. Please try again later. <ph name="NEWLINE"/>If you already have a verified Uphold account, continue to login.</translation>
+<translation id="5461792966682693675">You need to have minimum <ph name="AMOUNT"/> BAT to create an Uphold account. If you already have a verified Uphold account, continue to login.</translation>
 <translation id="3250511771491660127">Make this monthly</translation>
 <translation id="6028954173739504682">Manage Your Wallet</translation>
 <translation id="7886389832052393750">Apr</translation>

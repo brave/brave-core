@@ -239,7 +239,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="1737873393693460829">Attivando [[title]], accetti i <ph name="BEGIN_LINK1"/>Termini di servizio<ph name="END_LINK1"/> e l’<ph name="BEGIN_LINK2"/>Informativa sulla privacy<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Errore nella creazione della BAT card per Brave Browser</translation>
 <translation id="6473583070570450185">Hai bisogno di un portafogli verificato per accedere</translation>
-<translation id="5949995321533425416">Hai bisogno di un minimo di 25 BAT per creare un portafogli Uphold. Riprova dopo aver verificato il tuo portafogli con Uphold.</translation>
+<translation id="5949995321533425416">Hai bisogno di un minimo di <ph name="AMOUNT"/> BAT per creare un portafogli Uphold. Riprova dopo aver verificato il tuo portafogli con Uphold.</translation>
 <translation id="7422678632904904341">Importo:</translation>
 <translation id="6969783933307596818">Aggiorna automaticamente ogni 5 secondi</translation>
 <translation id="5025866799968038247">Informazioni sul saldo</translation>
@@ -458,7 +458,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="7335371657242627509">Includi auto-contributo</translation>
 <translation id="1864111464094315414">Accesso</translation>
 <translation id="4556504723624686474">Verificare il tuo portafogli ti permette di gestire i tuoi fondi al meglio.</translation>
-<translation id="5461792966682693675">Hai bisogno di almeno 25 BAT per creare un account Uphold. Ti preghiamo di riprovare più tardi. <ph name="NEWLINE"/>Se hai già un account Uphold verificato, prosegui con l'accesso.</translation>
+<translation id="5461792966682693675">Hai bisogno di almeno <ph name="AMOUNT"/> BAT per creare un account Uphold. Se hai già un account Uphold verificato, prosegui con l'accesso.</translation>
 <translation id="3250511771491660127">Rendilo mensile</translation>
 <translation id="6028954173739504682">Gestisci il tuo portafoglio</translation>
 <translation id="7886389832052393750">Apr</translation>
