@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# """This script runs `npm audit' and `cargo audit' on relevant paths in the repo."""
+"""This script runs `npm audit' and `cargo audit' on relevant paths in the repo."""
 
 # Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
