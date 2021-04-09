@@ -97,6 +97,7 @@ pipeline {
                                                 github('brave/devops', 'https')
                                             }
                                             // FIXME:
+
                                             branch('wknapik-local-pylint')
                                         }
                                     }
