@@ -2263,6 +2263,12 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically connect to the network.">
     Automatically connect to this network
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_HIDDEN" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox to set a wi-fi network as hidden.">
+    Hidden network
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_HIDDEN_SUBLABEL" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox to set a wi-fi network as hidden.">
+    Using a hidden network isn't recommended for security reasons.
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT_CELLULAR" desc="Settings &gt; Internet &gt; Mobile Data details: Label for the checkbox determining whether to automatically connect to the cellular network.">
     Automatically connect to cellular network
   </message>
