@@ -43,7 +43,7 @@ for ((i=1; i <= $#; ++i)); do
         --only-new) only_new=1;;
         --report) report=1;;
         --help) help;;
-        *) error "Extraneous arguments passed: ${@:$i}";;
+        *) error "Extraneous arguments passed: ${*:$i}";;
     esac
 done
 
