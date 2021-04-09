@@ -1,5 +1,5 @@
 diff --git a/extensions/common/mojom/api_permission_id.mojom b/extensions/common/mojom/api_permission_id.mojom
-index af312a56135fa922cb3f0296fb765fcc3a62e5eb..b614ae6922cb8da9239fbd29e194cd2dd0c3098c 100644
+index ab83d4e6e4dad11cca4281ec61aa6775bad1cbfc..a1b19f736217fc896309de90fdb298cb85820654 100644
 --- a/extensions/common/mojom/api_permission_id.mojom
 +++ b/extensions/common/mojom/api_permission_id.mojom
 @@ -254,6 +254,7 @@ enum APIPermissionID {

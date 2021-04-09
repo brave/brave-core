@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-index 3cf99f06cda44b1d61525ef738e9f1cc05b62f9b..eb7ca72005d2271bfef1c0ace66abb9ddb3bfeda 100644
+index a158f9c1cfc8058bb0ae70456ca778c266671bee..c1d7907fc6be54bf017a4d93a015a156bd19906d 100644
 --- a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 +++ b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-@@ -211,6 +211,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler
+@@ -213,6 +213,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler
          mPopup.setOutsideTouchable(true);
  
          if (!isByPermanentButton) mPopup.setAnimationStyle(R.style.OverflowMenuAnim);

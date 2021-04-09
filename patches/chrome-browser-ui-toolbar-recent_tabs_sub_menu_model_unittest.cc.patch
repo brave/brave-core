@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index 9c8501fdad6d21934952a3a16af96a1a8c33fd62..8f966f150dadc589945b21d73fb2e20c5584829d 100644
+index 1a306e3915bc1af56734e4f70aceff58ad9099e6..f4bed6f86a74f8b229cf040d45bca84d92a3fe7f 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-@@ -675,6 +675,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
+@@ -738,6 +738,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
  
    TestRecentTabsSubMenuModel model(nullptr, browser());
    int num_items = model.GetItemCount();
