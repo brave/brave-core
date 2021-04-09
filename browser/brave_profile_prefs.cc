@@ -126,6 +126,11 @@ void RegisterProfilePrefsForMigration(
 
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
+
+  // Added 04/2021
+  registry->RegisterIntegerPref(
+      kAlternativeSearchEngineProviderInTor,
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

@@ -7,6 +7,7 @@
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -51,6 +52,9 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 #if !defined(OS_ANDROID)
   new_tab_page::MigrateNewTabPagePrefs(profile);
 #endif
+
+  // Added 04/2021
+  profile->GetPrefs()->ClearPref(kAlternativeSearchEngineProviderInTor);
 }
 
 // This method should be periodically pruned of year+ old migrations.
