@@ -11,11 +11,11 @@
 
 #include "../../../../../../../chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc"
 
-void BraveAvatarToolbarButtonDelegate::Init(AvatarToolbarButton* button,
-                                            Profile* profile) {
-  profile_ = profile;
-  AvatarToolbarButtonDelegate::Init(button, profile);
-}
+BraveAvatarToolbarButtonDelegate::BraveAvatarToolbarButtonDelegate(
+    AvatarToolbarButton* button,
+    Profile* profile)
+    : AvatarToolbarButtonDelegate(button, profile),
+      profile_(profile) {}
 
 AvatarToolbarButton::State BraveAvatarToolbarButtonDelegate::GetState() const {
   AvatarToolbarButton::State state = AvatarToolbarButtonDelegate::GetState();
