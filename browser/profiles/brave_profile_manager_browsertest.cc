@@ -10,6 +10,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
+#include "brave/components/tor/tor_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -179,9 +180,14 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   g_browser_process->local_state()->SetString(
       prefs::kProfileLastUsed,
       base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe());
+
+  // The migration happens during the initialization of the browser process, so
+  // we need to explicitly call the method here to test it actually works.
+  tor::MigrateLastUsedProfileFromLocalStatePrefs(
+      g_browser_process->local_state());
+
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   base::FilePath last_used_path =
-      g_browser_process->profile_manager()->GetLastUsedProfileDir(
-          profile_manager->user_data_dir());
+      profile_manager->GetLastUsedProfileDir(profile_manager->user_data_dir());
   EXPECT_EQ(last_used_path.BaseName().AsUTF8Unsafe(), chrome::kInitialProfile);
 }
