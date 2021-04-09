@@ -254,8 +254,10 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
 #if !defined(OS_ANDROID)
   load_time_data->SetString(
       "braveTheme", GetThemeType(ui::NativeTheme::GetInstanceForNativeUi()));
+  load_time_data->SetString("os", "");
 #else
   load_time_data->SetString("braveTheme", "light");
+  load_time_data->SetString("os", "Android");
 #endif
 }
 
