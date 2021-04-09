@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index f64a099146f77563ec1280b2bdd22f23bd0a734e..f5aa739d8a32bbbaad96cb22bffd3a2944b9bc64 100644
+index 6e48edb9a55949e079e0821bc0621909a937e3ba..33890171a965fd7dc3047267833fe211d44ca18d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 @@ -369,7 +369,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
@@ -8,6 +8,6 @@ index f64a099146f77563ec1280b2bdd22f23bd0a734e..f5aa739d8a32bbbaad96cb22bffd3a29
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());
 +        mIntentHandler = new org.chromium.chrome.browser.BraveIntentHandler(this, createIntentHandlerDelegate());
+         mManualFillingComponentSupplier.set(ManualFillingComponentFactory.createComponent());
      }
  
-     @Override

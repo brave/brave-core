@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 1c12667a0c0cc688e1c8be23631d4a63e65e2c7b..62042cb9deff7e587bf944f8257ea489ec4c7abb 100644
+index 86739218b10256a9bb8a19cefa9501844b4216de..fc6fc5d5028c31a218d6607915c192894a4928ed 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -236,6 +236,7 @@ enum class ContentSettingsType : int32_t {
-   // register the PermissionContext.
-   DISPLAY_CAPTURE,
+@@ -243,6 +243,7 @@ enum class ContentSettingsType : int32_t {
+   // access files through drag & drop or clipboard paste operations.
+   FILE_HANDLING,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,
