@@ -131,6 +131,7 @@ const Config = function () {
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = true
+  this.enable_pseudolocales = false
   this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
   this.sign_widevine_key = process.env.SIGN_WIDEVINE_KEY || ''
   this.sign_widevine_passwd = process.env.SIGN_WIDEVINE_PASSPHRASE || ''
@@ -244,6 +245,7 @@ Config.prototype.buildArgs = function () {
     brave_stats_updater_url: this.braveStatsUpdaterUrl,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
+    enable_pseudolocales: this.enable_pseudolocales,
     skip_signing: !this.shouldSign(),
     chrome_pgo_phase: this.chromePgoPhase,
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
