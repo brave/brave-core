@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Je, unazipokea zawadi lini",
+    "message": "Je, unazipokea zawadi lini?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Kwa kutumia Zawadi za Brave, unasaidia kufanya wavuti kuwa mahali bora pa kila mtu. Na hilo ni jambo bora!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Thibitisha pochi yako",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Ili kutoa tokeni unazopata kwa kutazama matangazo, utahitaji kuthibitisha pochi yako.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Ifanye baadaye",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Thibitisha pochi yangu",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Pochi ya bitFlyer ni huduma inayodhibitiwa na bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Kwa kuthibitisha pochi yako na kuiunganisha kwenye akaunti ya bitFlyer, utaweza kuhifadhi na kudhibiti tokeni ulizopata kupitia Brave Rewards kwa urahisi zaidi",
     "description": ""
   },
   "bapDeprecationHeader": {

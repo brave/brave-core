@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">Torを備えたプライベートウィンドウを開く</translation>
 <translation id="1725356094208762656">Torで開く</translation>
 <translation id="7643538479215207633">IPFSを使用して開く</translation>
+<translation id="3094628781200061820">公開してファイルをIPFSから取得</translation>
 <translation id="1672270084584211506">利用できるオニオン</translation>
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
 <translation id="4703780849509456860">トーアのプライベートウィンドウでリンクを開く</translation>
@@ -174,6 +175,7 @@
 <translation id="1327977588028644528">ゲートウェイ</translation>
 <translation id="80225669816651290">ローカルノード</translation>
 <translation id="4927734062756955434">IPFSパブリックゲートウェイアドレス</translation>
+<translation id="5539104255771715383">IPFSのローカルノードおよびゲートウェイにおけるプライバシーへの考慮に関する<ph name="BEGIN_LINK_MPL"/>詳細<ph name="END_LINK_MPL"/>。</translation>
 <translation id="8425213833346101688">変更</translation>
 <translation id="557281710253742286">IPFSゲートウェイを設定します</translation>
 <translation id="8571837315037233299">ゲートウェイアドレス</translation>
@@ -245,7 +247,7 @@
 <translation id="1959966725083452288">アバター「ボンボン・ロイヤル」</translation>
 <translation id="2039034364578911089">アバター「ボンボン・ニンジャ」</translation>
 <translation id="239760341987199724">Brave をデフォルト ブラウザに設定する</translation>
-<translation id="9185422039067880535">Braveブラウザは現在デフォルトのブラウザとして設定されていません。
+<translation id="1391855377994926460">Braveブラウザは現在デフォルトのブラウザとして設定されていません。
 Braveをデフォルトに設定し、ウェブをより高速に閲覧し続けましょう。
 主要なニュースサイトの閲覧が最大6倍高速化されます。</translation>
 <translation id="9218430445555521422">デフォルトとして設定</translation>

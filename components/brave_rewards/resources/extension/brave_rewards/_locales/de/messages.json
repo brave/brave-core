@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Wann Sie Belohnungen erhalten",
+    "message": "Wann erhalten Sie Belohnungen?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Indem Sie Brave Rewards nutzen, helfen Sie, das Web zu einem besseren Ort für alle zu machen. Und das ist toll!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verifizieren Sie Ihre Wallet",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Um die Token abheben zu können, die Sie für das Anzeigen von Werbung verdienen, müssen Sie Ihre Wallet verifizieren.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Später",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Meine Wallet verifizieren",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Die bitFlyer-Wallet ist ein von bitFlyer, Inc. verwalteter Dienst.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Nach der Verifizierung Ihrer Wallet und ihrer Verknüpfung mit einem bitFlyer-Konto können Sie die durch Brave Rewards verdienten Token leichter speichern und verwalten.",
     "description": ""
   },
   "bapDeprecationHeader": {

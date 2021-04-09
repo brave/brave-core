@@ -789,6 +789,30 @@
     "message": "Brave Rewardsを使用することで、ウェブを誰にとってもより良い場所にすることができます。そしてそれは素晴らしいことです！",
     "description": ""
   },
+  "onboardingPanelVerifyHeader": {
+    "message": "ウォレットを確認",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "広告を表示して獲得したトークンを引き出すには、ウォレットを確認する必要があります。",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "後で行う",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "ウォレットを確認",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyerウォレットは、bitFlyer, Inc.が管理するサービスです。",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "ウォレットを確認しbitFlyerアカウントにリンクすると、Brave Rewardsで獲得したトークンを簡単に保管し管理することができます",
+    "description": ""
+  },
   "bapDeprecationHeader": {
     "message": "日本の「Brave Rewards」は新しいシステムに移行を予定しています！",
     "description": "Header text for BAP deprecation warning message"

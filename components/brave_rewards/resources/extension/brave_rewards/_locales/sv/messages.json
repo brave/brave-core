@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "När får du belöningar",
+    "message": "När får du belöningar?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Genom att använda Brave Belöningar hjälper du till att göra webben till en bättre plats för alla. Och det är toppen!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verifiera plånboken",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "För att ta ut de tokens du tjänar för att visa annonser måste du verifiera din plånbok.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Gör det senare",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verifiera min plånbok",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Plånboken bitFlyer är en tjänst som hanteras av bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Genom att verifiera din plånbok och länka den till ett bitFlyer-konto kan du enklare lagra och hantera de tokens du har tjänat ihop genom Bravebelöningar",
     "description": ""
   },
   "bapDeprecationHeader": {

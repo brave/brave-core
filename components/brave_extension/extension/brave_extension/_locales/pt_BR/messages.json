@@ -175,6 +175,10 @@
     "message": "Bloquear elemento via seletor",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "Gerenciar filtros personalizados",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "Visualização Avançada",
     "description": "Message for the advanced view option"

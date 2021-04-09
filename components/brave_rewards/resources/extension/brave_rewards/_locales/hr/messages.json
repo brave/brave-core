@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kada primate nagrade",
+    "message": "Kada primate nagrade?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Uporabom usluge Brave Rewards doprinosite stvaranju boljeg okruženja na mreži za sve. A to je odlično!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Potvrdi svoj novčanik",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Za povlačenje tokena zarađenih za pregledavanje oglasa trebate potvrditi svoj novčanik.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Napravi kasnije",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Potvrdi moj novčanik",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Novčanik bitFlyer usluga je kojom upravlja poduzeće bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Potvrđivanjem svojeg novčanika i njegovim povezivanjem s računom usluge bitFlyer možete jednostavnije pohranjivati i upravljati tokenima zarađenim putem usluge Brave Rewards",
     "description": ""
   },
   "bapDeprecationHeader": {

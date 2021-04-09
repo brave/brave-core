@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kada gaunate atlygį",
+    "message": "Kada gaunate atlygį?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Naudodami „Brave Rewards“ padedate siekti, kad žiniatinklis visiems taptų geresne vieta. Juk tai puiku!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Patvirtinkite savo piniginę",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Norėdami išsiimti žetonus, pelnytus už reklamų peržiūrą, turėsite patvirtinti savo piniginę.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Atlikti vėliau",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Patvirtinti mano piniginę",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "„bitFlyer“ piniginė yra „bitFlyer, Inc.“ valdoma paslauga.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Patvirtindami savo piniginę ir susiedami ją su „bitFlyer“ paskyra, galėsite lengviau laikyti ir tvarkyti žetonus, pelnytus per „Brave Rewards“",
     "description": ""
   },
   "bapDeprecationHeader": {

@@ -17,6 +17,8 @@
 <translation id="9148058034647219655">Salir</translation>
 <translation id="520895744850022668">HTTPS en cualquier sitio</translation>
 <translation id="8710614491157212477">Abre sitios compatibles que utilicen HTTPS en lugar de HTTP cuando sea posible.</translation>
+<translation id="4022987104439075738">Puerta de enlace IPFS</translation>
+<translation id="2688519859165248360">Permite la navegación hacia recursos IPFS mediante una puerta de enlace IPFS</translation>
 <translation id="8387201461264842096">Ad Block</translation>
 <translation id="1934885595886623674">Evita que se carguen los anuncios</translation>
 <translation id="7458422973722236530">Protección de huella digital</translation>
@@ -184,7 +186,7 @@ mes...</translation>
 <translation id="6776430845975754238">Cambiar la configuración solo afectará a los datos que este dispositivo comparte con los demás.</translation>
 <translation id="1061533051865606843">Añadir un nuevo dispositivo</translation>
 <translation id="7539985410310934287">Introducir palabras clave</translation>
-<translation id="2886391679017857869">Mediante el dispositivo sincronizado actual, abre Configuración de Brave y ve a Configuración y Sincronización. Elige "Añadir nuevo dispositivo" y luego "Mostrar palabras de código en su lugar".</translation>
+<translation id="2886391679017857869">Utilizando el dispositivo sincronizado existente, abre la Configuración de Brave y navega a Configuración &gt; Brave Sync. Selecciona "Añadir dispositivo" y, a continuación, "Mostrar palabras clave en su lugar".</translation>
 <translation id="8131740175452115882">Confirmar</translation>
 <translation id="4973653569293835178">Utilizaré mi cámara...</translation>
 <translation id="326454632686131209">Sincronizar dispositivo</translation>

@@ -60,6 +60,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1037341607922068025">Ava Tor'iga privaatne aken</translation>
 <translation id="1725356094208762656">Ava Tor’is</translation>
 <translation id="7643538479215207633">Ava IPFS-i abil</translation>
+<translation id="3094628781200061820">Failide avaldamine ja toomine IPFS-ist</translation>
 <translation id="1672270084584211506">Onion on saadaval</translation>
 <translation id="1434416574322382019">Uus Tor'iga privaatne aken</translation>
 <translation id="4703780849509456860">Ava link Tor'iga privaatses aknas</translation>
@@ -173,6 +174,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1327977588028644528">Lüüs</translation>
 <translation id="80225669816651290">Kohalik sõlm</translation>
 <translation id="4927734062756955434">IPFS-i avaliku lüüsi aadress</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Lisateave<ph name="END_LINK_MPL"/> IPFS-i kohaliku sõlme ja lüüsiga seotud privaatsuskaalutluste kohta.</translation>
 <translation id="8425213833346101688">Muuda</translation>
 <translation id="557281710253742286">Määrake IPFS-i lüüs</translation>
 <translation id="8571837315037233299">Lüüsi aadress</translation>
@@ -244,7 +246,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1959966725083452288">Avatar Bonbon kuninglik</translation>
 <translation id="2039034364578911089">Avatar Bonbon ninja</translation>
 <translation id="239760341987199724">Määra Brave vaikebrauseriks</translation>
-<translation id="9185422039067880535">Brave’i brauser pole praegu teie vaikebrauseriks seatud.
+<translation id="1391855377994926460">Brave’i brauser pole praegu teie vaikebrauseriks seatud.
 Seadke Brave  vaikebrauseriks, et kiiremini surfata –
 suurematel uudistesaitidel kuni 6x kiiremini.</translation>
 <translation id="9218430445555521422">Seadista vaikebrauseriks</translation>
@@ -265,7 +267,7 @@ suurematel uudistesaitidel kuni 6x kiiremini.</translation>
 <translation id="7090566321964540749">See anonüümne teave võimaldab Brave’il ainult hinnata teatud funktsioonide üldist kasutamist.</translation>
 <translation id="1947672064022327074">Kas soovid käivitada sellel lehel krüptorahakotid Ethereumi toe jaoks?</translation>
 <translation id="7583735190612229830">Seadistage krüptorahakotid suhtlema selle rakenduse ja teiste sarnaste rakendustega.</translation>
-<translation id="8731422418734770661">Krüptorahakottide seadistamine</translation>
+<translation id="8731422418734770661">Crypto Walletsi seadistamine</translation>
 <translation id="8199661191594897555">Käivita krüptorahakotid ja laadi uuesti</translation>
 <translation id="8428213095426709021">Seaded</translation>
 <translation id="7691598647605453992">IPFS</translation>

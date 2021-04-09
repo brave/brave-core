@@ -175,13 +175,9 @@
     "message": "Chặn phần tử qua bộ chọn",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "Xóa các quy tắc CSS cho website này",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "Xóa các quy tắc CSS cho mọi website",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "manageCustomFilters": {
+    "message": "Quản lý bộ lọc tùy chỉnh",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "advancedView": {
     "message": "Dạng xem Nâng cao",

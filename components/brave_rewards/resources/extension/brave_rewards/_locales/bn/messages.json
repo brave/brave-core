@@ -789,6 +789,30 @@
     "message": "Brave রিওয়ার্ডস ব্যবহার করে আপনি ওয়েবকে সবার জন্য আরও ভাল জায়গা করতে সহায়তা করছেন। এবং এটি দুর্দান্ত!",
     "description": ""
   },
+  "onboardingPanelVerifyHeader": {
+    "message": "আপনার ওয়ালেট যাচাই করুন",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "বিজ্ঞাপনগুলো দেখার জন্য আপনার উপার্জিত টোকেনগুলো উইথড্র করতে, আপনাকে আপনার ওয়ালেট যাচাই করতে হবে।",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "সেটি পরে করুন",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "আমার ওয়ালেট যাচাই করুন",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer ওয়ালেট হল bitFlyer, Inc. দ্বারা পরিচালিত একটি পরিষেবা।",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "আপনার ওয়ালেট ভেরিফাই করে এবং সেটি একটি bitFlyer অ্যাকাউন্টের সাথে লিঙ্ক করে, Brave Rewards এর মাধ্যমে আপনার উপার্জিত টোকেনগুলো আপনি আরও সহজে সংরক্ষণ ও পরিচালনা করতে পারবেন",
+    "description": ""
+  },
   "bapDeprecationHeader": {
     "message": "জাপানে Brave পুরষ্কারগুলি একটি নতুন সিস্টেমে স্যুইচ করছে!",
     "description": "Header text for BAP deprecation warning message"

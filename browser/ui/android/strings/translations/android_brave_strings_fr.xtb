@@ -17,6 +17,8 @@
 <translation id="9148058034647219655">Quitter</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">Ouvre les sites compatibles en utilisant HTTPS au lieu de HTTP lorsque c'est possible</translation>
+<translation id="4022987104439075738">Passerelle IPFS</translation>
+<translation id="2688519859165248360">Permet d'accéder aux ressources IPFS via une passerelle IPFS</translation>
 <translation id="8387201461264842096">Bloquer les annonces</translation>
 <translation id="1934885595886623674">Empêche le chargement des annonces</translation>
 <translation id="7458422973722236530">Protection contre la création d'empreinte numérique</translation>

@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Quando ricevi premi",
+    "message": "Quando ricevi le ricompense?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Utilizzando Brave Rewards contribuisci a rendere il web un posto migliore per tutti. Fantastico!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verifica il tuo portafoglio",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Per incassare i token guadagnati visualizzando gli annunci pubblicitari, devi verificare il tuo portafoglio.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "In seguito",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verifica il mio portafoglio",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Il portafoglio bitFlyer è un servizio gestito da bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Verificando il portafoglio e collegandolo a un account bitFlyer, è più facile conservare e gestire i token guadagnati con Brave Rewards",
     "description": ""
   },
   "bapDeprecationHeader": {

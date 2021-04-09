@@ -60,6 +60,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1037341607922068025">Abrir Janela Privada com Tor</translation>
 <translation id="1725356094208762656">Abrir no Tor</translation>
 <translation id="7643538479215207633">Abrir usando o IPFS</translation>
+<translation id="3094628781200061820">Publicar e obter arquivos do IPFS</translation>
 <translation id="1672270084584211506">Onion disponível</translation>
 <translation id="1434416574322382019">Nova Janela Privada com Tor</translation>
 <translation id="4703780849509456860">Abrir Link em Janela Privada com Tor</translation>
@@ -173,6 +174,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nó local</translation>
 <translation id="4927734062756955434">Endereço de gateway público de IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> sobre o nó local de IPFS e as considerações relacionadas à privacidade de gateway.</translation>
 <translation id="8425213833346101688">Alterar</translation>
 <translation id="557281710253742286">Definir gateway de IPFS</translation>
 <translation id="8571837315037233299">Endereço de gateway</translation>
@@ -244,7 +246,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Definir o Brave como seu navegador padrão</translation>
-<translation id="9185422039067880535">O navegador Brave não está atualmente definido como seu navegador padrão.
+<translation id="1391855377994926460">O navegador Brave não está atualmente definido como seu navegador padrão.
 Defina o Brave como seu navegador padrão para continuar navegando mais rápido na web –
 até 6x mais rápido nos maiores sites de notícias.</translation>
 <translation id="9218430445555521422">Definir como padrão</translation>
