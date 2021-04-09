@@ -74,7 +74,7 @@ check() {
 
 # Validate options and decide which files to check.
 case "$only_new,$base_branch" in
-    1,)  error "ERROR: The --only-new options is only valid with --compare-with";;
+    1,)  error "ERROR: The --only-new option is only valid with --compare-with";;
     1,*) #read -ra check_files <<<"$(get_changed_files)"
          #check "new pylint findings compared with $base_branch in: ${check_folders[*]}"
          error "The --only-new option is not implemented yet";;
