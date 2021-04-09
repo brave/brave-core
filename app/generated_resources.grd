@@ -386,6 +386,9 @@ are declared in tools/grit/grit_rule.gni.
           Permission requested, press F6 to respond
         </message>
       </if>
+      <message name="IDS_PERMISSIONS_EXPIRED_SCREENREADER_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="Announcement to screen readers that a pending permission request has timed out and is no longer shown in the UI.">
+          Permission request expired
+      </message>
       <message name="IDS_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> wants to
       </message>
@@ -1237,6 +1240,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_RESTORE_WINDOW" desc="The text label of the Restore Window menu item">
           R&amp;eopen closed window
         </message>
+        <message name="IDS_RESTORE_GROUP" desc="The text label of the Restore Group menu item">
+          Reopen closed group
+        </message>
         <message name="IDS_NAME_WINDOW" desc="The text label of the Name Window menu item, used to give a user-specified name to a window.">
           Name &amp;window...
         </message>
@@ -1271,6 +1277,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_RESTORE_WINDOW" desc="In Title Case: The text label of the Restore Window menu item">
           R&amp;eopen Closed Window
+        </message>
+        <message name="IDS_RESTORE_GROUP" desc="In Title Case: The text label of the Restore Group menu item">
+          Reopen Closed Group
         </message>
         <message name="IDS_NAME_WINDOW" desc="In Title Case: The text label of the Name Window menu item, used to give a user-specified name to a window.">
           Name &amp;Window...
@@ -6477,6 +6486,21 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PICTURE_IN_PICTURE_SKIP_AD_CONTROL_TEXT" desc="Text label of the skip ad control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Skip Ad
       </message>
+      <message name="IDS_PICTURE_IN_PICTURE_MUTE_MICROPHONE_TEXT" desc="Text label of the mute microphone control button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Mute microphone
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_UNMUTE_MICROPHONE_TEXT" desc="Text label of the unmute microphone control button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Unmute microphone
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_TURN_ON_CAMERA_TEXT" desc="Text label of the turn on camera control button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Turn on camera
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_TURN_OFF_CAMERA_TEXT" desc="Text label of the turn off camera control button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Turn off camera
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_HANG_UP_TEXT" desc="Text label of the hang up control button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Hang up
+      </message>
       <message name="IDS_PICTURE_IN_PICTURE_CLOSE_CONTROL_TEXT" desc="Text label of the close control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Close
       </message>
@@ -7091,6 +7115,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_EXTENSIONS_BLOCKLISTED_POTENTIALLY_UNWANTED" desc="The text explaining the reason for disabling extension or app. The extension in question might have been installed without user consent.">
           Disabled by Brave. This extension may be unsafe.
+        </message>
+
+        <!-- Enhanced Safe Browsing CRX allowlist warning -->
+        <message name="IDS_EXTENSIONS_SAFE_BROWSING_CRX_ALLOWLIST_WARNING" desc="A warning shown in 'chrome://extensions' when the extension is not included in the Enhanced Safe Browsing CRX allowlist.">
+           This extension is not trusted by Enhanced Safe Browsing.
         </message>
 
         <!-- Reset Profile Settings strings -->
@@ -8066,6 +8095,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_RECENTLY_CLOSED_WINDOW" desc="In Title Case: Title of recently closed windows in Recent Tabs menu. [ICU_Syntax]">
           {NUM_TABS, plural, =1 {1 Tab} other {# Tabs}}
         </message>
+        <message name="IDS_RECENTLY_CLOSED_GROUP" desc="In Title Case: Title of recently closed group that has a name, in Recent Tabs menu. [ICU_Syntax]">
+          {NUM_TABS, plural, =1 {<ph name="GROUP_TITLE">$1<ex>MyGroup</ex></ph> - 1 Tab} other {<ph name="GROUP_TITLE">$1<ex>MyGroup</ex></ph> - # Tabs}}
+        </message>
+        <message name="IDS_RECENTLY_CLOSED_GROUP_UNNAMED" desc="In Title Case: Title of recently closed group that does not have a name, in Recent Tabs menu. [ICU_Syntax]">
+          {NUM_TABS, plural, =1 {Unnamed Group - 1 Tab} other {Unnamed Group - # Tabs}}
+        </message>
         <message name="IDS_RECENT_TABS_NO_DEVICE_TABS" desc="In Title Case: The label in the Recent Tabs menu in the wrench menu when there's no tabs from other devices.">
           No Tabs From Other Devices
         </message>
@@ -8076,6 +8111,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_RECENTLY_CLOSED_WINDOW" desc="Title of recently closed windows in Recent Tabs menu. [ICU_Syntax]">
           {NUM_TABS, plural, =1 {1 tab} other {# tabs}}
+        </message>
+        <message name="IDS_RECENTLY_CLOSED_GROUP" desc="Title of recently closed group that has a name, in Recent Tabs menu. [ICU_Syntax]">
+          {NUM_TABS, plural, =1 {<ph name="GROUP_TITLE">$1<ex>MyGroup</ex></ph> - 1 tab} other {<ph name="GROUP_TITLE">$1<ex>MyGroup</ex></ph> - # tabs}}
+        </message>
+        <message name="IDS_RECENTLY_CLOSED_GROUP_UNNAMED" desc="Title of recently closed group that does not have a name, in Recent Tabs menu. [ICU_Syntax]">
+          {NUM_TABS, plural, =1 {Unnamed group - 1 tab} other {Unnamed group - # tabs}}
         </message>
         <message name="IDS_RECENT_TABS_NO_DEVICE_TABS" desc="The label in the Recent Tabs menu in the wrench menu when there's no tabs from other devices.">
           No tabs from other devices

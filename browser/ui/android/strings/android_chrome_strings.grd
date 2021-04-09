@@ -900,11 +900,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A text for the basic tab explaining browsing history.">
         Clears history and autocompletions in the address bar.
       </message>
+      <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED_NO_LINK" desc="A text for the basic tab explaining browsing history for users with history sync. This version is shown when the link to MyActivity is displayed separately.">
+        Clears history from all signed-in devices.
+      </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN" desc="A text explaining other forms of activity for signed in users.">
         Clears history and autocompletions in the address bar. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED" desc="A text for the basic tab explaining browsing history for users with history sync.">
         Clears history from all signed-in devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
+      </message>
+      <message name="IDS_CLEAR_SEARCH_HISTORY_LINK" desc="Text informing the user that they can clear search history and other data using MyActivity.">
+        To clear <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>search<ph name="END_LINK1">&lt;/link1&gt;</ph> or other forms of history, visit <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>My Brave Activity<ph name="END_LINK2">&lt;/link2&gt;</ph>
       </message>
       <message name="IDS_CLEAR_PASSWORDS_TITLE" desc="Title for Clear Passwords in Clear Browsing Data preference">
         Saved passwords
@@ -2760,6 +2766,36 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_NTP_MANAGE_REACTIONS" desc="Content description to manage feed reactions from the feed header overflow menu.">
         Manage reactions
       </message>
+      <message name="IDS_NTP_MANAGE_AUTOPLAY" desc="Content description to manage feed autoplay from the feed header overflow menu.">
+        Manage autoplay
+      </message>
+      <message name="IDS_NTP_MANAGE_FEED" desc="Menu item to manage feed settings from the feed header overflow menu.">
+        Manage
+      </message>
+      <message name="IDS_FEED_MANAGE_ACTIVITY" desc="Menu item to manage my activity from the feed header overflow menu.">
+        Activity
+      </message>
+      <message name="IDS_FEED_MANAGE_ACTIVITY_DESCRIPTION" desc="Content description to manage my activity from the feed header overflow menu.">
+        Control your Brave accounts data
+      </message>
+      <message name="IDS_FEED_MANAGE_INTERESTS" desc="Menu item to manage settings from the feed header overflow menu.">
+        Interests
+      </message>
+      <message name="IDS_FEED_MANAGE_INTERESTS_DESCRIPTION" desc="Content description to manage settings from the feed header overflow menu.">
+        Manage the topics that you're interested in
+      </message>
+      <message name="IDS_FEED_MANAGE_HIDDEN" desc="Menu item to manage hiding and unhiding topics.">
+        Hidden
+      </message>
+      <message name="IDS_FEED_MANAGE_HIDDEN_DESCRIPTION" desc="Content description to manage hiding and unhiding topics.">
+        Hide and unhide topics
+      </message>
+      <message name="IDS_FEED_MANAGE_FOLLOWING" desc="Menu item to manage followed sites.">
+        Following
+      </message>
+      <message name="IDS_FEED_MANAGE_FOLLOWING_DESCRIPTION" desc="Content description to manage followed sites.">
+        Manage the sites that you're following
+      </message>
       <message name="IDS_NTP_TURN_OFF_FEED" desc="Content description to turn off the feed from the feed header overflow menu.">
         Turn off
       </message>
@@ -3521,6 +3557,26 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_FEED_CARD_MENU_CLOSED" desc="Accessibility string read when the feed card menu bottom sheet is closed.">
         Feed card menu is closed
+      </message>
+
+      <!-- Feed Autoplay Preferences  -->
+      <message name="IDS_FEED_AUTOPLAY_TITLE" desc="Title for feed autoplay preference.">
+        Autoplay
+      </message>
+      <message name="IDS_VIDEO_PREVIEWS_TITLE" desc="Title for setting video previews preference.">
+        Video previews
+      </message>
+      <message name="IDS_VIDEO_PREVIEWS_SUMMARY" desc="Summary for setting video previews preference.">
+        Choose how video previews will automatically play on the Brave homepage.
+      </message>
+      <message name="IDS_VIDEO_PREVIEWS_OPTION_NEVER" desc="Option in video previews preference. Users can click this option to disable video previews.">
+        Never
+      </message>
+      <message name="IDS_VIDEO_PREVIEWS_OPTION_WIFI" desc="Option in video previews preference. Users can click this option to allow video previews on Wi-Fi only.">
+        Only on Wi-Fi
+      </message>
+      <message name="IDS_VIDEO_PREVIEWS_OPTION_WIFI_AND_MOBILE_DATA" desc="Option in video previews preference. Users can click this option to allow video previews on both Wi-Fi and mobile data.">
+        Only Wi-Fi &amp; mobile data
       </message>
 
       <!-- WebFeed -->
