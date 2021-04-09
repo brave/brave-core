@@ -69,6 +69,10 @@ components/weekly_storage/ @iefremov
 # Perf predictor
 components/brave_perf_predictor/ @iefremov
 
+# Permissions
+browser/permissions/ @akhoroshilov
+components/permissions/ @akhoroshilov
+
 # Java patching
 build/android/bytecode/ @samartnik
 patches/*.java.patch @samartnik
