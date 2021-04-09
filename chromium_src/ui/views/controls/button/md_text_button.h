@@ -6,18 +6,22 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 
-// Make all private members into protected instead of using `friend`. This is
-// because we are renaming the class into MdTextButtonBase and making our own
-// MdTextButton, so the friend statement would get renamed too.
-#define BRAVE_MD_TEXT_BUTTON_H_ \
- protected:
-// BRAVE_MD_TEXT_BUTTON_H_
-
 // Rename MdTextButton to MdTextButtonBase
 #define MdTextButton MdTextButtonBase
+
+// Define a Brave-specific method we can get called from UpdateColors() to
+// extend its functionality instead of defining UpdateColors() "virtual" and
+// overriding it in our version of the MdTextButton class because there are some
+// subclasses that define their own UpdateColors() method (OmniboxChipButton)
+// now, which would not work with the virtual + override approach.
+#define UpdateColors \
+  UpdateColors();    \
+  void UpdateColorsForBrave
+
 #include "../../../../../../ui/views/controls/button/md_text_button.h"
+
+#undef UpdateColors
 #undef MdTextButton
-#undef BRAVE_MD_TEXT_BUTTON_H_
 
 namespace views {
 
@@ -41,10 +45,10 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   SkPath GetHighlightPath() const;
 
  protected:
+  // views::Views
   void OnPaintBackground(gfx::Canvas* canvas) override;
 
  private:
-  void UpdateColors() override;
   DISALLOW_COPY_AND_ASSIGN(MdTextButton);
 };
 
