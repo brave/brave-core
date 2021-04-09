@@ -224,7 +224,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kWebOTP.name,
     federated_learning::kFederatedLearningOfCohorts.name,
     federated_learning::kFlocIdComputedEventLogging.name,
-    federated_learning::kFlocIdSortingLshBasedComputation.name,
     kSharingQRCodeGenerator.name,
     net::features::kFirstPartySets.name,
     network_time::kNetworkTimeServiceQuerying.name,
