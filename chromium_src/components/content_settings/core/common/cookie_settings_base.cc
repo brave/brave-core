@@ -81,9 +81,8 @@ GURL GetFirstPartyURL(const GURL& site_for_cookies,
 bool IsFirstPartyAccessAllowed(
     const GURL& first_party_url,
     const CookieSettingsBase* const cookie_settings) {
-  ContentSetting setting;
-  cookie_settings->GetCookieSetting(first_party_url, first_party_url, nullptr,
-                                    &setting);
+  ContentSetting setting = cookie_settings->GetCookieSetting(
+      first_party_url, first_party_url, nullptr);
   return cookie_settings->IsAllowed(setting);
 }
 
