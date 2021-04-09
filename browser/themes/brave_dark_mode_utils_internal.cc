@@ -43,8 +43,8 @@ void SetSystemDarkModeForNonDefaultMode(bool dark_mode) {
   // Have to notify observers explicitly because ui::SetDarkMode() and
   // ui::ReCalcPreferredColorScheme| just update ui::NativeTheme:dark_mode_ and
   // ui::NativeTheme:preferred_color_scheme_ values. Need to propagate them.
-  ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
-  ui::NativeTheme::GetInstanceForWeb()->NotifyObservers();
+  ui::NativeTheme::GetInstanceForNativeUi()->NotifyOnNativeThemeUpdated();
+  ui::NativeTheme::GetInstanceForWeb()->NotifyOnNativeThemeUpdated();
 }
 
 }  // namespace internal
