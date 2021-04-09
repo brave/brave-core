@@ -13,7 +13,8 @@ pylint_options=(-j0 -rn --rcfile=.pylintrc)
 report=0
 report_file=pylint-report.txt
 
-# Print help message and exit.
+# Print a help message and exit with 1 by default.
+# $@ := [ exit_status ]
 help() {
 	cat <<-EOF
 	USAGE: pylint.sh --help
@@ -29,7 +30,7 @@ help() {
 	npm run pylint
 	npm run pylint -- --compare-with master
 	EOF
-	exit 1
+	exit "${1:-1}"
 }
 
 # Print an error message, followed by the help message and exit.
@@ -46,7 +47,7 @@ parse_cmdline() {
                 base_branch="${*:$i:1}";;
             --only-new) only_new=1;;
             --report) report=1;;
-            --help) help;;
+            --help) help 0;;
             *) error "Extraneous arguments passed: ${*:$i}";;
         esac
     done
