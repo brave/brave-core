@@ -28,9 +28,9 @@ TLDEphemeralLifetimeMap& active_tld_storage_areas() {
 
 }  // namespace
 
-TLDEphemeralLifetime::TLDEphemeralLifetime(TLDEphemeralLifetimeKey key,
+TLDEphemeralLifetime::TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key,
                                            StoragePartition* storage_partition)
-    : key_(std::move(key)), storage_partition_(storage_partition) {
+    : key_(key), storage_partition_(storage_partition) {
   DCHECK(active_tld_storage_areas().find(key_) ==
          active_tld_storage_areas().end());
   DCHECK(storage_partition_);
@@ -54,9 +54,10 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
 }
 
 // static
-TLDEphemeralLifetime* TLDEphemeralLifetime::Get(BrowserContext* browser_context,
-                                                std::string storage_domain) {
-  const TLDEphemeralLifetimeKey key(browser_context, std::move(storage_domain));
+TLDEphemeralLifetime* TLDEphemeralLifetime::Get(
+    BrowserContext* browser_context,
+    const std::string& storage_domain) {
+  const TLDEphemeralLifetimeKey key(browser_context, storage_domain);
   return Get(key);
 }
 
@@ -64,14 +65,13 @@ TLDEphemeralLifetime* TLDEphemeralLifetime::Get(BrowserContext* browser_context,
 scoped_refptr<TLDEphemeralLifetime> TLDEphemeralLifetime::GetOrCreate(
     BrowserContext* browser_context,
     StoragePartition* storage_partition,
-    std::string storage_domain) {
-  TLDEphemeralLifetimeKey key(browser_context, std::move(storage_domain));
+    const std::string& storage_domain) {
+  const TLDEphemeralLifetimeKey key(browser_context, storage_domain);
   if (scoped_refptr<TLDEphemeralLifetime> existing = Get(key)) {
     return existing;
   }
 
-  return base::MakeRefCounted<TLDEphemeralLifetime>(std::move(key),
-                                                    storage_partition);
+  return base::MakeRefCounted<TLDEphemeralLifetime>(key, storage_partition);
 }
 
 // static

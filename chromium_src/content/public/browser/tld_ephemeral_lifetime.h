@@ -41,14 +41,14 @@ class CONTENT_EXPORT TLDEphemeralLifetime
  public:
   using OnDestroyCallback = base::OnceCallback<void(const std::string&)>;
 
-  TLDEphemeralLifetime(TLDEphemeralLifetimeKey key,
+  TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key,
                        StoragePartition* storage_partition);
   static TLDEphemeralLifetime* Get(BrowserContext* browser_context,
-                                   std::string storage_domain);
+                                   const std::string& storage_domain);
   static scoped_refptr<TLDEphemeralLifetime> GetOrCreate(
       BrowserContext* browser_context,
       StoragePartition* storage_partition,
-      std::string storage_domain);
+      const std::string& storage_domain);
 
   // Add a callback to a callback list to be called on destruction.
   void RegisterOnDestroyCallback(OnDestroyCallback callback);
