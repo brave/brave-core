@@ -6,6 +6,7 @@
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/sharing/features.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
@@ -82,6 +83,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &federated_learning::kFederatedLearningOfCohorts,
       &federated_learning::kFlocIdComputedEventLogging,
       &federated_learning::kFlocIdSortingLshBasedComputation,
+      &kEnableProfilePickerOnStartupFeature,
       &kSharingQRCodeGenerator,
       &network_time::kNetworkTimeServiceQuerying,
       &safe_browsing::kEnhancedProtection,
