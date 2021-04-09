@@ -7,43 +7,54 @@ package org.chromium.components.permissions;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import org.chromium.ui.base.ViewUtils;
 
 /* Helpers for permission dialog. */
 public class BravePermissionDialogModelUtils {
-    /* Adds a permission lifetime spinner to a dialog view if lifetime options are available. */
-    public static void addLifetimeSpinner(
+    /* Adds a permission lifetime options to a dialog view if lifetime options are available. */
+    public static void addLifetimeOptions(
             Context context, View customView, PermissionDialogDelegate delegate) {
         String[] lifetimeOptions = delegate.getLifetimeOptions();
         if (lifetimeOptions == null) {
             return;
         }
 
-        // Create spinner view.
-        Spinner spinner = new Spinner(context);
-
-        // Set lifetime options as visible items to the spinner.
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-                context, android.R.layout.simple_spinner_item, lifetimeOptions);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dataAdapter);
-
-        // Add select handler to store the selected lifetime option index in the delegate.
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(
-                    AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                delegate.setSelectedLifetimeOption(position);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {}
-        });
-        spinner.setSelection(0);
-
         LinearLayout layout = (LinearLayout) customView;
-        layout.addView(spinner);
+
+        // Create a text label before the lifetime selector.
+        TextView lifetimeOptionsText = new TextView(context);
+        lifetimeOptionsText.setText(delegate.getLifetimeOptionsText());
+        lifetimeOptionsText.setTextAppearance(R.style.TextAppearance_TextMedium_Primary);
+
+        LinearLayout.LayoutParams lifetimeOptionsTextLayoutParams =
+                new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        lifetimeOptionsTextLayoutParams.setMargins(0, 0, 0, ViewUtils.dpToPx(context, 8));
+        lifetimeOptionsText.setLayoutParams(lifetimeOptionsTextLayoutParams);
+        layout.addView(lifetimeOptionsText);
+
+        // Create radio buttons with lifetime options.
+        RadioGroup radioGroup = new RadioGroup(context);
+        int radioButtonIndex = 0;
+        for (String lifetimeOption : lifetimeOptions) {
+            RadioButton radioButon = new RadioButton(context);
+            radioButon.setText(lifetimeOption);
+            radioButon.setId(radioButtonIndex);
+            radioButtonIndex += 1;
+            radioGroup.addView(radioButon);
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                delegate.setSelectedLifetimeOption(checkedId);
+            }
+        });
+        radioGroup.check(0);
+        layout.addView(radioGroup);
     }
 }

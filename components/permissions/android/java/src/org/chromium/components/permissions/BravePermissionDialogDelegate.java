@@ -10,6 +10,9 @@ import org.chromium.base.annotations.JNINamespace;
 
 @JNINamespace("permissions")
 public class BravePermissionDialogDelegate {
+    /** Text to show before lifetime options. */
+    private String mLifetimeOptionsText;
+
     /** Lifetime options to show to the user. Can be null if no options should be shown. */
     private String[] mLifetimeOptions;
 
@@ -18,6 +21,15 @@ public class BravePermissionDialogDelegate {
 
     public BravePermissionDialogDelegate() {
         mSelectedLifetimeOption = -1;
+    }
+
+    @CalledByNative
+    public void setLifetimeOptionsText(String lifetimeOptionsText) {
+        mLifetimeOptionsText = lifetimeOptionsText;
+    }
+
+    public String getLifetimeOptionsText() {
+        return mLifetimeOptionsText;
     }
 
     @CalledByNative

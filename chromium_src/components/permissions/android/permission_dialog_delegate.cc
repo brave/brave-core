@@ -5,6 +5,7 @@
 
 #include "components/permissions/android/permission_dialog_delegate.h"
 
+#include "base/android/jni_string.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
@@ -27,7 +28,7 @@ const int IDS_PERMISSION_DENY_CHROMIUM_IMPL = IDS_PERMISSION_DENY;
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT \
   ApplyLifetimeToPermissionRequests(env, obj);
 
-#include "../../../../../../components/permissions/android/permission_dialog_delegate.cc"
+#include "../../../../../components/permissions/android/permission_dialog_delegate.cc"
 
 #undef BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT
 #undef BRAVE_PERMISSION_DIALOG_DELEGATE_CREATE_JAVA_DELEGATE
@@ -40,13 +41,20 @@ void PermissionDialogDelegate::CreateAndSetLifetimeOptions() {
   if (!base::FeatureList::IsEnabled(features::kPermissionLifetime)) {
     return;
   }
+
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BravePermissionDialogDelegate_setLifetimeOptionsText(
+      env, j_delegate_,
+      base::android::ConvertUTF16ToJavaString(
+          env, l10n_util::GetStringUTF16(
+                   IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL)));
+
   lifetime_options_ = CreatePermissionLifetimeOptions();
   std::vector<base::string16> lifetime_labels;
   for (const auto& lifetime_option : lifetime_options_) {
     lifetime_labels.push_back(lifetime_option.label);
   }
 
-  JNIEnv* env = base::android::AttachCurrentThread();
   Java_BravePermissionDialogDelegate_setLifetimeOptions(
       env, j_delegate_,
       base::android::ToJavaArrayOfStrings(env, lifetime_labels));
