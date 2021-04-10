@@ -67,18 +67,18 @@ get_changed_files() {
 # Execute pylint (if necessary) and print info messages.
 # $@ := description files_to_check
 check() {
-    local description="${1:?}"
+    local description="${1:?} in: ${check_folders[*]}"
     local -a check_files=("${@:2}")
 
     if (("${#check_files[@]}" > 0)); then
-        echo "Checking for $description in: ${check_folders[*]}" >&2
+        echo "Checking for $description" >&2
         case "${report:?}" in
            1) exec pylint "${pylint_options[@]}" -fparseable --exit-zero \
                "${check_files[@]}" >"${report_file:?}";;
            *) exec pylint "${pylint_options[@]}" "${check_files[@]}";;
         esac
     else
-        echo "No $*" >&2
+        echo "No $description" >&2
         [[ "$report" == 0 ]] || echo >"$report_file"
     fi
 }
