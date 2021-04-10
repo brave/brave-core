@@ -59,6 +59,7 @@
 <translation id="1037341607922068025">Відкрити приватне вікно в Tor</translation>
 <translation id="1725356094208762656">Відкрити в Tor</translation>
 <translation id="7643538479215207633">Відкрити за допомогою IPFS</translation>
+<translation id="3094628781200061820">Публікуйте та отримуйте файли від системи IPFS</translation>
 <translation id="1672270084584211506">Доступна Цибулина</translation>
 <translation id="1434416574322382019">Нове Приватне вікно з Tor</translation>
 <translation id="4703780849509456860">Відкрити посилання у Приватному вікні з Tor</translation>
@@ -172,6 +173,7 @@
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локальний вузол</translation>
 <translation id="4927734062756955434">Адреса відкритого шлюзу IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Докладніше про<ph name="END_LINK_MPL"/> міркування щодо приватності локального вузла IPFS і шлюзу.</translation>
 <translation id="8425213833346101688">Змінити</translation>
 <translation id="557281710253742286">Задати шлюз IPFS</translation>
 <translation id="8571837315037233299">Адреса шлюзу</translation>
@@ -243,7 +245,7 @@
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Зробити Brave веб-переглядачем за умовчанням</translation>
-<translation id="9185422039067880535">Браузер Brave наразі не встановлений як ваш браузер за замовчуванням.
+<translation id="1391855377994926460">Браузер Brave наразі не встановлений як ваш браузер за замовчуванням.
 Установіть Brave як браузер за замовчуванням, щоб переглядати сайти швидше -
 до 6 разів швидше на головних новинних сайтах.</translation>
 <translation id="9218430445555521422">Установити за умовчанням</translation>

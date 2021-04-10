@@ -789,6 +789,30 @@
     "message": "Al utilizar Brave Rewards, estás ayudando a hacer de la web un lugar mejor para todas las personas. ¡Y eso es genial!",
     "description": ""
   },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verifica tu billetera",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Para retirar los tokens que ganas por ver anuncios, deberás verificar tu billetera.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Hazlo más tarde",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verificar mi billetera",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "La billetera bitFlyer es un servicio administrado por bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Al verificar tu billetera y vincularla con una cuenta de bitFlyer, podrás almacenar y administrar los tokens que has ganado a través de Brave Rewards más fácilmente.",
+    "description": ""
+  },
   "bapDeprecationHeader": {
     "message": "¡Brave Rewards está cambiando a un nuevo sistema en Japón!",
     "description": "Header text for BAP deprecation warning message"

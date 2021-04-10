@@ -17,6 +17,8 @@
 <translation id="9148058034647219655">Выход</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">По возможности открывает поддерживаемые сайты, используя HTTPS вместо HTTP.</translation>
+<translation id="4022987104439075738">Шлюз IPFS</translation>
+<translation id="2688519859165248360">Разрешает навигацию по ресурсам IPFS с помощью шлюза IPFS</translation>
 <translation id="8387201461264842096">Блокировка рекламы</translation>
 <translation id="1934885595886623674">Предотвращает загрузку рекламы</translation>
 <translation id="7458422973722236530">Защита от определения отпечатков</translation>

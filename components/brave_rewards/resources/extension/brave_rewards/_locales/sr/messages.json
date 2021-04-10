@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kada dobijate nagrade",
+    "message": "Kada dobijate nagrade?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Korišćenjem Brave nagrada pomažete da veb bude bolje mesto za sve. I to je sjajno!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verifikujte svoj novčanik",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Da biste preuzeli tokene i zaradili gledajući oglase, moraćete da verifikujete svoj novčanik.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Uraditi kasnije",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verifikuj moj novčanik",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Uslugu bitFlyer wallet održava kompanija bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Verifikovanjem vašeg novčanika i njegovim povezivanjem sa bitFlyer nalogom, lakše ćete moći da čuvate i održavate tokene koje ste zaradili kroz Brave Rewards",
     "description": ""
   },
   "bapDeprecationHeader": {

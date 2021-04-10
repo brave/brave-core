@@ -789,6 +789,30 @@
     "message": "Izmantojot Brave Rewards, jūs palīdzat tīmekli padarīt par labāku vietu ikvienam. Tas ir lieliski!",
     "description": ""
   },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verificējiet savu maku",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Lai izņemtu žetonus, ko nopelnījāt, skatoties reklāmas, jums būs jāveic sava maka verifikācija.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Izdarīt to vēlāk",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verificēt maku",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer maks ir pakalpojums, ko pārvalda bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Pēc jūsu maka verifikācijas un savienošanas ar bitFlyer kontu jūs varēsit vienkāršāk uzglabāt un pārvaldīt tokenus, izmantojot Brave Rewards",
+    "description": ""
+  },
   "bapDeprecationHeader": {
     "message": "Brave balvas Japānā pāriet uz jaunu sistēmu!",
     "description": "Header text for BAP deprecation warning message"

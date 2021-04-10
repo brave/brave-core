@@ -175,6 +175,10 @@
     "message": "ಸೆಲೆಕ್ಟರ್ ಮೂಲಕ ಅಂಶ ನಿರ್ಬಂಧಿಸಿ",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ನಿರ್ವಹಿಸಿ",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "ಸುಧಾರಿತ ವೀಕ್ಷಣೆ",
     "description": "Message for the advanced view option"

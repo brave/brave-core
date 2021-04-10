@@ -789,6 +789,30 @@
     "message": "Brave पुरस्कारों का उपयोग करके आप वेब को सभी के लिए बेहतर जगह बनाने में मदद कर रहे हैं। और वह बहुत बढ़िया है!",
     "description": ""
   },
+  "onboardingPanelVerifyHeader": {
+    "message": "अपना वॉलेट सत्यापित करें",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "विज्ञापन देखने के लिए आपके द्वारा अर्जित टोकन को वापस लेने के लिए, आपको अपने वॉलेट को सत्यापित करना होगा।",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "बाद में करें",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "मेरा वॉलेट सत्यापित करें",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "The bitFlyer वॉलेट bitFlyer, Inc द्वारा प्रबंधित सेवा है।",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "अपने वॉलेट की पुष्टि करके और इसे एक बिटफ़ायर खाते से लिंक करके, आप Brave  पुरस्कार के माध्यम से अर्जित टोकन को स्टोर और प्रबंधित कर पाएंगे।",
+    "description": ""
+  },
   "bapDeprecationHeader": {
     "message": "जापान में ब्रेव रिवार्ड्स नए सिस्टम में पलायन कर रहे हैं!",
     "description": "Header text for BAP deprecation warning message"

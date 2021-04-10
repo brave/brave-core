@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kailan ka makakatanggap ng mga reward",
+    "message": "Kailan ka makakatanggap ng mga reward?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Sa pamamagitan ng paggamit sa Brave Rewards, nakakatulong kang gawing mas magandang lugar ang web para sa lahat. At mabuti iyon!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "I-verify ang iyong wallet",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Para ma-withdraw ang mga token na nakuha mo para sa panonood ng mga ad, kakailanganin mong i-verify ang iyong wallet.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Gawin ito sa ibang pagkakataon",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "I-verify ang aking wallet",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Ang bitFlyer wallet ay isang serbisyong pinapamahalaan ng bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Sa pamamagitan ng pag-verify sa iyong wallet at pag-link nito sa isang bitFlyer account, madali mong maso-store at mapapamahalaan ang mga token na nakuha mo sa pamamagitan ng Brave Rewards",
     "description": ""
   },
   "bapDeprecationHeader": {

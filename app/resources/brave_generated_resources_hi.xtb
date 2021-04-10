@@ -94,6 +94,7 @@ Binance
 <translation id="1037341607922068025">टोर के साथ निजी विंडो खोलें</translation>
 <translation id="1725356094208762656">Tor में खोलें</translation>
 <translation id="7643538479215207633">IPFS का उपयोग करके खोलें</translation>
+<translation id="3094628781200061820">IPFS से फ़ाइलें प्रकाशित और पुनर्प्राप्त करें</translation>
 <translation id="1672270084584211506">Onion उपलब्ध है</translation>
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
@@ -207,6 +208,7 @@ Binance
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="80225669816651290">लोकल नोड</translation>
 <translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Learn More<ph name="END_LINK_MPL"/> IPFS स्थानीय नोड और गेटवे गोपनीयता विचारों के बारे में।</translation>
 <translation id="8425213833346101688">बदलें</translation>
 <translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
 <translation id="8571837315037233299">गेटवे पता</translation>
@@ -278,7 +280,7 @@ Binance
 <translation id="1959966725083452288">अवतार बॉनबॉन रॉयल</translation>
 <translation id="2039034364578911089">अवतार बॉनबॉन निंजा</translation>
 <translation id="239760341987199724">क्रोमियम को अपने डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
-<translation id="9185422039067880535">ब्रेव ब्राउज़र फिलहाल आपका डिफ़ॉल्ट ब्राउज़र नही है.
+<translation id="1391855377994926460">ब्रेव ब्राउज़र फिलहाल आपका डिफ़ॉल्ट ब्राउज़र नही है.
 वेब पर तेज़ ब्राउज करने के लिए ब्रेव को अपना डिफ़ॉल्ट ब्राउज़र सेट करें-
 बड़ी न्यूज़ साइट्स पर औरों के से लगभग 6 गुना ज़्यादा तेज़</translation>
 <translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>

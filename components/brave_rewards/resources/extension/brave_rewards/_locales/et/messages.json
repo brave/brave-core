@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Millal preemiaid saab?",
+    "message": "Millal saate preemiaid?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Brave Rewardsi kasutamisega aitate veebi kõigi jaoks paremaks muuta. Ja see on vinge!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Kinnitage oma rahakott",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Et võtta välja reklaamide vaatamise eest teenitud tokeneid, peate kinnitama oma rahakoti.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Tee seda hiljem",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Kinnita minu rahakott",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyeri rahakott on teenus, mida haldab bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Kui kinnitate oma rahakoti ja seote selle bitFlyeri kontoga, saate Brave Rewardsi kaudu teenitud tokeneid lihtsamalt säilitada ja hallata.",
     "description": ""
   },
   "bapDeprecationHeader": {

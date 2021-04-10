@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Când primiți recompensele",
+    "message": "Când primiți recompensele?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Folosind Recompensele Brave, dai o mână de ajutor la efortul de a face internetul un loc mai bun pentru toată lumea. Și asta este minunat!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Confirmați portofelul dvs.",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Pentru a putea retrage token-urile câștigate prin afișarea de anunțuri, va trebui să confirmați portofelul dvs.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Mai târziu",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Confirmă portofelul meu",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Portofelul bitFlyer este un serviciu administrat de bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Prin confirmarea portofelului dvs. și conectarea acestuia la un cont bitFlyer, veți putea stoca și gestiona mai ușor token-urile câștigate prin Brave Rewards",
     "description": ""
   },
   "bapDeprecationHeader": {

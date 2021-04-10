@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Коли ви отримуєте винагороди",
+    "message": "Коли ви отримуєте винагороди?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Користуючись нагородами Brave, ви допомагаєте зробити мережу кращим місцем для кожного. І це чудово!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Верифікуйте свій гаманець",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Щоб зняти токени, зароблені за перегляд реклами, вам потрібно верифікувати гаманець.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Зробити це пізніше",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Верифікувати мій гаманець",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Гаманець bitFlyer — це сервіс, роботою якого керує компанія bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Виконавши верифікацію гаманця та прив’язавши його до облікового запису bitFlyer, ви зможете зберігати зароблені за допомогою Винагород Brave токени і керувати ними в більш простий спосіб.",
     "description": ""
   },
   "bapDeprecationHeader": {

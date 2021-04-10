@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">Tor 비공개 창 열기</translation>
 <translation id="1725356094208762656">Tor에서 열기</translation>
 <translation id="7643538479215207633">IPFS를 사용해서 열기</translation>
+<translation id="3094628781200061820">IPFS에서 게시 및 파일 받기</translation>
 <translation id="1672270084584211506">양파 사용 가능</translation>
 <translation id="1434416574322382019">Tor와 함께하는 새로운 비공개 윈도우</translation>
 <translation id="4703780849509456860">Tor와 함께 비공개 윈도우에서 링크 열기</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">게이트웨이</translation>
 <translation id="80225669816651290">로컬 노드</translation>
 <translation id="4927734062756955434">IPFS 퍼블릭 게이트웨이 주소</translation>
+<translation id="5539104255771715383">IPFS 로컬 노드 및 게이트웨이 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK_MPL"/>자세히 알아보기<ph name="END_LINK_MPL"/></translation>
 <translation id="8425213833346101688">변경</translation>
 <translation id="557281710253742286">IPFS 게이트웨이 설정</translation>
 <translation id="8571837315037233299">게이트웨이 주소</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">아바타 봉봉 로열</translation>
 <translation id="2039034364578911089">아바타 봉봉 닌자</translation>
 <translation id="239760341987199724">Brave을 기본 브라우저로 설정</translation>
-<translation id="9185422039067880535">Brave 브라우저가 현재 기본 브라우저로 설정되어 있지 않습니다.
+<translation id="1391855377994926460">Brave 브라우저가 현재 기본 브라우저로 설정되어 있지 않습니다.
 주요 뉴스 사이트에서 최대 6배 빠른 웹 검색을 위해 Brave를
 기본 브라우저로 설정하세요.</translation>
 <translation id="9218430445555521422">기본 브라우저로 설정</translation>

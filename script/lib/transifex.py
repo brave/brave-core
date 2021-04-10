@@ -28,7 +28,7 @@ transifex_handled_slugs = [
 ]
 # List of HTML tags that we allowed to be present inside the translated text.
 allowed_html_tags = [
-  'a', 'abbr', 'b', 'b1', 'b2', 'br', 'code', 'h4', 'learnmore', 'li', 'ol', 'p', 'span', 'strong', 'ul'
+  'a', 'abbr', 'b', 'b1', 'b2', 'br', 'code', 'h4', 'learnmore', 'li', 'li1', 'li2', 'ol', 'p', 'span', 'strong', 'ul'
 ]
 
 
@@ -142,7 +142,7 @@ def get_transifex_translation_file_content(source_file_path, filename,
         json.loads(content)
     elif ext == '.grd':
         # For .grd and .json files, for some reason Transifex puts a \\" and \'
-        content = content.replace('\\"', '"').replace("\\'", "'")
+        content = content.replace('\\\\"', '"').replace('\\"', '"').replace("\\'", "'")
         # Make sure it's parseable
         lxml.etree.fromstring(content)
     return content
