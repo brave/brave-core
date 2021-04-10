@@ -789,6 +789,30 @@
     "message": "การใช้งาน Brave Reward จะช่วยส่งเสริมให้เว็บนี้เป็นพื้นที่ที่ดีขึ้นสำหรับทุกคน ซึ่งนับว่าเยี่ยมยอดไปเลย!",
     "description": ""
   },
+  "onboardingPanelVerifyHeader": {
+    "message": "ยืนยันกระเป๋าเงินของคุณ",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "ในการถอนโทเค็นที่คุณได้รับจากการดูโฆษณา คุณจะต้องยืนยันกระเป๋าเงินของคุณ",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "ไว้ทีหลัง",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "ยืนยันกระเป๋าเงินของฉัน",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "กระเป๋าเงิน bitFlyer เป็นบริการที่จัดการโดย bitFlyer, Inc",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "เมื่อยืนยันกระเป๋าเงินของคุณและเชื่อมโยงกับบัญชี bitFlyer คุณจะสามารถจัดเก็บและจัดการโทเค็นที่คุณได้รับผ่าน Brave Rewards ได้ง่ายขึ้น",
+    "description": ""
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards ในญี่ปุ่นกำลังเปลี่ยนไปใช้ระบบใหม่!",
     "description": "Header text for BAP deprecation warning message"

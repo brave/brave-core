@@ -60,6 +60,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1037341607922068025">Otevřít Soukromé okno s Torem</translation>
 <translation id="1725356094208762656">Otevřít v Toru</translation>
 <translation id="7643538479215207633">Otevřít pomocí protokolu IPFS</translation>
+<translation id="3094628781200061820">Zveřejnit a načíst soubory z IPFS</translation>
 <translation id="1672270084584211506">Cibule dostupná</translation>
 <translation id="1434416574322382019">Nové soukromé okno v prohlížeči Tor</translation>
 <translation id="4703780849509456860">Otevřít odkaz v soukromém okně prohlížeče Tor</translation>
@@ -173,6 +174,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1327977588028644528">Brána</translation>
 <translation id="80225669816651290">Lokální uzel</translation>
 <translation id="4927734062756955434">Adresa veřejné brány IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Zjistěte více<ph name="END_LINK_MPL"/> o ochraně osobních údajů místního uzlu IPFS a brány.</translation>
 <translation id="8425213833346101688">Změnit</translation>
 <translation id="557281710253742286">Nastavit bránu IFPS</translation>
 <translation id="8571837315037233299">Adresa brány</translation>
@@ -244,7 +246,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1959966725083452288">Profilový obrázek Bonbon</translation>
 <translation id="2039034364578911089">Profilový obrázek Bonbon Ninja</translation>
 <translation id="239760341987199724">Nastavit Brave jako výchozí prohlížeč</translation>
-<translation id="9185422039067880535">Prohlížeč Brave aktuálně není nastavený jako váš výchozí prohlížeč.
+<translation id="1391855377994926460">Prohlížeč Brave aktuálně není nastavený jako váš výchozí prohlížeč.
 Nastavte si Brave jako výchozí, ať můžete i dál surfovat rychle –
 až 6krát rychleji na velkých zpravodajských serverech.</translation>
 <translation id="9218430445555521422">Nastavit jako výchozí</translation>

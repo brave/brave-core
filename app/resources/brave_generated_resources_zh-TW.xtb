@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">用 Tor 開啟私人視窗</translation>
 <translation id="1725356094208762656">在 Tor 中開啟</translation>
 <translation id="7643538479215207633">使用 IPFS 開啟</translation>
+<translation id="3094628781200061820">在 IPFS 發佈並擷取檔案</translation>
 <translation id="1672270084584211506">Onion 可用</translation>
 <translation id="1434416574322382019">以 Tor 開啟新私有窗口</translation>
 <translation id="4703780849509456860">使用 Tor 在隱私視窗中打開連結</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">閘道</translation>
 <translation id="80225669816651290">本地節點</translation>
 <translation id="4927734062756955434">IPFS 公用閘道器位址</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>進一步瞭解<ph name="END_LINK_MPL"/> IPFS 本機節點與閘道的隱私注意事項。</translation>
 <translation id="8425213833346101688">變更</translation>
 <translation id="557281710253742286">設定 IPFS 閘道器</translation>
 <translation id="8571837315037233299">閘道器位址</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">高貴糖果化身</translation>
 <translation id="2039034364578911089">糖果忍者化身</translation>
 <translation id="239760341987199724">將 Brave 設為預設瀏覽器</translation>
-<translation id="9185422039067880535">Brave 瀏覽器目前未設定為您的預設瀏覽器。
+<translation id="1391855377994926460">Brave 瀏覽器目前未設定為您的預設瀏覽器。
 將 Brave 設定為您的預設瀏覽器，讓瀏覽主要
 的新聞網站的速度提升到六倍快。</translation>
 <translation id="9218430445555521422">設定為預設瀏覽器</translation>

@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">افتح نافذة خاصة من خلال متصفح تور</translation>
 <translation id="1725356094208762656">افتح في Tor</translation>
 <translation id="7643538479215207633">افتح باستخدام IPFS</translation>
+<translation id="3094628781200061820">النشر واسترداد الملفات من IPFS</translation>
 <translation id="1672270084584211506">موقع أنيون المتاح</translation>
 <translation id="1434416574322382019">نافذة جديدة وخاصة بـTor</translation>
 <translation id="4703780849509456860">افتح الرابط في نافذة خاصة بـ Tor</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">المدخل</translation>
 <translation id="80225669816651290">عقدة محلية</translation>
 <translation id="4927734062756955434">عنوان بوابة IPFS العام</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Learn More<ph name="END_LINK_MPL"/> حول عقدة IPFS المحلية واعتبارات خصوصية البوابة.</translation>
 <translation id="8425213833346101688">تغيير</translation>
 <translation id="557281710253742286">تعيين بوابة IPFS</translation>
 <translation id="8571837315037233299">عنوان البوابة</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">الصورة الرمزية بونبون ملكي</translation>
 <translation id="2039034364578911089">الصورة الرمزية بونبون نينجا</translation>
 <translation id="239760341987199724">‏تعيين Brave المتصفح التلقائي</translation>
-<translation id="9185422039067880535">لم يتم تعيين متصفح Brave حالياً كمتصفحك الافتراضي.
+<translation id="1391855377994926460">لم يتم تعيين متصفح Brave حالياً كمتصفحك الافتراضي.
 قم بتعيين Brave كإعداد افتراضي للاستمرار في تصفح الويب بشكل أسرع -
 حتى 6 مرات أسرع على المواقع الإخبارية الرئيسية.</translation>
 <translation id="9218430445555521422">تعيين كافتراضي</translation>

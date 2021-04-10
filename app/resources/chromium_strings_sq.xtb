@@ -25,8 +25,6 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="1775322105159056176">Brave nuk mund të përcaktojë ose caktojë shfletuesin e parazgjedhur</translation>
 <translation id="9220324636239049437">Kjo do të fshijë 1 artikull nga kjo pajisje. Për t'i marrë më vonë të dhënat, identifikohu te Brave si <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Për të kontrolluar nëse fjalëkalimet e tjera janë të sigurta nga nxjerrjet e paautorizuara të të dhënave dhe probleme të tjera të sigurisë, <ph name="BEGIN_LINK"/>identifikohu në Brave<ph name="END_LINK"/>.</translation>
-<translation id="796822898986482154">Mund ta menaxhosh këtë dhe "Llogaritë e tjera të Brave" që ke shtuar për <ph name="USER_NAME"/> nga një vend i vetëm te <ph name="LINK_BEGIN"/>Cilësimet<ph name="LINK_END"/>.
-          Lejet që u ke dhënë sajteve të uebit në shfletuesin Brave dhe aplikacioneve nga Google Play mund të zbatohen për të gjitha llogaritë.</translation>
 <translation id="8745514854244955877">Brave - identifikimi në rrjet - <ph name="PAGE_TITLE"/></translation>
 <translation id="162629503687514352">Sistemi operativ Brave nuk mund t'i sinkronizonte fjalëkalimet e tua.</translation>
 <translation id="5659384504794665581">Nëse e ndan një kompjuter, miqtë dhe familja mund të shfletojnë veçmas dhe ta konfigurojnë Brave pikërisht ashtu si dëshirojnë.</translation>
@@ -36,7 +34,6 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="2576129394594491151">Shtesa "<ph name="EXTENSION_NAME"/>" ka ndryshuar se cila faqe shfaqet kur nis Brave.</translation>
 <translation id="6078442581074612226">Në Brave</translation>
 <translation id="2485422356828889247">Çinstalo</translation>
-<translation id="2555639463117073782">Rinis Brave për të aktivizuar <ph name="PLUGIN_NAME"/></translation>
 <translation id="9026991721384951619">Chrome OS nuk mundi të sinkronizonte të dhënat e tua, sepse detajet e llogarisë tënde të identifikimit janë të vjetruara.</translation>
 <translation id="7798069806040634998">Brave ka nevojë për qasje te hapësira ruajtëse për të shkarkuar skedarë</translation>
 <translation id="8447483940522230788">Ndihmuesi i Brave</translation>
@@ -52,6 +49,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="2770231113462710648">Ndrysho shfletuesin me parazgjedhje në:</translation>
 <translation id="2799223571221894425">Nis sërish</translation>
 <translation id="6811506454451584223">Të ndahet profili i Brave?</translation>
+<translation id="3783547330001921298">Kjo do të krijojë një profil të ri të Brave për <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Hiqe nga Brave...</translation>
 <translation id="2885378588091291677">Menaxheri i detyrave</translation>
 <translation id="2176825726964012531">Rreth &amp;Brave</translation>
@@ -103,6 +101,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="9183662282810237335">Dëshiron të dalësh nga Brave gjithsesi?</translation>
 <translation id="4065288863231444640">Lejo që Brave të ekzekutohet në sfond</translation>
 <translation id="8148611988012584308">Personalizo dhe kontrollo Brave</translation>
+<translation id="1201005444605297066">Kjo faqe të lejon të menaxhosh "Llogaritë e tua të Brave" ku je identifikuar. Këto llogari do të ofrohen në shfletuesin Brave dhe në aplikacionet e "Dyqanit të Play", si dhe në shërbimet si Gmail, "Disku" dhe YouTube. <ph name="LINK_BEGIN"/>Mëso më shumë<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Mirë se erdhe në Brave. U hap një dritare e re e shfletuesit</translation>
 <translation id="2633397153656205379">Brave nuk u përditësua. Ndodhi një gabim. <ph name="BEGIN_LINK"/>Rregullo problemet e përditësimit të Brave dhe përditësimet e dështuara.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Të vazhdohet te një profil i ri i Brave?</translation>
@@ -115,12 +114,12 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="8668413672647811944">Sapo është zbatuar një përditësim special i sigurisë për Brave. Rinise tani dhe do të restaurojmë skedat e tua.</translation>
 <translation id="4823369970559443694">Brave nuk mund t'i kontrollojë fjalëkalimet e tua. Provo përsëri pas 24 orësh ose <ph name="BEGIN_LINK"/>kontrollo fjalëkalimet në "Llogarinë tënde të Brave"<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Kjo përdor të njëjtin kontrollues drejtshkrimor që përdoret në kërkimin e Brave. Teksti që shkruan në shfletues dërgohet te Brave. Mund ta ndryshosh këtë sjellje gjithmonë te cilësimet.</translation>
-<translation id="2899369907387169108">Përdor Brave pa pasur llogari</translation>
 <translation id="1912973375560256099">Rregulli hyrës për Brave për të lejuar trafikun mDNS.</translation>
 <translation id="8797356639448065696">Brave është në modalitetin e sfondit.</translation>
 <translation id="7406627712452599344">Vizitorët mund të përdorin Brave pa lënë asgjë prapa.</translation>
 <translation id="5952898964075639679">Shtoje veten te Brave</translation>
 <translation id="9078804073692109646">Nuk ka asnjë fjalëkalim të ruajtur. Brave mund t'i kontrollojë fjalëkalimet e tua kur ti i ruan ato.</translation>
+<translation id="729580998737807583"><ph name="EXISTING_USER"/> është i identifikuar tashmë në këtë profil të Brave. Kjo do të krijojë një profil të ri të Brave për <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="8586264863973514035">Për të zbatuar ndryshimet, rinis Brave</translation>
 <translation id="7708394612738038097">Po identifikohesh me një llogari të menaxhuar dhe po i jep administratorit të saj kontroll mbi profilin tënd të Brave. Të dhënat e tua të Brave, siç janë aplikacionet, faqeshënuesit, fjalëkalimet dhe cilësime të tjera do të lidhen në mënyrë të përhershme me <ph name="USER_NAME"/>. Ti do të jesh në gjendje t'i fshish këto të dhëna përmes Panelit të llogarive të Brave, por nuk do të jesh në gjendje t'i shoqërosh këto të dhëna me një llogari tjetër. <ph name="LEARN_MORE"/></translation>
 <translation id="1786715389543715322">Po përditëson Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
@@ -134,7 +133,6 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="1744365871163268756">Prit ndërsa Brave instalon përditësimet më të fundit të sistemit.</translation>
 <translation id="3861679447659630159">Brave po përpiqet t'i modifikojë fjalëkalimet. Shkruaj fjalëkalimin tënd të Windows për ta lejuar këtë.</translation>
 <translation id="1026406809507858026">{0,plural, =0{Ofrohet një përditësim i Brave}=1{Ofrohet një përditësim i Brave}other{Një përditësim i Brave ofrohet prej # ditësh}}</translation>
-<translation id="4518479204315969707">Emri dhe fotografia e Brave</translation>
 <translation id="95624393026532554">Brave kërkon Windows 7 ose një version më të lartë.</translation>
 <translation id="5646769069113654257">Rinise Brave tani</translation>
 <translation id="2335583906071111058">Shfaqe Brave në këtë gjuhë</translation>
@@ -162,6 +160,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="428541510811554120">Brave nuk mund të kontrollojë për përditësime. Provo të kontrollosh lidhjen e internetit.</translation>
 <translation id="7445061995866044926">Dëshiron të dalësh nga Brave?</translation>
 <translation id="6806912298071949921">Personalizo profilin tënd të Brave</translation>
+<translation id="3792238845239580301">Emërto profilin tënd të Brave</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> mund të jetë i rrezikshëm, prandaj Brave e ka bllokuar.</translation>
 <translation id="3205074487970075628">Brave po përdor kamerën tënde.</translation>
 <translation id="1819119299840995223">Një veprim tjetër në Brave është në vazhdim. Provo përsëri më vonë.</translation>
@@ -190,6 +189,7 @@ Disa funksione mund të mos ofrohen. Specifiko një direktori tjetër profili os
 <translation id="5253815230176279256">Brave Pay (kopjuar në Brave)</translation>
 <translation id="2301993384336631869">Brave është përditësuar, por nuk e ke përdorur për të paktën 30 ditë.</translation>
 <translation id="8522287263361940593">Rosetta e mundëson Brave që të luajë median e mbrojtur në këtë faqe.</translation>
+<translation id="8828443087767259398">Brave i nevojitet leje te Bluetooth-i për të vazhduar me çiftimin. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Fjalëkalimet e dobëta mund të gjenden me lehtësi. Lejoje Brave <ph name="BEGIN_LINK"/>të krijojë dhe mbajë mend fjalëkalime të forta për ty<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Brave ka nevojë për leje për t'u qasur te mikrofoni yt për këtë sajt</translation>
 <translation id="1785833016412082453">Brave nuk mund t'i kontrollojë shtesat e tua. Provo përsëri më vonë.</translation>
@@ -227,6 +227,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="7747138024166251722">Instaluesi nuk mund të krijonte një direktori të përkohshme. Kontrollo për hapësirë të lirë në disk dhe për lejen për të instaluar softuerin.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="38898988211673781">Pastro kukit dhe të dhënat e sajteve kur të mbyllësh Brave</translation>
+<translation id="1652855885539187849">Një profil i Brave me këtë llogari ekziston tashmë në këtë pajisje</translation>
 <translation id="8462524920674814187">Për të marrë përditësimet e ardhshme të Brave, do të të duhet versioni OS X 10.11 ose një version i mëvonshëm. Ky kompjuter përdor versionin OS X 10.10.</translation>
 <translation id="7963515534397191222">Brave nuk mund të përditësohej me versionin më të fundit, kështu që të mungojnë rregullimet e sigurisë dhe funksionet e reja.</translation>
 <translation id="7573289029918943991">Për të parë nëse pajisja jote është e përditësuar, shko te <ph name="LINK_BEGIN"/>Cilësimet e sistemit operativ Brave<ph name="LINK_END"/></translation>
@@ -266,13 +267,13 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="1156157157416773301">Të zhvendoset llogaria te një profil i ri i Brave?</translation>
 <translation id="5173820533850252773">Brave nuk është i përditësuar</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave do të hapet përsëri për një orë}other{Brave do të hapet përsëri për # orë}}</translation>
-<translation id="3867851085410947377">Nëse ke disa "Llogari të Brave", mund t'i shtosh ato te <ph name="DEVICE_TYPE"/>. Llogaritë e tua do të ofrohen në shfletuesin Brave dhe në "Dyqanin e Play", si dhe në shërbimet si Gmail, "Disku" dhe YouTube. <ph name="LINK_BEGIN"/>Mëso më shumë<ph name="LINK_END"/></translation>
 <translation id="7863882214613921971">Hape lidhjen në një &amp;skedë të re të Brave</translation>
 <translation id="911206726377975832">Të fshihen po ashtu të dhënat e shfletimit?</translation>
 <translation id="2444257125841652328">Administratori i sistemit ka konfiguruar Brave që të hapë një shfletues alternativ për të pasur qasje te <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="6568793831116033768">Sistemi Chrome OS</translation>
 <translation id="7977787072794666032">Brave mund të mos funksionojë si duhet sepse nuk mbështetet më në Windows XP ose Windows Vista</translation>
+<translation id="4484434718272972655">Kush po e përdor Brave?</translation>
 <translation id="8992261409816268381">Autorët e Brave</translation>
 <translation id="6134859571175647580">Paralajmërim: Brave nuk mund të parandalojë regjistrimin e historikut të shfletimit nga shtesat. Për të çaktivizuar këtë shtesë në modalitetin "e fshehtë", anulo përzgjedhjen e këtij opsioni.</translation>
 <translation id="1448049584457347995">Për ta bërë më të sigurt Brave, çaktivizuam disa shtesa që nuk janë të listuara në <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dhe që mund të jenë shtuar pa dijeninë tënde.</translation>

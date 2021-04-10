@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">টর দিয়ে প্রাইভেট উইন্ডো খুলুন</translation>
 <translation id="1725356094208762656">Tor এ খুলুন</translation>
 <translation id="7643538479215207633">IPFS ব্যবহার করে খুলুন</translation>
+<translation id="3094628781200061820">IPFS থেকে ফাইলগুলো প্রকাশ এবং পুনরুদ্ধার করুন</translation>
 <translation id="1672270084584211506">অনিয়ন উপলব্ধ</translation>
 <translation id="1434416574322382019">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="4703780849509456860">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">গেটওয়ে</translation>
 <translation id="80225669816651290">স্থানীয় নোড</translation>
 <translation id="4927734062756955434">IPFS পাবলিক গেটওয়ে ঠিকানা</translation>
+<translation id="5539104255771715383">IPFS স্থানীয় নোড এবং গেটওয়ে গোপনীয়তার গুরুত্বগুলো সম্পর্কে <ph name="BEGIN_LINK_MPL"/>আরও জানুন<ph name="END_LINK_MPL"/>।</translation>
 <translation id="8425213833346101688">পরিবর্তন</translation>
 <translation id="557281710253742286">IPFS গেটওয়ে সেট করুন</translation>
 <translation id="8571837315037233299">গেটওয়ের ঠিকানা</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">অবতার বনবন রয়্যাল</translation>
 <translation id="2039034364578911089">অবতার বনবন নিনজা</translation>
 <translation id="239760341987199724">Brave কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
-<translation id="9185422039067880535">Brave ব্রাউজারটি বর্তমানে আপনার প্রধান ব্রাউজার হিসাবে নির্ধারণ করা নেই।
+<translation id="1391855377994926460">Brave ব্রাউজারটি বর্তমানে আপনার প্রধান ব্রাউজার হিসাবে নির্ধারণ করা নেই।
 ওয়েব ব্রাউজিং দ্রুত রাখতে Brave কে আপনার প্রধান ব্রাউজার হিসাবে সেট করুন -
 বড় নিউজ সাইটগুলিতে 6x পর্যন্ত দ্রুত।</translation>
 <translation id="9218430445555521422">ডিফল্ট হিসেবে সেট করুন</translation>

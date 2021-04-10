@@ -60,6 +60,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1037341607922068025">Abrir Janela Privada com Tor</translation>
 <translation id="1725356094208762656">Abrir em Tor</translation>
 <translation id="7643538479215207633">Abrir pelo uso de IPFS</translation>
+<translation id="3094628781200061820">Publicar e recuperar ficheiros do IPFS</translation>
 <translation id="1672270084584211506">Onion Disponível</translation>
 <translation id="1434416574322382019">Nova Janela Privada com o Tor</translation>
 <translation id="4703780849509456860">Abrir Ligação em Janela Privada com o Tor</translation>
@@ -173,6 +174,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nó local</translation>
 <translation id="4927734062756955434">Endereço gateway público IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> acerca do nó local e da privacidade da porta do IPFS.</translation>
 <translation id="8425213833346101688">Alterar</translation>
 <translation id="557281710253742286">Definir gateway IPFS</translation>
 <translation id="8571837315037233299">Endereço gateway</translation>
@@ -244,7 +246,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1959966725083452288">Avatar Real Bombom</translation>
 <translation id="2039034364578911089">Avatar Ninja Bombom</translation>
 <translation id="239760341987199724">Definir o Brave como o seu navegador predefinido</translation>
-<translation id="9185422039067880535">De momento, o navegador Brave não está definido como o seu navegador padrão.
+<translation id="1391855377994926460">De momento, o navegador Brave não está definido como o seu navegador padrão.
 Defina Brave como o seu navegador padrão para continuar a navegar o mais rapidamente possível na web. 
 até 6 vezes mais rápido nos principais sites de notícias.</translation>
 <translation id="9218430445555521422">Definir como predefinição</translation>

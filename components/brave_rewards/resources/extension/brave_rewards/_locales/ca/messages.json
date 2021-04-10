@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Quan rebeu recompenses",
+    "message": "Quan rebràs recompenses?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Fent servir Brave Rewards esteu ajudant a fer de la xarxa un lloc millor per a tots. I això és fantàstic!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verifica la teva cartera",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Per tal de retirar els tokens que hagis guanyat visualitzant anuncis, hauràs de verificar la teva cartera.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Fes-ho més tard",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verifica la meva cartera",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "La cartera bitFlyer és un servei que gestiona bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "En verificar la teva cartera i vincular-la a un compte de bitFlyer, podràs emmagatzemar i gestionar els tokens que hagis guanyat amb Brave Rewards més fàcilment",
     "description": ""
   },
   "bapDeprecationHeader": {

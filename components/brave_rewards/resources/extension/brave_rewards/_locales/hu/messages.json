@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Mikor kapja meg a jutalmakat",
+    "message": "Mikor kapja meg a jutalmakat?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "A Brave Rewards használatával segítesz mindenki számára jobbá tenni az internetet. Ez fantasztikus!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Pénztárca megerősítése",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "A hirdetések megtekintése után járó tokenek kivonásához erősítse meg a pénztárcáját.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Később",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "A pénztárcám megerősítése",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "A bitFlyer wallet szolgáltatást a bitFlyer, Inc. kezeli.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "A pénztárcája megerősítésével, valamint annak a bitFlyer-fiókjához kapcsolásával könnyebben tudja tárolni és kezelni a Brave Rewardson keresztül megszerzett tokenjeit.",
     "description": ""
   },
   "bapDeprecationHeader": {

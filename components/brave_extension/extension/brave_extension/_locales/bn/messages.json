@@ -175,6 +175,10 @@
     "message": "নির্বাচকের মাধ্যমে উপকরণ ব্লক করুন",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "কাস্টম ফিল্টারগুলো পরিচালনা করুন",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "উন্নত ভিউ",
     "description": "Message for the advanced view option"

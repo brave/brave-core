@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">פתח חלון פרטי עם Tor</translation>
 <translation id="1725356094208762656">פתח ב-Tor</translation>
 <translation id="7643538479215207633">לפתוח באמצעות IPFS</translation>
+<translation id="3094628781200061820">פרסם והחזר קבצים מ-IPFS</translation>
 <translation id="1672270084584211506">Onion זמין</translation>
 <translation id="1434416574322382019">חלון גלישה פרטי עם תור</translation>
 <translation id="4703780849509456860">פתחו קישור בחלון פרטי בעזרת Tor</translation>
@@ -174,6 +175,7 @@
 <translation id="1327977588028644528">שער</translation>
 <translation id="80225669816651290">צומת מקומי</translation>
 <translation id="4927734062756955434">כתובת השער הציבורי של IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>למידע נוסף<ph name="END_LINK_MPL"/> אודות הצומת המקומי של IPFS ושיקולי פרטיות של השער.</translation>
 <translation id="8425213833346101688">שנה</translation>
 <translation id="557281710253742286">הגדר שער IPFS</translation>
 <translation id="8571837315037233299">כתובת השער</translation>
@@ -245,7 +247,7 @@
 <translation id="1959966725083452288">אווטאר בונבון Royal</translation>
 <translation id="2039034364578911089">אווטאר בונבון נינג'ה</translation>
 <translation id="239760341987199724">‏הגדר את Brave כדפדפן ברירת המחדל שלך</translation>
-<translation id="9185422039067880535">דפדפן Brave אינו מוגדר כעת כדפדפן ברירת המחדל שלך.
+<translation id="1391855377994926460">דפדפן Brave אינו מוגדר כעת כדפדפן ברירת המחדל שלך.
 הגדר/י את Brave כברירת המחדל שלך כדי להמשיך לגלוש מהר יותר -
 עד פי 6 מהר יותר באתרי החדשות העיקריים.</translation>
 <translation id="9218430445555521422">הגדר כברירת מחדל</translation>

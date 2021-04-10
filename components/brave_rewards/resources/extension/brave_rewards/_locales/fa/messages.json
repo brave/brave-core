@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "چه زمانی پاداش دریافت می‌کنید",
+    "message": "چه زمانی پاداش دریافت می‌کنید؟",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "با استفاده از Brave Rewards کمک می‌کنید وب به مکانی بهتر برای همه تبدیل شود. و این فوق‌العاده است!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "تأیید کیف پول",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "برای برداشت کردن توکن‌هایی که بابت تماشای آگهی کسب می‌کنید، باید کیف پول خود را تأیید کنید.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "بعداً انجام می‌دهم",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "تأیید کیف پول",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "کیف پول bitFlyer سرویسی است که توسط bitFlyer Inc مدیریت می‌شود.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "با تأیید کیف پول و پیوند دادن آن به حساب bitFlyer، می‌توانید توکن‌هایی را که ازطریق «پاداش‌های Brave» کسب کرده‌اید آسان‌تر ذخیره و مدیریت کنید.",
     "description": ""
   },
   "bapDeprecationHeader": {
