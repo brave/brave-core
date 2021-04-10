@@ -67,7 +67,7 @@ get_changed_files() {
 # Execute pylint (if necessary) and print info messages.
 # $@ := description files_to_check
 check() {
-    local description="${1:?} in: ${check_folders[*]}"
+    local description="${1:?} in: ${check_folders[*]/%/\/}"
     local -a check_files=("${@:2}")
 
     if (("${#check_files[@]}" > 0)); then
