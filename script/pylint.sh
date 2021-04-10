@@ -62,10 +62,13 @@ get_changed_files() {
 }
 
 # Execute pylint (if necessary) and print info messages.
-# $@ := message
+# $@ := description files_to_check
 check() {
+    local description="${1:?}"
+    local -a check_files=("${@:2}")
+
     if (("${#check_files[@]}" > 0)); then
-        echo "Checking for $*" >&2
+        echo "Checking for $description in: ${check_folders[*]}" >&2
         case "${report:?}" in
            1) exec pylint "${pylint_options[@]}" -fparseable --exit-zero \
                "${check_files[@]}" >"${report_file:?}";;
@@ -79,6 +82,8 @@ check() {
 
 # $@ := script_arguments
 main() {
+    local -a check_files
+
     parse_cmdline "$@"
 
     # Decide which files to check and call check() to execute pylint.
@@ -86,16 +91,15 @@ main() {
         1,)  error "ERROR: The --only-new option is only valid with --compare-with";;
 
         1,*) #read -ra check_files <<<"$(get_changed_files)"
-             #check "new pylint findings in python scripts changed relative to"\
-             #    "$base_branch in: ${check_folders[*]}"
+             #check "new pylint findings in scripts changed relative to $base_branch" \
+             #      "${check_files[@]}"
              error "The --only-new option is not implemented yet";;
 
-        0,)  check_files=("${check_folders[@]}")
-             check "pylint findings in: ${check_folders[*]}";;
+        0,)  check "pylint findings" "${check_folders[@]}";;
 
         0,*) read -ra check_files <<<"$(get_changed_files)"
-             check "pylint findings in python scripts changed relative to"\
-                 "$base_branch in: ${check_folders[*]}";;
+             check "pylint findings in scripts changed relative to $base_branch" \
+                   "${check_files[@]}";;
     esac
 }
 
