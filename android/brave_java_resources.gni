@@ -728,6 +728,8 @@ brave_java_resources = [
   "java/res/layout/ntp_widget_list_item_layout.xml",
   "java/res/layout/qa_code_check.xml",
   "java/res/layout/qa_command_line.xml",
+  "java/res/layout/radio_button_group_ens_resolve_method_preference.xml",
+  "java/res/layout/radio_button_group_unstoppable_domains_resolve_method_preference.xml",
   "java/res/layout/report_broken_site_layout.xml",
   "java/res/layout/toolbar_space.xml",
   "java/res/layout/top_sites_layout.xml",
@@ -770,9 +772,11 @@ brave_java_resources = [
   "java/res/xml/closing_all_tabs_closes_brave_preference.xml",
   "java/res/xml/desktop_mode_preferences.xml",
   "java/res/xml/developer_preferences.xml",
+  "java/res/xml/ens_preferences.xml",
   "java/res/xml/legal_information_preferences.xml",
   "java/res/xml/play_yt_video_in_browser_preferences.xml",
   "java/res/xml/qa_preferences.xml",
+  "java/res/xml/unstoppable_domains_preferences.xml",
   "java/res/xml/use_custom_tabs_brave_preference.xml",
 ]
 
