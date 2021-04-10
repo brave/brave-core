@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Requirements: bash, coreutils, git, pylint.
+# The python3 version of pylint should be used (`pip3 install pylint').
 # This is called via `npm run pylint' with the top of the brave-core repo as $PWD.
 
 # Fail on any error.
@@ -58,7 +59,8 @@ parse_cmdline() {
 # Print a tab-delimited list of python scripts changed relative to $base_branch.
 # $@ := ""
 get_changed_files() {
-    git diff --name-only --diff-filter drt --merge-base "origin/${base_branch:?}" -- \
+    git diff --name-only --diff-filter drt \
+        "$(git merge-base "origin/${base_branch:?}" HEAD)" -- \
         "${check_folders[@]/%/\/\*.py}"|tr '\n' '\t'
 }
 
