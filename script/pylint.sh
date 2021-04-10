@@ -20,7 +20,8 @@ help() {
 	USAGE: pylint.sh --help
 	       pylint.sh [--compare-with <base_branch> [--only-new]] [--report]
 
-	Run pylint on python files in: ${check_folders[*]}
+	Run pylint on versioned python scripts in:
+	${check_folders[*]/%/\/}
 
 	--compare-with <base_branch>: only analyse files changed relative to base_branch
 	--only-new: exclude old findings from <base_branch> (NOT IMPLEMENTED YET)
@@ -56,10 +57,10 @@ parse_cmdline() {
     readonly base_branch check_folders only_new report report_file
 }
 
-# Print a tab-delimited list of python scripts changed since $base_branch.
+# Print a tab-delimited list of python scripts changed relative to $base_branch.
 # $@ := ""
 get_changed_files() {
-    git diff --name-only --diff-filter drt "origin/${base_branch:?}" -- \
+    git diff --name-only --diff-filter drt --merge-base "origin/${base_branch:?}" -- \
         "${check_folders[@]/%/\/\*.py}"|tr '\n' '\t'
 }
 
