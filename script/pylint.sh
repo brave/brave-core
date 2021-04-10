@@ -47,7 +47,9 @@ parse_cmdline() {
         case "${@:$i:1}" in
             --compare-with)
                 ((++i <= $#)) || error "The --compare-with option requires an argument";
-                base_branch="${*:$i:1}";;
+                base_branch="${*:$i:1}"
+                git merge-base "origin/${base_branch:?}" HEAD >/dev/null \
+                    || error "Invalid base_branch";;
             --report) report=1;;
             --help) help 0;;
             *) error "Invalid arguments passed: ${*:$i}";;
