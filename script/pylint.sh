@@ -7,6 +7,7 @@ shopt -s inherit_errexit
 set -eEo pipefail
 
 # Defaults. Overwritten in parse_cmdline() and set readonly.
+base_branch=""
 check_folders=(build components installer script tools)
 pylint_options=(-j0 -rn --rcfile=.pylintrc)
 report=0
@@ -51,7 +52,7 @@ parse_cmdline() {
             *) error "Invalid arguments passed: ${*:$i}";;
         esac
     done
-    readonly base_branch check_folders report report_file
+    readonly base_branch check_folders pylint_options report report_file
 }
 
 # Print a tab-delimited list of python scripts changed relative to $base_branch.
