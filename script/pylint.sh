@@ -26,6 +26,8 @@ help() {
 	--only-new: exclude old findings from <base_branch> (NOT IMPLEMENTED YET)
 	--report: produce a parseable report file
 	
+	The .pylintrc file at the top of this repo defines pylint options.
+	
 	This script should be called via \`npm run', e.g.:
 	npm run pylint
 	npm run pylint -- --compare-with master
@@ -51,7 +53,7 @@ parse_cmdline() {
             *) error "Extraneous arguments passed: ${*:$i}";;
         esac
     done
-    readonly check_folders base_branch only_new report report_file
+    readonly base_branch check_folders only_new report report_file
 }
 
 # Print a tab-delimited list of python scripts changed since $base_branch.
