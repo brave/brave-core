@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Wanneer ontvangt u beloningen",
+    "message": "Wanneer ontvang je beloningen?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Door Brave Rewards te gebruiken helpt u het internet een betere plek te maken voor iedereen. En dat is geweldig!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Je wallet verifiëren",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Om de tokens die je verdient voor het bekijken van advertenties op te nemen, moet je je wallet verifiëren.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Ik doe het later",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Mijn wallet verifiëren",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "De bitFlyer-wallet is een service die wordt beheerd door fitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Door je wallet te verifiëren en deze te koppelen aan een bitFlyer-account, kun je de tokens die je hebt verdiend via Brave Rewards eenvoudig opslaan en beheren",
     "description": ""
   },
   "bapDeprecationHeader": {

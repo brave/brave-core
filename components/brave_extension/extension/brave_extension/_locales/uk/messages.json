@@ -175,6 +175,10 @@
     "message": "Блокувати елемент через перемикач",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "Керувати користувацькими фільтрами",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "Розширений вигляд",
     "description": "Message for the advanced view option"

@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Кога получавате награди",
+    "message": "Кога получавате награди?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Използвайки Brave Rewards, вие помагате да направим мрежата по-добро място за всички. И това е страхотно!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Потвърдете вашия портфейл",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "За да изтеглите токените, които сте спечелили за гледане на реклами, е необходимо да потвърдите портфейла си.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Остави за по-късно",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Потвърди моя портфейл",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Портфейлът bitFlyer е услуга, управлявана от bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Чрез потвърждаване на вашия портфейл и свързването му към bitFlyer акаунта, вие ще можете по-лесно да съхранявате и управлявате вашите токени, които сте спечелили през Brave Rewards.",
     "description": ""
   },
   "bapDeprecationHeader": {

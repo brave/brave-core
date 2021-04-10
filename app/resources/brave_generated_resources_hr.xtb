@@ -60,6 +60,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1037341607922068025">Otvori privatni prozor s funkcijom Tor</translation>
 <translation id="1725356094208762656">Otvori u funkciji Tor</translation>
 <translation id="7643538479215207633">Otvori uporabom sustava IPFS</translation>
+<translation id="3094628781200061820">Objavi i dohvati datoteke s protokola IPFS</translation>
 <translation id="1672270084584211506">Dostupan Onion</translation>
 <translation id="1434416574322382019">Novi privatni prozor s funkcijom Tor</translation>
 <translation id="4703780849509456860">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
@@ -173,6 +174,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1327977588028644528">Pristupnik</translation>
 <translation id="80225669816651290">Lokalni čvor</translation>
 <translation id="4927734062756955434">Javna adresa IPFS pristupnika</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Doznajte više<ph name="END_LINK_MPL"/> o razmatranjima o privatnosti lokalnog čvora i pristupnika protokola IPFS.</translation>
 <translation id="8425213833346101688">Promijeni</translation>
 <translation id="557281710253742286">Postavi pristupnik IPFS</translation>
 <translation id="8571837315037233299">Adresa pristupnika</translation>
@@ -244,7 +246,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1959966725083452288">Avatar Bonbon kraljevski</translation>
 <translation id="2039034364578911089">Avatar Bonbon nindža</translation>
 <translation id="239760341987199724">Postavite Brave kao zadani preglednik</translation>
-<translation id="9185422039067880535">Preglednik Brave trenutačno nije postavljen kao vaš zadani preglednik.
+<translation id="1391855377994926460">Preglednik Brave trenutačno nije postavljen kao vaš zadani preglednik.
 Postavite preglednik Brave kao zadani preglednik kako biste pregledavali internet –
 do šest puta brže glavna mrežna mjesta.</translation>
 <translation id="9218430445555521422">Postavi kao zadano</translation>
@@ -265,7 +267,7 @@ do šest puta brže glavna mrežna mjesta.</translation>
 <translation id="7090566321964540749">Ovim se anonimnim informacijama omogućava društvu Brave procjenjivanje ukupnog korištenja određenim značajkama.</translation>
 <translation id="1947672064022327074">Želite li pokrenuti kriptovalutne novčanike za podršku Ethereum?</translation>
 <translation id="7583735190612229830">Postavite kriptovalutne novčanike koji ostvaruju interakciju s ovom aplikacijom, a koji se drugima sviđaju.</translation>
-<translation id="8731422418734770661">Postavi kriptovalutne novčanike</translation>
+<translation id="8731422418734770661">Postavi Crypto Wallets</translation>
 <translation id="8199661191594897555">Pokreni kriptovalutne novčanike i ponovno učitaj</translation>
 <translation id="8428213095426709021">Postavke</translation>
 <translation id="7691598647605453992">IPFS</translation>

@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Ödülleri ne zaman alırsınız",
+    "message": "Ödülleri ne zaman alırsınız?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Brave Rewards kullanarak webin herkes için daha iyi bir yer haline gelmesine yardım ediyorsunuz. Ve bu harika!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Cüzdanınızı doğrulayın",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Reklam görüntüleyerek kazandığınız tokenleri çekmek için cüzdanınızı doğrulamanız gerekecektir.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Daha sonra yap",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Cüzdanımı doğrula",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer cüzdanı; bitFlyer, Inc tarafından yönetilen bir hizmettir.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Cüzdanınızı doğrulayarak ve bir bitFlyer hesabına bağlayarak, Brave Rewards aracılığıyla kazandığınız tokenleri daha kolay depolayabilecek ve yönetebileceksiniz",
     "description": ""
   },
   "bapDeprecationHeader": {

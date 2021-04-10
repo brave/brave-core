@@ -175,6 +175,10 @@
     "message": "Seçici aracılığıyla element engelleyin",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "Özel filtreleri yönet",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "Gelişmiş Görünüm",
     "description": "Message for the advanced view option"

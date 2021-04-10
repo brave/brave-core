@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Milloin saat palkintosi",
+    "message": "Milloin saat palkintosi?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Brave Rewardien avulla voit tehdä verkosta turvallisemman paikan muille. Se vasta onkin upeaa!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Vahvista lompakkosi",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Jos haluat nostaa mainosten katsomisesta ansaittuja poletteja, tulee sinun vahvistaa lompakkosi.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Tee se myöhemmin",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Vahvista lompakkoni",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer-lompakko on palvelu, jota hallinnoi bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Kun vahvistat lompakkosi ja linkität sen bitFlyer-tiliin, voit helpommin tallentaa ja hallita Brave Rewardsin kautta ansaitsemiasi poletteja",
     "description": ""
   },
   "bapDeprecationHeader": {

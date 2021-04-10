@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kiedy przekazywane są nagrody",
+    "message": "Kiedy przekazywane są nagrody?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Poprzez korzystanie z Nagród Brave pomagasz sprawić, aby sieć była lepszym miejscem dla wszystkich. I to świetnie!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Zweryfikuj portfel",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Aby wypłacić tokeny zarobione za wyświetlanie reklam, musisz zweryfikować portfel.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Zrób to później",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Zweryfikuj mój portfel",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Portfel bitFlyer jest zarządzany przez bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Weryfikując swój portfel i łącząc go z kontem bitFlyer, możesz łatwiej przechowywać i zarządzać tokenami zdobytymi dzięki Brave Rewards",
     "description": ""
   },
   "bapDeprecationHeader": {

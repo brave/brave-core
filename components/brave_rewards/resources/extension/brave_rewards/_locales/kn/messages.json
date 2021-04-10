@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "ನೀವು ಯಾವಾಗ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪಡೆಯುತ್ತೀರಿ",
+    "message": "ನೀವು ಯಾವಾಗ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪಡೆಯುತ್ತೀರಿ?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Brave Rewards ಬಳಸುವ ಮೂಲಕ, ಎಲ್ಲರಿಗೂ ವೆಬ್ ಅನ್ನು ಉತ್ತಮ ಸ್ಥಳವನ್ನಾಗಿ ಮಾಡಲು ನೀವು ಸಹಾಯ ಮಾಡುತ್ತಿದ್ದೀರಿ ಮತ್ತು ಅದು ಅದ್ಭುತವಾಗಿದೆ!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಿದ್ದಕ್ಕಾಗಿ ನೀವು ಗಳಿಸಿದ ಟೋಕನ್‌ಗಳನ್ನು ಹಿಂಪಡೆಯುವುದಕ್ಕಾಗಿ, ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ನೀವು ಪರಿಶೀಲಿಸಬೇಕಾಗುತ್ತದೆ.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "ಅದನ್ನು ನಂತರ ಮಾಡಿ",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "ನನ್ನ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer ವ್ಯಾಲೆಟ್ ಎನ್ನುವುದು bitFlyer, Inc ನಿರ್ವಹಿಸಿರುವ ಸೇವೆಯಾಗಿದೆ.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವ ಮೂಲಕ ಮತ್ತು ಅದನ್ನು bitFlyer ಖಾತೆಗೆ ಲಿಂಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು ಹೆಚ್ಚು ಸುಲಭವಾಗಿ Brave Rewards ಮೂಲಕ ಗಳಿಸಿದ ಟೋಕನ್ಗಳನ್ನು ಸಂಗ್ರಹಿಸಲು ಮತ್ತು ನಿರ್ವಹಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ",
     "description": ""
   },
   "bapDeprecationHeader": {

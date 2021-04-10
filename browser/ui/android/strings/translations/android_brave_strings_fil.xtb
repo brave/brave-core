@@ -17,6 +17,8 @@
 <translation id="9148058034647219655">Lumabas</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">Nagbubukas ng mga sinusuportahang site gamit ang HTTPS sa halip na HTTP kapag posible</translation>
+<translation id="4022987104439075738">IPFS Gateway</translation>
+<translation id="2688519859165248360">Nagbibigay-daan sa pag-navigate sa mga resource ng IPFS sa pamamagitan ng IPFS Gateway</translation>
 <translation id="8387201461264842096">Pag-block ng Ad</translation>
 <translation id="1934885595886623674">Pinagbabawalang mag-load ang mga ad</translation>
 <translation id="7458422973722236530">Proteksyon Gamit ang Fingerprint</translation>
@@ -43,6 +45,7 @@
 <translation id="4150201353443180367">Display</translation>
 <translation id="2433507940547922241">Hitsura</translation>
 <translation id="2804710924397009224">Itago ang Icon ng Brave Rewards</translation>
+<translation id="7289740269305509613">Itinatago ang Icon ng Brave Rewards</translation>
 <translation id="8495235435594442882">I-enable ang toolbar sa ibaba</translation>
 <translation id="6587448235155023666">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave</translation>
 <translation id="8701563696941209024">ILUNSAD MULI NGAYON</translation>
@@ -55,6 +58,7 @@
 <translation id="8537217141725709400">Magkaroon ng <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
 <translation id="5870330605209713397">sa pamamagitan ng pagtingin sa mga ad na nagpapahalaga sa privacy at suportahan ang iyong mga paboritong site at creator bilang default.</translation>
+<translation id="5302488867897327287">Sa pamamagitan ng pag-tap sa Simulang gamitin ang Brave Rewards, sumasang-ayon ka sa</translation>
 <translation id="4281844954008187215">Mga Tuntunin ng Serbisyo</translation>
 <translation id="6871397658902960384">Simulan ang pag-browse</translation>
 <translation id="454386012157232640">Hindi ako nakakita ng ad</translation>
@@ -64,6 +68,7 @@
 <translation id="2070991379950719711">Simulang gamitin ang Brave Rewards</translation>
 <translation id="48520986898237073">Tumuloy sa wallet</translation>
 <translation id="3570367516044491911">Itakda bilang default na browser</translation>
+<translation id="19715420010996093">Piliin ang Brave Browser at i-tap ang 'Palagi'</translation>
 <translation id="3546439402724649282">Nakatakda na ang Brave bilang iyong default na browser.</translation>
 <translation id="8389661903259423907">Nagtakda ka na ng default na browser. Maaari mong palitan ang default na browser sa mga setting ng app mo.</translation>
 <translation id="7091885296442320770">Napakabilis ng Brave</translation>

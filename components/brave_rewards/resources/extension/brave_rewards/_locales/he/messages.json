@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "מתי אתם מקבלים תגמולים",
+    "message": "מתי אתם מקבלים פרסים?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "בשימושכם ב-Brave Rewards אתם עוזרים להפוך את האינטרנט למקום טוב יותר עבור כולם. וזה מדהים!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "אמתו את הארנק שלכם",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "על מנת למשוך את האסימונים שהרווחתם מצפיית פרסומות, תצטרכו לאמת את הארנק שלכם.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "עשה זאת מאוחר יותר",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "אמתו את הארנק שלי",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "ארנק bitFlyer הוא שירות המנוהל על ידי bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "על ידי אימות הארנק שלכם וקישורו לחשבון bitFlyer, תוכלו לאחסן ולנהל את האסימונים שהרווחתם באמצעות  Brave Rewards ביתר קלות.",
     "description": ""
   },
   "bapDeprecationHeader": {
