@@ -354,7 +354,6 @@ Config.prototype.buildArgs = function () {
     // TODO - recheck
     delete args.enable_nacl
     delete args.enable_hangout_services_extension
-    delete args.brave_infura_project_id
     // Ideally we'd not pass this on Linux CI and then
     // not have a default value for this. But we'll
     // eventually want it on Android, so keeping CI

@@ -26,6 +26,14 @@
         android:title="@string/ipfs_gateway_title"
         android:summary="@string/ipfs_gateway_summary"
         android:defaultValue="true" />
+    <Preference
+        android:fragment="org.chromium.chrome.browser.decentralized_dns.settings.UnstoppableDomainsSettingsFragment"
+        android:key="unstoppable_domains"
+        android:title="@string/unstoppable_domains_title" />
+    <Preference
+        android:fragment="org.chromium.chrome.browser.decentralized_dns.settings.ENSSettingsFragment"
+        android:key="ens"
+        android:title="@string/ens_title" />
     <org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference
         android:key="ad_block"
         android:title="@string/ad_block_title"
