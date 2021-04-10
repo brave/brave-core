@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">Отворете поверителен прозорец с Tor</translation>
 <translation id="1725356094208762656">Отворете в Tor</translation>
 <translation id="7643538479215207633">Отворете с помощта на IPFS</translation>
+<translation id="3094628781200061820">Публикувайте и извличайте файлове от IPFS</translation>
 <translation id="1672270084584211506">Наличен Onion</translation>
 <translation id="1434416574322382019">Нов поверителен прозорец с Tor</translation>
 <translation id="4703780849509456860">Отвори връзката в поверителен прозорец с Tor</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локален възел</translation>
 <translation id="4927734062756955434">Адрес на публичния IPFS шлюз</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Научете повече<ph name="END_LINK_MPL"/> за IPFS локален възел и за съображенията за поверителност на шлюза.</translation>
 <translation id="8425213833346101688">Промяна</translation>
 <translation id="557281710253742286">Задайте IPFS шлюз</translation>
 <translation id="8571837315037233299">Адрес на шлюза</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">Аватар Bonbon Royal</translation>
 <translation id="2039034364578911089">Аватар Bonbon Ninja</translation>
 <translation id="239760341987199724">Задаване на Brave като браузър по подразбиране</translation>
-<translation id="9185422039067880535">Понастоящем браузърът Brave не е зададен като браузър по подразбиране.
+<translation id="1391855377994926460">Понастоящем браузърът Brave не е зададен като браузър по подразбиране.
 Задайте Brave като Вашия браузър по подразбиране, за да продължите да сърфирате в мрежата по-бързо -
 до 6 пъти по-бързо в големите новинарски сайтове.</translation>
 <translation id="9218430445555521422">Задаване по подразбиране</translation>
@@ -289,4 +291,7 @@
 <translation id="2808630562319398131">Нулиране на данните за Brave Награди...</translation>
 <translation id="1224064034972923114">Помогнете за подобряване на Brave, като автоматично изпращате отчети за сривове</translation>
 <translation id="3738833060602717053">Помогнете за подобряването на <ph name="PRODUCT_NAME"/>, като автоматично изпращате отчети за сривове</translation>
+<translation id="9185422039067880535">Понастоящем браузърът Brave не е зададен като браузър по подразбиране.
+Задайте Brave като Вашия браузър по подразбиране, за да продължите да сърфирате в мрежата по-бързо -
+до 6 пъти по-бързо в големите новинарски сайтове.</translation>
 </translationbundle>

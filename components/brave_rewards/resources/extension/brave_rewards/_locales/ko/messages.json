@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "언제 보상을 받습니까",
+    "message": "Rewards가 적립되는 시점",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Brave Rewards를 사용함에 따라 여러분은 웹을 모두를 위한 더 나은 장소로 만드는 데 한 몫을 거들고 있습니다. 대단한 일이지요!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "월렛 검증하기",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "광고를 보고 적립된 토큰을 인출하려면 월렛을 검증해야 합니다.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "나중에",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "내 월렛 검증하기",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer wallet은 bitFlyer, Inc.에서 관리하는 서비스입니다.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "월렛을 검증하여 bitFlyer 계정에 연결하면 Brave Rewards를 통해 적립된 토큰을 더욱 쉽게 저장하고 관리할 수 있습니다.",
     "description": ""
   },
   "bapDeprecationHeader": {

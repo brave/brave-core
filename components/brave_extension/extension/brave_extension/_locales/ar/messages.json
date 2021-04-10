@@ -175,6 +175,10 @@
     "message": "حظر العنصر عبر المحدد",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "إدارة عوامل التصفية المخصصة",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "عرض متقدم",
     "description": "Message for the advanced view option"

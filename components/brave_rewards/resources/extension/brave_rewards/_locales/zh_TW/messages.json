@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "您何時獲得獎勵",
+    "message": "您何時獲得獎勵？",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "透過使用 Brave 獎勵，您正在協助使網際網路成為適合所有人的更美好的地方。真是太棒了！",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "驗證您的錢包",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "若要提領觀看廣告所賺取的代幣，您必須驗證您的錢包。",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "稍後再執行",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "驗證我的錢包",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer 錢包是由 bitFlyer, Inc. 管理的服務",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "驗證您的錢包並將其連結至 bitFlyer 帳戶，您將能更輕鬆地儲存並管理透過 Brave Rewards 賺取的代幣",
     "description": ""
   },
   "bapDeprecationHeader": {

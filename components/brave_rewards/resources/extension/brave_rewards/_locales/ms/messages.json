@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "BIla anda menerima ganjaran",
+    "message": "BIlakah anda menerima ganjaran?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Dengan menggunakan Ganjaran Brave anda membantu menjadikan web ini tempat yang lebih baik buat semua orang. Dan itu memang hebat!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Sahkan dompet anda",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Untuk mengeluarkan token yang anda peroleh kerana menonton iklan, anda akan perlu mengesahkan dompet anda.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Lakukannya kemudian",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Sahkan dompet saya",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Dompet bitFlyer adalah perkhidmatan yang diuruskan oleh bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Dengan mengesahkan dompet anda dan memautkannya ke akaun bitFlyer, anda akan dapat menyimpan dan menguruskan token yang anda peroleh melalui Brave Rewards dengan lebih mudah",
     "description": ""
   },
   "bapDeprecationHeader": {

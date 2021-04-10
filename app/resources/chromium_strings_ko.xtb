@@ -25,8 +25,6 @@
 <translation id="1775322105159056176">Brave에서 기본 브라우저를 확인하거나 설정할 수 없습니다.</translation>
 <translation id="9220324636239049437">항목 1개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="831418749472885028">다른 암호가 정보 유출 및 다른 보안 문제로부터 안전한지 확인하려면 <ph name="BEGIN_LINK"/>Brave에 로그인<ph name="END_LINK"/>하세요.</translation>
-<translation id="796822898986482154"><ph name="LINK_BEGIN"/>설정<ph name="LINK_END"/>의 한 장소에서 <ph name="USER_NAME"/>에 추가한 다른 Brave 계정과 이 계정을 관리할 수 있습니다.
-          Brave 브라우저의 웹사이트와 Google Play의 앱에서 부여한 권한은 모든 계정에 적용될 수 있습니다.</translation>
 <translation id="8745514854244955877">Brave - 네트워크 로그인 - <ph name="PAGE_TITLE"/></translation>
 <translation id="162629503687514352">Chrome OS에서 비밀번호를 동기화할 수 없습니다.</translation>
 <translation id="5659384504794665581">컴퓨터를 공유하는 경우 친구와 가족이 개별적으로 탐색하고 원하는 대로 Brave을 설정할 수 있습니다.</translation>
@@ -36,7 +34,6 @@
 <translation id="2576129394594491151">Brave을 시작하면 표시되는 페이지가 '<ph name="EXTENSION_NAME"/>' 확장 프로그램으로 인해 변경되었습니다.</translation>
 <translation id="6078442581074612226">Brave에서</translation>
 <translation id="2485422356828889247">제거</translation>
-<translation id="2555639463117073782"><ph name="PLUGIN_NAME"/>을(를) 사용하려면 Brave을 다시 시작하세요.</translation>
 <translation id="9026991721384951619">계정의 로그인 세부정보가 오래되어 Chrome OS에서 데이터를 동기화하지 못했습니다.</translation>
 <translation id="7798069806040634998">파일을 다운로드하려면 Brave에 저장소 액세스 권한이 있어야 합니다</translation>
 <translation id="8447483940522230788">Brave 도우미</translation>
@@ -52,6 +49,7 @@
 <translation id="2770231113462710648">다음으로 기본 브라우저 변경:</translation>
 <translation id="2799223571221894425">다시 시작</translation>
 <translation id="6811506454451584223">Brave 프로필을 분리하시겠습니까?</translation>
+<translation id="3783547330001921298"><ph name="USER_EMAIL_ADDRESS"/>님을 위한 새 Brave 프로필이 생성됩니다.</translation>
 <translation id="777113543093865885">Brave에서 제거...</translation>
 <translation id="2885378588091291677">작업 관리자</translation>
 <translation id="2176825726964012531">Brave 정보</translation>
@@ -103,6 +101,7 @@
 <translation id="9183662282810237335">Brave을 종료하시겠습니까?</translation>
 <translation id="4065288863231444640">백그라운드에서 Brave을 실행</translation>
 <translation id="8148611988012584308">Brave 맞춤설정 및 제어</translation>
+<translation id="1201005444605297066">이 페이지에서는 로그인된 Brave 계정을 관리할 수 있습니다. Gmail, Drive, YouTube 등의 서비스와 Brave 브라우저, Play 스토어 앱에서 계정을 사용할 수 있습니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Brave에 오신 것을 환영합니다. 새 브라우저 창이 열렸습니다</translation>
 <translation id="2633397153656205379">문제가 발생하여 Brave을 업데이트할 수 없습니다. <ph name="BEGIN_LINK"/>Brave 업데이트 문제 및 업데이트 실패 문제 해결하기<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">새 Brave 프로필로 계속하시겠습니까?</translation>
@@ -115,12 +114,12 @@
 <translation id="8668413672647811944">Brave 특별 보안 업데이트를 방금 적용했습니다. 다시 시작하면 탭이 복원됩니다.</translation>
 <translation id="4823369970559443694">Brave에서 비밀번호를 확인할 수 없습니다. 24시간 후에 다시 시도해 보거나 <ph name="BEGIN_LINK"/>Brave 계정에서 비밀번호를 확인<ph name="END_LINK"/>하세요.</translation>
 <translation id="215320507915280336">Brave 검색과 동일한 맞춤법 검사기가 사용됩니다. 브라우저에 입력되는 텍스트는 Brave로 전송됩니다. 설정에서 언제든지 이 동작을 변경할 수 있습니다.</translation>
-<translation id="2899369907387169108">계정 없이 Brave 사용</translation>
 <translation id="1912973375560256099">Brave이 mDNS 트래픽을 허용하는 인바운드 규칙입니다.</translation>
 <translation id="8797356639448065696">Brave이 백그라운드 모드로 실행 중입니다.</translation>
 <translation id="7406627712452599344">게스트로 사용 기록을 남기지 않고 Brave을 사용할 수 있습니다.</translation>
 <translation id="5952898964075639679">Brave에 본인 추가</translation>
 <translation id="9078804073692109646">저장된 비밀번호가 없습니다. 비밀번호를 저장하면 Brave에서 확인할 수 있습니다.</translation>
+<translation id="729580998737807583"><ph name="EXISTING_USER"/>님이 이미 Brave 프로필에 로그인되어 있습니다. <ph name="USER_EMAIL_ADDRESS"/>님을 위한 새 Brave 프로필이 생성됩니다.</translation>
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
 <translation id="7708394612738038097">관리 계정으로 로그인하고 Brave 프로필에 대한 관리자 제어권을 부여하려고 합니다. 앱, 북마크, 방문 기록, 비밀번호 및 기타 설정 등 Brave 데이터가 <ph name="USER_NAME"/> 계정에 영구적으로 연결됩니다. 이후 이 데이터를 Brave 계정 대시보드에서 삭제할 수는 있지만 다른 계정에 연결할 수는 없습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="1786715389543715322">Brave 업데이트 중(<ph name="PROGRESS_PERCENT"/>)</translation>
@@ -134,7 +133,6 @@
 <translation id="1744365871163268756">Brave에서 최신 시스템 업데이트를 설치하는 동안 잠시 기다려 주세요.</translation>
 <translation id="3861679447659630159">Brave에서 비밀번호를 수정하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave 업데이트 출시}=1{Brave 업데이트 출시}other{Brave 업데이트가 출시된 지 #일 지남}}</translation>
-<translation id="4518479204315969707">Brave 이름 및 사진</translation>
 <translation id="95624393026532554">Brave은 Windows 7 이상 버전에서 사용할 수 있습니다.</translation>
 <translation id="5646769069113654257">지금 Brave을 다시 시작하세요</translation>
 <translation id="2335583906071111058">이 언어로 Brave 표시</translation>
@@ -162,6 +160,7 @@
 <translation id="428541510811554120">Brave에서 업데이트를 확인할 수 없습니다. 인터넷 연결 상태를 확인하세요.</translation>
 <translation id="7445061995866044926">Brave에서 로그아웃</translation>
 <translation id="6806912298071949921">Brave 프로필 맞춤설정</translation>
+<translation id="3792238845239580301">Brave 프로필 이름 지정</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/>은(는) 위험할 수 있으므로 Brave에서 차단했습니다.</translation>
 <translation id="3205074487970075628">Brave이 카메라를 사용 중입니다.</translation>
 <translation id="1819119299840995223">Brave에서 다른 작업이 진행 중입니다. 나중에 다시 시도해 주세요.</translation>
@@ -190,6 +189,8 @@
 <translation id="5253815230176279256">Brave Pay(Brave에 복사됨)</translation>
 <translation id="2301993384336631869">Brave이 업데이트되었지만, 최소 30일 동안 사용하지 않았습니다.</translation>
 <translation id="8522287263361940593">Brave에서는 Rosetta를 통해 이 페이지에서 보호된 미디어를 재생할 수 있습니다.</translation>
+<translation id="8828443087767259398">페어링을 계속하려면 Brave에서 블루투스 액세스 권한이
+필요합니다. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">취약한 비밀번호는 추측하기 쉽습니다. Brave에서 <ph name="BEGIN_LINK"/>안전한 비밀번호를 생성하고 기억하도록 설정<ph name="END_LINK"/>하세요.</translation>
 <translation id="3335606533094650083">이 사이트에서 마이크에 액세스하려면 Brave에 권한이 필요합니다</translation>
 <translation id="1785833016412082453">Brave에서 확장 프로그램을 확인할 수 없습니다. 나중에 다시 시도하세요.</translation>
@@ -227,6 +228,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7747138024166251722">설치 프로그램이 임시 디렉터리를 만들지 못했습니다. 디스크 공간 및 설치 권한을 확인해 보세요.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="38898988211673781">Brave을 종료할 때 쿠키 및 사이트 데이터 삭제</translation>
+<translation id="1652855885539187849">이 계정을 사용하는 Brave 프로필이 기기에 이미 존재합니다</translation>
 <translation id="8462524920674814187">향후 Brave 업데이트를 받으려면 OS X 10.11 이상이 필요합니다. 이 컴퓨터에서는 OS X 10.10을 사용하고 있습니다.</translation>
 <translation id="7963515534397191222">Brave을 최신 버전으로 업데이트하지 못했기 때문에 새로운 기능과 보안 수정 사항이 적용되지 않았습니다.</translation>
 <translation id="7573289029918943991">기기가 최신 버전인지 확인하려면 <ph name="LINK_BEGIN"/>Chrome OS 설정<ph name="LINK_END"/>으로 이동하세요.</translation>
@@ -266,13 +268,13 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1156157157416773301">계정을 새 Brave 프로필로 이동하시겠습니까?</translation>
 <translation id="5173820533850252773">Brave이 이전 버전임</translation>
 <translation id="310518206836658214">{0,plural, =1{1시간 후 Brave이 다시 시작됩니다}other{#시간 후 Brave이 다시 시작됩니다}}</translation>
-<translation id="3867851085410947377">Brave 계정이 여러 개인 경우 <ph name="DEVICE_TYPE"/>에 추가할 수 있습니다. Gmail, 드라이브, YouTube 같은 서비스와 Brave 브라우저, Play 스토어에서 계정을 사용할 수 있습니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="7863882214613921971">새 Brave 탭에서 링크 열기(&amp;T)</translation>
 <translation id="911206726377975832">인터넷 사용 기록도 삭제하시겠습니까?</translation>
 <translation id="2444257125841652328">시스템 관리자가 <ph name="TARGET_URL_HOSTNAME"/> 액세스를 위해 대체 브라우저를 열도록 Brave을 구성했습니다.</translation>
 <translation id="3350544518197210895">Brave(mDNS-In)</translation>
 <translation id="6568793831116033768">Chrome OS 시스템</translation>
 <translation id="7977787072794666032">Windows XP 또는 Windows Vista에서 더 이상 Brave을 지원하지 않으므로 Brave이 올바르게 작동하지 않을 수 있습니다</translation>
+<translation id="4484434718272972655">Brave 사용자 선택</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="6134859571175647580">경고: Brave은 확장 프로그램이 인터넷 방문 기록을 저장하지 못하도록 할 수 없습니다. 시크릿 모드에서 이 확장 프로그램을 사용 중지하려면 옵션을 선택 취소하세요.</translation>
 <translation id="1448049584457347995">Brave Software에서는 Brave의 보안을 강화하기 위해 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>에 표시되지 않고 사용자 모르게 추가되었을 수 있는 일부 확장 프로그램의 사용을 중지했습니다.</translation>

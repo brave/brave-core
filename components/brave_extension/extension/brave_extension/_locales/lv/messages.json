@@ -175,6 +175,10 @@
     "message": "Bloķēt elementu, izmantojot atlasītāju",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "Pārvaldīt pielāgotos filtrus",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "Paplašinātais skatījums",
     "description": "Message for the advanced view option"

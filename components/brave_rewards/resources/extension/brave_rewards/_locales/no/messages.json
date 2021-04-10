@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Når mottar du belønninger",
+    "message": "Når mottar du belønninger?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Når du bruker Brave Rewards bidrar du til å gjøre nettet til et bedre sted for alle. Og det er kjempebra!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Bekreft lommeboken din",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "For å gjøre uttak av tokenene du tjener på å se annonser, må du bekrefte lommeboken din.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Gjør det senere",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Bekreft lommeboken min",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "BitFlyer-lommeboken er en tjeneste som administreres av bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Ved å bekrefte lommeboken din og knytte den til en bitFlyer-konto, vil du lettere kunne lagre og administrere tokener du har tjent gjennom Brave Rewards.",
     "description": ""
   },
   "bapDeprecationHeader": {

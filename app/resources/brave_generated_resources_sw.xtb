@@ -60,6 +60,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="1037341607922068025">Fungua Dirisha la Faragha na Tor</translation>
 <translation id="1725356094208762656">Fungua katika Tor</translation>
 <translation id="7643538479215207633">Fungua ukitumia IPFS</translation>
+<translation id="3094628781200061820">Chapisha na urejeshe faili kutoka IPFS</translation>
 <translation id="1672270084584211506">Onion Inapatikana</translation>
 <translation id="1434416574322382019">Dirisha Jipya Binafsi na Tor</translation>
 <translation id="4703780849509456860">Fungua kiungo kwenye Dirisha Binafsi kwa Tor</translation>
@@ -173,6 +174,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="1327977588028644528">Lango</translation>
 <translation id="80225669816651290">Fundo la karibu</translation>
 <translation id="4927734062756955434">Anwani ya lango la umma la IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Pata Maelezo Zaidi<ph name="END_LINK_MPL"/> kuhusu nodi ya karibu ya IPFS na mazingatio ya faragha ya lango.</translation>
 <translation id="8425213833346101688">Badilisha</translation>
 <translation id="557281710253742286">Weka lango la IPFS</translation>
 <translation id="8571837315037233299">Anwani ya lango</translation>
@@ -245,7 +247,7 @@ Zawadi za Avatar Paladin</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Weka Brave kuwa kivinjari chako chaguomsingi</translation>
-<translation id="9185422039067880535">Kisakuzi cha Brave hakijawekwa kama kisakuzi chaguomsingi.
+<translation id="1391855377994926460">Kisakuzi cha Brave hakijawekwa kama kisakuzi chaguomsingi.
 Weka Brave kama kisakuzi chaguomsingi ili kuendelea kufanya usakuzi wako haraka
 hadi mara sita ya visakuzi vya kawaida katika tovuti kuu.</translation>
 <translation id="9218430445555521422">Weka iwe chaguomsingi</translation>
@@ -290,4 +292,7 @@ hadi mara sita ya visakuzi vya kawaida katika tovuti kuu.</translation>
 <translation id="2808630562319398131">Weka upya data ya Zawadi za Brave...</translation>
 <translation id="1224064034972923114">Saidia kuboresha Brave kwa kutuma kiotomatiki ripoti za kulemaa</translation>
 <translation id="3738833060602717053">Saidia kuboresha <ph name="PRODUCT_NAME"/> kwa kutuma ripoti kiotomatiki.</translation>
+<translation id="9185422039067880535">Kisakuzi cha Brave hakijawekwa kama kisakuzi chaguomsingi.
+Weka Brave kama kisakuzi chaguomsingi ili kuendelea kufanya usakuzi wako haraka
+hadi mara sita ya visakuzi vya kawaida katika tovuti kuu.</translation>
 </translationbundle>

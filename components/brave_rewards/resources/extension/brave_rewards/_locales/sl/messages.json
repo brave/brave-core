@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kdaj prejmete nagrade",
+    "message": "Kdaj prejmete nagrade?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Z uporabo Brave Rewards pomagate izboljšati splet za vse. In to je super!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Preverite svojo denarnico",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Če želite dvigniti žetone, ki ste jih zaslužili za ogled oglasov, morate preveriti svojo denarnico.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Storite to pozneje",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Preverite mojo denarnico",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Denarnica bitFlyer je storitev, ki jo upravlja bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Če preverite svojo denarnico in jo povežete z računom bitFlyer, boste lažje shranili in upravljali žetone, ki ste jih zaslužili z Brave Rewards.",
     "description": ""
   },
   "bapDeprecationHeader": {

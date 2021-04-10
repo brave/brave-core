@@ -175,6 +175,10 @@
     "message": "चयनकर्ता द्वारा एलिमेंट को ब्लॉक करें",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "कस्टम फ़िल्टर मैनेज करें",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "उन्नत दृश्य",
     "description": "Message for the advanced view option"

@@ -25,8 +25,6 @@
 <translation id="1775322105159056176">Brave не можа вызначыць або задаць стандартны браўзер</translation>
 <translation id="9220324636239049437">Будзе выдалены 1 элемент з гэтай прылады. Каб потым атрымаць свае даныя, увайдзіце ва ўліковы запіс Brave як <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Каб праверыць, ці не пагражае вашым іншым паролям раскрыццё ў выніку ўцечкі даных або іншых праблем з бяспекай, <ph name="BEGIN_LINK"/>увайдзіце ў Brave<ph name="END_LINK"/>.</translation>
-<translation id="796822898986482154">Гэтым і іншымі Уліковымі запісамі Brave, якія выкарыстоўвае <ph name="USER_NAME"/>, можна кіраваць з аднаго інтэрфейсу ў <ph name="LINK_BEGIN"/>Наладах<ph name="LINK_END"/>.
-          Дазволы для вэб-сайтаў у браўзеры Brave і праграм з Google Play могуць дзейнічаць для ўсіх гэтых уліковых запісаў.</translation>
 <translation id="8745514854244955877">Brave – Уваход у сетку – <ph name="PAGE_TITLE"/></translation>
 <translation id="162629503687514352">Сістэме Chrome OS не ўдалося сінхранізаваць паролі.</translation>
 <translation id="5659384504794665581">Калі камп'ютар выкарыстоўваюць некалькі чалавек, кожны з іх можа наладзіць Brave для сябе і праглядаць старонкі асобна ад іншых.</translation>
@@ -36,7 +34,6 @@
 <translation id="2576129394594491151">Пашырэнне "<ph name="EXTENSION_NAME"/>" змяніла старонку, якая паказваецца пры запуску Brave.</translation>
 <translation id="6078442581074612226">У Brave</translation>
 <translation id="2485422356828889247">Выдаліць</translation>
-<translation id="2555639463117073782">Каб уключыць убудову "<ph name="PLUGIN_NAME"/>", перазапусціце Brave</translation>
 <translation id="9026991721384951619">Сінхранізаваць даныя ў сістэме Chrome OS не ўдалося: даныя ўліковага запісу для ўваходу састарэлі.</translation>
 <translation id="7798069806040634998">Для спампоўвання файлаў браўзеру Brave патрабуецца доступ да сховішча</translation>
 <translation id="8447483940522230788">Памочнік Brave</translation>
@@ -52,6 +49,7 @@
 <translation id="2770231113462710648">Зрабіць стандартным наступны браўзер:</translation>
 <translation id="2799223571221894425">Перазапусціць</translation>
 <translation id="6811506454451584223">Стварыць асобны профіль Brave?</translation>
+<translation id="3783547330001921298">Будзе створаны новы профіль Brave для ўліковага запісу <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="777113543093865885">Выдаліць з Brave...</translation>
 <translation id="2885378588091291677">Менеджар заданняў</translation>
 <translation id="2176825726964012531">Пра &amp;Brave</translation>
@@ -103,6 +101,7 @@
 <translation id="9183662282810237335">Усё роўна выйсці з Brave?</translation>
 <translation id="4065288863231444640">Дазволіць браўзеру Brave працаваць у фоне</translation>
 <translation id="8148611988012584308">Наладка і кіраванне Brave</translation>
+<translation id="1201005444605297066">На гэтай старонцы можна кіраваць Уліковымі запісамі Brave, у якія вы ўвайшлі. Іх можна будзе выкарыстоўваць у браўзеры Brave і праграмах з Крамы Play, а таксама ў такіх сэрвісах, як Gmail, Дыск і YouTube. <ph name="LINK_BEGIN"/>Даведацца больш<ph name="LINK_END"/></translation>
 <translation id="7084397798469173252">Вітаем у Brave! Адкрыта новае акно браўзера</translation>
 <translation id="2633397153656205379">Brave не абнавіўся. Нешта пайшло не так. <ph name="BEGIN_LINK"/>Выправіце праблемы з абнаўленнем Brave і памылкі абнаўлення.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Працягнуць працу ў новым профілі Brave?</translation>
@@ -115,12 +114,12 @@
 <translation id="8668413672647811944">Толькі што было прыменена спецыяльнае абнаўленне бяспекі для Brave. Перазапусціце браўзер, і вашы ўкладкі будуць адноўлены.</translation>
 <translation id="4823369970559443694">Браўзеру Brave не ўдаецца праверыць паролі. Паўтарыце спробу праз 24 гадзіны або <ph name="BEGIN_LINK"/>праверце паролі ва Уліковым запісе Brave<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Гэта функцыя выкарыстоўвае тую ж праверку правапісу, што ў Brave Пошуку. Уведзены ў браўзер тэкст адпраўляецца ў Brave. Гэта можна змяніць у наладах.</translation>
-<translation id="2899369907387169108">Выкарыстоўваць Brave без уліковага запісу</translation>
 <translation id="1912973375560256099">Уваходнае правіла для Brave, якое дазваляе трафік mDNS.</translation>
 <translation id="8797356639448065696">Brave працуе ў фонавым рэжыме.</translation>
 <translation id="7406627712452599344">Госці могуць выкарыстоўваць Brave, не пакідаючы нічога пасля сябе.</translation>
 <translation id="5952898964075639679">Дадаць мяне ў Brave</translation>
 <translation id="9078804073692109646">Няма захаваных пароляў. Brave можа правяраць толькі захаваныя паролі.</translation>
+<translation id="729580998737807583">Уваход у гэты профіль Brave ужо выкананы карыстальнікам <ph name="EXISTING_USER"/>. Будзе створаны новы профіль Brave для ўліковага запісу <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="8586264863973514035">Каб прымяніць змяненні, перазапусціце Brave</translation>
 <translation id="7708394612738038097">Вы ўваходзіце праз уліковы запіс пад кіраваннем, што дае адміністратару кантроль над вашым профілем у браўзеры Brave. Даныя Brave (праграмы, закладкі, гісторыя, паролі і іншыя налады) будуць назаўсёды прывязаны да ўліковага запісу <ph name="USER_NAME"/>. Вы зможаце выдаліць гэтыя даныя праз панэль кіравання Уліковымі запісамі Brave, але іх нельга будзе звязаць з іншым уліковым запісам. <ph name="LEARN_MORE"/></translation>
 <translation id="1786715389543715322">Brave абнаўляецца (<ph name="PROGRESS_PERCENT"/>)</translation>
@@ -134,7 +133,6 @@
 <translation id="1744365871163268756">Пачакайце, пакуль Brave усталюе апошнія абнаўленні сістэмы.</translation>
 <translation id="3861679447659630159">Brave спрабуе змяніць паролі. Каб дазволіць гэта, увядзіце пароль Windows.</translation>
 <translation id="1026406809507858026">{0,plural, =0{Ёсць абнаўленне Brave}=1{Ёсць абнаўленне Brave}one{Абнаўленне Brave выйшла # дзень таму}few{Абнаўленне Brave выйшла # дні таму}many{Абнаўленне Brave выйшла # дзён таму}other{Абнаўленне Brave выйшла # дня таму}}</translation>
-<translation id="4518479204315969707">Імя і фота профілю Brave</translation>
 <translation id="95624393026532554">Для браўзера Brave патрабуецца Windows 7 або навейшая версія.</translation>
 <translation id="5646769069113654257">Перазапусціце Brave</translation>
 <translation id="2335583906071111058">Паказваць інтэрфейс браўзера Brave на гэтай мове</translation>
@@ -162,6 +160,7 @@
 <translation id="428541510811554120">Браўзеру Brave не ўдаецца праверыць наяўнасць абнаўленняў. Паспрабуйце праверыць падключэнне да інтэрнэту.</translation>
 <translation id="7445061995866044926">Выйсці з уліковага запісу ў браўзеры Brave?</translation>
 <translation id="6806912298071949921">Наладзьце свой профіль Brave</translation>
+<translation id="3792238845239580301">Дайце назву свайму профілю Brave</translation>
 <translation id="3561569806301739367">Файл "<ph name="FILE_NAME"/>" можа быць небяспечным, таму Brave заблакіраваў яго.</translation>
 <translation id="3205074487970075628">Brave выкарыстоўвае камеру.</translation>
 <translation id="1819119299840995223">У Brave выконваецца іншая аперацыя. Паўтарыце спробу пазней.</translation>
@@ -190,6 +189,7 @@
 <translation id="5253815230176279256">Brave Pay (скапіравана ў Brave)</translation>
 <translation id="2301993384336631869">Brave быў абноўлены, але вы не выкарыстоўвалі яго на працягу як мінімум 30 дзён.</translation>
 <translation id="8522287263361940593">Дзякуючы праграме Rosetta браўзер Brave зможа прайграваць абароненае мультымедыйнае змесціва на гэтай старонцы.</translation>
+<translation id="8828443087767259398">Каб працягнуць спалучэнне, Brave патрабуе доступу да Bluetooth. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Ненадзейныя паролі лёгка адгадаць. Дазвольце Brave <ph name="BEGIN_LINK"/>ствараць для вас надзейныя паролі і запамінаць іх<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Brave запытвае дазвол на доступ да мікрафона для гэтага сайта</translation>
 <translation id="1785833016412082453">Браўзеру Brave не ўдаецца праверыць пашырэнні. Паўтарыце спробу пазней.</translation>
@@ -227,6 +227,7 @@
 <translation id="7747138024166251722">Усталёўшчыку не ўдалося стварыць часовы каталог. Праверце, ці ёсць вольнае месца на дыску і дазвол на ўсталяванне праграмнага забеспячэння.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="38898988211673781">Выдаліць файлы cookie і даныя сайтаў пры выхадзе з браўзера Brave</translation>
+<translation id="1652855885539187849">Профіль Brave з такім уліковым запісам ужо існуе на гэтай прыладзе</translation>
 <translation id="8462524920674814187">Каб атрымліваць наступныя абнаўленні Brave, вам патрэбна версія OS X 10.11 ці пазнейшая. На гэтым камп'ютары выкарыстоўваецца OS X 10.10.</translation>
 <translation id="7963515534397191222">Браўзеру Brave не ўдалося абнавіцца да апошняй версіі, таму ў ім няма новых функцый і выпраўленняў сістэмы бяспекі.</translation>
 <translation id="7573289029918943991">Каб даведацца, ці абноўлена прылада, адкрыйце <ph name="LINK_BEGIN"/>Налады Chrome OS<ph name="LINK_END"/></translation>
@@ -266,13 +267,13 @@
 <translation id="1156157157416773301">Перамясціць уліковы запіс у новы профіль Brave?</translation>
 <translation id="5173820533850252773">Brave састарэў</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave будзе перазапушчаны праз гадзіну}one{Brave будзе перазапушчаны праз # гадзіну}few{Brave будзе перазапушчаны праз # гадзіны}many{Brave будзе перазапушчаны праз # гадзін}other{Brave будзе перазапушчаны праз # гадзіны}}</translation>
-<translation id="3867851085410947377">Калі ў вас некалькі Уліковых запісаў Brave, вы можаце дадаць іх на сваю прыладу <ph name="DEVICE_TYPE"/>. Імі можна будзе карыстацца ў Краме Play і браўзеры Brave, а таксама ў такіх сэрвісах, як Gmail, Дыск і YouTube. <ph name="LINK_BEGIN"/>Даведацца больш<ph name="LINK_END"/></translation>
 <translation id="7863882214613921971">Адкрыць спасылку ў новай &amp;укладцы Brave</translation>
 <translation id="911206726377975832">Выдаліць таксама гісторыю праглядаў?</translation>
 <translation id="2444257125841652328">Ваш сістэмны адміністратар наладзіў Brave, каб адкрыць альтэрнатыўны браўзер для доступу да <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="6568793831116033768">Сістэма Chrome OS</translation>
 <translation id="7977787072794666032">Браўзер Brave больш не падтрымліваецца на Windows XP і Windows Vista, таму можа працаваць няправільна</translation>
+<translation id="4484434718272972655">Хто выкарыстоўвае Brave?</translation>
 <translation id="8992261409816268381">Аўтары Brave</translation>
 <translation id="6134859571175647580">Увага! Brave не можа забараніць пашырэнням весці запіс вашай гісторыі праглядаў сайтаў. Скасуйце выбар гэтай налады, каб выключыць гэта пашырэнне ў рэжыме інкогніта.</translation>
 <translation id="1448049584457347995">У мэтах бяспекі Brave мы выключылі некаторыя пашырэнні, якія не значацца ў спісе <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> і маглі быць дададзены без вашага ведама.</translation>

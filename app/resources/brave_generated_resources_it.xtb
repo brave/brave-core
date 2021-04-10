@@ -60,6 +60,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1037341607922068025">Apri Private Window con Tor</translation>
 <translation id="1725356094208762656">Apri in Tor</translation>
 <translation id="7643538479215207633">Apri utilizzando IPFS</translation>
+<translation id="3094628781200061820">Pubblica e recupera file da IPFS</translation>
 <translation id="1672270084584211506">Onion disponibile</translation>
 <translation id="1434416574322382019">Nuova finestra privata con Tor</translation>
 <translation id="4703780849509456860">Apri il collegamento in una finestra privata con Tor</translation>
@@ -173,6 +174,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nodo locale</translation>
 <translation id="4927734062756955434">Indirizzo del gateway pubblico IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Scopri di più<ph name="END_LINK_MPL"/> sulle questioni di privacy del nodo locale e del gateway IPFS.</translation>
 <translation id="8425213833346101688">Cambia</translation>
 <translation id="557281710253742286">Imposta gateway IPFS</translation>
 <translation id="8571837315037233299">Indirizzo gateway</translation>
@@ -244,7 +246,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1959966725083452288">Avatar bonbon reale</translation>
 <translation id="2039034364578911089">Avatar bonbon ninja</translation>
 <translation id="239760341987199724">Imposta Brave come browser predefinito</translation>
-<translation id="9185422039067880535">Il browser Brave non è impostato come browser predefinito.
+<translation id="1391855377994926460">Il browser Brave non è impostato come browser predefinito.
 Utilizza Brave come browser predefinito per navigare più velocemente  -
 fino a 6 volte più veloce sui principali siti di notizie.</translation>
 <translation id="9218430445555521422">Imposta di defult</translation>
@@ -289,4 +291,7 @@ fino a 6 volte più veloce sui principali siti di notizie.</translation>
 <translation id="2808630562319398131">Resetta dati Brave Rewards...</translation>
 <translation id="1224064034972923114">Contribuisci a migliorare Brave inviando automaticamente dei resoconti sugli arresti anomali</translation>
 <translation id="3738833060602717053">Contribuisci a migliorare <ph name="PRODUCT_NAME"/> inviando automaticamente dei resoconti sugli arresti anomali</translation>
+<translation id="9185422039067880535">Il browser Brave non è impostato come browser predefinito.
+Utilizza Brave come browser predefinito per navigare più velocemente  -
+fino a 6 volte più veloce sui principali siti di notizie.</translation>
 </translationbundle>

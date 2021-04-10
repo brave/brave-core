@@ -60,6 +60,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1037341607922068025">Öppna ett privat fönster med Tor</translation>
 <translation id="1725356094208762656">Öppna i Tor</translation>
 <translation id="7643538479215207633">Öppna med IPFS</translation>
+<translation id="3094628781200061820">Publicera och hämta filer från IPFS</translation>
 <translation id="1672270084584211506">Onion tillgänglig</translation>
 <translation id="1434416574322382019">Nytt privat fönster med Tor</translation>
 <translation id="4703780849509456860">Öppna länk i privat fönster med Tor</translation>
@@ -173,6 +174,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal nod</translation>
 <translation id="4927734062756955434">IPFS publik gateway-adress</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Läs mer<ph name="END_LINK_MPL"/> om sekretessöverväganden för lokal IPFS-nod och -gateway.</translation>
 <translation id="8425213833346101688">Ändra</translation>
 <translation id="557281710253742286">Ställ in IPFS gateway</translation>
 <translation id="8571837315037233299">Gateway-adress</translation>
@@ -244,7 +246,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1959966725083452288">Avataren Kungligt godis</translation>
 <translation id="2039034364578911089">Avataren Godisninja</translation>
 <translation id="239760341987199724">Använd Brave som standardwebbläsare</translation>
-<translation id="9185422039067880535">Brave webbläsare är för närvarande inte satt som din förvalda webbläsare.
+<translation id="1391855377994926460">Brave webbläsare är för närvarande inte satt som din förvalda webbläsare.
 Välj Brave som ditt förval för att fortsätta att surfa snabbare på nätet -
 upp till 6 x snabbare på ledande nyhetssajter.</translation>
 <translation id="9218430445555521422">Använd som standard</translation>
@@ -289,4 +291,7 @@ upp till 6 x snabbare på ledande nyhetssajter.</translation>
 <translation id="2808630562319398131">Återställ data för Brave Rewards...</translation>
 <translation id="1224064034972923114">Hjälp till att förbättra Brave genom att skicka kraschrapporter automatiskt</translation>
 <translation id="3738833060602717053">Hjälp till att förbättra <ph name="PRODUCT_NAME"/> genom att skicka kraschrapporter automatiskt</translation>
+<translation id="9185422039067880535">Brave webbläsare är för närvarande inte satt som din förvalda webbläsare.
+Välj Brave som ditt förval för att fortsätta att surfa snabbare på nätet -
+upp till 6 x snabbare på ledande nyhetssajter.</translation>
 </translationbundle>
