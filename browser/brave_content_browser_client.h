@@ -109,9 +109,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   std::string GetEffectiveUserAgent(content::BrowserContext* browser_context,
                                     const GURL& url) override;
-  void BindBraveSearchHost(
-      mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver)
-      override;
+  void RegisterBrowserInterfaceBindersForHost(content::ServiceWorkerHost* host,
+                                              mojo::BinderMap* map) override;
 
  private:
   friend class ::BraveNavigatorUserAgentFarblingBrowserTest;
