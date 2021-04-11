@@ -14,6 +14,7 @@ type Props = {
 }
 
 const Hideable = styled('div')<Props>`
+  pointer-events: ${p => p.show ? 'auto' : 'none'};
   position: fixed;
   right: 20px;
   bottom: 20px;
@@ -24,7 +25,11 @@ const Hideable = styled('div')<Props>`
 export default function Customize (props: Props) {
   return (
     <Hideable {...props}>
-      <Button onClick={props.onCustomizeBraveToday}>
+      <Button
+        aria-hidden={!props.show}
+        disabled={!props.show}
+        onClick={props.onCustomizeBraveToday}
+      >
         {getLocale('customize')}
       </Button>
     </Hideable>
