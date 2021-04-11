@@ -27,6 +27,7 @@ const CustomizeButton = styled('button')<Props>`
   border: none;
   font-weight: 800;
   cursor: pointer;
+  pointer-events: ${p => p.show ? 'auto' : 'none'};
   opacity: ${p => p.show ? 1 : 0};
   background: rgba(33, 37, 41, .8);
   backdrop-filter: blur(8px);
