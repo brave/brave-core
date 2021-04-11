@@ -51,6 +51,7 @@
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/version_info/version_info.h"
 #include "content/browser/renderer_host/render_frame_host_impl.h"
+#include "content/browser/service_worker/service_worker_host.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -238,6 +239,14 @@ void BindCosmeticFiltersResources(
       std::move(receiver));
 }
 
+void BindBraveSearchHost(
+    mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_search::BraveSearchHost>(
+          g_brave_browser_process->shared_url_loader_factory()),
+      std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -281,12 +290,11 @@ BraveContentBrowserClient::AllowWebBluetooth(
   return ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
 }
 
-void BraveContentBrowserClient::BindBraveSearchHost(
-    mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_search::BraveSearchHost>(
-          g_brave_browser_process->shared_url_loader_factory()),
-      std::move(receiver));
+void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForHost(
+    content::ServiceWorkerHost* host,
+    mojo::BinderMap* map) {
+  map->Add<brave_search::mojom::BraveSearchFallback>(
+      base::BindRepeating(&BindBraveSearchHost));
 }
 
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(

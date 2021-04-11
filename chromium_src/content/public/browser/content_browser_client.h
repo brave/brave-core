@@ -6,9 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CONTENT_BROWSER_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CONTENT_BROWSER_CLIENT_H_
 
-#include "brave/components/brave_search/common/brave_search.mojom.h"
 #include "content/browser/process_internals/process_internals.mojom.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
+
+namespace content {
+class ServiceWorkerHost;
+}  // namespace content
+
+namespace mojo {
+class BinderMap;
+}  // namespace mojo
 
 // Brave-specific: allows the embedder to modify the referrer string
 // according to user preferences.
@@ -18,9 +25,8 @@
       const GURL& document_url, blink::mojom::ReferrerPtr* referrer) {}      \
   virtual std::string GetEffectiveUserAgent(BrowserContext* browser_context, \
                                             const GURL& url);                \
-  virtual void BindBraveSearchHost(                                          \
-      mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback>        \
-          receiver) {}
+  virtual void RegisterBrowserInterfaceBindersForHost(                       \
+      content::ServiceWorkerHost* host, mojo::BinderMap* map) {}
 
 #include "../../../../../content/public/browser/content_browser_client.h"
 
