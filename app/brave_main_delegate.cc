@@ -59,6 +59,8 @@
 #if defined(OS_ANDROID)
 #include "base/android/jni_android.h"
 #include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
+#else
+#include "chrome/browser/ui/profile_picker.h"
 #endif
 
 namespace {
@@ -233,6 +235,8 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     feed::kInterestFeedV2.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
     translate::kTranslate.name,
+#else
+    kEnableProfilePickerOnStartupFeature.name,
 #endif
   };
 
