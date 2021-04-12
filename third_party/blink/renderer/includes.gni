@@ -1,9 +1,7 @@
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/core/BUILD.gn
-brave_blink_renderer_core_visibility = [
-  "//brave/third_party/blink/renderer/*",
-  "//brave/components/brave_search/renderer:renderer",
-]
+brave_blink_renderer_core_visibility =
+    [ "//brave/third_party/blink/renderer/*" ]
 
 brave_blink_renderer_core_public_deps = [ "//brave/third_party/blink/renderer" ]
 

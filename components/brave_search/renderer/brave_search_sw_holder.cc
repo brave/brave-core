@@ -46,15 +46,14 @@ JSHandlersVector::iterator FindContext(JSHandlersVector* contexts,
   return std::find_if(contexts->begin(), contexts->end(), context_matches);
 }
 
-// static
-BraveSearchSWHolder* BraveSearchSWHolder::GetInstance() {
-  static base::NoDestructor<BraveSearchSWHolder> instance;
-  return instance.get();
-}
-
-BraveSearchSWHolder::BraveSearchSWHolder() {}
+BraveSearchSWHolder::BraveSearchSWHolder() : broker_(nullptr) {}
 
 BraveSearchSWHolder::~BraveSearchSWHolder() = default;
+
+void BraveSearchSWHolder::InitBrowserInterfaceBrokerProxy(
+    blink::ThreadSafeBrowserInterfaceBrokerProxy* broker) {
+  broker_ = broker;
+}
 
 void BraveSearchSWHolder::WillEvaluateServiceWorkerOnWorkerThread(
     blink::WebServiceWorkerContextProxy* context_proxy,
@@ -67,13 +66,15 @@ void BraveSearchSWHolder::WillEvaluateServiceWorkerOnWorkerThread(
       !IsAllowedHost(service_worker_scope))
     return;
 
-  std::unique_ptr<BraveSearchJSHandler> js_handler(new BraveSearchJSHandler());
-  js_handler->AddJavaScriptObject(v8_context);
+  std::unique_ptr<BraveSearchJSHandler> js_handler(
+      new BraveSearchJSHandler(v8_context, broker_));
+  js_handler->AddJavaScriptObject();
 
   JSHandlersVector* js_handlers = js_handlers_tls_.Get();
   if (!js_handlers) {
     js_handlers = new JSHandlersVector();
     js_handlers_tls_.Set(js_handlers);
+    content::WorkerThread::AddObserver(this);
   }
   js_handlers->push_back(std::move(js_handler));
 }
@@ -94,6 +95,16 @@ void BraveSearchSWHolder::WillDestroyServiceWorkerContextOnWorkerThread(
 
   auto context_it = FindContext(js_handlers, v8_context);
   js_handlers->erase(context_it);
+}
+
+void BraveSearchSWHolder::WillStopCurrentWorkerThread() {
+  content::WorkerThread::RemoveObserver(this);
+  JSHandlersVector* js_handlers = js_handlers_tls_.Get();
+  DCHECK(js_handlers);
+  for (const auto& context : *js_handlers)
+    context->Invalidate();
+  js_handlers_tls_.Set(nullptr);
+  delete js_handlers;
 }
 
 }  // namespace brave_search

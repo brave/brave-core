@@ -14,7 +14,6 @@ source_set("renderer") {
     "//mojo/public/cpp/bindings",
     "//third_party/blink/public:blink",
     "//third_party/blink/public/common",
-    "//third_party/blink/renderer/core:core",
     "//v8",
   ]
 }

@@ -10,27 +10,29 @@
 #include <vector>
 
 #include "base/threading/thread_local.h"
+#include "content/public/renderer/worker_thread.h"
 #include "v8/include/v8.h"
 
 class GURL;
 
 namespace blink {
 class WebServiceWorkerContextProxy;
-}
+class ThreadSafeBrowserInterfaceBrokerProxy;
+}  // namespace blink
 
 namespace brave_search {
 
 class BraveSearchJSHandler;
 
-class BraveSearchSWHolder {
+class BraveSearchSWHolder : public content::WorkerThread::Observer {
  public:
-  static BraveSearchSWHolder* GetInstance();
-
   BraveSearchSWHolder();
   BraveSearchSWHolder(const BraveSearchSWHolder&) = delete;
   BraveSearchSWHolder& operator=(const BraveSearchSWHolder&) = delete;
-  ~BraveSearchSWHolder();
+  ~BraveSearchSWHolder() override;
 
+  void InitBrowserInterfaceBrokerProxy(
+      blink::ThreadSafeBrowserInterfaceBrokerProxy* broker);
   void WillEvaluateServiceWorkerOnWorkerThread(
       blink::WebServiceWorkerContextProxy* context_proxy,
       v8::Local<v8::Context> v8_context,
@@ -44,8 +46,14 @@ class BraveSearchSWHolder {
       const GURL& script_url);
 
  private:
+  // WorkerThread::Observer:
+  void WillStopCurrentWorkerThread() override;
+
+  // Implement thread safety by storing each BraveSearchJSHandler in TLS. The
+  // vector is called from worker threads.
   base::ThreadLocalPointer<std::vector<std::unique_ptr<BraveSearchJSHandler>>>
       js_handlers_tls_;
+  blink::ThreadSafeBrowserInterfaceBrokerProxy* broker_;
 };
 
 }  // namespace brave_search
