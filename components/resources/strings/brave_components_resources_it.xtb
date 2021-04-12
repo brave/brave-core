@@ -405,7 +405,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="4396256076373444156">Accumula punti visualizzando annunci pertinenti che rispettano la tua privacy.</translation>
 <translation id="2975780980638932742">Gli Annunci Brave sono arrivati!</translation>
 <translation id="3361548743396744457">Sostieni i tuoi siti preferiti semplicemente navigando – o fai una donazione ad un sito ogni volta che vuoi.</translation>
-<translation id="6976444672879155794">Contributo automatico [[processor]]</translation>
+<translation id="6976444672879155794">Contributo automatico, [[processor]]</translation>
 <translation id="4493850495402472953">e</translation>
 <translation id="8804164990146287819">Informativa sulla privacy</translation>
 <translation id="4281844954008187215">Termini di Servizio</translation>
@@ -450,7 +450,7 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="418343137736963579">Numero totale di siti che hai escluso dal Contributo Automatico:</translation>
 <translation id="1759104587873258696">scade il</translation>
 <translation id="6149218349077925111">per</translation>
-<translation id="8802504113265057166">I [[currency]] non utilizzati entro la data di scadenza saranno automaticamente restituiti al Fondo per la crescita degli utenti di Brave.</translation>
+<translation id="8802504113265057166">I [[currency]] non utilizzati entro la data di scadenza saranno automaticamente restituiti allo User Growth Pool di Brave.</translation>
 <translation id="279567716178902927">Data di Scadenza Contributo</translation>
 <translation id="2104073734684466851">Contributi</translation>
 <translation id="6476729769006815569">Ciao, [[name]]!</translation>

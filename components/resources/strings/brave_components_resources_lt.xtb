@@ -449,7 +449,7 @@
 <translation id="418343137736963579">Bendras svetainių skaičius, kurių neįtraukėte į automatinį indėlį:</translation>
 <translation id="1759104587873258696">galiojimo laikas baigiasi</translation>
 <translation id="6149218349077925111">skirta</translation>
-<translation id="8802504113265057166">[[currency]], nepanaudoti iki galiojimo pabaigos datos, bus automatiškai grąžinti į „Brave“ naudotojų skaičiaus augimo telkinį.</translation>
+<translation id="8802504113265057166">[[currency]], nepanaudoti iki galiojimo pabaigos datos, bus automatiškai grąžinti į „Brave User Growth Pool“.</translation>
 <translation id="279567716178902927">Išmokos galiojimo laiko pabaigos data</translation>
 <translation id="2104073734684466851">Išmokos</translation>
 <translation id="6476729769006815569">Sveiki, [[name]]!</translation>
@@ -518,7 +518,7 @@
 <translation id="6354568176665589146">Pasikartojantys</translation>
 <translation id="1110535155349301542">pašalinti</translation>
 <translation id="8204292894173669182">Pašalinti iš įrašytų</translation>
-<translation id="5530851178552343773">Jūs paskyrėte [[reservedAmount]] [[currency]] kūrėjams, kurie dar nebuvo prisiregistravę gauti įmokas. Jūsų naršyklė toliau mėgins prisidėti finansiškai, kol jie patikrins ar kol praeis 90 dienų.</translation>
+<translation id="5530851178552343773">Jūs paskyrėte [[reservedAmount]] [[currency]] kūrėjams, kurie dar nebuvo užsiregistravę gauti įmokas. Jūsų naršyklė toliau mėgins prisidėti finansiškai, kol jie užsiregistruos ar kol praeis 90 dienų.</translation>
 <translation id="8759753423332885148">Sužinokite daugiau.</translation>
 <translation id="5939518447894949180">Nustatyti iš naujo</translation>
 <translation id="3157931365184549694">Atkurti</translation>
