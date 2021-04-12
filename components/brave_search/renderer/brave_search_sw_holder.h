@@ -31,7 +31,7 @@ class BraveSearchSWHolder : public content::WorkerThread::Observer {
   BraveSearchSWHolder& operator=(const BraveSearchSWHolder&) = delete;
   ~BraveSearchSWHolder() override;
 
-  void InitBrowserInterfaceBrokerProxy(
+  void SetBrowserInterfaceBrokerProxy(
       blink::ThreadSafeBrowserInterfaceBrokerProxy* broker);
   void WillEvaluateServiceWorkerOnWorkerThread(
       blink::WebServiceWorkerContextProxy* context_proxy,
@@ -53,7 +53,7 @@ class BraveSearchSWHolder : public content::WorkerThread::Observer {
   // vector is called from worker threads.
   base::ThreadLocalPointer<std::vector<std::unique_ptr<BraveSearchJSHandler>>>
       js_handlers_tls_;
-  blink::ThreadSafeBrowserInterfaceBrokerProxy* broker_;
+  blink::ThreadSafeBrowserInterfaceBrokerProxy* broker_;  // not owned
 };
 
 }  // namespace brave_search

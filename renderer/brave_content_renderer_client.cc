@@ -36,7 +36,7 @@ BraveContentRendererClient::~BraveContentRendererClient() = default;
 
 void BraveContentRendererClient::RenderThreadStarted() {
   ChromeContentRendererClient::RenderThreadStarted();
-  brave_search_sw_holder_.InitBrowserInterfaceBrokerProxy(
+  brave_search_sw_holder_.SetBrowserInterfaceBrokerProxy(
       browser_interface_broker_.get());
 }
 
