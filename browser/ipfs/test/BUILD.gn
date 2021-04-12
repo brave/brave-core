@@ -17,7 +17,7 @@ source_set("unittests") {
 
   deps = [
     "//base/test:test_support",
-    "//brave/browser:browser_process",
+    "//brave/browser",
     "//brave/browser/net:net",
     "//brave/browser/tor",
     "//brave/components/ipfs",
@@ -48,7 +48,7 @@ source_set("browsertests") {
 
     deps = [
       "//base/test:test_support",
-      "//brave/browser:browser_process",
+      "//brave/browser",
       "//brave/browser/tor",
       "//brave/common:common",
       "//brave/common:pref_names",

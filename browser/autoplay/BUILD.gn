@@ -13,7 +13,7 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/browser:browser_process",
+    "//brave/browser",
     "//brave/common",
     "//brave/common:pref_names",
     "//chrome/common",
