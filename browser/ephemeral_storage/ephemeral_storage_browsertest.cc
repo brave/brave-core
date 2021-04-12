@@ -523,7 +523,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   ValuesFromFrame first_party_values =
       GetValuesFromFrame(first_party_nested_acom);
-  EXPECT_EQ("first-party-a.com", first_party_values.local_storage);
+  EXPECT_EQ("thirty-first-party-a.com", first_party_values.local_storage);
   EXPECT_EQ("first-party-a.com", first_party_values.session_storage);
   EXPECT_EQ("name=first-party-a.com", first_party_values.cookies);
 

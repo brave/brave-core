@@ -37,7 +37,7 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
   }
 
   // Image at index 1 should be displayed now because
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
   EXPECT_EQ(1, model.current_wallpaper_image_index());
   model.RegisterPageView();
 
