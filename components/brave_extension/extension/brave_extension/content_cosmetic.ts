@@ -974,6 +974,13 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       })
       break
     }
+    case 'userModifiedSelector': {
+      const selector = msg.selector
+      if (selector.length > 0) {
+        recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+      }
+      break
+    }
     case 'userSelectedRule': {
       // Append the hostname and forward to the background script
       chrome.runtime.sendMessage({

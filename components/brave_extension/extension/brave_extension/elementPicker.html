@@ -27,6 +27,14 @@
       overflow-wrap: break-word;
     }
 
+    #rules-box > textarea {
+      height: 100%;
+      width: 100%;
+      resize: none;
+      border: none;
+      overflow: auto;
+    }
+
     section {
       background-color: #eee;
       border: 1px solid #aaa;
@@ -38,7 +46,7 @@
       position: fixed;
       right: 4px;
       width: calc(20% - 4px);
-      display: none;
+      opacity: 0.2;
     }
 
     button {
@@ -98,6 +106,7 @@
   </svg>
   <section>
     <div id="rules-box">
+      <textarea></textarea>
     </div>
     <div>
       <button id="btnCreate">Create</button>

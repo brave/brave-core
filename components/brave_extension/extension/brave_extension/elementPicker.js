@@ -15,14 +15,6 @@ const sendMessageActiveTab = (message, callback = null) => {
 
 window.onload = () => {
   let hasSelectedTarget = false
-  const section = document.querySelector('section')
-  const togglePopup = (show) => {
-    if (show) {
-      section.style.display = 'block'
-    } else {
-      section.style.display = 'none'
-    }
-  }
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
@@ -47,6 +39,33 @@ window.onload = () => {
     event.stopPropagation()
   }, true)
 
+  const rulesTextArea = document.querySelector('#rules-box > textarea')
+  let textInputTimer = null
+  rulesTextArea.addEventListener('input', (event) => {
+    clearTimeout(textInputTimer)
+    textInputTimer = setTimeout(() => {
+      const selector = rulesTextArea.value.trim()
+      if (selector.length > 0) {
+        sendMessageActiveTab({
+          type: 'userModifiedSelector',
+          selector: selector,
+        })
+      }
+    }, 700)
+  })
+  rulesTextArea.addEventListener('focus', (event) => {
+    hasSelectedTarget = true
+    togglePopup(true)
+  })
+  const section = document.querySelector('section')
+  const togglePopup = (show) => {
+    if (show) {
+      section.style.opacity = 1
+    } else {
+      section.style.opacity = 0.2
+    }
+  }
+
   svg.addEventListener('click', (event) => {
     if (hasSelectedTarget) {
       // We are already previewing a target. We'll interpet another click
@@ -61,16 +80,14 @@ window.onload = () => {
         hasSelectedTarget = true
         togglePopup(true)
         // disable hovering new elements
-        const rulesBox = document.getElementById('rules-box')
-        rulesBox.innerText = selector
+        rulesTextArea.value = selector
       }
     })
   });
 
   const createButton = document.getElementById('btnCreate')
   createButton.addEventListener('click', (event) => {
-    const rulesBox = document.getElementById('rules-box')
-    const selector = rulesBox.innerText.trim()
+    const selector = rulesTextArea.value.trim()
     if (selector.length > 0) {
       sendMessageActiveTab({
         type: 'userSelectedRule',
