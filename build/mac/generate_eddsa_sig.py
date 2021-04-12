@@ -22,7 +22,7 @@ def Main(argv):
   (options, args) = parser.parse_args(argv)
 
   if len(args) > 0:
-    print >> sys.stderr, parser.get_usage()
+    print(parser.get_usage(), file=sys.stderr)
     return 1
 
   # sign file with eddsa
