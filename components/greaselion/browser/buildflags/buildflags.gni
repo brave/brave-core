@@ -1,4 +1,3 @@
-import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 declare_args() {

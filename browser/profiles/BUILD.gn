@@ -1,3 +1,4 @@
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//components/gcm_driver/config.gni")
 

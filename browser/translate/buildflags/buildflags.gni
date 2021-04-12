@@ -1,5 +1,4 @@
 import("//brave/build/config.gni")
-import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 declare_args() {
@@ -7,5 +6,6 @@ declare_args() {
 }
 
 declare_args() {
-  enable_brave_translate_extension = !enable_brave_translate_go && enable_extensions
+  enable_brave_translate_extension =
+      !enable_brave_translate_go && enable_extensions
 }
