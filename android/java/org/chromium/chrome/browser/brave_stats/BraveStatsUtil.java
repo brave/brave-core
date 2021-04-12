@@ -143,10 +143,12 @@ public class BraveStatsUtil {
         TextView mEstTimeSavedCountTextView = (TextView) view.findViewById(R.id.stats_timed_no);
 
         List<Pair<String, String>> statsPairs = getStatsPairs();
-        String trackersString = String.format("%s %s", statsPairs.get(0).first, statsPairs.get(0).second);
-        String dataSavedString = String.format("%s %s", statsPairs.get(1).first, statsPairs.get(1).second);
-        String timeSavedString = String.format("%s %s", statsPairs.get(2).first, statsPairs.get(2).second);
-
+        String trackersString =
+                String.format("%s %s", statsPairs.get(0).first, statsPairs.get(0).second);
+        String dataSavedString =
+                String.format("%s %s", statsPairs.get(1).first, statsPairs.get(1).second);
+        String timeSavedString =
+                String.format("%s %s", statsPairs.get(2).first, statsPairs.get(2).second);
 
         mAdsBlockedCountTextView.setText(trackersString);
         mDataSavedValueTextView.setText(dataSavedString);
