@@ -5,50 +5,42 @@
 
 package org.chromium.chrome.browser.brave_stats;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Pair;
-import java.util.List;
-import java.util.ArrayList;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
+import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import org.chromium.base.Log;
-import java.util.Locale;
-
-import android.content.Context;
-import org.chromium.base.ContextUtils;
-import android.view.View;
-import java.io.ByteArrayOutputStream;
-import android.provider.MediaStore;
-import android.net.Uri;
-import android.graphics.Canvas;
-import android.graphics.Bitmap;
-import android.content.Intent;
-import android.view.LayoutInflater;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 
-import org.chromium.base.ThreadUtils;
-import org.chromium.base.task.AsyncTask;
-import org.chromium.chrome.browser.local_database.DatabaseHelper;
-
-import android.content.pm.ResolveInfo;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.DialogInterface;
-import org.chromium.chrome.browser.app.BraveActivity;
-
-
-
-
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class BraveStatsUtil {
     public static final short MILLISECONDS_PER_ITEM = 50;
@@ -148,32 +140,34 @@ public class BraveStatsUtil {
     }
 
     public static void updateBraveShareStatsLayoutAndShare(View view) {
-        TextView mAdsBlockedCountTextView = (TextView) view.findViewById(R.id.stats_trackers_no);       
+        TextView mAdsBlockedCountTextView = (TextView) view.findViewById(R.id.stats_trackers_no);
         TextView mDataSavedValueTextView = (TextView) view.findViewById(R.id.stats_saved_data_no);
-        TextView mEstTimeSavedCountTextView = (TextView) view.findViewById(R.id.stats_timed_no); 
+        TextView mEstTimeSavedCountTextView = (TextView) view.findViewById(R.id.stats_timed_no);
 
         List<Pair<String, String>> statsPairs = getStatsPairs();
-        String trackersString = "" + statsPairs.get(0).first + " " +statsPairs.get(0).second;
+        String trackersString = "" + statsPairs.get(0).first + " " + statsPairs.get(0).second;
         String dataSavedString = "" + statsPairs.get(1).first + " " + statsPairs.get(1).second;
-        String timeSavedString = "" + statsPairs.get(2).first + " " + statsPairs.get(2).second;                  
-  
+        String timeSavedString = "" + statsPairs.get(2).first + " " + statsPairs.get(2).second;
+
         mAdsBlockedCountTextView.setText(trackersString);
         mDataSavedValueTextView.setText(dataSavedString);
         mEstTimeSavedCountTextView.setText(timeSavedString);
         shareStatsAction(view);
     }
-    
+
     public static void shareStatsAction(View view) {
         Context context = ContextUtils.getApplicationContext();
         Bitmap bmp = convertToBitmap(view);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bmp, "tempimage", null);
+        String path = MediaStore.Images.Media.insertImage(
+                context.getContentResolver(), bmp, "tempimage", null);
         Uri uri = Uri.parse(path);
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.brave_stats_share_text));
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                context.getResources().getString(R.string.brave_stats_share_text));
         sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
         sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sendIntent.setType("image/text");
@@ -183,10 +177,11 @@ public class BraveStatsUtil {
         context.startActivity(shareIntent);
     }
 
-    public static View getLayout(int layoutId){
+    public static View getLayout(int layoutId) {
         Context context = ContextUtils.getApplicationContext();
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        View layout = inflater.inflate(layoutId, null );
+        LayoutInflater inflater =
+                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(layoutId, null);
 
         return layout;
     }
@@ -196,7 +191,7 @@ public class BraveStatsUtil {
         int totalHeight = view.getMeasuredHeight();
         int totalWidth = view.getMeasuredWidth();
 
-        Bitmap canvasBitmap = Bitmap.createBitmap(totalWidth,totalHeight, Bitmap.Config.ARGB_8888);
+        Bitmap canvasBitmap = Bitmap.createBitmap(totalWidth, totalHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(canvasBitmap);
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         view.draw(canvas);
@@ -204,8 +199,8 @@ public class BraveStatsUtil {
         return canvasBitmap;
     }
 
-    private static List<Pair<String,String>> getStatsPairs(){
-        List<Pair<String,String>> statsPair = new ArrayList<>();
+    private static List<Pair<String, String>> getStatsPairs() {
+        List<Pair<String, String>> statsPair = new ArrayList<>();
         Profile mProfile = Profile.getLastUsedRegularProfile();
         long trackersBlockedCount =
                 BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
@@ -225,10 +220,9 @@ public class BraveStatsUtil {
         statsPair.add(timeSavedPair);
 
         return statsPair;
-    }   
+    }
 
-    public static Pair<String,String> getAdsTrackersBlocked(){
-
+    public static Pair<String, String> getAdsTrackersBlocked() {
         Profile mProfile = Profile.getLastUsedRegularProfile();
         long trackersBlockedCount =
                 BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
@@ -236,5 +230,5 @@ public class BraveStatsUtil {
         long adsTrackersBlockedCount = trackersBlockedCount + adsBlockedCount;
 
         return getBraveStatsStringFormNumberPair(adsTrackersBlockedCount, false);
-    }                 
+    }
 }

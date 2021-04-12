@@ -12,14 +12,18 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -40,6 +44,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
@@ -68,20 +73,12 @@ import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import android.widget.FrameLayout;
-import android.provider.MediaStore;
-import android.net.Uri;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.Bitmap;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
@@ -217,7 +214,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         int totalHeight = view.getMeasuredHeight();
         int totalWidth = view.getMeasuredWidth();
 
-        Bitmap canvasBitmap = Bitmap.createBitmap(totalWidth,totalHeight, Bitmap.Config.ARGB_8888);
+        Bitmap canvasBitmap = Bitmap.createBitmap(totalWidth, totalHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(canvasBitmap);
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         view.draw(canvas);
@@ -371,7 +368,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     return;
                 }
                 try {
-                    mSiteBlockCounterText.setText(String.valueOf(995 + fadsAndTrackers
+                    mSiteBlockCounterText.setText(String.valueOf(fadsAndTrackers
                                                   + fhttpsUpgrades
                                                   + fscriptsBlocked
                                                   + ffingerprintsBlocked));

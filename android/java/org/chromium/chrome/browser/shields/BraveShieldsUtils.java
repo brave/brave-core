@@ -29,8 +29,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
-
-
 public class BraveShieldsUtils {
 	private static final String TAG = "Shields";
 	private static final String httpUrl = "https://laptop-updates.brave.com/1/webcompat";
@@ -42,9 +40,9 @@ public class BraveShieldsUtils {
         public static final String PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP =
                 "shields_https_upgrade_tooltip";
         public static final String PREF_SHARE_SHIELDS_TOOLTIP = "share_shields_tooltip";
-        public static final String PREF_ADS_TRACKERS_BLOCKED_NO= "ads_trackers_blocked_no";
-        public static final String PREF_DATA_SAVED_NO= "data_saved_no";
-        public static final String PREF_TIME_SAVED_NO= "time_saved_no";
+        public static final String PREF_ADS_TRACKERS_BLOCKED_NO = "ads_trackers_blocked_no";
+        public static final String PREF_DATA_SAVED_NO = "data_saved_no";
+        public static final String PREF_TIME_SAVED_NO = "time_saved_no";
 
         public static final String PREF_SHARE_SHIELDS_TOOLTIP_TIER1 = "share_shields_tooltip_tier1";
         public static final String PREF_SHARE_SHIELDS_TOOLTIP_TIER2 = "share_shields_tooltip_tier2";
@@ -69,7 +67,7 @@ public class BraveShieldsUtils {
         public static final int BRAVE_BLOCKED_TIER6 = 100000;
         public static final int BRAVE_BLOCKED_TIER7 = 250000;
         public static final int BRAVE_BLOCKED_TIER8 = 500000;
-        public static final int BRAVE_BLOCKED_TIER9 = 1000000;        
+        public static final int BRAVE_BLOCKED_TIER9 = 1000000;
 
         public static boolean isTooltipShown;
 
