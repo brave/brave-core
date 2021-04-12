@@ -8,13 +8,13 @@
 // Not related to change in RecentTabsSubMenuModel for additional `More...`
 // menu item
 #define RecentlyClosedTabsFromCurrentSession \
-        DISABLED_RecentlyClosedTabsFromCurrentSession
+  DISABLED_RecentlyClosedTabsFromCurrentSession
 
 #define RecentlyClosedTabsAndWindowsFromLastSession \
-        DISABLED_RecentlyClosedTabsAndWindowsFromLastSession
+  DISABLED_RecentlyClosedTabsAndWindowsFromLastSession
 
 #define RecentlyClosedGroupsFromCurrentSession \
-        DISABLED_RecentlyClosedGroupsFromCurrentSession
+  DISABLED_RecentlyClosedGroupsFromCurrentSession
 
 // Need to expect more items at that place, because Brave has additional item
 // `More...` which redirects to brave://history/syncedTabs
@@ -23,8 +23,7 @@
 // instead
 //     EXPECT_EQ(9, num_items);
 // But in favor to reduce patch, just decrease num_items:
-#define BRAVE_MAX_TABS_PER_SESSION_AND_RECENCY \
-        --num_items;
+#define BRAVE_MAX_TABS_PER_SESSION_AND_RECENCY --num_items;
 
 // The case when number of tabs on other device is <=4 so we do not add
 // `More...` item is tested by RecentTabsSubMenuModelTest.MaxSessionsAndRecency
