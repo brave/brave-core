@@ -13,6 +13,9 @@
 #define RecentlyClosedTabsAndWindowsFromLastSession \
         DISABLED_RecentlyClosedTabsAndWindowsFromLastSession
 
+#define RecentlyClosedGroupsFromCurrentSession \
+        DISABLED_RecentlyClosedGroupsFromCurrentSession
+
 // Need to expect more items at that place, because Brave has additional item
 // `More...` which redirects to brave://history/syncedTabs
 // The perfect way is to have
@@ -30,3 +33,4 @@
 
 #undef RecentlyClosedTabsAndWindowsFromLastSession
 #undef RecentlyClosedTabsFromCurrentSession
+#undef RecentlyClosedGroupsFromCurrentSession
