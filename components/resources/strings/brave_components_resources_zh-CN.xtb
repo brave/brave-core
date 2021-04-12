@@ -449,7 +449,7 @@
 <translation id="418343137736963579">为算在自动贡献之内的网站总数：</translation>
 <translation id="1759104587873258696">过期日期</translation>
 <translation id="6149218349077925111">给</translation>
-<translation id="8802504113265057166">过期日期前未使用的 [[currency]] 会自动被退回 Brave 用户增长池。</translation>
+<translation id="8802504113265057166">过期日期前未使用的 [[currency]] 会自动被退回 Brave User Growth Pool。</translation>
 <translation id="279567716178902927">补助过期日期</translation>
 <translation id="2104073734684466851">授权</translation>
 <translation id="6476729769006815569">您好，[[name]]！</translation>
@@ -485,8 +485,8 @@
 <translation id="5736183007277264868">当前没有可用的令牌授权。</translation>
 <translation id="8307851765167460403">还没有活动…</translation>
 <translation id="8589748782214271192">不用了，谢谢</translation>
-<translation id="3204579740854485097">[[currency]]不足。</translation>
-<translation id="3330432260369310344">[[currency]]不足。请</translation>
+<translation id="3204579740854485097">[[currency]] 不足。</translation>
+<translation id="3330432260369310344">[[currency]] 不足。请</translation>
 <translation id="3630697955794050612">关闭</translation>
 <translation id="4921250468871504777">确定</translation>
 <translation id="7866482334467279021">在</translation>
@@ -560,7 +560,7 @@
 <translation id="4914597931214386232">已领取代币补助</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
 <translation id="1738658589626889850">保存为文件</translation>
-<translation id="2913994227901456490">查看所有 [[numItems]] 个项目</translation>
+<translation id="2913994227901456490">查看所有 [[numItems]] 个条目</translation>
 <translation id="3010479539542250179">查看所有 [[numSites]] 个站点</translation>
 <translation id="1549705559752367917">发送赏金</translation>
 <translation id="3536298624341433814">发送我的赏金</translation>
