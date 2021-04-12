@@ -10,7 +10,7 @@ import errno
 import glob
 import optparse
 import os
-import Queue
+import queue
 import re
 import subprocess
 import sys
@@ -50,16 +50,16 @@ def mkdir_p(path):
 def GenerateSymbols(options, binaries):
   """Dumps the symbols of binary and places them in the given directory."""
 
-  queue = Queue.Queue()
+  q = queue.Queue()
   print_lock = threading.Lock()
 
   def _Worker():
     while True:
-      binary = queue.get()
+      binary = q.get()
 
       if options.verbose:
         with print_lock:
-          print "Generating symbols for %s" % binary
+          print("Generating symbols for {0}".format(binary))
           thread_start = datetime.utcnow()
 
       dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
@@ -67,8 +67,8 @@ def GenerateSymbols(options, binaries):
       module_line = re.match("MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)\r\n", syms)
       if module_line == None:
         with print_lock:
-          print "Failed to get symbols for %s" % binary
-        queue.task_done()
+          print("Failed to get symbols for {0}".format(binary))
+        q.task_done()
         continue
 
       output_path = os.path.join(options.symbols_dir, module_line.group(2),
@@ -85,17 +85,17 @@ def GenerateSymbols(options, binaries):
           elapsed = thread_end - thread_start
           print("Completed generating symbols for {}: elapsed time {} seconds".format(binary, elapsed.total_seconds()))
 
-      queue.task_done()
+      q.task_done()
 
   for binary in binaries:
-    queue.put(binary)
+    q.put(binary)
 
   for _ in range(options.jobs):
     t = threading.Thread(target=_Worker)
     t.daemon = True
     t.start()
 
-  queue.join()
+  q.join()
 
 
 def main():
@@ -115,11 +115,11 @@ def main():
   (options, directories) = parser.parse_args()
 
   if not options.build_dir:
-    print "Required option --build-dir missing."
+    print("Required option --build-dir missing.")
     return 1
 
   if not options.symbols_dir:
-    print "Required option --symbols-dir missing."
+    print("Required option --symbols-dir missing.")
     return 1
 
   if options.clear:
