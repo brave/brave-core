@@ -449,7 +449,7 @@
 <translation id="418343137736963579">Kopējais vietņu skaits, kas ir izslēgtas no automātiskās ziedošanas:</translation>
 <translation id="1759104587873258696">derīguma termiņš beidzas</translation>
 <translation id="6149218349077925111">kam</translation>
-<translation id="8802504113265057166">[[currency]], kas netiek izmantota līdz derīguma termiņa beigām, tiks automātiski atgriezta Brave Lietotāju izaugsmes programmā.</translation>
+<translation id="8802504113265057166">[[currency]], kas netiek izmantota līdz derīguma termiņa beigām, tiks automātiski atgriezta programmā Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Piešķīruma derīguma beigu termiņš</translation>
 <translation id="2104073734684466851">Piešķīrumi</translation>
 <translation id="6476729769006815569">Sveiki, [[name]]!</translation>
@@ -486,7 +486,7 @@
 <translation id="8307851765167460403">Vēl nav darbību…</translation>
 <translation id="8589748782214271192">Nē, paldies</translation>
 <translation id="3204579740854485097">Nepietiek [[currency]].</translation>
-<translation id="3330432260369310344">Nepietiek [[currency]]. Lūdzu</translation>
+<translation id="3330432260369310344">Nepietiek [[currency]]. Lūdzu,</translation>
 <translation id="3630697955794050612">izslēgts</translation>
 <translation id="4921250468871504777">labi</translation>
 <translation id="7866482334467279021">ieslēgts</translation>

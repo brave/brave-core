@@ -165,7 +165,7 @@
 <translation id="8576106690599421723">Devlet düzetinde reklam hedefleme</translation>
 <translation id="4775297407519948063">Bu, Brave'in sizin devletinize özel reklamları göstermesine izin verir.</translation>
 <translation id="8446884382197647889">Daha Fazla Bilgi Edinin</translation>
-<translation id="6209514229703649203">[[adsSubdivisionTarget]] olarak otomatik tespit edildi</translation>
+<translation id="6209514229703649203">Otomatik olarak [[adsSubdivisionTarget]] tespit edildi</translation>
 <translation id="8010081455002666927">Otomatik bul</translation>
 <translation id="4394049700291259645">Devre dışı bırak</translation>
 <translation id="4176463684765177261">Devre dışı</translation>
@@ -449,7 +449,7 @@
 <translation id="418343137736963579">Otomatik Bağış'tan hariç tuttuğunuz toplam site sayısı:</translation>
 <translation id="1759104587873258696">sona eriyor</translation>
 <translation id="6149218349077925111">için</translation>
-<translation id="8802504113265057166">Son kullanma tarihine kadar kullanılmayan [[currency]] otomatik olarak Brave Kullanıcı Büyüme Havuzuna iade edilecektir.</translation>
+<translation id="8802504113265057166">Son kullanma tarihine kadar kullanılmayan [[currency]] otomatik olarak Brave User Growth Pool'a iade edilecektir.</translation>
 <translation id="279567716178902927">Bağış Bitiş Tarihi</translation>
 <translation id="2104073734684466851">Yardımlar</translation>
 <translation id="6476729769006815569">Merhaba, [[name]]!</translation>

@@ -404,7 +404,7 @@
 <translation id="4396256076373444156">Optjen point mens du ser relevante reklamer som respekterer dit privatliv</translation>
 <translation id="2975780980638932742">Brave Ads er nu på markedet!</translation>
 <translation id="3361548743396744457">Støt dine favoritsider ved bare at browse – eller donér til en side når du har lyst.</translation>
-<translation id="6976444672879155794">Auto-bidrag [[processor]]</translation>
+<translation id="6976444672879155794">Auto-bidrag med [[processor]]</translation>
 <translation id="4493850495402472953">og</translation>
 <translation id="8804164990146287819">Privatlivspolitik</translation>
 <translation id="4281844954008187215">Servicevilkår</translation>
@@ -518,7 +518,7 @@
 <translation id="6354568176665589146">Tilbagevendende</translation>
 <translation id="1110535155349301542">fjern</translation>
 <translation id="8204292894173669182">Fjern fra Gemte</translation>
-<translation id="5530851178552343773">Du har afsat [[reservedAmount]] [[currency]] til skabere som endnu ikke har tilmeldt sig modtagelse af donationer. Din browser vil fortsat forsøge at donere, indtil de godkender, eller indtil der er gået 90 dage.</translation>
+<translation id="5530851178552343773">Du har afsat [[reservedAmount]] [[currency]] til skabere, som endnu ikke har tilmeldt sig modtagelse af donationer. Din browser vil fortsat forsøge at donere, indtil de godkender, eller indtil der er gået 90 dage.</translation>
 <translation id="8759753423332885148">Lær mere.</translation>
 <translation id="5939518447894949180">Nulstil</translation>
 <translation id="3157931365184549694">Gendan</translation>
@@ -625,7 +625,7 @@
 <translation id="4947094120398792493">Din præmie er på vej til din Brave Præmier tegnebog.</translation>
 <translation id="39734939514946950">Dit præmiebeløb</translation>
 <translation id="2151535059686617995">Det’er din heldige dag!</translation>
-<translation id="6436689611575806470">Din [[currency]]-bevillig er på vej.</translation>
+<translation id="6436689611575806470">Din bevilling på [[currency]] er på vej.</translation>
 <translation id="2132683977638223450">Gratis pointbevillig</translation>
 <translation id="7512440811010447157">verificer</translation>
 <translation id="8267327690882073581">Bekræft Tegnebog</translation>

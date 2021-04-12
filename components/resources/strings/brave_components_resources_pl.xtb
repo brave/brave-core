@@ -104,7 +104,7 @@
 <translation id="3294503279952534143">To okno prywatne jest bardziej prywatne</translation>
 <translation id="4644024131266615376">z połączeniem z Tor</translation>
 <translation id="8541421872680304667">Tor ukrywa Twój adres IP przed odwiedzanymi witrynami, przesyłając przeglądaną zawartość przez kilka serwerów sieci Tor, zanim do Ciebie dotrze. Tor może spowolnić przeglądanie, a niektóre witryny mogą w ogóle nie działać.</translation>
-<translation id="8897548669448660973">Używanie okien prywatnych zmienia tylko to, co Brave robi na Twoim urządzeniu – nie zmienia tego, jak zachowują się inni. Tor ukrywa Twój adres IP przed witrynami, które odwiedzasz, i trochę utrudnia (ale nie uniemożliwia) Twojemu dostawcy usług internetowych lub pracodawcy zobaczenie, jakie witryny odwiedzasz. Otwórz okno prywatne z Tor w menu lub za pomocą [[ key ]].</translation>
+<translation id="8897548669448660973">Używanie okien prywatnych zmienia tylko to, co Brave robi na Twoim urządzeniu – nie zmienia tego, jak zachowują się inni. Tor ukrywa Twój adres IP przed witrynami, które odwiedzasz, i trochę utrudnia (ale nie uniemożliwia) Twojemu dostawcy usług internetowych lub pracodawcy zobaczenie, jakie witryny odwiedzasz. Otwórz okno prywatne z Tor w menu lub za pomocą kombinacji klawiszy [[ key ]].</translation>
 <translation id="6975708438781948564">Dowiedz się więcej na temat sieci Tor w Brave</translation>
 <translation id="4712050378540986986">Status Tor</translation>
 <translation id="3368922792935385530">Połączone</translation>
@@ -165,7 +165,7 @@
 <translation id="8576106690599421723">Poziom kierowania reklam</translation>
 <translation id="4775297407519948063">Dzięki temu Brave może wyświetlać reklamy skierowanie dla Ciebie.</translation>
 <translation id="8446884382197647889">Dowiedz się więcej</translation>
-<translation id="6209514229703649203">Automatyczne rozpoznawanie jako [[adsSubdivisionTarget]]</translation>
+<translation id="6209514229703649203">Automatycznie rozpoznano jako [[adsSubdivisionTarget]]</translation>
 <translation id="8010081455002666927">Automatyczne rozpoznawanie</translation>
 <translation id="4394049700291259645">Wyłącz</translation>
 <translation id="4176463684765177261">Wyłączone</translation>
@@ -449,7 +449,7 @@
 <translation id="418343137736963579">Liczba stron wykluczonych z automatycznego wspierania:</translation>
 <translation id="1759104587873258696">wygasa dnia</translation>
 <translation id="6149218349077925111">dla</translation>
-<translation id="8802504113265057166">Tokeny [[currency]] niewykorzystane przed datą wygaśnięcia zostaną automatycznie zwrócone do puli wzrostu użytkowników przeglądarki Brave.</translation>
+<translation id="8802504113265057166">Tokeny [[currency]] niewykorzystane przed datą wygaśnięcia zostaną automatycznie zwrócone do User Growth Pool przeglądarki Brave.</translation>
 <translation id="279567716178902927">Data wygaśnięcia środków</translation>
 <translation id="2104073734684466851">Przyznane środki</translation>
 <translation id="6476729769006815569">Cześć [[name]]!</translation>
@@ -485,8 +485,8 @@
 <translation id="5736183007277264868">Aktualnie brak dostępnych tokenów.</translation>
 <translation id="8307851765167460403">Brak aktywności do tej pory…</translation>
 <translation id="8589748782214271192">Nie, dziękuję</translation>
-<translation id="3204579740854485097">Brak tokenów [[currency]].</translation>
-<translation id="3330432260369310344">Brak tokenów [[currency]]. Należy</translation>
+<translation id="3204579740854485097">Brak [[currency]].</translation>
+<translation id="3330432260369310344">Brak [[currency]]. Należy</translation>
 <translation id="3630697955794050612">wył.</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">włączone</translation>
@@ -553,14 +553,14 @@
 <translation id="459721429458957031">Użyj klucza odzyskiwania, aby przywrócić swój portfel.</translation>
 <translation id="4600052736217630789">Przywracanie za pomocą klucza odzyskiwania zastąpi obecny portfel. Przed przywróceniem upewnij się, że aktualny portfel został opróżniony lub wykonano jego kopię.</translation>
 <translation id="3267911153934785912">Wprowadź klucz odzyskiwania lub</translation>
-<translation id="1209382772199769572">Wykonaj kopię zapasową swojego portfela przed wymianą, w przeciwnym razie stracisz środki [[funds]] znajdujące się w bieżącym portfelu.</translation>
+<translation id="1209382772199769572">Wykonaj kopię zapasową swojego portfela przed wymianą, w przeciwnym razie stracisz środki ([[funds]]) znajdujące się w bieżącym portfelu.</translation>
 <translation id="5423214929210538027">Czy na pewno chcesz zresetować swój portfel nagród?</translation>
 <translation id="8683358891240311475">Twoje <ph name="BAT_AMOUNT"/> i inne dane nagród zostaną trwale utracone, jeśli zresetujesz swój portfel. Pamiętaj, żeby zweryfikować swój portfel, korzystając z <ph name="PROVIDER"/>, aby zachować swoje BAT.</translation>
 <translation id="2028613172174411919">Jeśli zresetujesz swój portfel, dane dotyczące Twoich nagród zostaną trwale utracone.</translation>
 <translation id="4914597931214386232">Tokeny odebrane</translation>
 <translation id="3494964159182650590">Podsumowanie nagród</translation>
 <translation id="1738658589626889850">Zapisz jako plik</translation>
-<translation id="2913994227901456490">Zobacz wszystkie elementy, w liczbie: [[numItems]]</translation>
+<translation id="2913994227901456490">Zobacz wszystkie elementy: [[numItems]]</translation>
 <translation id="3010479539542250179">Zobacz wszystkie strony, w liczbie [[numSites]]</translation>
 <translation id="1549705559752367917">Wyślij napiwek</translation>
 <translation id="3536298624341433814">Wyślij napiwek</translation>
@@ -625,7 +625,7 @@
 <translation id="4947094120398792493">Twoja nagroda jest w drodze do portfela Brave.</translation>
 <translation id="39734939514946950">Wysokość Twojej nagrody</translation>
 <translation id="2151535059686617995">To Twój szczęśliwy dzień!</translation>
-<translation id="6436689611575806470">Twoje tokeny [[currency]] są już w drodze.</translation>
+<translation id="6436689611575806470">Twoje [[currency]] są już w drodze.</translation>
 <translation id="2132683977638223450">Bezpłatne punkty</translation>
 <translation id="7512440811010447157">weryfikuj</translation>
 <translation id="8267327690882073581">Weryfikuj portfel</translation>
