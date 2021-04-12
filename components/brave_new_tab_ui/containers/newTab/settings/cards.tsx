@@ -28,6 +28,7 @@ import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
 import geminiBanner from './assets/gemini.png'
 import cryptoDotComBanner from './assets/crypto-dot-com.png'
+import ftxPreviewImageUrl from './assets/ftx-preview.png'
 import HideIcon from './assets/hide-icon'
 import { Toggle } from '../../../components/toggle'
 import { PlusIcon } from 'brave-ui/components/icons'
@@ -171,21 +172,19 @@ class CardsSettings extends React.PureComponent<Props, {}> {
           : null
         }
         {
-          ftxSupported
-          ? <SettingsWidget>
-              <StyledBannerImage src={cryptoDotComBanner} />
-              <StyledSettingsInfo>
-                <StyledSettingsTitle>
-                  {'FTX'}
-                </StyledSettingsTitle>
-                <StyledSettingsCopy>
-                  {/* TODO(jlamont): localize */}
-                  FTX widget description...
-                </StyledSettingsCopy>
-              </StyledSettingsInfo>
-              {this.renderToggleButton(showFTX, toggleShowFTX, false)}
-            </SettingsWidget>
-          : null
+        ftxSupported &&
+        <SettingsWidget>
+          <StyledBannerImage src={ftxPreviewImageUrl} />
+          <StyledSettingsInfo>
+            <StyledSettingsTitle>
+              FTX
+            </StyledSettingsTitle>
+            <StyledSettingsCopy>
+              {getLocale('ftxWidgetDescription')}
+            </StyledSettingsCopy>
+          </StyledSettingsInfo>
+          {this.renderToggleButton(showFTX, toggleShowFTX, false)}
+        </SettingsWidget>
         }
         <SettingsWidget>
           <StyledBannerImage src={rewardsBanner} />

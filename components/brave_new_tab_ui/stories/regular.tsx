@@ -20,6 +20,7 @@ function getActions () {
 
 // TODO(petemill): privateCDN should be in /common/
 import { getUnpaddedAsDataUrl } from '../../brave_extension/extension/brave_extension/background/today/privateCDN'
+import getFTXStorybookState from '../widgets/ftx/ftx_storybook_state'
 
 // @ts-ignore
 window.braveStorybookUnpadUrl = async function UnpadUrl (paddedUrl: string, mimeType = 'image/jpg'): Promise<string> {
@@ -58,6 +59,7 @@ export const Regular = () => {
   const todayState = getTodayState()
   return (
     <NewTabPage
+      ftx={getFTXStorybookState()}
       newTabData={newTabData}
       todayData={todayState}
       gridSitesData={gridSitesData}

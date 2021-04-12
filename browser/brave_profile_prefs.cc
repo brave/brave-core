@@ -92,9 +92,8 @@
 #include "brave/components/crypto_dot_com/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
 #include "brave/components/ftx/browser/ftx_pref_utils.h"
-#include "brave/components/ftx/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -366,7 +365,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   crypto_dot_com::RegisterPrefs(registry);
 #endif
 
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
   ftx::RegisterPrefs(registry);
 #endif
 

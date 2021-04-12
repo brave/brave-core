@@ -20,7 +20,7 @@ import {
   EditTopSite,
   EditCards
 } from '../../components/default'
-import { FTXWidget as FTX } from '../../components/widgets'
+import { FTXWidget as FTX } from '../../widgets/ftx/components'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
@@ -45,6 +45,7 @@ import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
 import { NewTabActions } from '../../constants/new_tab_types'
 import { BraveTodayState } from '../../reducers/today'
+import { FTXState } from '../../widgets/ftx/ftx_state'
 
 // NTP features
 import Settings, { TabType as SettingsTabType } from './settings'
@@ -54,6 +55,7 @@ interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
   todayData: BraveTodayState
+  ftx: FTXState
   actions: NewTabActions
   saveShowBackgroundImage: (value: boolean) => void
   saveShowStats: (value: boolean) => void
@@ -618,14 +620,6 @@ class NewTabPage extends React.Component<Props, State> {
     })
   }
 
-  onFTXOptInMarkets = (show: boolean) => {
-    this.props.actions.onFTXOptInMarkets(show)
-  }
-
-  onFTXInteraction = () => {
-    this.props.actions.onFTXInteraction()
-  }
-
   getCurrencyList = () => {
     const { accountBalances, userTLD } = this.props.newTabData.binanceState
     const { usCurrencies, comCurrencies } = currencyData
@@ -1044,7 +1038,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderFTXWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
-    const { ftxState, showFTX, textDirection, ftxSupported } = newTabData
+    const { showFTX, textDirection, ftxSupported } = newTabData
 
     if (!showFTX || !ftxSupported) {
       return null
@@ -1052,7 +1046,8 @@ class NewTabPage extends React.Component<Props, State> {
 
     return (
       <FTX
-        {...ftxState}
+        ftx={this.props.ftx}
+        actions={this.props.actions.ftx}
         isCrypto={true}
         paddingType={'none'}
         isCryptoTab={!showContent}
@@ -1065,8 +1060,7 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowFTX}
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'ftx')}
-        onInteraction={this.onFTXInteraction}
-        onOptInMarkets={this.onFTXOptInMarkets}
+        onDisconnect={this.props.ftx.isConnected ? this.props.actions.ftx.disconnect : undefined}
       />
     )
   }

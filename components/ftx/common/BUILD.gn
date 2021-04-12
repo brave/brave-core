@@ -1,10 +1,9 @@
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 
-assert(ftx_enabled)
+assert(enable_ftx)
 
 source_set("common") {
     sources = [
-        "pref_names.cc",
         "pref_names.h",
     ]
 }

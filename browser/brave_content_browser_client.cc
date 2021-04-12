@@ -128,7 +128,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/gemini/gemini_protocol_handler.h"
 #endif
 
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
 #include "brave/browser/ftx/ftx_protocol_handler.h"
 #endif
 
@@ -347,7 +347,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   }
 #endif
 
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
   if (ftx::IsFTXProtocol(url)) {
     ftx::HandleFTXProtocol(url, std::move(web_contents_getter), page_transition,
                            has_user_gesture, initiating_origin);

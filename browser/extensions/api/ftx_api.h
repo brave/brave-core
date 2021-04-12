@@ -1,7 +1,7 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_FTX_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_FTX_API_H_
@@ -69,14 +69,12 @@ class FtxGetClientUrlFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class FtxGetAccessTokenFunction : public ExtensionFunction {
+class FtxDisconnectFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("ftx.getAccessToken", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("ftx.disconnect", UNKNOWN)
 
  protected:
-  ~FtxGetAccessTokenFunction() override {}
-  void OnCodeResult(bool success);
-
+  ~FtxDisconnectFunction() override {}
   ResponseAction Run() override;
 };
 

@@ -12,7 +12,6 @@ import("//brave/browser/component_updater/sources.gni")
 import("//brave/browser/crypto_dot_com/sources.gni")
 import("//brave/browser/decentralized_dns/sources.gni")
 import("//brave/browser/download/sources.gni")
-import("//brave/browser/ftx/sources.gni")
 import("//brave/browser/gemini/sources.gni")
 import("//brave/browser/greaselion/sources.gni")
 import("//brave/browser/importer/sources.gni")
@@ -33,6 +32,7 @@ import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -289,6 +289,10 @@ if (enable_brave_perf_predictor) {
       [ "//brave/components/brave_perf_predictor/browser" ]
 }
 
+if (enable_ftx) {
+  brave_chrome_browser_deps += [ "//brave/browser/ftx" ]
+}
+
 if (is_win && is_official_build) {
   brave_chrome_browser_sources += [
     "//chrome/browser/google/google_update_win.cc",
@@ -313,7 +317,6 @@ brave_chrome_browser_sources += brave_browser_component_updater_sources
 brave_chrome_browser_sources += brave_browser_crypto_dot_com_sources
 brave_chrome_browser_sources += brave_browser_decentralized_dns_sources
 brave_chrome_browser_sources += brave_browser_download_sources
-brave_chrome_browser_sources += brave_browser_ftx_sources
 brave_chrome_browser_sources += brave_browser_gemini_sources
 brave_chrome_browser_sources += brave_browser_greaselion_sources
 brave_chrome_browser_sources += brave_browser_importer_sources
@@ -333,7 +336,6 @@ brave_chrome_browser_deps += brave_browser_component_updater_deps
 brave_chrome_browser_deps += brave_browser_crypto_dot_com_deps
 brave_chrome_browser_deps += brave_browser_decentralized_dns_deps
 brave_chrome_browser_deps += brave_browser_download_deps
-brave_chrome_browser_deps += brave_browser_ftx_deps
 brave_chrome_browser_deps += brave_browser_gemini_deps
 brave_chrome_browser_deps += brave_browser_greaselion_deps
 brave_chrome_browser_deps += brave_browser_importer_deps

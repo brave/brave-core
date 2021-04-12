@@ -52,7 +52,7 @@
 #include "brave/components/decentralized_dns/pref_names.h"
 #endif
 
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
 #include "brave/components/ftx/common/pref_names.h"
 #endif
 
@@ -144,7 +144,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kCryptoDotComNewTabPageShowCryptoDotCom] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
   (*s_brave_allowlist)[kFTXNewTabPageShowFTX] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif

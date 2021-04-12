@@ -5,8 +5,8 @@ export default function customizeTheme (theme: IBraveTheme): IBraveTheme {
     ...theme,
     color: {
       ...theme.color,
-      primaryBackground: "rgba(2, 166, 194, 1)",
-      secondaryBackground: "rgba(33, 46, 60, 1)"
+      primaryBackground: 'rgba(2, 166, 194, 1)',
+      secondaryBackground: 'rgba(33, 46, 60, 1)'
     }
   }
 }

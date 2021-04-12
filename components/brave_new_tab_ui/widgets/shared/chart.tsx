@@ -4,16 +4,13 @@ import { SVG } from './styles'
 interface ChartConfig {
   width: number
   height: number
-  data: Array<any>
+  data: Array<ChartDataPoint>
 }
 
-interface ChartDataPoint {
+export interface ChartDataPoint {
   c: number
   h: number
   l: number
-  o: number
-  t: number
-  v: number
 }
 
 const plotData = ({ data, height, width }: ChartConfig) => {

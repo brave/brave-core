@@ -10,7 +10,8 @@ const widgets = {
   'binance': 'showBinance',
   'together': 'showTogether',
   'gemini': 'showGemini',
-  'cryptoDotCom': 'showCryptoDotCom'
+  'cryptoDotCom': 'showCryptoDotCom',
+  'ftx': 'showFTX'
 }
 
 const removeStackWidget = (widget: NewTab.StackWidget, state: NewTab.State): NewTab.State => {
@@ -50,15 +51,6 @@ const setForegroundStackWidget = (widget: NewTab.StackWidget, state: NewTab.Stat
 }
 
 const handleWidgetPrefsChange = (state: NewTab.State, oldState: NewTab.State): NewTab.State => {
-  const widgets = {
-    'rewards': 'showRewards',
-    'binance': 'showBinance',
-    'together': 'showTogether',
-    'gemini': 'showGemini',
-    'cryptoDotCom': 'showCryptoDotCom',
-    'ftx': 'showFTX'
-  }
-
   for (const val in widgets) {
     const widget = val as NewTab.StackWidget
     const showKey = widgets[widget]

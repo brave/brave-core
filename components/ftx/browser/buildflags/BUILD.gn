@@ -4,6 +4,6 @@ import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
-    "FTX_ENABLED=$ftx_enabled",
+    "ENABLE_FTX=$enable_ftx",
   ]
 }

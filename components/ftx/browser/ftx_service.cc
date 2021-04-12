@@ -1,7 +1,7 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ftx/browser/ftx_service.h"
 
@@ -9,7 +9,9 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/json/json_writer.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ftx/browser/ftx_json_parser.h"
 #include "brave/components/ftx/common/pref_names.h"
@@ -19,6 +21,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
+#include "net/base/escape.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -39,7 +42,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "This service is used to communicate with FTX "
           "on behalf of the user interacting with the FTX widget."
         trigger:
-          "Triggered by user connecting the FTX widget."
+          "Triggered by using the FTX widget."
         data:
           "Account balance for the widget."
         destination: WEBSITE
@@ -58,6 +61,14 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
   return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
 }
 
+void BuildFormEncoding(const std::string& key,
+                       const std::string& value,
+                       std::string* out) {
+  if (!out->empty())
+    out->append("&");
+  out->append(key + "=" + net::EscapeUrlEncodedData(value, true));
+}
+
 }  // namespace
 
 FTXService::FTXService(content::BrowserContext* context)
@@ -67,15 +78,34 @@ FTXService::FTXService(content::BrowserContext* context)
       url_loader_factory_(
           content::BrowserContext::GetDefaultStoragePartition(context_)
               ->GetURLLoaderFactoryForBrowserProcess()),
-      weak_factory_(this) {}
+      weak_factory_(this) {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  // Get access token from prefs
+  std::string encoded_encrypted_access_token =
+      prefs->GetString(kFTXAccessToken);
+  std::string encrypted_access_token;
+  if (!base::Base64Decode(encoded_encrypted_access_token,
+                          &encrypted_access_token)) {
+    LOG(ERROR) << "FTX: Could not decode Token info from prefs";
+  } else {
+    if (!OSCrypt::DecryptString(encrypted_access_token, &access_token_)) {
+      LOG(ERROR) << "FTX: Could not decrypt and save access token";
+    }
+  }
+}
 
 FTXService::~FTXService() {}
+
+void FTXService::Shutdown() {
+  url_loaders_.clear();
+}
 
 bool FTXService::GetFuturesData(GetFuturesDataCallback callback) {
   auto internal_callback = base::BindOnce(
       &FTXService::OnFuturesData, base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, get_futures_data_path);
-  return NetworkRequest(url, "GET", "", std::move(internal_callback), false);
+  return NetworkRequest(url, "GET", "", "",
+      std::move(internal_callback), false);
 }
 
 void FTXService::OnFuturesData(
@@ -100,9 +130,14 @@ bool FTXService::GetChartData(const std::string& symbol,
       api_host, std::string(get_market_data_path) + "/" + symbol + "/candles");
   url = net::AppendQueryParameter(url, "resolution", "14400");
   url = net::AppendQueryParameter(url, "limit", "42");
-  url = net::AppendQueryParameter(url, "start_time", start);
-  url = net::AppendQueryParameter(url, "end_time", end);
-  return NetworkRequest(url, "GET", "", std::move(internal_callback), false);
+  if (!start.empty()) {
+    url = net::AppendQueryParameter(url, "start_time", start);
+  }
+  if (!end.empty()) {
+    url = net::AppendQueryParameter(url, "end_time", end);
+  }
+  return NetworkRequest(url, "GET", "", "",
+      std::move(internal_callback), false);
 }
 
 void FTXService::OnChartData(
@@ -122,7 +157,7 @@ bool FTXService::GetAccountBalances(GetAccountBalancesCallback callback) {
       base::BindOnce(&FTXService::OnGetAccountBalances, base::Unretained(this),
                      std::move(callback));
   GURL url = GetOAuthURL(oauth_balances_path);
-  return NetworkRequest(url, "GET", "", std::move(internal_callback), true);
+  return NetworkRequest(url, "GET", "", "", std::move(internal_callback), true);
 }
 
 void FTXService::OnGetAccountBalances(
@@ -154,44 +189,44 @@ std::string FTXService::GetTokenHeader() {
 }
 
 std::string FTXService::GetOAuthClientUrl() {
-  GURL url = GetOAuthURL(oauth_path);
-  url = net::AppendQueryParameter(url, "response_type", "code");
-  url = net::AppendQueryParameter(url, "client_id", client_id_);
-  url = net::AppendQueryParameter(
-      url, "state", ntp_widget_utils::GetCryptoRandomString(false));
-  url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
+  // This particular FTX Url has a strange format. It is parameterized as if
+  // it has a query param, except the params are the last path segment.
+  auto state = ntp_widget_utils::GetCryptoRandomString(false);
+  std::string path = std::string(oauth_path) + "/response_type=code" +
+      "&client_id=" + net::EscapeQueryParamValue(client_id_, true) +
+      "&state=" + net::EscapeQueryParamValue(state, true) +
+      "&redirect_uri=" + net::EscapeQueryParamValue(oauth_callback, true);
+  GURL url = GetOAuthURL(path);
   return url.spec();
 }
 
-bool FTXService::GetAccessToken(GetAccessTokenCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&FTXService::OnGetAccessToken, base::Unretained(this),
-                     std::move(callback));
+bool FTXService::AuthenticateFromAuthToken(const std::string& auth_token) {
   GURL url = GetOAuthURL(oauth_token_path);
-  url = net::AppendQueryParameter(url, "grant_type", "code");
-  url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
-  url = net::AppendQueryParameter(url, "code", auth_token_);
-  auth_token_.clear();
+  std::string body;
+  // This is the only API POST that needs to be in form type.
+  BuildFormEncoding("grant_type", "code", &body);
+  BuildFormEncoding("redirect_uri", oauth_callback, &body);
+  BuildFormEncoding("code", auth_token, &body);
   access_token_.clear();
-  return NetworkRequest(url, "POST", url.query(), std::move(internal_callback),
-                        true);
-}
+  // Handle response from API network call
+  auto onRequest = base::BindOnce(
+      [](FTXService* service,
+          const int status, const std::string& body,
+          const std::map<std::string, std::string>& headers) {
+      std::string access_token;
+      if (status >= 200 && status <= 299) {
+        if (FTXJSONParser::GetAccessTokenFromJSON(body, &access_token)) {
+          service->SetAccessToken(access_token);
+        } else {
+          LOG(ERROR) << "ftx: unable to parse access token";
+        }
+      } else {
+        LOG(ERROR) << "ftx: bad access token status" << status;
+      }
+    }, base::Unretained(this));
 
-void FTXService::OnGetAccessToken(
-    GetAccessTokenCallback callback,
-    const int status,
-    const std::string& body,
-    const std::map<std::string, std::string>& headers) {
-  std::string access_token;
-  if (status >= 200 && status <= 299) {
-    if (FTXJSONParser::GetAccessTokenFromJSON(body, &access_token)) {
-      LOG(ERROR) << "going to set access token: " << access_token;
-      SetAccessToken(access_token);
-    } else {
-      LOG(ERROR) << "bad access token, body: " << body;
-    }
-  }
-  std::move(callback).Run(!access_token.empty());
+  return NetworkRequest(url, "POST", body, "application/x-www-form-urlencoded",
+      std::move(onRequest), true);
 }
 
 bool FTXService::GetConvertQuote(
@@ -202,11 +237,18 @@ bool FTXService::GetConvertQuote(
   auto internal_callback = base::BindOnce(&FTXService::OnGetConvertQuote,
       base::Unretained(this), std::move(callback));
   GURL url = GetOAuthURL(oauth_quote_path);
-  url = net::AppendQueryParameter(url, "fromCoin", from);
-  url = net::AppendQueryParameter(url, "toCoin", to);
-  url = net::AppendQueryParameter(url, "size", amount);
-  return NetworkRequest(url, "POST", url.query(), std::move(internal_callback),
-                        true);
+  base::Value request_data(base::Value::Type::DICTIONARY);
+  request_data.SetStringKey("fromCoin", from);
+  request_data.SetStringKey("toCoin", to);
+  request_data.SetStringKey("size", amount);
+  std::string body;
+  if (!base::JSONWriter::Write(request_data, &body)) {
+    LOG(ERROR) << "FTX: Could not serialize convert quote body data!";
+    std::move(callback).Run("");
+    return false;
+  }
+  return NetworkRequest(url, "POST", body, "application/json",
+      std::move(internal_callback), true);
 }
 
 void FTXService::OnGetConvertQuote(
@@ -225,7 +267,7 @@ bool FTXService::GetConvertQuoteInfo(const std::string& quote_id,
   auto internal_callback = base::BindOnce(&FTXService::OnGetConvertQuoteInfo,
       base::Unretained(this), std::move(callback));
   GURL url = GetOAuthURL(std::string(oauth_quote_path) + "/" + quote_id);
-  return NetworkRequest(url, "GET", "", std::move(internal_callback), true);
+  return NetworkRequest(url, "GET", "", "", std::move(internal_callback), true);
 }
 
 void FTXService::OnGetConvertQuoteInfo(
@@ -247,7 +289,8 @@ bool FTXService::ExecuteConvertQuote(const std::string& quote_id,
       base::Unretained(this), std::move(callback));
   GURL url = GetOAuthURL(
       std::string(oauth_quote_path) + "/" + quote_id + "/accept");
-  return NetworkRequest(url, "POST", "", std::move(internal_callback), true);
+  return NetworkRequest(url, "POST", "", "",
+      std::move(internal_callback), true);
 }
 
 void FTXService::OnExecuteConvertQuote(
@@ -255,10 +298,6 @@ void FTXService::OnExecuteConvertQuote(
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
   std::move(callback).Run(status >= 200 && status <= 299);
-}
-
-void FTXService::SetAuthToken(const std::string& auth_token) {
-  auth_token_ = auth_token;
 }
 
 bool FTXService::SetAccessToken(const std::string& access_token) {
@@ -279,9 +318,16 @@ bool FTXService::SetAccessToken(const std::string& access_token) {
   return true;
 }
 
+void FTXService::ClearAuth() {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  access_token_.clear();
+  prefs->ClearPref(kFTXAccessToken);
+}
+
 bool FTXService::NetworkRequest(const GURL& url,
                                 const std::string& method,
                                 const std::string& post_data,
+                                const std::string& post_data_type,
                                 URLRequestCallback callback,
                                 bool set_auth_header) {
   auto request = std::make_unique<network::ResourceRequest>();
@@ -298,9 +344,8 @@ bool FTXService::NetworkRequest(const GURL& url,
 
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
-  if (!post_data.empty()) {
-    url_loader->AttachStringForUpload(post_data,
-                                      "application/x-www-form-urlencoded");
+  if (!post_data.empty() && !post_data_type.empty()) {
+    url_loader->AttachStringForUpload(post_data, post_data_type);
   }
   url_loader->SetRetryOptions(
       kRetriesCountOnNetworkChange,
@@ -315,7 +360,7 @@ bool FTXService::NetworkRequest(const GURL& url,
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory,
       base::BindOnce(&FTXService::OnURLLoaderComplete, base::Unretained(this),
-                     std::move(iter), std::move(callback)));
+                    iter, std::move(callback)));
 
   return true;
 }
@@ -349,8 +394,8 @@ void FTXService::OnURLLoaderComplete(
 
 base::SequencedTaskRunner* FTXService::io_task_runner() {
   if (!io_task_runner_) {
-    io_task_runner_ = base::CreateSequencedTaskRunner(
-        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+    io_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return io_task_runner_.get();

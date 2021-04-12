@@ -1,7 +1,7 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ftx/ftx_protocol_handler.h"
 
@@ -61,11 +61,20 @@ void LoadNewTabURL(const GURL& url,
     std::string auth_token = parts["code"];
     Profile* profile =
         Profile::FromBrowserContext(web_contents->GetBrowserContext());
-    FTXServiceFactory::GetInstance()->GetForProfile(profile)->SetAuthToken(
-        auth_token);
+    auto* service = FTXServiceFactory::GetInstance()->GetForProfile(profile);
+    if (service) {
+      service->AuthenticateFromAuthToken(auth_token);
+    }
+  } else {
+    LOG(ERROR) << "FTX: could not get code from callback";
+    // Handle failure
+    web_contents->GetController().LoadURL(GURL("chrome://newtab?ftxAuthError"),
+                                      content::Referrer(), page_transition,
+                                      std::string());
+    return;
   }
-
-  web_contents->GetController().LoadURL(GURL("chrome://newtab?ftxAuth=1"),
+  // Handle success
+  web_contents->GetController().LoadURL(GURL("chrome://newtab?ftxAuthSuccess"),
                                         content::Referrer(), page_transition,
                                         std::string());
 }

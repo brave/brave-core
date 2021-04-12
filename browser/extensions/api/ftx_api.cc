@@ -1,7 +1,7 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/extensions/api/ftx_api.h"
 
@@ -30,21 +30,17 @@ FTXService* GetFTXService(content::BrowserContext* context) {
       Profile::FromBrowserContext(context));
 }
 
-bool IsFTXAPIAvailable(content::BrowserContext* context) {
-  return brave::IsRegularProfile(context);
-}
-
 }  // namespace
 
 namespace extensions {
 namespace api {
 
 ExtensionFunction::ResponseAction FtxGetFuturesDataFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
-  auto* service = GetFTXService(browser_context());
   bool data_request = service->GetFuturesData(
       base::BindOnce(&FtxGetFuturesDataFunction::OnFuturesData, this));
 
@@ -58,11 +54,12 @@ ExtensionFunction::ResponseAction FtxGetFuturesDataFunction::Run() {
 void FtxGetFuturesDataFunction::OnFuturesData(const FTXFuturesData& data) {
   base::ListValue result;
 
-  for (const auto& data_point : data) {
+  for (const TokenPriceData& currency : data) {
     auto point = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-    for (const auto& att : data_point) {
-      point->SetStringKey(att.first, att.second);
-    }
+    point->SetStringKey("symbol", currency.symbol);
+    point->SetDoubleKey("price", currency.price);
+    point->SetDoubleKey("percentChangeDay", currency.percentChangeDay);
+    point->SetDoubleKey("volumeDay", currency.volumeDay);
     result.Append(std::move(point));
   }
 
@@ -70,7 +67,8 @@ void FtxGetFuturesDataFunction::OnFuturesData(const FTXFuturesData& data) {
 }
 
 ExtensionFunction::ResponseAction FtxGetChartDataFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
@@ -78,7 +76,6 @@ ExtensionFunction::ResponseAction FtxGetChartDataFunction::Run() {
       ftx::GetChartData::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  auto* service = GetFTXService(browser_context());
   bool data_request = service->GetChartData(
       params->symbol, params->start, params->end,
       base::BindOnce(&FtxGetChartDataFunction::OnChartData, this));
@@ -96,7 +93,7 @@ void FtxGetChartDataFunction::OnChartData(const FTXChartData& data) {
   for (const auto& data_point : data) {
     auto point = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
     for (const auto& att : data_point) {
-      point->SetStringKey(att.first, att.second);
+      point->SetDoubleKey(att.first, att.second);
     }
     result.Append(std::move(point));
   }
@@ -105,7 +102,8 @@ void FtxGetChartDataFunction::OnChartData(const FTXChartData& data) {
 }
 
 ExtensionFunction::ResponseAction FtxSetOauthHostFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
@@ -124,7 +122,8 @@ ExtensionFunction::ResponseAction FtxSetOauthHostFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction FtxGetOauthHostFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
@@ -135,42 +134,33 @@ ExtensionFunction::ResponseAction FtxGetOauthHostFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction FtxGetClientUrlFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
-  auto* service = GetFTXService(browser_context());
   const std::string client_url = service->GetOAuthClientUrl();
 
   return RespondNow(OneArgument(base::Value(client_url)));
 }
 
-ExtensionFunction::ResponseAction FtxGetAccessTokenFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+ExtensionFunction::ResponseAction FtxDisconnectFunction::Run() {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
-  auto* service = GetFTXService(browser_context());
-  bool token_request = service->GetAccessToken(
-      base::BindOnce(&FtxGetAccessTokenFunction::OnCodeResult, this));
+  service->ClearAuth();
 
-  if (!token_request) {
-    return RespondNow(Error("Could not make request for access token"));
-  }
-
-  return RespondLater();
-}
-
-void FtxGetAccessTokenFunction::OnCodeResult(bool success) {
-  Respond(OneArgument(base::Value(success)));
+  return RespondNow(NoArguments());
 }
 
 ExtensionFunction::ResponseAction FtxGetAccountBalancesFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
-  auto* service = GetFTXService(browser_context());
   bool balance_success = service->GetAccountBalances(base::BindOnce(
       &FtxGetAccountBalancesFunction::OnGetAccountBalances, this));
 
@@ -187,7 +177,7 @@ void FtxGetAccountBalancesFunction::OnGetAccountBalances(
   base::Value result(base::Value::Type::DICTIONARY);
 
   for (const auto& balance : balances) {
-    result.SetStringKey(balance.first, balance.second);
+    result.SetDoubleKey(balance.first, balance.second);
   }
 
   Respond(TwoArguments(std::move(result), base::Value(auth_invalid)));
@@ -201,7 +191,8 @@ ExtensionFunction::ResponseAction FtxIsSupportedFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction FtxGetConvertQuoteFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
@@ -209,7 +200,6 @@ ExtensionFunction::ResponseAction FtxGetConvertQuoteFunction::Run() {
       ftx::GetConvertQuote::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  auto* service = GetFTXService(browser_context());
   bool data_request = service->GetConvertQuote(
       params->from, params->to, params->amount,
       base::BindOnce(&FtxGetConvertQuoteFunction::OnConvertQuote, this));
@@ -226,7 +216,8 @@ void FtxGetConvertQuoteFunction::OnConvertQuote(const std::string& quote_id) {
 }
 
 ExtensionFunction::ResponseAction FtxGetConvertQuoteInfoFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
@@ -234,7 +225,6 @@ ExtensionFunction::ResponseAction FtxGetConvertQuoteInfoFunction::Run() {
       ftx::GetConvertQuoteInfo::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  auto* service = GetFTXService(browser_context());
   bool data_request = service->GetConvertQuoteInfo(
       params->quote_id,
       base::BindOnce(
@@ -258,7 +248,8 @@ void FtxGetConvertQuoteInfoFunction::OnConvertQuoteInfo(const std::string& cost,
 }
 
 ExtensionFunction::ResponseAction FtxExecuteConvertQuoteFunction::Run() {
-  if (!IsFTXAPIAvailable(browser_context())) {
+  auto* service = GetFTXService(browser_context());
+  if (!service) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
@@ -266,7 +257,6 @@ ExtensionFunction::ResponseAction FtxExecuteConvertQuoteFunction::Run() {
       ftx::ExecuteConvertQuote::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  auto* service = GetFTXService(browser_context());
   bool data_request = service->ExecuteConvertQuote(
       params->quote_id,
       base::BindOnce(

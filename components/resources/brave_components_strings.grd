@@ -1095,6 +1095,10 @@
       <message name="IDS_GEMINI_WIDGET_TOTAL_PRICE" desc="">Total Spent</message>
       <message name="IDS_GEMINI_WIDGET_TOTAL_AMOUNT" desc="">Total Received</message>
 
+      <message name="IDS_CRYPTO_CONVERT_AMOUNT_PLACEHOLDER" desc="Text box placeholder for cyrptocurrency amount user wishes to convert to another currency">
+        I want to convert…
+      </message>
+
       <!-- WebUI Brave Toolbar resources -->
       <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the brave://wallets page">Crypto Wallets</message>
       <!-- WebUI Crypto Wallets resources -->
@@ -1115,7 +1119,9 @@
       <part file="speedreader_strings.grdp" />
       <part file="wallet_strings.grdp" />
       <part file="tor_strings.grdp" />
-      <part file="ftx_strings.grdp" />
+      <if expr="enable_ftx">
+        <part file="ftx_strings.grdp" />
+      </if>
     </messages>
   </release>
 </grit>

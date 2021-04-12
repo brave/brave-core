@@ -1,7 +1,7 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_BROWSER_FTX_FTX_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_FTX_FTX_SERVICE_FACTORY_H_
@@ -23,13 +23,14 @@ class FTXServiceFactory : public BrowserContextKeyedServiceFactory {
   FTXServiceFactory();
   ~FTXServiceFactory() override;
 
+  FTXServiceFactory(const FTXServiceFactory&) = delete;
+  FTXServiceFactory& operator=(FTXServiceFactory&) = delete;
+
   // BrowserContextKeyedServiceFactory overrides:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(FTXServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_FTX_FTX_SERVICE_FACTORY_H_

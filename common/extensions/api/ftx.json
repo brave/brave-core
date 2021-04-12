@@ -112,20 +112,14 @@
         ]
       },
       {
-        "name": "getAccessToken",
+        "name": "disconnect",
         "type": "function",
-        "description": "Facilitates access token creation given a temporary code",
+        "description": "Clear auth",
         "parameters": [
           {
             "type": "function",
             "name": "callback",
-            "parameters": [
-              {
-                "name": "success",
-                "type": "boolean",
-                "description": "Indicates the access token was retrieved successfully"
-              }
-            ]
+            "parameters": [ ]
           }
         ]
       },

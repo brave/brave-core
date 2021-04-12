@@ -45,7 +45,7 @@ grit("static_resources") {
     "ipfs_enabled=$ipfs_enabled",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "decentralized_dns_enabled=$decentralized_dns_enabled",
-    "ftx_enabled=$ftx_enabled",
+    "enable_ftx=$enable_ftx",
   ]
 
   grit_flags = [
@@ -117,7 +117,7 @@ grit("strings") {
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "enable_tor=$enable_tor",
     "enable_sidebar=$enable_sidebar",
-    "ftx_enabled=$ftx_enabled",
+    "enable_ftx=$enable_ftx",
   ]
 
   foreach(locale, locales_with_pseudolocales) {

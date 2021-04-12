@@ -158,7 +158,7 @@ source_set("extensions") {
     ]
   }
 
-  if (ftx_enabled) {
+  if (enable_ftx) {
     sources += [
       "api/ftx_api.cc",
       "api/ftx_api.h",

@@ -50,7 +50,7 @@ using ntp_background_images::ViewCounterServiceFactory;
 #include "brave/components/crypto_dot_com/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
 #include "brave/components/ftx/common/pref_names.h"
 #endif
 
@@ -126,7 +126,7 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       "showCryptoDotCom",
       prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
 #endif
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
   pref_data.SetBoolean("showFTX", prefs->GetBoolean(kFTXNewTabPageShowFTX));
 #endif
   return pref_data;
@@ -362,7 +362,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
 #endif
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
   pref_change_registrar_.Add(
       kFTXNewTabPageShowFTX,
       base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
@@ -486,7 +486,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settingsKeyInput == "showCryptoDotCom") {
     settingsKey = kCryptoDotComNewTabPageShowCryptoDotCom;
 #endif
-#if BUILDFLAG(FTX_ENABLED)
+#if BUILDFLAG(ENABLE_FTX)
   } else if (settingsKeyInput == "showFTX") {
     settingsKey = kFTXNewTabPageShowFTX;
 #endif

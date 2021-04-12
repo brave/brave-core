@@ -208,20 +208,39 @@ declare namespace chrome.cryptoDotCom {
 }
 
 declare namespace chrome.ftx {
-  const getFuturesData: (callback: (data: any[]) => void) => {}
-  const getChartData: (symbol: string, start: string, end: string, callback: (data: any[]) => void) => {}
-
   type FTXOauthHost = 'ftx.us' | 'ftx.com'
+  type TokenPriceData = {
+    symbol: string
+    price: number
+    percentChangeDay: number
+    volumeDay: number
+  }
+  type Balances = {
+    [CurrencyName: string]: number
+  }
+  type ChartPoint = {
+    high: number
+    low: number
+    close: number
+  }
+  type ChartData = ChartPoint[]
+  type QuoteInfo = {
+    cost: string
+    price: string
+    proceeds: string
+  }
+  const getFuturesData: (callback: (data: TokenPriceData[]) => void) => {}
+  const getChartData: (symbol: string, start: string, end: string, callback: (data: ChartData) => unknown) => {}
   const setOauthHost: (host: FTXOauthHost) => void
   const getOauthHost: (callback: (host: FTXOauthHost) => void) => {}
   const getClientUrl: (callback: (clientUrl: string) => void) => {}
-  const getAccessToken: (callback: (success: boolean) => void) => {}
 
-  const getAccountBalances: (callback: (balances: Record<string, string>, authInvalid: boolean) => void) => {}
+  const getAccountBalances: (callback: (balances: Balances, authInvalid: boolean) => void) => {}
   const getConvertQuote: (from: string, to: string, amount: string, callback: (quoteId: string) => void) => {}
-  const getConvertQuoteInfo: (quoteId: string, callback: (quote: any) => void) => {}
+  const getConvertQuoteInfo: (quoteId: string, callback: (quote: QuoteInfo) => void) => {}
   const executeConvertQuote: (quoteId: string, callback: (success: boolean) => void) => {}
   const isSupported: (callback: (supported: boolean) => void) => {}
+  const disconnect: (callback: () => void) => {}
 }
 
 declare namespace chrome.braveTogether {

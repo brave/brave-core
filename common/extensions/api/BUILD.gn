@@ -33,7 +33,7 @@ json_features("api_features") {
     sources += [ "_gemini_api_features.json" ]
   }
 
-  if (ftx_enabled) {
+  if (enable_ftx) {
     sources += [ "_ftx_api_features.json" ]
   }
 
@@ -97,7 +97,7 @@ if (gemini_enabled) {
   brave_extensions_api_schema_sources += [ "gemini.json" ]
 }
 
-if (ftx_enabled) {
+if (enable_ftx) {
   brave_extensions_api_schema_sources += [ "ftx.json" ]
 }
 
