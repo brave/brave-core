@@ -28,6 +28,7 @@ declare_args() {
   build_omaha = false
   tag_ap = ""
   target_apk_base = ""
+  target_output = ""
   brave_android_keystore_path = "."
   brave_android_keystore_name = ""
   brave_android_keystore_password = ""
@@ -133,16 +134,20 @@ if (is_win) {
 
 is_release_channel = brave_channel == ""
 
-brave_aab_output = ""
+brave_apk_or_aab_output = ""
 if (is_android) {
-  brave_aab_output += "$root_out_dir/apks/Brave"
+  brave_apk_or_aab_output += "$root_out_dir/apks/Brave"
   if (target_apk_base == "modern") {
     assert(target_cpu != "arm64" && target_cpu != "x64")
-    brave_aab_output += "Modern"
+    brave_apk_or_aab_output += "Modern"
   } else if (target_cpu == "arm64" || target_cpu == "x64" ||
              target_apk_base == "mono") {
-    brave_aab_output += "Mono"
+    brave_apk_or_aab_output += "Mono"
   }
 
-  brave_aab_output += "$target_cpu.aab"
+  if (target_output == "aab") {
+    brave_apk_or_aab_output += "$target_cpu.aab"
+  } else {
+    brave_apk_or_aab_output += "$target_cpu.apk"
+  }
 }

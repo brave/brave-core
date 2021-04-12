@@ -57,6 +57,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
+  .option('--target_output <target_output>', 'target Android output format (apk, aab)', 'apk')
   .arguments('[build_config]')
   .action(gnCheck)
 
@@ -71,6 +72,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
+  .option('--target_output <target_output>', 'target Android output format (apk, aab)', 'apk')
   .option('--android_override_version_name <android_override_version_name>', 'Android version number')
   .option('--mac_signing_identifier <id>', 'The identifier to use for signing')
   .option('--mac_signing_keychain <keychain>', 'The identifier to use for signing', 'login')
@@ -134,6 +136,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
+  .option('--target_output <target_output>', 'target Android output format (apk, aab)', 'apk')
   .option('--universal', 'build a universal binary distribution')
   .option('--is_asan', 'is asan enabled')
   .option('--use_goma', 'whether to use Goma for building')

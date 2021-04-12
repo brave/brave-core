@@ -19,7 +19,7 @@ action("create_symbol_archive") {
   inputs = [
     script,
     shell_script,
-    brave_aab_output,
+    brave_apk_or_aab_output,
   ]
 
   outputs = [ archive_name ]
