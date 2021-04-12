@@ -100,11 +100,11 @@
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "Fingeravtrykk blokkert (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "Fingeravtrykk blokkert (strengt, kan ødelegge nettsteder)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
@@ -174,6 +174,10 @@
   "addBlockElement": {
     "message": "Blokker element via velger",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "manageCustomFilters": {
+    "message": "Administrer spesialtilpassede filtre",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "advancedView": {
     "message": "Avansert visning",

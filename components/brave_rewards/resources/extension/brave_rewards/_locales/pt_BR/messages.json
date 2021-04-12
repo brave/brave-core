@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Quando você ganha recompensas",
+    "message": "Quando você recebe recompensas?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Utilizando as Recompensas Brave, você está ajudando a transformar a web em um lugar melhor para todos. E isso é incrível!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verificar sua carteira",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Para sacar os tokens que ganha com a visualização de anúncios, você precisará verificar sua carteira.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Fazer isso depois",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verificar minha carteira",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "A carteira bitFlyer é um serviço gerenciado pela bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Ao verificar sua carteira e vinculá-la a uma conta da bitFlyer, você poderá armazenar e gerenciar com mais facilidade os tokens que ganhou por meio do Brave Rewards",
     "description": ""
   },
   "bapDeprecationHeader": {

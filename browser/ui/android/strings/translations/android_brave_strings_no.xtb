@@ -17,6 +17,8 @@
 <translation id="9148058034647219655">Avslutt</translation>
 <translation id="520895744850022668">HTTPS Overalt</translation>
 <translation id="8710614491157212477">Åpner nettsteder som støttes, ved bruk av HTTPS i stedet for HTTP når det er mulig</translation>
+<translation id="4022987104439075738">IPFS-gateway</translation>
+<translation id="2688519859165248360">Tillater navigering til IPFS-ressurser gjennom en IPFS-inngangsport</translation>
 <translation id="8387201461264842096">Annonseblokkering</translation>
 <translation id="1934885595886623674">Hindrer innlasting av annonser</translation>
 <translation id="7458422973722236530">Fingeravtrykkbeskyttelse</translation>

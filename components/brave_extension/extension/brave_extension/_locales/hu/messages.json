@@ -175,6 +175,10 @@
     "message": "Elem letiltása a választóval",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "Egyedi szűrők kezelése",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "Speciális nézet",
     "description": "Message for the advanced view option"

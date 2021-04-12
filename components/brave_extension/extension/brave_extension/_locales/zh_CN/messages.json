@@ -175,13 +175,9 @@
     "message": "通过选择器拦截元素",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
-  "resetSiteFilterSettings": {
-    "message": "清除此站点的 CSS 规则",
-    "description": "Message for context menu that resets the site filters for cosmetic filtering"
-  },
-  "resetAllFilterSettings": {
-    "message": "清除所有站点的 CSS 规则",
-    "description": "Message for context menu that resets all cosmetic filters"
+  "manageCustomFilters": {
+    "message": "管理自定义过滤器",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "advancedView": {
     "message": "高级视图",

@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">Открыть Приватное окно с Tor</translation>
 <translation id="1725356094208762656">Открыть в Tor</translation>
 <translation id="7643538479215207633">Открыть с помощью IPFS</translation>
+<translation id="3094628781200061820">Публиковать файлы из IPFS</translation>
 <translation id="1672270084584211506">Доступен Onion</translation>
 <translation id="1434416574322382019">Новое Приватное Окно с Тор</translation>
 <translation id="4703780849509456860">Открыть Ссылку в Приватном Окне с Тор</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локальный узел</translation>
 <translation id="4927734062756955434">Адрес общего шлюза IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Узнайте больше<ph name="END_LINK_MPL"/> об обеспечении конфиденциальности на локальном узле и шлюзе IPFS.</translation>
 <translation id="8425213833346101688">Изменить</translation>
 <translation id="557281710253742286">Задать IPFS-шлюз</translation>
 <translation id="8571837315037233299">Адрес шлюза</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">Аватар королевская конфета</translation>
 <translation id="2039034364578911089">Аватар конфетный ниндзя</translation>
 <translation id="239760341987199724">Сделать Brave браузером по умолчанию</translation>
-<translation id="9185422039067880535">Brave не является браузером по умолчанию.
+<translation id="1391855377994926460">Brave не является браузером по умолчанию.
 Установите Brave браузером по умолчанию, чтобы продолжать просматривать сайты быстрее -
 популялные новостные сайты до 6 раз быстрее.</translation>
 <translation id="9218430445555521422">Сделать браузером по умолчанию</translation>

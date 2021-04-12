@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Khi nào bạn nhận được phần thưởng",
+    "message": "Khi nào bạn nhận được phần thưởng?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Khi sử dụng Brave Rewards, bạn đang giúp làm cho trang web trở thành một nơi tốt hơn cho mọi người. Và điều đó thật tuyệt vời!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Xác thực ví của bạn",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Để rút các token mà bạn kiếm được khi xem quảng cáo, bạn sẽ cần phải xác thực ví của mình.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Thực hiện sau",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Xác thực ví của tôi",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Ví bitFlyer là một dịch vụ do bitFlyer, Inc quản lý.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Với việc xác thực ví của bạn và liên kết ví với một tài khoản bitFlyer, bạn sẽ có thể lưu trữ và quản lý các token mà bạn đã kiếm được thông qua Brave Rewards dễ dàng hơn",
     "description": ""
   },
   "bapDeprecationHeader": {

@@ -17,6 +17,8 @@
 <translation id="9148058034647219655">Kilépés</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">A támogatott oldalakat HTTPS-el nyitja meg HTTP helyett, amikor ez lehetséges.</translation>
+<translation id="4022987104439075738">IPFS-átjáró</translation>
+<translation id="2688519859165248360">Egy IPFS gatewayen keresztül lehetővé teszi az IPFS forrásokhoz való eljutást</translation>
 <translation id="8387201461264842096">Hirdetések tiltása</translation>
 <translation id="1934885595886623674">Megelőzi a hirdetések betöltését</translation>
 <translation id="7458422973722236530">Ujlenyomat-leolvasásos védelem</translation>
@@ -267,7 +269,7 @@ hónapban...</translation>
 <translation id="2495032782748793764">Brave alapértelmezett</translation>
 <translation id="9132378787893584761">Oszd meg a Brave-et barátaiddal!</translation>
 <translation id="717952606991220586">Hoppá, valami hiba történt. Próbáld újra később.</translation>
-<translation id="2524310205387880526">Osztályozd a Brave-et</translation>
+<translation id="2524310205387880526">Értékeld a Brave-et</translation>
 <translation id="6680650203439190394">Árfolyam</translation>
 <translation id="2635089463885398597">Hogyan értékelnéd tapasztalataidat a Brave-vel?</translation>
 <translation id="141901961143729572">Oszd meg véleményedet</translation>

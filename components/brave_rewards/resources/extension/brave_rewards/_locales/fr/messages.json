@@ -12,7 +12,7 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Soyez payé en regardant des publicités et rémunéré vos créateurs de contenu préférés.",
+    "message": "Soyez payé en regardant des publicités et rémunérez vos créateurs de contenu préférés.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Quand recevez-vous vos rewards",
+    "message": "Quand recevez-vous vos récompenses ?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "En utilisant les Brave Rewards, vous aider à faire du Web un endroit meilleur pour tout le monde. Et c'est génial !",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Vérifier votre portefeuille",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Afin de retirer les jetons gagnés en visionnant des publicités, vous devrez vérifier votre portefeuille.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Plus tard",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Vérifier mon portefeuille",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Le portefeuille bitFlyer est un service géré par bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "En vérifiant votre portefeuille et en l'associant à un compte bitFlyer, vous pourrez conserver et gérer plus facilement les jetons gagnés via Brave Rewards",
     "description": ""
   },
   "bapDeprecationHeader": {

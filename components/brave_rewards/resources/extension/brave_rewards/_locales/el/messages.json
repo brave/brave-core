@@ -789,6 +789,30 @@
     "message": "Χρησιμοποιώντας τις Ανταμοιβές Brave βοηθάτε να γίνει το διαδίκτυο ένα καλύτερο μέρος για όλους. Και αυτό είναι φοβερό!",
     "description": ""
   },
+  "onboardingPanelVerifyHeader": {
+    "message": "Επαληθεύστε το πορτοφόλι σας",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Για να κάνετε ανάληψη των μαρκών που κερδίσατε από την προβολή διαφημίσεων, θα πρέπει να επαληθεύσετε το πορτοφόλι σας.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Επαλήθευση αργότερα",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Επαλήθευση πορτοφολιού",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Το πορτοφόλι bitFlyer είναι μια υπηρεσία που διαχειρίζεται η bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Με την επαλήθευση και σύνδεση του πορτοφολιού σας με έναν λογαριασμό bitFlyer, θα έχετε τη δυνατότητα να αποθηκεύετε και να διαχειρίζεστε πιο εύκολα τις μάρκες που έχετε κερδίσει μέσω Brave Rewards",
+    "description": ""
+  },
   "bapDeprecationHeader": {
     "message": "Οι Ανταμοιβές Brave στην Ιαπωνία μεταβαίνουν σε ένα νέο σύστημα!",
     "description": "Header text for BAP deprecation warning message"

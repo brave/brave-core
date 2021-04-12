@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kdy dostanete odměny",
+    "message": "Kdy obdržíte odměnu?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Používáním služby Brave Rewards pomáháte vytvářet z webu lepší místo pro všechny. A to je úžasné!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Ověřit peněženku",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Abyste mohli vybrat tokeny, které získáte za prohlížení reklam, je potřeba ověřit vaši peněženku.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Později",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Ověřit peněženku",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Peněženka bitFlyer je služba spravovaná společností bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Ověření peněženky a její propojení s účtem bitFlyer vám umožní snáze ukládat a spravovat tokeny, které jste získali prostřednictvím Brave Rewards",
     "description": ""
   },
   "bapDeprecationHeader": {

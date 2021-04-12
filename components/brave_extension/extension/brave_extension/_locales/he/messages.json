@@ -175,6 +175,10 @@
     "message": "חסום אלמנט באאמצעות סלקטור",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "נהל  מסננים מותאמים אישית",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "תצוגה מתקדמת",
     "description": "Message for the advanced view option"
