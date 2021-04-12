@@ -65,6 +65,7 @@
             android:paddingEnd="2dp"
             android:paddingStart="13dp"
             android:layout_marginBottom="7dp"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            tools:ignore="SmallSp" />
     </LinearLayout>
 </LinearLayout>

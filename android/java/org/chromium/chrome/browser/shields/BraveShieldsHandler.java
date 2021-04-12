@@ -12,8 +12,7 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
-import android.graphics.Bitmap;
+
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -27,6 +26,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,6 +50,8 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.core.widget.TextViewCompat;
+
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
@@ -69,6 +71,17 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import android.widget.FrameLayout;
+import android.provider.MediaStore;
+import android.net.Uri;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Bitmap;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
@@ -199,6 +212,19 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         updateValues(mTabId);
     }
 
+    protected Bitmap convertToBitmap(View view) {
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = view.getMeasuredHeight();
+        int totalWidth = view.getMeasuredWidth();
+
+        Bitmap canvasBitmap = Bitmap.createBitmap(totalWidth,totalHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(canvasBitmap);
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.draw(canvas);
+
+        return canvasBitmap;
+    }
+
     public PopupWindow showPopupMenu(View anchorView) {
         int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
@@ -279,7 +305,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         Rect bgPadding = new Rect();
-        // is this neccesary for something?
+        // is this neccesary?
         // popupWindow.getBackground().getPadding(bgPadding);
 
         int popupWidth = wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
@@ -312,7 +338,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return blockersInfo.mAdsBlocked;
     }
 
-    public int getTackersBlockedCount(int tabId) {
+    public int getTrackersBlockedCount(int tabId) {
         if (!mTabsStat.containsKey(tabId)) {
             return 0;
         }
@@ -345,11 +371,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     return;
                 }
                 try {
-                    // mSiteBlockCounterText.setText(String.valueOf(fadsAndTrackers
-                    //                               + fhttpsUpgrades
-                    //                               + fscriptsBlocked
-                    //                               + ffingerprintsBlocked));
-                    mSiteBlockCounterText.setText("1000");
+                    mSiteBlockCounterText.setText(String.valueOf(995 + fadsAndTrackers
+                                                  + fhttpsUpgrades
+                                                  + fscriptsBlocked
+                                                  + ffingerprintsBlocked));
                 } catch (NullPointerException exc) {
                     // It means that the Bravery Panel was destroyed during the update, we just do nothing
                 }
@@ -400,44 +425,26 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         Switch mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
 
-        ClickableSpan mClickableSpan = new ClickableSpan() {
+        ImageView helpImage = (ImageView) mMainLayout.findViewById(R.id.help);
+        ImageView shareImage = (ImageView) mMainLayout.findViewById(R.id.share);
+
+        helpImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View widget) {
+            public void onClick(View v) {
                 mMainLayout.setVisibility(View.GONE);
                 mAboutLayout.setVisibility(View.VISIBLE);
                 setUpAboutLayout();
             }
-        };        
+        });
 
-        ClickableSpan mClickableShareSpan = new ClickableSpan() {
+        shareImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View widget) {
+            public void onClick(View v) {
                 mMainLayout.setVisibility(View.GONE);
-                // mAboutLayout.setVisibility(View.VISIBLE);
-                // setUpAboutLayout();
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-                sendIntent.setType("text/plain");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                mContext.startActivity(shareIntent);
+                View shareStatsLayout = BraveStatsUtil.getLayout(R.layout.brave_stats_share_layout);
+                BraveStatsUtil.updateBraveShareStatsLayoutAndShare(shareStatsLayout);
             }
-        };
-
-        TextView mSiteBlockText = mMainLayout.findViewById(R.id.site_block_text);
-        mSiteBlockText.setMovementMethod(LinkMovementMethod.getInstance());
-        String mBlockText = mContext.getResources().getString(R.string.ads_and_other_things_blocked) + "     ";
-        SpannableString mSpannableString = new SpannableString(mBlockText);
-        ImageSpan mImageSpan = new ImageSpan(mContext, R.drawable.ic_help);
-        ImageSpan mShareImageSpan = new ImageSpan(mContext, R.drawable.ic_share);
-        mSpannableString.setSpan(mImageSpan, mBlockText.length() - 4, mBlockText.length() - 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mSpannableString.setSpan(mShareImageSpan, mBlockText.length() - 2, mBlockText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mSpannableString.setSpan(mClickableSpan, mSpannableString.getSpanStart(mImageSpan), mSpannableString.getSpanEnd(mImageSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mSpannableString.setSpan(mClickableShareSpan, mSpannableString.getSpanStart(mShareImageSpan), mSpannableString.getSpanEnd(mShareImageSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mSiteBlockText.setText(mSpannableString);
-
-
+        });
 
         mToggleIcon.setColorFilter(mContext.getResources().getColor(R.color.shield_toggle_button_tint));
         mToggleLayout.setOnClickListener(new View.OnClickListener() {
