@@ -106,8 +106,8 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   // aggressive.
   if (!brave_shields::GetBraveShieldsEnabled(content_settings_, request_url))
     return content::NavigationThrottle::PROCEED;
-  if (brave_shields::GetAdControlType(content_settings_, request_url) !=
-      ControlType::BLOCK)
+  if (brave_shields::GetCosmeticFilteringControlType(
+          content_settings_, request_url) != ControlType::BLOCK)
     return content::NavigationThrottle::PROCEED;
 
   // If user has just chosen to proceed on our interstitial, don't show
