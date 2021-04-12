@@ -1,17 +1,10 @@
 #!/bin/sh
 
-#
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 #
-# Bootstrap the Carthage dependencies. If the Carthage directory
-# already exists then nothing is done. This speeds up builds on
-# CI services where the Carthage directory can be cached.
-#
-# Use the --force option to force a rebuild of the dependencies.
 # Use the --ci option to use `npm ci` over `npm install`
-#
 
 set -e
 
@@ -21,34 +14,16 @@ missingCommand() {
 }
 
 # First Check to see if they have the neccessary software installed
-command -v carthage >/dev/null 2>&1 || { missingCommand "carthage" "https://github.com/Carthage/Carthage/releases"; }
 command -v swiftlint >/dev/null 2>&1 || { missingCommand "swiftlint" "https://github.com/realm/SwiftLint/releases"; }
 command -v npm >/dev/null 2>&1 || { missingCommand "npm" "https://nodejs.org/en/download/"; }
-
-IS_CI_BUILD=0
 
 # Log Colors
 COLOR_ORANGE='\033[0;33m'
 COLOR_NONE='\033[0m'
 
-for i in "$@"
-do
-case $i in
-    -f|--force)
-    rm -rf Carthage/*
-    rm -rf ~/Library/Caches/org.carthage.CarthageKit
-    shift
-    ;;
-    --ci)
-    IS_CI_BUILD=1
-    shift
-    ;;
-esac
-done
-
 # Install Node.js dependencies and build user scripts
 
-if [ "$IS_CI_BUILD" = 0 ]; then
+if [ "$1" == --ci ]; then
   npm install
 else
   npm ci
