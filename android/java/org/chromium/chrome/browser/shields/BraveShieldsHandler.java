@@ -209,19 +209,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         updateValues(mTabId);
     }
 
-    protected Bitmap convertToBitmap(View view) {
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = view.getMeasuredHeight();
-        int totalWidth = view.getMeasuredWidth();
-
-        Bitmap canvasBitmap = Bitmap.createBitmap(totalWidth, totalHeight, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(canvasBitmap);
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        view.draw(canvas);
-
-        return canvasBitmap;
-    }
-
     public PopupWindow showPopupMenu(View anchorView) {
         int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
@@ -302,12 +289,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         Rect bgPadding = new Rect();
-        // is this neccesary?
-        // popupWindow.getBackground().getPadding(bgPadding);
-
         int popupWidth = wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
                          + bgPadding.left + bgPadding.right;
-
         popupWindow.setWidth(popupWidth);
 
         return popupWindow;
