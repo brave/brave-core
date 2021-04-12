@@ -24,7 +24,11 @@ class PrefChangeRegistrar;
 namespace content {
 class BrowserContext;
 class RenderProcessHost;
-}
+}  // namespace content
+
+namespace blink {
+class AssociatedInterfaceRegistry;
+}  // namespace blink
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
@@ -109,8 +113,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   std::string GetEffectiveUserAgent(content::BrowserContext* browser_context,
                                     const GURL& url) override;
-  void RegisterBrowserInterfaceBindersForHost(content::ServiceWorkerHost* host,
-                                              mojo::BinderMap* map) override;
+  void ExposeInterfacesToRenderer(
+      service_manager::BinderRegistry* registry,
+      blink::AssociatedInterfaceRegistry* associated_registry,
+      content::RenderProcessHost* render_process_host) override;
 
  private:
   friend class ::BraveNavigatorUserAgentFarblingBrowserTest;

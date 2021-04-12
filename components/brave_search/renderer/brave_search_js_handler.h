@@ -12,19 +12,24 @@
 
 #include "brave/components/brave_search/common/brave_search.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "url/gurl.h"
 #include "v8/include/v8.h"
+
+namespace blink {
+class ThreadSafeBrowserInterfaceBrokerProxy;
+}
 
 namespace brave_search {
 
 class BraveSearchJSHandler {
  public:
-  BraveSearchJSHandler();
+  BraveSearchJSHandler(v8::Local<v8::Context> v8_context,
+                       blink::ThreadSafeBrowserInterfaceBrokerProxy* broker);
   BraveSearchJSHandler(const BraveSearchJSHandler&) = delete;
   BraveSearchJSHandler& operator=(const BraveSearchJSHandler&) = delete;
   ~BraveSearchJSHandler();
 
-  void AddJavaScriptObject(v8::Local<v8::Context> context);
+  void AddJavaScriptObject();
+  void Invalidate();
   v8::Local<v8::Context> Context();
   v8::Isolate* GetIsolate();
 
@@ -34,7 +39,7 @@ class BraveSearchJSHandler {
   void BindFunctionToObject(v8::Local<v8::Object> javascript_object,
                             const std::string& name,
                             const base::RepeatingCallback<Sig>& callback);
-  void BindFunctionsToObject(v8::Local<v8::Context> context);
+  void BindFunctionsToObject();
   bool EnsureConnected();
 
   // A function to be called from JS
@@ -46,8 +51,9 @@ class BraveSearchJSHandler {
       std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
       const std::string& response);
 
+  blink::ThreadSafeBrowserInterfaceBrokerProxy* broker_;
   mojo::Remote<brave_search::mojom::BraveSearchFallback> brave_search_fallback_;
-  std::unique_ptr<v8::Global<v8::Context>> context_;
+  v8::Global<v8::Context> context_;
   v8::Isolate* isolate_;
 };
 

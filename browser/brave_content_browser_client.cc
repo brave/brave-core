@@ -66,6 +66,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -326,11 +327,14 @@ BraveContentBrowserClient::AllowWebBluetooth(
   return ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
 }
 
-void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForHost(
-    content::ServiceWorkerHost* host,
-    mojo::BinderMap* map) {
-  map->Add<brave_search::mojom::BraveSearchFallback>(
-      base::BindRepeating(&BindBraveSearchHost));
+void BraveContentBrowserClient::ExposeInterfacesToRenderer(
+    service_manager::BinderRegistry* registry,
+    blink::AssociatedInterfaceRegistry* associated_registry,
+    content::RenderProcessHost* render_process_host) {
+  ChromeContentBrowserClient::ExposeInterfacesToRenderer(
+      registry, associated_registry, render_process_host);
+  registry->AddInterface(base::BindRepeating(&BindBraveSearchHost),
+                         content::GetUIThreadTaskRunner({}));
 }
 
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(

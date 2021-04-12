@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/components/brave_search/renderer/brave_search_sw_holder.h"
 #include "chrome/renderer/chrome_content_renderer_client.h"
 #include "v8/include/v8.h"
 
@@ -41,6 +42,7 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
 
  private:
   std::unique_ptr<BraveRenderThreadObserver> brave_observer_;
+  brave_search::BraveSearchSWHolder brave_search_sw_holder_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentRendererClient);
 };

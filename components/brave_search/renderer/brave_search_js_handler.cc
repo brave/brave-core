@@ -13,61 +13,64 @@
 #include "gin/arguments.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/common/thread_safe_browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
-#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 namespace brave_search {
 
-BraveSearchJSHandler::BraveSearchJSHandler() {}
+BraveSearchJSHandler::BraveSearchJSHandler(
+    v8::Local<v8::Context> v8_context,
+    blink::ThreadSafeBrowserInterfaceBrokerProxy* broker)
+    : broker_(broker),
+      context_(v8_context->GetIsolate(), v8_context),
+      isolate_(v8_context->GetIsolate()) {}
 
 BraveSearchJSHandler::~BraveSearchJSHandler() = default;
 
 bool BraveSearchJSHandler::EnsureConnected() {
-  if (!brave_search_fallback_.is_bound()) {
-    ExecutionContext* context = ExecutionContext::From(Context());
-    context->GetBrowserInterfaceBroker().GetInterface(
-        brave_search_fallback_.BindNewPipeAndPassReceiver());
+  if (!brave_search_fallback_.is_bound() && broker_) {
+    broker_->GetInterface(brave_search_fallback_.BindNewPipeAndPassReceiver());
   }
 
   return brave_search_fallback_.is_bound();
 }
 
 v8::Local<v8::Context> BraveSearchJSHandler::Context() {
-  return v8::Local<v8::Context>::New(isolate_, *context_);
+  return v8::Local<v8::Context>::New(isolate_, context_);
 }
 
 v8::Isolate* BraveSearchJSHandler::GetIsolate() {
   return isolate_;
 }
 
-void BraveSearchJSHandler::AddJavaScriptObject(v8::Local<v8::Context> context) {
-  v8::Isolate* isolate = context->GetIsolate();
-  context_ = std::make_unique<v8::Global<v8::Context>>(isolate, context);
-  isolate_ = isolate;
-  v8::HandleScope handle_scope(isolate);
-  if (context.IsEmpty())
-    return;
-
-  v8::Context::Scope context_scope(context);
-
-  BindFunctionsToObject(context);
+void BraveSearchJSHandler::Invalidate() {
+  context_.Reset();
 }
 
-void BraveSearchJSHandler::BindFunctionsToObject(
-    v8::Local<v8::Context> context) {
-  v8::Local<v8::Object> global = context->Global();
+void BraveSearchJSHandler::AddJavaScriptObject() {
+  v8::HandleScope handle_scope(isolate_);
+  if (Context().IsEmpty())
+    return;
+
+  v8::Context::Scope context_scope(Context());
+
+  BindFunctionsToObject();
+}
+
+void BraveSearchJSHandler::BindFunctionsToObject() {
+  v8::Local<v8::Object> global = Context()->Global();
   v8::Local<v8::Object> brave_obj;
   v8::Local<v8::Value> brave_value;
-  if (!global->Get(context, gin::StringToV8(isolate_, "brave"))
+  if (!global->Get(Context(), gin::StringToV8(isolate_, "brave"))
            .ToLocal(&brave_value) ||
       !brave_value->IsObject()) {
     brave_obj = v8::Object::New(isolate_);
-    global->Set(context, gin::StringToSymbol(isolate_, "brave"), brave_obj)
+    global->Set(Context(), gin::StringToSymbol(isolate_, "brave"), brave_obj)
         .Check();
   } else {
-    brave_obj = brave_value->ToObject(context).ToLocalChecked();
+    brave_obj = brave_value->ToObject(Context()).ToLocalChecked();
   }
 
   BindFunctionToObject(
@@ -81,12 +84,10 @@ void BraveSearchJSHandler::BindFunctionToObject(
     v8::Local<v8::Object> javascript_object,
     const std::string& name,
     const base::RepeatingCallback<Sig>& callback) {
-  v8::Local<v8::Context> context = isolate_->GetCurrentContext();
-  // Get the isolate associated with this object.
   javascript_object
-      ->Set(context, gin::StringToSymbol(isolate_, name),
+      ->Set(Context(), gin::StringToSymbol(isolate_, name),
             gin::CreateFunctionTemplate(isolate_, callback)
-                ->GetFunction(context)
+                ->GetFunction(Context())
                 .ToLocalChecked())
       .Check();
 }
@@ -100,7 +101,7 @@ v8::Local<v8::Promise> BraveSearchJSHandler::FetchBackupResults(
     return v8::Local<v8::Promise>();
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate_->GetCurrentContext());
+      v8::Promise::Resolver::New(Context());
   if (!resolver.IsEmpty()) {
     auto promise_resolver =
         std::make_unique<v8::Global<v8::Promise::Resolver>>();
@@ -120,8 +121,10 @@ void BraveSearchJSHandler::OnFetchBackupResults(
     std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
     const std::string& response) {
   v8::HandleScope handle_scope(isolate_);
-  v8::Local<v8::Context> context = context_->Get(isolate_);
+  v8::Local<v8::Context> context = context_.Get(isolate_);
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate_,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate_);
   v8::Local<v8::String> result;
