@@ -380,7 +380,7 @@
 <translation id="8913591412117692523">A hirdetések megtekintése után járó tokenek kivonásához erősítse meg a pénztárcáját.</translation>
 <translation id="9168436347345867845">Később</translation>
 <translation id="5468234114288973517">A pénztárcám megerősítése</translation>
-<translation id="6609621505400013054">A bitFlyer wallet szolgáltatást a bitFlyer, Inc. kezeli.</translation>
+<translation id="6609621505400013054">A bitFlyer pénztárca-szolgáltatást a bitFlyer, Inc. kezeli.</translation>
 <translation id="7258399883616914635">A pénztárcája megerősítésével, valamint annak a bitFlyer-fiókjához kapcsolásával könnyebben tudja tárolni és kezelni a Brave Rewardson keresztül megszerzett tokenjeit.</translation>
 <translation id="5094577350232361255">névjegy</translation>
 <translation id="4918086044614829423">Elfogadás</translation>
@@ -486,7 +486,7 @@
 <translation id="8307851765167460403">Még nincsenek tevékenységek…</translation>
 <translation id="8589748782214271192">Köszönöm, nem</translation>
 <translation id="3204579740854485097">Nincs elég [[currency]].</translation>
-<translation id="3330432260369310344">Nincs elég [[currency]] Kérjük,</translation>
+<translation id="3330432260369310344">Nincs elég [[currency]]. Kérjük,</translation>
 <translation id="3630697955794050612">kikapcsolva</translation>
 <translation id="4921250468871504777">rendben</translation>
 <translation id="7866482334467279021">bekapcsolva</translation>
@@ -508,7 +508,7 @@
 <translation id="135956957367307069">Kérésed még feldolgozás alatt áll, kérünk várj.</translation>
 <translation id="8725066075913043281">Újra</translation>
 <translation id="2600847485413879104">BAT jutalmak</translation>
-<translation id="8006596443377585072">bitFlyer wallet</translation>
+<translation id="8006596443377585072">bitFlyer pénztárca</translation>
 <translation id="8108350286444475334">Tárca rögzítése</translation>
 <translation id="6977372887576114613">Letétbe helyezett BAT</translation>
 <translation id="3173528272490482456">Készen áll a kezdésre?</translation>
