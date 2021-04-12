@@ -19,6 +19,7 @@
 #include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
@@ -237,6 +238,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     offline_pages::kPrefetchingOfflinePagesFeature.name,
     translate::kTranslate.name,
 #endif
+    brave_shields::features::kBraveDomainBlock.name,
   };
 
 #if defined(OS_WIN) || defined(OS_MAC) || defined(OS_ANDROID)
