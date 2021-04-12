@@ -22,6 +22,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -124,9 +125,12 @@ void BraveRequestHandler::SetupCallbacks() {
   headers_received_callbacks_.push_back(headers_received_callback);
 #endif
 
-  brave::OnHeadersReceivedCallback headers_received_callback2 =
-      base::Bind(brave::OnHeadersReceived_AdBlockCspWork);
-  headers_received_callbacks_.push_back(headers_received_callback2);
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveAdblockCspRules)) {
+    brave::OnHeadersReceivedCallback headers_received_callback2 =
+        base::Bind(brave::OnHeadersReceived_AdBlockCspWork);
+    headers_received_callbacks_.push_back(headers_received_callback2);
+  }
 }
 
 void BraveRequestHandler::InitPrefChangeRegistrar() {
