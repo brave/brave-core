@@ -97,7 +97,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/download/MimeUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/app/ChromeActivity"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ChromeTabbedActivity"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/app/BraveActivity"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
         Assert.assertTrue(classExists(
@@ -116,8 +115,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/top/ToolbarPhone"));
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
         Assert.assertTrue(classExists(
@@ -210,19 +207,6 @@ public class BytecodeTest {
     public void testMethodsForInvocationExist() throws Exception {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ChromeTabbedActivity",
                 "hideOverview", true, void.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/app/BraveActivity",
-                "openNewOrSelectExistingTab", true, Tab.class, String.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/app/BraveActivity",
-                "selectExistingTab", true, Tab.class, String.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
-                "updateModernLocationBarColorImpl", true, void.class, int.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
-                "onClickImpl", true, void.class, View.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
-                "populateUrlAnimatorSet", true, void.class, boolean.class, int.class, int.class,
-                List.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
-                "getBoundsAfterAccountingForRightButtons", true, int.class, ViewGroup.class));
 
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`

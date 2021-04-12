@@ -1342,8 +1342,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                     mBraveRewardsNativeWorker.DeleteNotification(currentNotificationId);
                     assert (BraveReflectionUtil.EqualTypes(
                             mActivity.getClass(), BraveActivity.class));
-                    BraveReflectionUtil.InvokeMethod(BraveActivity.class, mActivity,
-                            "openNewOrSelectExistingTab", String.class,
+                    BraveActivity.class.cast(mActivity).openNewOrSelectExistingTab(
                             BraveActivity.REWARDS_SETTINGS_URL);
                     dismiss();
                 }
