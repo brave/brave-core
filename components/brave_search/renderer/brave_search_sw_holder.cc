@@ -50,7 +50,7 @@ BraveSearchSWHolder::BraveSearchSWHolder() : broker_(nullptr) {}
 
 BraveSearchSWHolder::~BraveSearchSWHolder() = default;
 
-void BraveSearchSWHolder::InitBrowserInterfaceBrokerProxy(
+void BraveSearchSWHolder::SetBrowserInterfaceBrokerProxy(
     blink::ThreadSafeBrowserInterfaceBrokerProxy* broker) {
   broker_ = broker;
 }
@@ -61,6 +61,7 @@ void BraveSearchSWHolder::WillEvaluateServiceWorkerOnWorkerThread(
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
     const GURL& script_url) {
+  DCHECK(broker_);
   if (!service_worker_scope.is_valid() ||
       !service_worker_scope.SchemeIsHTTPOrHTTPS() ||
       !IsAllowedHost(service_worker_scope))

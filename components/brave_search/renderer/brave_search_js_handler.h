@@ -51,7 +51,7 @@ class BraveSearchJSHandler {
       std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
       const std::string& response);
 
-  blink::ThreadSafeBrowserInterfaceBrokerProxy* broker_;
+  blink::ThreadSafeBrowserInterfaceBrokerProxy* broker_;  // not owned
   mojo::Remote<brave_search::mojom::BraveSearchFallback> brave_search_fallback_;
   v8::Global<v8::Context> context_;
   v8::Isolate* isolate_;
