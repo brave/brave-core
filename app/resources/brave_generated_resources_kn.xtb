@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">Tor ನೊಂದಿಗೆ ಖಾಸಗಿ ವಿಂಡೊ ತೆರೆಯಿರಿ</translation>
 <translation id="1725356094208762656">Tor ತೆರೆಯಿರಿ</translation>
 <translation id="7643538479215207633">IPFS ಬಳಸಿ ತೆರೆಯಿರಿ</translation>
+<translation id="3094628781200061820">IPFS ನಿಂದ ಫೈಲ್‌ಗಳನ್ನು ಪ್ರಕಟಿಸಿ ಅಥವಾ ಮರುಪಡೆಯಿರಿ</translation>
 <translation id="1672270084584211506">Onion ಲಭ್ಯವಿದೆ</translation>
 <translation id="1434416574322382019">Tor ಜೊತೆಗೆ ಹೊಸ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="4703780849509456860">Tor ಜೊತೆಗೆ ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">ಗೇಟ್‌ವೇ</translation>
 <translation id="80225669816651290">ಸ್ಥಳೀಯ ನೋಡ್</translation>
 <translation id="4927734062756955434">IPFS ಸಾರ್ವಜನಿಕ ಗೇಟ್‌ವೇ ವಿಳಾಸ</translation>
+<translation id="5539104255771715383">IPFS ಸ್ಥಳೀಯ ನೋಡ್ ಮತ್ತು ಗೇಟ್‌ವೇ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳ ಕುರಿತು <ph name="BEGIN_LINK_MPL"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK_MPL"/>.</translation>
 <translation id="8425213833346101688">ಬದಲಿಸಿ</translation>
 <translation id="557281710253742286">IPFS ಗೇಟ್‌ವೇ ಹೊಂದಿಸಿ</translation>
 <translation id="8571837315037233299">ಗೇಟ್‌ವೇ ವಿಳಾಸ</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">ಅವತಾರ್ ಬೋನ್‌ಬೋನ್ ರಾಯಲ್</translation>
 <translation id="2039034364578911089">ಅವತಾರ್ ಬೋನ್‍ಬೋನ್ ನಿಂಜಾ</translation>
 <translation id="239760341987199724">Brave ಅನ್ನು ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್‌ ರೂಪದಲ್ಲಿ ಹೊಂದಿಸಿ</translation>
-<translation id="9185422039067880535">Brave ಬ್ರೌಸರ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿ ಹೊಂದಿಸಲಾಗಿಲ್ಲ.
+<translation id="1391855377994926460">Brave ಬ್ರೌಸರ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿ ಹೊಂದಿಸಲಾಗಿಲ್ಲ.
 ವೆಬ್ ಅನ್ನು ವೇಗವಾಗಿ ಬ್ರೌಸ್ ಮಾಡಲು ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಆಗಿ Brave ಅನ್ನು ಹೊಂದಿಸಿ -
 ಪ್ರಮುಖ ಸುದ್ದಿ ಸೈಟ್‌ಗಳಲ್ಲಿ 6x ವರೆಗೆ ವೇಗವಾಗಿದೆ.</translation>
 <translation id="9218430445555521422">ಡಿಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
@@ -265,7 +267,7 @@
 <translation id="7090566321964540749">ಈ ಅನಾಮಧೇಯ ಮಾಹಿತಿಯು ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳ ಒಟ್ಟಾರೆ ಬಳಕೆಯನ್ನು ಅಂದಾಜು ಮಾಡಲು ಮಾತ್ರ Brave ಗೆ ಅನುಮತಿಸುತ್ತದೆ.</translation>
 <translation id="1947672064022327074">ಎಥೆರಿಯಮ್ ಬೆಂಬಲಕ್ಕಾಗಿ ಕ್ರಿಪ್ಟೋ ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಪ್ರಾರಂಭಿಸಲು ನೀವು ಬಯಸುವಿರಾ?</translation>
 <translation id="7583735190612229830">ಈ ಆ್ಯಪ್‌ನ ಜೊತೆಗೆ ಸಂವಹನ ನಡೆಸಲು Crypto ವಾಲೆಟ್‌ಗಳನ್ನು ಹೊಂದಿಸಿ ಮತ್ತು ಇತರರು ಅದನ್ನು ಇಷ್ಟಪಡುತ್ತಾರೆ.</translation>
-<translation id="8731422418734770661">ಕ್ರಿಪ್ಟೋ ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಹೊಂದಿಸಿ</translation>
+<translation id="8731422418734770661">Crypto Wallets ಹೊಂದಿಸಿ</translation>
 <translation id="8199661191594897555">Crypto ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಪ್ರಾರಂಭಿಸಿ ಮತ್ತು ಮರುಲೋಡ್ ಮಾಡಿ</translation>
 <translation id="8428213095426709021">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="7691598647605453992">IPFS</translation>
@@ -289,4 +291,7 @@
 <translation id="2808630562319398131">Brave Rewards ಡೇಟಾ ಮರುಹೊಂದಿಸಿ...</translation>
 <translation id="1224064034972923114">ಕ್ರ್ಯಾಷ್ ವರದಿಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸುವುದರಿಂದ Brave ಅನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ.</translation>
 <translation id="3738833060602717053">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕ್ರ್ಯಾಷ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸುವ ಮೂಲಕ <ph name="PRODUCT_NAME"/> ಅನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
+<translation id="9185422039067880535">Brave ಬ್ರೌಸರ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿ ಹೊಂದಿಸಲಾಗಿಲ್ಲ.
+ವೆಬ್ ಅನ್ನು ವೇಗವಾಗಿ ಬ್ರೌಸ್ ಮಾಡಲು ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಆಗಿ Brave ಅನ್ನು ಹೊಂದಿಸಿ -
+ಪ್ರಮುಖ ಸುದ್ದಿ ಸೈಟ್‌ಗಳಲ್ಲಿ 6x ವರೆಗೆ ವೇಗವಾಗಿದೆ.</translation>
 </translationbundle>

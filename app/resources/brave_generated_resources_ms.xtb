@@ -60,6 +60,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1037341607922068025">Buka Tetingkap Peribadi dengan Tor</translation>
 <translation id="1725356094208762656">Buka dalam Tor</translation>
 <translation id="7643538479215207633">Buka menggunakan IPFS</translation>
+<translation id="3094628781200061820">Terbitkan dan dapatkan semula fail dari IPFS</translation>
 <translation id="1672270084584211506">Onion Tersedia</translation>
 <translation id="1434416574322382019">Tetingkap Peribadi baru dengan Tor</translation>
 <translation id="4703780849509456860">Buka Pautan dalam Tetingkap Peribadi dengan Tor</translation>
@@ -173,6 +174,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1327977588028644528">Get Laluan</translation>
 <translation id="80225669816651290">Nod tempatan</translation>
 <translation id="4927734062756955434">Alamat gerbang awam IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Ketahui lebih lanjut<ph name="END_LINK_MPL"/> tentang nod setempat IPFS dan pertimbangan privasi get laluan.</translation>
 <translation id="8425213833346101688">Tukar</translation>
 <translation id="557281710253742286">Tetapkan gerbang IPFS</translation>
 <translation id="8571837315037233299">Alamat gerbang</translation>
@@ -244,7 +246,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1959966725083452288">Avatar Diraja Bonbon</translation>
 <translation id="2039034364578911089">Avatar Ninja Bonbon</translation>
 <translation id="239760341987199724">Tetapkan Brave sebagai penyemak imbas lalai anda</translation>
-<translation id="9185422039067880535">Pelayar Brave tidak ditetapkan sebagai pelayar tetap anda.
+<translation id="1391855377994926460">Pelayar Brave tidak ditetapkan sebagai pelayar tetap anda.
 Tetapkan Brave sebagai pelayar tetap anda untuk terus melayari web dengan lebih pantas -
 sehingga 6 x lebih pantas pada laman berita utama.</translation>
 <translation id="9218430445555521422">Tetapkan sebagai lalai</translation>
@@ -289,4 +291,7 @@ sehingga 6 x lebih pantas pada laman berita utama.</translation>
 <translation id="2808630562319398131">Setkan semula data Ganjaran Brave...</translation>
 <translation id="1224064034972923114">Bantu menambah baik Brave dengan menghantar laporan kerosakan secara automatik</translation>
 <translation id="3738833060602717053">Bantu menambah baik <ph name="PRODUCT_NAME"/> dengan menghantar laporan kerosakan secara automatik</translation>
+<translation id="9185422039067880535">Pelayar Brave tidak ditetapkan sebagai pelayar tetap anda.
+Tetapkan Brave sebagai pelayar tetap anda untuk terus melayari web dengan lebih pantas -
+sehingga 6 x lebih pantas pada laman berita utama.</translation>
 </translationbundle>

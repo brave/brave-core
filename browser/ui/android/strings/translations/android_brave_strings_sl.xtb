@@ -17,6 +17,8 @@
 <translation id="9148058034647219655">Zapri</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">Odpre podprte spletne strani, ki uporabljajo HTTPS namesto HTTP, če je mogoče</translation>
+<translation id="4022987104439075738">Prehod IPFS</translation>
+<translation id="2688519859165248360">Omogoča navigacijo do virov IPFS prek prehoda IPFS</translation>
 <translation id="8387201461264842096">Blokiranje oglasov</translation>
 <translation id="1934885595886623674">Onemogoča nalaganje oglasov</translation>
 <translation id="7458422973722236530">Zaščita proti ustvarjanju prstnih odtisov</translation>
@@ -422,14 +424,14 @@ dejavnosti ...</translation>
 <translation id="6730444165801605682">Prispevki so način, kako osebno spodbuditi in podpreti vsebino ali ustvarjalce, ki so vam zelo všeč. Pa kar pogumno k prispevkom!</translation>
 <translation id="7509452925943421624">Kaj lahko storite z žetoni?</translation>
 <translation id="5876169128756792273">Žetone je mogoče uporabiti poleg podpore ustvarjalcem. Ko se trgovci pojavijo na krovu, lahko kupite digitalno vsebino in drugo blago.</translation>
-<translation id="1402530520078693620">Nenazadne, pojdimo zdaj na osnovne nastavitve’</translation>
+<translation id="1402530520078693620">Nenazadne, pojdimo zdaj na osnovne nastavitve</translation>
 <translation id="3494356595346329740">To lahko spremenite pozneje.</translation>
 <translation id="3115702351969988294">Kako pogosto si želite ogledati oglase?</translation>
 <translation id="3474670199029510295">(Oglasi na uro)</translation>
 <translation id="66599604460581068">Koliko podpore želite dati svojim najljubšim ustvarjalcem?</translation>
 <translation id="3164498053837913829">(od zaslužka od oglasov)</translation>
 <translation id="827315274423079662">Juhu, vse je pripravljeno!</translation>
-<translation id="3895246934788932488">Z uporabo Brave Rewards ščitite svojo zasebnost in pomagate izboljšati splet za vse. To je super!’</translation>
+<translation id="3895246934788932488">Z uporabo Brave Rewards ščitite svojo zasebnost in pomagate izboljšati splet za vse. To je super!</translation>
 <translation id="5705882733397021510">Pojdi nazaj</translation>
 <translation id="5140321319944305531">Pa pojdimo na eno kratko turo</translation>
 <translation id="2434574859640694129">Ko prejmete prvo izplačilo za oglase, se lahko vrnete in napotite tega ustvarjalca!</translation>
@@ -437,7 +439,7 @@ dejavnosti ...</translation>
 <translation id="8342862030112839977">Vaše 1. izplačilo nagrade bo prispelo do:</translation>
 <translation id="3769645103175790584">Prejmite žetone in nagrajujte ustvarjalce za odlično vsebino med brskanjem. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Kratka tura</translation>
-<translation id="1080013038789678738">Pa dajmo!’</translation>
+<translation id="1080013038789678738">Pa dajmo!</translation>
 <translation id="3604285424134705930">Pretvorili ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> v <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Preverite vašo omrežno povezavo.</translation>
 <translation id="7889432931837317731">Ko je mogoče, se naj samodejno odpre</translation>

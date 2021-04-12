@@ -244,7 +244,7 @@
     "description": "Title for device limit reached notification"
   },
   "deviceLimitReachedNotification": {
-    "message": "Su cartera no se puede verificar porque ha alcanzado el límite máximo de dispositivos verificados.",
+    "message": "Tu cartera no se puede verificar porque ha alcanzado el límite máximo de dispositivos verificados.",
     "description": "Description for device limit reached notification"
   },
   "insufficientFundsNotification": {
@@ -680,7 +680,7 @@
     "description": ""
   },
   "onboardingTakeTour": {
-    "message": "Haga una visita rápida",
+    "message": "Haz una visita rápida",
     "description": ""
   },
   "onboardingTerms": {
@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "¿Cuándo recibe recompensas?",
+    "message": "¿Cuándo recibes recompensas?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Cuando usas los premios de Brave contribuyes para que la web sea un lugar mejor para todos. ¡Algo que es increíble!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Verificar tu cartera",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Si quieres retirar los tokens que ganes por ver anuncios, debes verificar tu cartera.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Hacerlo en otro momento",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Verificar mi cartera",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "La cartera bitFlyer es un servicio gestionado por bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Si verificas tu cartera y la vinculas a una cuenta de bitFlyer, podrás almacenar y gestionar con mayor facilidad los tokens que hayas ganado a través de Brave Rewards.",
     "description": ""
   },
   "bapDeprecationHeader": {

@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Når du modtager belønninger",
+    "message": "Hvornår modtager du belønninger?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Ved at bruge Brave Rewards hjælper du med at gøre internettet til et bedre sted for alle, og det er fantastisk!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Bekræft din tegnebog",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "For at hæve de polletter, du har tjent ved at se reklamer, skal du bekræfte din tegnebog.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Gør det senere",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Bekræft min tegnebog",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer-tegnebogen er en tjeneste, der drives af bitFlyver, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Ved at bekræfte din tegnebog og knytte den til en bitFlyer-konto kan du nemmere opbevare og administrere de polletter, du har tjent gennem Brave Rewards.",
     "description": ""
   },
   "bapDeprecationHeader": {

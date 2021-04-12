@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">Atverti inkognito langą su „Tor“</translation>
 <translation id="1725356094208762656">Atverti „Tor“ lange</translation>
 <translation id="7643538479215207633">Atidaryti naudojant IPFS</translation>
+<translation id="3094628781200061820">Skelbkite ir gaukite failus iš IPFS</translation>
 <translation id="1672270084584211506">Galimas „Onion“</translation>
 <translation id="1434416574322382019">Naujas inkognito langas su „Tor“</translation>
 <translation id="4703780849509456860">Atverti nuorodą inkognito lange su „Tor“</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">Tinklų sietuvas</translation>
 <translation id="80225669816651290">Vietinis mazgas</translation>
 <translation id="4927734062756955434">IPFS viešojo tinklų sietuvo adresas</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Sužinokite daugiau<ph name="END_LINK_MPL"/> apie IPFS vietinio mazgo ir tinklų sietuvo privatumo nuostatas.</translation>
 <translation id="8425213833346101688">Keisti</translation>
 <translation id="557281710253742286">Nustatyti IPFS tinklų sietuvą</translation>
 <translation id="8571837315037233299">Tinklų sietuvo adresas</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">Avataras „Bonbon Royal“</translation>
 <translation id="2039034364578911089">Avataras „Bonbon Ninja“</translation>
 <translation id="239760341987199724">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
-<translation id="9185422039067880535">Šiuo metu „Brave“ nėra nustatyta kaip jūsų numatytoji naršyklė.
+<translation id="1391855377994926460">Šiuo metu „Brave“ nėra nustatyta kaip jūsų numatytoji naršyklė.
 Nustatykite „Brave“ kaip numatytąją naršyklę, kad toliau galėtumėte greičiau naršyti žiniatinklyje –
 pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="9218430445555521422">Nustatyti kaip numatytąją</translation>
@@ -265,7 +267,7 @@ pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="7090566321964540749">Ši anoniminė informacija leidžia „Brave“ įvertinti tik bendrą tam tikrų funkcijų naudojimą.</translation>
 <translation id="1947672064022327074">Ar norėtumėte paleisti kriptovaliutų pinigines „Ethereum“ palaikyti?</translation>
 <translation id="7583735190612229830">Nustatykite, kad kriptovaliutų piniginės sąveikautų su šia programa ir kitomis panašiomis programomis.</translation>
-<translation id="8731422418734770661">Nustatyti kriptovaliutų pinigines</translation>
+<translation id="8731422418734770661">Nustatyti „Crypto Wallets“</translation>
 <translation id="8199661191594897555">Paleisti kriptovaliutų pinigines ir užkrauti iš naujo</translation>
 <translation id="8428213095426709021">Nustatymai</translation>
 <translation id="7691598647605453992">IPFS</translation>
@@ -289,4 +291,7 @@ pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="2808630562319398131">Iš naujo nustatyti „Brave Rewards“ duomenis...</translation>
 <translation id="1224064034972923114">Padėkite tobulinti „Brave“, automatiškai siųsdami strigčių ataskaitas</translation>
 <translation id="3738833060602717053">Padėkite tobulinti <ph name="PRODUCT_NAME"/>, automatiškai siųsdami strigčių ataskaitas</translation>
+<translation id="9185422039067880535">Šiuo metu „Brave“ nėra nustatyta kaip jūsų numatytoji naršyklė.
+Nustatykite „Brave“ kaip numatytąją naršyklę, kad toliau galėtumėte greičiau naršyti žiniatinklyje –
+pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 </translationbundle>

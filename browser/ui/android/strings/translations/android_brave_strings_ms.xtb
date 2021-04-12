@@ -17,6 +17,8 @@
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">Membuka laman web yang disokong menggunakan HTTPS dan bukan HTTP apabila boleh</translation>
+<translation id="4022987104439075738">Gerbang IPFS</translation>
+<translation id="2688519859165248360">Membolehkan navigasi ke sumber IPFS melalui Get Laluan IPFS</translation>
 <translation id="8387201461264842096">Sekatan Iklan</translation>
 <translation id="1934885595886623674">Mengelakkan iklan daripada dimuatkan</translation>
 <translation id="7458422973722236530">Perlindungan Pencapjarian</translation>
@@ -423,14 +425,14 @@ bulan ini...</translation>
 <translation id="6730444165801605682">Memberi tip ialah cara untuk memberi galakan secara peribadi dan menyokong kandungan atau pencipta yang anda minati. Berikan tip!</translation>
 <translation id="7509452925943421624">Apakah yang anda boleh lakukan dengan token?</translation>
 <translation id="5876169128756792273">Token boleh digunakan selain daripada menyokong pencipta. Anda boleh membeli kandungan digital dan barangan-barangan lain apabila saudagar menyertai.</translation>
-<translation id="1402530520078693620">Akhirnya, mari’ kita sediakan anda untuk tetapan asas</translation>
+<translation id="1402530520078693620">Akhirnya, mari kita sediakan anda untuk tetapan asas</translation>
 <translation id="3494356595346329740">Anda boleh menukar ini kemudian.</translation>
 <translation id="3115702351969988294">Berapa kerap anda ingin melihat iklan?</translation>
 <translation id="3474670199029510295">(Iklan sejam)</translation>
 <translation id="66599604460581068">Berapa banyak sokongan yang anda ingin berikan kepada pencipta kegemaran anda?</translation>
 <translation id="3164498053837913829">(daripada pendapatan iklan anda)</translation>
 <translation id="827315274423079662">Woohoo, anda sudah bersedia!</translation>
-<translation id="3895246934788932488">Dengan menggunakan Ganjaran Brave, anda melindungi privasi anda dan membantu menjadikan internet tempat yang lebih baik untuk semua orang. Dan itu’memang hebat!</translation>
+<translation id="3895246934788932488">Dengan menggunakan Ganjaran Brave, anda melindungi privasi anda dan membantu menjadikan internet tempat yang lebih baik untuk semua orang. Dan itu memang hebat!</translation>
 <translation id="5705882733397021510">Kembali</translation>
 <translation id="5140321319944305531">Mari Menjelajah Dengan Pantas</translation>
 <translation id="2434574859640694129">Selepas menerima pembayaran iklan pertama anda, anda boleh datang kembali dan memberikan tip kepada pencipta ini!</translation>
@@ -438,7 +440,7 @@ bulan ini...</translation>
 <translation id="8342862030112839977">Pembayaran ganjaran pertama anda akan tiba sebelum:</translation>
 <translation id="3769645103175790584">Dapatkan token dan pencipta ganjaran untuk kandungan hebat sementara anda berlayar. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Jelajah pantas</translation>
-<translation id="1080013038789678738">Saya’ Masuk!</translation>
+<translation id="1080013038789678738">Saya Masuk!</translation>
 <translation id="3604285424134705930">Anda telah menukar <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> kepada <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Sila periksa sambuangan rangkaian anda.</translation>
 <translation id="7889432931837317731">Buka secara automatik bila mungkin</translation>
@@ -463,12 +465,12 @@ bulan ini...</translation>
 <translation id="8722651357687610395">Tetapkan Brave sebagai lalai</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
 <translation id="6232491755501685494">Brave Rewards di Jepun beralih ke sistem baharu!</translation>
-<translation id="7444515017164572362">Mulai 13 Mac, anda tidak dapat’ menggunakan BAP anda. Tetapi selepas sistem anda
-         dikemas kini ke sistem baharu pada bulan April, anda#8217; akan bermula dengan token baharu!</translation>
+<translation id="7444515017164572362">Mulai 13 Mac, anda tidak dapat menggunakan BAP anda. Tetapi selepas sistem anda
+         dikemas kini ke sistem baharu pada bulan April, anda akan bermula dengan token baharu!</translation>
 <translation id="8587285254008006694">Sebagai sebahagian daripada peralihan ini, tetapan pemberian tip dan sumbangan di
          pelayar anda tidak akan tersedia buat sementara waktu mulai 13 Mac, dan
          baki BAP anda akan menunjukkan 0.0 sehingga anda mengemas kini sistem baharu
-         dalam bulan April. Setelah sistem baharu anda’ dikemas kini, anda’ akan bermula dengan token
+         dalam bulan April. Setelah sistem baharu anda dikemas kini, anda akan bermula dengan token
          baharu!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>

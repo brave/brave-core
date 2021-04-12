@@ -175,6 +175,10 @@
     "message": "Blocați elementul prin selector",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
+  "manageCustomFilters": {
+    "message": "Gestionare filtre personalizate",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
   "advancedView": {
     "message": "Vizualizare avansată",
     "description": "Message for the advanced view option"

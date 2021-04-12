@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "متى تحصل على المكافآت",
+    "message": "متى تحصل على المكافآت؟",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "باستخدام Brave Rewards، فأنت تساعد في جعل الويب مكاناً أفضل للجميع. وهذا رائع!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "تحقق من محفظتك",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "من أجل سحب الرموز المميزة التي تربحها مقابل عرض الإعلانات، ستحتاج إلى التحقق من محفظتك.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "القيام بذلك لاحقًا",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "التحقق من محفظتي",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "محفظة bitFlyer هي خدمة تديرها شركة bitFlyer، Inc",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "من خلال التحقق من محفظتك وربطها بحساب bitFlyer، ستتمكن من تخزين الرموز المميزة التي اكتسبتها من خلال مكآفات Brave وإدارتها بسهولة أكبر",
     "description": ""
   },
   "bapDeprecationHeader": {

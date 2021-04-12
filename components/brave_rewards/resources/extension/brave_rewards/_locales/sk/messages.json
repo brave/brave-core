@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Kedy dostávate odmeny",
+    "message": "Kedy dostávate odmeny?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Používaním služby Odmeny Brave pomáhate robiť z webu lepšie miesto pre všetkých. A to je úžasné!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Overte si peňaženku",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Ak chcete stiahnuť tokeny, ktoré ste získali pozeraním reklám, musíte overiť svoju peňaženku.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Urobiť to neskôr",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Overiť peňaženku",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Peňaženka bitFlyer je služba spravovaná spoločnosťou bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Keď svoju peňaženku overíte a prepojíte s účtom bitFlyer, budete môcť jednoduchšie ukladať a spravovať tokeny, ktoré ste získali cez odmeny Brave",
     "description": ""
   },
   "bapDeprecationHeader": {

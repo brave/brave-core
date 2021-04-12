@@ -60,6 +60,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1037341607922068025">Atvērt inkognito logu ar Tor</translation>
 <translation id="1725356094208762656">Atvērt Tor</translation>
 <translation id="7643538479215207633">Atvērt, izmantojot IPFS</translation>
+<translation id="3094628781200061820">Datņu publicēšana un izgūšana no IPFS</translation>
 <translation id="1672270084584211506">Onion ir pieejams</translation>
 <translation id="1434416574322382019">Jauns inkognito logs Tor</translation>
 <translation id="4703780849509456860">Atvērt saiti inkognito logā Tor</translation>
@@ -173,6 +174,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1327977588028644528">Vārteja</translation>
 <translation id="80225669816651290">Vietējais mezgls</translation>
 <translation id="4927734062756955434">IPFS publiskās vārtejas adrese</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Uzziet vairāk<ph name="END_LINK_MPL"/> par IPFS vietējā mezgla un vārtejas konfidencialitātes apsvērumiem.</translation>
 <translation id="8425213833346101688">Mainīt</translation>
 <translation id="557281710253742286">Iestatīt IPFS vārteju</translation>
 <translation id="8571837315037233299">Vārtejas adrese</translation>
@@ -244,7 +246,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Iestatīt Brave kā noklusējuma pārlūku</translation>
-<translation id="9185422039067880535">Brave pārlūks pašlaik nav iestatīts kā noklusējuma pārlūks.
+<translation id="1391855377994926460">Brave pārlūks pašlaik nav iestatīts kā noklusējuma pārlūks.
 Iestatiet Brave kā noklusējuma pārlūku, lai varētu ātrāk pārlūkot tīmekli –
 lielākajās ziņu vietnēs līdz pat 6 reizēm ātrāk.</translation>
 <translation id="9218430445555521422">Iestatīt kā noklusējumu</translation>
@@ -289,4 +291,7 @@ lielākajās ziņu vietnēs līdz pat 6 reizēm ātrāk.</translation>
 <translation id="2808630562319398131">Atiestatīt Brave Rewards datus...</translation>
 <translation id="1224064034972923114">Palīdziet uzlabot Brave, automātiski nosūtot avāriju ziņojumus</translation>
 <translation id="3738833060602717053">Palīdziet uzlabot <ph name="PRODUCT_NAME"/>, automātiski nosūtot avāriju ziņojumus</translation>
+<translation id="9185422039067880535">Brave pārlūks pašlaik nav iestatīts kā noklusējuma pārlūks.
+Iestatiet Brave kā noklusējuma pārlūku, lai varētu ātrāk pārlūkot tīmekli –
+lielākajās ziņu vietnēs līdz pat 6 reizēm ātrāk.</translation>
 </translationbundle>

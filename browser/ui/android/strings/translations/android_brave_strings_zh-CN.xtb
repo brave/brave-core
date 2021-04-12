@@ -17,6 +17,8 @@
 <translation id="9148058034647219655">退出</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="8710614491157212477">当可用时，使用 HTTPS 代替 HTTP 访问支持的网站</translation>
+<translation id="4022987104439075738">IPFS网关</translation>
+<translation id="2688519859165248360">允许通过 IPFS 网关导航到 IPFS 资源</translation>
 <translation id="8387201461264842096">广告区块</translation>
 <translation id="1934885595886623674">防止广告加载</translation>
 <translation id="7458422973722236530">指纹保护</translation>
@@ -26,6 +28,7 @@
 <translation id="6469509880167172749">将完全的隐私产品分析信息自动发送给 Brave Software</translation>
 <translation id="7090566321964540749">该匿名信息仅使 Brave 能够估计某些功能的整体使用情况。</translation>
 <translation id="347604927162577559">数据\n已节省</translation>
+<translation id="9008534313521214777">预计节省的\n时间</translation>
 <translation id="6572660632052512096">桌面模式</translation>
 <translation id="1340503115760585811">使用桌面模式打开新标签页</translation>
 <translation id="7924540991929826186">将新标签页用于移动版网站上（推荐）</translation>
@@ -42,6 +45,7 @@
 <translation id="4150201353443180367">显示</translation>
 <translation id="2433507940547922241">外观</translation>
 <translation id="2804710924397009224">隐藏 Brave 奖励图标</translation>
+<translation id="7289740269305509613">隐藏 Brave 奖励图标</translation>
 <translation id="8495235435594442882">启用底部工具栏</translation>
 <translation id="6587448235155023666">您所做的更改将在您下次重新启动 Brave 时生效</translation>
 <translation id="8701563696941209024">立即重新启动</translation>
@@ -51,15 +55,20 @@
 <translation id="5808759341041733958">请选择默认搜索引擎</translation>
 <translation id="1331593888918588693">您以后随时可以在应用设置中更改自己的偏好。</translation>
 <translation id="5806601733251372221">Brave 屏蔽</translation>
+<translation id="8537217141725709400">赚取<ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave 奖励</translation>
+<translation id="5870330605209713397">默认查看尊重隐私的广告并支持你喜爱的站点和创作者</translation>
+<translation id="5302488867897327287">轻按 “开始使用 Brave 奖励” 意味着你同意</translation>
 <translation id="4281844954008187215">服务条款</translation>
 <translation id="6871397658902960384">开始浏览</translation>
 <translation id="454386012157232640">我没看到广告</translation>
 <translation id="1448877943847791441">Brave 会在以下月份展示您的第一个广告：</translation>
+<translation id="4410793187232041318">现在你可以从 Brave 广告中获得代币。</translation>
 <translation id="6511854390690723657">这是您的第一个 Brave 广告。点按以了解更多信息。</translation>
 <translation id="2070991379950719711">开始使用 Brave Rewards</translation>
 <translation id="48520986898237073">继续进入钱包</translation>
 <translation id="3570367516044491911">设置为默认浏览器</translation>
+<translation id="19715420010996093">选择 Brave 浏览器并轻按 "始终"</translation>
 <translation id="3546439402724649282">Brave 已被设置为您的默认浏览器。</translation>
 <translation id="8389661903259423907">您已经设置了默认浏览器。您可以在应用设置中更改默认浏览器。</translation>
 <translation id="7091885296442320770">Brave 快如闪电</translation>
@@ -138,6 +147,7 @@
 <translation id="3492491948683276944">设定每月酬谢费</translation>
 <translation id="8038539967102225446">Brave 的广告在这里！</translation>
 <translation id="222883304157347087">（此设备）</translation>
+<translation id="4157741509680155021">同步链上的设备</translation>
 <translation id="279635009973773843">加载设备...</translation>
 <translation id="6394333525003604181">脱离同步链...</translation>
 <translation id="2569646144216067185">字数：<ph name="WORD_COUNT"/></translation>
@@ -147,9 +157,11 @@
 <translation id="3149880132460839085">Brave 同步</translation>
 <translation id="3680755684186855422">Brave 同步使您能够在您的各种设备上的 Brave 浏览器之间私密同步书签数据。</translation>
 <translation id="3735228155296883311">只需扫描您在另一台设备上创建的同步链中的代码即可。或开始一个新的同步链。</translation>
+<translation id="2614069607859982576">使用现有的同步设备，打开 Brave 设置并导航到 “设置 &gt; 同步 ”。选择 “添加新设备”，并扫描屏幕上显示的二维码。</translation>
 <translation id="5241263629636958324">已复制到剪贴板</translation>
 <translation id="5817918615728894473">配对</translation>
 <translation id="7090325819305486658">资料偏好设定</translation>
+<translation id="728334460283296316">移除设备</translation>
 <translation id="1178128181015923849">确定要删除设备 '<ph name="DEVICE_NAME"/>'？</translation>
 <translation id="7745082336226088126">扫描或输入同步码</translation>
 <translation id="1602067095281698985">启动新的同步链</translation>
@@ -170,6 +182,7 @@
 <translation id="6776430845975754238">更改设置只会影响此设备与他人共享的数据。</translation>
 <translation id="1061533051865606843">添加新设备</translation>
 <translation id="7539985410310934287">输入码字</translation>
+<translation id="2886391679017857869">使用现有的同步设备，打开 Brave 设置并导航到 “设置 &gt; 同步 ”。选择 “添加新设备”，并选择 “显示同步密钥”。</translation>
 <translation id="8131740175452115882">确认</translation>
 <translation id="4973653569293835178">我会用我的摄像头...</translation>
 <translation id="326454632686131209">同步设备</translation>

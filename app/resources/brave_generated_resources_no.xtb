@@ -60,6 +60,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1037341607922068025">Åpne privat vindu med Tor</translation>
 <translation id="1725356094208762656">Åpne i Tor</translation>
 <translation id="7643538479215207633">Åpne med IPFS</translation>
+<translation id="3094628781200061820">Publiser og hent filer fra IPFS</translation>
 <translation id="1672270084584211506">Onion-tilgjengelig</translation>
 <translation id="1434416574322382019">Nytt privatvindu med Tor</translation>
 <translation id="4703780849509456860">Åpne lenke i privatvindu med Tor</translation>
@@ -152,6 +153,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal node</translation>
 <translation id="4927734062756955434">Offentlig IPFS-systemportadresse</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Les mer<ph name="END_LINK_MPL"/> om lokale IPFS-hensyn og personvernhensyn.</translation>
 <translation id="8425213833346101688">Endre</translation>
 <translation id="557281710253742286">Konfigurer IPFS-systemport</translation>
 <translation id="8571837315037233299">Systemportadresse</translation>
@@ -223,7 +225,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1959966725083452288">Bonbon-avatar: kongelig</translation>
 <translation id="2039034364578911089">Bonbon-avatar: ninja</translation>
 <translation id="239760341987199724">Bruk Brave som standard nettleser</translation>
-<translation id="9185422039067880535">Brave-nettleseren er ikke standard nettleser.
+<translation id="1391855377994926460">Brave-nettleseren er ikke standard nettleser.
 Velg Brave som standard for å fortsette å navigere raskere på nettet – 
 opptil 6 ganger raskere på ledende nyhetsnettsteder.</translation>
 <translation id="9218430445555521422">Bruk som standard</translation>
@@ -268,4 +270,7 @@ opptil 6 ganger raskere på ledende nyhetsnettsteder.</translation>
 <translation id="2808630562319398131">Tilbakestill Brave Rewards-data …</translation>
 <translation id="1224064034972923114">Hjelp oss med å gjøre Brave bedre ved å sende inn rapporter om krasj automatisk</translation>
 <translation id="3738833060602717053">Hjelp til med å forbedre <ph name="PRODUCT_NAME"/> ved å sende rapporter om krasj automatisk</translation>
+<translation id="9185422039067880535">Brave-nettleseren er ikke standard nettleser.
+Velg Brave som standard for å fortsette å navigere raskere på nettet – 
+opptil 6 ganger raskere på ledende nyhetsnettsteder.</translation>
 </translationbundle>

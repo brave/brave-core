@@ -60,6 +60,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1037341607922068025">Buka Jendela Pribadi dengan Tor</translation>
 <translation id="1725356094208762656">Buka di Tor</translation>
 <translation id="7643538479215207633">Buka memakai IPFS</translation>
+<translation id="3094628781200061820">Publikasikan dan ambil berkas dari IPFS</translation>
 <translation id="1672270084584211506">Onion Tersedia</translation>
 <translation id="1434416574322382019">Jendela Pribadi dengan Tor Baru</translation>
 <translation id="4703780849509456860">Buka Tautan di Jendela Pribadi dengan Tor</translation>
@@ -173,6 +174,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1327977588028644528">Gerbang</translation>
 <translation id="80225669816651290">Node lokal</translation>
 <translation id="4927734062756955434">Alamat gateway publik IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Pelajari Lebih Lanjut<ph name="END_LINK_MPL"/> tentang node lokal IPFS dan pertimbangan privasi gerbang.</translation>
 <translation id="8425213833346101688">Ubah</translation>
 <translation id="557281710253742286">Atur gateway IPFS</translation>
 <translation id="8571837315037233299">Alamat gateway</translation>
@@ -244,7 +246,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Setel Brave sebagai browser default</translation>
-<translation id="9185422039067880535">Peramban Brave saat ini tidak disetel menjadi browser baku Anda.
+<translation id="1391855377994926460">Peramban Brave saat ini tidak disetel menjadi browser baku Anda.
 Atur Brave jadi browser baku untuk terus menjelajahi web lebih cepat -
 mencapai 6× lebih cepat untuk situs-situs berita utama.</translation>
 <translation id="9218430445555521422">Setel sebagai default</translation>
@@ -289,4 +291,7 @@ mencapai 6× lebih cepat untuk situs-situs berita utama.</translation>
 <translation id="2808630562319398131">Atur ulang data Brave Reward...</translation>
 <translation id="1224064034972923114">Bantu meningkatkan Brave dengan mengirimkan laporan kemacetan secara otomatis</translation>
 <translation id="3738833060602717053">Bantu tingkatkan <ph name="PRODUCT_NAME"/> dengan mengirimkan laporan kemacetan secara otomatis</translation>
+<translation id="9185422039067880535">Peramban Brave saat ini tidak disetel menjadi browser baku Anda.
+Atur Brave jadi browser baku untuk terus menjelajahi web lebih cepat -
+mencapai 6× lebih cepat untuk situs-situs berita utama.</translation>
 </translationbundle>

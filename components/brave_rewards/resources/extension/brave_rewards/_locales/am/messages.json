@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "ሽልማቶችን መቼ ይቀበላሉ",
+    "message": "ሽልማቶችን መቼ ይቀበላሉ?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Brave Rewards ን በመጠቀም ድሩ ለሁሉም ሰው የተሻለ ቦታ እንዲሆን እየረዱ ነው። እና ያ ግሩም ነው!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "ዋለትዎን ያረጋግጡ",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "ማስታወቂያዎችን በመመልከት ያገኙዋቸውን ቶክኖች ወጪ ለማድረግ ዋለትዎን ማረጋገጥ ያስፈልግዎታል።",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "በኋላ ያድርጉት",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "ዋለቴን አረጋግጥ",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "bitFlyer ዋለት በ bitFlyer, Inc. የሚተዳደር አገልግሎት ነው።",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "ዋለትዎን በማረጋገጥ እና ከ bitFlyer መለያ ጋር በማገናኘት በ Brave Rewards ያገኙዋቸውን ቶከንዎችን የበለጠ በቀላሉ ለማከማቸት እና ለማስተዳደር ይችላሉ።",
     "description": ""
   },
   "bapDeprecationHeader": {

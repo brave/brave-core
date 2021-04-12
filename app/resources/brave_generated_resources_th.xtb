@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">เปิดหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="1725356094208762656">เปิดใน Tor</translation>
 <translation id="7643538479215207633">เปิดด้วย IPFS</translation>
+<translation id="3094628781200061820">เผยแพร่และเรียกดูไฟล์จาก IPFS</translation>
 <translation id="1672270084584211506">บริการหัวหอมพร้อมใช้งาน</translation>
 <translation id="1434416574322382019">การสร้างวินโดว์ส่วนบุคคลกับทอร์</translation>
 <translation id="4703780849509456860">เปิดลิงก์ในหน้าต่างส่วนตัวพร้อม Tor</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">เกตเวย์</translation>
 <translation id="80225669816651290">โหนดภายใน</translation>
 <translation id="4927734062756955434">ที่อยู่เกตเวย์ IPFS สาธารณะ</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_MPL"/> เกี่ยวกับการพิจารณาความเป็นส่วนตัวของโหนดภายใน IPFS และเกตเวย์</translation>
 <translation id="8425213833346101688">เปลี่ยน</translation>
 <translation id="557281710253742286">ตั้งค่าเกตเวย์ IPFS</translation>
 <translation id="8571837315037233299">ที่อยู่เกตเวย์</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">อวทาร์ Bonbon Royal</translation>
 <translation id="2039034364578911089">อวทาร์ Bonbon Ninja</translation>
 <translation id="239760341987199724">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ</translation>
-<translation id="9185422039067880535">ขณะนี้เบราว์เซอร์ Brave ไม่ได้ถูกตั้งค่าเป็นเบราว์เซอร์เริ่มต้นของคุณ
+<translation id="1391855377994926460">ขณะนี้เบราว์เซอร์ Brave ไม่ได้ถูกตั้งค่าเป็นเบราว์เซอร์เริ่มต้นของคุณ
 ตั้งค่า Brave เป็นค่าเริ่มต้นเพื่อให้ท่องเว็บได้เร็วขึ้น -
 สูงสุด 6 เท่าในเว็บไซต์ข่าวหลัก</translation>
 <translation id="9218430445555521422">ตั้งเป็นค่าเริ่มต้น</translation>
@@ -289,4 +291,7 @@
 <translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
 <translation id="1224064034972923114">ช่วยปรับปรุง Brave ด้วยการส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
 <translation id="3738833060602717053">ช่วยปรับปรุง <ph name="PRODUCT_NAME"/>โดยส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
+<translation id="9185422039067880535">ขณะนี้เบราว์เซอร์ Brave ไม่ได้ถูกตั้งค่าเป็นเบราว์เซอร์เริ่มต้นของคุณ
+ตั้งค่า Brave เป็นค่าเริ่มต้นเพื่อให้ท่องเว็บได้เร็วขึ้น -
+สูงสุด 6 เท่าในเว็บไซต์ข่าวหลัก</translation>
 </translationbundle>

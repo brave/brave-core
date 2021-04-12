@@ -60,6 +60,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1037341607922068025">Deschideți o fereastră privată cu Tor</translation>
 <translation id="1725356094208762656">Deschide în Tor</translation>
 <translation id="7643538479215207633">Deschideți folosind IPFS</translation>
+<translation id="3094628781200061820">Publicați și recuperați fișiere de pe IPFS</translation>
 <translation id="1672270084584211506">Disponibil onion</translation>
 <translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
 <translation id="4703780849509456860">Deschide Link în Fereastră Privată cu Tor</translation>
@@ -173,6 +174,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nod local</translation>
 <translation id="4927734062756955434">Adresa ieșirii publice IPFS</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe<ph name="END_LINK_MPL"/> despre nodul local IPFS și considerațiile privind confidențialitatea gateway-ului.</translation>
 <translation id="8425213833346101688">Modifică</translation>
 <translation id="557281710253742286">Configurează ieșirea IPFS</translation>
 <translation id="8571837315037233299">Adresa de ieșire</translation>
@@ -244,7 +246,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1959966725083452288">Avatar Regal Bombon</translation>
 <translation id="2039034364578911089">Avatar Ninja Bombon</translation>
 <translation id="239760341987199724">Setați Brave ca browser prestabilit</translation>
-<translation id="9185422039067880535">Browser-ul Brave nu este setat ca browser prestabilit în acest moment.
+<translation id="1391855377994926460">Browser-ul Brave nu este setat ca browser prestabilit în acest moment.
 Setați Brave ca prestabilit pentru a naviga în continuare mai rapid pe internet -
 de până la 6 ori mai rapid pe site-urile de știri principale.</translation>
 <translation id="9218430445555521422">Setează ca prestabilit</translation>
@@ -289,4 +291,7 @@ de până la 6 ori mai rapid pe site-urile de știri principale.</translation>
 <translation id="2808630562319398131">Resetați datele Brave Rewards...</translation>
 <translation id="1224064034972923114">Ajutați-ne să îmbunătățim Brave trimițând automat rapoarte de cădere</translation>
 <translation id="3738833060602717053">Ajutați-ne să îmbunătățim <ph name="PRODUCT_NAME"/> trimițând automat rapoarte de cădere</translation>
+<translation id="9185422039067880535">Browser-ul Brave nu este setat ca browser prestabilit în acest moment.
+Setați Brave ca prestabilit pentru a naviga în continuare mai rapid pe internet -
+de până la 6 ori mai rapid pe site-urile de știri principale.</translation>
 </translationbundle>

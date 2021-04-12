@@ -742,7 +742,7 @@
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
-    "message": "Когда вы получаете вознаграждения",
+    "message": "Когда вы получаете вознаграждение?",
     "description": ""
   },
   "onboardingPanelScheduleText": {
@@ -787,6 +787,30 @@
   },
   "onboardingPanelCompleteText": {
     "message": "Используя Brave Rewards, вы помогаете сделать Интернет лучше для всех. И это прекрасно!",
+    "description": ""
+  },
+  "onboardingPanelVerifyHeader": {
+    "message": "Подтвердите свой кошелек",
+    "description": ""
+  },
+  "onboardingPanelVerifySubtext": {
+    "message": "Чтобы вывести баллы, полученные за просмотр рекламы, подтвердите ваш кошелек.",
+    "description": ""
+  },
+  "onboardingPanelVerifyLater": {
+    "message": "Позже",
+    "description": ""
+  },
+  "onboardingPanelVerifyNow": {
+    "message": "Подтверждаю",
+    "description": ""
+  },
+  "onboardingPanelBitflyerNote": {
+    "message": "Кошелек bitFlyer — сервис, предоставляемый компанией bitFlyer, Inc.",
+    "description": ""
+  },
+  "onboardingPanelBitflyerText": {
+    "message": "Подтвердите ваш кошелек и свяжите его с аккаунтом bitFlyer. Хранить баллы Brave Rewards и управлять ими станет еще удобнее.",
     "description": ""
   },
   "bapDeprecationHeader": {

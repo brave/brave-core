@@ -60,6 +60,7 @@
 <translation id="1037341607922068025">打开 Tor 的私人窗口</translation>
 <translation id="1725356094208762656">在 Tor 中打开</translation>
 <translation id="7643538479215207633">用 IPFS 打开</translation>
+<translation id="3094628781200061820">发布并从 IPFS 检索文件</translation>
 <translation id="1672270084584211506">Onion 可用</translation>
 <translation id="1434416574322382019">用 Tor 打开新的私人窗口</translation>
 <translation id="4703780849509456860">用 Tor 在私人窗口中打开链接</translation>
@@ -161,11 +162,11 @@
 <translation id="2356070529366658676">询问</translation>
 <translation id="7701040980221191251">无</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
-<translation id="1696548911367097044">不建议使用的加密货币钱包扩展</translation>
+<translation id="1696548911367097044">不建议使用的 Crypto Wallets 扩展程序</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="7090046810227878892">使用 Dapps 的 Ethereum 提供商</translation>
 <translation id="5913089932885076110">启动时加载加密钱包</translation>
-<translation id="757886143331967039">在启动时加载已弃用加密货币钱包的扩展</translation>
+<translation id="757886143331967039">在启动时加载已弃用 Crypto Wallets 扩展程序</translation>
 <translation id="6864914031231797928">允许 Google 登录以获取扩展程序</translation>
 <translation id="5927916530277631319">解决无法停止域这个问题的方法</translation>
 <translation id="5248318250177143470">解决以太坊名称服务（ENS）相关问题的方法</translation>
@@ -173,6 +174,7 @@
 <translation id="1327977588028644528">网关</translation>
 <translation id="80225669816651290">本地节点</translation>
 <translation id="4927734062756955434">IPFS 公共网关地址</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>进一步了解<ph name="END_LINK_MPL"/> 有关 IPFS 本地节点和网关隐私注意事项方面的信息。</translation>
 <translation id="8425213833346101688">更改</translation>
 <translation id="557281710253742286">设置 IPFS 网关</translation>
 <translation id="8571837315037233299">网关地址</translation>
@@ -244,7 +246,7 @@
 <translation id="1959966725083452288">邦邦 Royal 的头像</translation>
 <translation id="2039034364578911089">邦邦 Ninja 的头像</translation>
 <translation id="239760341987199724">将Brave设为默认浏览器</translation>
-<translation id="9185422039067880535">目前未将 Brave 浏览器设置为默认浏览器。
+<translation id="1391855377994926460">目前未将 Brave 浏览器设置为默认浏览器。
 将“Brave”设为默认设置，以保持更快的浏览速度 — 
 在主要新闻网站上的速度可提高 6 倍。</translation>
 <translation id="9218430445555521422">设为默认浏览器</translation>
@@ -265,7 +267,7 @@
 <translation id="7090566321964540749">该匿名信息仅使 Brave 能够估计某些功能的整体使用情况。</translation>
 <translation id="1947672064022327074">是否要启动 Ethereum 支持的加密钱包？</translation>
 <translation id="7583735190612229830">设置 Crypto Wallets 以与此应用程序以及其他类似的应用程序进行交互。</translation>
-<translation id="8731422418734770661">设置加密货币钱包</translation>
+<translation id="8731422418734770661">设置 Crypto Wallets</translation>
 <translation id="8199661191594897555">启动加密钱包并重新加载</translation>
 <translation id="8428213095426709021">设置</translation>
 <translation id="7691598647605453992">IPFS</translation>
@@ -289,4 +291,7 @@
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="1224064034972923114">通过自动发送崩溃报告来帮助改进 Brave</translation>
 <translation id="3738833060602717053">可通过自动发送崩溃报告来改善 <ph name="PRODUCT_NAME"/></translation>
+<translation id="9185422039067880535">目前未将 Brave 浏览器设置为默认浏览器。
+将“Brave”设为默认设置，以保持更快的浏览速度 — 
+在主要新闻网站上的速度可提高 6 倍。</translation>
 </translationbundle>
