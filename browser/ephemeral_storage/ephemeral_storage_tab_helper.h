@@ -8,7 +8,9 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -35,11 +37,14 @@ class EphemeralStorageTabHelper
 
   static void SetKeepAliveTimeDelayForTesting(const base::TimeDelta& time);
 
- protected:
+ private:
+  // WebContentsObserver
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void WebContentsDestroyed() override;
 
- private:
+  void ClearEphemeralLifetimeKeepalive(
+      const content::TLDEphemeralLifetimeKey& key);
   void CreateEphemeralStorageAreasForDomainAndURL(const std::string& new_domain,
                                                   const GURL& new_url);
 
@@ -47,6 +52,11 @@ class EphemeralStorageTabHelper
   scoped_refptr<content::SessionStorageNamespace> local_storage_namespace_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
   scoped_refptr<content::TLDEphemeralLifetime> tld_ephemeral_lifetime_;
+
+  std::vector<scoped_refptr<content::TLDEphemeralLifetime>>
+                    keep_alive_tld_ephemeral_lifetime_list_;
+
+  base::WeakPtrFactory<EphemeralStorageTabHelper> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

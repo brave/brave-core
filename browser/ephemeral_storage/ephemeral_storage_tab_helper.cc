@@ -68,6 +68,10 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {}
 
+void EphemeralStorageTabHelper::WebContentsDestroyed() {
+  keep_alive_tld_ephemeral_lifetime_list_.clear();
+}
+
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame())
@@ -76,6 +80,7 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     return;
 
   const GURL& new_url = navigation_handle->GetURL();
+
   std::string new_domain = net::URLToEphemeralStorageDomain(new_url);
   std::string previous_domain =
       net::URLToEphemeralStorageDomain(web_contents()->GetLastCommittedURL());
@@ -83,6 +88,18 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     return;
 
   CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
+}
+
+void EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive(
+    const content::TLDEphemeralLifetimeKey& key) {
+  for (auto it = keep_alive_tld_ephemeral_lifetime_list_.begin(); it != keep_alive_tld_ephemeral_lifetime_list_.end();
+       ++it) {
+    if ((*it)->key() == key) {
+      keep_alive_tld_ephemeral_lifetime_list_.erase(it);
+      return;
+    }
+  }
+  NOTREACHED();
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
@@ -130,15 +147,18 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
           : base::nullopt);
 
   if (base::FeatureList::IsEnabled(
-          net::features::kBraveEphemeralStorageKeepAlive)) {
+          net::features::kBraveEphemeralStorageKeepAlive) &&
+      tld_ephemeral_lifetime_) {
+    keep_alive_tld_ephemeral_lifetime_list_.push_back(tld_ephemeral_lifetime_);
+    auto key = tld_ephemeral_lifetime_->key();
     // keep the ephemeral storage alive for some time to handle redirects
     // including meta refresh or other page driven "redirects" that end up back
     // at the original origin
     base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,
-        base::BindOnce([](scoped_refptr<content::TLDEphemeralLifetime>
-                              tld_ephemeral_lifetime) {},
-                       tld_ephemeral_lifetime_),
+        base::BindOnce(
+            &EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive,
+            weak_factory_.GetWeakPtr(), key),
         g_storage_keep_alive_for_testing.is_min()
             ? kStorageKeepAliveDelay
             : g_storage_keep_alive_for_testing);
