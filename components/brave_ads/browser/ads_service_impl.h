@@ -8,13 +8,13 @@
 
 #include <cstdint>
 #include <deque>
+#include <list>
 #include <map>
 #include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
@@ -175,6 +175,8 @@ class AdsServiceImpl : public AdsService,
 
  private:
   friend class AdsNotificationHandler;
+  using SimpleURLLoaderList =
+      std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   void MaybeInitialize();
   void Initialize();
@@ -240,7 +242,7 @@ class AdsServiceImpl : public AdsService,
       const GURL& final_url,
       const network::mojom::URLResponseHead& response_head);
 
-  void OnURLRequestComplete(network::SimpleURLLoader* loader,
+  void OnURLRequestComplete(SimpleURLLoaderList::iterator url_loader_it,
                             ads::UrlRequestCallback callback,
                             const std::unique_ptr<std::string> response_body);
 
@@ -442,7 +444,7 @@ class AdsServiceImpl : public AdsService,
 
   PrefChangeRegistrar profile_pref_change_registrar_;
 
-  base::flat_set<network::SimpleURLLoader*> url_loaders_;
+  SimpleURLLoaderList url_loaders_;
 
   NotificationDisplayService* display_service_;     // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED

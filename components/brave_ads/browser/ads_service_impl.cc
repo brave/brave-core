@@ -557,9 +557,6 @@ void AdsServiceImpl::Shutdown() {
 
   g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
 
-  for (auto* const url_loader : url_loaders_) {
-    delete url_loader;
-  }
   url_loaders_.clear();
 
   idle_poll_timer_.Stop();
@@ -1134,11 +1131,11 @@ void AdsServiceImpl::OnURLRequestStarted(
 }
 
 void AdsServiceImpl::OnURLRequestComplete(
-    network::SimpleURLLoader* url_loader,
+    SimpleURLLoaderList::iterator url_loader_it,
     ads::UrlRequestCallback callback,
     const std::unique_ptr<std::string> response_body) {
-  DCHECK(url_loaders_.find(url_loader) != url_loaders_.end());
-  url_loaders_.erase(url_loader);
+  auto url_loader = std::move(*url_loader_it);
+  url_loaders_.erase(url_loader_it);
 
   if (!connected()) {
     return;
@@ -1861,10 +1858,8 @@ void AdsServiceImpl::UrlRequest(ads::UrlRequestPtr url_request,
     resource_request->headers.AddHeaderFromString(header);
   }
 
-  network::SimpleURLLoader* url_loader =
-      network::SimpleURLLoader::Create(std::move(resource_request),
-                                       GetNetworkTrafficAnnotationTag())
-          .release();
+  auto url_loader = network::SimpleURLLoader::Create(
+      std::move(resource_request), GetNetworkTrafficAnnotationTag());
 
   if (!url_request->content.empty()) {
     url_loader->AttachStringForUpload(url_request->content,
@@ -1880,16 +1875,14 @@ void AdsServiceImpl::UrlRequest(ads::UrlRequestPtr url_request,
 
   url_loader->SetAllowHttpErrorResults(true);
 
-  url_loaders_.insert(url_loader);
-
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory =
+  auto url_loader_it =
+      url_loaders_.insert(url_loaders_.end(), std::move(url_loader));
+  url_loader_it->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       content::BrowserContext::GetDefaultStoragePartition(profile_)
-          ->GetURLLoaderFactoryForBrowserProcess();
-
-  url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory.get(),
+          ->GetURLLoaderFactoryForBrowserProcess()
+          .get(),
       base::BindOnce(&AdsServiceImpl::OnURLRequestComplete,
-                     base::Unretained(this), url_loader, callback));
+                     base::Unretained(this), url_loader_it, callback));
 }
 
 void AdsServiceImpl::Save(const std::string& name,
