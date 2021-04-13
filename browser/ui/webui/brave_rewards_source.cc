@@ -82,7 +82,7 @@ void BraveRewardsSource::StartDataRequest(
     image_service->RequestImage(
         actual_url,
         base::BindOnce(&BraveRewardsSource::OnBitmapFetched,
-                       base::Unretained(this), std::move(got_data_callback),
+                       weak_factory_.GetWeakPtr(), std::move(got_data_callback),
                        actual_url),
         traffic_annotation);
   }
