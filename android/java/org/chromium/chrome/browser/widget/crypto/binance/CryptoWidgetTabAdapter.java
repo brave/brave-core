@@ -52,6 +52,8 @@ public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
             ((BinanceConvertFragment)fragment).setBinanceBottomSheetListener(mBinanceBottomSheetListener);
         } else if (position == 3) {
             fragment = new BinanceBuyFragment();
+            ((BinanceBuyFragment) fragment)
+                    .setBinanceBottomSheetListener(mBinanceBottomSheetListener);
         }
         return fragment;
     }
