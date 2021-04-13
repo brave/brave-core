@@ -1,12 +1,12 @@
 diff --git a/components/permissions/android/BUILD.gn b/components/permissions/android/BUILD.gn
-index 3cfa933430a16ea55bfae73aa02e195a0aedd5a9..29ef945bf217fec6cf2af52a2f4bde7de00dfdda 100644
+index 3cfa933430a16ea55bfae73aa02e195a0aedd5a9..79d9bfcd28fa8b1c490213cb34abd31943a64e88 100644
 --- a/components/permissions/android/BUILD.gn
 +++ b/components/permissions/android/BUILD.gn
 @@ -14,6 +14,7 @@ generate_jni("jni_headers") {
      "java/src/org/chromium/components/permissions/PermissionUtil.java",
      "java/src/org/chromium/components/permissions/nfc/NfcSystemLevelSetting.java",
    ]
-+  import("//brave/components/permissions/android/java_sources.gni") sources += brave_components_permissions_java_jni_sources
++  sources += brave_components_permissions_java_jni_sources
  }
  
  android_resources("java_resources") {
@@ -14,7 +14,7 @@ index 3cfa933430a16ea55bfae73aa02e195a0aedd5a9..29ef945bf217fec6cf2af52a2f4bde7d
      "java/src/org/chromium/components/permissions/nfc/NfcSystemLevelPrompt.java",
      "java/src/org/chromium/components/permissions/nfc/NfcSystemLevelSetting.java",
    ]
-+  import("//brave/components/permissions/android/java_sources.gni") sources += brave_components_permissions_java_sources
++  sources += brave_components_permissions_java_sources
    deps = [
      ":java_resources",
      "//base:base_java",
