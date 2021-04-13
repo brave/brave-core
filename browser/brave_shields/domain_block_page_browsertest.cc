@@ -26,8 +26,8 @@
 
 using brave_shields::ControlType;
 using brave_shields::ResetBraveShieldsEnabled;
-using brave_shields::SetCosmeticFilteringControlType;
 using brave_shields::SetBraveShieldsEnabled;
+using brave_shields::SetCosmeticFilteringControlType;
 using brave_shields::features::kBraveDomainBlock;
 
 class DomainBlockTestBase : public AdBlockServiceTest {
@@ -274,9 +274,11 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndGoBack) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
-  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url_a);
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_a);
   GURL url_b = embedded_test_server()->GetURL("b.com", "/simple.html");
-  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url_b);
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_b);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url_a);
@@ -323,7 +325,8 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoThirdPartyInterstitial) {
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
   GURL cross_url =
       embedded_test_server()->GetURL("a.com", "/cross-site/b.com/simple.html");
-  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, cross_url);
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  cross_url);
 
   // Navigate to a page on a.com. This should work normally.
   NavigateTo(url);
