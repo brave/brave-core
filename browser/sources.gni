@@ -16,6 +16,7 @@ import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import(
     "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
@@ -41,8 +42,6 @@ brave_chrome_browser_visibility = [
 
   # these are layering violation and need to be fixed
   "//brave/components/brave_ads/test:*",
-  "//brave/components/brave_rewards/browser:testutil",
-  "//brave/components/brave_rewards/test:*",
   "//brave/components/ipfs/test:*",
 
   # Chrome does not yet define a visibility list by itself, meaning we can't
@@ -150,6 +149,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_drm",
   "//brave/components/brave_referrals/buildflags",
+  "//brave/components/brave_rewards/browser/buildflags",
   "//brave/components/brave_search/browser",
   "//brave/components/brave_search/common:mojom",
   "//brave/components/brave_shields/browser",
@@ -380,43 +380,6 @@ if (brave_ads_enabled) {
   ]
 }
 
-if (brave_rewards_enabled) {
-  brave_chrome_browser_sources += [
-    "//brave/browser/brave_rewards/rewards_service_factory.cc",
-    "//brave/browser/brave_rewards/rewards_service_factory.h",
-    "//brave/browser/brave_rewards/rewards_tab_helper.cc",
-    "//brave/browser/brave_rewards/rewards_tab_helper.h",
-  ]
-
-  if (enable_extensions) {
-    brave_chrome_browser_sources += [
-      "//brave/browser/brave_rewards/extension_rewards_notification_service_observer.cc",
-      "//brave/browser/brave_rewards/extension_rewards_notification_service_observer.h",
-      "//brave/browser/brave_rewards/extension_rewards_service_observer.cc",
-      "//brave/browser/brave_rewards/extension_rewards_service_observer.h",
-    ]
-  }
-
-  if (is_android) {
-    brave_chrome_browser_sources += [
-      "//brave/browser/brave_rewards/android/brave_rewards_native_worker.cc",
-      "//brave/browser/brave_rewards/android/brave_rewards_native_worker.h",
-    ]
-
-    brave_chrome_browser_deps += [ "brave_ads" ]
-  } else {
-    brave_chrome_browser_sources += [
-      "//brave/browser/brave_rewards/tip_dialog.cc",
-      "//brave/browser/brave_rewards/tip_dialog.h",
-    ]
-  }
-
-  brave_chrome_browser_deps += [
-    "//brave/components/brave_rewards/browser",
-    "//brave/vendor/bat-native-ledger:headers",
-  ]
-}
-
 if (enable_brave_wayback_machine) {
   brave_chrome_browser_deps += [ "//brave/components/brave_wayback_machine" ]
 }
@@ -466,6 +429,7 @@ brave_chrome_browser_sources += brave_chrome_browser_importer_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_signin_sources
+brave_chrome_browser_sources += brave_browser_brave_rewards_sources
 
 brave_chrome_browser_deps += brave_browser_themes_deps
 brave_chrome_browser_deps += brave_browser_wallet_deps
