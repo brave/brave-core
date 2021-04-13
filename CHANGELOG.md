@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.24](https://github.com/brave/brave-ios/releases/tag/v1.24)
+
+- Implemented opt-in for Brave Today. ([#3374](https://github.com/brave/brave-ios/issues/3374))
+- Added support for OpenSearch. ([#936](https://github.com/brave/brave-ios/issues/936))
+- Added server location support for Brave Firewall + VPN. ([#2934](https://github.com/brave/brave-ios/issues/2934))
+- Added support to remove other devices from sync chain. ([#3195](https://github.com/brave/brave-ios/issues/3195))
+- Added support for custom RSS feeds within Brave Today. ([#3249](https://github.com/brave/brave-ios/issues/3249))
+- Added support for Japanese content feed of Brave Today. ([#3051](https://github.com/brave/brave-ios/issues/3051))
+- Added share button in Brave Shields to increase app virality. ([#2981](https://github.com/brave/brave-ios/issues/2981))
+- Added support for including New Tab Page Sponsored Image views in “Estimated pending rewards” and “Ad notifications received this month” for Brave Ads. ([#3235](https://github.com/brave/brave-ios/issues/3235))
+- Added ability to control “Allow universal links to open in external apps” via “Other Privacy Settings”. ([#2119](https://github.com/brave/brave-ios/issues/2119))
+- Improved visuals for YubiKey security key PIN modal. ([#2129](https://github.com/brave/brave-ios/issues/2129))
+- Improved Brave Today by updating feed when publishers are removed or added. ([#3033](https://github.com/brave/brave-ios/issues/3033))
+- Fixed Brave Shields educational messages being shown when shields icon not visible. ([#3412](https://github.com/brave/brave-ios/issues/3412))
+
 ## [1.23.1](https://github.com/brave/brave-ios/releases/tag/v1.23.1)
 
 - Refactored both user scripts and content scripts to restrict web-pages interacting with content scripts. ([#2957](https://github.com/brave/brave-ios/issues/2957))
