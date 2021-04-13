@@ -97,17 +97,10 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   if (!handle->IsInMainFrame())
     return content::NavigationThrottle::PROCEED;
 
-  // Don't bother checking non-HTTP(S) pages
   GURL request_url = handle->GetURL();
-  if (!request_url.SchemeIsHTTPOrHTTPS())
-    return content::NavigationThrottle::PROCEED;
 
-  // Only block if Brave Shields is enabled and tracker/ad blocking is set to
-  // aggressive.
-  if (!brave_shields::GetBraveShieldsEnabled(content_settings_, request_url))
-    return content::NavigationThrottle::PROCEED;
-  if (brave_shields::GetCosmeticFilteringControlType(
-          content_settings_, request_url) != ControlType::BLOCK)
+  // Maybe don't block based on Brave Shields settings
+  if (!brave_shields::ShouldDoDomainBlocking(content_settings_, request_url))
     return content::NavigationThrottle::PROCEED;
 
   // If user has just chosen to proceed on our interstitial, don't show
