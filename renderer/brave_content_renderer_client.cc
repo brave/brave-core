@@ -6,7 +6,6 @@
 #include "brave/renderer/brave_content_renderer_client.h"
 
 #include "base/feature_list.h"
-#include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
@@ -14,6 +13,8 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
+#include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/common/features.h"
@@ -46,6 +47,8 @@ void BraveContentRendererClient::RenderThreadStarted() {
 
   brave_observer_ = std::make_unique<BraveRenderThreadObserver>();
   content::RenderThread::Get()->AddObserver(brave_observer_.get());
+  brave_search_sw_holder_.SetBrowserInterfaceBrokerProxy(
+      browser_interface_broker_.get());
 }
 
 void BraveContentRendererClient::RenderFrameCreated(
@@ -66,18 +69,40 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, BraveRenderThreadObserver::GetDynamicParams());
   }
 #endif
-
-  new brave_search::BraveSearchRenderFrameObserver(
-      render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
 }
 
 void BraveContentRendererClient::RunScriptsAtDocumentStart(
     content::RenderFrame* render_frame) {
   auto* observer =
       cosmetic_filters::CosmeticFiltersJsRenderFrameObserver::Get(render_frame);
-  // run this before any extensions
+  // Run this before any extensions
   if (observer)
     observer->RunScriptsAtDocumentStart();
 
   ChromeContentRendererClient::RunScriptsAtDocumentStart(render_frame);
+}
+
+void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
+    blink::WebServiceWorkerContextProxy* context_proxy,
+    v8::Local<v8::Context> v8_context,
+    int64_t service_worker_version_id,
+    const GURL& service_worker_scope,
+    const GURL& script_url) {
+  brave_search_sw_holder_.WillEvaluateServiceWorkerOnWorkerThread(
+      context_proxy, v8_context, service_worker_version_id,
+      service_worker_scope, script_url);
+  ChromeContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
+      context_proxy, v8_context, service_worker_version_id,
+      service_worker_scope, script_url);
+}
+
+void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
+    v8::Local<v8::Context> v8_context,
+    int64_t service_worker_version_id,
+    const GURL& service_worker_scope,
+    const GURL& script_url) {
+  brave_search_sw_holder_.WillDestroyServiceWorkerContextOnWorkerThread(
+      v8_context, service_worker_version_id, service_worker_scope, script_url);
+  ChromeContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
+      v8_context, service_worker_version_id, service_worker_scope, script_url);
 }

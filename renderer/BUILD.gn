@@ -16,6 +16,7 @@ source_set("renderer") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/cosmetic_filters/renderer",
+    "//v8",
   ]
 
   if (brave_wallet_enabled) {
