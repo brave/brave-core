@@ -7,10 +7,15 @@
 
 namespace net {
 namespace features {
+
 const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
-                                           base::FEATURE_DISABLED_BY_DEFAULT};
+                                           base::FEATURE_ENABLED_BY_DEFAULT};
 const base::Feature kBraveEphemeralStorageKeepAlive{
-    "BraveEphemeralStorageKeepAlive",
-    base::FEATURE_DISABLED_BY_DEFAULT};
+    "BraveEphemeralStorageKeepAlive", base::FEATURE_ENABLED_BY_DEFAULT};
+
+const base::FeatureParam<int> kBraveEphemeralStorageKeepAliveTimeInSeconds = {
+    &kBraveEphemeralStorageKeepAlive,
+    "BraveEphemeralStorageKeepAliveTimeInSeconds", 30};
+
 }  // namespace features
 }  // namespace net
