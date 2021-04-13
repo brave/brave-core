@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/sharing/features.h"
 #include "chrome/browser/ui/browser.h"
@@ -80,6 +81,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &network_time::kNetworkTimeServiceQuerying,
       &safe_browsing::kEnhancedProtection,
       &safe_browsing::kEnhancedProtectionMessageInInterstitials,
+      &brave_shields::features::kBraveDomainBlock,
   };
 
   for (const auto* feature : disabled_features)
