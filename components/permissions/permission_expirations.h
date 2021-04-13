@@ -7,10 +7,13 @@
 #define BRAVE_COMPONENTS_PERMISSIONS_PERMISSION_EXPIRATIONS_H_
 
 #include <map>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "base/callback.h"
 #include "base/containers/flat_set.h"
+#include "brave/components/permissions/permission_expiration_key.h"
 #include "brave/components/permissions/permission_origins.h"
 #include "components/content_settings/core/common/content_settings.h"
 
@@ -27,9 +30,10 @@ namespace permissions {
 class PermissionExpirations {
  public:
   using ExpiringPermissions = std::vector<PermissionOrigins>;
-  using TimeExpirationsMap = std::map<base::Time, ExpiringPermissions>;
-  using TypeTimeExpirationsMap =
-      base::flat_map<ContentSettingsType, TimeExpirationsMap>;
+  using KeyExpirationsMap =
+      std::map<PermissionExpirationKey, ExpiringPermissions>;
+  using TypeKeyExpirationsMap =
+      base::flat_map<ContentSettingsType, KeyExpirationsMap>;
   using ExpiredPermissions =
       base::flat_map<ContentSettingsType, ExpiringPermissions>;
 
@@ -42,21 +46,32 @@ class PermissionExpirations {
 
   // Add expiring permission.
   void AddExpiringPermission(ContentSettingsType content_type,
-                             base::Time expiration_time,
+                             PermissionExpirationKey expiration_time,
                              PermissionOrigins permission_origins);
   // Remove permission using |predicate|. Returns true if anything was removed.
   bool RemoveExpiringPermissions(
       ContentSettingsType content_type,
       base::RepeatingCallback<bool(const PermissionOrigins&)> predicate);
-  // Remove expired permissions with expiration_time > |current_time|.
+  // Remove expired permissions with expiration_time >= |current_time|.
   ExpiredPermissions RemoveExpiredPermissions(base::Time current_time);
+  // Remove expired permissions with exact |domain|.
+  ExpiredPermissions RemoveExpiredPermissions(const std::string& domain);
+  // Remove expired permissions with a domain as a key.
+  ExpiredPermissions RemoveAllDomainPermissions();
 
-  const TypeTimeExpirationsMap& expirations() const { return expirations_; }
+  const TypeKeyExpirationsMap& expirations() const { return expirations_; }
 
  private:
+  // Remove expired permissions using |predicate|.
+  ExpiredPermissions RemoveExpiredPermissionsImpl(
+      base::RepeatingCallback<std::pair<KeyExpirationsMap::const_iterator,
+                                        KeyExpirationsMap::const_iterator>(
+          const KeyExpirationsMap&)> predicate);
+
   // Update value in prefs, |time_items| used to update only listed items.
-  void UpdateTimeExpirationsPref(ContentSettingsType content_type,
-                                 const std::vector<base::Time>& time_items);
+  void UpdateExpirationsPref(
+      ContentSettingsType content_type,
+      const std::vector<PermissionExpirationKey>& expiration_keys);
 
   void ReadExpirationsFromPrefs();
   ExpiringPermissions ParseExpiringPermissions(
@@ -67,7 +82,7 @@ class PermissionExpirations {
   PrefService* const prefs_ = nullptr;
 
   // Expirations data from prefs used at runtime. Kept in sync with prefs.
-  TypeTimeExpirationsMap expirations_;
+  TypeKeyExpirationsMap expirations_;
 };
 
 }  // namespace permissions

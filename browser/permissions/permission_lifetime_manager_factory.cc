@@ -5,13 +5,18 @@
 
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 
+#include <memory>
+#include <utility>
+
 #include "brave/components/permissions/permission_lifetime_manager.h"
+#include "brave/components/permissions/permission_origin_lifetime_monitor_impl.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/permissions/features.h"
+#include "net/base/features.h"
 
 // static
 permissions::PermissionLifetimeManager*
@@ -43,10 +48,18 @@ KeyedService* PermissionLifetimeManagerFactory::BuildServiceInstanceFor(
           permissions::features::kPermissionLifetime)) {
     return nullptr;
   }
+  std::unique_ptr<permissions::PermissionOriginLifetimeMonitor>
+      permission_origin_lifetime_monitor;
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
+    permission_origin_lifetime_monitor =
+        std::make_unique<permissions::PermissionOriginLifetimeMonitorImpl>(
+            context);
+  }
   auto* profile = Profile::FromBrowserContext(context);
   return new permissions::PermissionLifetimeManager(
       HostContentSettingsMapFactory::GetForProfile(context),
-      profile->IsOffTheRecord() ? nullptr : profile->GetPrefs());
+      profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),
+      std::move(permission_origin_lifetime_monitor));
 }
 
 bool PermissionLifetimeManagerFactory::ServiceIsCreatedWithBrowserContext()

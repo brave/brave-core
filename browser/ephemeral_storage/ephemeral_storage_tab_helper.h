@@ -40,7 +40,7 @@ class EphemeralStorageTabHelper
       content::NavigationHandle* navigation_handle) override;
 
  private:
-  void CreateEphemeralStorageAreasForDomainAndURL(std::string new_domain,
+  void CreateEphemeralStorageAreasForDomainAndURL(const std::string& new_domain,
                                                   const GURL& new_url);
 
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
