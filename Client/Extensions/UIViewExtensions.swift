@@ -82,13 +82,13 @@ extension UIView {
         if subviews.isEmpty {
             return nil
         }
-        for subview: UIView in subviews {
-            if subview.isFirstResponder {
-                return subview
-            }
-            return findSubViewWithFirstResponder(subview)
+        
+        guard let firstSubview = subviews.first else { return nil }
+        if firstSubview.isFirstResponder {
+            return firstSubview
+        } else {
+            return findSubViewWithFirstResponder(firstSubview)
         }
-        return nil
     }
     
     /// Creates empty view with specified height or width parameter.
