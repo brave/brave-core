@@ -7268,13 +7268,13 @@
 <translation id="7475335772460644497">{COUNT, plural,
           =0 {Open all in &amp;private window}
           =1 {Open in &amp;private window}
-          其他 {Open all ({COUNT}) in &amp;private window}}</translation>
+          other {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">在隐身窗口中打开(&amp;I)</translation>
 <translation id="4620367155626060530">显示书签栏(&amp;S)</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Open All in &amp;Private Window}
           =1 {Open in &amp;Private Window}
-          其他 {Open All ({COUNT}) in &amp;Private Window}}</translation>
+          other {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">在隐身窗口中打开(&amp;I)</translation>
 <translation id="4680518314108745448">显示书签栏(&amp;S)</translation>
 <translation id="642436385689435488">在无痕式窗口中打开所有网址</translation>

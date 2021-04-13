@@ -7271,16 +7271,16 @@
 <translation id="5186185447130319458">プライベート</translation>
 <translation id="2579188629646253712">プライベートモードを終了する</translation>
 <translation id="1001131747196960052">プライベートウィンドウを閉じる</translation>
-<translation id="7475335772460644497">{COUNT, 複数,
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {すべて&amp;プライベートウィンドウで開く}
           =1 {すべて&amp;プライベートウィンドウで開く}
-          その他{すべての ({COUNT}) を&amp;プライベートウィンドウで開く}}</translation>
+          other {すべての ({COUNT}) を&amp;プライベートウィンドウで開く}}</translation>
 <translation id="2431625704210501303">&amp;プライベートウィンドウで開く</translation>
 <translation id="4620367155626060530">ブックマーク バーを表示(&amp;S)</translation>
-<translation id="1448315815373449655">{COUNT, 複数,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {すべて&amp;プライベートウィンドウで開く}
           =1 {すべて&amp;プライベートウィンドウで開く}
-          その他{すべての ({COUNT}) を&amp;プライベートウィンドウで開く}}</translation>
+          other {すべての ({COUNT}) を&amp;プライベートウィンドウで開く}}</translation>
 <translation id="1985165269306590797">&amp;プライベートウィンドウで開く</translation>
 <translation id="4680518314108745448">ブックマーク バーを表示(&amp;S)</translation>
 <translation id="642436385689435488">すべてをプライベートウィンドウで開く</translation>
@@ -7288,11 +7288,11 @@
 <translation id="5463021359602611602">プライベートウィンドウで開く</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Private}
-        その他 {# open private windows}
+        other {# open private windows}
       }</translation>
 <translation id="8773965542687789581">{0, plural,
       =1 {Private}
-      その他 {Private (#)}
+      other {Private (#)}
     }</translation>
 <translation id="5070556616376997776">これはプライベートウィンドウです</translation>
 <translation id="5832813618714645810">プロフィール</translation>

@@ -7271,13 +7271,13 @@ Druk op een toegewezen schakelaar om de toewijzing te verwijderen.</translation>
 <translation id="5186185447130319458">Privé</translation>
 <translation id="2579188629646253712">Sluit Privé af</translation>
 <translation id="1001131747196960052">Privé sluiten</translation>
-<translation id="7475335772460644497">{AANTAL, meervoud,
+<translation id="7475335772460644497">{COUNT, plural,
           =0 {Open allen in &amp;privévenster}
           =1 {Open in &amp;privévenster}
           other {Open allen ({AANTAL}) in &amp;privévenster}}</translation>
 <translation id="2431625704210501303">Open in &amp;privéscherm</translation>
 <translation id="4620367155626060530">&amp;Bladwijzerbalk weergeven</translation>
-<translation id="1448315815373449655">{AANTAL, meervoud,
+<translation id="1448315815373449655">{COUNT, plural,
           =0 {Open Alen in &amp;Privéscherm}
           =1 {Open in &amp;Privéscherm}
           other {Open Allen ({AANTAL}) in &amp;Privéscherm}}</translation>

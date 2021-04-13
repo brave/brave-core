@@ -7276,13 +7276,13 @@ Pritisnite dodijeljeni prekidač da biste uklonili dodjelu.</translation>
 <translation id="7475335772460644497">{COUNT, plural,
           =0 {Otvori sve u &amp;privatnom prozoru}
           =1 {Otvori u &amp;privatnom prozoru}
-          drugo {Otvori sve ({COUNT}) u &amp;privatnom/ih prozoru/a}}</translation>
+          other {Otvori sve ({COUNT}) u &amp;privatnom/ih prozoru/a}}</translation>
 <translation id="2431625704210501303">Otvori u &amp;privatnom prozoru</translation>
 <translation id="4620367155626060530">&amp;Prikaži traku oznake</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Otvori sve u &amp;privatnom prozoru}
           =1 {Otvori u &amp;privatnom prozoru}
-          drugo {Otvori sve ({COUNT})) u &amp;privatnom/ih prozoru/a}}</translation>
+          other {Otvori sve ({COUNT}) u &amp;privatnom/ih prozoru/a}}</translation>
 <translation id="1985165269306590797">Otvori u &amp;privatnom prozoru</translation>
 <translation id="4680518314108745448">&amp;Prikaz trake oznake</translation>
 <translation id="642436385689435488">Otvori sve u privatnom prozoru</translation>
