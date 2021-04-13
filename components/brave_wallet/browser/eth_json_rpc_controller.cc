@@ -103,8 +103,7 @@ void EthJsonRpcController::Request(const std::string& json_payload,
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory,
       base::BindOnce(&EthJsonRpcController::OnURLLoaderComplete,
-                     base::Unretained(this), std::move(iter),
-                     std::move(callback)));
+                     base::Unretained(this), iter, std::move(callback)));
 }
 
 void EthJsonRpcController::OnURLLoaderComplete(
