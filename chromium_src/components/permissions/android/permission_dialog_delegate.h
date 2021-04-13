@@ -10,7 +10,6 @@
 
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_H_                                 \
  private:                                                                   \
-  void CreateAndSetLifetimeOptions();                                       \
   void ApplyLifetimeToPermissionRequests(JNIEnv* env,                       \
                                          const JavaParamRef<jobject>& obj); \
                                                                             \
