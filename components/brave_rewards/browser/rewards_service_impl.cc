@@ -1004,8 +1004,7 @@ void RewardsServiceImpl::LoadURL(
     loader->AttachStringForUpload(request->content, request->content_type);
   }
 
-  auto loader_it =
-      url_loaders_.insert(url_loaders_.begin(), std::move(loader));
+  auto loader_it = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
   loader_it->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       content::BrowserContext::GetDefaultStoragePartition(profile_)
           ->GetURLLoaderFactoryForBrowserProcess()
