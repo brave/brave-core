@@ -70,8 +70,10 @@ components/weekly_storage/ @iefremov
 components/brave_perf_predictor/ @iefremov
 
 # Permissions
-browser/permissions/ @akhoroshilov
-components/permissions/ @akhoroshilov
+browser/permissions/**/*expiration* @goodov
+browser/permissions/**/*lifetime* @goodov
+components/permissions/**/*expiration* @goodov
+components/permissions/**/*lifetime* @goodov
 
 # Java patching
 build/android/bytecode/ @samartnik
