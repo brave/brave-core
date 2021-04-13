@@ -53,10 +53,14 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #include "brave/components/speedreader/features.h"
 
 #define SPEEDREADER_FEATURE_ENTRIES \
-    {"brave-speedreader",                                                  \
-     flag_descriptions::kBraveSpeedreaderName,                             \
-     flag_descriptions::kBraveSpeedreaderDescription, kOsDesktop,          \
-     FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature)},
+    {"brave-speedreader",                                                    \
+     flag_descriptions::kBraveSpeedreaderName,                               \
+     flag_descriptions::kBraveSpeedreaderDescription, kOsDesktop,            \
+     FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature)},                  \
+    {"speedreader-readability-backend",                                      \
+     flag_descriptions::kBraveSpeedreaderReadabilityName,                    \
+     flag_descriptions::kBraveSpeedreaderReadabilityDescription, kOsDesktop, \
+     FEATURE_VALUE_TYPE(speedreader::kSpeedreaderReadabilityBackend)},
 #else
 #define SPEEDREADER_FEATURE_ENTRIES
 #endif
