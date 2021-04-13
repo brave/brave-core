@@ -14,6 +14,8 @@
 
 namespace decentralized_dns {
 
+// Issue eth_call requests via Ethereum provider such as Infura to query
+// decentralized DNS records, and redirect URL requests based on them.
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx);

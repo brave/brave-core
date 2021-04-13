@@ -48,6 +48,7 @@ class EthJsonRpcController {
                             const std::string& address,
                             GetERC20TokenBalanceCallback callback);
 
+  // Call getMany function of ProxyReader contract from Unstoppable Domains.
   using UnstoppableDomainsProxyReaderGetManyCallback =
       base::OnceCallback<void(bool status, const std::string& result)>;
   bool UnstoppableDomainsProxyReaderGetMany(

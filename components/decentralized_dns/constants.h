@@ -31,6 +31,8 @@ enum class RecordKeys {
 };
 
 // Need to match RecordKeys above.
+// See https://docs.unstoppabledomains.com/browser-resolution/browser-resolution-algorithm#browser-resolution-records
+// for more details.
 const constexpr char* const kRecordKeys[] = {
     "dweb.ipfs.hash", "ipfs.html.value",      "dns.A",
     "dns.AAAA",       "browser.redirect_url", "ipfs.redirect_domain.value"};
