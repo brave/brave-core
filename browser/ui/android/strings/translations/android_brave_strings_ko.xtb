@@ -2,7 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
 <translation id="7307834434086582547">Brave Shields 활성화/비활성화</translation>
-<translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
+<translation id="3570081523466826008">연결을 HTTPS로 업그레이드</translation>
 <translation id="94154759592465111">스크립트 차단</translation>
 <translation id="5709627087332022422">사이트 간 추적기 차단</translation>
 <translation id="6052725679982758334">소셜 미디어 차단</translation>
@@ -11,7 +11,7 @@
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="6302422639282249274">Brave Rewards 관리</translation>
-<translation id="1506061864768559482">검색엔진</translation>
+<translation id="1506061864768559482">검색 엔진</translation>
 <translation id="1468415711258933398">일반 탭</translation>
 <translation id="3377025655491224618">시크릿 탭</translation>
 <translation id="9148058034647219655">나가기</translation>
@@ -76,7 +76,7 @@
 <translation id="7136694880210472378">기본으로 설정</translation>
 <translation id="4250680216510889253">아니요</translation>
 <translation id="4501702055016678577">DuckDuckGo로 비공개 검색을 하시겠어요?</translation>
-<translation id="910419239800579753">비공개 검색, Brave로 비공개 탭에 있는 동안 DuckDuckGo를 사용하여 검색합니다. DuckDuckGo는 검색 기록을 추적하지 않는 검색 엔진이므로 비공개로 검색 할 수 있습니다.</translation>
+<translation id="910419239800579753">비공개 검색에선, Brave로 비공개 탭에 있는 동안 DuckDuckGo를 사용하여 검색합니다. DuckDuckGo는 검색 기록을 추적하지 않는 검색 엔진이므로 비공개로 검색 할 수 있습니다.</translation>
 <translation id="1426410128494586442">예</translation>
 <translation id="5628466560184522265">DuckDuckGo 비공개 검색에 관해 알아보기</translation>
 <translation id="8826007068782654809">감사합니다</translation>

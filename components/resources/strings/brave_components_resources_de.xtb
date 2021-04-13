@@ -404,7 +404,7 @@
 <translation id="4396256076373444156">Sammeln Sie Punkte, wenn Sie sich relevante Werbung ansehen, die Ihre Privatsphäre respektiert.</translation>
 <translation id="2975780980638932742">Brave Werbung ist da!</translation>
 <translation id="3361548743396744457">Unterstützen Sie Ihre Lieblingsseiten einfach durchs Surfen – oder spendieren Sie Seiten ein Trinkgeld, wann immer Sie möchten.</translation>
-<translation id="6976444672879155794">Automatische Beitragszahlung [[processor]]</translation>
+<translation id="6976444672879155794">Automatische Beitragszahlung für [[processor]]</translation>
 <translation id="4493850495402472953">und</translation>
 <translation id="8804164990146287819">Datenschutzerklärung</translation>
 <translation id="4281844954008187215">Nutzungsbedingungen</translation>
@@ -449,7 +449,7 @@
 <translation id="418343137736963579">Anzahl an Websites, die Sie vom automatischen Spenden ausgeschlossen haben:</translation>
 <translation id="1759104587873258696">läuft ab am</translation>
 <translation id="6149218349077925111">für</translation>
-<translation id="8802504113265057166">[[currency]], welche nicht vor dem Ablaufdatum verwendet wird, wird automatisch an den Brave User Growth Pool zurückgesendet.</translation>
+<translation id="8802504113265057166">[[currency]], welche nicht vor dem Ablaufdatum verwendet werden, werden automatisch an den Brave User Growth Pool zurückgesendet.</translation>
 <translation id="279567716178902927">Zuwendungs-Ablaufdatum</translation>
 <translation id="2104073734684466851">Zuschüsse</translation>
 <translation id="6476729769006815569">Hallo, [[name]]!</translation>

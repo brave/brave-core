@@ -104,7 +104,7 @@
 <translation id="3294503279952534143">To zasebno okno je bolj zasebno</translation>
 <translation id="4644024131266615376">s povezljivostjo Tor</translation>
 <translation id="8541421872680304667">Tor skriva vaš naslov IP pred spletnimi mesti, ki jih obiščete, tako da brska po več strežnikih Tor, preden doseže vaš cilj. Tor lahko upočasni brskanje in nekatera spletna mesta morda sploh ne bodo delovala.</translation>
-<translation id="8897548669448660973">Uporaba zasebnega sistema Windows spremeni samo tisto, kar Brave počne v vaši napravi — ne spremeni vedenja nikogar drugega. Tor skriva vaš naslov IP pred spletnimi mesti, ki jih obiščete, in nekoliko otežuje, a ne nemogoče, da vaš ponudnik internetnih storitev ali delodajalec vidi, katera spletna mesta obiskujete. Odprite zasebno okno z menijem Tor ali z [[key]].</translation>
+<translation id="8897548669448660973">Uporaba zasebnega sistema Windows spremeni samo tisto, kar Brave počne v vaši napravi ne spremeni vedenja nikogar drugega. Tor skriva vaš naslov IP pred spletnimi mesti, ki jih obiščete, in nekoliko otežuje, a ne nemogoče, da vaš ponudnik internetnih storitev ali delodajalec vidi, katera spletna mesta obiskujete. Odprite zasebno okno z menijem Tor ali z [[key]].</translation>
 <translation id="6975708438781948564">Več o brskalnikih Tor in Brave</translation>
 <translation id="4712050378540986986">Stanje brskalnika Tor</translation>
 <translation id="3368922792935385530">Povezano</translation>
@@ -377,7 +377,7 @@
 <translation id="827315274423079662">Juhu, vse je pripravljeno!</translation>
 <translation id="8268038362451312235">Z uporabo Brave Rewards pomagate izboljšati splet za vse. In to je res krasno!</translation>
 <translation id="9146355483497231818">Preverite svojo denarnico</translation>
-<translation id="8913591412117692523">Če želite dvigniti žetone, ki jih zaslužite za ogled oglasov, morate #8217 preveriti svojo denarnico.</translation>
+<translation id="8913591412117692523">Če želite dvigniti žetone, ki jih zaslužite za ogled oglasov, morate preveriti svojo denarnico.</translation>
 <translation id="9168436347345867845">Storite to pozneje</translation>
 <translation id="5468234114288973517">Preveri mojo denarnico</translation>
 <translation id="6609621505400013054">Denarnica bitFlyer je storitev, ki jo upravlja bitFlyer, Inc.</translation>
@@ -449,7 +449,7 @@
 <translation id="418343137736963579">Skupno število spletnih mest, ki ste jih izključili iz samodejnih donacij:</translation>
 <translation id="1759104587873258696">poteče</translation>
 <translation id="6149218349077925111">za</translation>
-<translation id="8802504113265057166">[[currency]], ki se ne uporabi do datuma poteka, bo samodejno vrnjen v skupino za pogumne uporabnike.</translation>
+<translation id="8802504113265057166">[[currency]], ki se ne uporabi do datuma poteka, bo samodejno vrnjen v Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Datum izteka veljavnosti sredstev</translation>
 <translation id="2104073734684466851">Sredstva</translation>
 <translation id="6476729769006815569">Hello, [[name]]!</translation>
@@ -553,14 +553,14 @@
 <translation id="459721429458957031">Če želite obnoviti svojo denarnico, uporabite obnovitveni ključ.</translation>
 <translation id="4600052736217630789">Če denarnico obnovite z obnovitvenim ključem, boste s tem zamenjali svojo trenutno denarnico, zato se prepričajte, da je vaša trenutna denarnica prazna, preden se lotite obnovitve.</translation>
 <translation id="3267911153934785912">Vnesite svoj obnovitveni ključ ali</translation>
-<translation id="1209382772199769572">Pred zamenjavo varnostno kopirajte denarnico. V nasprotnem primeru boste izgubili sklad [[funds]] v svoji trenutni denarnici.</translation>
+<translation id="1209382772199769572">Pred zamenjavo varnostno kopirajte denarnico. V nasprotnem primeru boste izgubili sklad, [[funds]], v svoji trenutni denarnici.</translation>
 <translation id="5423214929210538027">Ali ste prepričani, da želite ponastaviti denarnico Rewards?</translation>
 <translation id="8683358891240311475">Vaših <ph name="BAT_AMOUNT"/> in drugi podatki o nagradah bodo trajno izgubljeni, če ponastavite denarnico. Prepričajte se, da ste preverili svojo denarnico z <ph name="PROVIDER"/>, da boste lahko obdržali BAT.</translation>
 <translation id="2028613172174411919">Podatki o nagradah Rewards bodo trajno izgubljeni, če ponastavite denarnico.</translation>
 <translation id="4914597931214386232">Zahteva za sredstva v obliki žetonov</translation>
 <translation id="3494964159182650590">Povzetek nagrad</translation>
 <translation id="1738658589626889850">Shrani kot datoteko</translation>
-<translation id="2913994227901456490">Oglejte si vse elemente [[numItems]]</translation>
+<translation id="2913994227901456490">Oglejte si vse elemente: [[numItems]]</translation>
 <translation id="3010479539542250179">Oglejte si vsa spletna mesta [[numSites]]</translation>
 <translation id="1549705559752367917">Pošlji nasvet</translation>
 <translation id="3536298624341433814">Pošlji moj prispevek</translation>

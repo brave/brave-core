@@ -104,7 +104,7 @@
 <translation id="3294503279952534143">Ovaj privatni prozor je još privatniji</translation>
 <translation id="4644024131266615376">sa Tor povezivanjem</translation>
 <translation id="8541421872680304667">Tor sakriva vašu IP adresu od lokacija koje posećujete usmeravanjem vašeg pretraživanja pomoću nekoliko Tor servera pre nego što stigne do vaše destinacije. Tor može da uspori pretraživanje i neke lokacije možda uopšte neće raditi.</translation>
-<translation id="8897548669448660973">Korišćenje privatnih prozora menja samo ono što Brave radi na vašem uređaju — ne menja ponašanje bilo koga drugog. Tor skriva vašu IP adresu na sajtovima koje posećujete i donekle otežava, ali ne onemogućava, da vaš internet provajder (ISP) ili poslodavac vidi koje sajtove posećujete. Otvorite privatni prozor pomoću opcije Tor iz menija, ili pomoću [[ key ]].</translation>
+<translation id="8897548669448660973">Korišćenje privatnih prozora menja samo ono što Brave radi na vašem uređaju ne menja ponašanje bilo koga drugog. Tor skriva vašu IP adresu na sajtovima koje posećujete i donekle otežava, ali ne onemogućava, da vaš internet provajder (ISP) ili poslodavac vidi koje sajtove posećujete. Otvorite privatni prozor pomoću opcije Tor iz menija, ili pomoću [[ key ]].</translation>
 <translation id="6975708438781948564">Saznajte više o Tor-u u Brave-u</translation>
 <translation id="4712050378540986986">Tor Status</translation>
 <translation id="3368922792935385530">Повезан</translation>
@@ -333,8 +333,8 @@ ažuriranja.</translation>
 <translation id="4622723187300249546">Jednokratna napojnica</translation>
 <translation id="5268142130226208198">Iznos jednokratne napojnice:</translation>
 <translation id="3669086939205397942">Sačekajte, još ne možete da dajete napojnicu</translation>
-<translation id="4758374243299807324">[[user]] objava</translation>
-<translation id="1242162113777253768">[[user]] tvit</translation>
+<translation id="4758374243299807324">Objava korisnika [[user]]</translation>
+<translation id="1242162113777253768">Tvit korisnika [[user]]</translation>
 <translation id="5531915212947569943">Žao nam je što nas napuštate…</translation>
 <translation id="1420756770787071946">Podržite ovog autora</translation>
 <translation id="3473919203449000069">Ako nastavite, prihvatate <ph name="LINK_BEGIN"/>Uslove korišćenja usluge<ph name="LINK_END"/> i <ph name="LINK_BEGIN"/>Smernice za privatnost<ph name="LINK_END"/>.</translation>
@@ -381,7 +381,7 @@ ažuriranja.</translation>
 <translation id="8913591412117692523">Da biste preuzeli tokene koje ste zaradili gledajući reklame, moraćete da verifikujete svoj novčanik.</translation>
 <translation id="9168436347345867845">Uradi kasnije</translation>
 <translation id="5468234114288973517">Verifikuj moj novčanik</translation>
-<translation id="6609621505400013054">Uslugu bitFlyer wallet održava kompanija bitFlyer, Inc.</translation>
+<translation id="6609621505400013054">Uslugu novčanik bitFlyer održava kompanija bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Verifikovanjem vašeg novčanika i njegovim povezivanjem sa bitFlyer nalogom, lakše ćete moći da čuvate i održavate tokene koje ste zaradili kroz Brave Rewards</translation>
 <translation id="5094577350232361255">o</translation>
 <translation id="4918086044614829423">Прихвати</translation>
@@ -450,7 +450,7 @@ ažuriranja.</translation>
 <translation id="418343137736963579">Ukupan broj lokacija koje ste isključili iz automatskog doprinošenja:</translation>
 <translation id="1759104587873258696">ističe</translation>
 <translation id="6149218349077925111">za</translation>
-<translation id="8802504113265057166">[[currency]] koji se ne iskoriste pre datuma isteka automatski će se vratiti u Brave skup novih korisnika.</translation>
+<translation id="8802504113265057166">[[currency]] koji se ne iskoriste pre datuma isteka automatski će se vratiti u stavku Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Datum isteka odobrenja</translation>
 <translation id="2104073734684466851">Grants</translation>
 <translation id="6476729769006815569">Zdravo, [[name]]!</translation>
@@ -509,7 +509,7 @@ ažuriranja.</translation>
 <translation id="135956957367307069">Vaš zahtev se i dalje obrađuje, molimo Vas pričekajte.</translation>
 <translation id="8725066075913043281">Пробај поново</translation>
 <translation id="2600847485413879104">BAT nagrade</translation>
-<translation id="8006596443377585072">bitFlyer Wallet</translation>
+<translation id="8006596443377585072">novčanik bitFlyer</translation>
 <translation id="8108350286444475334">Potvrdi novčanik</translation>
 <translation id="6977372887576114613">Uplaćen BAT</translation>
 <translation id="3173528272490482456">Spremni da krenete?</translation>
@@ -561,7 +561,7 @@ ažuriranja.</translation>
 <translation id="4914597931214386232">Traženi tokeni odobrenja</translation>
 <translation id="3494964159182650590">Rezime nagrada</translation>
 <translation id="1738658589626889850">Sačuvaj kao datoteku</translation>
-<translation id="2913994227901456490">Vidi svih [[numItems]] stavki</translation>
+<translation id="2913994227901456490">Vidi sve/ih [[numItems]] stavke/i</translation>
 <translation id="3010479539542250179">Vidi svih [[numSites]] sajtova</translation>
 <translation id="1549705559752367917">Pošalji savet</translation>
 <translation id="3536298624341433814">Pošalji moju donaciju</translation>

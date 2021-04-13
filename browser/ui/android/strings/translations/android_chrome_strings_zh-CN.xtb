@@ -1203,9 +1203,9 @@
 <translation id="996149300115483134">动态卡片上的菜单已关闭</translation>
 <translation id="5186185447130319458">私有</translation>
 <translation id="9063160602596686558">自动将使用情况统计信息和崩溃报告发送至 Brave Software</translation>
-<translation id="6944984374444075385">当启用时，站点可以使用这里显示的隐私保护技术来提供其内容和服务。这包括跨站点跟踪的替代方案。随着时间的推移，我们可能还会增加更多的试用。
+<translation id="6944984374444075385">当启用时，站点可以使用这里显示的隐私保护技术来提供其内容和服务。这包括跨站点跟踪的替代方案。随着时间的推移，我们可能还会增加更多的测试。
 
-<ph name="BEGIN_LIST_ITEM1"/>当成千上万的用户有相同的兴趣爱好时（例如，当一群人在听音乐会时），广告商就会知道并会为大众选择广告（而不是个人资料）。<ph name="END_LIST_ITEM1"/>
+<ph name="BEGIN_LIST_ITEM1"/>当成千上万的用户有相同的兴趣爱好时（例如，当一群人在听音乐会时），广告商就会知道并会针对这些人选择广告（而不是个人资料）。<ph name="END_LIST_ITEM1"/>
 
 <ph name="BEGIN_LIST_ITEM2"/>广告客户可以通过无需跨站点跟踪您的方式来研究广告的有效性。<ph name="END_LIST_ITEM2"/></translation>
 <translation id="1438581767753657407">启用精简模式后，Brave 使用 Brave 服务器来提高页面加载速度。精简模式重写非常慢的页面以仅加载基本内容。精简模式不适用于私有标签页。</translation>
