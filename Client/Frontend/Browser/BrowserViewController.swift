@@ -3186,7 +3186,7 @@ extension BrowserViewController: SessionRestoreHelperDelegate {
     func sessionRestoreHelper(_ helper: SessionRestoreHelper, didRestoreSessionForTab tab: Tab) {
         tab.restoring = false
 
-        if let tab = tabManager.selectedTab, tab.webView === tab.webView {
+        if let tab = tabManager.selectedTab {
             updateUIForReaderHomeStateForTab(tab)
         }
     }

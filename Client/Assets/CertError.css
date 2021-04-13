@@ -14,13 +14,13 @@ body {
     padding: 0 65px;
     color: #333;
     font-size: 13px;
-    font-family: "Helvetica Neue Medium" sans-serif;
+    font-family: "Helvetica Neue Medium", sans-serif;
 }
 
 h1 {
     color: #333;
     font-size: 16px;
-    font-family: "Helvetica Neue Medium" sans-serif;
+    font-family: "Helvetica Neue Medium", sans-serif;
     font-weight: 300;
     margin-bottom: 25px;
 }
@@ -46,7 +46,7 @@ button {
     width: 100%;
     border: none;
     padding: 1rem;
-    font-family: "Helvetica Neue Medium" sans-serif;
+    font-family: "Helvetica Neue Medium", sans-serif;
     background-color: rgb(76, 158, 255);
     color: white;
     font-size: 16px;

@@ -121,7 +121,7 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
       if (!acInputField.value)
         return;
 
-      log("onUsernameInput from", event.type);
+      log(`onUsernameInput from${event.type}`);
 
       // Make sure the username field fillForm will use is the
       // same field as the autocomplete was activated on.
@@ -168,8 +168,7 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
         log("(form ignored -- no password fields.)");
         return null;
       } else if (pwFields.length > 3) {
-        log("(form ignored -- too many password fields. [ got ",
-                    pwFields.length, "])");
+        log(`(form ignored -- too many password fields. [got ${pwFields.length}]`);
         return null;
       }
       return pwFields;
@@ -442,7 +441,7 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
         var fit = (l.username.length <= maxUsernameLen &&
                    l.password.length <= maxPasswordLen);
         if (!fit)
-          log("Ignored", l.username, "login: won't fit");
+          log(`Ignored ${l.username} login: won't fit`);
 
         return fit;
       }, this);
