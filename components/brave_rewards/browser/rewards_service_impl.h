@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_IMPL_H_
 
 #include <functional>
+#include <list>
 #include <map>
 #include <memory>
 #include <string>
@@ -14,7 +15,6 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
@@ -357,6 +357,8 @@ class RewardsServiceImpl : public RewardsService,
 
  private:
   friend class ::RewardsFlagBrowserTest;
+  using SimpleURLLoaderList =
+      std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   void OnConnectionClosed(const ledger::type::Result result);
 
@@ -445,7 +447,7 @@ class RewardsServiceImpl : public RewardsService,
     GetPendingContributionsCallback callback,
     ledger::type::PendingContributionInfoList list);
 
-  void OnURLLoaderComplete(network::SimpleURLLoader* loader,
+  void OnURLLoaderComplete(SimpleURLLoaderList::iterator url_loader_it,
                            ledger::client::LoadURLCallback callback,
                            std::unique_ptr<std::string> response_body);
 
@@ -776,7 +778,7 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<RewardsServicePrivateObserver> private_observer_;
 
   std::unique_ptr<base::OneShotEvent> ready_;
-  base::flat_set<network::SimpleURLLoader*> url_loaders_;
+  SimpleURLLoaderList url_loaders_;
   std::map<std::string, BitmapFetcherService::RequestId>
       current_media_fetchers_;
   std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
