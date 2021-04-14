@@ -11,7 +11,7 @@ use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use regex::Regex;
 use scorer::{Title, TopCandidate};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::default::Default;
 use std::io::Read;
 use std::str::FromStr;
@@ -115,7 +115,13 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     // Append siblings of the new root with related content.
     scorer::append_related_siblings(&mut dom, top_candidate.clone());
 
-    scorer::clean(&mut dom, top_candidate.clone(), url, &title.title, features);
+    scorer::clean(
+        &mut dom,
+        top_candidate.clone(),
+        &title.title.split_whitespace().collect::<HashSet<_>>(),
+        url,
+        features,
+    );
 
     // Our CSS formats based on id="article".
     dom::set_attr("id", "article", top_candidate.clone(), true);

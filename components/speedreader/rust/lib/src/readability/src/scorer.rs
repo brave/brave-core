@@ -10,26 +10,25 @@ use kuchiki::NodeRef as Handle;
 use kuchiki::{ElementData, NodeRef, Sink};
 use regex::Regex;
 use std::cmp::Ordering;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::str::FromStr;
 use url::Url;
 
 pub static PUNCTUATIONS_REGEX: &str = r"([,]\?)";
-pub static UNLIKELY_CANDIDATES: &str = "-ad-|ai2html|banner\
+pub static UNLIKELY_CANDIDATES: &str = "(?i)-ad-|ai2html|banner\
     |breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|foot|gdpr\
     |header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
     |social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup\
     |yom-remote";
-pub static LIKELY_CANDIDATES: &str = "and|article|body|column|main\
+pub static LIKELY_CANDIDATES: &str = "(?i)and|article|body|column|main\
     |shadow\
     |a";
-pub static POSITIVE_CANDIDATES: &str = "article|body|content|entry\
-        |hentry|h-entry|main|page|pagination|post|text|blog|story|paragraph|speakable";
-pub static NEGATIVE_CANDIDATES: &str = "hidden|^hid$|hid$|hid|^hid\
-        |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|header\
-        |legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
-        |social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup\
-        yom-remote";
+pub static POSITIVE_CANDIDATES: &str = "(?i)article|body|content|entry|hentry|h-entry|\
+        main|page|pagination|post|text|blog|story";
+pub static NEGATIVE_CANDIDATES: &str = "(?i)-ad-|hidden|^hid$| hid$| hid |\
+        ^hid |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|\
+        masthead|media|meta|outbrain|promo|related|scroll|share|shoutbox|\
+        sidebar|skyscraper|sponsor|shopping|tags|tool|widget";
 static BLOCK_CHILD_TAGS: [&LocalName; 9] = [
     &local_name!("a"),
     &local_name!("blockquote"),
@@ -255,8 +254,7 @@ pub fn is_candidate(handle: &Handle) -> bool {
 pub fn init_content_score(handle: &Handle) -> f32 {
     let score = match handle.data() {
         Element(ref data) => match data.name.local {
-            local_name!("article") => 10.0,
-            local_name!("div") => 5.0,
+            local_name!("div") | local_name!("section") => 5.0,
             local_name!("h1")
             | local_name!("h2")
             | local_name!("h3")
@@ -382,6 +380,7 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
             local_name!("script")
             | local_name!("noscript")
             | local_name!("link")
+            | local_name!("nav")
             | local_name!("style") => return true,
             local_name!("title") => {
                 if !title.is_meta && title.title.is_empty() {
@@ -722,8 +721,8 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
 pub fn clean<S: ::std::hash::BuildHasher>(
     mut dom: &mut Sink,
     handle: Handle,
+    title_tokens: &HashSet<&str>,
     url: &Url,
-    title: &str,
     features: &HashMap<String, u32, S>,
 ) -> bool {
     let useless = match handle.data() {
@@ -744,7 +743,30 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("header")
                 | local_name!("footer")
                 | local_name!("embed")
+                | local_name!("textarea")
+                | local_name!("input")
+                | local_name!("select")
+                | local_name!("button")
                 | local_name!("aside") => true,
+                local_name!("h1") | local_name!("h2") => {
+                    // Delete remaining headings that may be duplicates of the title.
+                    let mut heading = String::new();
+                    dom::extract_text(&handle, &mut heading, true);
+                    if heading.len() == 0 {
+                        return true;
+                    }
+                    if title_tokens.len() == 0 {
+                        return false;
+                    }
+                    let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
+                    let distance = title_tokens.difference(&heading_tokens).count() as f32;
+                    let similarity = 1.0 - distance / title_tokens.len() as f32;
+                    if similarity >= 0.75 {
+                        true
+                    } else {
+                        false
+                    }
+                }
                 local_name!("form")
                 | local_name!("table")
                 | local_name!("ul")
@@ -788,7 +810,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     }
     let mut useless_nodes = vec![];
     for child in handle.children() {
-        if clean(&mut dom, child.clone(), url, title, features) {
+        if clean(&mut dom, child.clone(), title_tokens, url, features) {
             useless_nodes.push(child.clone());
         }
     }
