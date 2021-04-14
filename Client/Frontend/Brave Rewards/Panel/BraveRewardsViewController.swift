@@ -56,17 +56,6 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
         
         super.init(nibName: nil, bundle: nil)
         
-        let observer = LedgerObserver(ledger: rewards.ledger)
-        rewards.ledger.add(observer)
-        ledgerObserver = observer
-        
-        observer.fetchedPanelPublisher = { [weak self] publisher, tabId in
-            guard let self = self else { return }
-            if tabId == tab.rewardsId {
-                self.publisher = publisher
-            }
-        }
-        
         prefsCancellable = Preferences.Rewards.transferCompletionAcknowledged
             .$value
             .receive(on: RunLoop.main)
@@ -104,23 +93,20 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
         rewardsView.applyTheme(theme)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        rewardsView.rewardsToggle.isOn = rewards.isEnabled
-        
-        if !rewards.isEnabled {
-            rewardsView.statusView.setVisibleStatus(status: .rewardsOff, animated: false)
-            rewardsView.publisherView.isHidden = true
+    private func reloadData() {
+        guard let ledger = self.rewards.ledger else { return }
+        if !self.rewards.isEnabled {
+            self.rewardsView.statusView.setVisibleStatus(status: .rewardsOff, animated: false)
+            self.rewardsView.publisherView.isHidden = true
         } else {
-            if let url = tab.url, !url.isLocal {
-                rewardsView.publisherView.hostLabel.text = url.baseDomain
-                rewards.ledger.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: nil, tabId: UInt64(tab.rewardsId))
+            if let url = self.tab.url, !url.isLocal {
+                self.rewardsView.publisherView.hostLabel.text = url.baseDomain
+                ledger.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: nil, tabId: UInt64(self.tab.rewardsId))
             } else {
-                rewardsView.publisherView.isHidden = true
+                self.rewardsView.publisherView.isHidden = true
             }
-            rewards.ledger.fetchPromotions(nil)
-            rewards.ledger.listAutoContributePublishers { [weak self] list in
+            ledger.fetchPromotions(nil)
+            ledger.listAutoContributePublishers { [weak self] list in
                 guard let self = self else { return }
                 self.supportedListCount = list.count
                 self.rewardsView.statusView.setVisibleStatus(status: list.isEmpty ? .rewardsOnNoCount : .rewardsOn, animated: false)
@@ -159,6 +145,36 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
         } else {
             rewardsView.publisherView.hostLabel.text = tab.url?.baseDomain
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        rewardsView.rewardsToggle.isOn = rewards.isEnabled
+        
+        rewards.startLedgerService { [weak self] in
+            guard let self = self else { return }
+            if let ledger = self.rewards.ledger {
+                let observer = LedgerObserver(ledger: ledger)
+                ledger.add(observer)
+                self.ledgerObserver = observer
+                
+                observer.fetchedPanelPublisher = { [weak self] publisher, tabId in
+                    guard let self = self else { return }
+                    if tabId == self.tab.rewardsId {
+                        self.publisher = publisher
+                    }
+                }
+            }
+            
+            self.reloadData()
+        }
+        
+        view.snp.makeConstraints {
+            $0.width.equalTo(360)
+            $0.height.equalTo(rewardsView)
+        }
+        
         rewardsView.publisherView.learnMoreButton.addTarget(self, action: #selector(tappedUnverifiedPubLearnMore), for: .touchUpInside)
         rewardsView.subtitleLabel.text = rewards.isEnabled ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
         rewardsView.rewardsToggle.addTarget(self, action: #selector(rewardsToggleValueChanged), for: .valueChanged)
@@ -166,11 +182,6 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
         rewardsView.legacyWalletTransferButton.dismissButton.addTarget(self, action: #selector(tappedDismissRewardsTransfer), for: .touchUpInside)
         rewardsView.legacyWalletTransferStatusButton.addTarget(self, action: #selector(tappedRewardsStatusButton), for: .touchUpInside)
         rewardsView.legacyWalletTransferStatusButton.dismissButton.addTarget(self, action: #selector(tappedDismissTransferStatus), for: .touchUpInside)
-        
-        view.snp.makeConstraints {
-            $0.width.equalTo(360)
-            $0.height.equalTo(rewardsView)
-        }
         
         if !AppConstants.buildChannel.isPublic {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedHostLabel(_:)))
@@ -242,7 +253,7 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
     @objc private func tappedHostLabel(_ gesture: UITapGestureRecognizer) {
         if gesture.state != .ended { return }
         guard let publisher = publisher else { return }
-        rewards.ledger.refreshPublisher(withId: publisher.id) { [weak self] status in
+        rewards.ledger?.refreshPublisher(withId: publisher.id) { [weak self] status in
             guard let self = self else { return }
             let copy = publisher.copy() as! PublisherInfo // swiftlint:disable:this force_cast
             copy.status = status

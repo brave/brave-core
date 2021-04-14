@@ -143,10 +143,9 @@ class BrowserViewController: UIViewController {
     
     let rewards: BraveRewards
     let legacyWallet: BraveLedger?
-    let rewardsObserver: LedgerObserver
-    private var promotionFetchTimer: Timer?
+    var promotionFetchTimer: Timer?
     private var notificationsHandler: AdsNotificationHandler?
-    private(set) var publisher: PublisherInfo?
+    var publisher: PublisherInfo?
     
     let vpnProductInfo = VPNProductInfo()
     
@@ -216,20 +215,18 @@ class BrowserViewController: UIViewController {
             if rewards.isEnabled && !Preferences.Rewards.rewardsToggledOnce.value {
                 Preferences.Rewards.rewardsToggledOnce.value = true
             }
-            // Update defaults
-            rewards.ledger.minimumVisitDuration = 8
-            rewards.ledger.minimumNumberOfVisits = 1
-            rewards.ledger.allowUnverifiedPublishers = false
-            rewards.ledger.allowVideoContributions = true
-            rewards.ledger.contributionAmount = Double.greatestFiniteMagnitude
         }
-        rewardsObserver = LedgerObserver(ledger: rewards.ledger)
         deviceCheckClient = DeviceCheckClient(environment: configuration.environment)
         
         super.init(nibName: nil, bundle: nil)
         didInit()
         
         rewards.delegate = self
+        
+        // Only start ledger service automatically if ads is enabled
+        if rewards.isAdsEnabled {
+            rewards.startLedgerService(nil)
+        }
     }
     
     static func legacyWallet(for config: BraveRewardsConfiguration) -> BraveLedger? {
@@ -345,17 +342,10 @@ class BrowserViewController: UIViewController {
         // Lists need to be compiled before attempting tab restoration
         contentBlockListDeferred = ContentBlockerHelper.compileBundledLists()
         
-        setupRewardsObservers()
-        promotionFetchTimer = Timer.scheduledTimer(
-            withTimeInterval: 1.hours,
-            repeats: true,
-            block: { [weak self] _ in
-                guard let self = self else { return }
-                if self.rewards.isEnabled {
-                    self.rewards.ledger.fetchPromotions(nil)
-                }
-            }
-        )
+        if rewards.ledger != nil {
+            // Ledger was started immediately due to user having ads enabled
+            setupLedger()
+        }
         
         Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value = true
         
@@ -437,24 +427,6 @@ class BrowserViewController: UIViewController {
                 let request = URLRequest(url: targetURL)
                 self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
             }
-        }
-    }
-    
-    private func setupRewardsObservers() {
-        rewards.ledger.add(rewardsObserver)
-        rewardsObserver.walletInitalized = { [weak self] result in
-            guard let self = self, let client = self.deviceCheckClient else { return }
-            if result == .walletCreated {
-                self.rewards.ledger.setupDeviceCheckEnrollment(client) { }                
-                self.updateRewardsButtonState()
-            }
-        }
-        rewardsObserver.promotionsAdded = { [weak self] promotions in
-            self?.claimPendingPromotions()
-        }
-        rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
-            guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
-            self.publisher = publisher
         }
     }
     
@@ -902,8 +874,8 @@ class BrowserViewController: UIViewController {
         updateTabCountUsingTabManager(tabManager)
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
         
-        if let tabId = tabManager.selectedTab?.rewardsId, rewards.ledger.selectedTabId == 0 {
-            rewards.ledger.selectedTabId = tabId
+        if let tabId = tabManager.selectedTab?.rewardsId, rewards.ledger?.selectedTabId == 0 {
+            rewards.ledger?.selectedTabId = tabId
         }
     }
     
@@ -1162,7 +1134,7 @@ class BrowserViewController: UIViewController {
         screenshotHelper.viewIsVisible = false
         super.viewWillDisappear(animated)
         
-        rewards.ledger.selectedTabId = 0
+        rewards.ledger?.selectedTabId = 0
     }
 
     override func viewDidDisappear(_ animated: Bool) {
