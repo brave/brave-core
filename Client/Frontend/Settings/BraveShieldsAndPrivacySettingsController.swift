@@ -126,9 +126,15 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
              (PasswordsClearable(profile: self.profile), true),
              (DownloadsClearable(), true)]
         
+        let playlist: [(clearable: Clearable, checked: Bool)] =
+            [(PlayListCacheClearable(), false),
+             (PlayListDataClearable(), false)]
+        
         #if !NO_BRAVE_TODAY
         alwaysVisible.append((BraveTodayClearable(feedDataSource: self.feedDataSource), true))
         #endif
+        
+        alwaysVisible.append(contentsOf: playlist)
         
         return alwaysVisible
     }()

@@ -110,6 +110,8 @@ class BrowserViewController: UIViewController {
 
     var pendingToast: Toast? // A toast that might be waiting for BVC to appear before displaying
     var downloadToast: DownloadToast? // A toast that is showing the combined download progress
+    var playlistToast: PlaylistToast? // A toast displayed when a playlist item is updated or added
+    var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)? // A boolean to determine If AddToListActivity should be added
 
     // Tracking navigation items to record history types.
     // TODO: weak references?
@@ -339,6 +341,7 @@ class BrowserViewController: UIViewController {
             self.setupAdsNotificationHandler()
         }
         Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
+        Preferences.Playlist.webMediaSourceCompatibility.observe(from: self)
         // Lists need to be compiled before attempting tab restoration
         contentBlockListDeferred = ContentBlockerHelper.compileBundledLists()
         
@@ -1780,6 +1783,20 @@ class BrowserViewController: UIViewController {
             tab?.switchUserAgent()
         }
         
+        let addToPlayListActivity = AddToPlaylistActivity() { [unowned self] in
+            guard let item = self.addToPlayListActivityItem?.item else { return }
+            
+            // Update playlist with new items..
+            self.addToPlaylist(item: item) { [weak self] didAddItem in
+                guard let self = self else { return }
+                
+                log.debug("Playlist Item Added")
+                self.showPlaylistToast(info: item, itemState: .added)
+                UIImpactFeedbackGenerator(style: .medium).bzzt()
+                
+            }
+        }
+        
         var activities: [UIActivity] = [findInPageActivity]
         
         // These actions don't apply if we're sharing a temporary document
@@ -1890,6 +1907,10 @@ class BrowserViewController: UIViewController {
             activities.append(addSearchEngineActivity)
         }
 
+        if let playListActivityItem = addToPlayListActivityItem, playListActivityItem.enabled {
+            activities.append(addToPlayListActivity)
+        }
+        
         let controller = helper.createActivityViewController(items: activities) { [weak self] completed, _, documentUrl  in
             guard let self = self else { return }
             
@@ -2660,6 +2681,10 @@ extension BrowserViewController: TabDelegate {
         
         tab.addContentScript(WindowRenderHelperScript(tab: tab), name: WindowRenderHelperScript.name(), sandboxed: false)
         
+        let playlistHelper = PlaylistHelper(tab: tab)
+        playlistHelper.delegate = self
+        tab.addContentScript(playlistHelper, name: PlaylistHelper.name(), sandboxed: false)
+
         tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name())
         tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
     }
@@ -3468,6 +3493,15 @@ extension BrowserViewController: PreferencesObserver {
         case Preferences.NewTabPage.selectedCustomTheme.key:
             Preferences.NTP.ntpCheckDate.value = nil
             backgroundDataSource.startFetching()
+        case Preferences.Playlist.webMediaSourceCompatibility.key:
+            if UIDevice.isIpad {
+                playlistToast?.dismiss(false)
+                
+                tabManager.allTabs.forEach {
+                    $0.userScriptManager?.isWebCompatibilityMediaSourceAPIEnabled = Preferences.Playlist.webMediaSourceCompatibility.value
+                    $0.webView?.reload()
+                }
+            }
         default:
             log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
             break

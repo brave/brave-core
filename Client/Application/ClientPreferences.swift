@@ -199,5 +199,24 @@ extension Preferences {
         /// When regional blocklists were last time updated on the device.
         static let lastRegionalAdblockUpdate = Option<Date?>(key: "last-regional-adblock-update", default: nil)
     }
+    
+    final class Playlist {
+        /// The Option to show video list left or right side
+        static let listViewSide = Option<String>(key: "playlist.listViewSide", default: PlayListSide.left.rawValue)
+        /// Whether to show Add to playlist Toast
+        static let showToastForAdd = Option<Bool>(key: "playlist.showToastForAdd", default: true)
+        /// The last played item url
+        static let lastPlayedItemUrl = Option<String?>(key: "playlist.last.played.item.url", default: nil)
+        /// The last played item time
+        static let lastPlayedItemTime = Option<Double>(key: "playlist.last.played.item.time", default: 0.0)
+        /// Whether to play the video when controller loaded
+        static let firstLoadAutoPlay = Option<Bool>(key: "playlist.firstLoadAutoPlay", default: false)
+        /// The Option to download video yes / no / only wifi
+        static let autoDownloadVideo = Option<String>(key: "playlist.autoDownload", default: PlayListDownloadType.on.rawValue)
+        /// The Option to disable playlist MediaSource web-compatibility
+        static let webMediaSourceCompatibility = Option<Bool>(key: "playlist.webMediaSourceCompatibility", default: UIDevice.isIpad)
+        /// The option to start the playback where user left-off
+        static let playbackLeftOff = Option<Bool>(key: "playlist.playbackLeftOff", default: true)
+    }
 }
 

@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     var window: UIWindow?
     var browserViewController: BrowserViewController!
     var rootViewController: UIViewController!
+    var playlistRestorationController: UIViewController? // When Picture-In-Picture is enabled, we need to store a reference to the controller to keep it alive, otherwise if it deallocates, the system automatically kills Picture-In-Picture.
     weak var profile: Profile?
     var tabManager: TabManager!
     var braveCore: BraveCoreMain?
@@ -319,6 +320,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         }
         
         AdblockResourceDownloader.shared.startLoading()
+        PlaylistManager.shared.restoreSession()
       
         return shouldPerformAdditionalDelegateHandling
     }

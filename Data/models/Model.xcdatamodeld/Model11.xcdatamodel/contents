@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H114" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Bookmark" representedClassName=".Favorite" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="customTitle" optional="YES" attributeType="String"/>
@@ -87,6 +87,17 @@
         <attribute name="visitedOn" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="historyItems" inverseEntity="Domain"/>
     </entity>
+    <entity name="PlaylistItem" representedClassName=".PlaylistItem" syncable="YES">
+        <attribute name="cachedData" optional="YES" attributeType="Binary"/>
+        <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="duration" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="mediaSrc" attributeType="String"/>
+        <attribute name="mimeType" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="order" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pageSrc" attributeType="String"/>
+        <attribute name="pageTitle" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="RSSFeedSource" representedClassName=".RSSFeedSource" syncable="YES">
         <attribute name="feedUrl" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
@@ -119,5 +130,6 @@
         <element name="History" positionX="493" positionY="-150" width="128" height="135"/>
         <element name="RSSFeedSource" positionX="-270" positionY="-288" width="128" height="73"/>
         <element name="TabMO" positionX="-488" positionY="-229" width="128" height="210"/>
+        <element name="PlaylistItem" positionX="-279" positionY="-297" width="128" height="178"/>
     </elements>
 </model>
