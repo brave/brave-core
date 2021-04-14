@@ -79,8 +79,8 @@ void OnBeforeURLRequest_DecentralizedDnsRedirectWork(
   }
 
   // Redirect to ipfs URI if content hash is set, otherwise, fallback to the
-  // set redirect URL. If no records available to use, do nothing.
-  // See https://docs.unstoppabledomains.com/browser-resolution/browser-resolution-algorithm
+  // set redirect URL. If no records available to use, do nothing. See
+  // https://docs.unstoppabledomains.com/browser-resolution/browser-resolution-algorithm
   // for more details.
   //
   // TODO(jocelyn): Do not fallback to the set redirect URL if dns.A or

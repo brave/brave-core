@@ -30,8 +30,8 @@ enum class RecordKeys {
   MAX_RECORD_KEY = IPFS_REDIRECT_DOMAIN_VALUE,
 };
 
-// Need to match RecordKeys above.
-// See https://docs.unstoppabledomains.com/browser-resolution/browser-resolution-algorithm#browser-resolution-records
+// Need to match RecordKeys above. See
+// https://docs.unstoppabledomains.com/browser-resolution/browser-resolution-algorithm#browser-resolution-records
 // for more details.
 const constexpr char* const kRecordKeys[] = {
     "dweb.ipfs.hash", "ipfs.html.value",      "dns.A",
