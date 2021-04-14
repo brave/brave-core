@@ -29,7 +29,7 @@ window.onload = () => {
   svg.addEventListener('mousemove', (event) => {
     if (!hasSelectedTarget) {
       sendMessageActiveTab({
-          type: 'targetingCoordsChanged',
+          type: 'elementPickerHoverCoordsChanged',
           coords: {
             x: event.clientX,
             y: event.clientY
@@ -47,7 +47,7 @@ window.onload = () => {
       const selector = rulesTextArea.value.trim()
       if (selector.length > 0) {
         sendMessageActiveTab({
-          type: 'userModifiedSelector',
+          type: 'elementPickerUserModifiedRule',
           selector: selector,
         })
       }
@@ -74,7 +74,7 @@ window.onload = () => {
       togglePopup(false)
       return
     }
-    sendMessageActiveTab({type: 'userSelectedElement'}, (response) => {
+    sendMessageActiveTab({type: 'elementPickerUserSelectedTarget'}, (response) => {
       const { isValid, selector } = response
       if (isValid) {
         hasSelectedTarget = true
@@ -90,7 +90,7 @@ window.onload = () => {
     const selector = rulesTextArea.value.trim()
     if (selector.length > 0) {
       sendMessageActiveTab({
-        type: 'userSelectedRule',
+        type: 'elementPickerUserCreatedRule',
         selector: selector,
       })
     }

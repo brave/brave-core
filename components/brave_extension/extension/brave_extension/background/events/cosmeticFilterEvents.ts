@@ -112,7 +112,7 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
     case 'elementPickerMode': {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs: [chrome.tabs.Tab]) => {
         if (tabs.length > 0) {
-          chrome.tabs.sendMessage(tabs[0].id!, { type: 'launchElementPicker' })
+          chrome.tabs.sendMessage(tabs[0].id!, { type: 'elementPickerLaunch' })
         }
       })
       break
