@@ -22,6 +22,7 @@ static_library("browser") {
     "ad_block_subscription_service.h",
     "ad_block_subscription_service_manager.cc",
     "ad_block_subscription_service_manager.h",
+    "ad_block_subscription_service_manager_observer.h",
     "adblock_stub_response.cc",
     "adblock_stub_response.h",
     "base_brave_shields_service.cc",

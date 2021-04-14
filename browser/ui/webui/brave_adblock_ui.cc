@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/scoped_observation.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
@@ -16,18 +17,24 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
 namespace {
 
-class AdblockDOMHandler : public content::WebUIMessageHandler {
+class AdblockDOMHandler
+    : public content::WebUIMessageHandler,
+      public brave_shields::AdBlockSubscriptionServiceManagerObserver {
  public:
   AdblockDOMHandler();
   ~AdblockDOMHandler() override;
 
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
+
+  // brave_shields::AdblockSubscriptionServiceManagerObserver overrides:
+  void OnServiceUpdateEvent() override;
 
  private:
   void HandleEnableFilterList(const base::ListValue* args);
@@ -41,6 +48,11 @@ class AdblockDOMHandler : public content::WebUIMessageHandler {
   void HandleRefreshSubscription(const base::ListValue* args);
 
   void RefreshSubscriptionsList();
+
+  base::ScopedObservation<
+      brave_shields::AdBlockSubscriptionServiceManager,
+      brave_shields::AdBlockSubscriptionServiceManagerObserver>
+      service_observer_{this};
 
   DISALLOW_COPY_AND_ASSIGN(AdblockDOMHandler);
 };
@@ -86,6 +98,16 @@ void AdblockDOMHandler::RegisterMessages() {
       "brave_adblock.refreshSubscription",
       base::BindRepeating(&AdblockDOMHandler::HandleRefreshSubscription,
                           base::Unretained(this)));
+
+  service_observer_.Observe(g_brave_browser_process->ad_block_service()
+                                ->subscription_service_manager());
+}
+
+void AdblockDOMHandler::OnServiceUpdateEvent() {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  RefreshSubscriptionsList();
 }
 
 void AdblockDOMHandler::HandleEnableFilterList(const base::ListValue* args) {
@@ -195,6 +217,9 @@ void AdblockDOMHandler::HandleDeleteSubscription(const base::ListValue* args) {
 
 void AdblockDOMHandler::HandleRefreshSubscription(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 1U);
+  // This handler does not call Javascript directly, but refreshing the
+  // subscription will trigger the observer later, which will require it.
+  AllowJavascript();
   std::string list_url_string;
   if (!args->GetString(0, &list_url_string)) {
     return;
@@ -206,7 +231,6 @@ void AdblockDOMHandler::HandleRefreshSubscription(const base::ListValue* args) {
   g_brave_browser_process->ad_block_service()
       ->subscription_service_manager()
       ->RefreshSubscription(list_url, true);
-  // TODO callback and show the result when finished
 }
 
 // Convenience method to push updated subscription information to the UI.

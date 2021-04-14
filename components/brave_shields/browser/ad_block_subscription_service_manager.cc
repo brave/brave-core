@@ -18,6 +18,7 @@
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_key.h"
@@ -372,6 +373,30 @@ void AdBlockSubscriptionServiceManager::OnNewListDownloadedOnTaskRunner(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&AdBlockSubscriptionServiceManager::UpdateFilterListPrefs,
                      base::Unretained(this), id, it->second->GetInfo()));
+
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(
+          &AdBlockSubscriptionServiceManager::NotifyObserversOfServiceEvent,
+          base::Unretained(this)));
+}
+
+void AdBlockSubscriptionServiceManager::NotifyObserversOfServiceEvent() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  for (auto& observer : observers_) {
+    observer.OnServiceUpdateEvent();
+  }
+}
+
+void AdBlockSubscriptionServiceManager::AddObserver(
+    AdBlockSubscriptionServiceManagerObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void AdBlockSubscriptionServiceManager::RemoveObserver(
+    AdBlockSubscriptionServiceManagerObserver* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
