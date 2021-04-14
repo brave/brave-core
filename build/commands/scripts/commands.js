@@ -89,13 +89,13 @@ program
   .option('--ninja <opt>', 'Additional Ninja command-line options, in the form <key>:<value>', collect, [])
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')
   .option('--is_asan', 'is asan enabled')
+  .option('--use_goma', 'whether to use Goma for building')
   .arguments('[build_config]')
   .action(build)
 
 program
   .command('create_dist')
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-  .option('--target_arch <target_arch>', 'target architecture')
   .option('--mac_signing_identifier <id>', 'The identifier to use for signing')
   .option('--mac_installer_signing_identifier <id>', 'The identifier to use for signing the installer')
   .option('--mac_signing_keychain <keychain>', 'The identifier to use for signing', 'login')
@@ -115,9 +115,11 @@ program
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')
   .option('--notarize', 'notarize the macOS app with Apple')
   .option('--target_os <target_os>', 'target OS')
+  .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
-  .option('--is_asan', 'is asan enabled')
   .option('--universal', 'build a universal binary distribution')
+  .option('--is_asan', 'is asan enabled')
+  .option('--use_goma', 'whether to use Goma for building')
   .arguments('[build_config]')
   .action(createDist)
 
