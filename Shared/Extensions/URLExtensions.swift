@@ -440,6 +440,37 @@ extension URL {
         
         return siteList.contains(where: domain.contains)
     }
+    
+    // Check if the website is supporting showing Add To playlist toast
+    public var isPlaylistSupportedSiteURL: Bool {
+        let domain = self.hostSLD
+        var siteList = ["youtube", "vimeo", "twitch", "floatplane", "spotify", "soundcloud"]
+        
+        /// Additional sites for Japanese locale
+        if Locale.current.regionCode == "JP" {
+            siteList.append(contentsOf: ["nicovideo", "dailymotion", "pandora", "veoh", "ted", "yahoo.co", "say-move", "9tsu"])
+        }
+        
+        return siteList.contains(where: domain.contains)
+    }
+    
+    public func uniquePathForFilename(_ filename: String) throws -> URL {
+        let basePath = self.appendingPathComponent(filename)
+        let fileExtension = basePath.pathExtension
+        let filenameWithoutExtension = !fileExtension.isEmpty ? String(filename.dropLast(fileExtension.count + 1)) : filename
+        
+        var proposedPath = basePath
+        var count = 0
+        
+        while FileManager.default.fileExists(atPath: proposedPath.path) {
+            count += 1
+            
+            let proposedFilenameWithoutExtension = "\(filenameWithoutExtension) (\(count))"
+            proposedPath = self.appendingPathComponent(proposedFilenameWithoutExtension).appendingPathExtension(fileExtension)
+        }
+        
+        return proposedPath
+    }
 }
 
 // Helpers to deal with About URLs

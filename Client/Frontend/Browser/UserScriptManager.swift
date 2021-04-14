@@ -55,6 +55,22 @@ class UserScriptManager {
         }
     }
     
+    /// Whether or not Playlist is enabled
+    var isPlaylistEnabled: Bool {
+        didSet {
+            if oldValue == isPlaylistEnabled { return }
+            reloadUserScripts()
+        }
+    }
+    
+    /// Whether or not the MediaSource API should be disabled for Playlists
+    var isWebCompatibilityMediaSourceAPIEnabled: Bool {
+        didSet {
+            if oldValue == isWebCompatibilityMediaSourceAPIEnabled { return }
+            reloadUserScripts()
+        }
+    }
+    
     /// Stores domain specific scriplet, usually used for webcompat workarounds.
     var domainUserScript: DomainUserScript? {
         didSet {
@@ -94,12 +110,14 @@ class UserScriptManager {
         return false
     }
     
-    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isU2FEnabled: Bool, isPaymentRequestEnabled: Bool) {
+    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isU2FEnabled: Bool, isPaymentRequestEnabled: Bool, isWebCompatibilityMediaSourceAPIEnabled: Bool) {
         self.tab = tab
         self.isFingerprintingProtectionEnabled = isFingerprintingProtectionEnabled
         self.isCookieBlockingEnabled = isCookieBlockingEnabled
         self.isU2FEnabled = isU2FEnabled
         self.isPaymentRequestEnabled = isPaymentRequestEnabled
+        self.isWebCompatibilityMediaSourceAPIEnabled = isWebCompatibilityMediaSourceAPIEnabled
+        self.isPlaylistEnabled = true
         reloadUserScripts()
     }
     
@@ -241,6 +259,51 @@ class UserScriptManager {
         }
         return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
+    
+    private let PlaylistSwizzlerScript: WKUserScript? = {
+        guard let path = Bundle.main.path(forResource: "PlaylistSwizzler", ofType: "js"),
+              let source = try? String(contentsOfFile: path) else {
+            log.error("Failed to load PlaylistSwizzler.js")
+            return nil
+        }
+        return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
+    
+    private let PlaylistHelperScript: WKUserScript? = {
+        guard let path = Bundle.main.path(forResource: "Playlist", ofType: "js"), let source = try? String(contentsOfFile: path) else {
+            log.error("Failed to load Playlist.js")
+            return nil
+        }
+        
+        var alteredSource = source
+        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        
+        let replacements = [
+            "$<Playlist>": "Playlist_\(token)",
+            "$<security_token>": "\(token)",
+            "$<sendMessage>": "playlistHelper_sendMessage_\(token)",
+            "$<handler>": "playlistHelper_\(messageHandlerTokenString)",
+            "$<notify>": "notify_\(token)",
+            "$<onLongPressActivated>": "onLongPressActivated_\(token)",
+            "$<setupLongPress>": "setupLongPress_\(token)",
+            "$<setupDetector>": "setupDetector_\(token)",
+            "$<notifyNodeSource>": "notifyNodeSource_\(token)",
+            "$<notifyNode>": "notifyNode_\(token)",
+            "$<observeNode>": "observeNode_\(token)",
+            "$<observeDocument>": "observeDocument_\(token)",
+            "$<observeDynamicElements>": "observeDynamicElements_\(token)",
+            "$<getAllVideoElements>": "getAllVideoElements_\(token)",
+            "$<getAllAudioElements>": "getAllAudioElements_\(token)",
+            "$<onReady>": "onReady_\(token)",
+            "$<observePage>": "observePage_\(token)",
+        ]
+        
+        replacements.forEach({
+            alteredSource = alteredSource.replacingOccurrences(of: $0.key, with: $0.value, options: .literal)
+        })
+        
+        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
 
     private func reloadUserScripts() {
         tab?.webView?.configuration.userContentController.do {
@@ -273,7 +336,15 @@ class UserScriptManager {
             if let script = FullscreenHelperScript {
                 $0.addUserScript(script)
             }
-
+            
+            if UIDevice.isIpad, isWebCompatibilityMediaSourceAPIEnabled, let script = PlaylistSwizzlerScript {
+                $0.addUserScript(script)
+            }
+            
+            if isPlaylistEnabled, let script = PlaylistHelperScript {
+                $0.addUserScript(script)
+            }
+            
             if let domainUserScript = domainUserScript, let script = domainUserScript.script {
                 $0.addUserScript(script)
             }

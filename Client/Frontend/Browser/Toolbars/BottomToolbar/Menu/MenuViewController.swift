@@ -99,7 +99,7 @@ class MenuViewController: UITableViewController {
     }
     
     private enum MenuButtons: Int, CaseIterable {
-        case vpn, settings, history, bookmarks, downloads, add, share
+        case vpn, settings, history, bookmarks, downloads, playlist, add, share
         
         var title: String {
             switch self {
@@ -111,6 +111,7 @@ class MenuViewController: UITableViewController {
             case .add: return Strings.addToMenuItem
             case .share: return Strings.shareWithMenuItem
             case .downloads: return Strings.downloadsMenuItem
+            case .playlist: return Strings.playlistMenuItem
             }
         }
         
@@ -123,6 +124,7 @@ class MenuViewController: UITableViewController {
             case .add: return #imageLiteral(resourceName: "menu-add-bookmark").template
             case .share: return #imageLiteral(resourceName: "nav-share").template
             case .downloads: return #imageLiteral(resourceName: "menu-downloads").template
+            case .playlist: return #imageLiteral(resourceName: "playlist_menu").template
             }
         }
     }
@@ -219,6 +221,7 @@ class MenuViewController: UITableViewController {
         case .add: openAddBookmark()
         case .share: openShareSheet()
         case .downloads: openDownloads()
+        case .playlist: openPlaylist()
         }
     }
     
@@ -282,7 +285,7 @@ class MenuViewController: UITableViewController {
     private typealias DoneButton = (style: UIBarButtonItem.SystemItem, position: DoneButtonPosition)
     
     private func open(_ viewController: UIViewController, doneButton: DoneButton,
-                      allowSwipeToDismiss: Bool = true) {
+                      allowSwipeToDismiss: Bool = true, alwaysFullScreen: Bool = false) {
         let nav = SettingsNavigationController(rootViewController: viewController)
         
         // All menu views should be opened in portrait on iPhones.
@@ -293,11 +296,13 @@ class MenuViewController: UITableViewController {
         nav.modalPresentationStyle =
             UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
         
-        let button = UIBarButtonItem(barButtonSystemItem: doneButton.style, target: nav, action: #selector(nav.done))
+        let button = UIBarButtonItem(barButtonSystemItem: doneButton.style,
+                                     target: nav,
+                                     action: #selector(nav.done))
         
         switch doneButton.position {
-        case .left: nav.navigationBar.topItem?.leftBarButtonItem = button
-        case .right: nav.navigationBar.topItem?.rightBarButtonItem = button
+            case .left: nav.navigationBar.topItem?.leftBarButtonItem = button
+            case .right: nav.navigationBar.topItem?.rightBarButtonItem = button
         }
         
         dismissView()
@@ -351,17 +356,22 @@ class MenuViewController: UITableViewController {
         open(vc, doneButton: DoneButton(style: .done, position: .right))
     }
     
+    private func openPlaylist() {
+        let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController ?? PlaylistViewController()
+        playlistController.modalPresentationStyle = .fullScreen
+                    
+        dismissView()
+        bvc.present(playlistController, animated: true)
+    }
+    
     private func openAddBookmark() {
         guard let title = tab?.displayTitle, let url = tab?.url else { return }
         
         let bookmarkUrl = url.decodeReaderModeURL ?? url
-        
         let mode = BookmarkEditMode.addBookmark(title: title, url: bookmarkUrl.absoluteString)
-        
         let vc = AddEditBookmarkTableViewController(mode: mode)
         
         open(vc, doneButton: DoneButton(style: .cancel, position: .left))
-
     }
     
     private func openHistory() {
@@ -402,4 +412,15 @@ class MenuViewController: UITableViewController {
 
 extension MenuViewController: PopoverContentComponent {
     var extendEdgeIntoArrow: Bool { return false }
+}
+
+class ColorAwareNavigationController: UINavigationController {
+    var statusBarStyle: UIStatusBarStyle = .default {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return statusBarStyle
+    }
 }

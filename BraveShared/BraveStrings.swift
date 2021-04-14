@@ -734,6 +734,7 @@ extension Strings {
     public static let openExternalAppURLDontAllow = NSLocalizedString("ExternalAppURLDontAllow", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Don't Allow", comment: "Don't allow Brave to open the external app URL")
     public static let downloadsMenuItem = NSLocalizedString("DownloadsMenuItem", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Downloads", comment: "Title for downloads menu item")
     public static let downloadsPanelEmptyStateTitle = NSLocalizedString("DownloadsPanelEmptyStateTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Downloaded files will show up here.", comment: "Title for when a user has nothing downloaded onto their device, and the list is empty.")
+    public static let playlistMenuItem = NSLocalizedString("PlaylistMenuItem", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Playlist", comment: "Playlist menu item")
     
     // MARK: - Themes
     
@@ -1048,6 +1049,318 @@ extension Strings {
                               bundle: .braveShared,
                               value: "Every day I save data by browsing the web with Brave.",
                               comment: "Text used for social sharing together with Brave Shield values")
+    }
+}
+
+// MARK: PlayList
+
+extension Strings {
+    public struct PlayList {
+        public static let playListSectionTitle =
+            NSLocalizedString("playList.playListSectionTitle",
+                              bundle: .braveShared,
+                              value: "Playlist",
+                              comment: "Title For the Section that videos are listed")
+        
+        public static let removeActionButtonTitle =
+            NSLocalizedString("playList.removeActionButtonTitle",
+                              bundle: .braveShared,
+                              value: "Remove",
+                              comment: "Title for removing offline mode storage")
+        
+        public static let noticeAlertTitle =
+            NSLocalizedString("playList.noticeAlertTitle",
+                              bundle: .braveShared,
+                              value: "Notice",
+                              comment: "Title for download video error alert")
+        
+        public static let okayButtonTitle =
+            NSLocalizedString("playList.okayButtonTitle",
+                              bundle: .braveShared,
+                              value: "Okay",
+                              comment: "Okay Alert button title")
+        
+        public static let reopenButtonTitle =
+            NSLocalizedString("playList.reopenButtonTitle",
+                              bundle: .braveShared,
+                              value: "Reopen",
+                              comment: "Reopen Alert button title")
+        
+        public static let sorryAlertTitle =
+            NSLocalizedString("playList.sorryAlertTitle",
+                              bundle: .braveShared,
+                              value: "Sorry",
+                              comment: "Title for load resources error alert")
+        
+        public static let loadResourcesErrorAlertDescription =
+            NSLocalizedString("playList.loadResourcesErrorAlertDescription",
+                              bundle: .braveShared,
+                              value: "There was a problem loading the resource!",
+                              comment: "Description for load resources error alert")
+        
+        public static let addToPlayListAlertTitle =
+            NSLocalizedString("playList.addToPlayListAlertTitle",
+                              bundle: .braveShared,
+                              value: "Add to Playlist",
+                              comment: "Alert Title for adding videos to playlist")
+        
+        public static let addToPlayListAlertDescription =
+            NSLocalizedString("playList.addToPlayListAlertDescription",
+                              bundle: .braveShared,
+                              value: "Would you like to add this video to your playlist?",
+                              comment: "Alert Description for adding videos to playlist")
+        
+        public static let savingForOfflineLabelTitle =
+            NSLocalizedString("playList.savingForOfflineLabelTitle",
+                              bundle: .braveShared,
+                              value: "Saving for Offline…",
+                              comment: "Text indicator on the table cell while saving a video for offline")
+        
+        public static let savedForOfflineLabelTitle =
+            NSLocalizedString("playList.savedForOfflineLabelTitle",
+                              bundle: .braveShared,
+                              value: "Saved for Offline",
+                              comment: "Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline")
+        
+        public static let noItemLabelTitle =
+            NSLocalizedString("playList.noItemLabelTitle",
+                              bundle: .braveShared,
+                              value: "No Items Available",
+                              comment: "Text indicator on the table cell If a video is already downloaded")
+        
+        public static let expiredLabelTitle =
+            NSLocalizedString("playList.expiredLabelTitle",
+                              bundle: .braveShared,
+                              value: "Expired",
+                              comment: "Text indicator on the table cell If a video is expired")
+        
+        public static let expiredAlertTitle =
+            NSLocalizedString("playList.expiredAlertTitle",
+                              bundle: .braveShared,
+                              value: "Expired Video",
+                              comment: "The title for the alert that shows up when an item is expired")
+        
+        public static let expiredAlertDescription =
+            NSLocalizedString("playList.expiredAlertDescription",
+                              bundle: .braveShared,
+                              value: "This video was a live stream or the time limit was reached. Please reopen the link to refresh.",
+                              comment: "The description for the alert that shows up when an item is expired")
+        
+        public static let pictureInPictureErrorTitle =
+            NSLocalizedString("playList.pictureInPictureErrorTitle",
+                              bundle: .braveShared,
+                              value: "Sorry, an error occurred while attempting to display picture-in-picture.",
+                              comment: "The title for the alert that shows up when an item is expired")
+        
+        public static let toastAddToPlaylistTitle =
+            NSLocalizedString("playList.toastAddToPlaylistTitle",
+                              bundle: .braveShared,
+                              value: "Add to Playlist",
+                              comment: "The title for the toast that shows up on a page containing a playlist item")
+        
+        public static let toastAddedToPlaylistTitle =
+            NSLocalizedString("playList.toastAddedToPlaylistTitle",
+                              bundle: .braveShared,
+                              value: "Added to Playlist",
+                              comment: "The title for the toast that shows up on a page containing a playlist item that was added to playlist")
+        
+        public static let toastAddToPlaylistOpenButton =
+            NSLocalizedString("playList.toastAddToPlaylistOpenButton",
+                              bundle: .braveShared,
+                              value: "Open",
+                              comment: "The title for the toast button when an item was added to playlist")
+        
+        public static let toastExitingItemPlaylistTitle =
+            NSLocalizedString("playList.toastExitingItemPlaylistTitle",
+                              bundle: .braveShared,
+                              value: "View in Playlist",
+                              comment: "The title for the toast that shows up on a page when an item that has already been added, was updated.")
+        
+        public static let removePlaylistVideoAlertTitle =
+            NSLocalizedString("playlist.removePlaylistVideoAlertTitle",
+                              bundle: .braveShared,
+                              value: "Remove Media Item from Playlist?",
+                              comment: "Title for the alert shown when the user tries to remove an item from playlist")
+        
+        public static let removePlaylistVideoAlertMessage =
+            NSLocalizedString("playlist.removePlaylistVideoAlertMessage",
+                              bundle: .braveShared,
+                              value: "This will remove the media item from the list. Are you sure you want to continue?",
+                              comment: "Message for the alert shown when the user tries to remove a video from playlist")
+        
+        public static let removePlaylistOfflineDataAlertTitle =
+            NSLocalizedString("playlist.removePlaylistOfflineDataAlertTitle",
+                              bundle: .braveShared,
+                              value: "Remove Offline Data",
+                              comment: "Title for the alert shown when the user tries to remove offline data of an item from playlist")
+        
+        public static let removePlaylistOfflineDataAlertMessage =
+            NSLocalizedString("playlist.removePlaylistOfflineDataAlertMessage",
+                              bundle: .braveShared,
+                              value: "This will delete the media from offline storage. Are you sure you want to continue?",
+                              comment: "Message for the alert shown when the user tries to remove offline data of an item from playlist")
+        
+        public static let playlistToastShowSettingsOptionTitle =
+            NSLocalizedString("playlist.playlistToastShowSettingsOptionTitle",
+                              bundle: .braveShared,
+                              value: "Show \"Add to Playlist\"",
+                              comment: "Title for the Playlist Settings Option for Enable/Disable Add Toast")
+        
+        public static let playlistToastShowSettingsOptionFooterText =
+            NSLocalizedString("playlist.playlistToastShowSettingsOptionFooterText",
+                              bundle: .braveShared,
+                              value: "This option will ask you to 'Add to Playlist' on some media websites. You can still add media (video/audio) by long-pressing media, or from the \"Share With…\" menu button.",
+                              comment: "Footer Text for the Playlist Settings Option for Enable/Disable Add Toast")
+        
+        public static let playlistAutoPlaySettingsOptionTitle =
+            NSLocalizedString("playlist.playlistAutoPlaySettingsOptionTitle",
+                              bundle: .braveShared,
+                              value: "Auto-Play",
+                              comment: "Title for the Playlist Settings Option for Enable/Disable Auto-Play")
+        
+        public static let playlistAutoPlaySettingsOptionFooterText =
+            NSLocalizedString("playlist.playlistAutoPlaySettingsOptionFooterText",
+                              bundle: .braveShared,
+                              value: "This option will enable/disable auto-play when Playlist is opened. However this option will not effect auto-play when next-video on the list is loaded.",
+                              comment: "Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play")
+        
+        public static let playlistSidebarLocationTitle =
+            NSLocalizedString("playlist.playlistSidebarLocationTitle",
+                              bundle: .braveShared,
+                              value: "Sidebar Location",
+                              comment: "Title for the Playlist Settings Option for Sidebar Location (Left/Right)")
+        
+        public static let playlistSidebarLocationFooterText =
+            NSLocalizedString("playlist.playlistSidebarLocationFooterText",
+                              bundle: .braveShared,
+                              value: "This setting will change video list location between left-hand side/ right-hand side.",
+                              comment: "Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right)")
+        
+        public static let playlistSidebarLocationOptionLeft =
+            NSLocalizedString("playlist.playlistSidebarLocationOptionLeft",
+                              bundle: .braveShared,
+                              value: "Left",
+                              comment: "Option Text for Sidebar Location Left")
+        
+        public static let playlistSidebarLocationOptionRight =
+            NSLocalizedString("playlist.playlistSidebarLocationOptionRight",
+                              bundle: .braveShared,
+                              value: "Right",
+                              comment: "Option Text for Sidebar Location Right")
+        
+        public static let playlistAutoSaveSettingsTitle =
+            NSLocalizedString("playlist.playlistAutoSaveSettingsTitle",
+                              bundle: .braveShared,
+                              value: "Auto-Save for Offline",
+                              comment: "Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)")
+        
+        public static let playlistAutoSaveSettingsDescription =
+            NSLocalizedString("playlist.playlistAutoSaveSettingsDescription",
+                              bundle: .braveShared,
+                              value: "Adding video and audio files for offline use can use a lot of storage on your device as well as use your cellular data",
+                              comment: "Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)")
+        
+        public static let playlistAutoSaveSettingsFooterText =
+            NSLocalizedString("playlist.playlistAutoSaveSettingsFooterText",
+                              bundle: .braveShared,
+                              value: "This option will automatically keep your playlist items on your device so you can play them while you dont have the internet connection.",
+                              comment: "Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi))")
+        
+        public static let playlistStartPlaybackSettingsOptionTitle =
+            NSLocalizedString("playlist.playlistStartPlaybackSettingsOptionTitle",
+                              bundle: .braveShared,
+                              value: "Start Playback where I last left off",
+                              comment: "Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off")
+        
+        public static let playlistStartPlaybackSettingsFooterText =
+            NSLocalizedString("playlist.playlistStartPlaybackSettingsFooterText",
+                              bundle: .braveShared,
+                              value: "This option will enable/disable the ability to start playback of media (video/audio) from the time where you last left off.",
+                              comment: "Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off")
+        
+        public static let playlistAutoSaveOptionOn =
+            NSLocalizedString("playlist.playlistAutoSaveOptionOn",
+                              bundle: .braveShared,
+                              value: "On",
+                              comment: "Auto Save turn On Option")
+        
+        public static let playlistAutoSaveOptionOff =
+            NSLocalizedString("playlist.playlistAutoSaveOptionOff",
+                              bundle: .braveShared,
+                              value: "Off",
+                              comment: "Auto Download turn Off Option")
+        
+        public static let playlistAutoSaveOptionOnlyWifi =
+            NSLocalizedString("playlist.playlistAutoSaveOptionOnlyWifi",
+                              bundle: .braveShared,
+                              value: "Only Wifi",
+                              comment: "Option Text for Auto Save Only Wifi Option")
+        
+        public static let playlistOfflineDataToggleOption =
+            NSLocalizedString("playlist.playlistOfflineDataToggleOption",
+                              bundle: .braveShared,
+                              value: "Playlist Offline Data",
+                              comment: "Text for Playlist Offline Data Toggle while clearing the offline data storage in settings")
+        
+        public static let playlistMediaAndOfflineDataToggleOption =
+            NSLocalizedString("playlist.playlistMediaAndOfflineDataToggleOption",
+                              bundle: .braveShared,
+                              value: "Playlist Media & Offline Data",
+                              comment: "Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings")
+        
+        public static let playlistResetAlertTitle =
+            NSLocalizedString("playList.playlistResetAlertTitle",
+                              bundle: .braveShared,
+                              value: "Reset",
+                              comment: "The title for the alert that shows up when removing all videos and their offline mode storage.")
+        
+        public static let playlistResetPlaylistOptionFooterText =
+            NSLocalizedString("playlist.playlistResetPlaylistOptionFooterText",
+                              bundle: .braveShared,
+                              value: "This option will remove all videos from Playlist as well as Offline mode storage.",
+                              comment: "Footer Text for the Playlist Settings Option for resetting Playlist.")
+        
+        public static let playlistSaveForOfflineErrorTitle =
+            NSLocalizedString("playlist.playlistSaveForOfflineErrorTitle",
+                              bundle: .braveShared,
+                              value: "Sorry, something went wrong",
+                              comment: "Title of alert when saving a playlist item for offline mode")
+        
+        public static let playlistSaveForOfflineErrorMessage =
+            NSLocalizedString("playlist.playlistSaveForOfflineErrorMessage",
+                              bundle: .braveShared,
+                              value: "Sorry, this item could not be saved for offline mode at this time.",
+                              comment: "Error message when saving a playlist item for offline fails")
+        
+        public static let playlistWebCompatibilityTitle =
+            NSLocalizedString("playlist.playlistWebCompatibilityTitle",
+                              bundle: .braveShared,
+                              value: "Web Compatibility",
+                              comment: "Title for Playlist setting")
+        
+        public static let playlistWebCompatibilityDescription =
+            NSLocalizedString("playlist.playlistWebCompatibilityDescription",
+                              bundle: .braveShared,
+                              value: "Disables the WebKit MediaSource API",
+                              comment: "Description for Playlist setting")
+        
+        public static let playlistLiveMediaStream =
+            NSLocalizedString("playlist.playlistLiveMediaStream",
+                              bundle: .braveShared,
+                              value: "Live Stream",
+                              comment: "When a video or audio is live and has no duration")
+        
+        public static let playlistDiskSpaceWarningTitle =
+            NSLocalizedString("playlist.playlistDiskSpaceWarningTitle",
+                              bundle: .braveShared,
+                              value: "Storage Almost Full",
+                              comment: "When the user's disk space is almost full")
+        
+        public static let playlistDiskSpaceWarningMessage =
+            NSLocalizedString("playlist.playlistDiskSpaceWarningMessage",
+                              bundle: .braveShared,
+                              value: "Adding video and audio files for offline use can use a lot of storage on your device. Please removes some files to free up storage space.",
+                              comment: "When the user's disk space is almost full")
     }
 }
 

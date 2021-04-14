@@ -66,6 +66,16 @@ open class DeviceInfo {
             return false
         }
     }
+    
+    open class func hasWifiConnection() -> Bool {
+        let status = Reach().connectionStatus()
+        switch status {
+        case .online(.wiFi):
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 extension Strings {
