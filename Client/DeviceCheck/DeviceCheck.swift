@@ -132,7 +132,7 @@ public class DeviceCheckClient {
   private static let privateKeyId = "com.brave.device.check.private.key"
   
   // The current build environment
-  private let environment: Environment
+  private let environment: BATEnvironment
   
   // A structure representing an error returned by the server
   public struct DeviceCheckError: Error, Codable {
@@ -143,7 +143,7 @@ public class DeviceCheckClient {
     let code: Int
   }
   
-  public init(environment: Environment) {
+  public init(environment: BATEnvironment) {
     self.environment = environment
   }
   

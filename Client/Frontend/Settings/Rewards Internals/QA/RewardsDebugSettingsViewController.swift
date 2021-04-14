@@ -97,7 +97,7 @@ class RewardsDebugSettingsViewController: TableViewController {
     }
     
     @objc private func customUserAgentEditingEnded() {
-        rewards.ledger.customUserAgent = customUserAgentTextField.text
+        rewards.ledger?.customUserAgent = customUserAgentTextField.text
     }
     
     private var numpadDismissalToolbar: UIToolbar {
@@ -143,7 +143,7 @@ class RewardsDebugSettingsViewController: TableViewController {
         customUserAgentTextField.delegate = self
         customUserAgentTextField.frame = CGRect(x: 0, y: 0, width: 125, height: 32)
         customUserAgentTextField.inputAccessoryView = numpadDismissalToolbar
-        customUserAgentTextField.text = rewards.ledger.customUserAgent
+        customUserAgentTextField.text = rewards.ledger?.customUserAgent
         
         KeyboardHelper.defaultHelper.addDelegate(self)
         
@@ -204,8 +204,16 @@ class RewardsDebugSettingsViewController: TableViewController {
                 header: .title("Wallet"),
                 rows: [
                     Row(text: "Internals", selection: { [unowned self] in
-                        let controller = RewardsInternalsDebugViewController(ledger: self.rewards.ledger)
-                        self.navigationController?.pushViewController(controller, animated: true)
+                        if let ledger = self.rewards.ledger {
+                            let controller = RewardsInternalsDebugViewController(ledger: ledger)
+                            self.navigationController?.pushViewController(controller, animated: true)
+                        } else {
+                            self.rewards.startLedgerService {
+                                guard let ledger = self.rewards.ledger else { return }
+                                let controller = RewardsInternalsDebugViewController(ledger: ledger)
+                                self.navigationController?.pushViewController(controller, animated: true)
+                            }
+                        }
                     }, accessory: .disclosureIndicator),
                     Row(text: "Fetch & Claim Promotions", selection: { [unowned self] in
                         self.fetchAndClaimPromotions()
@@ -276,7 +284,8 @@ class RewardsDebugSettingsViewController: TableViewController {
     }
     
     private func fetchAndClaimPromotions() {
-        rewards.ledger.fetchPromotions { [weak self] promotions in
+        guard let ledger = rewards.ledger else { return }
+        ledger.fetchPromotions { [weak self] promotions in
             guard let self = self else { return }
             let activePromotions = promotions.filter { $0.status == .active }
             if activePromotions.isEmpty {
@@ -291,7 +300,7 @@ class RewardsDebugSettingsViewController: TableViewController {
             var failuresCount: Int = 0
             for promo in activePromotions {
                 group.enter()
-                self.rewards.ledger.claimPromotion(promo) { success in
+                ledger.claimPromotion(promo) { success in
                     if success {
                         successCount += 1
                         claimedAmount += promo.approximateValue
