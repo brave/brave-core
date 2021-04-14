@@ -71,7 +71,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_apk_aab_base <target_apk_base>', 'target Android OS level for apk or aab  (classic, modern, mono)', 'classic')
-  .option('--target_output <target_output>', 'target Android output format (apk, aab)', 'aab')
+  .option('--target_output <target_output>', 'target Android output format (apk, aab)')
   .option('--android_override_version_name <android_override_version_name>', 'Android version number')
   .option('--mac_signing_identifier <id>', 'The identifier to use for signing')
   .option('--mac_signing_keychain <keychain>', 'The identifier to use for signing', 'login')

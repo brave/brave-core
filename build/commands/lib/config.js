@@ -328,7 +328,8 @@ Config.prototype.buildArgs = function () {
     }
 
     args.target_apk_base = this.targetApkBase
-    args.target_output = this.targetOutput
+    args.target_output =
+        this.targetOutput || (this.buildConfig === 'Release' ? 'aab' : 'apk')
     args.android_override_version_name = this.androidOverrideVersionName
 
     args.brave_android_developer_options_code = this.braveAndroidDeveloperOptionsCode
@@ -520,7 +521,7 @@ Config.prototype.update = function (options) {
     }
     if (options.target_output) {
       this.targetOutput = options.target_output
-    }    
+    }
     if (options.android_override_version_name) {
       this.androidOverrideVersionName = options.android_override_version_name
     }
