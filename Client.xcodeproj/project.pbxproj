@@ -4845,6 +4845,7 @@
 		D03F8F11200EAB8C003C2224 /* AtDocumentStart */ = {
 			isa = PBXGroup;
 			children = (
+				276E7A2E22F21A7700939424 /* RewardsReporting.js */,
 				D0C95DF5200EADD500E4E51C /* LoginsHelper.js */,
 				D03F8F20200EABB0003C2224 /* __firefox__.js */,
 				F9F8597B2533CEBC000CEB24 /* DownloadHelper.js */,
@@ -5545,7 +5546,6 @@
 			isa = PBXGroup;
 			children = (
 				2755AB7C23107BC600F0721F /* AdsReporting.js */,
-				276E7A2E22F21A7700939424 /* RewardsReporting.js */,
 			);
 			path = AtDocumentStart;
 			sourceTree = "<group>";
