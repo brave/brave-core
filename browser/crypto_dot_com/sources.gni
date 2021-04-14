@@ -1,0 +1,25 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+
+brave_browser_crypto_dot_com_sources = []
+brave_browser_crypto_dot_com_deps = []
+
+if (crypto_dot_com_enabled) {
+  brave_browser_crypto_dot_com_sources += [
+    "//brave/browser/crypto_dot_com/crypto_dot_com_service_factory.cc",
+    "//brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h",
+  ]
+
+  brave_browser_crypto_dot_com_deps += [
+    "//base",
+    "//brave/browser/profiles",
+    "//brave/components/crypto_dot_com/browser",
+    "//brave/components/crypto_dot_com/common",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+  ]
+}
