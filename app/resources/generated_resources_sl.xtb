@@ -7282,13 +7282,13 @@ Domena <ph name="DOMAIN"/> zahteva, da je pametna kartica vstavljena.}}</transla
 <translation id="7475335772460644497">{COUNT, plural,
           =0 {Odpri vse v &amp;zasebnem oknu}
           =1 {Odpri v &amp;zasebnem oknu}
-          drugo {Odpri vse ({COUNT}) v &amp;zasebnem oknu}}</translation>
+          other {Odpri vse ({COUNT}) v &amp;zasebnem oknu}}</translation>
 <translation id="2431625704210501303">Odpri v oknu &amp;brez beleženja zgodovine</translation>
 <translation id="4620367155626060530">&amp;Pokaži vrstico z zaznamki</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Oodpri vse v zasebnem oknu &amp;}
           =1 {Odpri vse v zasebnem oknu &amp;}
-          drugo {Odpri vse ({COUNT}) v zasebnem oknu &amp;}}</translation>
+          other {Odpri vse ({COUNT}) v zasebnem oknu &amp;}}</translation>
 <translation id="1985165269306590797">Odpri v oknu &amp;brez beleženja zgodovine</translation>
 <translation id="4680518314108745448">&amp;Pokaži vrstico z zaznamki</translation>
 <translation id="642436385689435488">Odpri vse v oknu brez beleženja zgodovine</translation>
