@@ -929,8 +929,10 @@ public class BraveNewTabPageLayout
             countDownTimer = new Timer();
             final Handler handler = new Handler();
             countDownTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
                 public void run() {
                     handler.post(new Runnable() {
+                        @Override
                         public void run() {
                             if (BinanceWidgetManager.getInstance()
                                             .isUserAuthenticatedForBinance()) {
