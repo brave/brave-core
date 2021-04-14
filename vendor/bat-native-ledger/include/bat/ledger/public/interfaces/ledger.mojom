@@ -521,6 +521,7 @@ struct UrlRequest {
   string content;
   string content_type;
   bool skip_log;
+  uint32 load_flags = 0;
 };
 
 struct UrlResponse {
