@@ -664,8 +664,8 @@ if (!is_android) {
       sources += [ "//brave/browser/greaselion/greaselion_browsertest.cc" ]
 
       deps += [
-        "//brave/browser/greaselion:greaselion",
         "//brave/components/greaselion/browser",
+        "//chrome/browser",
       ]
     }
 

@@ -38,10 +38,8 @@ if (brave_rewards_enabled) {
   ]
 
   if (enable_greaselion) {
-    brave_browser_brave_rewards_deps += [
-      "//brave/browser/greaselion",
-      "//brave/components/greaselion/browser",
-    ]
+    brave_browser_brave_rewards_deps +=
+        [ "//brave/components/greaselion/browser" ]
   }
 
   if (enable_extensions) {
