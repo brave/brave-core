@@ -21,7 +21,7 @@ std::string GetIPFSLearnMoreURL(const GURL& url) {
 #define kPageInfoHelpCenterURL GetIPFSLearnMoreURL(web_contents()->GetURL())
 #endif  // BUILDFLAG(IPFS_ENABLED)
 
-#include "../../../../../../chrome/browser/ui/views/page_info/page_info_bubble_view.cc"
+#include "../../../../../../../chrome/browser/ui/views/page_info/page_info_bubble_view.cc"
 
 #if BUILDFLAG(IPFS_ENABLED)
 #undef kPageInfoHelpCenterURL
