@@ -82,8 +82,7 @@ void BraveSearchHost::FetchBackupResults(const std::string& query,
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       shared_url_loader_factory_.get(),
       base::BindOnce(&BraveSearchHost::OnURLLoaderComplete,
-                     weak_factory_.GetWeakPtr(), std::move(iter),
-                     std::move(callback)));
+                     weak_factory_.GetWeakPtr(), iter, std::move(callback)));
 }
 
 void BraveSearchHost::OnURLLoaderComplete(
