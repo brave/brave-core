@@ -14,13 +14,27 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import org.chromium.ui.base.ViewUtils;
+import org.chromium.ui.modaldialog.ModalDialogProperties;
+import org.chromium.ui.modelutil.PropertyModel;
 
-/* Helpers for permission dialog. */
-public class BravePermissionDialogModelUtils {
+/* Adds additional items to Permission Dialog. */
+class BravePermissionDialogModel {
+    public static PropertyModel getModel(ModalDialogProperties.Controller controller,
+            PermissionDialogDelegate delegate, Runnable touchFilteredCallback) {
+        PropertyModel model =
+                PermissionDialogModel.getModel(controller, delegate, touchFilteredCallback);
+        View customView = (View) model.get(ModalDialogProperties.CUSTOM_VIEW);
+        addLifetimeOptions(customView, delegate);
+        return model;
+    }
+
     /* Adds a permission lifetime options to a dialog view if lifetime options are available. */
-    public static void addLifetimeOptions(
-            Context context, View customView, PermissionDialogDelegate delegate) {
-        String[] lifetimeOptions = delegate.getLifetimeOptions();
+    private static void addLifetimeOptions(View customView, PermissionDialogDelegate delegate) {
+        Context context = delegate.getWindow().getContext().get();
+        BravePermissionDialogDelegate braveDelegate =
+                (BravePermissionDialogDelegate) (Object) delegate;
+
+        String[] lifetimeOptions = braveDelegate.getLifetimeOptions();
         if (lifetimeOptions == null) {
             return;
         }
@@ -29,7 +43,7 @@ public class BravePermissionDialogModelUtils {
 
         // Create a text label before the lifetime selector.
         TextView lifetimeOptionsText = new TextView(context);
-        lifetimeOptionsText.setText(delegate.getLifetimeOptionsText());
+        lifetimeOptionsText.setText(braveDelegate.getLifetimeOptionsText());
         lifetimeOptionsText.setTextAppearance(R.style.TextAppearance_TextMedium_Primary);
 
         LinearLayout.LayoutParams lifetimeOptionsTextLayoutParams =
@@ -51,7 +65,7 @@ public class BravePermissionDialogModelUtils {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                delegate.setSelectedLifetimeOption(checkedId);
+                braveDelegate.setSelectedLifetimeOption(checkedId);
             }
         });
         radioGroup.check(0);
