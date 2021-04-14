@@ -809,9 +809,6 @@ void RewardsServiceImpl::Shutdown() {
     }
   }
 
-  for (auto* const loader : url_loaders_) {
-    delete loader;
-  }
   url_loaders_.clear();
 
   bat_ledger_.reset();
@@ -867,6 +864,10 @@ void RewardsServiceImpl::OnReconcileComplete(
   if (result == ledger::type::Result::LEDGER_OK &&
       contribution->type == ledger::type::RewardsType::RECURRING_TIP) {
     MaybeShowNotificationTipsPaid();
+  }
+
+  if (result == ledger::type::Result::LEDGER_OK) {
+    RecordBackendP3AStats();
   }
 
   for (auto& observer : observers_)
@@ -996,40 +997,36 @@ void RewardsServiceImpl::LoadURL(
     net_request->headers.AddHeaderFromString(header);
   }
 
-  network::SimpleURLLoader* loader = network::SimpleURLLoader::Create(
-      std::move(net_request),
-      GetNetworkTrafficAnnotationTagForURLLoad()).release();
+  auto loader = network::SimpleURLLoader::Create(
+      std::move(net_request), GetNetworkTrafficAnnotationTagForURLLoad());
   loader->SetAllowHttpErrorResults(true);
-  url_loaders_.insert(loader);
-  loader->SetRetryOptions(kRetriesCountOnNetworkChange,
+  loader->SetRetryOptions(
+      kRetriesCountOnNetworkChange,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
 
   if (!request->content.empty()) {
     loader->AttachStringForUpload(request->content, request->content_type);
   }
 
-  loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  auto loader_it = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
+  loader_it->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       content::BrowserContext::GetDefaultStoragePartition(profile_)
-          ->GetURLLoaderFactoryForBrowserProcess().get(),
+          ->GetURLLoaderFactoryForBrowserProcess()
+          .get(),
       base::BindOnce(&RewardsServiceImpl::OnURLLoaderComplete,
-                     base::Unretained(this),
-                     loader,
-                     callback));
+                     base::Unretained(this), loader_it, callback));
 }
 
 void RewardsServiceImpl::OnURLLoaderComplete(
-    network::SimpleURLLoader* loader,
+    SimpleURLLoaderList::iterator loader_it,
     ledger::client::LoadURLCallback callback,
     std::unique_ptr<std::string> response_body) {
-
-  DCHECK(url_loaders_.find(loader) != url_loaders_.end());
-  url_loaders_.erase(loader);
+  auto loader = std::move(*loader_it);
+  url_loaders_.erase(loader_it);
 
   if (!Connected()) {
     return;
   }
-
-  std::unique_ptr<network::SimpleURLLoader> scoped_loader(loader);
 
   ledger::type::UrlResponse response;
   response.body = response_body ? *response_body : "";
@@ -1399,9 +1396,6 @@ void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
 }
 
 void RewardsServiceImpl::Reset() {
-  for (auto* const url_loader : url_loaders_) {
-    delete url_loader;
-  }
   url_loaders_.clear();
 
   BitmapFetcherService* image_service =
@@ -2977,7 +2971,7 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
   int tips = 0;
   int queued_recurring = 0;
 
-  for (auto& contribution : list) {
+  for (const auto& contribution : list) {
     switch (contribution->type) {
     case ledger::type::RewardsType::AUTO_CONTRIBUTE: {
       auto_contributions += 1;

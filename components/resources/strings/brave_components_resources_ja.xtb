@@ -149,7 +149,7 @@
 <translation id="7954950242989581218">安心・安全にブラウズする</translation>
 <translation id="2188651882929633653">Brave Shieldは、広告などインターネット上であなたに付きまとう不快なものをブロックします。サイトの動作に問題がある場合、Shieldを無効にしてしましょう。Braveは<ph name="BEGIN_LINK_P3A"/>完全に匿名の分析機能<ph name="END_LINK_P3A"/>により、特定の機能の一般的な使用状況を推定しています。こちらは<ph name="BEGIN_LINK_P3A_SETTINGS"/>設定<ph name="END_LINK_P3A_SETTINGS"/>でオフにすることができます。</translation>
 <translation id="1919345977826869612">広告</translation>
-<translation id="6769094341455418696">Brave Adsを表示することで、[[currency]]を獲得できます。表示される広告は、閲覧行動から推測される興味や関心に基づきます。個人情報や閲覧履歴が、ブラウザから抽出されることはありません。</translation>
+<translation id="6769094341455418696">Brave Adsを表示することで、[[currency]]を獲得できます。表示される広告は、閲覧行動から推測される興味や関心に基づきます。個人情報や閲覧履歴が、ブラウザから外部に送られることはありません。</translation>
 <translation id="6112368337882254910">自動支援</translation>
 <translation id="3742599705619405136">パブリッシャーやコンテンツクリエイターを自動的に支援する方法です。毎月支援する金額を設定し、通常通りブラウジングをしましょう。あなたが訪問したサイトがBraveの認証を完了していた場合、あなたのアテンションに基づいて自動的に支援が行われます。</translation>
 <translation id="20281847067919078">保留中の推定報酬額</translation>
@@ -367,7 +367,7 @@
 <translation id="3477340970981564961">Braveプライベート広告は、従来の広告とは異なり、コンテンツクリエイターをサポートするためのトークンで報酬がもらえ、すべては個人情報を守られた状態で行われます。</translation>
 <translation id="6973095375773523904">広告はどこに表示されますか？</translation>
 <translation id="7556325460112047619">Braveプライベート広告は通常の通知として表示されます。これらの広告をどのくらいの頻度で表示するかは設定で操作します。</translation>
-<translation id="6897083627729802351">報酬を受け取るタイミング</translation>
+<translation id="6897083627729802351">報酬を受け取るタイミングは？</translation>
 <translation id="310863932297733723">当月中にBraveプライベート広告から獲得したトークンは、翌月の5日に届きます。</translation>
 <translation id="7712287524451429139">クリエイターへの支援がもっと簡単に</translation>
 <translation id="105037569026952831">クリエイターは、私たちが「アテンション」として測定するあなたのエンゲージメントに基づいて、トークンの寄付を自動的に受け取ります。</translation>
@@ -379,12 +379,12 @@
 <translation id="3494356595346329740">これを後で変更できます。</translation>
 <translation id="827315274423079662">やったー、準備完了です！</translation>
 <translation id="8268038362451312235">Brave Rewardsを使用することで、ウェブを誰にとってもより良い場所にすることができます。そしてそれは素晴らしいことです！</translation>
-<translation id="9146355483497231818">ウォレットを確認</translation>
-<translation id="8913591412117692523">広告を表示して獲得したトークンを引き出すには、ウォレットを確認する必要があります。</translation>
+<translation id="9146355483497231818">ウォレットを認証する</translation>
+<translation id="8913591412117692523">広告を表示して獲得したトークンを引き出すには、ウォレットを認証する必要があります。</translation>
 <translation id="9168436347345867845">後で行う</translation>
-<translation id="5468234114288973517">ウォレットを確認</translation>
+<translation id="5468234114288973517">ウォレットを認証する</translation>
 <translation id="6609621505400013054">bitFlyerウォレットは、bitFlyer, Inc.が管理するサービスです。</translation>
-<translation id="7258399883616914635">ウォレットを確認しbitFlyerアカウントにリンクすると、Brave Rewardsで獲得したトークンを簡単に保管し管理することができます</translation>
+<translation id="7258399883616914635">ウォレットを認証しbitFlyerアカウントにリンクすると、Brave Rewardsで獲得したトークンを簡単に保管し管理することができます</translation>
 <translation id="5094577350232361255">について</translation>
 <translation id="4918086044614829423">承諾</translation>
 <translation id="5916290544882167205">「Brave Software」や「Brave」は、Brave Softwareの登録商標です。サイト名は、サイト所有者の商標または登録商標である可能性があります。</translation>
@@ -521,7 +521,7 @@
 <translation id="6354568176665589146">繰り返し</translation>
 <translation id="1110535155349301542">削除する</translation>
 <translation id="8204292894173669182">保存済みから削除</translation>
-<translation id="5530851178552343773">まだ登録が済んでいないため支援を受け取ることのできないクリエイターに[[reservedAmount]] [[currency]]を指定しました。クリエイターが認証を受けるか、90日が経過するまで、ブラウザで支援が試行されます。</translation>
+<translation id="5530851178552343773">あなたは[[reservedAmount]] [[currency]]分を、まだ支援の受け取り登録が完了していないクリエイターに送信しました。あなたのブラウザはそのクリエイターが受け取り設定を完了するかもしくは90日間が経過するまで、支援の実行を試み続けます。</translation>
 <translation id="8759753423332885148">詳細を見る</translation>
 <translation id="5939518447894949180">リセット</translation>
 <translation id="3157931365184549694">復元</translation>
@@ -556,7 +556,7 @@
 <translation id="459721429458957031">回復キーを使ってウォレットを復元します。</translation>
 <translation id="4600052736217630789">回復キーで復元すると現在のウォレットと置き換えられます。復元前に現在のウォレットを空にするか、バックアップを確実にしてください。</translation>
 <translation id="3267911153934785912">回復キーを入力</translation>
-<translation id="1209382772199769572">現在使用中のウォレット内の資金[[funds]]が失われないよう、交換する前にウォレットをバックアップしてください。</translation>
+<translation id="1209382772199769572">現在使用中のウォレット内の資金[[funds]]が失われないよう、変更する前にウォレットをバックアップしてください。</translation>
 <translation id="5423214929210538027">本当にRewards Walletをリセットしてよろしいですか？</translation>
 <translation id="8683358891240311475">ウォレットをリセットすると、<ph name="BAT_AMOUNT"/>およびその他のRewardsデータは永久に失われます。BATを保持できるように、<ph name="PROVIDER"/>でウォレットを検証したことを確認してください。</translation>
 <translation id="2028613172174411919">ウォレットをリセットすると、あなたが受け取った報酬のデータが永久に失われます。</translation>
@@ -819,7 +819,7 @@
 <translation id="1675751799495331928">試行回数の上限を超過しました。後ほど再度お試しください。</translation>
 <translation id="4499666752625407848">アップデート中、エラーが発生しました。</translation>
 <translation id="62991515067726424">このコンテンツはIPFSプロトコルを使用してロードされました</translation>
-<translation id="7263366446813126341">InterPlanetary File System (IPFS) とは、P2Pデータストレージおよび送信のための公開ネットワークです。Braveとの統合またはIPFSの設定に関する詳細をいつでも確認できます。</translation>
+<translation id="7263366446813126341">InterPlanetary File System (IPFS) とは、P2Pデータストレージおよび送信のための公開ネットワークです。Braveとの接続またはIPFSの設定に関する詳細をいつでも確認できます。</translation>
 <translation id="7789840864192026963">許可を与える</translation>
 <translation id="8092074243456635562">私がこのページを閉じるまで</translation>
 <translation id="3523195733429162409">24時間</translation>

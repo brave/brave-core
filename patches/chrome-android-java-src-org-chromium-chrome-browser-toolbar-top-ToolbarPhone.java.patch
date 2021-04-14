@@ -1,12 +1,12 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 1500801f399b172ab2ba9e8c8740cfdd81509fc2..bf3ab2a0c41b99d23f42c79510e6230cb29bcd1b 100644
+index 1500801f399b172ab2ba9e8c8740cfdd81509fc2..d465ac4e916c03591599a736922a70661047f059 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -409,6 +409,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          if (mCurrentLocationBarColor == color) return;
          mCurrentLocationBarColor = color;
          mLocationBarBackground.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-+        org.chromium.base.BraveReflectionUtil.InvokeMethod(BraveToolbarLayout.class, this, "updateModernLocationBarColorImpl", int.class, color);
++        BraveToolbarLayout.class.cast(this).updateModernLocationBarColorImpl(color);
      }
  
      /**
@@ -14,7 +14,7 @@ index 1500801f399b172ab2ba9e8c8740cfdd81509fc2..bf3ab2a0c41b99d23f42c79510e6230c
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
-+        org.chromium.base.BraveReflectionUtil.InvokeMethod(BraveToolbarLayout.class, this, "onClickImpl", View.class, v);
++        BraveToolbarLayout.class.cast(this).onClickImpl(v);
      }
  
      @Override
@@ -22,7 +22,7 @@ index 1500801f399b172ab2ba9e8c8740cfdd81509fc2..bf3ab2a0c41b99d23f42c79510e6230c
       * @return The right bounds of the location bar after accounting for any visible left buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
-+        if (true) return Math.max(mToolbarSidePadding, (int) org.chromium.base.BraveReflectionUtil.InvokeMethod(BraveToolbarLayout.class, this, "getBoundsAfterAccountingForRightButtons", ViewGroup.class, mToolbarButtonsContainer));
++        if (true) return Math.max(mToolbarSidePadding, BraveToolbarLayout.class.cast(this).getBoundsAfterAccountingForRightButtons(mToolbarButtonsContainer));
          return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
      }
  
@@ -30,7 +30,7 @@ index 1500801f399b172ab2ba9e8c8740cfdd81509fc2..bf3ab2a0c41b99d23f42c79510e6230c
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
-+        org.chromium.base.BraveReflectionUtil.InvokeMethod(BraveToolbarLayout.class, this, "populateUrlAnimatorSet", boolean.class, showExpandedState, int.class, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, int.class, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, List.class, animators);
++        BraveToolbarLayout.class.cast(this).populateUrlAnimatorSet(showExpandedState, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
  

@@ -8,12 +8,12 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/post_task.h"
+#include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_component.h"
-#include "brave/components/speedreader/speedreader_switches.h"
 #include "components/grit/brave_components_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
@@ -41,14 +41,8 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
     brave_component_updater::BraveComponent::Delegate* delegate)
     : component_(new speedreader::SpeedreaderComponent(delegate)),
       speedreader_(new speedreader::SpeedReader) {
-  const base::CommandLine& cmd_line = *base::CommandLine::ForCurrentProcess();
-  if (cmd_line.HasSwitch(speedreader::kSpeedreaderBackend)) {
-    // @pes mentioned we might want to experiment with several backends, so this
-    // will give us the most flexibility.
-    std::string backend = cmd_line.GetSwitchValueASCII(kSpeedreaderBackend);
-    if (backend == "classify-all") {
-      backend_ = RewriterType::RewriterHeuristics;
-    }
+  if (base::FeatureList::IsEnabled(kSpeedreaderReadabilityBackend)) {
+    backend_ = RewriterType::RewriterHeuristics;
   }
 
   // Load the built-in stylesheet as the default

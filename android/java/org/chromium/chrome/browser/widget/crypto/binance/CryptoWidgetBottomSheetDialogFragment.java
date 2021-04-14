@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.widget.crypto.binance;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +36,23 @@ public class CryptoWidgetBottomSheetDialogFragment extends BottomSheetDialogFrag
     final public static String TAG_FRAGMENT = "CRYPTO_WIDGET_FRAG";
     private ViewPager viewPager;
     private CryptoWidgetTabAdapter adapter;
+    private CryptoWidgetBottomSheetDialogDismissListener
+            mCryptoWidgetBottomSheetDialogDismissListener;
 
     public interface BinanceBottomSheetListener {
         void onContinue();
+        void dismissBottomSheetDialog();
+    }
+
+    public interface CryptoWidgetBottomSheetDialogDismissListener {
+        void onCryptoWidgetBottomSheetDialogDismiss();
+    }
+
+    public void setCryptoWidgetBottomSheetDialogDismissListener(
+            CryptoWidgetBottomSheetDialogDismissListener
+                    cryptoWidgetBottomSheetDialogDismissListener) {
+        this.mCryptoWidgetBottomSheetDialogDismissListener =
+                cryptoWidgetBottomSheetDialogDismissListener;
     }
 
     @Nullable
@@ -64,11 +79,22 @@ public class CryptoWidgetBottomSheetDialogFragment extends BottomSheetDialogFrag
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mCryptoWidgetBottomSheetDialogDismissListener.onCryptoWidgetBottomSheetDialogDismiss();
+    }
+
     private BinanceBottomSheetListener binanceBottomSheetListener =
             new BinanceBottomSheetListener() {
                 @Override
                 public void onContinue() {
                     if (viewPager != null && adapter != null) viewPager.setAdapter(adapter); 
+                }
+
+                @Override
+                public void dismissBottomSheetDialog() {
+                    dismiss();
                 }
             };
 }

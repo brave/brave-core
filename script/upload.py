@@ -199,7 +199,6 @@ def get_brave_packages(dir, channel, version, target_os, target_arch='x64', targ
                 arch = '32' if (target_arch == 'ia32') else ''
                 channel_arch_extension = channel_capitalized + 'Setup' + arch + '.exe'
                 file_stub = 'BraveBrowser' + channel_arch_extension
-                file_stub_silent = 'BraveBrowserSilent' + channel_arch_extension
                 file_stub_untagged = 'BraveBrowserUntagged' + channel_arch_extension
                 file_stn = 'BraveBrowserStandalone' + channel_arch_extension
                 file_stn_silent = 'BraveBrowserStandaloneSilent' + channel_arch_extension
@@ -209,9 +208,6 @@ def get_brave_packages(dir, channel, version, target_os, target_arch='x64', targ
                 if re.match(r'BraveBrowser' + channel_capitalized + r'Setup' + arch + r'_.*\.exe', file):
                     filecopy(file_path, file_stub)
                     pkgs.append(file_stub)
-                elif re.match(r'BraveBrowserSilent' + channel_capitalized + r'Setup' + arch + r'_.*\.exe', file):
-                    filecopy(file_path, file_stub_silent)
-                    pkgs.append(file_stub_silent)
                 elif re.match(r'BraveBrowserUntagged' + channel_capitalized + r'Setup' + arch + r'_.*\.exe', file):
                     filecopy(file_path, file_stub_untagged)
                     pkgs.append(file_stub_untagged)

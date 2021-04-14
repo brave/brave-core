@@ -67,8 +67,17 @@ public class BinanceBuyFragment extends Fragment {
     private static final String US = ".us";
     private static final String COM = ".com";
 
+    private CryptoWidgetBottomSheetDialogFragment
+            .BinanceBottomSheetListener mBinanceBottomSheetListener;
+
     public BinanceBuyFragment() {
         // Required empty public constructor
+    }
+
+    public void setBinanceBottomSheetListener(
+            CryptoWidgetBottomSheetDialogFragment
+                    .BinanceBottomSheetListener binanceBottomSheetListener) {
+        mBinanceBottomSheetListener = binanceBottomSheetListener;
     }
 
     @Override
@@ -194,15 +203,7 @@ public class BinanceBuyFragment extends Fragment {
     }
 
     private void dismissBinanceBottomSheet() {
-        FragmentManager fm = getParentFragmentManager();
-        CryptoWidgetBottomSheetDialogFragment fragment =
-                (CryptoWidgetBottomSheetDialogFragment) fm.findFragmentByTag(
-                        CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
-        FragmentTransaction transaction = fm.beginTransaction();
-
-        if (fragment != null) {
-            fragment.dismiss();
-        }
+        mBinanceBottomSheetListener.dismissBottomSheetDialog();
     }
 
     private BinanceObserver mBinanaceObserver = new BinanceObserver() {

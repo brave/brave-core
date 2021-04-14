@@ -18,7 +18,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -118,9 +118,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeMap;
 
-public class BraveNewTabPageLayout extends NewTabPageLayout {
+public class BraveNewTabPageLayout
+        extends NewTabPageLayout implements CryptoWidgetBottomSheetDialogFragment
+                                                    .CryptoWidgetBottomSheetDialogDismissListener {
     private static final String TAG = "BraveNewTabPageView";
     private static final String BRAVE_BINANCE = "https://brave.com/binance/";
     private static final String BRAVE_REF_URL = "https://brave.com/r/";
@@ -157,7 +161,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     private BinanceNativeWorker mBinanceNativeWorker;
     private CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment;
-    private CountDownTimer countDownTimer;
+    private Timer countDownTimer;
     private List<NTPWidgetItem> widgetList = new ArrayList<NTPWidgetItem>();
     public static final int NTP_WIDGET_STACK_CODE = 3333;
 
@@ -324,6 +328,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                                 cancelTimer();
                                 cryptoWidgetBottomSheetDialogFragment =
                                         new CryptoWidgetBottomSheetDialogFragment();
+                                cryptoWidgetBottomSheetDialogFragment
+                                        .setCryptoWidgetBottomSheetDialogDismissListener(
+                                                BraveNewTabPageLayout.this);
                                 cryptoWidgetBottomSheetDialogFragment.show(
                                         ((BraveActivity) mActivity).getSupportFragmentManager(),
                                         CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
@@ -879,7 +886,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private BinanceObserver mBinanaceObserver = new BinanceObserver() {
         @Override
         public void OnGetAccessToken(boolean isSuccess) {
-            Log.e("NTP", "OnGetAccessToken : " + isSuccess);
             BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
             if (isSuccess) {
                 mBinanceNativeWorker.getAccountBalances();
@@ -919,23 +925,31 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     // start timer function
     public void startTimer() {
-        countDownTimer = new CountDownTimer(30000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {}
-            @Override
-            public void onFinish() {
-                if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
-                    mBinanceNativeWorker.getAccountBalances();
+        if (countDownTimer == null) {
+            countDownTimer = new Timer();
+            final Handler handler = new Handler();
+            countDownTimer.scheduleAtFixedRate(new TimerTask() {
+                public void run() {
+                    handler.post(new Runnable() {
+                        public void run() {
+                            if (BinanceWidgetManager.getInstance()
+                                            .isUserAuthenticatedForBinance()) {
+                                mBinanceNativeWorker.getAccountBalances();
+                            }
+                        }
+                    });
                 }
-                if ((BraveActivity) mActivity != null) startTimer();
-            }
-        };
-        countDownTimer.start();
+            }, 0, 30000);
+        }
     }
 
     // cancel timer
     public void cancelTimer() {
-        if (countDownTimer != null) countDownTimer.cancel();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer.purge();
+            countDownTimer = null;
+        }
     }
 
     public void openWidgetStack() {
@@ -946,7 +960,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 super.onActivityResult(requestCode, resultCode, data);
                 fm.beginTransaction().remove(this).commit();
                 if (requestCode == NTP_WIDGET_STACK_CODE) {
-                    Log.e("NTP", "Inside result");
                     showWidgets();
                 }
             }
@@ -977,5 +990,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         } else {
             mTopsiteErrorMessage.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onCryptoWidgetBottomSheetDialogDismiss() {
+        startTimer();
     }
 }

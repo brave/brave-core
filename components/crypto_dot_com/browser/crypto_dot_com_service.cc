@@ -199,9 +199,9 @@ bool CryptoDotComService::NetworkRequest(const GURL &url,
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
 
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory, base::BindOnce(
-          &CryptoDotComService::OnURLLoaderComplete,
-          base::Unretained(this), std::move(iter), std::move(callback)));
+      url_loader_factory,
+      base::BindOnce(&CryptoDotComService::OnURLLoaderComplete,
+                     base::Unretained(this), iter, std::move(callback)));
 
   return true;
 }

@@ -97,7 +97,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/download/MimeUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/app/ChromeActivity"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ChromeTabbedActivity"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/app/BraveActivity"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
         Assert.assertTrue(classExists(
@@ -116,8 +115,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/top/ToolbarPhone"));
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
         Assert.assertTrue(classExists(
@@ -210,19 +207,6 @@ public class BytecodeTest {
     public void testMethodsForInvocationExist() throws Exception {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ChromeTabbedActivity",
                 "hideOverview", true, void.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/app/BraveActivity",
-                "openNewOrSelectExistingTab", true, Tab.class, String.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/app/BraveActivity",
-                "selectExistingTab", true, Tab.class, String.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
-                "updateModernLocationBarColorImpl", true, void.class, int.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
-                "onClickImpl", true, void.class, View.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
-                "populateUrlAnimatorSet", true, void.class, boolean.class, int.class, int.class,
-                List.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
-                "getBoundsAfterAccountingForRightButtons", true, int.class, ViewGroup.class));
 
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
@@ -401,6 +385,40 @@ public class BytecodeTest {
                 "mToolbarView"));
     }
 
+    @Test
+    @SmallTest
+    public void testSuperNames() throws Exception {
+        Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/settings/MainSettings",
+                "org/chromium/chrome/browser/settings/BraveMainPreferencesBase"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/ntp/NewTabPageLayout", "android/widget/FrameLayout"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/password_manager/settings/PasswordSettings",
+                "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "org/chromium/chrome/browser/search_engines/settings/BraveBaseSearchEngineAdapter"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
+                "org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings"));
+        Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/ChromeTabbedActivity",
+                "org/chromium/chrome/browser/app/BraveActivity"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
+                "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate",
+                "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl"));
+        Assert.assertTrue(
+                checkSuperName("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView",
+                        "org/chromium/chrome/browser/suggestions/tile/BraveTileView"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar",
+                "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
+        Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/toolbar/top/ToolbarPhone",
+                "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
+    }
+
     private boolean classExists(String className) {
         return getClassForPath(className) != null;
     }
@@ -477,5 +495,14 @@ public class BytecodeTest {
             return false;
         }
         return false;
+    }
+
+    private boolean checkSuperName(String className, String superName) {
+        Class c = getClassForPath(className);
+        Class s = getClassForPath(superName);
+        if (c == null || s == null) {
+            return false;
+        }
+        return c.getSuperclass().equals(s);
     }
 }

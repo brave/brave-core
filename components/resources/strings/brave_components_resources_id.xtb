@@ -332,8 +332,8 @@
 <translation id="4622723187300249546">Tip Satu Kali</translation>
 <translation id="5268142130226208198">Jumlah tip satu kali:</translation>
 <translation id="3669086939205397942">Tunggu, Anda belum bisa memberi tip</translation>
-<translation id="4758374243299807324">Postingan [[user]]’s</translation>
-<translation id="1242162113777253768">Cuitan [[user]]’s</translation>
+<translation id="4758374243299807324">Postingan [[user]]</translation>
+<translation id="1242162113777253768">Cuitan [[user]]</translation>
 <translation id="5531915212947569943">Sedih rasanya melihat Anda pergi…</translation>
 <translation id="1420756770787071946">Dukung kreator ini</translation>
 <translation id="3473919203449000069">Dengan melanjutkan, Anda setuju dengan <ph name="LINK_BEGIN"/>Syarat layanan<ph name="LINK_END"/> dan <ph name="LINK_BEGIN"/>Kebijakan Privasi<ph name="LINK_END"/>.</translation>
@@ -377,7 +377,7 @@
 <translation id="827315274423079662">Cihuy, Anda kini siap!</translation>
 <translation id="8268038362451312235">Dengan menggunakan Brave Rewards Anda membantu menjadikan web tempat yang lebih baik bagi semua orang. Dan itu keren!</translation>
 <translation id="9146355483497231818">Verifikasikan dompet Anda</translation>
-<translation id="8913591412117692523">Agar dapat menarik token yang Anda dapatkan dari menonton iklan, Anda ’ perlu memverifikasi dompet Anda.</translation>
+<translation id="8913591412117692523">Agar dapat menarik token yang Anda dapatkan dari menonton iklan, Anda perlu memverifikasi dompet Anda.</translation>
 <translation id="9168436347345867845">Lakukan nanti</translation>
 <translation id="5468234114288973517">Verifikasi dompet saya</translation>
 <translation id="6609621505400013054">Dompet bitFlyer adalah layanan dari bitFlyer, Inc.</translation>
@@ -424,7 +424,7 @@
 <translation id="1767561995429774671">Kontribusi</translation>
 <translation id="2030909064203578811">Alokasi Kontribusi Otomatis</translation>
 <translation id="6896758677409633944">Salin</translation>
-<translation id="5867910966685447703">Anda saat ini ’ mengirim [[currentDonation]] BAT ke situs ini setiap bulan.</translation>
+<translation id="5867910966685447703">Anda saat ini mengirim [[currentDonation]] BAT ke situs ini setiap bulan.</translation>
 <translation id="4932733599132424254">Tanggal</translation>
 <translation id="1366855498335432549">Deposit</translation>
 <translation id="3552003743293281224">Deposit</translation>
@@ -449,7 +449,7 @@
 <translation id="418343137736963579">Total jumlah situs yang Anda kecualikan dari Kontribusi Otomatis:</translation>
 <translation id="1759104587873258696">kedaluwarsa pada</translation>
 <translation id="6149218349077925111">untuk</translation>
-<translation id="8802504113265057166">[[currency]] yang tidak digunakan hingga tanggal kedaluwarsa akan dikembalikan secara otomatis ke Data Pertumbuhan Pengguna Brave.</translation>
+<translation id="8802504113265057166">[[currency]] yang tidak digunakan hingga tanggal kedaluwarsa akan dikembalikan secara otomatis ke Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Tanggal Kedaluwarsa Hibah</translation>
 <translation id="2104073734684466851">Hibah</translation>
 <translation id="6476729769006815569">Halo, [[name]]!</translation>
@@ -518,7 +518,7 @@
 <translation id="6354568176665589146">Berulang</translation>
 <translation id="1110535155349301542">hapus</translation>
 <translation id="8204292894173669182">Hapus Dari Disimpan</translation>
-<translation id="5530851178552343773">Anda ’ memberikan [[reservedAmount]] [[currency]] untuk kreator yang belum ’ mendaftarkan diri untuk menerima kontribusi. Peramban Anda akan tetap mencoba berkontribusi hingga mereka memverifikasi, atau hingga 90 hari yang akan datang.</translation>
+<translation id="5530851178552343773">Anda memberikan [[reservedAmount]] [[currency]] untuk kreator yang belum mendaftarkan diri untuk menerima kontribusi. Peramban Anda akan tetap mencoba berkontribusi hingga mereka memverifikasi, atau hingga 90 hari yang akan datang.</translation>
 <translation id="8759753423332885148">Pelajari lebih lanjut.</translation>
 <translation id="5939518447894949180">Setel ulang</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
@@ -560,7 +560,7 @@
 <translation id="4914597931214386232">Hibah Token Diklaim</translation>
 <translation id="3494964159182650590">Ringkasan Rewards</translation>
 <translation id="1738658589626889850">Simpan sebagai Berkas</translation>
-<translation id="2913994227901456490">Lihat ke-[[numItems]] hal</translation>
+<translation id="2913994227901456490">Lihat ke-[[numItems]] baris</translation>
 <translation id="3010479539542250179">Lihat ke-[[numItems]] situs</translation>
 <translation id="1549705559752367917">Kirim Tip</translation>
 <translation id="3536298624341433814">Kirim Tip saya</translation>

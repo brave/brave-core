@@ -41,9 +41,8 @@ public class BraveTabCreator extends ChromeTabCreator {
             if(chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                 TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
                 if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS && UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-                    Tab tab = (Tab) BraveReflectionUtil.InvokeMethod(BraveActivity.class,
-                            chromeTabbedActivity, "selectExistingTab", String.class,
-                            UrlConstants.NTP_URL);
+                    Tab tab = BraveActivity.class.cast(chromeTabbedActivity)
+                                      .selectExistingTab(UrlConstants.NTP_URL);
                     if (tab != null) {
                         BraveReflectionUtil.InvokeMethod(
                                 ChromeTabbedActivity.class, chromeTabbedActivity, "hideOverview");

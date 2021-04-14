@@ -293,7 +293,7 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&IpfsService::OnGetConnectedPeers, base::Unretained(this),
-                     std::move(iter), std::move(callback), retries));
+                     iter, std::move(callback), retries));
 }
 
 base::TimeDelta IpfsService::CalculatePeersRetryTime() {
@@ -358,7 +358,7 @@ void IpfsService::GetAddressesConfig(GetAddressesConfigCallback callback) {
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&IpfsService::OnGetAddressesConfig, base::Unretained(this),
-                     std::move(iter), std::move(callback)));
+                     iter, std::move(callback)));
 }
 
 void IpfsService::OnGetAddressesConfig(
@@ -513,8 +513,8 @@ void IpfsService::GetRepoStats(GetRepoStatsCallback callback) {
 
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&IpfsService::OnRepoStats, base::Unretained(this),
-                     std::move(iter), std::move(callback)));
+      base::BindOnce(&IpfsService::OnRepoStats, base::Unretained(this), iter,
+                     std::move(callback)));
 }
 
 void IpfsService::OnRepoStats(SimpleURLLoaderList::iterator iter,
@@ -552,8 +552,8 @@ void IpfsService::GetNodeInfo(GetNodeInfoCallback callback) {
 
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&IpfsService::OnNodeInfo, base::Unretained(this),
-                     std::move(iter), std::move(callback)));
+      base::BindOnce(&IpfsService::OnNodeInfo, base::Unretained(this), iter,
+                     std::move(callback)));
 }
 
 void IpfsService::OnNodeInfo(SimpleURLLoaderList::iterator iter,
@@ -593,7 +593,7 @@ void IpfsService::RunGarbageCollection(GarbageCollectionCallback callback) {
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&IpfsService::OnGarbageCollection, base::Unretained(this),
-                     std::move(iter), std::move(callback)));
+                     iter, std::move(callback)));
 }
 
 void IpfsService::OnGarbageCollection(

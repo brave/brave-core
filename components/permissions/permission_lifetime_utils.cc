@@ -5,6 +5,9 @@
 
 #include "brave/components/permissions/permission_lifetime_utils.h"
 
+#include <string>
+#include <utility>
+
 #include "base/command_line.h"
 #include "base/optional.h"
 #include "base/strings/string_number_conversions.h"
@@ -12,6 +15,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/features.h"
+#include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace permissions {
@@ -42,17 +46,15 @@ base::Optional<PermissionLifetimeOption> GetTestSecondsOption() {
 
 std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
   std::vector<PermissionLifetimeOption> options;
-  const size_t kOptionsCount = 3;
+  const size_t kOptionsCount = 4;
   options.reserve(kOptionsCount);
 
-  // TODO(https://github.com/brave/brave-browser/issues/14126): Add support for
-  // "until page is closed" lifetime.
-#if 0
-  options.emplace_back(PermissionLifetimeOption(
-      l10n_util::GetStringUTF16(
-          IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION),
-      base::TimeDelta()));
-#endif  // 0
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
+    options.emplace_back(PermissionLifetimeOption(
+        l10n_util::GetStringUTF16(
+            IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION),
+        base::TimeDelta()));
+  }
   options.emplace_back(PermissionLifetimeOption(
       l10n_util::GetStringUTF16(
           IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION),
@@ -63,7 +65,7 @@ std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
   options.emplace_back(PermissionLifetimeOption(
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION),
       base::nullopt));
-  DCHECK_EQ(options.size(), kOptionsCount);
+  DCHECK_LE(options.size(), kOptionsCount);
 
   // This is strictly for manual testing.
   if (auto test_seconds_option = GetTestSecondsOption()) {

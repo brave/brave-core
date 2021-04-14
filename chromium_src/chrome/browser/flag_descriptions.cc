@@ -41,6 +41,11 @@ const char kBraveSidebarDescription[] = "Enable Sidebar";
 const char kBraveSpeedreaderName[] = "Enable SpeedReader";
 const char kBraveSpeedreaderDescription[] =
     "Enables faster loading of simplified article-style web pages.";
+const char kBraveSpeedreaderReadabilityName[] =
+    "Enable Readability Backend for SpeedReader";
+const char kBraveSpeedreaderReadabilityDescription[] =
+    "Enables the readability backend for SpeedReader. Runs a classifier to "
+    "determine if pages are readable and distills using the Arc90 algorithm.";
 const char kBraveSyncName[] = "Enable Brave Sync v2";
 const char kBraveSyncDescription[] =
     "Brave Sync v2 integrates with chromium sync engine with Brave specific "
