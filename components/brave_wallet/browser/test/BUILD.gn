@@ -21,6 +21,7 @@ source_set("brave_wallet_unit_tests") {
       "//brave/components/brave_wallet/browser/eth_transaction_unittest.cc",
       "//brave/components/brave_wallet/browser/hd_key_unittest.cc",
       "//brave/components/brave_wallet/browser/hd_keyring_unittest.cc",
+      "//brave/components/brave_wallet/browser/password_encryptor_unittest.cc",
       "//brave/components/brave_wallet/browser/rlp_decode_unittest.cc",
       "//brave/components/brave_wallet/browser/rlp_encode_unittest.cc",
     ]

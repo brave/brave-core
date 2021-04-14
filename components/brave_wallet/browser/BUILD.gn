@@ -35,6 +35,8 @@ source_set("browser") {
     "hd_key.h",
     "hd_keyring.cc",
     "hd_keyring.h",
+    "password_encryptor.cc",
+    "password_encryptor.h",
     "pref_names.cc",
     "pref_names.h",
     "rlp_decode.cc",
