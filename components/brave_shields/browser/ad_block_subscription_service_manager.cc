@@ -95,8 +95,12 @@ AdBlockSubscriptionServiceManager::~AdBlockSubscriptionServiceManager() {}
 
 void AdBlockSubscriptionServiceManager::CreateSubscription(
     const GURL list_url) {
+  auto refresh_callback = base::BindRepeating(
+      &AdBlockSubscriptionServiceManager::RefreshSubscription,
+      base::Unretained(this), list_url, false);
+
   auto subscription_service =
-      AdBlockSubscriptionServiceFactory(list_url, delegate_);
+      AdBlockSubscriptionServiceFactory(list_url, refresh_callback, delegate_);
   subscription_service->Start();
 
   base::PostTask(
@@ -154,10 +158,12 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
 }
 
 void AdBlockSubscriptionServiceManager::RefreshSubscription(
-    const SubscriptionIdentifier& id) {
+    const SubscriptionIdentifier& id,
+    bool from_ui) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto it = subscription_services_.find(id);
   DCHECK(it != subscription_services_.end());
-  download_manager_->StartDownload(it->second->GetInfo().list_url, true);
+  download_manager_->StartDownload(it->second->GetInfo().list_url, from_ui);
 }
 
 void AdBlockSubscriptionServiceManager::InitializeDownloadManager(
@@ -191,10 +197,16 @@ void AdBlockSubscriptionServiceManager::StartSubscriptionServices() {
     const base::Value* list_subscription_dict =
         list_subscriptions_dict->FindDictKey(uuid);
     if (list_subscription_dict) {
-      info = BuildInfoFromDict(GURL(uuid), list_subscription_dict);
+      const GURL list_url = GURL(uuid);
+
+      info = BuildInfoFromDict(list_url, list_subscription_dict);
+
+      auto refresh_callback = base::BindRepeating(
+          &AdBlockSubscriptionServiceManager::RefreshSubscription,
+          base::Unretained(this), list_url, false);
 
       auto subscription_service =
-          AdBlockSubscriptionServiceFactory(info, delegate_);
+          AdBlockSubscriptionServiceFactory(info, refresh_callback, delegate_);
       subscription_service->Start();
 
       subscription_services_.insert(

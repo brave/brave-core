@@ -19,6 +19,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/util/timer/wall_clock_timer.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -27,6 +28,10 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+
+namespace {
+const base::TimeDelta kListUpdateInterval = base::TimeDelta::FromDays(7);
+}
 
 namespace brave_shields {
 
@@ -53,24 +58,48 @@ FilterListSubscriptionInfo BuildInfoFromDict(const GURL& list_url,
 }
 
 // Constructor for a new subscription
+// |refresh_callback| will not be called; the new list download should be
+// initiated by the caller. |refresh_callback| will only initiate a
+// low-priority background download, whereas it should be immediate when
+// initiated by a user adding a new subscription.
 AdBlockSubscriptionService::AdBlockSubscriptionService(
     const GURL& list_url,
+    AdBlockSubscriptionService::RefreshSubscriptionCallback refresh_callback,
     brave_component_updater::BraveComponent::Delegate* delegate)
-    : AdBlockBaseService(delegate), list_url_(list_url), enabled_(true) {}
+    : AdBlockBaseService(delegate),
+      refresh_callback_(refresh_callback),
+      list_url_(list_url),
+      enabled_(true) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+}
 
 // Constructor from cached information
 AdBlockSubscriptionService::AdBlockSubscriptionService(
     const FilterListSubscriptionInfo& cached_info,
+    AdBlockSubscriptionService::RefreshSubscriptionCallback refresh_callback,
     brave_component_updater::BraveComponent::Delegate* delegate)
     : AdBlockBaseService(delegate),
+      refresh_callback_(refresh_callback),
       list_url_(cached_info.list_url),
       enabled_(cached_info.enabled),
       last_update_attempt_(cached_info.last_update_attempt),
       last_successful_update_attempt_(
           cached_info.last_successful_update_attempt) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   GetTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&AdBlockSubscriptionService::ReloadFilters,
                                 base::Unretained(this)));
+
+  const base::Time next_update = last_update_attempt_ + kListUpdateInterval;
+  const base::TimeDelta until_next_update = next_update - base::Time::Now();
+  // Schedule the next update for the list - either immediately, or in the
+  // future with a delayed task
+  if (until_next_update <= base::TimeDelta::FromSeconds(0)) {
+    content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
+        ->PostTask(FROM_HERE, refresh_callback_);
+  } else {
+    update_timer_.Start(FROM_HERE, next_update, refresh_callback_);
+  }
 }
 
 AdBlockSubscriptionService::~AdBlockSubscriptionService() {}
@@ -114,6 +143,19 @@ void AdBlockSubscriptionService::OnSuccessfulDownload() {
   last_successful_update_attempt_ = last_update_attempt_;
 
   ReloadFilters();
+
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockSubscriptionService::ScheduleRefreshOnUIThread,
+                     base::Unretained(this),
+                     last_update_attempt_ + kListUpdateInterval));
+}
+
+void AdBlockSubscriptionService::ScheduleRefreshOnUIThread(
+    base::Time next_download_time) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  update_timer_.Start(FROM_HERE, next_download_time, refresh_callback_);
 }
 
 void AdBlockSubscriptionService::OnComponentReady(
@@ -125,14 +167,18 @@ void AdBlockSubscriptionService::OnComponentReady(
 
 std::unique_ptr<AdBlockSubscriptionService> AdBlockSubscriptionServiceFactory(
     const GURL& list_url,
+    AdBlockSubscriptionService::RefreshSubscriptionCallback refresh_callback,
     brave_component_updater::BraveComponent::Delegate* delegate) {
-  return std::make_unique<AdBlockSubscriptionService>(list_url, delegate);
+  return std::make_unique<AdBlockSubscriptionService>(
+      list_url, refresh_callback, delegate);
 }
 
 std::unique_ptr<AdBlockSubscriptionService> AdBlockSubscriptionServiceFactory(
     const FilterListSubscriptionInfo& cached_info,
+    AdBlockSubscriptionService::RefreshSubscriptionCallback refresh_callback,
     brave_component_updater::BraveComponent::Delegate* delegate) {
-  return std::make_unique<AdBlockSubscriptionService>(cached_info, delegate);
+  return std::make_unique<AdBlockSubscriptionService>(
+      cached_info, refresh_callback, delegate);
 }
 
 }  // namespace brave_shields

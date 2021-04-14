@@ -54,7 +54,7 @@ class AdBlockSubscriptionServiceManager : public ProfileManagerObserver {
   std::vector<FilterListSubscriptionInfo> GetSubscriptions() const;
   void EnableSubscription(const SubscriptionIdentifier& id, bool enabled);
   void DeleteSubscription(const SubscriptionIdentifier& id);
-  void RefreshSubscription(const SubscriptionIdentifier& id);
+  void RefreshSubscription(const SubscriptionIdentifier& id, bool from_ui);
   void CreateSubscription(const GURL list_url);
 
   bool IsInitialized() const;

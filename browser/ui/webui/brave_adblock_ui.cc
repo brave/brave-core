@@ -205,7 +205,7 @@ void AdblockDOMHandler::HandleRefreshSubscription(const base::ListValue* args) {
   }
   g_brave_browser_process->ad_block_service()
       ->subscription_service_manager()
-      ->RefreshSubscription(list_url);
+      ->RefreshSubscription(list_url, true);
   // TODO callback and show the result when finished
 }
 

@@ -14,6 +14,7 @@
 
 #include "base/files/file_path.h"
 #include "base/time/time.h"
+#include "base/util/timer/wall_clock_timer.h"
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 
 class AdBlockServiceTest;
@@ -44,13 +45,17 @@ FilterListSubscriptionInfo BuildInfoFromDict(const GURL& list_url,
 // for a custom filter list subscription.
 class AdBlockSubscriptionService : public AdBlockBaseService {
  public:
+  using RefreshSubscriptionCallback = base::RepeatingCallback<void()>;
+
   // Constructor for a new subscription
   explicit AdBlockSubscriptionService(
       const GURL& list_url,
+      RefreshSubscriptionCallback refresh_callback,
       brave_component_updater::BraveComponent::Delegate* delegate);
   // Constructor from cached information
   explicit AdBlockSubscriptionService(
       const FilterListSubscriptionInfo& cached_info,
+      RefreshSubscriptionCallback refresh_callback,
       brave_component_updater::BraveComponent::Delegate* delegate);
   ~AdBlockSubscriptionService() override;
 
@@ -75,6 +80,9 @@ class AdBlockSubscriptionService : public AdBlockBaseService {
       const std::string& component_id,
       const std::string& component_base64_public_key);
   void ReloadFilters();
+  void ScheduleRefreshOnUIThread(base::Time next_download_time);
+
+  RefreshSubscriptionCallback refresh_callback_;
 
   std::string list_contents_;
 
@@ -86,6 +94,8 @@ class AdBlockSubscriptionService : public AdBlockBaseService {
   base::Time last_update_attempt_;
   base::Time last_successful_update_attempt_;
 
+  util::WallClockTimer update_timer_;
+
   base::WeakPtrFactory<AdBlockSubscriptionService> weak_factory_{this};
 
   AdBlockSubscriptionService(const AdBlockSubscriptionService&) = delete;
@@ -96,10 +106,12 @@ class AdBlockSubscriptionService : public AdBlockBaseService {
 // Creates the AdBlockSubscriptionService
 std::unique_ptr<AdBlockSubscriptionService> AdBlockSubscriptionServiceFactory(
     const GURL& list_url,
+    AdBlockSubscriptionService::RefreshSubscriptionCallback refresh_callback,
     brave_component_updater::BraveComponent::Delegate* delegate);
 
 std::unique_ptr<AdBlockSubscriptionService> AdBlockSubscriptionServiceFactory(
-    const FilterListSubscriptionInfo& list_url,
+    const FilterListSubscriptionInfo& info,
+    AdBlockSubscriptionService::RefreshSubscriptionCallback refresh_callback,
     brave_component_updater::BraveComponent::Delegate* delegate);
 
 }  // namespace brave_shields
