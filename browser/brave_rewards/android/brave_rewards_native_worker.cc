@@ -72,7 +72,7 @@ void BraveRewardsNativeWorker::GetRewardsParameters(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetRewardsParameters(
         base::BindOnce(&BraveRewardsNativeWorker::OnGetRewardsParameters,
-                       base::Unretained(this), brave_rewards_service_));
+                       weak_factory_.GetWeakPtr(), brave_rewards_service_));
   }
 }
 
@@ -286,7 +286,7 @@ void BraveRewardsNativeWorker::GetCurrentBalanceReport(JNIEnv* env) {
     brave_rewards_service_->GetBalanceReport(
         exploded.month, exploded.year,
         base::BindOnce(&BraveRewardsNativeWorker::OnGetCurrentBalanceReport,
-                       base::Unretained(this), brave_rewards_service_));
+                       weak_factory_.GetWeakPtr(), brave_rewards_service_));
   }
 }
 
@@ -352,10 +352,10 @@ void BraveRewardsNativeWorker::GetGrant(JNIEnv* env,
   if (brave_rewards_service_) {
     std::string promotion_id =
       base::android::ConvertJavaStringToUTF8(env, promotionId);
-    brave_rewards_service_->ClaimPromotion(promotion_id,
-      base::BindOnce(
-        &BraveRewardsNativeWorker::OnClaimPromotion,
-        base::Unretained(this)));
+    brave_rewards_service_->ClaimPromotion(
+        promotion_id,
+        base::BindOnce(&BraveRewardsNativeWorker::OnClaimPromotion,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -623,7 +623,7 @@ void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetExternalWallet(
         base::BindOnce(&BraveRewardsNativeWorker::OnGetExternalWallet,
-                       base::Unretained(this)));
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -678,9 +678,9 @@ void BraveRewardsNativeWorker::ProcessRewardsPageUrl(JNIEnv* env,
   if (brave_rewards_service_) {
     std::string cpath = base::android::ConvertJavaStringToUTF8(env, path);
     std::string cquery = base::android::ConvertJavaStringToUTF8(env, query);
-    auto callback = base::Bind(
-        &BraveRewardsNativeWorker::OnProcessRewardsPageUrl,
-        base::Unretained(this));
+    auto callback =
+        base::Bind(&BraveRewardsNativeWorker::OnProcessRewardsPageUrl,
+                   weak_factory_.GetWeakPtr());
     brave_rewards_service_->ProcessRewardsPageUrl(cpath, cquery, callback);
   }
 }
@@ -739,7 +739,7 @@ void BraveRewardsNativeWorker::RefreshPublisher(
   brave_rewards_service_->RefreshPublisher(
       base::android::ConvertJavaStringToUTF8(env, publisher_key),
       base::BindOnce(&BraveRewardsNativeWorker::OnRefreshPublisher,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void BraveRewardsNativeWorker::OnRefreshPublisher(
