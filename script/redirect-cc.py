@@ -74,7 +74,7 @@ def replace_cc_arg(args):
                               rel_path)
     if os.path.isfile(brave_path):
         # Okay, we can replace
-        args[index_path] = brave_path
+        args[index_path] = os.path.relpath(brave_path, os.path.abspath('.'))
 
 
 if __name__ == '__main__':
