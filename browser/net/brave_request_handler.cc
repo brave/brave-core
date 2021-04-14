@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
+#include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
@@ -21,6 +22,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -122,6 +124,13 @@ void BraveRequestHandler::SetupCallbacks() {
       base::Bind(webtorrent::OnHeadersReceived_TorrentRedirectWork);
   headers_received_callbacks_.push_back(headers_received_callback);
 #endif
+
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveAdblockCspRules)) {
+    brave::OnHeadersReceivedCallback headers_received_callback2 =
+        base::Bind(brave::OnHeadersReceived_AdBlockCspWork);
+    headers_received_callbacks_.push_back(headers_received_callback2);
+  }
 }
 
 void BraveRequestHandler::InitPrefChangeRegistrar() {

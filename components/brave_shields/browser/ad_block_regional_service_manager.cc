@@ -134,6 +134,21 @@ void AdBlockRegionalServiceManager::ShouldStartRequest(
   }
 }
 
+base::Optional<std::string> AdBlockRegionalServiceManager::GetCspDirectives(
+    const GURL& url,
+    blink::mojom::ResourceType resource_type,
+    const std::string& tab_host) {
+  base::Optional<std::string> csp_directives = base::nullopt;
+
+  for (const auto& regional_service : regional_services_) {
+    const auto directive =
+        regional_service.second->GetCspDirectives(url, resource_type, tab_host);
+    MergeCspDirectiveInto(directive, &csp_directives);
+  }
+
+  return csp_directives;
+}
+
 void AdBlockRegionalServiceManager::EnableTag(const std::string& tag,
                                               bool enabled) {
   base::AutoLock lock(regional_services_lock_);

@@ -28,6 +28,10 @@ const char kBraveAdblockCosmeticFilteringNativeName[] =
     "Use native implementation for cosmetic filtering";
 const char kBraveAdblockCosmeticFilteringNativeDescription[] =
     "Uses native implementation for cosmetic filtering instead of extension";
+const char kBraveAdblockCspRulesName[] = "Enable support for CSP rules";
+const char kBraveAdblockCspRulesDescription[] =
+    "Applies additional CSP rules to pages for which a $csp rule has been "
+    "loaded from a filter list";
 const char kBraveDomainBlockName[] = "Enable domain blocking";
 const char kBraveDomainBlockDescription[] =
     "Enable support for blocking domains with an interstitial page";

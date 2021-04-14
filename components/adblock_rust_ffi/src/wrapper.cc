@@ -65,6 +65,20 @@ void Engine::matches(const std::string& url,
   }
 }
 
+std::string Engine::getCspDirectives(const std::string& url,
+                                     const std::string& host,
+                                     const std::string& tab_host,
+                                     bool is_third_party,
+                                     const std::string& resource_type) {
+  char* csp_raw = engine_get_csp_directives(raw, url.c_str(), host.c_str(),
+                                            tab_host.c_str(), is_third_party,
+                                            resource_type.c_str());
+  const std::string csp = std::string(csp_raw);
+
+  c_char_buffer_destroy(csp_raw);
+  return csp;
+}
+
 bool Engine::deserialize(const char* data, size_t data_size) {
   return engine_deserialize(raw, data, data_size);
 }

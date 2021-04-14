@@ -12,6 +12,8 @@ source_set("net") {
   check_includes = false
   configs += [ "//brave/build/geolocation" ]
   sources = [
+    "brave_ad_block_csp_network_delegate_helper.cc",
+    "brave_ad_block_csp_network_delegate_helper.h",
     "brave_ad_block_tp_network_delegate_helper.cc",
     "brave_ad_block_tp_network_delegate_helper.h",
     "brave_block_safebrowsing_urls.cc",
@@ -51,6 +53,7 @@ source_set("net") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/common",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/extensions:common",

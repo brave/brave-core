@@ -115,7 +115,30 @@ std::vector<FilterList> RegionalCatalogFromJSON(
   return catalog;
 }
 
-// Merges the contents of the second UrlCosmeticResources Value into the first
+// Merges the first CSP directive into the second one provided, if they exist.
+//
+// Distinct policies are merged with comma separators, according to
+// https://www.w3.org/TR/CSP2/#implementation-considerations
+void MergeCspDirectiveInto(base::Optional<std::string> from,
+                           base::Optional<std::string>* into) {
+  DCHECK(into);
+
+  if (!from) {
+    return;
+  }
+
+  if (!*into) {
+    *into = from;
+    return;
+  }
+
+  const std::string from_str = *from;
+  const std::string into_str = **into;
+
+  *into = base::Optional<std::string>(from_str + ", " + into_str);
+}
+
+// Merges the contents of the first UrlCosmeticResources Value into the second
 // one provided.
 //
 // If `force_hide` is true, the contents of `from`'s `hide_selectors` field
