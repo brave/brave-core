@@ -8,41 +8,40 @@
 #include <memory>
 #include <string>
 
-#include "base/macros.h"
+#include "base/scoped_observation.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
+#include "components/search_engines/template_url_service.h"
+#include "components/search_engines/template_url_service_observer.h"
 
 class Profile;
 class TemplateURL;
 class TemplateURLService;
 
-class SearchEngineProviderService : public KeyedService {
+// TODO(simonhong): Rename this to GuestWindowSearchEngineProviderService.
+class SearchEngineProviderService : public KeyedService,
+                                    public TemplateURLServiceObserver {
  public:
   explicit SearchEngineProviderService(Profile* otr_profile);
   ~SearchEngineProviderService() override;
 
- protected:
-  // If subclass want to know and configure according to prefs change, override
-  // this.
-  virtual void OnUseAlternativeSearchEngineProviderChanged() {}
+  // TemplateURLServiceObserver overrides:
+  void OnTemplateURLServiceChanged() override;
+
+ private:
+  // Points off the record profile.
+  Profile* otr_profile_;
+  TemplateURLService* template_url_service_;
+  std::unique_ptr<TemplateURL> alternative_search_engine_url_;
+  BooleanPrefMember use_alternative_search_engine_provider_;
+  base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
+      observation_{this};
+  bool ignore_template_url_service_changing_ = false;
 
   bool UseAlternativeSearchEngineProvider() const;
   void ChangeToAlternativeSearchEngineProvider();
   void ChangeToNormalWindowSearchEngineProvider();
-
-  // Points off the record profile.
-  Profile* otr_profile_;
-  // Service for original profile of |otr_profile_|.
-  TemplateURLService* original_template_url_service_;
-  // Service for off the record profile.
-  TemplateURLService* otr_template_url_service_;
-
-  std::unique_ptr<TemplateURL> alternative_search_engine_url_;
-
- private:
   void OnPreferenceChanged(const std::string& pref_name);
-
-  BooleanPrefMember use_alternative_search_engine_provider_;
 
   DISALLOW_COPY_AND_ASSIGN(SearchEngineProviderService);
 };

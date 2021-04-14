@@ -6,10 +6,8 @@
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
-#include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
+#include "brave/browser/search_engines/search_engine_provider_service.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -17,40 +15,6 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-
-namespace {
-
-// Factory owns service object.
-KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
-  // Regardless of qwant region, tor profile needs controller to store
-  // previously set search engine provider.
-  if (profile->IsTor()) {
-    return new TorWindowSearchEngineProviderService(profile);
-  }
-
-  // Guest profile in qwant region doesn't need special handling of search
-  // engine provider because its newtab doesn't have ddg toggle button.
-  if (brave::IsRegionForQwant(profile))
-    return nullptr;
-
-  if (brave::IsGuestProfile(profile) && profile->IsOffTheRecord()) {
-    return new GuestWindowSearchEngineProviderService(profile);
-  }
-
-  // In non qwant region, controller is also needed for private profile.
-  // We use separate TemplateURLService for normal and off the recored profile.
-  // That means changing normal profile's provider doesn't affect otr profile's.
-  // This controller monitor's normal profile's service and apply its change to
-  // otr profile to use same provider.
-  // Private profile's setting is shared with normal profile's setting.
-  if (profile->IsIncognitoProfile()) {
-    return new PrivateWindowSearchEngineProviderService(profile);
-  }
-
-  return nullptr;
-}
-
-}  // namespace
 
 // static
 SearchEngineProviderService* SearchEngineProviderServiceFactory::GetForProfile(
@@ -76,14 +40,20 @@ SearchEngineProviderServiceFactory::~SearchEngineProviderServiceFactory() {}
 
 KeyedService* SearchEngineProviderServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return InitializeSearchEngineProviderServiceIfNeeded(
-      Profile::FromBrowserContext(context));
+  // Guest profile in qwant region doesn't need special handling of alternative
+  // search engine provider because its newtab doesn't have ddg toggle button.
+  auto* profile = Profile::FromBrowserContext(context);
+  if (brave::IsGuestProfile(profile) && !brave::IsRegionForQwant(profile)) {
+    return new SearchEngineProviderService(profile);
+  }
+
+  return nullptr;
 }
 
 content::BrowserContext*
 SearchEngineProviderServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
+  return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 
 bool SearchEngineProviderServiceFactory::ServiceIsNULLWhileTesting() const {
@@ -100,4 +70,5 @@ SearchEngineProviderServiceFactory::ServiceIsCreatedWithBrowserContext() const {
 void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
+  registry->RegisterDictionaryPref(kCachedNormalSearchProvider);
 }
