@@ -53,6 +53,7 @@
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/version_info/version_info.h"
 #include "content/browser/renderer_host/render_frame_host_impl.h"
+#include "content/browser/service_worker/service_worker_host.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -65,6 +66,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -267,14 +269,12 @@ void MaybeBindBraveWalletProvider(
 #endif
 
 void BindBraveSearchHost(
-    content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_search::BraveSearchHost>(
           g_brave_browser_process->shared_url_loader_factory()),
       std::move(receiver));
 }
-
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -327,6 +327,16 @@ BraveContentBrowserClient::AllowWebBluetooth(
   return ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
 }
 
+void BraveContentBrowserClient::ExposeInterfacesToRenderer(
+    service_manager::BinderRegistry* registry,
+    blink::AssociatedInterfaceRegistry* associated_registry,
+    content::RenderProcessHost* render_process_host) {
+  ChromeContentBrowserClient::ExposeInterfacesToRenderer(
+      registry, associated_registry, render_process_host);
+  registry->AddInterface(base::BindRepeating(&BindBraveSearchHost),
+                         content::GetUIThreadTaskRunner({}));
+}
+
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RenderFrameHost* render_frame_host,
     mojo::BinderMapWithContext<content::RenderFrameHost*>* map) {
@@ -341,9 +351,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&MaybeBindBraveWalletProvider));
   }
 #endif
-
-  map->Add<brave_search::mojom::BraveSearchFallback>(
-      base::BindRepeating(&BindBraveSearchHost));
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
