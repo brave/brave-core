@@ -7276,13 +7276,13 @@ Existujúce pridelenie odstránite stlačením prideleného prepínača.</transl
 <translation id="7475335772460644497">{COUNT, plural,
           =0 {Otvoriť všetky v &amp;súkromnom okne}
           =1 {Otvoriť v &amp;súkromnom okne}
-          iné {Otvoriť všetky ({COUNT}) v &amp;súkromnom okne}}</translation>
+          other {Otvoriť všetky ({COUNT}) v &amp;súkromnom okne}}</translation>
 <translation id="2431625704210501303">Otvoriť v &amp; súkromnom okne</translation>
 <translation id="4620367155626060530">&amp;Zobraziť panel so záložkami</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Otvoriť všetko v &amp;Súkromnom okne}
           =1 {Otvoriť v  &amp;Súkromnom okne}
-          iné {Otvoriť všetko ({COUNT}) v &amp;Súkromnom okne}}</translation>
+          other {Otvoriť všetko ({COUNT}) v &amp;Súkromnom okne}}</translation>
 <translation id="1985165269306590797">Otvoriť v &amp; Súkromnom okne</translation>
 <translation id="4680518314108745448">&amp;Zobraziť panel so záložkami</translation>
 <translation id="642436385689435488">Otvoriť všetko v súkromnom okne</translation>

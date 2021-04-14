@@ -7276,13 +7276,13 @@ Apasă o tastă de comutare atribuită pentru a elimina atribuirea.</translation
 <translation id="7475335772460644497">{COUNT, plural,
           =0 {Deschide tot în &amp;fereastră privată}
           =1 {Deschide în &amp;fereastră privată}
-          altul {Deschide tot ({COUNT}) în &amp;fereastră privată}}</translation>
+          other {Deschide tot ({COUNT}) în &amp;fereastră privată}}</translation>
 <translation id="2431625704210501303">Deschide în fereastră &amp;privată</translation>
 <translation id="4620367155626060530">&amp;Afișați bara de marcaje</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Deschide tot în &amp;Fereastră Privată}
           =1 {Deschide în &amp;Fereastră Privată}
-          altul {Deschide Tot ({COUNT}) în &amp;Fereastră Privată}}</translation>
+          other {Deschide Tot ({COUNT}) în &amp;Fereastră Privată}}</translation>
 <translation id="1985165269306590797">Deschide în Fereastră &amp;Privată</translation>
 <translation id="4680518314108745448">&amp;Afișați bara de marcaje</translation>
 <translation id="642436385689435488">Deschide to în fereastră privată</translation>

@@ -7287,13 +7287,13 @@ A(z) <ph name="DOMAIN"/> megköveteli, hogy ne távolítsa el az intelligens ká
 <translation id="642436385689435488">Összes megnyitása privát ablakban</translation>
 <translation id="5074021236879527611">Összes megnyitása (<ph name="URL_COUNT"/>) privát ablakban</translation>
 <translation id="5463021359602611602">Megnyitás privát ablakban</translation>
-<translation id="1850357845349976573">{0, több,
+<translation id="1850357845349976573">{0, plural,
         =1 {Privát}
-        egyéb {megnyitott privát ablakok #}
+        other {megnyitott privát ablakok #}
       }</translation>
-<translation id="8773965542687789581">0, többes,
+<translation id="8773965542687789581">{0, plural,
       =1 {Privát}
-      más {Privát (#)}
+      other {Privát (#)}
     }</translation>
 <translation id="5070556616376997776">Ez egy privát ablak</translation>
 <translation id="5832813618714645810">Profilok</translation>

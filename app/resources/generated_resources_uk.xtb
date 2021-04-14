@@ -7280,25 +7280,25 @@
 <translation id="7475335772460644497">{COUNT, plural,
           =0 {Відкрити все у &amp;приватному вікні}
           =1 {Відкрити у &amp;приватному вікні}
-          інше {Відкрити ({COUNT}) у &amp;приватному вікні}}</translation>
+          other {Відкрити ({COUNT}) у &amp;приватному вікні}}</translation>
 <translation id="2431625704210501303">Відкрити у &amp;приватному вікні</translation>
 <translation id="4620367155626060530">&amp;Показати панель закладок</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Відкрити все у &amp;Приватному вікні}
           =1 {Відкрити у &amp;Приватному вікні}
-          інше {Відкрити Всі ({COUNT}) у  &amp;Приватному вікні}}</translation>
+          other {Відкрити Всі ({COUNT}) у  &amp;Приватному вікні}}</translation>
 <translation id="1985165269306590797">Відкрити у &amp;Приватному вікні</translation>
 <translation id="4680518314108745448">&amp;Показати панель закладок</translation>
 <translation id="642436385689435488">Відкрити все у приватному вікні</translation>
 <translation id="5074021236879527611">Відкрити все (<ph name="URL_COUNT"/>) у приватному вікні</translation>
 <translation id="5463021359602611602">Відкрити у приватному вікні</translation>
-<translation id="1850357845349976573">{0, множина,
+<translation id="1850357845349976573">{0, plural,
         =1 {Приватне}
-        інше {# відкрити приватні вікна}
+        other {# відкрити приватні вікна}
       }</translation>
-<translation id="8773965542687789581">{0, множина,
+<translation id="8773965542687789581">{0, plural,
       =1 {Приватне}
-      інше {Приватне (#)}
+      other {Приватне (#)}
     }</translation>
 <translation id="5070556616376997776">Це приватне вікно</translation>
 <translation id="5832813618714645810">Профілі</translation>
