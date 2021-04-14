@@ -133,7 +133,9 @@ pub fn extract_text(handle: &Handle, text: &mut String, deep: bool) {
     for child in handle.children() {
         match child.data() {
             Text(ref contents) => {
-                text.push_str(contents.borrow().trim());
+                if contents.borrow().trim().len() > 0 {
+                    text.push_str(&contents.borrow());
+                }
             }
             Element(_) => {
                 if deep {
