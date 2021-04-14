@@ -135,7 +135,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     auto promotion = promotion_->GetPromotion();
     EXPECT_STREQ(
         std::to_string(promotion->approximate_value).c_str(),
-        "30.000000");
+        "1337.000000");
     EXPECT_STREQ(
         promotion->id.c_str(),
         promotion_->GetPromotionId().c_str());

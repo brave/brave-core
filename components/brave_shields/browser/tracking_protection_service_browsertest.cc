@@ -75,7 +75,7 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingBlocked) {
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ("tracker.com", contents->GetURL().host());
+  EXPECT_EQ("bugtracker.com", contents->GetURL().host());
 
   bool cookie_blocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(

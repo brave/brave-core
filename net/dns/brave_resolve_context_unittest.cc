@@ -63,7 +63,7 @@ TEST_F(BraveResolveContextTest, DohServerAvailability_InitialAvailability) {
                                             false /* network_change */);
 
   EXPECT_EQ(context.NumAvailableDohServers(session.get()), 2u);
-  EXPECT_TRUE(context.GetDohServerAvailability(0u, session.get()));
+  EXPECT_FALSE(context.GetDohServerAvailability(0u, session.get()));
   EXPECT_TRUE(context.GetDohServerAvailability(1u, session.get()));
 
   std::unique_ptr<DnsServerIterator> doh_itr = context.GetDohIterator(
