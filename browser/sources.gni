@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/binance/sources.gni")
 import("//brave/browser/brave_rewards/sources.gni")
 import("//brave/browser/brave_wallet/sources.gni")
 import("//brave/browser/importer/sources.gni")
@@ -12,7 +13,6 @@ import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/signin/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
-import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import(
     "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
@@ -255,27 +255,6 @@ if (enable_sidebar) {
   brave_chrome_browser_deps += [ "//brave/components/sidebar" ]
 }
 
-if (binance_enabled) {
-  brave_chrome_browser_sources += [
-    "//brave/browser/binance/binance_protocol_handler.cc",
-    "//brave/browser/binance/binance_protocol_handler.h",
-    "//brave/browser/binance/binance_service_factory.cc",
-    "//brave/browser/binance/binance_service_factory.h",
-  ]
-
-  brave_chrome_browser_deps += [
-    "//brave/components/binance/browser",
-    "//components/country_codes",
-  ]
-
-  if (is_android) {
-    brave_chrome_browser_sources += [
-      "//brave/browser/binance/android/binance_native_worker.cc",
-      "//brave/browser/binance/android/binance_native_worker.h",
-    ]
-  }
-}
-
 if (gemini_enabled) {
   brave_chrome_browser_sources += [
     "//brave/browser/gemini/gemini_protocol_handler.cc",
@@ -401,6 +380,7 @@ brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_signin_sources
 brave_chrome_browser_sources += brave_browser_brave_rewards_sources
 brave_chrome_browser_sources += brave_browser_ipfs_sources
+brave_chrome_browser_sources += brave_browser_binance_sources
 
 brave_chrome_browser_deps += brave_browser_themes_deps
 brave_chrome_browser_deps += brave_browser_wallet_deps
@@ -410,4 +390,5 @@ brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_signin_deps
 brave_chrome_browser_deps += brave_browser_brave_rewards_deps
 brave_chrome_browser_deps += brave_browser_ipfs_deps
+brave_chrome_browser_deps += brave_browser_binance_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_prefs_deps
