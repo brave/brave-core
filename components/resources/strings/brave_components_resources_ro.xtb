@@ -404,7 +404,7 @@
 <translation id="4396256076373444156">Strângeți puncte când vizualizați reclame relevante care vă respectă confidențialitatea.</translation>
 <translation id="2975780980638932742">Brave Ads a sosit!</translation>
 <translation id="3361548743396744457">Sprijiniți siteurile preferate doar prin navigare – sau oferiți o plată unui site oricând doriți.</translation>
-<translation id="6976444672879155794">[[processor]] contribuție automată</translation>
+<translation id="6976444672879155794">Contribuție automată [[processor]]</translation>
 <translation id="4493850495402472953">și</translation>
 <translation id="8804164990146287819">Politica de Confidențialitate</translation>
 <translation id="4281844954008187215">Termeni Servicii</translation>
@@ -449,7 +449,7 @@
 <translation id="418343137736963579">Număr total de siteuri pe care le-ați exclus din contribuția automată:</translation>
 <translation id="1759104587873258696">expiră pe</translation>
 <translation id="6149218349077925111">pentru</translation>
-<translation id="8802504113265057166">Token-urile [[currency]] neutilizate până la data expirării vor fi returnate automat în fondul de creștere a bazei de utilizatori Brave.</translation>
+<translation id="8802504113265057166">Token-urile [[currency]] neutilizate până la data expirării vor fi returnate automat în Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Data Expirării Grantului</translation>
 <translation id="2104073734684466851">Subvenții</translation>
 <translation id="6476729769006815569">Bună ziua, [[name]]!</translation>
@@ -486,7 +486,7 @@
 <translation id="8307851765167460403">Încă nu există activităţi…</translation>
 <translation id="8589748782214271192">Nu, mulțumesc</translation>
 <translation id="3204579740854485097">Token-uri [[currency]] insuficiente.</translation>
-<translation id="3330432260369310344">Token-uri [[currency]] insuficiente.</translation>
+<translation id="3330432260369310344">Token-uri [[currency]] insuficiente. Adăugați fonduri.</translation>
 <translation id="3630697955794050612">închis</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">pornit</translation>
@@ -560,7 +560,7 @@
 <translation id="4914597931214386232">Granturi Token Revendicate</translation>
 <translation id="3494964159182650590">Rezumat</translation>
 <translation id="1738658589626889850">Salvează ca fișier</translation>
-<translation id="2913994227901456490">Vedeți toate cele [[numItems]] elemente</translation>
+<translation id="2913994227901456490">Vedeți toate cele [[numItems]] rânduri</translation>
 <translation id="3010479539542250179">Vedeți toate cele [[numItems]] site-uri</translation>
 <translation id="1549705559752367917">Trimiteți bacșiș</translation>
 <translation id="3536298624341433814">Trimite Plata mea</translation>

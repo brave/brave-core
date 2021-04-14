@@ -404,7 +404,7 @@
 <translation id="4396256076373444156">هنگام تماشای آگهی‌های مرتبطی که به حریم خصوصی‌تان احترام می‌گذارند، امتیاز جمع‌آوری کنید.</translation>
 <translation id="2975780980638932742">آگهی‌های Brave ارائه شد!</translation>
 <translation id="3361548743396744457">فقط با مرور کردن، از سایت‌های محبوبتان حمایت کنید،‌ یا هرزمان مایل بودید به سایتی انعام دهید.</translation>
-<translation id="6976444672879155794">کمک خودکار [[processor]]</translation>
+<translation id="6976444672879155794">کمک خودکار از [[processor]]</translation>
 <translation id="4493850495402472953">و</translation>
 <translation id="8804164990146287819">خط‌مشی حریم‌خصوصی</translation>
 <translation id="4281844954008187215">شرایط خدمات</translation>
@@ -449,7 +449,7 @@
 <translation id="418343137736963579">مجموع سایت‌هایی که از «کمک خودکار» مستثنی کرده‌اید:</translation>
 <translation id="1759104587873258696">تاریخ انقضا</translation>
 <translation id="6149218349077925111">برای</translation>
-<translation id="8802504113265057166">[[currency]] استفاده‌نشده تا تاریخ انقضا، به‌طور خودکار به «صندوق رشد کاربر Brave» بازگردانده می‌شود.</translation>
+<translation id="8802504113265057166">[[currency]] استفاده‌نشده تا تاریخ انقضا، به‌طور خودکار به Brave User Growth Pool بازگردانده می‌شود.</translation>
 <translation id="279567716178902927">تاریخ انقضای امتیاز</translation>
 <translation id="2104073734684466851">امتیازها</translation>
 <translation id="6476729769006815569">سلام، [[name]]!</translation>
@@ -485,7 +485,7 @@
 <translation id="5736183007277264868">درحال‌حاضر امتیاز توکن دردسترس نیست.</translation>
 <translation id="8307851765167460403">هنوز هیچ فعالیتی وجود ندارد…</translation>
 <translation id="8589748782214271192">نه، متشکرم</translation>
-<translation id="3204579740854485097">[[currency]] کافی نیست.</translation>
+<translation id="3204579740854485097">مقدار [[currency]] کافی نیست.</translation>
 <translation id="3330432260369310344">[[currency]] کافی نیست. لطفاً</translation>
 <translation id="3630697955794050612">خاموش</translation>
 <translation id="4921250468871504777">تأیید</translation>
@@ -518,7 +518,7 @@
 <translation id="6354568176665589146">تکرارشونده</translation>
 <translation id="1110535155349301542">حذف</translation>
 <translation id="8204292894173669182">حذف از موارد ذخیره شده</translation>
-<translation id="5530851178552343773">[[reservedAmount]] [[currency]] برای پدیدآورندگانی که هنوز برای دریافت کمک ثبت نام نکرده‌اند، درنظر گرفته‌اید. مرورگر تلاش می‌کند تا زمانی که آنها کمک را تأیید کنند یا تا 90 روز به کمک ادامه دهد.</translation>
+<translation id="5530851178552343773">[[reservedAmount]] [[currency]] برای پدیدآورندگانی که هنوز برای دریافت کمک ثبت نام نکرده‌اند، درنظر گرفته‌اید. مرورگر تلاش می‌کند تا زمانی که آنها ثبت‌نام کنند یا تا 90 روز به کمک ادامه دهد.</translation>
 <translation id="8759753423332885148">بیشتر بدانید.</translation>
 <translation id="5939518447894949180">بازنشانی</translation>
 <translation id="3157931365184549694">بازیابی</translation>
@@ -560,7 +560,7 @@
 <translation id="4914597931214386232">امتیازهای توکن مطالبه شد</translation>
 <translation id="3494964159182650590">خلاصه پاداش‌ها</translation>
 <translation id="1738658589626889850">ذخیره به‌عنوان فایل</translation>
-<translation id="2913994227901456490">دیدن همه [[numItems]] مورد</translation>
+<translation id="2913994227901456490">دیدن همه [[numItems]] ردیف</translation>
 <translation id="3010479539542250179">دیدن همه [[numSites]] سایت</translation>
 <translation id="1549705559752367917">ارسال انعام</translation>
 <translation id="3536298624341433814">انعامم ارسال شود</translation>

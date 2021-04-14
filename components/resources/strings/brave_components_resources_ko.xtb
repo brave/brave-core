@@ -165,7 +165,7 @@
 <translation id="8576106690599421723">지역 레벨 광고 추적</translation>
 <translation id="4775297407519948063">허용하면 Brave가 지역과 관련된 광고를 더 많이 보여줍니다.</translation>
 <translation id="8446884382197647889">자세히 알아보기</translation>
-<translation id="6209514229703649203">[[adsSubdivisionTarget]](으)로 자동 감지됨</translation>
+<translation id="6209514229703649203">[[adsSubdivisionTarget]] 자동 감지됨</translation>
 <translation id="8010081455002666927">자동 감지</translation>
 <translation id="4394049700291259645">사용 중지</translation>
 <translation id="4176463684765177261">사용 중지</translation>
@@ -272,6 +272,7 @@
 <translation id="1979114396925139279">외부 지갑 정보</translation>
 <translation id="5457113250005438886">유효하지 않음</translation>
 <translation id="6161467863097205016">키 정보 시드:</translation>
+<translation id="5323604113525002127">로그의 마지막 [[numberOfLines]] 줄만 표시됩니다. 전체 로그를 보고 싶다면 아래에서 다운로드할 수 있습니다.</translation>
 <translation id="7168491065836975228">내부 리워드</translation>
 <translation id="758790787422117549">페르소나 ID</translation>
 <translation id="3671566813999349838">총액</translation>
@@ -379,7 +380,7 @@
 <translation id="8913591412117692523">광고를 보고 적립된 토큰을 인출하려면 월렛을 검증해야 합니다.</translation>
 <translation id="9168436347345867845">나중에</translation>
 <translation id="5468234114288973517">내 월렛 검증하기</translation>
-<translation id="6609621505400013054">bitFlyer Wallet은 bitFlyer, Inc.에서 관리하는 서비스입니다.</translation>
+<translation id="6609621505400013054">bitFlyer 월렛은 bitFlyer, Inc.에서 관리하는 서비스입니다.</translation>
 <translation id="7258399883616914635">월렛을 검증하여 bitFlyer 계정에 연결하면 Brave Rewards를 통해 적립된 토큰을 더욱 쉽게 저장하고 관리할 수 있습니다.</translation>
 <translation id="5094577350232361255">대하여</translation>
 <translation id="4918086044614829423">수락</translation>
@@ -448,7 +449,7 @@
 <translation id="418343137736963579">자동 기부에서 제외한 전체 사이트 숫자 :</translation>
 <translation id="1759104587873258696">만료됩니다</translation>
 <translation id="6149218349077925111">위해서</translation>
-<translation id="8802504113265057166">만료일까지 사용하지 않은 [[currency]]는 Brave User Growth Pool(Brave 사용자 성장 공동 기금)로 자동 반환됩니다.</translation>
+<translation id="8802504113265057166">만료일까지 사용하지 않은 [[currency]]는 Brave User Growth Pool로 자동 반환됩니다.</translation>
 <translation id="279567716178902927">만료 일자 승인</translation>
 <translation id="2104073734684466851">보조금</translation>
 <translation id="6476729769006815569">안녕하세요, [[name]] 님!</translation>
@@ -484,7 +485,7 @@
 <translation id="5736183007277264868">현재 이용 가능한 토큰 보조금이 없습니다.</translation>
 <translation id="8307851765167460403">아직 활동 없음</translation>
 <translation id="8589748782214271192">아뇨, 괜찮아요</translation>
-<translation id="3204579740854485097">[[currency]]가 충분하지 않습니다.</translation>
+<translation id="3204579740854485097">[[currency]] 잔액이 충분하지 않습니다.</translation>
 <translation id="3330432260369310344">[[currency]]가 충분하지 않습니다.</translation>
 <translation id="3630697955794050612">끄기</translation>
 <translation id="4921250468871504777">ok</translation>
@@ -507,7 +508,7 @@
 <translation id="135956957367307069">귀하의 요청을 아직 처리 중입니다, 기다려주세요:</translation>
 <translation id="8725066075913043281">다시 시도</translation>
 <translation id="2600847485413879104">리워드 BAT</translation>
-<translation id="8006596443377585072">bitFlyer Wallet</translation>
+<translation id="8006596443377585072">bitFlyer 월렛</translation>
 <translation id="8108350286444475334">월렛 유지</translation>
 <translation id="6977372887576114613">입금된 BAT</translation>
 <translation id="3173528272490482456">시작할 준비가 되셨나요?</translation>
@@ -524,6 +525,7 @@
 <translation id="1797334173232638045">고정된 사이트가 다음으로 이동됨</translation>
 <translation id="6803187280799213426">Brave 지갑에 있는 잔고는 가상이며 백업할 수 없습니다. 이 브라우저에서만 독점적으로 사용할 수 있습니다.</translation>
 <translation id="5290348443732633227">브라우저를 새로 설치하거나 새 기기로 전환할 때 모든 자금을 확보하고 자금 추가, 인출 및 이전과 같은 다른 혜택을 받고 싶다면 추천합니다</translation>
+<translation id="467041382895390784">검증된 <ph name="PROVIDER"/> 지갑에 연결 중</translation>
 <translation id="5717619667204259673">이 복구 키를 안전하게 보관하세요.</translation>
 <translation id="4699702339303280827">귀하께서는 브라우저나 컴퓨터에 이상 발생 시 항상 이 열쇠를 사용하여 귀하의 지갑을 돌려받으실 수 있습니다. 하지만 안전하게 보호하셔서 — 이 키를 가진 사람이 귀하의 지갑을 훔치지 못하도록 주의하세요. 아마도’ 종이에 적어두시거나, 혹은 중요한 정보를 보관하는 곳에 적어 두시는 것이 가장 안전할 것입니다.</translation>
 <translation id="8979401359137062629">참고:</translation>
@@ -551,7 +553,9 @@
 <translation id="459721429458957031">복구 키를 사용하여 월렛을 복구하세요.</translation>
 <translation id="4600052736217630789">복구 키로 복구하면 기존 월렛을 교체합니다. 복구 전에 기존 월렛을 비우거나 백업하셔야 합니다.</translation>
 <translation id="3267911153934785912">복구 키를 입력하거나</translation>
-<translation id="5423214929210538027">정말로 리워드 월랫을 초기화하실건가요?</translation>
+<translation id="1209382772199769572">교체하기 전에 지갑을 백업하세요. 그렇지 않을 경우 현재 지갑의 잔고, [[funds]]을/를 잃을 수 있습니다.</translation>
+<translation id="5423214929210538027">정말로 리워드 월렛을 초기화하시겠습니까?</translation>
+<translation id="8683358891240311475">지갑을 초기화할 경우 <ph name="BAT_AMOUNT"/> 및 기타 보상 데이터가 영구적으로 잃게됩니다. BAT을 보관할 수 있도록 <ph name="PROVIDER"/>를 통해 지갑을 인증하였는지 확인해주세요.</translation>
 <translation id="2028613172174411919">지갑을 초기화하면 리워드 데이터가 영구적으로 삭제됩니다.</translation>
 <translation id="4914597931214386232">토큰 승인 요청됨</translation>
 <translation id="3494964159182650590">보상 요약</translation>
