@@ -1,5 +1,5 @@
 import { NavObjectType } from '../constants/types'
-import locale from './mock-locale'
+import locale from '../constants/locale'
 import {
   WalletIconD,
   WalletIconL,

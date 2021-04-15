@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
-import { SideNav, TopTabNav } from '../components/desktop'
-import { NavTypes, NavObjectType, TopTabNavTypes } from '../constants/types'
-import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../mock-data/side-nav-options'
-import { TopNavOptions } from '../mock-data/top-nav-options'
+import { SideNav, TopTabNav, ChartControlBar } from '../components/desktop'
+import { NavTypes, NavObjectType, TopTabNavTypes, ChartTimelineType } from '../constants/types'
+import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
+import { TopNavOptions } from '../options/top-nav-options'
+import { ChartTimelineOptions } from '../options/chart-timeline-options'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -57,4 +58,25 @@ export const _DesktopTopTabNav = () => {
 
 _DesktopTopTabNav.story = {
   name: 'Top Tab Nav'
+}
+
+export const _LineChartControls = () => {
+  const [selectedTimeline, setSelectedTimeline] = React.useState<ChartTimelineType>('24HRS')
+
+  const changeTimline = (path: ChartTimelineType) => {
+    setSelectedTimeline(path)
+  }
+  return (
+    <DesktopComponentWrapper>
+      <ChartControlBar
+        onSubmit={changeTimline}
+        selectedTimeline={selectedTimeline}
+        timelineOptions={ChartTimelineOptions}
+      />
+    </DesktopComponentWrapper>
+  )
+}
+
+_LineChartControls.story = {
+  name: 'Chart Controls'
 }

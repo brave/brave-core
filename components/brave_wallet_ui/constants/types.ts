@@ -6,6 +6,31 @@ export interface WalletAccountType {
   asset: string
 }
 
+export interface UserAccountType {
+  id: string
+  name: string
+  address: string
+}
+
+export interface AssetOptionType {
+  id: string
+  name: string
+  symbol: string
+  icon: string
+}
+
+export interface RPCAssetType {
+  id: string
+  name: string
+  symbol: string
+  balance: number
+}
+
+export interface RPCResponseType {
+  address: string
+  assets: RPCAssetType[]
+}
+
 export type PanelTypes =
   | 'main'
   | 'buy'
@@ -33,6 +58,15 @@ export type TopTabNavTypes =
   | 'apps'
   | 'accounts'
 
+export type ChartTimelineType =
+  | '5MIN'
+  | '24HRS'
+  | '7Day'
+  | '1Month'
+  | '3Months'
+  | '1Year'
+  | 'AllTime'
+
 export interface TopTabNavObjectType {
   name: string
   id: TopTabNavTypes
@@ -56,4 +90,14 @@ export interface AppsListType {
   category: string
   categoryButtonText?: string
   appList: AppObjectType[]
+}
+
+export interface ChartTimelineObjectType {
+  name: string
+  id: ChartTimelineType
+}
+
+export interface PriceDataObjectType {
+  date: string
+  close: number
 }

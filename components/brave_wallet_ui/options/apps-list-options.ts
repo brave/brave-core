@@ -1,5 +1,5 @@
 import { AppsListType } from '../constants/types'
-import locale from './mock-locale'
+import locale from '../constants/locale'
 const compoundIcon = require('../assets/app-icons/compound-icon.png')
 const makerIcon = require('../assets/app-icons/maker-icon.jpeg')
 const aaveIcon = require('../assets/app-icons/aave-icon.jpeg')
