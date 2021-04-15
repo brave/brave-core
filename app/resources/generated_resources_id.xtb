@@ -7274,13 +7274,13 @@ Tekan kunci tombol akses yang telah ditetapkan untuk menghapus penetapan.</trans
 <translation id="7475335772460644497">{COUNT, plural,
           =0 {Buka semua di &amp;jendela privat}
           =1 {Buka di &amp;jendela privat}
-          lainnya {Buka semua ({COUNT}) di &amp;jendela privat}}</translation>
+          other {Buka semua ({COUNT}) di &amp;jendela privat}}</translation>
 <translation id="2431625704210501303">Buka di &amp;jendela pribadi</translation>
 <translation id="4620367155626060530">&amp;Tampilkan bilah bookmark</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Buka semua di &amp;Jendela Privat}
           =1 {Buka di &amp;Jendela Privat}
-          lainnya {Buka Semua ({COUNT}) di &amp;Jendela Privat}}</translation>
+          other {Buka Semua ({COUNT}) di &amp;Jendela Privat}}</translation>
 <translation id="1985165269306590797">Buka di &amp;Jendela Pribadi</translation>
 <translation id="4680518314108745448">&amp;Tampilkan Bilah Bookmark</translation>
 <translation id="642436385689435488">Buka semua di jendela pribadi</translation>

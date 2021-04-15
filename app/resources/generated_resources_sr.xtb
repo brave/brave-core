@@ -7282,7 +7282,7 @@
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Otvorite sve u &amp;privatnom prozoru}
           =1 {Otvorite u &amp;privatnom prozoru}
-          drugo {Otvorite sve ({COUNT}) u &amp;privatnom prozoru}}</translation>
+          other {Otvorite sve ({COUNT}) u &amp;privatnom prozoru}}</translation>
 <translation id="1985165269306590797">Otvoreno u &amp;privatni prozor</translation>
 <translation id="4680518314108745448">&amp;Прикажи траку са обележивачима</translation>
 <translation id="642436385689435488">Otvori sve u privatnom prozoru</translation>

@@ -102,6 +102,24 @@ void AdBlockService::ShouldStartRequest(
       did_match_important, mock_data_url);
 }
 
+base::Optional<std::string> AdBlockService::GetCspDirectives(
+    const GURL& url,
+    blink::mojom::ResourceType resource_type,
+    const std::string& tab_host) {
+  auto csp_directives =
+      AdBlockBaseService::GetCspDirectives(url, resource_type, tab_host);
+
+  const auto regional_csp = regional_service_manager()->GetCspDirectives(
+      url, resource_type, tab_host);
+  MergeCspDirectiveInto(regional_csp, &csp_directives);
+
+  const auto custom_csp =
+      custom_filters_service()->GetCspDirectives(url, resource_type, tab_host);
+  MergeCspDirectiveInto(custom_csp, &csp_directives);
+
+  return csp_directives;
+}
+
 base::Optional<base::Value> AdBlockService::UrlCosmeticResources(
     const std::string& url) {
   base::Optional<base::Value> resources =

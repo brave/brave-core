@@ -26,6 +26,7 @@
 
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
+using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveDomainBlock;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
@@ -137,6 +138,10 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveAdblockCosmeticFilteringNativeDescription,   \
      kOsMac | kOsWin | kOsLinux,                                           \
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFilteringNative)},            \
+    {"brave-adblock-csp-rules",                                            \
+     flag_descriptions::kBraveAdblockCspRulesName,                         \
+     flag_descriptions::kBraveAdblockCspRulesDescription, kOsAll,          \
+     FEATURE_VALUE_TYPE(kBraveAdblockCspRules)},                           \
     {"brave-domain-block",                                                 \
      flag_descriptions::kBraveDomainBlockName,                             \
      flag_descriptions::kBraveDomainBlockDescription, kOsAll,              \

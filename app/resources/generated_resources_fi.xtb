@@ -7282,13 +7282,13 @@ Paina määritettyä kytkintä, niin poistat sen määrityksen.</translation>
 <translation id="642436385689435488">Avaa kaikki yksityisessä ikkunassa</translation>
 <translation id="5074021236879527611">Avaa kaikki (<ph name="URL_COUNT"/>) yksityisessä ikkunassa</translation>
 <translation id="5463021359602611602">Avaa yksityisessä ikkunassa</translation>
-<translation id="1850357845349976573">{0, monikko,
+<translation id="1850357845349976573">{0, plural,
         =1 {Yksityinen}
-        muu {avoimien ikkunoiden lukumäärä}
+        other {avoimien ikkunoiden lukumäärä}
       }</translation>
-<translation id="8773965542687789581">{0, monikko,
+<translation id="8773965542687789581">{0, plural,
       =1 {Yksityinen}
-      muu {yksityinen (lukumäärä)}
+      other {yksityinen (lukumäärä)}
     }</translation>
 <translation id="5070556616376997776">Tämä on yksityinen ikkuna</translation>
 <translation id="5832813618714645810">Profiilit</translation>

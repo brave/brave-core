@@ -7281,13 +7281,13 @@ Trykk på en tilordnet bryter for å fjerne tilordningen.</translation>
 <translation id="642436385689435488">Åpne alle i privat vindu</translation>
 <translation id="5074021236879527611">Åpne alle (<ph name="URL_COUNT"/>) i privat vindu</translation>
 <translation id="5463021359602611602">Åpne i privat vindu</translation>
-<translation id="1850357845349976573">{0, flertall,
+<translation id="1850357845349976573">{0, plural,
         =1 {Privat}
-        andre {# åpne private vinduer}
+        other {# åpne private vinduer}
       }</translation>
-<translation id="8773965542687789581">{0, flertall,
+<translation id="8773965542687789581">{0, plural,
       =1 {Privat}
-      andre {Private (#)}
+      other {Private (#)}
     }</translation>
 <translation id="5070556616376997776">Dette er et privat vindu</translation>
 <translation id="5832813618714645810">Profiler</translation>

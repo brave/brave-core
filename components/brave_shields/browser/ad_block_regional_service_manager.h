@@ -54,6 +54,10 @@ class AdBlockRegionalServiceManager {
                           bool* did_match_exception,
                           bool* did_match_important,
                           std::string* mock_data_url);
+  base::Optional<std::string> GetCspDirectives(
+      const GURL& url,
+      blink::mojom::ResourceType resource_type,
+      const std::string& tab_host);
   void EnableTag(const std::string& tag, bool enabled);
   void AddResources(const std::string& resources);
   void EnableFilterList(const std::string& uuid, bool enabled);

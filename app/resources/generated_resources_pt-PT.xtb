@@ -7274,13 +7274,13 @@ Prima um comutador atribuído para remover a atribuição.</translation>
 <translation id="7475335772460644497">{COUNT, plural,
           =0 {Abrir tudo em in &amp;janela privada}
           =1 {Abrir em &amp;janela privada}
-          outro {Abrir tudo ({COUNT}) em &amp;janela privada}}</translation>
+          other {Abrir tudo ({COUNT}) em &amp;janela privada}}</translation>
 <translation id="2431625704210501303">Abrir na janela de &amp;navegação privada</translation>
 <translation id="4620367155626060530">&amp;Mostrar barra de marcadores</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Abrir tudo em &amp;Janela Privada}
           =1 {Abrir em &amp;Janela Privada}
-          outro {Abrir Tudo ({COUNT}) em &amp;Janela Privada}}</translation>
+          other {Abrir Tudo ({COUNT}) em &amp;Janela Privada}}</translation>
 <translation id="1985165269306590797">Abrir na Janela de &amp;Navegação Privada</translation>
 <translation id="4680518314108745448">&amp;Mostrar Barra de Marcadores</translation>
 <translation id="642436385689435488">Abrir tudo numa janela de navegação privada</translation>

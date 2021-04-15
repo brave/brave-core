@@ -2,8 +2,9 @@
 # It is not intended for manual editing.
 [[package]]
 name = "adblock"
-version = "0.3.5"
-source = "git+https://github.com/brave/adblock-rust?rev=732994bf57f4a5c7f3a2a7b873a97571737def42#732994bf57f4a5c7f3a2a7b873a97571737def42"
+version = "0.3.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e84ccc600a2619fbba5aef0f59b45fa8959ff2a9991e104bab96e55c327197df"
 dependencies = [
  "base64",
  "bitflags",

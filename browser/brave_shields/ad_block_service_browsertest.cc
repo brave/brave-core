@@ -783,6 +783,64 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+// Verify that scripts violating a Content Security Policy from a `$csp` rule
+// are not loaded.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
+  UpdateAdBlockInstanceWithRules(
+      "||example.com^$csp=script-src 'nonce-abcdef' 'unsafe-eval' 'self'");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  const GURL url =
+      embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  auto res = EvalJs(contents, "await window.allLoaded");
+  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
+  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedSamePartyScript"));
+  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedThirdPartyScript"));
+  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedDataImage"));
+
+  // Violations of injected CSP directives do not increment the Shields counter
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+// Verify that Content Security Policies from multiple `$csp` rules are
+// combined.
+//
+// The policy resulting from two of the same kind of directive will be the
+// union of both.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleMerging) {
+  UpdateAdBlockInstanceWithRules(
+      "||example.com^$csp=script-src 'nonce-abcdef' 'unsafe-eval' 'self'");
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters(
+                      "||example.com^$csp=img-src 'none'\n"
+                      "||sub.example.com^$csp=script-src 'nonce-abcdef' "
+                      "'unsafe-eval' 'unsafe-inline'"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  const GURL url =
+      embedded_test_server()->GetURL("sub.example.com", "/csp_rules.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  auto res = EvalJs(contents, "await window.allLoaded");
+  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
+  ASSERT_EQ(true, EvalJs(contents, "!!window.loadedEvalScript"));
+  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedSamePartyScript"));
+  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedThirdPartyScript"));
+  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  ASSERT_EQ(false, EvalJs(contents, "!!window.loadedDataImage"));
+
+  // Violations of injected CSP directives do not increment the Shields counter
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
 class CosmeticFilteringFlagDisabledTest : public AdBlockServiceTest {
  public:
   CosmeticFilteringFlagDisabledTest() {

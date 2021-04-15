@@ -192,7 +192,7 @@ void BitflyerAuthorization::OnClaimWallet(
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't claim wallet");
-    callback(result, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 

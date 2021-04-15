@@ -5,7 +5,7 @@ authors = ["Brian R. Bondy <netzen@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-adblock = { version = "~0.3.5", git = "https://github.com/brave/adblock-rust", rev = "732994bf57f4a5c7f3a2a7b873a97571737def42", default-features = false, features = ["full-regex-handling", "object-pooling"] }
+adblock = { version = "~0.3.10", default-features = false, features = ["full-regex-handling", "object-pooling"] }
 serde_json = "1.0"
 libc = "0.2"
 
