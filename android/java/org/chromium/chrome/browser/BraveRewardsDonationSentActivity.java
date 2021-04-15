@@ -138,7 +138,8 @@ public class BraveRewardsDonationSentActivity extends Activity implements BraveR
         mMonthly_tip_ = IntentUtils.safeGetBooleanExtra (intent, BraveRewardsSiteBannerActivity.TIP_MONTHLY_EXTRA, false);
 
         //set the data
-        String strAmount = String.format(getDefault(), "%.3f "+(BraveRewardsHelper.isAnonWallet() ? getResources().getString(R.string.brave_ui_bap_text) : getResources().getString(R.string.brave_ui_bat_text)), (float)mAmount_);
+        String strAmount = String.format(
+                getDefault(), "%.3f " + BraveRewardsHelper.BAT_TEXT, (float) mAmount_);
         ((TextView)findViewById(R.id.txt_pub_name)).setText(mPublisher_name_);
 
         if (true == mMonthly_tip_) {

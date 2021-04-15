@@ -63,6 +63,11 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static final int FAVICON_DESIRED_SIZE = 64; // px
     private static LargeIconBridge mLargeIconBridge;
 
+    public static final String BAT_TEXT = "BAT";
+    public static final String ONE_BAT_TEXT = "1.000 BAT";
+    public static final String FIVE_BAT_TEXT = "5.000 BAT";
+    public static final String TEN_BAT_TEXT = "10.000 BAT";
+
     private String mFaviconUrl;
     private LargeIconReadyCallback mCallback;
     private final Handler mHandler = new Handler();
