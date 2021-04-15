@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SW_HOLDER_H_
-#define BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SW_HOLDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SERVICE_WORKER_HOLDER_H_
+#define BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SERVICE_WORKER_HOLDER_H_
 
 #include <memory>
 #include <vector>
@@ -24,12 +24,14 @@ namespace brave_search {
 
 class BraveSearchJSHandler;
 
-class BraveSearchSWHolder : public content::WorkerThread::Observer {
+class BraveSearchServiceWorkerHolder : public content::WorkerThread::Observer {
  public:
-  BraveSearchSWHolder();
-  BraveSearchSWHolder(const BraveSearchSWHolder&) = delete;
-  BraveSearchSWHolder& operator=(const BraveSearchSWHolder&) = delete;
-  ~BraveSearchSWHolder() override;
+  BraveSearchServiceWorkerHolder();
+  BraveSearchServiceWorkerHolder(const BraveSearchServiceWorkerHolder&) =
+      delete;
+  BraveSearchServiceWorkerHolder& operator=(
+      const BraveSearchServiceWorkerHolder&) = delete;
+  ~BraveSearchServiceWorkerHolder() override;
 
   void SetBrowserInterfaceBrokerProxy(
       blink::ThreadSafeBrowserInterfaceBrokerProxy* broker);
@@ -58,4 +60,4 @@ class BraveSearchSWHolder : public content::WorkerThread::Observer {
 
 }  // namespace brave_search
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SW_HOLDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SERVICE_WORKER_HOLDER_H_

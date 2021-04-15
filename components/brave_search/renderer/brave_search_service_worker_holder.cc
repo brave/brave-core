@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_search/renderer/brave_search_sw_holder.h"
+#include "brave/components/brave_search/renderer/brave_search_service_worker_holder.h"
 
 #include <string>
 #include <utility>
@@ -46,16 +46,17 @@ JSHandlersVector::iterator FindContext(JSHandlersVector* contexts,
   return std::find_if(contexts->begin(), contexts->end(), context_matches);
 }
 
-BraveSearchSWHolder::BraveSearchSWHolder() : broker_(nullptr) {}
+BraveSearchServiceWorkerHolder::BraveSearchServiceWorkerHolder()
+    : broker_(nullptr) {}
 
-BraveSearchSWHolder::~BraveSearchSWHolder() = default;
+BraveSearchServiceWorkerHolder::~BraveSearchServiceWorkerHolder() = default;
 
-void BraveSearchSWHolder::SetBrowserInterfaceBrokerProxy(
+void BraveSearchServiceWorkerHolder::SetBrowserInterfaceBrokerProxy(
     blink::ThreadSafeBrowserInterfaceBrokerProxy* broker) {
   broker_ = broker;
 }
 
-void BraveSearchSWHolder::WillEvaluateServiceWorkerOnWorkerThread(
+void BraveSearchServiceWorkerHolder::WillEvaluateServiceWorkerOnWorkerThread(
     blink::WebServiceWorkerContextProxy* context_proxy,
     v8::Local<v8::Context> v8_context,
     int64_t service_worker_version_id,
@@ -80,11 +81,12 @@ void BraveSearchSWHolder::WillEvaluateServiceWorkerOnWorkerThread(
   js_handlers->push_back(std::move(js_handler));
 }
 
-void BraveSearchSWHolder::WillDestroyServiceWorkerContextOnWorkerThread(
-    v8::Local<v8::Context> v8_context,
-    int64_t service_worker_version_id,
-    const GURL& service_worker_scope,
-    const GURL& script_url) {
+void BraveSearchServiceWorkerHolder::
+    WillDestroyServiceWorkerContextOnWorkerThread(
+        v8::Local<v8::Context> v8_context,
+        int64_t service_worker_version_id,
+        const GURL& service_worker_scope,
+        const GURL& script_url) {
   if (!service_worker_scope.is_valid() ||
       !service_worker_scope.SchemeIsHTTPOrHTTPS() ||
       !IsAllowedHost(service_worker_scope))
@@ -98,7 +100,7 @@ void BraveSearchSWHolder::WillDestroyServiceWorkerContextOnWorkerThread(
   js_handlers->erase(context_it);
 }
 
-void BraveSearchSWHolder::WillStopCurrentWorkerThread() {
+void BraveSearchServiceWorkerHolder::WillStopCurrentWorkerThread() {
   content::WorkerThread::RemoveObserver(this);
   JSHandlersVector* js_handlers = js_handlers_tls_.Get();
   DCHECK(js_handlers);
