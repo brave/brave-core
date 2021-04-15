@@ -8,9 +8,11 @@
 
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 
+class BrowserView;
+
 class BraveAvatarToolbarButton : public AvatarToolbarButton {
  public:
-  explicit BraveAvatarToolbarButton(Browser* browser);
+  explicit BraveAvatarToolbarButton(BrowserView* browser_view);
 
   // ToolbarButton:
   void SetHighlight(const std::u16string& highlight_text,
