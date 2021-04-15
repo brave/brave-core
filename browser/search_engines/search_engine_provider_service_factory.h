@@ -21,6 +21,11 @@ class SearchEngineProviderServiceFactory
  public:
   static SearchEngineProviderServiceFactory* GetInstance();
 
+  SearchEngineProviderServiceFactory(
+      const SearchEngineProviderServiceFactory&) = delete;
+  SearchEngineProviderServiceFactory& operator=(
+      const SearchEngineProviderServiceFactory&) = delete;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(SearchEngineProviderServiceTest,
                            GuestWindowControllerTest);
@@ -41,8 +46,6 @@ class SearchEngineProviderServiceFactory
   bool ServiceIsCreatedWithBrowserContext() const override;
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
-
-  DISALLOW_COPY_AND_ASSIGN(SearchEngineProviderServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_FACTORY_H_

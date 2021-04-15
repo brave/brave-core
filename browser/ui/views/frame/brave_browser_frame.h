@@ -6,34 +6,25 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
 
-#include "base/scoped_observation.h"
-#include "chrome/browser/ui/views/frame/browser_frame.h"
-#include "components/prefs/pref_member.h"
-#include "ui/views/widget/widget_observer.h"
+#include <memory>
 
-class BraveBrowserFrame : public BrowserFrame,
-                          public views::WidgetObserver {
+#include "chrome/browser/ui/views/frame/browser_frame.h"
+
+class ActiveWindowSearchProviderManager;
+
+class BraveBrowserFrame : public BrowserFrame {
  public:
   explicit BraveBrowserFrame(BrowserView* browser_view);
   ~BraveBrowserFrame() override;
+  BraveBrowserFrame(const BraveBrowserFrame&) = delete;
+  BraveBrowserFrame& operator=(const BraveBrowserFrame&) = delete;
 
   // BrowserFrame overrides:
   const ui::NativeTheme* GetNativeTheme() const override;
 
-  // views::WidgetObserver overrides:
-  void OnWidgetActivationChanged(Widget* widget, bool active) override;
-
  private:
   BrowserView* view_;
-  BooleanPrefMember use_alternative_search_engine_provider_;
-  base::ScopedObservation<views::Widget, views::WidgetObserver>
-      observation_{this};
-
-  void ObserveWidget();
-  void ObserveSearchEngineProviderPrefs();
-  void OnPreferenceChanged();
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserFrame);
+  std::unique_ptr<ActiveWindowSearchProviderManager> search_provider_manager_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_

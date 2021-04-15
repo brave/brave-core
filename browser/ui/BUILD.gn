@@ -141,6 +141,8 @@ source_set("ui") {
       "views/reader_mode/brave_reader_mode_icon_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
+      "views/search_engines/active_window_search_provider_manager.cc",
+      "views/search_engines/active_window_search_provider_manager.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
       "views/tabs/brave_tab_context_menu_contents.cc",

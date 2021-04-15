@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -18,19 +19,20 @@ class Profile;
 class TemplateURL;
 class TemplateURLService;
 
-// TODO(simonhong): Rename this to GuestWindowSearchEngineProviderService.
 class SearchEngineProviderService : public KeyedService,
                                     public TemplateURLServiceObserver {
  public:
-  explicit SearchEngineProviderService(Profile* otr_profile);
+  explicit SearchEngineProviderService(Profile* profile);
   ~SearchEngineProviderService() override;
+  SearchEngineProviderService(const SearchEngineProviderService&) = delete;
+  SearchEngineProviderService& operator=(const SearchEngineProviderService&) =
+      delete;
 
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
  private:
-  // Points off the record profile.
-  Profile* otr_profile_;
+  Profile* profile_;
   TemplateURLService* template_url_service_;
   std::unique_ptr<TemplateURL> alternative_search_engine_url_;
   BooleanPrefMember use_alternative_search_engine_provider_;
@@ -42,8 +44,6 @@ class SearchEngineProviderService : public KeyedService,
   void ChangeToAlternativeSearchEngineProvider();
   void ChangeToNormalWindowSearchEngineProvider();
   void OnPreferenceChanged(const std::string& pref_name);
-
-  DISALLOW_COPY_AND_ASSIGN(SearchEngineProviderService);
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_

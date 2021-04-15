@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/search_engines/search_engine_provider_service.h"
+
+#include <vector>
 
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
@@ -13,14 +16,13 @@
 #include "components/search_engines/prepopulated_engines.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 
-SearchEngineProviderService::SearchEngineProviderService(
-    Profile* otr_profile)
-    : otr_profile_(otr_profile),
+SearchEngineProviderService::SearchEngineProviderService(Profile* profile)
+    : profile_(profile),
       template_url_service_(
-          TemplateURLServiceFactory::GetForProfile(otr_profile_)) {
+          TemplateURLServiceFactory::GetForProfile(profile_)) {
   use_alternative_search_engine_provider_.Init(
       kUseAlternativeSearchEngineProvider,
-      otr_profile_->GetOriginalProfile()->GetPrefs(),
+      profile_->GetOriginalProfile()->GetPrefs(),
       base::Bind(&SearchEngineProviderService::OnPreferenceChanged,
                  base::Unretained(this)));
 
@@ -35,7 +37,7 @@ SearchEngineProviderService::SearchEngineProviderService(
   std::unique_ptr<TemplateURLData> data;
   for (const auto& id : alt_search_providers) {
     data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-        otr_profile->GetPrefs(), id);
+        profile->GetPrefs(), id);
     if (data)
       break;
   }
@@ -58,7 +60,8 @@ void SearchEngineProviderService::OnTemplateURLServiceChanged() {
   // when user changes from ddg to different search engine provider
   // (or vice versa) from settings ui.
   bool is_ddg_is_set = false;
-  switch (template_url_service_->GetDefaultSearchProvider()->data()
+  switch (template_url_service_->GetDefaultSearchProvider()
+              ->data()
               .prepopulate_id) {
     case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO:
     case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE:
@@ -70,7 +73,7 @@ void SearchEngineProviderService::OnTemplateURLServiceChanged() {
   }
 
   if (UseAlternativeSearchEngineProvider() || is_ddg_is_set)
-    brave::ToggleUseAlternativeSearchEngineProvider(otr_profile_);
+    brave::ToggleUseAlternativeSearchEngineProvider(profile_);
 }
 
 void SearchEngineProviderService::OnPreferenceChanged(
