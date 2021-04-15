@@ -39,7 +39,7 @@ void CheckCommandsAreDisabledInMenuModel(
   BraveAppMenuModel model(browser_view->toolbar(), browser);
   model.Init();
   for (int id : disabled_commands)
-    EXPECT_EQ(-1, model.GetIndexOfCommandId(id));
+    EXPECT_EQ(-2, model.GetIndexOfCommandId(id));
 }
 
 void CheckCommandsAreInOrderInMenuModel(
