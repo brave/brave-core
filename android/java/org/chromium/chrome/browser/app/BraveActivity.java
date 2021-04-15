@@ -104,6 +104,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import androidx.annotation.NonNull;
 
 /**
  * Brave's extension for ChromeActivity
@@ -813,6 +814,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+     @Override
+    public void onRequestPermissionsResult(
+            int requestCode,@NonNull String[] permissions,@NonNull int[] grantResults) {      
+        if (requestCode == BraveStatsUtil.SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM && grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }  
 
     /**
      * Disable background ads on Android. Issue #8641.
