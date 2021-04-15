@@ -104,3 +104,4 @@ Client/Assets/MainFrameAtDocumentStart.js
 Client/Assets/MainFrameAtDocumentEnd.js
 Client/Assets/AllFramesAtDocumentStartSandboxed.js
 Client/Assets/AllFramesAtDocumentEndSandboxed.js
+Client/Assets/*LICENSE.txt
