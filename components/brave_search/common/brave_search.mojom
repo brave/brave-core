@@ -6,5 +6,6 @@ interface BraveSearchFallback {
   FetchBackupResults(string query_string,
                      string lang,
                      string country,
-                     string geo) => (string response);
+                     string geo,
+                     bool filter_explicit_results) => (string response);
 };

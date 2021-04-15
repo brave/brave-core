@@ -9,6 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "net/base/load_flags.h"
+#include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -56,13 +57,14 @@ void BraveSearchHost::FetchBackupResults(const std::string& query,
                                          const std::string& lang,
                                          const std::string& country,
                                          const std::string& geo,
+                                         bool filter_explicit_results,
                                          FetchBackupResultsCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
 
   if (backup_provider_for_test.is_empty()) {
     std::string spec(
         base::StringPrintf("https://www.google.com/search?q=%s",
-                           query.c_str(), lang.c_str(), country.c_str()));
+                           query.c_str()));
     request->url = GURL(spec);
   } else {
     request->url = backup_provider_for_test;
@@ -73,6 +75,9 @@ void BraveSearchHost::FetchBackupResults(const std::string& query,
   }
   if (!country.empty()) {
     request->url = net::AppendQueryParameter(request->url, "gl", country);
+  }
+  if (filter_explicit_results) {
+    request->url = net::AppendQueryParameter(request->url, "self", "active");
   }
 
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
