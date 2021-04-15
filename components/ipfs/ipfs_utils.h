@@ -51,6 +51,7 @@ bool TranslateIPFSURI(const GURL& url,
                       GURL* new_url,
                       const GURL& gateway_url,
                       bool use_subdomain);
+bool IsIpfsMenuEnabled(content::BrowserContext* browser_context);
 
 }  // namespace ipfs
 

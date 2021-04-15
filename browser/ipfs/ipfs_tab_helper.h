@@ -56,7 +56,8 @@ class IPFSTabHelper : public content::WebContentsObserver,
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
   void PushNotification(const base::string16& title,
-                        const base::string16& body);
+                        const base::string16& body,
+                        const GURL& link);
   GURL CreateAndCopyShareableLink(const ipfs::ImportedData& data);
   bool IsDNSLinkCheckEnabled() const;
   void IPFSLinkResolved(const GURL& ipfs);

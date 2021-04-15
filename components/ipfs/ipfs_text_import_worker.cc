@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_text_import_worker.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/command_line.h"

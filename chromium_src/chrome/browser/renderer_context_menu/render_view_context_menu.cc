@@ -38,12 +38,6 @@
 
 namespace {
 
-#if BUILDFLAG(IPFS_ENABLED)
-bool IsIpfsMenuEnabled(content::BrowserContext* browser_context) {
-  return ipfs::IsIpfsEnabled(browser_context) &&
-         ipfs::IsLocalGatewayConfigured(browser_context);
-}
-#endif
 GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
   AutocompleteMatch match;
   AutocompleteClassifier classifier(
@@ -198,8 +192,9 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
   // Suppress adding "Spellcheck->Ask Brave for suggestions" item.
 }
 
+#if BUILDFLAG(IPFS_ENABLED)
 bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
-  if (!IsIpfsMenuEnabled(browser_context_))
+  if (!ipfs::IsIpfsMenuEnabled(browser_context_))
     return false;
   switch (command) {
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
@@ -225,7 +220,6 @@ bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
   return false;
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
 void BraveRenderViewContextMenu::SeIpfsIconAt(int index) {
   auto& bundle = ui::ResourceBundle::GetSharedInstance();
   const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
@@ -234,7 +228,7 @@ void BraveRenderViewContextMenu::SeIpfsIconAt(int index) {
 }
 
 void BraveRenderViewContextMenu::BuildIPFSMenu() {
-  if (!IsIpfsMenuEnabled(browser_context_))
+  if (!ipfs::IsIpfsMenuEnabled(browser_context_))
     return;
   int index =
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);

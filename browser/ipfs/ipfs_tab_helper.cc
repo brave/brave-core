@@ -20,6 +20,7 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/ipfs/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
@@ -163,7 +164,8 @@ base::string16 GetImportNotificationBody(ipfs::ImportState state,
 std::unique_ptr<message_center::Notification> CreateMessageCenterNotification(
     const base::string16& title,
     const base::string16& body,
-    const std::string& uuid) {
+    const std::string& uuid,
+    const GURL& link) {
   message_center::RichNotificationData notification_data;
 
   // hack to prevent origin from showing in the notification
@@ -171,7 +173,7 @@ std::unique_ptr<message_center::Notification> CreateMessageCenterNotification(
   notification_data.context_message = base::ASCIIToUTF16(" ");
   auto notification = std::make_unique<message_center::Notification>(
       message_center::NOTIFICATION_TYPE_SIMPLE, uuid, title, body, gfx::Image(),
-      base::string16(), GURL(),
+      base::string16(), link,
       message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
                                  kNotifierId),
       notification_data, nullptr);
@@ -381,9 +383,13 @@ GURL IPFSTabHelper::CreateAndCopyShareableLink(const ipfs::ImportedData& data) {
 }
 
 void IPFSTabHelper::OnImportCompleted(const ipfs::ImportedData& data) {
-  PushNotification(
-      GetImportNotificationTitle(data.state),
-      GetImportNotificationBody(data.state, CreateAndCopyShareableLink(data)));
+  auto link = CreateAndCopyShareableLink(data);
+  if (!link.is_valid()) {
+    // Open node diagnostic page if import failed
+    link = GURL(kIPFSWebUIURL);
+  }
+  PushNotification(GetImportNotificationTitle(data.state),
+                   GetImportNotificationBody(data.state, link), link);
   if (data.state == ipfs::IPFS_IMPORT_SUCCESS) {
     GURL url = ResolveWebUIFilesLocation(data.directory, chrome::GetChannel());
     content::OpenURLParams params(url, content::Referrer(),
@@ -394,13 +400,14 @@ void IPFSTabHelper::OnImportCompleted(const ipfs::ImportedData& data) {
 }
 
 void IPFSTabHelper::PushNotification(const base::string16& title,
-                                     const base::string16& body) {
+                                     const base::string16& body,
+                                     const GURL& link) {
   auto notification =
-      CreateMessageCenterNotification(title, body, base::GenerateGUID());
+      CreateMessageCenterNotification(title, body, base::GenerateGUID(), link);
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   auto* display_service = NotificationDisplayService::GetForProfile(profile);
-  display_service->Display(NotificationHandler::Type::ANNOUNCEMENT,
+  display_service->Display(NotificationHandler::Type::SEND_TAB_TO_SELF,
                            *notification, /*metadata=*/nullptr);
 }
 

@@ -155,4 +155,5 @@ void IpfsLinkImportWorker::CreateRequestWithFile(
 
   StartImport(std::move(blob_builder_callback), content_type, filename);
 }
+
 }  // namespace ipfs

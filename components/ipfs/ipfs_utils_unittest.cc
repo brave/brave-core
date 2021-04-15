@@ -544,3 +544,11 @@ TEST_F(IpfsUtilsUnitTest, ResolveWebUIFilesLocation) {
   EXPECT_EQ(url.path(), "/webui/");
   EXPECT_EQ(url.ref(), "/files/test_directory");
 }
+
+TEST_F(IpfsUtilsUnitTest, IsIpfsMenuEnabled) {
+  ASSERT_FALSE(ipfs::IsLocalGatewayConfigured(context()));
+  ASSERT_FALSE(ipfs::IsIpfsMenuEnabled(context()));
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
+  ASSERT_TRUE(ipfs::IsLocalGatewayConfigured(context()));
+  ASSERT_TRUE(ipfs::IsIpfsMenuEnabled(context()));
+}

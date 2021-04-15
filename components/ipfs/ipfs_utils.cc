@@ -283,4 +283,9 @@ GURL ResolveWebUIFilesLocation(const std::string& directory,
   return url.ReplaceComponents(replacements);
 }
 
+bool IsIpfsMenuEnabled(content::BrowserContext* browser_context) {
+  return ipfs::IsIpfsEnabled(browser_context) &&
+         ipfs::IsLocalGatewayConfigured(browser_context);
+}
+
 }  // namespace ipfs

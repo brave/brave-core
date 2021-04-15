@@ -12,13 +12,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/callback.h"
-#include "base/containers/queue.h"
-#include "base/files/file_util.h"
-#include "base/memory/scoped_refptr.h"
 #include "brave/components/ipfs/imported_data.h"
 #include "brave/components/ipfs/ipfs_import_worker_base.h"
-#include "components/version_info/channel.h"
 #include "url/gurl.h"
 
 namespace ipfs {

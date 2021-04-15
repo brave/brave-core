@@ -53,6 +53,9 @@ class IpfsImportWorkerBase {
                        ImportCompletedCallback callback);
   virtual ~IpfsImportWorkerBase();
 
+  IpfsImportWorkerBase(const IpfsImportWorkerBase&) = delete;
+  IpfsImportWorkerBase& operator=(const IpfsImportWorkerBase&) = delete;
+
   using BlobBuilderCallback =
       base::OnceCallback<std::unique_ptr<storage::BlobDataBuilder>()>;
 
@@ -92,8 +95,6 @@ class IpfsImportWorkerBase {
   content::BrowserContext* browser_context_ = nullptr;
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
   base::WeakPtrFactory<IpfsImportWorkerBase> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(IpfsImportWorkerBase);
 };
 
 }  // namespace ipfs

@@ -6,25 +6,15 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_TEXT_IMPORT_WORKER_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_TEXT_IMPORT_WORKER_H_
 
-#include <list>
-#include <memory>
 #include <string>
-#include <utility>
-#include <vector>
 
-#include "base/callback.h"
-#include "base/containers/queue.h"
-#include "base/files/file_util.h"
-#include "base/memory/scoped_refptr.h"
-#include "brave/components/ipfs/imported_data.h"
 #include "brave/components/ipfs/ipfs_import_worker_base.h"
-#include "components/version_info/channel.h"
 #include "url/gurl.h"
 
 namespace ipfs {
 
 // Implements preparation steps for importing text objects into ipfs.
-// Wraps text data to a request objec and puts it to the base class
+// Wraps text data to a request object and puts it to the base class
 // for the upload using IPFS api
 class IpfsTextImportWorker : public IpfsImportWorkerBase {
  public:
