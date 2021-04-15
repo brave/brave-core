@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/strings/stringprintf.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -53,6 +52,27 @@ BraveSearchHost::BraveSearchHost(
 
 BraveSearchHost::~BraveSearchHost() {}
 
+// [static]
+GURL BraveSearchHost::GetBackupResultURL(const GURL& baseURL,
+                                         const std::string& query,
+                                         const std::string& lang,
+                                         const std::string& country,
+                                         const std::string& geo,
+                                         bool filter_explicit_results) {
+  GURL url = baseURL;
+  url = net::AppendQueryParameter(url, "q", query);
+  if (!lang.empty()) {
+    url = net::AppendQueryParameter(url, "hl", lang);
+  }
+  if (!country.empty()) {
+    url = net::AppendQueryParameter(url, "gl", country);
+  }
+  if (filter_explicit_results) {
+    url = net::AppendQueryParameter(url, "self", "active");
+  }
+  return url;
+}
+
 void BraveSearchHost::FetchBackupResults(const std::string& query,
                                          const std::string& lang,
                                          const std::string& country,
@@ -60,26 +80,12 @@ void BraveSearchHost::FetchBackupResults(const std::string& query,
                                          bool filter_explicit_results,
                                          FetchBackupResultsCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
-
-  if (backup_provider_for_test.is_empty()) {
-    std::string spec(
-        base::StringPrintf("https://www.google.com/search?q=%s",
-                           query.c_str()));
-    request->url = GURL(spec);
-  } else {
+  request->url = GURL("https://www.google.com/search");
+  if (!backup_provider_for_test.is_empty()) {
     request->url = backup_provider_for_test;
   }
-
-  if (!lang.empty()) {
-    request->url = net::AppendQueryParameter(request->url, "hl", lang);
-  }
-  if (!country.empty()) {
-    request->url = net::AppendQueryParameter(request->url, "gl", country);
-  }
-  if (filter_explicit_results) {
-    request->url = net::AppendQueryParameter(request->url, "self", "active");
-  }
-
+  request->url = GetBackupResultURL(request->url, query, lang, country, geo,
+                                    filter_explicit_results);
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
