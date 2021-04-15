@@ -5,11 +5,12 @@
 
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 
+#include <vector>
+
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 
@@ -33,6 +34,26 @@ bool IsRegionForQwant(Profile* profile) {
   return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
       profile->GetPrefs())->prepopulate_id ==
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
+}
+
+std::unique_ptr<TemplateURLData> GetDDGTemplateURLData(PrefService* prefs) {
+  std::vector<TemplateURLPrepopulateData::BravePrepopulatedEngineID>
+      ddg_search_providers = {
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
+          TemplateURLPrepopulateData::
+              PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE};
+
+  std::unique_ptr<TemplateURLData> data;
+  for (const auto& id : ddg_search_providers) {
+    data = TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, id);
+    if (data)
+      return data;
+  }
+
+  // There should ALWAYS be one entry
+  NOTREACHED();
+  return nullptr;
 }
 
 }  // namespace brave

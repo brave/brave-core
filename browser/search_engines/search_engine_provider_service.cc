@@ -26,24 +26,8 @@ SearchEngineProviderService::SearchEngineProviderService(Profile* profile)
       base::Bind(&SearchEngineProviderService::OnPreferenceChanged,
                  base::Unretained(this)));
 
-  std::vector<TemplateURLPrepopulateData::BravePrepopulatedEngineID>
-      alt_search_providers = {
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
-          TemplateURLPrepopulateData::
-              PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE
-      };
-
-  std::unique_ptr<TemplateURLData> data;
-  for (const auto& id : alt_search_providers) {
-    data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-        profile->GetPrefs(), id);
-    if (data)
-      break;
-  }
-
-  // There should ALWAYS be one entry
-  DCHECK(data);
+  std::unique_ptr<TemplateURLData> data =
+      brave::GetDDGTemplateURLData(profile->GetPrefs());
   alternative_search_engine_url_.reset(new TemplateURL(*data));
   observation_.Observe(template_url_service_);
 }
@@ -88,7 +72,7 @@ void SearchEngineProviderService::OnPreferenceChanged(
   base::AutoReset<bool> reset(&ignore_template_url_service_changing_, true);
   UseAlternativeSearchEngineProvider()
       ? ChangeToAlternativeSearchEngineProvider()
-      : ChangeToNormalWindowSearchEngineProvider();
+      : ChangeToDefaultSearchEngineProvider();
 }
 
 bool
@@ -101,6 +85,6 @@ void SearchEngineProviderService::ChangeToAlternativeSearchEngineProvider() {
       alternative_search_engine_url_.get());
 }
 
-void SearchEngineProviderService::ChangeToNormalWindowSearchEngineProvider() {
+void SearchEngineProviderService::ChangeToDefaultSearchEngineProvider() {
   template_url_service_->SetUserSelectedDefaultSearchProvider(nullptr);
 }

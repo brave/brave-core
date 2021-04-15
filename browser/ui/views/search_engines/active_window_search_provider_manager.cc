@@ -57,27 +57,11 @@ void HandleTorWindowActivationStateChange(Profile* profile, bool active) {
 }
 
 void ChangeToAlternativeSearchEngineProvider(Profile* profile) {
-  // TODO(simonhong): De-duplicate this
-  std::vector<TemplateURLPrepopulateData::BravePrepopulatedEngineID>
-      alt_search_providers = {
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
-          TemplateURLPrepopulateData::
-              PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE};
-
-  std::unique_ptr<TemplateURLData> data;
-  for (const auto& id : alt_search_providers) {
-    data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-        profile->GetPrefs(), id);
-    if (data)
-      break;
-  }
-
-  // There should ALWAYS be one entry
-  DCHECK(data);
-  // alternative_search_engine_url.reset(new TemplateURL(*data));
+  std::unique_ptr<TemplateURLData> data =
+      brave::GetDDGTemplateURLData(profile->GetPrefs());
   auto* tus = TemplateURLServiceFactory::GetForProfile(profile);
-  tus->SetUserSelectedDefaultSearchProvider(new TemplateURL(*data));
+  TemplateURL url(*data);
+  tus->SetUserSelectedDefaultSearchProvider(&url);
 }
 
 void ChangeToNormalWindowSearchEngineProvider(Profile* profile) {
@@ -88,7 +72,8 @@ void ChangeToNormalWindowSearchEngineProvider(Profile* profile) {
     std::unique_ptr<TemplateURLData> data = TemplateURLDataFromDictionary(
         base::Value::AsDictionaryValue(*data_value));
     auto* tus = TemplateURLServiceFactory::GetForProfile(profile);
-    tus->SetUserSelectedDefaultSearchProvider(new TemplateURL(*data));
+    TemplateURL url(*data);
+    tus->SetUserSelectedDefaultSearchProvider(&url);
   }
 }
 
@@ -104,7 +89,7 @@ void HandlePrivateWindowActivationStateChange(Profile* profile, bool active) {
 void HandleNormalWindowActivationStateChange(Profile* profile, bool active) {
   auto* tus = TemplateURLServiceFactory::GetForProfile(profile);
   auto* tu = tus->GetDefaultSearchProvider();
-  // Cache DSE.
+  // Cache DSE. This cached DSE will be set when normal window is activated.
   if (!active) {
     std::unique_ptr<base::DictionaryValue> data_value =
         TemplateURLDataToDictionary(tu->data());
@@ -118,7 +103,8 @@ void HandleNormalWindowActivationStateChange(Profile* profile, bool active) {
   if (data_value && data_value->is_dict()) {
     std::unique_ptr<TemplateURLData> data = TemplateURLDataFromDictionary(
         base::Value::AsDictionaryValue(*data_value));
-    tus->SetUserSelectedDefaultSearchProvider(new TemplateURL(*data));
+    TemplateURL url(*data);
+    tus->SetUserSelectedDefaultSearchProvider(&url);
   }
 }
 
@@ -184,6 +170,7 @@ void ActiveWindowSearchProviderManager::OnWidgetActivationChanged(
   }
 
   if (brave::IsGuestProfile(profile_)) {
+    // Handled by SearchEngineProviderService.
     NOTREACHED();
     return;
   }

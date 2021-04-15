@@ -19,6 +19,7 @@ class Profile;
 class TemplateURL;
 class TemplateURLService;
 
+// Handles DDG toggle button in NTP of guest window.
 class SearchEngineProviderService : public KeyedService,
                                     public TemplateURLServiceObserver {
  public:
@@ -42,7 +43,7 @@ class SearchEngineProviderService : public KeyedService,
 
   bool UseAlternativeSearchEngineProvider() const;
   void ChangeToAlternativeSearchEngineProvider();
-  void ChangeToNormalWindowSearchEngineProvider();
+  void ChangeToDefaultSearchEngineProvider();
   void OnPreferenceChanged(const std::string& pref_name);
 };
 

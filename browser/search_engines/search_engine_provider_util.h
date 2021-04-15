@@ -6,11 +6,11 @@
 #ifndef BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_UTIL_H_
 #define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_UTIL_H_
 
-class Profile;
+#include <memory>
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}
+class PrefService;
+class Profile;
+struct TemplateURLData;
 
 namespace brave {
 
@@ -19,6 +19,8 @@ bool UseAlternativeSearchEngineProviderEnabled(Profile* profile);
 void ToggleUseAlternativeSearchEngineProvider(Profile* profile);
 
 bool IsRegionForQwant(Profile* profile);
+
+std::unique_ptr<TemplateURLData> GetDDGTemplateURLData(PrefService* prefs);
 
 }  // namespace brave
 
