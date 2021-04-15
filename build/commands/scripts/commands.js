@@ -134,7 +134,7 @@ program
   .option('--notarize', 'notarize the macOS app with Apple')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
-  .option('--target_android_base <target_android_base>', 'target Android SDk level for apk or aab (classic, modern, mono)', 'classic')
+  .option('--target_android_base <target_android_base>', 'target Android SDK level for apk or aab (classic, modern, mono)', 'classic')
   .option('--target_android_output_format <target_android_output_format>', 'target Android output format (apk, aab)', 'aab')
   .option('--universal', 'build a universal binary distribution')
   .option('--is_asan', 'is asan enabled')
