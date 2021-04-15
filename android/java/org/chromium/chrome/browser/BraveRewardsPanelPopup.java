@@ -1682,7 +1682,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 df.setRoundingMode(RoundingMode.FLOOR);
                 df.setMinimumFractionDigits(3);
                 tvBrBatWallet.setText(df.format(walletBalance));
-                ((TextView) this.root.findViewById(R.id.br_bat)).setText(batPointsText);
                 ((TextView) this.root.findViewById(R.id.br_bat)).setText(batText);
                 double usdValue = walletBalance * mBraveRewardsNativeWorker.GetWalletRate();
                 String usdText =
