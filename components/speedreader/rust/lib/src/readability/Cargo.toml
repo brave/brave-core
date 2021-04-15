@@ -13,6 +13,7 @@ edition = "2018"
 [dependencies]
 html5ever        = "0.25.1"
 kuchiki = { git = "https://github.com/brave/kuchiki", branch = "speedreader" }
+htmlescape       = "0.3.1"
 lazy_static      = "1.4"
 regex            = "1"
 url              = "1.7"

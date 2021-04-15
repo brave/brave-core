@@ -3,6 +3,7 @@ use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
+use htmlescape::decode_html;
 use kuchiki::NodeData::{
     Comment, Doctype, Document, DocumentFragment, Element, ProcessingInstruction, Text,
 };
@@ -29,6 +30,7 @@ pub static NEGATIVE_CANDIDATES: &str = "(?i)-ad-|hidden|^hid$| hid$| hid |\
         ^hid |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|\
         masthead|media|meta|outbrain|promo|related|scroll|share|shoutbox|\
         sidebar|skyscraper|sponsor|shopping|tags|tool|widget";
+pub static HTML_TAGS: &str = r"<[^>]*>";
 static BLOCK_CHILD_TAGS: [&LocalName; 9] = [
     &local_name!("a"),
     &local_name!("blockquote"),
@@ -70,6 +72,7 @@ lazy_static! {
     static ref UNLIKELY: Regex = Regex::new(UNLIKELY_CANDIDATES).unwrap();
     static ref POSITIVE: Regex = Regex::new(POSITIVE_CANDIDATES).unwrap();
     static ref NEGATIVE: Regex = Regex::new(NEGATIVE_CANDIDATES).unwrap();
+    static ref DECODED_HTML_TAGS: Regex = Regex::new(HTML_TAGS).unwrap();
 }
 
 pub struct TopCandidate {
@@ -107,10 +110,11 @@ impl PartialEq for TopCandidate {
 
 impl Eq for TopCandidate {}
 
-#[derive(Default)]
-pub struct Title {
+#[derive(Default, Debug)]
+pub struct Meta {
     pub title: String,
-    pub is_meta: bool,
+    pub author: String,
+    pub description: String,
 }
 
 /// Add https:// to the img src, if missing.
@@ -311,28 +315,48 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
 }
 
 /// Uses the <meta> elements to extract the article title.
-pub fn get_metadata(data: &ElementData, title: &mut Title) {
-    if title.is_meta {
-        // We already grabbed a title from the metadata earlier in the parse.
-        return;
-    }
+pub fn get_metadata(data: &ElementData, meta: &mut Meta) {
     if let Some(property) = data.attributes.borrow().get(local_name!("property")) {
-        // TODO(keur): grab author, description, site name, etc in here.
-        // For now we are just getting the title.
-        match property.as_ref() {
-            "dc:title"
-            | "dcterm:title"
-            | "og:title"
-            | "weibo:article:title"
-            | "weibo:webpage:title"
-            | "title"
-            | "twitter:title" => {
-                if let Some(content) = data.attributes.borrow().get(local_name!("content")) {
-                    title.title = content.to_string();
-                    title.is_meta = true;
+        if let Some(mut content) = data.attributes.borrow().get(local_name!("content")) {
+            let mut key: Option<&mut String> = None;
+            match property.as_ref() {
+                "dc:title"
+                | "dcterm:title"
+                | "og:title"
+                | "weibo:article:title"
+                | "weibo:webpage:title"
+                | "title"
+                | "twitter:title" => {
+                    key = Some(&mut meta.title);
                 }
+                "description"
+                | "dc:description"
+                | "dcterm:description"
+                | "og:description"
+                | "weibo:article:description"
+                | "weibo:webpage:description"
+                | "twitter:description" => {
+                    key = Some(&mut meta.description);
+                    content = content
+                        .find(". ")
+                        .and_then(|pos| Some(&content[..pos]))
+                        .unwrap_or(content);
+                }
+                "dc:creator" | "dcterm:creator" | "author" => {
+                    key = Some(&mut meta.author);
+                }
+                _ => (),
             }
-            _ => (),
+            key.map(|k| {
+                // It's common for titles and descriptions to have encoded HTML attributes like &#8211;
+                // These are important in the title cleaning phase, so we want those decoded. Other
+                // sites, like buzzfeed, encode HTML tags to bold the text. So after decoding,
+                // we delete anything that looks like an HTML tag.
+                match decode_html(content) {
+                    Ok(s) => *k = DECODED_HTML_TAGS.replace_all(&s, "").into(),
+                    Err(_) => (),
+                }
+            });
         }
     }
 }
@@ -374,7 +398,7 @@ fn unwrap_noscript(
 
 /// Prepare the DOM for the candidate and cleaning steps. Delete "noisy" nodes and do small
 /// transformations.
-pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> bool {
+pub fn preprocess(mut dom: &mut Sink, handle: Handle, meta: &mut Meta) -> bool {
     if let Some(data) = handle.as_element() {
         match data.name.local {
             local_name!("script")
@@ -383,13 +407,12 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
             | local_name!("nav")
             | local_name!("style") => return true,
             local_name!("title") => {
-                if !title.is_meta && title.title.is_empty() {
-                    dom::extract_text(&handle, &mut title.title, true);
-                    title.is_meta = false;
+                if meta.title.is_empty() {
+                    dom::extract_text(&handle, &mut meta.title, true);
                 }
             }
             local_name!("meta") => {
-                get_metadata(&data, title);
+                get_metadata(&data, meta);
             }
             local_name!("div") => {
                 // Convert all divs whose children contains only phrasing
@@ -449,7 +472,7 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
     let mut paragraph_nodes = vec![];
     let mut brs = vec![];
     for child in handle.children() {
-        let pending_removal = preprocess(&mut dom, child.clone(), &mut title);
+        let pending_removal = preprocess(&mut dom, child.clone(), meta);
         if pending_removal {
             useless_nodes.push(child.clone());
         }

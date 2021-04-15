@@ -1,6 +1,7 @@
+use crate::html5ever::tree_builder::TreeSink;
 use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
-use html5ever::tree_builder::NodeOrText;
+use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{parse_document, ParseOpts};
 use html5ever::{Attribute, LocalName, QualName};
 use kuchiki::NodeData::{Comment, Element, Text};
@@ -362,4 +363,26 @@ pub fn is_phrasing_content(handle: &Handle) -> bool {
         }
         _ => false,
     }
+}
+
+#[inline]
+pub fn create_element_simple(
+    dom: &mut Sink,
+    local_name: &str,
+    classes: &str,
+    content: Option<&str>,
+) -> Handle {
+    let name = QualName::new(None, ns!(), LocalName::from(local_name));
+    let class_attr = Attribute {
+        name: QualName::new(None, ns!(), LocalName::from("class")),
+        value: StrTendril::from_str(classes).unwrap_or_default(),
+    };
+    let elem = dom.create_element(name, vec![class_attr], ElementFlags::default());
+    if let Some(text) = content {
+        dom.append(
+            &elem,
+            NodeOrText::AppendText(StrTendril::from_str(&text).unwrap_or_default()),
+        );
+    }
+    elem
 }
