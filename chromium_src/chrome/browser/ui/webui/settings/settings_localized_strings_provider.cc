@@ -60,6 +60,9 @@ const char kGoogleLoginLearnMoreURL[] =
     "https://github.com/brave/brave-browser/wiki/"
     "Allow-Google-login---Third-Parties-and-Extensions";
 const char kDNSLinkLearnMoreURL[] = "https://docs.ipfs.io/concepts/dnslink/";
+const char kUnstoppableDomainsLearnMoreURL[] =
+    "https://github.com/brave/brave-browser/wiki/"
+    "Resolve-Methods-for-Unstoppable-Domains";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -292,6 +295,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(IDS_SETTINGS_IPFS_METHOD_DESC,
                                  base::ASCIIToUTF16(ipfs::kIPFSLearnMoreURL));
   html_source->AddString("ipfsMethodDesc", ipfs_method_desc);
+
+  html_source->AddString(
+      "resolveUnstoppableDomainsSubDesc",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC,
+          base::ASCIIToUTF16(kUnstoppableDomainsLearnMoreURL)));
 }
 
 void BraveAddResources(content::WebUIDataSource* html_source,

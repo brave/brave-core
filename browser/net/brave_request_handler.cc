@@ -23,7 +23,9 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -55,6 +57,10 @@
 #include "brave/components/ipfs/features.h"
 #endif
 
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+#include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
+#endif
+
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK(ctx);
   return ctx->request_url.SchemeIs(extensions::kExtensionScheme) ||
@@ -83,6 +89,12 @@ void BraveRequestHandler::SetupCallbacks() {
 
   callback = base::Bind(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
   before_url_request_callbacks_.push_back(callback);
+
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED) && BUILDFLAG(BRAVE_WALLET_ENABLED)
+  callback = base::Bind(
+      decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
+  before_url_request_callbacks_.push_back(callback);
+#endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   callback = base::Bind(brave_rewards::OnBeforeURLRequest);
