@@ -97,6 +97,11 @@ void HandleNormalWindowActivationStateChange(Profile* profile, bool active) {
     return;
   }
 
+  auto* preference =
+      profile->GetPrefs()->FindPreference(kCachedNormalSearchProvider);
+  if (preference->IsDefaultValue())
+    return;
+
   const base::Value* data_value =
       profile->GetPrefs()->Get(kCachedNormalSearchProvider);
   // Apply cached DSE.

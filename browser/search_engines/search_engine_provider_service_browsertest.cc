@@ -7,10 +7,12 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
+#include "brave/browser/search_engines/search_engine_provider_service.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/views/frame/brave_browser_frame.h"
+#include "brave/browser/ui/views/search_engines/active_window_search_provider_manager.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -18,6 +20,8 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/views/frame/browser_frame.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
@@ -26,163 +30,98 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
-using SearchEngineProviderServiceTest = InProcessBrowserTest;
+class SearchEngineProviderServiceTest : public InProcessBrowserTest {
+ public:
+  void SimulateWindowActivated(Browser* browser, bool active) {
+    BraveBrowserFrame* frame = static_cast<BraveBrowserFrame*>(
+        BrowserView::GetBrowserViewForBrowser(browser)->frame());
+    frame->search_provider_manager_->OnWidgetActivationChanged(nullptr, active);
+  }
+};
 
-TemplateURLData CreateTestSearchEngine() {
-  TemplateURLData result;
-  result.SetShortName(base::ASCIIToUTF16("test1"));
-  result.SetKeyword(base::ASCIIToUTF16("test.com"));
-  result.SetURL("http://test.com/search?t={searchTerms}");
-  return result;
-}
-
-// In Qwant region, alternative search engine prefs isn't used.
+// Check normal and private window's default provider.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateWindowPrefTestWithNonQwantRegion) {
   Profile* profile = browser()->profile();
-  Profile* incognito_profile = profile->GetPrimaryOTRProfile();
+  auto* private_browser = CreateIncognitoBrowser();
 
   // This test case is only for non-qwant region.
   if (brave::IsRegionForQwant(profile))
     return;
 
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
-  auto* incognito_service =
-      TemplateURLServiceFactory::GetForProfile(incognito_profile);
 
-  // Test pref is initially disabled.
-  EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
-
-  // Both mode should use same search engine if alternate pref is disabled.
+  // simulate normal window is activated.
+  SimulateWindowActivated(browser(), true);
   base::string16 normal_search_engine =
       service->GetDefaultSearchProvider()->data().short_name();
-  EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
-            incognito_service->GetDefaultSearchProvider()->data().short_name());
 
-  // Toggle pref and check incognito_service uses duckduckgo search engine and
-  // normal mode service uses existing one.
+  // Simulate private window is activated
+  SimulateWindowActivated(browser(), false);
+  SimulateWindowActivated(private_browser, true);
+
+  // Test pref is initially disabled and current provider is same with normal
+  // search engine.
+  EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
+  EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
+            normal_search_engine);
+
+  // Toggle pref and check current provideer is duckduckgo.
   brave::ToggleUseAlternativeSearchEngineProvider(profile);
   EXPECT_TRUE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
-  EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
+  EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             base::ASCIIToUTF16("DuckDuckGo"));
-  EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
-            normal_search_engine);
 
-  // Toggle pref again and check both mode uses same search engine.
+  // Toggle pref again and check current provider is normal search engine.
   brave::ToggleUseAlternativeSearchEngineProvider(profile);
   EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             normal_search_engine);
-  EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
-            normal_search_engine);
-
-  // Check private search engine uses normal mode search engine when alternative
-  // search engine pref is false.
-  TemplateURLData test_data = CreateTestSearchEngine();
-  std::unique_ptr<TemplateURL> test_url(new TemplateURL(test_data));
-  service->SetUserSelectedDefaultSearchProvider(test_url.get());
-  EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
-            base::ASCIIToUTF16("test1"));
-}
-
-// For qwant region, just check that both profile uses same provider.
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
-                       PrivateWindowTestWithQwantRegion) {
-  Profile* profile = browser()->profile();
-  Profile* incognito_profile = profile->GetPrimaryOTRProfile();
-
-  // This test case is only for qwant region.
-  if (!brave::IsRegionForQwant(profile))
-    return;
-
-  auto* service = TemplateURLServiceFactory::GetForProfile(profile);
-  auto* incognito_service =
-      TemplateURLServiceFactory::GetForProfile(incognito_profile);
-
-  // Test pref is initially disabled.
-  EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
-
-  // Toggling doesn't work in qwant region.
-  brave::ToggleUseAlternativeSearchEngineProvider(profile);
-  EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
-
-  // Both mode should use same search engine.
-  base::string16 normal_search_engine =
-      service->GetDefaultSearchProvider()->data().short_name();
-  EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
-            incognito_service->GetDefaultSearchProvider()->data().short_name());
-
-
-  // Check private search engine uses normal mode search engine.
-  TemplateURLData test_data = CreateTestSearchEngine();
-  std::unique_ptr<TemplateURL> test_url(new TemplateURL(test_data));
-  service->SetUserSelectedDefaultSearchProvider(test_url.get());
-  EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
-            base::ASCIIToUTF16("test1"));
-}
-
-// Check crash isn't happened with multiple private window is used.
-// https://github.com/brave/brave-browser/issues/1452
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
-                       MultiplePrivateWindowTest) {
-  Browser* private_window_1 = CreateIncognitoBrowser();
-  CloseBrowserSynchronously(private_window_1);
-
-  Browser* private_window_2 = CreateIncognitoBrowser();
-  brave::ToggleUseAlternativeSearchEngineProvider(private_window_2->profile());
 }
 
 #if BUILDFLAG(ENABLE_TOR)
-// Checks the default search engine of the tor profile.
+// Check normal and tor private window's default provider.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
-                       PRE_CheckDefaultTorProfileSearchProviderTest) {
+                       CheckTorWindowSearchProviderTest) {
+  Profile* profile = browser()->profile();
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+  SimulateWindowActivated(browser(), true);
+  const int default_normal_provider_id =
+      service->GetDefaultSearchProvider()->data().prepopulate_id;
+
   brave::NewOffTheRecordWindowTor(browser());
   content::RunAllTasksUntilIdle();
 
-  Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
+  Browser* tor_browser = BrowserList::GetInstance()->GetLastActive();
+  tor_browser->window()->Show();
+  Profile* tor_profile = tor_browser->profile();
   EXPECT_TRUE(tor_profile->IsTor());
 
-  auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
-
-  int default_provider_id = brave::IsRegionForQwant(tor_profile) ?
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT :
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
-
-  // Check tor profile's search provider is set to ddg.
-  EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
-            default_provider_id);
-
-  // Change provider to check whether it is retained in the next sessions.
-  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      tor_profile->GetPrefs(),
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
-  TemplateURL other_url(*data);
-  service->SetUserSelectedDefaultSearchProvider(&other_url);
-}
-
-// Check changed provider in tor profile should not be retained across the
-// sessions.
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
-                       CheckDefaultTorProfileSearchProviderTest) {
-  brave::NewOffTheRecordWindowTor(browser());
-  content::RunAllTasksUntilIdle();
-
-  Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
-  EXPECT_TRUE(tor_profile->IsTor());
-
-  int default_provider_id =
+  int default_tor_provider_id =
       brave::IsRegionForQwant(tor_profile)
           ? TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT
           : TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
-  auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
+
+  // Activate tor window.
+  SimulateWindowActivated(browser(), false);
+  SimulateWindowActivated(tor_browser, true);
+
+  // Check tor profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
-            default_provider_id);
+            default_tor_provider_id);
+
+  // Activate normal window.
+  SimulateWindowActivated(tor_browser, false);
+  SimulateWindowActivated(browser(), true);
+
+  EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
+            default_normal_provider_id);
 }
 #endif
 
 // Check ddg toggle button state is changed by user's settings change.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
-                       GuestWindowControllerTest) {
+                       GuestWindowDDGToggletatusTest) {
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
   content::RunAllTasksUntilIdle();
 
@@ -215,20 +154,15 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   TemplateURL bing_url(*bing_data);
   template_service->SetUserSelectedDefaultSearchProvider(&bing_url);
 
-  auto* search_engine_provider_service =
-      static_cast<GuestWindowSearchEngineProviderService*>(
-          SearchEngineProviderServiceFactory::GetForProfile(guest_profile));
-  search_engine_provider_service->OnTemplateURLServiceChanged();
-
   // Check alternative pref is turned off.
   EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(guest_profile));
 
+  // Check alternative pref is turned on after setting ddg as a default.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
       guest_profile->GetPrefs(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
   template_service->SetUserSelectedDefaultSearchProvider(&ddg_url);
-  search_engine_provider_service->OnTemplateURLServiceChanged();
   EXPECT_TRUE(brave::UseAlternativeSearchEngineProviderEnabled(guest_profile));
 }

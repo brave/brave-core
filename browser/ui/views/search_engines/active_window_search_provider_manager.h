@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SEARCH_ENGINES_ACTIVE_WINDOW_SEARCH_PROVIDER_MANAGER_H_
 #define BRAVE_BROWSER_UI_VIEWS_SEARCH_ENGINES_ACTIVE_WINDOW_SEARCH_PROVIDER_MANAGER_H_
 
+#include "base/gtest_prod_util.h"
 #include "base/scoped_observation.h"
 #include "components/prefs/pref_member.h"
 #include "ui/views/widget/widget.h"
@@ -36,6 +37,11 @@ class ActiveWindowSearchProviderManager : public views::WidgetObserver {
       const ActiveWindowSearchProviderManager&) = delete;
 
  private:
+  friend class SearchEngineProviderServiceTest;
+
+  FRIEND_TEST_ALL_PREFIXES(SearchEngineProviderServiceTest,
+                           CheckTorWindowSearchProviderTest);
+
   Profile* profile_ = nullptr;
   BooleanPrefMember use_alternative_search_engine_provider_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
