@@ -85,11 +85,13 @@ class BraveSearchTest : public InProcessBrowserTest {
         request.GetURL().path_piece() == "/bravesearch.html")
       return nullptr;
 
+    GURL url = request.GetURL();
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
-    if (request.GetURL().path_piece() == "/search") {
+    if (url.path() + "?" + url.query() ==
+        "/search?q=test&hl=en&gl=us&self=active") {
       http_response->set_code(net::HTTP_OK);
-      http_response->set_content_type("application/json");
+      http_response->set_content_type("text/html");
       http_response->set_content(kBackupSearchContent);
       return http_response;
     }

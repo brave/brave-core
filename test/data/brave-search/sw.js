@@ -12,7 +12,7 @@ function notifyMain(result) {
 function waitForFunction() {
   if (self.brave != undefined && self.brave.fetchBackupResults != undefined) {
     console.log('calling fetch backup results')
-    self.brave.fetchBackupResults('test', 'en', 'us', 'US')
+    self.brave.fetchBackupResults('test', 'en', 'us', 'US', true)
         .then((response) => {
           notifyMain({result: 'INJECTED', response: response});
         })
