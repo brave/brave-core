@@ -619,7 +619,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
   ui_test_utils::NavigateToURL(browser(), tab_url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_EQ(false,
+  ASSERT_EQ(true,
             EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
                                                 "addImage('%s')",
                                                 resource_url.spec().c_str())));
@@ -1205,5 +1205,5 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(false, EvalJs(contents, "show_ad"));
+  ASSERT_EQ(true, EvalJs(contents, "show_ad"));
 }
