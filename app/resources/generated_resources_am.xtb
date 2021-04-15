@@ -7277,13 +7277,13 @@ nil</translation>
 <translation id="7475335772460644497">{COUNT, plural,
 =0 {ሁሉንም በዚህ ይክፈቱ &amp;Private Window}
 =1 {በዚህ &amp;Private Window}
-ሌላ {Open All ({COUNT}) በዚህ ይክፈቱ &amp;Private Window}}</translation>
+other {Open All ({COUNT}) በዚህ ይክፈቱ &amp;Private Window}}</translation>
 <translation id="2431625704210501303">&amp;ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="4620367155626060530">&amp;የዕልባቶች አሞሌ አሳይ</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {ሁሉንም በዚህ ይክፈቱ &amp;Private Window}
           =1 {በዚህ &amp;Private Window}
-          ሌላ {Open All ({COUNT}) በዚህ ይክፈቱ &amp;Private Window}}</translation>
+          other {Open All ({COUNT}) በዚህ ይክፈቱ &amp;Private Window}}</translation>
 <translation id="1985165269306590797">&amp;ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="4680518314108745448">&amp;የዕልባቶች አሞሌ አሳይ</translation>
 <translation id="642436385689435488">ሁሉንም ማንነት በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
@@ -7291,11 +7291,11 @@ nil</translation>
 <translation id="5463021359602611602">ማንነትን በማያሳውቅ መስኮት ክፈት</translation>
 <translation id="1850357845349976573">{0,plural,
 =1 {# ማንነትን የማያሳውቅ}
-ሌላ {# ማንነትን የማያሳውቁ መስኮቶች ክፈት}
+other {# ማንነትን የማያሳውቁ መስኮቶች ክፈት}
 }</translation>
 <translation id="8773965542687789581">{0,plural,
 =1 {# ማንነትን የማያሳውቅ}
-ሌላ {ማንነትን የማያሳውቅ (#)}
+other {ማንነትን የማያሳውቅ (#)}
 }</translation>
 <translation id="5070556616376997776">ይህ ማንነትን በማያሳውቅ መስኮት ነው</translation>
 <translation id="5832813618714645810">መገለጫዎች</translation>

@@ -4176,7 +4176,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5769519078756170258">Hôte ou domaine à exclure</translation>
 <translation id="5770125698810550803">Afficher les boutons de navigation</translation>
 <translation id="5771816112378578655">Configuration en cours...</translation>
-<translation id="5772114492540073460"><ph name="PARALLELS_NAME"/> vous permet d'utiliser des applications Windows🅫 sur votre Bravebook. <ph name="MINIMUM_SPACE"/> d'espace libre est recommandé pour l'installation.</translation>
+<translation id="5772114492540073460"><ph name="PARALLELS_NAME"/> vous permet d'utiliser des applications Windows? sur votre Bravebook. <ph name="MINIMUM_SPACE"/> d'espace libre est recommandé pour l'installation.</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Vous pouvez attendre que la page réponde ou la quitter.}one{Vous pouvez attendre que la page réponde ou la quitter.}other{Vous pouvez attendre que les pages répondent ou les quitter.}}</translation>
 <translation id="577322787686508614">Opération de lecture non autorisée sur l'appareil « <ph name="DEVICE_NAME"/> ».</translation>
 <translation id="5774295353725270860">Ouvrir l'application Fichiers</translation>

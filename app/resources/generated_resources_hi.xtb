@@ -7274,13 +7274,13 @@
 <translation id="7475335772460644497">{COUNT, plural,
           =0 {Open all in &amp;private window}
           =1 {Open in &amp;private window}
-           अन्य {Open all ({COUNT}) in &amp;private window}}</translation>
+           other {Open all ({COUNT}) in &amp;private window}}</translation>
 <translation id="2431625704210501303">प्राइवेट &amp;विंडो में खोलें</translation>
 <translation id="4620367155626060530">बुकमार्क बार &amp;दिखाएं</translation>
 <translation id="1448315815373449655">{COUNT, plural,
           =0 {Open All in &amp;Private Window}
           =1 {Open in &amp;Private Window}
-          अन्य {Open All ({COUNT}) in &amp;Private Window}}</translation>
+          other {Open All ({COUNT}) in &amp;Private Window}}</translation>
 <translation id="1985165269306590797">प्राइवेट &amp;विंडो में खोलें</translation>
 <translation id="4680518314108745448">बुकमार्क बार &amp;दिखाएं</translation>
 <translation id="642436385689435488">सभी प्राइवेट विंडो में खोलें</translation>
