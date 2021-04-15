@@ -54,6 +54,8 @@ bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url);
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
 
+bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url);
+
 void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,
                           const GURL& url,

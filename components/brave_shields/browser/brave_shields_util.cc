@@ -44,7 +44,6 @@ void RecordShieldsSettingChanged(PrefService* local_state) {
       ::brave_shields::kChangedPerSiteShields, local_state);
 }
 
-
 ContentSetting GetDefaultAllowFromControlType(ControlType type) {
   if (type == ControlType::DEFAULT)
     return CONTENT_SETTING_DEFAULT;
@@ -222,15 +221,34 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
 }
 
 bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url) {
-  return base::FeatureList::IsEnabled(features::kBraveAdblockCosmeticFiltering)
-      && GetBraveShieldsEnabled(map, url)
-      && (GetCosmeticFilteringControlType(map, url) != ControlType::ALLOW);
+  return base::FeatureList::IsEnabled(
+             features::kBraveAdblockCosmeticFiltering) &&
+         GetBraveShieldsEnabled(map, url) &&
+         (GetCosmeticFilteringControlType(map, url) != ControlType::ALLOW);
 }
 
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url) {
   const ControlType type = GetCosmeticFilteringControlType(map, url);
   return type == ControlType::BLOCK;
+}
+
+bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url) {
+  // Don't block if feature is disabled
+  if (!base::FeatureList::IsEnabled(brave_shields::features::kBraveDomainBlock))
+    return false;
+
+  // Don't block if Brave Shields is down (this also handles cases where
+  // the URL is not HTTP(S))
+  if (!brave_shields::GetBraveShieldsEnabled(map, url))
+    return false;
+
+  // Don't block unless ad blocking is "aggressive"
+  if (brave_shields::GetCosmeticFilteringControlType(map, url) !=
+      ControlType::BLOCK)
+    return false;
+
+  return true;
 }
 
 void SetCookieControlType(HostContentSettingsMap* map,
@@ -404,13 +422,13 @@ void DispatchBlockedEvent(const GURL& request_url,
                           const std::string& block_type) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   BraveShieldsWebContentsObserver::DispatchBlockedEvent(
-      block_type, request_url.spec(),
-      render_process_id, render_frame_id, frame_tree_node_id);
+      block_type, request_url.spec(), render_process_id, render_frame_id,
+      frame_tree_node_id);
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
-      request_url.spec(), render_process_id,
-      render_frame_id, frame_tree_node_id);
+      request_url.spec(), render_process_id, render_frame_id,
+      frame_tree_node_id);
 #endif
 }
 
@@ -421,12 +439,11 @@ bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url) {
   return original_referrer.IsSameOriginWith(target_origin);
 }
 
-bool MaybeChangeReferrer(
-    bool allow_referrers,
-    bool shields_up,
-    const GURL& current_referrer,
-    const GURL& target_url,
-    Referrer* output_referrer) {
+bool MaybeChangeReferrer(bool allow_referrers,
+                         bool shields_up,
+                         const GURL& current_referrer,
+                         const GURL& target_url,
+                         Referrer* output_referrer) {
   DCHECK(output_referrer);
   if (allow_referrers || !shields_up || current_referrer.is_empty()) {
     return false;
