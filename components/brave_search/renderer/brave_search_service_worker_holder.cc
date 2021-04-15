@@ -15,7 +15,7 @@
 namespace {
 
 static base::NoDestructor<std::vector<std::string>> g_vetted_hosts(
-    {"search.brave.com", "search-dev.brave.com"});
+    {"search.brave.com", "search-dev.brave.com", "search-dev-local.brave.com"});
 
 bool IsAllowedHost(const GURL& url) {
   std::string host = url.host();
