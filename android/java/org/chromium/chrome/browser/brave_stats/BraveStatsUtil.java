@@ -40,8 +40,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.core.app.ActivityCompat;
+import android.app.Activity;
+
+
+
 public class BraveStatsUtil {
     public static final short MILLISECONDS_PER_ITEM = 50;
+    public static final int SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM = 3867;
     /*
      * Gets string view of specific time in seconds for Brave stats
      */
@@ -198,6 +207,24 @@ public class BraveStatsUtil {
         view.draw(canvas);
 
         return canvasBitmap;
+    }
+
+    public static boolean hasWritePermission(Activity activity){
+        if (ActivityCompat.checkSelfPermission(
+                    activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activity.requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM);
+        }
+
+        return false;
+    }
+
+    public static void shareStats(int layout){
+        View shareStatsLayout = getLayout(layout);
+        updateBraveShareStatsLayoutAndShare(shareStatsLayout);
     }
 
     private static List<Pair<String, String>> getStatsPairs() {

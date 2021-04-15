@@ -80,6 +80,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
+import androidx.core.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import android.Manifest;
+import org.chromium.chrome.browser.app.BraveActivity;
+import android.app.Activity;
+
+
 /**
  * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
  */
@@ -421,8 +430,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             @Override
             public void onClick(View v) {
                 mMainLayout.setVisibility(View.GONE);
-                View shareStatsLayout = BraveStatsUtil.getLayout(R.layout.brave_stats_share_layout);
-                BraveStatsUtil.updateBraveShareStatsLayoutAndShare(shareStatsLayout);
+                if (BraveStatsUtil.hasWritePermission(BraveActivity.getBraveActivity())) {
+                    BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
+                }
             }
         });
 
@@ -456,6 +466,11 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setUpSecondaryLayout();
 
         setupMainSwitchClick(mShieldMainSwitch);
+    }
+
+    private void shareStats(){
+        View shareStatsLayout = BraveStatsUtil.getLayout(R.layout.brave_stats_share_layout);
+        BraveStatsUtil.updateBraveShareStatsLayoutAndShare(shareStatsLayout);
     }
 
     private void setToggleView(boolean shouldShow) {
