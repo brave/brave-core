@@ -13,6 +13,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
@@ -46,8 +47,8 @@ class BraveToolbarButtonHighlightPathGenerator
 };
 }  // namespace
 
-BraveAvatarToolbarButton::BraveAvatarToolbarButton(Browser* browser)
-    : AvatarToolbarButton(browser) {
+BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
+    : AvatarToolbarButton(browser_view) {
   // Replace ToolbarButton's highlight path generator.
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveToolbarButtonHighlightPathGenerator>());
