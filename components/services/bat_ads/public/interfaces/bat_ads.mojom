@@ -51,7 +51,7 @@ interface BatAdsClient {
   UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
   Save(string name, string value) => (int32 result);
   Load(string name) => (int32 result, string value);
-  LoadUserModelForId(string id) => (int32 result, string value);
+  LoadAdsResource(string id, int32 version) => (int32 result, string value);
   GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<string> history);
   RunDBTransaction(ads_database.mojom.DBTransaction transaction) => (ads_database.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
@@ -97,5 +97,5 @@ interface BatAds {
   ToggleAdOptOutAction(string category, int32 action) => (string category, int32 action);
   ToggleSaveAd(string creative_instance_id, string creative_set_id, bool saved) => (string creative_instance_id, bool saved);
   ToggleFlagAd(string creative_instance_id, string creative_set_id, bool flagged) => (string creative_instance_id, bool flagged);
-  OnUserModelUpdated(string id);
+  OnResourceComponentUpdated(string id);
 };

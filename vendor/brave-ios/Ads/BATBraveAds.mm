@@ -36,7 +36,7 @@
 
 static const NSInteger kDefaultNumberOfAdsPerHour = 2;
 
-static const int kCurrentUserModelManifestSchemaVersion = 1;
+static const int kCurrentAdsResourceManifestSchemaVersion = 1;
 
 static NSString * const kLegacyAdsEnabledPrefKey = @"BATAdsEnabled";
 static NSString * const kLegacyNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
@@ -49,7 +49,7 @@ static NSString * const kNumberOfAdsPerHourKey = [NSString stringWithUTF8String:
 static NSString * const kShouldAllowAdsSubdivisionTargetingPrefKey = [NSString stringWithUTF8String:ads::prefs::kShouldAllowAdsSubdivisionTargeting];
 static NSString * const kAdsSubdivisionTargetingCodePrefKey = [NSString stringWithUTF8String:ads::prefs::kAdsSubdivisionTargetingCode];
 static NSString * const kAutoDetectedAdsSubdivisionTargetingCodePrefKey = [NSString stringWithUTF8String:ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode];
-static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
+static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 
 namespace {
 
@@ -87,10 +87,10 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) dispatch_queue_t prefsWriteThread;
 @property (nonatomic) NSMutableDictionary *prefs;
-@property (nonatomic, copy) NSDictionary *userModelMetadata;
-@property (nonatomic) NSTimer *updateUserModelTimer;
-@property (nonatomic) int64_t userModelRetryCount;
-@property (nonatomic, readonly) NSDictionary *userModelPaths;
+@property(nonatomic, copy) NSDictionary* adsResourceMetadata;
+@property(nonatomic) NSTimer* updateAdsResourceTimer;
+@property(nonatomic) int64_t adsResourceRetryCount;
+@property(nonatomic, readonly) NSDictionary* componentPaths;
 @end
 
 @implementation BATBraveAds
@@ -114,11 +114,11 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
     [self setupNetworkMonitoring];
 
-    if (self.userModelMetadata == nil) {
-      self.userModelMetadata = [[NSDictionary alloc] init];
+    if (self.adsResourceMetadata == nil) {
+      self.adsResourceMetadata = [[NSDictionary alloc] init];
     }
 
-    self.userModelRetryCount = 1;
+    self.adsResourceRetryCount = 1;
 
     databaseQueue = base::CreateSequencedTaskRunner(
         {base::ThreadPool(), base::MayBlock(),
@@ -134,8 +134,8 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 
 - (void)dealloc
 {
-  [self.updateUserModelTimer invalidate];
-  self.updateUserModelTimer = nil;
+  [self.updateAdsResourceTimer invalidate];
+  self.updateAdsResourceTimer = nil;
 
   [NSNotificationCenter.defaultCenter removeObserver:self];
   if (networkMonitor) { nw_path_monitor_cancel(networkMonitor); }
@@ -249,8 +249,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       }
       ads->OnWalletUpdated(wallet.paymentId.UTF8String, base::Base64Encode(seed));
       ads->Initialize(^(bool) {
-        [self periodicallyCheckForUserModelUpdates];
-        [self registerUserModels];
+        [self periodicallyCheckForAdsResourceUpdates];
+        [self registerAdsResources];
       });
     }];
   }
@@ -666,123 +666,141 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 #pragma mark - File IO
 
-- (NSDictionary *)userModelMetadata
-{
-  return (NSDictionary *)self.prefs[kUserModelMetadataPrefKey];
+- (NSDictionary*)adsResourceMetadata {
+  return (NSDictionary*)self.prefs[kAdsResourceMetadataPrefKey];
 }
 
-- (void)setUserModelMetadata:(NSDictionary *)userModelMetadata
-{
-  self.prefs[kUserModelMetadataPrefKey] = userModelMetadata;
+- (void)setAdsResourceMetadata:(NSDictionary*)adsResourceMetadata {
+  self.prefs[kAdsResourceMetadataPrefKey] = adsResourceMetadata;
   [self savePrefs];
 }
 
-- (BOOL)registerUserModelsForLanguageCode:(NSString *)languageCode
-{
+- (BOOL)registerAdsResourcesForLanguageCode:(NSString*)languageCode {
   if (!languageCode) {
     return NO;
   }
 
   NSString *isoLanguageCode = [@"iso_639_1_" stringByAppendingString:[languageCode lowercaseString]];
 
-  NSArray *languageCodeUserModelIds = [self.userModelPaths allKeysForObject:isoLanguageCode];
-  if ([languageCodeUserModelIds count] == 0) {
+  NSArray* languageCodeAdsResourceIds =
+      [self.componentPaths allKeysForObject:isoLanguageCode];
+  if ([languageCodeAdsResourceIds count] == 0) {
     return NO;
   }
 
-  NSString *languageCodeUserModelId = [languageCodeUserModelIds firstObject];
-  BLOG(1, @"Registering Brave User Model Installer (%@) with id %@", languageCode, languageCodeUserModelId);
+  NSString* languageCodeAdsResourceId =
+      [languageCodeAdsResourceIds firstObject];
+  BLOG(1, @"Registering Brave Ads Resources Installer (%@) with id %@",
+       languageCode, languageCodeAdsResourceId);
 
-  BLOG(1, @"Notifying user model observers");
-  const std::string bridged_language_code_user_model_idkey = languageCodeUserModelId.UTF8String;
-  ads->OnUserModelUpdated(bridged_language_code_user_model_idkey);
+  BLOG(1, @"Notifying ads resource observers");
+  const std::string bridged_language_code_adsResource_idkey =
+      languageCodeAdsResourceId.UTF8String;
+  ads->OnResourceComponentUpdated(bridged_language_code_adsResource_idkey);
 
   return YES;
 }
 
-- (BOOL)registerUserModelsForCountryCode:(NSString *)countryCode
-{
+- (BOOL)registerAdsResourcesForCountryCode:(NSString*)countryCode {
   if (!countryCode) {
     return NO;
   }
 
   NSString *isoCountryCode = [@"iso_3166_1_" stringByAppendingString:[countryCode lowercaseString]];
 
-  NSArray *countryCodeUserModelIds = [self.userModelPaths allKeysForObject:isoCountryCode];
-  if ([countryCodeUserModelIds count] == 0) {
+  NSArray* countryCodeAdsResourceIds =
+      [self.componentPaths allKeysForObject:isoCountryCode];
+  if ([countryCodeAdsResourceIds count] == 0) {
     return NO;
   }
 
-  NSString *countryCodeUserModelId = [countryCodeUserModelIds firstObject];
-  BLOG(1, @"Registering Brave User Model Installer (%@) with id %@", countryCode, countryCodeUserModelId);
+  NSString* countryCodeAdsResourceId = [countryCodeAdsResourceIds firstObject];
+  BLOG(1, @"Registering Brave Ads Resources Installer (%@) with id %@",
+       countryCode, countryCodeAdsResourceId);
 
-  BLOG(1, @"Notifying user model observers");
-  const std::string bridged_country_code_user_model_idkey = countryCodeUserModelId.UTF8String;
-  ads->OnUserModelUpdated(bridged_country_code_user_model_idkey);
+  BLOG(1, @"Notifying ads resource observers");
+  const std::string bridged_country_code_adsResource_idkey =
+      countryCodeAdsResourceId.UTF8String;
+  ads->OnResourceComponentUpdated(bridged_country_code_adsResource_idkey);
 
   return YES;
 }
 
-- (void)registerUserModels
-{
+- (void)registerAdsResources {
   const auto currentLocale = [NSLocale currentLocale];
 
-  if (![self registerUserModelsForLanguageCode:currentLocale.languageCode]) {
-    BLOG(1, @"%@ not supported for user model installer", currentLocale.languageCode);
+  if (![self registerAdsResourcesForLanguageCode:currentLocale.languageCode]) {
+    BLOG(1, @"%@ not supported for ads resource installer",
+         currentLocale.languageCode);
   }
 
-  if (![self registerUserModelsForCountryCode:currentLocale.countryCode]) {
-    BLOG(1, @"%@ not supported for user model installer", currentLocale.countryCode);
+  if (![self registerAdsResourcesForCountryCode:currentLocale.countryCode]) {
+    BLOG(1, @"%@ not supported for ads resource installer",
+         currentLocale.countryCode);
   }
 }
 
-- (void)periodicallyCheckForUserModelUpdates
-{
+- (void)periodicallyCheckForAdsResourceUpdates {
   const uint64_t time_offset = 6 * 60 * 60;  // every 6 hours and on browser launch
 
   const auto __weak weakSelf = self;
-  self.updateUserModelTimer = [NSTimer scheduledTimerWithTimeInterval:time_offset repeats:YES block:^(NSTimer * _Nonnull timer) {
-    const auto strongSelf = weakSelf;
-    if (!strongSelf) { return; }
+  self.updateAdsResourceTimer = [NSTimer
+      scheduledTimerWithTimeInterval:time_offset
+                             repeats:YES
+                               block:^(NSTimer* _Nonnull timer) {
+                                 const auto strongSelf = weakSelf;
+                                 if (!strongSelf) {
+                                   return;
+                                 }
 
-    [strongSelf updateUserModels];
+                                 [strongSelf updateAdsResources];
 
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateStyle = NSDateFormatterFullStyle;
-    formatter.timeStyle = NSDateFormatterFullStyle;
-    BLOG(1, @"Update user models on %@", [formatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:time_offset]]);
-  }];
+                                 NSDateFormatter* formatter =
+                                     [[NSDateFormatter alloc] init];
+                                 formatter.dateStyle = NSDateFormatterFullStyle;
+                                 formatter.timeStyle = NSDateFormatterFullStyle;
+                                 BLOG(1, @"Update ads resources on %@",
+                                      [formatter
+                                          stringFromDate:
+                                              [[NSDate date]
+                                                  dateByAddingTimeInterval:
+                                                      time_offset]]);
+                               }];
 
-  [self.updateUserModelTimer fire];
+  [self.updateAdsResourceTimer fire];
 }
 
-- (void)updateUserModels
-{
-  NSDictionary *dict = [self userModelMetadata];
-  BLOG(1, @"Updating user models");
+- (void)updateAdsResources {
+  NSDictionary* dict = [self adsResourceMetadata];
+  BLOG(1, @"Updating ads resources");
 
   for (NSString *key in dict) {
-    BLOG(1, @"Checking %@ user model for updates", key);
+    BLOG(1, @"Checking %@ ads resource for updates", key);
 
     const auto __weak weakSelf = self;
-    [self downloadUserModelForId:key completion:^(BOOL success, BOOL shouldRetry) {
-      const auto strongSelf = weakSelf;
-      if (!strongSelf) { return; }
+    [self
+        downloadAdsResource:key
+                 completion:^(BOOL success, BOOL shouldRetry) {
+                   const auto strongSelf = weakSelf;
+                   if (!strongSelf) {
+                     return;
+                   }
 
-      if (!success) {
-        BLOG(1, @"Failed to update user models");
-        return;
-      }
+                   if (!success) {
+                     BLOG(1, @"Failed to update ads resources");
+                     return;
+                   }
 
-      BLOG(1, @"Notifying user model observers");
-      strongSelf->ads->OnUserModelUpdated(key.UTF8String);
-    }];
+                   BLOG(1, @"Notifying ads resource observers");
+                   strongSelf->ads->OnResourceComponentUpdated(key.UTF8String);
+                 }];
   }
 }
 
-- (void)downloadUserModelForId:(NSString *)id completion:(void (^)(BOOL success, BOOL shouldRetry))completion
-{
-  BLOG(1, @"Downloading %@ user model manifest", id);
+- (void)downloadAdsResource:(NSString*)id
+                 completion:
+                     (void (^)(BOOL success, BOOL shouldRetry))completion {
+  BLOG(1, @"Downloading %@ ads resource manifest", id);
 
   const auto __weak weakSelf = self;
 
@@ -793,22 +811,23 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     baseUrl = @"https://brave-user-model-installer-input-dev.s3.bravesoftware.com";
   }
 
-  NSString *userModelPath = self.userModelPaths[id] ?: @"";
-  baseUrl = [baseUrl stringByAppendingPathComponent:userModelPath];
+  NSString* componentPath = self.componentPaths[id] ?: @"";
+  baseUrl = [baseUrl stringByAppendingPathComponent:componentPath];
 
-  NSString *manifestUrl = [baseUrl stringByAppendingPathComponent:@"models.json"];
+  NSString* manifestUrl =
+      [baseUrl stringByAppendingPathComponent:@"resources.json"];
   return [self.commonOps loadURLRequest:manifestUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
     const auto strongSelf = weakSelf;
     if (!strongSelf || ![strongSelf isAdsServiceRunning]) { return; }
 
     if (statusCode == 404) {
-      BLOG(1, @"%@ user model manifest not found", id);
+      BLOG(1, @"%@ ads resource manifest not found", id);
       completion(NO, NO);
       return;
     }
 
     if (statusCode != 200) {
-      BLOG(1, @"Failed to download %@ user model manifest", id);
+      BLOG(1, @"Failed to download %@ ads resource manifest", id);
       completion(NO, YES);
       return;
     }
@@ -821,69 +840,92 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     }
 
     NSNumber *schemaVersion = dict[@"schemaVersion"];
-    if ([schemaVersion intValue] != kCurrentUserModelManifestSchemaVersion) {
+    if ([schemaVersion intValue] != kCurrentAdsResourceManifestSchemaVersion) {
       completion(NO, YES);
       return;
     }
 
-    NSArray *models = dict[@"models"];
+    NSArray* adsResources = dict[@"resources"];
 
-    for (NSDictionary *model in models) {
-      NSString *modelId = model[@"id"];
-      if (!modelId) {
+    for (NSDictionary* adsResource in adsResources) {
+      NSString* adsResourceStatus = adsResource[@"status"];
+      if (!adsResourceStatus ||
+          ![adsResourceStatus isEqualToString:@"stable"]) {
         continue;
       }
 
-      NSString *filename = model[@"filename"];
+      NSString* adsResourceId = adsResource[@"id"];
+      if (!adsResourceId) {
+        continue;
+      }
+
+      NSString* filename = adsResource[@"filename"];
       if (!filename) {
         completion(NO, YES);
         continue;
       }
 
-      NSNumber *version = model[@"version"];
+      NSNumber* version = adsResource[@"version"];
       if (!version) {
         completion(NO, YES);
         continue;
       }
 
-      NSDictionary *userModelMetadataDict = [strongSelf userModelMetadata];
-      if (version <= userModelMetadataDict[modelId]) {
-        BLOG(1, @"%@ user model is up to date on version %@", modelId, version);
+      NSDictionary* adsResourceMetadataDict = [strongSelf adsResourceMetadata];
+      if (version <= adsResourceMetadataDict[adsResourceId]) {
+        BLOG(1, @"%@ ads resource is up to date on version %@", adsResourceId,
+             version);
         completion(YES, NO);
         return;
       }
 
-      NSString *modelUrl = [baseUrl stringByAppendingPathComponent:filename];
+      NSString* adsResourceUrl =
+          [baseUrl stringByAppendingPathComponent:filename];
 
-      BLOG(1, @"Downloading %@ user model version %@", modelId, version);
+      BLOG(1, @"Downloading %@ ads resource version %@", adsResourceId,
+           version);
 
-      return [strongSelf.commonOps loadURLRequest:modelUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
-        const auto strongSelf = weakSelf;
-        if (!strongSelf || ![strongSelf isAdsServiceRunning]) { return; }
+      return [strongSelf.commonOps loadURLRequest:adsResourceUrl.UTF8String
+          headers:{}
+          content:""
+          content_type:""
+          method:"GET"
+          callback:^(const std::string& errorDescription, int statusCode,
+                     const std::string& response,
+                     const base::flat_map<std::string, std::string>& headers) {
+            const auto strongSelf = weakSelf;
+            if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
+              return;
+            }
 
-        if (statusCode == 404) {
-          BLOG(1, @"%@ user model not found", id);
-          completion(NO, NO);
-          return;
-        }
+            if (statusCode == 404) {
+              BLOG(1, @"%@ ads resource not found", id);
+              completion(NO, NO);
+              return;
+            }
 
-        if (statusCode != 200) {
-          BLOG(1, @"Failed to download %@ user model version %@", modelId, version);
-          completion(NO, YES);
-          return;
-        }
+            if (statusCode != 200) {
+              BLOG(1, @"Failed to download %@ ads resource version %@",
+                   adsResourceId, version);
+              completion(NO, YES);
+              return;
+            }
 
-        [strongSelf.commonOps saveContents:response name:modelId.UTF8String];
-        BLOG(1, @"Cached %@ user model version %@", modelId, version);
+            [strongSelf.commonOps saveContents:response
+                                          name:adsResourceId.UTF8String];
+            BLOG(1, @"Cached %@ ads resource version %@", adsResourceId,
+                 version);
 
-        NSMutableDictionary *dict = [[strongSelf userModelMetadata] mutableCopy];
-        dict[modelId] = version;
-        [strongSelf setUserModelMetadata:dict];
+            NSMutableDictionary* dict =
+                [[strongSelf adsResourceMetadata] mutableCopy];
+            dict[adsResourceId] = version;
+            [strongSelf setAdsResourceMetadata:dict];
 
-        BLOG(1, @"%@ user model updated to version %@", modelId, version);
+            BLOG(1, @"%@ ads resource updated to version %@", adsResourceId,
+                 version);
 
-        completion(YES, NO);
-      }];
+            completion(YES, NO);
+          }];
     }
   }];
 }
@@ -895,56 +937,74 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   callback({});
 }
 
-- (void)loadUserModelForId:(const std::string &)id callback:(ads::LoadCallback)callback
-{
+- (void)loadAdsResource:(const std::string&)id
+                version:(const int)version
+               callback:(ads::LoadCallback)callback {
   NSString *bridgedId = [NSString stringWithUTF8String:id.c_str()];
 
-  BLOG(1, @"Loading %@ user model", bridgedId);
+  BLOG(1, @"Loading %@ ads resource", bridgedId);
 
   const std::string contents = [self.commonOps loadContentsFromFileWithName:bridgedId.UTF8String];
   if (!contents.empty()) {
-    BLOG(1, @"%@ user model is cached", bridgedId);
+    BLOG(1, @"%@ ads resource is cached", bridgedId);
     callback(ads::Result::SUCCESS, contents);
     return;
   }
 
-  BLOG(1, @"%@ user model not cached", bridgedId);
+  BLOG(1, @"%@ ads resource not cached", bridgedId);
 
   const auto __weak weakSelf = self;
-  [self downloadUserModelForId:bridgedId completion:^(BOOL success, BOOL shouldRetry) {
-    const auto strongSelf = weakSelf;
-    if (!strongSelf || ![strongSelf isAdsServiceRunning]) { return; }
+  [self
+      downloadAdsResource:bridgedId
+               completion:^(BOOL success, BOOL shouldRetry) {
+                 const auto strongSelf = weakSelf;
+                 if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
+                   return;
+                 }
 
-    const auto contents = [strongSelf.commonOps loadContentsFromFileWithName:bridgedId.UTF8String];
-    if (!success || contents.empty()) {
-      if (shouldRetry) {
-        const int64_t backoff = 1 * 60;
-        int64_t delay = backoff << strongSelf.userModelRetryCount;
-        if (delay >= 60 * 60) {
-          delay = 60 * 60;
-        } else {
-          strongSelf.userModelRetryCount++;
-        }
+                 const auto contents = [strongSelf.commonOps
+                     loadContentsFromFileWithName:bridgedId.UTF8String];
+                 if (!success || contents.empty()) {
+                   if (shouldRetry) {
+                     const int64_t backoff = 1 * 60;
+                     int64_t delay = backoff
+                                     << strongSelf.adsResourceRetryCount;
+                     if (delay >= 60 * 60) {
+                       delay = 60 * 60;
+                     } else {
+                       strongSelf.adsResourceRetryCount++;
+                     }
 
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        formatter.dateStyle = NSDateFormatterFullStyle;
-        formatter.timeStyle = NSDateFormatterFullStyle;
-        BLOG(1, @"Retry loading %@ user model on %@", bridgedId, [formatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:delay]]);
+                     NSDateFormatter* formatter =
+                         [[NSDateFormatter alloc] init];
+                     formatter.dateStyle = NSDateFormatterFullStyle;
+                     formatter.timeStyle = NSDateFormatterFullStyle;
+                     BLOG(1, @"Retry loading %@ ads resource on %@", bridgedId,
+                          [formatter stringFromDate:
+                                         [[NSDate date]
+                                             dateByAddingTimeInterval:delay]]);
 
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-          const auto strongSelf2 = weakSelf;
-          if (!strongSelf2 || ![strongSelf2 isAdsServiceRunning]) { return; }
-          [strongSelf2 loadUserModelForId:bridgedId.UTF8String callback:callback];
-        });
-      }
+                     dispatch_after(
+                         dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC),
+                         dispatch_get_main_queue(), ^{
+                           const auto strongSelf2 = weakSelf;
+                           if (!strongSelf2 ||
+                               ![strongSelf2 isAdsServiceRunning]) {
+                             return;
+                           }
+                           [strongSelf2 loadAdsResource:bridgedId.UTF8String
+                                                version:version
+                                               callback:callback];
+                         });
+                   }
 
-      return;
-    }
+                   return;
+                 }
 
-    strongSelf.userModelRetryCount = 1;
+                 strongSelf.adsResourceRetryCount = 1;
 
-    callback(ads::Result::SUCCESS, contents);
-  }];
+                 callback(ads::Result::SUCCESS, contents);
+               }];
 }
 
 - (void)load:(const std::string &)name callback:(ads::LoadCallback)callback
@@ -957,10 +1017,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
 }
 
-- (const std::string)loadResourceForId:(const std::string &)id
-{
+- (const std::string)loadResourceForId:(const std::string&)id {
   const auto bundle = [NSBundle bundleForClass:[BATBraveAds class]];
-  const auto path = [bundle pathForResource:[NSString stringWithUTF8String:id.c_str()] ofType:nil];
+  const auto path =
+      [bundle pathForResource:[NSString stringWithUTF8String:id.c_str()]
+                       ofType:nil];
   if (!path || path.length == 0) {
     return "";
   }
@@ -1188,9 +1249,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   [self savePrefs];
 }
 
-#pragma mark - User Model Paths
+#pragma mark - Ads Resources Paths
 
-- (NSDictionary *)userModelPaths {
+- (NSDictionary*)componentPaths {
   static NSDictionary *_paths = nil;
 
   static dispatch_once_t onceToken;
@@ -1236,7 +1297,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"oeneodeckioghmhokkmcbijfanjbanop": @"iso_3166_1_cv",
       @"cmknopomfihgdpjlnjhjkmogaooeoeic": @"iso_3166_1_kh",
       @"mmiflfidlgoehkhhkeodfdjpbkkjadgi": @"iso_3166_1_cm",
-      @"gpaihfendegmjoffnpngjjhbipbioknd": @"iso_3166_1_ca",
+      @"lgejdiamednlaeiknhnnjnkofmapfbbf": @"iso_3166_1_ca",
       @"efpgpbmpbkhadlnpdnjigldeebgacopp": @"iso_3166_1_ky",
       @"ljfeoddejgcdofgnpgljaeiaemfimgej": @"iso_3166_1_cf",
       @"oahnhemdhgogkhgljdkhbficecbplmdf": @"iso_3166_1_td",
@@ -1279,7 +1340,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"nchncleokkkkdfgbgmenkpkmhnlbibmg": @"iso_3166_1_ga",
       @"alebifccfdpcgpandngmalclpbjpaiak": @"iso_3166_1_gm",
       @"kaikhlldfkdjgddjdkangjobahokefeb": @"iso_3166_1_ge",
-      @"dgkplhfdbkdogfblcghcfcgfalanhomi": @"iso_3166_1_de",
+      @"jcncoheihebhhiemmbmpfhkceomfipbj": @"iso_3166_1_de",
       @"panlkcipneniikplpjnoddnhonjljbdp": @"iso_3166_1_gh",
       @"pibapallcmncjajdoamgdnmgcbefekgn": @"iso_3166_1_gi",
       @"ochemplgmlglilaflfjnmngpfmpmjgnb": @"iso_3166_1_gr",
@@ -1308,7 +1369,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"fiodhmddlgkgajbhohfdmkliikidmaom": @"iso_3166_1_il",
       @"gjkhegliajlngffafldbadcnpfegmkmb": @"iso_3166_1_it",
       @"ncfbonfnhophngmkkihoieoclepddfhm": @"iso_3166_1_jm",
-      @"ienmdlgalnmefnpjggommgdilkklopof": @"iso_3166_1_jp",
+      @"ikolbkmkinegpoedjeklhfnaidmloifj": @"iso_3166_1_jp",
       @"lfgnglkpngeffaijiomlppnobpchhcgf": @"iso_3166_1_je",
       @"gnkmfghehkoegoabhndflbdmfnlgeind": @"iso_3166_1_jo",
       @"jadlfgggcfdhicaoacokfpmccbmedkim": @"iso_3166_1_kz",
@@ -1430,8 +1491,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"bolcbpmofcabjoflcmljongimpbpeagb": @"iso_3166_1_ug",
       @"enkpeojckjlmehbniegocfffdkanjhef": @"iso_3166_1_ua",
       @"ajdiilmgienedlgohldjicpcofnckdmn": @"iso_3166_1_ae",
-      @"cdjnpippjnphaeahihhpafnneefcnnfh": @"iso_3166_1_gb",
-      @"kkjipiepeooghlclkedllogndmohhnhi": @"iso_3166_1_us",
+      @"cmdlemldhabgmejfognbhdejendfeikd": @"iso_3166_1_gb",
+      @"iblokdlgekdjophgeonmanpnjihcjkjj": @"iso_3166_1_us",
       @"ocikkcmgfagemkpbbkjlngjomkdobgpp": @"iso_3166_1_um",
       @"cejbfkalcdepkoekifpidloabepihogd": @"iso_3166_1_uy",
       @"chpbioaimigllimaalbibcmjjcfnbpid": @"iso_3166_1_uz",
@@ -1451,7 +1512,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"pecokcgeeiabdlkfkfjpmfldfhhjlmom": @"iso_639_1_ak",
       @"pgkommhmfkkkfbbcnnfhlkagbodoimjm": @"iso_639_1_sq",
       @"emopjfcnkbjfedjbfgajdajnkkfekcbl": @"iso_639_1_am",
-      @"hfiknbegiiiigegdgpcgekhdlpdmladb": @"iso_639_1_ar",
+      @"knjanagkmnjgjjiekhmhclcbcdbjajmk": @"iso_639_1_ar",
       @"onjbjcnjheabeghbflckfekjnnjgfabn": @"iso_639_1_an",
       @"ghgfdmhmhifphaokjfplffppmlfchofm": @"iso_639_1_hy",
       @"mbcmenffnlanegglgpdgbmmldfpclnkm": @"iso_639_1_as",
@@ -1474,7 +1535,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"fllhkadnpidionapphjicdkfdiloghad": @"iso_639_1_ch",
       @"eakppbikiomjdnligoccikcdipojiljk": @"iso_639_1_ce",
       @"ddekfkhnjcpbankekbelkeekibbhmgnh": @"iso_639_1_ny",
-      @"oblfikajhadjnmjiihdchdfdcfehlbpj": @"iso_639_1_zh",
+      @"clegognodnfcpbmhpfgbpckebppbaebp": @"iso_639_1_zh",
       @"obdagonejiaflgbifdloghkllgdjpcdj": @"iso_639_1_cv",
       @"apmkijnjnhdabkckmkkejgdnbgdglocb": @"iso_639_1_kw",
       @"gdmbpbmoiogajaogpajfhonmlepcdokn": @"iso_639_1_co",
@@ -1483,28 +1544,28 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"nllaodpgkekajbabhjphhekenlnlpdmd": @"iso_639_1_cs",
       @"klifniioldbebiedppmbobpdiombacge": @"iso_639_1_da",
       @"aoljgchlinejchjbbkicamhfdapghahp": @"iso_639_1_dv",
-      @"opoleacilplnkhobipjcihpdoklpnjkk": @"iso_639_1_nl",
+      @"neglbnegiidighiifljiphcldmgibifn": @"iso_639_1_nl",
       @"jginkacioplimdjobccplmgiphpjjigl": @"iso_639_1_dz",
-      @"emgmepnebbddgnkhfmhdhmjifkglkamo": @"iso_639_1_en",
+      @"ocilmpijebaopmdifcomolmpigakocmo": @"iso_639_1_en",
       @"halbpcgpgcafebkldcfhllomekophick": @"iso_639_1_eo",
       @"onmakacikbbnhmanodpjhijljadlpbda": @"iso_639_1_et",
       @"bjhkalknmdllcnkcjdjncplkbbeigklb": @"iso_639_1_ee",
       @"jamflccjbegjmghgaljipcjjbipgojbn": @"iso_639_1_fo",
       @"gfoibbmiaikelajlipoffiklghlbapjf": @"iso_639_1_fj",
-      @"djokgcimofealcnfijnlfdnfajpdjcfg": @"iso_639_1_fi",
-      @"hbejpnagkgeeohiojniljejpdpojmfdp": @"iso_639_1_fr",
+      @"lbbgedbjaoehfaoklcebbepkbmljanhc": @"iso_639_1_fi",
+      @"ijgkfgmfiinppefbonemjidmkhgbonei": @"iso_639_1_fr",
       @"anhpkncejedojfopbigplmbfmbhkagao": @"iso_639_1_ff",
       @"ejioajnkmjfjfbbanmgfbagjbdlfodge": @"iso_639_1_gl",
       @"hlipecdabdcghhdkhfmhiclaobjjmhbo": @"iso_639_1_ka",
-      @"eclclcmhpefndfimkgjknaenojpdffjp": @"iso_639_1_de",
-      @"aefhgfnampgebnpchhfkaoaiijpmhcca": @"iso_639_1_el",
+      @"bbefpembgddgdihpkcidgdgiojjlchji": @"iso_639_1_de",
+      @"hgcnnimnfelflnbdfbdngikednoidhmg": @"iso_639_1_el",
       @"ebgmbleidclecpicaccgpjdhndholiel": @"iso_639_1_gn",
       @"mdpcebhdjplkegddkiodmbjcmlnhbpog": @"iso_639_1_gu",
       @"hpkelamfnimiapfbeeelpfkhkgfoejil": @"iso_639_1_ht",
       @"khgpojhhoikmhodflkppdcakhbkaojpi": @"iso_639_1_ha",
-      @"gffjpkbdngpbfkflpnoodjfkpelbappk": @"iso_639_1_he",
+      @"biklnlngpkiolabpfdiokhnokoomfldp": @"iso_639_1_he",
       @"pkmkhkpglegjekkfabaelkbgkfegnmde": @"iso_639_1_hz",
-      @"emhbebmifclalgbdpodobmckfehlkhfp": @"iso_639_1_hi",
+      @"acdmbpdfmekdichgebponnjloihkdejf": @"iso_639_1_hi",
       @"cmkgcbedakcdopgjdhbbpjjaodjcdbdp": @"iso_639_1_ho",
       @"ifbdofecjcadpnkokmdfahhjadcppmko": @"iso_639_1_hu",
       @"hoeihggfhgnfpdnaeocfpmoelcenhfla": @"iso_639_1_ia",
@@ -1515,9 +1576,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"fbdjobfnceggaokdnlebbaplnhednlhl": @"iso_639_1_ik",
       @"nkajjfpapgfhlcpmmoipafbfnnmojaep": @"iso_639_1_io",
       @"dhhkjdedjghadoekfklpheblplmlpdec": @"iso_639_1_is",
-      @"ijaiihoedhaocihjjkfjnhfhbceekdkg": @"iso_639_1_it",
+      @"apaklaabmoggbjglopdnboibkipdindg": @"iso_639_1_it",
       @"eociikjclgmjinkgeoehleofopogehja": @"iso_639_1_iu",
-      @"ncnmgkcadooabjhgjlkkdipdnfokpjnm": @"iso_639_1_ja",
+      @"anbffbdnbfabjafoemkhoaelpodojknn": @"iso_639_1_ja",
       @"jdfafcdnmjeadcohbmjeeijgheobldng": @"iso_639_1_jv",
       @"jknflnmanienedkoeoginjmbpmkpclki": @"iso_639_1_kl",
       @"nggdckgfnooehkpnmjdodbknekmhcdeg": @"iso_639_1_kn",
@@ -1530,7 +1591,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"njimokpabbaelbbpohoflcbjhdgonbmf": @"iso_639_1_ky",
       @"danmahhfdmncbiipbefmjdkembceajdk": @"iso_639_1_kv",
       @"lcahllbcfbhghpjjocdhmilokfbpbekn": @"iso_639_1_kg",
-      @"jbhiacghlejpbieldkdfkgenhnolndlf": @"iso_639_1_ko",
+      @"deadocmlegcgnokbhhpgblpofkpkeocg": @"iso_639_1_ko",
       @"hfboaaehpnfpnpompagbamoknlnladfn": @"iso_639_1_ku",
       @"cppbcboljlmfdgeehadijemhkifhcpnl": @"iso_639_1_kj",
       @"knnpciecjoakhokllbgioaceglldlgan": @"iso_639_1_la",
@@ -1571,14 +1632,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"ghikcfknmlkdjiiljfpgpmcfjinpollk": @"iso_639_1_pa",
       @"hinecgnhkigghpncjnflaokadaclcfpm": @"iso_639_1_pi",
       @"blaocfojieebnkolagngecdhnipocicj": @"iso_639_1_fa",
-      @"aijecnhpjljblhnogamehknbmljlbfgn": @"iso_639_1_pl",
+      @"fojhemdeemkcacelmecilmibcjallejo": @"iso_639_1_pl",
       @"fikmpfipjepnnhiolongfjimedlhaemk": @"iso_639_1_ps",
-      @"ikpplkdenofcphgejneekjmhepajgopf": @"iso_639_1_pt",
+      @"fimpfhgllgkaekhbpkakjchdogecjflf": @"iso_639_1_pt",
       @"ndlciiakjgfcefimfjlfcjgohlgidpnc": @"iso_639_1_qu",
       @"nlabdknfkecjaechkekdlkgnapljpfla": @"iso_639_1_rm",
       @"piebpodmljdloocefikhekfjajloneij": @"iso_639_1_rn",
-      @"hffipkehifobjlkdjagndofmpjnpkgje": @"iso_639_1_ro",
-      @"nigmjcnboijpcoikglccmoncigioojpa": @"iso_639_1_ru",
+      @"ohhkknigpeehdnkeccopplflnodppkme": @"iso_639_1_ro",
+      @"jajlkohoekhghdbclekclenlahcjplec": @"iso_639_1_ru",
       @"inkmdnaeojfdngbdkbinoinflfahcjfc": @"iso_639_1_sa",
       @"golaphmkhjkdmcakpigbjhneagiapkfh": @"iso_639_1_sc",
       @"kcmiboiihhehobbffjebhgadbalknboh": @"iso_639_1_sd",
@@ -1593,11 +1654,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"jifgjineejhedlmjnkcijoincbhelicp": @"iso_639_1_sl",
       @"doclofgiadjildnifgkajdlpngijbpop": @"iso_639_1_so",
       @"mgdaglmilmjenimbkdmneckfbphfllic": @"iso_639_1_st",
-      @"ahiocclicnhmiobhocikfdamfccbehhn": @"iso_639_1_es",
+      @"elecgkckipdmnkkgndidemmdhdcdfhnp": @"iso_639_1_es",
       @"aondicpcneldjpbfemaimbpomgaepjhg": @"iso_639_1_su",
       @"ccmmjlklhnoojaganaecljeecenhafok": @"iso_639_1_sw",
       @"khbhchcpljcejlmijghlabpcmlkkfnid": @"iso_639_1_ss",
-      @"jpgndiehmchkacbfggdgkoohioocdhbp": @"iso_639_1_sv",
+      @"lnhckckgfdgjgkoelimnmpbnnognpmfb": @"iso_639_1_sv",
       @"nbmbpelgpalcgdghkeafabljjbhmalhf": @"iso_639_1_ta",
       @"nonmahhknjgpnoamcdihefcbpdioimbh": @"iso_639_1_te",
       @"olopfkdcklijkianjbegdegilmhdgpcj": @"iso_639_1_tg",
@@ -1605,10 +1666,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       @"hkeoedmbihkkglaobeembiogeofffpop": @"iso_639_1_ti",
       @"ijgcgakmmgjaladckdppemjgdnjlcgpo": @"iso_639_1_bo",
       @"liddcpbnodlgenmbmmfchepoebgfondk": @"iso_639_1_tk",
-      @"kcoilhabhhnfdakenmhddnhngngggcmp": @"iso_639_1_tl",
+      @"mocihammffaleonaomjleikagemilaoj": @"iso_639_1_tl",
       @"gjinficpofcocgaaogaiimhacbfkmjmj": @"iso_639_1_tn",
       @"hhliclmbfpdlpkdhmpkleicjnemheeea": @"iso_639_1_to",
-      @"kpdcfihnokkbialolpedfamclbdlgopi": @"iso_639_1_tr",
+      @"edjnpechdkjgcfjepfnnabdkcfcfllpd": @"iso_639_1_tr",
       @"nhbpjehmiofogaicflcjhcfdmmkgbohp": @"iso_639_1_ts",
       @"mmmembcojnkgfclnogjfeeiicmiijcnk": @"iso_639_1_tt",
       @"ldjaelhegioonaebajlgfnhcipdajfeo": @"iso_639_1_tw",

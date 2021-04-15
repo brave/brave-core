@@ -25,9 +25,9 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
-#include "brave/components/brave_user_model/browser/user_model_file_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
@@ -40,8 +40,8 @@
 
 #include "base/task/cancelable_task_tracker.h"
 
+using brave_ads::ResourceComponent;
 using brave_rewards::RewardsNotificationService;
-using brave_user_model::UserModelFileService;
 
 class NotificationDisplayService;
 class Profile;
@@ -70,7 +70,7 @@ class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
                        public history::HistoryServiceObserver,
                        BackgroundHelper::Observer,
-                       public brave_user_model::Observer,
+                       public brave_ads::Observer,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
   void OnWalletUpdated();
@@ -124,7 +124,7 @@ class AdsServiceImpl : public AdsService,
 
   void OnTabClosed(const SessionID& tab_id) override;
 
-  void OnUserModelUpdated(const std::string& id) override;
+  void OnResourceComponentUpdated(const std::string& id) override;
 
   void OnNewTabPageAdEvent(
       const std::string& uuid,
@@ -236,7 +236,7 @@ class AdsServiceImpl : public AdsService,
 
   void NotificationTimedOut(const std::string& uuid);
 
-  void RegisterUserModelComponentsForLocale(const std::string& locale);
+  void RegisterResourceComponentsForLocale(const std::string& locale);
 
   void OnURLRequestStarted(
       const GURL& final_url,
@@ -352,8 +352,9 @@ class AdsServiceImpl : public AdsService,
 
   void Load(const std::string& name, ads::LoadCallback callback) override;
 
-  void LoadUserModelForId(const std::string& id,
-                          ads::LoadCallback callback) override;
+  void LoadAdsResource(const std::string& id,
+                       const int version,
+                       ads::LoadCallback callback) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,

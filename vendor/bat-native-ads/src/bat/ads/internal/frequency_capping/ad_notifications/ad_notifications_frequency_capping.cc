@@ -6,7 +6,6 @@
 #include "bat/ads/internal/frequency_capping/ad_notifications/ad_notifications_frequency_capping.h"
 
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/anti_targeting_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
@@ -37,6 +36,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 
 namespace ads {
 namespace ad_notifications {

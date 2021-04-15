@@ -65,8 +65,10 @@ void NativeAdsClient::Save(const std::string & name, const std::string & value, 
   [bridge_ save:name value:value callback:callback];
 }
 
-void NativeAdsClient::LoadUserModelForId(const std::string & id, ads::LoadCallback callback) {
-  [bridge_ loadUserModelForId:id callback:callback];
+void NativeAdsClient::LoadAdsResource(const std::string& id,
+                                      const int version,
+                                      ads::LoadCallback callback) {
+  [bridge_ loadAdsResource:id version:version callback:callback];
 }
 
 void NativeAdsClient::GetBrowsingHistory(

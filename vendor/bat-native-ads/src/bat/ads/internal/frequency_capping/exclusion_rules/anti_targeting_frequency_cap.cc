@@ -9,8 +9,8 @@
 #include <memory>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ad_targeting/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/url_util.h"
 
 namespace ads {
@@ -18,7 +18,7 @@ namespace ads {
 namespace {
 bool HasVisitedSiteOnAntiTargetingList(
     const BrowsingHistoryList history_sites,
-    const AnitTargetingList anti_targeting_sites) {
+    const resource::AntiTargetingList anti_targeting_sites) {
   auto result = std::find_first_of(
       anti_targeting_sites.begin(), anti_targeting_sites.end(),
       history_sites.begin(), history_sites.end(), SameDomainOrHost);
@@ -61,7 +61,7 @@ bool AntiTargetingFrequencyCap::DoesRespectCap(const CreativeAdInfo& ad) const {
     return true;
   }
 
-  AntiTargetingInfo anti_targeting = anti_targeting_->get();
+  resource::AntiTargetingInfo anti_targeting = anti_targeting_->get();
   const auto iter = anti_targeting.sites.find(ad.creative_set_id);
   if (iter == anti_targeting.sites.end()) {
     // Always respect if creative set has no anti-targeting sites
