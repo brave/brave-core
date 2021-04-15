@@ -84,18 +84,18 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
 
         //bind tip amount custom radio buttons
         radio_tip_amount[0] = findViewById(R.id.one_bat_option);
-        radio_tip_amount[0].setTextOff(String.format(getResources().getString(R.string.one_tip_option),isAnonWallet ? getResources().getString(R.string.brave_ui_bap_text) : getResources().getString(R.string.brave_ui_bat_text)));
-        radio_tip_amount[0].setTextOn(String.format(getResources().getString(R.string.one_tip_option),isAnonWallet ? getResources().getString(R.string.brave_ui_bap_text) : getResources().getString(R.string.brave_ui_bat_text)));
+        radio_tip_amount[0].setTextOff(BraveRewardsHelper.ONE_BAT_TEXT);
+        radio_tip_amount[0].setTextOn(BraveRewardsHelper.ONE_BAT_TEXT);
         radio_tip_amount[0].setChecked(false);
 
         radio_tip_amount[1] = findViewById(R.id.five_bat_option);
-        radio_tip_amount[1].setTextOff(String.format(getResources().getString(R.string.five_tip_option),isAnonWallet ? getResources().getString(R.string.brave_ui_bap_text) : getResources().getString(R.string.brave_ui_bat_text)));
-        radio_tip_amount[1].setTextOn(String.format(getResources().getString(R.string.five_tip_option),isAnonWallet ? getResources().getString(R.string.brave_ui_bap_text) : getResources().getString(R.string.brave_ui_bat_text)));
+        radio_tip_amount[1].setTextOff(BraveRewardsHelper.FIVE_BAT_TEXT);
+        radio_tip_amount[1].setTextOn(BraveRewardsHelper.FIVE_BAT_TEXT);
         radio_tip_amount[1].setChecked(true);
 
         radio_tip_amount[2] = findViewById(R.id.ten_bat_option);
-        radio_tip_amount[2].setTextOff(String.format(getResources().getString(R.string.ten_tip_option),isAnonWallet ? getResources().getString(R.string.brave_ui_bap_text) : getResources().getString(R.string.brave_ui_bat_text)));
-        radio_tip_amount[2].setTextOn(String.format(getResources().getString(R.string.ten_tip_option),isAnonWallet ? getResources().getString(R.string.brave_ui_bap_text) : getResources().getString(R.string.brave_ui_bat_text)));
+        radio_tip_amount[2].setTextOff(BraveRewardsHelper.TEN_BAT_TEXT);
+        radio_tip_amount[2].setTextOn(BraveRewardsHelper.TEN_BAT_TEXT);
         radio_tip_amount[2].setChecked(false);
 
         //radio buttons behaviour
@@ -146,7 +146,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         DecimalFormat df = new DecimalFormat("#.###");
         df.setRoundingMode(RoundingMode.FLOOR);
         df.setMinimumFractionDigits(3);
-        String walletAmount = df.format(balance) + " "+(isAnonWallet ? getResources().getString(R.string.brave_ui_bat_points_text) : getResources().getString(R.string.brave_ui_bat_text));
+        String walletAmount = df.format(balance) + " " + BraveRewardsHelper.BAT_TEXT;
 
         ((TextView)findViewById(R.id.wallet_amount_text)).setText(walletAmount);
 
@@ -472,10 +472,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 DecimalFormat df = new DecimalFormat("#.###");
                 df.setRoundingMode(RoundingMode.FLOOR);
                 df.setMinimumFractionDigits(3);
-                String walletAmount = df.format(balance) + " "
-                        + (isAnonWallet ? getResources().getString(
-                                   R.string.brave_ui_bat_points_text)
-                                        : getResources().getString(R.string.brave_ui_bat_text));
+                String walletAmount = df.format(balance) + " " + BraveRewardsHelper.BAT_TEXT;
                 ((TextView) findViewById(R.id.wallet_amount_text)).setText(walletAmount);
             }
         }
