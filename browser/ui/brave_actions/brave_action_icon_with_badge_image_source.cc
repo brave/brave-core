@@ -9,7 +9,6 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "cc/paint/paint_flags.h"
-#include "chrome/browser/ui/toolbar/toolbar_actions_bar.h"
 #include "chrome/grit/theme_resources.h"
 #include "extensions/common/constants.h"
 #include "third_party/skia/include/core/SkColor.h"
