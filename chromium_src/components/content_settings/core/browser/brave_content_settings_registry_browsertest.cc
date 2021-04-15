@@ -34,7 +34,8 @@ class BraveContentSettingsRegistryBrowserTest : public PlatformBrowserTest {
 
   HostContentSettingsMap* private_content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(
-        chrome_test_utils::GetProfile(this)->GetPrimaryOTRProfile());
+        chrome_test_utils::GetProfile(this)->GetPrimaryOTRProfile(
+            /*create_if_needed=*/true));
   }
 
  private:

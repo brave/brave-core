@@ -74,11 +74,12 @@ content::BrowserContext* GetBrowserContextRedirectedInIncognitoOverride(
 
 // Get the correct profile for keyed services that do NOT use
 // GetBrowserContextRedirectedInIncognito or equivalent
-#define BRAVE_GET_BROWSER_CONTEXT_TO_USE_WITHOUT_REDIRECT                      \
-  if (brave::IsSessionProfile(context)) {                                      \
-    auto* parent = brave::GetParentProfile(context);                           \
-    context =                                                                  \
-        context->IsOffTheRecord() ? parent->GetPrimaryOTRProfile() : parent; \
+#define BRAVE_GET_BROWSER_CONTEXT_TO_USE_WITHOUT_REDIRECT                   \
+  if (brave::IsSessionProfile(context)) {                                   \
+    auto* parent = brave::GetParentProfile(context);                        \
+    context = context->IsOffTheRecord()                                     \
+                  ? parent->GetPrimaryOTRProfile(/*create_if_needed=*/true) \
+                  : parent;                                                 \
   }
 
 #endif  // BRAVE_BROWSER_PROFILES_PROFILE_UTIL_H_

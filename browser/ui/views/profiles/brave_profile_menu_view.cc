@@ -50,7 +50,8 @@ void BraveProfileMenuView::BuildFeatureButtons() {
   Profile* profile = browser()->profile();
   int window_count = chrome::GetBrowserCount(profile);
   if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile())
-    window_count += chrome::GetBrowserCount(profile->GetPrimaryOTRProfile());
+    window_count += chrome::GetBrowserCount(
+        profile->GetPrimaryOTRProfile(/*create_if_needed=*/true));
   if (window_count > 1) {
     AddFeatureButton(
         l10n_util::GetPluralStringFUTF16(IDS_PROFILES_CLOSE_X_WINDOWS_BUTTON,
