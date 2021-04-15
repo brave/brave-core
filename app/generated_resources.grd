@@ -4997,7 +4997,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Experimental Lacros Infobar-->
       <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE" desc="Message shown when user uses Lacros, an experimental feature.">
-        Lacros is an experimental browser. Please report any issues with Help &gt; "Report an issue..."
+        Lacros is an experimental Browser. Please report issues with: Help &gt; "Report an issue..." The standard browser can be found by typing "Brave" into Launcher.
       </message>
 
       <!-- Bad Flags Infobar-->
@@ -5529,7 +5529,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Even Better Module
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module and various other UIs.">
-        Recently from Google Drive
+        From Google Drive
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
@@ -5566,6 +5566,30 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_CART_CART_MENU_REMOVE_MERCHANT_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart for a specific merchant has been permanently removed. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
         You won't see <ph name="MERCHANT">$1<ex>Amazon</ex></ph> again
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CHIP_AMOUNT" desc="Text shown on the chip that indicates there is a discount in the current cart of certain amount off. It can be either in percent (e.g. 15% off) or in dollar amount (e.g. 50$ off).">
+        <ph name="DISCOUNT_AMOUNT">$1<ex>15%</ex></ph> off
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CHIP_UP_TO_AMOUNT" desc="Text shown on the chip that indicates there is a discount in the current cart of up to certain amount off. It can be either in percent (e.g. Up to 15% off) or in dollar amount (e.g. Up to 50$ off).">
+        Up to <ph name="DISCOUNT_UP_TO_AMOUNT">$1<ex>15%</ex></ph> off
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT" desc="Text shown on the consent card for rule-based discount asking if users would like to give their consent to the feature.">
+        Ask Brave to find discounts on what you’ve added to your carts?
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_ACCEPT" desc="Text shown on the accept button of the consent card for rule-based discount. By clicking this button, users have chosen to opt in the feature and let Brave get discounts for them. See consent request in IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT.">
+        Get discounts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_ACCEPT_CONFIRMATION" desc="Text shown on snack bar after user has accepted the consent to opt in the feature and allow Brave to get discounts for them. See string about accepting consent in IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_ACCEPT.">
+        If Brave finds a discount, you will see it on this page
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_REJECT" desc="Text shown on the reject button of the consent card for rule-based discount. By clicking this button, users have chosen to opt out the feature that allows Brave get discounts for them. See consent request in IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT.">
+        No thanks
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_REJECT_CONFIRMATION" desc="Text shown on snack bar after user has rejected the consent and opted out the feature that allows Brave to get discounts for them. See string about rejecting consent in IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_REJECT.">
+        Discounts are off. You can turn them on in the customize menu
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONFIRMATION_DISMISS" desc="Text shown on snack bar button. Clicking it indicates that users have understood the content of the snack bar.">
+        Got it
       </message>
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
@@ -5795,7 +5819,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Enterprise policy changed. Experiments button removed from toolbar.
       </message>
       <message name="IDS_ACCNAME_CHROMELABS_COMBOBOX" desc="The accessible name for the experiment's combobox to select between experiment states. ">
-        Select experiment state for the <ph name="EXPERIMENT_NAME">$1<ex>Tab Scrolling</ex></ph> experiment. Experiment description: <ph name="EXPERIMENT_DESCRIPTION">$2<ex>Enables tab strip to scroll left and right when full.</ex></ph>
+        Select experiment state for the <ph name="EXPERIMENT_NAME">$1<ex>Tab Scrolling</ex></ph> experiment.
       </message>
       <message name="IDS_ACCNAME_SEPARATOR" desc="The accessible name for a separator.">
         Separator
@@ -6007,6 +6031,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
           No thanks
         </message>
       </if>
+      <message name="IDS_PASSWORD_MANAGER_USERNAME_LABEL" desc="Label for the username field in a prompt to store new credential">
+        Username
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential">
+        Password
+      </message>
       <if expr="not is_android">
         <message name="IDS_PASSWORD_MANAGER_UPDATED_BUBBLE_TITLE" desc="Title of the bubble notifying the user that the password was updated.">
           Password updated
@@ -6086,12 +6116,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_EXPORT_DIALOG_TITLE" desc="The title of the file selection dialog for exporting passwords">
           Export Passwords From Brave
         </message>
-        <message name="IDS_PASSWORD_MANAGER_USERNAME_LABEL" desc="Label for the username field in a prompt to store new credential">
-          Username
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential">
-          Password
-        </message>
         <message name="IDS_PASSWORD_MANAGER_MOVE_TITLE" desc="The title of the 'move password to account' bubble">
           Move to Brave sync chain?
         </message>
@@ -6144,6 +6168,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
+        </message>
+        <message name="IDS_UPDATE_PASSWORD_DIALOG_TITLE" desc="The title of the update password dialog.">
+          Update password for <ph name="ORIGIN">$1<ex>example.com</ex></ph>
+        </message>
+        <message name="IDS_UPDATE_PASSWORD_DIALOG_SIGNED_IN_DESCRIPTION" desc="The description at the bottom of update password dialog when the user is signed in.">
+          Passwords are saved in your Brave sync chain (<ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>) so you can use them on any device
         </message>
       </if>
 
@@ -7865,6 +7895,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SYNC_DISABLED_CONFIRMATION_UNDO_BUTTON_LABEL" desc="Label of the undo button in the sync confirmation dialog of the tab modal signin flow">
         Cancel sign in
+      </message>
+
+      <!--  Loading subscreen for Sync confirmation -->
+      <message name="IDS_SYNC_LOADING_CONFIRMATION_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Dice is enabled">
+        Loading account information...
       </message>
 
       <!-- Dice Web Signin Interception Bubble-->
