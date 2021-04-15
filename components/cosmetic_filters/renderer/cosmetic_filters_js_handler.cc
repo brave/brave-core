@@ -19,6 +19,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/blink.h"
+#include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -324,8 +325,10 @@ void CosmeticFiltersJSHandler::ApplyRules() {
   }
   if (!scriptlet_script.empty()) {
     web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_, blink::WebString::FromUTF8(scriptlet_script));
+        isolated_world_id_, blink::WebString::FromUTF8(scriptlet_script),
+        blink::BackForwardCacheAware::kAllow);
   }
+
   if (!render_frame_->IsMainFrame())
     return;
 
@@ -339,9 +342,11 @@ void CosmeticFiltersJSHandler::ApplyRules() {
       kPreInitScript, cosmetic_filtering_init_script.c_str());
 
   web_frame->ExecuteScriptInIsolatedWorld(
-      isolated_world_id_, blink::WebString::FromUTF8(pre_init_script));
+      isolated_world_id_, blink::WebString::FromUTF8(pre_init_script),
+      blink::BackForwardCacheAware::kAllow);
   web_frame->ExecuteScriptInIsolatedWorld(
-      isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
+      isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script),
+      blink::BackForwardCacheAware::kAllow);
 
   CSSRulesRoutine(resources_dict_.get());
 }
@@ -380,7 +385,8 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     std::string new_selectors_script =
         base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
     web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
+        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script),
+        blink::BackForwardCacheAware::kAllow);
   }
 
   if (force_hide_selectors_list && force_hide_selectors_list->GetSize() != 0) {
@@ -393,7 +399,8 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     std::string new_selectors_script = base::StringPrintf(
         kForceHideSelectorsInjectScript, json_selectors.c_str());
     web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
+        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script),
+        blink::BackForwardCacheAware::kAllow);
   }
 
   base::DictionaryValue* style_selectors_dictionary = nullptr;
@@ -409,13 +416,15 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
         base::StringPrintf(kStyleSelectorsInjectScript, json_selectors.c_str());
     if (!json_selectors.empty()) {
       web_frame->ExecuteScriptInIsolatedWorld(
-          isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
+          isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script),
+          blink::BackForwardCacheAware::kAllow);
     }
   }
 
   if (!enabled_1st_party_cf_) {
     web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
+        isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script),
+        blink::BackForwardCacheAware::kAllow);
   }
 }
 
@@ -443,12 +452,14 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
       base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
   if (selectors_list->GetSize() != 0) {
     web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
+        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script),
+        blink::BackForwardCacheAware::kAllow);
   }
 
   if (!enabled_1st_party_cf_) {
     web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
+        isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script),
+        blink::BackForwardCacheAware::kAllow);
   }
 }
 
