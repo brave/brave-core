@@ -61,12 +61,20 @@ void BraveSearchHost::FetchBackupResults(const std::string& query,
 
   if (backup_provider_for_test.is_empty()) {
     std::string spec(
-        base::StringPrintf("https://www.google.com/search?q=%s&hl=%s&gl=%s",
+        base::StringPrintf("https://www.google.com/search?q=%s",
                            query.c_str(), lang.c_str(), country.c_str()));
     request->url = GURL(spec);
   } else {
     request->url = backup_provider_for_test;
   }
+
+  if (!lang.empty()) {
+    request->url = net::AppendQueryParameter(request->url, "hl", lang);
+  }
+  if (!country.empty()) {
+    request->url = net::AppendQueryParameter(request->url, "gl", country);
+  }
+
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
