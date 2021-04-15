@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
-index 1c200609dbc7fcfc502fb2b23822aed4d958ddf1..02265f9d10ba628b1255abe3f80db6a00165e866 100644
+index 42d9f6962b717495a19227adde74edbff75e0552..397109f7e1d20cda6df47828b2adfa4b1e2d8d5a 100644
 --- a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
 +++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
-@@ -146,6 +146,7 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
+@@ -147,6 +147,7 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
    gfx::ImageSkiaRep rep = skia.GetRepresentation(canvas->image_scale());
    if (rep.scale() != canvas->image_scale()) {
      skia.AddRepresentation(
@@ -10,7 +10,7 @@ index 1c200609dbc7fcfc502fb2b23822aed4d958ddf1..02265f9d10ba628b1255abe3f80db6a0
          ScaleImageSkiaRep(rep, extensions::ExtensionAction::ActionIconSize(),
                            canvas->image_scale()));
    }
-@@ -156,6 +157,7 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
+@@ -157,6 +158,7 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
        (size().width() - extensions::ExtensionAction::ActionIconSize()) / 2.0);
    int y_offset = std::floor(
        (size().height() - extensions::ExtensionAction::ActionIconSize()) / 2.0);
