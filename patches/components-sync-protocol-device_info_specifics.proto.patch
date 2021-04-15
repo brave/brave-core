@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/device_info_specifics.proto b/components/sync/protocol/device_info_specifics.proto
-index a2843e31040aed602253077f5b5d5a810fee22ae..97517405250431ae362e8daafd27d388b9114460 100644
+index 6a05a56c8d305ff221fa6d82aba07d4a7a6a07e2..ad09b9c1d5704b84adb83a234fff37188e407a94 100644
 --- a/components/sync/protocol/device_info_specifics.proto
 +++ b/components/sync/protocol/device_info_specifics.proto
 @@ -17,6 +17,7 @@ option optimize_for = LITE_RUNTIME;
@@ -10,10 +10,10 @@ index a2843e31040aed602253077f5b5d5a810fee22ae..97517405250431ae362e8daafd27d388
  
  // Information about a device that is running a sync-enabled Chrome browser.  We
  // are mapping the per-client cache guid to more specific information about the
-@@ -78,6 +79,7 @@ message DeviceInfoSpecifics {
-   // Information for contacting this device in order to perform security key
-   // operations.
-   optional PhoneAsASecurityKeySpecificFields paask_fields = 15;
+@@ -82,6 +83,7 @@ message DeviceInfoSpecifics {
+   // Unique hardware identifier string which details the HW combination of
+   // a ChromeOS device. This field will be empty on other OS devices.
+   optional string full_hardware_class = 16;
 +  optional BraveSpecificFields brave_fields = 1000;
  }
  
