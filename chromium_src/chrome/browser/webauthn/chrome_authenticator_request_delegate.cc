@@ -13,7 +13,7 @@
       "KL8N8XSYF4", base::mac::BaseBundleID(), "webauthn"};     \
   return TouchIdAuthenticatorConfig{                            \
       base::JoinString(kBraveKeyChainAccessParts, "."),         \
-      TouchIdMetadataSecret(profile)};
+      std::move(metadata_secret)};
 #else
 #define BRAVE_WEBAUTHN_KEYCHAIN_ACCESS_GROUP void(0)
 #endif
