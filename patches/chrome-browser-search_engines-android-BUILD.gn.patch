@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/search_engines/android/BUILD.gn b/chrome/browser/search_engines/android/BUILD.gn
+index ff0be3d69d686e903a58f38b4d2b41c0c7d89f4d..b56d9c1d6cdfafec88730e4d355f32653b9bf6cf 100644
+--- a/chrome/browser/search_engines/android/BUILD.gn
++++ b/chrome/browser/search_engines/android/BUILD.gn
+@@ -14,6 +14,7 @@ android_library("java") {
+     "java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java",
+     "java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings.java",
+   ]
++  sources += brave_browser_search_engines_android_sources
+ 
+   srcjar_deps = [ "//components/search_engines:search_engine_type_java" ]
+ 
