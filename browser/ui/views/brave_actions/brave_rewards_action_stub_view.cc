@@ -113,7 +113,7 @@ SkPath BraveRewardsActionStubView::GetHighlightPath() const {
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::EMPHASIS_MAXIMUM, rect.size());
+      views::Emphasis::kMaximum, rect.size());
   SkPath path;
   path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
   return path;
