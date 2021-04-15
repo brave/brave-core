@@ -4,16 +4,12 @@
 
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
-#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
-#include "components/omnibox/browser/autocomplete_classifier.h"
-#include "components/omnibox/browser/autocomplete_controller.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image_skia.h"
@@ -38,19 +34,6 @@
 
 namespace {
 
-GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
-  AutocompleteMatch match;
-  AutocompleteClassifier classifier(
-      std::make_unique<AutocompleteController>(
-          std::make_unique<ChromeAutocompleteProviderClient>(profile),
-          AutocompleteClassifier::DefaultOmniboxProviders()),
-      std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
-  classifier.Classify(text, false, false,
-                      metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);
-  classifier.Shutdown();
-  return match.destination_url;
-}
-
 base::OnceCallback<void(BraveRenderViewContextMenu*)>*
 BraveGetMenuShownCallback() {
   static base::NoDestructor<
@@ -66,14 +49,6 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
   *BraveGetMenuShownCallback() = std::move(cb);
 }
 
-#define BRAVE_APPEND_SEARCH_PROVIDER \
-  if (GetProfile()->IsOffTheRecord()) { \
-    selection_navigation_url_ = \
-        GetSelectionNavigationURL(GetProfile(), params_.selection_text); \
-    if (!selection_navigation_url_.is_valid()) \
-      return; \
-  }
-
 // Use our subclass to initialize SpellingOptionsSubMenuObserver.
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 #define RegisterMenuShownCallbackForTesting \
@@ -86,7 +61,6 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
-#undef BRAVE_APPEND_SEARCH_PROVIDER
 
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost* render_frame_host,
