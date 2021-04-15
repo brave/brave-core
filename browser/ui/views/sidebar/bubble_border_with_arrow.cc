@@ -40,7 +40,7 @@ BubbleBorderWithArrow::BubbleBorderWithArrow(Arrow arrow,
                                              SkColor color)
     : BubbleBorder(arrow, shadow, color) {
   set_md_shadow_elevation(ChromeLayoutProvider::Get()->GetShadowElevationMetric(
-      views::EMPHASIS_HIGH));
+      views::Emphasis::kHigh));
 }
 
 BubbleBorderWithArrow::~BubbleBorderWithArrow() = default;
