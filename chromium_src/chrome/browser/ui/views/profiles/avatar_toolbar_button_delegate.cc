@@ -17,7 +17,7 @@ BraveAvatarToolbarButtonDelegate::BraveAvatarToolbarButtonDelegate(
 
 AvatarToolbarButton::State BraveAvatarToolbarButtonDelegate::GetState() const {
   AvatarToolbarButton::State state = AvatarToolbarButtonDelegate::GetState();
-  if (state == AvatarToolbarButton::State::kGenericProfile) {
+  if (state == AvatarToolbarButton::State::kNormal) {
     ProfileAttributesEntry* entry =
         g_browser_process->profile_manager()
             ->GetProfileAttributesStorage()
