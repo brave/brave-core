@@ -59,7 +59,6 @@ class BraveActionsContainer : public views::View,
   void SetShouldHide(bool should_hide);
   // ToolbarActionView::Delegate
   content::WebContents* GetCurrentWebContents() override;
-  bool ShownInsideMenu() const override;
   // Notifies that a drag completed.
   void OnToolbarActionViewDragDone() override;
   // Returns the view of the toolbar actions overflow menu to use as a

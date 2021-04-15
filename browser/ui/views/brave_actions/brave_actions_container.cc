@@ -332,10 +332,6 @@ content::WebContents* BraveActionsContainer::GetCurrentWebContents() {
   return browser_->tab_strip_model()->GetActiveWebContents();
 }
 
-bool BraveActionsContainer::ShownInsideMenu() const {
-  return false;
-}
-
 void BraveActionsContainer::OnToolbarActionViewDragDone() {
 }
 
