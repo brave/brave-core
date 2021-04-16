@@ -13,11 +13,13 @@ enum class Provider {
   ENS,
 };
 
+// GENERATED_JAVA_ENUM_PACKAGE: org.chromium.chrome.browser.decentralized_dns
 enum class ResolveMethodTypes {
   ASK,
   DISABLED,
   DNS_OVER_HTTPS,
   ETHEREUM,
+  MAX_VALUE = ETHEREUM,
 };
 
 enum class RecordKeys {
