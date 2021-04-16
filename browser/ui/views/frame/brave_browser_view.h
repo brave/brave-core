@@ -18,6 +18,8 @@ class ContentsLayoutManager;
 class SidebarContainerView;
 #endif
 
+class ActiveWindowSearchProviderManager;
+
 class BraveBrowserView : public BrowserView {
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
@@ -36,6 +38,10 @@ class BraveBrowserView : public BrowserView {
   void StartTabCycling() override;
 
  private:
+  friend class SearchEngineProviderServiceTest;
+  FRIEND_TEST_ALL_PREFIXES(SearchEngineProviderServiceTest,
+                           CheckTorWindowSearchProviderTest);
+
   class TabCyclingEventHandler;
 
   // BrowserView overrides:
@@ -43,6 +49,7 @@ class BraveBrowserView : public BrowserView {
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void AddedToWidget() override;
 
   void StopTabCycling();
 
@@ -60,6 +67,7 @@ class BraveBrowserView : public BrowserView {
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
+  std::unique_ptr<ActiveWindowSearchProviderManager> search_provider_manager_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };

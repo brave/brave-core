@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_frame.h"
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/views/search_engines/active_window_search_provider_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -15,10 +14,7 @@
 
 BraveBrowserFrame::BraveBrowserFrame(BrowserView* browser_view)
     : BrowserFrame(browser_view),
-      view_(browser_view),
-      search_provider_manager_(
-          new ActiveWindowSearchProviderManager(view_->browser()->profile(),
-                                                this)) {}
+      view_(browser_view) {}
 
 BraveBrowserFrame::~BraveBrowserFrame() = default;
 

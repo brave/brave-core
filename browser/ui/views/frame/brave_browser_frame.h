@@ -11,8 +11,6 @@
 #include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
 
-class ActiveWindowSearchProviderManager;
-
 class BraveBrowserFrame : public BrowserFrame {
  public:
   explicit BraveBrowserFrame(BrowserView* browser_view);
@@ -24,13 +22,7 @@ class BraveBrowserFrame : public BrowserFrame {
   const ui::NativeTheme* GetNativeTheme() const override;
 
  private:
-  friend class SearchEngineProviderServiceTest;
-
-  FRIEND_TEST_ALL_PREFIXES(SearchEngineProviderServiceTest,
-                           CheckTorWindowSearchProviderTest);
-
   BrowserView* view_;
-  std::unique_ptr<ActiveWindowSearchProviderManager> search_provider_manager_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_

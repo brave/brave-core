@@ -9,6 +9,7 @@
 
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
+#include "brave/browser/ui/views/search_engines/active_window_search_provider_manager.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "extensions/buildflags/buildflags.h"
@@ -222,6 +223,13 @@ void BraveBrowserView::OnTabStripModelChanged(
     // After stopping, current tab cycling, new tab cycling will be started.
     StopTabCycling();
   }
+}
+
+void BraveBrowserView::AddedToWidget() {
+  BrowserView::AddedToWidget();
+
+  search_provider_manager_.reset(
+      new ActiveWindowSearchProviderManager(browser()->profile(), frame()));
 }
 
 void BraveBrowserView::StartTabCycling() {
