@@ -68,7 +68,7 @@ GURL BraveSearchHost::GetBackupResultURL(const GURL& baseURL,
     url = net::AppendQueryParameter(url, "gl", country);
   }
   if (filter_explicit_results) {
-    url = net::AppendQueryParameter(url, "self", "active");
+    url = net::AppendQueryParameter(url, "safe", "active");
   }
   return url;
 }
