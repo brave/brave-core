@@ -16,6 +16,7 @@
 #include "base/containers/queue.h"
 #include "base/files/file_util.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/ipfs/import_utils.h"
 #include "brave/components/ipfs/imported_data.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/browser_context.h"
@@ -56,9 +57,6 @@ class IpfsImportWorkerBase {
   IpfsImportWorkerBase(const IpfsImportWorkerBase&) = delete;
   IpfsImportWorkerBase& operator=(const IpfsImportWorkerBase&) = delete;
 
-  using BlobBuilderCallback =
-      base::OnceCallback<std::unique_ptr<storage::BlobDataBuilder>()>;
-
  protected:
   void StartImport(BlobBuilderCallback blob_builder_callback,
                    const std::string& content_type,
@@ -68,7 +66,12 @@ class IpfsImportWorkerBase {
       const std::string& method);
   scoped_refptr<network::SharedURLLoaderFactory> GetUrlLoaderFactory();
 
-  void NotifyImportCompleted(ipfs::ImportState state);
+  virtual void NotifyImportCompleted(ipfs::ImportState state);
+
+  void CreateRequestWithFile(const base::FilePath upload_file_path,
+                             const std::string& mime_type,
+                             const std::string& filename,
+                             int64_t file_size);
 
  private:
   std::unique_ptr<network::ResourceRequest> CreateResourceRequest(

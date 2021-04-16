@@ -25,16 +25,10 @@ class IpfsFileImportWorker : public IpfsImportWorkerBase {
                        const base::FilePath& path);
   ~IpfsFileImportWorker() override;
 
+  IpfsFileImportWorker(const IpfsFileImportWorker&) = delete;
+  IpfsFileImportWorker& operator=(const IpfsFileImportWorker&) = delete;
+
  private:
-  void StartImportFile(const base::FilePath& path);
-  void OnImportDataAvailable(const base::FilePath path);
-
-  void CreateRequestWithFile(const base::FilePath upload_file_path,
-                             const std::string& mime_type,
-                             int64_t file_size);
-  void OnImportAddComplete(std::unique_ptr<std::string> response_body);
-
-  std::unique_ptr<network::SimpleURLLoader> url_loader_;
   base::WeakPtrFactory<IpfsFileImportWorker> weak_factory_;
 };
 

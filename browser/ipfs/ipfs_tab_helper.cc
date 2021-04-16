@@ -369,9 +369,8 @@ void IPFSTabHelper::ImportTextToIpfs(const std::string& text) {
 void IPFSTabHelper::ImportFileToIpfs(const base::FilePath& path) {
   DCHECK(ipfs_service_);
   ipfs_service_->ImportFileToIpfs(
-      path,
-      base::BindOnce(&IPFSTabHelper::OnImportCompleted,
-                     weak_ptr_factory_.GetWeakPtr()));
+      path, base::BindOnce(&IPFSTabHelper::OnImportCompleted,
+                           weak_ptr_factory_.GetWeakPtr()));
 }
 
 GURL IPFSTabHelper::CreateAndCopyShareableLink(const ipfs::ImportedData& data) {
@@ -421,7 +420,8 @@ void IPFSTabHelper::PushNotification(const base::string16& title,
 }
 
 void IPFSTabHelper::FileSelected(const base::FilePath& path,
-                  int index, void* params) {
+                                 int index,
+                                 void* params) {
   ImportFileToIpfs(path);
   select_file_dialog_.reset();
 }
@@ -432,12 +432,12 @@ void IPFSTabHelper::FileSelectionCanceled(void* params) {
 
 void IPFSTabHelper::SelectFileForImport() {
   select_file_dialog_ = ui::SelectFileDialog::Create(
-      this, std::make_unique<ChromeSelectFilePolicy>(
-                web_contents()));
+      this, std::make_unique<ChromeSelectFilePolicy>(web_contents()));
 
   if (!select_file_dialog_)
     return;
-  Profile* profile = Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   const base::FilePath directory = profile->last_selected_directory();
   gfx::NativeWindow parent_window = web_contents()->GetTopLevelNativeWindow();
   ui::SelectFileDialog::FileTypeInfo file_types;

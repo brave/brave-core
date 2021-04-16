@@ -102,6 +102,22 @@ IpfsImportWorkerBase::IpfsImportWorkerBase(content::BrowserContext* context,
 
 IpfsImportWorkerBase::~IpfsImportWorkerBase() = default;
 
+void IpfsImportWorkerBase::CreateRequestWithFile(
+    const base::FilePath upload_file_path,
+    const std::string& mime_type,
+    const std::string& filename,
+    int64_t file_size) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  std::string mime_boundary = net::GenerateMimeMultipartBoundary();
+  auto blob_builder_callback =
+      base::BindOnce(&BuildBlobWithFile, upload_file_path, file_size, mime_type,
+                     filename, mime_boundary);
+  std::string content_type = kIPFSImportMultipartContentType;
+  content_type += " boundary=";
+  content_type += mime_boundary;
+  StartImport(std::move(blob_builder_callback), content_type, filename);
+}
+
 void IpfsImportWorkerBase::StartImport(
     BlobBuilderCallback blob_builder_callback,
     const std::string& content_type,

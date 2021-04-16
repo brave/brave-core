@@ -5,9 +5,16 @@
 
 #include "brave/components/ipfs/import_utils.h"
 
+#include <memory>
 #include <string>
 
+#include "base/callback.h"
 #include "base/check.h"
+#include "base/files/file_util.h"
+#include "base/guid.h"
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "net/base/mime_util.h"
+#include "storage/browser/blob/blob_data_builder.h"
 
 namespace ipfs {
 
@@ -26,6 +33,36 @@ void AddMultipartHeaderForUploadWithFileName(const std::string& value_name,
   post_data->append("Content-Type: " + content_type + "\r\n");
   // Empty string before next content
   post_data->append("\r\n");
+}
+
+int64_t CalculateFileSize(base::FilePath upload_file_path) {
+  int64_t file_size = -1;
+  base::GetFileSize(upload_file_path, &file_size);
+  return file_size;
+}
+
+std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFile(
+    base::FilePath upload_file_path,
+    size_t file_size,
+    std::string mime_type,
+    std::string filename,
+    std::string mime_boundary) {
+  auto blob_builder =
+      std::make_unique<storage::BlobDataBuilder>(base::GenerateGUID());
+  if (filename.empty())
+    filename = upload_file_path.BaseName().MaybeAsASCII();
+  std::string post_data_header;
+  ipfs::AddMultipartHeaderForUploadWithFileName(
+      kFileValueName, filename, mime_boundary, mime_type, &post_data_header);
+  blob_builder->AppendData(post_data_header);
+
+  blob_builder->AppendFile(upload_file_path, /* offset= */ 0, file_size,
+                           /* expected_modification_time= */ base::Time());
+  std::string post_data_footer = "\r\n";
+  net::AddMultipartFinalDelimiterForUpload(mime_boundary, &post_data_footer);
+  blob_builder->AppendData(post_data_footer);
+
+  return blob_builder;
 }
 
 }  // namespace ipfs

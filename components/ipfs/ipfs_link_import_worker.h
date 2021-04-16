@@ -29,15 +29,17 @@ class IpfsLinkImportWorker : public IpfsImportWorkerBase {
                        const GURL& url);
   ~IpfsLinkImportWorker() override;
 
+  IpfsLinkImportWorker(const IpfsLinkImportWorker&) = delete;
+  IpfsLinkImportWorker& operator=(const IpfsLinkImportWorker&) = delete;
+
  private:
-  void StartImportLink(const GURL& url);
+  void DownloadLinkContent(const GURL& url);
   void OnImportDataAvailable(base::FilePath path);
+  void RemoveDownloadedFile();
+  // IpfsImportWorkerBase
+  void NotifyImportCompleted(ipfs::ImportState state) override;
 
-  void CreateRequestWithFile(base::FilePath upload_file_path,
-                             const std::string& mime_type,
-                             int64_t file_size);
-  void OnImportAddComplete(std::unique_ptr<std::string> response_body);
-
+  base::FilePath temp_file_path_;
   GURL import_url_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   base::WeakPtrFactory<IpfsLinkImportWorker> weak_factory_;

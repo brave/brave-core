@@ -63,7 +63,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
                         const base::string16& body,
                         const GURL& link);
   GURL CreateAndCopyShareableLink(const ipfs::ImportedData& data);
-  
+
   // ui::SelectFileDialog::Listener
   void FileSelected(const base::FilePath& path,
                     int index,

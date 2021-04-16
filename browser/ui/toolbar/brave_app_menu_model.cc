@@ -99,9 +99,11 @@ BraveAppMenuModel::BraveAppMenuModel(
     AppMenuIconController* app_menu_icon_controller)
     : AppMenuModel(provider, browser, app_menu_icon_controller)
 #if BUILDFLAG(IPFS_ENABLED)
-    , ipfs_submenu_model_(this)
+      ,
+      ipfs_submenu_model_(this)
 #endif
-    {}
+{
+}
 
 BraveAppMenuModel::~BraveAppMenuModel() = default;
 
@@ -206,8 +208,8 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
         IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE);
     const int zoom_index = GetIndexOfCommandId(IDC_ZOOM_MENU);
     const int index = zoom_index - 1;
-    InsertSubMenuWithStringIdAt(
-        index, IDC_APP_MENU_IPFS, IDS_APP_MENU_IPFS, &ipfs_submenu_model_);
+    InsertSubMenuWithStringIdAt(index, IDC_APP_MENU_IPFS, IDS_APP_MENU_IPFS,
+                                &ipfs_submenu_model_);
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
     const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
     ui::ImageModel model = ui::ImageModel::FromImageSkia(ipfs_logo);

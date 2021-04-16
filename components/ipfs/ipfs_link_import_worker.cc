@@ -7,9 +7,6 @@
 
 #include <utility>
 
-#include "base/command_line.h"
-#include "base/files/file_util.h"
-#include "base/guid.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ipfs/import_utils.h"
@@ -21,48 +18,11 @@
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "storage/browser/blob/blob_data_builder.h"
 #include "url/gurl.h"
 
 namespace {
 
-const char kIPFSImportMultipartContentType[] = "multipart/form-data;";
-const char kFileValueName[] = "file";
-
-const char kDefaultMimeType[] = "text/html";
-
-using BlobBuilderCallback =
-    base::OnceCallback<std::unique_ptr<storage::BlobDataBuilder>()>;
-
-int64_t CalculateFileSize(base::FilePath upload_file_path) {
-  int64_t file_size = -1;
-  base::GetFileSize(upload_file_path, &file_size);
-  return file_size;
-}
-
-std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFile(
-    base::FilePath upload_file_path,
-    size_t file_size,
-    std::string mime_type,
-    std::string filename,
-    std::string mime_boundary) {
-  auto blob_builder =
-      std::make_unique<storage::BlobDataBuilder>(base::GenerateGUID());
-  if (filename.empty())
-    filename = upload_file_path.BaseName().MaybeAsASCII();
-  std::string post_data_header;
-  ipfs::AddMultipartHeaderForUploadWithFileName(kFileValueName, filename,
-      mime_boundary, mime_type, &post_data_header);
-  blob_builder->AppendData(post_data_header);
-
-  blob_builder->AppendFile(upload_file_path, /* offset= */ 0, file_size,
-                           /* expected_modification_time= */ base::Time());
-  std::string post_data_footer = "\r\n";
-  net::AddMultipartFinalDelimiterForUpload(mime_boundary, &post_data_footer);
-  blob_builder->AppendData(post_data_footer);
-
-  return blob_builder;
-}
+const char kLinkMimeType[] = "text/html";
 
 }  // namespace
 
@@ -76,12 +36,14 @@ IpfsLinkImportWorker::IpfsLinkImportWorker(content::BrowserContext* context,
       weak_factory_(this) {
   DCHECK(context);
   DCHECK(endpoint.is_valid());
-  StartImportLink(url);
+  DownloadLinkContent(url);
 }
 
-IpfsLinkImportWorker::~IpfsLinkImportWorker() = default;
+IpfsLinkImportWorker::~IpfsLinkImportWorker() {
+  RemoveDownloadedFile();
+}
 
-void IpfsLinkImportWorker::StartImportLink(const GURL& url) {
+void IpfsLinkImportWorker::DownloadLinkContent(const GURL& url) {
   if (!url.is_valid()) {
     VLOG(1) << "Unable to import invalid links:" << url;
     return;
@@ -99,7 +61,7 @@ void IpfsLinkImportWorker::OnImportDataAvailable(base::FilePath path) {
   int error_code = url_loader_->NetError();
   int response_code = -1;
   int64_t content_length = -1;
-  std::string mime_type = kDefaultMimeType;
+  std::string mime_type = kLinkMimeType;
   if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers) {
     response_code = url_loader_->ResponseInfo()->headers->response_code();
     content_length = url_loader_->ResponseInfo()->headers->GetContentLength();
@@ -114,30 +76,29 @@ void IpfsLinkImportWorker::OnImportDataAvailable(base::FilePath path) {
     NotifyImportCompleted(IPFS_IMPORT_ERROR_REQUEST_EMPTY);
     return;
   }
+  temp_file_path_ = path;
+  std::string filename = import_url_.ExtractFileName();
+  if (filename.empty())
+    filename = import_url_.host();
+
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(&CalculateFileSize, path),
       base::BindOnce(&IpfsLinkImportWorker::CreateRequestWithFile,
-                     weak_factory_.GetWeakPtr(), path, mime_type));
+                     weak_factory_.GetWeakPtr(), path, mime_type, filename));
 }
 
-void IpfsLinkImportWorker::CreateRequestWithFile(
-    base::FilePath upload_file_path,
-    const std::string& mime_type,
-    int64_t file_size) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  std::string filename = import_url_.ExtractFileName();
-  if (filename.empty())
-    filename = import_url_.host();
-  std::string mime_boundary = net::GenerateMimeMultipartBoundary();
-  auto blob_builder_callback =
-      base::BindOnce(&BuildBlobWithFile, upload_file_path, file_size, mime_type,
-                     filename, mime_boundary);
-  std::string content_type = kIPFSImportMultipartContentType;
-  content_type += " boundary=";
-  content_type += mime_boundary;
-
-  StartImport(std::move(blob_builder_callback), content_type, filename);
+void IpfsLinkImportWorker::RemoveDownloadedFile() {
+  if (!temp_file_path_.empty()) {
+    base::ThreadPool::PostTask(
+        FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
+        base::BindOnce(base::GetDeleteFileCallback(), temp_file_path_));
+    temp_file_path_ = base::FilePath();
+  }
 }
 
+void IpfsLinkImportWorker::NotifyImportCompleted(ipfs::ImportState state) {
+  RemoveDownloadedFile();
+  IpfsImportWorkerBase::NotifyImportCompleted(state);
+}
 }  // namespace ipfs

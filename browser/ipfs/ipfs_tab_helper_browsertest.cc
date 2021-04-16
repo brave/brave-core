@@ -101,6 +101,11 @@ class FakeIpfsService : public ipfs::IpfsService {
     if (callback)
       std::move(callback).Run(data_);
   }
+  void ImportFileToIpfs(const base::FilePath& path,
+                        ipfs::ImportCompletedCallback callback) override {
+    if (callback)
+      std::move(callback).Run(data_);
+  }
   void SetImportData(const ipfs::ImportedData& data) { data_ = data; }
 
  private:
@@ -349,7 +354,7 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ImportFileToIpfs) {
   ipfs_service->SetImportData(data);
   helper->SetIpfsServiceForTesting(ipfs_service.get());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
-  helper->ImportTextToIpfs("test");
+  helper->ImportFileToIpfs(base::FilePath(FILE_PATH_LITERAL("fake.file")));
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
   auto* web_content = browser()->tab_strip_model()->GetWebContentsAt(1);
   ASSERT_TRUE(web_content);

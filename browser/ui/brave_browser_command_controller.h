@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 
@@ -40,8 +41,9 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
   void UpdateCommandForBraveSync();
   void UpdateCommandForBraveWallet();
   void UpdateCommandForSidebar();
+#if BUILDFLAG(IPFS_ENABLED)
   void UpdateCommandForIpfs();
-
+#endif
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
                                           base::TimeTicks time_stamp);

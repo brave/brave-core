@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_BRAVE_PAGES_H_
 
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "build/build_config.h"
 
 class Browser;
 

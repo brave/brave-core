@@ -13,6 +13,7 @@
 #include "base/guid.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#include "brave/components/ipfs/import_utils.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/mime_util.h"
@@ -22,10 +23,6 @@
 namespace {
 
 const char kIPFSImportTextMimeType[] = "application/octet-stream";
-const char kFileValueName[] = "file";
-
-using BlobBuilderCallback =
-    base::OnceCallback<std::unique_ptr<storage::BlobDataBuilder>()>;
 
 std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithText(
     const std::string& text,
@@ -35,8 +32,9 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithText(
   auto blob_builder =
       std::make_unique<storage::BlobDataBuilder>(base::GenerateGUID());
   std::string post_data_header;
-  net::AddMultipartValueForUploadWithFileName(
-      kFileValueName, filename, text, mime_boundary, mime_type, &post_data_header);
+  net::AddMultipartValueForUploadWithFileName(ipfs::kFileValueName, filename,
+                                              text, mime_boundary, mime_type,
+                                              &post_data_header);
   blob_builder->AppendData(post_data_header);
 
   std::string post_data_footer = "\r\n";
@@ -73,7 +71,7 @@ void IpfsTextImportWorker::StartImportText(const std::string& text,
   auto blob_builder_callback =
       base::BindOnce(&BuildBlobWithText, text, kIPFSImportTextMimeType,
                      filename, mime_boundary);
-  std::string content_type = ipfs::kIPFSImportMultipartContentType;
+  std::string content_type = kIPFSImportMultipartContentType;
   content_type += " boundary=";
   content_type += mime_boundary;
   StartImport(std::move(blob_builder_callback), content_type, filename);

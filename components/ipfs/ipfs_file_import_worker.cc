@@ -23,39 +23,7 @@
 
 namespace {
 
-const char kFileValueName[] = "file";
-
-const char kDefaultMimeType[] = "application/octet-stream";
-
-int64_t CalculateFileSize(base::FilePath upload_file_path) {
-  int64_t file_size = -1;
-  base::GetFileSize(upload_file_path, &file_size);
-  return file_size;
-}
-
-std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFile(
-    base::FilePath upload_file_path,
-    size_t file_size,
-    std::string mime_type,
-    std::string filename,
-    std::string mime_boundary) {
-  auto blob_builder =
-      std::make_unique<storage::BlobDataBuilder>(base::GenerateGUID());
-  if (filename.empty())
-    filename = upload_file_path.BaseName().MaybeAsASCII();
-  std::string post_data_header;
-  ipfs::AddMultipartHeaderForUploadWithFileName(
-      kFileValueName, filename, mime_boundary, mime_type, &post_data_header);
-  blob_builder->AppendData(post_data_header);
-
-  blob_builder->AppendFile(upload_file_path, /* offset= */ 0, file_size,
-                           /* expected_modification_time= */ base::Time());
-  std::string post_data_footer = "\r\n";
-  net::AddMultipartFinalDelimiterForUpload(mime_boundary, &post_data_footer);
-  blob_builder->AppendData(post_data_footer);
-
-  return blob_builder;
-}
+const char kFileMimeType[] = "application/octet-stream";
 
 }  // namespace
 
@@ -67,32 +35,15 @@ IpfsFileImportWorker::IpfsFileImportWorker(content::BrowserContext* context,
                                            const base::FilePath& path)
     : IpfsImportWorkerBase(context, endpoint, std::move(callback)),
       weak_factory_(this) {
-  StartImportFile(path);
-}
-
-IpfsFileImportWorker::~IpfsFileImportWorker() = default;
-
-void IpfsFileImportWorker::StartImportFile(const base::FilePath& path) {
+  std::string filename = path.BaseName().MaybeAsASCII();
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(&CalculateFileSize, path),
       base::BindOnce(&IpfsFileImportWorker::CreateRequestWithFile,
-                     weak_factory_.GetWeakPtr(), path, kDefaultMimeType));
+                     weak_factory_.GetWeakPtr(), path, kFileMimeType,
+                     filename));
 }
 
-void IpfsFileImportWorker::CreateRequestWithFile(
-    const base::FilePath upload_file_path,
-    const std::string& mime_type,
-    int64_t file_size) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  std::string filename = upload_file_path.BaseName().MaybeAsASCII();
-  std::string mime_boundary = net::GenerateMimeMultipartBoundary();
-  auto blob_builder_callback =
-      base::BindOnce(&BuildBlobWithFile, upload_file_path, file_size, mime_type,
-                     filename, mime_boundary);
-  std::string content_type = kIPFSImportMultipartContentType;
-  content_type += " boundary=";
-  content_type += mime_boundary;
-  StartImport(std::move(blob_builder_callback), content_type, filename);
-}
+IpfsFileImportWorker::~IpfsFileImportWorker() = default;
+
 }  // namespace ipfs
