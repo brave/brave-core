@@ -1652,6 +1652,21 @@ until they verify, or until 90 days have passed.
       <message name="IDS_VALUE_0_USD" desc="value for 0 USD">
         0.00 USD
       </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
+        WebRTC IP handling policy
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT" desc="Select value">
+        Default
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES" desc="Select value">
+        Default public and private interfaces
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_INTERFACE_ONLY" desc="Select value">
+        Default public interface only
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP" desc="Select value">
+        Disable non-proxied UDP
+      </message>
     </messages>
   </release>
 </grit>
