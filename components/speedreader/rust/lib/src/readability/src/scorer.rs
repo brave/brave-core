@@ -115,6 +115,16 @@ pub struct Meta {
     pub title: String,
     pub author: String,
     pub description: String,
+    pub charset: String,
+}
+
+impl Meta {
+    pub fn new() -> Meta {
+        Meta {
+            charset: "utf-8".to_string(),
+            ..Default::default()
+        }
+    }
 }
 
 /// Add https:// to the img src, if missing.
@@ -358,6 +368,8 @@ pub fn get_metadata(data: &ElementData, meta: &mut Meta) {
                 }
             });
         }
+    } else if let Some(charset) = data.attributes.borrow().get(local_name!("charset")) {
+        meta.charset = charset.to_string();
     }
 }
 

@@ -54,7 +54,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     url: &Url,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
-    let mut meta = Meta::default();
+    let mut meta = Meta::new();
     let handle = dom.document_node.clone();
 
     // extracts title (if it exists) pre-processes the DOM by removing script
@@ -123,7 +123,8 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     postprocess(&mut dom, top_candidate.clone(), &meta);
 
     // Calls html5ever::serialize() with IncludeNode for us.
-    let content: String = top_candidate.to_string();
+    let charset_blob = format!("<meta charset=\"{}\"/>", meta.charset);
+    let content: String = charset_blob + &top_candidate.to_string();
     Ok(Product { meta, content })
 }
 
