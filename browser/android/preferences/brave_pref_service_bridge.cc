@@ -19,8 +19,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/common/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
@@ -40,6 +42,34 @@ namespace {
 
 Profile* GetOriginalProfile() {
   return ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
+}
+
+enum WebRTCIPHandlingPolicy {
+  DEFAULT,
+  DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES,
+  DEFAULT_PUBLIC_INTERFACE_ONLY,
+  DISABLE_NON_PROXIED_UDP,
+};
+
+WebRTCIPHandlingPolicy GetWebRTCIPHandlingPolicy(
+    const std::string& preference) {
+  if (preference == blink::kWebRTCIPHandlingDefaultPublicAndPrivateInterfaces)
+    return DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES;
+  if (preference == blink::kWebRTCIPHandlingDefaultPublicInterfaceOnly)
+    return DEFAULT_PUBLIC_INTERFACE_ONLY;
+  if (preference == blink::kWebRTCIPHandlingDisableNonProxiedUdp)
+    return DISABLE_NON_PROXIED_UDP;
+  return DEFAULT;
+}
+
+std::string GetWebRTCIPHandlingPreference(WebRTCIPHandlingPolicy policy) {
+  if (policy == DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES)
+    return blink::kWebRTCIPHandlingDefaultPublicAndPrivateInterfaces;
+  if (policy == DEFAULT_PUBLIC_INTERFACE_ONLY)
+    return blink::kWebRTCIPHandlingDefaultPublicInterfaceOnly;
+  if (policy == DISABLE_NON_PROXIED_UDP)
+    return blink::kWebRTCIPHandlingDisableNonProxiedUdp;
+  return blink::kWebRTCIPHandlingDefault;
 }
 
 }  // namespace
@@ -288,6 +318,18 @@ void JNI_BravePrefServiceBridge_SetReferralDownloadId(
     const JavaParamRef<jstring>& downloadId) {
   return g_browser_process->local_state()->SetString(
       kReferralDownloadID, ConvertJavaStringToUTF8(env, downloadId));
+}
+
+jint JNI_BravePrefServiceBridge_GetWebrtcPolicy(JNIEnv* env) {
+  return (int)GetWebRTCIPHandlingPolicy(
+      GetOriginalProfile()->GetPrefs()->GetString(
+          prefs::kWebRTCIPHandlingPolicy));
+}
+
+void JNI_BravePrefServiceBridge_SetWebrtcPolicy(JNIEnv* env, jint policy) {
+  GetOriginalProfile()->GetPrefs()->SetString(
+      prefs::kWebRTCIPHandlingPolicy,
+      GetWebRTCIPHandlingPreference((WebRTCIPHandlingPolicy)policy));
 }
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)

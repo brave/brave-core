@@ -19,8 +19,10 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
 import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
+import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.prefs.PrefService;
@@ -42,6 +44,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_SOCIAL_BLOCKING_TWITTER = "social_blocking_twitter";
     private static final String PREF_SOCIAL_BLOCKING_LINKEDIN = "social_blocking_linkedin";
     private static final String PREF_DO_NOT_TRACK = "do_not_track";
+    private static final String PREF_WEBRTC_POLICY = "webrtc_policy";
 
     private final PrefService mPrefServiceBridge = UserPrefs.get(Profile.getLastUsedRegularProfile());
     private final ChromeManagedPreferenceDelegate mManagedPreferenceDelegate =
@@ -59,6 +62,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mSocialBlockingFacebook;
     private ChromeSwitchPreference mSocialBlockingTwitter;
     private ChromeSwitchPreference mSocialBlockingLinkedin;
+    private ChromeBasePreference mWebrtcPolicy;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -108,6 +112,8 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mSocialBlockingLinkedin = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_LINKEDIN);
         mSocialBlockingLinkedin.setOnPreferenceChangeListener(this);
+
+        mWebrtcPolicy = (ChromeBasePreference) findPreference(PREF_WEBRTC_POLICY);
 
         updatePreferences();
     }
@@ -176,6 +182,9 @@ public class BravePrivacySettings extends PrivacySettings {
         mAdBlockPref.setOrder(++order);
         mFingerprintingProtectionPref.setOrder(++order);
         mSearchSuggestions.setOrder(++order);
+        mWebrtcPolicy.setOrder(++order);
+        mWebrtcPolicy.setSummary(
+                webrtcPolicyToString(BravePrefServiceBridge.getInstance().getWebrtcPolicy()));
         mAutocompleteTopSites
                 .setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
         mAutocompleteTopSites.setOrder(++order);
@@ -200,5 +209,24 @@ public class BravePrivacySettings extends PrivacySettings {
             }
             return false;
         };
+    }
+
+    private String webrtcPolicyToString(@BraveWebrtcPolicyPreference.WebrtcPolicy int policy) {
+        switch (policy) {
+            case BraveWebrtcPolicyPreference.WebrtcPolicy.DEFAULT:
+                return getActivity().getResources().getString(
+                        R.string.settings_webrtc_policy_default);
+            case BraveWebrtcPolicyPreference.WebrtcPolicy.DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES:
+                return getActivity().getResources().getString(
+                        R.string.settings_webrtc_policy_default_public_and_private_interfaces);
+            case BraveWebrtcPolicyPreference.WebrtcPolicy.DEFAULT_PUBLIC_INTERFACE_ONLY:
+                return getActivity().getResources().getString(
+                        R.string.settings_webrtc_policy_default_public_interface_only);
+            case BraveWebrtcPolicyPreference.WebrtcPolicy.DISABLE_NON_PROXIED_UDP:
+                return getActivity().getResources().getString(
+                        R.string.settings_webrtc_policy_disable_non_proxied_udp);
+        }
+        assert false : "Setting is out of range!";
+        return "";
     }
 }
