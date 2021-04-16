@@ -195,6 +195,30 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getP3ANoticeAcknowledged();
     }
 
+    public void setUnstoppableDomainsResolveMethod(int method) {
+        BravePrefServiceBridgeJni.get().setUnstoppableDomainsResolveMethod(method);
+    }
+
+    public int getUnstoppableDomainsResolveMethod() {
+        return BravePrefServiceBridgeJni.get().getUnstoppableDomainsResolveMethod();
+    }
+
+    public void setENSResolveMethod(int method) {
+        BravePrefServiceBridgeJni.get().setENSResolveMethod(method);
+    }
+
+    public int getENSResolveMethod() {
+        return BravePrefServiceBridgeJni.get().getENSResolveMethod();
+    }
+    
+    public void setWebrtcPolicy(int policy) {
+        BravePrefServiceBridgeJni.get().setWebrtcPolicy(policy);
+    }
+
+    public int getWebrtcPolicy() {
+        return BravePrefServiceBridgeJni.get().getWebrtcPolicy();
+    }
+
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
@@ -246,5 +270,13 @@ public class BravePrefServiceBridge {
         boolean hasPathP3AEnabled();
         void setP3ANoticeAcknowledged(boolean value);
         boolean getP3ANoticeAcknowledged();
+
+        void setUnstoppableDomainsResolveMethod(int method);
+        void setENSResolveMethod(int method);
+        int getUnstoppableDomainsResolveMethod();
+        int getENSResolveMethod();
+
+        void setWebrtcPolicy(int policy);
+        int getWebrtcPolicy();
     }
 }
