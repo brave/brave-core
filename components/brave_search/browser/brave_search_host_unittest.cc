@@ -14,21 +14,21 @@ TEST(BraveSearchHost, GetBackupResultURL) {
   ASSERT_EQ(
       BraveSearchHost::GetBackupResultURL(base_url, "test", "en", "ca", "32,32",
                                           true),
-      GURL("https://www.google.com/search/?q=test&hl=en&gl=ca&self=active"));
+      GURL("https://www.google.com/search/?q=test&hl=en&gl=ca&safe=active"));
 }
 
 TEST(BraveSearchHost, GetBackupResultURLNoLang) {
   GURL base_url("https://www.google.com/search/");
   ASSERT_EQ(BraveSearchHost::GetBackupResultURL(base_url, "test", "", "ca",
                                                 "32,32", true),
-            GURL("https://www.google.com/search/?q=test&gl=ca&self=active"));
+            GURL("https://www.google.com/search/?q=test&gl=ca&safe=active"));
 }
 
 TEST(BraveSearchHost, GetBackupResultURLNoCountry) {
   GURL base_url("https://www.google.com/search/");
   ASSERT_EQ(BraveSearchHost::GetBackupResultURL(base_url, "test", "en", "",
                                                 "32,32", true),
-            GURL("https://www.google.com/search/?q=test&hl=en&self=active"));
+            GURL("https://www.google.com/search/?q=test&hl=en&safe=active"));
 }
 
 TEST(BraveSearchHost, GetBackupResultURLNoFilter) {
