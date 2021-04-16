@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/components/ipfs/addresses_config.h"
+#include "brave/components/ipfs/imported_data.h"
 #include "brave/components/ipfs/node_info.h"
 #include "brave/components/ipfs/repo_stats.h"
 
@@ -25,6 +26,8 @@ class IPFSJSONParser {
                                   ipfs::NodeInfo* info);
   static bool GetGarbageCollectionFromJSON(const std::string& json,
                                            std::string* error);
+  static bool GetImportResponseFromJSON(const std::string& json,
+                                        ipfs::ImportedData* data);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_JSON_PARSER_H_
