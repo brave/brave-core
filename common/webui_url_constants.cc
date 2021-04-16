@@ -27,3 +27,5 @@ const char kWalletHost[] = "wallet";
 const char kBraveSyncPath[] = "braveSync";
 const char kBraveSyncSetupPath[] = "braveSync/setup";
 const char kTorInternalsHost[] = "tor-internals";
+const char kPlaylistHost[] = "playlist";
+const char kBraveUIPlaylistURL[] = "chrome://playlist/";

@@ -129,6 +129,8 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     additional_list += [
         os.path.join('brave', 'components', 'brave_prochlo'),
         os.path.join('brave', 'components', 'brave_new_tab_ui', 'data'),
+        os.path.join('brave', 'components', 'playlist', 'third_party',
+                     'youtubedown'),
     ]
     additional_paths = tuple(additional_list)
 

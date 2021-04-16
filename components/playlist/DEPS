@@ -1,0 +1,12 @@
+include_rules = [
+  "+brave/components/brave_component_updater/browser",
+  "+components/component_updater",
+  "+components/keyed_service/core",
+  "+components/prefs",
+  "+components/user_prefs",
+  "+content/public/browser",
+  "+content/public/common",
+  "+services/network/public/cpp",
+  "+services/preferences/public/cpp",
+  "+third_party/re2",
+]

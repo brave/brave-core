@@ -80,6 +80,8 @@ const char kBraveEphemeralStorageKeepAliveName[] =
 const char kBraveEphemeralStorageKeepAliveDescription[] =
     "Keep ephemeral storage partitions alive for 30 seconds after last tab "
     "close";
+const char kPlaylistName[] = "Playlist";
+const char kPlaylistDescription[] = "Download web videos for later viewing.";
 const char kBravePermissionLifetimeName[] = "Permission Lifetime";
 const char kBravePermissionLifetimeDescription[] =
     "Enables the option to choose a time period after which a permission will "

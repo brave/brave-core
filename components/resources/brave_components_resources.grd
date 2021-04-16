@@ -60,6 +60,7 @@
         <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
       </if>
 
+      <part file="../playlist/resources/playlist_resources.grdp" />
       <part file="brave_blank_page_resources.grdp" />
       <part file="speedreader_resources.grdp" />
       <part file="brave_flags_ui_resources.grdp" />

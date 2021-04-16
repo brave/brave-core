@@ -5,6 +5,7 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/playlist/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -240,6 +241,8 @@ source_set("ui") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/p3a:buildflags",
+    "//brave/components/playlist/buildflags",
+    "//brave/components/resources:static_resources",
     "//brave/components/sidebar/buildflags",
     "//brave/components/tor:pref_names",
     "//brave/components/vector_icons",
@@ -469,6 +472,17 @@ source_set("ui") {
       "webui/brave_wallet_ui.h",
     ]
     deps += [ "//brave/components/brave_wallet_ui:generated_resources" ]
+  }
+
+  if (enable_playlist) {
+    sources += [
+      "webui/playlist_ui.cc",
+      "webui/playlist_ui.h",
+    ]
+    deps += [
+      "//brave/browser/playlist",
+      "//brave/components/playlist/resources:generated_resources",
+    ]
   }
 
   if (toolkit_views) {

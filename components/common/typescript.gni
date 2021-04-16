@@ -11,6 +11,7 @@ brave_common_web_compile_inputs = [
   # common definitions change
   rebase_path("../definitions/adBlock.d.ts"),
   rebase_path("../definitions/ipfs.d.ts"),
+  rebase_path("../definitions/playlist.d.ts"),
   rebase_path("../definitions/webcompatReporter.d.ts"),
   rebase_path("../definitions/chromel.d.ts"),
   rebase_path("../definitions/global.d.ts"),

@@ -47,6 +47,8 @@ extern const char kBraveEphemeralStorageName[];
 extern const char kBraveEphemeralStorageDescription[];
 extern const char kBraveEphemeralStorageKeepAliveName[];
 extern const char kBraveEphemeralStorageKeepAliveDescription[];
+extern const char kPlaylistName[];
+extern const char kPlaylistDescription[];
 extern const char kBravePermissionLifetimeName[];
 extern const char kBravePermissionLifetimeDescription[];
 }  // namespace flag_descriptions
