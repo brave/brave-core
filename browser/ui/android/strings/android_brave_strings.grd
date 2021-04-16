@@ -1670,6 +1670,21 @@ until they verify, or until 90 days have passed.
       <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for enabling Tab Groups.">
         Enable Tab Groups
       </message>
+      <message name="IDS_VERIFYING_WALLET_ALLOWS" desc="Uphold login verify text">
+        Verifying wallet allows you to manage your funds easily, adding &amp; withdrawing
+      </message>
+      <message name="IDS_DONT_HAVE_ENOUGH_BAT" desc="Uphold login don't enough text">
+        You don't have enough BAT.
+      </message>
+      <message name="IDS_NEED_TO_HAVE_MINIMUM_BAT" desc="Uphold login need to have minimum balance text">
+        You need to have minimum 25 BAT to create a verified Uphold wallet. Please try again later.
+      </message>
+      <message name="IDS_VERIFIED_ACCOUNT_UPHOLD" desc="Uphold login need to have minimum balance text">
+        If you already have a verified Uphold account, <ph name="CONTINUE_TO_LOGIN">%1$s</ph>.
+      </message>
+      <message name="IDS_CONTINUE_TO_LOGIN" desc="Uphold continue to login text">
+        continue to login
+      </message>
     </messages>
   </release>
 </grit>

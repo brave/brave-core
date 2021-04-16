@@ -335,7 +335,8 @@ public class BraveNewTabPageLayout
                                         ((BraveActivity) mActivity).getSupportFragmentManager(),
                                         CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
                             } else {
-                                TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
+                                Log.e("NTP", mBinanceNativeWorker.getOAuthClientUrl());
+                                TabUtils.openUrlInSameTab("https://accounts.binance.com/en/oauth/authorize?response_type=code&client_id=Fx5sIiTEI5&redirect_uri=com.brave.binance_release%3A%2F%2Fauthorization&scope=user%3Aemail%2Cuser%3Aaddress%2Casset%3Abalance%2Casset%3Aocbs&code_challenge=nj9kSqv9o4kh5QIfW9QmaTXPUANhk2S_2vYK2kKDd8c&code_challenge_method=S256&ref=39346846");
                                 bianceDisconnectLayout.setVisibility(View.GONE);
                                 binanceWidgetProgress.setVisibility(View.VISIBLE);
                             }
