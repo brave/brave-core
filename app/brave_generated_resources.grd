@@ -352,6 +352,27 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         Onion Available
       </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS" desc="The name of the IPFS context menu item for renderer">
+        Import to IPFS
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_PAGE" desc="The name of the IPFS context menu item to import current page using IPFS">
+        This page
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_IMAGE" desc="The name of the IPFS context menu item to import selected image using IPFS">
+        Selected image
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_VIDEO" desc="The name of the IPFS context menu item to import selected video using IPFS">
+        Selected video
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_AUDIO" desc="The name of the IPFS context menu item to import selected audio using IPFS">
+        Selected audio
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_LINK" desc="The name of the IPFS context menu item to import linked content using IPFS">
+        Linked content
+      </message>
+      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT" desc="The name of the IPFS context menu item to import selected text using IPFS">
+        Import Selected text to IPFS
+      </message>
       <if expr="use_titlecase">
         <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="Title case: The text label of a menu item to open a new off-the-record window with Tor.">
           New Private Window with Tor
@@ -715,6 +736,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_DESC" desc="The description for how to handle Unstoppable Domains">
         Method to resolve Unstoppable Domains
       </message>
+      <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC" desc="The sub-description for how to handle Unstoppable Domains">
+        <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about DNS over HTTPS and Ethereum privacy considerations.
+      </message>
       <message name="IDS_SETTINGS_RESOLVE_ENS_DESC" desc="The description for how to handle ENS">
         Method to resolve Ethereum Name Service (ENS)
       </message>
@@ -737,7 +761,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         IPFS public gateway address
       </message>
       <message name="IDS_SETTINGS_IPFS_METHOD_DESC" desc="The description of IPFS protocol on settings page">
-        <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn More<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about IPFS local node and gateway privacy considerations.
+        <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about IPFS local node and gateway privacy considerations.
       </message>
       <message name="IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL" desc="The label of the button for changing IPFS gateway address">
         Change

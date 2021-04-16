@@ -17,7 +17,6 @@ const pushL10n = require('../lib/pushL10n')
 const chromiumRebaseL10n = require('../lib/chromiumRebaseL10n')
 const l10nDeleteTranslations = require('../lib/l10nDeleteTranslations')
 const createDist = require('../lib/createDist')
-const upload = require('../lib/upload')
 const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 
@@ -140,13 +139,6 @@ program
   .option('--use_goma', 'whether to use Goma for building')
   .arguments('[build_config]')
   .action(createDist)
-
-program
-  .command('upload')
-  .option('--target_os <target_os>', 'target OS')
-  .option('--target_arch <target_arch>', 'target architecture')
-  .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
-  .action(upload)
 
 program
   .command('start')

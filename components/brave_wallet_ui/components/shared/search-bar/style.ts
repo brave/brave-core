@@ -8,7 +8,7 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   width: 100%;
   height: 32px;
-  border: 1px solid #E9E9F4;
+  border: ${(p) => `1px solid ${p.theme.palette.grey500}`};
   box-sizing: border-box;
   border-radius: 8px;
   background-color: ${(p) => p.theme.palette.white};

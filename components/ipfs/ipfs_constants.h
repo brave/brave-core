@@ -26,6 +26,10 @@ extern const char kNodeInfoPath[];
 extern const char kLocalhostIP[];
 extern const char kLocalhostDomain[];
 extern const char kGarbageCollectionPath[];
+extern const char kImportAddPath[];
+extern const char kImportMakeDirectoryPath[];
+extern const char kImportCopyPath[];
+extern const char kImportDirectory[];
 
 // Keep it synced with IPFSResolveMethodTypes in
 // browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js

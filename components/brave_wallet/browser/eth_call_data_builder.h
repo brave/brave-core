@@ -21,6 +21,7 @@ bool BalanceOf(const std::string& address, std::string* data);
 
 namespace unstoppable_domains {
 
+// Get mutiple record values mapped with keys of the target domain.
 bool GetMany(const std::vector<std::string>& keys,
              const std::string& domain,
              std::string* data);

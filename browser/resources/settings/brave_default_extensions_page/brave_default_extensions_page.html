@@ -87,16 +87,19 @@
     </settings-toggle-button>
     <template is="dom-if" if="{{ decentralizedDnsEnabled_ }}">
       <div class="settings-box">
-        <div class="start">$i18n{resolveUnstoppableDomainsDesc}</div>
+        <div class="flex cr-padded-text">
+          <div class="start">$i18n{resolveUnstoppableDomainsDesc}</div>
+          <div class="secondary">$i18nRaw{resolveUnstoppableDomainsSubDesc}</div>
+        </div>
         <settings-dropdown-menu id="unstoppableDomainsResolveMethodType"
                                 pref="{{prefs.brave.unstoppable_domains.resolve_method}}"
-                                menu-options="[[decentralizedDnsResolveMethod_]]">
+                                menu-options="[[unstoppableDomainsResolveMethod_]]">
       </div>
       <div class="settings-box">
         <div class="start">$i18n{resolveENSDesc}</div>
         <settings-dropdown-menu id="ensResolveMethodType"
                                 pref="{{prefs.brave.ens.resolve_method}}"
-                                menu-options="[[decentralizedDnsResolveMethod_]]">
+                                menu-options="[[ensResolveMethod_]]">
       </div>
     </template>
     <settings-toggle-button id="mediaRouterEnabled"

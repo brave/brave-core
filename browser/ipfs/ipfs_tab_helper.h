@@ -24,8 +24,9 @@ class WebContents;
 class PrefService;
 
 namespace ipfs {
-
+struct ImportedData;
 class IPFSHostResolver;
+class IpfsService;
 
 // Determines if IPFS should be active for a given top-level navigation.
 class IPFSTabHelper : public content::WebContentsObserver,
@@ -43,17 +44,28 @@ class IPFSTabHelper : public content::WebContentsObserver,
     resolver_ = std::move(resolver);
   }
 
+  void SetIpfsServiceForTesting(ipfs::IpfsService* service) {
+    ipfs_service_ = service;
+  }
+
+  void ImportLinkToIpfs(const GURL& url);
+  void ImportTextToIpfs(const std::string& text);
+
  private:
   friend class content::WebContentsUserData<IPFSTabHelper>;
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
+  void PushNotification(const base::string16& title,
+                        const base::string16& body,
+                        const GURL& link);
+  GURL CreateAndCopyShareableLink(const ipfs::ImportedData& data);
   bool IsDNSLinkCheckEnabled() const;
   void IPFSLinkResolved(const GURL& ipfs);
   void MaybeShowDNSLinkButton(content::NavigationHandle* handle);
   void UpdateDnsLinkButtonState();
 
   void MaybeSetupIpfsProtocolHandlers(const GURL& url);
-
+  void OnImportCompleted(const ipfs::ImportedData& data);
   // content::WebContentsObserver
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -65,6 +77,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   PrefService* pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
+  ipfs::IpfsService* ipfs_service_ = nullptr;
   GURL ipfs_resolved_url_;
   std::unique_ptr<IPFSHostResolver> resolver_;
   base::WeakPtrFactory<IPFSTabHelper> weak_ptr_factory_{this};

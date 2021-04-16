@@ -86,6 +86,7 @@
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
@@ -1737,19 +1738,24 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   if (!parsed_url.is_valid() || !ProcessPublisher(parsed_url)) {
     return;
   }
-#if BUILDFLAG(IPFS_ENABLED)
-  if (ipfs::IsIpfsEnabled(profile_) &&
-      ipfs::IsDefaultGatewayURL(parsed_url, profile_)) {
-    ledger::type::PublisherInfoPtr info;
-    OnPanelPublisherInfo(ledger::type::Result::NOT_FOUND, std::move(info),
-                         windowId);
-    return;
-  }
-#endif
+
   auto origin = parsed_url.GetOrigin();
   std::string baseDomain =
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
-
+  std::string path = parsed_url.PathForRequest();
+#if BUILDFLAG(IPFS_ENABLED)
+  if (ipfs::IsIpfsEnabled(profile_) && parsed_url.SchemeIs(ipfs::kIPNSScheme)) {
+    std::string cid;
+    if (!ipfs::ParseCIDAndPathFromIPFSUrl(parsed_url, &cid, &path) ||
+        cid.empty())
+      return;
+    origin = GURL(parsed_url.scheme() + "://" + cid);
+    baseDomain = cid;
+  } else if (parsed_url.SchemeIs(ipfs::kIPFSScheme)) {
+    OnPanelPublisherInfo(ledger::type::Result::NOT_FOUND, nullptr, windowId);
+    return;
+  }
+#endif
   if (baseDomain == "") {
     ledger::type::PublisherInfoPtr info;
     OnPanelPublisherInfo(
@@ -1765,7 +1771,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
 
   ledger::type::VisitDataPtr visit_data = ledger::type::VisitData::New();
   visit_data->domain = visit_data->name = baseDomain;
-  visit_data->path = parsed_url.PathForRequest();
+  visit_data->path = path;
   visit_data->url = origin.spec();
   visit_data->favicon_url = favicon_url;
 

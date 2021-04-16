@@ -16,9 +16,12 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_import_worker_base.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
+#include "brave/components/ipfs/ipfs_link_import_worker.h"
 #include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
+#include "brave/components/ipfs/ipfs_text_import_worker.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/service_sandbox_type.h"
@@ -27,6 +30,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/url_util.h"
@@ -39,6 +43,23 @@
 
 namespace {
 
+// Works similarly to base::AutoReset but checks for access from the wrong
+// thread as well as ensuring that the previous value of the re-entrancy guard
+// variable was false.
+class ReentrancyCheck {
+ public:
+  explicit ReentrancyCheck(bool* guard_flag) : guard_flag_(guard_flag) {
+    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+    DCHECK(!*guard_flag_);
+    *guard_flag_ = true;
+  }
+
+  ~ReentrancyCheck() { *guard_flag_ = false; }
+
+ private:
+  bool* const guard_flag_;
+};
+
 // Used to retry request if we got zero peers from ipfs service
 // Actual value will be generated randomly in range
 // (kMinimalPeersRetryIntervalMs, kPeersRetryRate*kMinimalPeersRetryIntervalMs)
@@ -47,25 +68,25 @@ const int kPeersRetryRate = 3;
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ipfs_service", R"(
-      semantics {
-        sender: "IPFS service"
-        description:
-          "This service is used to communicate with IPFS daemon "
-          "on behalf of the user interacting with the actions in brvae://ipfs."
-        trigger:
-          "Triggered by actions in brave://ipfs."
-        data:
-          "Options of the commands."
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        setting:
-          "You can enable or disable this feature in brave://settings."
-        policy_exception_justification:
-          "Not implemented."
-      }
-    )");
+          semantics {
+            sender: "IPFS service"
+            description:
+              "This service is used to communicate with IPFS daemon "
+              "on behalf of the user interacting with the actions in brave://ipfs."
+            trigger:
+              "Triggered by actions in brave://ipfs."
+            data:
+              "Options of the commands."
+            destination: WEBSITE
+          }
+          policy {
+            cookies_allowed: NO
+            setting:
+              "You can enable or disable this feature in brave://settings."
+            policy_exception_justification:
+              "Not implemented."
+          }
+        )");
 }
 
 std::pair<bool, std::string> LoadConfigFileOnFileTaskRunner(
@@ -255,10 +276,11 @@ void IpfsService::Shutdown() {
 }
 
 std::unique_ptr<network::SimpleURLLoader> IpfsService::CreateURLLoader(
-    const GURL& gurl) {
+    const GURL& gurl,
+    const std::string& method) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = gurl;
-  request->method = "POST";
+  request->method = method;
 
   // Remove trailing "/".
   std::string origin = server_endpoint_.spec();
@@ -270,6 +292,56 @@ std::unique_ptr<network::SimpleURLLoader> IpfsService::CreateURLLoader(
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   return url_loader;
+}
+
+void IpfsService::ImportLinkToIpfs(const GURL& url,
+                                   ipfs::ImportCompletedCallback callback) {
+  ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+  if (!IsDaemonLaunched()) {
+    StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportLinkToIpfs,
+                                        weak_factory_.GetWeakPtr(), url,
+                                        std::move(callback)));
+    return;
+  }
+  size_t key = base::FastHash(base::as_bytes(base::make_span(url.spec())));
+  if (importers_.count(key))
+    return;
+
+  auto import_completed_callback =
+      base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
+                     std::move(callback), key);
+  importers_[key] = std::make_unique<IpfsLinkImportWorker>(
+      context_, server_endpoint_, std::move(import_completed_callback), url);
+}
+
+void IpfsService::ImportTextToIpfs(const std::string& text,
+                                   const std::string& host,
+                                   ipfs::ImportCompletedCallback callback) {
+  ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+  if (!IsDaemonLaunched()) {
+    StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportTextToIpfs,
+                                        weak_factory_.GetWeakPtr(), text, host,
+                                        std::move(callback)));
+    return;
+  }
+  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
+  if (importers_.count(key))
+    return;
+  auto import_completed_callback =
+      base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
+                     std::move(callback), key);
+  importers_[key] = std::make_unique<IpfsTextImportWorker>(
+      context_, server_endpoint_, std::move(import_completed_callback), text,
+      host);
+}
+
+void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
+                                   size_t key,
+                                   const ipfs::ImportedData& data) {
+  if (callback)
+    std::move(callback).Run(data);
+
+  importers_.erase(key);
 }
 
 void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
@@ -390,6 +462,23 @@ bool IpfsService::IsDaemonLaunched() const {
     return true;
   }
   return ipfs_pid_ > 0;
+}
+
+void IpfsService::StartDaemonAndLaunch(
+    base::OnceCallback<void(void)> callback) {
+  if (IsDaemonLaunched()) {
+    std::move(callback).Run();
+    return;
+  }
+
+  LaunchDaemon(base::BindOnce(
+      [](base::OnceCallback<void(void)> callback, bool success) {
+        if (!success)
+          return;
+        if (callback)
+          std::move(callback).Run();
+      },
+      std::move(callback)));
 }
 
 void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
@@ -620,6 +709,28 @@ void IpfsService::OnGarbageCollection(
       IPFSJSONParser::GetGarbageCollectionFromJSON(body, &error);
   }
   std::move(callback).Run(success && error.empty(), error);
+}
+
+void IpfsService::PreWarmShareableLink(const GURL& url) {
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = url;
+  request->method = "HEAD";
+  auto url_loader = network::SimpleURLLoader::Create(
+      std::move(request), GetNetworkTrafficAnnotationTag());
+
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsService::OnPreWarmComplete, base::Unretained(this),
+                     std::move(iter)));
+}
+
+void IpfsService::OnPreWarmComplete(
+    SimpleURLLoaderList::iterator iter,
+    std::unique_ptr<std::string> response_body) {
+  url_loaders_.erase(iter);
+  if (prewarm_callback_for_testing_)
+    std::move(prewarm_callback_for_testing_).Run();
 }
 
 }  // namespace ipfs

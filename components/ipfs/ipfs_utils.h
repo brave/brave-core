@@ -27,6 +27,12 @@ bool HasIPFSPath(const GURL& url);
 bool IsDefaultGatewayURL(const GURL& url, content::BrowserContext* context);
 bool IsLocalGatewayURL(const GURL& url);
 bool IsIPFSScheme(const GURL& url);
+// Extracts cid and path from ipfs URLs like:
+// [scheme]://[cid][.gateway][/path]
+// [scheme]://[cid][/path]
+bool ParseCIDAndPathFromIPFSUrl(const GURL& url,
+                                std::string* cid,
+                                std::string* path);
 GURL ToPublicGatewayURL(const GURL& url, content::BrowserContext* context);
 GURL GetIPFSGatewayURL(const std::string& cid,
                        const std::string& path,
@@ -45,10 +51,13 @@ void SetIPFSDefaultGatewayForTest(const GURL& url);
 GURL GetDefaultIPFSLocalGateway(version_info::Channel channel);
 GURL GetDefaultIPFSGateway(content::BrowserContext* context);
 GURL GetAPIServer(version_info::Channel channel);
+GURL ResolveWebUIFilesLocation(const std::string& directory,
+                               version_info::Channel channel);
 bool TranslateIPFSURI(const GURL& url,
                       GURL* new_url,
                       const GURL& gateway_url,
                       bool use_subdomain);
+bool IsIpfsMenuEnabled(content::BrowserContext* browser_context);
 
 }  // namespace ipfs
 

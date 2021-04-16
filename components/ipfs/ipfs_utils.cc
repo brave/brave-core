@@ -215,30 +215,42 @@ GURL GetAPIServer(version_info::Channel channel) {
   return AppendLocalPort(GetAPIPort(channel));
 }
 
-bool TranslateIPFSURI(const GURL& url,
-                      GURL* new_url,
-                      const GURL& gateway_url,
-                      bool use_subdomain) {
+bool ParseCIDAndPathFromIPFSUrl(const GURL& url,
+                                std::string* cid,
+                                std::string* path) {
   if (!url.SchemeIs(kIPFSScheme) && !url.SchemeIs(kIPNSScheme)) {
     return false;
   }
   if (!url.host().empty())
     return false;
-
+  DCHECK(cid);
+  DCHECK(path);
   // ipfs: or ipfs://
   size_t offset = (url.path().substr(0, 2) == "//") ? 2 : 0;
   // In the case of a URL like ipfs://[cid]/wiki/Vincent_van_Gogh.html
   // host is empty and path is //wiki/Vincent_van_Gogh.html
-  std::string cid(url.path().substr(offset));
+  std::string local_cid(url.path().substr(offset));
   // If we have a path after the CID, get at the real resource path
-  size_t pos = cid.find("/");
-  std::string path;
+  size_t pos = local_cid.find("/");
   if (pos != std::string::npos && pos != 0) {
     // path would be /wiki/Vincent_van_Gogh.html
-    path = cid.substr(pos, cid.length() - pos);
+    *path = local_cid.substr(pos, local_cid.length() - pos);
+
     // cid would be [cid]
-    cid = cid.substr(0, pos);
+    *cid = local_cid.substr(0, pos);
+    return true;
   }
+  *cid = local_cid;
+  return true;
+}
+
+bool TranslateIPFSURI(const GURL& url,
+                      GURL* new_url,
+                      const GURL& gateway_url,
+                      bool use_subdomain) {
+  std::string cid, path;
+  if (!ParseCIDAndPathFromIPFSUrl(url, &cid, &path))
+    return false;
   bool ipfs_scheme = url.scheme() == kIPFSScheme;
   bool ipns_scheme = url.scheme() == kIPNSScheme;
   if ((ipfs_scheme && std::all_of(cid.begin(), cid.end(),
@@ -271,6 +283,21 @@ bool TranslateIPFSURI(const GURL& url,
   }
 
   return false;
+}
+
+GURL ResolveWebUIFilesLocation(const std::string& directory,
+                               version_info::Channel channel) {
+  GURL url = GetAPIServer(channel);
+  GURL::Replacements replacements;
+  replacements.SetPathStr("/webui/");
+  std::string webui_files_ref = std::string("/files") + directory;
+  replacements.SetRefStr(webui_files_ref);
+  return url.ReplaceComponents(replacements);
+}
+
+bool IsIpfsMenuEnabled(content::BrowserContext* browser_context) {
+  return ipfs::IsIpfsEnabled(browser_context) &&
+         ipfs::IsLocalGatewayConfigured(browser_context);
 }
 
 }  // namespace ipfs

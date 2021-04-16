@@ -441,9 +441,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="Your wallet title">
         Your wallet
       </message>
-      <message name="IDS_BRAVE_UI_BAT_TEXT" desc="A token name">
-        BAT
-      </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         <ph name="VALUE">%1$s<ex>0.0</ex></ph>
       </message>
@@ -507,7 +504,7 @@ month...
         <ph name="MONTH">%1$s<ex>DECEMBER</ex></ph> <ph name="YEAR">%2$s<ex>2018</ex></ph>
       </message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_DESCRIPTION" desc="A notication message description about auto-contribute">
-        You've contributed <ph name="BAT_VALUE">%1$s<ex>50</ex></ph>  <ph name="BAT_TEXT">%2$s<ex>BAT</ex></ph>.
+        You've contributed <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT.
       </message>
       <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_NO_FUNDS" desc="A notification about not enough funds">
         Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We'll try again in 30 days.
@@ -558,7 +555,7 @@ month...
         on Twitch
       </message>
       <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="A message that some amount of tokens reserved for non verified publishers">
-        You've designated <ph name="BAT_VALUE">%1$s<ex>50</ex></ph>  <ph name="BAT_TEXT">%2$s<ex>BAT</ex></ph> for creators who haven't
+        You've designated <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT for creators who haven't
 yet signed up to receive contributions. Your browser will keep trying to contribute
 until they verify, or until 90 days have passed.
       </message>
@@ -795,12 +792,6 @@ until they verify, or until 90 days have passed.
        <message name="IDS_BRAVE_UI_YOUR_BALANCE" desc="Your balance title">
         Your balance
       </message>
-       <message name="IDS_BRAVE_UI_BAP_TEXT" desc="A point name">
-        BAP
-      </message>
-      <message name="IDS_BRAVE_UI_BAT_POINTS_TEXT" desc="A token name for japan">
-        BAT Points
-      </message>
        <message name="IDS_BRAVE_UI_POINT_GRANT_CLAIMED" desc="A message about points being claimed">
         Point Grants Claimed
       </message>
@@ -812,15 +803,6 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_POINT" desc="Text for point">
         point
-      </message>
-      <message name="IDS_ONE_TIP_OPTION" desc="Text for one tip option">
-        1.000 <ph name="TIP">%1$s<ex>BAT</ex></ph>
-      </message>
-      <message name="IDS_FIVE_TIP_OPTION" desc="Text for five tip option">
-        5.000 <ph name="TIP">%1$s<ex>BAT</ex></ph>
-      </message>
-      <message name="IDS_TEN_TIP_OPTION" desc="Text for ten tip option">
-        10.000 <ph name="TIP">%1$s<ex>BAT</ex></ph>
       </message>
       <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
         New Tab Page

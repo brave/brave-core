@@ -2,12 +2,13 @@ import * as React from 'react'
 
 import { StyledWrapper } from './style'
 import { TopTabNavTypes, AppObjectType, AppsListType } from '../../../../constants/types'
-import { TopNavOptions } from '../../../../mock-data/top-nav-options'
+import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav } from '../../'
 import { SearchBar, AppList } from '../../../shared'
-import locale from '../../../../mock-data/mock-locale'
-import { AppsList } from '../../../../mock-data/apps-list'
+import locale from '../../../../constants/locale'
+import { AppsList } from '../../../../options/apps-list-options'
 import { filterAppList } from '../../../../utils/filter-app-list'
+import { PortfolioView } from '../'
 
 const CryptoView = () => {
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
@@ -48,7 +49,7 @@ const CryptoView = () => {
         selectedTab={selectedTab}
         onSubmit={tabTo}
       />
-      {selectedTab === 'apps' ? (
+      {selectedTab === 'apps' &&
         <>
           <SearchBar
             placeholder={locale.searchText}
@@ -62,8 +63,13 @@ const CryptoView = () => {
             action={browseMore}
           />
         </>
-      ) : (<h2>{selectedTab} view</h2>)}
-
+      }
+      {selectedTab === 'portfolio' &&
+        <PortfolioView />
+      }
+      {selectedTab !== 'portfolio' && selectedTab !== 'apps' &&
+        <h2>{selectedTab} view</h2>
+      }
     </StyledWrapper>
   )
 }
