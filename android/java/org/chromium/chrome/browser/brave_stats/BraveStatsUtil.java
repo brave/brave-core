@@ -5,12 +5,16 @@
 
 package org.chromium.chrome.browser.brave_stats;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -18,6 +22,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -39,14 +44,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import androidx.core.app.ActivityCompat;
-import android.app.Activity;
-
-
 
 public class BraveStatsUtil {
     public static final short MILLISECONDS_PER_ITEM = 50;
@@ -209,20 +206,20 @@ public class BraveStatsUtil {
         return canvasBitmap;
     }
 
-    public static boolean hasWritePermission(Activity activity){
-        if (ActivityCompat.checkSelfPermission(
-                    activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    public static boolean hasWritePermission(Activity activity) {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity.requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM);
+            activity.requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM);
         }
 
         return false;
     }
 
-    public static void shareStats(int layout){
+    public static void shareStats(int layout) {
         View shareStatsLayout = getLayout(layout);
         updateBraveShareStatsLayoutAndShare(shareStatsLayout);
     }
