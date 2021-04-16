@@ -9,22 +9,25 @@ import("//testing/test.gni")
 
 source_set("browser_tests") {
   testonly = true
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  sources = [
-    "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_browsertest.cc",
-    "//brave/browser/decentralized_dns/test/decentralized_dns_service_browsertest.cc",
-  ]
-  deps = [
-    "//base/test:test_support",
-    "//brave/components/decentralized_dns",
-    "//chrome/browser:browser_process",
-    "//chrome/test:test_support",
-    "//chrome/test:test_support_ui",
-    "//components/prefs",
-    "//components/security_interstitials/content:security_interstitial_page",
-    "//content/test:test_support",
-    "//testing/gtest",
-  ]
+  if (!is_android) {
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [
+      "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_browsertest.cc",
+      "//brave/browser/decentralized_dns/test/decentralized_dns_service_browsertest.cc",
+    ]
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/decentralized_dns",
+      "//chrome/browser:browser_process",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//components/prefs",
+      "//components/security_interstitials/content:security_interstitial_page",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }  # !is_android
 }  # source_set("browser_tests") {
 
 source_set("unit_tests") {
