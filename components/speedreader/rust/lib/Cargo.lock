@@ -1707,6 +1707,7 @@ dependencies = [
 name = "readability"
 version = "0.1.4"
 dependencies = [
+ "bitflags",
  "html5ever",
  "htmlescape",
  "kuchiki",

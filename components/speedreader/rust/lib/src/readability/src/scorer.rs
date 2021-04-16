@@ -142,27 +142,35 @@ pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
     }
 }
 
+bitflags::bitflags! {
+    pub struct ImageLoadedMask: u8 {
+        const SRC = 1 << 0;
+        const SRCSET = 1 << 1;
+
+        const NONE = 0;
+    }
+}
 /// Returns true if the image src loads without JavaScript logic. Some sites like Kotaku and The
 /// Atlantic try and get fancy with this. Our simple heuristic is to check if src is set something
 /// reasonable or srcset is set at all. Some things we've seen in the wild are srcset being left
 /// out in favor of data-srcset, and src being base64 encoded.
 #[inline]
-fn img_is_loaded(data: &ElementData) -> bool {
-    let mut loaded = false;
+fn img_is_loaded(data: &ElementData) -> ImageLoadedMask {
+    let mut mask: ImageLoadedMask = ImageLoadedMask::NONE;
     if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
         for suffix in LOADABLE_IMG_SUFFIX.iter() {
             if src.ends_with(suffix) {
-                loaded = true;
+                mask |= ImageLoadedMask::SRC;
                 break;
             }
         }
-        if !loaded {
+        if !mask.contains(ImageLoadedMask::SRC) {
             // Try parsing the URL to ignore url params
             match Url::parse(src) {
                 Ok(url) => {
                     for suffix in LOADABLE_IMG_SUFFIX.iter() {
                         if url.path().ends_with(suffix) {
-                            loaded = true;
+                            mask |= ImageLoadedMask::SRC;
                             break;
                         }
                     }
@@ -170,15 +178,17 @@ fn img_is_loaded(data: &ElementData) -> bool {
                 _ => (),
             }
         }
-    } else if data
+    }
+
+    if data
         .attributes
         .borrow()
         .get(local_name!("srcset"))
         .is_some()
     {
-        loaded = true;
+        mask |= ImageLoadedMask::SRCSET;
     }
-    loaded
+    mask
 }
 
 /// Contains metadata about how to load a lazy loaded image.
@@ -190,25 +200,38 @@ struct LazyImage {
 /// Try and find attributes corresponding to a lazy loaded image and return the new attribute
 /// metadata. Look for anything ending in *srcset (data-srcset is fairly common) or any element
 /// with image suffixes.
-fn try_lazy_img(data: &ElementData) -> Option<LazyImage> {
+fn try_lazy_img(
+    data: &ElementData,
+    mut mask: ImageLoadedMask,
+) -> (ImageLoadedMask, Vec<LazyImage>) {
+    let mut lazy_srcs: Vec<LazyImage> = Vec::with_capacity(2);
     for (name, value) in &data.attributes.borrow().map {
-        if name.local.as_ref().ends_with("-srcset") {
-            return Some(LazyImage {
-                local: local_name!("srcset"),
-                value: value.value.clone(),
-            });
+        if mask.is_all() {
+            break;
         }
-        if LOADABLE_IMG_SUFFIX
-            .iter()
-            .any(|suffix| value.value.ends_with(suffix))
-        {
-            return Some(LazyImage {
-                local: local_name!("src"),
-                value: value.value.clone(),
-            });
+        if !mask.contains(ImageLoadedMask::SRCSET) {
+            if name.local.as_ref().ends_with("-srcset") {
+                mask |= ImageLoadedMask::SRCSET;
+                lazy_srcs.push(LazyImage {
+                    local: local_name!("srcset"),
+                    value: value.value.clone(),
+                });
+            }
+        }
+        if !mask.contains(ImageLoadedMask::SRC) {
+            if LOADABLE_IMG_SUFFIX
+                .iter()
+                .any(|suffix| value.value.ends_with(suffix))
+            {
+                mask |= ImageLoadedMask::SRC;
+                lazy_srcs.push(LazyImage {
+                    local: local_name!("src"),
+                    value: value.value.clone(),
+                });
+            }
         }
     }
-    None
+    (mask, lazy_srcs)
 }
 
 /// Returns the proportion of links an element contains with the amount of text in the subtree.
@@ -816,14 +839,16 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     false
                 }
                 local_name!("img") => {
-                    let mut loaded = img_is_loaded(data);
-                    if !loaded {
-                        if let Some(img) = try_lazy_img(data) {
-                            dom::set_attr(img.local.as_ref(), img.value, handle.clone(), true);
-                            loaded = true
+                    let mask = img_is_loaded(data);
+                    let (mask, lazy_srcs) = try_lazy_img(data, mask);
+                    if mask == ImageLoadedMask::NONE {
+                        true
+                    } else {
+                        for src in lazy_srcs {
+                            dom::set_attr(src.local.as_ref(), src.value, handle.clone(), true);
                         }
+                        false
                     }
-                    !loaded
                 }
                 _ => false,
             };
@@ -935,8 +960,9 @@ mod tests {
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
         assert_eq!(elem.name.local, local_name!("img"));
-        assert!(!img_is_loaded(elem));
-        assert!(try_lazy_img(elem).is_some());
+        assert_eq!(img_is_loaded(elem), ImageLoadedMask::NONE);
+        let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
+        assert_eq!(mask, ImageLoadedMask::SRCSET);
     }
 
     #[test]
@@ -950,6 +976,20 @@ mod tests {
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
         assert_eq!(elem.name.local, local_name!("img"));
-        assert!(img_is_loaded(elem));
+        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+    }
+
+    #[test]
+    fn test_load_lazy_images_src_and_srcset() {
+        // look for srcset even if we loaded the src
+        let input = r#"
+        <img src="https://some-site/some-image.jpg"
+            data-srcset="https://some-site/some-image.jpg2000x2000"/>
+        "#;
+        let handle = dom::parse_inner(input).unwrap();
+        let elem = handle.as_element().unwrap();
+        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+        let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
+        assert!(mask.is_all());
     }
 }
