@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/strings/stringprintf.h"
 #include "net/base/load_flags.h"
+#include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -52,21 +52,40 @@ BraveSearchHost::BraveSearchHost(
 
 BraveSearchHost::~BraveSearchHost() {}
 
+// [static]
+GURL BraveSearchHost::GetBackupResultURL(const GURL& baseURL,
+                                         const std::string& query,
+                                         const std::string& lang,
+                                         const std::string& country,
+                                         const std::string& geo,
+                                         bool filter_explicit_results) {
+  GURL url = baseURL;
+  url = net::AppendQueryParameter(url, "q", query);
+  if (!lang.empty()) {
+    url = net::AppendQueryParameter(url, "hl", lang);
+  }
+  if (!country.empty()) {
+    url = net::AppendQueryParameter(url, "gl", country);
+  }
+  if (filter_explicit_results) {
+    url = net::AppendQueryParameter(url, "self", "active");
+  }
+  return url;
+}
+
 void BraveSearchHost::FetchBackupResults(const std::string& query,
                                          const std::string& lang,
                                          const std::string& country,
                                          const std::string& geo,
+                                         bool filter_explicit_results,
                                          FetchBackupResultsCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
-
-  if (backup_provider_for_test.is_empty()) {
-    std::string spec(
-        base::StringPrintf("https://www.google.com/search?q=%s&hl=%s&gl=%s",
-                           query.c_str(), lang.c_str(), country.c_str()));
-    request->url = GURL(spec);
-  } else {
+  request->url = GURL("https://www.google.com/search");
+  if (!backup_provider_for_test.is_empty()) {
     request->url = backup_provider_for_test;
   }
+  request->url = GetBackupResultURL(request->url, query, lang, country, geo,
+                                    filter_explicit_results);
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;

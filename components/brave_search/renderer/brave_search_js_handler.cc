@@ -96,7 +96,8 @@ v8::Local<v8::Promise> BraveSearchJSHandler::FetchBackupResults(
     const std::string& query_string,
     const std::string& lang,
     const std::string& country,
-    const std::string& geo) {
+    const std::string& geo,
+    bool filter_explicit_results) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -107,7 +108,7 @@ v8::Local<v8::Promise> BraveSearchJSHandler::FetchBackupResults(
         std::make_unique<v8::Global<v8::Promise::Resolver>>();
     promise_resolver->Reset(isolate_, resolver.ToLocalChecked());
     brave_search_fallback_->FetchBackupResults(
-        query_string, lang, country, geo,
+        query_string, lang, country, geo, filter_explicit_results,
         base::BindOnce(&BraveSearchJSHandler::OnFetchBackupResults,
                        base::Unretained(this), std::move(promise_resolver)));
 

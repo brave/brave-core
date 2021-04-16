@@ -34,7 +34,15 @@ class BraveSearchHost final : public brave_search::mojom::BraveSearchFallback {
                           const std::string& lang,
                           const std::string& country,
                           const std::string& geo,
+                          bool filter_explicit_results,
                           FetchBackupResultsCallback callback) override;
+
+  static GURL GetBackupResultURL(const GURL& baseURL,
+                                 const std::string& query,
+                                 const std::string& lang,
+                                 const std::string& country,
+                                 const std::string& geo,
+                                 bool filter_explicit_results);
   static void SetBackupProviderForTest(const GURL&);
 
  private:
