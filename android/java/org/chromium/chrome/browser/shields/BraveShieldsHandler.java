@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.shields;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
@@ -12,6 +13,7 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -55,6 +57,8 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.widget.TextViewCompat;
 
 import org.chromium.base.Log;
@@ -63,6 +67,7 @@ import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -79,15 +84,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.content.pm.PackageManager;
-import android.os.Build;
-import androidx.core.app.ActivityCompat;
-import androidx.annotation.NonNull;
-import android.Manifest;
-import org.chromium.chrome.browser.app.BraveActivity;
-import android.app.Activity;
-
 
 /**
  * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
@@ -468,7 +464,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setupMainSwitchClick(mShieldMainSwitch);
     }
 
-    private void shareStats(){
+    private void shareStats() {
         View shareStatsLayout = BraveStatsUtil.getLayout(R.layout.brave_stats_share_layout);
         BraveStatsUtil.updateBraveShareStatsLayoutAndShare(shareStatsLayout);
     }

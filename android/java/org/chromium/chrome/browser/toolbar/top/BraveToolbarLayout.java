@@ -467,58 +467,68 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
         int totalBlocked = Integer.parseInt(BraveStatsUtil.getAdsTrackersBlocked().first);
 
-        // show after BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF (20) blocked stuff above the TIER threshold
+        // show after BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF (20) blocked stuff above the TIER
+        // threshold
         if (!BraveShieldsUtils.hasShieldsTooltipShown(
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER1)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER1 + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER1
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
                         && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER2)) {
             showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER1_TOOLTIP,
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER1);
         } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                            BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER2)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER2 + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER2
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
                         && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER3)) {
             showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER2_TOOLTIP,
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER2);
         } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                            BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER3)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER3 + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER3
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
                         && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER4)) {
             showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER3_TOOLTIP,
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER3);
         } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                            BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER4)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER4 + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER4
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
                         && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER5)) {
             showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER4_TOOLTIP,
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER4);
         } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                            BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER5)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER5 + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER5
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
                         && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER6)) {
             showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER5_TOOLTIP,
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER5);
         } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                            BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER6)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER6 + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER6
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
                         && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER7)) {
             showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER6_TOOLTIP,
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER6);
         } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                            BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER7)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER7 + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER7
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
                         && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER8)) {
             showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER7_TOOLTIP,
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER7);
         } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                            BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER8)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER8 + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER8
+                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
                         && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER9)) {
             showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER8_TOOLTIP,
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER8);
         } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                            BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER9)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER9 + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF)) {
+                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER9
+                                + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF)) {
             showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER9_TOOLTIP,
                     BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER9);
         }
