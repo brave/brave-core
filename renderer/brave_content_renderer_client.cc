@@ -46,7 +46,7 @@ void BraveContentRendererClient::RenderThreadStarted() {
 
   brave_observer_ = std::make_unique<BraveRenderThreadObserver>();
   content::RenderThread::Get()->AddObserver(brave_observer_.get());
-  brave_search_sw_holder_.SetBrowserInterfaceBrokerProxy(
+  brave_search_service_worker_holder_.SetBrowserInterfaceBrokerProxy(
       browser_interface_broker_.get());
 }
 
@@ -87,7 +87,7 @@ void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
     const GURL& script_url) {
-  brave_search_sw_holder_.WillEvaluateServiceWorkerOnWorkerThread(
+  brave_search_service_worker_holder_.WillEvaluateServiceWorkerOnWorkerThread(
       context_proxy, v8_context, service_worker_version_id,
       service_worker_scope, script_url);
   ChromeContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
@@ -100,8 +100,10 @@ void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
     const GURL& script_url) {
-  brave_search_sw_holder_.WillDestroyServiceWorkerContextOnWorkerThread(
-      v8_context, service_worker_version_id, service_worker_scope, script_url);
+  brave_search_service_worker_holder_
+      .WillDestroyServiceWorkerContextOnWorkerThread(
+          v8_context, service_worker_version_id, service_worker_scope,
+          script_url);
   ChromeContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
       v8_context, service_worker_version_id, service_worker_scope, script_url);
 }
