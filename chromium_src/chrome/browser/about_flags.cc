@@ -117,66 +117,66 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES
 #endif
 
-#define BRAVE_FEATURE_ENTRIES \
-    {"use-dev-updater-url",                                                \
-     flag_descriptions::kUseDevUpdaterUrlName,                             \
-     flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,              \
-     FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl)},      \
-    {"brave-ntp-branded-wallpaper",                                        \
-     flag_descriptions::kBraveNTPBrandedWallpaperName,                     \
-     flag_descriptions::kBraveNTPBrandedWallpaperDescription, kOsAll,      \
-     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaper)},                       \
-    {"brave-ntp-branded-wallpaper-demo",                                   \
-     flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                 \
-     flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll,  \
-     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},                   \
-    {"brave-adblock-cosmetic-filtering",                                   \
-     flag_descriptions::kBraveAdblockCosmeticFilteringName,                \
-     flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll, \
-     FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                  \
-    {"brave-adblock-cosmetic-filtering-native",                            \
-     flag_descriptions::kBraveAdblockCosmeticFilteringNativeName,          \
-     flag_descriptions::kBraveAdblockCosmeticFilteringNativeDescription,   \
-     kOsMac | kOsWin | kOsLinux,                                           \
-     FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFilteringNative)},            \
-    {"brave-adblock-csp-rules",                                            \
-     flag_descriptions::kBraveAdblockCspRulesName,                         \
-     flag_descriptions::kBraveAdblockCspRulesDescription, kOsAll,          \
-     FEATURE_VALUE_TYPE(kBraveAdblockCspRules)},                           \
-    {"brave-domain-block",                                                 \
-     flag_descriptions::kBraveDomainBlockName,                             \
-     flag_descriptions::kBraveDomainBlockDescription, kOsAll,              \
-     FEATURE_VALUE_TYPE(kBraveDomainBlock)},                               \
-    {"brave-extension-network-blocking",                                   \
-     flag_descriptions::kBraveExtensionNetworkBlockingName,                \
-     flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll, \
-     FEATURE_VALUE_TYPE(kBraveExtensionNetworkBlocking)},                  \
-    SPEEDREADER_FEATURE_ENTRIES                                            \
-    BRAVE_SYNC_FEATURE_ENTRIES                                             \
-    BRAVE_IPFS_FEATURE_ENTRIES                                             \
-    BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                    \
-    SIDEBAR_FEATURE_ENTRIES                                                \
-    BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                              \
-    {"brave-super-referral",                                               \
-     flag_descriptions::kBraveSuperReferralName,                           \
-     flag_descriptions::kBraveSuperReferralDescription,                    \
-     flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,           \
-     FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},                 \
-    {"brave-ephemeral-storage",                                            \
-     flag_descriptions::kBraveEphemeralStorageName,                        \
-     flag_descriptions::kBraveEphemeralStorageDescription, kOsAll,         \
-     FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},           \
-    {"brave-ephemeral-storage-keep-alive",                                 \
-     flag_descriptions::kBraveEphemeralStorageKeepAliveName,               \
-     flag_descriptions::kBraveEphemeralStorageKeepAliveDescription, kOsAll,\
-     FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},           \
-    {"brave-permission-lifetime",                                          \
-     flag_descriptions::kBravePermissionLifetimeName,                      \
-     flag_descriptions::kBravePermissionLifetimeDescription, kOsAll,       \
-     FEATURE_VALUE_TYPE(permissions::features::kPermissionLifetime)},      \
-    {"brave-rewards-bitflyer",                                             \
-     flag_descriptions::kBraveRewardsBitflyerName,                         \
-     flag_descriptions::kBraveRewardsBitflyerDescription, kOsDesktop,      \
+#define BRAVE_FEATURE_ENTRIES                                               \
+    {"use-dev-updater-url",                                                 \
+     flag_descriptions::kUseDevUpdaterUrlName,                              \
+     flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,               \
+     FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl)},       \
+    {"brave-ntp-branded-wallpaper",                                         \
+     flag_descriptions::kBraveNTPBrandedWallpaperName,                      \
+     flag_descriptions::kBraveNTPBrandedWallpaperDescription, kOsAll,       \
+     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaper)},                        \
+    {"brave-ntp-branded-wallpaper-demo",                                    \
+     flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                  \
+     flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll,   \
+     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},                    \
+    {"brave-adblock-cosmetic-filtering",                                    \
+     flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
+     flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \
+     FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                   \
+    {"brave-adblock-cosmetic-filtering-native",                             \
+     flag_descriptions::kBraveAdblockCosmeticFilteringNativeName,           \
+     flag_descriptions::kBraveAdblockCosmeticFilteringNativeDescription,    \
+     kOsMac | kOsWin | kOsLinux,                                            \
+     FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFilteringNative)},             \
+    {"brave-adblock-csp-rules",                                             \
+     flag_descriptions::kBraveAdblockCspRulesName,                          \
+     flag_descriptions::kBraveAdblockCspRulesDescription, kOsAll,           \
+     FEATURE_VALUE_TYPE(kBraveAdblockCspRules)},                            \
+    {"brave-domain-block",                                                  \
+     flag_descriptions::kBraveDomainBlockName,                              \
+     flag_descriptions::kBraveDomainBlockDescription, kOsAll,               \
+     FEATURE_VALUE_TYPE(kBraveDomainBlock)},                                \
+    {"brave-extension-network-blocking",                                    \
+     flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
+     flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \
+     FEATURE_VALUE_TYPE(kBraveExtensionNetworkBlocking)},                   \
+    SPEEDREADER_FEATURE_ENTRIES                                             \
+    BRAVE_SYNC_FEATURE_ENTRIES                                              \
+    BRAVE_IPFS_FEATURE_ENTRIES                                              \
+    BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
+    SIDEBAR_FEATURE_ENTRIES                                                 \
+    BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                                 \
+    {"brave-super-referral",                                                \
+     flag_descriptions::kBraveSuperReferralName,                            \
+     flag_descriptions::kBraveSuperReferralDescription,                     \
+     flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,            \
+     FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},                  \
+    {"brave-ephemeral-storage",                                             \
+     flag_descriptions::kBraveEphemeralStorageName,                         \
+     flag_descriptions::kBraveEphemeralStorageDescription, kOsAll,          \
+     FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},            \
+    {"brave-ephemeral-storage-keep-alive",                                  \
+     flag_descriptions::kBraveEphemeralStorageKeepAliveName,                \
+     flag_descriptions::kBraveEphemeralStorageKeepAliveDescription, kOsAll, \
+     FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},            \
+    {"brave-permission-lifetime",                                           \
+     flag_descriptions::kBravePermissionLifetimeName,                       \
+     flag_descriptions::kBravePermissionLifetimeDescription, kOsAll,        \
+     FEATURE_VALUE_TYPE(permissions::features::kPermissionLifetime)},       \
+    {"brave-rewards-bitflyer",                                              \
+     flag_descriptions::kBraveRewardsBitflyerName,                          \
+     flag_descriptions::kBraveRewardsBitflyerDescription, kOsDesktop,       \
      FEATURE_VALUE_TYPE(brave_rewards::features::kBitflyerFeature)},
 
 
