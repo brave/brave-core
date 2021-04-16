@@ -27,7 +27,6 @@
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="6469509880167172749">Braveに完全に匿名の製品分析データを自動的に送信する</translation>
 <translation id="7090566321964540749">この匿名の情報は、Braveの特定の機能が全体でどの程度使われるか、予測するためにのみ使われます。</translation>
-<translation id="347604927162577559">節約された\n通信量</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
 <translation id="6572660632052512096">デスクトップモード</translation>
 <translation id="1340503115760585811">新しいタブ用にデスクトップ版サイトを表示する</translation>
@@ -105,7 +104,6 @@
 <translation id="8280223431922155812">11月</translation>
 <translation id="4254029385847607686">12月</translation>
 <translation id="3780605330121608425">ウォレット</translation>
-<translation id="8845154268466251503">BAP</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">米ドル</translation>
 <translation id="1165667598801520610">資金を追加する</translation>
@@ -128,7 +126,7 @@
 <translation id="7335371657242627509">自動支援の対象にする</translation>
 <translation id="5463954686005964104">毎月このサイトにチップを払う</translation>
 <translation id="937392350501765664"><ph name="MONTH"/><ph name="YEAR"/></translation>
-<translation id="4751553692764711651"><ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>分の自動支援を行いました。</translation>
+<translation id="4781696154289395607">あなたは<ph name="BAT_VALUE"/> BATを寄付しました。</translation>
 <translation id="7997676409547731821">予定されていた自動支援とチップは、残高不足のため完了できませんでした。30日後に再試行します。</translation>
 <translation id="5306913077198665897">チップの実行中に問題が発生しました。もう一度お試しください。</translation>
 <translation id="2429828319207652823">支援の実行中に問題が発生しました。</translation>
@@ -144,7 +142,7 @@
 <translation id="7510166204621526816">Brave Rewardsサーバーが応答しません。可能な限り早く回復いたします。</translation>
 <translation id="683765328936486920">YouTubeで</translation>
 <translation id="8969049974285901797">Twitchで</translation>
-<translation id="4376933248999950592">応援を受け取るため設定が完了していないクリエイターに、<ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>を送りました。クリエイターが設定を完了するか90日が経過するまで、繰り返し実行を試みます。</translation>
+<translation id="3692362746128814480">あなたは、寄付を受け取るためにまだサインアップしていないクリエイターに対して<ph name="BAT_VALUE"/>BATを指定しました。あなたのブラウザーは、クリエイターたちが確認するまで、または90日が経過するまで寄付の実行を試み続けます。</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/>足りません</translation>
 <translation id="6940273954212603510">お願いします</translation>
 <translation id="1036277985068412734">資金を追加する</translation>
@@ -219,15 +217,10 @@
 <translation id="7541582550122501404">保留中の支援</translation>
 <translation id="8520059774736886747">クリエイター<ph name="PUBLISHER_NAME"/>が最近設定を完了しました</translation>
 <translation id="7924320838799747606">残高</translation>
-<translation id="6160106411363856968">BAP</translation>
-<translation id="1081826981536899387">BATポイント</translation>
 <translation id="9212459913845238740">獲得したポイント付与</translation>
 <translation id="2132683977638223450">無料のポイント付与</translation>
 <translation id="1486343603936278248">トークン</translation>
 <translation id="8713995420537272453">ポイント</translation>
-<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
-<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
-<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
 <translation id="8522669544471808198">背景画像を表示</translation>
 <translation id="3870475560794762985">スポンサー付き画像を表示</translation>
@@ -240,11 +233,11 @@
 <translation id="8030169304546394654">切断されました</translation>
 <translation id="8267327690882073581">ウォレットを確認</translation>
 <translation id="543510923939676996">ウォレットが検証済み</translation>
-<translation id="8673913984316081937">ウォレットの確認はオプションです</translation>
-<translation id="8558636200953226885">しかし、確認を行うと、次のことが可能です...</translation>
-<translation id="8697510149346635496">プライバシーを尊重する広告表示で獲得したBAPを引き出す</translation>
-<translation id="1481480653609649134">クレジットカードやその他の資金源で追加のBAPを購入する</translation>
-<translation id="9096003370755878766">過去に追加したBrave Rewardsウォレットに追加した可能性のあるBAPを引き出す</translation>
+<translation id="8673913984316081937">ウォレットの認証は任意です。</translation>
+<translation id="8558636200953226885">認証を行うと、次のことが可能となります。</translation>
+<translation id="8697510149346635496">Braveブラウザに貯まっているBATをウォレットに移動する</translation>
+<translation id="1481480653609649134">広告視聴で得られるBATをウォレットに貯める</translation>
+<translation id="9096003370755878766">ウォレットに貯めたBATを日本円に交換したり、日本円でBATを購入したりする</translation>
 <translation id="1554282356558968486">Braveのウォレットサービスは以下の企業のご協力を得てご提供しています</translation>
 <translation id="6569877533335686968">アップホールド</translation>
 <translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を行う必要性がある場合があります。</translation>
