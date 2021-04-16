@@ -1,12 +1,12 @@
 import("//brave/build/config.gni")
 
-group("symbol_dist_resources") {}
-group("dist_resources") {}
+group("symbol_dist_resources") {
+}
+group("dist_resources") {
+}
 
 group("create_dist_zips") {
-  deps = [
-    ":create_symbol_archive"
-  ]
+  deps = [ ":create_symbol_archive" ]
 }
 
 action("create_symbol_archive") {
@@ -14,12 +14,12 @@ action("create_symbol_archive") {
   shell_script = "//brave/build/android/pack_symbols.sh"
 
   deps = [ "//brave/build/android:brave" ]
-  archive_name = "$root_out_dir/dist/Default$target_cpu$target_apk_base.tar"
+  archive_name = "$root_out_dir/dist/Default$target_cpu$target_android_base.tar"
 
   inputs = [
     script,
     shell_script,
-    brave_apk_output,
+    brave_android_output,
   ]
 
   outputs = [ archive_name ]
