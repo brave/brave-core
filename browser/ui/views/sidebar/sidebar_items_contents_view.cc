@@ -148,14 +148,11 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
   }
 }
 
-void SidebarItemsContentsView::MaybeStartDrag() {
-}
+void SidebarItemsContentsView::MaybeStartDrag() {}
 
-void SidebarItemsContentsView::ContinueDrag() {
-}
+void SidebarItemsContentsView::ContinueDrag() {}
 
-void SidebarItemsContentsView::EndDrag() {
-}
+void SidebarItemsContentsView::EndDrag() {}
 
 void SidebarItemsContentsView::OnContextMenuClosed() {
   view_for_context_menu_ = nullptr;

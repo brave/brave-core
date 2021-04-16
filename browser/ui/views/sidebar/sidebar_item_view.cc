@@ -14,8 +14,7 @@
 
 SidebarItemView::SidebarItemView(Delegate* delegate,
                                  SidebarItemController* controller)
-    : SidebarButtonView(delegate),
-      controller_(controller) {
+    : SidebarButtonView(delegate), controller_(controller) {
   DCHECK(controller_);
 }
 

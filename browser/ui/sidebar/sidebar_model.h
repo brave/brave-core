@@ -56,6 +56,7 @@ class SidebarModel : public SidebarService::Observer,
     virtual void OnItemAdded(const SidebarItem& item,
                              int index,
                              bool user_gesture) {}
+    virtual void OnItemMoved(const SidebarItem& item, int from, int to) {}
     virtual void OnItemRemoved(int index) {}
     virtual void OnActiveIndexChanged(int old_index, int new_index) {}
     virtual void OnFaviconUpdatedForItem(const SidebarItem& item,
@@ -71,12 +72,13 @@ class SidebarModel : public SidebarService::Observer,
   SidebarModel(const SidebarModel&) = delete;
   SidebarModel& operator=(const SidebarModel&) = delete;
 
-  void Init();
+  void Init(history::HistoryService* history_service);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  void SetActiveIndex(int index);
+  // |false| is used in unit test.
+  void SetActiveIndex(int index, bool load = true);
   // Returns true if webcontents of item at |index| already loaded url.
   bool IsLoadedAt(int index) const;
   bool IsSidebarHasAllBuiltiInItems() const;
@@ -93,6 +95,7 @@ class SidebarModel : public SidebarService::Observer,
 
   // SidebarService::Observer overrides:
   void OnItemAdded(const SidebarItem& item, int index) override;
+  void OnItemMoved(const SidebarItem& item, int from, int to) override;
   void OnWillRemoveItem(const SidebarItem& item, int index) override;
   void OnItemRemoved(const SidebarItem& item, int index) override;
 
@@ -104,6 +107,8 @@ class SidebarModel : public SidebarService::Observer,
                     base::Time visit_time) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(SidebarModelTest, ItemsChangedTest);
+
   // Add item at last.
   void AddItem(const SidebarItem& item, int index, bool user_gesture);
   void RemoveItemAt(int index);

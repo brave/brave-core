@@ -12,6 +12,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -97,6 +98,8 @@ void SidebarController::SetSidebar(Sidebar* sidebar) {
   sidebar_ = sidebar;
 
   UpdateSidebarVisibility();
+  sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
+      browser_->profile(), ServiceAccessType::EXPLICIT_ACCESS));
 }
 
 void SidebarController::UpdateSidebarVisibility() {
