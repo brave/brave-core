@@ -94,6 +94,9 @@ are declared in tools/grit/grit_rule.gni.
 
       <part file="profiles_strings_override.grdp" />
 
+      <if expr="is_win or is_macosx or is_linux">
+        </if>
+
       <if expr="chromeos">
         <part file="os_settings_strings_override.grdp" />
         <part file="os_settings_search_tag_strings_override.grdp" />
@@ -814,12 +817,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos">
         </if>
 
-      <if expr="chromeos">
-      </if>
-    <if expr="is_macosx">
-      </if>
-    <if expr="is_win or desktop_linux">
-      </if>
       <if expr="not chromeos">
         </if>
       <if expr="chromeos">

@@ -154,6 +154,7 @@ CHAR-LIMIT guidelines:
       <message name="IDS_SIGNIN_INCOGNITO_BUTTON" desc="Button text to open the private interstitial in the web sign-in account picker bottom sheet">
         Open a Private tab
       </message>
+
       <message name="IDS_INCOGNITO_INTERSTITIAL_TITLE" desc="The title of the private interstitial bottom sheet.">
         Use Private to sign in
       </message>

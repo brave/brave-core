@@ -370,6 +370,12 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_SPELL_CHECK_LANGUAGES_TITLE" translateable="false" desc="Title for the dialog that allows users to select new languages to add to their list of spell check languages.">
     Add spell check languages
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SUGGESTED_SPELL_CHECK_LANGUAGES_LABEL" translateable="false" desc="Title of the list of spell check languages suggested to users.">
+    Suggested
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ALL_SPELL_CHECK_LANGUAGES_LABEL" translateable="false" desc="Title of the list of all spell check languages.">
+    All languages
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGE_NOT_ALLOWED" translateable="false" desc="Tooltip for policy icon when a spell check language is not allowed.">
     Your administrator doesn't allow this spell check language
   </message>
@@ -2510,7 +2516,7 @@ Press an assigned switch to remove assignment.
     No SIM card inserted
   </message>
   <message name="IDS_SETTINGS_INTERNET_TETHER_NOT_SETUP_WITH_LEARN_MORE_LINK" desc="Text shown when viewing the Mobile data page and no instant tether network is available">
-    No device detected <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    No device detected. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_SHOW_EID_POPUP_BUTTON_LABEL" desc="A11y and tooltop label for EID and QR code popup show button when viewing cellular network list">
     Show device EID and QR code popup

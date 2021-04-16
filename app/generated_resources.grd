@@ -290,6 +290,11 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Profiles specific strings -->
       <part file="profiles_strings.grdp" />
 
+      <!-- Web app intent picker strings -->
+      <if expr="is_win or is_macosx or is_linux">
+        <part file="protocol_handler_intent_picker_strings.grdp" />
+      </if>
+
       <!-- Brave-OS-specific strings -->
       <if expr="chromeos">
         <part file="chromeos_strings.grdp" />
@@ -1193,12 +1198,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos">
         <message name="IDS_VISIT_DESKTOP_OF_LRU_USER" desc="The text label of the menu item which allows the user to move a window from one users desktop to another.">
           Move window to <ph name="USER_NAME">$1<ex>User name</ex></ph> (<ph name="USER_EMAIL">$2<ex>john@google.com</ex></ph>)
-        </message>
-        <message name="IDS_MOVE_TO_DESKS_MENU" desc="The text label of the Move to Desks submenu">
-          Move window to desk
-        </message>
-        <message name="IDS_ASSIGN_TO_ALL_DESKS" desc="The text label of the Assign to All Desks menu item">
-          All desks
         </message>
       </if>
 
@@ -3226,11 +3225,6 @@ are declared in tools/grit/grit_rule.gni.
         Empty Cache and Hard Reload
       </message>
 
-      <!-- Fullscreen mode -->
-      <message name="IDS_EXIT_FULLSCREEN_MODE" desc="Clickable message displayed on entering full screen mode. Clicking on the link exits full screen mode.">
-        Exit full screen
-      </message>
-
       <!-- Tab sharing infobar -->
       <message name="IDS_TAB_SHARING_INFOBAR_SHARING_CURRENT_TAB_LABEL" desc="Text displayed on an infobar when current tab is being shared.">
        Sharing this tab to <ph name="APP_NAME">$1<ex>meet.google.com</ex></ph>
@@ -4083,6 +4077,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_PLATFORMKEYS" desc="Permission string for enterprise platform keys permission.">
           Perform security-related tasks for your organization, such as managing certificates and keys stored on the device
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE" desc="Permission string for enterprise private reporting permission.">
+          Read information about your browser, OS, and device
         </message>
       </if>
 
@@ -5517,7 +5514,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         your carts
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_SENTENCE" desc="Name of the Drive module in sentence case shown in various UIs.">
-        Drive files
+        Google Drive files
       </message>
       <message name="IDS_NTP_MODULES_DUMMY_LOWER" translateable="false" desc="Name of the dummy module in lowercase shown in various UIs.">
         this module
@@ -5529,7 +5526,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Even Better Module
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module and various other UIs.">
-        From Google Drive
+        From your Google Drive
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
@@ -5574,7 +5571,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Up to <ph name="DISCOUNT_UP_TO_AMOUNT">$1<ex>15%</ex></ph> off
       </message>
       <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT" desc="Text shown on the consent card for rule-based discount asking if users would like to give their consent to the feature.">
-        Ask Brave to find discounts on what you’ve added to your carts?
+        Allow Brave to find discounts on what you add to your carts?
       </message>
       <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_ACCEPT" desc="Text shown on the accept button of the consent card for rule-based discount. By clicking this button, users have chosen to opt in the feature and let Brave get discounts for them. See consent request in IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT.">
         Get discounts
@@ -5902,12 +5899,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
         To browse privately, click the dots icon menu to open a private window
-      </message>
-      <message name="IDS_LIVE_CAPTION_PROMO" desc="Text shown on promotional UI appearing next to the global media controls button">
-        Get captions for your audio and video
-      </message>
-      <message name="IDS_LIVE_CAPTION_PROMO_SCREENREADER" desc="Text announced encouraging users to open live caption">
-        Get captions for your audio and video by enabling Live Caption in settings
       </message>
       <message name="IDS_NEWTAB_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the New Tab button, which encourages users to use it.">
         Open a new tab with one click
@@ -6797,6 +6788,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS_FOR" desc="Plural form of a11y message after user changes search field when search filed is not empty.">
         Found <ph name="NUM">$1<ex>2</ex></ph> Tabs For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
       </message>
+      <message name="IDS_TAB_SEARCH_A11Y_OPEN_TAB" desc="Singular form of a11y message announced after user selects an open tab.">
+        Open Tab
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_RECENTLY_CLOSED_TAB" desc="Singular form of a11y message announced after user selects a recently closed tab.">
+        Recently Closed Tab
+      </message>
       <message name="IDS_TAB_SEARCH_OPEN_TABS" desc="The label on the tab search list section corresponding to open tabs.">
         Open Tabs
       </message>
@@ -6990,16 +6987,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
-      <!-- Mac First-run dialog -->
+      <!-- First-run dialog -->
       <message name="IDS_FR_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
         Automatically send crash reports to Brave
       </message>
 
       <!-- Mac First-run dialog messages -->
       <if expr="is_macosx">
-        <message name="IDS_FIRSTRUN_DLG_MAC_WINDOW_TITLE" desc="Window title of First Run Title on OS X - displayed in Window title bar">
-          Welcome to <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>
-        </message>
         <message name="IDS_FIRSTRUN_DLG_MAC_COMPLETE_INSTALLATION_LABEL" desc="Label at top of Dialog noting what's going to happen">
           <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> is ready to complete your installation
         </message>
@@ -9368,9 +9362,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_FULLSCREEN_PRESS_ESC_TO_EXIT_MOUSELOCK" desc="Text displayed in the bubble to tell users how to return from mouselock mode (where the mouse cursor is hidden) to normal mode. Please surround the name of the key (e.g. 'Esc') in pipe characters so it can be rendered as a key.">
         Press |<ph name="ACCELERATOR">$1<ex>Esc</ex></ph>| to show your cursor
       </message>
-      <message name="IDS_FULLSCREEN_HOLD_ESC_TO_EXIT_FULLSCREEN" desc="Text displayed in the bubble to tell users how to return from fullscreen mode (where the web page occupies the entire screen) to normal mode. Please surround the name of the key (e.g. 'Esc') in pipe characters so it can be rendered as a key.">
-        Press and hold |<ph name="ACCELERATOR">$1<ex>Esc</ex></ph>| to exit full screen
-      </message>
 
       <!-- Register Protocol Handler Strings -->
       <message name="IDS_REGISTER_PROTOCOL_HANDLER_MAILTO_NAME" desc="A more user friendly way of describing mailto: links.">
@@ -9474,38 +9465,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- Live caption. -->
-      <message name="IDS_LIVE_CAPTION_BUBBLE_TITLE" desc="Title of the Live Caption bubble">
-        Live Caption
+      <message name="IDS_LIVE_CAPTION_PROMO" desc="Text shown on promotional UI appearing next to the global media controls button">
+        Get captions for your audio and video
       </message>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_CLOSE" desc="Tooltip for the Live Caption close button">
-        Turn off Live Caption for now
-      </message>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_EXPAND" desc="Tooltip for the Live Caption expand button">
-        Show more lines
-      </message>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_COLLAPSE" desc="Tooltip for the Live Caption collapse button">
-        Show fewer lines
-      </message>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_ERROR" desc="Error message for the Live Caption bubble when Live Captions are unavailable.">
-        Live Caption is not available right now
-      </message>
-    <if expr="chromeos">
-      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on BraveOS when the Live Caption bubble appears to inform users of how to focus the bubble.">
-        Live Caption visible, press Ctrl + Back or Ctrl + Forward to cycle focus
-      </message>
-    </if>
-    <if expr="is_macosx">
-      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on MacOS when the Live Caption bubble appears to inform users of how to focus the bubble.">
-        Live Caption visible, press ⌘ + Option + Up arrow or Down arrow to cycle focus
-      </message>
-    </if>
-    <if expr="is_win or desktop_linux">
-      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on Windows or Linux when the Live Caption bubble appears to inform users of how to focus the bubble.">
-        Live Caption visible, press F6 to cycle focus
-      </message>
-    </if>
-      <message name="IDS_LIVE_CAPTION_BUBBLE_MOVE_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers when the Live Caption bubble moves.">
-        Moved caption bubble to <ph name="POSITION_ON_SCREEN_FROM_LEFT">$1<ex>20</ex></ph>% across, <ph name="POSITION_ON_SCREEN_FROM_TOP">$2<ex>80</ex></ph>% down
+      <message name="IDS_LIVE_CAPTION_PROMO_SCREENREADER" desc="Text announced encouraging users to open live caption">
+        Get captions for your audio and video by enabling Live Caption in settings
       </message>
 
       <!-- Caret browsing. -->
@@ -9660,10 +9624,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Share an application window
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TEXT" desc="Text for the window picker dialog shown when desktop capture is requested by an app to be used by the app itself.">
-        <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen.
+        The extension "<ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph>" wants to share the contents of your screen.
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TEXT_DELEGATED" desc="Text for the window picker dialog shown when desktop capture is requested by an app to be used by a tab.">
-        <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen with <ph name="TARGET_NAME">$2<ex>https://google.com</ex></ph>.
+        The extension "<ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph>" wants to share the contents of your screen with <ph name="TARGET_NAME">$2<ex>https://google.com</ex></ph>.
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_AUDIO_SHARE" desc="Text for the checkbox on the window picker dialog, when checked, audio will be shared, otherwise just video sharing">
         Share audio
@@ -10152,19 +10116,19 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Device descriptions for devices defined by policy with wildcards. -->
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a device by its vendor name when only the numeric product ID is available.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a device by its vendor name when only the numeric product ID is available.">
       Unknown product <ph name="PRODUCT_ID">$1<ex>123</ex></ph> from <ph name="VENDOR_NAME">$2<ex>Brave</ex></ph>
     </message>
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_PRODUCT_ID_AND_VENDOR_ID" desc="String describing a device when only the numeric product ID and vendor ID are available.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_PRODUCT_ID_AND_VENDOR_ID" desc="String describing a device when only the numeric product ID and vendor ID are available.">
       Unknown product <ph name="PRODUCT_ID">$1<ex>123</ex></ph> from vendor <ph name="VENDOR_ID">$2<ex>123</ex></ph>
     </message>
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_VENDOR_ID" desc="String describing devices from a vendor by ID.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_VENDOR_ID" desc="String describing devices from a vendor by ID.">
       Devices from vendor <ph name="VENDOR_ID">$1<ex>123</ex></ph>
     </message>
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_VENDOR_NAME" desc="String describing devices from a vendor.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_VENDOR_NAME" desc="String describing devices from a vendor.">
       Devices from <ph name="VENDOR_NAME">$1<ex>Brave</ex></ph>
     </message>
-    <message name="IDS_DEVICE_DESCRIPTION_FOR_ANY_VENDOR" desc="String describing devices from any vendor.">
+    <message name="IDS_USB_POLICY_DEVICE_DESCRIPTION_FOR_ANY_VENDOR" desc="String describing devices from any vendor.">
       Devices from any vendor
     </message>
 
@@ -10190,6 +10154,21 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of serial devices.">
         Finding serial devices...
+      </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site when the vendor name is available by a numeric product ID must be used.">
+        USB devices with product ID <ph name="PRODUCT_ID">$1<ex>0x12AB</ex></ph> from <ph name="VENDOR_NAME">$2<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available.">
+        USB devices with product ID <ph name="PRODUCT_ID">$1<ex>0x12AB</ex></ph> from vendor <ph name="VENDOR_ID">$2<ex>0x12AB</ex></ph>
+      </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
+        USB devices from vendor <ph name="VENDOR_ID">$1<ex>123</ex></ph>
+      </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor.">
+        USB devices from <ph name="VENDOR_NAME">$1<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_ANY_PORT" desc="String describing a serial port permission granted by enterprise policy for all ports.">
+        Any serial port
       </message>
     </if>
 
