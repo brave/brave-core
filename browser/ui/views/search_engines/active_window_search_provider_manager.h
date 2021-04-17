@@ -12,6 +12,7 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
 
+class Browser;
 class Profile;
 
 // Setting proper default search provider for profile of activated window.
@@ -28,7 +29,7 @@ class Profile;
 // window's DDG toggle button config is sufficient.
 class ActiveWindowSearchProviderManager : public views::WidgetObserver {
  public:
-  ActiveWindowSearchProviderManager(Profile* profile, views::Widget* widget);
+  ActiveWindowSearchProviderManager(Browser* profile, views::Widget* widget);
   ~ActiveWindowSearchProviderManager() override;
 
   ActiveWindowSearchProviderManager(const ActiveWindowSearchProviderManager&) =
@@ -42,6 +43,7 @@ class ActiveWindowSearchProviderManager : public views::WidgetObserver {
   FRIEND_TEST_ALL_PREFIXES(SearchEngineProviderServiceTest,
                            CheckTorWindowSearchProviderTest);
 
+  Browser* browser_ = nullptr;
   Profile* profile_ = nullptr;
   BooleanPrefMember use_alternative_search_engine_provider_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
@@ -51,7 +53,6 @@ class ActiveWindowSearchProviderManager : public views::WidgetObserver {
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void OnWidgetClosing(views::Widget* widget) override;
 
-  void ObserveWidget(views::Widget* widget);
   void ObserveSearchEngineProviderPrefs();
   void OnPreferenceChanged();
 };

@@ -16,6 +16,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
@@ -116,21 +119,15 @@ void HandleNormalWindowActivationStateChange(Profile* profile, bool active) {
 }  // namespace
 
 ActiveWindowSearchProviderManager::ActiveWindowSearchProviderManager(
-    Profile* profile,
+    Browser* browser,
     views::Widget* widget)
-    : profile_(profile) {
-  ObserveWidget(widget);
+    : browser_(browser), profile_(browser->profile()) {
+  observation_.Observe(widget);
   ObserveSearchEngineProviderPrefs();
 }
 
 ActiveWindowSearchProviderManager::~ActiveWindowSearchProviderManager() =
     default;
-
-void ActiveWindowSearchProviderManager::ObserveWidget(views::Widget* widget) {
-  if (!brave::IsGuestProfile(profile_)) {
-    observation_.Observe(widget);
-  }
-}
 
 void ActiveWindowSearchProviderManager::ObserveSearchEngineProviderPrefs() {
   if (profile_->IsTor() || brave::IsGuestProfile(profile_)) {
@@ -161,10 +158,18 @@ void ActiveWindowSearchProviderManager::OnPreferenceChanged() {
 void ActiveWindowSearchProviderManager::OnWidgetActivationChanged(
     views::Widget* widget,
     bool active) {
+  if (active) {
+    // Set proper placeholder text whenever it's activated because inactive
+    // window's omnibox placeholder could have invalid one.
+    // See BraveOmniboxViewViews::OnTemplateURLServiceChanged() comment.
+    auto* location_bar =
+        BrowserView::GetBrowserViewForBrowser(browser_)->GetLocationBarView();
+    location_bar->omnibox_view()->InstallPlaceholderText();
+  }
+
   auto* tus = TemplateURLServiceFactory::GetForProfile(profile_);
   if (!tus)
     return;
-
   auto* tu = tus->GetDefaultSearchProvider();
   if (tu && tu->type() == TemplateURL::NORMAL_CONTROLLED_BY_EXTENSION)
     return;
@@ -176,7 +181,6 @@ void ActiveWindowSearchProviderManager::OnWidgetActivationChanged(
 
   if (brave::IsGuestProfile(profile_)) {
     // Handled by SearchEngineProviderService.
-    NOTREACHED();
     return;
   }
 

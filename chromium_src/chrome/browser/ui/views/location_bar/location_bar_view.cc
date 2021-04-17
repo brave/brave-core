@@ -4,6 +4,24 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
+#include "ui/views/widget/widget.h"
+
+class BraveOmniboxViewViews : public OmniboxViewViews {
+ public:
+  using OmniboxViewViews::OmniboxViewViews;
+  BraveOmniboxViewViews(const BraveOmniboxViewViews&) = delete;
+  BraveOmniboxViewViews& operator=(const BraveOmniboxViewViews&) = delete;
+
+  // OmniboxViewViews overrides:
+  void OnTemplateURLServiceChanged() override {
+    // Only update active window's omnibox placeholder text when search provider
+    // is changed.
+    // See ActiveWindowSearchProviderManager comment for more details.
+    if (GetWidget()->IsActive())
+      OmniboxViewViews::OnTemplateURLServiceChanged();
+  }
+};
 
 #define BRAVE_LAYOUT_TRAILING_DECORATIONS                                \
   auto right_most = GetTrailingViews();                                  \
@@ -13,9 +31,11 @@
   }
 
 #define ChromeOmniboxClient BraveOmniboxClientImpl
+#define OmniboxViewViews BraveOmniboxViewViews
 #include "../../../../../../../chrome/browser/ui/views/location_bar/location_bar_view.cc"
 #undef ChromeOmniboxClient
 #undef BRAVE_LAYOUT_TRAILING_DECORATIONS
+#undef OmniboxViewViews
 
 std::vector<views::View*> LocationBarView::GetTrailingViews() {
   return std::vector<views::View*>();

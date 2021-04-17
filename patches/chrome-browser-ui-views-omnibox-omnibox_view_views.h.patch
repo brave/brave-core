@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_view_views.h b/chrome/browser/ui/views/omnibox/omnibox_view_views.h
+index 16e560d7c6d2c336fd248b9d7adf17809f023631..6179a8d7b1597dd1018ebadb3eab153b6ad5cef6 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_view_views.h
++++ b/chrome/browser/ui/views/omnibox/omnibox_view_views.h
+@@ -165,6 +165,7 @@ class OmniboxViewViews : public OmniboxView,
+     return popup_view_.get();
+   }
+ 
++  BRAVE_OMNIBOX_VIEW_VIEWS_H
+  protected:
+   // Animates the URL to a given range of text, which could be a substring or
+   // superstring of what's currently displayed. An elision animation hides the

@@ -229,7 +229,7 @@ void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
 
   search_provider_manager_.reset(
-      new ActiveWindowSearchProviderManager(browser()->profile(), frame()));
+      new ActiveWindowSearchProviderManager(browser(), frame()));
 }
 
 void BraveBrowserView::StartTabCycling() {
