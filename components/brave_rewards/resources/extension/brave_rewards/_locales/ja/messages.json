@@ -420,7 +420,7 @@
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
-    "message": "BAP",
+    "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
   "bap": {
@@ -528,7 +528,7 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "私の$provider$アカウントに移動する",
+    "message": "$provider$のアカウントに移動",
     "description": "CTA to open an external wallet account",
     "placeholders": {
       "provider": {
@@ -629,9 +629,15 @@
     "message": "ウォレットを認証すると、資金をより効率的に管理することができます。",
     "description": "Text for login button"
   },
-  "loginMessageText":  {
-    "message": "Upholdアカウントを作成するには、最低25 BATが必要です。 後でもう一度ためしてください。\n認証済みのUpholdアカウントをすでにお持ちの場合は、引き続きログインを行ってください。",
-    "description": "Text for login button"
+  "loginMessageText": {
+    "message": "Upholdアカウントを作成するには、最低$amount$ BATが必要です。認証済みのUpholdアカウントをすでにお持ちの場合は、引き続きログインを行ってください。",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "接続済み",
