@@ -24,6 +24,16 @@ const elementFromFrameCoords = (x: number, y: number): Element | null => {
   return elem
 }
 
+enum SpecificityFlags {
+  Id = (1 << 0),
+  Hierarchy = (1 << 1),
+  Attributes = (1 << 2),
+  Class = (1 << 3),
+  NthOfType = (1 << 4)
+}
+
+const mostSpecificMask = 0b11111
+
 enum Selector {
   Id,
   Class,
@@ -69,11 +79,25 @@ class ElementSelectorBuilder {
     return this.rules.length
   }
 
-  toString (): string {
+  toString (mask: number = mostSpecificMask): string {
     let selector = this.tag + ''
     for (const rule of this.rules) {
 
-      if (this.hasId && rule.type === Selector.Class) { continue }
+      if (!(mask & SpecificityFlags.Id) && rule.type === Selector.Id) {
+        continue
+      }
+      if (!(mask & SpecificityFlags.Class) && rule.type === Selector.Class) {
+        continue
+      }
+      if (!(mask & SpecificityFlags.Attributes) && rule.type === Selector.Attributes) {
+        continue
+      }
+      if (!(mask & SpecificityFlags.NthOfType) && rule.type === Selector.NthOfType) {
+        continue
+      }
+      if (this.hasId && (mask & SpecificityFlags.Id) && rule.type === Selector.Class) {
+        continue
+      }
 
       switch (rule.type) {
         case Selector.Id: {
@@ -311,28 +335,42 @@ const recalculateAndSendTargets = (elems: Element[]) => {
   chrome.runtime.sendMessage({ type: 'highlightElements', coords: coords })
 }
 
-const onTargetSelected = (selected: Element | null): string => {
+const onTargetSelected = (selected: Element | null, index: number): string => {
   if (lastHoveredElem === null) { return '' }
 
   let elem: Element | null = selected
   const selectorBuilders = []
-  while (elem !== null && elem !== document.body) {
-    selectorBuilders.push(cssSelectorFromElement(elem))
-    elem = elem.parentElement
+  const specificityMasks = [
+    0b01101,
+    0b11101,
+    0b01011,
+    0b10011,
+    0b11111
+  ]
+  const mask: number = specificityMasks[index]
+
+  if (mask & SpecificityFlags.Hierarchy) {
+    while (elem !== null && elem !== document.body) {
+      selectorBuilders.push(cssSelectorFromElement(elem))
+      elem = elem.parentElement
+    }
+  } else {
+    selectorBuilders.push(cssSelectorFromElement(selected!))
   }
   // TODO: insert the body if using nth-type-of
 
   let i = 0
   for (; i < selectorBuilders.length; i++) {
     const b = selectorBuilders[i]
-    if (b.hasId || document.querySelectorAll(b.toString()).length === 1) {
+    if ((mask & SpecificityFlags.Id) && b.hasId
+        || document.querySelectorAll(b.toString(mask)).length === 1) {
       break
     }
   }
   const selector = selectorBuilders
       .slice(0, i + 1)
       .reverse()
-      .map((b) => b.toString())
+      .map((b) => b.toString(mask))
       .join(' > ')
   return selector
 }
@@ -356,7 +394,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       break
     }
     case 'elementPickerUserSelectedTarget': {
-      const selector = onTargetSelected(lastHoveredElem)
+      const { specificity } = msg
+      const selector = onTargetSelected(lastHoveredElem, specificity)
       recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
       sendResponse({
         isValid: selector !== '',

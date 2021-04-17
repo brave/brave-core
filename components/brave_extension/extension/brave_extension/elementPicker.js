@@ -22,7 +22,7 @@ window.onload = () => {
       event.preventDefault()
       sendMessageActiveTab({type: 'quitElementPicker'})
     }
-  }, true);
+  }, true)
 
   const svg = document.getElementById('picker-ui')
 
@@ -66,15 +66,13 @@ window.onload = () => {
     }
   }
 
-  svg.addEventListener('click', (event) => {
-    if (hasSelectedTarget) {
-      // We are already previewing a target. We'll interpet another click
-      // as the user wanting back control of the UI.
-      hasSelectedTarget = false
-      togglePopup(false)
-      return
-    }
-    sendMessageActiveTab({type: 'elementPickerUserSelectedTarget'}, (response) => {
+  const slider = document.getElementById('sliderSpecificity')
+
+  const dispatchSelect = () => {
+    sendMessageActiveTab({
+      type: 'elementPickerUserSelectedTarget',
+      specificity: parseInt(slider.value)
+    }, (response) => {
       const { isValid, selector } = response
       if (isValid) {
         hasSelectedTarget = true
@@ -83,7 +81,22 @@ window.onload = () => {
         rulesTextArea.value = selector
       }
     })
-  });
+  }
+
+  slider.addEventListener('input', (event) => {
+    dispatchSelect()
+  })
+
+  svg.addEventListener('click', (event) => {
+    if (hasSelectedTarget) {
+      // We are already previewing a target. We'll interpet another click
+      // as the user wanting back control of the UI.
+      hasSelectedTarget = false
+      togglePopup(false)
+      return
+    }
+    dispatchSelect()
+  })
 
   const createButton = document.getElementById('btnCreate')
   createButton.addEventListener('click', (event) => {
