@@ -11,7 +11,9 @@ source_set("renderer") {
   public_deps = [ "//chrome/renderer" ]
 
   deps = [
+    "//brave/components/brave_search/renderer",
     "//brave/components/brave_shields/common",
     "//brave/components/cosmetic_filters/renderer",
+    "//v8",
   ]
 }

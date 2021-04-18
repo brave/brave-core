@@ -10,6 +10,8 @@
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
+#include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
+#include "url/gurl.h"
 
 BraveContentRendererClient::BraveContentRendererClient()
     : ChromeContentRendererClient() {}
@@ -32,6 +34,12 @@ SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;
 
+void BraveContentRendererClient::RenderThreadStarted() {
+  ChromeContentRendererClient::RenderThreadStarted();
+  brave_search_service_worker_holder_.SetBrowserInterfaceBrokerProxy(
+      browser_interface_broker_.get());
+}
+
 void BraveContentRendererClient::RenderFrameCreated(
     content::RenderFrame* render_frame) {
   ChromeContentRendererClient::RenderFrameCreated(render_frame);
@@ -42,4 +50,31 @@ void BraveContentRendererClient::RenderFrameCreated(
 #endif
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+}
+
+void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
+    blink::WebServiceWorkerContextProxy* context_proxy,
+    v8::Local<v8::Context> v8_context,
+    int64_t service_worker_version_id,
+    const GURL& service_worker_scope,
+    const GURL& script_url) {
+  brave_search_service_worker_holder_.WillEvaluateServiceWorkerOnWorkerThread(
+      context_proxy, v8_context, service_worker_version_id,
+      service_worker_scope, script_url);
+  ChromeContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
+      context_proxy, v8_context, service_worker_version_id,
+      service_worker_scope, script_url);
+}
+
+void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
+    v8::Local<v8::Context> v8_context,
+    int64_t service_worker_version_id,
+    const GURL& service_worker_scope,
+    const GURL& script_url) {
+  brave_search_service_worker_holder_
+      .WillDestroyServiceWorkerContextOnWorkerThread(
+          v8_context, service_worker_version_id, service_worker_scope,
+          script_url);
+  ChromeContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
+      v8_context, service_worker_version_id, service_worker_scope, script_url);
 }

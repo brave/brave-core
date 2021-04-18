@@ -23,6 +23,8 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_search/browser/brave_search_host.h"
+#include "brave/components/brave_search/common/brave_search.mojom.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
@@ -49,6 +51,7 @@
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "components/version_info/version_info.h"
 #include "content/browser/renderer_host/render_frame_host_impl.h"
+#include "content/browser/service_worker/service_worker_host.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -61,6 +64,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -236,6 +240,14 @@ void BindCosmeticFiltersResources(
       std::move(receiver));
 }
 
+void BindBraveSearchHost(
+    mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_search::BraveSearchHost>(
+          g_brave_browser_process->shared_url_loader_factory()),
+      std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -277,6 +289,16 @@ BraveContentBrowserClient::AllowWebBluetooth(
     const url::Origin& requesting_origin,
     const url::Origin& embedding_origin) {
   return ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
+}
+
+void BraveContentBrowserClient::ExposeInterfacesToRenderer(
+    service_manager::BinderRegistry* registry,
+    blink::AssociatedInterfaceRegistry* associated_registry,
+    content::RenderProcessHost* render_process_host) {
+  ChromeContentBrowserClient::ExposeInterfacesToRenderer(
+      registry, associated_registry, render_process_host);
+  registry->AddInterface(base::BindRepeating(&BindBraveSearchHost),
+                         content::GetUIThreadTaskRunner({}));
 }
 
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(

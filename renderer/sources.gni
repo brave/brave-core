@@ -9,6 +9,7 @@ brave_chrome_renderer_sources = [
 ]
 
 brave_chrome_renderer_public_deps = [
+  "//brave/components/brave_search/renderer",
   "//brave/components/content_settings/renderer",
   "//brave/components/cosmetic_filters/renderer",
 ]
