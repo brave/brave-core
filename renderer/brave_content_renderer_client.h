@@ -8,9 +8,16 @@
 
 #include <memory>
 
+#include "brave/components/brave_search/renderer/brave_search_service_worker_holder.h"
 #include "chrome/renderer/chrome_content_renderer_client.h"
+#include "v8/include/v8.h"
 
 class BraveRenderThreadObserver;
+class GURL;
+
+namespace blink {
+class WebServiceWorkerContextProxy;
+}
 
 class BraveContentRendererClient : public ChromeContentRendererClient {
  public:
@@ -21,9 +28,22 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
   void SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() override;
   void RenderFrameCreated(content::RenderFrame* render_frame) override;
   void RunScriptsAtDocumentStart(content::RenderFrame* render_frame) override;
+  void WillEvaluateServiceWorkerOnWorkerThread(
+      blink::WebServiceWorkerContextProxy* context_proxy,
+      v8::Local<v8::Context> v8_context,
+      int64_t service_worker_version_id,
+      const GURL& service_worker_scope,
+      const GURL& script_url) override;
+  void WillDestroyServiceWorkerContextOnWorkerThread(
+      v8::Local<v8::Context> v8_context,
+      int64_t service_worker_version_id,
+      const GURL& service_worker_scope,
+      const GURL& script_url) override;
 
  private:
   std::unique_ptr<BraveRenderThreadObserver> brave_observer_;
+  brave_search::BraveSearchServiceWorkerHolder
+      brave_search_service_worker_holder_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentRendererClient);
 };
