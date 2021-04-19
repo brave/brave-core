@@ -31,5 +31,7 @@ const char kImportAddPath[] = "/api/v0/add";
 const char kImportMakeDirectoryPath[] = "/api/v0/files/mkdir";
 const char kImportCopyPath[] = "/api/v0/files/cp";
 const char kImportDirectory[] = "/brave-imports/";
+const char kIPFSImportMultipartContentType[] = "multipart/form-data;";
+const char kFileValueName[] = "file";
 
 }  // namespace ipfs

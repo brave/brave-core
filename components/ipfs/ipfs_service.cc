@@ -16,6 +16,7 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_file_import_worker.h"
 #include "brave/components/ipfs/ipfs_import_worker_base.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_link_import_worker.h"
@@ -294,6 +295,26 @@ std::unique_ptr<network::SimpleURLLoader> IpfsService::CreateURLLoader(
   return url_loader;
 }
 
+void IpfsService::ImportFileToIpfs(const base::FilePath& path,
+                                   ipfs::ImportCompletedCallback callback) {
+  ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+  if (!IsDaemonLaunched()) {
+    StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportFileToIpfs,
+                                        weak_factory_.GetWeakPtr(), path,
+                                        std::move(callback)));
+    return;
+  }
+  size_t key = base::FastHash(base::as_bytes(base::make_span(path.value())));
+  if (importers_.count(key))
+    return;
+
+  auto import_completed_callback =
+      base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
+                     std::move(callback), key);
+  importers_[key] = std::make_unique<IpfsFileImportWorker>(
+      context_, server_endpoint_, std::move(import_completed_callback), path);
+}
+
 void IpfsService::ImportLinkToIpfs(const GURL& url,
                                    ipfs::ImportCompletedCallback callback) {
   ReentrancyCheck reentrancy_check(&reentrancy_guard_);
@@ -465,20 +486,20 @@ bool IpfsService::IsDaemonLaunched() const {
 }
 
 void IpfsService::StartDaemonAndLaunch(
-    base::OnceCallback<void(void)> callback) {
+    base::OnceCallback<void(void)> success_callback) {
   if (IsDaemonLaunched()) {
-    std::move(callback).Run();
+    std::move(success_callback).Run();
     return;
   }
 
   LaunchDaemon(base::BindOnce(
-      [](base::OnceCallback<void(void)> callback, bool success) {
+      [](base::OnceCallback<void(void)> launched_callback, bool success) {
         if (!success)
           return;
-        if (callback)
-          std::move(callback).Run();
+        if (launched_callback)
+          std::move(launched_callback).Run();
       },
-      std::move(callback)));
+      std::move(success_callback)));
 }
 
 void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {

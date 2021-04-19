@@ -96,6 +96,8 @@ class IpfsService : public KeyedService,
   void Shutdown() override;
 
   void RestartDaemon();
+  virtual void ImportFileToIpfs(const base::FilePath& path,
+                                ipfs::ImportCompletedCallback callback);
 
   virtual void ImportLinkToIpfs(const GURL& url,
                                 ImportCompletedCallback callback);
