@@ -279,14 +279,12 @@ public class BravePrefServiceBridge {
         void setP3ANoticeAcknowledged(boolean value);
         boolean getP3ANoticeAcknowledged();
 
-<<<<<<< HEAD
         void setUnstoppableDomainsResolveMethod(int method);
         void setENSResolveMethod(int method);
         int getUnstoppableDomainsResolveMethod();
         int getENSResolveMethod();
-=======
+
         void setWebrtcPolicy(int policy);
         int getWebrtcPolicy();
->>>>>>> [Android] Added WebRTC IP handling policy option
     }
 }
