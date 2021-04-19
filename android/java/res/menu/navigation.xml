@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_crypto"
+        android:icon="@drawable/ic_crypto_wallets"
+        android:title="@string/title_crypto" />
+
+    <item
+        android:id="@+id/navigation_rewards"
+        android:icon="@drawable/ic_bat_logo"
+        android:title="@string/title_rewards" />
+
+    <item
+        android:id="@+id/navigation_swap"
+        android:title="@null" />
+
+    <item
+        android:id="@+id/navigation_cards"
+        android:icon="@drawable/ic_credit_card"
+        android:title="@string/title_cards" />
+
+    <item
+        android:id="@+id/navigation_lock"
+        android:icon="@drawable/ic_lock_open"
+        android:title="@string/title_lock" />
+
+</menu>

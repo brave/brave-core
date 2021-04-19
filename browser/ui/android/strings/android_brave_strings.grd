@@ -1702,6 +1702,36 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CONTINUE_TO_LOGIN" desc="Uphold continue to login text">
         continue to login
       </message>
+      <message name="IDS_TITLE_CRYPTO" desc="String for crypto wallet">
+        Crypto
+      </message>
+      <message name="IDS_TITLE_REWARDS" desc="String for crypto wallet">
+        Rewards
+      </message>
+      <message name="IDS_TITLE_CARDS" desc="String for crypto wallet">
+        Cards
+      </message>
+      <message name="IDS_MY" desc="String for crypto wallet">
+        My <ph name="SECTION_TITLE">%1$s</ph>
+      </message>
+      <message name="IDS_PORTFOLIO" desc="String for crypto wallet">
+        PORTFOLIO
+      </message>
+      <message name="IDS_NFTS" desc="String for crypto wallet">
+        NFTS
+      </message>
+      <message name="IDS_INVEST" desc="String for crypto wallet">
+        INVEST
+      </message>
+      <message name="IDS_LENDING" desc="String for crypto wallet">
+        LENDING
+      </message>
+      <message name="IDS_APPS" desc="String for crypto wallet">
+        APPS
+      </message>
+      <message name="IDS_TITLE_LOCK" desc="String for crypto wallet">
+        Lock
+      </message>
     </messages>
   </release>
 </grit>
