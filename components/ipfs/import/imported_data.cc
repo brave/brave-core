@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/imported_data.h"
+#include "brave/components/ipfs/import/imported_data.h"
 
 namespace ipfs {
 

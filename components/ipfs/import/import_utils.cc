@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/import_utils.h"
+#include "brave/components/ipfs/import/import_utils.h"
 
 #include <memory>
 #include <string>
@@ -20,12 +20,15 @@ namespace ipfs {
 
 void AddMultipartHeaderForUploadWithFileName(const std::string& value_name,
                                              const std::string& file_name,
+                                             const std::string& absolute_path,
                                              const std::string& mime_boundary,
                                              const std::string& content_type,
                                              std::string* post_data) {
   DCHECK(post_data);
   // First line is the boundary.
   post_data->append("--" + mime_boundary + "\r\n");
+  if (!absolute_path.empty())
+    post_data->append("Abspath: " + absolute_path + "\r\n");
   // Next line is the Content-disposition.
   post_data->append("Content-Disposition: form-data; name=\"" + value_name +
                     "\"; filename=\"" + file_name + "\"\r\n");
@@ -52,8 +55,9 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFile(
   if (filename.empty())
     filename = upload_file_path.BaseName().MaybeAsASCII();
   std::string post_data_header;
-  ipfs::AddMultipartHeaderForUploadWithFileName(
-      kFileValueName, filename, mime_boundary, mime_type, &post_data_header);
+  ipfs::AddMultipartHeaderForUploadWithFileName(kFileValueName, filename,
+                                                std::string(), mime_boundary,
+                                                mime_type, &post_data_header);
   blob_builder->AppendData(post_data_header);
 
   blob_builder->AppendFile(upload_file_path, /* offset= */ 0, file_size,

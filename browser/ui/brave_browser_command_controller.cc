@@ -196,6 +196,7 @@ void BraveBrowserCommandController::UpdateCommandForIpfs() {
   auto enabled = ipfs::IsIpfsMenuEnabled(browser_->profile());
   UpdateCommandEnabled(IDC_APP_MENU_IPFS, enabled);
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE, enabled);
+  UpdateCommandEnabled(IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER, enabled);
 }
 #endif
 
@@ -256,6 +257,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(IPFS_ENABLED)
     case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
       brave::ShareLocalFileUsingIPFS(browser_);
+      break;
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
+      brave::ShareLocalFolderUsingIPFS(browser_);
       break;
 #endif
     case IDC_TOGGLE_SPEEDREADER:

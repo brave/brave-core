@@ -11,12 +11,11 @@
 #include <utility>
 #include <vector>
 
+#include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "ui/shell_dialogs/select_file_dialog.h"
 
 namespace content {
 class NavigationHandle;
@@ -26,14 +25,13 @@ class WebContents;
 class PrefService;
 
 namespace ipfs {
-struct ImportedData;
 class IPFSHostResolver;
-class IpfsService;
+class IpfsImportController;
 
 // Determines if IPFS should be active for a given top-level navigation.
 class IPFSTabHelper : public content::WebContentsObserver,
-                      public content::WebContentsUserData<IPFSTabHelper>,
-                      public ui::SelectFileDialog::Listener {
+                      public IpfsImportController,
+                      public content::WebContentsUserData<IPFSTabHelper> {
  public:
   IPFSTabHelper(const IPFSTabHelper&) = delete;
   IPFSTabHelper& operator=(IPFSTabHelper&) = delete;
@@ -46,29 +44,13 @@ class IPFSTabHelper : public content::WebContentsObserver,
     resolver_ = std::move(resolver);
   }
 
-  void SetIpfsServiceForTesting(ipfs::IpfsService* service) {
-    ipfs_service_ = service;
+  IpfsImportController* GetImportController() {
+    return static_cast<IpfsImportController*>(this);
   }
-
-  void ImportLinkToIpfs(const GURL& url);
-  void ImportTextToIpfs(const std::string& text);
-  void ImportFileToIpfs(const base::FilePath& path);
-  void SelectFileForImport();
 
  private:
   friend class content::WebContentsUserData<IPFSTabHelper>;
   explicit IPFSTabHelper(content::WebContents* web_contents);
-
-  void PushNotification(const base::string16& title,
-                        const base::string16& body,
-                        const GURL& link);
-  GURL CreateAndCopyShareableLink(const ipfs::ImportedData& data);
-
-  // ui::SelectFileDialog::Listener
-  void FileSelected(const base::FilePath& path,
-                    int index,
-                    void* params) override;
-  void FileSelectionCanceled(void* params) override;
 
   bool IsDNSLinkCheckEnabled() const;
   void IPFSLinkResolved(const GURL& ipfs);
@@ -76,7 +58,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   void UpdateDnsLinkButtonState();
 
   void MaybeSetupIpfsProtocolHandlers(const GURL& url);
-  void OnImportCompleted(const ipfs::ImportedData& data);
+
   // content::WebContentsObserver
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -87,9 +69,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
                             const std::string& dnslink);
 
   PrefService* pref_service_ = nullptr;
-  scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
   PrefChangeRegistrar pref_change_registrar_;
-  ipfs::IpfsService* ipfs_service_ = nullptr;
   GURL ipfs_resolved_url_;
   std::unique_ptr<IPFSHostResolver> resolver_;
   base::WeakPtrFactory<IPFSTabHelper> weak_ptr_factory_{this};

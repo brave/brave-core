@@ -15,14 +15,15 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#include "brave/components/ipfs/import/ipfs_directory_import_worker.h"
+#include "brave/components/ipfs/import/ipfs_file_import_worker.h"
+#include "brave/components/ipfs/import/ipfs_import_worker_base.h"
+#include "brave/components/ipfs/import/ipfs_link_import_worker.h"
+#include "brave/components/ipfs/import/ipfs_text_import_worker.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_file_import_worker.h"
-#include "brave/components/ipfs/ipfs_import_worker_base.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
-#include "brave/components/ipfs/ipfs_link_import_worker.h"
 #include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
-#include "brave/components/ipfs/ipfs_text_import_worker.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/service_sandbox_type.h"
@@ -297,6 +298,11 @@ std::unique_ptr<network::SimpleURLLoader> IpfsService::CreateURLLoader(
 
 void IpfsService::ImportFileToIpfs(const base::FilePath& path,
                                    ipfs::ImportCompletedCallback callback) {
+  if (path.empty()) {
+    if (callback)
+      std::move(callback).Run(ipfs::ImportedData());
+    return;
+  }
   ReentrancyCheck reentrancy_check(&reentrancy_guard_);
   if (!IsDaemonLaunched()) {
     StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportFileToIpfs,
@@ -317,6 +323,12 @@ void IpfsService::ImportFileToIpfs(const base::FilePath& path,
 
 void IpfsService::ImportLinkToIpfs(const GURL& url,
                                    ipfs::ImportCompletedCallback callback) {
+  if (!url.is_valid()) {
+    if (callback)
+      std::move(callback).Run(ipfs::ImportedData());
+    return;
+  }
+
   ReentrancyCheck reentrancy_check(&reentrancy_guard_);
   if (!IsDaemonLaunched()) {
     StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportLinkToIpfs,
@@ -335,9 +347,39 @@ void IpfsService::ImportLinkToIpfs(const GURL& url,
       context_, server_endpoint_, std::move(import_completed_callback), url);
 }
 
+void IpfsService::ImportDirectoryToIpfs(const base::FilePath& folder,
+                                        ImportCompletedCallback callback) {
+  if (folder.empty()) {
+    if (callback)
+      std::move(callback).Run(ipfs::ImportedData());
+    return;
+  }
+  ReentrancyCheck reentrancy_check(&reentrancy_guard_);
+  if (!IsDaemonLaunched()) {
+    StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportDirectoryToIpfs,
+                                        weak_factory_.GetWeakPtr(), folder,
+                                        std::move(callback)));
+    return;
+  }
+  size_t key =
+      base::FastHash(base::as_bytes(base::make_span(folder.MaybeAsASCII())));
+  if (importers_.count(key))
+    return;
+  auto import_completed_callback =
+      base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
+                     std::move(callback), key);
+  importers_[key] = std::make_unique<IpfsDirectoryImportWorker>(
+      context_, server_endpoint_, std::move(import_completed_callback), folder);
+}
+
 void IpfsService::ImportTextToIpfs(const std::string& text,
                                    const std::string& host,
                                    ipfs::ImportCompletedCallback callback) {
+  if (text.empty()) {
+    if (callback)
+      std::move(callback).Run(ipfs::ImportedData());
+    return;
+  }
   ReentrancyCheck reentrancy_check(&reentrancy_guard_);
   if (!IsDaemonLaunched()) {
     StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportTextToIpfs,
@@ -491,7 +533,6 @@ void IpfsService::StartDaemonAndLaunch(
     std::move(success_callback).Run();
     return;
   }
-
   LaunchDaemon(base::BindOnce(
       [](base::OnceCallback<void(void)> launched_callback, bool success) {
         if (!success)

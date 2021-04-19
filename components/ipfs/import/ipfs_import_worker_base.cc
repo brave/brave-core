@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/ipfs_import_worker_base.h"
+#include "brave/components/ipfs/import/ipfs_import_worker_base.h"
 
 #include <utility>
 
@@ -15,7 +15,6 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
-#include "base/threading/scoped_blocking_call.h"
 #include "base/time/time.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
@@ -201,6 +200,28 @@ void IpfsImportWorkerBase::UploadDataUI(
                      weak_factory_.GetWeakPtr()));
 }
 
+bool IpfsImportWorkerBase::ParseResponseBody(const std::string& response_body,
+                                             ipfs::ImportedData* data) {
+  DCHECK(data);
+  std::vector<std::string> parts = base::SplitString(
+      response_body, "\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  if (!parts.size())
+    return IPFSJSONParser::GetImportResponseFromJSON(response_body, data);
+  for (const auto& item : parts) {
+    if (item.front() != '{' || item.back() != '}')
+      continue;
+    ipfs::ImportedData imported_item;
+    if (IPFSJSONParser::GetImportResponseFromJSON(item, &imported_item)) {
+      if (imported_item.filename != data->filename)
+        continue;
+      data->hash = imported_item.hash;
+      data->size = imported_item.size;
+      return true;
+    }
+  }
+  return false;
+}
+
 void IpfsImportWorkerBase::OnImportAddComplete(
     std::unique_ptr<std::string> response_body) {
   int error_code = url_loader_->NetError();
@@ -210,15 +231,7 @@ void IpfsImportWorkerBase::OnImportAddComplete(
 
   bool success = (error_code == net::OK && response_code == net::HTTP_OK);
   if (success) {
-    std::vector<std::string> parts = base::SplitString(
-        *response_body, "\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-    auto content = *response_body;
-    if (parts.size()) {
-      auto front = parts.front();
-      if (front.front() == '{' && front.back() == '}')
-        content = front;
-    }
-    success = IPFSJSONParser::GetImportResponseFromJSON(content, data_.get());
+    success = ParseResponseBody(*response_body, data_.get());
   }
   url_loader_.reset();
   if (success && !data_->hash.empty()) {

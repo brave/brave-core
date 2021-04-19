@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_IPFS_IPFS_IMPORT_WORKER_BASE_H_
-#define BRAVE_COMPONENTS_IPFS_IPFS_IMPORT_WORKER_BASE_H_
+#ifndef BRAVE_COMPONENTS_IPFS_IMPORT_IPFS_IMPORT_WORKER_BASE_H_
+#define BRAVE_COMPONENTS_IPFS_IMPORT_IPFS_IMPORT_WORKER_BASE_H_
 
 #include <list>
 #include <memory>
@@ -16,8 +16,8 @@
 #include "base/containers/queue.h"
 #include "base/files/file_util.h"
 #include "base/memory/scoped_refptr.h"
-#include "brave/components/ipfs/import_utils.h"
-#include "brave/components/ipfs/imported_data.h"
+#include "brave/components/ipfs/import/import_utils.h"
+#include "brave/components/ipfs/import/imported_data.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/browser_context.h"
 #include "storage/browser/blob/blob_data_builder.h"
@@ -88,7 +88,8 @@ class IpfsImportWorkerBase {
                                 std::unique_ptr<std::string> response_body);
   void CopyFilesToBraveDirectory();
   void OnImportFilesMoved(std::unique_ptr<std::string> response_body);
-
+  bool ParseResponseBody(const std::string& response_body,
+                         ipfs::ImportedData* data);
   ImportCompletedCallback callback_;
   std::unique_ptr<ipfs::ImportedData> data_;
 
@@ -102,4 +103,4 @@ class IpfsImportWorkerBase {
 
 }  // namespace ipfs
 
-#endif  // BRAVE_COMPONENTS_IPFS_IPFS_IMPORT_WORKER_BASE_H_
+#endif  // BRAVE_COMPONENTS_IPFS_IMPORT_IPFS_IMPORT_WORKER_BASE_H_

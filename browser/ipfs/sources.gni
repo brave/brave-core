@@ -13,6 +13,10 @@ if (ipfs_enabled) {
   brave_browser_ipfs_sources += [
     "//brave/browser/ipfs/content_browser_client_helper.cc",
     "//brave/browser/ipfs/content_browser_client_helper.h",
+    "//brave/browser/ipfs/import/ipfs_import_controller.cc",
+    "//brave/browser/ipfs/import/ipfs_import_controller.h",
+    "//brave/browser/ipfs/import/save_package_observer.cc",
+    "//brave/browser/ipfs/import/save_package_observer.h",
     "//brave/browser/ipfs/ipfs_host_resolver.cc",
     "//brave/browser/ipfs/ipfs_host_resolver.h",
     "//brave/browser/ipfs/ipfs_service_factory.cc",
@@ -26,7 +30,6 @@ if (ipfs_enabled) {
     "//brave/browser/profiles:util",
     "//brave/common",
     "//brave/components/ipfs",
-    "//brave/components/resources:strings_grit",
     "//brave/components/services/ipfs/public/mojom",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",

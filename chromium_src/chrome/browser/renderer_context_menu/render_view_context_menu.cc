@@ -5,6 +5,7 @@
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
@@ -132,20 +133,23 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
       ipfs::IPFSTabHelper::FromWebContents(source_web_contents_);
   if (!helper)
     return;
+  auto* controller = helper->GetImportController();
+  if (!controller)
+    return;
   switch (id) {
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
-      helper->ImportLinkToIpfs(source_web_contents_->GetURL());
+      helper->ImportCurrentPageToIpfs();
       break;
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS:
-      helper->ImportLinkToIpfs(params_.src_url);
+      controller->ImportLinkToIpfs(params_.src_url);
       break;
     case IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS:
-      helper->ImportLinkToIpfs(params_.link_url);
+      controller->ImportLinkToIpfs(params_.link_url);
       break;
     case IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS:
-      helper->ImportTextToIpfs(base::UTF16ToUTF8(params_.selection_text));
+      controller->ImportTextToIpfs(base::UTF16ToUTF8(params_.selection_text));
       break;
   }
 }
@@ -200,7 +204,8 @@ bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
       return true;
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
-      return source_web_contents_->GetURL().SchemeIsHTTPOrHTTPS();
+      return source_web_contents_->GetURL().SchemeIsHTTPOrHTTPS() &&
+             source_web_contents_->IsSavable();
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
       return params_.has_image_contents;
     case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:

@@ -18,7 +18,7 @@
 #include "base/observer_list.h"
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
-#include "brave/components/ipfs/imported_data.h"
+#include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_p3a.h"
 #include "brave/components/ipfs/node_info.h"
@@ -99,12 +99,14 @@ class IpfsService : public KeyedService,
   virtual void ImportFileToIpfs(const base::FilePath& path,
                                 ipfs::ImportCompletedCallback callback);
 
+  virtual void ImportDirectoryToIpfs(const base::FilePath& folder,
+                                     ImportCompletedCallback callback);
   virtual void ImportLinkToIpfs(const GURL& url,
                                 ImportCompletedCallback callback);
   virtual void ImportTextToIpfs(const std::string& text,
                                 const std::string& host,
                                 ImportCompletedCallback callback);
-  void PreWarmShareableLink(const GURL& url);
+  virtual void PreWarmShareableLink(const GURL& url);
 
   void OnImportFinished(ipfs::ImportCompletedCallback callback,
                         size_t key,

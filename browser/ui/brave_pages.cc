@@ -54,7 +54,16 @@ void ShareLocalFileUsingIPFS(Browser* browser) {
     return;
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(web_contents);
-  helper->SelectFileForImport();
+  helper->ShowImportDialog(ui::SelectFileDialog::SELECT_OPEN_FILE);
+}
+
+void ShareLocalFolderUsingIPFS(Browser* browser) {
+  auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!web_contents)
+    return;
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(web_contents);
+  helper->ShowImportDialog(ui::SelectFileDialog::SELECT_EXISTING_FOLDER);
 }
 #endif
 

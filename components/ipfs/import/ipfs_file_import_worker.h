@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_IPFS_IPFS_FILE_IMPORT_WORKER_H_
-#define BRAVE_COMPONENTS_IPFS_IPFS_FILE_IMPORT_WORKER_H_
+#ifndef BRAVE_COMPONENTS_IPFS_IMPORT_IPFS_FILE_IMPORT_WORKER_H_
+#define BRAVE_COMPONENTS_IPFS_IMPORT_IPFS_FILE_IMPORT_WORKER_H_
 
 #include <memory>
 #include <string>
 #include <utility>
 
 #include "base/callback.h"
-#include "brave/components/ipfs/imported_data.h"
-#include "brave/components/ipfs/ipfs_import_worker_base.h"
+#include "brave/components/ipfs/import/imported_data.h"
+#include "brave/components/ipfs/import/ipfs_import_worker_base.h"
 #include "url/gurl.h"
 
 namespace ipfs {
@@ -34,4 +34,4 @@ class IpfsFileImportWorker : public IpfsImportWorkerBase {
 
 }  // namespace ipfs
 
-#endif  // BRAVE_COMPONENTS_IPFS_IPFS_FILE_IMPORT_WORKER_H_
+#endif  // BRAVE_COMPONENTS_IPFS_IMPORT_IPFS_FILE_IMPORT_WORKER_H_

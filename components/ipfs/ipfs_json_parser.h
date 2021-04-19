@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/components/ipfs/addresses_config.h"
-#include "brave/components/ipfs/imported_data.h"
+#include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/node_info.h"
 #include "brave/components/ipfs/repo_stats.h"
 

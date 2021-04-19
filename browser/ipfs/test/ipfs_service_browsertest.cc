@@ -12,7 +12,7 @@
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/features.h"
-#include "brave/components/ipfs/imported_data.h"
+#include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -42,6 +42,26 @@ std::string GetFileNameForText(const std::string& text,
   filename += std::to_string(key);
   return filename;
 }
+
+class FakeIpfsService : public ipfs::IpfsService {
+ public:
+  FakeIpfsService(content::BrowserContext* context,
+                  ipfs::BraveIpfsClientUpdater* updater,
+                  const base::FilePath& user_dir,
+                  version_info::Channel channel)
+      : ipfs::IpfsService(context, updater, user_dir, channel) {}
+  ~FakeIpfsService() override {}
+
+  void LaunchDaemon(LaunchDaemonCallback callback) override {
+    if (callback)
+      std::move(callback).Run(launch_result_);
+  }
+
+  void SetLaunchResult(bool result) { launch_result_ = result; }
+
+ private:
+  bool launch_result_ = true;
+};
 
 }  // namespace
 
@@ -208,6 +228,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleSecondImportRequests(
+      const std::string& expected_result,
       const net::test_server::HttpRequest& request) {
     const GURL gurl = request.GetURL();
     if (gurl.path_piece() == kImportAddPath) {
@@ -215,18 +236,14 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
           std::make_unique<net::test_server::BasicHttpResponse>();
       http_response->set_code(net::HTTP_OK);
       http_response->set_content_type("application/json");
-      http_response->set_content(
-          "{\"Name\":\"google.com\",\"Hash\":"
-          "\"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU\",\"Size\":"
-          "\"567857\"}"
-          "\n{\"Name\":\"google.com\",\"Hash\":\"QmTEST\",\"Size\":"
-          "\"567857\"}");
+      http_response->set_content(expected_result);
       return http_response;
     }
-    return HandleImportRequests(request);
+    return HandleImportRequests(expected_result, request);
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleImportRequests(
+      const std::string& expected_response,
       const net::test_server::HttpRequest& request) {
     const GURL gurl = request.GetURL();
     if (gurl.path_piece() == kImportAddPath) {
@@ -234,11 +251,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
           std::make_unique<net::test_server::BasicHttpResponse>();
       http_response->set_code(net::HTTP_OK);
       http_response->set_content_type("application/json");
-      http_response->set_content(R"({
-        "Name":"google.com",
-        "Hash":"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU",
-        "Size":"567857"
-      })");
+      http_response->set_content(expected_response);
       return http_response;
     }
 
@@ -247,7 +260,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
           std::make_unique<net::test_server::BasicHttpResponse>();
       http_response->set_code(net::HTTP_OK);
       http_response->set_content_type("application/json");
-      http_response->set_content("");
+      http_response->set_content(expected_response);
       return http_response;
     }
 
@@ -256,7 +269,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
           std::make_unique<net::test_server::BasicHttpResponse>();
       http_response->set_code(net::HTTP_OK);
       http_response->set_content_type("application/json");
-      http_response->set_content("");
+      http_response->set_content(expected_response);
       return http_response;
     }
 
@@ -265,7 +278,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
           std::make_unique<net::test_server::BasicHttpResponse>();
       http_response->set_code(net::HTTP_OK);
       http_response->set_content_type("application/json");
-      http_response->set_content("test");
+      http_response->set_content(expected_response);
       return http_response;
     }
 
@@ -553,40 +566,19 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-class FakeIpfsService : public ipfs::IpfsService {
- public:
-  FakeIpfsService(content::BrowserContext* context,
-                  ipfs::BraveIpfsClientUpdater* updater,
-                  const base::FilePath& user_dir,
-                  version_info::Channel channel)
-      : ipfs::IpfsService(context, updater, user_dir, channel) {}
-  ~FakeIpfsService() override {}
-
-  void LaunchDaemon(LaunchDaemonCallback callback) override {
-    if (callback)
-      std::move(callback).Run(launch_result_);
-  }
-
-  void SetLaunchResult(bool result) { launch_result_ = result; }
-
- private:
-  bool launch_result_ = true;
-};
-
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, StartSuccessAndLaunch) {
   base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
   auto* context = browser()->profile();
-  std::unique_ptr<FakeIpfsService> ipfs_service(
+  std::unique_ptr<FakeIpfsService> fake_service(
       new FakeIpfsService(context, nullptr, user_dir, chrome::GetChannel()));
-  ipfs_service->SetLaunchResult(true);
+  fake_service->SetLaunchResult(true);
   base::MockOnceCallback<void(void)> callback_called;
   EXPECT_CALL(callback_called, Run()).Times(1);
-  ipfs_service->StartDaemonAndLaunch(callback_called.Get());
-
-  ipfs_service->SetLaunchResult(false);
+  fake_service->StartDaemonAndLaunch(callback_called.Get());
+  fake_service->SetLaunchResult(false);
   base::MockOnceCallback<void(void)> callback_not_called;
   EXPECT_CALL(callback_not_called, Run()).Times(0);
-  ipfs_service->StartDaemonAndLaunch(callback_not_called.Get());
+  fake_service->StartDaemonAndLaunch(callback_not_called.Get());
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeers) {
@@ -698,91 +690,6 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, RunGarbageCollectionError) {
       base::BindOnce(&IpfsServiceBrowserTest::OnGarbageCollectionFail,
                      base::Unretained(this)));
   WaitForRequest();
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfs) {
-  ResetTestServer(base::BindRepeating(
-      &IpfsServiceBrowserTest::HandleImportRequests, base::Unretained(this)));
-
-  ipfs_service()->ImportTextToIpfs(
-      "text", "host",
-      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
-                     base::Unretained(this)));
-  WaitForRequest();
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTwiceTextToIpfs) {
-  ResetTestServer(
-      base::BindRepeating(&IpfsServiceBrowserTest::HandleSecondImportRequests,
-                          base::Unretained(this)));
-
-  ipfs_service()->ImportTextToIpfs(
-      "text", "host",
-      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
-                     base::Unretained(this)));
-  WaitForRequest();
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfs) {
-  ResetTestServer(base::BindRepeating(
-      &IpfsServiceBrowserTest::HandleImportRequests, base::Unretained(this)));
-
-  ipfs_service()->ImportLinkToIpfs(
-      GetURL("b.com", kTestLinkImportPath),
-      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
-                     base::Unretained(this)));
-  WaitForRequest();
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfsFail) {
-  ResetTestServer(
-      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
-                          base::Unretained(this)));
-
-  std::string text = "text";
-  std::string host = "host";
-
-  ipfs_service()->ImportTextToIpfs(
-      text, host,
-      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
-                     base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
-                     GetFileNameForText(text, host)));
-  WaitForRequest();
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsFail) {
-  ResetTestServer(
-      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
-                          base::Unretained(this)));
-
-  ipfs_service()->ImportLinkToIpfs(
-      GetURL("b.com", kTestLinkImportPath),
-      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
-                     base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
-                     "link.png"));
-  WaitForRequest();
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsBadLink) {
-  ResetTestServer(
-      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
-                          base::Unretained(this)));
-
-  ipfs_service()->ImportLinkToIpfs(
-      GetURL("b.com", kUnavailableLinkImportPath),
-      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
-                     base::Unretained(this),
-                     ipfs::IPFS_IMPORT_ERROR_REQUEST_EMPTY, ""));
-  WaitForRequest();
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, PreWarmLink) {
-  ResetTestServer(base::BindRepeating(
-      &IpfsServiceBrowserTest::HandlePreWarmRequest, base::Unretained(this)));
-  base::RunLoop run_loop;
-  ipfs_service()->SetPreWarmCalbackForTesting(run_loop.QuitClosure());
-  ipfs_service()->PreWarmShareableLink(GetURL("b.com", kTestLinkImportPath));
-  run_loop.Run();
 }
 
 // Make sure an ipfs:// window.fetch does not work within the http:// scheme
@@ -972,6 +879,150 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOff) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(contents->GetURL().host(), other_gateway.host());
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfs) {
+  std::string domain = "test.domain.com";
+  std::string text = "text to import";
+  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
+  std::string filename = domain;
+  filename += "_";
+  filename += std::to_string(key);
+  std::string expected_response = base::StringPrintf(
+      R"({"Name":"%s","Hash":"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU")"
+      R"(,"Size":"567857"})",
+      filename.c_str());
+
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+
+  ipfs_service()->ImportTextToIpfs(
+      text, domain,
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTwiceTextToIpfs) {
+  std::string domain = "test.domain.com";
+  std::string text = "text to import";
+  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
+  std::string filename = domain;
+  filename += "_";
+  filename += std::to_string(key);
+  std::string expected_response = base::StringPrintf(
+      R"({"Name":"%s", "Hash":"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU",)"
+      R"("Size":"567857"}
+      {"Name":"%s", "Hash":"QmTEST", "Size":"567857"})",
+      filename.c_str(), filename.c_str());
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleSecondImportRequests,
+                          base::Unretained(this), expected_response));
+
+  ipfs_service()->ImportTextToIpfs(
+      text, domain,
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfs) {
+  std::string test_host = "b.com";
+  std::string expected_response =
+      R"({"Name":"link.png", "Size":"567857", "Hash": "QmYbK4SLa"})";
+
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+
+  ipfs_service()->ImportLinkToIpfs(
+      GetURL(test_host, kTestLinkImportPath),
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfsFail) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
+                          base::Unretained(this)));
+
+  std::string text = "text";
+  std::string host = "host";
+
+  ipfs_service()->ImportTextToIpfs(
+      text, host,
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
+                     base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
+                     GetFileNameForText(text, host)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsFail) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
+                          base::Unretained(this)));
+
+  ipfs_service()->ImportLinkToIpfs(
+      GetURL("b.com", kTestLinkImportPath),
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
+                     base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
+                     "link.png"));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsBadLink) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequestsFail,
+                          base::Unretained(this)));
+
+  ipfs_service()->ImportLinkToIpfs(
+      GetURL("b.com", kUnavailableLinkImportPath),
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
+                     base::Unretained(this),
+                     ipfs::IPFS_IMPORT_ERROR_REQUEST_EMPTY, ""));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, PreWarmLink) {
+  ResetTestServer(base::BindRepeating(
+      &IpfsServiceBrowserTest::HandlePreWarmRequest, base::Unretained(this)));
+  base::RunLoop run_loop;
+  ipfs_service()->SetPreWarmCalbackForTesting(run_loop.QuitClosure());
+  ipfs_service()->PreWarmShareableLink(GetURL("b.com", kTestLinkImportPath));
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileToIpfsSuccess) {
+  std::string expected_response =
+      R"({"Name":"adbanner.js", "Size":"567857", "Hash": "QmYbK4SLa"})";
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+  auto file_to_upload = embedded_test_server()->GetFullPathFromSourceDirectory(
+      base::FilePath(FILE_PATH_LITERAL("brave/test/data/adbanner.js")));
+  ipfs_service()->ImportFileToIpfs(
+      file_to_upload,
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportDirectoryToIpfsSuccess) {
+  std::string expected_response =
+      R"({"Name":"autoplay-whitelist-data", "Size":"567857", "Hash": "QmYbK4SLa"})";
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+  auto* folder = FILE_PATH_LITERAL("brave/test/data/autoplay-whitelist-data");
+  auto test_path = embedded_test_server()->GetFullPathFromSourceDirectory(
+      base::FilePath(folder));
+  ipfs_service()->ImportDirectoryToIpfs(
+      test_path,
+      base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
 }
 
 }  // namespace ipfs

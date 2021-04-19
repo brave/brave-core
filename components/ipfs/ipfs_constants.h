@@ -32,6 +32,7 @@ extern const char kImportCopyPath[];
 extern const char kImportDirectory[];
 extern const char kIPFSImportMultipartContentType[];
 extern const char kFileValueName[];
+extern const char kFileMimeType[];
 
 // Keep it synced with IPFSResolveMethodTypes in
 // browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js

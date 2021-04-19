@@ -9,46 +9,21 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
-#include "base/callback_helpers.h"
-#include "base/containers/contains.h"
-#include "base/guid.h"
-#include "base/location.h"
-#include "base/single_thread_task_runner.h"
 #include "base/strings/string_split.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/common/webui_url_constants.h"
-#include "brave/components/ipfs/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/browser/notifications/notification_display_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/shell_integration.h"
-#include "chrome/browser/ui/chrome_select_file_policy.h"
-#include "chrome/common/channel_info.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents_delegate.h"
-#include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
-#include "ui/base/clipboard/scoped_clipboard_writer.h"
-#include "ui/base/l10n/l10n_util.h"
-#include "ui/message_center/public/cpp/notification.h"
-#include "ui/message_center/public/cpp/notification_types.h"
-#include "ui/message_center/public/cpp/notifier_id.h"
 
 namespace {
 
@@ -59,12 +34,6 @@ const char kDnsDomainPrefix[] = "_dnslink.";
 // IPFS HTTP gateways can return an x-ipfs-path header with each response.
 // The value of the header is the IPFS path of the returned payload.
 const char kIfpsPathHeader[] = "x-ipfs-path";
-
-// Message center notifier id for user notifications
-const char kNotifierId[] = "service.ipfs";
-
-// Imported shareable link should have filename parameter.
-const char kImportFileNameParam[] = "filename";
 
 // /ipfs/{cid}/path → ipfs://{cid}/path
 // query and fragment are taken from source page url
@@ -121,67 +90,6 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
       ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
 }
 
-base::string16 GetImportNotificationTitle(ipfs::ImportState state) {
-  switch (state) {
-    case ipfs::IPFS_IMPORT_SUCCESS:
-      return l10n_util::GetStringUTF16(IDS_IPFS_IMPORT_NOTIFICATION_TITLE);
-    case ipfs::IPFS_IMPORT_ERROR_REQUEST_EMPTY:
-    case ipfs::IPFS_IMPORT_ERROR_ADD_FAILED:
-      return l10n_util::GetStringUTF16(
-          IDS_IPFS_IMPORT_ERROR_NOTIFICATION_TITLE);
-    case ipfs::IPFS_IMPORT_ERROR_MKDIR_FAILED:
-    case ipfs::IPFS_IMPORT_ERROR_MOVE_FAILED:
-      return l10n_util::GetStringUTF16(
-          IDS_IPFS_IMPORT_PARTLY_COMPLETED_NOTIFICATION_TITLE);
-    default:
-      NOTREACHED();
-      break;
-  }
-  return base::string16();
-}
-
-base::string16 GetImportNotificationBody(ipfs::ImportState state,
-                                         const GURL& shareable_link) {
-  switch (state) {
-    case ipfs::IPFS_IMPORT_SUCCESS:
-      return l10n_util::GetStringFUTF16(
-          IDS_IPFS_IMPORT_NOTIFICATION_BODY,
-          base::UTF8ToUTF16(shareable_link.spec()));
-    case ipfs::IPFS_IMPORT_ERROR_REQUEST_EMPTY:
-      return l10n_util::GetStringUTF16(IDS_IPFS_IMPORT_ERROR_NO_REQUEST_BODY);
-    case ipfs::IPFS_IMPORT_ERROR_ADD_FAILED:
-      return l10n_util::GetStringUTF16(IDS_IPFS_IMPORT_ERROR_ADD_FAILED_BODY);
-    case ipfs::IPFS_IMPORT_ERROR_MKDIR_FAILED:
-    case ipfs::IPFS_IMPORT_ERROR_MOVE_FAILED:
-      return l10n_util::GetStringUTF16(
-          IDS_IPFS_IMPORT_PARTLY_COMPLETED_NOTIFICATION_BODY);
-    default:
-      NOTREACHED();
-      break;
-  }
-  return base::string16();
-}
-
-std::unique_ptr<message_center::Notification> CreateMessageCenterNotification(
-    const base::string16& title,
-    const base::string16& body,
-    const std::string& uuid,
-    const GURL& link) {
-  message_center::RichNotificationData notification_data;
-
-  // hack to prevent origin from showing in the notification
-  // since we're using that to get the notification_id to OpenSettings
-  notification_data.context_message = base::ASCIIToUTF16(" ");
-  auto notification = std::make_unique<message_center::Notification>(
-      message_center::NOTIFICATION_TYPE_SIMPLE, uuid, title, body, gfx::Image(),
-      base::string16(), link,
-      message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
-                                 kNotifierId),
-      notification_data, nullptr);
-
-  return notification;
-}
-
 }  // namespace
 
 namespace ipfs {
@@ -189,7 +97,8 @@ namespace ipfs {
 IPFSTabHelper::~IPFSTabHelper() = default;
 
 IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {
+    : content::WebContentsObserver(web_contents),
+      IpfsImportController(web_contents) {
   pref_service_ = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
       web_contents->GetBrowserContext());
@@ -201,8 +110,6 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
       kIPFSResolveMethod,
       base::BindRepeating(&IPFSTabHelper::UpdateDnsLinkButtonState,
                           base::Unretained(this)));
-  ipfs_service_ = ipfs::IpfsServiceFactory::GetForContext(
-      web_contents->GetBrowserContext());
 }
 
 // static
@@ -349,103 +256,6 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
     MaybeSetupIpfsProtocolHandlers(handle->GetURL());
   }
   MaybeShowDNSLinkButton(handle);
-}
-
-void IPFSTabHelper::ImportLinkToIpfs(const GURL& url) {
-  DCHECK(ipfs_service_);
-  ipfs_service_->ImportLinkToIpfs(
-      url, base::BindOnce(&IPFSTabHelper::OnImportCompleted,
-                          weak_ptr_factory_.GetWeakPtr()));
-}
-
-void IPFSTabHelper::ImportTextToIpfs(const std::string& text) {
-  DCHECK(ipfs_service_);
-  ipfs_service_->ImportTextToIpfs(
-      text, web_contents()->GetURL().host(),
-      base::BindOnce(&IPFSTabHelper::OnImportCompleted,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void IPFSTabHelper::ImportFileToIpfs(const base::FilePath& path) {
-  DCHECK(ipfs_service_);
-  ipfs_service_->ImportFileToIpfs(
-      path, base::BindOnce(&IPFSTabHelper::OnImportCompleted,
-                           weak_ptr_factory_.GetWeakPtr()));
-}
-
-GURL IPFSTabHelper::CreateAndCopyShareableLink(const ipfs::ImportedData& data) {
-  if (data.hash.empty())
-    return GURL();
-  std::string ipfs = ipfs::kIPFSScheme + std::string("://") + data.hash;
-  auto shareable_link =
-      ipfs::ToPublicGatewayURL(GURL(ipfs), web_contents()->GetBrowserContext());
-  if (!shareable_link.is_valid())
-    return GURL();
-  if (!data.filename.empty())
-    shareable_link = net::AppendQueryParameter(
-        shareable_link, kImportFileNameParam, data.filename);
-  ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste)
-      .WriteText(base::UTF8ToUTF16(shareable_link.spec()));
-  ipfs_service_->PreWarmShareableLink(shareable_link);
-  return shareable_link;
-}
-
-void IPFSTabHelper::OnImportCompleted(const ipfs::ImportedData& data) {
-  auto link = CreateAndCopyShareableLink(data);
-  if (!link.is_valid()) {
-    // Open node diagnostic page if import failed
-    link = GURL(kIPFSWebUIURL);
-  }
-  PushNotification(GetImportNotificationTitle(data.state),
-                   GetImportNotificationBody(data.state, link), link);
-  if (data.state == ipfs::IPFS_IMPORT_SUCCESS) {
-    GURL url = ResolveWebUIFilesLocation(data.directory, chrome::GetChannel());
-    content::OpenURLParams params(url, content::Referrer(),
-                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                  ui::PAGE_TRANSITION_LINK, false);
-    web_contents()->OpenURL(params);
-  }
-}
-
-void IPFSTabHelper::PushNotification(const base::string16& title,
-                                     const base::string16& body,
-                                     const GURL& link) {
-  auto notification =
-      CreateMessageCenterNotification(title, body, base::GenerateGUID(), link);
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  auto* display_service = NotificationDisplayService::GetForProfile(profile);
-  display_service->Display(NotificationHandler::Type::SEND_TAB_TO_SELF,
-                           *notification, /*metadata=*/nullptr);
-}
-
-void IPFSTabHelper::FileSelected(const base::FilePath& path,
-                                 int index,
-                                 void* params) {
-  ImportFileToIpfs(path);
-  select_file_dialog_.reset();
-}
-
-void IPFSTabHelper::FileSelectionCanceled(void* params) {
-  select_file_dialog_.reset();
-}
-
-void IPFSTabHelper::SelectFileForImport() {
-  select_file_dialog_ = ui::SelectFileDialog::Create(
-      this, std::make_unique<ChromeSelectFilePolicy>(web_contents()));
-
-  if (!select_file_dialog_)
-    return;
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  const base::FilePath directory = profile->last_selected_directory();
-  gfx::NativeWindow parent_window = web_contents()->GetTopLevelNativeWindow();
-  ui::SelectFileDialog::FileTypeInfo file_types;
-  file_types.allowed_paths =
-      ui::SelectFileDialog::FileTypeInfo::ANY_PATH_OR_URL;
-  select_file_dialog_->SelectFile(
-      ui::SelectFileDialog::SELECT_OPEN_FILE, base::string16(), directory,
-      &file_types, 0, base::FilePath::StringType(), parent_window, NULL);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSTabHelper)
