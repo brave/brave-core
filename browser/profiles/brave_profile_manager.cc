@@ -156,14 +156,11 @@ bool BraveProfileManager::LoadProfileByPath(const base::FilePath& profile_path,
                                            std::move(callback));
 }
 
-// This overridden method doesn't clear |kDefaultSearchProviderDataPrefName|.
-// W/o this, prefs set by TorWindowSearchEngineProviderService is cleared
-// during the initialization.
 void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
+  ProfileManager::SetNonPersonalProfilePrefs(profile);
+
   PrefService* prefs = profile->GetPrefs();
   prefs->SetBoolean(prefs::kSigninAllowed, false);
-  prefs->SetBoolean(bookmarks::prefs::kEditBookmarksEnabled, false);
-  prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, false);
 }
 
 void BraveProfileManager::MigrateProfileNames() {
