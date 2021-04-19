@@ -83,11 +83,11 @@ def Main(argv):
   (options, args) = parser.parse_args(argv)
 
   if len(args) > 0:
-    print(parser.get_usage(), file=sys.stderr)
+    print >>sys.stderr, parser.get_usage()
     return 1
 
   if not options.plist_path:
-    print('No --plist specified.', file=sys.stderr)
+    print >>sys.stderr, 'No --plist specified.'
     return 1
 
   # Read the plist into its parsed format. Convert the file to 'xml1' as

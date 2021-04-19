@@ -27,7 +27,7 @@ def get_sign_cmd(file):
 def run_cmd(cmd):
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     for line in p.stdout:
-        print(line)
+        print line
     p.wait()
     assert p.returncode == 0, "Error signing"
 

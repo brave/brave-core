@@ -13,7 +13,7 @@ platforms is planned.
 import errno
 import optparse
 import os
-import queue
+import Queue
 import re
 import shutil
 import subprocess
@@ -40,7 +40,7 @@ def GetCommandOutput(command):
   proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull,
                           bufsize=1)
   output = proc.communicate()[0]
-  return output.decode('utf-8')
+  return output
 
 
 def GetDumpSymsBinary(build_dir=None):
@@ -48,7 +48,7 @@ def GetDumpSymsBinary(build_dir=None):
   DUMP_SYMS = 'dump_syms'
   dump_syms_bin = os.path.join(os.path.expanduser(build_dir), DUMP_SYMS)
   if not os.access(dump_syms_bin, os.X_OK):
-    print("Cannot find {0}.".format(DUMP_SYMS))
+    print 'Cannot find %s.' % DUMP_SYMS
     sys.exit(1)
 
   return dump_syms_bin
@@ -160,7 +160,7 @@ def GetSharedLibraryDependencies(options, binary, exe_path):
   elif sys.platform == 'darwin':
     deps = GetSharedLibraryDependenciesMac(binary, exe_path)
   else:
-    print("Platform not supported.")
+    print "Platform not supported."
     sys.exit(1)
 
   result = []
@@ -184,17 +184,17 @@ def mkdir_p(path):
 def GenerateSymbols(options, binaries):
   """Dumps the symbols of binary and places them in the given directory."""
 
-  q = queue.Queue()
+  queue = Queue.Queue()
   print_lock = threading.Lock()
 
   def _Worker():
     while True:
-      binary = q.get()
+      binary = queue.get()
 
       try:
           if options.verbose:
             with print_lock:
-              print("Generating symbols for {0}".format(binary))
+              print "Generating symbols for %s" % binary
 
           if sys.platform == 'darwin':
             binary = GetDSYMBundle(options, binary)
@@ -214,20 +214,20 @@ def GenerateSymbols(options, binaries):
       except Exception as inst:
           if options.verbose:
             with print_lock:
-              print(type(inst))
-              print(inst)
+              print type(inst)
+              print inst
       finally:
-          q.task_done()
+          queue.task_done()
 
   for binary in binaries:
-    q.put(binary)
+    queue.put(binary)
 
   for _ in range(options.jobs):
     t = threading.Thread(target=_Worker)
     t.daemon = True
     t.start()
 
-  q.join()
+  queue.join()
 
 
 def main():
@@ -251,19 +251,19 @@ def main():
   (options, _) = parser.parse_args()
 
   if not options.symbols_dir:
-    print("Required option --symbols-dir missing.")
+    print "Required option --symbols-dir missing."
     return 1
 
   if not options.build_dir:
-    print("Required option --build-dir missing.")
+    print "Required option --build-dir missing."
     return 1
 
   if not options.libchromiumcontent_dir:
-    print("Required option --libchromiumcontent-dir missing.")
+    print "Required option --libchromiumcontent-dir missing."
     return 1
 
   if not options.binary:
-    print("Required option --binary missing.")
+    print "Required option --binary missing."
     return 1
 
   if options.clear:
