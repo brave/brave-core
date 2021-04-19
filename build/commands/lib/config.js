@@ -352,6 +352,9 @@ Config.prototype.buildArgs = function () {
     // TODO(fixme)
     args.enable_tor = false
 
+    // Fixes WebRTC IP leak with default option
+    args.enable_mdns = true
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_nacl
