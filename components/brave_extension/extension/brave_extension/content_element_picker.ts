@@ -17,7 +17,7 @@ let pickerFrame: HTMLIFrameElement | null
 // frame. We disable pointer events for the duration of the query to get
 // around this.
 const elementFromFrameCoords = (x: number, y: number): Element | null => {
-  if (pickerFrame === null) { return null }
+  if (!pickerFrame) { return null }
   pickerFrame.style.setProperty('pointer-events', 'none', 'important')
   const elem = document.elementFromPoint(x, y)
   pickerFrame.style.setProperty('pointer-events', 'auto', 'important')
@@ -141,7 +141,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
   if (elem.id.length > 0) {
     builder.addRule({
       type: Selector.Id,
-      value: elem.id
+      value: CSS.escape(elem.id)
     })
   }
 
@@ -149,7 +149,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
   if (elem.classList.length > 0) {
     builder.addRule({
       type: Selector.Class,
-      value: [...elem.classList].map((c: string) => CSS.escape(c))
+      value: Array.from(elem.classList).map((c: string) => CSS.escape(c))
     })
   }
 
@@ -341,11 +341,11 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
   let elem: Element | null = selected
   const selectorBuilders = []
   const specificityMasks = [
-    0b01101,
-    0b11101,
-    0b01011,
-    0b10011,
-    0b11111
+    0b01101, // No DOM hierarchy, no nth-of-type
+    0b11101, // No DOM hierarchy
+    0b01011, // No nth-of-type, no attributes
+    0b10011, // No attributes, no class names
+    0b11111  // All selector rules (default)
   ]
   const mask: number = specificityMasks[index]
 
@@ -395,12 +395,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
     case 'elementPickerUserSelectedTarget': {
       const { specificity } = msg
-      const selector = onTargetSelected(lastHoveredElem, specificity)
-      recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
-      sendResponse({
-        isValid: selector !== '',
-        selector: selector.trim()
-      })
+      if (lastHoveredElem !== null && (lastHoveredElem instanceof HTMLElement)) {
+        const selector = onTargetSelected(lastHoveredElem, specificity)
+        recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+        sendResponse({
+          isValid: selector !== '',
+          selector: selector.trim()
+        })
+      }
       break
     }
     case 'elementPickerUserModifiedRule': {

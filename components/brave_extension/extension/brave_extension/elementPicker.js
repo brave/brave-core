@@ -1,8 +1,11 @@
+"use strict"
+
 // Namespace for creating SVG elements
 const NSSVG = "http://www.w3.org/2000/svg"
 
 const sendMessageActiveTab = (message, callback = null) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    // If we cannot find active tab, this iframe is no longer valid.
     if (tabs.length > 0) {
       if (callback !== null) {
         chrome.tabs.sendMessage(tabs[0].id, message, callback)
@@ -92,6 +95,7 @@ window.onload = () => {
       // We are already previewing a target. We'll interpet another click
       // as the user wanting back control of the UI.
       hasSelectedTarget = false
+      slider.value = '5'
       togglePopup(false)
       return
     }
