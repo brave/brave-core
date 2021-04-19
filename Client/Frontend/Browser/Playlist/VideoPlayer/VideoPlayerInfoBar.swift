@@ -9,11 +9,11 @@ import AVKit
 
 class VideoPlayerInfoBar: UIView {
     private let controlStackView = UIStackView().then {
-        $0.spacing = 32.0
+        $0.spacing = 16
     }
     
     private let leftStackView = UIStackView().then {
-        $0.spacing = 32.0
+        $0.spacing = 16
         $0.alignment = .center
     }
     
@@ -23,6 +23,7 @@ class VideoPlayerInfoBar: UIView {
     
     let sidePanelButton = UIButton().then {
         $0.setImage(#imageLiteral(resourceName: "playlist_split_navigation"), for: .normal)
+        $0.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
     }
     
     private let favIconImageView = UIImageView().then {
@@ -43,17 +44,20 @@ class VideoPlayerInfoBar: UIView {
         $0.imageView?.contentMode = .scaleAspectFit
         $0.setImage(#imageLiteral(resourceName: "playlist_pip"), for: .normal)
         $0.isHidden = !AVPictureInPictureController.isPictureInPictureSupported()
+        $0.contentEdgeInsets = .init(equalInset: 8)
     }
     
     let fullscreenButton = UIButton().then {
         $0.imageView?.contentMode = .scaleAspectFit
         $0.setImage(#imageLiteral(resourceName: "playlist_fullscreen"), for: .normal)
+        $0.contentEdgeInsets = .init(equalInset: 8)
     }
     
     let exitButton = UIButton().then {
         $0.imageView?.contentMode = .scaleAspectFit
         $0.setImage(#imageLiteral(resourceName: "playlist_exit"), for: .normal)
         $0.isHidden = true
+        $0.contentEdgeInsets = .init(equalInset: 8)
     }
     
     override init(frame: CGRect) {
