@@ -61,6 +61,7 @@ include_rules = [
   "+../../../../../../../chrome/browser/ui/views/extensions",
   "+../../../../../../../chrome/browser/ui/views/frame",
   "+../../../../../../../chrome/browser/ui/views/location_bar",
+  "+../../../../../../../chrome/browser/ui/views/omnibox",
   "+../../../../../../../chrome/browser/ui/views/page_action",
   "+../../../../../../../chrome/browser/ui/views/profiles",
   "+../../../../../../../chrome/browser/ui/views/tabs",
