@@ -4,24 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
-#include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
-#include "ui/views/widget/widget.h"
-
-class BraveOmniboxViewViews : public OmniboxViewViews {
- public:
-  using OmniboxViewViews::OmniboxViewViews;
-  BraveOmniboxViewViews(const BraveOmniboxViewViews&) = delete;
-  BraveOmniboxViewViews& operator=(const BraveOmniboxViewViews&) = delete;
-
-  // OmniboxViewViews overrides:
-  void OnTemplateURLServiceChanged() override {
-    // Only update active window's omnibox placeholder text when search provider
-    // is changed.
-    // See ActiveWindowSearchProviderManager comment for more details.
-    if (GetWidget()->IsActive())
-      OmniboxViewViews::OnTemplateURLServiceChanged();
-  }
-};
+#include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 
 #define BRAVE_LAYOUT_TRAILING_DECORATIONS                                \
   auto right_most = GetTrailingViews();                                  \
