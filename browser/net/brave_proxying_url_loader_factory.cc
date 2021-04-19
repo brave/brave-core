@@ -28,6 +28,7 @@
 #include "net/url_request/redirect_util.h"
 #include "net/url_request/url_request.h"
 #include "services/network/public/cpp/features.h"
+#include "services/network/public/cpp/parsed_headers.h"
 #include "url/origin.h"
 
 namespace {
@@ -493,8 +494,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     return;
   }
 
-  if (override_headers_)
+  if (override_headers_) {
     current_response_->headers = override_headers_;
+    // Since we overrode headers we should reparse them:
+    // NavigationRequest::ComputePoliciesToCommit uses parsed headers to set
+    // CSP, so if we don't reparse our CSP header changes won't work.
+    current_response_->parsed_headers = network::PopulateParsedHeaders(
+        current_response_->headers.get(), request_.url);
+  }
 
   std::string redirect_location;
   if (override_headers_ && override_headers_->IsRedirect(&redirect_location)) {
