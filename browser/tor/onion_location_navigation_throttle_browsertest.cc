@@ -13,6 +13,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
