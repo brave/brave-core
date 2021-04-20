@@ -7,6 +7,7 @@ import UIKit
 import Shared
 import BraveShared
 import pop
+import BraveUI
 
 extension BuyVPNViewController {
     class View: UIView {

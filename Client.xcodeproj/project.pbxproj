@@ -388,7 +388,6 @@
 		27D114D42358FBBF00166534 /* BraveRewardsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */; };
 		27D114D62358FCA400166534 /* SettingsRowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D114D52358FCA400166534 /* SettingsRowViews.swift */; };
 		27D67CED24D07EB800066D83 /* BraveTodaySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D67CEC24D07EB800066D83 /* BraveTodaySettingsViewController.swift */; };
-		27D87C2E2152B50200FB55C6 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D87C2D2152B50200FB55C6 /* GradientView.swift */; };
 		27E0652624CB69C700134946 /* brave-today-welcome-graphic.json in Resources */ = {isa = PBXBuildFile; fileRef = 27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */; };
 		27E0652824CB6AE300134946 /* BraveTodayErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0652724CB6AE300134946 /* BraveTodayErrorView.swift */; };
 		27EA04C2249D4336004F5D2E /* FeedCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EA04C1249D4336004F5D2E /* FeedCardContent.swift */; };
@@ -728,6 +727,8 @@
 		5E0FCD252342544C00AC831E /* URLSession+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0FCD242342544C00AC831E /* URLSession+Requests.swift */; };
 		5E1645A824ABA35B0003C3B2 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1645A724ABA35B0003C3B2 /* SpinnerView.swift */; };
 		5E1DF2FD253E138500F84C39 /* Bookmarkv2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DF2FC253E138500F84C39 /* Bookmarkv2.swift */; };
+		5E2A74B8262DE62900DBBE88 /* Gradients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A74B7262DE62900DBBE88 /* Gradients.swift */; };
+		5E2A74CF262E14E500DBBE88 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2A74CE262E14E500DBBE88 /* GradientView.swift */; };
 		5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */; };
 		5E34781022D7A1D200B0D5F8 /* ResourceDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E34780F22D7A1D200B0D5F8 /* ResourceDownloadManager.swift */; };
 		5E46C371234FACC600ACA8C1 /* root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C36D234FACC600ACA8C1 /* root.cer */; };
@@ -1888,7 +1889,6 @@
 		27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsSettingsViewController.swift; sourceTree = "<group>"; };
 		27D114D52358FCA400166534 /* SettingsRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowViews.swift; sourceTree = "<group>"; };
 		27D67CEC24D07EB800066D83 /* BraveTodaySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodaySettingsViewController.swift; sourceTree = "<group>"; };
-		27D87C2D2152B50200FB55C6 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		27D922B221C9830F00345BF3 /* Model9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model9.xcdatamodel; sourceTree = "<group>"; };
 		27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "brave-today-welcome-graphic.json"; sourceTree = "<group>"; };
 		27E0652724CB6AE300134946 /* BraveTodayErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodayErrorView.swift; sourceTree = "<group>"; };
@@ -2431,6 +2431,8 @@
 		5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRewardsAgreementView.swift; sourceTree = "<group>"; };
 		5E1D8C6E232C0BDB00BDE662 /* onboarding-rewards.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-rewards.json"; sourceTree = "<group>"; };
 		5E1DF2FC253E138500F84C39 /* Bookmarkv2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmarkv2.swift; sourceTree = "<group>"; };
+		5E2A74B7262DE62900DBBE88 /* Gradients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradients.swift; sourceTree = "<group>"; };
+		5E2A74CE262E14E500DBBE88 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ResourceDownloader.js; sourceTree = "<group>"; };
 		5E34780F22D7A1D200B0D5F8 /* ResourceDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDownloadManager.swift; sourceTree = "<group>"; };
 		5E46C36D234FACC600ACA8C1 /* root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = root.cer; sourceTree = "<group>"; };
@@ -3799,6 +3801,7 @@
 			isa = PBXGroup;
 			children = (
 				278C46A223F1EDAB0083347F /* Colors.swift */,
+				5E2A74B7262DE62900DBBE88 /* Gradients.swift */,
 			);
 			path = Colors;
 			sourceTree = "<group>";
@@ -3919,6 +3922,7 @@
 		27DD87F4242175B000BBB624 /* Design System */ = {
 			isa = PBXGroup;
 			children = (
+				5E2A74CD262E14C200DBBE88 /* Views */,
 				278C46A123F1ED9B0083347F /* Colors */,
 			);
 			path = "Design System";
@@ -4679,6 +4683,14 @@
 			path = BraveCore;
 			sourceTree = "<group>";
 		};
+		5E2A74CD262E14C200DBBE88 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5E2A74CE262E14E500DBBE88 /* GradientView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		5E5E6E3825BA03360035B6A0 /* Playlist */ = {
 			isa = PBXGroup;
 			children = (
@@ -4964,7 +4976,6 @@
 				5D26E89C22E117660015D7E9 /* Themes */,
 				59A68B1F857A8638598A63A0 /* TwoLineCell.swift */,
 				D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */,
-				27D87C2D2152B50200FB55C6 /* GradientView.swift */,
 				5E1645A724ABA35B0003C3B2 /* SpinnerView.swift */,
 			);
 			path = Widgets;
@@ -6632,6 +6643,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E2A74CF262E14E500DBBE88 /* GradientView.swift in Sources */,
 				276A790A244660B100AC9446 /* SpringButton.swift in Sources */,
 				278C46A023F1ED340083347F /* LinkLabel.swift in Sources */,
 				27953F7423F5B04500B4B595 /* ViewLabel.swift in Sources */,
@@ -6643,6 +6655,7 @@
 				2746D27F24A3EB9800E38852 /* UITableViewExtensions.swift in Sources */,
 				278C46B223F4A91D0083347F /* PopoverNavigationController.swift in Sources */,
 				278C46B023F4A91C0083347F /* PopoverContainerView.swift in Sources */,
+				5E2A74B8262DE62900DBBE88 /* Gradients.swift in Sources */,
 				278C46A323F1EDAB0083347F /* Colors.swift in Sources */,
 				276A790C244660B500AC9446 /* UICollectionViewExtensions.swift in Sources */,
 				278C469523F1E8620083347F /* LoaderView.swift in Sources */,
@@ -7398,7 +7411,6 @@
 				59A68D66379CFA85C4EAF00B /* TwoLineCell.swift in Sources */,
 				A1AD4BE320C0861D007A6EA1 /* UIBarButtonItemExtensions.swift in Sources */,
 				C6D267522136800100465DFA /* PrivateBrowsingManager.swift in Sources */,
-				27D87C2E2152B50200FB55C6 /* GradientView.swift in Sources */,
 				0A4B012220D02F26004D4011 /* TabBarCell.swift in Sources */,
 				27FD2CAC2146C31C00A5A779 /* FindInPageActivity.swift in Sources */,
 			);

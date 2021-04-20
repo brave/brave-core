@@ -9,6 +9,7 @@ import BraveShared
 import Shared
 import SnapKit
 import Data
+import BraveUI
 
 class PlaylistToast: Toast {
     private struct DesignUX {
@@ -18,7 +19,7 @@ class PlaylistToast: Toast {
     private class HighlightableButton: UIButton {
         override var isHighlighted: Bool {
             didSet {
-                backgroundColor = isHighlighted ? .white : DownloadToastUX.toastBackgroundColor
+                backgroundColor = isHighlighted ? .white : .clear
             }
         }
     }
@@ -31,10 +32,19 @@ class PlaylistToast: Toast {
         $0.shadowRadius = ButtonToastUX.toastButtonBorderRadius
     }
     
+    private lazy var gradientView = { () -> GradientView in
+        let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
+        return isDarkMode ? Gradients.Dark.gradient02 : Gradients.Light.gradient02
+    }()
+    
+    private let button = HighlightableButton()
+    
+    private let state: PlaylistItemAddedState
     var item: PlaylistInfo
 
     init(item: PlaylistInfo, state: PlaylistItemAddedState, completion: ((_ buttonPressed: Bool) -> Void)?) {
         self.item = item
+        self.state = state
         super.init(frame: .zero)
 
         self.completionHandler = completion
@@ -90,10 +100,11 @@ class PlaylistToast: Toast {
                 }
             }
             
-            let button = HighlightableButton().then {
+            self.button.do {
                 $0.layer.cornerRadius = ButtonToastUX.toastButtonBorderRadius
                 $0.layer.borderWidth = ButtonToastUX.toastButtonBorderWidth
                 $0.layer.borderColor = UIColor.Photon.white100.cgColor
+                $0.imageView?.tintColor = UIColor.Photon.white100
                 $0.setTitle(Strings.PlayList.toastAddToPlaylistOpenButton, for: [])
                 $0.setTitleColor(toastView.backgroundColor, for: .highlighted)
                 $0.titleLabel?.font = SimpleToastUX.toastFont
@@ -105,8 +116,8 @@ class PlaylistToast: Toast {
                 $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
             }
 
-            button.snp.makeConstraints {
-                if let titleLabel = button.titleLabel {
+            self.button.snp.makeConstraints {
+                if let titleLabel = self.button.titleLabel {
                     $0.width.equalTo(titleLabel.intrinsicContentSize.width + 2 * ButtonToastUX.toastButtonPadding)
                 }
             }
@@ -122,7 +133,8 @@ class PlaylistToast: Toast {
                 $0.centerY.equalTo(toastView)
                 $0.width.equalTo(toastView.snp.width).offset(-2 * ButtonToastUX.toastPadding)
             }
-
+            
+            updateGradientView(traitCollection: traitCollection)
             return toastView
         }
         
@@ -131,12 +143,13 @@ class PlaylistToast: Toast {
             $0.spacing = ButtonToastUX.toastPadding
         }
         
-        let button = HighlightableButton().then {
+        self.button.do {
             $0.layer.cornerRadius = ButtonToastUX.toastButtonBorderRadius
             $0.layer.masksToBounds = true
-            $0.backgroundColor = DownloadToastUX.toastBackgroundColor
+            $0.backgroundColor = .clear
             $0.setTitleColor(toastView.backgroundColor, for: .highlighted)
-            $0.tintColor = UIColor.Photon.white100
+            $0.imageView?.tintColor = UIColor.Photon.white100
+            $0.appearanceTintColor = UIColor.Photon.white100
             $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
             $0.titleLabel?.numberOfLines = 1
             $0.titleLabel?.lineBreakMode = .byClipping
@@ -145,7 +158,6 @@ class PlaylistToast: Toast {
             $0.contentHorizontalAlignment = .left
             $0.contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 20.0)
             $0.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: -10.0)
-            
             $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
         }
         
@@ -165,7 +177,8 @@ class PlaylistToast: Toast {
         } else {
             assertionFailure("Should Never get here. Others case are handled at the start of this function.")
         }
-
+        
+        updateGradientView(traitCollection: traitCollection)
         return toastView
     }
     
@@ -210,6 +223,34 @@ class PlaylistToast: Toast {
                 if !buttonPressed {
                     self.completionHandler?(false)
                 }
+            }
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            updateGradientView(traitCollection: traitCollection)
+        }
+    }
+    
+    private func updateGradientView(traitCollection: UITraitCollection) {
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        
+        gradientView.removeFromSuperview()
+        gradientView = isDarkMode ? Gradients.Dark.gradient02 : Gradients.Light.gradient02
+        
+        if state == .added || state == .existing {
+            toastView.backgroundColor = .clear
+            toastView.insertSubview(gradientView, at: 0)
+            gradientView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+        } else {
+            button.insertSubview(gradientView, at: 0)
+            gradientView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
             }
         }
     }
