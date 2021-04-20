@@ -98,7 +98,7 @@ void BraveAlertIndicator::OnMouseReleased(const ui::MouseEvent& event) {
     return;
   chrome::SetTabAudioMuted(web_contents,
                            !web_contents->IsAudioMuted(),
-                           TabMutedReason::CONTEXT_MENU,
+                           TabMutedReason::CONTENT_SETTING,
                            std::string());
 }
 
