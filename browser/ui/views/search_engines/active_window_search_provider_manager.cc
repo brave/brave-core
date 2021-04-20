@@ -67,17 +67,31 @@ void ChangeToAlternativeSearchEngineProvider(Profile* profile) {
   tus->SetUserSelectedDefaultSearchProvider(&url);
 }
 
-void ChangeToNormalWindowSearchEngineProvider(Profile* profile) {
-  const base::Value* data_value =
+void ApplyCachedNormalWindowSearchProvider(Profile* profile) {
+  const base::Value* cached_value =
       profile->GetOriginalProfile()->GetPrefs()->Get(
           kCachedNormalSearchProvider);
-  if (data_value && data_value->is_dict()) {
-    std::unique_ptr<TemplateURLData> data = TemplateURLDataFromDictionary(
-        base::Value::AsDictionaryValue(*data_value));
+
+  if (cached_value && cached_value->is_dict()) {
+    const base::DictionaryValue* dict_value = nullptr;
+    cached_value->GetAsDictionary(&dict_value);
+    DCHECK(dict_value);
+    std::unique_ptr<TemplateURLData> data =
+        TemplateURLDataFromDictionary(*dict_value);
+    // Early return if |data| is empty. In the initial state, cached normal
+    // provider data could be empty because it's set when normal window is
+    // deactivated. In this case, default provider will be used.
+    if (!data)
+      return;
+
     auto* tus = TemplateURLServiceFactory::GetForProfile(profile);
     TemplateURL url(*data);
     tus->SetUserSelectedDefaultSearchProvider(&url);
   }
+}
+
+void ChangeToNormalWindowSearchEngineProvider(Profile* profile) {
+  ApplyCachedNormalWindowSearchProvider(profile);
 }
 
 void HandlePrivateWindowActivationStateChange(Profile* profile, bool active) {
@@ -100,20 +114,7 @@ void HandleNormalWindowActivationStateChange(Profile* profile, bool active) {
     return;
   }
 
-  auto* preference =
-      profile->GetPrefs()->FindPreference(kCachedNormalSearchProvider);
-  if (preference->IsDefaultValue())
-    return;
-
-  const base::Value* data_value =
-      profile->GetPrefs()->Get(kCachedNormalSearchProvider);
-  // Apply cached DSE.
-  if (data_value && data_value->is_dict()) {
-    std::unique_ptr<TemplateURLData> data = TemplateURLDataFromDictionary(
-        base::Value::AsDictionaryValue(*data_value));
-    TemplateURL url(*data);
-    tus->SetUserSelectedDefaultSearchProvider(&url);
-  }
+  ApplyCachedNormalWindowSearchProvider(profile);
 }
 
 }  // namespace
