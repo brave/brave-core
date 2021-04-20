@@ -57,6 +57,11 @@
         android:key="autocomplete_brave_suggested_sites"
         android:title="@string/autocomplete_brave_suggested_sites_title"
         android:persistent="false"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreferencesFragment"
+        android:key="webrtc_policy"
+        android:title="@string/settings_webrtc_policy_label"
+        android:persistent="false"/>
     <PreferenceCategory
         android:key="brave_shields_social_blocking"
         android:title="@string/brave_shields_social_blocking_title">

@@ -156,6 +156,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStandardSearchEnginePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStatsPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreferencesFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/ClosingAllTabsClosesBravePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
