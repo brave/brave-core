@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -735,11 +736,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         // Find if tab exists
         if (tabIndex != TabModel.INVALID_TAB_INDEX) {
             tab = tabModel.getTabAt(tabIndex);
-            // Moving tab forward
-            tabModel.moveTab(tab.getId(), tabModel.getCount());
-            tabModel.setIndex(
-                TabModelUtils.getTabIndexById(tabModel, tab.getId()),
-                TabSelectionType.FROM_USER);
+            // Set active tab
+            tabModel.setIndex(tabIndex, TabSelectionType.FROM_USER);
             return tab;
         } else {
             return null;
@@ -812,6 +810,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == BraveStatsUtil.SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM
+                && grantResults.length != 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**
