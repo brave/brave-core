@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 
 #include <stdint.h>
+#include <string>
 
 #include <algorithm>
 #include <functional>
@@ -979,6 +980,7 @@ void RewardsServiceImpl::LoadURL(
   auto net_request = std::make_unique<network::ResourceRequest>();
   net_request->url = parsed_url;
   net_request->method = URLMethodToRequestType(request->method);
+  net_request->load_flags = request->load_flags;
 
   // Loading Twitter requires credentials
   if (net_request->url.DomainIs("twitter.com")) {
