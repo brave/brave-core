@@ -174,7 +174,7 @@
 <translation id="4176463684765177261">無効</translation>
 <translation id="4434663852465709809">BATを移行するiOSリワードユーザーのためのQRコード</translation>
 <translation id="2175927920773552910">QR コード</translation>
-<translation id="8845154268466251503">BAP</translation>
+<translation id="8845154268466251503">BAT</translation>
 <translation id="6160106411363856968">BAP</translation>
 <translation id="1081826981536899387">BATポイント</translation>
 <translation id="2563462925929938015">はBrave Rewardsにおいて、あなたの気に入ったコンテンツの制作者に寄付するために利用できます。BATポイントはBATに交換できません。</translation>
@@ -239,9 +239,8 @@
 <translation id="6805660603861526473">表示済み</translation>
 <translation id="2359865110462963929">お住まいの地域で、現在BATはサポートされていません。最新の情報につきましては、<ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>をご参照ください。</translation>
 <translation id="1737873393693460829">[[title]]をオンにすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
-<translation id="2564425876266960486">BraveブラウザBAPカードの作成エラー</translation>
+<translation id="2564425876266960486">BraveブラウザBATカードの作成エラー</translation>
 <translation id="6473583070570450185">ログインするには、認証済みのウォレットが必要です</translation>
-<translation id="5949995321533425416">Upholdウォレットを作成するには、最低<ph name="AMOUNT"/> BATが必要です。Upholdでウォレットを認証した後、もう一度試してください。</translation>
 <translation id="7422678632904904341">金額：</translation>
 <translation id="6969783933307596818">5秒毎に自動的にリフレッシュします</translation>
 <translation id="5025866799968038247">残高情報</translation>
@@ -460,7 +459,6 @@
 <translation id="7335371657242627509">自動支援の対象にする</translation>
 <translation id="1864111464094315414">ログイン</translation>
 <translation id="4556504723624686474">ウォレットを認証すると、資金をより効率的に管理することができます。</translation>
-<translation id="5461792966682693675">Upholdアカウントを作成するには、最低<ph name="AMOUNT"/> BATが必要です。 認証済みのUpholdアカウントをすでにお持ちの場合は、引き続きログインしてください。</translation>
 <translation id="3250511771491660127">毎月行う</translation>
 <translation id="6028954173739504682">ウォレットを管理</translation>
 <translation id="7886389832052393750">4月</translation>
@@ -571,7 +569,7 @@
 <translation id="1792148354504719133">サイト</translation>
 <translation id="5944430251223015324">サイト</translation>
 <translation id="6432779622695508363">「いいね」でチップを送る</translation>
-<translation id="8424370624815730676">BATポイント(BAP)</translation>
+<translation id="8424370624815730676">Basic Attention Token　ベーシック・アテンション・ポイント (BAT)</translation>
 <translation id="4588241643143931775">ビットコイン (BTC)</translation>
 <translation id="4837149400263828922">イーサリアム (ETH)</translation>
 <translation id="8746837129291133068">ライトコイン (LTC)</translation>
@@ -637,16 +635,16 @@
 <translation id="3699674790322420653">ウォレットの認証を完了</translation>
 <translation id="9200453331904391567">Braveの報酬から切断</translation>
 <translation id="46988480989545156">ウォレットを認証</translation>
-<translation id="5796169459825124737">私達のウォレットサービスは、<ph name="PROVIDER"/>に提供されています</translation>
+<translation id="5796169459825124737">当ウォレットサービスは、<ph name="PROVIDER"/>によって提供されています。</translation>
 <translation id="6771734945114850124">政府発行の身分証明書をご用意ください。</translation>
-<translation id="8697510149346635496">プライバシーを尊重する広告表示で獲得したBAPを引き出す</translation>
-<translation id="1481480653609649134">クレジットカードやその他の資金源で追加のBAPを購入する</translation>
-<translation id="9096003370755878766">過去に追加したBrave Rewardsウォレットに追加した可能性のあるBAPを引き出す</translation>
-<translation id="8558636200953226885">しかし、確認を行うと、次のことが可能です...</translation>
+<translation id="8697510149346635496">Braveブラウザに貯まっているBATをウォレットに移動する</translation>
+<translation id="1481480653609649134">広告視聴で得られるBATをウォレットに貯める</translation>
+<translation id="9096003370755878766">ウォレットに貯めたBATを日本円に交換したり、日本円でBATを購入したりする</translation>
+<translation id="8558636200953226885">認証を行うと、次のことが可能となります。</translation>
 <translation id="3354315693758743702">ウォレットの認証は任意です。</translation>
-<translation id="4872388810065331182"><ph name="PROVIDER"/>では、必要に応じてあなたの身元確認が求められる場合があります。</translation>
-<translation id="6938217233488972952">Brave Software社は、 あなたが<ph name="PROVIDER"/>にアカウントを開設したときに提供したいかなる個人情報についても処理、保存、またはアクセスすることはありません。</translation>
-<translation id="2415586822982819406">注意： 承認すると、あなたのトランザクションは<ph name="PROVIDER"/>から閲覧可能になります。例えば、彼らはチップの受取人と金額を見ることができるようになります。</translation>
+<translation id="4872388810065331182"><ph name="PROVIDER"/>との認証にあたっては、<ph name="PROVIDER"/>での本人確認手続きが必要です。</translation>
+<translation id="6938217233488972952">Brave Software Inc.は、あなたが<ph name="PROVIDER"/>のアカウントを開設する際に<ph name="PROVIDER"/>に提供する個人情報について処理、保存、アクセスすることは一切ありません。</translation>
+<translation id="2415586822982819406">注：ウォレットを認証すると、あなたの取引は<ph name="PROVIDER"/>に把握されるようになります。例えば、チップの送り先が<ph name="PROVIDER"/>と認証している場合、<ph name="PROVIDER"/>はチップの送り先や金額が把握可能となります。</translation>
 <translation id="7404779623219601861">BATをギフトカードと交換する</translation>
 <translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
 <translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>

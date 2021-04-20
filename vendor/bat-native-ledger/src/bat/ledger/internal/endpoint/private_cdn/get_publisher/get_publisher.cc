@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
+#include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -219,6 +220,7 @@ void GetPublisher::Request(
 
   auto request = type::UrlRequest::New();
   request->url = GetUrl(hash_prefix);
+  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 

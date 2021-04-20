@@ -25,6 +25,9 @@ class IpfsTextImportWorker : public IpfsImportWorkerBase {
                        const std::string& host);
   ~IpfsTextImportWorker() override;
 
+  IpfsTextImportWorker(const IpfsTextImportWorker&) = delete;
+  IpfsTextImportWorker& operator=(const IpfsTextImportWorker&) = delete;
+
  private:
   void StartImportText(const std::string& text, const std::string& host);
 };

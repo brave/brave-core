@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
@@ -31,6 +32,11 @@
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #endif
 
 namespace {
@@ -143,6 +149,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, add_new_profile_enabled);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
   UpdateCommandEnabled(IDC_TOGGLE_SPEEDREADER, true);
+#if BUILDFLAG(IPFS_ENABLED)
+  UpdateCommandForIpfs();
+#endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -181,6 +190,14 @@ void BraveBrowserCommandController::UpdateCommandForBraveSync() {
 void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, true);
 }
+
+#if BUILDFLAG(IPFS_ENABLED)
+void BraveBrowserCommandController::UpdateCommandForIpfs() {
+  auto enabled = ipfs::IsIpfsMenuEnabled(browser_->profile());
+  UpdateCommandEnabled(IDC_APP_MENU_IPFS, enabled);
+  UpdateCommandEnabled(IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE, enabled);
+}
+#endif
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     int id,
@@ -236,6 +253,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_OPEN_GUEST_PROFILE:
       brave::OpenGuestProfile();
       break;
+#if BUILDFLAG(IPFS_ENABLED)
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
+      brave::ShareLocalFileUsingIPFS(browser_);
+      break;
+#endif
     case IDC_TOGGLE_SPEEDREADER:
       brave::ToggleSpeedreader(browser_);
       break;
