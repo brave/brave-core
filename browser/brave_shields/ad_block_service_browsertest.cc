@@ -447,9 +447,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 0, 1, 1);"
                          "xhr('normal.js')"));
-  ASSERT_EQ(false, EvalJs(contents,
-                          "setExpectations(0, 0, 1, 2);"
-                          "xhr('adbanner.js')"));
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 0, 1, 2);"
+                         "xhr('adbanner.js')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 

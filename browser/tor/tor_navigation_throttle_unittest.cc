@@ -81,7 +81,7 @@ TEST_F(TorNavigationThrottleUnitTest, Instantiation) {
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
           &test_handle, tor_web_contents()->GetBrowserContext()->IsTor());
-  EXPECT_FALSE(throttle != nullptr);
+  EXPECT_TRUE(throttle != nullptr);
 
   content::MockNavigationHandle test_handle2(web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle2 =
