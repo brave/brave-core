@@ -113,7 +113,7 @@ std::unique_ptr<message_center::Notification> CreateMessageCenterNotification(
   message_center::RichNotificationData notification_data;
   // hack to prevent origin from showing in the notification
   // since we're using that to get the notification_id to OpenSettings
-  notification_data.context_message = base::ASCIIToUTF16(" ");
+  notification_data.context_message = u" ";
   auto notification = std::make_unique<message_center::Notification>(
       message_center::NOTIFICATION_TYPE_SIMPLE, uuid, title, body, gfx::Image(),
       std::u16string(), link,

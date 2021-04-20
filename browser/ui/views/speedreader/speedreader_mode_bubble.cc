@@ -102,7 +102,7 @@ void SpeedreaderModeBubble::Init() {
   DCHECK(!host.empty());
   auto site = base::ASCIIToUTF16(host);
   auto offset = site.length();
-  site.append(base::ASCIIToUTF16(kSpeedreaderSeparator));
+  site.append(kSpeedreaderSeparator);
   site.append(l10n_util::GetStringUTF16(IDS_PAGE_IS_DISTILLED));
   auto site_title_label = std::make_unique<views::StyledLabel>();
   site_title_label->SetText(site);

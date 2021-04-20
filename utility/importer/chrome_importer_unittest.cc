@@ -22,7 +22,6 @@
 #include "components/os_crypt/os_crypt_mocker.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using base::ASCIIToUTF16;
 using base::UTF16ToASCII;
 using ::testing::_;
 
@@ -108,7 +107,7 @@ TEST_F(ChromeImporterTest, ImportBookmarks) {
   EXPECT_EQ("", bookmarks[1].url.spec());
   EXPECT_TRUE(bookmarks[1].in_toolbar);
   EXPECT_TRUE(bookmarks[1].is_folder);
-  EXPECT_EQ(ASCIIToUTF16("Empty"), bookmarks[1].title);
+  EXPECT_EQ(u"Empty", bookmarks[1].title);
 
   EXPECT_EQ("https://brave.com/", bookmarks[2].url.spec());
   EXPECT_FALSE(bookmarks[2].in_toolbar);
