@@ -2,19 +2,16 @@ use crate::dom;
 use crate::scorer;
 use crate::util;
 use html5ever::parse_document;
-use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
+use html5ever::tree_builder::NodeOrText;
 use html5ever::tree_builder::TreeSink;
-use html5ever::tree_builder::{ElementFlags, NodeOrText};
-use html5ever::{LocalName, QualName};
 use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use regex::Regex;
-use scorer::{Title, TopCandidate};
-use std::collections::HashMap;
+use scorer::{Meta, TopCandidate};
+use std::collections::{HashMap, HashSet};
 use std::default::Default;
 use std::io::Read;
-use std::str::FromStr;
 use url::Url;
 use util::StringUtils;
 
@@ -25,12 +22,13 @@ use util::StringUtils;
 const NUM_TOP_CANDIDATES: usize = 5;
 
 lazy_static! {
-    static ref SEPARATORS: Regex = Regex::new(r#"\s+[\|\-\\/>»]\s+"#).unwrap();
+    static ref SEPARATORS: Regex = Regex::new(r#"\s+[\|\\/>»]\s+"#).unwrap();
+    static ref END_DASH: Regex = Regex::new(r#"\s+(:?[—\-–])\s+.*$"#).unwrap();
 }
 
 #[derive(Debug)]
 pub struct Product {
-    pub title: String,
+    pub meta: Meta,
     pub content: String,
 }
 
@@ -56,13 +54,13 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     url: &Url,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
-    let mut title = Title::default();
+    let mut meta = Meta::default();
     let handle = dom.document_node.clone();
 
     // extracts title (if it exists) pre-processes the DOM by removing script
     // tags, css, links
-    scorer::preprocess(&mut dom, handle.clone(), &mut title);
-    title.title = clean_title(title.title);
+    scorer::preprocess(&mut dom, handle.clone(), &mut meta);
+    meta.title = clean_title(dom, meta.title);
 
     // now that the dom has been preprocessed, get the set of potential dom
     // candidates and their scoring. a candidate contains the node parent of the
@@ -79,7 +77,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         let mut top_candidates: Vec<TopCandidate> = vec![];
         for node in dom.document_node.descendants().filter(|d| {
             d.as_element()
-                .and_then(|e| Some(e.is_candidate.get()))
+                .map(|e| e.is_candidate.get())
                 .unwrap_or(false)
         }) {
             let elem = node.as_element().unwrap();
@@ -114,57 +112,94 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     // Append siblings of the new root with related content.
     scorer::append_related_siblings(&mut dom, top_candidate.clone());
 
-    scorer::clean(&mut dom, top_candidate.clone(), url, &title.title, features);
-
-    // Our CSS formats based on id="article".
-    dom::set_attr("id", "article", top_candidate.clone(), true);
-
-    let name = QualName::new(None, ns!(), LocalName::from("h1"));
-    let header = dom.create_element(name, vec![], ElementFlags::default());
-    dom.append(
-        &header,
-        NodeOrText::AppendText(StrTendril::from_str(&title.title).unwrap_or_default()),
+    scorer::clean(
+        &mut dom,
+        top_candidate.clone(),
+        &meta.title.split_whitespace().collect::<HashSet<_>>(),
+        url,
+        features,
     );
 
-    if let Some(first_child) = top_candidate.first_child() {
-        dom.append_before_sibling(&first_child.clone(), NodeOrText::AppendNode(header.clone()));
-    }
+    post_process(&mut dom, top_candidate.clone(), &meta);
 
     // Calls html5ever::serialize() with IncludeNode for us.
-    let content: String = top_candidate.to_string();
-    Ok(Product {
-        title: title.title,
-        content,
-    })
+    let charset_blob = format!("<meta charset=\"{}\"/>", meta.charset);
+    let content: String = charset_blob + &top_candidate.to_string();
+    Ok(Product { meta, content })
 }
 
-pub fn clean_title(title: String) -> String {
+pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
+    // Our CSS formats based on id="article".
+    dom::set_attr("id", "article", root.clone(), true);
+
+    if let Some(first_child) = root.first_child() {
+        // Add in the title
+        if !meta.title.is_empty() {
+            let title_header =
+                dom::create_element_simple(dom, "h1", "title metadata", Some(&meta.title));
+            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(title_header));
+        }
+        // Add in the description
+        if !meta.description.is_empty() {
+            let description =
+                dom::create_element_simple(dom, "p", "subhead metadata", Some(&meta.description));
+            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
+        }
+        if !meta.title.is_empty() || !meta.description.is_empty() {
+            let splitter = dom::create_element_simple(dom, "hr", "", None);
+            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
+        }
+    }
+}
+
+pub fn clean_title(dom: &Sink, title: String) -> String {
     if let Some(m) = SEPARATORS.find(&title) {
         let mut cur_title = title.substring(0, m.start());
         if cur_title.split_whitespace().count() < 3 {
             cur_title = title.substring(m.end(), title.len());
         }
         cur_title.trim().to_string()
+    } else if let Some(m) = END_DASH.find(&title) {
+        let trailing_title = title.substring(m.start(), title.len());
+        if trailing_title.split_whitespace().count() <= 4 {
+            // We have 3 distinct words and the dash. Probably the website title. Trim it off.
+            title.substring(0, m.start())
+        } else {
+            title
+        }
+    } else if title.contains(": ") {
+        let found_matching_heading = dom
+            .document_node
+            .descendants()
+            .filter(|d| {
+                d.as_element()
+                    .map(|e| e.name.local == local_name!("h1") || e.name.local == local_name!("h2"))
+                    .unwrap_or(false)
+            })
+            .any(|handle| {
+                let mut maybe_title = String::new();
+                dom::extract_text(&handle, &mut maybe_title, true);
+                return maybe_title.trim() == title.trim();
+            });
+        if found_matching_heading {
+            return title;
+        }
+        let mut cur_title = title.substring(title.rfind(':').unwrap() + 1, title.len());
+
+        // Less than 3 words in the title. Try first colon.
+        if cur_title.split_whitespace().count() < 3 {
+            cur_title = title.substring(title.find(':').unwrap() + 1, title.len());
+        } else if title
+            .substring(0, title.find(':').unwrap_or(0))
+            .split_whitespace()
+            .count()
+            > 5
+        {
+            return title;
+        }
+        cur_title.trim().to_string()
     } else {
         title
-            .find(": ")
-            .and_then(|_| {
-                let mut cur_title = title.substring(title.rfind(':').unwrap() + 1, title.len());
-
-                // Less than 3 words in the title. Try first colon.
-                if cur_title.split_whitespace().count() < 3 {
-                    cur_title = title.substring(title.find(':').unwrap() + 1, title.len());
-                } else if title
-                    .substring(0, title.find(':').unwrap_or(0))
-                    .split_whitespace()
-                    .count()
-                    > 5
-                {
-                    return None;
-                }
-                Some(cur_title.trim().to_string())
-            })
-            .unwrap_or(title)
     }
 }
 
@@ -189,14 +224,12 @@ mod tests {
             .from_utf8()
             .read_from(input)?;
 
-        let mut title = Title::default();
+        let mut meta = Meta::default();
         let handle = dom.document_node.clone();
-        scorer::preprocess(&mut dom, handle, &mut title);
+        scorer::preprocess(&mut dom, handle, &mut meta);
         let content = dom.document_node.to_string();
-        Ok(Product {
-            title: title.title,
-            content,
-        })
+        meta.title = clean_title(&dom, meta.title);
+        Ok(Product { meta, content })
     }
 
     #[test]
@@ -211,23 +244,37 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(data);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(product.title, "This is title");
+        assert_eq!(product.meta.title, "This is title");
     }
 
     #[test]
     fn test_title_prefer_meta() {
         let data = r#"
         <head>
-        <meta property="og:title" content="Raspberry Pi 3 - All-time bestselling computer in UK"/>
+        <meta property="og:title" content="Title in meta tag"/>
         <meta property="hi" content="test"/>
-        <title>Raspberry Pi 3 - All-time bestselling computer in UK - SimplyFound</title>
+        <title>Title in title tag</title>
+        </head>
+        "#;
+        let mut cursor = Cursor::new(data);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(product.meta.title, "Title in meta tag");
+    }
+
+    #[test]
+    fn test_description_complex() {
+        // We grab the description, HTML decode it, keep the punctuation entites, but delete the <b> tag.
+        // This was found on Buzzfeed.
+        let data = r#"
+        <head>
+        <meta property="og:description" content="&lt;b&gt;An inquest into Eloise Parry&#x27;s death has been adjourned.&lt;/b&gt;"/>
         </head>
         "#;
         let mut cursor = Cursor::new(data);
         let product = preprocess(&mut cursor).unwrap();
         assert_eq!(
-            product.title,
-            "Raspberry Pi 3 - All-time bestselling computer in UK"
+            product.meta.description,
+            "An inquest into Eloise Parry's death has been adjourned."
         );
     }
 
@@ -417,7 +464,6 @@ mod tests {
         "#;
         let expected = r#"
         <body id="article">
-          <h1></h1>
           <p>
             <strong>
               <a href="example.com/example.png">Some Link</a>
@@ -439,7 +485,7 @@ mod tests {
     fn test_clean_title_colon() {
         let input = "The SoCal Weekly Digest: Welcome to our wonderful page";
         let expected = "Welcome to our wonderful page";
-        let output = clean_title(input.to_string());
+        let output = clean_title(&Sink::default(), input.to_string());
         assert_eq!(expected, output);
     }
 
@@ -447,7 +493,7 @@ mod tests {
     fn test_clean_title_separator_left() {
         let input = "Príncipe Harry asegura que su padre y hermano están \"atrapados\" en la monarquía: \"Siento compasión\" | Príncipe Carlos | Príncipe William | Meghan Markle | Duques de Sussex | Oprah Winfrey";
         let expected = "Príncipe Harry asegura que su padre y hermano están \"atrapados\" en la monarquía: \"Siento compasión\"";
-        let output = clean_title(input.to_string());
+        let output = clean_title(&Sink::default(), input.to_string());
         assert_eq!(expected, output);
     }
 
@@ -455,14 +501,68 @@ mod tests {
     fn test_clean_title_separator_right() {
         let input = "Short Title | How Cats Can Save the Planet";
         let expected = "How Cats Can Save the Planet";
-        let output = clean_title(input.to_string());
+        let output = clean_title(&Sink::default(), input.to_string());
         assert_eq!(expected, output);
     }
 
     #[test]
     fn test_clean_title_preserve_hyphen() {
         let input = "Just-released Minecraft exploit makes it easy to crash game servers";
-        let output = clean_title(input.to_string());
+        let output = clean_title(&Sink::default(), input.to_string());
         assert_eq!(input, output);
+    }
+
+    #[test]
+    fn test_clean_title_ascii_dash_separator() {
+        // A common pattern found it <title> tags is the site name being included after a final dash
+        let input =
+            "House committee votes to approve bill that would grant DC statehood - CNNPolitics";
+        let expected = "House committee votes to approve bill that would grant DC statehood";
+        let output = clean_title(&Sink::default(), input.to_string());
+        assert_eq!(expected, output);
+    }
+
+    #[test]
+    fn test_clean_title_unicode_dash_separator() {
+        // A follow up to the last test with common unicode dashes. For example &#8211; converts to an en dash.
+        let dashes = [
+            "-",   // hyphen
+            "–", // en dash
+            "—", // em dash
+        ];
+        let expected = "Coinbase from YC to IPO";
+        for &d in dashes.iter() {
+            let f = format!("Coinbase from YC to IPO {} Y Combinator", d);
+            let output = clean_title(&Sink::default(), f.to_string());
+            assert_eq!(expected, output);
+        }
+    }
+
+    #[test]
+    fn test_clean_title_preserve_dash() {
+        // In this case, we don't want to delete the content after the " - ", because it is part of the title
+        let input = "Raspberry Pi 3 - All-time bestselling computer in UK";
+        let output = clean_title(&Sink::default(), input.to_string());
+        assert_eq!(input, output);
+    }
+
+    #[test]
+    fn test_clean_title_preserve_colon() {
+        let input = r#"
+        <html>
+          <head>
+          <meta property="og:title" content="Watch Dogs: Legion Will Be Free To Play This Weekend"/>
+          </head>
+          <body>
+            <header>
+              <h1><i>Watch Dogs: Legion</i> Will Be Free To Play This Weekend</h1>
+            </header>
+          </body>
+        </html>
+        "#;
+        let expected = "Watch Dogs: Legion Will Be Free To Play This Weekend";
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(expected, product.meta.title);
     }
 }

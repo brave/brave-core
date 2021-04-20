@@ -3,6 +3,7 @@ use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
+use htmlescape::decode_html;
 use kuchiki::NodeData::{
     Comment, Doctype, Document, DocumentFragment, Element, ProcessingInstruction, Text,
 };
@@ -10,26 +11,26 @@ use kuchiki::NodeRef as Handle;
 use kuchiki::{ElementData, NodeRef, Sink};
 use regex::Regex;
 use std::cmp::Ordering;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::str::FromStr;
 use url::Url;
 
 pub static PUNCTUATIONS_REGEX: &str = r"([,]\?)";
-pub static UNLIKELY_CANDIDATES: &str = "-ad-|ai2html|banner\
+pub static UNLIKELY_CANDIDATES: &str = "(?i)-ad-|ai2html|banner\
     |breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|foot|gdpr\
     |header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
     |social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup\
     |yom-remote";
-pub static LIKELY_CANDIDATES: &str = "and|article|body|column|main\
+pub static LIKELY_CANDIDATES: &str = "(?i)and|article|body|column|main\
     |shadow\
     |a";
-pub static POSITIVE_CANDIDATES: &str = "article|body|content|entry\
-        |hentry|h-entry|main|page|pagination|post|text|blog|story|paragraph|speakable";
-pub static NEGATIVE_CANDIDATES: &str = "hidden|^hid$|hid$|hid|^hid\
-        |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|header\
-        |legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
-        |social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup\
-        yom-remote";
+pub static POSITIVE_CANDIDATES: &str = "(?i)article|body|content|entry|hentry|h-entry|\
+        main|page|pagination|post|text|blog|story";
+pub static NEGATIVE_CANDIDATES: &str = "(?i)-ad-|hidden|^hid$| hid$| hid |\
+        ^hid |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|\
+        masthead|media|meta|outbrain|promo|related|scroll|share|shoutbox|\
+        sidebar|skyscraper|sponsor|shopping|tags|tool|widget";
+pub static HTML_TAGS: &str = r"<[^>]*>";
 static BLOCK_CHILD_TAGS: [&LocalName; 9] = [
     &local_name!("a"),
     &local_name!("blockquote"),
@@ -71,6 +72,7 @@ lazy_static! {
     static ref UNLIKELY: Regex = Regex::new(UNLIKELY_CANDIDATES).unwrap();
     static ref POSITIVE: Regex = Regex::new(POSITIVE_CANDIDATES).unwrap();
     static ref NEGATIVE: Regex = Regex::new(NEGATIVE_CANDIDATES).unwrap();
+    static ref DECODED_HTML_TAGS: Regex = Regex::new(HTML_TAGS).unwrap();
 }
 
 pub struct TopCandidate {
@@ -108,10 +110,23 @@ impl PartialEq for TopCandidate {
 
 impl Eq for TopCandidate {}
 
-#[derive(Default)]
-pub struct Title {
+#[derive(Debug)]
+pub struct Meta {
     pub title: String,
-    pub is_meta: bool,
+    pub author: String,
+    pub description: String,
+    pub charset: String,
+}
+
+impl Default for Meta {
+    fn default() -> Self {
+        Self {
+            title: Default::default(),
+            author: Default::default(),
+            description: Default::default(),
+            charset: "utf-8".to_string(),
+        }
+    }
 }
 
 /// Add https:// to the img src, if missing.
@@ -129,27 +144,35 @@ pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
     }
 }
 
+bitflags::bitflags! {
+    pub struct ImageLoadedMask: u8 {
+        const SRC = 1 << 0;
+        const SRCSET = 1 << 1;
+
+        const NONE = 0;
+    }
+}
 /// Returns true if the image src loads without JavaScript logic. Some sites like Kotaku and The
 /// Atlantic try and get fancy with this. Our simple heuristic is to check if src is set something
 /// reasonable or srcset is set at all. Some things we've seen in the wild are srcset being left
 /// out in favor of data-srcset, and src being base64 encoded.
 #[inline]
-fn img_is_loaded(data: &ElementData) -> bool {
-    let mut loaded = false;
+fn img_is_loaded(data: &ElementData) -> ImageLoadedMask {
+    let mut mask: ImageLoadedMask = ImageLoadedMask::NONE;
     if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
         for suffix in LOADABLE_IMG_SUFFIX.iter() {
             if src.ends_with(suffix) {
-                loaded = true;
+                mask |= ImageLoadedMask::SRC;
                 break;
             }
         }
-        if !loaded {
+        if !mask.contains(ImageLoadedMask::SRC) {
             // Try parsing the URL to ignore url params
             match Url::parse(src) {
                 Ok(url) => {
                     for suffix in LOADABLE_IMG_SUFFIX.iter() {
                         if url.path().ends_with(suffix) {
-                            loaded = true;
+                            mask |= ImageLoadedMask::SRC;
                             break;
                         }
                     }
@@ -157,15 +180,17 @@ fn img_is_loaded(data: &ElementData) -> bool {
                 _ => (),
             }
         }
-    } else if data
+    }
+
+    if data
         .attributes
         .borrow()
         .get(local_name!("srcset"))
         .is_some()
     {
-        loaded = true;
+        mask |= ImageLoadedMask::SRCSET;
     }
-    loaded
+    mask
 }
 
 /// Contains metadata about how to load a lazy loaded image.
@@ -177,25 +202,38 @@ struct LazyImage {
 /// Try and find attributes corresponding to a lazy loaded image and return the new attribute
 /// metadata. Look for anything ending in *srcset (data-srcset is fairly common) or any element
 /// with image suffixes.
-fn try_lazy_img(data: &ElementData) -> Option<LazyImage> {
+fn try_lazy_img(
+    data: &ElementData,
+    mut mask: ImageLoadedMask,
+) -> (ImageLoadedMask, Vec<LazyImage>) {
+    let mut lazy_srcs: Vec<LazyImage> = Vec::with_capacity(2);
     for (name, value) in &data.attributes.borrow().map {
-        if name.local.as_ref().ends_with("-srcset") {
-            return Some(LazyImage {
-                local: local_name!("srcset"),
-                value: value.value.clone(),
-            });
+        if mask.is_all() {
+            break;
         }
-        if LOADABLE_IMG_SUFFIX
-            .iter()
-            .any(|suffix| value.value.ends_with(suffix))
-        {
-            return Some(LazyImage {
-                local: local_name!("src"),
-                value: value.value.clone(),
-            });
+        if !mask.contains(ImageLoadedMask::SRCSET) {
+            if name.local.as_ref().ends_with("-srcset") {
+                mask |= ImageLoadedMask::SRCSET;
+                lazy_srcs.push(LazyImage {
+                    local: local_name!("srcset"),
+                    value: value.value.clone(),
+                });
+            }
+        }
+        if !mask.contains(ImageLoadedMask::SRC) {
+            if LOADABLE_IMG_SUFFIX
+                .iter()
+                .any(|suffix| value.value.ends_with(suffix))
+            {
+                mask |= ImageLoadedMask::SRC;
+                lazy_srcs.push(LazyImage {
+                    local: local_name!("src"),
+                    value: value.value.clone(),
+                });
+            }
         }
     }
-    None
+    (mask, lazy_srcs)
 }
 
 /// Returns the proportion of links an element contains with the amount of text in the subtree.
@@ -255,8 +293,7 @@ pub fn is_candidate(handle: &Handle) -> bool {
 pub fn init_content_score(handle: &Handle) -> f32 {
     let score = match handle.data() {
         Element(ref data) => match data.name.local {
-            local_name!("article") => 10.0,
-            local_name!("div") => 5.0,
+            local_name!("div") | local_name!("section") => 5.0,
             local_name!("h1")
             | local_name!("h2")
             | local_name!("h3")
@@ -313,29 +350,50 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
 }
 
 /// Uses the <meta> elements to extract the article title.
-pub fn get_metadata(data: &ElementData, title: &mut Title) {
-    if title.is_meta {
-        // We already grabbed a title from the metadata earlier in the parse.
-        return;
-    }
+pub fn get_metadata(data: &ElementData, meta: &mut Meta) {
     if let Some(property) = data.attributes.borrow().get(local_name!("property")) {
-        // TODO(keur): grab author, description, site name, etc in here.
-        // For now we are just getting the title.
-        match property.as_ref() {
-            "dc:title"
-            | "dcterm:title"
-            | "og:title"
-            | "weibo:article:title"
-            | "weibo:webpage:title"
-            | "title"
-            | "twitter:title" => {
-                if let Some(content) = data.attributes.borrow().get(local_name!("content")) {
-                    title.title = content.to_string();
-                    title.is_meta = true;
+        if let Some(mut content) = data.attributes.borrow().get(local_name!("content")) {
+            let mut key: Option<&mut String> = None;
+            match property.as_ref() {
+                "dc:title"
+                | "dcterm:title"
+                | "og:title"
+                | "weibo:article:title"
+                | "weibo:webpage:title"
+                | "title"
+                | "twitter:title" => {
+                    key = Some(&mut meta.title);
+                }
+                "description"
+                | "dc:description"
+                | "dcterm:description"
+                | "og:description"
+                | "weibo:article:description"
+                | "weibo:webpage:description"
+                | "twitter:description" => {
+                    key = Some(&mut meta.description);
+                    content = content
+                        .find(". ")
+                        .map(|pos| &content[..pos])
+                        .unwrap_or(content);
+                }
+                "dc:creator" | "dcterm:creator" | "author" => {
+                    key = Some(&mut meta.author);
+                }
+                _ => (),
+            }
+            if let Some(k) = key {
+                // It's common for titles and descriptions to have encoded HTML attributes like &#8211;
+                // These are important in the title cleaning phase, so we want those decoded. Other
+                // sites, like buzzfeed, encode HTML tags to bold the text. So after decoding,
+                // we delete anything that looks like an HTML tag.
+                if let Ok(s) = decode_html(content) {
+                    *k = DECODED_HTML_TAGS.replace_all(&s, "").into();
                 }
             }
-            _ => (),
         }
+    } else if let Some(charset) = data.attributes.borrow().get(local_name!("charset")) {
+        meta.charset = charset.to_string();
     }
 }
 
@@ -376,21 +434,21 @@ fn unwrap_noscript(
 
 /// Prepare the DOM for the candidate and cleaning steps. Delete "noisy" nodes and do small
 /// transformations.
-pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> bool {
+pub fn preprocess(mut dom: &mut Sink, handle: Handle, meta: &mut Meta) -> bool {
     if let Some(data) = handle.as_element() {
         match data.name.local {
             local_name!("script")
             | local_name!("noscript")
             | local_name!("link")
+            | local_name!("nav")
             | local_name!("style") => return true,
             local_name!("title") => {
-                if !title.is_meta && title.title.is_empty() {
-                    dom::extract_text(&handle, &mut title.title, true);
-                    title.is_meta = false;
+                if meta.title.is_empty() {
+                    dom::extract_text(&handle, &mut meta.title, true);
                 }
             }
             local_name!("meta") => {
-                get_metadata(&data, title);
+                get_metadata(&data, meta);
             }
             local_name!("div") => {
                 // Convert all divs whose children contains only phrasing
@@ -450,7 +508,7 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, mut title: &mut Title) -> 
     let mut paragraph_nodes = vec![];
     let mut brs = vec![];
     for child in handle.children() {
-        let pending_removal = preprocess(&mut dom, child.clone(), &mut title);
+        let pending_removal = preprocess(&mut dom, child.clone(), meta);
         if pending_removal {
             useless_nodes.push(child.clone());
         }
@@ -722,8 +780,8 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
 pub fn clean<S: ::std::hash::BuildHasher>(
     mut dom: &mut Sink,
     handle: Handle,
+    title_tokens: &HashSet<&str>,
     url: &Url,
-    title: &str,
     features: &HashMap<String, u32, S>,
 ) -> bool {
     let useless = match handle.data() {
@@ -744,7 +802,26 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("header")
                 | local_name!("footer")
                 | local_name!("embed")
+                | local_name!("textarea")
+                | local_name!("input")
+                | local_name!("select")
+                | local_name!("button")
                 | local_name!("aside") => true,
+                local_name!("h1") | local_name!("h2") => {
+                    // Delete remaining headings that may be duplicates of the title.
+                    let mut heading = String::new();
+                    dom::extract_text(&handle, &mut heading, true);
+                    if heading.is_empty() {
+                        return true;
+                    }
+                    if title_tokens.is_empty() {
+                        return false;
+                    }
+                    let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
+                    let distance = title_tokens.difference(&heading_tokens).count() as f32;
+                    let similarity = 1.0 - distance / title_tokens.len() as f32;
+                    similarity >= 0.75
+                }
                 local_name!("form")
                 | local_name!("table")
                 | local_name!("ul")
@@ -759,14 +836,16 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     false
                 }
                 local_name!("img") => {
-                    let mut loaded = img_is_loaded(data);
-                    if !loaded {
-                        if let Some(img) = try_lazy_img(data) {
-                            dom::set_attr(img.local.as_ref(), img.value, handle.clone(), true);
-                            loaded = true
+                    let mask = img_is_loaded(data);
+                    let (mask, lazy_srcs) = try_lazy_img(data, mask);
+                    if mask == ImageLoadedMask::NONE {
+                        true
+                    } else {
+                        for src in lazy_srcs {
+                            dom::set_attr(src.local.as_ref(), src.value, handle.clone(), true);
                         }
+                        false
                     }
-                    !loaded
                 }
                 _ => false,
             };
@@ -788,7 +867,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     }
     let mut useless_nodes = vec![];
     for child in handle.children() {
-        if clean(&mut dom, child.clone(), url, title, features) {
+        if clean(&mut dom, child.clone(), title_tokens, url, features) {
             useless_nodes.push(child.clone());
         }
     }
@@ -878,8 +957,9 @@ mod tests {
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
         assert_eq!(elem.name.local, local_name!("img"));
-        assert!(!img_is_loaded(elem));
-        assert!(try_lazy_img(elem).is_some());
+        assert_eq!(img_is_loaded(elem), ImageLoadedMask::NONE);
+        let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
+        assert_eq!(mask, ImageLoadedMask::SRCSET);
     }
 
     #[test]
@@ -893,6 +973,20 @@ mod tests {
         let handle = dom::parse_inner(input).unwrap();
         let elem = handle.as_element().unwrap();
         assert_eq!(elem.name.local, local_name!("img"));
-        assert!(img_is_loaded(elem));
+        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+    }
+
+    #[test]
+    fn test_load_lazy_images_src_and_srcset() {
+        // look for srcset even if we loaded the src
+        let input = r#"
+        <img src="https://some-site/some-image.jpg"
+            data-srcset="https://some-site/some-image.jpg2000x2000"/>
+        "#;
+        let handle = dom::parse_inner(input).unwrap();
+        let elem = handle.as_element().unwrap();
+        assert_eq!(img_is_loaded(elem), ImageLoadedMask::SRC);
+        let (mask, _) = try_lazy_img(elem, ImageLoadedMask::NONE);
+        assert!(mask.is_all());
     }
 }
