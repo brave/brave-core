@@ -13,8 +13,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
@@ -40,8 +40,8 @@ class BraveToolbarButtonHighlightPathGenerator
     gfx::Rect rect(view->size());
     rect.Inset(GetToolbarInkDropInsets(view));
     SkPath path;
-    path.addRoundRect(gfx::RectToSkRect(rect),
-                      kHighlightRadius, kHighlightRadius);
+    path.addRoundRect(gfx::RectToSkRect(rect), kHighlightRadius,
+                      kHighlightRadius);
     return path;
   }
 };
@@ -86,8 +86,7 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
     SetBackground(views::CreateBackgroundFromPainter(
         views::Painter::CreateSolidRoundRectPainter(
             is_tor ? kPrivateTorAvatarBGColor : kPrivateAvatarBGColor,
-            kHighlightRadius,
-            paint_insets)));
+            kHighlightRadius, paint_insets)));
 
     // We give more margins to horizontally.
     gfx::Insets target_insets =
@@ -113,8 +112,7 @@ ui::ImageModel BraveAvatarToolbarButton::GetAvatarIcon(
 
   if (browser_->profile()->IsGuestSession()) {
     return ui::ImageModel::FromVectorIcon(
-        kUserMenuGuestIcon,
-        GetForegroundColor(state),
+        kUserMenuGuestIcon, GetForegroundColor(state),
         ui::TouchUiController::Get()->touch_ui() ? 24 : 20);
   }
 
