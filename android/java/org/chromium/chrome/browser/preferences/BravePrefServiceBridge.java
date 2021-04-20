@@ -210,7 +210,7 @@ public class BravePrefServiceBridge {
     public int getENSResolveMethod() {
         return BravePrefServiceBridgeJni.get().getENSResolveMethod();
     }
-    
+
     public void setWebrtcPolicy(int policy) {
         BravePrefServiceBridgeJni.get().setWebrtcPolicy(policy);
     }
