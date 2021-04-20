@@ -19,6 +19,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -56,8 +57,8 @@ void CheckCommandsAreInOrderInMenuModel(
     EXPECT_NE(-1, index);
     commands_index.push_back(index);
   }
-  EXPECT_TRUE(std::is_sorted(std::begin(commands_index),
-                             std::end(commands_index)));
+  EXPECT_TRUE(
+      std::is_sorted(std::begin(commands_index), std::end(commands_index)));
 }
 
 // Test brave menu order test.
