@@ -338,9 +338,9 @@ void JNI_BravePrefServiceBridge_SetReferralDownloadId(
 }
 
 jint JNI_BravePrefServiceBridge_GetWebrtcPolicy(JNIEnv* env) {
-  return (int)GetWebRTCIPHandlingPolicy(
-      GetOriginalProfile()->GetPrefs()->GetString(
-          prefs::kWebRTCIPHandlingPolicy));
+  return static_cast<int>(
+      GetWebRTCIPHandlingPolicy(GetOriginalProfile()->GetPrefs()->GetString(
+          prefs::kWebRTCIPHandlingPolicy)));
 }
 
 void JNI_BravePrefServiceBridge_SetWebrtcPolicy(JNIEnv* env, jint policy) {
