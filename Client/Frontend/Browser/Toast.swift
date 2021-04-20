@@ -11,7 +11,7 @@ class Toast: UIView {
 
     weak var viewController: UIViewController?
 
-    var dismissed = false
+    var displayState = State.dismissed
 
     lazy var gestureRecognizer: UITapGestureRecognizer = {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -32,10 +32,13 @@ class Toast: UIView {
 
     func showToast(viewController: UIViewController? = nil, delay: DispatchTimeInterval, duration: DispatchTimeInterval?, makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void) {
         self.viewController = viewController
+        
+        self.displayState = .pendingShow
 
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             viewController?.view.addSubview(self)
 
+            self.layer.removeAllAnimations()
             self.snp.makeConstraints(makeConstraints)
             self.layoutIfNeeded()
 
@@ -43,6 +46,7 @@ class Toast: UIView {
                 self.animationConstraint?.update(offset: 0)
                 self.layoutIfNeeded()
             }) { finished in
+                self.displayState = .showing
                 if let duration = duration {
                     DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                         self.dismiss(false)
@@ -53,14 +57,19 @@ class Toast: UIView {
     }
 
     func dismiss(_ buttonPressed: Bool) {
-        guard !dismissed else { return }
-        dismissed = true
+        if displayState == .pendingDismiss || displayState == .dismissed {
+            return
+        }
+        
+        displayState = .pendingDismiss
         superview?.removeGestureRecognizer(gestureRecognizer)
-
+        layer.removeAllAnimations()
+        
         UIView.animate(withDuration: SimpleToastUX.toastAnimationDuration, animations: {
             self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
             self.layoutIfNeeded()
         }) { finished in
+            self.displayState = .dismissed
             self.removeFromSuperview()
             if !buttonPressed {
                 self.completionHandler?(false)
@@ -70,5 +79,12 @@ class Toast: UIView {
 
     @objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
         dismiss(false)
+    }
+    
+    enum State {
+        case showing
+        case pendingShow
+        case pendingDismiss
+        case dismissed
     }
 }
