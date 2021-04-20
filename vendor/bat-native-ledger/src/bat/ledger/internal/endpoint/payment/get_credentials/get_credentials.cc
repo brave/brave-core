@@ -35,7 +35,7 @@ std::string GetCredentials::GetUrl(
       order_id.c_str(),
       item_id.c_str());
 
-  return GetServerUrl(path);
+  return GetServerUrl(ledger_, path);
 }
 
 type::Result GetCredentials::CheckStatusCode(const int status_code) {

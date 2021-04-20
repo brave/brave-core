@@ -8,47 +8,28 @@ import { LocaleContext } from '../localeContext'
 
 import {
   Container,
-  Description,
   BatAmount,
   BatSymbol,
   ExchangeAmount,
-  StyledTable,
-  StyledTableHeader,
-  StyledTableCell
+  OrderTotal
 } from './style'
 
 interface OrderSummaryProps {
-  description: string
   orderTotal: string
   orderTotalConverted: string
 }
 
 export function OrderSummary (props: OrderSummaryProps) {
   const locale = React.useContext(LocaleContext)
+
   return (
     <Container>
-      <StyledTable>
-        <thead>
-          <tr>
-            <StyledTableHeader>{locale.get('itemSelected')}</StyledTableHeader>
-            <StyledTableHeader>{locale.get('orderTotal')}</StyledTableHeader>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <StyledTableCell>
-              <Description>{props.description}</Description>
-            </StyledTableCell>
-            <StyledTableCell>
-              <BatAmount>
-                {props.orderTotal}
-                <BatSymbol>{locale.get('bat')}</BatSymbol>
-              </BatAmount>
-              <ExchangeAmount>{props.orderTotalConverted}</ExchangeAmount>
-            </StyledTableCell>
-          </tr>
-        </tbody>
-      </StyledTable>
+        <OrderTotal>{locale.get('orderTotal')}</OrderTotal>
+          <ExchangeAmount>{props.orderTotalConverted}</ExchangeAmount>
+          <BatAmount>
+            {props.orderTotal}
+            <BatSymbol>{locale.get('bat')}</BatSymbol>
+          </BatAmount>
     </Container>
   )
 }

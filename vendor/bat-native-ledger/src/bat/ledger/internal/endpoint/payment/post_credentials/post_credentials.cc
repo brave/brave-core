@@ -31,7 +31,7 @@ std::string PostCredentials::GetUrl(const std::string& order_id) {
       "/v1/orders/%s/credentials",
       order_id.c_str());
 
-  return GetServerUrl(path);
+  return GetServerUrl(ledger_, path);
 }
 
 std::string PostCredentials::GeneratePayload(

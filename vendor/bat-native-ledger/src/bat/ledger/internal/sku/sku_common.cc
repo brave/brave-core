@@ -24,9 +24,9 @@ SKUCommon::SKUCommon(LedgerImpl* ledger) :
 SKUCommon::~SKUCommon() = default;
 
 void SKUCommon::CreateOrder(
-    const std::vector<type::SKUOrderItem>& items,
+    std::vector<mojom::SKUOrderItemPtr> items,
     ledger::SKUOrderCallback callback) {
-  order_->Create(items, callback);
+  order_->Create(std::move(items), callback);
 }
 
 void SKUCommon::CreateTransaction(

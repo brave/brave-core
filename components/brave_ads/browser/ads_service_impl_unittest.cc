@@ -246,6 +246,10 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(SetAdsEnabled, void(const bool is_enabled));
 
   MOCK_CONST_METHOD0(IsRewardsEnabled, bool());
+  MOCK_METHOD3(ProcessSKU,
+               void(std::vector<ledger::mojom::SKUOrderItemPtr> items,
+                    const std::string& wallet_type,
+                    brave_rewards::ProcessSKUCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

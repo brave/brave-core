@@ -1,3 +1,5 @@
+import("//brave/build/config.gni")
+
 source_set("features") {
   sources = [
     "features.cc",
@@ -9,6 +11,7 @@ source_set("features") {
 
 source_set("common") {
   sources = [
+    "constants.h",
     "pref_names.cc",
     "pref_names.h",
     "url_constants.cc",

@@ -1,0 +1,25 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/components/payments/content/buildflags/buildflags.gni")
+
+brave_payment_sources = []
+brave_payment_deps = []
+
+if (enable_pay_with_bat) {
+  brave_payment_sources += [
+    "//brave/components/payments/content/bat_payment_app.cc",
+    "//brave/components/payments/content/bat_payment_app.h",
+    "//brave/components/payments/content/bat_payment_app_factory.cc",
+    "//brave/components/payments/content/bat_payment_app_factory.h",
+  ]
+
+  brave_payment_deps += [
+    "//base",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/payments/content/buildflags",
+    "//components/payments/core",
+  ]
+}

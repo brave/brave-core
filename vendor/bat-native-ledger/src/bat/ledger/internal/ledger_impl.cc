@@ -803,10 +803,10 @@ void LedgerImpl::GetAllMonthlyReportIds(
 }
 
 void LedgerImpl::ProcessSKU(
-    const std::vector<type::SKUOrderItem>& items,
+    std::vector<mojom::SKUOrderItemPtr> items,
     const std::string& wallet_type,
     ledger::SKUOrderCallback callback) {
-  sku()->Process(items, wallet_type, callback);
+  sku()->Process(std::move(items), wallet_type, callback);
 }
 
 void LedgerImpl::Shutdown(ledger::ResultCallback callback) {

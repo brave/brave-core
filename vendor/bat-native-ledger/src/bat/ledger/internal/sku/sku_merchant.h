@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_SKU_MERCHANT_H_
-#define BRAVELEDGER_SKU_MERCHANT_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_MERCHANT_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_MERCHANT_H_
 
 #include <memory>
 #include <string>
@@ -25,7 +25,7 @@ class SKUMerchant : public SKU  {
   ~SKUMerchant() override;
 
   void Process(
-      const std::vector<type::SKUOrderItem>& items,
+      std::vector<mojom::SKUOrderItemPtr> items,
       const std::string& wallet_type,
       ledger::SKUOrderCallback callback,
       const std::string& contribution_id = "") override;
@@ -60,4 +60,4 @@ class SKUMerchant : public SKU  {
 }  // namespace sku
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_SKU_MERCHANT_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_MERCHANT_H_

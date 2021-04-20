@@ -10,6 +10,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/brave_rewards/browser/switches.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
@@ -169,19 +170,23 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("staging=true");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "staging=true");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("staging=1");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "staging=1");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
-  rewards_service_->HandleFlags("staging=false");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "staging=false");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
-  rewards_service_->HandleFlags("staging=werwe");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "staging=werwe");
   GetEnvironment();
 }
 
@@ -196,19 +201,23 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDebug) {
   GetDebug();
 
   rewards_service_->SetDebug(false);
-  rewards_service_->HandleFlags("debug=true");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "debug=true");
   GetDebug();
 
   rewards_service_->SetDebug(false);
-  rewards_service_->HandleFlags("debug=1");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "debug=1");
   GetDebug();
 
   rewards_service_->SetDebug(true);
-  rewards_service_->HandleFlags("debug=false");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "debug=false");
   GetDebug();
 
   rewards_service_->SetDebug(true);
-  rewards_service_->HandleFlags("debug=werwe");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "debug=werwe");
   GetDebug();
 }
 
@@ -225,19 +234,23 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("development=true");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "development=true");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("development=1");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "development=1");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("development=false");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "development=false");
   GetEnvironment();
 
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
-  rewards_service_->HandleFlags("development=werwe");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "development=werwe");
   GetEnvironment();
 }
 
@@ -249,15 +262,18 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsReconcile) {
   testing::InSequence s;
 
   rewards_service_->SetReconcileInterval(0);
-  rewards_service_->HandleFlags("reconcile-interval=10");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "reconcile-interval=10");
   GetReconcileInterval();
 
   rewards_service_->SetReconcileInterval(0);
-  rewards_service_->HandleFlags("reconcile-interval=-1");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "reconcile-interval=-1");
   GetReconcileInterval();
 
   rewards_service_->SetReconcileInterval(0);
-  rewards_service_->HandleFlags("reconcile-interval=sdf");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "reconcile-interval=sdf");
   GetReconcileInterval();
 }
 
@@ -269,11 +285,13 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsShortRetries) {
   testing::InSequence s;
 
   rewards_service_->SetShortRetries(false);
-  rewards_service_->HandleFlags("short-retries=true");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "short-retries=true");
   GetShortRetries();
 
   rewards_service_->SetShortRetries(true);
-  rewards_service_->HandleFlags("short-retries=false");
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
+                                "short-retries=false");
   GetShortRetries();
 }
 
@@ -290,7 +308,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetShortRetries(false);
 
-  rewards_service_->HandleFlags(
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
       "staging=true,debug=true,short-retries=true,reconcile-interval=10");
 
   GetReconcileInterval();
@@ -312,7 +330,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetShortRetries(false);
 
-  rewards_service_->HandleFlags(
+  rewards_service_->HandleFlags(brave_rewards::switches::kRewards,
       "staging=,debug=,shortretries=true,reconcile-interval");
 
   GetReconcileInterval();

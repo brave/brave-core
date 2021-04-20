@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
-#define BRAVELEDGER_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -72,24 +73,22 @@ class PostOrder {
   ~PostOrder();
 
   void Request(
-      const std::vector<type::SKUOrderItem>& items,
+      std::vector<type::SKUOrderItemPtr> items,
       PostOrderCallback callback);
 
  private:
   std::string GetUrl();
 
-  std::string GeneratePayload(const std::vector<type::SKUOrderItem>& items);
-
   type::Result CheckStatusCode(const int status_code);
 
   type::Result ParseBody(
       const std::string& body,
-      const std::vector<type::SKUOrderItem>& order_items,
+      std::vector<mojom::SKUOrderItemPtr> order_items,
       type::SKUOrder* order);
 
   void OnRequest(
       const type::UrlResponse& response,
-      const std::vector<type::SKUOrderItem>& items,
+      std::shared_ptr<std::vector<mojom::SKUOrderItemPtr>> items,
       PostOrderCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
@@ -99,4 +98,4 @@ class PostOrder {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_ORDER_POST_ORDER_H_

@@ -11,6 +11,7 @@ include_rules = [
   "+../../../../../../../third_party/blink/renderer/modules/cookie_store",
   "+../../../../../../../third_party/blink/renderer/modules/encryptedmedia",
   "+../../../../../../../third_party/blink/renderer/modules/mediastream",
+  "+../../../../../../../third_party/blink/renderer/modules/payments",
   "+../../../../../../../third_party/blink/renderer/modules/quota",
   "+../../../../../../../third_party/blink/renderer/modules/storage",
   "+../../../../../../../third_party/blink/renderer/modules/webaudio",

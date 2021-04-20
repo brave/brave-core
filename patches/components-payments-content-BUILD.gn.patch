@@ -1,0 +1,12 @@
+diff --git a/components/payments/content/BUILD.gn b/components/payments/content/BUILD.gn
+index fa171bba474a1b6ab3ff7f968959a0ffd3ef6f3c..fdcfa2a96a833c30f84317b836cb0cdd1b88f71a 100644
+--- a/components/payments/content/BUILD.gn
++++ b/components/payments/content/BUILD.gn
+@@ -84,6 +84,7 @@ static_library("content") {
+     "//url",
+   ]
+ 
++  import("//brave/components/payments/content/brave_payment_sources.gni") sources += brave_payment_sources deps += brave_payment_deps
+   if (is_chromeos_ash) {
+     sources += [ "android_app_communication_chrome_os.cc" ]
+ 

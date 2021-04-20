@@ -34,6 +34,7 @@ interface BatLedger {
   GetPublisherAllowVideos() => (bool allowed);
   GetAutoContributeEnabled() => (bool auto_contribute);
   GetReconcileStamp() => (uint64 reconcile_stamp);
+  ProcessSKU(array<ledger.mojom.SKUOrderItem> items, string wallet_type) => (ledger.mojom.Result result, string order_id);
 
   OnLoad(ledger.mojom.VisitData visit_data, uint64 current_time);
   OnUnload(uint32 tab_id, uint64 current_time);

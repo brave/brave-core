@@ -1,0 +1,11 @@
+diff --git a/third_party/blink/renderer/modules/payments/payment_item.idl b/third_party/blink/renderer/modules/payments/payment_item.idl
+index 48b92d94e24b17c9219992a34dbfe178164f1639..8f5af36ce69ea5de14cbbf6f2bdf80ac3b001923 100644
+--- a/third_party/blink/renderer/modules/payments/payment_item.idl
++++ b/third_party/blink/renderer/modules/payments/payment_item.idl
+@@ -7,5 +7,6 @@
+ dictionary PaymentItem {
+     required DOMString label;
+     required PaymentCurrencyAmount amount;
++    DOMString sku;
+     boolean pending = false;
+ };

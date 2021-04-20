@@ -5,6 +5,7 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/payments/content/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -49,6 +50,22 @@ source_set("ui") {
     sources += [
       "webui/ipfs_ui.cc",
       "webui/ipfs_ui.h",
+    ]
+  }
+
+  if (enable_pay_with_bat) {
+    sources += [
+      "brave_rewards/checkout_dialog.cc",
+      "brave_rewards/checkout_dialog.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/vendor/bat-native-ledger:headers",
+      "//components/payments/content/",
+      "//components/payments/core/",
+      "//components/web_modal/",
+      "//ui/web_dialogs/",
     ]
   }
 
@@ -205,7 +222,7 @@ source_set("ui") {
     ]
   }
 
-  deps = [
+  deps += [
     "tabs",
     "//base",
     "//brave/app:command_ids",
@@ -441,6 +458,12 @@ source_set("ui") {
       sources += [
         "webui/brave_tip_ui.cc",
         "webui/brave_tip_ui.h",
+        "webui/brave_checkout_ui.cc",
+        "webui/brave_checkout_ui.h",
+      ]
+
+      deps += [
+        "//brave/components/brave_rewards/resources:checkout_generated_resources",
       ]
     }
 

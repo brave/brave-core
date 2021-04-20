@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_SKU_COMMON_H_
-#define BRAVELEDGER_SKU_COMMON_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_COMMON_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_COMMON_H_
 
 #include <memory>
 #include <string>
@@ -25,7 +25,7 @@ class SKUCommon {
   ~SKUCommon();
 
   void CreateOrder(
-      const std::vector<type::SKUOrderItem>& items,
+      std::vector<mojom::SKUOrderItemPtr> items,
       ledger::SKUOrderCallback callback);
 
   void CreateTransaction(
@@ -56,4 +56,4 @@ class SKUCommon {
 }  // namespace sku
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_SKU_COMMON_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_SKU_SKU_COMMON_H_

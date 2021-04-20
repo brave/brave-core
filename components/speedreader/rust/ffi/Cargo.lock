@@ -177,6 +177,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "convert_case"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6245d59a3e82a7fc217c5828a6692dbc6dfb63a0c8c90495621f7b9d79704a0e"
+
+[[package]]
 name = "core-foundation"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -213,7 +219,7 @@ version = "0.25.9"
 source = "git+https://github.com/AndriusA/rust-cssparser?branch=glibc#ad2f4d3c89e247ec1693a581ecace199e46f30fa"
 dependencies = [
  "autocfg 0.1.7",
- "cssparser-macros",
+ "cssparser-macros 0.3.6",
  "dtoa-short",
  "itoa",
  "libm",
@@ -222,7 +228,24 @@ dependencies = [
  "proc-macro2 1.0.24",
  "procedural-masquerade",
  "quote 1.0.7",
- "smallvec",
+ "smallvec 0.6.14",
+ "syn 1.0.60",
+]
+
+[[package]]
+name = "cssparser"
+version = "0.27.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "754b69d351cdc2d8ee09ae203db831e005560fc6030da058f86ad60c92a9cb0a"
+dependencies = [
+ "cssparser-macros 0.6.0",
+ "dtoa-short",
+ "itoa",
+ "matches",
+ "phf 0.8.0",
+ "proc-macro2 1.0.24",
+ "quote 1.0.7",
+ "smallvec 1.6.1",
  "syn 1.0.60",
 ]
 
@@ -234,6 +257,28 @@ dependencies = [
  "phf_codegen 0.7.24",
  "proc-macro2 1.0.24",
  "procedural-masquerade",
+ "quote 1.0.7",
+ "syn 1.0.60",
+]
+
+[[package]]
+name = "cssparser-macros"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dfae75de57f2b2e85e8768c3ea840fd159c8f33e2b6522c7835b7abac81be16e"
+dependencies = [
+ "quote 1.0.7",
+ "syn 1.0.60",
+]
+
+[[package]]
+name = "derive_more"
+version = "0.99.13"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f82b1b72f1263f214c0f823371768776c4f5841b942c9883aa8e5ec584fd0ba6"
+dependencies = [
+ "convert_case",
+ "proc-macro2 1.0.24",
  "quote 1.0.7",
  "syn 1.0.60",
 ]
@@ -421,6 +466,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc6f3ad7b9d11a0c00842ff8de1b60ee58661048eb8049ed33c73594f359d7e6"
 
 [[package]]
+name = "kuchiki"
+version = "0.8.1"
+source = "git+https://github.com/brave/kuchiki?branch=speedreader#589eadca2c1d06ddda2919354590bfe1ace88a43"
+dependencies = [
+ "cssparser 0.27.2",
+ "html5ever",
+ "matches",
+ "selectors 0.22.0",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -467,13 +523,13 @@ checksum = "169299b3b58aa5cd8ad25fd8fe984e93748046d24c80f05aaadd9022f95423ec"
 dependencies = [
  "bitflags",
  "cfg-if 0.1.10",
- "cssparser",
+ "cssparser 0.25.9",
  "encoding_rs",
  "lazy_static",
  "lazycell",
  "memchr",
  "safemem",
- "selectors",
+ "selectors 0.21.0",
  "thiserror",
 ]
 
@@ -498,18 +554,6 @@ dependencies = [
  "string_cache",
  "string_cache_codegen",
  "tendril",
-]
-
-[[package]]
-name = "markup5ever_rcdom"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f015da43bcd8d4f144559a3423f4591d69b8ce0652c905374da7205df336ae2b"
-dependencies = [
- "html5ever",
- "markup5ever",
- "tendril",
- "xml5ever",
 ]
 
 [[package]]
@@ -660,7 +704,9 @@ version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3dfb61232e34fcb633f43d12c58f83c1df82962dcdfa565a4e866ffc17dafe12"
 dependencies = [
+ "phf_macros",
  "phf_shared 0.8.0",
+ "proc-macro-hack",
 ]
 
 [[package]]
@@ -701,6 +747,20 @@ checksum = "17367f0cc86f2d25802b2c26ee58a7b23faeccf78a396094c13dced0d0182526"
 dependencies = [
  "phf_shared 0.8.0",
  "rand 0.7.3",
+]
+
+[[package]]
+name = "phf_macros"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7f6fde18ff429ffc8fe78e2bf7f8b7a5a5a6e2a8b58bc5a9ac69198bbda9189c"
+dependencies = [
+ "phf_generator 0.8.0",
+ "phf_shared 0.8.0",
+ "proc-macro-hack",
+ "proc-macro2 1.0.24",
+ "quote 1.0.7",
+ "syn 1.0.60",
 ]
 
 [[package]]
@@ -993,8 +1053,8 @@ name = "readability"
 version = "0.1.4"
 dependencies = [
  "html5ever",
+ "kuchiki",
  "lazy_static",
- "markup5ever_rcdom",
  "regex",
  "url 1.7.2",
 ]
@@ -1147,7 +1207,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1b86b100bede4f651059740afc3b6cb83458d7401cb7c1ad96d8a11e91742c86"
 dependencies = [
  "bitflags",
- "cssparser",
+ "cssparser 0.25.9",
  "fxhash",
  "log",
  "matches",
@@ -1155,7 +1215,27 @@ dependencies = [
  "phf_codegen 0.7.24",
  "precomputed-hash",
  "servo_arc",
- "smallvec",
+ "smallvec 0.6.14",
+ "thin-slice",
+]
+
+[[package]]
+name = "selectors"
+version = "0.22.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "df320f1889ac4ba6bc0cdc9c9af7af4bd64bb927bccdf32d81140dc1f9be12fe"
+dependencies = [
+ "bitflags",
+ "cssparser 0.27.2",
+ "derive_more",
+ "fxhash",
+ "log",
+ "matches",
+ "phf 0.8.0",
+ "phf_codegen 0.8.0",
+ "precomputed-hash",
+ "servo_arc",
+ "smallvec 1.6.1",
  "thin-slice",
 ]
 
@@ -1243,17 +1323,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "smallvec"
+version = "1.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fe0f37c9e8f3c5a4a66ad655a93c74daac4ad00c441533bf5c6e7990bb42604e"
+
+[[package]]
 name = "speedreader"
 version = "0.1.0"
 dependencies = [
  "adblock",
  "flate2",
  "html5ever",
+ "kuchiki",
  "lazy_static",
  "lifeguard",
  "lol_html",
  "markup5ever",
- "markup5ever_rcdom",
  "readability",
  "regex",
  "serde",
@@ -1384,16 +1470,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "time"
-version = "0.1.43"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca8a50ef2360fbd1eeb0ecd46795a87a19024eb4b53c5dc916ca1fd95fe62438"
-dependencies = [
- "libc",
- "winapi",
-]
-
-[[package]]
 name = "tiny-keccak"
 version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1433,7 +1509,7 @@ version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "141339a08b982d942be2ca06ff8b076563cbe223d1befd5450716790d44e2426"
 dependencies = [
- "smallvec",
+ "smallvec 0.6.14",
 ]
 
 [[package]]
@@ -1521,15 +1597,3 @@ name = "winapi-x86_64-pc-windows-gnu"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
-
-[[package]]
-name = "xml5ever"
-version = "0.16.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0b1b52e6e8614d4a58b8e70cf51ec0cc21b256ad8206708bcff8139b5bbd6a59"
-dependencies = [
- "log",
- "mac",
- "markup5ever",
- "time",
-]

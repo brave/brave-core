@@ -1151,4 +1151,36 @@ void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
   std::move(callback).Run(ledger_->GetWalletPassphrase());
 }
 
+void BatLedgerImpl::ProcessSKU(
+    std::vector<::ledger::mojom::SKUOrderItemPtr> items,
+    const std::string& wallet_type,
+    ProcessSKUCallback callback) {
+  auto* holder = new CallbackHolder<ProcessSKUCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->ProcessSKU(std::move(items),
+                      wallet_type,
+                      std::bind(BatLedgerImpl::OnSKUProcessed,
+                                holder,
+                                _1,
+                                _2));
+}
+
+
+// static
+void BatLedgerImpl::OnSKUProcessed(
+    CallbackHolder<ProcessSKUCallback>* holder,
+    const ledger::type::Result result,
+    const std::string& wallet_type) {
+  if (!holder) {
+    return;
+  }
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, wallet_type);
+  }
+  delete holder;
+}
+
+
 }  // namespace bat_ledger

@@ -1,0 +1,3 @@
+brave_browser_ui_deps = [
+  "//brave/vendor/bat-native-ledger:headers",
+]

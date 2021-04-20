@@ -31,7 +31,7 @@ std::string PostTransactionUphold::GetUrl(const std::string& order_id) {
       "/v1/orders/%s/transactions/uphold",
       order_id.c_str());
 
-  return GetServerUrl(path);
+  return GetServerUrl(ledger_, path);
 }
 
 std::string PostTransactionUphold::GeneratePayload(

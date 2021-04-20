@@ -25,7 +25,7 @@ interface UseCreditCardPanelProps {
   walletVerified: boolean
   continueWithCard: boolean
   setContinueWithCard: (value: boolean) => void
-  onPayWithCreditCard: (cardDetails: CreditCardDetails) => void
+  onPayWithCreditCard?: (cardDetails: CreditCardDetails) => void
 }
 
 export function UseCreditCardPanel (props: UseCreditCardPanelProps) {
@@ -37,7 +37,7 @@ export function UseCreditCardPanel (props: UseCreditCardPanelProps) {
     const formHandle = creditCardFormRef.current
     if (formHandle) {
       const errors = formHandle.validate()
-      if (errors.length === 0) {
+      if (errors.length === 0 && props.onPayWithCreditCard) {
         props.onPayWithCreditCard(formHandle.details)
       } else {
         errors[0].element.focus()

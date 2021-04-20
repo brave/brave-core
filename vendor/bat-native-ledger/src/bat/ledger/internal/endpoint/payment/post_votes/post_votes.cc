@@ -29,7 +29,7 @@ PostVotes::PostVotes(LedgerImpl* ledger):
 PostVotes::~PostVotes() = default;
 
 std::string PostVotes::GetUrl() {
-  return GetServerUrl("/v1/votes");
+  return GetServerUrl(ledger_, "/v1/votes");
 }
 
 std::string PostVotes::GeneratePayload(

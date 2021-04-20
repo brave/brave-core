@@ -16,6 +16,7 @@
 #include "base/observer_list.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
@@ -129,6 +130,9 @@ using GetEventLogsCallback =
 
 using GetBraveWalletCallback =
     base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
+
+using ProcessSKUCallback =
+    base::OnceCallback<void(ledger::mojom::Result result, const std::string&)>;
 
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 
@@ -368,6 +372,9 @@ class RewardsService : public KeyedService {
   virtual void SetAdsEnabled(const bool is_enabled) = 0;
 
   virtual bool IsRewardsEnabled() const = 0;
+  virtual void ProcessSKU(std::vector<ledger::mojom::SKUOrderItemPtr> items,
+                           const std::string& wallet_type,
+                           ProcessSKUCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
