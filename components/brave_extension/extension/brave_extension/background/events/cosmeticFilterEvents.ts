@@ -7,6 +7,21 @@ export let rule = {
   selector: ''
 }
 
+const applyCosmeticFilter = (host: string, selector: string) => {
+  if (selector) {
+    const s: string = selector.trim()
+
+    if (s.length > 0) {
+      chrome.tabs.insertCSS({
+        code: `${s} {display: none !important;}`,
+        cssOrigin: 'user'
+      })
+
+      addSiteCosmeticFilter(host, s)
+    }
+  }
+}
+
 // parent menu
 chrome.contextMenus.create({
   title: 'Brave',
@@ -23,6 +38,12 @@ chrome.contextMenus.create({
 chrome.contextMenus.create({
   title: getLocale('manageCustomFilters'),
   id: 'manageCustomFilters',
+  parentId: 'brave',
+  contexts: ['all']
+})
+chrome.contextMenus.create({
+  title: getLocale('elementPickerMode'),
+  id: 'elementPickerMode',
   parentId: 'brave',
   contexts: ['all']
 })
@@ -70,6 +91,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         break
       }
       shieldsPanelActions.contentScriptsLoaded(tabId, frameId, url)
+      break
+    }
+    case 'cosmeticFilterCreate': {
+      const { host, selector } = msg
+      applyCosmeticFilter(host, selector)
+      break
     }
   }
 })
@@ -82,6 +109,14 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
     case 'manageCustomFilters':
       openFilterManagementPage()
       break
+    case 'elementPickerMode': {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs: [chrome.tabs.Tab]) => {
+        if (tabs.length > 0) {
+          chrome.tabs.sendMessage(tabs[0].id!, { type: 'elementPickerLaunch' })
+        }
+      })
+      break
+    }
     default: {
       console.warn('[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
     }
@@ -105,16 +140,5 @@ export function onSelectorReturned (response: any) {
     rule.selector = window.prompt('CSS selector:', `${response}`) || ''
   }
 
-  if (rule.selector) {
-    const selector: string = rule.selector.trim()
-
-    if (selector.length > 0) {
-      chrome.tabs.insertCSS({
-        code: `${selector} {display: none !important;}`,
-        cssOrigin: 'user'
-      })
-
-      addSiteCosmeticFilter(rule.host, selector)
-    }
-  }
+  applyCosmeticFilter(rule.host, rule.selector)
 }

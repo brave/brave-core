@@ -95,6 +95,7 @@ const isHTMLElement = (node: Node): boolean => {
   return ('innerText' in node)
 }
 
+// @ts-ignore unused function
 const asHTMLElement = (node: Node): HTMLElement | null => {
   return isHTMLElement(node) ? node as HTMLElement : null
 }

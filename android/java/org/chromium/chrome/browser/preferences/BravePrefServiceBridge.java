@@ -218,6 +218,14 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getENSResolveMethod();
     }
 
+    public void setWebrtcPolicy(int policy) {
+        BravePrefServiceBridgeJni.get().setWebrtcPolicy(policy);
+    }
+
+    public int getWebrtcPolicy() {
+        return BravePrefServiceBridgeJni.get().getWebrtcPolicy();
+    }
+
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
@@ -275,5 +283,8 @@ public class BravePrefServiceBridge {
         void setENSResolveMethod(int method);
         int getUnstoppableDomainsResolveMethod();
         int getENSResolveMethod();
+
+        void setWebrtcPolicy(int policy);
+        int getWebrtcPolicy();
     }
 }

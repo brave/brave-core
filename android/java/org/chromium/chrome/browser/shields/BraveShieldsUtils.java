@@ -69,6 +69,8 @@ public class BraveShieldsUtils {
         public static final int BRAVE_BLOCKED_TIER8 = 500000;
         public static final int BRAVE_BLOCKED_TIER9 = 1000000;
 
+        public static final int BRAVE_BLOCKED_SHOW_DIFF = 20;
+
         public static boolean isTooltipShown;
 
         public interface BraveShieldsCallback {
