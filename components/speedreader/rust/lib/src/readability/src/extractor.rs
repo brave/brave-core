@@ -54,7 +54,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     url: &Url,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
-    let mut meta = Meta::new();
+    let mut meta = Meta::default();
     let handle = dom.document_node.clone();
 
     // extracts title (if it exists) pre-processes the DOM by removing script
@@ -77,7 +77,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         let mut top_candidates: Vec<TopCandidate> = vec![];
         for node in dom.document_node.descendants().filter(|d| {
             d.as_element()
-                .and_then(|e| Some(e.is_candidate.get()))
+                .map(|e| e.is_candidate.get())
                 .unwrap_or(false)
         }) {
             let elem = node.as_element().unwrap();
@@ -120,7 +120,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         features,
     );
 
-    postprocess(&mut dom, top_candidate.clone(), &meta);
+    post_process(&mut dom, top_candidate.clone(), &meta);
 
     // Calls html5ever::serialize() with IncludeNode for us.
     let charset_blob = format!("<meta charset=\"{}\"/>", meta.charset);
@@ -128,7 +128,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     Ok(Product { meta, content })
 }
 
-pub fn postprocess(dom: &mut Sink, root: Handle, meta: &Meta) {
+pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
     // Our CSS formats based on id="article".
     dom::set_attr("id", "article", root.clone(), true);
 
@@ -167,15 +167,13 @@ pub fn clean_title(dom: &Sink, title: String) -> String {
         } else {
             title
         }
-    } else if title.find(": ").is_some() {
+    } else if title.contains(": ") {
         let found_matching_heading = dom
             .document_node
             .descendants()
             .filter(|d| {
                 d.as_element()
-                    .and_then(|e| {
-                        Some(e.name.local == local_name!("h1") || e.name.local == local_name!("h2"))
-                    })
+                    .map(|e| e.name.local == local_name!("h1") || e.name.local == local_name!("h2"))
                     .unwrap_or(false)
             })
             .any(|handle| {

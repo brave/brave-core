@@ -110,7 +110,7 @@ impl PartialEq for TopCandidate {
 
 impl Eq for TopCandidate {}
 
-#[derive(Default, Debug)]
+#[derive(Debug)]
 pub struct Meta {
     pub title: String,
     pub author: String,
@@ -118,11 +118,13 @@ pub struct Meta {
     pub charset: String,
 }
 
-impl Meta {
-    pub fn new() -> Meta {
-        Meta {
+impl Default for Meta {
+    fn default() -> Self {
+        Self {
+            title: Default::default(),
+            author: Default::default(),
+            description: Default::default(),
             charset: "utf-8".to_string(),
-            ..Default::default()
         }
     }
 }
@@ -372,7 +374,7 @@ pub fn get_metadata(data: &ElementData, meta: &mut Meta) {
                     key = Some(&mut meta.description);
                     content = content
                         .find(". ")
-                        .and_then(|pos| Some(&content[..pos]))
+                        .map(|pos| &content[..pos])
                         .unwrap_or(content);
                 }
                 "dc:creator" | "dcterm:creator" | "author" => {
@@ -380,16 +382,15 @@ pub fn get_metadata(data: &ElementData, meta: &mut Meta) {
                 }
                 _ => (),
             }
-            key.map(|k| {
+            if let Some(k) = key {
                 // It's common for titles and descriptions to have encoded HTML attributes like &#8211;
                 // These are important in the title cleaning phase, so we want those decoded. Other
                 // sites, like buzzfeed, encode HTML tags to bold the text. So after decoding,
                 // we delete anything that looks like an HTML tag.
-                match decode_html(content) {
-                    Ok(s) => *k = DECODED_HTML_TAGS.replace_all(&s, "").into(),
-                    Err(_) => (),
+                if let Ok(s) = decode_html(content) {
+                    *k = DECODED_HTML_TAGS.replace_all(&s, "").into();
                 }
-            });
+            }
         }
     } else if let Some(charset) = data.attributes.borrow().get(local_name!("charset")) {
         meta.charset = charset.to_string();
@@ -810,20 +811,16 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     // Delete remaining headings that may be duplicates of the title.
                     let mut heading = String::new();
                     dom::extract_text(&handle, &mut heading, true);
-                    if heading.len() == 0 {
+                    if heading.is_empty() {
                         return true;
                     }
-                    if title_tokens.len() == 0 {
+                    if title_tokens.is_empty() {
                         return false;
                     }
                     let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
                     let distance = title_tokens.difference(&heading_tokens).count() as f32;
                     let similarity = 1.0 - distance / title_tokens.len() as f32;
-                    if similarity >= 0.75 {
-                        true
-                    } else {
-                        false
-                    }
+                    similarity >= 0.75
                 }
                 local_name!("form")
                 | local_name!("table")
