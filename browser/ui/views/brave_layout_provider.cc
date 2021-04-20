@@ -7,9 +7,8 @@
 
 #include "ui/views/layout/layout_provider.h"
 
-int BraveLayoutProvider::GetCornerRadiusMetric(
-    views::Emphasis emphasis,
-    const gfx::Size& size) const {
+int BraveLayoutProvider::GetCornerRadiusMetric(views::Emphasis emphasis,
+                                               const gfx::Size& size) const {
   switch (emphasis) {
     case views::Emphasis::kNone:
       return 0;

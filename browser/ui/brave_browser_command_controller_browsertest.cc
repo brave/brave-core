@@ -16,6 +16,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -74,8 +75,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(
-                  IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
 
   // Create private browser and test its brave commands status.
   auto* private_browser = CreateIncognitoBrowser();
@@ -108,8 +109,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(
-                  IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
 
   // Create guest browser and test its brave commands status.
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
@@ -143,8 +144,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(
-                  IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
 
 #if BUILDFLAG(ENABLE_TOR)
   // Launch tor window and check its command status.
@@ -179,8 +180,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(
-                  IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
 
   // Check tor commands when tor is disabled.
   TorProfileServiceFactory::SetTorDisabled(true);
