@@ -32,6 +32,7 @@ BraveDeviceInfo::BraveDeviceInfo(
                  signin_scoped_device_id,
                  manufacturer_name,
                  model_name,
+                 /*full_hardware_class=*/"",
                  last_updated_timestamp,
                  pulse_interval,
                  send_tab_to_self_receiving_enabled,
