@@ -2,6 +2,9 @@ source_set("renderer") {
   sources = [
     "brave_wallet_js_handler.cc",
     "brave_wallet_js_handler.h",
+    "brave_wallet_response_helpers.cc",
+    "brave_wallet_response_helpers.h",
+    "web3_provider_constants.h",
   ]
 
   deps = [

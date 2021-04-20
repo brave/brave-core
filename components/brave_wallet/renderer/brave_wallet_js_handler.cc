@@ -8,7 +8,10 @@
 #include <utility>
 
 #include "base/no_destructor.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
+#include "brave/components/brave_wallet/renderer/web3_provider_constants.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
@@ -96,11 +99,10 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(v8::Isolate* isolate,
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
   if (!resolver.IsEmpty()) {
-    auto promise_resolver =
-        std::make_unique<v8::Global<v8::Promise::Resolver>>();
-    promise_resolver->Reset(isolate, resolver.ToLocalChecked());
-    auto context_old = std::make_unique<v8::Global<v8::Context>>(
-        isolate, isolate->GetCurrentContext());
+    auto promise_resolver(
+        v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+    auto context_old(
+        v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
     brave_wallet_provider_->Request(
         input,
         base::BindOnce(&BraveWalletJSHandler::OnRequest, base::Unretained(this),
@@ -114,20 +116,32 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(v8::Isolate* isolate,
 }
 
 void BraveWalletJSHandler::OnRequest(
-    std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
-    std::unique_ptr<v8::Global<v8::Context>> context_old,
-    const int status,
+    v8::Global<v8::Context> context_old,
+    const int http_code,
     const std::string& response) {
   v8::HandleScope handle_scope(isolate);
-  v8::Local<v8::Context> context = context_old->Get(isolate);
+  v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
 
-  v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   v8::Local<v8::String> result;
-  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+  bool reject = http_code != 200;
+  ProviderErrors code = ProviderErrors::kDisconnected;
+  std::string message;
+  std::string formed_response;
+  if (reject) {
+    code = ProviderErrors::kUnsupportedMethod;
+    message = "HTTP Status code: " + base::NumberToString(http_code);
+    formed_response = FormProviderResponse(code, message);
+  } else {
+    formed_response = FormProviderResponse(response, &reject);
+  }
+  result = v8::String::NewFromUtf8(isolate, formed_response.c_str())
+               .ToLocalChecked();
 
-  if (status != 200) {
+  if (reject) {
     ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
   } else {
     ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));

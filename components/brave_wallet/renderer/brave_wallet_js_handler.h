@@ -41,12 +41,11 @@ class BraveWalletJSHandler {
   // A function to be called from JS
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,
                                  const std::string& input);
-  void OnRequest(
-      std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
-      v8::Isolate* isolate,
-      std::unique_ptr<v8::Global<v8::Context>> context_old,
-      const int status,
-      const std::string& response);
+  void OnRequest(v8::Global<v8::Promise::Resolver> promise_resolver,
+                 v8::Isolate* isolate,
+                 v8::Global<v8::Context> context_old,
+                 const int http_code,
+                 const std::string& response);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<brave_wallet::mojom::BraveWalletProvider> brave_wallet_provider_;

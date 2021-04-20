@@ -29,7 +29,7 @@ class BraveWalletProviderImpl final
   void Request(const std::string& json_payload,
                RequestCallback callback) override;
   void OnResponse(RequestCallback callback,
-                  const int status,
+                  const int http_code,
                   const std::string& response,
                   const std::map<std::string, std::string>& headers);
 
