@@ -631,7 +631,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?
       </message>
       <message name="IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION" desc="Confirmation message prompt to make sure the user is ok to delete other device from the chain">
-        Are you sure you want to delete selected device from sync chain?
+        Are you sure you want to remove the selected device from the sync chain?
       </message>
       <!-- Sync Infobar -->
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
