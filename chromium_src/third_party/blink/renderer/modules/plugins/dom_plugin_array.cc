@@ -24,6 +24,7 @@ using blink::LocalFrame;
 using blink::MakeGarbageCollected;
 using blink::Member;
 using blink::MimeClassInfo;
+using blink::PluginData;
 using blink::PluginInfo;
 using WTF::String;
 using WTF::StringBuilder;
@@ -51,6 +52,7 @@ String PluginReplacementName(std::mt19937_64* prng) {
 }
 
 void FarblePlugins(DOMPluginArray* owner,
+                   PluginData* data,
                    HeapVector<Member<DOMPlugin>>* dom_plugins) {
   if (!owner->DomWindow())
     return;
@@ -79,7 +81,8 @@ void FarblePlugins(DOMPluginArray* owner,
       // ensure that the cache is fully populated now while the assumptions
       // still hold, so the problematic code is never executed later.
       for (unsigned index = 0; index < dom_plugins->size(); index++) {
-        auto plugin = frame->GetPluginData()->Plugins()[index];
+        DCHECK_EQ(dom_plugins->size(), data->Plugins().size());
+        auto plugin = data->Plugins()[index];
         String name = plugin->Name();
         // Built-in plugins get their names and descriptions farbled as well.
         if ((name == "Chrome PDF Plugin") || (name == "Chrome PDF Viewer")) {
@@ -138,9 +141,12 @@ void FarblePlugins(DOMPluginArray* owner,
 
 }  // namespace brave
 
-#define BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA \
-  data->ResetPluginData();                   \
-  brave::FarblePlugins(this, &dom_plugins_);
+#define BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__RESET_PLUGIN_DATA \
+  if (PluginData* data = GetPluginData())                       \
+    data->ResetPluginData();
+
+#define BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__FARBLE_PLUGIN_DATA \
+  brave::FarblePlugins(this, data, &dom_plugins_);
 
 #include "../../../../../../../third_party/blink/renderer/modules/plugins/dom_plugin_array.cc"
 
