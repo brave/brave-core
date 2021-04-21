@@ -195,6 +195,13 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getP3ANoticeAcknowledged();
     }
 
+    public void setWebrtcPolicy(int policy) {
+        BravePrefServiceBridgeJni.get().setWebrtcPolicy(policy);
+    }
+
+    public int getWebrtcPolicy() {
+        return BravePrefServiceBridgeJni.get().getWebrtcPolicy();
+    }
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
@@ -246,5 +253,8 @@ public class BravePrefServiceBridge {
         boolean hasPathP3AEnabled();
         void setP3ANoticeAcknowledged(boolean value);
         boolean getP3ANoticeAcknowledged();
+
+        void setWebrtcPolicy(int policy);
+        int getWebrtcPolicy();
     }
 }
