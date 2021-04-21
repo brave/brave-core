@@ -53,6 +53,10 @@ class TabsBarViewController: UIViewController {
     fileprivate weak var tabManager: TabManager?
     fileprivate var tabList = WeakList<Tab>()
     
+    /// See #3549. There is a problem with userInterfaceStyles that seems to affect theming TabBarCells
+    /// As a workaround we pass `Theme` used in theming `TabsBarViewController` to make sure both use the same theme.
+    private var lastUsedTheme: Theme?
+    
     init(tabManager: TabManager) {
         self.tabManager = tabManager
         super.init(nibName: nil, bundle: nil)
@@ -134,14 +138,6 @@ class TabsBarViewController: UIViewController {
     
     @objc func orientationChanged() {
         overflowIndicators()
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            applyTheme(Theme.of(nil))
-        }
     }
     
     @objc func addTabPressed() {
@@ -316,6 +312,9 @@ extension TabsBarViewController: UICollectionViewDataSource {
         cell.currentIndex = indexPath.row
         cell.separatorLineRight.isHidden = (indexPath.row != tabList.count() - 1)
         
+        // Cell theming fix #3549
+        cell.configure(with: lastUsedTheme)
+        
         cell.closeTabCallback = { [weak self] tab in
             guard let strongSelf = self, let tabManager = strongSelf.tabManager, let previousIndex = strongSelf.tabList.index(of: tab) else { return }
             
@@ -372,6 +371,7 @@ extension TabsBarViewController: TabManagerDelegate {
 extension TabsBarViewController: Themeable {
     func applyTheme(_ theme: Theme) {
         styleChildren(theme: theme)
+        lastUsedTheme = theme
         
         view.backgroundColor = theme.colors.header
         plusButton.tintColor = theme.colors.tints.header

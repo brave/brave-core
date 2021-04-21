@@ -23,20 +23,11 @@ class TabBarCell: UICollectionViewCell {
         return button
     }()
     
-    private lazy var separatorLine: UIView = {
-        let view = UIView()
-        let theme = Theme.of(nil)
-        view.backgroundColor = theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
-        return view
-    }()
+    private let separatorLine = UIView()
     
-    lazy var separatorLineRight: UIView = {
-        let view = UIView()
-        let theme = Theme.of(nil)
-        view.backgroundColor = theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
-        view.isHidden = true
-        return view
-    }()
+    let separatorLineRight = UIView().then {
+        $0.isHidden = true
+    }
     
     var currentIndex: Int = -1 {
         didSet {
@@ -92,23 +83,34 @@ class TabBarCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            let theme = Theme.of(tab)
-            closeButton.tintColor = theme.colors.tints.header
-            
-            if isSelected {
-                titleLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)
-                closeButton.isHidden = false
-                titleLabel.textColor = theme.colors.tints.header
-                backgroundColor = theme.colors.header
-            }
-                // Prevent swipe and release outside- deselects cell.
-            else if currentIndex != tabManager?.currentDisplayedIndex {
-                titleLabel.font = UIFont.systemFont(ofSize: 12)
-                titleLabel.textColor = theme.colors.tints.header.withAlphaComponent(0.6)
-                closeButton.isHidden = true
-                backgroundColor = theme.colors.home
-            }
+            configure()
         }
+    }
+    
+    func configure(with theme: Theme? = nil) {
+        let theme = theme ?? Theme.of(tab)
+        closeButton.tintColor = theme.colors.tints.header
+        
+        separatorLine.backgroundColor =
+            theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
+        
+        separatorLineRight.backgroundColor =
+            theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
+        
+        if isSelected {
+            titleLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)
+            closeButton.isHidden = false
+            titleLabel.textColor = theme.colors.tints.header
+            backgroundColor = theme.colors.header
+        }
+            // Prevent swipe and release outside- deselects cell.
+        else if currentIndex != tabManager?.currentDisplayedIndex {
+            titleLabel.font = UIFont.systemFont(ofSize: 12)
+            titleLabel.textColor = theme.colors.tints.header.withAlphaComponent(0.6)
+            closeButton.isHidden = true
+            backgroundColor = theme.colors.home
+        }
+
     }
     
     @objc func closeTab() {
