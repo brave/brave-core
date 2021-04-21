@@ -960,12 +960,6 @@ extension Strings {
                               value: "%ld+ trackers & ads blocked on this page.",
                               comment: "Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page")
         
-        public static let encryptedConnectionWarningTitle =
-            NSLocalizedString("shieldEducation.encryptedConnectionWarningTitle",
-                              bundle: .braveShared,
-                              value: "Your connection is now encrypted.",
-                              comment: "Title for Shield Education Encrypted Connection Warning")
-        
         public static let trackerCountShareSubtitle =
             NSLocalizedString("shieldEducation.trackerCountShareSubtitle",
                               bundle: .braveShared,
@@ -989,12 +983,6 @@ extension Strings {
                               bundle: .braveShared,
                               value: "Brave Shields protects your online privacy on every site.",
                               comment: "Subtitle for Shield Education Tracker Ad Count Block")
-        
-        public static let encryptedConnectionWarningSubtitle =
-            NSLocalizedString("shieldEducation.encryptedConnectionWarningSubtitle",
-                              bundle: .braveShared,
-                              value: "If available, Brave upgrades you to a secure connection automatically.",
-                              comment: "Subtitle for Shield Education Encrypted Connection Warning")
         
         public static let educationInspectTitle =
             NSLocalizedString("shieldEducation.inspectTitle",
