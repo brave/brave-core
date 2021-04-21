@@ -694,9 +694,17 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
        languageCode, languageCodeAdsResourceId);
 
   BLOG(1, @"Notifying ads resource observers");
-  const std::string bridged_language_code_adsResource_idkey =
+  
+  const auto __weak weakSelf = self;
+  [self downloadAdsResource:isoLanguageCode completion:^(BOOL success) {
+    const auto strongSelf = weakSelf;
+    if (!strongSelf) { return; }
+    if (success) {
+      const std::string bridged_language_code_adsResource_idkey =
       languageCodeAdsResourceId.UTF8String;
-  ads->OnResourceComponentUpdated(bridged_language_code_adsResource_idkey);
+      strongSelf->ads->OnResourceComponentUpdated(bridged_language_code_adsResource_idkey);
+    }
+  }];
 
   return YES;
 }
@@ -719,9 +727,17 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
        countryCode, countryCodeAdsResourceId);
 
   BLOG(1, @"Notifying ads resource observers");
-  const std::string bridged_country_code_adsResource_idkey =
+  const auto __weak weakSelf = self;
+  [self downloadAdsResource:isoCountryCode completion:^(BOOL success) {
+    const auto strongSelf = weakSelf;
+    if (!strongSelf) { return; }
+    if (success) {
+      const std::string bridged_country_code_adsResource_idkey =
       countryCodeAdsResourceId.UTF8String;
-  ads->OnResourceComponentUpdated(bridged_country_code_adsResource_idkey);
+      
+      strongSelf->ads->OnResourceComponentUpdated(bridged_country_code_adsResource_idkey);
+    }
+  }];
 
   return YES;
 }
@@ -741,7 +757,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 - (void)periodicallyCheckForAdsResourceUpdates {
-  const uint64_t time_offset = 6 * 60 * 60;  // every 6 hours and on browser launch
+  const uint64_t time_offset = 6 * 60 * 60;  // every 6 hours
 
   const auto __weak weakSelf = self;
   self.updateAdsResourceTimer = [NSTimer
@@ -766,21 +782,24 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
                                                   dateByAddingTimeInterval:
                                                       time_offset]]);
                                }];
-
-  [self.updateAdsResourceTimer fire];
 }
 
 - (void)updateAdsResources {
-  NSDictionary* dict = [self adsResourceMetadata];
   BLOG(1, @"Updating ads resources");
 
-  for (NSString *key in dict) {
+  const auto currentLocale = [NSLocale currentLocale];
+  NSString *isoLanguageCode = [@"iso_639_1_" stringByAppendingString:
+                               [currentLocale.languageCode lowercaseString]];
+  NSString *isoCountryCode = [@"iso_3166_1_" stringByAppendingString:
+                              [currentLocale.countryCode lowercaseString]];
+  
+  for (NSString *key in @[isoLanguageCode, isoCountryCode]) {
     BLOG(1, @"Checking %@ ads resource for updates", key);
 
     const auto __weak weakSelf = self;
     [self
         downloadAdsResource:key
-                 completion:^(BOOL success, BOOL shouldRetry) {
+                 completion:^(BOOL success) {
                    const auto strongSelf = weakSelf;
                    if (!strongSelf) {
                      return;
@@ -797,12 +816,45 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
 }
 
-- (void)downloadAdsResource:(NSString*)id
+- (void)downloadAdsResource:(NSString*)folderName
                  completion:
-                     (void (^)(BOOL success, BOOL shouldRetry))completion {
-  BLOG(1, @"Downloading %@ ads resource manifest", id);
+                     (void (^)(BOOL success))completion {
+  BLOG(1, @"Downloading %@ ads resource manifest", folderName);
 
   const auto __weak weakSelf = self;
+  
+  void (^handleRetry)() = ^{
+    const auto strongSelf = weakSelf;
+    const int64_t backoff = 1 * 60;
+    int64_t delay = backoff
+    << strongSelf.adsResourceRetryCount;
+    if (delay >= 60 * 60) {
+      delay = 60 * 60;
+    } else {
+      strongSelf.adsResourceRetryCount++;
+    }
+    
+    NSDateFormatter* formatter =
+    [[NSDateFormatter alloc] init];
+    formatter.dateStyle = NSDateFormatterFullStyle;
+    formatter.timeStyle = NSDateFormatterFullStyle;
+    BLOG(1, @"Retry loading %@ ads resource on %@", folderName,
+         [formatter stringFromDate:
+          [[NSDate date]
+           dateByAddingTimeInterval:delay]]);
+    
+    dispatch_after(
+                   dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC),
+                   dispatch_get_main_queue(), ^{
+      const auto strongSelf2 = weakSelf;
+      if (!strongSelf2 ||
+          ![strongSelf2 isAdsServiceRunning]) {
+        return;
+      }
+      [strongSelf2 downloadAdsResource:folderName
+                            completion:completion];
+    });
+  };
 
   NSString *baseUrl;
   if (ads::g_environment == ads::Environment::PRODUCTION) {
@@ -811,42 +863,47 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     baseUrl = @"https://brave-user-model-installer-input-dev.s3.bravesoftware.com";
   }
 
-  NSString* componentPath = self.componentPaths[id] ?: @"";
-  baseUrl = [baseUrl stringByAppendingPathComponent:componentPath];
+  baseUrl = [baseUrl stringByAppendingPathComponent:folderName];
 
   NSString* manifestUrl =
       [baseUrl stringByAppendingPathComponent:@"resources.json"];
-  return [self.commonOps loadURLRequest:manifestUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
+  [self.commonOps loadURLRequest:manifestUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
     const auto strongSelf = weakSelf;
     if (!strongSelf || ![strongSelf isAdsServiceRunning]) { return; }
 
     if (statusCode == 404) {
-      BLOG(1, @"%@ ads resource manifest not found", id);
-      completion(NO, NO);
+      BLOG(1, @"%@ ads resource manifest not found", folderName);
+      completion(NO);
       return;
     }
 
     if (statusCode != 200) {
-      BLOG(1, @"Failed to download %@ ads resource manifest", id);
-      completion(NO, YES);
+      BLOG(1, @"Failed to download %@ ads resource manifest", folderName);
+      handleRetry();
       return;
     }
 
     NSData *data = [[NSString stringWithUTF8String:response.c_str()] dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
     if (!dict) {
-      completion(NO, YES);
+      handleRetry();
       return;
     }
 
     NSNumber *schemaVersion = dict[@"schemaVersion"];
     if ([schemaVersion intValue] != kCurrentAdsResourceManifestSchemaVersion) {
-      completion(NO, YES);
+      BLOG(1, @"Invalid schema version for ads resource manifest %@ (%d)",
+           folderName, [schemaVersion intValue]);
+      handleRetry();
       return;
     }
 
     NSArray* adsResources = dict[@"resources"];
 
+    const auto group = dispatch_group_create();
+    BOOL __block allSuccessful = YES;
+    BOOL __block shouldRetry = NO;
+    
     for (NSDictionary* adsResource in adsResources) {
       NSString* adsResourceStatus = adsResource[@"status"];
       if (!adsResourceStatus ||
@@ -861,13 +918,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
       NSString* filename = adsResource[@"filename"];
       if (!filename) {
-        completion(NO, YES);
         continue;
       }
 
       NSNumber* version = adsResource[@"version"];
       if (!version) {
-        completion(NO, YES);
         continue;
       }
 
@@ -875,8 +930,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       if (version <= adsResourceMetadataDict[adsResourceId]) {
         BLOG(1, @"%@ ads resource is up to date on version %@", adsResourceId,
              version);
-        completion(YES, NO);
-        return;
+        continue;
       }
 
       NSString* adsResourceUrl =
@@ -885,7 +939,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       BLOG(1, @"Downloading %@ ads resource version %@", adsResourceId,
            version);
 
-      return [strongSelf.commonOps loadURLRequest:adsResourceUrl.UTF8String
+      dispatch_group_enter(group);
+      [strongSelf.commonOps loadURLRequest:adsResourceUrl.UTF8String
           headers:{}
           content:""
           content_type:""
@@ -897,17 +952,18 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
             if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
               return;
             }
-
+        
             if (statusCode == 404) {
-              BLOG(1, @"%@ ads resource not found", id);
-              completion(NO, NO);
+              BLOG(1, @"%@ ads resource not found", folderName);
+              allSuccessful = NO;
               return;
             }
 
             if (statusCode != 200) {
               BLOG(1, @"Failed to download %@ ads resource version %@",
                    adsResourceId, version);
-              completion(NO, YES);
+              allSuccessful = NO;
+              shouldRetry = YES;
               return;
             }
 
@@ -923,10 +979,17 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
             BLOG(1, @"%@ ads resource updated to version %@", adsResourceId,
                  version);
-
-            completion(YES, NO);
+            dispatch_group_leave(group);
           }];
     }
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+      if (shouldRetry) {
+        handleRetry();
+      } else {
+        completion(allSuccessful);
+      }
+    });
   }];
 }
 
@@ -951,60 +1014,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     return;
   }
 
-  BLOG(1, @"%@ ads resource not cached", bridgedId);
-
-  const auto __weak weakSelf = self;
-  [self
-      downloadAdsResource:bridgedId
-               completion:^(BOOL success, BOOL shouldRetry) {
-                 const auto strongSelf = weakSelf;
-                 if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
-                   return;
-                 }
-
-                 const auto contents = [strongSelf.commonOps
-                     loadContentsFromFileWithName:bridgedId.UTF8String];
-                 if (!success || contents.empty()) {
-                   if (shouldRetry) {
-                     const int64_t backoff = 1 * 60;
-                     int64_t delay = backoff
-                                     << strongSelf.adsResourceRetryCount;
-                     if (delay >= 60 * 60) {
-                       delay = 60 * 60;
-                     } else {
-                       strongSelf.adsResourceRetryCount++;
-                     }
-
-                     NSDateFormatter* formatter =
-                         [[NSDateFormatter alloc] init];
-                     formatter.dateStyle = NSDateFormatterFullStyle;
-                     formatter.timeStyle = NSDateFormatterFullStyle;
-                     BLOG(1, @"Retry loading %@ ads resource on %@", bridgedId,
-                          [formatter stringFromDate:
-                                         [[NSDate date]
-                                             dateByAddingTimeInterval:delay]]);
-
-                     dispatch_after(
-                         dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC),
-                         dispatch_get_main_queue(), ^{
-                           const auto strongSelf2 = weakSelf;
-                           if (!strongSelf2 ||
-                               ![strongSelf2 isAdsServiceRunning]) {
-                             return;
-                           }
-                           [strongSelf2 loadAdsResource:bridgedId.UTF8String
-                                                version:version
-                                               callback:callback];
-                         });
-                   }
-
-                   return;
-                 }
-
-                 strongSelf.adsResourceRetryCount = 1;
-
-                 callback(ads::Result::SUCCESS, contents);
-               }];
+  BLOG(1, @"%@ ads resource not found", bridgedId);
+  callback(ads::Result::FAILED, "");
 }
 
 - (void)load:(const std::string &)name callback:(ads::LoadCallback)callback

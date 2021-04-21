@@ -204,11 +204,11 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     const std::string index = GetIndex(resource.id, resource.version);
     auto iter = resources_.find(index);
     if (iter != resources_.end()) {
-      VLOG(1) << "Updating resource" << resource.id << " version "
+      VLOG(1) << "Updating resource " << resource.id << " version "
               << resource.version;
       iter->second = resource;
     } else {
-      VLOG(1) << "Adding resource" << resource.id << " version "
+      VLOG(1) << "Adding resource " << resource.id << " version "
               << resource.version;
       resources_.insert({index, resource});
     }
