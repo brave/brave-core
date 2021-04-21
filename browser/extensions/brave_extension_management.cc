@@ -14,7 +14,6 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/tor/pref_names.h"
 #include "chrome/browser/extensions/extension_management_internal.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "chrome/browser/profiles/profile.h"
@@ -26,6 +25,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/brave_tor_client_updater.h"
+#include "brave/components/tor/pref_names.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -45,10 +45,12 @@ BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
       ExtensionRegistry::Get(static_cast<content::BrowserContext*>(profile)));
   providers_.push_back(std::make_unique<BraveExtensionProvider>());
   local_state_pref_change_registrar_.Init(g_browser_process->local_state());
+#if BUILDFLAG(ENABLE_TOR)
   local_state_pref_change_registrar_.Add(
       tor::prefs::kTorDisabled,
       base::BindRepeating(&BraveExtensionManagement::OnTorDisabledChanged,
                           base::Unretained(this)));
+#endif
   // Make IsInstallationExplicitlyAllowed to be true
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   AccessById(ethereum_remote_client_extension_id)->installation_mode =

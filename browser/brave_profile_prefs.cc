@@ -45,7 +45,6 @@
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
-#include "extensions/common/feature_switch.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -109,7 +108,10 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #endif
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/common/feature_switch.h"
 using extensions::FeatureSwitch;
+#endif
 
 namespace brave {
 
