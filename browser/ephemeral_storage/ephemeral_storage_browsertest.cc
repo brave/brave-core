@@ -6,7 +6,7 @@
 #include <string>
 
 #include "base/path_service.h"
-#include "base/threading/platform_thread.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/common/brave_paths.h"
@@ -306,7 +306,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // after keepalive values should be cleared
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
   ASSERT_TRUE(WaitForLoadStop(web_contents));
-  base::PlatformThread::Sleep(base::TimeDelta::FromSeconds(kKeepAliveInterval));
+
+  base::RunLoop run_loop;
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(),
+      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+  run_loop.Run();
+
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   ASSERT_TRUE(WaitForLoadStop(web_contents));
 
