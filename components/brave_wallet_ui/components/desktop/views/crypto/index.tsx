@@ -16,6 +16,7 @@ const CryptoView = () => {
     AppsList[0].appList[0]
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
+  const [hideNav, setHideNav] = React.useState<boolean>(false)
 
   // In the future these will be actual paths
   // for example wallet/crypto/portfolio
@@ -42,13 +43,19 @@ const CryptoView = () => {
     filterAppList(event, AppsList, setFilteredAppsList)
   }
 
+  const toggleNav = () => {
+    setHideNav(!hideNav)
+  }
+
   return (
     <StyledWrapper>
-      <TopTabNav
-        tabList={TopNavOptions}
-        selectedTab={selectedTab}
-        onSubmit={tabTo}
-      />
+      {!hideNav &&
+        <TopTabNav
+          tabList={TopNavOptions}
+          selectedTab={selectedTab}
+          onSubmit={tabTo}
+        />
+      }
       {selectedTab === 'apps' &&
         <>
           <SearchBar
@@ -65,7 +72,7 @@ const CryptoView = () => {
         </>
       }
       {selectedTab === 'portfolio' &&
-        <PortfolioView />
+        <PortfolioView toggleNav={toggleNav} />
       }
       {selectedTab !== 'portfolio' && selectedTab !== 'apps' &&
         <h2>{selectedTab} view</h2>

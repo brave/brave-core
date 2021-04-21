@@ -64,7 +64,15 @@ const locale = {
 
   // Portfolio View
   addCoin: 'Add Coin',
-  balance: 'Balance'
+  balance: 'Balance',
+
+  // Portfolio SubView
+  accounts: 'Accounts',
+  account: 'Account',
+  transactions: 'Transactions',
+  price: 'Price',
+  back: 'Back',
+  addAccount: 'Add Account'
 }
 
 export default locale
