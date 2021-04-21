@@ -6,11 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_ANDROID_PERMISSION_PROMPT_ANDROID_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_ANDROID_PERMISSION_PROMPT_ANDROID_H_
 
-#define BRAVE_PERMISSION_PROMPT_ANDROID_H_ \
-  Delegate* delegate() const { return delegate_; }
+#define PermissionCount                            \
+  NotUsed() { return 0; }                          \
+  Delegate* delegate() const { return delegate_; } \
+  size_t PermissionCount
 
 #include "../../../../../components/permissions/android/permission_prompt_android.h"
 
-#undef BRAVE_PERMISSION_PROMPT_ANDROID_H_
+#undef PermissionCount
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_ANDROID_PERMISSION_PROMPT_ANDROID_H_
