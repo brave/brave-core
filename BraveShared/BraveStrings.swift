@@ -1089,7 +1089,7 @@ extension Strings {
         public static let addToPlayListAlertTitle =
             NSLocalizedString("playList.addToPlayListAlertTitle",
                               bundle: .braveShared,
-                              value: "Add to Playlist",
+                              value: "Add to Brave Playlist",
                               comment: "Alert Title for adding videos to playlist")
         
         public static let addToPlayListAlertDescription =
@@ -1143,7 +1143,7 @@ extension Strings {
         public static let toastAddToPlaylistTitle =
             NSLocalizedString("playList.toastAddToPlaylistTitle",
                               bundle: .braveShared,
-                              value: "Add to Playlist",
+                              value: "Add to Brave Playlist",
                               comment: "The title for the toast that shows up on a page containing a playlist item")
         
         public static let toastAddedToPlaylistTitle =
@@ -1191,13 +1191,13 @@ extension Strings {
         public static let playlistToastShowSettingsOptionTitle =
             NSLocalizedString("playlist.playlistToastShowSettingsOptionTitle",
                               bundle: .braveShared,
-                              value: "Show \"Add to Playlist\"",
+                              value: "Show \"Add to Brave Playlist\"",
                               comment: "Title for the Playlist Settings Option for Enable/Disable Add Toast")
         
         public static let playlistToastShowSettingsOptionFooterText =
             NSLocalizedString("playlist.playlistToastShowSettingsOptionFooterText",
                               bundle: .braveShared,
-                              value: "This option will ask you to 'Add to Playlist' on some media websites. You can still add media (video/audio) by long-pressing media, or from the \"Share With…\" menu button.",
+                              value: "This option will ask you to 'Add to Brave Playlist' on some media websites. You can still add media (video/audio) by long-pressing media, or from the \"Share With…\" menu button.",
                               comment: "Footer Text for the Playlist Settings Option for Enable/Disable Add Toast")
         
         public static let playlistAutoPlaySettingsOptionTitle =
