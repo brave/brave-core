@@ -99,6 +99,23 @@ void SidebarService::RemoveItemAt(int index) {
   UpdateSidebarItemsToPrefStore();
 }
 
+void SidebarService::MoveItem(int from, int to) {
+  DCHECK(items_.size() > static_cast<size_t>(from) &&
+         items_.size() > static_cast<size_t>(to) && from >= 0 && to >= 0);
+
+  if (from == to)
+    return;
+
+  const SidebarItem item = items_[from];
+  items_.erase(items_.begin() + from);
+  items_.insert(items_.begin() + to, item);
+
+  for (Observer& obs : observers_)
+    obs.OnItemMoved(item, from, to);
+
+  UpdateSidebarItemsToPrefStore();
+}
+
 void SidebarService::UpdateSidebarItemsToPrefStore() {
   ListPrefUpdate update(prefs_, kSidebarItems);
   update->ClearList();

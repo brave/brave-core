@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.25.32",
+  "version": "1.25.33",
   "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -277,6 +277,7 @@
     "emptykit.css": "1.0.1",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
+    "ethereum-blockies": "github:brave/blockies#07ebdfa3ed79fceec8234ef8c880ebdefd79bf0a",
     "file-loader": "1.1.11",
     "font-awesome": "4.7.0",
     "fs-extra": "8.1.0",

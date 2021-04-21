@@ -1,20 +1,23 @@
 import styled from 'styled-components'
-import Blockies from '../assets/blockies-temp.svg'
 import Swap from '../assets/swap.svg'
 import {
   VerifiedSIcon,
   CaratCircleODownIcon
 } from 'brave-ui/components/icons'
 
-// This gradient will be generated using blockies package in the future.
-export const StyledWrapper = styled.div`
+interface StyleProps {
+  panelBackground: string
+  orb: string
+}
+
+export const StyledWrapper = styled.div<Partial<StyleProps>>`
   display: flex;
   height: 100%;
   width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(180deg, #CF4A89 0%, #9E5EB2 100%);
+  background: ${(p) => p.panelBackground};
 `
 
 export const CenterColumn = styled.div`
@@ -27,11 +30,12 @@ export const CenterColumn = styled.div`
   padding: 12px 0px 28px;
 `
 
-export const AccountCircle = styled.div`
+export const AccountCircle = styled.div<Partial<StyleProps>>`
   width: 54px;
   height: 54px;
   border-radius: 100%;
-  background: url(${Blockies});
+  background-image: url(${(p) => p.orb});
+  background-size: cover;
   border: 2px solid white;
 `
 
@@ -83,7 +87,7 @@ export const ConnectedIcon = styled(VerifiedSIcon)`
   width: 14px;
   height: 14px;
   margin-right: 8px;
-  color: ${(p) => p.theme.palette.green500};
+  color: ${(p) => p.theme.palette.white};
 `
 
 export const NotConnectedIcon = styled.div`
