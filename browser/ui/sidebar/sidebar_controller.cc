@@ -89,10 +89,6 @@ void SidebarController::AddItemWithCurrentTab() {
       SidebarItem::Create(url, title, SidebarItem::Type::kTypeWeb, false));
 }
 
-void SidebarController::RemoveItemAt(int index) {
-  GetSidebarService(browser_)->RemoveItemAt(index);
-}
-
 void SidebarController::SetSidebar(Sidebar* sidebar) {
   DCHECK(!sidebar_);
   sidebar_ = sidebar;
