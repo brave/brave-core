@@ -90,7 +90,7 @@
     <entity name="PlaylistItem" representedClassName=".PlaylistItem" syncable="YES">
         <attribute name="cachedData" optional="YES" attributeType="Binary"/>
         <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="duration" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="duration" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="mediaSrc" attributeType="String"/>
         <attribute name="mimeType" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
@@ -128,8 +128,8 @@
         <element name="Favicon" positionX="439" positionY="-414" width="128" height="120"/>
         <element name="FeedSourceOverride" positionX="-279" positionY="-297" width="128" height="28"/>
         <element name="History" positionX="493" positionY="-150" width="128" height="135"/>
+        <element name="PlaylistItem" positionX="-279" positionY="-297" width="128" height="178"/>
         <element name="RSSFeedSource" positionX="-270" positionY="-288" width="128" height="73"/>
         <element name="TabMO" positionX="-488" positionY="-229" width="128" height="210"/>
-        <element name="PlaylistItem" positionX="-279" positionY="-297" width="128" height="178"/>
     </elements>
 </model>

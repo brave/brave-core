@@ -20,6 +20,25 @@ if (!window.__firefox__.includeOnce) {
 // MARK: - Media Detection
 
 window.__firefox__.includeOnce("$<Playlist>", function() {
+    function is_nan(value) {
+        return typeof value === "number" && value !== value;
+    }
+    
+    function is_infinite(value) {
+        return typeof value === "number" && (maxNumber === Infinity || value === -Infinity);
+    }
+    
+    function clamp_duration(value) {
+        if (is_nan(value)) {
+            return 0.0;
+        }
+        
+        if (is_infinite(value)) {
+            return Number.MAX_VALUE;
+        }
+        return value;
+    }
+    
     function $<sendMessage>(message) {
         if (window.webkit.messageHandlers.$<handler>) {
             window.webkit.messageHandlers.$<handler>.postMessage(message);
@@ -41,7 +60,7 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                     "pageSrc": window.location.href,
                     "pageTitle": document.title,
                     "mimeType": type,
-                    "duration": target.duration !== target.duration ? 0.0 : target.duration,
+                    "duration": clamp_duration(target.duration),
                     "detected": false,
                 });
             }
@@ -56,7 +75,7 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                                 "pageSrc": window.location.href,
                                 "pageTitle": document.title,
                                 "mimeType": type,
-                                "duration": target.duration !== target.duration ? 0.0 : target.duration,
+                                "duration": clamp_duration(target.duration),
                                 "detected": false,
                             });
                         }
@@ -69,7 +88,7 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                                 "pageSrc": window.location.href,
                                 "pageTitle": document.title,
                                 "mimeType": type,
-                                "duration": target.duration !== target.duration ? 0.0 : target.duration,
+                                "duration": clamp_duration(target.duration),
                                 "detected": false,
                             });
                         }
@@ -214,7 +233,7 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                     "pageSrc": window.location.href,
                     "pageTitle": document.title,
                     "mimeType": mimeType,
-                    "duration": node.duration !== node.duration ? 0.0 : node.duration,
+                    "duration": clamp_duration(node.duration),
                     "detected": true
                 });
             } else {
@@ -229,7 +248,7 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                                 "pageSrc": window.location.href,
                                 "pageTitle": document.title,
                                 "mimeType": mimeType,
-                                "duration": target.duration !== target.duration ? 0.0 : target.duration,
+                                "duration": clamp_duration(target.duration),
                     "detected": true
                             });
                         }
@@ -242,7 +261,7 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                                 "pageSrc": window.location.href,
                                 "pageTitle": document.title,
                                 "mimeType": mimeType,
-                                "duration": target.duration !== target.duration ? 0.0 : target.duration,
+                                "duration": clamp_duration(target.duration),
                     "detected": true
                             });
                         }

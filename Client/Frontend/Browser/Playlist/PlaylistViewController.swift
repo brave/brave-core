@@ -437,7 +437,7 @@ extension ListController: UITableViewDataSource {
     }
     
     private func getAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval, AVAsset?) -> Void) {
-        let tolerance: Float = 0.00001
+        let tolerance: Double = 0.00001
         let distance = abs(item.duration.distance(to: 0.0))
         
         // If the database duration is 0.0
@@ -450,7 +450,7 @@ extension ListController: UITableViewDataSource {
                     completion(track.timeRange.duration.seconds, asset)
                 } else if let track = asset.tracks(withMediaType: .audio).first {
                     completion(track.timeRange.duration.seconds, asset)
-                } else if abs(asset.duration.seconds.distance(to: 0.0)) < Double(tolerance) {
+                } else if abs(asset.duration.seconds.distance(to: 0.0)) < tolerance {
                     
                     // We can't get the duration synchronously so we need to let the AVAsset load the media item
                     // and hopefully we get a valid duration from that.
@@ -464,13 +464,13 @@ extension ListController: UITableViewDataSource {
                             duration = asset.duration.seconds
                         }
                         
-                        if abs(asset.duration.seconds.distance(to: 0.0)) > Double(tolerance) {
+                        if abs(asset.duration.seconds.distance(to: 0.0)) > tolerance {
                             let newItem = PlaylistInfo(name: item.name,
                                                        src: item.src,
                                                        pageSrc: item.pageSrc,
                                                        pageTitle: item.pageTitle,
                                                        mimeType: item.mimeType,
-                                                       duration: Float(duration),
+                                                       duration: duration,
                                                        detected: item.detected,
                                                        dateAdded: item.dateAdded)
                             
@@ -573,19 +573,19 @@ extension ListController: UITableViewDataSource {
         loadThumbnail(item: item, cell: cell) { newTrackDuration in
             guard let newTrackDuration = newTrackDuration else { return }
             
-            let tolerance: Float = 0.00001
+            let tolerance: Double = 0.00001
             let existingDistance = abs(item.duration.distance(to: 0.0))
             let newDistance = abs(newTrackDuration.distance(to: 0.0))
             
             // If the database duration is 0.0
             // and the new duration != 0.0
-            if existingDistance < tolerance && Float(newDistance) > tolerance {
+            if existingDistance < tolerance && newDistance > tolerance {
                 let newItem = PlaylistInfo(name: item.name,
                                            src: item.src,
                                            pageSrc: item.pageSrc,
                                            pageTitle: item.pageTitle,
                                            mimeType: item.mimeType,
-                                           duration: Float(newTrackDuration),
+                                           duration: newTrackDuration,
                                            detected: item.detected,
                                            dateAdded: item.dateAdded)
                 PlaylistItem.updateItem(newItem)

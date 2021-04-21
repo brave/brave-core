@@ -13,7 +13,7 @@ private let log = Logger.browserLogger
 final public class PlaylistItem: NSManagedObject, CRUD {
     @NSManaged public var cachedData: Data?
     @NSManaged public var dateAdded: Date?
-    @NSManaged public var duration: Float
+    @NSManaged public var duration: TimeInterval
     @NSManaged public var mediaSrc: String?
     @NSManaged public var mimeType: String?
     @NSManaged public var name: String?
