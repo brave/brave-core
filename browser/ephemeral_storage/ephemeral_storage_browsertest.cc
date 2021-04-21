@@ -80,10 +80,7 @@ content::EvalJsResult GetCookiesInFrame(RenderFrameHost* host) {
 class EphemeralStorageBrowserTest : public InProcessBrowserTest {
  public:
   EphemeralStorageBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndEnableFeature(
-        net::features::kBraveEphemeralStorage);
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
