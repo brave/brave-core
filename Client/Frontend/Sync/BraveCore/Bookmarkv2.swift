@@ -137,7 +137,8 @@ class Bookmarkv2: WebsitePresentable {
     }
     
     public static func lastFolderPath() -> [Bookmarkv2] {
-        if let nodeId = Preferences.Chromium.lastBookmarksFolderNodeId.value,
+        if Preferences.General.showLastVisitedBookmarksFolder.value,
+           let nodeId = Preferences.Chromium.lastBookmarksFolderNodeId.value,
            var folderNode = Bookmarkv2.bookmarksAPI.getNodeById(nodeId),
            folderNode.isVisible {
             
