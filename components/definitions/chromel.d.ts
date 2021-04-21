@@ -196,13 +196,87 @@ declare namespace chrome.gemini {
 }
 
 declare namespace chrome.cryptoDotCom {
-  const getTickerInfo: (asset: string, callback: (info: any) => void) => {}
-  const getChartData: (asset: string, callback: (data: any[]) => void) => {}
-  const getSupportedPairs: (callback: (pairs: any[]) => void) => {}
-  const getAssetRankings: (callback: (assets: any) => void) => {}
+  type TickerPrice = {
+    price: number
+    volume: number
+  }
+
+  type ChartDataPoint = {
+    t: number
+    o: number
+    h: number
+    l: number
+    c: number
+    v: number
+  }
+
+  type AssetRanking = {
+    lastPrice: string
+    pair: string
+    percentChange: string
+  }
+
+  type SupportedPair = {
+    pair: string
+    base: string
+    quote: string
+    price: string
+    quantity: string
+  }
+
+  type Account = {
+    stake: string
+    balance: string
+    available: string
+    currency: string
+    currency_decimals: number
+    order: string
+  }
+
+  type AccountBalances = {
+    total_balance: string
+    accounts: Account[]
+  }
+
+  type NewsEvent = {
+    content: string
+    redirect_url: string
+    updated_at: string
+    redirect_title: string
+  }
+
+  type DepositAddress = {
+    address: string
+    qr_code: string
+    currency: string
+  }
+
+  type Order = {
+    instrument_name: string
+    type: string
+    side: string
+    notional?: number
+    quantity?: number
+  }
+
+  type OrderResult = {
+    success: boolean
+    message: string
+  }
+
+  const getTickerInfo: (asset: string, callback: (info: TickerPrice) => void) => {}
+  const getChartData: (asset: string, callback: (data: ChartDataPoint[]) => void) => {}
+  const getSupportedPairs: (callback: (pairs: SupportedPair[]) => void) => {}
+  const getAssetRankings: (callback: (assets: Record<string, AssetRanking[]>) => void) => {}
+  const getAccountBalances: (callback: (balances: AccountBalances) => void) => {}
+  const getDepositAddress: (asset: string, callback: (address: DepositAddress) => void) => {}
+  const getNewsEvents: (callback: (newsEvents: NewsEvent[]) => void) => {}
+  const createMarketOrder: (order: Order, callback: (result: OrderResult) => void) => {}
+  const getClientUrl: (callback: (url: string) => void) => {}
+  const disconnect: (callback: (success: boolean) => void) => {}
+  const isConnected: (callback: (connected: boolean) => void) => {}
+  const isLoggedIn: (callback: (loggedIn: boolean) => void) => {}
   const isSupported: (callback: (supported: boolean) => void) => {}
-  const onBuyCrypto: () => void
-  const onInteraction: () => void
 }
 
 declare namespace chrome.ftx {

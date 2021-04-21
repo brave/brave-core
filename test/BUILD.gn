@@ -759,6 +759,7 @@ if (!is_android) {
 
     if (crypto_dot_com_enabled) {
       sources += [ "//brave/components/crypto_dot_com/browser/crypto_dot_com_service_browsertest.cc" ]
+      deps += [ "//brave/components/crypto_dot_com/common" ]
     }
 
     if (brave_rewards_enabled) {

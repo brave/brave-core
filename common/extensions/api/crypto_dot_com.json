@@ -9,7 +9,72 @@
     "compiler_options": {
       "implemented_in": "brave/browser/extensions/api/crypto_dot_com_api.h"
     },
-    "events": [
+    "types": [
+      {
+        "id": "AssetRanking",
+        "type": "object",
+        "properties": {
+          "lastPrice": { "type": "string" },
+          "pair": { "type": "string" },
+          "percentChange": { "type": "string" }
+        }
+      },
+      {
+        "id": "AccountBalance",
+        "type": "object",
+        "properties": {
+          "stake": { "type": "string" },
+          "balance": { "type": "string" },
+          "available": { "type": "string" },
+          "currency": { "type": "string" },
+          "currency_decimals": { "type": "number" },
+          "order": { "type": "string" }
+        }
+      },
+      {
+        "id": "NewsEvent",
+        "type": "object",
+        "properties": {
+          "content": { "type": "string" },
+          "redirect_url": { "type": "string" },
+          "updated_at": { "type": "string" },
+          "redirect_title": { "type": "string" }
+        }
+      },
+      {
+        "id": "Order",
+        "type": "object",
+        "properties": {
+          "instrument_name": { "type": "string" },
+          "type": { "type": "string" },
+          "side": { "type": "string" },
+          "notional": {
+            "type": "number",
+            "optional": true
+          },
+          "quantity": {
+            "type": "number",
+            "optional": true
+          }
+        }
+      },
+      {
+        "id": "OrderResult",
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" }
+        }
+      },
+      {
+        "id": "DepositAddress",
+        "type": "object",
+        "properties": {
+          "address": { "type": "string" },
+          "qr_code": { "type": "string" },
+          "currency": { "type": "string" }
+        }
+      }
     ],
     "functions": [
       {
@@ -30,11 +95,11 @@
                 "type": "object",
                 "properties": {
                   "price": {
-                    "type": "string",
+                    "type": "number",
                     "description": "price"
                   },
                   "volume": {
-                    "type": "string",
+                    "type": "number",
                     "description": "volume"
                   }
                 }
@@ -61,7 +126,26 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": { "type": "any" }
+                  "properties": {
+                    "t": {
+                      "type": "number"
+                    },
+                    "o": {
+                      "type": "number"
+                    },
+                    "h": {
+                      "type": "number"
+                    },
+                    "l": {
+                      "type": "number"
+                    },
+                    "c": {
+                      "type": "number"
+                    },
+                    "v": {
+                      "type": "number"
+                    }
+                  }
                 }
               }
             ]
@@ -94,6 +178,14 @@
                     "quote": {
                       "type": "string",
                       "description": "quote asset"
+                    },
+                    "price": {
+                      "type": "string",
+                      "description": "price decimals"
+                    },
+                    "quantity": {
+                      "type": "string",
+                      "description": "quantity decimals"
                     }
                   }
                 }
@@ -118,18 +210,12 @@
                   "gainers": {
                     "type": "array",
                     "description": "top gainers",
-                    "items": {
-                      "type": "object",
-                      "additionalProperties": { "type": "any" }
-                    }
+                    "items": { "$ref": "AssetRanking" }
                   },
                   "losers": {
                     "type": "array",
                     "description": "top losers",
-                    "items": {
-                      "type": "object",
-                      "additionalProperties": { "type": "any" }
-                    }
+                    "items": { "$ref": "AssetRanking" }
                   }
                 }
               }
@@ -155,48 +241,163 @@
         ]
       },
       {
-        "name": "onBuyCrypto",
+        "name": "getAccountBalances",
         "type": "function",
-        "description": "Marks when a user has used the crypto.com widget to buy crypto",
-        "parameters": []
-      },
-      {
-        "name": "onInteraction",
-        "type": "function",
-        "description": "Marks user interaction with the crypto.com widget",
-        "parameters": []
-      },
-      {
-        "name": "getInteractions",
-        "type": "function",
-        "description": "Fetches user interactions with crypto.com",
+        "description": "Retrieves user asset balances",
         "parameters": [
           {
             "type": "function",
             "name": "callback",
             "parameters": [
               {
-                "name": "interactions",
+                "name": "balances",
                 "type": "object",
                 "properties": {
-                  "boughtCrypto": {
-                    "type": "boolean",
-                    "description": "Has clicked the buy button"
+                  "total_balance": {
+                    "type": "string"
                   },
-                  "interacted": {
-                    "type": "boolean",
-                    "description": "Has interacted"
+                  "accounts": {
+                    "type": "array",
+                    "items": { "$ref": "AccountBalance" }
                   }
                 }
               }
             ]
           }
         ]
+      },
+      {
+        "name": "getClientUrl",
+        "type": "function",
+        "description": "Retrieves crypto.com auth client url",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "url",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "isConnected",
+        "type": "function",
+        "description": "Check access token is valid or not",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "connected",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "disconnect",
+        "type": "function",
+        "description": "disconnect widget connect by invalidating access token",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "isLoggedIn",
+        "type": "function",
+        "description": "Check whether user logged in or not",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "loggedIn",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getNewsEvents",
+        "type": "function",
+        "description": "Get latest news events",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "events",
+                "type": "array",
+                "items": { "$ref": "NewsEvent" }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getDepositAddress",
+        "type": "function",
+        "description": "Retrieves deposit address",
+        "parameters": [
+          {
+            "name": "asset",
+            "type": "string"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "data",
+                "$ref": "DepositAddress"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "createMarketOrder",
+        "type": "function",
+        "description": "Create market order for buy/sell",
+        "parameters": [
+          {
+            "name": "order",
+            "$ref": "Order"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "result",
+                "$ref": "OrderResult"
+              }
+            ]
+          }
+        ]
       }
     ],
-    "types": [
-    ],
     "properties": {
-    }
+    },
+    "events": [
+    ]
   }
 ]

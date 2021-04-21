@@ -3,8 +3,8 @@ import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 assert(crypto_dot_com_enabled)
 
 source_set("common") {
-    sources = [
-        "pref_names.cc",
-        "pref_names.h",
-    ]
+  sources = [
+    "constants.h",
+    "pref_names.h",
+  ]
 }

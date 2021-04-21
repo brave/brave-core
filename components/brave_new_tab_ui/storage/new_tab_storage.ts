@@ -120,16 +120,18 @@ export const defaultState: NewTab.State = {
     authInvalid: false
   },
   cryptoDotComState: {
-    optInTotal: false,
     optInBTCPrice: false,
-    optInMarkets: false,
-    fetchStatus: null,
+    isConnected: false,
+    hideBalance: true,
+    disconnectInProgress: false,
     tickerPrices: {},
     losersGainers: {},
     supportedPairs: {},
     tradingPairs: [],
     newsEvents: [],
-    charts: []
+    charts: [],
+    accountBalances: { total_balance: '0', accounts: [] },
+    depositAddresses: {}
   },
   ftxState: {
     optedIntoMarkets: false

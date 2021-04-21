@@ -5,7 +5,7 @@
 
 function getCryptoDotComTickerInfo (asset: string) {
   return new Promise((resolve: Function) => {
-    chrome.cryptoDotCom.getTickerInfo(`${asset}`, (resp: any) => {
+    chrome.cryptoDotCom.getTickerInfo(asset, (resp: chrome.cryptoDotCom.TickerPrice) => {
       resolve({ [asset]: resp })
     })
   })
@@ -13,7 +13,7 @@ function getCryptoDotComTickerInfo (asset: string) {
 
 function getCryptoDotComAssetRankings () {
   return new Promise((resolve: Function) => {
-    chrome.cryptoDotCom.getAssetRankings((resp: any) => {
+    chrome.cryptoDotCom.getAssetRankings((resp: Record<string, chrome.cryptoDotCom.AssetRanking[]>) => {
       resolve(resp)
     })
   })
@@ -21,7 +21,7 @@ function getCryptoDotComAssetRankings () {
 
 function getCryptoDotComChartData (asset: string) {
   return new Promise((resolve: Function) => {
-    chrome.cryptoDotCom.getChartData(`${asset}_USDT`, (resp: any) => {
+    chrome.cryptoDotCom.getChartData(asset, (resp: chrome.cryptoDotCom.ChartDataPoint[]) => {
       resolve({ [asset]: resp })
     })
   })
@@ -29,8 +29,32 @@ function getCryptoDotComChartData (asset: string) {
 
 function getCryptoDotComSupportedPairs () {
   return new Promise((resolve: Function) => {
-    chrome.cryptoDotCom.getSupportedPairs((resp: any) => {
+    chrome.cryptoDotCom.getSupportedPairs((resp: chrome.cryptoDotCom.SupportedPair[]) => {
       resolve(resp)
+    })
+  })
+}
+
+function getCryptoDotComAccountBalances () {
+  return new Promise((resolve: Function) => {
+    chrome.cryptoDotCom.getAccountBalances((balance: chrome.cryptoDotCom.AccountBalances) => {
+      resolve(balance)
+    })
+  })
+}
+
+function getCryptoDotComNewsEvents () {
+  return new Promise((resolve: Function) => {
+    chrome.cryptoDotCom.getNewsEvents((newsEvents: chrome.cryptoDotCom.NewsEvent[]) => {
+      resolve(newsEvents)
+    })
+  })
+}
+
+function getCryptoDotComDepositAddress (asset: string) {
+  return new Promise((resolve: Function) => {
+    chrome.cryptoDotCom.getDepositAddress(asset, (address: chrome.cryptoDotCom.DepositAddress) => {
+      resolve(address)
     })
   })
 }
@@ -42,7 +66,7 @@ export async function fetchCryptoDotComTickerPrices (assets: string[]) {
 }
 
 export async function fetchCryptoDotComLosersGainers () {
-  return getCryptoDotComAssetRankings().then((resp: any) => resp)
+  return getCryptoDotComAssetRankings().then((resp: Record<string, chrome.cryptoDotCom.AssetRanking[]>) => resp)
 }
 
 export async function fetchCryptoDotComCharts (assets: string[]) {
@@ -52,5 +76,17 @@ export async function fetchCryptoDotComCharts (assets: string[]) {
 }
 
 export async function fetchCryptoDotComSupportedPairs () {
-  return getCryptoDotComSupportedPairs().then((resp: any) => resp)
+  return getCryptoDotComSupportedPairs().then((resp: chrome.cryptoDotCom.SupportedPair[]) => resp)
+}
+
+export async function fetchCryptoDotComAccountBalances () {
+  return getCryptoDotComAccountBalances().then((balance: chrome.cryptoDotCom.AccountBalances) => balance)
+}
+
+export async function fetchCryptoDotComDepositAddress (asset: string) {
+  return getCryptoDotComDepositAddress(asset).then((address: chrome.cryptoDotCom.DepositAddress) => address)
+}
+
+export async function fetchCryptoDotComNewsEvents () {
+  return getCryptoDotComNewsEvents().then((newsEvents: chrome.cryptoDotCom.NewsEvent[]) => newsEvents)
 }

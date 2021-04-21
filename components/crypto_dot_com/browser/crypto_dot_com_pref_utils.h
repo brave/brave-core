@@ -7,10 +7,12 @@
 #define BRAVE_COMPONENTS_CRYPTO_DOT_COM_BROWSER_CRYPTO_DOT_COM_PREF_UTILS_H_
 
 class PrefRegistrySimple;
+class PrefService;
 
 namespace crypto_dot_com {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
+void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
 }  // namespace crypto_dot_com
 

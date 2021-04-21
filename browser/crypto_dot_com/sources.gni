@@ -10,6 +10,8 @@ brave_browser_crypto_dot_com_deps = []
 
 if (crypto_dot_com_enabled) {
   brave_browser_crypto_dot_com_sources += [
+    "//brave/browser/ccrypto_dot_com/crypto_dot_com_protocol_handler.cc",
+    "//brave/browser/crypto_dot_com/crypto_dot_com_protocol_handler.h",
     "//brave/browser/crypto_dot_com/crypto_dot_com_service_factory.cc",
     "//brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h",
   ]

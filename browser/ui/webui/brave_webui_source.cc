@@ -375,26 +375,25 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "cryptoDotComWidgetSell", IDS_GEMINI_WIDGET_SELL },
         { "cryptoDotComWidgetDeposit", IDS_BINANCE_WIDGET_DEPOSIT_LABEL },
         { "cryptoDotComWidgetCopyOne", IDS_CRYPTO_DOT_COM_WIDGET_COPY_ONE },
-        { "cryptoDotComWidgetBuyBtc", IDS_CRYPTO_DOT_COM_WIDGET_BUY_BTC },
         { "cryptoDotComWidgetTop", IDS_CRYPTO_DOT_COM_WIDGET_TOP },
         { "cryptoDotComWidgetTrade", IDS_BINANCE_WIDGET_TRADE_LABEL },
         { "cryptoDotComWidgetEvents", IDS_CRYPTO_DOT_COM_WIDGET_EVENTS },
-        { "cryptoDotComWidgetCopyAddress", IDS_CRYPTO_DOT_COM_WIDGET_COPY_ADDRESS },
+        { "cryptoDotComWidgetCopyAddress", IDS_CRYPTO_DOT_COM_WIDGET_COPY_ADDRESS },  // NOLINT
         { "cryptoDotComWidgetBalance", IDS_GEMINI_WIDGET_BALANCE_LABEL },
-        { "cryptoDotComWidgetSendCaveatHeading", IDS_CRYPTO_DOT_COM_WIDGET_SEND_CAVEAT_HEADING },
-        { "cryptoDotComWidgetSendCaveatBody", IDS_CRYPTO_DOT_COM_WIDGET_SEND_CAVEAT_BODY },
+        { "cryptoDotComWidgetSendCaveatHeading", IDS_CRYPTO_DOT_COM_WIDGET_SEND_CAVEAT_HEADING },  // NOLINT
+        { "cryptoDotComWidgetSendCaveatBody", IDS_CRYPTO_DOT_COM_WIDGET_SEND_CAVEAT_BODY },  // NOLINT
         { "cryptoDotComWidgetTradeTo", IDS_CRYPTO_DOT_COM_WIDGET_TRADE_TO },
         { "cryptoDotComWidgetConfirm", IDS_CRYPTO_DOT_COM_WIDGET_CONFIRM },
-        { "cryptoDotComWidgetConfirmOrder", IDS_CRYPTO_DOT_COM_WIDGET_CONFIRM_ORDER },
+        { "cryptoDotComWidgetConfirmOrder", IDS_CRYPTO_DOT_COM_WIDGET_CONFIRM_ORDER },  // NOLINT
         { "cryptoDotComWidgetBuying", IDS_GEMINI_WIDGET_BUYING },
         { "cryptoDotComWidgetSelling", IDS_GEMINI_WIDGET_SELLING },
-        { "cryptoDotComWidgetApproxPrice", IDS_CRYPTO_DOT_COM_WIDGET_APPROX_PRICE },
-        { "cryptoDotComWidgetApproxTotalReceived", IDS_CRYPTO_DOT_COM_WIDGET_APPROX_TOTAL_RECEIVED },
-        { "cryptoDotComWidgetApproxTotalSpent", IDS_CRYPTO_DOT_COM_WIDGET_APPROX_TOTAL_SPENT },
-        { "cryptoDotComWidgetApproxFootnote", IDS_CRYPTO_DOT_COM_WIDGET_APPROX_FOOTNOTE },
+        { "cryptoDotComWidgetApproxPrice", IDS_CRYPTO_DOT_COM_WIDGET_APPROX_PRICE },  // NOLINT
+        { "cryptoDotComWidgetApproxTotalReceived", IDS_CRYPTO_DOT_COM_WIDGET_APPROX_TOTAL_RECEIVED },  // NOLINT
+        { "cryptoDotComWidgetApproxTotalSpent", IDS_CRYPTO_DOT_COM_WIDGET_APPROX_TOTAL_SPENT },  // NOLINT
+        { "cryptoDotComWidgetApproxFootnote", IDS_CRYPTO_DOT_COM_WIDGET_APPROX_FOOTNOTE },  // NOLINT
         { "cryptoDotComWidgetCancel", IDS_BINANCE_WIDGET_CANCEL },
         { "cryptoDotComWidgetAvailable", IDS_BINANCE_WIDGET_AVAILABLE },
-        { "cryptoDotComWidgetAvailableBalance", IDS_CRYPTO_DOT_COM_WIDGET_AVAILABLE_BALANCE },
+        { "cryptoDotComWidgetAvailableBalance", IDS_CRYPTO_DOT_COM_WIDGET_AVAILABLE_BALANCE },  // NOLINT
         { "cryptoDotComWidgetHoldings", IDS_CRYPTO_DOT_COM_WIDGET_HOLDINGS },
         { "cryptoDotComWidgetGainers", IDS_CRYPTO_DOT_COM_WIDGET_GAINERS },
         { "cryptoDotComWidgetLosers", IDS_CRYPTO_DOT_COM_WIDGET_LOSERS },
@@ -402,6 +401,16 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "cryptoDotComWidgetGraph", IDS_CRYPTO_DOT_COM_WIDGET_GRAPH },
         { "cryptoDotComWidgetPairs", IDS_CRYPTO_DOT_COM_WIDGET_PAIRS },
         { "cryptoDotComWidgetVolume", IDS_CRYPTO_DOT_COM_WIDGET_VOLUME },
+        { "cryptoDotComWidgetDisconnectTitle", IDS_BINANCE_WIDGET_DISCONNECT_TITLE },    // NOLINT
+        { "cryptoDotComWidgetDisconnectText" , IDS_BINANCE_WIDGET_DISCONNECT_TEXT },     // NOLINT
+        { "cryptoDotComWidgetDisconnectButton" , IDS_BINANCE_WIDGET_DISCONNECT_BUTTON }, // NOLINT
+        { "cryptoDotComWidgetCancelText" , IDS_BRAVE_UI_CANCEL },
+        { "cryptoDotComWidgetDepositMore" , IDS_CRYPTO_DOT_COM_WIDGET_DEPOSIT_MORE },  // NOLINT
+        { "cryptoDotComWidgetContinue", IDS_BINANCE_WIDGET_CONTINUE },
+        { "cryptoDotComWidgetBought", IDS_GEMINI_WIDGET_BOUGHT },
+        { "cryptoDotComWidgetSold", IDS_GEMINI_WIDGET_SOLD },
+        { "cryptoDotComWidgetFailedTrade", IDS_GEMINI_WIDGET_FAILED_TRADE },
+        { "cryptoDotComWidgetError", IDS_GEMINI_WIDGET_ERROR },
 #endif
 #if BUILDFLAG(ENABLE_FTX)
         { "ftxMoreMarketsLink", IDS_FTX_MORE_MARKETS_LINK },

@@ -5,6 +5,9 @@
 
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_json_parser.h"
 
+#include <map>
+#include <vector>
+
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
@@ -12,6 +15,16 @@
 // npm run test -- brave_unit_tests --filter=CryptoDotComJSONParserTest.*
 
 namespace {
+
+double GetValueFromStringMap(const std::map<std::string, double>& map,
+                             const std::string& key) {
+  double value = -1.0;
+  std::map<std::string, double>::const_iterator it = map.find(key);
+  if (it != map.end()) {
+    value = it->second;
+  }
+  return value;
+}
 
 std::string GetValueFromStringMap(
     const std::map<std::string, std::string>& map,
@@ -64,11 +77,12 @@ TEST_F(CryptoDotComJSONParserTest, GetTickerInfoFromJSON) {
             }
         }
       })", &info));
-
-  std::string info_price = GetValueFromStringMap(info, "price");
-  std::string info_volume = GetValueFromStringMap(info, "volume");
-  ASSERT_EQ(info_price, "11759.200000");
-  ASSERT_EQ(info_volume, "9164802.287349");
+  double info_price = GetValueFromStringMap(info, "price");
+  double info_volume = GetValueFromStringMap(info, "volume");
+  constexpr double kTargetPrice = 11759.2;
+  constexpr double kTargetVolume = 9164802.2873492744;
+  EXPECT_EQ(kTargetPrice, info_price);
+  EXPECT_EQ(kTargetVolume, info_volume);
 }
 
 TEST_F(CryptoDotComJSONParserTest, GetChartDataFromJSON) {
@@ -104,36 +118,36 @@ TEST_F(CryptoDotComJSONParserTest, GetChartDataFromJSON) {
         }
       })", &data));
 
-  std::map<std::string, std::string> first_point = data.front();
-  std::map<std::string, std::string> last_point = data.back();
+  std::map<std::string, double> first_point = data.front();
+  std::map<std::string, double> last_point = data.back();
 
-  std::string t_f = GetValueFromStringMap(first_point, "t");
-  std::string o_f = GetValueFromStringMap(first_point, "o");
-  std::string h_f = GetValueFromStringMap(first_point, "h");
-  std::string l_f = GetValueFromStringMap(first_point, "l");
-  std::string c_f = GetValueFromStringMap(first_point, "c");
-  std::string v_f = GetValueFromStringMap(first_point, "v");
+  double t_f = GetValueFromStringMap(first_point, "t");
+  double o_f = GetValueFromStringMap(first_point, "o");
+  double h_f = GetValueFromStringMap(first_point, "h");
+  double l_f = GetValueFromStringMap(first_point, "l");
+  double c_f = GetValueFromStringMap(first_point, "c");
+  double v_f = GetValueFromStringMap(first_point, "v");
 
-  ASSERT_EQ(t_f, "1598227200000.000000");
-  ASSERT_EQ(o_f, "11646.900000");
-  ASSERT_EQ(h_f, "11792.510000");
-  ASSERT_EQ(l_f, "11594.550000");
-  ASSERT_EQ(c_f, "11787.250000");
-  ASSERT_EQ(v_f, "228.290252");
+  ASSERT_EQ(t_f, 1598227200000.000000);
+  ASSERT_EQ(o_f, 11646.900000);
+  ASSERT_EQ(h_f, 11792.510000);
+  ASSERT_EQ(l_f, 11594.550000);
+  ASSERT_EQ(c_f, 11787.250000);
+  ASSERT_EQ(v_f, 228.290252);
 
-  std::string t_l = GetValueFromStringMap(last_point, "t");
-  std::string o_l = GetValueFromStringMap(last_point, "o");
-  std::string h_l = GetValueFromStringMap(last_point, "h");
-  std::string l_l = GetValueFromStringMap(last_point, "l");
-  std::string c_l = GetValueFromStringMap(last_point, "c");
-  std::string v_l = GetValueFromStringMap(last_point, "v");
+  double t_l = GetValueFromStringMap(last_point, "t");
+  double o_l = GetValueFromStringMap(last_point, "o");
+  double h_l = GetValueFromStringMap(last_point, "h");
+  double l_l = GetValueFromStringMap(last_point, "l");
+  double c_l = GetValueFromStringMap(last_point, "c");
+  double v_l = GetValueFromStringMap(last_point, "v");
 
-  ASSERT_EQ(t_l, "16982337200000.000000");
-  ASSERT_EQ(o_l, "12646.900000");
-  ASSERT_EQ(h_l, "13882.510000");
-  ASSERT_EQ(l_l, "14734.550000");
-  ASSERT_EQ(c_l, "15787.250000");
-  ASSERT_EQ(v_l, "268.290252");
+  ASSERT_EQ(t_l, 16982337200000.000000);
+  ASSERT_EQ(o_l, 12646.900000);
+  ASSERT_EQ(h_l, 13882.510000);
+  ASSERT_EQ(l_l, 14734.550000);
+  ASSERT_EQ(c_l, 15787.250000);
+  ASSERT_EQ(v_l, 268.290252);
 }
 
 TEST_F(CryptoDotComJSONParserTest, GetPairsFromJSON) {
@@ -236,6 +250,141 @@ TEST_F(CryptoDotComJSONParserTest, GetRankingsFromJSON) {
   ASSERT_EQ(pair_l, "XRP_USDT");
   ASSERT_EQ(change_l, "-20.12");
   ASSERT_EQ(price_l, "0.10");
+}
+
+TEST_F(CryptoDotComJSONParserTest, GetAccountBalancesFromJSON) {
+  base::Value valid = CryptoDotComJSONParser::GetValidAccountBalances(R"(
+      {
+        "code": "0",
+        "result": {
+          "total_balance":"100000.33",
+          "accounts":[
+            {
+              "stake":"0",
+              "balance":"0",
+              "available":"0",
+              "currency":"BAT",
+              "currency_decimals":8,
+              "order":"0"
+            },
+            {
+              "stake":"0",
+              "balance":"0",
+              "available":"0",
+              "currency":"ETH",
+              "currency_decimals":8,
+              "order":"0"
+            }
+          ]
+        }
+      })");
+  EXPECT_TRUE(!valid.is_none());
+  const base::Value* accounts = valid.FindListKey("accounts");
+  // have 2 valid currency balances.
+  EXPECT_EQ(2UL, accounts->GetList().size());
+
+  base::Value valid_2 = CryptoDotComJSONParser::GetValidAccountBalances(R"(
+      {
+        "code": "0",
+        "result": {
+          "total_balance":"100000.33",
+          "accounts":[
+            {
+              "stake":"0",
+              "balance":"0",
+              "available":"0",
+              "currency":"BAT",
+              "currency_decimals":8,
+              "order":"0"
+            },
+            {
+              "stake":"0",
+              "balance":"0",
+              "available":"0",
+              "currency":"ETH",
+              "order":"0"
+            }
+          ]
+        }
+      })");
+  EXPECT_TRUE(!valid_2.is_none());
+  const base::Value* accounts_2 = valid_2.FindListKey("accounts");
+  // have 1 valid currency balances because sconed balance doesn't have
+  // 'currency_decimal' property.
+  EXPECT_EQ(1UL, accounts_2->GetList().size());
+
+  // All included balances are invalid - doesn't have 'currency_decimal' props.
+  base::Value invalid_1 = CryptoDotComJSONParser::GetValidAccountBalances(R"(
+      {
+        "code": "0",
+        "result": {
+          "total_balance":"100000.33",
+          "accounts":[
+            {
+              "stake":"0",
+              "balance":"0",
+              "available":"0",
+              "currency":"BAT",
+              "order":"0"
+            },
+            {
+              "stake":"0",
+              "balance":"0",
+              "available":"0",
+              "currency":"ETH",
+              "order":"0"
+            }
+          ]
+        }
+      })");
+  EXPECT_TRUE(invalid_1.is_none());
+
+  base::Value invalid_2 = CryptoDotComJSONParser::GetValidAccountBalances(R"(
+      {
+        "code": "1",
+        "result": {
+        }
+      })");
+  EXPECT_TRUE(invalid_2.is_none());
+}
+
+TEST_F(CryptoDotComJSONParserTest, GetNewsEventsFromJSON) {
+  base::Value valid = CryptoDotComJSONParser::GetValidNewsEvents(R"(
+      {
+        "code": "0",
+        "result":{
+          "events":[
+            {
+              "layout":"announcement",
+              "updated_at":"2020-11-03T07:17:56.891Z",
+              "redirect_title":"More here",
+              "redirect_type":"url",
+              "content":"November Updates",
+              "redirect_url":"https://blog.crypto.com/crypto-com-november-2019-updates/"
+            }
+          ]
+        }
+      })");
+  EXPECT_TRUE(valid.is_list());
+  EXPECT_EQ(1UL, valid.GetList().size());
+
+  base::Value invalid = CryptoDotComJSONParser::GetValidNewsEvents(R"(
+      {
+        "code": "0",
+        "result":{
+          "events":[
+            {
+              "layout":"announcement",
+              "redirect_title":"More here",
+              "redirect_type":"url",
+              "content":"November Updates",
+              "redirect_url":"https://blog.crypto.com/crypto-com-november-2019-updates/"
+            }
+          ]
+        }
+      })");
+  // event doesn't have 'updated_at' props.
+  EXPECT_TRUE(invalid.is_none());
 }
 
 }  // namespace

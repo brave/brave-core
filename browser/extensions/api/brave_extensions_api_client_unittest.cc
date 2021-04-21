@@ -113,4 +113,25 @@ TEST_F(BraveExtensionsAPIClientTests, IsBraveProtectedUrlGemini) {
   ASSERT_FALSE(ShouldHideBrowserNetworkRequest(allowed2));
 }
 
+TEST_F(BraveExtensionsAPIClientTests, IsBraveProtectedUrlCryptoDotCom) {
+  auto create_request_params = [](const std::string& url) {
+    const int kRendererProcessId = 2;
+    WebRequestInfoInitParams request;
+    request.url = GURL(url);
+    request.render_process_id = kRendererProcessId;
+    return request;
+  };
+
+  // TODO(simonhong): Use prod url before merging. - https://auth.crypto.com/
+  WebRequestInfo blocked1(create_request_params("https://st.mona.co/"));
+  WebRequestInfo blocked2(create_request_params(
+      "com.brave.cryptodotcom://oauth_callback?token=Sggjh9s"));
+
+  ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked1));
+  ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked2));
+
+  WebRequestInfo allowed1(create_request_params("https://crypto.com/"));
+  ASSERT_FALSE(ShouldHideBrowserNetworkRequest(allowed1));
+}
+
 }  // namespace extensions

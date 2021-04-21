@@ -8,8 +8,8 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "content/public/browser/browser_context.h"
 
 // static
 CryptoDotComServiceFactory* CryptoDotComServiceFactory::GetInstance() {
@@ -17,14 +17,14 @@ CryptoDotComServiceFactory* CryptoDotComServiceFactory::GetInstance() {
 }
 
 // static
-CryptoDotComService*CryptoDotComServiceFactory::GetForProfile(
-    Profile* profile) {
-  if (!brave::IsRegularProfile(profile)) {
+CryptoDotComService* CryptoDotComServiceFactory::GetForProfile(
+    content::BrowserContext* context) {
+  if (!brave::IsRegularProfile(context)) {
     return nullptr;
   }
 
   return static_cast<CryptoDotComService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
+      GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 CryptoDotComServiceFactory::CryptoDotComServiceFactory()

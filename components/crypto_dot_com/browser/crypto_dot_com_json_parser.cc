@@ -3,24 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include <map>
+#include <utility>
+#include <vector>
 
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_json_parser.h"
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/values.h"
 
-void CryptoDotComJSONParser::CalculateAssetVolume(
-    const double v,
-    const double h,
-    const double l,
-    std::string* volume) {
+namespace {
+
+double CalculateAssetVolume(double v, double h, double l) {
   // Volume is v * ((h + l) / 2)
-  double calc_volume = v * ((h + l) / 2.0);
-  *volume = std::to_string(calc_volume);
+  return v * ((h + l) / 2.0);
 }
+
+}  // namespace
 
 bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
     const std::string& json,
@@ -39,14 +39,8 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
     return false;
   }
 
-  const base::Value* response = records_v->FindKey("response");
-  const base::Value* result = response->FindKey("result");
-  const base::Value* data = result->FindKey("data");
-
-  if (!response || !result || !data) {
-    // Empty values on failed response
-    info->insert({"volume", std::string()});
-    info->insert({"price", std::string()});
+  const base::Value* data = records_v->FindPath("response.result.data");
+  if (!data || !data->is_dict()) {
     return false;
   }
 
@@ -60,17 +54,14 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
       !(h && (h->is_double() || h->is_int())) ||
       !(l && (l->is_double() || l->is_int())) ||
       !(price && (price->is_double() || price->is_int()))) {
-    info->insert({"volume", std::string()});
-    info->insert({"price", std::string()});
     return false;
   }
 
-  std::string volume;
-  CalculateAssetVolume(
-      v->GetDouble(), h->GetDouble(), l->GetDouble(), &volume);
+  const double volume =
+      CalculateAssetVolume(v->GetDouble(), h->GetDouble(), l->GetDouble());
 
   info->insert({"volume", volume});
-  info->insert({"price", std::to_string(price->GetDouble())});
+  info->insert({"price", price->GetDouble()});
 
   return true;
 }
@@ -92,25 +83,13 @@ bool CryptoDotComJSONParser::GetChartDataFromJSON(
     return false;
   }
 
-  const base::Value* response = records_v->FindKey("response");
-  if (!response) {
-    return false;
-  }
-
-  const base::Value* result = response->FindKey("result");
-  if (!result) {
-    return false;
-  }
-
-  const base::Value* data_arr = result->FindKey("data");
+  const base::Value* data_arr = records_v->FindPath("response.result.data");
   if (!data_arr || !data_arr->is_list()) {
     return false;
   }
 
-  bool success = true;
-
   for (const base::Value &point : data_arr->GetList()) {
-    std::map<std::string, std::string> data_point;
+    std::map<std::string, double> data_point;
     const base::Value* t = point.FindKey("t");
     const base::Value* o = point.FindKey("o");
     const base::Value* h = point.FindKey("h");
@@ -124,21 +103,21 @@ bool CryptoDotComJSONParser::GetChartDataFromJSON(
         !(l && l->is_double()) ||
         !(c && c->is_double()) ||
         !(v && v->is_double())) {
-      success = false;
-      break;
+      data->clear();
+      return false;
     }
 
-    data_point.insert({"t", std::to_string(t->GetDouble())});
-    data_point.insert({"o", std::to_string(o->GetDouble())});
-    data_point.insert({"h", std::to_string(h->GetDouble())});
-    data_point.insert({"l", std::to_string(l->GetDouble())});
-    data_point.insert({"c", std::to_string(c->GetDouble())});
-    data_point.insert({"v", std::to_string(v->GetDouble())});
+    data_point.insert({"t", t->GetDouble()});
+    data_point.insert({"o", o->GetDouble()});
+    data_point.insert({"h", h->GetDouble()});
+    data_point.insert({"l", l->GetDouble()});
+    data_point.insert({"c", c->GetDouble()});
+    data_point.insert({"v", v->GetDouble()});
 
     data->push_back(data_point);
   }
 
-  return success;
+  return true;
 }
 
 bool CryptoDotComJSONParser::GetPairsFromJSON(
@@ -158,17 +137,8 @@ bool CryptoDotComJSONParser::GetPairsFromJSON(
     return false;
   }
 
-  const base::Value* response = records_v->FindKey("response");
-  if (!response) {
-    return false;
-  }
-
-  const base::Value* result = response->FindKey("result");
-  if (!result) {
-    return false;
-  }
-
-  const base::Value* instruments = result->FindKey("instruments");
+  const base::Value* instruments =
+      records_v->FindPath("response.result.instruments");
   if (!instruments || !instruments->is_list()) {
     return false;
   }
@@ -178,16 +148,21 @@ bool CryptoDotComJSONParser::GetPairsFromJSON(
     const base::Value* pair = instrument.FindKey("instrument_name");
     const base::Value* quote = instrument.FindKey("quote_currency");
     const base::Value* base = instrument.FindKey("base_currency");
+    const base::Value* price = instrument.FindKey("price_decimals");
+    const base::Value* quantity = instrument.FindKey("quantity_decimals");
 
-    if (!(pair && pair->is_string()) ||
-        !(quote && quote->is_string()) ||
-        !(base && base->is_string())) {
-      continue;
+    if (!(pair && pair->is_string()) || !(quote && quote->is_string()) ||
+        !(base && base->is_string()) || !(price && price->is_int()) ||
+        !(quantity && quantity->is_int())) {
+      pairs->clear();
+      return false;
     }
 
     instrument_data.insert({"pair", pair->GetString()});
     instrument_data.insert({"quote", quote->GetString()});
     instrument_data.insert({"base", base->GetString()});
+    instrument_data.insert({"price", std::to_string(price->GetInt())});
+    instrument_data.insert({"quantity", std::to_string(quantity->GetInt())});
 
     pairs->push_back(instrument_data);
   }
@@ -212,28 +187,20 @@ bool CryptoDotComJSONParser::GetRankingsFromJSON(
     return false;
   }
 
-  const base::Value* response = records_v->FindKey("response");
-  if (!response) {
-    return false;
-  }
-
-  const base::Value* result = response->FindKey("result");
+  const base::Value* result = records_v->FindPath("response.result");
   if (!result) {
     return false;
   }
-
-  std::vector<std::map<std::string, std::string>> gainers;
-  std::vector<std::map<std::string, std::string>> losers;
 
   // Both gainers and losers are part of the "gainers" list
   const base::Value* rankings_list = result->FindKey("gainers");
   if (!rankings_list || !rankings_list->is_list()) {
     // Gainers and losers should return empty on a bad response
-    rankings->insert({"gainers", gainers});
-    rankings->insert({"losers", losers});
     return false;
   }
 
+  std::vector<std::map<std::string, std::string>> gainers;
+  std::vector<std::map<std::string, std::string>> losers;
   for (const base::Value &ranking : rankings_list->GetList()) {
     std::map<std::string, std::string> ranking_data;
     const base::Value* pair = ranking.FindKey("instrument_name");
@@ -270,4 +237,149 @@ bool CryptoDotComJSONParser::GetRankingsFromJSON(
   rankings->insert({"losers", losers});
 
   return true;
+}
+
+base::Value CryptoDotComJSONParser::GetValidAccountBalances(
+    const std::string& json) {
+  auto response_value = base::JSONReader::Read(json);
+  if (!response_value.has_value() || !response_value.value().is_dict()) {
+    return base::Value();
+  }
+
+  // Valid response has "0" for "code" property.
+  if (const auto* code = response_value->FindStringKey("code")) {
+    if (!code || *code != "0")
+      return base::Value();
+  }
+
+  const base::Value* result_value = response_value->FindKey("result");
+  if (!result_value || !result_value->is_dict()) {
+    return base::Value();
+  }
+
+  base::Value valid_balances(base::Value::Type::DICTIONARY);
+  const std::string* total_balance =
+      result_value->FindStringKey("total_balance");
+  if (!total_balance)
+    return base::Value();
+
+  const base::Value* accounts = result_value->FindListKey("accounts");
+  if (!accounts)
+    return base::Value();
+
+  base::Value accounts_list(base::Value::Type::LIST);
+  for (const base::Value& account : accounts->GetList()) {
+    if (account.FindStringKey("stake") && account.FindStringKey("balance") &&
+        account.FindStringKey("available") &&
+        account.FindStringKey("currency") && account.FindStringKey("order") &&
+        account.FindIntKey("currency_decimals")) {
+      accounts_list.Append(account.Clone());
+    }
+  }
+
+  if (accounts_list.GetList().empty())
+    return base::Value();
+
+  valid_balances.SetStringKey("total_balance", *total_balance);
+  valid_balances.SetKey("accounts", std::move(accounts_list));
+  return valid_balances;
+}
+
+base::Value CryptoDotComJSONParser::GetValidNewsEvents(
+    const std::string& json) {
+  auto response_value = base::JSONReader::Read(json);
+  if (!response_value.has_value() || !response_value.value().is_dict()) {
+    return base::Value();
+  }
+
+  if (const auto* code = response_value->FindStringKey("code")) {
+    if (!code || *code != "0")
+      return base::Value();
+  }
+
+  const base::Value* events = response_value->FindListPath("result.events");
+  if (!events)
+    return base::Value();
+
+  base::Value valid_events(base::Value::Type::LIST);
+  for (const base::Value& event : events->GetList()) {
+    const std::string* content = event.FindStringKey("content");
+    const std::string* redirect_url = event.FindStringKey("redirect_url");
+    const std::string* updated_at = event.FindStringKey("updated_at");
+    const std::string* redirect_title = event.FindStringKey("redirect_title");
+    if (content && redirect_url && updated_at && redirect_title) {
+      base::Value valid_event(base::Value::Type::DICTIONARY);
+      valid_event.SetStringKey("content", *content);
+      valid_event.SetStringKey("redirect_title", *redirect_title);
+      valid_event.SetStringKey("redirect_url", *redirect_url);
+      valid_event.SetStringKey("updated_at", *updated_at);
+      valid_events.Append(std::move(valid_event));
+    }
+  }
+
+  if (valid_events.GetList().empty())
+    return base::Value();
+
+  return valid_events;
+}
+
+// TODO(simonhong): Re-check return type from crypto.com service.
+// Current return type is different with their spec.
+base::Value CryptoDotComJSONParser::GetValidDepositAddress(
+    const std::string& json) {
+  auto response_value = base::JSONReader::Read(json);
+  if (!response_value.has_value() || !response_value.value().is_dict()) {
+    return base::Value();
+  }
+
+  // Valid response has "0" for "code" property.
+  if (const auto* code = response_value->FindStringKey("code")) {
+    if (*code != "0")
+      return base::Value();
+  }
+
+  const base::Value* addresses_value =
+      response_value->FindPath("result.addresses");
+  if (!addresses_value || !addresses_value->is_list() ||
+      !addresses_value->GetList().size()) {
+    return base::Value();
+  }
+
+  const std::string* address_str =
+      addresses_value->GetList()[0].FindStringKey("address");
+  const std::string* qr_code_str =
+      addresses_value->GetList()[0].FindStringKey("qr_code");
+  const std::string* currency_str =
+      addresses_value->GetList()[0].FindStringKey("currency");
+  if (!address_str || !qr_code_str || !currency_str) {
+    return base::Value();
+  }
+
+  base::Value address(base::Value::Type::DICTIONARY);
+  address.SetStringKey("address", *address_str);
+  address.SetStringKey("qr_code", *qr_code_str);
+  address.SetStringKey("currency", *currency_str);
+  return address;
+}
+
+base::Value CryptoDotComJSONParser::GetValidOrderResult(
+    const std::string& json) {
+  auto response_value = base::JSONReader::Read(json);
+  if (!response_value.has_value() || !response_value.value().is_dict()) {
+    return base::Value();
+  }
+
+  base::Value result(base::Value::Type::DICTIONARY);
+  if (const auto* code = response_value->FindStringPath("result.order_id")) {
+    result.SetBoolKey("success", true);
+    result.SetStringKey("message", "");
+    return result;
+  }
+
+  result.SetBoolKey("success", false);
+  result.SetStringKey("message", "");
+  if (auto* message_str = response_value->FindStringKey("result")) {
+    result.SetStringKey("message", *message_str);
+  }
+  return result;
 }

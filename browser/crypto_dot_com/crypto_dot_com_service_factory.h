@@ -10,11 +10,14 @@
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class CryptoDotComService;
-class Profile;
+
+namespace content {
+class BrowserContext;
+}  // namespace content
 
 class CryptoDotComServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static CryptoDotComService* GetForProfile(Profile* profile);
+  static CryptoDotComService* GetForProfile(content::BrowserContext* context);
   static CryptoDotComServiceFactory* GetInstance();
 
  private:

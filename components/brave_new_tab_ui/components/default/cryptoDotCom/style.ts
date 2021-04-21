@@ -25,6 +25,7 @@ interface StyleProps {
   hideBalance?: boolean
   hideOverflow?: boolean
   href?: string
+  inButtonGroup?: boolean
   inline?: boolean
   inlineBlock?: boolean
   isActive?: boolean
@@ -69,12 +70,12 @@ interface StyleProps {
 
 function getTextStyle (p: StyleProps) {
   return [
-    ["weight", `font-weight: ${p.weight || (p.small ? '500' : 'normal')};`],
-    ["$fontSize", `font-size: ${(
+    ['weight', `font-weight: ${p.weight || (p.small ? '500' : 'normal')};`],
+    ['$fontSize', `font-size: ${(
         (p.$fontSize && `${p.$fontSize}px`) || (p.small ? '11px' : (p.large ? '19px' : '13px'))
     )};`],
-    ["center", `text-align: ${p.center ? 'center' : 'inherit'};`],
-    ["lineHeight", `line-height: ${p.lineHeight || 'normal'};]`]
+    ['center', `text-align: ${p.center ? 'center' : 'inherit'};`],
+    ['lineHeight', `line-height: ${p.lineHeight || 'normal'};]`]
   ].reduce((aggr, v) => {
     return p[v[0]] ? `${aggr}${v[1]}` : aggr
   }, '')
@@ -107,7 +108,7 @@ const colorNameToColor = {
 }
 
 function getColor (p: any) {
-  let colorName;
+  let colorName
   if (!/(string|undefined)/.test(typeof p)) {
     const keys = Object.keys(p)
     colorName = keys.find((key) => key in colorNameToColor)
@@ -197,18 +198,18 @@ export const PlainButton = styled('button')<StyleProps>`
 
   ${getBoxStyle}
 
-  ${ButtonGroup} & {
-    color: ${p => p.isActive
-      ? p.theme.primary
-      : getColor(p.textColor) || getColor('light')};
+  ${(p) =>
+    p.inButtonGroup &&
+    `
+    color: ${p.isActive ? p.theme.palette.primary
+                        : getColor(p.textColor) || getColor('light')};
     font-weight: 500;
     text-transform: uppercase;
     border-right: 1px solid rgba(255, 255, 255, 0.2);
-
     &:last-child {
       border-right: none;
     }
-  }
+  `}
 `
 
 export const ActionButton = styled('button')<StyleProps>`
@@ -218,10 +219,10 @@ export const ActionButton = styled('button')<StyleProps>`
   font-weight: ${p => (p.small ? '500' : 'bold')};
   border-radius: 20px;
   width: ${p => (p.inline ? 'auto' : (p.isFullWidth === false ? 'max-content' : '100%'))};
-  background: ${p => getColor(p.$bg) || (p.light ? 'rgba(255, 255, 255, 0.21)' : p.theme.primary)};
+  background: ${p => getColor(p.$bg) || (p.light ? 'rgba(255, 255, 255, 0.21)' : p.theme.palette.primary)};
   border: 0;
   padding: ${p => (p.small ? '6px 10px' : '10px 0px')};
-  cursor: ${p => p.disabled ? 'auto' : 'pointer'};
+    cursor: ${p => p.disabled ? 'auto' : 'pointer'};
   color: rgba(255, 255, 255, var(--textOpacity));
   line-height: 1;
   text-transform: ${p => !p.upperCase ? 'none' : 'uppercase'};
@@ -233,7 +234,7 @@ export const Link = styled('a')<StyleProps>`
   ${p => p.inlineBlock && 'display: inline-block;'}
   color: ${p => p.textColor
     ? getColor(p.textColor) || getColor('light')
-    : p.theme.primary};
+    : p.theme.palette.primary};
 
   ${getTextStyle}
   ${getBoxStyle}
@@ -248,7 +249,7 @@ export const WidgetWrapper = styled('div')<StyleProps>`
   font-size: 14px;
   overflow: hidden;
   min-width: 284px;
-  background: ${p => p.theme.secondary};
+  background: ${p => p.theme.palette.secondary};
   backdrop-filter: blur(16px);
 `
 
@@ -266,19 +267,6 @@ export const StyledTitle = styled('div')<{}>`
   font-weight: 600;
   color: #fff;
   font-family: ${p => p.theme.fontFamily.heading};
-`
-
-export const CryptoDotComIcon = styled('div')<{}>`
-  width: 27px;
-  height: 27px;
-  margin-right: 7px;
-  margin-left: 2px;
-
-  & svg,
-  & img {
-    width: 100%;
-    height: 100%;
-  }
 `
 
 export const StyledTitleText = styled('div')<{}>``
@@ -300,7 +288,7 @@ export const ListItem = styled('li')<StyleProps>`
   padding: ${p => (p.$p || 5)}px;
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};
-  cursor: ${p => (p.onClick ? 'pointer' : 'initial')}
+  cursor: ${p => (p.onClick ? 'pointer' : 'initial')};
   height: ${p => (p.$height ? `${p.$height}px` : 'auto')};
   ${(p) =>
     p.isFlex && `
@@ -309,7 +297,7 @@ export const ListItem = styled('li')<StyleProps>`
   `};
 `
 
-export const BackArrow = styled('PlainButton')<StyleProps>`
+export const BackArrow = styled(PlainButton)<StyleProps>`
   width: 20px;
   padding: 0;
   cursor: pointer;
@@ -322,7 +310,7 @@ export const ActionAnchor = styled('a')<StyleProps>`
   font-weight: ${p => (p.small ? '500' : 'bold')};
   border-radius: 20px;
   width: ${p => (p.inline ? 'auto' : '100%')};
-  background: ${p => (p.light ? 'rgba(255, 255, 255, 0.21)' : p.theme.primary)};
+  background: ${p => (p.light ? 'rgba(255, 255, 255, 0.21)' : p.theme.palette.primary)};
   border: 0;
   padding: ${p => (p.small ? '6px 10px' : '10px 0px')};
   margin: 10px 0 15px;
@@ -334,8 +322,8 @@ export const ActionAnchor = styled('a')<StyleProps>`
   text-decoration: none;
 `
 
-export const PlainAnchor = styled<StyleProps, 'a'>('a')`
-  color: ${p => p.theme.primary};
+export const PlainAnchor = styled('a')<StyleProps>`
+  color: ${p => p.theme.palette.primary};
 
   &:hover {
     opacity: 0.7;
@@ -350,11 +338,11 @@ export const SVG = styled('svg')<StyleProps>`
   margin: 1rem 0;
 `
 
-/**
-* Dropdown styles
-*/
+/*
+ * Dropdown styles
+ */
 
-export const InputWrapper = styled<StyleProps>(BasicBox)`
+export const InputWrapper = styled(BasicBox)<StyleProps>`
   height: 30px;
   color: #000;
   background: #fff;
@@ -366,7 +354,7 @@ export const InputWrapper = styled<StyleProps>(BasicBox)`
   position: relative;
 `
 
-export const InputField = styled<{}, 'input'>('input')`
+export const InputField = styled('input')<StyleProps>`
   background: none;
   display: inline-block;
   min-width: 225px;
@@ -379,7 +367,7 @@ export const InputField = styled<{}, 'input'>('input')`
   ${getBoxStyle}
 `
 
-export const AmountInputField = styled(InputField)`
+export const AmountInputField = styled(InputField)<StyleProps>`
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.38);
   box-sizing: border-box;
@@ -387,7 +375,7 @@ export const AmountInputField = styled(InputField)`
   color: ${getColor('light')};
 `
 
-export const Dropdown = styled<StyleProps, 'div'>('div')`
+export const Dropdown = styled('div')<StyleProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -398,15 +386,15 @@ export const Dropdown = styled<StyleProps, 'div'>('div')`
   cursor: ${p => p.disabled ? 'auto' : 'pointer'};
 `
 
-export const DropdownIcon = styled<StyleProps, 'span'>('span')`
+export const DropdownIcon = styled('span')<StyleProps>`
   margin-right: 10px;
 `
 
-export const AssetDropdownLabel = styled<{}, 'span'>('span')`
+export const AssetDropdownLabel = styled('span')<{}>`
   font-weight: bold;
 `
 
-export const CaratDropdown = styled<StyleProps, 'div'>('div')`
+export const CaratDropdown = styled('div')<StyleProps>`
   margin-left: auto;
   width: 14px;
   height: 14px;
@@ -414,7 +402,7 @@ export const CaratDropdown = styled<StyleProps, 'div'>('div')`
   visibility: ${p => p.hide ? 'hidden' : 'visible'};
 `
 
-export const AssetItems = styled<StyleProps, 'div'>('div')`
+export const AssetItems = styled('div')<StyleProps>`
   z-index: 1;
   background: #fff;
   color: #000;
@@ -431,32 +419,32 @@ export const AssetItems = styled<StyleProps, 'div'>('div')`
   top: 100%;
 `
 
-export const AssetItem = styled<StyleProps, 'div'>('div')`
+export const AssetItem = styled('div')<StyleProps>`
   padding: 3px 0px;
   font-weight: bold;
   cursor: pointer;
   border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70, 0.2)' : ''};
 `
 
-export const TradeWrapper = styled<{}, 'div'>('div')`
+export const TradeWrapper = styled('div')<{}>`
   margin-bottom: 20px;
 `
 
-export const ActionsWrapper = styled<StyleProps, 'div'>('div')`
+export const ActionsWrapper = styled('div')<StyleProps>`
   margin-bottom: ${p => p.isAuth ? 20 : 5}px;
   text-align: center;
 `
 
-export const Balance = styled<StyleProps, 'span'>('span')`
+export const Balance = styled('span')<StyleProps>`
   -webkit-filter: blur(${p => p.hideBalance ? 10 : 0}px);
 `
 
-export const BlurIcon = styled<{}, 'div'>('div')`
+export const BlurIcon = styled('div')<{}>`
   cursor: pointer;
   color: rgb(70, 70, 70);
 `
 
-export const CryptoDotComIcon = styled<{}, 'div'>('div')`
+export const CryptoDotComIcon = styled('div')<{}>`
 width: 27px;
 height: 27px;
 margin-right: 7px;
@@ -466,4 +454,105 @@ margin-left: 2px;
   width: 100%;
   height: 100%;
 }
+`
+
+export const GenButton = styled('button')<{}>`
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 20px;
+  border: 0;
+  padding: 5px 10px;
+  cursor: pointer;
+  background: #2C2C2B;
+  color: rgba(255, 255, 255, 0.7);
+`
+
+export const DisconnectButton = styled(GenButton)<{}>`
+  background: #AA1212;
+  color: #fff;
+  padding: 5px 20px;
+`
+
+export const DisconnectWrapper = styled('div')<{}>`
+  padding-top: 75px;
+  min-height: 250px;
+  text-align: center;
+  max-width: 240px;
+`
+
+export const Title = styled('span')<{}>`
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+`
+
+export const Copy = styled('p')<{}>`
+  font-size: 15px;
+  max-width: 240px;
+  margin-top: 20px;
+  margin-bottom: 11px;
+`
+
+export const DisconnectTitle = styled(Title)<{}>`
+  font-size: 14px;
+  max-width: 245px;
+  margin: 0 auto;
+  line-height: 18px;
+`
+
+export const DisconnectCopy = styled(Copy)<{}>`
+  color: #fff;
+  max-width: 220px;
+  line-height: 17px;
+  margin: 8px auto 15px auto;
+`
+
+export const DismissAction = styled('span')<{}>`
+  display: block;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin-top: 20px;
+  font-weight: bold;
+`
+
+export const InvalidWrapper = styled(DisconnectWrapper)`
+  min-width: 244px;
+`
+
+export const StyledParty = styled('div')<{}>`
+  font-size: 35px;
+  margin: 10px 0px;
+`
+
+export const InvalidTitle = styled(DisconnectTitle)`
+  max-width: unset;
+  margin-bottom: 20px;
+`
+
+export const InvalidCopy = styled(DisconnectCopy)`
+  max-width: 210px;
+`
+
+export const ConnectButton = styled('button')<StyleProps>`
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 20px;
+  width: 100%;
+  background: #3D3D3D;
+  border: 0;
+  padding: 10px;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+  min-width: 245px;
+
+  &:focus {
+    outline: 0;
+  }
+`
+
+export const SmallButton = styled(ConnectButton)`
+  width: 50%;
+  margin-bottom: 10px;
 `

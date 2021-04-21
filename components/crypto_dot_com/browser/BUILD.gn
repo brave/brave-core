@@ -20,6 +20,7 @@ static_library("browser") {
     "//brave/components/crypto_dot_com/common",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+    "//components/os_crypt",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",

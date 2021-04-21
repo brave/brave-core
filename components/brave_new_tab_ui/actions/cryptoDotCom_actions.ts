@@ -8,32 +8,22 @@ import { types } from '../constants/cryptoDotCom_types'
 
 export const onBtcPriceOptIn = () => action(types.ON_BTC_PRICE_OPT_IN)
 
-export const onCryptoDotComMarketsRequested = () => {
-  return action(types.MARKETS_REQUESTED)
+export const onCryptoDotComAssetsDetailsReceived = (charts: object, tickerPrices: object, depositAddress: object) => {
+  return action(types.ALL_ASSETS_DETAILS_RECEIVED, { charts, tickerPrices, depositAddress })
 }
 
-export const onCryptoDotComMarketDataReceived = (tickerPrices: object, losersGainers: object[], pairs?: object[]) => {
-  return action(types.MARKETS_RECEIVED, { tickerPrices, losersGainers, pairs })
+export const onIsConnectedReceived = (isConnected: boolean) => {
+  return action(types.ON_IS_CONNECTED_RECEIVED, { isConnected })
 }
 
-export const onCryptoDotComAssetsDetailsRequested = () => {
-  return action(types.ALL_ASSETS_DETAILS_REQUESTED)
+export const onCryptoDotComRefreshedDataReceived = (tickerPrices: object, losersGainers: object, charts?: object, accountBalances?: object, newsEvents?: object, pairs?: object) => {
+  return action(types.REFRESHED_DATA_RECEIVED, { tickerPrices, losersGainers, charts, accountBalances, newsEvents, pairs })
 }
 
-export const onCryptoDotComAssetsDetailsReceived = (charts: object, pairs: object[]) => {
-  return action(types.ALL_ASSETS_DETAILS_RECEIVED, { charts, pairs })
-}
+export const setCryptoDotComDisconnectInProgress = (inProgress: boolean) => action(types.SET_DISCONNECT_IN_PROGRESS, {
+  inProgress
+})
 
-export const onCryptoDotComRefreshRequested = () => {
-  return action(types.ON_REFRESH_DATA)
-}
-
-export const onCryptoDotComRefreshedDataReceived = (tickerPrices: object, losersGainers: object[], charts: object, supportedPairs?: string[]) => {
-  return action(types.REFRESHED_DATA_RECEIVED, { tickerPrices, losersGainers, charts, supportedPairs })
-}
-
-export const onCryptoDotComBuyCrypto = () => action(types.ON_BUY_CRYPTO)
-
-export const onCryptoDotComOptInMarkets = (show: boolean) => {
-  return action(types.ON_MARKETS_OPT_IN, { show })
+export const setCryptoDotComHideBalance = (hide: boolean) => {
+  return action(types.HIDE_BALANCE, { hide })
 }
