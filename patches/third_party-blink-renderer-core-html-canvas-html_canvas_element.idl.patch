@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
+index d8f04c404a25a54637f432cae35c415ff5e6310b..9b499947255a823de46ea37ba4c6e645a385383b 100644
+--- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
++++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
+@@ -36,7 +36,7 @@
+     [RaisesException=Setter, CEReactions] attribute unsigned long width;
+     [RaisesException=Setter, CEReactions] attribute unsigned long height;
+ 
+-    [HighEntropy, MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
+ 
+     [HighEntropy, MeasureAs=CanvasToBlob, RaisesException] void toBlob(BlobCallback _callback, optional DOMString type = "image/png", optional any quality);
+ 
