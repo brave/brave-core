@@ -585,7 +585,7 @@ class EphemeralStorageKeepAliveDisabledBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
-                       NavigatingClearsEphemeralStorageAfterKeepAlive) {
+                       NavigatingClearsEphemeralStorageWhenKeepAliveDisabled) {
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
