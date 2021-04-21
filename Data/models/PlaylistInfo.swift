@@ -15,7 +15,7 @@ public struct PlaylistInfo: Codable {
     public let pageSrc: String
     public let pageTitle: String
     public let mimeType: String
-    public let duration: Float
+    public let duration: TimeInterval
     public let detected: Bool
     public let dateAdded: Date
     
@@ -30,7 +30,7 @@ public struct PlaylistInfo: Codable {
         self.detected = false
     }
     
-    public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: Float, detected: Bool, dateAdded: Date) {
+    public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, detected: Bool, dateAdded: Date) {
         self.name = name
         self.src = src
         self.pageSrc = pageSrc
@@ -48,7 +48,7 @@ public struct PlaylistInfo: Codable {
         self.pageSrc = try container.decode(String.self, forKey: .pageSrc)
         self.pageTitle = try container.decode(String.self, forKey: .pageTitle)
         self.mimeType = try container.decodeIfPresent(String.self, forKey: .mimeType) ?? ""
-        self.duration = try container.decodeIfPresent(Float.self, forKey: .duration) ?? 0.0
+        self.duration = try container.decodeIfPresent(TimeInterval.self, forKey: .duration) ?? 0.0
         self.detected = try container.decodeIfPresent(Bool.self, forKey: .detected) ?? false
         self.dateAdded = Date()
     }
