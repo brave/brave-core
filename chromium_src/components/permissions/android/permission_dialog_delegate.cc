@@ -7,9 +7,9 @@
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
+#include "brave/components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
 #include "components/permissions/android/jni_headers/PermissionDialogController_jni.h"
 #include "components/permissions/features.h"
 #include "components/strings/grit/components_strings.h"

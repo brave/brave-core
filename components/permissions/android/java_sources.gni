@@ -1,5 +1,3 @@
-brave_components_permissions_java_jni_sources = [ "//brave/components/permissions/android/java/src/org/chromium/components/permissions/BravePermissionDialogDelegate.java" ]
-
 brave_components_permissions_java_sources = [
   "//brave/components/permissions/android/java/src/org/chromium/components/permissions/BravePermissionDialogDelegate.java",
   "//brave/components/permissions/android/java/src/org/chromium/components/permissions/BravePermissionDialogModel.java",
