@@ -19,6 +19,7 @@ bool IsNativeWalletEnabled();
 std::string ToHex(const std::string& data);
 // Equivalent to web3.utils.keccak256(string)
 std::string KeccakHash(const std::string& input, bool to_hex = true);
+std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input);
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')
 std::string GetFunctionHash(const std::string& input);
