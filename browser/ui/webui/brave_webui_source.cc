@@ -641,8 +641,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "noActivity", IDS_BRAVE_UI_NO_ACTIVITY },
         { "noAdsHistory", IDS_BRAVE_UI_ADS_NO_ADS_HISTORY },
         { "noGrants", IDS_BRAVE_UI_NO_GRANTS },
-        { "notEnoughTokens", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS },
-        { "notEnoughTokensLink", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS_LINK },
         { "noThankYou", IDS_BRAVE_UI_NO_THANK_YOU },
         { "off", IDS_BRAVE_UI_OFF },
         { "ok", IDS_BRAVE_UI_OK },
@@ -911,7 +909,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     }, {
 #endif
       std::string("tip"), {
-        { "addFunds", IDS_BRAVE_UI_ADD_FUNDS },
         { "bap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },
         { "bapFunds", IDS_BRAVE_REWARDS_TIP_BAP_FUNDS },
         { "bat", IDS_BRAVE_UI_BAT_TEXT },
@@ -921,20 +918,27 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "cancelMonthlyContribution", IDS_BRAVE_REWARDS_TIP_CANCEL_MONTHLY_CONTRIBUTION },  // NOLINT
         { "changeAmount", IDS_BRAVE_REWARDS_TIP_CHANGE_AMOUNT },
         { "confirmCancel", IDS_BRAVE_REWARDS_TIP_CONFIRM_CANCEL },
+        { "continue", IDS_BRAVE_REWARDS_TIP_CONTINUE },
         { "contributionAmount", IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_AMOUNT },  // NOLINT
         { "contributionCanceled", IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_CANCELED },  // NOLINT
         { "currentlySupporting", IDS_BRAVE_REWARDS_TIP_CURRENTLY_SUPPORTING },
         { "currentMonthlyContribution", IDS_BRAVE_REWARDS_TIP_CURRENT_MONTHLY_CONTRIBUTION },  // NOLINT
+        { "customAmount", IDS_BRAVE_REWARDS_TIP_CUSTOM_AMOUNT },
+        { "customMonthlyTipText", IDS_BRAVE_REWARDS_TIP_CUSTOM_MONTHLY_TIP_TEXT },  // NOLINT
+        { "customTipAmount", IDS_BRAVE_REWARDS_TIP_CUSTOM_TIP_AMOUNT },
+        { "customTipText", IDS_BRAVE_REWARDS_TIP_CUSTOM_TIP_TEXT },
         { "doMonthly", IDS_BRAVE_UI_DO_MONTHLY },
         { "errorHasOccurred", IDS_BRAVE_REWARDS_TIP_ERROR_HAS_OCCURRED },
         { "errorServerConnection", IDS_BRAVE_REWARDS_TIP_ERROR_SERVER_CONNECTION },  // NOLINT
         { "errorTryAgain", IDS_BRAVE_REWARDS_TIP_ERROR_TRY_AGAIN },
+        { "exampleTipAmount", IDS_BRAVE_REWARDS_TIP_EXAMPLE_TIP_AMOUNT },
+        { "minimumTipAmount", IDS_BRAVE_REWARDS_TIP_MINIMUM_TIP_AMOUNT },
         { "monthlyContribution", IDS_BRAVE_UI_MONTHLY_CONTRIBUTION },
         { "monthlyContributionSet", IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET },  // NOLINT
         { "monthlyText", IDS_BRAVE_UI_MONTHLY_TEXT },
         { "nextContributionDate", IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE },  // NOLINT
-        { "notEnoughTokens", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS },
-        { "notEnoughTokensLink", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS_LINK },
+        { "notEnoughPoints", IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_POINTS },
+        { "notEnoughTokens", IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS },
         { "on", IDS_BRAVE_UI_ON },
         { "onboardingMaybeLater", IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER },
         { "onboardingSetupAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER },  // NOLINT
@@ -981,7 +985,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "siteBannerNoticeText", IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT },
         { "sorryToSeeYouGo", IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO },
         { "supportThisCreator", IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR },
-        { "termsOfService", IDS_BRAVE_REWARDS_TIP_TERMS_OF_SERVICE },
         { "thanksForTheSupport", IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT },  // NOLINT
         { "tipHasBeenSent", IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET },
         { "tipPostSubtitle", IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE },
