@@ -242,11 +242,17 @@ void BindCosmeticFiltersResources(
 }
 
 void BindBraveSearchHost(
-    Profile* profile,
+    int process_id,
     mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
+  content::RenderProcessHost* render_process_host =
+      content::RenderProcessHost::FromID(process_id);
+  if (!render_process_host)
+    return;
+
+  content::BrowserContext* context = render_process_host->GetBrowserContext();
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_search::BraveSearchHost>(
-          content::BrowserContext::GetDefaultStoragePartition(profile)
+          content::BrowserContext::GetDefaultStoragePartition(context)
               ->GetURLLoaderFactoryForBrowserProcess()),
       std::move(receiver));
 }
@@ -300,10 +306,9 @@ void BraveContentBrowserClient::ExposeInterfacesToRenderer(
     content::RenderProcessHost* render_process_host) {
   ChromeContentBrowserClient::ExposeInterfacesToRenderer(
       registry, associated_registry, render_process_host);
-  Profile* profile =
-      Profile::FromBrowserContext(render_process_host->GetBrowserContext());
-  registry->AddInterface(base::BindRepeating(&BindBraveSearchHost, profile),
-                         content::GetUIThreadTaskRunner({}));
+  registry->AddInterface(
+      base::BindRepeating(&BindBraveSearchHost, render_process_host->GetID()),
+      content::GetUIThreadTaskRunner({}));
 }
 
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
