@@ -15,11 +15,14 @@
 namespace chrome {
 namespace android {
 
-static void JNI_BraveFeatureList_EnableFeature(JNIEnv* env,
+static void JNI_BraveFeatureList_EnableFeature(
+    JNIEnv* env,
     const base::android::JavaParamRef<jstring>& featureName,
-    jboolean enabled) {
+    jboolean enabled,
+    const base::android::JavaParamRef<jstring>& disabledValue) {
   std::string feature_name = ConvertJavaStringToUTF8(env, featureName);
-  enabled ? feature_name += "@1" : feature_name += "@0";
+  std::string disabled_value = ConvertJavaStringToUTF8(env, disabledValue);
+  enabled ? feature_name += "@1" : feature_name += "@" + disabled_value;
   flags_ui::PrefServiceFlagsStorage flags_storage(
       g_brave_browser_process->local_state());
   about_flags::SetFeatureEntryEnabled(&flags_storage, feature_name, true);
