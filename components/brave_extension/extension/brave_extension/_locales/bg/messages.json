@@ -171,10 +171,6 @@
     "message": "Промени настройките на глобалния щит по подразбиране",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Блокиране на елемента чрез селектор",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Управлявайте персонализираните филтри",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"

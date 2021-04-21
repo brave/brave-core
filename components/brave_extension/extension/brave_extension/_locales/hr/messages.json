@@ -171,10 +171,6 @@
     "message": "Promijeni zadane postavke glavnog štitnika",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Blokiraj element uporabom odabirača",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Upravljaj prilagođenim filtrima",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"

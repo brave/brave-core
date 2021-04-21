@@ -171,10 +171,6 @@
     "message": "Badilisha mipangilio chaguo msingi ya ngao ya kiulimwengu",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Zuia kipengele kupitia kichaguzi",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Dhibiti vichujio maalum",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"

@@ -171,10 +171,6 @@
     "message": "Modifică setările implicite ale scutului global",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Blocați elementul prin selector",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Gestionare filtre personalizate",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
