@@ -487,10 +487,7 @@ public class VideoView: UIView, VideoTrackerBarDelegate {
         } else {
             // If the overlay is showing, hide the particle view.. else show it..
             except.append(particleView)
-            
-            if !showOverlay {
-                display.append(particleView)
-            }
+            display.append(particleView)
         }
         
         UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: [.curveEaseInOut, .allowUserInteraction], animations: {
