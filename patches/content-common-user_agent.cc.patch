@@ -1,0 +1,12 @@
+diff --git a/content/common/user_agent.cc b/content/common/user_agent.cc
+index 104986360e1c593fe9db99b9cb54fa2385c0731d..7a9e6990d16a46734fe42f5081b5dfaeccd4292f 100644
+--- a/content/common/user_agent.cc
++++ b/content/common/user_agent.cc
+@@ -280,6 +280,7 @@ std::string GetAndroidOSInfo(
+ 
+   // Send information about the device.
+   bool semicolon_inserted = false;
++  BRAVE_GET_ANDROID_OS_INFO
+   if (include_android_model == IncludeAndroidModel::Include) {
+     std::string android_device_name = BuildModelInfo();
+     if (!android_device_name.empty()) {
