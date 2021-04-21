@@ -17,6 +17,7 @@ import("//brave/browser/importer/sources.gni")
 import("//brave/browser/ipfs/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/permissions/sources.gni")
+import("//brave/browser/search_engines/sources.gni")
 import("//brave/browser/signin/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/themes/sources.gni")
@@ -79,20 +80,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/geolocation/brave_geolocation_permission_context_delegate.h",
   "//brave/browser/metrics/metrics_reporting_util.cc",
   "//brave/browser/metrics/metrics_reporting_util.h",
-  "//brave/browser/search_engines/guest_window_search_engine_provider_service.cc",
-  "//brave/browser/search_engines/guest_window_search_engine_provider_service.h",
-  "//brave/browser/search_engines/private_window_search_engine_provider_service.cc",
-  "//brave/browser/search_engines/private_window_search_engine_provider_service.h",
-  "//brave/browser/search_engines/search_engine_provider_service.cc",
-  "//brave/browser/search_engines/search_engine_provider_service.h",
-  "//brave/browser/search_engines/search_engine_provider_service_factory.cc",
-  "//brave/browser/search_engines/search_engine_provider_service_factory.h",
-  "//brave/browser/search_engines/search_engine_provider_util.cc",
-  "//brave/browser/search_engines/search_engine_provider_util.h",
-  "//brave/browser/search_engines/search_engine_tracker.cc",
-  "//brave/browser/search_engines/search_engine_tracker.h",
-  "//brave/browser/search_engines/tor_window_search_engine_provider_service.cc",
-  "//brave/browser/search_engines/tor_window_search_engine_provider_service.h",
   "//brave/browser/update_util.cc",
   "//brave/browser/update_util.h",
 ]
@@ -319,6 +306,7 @@ brave_chrome_browser_sources += brave_browser_gemini_sources
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
 brave_chrome_browser_sources += brave_browser_brave_shields_sources
 brave_chrome_browser_sources += brave_browser_component_updater_sources
+brave_chrome_browser_sources += brave_browser_search_engines_sources
 
 brave_chrome_browser_deps += brave_browser_themes_deps
 brave_chrome_browser_deps += brave_browser_wallet_deps
@@ -337,4 +325,5 @@ brave_chrome_browser_deps += brave_browser_gemini_deps
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
 brave_chrome_browser_deps += brave_browser_brave_shields_deps
 brave_chrome_browser_deps += brave_browser_component_updater_deps
+brave_chrome_browser_deps += brave_browser_search_engines_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_prefs_deps
