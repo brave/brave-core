@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index eb933cb9fe315143449655ea51de823dda41b235..4f98d40f2b9070f6a4c5d6c759a74e3a32fad5ba 100644
+index 5045ae89d1826c0e25008551eab40dffc28a456a..f359424436735cbad8ced5013ae5aedfd35c8456 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -29,6 +29,7 @@
@@ -10,7 +10,7 @@ index eb933cb9fe315143449655ea51de823dda41b235..4f98d40f2b9070f6a4c5d6c759a74e3a
          <cr-link-row id="clearBrowsingData"
              start-icon="cr:delete"
              label="$i18n{clearBrowsingData}"
-@@ -156,6 +157,7 @@
+@@ -157,6 +158,7 @@
            </template>
          </settings-subpage>
        </template>
@@ -18,7 +18,7 @@ index eb933cb9fe315143449655ea51de823dda41b235..4f98d40f2b9070f6a4c5d6c759a74e3a
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -197,6 +199,7 @@
+@@ -198,6 +200,7 @@
            </template>
          </settings-subpage>
        </template>
@@ -26,7 +26,7 @@ index eb933cb9fe315143449655ea51de823dda41b235..4f98d40f2b9070f6a4c5d6c759a74e3a
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -446,11 +449,13 @@
+@@ -447,11 +450,13 @@
              </category-setting-exceptions>
            </template>
            <template is="dom-if" if="[[!enableContentSettingsRedesign_]]">
@@ -40,7 +40,7 @@ index eb933cb9fe315143449655ea51de823dda41b235..4f98d40f2b9070f6a4c5d6c759a74e3a
              <category-setting-exceptions
                  category="[[ContentSettingsTypes.JAVASCRIPT]]"
                  block-header="$i18n{siteSettingsBlock}"
-@@ -754,6 +759,19 @@
+@@ -755,6 +760,19 @@
            </settings-subpage>
         </template>
       </template>
