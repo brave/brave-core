@@ -161,8 +161,7 @@ class PlaylistCell: UITableViewCell {
             return UIEdgeInsets(top: 0, left: self.titleLabel.frame.origin.x, bottom: 0, right: 0)
         }
         
-        set (newValue) {
-            // swiftlint:disable:this unused_setter_value
+        set { // swiftlint:disable:this unused_setter_value
             super.separatorInset = UIEdgeInsets(top: 0, left: self.titleLabel.frame.origin.x, bottom: 0, right: 0)
         }
     }
