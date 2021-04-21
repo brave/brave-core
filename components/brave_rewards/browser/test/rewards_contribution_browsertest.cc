@@ -299,10 +299,7 @@ IN_PROC_BROWSER_TEST_F(
       1);
 }
 
-// https://github.com/brave/brave-browser/issues/12607
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    DISABLED_TipUnverifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipUnverifiedPublisher) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
@@ -312,10 +309,8 @@ IN_PROC_BROWSER_TEST_F(
       rewards_browsertest_util::TipAction::OneTime);
 }
 
-// Enable when https://github.com/brave/brave-browser/issues/12556 is fixed
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    DISABLED_RecurringTipForVerifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       RecurringTipForVerifiedPublisher) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
@@ -327,10 +322,8 @@ IN_PROC_BROWSER_TEST_F(
       1);
 }
 
-// Enable when https://github.com/brave/brave-browser/issues/12295 is fixed
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    DISABLED_RecurringTipForUnverifiedPublisher) {
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       RecurringTipForUnverifiedPublisher) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
@@ -473,10 +466,8 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->VerifyTip(amount, true, false, true);
 }
 
-// Enable when https://github.com/brave/brave-browser/issues/12555 is fixed
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    DISABLED_MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
@@ -571,10 +562,8 @@ IN_PROC_BROWSER_TEST_F(
       "Have you tipped your favorite content creator today?");
 }
 
-// https://github.com/brave/brave-browser/issues/12985
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    DISABLED_TipConnectedPublisherVerified) {
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       TipConnectedPublisherVerified) {
   response_->SetVerifiedWallet(true);
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   rewards_browsertest_util::CreateWallet(rewards_service_);
