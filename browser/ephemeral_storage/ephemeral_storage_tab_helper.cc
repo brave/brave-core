@@ -33,9 +33,6 @@ namespace {
 constexpr char kSessionStorageSuffix[] = "/ephemeral-session-storage";
 constexpr char kLocalStorageSuffix[] = "/ephemeral-local-storage";
 
-const base::TimeDelta kStorageKeepAliveDelay = base::TimeDelta::FromSeconds(
-    net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds.Get());
-
 base::TimeDelta g_storage_keep_alive_for_testing = base::TimeDelta::Min();
 
 // Session storage ids are expected to be 36 character long GUID strings. Since
@@ -146,7 +143,9 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
             &EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive,
             weak_factory_.GetWeakPtr(), tld_ephemeral_lifetime_->key()),
         g_storage_keep_alive_for_testing.is_min()
-            ? kStorageKeepAliveDelay
+            ? base::TimeDelta::FromSeconds(
+                  net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds
+                      .Get())
             : g_storage_keep_alive_for_testing);
   }
 
