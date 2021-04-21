@@ -86,7 +86,7 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
-    std::string new_domain,
+    const std::string& new_domain,
     const GURL& new_url) {
   if (new_url.is_empty())
     return;

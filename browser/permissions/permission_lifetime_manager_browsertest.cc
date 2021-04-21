@@ -27,6 +27,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/network_session_configurator/common/network_switches.h"
 #include "components/permissions/features.h"
 #include "components/permissions/request_type.h"
 #include "components/prefs/pref_service.h"
@@ -34,6 +35,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
@@ -49,21 +51,30 @@ const char kPreTestDataFileName[] = "pre_test_data";
 
 class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
  public:
-  PermissionLifetimeManagerBrowserTest() {
+  PermissionLifetimeManagerBrowserTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     scoped_feature_list_.InitAndEnableFeature(features::kPermissionLifetime);
   }
 
   ~PermissionLifetimeManagerBrowserTest() override = default;
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+  }
 
   void SetUpOnMainThread() override {
     PermissionRequestManager* manager = GetPermissionRequestManager();
     prompt_factory_.reset(new MockPermissionLifetimePromptFactory(manager));
 
     host_resolver()->AddRule("*", "127.0.0.1");
-    ASSERT_TRUE(embedded_test_server()->Start());
+    https_server()->ServeFilesFromDirectory(GetChromeTestDataDir());
+    ASSERT_TRUE(https_server()->Start());
   }
 
   void TearDownOnMainThread() override { prompt_factory_.reset(); }
+
+  net::EmbeddedTestServer* https_server() { return &https_server_; }
 
   PermissionRequestManager* GetPermissionRequestManager() {
     return PermissionRequestManager::FromWebContents(
@@ -120,12 +131,13 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
 
  protected:
   base::test::ScopedFeatureList scoped_feature_list_;
+  net::test_server::EmbeddedTestServer https_server_;
   std::unique_ptr<MockPermissionLifetimePromptFactory> prompt_factory_;
   base::Value pre_test_data_{base::Value::Type::DICTIONARY};
 };
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
-  const GURL& url = embedded_test_server()->GetURL("/empty.html");
+  const GURL& url = https_server()->GetURL("/empty.html");
   ui_test_utils::NavigateToURL(browser(), url);
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
@@ -169,7 +181,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        PRE_PermissionExpiredAfterRestart) {
-  const GURL& url = embedded_test_server()->GetURL("/empty.html");
+  const GURL& url = https_server()->GetURL("/empty.html");
   ui_test_utils::NavigateToURL(browser(), url);
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
@@ -227,7 +239,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        ExpirationRemovedAfterManualReset) {
-  const GURL& url = embedded_test_server()->GetURL("/empty.html");
+  const GURL& url = https_server()->GetURL("/empty.html");
   ui_test_utils::NavigateToURL(browser(), url);
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
@@ -254,6 +266,177 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
       url, url, ContentSettingsType::GEOLOCATION,
       ContentSetting::CONTENT_SETTING_DEFAULT);
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+}
+
+class PermissionLifetimeManagerWithOriginMonitorBrowserTest
+    : public PermissionLifetimeManagerBrowserTest {
+ public:
+  PermissionLifetimeManagerWithOriginMonitorBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        net::features::kBraveEphemeralStorage);
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+                       DomainPermissionReset) {
+  const GURL& url = https_server()->GetURL("host.com", "/empty.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  prompt_factory_->set_response_type(
+      PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
+
+  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+      .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+        prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
+      }));
+  content::ExecuteScriptAsync(
+      GetActiveMainFrame(),
+      "navigator.geolocation.getCurrentPosition(function(){});");
+  prompt_factory_->WaitForPermissionBubble();
+
+  EXPECT_EQ(1, prompt_factory_->show_count());
+  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ALLOW);
+
+  // Navigate to another domain. It should reset the permission.
+  const GURL& other_url =
+      https_server()->GetURL("other_host.com", "/empty.html");
+  ui_test_utils::NavigateToURL(browser(), other_url);
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ASK);
+  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+                       FriendlyDomainPermissionKept) {
+  const GURL& url = https_server()->GetURL("example.com", "/empty.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  prompt_factory_->set_response_type(
+      PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
+
+  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+      .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+        prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
+      }));
+  content::ExecuteScriptAsync(
+      GetActiveMainFrame(),
+      "navigator.geolocation.getCurrentPosition(function(){});");
+  prompt_factory_->WaitForPermissionBubble();
+
+  EXPECT_EQ(1, prompt_factory_->show_count());
+  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ALLOW);
+
+  // Navigate to a subdomain, permission should be kept.
+  const GURL& sub_url =
+      https_server()->GetURL("sub.example.com", "/empty.html");
+  ui_test_utils::NavigateToURL(browser(), sub_url);
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ALLOW);
+  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+
+  // Navigate to another domain. It should reset the permission.
+  const GURL& other_url =
+      https_server()->GetURL("other_host.com", "/empty.html");
+  ui_test_utils::NavigateToURL(browser(), other_url);
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ASK);
+  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+                       PublicSuffixListDomainPermissionReset) {
+  const GURL& url = https_server()->GetURL("user.github.io", "/empty.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  prompt_factory_->set_response_type(
+      PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
+
+  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+      .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+        prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
+      }));
+  content::ExecuteScriptAsync(
+      GetActiveMainFrame(),
+      "navigator.geolocation.getCurrentPosition(function(){});");
+  prompt_factory_->WaitForPermissionBubble();
+
+  EXPECT_EQ(1, prompt_factory_->show_count());
+  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ALLOW);
+
+  // Navigate to a subdomain, permission should be kept.
+  const GURL& sub_url =
+      https_server()->GetURL("sub.user.github.io", "/empty.html");
+  ui_test_utils::NavigateToURL(browser(), sub_url);
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ALLOW);
+  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+
+  // Navigate to another domain in PSL. It should reset the permission.
+  const GURL& other_url =
+      https_server()->GetURL("user2.github.io", "/empty.html");
+  ui_test_utils::NavigateToURL(browser(), other_url);
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ASK);
+  EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+                       PRE_DomainPermissionResetAfterRestart) {
+  const GURL& url = https_server()->GetURL("example.com", "/empty.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  prompt_factory_->set_response_type(
+      PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
+
+  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+      .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+        prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
+      }));
+  content::ExecuteScriptAsync(
+      GetActiveMainFrame(),
+      "navigator.geolocation.getCurrentPosition(function(){});");
+  prompt_factory_->WaitForPermissionBubble();
+
+  EXPECT_EQ(1, prompt_factory_->show_count());
+  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ALLOW);
+
+  pre_test_data_.SetStringKey("url", url.spec());
+  WritePreTestData();
+}
+
+IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
+                       DomainPermissionResetAfterRestart) {
+  ReadPreTestData();
+  const GURL url(*pre_test_data_.FindStringKey("url"));
+
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ASK);
   EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
 }
 

@@ -6,6 +6,7 @@
 #include "content/public/browser/tld_ephemeral_lifetime.h"
 
 #include <map>
+
 #include "base/no_destructor.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
 
@@ -27,12 +28,13 @@ TLDEphemeralLifetimeMap& active_tld_storage_areas() {
 
 }  // namespace
 
-TLDEphemeralLifetime::TLDEphemeralLifetime(TLDEphemeralLifetimeKey key,
+TLDEphemeralLifetime::TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key,
                                            StoragePartition* storage_partition)
     : key_(key), storage_partition_(storage_partition) {
-  DCHECK(active_tld_storage_areas().find(key) ==
+  DCHECK(active_tld_storage_areas().find(key_) ==
          active_tld_storage_areas().end());
-  active_tld_storage_areas().emplace(key, weak_factory_.GetWeakPtr());
+  DCHECK(storage_partition_);
+  active_tld_storage_areas().emplace(key_, weak_factory_.GetWeakPtr());
 }
 
 TLDEphemeralLifetime::~TLDEphemeralLifetime() {
@@ -41,27 +43,48 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   storage_partition_->GetCookieManagerForBrowserProcess()->DeleteCookies(
       std::move(filter), base::NullCallback());
 
+  if (!on_destroy_callbacks_.empty()) {
+    auto on_destroy_callbacks = std::move(on_destroy_callbacks_);
+    for (auto& callback : on_destroy_callbacks) {
+      std::move(callback).Run(key_.second);
+    }
+  }
+
   active_tld_storage_areas().erase(key_);
 }
 
-TLDEphemeralLifetime* TLDEphemeralLifetime::Get(BrowserContext* browser_context,
-                                                std::string storage_domain) {
-  TLDEphemeralLifetimeKey key = std::make_pair(browser_context, storage_domain);
+// static
+TLDEphemeralLifetime* TLDEphemeralLifetime::Get(
+    BrowserContext* browser_context,
+    const std::string& storage_domain) {
+  const TLDEphemeralLifetimeKey key(browser_context, storage_domain);
+  return Get(key);
+}
+
+// static
+scoped_refptr<TLDEphemeralLifetime> TLDEphemeralLifetime::GetOrCreate(
+    BrowserContext* browser_context,
+    StoragePartition* storage_partition,
+    const std::string& storage_domain) {
+  const TLDEphemeralLifetimeKey key(browser_context, storage_domain);
+  if (scoped_refptr<TLDEphemeralLifetime> existing = Get(key)) {
+    return existing;
+  }
+
+  return base::MakeRefCounted<TLDEphemeralLifetime>(key, storage_partition);
+}
+
+// static
+TLDEphemeralLifetime* TLDEphemeralLifetime::Get(
+    const TLDEphemeralLifetimeKey& key) {
   auto it = active_tld_storage_areas().find(key);
   DCHECK(it == active_tld_storage_areas().end() || it->second.get());
   return it != active_tld_storage_areas().end() ? it->second.get() : nullptr;
 }
 
-scoped_refptr<TLDEphemeralLifetime> TLDEphemeralLifetime::GetOrCreate(
-    BrowserContext* browser_context,
-    StoragePartition* storage_partition,
-    std::string storage_domain) {
-  if (TLDEphemeralLifetime* existing = Get(browser_context, storage_domain)) {
-    return existing;
-  }
-
-  TLDEphemeralLifetimeKey key = std::make_pair(browser_context, storage_domain);
-  return base::MakeRefCounted<TLDEphemeralLifetime>(key, storage_partition);
+void TLDEphemeralLifetime::RegisterOnDestroyCallback(
+    OnDestroyCallback callback) {
+  on_destroy_callbacks_.push_back(std::move(callback));
 }
 
 }  // namespace content
