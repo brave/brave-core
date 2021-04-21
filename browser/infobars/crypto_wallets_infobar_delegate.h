@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_INFOBARS_CRYPTO_WALLETS_INFOBAR_DELEGATE_H_
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/string16.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "url/gurl.h"
@@ -22,14 +22,14 @@ class WebContents;
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class CryptoWalletsInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
-  enum class InfobarSubType {
-    LOAD_CRYPTO_WALLETS,
-    GENERIC_SETUP
-  };
+  enum class InfobarSubType { LOAD_CRYPTO_WALLETS, GENERIC_SETUP };
   static void Create(InfoBarService* infobar_service, InfobarSubType subtype);
 
  private:
   explicit CryptoWalletsInfoBarDelegate(InfobarSubType subtype);
+  CryptoWalletsInfoBarDelegate(const CryptoWalletsInfoBarDelegate&) = delete;
+  CryptoWalletsInfoBarDelegate& operator=(const CryptoWalletsInfoBarDelegate&) =
+      delete;
   ~CryptoWalletsInfoBarDelegate() override;
 
   void OnCryptoWalletsLoaded(content::WebContents*);
@@ -47,7 +47,7 @@ class CryptoWalletsInfoBarDelegate : public ConfirmInfoBarDelegate {
 
   InfobarSubType subtype_;
 
-  DISALLOW_COPY_AND_ASSIGN(CryptoWalletsInfoBarDelegate);
+  base::WeakPtrFactory<CryptoWalletsInfoBarDelegate> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_CRYPTO_WALLETS_INFOBAR_DELEGATE_H_
