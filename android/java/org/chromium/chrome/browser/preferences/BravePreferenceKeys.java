@@ -19,4 +19,6 @@ public final class BravePreferenceKeys {
             "org.chromium.chrome.browser.upgrade.Milliseconds_New";
     public static final String BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE =
             "org.chromium.chrome.browser.downloads.Automatically_Open_When_Possible";
+    public static final String BRAVE_DOUBLE_RESTART =
+            "org.chromium.chrome.browser.Brave_Double_Restart";
 }

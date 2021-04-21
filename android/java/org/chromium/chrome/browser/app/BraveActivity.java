@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
@@ -268,6 +269,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        if (SharedPreferencesManager.getInstance().readBoolean(
+                    BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false);
+            BraveRelaunchUtils.restart();
+            return;
+        }
 
         if (BraveRewardsHelper.hasRewardsEnvChange()) {
             BravePrefServiceBridge.getInstance().resetPromotionLastFetchStamp();
