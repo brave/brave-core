@@ -148,6 +148,12 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
   }
 }
 
+void SidebarItemsContentsView::MaybeStartDrag() {}
+
+void SidebarItemsContentsView::ContinueDrag() {}
+
+void SidebarItemsContentsView::EndDrag() {}
+
 void SidebarItemsContentsView::OnContextMenuClosed() {
   view_for_context_menu_ = nullptr;
 }
@@ -177,7 +183,7 @@ void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                                            int index,
                                            bool user_gesture) {
   auto* item_view =
-      AddChildViewAt(std::make_unique<SidebarItemView>(this), index);
+      AddChildViewAt(std::make_unique<SidebarItemView>(this, this), index);
   item_view->set_context_menu_controller(this);
   item_view->set_paint_background_on_hovered(true);
   item_view->SetCallback(

@@ -9,7 +9,6 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -27,7 +26,6 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
   // sidebar UI. After that, UI will be updated for model's change.
   sidebar_controller_.reset(new sidebar::SidebarController(this, profile()));
   sidebar_controller_->SetSidebar(brave_window()->InitSidebar());
-  sidebar_controller_->model()->Init();
 #endif
 }
 

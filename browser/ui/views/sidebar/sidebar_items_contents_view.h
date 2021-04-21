@@ -10,6 +10,7 @@
 
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_item_controller.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
@@ -22,6 +23,7 @@ class MenuRunner;
 class BraveBrowser;
 
 class SidebarItemsContentsView : public views::View,
+                                 public SidebarItemController,
                                  public SidebarButtonView::Delegate,
                                  public views::ContextMenuController,
                                  public ui::SimpleMenuModel::Delegate {
@@ -35,6 +37,11 @@ class SidebarItemsContentsView : public views::View,
   // views::View overrides:
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
+
+  // SidebarItemController overrides:
+  void MaybeStartDrag() override;
+  void ContinueDrag() override;
+  void EndDrag() override;
 
   // SidebarButtonView::Delegate overrides:
   base::string16 GetTooltipTextFor(const views::View* view) const override;

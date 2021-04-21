@@ -6,10 +6,17 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/ui/views/sidebar/sidebar_item_controller.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
+
+SidebarItemView::SidebarItemView(Delegate* delegate,
+                                 SidebarItemController* controller)
+    : SidebarButtonView(delegate), controller_(controller) {
+  DCHECK(controller_);
+}
 
 SidebarItemView::~SidebarItemView() = default;
 
@@ -35,4 +42,24 @@ void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
               BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND));
     }
   }
+}
+
+bool SidebarItemView::OnMousePressed(const ui::MouseEvent& event) {
+  controller_->MaybeStartDrag();
+  return true;
+}
+
+bool SidebarItemView::OnMouseDragged(const ui::MouseEvent& event) {
+  controller_->ContinueDrag();
+  return true;
+}
+
+void SidebarItemView::OnMouseReleased(const ui::MouseEvent& event) {
+  SidebarButtonView::OnMouseReleased(event);
+
+  controller_->EndDrag();
+}
+
+void SidebarItemView::OnMouseCaptureLost() {
+  controller_->EndDrag();
 }
