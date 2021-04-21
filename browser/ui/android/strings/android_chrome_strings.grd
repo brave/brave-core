@@ -3011,6 +3011,12 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_MENU_FOLLOWING" desc="Menu item indicating the current website is followed, allowing users to unfollow the current website. [CHAR-LIMIT=27]">
         Following
       </message>
+      <message name="IDS_MENU_ITEM_REQUEST_DESKTOP_SITE" desc="Menu item allowing users to change the website from the mobile site to desktop site. [CHAR-LIMIT=27]">
+        Request desktop site
+      </message>
+      <message name="IDS_MENU_ITEM_REQUEST_MOBILE_SITE" desc="Menu item allowing users to change the website from the desktop site to mobile site. [CHAR-LIMIT=27]">
+        Request mobile site
+      </message>
       <message name="IDS_MENU_PAINT_PREVIEW_SHOW" desc="Menu item allowing users to capture and show a paint preview of a page. [CHAR-LIMIT=27]" translateable="false">
         Show Paint Preview
       </message>
@@ -3373,6 +3379,12 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_BTN_REFINE" desc="Content description for the omnibox refine button followed with the text or URL that will be shown in the Omnibox if the user clicks the refine button, eg. User input 'The' may offer a suggestion 'The meaning of life' or 'thewirecutter.com'.">
         Refine: <ph name="REFINE_TEXT">%1$s<ex>The meaning of life</ex></ph>
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_CONCEAL_CLIPBOARD_CONTENTS" desc="Content description for the omnibox clipboard conceal button.">
+        Conceal Clipboard Contents
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_REVEAL_CLIPBOARD_CONTENTS" desc="Content description for the omnibox clipboard reveal button.">
+        Reveal Clipboard Contents
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_SWITCH_TO_TAB" desc="Content description for the omnibox switch to tab button.">
         Switch To Tab
