@@ -160,7 +160,7 @@ void SidebarItemsContentsView::OnItemAdded(const sidebar::SidebarItem& item,
 }
 
 void SidebarItemsContentsView::OnItemRemoved(int index) {
-  RemoveChildView(children()[index]);
+  RemoveChildViewT(children()[index]);
   InvalidateLayout();
 }
 
