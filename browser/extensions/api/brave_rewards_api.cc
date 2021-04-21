@@ -1203,16 +1203,10 @@ BraveRewardsIsInitializedFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsIsInitializedFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  const bool initialized = rewards_service->IsInitialized();
-  return RespondNow(OneArgument(base::Value(initialized)));
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  return RespondNow(OneArgument(
+      base::Value(rewards_service && rewards_service->IsInitialized())));
 }
 
 BraveRewardsShouldShowOnboardingFunction::
