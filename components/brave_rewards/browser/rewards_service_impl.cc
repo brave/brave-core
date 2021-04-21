@@ -403,6 +403,9 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
       base::Bind(
           &RewardsServiceImpl::OnPreferenceChanged,
           base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      ads::prefs::kEnabled, base::Bind(&RewardsServiceImpl::OnPreferenceChanged,
+                                       base::Unretained(this)));
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
@@ -413,9 +416,19 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   if (key == prefs::kAutoContributeEnabled) {
     if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
       StartLedgerProcessIfNecessary();
+    } else {
+      // Just record the disabled state.
+      RecordAutoContributionsState(
+          AutoContributionsP3AState::kWalletCreatedAutoContributeOff, 0);
     }
+  }
 
-    return;
+  if (key == prefs::kAutoContributeEnabled || key == ads::prefs::kEnabled) {
+    if (IsRewardsEnabled()) {
+      RecordBackendP3AStats();
+    } else {
+      RecordRewardsDisabledForSomeMetrics();
+    }
   }
 }
 
@@ -824,6 +837,12 @@ void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
 
   if (!ready_->is_signaled()) {
     ready_->Signal();
+  }
+
+  if (IsRewardsEnabled()) {
+    RecordBackendP3AStats();
+  } else {
+    RecordRewardsDisabledForSomeMetrics();
   }
 
   for (auto& observer : observers_) {
@@ -1637,15 +1656,6 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
   }
 
   bat_ledger_->SetAutoContributeEnabled(enabled);
-
-  if (!enabled) {
-    // Just record the disabled state.
-    RecordAutoContributionsState(
-        AutoContributionsP3AState::kWalletCreatedAutoContributeOff, 0);
-  } else {
-    // Need to query the DB for actual counts.
-    RecordBackendP3AStats();
-  }
 }
 
 bool RewardsServiceImpl::ShouldShowOnboarding() const {
