@@ -6,6 +6,9 @@
 #include <string>
 
 #include "base/path_service.h"
+#include "base/threading/platform_thread.h"
+#include "base/time/time.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -32,6 +35,8 @@ using content::WebContents;
 using net::test_server::EmbeddedTestServer;
 
 namespace {
+
+const int kKeepAliveInterval = 2;
 
 enum StorageType { Session, Local };
 
@@ -100,6 +105,10 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
         https_server_.GetURL("b.com", "/ephemeral_storage.html");
     c_site_ephemeral_storage_url_ =
         https_server_.GetURL("c.com", "/ephemeral_storage.html");
+
+    ephemeral_storage::EphemeralStorageTabHelper::
+        SetKeepAliveTimeDelayForTesting(
+            base::TimeDelta::FromSeconds(kKeepAliveInterval));
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -253,41 +262,66 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
-                       NavigatingClearsEphemeralStorage) {
+                       NavigatingClearsEphemeralStorageAfterKeepAlive) {
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(WaitForLoadStop(web_contents));
 
   SetValuesInFrames(web_contents, "a.com value", "from=a.com");
 
-  ValuesFromFrames values_before = GetValuesFromFrames(web_contents);
-  EXPECT_EQ("a.com value", values_before.main_frame.local_storage);
-  EXPECT_EQ("a.com value", values_before.iframe_1.local_storage);
-  EXPECT_EQ("a.com value", values_before.iframe_2.local_storage);
+  ValuesFromFrames values = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", values.main_frame.local_storage);
+  EXPECT_EQ("a.com value", values.iframe_1.local_storage);
+  EXPECT_EQ("a.com value", values.iframe_2.local_storage);
 
-  EXPECT_EQ("a.com value", values_before.main_frame.session_storage);
-  EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
-  EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
+  EXPECT_EQ("a.com value", values.main_frame.session_storage);
+  EXPECT_EQ("a.com value", values.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", values.iframe_2.session_storage);
 
-  EXPECT_EQ("from=a.com", values_before.main_frame.cookies);
-  EXPECT_EQ("from=a.com", values_before.iframe_1.cookies);
-  EXPECT_EQ("from=a.com", values_before.iframe_2.cookies);
+  EXPECT_EQ("from=a.com", values.main_frame.cookies);
+  EXPECT_EQ("from=a.com", values.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", values.iframe_2.cookies);
 
   // Navigate away and then navigate back to the original site.
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+  ASSERT_TRUE(WaitForLoadStop(web_contents));
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(WaitForLoadStop(web_contents));
 
-  ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
-  EXPECT_EQ("a.com value", values_after.main_frame.local_storage);
-  EXPECT_EQ(nullptr, values_after.iframe_1.local_storage);
-  EXPECT_EQ(nullptr, values_after.iframe_2.local_storage);
+  // within keepalive values should be the same
+  ValuesFromFrames before_timeout = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", before_timeout.main_frame.local_storage);
+  EXPECT_EQ("a.com value", before_timeout.iframe_1.local_storage);
+  EXPECT_EQ("a.com value", before_timeout.iframe_2.local_storage);
 
-  EXPECT_EQ("a.com value", values_after.main_frame.session_storage);
-  EXPECT_EQ(nullptr, values_after.iframe_1.session_storage);
-  EXPECT_EQ(nullptr, values_after.iframe_2.session_storage);
+  EXPECT_EQ("a.com value", before_timeout.main_frame.session_storage);
+  // TODO(bridiver) - do we need to persist session storage?
+  // EXPECT_EQ("a.com value", before_timeout.iframe_1.session_storage);
+  // EXPECT_EQ("a.com value", before_timeout.iframe_2.session_storage);
 
-  EXPECT_EQ("from=a.com", values_after.main_frame.cookies);
-  EXPECT_EQ("", values_after.iframe_1.cookies);
-  EXPECT_EQ("", values_after.iframe_2.cookies);
+  EXPECT_EQ("from=a.com", before_timeout.main_frame.cookies);
+  EXPECT_EQ("from=a.com", before_timeout.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", before_timeout.iframe_2.cookies);
+
+  // after keepalive values should be cleared
+  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+  ASSERT_TRUE(WaitForLoadStop(web_contents));
+  base::PlatformThread::Sleep(base::TimeDelta::FromSeconds(kKeepAliveInterval));
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(WaitForLoadStop(web_contents));
+
+  ValuesFromFrames after_timeout = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", after_timeout.main_frame.local_storage);
+  EXPECT_EQ(nullptr, after_timeout.iframe_1.local_storage);
+  EXPECT_EQ(nullptr, after_timeout.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", after_timeout.main_frame.session_storage);
+  EXPECT_EQ(nullptr, after_timeout.iframe_1.session_storage);
+  EXPECT_EQ(nullptr, after_timeout.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", after_timeout.main_frame.cookies);
+  EXPECT_EQ("", after_timeout.iframe_1.cookies);
+  EXPECT_EQ("", after_timeout.iframe_2.cookies);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
@@ -532,4 +566,52 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("third-party-a.com", third_party_values.local_storage);
   EXPECT_EQ("third-party-a.com", third_party_values.session_storage);
   EXPECT_EQ("name=third-party-a.com", third_party_values.cookies);
+}
+
+class EphemeralStorageKeepAliveDisabledBrowserTest
+    : public EphemeralStorageBrowserTest {
+ public:
+  EphemeralStorageKeepAliveDisabledBrowserTest()
+      : EphemeralStorageBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        net::features::kBraveEphemeralStorageKeepAlive);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
+                       NavigatingClearsEphemeralStorageAfterKeepAlive) {
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  SetValuesInFrames(web_contents, "a.com value", "from=a.com");
+
+  ValuesFromFrames values_before = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", values_before.main_frame.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.local_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", values_before.main_frame.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
+  EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_before.main_frame.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_2.cookies);
+
+  // Navigate away and then navigate back to the original site.
+  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+
+  ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com value", values_after.main_frame.local_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_1.local_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com value", values_after.main_frame.session_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_1.session_storage);
+  EXPECT_EQ(nullptr, values_after.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_after.main_frame.cookies);
+  EXPECT_EQ("", values_after.iframe_1.cookies);
+  EXPECT_EQ("", values_after.iframe_2.cookies);
 }

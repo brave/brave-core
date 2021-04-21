@@ -71,6 +71,7 @@ EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {}
 
 void EphemeralStorageTabHelper::WebContentsDestroyed() {
   keep_alive_tld_ephemeral_lifetime_list_.clear();
+  keep_alive_local_storage_list_.clear();
 }
 
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
@@ -93,10 +94,25 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
 
 void EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive(
     const content::TLDEphemeralLifetimeKey& key) {
-  for (auto it = keep_alive_tld_ephemeral_lifetime_list_.begin(); it != keep_alive_tld_ephemeral_lifetime_list_.end();
-       ++it) {
+  ClearLocalStorageKeepAlive(
+      StringToSessionStorageId(key.second, kLocalStorageSuffix));
+
+  for (auto it = keep_alive_tld_ephemeral_lifetime_list_.begin();
+       it != keep_alive_tld_ephemeral_lifetime_list_.end(); ++it) {
     if ((*it)->key() == key) {
       keep_alive_tld_ephemeral_lifetime_list_.erase(it);
+      return;
+    }
+  }
+  NOTREACHED();
+}
+
+void EphemeralStorageTabHelper::ClearLocalStorageKeepAlive(
+    const std::string& id) {
+  for (auto it = keep_alive_local_storage_list_.begin();
+       it != keep_alive_local_storage_list_.end(); ++it) {
+    if ((*it)->id() == id) {
+      keep_alive_local_storage_list_.erase(it);
       return;
     }
   }
@@ -114,6 +130,25 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
       content::SiteInstance::CreateForURL(browser_context, new_url);
   auto* partition =
       BrowserContext::GetStoragePartition(browser_context, site_instance.get());
+
+  if (base::FeatureList::IsEnabled(
+          net::features::kBraveEphemeralStorageKeepAlive) &&
+      tld_ephemeral_lifetime_) {
+    keep_alive_tld_ephemeral_lifetime_list_.push_back(tld_ephemeral_lifetime_);
+    keep_alive_local_storage_list_.push_back(local_storage_namespace_);
+
+    // keep the ephemeral storage alive for some time to handle redirects
+    // including meta refresh or other page driven "redirects" that end up back
+    // at the original origin
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(
+            &EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive,
+            weak_factory_.GetWeakPtr(), tld_ephemeral_lifetime_->key()),
+        g_storage_keep_alive_for_testing.is_min()
+            ? kStorageKeepAliveDelay
+            : g_storage_keep_alive_for_testing);
+  }
 
   // This will fetch a session storage namespace for this storage partition
   // and storage domain. If another tab helper is already using the same
@@ -146,24 +181,6 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
                     WebContents::FromRenderFrameHost(rfh)),
                 kSessionStorageSuffix))
           : base::nullopt);
-
-  if (base::FeatureList::IsEnabled(
-          net::features::kBraveEphemeralStorageKeepAlive) &&
-      tld_ephemeral_lifetime_) {
-    keep_alive_tld_ephemeral_lifetime_list_.push_back(tld_ephemeral_lifetime_);
-    auto key = tld_ephemeral_lifetime_->key();
-    // keep the ephemeral storage alive for some time to handle redirects
-    // including meta refresh or other page driven "redirects" that end up back
-    // at the original origin
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce(
-            &EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive,
-            weak_factory_.GetWeakPtr(), key),
-        g_storage_keep_alive_for_testing.is_min()
-            ? kStorageKeepAliveDelay
-            : g_storage_keep_alive_for_testing);
-  }
 
   tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
       browser_context, partition, new_domain);
