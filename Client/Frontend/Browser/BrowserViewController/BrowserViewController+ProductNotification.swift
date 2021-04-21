@@ -111,17 +111,7 @@ extension BrowserViewController {
             return
         }
         
-        // Step 4: Https Upgrade
-        if !Preferences.ProductNotificationBenchmarks.httpsUpgradeShown.value,
-           contentBlockerStats.httpsCount > 0 {
-
-            notifyHttpsUpgrade(theme: Theme.of(selectedTab))
-            Preferences.ProductNotificationBenchmarks.httpsUpgradeShown.value = true
-
-            return
-        }
-        
-        // Step 5: Share Brave Benchmark Tiers
+        // Step 4: Share Brave Benchmark Tiers
         // Benchmark Tier Pop-Over only exist in JP locale
         if Locale.current.regionCode == "JP" {
             let numOfTrackerAds = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
@@ -162,12 +152,6 @@ extension BrowserViewController {
     
     private func notifyPrivacyProtectBlock(theme: Theme) {
         let shareTrackersViewController = ShareTrackersController(theme: theme, trackingType: .trackerAdCountBlock(count: benchmarkNumberOfTrackers))
-        dismiss(animated: true)
-        showBenchmarkNotificationPopover(controller: shareTrackersViewController)
-    }
-    
-    private func notifyHttpsUpgrade(theme: Theme) {
-        let shareTrackersViewController = ShareTrackersController(theme: theme, trackingType: .encryptedConnectionWarning)
         dismiss(animated: true)
         showBenchmarkNotificationPopover(controller: shareTrackersViewController)
     }
