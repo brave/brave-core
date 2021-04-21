@@ -294,10 +294,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", before_timeout.iframe_1.local_storage);
   EXPECT_EQ("a.com value", before_timeout.iframe_2.local_storage);
 
+  // keepalive does not apply to session storage
   EXPECT_EQ("a.com value", before_timeout.main_frame.session_storage);
-  // TODO(bridiver) - do we need to persist session storage?
-  // EXPECT_EQ("a.com value", before_timeout.iframe_1.session_storage);
-  // EXPECT_EQ("a.com value", before_timeout.iframe_2.session_storage);
+  EXPECT_EQ(nullptr, before_timeout.iframe_1.session_storage);
+  EXPECT_EQ(nullptr, before_timeout.iframe_2.session_storage);
 
   EXPECT_EQ("from=a.com", before_timeout.main_frame.cookies);
   EXPECT_EQ("from=a.com", before_timeout.iframe_1.cookies);
