@@ -84,10 +84,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         
         setUpToolbar()
         updateEditBookmarksButtonStatus()
-        
-        if Preferences.General.showLastVisitedBookmarksFolder.value {
-            self.showLastVisitedFolder()
-        }
+        updatedFolderHierarchy()
     }
     
     private func updateEditBookmarksButtonStatus() {
@@ -127,7 +124,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         setToolbarItems(items, animated: true)
     }
     
-    private func showLastVisitedFolder() {
+    private func updatedFolderHierarchy() {
         DispatchQueue.main.async {
             guard let navigationController = self.navigationController else { return }
             let index = navigationController.viewControllers.firstIndex(of: self) ?? 0
@@ -148,7 +145,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     }
     
     override func reloadData() {
-        
         do {
             // Recreate the frc if it was previously removed
             // (when user navigated into a nested folder for example)
@@ -488,34 +484,39 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         return item.canBeDeleted
     }
     
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        guard let item = bookmarksFRC?.object(at: indexPath) else { return nil }
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let item = bookmarksFRC?.object(at: indexPath),
+              item.canBeDeleted else { return nil }
         
-        if !item.canBeDeleted {
-            return []
+        let deleteAction = UIContextualAction(style: .destructive, title: Strings.delete) { [weak self] _, _, completion in
+            guard let self = self else {
+                completion(false)
+                return
+            }
+            
+            if let children = item.children, !children.isEmpty {
+                let alert = UIAlertController(title: Strings.deleteBookmarksFolderAlertTitle, message: Strings.deleteBookmarksFolderAlertMessage, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel) { _ in
+                    completion(false)
+                })
+                alert.addAction(UIAlertAction(title: Strings.yesDeleteButtonTitle, style: .destructive) { _ in
+                    item.delete()
+                    completion(true)
+                })
+                
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                item.delete()
+                completion(true)
+            }
         }
         
-        let deleteAction = UITableViewRowAction(style: UITableViewRowAction.Style.destructive, title: Strings.delete,
-                                                handler: { action, indexPath in
-                                                    
-                                                    if let children = item.children, !children.isEmpty {
-                                                        let alert = UIAlertController(title: Strings.deleteBookmarksFolderAlertTitle, message: Strings.deleteBookmarksFolderAlertMessage, preferredStyle: .alert)
-                                                        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
-                                                        alert.addAction(UIAlertAction(title: Strings.yesDeleteButtonTitle, style: .destructive) { _ in
-                                                            item.delete()
-                                                        })
-                                                        
-                                                        self.present(alert, animated: true, completion: nil)
-                                                    } else {
-                                                        item.delete()
-                                                    }
-                                                })
+        let editAction = UIContextualAction(style: .normal, title: Strings.edit) { [weak self] _, _, completion in
+            self?.showEditBookmarkController(bookmark: item)
+            completion(true)
+        }
         
-        let editAction = UITableViewRowAction(style: UITableViewRowAction.Style.normal, title: Strings.edit, handler: { (action, indexPath) in
-            self.showEditBookmarkController(bookmark: item)
-        })
-        
-        return [deleteAction, editAction]
+        return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
     }
     
     fileprivate func showEditBookmarkController(bookmark: Bookmarkv2) {
