@@ -33,6 +33,7 @@
 #include "content/public/common/url_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "services/network/host_resolver.h"
 #include "services/network/network_context.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/url_canon.h"
@@ -40,6 +41,8 @@
 namespace brave {
 
 namespace {
+
+network::HostResolver* g_testing_host_resolver;
 
 content::WebContents* GetWebContents(int render_process_id,
                                      int render_frame_id,
@@ -59,6 +62,11 @@ content::WebContents* GetWebContents(int render_process_id,
 }
 
 }  // namespace
+
+void SetAdblockCnameHostResolverForTesting(
+    network::HostResolver* host_resolver) {
+  g_testing_host_resolver = host_resolver;
+}
 
 void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
                                base::Optional<std::string> canonical_name) {
@@ -163,9 +171,15 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 
     start_time_ = base::TimeTicks::Now();
 
-    network_context->ResolveHost(
-        net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
-        std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
+    if (g_testing_host_resolver) {
+      g_testing_host_resolver->ResolveHost(
+          net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
+          std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
+    } else {
+      network_context->ResolveHost(
+          net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
+          std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
+    }
 
     receiver_.set_disconnect_handler(
         base::BindOnce(&AdblockCnameResolveHostClient::OnComplete,

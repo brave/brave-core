@@ -48,6 +48,7 @@ include_rules = [
   "+services/image_annotation/public",
   "+services/media_session/public",
   "+services/metrics/public",
+  "+services/network/host_resolver.h",
   "+services/network/network_context.h",
   "+services/network/network_service.h",
   "+services/network/public",
