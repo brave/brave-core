@@ -34,10 +34,12 @@ type::Result GetBalance::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED ||
       status_code == net::HTTP_NOT_FOUND ||
       status_code == net::HTTP_FORBIDDEN) {
+    BLOG(0, "Invalid authorization HTTP status: " << status_code);
     return type::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
+    BLOG(0, "Unexpected HTTP status: " << status_code);
     return type::Result::LEDGER_ERROR;
   }
 

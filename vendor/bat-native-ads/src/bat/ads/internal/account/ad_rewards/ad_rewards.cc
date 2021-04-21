@@ -283,7 +283,8 @@ void AdRewards::OnGetPayments(const UrlResponse& url_response) {
   }
 
   if (!payments_->SetFromJson(url_response.body)) {
-    BLOG(0, "Failed to parse payment balance: " << url_response.body);
+    BLOG(0, "Failed to parse payment balance");
+    BLOG(6, "Payment balance response body: " << url_response.body);
     OnFailedToReconcileAdRewards();
     return;
   }
@@ -324,7 +325,8 @@ void AdRewards::OnGetAdGrants(const UrlResponse& url_response) {
   }
 
   if (!ad_grants_->SetFromJson(url_response.body)) {
-    BLOG(0, "Failed to parse ad grants: " << url_response.body);
+    BLOG(0, "Failed to parse ad grants");
+    BLOG(6, "Ad grants response body: " << url_response.body);
     OnFailedToReconcileAdRewards();
     return;
   }

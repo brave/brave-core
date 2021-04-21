@@ -174,6 +174,10 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBravePermissionLifetimeName,                       \
      flag_descriptions::kBravePermissionLifetimeDescription, kOsAll,        \
      FEATURE_VALUE_TYPE(permissions::features::kPermissionLifetime)},       \
+    {"brave-rewards-verbose-logging",                                       \
+     flag_descriptions::kBraveRewardsVerboseLoggingName,                    \
+     flag_descriptions::kBraveRewardsVerboseLoggingDescription, kOsDesktop, \
+     FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
     {"brave-rewards-bitflyer",                                              \
      flag_descriptions::kBraveRewardsBitflyerName,                          \
      flag_descriptions::kBraveRewardsBitflyerDescription, kOsDesktop,       \
