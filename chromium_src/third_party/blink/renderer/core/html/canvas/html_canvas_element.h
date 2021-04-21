@@ -15,6 +15,7 @@
     return toDataURL(script_state, mime_type, ScriptValue(), exception_state); \
   }                                                                            \
                                                                                \
+ private:                                                                      \
   mutable UntracedMember<ExecutionContext> scoped_execution_context_;
 
 #include "../../../../../../../../third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
