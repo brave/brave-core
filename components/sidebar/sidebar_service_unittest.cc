@@ -51,17 +51,23 @@ class SidebarServiceTest : public testing::Test,
     on_item_removed_called_ = true;
   }
 
+  void OnItemMoved(const SidebarItem& item, int from, int to) override {
+    on_item_moved_called_ = true;
+  }
+
   void ClearState() {
     item_index_on_called_ = -1;
     on_item_added_called_ = false;
     on_will_remove_item_called_ = false;
     on_item_removed_called_ = false;
+    on_item_moved_called_ = false;
   }
 
   int item_index_on_called_ = -1;
   bool on_item_added_called_ = false;
   bool on_will_remove_item_called_ = false;
   bool on_item_removed_called_ = false;
+  bool on_item_moved_called_ = false;
 
   TestingPrefServiceSimple prefs_;
   std::unique_ptr<SidebarService> service_;
@@ -108,6 +114,31 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   EXPECT_EQ(5UL, service_->items().size());
   // Default item count is not changed.
   EXPECT_EQ(4UL, service_->GetDefaultSidebarItemsFromCurrentItems().size());
+}
+
+TEST_F(SidebarServiceTest, MoveItem) {
+  EXPECT_EQ(4UL, service_->items().size());
+
+  // Move item at 0 to index 2.
+  SidebarItem item = service_->items()[0];
+  service_->MoveItem(0, 2);
+  EXPECT_EQ(item.url, service_->items()[2].url);
+  EXPECT_TRUE(on_item_moved_called_);
+
+  // Move item at 0 to index 3.
+  item = service_->items()[0];
+  service_->MoveItem(0, 3);
+  EXPECT_EQ(item.url, service_->items()[3].url);
+
+  // Move item at 3 to index 0.
+  item = service_->items()[3];
+  service_->MoveItem(3, 0);
+  EXPECT_EQ(item.url, service_->items()[0].url);
+
+  // Move item at 2 to index 1.
+  item = service_->items()[2];
+  service_->MoveItem(2, 1);
+  EXPECT_EQ(item.url, service_->items()[1].url);
 }
 
 }  // namespace sidebar

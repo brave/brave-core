@@ -57,3 +57,23 @@ source_set("browser_tests") {
     ]
   }
 }
+
+source_set("unit_tests") {
+  if (enable_sidebar) {
+    testonly = true
+
+    sources = [ "sidebar_unittest.cc" ]
+
+    deps = [
+      "//base",
+      "//brave/browser/ui",
+      "//brave/browser/ui/sidebar",
+      "//brave/components/sidebar",
+      "//chrome/test:test_support",
+      "//components/prefs",
+      "//components/sync_preferences:test_support",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
+}
