@@ -79,7 +79,7 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
     // Run the tests
     getTestsToRun(config, suite).forEach((testSuite) => {
       if (options.output) {
-        braveArgs.splice(braveArgs.indexOf('--gtest_output=xml:' + options.output, 1))
+        braveArgs.splice(braveArgs.indexOf('--gtest_output=xml:' + options.output), 1)
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
       }
       if (config.targetOS === 'android') {
