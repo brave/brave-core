@@ -17,8 +17,8 @@ public class HLSThumbnailGenerator {
 
     private let asset: AVAsset
     private let sourceURL: URL
-    private let player: AVPlayer
-    private let videoOutput: AVPlayerItemVideoOutput
+    private let player: AVPlayer?
+    private let videoOutput: AVPlayerItemVideoOutput?
     private var observer: NSKeyValueObservation?
     private var state: State = .loading
     private let queue = DispatchQueue(label: "com.brave.hls-thumbnail-generator")
@@ -29,52 +29,57 @@ public class HLSThumbnailGenerator {
         self.sourceURL = url
         self.completion = completion
         
-        let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: [])
-        self.player = AVPlayer(playerItem: item).then {
-            $0.rate = 0
-        }
-        
-        self.videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: [
-            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
-        ])
-        
-        self.observer = self.player.currentItem?.observe(\.status) { [weak self] item, _ in
-            guard let self = self else { return }
-            
-            if item.status == .readyToPlay && self.state == .loading {
-                self.state = .ready
-                self.generateThumbnail(at: time)
-            } else if item.status == .failed {
-                self.state = .failed
-                DispatchQueue.main.async {
-                    self.completion(nil, nil, "Failed to load item")
-                }
-            }
-        }
-        
         // Load from cache
         if let cachedImage = SDImageCache.shared.imageFromCache(forKey: sourceURL.absoluteString) {
+            self.player = nil
+            self.videoOutput = nil
+            
             DispatchQueue.main.async {
-                if let duration = self.player.currentItem?.duration {
+                if let duration = self.player?.currentItem?.duration {
                     self.completion(cachedImage, CMTimeGetSeconds(duration), nil)
                 } else {
                    self.completion(cachedImage, nil, nil)
                 }
             }
+        } else {
+            let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: [])
+            self.player = AVPlayer(playerItem: item).then {
+                $0.rate = 0
+            }
+            
+            self.videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: [
+                kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
+            ])
+            
+            self.observer = self.player?.currentItem?.observe(\.status) { [weak self] item, _ in
+                guard let self = self else { return }
+                
+                if item.status == .readyToPlay && self.state == .loading {
+                    self.state = .ready
+                    self.generateThumbnail(at: time)
+                } else if item.status == .failed {
+                    self.state = .failed
+                    DispatchQueue.main.async {
+                        self.completion(nil, nil, "Failed to load item")
+                    }
+                }
+            }
+            
+            if let videoOutput = self.videoOutput {
+                self.player?.currentItem?.add(videoOutput)
+            }
         }
-        
-        self.player.currentItem?.add(self.videoOutput)
     }
 
     private func generateThumbnail(at time: TimeInterval) {
         queue.async {
             let time = CMTime(seconds: time, preferredTimescale: 1)
-            self.player.seek(to: time) { [weak self] finished in
+            self.player?.seek(to: time) { [weak self] finished in
                 guard let self = self else { return }
                 
                 if finished {
                     self.queue.async {
-                        if let buffer = self.videoOutput.copyPixelBuffer(forItemTime: time, itemTimeForDisplay: nil) {
+                        if let buffer = self.videoOutput?.copyPixelBuffer(forItemTime: time, itemTimeForDisplay: nil) {
                             self.snapshotPixelBuffer(buffer, atTime: time.seconds)
                         } else {
                             DispatchQueue.main.async {
@@ -101,7 +106,7 @@ public class HLSThumbnailGenerator {
             let result = UIImage(cgImage: cgImage)
             
             DispatchQueue.main.async {
-                if let duration = self.player.currentItem?.duration {
+                if let duration = self.player?.currentItem?.duration {
                     self.completion(result, CMTimeGetSeconds(duration), nil)
                 } else {
                     self.completion(result, nil, nil)

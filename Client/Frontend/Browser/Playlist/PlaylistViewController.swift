@@ -536,6 +536,14 @@ extension ListController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? PlaylistCell else {
+            return
+        }
+        
         let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
         
         cell.do {
@@ -551,7 +559,9 @@ extension ListController: UITableViewDataSource {
         let cacheState = PlaylistManager.shared.state(for: item.pageSrc)
         switch cacheState {
         case .inProgress:
-            cell.detailLabel.text = Strings.PlayList.savingForOfflineLabelTitle
+            getAssetDurationFormatted(item: item) {
+                cell.detailLabel.text = "\($0) - \(Strings.PlayList.savingForOfflineLabelTitle)"
+            }
         case .downloaded:
             if let itemSize = PlaylistManager.shared.sizeOfDownloadedItem(for: item.pageSrc) {
                 getAssetDurationFormatted(item: item) {
@@ -591,8 +601,6 @@ extension ListController: UITableViewDataSource {
                 PlaylistItem.updateItem(newItem)
             }
         }
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
