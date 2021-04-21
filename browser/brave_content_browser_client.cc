@@ -485,6 +485,7 @@ std::string BraveContentBrowserClient::GetEffectiveUserAgent(
     content::BrowserContext* browser_context,
     const GURL& url) {
   std::string ua = GetUserAgent();
+  return ua;
   if (Profile* profile = Profile::FromBrowserContext(browser_context)) {
     auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
     // If shields is off or farbling is off, do not override.
