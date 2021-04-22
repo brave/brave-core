@@ -173,7 +173,6 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
 
  protected:
   net::test_server::EmbeddedTestServer https_server_;
-  base::test::ScopedFeatureList scoped_feature_list_;
   GURL a_site_ephemeral_storage_url_;
   GURL b_site_ephemeral_storage_url_;
   GURL c_site_ephemeral_storage_url_;
@@ -579,6 +578,9 @@ class EphemeralStorageKeepAliveDisabledBrowserTest
     scoped_feature_list_.InitAndDisableFeature(
         net::features::kBraveEphemeralStorageKeepAlive);
   }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
