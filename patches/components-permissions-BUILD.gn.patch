@@ -1,12 +1,12 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 799755985b575a7464897d0969bf383c386d267c..5d024c0b16026a644902ec22cc129b9b930df62d 100644
+index 799755985b575a7464897d0969bf383c386d267c..84620efdf6cfc864cc6942272965b42382685c61 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
 @@ -89,6 +89,7 @@ source_set("permissions") {
      "//ui/base",
      "//url",
    ]
-+  import("//brave/components/permissions/sources.gni") sources += brave_components_permissions_sources deps += brave_components_permissions_deps if (is_android) { deps += [ "//brave/components/permissions/android:jni_headers" ] }
++  import("//brave/components/permissions/sources.gni") sources += brave_components_permissions_sources deps += brave_components_permissions_deps
    if (is_android) {
      sources += [
        "android/android_permission_util.cc",
