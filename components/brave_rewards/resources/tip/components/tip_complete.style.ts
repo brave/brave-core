@@ -64,6 +64,10 @@ export const table = styled.div`
   td:last-of-type {
     text-align: right;
   }
+
+  td .amount {
+    font-weight: 600;
+  }
 `
 
 export const share = styled.div`

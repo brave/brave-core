@@ -130,30 +130,12 @@ class PermissionLifetimeCombobox : public views::Combobox,
 
  private:
   void OnItemSelected() {
-    const auto& lifetime = lifetime_options_[GetSelectedIndex()].lifetime;
-    DLOG(INFO) << "Set permission lifetime "
-               << (lifetime ? lifetime->InSeconds() : -1);
-    for (auto* request : delegate_->Requests()) {
-      request->SetLifetime(lifetime);
-    }
+    SetRequestsLifetime(lifetime_options_, GetSelectedIndex(), delegate_);
   }
 
   permissions::PermissionPrompt::Delegate* const delegate_;
   std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
 };
-
-bool ShouldShowLifetimeOptions(
-    permissions::PermissionPrompt::Delegate* delegate) {
-  if (!base::FeatureList::IsEnabled(
-          permissions::features::kPermissionLifetime)) {
-    return false;
-  }
-
-  const bool all_requests_support_lifetime = std::all_of(
-      delegate->Requests().begin(), delegate->Requests().end(),
-      [](const auto& request) { return request->SupportsLifetime(); });
-  return all_requests_support_lifetime;
-}
 
 void AddPermissionLifetimeComboboxIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,

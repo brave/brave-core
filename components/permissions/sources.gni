@@ -29,3 +29,8 @@ brave_components_permissions_deps = [
   "//ui/base",
   "//url",
 ]
+
+if (is_android) {
+  brave_components_permissions_deps +=
+      [ "//brave/components/permissions/android:jni_headers" ]
+}

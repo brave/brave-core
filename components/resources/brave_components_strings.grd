@@ -570,23 +570,31 @@
       <message name="IDS_BRAVE_REWARDS_TIP_CANCEL_MONTHLY_CONTRIBUTION" desc="">Cancel Monthly Contribution</message>
       <message name="IDS_BRAVE_REWARDS_TIP_CHANGE_AMOUNT" desc="">Change Amount</message>
       <message name="IDS_BRAVE_REWARDS_TIP_CONFIRM_CANCEL" desc="">Confirm Canceling Monthly</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CONTINUE" desc="">Continue</message>
       <message name="IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_AMOUNT" desc="">Contribution amount:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_CANCELED" desc="">Your monthly contribution to this creator has been canceled.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_CURRENTLY_SUPPORTING" desc="">You’re currently supporting this creator</message>
       <message name="IDS_BRAVE_REWARDS_TIP_CURRENT_MONTHLY_CONTRIBUTION" desc="">Current monthly contribution</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CUSTOM_AMOUNT" desc="">Custom Amount</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CUSTOM_MONTHLY_TIP_TEXT" desc="">Your monthly support will be</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CUSTOM_TIP_AMOUNT" desc="">Custom tip amount</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CUSTOM_TIP_TEXT" desc="">You are about to tip</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ERROR_HAS_OCCURRED" desc="">A wild bug has appeared</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ERROR_SERVER_CONNECTION" desc="">Server connection error</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ERROR_TRY_AGAIN" desc="">Please close and reopen the tipping banner to try again.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_EXAMPLE_TIP_AMOUNT" desc="">e.g. <ph name="AMOUNT">$1<ex>12.75</ex></ph></message>
+      <message name="IDS_BRAVE_REWARDS_TIP_MINIMUM_TIP_AMOUNT" desc="">Minimum tip amount is <ph name="AMOUNT">$1<ex>0.25</ex></ph> <ph name="CURRENCY">$2<ex>BAT</ex></ph></message>
       <message name="IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET" desc="">Monthly contribution has been set.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE" desc="">Next contribution date:</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_POINTS" desc="">Not enough points.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS" desc="">Not enough tokens. Please <ph name="LINK_BEGIN">$1</ph>add funds<ph name="LINK_END">$2</ph>.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP" desc="">One Time Tip</message>
       <message name="IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT" desc="">One time tip amount:</message>
       <message name="IDS_BRAVE_REWARDS_TIP_OPT_IN_REQUIRED" desc="">Hold on, you can’t tip yet</message>
-      <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER" desc="">[[user]]’s post</message>
-      <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER" desc="">[[user]]’s tweet</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER" desc=""><ph name="USER">$1</ph>’s post</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER" desc=""><ph name="USER">$1</ph>’s tweet</message>
       <message name="IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO" desc="">Sorry to see you go…</message>
       <message name="IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR" desc="">Support this creator</message>
-      <message name="IDS_BRAVE_REWARDS_TIP_TERMS_OF_SERVICE" desc="">By proceeding, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph> and <ph name="LINK_BEGIN">$3</ph>Privacy Policy<ph name="LINK_END">$4</ph>.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT" desc="">Thanks for the support!</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one time tip has been sent.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>
@@ -594,7 +602,7 @@
 
       <!-- WebUI rewards onboarding resources -->
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_BRAVE_REWARDS" desc="">Brave Rewards</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_DETAIL_LINKS" desc=""><ph name="LINK_BEGIN">$1</ph>Take a quick tour<ph name="LINK_END">$2</ph> or <ph name="LINK_BEGIN">$3</ph>learn more<ph name="LINK_END">$4</ph> for details.</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_DETAIL_LINKS" desc=""><ph name="TOUR_LINK_BEGIN">$1</ph>Take a quick tour<ph name="TOUR_LINK_END">$2</ph> or <ph name="LEARN_LINK_BEGIN">$3</ph>learn more<ph name="LEARN_LINK_END">$4</ph> for details.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER" desc="">Earn Tokens &amp; Give Back</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER" desc="">Maybe Later</message>
@@ -606,7 +614,7 @@
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER" desc="">(from your ads earnings)</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">Start using Brave Rewards</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR" desc="">Take a quick tour</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">By proceeding, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph> and <ph name="LINK_BEGIN">$3</ph>Privacy Policy<ph name="LINK_END">$4</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_HEADER" desc="">Tip with Brave rewards</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TIP_TEXT" desc="">By using Brave rewards, you will start to gain BAT that you can use to tip creators.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK" desc="">Go Back</message>
@@ -761,8 +769,6 @@
       <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
       <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="">No activities yet…</message>
       <message name="IDS_BRAVE_UI_NO_THANK_YOU" desc="">No, thank you</message>
-      <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="">Not enough [[currency]].</message>
-      <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS_LINK" desc="">Not enough [[currency]]. Please</message>
       <message name="IDS_BRAVE_UI_OFF" desc="">off</message>
       <message name="IDS_BRAVE_UI_OK" desc="">ok</message>
       <message name="IDS_BRAVE_UI_ON" desc="">on</message>
@@ -965,7 +971,7 @@
       <message name="IDS_REWARDS_WIDGET_SERVICE_TEXT"
         desc="Small-print for enabling Brave Rewards on the New Tab Page"
       >
-        By clicking Start using Brave Rewards, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph> and <ph name="LINK_BEGIN">$3</ph>Privacy Policy<ph name="LINK_END">$4</ph>.
+        By clicking Start using Brave Rewards, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
       </message>
       <message name="IDS_REWARDS_WIDGET_ESTIMATED_EARNINGS" desc="">Estimated earnings so far this month</message>
       <message name="IDS_REWARDS_WIDGET_MONTHLY_TIPS" desc="">Tips and contributions this month</message>

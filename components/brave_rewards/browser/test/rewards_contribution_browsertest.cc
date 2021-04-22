@@ -299,6 +299,18 @@ IN_PROC_BROWSER_TEST_F(
       1);
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       TipVerifiedPublisherWithCustomAmount) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
+
+  contribution_->TipPublisher(
+      rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
+      rewards_browsertest_util::TipAction::OneTime, 1, 0, 1.25);
+}
+
 // https://github.com/brave/brave-browser/issues/12607
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,

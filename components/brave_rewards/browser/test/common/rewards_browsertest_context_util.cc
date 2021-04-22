@@ -133,8 +133,8 @@ void WaitForElementToContain(
     const std::string& selector,
     const std::string& substring) {
   DCHECK(context);
-  auto script = kWaitForElementToAppearScript +
-      content::JsReplace(R"(
+  auto script =
+      kWaitForElementToAppearScript + content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
             const TIMEOUT_SECONDS = 5;
             const selector = $1;
@@ -144,7 +144,7 @@ void WaitForElementToContain(
             try {
               let element = await waitForElementToAppear(selector);
 
-              currentText = element.innerText;
+              currentText = element.innerText.replace(/\xa0/g, ' ');
               if (currentText.indexOf(substring) !== -1) {
                 resolve(true);
                 return;
@@ -164,7 +164,7 @@ void WaitForElementToContain(
                   return;
                 }
 
-                currentText = element.innerText;
+                currentText = element.innerText.replace(/\xa0/g, ' ');
                 if (currentText.indexOf(substring) !== -1) {
                   clearTimeout(timerID);
                   observer.disconnect();
@@ -178,8 +178,7 @@ void WaitForElementToContain(
             }
           });
       )",
-      selector,
-      substring);
+                                                         selector, substring);
 
   auto result = EvalJs(
       context,

@@ -77,7 +77,8 @@ void RewardsBrowserTestContribution::TipPublisher(
     const GURL& url,
     rewards_browsertest_util::TipAction tip_action,
     int32_t number_of_contributions,
-    int32_t selection) {
+    int32_t selection,
+    double custom_amount) {
   bool should_contribute = number_of_contributions > 0;
   const std::string publisher = url.host();
   // we shouldn't be adding publisher to AC list,
@@ -95,18 +96,42 @@ void RewardsBrowserTestContribution::TipPublisher(
       context_helper_->OpenSiteBanner(tip_action);
   ASSERT_TRUE(site_banner_contents);
 
-  auto tip_options = rewards_browsertest_util::GetSiteBannerTipOptions(
-          site_banner_contents);
-  const double amount = tip_options.at(selection);
+  double amount = 0.0;
 
-  // Select the tip amount (default is 1.000 BAT)
-  std::string amount_selector = base::StringPrintf(
-      "[data-test-id=tip-amount-options] [data-option-index='%u'] button",
-      selection);
+  if (custom_amount > 0) {
+    amount = custom_amount;
+    rewards_browsertest_util::WaitForElementThenClick(
+        site_banner_contents, "[data-test-id=custom-tip-button]");
 
-  rewards_browsertest_util::WaitForElementThenClick(
-      site_banner_contents,
-      amount_selector);
+    rewards_browsertest_util::WaitForElementToAppear(
+        site_banner_contents, "[data-test-id=custom-amount-input]");
+
+    constexpr char set_input_script[] = R"(
+        const input = document.querySelector(
+          '[data-test-id=custom-amount-input]');
+        input.value = $1;
+        input.blur();
+    )";
+
+    ASSERT_TRUE(ExecJs(site_banner_contents,
+                       content::JsReplace(set_input_script, amount),
+                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                       content::ISOLATED_WORLD_ID_CONTENT_END));
+
+    rewards_browsertest_util::WaitForElementThenClick(
+        site_banner_contents, "[data-test-id=form-submit-button]");
+  } else {
+    amount = rewards_browsertest_util::GetSiteBannerTipOptions(
+        site_banner_contents)[selection];
+
+    // Select the tip amount (default is 1.000 BAT)
+    std::string amount_selector = base::StringPrintf(
+        "[data-test-id=tip-amount-options] [data-option-index='%u'] button",
+        selection);
+
+    rewards_browsertest_util::WaitForElementThenClick(site_banner_contents,
+                                                      amount_selector);
+  }
 
   // Send the tip
   rewards_browsertest_util::WaitForElementThenClick(

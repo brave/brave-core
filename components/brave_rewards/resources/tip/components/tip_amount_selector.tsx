@@ -8,7 +8,7 @@ import { ButtonSwitch } from './button_switch'
 
 import * as style from './tip_amount_selector.style'
 
-interface TipAmountOption {
+export interface TipAmountOption {
   value: number
   amount?: React.ReactNode
   currency: React.ReactNode

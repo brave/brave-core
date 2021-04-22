@@ -4,14 +4,13 @@
 
 import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
-import { boolean, select, text, object, number } from '@storybook/addon-knobs'
+import { boolean, select, text } from '@storybook/addon-knobs'
 // Components
 import {
   Box,
   DisabledContent,
   Alert,
   MainToggle,
-  Donate,
   List,
   ListToken,
   Tokens,
@@ -19,7 +18,6 @@ import {
   Amount,
   ToggleTips,
   Tooltip,
-  MediaBox,
   Tab
 } from '../components'
 
@@ -31,12 +29,6 @@ const favicon = require('./img/brave-favicon.png')
 const dummyClick = () => {
   console.log(dummyClick)
 }
-
-const donationAmounts = [
-  { tokens: '1.0', converted: '0.30', selected: false },
-  { tokens: '5.0', converted: '1.50', selected: false },
-  { tokens: '10.0', converted: '3.00', selected: false }
-]
 
 export default {
   title: 'Rewards/Other/Desktop',
@@ -114,34 +106,6 @@ export const mainToggle = () => {
 }
 
 mainToggle.storyName = 'Main Toggle'
-
-export const donate = withState({ donationAmounts, currentAmount: '5.0' }, (store) => {
-  const onDonate = () => {
-    console.log('onDonate')
-  }
-
-  const onAmountSelection = (tokens: string) => {
-    store.set({ currentAmount: tokens })
-  }
-
-  return (
-    <div style={{ background: '#696fdc' }}>
-      <Donate
-        type={'one-time'}
-        donateType={select<any>('Type', { big: 'big', small: 'small' }, 'small')}
-        balance={number('Balance ', 5)}
-        donationAmounts={object('Donations', store.state.donationAmounts)}
-        onDonate={onDonate}
-        title={'Donation amount'}
-        actionText={text('Action text', 'Send my Donation')}
-        onAmountSelection={onAmountSelection}
-        currentAmount={text('Current amount', store.state.currentAmount)}
-      />
-    </div>
-  )
-})
-
-donate.storyName = 'Donate'
 
 export const list = () => {
   return (
@@ -300,19 +264,6 @@ export const tooltip = () => {
 }
 
 tooltip.storyName = 'Tooltip'
-
-export const mediaBox = () => {
-  const mediaProvider = select<any>('Provider', { twitter: 'twitter', reddit: 'reddit' }, 'twitter')
-  return (
-    <MediaBox
-      mediaType={mediaProvider}
-      mediaText={text('Media text', 'This is my text.')}
-      mediaTimetext={mediaProvider === 'reddit' ? text('Reddit Text', '3 months ago') : ''}
-      mediaTimestamp={mediaProvider === 'twitter' ? number('Timestamp in seconds', 46420000) : 0}
-    />
-  )
-}
-mediaBox.storyName = 'Media Box'
 
 export const tab = withState({ tabIndexSelected: 0 }, (store) => {
   const onSwitch = () => {
