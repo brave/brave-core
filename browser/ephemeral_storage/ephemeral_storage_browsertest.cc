@@ -261,7 +261,6 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        NavigatingClearsEphemeralStorageAfterKeepAlive) {
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(WaitForLoadStop(web_contents));
 
   SetValuesInFrames(web_contents, "a.com value", "from=a.com");
 
@@ -280,9 +279,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // Navigate away and then navigate back to the original site.
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
-  ASSERT_TRUE(WaitForLoadStop(web_contents));
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
-  ASSERT_TRUE(WaitForLoadStop(web_contents));
 
   // within keepalive values should be the same
   ValuesFromFrames before_timeout = GetValuesFromFrames(web_contents);
@@ -301,7 +298,6 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // after keepalive values should be cleared
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
-  ASSERT_TRUE(WaitForLoadStop(web_contents));
 
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
@@ -310,7 +306,6 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   run_loop.Run();
 
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
-  ASSERT_TRUE(WaitForLoadStop(web_contents));
 
   ValuesFromFrames after_timeout = GetValuesFromFrames(web_contents);
   EXPECT_EQ("a.com value", after_timeout.main_frame.local_storage);
