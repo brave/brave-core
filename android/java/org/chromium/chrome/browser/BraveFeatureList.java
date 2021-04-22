@@ -18,7 +18,7 @@ public abstract class BraveFeatureList {
     public static final String ENABLE_TAB_GROUPS = "enable-tab-groups";
     public static final String ENABLE_TAB_GROUPS_DISABLED_VALUE = "2";
     public static final String ENABLE_TAB_GRID = "enable-tab-grid-layout";
-    public static final String ENABLE_TAB_GRID_DISABLED_VALUE = "7";
+    public static final String ENABLE_TAB_GRID_DISABLED_VALUE = "8";
 
     public static void enableFeature(String featureName, boolean enabled, String disabledValue) {
         BraveFeatureListJni.get().enableFeature(featureName, enabled, disabledValue);
