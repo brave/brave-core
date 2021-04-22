@@ -27,6 +27,8 @@ public class BraveClassAdapter {
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);
+        chain = new BravePermissionDialogDelegateClassAdapter(chain);
+        chain = new BravePermissionDialogModelClassAdapter(chain);
         chain = new BraveQueryTileSectionClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveSettingsLauncherImplClassAdapter(chain);

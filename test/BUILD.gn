@@ -929,6 +929,7 @@ if (is_android) {
       "//components/browser_ui/widget/android:java",
       "//components/embedder_support/android:browser_context_java",
       "//components/password_manager/core/browser:password_manager_java_enums",
+      "//components/permissions/android:java",
       "//components/search_engines/android:java",
       "//components/sync/android:sync_java",
       "//third_party/android_support_test_runner:runner_java",

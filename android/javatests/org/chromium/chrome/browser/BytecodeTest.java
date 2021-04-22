@@ -139,6 +139,13 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate"));
         Assert.assertTrue(classExists(
                 "org/chromium/components/browser_ui/site_settings/SingleCategorySettings"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/permissions/BravePermissionDialogDelegate"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/permissions/PermissionDialogDelegate"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/permissions/BravePermissionDialogModel"));
+        Assert.assertTrue(classExists("org/chromium/components/permissions/PermissionDialogModel"));
     }
 
     @Test
@@ -200,6 +207,11 @@ public class BytecodeTest {
                 "showBookmarkBottomSheet", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
                 "addBookmarkAndShowSnackbar", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/permissions/BravePermissionDialogModel",
+                        "getModel", false, null));
+        Assert.assertTrue(methodExists("org/chromium/components/permissions/PermissionDialogModel",
+                "getModel", false, null));
     }
 
     @Test
