@@ -14,5 +14,9 @@ extern const char kBraveWalletPrefVersion[];
 extern const char kBraveWalletWeb3Provider[];
 extern const char kLoadCryptoWalletsOnStartup[];
 extern const char kOptedIntoCryptoWallets[];
+extern const char kBraveWalletPasswordEncryptorSalt[];
+extern const char kBraveWalletPasswordEncryptorNonce[];
+extern const char kBraveWalletEncryptedMnemonic[];
+extern const char kBraveWalletDefaultKeyringAccountNum[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
