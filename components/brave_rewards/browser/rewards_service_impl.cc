@@ -3409,8 +3409,7 @@ bool RewardsServiceImpl::IsRewardsEnabled() const {
   if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled))
     return true;
 
-  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-  if (ads_service && ads_service->IsEnabled())
+  if (profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled))
     return true;
 
   return false;
