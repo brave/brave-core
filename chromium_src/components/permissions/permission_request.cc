@@ -6,7 +6,9 @@
 #include "components/permissions/permission_request.h"
 
 #define PermissionRequest PermissionRequest_ChromiumImpl
+#define IsDuplicateOf IsDuplicateOf_Unused
 #include "../../../../components/permissions/permission_request.cc"
+#undef IsDuplicateOf
 #undef PermissionRequest
 
 namespace permissions {
@@ -27,6 +29,12 @@ void PermissionRequest::SetLifetime(base::Optional<base::TimeDelta> lifetime) {
 const base::Optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
   DCHECK(SupportsLifetime());
   return lifetime_;
+}
+
+// Needs to be synced with upstream's PermissionRequest::IsDuplicateOf().
+bool PermissionRequest::IsDuplicateOf(PermissionRequest* other_request) const {
+  return GetRequestType() == other_request->GetRequestType() &&
+         GetOrigin() == other_request->GetOrigin();
 }
 
 }  // namespace permissions
