@@ -22,6 +22,7 @@ if (!is_android) {
     ]
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
     deps = [
+      ":ephemeral_storage",
       "//base",
       "//brave/components/brave_shields/browser:browser",
       "//brave/components/brave_shields/common:common",

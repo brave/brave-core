@@ -78,8 +78,8 @@ const char kBraveEphemeralStorageDescription[] =
 const char kBraveEphemeralStorageKeepAliveName[] =
     "Ephemeral Storage Keep Alive";
 const char kBraveEphemeralStorageKeepAliveDescription[] =
-    "Keep ephemeral storage partitions alive for 30 seconds after last tab "
-    "close";
+    "Keep ephemeral storage partitions alive for a specified time after all "
+    "tabs for that origin are closed";
 const char kBravePermissionLifetimeName[] = "Permission Lifetime";
 const char kBravePermissionLifetimeDescription[] =
     "Enables the option to choose a time period after which a permission will "

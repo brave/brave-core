@@ -10,8 +10,7 @@
 
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
-#include "base/no_destructor.h"
-#include "base/optional.h"
+#include "base/ranges/ranges.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
@@ -32,8 +31,6 @@ namespace {
 // TODO(bridiver) - share these constants with DOMWindowStorage
 constexpr char kSessionStorageSuffix[] = "/ephemeral-session-storage";
 constexpr char kLocalStorageSuffix[] = "/ephemeral-local-storage";
-
-const base::TimeDelta kStorageKeepAliveDelay = base::TimeDelta::FromSeconds(30);
 
 base::TimeDelta g_storage_keep_alive_for_testing = base::TimeDelta::Min();
 
@@ -68,6 +65,11 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {}
 
+void EphemeralStorageTabHelper::WebContentsDestroyed() {
+  keep_alive_tld_ephemeral_lifetime_list_.clear();
+  keep_alive_local_storage_list_.clear();
+}
+
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame())
@@ -76,6 +78,7 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     return;
 
   const GURL& new_url = navigation_handle->GetURL();
+
   std::string new_domain = net::URLToEphemeralStorageDomain(new_url);
   std::string previous_domain =
       net::URLToEphemeralStorageDomain(web_contents()->GetLastCommittedURL());
@@ -83,6 +86,28 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     return;
 
   CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
+}
+
+void EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive(
+    const content::TLDEphemeralLifetimeKey& key) {
+  ClearLocalStorageKeepAlive(
+      StringToSessionStorageId(key.second, kLocalStorageSuffix));
+
+  auto it = base::ranges::find_if(keep_alive_tld_ephemeral_lifetime_list_,
+                                  [&key](const auto& tld_ephermal_liftime) {
+                                    return tld_ephermal_liftime->key() == key;
+                                  });
+  if (it != keep_alive_tld_ephemeral_lifetime_list_.end())
+    keep_alive_tld_ephemeral_lifetime_list_.erase(it);
+}
+
+void EphemeralStorageTabHelper::ClearLocalStorageKeepAlive(
+    const std::string& id) {
+  auto it = base::ranges::find_if(
+      keep_alive_local_storage_list_,
+      [&id](const auto& local_storage) { return local_storage->id() == id; });
+  if (it != keep_alive_local_storage_list_.end())
+    keep_alive_local_storage_list_.erase(it);
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
@@ -96,6 +121,27 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
       content::SiteInstance::CreateForURL(browser_context, new_url);
   auto* partition =
       BrowserContext::GetStoragePartition(browser_context, site_instance.get());
+
+  if (base::FeatureList::IsEnabled(
+          net::features::kBraveEphemeralStorageKeepAlive) &&
+      tld_ephemeral_lifetime_) {
+    keep_alive_tld_ephemeral_lifetime_list_.push_back(tld_ephemeral_lifetime_);
+    keep_alive_local_storage_list_.push_back(local_storage_namespace_);
+
+    // keep the ephemeral storage alive for some time to handle redirects
+    // including meta refresh or other page driven "redirects" that end up back
+    // at the original origin
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(
+            &EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive,
+            weak_factory_.GetWeakPtr(), tld_ephemeral_lifetime_->key()),
+        g_storage_keep_alive_for_testing.is_min()
+            ? base::TimeDelta::FromSeconds(
+                  net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds
+                      .Get())
+            : g_storage_keep_alive_for_testing);
+  }
 
   // This will fetch a session storage namespace for this storage partition
   // and storage domain. If another tab helper is already using the same
@@ -128,21 +174,6 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
                     WebContents::FromRenderFrameHost(rfh)),
                 kSessionStorageSuffix))
           : base::nullopt);
-
-  if (base::FeatureList::IsEnabled(
-          net::features::kBraveEphemeralStorageKeepAlive)) {
-    // keep the ephemeral storage alive for some time to handle redirects
-    // including meta refresh or other page driven "redirects" that end up back
-    // at the original origin
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce([](scoped_refptr<content::TLDEphemeralLifetime>
-                              tld_ephemeral_lifetime) {},
-                       tld_ephemeral_lifetime_),
-        g_storage_keep_alive_for_testing.is_min()
-            ? kStorageKeepAliveDelay
-            : g_storage_keep_alive_for_testing);
-  }
 
   tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
       browser_context, partition, new_domain);
