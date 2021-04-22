@@ -60,7 +60,6 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/common/content_client.h"
 #include "content/public/common/content_switches.h"
-#include "content/public/common/user_agent.h"
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -136,77 +135,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 namespace {
-
-#if defined(OS_MAC)
-int32_t GetMinimumBugfixVersion(int32_t os_major_version,
-                                int32_t os_minor_version) {
-  if (os_major_version == 10) {
-    switch (os_minor_version) {
-      case 9:
-      case 10:
-        return 5;
-      case 11:
-      case 12:
-      case 13:
-      case 14:
-        return 6;
-      case 15:
-        return 7;
-    }
-  } else if (os_major_version == 11) {
-    switch (os_minor_version) {
-      case 0:
-        return 1;
-      case 1:
-        return 0;
-    }
-  }
-  return 0;
-}
-#endif
-
-std::string GetUserAgentPlatform() {
-#if defined(OS_WIN)
-  return "";
-#elif defined(OS_MAC)
-  return "Macintosh; ";
-#elif defined(USE_X11)
-  return "X11; ";
-#elif defined(OS_ANDROID)
-  return "Linux; ";
-#elif defined(OS_POSIX)
-  return "Unknown; ";
-#endif
-}
-
-std::string GetMinimalProduct() {
-  return version_info::GetProductNameAndVersionForUserAgent();
-}
-
-std::string GetMinimalOSVersion() {
-  std::string os_version;
-
-#if defined(OS_MAC)
-  int32_t os_major_version = 0;
-  int32_t os_minor_version = 0;
-  int32_t os_bugfix_version = 0;
-  base::SysInfo::OperatingSystemVersionNumbers(
-      &os_major_version, &os_minor_version, &os_bugfix_version);
-  // change from upstream: compute bugfix version
-  os_bugfix_version =
-      std::max(os_bugfix_version,
-               GetMinimumBugfixVersion(os_major_version, os_minor_version));
-  base::StringAppendF(&os_version, "%d_%d_%d", os_major_version,
-                      os_minor_version, os_bugfix_version);
-#else
-  // change from upstream: exclude Android model
-  os_version =
-      content::GetOSVersion(content::IncludeAndroidBuildNumber::Exclude,
-                            content::IncludeAndroidModel::Exclude);
-#endif
-
-  return os_version;
-}
 
 bool HandleURLReverseOverrideRewrite(GURL* url,
                                      content::BrowserContext* browser_context) {
@@ -511,36 +439,6 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     (*referrer)->url = new_referrer.url;
     (*referrer)->policy = new_referrer.policy;
   }
-}
-
-std::string BraveContentBrowserClient::GetEffectiveUserAgent(
-    content::BrowserContext* browser_context,
-    const GURL& url) {
-  std::string ua = GetUserAgent();
-  if (Profile* profile = Profile::FromBrowserContext(browser_context)) {
-    auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
-    // If shields is off or farbling is off, do not override.
-    // Also, we construct real user agent two different ways, through the
-    // browser client's higher level utility function and through direct
-    // functions. If they differ, there's some sort of override happening. Maybe
-    // the end user is forcing the user agent via command line flags. Or maybe
-    // they turned on the "freeze user agent" flag. Whatever it is, we want to
-    // respect it.
-    if (GetBraveShieldsEnabled(map, url) &&
-        (GetFingerprintingControlType(map, url) != ControlType::ALLOW) &&
-        (ua == content::BuildUserAgentFromProduct(
-                   version_info::GetProductNameAndVersionForUserAgent()))) {
-      std::string minimal_os_info;
-      base::StringAppendF(&minimal_os_info, "%s%s",
-                          GetUserAgentPlatform().c_str(),
-                          content::BuildOSCpuInfoFromOSVersionAndCpuType(
-                              GetMinimalOSVersion(), content::BuildCpuInfo())
-                              .c_str());
-      ua = content::BuildUserAgentFromOSAndProduct(minimal_os_info,
-                                                   GetMinimalProduct());
-    }
-  }
-  return ua;
 }
 
 GURL BraveContentBrowserClient::GetEffectiveURL(

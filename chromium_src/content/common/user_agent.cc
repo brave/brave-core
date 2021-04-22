@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "content/browser/worker_host/shared_worker_host.h"
+#include "content/public/common/user_agent.h"
 
-#define GetUserAgent() \
-  GetEffectiveUserAgent(GetProcessHost()->GetBrowserContext(), instance_.url())
+#define BRAVE_GET_ANDROID_OS_INFO \
+  include_android_model = IncludeAndroidModel::Exclude;
 
-#include "../../../../../content/browser/worker_host/shared_worker_host.cc"
+#include "../../../../content/common/user_agent.cc"
+
+#undef BRAVE_GET_ANDROID_OS_INFO

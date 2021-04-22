@@ -102,13 +102,12 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;
-  static bool HandleURLOverrideRewrite(GURL* url,
+  static bool HandleURLOverrideRewrite(
+      GURL* url,
       content::BrowserContext* browser_context);
   std::vector<std::unique_ptr<content::NavigationThrottle>>
-      CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
+  CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
 
-  std::string GetEffectiveUserAgent(content::BrowserContext* browser_context,
-                                    const GURL& url) override;
   void ExposeInterfacesToRenderer(
       service_manager::BinderRegistry* registry,
       blink::AssociatedInterfaceRegistry* associated_registry,
