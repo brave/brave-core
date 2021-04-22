@@ -16,8 +16,8 @@
 #include "base/containers/queue.h"
 #include "base/files/file_util.h"
 #include "base/memory/scoped_refptr.h"
-#include "brave/components/ipfs/import/import_utils.h"
 #include "brave/components/ipfs/import/imported_data.h"
+#include "brave/components/ipfs/ipfs_network_utils.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/browser_context.h"
 #include "storage/browser/blob/blob_data_builder.h"
@@ -61,9 +61,6 @@ class IpfsImportWorkerBase {
   void StartImport(BlobBuilderCallback blob_builder_callback,
                    const std::string& content_type,
                    const std::string& filename);
-  std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
-      const GURL& gurl,
-      const std::string& method);
   scoped_refptr<network::SharedURLLoaderFactory> GetUrlLoaderFactory();
 
   virtual void NotifyImportCompleted(ipfs::ImportState state);

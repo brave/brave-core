@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/import/import_utils.h"
+#include "brave/components/ipfs/ipfs_network_utils.h"
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/callback.h"
 #include "base/check.h"
@@ -14,7 +15,35 @@
 #include "base/guid.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "net/base/mime_util.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "storage/browser/blob/blob_data_builder.h"
+
+namespace {
+
+net::NetworkTrafficAnnotationTag GetIpfsNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ipfs_service", R"(
+          semantics {
+            sender: "IPFS service"
+            description:
+              "This service is used to communicate with IPFS daemon "
+              "on behalf of the user interacting with the actions in brave://ipfs."
+            trigger:
+              "Triggered by actions in brave://ipfs."
+            data:
+              "Options of the commands."
+            destination: WEBSITE
+          }
+          policy {
+            cookies_allowed: NO
+            setting:
+              "You can enable or disable this feature in brave://settings."
+            policy_exception_justification:
+              "Not implemented."
+          }
+        )");
+}
+
+}  // namespace
 
 namespace ipfs {
 
@@ -67,6 +96,24 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFile(
   blob_builder->AppendData(post_data_footer);
 
   return blob_builder;
+}
+
+std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
+    const GURL& gurl,
+    const std::string& method,
+    std::unique_ptr<network::ResourceRequest> request) {
+  if (!request)
+    request = std::make_unique<network::ResourceRequest>();
+  request->url = gurl;
+  request->method = method;
+
+  const url::Origin origin = url::Origin::Create(gurl);
+  request->headers.SetHeader(net::HttpRequestHeaders::kOrigin,
+                             origin.Serialize());
+
+  auto url_loader = network::SimpleURLLoader::Create(
+      std::move(request), GetIpfsNetworkTrafficAnnotationTag());
+  return url_loader;
 }
 
 }  // namespace ipfs

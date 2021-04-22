@@ -164,3 +164,29 @@ TEST_F(IPFSJSONParserTest, GetImportResponseFromJSON) {
   // EXPECT_EQ(failed2.name, "");
   ASSERT_EQ(failed2.size, -1);
 }
+
+TEST_F(IPFSJSONParserTest, GetParseKeysFromJSON) {
+  std::unordered_map<std::string, std::string> parsed_keys;
+  std::string response = R"({"Keys" : [)"
+                         R"({"Name":"self","Id":"k51q...wal"},)"
+                         R"({"Name":"MyCustomKey","Id":"k51q...wa1"}]})";
+  ASSERT_TRUE(IPFSJSONParser::GetParseKeysFromJSON(response, &parsed_keys));
+  ASSERT_EQ(parsed_keys.size(), size_t(2));
+  ASSERT_TRUE(parsed_keys.count("self"));
+  ASSERT_TRUE(parsed_keys.count("MyCustomKey"));
+  EXPECT_EQ(parsed_keys["self"], "k51q...wal");
+  EXPECT_EQ(parsed_keys["MyCustomKey"], "k51q...wa1");
+
+  ASSERT_FALSE(IPFSJSONParser::GetParseKeysFromJSON("{}", &parsed_keys));
+  ASSERT_EQ(parsed_keys.size(), size_t(2));
+}
+
+TEST_F(IPFSJSONParserTest, GetParseSingleKeyFromJSON) {
+  std::string name;
+  std::string value;
+  std::string response = R"({"Name":"self","Id":"k51q...wal"})";
+  ASSERT_TRUE(
+      IPFSJSONParser::GetParseSingleKeyFromJSON(response, &name, &value));
+  EXPECT_EQ(name, "self");
+  EXPECT_EQ(value, "k51q...wal");
+}

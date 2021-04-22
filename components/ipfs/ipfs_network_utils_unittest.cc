@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/import/import_utils.h"
+#include "brave/components/ipfs/ipfs_network_utils.h"
 
 #include <memory>
 #include <string>
@@ -16,15 +16,15 @@
 
 namespace ipfs {
 
-class IpfsImportUtilsUnitTest : public testing::Test {
+class IpfsNetwrokUtilsUnitTest : public testing::Test {
  public:
-  IpfsImportUtilsUnitTest() {}
-  ~IpfsImportUtilsUnitTest() override = default;
+  IpfsNetwrokUtilsUnitTest() {}
+  ~IpfsNetwrokUtilsUnitTest() override = default;
 
  private:
 };
 
-TEST_F(IpfsImportUtilsUnitTest, AddMultipartHeaderForUploadWithFileName) {
+TEST_F(IpfsNetwrokUtilsUnitTest, AddMultipartHeaderForUploadWithFileName) {
   const char ref_output[] =
       "--boundary\r\nContent-Disposition: form-data; name=\"value name\"; "
       "filename=\"value\"\r\nContent-Type: content type\r\n\r\n"
@@ -40,7 +40,7 @@ TEST_F(IpfsImportUtilsUnitTest, AddMultipartHeaderForUploadWithFileName) {
   EXPECT_STREQ(ref_output, post_data.c_str());
 }
 
-TEST_F(IpfsImportUtilsUnitTest, BuildFileBlob) {
+TEST_F(IpfsNetwrokUtilsUnitTest, BuildFileBlob) {
   base::FilePath upload_file_path(FILE_PATH_LITERAL("test_file"));
   size_t file_size = 100;
   std::string mime_type = "test/type";
@@ -58,7 +58,7 @@ TEST_F(IpfsImportUtilsUnitTest, BuildFileBlob) {
             storage::BlobDataItem::Type::kBytes);
 }
 
-TEST_F(IpfsImportUtilsUnitTest, FileSizeCalculation) {
+TEST_F(IpfsNetwrokUtilsUnitTest, FileSizeCalculation) {
   base::ScopedTempDir dir;
   ASSERT_TRUE(dir.CreateUniqueTempDir());
   base::FilePath file_path =

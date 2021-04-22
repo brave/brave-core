@@ -45,6 +45,7 @@ source_set("browsertests") {
       "//brave/browser/ipfs/test/ipfs_not_connected_page_browsertest.cc",
       "//brave/browser/ipfs/test/ipfs_onboarding_page_browsertest.cc",
       "//brave/browser/ipfs/test/ipfs_service_browsertest.cc",
+      "//brave/browser/ipfs/test/ipns_keys_manager_browsertest.cc",
       "//brave/browser/net/ipfs_redirect_network_delegate_helper_browsertest.cc",
     ]
 
