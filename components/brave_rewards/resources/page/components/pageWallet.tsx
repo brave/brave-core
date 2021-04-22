@@ -710,7 +710,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   generateMonthlyReport = () => {
-    const { monthlyReport, ui } = this.props.rewardsData
+    const { monthlyReport, ui, externalWallet } = this.props.rewardsData
 
     if (!monthlyReport || monthlyReport.year === -1 || monthlyReport.month === -1) {
       return undefined
@@ -723,6 +723,7 @@ class PageWallet extends React.Component<Props, State> {
         activityRows={this.generateActivityRows()}
         transactionRows={this.generateTransactionRows()}
         months={this.getMonthlyReportDropDown()}
+        walletType={externalWallet ? externalWallet.type : ''}
         onClose={this.onModalActivityToggle}
         onMonthChange={this.onModalActivityAction.bind(this,'onMonthChange')}
       />
