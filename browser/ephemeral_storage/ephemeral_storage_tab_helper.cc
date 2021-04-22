@@ -10,8 +10,7 @@
 
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
-#include "base/no_destructor.h"
-#include "base/optional.h"
+#include "base/ranges/ranges.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
@@ -94,26 +93,22 @@ void EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive(
   ClearLocalStorageKeepAlive(
       StringToSessionStorageId(key.second, kLocalStorageSuffix));
 
-  for (auto it = keep_alive_tld_ephemeral_lifetime_list_.begin();
-       it != keep_alive_tld_ephemeral_lifetime_list_.end(); ++it) {
-    if ((*it)->key() == key) {
-      keep_alive_tld_ephemeral_lifetime_list_.erase(it);
-      return;
-    }
-  }
-  NOTREACHED();
+  auto it = base::ranges::find_if(keep_alive_tld_ephemeral_lifetime_list_,
+                                  [&key](const auto& tld_ephermal_liftime) {
+                                    return tld_ephermal_liftime->key() == key;
+                                  });
+  if (it != keep_alive_tld_ephemeral_lifetime_list_.end())
+    keep_alive_tld_ephemeral_lifetime_list_.erase(it);
 }
 
 void EphemeralStorageTabHelper::ClearLocalStorageKeepAlive(
     const std::string& id) {
-  for (auto it = keep_alive_local_storage_list_.begin();
-       it != keep_alive_local_storage_list_.end(); ++it) {
-    if ((*it)->id() == id) {
-      keep_alive_local_storage_list_.erase(it);
-      return;
-    }
-  }
-  NOTREACHED();
+  auto it = base::ranges::find_if(keep_alive_local_storage_list_,
+                                  [&id](const auto& local_storage) {
+                                    return local_storage->id() == id;
+                                  });
+  if (it != keep_alive_local_storage_list_.end())
+    keep_alive_local_storage_list_.erase(it);
 }
 
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
