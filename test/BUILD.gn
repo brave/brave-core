@@ -380,7 +380,7 @@ test("brave_unit_tests") {
       "//components/crx_file",
       "//components/policy/core/common:test_support",
       "//extensions/browser:test_support",
-      "//extensions/browser/api/web_request",
+      "//extensions/browser",
       "//url",
     ]
   }
