@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/startup/startup_browser_creator.h b/chrome/browser/ui/startup/startup_browser_creator.h
+index 95f6bbefd18d3c2c47f0907f5cb7a7141146e7ea..e947d6b8d7f16f722df5d0af10aa4ab88e8c3130 100644
+--- a/chrome/browser/ui/startup/startup_browser_creator.h
++++ b/chrome/browser/ui/startup/startup_browser_creator.h
+@@ -38,7 +38,7 @@ class StartupBrowserCreator {
+   StartupBrowserCreator();
+   StartupBrowserCreator(const StartupBrowserCreator&) = delete;
+   StartupBrowserCreator& operator=(const StartupBrowserCreator&) = delete;
+-  ~StartupBrowserCreator();
++  virtual ~StartupBrowserCreator();
+ 
+   // Adds a url to be opened during first run. This overrides the standard
+   // tabs shown at first run.
