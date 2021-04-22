@@ -145,9 +145,9 @@ class ADS_EXPORT Ads {
   virtual void OnWalletUpdated(const std::string& payment_id,
                                const std::string& seed) = 0;
 
-  // Should be called when the user model has been updated by
-  // |BraveUserModelInstaller| component
-  virtual void OnUserModelUpdated(const std::string& id) = 0;
+  // Should be called when a resource component has been updated by
+  // |brave_ads::ResourceComponent|
+  virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
   // Should be called to get the ad notification specified by |uuid|. Returns
   // true if the ad notification exists otherwise returns false.

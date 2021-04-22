@@ -56,8 +56,10 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD2(Load, void(const std::string& name, LoadCallback callback));
 
-  MOCK_METHOD2(LoadUserModelForId,
-               void(const std::string& id, LoadCallback callback));
+  MOCK_METHOD3(LoadAdsResource,
+               void(const std::string& id,
+                    const int version,
+                    LoadCallback callback));
 
   MOCK_METHOD3(GetBrowsingHistory,
                void(const int max_count,

@@ -86,7 +86,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "brave/components/brave_user_model/browser/user_model_file_service.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -192,7 +192,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   speedreader_rewriter_service();
 #endif
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-  user_model_file_service();
+  resource_component();
 #endif
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
@@ -392,14 +392,12 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-brave_user_model::UserModelFileService*
-BraveBrowserProcessImpl::user_model_file_service() {
-  if (!user_model_file_service_) {
-    user_model_file_service_.reset(
-        new brave_user_model::UserModelFileService(
-            brave_component_updater_delegate()));
+brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
+  if (!resource_component_) {
+    resource_component_.reset(
+        new brave_ads::ResourceComponent(brave_component_updater_delegate()));
   }
-  return user_model_file_service_.get();
+  return resource_component_.get();
 }
 
 #endif  // BUILDFLAG(BRAVE_ADS_ENABLED)

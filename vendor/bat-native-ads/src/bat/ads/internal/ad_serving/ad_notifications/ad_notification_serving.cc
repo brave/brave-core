@@ -19,7 +19,6 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_values.h"
-#include "bat/ads/internal/ad_targeting/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
@@ -30,6 +29,7 @@
 #include "bat/ads/internal/p2a/p2a.h"
 #include "bat/ads/internal/p2a/p2a_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/internal/time_formatting_util.h"
 

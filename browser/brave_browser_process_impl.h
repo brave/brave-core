@@ -65,8 +65,8 @@ namespace speedreader {
 class SpeedreaderRewriterService;
 }
 
-namespace brave_user_model {
-class UserModelFileService;
+namespace brave_ads {
+class ResourceComponent;
 }
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
@@ -109,7 +109,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service();
 #endif
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-  brave_user_model::UserModelFileService* user_model_file_service();
+  brave_ads::ResourceComponent* resource_component();
 #endif
 
  private:
@@ -168,8 +168,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-  std::unique_ptr<brave_user_model::UserModelFileService>
-      user_model_file_service_;
+  std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
 #endif
 
   SEQUENCE_CHECKER(sequence_checker_);

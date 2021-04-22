@@ -21,6 +21,8 @@ uint16_t GetPurchaseIntentThreshold();
 
 int64_t GetPurchaseIntentTimeWindowInSeconds();
 
+int GetPurchaseIntentResourceVersion();
+
 }  // namespace features
 }  // namespace ads
 

@@ -252,9 +252,8 @@ void BatAdsImpl::ToggleFlagAd(
   std::move(callback).Run(creative_instance_id, flagged_result);
 }
 
-void BatAdsImpl::OnUserModelUpdated(
-    const std::string& id) {
-  ads_->OnUserModelUpdated(id);
+void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
+  ads_->OnResourceComponentUpdated(id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -62,9 +62,9 @@ class AdsClientMojoBridge
       const int32_t line,
       const int32_t verbose_level,
       const std::string& message) override;
-  void LoadUserModelForId(
-      const std::string& id,
-      LoadCallback callback) override;
+  void LoadAdsResource(const std::string& id,
+                       const int version,
+                       LoadCallback callback) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,
@@ -164,10 +164,9 @@ class AdsClientMojoBridge
     Callback callback_;
   };
 
-  static void OnLoadUserModelForId(
-      CallbackHolder<LoadCallback>* holder,
-      const ads::Result result,
-      const std::string& value);
+  static void OnLoadAdsResource(CallbackHolder<LoadCallback>* holder,
+                                const ads::Result result,
+                                const std::string& value);
 
   static void OnGetBrowsingHistory(
       CallbackHolder<GetBrowsingHistoryCallback>* holder,

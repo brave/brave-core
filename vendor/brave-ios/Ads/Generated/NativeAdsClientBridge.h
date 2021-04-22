@@ -18,7 +18,9 @@
 - (bool)canShowBackgroundNotifications;
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;
-- (void)loadUserModelForId:(const std::string &)id callback:(ads::LoadCallback)callback;
+- (void)loadAdsResource:(const std::string&)id
+                version:(const int)version
+               callback:(ads::LoadCallback)callback;
 - (void)getBrowsingHistory:(const int)max_count
                    forDays:(const int)days_ago
                   callback:(ads::GetBrowsingHistoryCallback)callback;

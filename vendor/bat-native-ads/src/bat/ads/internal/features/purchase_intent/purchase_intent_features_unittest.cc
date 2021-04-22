@@ -40,4 +40,13 @@ TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTimeWindowInSeconds) {
   EXPECT_EQ(expected_window, features::GetPurchaseIntentTimeWindowInSeconds());
 }
 
+TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentResource) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(1, features::GetPurchaseIntentResourceVersion());
+}
+
 }  // namespace ads

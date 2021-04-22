@@ -17,6 +17,8 @@ bool IsTextClassificationEnabled();
 
 int GetTextClassificationProbabilitiesHistorySize();
 
+int GetTextClassificationResourceVersion();
+
 }  // namespace features
 }  // namespace ads
 
