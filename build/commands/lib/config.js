@@ -325,6 +325,7 @@ Config.prototype.buildArgs = function () {
     } else if (this.channel === 'nightly') {
       args.android_channel = 'canary'
       args.chrome_public_manifest_package = 'com.brave.browser_nightly'
+      args.exclude_unwind_tables = false
     }
 
     args.target_android_base = this.targetAndroidBase
