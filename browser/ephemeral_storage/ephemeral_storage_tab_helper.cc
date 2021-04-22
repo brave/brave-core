@@ -103,10 +103,9 @@ void EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive(
 
 void EphemeralStorageTabHelper::ClearLocalStorageKeepAlive(
     const std::string& id) {
-  auto it = base::ranges::find_if(keep_alive_local_storage_list_,
-                                  [&id](const auto& local_storage) {
-                                    return local_storage->id() == id;
-                                  });
+  auto it = base::ranges::find_if(
+      keep_alive_local_storage_list_,
+      [&id](const auto& local_storage) { return local_storage->id() == id; });
   if (it != keep_alive_local_storage_list_.end())
     keep_alive_local_storage_list_.erase(it);
 }
