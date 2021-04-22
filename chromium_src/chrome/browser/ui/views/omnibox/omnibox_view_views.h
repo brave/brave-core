@@ -6,10 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_VIEW_VIEWS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_VIEW_VIEWS_H_
 
-#define BRAVE_OMNIBOX_VIEW_VIEWS_H friend class BraveOmniboxViewViews;
+#define OnOmniboxPaste                \
+  NotUsed();                          \
+  friend class BraveOmniboxViewViews; \
+  void OnOmniboxPaste
 
 #include "../../../../../../../chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 
-#undef BRAVE_OMNIBOX_VIEW_VIEWS_H
+#undef OnOmniboxPaste
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_VIEW_VIEWS_H_
