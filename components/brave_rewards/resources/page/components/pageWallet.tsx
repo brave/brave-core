@@ -851,6 +851,7 @@ class PageWallet extends React.Component<Props, State> {
               onReset={this.onModalBackupOnReset}
               internalFunds={this.getInternalFunds()}
               error={this.getBackupErrorMessage()}
+              onlyAnonWallet={onlyAnonWallet}
             />
             : null
         }
