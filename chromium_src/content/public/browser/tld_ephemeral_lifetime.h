@@ -53,7 +53,7 @@ class CONTENT_EXPORT TLDEphemeralLifetime
   // Add a callback to a callback list to be called on destruction.
   void RegisterOnDestroyCallback(OnDestroyCallback callback);
 
-  const TLDEphemeralLifetimeKey& key() { return key_; }
+  const TLDEphemeralLifetimeKey& key() const { return key_; }
 
  private:
   friend class RefCounted<TLDEphemeralLifetime>;
