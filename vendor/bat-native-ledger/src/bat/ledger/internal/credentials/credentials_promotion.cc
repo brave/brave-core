@@ -9,9 +9,11 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/credentials/credentials_promotion.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -532,6 +534,11 @@ void CredentialsPromotion::OnDrainTokens(
   if (!redeem.contribution_id.empty()) {
     id = redeem.contribution_id;
   }
+
+  ledger_->database()->SaveEventLog(
+      log::kTokensDrained,
+      base::StringPrintf("tokens: %lu, drain_id: %s", token_id_list.size(),
+                         drain_id.c_str()));
 
   DCHECK(redeem.type == type::RewardsType::TRANSFER);
   ledger_->database()->MarkUnblindedTokensAsSpent(
