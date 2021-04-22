@@ -57,6 +57,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/browser_url_handler.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/common/content_client.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/common/user_agent.h"
@@ -241,10 +242,18 @@ void BindCosmeticFiltersResources(
 }
 
 void BindBraveSearchHost(
+    int process_id,
     mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
+  content::RenderProcessHost* render_process_host =
+      content::RenderProcessHost::FromID(process_id);
+  if (!render_process_host)
+    return;
+
+  content::BrowserContext* context = render_process_host->GetBrowserContext();
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_search::BraveSearchHost>(
-          g_brave_browser_process->shared_url_loader_factory()),
+          content::BrowserContext::GetDefaultStoragePartition(context)
+              ->GetURLLoaderFactoryForBrowserProcess()),
       std::move(receiver));
 }
 
@@ -297,8 +306,9 @@ void BraveContentBrowserClient::ExposeInterfacesToRenderer(
     content::RenderProcessHost* render_process_host) {
   ChromeContentBrowserClient::ExposeInterfacesToRenderer(
       registry, associated_registry, render_process_host);
-  registry->AddInterface(base::BindRepeating(&BindBraveSearchHost),
-                         content::GetUIThreadTaskRunner({}));
+  registry->AddInterface(
+      base::BindRepeating(&BindBraveSearchHost, render_process_host->GetID()),
+      content::GetUIThreadTaskRunner({}));
 }
 
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
