@@ -226,12 +226,12 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile,
 
 AdsServiceImpl::~AdsServiceImpl() = default;
 
-void AdsServiceImpl::OnUserModelUpdated(const std::string& id) {
+void AdsServiceImpl::OnResourceComponentUpdated(const std::string& id) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnUserModelUpdated(id);
+  bat_ads_->OnResourceComponentUpdated(id);
 }
 
 bool AdsServiceImpl::IsSupportedLocale() const {
@@ -304,7 +304,7 @@ void AdsServiceImpl::ChangeLocale(const std::string& locale) {
     return;
   }
 
-  RegisterUserModelComponentsForLocale(locale);
+  RegisterResourceComponentsForLocale(locale);
 
   bat_ads_->ChangeLocale(locale);
 }
@@ -555,7 +555,7 @@ void AdsServiceImpl::Shutdown() {
 
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
-  g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
+  g_brave_browser_process->resource_component()->RemoveObserver(this);
 
   url_loaders_.clear();
 
@@ -843,7 +843,7 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const bool success) {
     return;
   }
 
-  g_brave_browser_process->user_model_file_service()->AddObserver(this);
+  g_brave_browser_process->resource_component()->AddObserver(this);
 
   BackgroundHelper::GetInstance()->AddObserver(this);
 
@@ -858,7 +858,7 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(const bool success) {
   OnWalletUpdated();
 
   const std::string locale = GetLocale();
-  RegisterUserModelComponentsForLocale(locale);
+  RegisterResourceComponentsForLocale(locale);
 
   MaybeShowMyFirstAdNotification();
 }
@@ -1115,10 +1115,10 @@ void AdsServiceImpl::NotificationTimedOut(const std::string& uuid) {
   CloseNotification(uuid);
 }
 
-void AdsServiceImpl::RegisterUserModelComponentsForLocale(
+void AdsServiceImpl::RegisterResourceComponentsForLocale(
     const std::string& locale) {
-  g_brave_browser_process->user_model_file_service()
-      ->RegisterComponentsForLocale(locale);
+  g_brave_browser_process->resource_component()->RegisterComponentsForLocale(
+      locale);
 }
 
 void AdsServiceImpl::OnURLRequestStarted(
@@ -1896,17 +1896,18 @@ void AdsServiceImpl::Save(const std::string& name,
                      std::move(callback)));
 }
 
-void AdsServiceImpl::LoadUserModelForId(const std::string& id,
-                                        ads::LoadCallback callback) {
+void AdsServiceImpl::LoadAdsResource(const std::string& id,
+                                     const int version,
+                                     ads::LoadCallback callback) {
   const base::Optional<base::FilePath> path =
-      g_brave_browser_process->user_model_file_service()->GetPathForId(id);
+      g_brave_browser_process->resource_component()->GetPath(id, version);
 
   if (!path) {
     callback(ads::Result::FAILED, "");
     return;
   }
 
-  VLOG(1) << "Loading user model from " << path.value();
+  VLOG(1) << "Loading ads resource from " << path.value();
 
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,

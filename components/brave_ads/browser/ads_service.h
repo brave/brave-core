@@ -109,7 +109,7 @@ class AdsService : public KeyedService {
 
   virtual void OnTabClosed(const SessionID& tab_id) = 0;
 
-  virtual void OnUserModelUpdated(const std::string& id) = 0;
+  virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
   virtual void OnNewTabPageAdEvent(
       const std::string& uuid,

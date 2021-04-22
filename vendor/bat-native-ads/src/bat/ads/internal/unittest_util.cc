@@ -617,21 +617,22 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock) {
       }));
 }
 
-void MockLoadUserModelForId(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadUserModelForId(_, _))
-      .WillByDefault(Invoke([](const std::string& id, LoadCallback callback) {
-        base::FilePath path = GetTestPath();
-        path = path.AppendASCII("user_models");
-        path = path.AppendASCII(id);
+void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, LoadAdsResource(_, _, _))
+      .WillByDefault(Invoke(
+          [](const std::string& id, const int version, LoadCallback callback) {
+            base::FilePath path = GetTestPath();
+            path = path.AppendASCII("resources");
+            path = path.AppendASCII(id);
 
-        std::string value;
-        if (!base::ReadFileToString(path, &value)) {
-          callback(FAILED, value);
-          return;
-        }
+            std::string value;
+            if (!base::ReadFileToString(path, &value)) {
+              callback(FAILED, value);
+              return;
+            }
 
-        callback(SUCCESS, value);
-      }));
+            callback(SUCCESS, value);
+          }));
 }
 
 void MockLoadResourceForId(const std::unique_ptr<AdsClientMock>& mock) {

@@ -15,6 +15,9 @@ namespace {
 const char kFeatureName[] = "TextClassification";
 const char kFieldTrialParameterPageProbabilitiesHistorySize[] =
     "page_probabilities_history_size";
+const char kFieldTrialParameterResourceVersion[] =
+    "text_classification_resource_version";
+const int kDefaultResourceVersion = 1;
 }  // namespace
 
 const base::Feature kTextClassification{kFeatureName,
@@ -29,6 +32,12 @@ int GetTextClassificationProbabilitiesHistorySize() {
       kTextClassification, kFieldTrialParameterPageProbabilitiesHistorySize,
       ad_targeting::processor::
           kDefaultTextClassificationProbabilitiesHistorySize);
+}
+
+int GetTextClassificationResourceVersion() {
+  return GetFieldTrialParamByFeatureAsInt(kTextClassification,
+                                          kFieldTrialParameterResourceVersion,
+                                          kDefaultResourceVersion);
 }
 
 }  // namespace features

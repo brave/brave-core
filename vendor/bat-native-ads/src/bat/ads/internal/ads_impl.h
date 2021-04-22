@@ -14,7 +14,6 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
-#include "bat/ads/internal/ad_targeting/resources/frequency_capping/anti_targeting_info.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
@@ -22,6 +21,7 @@
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_info.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
 
@@ -137,7 +137,7 @@ class AdsImpl : public Ads,
 
   void OnWalletUpdated(const std::string& id, const std::string& seed) override;
 
-  void OnUserModelUpdated(const std::string& id) override;
+  void OnResourceComponentUpdated(const std::string& id) override;
 
   bool GetAdNotification(const std::string& uuid,
                          AdNotificationInfo* ad_notification) override;

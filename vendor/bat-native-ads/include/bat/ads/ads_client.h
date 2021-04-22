@@ -88,11 +88,10 @@ class ADS_EXPORT AdsClient {
   // to |FAILED|. |value| should contain the persisted value
   virtual void Load(const std::string& name, LoadCallback callback) = 0;
 
-  // Load user model for id from persistent storage. The callback takes 2
-  // arguments - |Result| should be set to |SUCCESS| if successful otherwise
-  // should be set to |FAILED|. |value| should contain the user model
-  virtual void LoadUserModelForId(const std::string& name,
-                                  LoadCallback callback) = 0;
+  // Load ads resource for name and version from persistent storage.
+  virtual void LoadAdsResource(const std::string& name,
+                               const int version,
+                               LoadCallback callback) = 0;
 
   // Get |max_count| browsing history results for past |days_ago| days from
   // |HistoryService| and return as list of strings

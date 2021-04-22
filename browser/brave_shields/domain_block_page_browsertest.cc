@@ -135,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndProceed) {
 
   // Simulate click on "Proceed anyway" button. This should navigate to the
   // originally requested page.
-  ClickAndWaitForNavigation("proceed-button");
+  ClickAndWaitForNavigation("primary-button");
   ASSERT_FALSE(IsShowingInterstitial());
   base::string16 expected_title = base::ASCIIToUTF16("OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -180,7 +180,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedAndReload) {
 
   // Simulate click on "Proceed anyway" button. This should navigate to the
   // originally requested page.
-  ClickAndWaitForNavigation("proceed-button");
+  ClickAndWaitForNavigation("primary-button");
   ASSERT_FALSE(IsShowingInterstitial());
   base::string16 expected_title = base::ASCIIToUTF16("OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -213,7 +213,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
 
   // Simulate click on "Proceed anyway" button. This should navigate to the
   // originally requested page.
-  ClickAndWaitForNavigation("proceed-button");
+  ClickAndWaitForNavigation("primary-button");
   ASSERT_FALSE(IsShowingInterstitial());
   base::string16 expected_title = base::ASCIIToUTF16("OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -252,7 +252,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
 
   // Simulate click on "Proceed anyway" button. This should save the "don't warn
   // again" choice and navigate to the originally requested page.
-  ClickAndWaitForNavigation("proceed-button");
+  ClickAndWaitForNavigation("primary-button");
   WaitForAdBlockServiceThreads();
   ASSERT_FALSE(IsShowingInterstitial());
   base::string16 expected_title = base::ASCIIToUTF16("OK");
@@ -292,7 +292,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndGoBack) {
 
   // Simulate click on "Go back" button. This should return to previous page on
   // a.com.
-  ClickAndWaitForNavigation("primary-button");
+  ClickAndWaitForNavigation("back-button");
   ASSERT_FALSE(IsShowingInterstitial());
   EXPECT_EQ(web_contents()->GetURL().host(), "a.com");
 }

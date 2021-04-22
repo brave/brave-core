@@ -18,12 +18,12 @@
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
-#include "bat/ads/internal/ad_targeting/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
-#include "bat/ads/internal/ad_targeting/resources/behavioral/purchase_intent/purchase_intent_resource.h"
-#include "bat/ads/internal/ad_targeting/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
+#include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
+#include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"
@@ -86,13 +86,13 @@ class BatAdsAdTargetingTest
     bandit_processor_ = std::make_unique<processor::EpsilonGreedyBandit>();
 
     purchase_intent_resource_ = std::make_unique<resource::PurchaseIntent>();
-    purchase_intent_resource_->LoadForLocale("en-US");
+    purchase_intent_resource_->Load();
     purchase_intent_processor_ = std::make_unique<processor::PurchaseIntent>(
         purchase_intent_resource_.get());
 
     text_classification_resource_ =
         std::make_unique<resource::TextClassification>();
-    text_classification_resource_->LoadForLocale("en-US");
+    text_classification_resource_->Load();
     text_classification_processor_ =
         std::make_unique<processor::TextClassification>(
             text_classification_resource_.get());

@@ -355,7 +355,6 @@ source_set("browser_process") {
   if (brave_ads_enabled) {
     deps += [
       "//brave/components/brave_ads/browser",
-      "//brave/components/brave_user_model/browser",
       "//components/dom_distiller/core",
     ]
   }

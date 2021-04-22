@@ -172,23 +172,22 @@ void BatAdsClientMojoBridge::Save(
       std::move(callback)));
 }
 
-void OnLoadUserModelForId(
-    const ads::LoadCallback& callback,
-    const int32_t result,
-    const std::string& value) {
+void OnLoadAdsResource(const ads::LoadCallback& callback,
+                       const int32_t result,
+                       const std::string& value) {
   callback(ToAdsResult(result), value);
 }
 
-void BatAdsClientMojoBridge::LoadUserModelForId(
-    const std::string& id,
-    ads::LoadCallback callback) {
+void BatAdsClientMojoBridge::LoadAdsResource(const std::string& id,
+                                             const int version,
+                                             ads::LoadCallback callback) {
   if (!connected()) {
     callback(ads::Result::FAILED, "");
     return;
   }
 
-  bat_ads_client_->LoadUserModelForId(id,
-      base::BindOnce(&OnLoadUserModelForId, std::move(callback)));
+  bat_ads_client_->LoadAdsResource(
+      id, version, base::BindOnce(&OnLoadAdsResource, std::move(callback)));
 }
 
 void OnGetBrowsingHistory(const ads::GetBrowsingHistoryCallback& callback,

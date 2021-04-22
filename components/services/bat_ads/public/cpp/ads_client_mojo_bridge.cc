@@ -124,7 +124,7 @@ void AdsClientMojoBridge::Log(
 }
 
 // static
-void AdsClientMojoBridge::OnLoadUserModelForId(
+void AdsClientMojoBridge::OnLoadAdsResource(
     CallbackHolder<LoadCallback>* holder,
     const ads::Result result,
     const std::string& value) {
@@ -137,14 +137,15 @@ void AdsClientMojoBridge::OnLoadUserModelForId(
   delete holder;
 }
 
-void AdsClientMojoBridge::LoadUserModelForId(
-    const std::string& id,
-    LoadCallback callback) {
+void AdsClientMojoBridge::LoadAdsResource(const std::string& id,
+                                          const int version,
+                                          LoadCallback callback) {
   // this gets deleted in OnLoad
   auto* holder =
       new CallbackHolder<LoadCallback>(AsWeakPtr(), std::move(callback));
-  ads_client_->LoadUserModelForId(
-      id, std::bind(AdsClientMojoBridge::OnLoadUserModelForId, holder, _1, _2));
+  ads_client_->LoadAdsResource(
+      id, version,
+      std::bind(AdsClientMojoBridge::OnLoadAdsResource, holder, _1, _2));
 }
 
 // static

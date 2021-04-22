@@ -20,15 +20,9 @@
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_components.h"
-#include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_components.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
-#include "bat/ads/internal/ad_targeting/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
-#include "bat/ads/internal/ad_targeting/resources/behavioral/purchase_intent/purchase_intent_resource.h"
-#include "bat/ads/internal/ad_targeting/resources/contextual/text_classification/text_classification_resource.h"
-#include "bat/ads/internal/ad_targeting/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
@@ -48,6 +42,12 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
+#include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
+#include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/resources/country_components.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/language_components.h"
 #include "bat/ads/internal/search_engine/search_providers.h"
 #include "bat/ads/internal/string_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
@@ -123,8 +123,8 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
   subdivision_targeting_->MaybeFetchForLocale(locale);
-  text_classification_resource_->LoadForLocale(locale);
-  purchase_intent_resource_->LoadForLocale(locale);
+  text_classification_resource_->Load();
+  purchase_intent_resource_->Load();
   anti_targeting_resource_->Load();
 }
 
@@ -268,16 +268,14 @@ void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
   BLOG(1, "Successfully set wallet");
 }
 
-void AdsImpl::OnUserModelUpdated(const std::string& id) {
-  if (kTextClassificationComponentIds.find(id) !=
-      kTextClassificationComponentIds.end()) {
-    text_classification_resource_->LoadForId(id);
-  } else if (kPurchaseIntentComponentIds.find(id) !=
-             kPurchaseIntentComponentIds.end()) {
-    purchase_intent_resource_->LoadForId(id);
+void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
+  if (kComponentLanguageIds.find(id) != kComponentLanguageIds.end()) {
+    text_classification_resource_->Load();
+  } else if (kComponentCountryIds.find(id) != kComponentCountryIds.end()) {
+    purchase_intent_resource_->Load();
     anti_targeting_resource_->Load();
   } else {
-    BLOG(0, "Unknown " << id << " user model");
+    BLOG(0, "Unknown resource for " << id);
   }
 }
 

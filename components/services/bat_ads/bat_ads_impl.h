@@ -140,8 +140,7 @@ class BatAdsImpl :
       const bool flagged,
       ToggleFlagAdCallback callback) override;
 
-  void OnUserModelUpdated(
-      const std::string& id) override;
+  void OnResourceComponentUpdated(const std::string& id) override;
 
  private:
   // Workaround to pass base::OnceCallback into std::bind
