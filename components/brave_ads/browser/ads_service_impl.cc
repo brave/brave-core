@@ -40,7 +40,7 @@
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
 #include "brave/browser/brave_ads/notifications/platform_bridge.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
@@ -1073,7 +1073,7 @@ void AdsServiceImpl::ClearAdsServiceForNotificationHandler() {
 }
 
 void AdsServiceImpl::OpenNewTabWithUrl(const std::string& url) {
-  if (g_brave_browser_process->IsShuttingDown()) {
+  if (g_browser_process->IsShuttingDown()) {
     return;
   }
 

@@ -6,7 +6,7 @@
 #include "brave/components/brave_shields/browser/tracking_protection_helper.h"
 
 #include "base/task/post_task.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"

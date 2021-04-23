@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "brave/common/pref_names.h"

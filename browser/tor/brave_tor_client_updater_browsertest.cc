@@ -9,7 +9,7 @@
 #include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/extensions/extension_browsertest.h"

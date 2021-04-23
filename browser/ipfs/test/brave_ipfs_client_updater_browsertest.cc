@@ -6,7 +6,7 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"

@@ -11,11 +11,12 @@
 
 #include "base/task/post_task.h"
 #include "base/threading/scoped_blocking_call.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "content/public/browser/browser_thread.h"
+#include "net/base/net_errors.h"
 
 using content::BrowserThread;
 

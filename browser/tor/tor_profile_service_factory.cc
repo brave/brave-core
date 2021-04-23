@@ -8,9 +8,10 @@
 #include <memory>
 
 #include "base/path_service.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_profile_service_impl.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
@@ -38,14 +39,14 @@ TorProfileServiceFactory* TorProfileServiceFactory::GetInstance() {
 // static
 void TorProfileServiceFactory::SetTorDisabled(bool disabled) {
   if (g_brave_browser_process)
-    g_brave_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled,
+    g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled,
                                                        disabled);
 }
 
 // static
 bool TorProfileServiceFactory::IsTorDisabled() {
   if (g_brave_browser_process)
-    return g_brave_browser_process->local_state()->GetBoolean(
+    return g_browser_process->local_state()->GetBoolean(
         tor::prefs::kTorDisabled);
   return false;
 }

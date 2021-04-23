@@ -7,7 +7,7 @@
 
 #include "base/android/jni_string.h"
 #include "base/feature_list.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/build/android/jni_headers/BraveFeatureList_jni.h"
 #include "chrome/browser/about_flags.h"
 #include "components/flags_ui/feature_entry.h"

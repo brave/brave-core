@@ -13,7 +13,7 @@
 #include "base/base64url.h"
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/url_constants.h"

@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/pref_names.h"
