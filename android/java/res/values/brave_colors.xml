@@ -97,6 +97,8 @@
 
     <color name="brave_stats_title_color">#868E96</color>
     <color name="brave_stats_text_color">#212529</color>
+    <color name="brave_stats_text_light_color">#212529</color>
+    <color name="brave_stats_text_dark_color">#F0F2FF</color>
     <color name="ntp_stats_bg_color">#212529</color>
     <color name="ntp_stats_text_color">#C2C4CF</color>
 

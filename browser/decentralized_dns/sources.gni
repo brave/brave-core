@@ -1,0 +1,24 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
+
+brave_browser_decentralized_dns_sources = []
+brave_browser_decentralized_dns_deps = []
+
+if (decentralized_dns_enabled) {
+  brave_browser_decentralized_dns_sources += [
+    "//brave/browser/decentralized_dns/decentralized_dns_service_delegate_impl.cc",
+    "//brave/browser/decentralized_dns/decentralized_dns_service_delegate_impl.h",
+    "//brave/browser/decentralized_dns/decentralized_dns_service_factory.cc",
+    "//brave/browser/decentralized_dns/decentralized_dns_service_factory.h",
+  ]
+
+  brave_browser_decentralized_dns_deps += [
+    "//base",
+    "//brave/components/decentralized_dns",
+    "//components/keyed_service/content",
+  ]
+}

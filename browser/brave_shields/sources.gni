@@ -1,0 +1,21 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+brave_browser_brave_shields_sources = [
+  "//brave/browser/brave_shields/ad_block_pref_service_factory.cc",
+  "//brave/browser/brave_shields/ad_block_pref_service_factory.h",
+  "//brave/browser/brave_shields/cookie_pref_service_factory.cc",
+  "//brave/browser/brave_shields/cookie_pref_service_factory.h",
+]
+
+brave_browser_brave_shields_deps = [
+  "//base",
+  "//brave/components/brave_shields/browser",
+  "//brave/components/brave_shields/common",
+  "//chrome/browser:browser_process",
+  "//chrome/browser/profiles:profile",
+  "//components/content_settings/core/browser",
+  "//components/keyed_service/content",
+]

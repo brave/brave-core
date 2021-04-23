@@ -1,0 +1,31 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
+
+brave_browser_gemini_sources = []
+brave_browser_gemini_deps = []
+
+if (gemini_enabled) {
+  brave_browser_gemini_sources += [
+    "//brave/browser/gemini/gemini_protocol_handler.cc",
+    "//brave/browser/gemini/gemini_protocol_handler.h",
+    "//brave/browser/gemini/gemini_service_factory.cc",
+    "//brave/browser/gemini/gemini_service_factory.h",
+  ]
+
+  brave_browser_gemini_deps += [
+    "//base",
+    "//brave/common",
+    "//brave/components/gemini/browser",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+    "//ui/base",
+    "//url",
+  ]
+}

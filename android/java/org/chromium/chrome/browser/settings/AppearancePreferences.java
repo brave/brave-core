@@ -45,6 +45,7 @@ public class AppearancePreferences extends BravePreferenceFragment
                 ContextUtils.getApplicationContext());
         if (isTablet) {
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+            removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
         }
 
         if (!NightModeUtils.isNightModeSupported()) {
@@ -68,20 +69,21 @@ public class AppearancePreferences extends BravePreferenceFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ChromeSwitchPreference hideBraveRewardsIconPref = (ChromeSwitchPreference) findPreference(PREF_HIDE_BRAVE_REWARDS_ICON);
+        ChromeSwitchPreference hideBraveRewardsIconPref =
+                (ChromeSwitchPreference) findPreference(PREF_HIDE_BRAVE_REWARDS_ICON);
         if (hideBraveRewardsIconPref != null) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            hideBraveRewardsIconPref.setChecked(sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false));
+            hideBraveRewardsIconPref.setChecked(
+                    sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false));
             hideBraveRewardsIconPref.setOnPreferenceChangeListener(this);
         }
 
-        Preference nightModeEnabled =
-                findPreference(PREF_BRAVE_NIGHT_MODE_ENABLED);
+        Preference nightModeEnabled = findPreference(PREF_BRAVE_NIGHT_MODE_ENABLED);
         nightModeEnabled.setOnPreferenceChangeListener(this);
         if (nightModeEnabled instanceof ChromeSwitchPreference) {
             ((ChromeSwitchPreference) nightModeEnabled)
                     .setChecked(ChromeFeatureList.isEnabled(
-                        BraveFeatureList.FORCE_WEB_CONTENTS_DARK_MODE));
+                            BraveFeatureList.FORCE_WEB_CONTENTS_DARK_MODE));
         }
 
         Preference enableBottomToolbar =
@@ -93,8 +95,7 @@ public class AppearancePreferences extends BravePreferenceFragment
             boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                     ContextUtils.getApplicationContext());
             ((ChromeSwitchPreference) enableBottomToolbar)
-                    .setChecked(!isTablet
-                            && BottomToolbarConfiguration.isBottomToolbarEnabled());
+                    .setChecked(!isTablet && BottomToolbarConfiguration.isBottomToolbarEnabled());
         }
 
         Preference enableTabGroups = findPreference(PREF_BRAVE_ENABLE_TAB_GROUPS);
@@ -129,8 +130,8 @@ public class AppearancePreferences extends BravePreferenceFragment
             SharedPreferences prefs = ContextUtils.getAppSharedPreferences();
             Boolean originalStatus = BottomToolbarConfiguration.isBottomToolbarEnabled();
             prefs.edit()
-                    .putBoolean(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
-                            !originalStatus)
+                    .putBoolean(
+                            BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus)
                     .apply();
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_HIDE_BRAVE_REWARDS_ICON.equals(key)) {
@@ -140,14 +141,14 @@ public class AppearancePreferences extends BravePreferenceFragment
             sharedPreferencesEditor.apply();
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_BRAVE_NIGHT_MODE_ENABLED.equals(key)) {
-            BraveFeatureList.enableFeature(BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue,
-                    BraveFeatureList.ENABLE_FORCE_DARK_DISABLED_VALUE);
+            BraveFeatureList.enableFeature(
+                    BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
-            BraveFeatureList.enableFeature(BraveFeatureList.ENABLE_TAB_GROUPS, (boolean) newValue,
-                    BraveFeatureList.ENABLE_TAB_GROUPS_DISABLED_VALUE);
-            BraveFeatureList.enableFeature(BraveFeatureList.ENABLE_TAB_GRID, (boolean) newValue,
-                    BraveFeatureList.ENABLE_TAB_GRID_DISABLED_VALUE);
+            BraveFeatureList.enableFeature(
+                    BraveFeatureList.ENABLE_TAB_GROUPS, (boolean) newValue, false);
+            BraveFeatureList.enableFeature(
+                    BraveFeatureList.ENABLE_TAB_GRID, (boolean) newValue, false);
             SharedPreferencesManager.getInstance().writeBoolean(
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, true);
             BraveRelaunchUtils.askForRelaunch(getActivity());

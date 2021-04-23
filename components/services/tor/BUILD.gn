@@ -1,7 +1,7 @@
 source_set("tor") {
   visibility = [
-    "//brave/utility:*",
-    "//brave/test:*"
+    "//brave/test:*",
+    "//chrome/utility:*",
   ]
 
   sources = [
@@ -10,8 +10,8 @@ source_set("tor") {
   ]
 
   deps = [
+    "public/interfaces",
     "//base",
     "//mojo/public/cpp/bindings",
-    "public/interfaces",
   ]
 }

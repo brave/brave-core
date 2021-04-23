@@ -14,6 +14,9 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_mock_time_message_loop_task_runner.h"
 #include "base/test/test_mock_time_task_runner.h"
+#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/time/time.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/permissions/mock_permission_lifetime_prompt_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
@@ -46,6 +49,7 @@ using testing::_;
 namespace permissions {
 
 namespace {
+const int kKeepAliveInterval = 2;
 const char kPreTestDataFileName[] = "pre_test_data";
 }  // namespace
 
@@ -273,8 +277,9 @@ class PermissionLifetimeManagerWithOriginMonitorBrowserTest
     : public PermissionLifetimeManagerBrowserTest {
  public:
   PermissionLifetimeManagerWithOriginMonitorBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        net::features::kBraveEphemeralStorage);
+    ephemeral_storage::EphemeralStorageTabHelper::
+        SetKeepAliveTimeDelayForTesting(
+            base::TimeDelta::FromSeconds(kKeepAliveInterval));
   }
 
  protected:
@@ -305,10 +310,21 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
 
-  // Navigate to another domain. It should reset the permission.
+  // Navigate to another domain. It should not reset the permission.
   const GURL& other_url =
       https_server()->GetURL("other_host.com", "/empty.html");
   ui_test_utils::NavigateToURL(browser(), other_url);
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ALLOW);
+
+  // Permission Should be reset after the timeout
+  base::RunLoop run_loop;
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(),
+      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+  run_loop.Run();
+
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
@@ -348,10 +364,22 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
             ContentSetting::CONTENT_SETTING_ALLOW);
   EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
 
-  // Navigate to another domain. It should reset the permission.
+  // Navigate to another domain. It should keep the permission.
   const GURL& other_url =
       https_server()->GetURL("other_host.com", "/empty.html");
   ui_test_utils::NavigateToURL(browser(), other_url);
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ALLOW);
+  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+
+  // Permission Should be reset after the timeout
+  base::RunLoop run_loop;
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(),
+      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+  run_loop.Run();
+
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
@@ -391,10 +419,22 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
             ContentSetting::CONTENT_SETTING_ALLOW);
   EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
 
-  // Navigate to another domain in PSL. It should reset the permission.
+  // Navigate to another domain in PSL. It should keep the permission.
   const GURL& other_url =
       https_server()->GetURL("user2.github.io", "/empty.html");
   ui_test_utils::NavigateToURL(browser(), other_url);
+  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                url, url, ContentSettingsType::GEOLOCATION),
+            ContentSetting::CONTENT_SETTING_ALLOW);
+  EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
+
+  // Permission Should be reset after the timeout
+  base::RunLoop run_loop;
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(),
+      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+  run_loop.Run();
+
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);

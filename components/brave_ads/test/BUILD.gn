@@ -173,7 +173,7 @@ source_set("brave_ads_unit_tests") {
 
     deps = [
       "//base/test:test_support",
-      "//brave/browser:browser_process",
+      "//brave/browser",
       "//brave/browser/brave_ads",
       "//brave/components/brave_ads/browser:browser",
       "//brave/components/brave_ads/browser:testutil",

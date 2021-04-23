@@ -62,10 +62,6 @@ source_set("profiles") {
   if (enable_tor) {
     deps += [ "//brave/browser/tor" ]
   }
-
-  if (decentralized_dns_enabled) {
-    deps += [ "//brave/browser/decentralized_dns" ]
-  }
 }
 
 source_set("util") {
