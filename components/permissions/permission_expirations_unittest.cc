@@ -6,6 +6,7 @@
 #include "brave/components/permissions/permission_expirations.h"
 
 #include <algorithm>
+#include <memory>
 
 #include "base/stl_util.h"
 #include "base/strings/strcat.h"
@@ -41,6 +42,20 @@ constexpr base::StringPiece kOneTypeTwoExpirationsPrefValue = R"({
     ],
     "$4": [
       {"ro": "$5"}
+    ]
+  }
+})";
+
+constexpr base::StringPiece kOneTypeThreeExpirationsPrefValue = R"({
+  "$1": {
+    "$2": [
+      {"ro": "$3"}
+    ],
+    "$4": [
+      {"ro": "$5"}
+    ],
+    "$6": [
+      {"ro": "$7"}
     ]
   }
 })";
@@ -89,7 +104,15 @@ class PermissionExpirationsTest : public testing::Test {
   void AddExpiringPermission(ContentSettingsType content_type,
                              base::TimeDelta time_delta,
                              const GURL& origin) {
-    expirations()->AddExpiringPermission(content_type, now_ + time_delta,
+    expirations()->AddExpiringPermission(
+        content_type, PermissionExpirationKey(now_ + time_delta),
+        PermissionOrigins(origin, origin));
+  }
+
+  void AddExpiringPermission(ContentSettingsType content_type,
+                             const GURL& origin) {
+    expirations()->AddExpiringPermission(content_type,
+                                         PermissionExpirationKey(origin.host()),
                                          PermissionOrigins(origin, origin));
   }
 
@@ -105,9 +128,16 @@ class PermissionExpirationsTest : public testing::Test {
                   pref_value_template, subst, nullptr)));
   }
 
+  static std::string TimeKey(const base::Time& time) {
+    return std::to_string(time.ToDeltaSinceWindowsEpoch().InMicroseconds());
+  }
+
+  static std::string DomainKey(const GURL& url) { return url.host(); }
+
  protected:
   const GURL kOrigin{"https://example.com"};
-  const GURL kOrigin2{"https://brave.com"};
+  const GURL kOrigin2{"https://brave1.com"};
+  const GURL kOrigin3{"https://brave2.com"};
   const base::TimeDelta kLifetime{base::TimeDelta::FromSeconds(5)};
   const base::TimeDelta kOneSecond{base::TimeDelta::FromSeconds(1)};
 
@@ -126,10 +156,7 @@ TEST_F(PermissionExpirationsTest, AddAndRemoveAfterExpiration) {
   // Check data stored in prefs.
   CheckExpirationsPref(
       FROM_HERE, kOneTypeOneExpirationPrefValue,
-      {"notifications",
-       std::to_string(
-           expiration_time.ToDeltaSinceWindowsEpoch().InMicroseconds()),
-       kOrigin.spec()});
+      {"notifications", TimeKey(expiration_time), kOrigin.spec()});
 
   auto removed = expirations()->RemoveExpiredPermissions(expiration_time);
   EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
@@ -156,13 +183,8 @@ TEST_F(PermissionExpirationsTest, AddAndRemoveExpiring) {
   // Check data stored in prefs.
   CheckExpirationsPref(
       FROM_HERE, kOneTypeTwoExpirationsPrefValue,
-      {"notifications",
-       std::to_string(
-           expiration_time2.ToDeltaSinceWindowsEpoch().InMicroseconds()),
-       kOrigin2.spec(),
-       std::to_string(
-           expiration_time.ToDeltaSinceWindowsEpoch().InMicroseconds()),
-       kOrigin.spec()});
+      {"notifications", TimeKey(expiration_time2), kOrigin2.spec(),
+       TimeKey(expiration_time), kOrigin.spec()});
 
   EXPECT_TRUE(expirations()->RemoveExpiringPermissions(
       ContentSettingsType::NOTIFICATIONS,
@@ -173,10 +195,7 @@ TEST_F(PermissionExpirationsTest, AddAndRemoveExpiring) {
   // Check data stored in prefs.
   CheckExpirationsPref(
       FROM_HERE, kOneTypeOneExpirationPrefValue,
-      {"notifications",
-       std::to_string(
-           expiration_time.ToDeltaSinceWindowsEpoch().InMicroseconds()),
-       kOrigin.spec()});
+      {"notifications", TimeKey(expiration_time), kOrigin.spec()});
 
   EXPECT_TRUE(expirations()->RemoveExpiringPermissions(
       ContentSettingsType::NOTIFICATIONS,
@@ -202,13 +221,8 @@ TEST_F(PermissionExpirationsTest, RemoveExpiredDifferentTypes) {
   // Check data stored in prefs.
   CheckExpirationsPref(
       FROM_HERE, kTwoTypesOneExpirationPrefValue,
-      {"notifications",
-       std::to_string(
-           expiration_time.ToDeltaSinceWindowsEpoch().InMicroseconds()),
-       kOrigin.spec(), "geolocation",
-       std::to_string(
-           expiration_time.ToDeltaSinceWindowsEpoch().InMicroseconds()),
-       kOrigin.spec()});
+      {"notifications", TimeKey(expiration_time), kOrigin.spec(), "geolocation",
+       TimeKey(expiration_time), kOrigin.spec()});
 
   auto removed = expirations()->RemoveExpiredPermissions(expiration_time);
   EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
@@ -244,6 +258,121 @@ TEST_F(PermissionExpirationsTest, ClearInvalidContentType) {
   EXPECT_TRUE(expirations()->expirations().empty());
 
   // Prefs data should be empty.
+  CheckExpirationsPref(FROM_HERE, "{}");
+}
+
+TEST_F(PermissionExpirationsTest, AddRemoveDomainExpiration) {
+  AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, kOrigin);
+  AddExpiringPermission(ContentSettingsType::GEOLOCATION, kOrigin2);
+
+  // Check data stored in prefs.
+  CheckExpirationsPref(FROM_HERE, kTwoTypesOneExpirationPrefValue,
+                       {"notifications", DomainKey(kOrigin), kOrigin.spec(),
+                        "geolocation", DomainKey(kOrigin2), kOrigin2.spec()});
+
+  auto removed = expirations()->RemoveExpiredPermissions(kOrigin.host());
+  EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
+                         {{ContentSettingsType::NOTIFICATIONS,
+                           {PermissionOrigins(kOrigin, kOrigin)}}}));
+
+  CheckExpirationsPref(FROM_HERE, kOneTypeOneExpirationPrefValue,
+                       {"geolocation", DomainKey(kOrigin2), kOrigin2.spec()});
+
+  removed = expirations()->RemoveExpiredPermissions(kOrigin2.host());
+  EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
+                         {{ContentSettingsType::GEOLOCATION,
+                           {PermissionOrigins(kOrigin2, kOrigin2)}}}));
+  CheckExpirationsPref(FROM_HERE, "{}");
+
+  // Nothing should be removed in the end.
+  EXPECT_TRUE(expirations()->RemoveAllDomainPermissions().empty());
+}
+
+TEST_F(PermissionExpirationsTest, RemoveDomainThenTimeExpirations) {
+  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_time = now_ + expiration_delta;
+  AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta,
+                        kOrigin);
+  AddExpiringPermission(ContentSettingsType::GEOLOCATION, kOrigin2);
+
+  // Check data stored in prefs.
+  CheckExpirationsPref(
+      FROM_HERE, kTwoTypesOneExpirationPrefValue,
+      {"notifications", TimeKey(expiration_time), kOrigin.spec(), "geolocation",
+       DomainKey(kOrigin2), kOrigin2.spec()});
+
+  auto removed = expirations()->RemoveExpiredPermissions(kOrigin2.host());
+  EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
+                         {{ContentSettingsType::GEOLOCATION,
+                           {PermissionOrigins(kOrigin2, kOrigin2)}}}));
+
+  CheckExpirationsPref(
+      FROM_HERE, kOneTypeOneExpirationPrefValue,
+      {"notifications", TimeKey(expiration_time), kOrigin.spec()});
+
+  removed = expirations()->RemoveExpiredPermissions(expiration_time);
+  EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
+                         {{ContentSettingsType::NOTIFICATIONS,
+                           {PermissionOrigins(kOrigin, kOrigin)}}}));
+  CheckExpirationsPref(FROM_HERE, "{}");
+}
+
+TEST_F(PermissionExpirationsTest, RemoveTimeThenDomainExpirations) {
+  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_time = now_ + expiration_delta;
+  AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta,
+                        kOrigin);
+  AddExpiringPermission(ContentSettingsType::GEOLOCATION, kOrigin2);
+
+  // Check data stored in prefs.
+  CheckExpirationsPref(
+      FROM_HERE, kTwoTypesOneExpirationPrefValue,
+      {"notifications", TimeKey(expiration_time), kOrigin.spec(), "geolocation",
+       DomainKey(kOrigin2), kOrigin2.spec()});
+
+  auto removed = expirations()->RemoveExpiredPermissions(expiration_time);
+  EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
+                         {{ContentSettingsType::NOTIFICATIONS,
+                           {PermissionOrigins(kOrigin, kOrigin)}}}));
+
+  CheckExpirationsPref(FROM_HERE, kOneTypeOneExpirationPrefValue,
+                       {"geolocation", DomainKey(kOrigin2), kOrigin2.spec()});
+
+  removed = expirations()->RemoveExpiredPermissions(kOrigin2.host());
+  EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
+                         {{ContentSettingsType::GEOLOCATION,
+                           {PermissionOrigins(kOrigin2, kOrigin2)}}}));
+  CheckExpirationsPref(FROM_HERE, "{}");
+}
+
+TEST_F(PermissionExpirationsTest, RemoveAllDomainExpirations) {
+  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_time = now_ + expiration_delta;
+  AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta,
+                        kOrigin);
+  AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, kOrigin2);
+  AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, kOrigin3);
+
+  // Check data stored in prefs.
+  CheckExpirationsPref(FROM_HERE, kOneTypeThreeExpirationsPrefValue,
+                       {"notifications", TimeKey(expiration_time),
+                        kOrigin.spec(), DomainKey(kOrigin2), kOrigin2.spec(),
+                        DomainKey(kOrigin3), kOrigin3.spec()});
+
+  auto removed = expirations()->RemoveAllDomainPermissions();
+  EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
+                         {{ContentSettingsType::NOTIFICATIONS,
+                           {{PermissionOrigins(kOrigin2, kOrigin2)},
+                            PermissionOrigins(kOrigin3, kOrigin3)}}}));
+
+  CheckExpirationsPref(
+      FROM_HERE, kOneTypeOneExpirationPrefValue,
+      {"notifications", TimeKey(expiration_time), kOrigin.spec()});
+
+  removed = expirations()->RemoveExpiredPermissions(expiration_time);
+  EXPECT_EQ(removed, PermissionExpirations::ExpiredPermissions(
+                         {{ContentSettingsType::NOTIFICATIONS,
+                           {PermissionOrigins(kOrigin, kOrigin)}}}));
   CheckExpirationsPref(FROM_HERE, "{}");
 }
 

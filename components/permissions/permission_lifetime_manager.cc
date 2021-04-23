@@ -6,9 +6,11 @@
 #include "brave/components/permissions/permission_lifetime_manager.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/auto_reset.h"
 #include "base/stl_util.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
@@ -34,15 +36,27 @@ void PermissionLifetimeManager::RegisterProfilePrefs(
 
 PermissionLifetimeManager::PermissionLifetimeManager(
     HostContentSettingsMap* host_content_settings_map,
-    PrefService* prefs)
+    PrefService* prefs,
+    std::unique_ptr<PermissionOriginLifetimeMonitor>
+        permission_origin_lifetime_monitor)
     : host_content_settings_map_(host_content_settings_map),
       prefs_(prefs),
+      permission_origin_lifetime_monitor_(
+          std::move(permission_origin_lifetime_monitor)),
       permission_expirations_(prefs_),
       expiration_timer_(std::make_unique<util::WallClockTimer>()) {
   DCHECK(host_content_settings_map_);
   // In incognito prefs_ is nullptr.
 
   ResetExpiredPermissionsAndUpdateTimer(base::Time::Now());
+
+  if (permission_origin_lifetime_monitor_) {
+    ResetAllDomainPermissions();
+    permission_origin_lifetime_monitor_->SetOnPermissionOriginDestroyedCallback(
+        base::BindRepeating(
+            &PermissionLifetimeManager::OnPermissionOriginDestroyed,
+            base::Unretained(this)));
+  }
 
   host_content_settings_map_observation_.Observe(host_content_settings_map_);
 }
@@ -51,6 +65,7 @@ PermissionLifetimeManager::~PermissionLifetimeManager() {}
 
 void PermissionLifetimeManager::Shutdown() {
   host_content_settings_map_observation_.Reset();
+  permission_origin_lifetime_monitor_.reset();
   StopExpirationTimer();
 }
 
@@ -68,14 +83,13 @@ void PermissionLifetimeManager::PermissionDecided(
   }
 
   const auto& lifetime = permission_request.GetLifetime();
-  if (!lifetime || *lifetime == base::TimeDelta()) {
+  if (!lifetime) {
     // If no lifetime is set, then we don't need to do anything here.
     return;
   }
 
   const ContentSettingsType content_type =
       permission_request.GetContentSettingsType();
-  const base::Time expiration_time = base::Time::Now() + *lifetime;
 
   DVLOG(1) << "PermissionLifetimeManager::PermissionDecided"
            << "\ntype: "
@@ -87,11 +101,32 @@ void PermissionLifetimeManager::PermissionDecided(
            << "\nlifetime: " << permission_request.GetLifetime()->InSeconds()
            << " seconds";
 
-  permission_expirations_.AddExpiringPermission(
-      content_type, expiration_time,
-      PermissionOrigins(requesting_origin, embedding_origin));
-
-  UpdateExpirationTimer();
+  if (*lifetime == base::TimeDelta()) {
+    DCHECK(permission_origin_lifetime_monitor_);
+    std::string key =
+        permission_origin_lifetime_monitor_
+            ->SubscribeToPermissionOriginDestruction(requesting_origin);
+    if (key.empty()) {
+      // There is no any active origin with this key, so reset the permission
+      // right away. PostTask is required because at this point the permission
+      // is not stored in HostContentSettingsMap yet.
+      base::SequencedTaskRunnerHandle::Get()->PostTask(
+          FROM_HERE,
+          base::BindOnce(&PermissionLifetimeManager::ResetPermission,
+                         weak_ptr_factory_.GetWeakPtr(), content_type,
+                         requesting_origin, embedding_origin));
+      return;
+    }
+    permission_expirations_.AddExpiringPermission(
+        content_type, PermissionExpirationKey(std::move(key)),
+        PermissionOrigins(requesting_origin, embedding_origin));
+  } else {
+    const base::Time expiration_time = base::Time::Now() + *lifetime;
+    permission_expirations_.AddExpiringPermission(
+        content_type, PermissionExpirationKey(expiration_time),
+        PermissionOrigins(requesting_origin, embedding_origin));
+    UpdateExpirationTimer();
+  }
 }
 
 void PermissionLifetimeManager::OnContentSettingChanged(
@@ -154,12 +189,13 @@ void PermissionLifetimeManager::RestartExpirationTimerForTesting() {
 void PermissionLifetimeManager::UpdateExpirationTimer() {
   base::Time nearest_expiration_time(base::Time::Max());
   for (const auto& type_expirations : permission_expirations_.expirations()) {
-    const auto& time_expirations_map = type_expirations.second;
-    if (time_expirations_map.empty()) {
+    const auto& key_expirations_map = type_expirations.second;
+    if (key_expirations_map.empty() ||
+        !key_expirations_map.begin()->first.IsTimeKey()) {
       continue;
     }
-    nearest_expiration_time =
-        std::min(nearest_expiration_time, time_expirations_map.begin()->first);
+    nearest_expiration_time = std::min(
+        nearest_expiration_time, key_expirations_map.begin()->first.time());
   }
 
   if (nearest_expiration_time == base::Time::Max()) {
@@ -200,13 +236,47 @@ void PermissionLifetimeManager::ResetExpiredPermissionsAndUpdateTimer(
     const auto& content_type = expired_permissions.first;
     const auto& expiring_permissions = expired_permissions.second;
     for (const auto& expiring_permission : expiring_permissions) {
-      host_content_settings_map_->SetContentSettingDefaultScope(
-          expiring_permission.requesting_origin(),
-          expiring_permission.embedding_origin(), content_type,
-          CONTENT_SETTING_DEFAULT);
+      ResetPermission(content_type, expiring_permission.requesting_origin(),
+                      expiring_permission.embedding_origin());
     }
   }
   UpdateExpirationTimer();
+}
+
+void PermissionLifetimeManager::OnPermissionOriginDestroyed(
+    const std::string& origin_key) {
+  base::AutoReset<bool> auto_reset(&is_currently_removing_permissions_, true);
+  for (const auto& expired_permissions :
+       permission_expirations_.RemoveExpiredPermissions(origin_key)) {
+    const auto& content_type = expired_permissions.first;
+    const auto& expiring_permissions = expired_permissions.second;
+    for (const auto& expiring_permission : expiring_permissions) {
+      ResetPermission(content_type, expiring_permission.requesting_origin(),
+                      expiring_permission.embedding_origin());
+    }
+  }
+}
+
+void PermissionLifetimeManager::ResetAllDomainPermissions() {
+  base::AutoReset<bool> auto_reset(&is_currently_removing_permissions_, true);
+  for (const auto& expired_permissions :
+       permission_expirations_.RemoveAllDomainPermissions()) {
+    const auto& content_type = expired_permissions.first;
+    const auto& expiring_permissions = expired_permissions.second;
+    for (const auto& expiring_permission : expiring_permissions) {
+      ResetPermission(content_type, expiring_permission.requesting_origin(),
+                      expiring_permission.embedding_origin());
+    }
+  }
+}
+
+void PermissionLifetimeManager::ResetPermission(
+    ContentSettingsType content_type,
+    const GURL& requesting_origin,
+    const GURL& embedding_origin) {
+  host_content_settings_map_->SetContentSettingDefaultScope(
+      requesting_origin, embedding_origin, content_type,
+      CONTENT_SETTING_DEFAULT);
 }
 
 }  // namespace permissions

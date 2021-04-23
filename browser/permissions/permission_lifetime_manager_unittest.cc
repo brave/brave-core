@@ -25,10 +25,12 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using content_settings::WebsiteSettingsInfo;
 using content_settings::WebsiteSettingsRegistry;
+using testing::_;
 
 namespace permissions {
 
@@ -78,6 +80,35 @@ constexpr base::StringPiece kTwoTypesOneExpirationPrefValue = R"({
   }
 })";
 
+class MockPermissionOriginLifetimeMonitor
+    : public PermissionOriginLifetimeMonitor {
+ public:
+  MockPermissionOriginLifetimeMonitor() {
+    ON_CALL(*this, SetOnPermissionOriginDestroyedCallback(_))
+        .WillByDefault(
+            [this](base::RepeatingCallback<void(const std::string&)> callback) {
+              origin_destroyed_callback_ = std::move(callback);
+            });
+  }
+
+  MOCK_METHOD(void,
+              SetOnPermissionOriginDestroyedCallback,
+              (base::RepeatingCallback<void(const std::string&)> callback),
+              (override));
+  MOCK_METHOD(std::string,
+              SubscribeToPermissionOriginDestruction,
+              (const GURL& requesting_origin),
+              (override));
+
+  void NotifyOriginDestroyed(const std::string& origin) {
+    ASSERT_TRUE(origin_destroyed_callback_);
+    origin_destroyed_callback_.Run(origin);
+  }
+
+ private:
+  base::RepeatingCallback<void(const std::string&)> origin_destroyed_callback_;
+};
+
 }  // namespace
 
 class PermissionLifetimeManagerTest : public testing::Test {
@@ -100,10 +131,16 @@ class PermissionLifetimeManagerTest : public testing::Test {
 
   PrefService* prefs() { return profile_.GetPrefs(); }
 
+  virtual std::unique_ptr<PermissionOriginLifetimeMonitor>
+  GetPermissionOriginLifetimeMonitor() {
+    return nullptr;
+  }
+
   PermissionLifetimeManager* manager() {
     if (!manager_) {
       manager_ = std::make_unique<PermissionLifetimeManager>(
-          host_content_settings_map_, prefs());
+          host_content_settings_map_, prefs(),
+          GetPermissionOriginLifetimeMonitor());
     }
     return manager_.get();
   }
@@ -513,6 +550,163 @@ TEST_F(PermissionLifetimeManagerTest, ClearAllExpiredAfterRestart) {
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
   ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_DEFAULT);
+}
+
+class PermissionLifetimeManagerWithOriginMonitorTest
+    : public PermissionLifetimeManagerTest {
+ public:
+  std::unique_ptr<PermissionOriginLifetimeMonitor>
+  GetPermissionOriginLifetimeMonitor() override {
+    auto monitor = std::make_unique<MockPermissionOriginLifetimeMonitor>();
+    origin_lifetime_monitor_ = monitor.get();
+    EXPECT_CALL(*origin_lifetime_monitor_,
+                SetOnPermissionOriginDestroyedCallback(_));
+    return monitor;
+  }
+
+ protected:
+  MockPermissionOriginLifetimeMonitor* origin_lifetime_monitor_ = nullptr;
+};
+
+TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
+       SetAndResetDomainPermission) {
+  // Create a manager with a mocked origin lifetime monitor.
+  ASSERT_TRUE(manager());
+  auto request(CreateRequestAndAllowContentSetting(
+      kOrigin, ContentSettingsType::NOTIFICATIONS, base::TimeDelta()));
+  EXPECT_CALL(*origin_lifetime_monitor_,
+              SubscribeToPermissionOriginDestruction(kOrigin))
+      .WillOnce(testing::Return(kOrigin.host()));
+  manager()->PermissionDecided(*request, kOrigin, kOrigin,
+                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+  EXPECT_FALSE(timer().IsRunning());
+
+  // Check data stored in prefs.
+  CheckExpirationsPref(FROM_HERE, kOneTypeOneExpirationPrefValue,
+                       {"notifications", kOrigin.host(), kOrigin.spec()});
+
+  // Invalid host destroy shouldn't trigger any reset.
+  origin_lifetime_monitor_->NotifyOriginDestroyed("test.com");
+  CheckExpirationsPref(FROM_HERE, kOneTypeOneExpirationPrefValue,
+                       {"notifications", kOrigin.host(), kOrigin.spec()});
+
+  // Destroy origin, this should trigger a setting reset to default state.
+  origin_lifetime_monitor_->NotifyOriginDestroyed(kOrigin.host());
+  ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_DEFAULT);
+
+  // Prefs data should be empty.
+  CheckExpirationsPref(FROM_HERE, "{}");
+}
+
+TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
+       ResetAllDomainsAfterRestart) {
+  // Create a manager with a mocked origin lifetime monitor.
+  ASSERT_TRUE(manager());
+  auto request(CreateRequestAndAllowContentSetting(
+      kOrigin, ContentSettingsType::NOTIFICATIONS, base::TimeDelta()));
+  auto request2(CreateRequestAndAllowContentSetting(
+      kOrigin2, ContentSettingsType::NOTIFICATIONS, base::TimeDelta()));
+  EXPECT_CALL(*origin_lifetime_monitor_,
+              SubscribeToPermissionOriginDestruction(kOrigin))
+      .WillOnce(testing::Return(kOrigin.host()));
+  EXPECT_CALL(*origin_lifetime_monitor_,
+              SubscribeToPermissionOriginDestruction(kOrigin2))
+      .WillOnce(testing::Return(kOrigin2.host()));
+  manager()->PermissionDecided(*request, kOrigin, kOrigin,
+                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+  manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
+                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+  EXPECT_FALSE(timer().IsRunning());
+
+  // Check data stored in prefs.
+  CheckExpirationsPref(FROM_HERE, kOneTypeTwoExpirationsPrefValue,
+                       {"notifications", kOrigin.host(), kOrigin.spec(),
+                        kOrigin2.host(), kOrigin2.spec()});
+
+  ResetManager();
+  // This will create a new PermissionLifetimeManager instance.
+  ASSERT_TRUE(manager());
+
+  ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_DEFAULT);
+  ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_DEFAULT);
+
+  // Prefs data should be empty.
+  CheckExpirationsPref(FROM_HERE, "{}");
+}
+
+TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
+       TimeAndDomainKeyedPermissionsWorks) {
+  // Create a manager with a mocked origin lifetime monitor.
+  ASSERT_TRUE(manager());
+  auto request(CreateRequestAndAllowContentSetting(
+      kOrigin, ContentSettingsType::NOTIFICATIONS, kLifetime));
+  const base::Time expected_expiration_time =
+      base::Time::Now() + *request->GetLifetime();
+  auto request2(CreateRequestAndAllowContentSetting(
+      kOrigin2, ContentSettingsType::NOTIFICATIONS, base::TimeDelta()));
+  EXPECT_CALL(*origin_lifetime_monitor_,
+              SubscribeToPermissionOriginDestruction(kOrigin))
+      .Times(0);
+  EXPECT_CALL(*origin_lifetime_monitor_,
+              SubscribeToPermissionOriginDestruction(kOrigin2))
+      .WillOnce(testing::Return(kOrigin2.host()));
+  manager()->PermissionDecided(*request, kOrigin, kOrigin,
+                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+  manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
+                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+  EXPECT_TRUE(timer().IsRunning());
+
+  // Check data stored in prefs.
+  CheckExpirationsPref(
+      FROM_HERE, kOneTypeTwoExpirationsPrefValue,
+      {"notifications",
+       std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
+                          .InMicroseconds()),
+       kOrigin.spec(), kOrigin2.host(), kOrigin2.spec()});
+
+  browser_task_environment_.FastForwardBy(*request->GetLifetime());
+  ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_DEFAULT);
+  ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_ALLOW);
+
+  // Check data stored in prefs.
+  CheckExpirationsPref(FROM_HERE, kOneTypeOneExpirationPrefValue,
+                       {"notifications", kOrigin2.host(), kOrigin2.spec()});
+
+  // Destroy origin, this should trigger a setting reset to default state.
+  origin_lifetime_monitor_->NotifyOriginDestroyed(kOrigin2.host());
+  ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_DEFAULT);
+
+  // Prefs data should be empty.
+  CheckExpirationsPref(FROM_HERE, "{}");
+}
+
+TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
+       PermissionResetIfDomainKeyIsEmpty) {
+  // Create a manager with a mocked origin lifetime monitor.
+  ASSERT_TRUE(manager());
+  auto request(CreateRequestAndAllowContentSetting(
+      kOrigin, ContentSettingsType::NOTIFICATIONS, base::TimeDelta()));
+  EXPECT_CALL(*origin_lifetime_monitor_,
+              SubscribeToPermissionOriginDestruction(kOrigin))
+      .WillOnce(testing::Return(std::string()));
+  manager()->PermissionDecided(*request, kOrigin, kOrigin,
+                               ContentSetting::CONTENT_SETTING_ALLOW, false);
+
+  // Nothing should be stored in prefs.
+  CheckExpirationsPref(FROM_HERE, "{}");
+
+  // Permission should be reset on the next loop.
+  ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
+                       ContentSetting::CONTENT_SETTING_ALLOW);
+  browser_task_environment_.RunUntilIdle();
+  ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
 }
 
