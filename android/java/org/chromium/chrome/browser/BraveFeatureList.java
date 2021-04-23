@@ -14,18 +14,16 @@ public abstract class BraveFeatureList {
     public static final String USE_DEV_UPDATER_URL = "UseDevUpdaterUrl";
     public static final String FORCE_WEB_CONTENTS_DARK_MODE = "WebContentsForceDark";
     public static final String ENABLE_FORCE_DARK = "enable-force-dark";
-    public static final String ENABLE_FORCE_DARK_DISABLED_VALUE = "0";
     public static final String ENABLE_TAB_GROUPS = "enable-tab-groups";
-    public static final String ENABLE_TAB_GROUPS_DISABLED_VALUE = "2";
     public static final String ENABLE_TAB_GRID = "enable-tab-grid-layout";
-    public static final String ENABLE_TAB_GRID_DISABLED_VALUE = "8";
 
-    public static void enableFeature(String featureName, boolean enabled, String disabledValue) {
-        BraveFeatureListJni.get().enableFeature(featureName, enabled, disabledValue);
+    public static void enableFeature(
+            String featureName, boolean enabled, boolean fallbackToDefault) {
+        BraveFeatureListJni.get().enableFeature(featureName, enabled, fallbackToDefault);
     }
 
     @NativeMethods
     interface Natives {
-        void enableFeature(String featureName, boolean enabled, String disabledValue);
+        void enableFeature(String featureName, boolean enabled, boolean fallbackToDefault);
     }
 }
