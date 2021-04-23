@@ -41,12 +41,12 @@ base::Optional<std::string> GetCspDirectivesOnTaskRunner(
 void OnReceiveCspDirectives(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+    scoped_refptr<net::HttpResponseHeaders> override_response_headers,
     base::Optional<std::string> csp_directives) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (csp_directives) {
-    (*override_response_headers)
+    override_response_headers
         ->AddHeader("Content-Security-Policy", *csp_directives);
   }
 
@@ -92,7 +92,7 @@ int OnHeadersReceived_AdBlockCspWork(
         FROM_HERE,
         base::BindOnce(&GetCspDirectivesOnTaskRunner, ctx, original_csp),
         base::BindOnce(&OnReceiveCspDirectives, next_callback, ctx,
-                       override_response_headers));
+                       *override_response_headers));
     return net::ERR_IO_PENDING;
   }
 
