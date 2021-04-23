@@ -9,11 +9,14 @@
 namespace brave_wallet {
 
 enum class ProviderErrors {
-  kUserRejectedRequest = 4001,
-  kUnauthorized = 4100,
-  kUnsupportedMethod = 4200,
-  kDisconnected = 4900,
-  kChainDisconnected = 4901,
+  kUserRejectedRequest = 4001,  // User rejected the request
+  kUnauthorized = 4100,         // The requested account and/or method has not
+                                // been authorized by the user
+  kUnsupportedMethod = 4200,    // The requested method is not supported by this
+                                // Ethereum provider
+  kDisconnected = 4900,         // The provider is disconnected from all chains
+  kChainDisconnected = 4901,    // The provider is disconnected from the
+                                // specified chain
 };
 
 }  // namespace brave_wallet
