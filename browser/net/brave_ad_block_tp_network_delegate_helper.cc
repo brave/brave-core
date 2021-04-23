@@ -46,44 +46,37 @@ void SetAdblockCnameHostResolverForTesting(
   g_testing_host_resolver = host_resolver;
 }
 
-void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
-                               base::Optional<std::string> canonical_name) {
-  bool did_match_rule = false;
-  bool did_match_exception = false;
-  bool did_match_important = false;
+// If `canonical_url` is specified, this will only check if the CNAME-uncloaked
+// response should be blocked. Otherwise, it will run the check for the
+// original request URL.
+void ShouldBlockRequestOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
+                                    base::Optional<GURL> canonical_url) {
   if (!ctx->initiator_url.is_valid()) {
     return;
   }
   std::string source_host = ctx->initiator_url.host();
 
+  GURL url_to_check;
+  if (canonical_url.has_value()) {
+    url_to_check = *canonical_url;
+  } else {
+    url_to_check = ctx->request_url;
+  }
+
   g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-      ctx->request_url, ctx->resource_type, source_host, &did_match_rule,
-      &did_match_exception, &did_match_important, &ctx->mock_data_url);
-  if (did_match_important) {
-    ctx->blocked_by = kAdBlocked;
-    return;
-  }
+      url_to_check, ctx->resource_type, source_host, &ctx->did_match_rule,
+      &ctx->did_match_exception, &ctx->did_match_important,
+      &ctx->mock_data_url);
 
-  if (canonical_name.has_value() &&
-      ctx->request_url.host() != *canonical_name && *canonical_name != "") {
-    GURL::Replacements replacements = GURL::Replacements();
-    replacements.SetHost(
-        canonical_name->c_str(),
-        url::Component(0, static_cast<int>(canonical_name->length())));
-    const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
-
-    g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-        canonical_url, ctx->resource_type, source_host, &did_match_rule,
-        &did_match_exception, &did_match_important, &ctx->mock_data_url);
-  }
-
-  if (did_match_important || (did_match_rule && !did_match_exception)) {
+  if (ctx->did_match_important ||
+      (ctx->did_match_rule && !ctx->did_match_exception)) {
     ctx->blocked_by = kAdBlocked;
   }
 }
 
-void OnShouldBlockAdResult(const ResponseCallback& next_callback,
-                           std::shared_ptr<BraveRequestInfo> ctx) {
+void OnShouldBlockUncloakedRequestResult(
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx->blocked_by == kAdBlocked) {
     brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
@@ -92,15 +85,28 @@ void OnShouldBlockAdResult(const ResponseCallback& next_callback,
   next_callback.Run();
 }
 
-void ShouldBlockAdWithOptionalCname(
-    scoped_refptr<base::SequencedTaskRunner> task_runner,
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx,
-    const base::Optional<std::string> cname) {
+void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
+                    const ResponseCallback& next_callback,
+                    std::shared_ptr<BraveRequestInfo> ctx,
+                    const base::Optional<std::string> cname) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  task_runner->PostTaskAndReply(
-      FROM_HERE, base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx, cname),
-      base::BindOnce(&OnShouldBlockAdResult, next_callback, ctx));
+
+  if (cname.has_value() && ctx->request_url.host() != *cname &&
+      !cname->empty()) {
+    GURL::Replacements replacements;
+    replacements.SetHost(cname->c_str(),
+                         url::Component(0, static_cast<int>(cname->length())));
+    const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
+
+    task_runner->PostTaskAndReply(
+        FROM_HERE,
+        base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx,
+                       base::make_optional<GURL>(canonical_url)),
+        base::BindOnce(&OnShouldBlockUncloakedRequestResult, next_callback,
+                       ctx));
+  } else {
+    next_callback.Run();
+  }
 }
 
 class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
@@ -114,8 +120,9 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       const ResponseCallback& next_callback,
       scoped_refptr<base::SequencedTaskRunner> task_runner,
       std::shared_ptr<BraveRequestInfo> ctx) {
-    cb_ = base::BindOnce(&ShouldBlockAdWithOptionalCname, task_runner,
-                         std::move(next_callback), ctx);
+    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+    cb_ = base::BindOnce(&UseCnameResult, task_runner, std::move(next_callback),
+                         ctx);
 
     const auto network_isolation_key = ctx->network_isolation_key;
 
@@ -183,6 +190,42 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
   }
 };
 
+// Called after checking a request without any CNAME uncloaking.
+void OnShouldBlockRequestResult(
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (ctx->blocked_by == kAdBlocked) {
+    brave_shields::DispatchBlockedEvent(
+        ctx->request_url, ctx->frame_tree_node_id, brave_shields::kAds);
+    next_callback.Run();
+  } else {
+    // If not blocked, the request still needs to be CNAME uncloaked.
+
+    // DoH or standard DNS queries won't be routed through Tor, so we need to
+    // skip it.
+    if (ctx->browser_context->IsTor() || ctx->did_match_important) {
+      next_callback.Run();
+    } else {
+      // This will be deleted by `AdblockCnameResolveHostClient::OnComplete`.
+      new AdblockCnameResolveHostClient(std::move(next_callback), task_runner,
+                                        ctx);
+    }
+  }
+}
+
+void ShouldBlockRequest(scoped_refptr<base::SequencedTaskRunner> task_runner,
+                        const ResponseCallback& next_callback,
+                        std::shared_ptr<BraveRequestInfo> ctx) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  task_runner->PostTaskAndReply(
+      FROM_HERE,
+      base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, base::nullopt),
+      base::BindOnce(&OnShouldBlockRequestResult, task_runner, next_callback,
+                     ctx));
+}
+
 void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
                                  std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -190,19 +233,12 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   DCHECK(!ctx->request_url.is_empty());
   DCHECK(!ctx->initiator_url.is_empty());
 
+  DCHECK(g_brave_browser_process);
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
   DCHECK(ctx->browser_context);
-  // DoH or standard DNS quries won't be routed through Tor, so we need to skip
-  // it.
-  if (ctx->browser_context->IsTor()) {
-    ShouldBlockAdWithOptionalCname(task_runner, std::move(next_callback), ctx,
-                                   base::nullopt);
-  } else {
-    new AdblockCnameResolveHostClient(std::move(next_callback), task_runner,
-                                      ctx);
-  }
+  ShouldBlockRequest(task_runner, std::move(next_callback), ctx);
 }
 
 int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,

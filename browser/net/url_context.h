@@ -99,6 +99,12 @@ struct BraveRequestInfo {
   GURL ipfs_gateway_url;
   bool ipfs_auto_fallback = false;
 
+  // Used to keep track of state between a primary adblock engine query and one
+  // after CNAME uncloaking the request.
+  bool did_match_rule = false;
+  bool did_match_exception = false;
+  bool did_match_important = false;
+
   bool ShouldMockRequest() const { return !mock_data_url.empty(); }
 
   net::NetworkIsolationKey network_isolation_key = net::NetworkIsolationKey();
