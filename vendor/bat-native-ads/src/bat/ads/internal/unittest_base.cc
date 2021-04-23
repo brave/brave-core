@@ -41,6 +41,21 @@ UnitTestBase::~UnitTestBase() {
       << "You have overridden TearDown but never called UnitTestBase::TearDown";
 }
 
+void UnitTestBase::InitializeAds() {
+  CHECK(integration_test_)
+      << "|InitializeAds| should only be called if "
+         "|SetUpForTesting| was initialized for integration testing";
+
+  ads_->Initialize(
+      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+
+  task_environment_.RunUntilIdle();
+}
+
+AdsImpl* UnitTestBase::GetAds() const {
+  return ads_.get();
+}
+
 void UnitTestBase::SetUp() {
   // Code here will be called immediately after the constructor (right before
   // each test)
@@ -173,17 +188,6 @@ void UnitTestBase::Initialize() {
   // Fast forward until no tasks remain to ensure "EnsureSqliteInitialized"
   // tasks have fired before running tests
   task_environment_.FastForwardUntilNoTasksRemain();
-}
-
-void UnitTestBase::InitializeAds() {
-  CHECK(integration_test_)
-      << "|InitializeAds| should only be called if "
-         "|SetUpForTesting| was initialized for integration testing";
-
-  ads_->Initialize(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
-
-  task_environment_.RunUntilIdle();
 }
 
 }  // namespace ads

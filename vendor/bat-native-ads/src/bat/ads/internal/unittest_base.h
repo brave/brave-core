@@ -47,6 +47,8 @@ class UnitTestBase : public testing::Test {
 
   void InitializeAds();
 
+  AdsImpl* GetAds() const;
+
   // testing::Test implementation
   void SetUp() override;
   void TearDown() override;
