@@ -103,7 +103,7 @@ source_set("testutil") {
   deps = [
     ":browser",
     "//base",
-    "//brave/browser:browser_process",
+    "//brave/browser",
     "//brave/vendor/bat-native-ledger:headers",
     "//chrome/test:test_support",
     "//content/public/browser",

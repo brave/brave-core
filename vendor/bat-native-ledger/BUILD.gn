@@ -67,7 +67,7 @@ static_library("bat-native-ledger-standalone") {
 source_set("headers") {
   visibility = [
     ":*",
-    "//brave/browser:browser_process",
+    "//chrome/browser:browser",
 
     # add this only when ads is in the same process
     # rebase_path("bat-native-ads", dep_base),

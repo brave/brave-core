@@ -1,0 +1,30 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+brave_browser_autocomplete_sources = [
+  "//brave/browser/autocomplete/brave_autocomplete_scheme_classifier.cc",
+  "//brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h",
+]
+
+brave_browser_autocomplete_deps = [
+  "//base",
+  "//brave/common",
+  "//brave/components/brave_webtorrent/browser/buildflags",
+  "//brave/components/ipfs/buildflags",
+  "//chrome/browser/profiles:profile",
+]
+
+if (enable_extensions && enable_brave_webtorrent) {
+  brave_browser_autocomplete_deps +=
+      [ "//brave/components/brave_webtorrent/browser" ]
+}
+
+if (ipfs_enabled) {
+  brave_browser_autocomplete_deps += [ "//brave/components/ipfs" ]
+}

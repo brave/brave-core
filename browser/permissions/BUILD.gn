@@ -12,7 +12,7 @@ if (!is_android) {
     ]
 
     deps = [
-      "//brave/browser:browser_process",
+      "//brave/browser",
       "//brave/browser/ephemeral_storage",
       "//chrome/browser",
       "//chrome/browser/ui",

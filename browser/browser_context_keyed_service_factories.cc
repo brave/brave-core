@@ -6,13 +6,13 @@
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -26,6 +26,10 @@
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #else
 #include "brave/browser/ntp_background_images/android/ntp_background_images_bridge.h"
+#endif
+
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -44,7 +48,9 @@ namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_ads::AdsServiceFactory::GetInstance();
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   brave_rewards::RewardsServiceFactory::GetInstance();
+#endif
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
   brave_shields::CookiePrefServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_GREASELION)

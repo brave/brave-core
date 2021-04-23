@@ -1,0 +1,31 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+brave_browser_search_engines_sources = [
+  "//brave/browser/search_engines/guest_window_search_engine_provider_service.cc",
+  "//brave/browser/search_engines/guest_window_search_engine_provider_service.h",
+  "//brave/browser/search_engines/private_window_search_engine_provider_service.cc",
+  "//brave/browser/search_engines/private_window_search_engine_provider_service.h",
+  "//brave/browser/search_engines/search_engine_provider_service.cc",
+  "//brave/browser/search_engines/search_engine_provider_service.h",
+  "//brave/browser/search_engines/search_engine_provider_service_factory.cc",
+  "//brave/browser/search_engines/search_engine_provider_service_factory.h",
+  "//brave/browser/search_engines/search_engine_provider_util.cc",
+  "//brave/browser/search_engines/search_engine_provider_util.h",
+  "//brave/browser/search_engines/search_engine_tracker.cc",
+  "//brave/browser/search_engines/search_engine_tracker.h",
+  "//brave/browser/search_engines/tor_window_search_engine_provider_service.cc",
+  "//brave/browser/search_engines/tor_window_search_engine_provider_service.h",
+]
+
+brave_browser_search_engines_deps = [
+  "//brave/browser/profiles:util",
+  "//brave/common:pref_names",
+  "//chrome/browser/profiles:profile",
+  "//components/keyed_service/content",
+  "//components/pref_registry",
+  "//components/search_engines",
+  "//url",
+]
