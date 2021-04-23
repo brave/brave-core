@@ -45,6 +45,7 @@ public class AppearancePreferences extends BravePreferenceFragment
                 ContextUtils.getApplicationContext());
         if (isTablet) {
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+            removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
         }
 
         if (!NightModeUtils.isNightModeSupported()) {
