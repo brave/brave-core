@@ -33,7 +33,6 @@ if (brave_rewards_enabled) {
     "//components/keyed_service/content",
     "//components/prefs",
     "//components/sessions",
-    "//components/sessions:session_id",
     "//extensions/buildflags",
   ]
 
