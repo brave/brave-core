@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/ipfs_file_import_worker.h"
+#include "brave/components/ipfs/import/ipfs_file_import_worker.h"
 
 #include <utility>
 
@@ -11,21 +11,12 @@
 #include "base/guid.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
-#include "brave/components/ipfs/import_utils.h"
+#include "brave/components/ipfs/import/import_utils.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
-#include "net/base/mime_util.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 #include "storage/browser/blob/blob_data_builder.h"
 #include "url/gurl.h"
-
-namespace {
-
-const char kFileMimeType[] = "application/octet-stream";
-
-}  // namespace
 
 namespace ipfs {
 

@@ -11,7 +11,7 @@ source_set("brave_ipfs_unit_tests") {
   testonly = true
   if (ipfs_enabled) {
     sources = [
-      "//brave/components/ipfs/import_utils_unittest.cc",
+      "//brave/components/ipfs/import/import_utils_unittest.cc",
       "//brave/components/ipfs/ipfs_cookie_store_unittest.cc",
       "//brave/components/ipfs/ipfs_json_parser_unittest.cc",
       "//brave/components/ipfs/ipfs_p3a_unittest.cc",

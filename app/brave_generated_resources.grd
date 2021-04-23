@@ -389,6 +389,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE" desc="Title case: The text label of a menu item to share local file using IPFS.">
           Share Local File Using IPFS
         </message>
+        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER" desc="Title case: The text label of a menu item to share local fodler using IPFS.">
+          Share Local Folder Using IPFS
+        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE" desc="The text label of a menu item to share local file using IPFS.">
@@ -402,6 +405,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         </message>
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="The name of the open a link in private window with Tor command">
           Open link in Brave private window with Tor
+        </message>
+        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER" desc="The text label of a menu item to share local folder using IPFS.">
+          Share local folder using IPFS
         </message>
       </if>
       <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">

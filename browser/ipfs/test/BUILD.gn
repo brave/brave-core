@@ -36,6 +36,8 @@ source_set("browsertests") {
   if (!is_android) {
     sources = [
       "//brave/browser/extensions/api/ipfs_apitest.cc",
+      "//brave/browser/ipfs/import/ipfs_import_controller_browsertest.cc",
+      "//brave/browser/ipfs/import/save_package_observer_browsertest.cc",
       "//brave/browser/ipfs/ipfs_policy_browsertest.cc",
       "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
       "//brave/browser/ipfs/test/brave_ipfs_client_updater_browsertest.cc",

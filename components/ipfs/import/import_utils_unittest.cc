@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/import_utils.h"
+#include "brave/components/ipfs/import/import_utils.h"
 
 #include <memory>
 #include <string>
@@ -28,13 +28,15 @@ TEST_F(IpfsImportUtilsUnitTest, AddMultipartHeaderForUploadWithFileName) {
   const char ref_output[] =
       "--boundary\r\nContent-Disposition: form-data; name=\"value name\"; "
       "filename=\"value\"\r\nContent-Type: content type\r\n\r\n"
-      "--boundary\r\nContent-Disposition: form-data; name=\"value name\"; "
+      "--boundary\r\nAbspath: file_abs_path\r\nContent-Disposition: form-data; "
+      "name=\"value name\"; "
       "filename=\"value\"\r\nContent-Type: \r\n\r\n";
   std::string post_data;
-  AddMultipartHeaderForUploadWithFileName("value name", "value", "boundary",
-                                          "content type", &post_data);
-  AddMultipartHeaderForUploadWithFileName("value name", "value", "boundary", "",
+  AddMultipartHeaderForUploadWithFileName("value name", "value", std::string(),
+                                          "boundary", "content type",
                                           &post_data);
+  AddMultipartHeaderForUploadWithFileName(
+      "value name", "value", "file_abs_path", "boundary", "", &post_data);
   EXPECT_STREQ(ref_output, post_data.c_str());
 }
 

@@ -22,6 +22,7 @@ void ShowSync(Browser* browser);
 
 #if BUILDFLAG(IPFS_ENABLED)
 void ShareLocalFileUsingIPFS(Browser* browser);
+void ShareLocalFolderUsingIPFS(Browser* browser);
 #endif
 
 }  // namespace brave
