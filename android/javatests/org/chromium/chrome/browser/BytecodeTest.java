@@ -80,6 +80,8 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings"));
         Assert.assertTrue(classExists("org/chromium/base/CommandLineInitUtil"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/appmenu/AppMenu"));
         Assert.assertTrue(classExists(
@@ -216,6 +218,8 @@ public class BytecodeTest {
                         "getModel", false, null));
         Assert.assertTrue(methodExists("org/chromium/components/permissions/PermissionDialogModel",
                 "getModel", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+                "createAdapterIfNecessary", false, null));
     }
 
     @Test
@@ -402,6 +406,9 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
                 "mToolbarView"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+                "mSearchEngineAdapter"));
     }
 
     @Test
