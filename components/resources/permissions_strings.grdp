@@ -4,7 +4,7 @@
     Give permission
   </message>
   <message name="IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
-    until I close this page
+    until I close this site
   </message>
   <message name="IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
     for 24 hours
