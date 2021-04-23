@@ -70,6 +70,11 @@
     *** sortAndFilterUnnecessaryTemplateUrl(...);
 }
 
+-keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineSettings {
+    *** mSearchEngineAdapter;
+    *** createAdapterIfNecessary(...);
+}
+
 -keep class org.chromium.base.CommandLineInitUtil {
     *** initCommandLine(...);
 }

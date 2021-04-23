@@ -34,5 +34,8 @@ brave_chrome_app_java_resources_deps =
 brave_components_browser_ui_site_settings_android_java_resources_deps =
     [ "//brave/build/android:android_brave_strings_grd" ]
 
+brave_browser_search_engines_android_resources_deps =
+    [ "//brave/build/android:android_brave_strings_grd" ]
+
 brave_resources_exclusion_exceptions =
     [ "*com_google_android_material*design_bottom_*" ]

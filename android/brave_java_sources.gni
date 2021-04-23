@@ -146,16 +146,12 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveMainPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BravePrivateSearchEnginePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRewardsPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRewardsResetPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRewardsResetPreferenceDialog.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEngineAdapter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEnginePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEngineUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStandardSearchEnginePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStatsPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreferencesFragment.java",
@@ -275,4 +271,10 @@ brave_android_features_tab_ui_java_sources = [ "//brave/android/features/tab_ui/
 
 brave_browser_safe_browsing_android_sources = [ "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings/BraveRadioButtonGroupSafeBrowsingPreference.java" ]
 
-brave_browser_search_engines_android_sources = [ "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveBaseSearchEngineAdapter.java" ]
+brave_browser_search_engines_android_sources = [
+  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveBaseSearchEngineAdapter.java",
+  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BravePrivateSearchEnginePreference.java",
+  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveSearchEngineAdapter.java",
+  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveSearchEnginePreference.java",
+  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveStandardSearchEnginePreference.java",
+]
