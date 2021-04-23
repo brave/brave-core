@@ -65,9 +65,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
         browser_context,
         std::make_unique<NTPBackgroundImagesSource>(service));
 
-    return new ViewCounterService(service,
-                                  ads_service,
-                                  profile->GetPrefs(),
+    return new ViewCounterService(service, ads_service, profile->GetPrefs(),
                                   g_browser_process->local_state(),
                                   is_supported_locale);
   }

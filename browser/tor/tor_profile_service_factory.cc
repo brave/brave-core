@@ -40,7 +40,7 @@ TorProfileServiceFactory* TorProfileServiceFactory::GetInstance() {
 void TorProfileServiceFactory::SetTorDisabled(bool disabled) {
   if (g_brave_browser_process)
     g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled,
-                                                       disabled);
+                                                 disabled);
 }
 
 // static

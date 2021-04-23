@@ -8,8 +8,8 @@
 // will return NULL if the service is not available, so callers must check for
 // this condition.
 
-#ifndef BRAVE_BROWSER_BROWSER_PROCESS_H_
-#define BRAVE_BROWSER_BROWSER_PROCESS_H_
+#ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
+#define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
 #include "base/memory/ref_counted.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
@@ -114,10 +114,11 @@ class BraveBrowserProcess {
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   virtual brave_ads::ResourceComponent* resource_component() = 0;
 #endif
+
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcess);
 };
 
 extern BraveBrowserProcess* g_brave_browser_process;
 
-#endif  // BRAVE_BROWSER_BROWSER_PROCESS_H_
+#endif  // BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_

@@ -41,8 +41,7 @@ KeyedService* DecentralizedDnsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new DecentralizedDnsService(
       std::make_unique<DecentralizedDnsServiceDelegateImpl>(), context,
-      g_browser_process ? g_browser_process->local_state()
-                              : nullptr);
+      g_browser_process ? g_browser_process->local_state() : nullptr);
 }
 
 }  // namespace decentralized_dns

@@ -583,10 +583,10 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   std::unique_ptr<content::NavigationThrottle>
-      decentralized_dns_navigation_throttle = decentralized_dns::
-          DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-              handle, g_browser_process->local_state(),
-              g_browser_process->GetApplicationLocale());
+      decentralized_dns_navigation_throttle =
+          decentralized_dns::DecentralizedDnsNavigationThrottle::
+              MaybeCreateThrottleFor(handle, g_browser_process->local_state(),
+                                     g_browser_process->GetApplicationLocale());
   if (decentralized_dns_navigation_throttle)
     throttles.push_back(std::move(decentralized_dns_navigation_throttle));
 #endif
