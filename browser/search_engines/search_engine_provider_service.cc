@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/search_engines/search_engine_provider_service.h"
+
+#include <utility>
+#include <vector>
 
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
@@ -11,8 +15,14 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/prepopulated_engines.h"
+#include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/browser/extension_prefs.h"
+#endif
 
 SearchEngineProviderService::SearchEngineProviderService(
     Profile* otr_profile)
@@ -49,8 +59,7 @@ SearchEngineProviderService::SearchEngineProviderService(
   alternative_search_engine_url_.reset(new TemplateURL(*data));
 }
 
-SearchEngineProviderService::~SearchEngineProviderService() {
-}
+SearchEngineProviderService::~SearchEngineProviderService() = default;
 
 void SearchEngineProviderService::OnPreferenceChanged(
     const std::string& pref_name) {
@@ -75,4 +84,48 @@ void SearchEngineProviderService::ChangeToNormalWindowSearchEngineProvider() {
       original_template_url_service_->GetDefaultSearchProvider()->data());
   otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
       &normal_url);
+}
+
+void SearchEngineProviderService::UseExtensionSearchProvider() {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  DCHECK(ShouldUseExtensionSearchProvider());
+
+  const auto* extension_provider_url =
+      original_template_url_service_->GetDefaultSearchProvider();
+  auto data = extension_provider_url->data();
+  data.id = kInvalidTemplateURLID;
+
+  // Can't add same turl again to service.
+  if (CouldAddExtensionTemplateURL(extension_provider_url)) {
+    auto type = extension_provider_url->type();
+    auto extension_id = extension_provider_url->GetExtensionId();
+    extensions::ExtensionPrefs* prefs =
+        extensions::ExtensionPrefs::Get(otr_profile_->GetOriginalProfile());
+    auto time = prefs->GetInstallTime(extension_id);
+
+    auto turl =
+        std::make_unique<TemplateURL>(data, type, extension_id, time, true);
+
+    otr_template_url_service_->Add(std::move(turl));
+  }
+
+  otr_profile_->GetPrefs()->Set(
+      DefaultSearchManager::kDefaultSearchProviderDataPrefName,
+      *TemplateURLDataToDictionary(data));
+#endif
+}
+
+bool SearchEngineProviderService::ShouldUseExtensionSearchProvider() {
+  return original_template_url_service_->IsExtensionControlledDefaultSearch();
+}
+
+bool SearchEngineProviderService::CouldAddExtensionTemplateURL(
+    const TemplateURL* url) {
+  DCHECK_NE(TemplateURL::NORMAL, url->type());
+  for (const auto* turl : otr_template_url_service_->GetTemplateURLs()) {
+    if (url->type() == turl->type() &&
+        url->GetExtensionId() == turl->GetExtensionId())
+      return false;
+  }
+  return true;
 }

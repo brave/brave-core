@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_components_search_engines_sources = [
+brave_components_search_engines_prepopulated_engines_sources = [
   "//brave/components/search_engines/brave_prepopulated_engines.cc",
-  "//brave/components/search_engines/brave_prepopulated_engines.h"
+  "//brave/components/search_engines/brave_prepopulated_engines.h",
 ]
+
+brave_components_search_engines_sources =
+    [ "//brave/components/search_engines/pref_names.h" ]
