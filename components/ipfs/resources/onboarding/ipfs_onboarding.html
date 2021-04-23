@@ -1,31 +1,812 @@
-<!doctype html>
-<head>
+
+<html><head>
   <meta charset="utf-8">
   <meta name="theme-color" content="#fff">
-  <title>$i18n{tabTitle}</title>
-  <link rel="stylesheet" href="ipfs_onboarding.css">
-  <script src="../../../../../ui/webui/resources/js/assert.js"></script>
-  <script src="../../../../../ui/webui/resources/js/util.js"></script>
-  <script src="../../../../../components/security_interstitials/core/common/resources/interstitial_common.js"></script>
-  <script src="ipfs_onboarding.js"></script>
+  <title>IPFS Preference</title>
+	<link rel="icon" href="https://brave.com/static-assets/images/brave-favicon.png">
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+	body {
+  margin: 0px;
+  background: #FAF9FE;
+	zoom: 85%;
+	font-family: Poppins, sans-serif;
+}
+
+.interstitial-wrapper {
+  text-align: center;
+}
+
+.interstitial-wrapper span, p, button {
+  color: #212529;
+  letter-spacing: .5px;
+  font-family: Poppins, sans-serif;
+}
+
+.header-logo {
+  margin: 60px 0 30px 0;
+}
+
+.heading {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.copy {
+  font-size: 14px;
+  line-height: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.info-link {
+  display: inline-block;
+}
+
+.nav-wrapper {
+  max-width: 725px;
+  margin: 15px auto 0 auto;
+}
+
+.control-box {
+  background: #fff;
+  border-radius: 16px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  height: 125px;
+}
+
+.button-wrapper {
+  width: 35%;
+  float: left;
+}
+
+.button {
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 13px;
+  width: 200px;
+  word-wrap: break-word;
+  cursor: pointer;
+}
+
+.button-retry {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTYuOTU4MyA0LjkwMTc1QzE3LjIxODMgNS4yODE3NSAxNy4xMTkxIDUuODAwMDggMTYuNzM5MSA2LjA1OTI1QzE2LjM1OTEgNi4zMTg0MiAxNS44Mzk5IDYuMjIwOTIgMTUuNTgwOCA1Ljg0MDkyQzE0LjE5NzQgMy44MTA5MiAxMS42ODA4IDIuNTAwMDggOS4xNjkxMSAyLjUwMDA4QzUuMDMyNDQgMi41MDAwOCAxLjY2NzQ0IDUuODY1MDggMS42Njc0NCAxMC4wMDAxQzEuNjY3NDQgMTQuMTM1MSA1LjAzMjQ0IDE3LjUwMDEgOS4xNjkxMSAxNy41MDAxQzEzLjEzNjYgMTcuNTAwMSAxNi4zODY2IDE0LjQwMjYgMTYuNjQ1OCAxMC41MDA5TDE0LjU3ODMgMTEuNjg0MkMxNC4xNzkxIDExLjkxMTcgMTMuNjY5OSAxMS43NzM0IDEzLjQ0MTYgMTEuMzc0MkMxMy4yMTI0IDEwLjk3NDIgMTMuMzUwOCAxMC40NjU5IDEzLjc1MDggMTAuMjM2N0wxNi44ODU4IDguNDQzNDJDMTcuMDc5MSA4LjMzMjU4IDE3LjMwODMgOC4zMDQyNSAxNy41MjI0IDguMzYzNDJDMTcuNzM3NCA4LjQyMjU4IDE3LjkxOTEgOC41NjU5MiAxOC4wMjc0IDguNzYwMDhMMTkuODkzMyAxMi4wOTM0QzE5Ljk2NTggMTIuMjIxNyAxOS45OTk5IDEyLjM2MTcgMTkuOTk5OSAxMi40OTkyQzE5Ljk5OTkgMTIuNzkxNyAxOS44NDU4IDEzLjA3NDIgMTkuNTczMyAxMy4yMjc2QzE5LjE3MTYgMTMuNDUyNiAxOC42NjMzIDEzLjMwODQgMTguNDM5MSAxMi45MDY3TDE4LjA1NDkgMTIuMjIxN0MxNy4wNTc0IDE2LjIwNDIgMTMuNDU3NCAxOS4xNjY3IDkuMTY5MTEgMTkuMTY2N0M0LjExMzI3IDE5LjE2NjcgLTYuMTAzNTJlLTA1IDE1LjA1NDIgLTYuMTAzNTJlLTA1IDEwLjAwMDFDLTYuMTAzNTJlLTA1IDQuOTQ1OTIgNC4xMTMyNyAwLjgzMzQxNiA5LjE2OTExIDAuODMzNDE2QzEyLjIxNTggMC44MzM0MTYgMTUuMjczMyAyLjQzMDA4IDE2Ljk1ODMgNC45MDE3NVoiIGZpbGw9IndoaXRlIi8+DQo8L3N2Zz4NCg==');
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: left 20% top 50%;
+  cursor: pointer;
+}
+
+#local-node-button {
+  color: #fff;
+  border: none;
+  background-color: #FB542B;
+  padding: 10px 30px;
+}
+
+#public-gateway-button {
+  background: inherit;
+  border: 1px solid #AEB1C2;
+  padding: 10px 24px;
+}
+
+.copy-wrapper {
+  width: 65%;
+  float: right;
+  text-align: left;
+}
+
+.copy-wrapper p {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.footer {
+  margin-top: 20px;
+}
+
+.background-container {
+  box-sizing: border-box;
+  width: 100%;
+  height: 136px;
+  position: absolute;
+  bottom: 0px;
+}
+
+.background {
+  box-sizing: border-box;
+  background: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTQ0MCAxMzYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQogIDxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNLTEgMnMzNzIuNTQ3IDk0IDcyNiA5NGMzNTMuNDUgMCA3MTUtOTQgNzE1LTk0djEzNEgtMVYyeiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyKSIgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZCkiLz4NCiAgPGRlZnM+DQogICAgPGZpbHRlciBpZD0iZmlsdGVyMF9kIiB4PSItNSIgeT0iMCIgd2lkdGg9IjE0NDkiIGhlaWdodD0iMTQyIiBmaWx0ZXJVbml0cz0idXNlclNwYWNlT25Vc2UiIGNvbG9yLWludGVycG9sYXRpb24tZmlsdGVycz0ic1JHQiI+DQogICAgICA8ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwIiByZXN1bHQ9IkJhY2tncm91bmRJbWFnZUZpeCIvPg0KICAgICAgPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDEyNyAwIi8+DQogICAgICA8ZmVPZmZzZXQgZHk9IjIiLz4NCiAgICAgIDxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjIiLz4NCiAgICAgIDxmZUNvbG9yTWF0cml4IHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMC4yIDAiLz4NCiAgICAgIDxmZUJsZW5kIGluMj0iQmFja2dyb3VuZEltYWdlRml4IiByZXN1bHQ9ImVmZmVjdDFfZHJvcFNoYWRvdyIvPg0KICAgICAgPGZlQmxlbmQgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iZWZmZWN0MV9kcm9wU2hhZG93IiByZXN1bHQ9InNoYXBlIi8+DQogICAgPC9maWx0ZXI+DQogICAgPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyIiB4MT0iLTEwMi41IiB5MT0iLTQzLjI3IiB4Mj0iMTMwMS45MSIgeTI9IjgwLjE3MiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPg0KICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iIzM5MkREMSIvPg0KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjQTkxQjc4Ii8+DQogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM5RDFEODIiLz4NCiAgICA8L2xpbmVhckdyYWRpZW50Pg0KICA8L2RlZnM+DQo8L3N2Zz4NCg==');
+  width: 100%;
+  height: 136px;
+  background-size: cover;
+  background-position-x: center;
+}
+
+/* Dark theme styles */
+body.dark {
+  background: #17171F;
+}
+
+.dark *,
+.dark > .interstitial-wrapper span {
+  color: #F0F2FF;
+  letter-spacing: .5px;
+  font-family: Poppins, sans-serif;
+}
+
+.dark .control-box {
+  background: #1E2029;
+}
+
+.dark #local-node-button {
+  background: #FB542B;
+}
+
+.error-container-hidden {
+  display: none
+}
+
+.error-container-visible {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNyAxNEMzLjE0MDA4IDE0IDAgMTAuODU5OSAwIDdDMCAzLjE0MDA4IDMuMTQwMDggMCA3IDBDMTAuODU5OSAwIDE0IDMuMTQwMDggMTQgN0MxNCAxMC44NTk5IDEwLjg1OTkgMTQgNyAxNFpNNyAxMS4wODMzQzYuODQ4MzMgMTEuMDgzMyA2LjY5NjY3IDExLjAxOTIgNi41ODU4MyAxMC45MTQyQzYuNDgwMjUgMTAuODAzMyA2LjQxNjY3IDEwLjY1MTcgNi40MTY2NyAxMC41QzYuNDE2NjcgMTAuMzQyNSA2LjQ4MDI1IDEwLjE5NjcgNi41ODU4MyAxMC4wODU4QzYuODAxNjcgOS44NyA3LjE5MjUgOS44NyA3LjQxNDE3IDEwLjA4NThDNy41MTkxNyAxMC4xOTY3IDcuNTgzMzMgMTAuMzQyNSA3LjU4MzMzIDEwLjVDNy41ODMzMyAxMC42NTE3IDcuNTE5MTcgMTAuODAzMyA3LjQxNDE3IDEwLjkxNDJDNy4zMDMzMyAxMS4wMTkyIDcuMTUxNjcgMTEuMDgzMyA3IDExLjA4MzNaTTcgOC43NUM2LjY3NzQyIDguNzUgNi40MTY2NyA4LjQ4ODY3IDYuNDE2NjcgOC4xNjY2N1YzLjVDNi40MTY2NyAzLjE3OCA2LjY3NzQyIDIuOTE2NjcgNyAyLjkxNjY3QzcuMzIyNTggMi45MTY2NyA3LjU4MzMzIDMuMTc4IDcuNTgzMzMgMy41VjguMTY2NjdDNy41ODMzMyA4LjQ4ODY3IDcuMzIyNTggOC43NSA3IDguNzVaIiBmaWxsPSIjQkQxNTMxIi8+DQo8L3N2Zz4NCg==');
+  background-repeat: no-repeat;
+  background-position: left 25px top 2px;
+
+  display: block;
+  color: red;
+  margin-top: 10px;
+  padding: 0px 40px;
+  padding-left: 45px;
+  text-align: left;
+}
+
+</style>
+  <script>// Copyright (c) 2013 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+/**
+ * @fileoverview Assertion support.
+ */
+
+/**
+ * Verify |condition| is truthy and return |condition| if so.
+ * @template T
+ * @param {T} condition A condition to check for truthiness.  Note that this
+ *     may be used to test whether a value is defined or not, and we don't want
+ *     to force a cast to Boolean.
+ * @param {string=} opt_message A message to show on failure.
+ * @return {T} A non-null |condition|.
+ * @closurePrimitive {asserts.truthy}
+ * @suppress {reportUnknownTypes} because T is not sufficiently constrained.
+ */
+/* #export */ 
+function assert(condition, opt_message) {
+  if (!condition) {
+    let message = 'Assertion failed';
+    if (opt_message) {
+      message = message + ': ' + opt_message;
+    }
+    const error = new Error(message);
+    const global = function() {
+      const thisOrSelf = this || self;
+      /** @type {boolean} */
+      thisOrSelf.traceAssertionsForTesting;
+      return thisOrSelf;
+    }();
+    if (global.traceAssertionsForTesting) {
+      console.warn(error.stack);
+    }
+    throw error;
+  }
+  return condition;
+}
+
+/**
+ * Call this from places in the code that should never be reached.
+ *
+ * For example, handling all the values of enum with a switch() like this:
+ *
+ *   function getValueFromEnum(enum) {
+ *     switch (enum) {
+ *       case ENUM_FIRST_OF_TWO:
+ *         return first
+ *       case ENUM_LAST_OF_TWO:
+ *         return last;
+ *     }
+ *     assertNotReached();
+ *     return document;
+ *   }
+ *
+ * This code should only be hit in the case of serious programmer error or
+ * unexpected input.
+ *
+ * @param {string=} opt_message A message to show when this is hit.
+ * @closurePrimitive {asserts.fail}
+ */
+/* #export */ function assertNotReached(opt_message) {
+  assert(false, opt_message || 'Unreachable code hit');
+}
+
+/**
+ * @param {*} value The value to check.
+ * @param {function(new: T, ...)} type A user-defined constructor.
+ * @param {string=} opt_message A message to show when this is hit.
+ * @return {T}
+ * @template T
+ */
+/* #export */ function assertInstanceof(value, type, opt_message) {
+  // We don't use assert immediately here so that we avoid constructing an error
+  // message if we don't have to.
+  if (!(value instanceof type)) {
+    assertNotReached(
+        opt_message ||
+        'Value ' + value + ' is not a[n] ' + (type.name || typeof type));
+  }
+  return value;
+}
+
+/* #ignore */ console.warn('crbug/1173575, non-JS module files deprecated.');
+</script>
+  <script>// Copyright (c) 2012 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// #import {assertInstanceof} from './assert.m.js';
+// #import {dispatchSimpleEvent} from './cr.m.js';
+
+/**
+ * Alias for document.getElementById. Found elements must be HTMLElements.
+ * @param {string} id The ID of the element to find.
+ * @return {HTMLElement} The found element or null if not found.
+ */
+/* #export */ function $(id) {
+  // Disable getElementById restriction here, since we are instructing other
+  // places to re-use the $() that is defined here.
+  // eslint-disable-next-line no-restricted-properties
+  const el = document.getElementById(id);
+  return el ? assertInstanceof(el, HTMLElement) : null;
+}
+
+// TODO(devlin): This should return SVGElement, but closure compiler is missing
+// those externs.
+/**
+ * Alias for document.getElementById. Found elements must be SVGElements.
+ * @param {string} id The ID of the element to find.
+ * @return {Element} The found element or null if not found.
+ */
+/* #export */ function getSVGElement(id) {
+  // Disable getElementById restriction here, since it is not suitable for SVG
+  // elements.
+  // eslint-disable-next-line no-restricted-properties
+  const el = document.getElementById(id);
+  return el ? assertInstanceof(el, Element) : null;
+}
+
+/**
+ * @return {?Element} The currently focused element (including elements that are
+ *     behind a shadow root), or null if nothing is focused.
+ */
+/* #export */ function getDeepActiveElement() {
+  let a = document.activeElement;
+  while (a && a.shadowRoot && a.shadowRoot.activeElement) {
+    a = a.shadowRoot.activeElement;
+  }
+  return a;
+}
+
+// 
+
+/**
+ * @param {Node} el A node to search for ancestors with |className|.
+ * @param {string} className A class to search for.
+ * @return {Element} A node with class of |className| or null if none is found.
+ */
+/* #export */ function findAncestorByClass(el, className) {
+  return /** @type {Element} */ (findAncestor(el, function(el) {
+    return el.classList && el.classList.contains(className);
+  }));
+}
+
+/**
+ * Return the first ancestor for which the {@code predicate} returns true.
+ * @param {Node} node The node to check.
+ * @param {function(Node):boolean} predicate The function that tests the
+ *     nodes.
+ * @param {boolean=} includeShadowHosts
+ * @return {Node} The found ancestor or null if not found.
+ */
+/* #export */ function findAncestor(node, predicate, includeShadowHosts) {
+  while (node !== null) {
+    if (predicate(node)) {
+      break;
+    }
+    node = includeShadowHosts && node instanceof ShadowRoot ? node.host :
+                                                              node.parentNode;
+  }
+  return node;
+}
+
+/**
+ * Disables text selection and dragging, with optional callbacks to specify
+ * overrides.
+ * @param {function(Event):boolean=} opt_allowSelectStart Unless this function
+ *    is defined and returns true, the onselectionstart event will be
+ *    suppressed.
+ * @param {function(Event):boolean=} opt_allowDragStart Unless this function
+ *    is defined and returns true, the ondragstart event will be suppressed.
+ */
+/* #export */ function disableTextSelectAndDrag(
+    opt_allowSelectStart, opt_allowDragStart) {
+  // Disable text selection.
+  document.onselectstart = function(e) {
+    if (!(opt_allowSelectStart && opt_allowSelectStart.call(this, e))) {
+      e.preventDefault();
+    }
+  };
+
+  // Disable dragging.
+  document.ondragstart = function(e) {
+    if (!(opt_allowDragStart && opt_allowDragStart.call(this, e))) {
+      e.preventDefault();
+    }
+  };
+}
+
+/**
+ * Check the directionality of the page.
+ * @return {boolean} True if Chrome is running an RTL UI.
+ */
+/* #export */ function isRTL() {
+  return document.documentElement.dir === 'rtl';
+}
+
+/**
+ * Get an element that's known to exist by its ID. We use this instead of just
+ * calling getElementById and not checking the result because this lets us
+ * satisfy the JSCompiler type system.
+ * @param {string} id The identifier name.
+ * @return {!HTMLElement} the Element.
+ */
+/* #export */ function getRequiredElement(id) {
+  return assertInstanceof(
+      $(id), HTMLElement, 'Missing required element: ' + id);
+}
+
+/**
+ * Query an element that's known to exist by a selector. We use this instead of
+ * just calling querySelector and not checking the result because this lets us
+ * satisfy the JSCompiler type system.
+ * @param {string} selectors CSS selectors to query the element.
+ * @param {(!Document|!DocumentFragment|!Element)=} opt_context An optional
+ *     context object for querySelector.
+ * @return {!HTMLElement} the Element.
+ */
+/* #export */ function queryRequiredElement(selectors, opt_context) {
+  const element = (opt_context || document).querySelector(selectors);
+  return assertInstanceof(
+      element, HTMLElement, 'Missing required element: ' + selectors);
+}
+
+/**
+ * Creates a new URL which is the old URL with a GET param of key=value.
+ * @param {string} url The base URL. There is not sanity checking on the URL so
+ *     it must be passed in a proper format.
+ * @param {string} key The key of the param.
+ * @param {string} value The value of the param.
+ * @return {string} The new URL.
+ */
+/* #export */ function appendParam(url, key, value) {
+  const param = encodeURIComponent(key) + '=' + encodeURIComponent(value);
+
+  if (url.indexOf('?') === -1) {
+    return url + '?' + param;
+  }
+  return url + '&' + param;
+}
+
+/**
+ * Creates an element of a specified type with a specified class name.
+ * @param {string} type The node type.
+ * @param {string} className The class name to use.
+ * @return {Element} The created element.
+ */
+/* #export */ function createElementWithClassName(type, className) {
+  const elm = document.createElement(type);
+  elm.className = className;
+  return elm;
+}
+
+/**
+ * transitionend does not always fire (e.g. when animation is aborted
+ * or when no paint happens during the animation). This function sets up
+ * a timer and emulate the event if it is not fired when the timer expires.
+ * @param {!HTMLElement} el The element to watch for transitionend.
+ * @param {number=} opt_timeOut The maximum wait time in milliseconds for the
+ *     transitionend to happen. If not specified, it is fetched from |el|
+ *     using the transitionDuration style value.
+ */
+/* #export */ function ensureTransitionEndEvent(el, opt_timeOut) {
+  if (opt_timeOut === undefined) {
+    const style = getComputedStyle(el);
+    opt_timeOut = parseFloat(style.transitionDuration) * 1000;
+
+    // Give an additional 50ms buffer for the animation to complete.
+    opt_timeOut += 50;
+  }
+
+  let fired = false;
+  el.addEventListener('transitionend', function f(e) {
+    el.removeEventListener('transitionend', f);
+    fired = true;
+  });
+  window.setTimeout(function() {
+    if (!fired) {
+      cr.dispatchSimpleEvent(el, 'transitionend', true);
+    }
+  }, opt_timeOut);
+}
+
+/**
+ * Alias for document.scrollTop getter.
+ * @param {!HTMLDocument} doc The document node where information will be
+ *     queried from.
+ * @return {number} The Y document scroll offset.
+ */
+/* #export */ function scrollTopForDocument(doc) {
+  return doc.documentElement.scrollTop || doc.body.scrollTop;
+}
+
+/**
+ * Alias for document.scrollTop setter.
+ * @param {!HTMLDocument} doc The document node where information will be
+ *     queried from.
+ * @param {number} value The target Y scroll offset.
+ */
+/* #export */ function setScrollTopForDocument(doc, value) {
+  doc.documentElement.scrollTop = doc.body.scrollTop = value;
+}
+
+/**
+ * Alias for document.scrollLeft getter.
+ * @param {!HTMLDocument} doc The document node where information will be
+ *     queried from.
+ * @return {number} The X document scroll offset.
+ */
+/* #export */ function scrollLeftForDocument(doc) {
+  return doc.documentElement.scrollLeft || doc.body.scrollLeft;
+}
+
+/**
+ * Alias for document.scrollLeft setter.
+ * @param {!HTMLDocument} doc The document node where information will be
+ *     queried from.
+ * @param {number} value The target X scroll offset.
+ */
+/* #export */ function setScrollLeftForDocument(doc, value) {
+  doc.documentElement.scrollLeft = doc.body.scrollLeft = value;
+}
+
+/**
+ * Replaces '&', '<', '>', '"', and ''' characters with their HTML encoding.
+ * @param {string} original The original string.
+ * @return {string} The string with all the characters mentioned above replaced.
+ */
+/* #export */ function HTMLEscape(original) {
+  return original.replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+}
+
+/**
+ * Shortens the provided string (if necessary) to a string of length at most
+ * |maxLength|.
+ * @param {string} original The original string.
+ * @param {number} maxLength The maximum length allowed for the string.
+ * @return {string} The original string if its length does not exceed
+ *     |maxLength|. Otherwise the first |maxLength| - 1 characters with '...'
+ *     appended.
+ */
+/* #export */ function elide(original, maxLength) {
+  if (original.length <= maxLength) {
+    return original;
+  }
+  return original.substring(0, maxLength - 1) + '\u2026';
+}
+
+/**
+ * Quote a string so it can be used in a regular expression.
+ * @param {string} str The source string.
+ * @return {string} The escaped string.
+ */
+/* #export */ function quoteString(str) {
+  return str.replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, '\\$1');
+}
+
+/**
+ * Calls |callback| and stops listening the first time any event in |eventNames|
+ * is triggered on |target|.
+ * @param {!EventTarget} target
+ * @param {!Array<string>|string} eventNames Array or space-delimited string of
+ *     event names to listen to (e.g. 'click mousedown').
+ * @param {function(!Event)} callback Called at most once. The
+ *     optional return value is passed on by the listener.
+ */
+/* #export */ function listenOnce(target, eventNames, callback) {
+  if (!Array.isArray(eventNames)) {
+    eventNames = eventNames.split(/ +/);
+  }
+
+  const removeAllAndCallCallback = function(event) {
+    eventNames.forEach(function(eventName) {
+      target.removeEventListener(eventName, removeAllAndCallCallback, false);
+    });
+    return callback(event);
+  };
+
+  eventNames.forEach(function(eventName) {
+    target.addEventListener(eventName, removeAllAndCallCallback, false);
+  });
+}
+
+/**
+ * @param {!Event} e
+ * @return {boolean} Whether a modifier key was down when processing |e|.
+ */
+/* #export */ function hasKeyModifiers(e) {
+  return !!(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey);
+}
+
+/**
+ * @param {!Element} el
+ * @return {boolean} Whether the element is interactive via text input.
+ */
+/* #export */ function isTextInputElement(el) {
+  return el.tagName === 'INPUT' || el.tagName === 'TEXTAREA';
+}
+
+/* #ignore */ console.warn('crbug/1173575, non-JS module files deprecated.');
+</script>
+  <script>// Copyright 2017 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// This is the shared code for security interstitials. It is used for both SSL
+// interstitials and Safe Browsing interstitials.
+
+/**
+ * @typedef {{
+ *   dontProceed: function(),
+ *   proceed: function(),
+ *   showMoreSection: function(),
+ *   openHelpCenter: function(),
+ *   openDiagnostic: function(),
+ *   reload: function(),
+ *   openDateSettings: function(),
+ *   openLogin: function(),
+ *   doReport: function(),
+ *   dontReport: function(),
+ *   openReportingPrivacy: function(),
+ *   openWhitepaper: function(),
+ *   reportPhishingError: function(),
+ * }}
+ */
+// eslint-disable-next-line no-var
+var certificateErrorPageController;
+
+// Should match security_interstitials::SecurityInterstitialCommand
+/** @enum {number} */
+const SecurityInterstitialCommandId = {
+  CMD_DONT_PROCEED: 0,
+  CMD_PROCEED: 1,
+  // Ways for user to get more information
+  CMD_SHOW_MORE_SECTION: 2,
+  CMD_OPEN_HELP_CENTER: 3,
+  CMD_OPEN_DIAGNOSTIC: 4,
+  // Primary button actions
+  CMD_RELOAD: 5,
+  CMD_OPEN_DATE_SETTINGS: 6,
+  CMD_OPEN_LOGIN: 7,
+  // Safe Browsing Extended Reporting
+  CMD_DO_REPORT: 8,
+  CMD_DONT_REPORT: 9,
+  CMD_OPEN_REPORTING_PRIVACY: 10,
+  CMD_OPEN_WHITEPAPER: 11,
+  // Report a phishing error.
+  CMD_REPORT_PHISHING_ERROR: 12,
+  // Open enhanced protection settings.
+  CMD_OPEN_ENHANCED_PROTECTION_SETTINGS: 13,
+};
+
+const HIDDEN_CLASS = 'hidden';
+
+/**
+ * A convenience method for sending commands to the parent page.
+ * @param {SecurityInterstitialCommandId} cmd  The command to send.
+ */
+function sendCommand(cmd) {
+  if (window.certificateErrorPageController) {
+    switch (cmd) {
+      case SecurityInterstitialCommandId.CMD_DONT_PROCEED:
+        certificateErrorPageController.dontProceed();
+        break;
+      case SecurityInterstitialCommandId.CMD_PROCEED:
+        certificateErrorPageController.proceed();
+        break;
+      case SecurityInterstitialCommandId.CMD_SHOW_MORE_SECTION:
+        certificateErrorPageController.showMoreSection();
+        break;
+      case SecurityInterstitialCommandId.CMD_OPEN_HELP_CENTER:
+        certificateErrorPageController.openHelpCenter();
+        break;
+      case SecurityInterstitialCommandId.CMD_OPEN_DIAGNOSTIC:
+        certificateErrorPageController.openDiagnostic();
+        break;
+      case SecurityInterstitialCommandId.CMD_RELOAD:
+        certificateErrorPageController.reload();
+        break;
+      case SecurityInterstitialCommandId.CMD_OPEN_DATE_SETTINGS:
+        certificateErrorPageController.openDateSettings();
+        break;
+      case SecurityInterstitialCommandId.CMD_OPEN_LOGIN:
+        certificateErrorPageController.openLogin();
+        break;
+      case SecurityInterstitialCommandId.CMD_DO_REPORT:
+        certificateErrorPageController.doReport();
+        break;
+      case SecurityInterstitialCommandId.CMD_DONT_REPORT:
+        certificateErrorPageController.dontReport();
+        break;
+      case SecurityInterstitialCommandId.CMD_OPEN_REPORTING_PRIVACY:
+        certificateErrorPageController.openReportingPrivacy();
+        break;
+      case SecurityInterstitialCommandId.CMD_OPEN_WHITEPAPER:
+        certificateErrorPageController.openWhitepaper();
+        break;
+      case SecurityInterstitialCommandId.CMD_REPORT_PHISHING_ERROR:
+        certificateErrorPageController.reportPhishingError();
+        break;
+      case SecurityInterstitialCommandId.CMD_OPEN_ENHANCED_PROTECTION_SETTINGS:
+        certificateErrorPageController.openEnhancedProtectionSettings();
+        break;
+    }
+    return;
+  }
+  // 
+  window.domAutomationController.send(cmd);
+  // 
+  // 
+}
+
+/**
+ * Call this to stop clicks on <a href="#"> links from scrolling to the top of
+ * the page (and possibly showing a # in the link).
+ */
+function preventDefaultOnPoundLinkClicks() {
+  document.addEventListener('click', function(e) {
+    const anchor = findAncestor(/** @type {Node} */ (e.target), function(el) {
+      return el.tagName === 'A';
+    });
+    // Use getAttribute() to prevent URL normalization.
+    if (anchor && anchor.getAttribute('href') === '#') {
+      e.preventDefault();
+    }
+  });
+}
+
+// 
+
+// 
+</script>
+  <script>// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+// Should match ipfs::IPFSOnboardingPage::IPFSOnboardingCommandId
+/** @enum {number} */
+const IPFSOnboardingCommandId = {
+  USE_LOCAL_NODE: 0,
+  USE_PUBLIC_GATEWAY: 1,
+  LEARN_MORE: 2,
+  OPEN_SETTINGS: 3
+};
+
+// Should match ipfs::IPFSOnboardingPage::IPFSOnboardingResponse
+/** @enum {number} */
+const IPFSOnboardingResponse = {
+  LOCAL_NODE_ERROR: 0,
+  THEME_CHANGED: 1,
+  LOCAL_NODE_LAUNCHED: 2,
+  NO_PEERS_AVAILABLE: 3,
+  NO_PEERS_LIMIT: 4,
+  INSTALLATION_ERROR: 5
+};
+
+const setTheme = (theme) => {
+  document.body.className = `${theme.toLowerCase()}`;
+}
+
+function setup() {
+  // No local node option on Android
+  if ('' == 'Android') {
+    $('local-node-box').style.display = 'none'
+    $('footer').style.display = 'none'
+  }
+
+  $('local-node-button').addEventListener('click', function() {
+    $('local-node-button').textContent = 'Installing…'
+    $('error-container').className = 'error-container-hidden'
+    $('local-node-button').className = 'button'
+    sendCommand(IPFSOnboardingCommandId.USE_LOCAL_NODE);
+  });
+
+  $('public-gateway-button').addEventListener('click', function() {
+    sendCommand(IPFSOnboardingCommandId.USE_PUBLIC_GATEWAY);
+  });
+
+  $('learn-more').addEventListener('click', function() {
+    sendCommand(IPFSOnboardingCommandId.LEARN_MORE);
+  });
+
+  $('open-settings').addEventListener('click', function() {
+    sendCommand(IPFSOnboardingCommandId.OPEN_SETTINGS);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', setup);
+
+function showErrorMessage(text) {
+  $('error-container').textContent = text
+  $('error-container').className = 'error-container-visible'
+}
+
+function handleCommand(code, text) {
+  if (code == IPFSOnboardingResponse.LOCAL_NODE_ERROR) {
+    showErrorMessage(text)
+    $('local-node-button').textContent = 'Try again'
+  } else if (code == IPFSOnboardingResponse.THEME_CHANGED) {
+    setTheme(text)
+  } else if (code == IPFSOnboardingResponse.LOCAL_NODE_LAUNCHED) {
+    $('local-node-button').textContent = 'Looking for peers…'
+  } else if (code == IPFSOnboardingResponse.NO_PEERS_AVAILABLE) {
+    showErrorMessage(text)
+  } else if (code == IPFSOnboardingResponse.NO_PEERS_LIMIT) {
+    showErrorMessage('We have exceeded the limit of attemps, try again later.')
+    $('local-node-button').textContent = 'Try again'
+    $('local-node-button').className = 'button button-retry'
+  } else if (code == IPFSOnboardingResponse.INSTALLATION_ERROR) {
+    showErrorMessage(text)
+    $('local-node-button').textContent = 'Try again'
+    $('local-node-button').className = 'button button-retry'
+  }
+}
+
+window.addEventListener("message", function(event) {
+  if (!event.data || event.data.command != "ipfs")
+    return
+  handleCommand(event.data.value, event.data.text);
+}, false);
+</script>
 </head>
-<body id="body" class="$i18nRaw{braveTheme}" >
+<body id="body" class="light">
   <div class="interstitial-wrapper">
     <div id="main-content">
       <div class="header-logo">
-        <img alt="header brave logo" src="./assets/brave-ipfs.svg" />
+        <img alt="header brave logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjE5IiBoZWlnaHQ9IjE3NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMTUuMzU0IiBjeT0iOTAuNDQyIiByPSI4NC41NzgiIHN0cm9rZT0iI0RBRENFOCIgc3Ryb2tlLXdpZHRoPSIuODc2Ii8+PGNpcmNsZSBjeD0iMTE1LjM1NCIgY3k9IjkwLjQ0MiIgcj0iNjYuMTcyIiBzdHJva2U9IiNEQURDRTgiIHN0cm9rZS13aWR0aD0iLjg3NiIvPjxjaXJjbGUgY3g9IjExNS4xIiBjeT0iOTAuMjA0IiByPSI0OC42NDMiIHN0cm9rZT0iI0RBRENFOCIgc3Ryb2tlLXdpZHRoPSIuODc2Ii8+PHBhdGggZD0iTTYuMjk2IDEwOS41NjdsMzUuNzE3IDIwLjYyMiAzNS43MTctMjAuNjIyVjY4LjMyNGwtMzUuNzE3LTIwLjYyTDYuMjk2IDY4LjMyNnY0MS4yNDF6IiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXIpIi8+PHBhdGggZD0iTTM4LjMyNiA1Mi42NzFMMTIuNDMgNjcuNjIzYy4wNTIuNDYuMDUyLjkyNCAwIDEuMzg0bDI1Ljg5OCAxNC45NTFhNi4xODYgNi4xODYgMCAwMTcuMzQ2IDBsMjUuODk4LTE0Ljk1MWE2LjE3OSA2LjE3OSAwIDAxMC0xLjM4NEw0NS42NzQgNTIuNjdhNi4xODYgNi4xODYgMCAwMS03LjM0NiAwaC0uMDAzem0zNS43MzIgMjAuNDY2TDQ4LjEzMyA4OC4yNTVhNi4xODcgNi4xODcgMCAwMS0zLjY3MyA2LjM2MmwuMDI5IDI5LjczN2MuNDI0LjE4NS44MjYuNDE3IDEuMTk4LjY5MWwyNS44OTgtMTQuOTUxYTYuMTg2IDYuMTg2IDAgMDEzLjY3My02LjM2MlY3My44MjlhNi4xODYgNi4xODYgMCAwMS0xLjE5OS0uNjkyaC0uMDAxem0tNjQuMDkuMTY2YTYuMTgyIDYuMTgyIDAgMDEtMS4xOTguNjkydjI5LjkwM2E2LjE4NiA2LjE4NiAwIDAxMy42NzMgNi4zNjJsMjUuODk2IDE0Ljk1MWE2LjE2NyA2LjE2NyAwIDAxMS4xOTktLjY5MlY5NC42MTZhNi4xODcgNi4xODcgMCAwMS0zLjY3My02LjM2Mkw5Ljk2OCA3My4zMDJ6IiBmaWxsPSJ1cmwoI3BhaW50MV9saW5lYXIpIi8+PHBhdGggZD0iTTQyLjAxMyAxMzAuMTg5bDM1LjcxOC0yMC42MjJWNjguMzI0TDQyLjAxMyA4OC45NDZ2NDEuMjQzeiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIuMjUxIi8+PHBhdGggZD0iTTQyLjAxNCAxMzAuMTg5Vjg4Ljk0Nkw2LjI5NSA2OC4zMjR2NDEuMjQzbDM1LjcxOCAyMC42MjJ6IiBmaWxsPSIjMDAwIiBmaWxsLW9wYWNpdHk9Ii4wMzkiLz48cGF0aCBkPSJNNi4yOTYgNjguMzI0bDM1LjcxNyAyMC42MjJMNzcuNzMgNjguMzI0IDQyLjAxMyA0Ny43MDMgNi4yOTYgNjguMzI0eiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIuMTMiLz48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTIxNS42MzIgNjguNGwxLjg2NS00LjU3MnMtMi4zNzMtMi41NC01LjI1NS01LjQxOGMtMi44ODItMi44OC04Ljk4NS0xLjE4Ni04Ljk4NS0xLjE4NmwtNi45NS03Ljg3NmgtMjQuNDEybC02Ljk1MSA3Ljg3NnMtNi4xMDItMS42OTMtOC45ODQgMS4xODZjLTIuODgyIDIuODc4LTUuMjU2IDUuNDE4LTUuMjU2IDUuNDE4bDEuODY1IDQuNTcyLTIuMzczIDYuNzc0czYuOTggMjYuNDA4IDcuNzk4IDI5LjYzM2MxLjYxIDYuMzUgMi43MTIgOC44MDUgNy4yODkgMTIuMDIzIDQuNTc4IDMuMjE3IDEyLjg4NCA4LjgwNSAxNC4yNDEgOS42NTIgMS4zNTYuODQ3IDMuMDUxIDIuMjg5IDQuNTc3IDIuMjg5IDEuNTI2IDAgMy4yMjEtMS40NDIgNC41NzctMi4yODkgMS4zNTYtLjg0NyA5LjY2My02LjQzNSAxNC4yNC05LjY1MiA0LjU3Ny0zLjIxOCA1LjY3OS01LjY3MyA3LjI5LTEyLjAyMy44MTctMy4yMjUgNy43OTgtMjkuNjMzIDcuNzk4LTI5LjYzM2wtMi4zNzQtNi43NzR6IiBmaWxsPSJ1cmwoI3BhaW50Ml9saW5lYXIpIi8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xOTIuNzQ3IDYzLjY1OWMxLjAxNyAwIDguNTYxLTEuNDQgOC41NjEtMS40NHM4Ljk0IDEwLjc5NiA4Ljk0IDEzLjEwM2MwIDEuOTA3LS43NjkgMi42NTQtMS42NzUgMy41MzMtLjE4OS4xODQtLjM4NS4zNzQtLjU4MS41ODJsLTYuNzAzIDcuMTFjLS4wNjYuMDctLjE0LjE0NS0uMjE5LjIyNC0uNjY5LjY3Mi0xLjY1NCAxLjY2MS0uOTU5IDMuMzA1bC4xNDMuMzM1Yy43NjIgMS43OCAxLjcwMyAzLjk3OC41MDUgNi4yMDYtMS4yNzQgMi4zNy0zLjQ1NiAzLjk1MS00Ljg1NSAzLjY4OS0xLjM5OS0uMjYxLTQuNjgzLTEuOTc2LTUuODkxLTIuNzYtMS4yMDgtLjc4Mi01LjAzNi0zLjkzNi01LjAzNi01LjE0MyAwLTEuMDA2IDIuNzUzLTIuNjggNC4wOTEtMy40OTQuMjY2LS4xNjIuNDc2LS4yOS41OTctLjM3LjEzOC0uMDk0LjM2OS0uMjM3LjY1My0uNDEzIDEuMjIxLS43NTggMy40MjYtMi4xMjYgMy40ODEtMi43MzMuMDY4LS43NDguMDQzLS45NjctLjk0Mi0yLjgxNS0uMjA5LS4zOTMtLjQ1NC0uODE0LS43MDctMS4yNDktLjkzNy0xLjYxLTEuOTg2LTMuNDE0LTEuNzU0LTQuNzA1LjI2Mi0xLjQ1OSAyLjU1LTIuMjk1IDQuNDg4LTMuMDAzLjI0Mi0uMDg4LjQ3OC0uMTc1LjcwNS0uMjYuNTY1LS4yMTQgMS4yNzYtLjQ4IDIuMDE4LS43NTcgMS45MzUtLjcyNCA0LjA4NC0xLjUyOCA0LjQzOS0xLjY5Mi40OTEtLjIyNi4zNjQtLjQ0MS0xLjEyMi0uNTgyLS4xOTctLjAxOC0uNDQxLS4wNDQtLjcyMi0uMDc0LTEuODQtLjE5NS01LjIzMy0uNTU1LTYuODgzLS4wOTYtLjMyNC4wOS0uNjg4LjE4OS0xLjA2OS4yOTItMS44NTQuNTAxLTQuMTI1IDEuMTE1LTQuMzQzIDEuNDctLjAzOC4wNjItLjA3Ni4xMTUtLjExMS4xNjUtLjIwOS4yOTYtLjM0NS40OS0uMTE0IDEuNzUuMDY5LjM3NC4yMSAxLjExMi4zODUgMi4wMjQuNTEyIDIuNjcxIDEuMzExIDYuODM3IDEuNDExIDcuNzczLjAxNC4xMzEuMDMuMjU3LjA0NS4zNzkuMTI4IDEuMDQ0LjIxMyAxLjczOS0xLjAwMSAyLjAxNmwtLjMxOC4wNzNjLTEuMzY5LjMxNC0zLjM3OC43NzQtNC4xMDMuNzc0LS43MjYgMC0yLjczNi0uNDYtNC4xMDYtLjc3NGwtLjMxNS0uMDczYy0xLjIxNS0uMjc3LTEuMTI5LS45NzItMS4wMDEtMi4wMTYuMDE1LS4xMjIuMDMtLjI0OC4wNDQtLjM3OS4xMDEtLjkzNy45MDItNS4xMTQgMS40MTQtNy43ODQuMTc0LS45MDcuMzE0LTEuNjQuMzgzLTIuMDE0LjIzLTEuMjYuMDk0LTEuNDUzLS4xMTQtMS43NDlhMi43NjIgMi43NjIgMCAwMS0uMTExLS4xNjZjLS4yMTktLjM1NC0yLjQ5LS45NjgtNC4zNDMtMS40Ny0uMzgyLS4xMDItLjc0NS0uMi0xLjA3LS4yOTEtMS42NS0uNDYtNS4wNDItLjEtNi44ODIuMDk2LS4yODEuMDMtLjUyNS4wNTYtLjcyMi4wNzQtMS40ODYuMTQxLTEuNjEzLjM1Ni0xLjEyMi41ODIuMzU0LjE2MyAyLjUwMi45NjcgNC40MzcgMS42OTEuNzQyLjI3OCAxLjQ1NC41NDQgMi4wMi43NTguMjI2LjA4NS40NjMuMTcyLjcwNS4yNiAxLjkzOC43MDggNC4yMjUgMS41NDQgNC40ODcgMy4wMDMuMjMzIDEuMjkxLS44MTYgMy4wOTQtMS43NTMgNC43MDUtLjI1My40MzUtLjQ5OS44NTYtLjcwOCAxLjI1LS45ODQgMS44NDctMS4wMSAyLjA2Ni0uOTQyIDIuODE0LjA1Ni42MDYgMi4yNTkgMS45NzQgMy40OCAyLjczMi4yODUuMTc3LjUxNi4zMi42NTQuNDEzLjEyMi4wODIuMzMxLjIxLjU5Ny4zNzEgMS4zMzguODEzIDQuMDkyIDIuNDg4IDQuMDkyIDMuNDk0IDAgMS4yMDctMy44MjkgNC4zNi01LjAzNiA1LjE0NC0xLjIwOC43ODMtNC40OTMgMi40OTgtNS44OTEgMi43NTktMS4zOTkuMjYyLTMuNTgyLTEuMzItNC44NTYtMy42OS0xLjE5Ny0yLjIyNy0uMjU3LTQuNDI0LjUwNS02LjIwNWwuMTQzLS4zMzVjLjY5Ni0xLjY0NC0uMjktMi42MzMtLjk1OS0zLjMwNS0uMDc4LS4wNzktLjE1Mi0uMTUzLS4yMTktLjIyNGwtNi43MDMtNy4xMWExOC4yMzQgMTguMjM0IDAgMDAtLjU4MS0uNTgyYy0uOTA1LS44NzktMS42NzQtMS42MjYtMS42NzQtMy41MzMgMC0yLjMwNyA4Ljk0LTEzLjEwMiA4Ljk0LTEzLjEwMnM3LjU0NCAxLjQzOSA4LjU2MSAxLjQzOWMuODEyIDAgMi4zNzktLjU0IDQuMDEzLTEuMTAxLjQxMy0uMTQyLjgzMS0uMjg2IDEuMjQyLS40MjMgMi4wMzUtLjY3NyAzLjM5MS0uNjgyIDMuMzkxLS42ODJzMS4zNTYuMDA1IDMuMzkuNjgyYy40MTEuMTM3LjgyOS4yOCAxLjI0My40MjMgMS42MzQuNTYyIDMuMjAxIDEuMSA0LjAxMyAxLjF6bS0xLjI5NSAzOC4xODNjMS41OTQuODIxIDIuNzI2IDEuNDAzIDMuMTU0IDEuNjcxLjU1My4zNDYuMjE1Ljk5OC0uMjg5IDEuMzU0LS41MDQuMzU2LTcuMjc4IDUuNTk2LTcuOTM2IDYuMTc1bC0uMjY2LjIzOGMtLjYzMy41NzEtMS40NDEgMS4yOTgtMi4wMTQgMS4yOTgtLjU3MyAwLTEuMzgyLS43MjgtMi4wMTUtMS4yOThhMjkuMjQgMjkuMjQgMCAwMC0uMjY2LS4yMzhjLS42NTctLjU3OS03LjQzMi01LjgxOS03LjkzNi02LjE3NS0uNTA0LS4zNTYtLjg0MS0xLjAwOC0uMjg4LTEuMzU0LjQyOC0uMjY4IDEuNTYtLjg1MSAzLjE1Ny0xLjY3MmwxLjUxNy0uNzgyYzIuMzg5LTEuMjM1IDUuMzY2LTIuMjg1IDUuODMxLTIuMjg1LjQ2NCAwIDMuNDQyIDEuMDUgNS44MzEgMi4yODVsMS41Mi43ODN6IiBmaWxsPSIjZmZmIi8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yMDMuMjU3IDU3LjIyNGwtNi45NS03Ljg3NmgtMjQuNDEybC02Ljk1MSA3Ljg3NnMtNi4xMDItMS42OTMtOC45ODQgMS4xODZjMCAwIDguMTM3LS43MzQgMTAuOTM0IDMuODEgMCAwIDcuNTQ0IDEuNDM5IDguNTYxIDEuNDM5IDEuMDE3IDAgMy4yMjEtLjg0NyA1LjI1NS0xLjUyNCAyLjAzNS0uNjc3IDMuMzkxLS42ODIgMy4zOTEtLjY4MnMxLjM1Ni4wMDUgMy4zOS42ODJjMi4wMzUuNjc3IDQuMjM4IDEuNTI0IDUuMjU2IDEuNTI0IDEuMDE3IDAgOC41NjEtMS40NCA4LjU2MS0xLjQ0IDIuNzk3LTQuNTQzIDEwLjkzNC0zLjgxIDEwLjkzNC0zLjgxLTIuODgyLTIuODc4LTguOTg1LTEuMTg1LTguOTg1LTEuMTg1eiIgZmlsbD0idXJsKCNwYWludDNfbGluZWFyKSIvPjxtYXNrIGlkPSJhIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSIxNTUiIHk9IjQ5IiB3aWR0aD0iNTgiIGhlaWdodD0iMTUiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjAzLjI1NyA1Ny4yMjRsLTYuOTUtNy44NzZoLTI0LjQxMmwtNi45NTEgNy44NzZzLTYuMTAyLTEuNjkzLTguOTg0IDEuMTg2YzAgMCA4LjEzNy0uNzM0IDEwLjkzNCAzLjgxIDAgMCA3LjU0NCAxLjQzOSA4LjU2MSAxLjQzOSAxLjAxNyAwIDMuMjIxLS44NDcgNS4yNTUtMS41MjQgMi4wMzUtLjY3NyAzLjM5MS0uNjgyIDMuMzkxLS42ODJzMS4zNTYuMDA1IDMuMzkuNjgyYzIuMDM1LjY3NyA0LjIzOCAxLjUyNCA1LjI1NiAxLjUyNCAxLjAxNyAwIDguNTYxLTEuNDQgOC41NjEtMS40NCAyLjc5Ny00LjU0MyAxMC45MzQtMy44MSAxMC45MzQtMy44MS0yLjg4Mi0yLjg3OC04Ljk4NS0xLjE4NS04Ljk4NS0xLjE4NXoiIGZpbGw9IiNmZmYiLz48L21hc2s+PHBhdGggZD0iTTEyNS4wNiA5Mi40NDdoLTcuNTMxdjcuNzE4aC0zLjk1MnYtNy43MThoLTcuNTMydi0zLjU4aDcuNTMyVjgxLjE1aDMuOTUydjcuNzE4aDcuNTMxdjMuNTh6IiBmaWxsPSIjMDAwIi8+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyIiB4MT0iNi4yOTYiIHkxPSI4OC45NDYiIHgyPSI3Ny43MzEiIHkyPSI4OC45NDYiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBzdG9wLWNvbG9yPSIjNEE5RUExIi8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MV9saW5lYXIiIHgxPSI4Ljc3IiB5MT0iODguOTQxIiB4Mj0iNzUuMjU3IiB5Mj0iODguOTQxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iIzYzRDNENyIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJwYWludDJfbGluZWFyIiB4MT0iMTUwLjE5NiIgeTE9IjEyOS4zMzEiIHgyPSIyMTguMDA2IiB5Mj0iMTI5LjMzMSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIHN0b3AtY29sb3I9IiNGNTAiLz48c3RvcCBvZmZzZXQ9Ii40MSIgc3RvcC1jb2xvcj0iI0Y1MCIvPjxzdG9wIG9mZnNldD0iLjU4MiIgc3RvcC1jb2xvcj0iI0ZGMjAwMCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0ZGMjAwMCIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJwYWludDNfbGluZWFyIiB4MT0iMTU3LjE2OSIgeTE9IjYzLjYwNiIgeDI9IjIxMi4yNDIiIHkyPSI2My42MDYiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBzdG9wLWNvbG9yPSIjRkY0NTJBIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkYyMDAwIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PC9zdmc+">
       </div>
       <div id="main-message">
         <span class="heading">
-          $i18nRaw{heading}
+          Set your IPFS preference
         </span>
         <p class="copy">
-          $i18nRaw{primaryParagraph}
-          <a id="learn-more"
-          class="info-link"
-          href>
-            $i18nRaw{learnMore}
-          </a>
+          IPFS (InterPlanetary File System) is the public network for peer-to-peer data storage and delivery. This protocol has different privacy considerations from HTTP(S). You can change your preferences in <a id="open-settings" class="info-link" href="">settings</a>. Or, you can <a id="learn-more" class="info-link" href="">learn more</a> about IPFS.
         </p>
       </div>
     </div>
@@ -33,38 +814,303 @@
       <div class="control-box" id="local-node-box">
         <div class="button-wrapper">
           <button class="button" id="local-node-button">
-            $i18n{localNodeButton}
+            Use a local node
           </button>
         <div id="error-container" class="error-container-hidden">
         </div>
         </div>
         <div class="copy-wrapper">
-          <p>$i18n{localNodeText}</p>
+          <p>Your computer contributes to the public network, but your IP address and any content you’re requesting or providing could be exposed. Content you request over IPFS is verified before being served to you.</p>
         </div>
       </div>
       <div class="control-box">
         <div class="button-wrapper">
           <button class="button" id="public-gateway-button">
-            $i18n{publicGatewayButton}
+            Use a public gateway
           </button>
         </div>
         <div class="copy-wrapper">
-          <p>$i18n{publicGatewayText}</p>
+          <p>Protects your IP address and content you’re requesting from potential third-party observers, but not from the public gateway operator. The gateway operator is responsible for ensuring that the content served to you over a gateway is the content you requested. Also, your computer does not contribute to the public IPFS network.</p>
         </div>
       </div>
     </div>
-    <div class="footer" id="footer">
-      <p class="copy">
-        $i18nRaw{footerText}
-        <a id="open-settings"
-        class="info-link"
-        href>
-          $i18nRaw{settings}.
-        </a>
-      </p>
-    </div>
   </div>
-  <div class="background-container">
-    <div class="background"></div>
-  </div>
-</body>
+
+<style>/* Copyright 2014 The Chromium Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file. */
+
+/* This file is dynamically processed by a C++ data source handler to fill in
+ * some per-platform/locale styles that dramatically alter the page. This is
+ * done to reduce flicker, as JS may not run before the page is rendered.
+ *
+ * There are two ways to include this stylesheet:
+ * 1. via its chrome://resources/ URL in HTML, i.e.:
+ *
+ *   <link rel="stylesheet" href="chrome://resources/css/text_defaults.css">
+ *
+ * 2. via the webui::AppendWebUICSSTextDefaults() method to directly append it
+ * to an HTML string.
+ * Otherwise its placeholders won't be expanded. */
+
+html {
+  /* TODO(dbeam): remove this soon. Prefer dir= in HTML. */
+  direction: ltr;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 75%;
+}
+
+button {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+</style><script>// Copyright (c) 2012 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+/**
+ * @fileoverview This file defines a singleton which provides access to all data
+ * that is available as soon as the page's resources are loaded (before DOM
+ * content has finished loading). This data includes both localized strings and
+ * any data that is important to have ready from a very early stage (e.g. things
+ * that must be displayed right away).
+ *
+ * Note that loadTimeData is not guaranteed to be consistent between page
+ * refreshes (https://crbug.com/740629) and should not contain values that might
+ * change if the page is re-opened later.
+ */
+
+// #import {assert} from './assert.m.js';
+// #import {parseHtmlSubset} from './parse_html_subset.m.js';
+
+/**
+ * @typedef {{
+ *   substitutions: (!Array<string>|undefined),
+ *   attrs: (!Array<string>|undefined),
+ *   tags: (!Array<string>|undefined),
+ * }}
+ */
+/* #export */ let SanitizeInnerHtmlOpts;
+
+// eslint-disable-next-line no-var
+/* #export */ /** @type {!LoadTimeData} */ var loadTimeData;
+
+// Expose this type globally as a temporary work around until
+// https://github.com/google/closure-compiler/issues/544 is fixed.
+/** @constructor */
+function LoadTimeData(){}
+
+(function() {
+  'use strict';
+
+  LoadTimeData.prototype = {
+    /**
+     * Sets the backing object.
+     *
+     * Note that there is no getter for |data_| to discourage abuse of the form:
+     *
+     *     var value = loadTimeData.data()['key'];
+     *
+     * @param {Object} value The de-serialized page data.
+     */
+    set data(value) {
+      expect(!this.data_, 'Re-setting data.');
+      this.data_ = value;
+    },
+
+    /**
+     * Returns a JsEvalContext for |data_|.
+     * @returns {JsEvalContext}
+     */
+    createJsEvalContext() {
+      return new JsEvalContext(this.data_);
+    },
+
+    /**
+     * @param {string} id An ID of a value that might exist.
+     * @return {boolean} True if |id| is a key in the dictionary.
+     */
+    valueExists(id) {
+      return id in this.data_;
+    },
+
+    /**
+     * Fetches a value, expecting that it exists.
+     * @param {string} id The key that identifies the desired value.
+     * @return {*} The corresponding value.
+     */
+    getValue(id) {
+      expect(this.data_, 'No data. Did you remember to include strings.js?');
+      const value = this.data_[id];
+      expect(typeof value !== 'undefined', 'Could not find value for ' + id);
+      return value;
+    },
+
+    /**
+     * As above, but also makes sure that the value is a string.
+     * @param {string} id The key that identifies the desired string.
+     * @return {string} The corresponding string value.
+     */
+    getString(id) {
+      const value = this.getValue(id);
+      expectIsType(id, value, 'string');
+      return /** @type {string} */ (value);
+    },
+
+    /**
+     * Returns a formatted localized string where $1 to $9 are replaced by the
+     * second to the tenth argument.
+     * @param {string} id The ID of the string we want.
+     * @param {...(string|number)} var_args The extra values to include in the
+     *     formatted output.
+     * @return {string} The formatted string.
+     */
+    getStringF(id, var_args) {
+      const value = this.getString(id);
+      if (!value) {
+        return '';
+      }
+
+      const args = Array.prototype.slice.call(arguments);
+      args[0] = value;
+      return this.substituteString.apply(this, args);
+    },
+
+    /**
+     * Make a string safe for use with with Polymer bindings that are
+     * inner-h-t-m-l (or other innerHTML use).
+     * @param {string} rawString The unsanitized string.
+     * @param {SanitizeInnerHtmlOpts=} opts Optional additional allowed tags and
+     *     attributes.
+     * @return {string}
+     */
+    sanitizeInnerHtml(rawString, opts) {
+      opts = opts || {};
+      return parseHtmlSubset('<b>' + rawString + '</b>', opts.tags, opts.attrs)
+          .firstChild.innerHTML;
+    },
+
+    /**
+     * Returns a formatted localized string where $1 to $9 are replaced by the
+     * second to the tenth argument. Any standalone $ signs must be escaped as
+     * $$.
+     * @param {string} label The label to substitute through.
+     *     This is not an resource ID.
+     * @param {...(string|number)} var_args The extra values to include in the
+     *     formatted output.
+     * @return {string} The formatted string.
+     */
+    substituteString(label, var_args) {
+      const varArgs = arguments;
+      return label.replace(/\$(.|$|\n)/g, function(m) {
+        assert(m.match(/\$[$1-9]/), 'Unescaped $ found in localized string.');
+        return m === '$$' ? '$' : varArgs[m[1]];
+      });
+    },
+
+    /**
+     * Returns a formatted string where $1 to $9 are replaced by the second to
+     * tenth argument, split apart into a list of pieces describing how the
+     * substitution was performed. Any standalone $ signs must be escaped as $$.
+     * @param {string} label A localized string to substitute through.
+     *     This is not an resource ID.
+     * @param {...(string|number)} var_args The extra values to include in the
+     *     formatted output.
+     * @return {!Array<!{value: string, arg: (null|string)}>} The formatted
+     *     string pieces.
+     */
+    getSubstitutedStringPieces(label, var_args) {
+      const varArgs = arguments;
+      // Split the string by separately matching all occurrences of $1-9 and of
+      // non $1-9 pieces.
+      const pieces = (label.match(/(\$[1-9])|(([^$]|\$([^1-9]|$))+)/g) ||
+                      []).map(function(p) {
+        // Pieces that are not $1-9 should be returned after replacing $$
+        // with $.
+        if (!p.match(/^\$[1-9]$/)) {
+          assert(
+              (p.match(/\$/g) || []).length % 2 === 0,
+              'Unescaped $ found in localized string.');
+          return {value: p.replace(/\$\$/g, '$'), arg: null};
+        }
+
+        // Otherwise, return the substitution value.
+        return {value: varArgs[p[1]], arg: p};
+      });
+
+      return pieces;
+    },
+
+    /**
+     * As above, but also makes sure that the value is a boolean.
+     * @param {string} id The key that identifies the desired boolean.
+     * @return {boolean} The corresponding boolean value.
+     */
+    getBoolean(id) {
+      const value = this.getValue(id);
+      expectIsType(id, value, 'boolean');
+      return /** @type {boolean} */ (value);
+    },
+
+    /**
+     * As above, but also makes sure that the value is an integer.
+     * @param {string} id The key that identifies the desired number.
+     * @return {number} The corresponding number value.
+     */
+    getInteger(id) {
+      const value = this.getValue(id);
+      expectIsType(id, value, 'number');
+      expect(value === Math.floor(value), 'Number isn\'t integer: ' + value);
+      return /** @type {number} */ (value);
+    },
+
+    /**
+     * Override values in loadTimeData with the values found in |replacements|.
+     * @param {Object} replacements The dictionary object of keys to replace.
+     */
+    overrideValues(replacements) {
+      expect(
+          typeof replacements === 'object',
+          'Replacements must be a dictionary object.');
+      for (const key in replacements) {
+        this.data_[key] = replacements[key];
+      }
+    }
+  };
+
+  /**
+   * Checks condition, displays error message if expectation fails.
+   * @param {*} condition The condition to check for truthiness.
+   * @param {string} message The message to display if the check fails.
+   */
+  function expect(condition, message) {
+    if (!condition) {
+      console.error(
+          'Unexpected condition on ' + document.location.href + ': ' + message);
+    }
+  }
+
+  /**
+   * Checks that the given value has the given type.
+   * @param {string} id The id of the value (only used for error message).
+   * @param {*} value The value to check the type on.
+   * @param {string} type The type we expect |value| to be.
+   */
+  function expectIsType(id, value, type) {
+    expect(
+        typeof value === type, '[' + value + '] (' + id + ') is not a ' + type);
+  }
+
+  expect(!loadTimeData, 'should only include this file once');
+  loadTimeData = new LoadTimeData;
+
+  // Expose |loadTimeData| directly on |window|. This is only necessary by the
+  // auto-generated load_time_data.m.js, since within a JS module the scope is
+  // local.
+  window.loadTimeData = loadTimeData;
+})();
+
+/* #ignore */ console.warn('crbug/1173575, non-JS module files deprecated.');
+</script><script>loadTimeData.data = {"braveTheme":"light","fontfamily":"'Segoe UI', Tahoma, sans-serif","fontsize":"75%","footerText":"You can change your preferences again in","heading":"Set your IPFS preference","installationText":"Installing…","language":"en","learnMore":"Learn more","localNodeButton":"Use a local node","localNodeText":"Your computer contributes to the public network, but your IP address and any content you’re requesting or providing could be exposed. Content you request over IPFS is verified before being served to you.","os":"","primaryParagraph":"IPFS (InterPlanetary File System) is the public network for peer-to-peer data storage and delivery. This protocol has different privacy considerations from HTTP(S).","publicGatewayButton":"Use a public gateway","publicGatewayText":"Protects your IP address and content you’re requesting from potential third-party observers, but not from the public gateway operator.  The gateway operator is responsible for ensuring that the content served to you over a gateway is the content you requested. Also, your computer does not contribute to the public IPFS network.","retryLimitPeersText":"We have exceeded the limit of attemps, try again later.","retryText":"Try again","settings":"settings","tabTitle":"IPFS Preference","textdirection":"ltr","tryAgainText":"Try again","watingPeersText":"Looking for peers…"};</script></body></html>
