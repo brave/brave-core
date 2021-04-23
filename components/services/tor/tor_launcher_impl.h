@@ -7,11 +7,10 @@
 #define BRAVE_COMPONENTS_SERVICES_TOR_TOR_LAUNCHER_IMPL_H_
 
 #include <memory>
-#include <string>
-#include <vector>
 
-#include "base/macros.h"
+#include "base/memory/weak_ptr.h"
 #include "base/process/process.h"
+#include "base/sequence_checker.h"
 #include "base/threading/thread.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -30,18 +29,23 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   void Launch(mojom::TorConfigPtr config,
               LaunchCallback callback) override;
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
+
  private:
-  void MonitorChild();
+  void OnChildCrash(base::ProcessId pid);
   void Cleanup();
 
   SetCrashHandlerCallback crash_handler_callback_;
   std::unique_ptr<base::Thread> child_monitor_thread_;
-  scoped_refptr<base::SequencedTaskRunner> main_task_runner_;
   base::Process tor_process_;
   mojo::Receiver<tor::mojom::TorLauncher> receiver_;
   bool in_shutdown_ = false;
 
-  DISALLOW_COPY_AND_ASSIGN(TorLauncherImpl);
+  SEQUENCE_CHECKER(sequence_checker_);
+
+  base::WeakPtrFactory<TorLauncherImpl> weak_ptr_factory_{this};
+
+  TorLauncherImpl(const TorLauncherImpl&) = delete;
+  TorLauncherImpl& operator=(const TorLauncherImpl&) = delete;
 };
 
 }  // namespace tor

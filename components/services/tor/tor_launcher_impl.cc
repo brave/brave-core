@@ -5,7 +5,6 @@
 
 #include "brave/components/services/tor/tor_launcher_impl.h"
 
-
 #if defined(OS_LINUX)
 #include <errno.h>
 #include <fcntl.h>
@@ -16,6 +15,7 @@
 
 #include <utility>
 
+#include "base/bind_post_task.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/process/kill.h"
@@ -26,6 +26,8 @@
 #include "base/task/post_task.h"
 #include "base/threading/thread.h"
 #include "base/threading/thread_task_runner_handle.h"
+
+namespace {
 
 #if defined(OS_POSIX)
 int pipehack[2];
@@ -75,21 +77,62 @@ static void TearDownPipeHack() {
 }
 #endif
 
+void MonitorChild(base::ProcessHandle p_handle,
+                  base::OnceCallback<void(base::ProcessId)> callback) {
+#if defined(OS_POSIX)
+  char buf[PIPE_BUF];
+
+  while (1) {
+    if (read(pipehack[0], buf, sizeof(buf)) > 0) {
+      pid_t pid;
+      int status;
+
+      if ((pid = waitpid(-1, &status, WNOHANG)) != -1) {
+        if (WIFSIGNALED(status)) {
+          LOG(ERROR) << "tor got terminated by signal " << WTERMSIG(status);
+        } else if (WCOREDUMP(status)) {
+          LOG(ERROR) << "tor coredumped";
+        } else if (WIFEXITED(status)) {
+          LOG(ERROR) << "tor exit (" << WEXITSTATUS(status) << ")";
+        }
+        if (callback) {
+          std::move(callback).Run(pid);
+        }
+        break;
+      }
+    } else {
+      // pipes closed
+      break;
+    }
+  }
+#elif defined(OS_WIN)
+  WaitForSingleObject(p_handle, INFINITE);
+  if (callback)
+    std::move(callback).Run(base::GetProcId(p_handle));
+#else
+#error unsupported platforms
+#endif
+}
+
+}  // namespace
+
 namespace tor {
 
 TorLauncherImpl::TorLauncherImpl(
     mojo::PendingReceiver<mojom::TorLauncher> receiver)
-    : main_task_runner_(base::SequencedTaskRunnerHandle::Get()),
-      receiver_(this, std::move(receiver)) {
-  receiver_.set_disconnect_handler(
-      base::BindOnce(&TorLauncherImpl::Cleanup, base::Unretained(this)));
+    : receiver_(this, std::move(receiver)) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  receiver_.set_disconnect_handler(base::BindOnce(
+      &TorLauncherImpl::Cleanup, weak_ptr_factory_.GetWeakPtr()));
 #if defined(OS_POSIX)
   SetupPipeHack();
 #endif
 }
 
 void TorLauncherImpl::Cleanup() {
-  if (in_shutdown_) return;
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (in_shutdown_)
+    return;
   in_shutdown_ = true;
 
   if (tor_process_.IsValid()) {
@@ -109,15 +152,18 @@ void TorLauncherImpl::Cleanup() {
 }
 
 TorLauncherImpl::~TorLauncherImpl() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   Cleanup();
 }
 
 void TorLauncherImpl::Shutdown() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   Cleanup();
 }
 
 void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
                              LaunchCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::CommandLine args(config->binary_path);
   args.AppendArg("--ignore-missing-torrc");
   args.AppendArg("-f");
@@ -167,7 +213,6 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
 #endif
   tor_process_ = base::LaunchProcess(args, launchopts);
 
-  // TODO(darkdh): return success when tor connected to tor network
   bool result = tor_process_.IsValid();
 
   if (callback)
@@ -180,54 +225,25 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
     }
 
     child_monitor_thread_->task_runner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorLauncherImpl::MonitorChild, base::Unretained(this)));
+        FROM_HERE,
+        base::BindOnce(&MonitorChild, tor_process_.Handle(),
+                       base::BindPostTask(
+                           base::SequencedTaskRunnerHandle::Get(),
+                           base::BindOnce(&TorLauncherImpl::OnChildCrash,
+                                          weak_ptr_factory_.GetWeakPtr()))));
   }
 }
 
 void TorLauncherImpl::SetCrashHandler(SetCrashHandlerCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   crash_handler_callback_ = std::move(callback);
 }
 
-void TorLauncherImpl::MonitorChild() {
-#if defined(OS_POSIX)
-  char buf[PIPE_BUF];
-
-  while (1) {
-      if (read(pipehack[0], buf, sizeof(buf)) > 0) {
-        pid_t pid;
-        int status;
-
-        if ((pid = waitpid(-1, &status, WNOHANG)) != -1) {
-          if (WIFSIGNALED(status)) {
-            LOG(ERROR) << "tor got terminated by signal " << WTERMSIG(status);
-          } else if (WCOREDUMP(status)) {
-            LOG(ERROR) << "tor coredumped";
-          } else if (WIFEXITED(status)) {
-            LOG(ERROR) << "tor exit (" << WEXITSTATUS(status) << ")";
-          }
-          tor_process_.Close();
-          if (receiver_.is_bound() && crash_handler_callback_) {
-            main_task_runner_->PostTask(
-              FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
-                                        pid));
-          }
-          break;
-        }
-      } else {
-        // pipes closed
-        break;
-      }
-  }
-#elif defined(OS_WIN)
-  WaitForSingleObject(tor_process_.Handle(), INFINITE);
+void TorLauncherImpl::OnChildCrash(base::ProcessId pid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  tor_process_.Close();
   if (receiver_.is_bound() && crash_handler_callback_)
-    main_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
-                                base::GetProcId(tor_process_.Handle())));
-#else
-#error unsupported platforms
-#endif
+    std::move(crash_handler_callback_).Run(pid);
 }
 
 }  // namespace tor

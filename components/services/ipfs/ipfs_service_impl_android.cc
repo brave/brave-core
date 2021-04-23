@@ -26,8 +26,6 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
   std::move(callback).Run(false, -1);
 }
 
-void IpfsServiceImpl::MonitorChild() {}
-
 void IpfsServiceImpl::Shutdown() {}
 
 void IpfsServiceImpl::SetCrashHandler(SetCrashHandlerCallback callback) {}

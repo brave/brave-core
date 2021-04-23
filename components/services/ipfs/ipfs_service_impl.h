@@ -8,7 +8,9 @@
 
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "base/process/process.h"
+#include "base/sequence_checker.h"
 #include "base/threading/thread.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -26,7 +28,7 @@ class IpfsServiceImpl : public mojom::IpfsService {
   void Launch(mojom::IpfsConfigPtr config, LaunchCallback callback) override;
   void Shutdown() override;
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
-  void MonitorChild();
+  void OnChildCrash(base::ProcessId pid);
   void Cleanup();
 
   base::Process ipfs_process_;
@@ -36,8 +38,12 @@ class IpfsServiceImpl : public mojom::IpfsService {
 #if !defined(OS_ANDROID)
   bool in_shutdown_ = false;
 #endif
+  SEQUENCE_CHECKER(sequence_checker_);
 
-  DISALLOW_COPY_AND_ASSIGN(IpfsServiceImpl);
+  base::WeakPtrFactory<IpfsServiceImpl> weak_ptr_factory_{this};
+
+  IpfsServiceImpl(const IpfsServiceImpl&) = delete;
+  IpfsServiceImpl& operator=(const IpfsServiceImpl&) = delete;
 };
 
 }  // namespace ipfs

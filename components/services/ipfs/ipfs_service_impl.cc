@@ -17,6 +17,7 @@
 #include <string>
 #include <utility>
 
+#include "base/bind_post_task.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/process/kill.h"
@@ -108,6 +109,43 @@ bool LaunchProcessAndExit(const base::FilePath& path,
   return true;
 }
 
+void MonitorChild(base::ProcessHandle p_handle,
+                  base::OnceCallback<void(base::ProcessId)> callback) {
+#if defined(OS_POSIX)
+  char buf[PIPE_BUF];
+
+  while (1) {
+    if (read(pipehack[0], buf, sizeof(buf)) > 0) {
+      pid_t pid;
+      int status;
+
+      if ((pid = waitpid(-1, &status, WNOHANG)) != -1) {
+        if (WIFSIGNALED(status)) {
+          VLOG(0) << "ipfs got terminated by signal " << WTERMSIG(status);
+        } else if (WCOREDUMP(status)) {
+          VLOG(0) << "ipfs coredumped";
+        } else if (WIFEXITED(status)) {
+          VLOG(0) << "ipfs exit (" << WEXITSTATUS(status) << ")";
+        }
+        if (callback) {
+          std::move(callback).Run(pid);
+        }
+      }
+    } else {
+      // pipes closed
+      break;
+    }
+  }
+#elif defined(OS_WIN)
+  WaitForSingleObject(p_handle, INFINITE);
+  if (callback) {
+    std::move(callback).Run(base::GetProcId(p_handle));
+  }
+#else
+#error unsupported platforms
+#endif
+}
+
 }  // namespace
 
 namespace ipfs {
@@ -115,15 +153,18 @@ namespace ipfs {
 IpfsServiceImpl::IpfsServiceImpl(
     mojo::PendingReceiver<mojom::IpfsService> receiver)
     : receiver_(this, std::move(receiver)) {
-  receiver_.set_disconnect_handler(
-      base::BindOnce(&IpfsServiceImpl::Cleanup, base::Unretained(this)));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  receiver_.set_disconnect_handler(base::BindOnce(
+      &IpfsServiceImpl::Cleanup, weak_ptr_factory_.GetWeakPtr()));
 }
 
 IpfsServiceImpl::~IpfsServiceImpl() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   Cleanup();
 }
 
 void IpfsServiceImpl::Cleanup() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (in_shutdown_)
     return;
   in_shutdown_ = true;
@@ -143,6 +184,7 @@ void IpfsServiceImpl::Cleanup() {
 
 void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
                              LaunchCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (in_shutdown_) {
     if (callback)
       std::move(callback).Run(false, -1);
@@ -236,57 +278,29 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
 
     child_monitor_thread_->task_runner()->PostTask(
         FROM_HERE,
-        base::BindOnce(&IpfsServiceImpl::MonitorChild, base::Unretained(this)));
+        base::BindOnce(&MonitorChild, ipfs_process_.Handle(),
+                       base::BindPostTask(
+                           base::SequencedTaskRunnerHandle::Get(),
+                           base::BindOnce(&IpfsServiceImpl::OnChildCrash,
+                                          weak_ptr_factory_.GetWeakPtr()))));
   }
-}
-
-void IpfsServiceImpl::MonitorChild() {
-#if defined(OS_POSIX)
-  char buf[PIPE_BUF];
-
-  while (1) {
-    if (read(pipehack[0], buf, sizeof(buf)) > 0) {
-      pid_t pid;
-      int status;
-
-      if ((pid = waitpid(-1, &status, WNOHANG)) != -1) {
-        if (WIFSIGNALED(status)) {
-          VLOG(0) << "ipfs got terminated by signal " << WTERMSIG(status);
-        } else if (WCOREDUMP(status)) {
-          VLOG(0) << "ipfs coredumped";
-        } else if (WIFEXITED(status)) {
-          VLOG(0) << "ipfs exit (" << WEXITSTATUS(status) << ")";
-        }
-        ipfs_process_.Close();
-        if (receiver_.is_bound() && crash_handler_callback_) {
-          base::ThreadTaskRunnerHandle::Get()->PostTask(
-              FROM_HERE,
-              base::BindOnce(std::move(crash_handler_callback_), pid));
-        }
-      }
-    } else {
-      // pipes closed
-      break;
-    }
-  }
-#elif defined(OS_WIN)
-  WaitForSingleObject(ipfs_process_.Handle(), INFINITE);
-  if (receiver_.is_bound() && crash_handler_callback_ && !in_shutdown_) {
-    base::ThreadTaskRunnerHandle::Get()->PostTask(
-        FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
-                                  base::GetProcId(ipfs_process_.Handle())));
-  }
-#else
-#error unsupported platforms
-#endif
 }
 
 void IpfsServiceImpl::Shutdown() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   Cleanup();
 }
 
 void IpfsServiceImpl::SetCrashHandler(SetCrashHandlerCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   crash_handler_callback_ = std::move(callback);
+}
+
+void IpfsServiceImpl::OnChildCrash(base::ProcessId pid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  ipfs_process_.Close();
+  if (receiver_.is_bound() && crash_handler_callback_ && !in_shutdown_)
+    std::move(crash_handler_callback_).Run(pid);
 }
 
 }  // namespace ipfs
