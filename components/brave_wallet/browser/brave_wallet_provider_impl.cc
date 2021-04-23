@@ -32,12 +32,12 @@ void BraveWalletProviderImpl::Request(const std::string& json_payload,
 
 void BraveWalletProviderImpl::OnResponse(
     RequestCallback callback,
-    const int status,
+    const int http_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   // Do we need to pass headers map to a renderer? We would need to convert
   // it to base::flat_map in that case
-  std::move(callback).Run(status, response);
+  std::move(callback).Run(http_code, response);
 }
 
 }  // namespace brave_wallet
