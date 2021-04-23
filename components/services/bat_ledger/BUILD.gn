@@ -1,7 +1,7 @@
 static_library("lib") {
   visibility = [
-    "//brave/utility:*",
     "//brave/test:*",
+    "//chrome/utility:*",
   ]
 
   sources = [
@@ -14,11 +14,9 @@ static_library("lib") {
   ]
 
   public_deps = [
-    "//brave/vendor/bat-native-ledger",
     "public/interfaces",
+    "//brave/vendor/bat-native-ledger",
   ]
 
-  deps = [
-    "//mojo/public/cpp/system",
-  ]
+  deps = [ "//mojo/public/cpp/system" ]
 }
