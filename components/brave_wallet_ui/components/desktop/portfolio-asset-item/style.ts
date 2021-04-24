@@ -4,7 +4,7 @@ interface StyleProps {
   icon: string
 }
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -12,6 +12,9 @@ export const StyledWrapper = styled.div`
   width: 100%;
   margin: 8px 0px;
   cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
 `
 
 export const NameAndIcon = styled.div`
@@ -52,7 +55,7 @@ export const AssetBalanceText = styled.span`
   color: ${(p) => p.theme.palette.neutral600};
 `
 
-export const AssetIcon = styled.div<Partial<StyleProps>>`
+export const AssetIcon = styled.div<StyleProps>`
   width: 40px;
   height: 40px;
   border-radius: 100%;

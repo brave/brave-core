@@ -1,11 +1,11 @@
 import { AssetOptionType } from '../constants/types'
 import {
-  ALGOIcon,
-  BATIcon,
-  BNBIcon,
-  BTCIcon,
-  ETHIcon,
-  ZRXIcon
+  ALGOIconUrl,
+  BATIconUrl,
+  BNBIconUrl,
+  BTCIconUrl,
+  ETHIconUrl,
+  ZRXIconUrl
 } from '../assets/asset-icons'
 
 export const AssetOptions: AssetOptionType[] = [
@@ -13,36 +13,36 @@ export const AssetOptions: AssetOptionType[] = [
     id: '1',
     name: 'Ethereum',
     symbol: 'ETH',
-    icon: ETHIcon
+    icon: ETHIconUrl
   },
   {
     id: '2',
     name: 'Basic Attention Token',
     symbol: 'BAT',
-    icon: BATIcon
+    icon: BATIconUrl
   },
   {
     id: '3',
     name: 'Binance Coin',
     symbol: 'BNB',
-    icon: BNBIcon
+    icon: BNBIconUrl
   },
   {
     id: '4',
     name: 'Bitcoin',
     symbol: 'BTC',
-    icon: BTCIcon
+    icon: BTCIconUrl
   },
   {
     id: '5',
     name: 'Algorand',
     symbol: 'ALGO',
-    icon: ALGOIcon
+    icon: ALGOIconUrl
   },
   {
     id: '6',
     name: '0x',
     symbol: 'ZRX',
-    icon: ZRXIcon
+    icon: ZRXIconUrl
   }
 ]

@@ -7,6 +7,8 @@ import WalletSubViewLayout from './wallet-sub-view-layout'
 import ChartControlBar from './chart-control-bar'
 import LineChart from './line-chart'
 import PortfolioAssetItem from './portfolio-asset-item'
+import PortfolioAccountItem from './portfolio-account-item'
+import PortfolioTransactionItem from './portfolio-transaction-item'
 import AddButton from './add-button'
 import { CryptoView, PortfolioView } from './views'
 
@@ -20,6 +22,8 @@ export {
   ChartControlBar,
   LineChart,
   PortfolioAssetItem,
+  PortfolioAccountItem,
+  PortfolioTransactionItem,
   AddButton,
   CryptoView,
   PortfolioView

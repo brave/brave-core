@@ -26,9 +26,18 @@ export interface RPCAssetType {
   balance: number
 }
 
+export interface RPCTransactionType {
+  assetId: string
+  amount: number
+  to: string
+  from: string
+  hash: string
+}
+
 export interface RPCResponseType {
   address: string
   assets: RPCAssetType[]
+  transactions: RPCTransactionType[]
 }
 
 export type PanelTypes =
