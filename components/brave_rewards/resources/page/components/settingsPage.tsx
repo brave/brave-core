@@ -272,6 +272,7 @@ class SettingsPage extends React.Component<Props, State> {
           buttonText={getLocale('processingRequestButton')}
           titleText={getLocale('processingRequest')}
           walletType={walletType}
+          displayCloseButton={true}
           onClick={this.onRedirectError}
         />
       )
