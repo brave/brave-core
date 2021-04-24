@@ -1,4 +1,5 @@
 use crate::dom;
+use chrono::DateTime;
 use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
@@ -116,6 +117,7 @@ pub struct Meta {
     pub author: String,
     pub description: String,
     pub charset: String,
+    pub last_modified: Option<DateTime<chrono::offset::FixedOffset>>,
 }
 
 impl Default for Meta {
@@ -124,6 +126,7 @@ impl Default for Meta {
             title: Default::default(),
             author: Default::default(),
             description: Default::default(),
+            last_modified: Default::default(),
             charset: "utf-8".to_string(),
         }
     }

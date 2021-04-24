@@ -12,8 +12,31 @@ use scorer::{Meta, TopCandidate};
 use std::collections::{HashMap, HashSet};
 use std::default::Default;
 use std::io::Read;
+use thiserror::Error;
 use url::Url;
 use util::StringUtils;
+
+static JSONLD_ARTICLE_TYPES: [&str; 19] = [
+    "Article",
+    "AdvertiserContentArticle",
+    "NewsArticle",
+    "AnalysisNewsArticle",
+    "AskPublicNewsArticle",
+    "BackgroundNewsArticle",
+    "OpinionNewsArticle",
+    "ReportageNewsArticle",
+    "ReviewNewsArticle",
+    "Report",
+    "SatiricalArticle",
+    "ScholarlyArticle",
+    "MedicalScholarlyArticle",
+    "SocialMediaPosting",
+    "BlogPosting",
+    "LiveBlogPosting",
+    "DiscussionForumPosting",
+    "TechArticle",
+    "APIReference",
+];
 
 // The number of candidates to consider when choosing the "top" candidate. These
 // top candidates are used in the alternative candidates part of the algorithm.
@@ -24,6 +47,7 @@ const NUM_TOP_CANDIDATES: usize = 5;
 lazy_static! {
     static ref SEPARATORS: Regex = Regex::new(r#"\s+[\|\\/>»]\s+"#).unwrap();
     static ref END_DASH: Regex = Regex::new(r#"\s+(:?[—\-–])\s+.*$"#).unwrap();
+    static ref JSONLD_SCHEMA: Regex = Regex::new(r#"^https?://schema\.org$"#).unwrap();
 }
 
 #[derive(Debug)]
@@ -201,6 +225,136 @@ pub fn clean_title(dom: &Sink, title: String) -> String {
     } else {
         title
     }
+}
+
+#[derive(Error, Debug, PartialEq)]
+pub enum JsonLDError {
+    #[error("Could not parse json-ld: `{0}`")]
+    ParseError(String),
+    #[error("Missing @context field")]
+    MissingContext,
+    #[error("Invalid @context: Does not match http://schema.org")]
+    InvalidContext,
+    #[error("Missing @type field")]
+    MissingType,
+    #[error("Invalid @type")]
+    InvalidType,
+}
+
+impl From<serde_json::Error> for JsonLDError {
+    fn from(err: serde_json::Error) -> Self {
+        JsonLDError::ParseError(err.to_string())
+    }
+}
+
+#[inline(never)]
+fn try_parse_author(v: &serde_json::Value) -> Option<String> {
+    match v {
+        serde_json::Value::String(s) => {
+            if s.starts_with("[{") {
+                // Looks like it's nested JSON. I have no idea why sites do this. It's so stupid, but some do...
+                let p = serde_json::from_str(s).ok()?;
+                try_parse_author(&p)
+            } else {
+                Some(s.to_string())
+            }
+        }
+        serde_json::Value::Array(a) => {
+            if a.len() > 0 {
+                Some(
+                    a.into_iter()
+                        .filter_map(|e| try_parse_author(e))
+                        .collect::<Vec<_>>()
+                        .join(", "),
+                )
+            } else {
+                None
+            }
+        }
+        serde_json::Value::Object(o) => o
+            .get("name")
+            .and_then(|name| name.as_str())
+            .map(|x| x.to_string()),
+        _ => None,
+    }
+}
+
+fn try_parse_untyped_jsonld(content: &str, meta: &mut Meta) -> Result<(), JsonLDError> {
+    let v: serde_json::Value = serde_json::from_str(content)?;
+
+    let from_json_string = |v: &serde_json::Value| -> Option<String> {
+        match v {
+            serde_json::Value::String(s) => {
+                if !s.is_empty() {
+                    Some(s.to_string())
+                } else {
+                    None
+                }
+            }
+            _ => None,
+        }
+    };
+    match v {
+        serde_json::Value::Object(o) => {
+            // Validate @context
+            o.get("@context")
+                .map(|c| match c {
+                    serde_json::Value::String(s) => {
+                        if !JSONLD_SCHEMA.is_match(s) {
+                            Err(JsonLDError::InvalidContext)
+                        } else {
+                            Ok(())
+                        }
+                    }
+                    _ => Err(JsonLDError::MissingContext),
+                })
+                .unwrap_or(Err(JsonLDError::MissingContext))?;
+
+            // Validate @type
+            o.get("@type")
+                .map(|t| match t {
+                    serde_json::Value::String(s) => {
+                        if !JSONLD_ARTICLE_TYPES.iter().find(|&&x| x == s).is_some() {
+                            Err(JsonLDError::InvalidType)
+                        } else {
+                            Ok(())
+                        }
+                    }
+                    _ => Err(JsonLDError::MissingType),
+                })
+                .unwrap_or(Err(JsonLDError::MissingType))?;
+
+            // Get article title
+            if let Some(title) = o
+                .get("name")
+                .or_else(|| o.get("headline"))
+                .and_then(from_json_string)
+            {
+                meta.title = title;
+            }
+
+            // Get article description
+            if let Some(description) = o.get("description").and_then(from_json_string) {
+                meta.description = description;
+            }
+
+            // Get article modified date
+            if let Some(timestamp) = o
+                .get("dateModified")
+                .or_else(|| o.get("datePublished"))
+                .and_then(from_json_string)
+            {
+                meta.last_modified = chrono::DateTime::parse_from_rfc3339(&timestamp).ok();
+            }
+
+            if let Some(author) = o.get("author").and_then(try_parse_author) {
+                meta.author = author;
+            }
+        }
+
+        _ => (),
+    }
+    Ok(())
 }
 
 #[cfg(test)]
@@ -564,5 +718,79 @@ mod tests {
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
         assert_eq!(expected, product.meta.title);
+    }
+
+    #[test]
+    fn test_ldjson_missing_context() {
+        let mut meta = Meta::default();
+        let input = "{\"@type\":\"NewsArticle\"}";
+        match try_parse_untyped_jsonld(&input, &mut meta) {
+            Ok(_) => assert!(false, "Expected missing context error"),
+            Err(e) => assert_eq!(JsonLDError::MissingContext, e),
+        }
+    }
+
+    #[test]
+    fn test_ldjson_invalid_context() {
+        let mut meta = Meta::default();
+        let input = "{\"@context\":\"http://fake.org\", \"@type\":\"NewsArticle\"}";
+        match try_parse_untyped_jsonld(&input, &mut meta) {
+            Ok(_) => assert!(false, "Expected invalid context error"),
+            Err(e) => assert_eq!(JsonLDError::InvalidContext, e),
+        }
+    }
+
+    #[test]
+    fn test_ldjson_missing_type() {
+        let mut meta = Meta::default();
+        let input = "{\"@context\":\"http://schema.org\"}";
+        match try_parse_untyped_jsonld(&input, &mut meta) {
+            Ok(_) => assert!(false, "Expected missing type error"),
+            Err(e) => assert_eq!(JsonLDError::MissingType, e),
+        }
+    }
+
+    #[test]
+    fn test_ldjson_invalid_type() {
+        let mut meta = Meta::default();
+        let input = "{\"@context\":\"http://schema.org\", \"@type\":\"DefinitelyNotValid\"}";
+        match try_parse_untyped_jsonld(&input, &mut meta) {
+            Ok(_) => assert!(false, "Expected invalid type error"),
+            Err(e) => assert_eq!(JsonLDError::InvalidType, e),
+        }
+    }
+
+    #[test]
+    fn test_ldjson_buzzfeed() {
+        let mut meta = Meta::default();
+        let input = r#"
+{"@context":"http://schema.org",
+"@type":"NewsArticle",
+"isAccessibleForFree":true,
+"mainEntityOfPage":"https://www.buzzfeed.com/markdistefano/diet-pills-burns-up",
+"description":"An inquest into Eloise Parry's death has been adjourned until July.",
+"headline":"Student Dies After Diet Pills She Bought Online \"Burned Her Up From Within\"",
+"datePublished":"2015-04-21T09:29:39.000Z",
+"dateModified":"2015-04-21T09:29:39.000Z",
+"author":"[{\"@type\":\"Person\",\"name\":\"Mark Di Stefano\",\"url\":\"https://www.buzzfeed.com/markdistefano\",\"jobTitle\":\"BuzzFeed News Reporter, Australia\"}]",
+"publisher":{"@type":"Organization","name":"BuzzFeed","url":"https://www.buzzfeed.com"},
+"image":{"@type":"ImageObject","url":"https://img.buzzfeed.com/buzzfeed-static/static/2015-04/22/5/campaign_images/webdr03/student-dies-after-diet-pills-she-bought-online-b-2-28712-1429696299-24_dblbig.jpg?resize=1200:*","representativeOfPage":true}
+}
+    "#;
+        try_parse_untyped_jsonld(&input, &mut meta).expect("Could not parse json ld");
+        assert_eq!("Mark Di Stefano", meta.author);
+        assert_eq!(
+            "Student Dies After Diet Pills She Bought Online \"Burned Her Up From Within\"",
+            meta.title
+        );
+        assert_eq!(
+            "An inquest into Eloise Parry's death has been adjourned until July.",
+            meta.description
+        );
+        assert!(
+            meta.last_modified.is_some(),
+            "Could not parse dateModified field"
+        );
+        // TODO(headline == title), description, datePublished,
     }
 }
