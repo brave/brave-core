@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
+import { DesktopComponentWrapper, DesktopComponentWrapperRow, WalletWidgetStandIn } from './style'
 import { SideNav, TopTabNav, ChartControlBar } from '../components/desktop'
 import { NavTypes, NavObjectType, TopTabNavTypes, ChartTimelineType } from '../constants/types'
 import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
+import BuySendSwap from '../components/buy-send-swap'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -79,4 +80,16 @@ export const _LineChartControls = () => {
 
 _LineChartControls.story = {
   name: 'Chart Controls'
+}
+
+export const _BuySendSwap = () => {
+  return (
+    <WalletWidgetStandIn>
+      <BuySendSwap />
+    </WalletWidgetStandIn>
+  )
+}
+
+_BuySendSwap.story = {
+  name: 'Buy/Send/Swap'
 }

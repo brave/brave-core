@@ -72,7 +72,12 @@ const locale = {
   transactions: 'Transactions',
   price: 'Price',
   back: 'Back',
-  addAccount: 'Add Account'
+  addAccount: 'Add Account',
+
+  // BuySendSwap
+  buy: 'Buy',
+  send: 'Send',
+  swap: 'Swap'
 }
 
 export default locale
