@@ -127,7 +127,6 @@ test("brave_unit_tests") {
     "//brave/browser",
     "//brave/browser/browsing_data",
     "//brave/browser/content_settings:unit_tests",
-    "//brave/browser/download",
     "//brave/browser/first_run:unit_tests",
     "//brave/browser/metrics/test:brave_metrics_unit_tests",
     "//brave/browser/net",
