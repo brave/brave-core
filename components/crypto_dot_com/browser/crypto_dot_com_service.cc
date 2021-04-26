@@ -218,8 +218,36 @@ bool CryptoDotComService::IsLoggedIn() {
   return !access_token_.empty();
 }
 
-bool CryptoDotComService::Disconnect() {
-  return SetAccessToken("");
+bool CryptoDotComService::Disconnect(DisconnectCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&CryptoDotComService::OnDisconnect, base::Unretained(this),
+                     std::move(callback));
+  net::HttpRequestHeaders headers;
+  headers.SetHeader("widget-token", access_token_);
+  return NetworkRequest(GURL(kCryptoDotComDisconnectURL), "POST", "", headers,
+                        std::move(internal_callback));
+}
+
+void CryptoDotComService::OnDisconnect(
+    DisconnectCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  DVLOG(2) << __func__ << ": " << body;
+  auto disconnect_value = base::JSONReader::Read(body);
+  if (!disconnect_value || !disconnect_value->is_dict()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  if (const auto* code = disconnect_value->FindStringKey("code")) {
+    if (*code != "0")
+      std::move(callback).Run(false);
+  }
+
+  std::move(callback).Run(true);
+  // Clear if got success
+  SetAccessToken("");
 }
 
 bool CryptoDotComService::IsConnected(IsConnectedCallback callback) {

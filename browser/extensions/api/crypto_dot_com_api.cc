@@ -253,13 +253,28 @@ ExtensionFunction::ResponseAction CryptoDotComIsConnectedFunction::Run() {
   return RespondLater();
 }
 
+void CryptoDotComIsConnectedFunction::OnIsConnectedResult(bool connected) {
+  Respond(OneArgument(base::Value(connected)));
+}
+
 ExtensionFunction::ResponseAction CryptoDotComDisconnectFunction::Run() {
   if (!IsCryptoDotComAPIAvailable(browser_context())) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   auto* service = GetCryptoDotComService(browser_context());
-  return RespondNow(OneArgument(base::Value(service->Disconnect())));
+  bool ret = service->Disconnect(base::BindOnce(
+      &CryptoDotComDisconnectFunction::OnDisconnectResult, this));
+
+  if (!ret) {
+    return RespondNow(
+        Error("Could not make request for checking connect status"));
+  }
+  return RespondLater();
+}
+
+void CryptoDotComDisconnectFunction::OnDisconnectResult(bool success) {
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction CryptoDotComIsLoggedInFunction::Run() {
@@ -269,10 +284,6 @@ ExtensionFunction::ResponseAction CryptoDotComIsLoggedInFunction::Run() {
 
   auto* service = GetCryptoDotComService(browser_context());
   return RespondNow(OneArgument(base::Value(service->IsLoggedIn())));
-}
-
-void CryptoDotComIsConnectedFunction::OnIsConnectedResult(bool connected) {
-  Respond(OneArgument(base::Value(connected)));
 }
 
 ExtensionFunction::ResponseAction CryptoDotComGetNewsEventsFunction::Run() {

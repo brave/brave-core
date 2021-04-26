@@ -66,6 +66,7 @@ class CryptoDotComService : public KeyedService {
         base::OnceCallback<void(const CryptoDotComAssetRankings&)>;
   using GetAccountBalancesCallback = base::OnceCallback<void(base::Value)>;
   using IsConnectedCallback = base::OnceCallback<void(bool)>;
+  using DisconnectCallback = base::OnceCallback<void(bool)>;
   using GetNewsEventsCallback = base::OnceCallback<void(base::Value)>;
   using GetDepositAddressCallback = base::OnceCallback<void(base::Value)>;
   using CreateMarketOrderCallback = base::OnceCallback<void(base::Value)>;
@@ -78,7 +79,7 @@ class CryptoDotComService : public KeyedService {
   bool GetAssetRankings(GetAssetRankingsCallback callback);
   bool GetAccountBalances(GetAccountBalancesCallback callback);
   bool IsConnected(IsConnectedCallback callback);
-  bool Disconnect();
+  bool Disconnect(DisconnectCallback callback);
   bool IsLoggedIn();
   bool GetDepositAddress(const std::string& asset,
                          GetDepositAddressCallback callback);
@@ -129,6 +130,10 @@ class CryptoDotComService : public KeyedService {
                        const int status,
                        const std::string& body,
                        const std::map<std::string, std::string>& headers);
+  void OnDisconnect(DisconnectCallback callback,
+                    const int status,
+                    const std::string& body,
+                    const std::map<std::string, std::string>& headers);
 
   bool LoadTokenFromPrefs();
 

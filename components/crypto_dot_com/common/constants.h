@@ -22,7 +22,9 @@ constexpr char kCryptoDotComCreateMarketOrderURL[] =
 // prod url: https://crypto.com/fe-ex-api/widget/get-events
 constexpr char kCryptoDotComGetNewsEventsURL[] =
     "https://xdev-www.3ona.co/fe-ex-api/widget/get-events";
-
+// prod url: https://crypto.com/fe-ex-api/widget/disconnect
+constexpr char kCryptoDotComDisconnectURL[] =
+    "https://xdev-www.3ona.co/fe-ex-api/widget/disconnect";
 // These empty value is passed when corresponding apis get failed.
 constexpr char kEmptyAccountBalances[] = R"(
     {

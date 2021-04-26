@@ -113,6 +113,7 @@ class CryptoDotComDisconnectFunction : public ExtensionFunction {
  protected:
   ~CryptoDotComDisconnectFunction() override {}
   ResponseAction Run() override;
+  void OnDisconnectResult(bool success);
 };
 
 class CryptoDotComIsLoggedInFunction : public ExtensionFunction {
