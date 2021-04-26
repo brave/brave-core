@@ -107,6 +107,14 @@ impl Meta {
         }
         self
     }
+
+    #[inline]
+    pub fn last_modified_to_string(&self) -> String {
+        self.last_modified
+            .expect("last_modified not found")
+            .format("Updated %b. %d, %Y %H:%M %P")
+            .to_string()
+    }
 }
 
 /// This function searches the DOM for <meta> tags and JSON-LD data.
@@ -326,7 +334,31 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             let description = dom::create_element_simple(dom, "p", "subhead metadata", Some(text));
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
         }
-        if !meta.title.is_empty() || meta.description.is_some() {
+
+        // Add in the author
+        if let Some(ref text) = meta.author {
+            let author =
+                dom::create_element_simple(dom, "p", "metadata", Some(&format!("By {}", text)));
+            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(author));
+        }
+
+        // Add in last modified datetime
+        if meta.last_modified.is_some() {
+            let modified = dom::create_element_simple(
+                dom,
+                "p",
+                "metadata date",
+                Some(&meta.last_modified_to_string()),
+            );
+            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(modified));
+        }
+
+        // Vertical split
+        if !meta.title.is_empty()
+            || meta.description.is_some()
+            || meta.author.is_some()
+            || meta.last_modified.is_some()
+        {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
         }

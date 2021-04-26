@@ -374,7 +374,7 @@ pub fn create_element_simple(
 ) -> Handle {
     let name = QualName::new(None, ns!(), LocalName::from(local_name));
     let class_attr = Attribute {
-        name: QualName::new(None, ns!(), LocalName::from("class")),
+        name: QualName::new(None, ns!(), local_name!("class")),
         value: StrTendril::from_str(classes).unwrap_or_default(),
     };
     let elem = dom.create_element(name, vec![class_attr], ElementFlags::default());
