@@ -179,8 +179,12 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
     }
 
     private Bitmap getBraveIcon() {
-        int largeIconId = R.drawable.btn_brave;
-        return BitmapFactory.decodeResource(mContext.getResources(), largeIconId);
+        int largeIconId = R.mipmap.app_icon;
+        Resources resources = mContext.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        int iconSize = dpToPx(metrics, MAX_ACTION_ICON_WIDTH_DP);
+        return Bitmap.createScaledBitmap(
+                BitmapFactory.decodeResource(resources, largeIconId), iconSize, iconSize, false);
     }
 
     @Override
