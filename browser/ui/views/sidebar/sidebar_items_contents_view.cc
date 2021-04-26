@@ -15,9 +15,11 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/components/sidebar/sidebar_item.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -27,7 +29,9 @@
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/background.h"
 #include "ui/views/controls/menu/menu_runner.h"
+#include "ui/views/controls/separator.h"
 #include "ui/views/layout/box_layout.h"
 
 namespace {
@@ -47,10 +51,17 @@ std::string GetFirstCharFromURL(const GURL& url) {
   return target;
 }
 
+sidebar::SidebarService* GetSidebarService(Browser* browser) {
+  return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
+}
+
 }  // namespace
 
-SidebarItemsContentsView::SidebarItemsContentsView(BraveBrowser* browser)
+SidebarItemsContentsView::SidebarItemsContentsView(
+    BraveBrowser* browser,
+    views::DragController* drag_controller)
     : browser_(browser),
+      drag_controller_(drag_controller),
       sidebar_model_(browser->sidebar_controller()->model()) {
   DCHECK(browser_);
   set_context_menu_controller(this);
@@ -143,16 +154,10 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
     return;
 
   if (command_id == kItemRemove) {
-    browser_->sidebar_controller()->RemoveItemAt(index);
+    GetSidebarService(browser_)->RemoveItemAt(index);
     return;
   }
 }
-
-void SidebarItemsContentsView::MaybeStartDrag() {}
-
-void SidebarItemsContentsView::ContinueDrag() {}
-
-void SidebarItemsContentsView::EndDrag() {}
 
 void SidebarItemsContentsView::OnContextMenuClosed() {
   view_for_context_menu_ = nullptr;
@@ -179,16 +184,24 @@ void SidebarItemsContentsView::OnActiveIndexChanged(int old_index,
     UpdateItemViewStateAt(new_index, true);
 }
 
+void SidebarItemsContentsView::OnItemMoved(const sidebar::SidebarItem& item,
+                                           int from,
+                                           int to) {
+  views::View* source_view = children()[from];
+  ReorderChildView(source_view, to);
+}
+
 void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                                            int index,
                                            bool user_gesture) {
   auto* item_view =
-      AddChildViewAt(std::make_unique<SidebarItemView>(this, this), index);
+      AddChildViewAt(std::make_unique<SidebarItemView>(this), index);
   item_view->set_context_menu_controller(this);
   item_view->set_paint_background_on_hovered(true);
   item_view->SetCallback(
       base::BindRepeating(&SidebarItemsContentsView::OnItemPressed,
                           base::Unretained(this), item_view));
+  item_view->set_drag_controller(drag_controller_);
 
   if (sidebar::IsWebType(item))
     SetDefaultImageAt(index, item);
@@ -247,16 +260,78 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
   if (index == -1)
     return;
 
-  SidebarItemView* item_view = static_cast<SidebarItemView*>(children()[index]);
+  SidebarItemView* item_view = GetItemViewAt(index);
   item_view->SetImage(
       views::Button::STATE_NORMAL,
       gfx::ImageSkiaOperations::CreateResizedImage(
           image, skia::ImageOperations::RESIZE_BEST, kIconSize));
 }
 
+void SidebarItemsContentsView::ClearDragIndicator() {
+  for (auto* view : children()) {
+    static_cast<SidebarItemView*>(view)->ClearHorizontalBorder();
+  }
+}
+
+int SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
+    const gfx::Point& screen_position) {
+  // Find which item view includes this |screen_position|.
+  const int child_count = children().size();
+  for (int i = 0; i < child_count; ++i) {
+    views::View* child_view = children()[i];
+    gfx::Rect child_view_rect = child_view->GetLocalBounds();
+    views::View::ConvertRectToScreen(child_view, &child_view_rect);
+
+    if (child_view_rect.Contains(screen_position)) {
+      const gfx::Point center_point = child_view_rect.CenterPoint();
+      return center_point.y() > screen_position.y() ? i : i + 1;
+    }
+  }
+
+  NOTREACHED();
+  return -1;
+}
+
+int SidebarItemsContentsView::DrawDragIndicator(views::View* source,
+                                                const gfx::Point& position) {
+  const int source_view_index = GetIndexOf(source);
+  int target_index = CalculateTargetDragIndicatorIndex(position);
+  // If target position is right before or right after, don't need to draw
+  // drag indicator.
+  if (source_view_index == target_index ||
+      source_view_index + 1 == target_index) {
+    ClearDragIndicator();
+  } else {
+    DoDrawDragIndicator(target_index);
+  }
+
+  return target_index;
+}
+
+void SidebarItemsContentsView::DoDrawDragIndicator(int index) {
+  // Clear current drag indicator.
+  ClearDragIndicator();
+
+  if (index == -1)
+    return;
+
+  // Use item's top or bottom border as a drag indicator.
+  // Item's top border is used as a drag indicator except last item.
+  // Last item's bottom border is used for indicator when drag candidate
+  // position is behind the last item.
+  const int child_count = children().size();
+  const bool draw_top_border = child_count != index;
+  const int item_index = draw_top_border ? index : index - 1;
+  GetItemViewAt(item_index)->DrawHorizontalBorder(draw_top_border);
+}
+
+SidebarItemView* SidebarItemsContentsView::GetItemViewAt(int index) {
+  return static_cast<SidebarItemView*>(children()[index]);
+}
+
 void SidebarItemsContentsView::UpdateItemViewStateAt(int index, bool active) {
   const auto item = sidebar_model_->GetAllSidebarItems()[index];
-  SidebarItemView* item_view = static_cast<SidebarItemView*>(children()[index]);
+  SidebarItemView* item_view = GetItemViewAt(index);
 
   if (item.open_in_panel)
     item_view->set_draw_highlight(active);

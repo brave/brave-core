@@ -10,7 +10,6 @@
 
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
-#include "brave/browser/ui/views/sidebar/sidebar_item_controller.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
@@ -21,14 +20,15 @@ class MenuRunner;
 }  // namespace views
 
 class BraveBrowser;
+class SidebarItemView;
 
 class SidebarItemsContentsView : public views::View,
-                                 public SidebarItemController,
                                  public SidebarButtonView::Delegate,
                                  public views::ContextMenuController,
                                  public ui::SimpleMenuModel::Delegate {
  public:
-  explicit SidebarItemsContentsView(BraveBrowser* browser);
+  SidebarItemsContentsView(BraveBrowser* browser,
+                           views::DragController* drag_controller);
   ~SidebarItemsContentsView() override;
 
   SidebarItemsContentsView(const SidebarItemsContentsView&) = delete;
@@ -37,11 +37,6 @@ class SidebarItemsContentsView : public views::View,
   // views::View overrides:
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
-
-  // SidebarItemController overrides:
-  void MaybeStartDrag() override;
-  void ContinueDrag() override;
-  void EndDrag() override;
 
   // SidebarButtonView::Delegate overrides:
   base::string16 GetTooltipTextFor(const views::View* view) const override;
@@ -57,6 +52,7 @@ class SidebarItemsContentsView : public views::View,
   void OnItemAdded(const sidebar::SidebarItem& item,
                    int index,
                    bool user_gesture);
+  void OnItemMoved(const sidebar::SidebarItem& item, int from, int to);
   void OnItemRemoved(int index);
   void OnActiveIndexChanged(int old_index, int new_index);
 
@@ -64,6 +60,12 @@ class SidebarItemsContentsView : public views::View,
 
   void SetImageForItem(const sidebar::SidebarItem& item,
                        const gfx::ImageSkia& image);
+
+  // |source| is drag source view.
+  // |position| is in local coordinate space of |source|.
+  // Returns drag indicator index.
+  int DrawDragIndicator(views::View* source, const gfx::Point& position);
+  void ClearDragIndicator();
 
  private:
   enum ContextMenuIDs {
@@ -87,7 +89,15 @@ class SidebarItemsContentsView : public views::View,
   void UpdateAllBuiltInItemsViewState();
   void ShowItemAddedFeedbackBubble(views::View* anchor_view);
 
+  // When item count is five, drag indicator is drawn in front of first item.
+  // If |index| is 5, it's drawn after the last item.
+  // Pass -1 to remove indicator.
+  void DoDrawDragIndicator(int index);
+  int CalculateTargetDragIndicatorIndex(const gfx::Point& screen_position);
+  SidebarItemView* GetItemViewAt(int index);
+
   BraveBrowser* browser_ = nullptr;
+  views::DragController* drag_controller_ = nullptr;
   views::View* view_for_context_menu_ = nullptr;
   sidebar::SidebarModel* sidebar_model_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> context_menu_model_;
