@@ -1,0 +1,13 @@
+source_set("child_monitor") {
+  visibility = [
+    "//brave/components/services/ipfs",
+    "//brave/components/services/tor",
+  ]
+
+  sources = [
+    "child_monitor.cc",
+    "child_monitor.h",
+  ]
+
+  deps = [ "//base" ]
+}

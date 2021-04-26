@@ -11,7 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/process/process.h"
 #include "base/sequence_checker.h"
-#include "base/threading/thread.h"
+#include "brave/components/external_child_process/child_monitor.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -23,6 +23,8 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   explicit TorLauncherImpl(
       mojo::PendingReceiver<tor::mojom::TorLauncher> receiver);
   ~TorLauncherImpl() override;
+  TorLauncherImpl(const TorLauncherImpl&) = delete;
+  TorLauncherImpl& operator=(const TorLauncherImpl&) = delete;
 
   // tor::mojom::TorLauncher
   void Shutdown() override;
@@ -35,17 +37,13 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   void Cleanup();
 
   SetCrashHandlerCallback crash_handler_callback_;
-  std::unique_ptr<base::Thread> child_monitor_thread_;
-  base::Process tor_process_;
+  std::unique_ptr<brave::ChildMonitor> child_monitor_;
   mojo::Receiver<tor::mojom::TorLauncher> receiver_;
   bool in_shutdown_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<TorLauncherImpl> weak_ptr_factory_{this};
-
-  TorLauncherImpl(const TorLauncherImpl&) = delete;
-  TorLauncherImpl& operator=(const TorLauncherImpl&) = delete;
 };
 
 }  // namespace tor

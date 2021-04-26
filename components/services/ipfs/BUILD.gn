@@ -8,6 +8,7 @@ source_set("ipfs") {
 
   deps = [
     "//base",
+    "//brave/components/external_child_process:child_monitor",
     "//brave/components/services/ipfs/public/mojom",
     "//mojo/public/cpp/bindings",
   ]

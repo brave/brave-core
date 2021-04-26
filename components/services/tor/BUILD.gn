@@ -12,6 +12,7 @@ source_set("tor") {
   deps = [
     "public/interfaces",
     "//base",
+    "//brave/components/external_child_process:child_monitor",
     "//mojo/public/cpp/bindings",
   ]
 }
