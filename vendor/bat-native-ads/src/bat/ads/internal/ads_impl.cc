@@ -45,6 +45,7 @@
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/resources/conversions/conversions_resource.h"
 #include "bat/ads/internal/resources/country_components.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/language_components.h"
@@ -126,6 +127,7 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   text_classification_resource_->Load();
   purchase_intent_resource_->Load();
   anti_targeting_resource_->Load();
+  conversions_resource_->Load();
 }
 
 void AdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
@@ -150,7 +152,8 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
 
   const std::string original_url = redirect_chain.front();
   ad_transfer_->MaybeTransferAd(tab_id, original_url);
-  conversions_->MaybeConvert(redirect_chain, html);
+  conversions_->MaybeConvert(redirect_chain, html,
+                             conversions_resource_->get());
 }
 
 void AdsImpl::OnTextLoaded(const int32_t tab_id,
@@ -274,6 +277,7 @@ void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
   } else if (kComponentCountryIds.find(id) != kComponentCountryIds.end()) {
     purchase_intent_resource_->Load();
     anti_targeting_resource_->Load();
+    conversions_resource_->Load();
   } else {
     BLOG(0, "Unknown resource for " << id);
   }
@@ -423,6 +427,8 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
           purchase_intent_resource_.get());
 
   anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
+
+  conversions_resource_ = std::make_unique<resource::Conversions>();
 
   ad_targeting_ = std::make_unique<AdTargeting>();
   subdivision_targeting_ =

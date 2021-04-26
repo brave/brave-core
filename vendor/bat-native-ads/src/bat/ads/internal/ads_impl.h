@@ -47,6 +47,7 @@ class SubdivisionTargeting;
 
 namespace resource {
 class AntiTargeting;
+class Conversions;
 class EpsilonGreedyBandit;
 class PurchaseIntent;
 class TextClassification;
@@ -202,6 +203,7 @@ class AdsImpl : public Ads,
   std::unique_ptr<ad_targeting::processor::PurchaseIntent>
       purchase_intent_processor_;
   std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
+  std::unique_ptr<resource::Conversions> conversions_resource_;
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
   std::unique_ptr<AdTargeting> ad_targeting_;
