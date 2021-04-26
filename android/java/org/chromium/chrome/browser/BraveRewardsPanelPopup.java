@@ -134,7 +134,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private static final int BALANCE_REPORT_ONE_TIME_DONATION = 4;
 
     private static final int CLICK_DISABLE_INTERVAL = 1000; // In milliseconds
-    private static final int WALLET_BALANCE_LIMIT = 25;
+    private static final int WALLET_BALANCE_LIMIT = 15;
 
     public static final String PREF_VERIFY_WALLET_ENABLE = "verify_wallet_enable";
 
