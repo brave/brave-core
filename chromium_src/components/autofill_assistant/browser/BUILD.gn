@@ -5,13 +5,13 @@
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ 
-    "autofill_assistant_features_unittest.cc",
+  sources = [
     # "//components/autofill_assistant/browser" target doesn't seem to build
     # properly on all platforms yet (only builds on Android), so instead of
     # adding a dep on the target, adding feaures.h/cc directly.
     "//components/autofill_assistant/browser/features.cc",
     "//components/autofill_assistant/browser/features.h",
+    "autofill_assistant_features_unittest.cc",
   ]
 
   deps = [
