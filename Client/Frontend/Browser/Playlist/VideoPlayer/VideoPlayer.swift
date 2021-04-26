@@ -156,6 +156,7 @@ public class VideoView: UIView, VideoTrackerBarDelegate {
         let overlayDoubleTappedGesture = UITapGestureRecognizer(target: self, action: #selector(onOverlayDoubleTapped(_:))).then {
             $0.numberOfTapsRequired = 2
             $0.numberOfTouchesRequired = 1
+            $0.delegate = self
         }
         
         addGestureRecognizer(overlayTappedGesture)
@@ -731,6 +732,19 @@ public class VideoView: UIView, VideoTrackerBarDelegate {
         // We do this because for m3u8 HLS streams,
         // tracks may not always be available and the particle effect will show even on videos..
         // It's best to assume this type of media is a video stream.
+        return true
+    }
+}
+
+extension VideoView: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let location = touch.location(in: self)
+        let restrictedViews = [infoView, controlsView]
+        for view in restrictedViews {
+            if view.point(inside: self.convert(location, to: view), with: nil) {
+                return false
+            }
+        }
         return true
     }
 }
