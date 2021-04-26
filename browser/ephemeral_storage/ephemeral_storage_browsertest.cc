@@ -470,7 +470,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
-                       DISABLED_NavigationCookiesArePartitioned) {
+                       NavigationCookiesArePartitioned) {
   GURL a_site_set_cookie_url = https_server_.GetURL(
       "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
   GURL b_site_set_cookie_url = https_server_.GetURL(
@@ -510,8 +510,16 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   b_cookie = content::GetCookies(browser()->profile(), GURL("https://b.com/"));
   EXPECT_EQ("name=bcom", b_cookie);
 
-  // Navigating to a new TLD should clear all ephemeral cookies.
+  // Navigating to a new TLD should clear all ephemeral cookies after keep-alive
+  // timeout.
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+
+  base::RunLoop run_loop;
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(),
+      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+  run_loop.Run();
+
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
 
   ValuesFromFrames values_after = GetValuesFromFrames(web_contents);

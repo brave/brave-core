@@ -78,6 +78,7 @@ GURL GetFirstPartyURL(const GURL& site_for_cookies,
                       const base::Optional<url::Origin>& top_frame_origin) {
   return top_frame_origin ? top_frame_origin->GetURL() : site_for_cookies;
 }
+
 bool IsFirstPartyAccessAllowed(
     const GURL& first_party_url,
     const CookieSettingsBase* const cookie_settings) {
@@ -87,6 +88,15 @@ bool IsFirstPartyAccessAllowed(
 }
 
 }  // namespace
+
+ScopedEphemeralStorageAwareness::ScopedEphemeralStorageAwareness(
+    bool* ephemeral_storage_aware)
+    : ephemeral_storage_aware_auto_reset_(ephemeral_storage_aware, true) {}
+ScopedEphemeralStorageAwareness::~ScopedEphemeralStorageAwareness() = default;
+ScopedEphemeralStorageAwareness::ScopedEphemeralStorageAwareness(
+    ScopedEphemeralStorageAwareness&& rhs) = default;
+ScopedEphemeralStorageAwareness& ScopedEphemeralStorageAwareness::operator=(
+    ScopedEphemeralStorageAwareness&& rhs) = default;
 
 bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
@@ -107,11 +117,16 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
     return false;
 
   bool allow_3p =
-      IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+      IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin);
   bool allow_1p = IsFirstPartyAccessAllowed(first_party_url, this);
 
   // only use ephemeral storage for block 3p
   return allow_1p && !allow_3p;
+}
+
+ScopedEphemeralStorageAwareness
+CookieSettingsBase::CreateScopedEphemeralStorageAwareness() const {
+  return ScopedEphemeralStorageAwareness(&ephemeral_storage_aware_);
 }
 
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
@@ -124,9 +139,8 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<url::Origin>& top_frame_origin) const {
-  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin))
-    return true;
-
+  auto scoped_ephemeral_storage_awareness =
+      CreateScopedEphemeralStorageAwareness();
   return IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
 }
 
@@ -137,6 +151,18 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
 }
 
 bool CookieSettingsBase::IsCookieAccessAllowed(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<url::Origin>& top_frame_origin) const {
+  if (ephemeral_storage_aware_ &&
+      ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
+    return true;
+  }
+
+  return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin);
+}
+
+bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<url::Origin>& top_frame_origin) const {
