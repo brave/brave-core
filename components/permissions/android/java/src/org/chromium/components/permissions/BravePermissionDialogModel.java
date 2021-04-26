@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.modaldialog.ModalDialogProperties;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -44,7 +45,8 @@ class BravePermissionDialogModel {
         // Create a text label before the lifetime selector.
         TextView lifetimeOptionsText = new TextView(context);
         lifetimeOptionsText.setText(braveDelegate.getLifetimeOptionsText());
-        lifetimeOptionsText.setTextAppearance(R.style.TextAppearance_TextMedium_Primary);
+        ApiCompatibilityUtils.setTextAppearance(
+                lifetimeOptionsText, R.style.TextAppearance_TextMedium_Primary);
 
         LinearLayout.LayoutParams lifetimeOptionsTextLayoutParams =
                 new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
