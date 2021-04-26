@@ -14,10 +14,41 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
-namespace brave_rewards {
+namespace {
 
-void RecordWalletBalanceP3A(bool wallet_created, bool rewards_enabled,
-                            size_t b) {
+uint64_t RoundProbiToUint64(base::StringPiece probi) {
+  if (probi.size() < 18)
+    return 0;
+  uint64_t grant = 0;
+  base::StringToUint64(probi.substr(0, probi.size() - 18), &grant);
+  return grant;
+}
+
+}  // namespace
+
+namespace brave_rewards {
+namespace p3a {
+
+void RecordWalletState(const WalletState& state) {
+  int answer = 0;
+  if (state.wallet_created && !state.rewards_enabled) {
+    answer = 5;
+  } else if (state.rewards_enabled) {
+    DCHECK(state.wallet_created);
+    if (state.grants_claimed && state.funds_added) {
+      answer = 4;
+    } else if (state.funds_added) {
+      answer = 3;
+    } else if (state.grants_claimed) {
+      answer = 2;
+    } else {
+      answer = 1;
+    }
+  }
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletState", answer, 5);
+}
+
+void RecordWalletBalance(bool wallet_created, bool rewards_enabled, size_t b) {
   int answer = 0;
   if (wallet_created && !rewards_enabled) {
     answer = 1;
@@ -34,19 +65,19 @@ void RecordWalletBalanceP3A(bool wallet_created, bool rewards_enabled,
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletBalance.2", answer, 4);
 }
 
-void RecordAutoContributionsState(AutoContributionsP3AState state, int count) {
+void RecordAutoContributionsState(AutoContributionsState state, int count) {
   DCHECK_GE(count, 0);
   int answer = 0;
   switch (state) {
-    case AutoContributionsP3AState::kNoWallet:
+    case AutoContributionsState::kNoWallet:
       break;
-    case AutoContributionsP3AState::kRewardsDisabled:
+    case AutoContributionsState::kRewardsDisabled:
       answer = 1;
       break;
-    case AutoContributionsP3AState::kWalletCreatedAutoContributeOff:
+    case AutoContributionsState::kWalletCreatedAutoContributeOff:
       answer = 2;
       break;
-    case AutoContributionsP3AState::kAutoContributeOn:
+    case AutoContributionsState::kAutoContributeOn:
       switch (count) {
         case 0:
           answer = 3;
@@ -90,75 +121,66 @@ void RecordTipsState(bool wallet_created,
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.TipsState.2", answer, 5);
 }
 
-void RecordAdsState(AdsP3AState state) {
+void RecordAdsState(AdsState state) {
   UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsState.2", state);
 }
 
-void UpdateAdsP3AOnPreferenceChange(PrefService *prefs,
-                                    const std::string& pref) {
+void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
+                                      const std::string& pref) {
   const bool ads_enabled = prefs->GetBoolean(ads::prefs::kEnabled);
   if (pref == ads::prefs::kEnabled) {
     if (ads_enabled) {
-      brave_rewards::RecordAdsState(AdsP3AState::kAdsEnabled);
+      RecordAdsState(AdsState::kAdsEnabled);
       prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, false);
     } else {
       // Apparently, the pref was disabled.
-      brave_rewards::RecordAdsState(
-          AdsP3AState::kAdsEnabledThenDisabledRewardsOn);
+      RecordAdsState(AdsState::kAdsEnabledThenDisabledRewardsOn);
       prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, true);
     }
   }
 }
 
-void MaybeRecordInitialAdsP3AState(PrefService* prefs) {
+void MaybeRecordInitialAdsState(PrefService* prefs) {
   if (!prefs->GetBoolean(brave_ads::prefs::kHasAdsP3AState)) {
     const bool ads_state = prefs->GetBoolean(ads::prefs::kEnabled);
-    RecordAdsState(ads_state ? AdsP3AState::kAdsEnabled
-                             : AdsP3AState::kAdsDisabled);
+    RecordAdsState(ads_state ? AdsState::kAdsEnabled : AdsState::kAdsDisabled);
     prefs->SetBoolean(brave_ads::prefs::kHasAdsP3AState, true);
   }
 }
 
 void RecordNoWalletCreatedForAllMetrics() {
-  RecordWalletBalanceP3A(false, false, 0);
-  RecordAutoContributionsState(AutoContributionsP3AState::kNoWallet, 0);
+  RecordWalletState({});
+  RecordWalletBalance(false, false, 0);
+  RecordAutoContributionsState(AutoContributionsState::kNoWallet, 0);
   RecordTipsState(false, false, 0, 0);
-  RecordAdsState(AdsP3AState::kNoWallet);
+  RecordAdsState(AdsState::kNoWallet);
 }
 
 void RecordRewardsDisabledForSomeMetrics() {
-  RecordWalletBalanceP3A(true, false, 1);
-  RecordAutoContributionsState(AutoContributionsP3AState::kRewardsDisabled, 0);
+  RecordWalletBalance(true, false, 1);
+  RecordAutoContributionsState(AutoContributionsState::kRewardsDisabled, 0);
   RecordTipsState(true, false, 0, 0);
   // Ads state is handled separately.
 }
 
-
-double CalcWalletBalanceForP3A(base::flat_map<std::string, double> wallets,
-                               double user_funds) {
+double CalcWalletBalance(base::flat_map<std::string, double> wallets,
+                         double user_funds) {
   double balance_minus_grant = 0.0;
   for (const auto& wallet : wallets) {
-    // Skip anonymous wallet, since it can contain grants.
-    if (wallet.first == "anonymous") {
+    // Skip anonymous and unblinded wallets, since they can contain grants.
+    if (wallet.first == "anonymous" || wallet.first == "blinded") {
       continue;
     }
     balance_minus_grant += static_cast<size_t>(wallet.second);
   }
 
-  // `user_funds` is the amount of user-funded BAT
-  // in the anonymous wallet (ex: not grants).
+  // |user_funds| is the amount of user-funded BAT in the anonymous
+  // wallet (ex: not grants).
   balance_minus_grant += user_funds;
   return balance_minus_grant;
 }
 
-uint64_t RoundProbiToUint64(base::StringPiece probi) {
-  if (probi.size() < 18) return 0;
-  uint64_t grant = 0;
-  base::StringToUint64(probi.substr(0, probi.size() - 18), &grant);
-  return grant;
-}
-
-void ExtractAndLogP3AStats(const base::DictionaryValue& dict) {
+void ExtractAndLogStats(const base::DictionaryValue& dict) {
   const base::Value* probi_value =
       dict.FindPath({"walletProperties", "probi_"});
   if (!probi_value || !probi_value->is_string()) {
@@ -195,7 +217,8 @@ void ExtractAndLogP3AStats(const base::DictionaryValue& dict) {
   }
   const uint64_t total =
       RoundProbiToUint64(probi_value->GetString()) - total_grants;
-  RecordWalletBalanceP3A(true, true, total);
+  RecordWalletBalance(true, true, total);
 }
 
+}  // namespace p3a
 }  // namespace brave_rewards

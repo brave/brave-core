@@ -1708,7 +1708,8 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
     }
 
     // Record P3A.
-    brave_rewards::UpdateAdsP3AOnPreferenceChange(profile_->GetPrefs(), pref);
+    brave_rewards::p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
+                                                         pref);
   } else if (pref == ads::prefs::kIdleTimeThreshold) {
     StartCheckIdleStateTimer();
   } else if (pref == brave_rewards::prefs::kWalletBrave) {

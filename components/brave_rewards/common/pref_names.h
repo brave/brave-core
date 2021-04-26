@@ -16,6 +16,7 @@ extern const char kNotificationTimerInterval[];
 extern const char kBackupNotificationInterval[];
 extern const char kBackupSucceeded[];
 extern const char kUserHasFunded[];
+extern const char kUserHasClaimedGrant[];
 extern const char kAddFundsNotification[];
 extern const char kNotificationStartupDelay[];
 extern const char kExternalWallets[];  // DEPRECATED

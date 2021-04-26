@@ -21,25 +21,36 @@ class DictionaryValue;
 }
 
 namespace brave_rewards {
+namespace p3a {
 
-void RecordWalletBalanceP3A(bool wallet_created, bool rewards_enabled,
-                            size_t balance);
+struct WalletState {
+  bool wallet_created = false;
+  bool rewards_enabled = false;
+  bool grants_claimed = false;
+  bool funds_added = false;
+};
 
-enum class AutoContributionsP3AState {
+void RecordWalletState(const WalletState& state);
+
+void RecordWalletBalance(bool wallet_created,
+                         bool rewards_enabled,
+                         size_t balance);
+
+enum class AutoContributionsState {
   kNoWallet,
   kRewardsDisabled,
   kWalletCreatedAutoContributeOff,
   kAutoContributeOn,
 };
 
-void RecordAutoContributionsState(AutoContributionsP3AState state, int count);
+void RecordAutoContributionsState(AutoContributionsState state, int count);
 
 void RecordTipsState(bool wallet_created,
                      bool rewards_enabled,
                      int one_time_count,
                      int recurring_count);
 
-enum class AdsP3AState {
+enum class AdsState {
   kNoWallet,
   kRewardsDisabled,
   kAdsDisabled,
@@ -49,26 +60,25 @@ enum class AdsP3AState {
   kMaxValue = kAdsEnabledThenDisabledRewardsOff,
 };
 
-void RecordAdsState(AdsP3AState state);
+void RecordAdsState(AdsState state);
 
-void UpdateAdsP3AOnPreferenceChange(PrefService* prefs,
-                                    const std::string& pref);
+void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
+                                      const std::string& pref);
 
 // Records an initial metric state ("disabled" or "enabled") if it was not done
 // before. Intended to be called if the user has already created a wallet.
-void MaybeRecordInitialAdsP3AState(PrefService* local_state);
+void MaybeRecordInitialAdsState(PrefService* local_state);
 
 void RecordNoWalletCreatedForAllMetrics();
 
 void RecordRewardsDisabledForSomeMetrics();
 
-double CalcWalletBalanceForP3A(base::flat_map<std::string, double> wallets,
-                               double user_funds);
+double CalcWalletBalance(base::flat_map<std::string, double> wallets,
+                         double user_funds);
 
-uint64_t RoundProbiToUint64(base::StringPiece probi);
+void ExtractAndLogStats(const base::DictionaryValue& dict);
 
-void ExtractAndLogP3AStats(const base::DictionaryValue& dict);
-
+}  // namespace p3a
 }  // namespace brave_rewards
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
