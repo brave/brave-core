@@ -216,7 +216,8 @@ public class BytecodeTest {
                         "getModel", false, null));
         Assert.assertTrue(methodExists("org/chromium/components/permissions/PermissionDialogModel",
                 "getModel", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "createAdapterIfNecessary", false, null));
     }
 
