@@ -672,7 +672,6 @@
 		59A68D66379CFA85C4EAF00B /* TwoLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A68B1F857A8638598A63A0 /* TwoLineCell.swift */; };
 		59B6902921B684A700E9388E /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B6902821B684A700E9388E /* BundleExtension.swift */; };
 		59B6911D21B695A400E9388E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B6911B21B695A400E9388E /* InfoPlist.strings */; };
-		59B6912321B695A400E9388E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B6912121B695A400E9388E /* InfoPlist.strings */; };
 		59B6912621B695A400E9388E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B6912421B695A400E9388E /* InfoPlist.strings */; };
 		59B6912921B695A400E9388E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B6912721B695A400E9388E /* InfoPlist.strings */; };
 		59B6912C21B695A400E9388E /* Shared.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B6912A21B695A400E9388E /* Shared.strings */; };
@@ -6329,7 +6328,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				27F443F42138843400296C58 /* BraveShareToInfoPlist.strings in Resources */,
-				59B6912321B695A400E9388E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8701,7 +8699,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
 					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
@@ -9374,7 +9371,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
 					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
@@ -11491,7 +11487,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
 					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
@@ -11725,7 +11720,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
 					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
@@ -12026,7 +12020,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
 					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
@@ -12280,7 +12273,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
 					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
