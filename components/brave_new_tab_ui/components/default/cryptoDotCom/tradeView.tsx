@@ -40,7 +40,7 @@ export default function TradeView ({
   tradingPairs,
   handleAssetClick
 }: Props) {
-  const assetRankings = transformLosersGainers(losersGainers)
+  const assetRankings = transformLosersGainers(losersGainers || {})
 
   enum FilterValues {
     ALL = 'ALL',

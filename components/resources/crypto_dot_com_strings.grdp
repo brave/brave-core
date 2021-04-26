@@ -13,8 +13,10 @@
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_SEND_CAVEAT_HEADING" desc="">Send only [[currency]] to this deposit address.</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_SEND_CAVEAT_BODY" desc="">Sending coin or token other than [[currency]] to this address may result in the loss of your deposit.</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_TRADE_TO" desc="">Trade ([[fromCurrency]] to [[toCurrency]])</message>
-    <message name="IDS_CRYPTO_DOT_COM_WIDGET_CONFIRM" desc="">Confirm</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_CONFIRM" desc="Label for confirm button. Label has countdown numbers like (Confirms (2)s)">Confirm ([[counter]])s</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_CONFIRM_ORDER" desc="">Confirm Order</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_BOUGHT" desc="">You bought [[amount]] [[currency]]!</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_SOLD" desc="">You sold [[amount]] [[currency]]!</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_APPROX_PRICE" desc="">Approx Market Price</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_APPROX_TOTAL_RECEIVED" desc="">Approx Total Received</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_APPROX_TOTAL_SPENT" desc="">Approx Total Spent</message>

@@ -407,8 +407,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "cryptoDotComWidgetCancelText" , IDS_BRAVE_UI_CANCEL },
         { "cryptoDotComWidgetDepositMore" , IDS_CRYPTO_DOT_COM_WIDGET_DEPOSIT_MORE },  // NOLINT
         { "cryptoDotComWidgetContinue", IDS_BINANCE_WIDGET_CONTINUE },
-        { "cryptoDotComWidgetBought", IDS_GEMINI_WIDGET_BOUGHT },
-        { "cryptoDotComWidgetSold", IDS_GEMINI_WIDGET_SOLD },
+        { "cryptoDotComWidgetBought", IDS_CRYPTO_DOT_COM_WIDGET_BOUGHT },
+        { "cryptoDotComWidgetSold", IDS_CRYPTO_DOT_COM_WIDGET_SOLD },
         { "cryptoDotComWidgetFailedTrade", IDS_GEMINI_WIDGET_FAILED_TRADE },
         { "cryptoDotComWidgetError", IDS_GEMINI_WIDGET_ERROR },
 #endif

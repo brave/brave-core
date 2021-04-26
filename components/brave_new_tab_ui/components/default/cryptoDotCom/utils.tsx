@@ -45,7 +45,12 @@ function getPercentColor (percentChange: string) {
 }
 
 // Merges losers/gainers into one table
-function transformLosersGainers ({ losers = [], gainers = [] }: Record<string, chrome.cryptoDotCom.AssetRanking[]>): Record<string, chrome.cryptoDotCom.AssetRanking> {
+function transformLosersGainers (losersGainers: Record<string, chrome.cryptoDotCom.AssetRanking[]>): Record<string, chrome.cryptoDotCom.AssetRanking> {
+  if (!losersGainers) {
+    return {}
+  }
+
+  const { losers = [], gainers = [] } = losersGainers
   const losersGainersMerged = [ ...losers, ...gainers ]
   return losersGainersMerged.reduce((mergedTable: object, asset: chrome.cryptoDotCom.AssetRanking) => {
     let { pair: assetName } = asset

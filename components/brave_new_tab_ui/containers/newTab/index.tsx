@@ -326,10 +326,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setGeminiHideBalance(hide)
   }
 
-  setCryptoDotComHideBalance = (hide: boolean) => {
-    this.props.actions.setCryptoDotComHideBalance(hide)
-  }
-
   disconnectBinance = () => {
     this.props.actions.disconnectBinance()
   }
@@ -1004,7 +1000,7 @@ class NewTabPage extends React.Component<Props, State> {
         onDisableWidget={this.toggleShowCryptoDotCom}
         onBtcPriceOptIn={this.props.actions.onBtcPriceOptIn}
         onIsConnected={this.props.actions.onIsConnectedReceived}
-        onSetHideBalance={this.setCryptoDotComHideBalance}
+        onSetHideBalance={this.props.actions.setCryptoDotComHideBalance}
         disconnect={this.disconnectCryptoDotCom}
         cancelDisconnect={this.cancelCryptoDotComDisconnect}
         isCryptoDotComLoggedIn={chrome.cryptoDotCom.isLoggedIn}

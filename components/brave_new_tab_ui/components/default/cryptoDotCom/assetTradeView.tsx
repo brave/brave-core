@@ -157,21 +157,23 @@ export default function AssetTradeView ({
     setConfirmScreen(false)
   }
 
+  const cancelOrder = () => {
+    clearTimers()
+    setConfirmScreen(false)
+  }
+
   React.useEffect(() => {
     if (showConfirmScreen && counter > 0) {
-      const id = setInterval(() => {
+      setTimeout(() => {
         if (counter > 0) {
           setCounter(counter - 1)
         }
       }, 1000)
-      timerRef.current = id
     }
 
     if (showConfirmScreen && counter === 0) {
-      makeOrder()
+      cancelOrder()
     }
-
-    return () => clearInterval(timerRef.current)
   }, [counter, showConfirmScreen])
 
   const handlePurchaseClick = () => {
@@ -189,8 +191,7 @@ export default function AssetTradeView ({
   }
 
   const handleCancelClick = () => {
-    clearTimers()
-    setConfirmScreen(false)
+    cancelOrder()
   }
 
   const showDepositView = () => {
@@ -225,7 +226,7 @@ export default function AssetTradeView ({
           <Text textColor='light' $fontSize={12}>* {getLocale('cryptoDotComWidgetApproxFootnote')}</Text>
         </Box>
         <BasicBox $pt={15}>
-          <ActionButton onClick={handleConfirmClick}>{getLocale('cryptoDotComWidgetConfirm')} ({counter}s)</ActionButton>
+          <ActionButton onClick={handleConfirmClick}>{getLocale('cryptoDotComWidgetConfirm', { counter: counter.toString() })} </ActionButton>
           <PlainButton $pb={5} onClick={handleCancelClick} $pt={10} $m='0 auto' textColor='light'>{getLocale('cryptoDotComWidgetCancel')}</PlainButton>
         </BasicBox>
       </>
@@ -248,7 +249,7 @@ export default function AssetTradeView ({
           🎉
         </StyledParty>
         <InvalidTitle>
-          {`${getLocale(actionLabel)} ${amount} ${base}!`}
+          {`${getLocale(actionLabel, { amount: amount.toString(), currency: base })}`}
         </InvalidTitle>
         <SmallButton onClick={finishTrade}>
           {getLocale('cryptoDotComWidgetContinue')}
