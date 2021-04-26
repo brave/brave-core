@@ -7,7 +7,7 @@ export let rule = {
   selector: ''
 }
 
-const applyCosmeticFilter = (host: string, selector: string) => {
+export const applyCosmeticFilter = (host: string, selector: string) => {
   if (selector) {
     const s: string = selector.trim()
 
