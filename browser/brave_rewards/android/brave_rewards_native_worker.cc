@@ -257,6 +257,16 @@ double BraveRewardsNativeWorker::GetWalletRate(JNIEnv* env) {
   return parameters_.rate;
 }
 
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetExternalWalletType(JNIEnv* env) {
+  std::string wallet_type;
+  if (brave_rewards_service_) {
+    wallet_type = brave_rewards_service_->GetExternalWalletType();
+  }
+
+  return base::android::ConvertUTF8ToJavaString(env, wallet_type);
+}
+
 void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->FetchPromotions();

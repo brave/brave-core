@@ -312,6 +312,8 @@ class RewardsService : public KeyedService {
 
   virtual void GetExternalWallet(GetExternalWalletCallback callback) = 0;
 
+  virtual std::string GetExternalWalletType() const = 0;
+
   virtual void ProcessRewardsPageUrl(
       const std::string& path,
       const std::string& query,

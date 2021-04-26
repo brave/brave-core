@@ -293,6 +293,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetExternalWallet(GetExternalWalletCallback callback) override;
 
+  std::string GetExternalWalletType() const override;
+
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
@@ -371,8 +373,6 @@ class RewardsServiceImpl : public RewardsService,
   void StartLedgerProcessIfNecessary();
 
   void EnableGreaseLion();
-
-  std::string GetExternalWalletType() const;
 
   void OnStopLedger(
       StopLedgerCallback callback,

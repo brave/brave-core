@@ -1799,7 +1799,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             @Override
             public void onClick(View v) {
                 dismiss();
-                mBraveActivity.openNewOrSelectExistingTab (mExternalWallet.getAddUrl());
+                mBraveActivity.openNewOrSelectExistingTab(mExternalWallet.getAddUrl());
             }
         }));
     }
@@ -1819,7 +1819,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 case BraveRewardsExternalWallet.CONNECTED:
                 case BraveRewardsExternalWallet.PENDING:
                 case BraveRewardsExternalWallet.VERIFIED:
-                    if (walletBalance < WALLET_BALANCE_LIMIT && !isVerifyWalletEnabled()) {
+                    if (walletBalance < WALLET_BALANCE_LIMIT
+                            && mBraveRewardsNativeWorker.getExternalWalletType().equals(
+                                    BraveUphold.UPHOLD)
+                            && !isVerifyWalletEnabled()) {
                         showUpholdLoginPopupWindow(btnVerifyWallet);
                     } else {
                         int requestCode =
@@ -1832,12 +1835,16 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                     break;
                 case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
                 case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
-                    if (walletBalance < WALLET_BALANCE_LIMIT && !isVerifyWalletEnabled()) {
+                    if (walletBalance < WALLET_BALANCE_LIMIT
+                            && mBraveRewardsNativeWorker.getExternalWalletType().equals(
+                                    BraveUphold.UPHOLD)
+                            && !isVerifyWalletEnabled()) {
                         showUpholdLoginPopupWindow(btnVerifyWallet);
                     } else {
                         if (!TextUtils.isEmpty(mExternalWallet.getVerifyUrl())) {
                             dismiss();
-                            mBraveActivity.openNewOrSelectExistingTab (mExternalWallet.getVerifyUrl());
+                            mBraveActivity.openNewOrSelectExistingTab(
+                                    mExternalWallet.getVerifyUrl());
                         }
                     }
                     break;
@@ -2001,25 +2008,28 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     public void showUpholdLoginPopupWindow(final View view) {
         PopupWindow loginPopupWindow = new PopupWindow(mActivity);
 
-        //Create a View object yourself through inflater
         LayoutInflater inflater =
-            (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View loginPopupView = inflater.inflate(R.layout.uphold_login_popup_window, null);
-        // View loginPopupView = inflater.from(mActivity).inflate(R.layout.uphold_login_popup_window, null);
 
         TextView loginActionButton = loginPopupView.findViewById(R.id.login_action_button);
 
-        String verifiedAccountUpholdText = String.format(mActivity.getResources().getString(R.string.verified_account_uphold), mActivity.getResources().getString(R.string.continue_to_login));
-        int countinueToLoginIndex = verifiedAccountUpholdText.indexOf(mActivity.getResources().getString(R.string.continue_to_login));
-        Spanned verifiedAccountUpholdTextSpanned = BraveRewardsHelper.spannedFromHtmlString(verifiedAccountUpholdText);
-        SpannableString verifiedAccountUpholdTextSS = new SpannableString(verifiedAccountUpholdTextSpanned.toString());
+        String verifiedAccountUpholdText =
+                String.format(mActivity.getResources().getString(R.string.verified_account_uphold),
+                        mActivity.getResources().getString(R.string.continue_to_login));
+        int countinueToLoginIndex = verifiedAccountUpholdText.indexOf(
+                mActivity.getResources().getString(R.string.continue_to_login));
+        Spanned verifiedAccountUpholdTextSpanned =
+                BraveRewardsHelper.spannedFromHtmlString(verifiedAccountUpholdText);
+        SpannableString verifiedAccountUpholdTextSS =
+                new SpannableString(verifiedAccountUpholdTextSpanned.toString());
 
         ClickableSpan verifiedAccountUpholdClickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View textView) {
                 dismiss();
                 loginPopupWindow.dismiss();
-                mBraveActivity.openNewOrSelectExistingTab (mExternalWallet.getLoginUrl());
+                mBraveActivity.openNewOrSelectExistingTab(mExternalWallet.getLoginUrl());
             }
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
@@ -2028,16 +2038,26 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
         };
 
-        verifiedAccountUpholdTextSS.setSpan(verifiedAccountUpholdClickableSpan, countinueToLoginIndex, countinueToLoginIndex + mActivity.getResources().getString(R.string.continue_to_login).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        verifiedAccountUpholdTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), countinueToLoginIndex, countinueToLoginIndex + mActivity.getResources().getString(R.string.continue_to_login).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        verifiedAccountUpholdTextSS.setSpan(verifiedAccountUpholdClickableSpan,
+                countinueToLoginIndex,
+                countinueToLoginIndex
+                        + mActivity.getResources().getString(R.string.continue_to_login).length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        verifiedAccountUpholdTextSS.setSpan(
+                new ForegroundColorSpan(
+                        mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)),
+                countinueToLoginIndex,
+                countinueToLoginIndex
+                        + mActivity.getResources().getString(R.string.continue_to_login).length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         loginActionButton.setMovementMethod(LinkMovementMethod.getInstance());
         loginActionButton.setText(verifiedAccountUpholdTextSS);
 
         loginPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         loginPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        loginPopupWindow.setBackgroundDrawable(new ColorDrawable(
-                android.graphics.Color.TRANSPARENT));
+        loginPopupWindow.setBackgroundDrawable(
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             loginPopupWindow.setElevation(20);
         }
@@ -2048,12 +2068,12 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         loginPopupWindow.setContentView(loginPopupView);
 
         view.post(new Runnable() {
-           public void run() {
-               if (SysUtils.isLowEndDevice()) {
-                                    loginPopupWindow.setAnimationStyle(0);
-                                }
-                                loginPopupWindow.showAsDropDown(view, 0, 0);
-           }
+            public void run() {
+                if (SysUtils.isLowEndDevice()) {
+                    loginPopupWindow.setAnimationStyle(0);
+                }
+                loginPopupWindow.showAsDropDown(view, 0, 0);
+            }
         });
     }
 }
