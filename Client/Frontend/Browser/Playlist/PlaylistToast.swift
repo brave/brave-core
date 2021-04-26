@@ -60,6 +60,11 @@ class PlaylistToast: Toast {
         self.snp.makeConstraints {
             $0.height.equalTo(ButtonToastUX.toastHeight)
         }
+        
+        toastView.addGestureRecognizer(UISwipeGestureRecognizer(target: self,
+                                                                action: #selector(onSwipeToDismiss(_:))).then {
+            $0.direction = [.down]
+        })
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -258,5 +263,10 @@ class PlaylistToast: Toast {
                 $0.edges.equalToSuperview()
             }
         }
+    }
+    
+    @objc
+    private func onSwipeToDismiss(_ gestureRecognizer: UISwipeGestureRecognizer) {
+        self.dismiss(false)
     }
 }
