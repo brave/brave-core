@@ -39,31 +39,42 @@ static void SIGCHLDHandler(int signo) {
   errno = error;
 }
 
+#if defined(OS_MAC)
+static void SetupFD(int fd) {
+  int flags;
+  if ((flags = fcntl(fd, F_GETFD)) == -1)
+    VLOG(0) << "get fd flags errno:" << errno;
+  flags |= FD_CLOEXEC;
+  if (fcntl(fd, F_SETFD, flags) == -1)
+    VLOG(0) << "set fd flags errno:" << errno;
+}
+#endif
+
 static void SetupPipeHack() {
+#if defined(OS_MAC)
   if (pipe(pipehack) == -1)
     VLOG(0) << "pipehack errno:" << errno;
+  SetupFD(pipehack[0]);
+  SetupFD(pipehack[1]);
+#else
+  if (pipe2(pipehack, O_CLOEXEC) == -1)
+    VLOG(0) << "pipehack errno:" << errno;
+#endif
 
   int flags;
-  for (size_t i = 0; i < 2; ++i) {
-    if ((flags = fcntl(pipehack[i], F_GETFL)) == -1)
-      VLOG(0) << "get flags errno:" << errno;
-    // Nonblock write end on SIGCHLD handler which will notify monitor thread
-    // by sending one byte to pipe whose read end is blocked and wait for
-    // SIGCHLD to arrives to avoid busy reading
-    if (i == 1)
-      flags |= O_NONBLOCK;
-    if (fcntl(pipehack[i], F_SETFL, flags) == -1)
-      VLOG(0) << "set flags errno:" << errno;
-    if ((flags = fcntl(pipehack[i], F_GETFD)) == -1)
-      VLOG(0) << "get fd flags errno:" << errno;
-    flags |= FD_CLOEXEC;
-    if (fcntl(pipehack[i], F_SETFD, flags) == -1)
-      VLOG(0) << "set fd flags errno:" << errno;
-  }
+  if ((flags = fcntl(pipehack[1], F_GETFL)) == -1)
+    VLOG(0) << "get flags errno:" << errno;
+  // Nonblock write end on SIGCHLD handler which will notify monitor thread
+  // by sending one byte to pipe whose read end is blocked and wait for
+  // SIGCHLD to arrives to avoid busy reading
+  flags |= O_NONBLOCK;
+  if (fcntl(pipehack[1], F_SETFL, flags) == -1)
+    VLOG(0) << "set flags errno:" << errno;
 
   struct sigaction action;
   memset(&action, 0, sizeof(action));
   action.sa_handler = SIGCHLDHandler;
+  action.sa_flags = SA_RESTART;
   sigaction(SIGCHLD, &action, NULL);
 }
 
@@ -71,9 +82,10 @@ static void TearDownPipeHack() {
   struct sigaction action;
   memset(&action, 0, sizeof(action));
   action.sa_handler = SIG_DFL;
+  action.sa_flags = SA_RESTART;
   sigaction(SIGCHLD, &action, NULL);
-  for (size_t i = 0; i < 2; ++i)
-    close(pipehack[i]);
+  close(pipehack[0]);
+  close(pipehack[1]);
 }
 #endif
 
