@@ -726,6 +726,7 @@ if (!is_android) {
         "//brave/components/brave_rewards/browser/test/rewards_contribution_browsertest.cc",
         "//brave/components/brave_rewards/browser/test/rewards_flag_browsertest.cc",
         "//brave/components/brave_rewards/browser/test/rewards_notification_browsertest.cc",
+        "//brave/components/brave_rewards/browser/test/rewards_p3a_browsertest.cc",
         "//brave/components/brave_rewards/browser/test/rewards_promotion_browsertest.cc",
         "//brave/components/brave_rewards/browser/test/rewards_publisher_browsertest.cc",
         "//brave/components/brave_rewards/browser/test/rewards_state_browsertest.cc",

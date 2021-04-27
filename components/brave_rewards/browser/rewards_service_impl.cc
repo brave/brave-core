@@ -2785,11 +2785,10 @@ void RewardsServiceImpl::OnFetchBalance(
   if (IsRewardsEnabled()) {
     const bool grants_claimed =
         pref_service->GetBoolean(prefs::kUserHasClaimedGrant);
-    p3a::RecordWalletState(
-        {.wallet_created = true,
-         .rewards_enabled = true,
-         .grants_claimed = grants_claimed,
-         .funds_added = balance && balance->user_funds > 0});
+    p3a::RecordWalletState({.wallet_created = true,
+                            .rewards_enabled = true,
+                            .grants_claimed = grants_claimed,
+                            .funds_added = balance && balance->user_funds > 0});
   }
 
   if (balance) {
