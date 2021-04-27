@@ -6,25 +6,18 @@
 #ifndef BRAVE_COMPONENTS_CRYPTO_DOT_COM_COMMON_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CRYPTO_DOT_COM_COMMON_CONSTANTS_H_
 
-// TODO(simonhong): Use prod url.
-// prod url: https://auth.crypto.com/exchange/widget/sign_in
 constexpr char kCryptoDotComAuthURL[] =
-    "https://st.mona.co/exchange/widget/sign_in/";
-// prod url: https://auth.crypto.com/exchange/widget/sign_in
+    "https://auth.crypto.com/exchange/widget/sign_in";
 constexpr char kCryptoDotComGetAccountBalanceURL[] =
-    "https://xdev-www.3ona.co/fe-ex-api/widget/get-account-summary";
-// prod url: https://crypto.com/fe-ex-api/widget/get-deposit-address
+    "https://crypto.com/fe-ex-api/widget/get-account-summary";
 constexpr char kCryptoDotComGetDepositAddressURL[] =
-    "https://xdev-www.3ona.co/fe-ex-api/widget/get-deposit-address";
-// prod url: https://crypto.com/fe-ex-api/widget/create-order
+    "https://crypto.com/fe-ex-api/widget/get-deposit-address";
 constexpr char kCryptoDotComCreateMarketOrderURL[] =
-    "https://xdev-www.3ona.co/fe-ex-api/widget/create-order";
-// prod url: https://crypto.com/fe-ex-api/widget/get-events
+    "https://crypto.com/fe-ex-api/widget/create-order";
 constexpr char kCryptoDotComGetNewsEventsURL[] =
-    "https://xdev-www.3ona.co/fe-ex-api/widget/get-events";
-// prod url: https://crypto.com/fe-ex-api/widget/disconnect
+    "https://crypto.com/fe-ex-api/widget/get-events";
 constexpr char kCryptoDotComDisconnectURL[] =
-    "https://xdev-www.3ona.co/fe-ex-api/widget/disconnect";
+    "https://crypto.com/fe-ex-api/widget/disconnect";
 // These empty value is passed when corresponding apis get failed.
 constexpr char kEmptyAccountBalances[] = R"(
     {

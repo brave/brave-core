@@ -304,8 +304,6 @@ class CryptoDotComAPIBrowserTest : public InProcessBrowserTest {
 
   CryptoDotComTickerInfo GetEmptyTickerInfo() {
     CryptoDotComTickerInfo empty_info;
-    empty_info.insert({"volume", 0});
-    empty_info.insert({"price", 0});
     return empty_info;
   }
 
