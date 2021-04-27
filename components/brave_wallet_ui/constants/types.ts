@@ -120,3 +120,23 @@ export interface PriceDataObjectType {
   date: string
   close: number
 }
+
+export interface State {
+  walletPanelReducer: WalletPanelReducerState
+}
+
+export interface WalletPanelReducerState {
+  hasInitialized: boolean
+  isConnected: boolean
+  connectedSiteOrigin: string
+  accounts: WalletAccountType[]
+}
+
+export interface WalletPanelApiProxy {
+  showUI: () => {}
+  closeUI: () => {}
+}
+
+export interface APIProxy {
+  getInstance: () => WalletPanelApiProxy
+}

@@ -26,10 +26,13 @@ export const SelectAddressScrollContainer = styled.div`
   justify-content: flex-start;
   width: 100%;
   padding-top: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
   max-height: 100px;
+  box-sizing: border-box;
 `
 
 export const MiddleWrapper = styled.div`
