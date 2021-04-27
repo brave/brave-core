@@ -25,7 +25,7 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
     }
     
     function is_infinite(value) {
-        return typeof value === "number" && (maxNumber === Infinity || value === -Infinity);
+        return typeof value === "number" && (value === Infinity || value === -Infinity);
     }
     
     function clamp_duration(value) {

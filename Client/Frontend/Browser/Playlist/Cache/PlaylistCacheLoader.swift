@@ -461,23 +461,23 @@ class PlaylistWebLoader: UIView {
         }
         
         func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-            if !isPageLoaded {
-                if let info = PageInfo.from(message: message) {
-                    isPageLoaded = info.pageLoad
+
+            if let info = PageInfo.from(message: message) {
+                isPageLoaded = info.pageLoad
+                
+                if isPageLoaded {
+                    timeout?.cancel()
+                    timeout = DispatchWorkItem(block: { [weak self] in
+                        guard let self = self else { return }
+                        self.webLoader?.handler(nil)
+                        self.webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
+                    })
                     
-                    if isPageLoaded {
-                        timeout = DispatchWorkItem(block: { [weak self] in
-                            guard let self = self else { return }
-                            self.webLoader?.handler(nil)
-                            self.webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
-                        })
-                        
-                        if let timeout = timeout {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + PlaylistWebLoader.pageLoadTimeout, execute: timeout)
-                        }
+                    if let timeout = timeout {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + PlaylistWebLoader.pageLoadTimeout, execute: timeout)
                     }
-                    return
                 }
+                return
             }
             
             guard let item = PlaylistInfo.from(message: message),

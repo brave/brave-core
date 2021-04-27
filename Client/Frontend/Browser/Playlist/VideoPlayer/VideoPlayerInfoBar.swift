@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 import AVKit
+import Data
 
 class VideoPlayerInfoBar: UIView {
     private let controlStackView = UIStackView().then {
@@ -112,7 +113,8 @@ class VideoPlayerInfoBar: UIView {
         favIconImageView.image = FaviconFetcher.defaultFaviconImage
         
         if let url = URL(string: domain) {
-            favIconImageView.loadFavicon(for: url)
+            let domain = Domain.getOrCreate(forUrl: url, persistent: false)
+            favIconImageView.loadFavicon(for: url, domain: domain)
         }
     }
     
