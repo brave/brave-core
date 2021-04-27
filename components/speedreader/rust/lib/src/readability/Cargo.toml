@@ -14,7 +14,6 @@ edition = "2018"
 bitflags         = "1.2"
 chrono           = "0.4"
 html5ever        = "0.25.1"
-htmlescape       = "0.3.1"
 kuchiki = { git = "https://github.com/brave/kuchiki", branch = "speedreader" }
 lazy_static      = "1.4"
 regex            = "1"

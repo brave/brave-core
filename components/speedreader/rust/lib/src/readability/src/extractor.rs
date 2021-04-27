@@ -6,7 +6,6 @@ use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::NodeOrText;
 use html5ever::tree_builder::TreeSink;
-use htmlescape::decode_html;
 use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use regex::Regex;
@@ -89,31 +88,14 @@ impl Meta {
     /// Performs a merge of two meta structs, always preferencing self.
     /// Takes ownership of both structs and returns the merged metadata.
     pub fn merge(mut self, other: Self) -> Meta {
-        // TODO(keur): Is there a way we can iterate over the option fields. Maybe in a macro?
         if self.title.is_empty() {
             self.title = other.title;
         }
-        if self.author.is_none() {
-            self.author = other.author;
-        }
-        if self.description.is_none() {
-            self.description = other.description;
-        }
-        if self.charset.is_none() {
-            self.charset = other.charset;
-        }
-        if self.last_modified.is_none() {
-            self.last_modified = other.last_modified;
-        }
+        self.author = self.author.or(other.author);
+        self.description = self.description.or(other.description);
+        self.charset = self.charset.or(other.charset);
+        self.last_modified = self.last_modified.or(other.last_modified);
         self
-    }
-
-    #[inline]
-    pub fn last_modified_to_string(&self) -> String {
-        self.last_modified
-            .expect("last_modified not found")
-            .format("Updated %b. %d, %Y %H:%M %P")
-            .to_string()
     }
 }
 
@@ -139,7 +121,9 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
 
     let mut meta_jsonld = Meta::default();
     for node in meta_nodes.clone().into_iter() {
+        // NOTE: This unwrap is safe because the iterator only contains element types
         let data = node.as_element().unwrap();
+
         if data.name.local == local_name!("script")
             && data.attributes.borrow().get("type") == Some("application/ld+json")
         {
@@ -153,7 +137,9 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
 
     let mut meta_tags = Meta::default();
     for node in meta_nodes.clone().into_iter() {
+        // NOTE: This unwrap is safe because the iterator only contains element types
         let data = node.as_element().unwrap();
+
         if data.name.local != local_name!("meta") {
             continue;
         }
@@ -220,15 +206,21 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
 
     // Clean title of html encoded attributes
     if !meta.title.is_empty() {
-        if let Ok(s) = decode_html(&meta.title) {
-            meta.title = DECODED_HTML_TAGS.replace_all(&s, "").into();
+        if let Some(ref inner) = dom::parse_inner(&meta.title) {
+            let title = dom::extract_text_from_node(inner, true, true);
+            if !title.is_empty() {
+                meta.title = title;
+            }
         }
     }
 
     // Clean description of html encoded attributes
     if let Some(ref description) = meta.description {
-        if let Ok(s) = decode_html(description) {
-            meta.description = Some(DECODED_HTML_TAGS.replace_all(&s, "").into());
+        if let Some(ref inner) = dom::parse_inner(description) {
+            let desc = dom::extract_text_from_node(inner, true, true);
+            if !desc.is_empty() {
+                meta.description = Some(desc);
+            }
         }
     }
 
@@ -311,7 +303,11 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 
     // Calls html5ever::serialize() with IncludeNode for us.
     let mut content: String = top_candidate.to_string();
+
     if let Some(ref charset) = meta.charset {
+        // Since we strip out the entire head, we need to include charset if one
+        // was provided. Otherwise the browser will use the default encoding,
+        // and surprisingly it's not utf-8 ;)
         let charset_blob = format!("<meta charset=\"{}\"/>", charset);
         content = charset_blob + &content;
     }
@@ -343,13 +339,11 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         }
 
         // Add in last modified datetime
-        if meta.last_modified.is_some() {
-            let modified = dom::create_element_simple(
-                dom,
-                "p",
-                "metadata date",
-                Some(&meta.last_modified_to_string()),
-            );
+        if let Some(ref last_modified) = meta.last_modified {
+            let formatted = last_modified
+                .format("Updated %b. %d, %Y %H:%M %P")
+                .to_string();
+            let modified = dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(modified));
         }
 
@@ -440,12 +434,11 @@ impl From<serde_json::Error> for JsonLdError {
 fn try_parse_author(v: &serde_json::Value) -> Option<String> {
     match v {
         serde_json::Value::String(s) => {
-            if s.starts_with("[{") {
-                // Looks like it's nested JSON. I have no idea why sites do this. It's so stupid, but some do...
-                let p = serde_json::from_str(s).ok()?;
-                try_parse_author(&p)
-            } else {
-                Some(s.to_string())
+            // Try to parse for nested JSON. Buzzfeed includes the author field as string
+            // JSON blob. I have no idea why sites do this kind of stuff...
+            match serde_json::from_str(s) {
+                Ok(p) => try_parse_author(&p),
+                Err(_) => Some(s.to_string()), // Wasn't JSON, so we can assume it's a valid author.
             }
         }
         serde_json::Value::Array(a) => {
@@ -471,18 +464,13 @@ fn try_parse_author(v: &serde_json::Value) -> Option<String> {
 fn try_parse_untyped_jsonld(content: &str, meta: &mut Meta) -> Result<(), JsonLdError> {
     let v: serde_json::Value = serde_json::from_str(content)?;
 
-    let from_json_string = |v: &serde_json::Value| -> Option<String> {
+    fn from_json_string(v: &serde_json::Value) -> Option<String> {
         match v {
-            serde_json::Value::String(s) => {
-                if !s.is_empty() {
-                    Some(s.to_string())
-                } else {
-                    None
-                }
-            }
+            serde_json::Value::String(s) if !s.is_empty() => Some(s.to_string()),
             _ => None,
         }
-    };
+    }
+
     match v {
         serde_json::Value::Object(o) => {
             // Validate @context
