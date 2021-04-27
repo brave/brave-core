@@ -2,9 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//components/vector_icons/vector_icons.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 aggregate_vector_icons("brave_vector_icons") {
   icon_directory = "."

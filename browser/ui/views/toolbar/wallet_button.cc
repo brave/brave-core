@@ -5,34 +5,48 @@
 
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 
-#include "brave/app/brave_command_ids.h"
+#include <utility>
+
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_view_ids.h"
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/metadata/metadata_impl_macros.h"
 
-WalletButton::WalletButton(PressedCallback callback,
-                           PrefService* prefs)
-    : ToolbarButton(callback), prefs_(prefs) {
-  SetID(BRAVE_VIEW_ID_WALLET_BUTTON);
-  set_tag(IDC_TOGGLE_WALLET);
-
+WalletButton::WalletButton(Profile* profile, PrefService* prefs)
+    : ToolbarButton(base::BindRepeating(&WalletButton::OnWalletPressed,
+                                        base::Unretained(this))),
+      webui_bubble_manager_(this,
+                            profile,
+                            GURL(kBraveUIWalletPanelURL),
+                            IDS_ACCNAME_BRAVE_WALLET_BUTTON,
+                            true),
+      prefs_(prefs) {
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      kShowWalletIcon,
-      base::BindRepeating(&WalletButton::OnPreferenceChanged,
-                          base::Unretained(this)));
+      kShowWalletIcon, base::BindRepeating(&WalletButton::OnPreferenceChanged,
+                                           base::Unretained(this)));
   UpdateVisibility();
+
+  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
+      this,
+      base::BindRepeating(&WalletButton::OnWalletPressed,
+                          base::Unretained(this)),
+      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  menu_button_controller_ = menu_button_controller.get();
+  SetButtonController(std::move(menu_button_controller));
 }
 
 WalletButton::~WalletButton() = default;
 
-const char* WalletButton::GetClassName() const {
-  return "WalletButton";
+void WalletButton::OnWalletPressed(const ui::Event& event) {
+  ShowWalletBubble();
 }
 
 void WalletButton::UpdateImageAndText() {
@@ -50,3 +64,36 @@ void WalletButton::UpdateVisibility() {
 void WalletButton ::OnPreferenceChanged() {
   UpdateVisibility();
 }
+
+void WalletButton::OnWidgetDestroying(views::Widget* widget) {
+  DCHECK_EQ(webui_bubble_manager_.GetBubbleWidget(), widget);
+  DCHECK(bubble_widget_observation_.IsObservingSource(
+      webui_bubble_manager_.GetBubbleWidget()));
+  bubble_widget_observation_.Reset();
+  pressed_lock_.reset();
+}
+
+bool WalletButton::ShowWalletBubble() {
+  if (webui_bubble_manager_.GetBubbleWidget()) {
+    CloseWalletBubble();
+    return false;
+  }
+
+  webui_bubble_manager_.ShowBubble();
+
+  // There should only ever be a single bubble widget active for the
+  // WalletButton.
+  DCHECK(!bubble_widget_observation_.IsObserving());
+  bubble_widget_observation_.Observe(webui_bubble_manager_.GetBubbleWidget());
+
+  // Hold the pressed lock while the |bubble_| is active.
+  pressed_lock_ = menu_button_controller_->TakeLock();
+  return true;
+}
+
+void WalletButton::CloseWalletBubble() {
+  webui_bubble_manager_.CloseBubble();
+}
+
+BEGIN_METADATA(WalletButton, ToolbarButton)
+END_METADATA

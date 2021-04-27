@@ -40,6 +40,7 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet_ui.h"
+#include "brave/browser/ui/webui/wallet_panel/wallet_panel_ui.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -76,6 +77,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
   } else if (host == kWalletHost) {
     return new BraveWalletUI(web_ui, url.host());
+  } else if (host == kWalletPanelHost) {
+    return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   } else if (host == kRewardsPageHost) {
@@ -115,7 +118,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
-      url.host_piece() == kWalletHost ||
+      url.host_piece() == kWalletHost || url.host_piece() == kWalletPanelHost ||
 #endif
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
       url.host_piece() == kRewardsPageHost ||

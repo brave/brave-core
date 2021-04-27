@@ -11,6 +11,7 @@
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/event_monitor.h"
@@ -31,6 +32,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
 #endif
 
 class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
@@ -208,6 +213,30 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
   }
 #endif
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
+}
+
+WalletButton* BraveBrowserView::GetWalletButton() {
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
+#else
+  return nullptr;
+#endif
+}
+
+void BraveBrowserView::CreateWalletBubble() {
+  // Do not spawn the bubble if using the WebUITabStrip.
+#if BUILDFLAG(ENABLE_WEBUI_TAB_STRIP)
+  if (WebUITabStripContainerView::UseTouchableTabStrip(browser_.get()))
+    return;
+#endif  // BUILDFLAG(ENABLE_WEBUI_TAB_STRIP)
+
+  DCHECK(GetWalletButton());
+  GetWalletButton()->ShowWalletBubble();
+}
+
+void BraveBrowserView::CloseWalletBubble() {
+  if (GetWalletButton())
+    GetWalletButton()->CloseWalletBubble();
 }
 
 void BraveBrowserView::OnTabStripModelChanged(
