@@ -67,6 +67,11 @@ export type TopTabNavTypes =
   | 'apps'
   | 'accounts'
 
+export type BuySendSwapTypes =
+  | 'buy'
+  | 'send'
+  | 'swap'
+
 export type ChartTimelineType =
   | '5MIN'
   | '24HRS'
@@ -75,6 +80,11 @@ export type ChartTimelineType =
   | '3Months'
   | '1Year'
   | 'AllTime'
+
+export interface BuySendSwapObjectType {
+  name: string
+  id: BuySendSwapTypes
+}
 
 export interface TopTabNavObjectType {
   name: string

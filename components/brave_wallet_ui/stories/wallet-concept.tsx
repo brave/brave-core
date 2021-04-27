@@ -11,7 +11,7 @@ import {
   NavObjectType
 } from '../constants/types'
 import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
-
+import BuySendSwap from '../components/buy-send-swap'
 export default {
   title: 'Wallet/Desktop'
 }
@@ -46,7 +46,7 @@ export const _DesktopWalletConcept = () => {
 
       </WalletSubViewLayout>
       <WalletWidgetStandIn>
-        <h2>Buy/Send/Swap Widget</h2>
+        <BuySendSwap />
       </WalletWidgetStandIn>
     </WalletPageLayout>
   )
