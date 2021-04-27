@@ -211,7 +211,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   EXPECT_STREQ(query_value.c_str(), "BRV001");
 }
 
-// TODO - convert to a unit test
+// TODO(bridiver) - convert to a unit test
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        DISABLED_StatsUpdaterMigration) {
   // Create a pre 1.19 user.
