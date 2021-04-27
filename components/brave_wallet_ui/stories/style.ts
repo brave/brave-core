@@ -38,7 +38,7 @@ export const DesktopComponentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  background-color: ${(p) => p.theme.color.background02};
   padding: 20px;
 `
 
@@ -57,7 +57,7 @@ export const DesktopComponentWrapperRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  background-color: ${(p) => p.theme.color.background02};
   width: 800px;
   padding: 20px;
 `

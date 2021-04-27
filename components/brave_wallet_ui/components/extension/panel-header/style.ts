@@ -7,7 +7,7 @@ export const HeaderTitle = styled.span`
   line-height: 26px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.neutral700};
+  color: ${(p) => p.theme.color.text02};
   text-transform: capitalize;
 `
 
@@ -17,7 +17,7 @@ export const HeaderWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.separatorLine}`};
+  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
   padding: 0px 12px;
 `
 

@@ -38,7 +38,7 @@ export const AccountName = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.palette.neutral900};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const AccountAddress = styled.span`
@@ -46,7 +46,7 @@ export const AccountAddress = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.neutral700};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const BalanceColumn = styled.div`
@@ -69,7 +69,7 @@ export const FiatBalanceText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.neutral900};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const AssetBalanceText = styled.span`
@@ -77,7 +77,7 @@ export const AssetBalanceText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.neutral600};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const AccountCircle = styled.div<StyleProps>`
@@ -103,4 +103,5 @@ export const MoreIcon = styled(MoreVertRIcon)`
   width: auto;
   height: 26px;
   transform: rotate(90deg);
+  color: ${(p) => p.theme.color.interactive08};
 `

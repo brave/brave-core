@@ -26,7 +26,7 @@ export const ButtonText = styled.span<Partial<StyleProps>>`
   line-height: 20px;
   margin-bottom: 10px;
 	background: ${(p) =>
-    p.isSelected ? 'linear-gradient(128.18deg, #A43CE4 13.94%, #A72B6D 84.49%)' : `${p.theme.palette.neutral700}`};
+    p.isSelected ? 'linear-gradient(128.18deg, #A43CE4 13.94%, #A72B6D 84.49%)' : `${p.theme.color.text02}`};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
@@ -36,5 +36,5 @@ export const TabLine = styled.div<Partial<StyleProps>>`
   width: 100%;
   height: 2px;
   background: ${(p) =>
-    p.isSelected ? 'linear-gradient(178.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%);' : `${p.theme.color.separatorLine}`};
+    p.isSelected ? 'linear-gradient(178.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%);' : `${p.theme.color.divider01}`};
 `

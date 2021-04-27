@@ -4,7 +4,7 @@ export const StyledWrapper = styled('div') <{}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: ${(p) => p.theme.color.background02};
   height: 100vh;
   width: 100%;
   min-width: 1200px;

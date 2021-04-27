@@ -15,11 +15,11 @@ export const StyledButton = styled.button<StyleProps>`
 	padding: 10px 22px;
   outline: none;
 	background-color: ${(p) =>
-    p.buttonType === 'primary' ? `${p.theme.palette.blurple500}` : 'transparent'};
+    p.buttonType === 'primary' ? p.theme.palette.blurple500 : 'transparent'};
 	border: ${(p) =>
     p.buttonType === 'primary'
       ? 'none'
-      : `1px solid ${p.theme.color.inputBorder}`};
+      : `1px solid ${p.theme.color.interactive08}`};
 	margin-right: ${(p) => (p.buttonType === 'primary' ? '0px' : '8px')};
 `
 
@@ -28,5 +28,5 @@ export const ButtonText = styled.span<StyleProps>`
 	font-weight: 600;
 	line-height: 20px;
 	color: ${(p) =>
-    p.buttonType === 'primary' ? '#ffffff' : `${p.theme.color.text}`};
+    p.buttonType === 'primary' ? p.theme.palette.white : p.theme.color.interactive07};
 `
