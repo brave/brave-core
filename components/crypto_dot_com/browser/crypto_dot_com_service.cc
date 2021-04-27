@@ -99,10 +99,8 @@ void CryptoDotComService::OnTickerInfo(
   DVLOG(2) << __func__ << ": " << body;
   CryptoDotComTickerInfo info;
   const std::string json_body = GetFormattedResponseBody(body);
-  if (!CryptoDotComJSONParser::GetTickerInfoFromJSON(json_body, &info)) {
-    info.insert({"volume", 0});
-    info.insert({"price", 0});
-  }
+  // If |json_body| is invalid, empty |info| is passed.
+  CryptoDotComJSONParser::GetTickerInfoFromJSON(json_body, &info);
   std::move(callback).Run(info);
 }
 

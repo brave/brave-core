@@ -96,11 +96,13 @@
                 "properties": {
                   "price": {
                     "type": "number",
-                    "description": "price"
+                    "description": "price",
+                    "optional": true
                   },
                   "volume": {
                     "type": "number",
-                    "description": "volume"
+                    "description": "volume",
+                    "optional": true
                   }
                 }
               }
