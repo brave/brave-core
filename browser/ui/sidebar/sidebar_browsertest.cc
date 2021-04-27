@@ -7,9 +7,11 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/sidebar/features.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -78,7 +80,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   controller()->ActivateItemAt(3);
 
   // Remove Item at index 0 change active index from 3 to 2.
-  controller()->RemoveItemAt(0);
+  SidebarServiceFactory::GetForProfile(browser()->profile())->RemoveItemAt(0);
   EXPECT_EQ(3UL, model()->GetAllSidebarItems().size());
   EXPECT_EQ(2, model()->active_index());
 
