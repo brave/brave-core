@@ -105,7 +105,8 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                             \
     {"brave-decentralized-dns",                                             \
      flag_descriptions::kBraveDecentralizedDnsName,                         \
-     flag_descriptions::kBraveDecentralizedDnsDescription, kOsDesktop,      \
+     flag_descriptions::kBraveDecentralizedDnsDescription,                  \
+     kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(decentralized_dns::features::kDecentralizedDns)},
 #else
 #define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES
@@ -158,7 +159,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},           \
     {"brave-ephemeral-storage-keep-alive",                                 \
      flag_descriptions::kBraveEphemeralStorageKeepAliveName,               \
-     flag_descriptions::kBraveEphemeralStorageKeepAliveDescription, kOsAll,\
+     flag_descriptions::kBraveEphemeralStorageKeepAliveDescription, kOsAll, \
      FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},           \
     {"brave-permission-lifetime",                                          \
      flag_descriptions::kBravePermissionLifetimeName,                      \

@@ -196,6 +196,24 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_IPFS_GATEWAY_SUMMARY" desc="Summary for IPFS gateway setting.">
         Allows for navigation to IPFS resources through an IPFS Gateway
       </message>
+      <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
+        Unstoppable Domains
+      </message>
+      <message name="IDS_ENS_TITLE" desc="Title for ENS settings.">
+        Ethereum Name Service
+      </message>
+      <message name="IDS_RESOLVE_METHOD_TITLE" desc="Title for resolve method preference category.">
+        Resolve Method
+      </message>
+      <message name="IDS_RESOLVE_METHOD_ASK" desc="Text for resolve method Ask.">
+        Ask
+      </message>
+      <message name="IDS_RESOLVE_METHOD_DISABLED" desc="Text for resolve method Disabled.">
+        Disabled
+      </message>
+      <message name="IDS_RESOLVE_METHOD_DNS_OVER_HTTPS" desc="Text for resolve method DNS over HTTPS.">
+        DNS over HTTPS
+      </message>
       <message name="IDS_AD_BLOCK_TITLE" desc="Title for ad block.">
         Ad Block
       </message>

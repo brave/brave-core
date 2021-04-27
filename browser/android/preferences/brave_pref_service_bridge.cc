@@ -12,6 +12,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/buildflags.h"
 #include "build/build_config.h"
@@ -37,6 +38,10 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
+#endif
+
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+#include "brave/components/decentralized_dns/pref_names.h"
 #endif
 
 using base::android::ConvertUTF8ToJavaString;
@@ -401,6 +406,41 @@ jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
   return false;
 }
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
+
+void JNI_BravePrefServiceBridge_SetUnstoppableDomainsResolveMethod(
+    JNIEnv* env,
+    jint method) {
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  g_browser_process->local_state()->SetInteger(
+      decentralized_dns::kUnstoppableDomainsResolveMethod, method);
+#endif
+}
+
+jint JNI_BravePrefServiceBridge_GetUnstoppableDomainsResolveMethod(
+    JNIEnv* env) {
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  return g_browser_process->local_state()->GetInteger(
+      decentralized_dns::kUnstoppableDomainsResolveMethod);
+#else
+  return 0;
+#endif
+}
+
+void JNI_BravePrefServiceBridge_SetENSResolveMethod(JNIEnv* env, jint method) {
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  g_browser_process->local_state()->SetInteger(
+      decentralized_dns::kENSResolveMethod, method);
+#endif
+}
+
+jint JNI_BravePrefServiceBridge_GetENSResolveMethod(JNIEnv* env) {
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  return g_browser_process->local_state()->GetInteger(
+      decentralized_dns::kENSResolveMethod);
+#else
+  return 0;
+#endif
+}
 
 }  // namespace android
 }  // namespace chrome
