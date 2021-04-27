@@ -62,9 +62,19 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="7643538479215207633">Öppna med IPFS</translation>
 <translation id="3094628781200061820">Publicera och hämta filer från IPFS</translation>
 <translation id="1672270084584211506">Onion tillgänglig</translation>
+<translation id="4901618511712685702">Importera till IPFS</translation>
+<translation id="6794469945030154569">Den här sidan</translation>
+<translation id="5037852323412456577">Vald bild</translation>
+<translation id="2715839724138372481">Vald video</translation>
+<translation id="4227945450504703638">Valt ljud</translation>
+<translation id="7895302206188277628">Länkat innehåll</translation>
+<translation id="4322612543319315652">Importera vald text till IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nytt privat fönster med Tor</translation>
 <translation id="4703780849509456860">Öppna länk i privat fönster med Tor</translation>
 <translation id="3488584642074079080">Öppna länken med Tor i ett privat Bravefönster</translation>
+<translation id="7475547933708221517">Dela lokal fil med IPFS</translation>
+<translation id="784573715436258741">Dela lokal fil med IPFS</translation>
 <translation id="6313675821927505581">Nytt privat fönster med Tor</translation>
 <translation id="2638041073279639246">Öppna länk i nytt privat fönster med Tor</translation>
 <translation id="3425600262621021599">Öppna länk i Brave i ett privat fönster med Tor</translation>
@@ -147,7 +157,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="4112587618563511470">Ogiltig synkningskod, kontrollera och prova igen.</translation>
 <translation id="2339730291919608488">Lämna synkkedja</translation>
 <translation id="115699408012835975">Om du nollställer Synk måste du skriva in en synkningskod från en annan enhet för att synka med den. Är du säker på att du vill gå vidare?</translation>
-<translation id="339086854515247923">Är du säker på att du vill ta bort den valda enheten från synkroniseringskedjan?</translation>
+<translation id="6092564993102418148">Är du säker på att du vill ta bort den valda enheten från synkroniseringskedjan?</translation>
 <translation id="3396347744975515056">Brave Sync har uppgraderats och måste installeras</translation>
 <translation id="7473245612074035141">Påbörja installation</translation>
 <translation id="3411013544209536575">Hjälpdricks</translation>
@@ -169,12 +179,13 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="757886143331967039">Ladda föråldrat Crypto Wallets-tillägg vid start</translation>
 <translation id="6864914031231797928">Tillåt Google-inloggning för tillägg</translation>
 <translation id="5927916530277631319">Metod för att lösa ostoppbara domäner</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/> om sekretessöverväganden för DNS över HTTPS och Ethereum.</translation>
 <translation id="5248318250177143470">Metod för att lösa Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Metod för att lösa IPFS-resurser</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal nod</translation>
 <translation id="4927734062756955434">IPFS publik gateway-adress</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Läs mer<ph name="END_LINK_MPL"/> om sekretessöverväganden för lokal IPFS-nod och -gateway.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Läs mer<ph name="END_LINK_MPL"/> om sekretessövervägande för IPFS lokal nod och gateway.</translation>
 <translation id="8425213833346101688">Ändra</translation>
 <translation id="557281710253742286">Ställ in IPFS gateway</translation>
 <translation id="8571837315037233299">Gateway-adress</translation>
@@ -246,9 +257,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1959966725083452288">Avataren Kungligt godis</translation>
 <translation id="2039034364578911089">Avataren Godisninja</translation>
 <translation id="239760341987199724">Använd Brave som standardwebbläsare</translation>
-<translation id="1391855377994926460">Brave webbläsare är för närvarande inte satt som din förvalda webbläsare.
-Välj Brave som ditt förval för att fortsätta att surfa snabbare på nätet -
-upp till 6 x snabbare på ledande nyhetssajter.</translation>
+<translation id="1391855377994926460">Fortsätt surfa snabbare på webben – upp till sex gånger snabbare på större nyhetssajter.</translation>
 <translation id="9218430445555521422">Använd som standard</translation>
 <translation id="3479552764303398839">Inte nu</translation>
 <translation id="4877147287319222750">Lägg till i sidofält</translation>
@@ -270,7 +279,6 @@ upp till 6 x snabbare på ledande nyhetssajter.</translation>
 <translation id="8731422418734770661">Ställ in Crypto Wallets</translation>
 <translation id="8199661191594897555">Starta Crypto Wallets och ladda om</translation>
 <translation id="8428213095426709021">Inställningar</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Läs mer om IPFS och sekretess</translation>
 <translation id="4552520379838695057">Tyvärr, den sidan saknas.</translation>
 <translation id="2609895996619941644">Vill du kolla om det finns en sparad version tillgänglig på Wayback Machine?</translation>

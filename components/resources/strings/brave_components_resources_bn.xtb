@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">[[title]] চালু করে, আপনি <ph name="BEGIN_LINK1"/>পরিষেবার শর্তাবলী<ph name="END_LINK1"/> এবং <ph name="BEGIN_LINK2"/>গোপনীয়তা নীতি<ph name="END_LINK2"/>তে সম্মত হচ্ছেন।</translation>
 <translation id="2564425876266960486">Brave ব্রাউজার BAT কার্ড তৈরি করতে ত্রুটি</translation>
 <translation id="6473583070570450185">লগইন করতে আপনার একটি যাচাইকৃত ওয়ালেট লাগবে</translation>
-<translation id="5949995321533425416">একটি আপহোল্ড ওয়ালেট তৈরি করতে আপনার অন্তত <ph name="AMOUNT"/> BAT লাগবে। আপহোল্ড দিয়ে আপনার ওয়ালেট যাচাই করার পরে অনুগ্রহ করে চেষ্টা করুন।</translation>
+<translation id="5949995321533425416">একটি আপহোল্ড ওয়ালেট তৈরি করতে আপনার <ph name="AMOUNT"/> BAT এর একটি ন্যুনতম ব্যালেন্স লাগবে। আপনি আপহোল্ডের সাথে আপনার ওয়ালেট যাচাই করার পরে অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="7422678632904904341">অর্থরাশি:</translation>
 <translation id="6969783933307596818">প্রতি 5 সেকেন্ডে স্বয়ংক্রিয়ভাবে রিফ্রেশ হয়</translation>
 <translation id="5025866799968038247">ব্যালেন্স সম্পর্কিত তথ্য</translation>
@@ -320,28 +320,36 @@
 <translation id="3922777918343537463">মাসিক অবদান বাতিল করুন</translation>
 <translation id="9087994290002662101">অর্থরাশি পরিবর্তন করুন</translation>
 <translation id="1969724076378550685">মাসিক বাতিলকরণ নিশ্চিত করুন</translation>
+<translation id="2359808026110333948">চালিয়ে যান</translation>
 <translation id="6238322297266927861">অবদানের অর্থরাশি:</translation>
 <translation id="1723857724166389190">এই স্রষ্টার জন্য আপনার মাসিক অবদান বাতিল করা হয়েছে।</translation>
 <translation id="534368327994110883">আপনি বর্তমানে এই স্রষ্টাকে সমর্থন করছেন</translation>
 <translation id="2621124276654521177">বর্তমান মাসিক অবদান</translation>
+<translation id="7723816962634734185">কাস্টম পরিমাণ</translation>
+<translation id="7286679368056222644">আপনার মাসিক সমর্থন হবে</translation>
+<translation id="4088764345615745058">কাস্টম বখশিশের পরিমাণ</translation>
+<translation id="864162897141534043">আপনি বখশিশ দিতে চলেছেন</translation>
 <translation id="3084276630953238154">একটি বুনো জীবাণু হাজির হয়েছে</translation>
 <translation id="3263379510325043678">সার্ভার সংযোগ ভুল</translation>
 <translation id="8994556588732085585">আবার চেষ্টা করার জন্য টিপিং ব্যানারটি বন্ধ করুন এবং আবার খুলুন।</translation>
+<translation id="8987454605694983241">যেমন <ph name="AMOUNT"/></translation>
+<translation id="4492470488449820476">ন্যুনতম বখশিশের পরিমান <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
 <translation id="4371618764691059036">মাসিক অনুদান সেট করা হয়েছে।</translation>
 <translation id="6356822617569064293">পরবর্তী অবদানের তারিখ:</translation>
+<translation id="4783907814409710132">পর্যাপ্ত পয়েন্ট নেই।</translation>
+<translation id="3593485149443019592">পর্যাপ্ত টোকেন নেই। অনুগ্রহ করে <ph name="LINK_BEGIN"/>ফান্ড যোগ করুন<ph name="LINK_END"/>।</translation>
 <translation id="4622723187300249546">এককালীন পরামর্শ</translation>
 <translation id="5268142130226208198">এককালীন পরামর্শের অর্থরাশি:</translation>
 <translation id="3669086939205397942">ধরে থাকুন, আপনি পারবেন’tএখনও টিপ করতে</translation>
-<translation id="4758374243299807324">[[user]] এর পোস্ট</translation>
-<translation id="1242162113777253768">[[user]] এর টুইট</translation>
+<translation id="3288812755711687300"><ph name="USER"/>’ এর পোস্ট</translation>
+<translation id="5851002232791947896"><ph name="USER"/>’ এর টুইট</translation>
 <translation id="5531915212947569943">আপনাকে চলে যেতে দেখে খারাপ লাগছে…</translation>
 <translation id="1420756770787071946">এই স্রষ্টাকে সহায়তা করুন</translation>
-<translation id="3473919203449000069">এগিয়ে গিয়ে, আপনি <ph name="LINK_BEGIN"/>পরিষেবার শর্তাবলী<ph name="LINK_END"/> এবং <ph name="LINK_BEGIN"/>গোপনীয়তা নীতিতে<ph name="LINK_END"/> সম্মত হচ্ছেন।</translation>
 <translation id="3271043362279673449">সহায়তার জন্য ধন্যবাদ!</translation>
 <translation id="379596083010863211">আপনার এককালীন পরামর্শ পাঠানো হয়েছে।</translation>
 <translation id="5096821444729034955">তাদের পোস্টের জন্য</translation>
 <translation id="2978223787436054634">আপনার সহায়তা সম্পর্কে টুইট</translation>
-<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Take a quick tour<ph name="LINK_END"/> or <ph name="LINK_BEGIN"/>learn more<ph name="LINK_END"/>বিস্তারিত জানার জন্য।</translation>
+<translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>এক ঝলকে দেখে নিন<ph name="TOUR_LINK_END"/> বা বিস্তারিতের জন্য <ph name="LEARN_LINK_BEGIN"/>আরো জানুন<ph name="LEARN_LINK_END"/>।</translation>
 <translation id="7465614181960492526">টোকেন উপার্জন করুন &amp; ফেরৎ পাঠান</translation>
 <translation id="2731539192954672606">গোপনীয়তা-সম্মানজনক বিজ্ঞাপনগুলি দেখে টোকেনগুলি উপার্জন করুন এবং আপনার পছন্দসই সাইট এবং সামগ্রী নির্মাতাকে স্বয়ংক্রিয়ভাবে সমর্থন করুন।</translation>
 <translation id="1275213816424141989">সম্ভবত পরে</translation>
@@ -353,11 +361,11 @@
 <translation id="3164498053837913829">(আপনার বিজ্ঞাপন উপার্জন থেকে)</translation>
 <translation id="2070991379950719711">Brave Rewards ব্যবহার শুরু করুন</translation>
 <translation id="6318696841371191107">দ্রুত ভ্রমণ করুন</translation>
+<translation id="8465790416279415448">এগিয়ে গিয়ে, আপনি <ph name="TOS_LINK_BEGIN"/>পরিষেবার শর্তাবলী<ph name="TOS_LINK_END"/> এবং <ph name="PP_LINK_BEGIN"/>গোপনীয়তা নীতি<ph name="PP_LINK_END"/>তে সম্মত হচ্ছেন।</translation>
 <translation id="2404165674840145940">Brave rewards টিপ করুন।</translation>
 <translation id="5820285701794581330">Brave rewards ব্যবহার করে, আপনি BAT পেতে শুরু করবেন যা আপনি নির্মাতাদের টিপ করতে ব্যবহার করতে পারেন।</translation>
 <translation id="5705882733397021510">ফিরে যাও</translation>
 <translation id="185034574799484512">#8217 এর দ্রুত ভ্রমণ করতে দিন</translation>
-<translation id="2359808026110333948">চালিয়ে যান</translation>
 <translation id="8281886186245836920">ছেড়ে যান</translation>
 <translation id="1377600615067678409">যথোপযুক্ত সৃষ্টিকর্তা</translation>
 <translation id="7930505144430343145">Brave Rewards এ স্বাগতম</translation>
@@ -457,7 +465,7 @@
 <translation id="7335371657242627509">স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন</translation>
 <translation id="1864111464094315414">লগ-ইন করুন</translation>
 <translation id="4556504723624686474">ওয়ালেট যাচাই করলে আপনি আপনার ফান্ড আরো সুদক্ষভাবে পরিচালনা করতে পারবেন।</translation>
-<translation id="5461792966682693675">একটি Uphold অ্যাকাউন্ট তৈরি করতে আপনার অন্তত <ph name="AMOUNT"/> BAT থাকতে হবে। আপনার ইতিমধ্যে একটি যাচাইকৃত Uphold অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।</translation>
+<translation id="5461792966682693675">একটি আপহোল্ড অ্যাকাউন্ট তৈরি করতে আপনার <ph name="AMOUNT"/> BAT এর একটি ন্যুনতম ব্যালেন্স লাগবে। আপনার ইতিমধ্যে একটি যাচাইকৃত আপহোল্ড অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।</translation>
 <translation id="3250511771491660127">এটি মাসিক করে দিন</translation>
 <translation id="6028954173739504682">আপনার ওয়ালেট নিয়ন্ত্রণ করুন</translation>
 <translation id="7886389832052393750">এপ্রিল</translation>
@@ -485,8 +493,6 @@
 <translation id="5736183007277264868">বর্তমানে কোনো টোকেন মঞ্জুরি উপলব্ধ নেই|</translation>
 <translation id="8307851765167460403">এখনও কোনো ক্রিয়াকলাপ নেই…</translation>
 <translation id="8589748782214271192">না, ধন্যবাদ</translation>
-<translation id="3204579740854485097">যথেষ্ট [[currency]] নেই।</translation>
-<translation id="3330432260369310344">যথেষ্ট [[currency]] নেই। অনুগ্রহ করে</translation>
 <translation id="3630697955794050612">বন্ধ</translation>
 <translation id="4921250468871504777">ঠিক আছে</translation>
 <translation id="7866482334467279021">চালু</translation>
@@ -652,7 +658,7 @@
 <translation id="7840362246306242214">Uphold মার্কিন ইক্যুইটি ট্রেডিং উপলব্ধ।</translation>
 <translation id="3345432088196080137">জনপ্রিয় স্টকগুলিতে $1 এর মতো কম পরিমাণে বিনিয়োগ করুন এবং AAPL, TSLA বা AMZN এর মতো ট্রেড করা ফান্ডগুলিতে বিনিময় করুন</translation>
 <translation id="4360054110030715117">Brave Rewards সম্পর্কে <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/></translation>
-<translation id="629521674505004728">ক্লিক করে Brave Rewards ব্যবহার শুরু করুন, আপনি রাজি হন <ph name="LINK_BEGIN"/> পরিষেবার শর্তাদি<ph name="LINK_END"/> এবং <ph name="LINK_BEGIN"/>গোপনীয়তা নীতি <ph name="LINK_END"/></translation>
+<translation id="7443190393462029180">Brave Rewards ব্যবহার করা শুরু করুন-এ ক্লিক করে, আপনি <ph name="TOS_LINK_BEGIN"/>পরিষেবার শর্তাবলী<ph name="TOS_LINK_END"/> এবং <ph name="PP_LINK_BEGIN"/>গোপনীয়তা নীতি<ph name="PP_LINK_END"/>তে সম্মত হচ্ছেন।</translation>
 <translation id="8344084848798035850">এই মাসে এখন পর্যন্ত আনুমানিক উপার্জন</translation>
 <translation id="5235444069025581717">এই মাসে টিপ এবং অনুদানসমূহ</translation>
 <translation id="1210965535849006928">আমার পুরষ্কারগুলি দাবি করুন</translation>
@@ -760,10 +766,11 @@
 <translation id="5636651007798897342">Cloudflare সার্ভার ব্যবহার করে অগ্রসর হোন</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="2218918398178303658">HTTPS এর ওপরে DNS</translation>
+<translation id="1448289340149908413">ইথেরিয়াম</translation>
 <translation id="2468755552460246661">ডোমেইন ব্লক করা হয়েছে</translation>
-<translation id="6631469728138660166">সামনে সন্দেহজনক সাইট আসছে</translation>
+<translation id="6393849031898466746">এই সাইটটি আপনাকে অন্যান্য সাইট জুড়ে ট্র্যাক করার চেষ্টা করতে পারে</translation>
 <translation id="983774928604730749">Brave নিম্নোক্ত সাইটগুলোকে লোড হওয়া থেকে বিরত করেছে:</translation>
-<translation id="8250033559824599347">সাইটটি ভুয়া হতে পারে এবং আপনাকে বিভিন্ন সাইটে ঘুরিয়ে ট্র্যাকিং কুকিজ সেট করতে পারে, অথবা অন্যান্য গোপনীয়তা লঙ্ঘনকারী কাজ করতে পারে।</translation>
+<translation id="4781961723893779890">বিষয়বস্তু দেখানোর আগে এই সাইটটি আপনার কিছু ব্যক্তিগত ডেটা একটি কুকির সাথে লিঙ্ক করতে পারে।</translation>
 <translation id="2459038234784107183">এই সাইটটি সম্পর্কে আমাকে আর সতর্ক করবেন না</translation>
 <translation id="8242426110754782860">অগ্রসর হোন</translation>
 <translation id="2501278716633472235">ফিরে যান</translation>
@@ -821,8 +828,15 @@
 <translation id="4499666752625407848">একটি আপডেটের সময় ত্রুটি হয়েছে।</translation>
 <translation id="62991515067726424">এই কন্টেন্টটি IPFS প্রোটোকল অনুযায়ী লোড করা হয়েছে</translation>
 <translation id="7263366446813126341">InterPlanetary ফাইল সিস্টেম (IPFS) হল পীয়ার-টু-পীয়ার ডেটা স্টোরেজ এবং ডেলিভারির একটি সর্বজনীন নেটওয়ার্ক। আপনি যে কোনো সময় Brave এর সংহতকরণ বা আপনার IPFS কনফিগার করা সম্বন্ধে আরও জানতে পারবেন।</translation>
+<translation id="3862600063748690056">IPFS আমদানি সম্পূর্ণ হয়েছে</translation>
+<translation id="8263749381887932384">IPFS আমদানি আংশিক সম্পূর্ণ হয়েছে</translation>
+<translation id="2145699434318651911">IPFS আমদানি ব্যর্থ হয়েছে</translation>
+<translation id="5525148540855044244">শেয়ার করার যোগ্য লিঙ্ক কপি করা হয়েছে: <ph name="SHAREABLE_LINK"/></translation>
+<translation id="3741998951694470470">আমদানির জন্য ডেটা টেনে আনতে ব্যর্থ হয়েছে</translation>
+<translation id="7900950536120202771">IPFS নোড অভ্যন্তরীণ ত্রুটি</translation>
+<translation id="1036635552229153800">ডেটাটি সফলভাবে আপলোড করা হয়েছে কিন্তু brave-আমদানি ডিরেক্টরিতে সরানো হয়নি। আপনি আমদানি সেটিংস পৃষ্ঠায় এটি ম্যানুয়ালি করতে পারেন।</translation>
 <translation id="7789840864192026963">অনুমতি দিন</translation>
-<translation id="8092074243456635562">আমি এই পেজটি বন্ধ করা পর্যন্ত</translation>
+<translation id="7978789143098237970">আমি এই পেজটি বন্ধ করা পর্যন্ত</translation>
 <translation id="3523195733429162409">24 ঘণ্টার জন্য</translation>
 <translation id="2373264732659722940">1 সপ্তাহের জন্য</translation>
 <translation id="6318437367327684789">সবসময়</translation>

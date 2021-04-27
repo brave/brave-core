@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Kailangang may minimum ka na 25 BAT para makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. \n Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.",
-    "description": "Text for login button"
+    "message": "Kailangang may minimum ka na $amount$ BAT para makagawa ng Uphold account. Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Nakakonekta",

@@ -171,9 +171,17 @@
     "message": "Genel koruma varsayılanlarını değiştir",
     "description": "Message for the button action linking to the settings page"
   },
+  "addBlockElement": {
+    "message": "Seçici aracılığıyla element engelleyin",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
   "manageCustomFilters": {
     "message": "Özel filtreleri yönet",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Öğe seçici moduna girin",
+    "description": "Message for context menu that enables the element picker UI on the page."
   },
   "advancedView": {
     "message": "Gelişmiş Görünüm",

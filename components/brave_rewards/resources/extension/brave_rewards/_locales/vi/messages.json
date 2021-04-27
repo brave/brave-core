@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Bạn cần có tối thiểu 25 BAT để tạo tài khoản Uphold. Xin vui lòng thử lại sau.\nNếu bạn đã có tài khoản Uphold được xác minh, hãy tiếp tục đăng nhập.",
-    "description": "Text for login button"
+    "message": "You need to have minimum $amount$ BAT to create an Uphold account. If you already have a verified Uphold account, continue to login.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Đã kết nối",

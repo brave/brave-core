@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold 계정을 만들려면 최소 25 BAT가 있어야 합니다. 나중에 다시 시도하세요. 인증된 Uphold 계정이 이미 있는 경우 계속해서 로그인하세요.",
-    "description": "Text for login button"
+    "message": "Uphold 지갑을 만들려면 최소 $amount$BAT가 필요합니다. 인증된 Uphold 계정이 이미 있는 경우, 로그인하세요.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "연결됨",
