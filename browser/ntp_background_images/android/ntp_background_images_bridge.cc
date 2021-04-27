@@ -83,11 +83,13 @@ NTPBackgroundImagesBridge::NTPBackgroundImagesBridge(Profile* profile)
   java_object_.Reset(Java_NTPBackgroundImagesBridge_create(
       AttachCurrentThread(), reinterpret_cast<intptr_t>(this)));
 
-  background_images_service_->AddObserver(this);
+  if (background_images_service_)
+    background_images_service_->AddObserver(this);
 }
 
 NTPBackgroundImagesBridge::~NTPBackgroundImagesBridge() {
-  background_images_service_->RemoveObserver(this);
+  if (background_images_service_)
+    background_images_service_->RemoveObserver(this);
   Java_NTPBackgroundImagesBridge_destroy(AttachCurrentThread(), java_object_);
 }
 
