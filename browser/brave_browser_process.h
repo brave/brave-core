@@ -109,9 +109,6 @@ class BraveBrowserProcess {
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   virtual brave_ads::ResourceComponent* resource_component() = 0;
 #endif
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcess);
 };
 
 extern BraveBrowserProcess* g_brave_browser_process;

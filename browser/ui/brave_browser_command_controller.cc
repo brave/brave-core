@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -19,6 +18,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"

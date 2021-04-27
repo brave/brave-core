@@ -7,9 +7,9 @@
 
 #include "base/android/jni_string.h"
 #include "base/feature_list.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/build/android/jni_headers/BraveFeatureList_jni.h"
 #include "chrome/browser/about_flags.h"
+#include "chrome/browser/browser_process.h"
 #include "components/flags_ui/feature_entry.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
 
@@ -43,7 +43,7 @@ static void JNI_BraveFeatureList_EnableFeature(
           : std::to_string(GetNumberOfOptions(feature_name) - 1);
   enabled ? feature_name += "@1" : feature_name += "@" + disabled_value;
   flags_ui::PrefServiceFlagsStorage flags_storage(
-      g_brave_browser_process->local_state());
+      g_browser_process->local_state());
   about_flags::SetFeatureEntryEnabled(&flags_storage, feature_name, true);
 }
 
