@@ -1,5 +1,6 @@
 source_set("child_monitor") {
   visibility = [
+    ":unittests",
     "//brave/components/services/ipfs",
     "//brave/components/services/tor",
   ]
@@ -10,4 +11,17 @@ source_set("child_monitor") {
   ]
 
   deps = [ "//base" ]
+}
+
+source_set("unittests") {
+  testonly = true
+  if (!is_android) {
+    sources = [ "child_monitor_unittest.cc" ]
+
+    deps = [
+      ":child_monitor",
+      "//base/test:test_support",
+      "//testing/gtest",
+    ]
+  }
 }
