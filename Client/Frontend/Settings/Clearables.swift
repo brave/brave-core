@@ -194,7 +194,9 @@ class PlayListCacheClearable: Clearable {
     }
     
     func clear() -> Success {
-        PlaylistManager.shared.deleteAllItems(cacheOnly: true)
+        DispatchQueue.main.async {
+            PlaylistManager.shared.deleteAllItems(cacheOnly: true)
+        }
         return succeed()
     }
 }
@@ -208,7 +210,9 @@ class PlayListDataClearable: Clearable {
     }
     
     func clear() -> Success {
-        PlaylistManager.shared.deleteAllItems()
+        DispatchQueue.main.async {
+            PlaylistManager.shared.deleteAllItems()
+        }
         return succeed()
     }
 }
