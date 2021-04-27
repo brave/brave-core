@@ -60,7 +60,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_browser_main_extra_parts.h",
   "//brave/browser/brave_browser_main_parts.cc",
   "//brave/browser/brave_browser_main_parts.h",
-  "//brave/browser/brave_browser_process.cc",
   "//brave/browser/brave_browser_process.h",
   "//brave/browser/brave_browser_process_impl.cc",
   "//brave/browser/brave_browser_process_impl.h",

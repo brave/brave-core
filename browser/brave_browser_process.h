@@ -11,7 +11,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
-#include "base/memory/ref_counted.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
@@ -19,7 +18,6 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "chrome/browser/browser_process.h"
 #include "extensions/buildflags/buildflags.h"
 
 namespace brave {
@@ -74,9 +72,6 @@ class ResourceComponent;
 
 class BraveBrowserProcess {
  public:
-  BraveBrowserProcess();
-  virtual ~BraveBrowserProcess();
-
   virtual void StartBraveServices() = 0;
   virtual brave_shields::AdBlockService* ad_block_service() = 0;
   virtual brave_shields::AdBlockCustomFiltersService*
