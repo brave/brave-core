@@ -17,6 +17,8 @@ class WebContents;
 
 namespace sidebar {
 
+class SidebarWebContentsDelegate;
+
 // SidebarModelData represents sidebar each item's runtime state.
 // Each sidebar item of built in type owns WebContents.
 class SidebarModelData {
@@ -38,6 +40,7 @@ class SidebarModelData {
  private:
   Profile* profile_ = nullptr;
   bool need_favicon_update_ = false;
+  std::unique_ptr<SidebarWebContentsDelegate> contents_delegate_;
   std::unique_ptr<content::WebContents> contents_;
 };
 

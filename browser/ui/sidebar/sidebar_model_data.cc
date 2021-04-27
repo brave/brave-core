@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "brave/browser/ui/sidebar/sidebar_web_contents_delegate.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
@@ -16,12 +17,18 @@ namespace sidebar {
 
 SidebarModelData::SidebarModelData(Profile* profile) : profile_(profile) {}
 
-SidebarModelData::~SidebarModelData() = default;
+SidebarModelData::~SidebarModelData() {
+  // Make sure to destroy contents first because contents refers delegate.
+  contents_.reset();
+  contents_delegate_.reset();
+}
 
 content::WebContents* SidebarModelData::GetWebContents() {
   if (!contents_) {
     content::WebContents::CreateParams params(profile_);
     contents_ = content::WebContents::Create(params);
+    contents_delegate_.reset(new SidebarWebContentsDelegate);
+    contents_->SetDelegate(contents_delegate_.get());
   }
 
   return contents_.get();

@@ -21,6 +21,8 @@ source_set("sidebar") {
     "sidebar_service_factory.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
+    "sidebar_web_contents_delegate.cc",
+    "sidebar_web_contents_delegate.h",
   ]
 
   deps = [
