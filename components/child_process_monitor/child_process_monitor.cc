@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/external_child_process/child_monitor.h"
+#include "brave/components/child_process_monitor/child_process_monitor.h"
 
 #if defined(OS_POSIX)
 #include <errno.h>
@@ -22,8 +22,9 @@
 #include "base/logging.h"
 #include "base/process/kill.h"
 #include "base/single_thread_task_runner.h"
-#include "base/task/post_task.h"
-#include "base/threading/thread_task_runner_handle.h"
+#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 
 namespace brave {
 
@@ -32,7 +33,7 @@ namespace {
 #if defined(OS_POSIX)
 int pipehack[2];
 
-static void SIGCHLDHandler(int signo) {
+void SIGCHLDHandler(int signo) {
   int error = errno;
   char ch = 0;
   (void)write(pipehack[1], &ch, 1);
@@ -40,7 +41,7 @@ static void SIGCHLDHandler(int signo) {
 }
 
 #if defined(OS_MAC)
-static void SetupFD(int fd) {
+void SetupFD(int fd) {
   int flags;
   if ((flags = fcntl(fd, F_GETFD)) == -1)
     VLOG(0) << "get fd flags errno:" << errno;
@@ -50,7 +51,7 @@ static void SetupFD(int fd) {
 }
 #endif
 
-static void SetupPipeHack() {
+void SetupPipeHack() {
 #if defined(OS_MAC)
   if (pipe(pipehack) == -1)
     VLOG(0) << "pipehack errno:" << errno;
@@ -78,7 +79,7 @@ static void SetupPipeHack() {
   sigaction(SIGCHLD, &action, NULL);
 }
 
-static void TearDownPipeHack() {
+void TearDownPipeHack() {
   struct sigaction action;
   memset(&action, 0, sizeof(action));
   action.sa_handler = SIG_DFL;
@@ -111,6 +112,7 @@ void MonitorChild(base::ProcessHandle p_handle,
                   << ")";
         }
         std::move(callback).Run(pid);
+        break;
       }
     } else {
       // pipes closed
@@ -127,8 +129,9 @@ void MonitorChild(base::ProcessHandle p_handle,
 
 }  // namespace
 
-ChildMonitor::ChildMonitor()
-    : child_monitor_thread_(new base::Thread("child_monitor_thread")) {
+ChildProcessMonitor::ChildProcessMonitor()
+    : child_monitor_thread_(
+          std::make_unique<base::Thread>("child_monitor_thread")) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 #if defined(OS_POSIX)
   SetupPipeHack();
@@ -137,7 +140,8 @@ ChildMonitor::ChildMonitor()
     NOTREACHED();
   }
 }
-ChildMonitor::~ChildMonitor() {
+
+ChildProcessMonitor::~ChildProcessMonitor() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 #if defined(OS_POSIX)
   TearDownPipeHack();
@@ -148,9 +152,8 @@ ChildMonitor::~ChildMonitor() {
 #if defined(OS_MAC)
     // TODO(https://crbug.com/806451): The Mac implementation currently blocks
     // the calling thread for up to two seconds.
-    base::PostTask(
-        FROM_HERE,
-        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT},
+    base::ThreadPool::PostTask(
+        FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
         base::BindOnce(&base::EnsureProcessTerminated,
                        Passed(&child_process_)));
 #else
@@ -159,23 +162,24 @@ ChildMonitor::~ChildMonitor() {
   }
 }
 
-void ChildMonitor::Start(base::Process child,
-                         base::OnceCallback<void(base::ProcessId)> callback) {
+void ChildProcessMonitor::Start(
+    base::Process child,
+    base::OnceCallback<void(base::ProcessId)> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   child_process_ = std::move(child);
 
-  DCHECK(child_monitor_thread_.get());
+  DCHECK(child_monitor_thread_);
   child_monitor_thread_->task_runner()->PostTask(
       FROM_HERE,
       base::BindOnce(
           &MonitorChild, child_process_.Handle(),
           base::BindPostTask(base::SequencedTaskRunnerHandle::Get(),
-                             base::BindOnce(&ChildMonitor::OnChildCrash,
+                             base::BindOnce(&ChildProcessMonitor::OnChildCrash,
                                             weak_ptr_factory_.GetWeakPtr(),
                                             std::move(callback)))));
 }
 
-void ChildMonitor::OnChildCrash(
+void ChildProcessMonitor::OnChildCrash(
     base::OnceCallback<void(base::ProcessId)> callback,
     base::ProcessId pid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

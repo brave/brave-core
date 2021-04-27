@@ -16,7 +16,7 @@ namespace tor {
 
 TorLauncherImpl::TorLauncherImpl(
     mojo::PendingReceiver<mojom::TorLauncher> receiver)
-    : child_monitor_(new brave::ChildMonitor()),
+    : child_monitor_(std::make_unique<brave::ChildProcessMonitor>()),
       receiver_(this, std::move(receiver)) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   receiver_.set_disconnect_handler(base::BindOnce(

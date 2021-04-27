@@ -11,7 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/process/process.h"
 #include "base/sequence_checker.h"
-#include "brave/components/external_child_process/child_monitor.h"
+#include "brave/components/child_process_monitor/child_process_monitor.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -33,7 +33,7 @@ class IpfsServiceImpl : public mojom::IpfsService {
   void OnChildCrash(base::ProcessId pid);
   void Cleanup();
 
-  std::unique_ptr<brave::ChildMonitor> child_monitor_;
+  std::unique_ptr<brave::ChildProcessMonitor> child_monitor_;
   mojo::Receiver<mojom::IpfsService> receiver_;
   SetCrashHandlerCallback crash_handler_callback_;
 #if !defined(OS_ANDROID)

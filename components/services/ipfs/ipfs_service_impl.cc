@@ -137,7 +137,7 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
     return;
   }
 
-  child_monitor_.reset(new brave::ChildMonitor());
+  child_monitor_ = std::make_unique<brave::ChildProcessMonitor>();
 
   // Launch IPFS daemon.
   base::CommandLine args(config->binary_path);

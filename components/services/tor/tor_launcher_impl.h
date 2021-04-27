@@ -11,7 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/process/process.h"
 #include "base/sequence_checker.h"
-#include "brave/components/external_child_process/child_monitor.h"
+#include "brave/components/child_process_monitor/child_process_monitor.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -28,8 +28,7 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
 
   // tor::mojom::TorLauncher
   void Shutdown() override;
-  void Launch(mojom::TorConfigPtr config,
-              LaunchCallback callback) override;
+  void Launch(mojom::TorConfigPtr config, LaunchCallback callback) override;
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
 
  private:
@@ -37,7 +36,7 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   void Cleanup();
 
   SetCrashHandlerCallback crash_handler_callback_;
-  std::unique_ptr<brave::ChildMonitor> child_monitor_;
+  std::unique_ptr<brave::ChildProcessMonitor> child_monitor_;
   mojo::Receiver<tor::mojom::TorLauncher> receiver_;
   bool in_shutdown_ = false;
 

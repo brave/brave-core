@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_EXTERNAL_CHILD_PROCESS_CHILD_MONITOR_H_
-#define BRAVE_COMPONENTS_EXTERNAL_CHILD_PROCESS_CHILD_MONITOR_H_
+#ifndef BRAVE_COMPONENTS_CHILD_PROCESS_MONITOR_CHILD_PROCESS_MONITOR_H_
+#define BRAVE_COMPONENTS_CHILD_PROCESS_MONITOR_CHILD_PROCESS_MONITOR_H_
 
 #include <memory>
 
@@ -18,12 +18,12 @@ namespace brave {
 
 // This class can only be used once per utility process to monitor the lifetime
 // of external process, ex. IpfsServiceImpl and TorLauncherImpl
-class ChildMonitor {
+class ChildProcessMonitor {
  public:
-  ChildMonitor();
-  ~ChildMonitor();
-  ChildMonitor(const ChildMonitor&) = delete;
-  ChildMonitor& operator=(const ChildMonitor&) = delete;
+  ChildProcessMonitor();
+  ~ChildProcessMonitor();
+  ChildProcessMonitor(const ChildProcessMonitor&) = delete;
+  ChildProcessMonitor& operator=(const ChildProcessMonitor&) = delete;
 
   void Start(base::Process child,
              base::OnceCallback<void(base::ProcessId)> callback);
@@ -37,8 +37,8 @@ class ChildMonitor {
 
   SEQUENCE_CHECKER(sequence_checker_);
 
-  base::WeakPtrFactory<ChildMonitor> weak_ptr_factory_{this};
+  base::WeakPtrFactory<ChildProcessMonitor> weak_ptr_factory_{this};
 };
 
 }  // namespace brave
-#endif  // BRAVE_COMPONENTS_EXTERNAL_CHILD_PROCESS_CHILD_MONITOR_H_
+#endif  // BRAVE_COMPONENTS_CHILD_PROCESS_MONITOR_CHILD_PROCESS_MONITOR_H_

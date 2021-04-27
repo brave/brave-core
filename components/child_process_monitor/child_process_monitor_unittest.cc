@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/external_child_process/child_monitor.h"
+#include "brave/components/child_process_monitor/child_process_monitor.h"
 
 #if defined(OS_WIN)
 #include <windows.h>
@@ -33,7 +33,7 @@ void WaitForChildTermination(base::ProcessHandle handle) {
 }
 }  // namespace
 
-class ChildMonitorTest : public base::MultiProcessTest {
+class ChildProcessMonitorTest : public base::MultiProcessTest {
  protected:
   void SetUp() override {
     callback_runner_ = base::SequencedTaskRunnerHandle::Get();
@@ -51,8 +51,9 @@ MULTIPROCESS_TEST_MAIN(NeverDieChildProcess) {
   return 0;
 }
 
-TEST_F(ChildMonitorTest, Terminate) {
-  std::unique_ptr<ChildMonitor> monitor(new ChildMonitor());
+TEST_F(ChildProcessMonitorTest, Terminate) {
+  std::unique_ptr<ChildProcessMonitor> monitor =
+      std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("NeverDieChildProcess");
   bool is_called = false;
@@ -68,8 +69,9 @@ TEST_F(ChildMonitorTest, Terminate) {
   EXPECT_TRUE(is_called);
 }
 
-TEST_F(ChildMonitorTest, Kill) {
-  std::unique_ptr<ChildMonitor> monitor(new ChildMonitor());
+TEST_F(ChildProcessMonitorTest, Kill) {
+  std::unique_ptr<ChildProcessMonitor> monitor =
+      std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("NeverDieChildProcess");
   bool is_called = false;
@@ -95,8 +97,9 @@ MULTIPROCESS_TEST_MAIN(FastSleepyChildProcess) {
   return 0;
 }
 
-TEST_F(ChildMonitorTest, ChildExit) {
-  std::unique_ptr<ChildMonitor> monitor(new ChildMonitor());
+TEST_F(ChildProcessMonitorTest, ChildExit) {
+  std::unique_ptr<ChildProcessMonitor> monitor =
+      std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("FastSleepyChildProcess");
   bool is_called = false;
@@ -126,8 +129,9 @@ MULTIPROCESS_TEST_MAIN(SleepyCrashChildProcess) {
 
 // TODO(darkdh): This test case is not stable on Windows CI
 #if !defined(OS_WIN)
-TEST_F(ChildMonitorTest, ChildCrash) {
-  std::unique_ptr<ChildMonitor> monitor(new ChildMonitor());
+TEST_F(ChildProcessMonitorTest, ChildCrash) {
+  std::unique_ptr<ChildProcessMonitor> monitor =
+      std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("SleepyCrashChildProcess");
   bool is_called = false;
