@@ -237,7 +237,8 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
     return;
   int index =
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
-  DCHECK_NE(index, -1);
+  if (index == -1)
+    return;
   if (!params_.selection_text.empty() &&
       params_.media_type == ContextMenuDataMediaType::kNone) {
     menu_model_.InsertSeparatorAt(index,

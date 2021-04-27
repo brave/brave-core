@@ -1,0 +1,89 @@
+<link rel="import" href="chrome://resources/html/cr.html">
+<link rel="import" href="chrome://resources/html/polymer.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_link_row/cr_link_row.html">
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
+<link rel="import" href="../settings_page/settings_section.html">
+<link rel="import" href="../settings_shared_css.html">
+<link rel="import" href="../settings_vars_css.html">
+<link rel="import" href="brave_ipfs_browser_proxy.html">
+<link rel="import" href="add_p2p_key_dialog.js">
+
+<dom-module id="settings-p2p-keys-subpage">
+<template>
+<style include="cr-shared-style settings-shared iron-flex">
+  .settings-row:not(:first-child) {
+    border-top: var(--cr-separator-line);
+  }
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
+  .error-text {
+    color: red;
+  }
+  #keys-section {
+    display: block;
+    background-color: var(--cr-card-background-color);
+    padding-block-end: 0;
+    padding-block-start: 0;
+    padding-inline-end: var(--cr-section-padding);
+    padding-inline-start: var(--cr-section-indent-padding);
+  }
+</style>
+
+<div id="keys-section" class="flex-container" hidden=[[!localNodeMethod]]>
+  <div class="flex" hidden="[[localNodeLaunched]]">
+    <div class="settings-row">
+      <div class="flex cr-padded-text">
+          <div>$i18n{ipfsKeysNodeNotLaunched}</div>
+          <div class="secondary error-text" hidden="[[!localNodeLaunchError_]]">
+            $i18nRaw{ipfsKeysNodeLaunchError}
+          </div>
+      </div>
+      <cr-button on-click="onStartNodeKeyTap_" disabled=[[!launchNodeButtonEnabled_]]>
+        $i18n{ipfsKeysStartNode}
+      </cr-button>
+    </div>
+  </div>
+  <div class="flex" hidden="[[!localNodeLaunched]]">
+    <div class="settings-row">
+      <div class="flex cr-padded-text">
+          $i18n{ipfsKeysListTitle}
+      </div>
+      <cr-button on-click="onAddKeyTap_" >
+        $i18n{add}
+      </cr-button>
+    </div>
+    <div class="flex" id="listContainer">
+      <iron-list items="[[keys_]]" class="flex"
+          preserve-focus risk-selection>
+        <template>
+          <div class="settings-box">
+            <div class="flex cr-padded-text">
+              <div>{{item.name}}</div>
+              <div class="secondary">{{item.value}}</div>
+            </div>
+            <cr-icon-button class="icon-delete-gray"
+                on-click="onKeyDeleteTapped_"
+                itemName=[[item.name]]
+                hidden="[[isDefaultKey_(item.name)]]">
+            </cr-icon-button>
+          </div>
+        </template>
+      </iron-list>
+    </div>
+  </div>
+</div>
+<template is="dom-if" if="[[showAddp2pKeyDialog_]]" restamp>
+  <add-p2p-key-dialog keys="[[keys_]]" on-close="onAddKeyDialogClosed_">
+  </add-p2p-key-dialog>
+</template>
+
+</template>
+<script src="p2p_keys_subpage.js"></script>
+</dom-module>
