@@ -30,3 +30,28 @@ class AddToPlaylistActivity: UIActivity {
     }
 }
 
+class OpenInPlaylistActivity: UIActivity {
+    fileprivate let callback: () -> Void
+
+    init(callback: @escaping () -> Void) {
+        self.callback = callback
+    }
+
+    override var activityTitle: String? {
+        return Strings.PlayList.toastExitingItemPlaylistTitle
+    }
+
+    override var activityImage: UIImage? {
+        return #imageLiteral(resourceName: "playlist_menu")
+    }
+
+    override func perform() {
+        callback()
+        activityDidFinish(true)
+    }
+
+    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+        return true
+    }
+}
+

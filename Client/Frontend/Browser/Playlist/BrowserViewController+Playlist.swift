@@ -86,13 +86,25 @@ extension BrowserViewController: PlaylistHelperDelegate {
         }
     }
     
+    func openInPlayListActivity(info: PlaylistInfo?) {
+        if info == nil {
+            openInPlaylistActivityItem = nil
+        } else {
+            openInPlaylistActivityItem = (enabled: true, item: info)
+        }
+    }
+    
     func addToPlaylist(item: PlaylistInfo, completion: ((_ didAddItem: Bool) -> Void)?) {
         if PlaylistManager.shared.isDiskSpaceEncumbered() {
             let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
             let alert = UIAlertController(
                 title: Strings.PlayList.playlistDiskSpaceWarningTitle, message: Strings.PlayList.playlistDiskSpaceWarningMessage, preferredStyle: style)
             
-            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: { _ in
+            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.openInPlaylistActivityItem = (enabled: true, item: item)
+                self.addToPlayListActivityItem = nil
+                
                 PlaylistItem.addItem(item, cachedData: nil) {
                     PlaylistManager.shared.autoDownload(item: item)
                     completion?(true)
@@ -104,10 +116,21 @@ extension BrowserViewController: PlaylistHelperDelegate {
             }))
             self.present(alert, animated: true, completion: nil)
         } else {
+            openInPlaylistActivityItem = (enabled: true, item: item)
+            addToPlayListActivityItem = nil
+            
             PlaylistItem.addItem(item, cachedData: nil) {
                 PlaylistManager.shared.autoDownload(item: item)
                 completion?(true)
             }
+        }
+    }
+    
+    func openInPlaylist(item: PlaylistInfo, completion: (() -> Void)?) {
+        let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController ?? PlaylistViewController()
+        playlistController.modalPresentationStyle = .fullScreen
+        present(playlistController, animated: true) {
+            completion?()
         }
     }
 }

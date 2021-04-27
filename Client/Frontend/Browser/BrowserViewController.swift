@@ -112,6 +112,7 @@ class BrowserViewController: UIViewController {
     var downloadToast: DownloadToast? // A toast that is showing the combined download progress
     var playlistToast: PlaylistToast? // A toast displayed when a playlist item is updated or added
     var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)? // A boolean to determine If AddToListActivity should be added
+    var openInPlaylistActivityItem: (enabled: Bool, item: PlaylistInfo?)? // A boolean to determine if OpenInPlaylistActivity should be shown
 
     // Tracking navigation items to record history types.
     // TODO: weak references?
@@ -1769,6 +1770,17 @@ class BrowserViewController: UIViewController {
             }
         }
         
+        let openInPlayListActivity = OpenInPlaylistActivity() { [unowned self] in
+            guard let item = self.openInPlaylistActivityItem?.item else { return }
+            
+            // Update playlist with new items..
+            self.openInPlaylist(item: item) {
+                log.debug("Playlist Item Opened")
+                UIImpactFeedbackGenerator(style: .medium).bzzt()
+                
+            }
+        }
+        
         var activities: [UIActivity] = [findInPageActivity]
         
         // These actions don't apply if we're sharing a temporary document
@@ -1881,6 +1893,10 @@ class BrowserViewController: UIViewController {
 
         if let playListActivityItem = addToPlayListActivityItem, playListActivityItem.enabled {
             activities.append(addToPlayListActivity)
+        }
+        
+        if let playListActivityItem = openInPlaylistActivityItem, playListActivityItem.enabled {
+            activities.append(openInPlayListActivity)
         }
         
         let controller = helper.createActivityViewController(items: activities) { [weak self] completed, _, documentUrl  in

@@ -22,6 +22,7 @@ protocol PlaylistHelperDelegate: NSObject {
     func showPlaylistAlert(_ alertController: UIAlertController)
     func showPlaylistToast(info: PlaylistInfo, itemState: PlaylistItemAddedState)
     func addToPlayListActivity(info: PlaylistInfo?, itemDetected: Bool)
+    func openInPlayListActivity(info: PlaylistInfo?)
     func dismissPlaylistToast(animated: Bool)
 }
 
@@ -59,11 +60,13 @@ class PlaylistHelper: TabContentScript {
         
         guard let item = PlaylistInfo.from(message: message),
               !item.src.isEmpty else {
+            delegate?.openInPlayListActivity(info: nil)
             delegate?.addToPlayListActivity(info: nil, itemDetected: false)
             return
         }
         
         if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
+            delegate?.openInPlayListActivity(info: nil)
             delegate?.addToPlayListActivity(info: nil, itemDetected: false)
             return
         }
@@ -73,15 +76,17 @@ class PlaylistHelper: TabContentScript {
         // IE: WebM videos aren't supported so can't be played.
         // Therefore we shouldn't prompt the user to add to playlist.
         if let url = URL(string: item.src), !AVURLAsset(url: url).isPlayable {
+            delegate?.openInPlayListActivity(info: nil)
             delegate?.addToPlayListActivity(info: nil, itemDetected: false)
             return
         }
         
         log.debug("FOUND VIDEO ITEM ON PAGE: \(message.body)")
         
-        delegate?.addToPlayListActivity(info: item, itemDetected: true)
-        
         if PlaylistItem.itemExists(item) {
+            delegate?.openInPlayListActivity(info: item)
+            delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+            
             PlaylistItem.updateItem(item) {
                 log.debug("Playlist Item Updated")
                 
@@ -91,6 +96,9 @@ class PlaylistHelper: TabContentScript {
                 }
             }
         } else {
+            delegate?.openInPlayListActivity(info: nil)
+            delegate?.addToPlayListActivity(info: item, itemDetected: true)
+            
             if item.detected {
                 self.delegate?.showPlaylistToast(info: item, itemState: .pendingUserAction)
             } else {
