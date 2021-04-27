@@ -3,15 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/crypto_dot_com/browser/crypto_dot_com_json_parser.h"
+
 #include <map>
 #include <utility>
 #include <vector>
 
-#include "brave/components/crypto_dot_com/browser/crypto_dot_com_json_parser.h"
-
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -365,11 +367,15 @@ base::Value CryptoDotComJSONParser::GetValidDepositAddress(
 base::Value CryptoDotComJSONParser::GetValidOrderResult(
     const std::string& json) {
   auto response_value = base::JSONReader::Read(json);
+  base::Value result(base::Value::Type::DICTIONARY);
   if (!response_value.has_value() || !response_value.value().is_dict()) {
-    return base::Value();
+    result.SetBoolKey("success", false);
+    result.SetStringKey("message",
+                        l10n_util::GetStringUTF8(
+                            IDS_CRYPTO_DOT_COM_WIDGET_ORDER_ERROR_MESSAGE));
+    return result;
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
   if (const auto* code = response_value->FindStringPath("result.order_id")) {
     result.SetBoolKey("success", true);
     result.SetStringKey("message", "");
@@ -380,6 +386,10 @@ base::Value CryptoDotComJSONParser::GetValidOrderResult(
   result.SetStringKey("message", "");
   if (auto* message_str = response_value->FindStringKey("result")) {
     result.SetStringKey("message", *message_str);
+  } else {
+    result.SetStringKey("message",
+                        l10n_util::GetStringUTF8(
+                            IDS_CRYPTO_DOT_COM_WIDGET_ORDER_ERROR_MESSAGE));
   }
   return result;
 }

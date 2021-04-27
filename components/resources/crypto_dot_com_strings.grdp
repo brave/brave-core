@@ -30,5 +30,6 @@
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_PAIRS" desc="">Supported Pairs</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_VOLUME" desc="">24HR Volume</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_DEPOSIT_MORE" desc="">Deposit more [[currency]]</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_ORDER_ERROR_MESSAGE" desc="">Error placing order, please try again or contact support https://help.crypto.com/</message>
   </if>
 </grit-part>
