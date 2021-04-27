@@ -6,16 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_BRAVE_WALLET_RESPONSE_HELPERS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_BRAVE_WALLET_RESPONSE_HELPERS_H_
 
+#include <memory>
 #include <string>
 
+#include "base/values.h"
 #include "brave/components/brave_wallet/renderer/web3_provider_constants.h"
 
 namespace brave_wallet {
 
-std::string FormProviderResponse(ProviderErrors code,
-                                 const std::string& message);
-std::string FormProviderResponse(const std::string& controller_response,
-                                 bool* reject);
+std::unique_ptr<base::Value> FormProviderResponse(ProviderErrors code,
+                                                  const std::string& message);
+std::unique_ptr<base::Value> FormProviderResponse(
+    const std::string& controller_response,
+    bool* reject);
 
 }  // namespace brave_wallet
 

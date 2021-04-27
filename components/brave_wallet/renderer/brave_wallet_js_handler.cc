@@ -7,12 +7,14 @@
 
 #include <utility>
 
+#include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/renderer/web3_provider_constants.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
@@ -91,10 +93,22 @@ void BraveWalletJSHandler::BindFunctionToObject(
       .Check();
 }
 
-v8::Local<v8::Promise> BraveWalletJSHandler::Request(v8::Isolate* isolate,
-                                                     const std::string& input) {
-  if (!EnsureConnected())
+v8::Local<v8::Promise> BraveWalletJSHandler::Request(
+    v8::Isolate* isolate,
+    v8::Local<v8::Value> input) {
+  if (!EnsureConnected() || !input->IsObject())
     return v8::Local<v8::Promise>();
+
+  std::unique_ptr<base::Value> out(
+      content::V8ValueConverter::Create()->FromV8Value(
+          input, isolate->GetCurrentContext()));
+
+  base::DictionaryValue* out_dict;
+  if (!out || !out->is_dict() || !out->GetAsDictionary(&out_dict))
+    return v8::Local<v8::Promise>();
+
+  std::string formed_input;
+  base::JSONWriter::Write(*out_dict, &formed_input);
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
@@ -104,7 +118,7 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(v8::Isolate* isolate,
     auto context_old(
         v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
     brave_wallet_provider_->Request(
-        input,
+        formed_input,
         base::BindOnce(&BraveWalletJSHandler::OnRequest, base::Unretained(this),
                        std::move(promise_resolver), isolate,
                        std::move(context_old)));
@@ -126,11 +140,10 @@ void BraveWalletJSHandler::OnRequest(
   v8::Context::Scope context_scope(context);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  v8::Local<v8::String> result;
   bool reject = http_code != 200;
   ProviderErrors code = ProviderErrors::kDisconnected;
   std::string message;
-  std::string formed_response;
+  std::unique_ptr<base::Value> formed_response;
   if (reject) {
     code = ProviderErrors::kUnsupportedMethod;
     message = "HTTP Status code: " + base::NumberToString(http_code);
@@ -138,8 +151,11 @@ void BraveWalletJSHandler::OnRequest(
   } else {
     formed_response = FormProviderResponse(response, &reject);
   }
-  result = v8::String::NewFromUtf8(isolate, formed_response.c_str())
-               .ToLocalChecked();
+  v8::Local<v8::Value> result;
+  if (formed_response) {
+    result = content::V8ValueConverter::Create()->ToV8Value(
+        formed_response.get(), context);
+  }
 
   if (reject) {
     ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
