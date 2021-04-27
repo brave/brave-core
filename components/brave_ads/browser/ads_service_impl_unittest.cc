@@ -175,8 +175,6 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(GetExternalWallet,
                void(brave_rewards::GetExternalWalletCallback callback));
 
-  MOCK_CONST_METHOD0(GetExternalWalletType, std::string());
-
   MOCK_METHOD3(ProcessRewardsPageUrl,
                void(const std::string& path,
                     const std::string& query,

@@ -257,16 +257,6 @@ double BraveRewardsNativeWorker::GetWalletRate(JNIEnv* env) {
   return parameters_.rate;
 }
 
-base::android::ScopedJavaLocalRef<jstring>
-BraveRewardsNativeWorker::GetExternalWalletType(JNIEnv* env) {
-  std::string wallet_type;
-  if (brave_rewards_service_) {
-    wallet_type = brave_rewards_service_->GetExternalWalletType();
-  }
-
-  return base::android::ConvertUTF8ToJavaString(env, wallet_type);
-}
-
 void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->FetchPromotions();
@@ -652,6 +642,7 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     dict.SetIntKey("status", static_cast<int32_t>(wallet->status));
     dict.SetStringKey("verify_url", wallet->verify_url);
     dict.SetStringKey("add_url", wallet->add_url);
+    dict.SetStringKey("type", wallet->type);
     dict.SetStringKey("withdraw_url", wallet->withdraw_url);
     dict.SetStringKey("user_name", wallet->user_name);
     dict.SetStringKey("account_url", wallet->account_url);

@@ -1820,8 +1820,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 case BraveRewardsExternalWallet.PENDING:
                 case BraveRewardsExternalWallet.VERIFIED:
                     if (walletBalance < WALLET_BALANCE_LIMIT
-                            && mBraveRewardsNativeWorker.getExternalWalletType().equals(
-                                    BraveUphold.UPHOLD)
+                            && mExternalWallet.getType().equals(BraveUphold.UPHOLD)
                             && !isVerifyWalletEnabled()) {
                         showUpholdLoginPopupWindow(btnVerifyWallet);
                     } else {
@@ -1836,8 +1835,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
                 case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
                     if (walletBalance < WALLET_BALANCE_LIMIT
-                            && mBraveRewardsNativeWorker.getExternalWalletType().equals(
-                                    BraveUphold.UPHOLD)
+                            && mExternalWallet.getType().equals(BraveUphold.UPHOLD)
                             && !isVerifyWalletEnabled()) {
                         showUpholdLoginPopupWindow(btnVerifyWallet);
                     } else {

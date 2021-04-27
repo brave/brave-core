@@ -24,6 +24,7 @@ class BraveRewardsExternalWallet {
     public static final String ADDRESS = "address";
     public static final String STATUS = "status";
     public static final String TOKEN = "token";
+    public static final String TYPE = "type";
     public static final String USER_NAME = "user_name";
     public static final String VERIFY_URL = "verify_url";
     public static final String WITHDRAW_URL = "withdraw_url";
@@ -105,6 +106,7 @@ class BraveRewardsExternalWallet {
         mAddress = jsonObj.getString(ADDRESS);
         mStatus = jsonObj.getInt(STATUS);
         mToken = jsonObj.getString(TOKEN);
+        mType = jsonObj.getString(TYPE);
         mUserName = jsonObj.getString(USER_NAME);
         mVerifyUrl = jsonObj.getString(VERIFY_URL);
         mWithdrawUrl = jsonObj.getString(WITHDRAW_URL);
