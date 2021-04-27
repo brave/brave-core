@@ -271,7 +271,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         super.finishNativeInitialization();
 
         if (SharedPreferencesManager.getInstance().readBoolean(
-                    BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {
+                    BravePreferenceKeys.BRAVE_DOUBLE_RESTART, true)) {
             SharedPreferencesManager.getInstance().writeBoolean(
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false);
             BraveRelaunchUtils.restart();
