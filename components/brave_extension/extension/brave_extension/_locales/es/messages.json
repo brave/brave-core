@@ -171,10 +171,6 @@
     "message": "Cambiar los escudos globales por defecto",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Bloquear elemento vía selector",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Gestionar filtros personalizados",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"

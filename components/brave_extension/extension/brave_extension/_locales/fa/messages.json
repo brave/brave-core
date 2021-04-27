@@ -171,10 +171,6 @@
     "message": "تغییر پیش‌فرض‌های سپرایمنی جهانی",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "مسدود کردن عناصر به‌وسیله انتخابگر",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "مدیریت فیلترهای سفارشی",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"

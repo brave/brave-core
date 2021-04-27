@@ -171,10 +171,6 @@
     "message": "Baguhin ang mga global na default ng shield",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "I-block ang element sa pamamagitan ng selector",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Pamahalaan ang mga custom na filter",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"

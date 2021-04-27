@@ -171,10 +171,6 @@
     "message": "Изменить общие настройки защиты",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Блокировать элемент с помощью селектора",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Настроить фильтры",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"

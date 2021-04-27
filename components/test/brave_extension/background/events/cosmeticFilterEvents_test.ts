@@ -47,7 +47,7 @@ describe('cosmeticFilterEvents events', () => {
 
     describe('addBlockElement', function () {
       it('triggers addBlockElement action (query call)', function () {
-        const info: chrome.contextMenus.OnClickData = { menuItemId: 'addBlockElement', editable: false, pageUrl: 'brave.com' }
+        const info: chrome.contextMenus.OnClickData = { menuItemId: 'elementPickerMode', editable: false, pageUrl: 'brave.com' }
         // calls query
         const tab: chrome.tabs.Tab = {
           id: 3,
@@ -64,40 +64,8 @@ describe('cosmeticFilterEvents events', () => {
         cosmeticFilterEvents.onContextMenuClicked(info, tab)
         expect(chromeTabsQuerySpy).toBeCalled()
       })
-      it('calls tabsCallback', function () {
-        const myTab: chrome.tabs.Tab = {
-          id: 3,
-          index: 0,
-          pinned: false,
-          highlighted: false,
-          windowId: 1,
-          active: true,
-          incognito: false,
-          selected: true,
-          discarded: false,
-          autoDiscardable: false
-        }
-        cosmeticFilterEvents.tabsCallback([myTab])
-        expect(1).toBe(1)
-        chrome.tabs.sendMessage(myTab.id, { type: 'getTargetSelector' }, cosmeticFilterEvents.onSelectorReturned)
-      })
     })
     describe('onSelectorReturned', function () {
-      describe('when prompting user with selector', function () {
-        describe('when a selector is returned', function () {
-          it('calls window.prompt with selector as input', function () {
-            cosmeticFilterEvents.onSelectorReturned('abc')
-            expect(lastInputText).toBe('CSS selector:')
-            expect(lastPromptText).toBe('abc')
-          })
-        })
-        describe('when a selector is not returned', function () {
-          it('calls window.prompt with `not found` message', function () {
-            cosmeticFilterEvents.onSelectorReturned(null)
-            expect(lastInputText.indexOf('We were unable to automatically populat') > -1).toBe(true)
-          })
-        })
-      })
       describe('after selector prompt is shown', function () {
         let insertCssSpy: jest.SpyInstance
         beforeEach(() => {
@@ -106,24 +74,14 @@ describe('cosmeticFilterEvents events', () => {
         afterEach(() => {
           insertCssSpy.mockRestore()
         })
-        it('calls `chrome.tabs.insertCSS` when selector is NOT null/undefined', function () {
+        it('calls `chrome.tabs.insertCSS` with cosmetic filter rule', function () {
           selectorToReturn = '#test_selector'
-          cosmeticFilterEvents.onSelectorReturned(selectorToReturn)
+          cosmeticFilterEvents.applyCosmeticFilter('brave.com', selectorToReturn)
           let returnObj = {
             'code': '#test_selector {display: none !important;}',
             'cssOrigin': 'user'
           }
           expect(insertCssSpy).toBeCalledWith(returnObj)
-        })
-        it('does NOT call `chrome.tabs.insertCSS` when selector is undefined', function () {
-          selectorToReturn = undefined
-          cosmeticFilterEvents.onSelectorReturned(undefined)
-          expect(insertCssSpy).not.toBeCalled()
-        })
-        it('does NOT call `chrome.tabs.insertCSS` when selector is null', function () {
-          selectorToReturn = null
-          cosmeticFilterEvents.onSelectorReturned(null)
-          expect(insertCssSpy).not.toBeCalled()
         })
       })
     })
