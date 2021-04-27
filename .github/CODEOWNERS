@@ -8,16 +8,16 @@ Jenkinsfile @mihaiplesa
 DEPS @bridiver
 
 # Rewards
-browser/brave_rewards/ @brave/rewards
-browser/extensions/api/brave_rewards_api.cc @brave/rewards
-browser/extensions/api/brave_rewards_api.h @brave/rewards
-browser/ui/webui/brave_rewards_page_ui.cc @brave/rewards
-browser/ui/webui/brave_rewards_page_ui.h @brave/rewards
-browser/ui/webui/brave_rewards_ui.cc @brave/rewards
-browser/ui/webui/brave_rewards_ui.h @brave/rewards
-components/brave_rewards/ @brave/rewards
-components/services/bat_ledger/ @brave/rewards
-vendor/bat-native-ledger/ @brave/rewards
+browser/brave_rewards/ @brave/rewards-client
+browser/extensions/api/brave_rewards_api.cc @brave/rewards-client
+browser/extensions/api/brave_rewards_api.h @brave/rewards-client
+browser/ui/webui/brave_rewards_page_ui.cc @brave/rewards-client
+browser/ui/webui/brave_rewards_page_ui.h @brave/rewards-client
+browser/ui/webui/brave_rewards_ui.cc @brave/rewards-client
+browser/ui/webui/brave_rewards_ui.h @brave/rewards-client
+components/brave_rewards/ @brave/rewards-client
+components/services/bat_ledger/ @brave/rewards-client
+vendor/bat-native-ledger/ @brave/rewards-client
 
 # Ads
 vendor/bat-native-ads/ @tmancey
