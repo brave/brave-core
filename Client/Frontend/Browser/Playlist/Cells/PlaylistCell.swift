@@ -8,6 +8,18 @@ import UIKit
 import SDWebImage
 import AVFoundation
 
+class PlaylistAssetFetcher {
+    private let asset: AVURLAsset
+    
+    init(asset: AVURLAsset) {
+        self.asset = asset
+    }
+    
+    func cancelLoading() {
+        asset.cancelLoading()
+    }
+}
+
 class PlaylistResizingThumbnailView: UIImageView {
     private var onImageChanged: (PlaylistResizingThumbnailView) -> Void
     
@@ -29,6 +41,8 @@ class PlaylistResizingThumbnailView: UIImageView {
 
 class PlaylistCell: UITableViewCell {
     var thumbnailGenerator: HLSThumbnailGenerator?
+    var imageAssetGenerator: AVAssetImageGenerator?
+    var durationFetcher: PlaylistAssetFetcher?
     
     private let thumbnailMaskView = CAShapeLayer().then {
         $0.fillColor = UIColor.white.cgColor
@@ -40,6 +54,11 @@ class PlaylistCell: UITableViewCell {
         $0.layer.cornerRadius = 5.0
         $0.layer.cornerCurve = .continuous
         $0.layer.masksToBounds = true
+    }
+    
+    let thumbnailActivityIndicator = UIActivityIndicatorView(style: .medium).then {
+        $0.hidesWhenStopped = true
+        $0.tintColor = .white
     }
     
     let thumbnailView = PlaylistResizingThumbnailView(onImageChanged: {
@@ -77,6 +96,14 @@ class PlaylistCell: UITableViewCell {
         $0.backgroundColor = UIColor(white: 1.0, alpha: 0.15)
     }
     
+    func prepareForDisplay() {
+        thumbnailGenerator = nil
+        imageAssetGenerator = nil
+        thumbnailView.cancelFaviconLoad()
+        durationFetcher?.cancelLoading()
+        durationFetcher = nil
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -90,6 +117,7 @@ class PlaylistCell: UITableViewCell {
         infoStackView.addArrangedSubview(detailLabel)
         contentView.addSubview(separator)
         thumbnailHolder.addSubview(thumbnailView)
+        thumbnailHolder.addSubview(thumbnailActivityIndicator)
         
         thumbnailHolder.snp.makeConstraints {
             // Keeps a 94.0px width on iPhone-X as per design
@@ -101,6 +129,10 @@ class PlaylistCell: UITableViewCell {
             $0.center.equalToSuperview()
             $0.leading.trailing.top.bottom.equalToSuperview().priority(.high)
             $0.width.height.equalToSuperview()
+        }
+        
+        thumbnailActivityIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
         
         iconStackView.snp.makeConstraints {

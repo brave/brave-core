@@ -1149,7 +1149,7 @@ extension Strings {
         public static let toastAddedToPlaylistTitle =
             NSLocalizedString("playList.toastAddedToPlaylistTitle",
                               bundle: .braveShared,
-                              value: "Added to Playlist",
+                              value: "Added to Brave Playlist",
                               comment: "The title for the toast that shows up on a page containing a playlist item that was added to playlist")
         
         public static let toastAddToPlaylistOpenButton =
@@ -1161,7 +1161,7 @@ extension Strings {
         public static let toastExitingItemPlaylistTitle =
             NSLocalizedString("playList.toastExitingItemPlaylistTitle",
                               bundle: .braveShared,
-                              value: "View in Playlist",
+                              value: "View in Brave Playlist",
                               comment: "The title for the toast that shows up on a page when an item that has already been added, was updated.")
         
         public static let removePlaylistVideoAlertTitle =
