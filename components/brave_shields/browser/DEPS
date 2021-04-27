@@ -18,7 +18,7 @@ specific_include_rules = {
     "+brave/common/pref_names.h",
   ],
   "ad_block_custom_filters_service.cc": [
-    "+brave/browser/brave_browser_process.h",
+    "+chrome/browser/browser_process.h",
     "+brave/common/pref_names.h",
   ],
   "ad_block_regional_service.cc": [
