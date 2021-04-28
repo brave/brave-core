@@ -19,19 +19,20 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/metadata/metadata_impl_macros.h"
 
-WalletButton::WalletButton(Profile* profile, PrefService* prefs)
+WalletButton::WalletButton(View* backup_anchor_view,
+                           Profile* profile,
+                           PrefService* prefs)
     : ToolbarButton(base::BindRepeating(&WalletButton::OnWalletPressed,
                                         base::Unretained(this))),
-      webui_bubble_manager_(this,
-                            profile,
-                            GURL(kBraveUIWalletPanelURL),
-                            IDS_ACCNAME_BRAVE_WALLET_BUTTON,
-                            true),
-      prefs_(prefs) {
+      prefs_(prefs),
+      backup_anchor_view_(backup_anchor_view),
+      profile_(profile) {
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      kShowWalletIcon, base::BindRepeating(&WalletButton::OnPreferenceChanged,
-                                           base::Unretained(this)));
+      kShowWalletIconOnToolbar,
+      base::BindRepeating(&WalletButton::OnPreferenceChanged,
+                          base::Unretained(this)));
+  InitBubbleManagerAnchor();
   UpdateVisibility();
 
   auto menu_button_controller = std::make_unique<views::MenuButtonController>(
@@ -57,34 +58,45 @@ void WalletButton::UpdateImageAndText() {
   SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_WALLET));
 }
 
+void WalletButton::InitBubbleManagerAnchor() {
+  View* anchor_view = this;
+  if (!prefs_->GetBoolean(kShowWalletIconOnToolbar)) {
+    anchor_view = backup_anchor_view_;
+  }
+  webui_bubble_manager_ = std::make_unique<WebUIBubbleManagerT<WalletPanelUI>>(
+      anchor_view, profile_, GURL(kBraveUIWalletPanelURL),
+      IDS_ACCNAME_BRAVE_WALLET_BUTTON, true);
+}
+
 void WalletButton::UpdateVisibility() {
-  SetVisible(prefs_->GetBoolean(kShowWalletIcon));
+  SetVisible(prefs_->GetBoolean(kShowWalletIconOnToolbar));
 }
 
 void WalletButton ::OnPreferenceChanged() {
+  InitBubbleManagerAnchor();
   UpdateVisibility();
 }
 
 void WalletButton::OnWidgetDestroying(views::Widget* widget) {
-  DCHECK_EQ(webui_bubble_manager_.GetBubbleWidget(), widget);
+  DCHECK_EQ(webui_bubble_manager_->GetBubbleWidget(), widget);
   DCHECK(bubble_widget_observation_.IsObservingSource(
-      webui_bubble_manager_.GetBubbleWidget()));
+      webui_bubble_manager_->GetBubbleWidget()));
   bubble_widget_observation_.Reset();
   pressed_lock_.reset();
 }
 
 bool WalletButton::ShowWalletBubble() {
-  if (webui_bubble_manager_.GetBubbleWidget()) {
+  if (webui_bubble_manager_->GetBubbleWidget()) {
     CloseWalletBubble();
     return false;
   }
 
-  webui_bubble_manager_.ShowBubble();
+  webui_bubble_manager_->ShowBubble();
 
   // There should only ever be a single bubble widget active for the
   // WalletButton.
   DCHECK(!bubble_widget_observation_.IsObserving());
-  bubble_widget_observation_.Observe(webui_bubble_manager_.GetBubbleWidget());
+  bubble_widget_observation_.Observe(webui_bubble_manager_->GetBubbleWidget());
 
   // Hold the pressed lock while the |bubble_| is active.
   pressed_lock_ = menu_button_controller_->TakeLock();
@@ -92,7 +104,7 @@ bool WalletButton::ShowWalletBubble() {
 }
 
 void WalletButton::CloseWalletBubble() {
-  webui_bubble_manager_.CloseBubble();
+  webui_bubble_manager_->CloseBubble();
 }
 
 BEGIN_METADATA(WalletButton, ToolbarButton)
