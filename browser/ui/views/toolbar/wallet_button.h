@@ -39,6 +39,10 @@ class WalletButton : public ToolbarButton, public views::WidgetObserver {
   void UpdateImageAndText();
   void UpdateVisibility();
 
+  WebUIBubbleManager* webui_bubble_manager_for_testing() {
+    return &webui_bubble_manager_;
+  }
+
  private:
   void OnPreferenceChanged();
   void OnWalletPressed(const ui::Event& event);
