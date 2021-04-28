@@ -9,6 +9,7 @@ declare_args() {
 brave_android_manifest_includes = [ "//brave/android/java/AndroidManifest.xml" ]
 
 brave_chrome_java_deps = [
+  "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
