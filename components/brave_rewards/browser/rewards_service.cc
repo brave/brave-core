@@ -52,6 +52,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                   base::TimeDelta::FromSeconds(30));
   registry->RegisterBooleanPref(prefs::kBackupSucceeded, false);
   registry->RegisterBooleanPref(prefs::kUserHasFunded, false);
+  registry->RegisterBooleanPref(prefs::kUserHasClaimedGrant, false);
   registry->RegisterTimePref(prefs::kAddFundsNotification, base::Time());
   registry->RegisterBooleanPref(prefs::kEnabled, false);
   registry->RegisterDictionaryPref(prefs::kExternalWallets);

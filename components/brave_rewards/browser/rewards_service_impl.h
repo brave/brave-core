@@ -688,6 +688,8 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
+  void OnGetBraveWalletForP3A(ledger::type::BraveWalletPtr wallet);
+
   bool Connected() const;
   void ConnectionClosed();
   void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;

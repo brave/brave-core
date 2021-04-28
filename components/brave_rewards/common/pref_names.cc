@@ -17,6 +17,7 @@ const char kBackupNotificationInterval[] =
     "brave.rewards.backup_notification_interval";
 const char kBackupSucceeded[] = "brave.rewards.backup_succeeded";
 const char kUserHasFunded[] = "brave.rewards.user_has_funded";
+const char kUserHasClaimedGrant[] = "brave.rewards.user_has_claimed_grant";
 const char kAddFundsNotification[] =
     "brave.rewards.add_funds_notification";
 const char kNotificationStartupDelay[] =

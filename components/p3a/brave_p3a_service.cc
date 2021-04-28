@@ -20,12 +20,12 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
@@ -80,6 +80,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Rewards.AutoContributionsState.2",
     "Brave.Rewards.TipsState.2",
     "Brave.Rewards.WalletBalance.2",
+    "Brave.Rewards.WalletState",
     "Brave.Savings.BandwidthSavingsMB",
     "Brave.Search.DefaultEngine.4",
     "Brave.Shields.UsageStatus",
