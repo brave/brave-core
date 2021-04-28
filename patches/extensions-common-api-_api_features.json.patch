@@ -1,8 +1,8 @@
 diff --git a/extensions/common/api/_api_features.json b/extensions/common/api/_api_features.json
-index 5ec0cd8fa44b930a341ee13e543b6479302676a9..ae0ecb069e1ff0873870d1c13ea65b23239e6f72 100644
+index 9db0bbe8e75b00b632ebe73fddf5a3066bf596cc..2d4ed75263518a2142dd24f0b2e53a8a2bba9ad0 100644
 --- a/extensions/common/api/_api_features.json
 +++ b/extensions/common/api/_api_features.json
-@@ -523,6 +523,7 @@
+@@ -525,6 +525,7 @@
      "matches": [
        "chrome://password-change/*",
        "chrome://file-manager/*"
