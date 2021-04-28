@@ -31,7 +31,9 @@ extension BraveRewardsViewController {
         
         let publisherView = BraveRewardsPublisherView()
         let statusView = BraveRewardsStatusView()
-        let legacyWalletTransferButton = LegacyWalletTransferButton()
+        let legacyWalletTransferButton = LegacyWalletTransferButton().then {
+            $0.isHidden = true
+        }
         let legacyWalletTransferStatusButton = LegacyWalletTransferStatusButton().then {
             $0.isHidden = true
         }
