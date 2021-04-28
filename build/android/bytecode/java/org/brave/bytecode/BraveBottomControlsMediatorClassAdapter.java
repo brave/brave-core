@@ -27,8 +27,5 @@ public class BraveBottomControlsMediatorClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveBottomControlsMediatorClassName, "mBrowserControlsSizer");
         makeProtectedField(sBottomControlsMediatorClassName, "mBrowserControlsSizer");
-
-        addMethodAnnotation(sBraveBottomControlsMediatorClassName, "updateCompositedViewVisibility",
-                "Ljava/lang/Override;");
     }
 }
