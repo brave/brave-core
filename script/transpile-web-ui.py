@@ -19,7 +19,6 @@ def main():
     output_path_absolute = os.path.abspath(args.output_path[0])
     root_gen_dir = args.root_gen_dir[0]
     grd_path = os.path.join(args.output_path[0], args.grd_name[0])
-    grd_path_absolute = os.path.abspath(grd_path)
 
     clean_target_dir(output_path_absolute)
 
@@ -62,7 +61,7 @@ def parse_args():
     return args
 
 
-def clean_target_dir(target_dir, env=None):
+def clean_target_dir(target_dir):
     try:
         if os.path.exists(target_dir):
             shutil.rmtree(target_dir)
@@ -71,7 +70,8 @@ def clean_target_dir(target_dir, env=None):
 
 
 def transpile_web_uis(production, target_gen_dir, root_gen_dir,
-                      entry_points, depfile_path, depfile_sourcename, public_asset_path=None, env=None):
+                      entry_points, depfile_path, depfile_sourcename,
+                      public_asset_path=None, env=None):
     if env is None:
         env = os.environ.copy()
 
