@@ -1,22 +1,20 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.py b/chrome/browser/resources/tools/optimize_webui.py
-index f41a89bf816fe8cdba73d3700399ce55e94a7e99..956560289e04efc5678be2e7c392b4a0c60a3059 100755
+index f41a89bf816fe8cdba73d3700399ce55e94a7e99..8381a1b5be429ef32861c2e9ea36655fd0e114c7 100755
 --- a/chrome/browser/resources/tools/optimize_webui.py
 +++ b/chrome/browser/resources/tools/optimize_webui.py
 @@ -26,6 +26,7 @@ import node_modules
  
  # These files are already combined and minified.
  _BASE_EXCLUDES = []
-+_BASE_EXCLUDES += [ 'chrome://brave-resources/fonts/muli.css', 'chrome://brave-resources/fonts/poppins.css' ]
++_BASE_EXCLUDES += [ 'chrome://brave-resources/fonts/muli.css', 'chrome://brave-resources/fonts/poppins.css' ]; _BR_RESOURCES_PATH = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources','').replace('\\', '/')
  for excluded_file in [
    'resources/polymer/v1_0/web-animations-js/web-animations-next-lite.min.js',
    'resources/css/roboto.css',
-@@ -70,6 +71,9 @@ def _update_dep_file(in_folder, args, manifest):
+@@ -70,6 +71,7 @@ def _update_dep_file(in_folder, args, manifest):
    # that we can map it to the correct source file path below.
    request_list = map(lambda dep: _get_dep_path(dep, args.host_url, in_path),
                       request_list)
-+  _BR_RESOURCES_PATH = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources','').replace('\\', '/')
-+  for (redirect_url, file_path) in [ ('chrome://brave-resources/', _BR_RESOURCES_PATH), ('//brave-resources/', _BR_RESOURCES_PATH) ]:
-+    request_list = map(lambda dep: _get_dep_path(dep, redirect_url, file_path), request_list)
++  for (redirect_url, file_path) in [ ('chrome://brave-resources/', _BR_RESOURCES_PATH), ('//brave-resources/', _BR_RESOURCES_PATH) ]: request_list = map(lambda dep: _get_dep_path(dep, redirect_url, file_path), request_list)
  
    deps = map(os.path.normpath, request_list)
  
