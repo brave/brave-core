@@ -7,10 +7,11 @@
 
 #include <string>
 
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
 #include "url/gurl.h"
 

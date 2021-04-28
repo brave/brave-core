@@ -8,13 +8,14 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/switches.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_paths.h"
@@ -211,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   EXPECT_STREQ(query_value.c_str(), "BRV001");
 }
 
-// TODO - convert to a unit test
+// TODO(bridiver) - convert to a unit test
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        DISABLED_StatsUpdaterMigration) {
   // Create a pre 1.19 user.

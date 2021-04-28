@@ -9,11 +9,11 @@
 #include "base/path_service.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_drm_tab_helper.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
@@ -79,7 +79,7 @@ void EnableWidevineCdmComponent() {
     return;
 
   SetWidevineOptedIn(true);
-  RegisterWidevineCdmComponent(g_brave_browser_process->component_updater());
+  RegisterWidevineCdmComponent(g_browser_process->component_updater());
 }
 
 void DisableWidevineCdmComponent() {
@@ -87,7 +87,7 @@ void DisableWidevineCdmComponent() {
     return;
 
   SetWidevineOptedIn(false);
-  g_brave_browser_process->component_updater()->UnregisterComponent(
+  g_browser_process->component_updater()->UnregisterComponent(
       BraveDrmTabHelper::kWidevineComponentId);
 }
 

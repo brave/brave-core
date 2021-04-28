@@ -18,19 +18,20 @@ specific_include_rules = {
     "+brave/common/pref_names.h",
   ],
   "ad_block_custom_filters_service.cc": [
-    "+brave/browser/brave_browser_process_impl.h",
+    "+chrome/browser/browser_process.h",
     "+brave/common/pref_names.h",
   ],
   "ad_block_regional_service.cc": [
-    "+brave/browser/brave_browser_process_impl.h",
+    "+brave/browser/brave_browser_process.h",
     "+brave/common/pref_names.h",
   ],
   "ad_block_regional_service_manager.cc": [
-    "+brave/browser/brave_browser_process_impl.h",
+    "+brave/browser/brave_browser_process.h",
     "+brave/common/pref_names.h",
+    "+chrome/browser/browser_process.h",
   ],
   "ad_block_service.cc": [
-    "+brave/browser/brave_browser_process_impl.h",
+    "+brave/browser/brave_browser_process.h",
     "+brave/common/pref_names.h",
   ],
   "brave_shields_web_contents_observer.cc": [
@@ -47,7 +48,7 @@ specific_include_rules = {
     "+chrome/browser/android/tab_android.h",
   ],
   "tracking_protection_helper.cc": [
-    "+brave/browser/brave_browser_process_impl.h",
+    "+brave/browser/brave_browser_process.h",
   ],
   "tracking_protection_service.cc": [
     "+brave/common/brave_switches.h",
