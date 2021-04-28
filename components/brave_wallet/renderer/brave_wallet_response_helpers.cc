@@ -5,25 +5,25 @@
 
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/values.h"
 
 namespace brave_wallet {
 
-std::string FormProviderResponse(ProviderErrors code,
-                                 const std::string& message) {
+std::unique_ptr<base::Value> FormProviderResponse(ProviderErrors code,
+                                                  const std::string& message) {
   std::string formed_response;
-  base::DictionaryValue json_root;
-  json_root.SetIntKey("code", static_cast<int>(code));
-  json_root.SetStringKey("message", message);
-  base::JSONWriter::Write(json_root, &formed_response);
+  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
+  result->SetIntKey("code", static_cast<int>(code));
+  result->SetStringKey("message", message);
 
-  return formed_response;
+  return std::move(result);
 }
 
-std::string FormProviderResponse(const std::string& controller_response,
-                                 bool* reject) {
+std::unique_ptr<base::Value> FormProviderResponse(
+    const std::string& controller_response,
+    bool* reject) {
   DCHECK(reject);
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
@@ -38,24 +38,19 @@ std::string FormProviderResponse(const std::string& controller_response,
     return FormProviderResponse(code, message);
   }
 
-  std::string formed_response;
-  // Check, do we have any error message
   const base::Value* error = response->FindKey("error");
   if (error) {
-    base::JSONWriter::Write(*error, &formed_response);
     *reject = true;
 
-    return formed_response;
+    return base::Value::ToUniquePtrValue(error->Clone());
   }
   *reject = false;
 
   // We have a result
   const base::Value* result = response->FindKey("result");
   DCHECK(result);
-  if (result)
-    base::JSONWriter::Write(*result, &formed_response);
 
-  return formed_response;
+  return base::Value::ToUniquePtrValue(result->Clone());
 }
 
 }  // namespace brave_wallet

@@ -40,7 +40,7 @@ class BraveWalletJSHandler {
 
   // A function to be called from JS
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,
-                                 const std::string& input);
+                                 v8::Local<v8::Value> input);
   void OnRequest(v8::Global<v8::Promise::Resolver> promise_resolver,
                  v8::Isolate* isolate,
                  v8::Global<v8::Context> context_old,
