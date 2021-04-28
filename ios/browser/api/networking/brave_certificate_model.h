@@ -74,6 +74,7 @@ OBJC_EXPORT
 @property (nonatomic, strong, readonly) NSString* algorithm;
 @property (nonatomic, strong, readonly) NSString* objectIdentifier;
 @property (nonatomic, strong, readonly) NSString* curveName;
+@property (nonatomic, strong, readonly) NSString* nistCurveName;
 @property (nonatomic, strong, readonly) NSString* parameters;
 @property (nonatomic, strong, readonly) NSString* keyHexEncoded;
 @property (nonatomic, assign, readonly) NSUInteger keyBytesSize;
@@ -106,6 +107,8 @@ OBJC_EXPORT
 @property (nonatomic, strong, readonly) BraveCertificateFingerprint* sha1Fingerprint;
 @property (nonatomic, strong, readonly) BraveCertificateFingerprint* sha256Fingerprint;
 
+- (nullable instancetype)initWithData:(NSData *)data;
+- (nullable instancetype)initWithFilePath:(NSString *)path;
 - (nullable instancetype)initWithCertificate:(nonnull SecCertificateRef)certificate;
 @end
 

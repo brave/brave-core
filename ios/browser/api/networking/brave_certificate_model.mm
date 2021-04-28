@@ -22,6 +22,8 @@
 #include <unordered_map>
 #include <algorithm>
 #include <cstdlib>
+#include <string>
+#include <vector>
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -33,6 +35,80 @@ namespace x509_utils {
 namespace {
   static const char hex_characters[] = "0123456789ABCDEF";
 } // namespace
+  
+const char* EC_curve_nid2nist(int nid) {
+  switch (nid) {
+    case NID_sect163r2:
+      return "B-163";
+    case NID_sect233r1:
+      return "B-233";
+    case NID_sect283r1:
+      return "B-283";
+    case NID_sect409r1:
+      return "B-409";
+    case NID_sect571r1:
+      return "B-571";
+    case NID_sect163k1:
+      return "K-163";
+    case NID_sect233k1:
+      return "K-233";
+    case NID_sect283k1:
+      return "K-283";
+    case NID_sect409k1:
+      return "K-409";
+    case NID_sect571k1:
+      return "K-571";
+    case NID_X9_62_prime192v1:
+      return "P-192";
+    case NID_secp224r1:
+      return "P-224";
+    case NID_X9_62_prime256v1:
+      return "P-256";
+    case NID_secp384r1:
+      return "P-384";
+    case NID_secp521r1:
+      return "P-521";
+    default:
+      return ::EC_curve_nid2nist(nid);
+  }
+}
+
+int EC_curve_nid2num_bits(int nid) {
+  switch (nid) {
+    case NID_sect163r2:
+      return 163;
+    case NID_sect233r1:
+      return 233;
+    case NID_sect283r1:
+      return 283;
+    case NID_sect409r1:
+      return 409;
+    case NID_sect571r1:
+      return 571;
+    case NID_sect163k1:
+      return 163;
+    case NID_sect233k1:
+      return 233;
+    case NID_sect283k1:
+      return 283;
+    case NID_sect409k1:
+      return 409;
+    case NID_sect571k1:
+      return 571;
+    case NID_X9_62_prime192v1:
+      return 192;
+    case NID_secp224r1:
+      return 224;
+    case NID_X9_62_prime256v1:
+      return 256;
+    case NID_secp384r1:
+      return 384;
+    case NID_secp521r1:
+      return 521;
+    default:
+      return 0;
+  }
+}
 
 std::string string_from_ASN1STRING(const ASN1_STRING* string)
 {
@@ -118,9 +194,15 @@ std::string hex_string_from_ASN1_BIT_STRING(ASN1_BIT_STRING* string) {
 std::string hex_string_from_ASN1INTEGER(ASN1_INTEGER* integer)
 {
   std::string result;
-  for (int i = 0; i < integer->length; ++i) {
-    result += hex_characters[(integer->data[i] & 0xF0) >> 4];
-    result += hex_characters[(integer->data[i] & 0x0F) >> 0];
+  if (integer) {
+    int length = ASN1_STRING_length(integer);
+    const unsigned char* data = ASN1_STRING_get0_data(integer);
+    if (data) {
+      for (int i = 0; i < length; ++i) {
+        result += hex_characters[(data[i] & 0xF0) >> 4];
+        result += hex_characters[(data[i] & 0x0F) >> 0];
+      }
+    }
   }
   return result;
 }
@@ -277,7 +359,165 @@ std::string string_from_ASN1_OBJECT(const ASN1_OBJECT* object, bool no_name) {
   return std::string();
 }
 
-// iOS Specific
+class X509_EXTENSION_INFO {
+public:
+  enum TYPE {
+    STRING,
+    MULTI_VALUE
+  };
+  
+  X509_EXTENSION_INFO(const std::string& value) {
+    this->value_type = TYPE::STRING;
+    this->value = new std::string(value);
+    this->is_multi_line = false;
+  }
+  
+  X509_EXTENSION_INFO(const std::vector<std::pair<std::string,
+                                                  std::string>>& values,
+                                            bool is_multi_line) {
+    this->value_type = TYPE::MULTI_VALUE;
+    this->value = new std::vector<std::pair<std::string,
+                                            std::string>>(values);
+    this->is_multi_line = is_multi_line;
+  }
+  
+  ~X509_EXTENSION_INFO() {
+    switch (value_type) {
+      case TYPE::STRING: {
+        delete static_cast<std::string*>(value);
+      }
+        break;
+        
+      case TYPE::MULTI_VALUE: {
+        delete static_cast<std::vector<
+                              std::pair<std::string,
+                                        std::string>>*>(value);
+      }
+        break;
+    }
+  }
+  
+  TYPE get_type() {
+    return value_type;
+  }
+  
+  bool has_multi_line_flag() {
+    return is_multi_line;
+  }
+  
+  std::string* get_extension_string() {
+    if (value_type == TYPE::STRING) {
+      return static_cast<std::string*>(value);
+    }
+    return nullptr;
+  }
+  
+  std::vector<std::pair<std::string, std::string>>* get_extension_multi_value() {
+    if (value_type == TYPE::MULTI_VALUE) {
+      return static_cast<std::vector<
+                            std::pair<std::string,
+                                      std::string>>*>(value);
+    }
+    return nullptr;
+  }
+  
+private:
+  void* value;
+  TYPE value_type;
+  bool is_multi_line;
+};
+
+std::unique_ptr<X509_EXTENSION_INFO> decode_extension_info(X509_EXTENSION* extension) {
+  auto cleanup_extension_string = [](const X509V3_EXT_METHOD* method,
+                                     void* extension_string) {
+    if (method->it) {
+      ASN1_item_free(static_cast<ASN1_VALUE*>(extension_string),
+                     ASN1_ITEM_ptr(method->it));
+    } else {
+      method->ext_free(extension_string);
+    }
+  };
+  
+  const X509V3_EXT_METHOD* method = X509V3_EXT_get(extension);
+  if (method) {
+    void* extension_string = nullptr;
+    ASN1_OCTET_STRING* extension_data = X509_EXTENSION_get_data(extension);
+    const unsigned char* der_data = ASN1_STRING_get0_data(extension_data);
+    if (method->it) {
+      // ASN1_ITEM from BER encoding
+      extension_string = ASN1_item_d2i(nullptr,
+                                       &der_data,
+                                       ASN1_STRING_length(extension_data),
+                                       ASN1_ITEM_ptr(method->it));
+    } else {
+      extension_string = method->d2i(nullptr,
+                                     &der_data,
+                                     ASN1_STRING_length(extension_data));
+    }
+    
+    if (extension_string) {
+      if (method->i2s) { // STRING EXTENSION
+        char* value = method->i2s(method, extension_string);
+        if (value) {
+          std::string result = value;
+          OPENSSL_free(value);
+          cleanup_extension_string(method, extension_string);
+          return std::make_unique<X509_EXTENSION_INFO>(result);
+        }
+      } else if (method->i2v) { // MULTI-PAIR EXTENSION
+        STACK_OF(CONF_VALUE)* stack = method->i2v(method, extension_string, nullptr);
+        if (stack) {
+          bool is_multi_line = method->ext_flags & X509V3_EXT_MULTILINE;
+          std::size_t count = sk_CONF_VALUE_num(stack);
+          if (!count) {
+            sk_CONF_VALUE_pop_free(stack, X509V3_conf_free);
+            cleanup_extension_string(method, extension_string);
+            return nullptr;
+          }
+          
+          std::vector<std::pair<std::string, std::string>> values;
+          for (std::size_t i = 0; i < count; ++i) {
+            CONF_VALUE* item = sk_CONF_VALUE_value(stack, static_cast<int>(i));
+            if (item) {
+              if (!item->name) {
+                values.push_back(std::make_pair("", item->value));
+              } else if (!item->value) {
+                values.push_back(std::make_pair(item->name, ""));
+              } else {
+                values.push_back(std::make_pair(item->name, item->value));
+              }
+            }
+          }
+          sk_CONF_VALUE_pop_free(stack, X509V3_conf_free);
+          cleanup_extension_string(method, extension_string);
+          return std::make_unique<X509_EXTENSION_INFO>(values, is_multi_line);
+        }
+      } else if (method->i2r) { // RAW EXTENSION
+        std::string result;
+        BIO* bio = BIO_new(BIO_s_mem());
+        if (bio) {
+          if (method->i2r(method, extension_string, bio, 0)) {
+            char* bio_memory = nullptr;
+            std::size_t total_size = BIO_get_mem_data(bio, &bio_memory);
+            
+            if (total_size > 0 && bio_memory) {
+              result = std::string(bio_memory, total_size);
+            }
+            
+            BIO_free_all(bio);
+            cleanup_extension_string(method, extension_string);
+            return std::make_unique<X509_EXTENSION_INFO>(result);
+          }
+          BIO_free_all(bio);
+        }
+      }
+      
+      cleanup_extension_string(method, extension_string);
+    }
+  }
+  return nullptr;
+}
+
 NSString* string_to_ns(const std::string& str)
 {
   if (str.empty()) {
@@ -303,10 +543,10 @@ NSDate* date_to_ns(double time_interval)
                                                            NID_countryName));
     _stateOrProvince = x509_utils::string_to_ns(
                            x509_utils::name_entry_from_nid(subject_name,
-                                                           NID_stateOrProvinceName).c_str());
+                                                           NID_stateOrProvinceName));
     _locality = x509_utils::string_to_ns(
                     x509_utils::name_entry_from_nid(subject_name,
-                                                    NID_localityName).c_str());
+                                                    NID_localityName));
     _organization = x509_utils::string_to_ns(
                         x509_utils::name_entry_from_nid(subject_name,
                                                         NID_organizationName));
@@ -315,16 +555,16 @@ NSDate* date_to_ns(double time_interval)
                                                               NID_organizationalUnitName));
     _commonName =  x509_utils::string_to_ns(
                        x509_utils::name_entry_from_nid(subject_name,
-                                                       NID_commonName).c_str());
+                                                       NID_commonName));
     _streetAddress =  x509_utils::string_to_ns(
                           x509_utils::name_entry_from_nid(subject_name,
-                                                          NID_streetAddress).c_str());
+                                                          NID_streetAddress));
     _domainComponent =  x509_utils::string_to_ns(
                             x509_utils::name_entry_from_nid(subject_name,
-                                                            NID_domainComponent).c_str());
+                                                            NID_domainComponent));
     _userId =  x509_utils::string_to_ns(
                    x509_utils::name_entry_from_nid(subject_name,
-                                                   NID_userId).c_str());
+                                                   NID_userId));
   }
   return self;
 }
@@ -339,10 +579,10 @@ NSDate* date_to_ns(double time_interval)
                                                            NID_countryName));
     _stateOrProvince = x509_utils::string_to_ns(
                            x509_utils::name_entry_from_nid(issuer_name,
-                                                           NID_stateOrProvinceName).c_str());
+                                                           NID_stateOrProvinceName));
     _locality = x509_utils::string_to_ns(
                     x509_utils::name_entry_from_nid(issuer_name,
-                                                    NID_localityName).c_str());
+                                                    NID_localityName));
     _organization = x509_utils::string_to_ns(
                         x509_utils::name_entry_from_nid(issuer_name,
                                                         NID_organizationName));
@@ -351,16 +591,16 @@ NSDate* date_to_ns(double time_interval)
                                                               NID_organizationalUnitName));
     _commonName =  x509_utils::string_to_ns(
                        x509_utils::name_entry_from_nid(issuer_name,
-                                                       NID_commonName).c_str());
+                                                       NID_commonName));
     _streetAddress =  x509_utils::string_to_ns(
                           x509_utils::name_entry_from_nid(issuer_name,
-                                                          NID_streetAddress).c_str());
+                                                          NID_streetAddress));
     _domainComponent =  x509_utils::string_to_ns(
                             x509_utils::name_entry_from_nid(issuer_name,
-                                                            NID_domainComponent).c_str());
+                                                            NID_domainComponent));
     _userId =  x509_utils::string_to_ns(
                    x509_utils::name_entry_from_nid(issuer_name,
-                                                   NID_userId).c_str());
+                                                   NID_userId));
   }
   return self;
 }
@@ -433,70 +673,37 @@ NSDate* date_to_ns(double time_interval)
     _algorithm = [[NSString alloc] init];
     _objectIdentifier = [[NSString alloc] init];
     _curveName = [[NSString alloc] init];
+    _nistCurveName = [[NSString alloc] init];
     _parameters = [[NSString alloc] init];
     _keyHexEncoded = [[NSString alloc] init];
     
+    // Sometimes a key cannot be "decoded"
+    // but you can still use X509_get_X509_PUBKEY to get its raw form
     EVP_PKEY* key = X509_get_pubkey(certificate);
     if (key) {
-      //_keySizeInBits = EVP_PKEY_bits(key);
-      _keyBytesSize = EVP_PKEY_size(key);
+      _keySizeInBits = EVP_PKEY_bits(key);
+      _keyBytesSize = _keySizeInBits / 8;
       int key_type = EVP_PKEY_base_id(key);
-      //int key_usage = X509_get_key_usage(certificate)
-      ASN1_BIT_STRING* key_usage = static_cast<ASN1_BIT_STRING*>(
-                                                   X509_get_ext_d2i(certificate,
-                                                                    NID_key_usage,
-                                                                    nullptr,
-                                                                    nullptr));
-      
-      if (key_usage) {
-        const unsigned char* data = ASN1_STRING_get0_data(key_usage);
-        if (data && ASN1_STRING_length(key_usage) > 0) {
-          if (data[0] & KU_DIGITAL_SIGNATURE) {
-            //verify/sign
-            _keyUsage |= BravePublicKeyUsage_Verify;
-          }
-          
-          if (data[0] & KU_KEY_ENCIPHERMENT) {
-            //wrap
-            _keyUsage |= BravePublicKeyUsage_Wrap;
-          }
-          
-          if (data[0] & KU_KEY_AGREEMENT) {
-            //derive
-            _keyUsage |= BravePublicKeyUsage_Derive;
-          }
-          
-          if (data[0] & KU_DATA_ENCIPHERMENT ||
-              (data[0] & KU_KEY_AGREEMENT &&
-               data[0] & KU_KEY_ENCIPHERMENT)) {
-            //encrypt
-            _keyUsage |= BravePublicKeyUsage_Encrpyt;
-          }
-        }
-        ASN1_BIT_STRING_free(key_usage);
-      } else if (key_type == EVP_PKEY_RSA) {
-        //encrypt, verify, derive, wrap
-        _keyUsage = BravePublicKeyUsage_Any;
-      }
       
       switch (key_type) {
         case EVP_PKEY_RSA: {
           _type = BravePublicKeyType_RSA;
-          RSA* rsa_key = EVP_PKEY_get0_RSA(key);
+          const RSA* rsa_key = EVP_PKEY_get0_RSA(key);
           if (rsa_key) {
             const BIGNUM* n = nullptr;
             const BIGNUM* e = nullptr;
-            RSA_get0_key(rsa_key, &n, &e, nullptr);
+            const BIGNUM* d = nullptr;
+            RSA_get0_key(rsa_key, &n, &e, &d);
             if (n && e) {
               _exponent = BN_get_word(e);
-              _keySizeInBits = BN_num_bits(n);
+              //_keySizeInBits = BN_num_bits(n);
             }
           }
         }
           break;
         case EVP_PKEY_DSA: {
           _type = BravePublicKeyType_DSA;
-          DSA* dsa_key = EVP_PKEY_get0_DSA(key);
+          const DSA* dsa_key = EVP_PKEY_get0_DSA(key);
           if (dsa_key) {
             const BIGNUM* p = nullptr;
             const BIGNUM* q = nullptr;
@@ -510,7 +717,7 @@ NSDate* date_to_ns(double time_interval)
           break;
         case EVP_PKEY_DH: {
           _type = BravePublicKeyType_DH;
-          DH* dh_key = EVP_PKEY_get0_DH(key);
+          const DH* dh_key = EVP_PKEY_get0_DH(key);
           if (dh_key) {
             const BIGNUM* p = nullptr;
             const BIGNUM* q = nullptr;
@@ -524,14 +731,16 @@ NSDate* date_to_ns(double time_interval)
           break;
         case EVP_PKEY_EC: {
           _type = BravePublicKeyType_EC;
-          EC_KEY* ec_key = EVP_PKEY_get0_EC_KEY(key);
+          const EC_KEY* ec_key = EVP_PKEY_get0_EC_KEY(key);
           if (ec_key) {
             const EC_GROUP* group = EC_KEY_get0_group(ec_key);
             if (group) {
-              _keySizeInBits = EC_GROUP_get_degree(group); // EC_GROUP_order_bits
+              //_keySizeInBits = EC_GROUP_get_degree(group); // EC_GROUP_order_bits //BN_num_bytes(EC_GROUP_get0_order());
               
               int name_nid = EC_GROUP_get_curve_name(group);
               _curveName = x509_utils::string_to_ns(OBJ_nid2sn(name_nid));
+              _nistCurveName = x509_utils::string_to_ns(
+                                                x509_utils::EC_curve_nid2nist(name_nid));
             }
           }
         }
@@ -540,6 +749,7 @@ NSDate* date_to_ns(double time_interval)
       EVP_PKEY_free(key);
     }
     
+    // X509_PUB_KEY->public_key != EVP_PKEY
     ASN1_BIT_STRING* key_bits = X509_get0_pubkey_bitstr(certificate);
     if (key_bits) {
       _keyHexEncoded = x509_utils::string_to_ns(
@@ -573,7 +783,96 @@ NSDate* date_to_ns(double time_interval)
           _parameters = x509_utils::string_to_ns(
                                          x509_utils::hex_string_from_ASN1STRING(seq_string));
         }
+        
+        // Possible ECC certificate & Unsupported algorithms
+        if (object && !key) {
+          // Retrieve public key info
+          int algorithm_key_type = OBJ_obj2nid(object);
+          switch (algorithm_key_type) {
+            case NID_rsaEncryption: {
+              _type = BravePublicKeyType_RSA;
+            }
+              break;
+            case NID_dsa: {
+              _type = BravePublicKeyType_DSA;
+            }
+              break;
+            case NID_dhpublicnumber:{
+              _type = BravePublicKeyType_DH;
+            }
+              break;
+            case NID_X9_62_id_ecPublicKey: {
+              _type = BravePublicKeyType_EC;
+              
+              if (param_type == V_ASN1_SEQUENCE) {
+                const ASN1_STRING* sequence = reinterpret_cast<const ASN1_STRING*>(param);
+                _curveName = x509_utils::string_to_ns(
+                                              x509_utils::string_from_ASN1STRING(sequence));
+                //EC_KEY* ec_key = d2i_ECParameters(nullptr, &data, length);
+              } else if (param_type == V_ASN1_OBJECT) {
+                const ASN1_OBJECT* object = reinterpret_cast<const ASN1_OBJECT*>(param);
+                _curveName = x509_utils::string_to_ns(
+                                              x509_utils::string_from_ASN1_OBJECT(object, false));
+                int nid = OBJ_obj2nid(object);
+                _nistCurveName = x509_utils::string_to_ns(
+                                                  x509_utils::EC_curve_nid2nist(nid));
+                _keySizeInBits = x509_utils::EC_curve_nid2num_bits(nid);
+                _keyBytesSize = _keySizeInBits / 8;
+                //EC_GROUP* group = EC_GROUP_new_by_curve_name(nid);
+              }
+            }
+              break;
+              
+            case V_ASN1_UNDEF: {
+              _type = BravePublicKeyType_UNKNOWN;
+            }
+              break;
+              
+            default: {
+              _type = BravePublicKeyType_UNKNOWN;
+            }
+              break;
+          }
+        }
       }
+    }
+    
+    //int key_usage = X509_get_key_usage(certificate)
+    ASN1_BIT_STRING* key_usage = static_cast<ASN1_BIT_STRING*>(
+                                                 X509_get_ext_d2i(certificate,
+                                                                  NID_key_usage,
+                                                                  nullptr,
+                                                                  nullptr));
+    
+    if (key_usage) {
+      const unsigned char* data = ASN1_STRING_get0_data(key_usage);
+      if (data && ASN1_STRING_length(key_usage) > 0) {
+        if (data[0] & KU_DIGITAL_SIGNATURE) {
+          //verify/sign
+          _keyUsage |= BravePublicKeyUsage_Verify;
+        }
+        
+        if (data[0] & KU_KEY_ENCIPHERMENT) {
+          //wrap
+          _keyUsage |= BravePublicKeyUsage_Wrap;
+        }
+        
+        if (data[0] & KU_KEY_AGREEMENT) {
+          //derive
+          _keyUsage |= BravePublicKeyUsage_Derive;
+        }
+        
+        if (data[0] & KU_DATA_ENCIPHERMENT ||
+            (data[0] & KU_KEY_AGREEMENT &&
+             data[0] & KU_KEY_ENCIPHERMENT)) {
+          //encrypt
+          _keyUsage |= BravePublicKeyUsage_Encrpyt;
+        }
+      }
+      ASN1_BIT_STRING_free(key_usage);
+    } else {
+      //encrypt, verify, derive, wrap
+      _keyUsage = BravePublicKeyUsage_Any;
     }
   }
   return self;
@@ -584,7 +883,7 @@ NSDate* date_to_ns(double time_interval)
   const BIGNUM* e = nullptr;
   RSA_get0_key(rsa_key, &n, &e, nullptr);
   
-  int exponent = BN_get_word(e);
+  uint64_t exponent = BN_get_word(e);
   int modulus = BN_num_bits(n);
   
   if (exponent != 3 && exponent != 65537) {
@@ -641,24 +940,53 @@ NSDate* date_to_ns(double time_interval)
 @end
 
 @implementation BraveCertificateModel
-#if defined(MEMORY_TRACKING)
-int on_memory_leaked(const char *str, size_t len, void *userp) {
-  BraveCertificateModel* self_ = (__bridge BraveCertificateModel*)userp;
-  NSLog("%@ -- %s", self_, std::string(str, len).c_str());
-  return 0;
+- (nullable instancetype)initWithData:(NSData *)data {
+  if ((self = [super init])) {
+    const std::uint8_t* bytes = static_cast<const std::uint8_t*>([data bytes]);
+    if (!bytes) {
+      return nullptr;
+    }
+    
+    x509_cert_ = d2i_X509(nullptr, &bytes, [data length]);
+    if (!x509_cert_) {
+      BIO* bio = BIO_new(BIO_s_mem());
+      if (bio) {
+        BIO_write(bio, bytes, static_cast<int>([data length]));
+        x509_cert_ = PEM_read_bio_X509(bio, nullptr, 0, nullptr);
+        BIO_free_all(bio);
+      }
+      
+      if (!x509_cert_) {
+        return nullptr;
+      }
+    }
+    
+    [self parseCertificate];
+  }
+  return self;
 }
 
-void record_memory(std::function<void()> &&func, void* userp) {
-  CRYPTO_mem_ctrl(CRYPTO_MEM_CHECK_ON);
-  CRYPTO_mem_debug_push(__PRETTY_FUNCTION__, __FILE__, __LINE__);
-  
-  func();
-  
-  CRYPTO_mem_debug_pop();
-  CRYPTO_mem_leaks_cb(&onMemoryLeaked, userp);
-  CRYPTO_mem_ctrl(CRYPTO_MEM_CHECK_OFF);
+- (nullable instancetype)initWithFilePath:(NSString *)path {
+  if ((self = [super init])) {
+    BIO* bio = BIO_new(BIO_s_mem());
+    if (bio) {
+      if (BIO_read_filename(bio, [path UTF8String])) {
+        x509_cert_ = d2i_X509_bio(bio, nullptr);
+        if (!x509_cert_) {
+          x509_cert_ = PEM_read_bio_X509(bio, nullptr, 0, nullptr);
+        }
+      }
+      BIO_free_all(bio);
+    }
+    
+    if (!x509_cert_) {
+      return nullptr;
+    }
+    
+    [self parseCertificate];
+  }
+  return self;
 }
-#endif
 
 - (nullable instancetype)initWithCertificate:(nonnull SecCertificateRef)certificate {
   if ((self = [super init])) {
@@ -733,30 +1061,89 @@ void record_memory(std::function<void()> &&func, void* userp) {
 - (void)debugExtensions {
   const STACK_OF(X509_EXTENSION)* extensions_list = X509_get0_extensions(x509_cert_);
   if (extensions_list) {
-    int count = sk_X509_EXTENSION_num(extensions_list); //X509_get_ext_count
+    std::size_t count = sk_X509_EXTENSION_num(extensions_list); //X509_get_ext_count
     
-    for (int i = 0; i < count; ++i) {
-      X509_EXTENSION* extension = sk_X509_EXTENSION_value(extensions_list, i); //X509_get_ext
+    for (std::size_t i = 0; i < count; ++i) {
+      X509_EXTENSION* extension = sk_X509_EXTENSION_value(extensions_list, static_cast<int>(i)); //X509_get_ext
       if (extension) {
         ASN1_OBJECT* object = X509_EXTENSION_get_object(extension);
         bool is_critical = X509_EXTENSION_get_critical(extension);
         
-        NSLog(@"IS_CRITICAL: %s\nINFO: %s", is_critical ? "true" : "false",
-                                            x509_utils::string_from_ASN1_OBJECT(object, false).c_str());
+        std::string result = x509_utils::string_from_ASN1_OBJECT(object, false);
+        result += ": ";
+        result += is_critical ? "true" : "false";
+        result += "\n--------------------------\n";
         
         // NOTE: BoringSSL doesn't support SCT (Signed Certificate Timestamps) yet..
         // So it will print the raw ASN.1 structure of 1.3.6.1.4.1.11129.2.4.2 instead of the Embedded Certificate Info
         // So we will just put the name, and the hex encoded extension information of the sequence.
         
-        //ASN1_OCTET_STRING* data = X509_EXTENSION_get_data(extension);
-        //i2a_ASN1_OBJECT(out, obj);
-        //X509V3_EXT_print(out, ext, 0, 0);
+        // Handle unsupported extension: Such as SCT, etc.
+//        if (!X509_supported_extension(extension)) {
+//          BIO* bio = BIO_new_fp(stderr, BIO_NOCLOSE);
+//          if (bio) {
+//            ASN1_OCTET_STRING* value = X509_EXTENSION_get_data(extension); // extension->value
+//            ASN1_STRING_print(bio, value);
+//            BIO_free(bio);
+//          }
+//          continue;
+//        }
+        
+        // Extension is supported. Decompose it into the correct models.
+        std::unique_ptr<x509_utils::X509_EXTENSION_INFO> info =
+                                            x509_utils::decode_extension_info(extension);
+        if (info) {
+          if (info->get_type() == x509_utils::X509_EXTENSION_INFO::TYPE::STRING) {
+            result += *info->get_extension_string();
+            result += "\n";
+          } else if (info->get_type() == x509_utils::X509_EXTENSION_INFO::TYPE::MULTI_VALUE) {
+            auto vec = info->get_extension_multi_value();
+            for (auto it = vec->begin(); it != vec->end(); ++it) {
+              if (it->first.empty()) {
+                result += it->second;
+              } else if (it->second.empty()) {
+                result += it->first;
+              } else {
+                result += it->first + ": ";
+                result += it->second;
+              }
+
+              result += "\n";
+            }
+          } else {
+            ASN1_OCTET_STRING* data = X509_EXTENSION_get_data(extension);
+            if (data) {
+              result += x509_utils::hex_string_from_ASN1STRING(data);
+              result += "\n";
+            }
+          }
+        } else {
+          ASN1_OCTET_STRING* data = X509_EXTENSION_get_data(extension);
+          if (data) {
+            result += x509_utils::hex_string_from_ASN1STRING(data);
+            result += "\n";
+          }
+        }
       }
     }
-    
+  }
+}
+
+- (void)debugPrint {
+  BIO* bio = BIO_new_fp(stdout, BIO_NOCLOSE);
+  X509_print(bio, x509_cert_);
+  BIO_free(bio);
+}
+
+- (void)debugPrintExtensions {
+  const STACK_OF(X509_EXTENSION)* extensions_list = X509_get0_extensions(x509_cert_);
+  if (extensions_list) {
     BIO* bio = BIO_new_fp(stdout, BIO_NOCLOSE);
-    X509V3_extensions_print(bio, "X509v3 extensions", extensions_list, 0 /*X509_FLAG_COMPAT*/, 0);
-    BIO_free(bio);
+    if (bio) {
+      X509V3_extensions_print(bio, "X509v3 extensions", extensions_list, X509_FLAG_COMPAT, 0);
+      BIO_free(bio);
+    }
   }
 }
 @end
+
