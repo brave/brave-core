@@ -268,11 +268,3 @@ brave_java_base_module_deps =
     [ "//third_party/androidx:androidx_core_core_java" ]
 
 brave_android_features_tab_ui_java_sources = [ "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator.java" ]
-
-brave_browser_search_engines_android_sources = [
-  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveBaseSearchEngineAdapter.java",
-  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BravePrivateSearchEnginePreference.java",
-  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveSearchEngineAdapter.java",
-  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveSearchEnginePreference.java",
-  "//brave/android/java/org/chromium/chrome/browser/search_engines/settings/BraveStandardSearchEnginePreference.java",
-]
