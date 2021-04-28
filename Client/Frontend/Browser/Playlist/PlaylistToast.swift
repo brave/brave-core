@@ -38,6 +38,8 @@ class PlaylistToast: Toast {
     }()
     
     private let button = HighlightableButton()
+    private var swipeStartLocation = CGPoint()
+    private let idealDismissDistance: CGFloat = 40.0
     
     private let state: PlaylistItemAddedState
     var item: PlaylistInfo
@@ -61,10 +63,8 @@ class PlaylistToast: Toast {
             $0.height.equalTo(ButtonToastUX.toastHeight)
         }
         
-        toastView.addGestureRecognizer(UISwipeGestureRecognizer(target: self,
-                                                                action: #selector(onSwipeToDismiss(_:))).then {
-            $0.direction = [.down]
-        })
+        toastView.addGestureRecognizer(UIPanGestureRecognizer(target: self,
+                                                              action: #selector(onSwipeToDismiss(_:))))
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -117,8 +117,7 @@ class PlaylistToast: Toast {
                 $0.titleLabel?.lineBreakMode = .byClipping
                 $0.titleLabel?.adjustsFontSizeToFitWidth = true
                 $0.titleLabel?.minimumScaleFactor = 0.1
-                
-                $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
+                $0.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
             }
 
             self.button.snp.makeConstraints {
@@ -266,7 +265,28 @@ class PlaylistToast: Toast {
     }
     
     @objc
-    private func onSwipeToDismiss(_ gestureRecognizer: UISwipeGestureRecognizer) {
-        self.dismiss(false)
+    private func onSwipeToDismiss(_ recognizer: UIPanGestureRecognizer) {
+        if recognizer.state == .began {
+            swipeStartLocation = recognizer.location(in: self.toastView)
+        } else if recognizer.state == .ended {
+            let stopLocation = recognizer.location(in: self.toastView)
+            let dx = stopLocation.x - swipeStartLocation.x
+            let dy = stopLocation.y - swipeStartLocation.y
+            let distance = sqrt(dx * dx + dy * dy)
+
+            // Swiping up
+            if dy < -15.0 {
+                return
+            }
+            
+            // Swiping left or right
+            if (dx > idealDismissDistance * 2.0 || dx < -idealDismissDistance * 2.0) && abs(dy) < idealDismissDistance {
+                return
+            }
+            
+            if distance > idealDismissDistance {
+                self.dismiss(false)
+            }
+        }
     }
 }
