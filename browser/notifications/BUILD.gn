@@ -3,8 +3,16 @@ import("//chrome/common/features.gni")
 source_set("notifications") {
   # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
   check_includes = false
+
+  sources = [
+    "ads_notification_handler.cc",
+    "ads_notification_handler.h",
+  ]
+
+  deps = [ "//chrome/browser/notifications" ]
+
   if (is_mac) {
-    sources = [
+    sources += [
       "brave_alert_dispatcher_mac.h",
       "brave_alert_dispatcher_mac.mm",
     ]
@@ -16,7 +24,7 @@ source_set("notifications") {
       ]
     }
 
-    deps = [
+    deps += [
       "//base",
       "//chrome/browser/ui/cocoa/notifications:common",
       "//chrome/services/mac_notifications/public/cpp",
@@ -26,12 +34,12 @@ source_set("notifications") {
 
     frameworks = [ "Foundation.framework" ]
   } else if (is_android) {
-    sources = [
+    sources += [
       "brave_notification_platform_bridge_helper_android.cc",
       "brave_notification_platform_bridge_helper_android.h",
     ]
 
-    deps = [
+    deps += [
       "//base",
       "//chrome/common",
     ]

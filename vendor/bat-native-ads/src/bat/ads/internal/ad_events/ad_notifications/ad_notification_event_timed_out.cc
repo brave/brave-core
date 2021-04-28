@@ -21,7 +21,7 @@ void AdEventTimedOut::FireEvent(const AdNotificationInfo& ad) {
                                                  << " and creative instance id "
                                                  << ad.creative_instance_id);
 
-  AdNotifications::Get()->Remove(ad.uuid, /* should dismiss */ false);
+  AdNotifications::Get()->Remove(ad.uuid);
 }
 
 }  // namespace ad_notifications

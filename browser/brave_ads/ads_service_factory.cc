@@ -9,7 +9,6 @@
 
 #include "base/time/time.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -33,16 +32,6 @@ AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
   }
 
   return static_cast<AdsService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
-}
-
-// static
-AdsServiceImpl* AdsServiceFactory::GetImplForProfile(Profile* profile) {
-  if (!brave::IsRegularProfile(profile)) {
-    return nullptr;
-  }
-
-  return static_cast<AdsServiceImpl*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
 

@@ -7,13 +7,12 @@
 #define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
 
 namespace brave_ads {
-class AdsService;
-class AdsServiceImpl;
 
 // Singleton that owns all AdsService and associates them with Profiles.
 class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
@@ -21,8 +20,7 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   AdsServiceFactory(const AdsServiceFactory&) = delete;
   AdsServiceFactory& operator=(const AdsServiceFactory&) = delete;
 
-  static brave_ads::AdsService* GetForProfile(Profile* profile);
-  static brave_ads::AdsServiceImpl* GetImplForProfile(Profile* profile);
+  static AdsService* GetForProfile(Profile* profile);
 
   static AdsServiceFactory* GetInstance();
 

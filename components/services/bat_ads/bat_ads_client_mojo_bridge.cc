@@ -71,12 +71,12 @@ bool BatAdsClientMojoBridge::IsFullScreen() const {
 }
 
 void BatAdsClientMojoBridge::ShowNotification(
-    const ads::AdNotificationInfo& ad_notification) {
+    const ads::AdNotificationInfo& info) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ShowNotification(ad_notification.ToJson());
+  bat_ads_client_->ShowNotification(info.ToJson());
 }
 
 bool BatAdsClientMojoBridge::ShouldShowNotifications() {

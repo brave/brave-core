@@ -38,10 +38,6 @@ source_set("browser") {
 
   if (brave_ads_enabled) {
     sources += [
-      "ad_notification.cc",
-      "ad_notification.h",
-      "ads_notification_handler.cc",
-      "ads_notification_handler.h",
       "ads_p2a.cc",
       "ads_p2a.h",
       "ads_service_impl.cc",

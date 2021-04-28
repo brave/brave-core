@@ -126,8 +126,7 @@ void AdNotifications::PopFront(const bool should_dismiss) {
   }
 }
 
-bool AdNotifications::Remove(const std::string& uuid,
-                             const bool should_dismiss) {
+bool AdNotifications::Remove(const std::string& uuid) {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(ad_notifications_.begin(), ad_notifications_.end(),
@@ -139,27 +138,27 @@ bool AdNotifications::Remove(const std::string& uuid,
     return false;
   }
 
-  if (should_dismiss) {
-    AdsClientHelper::Get()->CloseNotification(uuid);
-  }
   ad_notifications_.erase(iter);
-
   Save();
 
   return true;
 }
 
-void AdNotifications::RemoveAll(const bool should_dismiss) {
+void AdNotifications::RemoveAll() {
   DCHECK(is_initialized_);
 
-  if (should_dismiss) {
-    for (const auto& notification : ad_notifications_) {
-      AdsClientHelper::Get()->CloseNotification(notification.uuid);
-    }
-  }
   ad_notifications_.clear();
-
   Save();
+}
+
+void AdNotifications::CloseAndRemoveAll() {
+  DCHECK(is_initialized_);
+
+  for (const auto& ad_notification : ad_notifications_) {
+    AdsClientHelper::Get()->CloseNotification(ad_notification.uuid);
+  }
+
+  RemoveAll();
 }
 
 bool AdNotifications::Exists(const std::string& uuid) const {
@@ -204,7 +203,7 @@ void AdNotifications::RemoveAllAfterReboot() {
     const int64_t boot_timestamp = boot_time.ToDoubleT();
 
     if (ad_event.timestamp <= boot_timestamp) {
-      RemoveAll(false);
+      RemoveAll();
     }
   });
 }
@@ -225,7 +224,7 @@ void AdNotifications::RemoveAllAfterUpdate() {
 
   Client::Get()->SetVersionCode(current_version_code);
 
-  RemoveAll(false);
+  RemoveAll();
 }
 #endif
 

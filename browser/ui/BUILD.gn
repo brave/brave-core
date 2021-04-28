@@ -221,6 +221,7 @@ source_set("ui") {
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
+    "//brave/browser/ui/brave_ads",
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/common:pref_names",
@@ -246,8 +247,6 @@ source_set("ui") {
     "//brave/components/webcompat_reporter/browser",
     "//brave/components/webcompat_reporter/ui:generated_resources",
     "//brave/components/weekly_storage",
-    "//brave/ui/brave_ads",
-    "//brave/ui/brave_ads/public/cpp",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/browser:browser_process",
