@@ -108,7 +108,8 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
     return v8::Local<v8::Promise>();
 
   std::string formed_input;
-  base::JSONWriter::Write(*out_dict, &formed_input);
+  if (!base::JSONWriter::Write(*out_dict, &formed_input))
+    return v8::Local<v8::Promise>();
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
