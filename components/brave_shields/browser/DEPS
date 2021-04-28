@@ -47,10 +47,4 @@ specific_include_rules = {
     "+brave/browser/android/brave_shields_content_settings.h",
     "+chrome/browser/android/tab_android.h",
   ],
-  "tracking_protection_helper.cc": [
-    "+brave/browser/brave_browser_process.h",
-  ],
-  "tracking_protection_service.cc": [
-    "+brave/common/brave_switches.h",
-  ],
 }

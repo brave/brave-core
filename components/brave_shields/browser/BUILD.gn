@@ -1,12 +1,10 @@
 import(
     "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_shields/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 source_set("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10643 is resolved
   check_includes = false
-  public_deps = [ "buildflags" ]
 
   sources = [
     "ad_block_base_service.cc",
@@ -44,19 +42,10 @@ source_set("browser") {
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
-    "tracking_protection_service.cc",
-    "tracking_protection_service.h",
   ]
 
   if (is_android) {
     sources += [ "brave_shields_web_contents_observer_android.cc" ]
-  }
-
-  if (brave_stp_enabled) {
-    sources += [
-      "tracking_protection_helper.cc",
-      "tracking_protection_helper.h",
-    ]
   }
 
   deps = [
