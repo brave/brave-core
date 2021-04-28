@@ -1,6 +1,7 @@
 use crate::dom;
 use crate::scorer;
 use crate::util;
+use chrono::DateTime;
 use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::NodeOrText;
@@ -8,12 +9,35 @@ use html5ever::tree_builder::TreeSink;
 use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use regex::Regex;
-use scorer::{Meta, TopCandidate};
+use scorer::TopCandidate;
 use std::collections::{HashMap, HashSet};
 use std::default::Default;
 use std::io::Read;
+use thiserror::Error;
 use url::Url;
 use util::StringUtils;
+
+static JSONLD_ARTICLE_TYPES: [&str; 19] = [
+    "Article",
+    "AdvertiserContentArticle",
+    "NewsArticle",
+    "AnalysisNewsArticle",
+    "AskPublicNewsArticle",
+    "BackgroundNewsArticle",
+    "OpinionNewsArticle",
+    "ReportageNewsArticle",
+    "ReviewNewsArticle",
+    "Report",
+    "SatiricalArticle",
+    "ScholarlyArticle",
+    "MedicalScholarlyArticle",
+    "SocialMediaPosting",
+    "BlogPosting",
+    "LiveBlogPosting",
+    "DiscussionForumPosting",
+    "TechArticle",
+    "APIReference",
+];
 
 // The number of candidates to consider when choosing the "top" candidate. These
 // top candidates are used in the alternative candidates part of the algorithm.
@@ -24,6 +48,8 @@ const NUM_TOP_CANDIDATES: usize = 5;
 lazy_static! {
     static ref SEPARATORS: Regex = Regex::new(r#"\s+[\|\\/>»]\s+"#).unwrap();
     static ref END_DASH: Regex = Regex::new(r#"\s+(:?[—\-–])\s+.*$"#).unwrap();
+    static ref JSONLD_SCHEMA: Regex = Regex::new(r#"^https?://schema\.org$"#).unwrap();
+    static ref DECODED_HTML_TAGS: Regex = Regex::new(r"<[^>]*>").unwrap();
 }
 
 #[derive(Debug)]
@@ -49,18 +75,171 @@ where
     extract_dom(&mut dom, &url, &HashMap::new())
 }
 
+#[derive(Default, Debug)]
+pub struct Meta {
+    pub title: String,
+    pub author: Option<String>,
+    pub description: Option<String>,
+    pub charset: Option<String>,
+    pub last_modified: Option<DateTime<chrono::offset::FixedOffset>>,
+}
+
+impl Meta {
+    /// Performs a merge of two meta structs, always preferencing self.
+    /// Takes ownership of both structs and returns the merged metadata.
+    pub fn merge(mut self, other: Self) -> Meta {
+        if self.title.is_empty() {
+            self.title = other.title;
+        }
+        self.author = self.author.or(other.author);
+        self.description = self.description.or(other.description);
+        self.charset = self.charset.or(other.charset);
+        self.last_modified = self.last_modified.or(other.last_modified);
+        self
+    }
+}
+
+/// This function searches the DOM for <meta> tags and JSON-LD data.
+/// It looks for the title, author, time modified, and charset
+/// of the article.
+/// The preference of data sources is as follows:
+///     (1) JSON-LD
+///     (2) <meta> tags
+///     (3) <title> tag
+pub fn extract_metadata(dom: &Sink) -> Meta {
+    let meta_nodes = dom.document_node.descendants().filter(|d| {
+        d.as_element()
+            .map(|e| match e.name.local {
+                local_name!("script") => {
+                    e.attributes.borrow().get(local_name!("type")) == Some("application/ld+json")
+                }
+                local_name!("meta") | local_name!("title") => true,
+                _ => false,
+            })
+            .unwrap_or(false)
+    });
+
+    let mut meta_jsonld = Meta::default();
+    for node in meta_nodes.clone().into_iter() {
+        // NOTE: This unwrap is safe because the iterator only contains element types
+        let data = node.as_element().unwrap();
+
+        if data.name.local == local_name!("script")
+            && data.attributes.borrow().get("type") == Some("application/ld+json")
+        {
+            let mut blob = String::new();
+            dom::extract_text(&node, &mut blob, false);
+            if try_parse_untyped_jsonld(&blob, &mut meta_jsonld).is_ok() {
+                break;
+            }
+        }
+    }
+
+    let mut meta_tags = Meta::default();
+    for node in meta_nodes.clone().into_iter() {
+        // NOTE: This unwrap is safe because the iterator only contains element types
+        let data = node.as_element().unwrap();
+
+        if data.name.local != local_name!("meta") {
+            continue;
+        }
+        if let Some(property) = data.attributes.borrow().get(local_name!("property")) {
+            if let Some(ref content) = data.attributes.borrow().get(local_name!("content")) {
+                match property {
+                    "dc:title"
+                    | "dcterm:title"
+                    | "og:title"
+                    | "weibo:article:title"
+                    | "weibo:webpage:title"
+                    | "title"
+                    | "twitter:title" => {
+                        meta_tags.title = content.to_string();
+                    }
+                    "description"
+                    | "dc:description"
+                    | "dcterm:description"
+                    | "og:description"
+                    | "weibo:article:description"
+                    | "weibo:webpage:description"
+                    | "twitter:description" => {
+                        meta_tags.description = Some(
+                            content
+                                .find(". ")
+                                .map(|pos| &content[..pos])
+                                .unwrap_or(content)
+                                .to_string(),
+                        );
+                    }
+                    "dc:creator" | "dcterm:creator" | "author" => {
+                        meta_tags.author = Some(content.to_string());
+                    }
+                    _ => (),
+                }
+            }
+        } else if let Some(charset) = data.attributes.borrow().get(local_name!("charset")) {
+            meta_tags.charset = Some(charset.to_string());
+        } else if data
+            .attributes
+            .borrow()
+            .get(local_name!("http-equiv"))
+            .map(|e| e.to_ascii_lowercase() == "content-type")
+            .unwrap_or(false)
+        {
+            if let Some(content) = data.attributes.borrow().get(local_name!("content")) {
+                if let Some(charset) = content.split("charset=").nth(1) {
+                    meta_tags.charset = Some(charset.trim().to_string());
+                }
+            }
+        }
+    }
+
+    let mut meta = meta_jsonld.merge(meta_tags);
+
+    if meta.title.is_empty() {
+        if let Some(handle) = meta_nodes
+            .into_iter()
+            .find(|d| d.as_element().unwrap().name.local == local_name!("title"))
+        {
+            dom::extract_text(&handle, &mut meta.title, true);
+        }
+    }
+
+    // Clean title of html encoded attributes
+    if !meta.title.is_empty() {
+        if let Some(ref inner) = dom::parse_inner(&meta.title) {
+            let title = dom::extract_text_from_node(inner, true, true);
+            if !title.is_empty() {
+                meta.title = title;
+            }
+        }
+    }
+
+    // Clean description of html encoded attributes
+    if let Some(ref description) = meta.description {
+        if let Some(ref inner) = dom::parse_inner(description) {
+            let desc = dom::extract_text_from_node(inner, true, true);
+            if !desc.is_empty() {
+                meta.description = Some(desc);
+            }
+        }
+    }
+
+    meta
+}
+
 pub fn extract_dom<S: ::std::hash::BuildHasher>(
     mut dom: &mut Sink,
     url: &Url,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
-    let mut meta = Meta::default();
     let handle = dom.document_node.clone();
+
+    let mut meta = extract_metadata(dom);
+    meta.title = clean_title(dom, meta.title);
 
     // extracts title (if it exists) pre-processes the DOM by removing script
     // tags, css, links
-    scorer::preprocess(&mut dom, handle.clone(), &mut meta);
-    meta.title = clean_title(dom, meta.title);
+    scorer::preprocess(&mut dom, handle.clone());
 
     // now that the dom has been preprocessed, get the set of potential dom
     // candidates and their scoring. a candidate contains the node parent of the
@@ -123,8 +302,15 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     post_process(&mut dom, top_candidate.clone(), &meta);
 
     // Calls html5ever::serialize() with IncludeNode for us.
-    let charset_blob = format!("<meta charset=\"{}\"/>", meta.charset);
-    let content: String = charset_blob + &top_candidate.to_string();
+    let mut content: String = top_candidate.to_string();
+
+    if let Some(ref charset) = meta.charset {
+        // Since we strip out the entire head, we need to include charset if one
+        // was provided. Otherwise the browser will use the default encoding,
+        // and surprisingly it's not utf-8 ;)
+        let charset_blob = format!("<meta charset=\"{}\"/>", charset);
+        content = charset_blob + &content;
+    }
     Ok(Product { meta, content })
 }
 
@@ -140,12 +326,33 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(title_header));
         }
         // Add in the description
-        if !meta.description.is_empty() {
-            let description =
-                dom::create_element_simple(dom, "p", "subhead metadata", Some(&meta.description));
+        if let Some(ref text) = meta.description {
+            let description = dom::create_element_simple(dom, "p", "subhead metadata", Some(text));
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
         }
-        if !meta.title.is_empty() || !meta.description.is_empty() {
+
+        // Add in the author
+        if let Some(ref text) = meta.author {
+            let author =
+                dom::create_element_simple(dom, "p", "metadata", Some(&format!("By {}", text)));
+            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(author));
+        }
+
+        // Add in last modified datetime
+        if let Some(ref last_modified) = meta.last_modified {
+            let formatted = last_modified
+                .format("Updated %b. %d, %Y %H:%M %P")
+                .to_string();
+            let modified = dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
+            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(modified));
+        }
+
+        // Vertical split
+        if !meta.title.is_empty()
+            || meta.description.is_some()
+            || meta.author.is_some()
+            || meta.last_modified.is_some()
+        {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
         }
@@ -203,6 +410,131 @@ pub fn clean_title(dom: &Sink, title: String) -> String {
     }
 }
 
+#[derive(Error, Debug, PartialEq)]
+pub enum JsonLdError {
+    #[error("Could not parse json-ld: `{0}`")]
+    ParseError(String),
+    #[error("Missing @context field")]
+    MissingContext,
+    #[error("Invalid @context: Does not match http://schema.org")]
+    InvalidContext,
+    #[error("Missing @type field")]
+    MissingType,
+    #[error("Invalid @type")]
+    InvalidType,
+}
+
+impl From<serde_json::Error> for JsonLdError {
+    fn from(err: serde_json::Error) -> Self {
+        JsonLdError::ParseError(err.to_string())
+    }
+}
+
+#[inline(never)]
+fn try_parse_author(v: &serde_json::Value) -> Option<String> {
+    match v {
+        serde_json::Value::String(s) => {
+            // Try to parse for nested JSON. Buzzfeed includes the author field as string
+            // JSON blob. I have no idea why sites do this kind of stuff...
+            match serde_json::from_str(s) {
+                Ok(p) => try_parse_author(&p),
+                Err(_) => Some(s.to_string()), // Wasn't JSON, so we can assume it's a valid author.
+            }
+        }
+        serde_json::Value::Array(a) => {
+            if !a.is_empty() {
+                Some(
+                    a.iter()
+                        .filter_map(|e| try_parse_author(e))
+                        .collect::<Vec<_>>()
+                        .join(", "),
+                )
+            } else {
+                None
+            }
+        }
+        serde_json::Value::Object(o) => o
+            .get("name")
+            .and_then(|name| name.as_str())
+            .map(|x| x.to_string()),
+        _ => None,
+    }
+}
+
+fn try_parse_untyped_jsonld(content: &str, meta: &mut Meta) -> Result<(), JsonLdError> {
+    let v: serde_json::Value = serde_json::from_str(content)?;
+
+    fn from_json_string(v: &serde_json::Value) -> Option<String> {
+        match v {
+            serde_json::Value::String(s) if !s.is_empty() => Some(s.to_string()),
+            _ => None,
+        }
+    }
+
+    match v {
+        serde_json::Value::Object(o) => {
+            // Validate @context
+            o.get("@context")
+                .map(|c| match c {
+                    serde_json::Value::String(s) => {
+                        if !JSONLD_SCHEMA.is_match(s) {
+                            Err(JsonLdError::InvalidContext)
+                        } else {
+                            Ok(())
+                        }
+                    }
+                    _ => Err(JsonLdError::MissingContext),
+                })
+                .unwrap_or(Err(JsonLdError::MissingContext))?;
+
+            // Validate @type
+            o.get("@type")
+                .map(|t| match t {
+                    serde_json::Value::String(s) => {
+                        if JSONLD_ARTICLE_TYPES.iter().find(|&&x| x == s).is_none() {
+                            Err(JsonLdError::InvalidType)
+                        } else {
+                            Ok(())
+                        }
+                    }
+                    _ => Err(JsonLdError::MissingType),
+                })
+                .unwrap_or(Err(JsonLdError::MissingType))?;
+
+            // Get article title
+            if let Some(title) = o
+                .get("name")
+                .or_else(|| o.get("headline"))
+                .and_then(from_json_string)
+            {
+                meta.title = title;
+            }
+
+            // Get article author
+            if let Some(author) = o.get("author").and_then(try_parse_author) {
+                meta.author = Some(author);
+            }
+
+            // Get article description
+            if let Some(description) = o.get("description").and_then(from_json_string) {
+                meta.description = Some(description);
+            }
+
+            // Get article modified date
+            if let Some(timestamp) = o
+                .get("dateModified")
+                .or_else(|| o.get("datePublished"))
+                .and_then(from_json_string)
+            {
+                meta.last_modified = chrono::DateTime::parse_from_rfc3339(&timestamp).ok();
+            }
+        }
+
+        _ => (),
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -224,11 +556,11 @@ mod tests {
             .from_utf8()
             .read_from(input)?;
 
-        let mut meta = Meta::default();
-        let handle = dom.document_node.clone();
-        scorer::preprocess(&mut dom, handle, &mut meta);
-        let content = dom.document_node.to_string();
+        let mut meta = extract_metadata(&dom);
         meta.title = clean_title(&dom, meta.title);
+        let handle = dom.document_node.clone();
+        scorer::preprocess(&mut dom, handle);
+        let content = dom.document_node.to_string();
         Ok(Product { meta, content })
     }
 
@@ -273,7 +605,7 @@ mod tests {
         let mut cursor = Cursor::new(data);
         let product = preprocess(&mut cursor).unwrap();
         assert_eq!(
-            product.meta.description,
+            product.meta.description.expect("No description extracted"),
             "An inquest into Eloise Parry's death has been adjourned."
         );
     }
@@ -564,5 +896,108 @@ mod tests {
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
         assert_eq!(expected, product.meta.title);
+    }
+
+    #[test]
+    fn test_meta_variant0() {
+        let input = r#"
+        <html>
+          <head>
+            <meta charset="utf-8"/>
+          </head>
+          <body></body>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(product.meta.charset.expect("Expected charset"), "utf-8");
+    }
+
+    #[test]
+    fn test_meta_variant1() {
+        let input = r#"
+        <html>
+          <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+          </head>
+          <body></body>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(product.meta.charset.expect("Expected charset"), "utf-8");
+    }
+
+    #[test]
+    fn test_ldjson_missing_context() {
+        let mut meta = Meta::default();
+        let input = "{\"@type\":\"NewsArticle\"}";
+        match try_parse_untyped_jsonld(&input, &mut meta) {
+            Ok(_) => assert!(false, "Expected missing context error"),
+            Err(e) => assert_eq!(JsonLdError::MissingContext, e),
+        }
+    }
+
+    #[test]
+    fn test_ldjson_invalid_context() {
+        let mut meta = Meta::default();
+        let input = "{\"@context\":\"http://fake.org\", \"@type\":\"NewsArticle\"}";
+        match try_parse_untyped_jsonld(&input, &mut meta) {
+            Ok(_) => assert!(false, "Expected invalid context error"),
+            Err(e) => assert_eq!(JsonLdError::InvalidContext, e),
+        }
+    }
+
+    #[test]
+    fn test_ldjson_missing_type() {
+        let mut meta = Meta::default();
+        let input = "{\"@context\":\"http://schema.org\"}";
+        match try_parse_untyped_jsonld(&input, &mut meta) {
+            Ok(_) => assert!(false, "Expected missing type error"),
+            Err(e) => assert_eq!(JsonLdError::MissingType, e),
+        }
+    }
+
+    #[test]
+    fn test_ldjson_invalid_type() {
+        let mut meta = Meta::default();
+        let input = "{\"@context\":\"http://schema.org\", \"@type\":\"DefinitelyNotValid\"}";
+        match try_parse_untyped_jsonld(&input, &mut meta) {
+            Ok(_) => assert!(false, "Expected invalid type error"),
+            Err(e) => assert_eq!(JsonLdError::InvalidType, e),
+        }
+    }
+
+    #[test]
+    fn test_ldjson_buzzfeed() {
+        let mut meta = Meta::default();
+        let input = r#"
+{"@context":"http://schema.org",
+"@type":"NewsArticle",
+"isAccessibleForFree":true,
+"mainEntityOfPage":"https://www.buzzfeed.com/markdistefano/diet-pills-burns-up",
+"description":"An inquest into Eloise Parry's death has been adjourned until July.",
+"headline":"Student Dies After Diet Pills She Bought Online \"Burned Her Up From Within\"",
+"datePublished":"2015-04-21T09:29:39.000Z",
+"dateModified":"2015-04-21T09:29:39.000Z",
+"author":"[{\"@type\":\"Person\",\"name\":\"Mark Di Stefano\",\"url\":\"https://www.buzzfeed.com/markdistefano\",\"jobTitle\":\"BuzzFeed News Reporter, Australia\"}]",
+"publisher":{"@type":"Organization","name":"BuzzFeed","url":"https://www.buzzfeed.com"},
+"image":{"@type":"ImageObject","url":"https://img.buzzfeed.com/buzzfeed-static/static/2015-04/22/5/campaign_images/webdr03/student-dies-after-diet-pills-she-bought-online-b-2-28712-1429696299-24_dblbig.jpg?resize=1200:*","representativeOfPage":true}
+}
+    "#;
+        try_parse_untyped_jsonld(&input, &mut meta).expect("Could not parse json ld");
+        assert_eq!("Mark Di Stefano", meta.author.expect("No author extracted"));
+        assert_eq!(
+            "Student Dies After Diet Pills She Bought Online \"Burned Her Up From Within\"",
+            meta.title
+        );
+        assert_eq!(
+            "An inquest into Eloise Parry's death has been adjourned until July.",
+            meta.description.expect("No description extracted")
+        );
+        assert!(
+            meta.last_modified.is_some(),
+            "Could not parse dateModified field"
+        );
     }
 }
