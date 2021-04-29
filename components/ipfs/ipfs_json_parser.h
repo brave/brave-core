@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_IPFS_IPFS_JSON_PARSER_H_
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "brave/components/ipfs/addresses_config.h"
@@ -28,6 +29,12 @@ class IPFSJSONParser {
                                            std::string* error);
   static bool GetImportResponseFromJSON(const std::string& json,
                                         ipfs::ImportedData* data);
+  static bool GetParseKeysFromJSON(
+      const std::string& json,
+      std::unordered_map<std::string, std::string>* keys);
+  static bool GetParseSingleKeyFromJSON(const std::string& json,
+                                        std::string* name,
+                                        std::string* value);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_JSON_PARSER_H_

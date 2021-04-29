@@ -46,28 +46,6 @@
 
 namespace {
 
-net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("ipfs_import_worker", R"(
-          semantics {
-            sender: "IPFS import worker"
-            description:
-              "This worker is used to communicate with IPFS daemon "
-            trigger:
-              "Triggered by user actions"
-            data:
-              "Options of the commands."
-            destination: WEBSITE
-          }
-          policy {
-            cookies_allowed: NO
-            setting:
-              "You can enable or disable this feature in brave://settings."
-            policy_exception_justification:
-              "Not implemented."
-          }
-        )");
-}
-
 // Return a date string formatted as "YYYY-MM-DD".
 std::string TimeFormatDate(const base::Time& time) {
   base::Time::Exploded exploded_time;
@@ -181,18 +159,8 @@ void IpfsImportWorkerBase::UploadDataUI(
   url = net::AppendQueryParameter(url, "pin", "false");
   url = net::AppendQueryParameter(url, "progress", "false");
 
-  request->url = url;
-  request->method = "POST";
-
-  // Remove trailing "/".
-  std::string origin = server_endpoint_.spec();
-  if (base::EndsWith(origin, "/", base::CompareCase::INSENSITIVE_ASCII)) {
-    origin.pop_back();
-  }
-  request->headers.SetHeader(net::HttpRequestHeaders::kOrigin, origin);
   DCHECK(!url_loader_);
-  url_loader_ = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
+  url_loader_ = CreateURLLoader(url, "POST", std::move(request));
 
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
@@ -310,23 +278,6 @@ void IpfsImportWorkerBase::NotifyImportCompleted(ipfs::ImportState state) {
   data_->state = state;
   if (callback_)
     std::move(callback_).Run(*data_.get());
-}
-
-std::unique_ptr<network::SimpleURLLoader> IpfsImportWorkerBase::CreateURLLoader(
-    const GURL& gurl,
-    const std::string& method) {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = gurl;
-  request->method = method;
-  // Remove trailing "/".
-  std::string origin = server_endpoint_.spec();
-  if (base::EndsWith(origin, "/", base::CompareCase::INSENSITIVE_ASCII)) {
-    origin.pop_back();
-  }
-  request->headers.SetHeader(net::HttpRequestHeaders::kOrigin, origin);
-  auto url_loader = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  return url_loader;
 }
 
 scoped_refptr<network::SharedURLLoaderFactory>
