@@ -37,8 +37,7 @@ class BatAdsClientMojoBridge
 
   bool IsFullScreen() const override;
 
-  void ShowNotification(
-      const ads::AdNotificationInfo& ad_notification) override;
+  void ShowNotification(const ads::AdNotificationInfo& info) override;
   bool ShouldShowNotifications() override;
   void CloseNotification(const std::string& uuid) override;
 

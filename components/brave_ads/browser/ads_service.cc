@@ -41,6 +41,9 @@ void AdsService::RegisterProfilePrefs(
 
   registry->RegisterBooleanPref(ads::prefs::kEnabled, false);
 
+  registry->RegisterIntegerPref(prefs::kAdNotificationLastScreenPositionX, 0);
+  registry->RegisterIntegerPref(prefs::kAdNotificationLastScreenPositionY, 0);
+
   registry->RegisterBooleanPref(ads::prefs::kShouldAllowConversionTracking,
                                 true);
 

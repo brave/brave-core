@@ -11,11 +11,8 @@ include_rules = [
 
 # Existing exceptions
 specific_include_rules = {
-  "ads_notification_handler.h": [
-    "+chrome/browser/notifications/notification_handler.h",
-  ],
   "ads_service_impl.cc": [
-    "+brave/browser/brave_ads/notifications/platform_bridge.h",
+    "+brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h",
     "+brave/browser/profiles/profile_util.h",
     "+brave/common/brave_channel_info.h",
     "+brave/browser/brave_rewards/rewards_service_factory.h",

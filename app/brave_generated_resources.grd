@@ -1019,6 +1019,14 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         </message>
       </if>
 
+      <!-- Brave Ads -->
+      <message name="IDS_BRAVE_ADS_AD_NOTIFICATION_CLOSE_BUTTON" desc="Text to be spoken for the ad notification close button">
+        Close
+      </message>
+      <message name="IDS_BRAVE_ADS_AD_NOTIFICATION_ACCESSIBLE_NAME" desc="Text to be spoken when an ad notification is shown">
+        Brave Ad Notification
+      </message>
+
       <!-- Sidebar -->
       <if expr="enable_sidebar">
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE" desc="Menu for removing an item from sidebar">
