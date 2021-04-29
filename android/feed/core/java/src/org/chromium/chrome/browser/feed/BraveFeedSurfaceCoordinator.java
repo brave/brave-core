@@ -42,11 +42,12 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
             boolean isPlaceholderShownInitially, BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
-            @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate) {
+            @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
+            TabModelSelector tabModelSelector) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
                 sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
                 isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
-                externalScrollableContainerDelegate);
+                externalScrollableContainerDelegate, tabModelSelector);
     }
 
     @Override
