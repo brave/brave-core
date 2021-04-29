@@ -96,7 +96,7 @@ repack("resources") {
     ]
     sources += [
       "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_generated.pak",
-      "$root_gen_dir/brave/components/brave_wallet_ui/brave_wallet_panel_generated.pak",
+      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_panel_generated.pak",
     ]
   }
 

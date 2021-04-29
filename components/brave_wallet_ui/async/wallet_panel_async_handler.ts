@@ -11,7 +11,7 @@ import { AccountPayloadType } from '../constants/action_types'
 
 const handler = new AsyncActionHandler()
 
-async function getAPIProxy() {
+async function getAPIProxy () {
   // TODO(petemill): don't lazy import() if this actually makes the time-to-first-data slower!
   const api = await import('../wallet_panel_api_proxy.js')
   return api.default.getInstance()
@@ -35,7 +35,7 @@ handler.on(Actions.initialize.getType(), async (store) => {
   apiProxy.showUI()
   // TODO: Fetch any data we need for initial display, instead of fake wait.
   await new Promise(resolve => setTimeout(resolve, 400))
-  store.dispatch(Actions.initialized({isConnected: true}))
+  store.dispatch(Actions.initialized({ isConnected: true }))
   return
 })
 

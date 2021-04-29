@@ -82,7 +82,7 @@
     "includes": [43000],
   },
   # This file is generated during the build.
-  "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet/brave_wallet.grd": {
+  "<(ROOT_GEN_DIR)/brave/components/brave_wallet/resources/brave_wallet.grd": {
     "includes": [43600],
   },
   "<(ROOT_GEN_DIR)/brave/components/brave_wallet/resources/brave_wallet_panel.grd": {

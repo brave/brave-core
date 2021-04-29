@@ -22,6 +22,20 @@ type Props = {
   actions: typeof WalletPanelActions
 }
 
+function mapStateToProps (state: State): Partial<Props> {
+  return {
+    panel: state.walletPanelReducer
+  }
+}
+
+function mapDispatchToProps (dispatch: Dispatch): Partial<Props> {
+  return {
+    actions: bindActionCreators(WalletPanelActions, store.dispatch.bind(store))
+  }
+}
+
+const PanelWithState = connect(mapStateToProps, mapDispatchToProps)(Panel)
+
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
   React.useEffect(() => {
@@ -35,8 +49,7 @@ function App () {
         dark={walletPanelDarkTheme}
         light={walletPanelLightTheme}
       >
-        <PanelWithState
-        />
+        <PanelWithState />
       </BraveCoreThemeProvider>
       }
     </Provider>
@@ -97,20 +110,6 @@ function Panel (props: Props) {
     </StyledExtensionWrapper>
   )
 }
-
-function mapStateToProps (state: State): Partial<Props> {
-  return {
-    panel: state.walletPanelReducer
-  }
-}
-
-function mapDispatchToProps (dispatch: Dispatch): Partial<Props> {
-  return {
-    actions: bindActionCreators(WalletPanelActions, store.dispatch.bind(store))
-  }
-}
-
-const PanelWithState = connect(mapStateToProps, mapDispatchToProps)(Panel)
 
 function initialize () {
   store.dispatch(WalletPanelActions.initialize())

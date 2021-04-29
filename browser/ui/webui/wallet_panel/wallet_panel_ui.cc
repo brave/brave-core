@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_wallet_ui/grit/brave_wallet_panel_generated_map.h"
+#include "brave/components/brave_wallet/resources/grit/brave_wallet_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"

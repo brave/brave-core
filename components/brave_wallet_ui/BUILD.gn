@@ -22,12 +22,14 @@ transpile_web_ui("brave_wallet_ui") {
         "brave_wallet",
         rebase_path("brave_wallet.tsx"),
       ] ]
+  output_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
   resource_name = "brave_wallet"
 }
 
 pack_web_resources("page_generated_resources") {
   resource_name = "brave_wallet"
   output_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
+  generated_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
   deps = [ ":brave_wallet_ui" ]
 }
 
@@ -49,7 +51,7 @@ transpile_web_ui("brave_wallet_panel_ui") {
 pack_web_resources("panel_generated_resources") {
   resource_name = "brave_wallet_panel"
   generated_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
-  output_dir = "$target_gen_dir"
+  output_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
   deps = [ ":brave_wallet_panel_ui" ]
 }
 
