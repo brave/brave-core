@@ -320,6 +320,7 @@ Config.prototype.buildArgs = function () {
       args.chrome_public_manifest_package = 'com.brave.browser'
     } else if (this.channel === 'beta') {
       args.chrome_public_manifest_package = 'com.brave.browser_beta'
+      args.exclude_unwind_tables = false
     } else if (this.channel === 'dev') {
       args.chrome_public_manifest_package = 'com.brave.browser_dev'
     } else if (this.channel === 'nightly') {
