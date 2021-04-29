@@ -96,6 +96,10 @@ Result CatalogState::FromJson(const std::string& json,
 
       creative_set_info.per_day = creative_set["perDay"].GetUint();
 
+      creative_set_info.per_week = creative_set["perWeek"].GetUint();
+
+      creative_set_info.per_month = creative_set["perMonth"].GetUint();
+
       creative_set_info.total_max = creative_set["totalMax"].GetUint();
 
       if (creative_set.HasMember("splitTestGroup")) {
