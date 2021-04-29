@@ -179,6 +179,10 @@
     "message": "Halda kohandatud filtreid",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Sisene elemendivaliku režiimi",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Täpsem vaade",
     "description": "Message for the advanced view option"

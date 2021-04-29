@@ -62,9 +62,19 @@
 <translation id="7643538479215207633">IPFSን በመጠቀም ይክፈቱ</translation>
 <translation id="3094628781200061820">ፋይሎችን ከ IPFS ያትሙ እና ሰርስሮ ያውጡ</translation>
 <translation id="1672270084584211506">Onion ይገኛል</translation>
+<translation id="4901618511712685702">ወደ IPFS ያስመጡ</translation>
+<translation id="6794469945030154569">ይህ ገጽ</translation>
+<translation id="5037852323412456577">የተመረጠ ምስል</translation>
+<translation id="2715839724138372481">የተመረጠ ቪዲዮ</translation>
+<translation id="4227945450504703638">የተመረጠ ድምጽ</translation>
+<translation id="7895302206188277628">የተገናኘ ይዘት</translation>
+<translation id="4322612543319315652">የተመረጠውን ጽሑፍ ወደ IPFS ያስመጡ</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">አዲስ የግል መስኮት በ Brave</translation>
 <translation id="4703780849509456860">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3488584642074079080">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
+<translation id="7475547933708221517">IPFS ን በመጠቀም የውስጥ ፋይልን ያጋሩ</translation>
+<translation id="784573715436258741">IPFS ን በመጠቀም የውስጥ ፋይልን ያጋሩ</translation>
 <translation id="6313675821927505581">አዲስ የግል መስኮት በ Brave</translation>
 <translation id="2638041073279639246">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3425600262621021599">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
@@ -147,7 +157,7 @@
 <translation id="4112587618563511470">ልክ ያልሆነ የማመሳሰል ኮድ ፣ እባክዎ ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
 <translation id="2339730291919608488">ከማመሳሰል ሰንሰለት ይውጡ</translation>
 <translation id="115699408012835975">ማመሳሰልን ዳግም ካቀናበሩ እሱን ለማመሳሰል ከሌላ መሣሪያ ላይ የአስምር ኮድ ድጋሚ ማስገባት ይኖርብዎታል። እርግጠኛ ነዎት ለመቀጠል ይፈልጋሉ?</translation>
-<translation id="339086854515247923">የተመረጠውን መሣሪያ ከ አስምር ሰንሰለት ለመሰረዝ እርግጠኛ ነዎት?</translation>
+<translation id="6092564993102418148">የተመረጠውን መሣሪያ ከ አስምር ሰንሰለት ለመሰረዝ እርግጠኛ ነዎት?</translation>
 <translation id="3396347744975515056">ብራቭ ማመሳሰል የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
 <translation id="7473245612074035141">ማዋቀር ይጀምሩ</translation>
 <translation id="3411013544209536575">የእገዛ ምክሮች</translation>
@@ -169,12 +179,13 @@
 <translation id="757886143331967039">ጅምር ላይ የተበላሸ የCrypto ዋሌቶች ቅጥያ ጫን</translation>
 <translation id="6864914031231797928">ለቅጥያዎች የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
 <translation id="5927916530277631319">የማይቆሙ ጎራዎችን የመፍታት ዘዴ</translation>
+<translation id="8412057160793088103">ስለ DNS በHTTPS እና በEthereum ግላዊነት ግምቶች ለማወቅ <ph name="BEGIN_LINK"/>የበለጠ ለመማር<ph name="END_LINK"/>፤ ይጎብኙ።</translation>
 <translation id="5248318250177143470">የEthereum ስም አገልግሎት (ENS) የአፈታት ዘዴ</translation>
 <translation id="9170907049676078643">የ IPFS ሀብቶችን የፍታት ዘዴ</translation>
 <translation id="1327977588028644528">አግባቢ ፍኖት</translation>
 <translation id="80225669816651290">አካባቢያዊ መገናኛ</translation>
 <translation id="4927734062756955434">የ IPFS የህዝብ አግባቢ ፍኖት አድራሻ</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>ተጨማሪ ይማሩ<ph name="END_LINK_MPL"/> ስለ አካባቢያዊ IPFS ኖድ እና የመግቢያ ግላዊነት።</translation>
+<translation id="3399481770463167943">ስለ IPFS ውስጣዊ አንጓ መንገድ እና የመግቢያ ግላዊነት ግምቶች <ph name="BEGIN_LINK_MPL"/>የበለጠ ለመማር<ph name="END_LINK_MPL"/>፤ ይጎብኙ።</translation>
 <translation id="8425213833346101688">ለውጥ</translation>
 <translation id="557281710253742286">የ IPFS  አግባቢ ፍኖትን ያስተካክሉ</translation>
 <translation id="8571837315037233299">አግባቢ ፍኖት አድራሻ</translation>
@@ -246,9 +257,7 @@
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Brave እንደ ነባሪ አሳሽዎ አድርገው ያዋቅሩት</translation>
-<translation id="1391855377994926460">Brave አሳሽ በአሁኑ ጊዜ እንደ ነባሪ አሳሽዎ አልተዘጋጀም።
-ድሩን በፍጥነት ማሰስዎን ለመቀጠል Brave እንደ ነባሪ አሳሽዎ ኣድርገው ያዘጋጁ -
-በዋና ዋና የዜና ጣቢያዎች እስከ 6x ዕጥፍ ፍጥነት።</translation>
+<translation id="1391855377994926460">ድረ-ገጹን በፍጥነት ማሰስዎን ይቀጥሉ - በዋና ዋና የዜና ጣቢያዎች እስከ 6x የበለጠ ፍጥነት ያለው።</translation>
 <translation id="9218430445555521422">እንደወረደ አዘጋጀው</translation>
 <translation id="3479552764303398839">አሁን አይደለም</translation>
 <translation id="4877147287319222750">ወደ Sidebar ያክሉ</translation>
@@ -270,7 +279,6 @@
 <translation id="8731422418734770661">የCrypto Wallets ን ያዋቅሩ</translation>
 <translation id="8199661191594897555">የ Crypto ዋሌቶችን አስጀምረና ዳግም ጫን</translation>
 <translation id="8428213095426709021">ቅንብሮች</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">ስለ IPFS እና ግላዊነት የበለጠ ይወቁ</translation>
 <translation id="4552520379838695057">ይቅርታ፣ ይህ ገጽ ይጎድላል።</translation>
 <translation id="2609895996619941644">የተቀመጠ ስሪት በ Wayback ማሽን ላይ መኖሩን ለማጣራት ይፈልጋሉ?</translation>
@@ -291,4 +299,6 @@
 <translation id="2808630562319398131">የ Brave ሽልማቶች ውሂብን ዳግም ያስጀምሩ...</translation>
 <translation id="1224064034972923114">የ ብልሽት ሪፖርቶች ን በራስ-ሰር በመላክ Brave ለማሻሻል ይርዱ</translation>
 <translation id="3738833060602717053">የ ብልሽት ሪፖርቶች ን በራስ-ሰር በመላክ <ph name="PRODUCT_NAME"/> ለማሻሻል ይርዱ</translation>
+<translation id="339086854515247923">የተመረጠውን መሣሪያ ከ አስምር ሰንሰለት ለመሰረዝ እርግጠኛ ነዎት?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>ተጨማሪ ይማሩ<ph name="END_LINK_MPL"/> ስለ አካባቢያዊ IPFS ኖድ እና የመግቢያ ግላዊነት።</translation>
 </translationbundle>

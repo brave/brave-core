@@ -179,6 +179,10 @@
     "message": "管理自定义过滤器",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "进入元素选择器模式",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "高级视图",
     "description": "Message for the advanced view option"

@@ -62,9 +62,19 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="7643538479215207633">Otwórz, korzystając z IPFS</translation>
 <translation id="3094628781200061820">Publikować i odzyskiwać pliki z IPFS</translation>
 <translation id="1672270084584211506">Dostępne usługi cebulowe</translation>
+<translation id="4901618511712685702">Import do IPFS</translation>
+<translation id="6794469945030154569">Ta strona</translation>
+<translation id="5037852323412456577">Wybrane zdjęcie</translation>
+<translation id="2715839724138372481">Wybrany film</translation>
+<translation id="4227945450504703638">Wybrany dźwięk</translation>
+<translation id="7895302206188277628">Powiązane treści</translation>
+<translation id="4322612543319315652">Importuj wybrany tekst do IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nowe okno prywatne z obsługą sieci Tor</translation>
 <translation id="4703780849509456860">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3488584642074079080">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
+<translation id="7475547933708221517">Udostępnij plik lokalny, używając IPFS</translation>
+<translation id="784573715436258741">Udostępnij plik lokalny, używając IPFS</translation>
 <translation id="6313675821927505581">Nowe okno prywatne z obsługą sieci Tor</translation>
 <translation id="2638041073279639246">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3425600262621021599">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
@@ -147,7 +157,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="4112587618563511470">Kod synchronizacji jest nieprawidłowy. Sprawdź go i spróbuj ponownie.</translation>
 <translation id="2339730291919608488">Opuść łańcuch synchronizacji</translation>
 <translation id="115699408012835975">Jeśli zresetujesz synchronizację, będziesz musiał ponownie wpisać kod synchronizacji z innego urządzenia, aby zsynchronizować się z nim. Na pewno chcesz kontynuować?</translation>
-<translation id="339086854515247923">Czy na pewno usunąć wybrane urządzenie z łańcucha synchronizacji?</translation>
+<translation id="6092564993102418148">Czy na pewno usunąć wybrane urządzenie z łańcucha synchronizacji?</translation>
 <translation id="3396347744975515056">Synchronizacja Brave została zaktualizowana i wymaga skonfigurowania</translation>
 <translation id="7473245612074035141">Rozpocznij konfigurację</translation>
 <translation id="3411013544209536575">Pomocne podpowiedzi</translation>
@@ -169,12 +179,13 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="757886143331967039">Wczytaj stare rozszerzenie portfeli kryptowaluty podczas uruchomienia</translation>
 <translation id="6864914031231797928">Zezwól na logowanie Google w przypadku rozszerzeń</translation>
 <translation id="5927916530277631319">Metoda rozwiązywania Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/> o DNS over HTTPS i uwzględnieniu prywatności Ethereum</translation>
 <translation id="5248318250177143470">Metoda rozwiązywania Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Metoda rozwiązania zasobów IPFS</translation>
 <translation id="1327977588028644528">Brama</translation>
 <translation id="80225669816651290">Węzeł lokalny</translation>
 <translation id="4927734062756955434">Adres publicznego wejścia IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>;Dowiedz się więcej<ph name="END_LINK_MPL"/> o parametrach prywatności węzła lokalnego i bramki IPFS.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Dowiedz się więcej<ph name="END_LINK_MPL"/> o ochronie prywatności węzła lokalnego i bramki IPFS.</translation>
 <translation id="8425213833346101688">Zmień</translation>
 <translation id="557281710253742286">Ustaw wejście IPFS</translation>
 <translation id="8571837315037233299">Adres wejścia</translation>
@@ -246,9 +257,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="1959966725083452288">Awatar królewski cukierek</translation>
 <translation id="2039034364578911089">Awatar cukierkowy ninja</translation>
 <translation id="239760341987199724">Ustaw Brave jako domyślną przeglądarkę</translation>
-<translation id="1391855377994926460">Przeglądarka Brave jest aktualnie ustawiona jako Twoja domyślna.
-Ustaw przeglądarkę Brave jako swoją domyślną, aby przeglądać sieć szybciej –
-do sześciu razy szybciej na największych portalach informacyjnych.</translation>
+<translation id="1391855377994926460">Przeglądaj sieć szybciej - do sześciu razy szybciej na największych portalach informacyjnych.</translation>
 <translation id="9218430445555521422">Ustaw jako domyślną</translation>
 <translation id="3479552764303398839">Nie teraz</translation>
 <translation id="4877147287319222750">Dodaj do paska bocznego</translation>
@@ -270,7 +279,6 @@ do sześciu razy szybciej na największych portalach informacyjnych.</translatio
 <translation id="8731422418734770661">Skonfiguruj portfele kryptowaluty</translation>
 <translation id="8199661191594897555">Załóż portfele kryptowalut i wczytaj ponownie</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Dowiedz się więcej o IPFS oraz prywatności</translation>
 <translation id="4552520379838695057">Przepraszamy, nie znaleziono tej strony.</translation>
 <translation id="2609895996619941644">Czy chcesz sprawdzić, czy zapisana wersja strony jest dostępna w archiwum Wayback Machine?</translation>
@@ -290,4 +298,6 @@ do sześciu razy szybciej na największych portalach informacyjnych.</translatio
 <translation id="2808630562319398131">Zresetuj dane nagród przeglądarki Brave...</translation>
 <translation id="1224064034972923114">Pomóż ulepszać przeglądarkę Brave, automatycznie wysyłając raporty o crashach.</translation>
 <translation id="3738833060602717053">Pomóż ulepszać przeglądarkę <ph name="PRODUCT_NAME"/>, automatycznie wysyłając raporty o crashach.</translation>
+<translation id="339086854515247923">Czy na pewno usunąć wybrane urządzenie z łańcucha synchronizacji?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>;Dowiedz się więcej<ph name="END_LINK_MPL"/> o parametrach prywatności węzła lokalnego i bramki IPFS.</translation>
 </translationbundle>

@@ -63,9 +63,19 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="7643538479215207633">Openen met IPFS</translation>
 <translation id="3094628781200061820">Bestanden publiceren en ophalen uit IPFS</translation>
 <translation id="1672270084584211506">Onion beschikbaar</translation>
+<translation id="4901618511712685702">Naar IPFS importeren</translation>
+<translation id="6794469945030154569">Deze pagina</translation>
+<translation id="5037852323412456577">Geselecteerde afbeelding</translation>
+<translation id="2715839724138372481">Geselecteerde video</translation>
+<translation id="4227945450504703638">Geselecteerde audio</translation>
+<translation id="7895302206188277628">Gekoppelde inhoud</translation>
+<translation id="4322612543319315652">Geselecteerde tekst naar IPFS importeren</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nieuw Privévenster in Tor</translation>
 <translation id="4703780849509456860">Open Link in Privévenster in Tor</translation>
 <translation id="3488584642074079080">Open Link met Brave Privévenster met Tor</translation>
+<translation id="7475547933708221517">Lokaal bestand delen met IPFS</translation>
+<translation id="784573715436258741">Lokaal bestand delen met IPFS</translation>
 <translation id="6313675821927505581">Nieuw privévenster met Tor</translation>
 <translation id="2638041073279639246">Een link in een privévenster met Tor openen</translation>
 <translation id="3425600262621021599">Een link in een Brave privévenster met Tor openen</translation>
@@ -148,7 +158,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="4112587618563511470">Ongeldige synchronisatie code, check and probeer opnieuw.</translation>
 <translation id="2339730291919608488">Synchronisatieketen verlaten</translation>
 <translation id="115699408012835975">Als je de Synchronisatie opnieuw instelt, moet je een synchronisatie code van een ander apparaat opnieuw invoeren. Ben je er zeker van om door te gaan?</translation>
-<translation id="339086854515247923">Weet u zeker dat u het geselecteerde apparaat wilt verwijderen uit de synchronisatieketen?</translation>
+<translation id="6092564993102418148">Weet u zeker dat u het geselecteerde apparaat wilt verwijderen uit de synchronisatieketen?</translation>
 <translation id="3396347744975515056">Brave Sync is ge-update and vereist configuratie</translation>
 <translation id="7473245612074035141">Begin met de Configuratie</translation>
 <translation id="3411013544209536575">Hulptips</translation>
@@ -170,12 +180,13 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="757886143331967039">Laad de verouderde Crypto Wallets extensie bij het opstarten</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
 <translation id="5927916530277631319">Methode om Unstoppable Domains op te lossen</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over DNS via HTTPS en privacy-overwegingen voor Ethereum.</translation>
 <translation id="5248318250177143470">Methode om Ethereum Name Service (ENS) op te lossen</translation>
 <translation id="9170907049676078643">Methode voor het oplossen van IPFS-bronnen</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokale node</translation>
 <translation id="4927734062756955434">Openbaar IPFS-gateway-adres</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt en privacy-overwegingen voor de gateway.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt en privacy-overwegingen voor de gateway.</translation>
 <translation id="8425213833346101688">Wijzigen</translation>
 <translation id="557281710253742286">Stel IPFS-gateway in</translation>
 <translation id="8571837315037233299">Gateway-adres</translation>
@@ -247,9 +258,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Brave instellen als je standaardbrowser</translation>
-<translation id="1391855377994926460">Brave browser is momenteel niet ingesteld als uw standaard browser.
-Stel Brave in als uw standaard browser om sneller te surfen op het web -
-tot 6x sneller op de grote nieuwssites.</translation>
+<translation id="1391855377994926460">Sneller online browsen - tot wel 6 keer sneller op populaire nieuwswebsites.</translation>
 <translation id="9218430445555521422">Instellen als standaard</translation>
 <translation id="3479552764303398839">Niet nu</translation>
 <translation id="4877147287319222750">Toevoegen aan zijbalk</translation>
@@ -271,7 +280,6 @@ tot 6x sneller op de grote nieuwssites.</translation>
 <translation id="8731422418734770661">Crypto wallets instellen</translation>
 <translation id="8199661191594897555">Start Crypto Wallets en herlaad</translation>
 <translation id="8428213095426709021">Instellingen</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Meer informatie over IPFS en privacy</translation>
 <translation id="4552520379838695057">Sorry, deze pagina bestaat niet.</translation>
 <translation id="2609895996619941644">Wil je bekijken of er een opgeslagen versie beschikbaar is op de Wayback Machine?</translation>
@@ -292,4 +300,6 @@ tot 6x sneller op de grote nieuwssites.</translation>
 <translation id="2808630562319398131">Brave Rewards-gegevens resetten...</translation>
 <translation id="1224064034972923114">Help Brave te verbeteren door automatisch crash-rapporten te sturen</translation>
 <translation id="3738833060602717053">Help met het verbeteren van <ph name="PRODUCT_NAME"/> door automatisch crash-rapporten te verzenden</translation>
+<translation id="339086854515247923">Weet u zeker dat u het geselecteerde apparaat wilt verwijderen uit de synchronisatieketen?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt en privacy-overwegingen voor de gateway.</translation>
 </translationbundle>

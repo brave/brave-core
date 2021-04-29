@@ -179,6 +179,10 @@
     "message": "Administrar filtros personalizados",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Ingresar modo de selector de elementos",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Vista avanzada",
     "description": "Message for the advanced view option"

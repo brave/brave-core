@@ -179,6 +179,10 @@
     "message": "Egyedi szűrők kezelése",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Elemválasztó mód megadása",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Speciális nézet",
     "description": "Message for the advanced view option"

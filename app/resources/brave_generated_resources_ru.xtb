@@ -62,9 +62,19 @@
 <translation id="7643538479215207633">Открыть с помощью IPFS</translation>
 <translation id="3094628781200061820">Публиковать и скачивать файлы из IPFS</translation>
 <translation id="1672270084584211506">Доступен Onion</translation>
+<translation id="4901618511712685702">Импортировать в IPFS</translation>
+<translation id="6794469945030154569">Страницу</translation>
+<translation id="5037852323412456577">Выбранное изображение</translation>
+<translation id="2715839724138372481">Выбранное видео</translation>
+<translation id="4227945450504703638">Выбранное аудио</translation>
+<translation id="7895302206188277628">Связанный контент</translation>
+<translation id="4322612543319315652">Импортировать выбранный текст в IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Новое Приватное Окно с Тор</translation>
 <translation id="4703780849509456860">Открыть Ссылку в Приватном Окне с Тор</translation>
 <translation id="3488584642074079080">Открыть Ссылку в Приватном Окне Brave с Тор</translation>
+<translation id="7475547933708221517">Поделиться файлом с помощью IPFS</translation>
+<translation id="784573715436258741">Поделиться файлом с помощью IPFS</translation>
 <translation id="6313675821927505581">Новое Приватное окно с Tor</translation>
 <translation id="2638041073279639246">Открыть ссылку в Приватном окне с Tor</translation>
 <translation id="3425600262621021599">Открыть ссылку в Приватном окне Brave с Tor</translation>
@@ -147,7 +157,7 @@
 <translation id="4112587618563511470">Неверный код синхронизации. Проверьте и попробуйте еще раз.</translation>
 <translation id="2339730291919608488">Выйти из цепочки</translation>
 <translation id="115699408012835975">Если вы сбросите синхронизацию, вам придется повторно ввести код синхронизации на другом устройстве, чтобы выполнять синхронизацию с ним. Уверены, что хотите продолжить?</translation>
-<translation id="339086854515247923">Вы уверены, что хотите удалить выбранное устройство из цепочки синхронизации?</translation>
+<translation id="6092564993102418148">Вы уверены, что хотите удалить выбранное устройство из цепочки синхронизации?</translation>
 <translation id="3396347744975515056">Синхронизация Brave улучшена и требует настройки</translation>
 <translation id="7473245612074035141">Начать настройку</translation>
 <translation id="3411013544209536575">Полезные советы</translation>
@@ -169,12 +179,13 @@
 <translation id="757886143331967039">Загружать устаревшее расширение Crypto Wallets при запуске</translation>
 <translation id="6864914031231797928">Разрешить вход с помощью Google для расширений</translation>
 <translation id="5927916530277631319">Метод устранения Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Узнайте больше<ph name="END_LINK"/> о DNS по HTTPS и об обеспечении конфиденциальности Ethereum.</translation>
 <translation id="5248318250177143470">Метод разрешения службы имен Ethereum (ENS)</translation>
 <translation id="9170907049676078643">Метод преобразования IPFS-ресурсов</translation>
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локальный узел</translation>
 <translation id="4927734062756955434">Адрес общего шлюза IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Узнайте больше<ph name="END_LINK_MPL"/> об обеспечении конфиденциальности на локальном узле и шлюзе IPFS.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Узнайте больше<ph name="END_LINK_MPL"/> об обеспечении конфиденциальности на локальном узле и шлюзе IPFS.</translation>
 <translation id="8425213833346101688">Изменить</translation>
 <translation id="557281710253742286">Задать IPFS-шлюз</translation>
 <translation id="8571837315037233299">Адрес шлюза</translation>
@@ -246,9 +257,7 @@
 <translation id="1959966725083452288">Аватар королевская конфета</translation>
 <translation id="2039034364578911089">Аватар конфетный ниндзя</translation>
 <translation id="239760341987199724">Сделать Brave браузером по умолчанию</translation>
-<translation id="1391855377994926460">Brave не является браузером по умолчанию.
-Установите Brave браузером по умолчанию, чтобы продолжать просматривать сайты быстрее -
-популялные новостные сайты до 6 раз быстрее.</translation>
+<translation id="1391855377994926460">Популярные сайты с новостями загружаются до 6 раз быстрее.</translation>
 <translation id="9218430445555521422">Сделать браузером по умолчанию</translation>
 <translation id="3479552764303398839">Не сейчас</translation>
 <translation id="4877147287319222750">Добавить к боковой панели</translation>
@@ -270,7 +279,6 @@
 <translation id="8731422418734770661">Настроить Crypto Wallets</translation>
 <translation id="8199661191594897555">Запустить криптовалютные кошельки и перезагрузить</translation>
 <translation id="8428213095426709021">Настройки</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Подробнее об IPFS и конфиденциальности</translation>
 <translation id="4552520379838695057">Извините, этой страницы не существует.</translation>
 <translation id="2609895996619941644">Хотите проверить, доступна ли сохраненная версия на Wayback Machine?</translation>
@@ -291,4 +299,6 @@
 <translation id="2808630562319398131">Сбросить данные Вознаграждений Brave...</translation>
 <translation id="1224064034972923114">Помогите улучшить Brave, автоматически отправляя отчеты о сбоях</translation>
 <translation id="3738833060602717053">Помогите улучшить <ph name="PRODUCT_NAME"/>, автоматически отправляя отчеты о сбоях</translation>
+<translation id="339086854515247923">Вы уверены, что хотите удалить выбранное устройство из цепочки синхронизации?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Узнайте больше<ph name="END_LINK_MPL"/> об обеспечении конфиденциальности на локальном узле и шлюзе IPFS.</translation>
 </translationbundle>

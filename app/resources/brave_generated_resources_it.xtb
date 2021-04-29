@@ -62,9 +62,19 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="7643538479215207633">Apri utilizzando IPFS</translation>
 <translation id="3094628781200061820">Pubblicare contenuti e ottenere file tramite IPFS</translation>
 <translation id="1672270084584211506">Onion disponibile</translation>
+<translation id="4901618511712685702">Importa su IPFS</translation>
+<translation id="6794469945030154569">Questa pagina</translation>
+<translation id="5037852323412456577">Immagine selezionata</translation>
+<translation id="2715839724138372481">Video selezionato</translation>
+<translation id="4227945450504703638">Audio selezionato</translation>
+<translation id="7895302206188277628">Contenuto collegato</translation>
+<translation id="4322612543319315652">Importa il testo selezionato su IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nuova finestra privata con Tor</translation>
 <translation id="4703780849509456860">Apri il collegamento in una finestra privata con Tor</translation>
 <translation id="3488584642074079080">Apri il collegamento in una finestra privata Brave con Tor</translation>
+<translation id="7475547933708221517">Condividi il file locale su IPFS</translation>
+<translation id="784573715436258741">Condividi il file locale con IPFS</translation>
 <translation id="6313675821927505581">Nuova finestra privata con Tor</translation>
 <translation id="2638041073279639246">Apri il link in una finestra privata con Tor</translation>
 <translation id="3425600262621021599">Apri il link in una finestra privata Brave con Tor</translation>
@@ -147,7 +157,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="4112587618563511470">Codice di sincronizzazione non valido, controllalo e riprova.</translation>
 <translation id="2339730291919608488">Esci dalla catena di sincronizzazione</translation>
 <translation id="115699408012835975">Se reimposti la sincronizzazione, dovrai reinserire un codice di sincronizzazione da un altro dispositivo per sincronizzarti ad esso. Sei sicuro di voler procedere?</translation>
-<translation id="339086854515247923">Sei sicuro di voler eliminare il dispositivo selezionato dalla catena di sincronizzazione?</translation>
+<translation id="6092564993102418148">Sei sicuro di voler eliminare il dispositivo selezionato dalla catena di sincronizzazione?</translation>
 <translation id="3396347744975515056">Brave Sync è stato aggiornato e deve essere configurato</translation>
 <translation id="7473245612074035141">Inizia configurazione</translation>
 <translation id="3411013544209536575">Suggerimenti</translation>
@@ -169,12 +179,13 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="757886143331967039">Carica l'estensione Crypto Wallets deprecata all'avvio</translation>
 <translation id="6864914031231797928">Consenti l'accesso a Google per le estensioni</translation>
 <translation id="5927916530277631319">Metodo per risolvere Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> sulla privacy del protocollo DNS over HTTPS e di Ethereum.</translation>
 <translation id="5248318250177143470">Metodo per risolvere Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Metodo per risolvere le risorse IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nodo locale</translation>
 <translation id="4927734062756955434">Indirizzo del gateway pubblico IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Scopri di più<ph name="END_LINK_MPL"/> sulle questioni di privacy del nodo locale e del gateway IPFS.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Scopri di più<ph name="END_LINK_MPL"/> sulle questioni di privacy del nodo locale e del gateway IPFS.</translation>
 <translation id="8425213833346101688">Cambia</translation>
 <translation id="557281710253742286">Imposta gateway IPFS</translation>
 <translation id="8571837315037233299">Indirizzo gateway</translation>
@@ -246,9 +257,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1959966725083452288">Avatar bonbon reale</translation>
 <translation id="2039034364578911089">Avatar bonbon ninja</translation>
 <translation id="239760341987199724">Imposta Brave come browser predefinito</translation>
-<translation id="1391855377994926460">Il browser Brave non è impostato come browser predefinito.
-Utilizza Brave come browser predefinito per navigare più velocemente  -
-fino a 6 volte più veloce sui principali siti di notizie.</translation>
+<translation id="1391855377994926460">Continua a navigare in velocità: fino a 6 volte più rapidamente sui principali siti di informazione.</translation>
 <translation id="9218430445555521422">Imposta di defult</translation>
 <translation id="3479552764303398839">Non adesso</translation>
 <translation id="4877147287319222750">Aggiungi alla barra laterale</translation>
@@ -270,7 +279,6 @@ fino a 6 volte più veloce sui principali siti di notizie.</translation>
 <translation id="8731422418734770661">Imposta Crypto Wallet</translation>
 <translation id="8199661191594897555">Avvia i portafogli di criptovalute e ricarica</translation>
 <translation id="8428213095426709021">Impostazioni</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Ulteriori informazioni su IPFS e privacy</translation>
 <translation id="4552520379838695057">Spiacenti, questa pagina risulta mancante.</translation>
 <translation id="2609895996619941644">Vuoi controllare se è disponibile una versione salvata sulla Wayback Machine?</translation>
@@ -291,4 +299,6 @@ fino a 6 volte più veloce sui principali siti di notizie.</translation>
 <translation id="2808630562319398131">Resetta dati Brave Rewards...</translation>
 <translation id="1224064034972923114">Contribuisci a migliorare Brave inviando automaticamente dei resoconti sugli arresti anomali</translation>
 <translation id="3738833060602717053">Contribuisci a migliorare <ph name="PRODUCT_NAME"/> inviando automaticamente dei resoconti sugli arresti anomali</translation>
+<translation id="339086854515247923">Sei sicuro di voler eliminare il dispositivo selezionato dalla catena di sincronizzazione?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Scopri di più<ph name="END_LINK_MPL"/> sulle questioni di privacy del nodo locale e del gateway IPFS.</translation>
 </translationbundle>

@@ -62,9 +62,19 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="7643538479215207633">Avaa IPFS:llä</translation>
 <translation id="3094628781200061820">Julkaise ja hae tiedostoja IPFS:stä</translation>
 <translation id="1672270084584211506">Tarjolla oleva Onion</translation>
+<translation id="4901618511712685702">Tuo IPFS:ään</translation>
+<translation id="6794469945030154569">Tämä sivu</translation>
+<translation id="5037852323412456577">Valittu kuva</translation>
+<translation id="2715839724138372481">Valittu video</translation>
+<translation id="4227945450504703638">Valittu äänitiedosto</translation>
+<translation id="7895302206188277628">Linkitetty sisältö</translation>
+<translation id="4322612543319315652">Tuo valittu teksti IPFS:ään</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Uusi Tor-yksityisikkuna</translation>
 <translation id="4703780849509456860">Avaa linkki yksityisessä ikkunassa tai Tor-selaimessa</translation>
 <translation id="3488584642074079080">Avaa linkki Braven yksityisessä ikkunassa Tor-verkossa</translation>
+<translation id="7475547933708221517">Jaa paikallinen tiedosto IPFS:n avulla</translation>
+<translation id="784573715436258741">Jaa paikallinen tiedosto IPFS:n avulla</translation>
 <translation id="6313675821927505581">Uusi yksityisikkuna käyttäen Tor-verkkoa</translation>
 <translation id="2638041073279639246">Avaa linkki yksityisessä ikkunassa käyttäen Tor-verkkoa</translation>
 <translation id="3425600262621021599">Avaa linkki Braven yksityisikkunassa käyttäen Tor-verkkoa</translation>
@@ -147,7 +157,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4112587618563511470">Virheellinen synkronointikoodi. Tarkista koodi ja yritä uudelleen.</translation>
 <translation id="2339730291919608488">Jätä synkronointiketju</translation>
 <translation id="115699408012835975">Jos palautat synkronoinnin alkutilaan, niin sinun on annettava muiden laitteiden synkronointikoodit voidaksesi synkronoida kyseisen laitteen.</translation>
-<translation id="339086854515247923">Haluatko varmasti poistaa valitut laitteet synkronointiketjusta?</translation>
+<translation id="6092564993102418148">Haluatko varmasti poistaa valitut laitteet synkronointiketjusta?</translation>
 <translation id="3396347744975515056">Brave Sync on päivitetty ja vaatii määrityksen</translation>
 <translation id="7473245612074035141">Aloita määrittäminen</translation>
 <translation id="3411013544209536575">Apuvinkkejä</translation>
@@ -169,12 +179,13 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="757886143331967039">Lataa vanhentunut kryptovaluuttalaajennus käynnistyksen yhteydessä</translation>
 <translation id="6864914031231797928">Salli laajennuksille Google-kirjautuminen</translation>
 <translation id="5927916530277631319">Pysäyttämättömien verkkotunnusten käsittelytapa</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/> DNS:n ja HTTPS-protokollan sekä Ethereumin tietosuojanäkökohdista.</translation>
 <translation id="5248318250177143470">ENS-palvelun (Ethereum Name Service) selvityskeino</translation>
 <translation id="9170907049676078643">IPFS-resurssien selvitystapa</translation>
 <translation id="1327977588028644528">Yhdyskäytävä</translation>
 <translation id="80225669816651290">Paikallinen solmu</translation>
 <translation id="4927734062756955434">Julkisen IPFS-portin osoite</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Learn More<ph name="END_LINK_MPL"/> tietoja IPFS:n paikallisesta solmusta ja portin tietosuojamenetelmistä.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Lue lisää<ph name="END_LINK_MPL"/> paikallisen IPFS-noodin ja -yhdyskäytävän tietosuojanäkökohdista.</translation>
 <translation id="8425213833346101688">Vaihda</translation>
 <translation id="557281710253742286">Määritä IPFS-portti</translation>
 <translation id="8571837315037233299">Portin osoite</translation>
@@ -246,9 +257,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="1959966725083452288">Kuninkaallinen karamelli -kuvake</translation>
 <translation id="2039034364578911089">Karamellininja-kuvake</translation>
 <translation id="239760341987199724">Aseta Brave oletusselaimeksi</translation>
-<translation id="1391855377994926460">Brave-selaintasi ei ole asetettu oletusselaimeksesi.
-Tee Bravesta oletusselaimesi, jotta voit selata verkkoa muita nopeammin -
-jopa 6 kertaa nopeammin suurilla uutissivustoilla.</translation>
+<translation id="1391855377994926460">Jatka verkon selailua nopeammin – jopa 6x nopeammin suosituilla uutissivustoilla.</translation>
 <translation id="9218430445555521422">Aseta oletusselaimeksi</translation>
 <translation id="3479552764303398839">Ei nyt</translation>
 <translation id="4877147287319222750">Lisää sivupalkkiin</translation>
@@ -270,7 +279,6 @@ jopa 6 kertaa nopeammin suurilla uutissivustoilla.</translation>
 <translation id="8731422418734770661">Asenna kryptovaluuttalompakot</translation>
 <translation id="8199661191594897555">Käynnistä Crypto Wallets ja lataa uudelleen</translation>
 <translation id="8428213095426709021">Asetukset</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Lue lisää IPFS:stä ja tietosuojasta</translation>
 <translation id="4552520379838695057">Pahoittelut, mutta kyseinen sivu puuttuu.</translation>
 <translation id="2609895996619941644">Haluatko tarkastaa, onko tallennettu versio saatavilla Wayback Machine -palvelussa?</translation>
@@ -291,4 +299,6 @@ jopa 6 kertaa nopeammin suurilla uutissivustoilla.</translation>
 <translation id="2808630562319398131">Tyhjennä Brave Rewardsin tiedot...</translation>
 <translation id="1224064034972923114">Auta kehittämään Bravea lähettämällä kaatumisraportit automaattisesti</translation>
 <translation id="3738833060602717053">Auta kehittämään <ph name="PRODUCT_NAME"/> lähettämällä kaatumisraportteja automaattisesti</translation>
+<translation id="339086854515247923">Haluatko varmasti poistaa valitut laitteet synkronointiketjusta?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Learn More<ph name="END_LINK_MPL"/> tietoja IPFS:n paikallisesta solmusta ja portin tietosuojamenetelmistä.</translation>
 </translationbundle>

@@ -62,9 +62,19 @@
 <translation id="7643538479215207633">Atidaryti naudojant IPFS</translation>
 <translation id="3094628781200061820">Skelbti ir gauti failus iš IPFS</translation>
 <translation id="1672270084584211506">Galimas „Onion“</translation>
+<translation id="4901618511712685702">Importuoti į IPFS</translation>
+<translation id="6794469945030154569">Šis puslapis</translation>
+<translation id="5037852323412456577">Pasirinktas vaizdas</translation>
+<translation id="2715839724138372481">Pasirinktas vaizdo įrašas</translation>
+<translation id="4227945450504703638">Pasirinktas garsas</translation>
+<translation id="7895302206188277628">Susietas turinys</translation>
+<translation id="4322612543319315652">Importuoti pažymėtą tekstą į IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Naujas inkognito langas su „Tor“</translation>
 <translation id="4703780849509456860">Atverti nuorodą inkognito lange su „Tor“</translation>
 <translation id="3488584642074079080">Atverti nuorodą „Brave“ inkognito lange su „Tor“</translation>
+<translation id="7475547933708221517">Bendrinti vietinį failą naudojant IPFS</translation>
+<translation id="784573715436258741">Bendrinti vietinį failą naudojant IPFS</translation>
 <translation id="6313675821927505581">Naujas privatus langas su Tor</translation>
 <translation id="2638041073279639246">Atidaryti saitą privačiame lange su Tor</translation>
 <translation id="3425600262621021599">Atidaryti saitą Brave privačiame lange su Tor</translation>
@@ -147,7 +157,7 @@
 <translation id="4112587618563511470">Negaliojantis sinchronizavimo kodas; patikrinkite ir bandykite dar kartą.</translation>
 <translation id="2339730291919608488">Išeiti iš sinchronizavimo grandinės</translation>
 <translation id="115699408012835975">Jei iš naujo nustatysite „Sync“, turėsite iš naujo įvesti sinchronizavimo kodą iš kito įrenginio, kad su juo būtų sinchronizuota. Ar tikrai norite tęsti?</translation>
-<translation id="339086854515247923">Ar tikrai norite pašalinti pasirinktą įrenginį iš sinchronizavimo grandinės?</translation>
+<translation id="6092564993102418148">Ar tikrai norite pašalinti pasirinktą įrenginį iš sinchronizavimo grandinės?</translation>
 <translation id="3396347744975515056">„Brave Sync“ buvo atnaujinta ir reikia atlikti sąranką</translation>
 <translation id="7473245612074035141">Pradėti sąranką</translation>
 <translation id="3411013544209536575">Žinyno patarimai</translation>
@@ -169,12 +179,13 @@
 <translation id="757886143331967039">Užkrauti nebenaudojamų kriptovaliutų piniginių plėtinį paleidžiant</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
 <translation id="5927916530277631319">„Unstoppable Domains“ sprendimo būdas</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/> apie DNS per HTTPS ir eterio privatumo nuostatas.</translation>
 <translation id="5248318250177143470">Eterio pavadinimų paslaugos (ENS) sprendimo būdas</translation>
 <translation id="9170907049676078643">IPFS išteklių nustatymo metodas</translation>
 <translation id="1327977588028644528">Tinklų sietuvas</translation>
 <translation id="80225669816651290">Vietinis mazgas</translation>
 <translation id="4927734062756955434">IPFS viešojo tinklų sietuvo adresas</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Sužinokite daugiau<ph name="END_LINK_MPL"/> apie IPFS vietinio mazgo ir tinklų sietuvo privatumo nuostatas.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Sužinokite daugiau<ph name="END_LINK_MPL"/> apie IPFS vietinio mazgo ir tinklų sietuvo privatumo nuostatas.</translation>
 <translation id="8425213833346101688">Keisti</translation>
 <translation id="557281710253742286">Nustatyti IPFS tinklų sietuvą</translation>
 <translation id="8571837315037233299">Tinklų sietuvo adresas</translation>
@@ -246,9 +257,7 @@
 <translation id="1959966725083452288">Avataras „Bonbon Royal“</translation>
 <translation id="2039034364578911089">Avataras „Bonbon Ninja“</translation>
 <translation id="239760341987199724">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
-<translation id="1391855377994926460">Šiuo metu „Brave“ nėra nustatyta kaip jūsų numatytoji naršyklė.
-Nustatykite „Brave“ kaip numatytąją naršyklę, kad toliau galėtumėte greičiau naršyti žiniatinklyje –
-pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
+<translation id="1391855377994926460">Saityne naršykite sparčiau – pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="9218430445555521422">Nustatyti kaip numatytąją</translation>
 <translation id="3479552764303398839">Ne dabar</translation>
 <translation id="4877147287319222750">Pridėti į šoninę juostą</translation>
@@ -270,7 +279,6 @@ pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="8731422418734770661">Nustatyti „Crypto Wallets“</translation>
 <translation id="8199661191594897555">Paleisti kriptovaliutų pinigines ir užkrauti iš naujo</translation>
 <translation id="8428213095426709021">Nustatymai</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Daugiau informacijos apie IPFS ir privatumą</translation>
 <translation id="4552520379838695057">Deja, šio puslapio nėra.</translation>
 <translation id="2609895996619941644">Gal norite patikrinti, ar per „Wayback Machine“ pasiekiama įrašyta versija?</translation>
@@ -291,4 +299,6 @@ pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="2808630562319398131">Iš naujo nustatyti „Brave Rewards“ duomenis...</translation>
 <translation id="1224064034972923114">Padėkite tobulinti „Brave“, automatiškai siųsdami strigčių ataskaitas</translation>
 <translation id="3738833060602717053">Padėkite tobulinti <ph name="PRODUCT_NAME"/>, automatiškai siųsdami strigčių ataskaitas</translation>
+<translation id="339086854515247923">Ar tikrai norite pašalinti pasirinktą įrenginį iš sinchronizavimo grandinės?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Sužinokite daugiau<ph name="END_LINK_MPL"/> apie IPFS vietinio mazgo ir tinklų sietuvo privatumo nuostatas.</translation>
 </translationbundle>

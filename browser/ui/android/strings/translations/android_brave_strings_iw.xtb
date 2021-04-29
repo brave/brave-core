@@ -19,6 +19,13 @@
 <translation id="8710614491157212477">פותח אתרים נתמכים באמצעות HTTPS במקום HTTP במידת האפשר</translation>
 <translation id="4022987104439075738">שער IPFS</translation>
 <translation id="2688519859165248360">מאפשר ניווט למשאבי IPFS  דרך IPFS Gateway.</translation>
+<translation id="7534079972563542000">דומיינים בלתי ניתנים לעצירה</translation>
+<translation id="6513892817556267573">שירות רישום שמות Ethereum</translation>
+<translation id="3894650624018948468">שיטת רזולוציה</translation>
+<translation id="2356070529366658676">שאל</translation>
+<translation id="4176463684765177261">מושבת</translation>
+<translation id="2218918398178303658">DNS על פני HTTPS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="8387201461264842096">Ad Block</translation>
 <translation id="1934885595886623674">מונע טעינת פרסומות</translation>
 <translation id="7458422973722236530">הגנת טביעות אצבע</translation>
@@ -27,7 +34,7 @@
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
 <translation id="6469509880167172749">שלח באופן אוטומטי אנליטיקות מוצר פרטיות לחלוטין אל Brave</translation>
 <translation id="7090566321964540749">מידע אנונימי זה רק מאפשר ל-Brave להעריך את השימוש הכולל בתכונות מסוימות.</translation>
-<translation id="347604927162577559">מידע\nנשמר</translation>
+<translation id="7977176350719484850">הערכת נתונים/nשנחסכו</translation>
 <translation id="9008534313521214777">זמן מוערך\nשנחסך</translation>
 <translation id="6572660632052512096">מצב שולחן עבודה</translation>
 <translation id="1340503115760585811">אפשר תצוגת שולחן עבודה לכרטיסיית חדשות</translation>
@@ -41,7 +48,6 @@
 <translation id="6332924730165919598">סגירת כל הכרטיסיות סוגרת את Brave</translation>
 <translation id="1580125697191336644">ניסיוני. מאפשר השמעת אודיו מוידאו ברקע כאשר הכרטיסייה אינה פעילה או כאשר מסך המכשיר כבוי. נסה/י לעבור למצב שולחן עבודה אם פיצ'ר זה אינו עובד.</translation>
 <translation id="59174027418879706">מופעל</translation>
-<translation id="4176463684765177261">מושבת</translation>
 <translation id="4150201353443180367">תצוגה</translation>
 <translation id="2433507940547922241">מראה</translation>
 <translation id="2804710924397009224">הסתר את אייקון Brave Rewards</translation>
@@ -105,7 +111,6 @@
 <translation id="8280223431922155812">נובמבר</translation>
 <translation id="4254029385847607686">דצמבר</translation>
 <translation id="3780605330121608425">הארנק שלך</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">דולר אמריקאי</translation>
 <translation id="1165667598801520610">הוספת כספים</translation>
@@ -128,7 +133,7 @@
 <translation id="7335371657242627509">כלול בתרומות העצמיות</translation>
 <translation id="5463954686005964104">תגמלו אתר זה מדי חודש</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4751553692764711651">תרמת <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4781696154289395607">תרמת <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">לא ניתן היה להשלים את התשלום החודשי המתוכנן שלך עבור Auto-Contribute ואת הטיפים החודשיים בגלל מחסור בכסף. אנו ננסה שוב בעוד 30 יום.</translation>
 <translation id="5306913077198665897">אירעה בעיה בעיבוד הטיפ שלך, נא לנסות שוב.</translation>
 <translation id="2429828319207652823">אירעה תקלה בעיבוד התרומה שלכם.</translation>
@@ -144,7 +149,8 @@
 <translation id="7510166204621526816">שרת Brave Rewards אינו מגיב. אנו נתקן זאת בהקדם האפשרי.</translation>
 <translation id="683765328936486920">ביוטיוב</translation>
 <translation id="8969049974285901797">ב-Twitch</translation>
-<translation id="4376933248999950592">ייעדת You've designated <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> עבור יוצרים שעדיין לא נרשמו לקבלת תרומות. הדפדפן שלך ימשיך לנסות לתרום עד אשר הם יאומתו, או עד שיחלפו 90 יום.</translation>
+<translation id="3692362746128814480">ייעדת <ph name="BAT_VALUE"/> BAT עבור יוצרים שלא נרשמו עדיין לקבלת תרומות. הדפדפן שלך ימשיך לנסות ולתרום 
+עד אשר הם יאומתו, או עד שיחלפו 90 יום.</translation>
 <translation id="3101693828171454453">אין מספיק <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">אנא</translation>
 <translation id="1036277985068412734">הוסיפו כסף</translation>
@@ -220,15 +226,10 @@
 <translation id="7541582550122501404">ממתין לתרומה</translation>
 <translation id="8520059774736886747">יוצר/ת <ph name="PUBLISHER_NAME"/> אומת/ה לאחרונה</translation>
 <translation id="7924320838799747606">היתרה שלך</translation>
-<translation id="6160106411363856968">BAP</translation>
-<translation id="1081826981536899387">נקודות BAT</translation>
 <translation id="9212459913845238740">מענקי נקודות נתבעו</translation>
 <translation id="2132683977638223450">מענק נקודות חינם</translation>
 <translation id="1486343603936278248">טוקן</translation>
 <translation id="8713995420537272453">נקודה</translation>
-<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
-<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
-<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">דף כרטיסייה חדשה</translation>
 <translation id="8522669544471808198">הצג תמונות רקע</translation>
 <translation id="3870475560794762985">הצג תמונות ממומנות</translation>
@@ -295,6 +296,7 @@
 <translation id="7396366757003005317">טביעות אצבע חסומות (מחמיר, עלול לקלקל אתרים)</translation>
 <translation id="700453611199558021">טביעות אצבע חסומות (סטנדרטי)</translation>
 <translation id="769702552748212954">אפשר כל לקיחת טביעות אצבע</translation>
+<translation id="876424292214881779">פרסומות ומטרדים אחרים נחסמו</translation>
 <translation id="5142293891785304489">עוקבים, פרסומות\nועוד חסומים</translation>
 <translation id="6930134873084561197">אתרים כוללים לעתים קרובות קובצי עוגייה וסקריפטים שמנסים לזהות אותך ואת המכשיר שלך. הם רוצים להבין מי את/ה ולעקוב אחריך ברחבי האינטרנט - בעודם עוקבים אחר מה שאת/ה עושה בכל אתר.\n\n Braveחוסם את הדברים האלה כך שתוכל/י לגלוש בלי שיעקבו אחריך.</translation>
 <translation id="8553998445606452168">אודות Brave Shields</translation>
@@ -322,6 +324,23 @@
 <translation id="5806208250835099572">Brave Shields שומר על פרטיותך המקוונת בכל האתרים.</translation>
 <translation id="5617673581653540121">החיבור שלך מוצפן עכשיו.</translation>
 <translation id="4055107796760496928">בכפוף לזמינות, Brave ישדרג אותך לחיבור מאובטח באופן אוטומטי.</translation>
+<translation id="8869714780588464835">שתף את החדשות עם אחרים</translation>
+<translation id="7888588008014907646">כל יום נחסכים לי נתונים בזכות הגלישה ב-Brave.</translation>
+<translation id="5372054974373489308">1000 עוקבים &amp; ופרסומות נחסמו!</translation>
+<translation id="2338952568654182692">5000 עוקבים &amp; ופרסומות נחסמו!</translation>
+<translation id="5289711064670408815">10,000 עוקבים&amp; ופרסומות נחסמו!</translation>
+<translation id="7150609425870119925">25,000 עוקבים &amp; ופרסומות נחסמו!</translation>
+<translation id="7856423737692274943">75,000 עוקבים ופרסומות נחסמו!</translation>
+<translation id="7252948690584461484">100,000 עוקבים &amp; ופרסומות נחסמו!</translation>
+<translation id="7579633043057546002">250,000 עוקבים &amp; ופרסומות נחסמו!</translation>
+<translation id="8710984962087186365">500,000 עוקבים &amp; ופרסומות נחסמו!</translation>
+<translation id="4383614608366907253">1,000,000 עוקבים &amp; ופרסומות נחסמו!</translation>
+<translation id="6819535527112707811">מזל טוב, זכית בייחוד מסוים.</translation>
+<translation id="5819231438994979709">מזל טוב. הצטרפת למועדון ייחודי.</translation>
+<translation id="5174835622895450943">מזל טוב. הצטפרת למקצוענים.</translation>
+<translation id="4625546020186631261">מזל טוב. הפכת לאמן/ית.</translation>
+<translation id="4288835546846020774">מזל טוב. הפכת לרב-אמן/ית.</translation>
+<translation id="6863752373888328811">מזל טוב. יש לך מעמד של אגדה בחייך.</translation>
 <translation id="4776948189086901857">Brave עובד בכל מקום</translation>
 <translation id="1606322780901645965">הורידו את Brave ב- brave.com במחשב הנייד או בטאבלט שלכם בשביל אינטרנט מהיר ופרטי יותר</translation>
 <translation id="8374242949413616101">הגנת פרטיות</translation>
@@ -352,15 +371,15 @@
 <translation id="7427567994475794038">הפעילו דוחות פרטיות כדי לראות כמה עוקבים &amp; פרסומות נחסמו ב-3 השעות האחרונות.</translation>
 <translation id="2053891538879944400">חסכתם <ph name="DATA"/> <ph name="DATA_TEXT"/> נתונים עם דפדפן Brave.</translation>
 <translation id="8640064498452534195">הפעילו דוחות פרטיות כדי לראות כמה נתונים חסכתם.</translation>
-<translation id="2252497442547961651">הדפדפן Brave משתמש בממוצא ב-40% פחות סוללה.&#128267;</translation>
+<translation id="2252497442547961651">הדפדפן Brave משתמש בממוצא ב-40% פחות סוללה.🔋</translation>
 <translation id="1945330434665345785">חסמתם <ph name="COUNT"/> עוקבים &amp; פרסומות עם דפדפן Brave בשבוע האחרון.</translation>
 <translation id="2883868922264431515">הרוויחו טוקנים על ידי הצגת מודעות השומרות על הפרטיות ותמכו באתרים האהובים עליכם.</translation>
-<translation id="5678925890616256956">יפה! חסמת 250 עוקבים ופרסומות amp;amp; באמצעות הדפדפן Brave.&#128293;</translation>
-<translation id="9199047775708635708">יפה! חסכת 10MB באמצעות הדפדפן Brave.&#128267;</translation>
-<translation id="1880168210969863408">יפה! חסכת 10 דקות של זמן טעינה באמצעות הדפדפן Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">יפה! חסמת 250 עוקבים ופרסומות amp;amp; באמצעות הדפדפן Brave.🔥</translation>
+<translation id="9199047775708635708">יפה! חסכת 10MB באמצעות הדפדפן Brave.🔋</translation>
+<translation id="1880168210969863408">יפה! חסכת 10 דקות של זמן טעינה באמצעות הדפדפן Brave.💨💨</translation>
 <translation id="7408493389591475748">התחל לגלוש כדי לראות דוחות פרטיות</translation>
 <translation id="9080777565335515917">הגדירו את Brave כדפדפן ברירת המחדל שלכם לגלישה פרטית ומאובטחת.</translation>
-<translation id="7801488941710395275">מאפשר ל-Brave להציג את סטטיסטיקת הפרטיות שלכם</translation>
+<translation id="1390943217516275883">מאפשר ל-Brave להציג את סטטיסטיקת הפרטיות שלכם</translation>
 <translation id="1763352720905582220">שולח דוח פרטיות שבועי</translation>
 <translation id="1811691435325545066">נקה את כל נתוני דוחות הפרטיות</translation>
 <translation id="8089997572759938512">מאפס את דוחות הפרטיות שלך לאפס</translation>
@@ -481,4 +500,20 @@
 <translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0.00 BAT</translation>
 <translation id="4193129043743994339">0.00 דולר</translation>
+<translation id="8792121506918889955">מדיניות טיפול ב- WebRTC IP</translation>
+<translation id="8798099450830957504">ברירת מחדל</translation>
+<translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
+<translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
+<translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
+<translation id="3171931580569169744">הפיכת קבוצות של כרטיסיות לזמינה</translation>
+<translation id="347604927162577559">מידע\nנשמר</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651">תרמת <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4376933248999950592">ייעדת You've designated <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> עבור יוצרים שעדיין לא נרשמו לקבלת תרומות. הדפדפן שלך ימשיך לנסות לתרום עד אשר הם יאומתו, או עד שיחלפו 90 יום.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">נקודות BAT</translation>
+<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">מאפשר ל-Brave להציג את סטטיסטיקת הפרטיות שלכם</translation>
 </translationbundle>

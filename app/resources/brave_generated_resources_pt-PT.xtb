@@ -62,9 +62,19 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="7643538479215207633">Abrir pelo uso de IPFS</translation>
 <translation id="3094628781200061820">Publicar e recuperar ficheiros do IPFS</translation>
 <translation id="1672270084584211506">Onion Disponível</translation>
+<translation id="4901618511712685702">Importar para IPFS</translation>
+<translation id="6794469945030154569">Esta página</translation>
+<translation id="5037852323412456577">Imagem selecionada</translation>
+<translation id="2715839724138372481">Vídeo selecionado</translation>
+<translation id="4227945450504703638">Áudio selecionado</translation>
+<translation id="7895302206188277628">Conteúdo associado</translation>
+<translation id="4322612543319315652">Importar texto selecionado para IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nova Janela Privada com o Tor</translation>
 <translation id="4703780849509456860">Abrir Ligação em Janela Privada com o Tor</translation>
 <translation id="3488584642074079080">Abrir Ligação em Janela Privada Brave com o Tor</translation>
+<translation id="7475547933708221517">Partilhar ficheiro local via IPFS</translation>
+<translation id="784573715436258741">Partilhar ficheiro local via IPFS</translation>
 <translation id="6313675821927505581">Nova janela privada com Tor</translation>
 <translation id="2638041073279639246">Abrir ligação em janela privada com Tor</translation>
 <translation id="3425600262621021599">Abrir ligação em janela privada Brave com Tor</translation>
@@ -147,7 +157,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4112587618563511470">Código de sincronização inválido; por favor, verifique e tente de novo.</translation>
 <translation id="2339730291919608488">Sair da cadeia de sincronização</translation>
 <translation id="115699408012835975">Caso vise proceder à redefinição da Sincronização, precisará reintroduzir um código de sincronização de um outro dispositivo para os sincronizar. Tem a certeza que pretende continuar?</translation>
-<translation id="339086854515247923">Confirma que pretende eliminar o dispositivo selecionado da cadeia de sincronização?</translation>
+<translation id="6092564993102418148">Confirma que pretende eliminar o dispositivo selecionado da cadeia de sincronização?</translation>
 <translation id="3396347744975515056">A Brave Sync foi atualizada e precisa ser configurada</translation>
 <translation id="7473245612074035141">Iniciar Configuração</translation>
 <translation id="3411013544209536575">Ajuda</translation>
@@ -169,12 +179,13 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="757886143331967039">Carrega a extensão descontinuada Crypto Wallets na inicialização</translation>
 <translation id="6864914031231797928">Autorizar logins do Google para extensões</translation>
 <translation id="5927916530277631319">Método para resolver Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> acerca da privacidade de DNS por HTTPS e da Ethereum.</translation>
 <translation id="5248318250177143470">Método para resolver Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Método para solucionar métodos IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nó local</translation>
 <translation id="4927734062756955434">Endereço gateway público IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> acerca do nó local e da privacidade da porta do IPFS.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> acerca do nó local e da privacidade da porta do IPFS.</translation>
 <translation id="8425213833346101688">Alterar</translation>
 <translation id="557281710253742286">Definir gateway IPFS</translation>
 <translation id="8571837315037233299">Endereço gateway</translation>
@@ -246,9 +257,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1959966725083452288">Avatar Real Bombom</translation>
 <translation id="2039034364578911089">Avatar Ninja Bombom</translation>
 <translation id="239760341987199724">Definir o Brave como o seu navegador predefinido</translation>
-<translation id="1391855377994926460">De momento, o navegador Brave não está definido como o seu navegador padrão.
-Defina Brave como o seu navegador padrão para continuar a navegar o mais rapidamente possível na web. 
-até 6 vezes mais rápido nos principais sites de notícias.</translation>
+<translation id="1391855377994926460">Navegue mais rápido — até 6x mais rápido nos sites de notícias principais.</translation>
 <translation id="9218430445555521422">Definir como predefinição</translation>
 <translation id="3479552764303398839">Agora não</translation>
 <translation id="4877147287319222750">Adicionar à barra lateral</translation>
@@ -270,7 +279,6 @@ até 6 vezes mais rápido nos principais sites de notícias.</translation>
 <translation id="8731422418734770661">Configurar a Crypto Wallets</translation>
 <translation id="8199661191594897555">Inicar Crypto Wallets e recarregar</translation>
 <translation id="8428213095426709021">Definições</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Saiba mais sobre IPFS e privacidade</translation>
 <translation id="4552520379838695057">Desculpe, essa página está em falta.</translation>
 <translation id="2609895996619941644">Deseja verificar se está disponível uma versão guardada no Wayback Machine?</translation>
@@ -291,4 +299,6 @@ até 6 vezes mais rápido nos principais sites de notícias.</translation>
 <translation id="2808630562319398131">Redefinir dados da Brave Rewards...</translation>
 <translation id="1224064034972923114">Ajude o Brave a enviar automaticamente relatórios de falhas</translation>
 <translation id="3738833060602717053">Ajude a melhorar <ph name="PRODUCT_NAME"/> ao enviar automaticamente relatórios de falhas</translation>
+<translation id="339086854515247923">Confirma que pretende eliminar o dispositivo selecionado da cadeia de sincronização?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> acerca do nó local e da privacidade da porta do IPFS.</translation>
 </translationbundle>

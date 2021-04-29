@@ -19,6 +19,13 @@
 <translation id="8710614491157212477">Desteklenen siteleri mümkün olduğunda HTTP yerine HTTPS kullanarak açar</translation>
 <translation id="4022987104439075738">IPFS Geçidi</translation>
 <translation id="2688519859165248360">Bir IPFS Ağ Geçidi aracılığıyla IPFS kaynaklarına gitmeye izin verir</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="3894650624018948468">Çözümleme Yöntemi</translation>
+<translation id="2356070529366658676">Sor</translation>
+<translation id="4176463684765177261">Devre dışı</translation>
+<translation id="2218918398178303658">HTTPS üzerinde DNS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="8387201461264842096">Reklam Engelleme</translation>
 <translation id="1934885595886623674">Reklamların yüklenmesini önler</translation>
 <translation id="7458422973722236530">Parmak İzi Kontrolü Koruması</translation>
@@ -27,7 +34,7 @@
 <translation id="1680858055899097121">Göz atma oturumları arasında sekmeleri açık bırakmayın</translation>
 <translation id="6469509880167172749">Brave'e otomatik olarak tamamıyla gizli ürün analizi gönder</translation>
 <translation id="7090566321964540749">Bu anonim bilgi, yalnızca Brave'in belirli özelliklerin genel kullanımını tahmin etmesine olanak tanır.</translation>
-<translation id="347604927162577559">Veri\nTasarruf edildi</translation>
+<translation id="7977176350719484850">Tahmini Veri\nTasarrufu</translation>
 <translation id="9008534313521214777">Tahmini Zaman\nTasarruf edildi</translation>
 <translation id="6572660632052512096">Masaüstü Modu</translation>
 <translation id="1340503115760585811">Yeni sekmeler için Masaüstü Grönümünü etkinleştirin</translation>
@@ -41,7 +48,6 @@
 <translation id="6332924730165919598">Tüm sekmelerin kapatılması, Brave'i kapatır</translation>
 <translation id="1580125697191336644">Deneysel. Sekme aktif olmadığında veya cihaz ekranı kapalı olduğunda arka planda videodan ses çalınmasını etkinleştirir. Bu özellik çalışmıyorsa masaüstü moduna geçmeyi deneyin.</translation>
 <translation id="59174027418879706">Etkin</translation>
-<translation id="4176463684765177261">Devre dışı</translation>
 <translation id="4150201353443180367">Ekran</translation>
 <translation id="2433507940547922241">Görünüm</translation>
 <translation id="2804710924397009224">Brave Ödülleri Simgesini Gizle</translation>
@@ -105,7 +111,6 @@
 <translation id="8280223431922155812">KASIM</translation>
 <translation id="4254029385847607686">ARALIK</translation>
 <translation id="3780605330121608425">Cüzdanınız</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Sermaye Ekle</translation>
@@ -128,7 +133,7 @@ yok...</translation>
 <translation id="7335371657242627509">Otomatik-Katkıya Dahil</translation>
 <translation id="5463954686005964104">Bu siteye aylık bahşiş verin</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4751553692764711651"><ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>'e katıldınız.</translation>
+<translation id="4781696154289395607"><ph name="BAT_VALUE"/> BAT katkıda bulundunuz.</translation>
 <translation id="7997676409547731821">Otomatik Katkı ve aylık bahşişler için programlanan aylık ödemeniz, yetersiz kaynak nedeniyle tamamlanamadı. 30 gün içinde yeniden deneyeceğiz.</translation>
 <translation id="5306913077198665897">Bahşişiniz işlenirken bir sorun oluştu, lütfen yeniden deneyin.</translation>
 <translation id="2429828319207652823">Katkınızın işleme sokulması esnasında bir sorunla karşılaşıldı.</translation>
@@ -144,7 +149,7 @@ yok...</translation>
 <translation id="7510166204621526816">Brave Rewards sunucusu yanıt vermiyor. Bunu mümkün olan en kısa sürede düzelteceğiz.</translation>
 <translation id="683765328936486920">YouTube'da</translation>
 <translation id="8969049974285901797">Twitch'te</translation>
-<translation id="4376933248999950592">Katkıları almak için henüz kaydolmamış oluşturucular için <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> olarak belirlendiniz. Doğrulanana ya da 90 gün geçene kadar, tarayıcınız katkıda bulunmaya çalışmaya devam edecektir.</translation>
+<translation id="3692362746128814480">Katkılar almak üzere henüz kaydolmamış oluşturucular için <ph name="BAT_VALUE"/> BAT'i belirlediniz. Tarayıcınız onlar doğrulayana kadar veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam eder.</translation>
 <translation id="3101693828171454453">yetersiz <ph name="TOKEN"/></translation>
 <translation id="6940273954212603510">lütfen</translation>
 <translation id="1036277985068412734">para ekle</translation>
@@ -219,15 +224,10 @@ yok...</translation>
 <translation id="7541582550122501404">Beklenen Katkı</translation>
 <translation id="8520059774736886747">Oluşturucu <ph name="PUBLISHER_NAME"/> doğrulandı</translation>
 <translation id="7924320838799747606">Bakiyeniz</translation>
-<translation id="6160106411363856968">BAP</translation>
-<translation id="1081826981536899387">BAT Puanları</translation>
 <translation id="9212459913845238740">Puan Bağışları Talep Edildi</translation>
 <translation id="2132683977638223450">Ücretsiz Puan Bağışı</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="8713995420537272453">puan</translation>
-<translation id="2802462801862186499">1,000 <ph name="TIP"/></translation>
-<translation id="3215472762156924589">5,000 <ph name="TIP"/></translation>
-<translation id="487252517537426371">10,000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">Yeni Sekme Sayfası</translation>
 <translation id="8522669544471808198">Arka Plan Resimlerini Göster</translation>
 <translation id="3870475560794762985">Sponsorlu Resimleri Göster</translation>
@@ -294,6 +294,7 @@ yok...</translation>
 <translation id="7396366757003005317">Parmak izi engellendi (katı, siteleri kırabilir)</translation>
 <translation id="700453611199558021">Parmak izi engellendi (standart)</translation>
 <translation id="769702552748212954">Tüm parmak izlerine izin ver</translation>
+<translation id="876424292214881779">Reklam ve diğer tuhaflıklar engellendi</translation>
 <translation id="5142293891785304489">İzleyiciler, reklamlar ve\ndahası engellendi</translation>
 <translation id="6930134873084561197">Siteler genelde, sizi ve cihazınızı tanımlamaya çalışan çerezler ve küçük programlar içerir. Kim olduğunuzu çözmeye çalışıp, girdiğiniz her sitede ne yaptığınızı izlemek isterler.\n\nBrave, siz takip edilmeden gezinebilmeniz için bu tür şeyleri engeller.</translation>
 <translation id="8553998445606452168">Brave Shields Hakkında</translation>
@@ -321,6 +322,23 @@ yok...</translation>
 <translation id="5806208250835099572">Brave Shields çevrim içi gizliliğinizi tüm sitelerde korur.</translation>
 <translation id="5617673581653540121">Bağlantınız artık şifrelendi.</translation>
 <translation id="4055107796760496928">Eğer uygunsa Brave sizi güvenli bir bağlantıya otomatik yükseltir.</translation>
+<translation id="8869714780588464835">Haberleri paylaş</translation>
+<translation id="7888588008014907646">Web'de gezinirken Brave kullanarak her gün veri tasarruf ediyorum.</translation>
+<translation id="5372054974373489308">1.000 izleyici ve reklam engellendi!</translation>
+<translation id="2338952568654182692">5.000 izleyici ve reklam engellendi!</translation>
+<translation id="5289711064670408815">10.000 izleyici ve reklam engellendi!</translation>
+<translation id="7150609425870119925">25.000 izleyici ve reklam engellendi!</translation>
+<translation id="7856423737692274943">75.000 izleyici ve reklam engellendi!</translation>
+<translation id="7252948690584461484">100.000 izleyici ve reklam engellendi!</translation>
+<translation id="7579633043057546002">250.000 izleyici ve reklam engellendi!</translation>
+<translation id="8710984962087186365">500.000 izleyici ve reklam engellendi!</translation>
+<translation id="4383614608366907253">1.000.000 izleyici ve reklam engellendi!</translation>
+<translation id="6819535527112707811">Tebrikler, çok özelsiniz.</translation>
+<translation id="5819231438994979709">Tebrikler. Özel kulübe katıldınız.</translation>
+<translation id="5174835622895450943">Tebrikler. Uzmanların arasına katıldınız.</translation>
+<translation id="4625546020186631261">Tebrikler. Usta oldunuz.</translation>
+<translation id="4288835546846020774">Tebrikler. Büyük Usta oldunuz.</translation>
+<translation id="6863752373888328811">Tebrikler. Efsanesiniz.</translation>
 <translation id="4776948189086901857">Brave her yerde çalışır</translation>
 <translation id="1606322780901645965">Daha hızlı ve daha mahrem bir web için, Brave'i brave.com adresinden laptopunuza veya tabletinize indirin</translation>
 <translation id="8374242949413616101">Gizlilik koruma</translation>
@@ -351,15 +369,15 @@ yok...</translation>
 <translation id="7427567994475794038">Son 3 saatte kaç izleyicinin &amp; reklamın engellendiğini görmek için Gizlilik Raporları'nı açın.</translation>
 <translation id="2053891538879944400">Brave tarayıcı ile <ph name="DATA"/> <ph name="DATA_TEXT"/> veri tasarruf ettiniz.</translation>
 <translation id="8640064498452534195">Ne kadar veri tasarruf ettiğinizi görmek için Gizlilik Raporları'nı açın.</translation>
-<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.&#128267;</translation>
+<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.🔋</translation>
 <translation id="1945330434665345785">Brave tarayıcı ile geçen hafta <ph name="COUNT"/> izleyici &amp; reklamı engellediniz.</translation>
 <translation id="2883868922264431515">Gizlilik dostu reklamlar izleyerek token kazanın ve sevdiğiniz websitelerini destekleyin.</translation>
-<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.&#128293;</translation>
-<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.&#128267;</translation>
-<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.🔥</translation>
+<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.🔋</translation>
+<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.💨💨</translation>
 <translation id="7408493389591475748">Gizlilik raporunu görmek için gezinmeye başlayın</translation>
 <translation id="9080777565335515917">Gizli ve güvenli gezinti için, Brave'i varsayılan tarayıcınız yapın.</translation>
-<translation id="7801488941710395275">Brave'in, gizlilik istatistiklerinizi göstermesine izin verir</translation>
+<translation id="1390943217516275883">Brave'in, gizlilik istatistiklerinizi göstermesine izin verir</translation>
 <translation id="1763352720905582220">Haftalık gizlilik raporu gönderir</translation>
 <translation id="1811691435325545066">Bütün gizlilik raporları verisini temizleyin</translation>
 <translation id="8089997572759938512">Gizlilik raporlarınızı sıfırlayın</translation>
@@ -480,4 +498,20 @@ yok...</translation>
 <translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0.00 BAT</translation>
 <translation id="4193129043743994339">0.00 USD</translation>
+<translation id="8792121506918889955">WebRTC IP kullanım politikası</translation>
+<translation id="8798099450830957504">Varsayılan</translation>
+<translation id="1822560017823072927">Varsayılan genel ve özel arabirimler</translation>
+<translation id="5825943197137337319">Sadece varsayılan genel arayüz</translation>
+<translation id="1689062823386843231">Non-proxied UDP'yi devre dışı bırak</translation>
+<translation id="3171931580569169744">Sekme Gruplarını Etkinleştir</translation>
+<translation id="347604927162577559">Veri\nTasarruf edildi</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651"><ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>'e katıldınız.</translation>
+<translation id="4376933248999950592">Katkıları almak için henüz kaydolmamış oluşturucular için <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> olarak belirlendiniz. Doğrulanana ya da 90 gün geçene kadar, tarayıcınız katkıda bulunmaya çalışmaya devam edecektir.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">BAT Puanları</translation>
+<translation id="2802462801862186499">1,000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5,000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10,000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">Brave'in, gizlilik istatistiklerinizi göstermesine izin verir</translation>
 </translationbundle>

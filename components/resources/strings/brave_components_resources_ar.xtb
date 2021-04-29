@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">بتفعيل [[title]]، فأنت توافق على <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">خطأ في إنشاء بطاقة BAT لمتصفح Brave</translation>
 <translation id="6473583070570450185">أنت بحاجة إلى محفظة مفعلة لتسجيل الدخول</translation>
-<translation id="2106271389438168634">يجب أن يكون لديك 25 BAT كحد أدنى لإنشاء محفظة Uphold. الرجاء إعادة المحاولة بعد أن تقوم بتفعيل محفظتك مع Uphold.</translation>
+<translation id="5949995321533425416">يجب أن يكون لديك على الأقل <ph name="AMOUNT"/> من البات لإنشاء محفظة Uphold. يُرجى المحاولة مرةً أخرى بعد مصادقة محفظتك لدى Uphold.</translation>
 <translation id="7422678632904904341">المقدار:</translation>
 <translation id="6969783933307596818">يتم التحديث تلقائياً كل 5 ثوانٍ</translation>
 <translation id="5025866799968038247">معلومات الرصيد</translation>
@@ -320,28 +320,36 @@
 <translation id="3922777918343537463">إلغاء المساهمة الشهرية</translation>
 <translation id="9087994290002662101">تغيير المبلغ</translation>
 <translation id="1969724076378550685">تأكيد الإلغاء شهرياً</translation>
+<translation id="2359808026110333948">استمرار</translation>
 <translation id="6238322297266927861">مبلغ المساهمة:</translation>
 <translation id="1723857724166389190">لقد تم إلغاء مساهمتك الشهرية لهذا المنشئ.</translation>
 <translation id="534368327994110883">أنت حالياً ’ تدعم هذا المنشئ</translation>
 <translation id="2621124276654521177">المساهمة الشهرية الحالية</translation>
+<translation id="7723816962634734185">المبلغ المخصص</translation>
+<translation id="7286679368056222644">سيكون دعمك شهريًا</translation>
+<translation id="4088764345615745058">مبلغ المكافأة المخصص</translation>
+<translation id="864162897141534043">أنت على وشك إرسال مكافأة</translation>
 <translation id="3084276630953238154">ظهر خطأ شاذ</translation>
 <translation id="3263379510325043678">خطأ في الاتصال بالخادم</translation>
 <translation id="8994556588732085585">يُرجى إغلاق لافتة الإكرامية وإعادة فتحها للمحاولة مرة أخرى.</translation>
+<translation id="8987454605694983241">على سبيل المثال <ph name="AMOUNT"/></translation>
+<translation id="4492470488449820476">الحد الأدنى لمبلغ المكافأة هو <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
 <translation id="4371618764691059036">تم تحديد المساهمة الشهرية.</translation>
 <translation id="6356822617569064293">تاريخ المساهمة التالي:</translation>
+<translation id="4783907814409710132">لا توجد نقاط كافية.</translation>
+<translation id="3593485149443019592">لا توجد رموز كافية. يُرجى <ph name="LINK_BEGIN"/>إضافة الأموال<ph name="LINK_END"/>.</translation>
 <translation id="4622723187300249546">إكرامية لمرة وحيدة</translation>
 <translation id="5268142130226208198">مبلغ الإكرامية الذي يدفع لمرة وحيدة:</translation>
 <translation id="3669086939205397942">مهلاً، لا يمكنك منح ’الإكرامية بعد</translation>
-<translation id="4758374243299807324">منشور [[user]]</translation>
-<translation id="1242162113777253768">تغريدة [[user]]</translation>
+<translation id="3288812755711687300">منشور <ph name="USER"/></translation>
+<translation id="5851002232791947896">تغريدة <ph name="USER"/></translation>
 <translation id="5531915212947569943">نأسف لقيامك بإلغاء اشتراكك…</translation>
 <translation id="1420756770787071946">دعم هذا المنشئ</translation>
-<translation id="3473919203449000069">بالمتابعة، فأنت توافق على <ph name="LINK_BEGIN"/>شروط الخدمة<ph name="LINK_END"/> و <ph name="LINK_BEGIN"/>سياسة الخصوصية<ph name="LINK_END"/>.</translation>
 <translation id="3271043362279673449">شكراً على الدعم!</translation>
 <translation id="379596083010863211">تم إرسال مبلغ الإكرامية الذي تدفعه لمرة وحيدة.</translation>
 <translation id="5096821444729034955">لمنشورهم</translation>
 <translation id="2978223787436054634">غرّد بشأن دعمك</translation>
-<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>خذ جولة سريعة<ph name="LINK_END"/>أو<ph name="LINK_BEGIN"/>اعرف أكثر<ph name="LINK_END"/> للتفاصيل.</translation>
+<translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>خذ جولةً سريعةً<ph name="TOUR_LINK_END"/> أو <ph name="LEARN_LINK_BEGIN"/>تعرّف على المزيد<ph name="LEARN_LINK_END"/> للحصول على تفاصيل أكثر.</translation>
 <translation id="7465614181960492526">اكسب العملات الرمزية &amp; وأعطها مرة أخرى</translation>
 <translation id="2731539192954672606">اربح العملات الرمزية من خلال عرض الإعلانات التي تحترم الخصوصية وادعم مواقعك المفضلة ومنشئي المحتوى تلقائياً.</translation>
 <translation id="1275213816424141989">ربما لاحقاً</translation>
@@ -353,11 +361,11 @@
 <translation id="3164498053837913829">(من أرباح إعلانات)</translation>
 <translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
 <translation id="6318696841371191107">قم بجولة سريعة</translation>
+<translation id="8465790416279415448">بالمتابعة؛ أنت توافق على <ph name="TOS_LINK_BEGIN"/>شروط الخدمة<ph name="TOS_LINK_END"/> و <ph name="PP_LINK_BEGIN"/>سياسة الخصوصية<ph name="PP_LINK_END"/>.</translation>
 <translation id="2404165674840145940">قدم إكرامية عبر Brave Rewards</translation>
 <translation id="5820285701794581330">باستخدام Brave rewards، ستبدأ في الحصول على أفضل التقنيات المتاحة التي يمكنك استخدامها لإعطاء إكراميات لمنشئي المحتوى.</translation>
 <translation id="5705882733397021510">العودة</translation>
 <translation id="185034574799484512">لنقم ’s بجولة سريعة</translation>
-<translation id="2359808026110333948">استمرار</translation>
 <translation id="8281886186245836920">تخطّي</translation>
 <translation id="1377600615067678409">تخطي في الوقت الراهن</translation>
 <translation id="7930505144430343145">مرحباً بك في Brave Rewards!</translation>
@@ -424,7 +432,7 @@
 <translation id="1767561995429774671">مساهمة</translation>
 <translation id="2030909064203578811">تخصيص المساهمة التلقائية</translation>
 <translation id="6896758677409633944">نسخ</translation>
-<translation id="5867910966685447703">أنت; حاليًا تُرسل رمز الانتباه الأساسي المميز لـ[[currentDonation]] لهذا الموقع في كل شهر.</translation>
+<translation id="5867910966685447703">أنت حاليًا تُرسل رمز الانتباه الأساسي المميز لـ[[currentDonation]] لهذا الموقع في كل شهر.</translation>
 <translation id="4932733599132424254">التاريخ</translation>
 <translation id="1366855498335432549">إيداع</translation>
 <translation id="3552003743293281224">الإيرادات النقدية</translation>
@@ -457,7 +465,7 @@
 <translation id="7335371657242627509">تضمين في المساهمة التلقائية</translation>
 <translation id="1864111464094315414">تسجيل الدخول</translation>
 <translation id="4556504723624686474">تفعيل المحفظة يتيح لك إدارة أموالك بشكل أكثر كفاءة.</translation>
-<translation id="5594737784294211654">يجب أن يكون لديك 25 عملة BAT كحد أدنى لإنشاء حساب Uphold. يُرجى المحاولة مرة أخرى في وقت لاحق. <ph name="NEWLINE"/>إذا كان لديك بالفعل حساب Uphold تم التحقق منه ، فتابع تسجيل الدخول.</translation>
+<translation id="5461792966682693675">يجب أن يكون لديك على الأقل <ph name="AMOUNT"/> من البات لإنشاء حساب Uphold. إذا قمت بالفعل بمصادقة حسابك لدى Uphold؛ فتابع لتسجيل الدخول.</translation>
 <translation id="3250511771491660127">اجعل هذا شهرياً</translation>
 <translation id="6028954173739504682">إدارة محفظتك</translation>
 <translation id="7886389832052393750">شروط اعتماد المشاركة</translation>
@@ -485,8 +493,6 @@
 <translation id="5736183007277264868">غير متاح حالياً منح أية رموز كهدية.</translation>
 <translation id="8307851765167460403">لا توجد أنشطة حتى الآن…</translation>
 <translation id="8589748782214271192">لا، شكراً لك</translation>
-<translation id="3204579740854485097">لا توجد [[currency]] كافية.</translation>
-<translation id="3330432260369310344">لا توجد [[currency]] كافية. يرجى</translation>
 <translation id="3630697955794050612">إيقاف</translation>
 <translation id="4921250468871504777">موافق</translation>
 <translation id="7866482334467279021">على</translation>
@@ -518,7 +524,7 @@
 <translation id="6354568176665589146">متكرر</translation>
 <translation id="1110535155349301542">إزالة</translation>
 <translation id="8204292894173669182">إزالة من قائمة المحفوظات</translation>
-<translation id="5530851178552343773">لقد حددت [[reservedAmount]] [[currency]] للمُنشئين الذين لم يش’تركوا بعد لتلقي المساهمات. سيظل متصفحك يحاول المساهمة حتى يؤكدوا، أو حتى مرور 90 يومًا.</translation>
+<translation id="5530851178552343773">لقد حددت [[reservedAmount]] [[currency]] للمُنشئين الذين لم يشتركوا بعد لتلقي المساهمات. سيظل متصفحك يحاول المساهمة حتى يؤكدوا، أو حتى مرور 90 يومًا.</translation>
 <translation id="8759753423332885148">اعرف المزيد.</translation>
 <translation id="5939518447894949180">إعادة الضبط</translation>
 <translation id="3157931365184549694">استعادة</translation>
@@ -560,7 +566,7 @@
 <translation id="4914597931214386232">تم جمع المكافأة المالية التي منحت لك</translation>
 <translation id="3494964159182650590">ملخص المكافآت</translation>
 <translation id="1738658589626889850">حفظ كملف</translation>
-<translation id="2913994227901456490">الاطلاع على جميع عناصر [[numItems]]</translation>
+<translation id="2913994227901456490">الاطلاع على جميع العناصر وعددها [[numItems]]</translation>
 <translation id="3010479539542250179">الاطلاع على جميع مواقع [[numSites]]</translation>
 <translation id="1549705559752367917">إرسال المساهمة</translation>
 <translation id="3536298624341433814">أرسل مكافأتي</translation>
@@ -652,7 +658,7 @@
 <translation id="7840362246306242214">تداول الأسهم الأمريكية متاح على Uphold</translation>
 <translation id="3345432088196080137">استثمر مبلغاً ضئيلاً مثل $1 في الأسهم المعروفة والصناديق المرتبطة بمؤشر القابلة للتداول مثل AAPL أو TSLA أو AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>أعرف أكثر<ph name="LINK_END"/> عن Brave Rewards</translation>
-<translation id="629521674505004728">بالنقر على البدء في استخدام Brave Rewards، فأنت توافق على <ph name="LINK_BEGIN"/>شروط الخدمة<ph name="LINK_END"/> و<ph name="LINK_BEGIN"/>سياسة الخصوصية<ph name="LINK_END"/>.</translation>
+<translation id="7443190393462029180">عند النقر فوق بدء استخدام Brave Rewards؛ أنت توافق على <ph name="TOS_LINK_BEGIN"/>;شروط الخدمة<ph name="TOS_LINK_END"/>;و<ph name="PP_LINK_BEGIN"/>;سياسة الخصوصية<ph name="PP_LINK_END"/>.</translation>
 <translation id="8344084848798035850">الأرباح المقدرة لغاية الوقت الحالي من هذا الشهر</translation>
 <translation id="5235444069025581717">إكراميات ومساهمات هذا الشهر</translation>
 <translation id="1210965535849006928">تحصيل مكافآتي</translation>
@@ -760,10 +766,11 @@
 <translation id="5636651007798897342">تابع باستخدام خادم كلاود فلير</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="2218918398178303658">بروتوكول DNS عبر HTTPS</translation>
+<translation id="1448289340149908413">إيثريوم</translation>
 <translation id="2468755552460246661">نطاق تم حظره</translation>
-<translation id="6631469728138660166">أمامك موقع إلكتروني مريب</translation>
+<translation id="6393849031898466746">قد يحاول هذا الموقع تتبعك عبر المواقع الأخرى</translation>
 <translation id="983774928604730749">قام Brave بمنع الموقع التالي من التحميل:</translation>
-<translation id="8250033559824599347">قد يكون هذا الموقع احتيالياً، أو قد يقوم بالتنقل بك بين مواقع مختلفة لتثبيت ملفات تعريف الارتباط من أجل لتتبع، أو لتنفيذ إجراءات أخرى تخترق الخصوصية.</translation>
+<translation id="4781961723893779890">قد يحاول هذا الموقع ربط بعض بياناتك الشخصية بأحد ملفات تعريف الارتباط قبل عرض المحتوى.</translation>
 <translation id="2459038234784107183">لا تحذرني من هذا الموقع مرة أخرى</translation>
 <translation id="8242426110754782860">متابعة</translation>
 <translation id="2501278716633472235">الرجوع</translation>
@@ -821,8 +828,15 @@
 <translation id="4499666752625407848">حدث خطأ أثناء التحديث.</translation>
 <translation id="62991515067726424">تم تحميل هذا المحتوى عبر بروتوكول IPFS</translation>
 <translation id="7263366446813126341">نظام الملفات اللامركزي (IPFS) هو شبكة عامة لتخزين البيانات من نظير إلى نظير وتسليمها. يمكنك معرفة المزيد حول تكامل Brave أو تكوين إعدادات IPFS الخاصة بك في أي وقت.</translation>
+<translation id="3862600063748690056">اكتمل استيراد IPFS</translation>
+<translation id="8263749381887932384">اكتمل استيراد IPFS جزئيًا</translation>
+<translation id="2145699434318651911">فشل استيراد IPFS</translation>
+<translation id="5525148540855044244">تم نسخ الرابط القابل للمشاركة: <ph name="SHAREABLE_LINK"/></translation>
+<translation id="3741998951694470470">فشل إحضار البيانات للاستيراد</translation>
+<translation id="7900950536120202771">خطأ داخلي في عقدة IPFS</translation>
+<translation id="1036635552229153800">تم تحميل البيانات بنجاح، ولكن لم تنتقل إلى دليل العناصر المستوردة من brave. يمكنك القيام بذلك يدويًا في صفحة إعدادات الاستيراد.</translation>
 <translation id="7789840864192026963">منح إذن</translation>
-<translation id="8092074243456635562">حتى أقوم بغلق هذه الصفحة</translation>
+<translation id="7978789143098237970">حتى أقوم بغلق هذه الصفحة</translation>
 <translation id="3523195733429162409">لمدة 24 ساعة</translation>
 <translation id="2373264732659722940">لمدة أسبوع واحد</translation>
 <translation id="6318437367327684789">للأبد</translation>
@@ -839,4 +853,16 @@
 <translation id="6951743416068151209">عنوان URI لوكيل متصفح تور</translation>
 <translation id="1671503397662036257">حالة اتصال تور</translation>
 <translation id="6024292492796847324">التقدم المحرز في تهيئة متصفح تور</translation>
+<translation id="2106271389438168634">يجب أن يكون لديك 25 BAT كحد أدنى لإنشاء محفظة Uphold. الرجاء إعادة المحاولة بعد أن تقوم بتفعيل محفظتك مع Uphold.</translation>
+<translation id="4758374243299807324">منشور [[user]]</translation>
+<translation id="1242162113777253768">تغريدة [[user]]</translation>
+<translation id="3473919203449000069">بالمتابعة، فأنت توافق على <ph name="LINK_BEGIN"/>شروط الخدمة<ph name="LINK_END"/> و <ph name="LINK_BEGIN"/>سياسة الخصوصية<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>خذ جولة سريعة<ph name="LINK_END"/>أو<ph name="LINK_BEGIN"/>اعرف أكثر<ph name="LINK_END"/> للتفاصيل.</translation>
+<translation id="5594737784294211654">يجب أن يكون لديك 25 عملة BAT كحد أدنى لإنشاء حساب Uphold. يُرجى المحاولة مرة أخرى في وقت لاحق. <ph name="NEWLINE"/>إذا كان لديك بالفعل حساب Uphold تم التحقق منه ، فتابع تسجيل الدخول.</translation>
+<translation id="3204579740854485097">لا توجد [[currency]] كافية.</translation>
+<translation id="3330432260369310344">لا توجد [[currency]] كافية. يرجى</translation>
+<translation id="629521674505004728">بالنقر على البدء في استخدام Brave Rewards، فأنت توافق على <ph name="LINK_BEGIN"/>شروط الخدمة<ph name="LINK_END"/> و<ph name="LINK_BEGIN"/>سياسة الخصوصية<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">أمامك موقع إلكتروني مريب</translation>
+<translation id="8250033559824599347">قد يكون هذا الموقع احتيالياً، أو قد يقوم بالتنقل بك بين مواقع مختلفة لتثبيت ملفات تعريف الارتباط من أجل لتتبع، أو لتنفيذ إجراءات أخرى تخترق الخصوصية.</translation>
+<translation id="8092074243456635562">حتى أقوم بغلق هذه الصفحة</translation>
 </translationbundle>

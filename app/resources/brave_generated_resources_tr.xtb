@@ -62,9 +62,19 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7643538479215207633">IPFS kullanarak açın</translation>
 <translation id="3094628781200061820">IPFS'den dosyalar yayınlama ve alma</translation>
 <translation id="1672270084584211506">Onion Kullanılabilir</translation>
+<translation id="4901618511712685702">IPFS'ye aktar</translation>
+<translation id="6794469945030154569">Bu sayfa</translation>
+<translation id="5037852323412456577">Seçilen görüntü</translation>
+<translation id="2715839724138372481">Seçilen video</translation>
+<translation id="4227945450504703638">Seçilen ses</translation>
+<translation id="7895302206188277628">Bağlantılı içerik</translation>
+<translation id="4322612543319315652">Seçilen Metni IPFS'ye Aktar</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Yeni Tor ile Özel Pencere</translation>
 <translation id="4703780849509456860">Bağlantıyı Tor içeren Özel Pencereyle Aç</translation>
 <translation id="3488584642074079080">Tor ile Brave Özel Pencere Açma Linki</translation>
+<translation id="7475547933708221517">IPFS Kullanarak Yerel Dosya Paylaş</translation>
+<translation id="784573715436258741">IPFS kullanarak yerel dosya paylaş</translation>
 <translation id="6313675821927505581">Tor ile yeni özel pencere</translation>
 <translation id="2638041073279639246">Bağlantıyı Tor ile özel pencerede aç</translation>
 <translation id="3425600262621021599">Bağlantıyı Brave'de Tor ile özel pencerede aç</translation>
@@ -147,7 +157,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="4112587618563511470">Eş zamanlama kodu geçersiz, lütfen kontrol edip tekrar deneyin.</translation>
 <translation id="2339730291919608488">Senkronizasyon Zincirinden Ayrıl</translation>
 <translation id="115699408012835975">Eş Zamanlamayı sıfırlarsanız, başka bir cihaza eş zamanlamada bulunmak için o cihazdan bir eş zamanlama kodunu tekrar girmeniz gerekecek. Devam etmek istediğinize emin misiniz?</translation>
-<translation id="339086854515247923">Eşitleme zincirinden seçilen cihazı silmek istediğinizden emin misiniz?</translation>
+<translation id="6092564993102418148">Eşitleme zincirinden seçilen cihazı silmek istediğinizden emin misiniz?</translation>
 <translation id="3396347744975515056">Brave Eş Zamanlama güncellendi ve kurulması gerekli</translation>
 <translation id="7473245612074035141">Kuruluma Başla</translation>
 <translation id="3411013544209536575">Yardım ipuçları</translation>
@@ -169,12 +179,13 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="757886143331967039">Onaylanmamış Kripto Cüzdanlar uzantısını başlangıçta yükle</translation>
 <translation id="6864914031231797928">Uzantılar için Google ile oturum açmaya izin ver</translation>
 <translation id="5927916530277631319">Unstoppable Domains'i çözmenin yolu</translation>
+<translation id="8412057160793088103">HTTPS üzerinden DNS ve Ethereum gizliliğiyle ilgili hususlar hakkında <ph name="BEGIN_LINK"/>Daha Fazla Bilgi Edinin<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) çözümlemesi için yol</translation>
 <translation id="9170907049676078643">IPFS kaynaklarını çözmek için yöntem</translation>
 <translation id="1327977588028644528">Ağ geçidi</translation>
 <translation id="80225669816651290">Yerel düğüm</translation>
 <translation id="4927734062756955434">IPFS ortak ağ geçidi adresi</translation>
-<translation id="5539104255771715383">IPFS yerel düğüm ve ağ geçidi gizliliğiyle ilgili hususlar hakkında <ph name="BEGIN_LINK_MPL"/>Daha Fazla Bilgi Edinin<ph name="END_LINK_MPL"/>.</translation>
+<translation id="3399481770463167943">IPFS yerel düğüm ve ağ geçidi gizliliğiyle ilgili hususlar hakkında <ph name="BEGIN_LINK_MPL"/>Daha fazla bilgi edinin<ph name="END_LINK_MPL"/>.</translation>
 <translation id="8425213833346101688">Değiştir</translation>
 <translation id="557281710253742286">IPFS ağ geçidi belirleyin</translation>
 <translation id="8571837315037233299">Ağ geçidi adresi</translation>
@@ -246,9 +257,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="1959966725083452288">Avatar Kraliyet Şekerlemesi</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Brave'u varsayılan tarayıcım olarak ayarla</translation>
-<translation id="1391855377994926460">Şu an Brave tarayıcı varsayılan tarayıcınız değil.
-İnternette daha hızlı gezinmeye devam etmek için Brave'i varsayılan tarayıcı yapın.
-başlıca haber sitelerinde 6 kata kadar daha hızlı.</translation>
+<translation id="1391855377994926460">Web'de daha hızlı gezinmeye devam edin. Başlıca haber sitelerinde 6 kata kadar daha hızlı gezinin.</translation>
 <translation id="9218430445555521422">Varsayılan olarak ayarla</translation>
 <translation id="3479552764303398839">Şimdi değil</translation>
 <translation id="4877147287319222750">Kenar çubuğuna ekle</translation>
@@ -270,7 +279,6 @@ başlıca haber sitelerinde 6 kata kadar daha hızlı.</translation>
 <translation id="8731422418734770661">Kripto Cüzdanları ayarlayın</translation>
 <translation id="8199661191594897555">Kripto Cüzdanı başlat ve yeniden yükle</translation>
 <translation id="8428213095426709021">Ayarlar</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">IPFS ve gizlilik hakkında daha fazlasını öğrenin</translation>
 <translation id="4552520379838695057">Üzgünüz, bu sayfa mevcut değil.</translation>
 <translation id="2609895996619941644">Kayıtlı bir versiyonun Wayback Machine'de olup olmadığını kontrol etmek ister misiniz?</translation>
@@ -291,4 +299,6 @@ başlıca haber sitelerinde 6 kata kadar daha hızlı.</translation>
 <translation id="2808630562319398131">Brave Rewards verilerini yeniden ayarlayın...</translation>
 <translation id="1224064034972923114">Otomatik olarak çökme raporları göndererek Brave'in gelişmesine yardımcı olun</translation>
 <translation id="3738833060602717053">Otomatik olarak çökme raporları göndererek <ph name="PRODUCT_NAME"/> gelişmesine yardımcı olun.</translation>
+<translation id="339086854515247923">Eşitleme zincirinden seçilen cihazı silmek istediğinizden emin misiniz?</translation>
+<translation id="5539104255771715383">IPFS yerel düğüm ve ağ geçidi gizliliğiyle ilgili hususlar hakkında <ph name="BEGIN_LINK_MPL"/>Daha Fazla Bilgi Edinin<ph name="END_LINK_MPL"/>.</translation>
 </translationbundle>

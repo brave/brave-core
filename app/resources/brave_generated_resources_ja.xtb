@@ -62,9 +62,19 @@
 <translation id="7643538479215207633">IPFSを使用して開く</translation>
 <translation id="3094628781200061820">公開してファイルをIPFSから取得</translation>
 <translation id="1672270084584211506">利用できるオニオン</translation>
+<translation id="4901618511712685702">IPFSにインポート</translation>
+<translation id="6794469945030154569">このページ</translation>
+<translation id="5037852323412456577">選択された画像</translation>
+<translation id="2715839724138372481">選択された動画</translation>
+<translation id="4227945450504703638">選択された音声</translation>
+<translation id="7895302206188277628">リンクされたコンテンツ</translation>
+<translation id="4322612543319315652">選択したテキストをIPFSにインポート</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
 <translation id="4703780849509456860">トーアのプライベートウィンドウでリンクを開く</translation>
 <translation id="3488584642074079080">Braveプライベートウィンドウ+Tor でリンクを開く</translation>
+<translation id="7475547933708221517">IPFSを使用してローカルファイルを共有</translation>
+<translation id="784573715436258741">IPFSを使用してローカルファイルを共有</translation>
 <translation id="6313675821927505581">Torで新しいプライベートウィンドウを開く</translation>
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
@@ -148,7 +158,7 @@
 <translation id="4112587618563511470">同期コードが無効ですので、確認してからやり直してください。</translation>
 <translation id="2339730291919608488">同期チェーンから離れる</translation>
 <translation id="115699408012835975">Syncをリセットすると、データを同期するためには別なデバイスから同期コードを再入力する必要があります。本当に続行してもよろしいですか？</translation>
-<translation id="339086854515247923">選択したデバイスを、同期チェーンから削除してもよろしいですか？</translation>
+<translation id="6092564993102418148">選択したデバイスを、同期チェーンから削除してもよろしいですか？</translation>
 <translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
 <translation id="7473245612074035141">セットアップ開始</translation>
 <translation id="3411013544209536575">ヘルプのヒント</translation>
@@ -170,12 +180,13 @@
 <translation id="757886143331967039">起動時に非推奨のCryptoウォレット拡張機能を読み込む</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
 <translation id="5927916530277631319">「Unstoppable Domains」を解決する方法</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>からDNS over HTTPSとイーサリアムのプライバシーへの考慮に関する詳細をご確認ください。</translation>
 <translation id="5248318250177143470">イーサリアムネームサービス（ENS）を解決する方法</translation>
 <translation id="9170907049676078643">IPFSリソースを解決する方法</translation>
 <translation id="1327977588028644528">ゲートウェイ</translation>
 <translation id="80225669816651290">ローカルノード</translation>
 <translation id="4927734062756955434">IPFSパブリックゲートウェイアドレス</translation>
-<translation id="5539104255771715383">IPFSのローカルノードおよびゲートウェイにおけるプライバシーへの考慮に関する<ph name="BEGIN_LINK_MPL"/>詳細を見る<ph name="END_LINK_MPL"/>。</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>こちら<ph name="END_LINK_MPL"/>からIPFSローカルノードとゲートウェイのプライバシーへの考慮に関する詳細をご確認ください。</translation>
 <translation id="8425213833346101688">変更</translation>
 <translation id="557281710253742286">IPFSゲートウェイを設定します</translation>
 <translation id="8571837315037233299">ゲートウェイアドレス</translation>
@@ -247,9 +258,7 @@
 <translation id="1959966725083452288">アバター「ボンボン・ロイヤル」</translation>
 <translation id="2039034364578911089">アバター「ボンボン・ニンジャ」</translation>
 <translation id="239760341987199724">Brave をデフォルト ブラウザに設定する</translation>
-<translation id="1391855377994926460">Braveブラウザは現在デフォルトのブラウザとして設定されていません。
-Braveをデフォルトに設定し、ウェブをより高速に閲覧し続けましょう。
-主要なニュースサイトの閲覧が最大6倍高速化されます。</translation>
+<translation id="1391855377994926460">ウェブの閲覧をより高速に - 主要なニュースサイトよりも最大6倍速</translation>
 <translation id="9218430445555521422">デフォルトとして設定</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="4877147287319222750">サイドバーに追加</translation>
@@ -271,7 +280,6 @@ Braveをデフォルトに設定し、ウェブをより高速に閲覧し続け
 <translation id="8731422418734770661">クリプトウォレットを設定</translation>
 <translation id="8199661191594897555">クリプトウォレットを開始してリロード</translation>
 <translation id="8428213095426709021">設定</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">IPFSとプライバシーについて詳しくは知る</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認しますか？</translation>
@@ -292,4 +300,6 @@ Braveをデフォルトに設定し、ウェブをより高速に閲覧し続け
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="1224064034972923114">クラッシュ報告を自動送信して、Braveの改善を支援してください</translation>
 <translation id="3738833060602717053">クラッシュ報告を自動送信して、<ph name="PRODUCT_NAME"/> Braveの改善を支援してください</translation>
+<translation id="339086854515247923">選択したデバイスを、同期チェーンから削除してもよろしいですか？</translation>
+<translation id="5539104255771715383">IPFSのローカルノードおよびゲートウェイにおけるプライバシーへの考慮に関する<ph name="BEGIN_LINK_MPL"/>詳細を見る<ph name="END_LINK_MPL"/>。</translation>
 </translationbundle>

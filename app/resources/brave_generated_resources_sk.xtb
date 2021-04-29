@@ -62,9 +62,19 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7643538479215207633">Otvoriť pomocou IPFS</translation>
 <translation id="3094628781200061820">Zverejniť a získať súbory z IPFS</translation>
 <translation id="1672270084584211506">Služba Onion dostupná</translation>
+<translation id="4901618511712685702">Importovať do IPFS</translation>
+<translation id="6794469945030154569">Táto stránka</translation>
+<translation id="5037852323412456577">Vybraný obrázok</translation>
+<translation id="2715839724138372481">Vybrané video</translation>
+<translation id="4227945450504703638">Vybraný zvuk</translation>
+<translation id="7895302206188277628">Prepojený obsah</translation>
+<translation id="4322612543319315652">Importovať vybraný text do IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nové súkromné okno s Torom</translation>
 <translation id="4703780849509456860">Otvoriť odkaz v súkromnom okne s Torom</translation>
 <translation id="3488584642074079080">Torom otvoriť odkaz v súkromnom okne Brave</translation>
+<translation id="7475547933708221517">Zdieľanie lokálneho súboru pomocou IPFS</translation>
+<translation id="784573715436258741">Zdieľať lokálny súbor pomocou IPFS</translation>
 <translation id="6313675821927505581">Nové súkromné okno s Torom</translation>
 <translation id="2638041073279639246">Otvoriť odkaz v súkromnom okne s Torom</translation>
 <translation id="3425600262621021599">Otvoriť odkaz v súkromnom okne Brave s Torom</translation>
@@ -147,7 +157,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4112587618563511470">Neplatný synchronizačný kód, skontrolujte ho a skúste to znova.</translation>
 <translation id="2339730291919608488">Ukončiť synchronizačný reťazec</translation>
 <translation id="115699408012835975">Ak resetujete synchronizáciu, budete musieť znova synchronizovať kód z iného zariadenia, aby ste ho mohli synchronizovať. Naozaj chcete pokračovať?</translation>
-<translation id="339086854515247923">Ste si istý, že chcete vymazať vybrané zariadenie z reťazca sync?</translation>
+<translation id="6092564993102418148">Ste si istý, že chcete vymazať vybrané zariadenie z reťazca sync?</translation>
 <translation id="3396347744975515056">Synchronizácia aplikácie Brave bola vylepšená a potrebuje inštaláciu</translation>
 <translation id="7473245612074035141">Začať inštaláciu</translation>
 <translation id="3411013544209536575">Pomocník</translation>
@@ -169,12 +179,13 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="757886143331967039">Načítať pri spustení zastarané rozšírenie kryptopeňaženiek</translation>
 <translation id="6864914031231797928">Povoliť prihlasovanie Google pre rozšírenia</translation>
 <translation id="5927916530277631319">Metóda riešenia nezastaviteľných domén</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/> o DNS prostredníctvom protokolu HTTPS a aspektoch ochrany súkromia Etherea.</translation>
 <translation id="5248318250177143470">Metóda riešenia služby Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Metóda riešenia zdrojov IPFS</translation>
 <translation id="1327977588028644528">Brána</translation>
 <translation id="80225669816651290">Lokálny uzol</translation>
 <translation id="4927734062756955434">Adresa verejnej brány IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Ďalšie informácie<ph name="END_LINK_MPL"/> o lokálnom uzle IPFS a aspektoch ochrany súkromia brány.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Ďalšie informácie<ph name="END_LINK_MPL"/> o lokálnom uzle IPFS a aspektoch ochrany súkromia brány.</translation>
 <translation id="8425213833346101688">Zmeniť</translation>
 <translation id="557281710253742286">Nastavte bránu IPFS</translation>
 <translation id="8571837315037233299">Adresa brány</translation>
@@ -246,9 +257,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="1959966725083452288">Avatar bonbón kráľovský</translation>
 <translation id="2039034364578911089">Avatar bonbón nindža</translation>
 <translation id="239760341987199724">Nastaviť Brave ako predvolený prehliadač</translation>
-<translation id="1391855377994926460">Prehliadač Brave nie je momentálne nastavený ako predvolený prehľadávač.
-Nastavte Brave ako predvolený, aby ste mohli prehľadávať web rýchlejšie –
-až 6-krát rýchlejšie na hlavných spravodajských weboch.</translation>
+<translation id="1391855377994926460">Prehľadávajte web rýchlejšie – až 6× rýchlejšie na hlavných spravodajských webových lokalitách.</translation>
 <translation id="9218430445555521422">Nastaviť ako predvolený</translation>
 <translation id="3479552764303398839">Teraz nie</translation>
 <translation id="4877147287319222750">Pridať na bočný panel</translation>
@@ -270,7 +279,6 @@ až 6-krát rýchlejšie na hlavných spravodajských weboch.</translation>
 <translation id="8731422418734770661">Nastaviť kryptopeňaženky</translation>
 <translation id="8199661191594897555">Spustite Crypto Wallets a znova načítajte</translation>
 <translation id="8428213095426709021">Nastavenia</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Získajte viac informácií o IPFS a ochrane osobných údajov</translation>
 <translation id="4552520379838695057">Ľutujeme, táto stránka chýba.</translation>
 <translation id="2609895996619941644">Chcete skontrolovať, či je k dispozícii uložená verzia na Wayback Machine?</translation>
@@ -291,4 +299,6 @@ až 6-krát rýchlejšie na hlavných spravodajských weboch.</translation>
 <translation id="2808630562319398131">Obnoviť údaje o Odmenách Brave</translation>
 <translation id="1224064034972923114">Pomôžte vylepšiť Brave automatickým odosielaním chybových správ</translation>
 <translation id="3738833060602717053">Pomôžte vylepšiť <ph name="PRODUCT_NAME"/> automatickým odosielaním chybových správ</translation>
+<translation id="339086854515247923">Ste si istý, že chcete vymazať vybrané zariadenie z reťazca sync?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Ďalšie informácie<ph name="END_LINK_MPL"/> o lokálnom uzle IPFS a aspektoch ochrany súkromia brány.</translation>
 </translationbundle>

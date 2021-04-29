@@ -96,9 +96,19 @@ Binance
 <translation id="7643538479215207633">IPFS का उपयोग करके खोलें</translation>
 <translation id="3094628781200061820">IPFS से फ़ाइलें प्रकाशित और पुनर्प्राप्त करें</translation>
 <translation id="1672270084584211506">Onion उपलब्ध है</translation>
+<translation id="4901618511712685702">IPFS में इम्पोर्ट करें</translation>
+<translation id="6794469945030154569">यह पेज</translation>
+<translation id="5037852323412456577">चुनी गई इमेज</translation>
+<translation id="2715839724138372481">चुना गया वीडियो</translation>
+<translation id="4227945450504703638">चुना गया ऑडियो</translation>
+<translation id="7895302206188277628">लिंक किया गया कंटेंट</translation>
+<translation id="4322612543319315652">चुने गए टेक्स्ट IPFS में इम्पोर्ट करें</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
+<translation id="7475547933708221517">IPFS का इस्तेमाल करके लोकल फ़ाइल शेयर करें</translation>
+<translation id="784573715436258741">IPFS का इस्तेमाल करके लोकल फ़ाइल शेयर करें</translation>
 <translation id="6313675821927505581">Tor के साथ नई प्राइवेट विंडो</translation>
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
@@ -181,7 +191,7 @@ Binance
 <translation id="4112587618563511470">अमान्य सिंक कोड, कृपया जाँच करें और पुनः प्रयास करें।</translation>
 <translation id="2339730291919608488">सिंक चेन छोड़ें</translation>
 <translation id="115699408012835975">यदि आप सिंक रिसेट करते हैं, तो आपको इसके साथ सिंक करने के लिए किसी अन्य डिवाइस से सिंक कोड को फ़िर से दर्ज करना होगा। क्या आप वाकई आगे बढ़ना चाहते हैं?</translation>
-<translation id="339086854515247923">क्या आप वाकई चयनित डिवाइस को सिंक चेन से हटाना चाहते हैं?</translation>
+<translation id="6092564993102418148">क्या आप वाकई चयनित डिवाइस को सिंक चेन से हटाना चाहते हैं?</translation>
 <translation id="3396347744975515056">Brave सिंक को अपग्रेड किया गया है और सेटअप की आवश्यकता है</translation>
 <translation id="7473245612074035141">सेटअप शुरू करें</translation>
 <translation id="3411013544209536575">सहायक सुझाव</translation>
@@ -203,12 +213,13 @@ Binance
 <translation id="757886143331967039">स्टार्टअप पर डेप्रीकेटेड क्रिप्टो वॉलेट के एक्सटेंशन लोड करें</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
 <translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
+<translation id="8412057160793088103">HTTPS और Ethereum गोपनीयता विचारों पर DNS के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
 <translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
 <translation id="9170907049676078643">IPFS संसाधनों को सुलझाने की विधि</translation>
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="80225669816651290">लोकल नोड</translation>
 <translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Learn More<ph name="END_LINK_MPL"/> IPFS स्थानीय नोड और गेटवे गोपनीयता विचारों के बारे में।</translation>
+<translation id="3399481770463167943">IPFS स्थानीय नोड और गेटवे गोपनीयता विचारों के बारे में <ph name="BEGIN_LINK_MPL"/>और जानें<ph name="END_LINK_MPL"/> about IPFS local node and gateway privacy considerations.</translation>
 <translation id="8425213833346101688">बदलें</translation>
 <translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
 <translation id="8571837315037233299">गेटवे पता</translation>
@@ -280,9 +291,7 @@ Binance
 <translation id="1959966725083452288">अवतार बॉनबॉन रॉयल</translation>
 <translation id="2039034364578911089">अवतार बॉनबॉन निंजा</translation>
 <translation id="239760341987199724">क्रोमियम को अपने डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
-<translation id="1391855377994926460">ब्रेव ब्राउज़र फिलहाल आपका डिफ़ॉल्ट ब्राउज़र नही है.
-वेब पर तेज़ ब्राउज करने के लिए ब्रेव को अपना डिफ़ॉल्ट ब्राउज़र सेट करें-
-बड़ी न्यूज़ साइट्स पर औरों के से लगभग 6 गुना ज़्यादा तेज़</translation>
+<translation id="1391855377994926460">वेब तेज़ी से ब्राउज़ करना जारी रखें - प्रमुख समाचार साइटों पर 6 गुना तेज़ी से.</translation>
 <translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
 <translation id="4877147287319222750">साइडबार में जोड़ें</translation>
@@ -304,7 +313,6 @@ Binance
 <translation id="8731422418734770661">क्रिप्टो वॉलेट् सेट करें</translation>
 <translation id="8199661191594897555">क्रिप्टो वॉलेट शुरू करें और पुनः लोड करें</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">IPFS और गोपनीयता के बारे में और जानें</translation>
 <translation id="4552520379838695057">क्षमा करें, वह पेज गायब है।</translation>
 <translation id="2609895996619941644">क्या आप जांचना चाहते हैं कि क्या वेबैक मशीन पर सेव किया गया संस्करण उपलब्ध है?</translation>
@@ -325,4 +333,6 @@ Binance
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="1224064034972923114">अपने आप क्रैश रिपोर्ट भेजकर ब्रेव को सुधारने में मदद करें</translation>
 <translation id="3738833060602717053">अपने आप क्रैश रिपोर्ट्स भेजकर <ph name="PRODUCT_NAME"/> को बेहतर करने में मदद करें</translation>
+<translation id="339086854515247923">क्या आप वाकई चयनित डिवाइस को सिंक चेन से हटाना चाहते हैं?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Learn More<ph name="END_LINK_MPL"/> IPFS स्थानीय नोड और गेटवे गोपनीयता विचारों के बारे में।</translation>
 </translationbundle>

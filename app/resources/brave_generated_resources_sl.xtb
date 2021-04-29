@@ -62,9 +62,19 @@
 <translation id="7643538479215207633">Odpri z IPFS</translation>
 <translation id="3094628781200061820">Objavite in pridobite datoteke iz IPFS</translation>
 <translation id="1672270084584211506">Na voljo je Onion</translation>
+<translation id="4901618511712685702">Uvozi v IPFS</translation>
+<translation id="6794469945030154569">Ta stran</translation>
+<translation id="5037852323412456577">Izbrana slika</translation>
+<translation id="2715839724138372481">Izbran video</translation>
+<translation id="4227945450504703638">Izbrana raba zvoka</translation>
+<translation id="7895302206188277628">Izbrana vsebina</translation>
+<translation id="4322612543319315652">Uvozi izbrano besedilo v IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Novo zasebno okno v brskalniku Tor</translation>
 <translation id="4703780849509456860">Odpri povezavo v zasebnem oknu v brskalniku Tor</translation>
 <translation id="3488584642074079080">Odpri povezavo v zasebnem oknu Brave v brskalniku Tor</translation>
+<translation id="7475547933708221517">Skupna raba lokalne datoteke z uporabo IPFS</translation>
+<translation id="784573715436258741">Skupna raba lokalne datoteke z uporabo IPFS</translation>
 <translation id="6313675821927505581">Novo zasebno okno z uporabo brskalnika Tor</translation>
 <translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo brskalnika Tor</translation>
 <translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo brskalnika Tor</translation>
@@ -147,7 +157,7 @@
 <translation id="4112587618563511470">Neveljavna koda za sinhronizacijo, preverite in poskusite znova.</translation>
 <translation id="2339730291919608488">Zapusti sinhronizacijsko verigo</translation>
 <translation id="115699408012835975">Če sinhronizacijo ponastavite, boste morali kodo za sinhronizacijo znova vnesti iz druge naprave, da jo boste lahko sinhronizirali. Ali ste prepričani, da želite nadaljevati?</translation>
-<translation id="339086854515247923">Ali ste prepričani, da želite izbrisati izbrano napravo iz sinhronizacijske verige?</translation>
+<translation id="6092564993102418148">Ali ste prepričani, da želite izbrisati izbrano napravo iz sinhronizacijske verige?</translation>
 <translation id="3396347744975515056">Sinhronizacija Brave je bila nadgrajena in zahteva nastavitev</translation>
 <translation id="7473245612074035141">Začetek nastavitev</translation>
 <translation id="3411013544209536575">Pomoč in nasveti</translation>
@@ -169,12 +179,13 @@
 <translation id="757886143331967039">Ob zagonu naložite zastarelo razširitev kripto denarnice</translation>
 <translation id="6864914031231797928">Dovoli Googlovo prijavo za razširitve</translation>
 <translation id="5927916530277631319">Način za reševanje neustavljivih domen</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Preberite si več<ph name="END_LINK"/> o zasebnosti DNS preko HTTPS in Ethereum.</translation>
 <translation id="5248318250177143470">Metoda za razrešitev imenske storitve Ethereum (ENS)</translation>
 <translation id="9170907049676078643">Metoda za reševanje virov IPFS</translation>
 <translation id="1327977588028644528">Prehod</translation>
 <translation id="80225669816651290">Lokalno vozlišče</translation>
 <translation id="4927734062756955434">Naslov javnega prehoda IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Več informacij<ph name="END_LINK_MPL"/> o vprašanjih zasebnosti lokalnega vozlišča in prehoda IPFS.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Preberite si več<ph name="END_LINK_MPL"/> o zasebnosti lokalnega vozlišča in prehoda IPFS.</translation>
 <translation id="8425213833346101688">Spremeni</translation>
 <translation id="557281710253742286">Nastavite prehod IPFS</translation>
 <translation id="8571837315037233299">Naslov prehoda</translation>
@@ -246,9 +257,7 @@
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Nastavitev Bravea za privzeti brskalnik</translation>
-<translation id="1391855377994926460">Pogumni brskalnik trenutno ni nastavljen kot vaš privzeti brskalnik.
-Za privzeto nastavite Brave, da boste lahko hitreje brskali po spletu -
-do 6x hitreje na glavnih spletnih mestih z novicami .</translation>
+<translation id="1391855377994926460">Brskajte po spletu hitreje - do 6-krat hitreje na glavnih spletnih mestih z novicami.</translation>
 <translation id="9218430445555521422">Nastavi za privzeti brskalnik</translation>
 <translation id="3479552764303398839">Ne zdaj</translation>
 <translation id="4877147287319222750">Dodaj v stransko vrstico</translation>
@@ -270,7 +279,6 @@ do 6x hitreje na glavnih spletnih mestih z novicami .</translation>
 <translation id="8731422418734770661">Nastavite Crypto Wallets</translation>
 <translation id="8199661191594897555">Zaženi kripto denarnice in znova naloži</translation>
 <translation id="8428213095426709021">Nastavitve</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Preberite več o IPFS in zasebnosti</translation>
 <translation id="4552520379838695057">Ta stran manjka.</translation>
 <translation id="2609895996619941644">Želite preveriti, ali je na računalniku Wayback na voljo shranjena različica?</translation>
@@ -291,4 +299,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2808630562319398131">Ponastavi podatke Brave Rewards ...</translation>
 <translation id="1224064034972923114">Pomagajte izboljšati Brave s samodejnim pošiljanjem poročil o zrušitvah</translation>
 <translation id="3738833060602717053">Pomagajte izboljšati <ph name="PRODUCT_NAME"/> s samodejnim pošiljanjem poročil o zrušitvah</translation>
+<translation id="339086854515247923">Ali ste prepričani, da želite izbrisati izbrano napravo iz sinhronizacijske verige?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Več informacij<ph name="END_LINK_MPL"/> o vprašanjih zasebnosti lokalnega vozlišča in prehoda IPFS.</translation>
 </translationbundle>

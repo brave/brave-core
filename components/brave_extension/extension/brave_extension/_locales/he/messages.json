@@ -179,6 +179,10 @@
     "message": "נהל  מסננים מותאמים אישית",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "יש להזין מצב בורר אלמנטים",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "תצוגה מתקדמת",
     "description": "Message for the advanced view option"

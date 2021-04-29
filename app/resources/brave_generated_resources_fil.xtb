@@ -62,9 +62,19 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="7643538479215207633">Buksan gamit ang IPFS</translation>
 <translation id="3094628781200061820">I-publish at kunin ang mga file mula sa IPFS</translation>
 <translation id="1672270084584211506">Available ang Onion</translation>
+<translation id="4901618511712685702">I-import sa IPFS</translation>
+<translation id="6794469945030154569">Ang page na ito</translation>
+<translation id="5037852323412456577">Napiling larawan</translation>
+<translation id="2715839724138372481">Napiling video</translation>
+<translation id="4227945450504703638">Napiling audio</translation>
+<translation id="7895302206188277628">Naka-link na content</translation>
+<translation id="4322612543319315652">I-import sa IPFS ang Napiling text</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Bagong Pribadong Window na may Tor</translation>
 <translation id="4703780849509456860">Buksan ang Link sa Pribadong Window na may Tor</translation>
 <translation id="3488584642074079080">Buksan ang Link sa Bagong Pribadong Window ng Brave na may Tor</translation>
+<translation id="7475547933708221517">Ibahagi ang Lokal na File Gamit ang IPFS</translation>
+<translation id="784573715436258741">Ibahagi ang lokal na file gamit ang IPFS</translation>
 <translation id="6313675821927505581">Bagong pribadong window na may Tor</translation>
 <translation id="2638041073279639246">Buksan ang link sa pribadong window gamit ang Tor</translation>
 <translation id="3425600262621021599">Buksan ang link sa pribadong window ng Brave gamit ang Tor</translation>
@@ -147,7 +157,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4112587618563511470">Invalid ang sync code, pakitingnan at subukan ulit.</translation>
 <translation id="2339730291919608488">Umalis sa Chain ng Pag-sync</translation>
 <translation id="115699408012835975">Kung ire-reset mo ang Sync, kakailanganin mong mag-enter ulit ng sync code mula sa ibang device upang makapag-sync dito. Sigurado ka bang gusto mong magpatuloy?</translation>
-<translation id="339086854515247923">Sigurado ka bang gusto mong i-delete ang napiling device sa sync chain?</translation>
+<translation id="6092564993102418148">Sigurado ka bang gusto mong i-delete ang napiling device sa sync chain?</translation>
 <translation id="3396347744975515056">Ang Brave Sync ay na-upgrade at nangangailangan ng setup</translation>
 <translation id="7473245612074035141">Simulan ang Setup</translation>
 <translation id="3411013544209536575">Mga tulong na tip</translation>
@@ -169,12 +179,13 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="757886143331967039">I-load ang hindi na ginagamit na extension ng Crypto Wallets sa startup</translation>
 <translation id="6864914031231797928">Payagan ang mga pag-log in sa Google para sa mga extension</translation>
 <translation id="5927916530277631319">Pamamaraan para lutasin ang Mga Hindi Napipigilang Domain</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Matuto Pa<ph name="END_LINK"/> tungkol sa DNS over HTTPS at mga pagsasaalang-alang sa privacy ng Ethereum.</translation>
 <translation id="5248318250177143470">Pamamaraan para lutasin ang Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Paraan para lutasin ang mga resource ng IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal na node</translation>
 <translation id="4927734062756955434">Pampublikong gateway address ng IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Matuto Pa<ph name="END_LINK_MPL"/> tungkol sa lokal na node ng IPFS at mga pagsasaalang-alang sa privacy ng gateway.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Matuto pa<ph name="END_LINK_MPL"/> tungkol sa lokal na node ng IPFS at mga pagsasaalang-alang sa privacy ng gateway.</translation>
 <translation id="8425213833346101688">Baguhin</translation>
 <translation id="557281710253742286">Itakda ang gateway ng IPFS</translation>
 <translation id="8571837315037233299">Gateway address</translation>
@@ -246,9 +257,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Itakda ang Brave bilang iyong default na browser</translation>
-<translation id="1391855377994926460">Kasalukuyang hindi nakatakda ang browser ng Brave bilang iyong default na browser.
-Itakda ang Brave bilang default mo para patuloy na mag-browse sa web nang mas mabilis -
-mas mabilis nang hanggang 6x sa mga pangunahing site ng balita.</translation>
+<translation id="1391855377994926460">Patuloy na mag-browse sa web nang mas mabilis - mas mabilis nang hanggang 6x sa mga pangunahing site ng balita.</translation>
 <translation id="9218430445555521422">Itakda bilang default</translation>
 <translation id="3479552764303398839">Hindi ngayon</translation>
 <translation id="4877147287319222750">Idagdag sa Sidebar</translation>
@@ -270,7 +279,6 @@ mas mabilis nang hanggang 6x sa mga pangunahing site ng balita.</translation>
 <translation id="8731422418734770661">I-set up ang Crypto Wallets</translation>
 <translation id="8199661191594897555">Simulan ang Crypto Wallets at i-reload</translation>
 <translation id="8428213095426709021">Mga Setting</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Matuto pa tungkol sa IPFS at privacy</translation>
 <translation id="4552520379838695057">Pasensya na, nawawala ang page na iyon.</translation>
 <translation id="2609895996619941644">Gusto mo bang tingnan kung may available na naka-save na bersyon sa Wayback Machine?</translation>
@@ -291,4 +299,6 @@ mas mabilis nang hanggang 6x sa mga pangunahing site ng balita.</translation>
 <translation id="2808630562319398131">I-reset ang data ng Mga Reward ng Brave...</translation>
 <translation id="1224064034972923114">Tumulong na mapahusay ang Brave sa pamamagitan ng awtomatikong pagpapadala ng mga ulat ng pag-crash</translation>
 <translation id="3738833060602717053">Tumulong na mapahusay ang <ph name="PRODUCT_NAME"/> sa pamamagitan ng awtomatikong pagpapadala ng mga ulat ng pag-crash</translation>
+<translation id="339086854515247923">Sigurado ka bang gusto mong i-delete ang napiling device sa sync chain?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Matuto Pa<ph name="END_LINK_MPL"/> tungkol sa lokal na node ng IPFS at mga pagsasaalang-alang sa privacy ng gateway.</translation>
 </translationbundle>

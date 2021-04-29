@@ -179,6 +179,10 @@
     "message": "Dhibiti vichujio maalum",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Weka hali ya kichaguzi cha kipengee",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Mwonekano Mahiri",
     "description": "Message for the advanced view option"

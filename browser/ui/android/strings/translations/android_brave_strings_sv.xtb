@@ -19,6 +19,13 @@
 <translation id="8710614491157212477">Öppnar sidor som stöds med HTTPS istället för HTTP när det är möjligt</translation>
 <translation id="4022987104439075738">IPFS-gateway</translation>
 <translation id="2688519859165248360">Möjliggör navigering till IPFS-resurser via en IPFS-gateway</translation>
+<translation id="7534079972563542000">Ostoppbara domäner</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="3894650624018948468">Lösningsmetod</translation>
+<translation id="2356070529366658676">Fråga</translation>
+<translation id="4176463684765177261">Inaktiverad</translation>
+<translation id="2218918398178303658">DNS över HTTPS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="8387201461264842096">Annonsblockering</translation>
 <translation id="1934885595886623674">Förhindrar att annonser laddas</translation>
 <translation id="7458422973722236530">Fingeravtrycksskydd</translation>
@@ -27,7 +34,7 @@
 <translation id="1680858055899097121">Behåll inte flikarna mellan surfsessioner</translation>
 <translation id="6469509880167172749">Skicka automatiskt helt privat produktanalys till Brave</translation>
 <translation id="7090566321964540749">Denna anonyma information används endast för att Brave ska kunna uppskatta generella användningen av vissa funktioner.</translation>
-<translation id="347604927162577559">Data\nsparat</translation>
+<translation id="7977176350719484850">Uppsk. data\nsparade</translation>
 <translation id="9008534313521214777">Ung. tid\nsparad</translation>
 <translation id="6572660632052512096">Skrivbordsläge</translation>
 <translation id="1340503115760585811">Aktivera Skrivbordsvy för nya flikar</translation>
@@ -41,7 +48,6 @@
 <translation id="6332924730165919598">Att stänga alla flikar stänger Brave</translation>
 <translation id="1580125697191336644">Experimentellt. Aktiverar uppspelning av ljud från video i bakgrunden när fliken inte är aktiv eller enhetens skärm är avstängd. Prova att växla till skrivbordsläge om funktionen inte fungerar.</translation>
 <translation id="59174027418879706">Aktiverat</translation>
-<translation id="4176463684765177261">Inaktiverad</translation>
 <translation id="4150201353443180367">Skärm</translation>
 <translation id="2433507940547922241">Utseende</translation>
 <translation id="2804710924397009224">Dölj Brave Rewards-ikonen</translation>
@@ -105,7 +111,6 @@
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3780605330121608425">Din plånbok</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Sätt in pengar</translation>
@@ -128,7 +133,7 @@ denna månad...</translation>
 <translation id="7335371657242627509">Inkludera i automatiska bidrag</translation>
 <translation id="5463954686005964104">Ge dricks till denna webbplats varje månad</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4751553692764711651">Du har bidragit med <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4781696154289395607">Du har bidragit med <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Din schemalagda månatliga betalning för Auto-bidrag och månatlig dricks kunde inte slutföras på grund av otillräckliga medel. Vi försöker igen om 30 dagar.</translation>
 <translation id="5306913077198665897">Det gick inte att behandla din dricks, försök igen.</translation>
 <translation id="2429828319207652823">Det gick inte att behandla ditt bidrag.</translation>
@@ -144,7 +149,9 @@ denna månad...</translation>
 <translation id="7510166204621526816">Servern för Brave Rewards svarar inte. Vi åtgärdar detta så snart som möjligt.</translation>
 <translation id="683765328936486920">på YouTube</translation>
 <translation id="8969049974285901797">på Twitch</translation>
-<translation id="4376933248999950592">Du har allokerat <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> till skapare som ännu inte har registrerat sig för att ta emot bidrag. Din webbläsare kommer att försöka bidra tills de är verifierade, eller tills det har gått 90 dagar.</translation>
+<translation id="3692362746128814480">Du har angett <ph name="BAT_VALUE"/> BAT för innehållsskapare som inte 
+har registrerat sig för att ta emot bidrag ännu. Din webbläsare kommer att fortsätta 
+försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</translation>
 <translation id="3101693828171454453">inte tillräckligt med <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">vänligen</translation>
 <translation id="1036277985068412734">Sätt in pengar</translation>
@@ -219,15 +226,10 @@ denna månad...</translation>
 <translation id="7541582550122501404">Pågående bidrag</translation>
 <translation id="8520059774736886747">Skaparen <ph name="PUBLISHER_NAME"/> verifierades nyligen</translation>
 <translation id="7924320838799747606">Din behållning</translation>
-<translation id="6160106411363856968">BAP</translation>
-<translation id="1081826981536899387">BAT-poäng</translation>
 <translation id="9212459913845238740">Poängbidrag reserverat</translation>
 <translation id="2132683977638223450">Gratis poängbidrag</translation>
 <translation id="1486343603936278248">pollett</translation>
 <translation id="8713995420537272453">poäng</translation>
-<translation id="2802462801862186499">1 000 <ph name="TIP"/></translation>
-<translation id="3215472762156924589">5 000 <ph name="TIP"/></translation>
-<translation id="487252517537426371">10 000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">Ny flik</translation>
 <translation id="8522669544471808198">Visa bakgrundsbilder</translation>
 <translation id="3870475560794762985">Visa sponsrade bilder</translation>
@@ -294,6 +296,7 @@ denna månad...</translation>
 <translation id="7396366757003005317">Fingeravtryck blockerat (strikt, kan göra att webbplatser inte fungerar)</translation>
 <translation id="700453611199558021">Fingeravtryck blockerat (standard)</translation>
 <translation id="769702552748212954">Tillåt att alla fingeravtryck tas</translation>
+<translation id="876424292214881779">annonser och andra oönskade saker har blockerats</translation>
 <translation id="5142293891785304489">Spårning, annonser, och\nmer blockeras</translation>
 <translation id="6930134873084561197">Sajter har ofta cookies och skript som försöker identifiera dig och din enhet. De vill ta reda på vem du är och vad du gör på webben, på varenda sajt.\n\nBrave blockerar sådana saker, så att du kan surfa utan att någon bevakar dig.</translation>
 <translation id="8553998445606452168">Om Brave-sköldar</translation>
@@ -321,6 +324,23 @@ denna månad...</translation>
 <translation id="5806208250835099572">Brave Shields skyddar din integritet online på varje sajt.</translation>
 <translation id="5617673581653540121">Din anslutning är nu krypterad.</translation>
 <translation id="4055107796760496928">Brave uppgraderar dig automatiskt till en säker anslutning om sådan finns att tillgå.</translation>
+<translation id="8869714780588464835">Dela nyheterna</translation>
+<translation id="7888588008014907646">Varje dag sparar jag data genom att surfa på webben med Brave.</translation>
+<translation id="5372054974373489308">1 000 spårare och annonser blockerade!</translation>
+<translation id="2338952568654182692">5 000 spårare och annonser blockerade!</translation>
+<translation id="5289711064670408815">10 000 spårare och annonser blockerade!</translation>
+<translation id="7150609425870119925">25 000 spårare och annonser blockerade!</translation>
+<translation id="7856423737692274943">75 000 spårare och annonser blockerade!</translation>
+<translation id="7252948690584461484">100 000 spårare och annonser blockerade!</translation>
+<translation id="7579633043057546002">250 000 spårare och annonser blockerade!</translation>
+<translation id="8710984962087186365">500 000 spårare och annonser blockerade!</translation>
+<translation id="4383614608366907253">1 000 000 spårare och annonser blockerade!</translation>
+<translation id="6819535527112707811">Grattis, du är mycket speciell.</translation>
+<translation id="5819231438994979709">Grattis, du är medlem i en exklusiv klubb.</translation>
+<translation id="5174835622895450943">Grattis, du tillhör proffsen.</translation>
+<translation id="4625546020186631261">Grattis, du har blivit en mästare.</translation>
+<translation id="4288835546846020774">Grattis, du har blivit stormästare.</translation>
+<translation id="6863752373888328811">Grattis! Du är en legend.</translation>
 <translation id="4776948189086901857">Brave fungerar överallt</translation>
 <translation id="1606322780901645965">Ladda ner Brave på brave.com på din bärbara dator eller surfplatta för snabbare och mer privat internet</translation>
 <translation id="8374242949413616101">Integritetsskydd</translation>
@@ -351,15 +371,15 @@ denna månad...</translation>
 <translation id="7427567994475794038">Aktivera integritetsrapporter för att se hur många trackers och annonser som har blockerats under de senaste 3 timmarna.</translation>
 <translation id="2053891538879944400">Du sparade <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave webbläsare.</translation>
 <translation id="8640064498452534195">Aktivera integritetsrapporter för att se hur mycket data du har sparat.</translation>
-<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blockerade <ph name="COUNT"/> trackers och annonser med Brave webbläsare förra veckan.</translation>
 <translation id="2883868922264431515">Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser.</translation>
-<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.&#128293;</translation>
-<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.&#128267;</translation>
-<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.🔥</translation>
+<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.🔋</translation>
+<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.💨💨</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
-<translation id="7801488941710395275">Låter Brave visa din integritetsstatistik</translation>
+<translation id="1390943217516275883">Låter Brave visa din integritetsstatistik</translation>
 <translation id="1763352720905582220">Skickar en integritetsrapport varje vecka</translation>
 <translation id="1811691435325545066">Rensa alla data för integritetsrapporter</translation>
 <translation id="8089997572759938512">Återställer dina integritetsrapporter till noll</translation>
@@ -485,4 +505,20 @@ startar du upp med nya
 <translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0.00 BAT</translation>
 <translation id="4193129043743994339">0.00 USD</translation>
+<translation id="8792121506918889955">WebRTC IP-hanteringspolicy</translation>
+<translation id="8798099450830957504">Standard</translation>
+<translation id="1822560017823072927">Offentliga och privata standardgränssnitt</translation>
+<translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
+<translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
+<translation id="3171931580569169744">Aktivera flikgrupper</translation>
+<translation id="347604927162577559">Data\nsparat</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651">Du har bidragit med <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4376933248999950592">Du har allokerat <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> till skapare som ännu inte har registrerat sig för att ta emot bidrag. Din webbläsare kommer att försöka bidra tills de är verifierade, eller tills det har gått 90 dagar.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">BAT-poäng</translation>
+<translation id="2802462801862186499">1 000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5 000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10 000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">Låter Brave visa din integritetsstatistik</translation>
 </translationbundle>

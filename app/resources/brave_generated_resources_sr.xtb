@@ -62,9 +62,19 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="7643538479215207633">Otvorite pomoću IPFS</translation>
 <translation id="3094628781200061820">Objavite i preuzmite datoteke sa IPFS</translation>
 <translation id="1672270084584211506">Onion dostupan</translation>
+<translation id="4901618511712685702">Uvezi u IPFS</translation>
+<translation id="6794469945030154569">Ova stranica</translation>
+<translation id="5037852323412456577">Odabrana slika</translation>
+<translation id="2715839724138372481">Odabrani video</translation>
+<translation id="4227945450504703638">Odabrani zvuk</translation>
+<translation id="7895302206188277628">Povezani sadržaj</translation>
+<translation id="4322612543319315652">Uvezi odabrani tekst u IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Novi privatni prozor sa Tor-om</translation>
 <translation id="4703780849509456860">Otvorite vezu u privatnom prozoru sa Tor-om</translation>
 <translation id="3488584642074079080">Otvorite vezu u Brejv privatnom Vinousu sa Torom</translation>
+<translation id="7475547933708221517">Podeli lokalnu datoteku IPFS-om</translation>
+<translation id="784573715436258741">Podeli lokalnu datoteku IPFS-om</translation>
 <translation id="6313675821927505581">Novi privatni prozor sa Tor-om</translation>
 <translation id="2638041073279639246">Otvori vezu u privatnom prozoru sa Tor-om</translation>
 <translation id="3425600262621021599">Otvori vezu u Brave privatnom prozoru sa Tor-om</translation>
@@ -147,7 +157,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4112587618563511470">Nevažeći kod za sinhronizaciju, proverite i pokušajte ponovo.</translation>
 <translation id="2339730291919608488">Napusti lanac sinhronizacije</translation>
 <translation id="115699408012835975">Ako ponovo postavite sinhronizaciju, moraćete da ponovo unesete kod za sinhronizaciju sa drugog uređaja da biste ga sinhronizovali sa njim. Da li ste sigurni da želite da nastavite?</translation>
-<translation id="339086854515247923">Da li ste sigurni da želite da izbrišete izabrani uređaj iz sinhronizovanog lanca?</translation>
+<translation id="6092564993102418148">Da li ste sigurni da želite da izbrišete izabrani uređaj iz sinhronizovanog lanca?</translation>
 <translation id="3396347744975515056">Brave sinhronizacija je nadograđena i zahteva podešavanje</translation>
 <translation id="7473245612074035141">Počni podešavanje</translation>
 <translation id="3411013544209536575">Pomoć i saveti</translation>
@@ -169,12 +179,13 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="757886143331967039">Učitajte pri pokretanju zastarelo proširenje kripto novčanika</translation>
 <translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
 <translation id="5927916530277631319">Metod za razrešavanje Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o razmatranjima privatnosti  DNS-a putem HTTPS-a i Ethereuma.</translation>
 <translation id="5248318250177143470">Metod za razrešavanje Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Metoda za rešavanje IPFS resursa</translation>
 <translation id="1327977588028644528">Мрежни пролаз</translation>
 <translation id="80225669816651290">Lokalni čvor</translation>
 <translation id="4927734062756955434">Adresa IPFS javnog mrežnog prolaza</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Saznajte više<ph name="END_LINK_MPL"/> o razmatranjima privatnosti IPFS lokalnog čvora i mrežnog prolaza.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saznajte više<ph name="END_LINK_MPL"/> o razmatranjima privatnosti IPFS lokalnog čvora i mrežnog prolaza.</translation>
 <translation id="8425213833346101688">Промени</translation>
 <translation id="557281710253742286">Postavite IPFS mrežni prolaz</translation>
 <translation id="8571837315037233299">Adresa mrežnog prolaza</translation>
@@ -246,9 +257,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1959966725083452288">Avatar kraljevski bonbon</translation>
 <translation id="2039034364578911089">Avatar bonbon nindža</translation>
 <translation id="239760341987199724">Подеси Brave као подразумевани прегледач</translation>
-<translation id="1391855377994926460">Brave pregledač trenutno nije podešen kao podrazumevani pregledač.
-Podesite Brave kao podrazumevani pregledač da biste nastavili sa brzim pregledanjem veba –
-do 6x brže na glavnim lokacijama za vesti.</translation>
+<translation id="1391855377994926460">Nastavite brže pregledavati mrežu – do 6 puta brže na velikim novinskim stranicama.</translation>
 <translation id="9218430445555521422">Подеси као подразумеван</translation>
 <translation id="3479552764303398839">Не сада</translation>
 <translation id="4877147287319222750">Dodaj bočnoj traci</translation>
@@ -270,7 +279,6 @@ do 6x brže na glavnim lokacijama za vesti.</translation>
 <translation id="8731422418734770661">Podesite kripto novčanike</translation>
 <translation id="8199661191594897555">Pokrenite Crypto Wallets i ponovo učitajte</translation>
 <translation id="8428213095426709021">Подешавања</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Saznaj više o IPFS-u i privatnosti</translation>
 <translation id="4552520379838695057">Žao nam je, ta stranica nedostaje.</translation>
 <translation id="2609895996619941644">Da li želite da proverite da li je sačuvana verzija dostupna u Wayback Machine arhivi?</translation>
@@ -291,4 +299,6 @@ do 6x brže na glavnim lokacijama za vesti.</translation>
 <translation id="2808630562319398131">Ponovo postavi Brave Rewards podatke...</translation>
 <translation id="1224064034972923114">Pomozite nam da poboljšamo Brave automatskim slanjem izveštaja o padu</translation>
 <translation id="3738833060602717053">Pomozite nam da poboljšamo <ph name="PRODUCT_NAME"/> automatskim slanjem izveštaja o padu</translation>
+<translation id="339086854515247923">Da li ste sigurni da želite da izbrišete izabrani uređaj iz sinhronizovanog lanca?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Saznajte više<ph name="END_LINK_MPL"/> o razmatranjima privatnosti IPFS lokalnog čvora i mrežnog prolaza.</translation>
 </translationbundle>

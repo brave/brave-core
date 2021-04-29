@@ -19,6 +19,13 @@
 <translation id="8710614491157212477">Jika memungkinkan, buka situs yang didukung menggunakan HTTPS ketimbang HTTP</translation>
 <translation id="4022987104439075738">Gateway IPFS</translation>
 <translation id="2688519859165248360">Memungkinkan navigasi untuk sumber daya IFFS melalui Gerbang IPFS</translation>
+<translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="3894650624018948468">Metode Penyelesaian</translation>
+<translation id="2356070529366658676">Tanya</translation>
+<translation id="4176463684765177261">Dinonaktifkan</translation>
+<translation id="2218918398178303658">DNS atas HTTPS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="8387201461264842096">Blokir Iklan</translation>
 <translation id="1934885595886623674">Cegah pemuatan iklan</translation>
 <translation id="7458422973722236530">Perlindungan Sidik Jari</translation>
@@ -27,7 +34,7 @@
 <translation id="1680858055899097121">Jangan simpan tab antar sesi penjelajahan</translation>
 <translation id="6469509880167172749">Secara otomatis mengirim analisis produk pribadi ke Brave</translation>
 <translation id="7090566321964540749">Info anonim ini hanya memungkinkan Brave memperkirakan penggunaan keseluruhan dari fitur tertentu.</translation>
-<translation id="347604927162577559">Data\nTersimpan</translation>
+<translation id="7977176350719484850">Perkiraan Data\nDihemat</translation>
 <translation id="9008534313521214777">Est. Waktu\nDihemat</translation>
 <translation id="6572660632052512096">Mode Desktop</translation>
 <translation id="1340503115760585811">Aktifkan Tampilan Desktop untuk tab baru</translation>
@@ -41,7 +48,6 @@
 <translation id="6332924730165919598">Menutup semua tab akan menutup Brave</translation>
 <translation id="1580125697191336644">Eksperimental. Aktifkan pemutaran audio dari video di latar ketika tab tidak aktif atau layar perangkat dimatikan. Coba beralih ke mode desktop jika fitur ini tak bekerja.</translation>
 <translation id="59174027418879706">Diaktifkan</translation>
-<translation id="4176463684765177261">Dinonaktifkan</translation>
 <translation id="4150201353443180367">Tampilan</translation>
 <translation id="2433507940547922241">Tampilan</translation>
 <translation id="2804710924397009224">Sembunyikan Ikon Brave Rewards</translation>
@@ -105,7 +111,6 @@
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DESEMBER</translation>
 <translation id="3780605330121608425">Dompet Anda</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Tambah Dana</translation>
@@ -128,7 +133,7 @@ bulan ini...</translation>
 <translation id="7335371657242627509">Sertakan dalam Kontribusi Otomatis</translation>
 <translation id="5463954686005964104">Beri tip bulanan untuk situs ini</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4751553692764711651">Anda telah berkontribusi <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4781696154289395607">Anda telah berkontribusi <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Pembayaran bulanan Anda untuk berkontribusi pada Kontribusi-Otomatis dan tip bulanan tidak dapat dijalankan karena dana tidak cukup. Kita akan mencoba lagi dalam 30 hari.</translation>
 <translation id="5306913077198665897">Ada masalah saat memproses tip Anda, silakan coba lagi.</translation>
 <translation id="2429828319207652823">Terdapat masalah dalam memproses kontribusi Anda.</translation>
@@ -144,9 +149,8 @@ bulan ini...</translation>
 <translation id="7510166204621526816">Peladen Brave Rewards tidak merespon. Kami akan memperbaiki ini secepat mungkin.</translation>
 <translation id="683765328936486920">di YouTube</translation>
 <translation id="8969049974285901797">di Twitch</translation>
-<translation id="4376933248999950592">Anda menetapkan <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> untuk pencipta yang belum
-mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memberikan kontribusi
-sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
+<translation id="3692362746128814480">Anda memberikan <ph name="BAT_VALUE"/> BAT bagi pembuat konten yang belum
+mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memberikan kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
 <translation id="3101693828171454453">tidak cukup <ph name="TOKEN"/></translation>
 <translation id="6940273954212603510">silakan</translation>
 <translation id="1036277985068412734">tambah dana</translation>
@@ -221,15 +225,10 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="7541582550122501404">Kontribusi Tertunda</translation>
 <translation id="8520059774736886747">Pembuat <ph name="PUBLISHER_NAME"/> baru diverifikasi</translation>
 <translation id="7924320838799747606">Saldo Anda</translation>
-<translation id="6160106411363856968">BAP</translation>
-<translation id="1081826981536899387">Poin BAT</translation>
 <translation id="9212459913845238740">Hibah Poin Telah Diambil</translation>
 <translation id="2132683977638223450">Hibah Poin Gratis</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="8713995420537272453">poin</translation>
-<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
-<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
-<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">Halaman Tab Baru</translation>
 <translation id="8522669544471808198">Tampilkan Gambar Latar Belakang</translation>
 <translation id="3870475560794762985">Tampilkan Gambar Bersponsor</translation>
@@ -296,6 +295,7 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="7396366757003005317">Penyidikjari diblokir(ketat, dapat memacetkan situs)</translation>
 <translation id="700453611199558021">Penyidikjari diblokir(standar)</translation>
 <translation id="769702552748212954">Izinkan semua pemindaian sidik jari</translation>
+<translation id="876424292214881779">Iklan dan hal mencurigakan lainnya diblokir</translation>
 <translation id="5142293891785304489">Pelacak, iklan, dan\nlainnya diblokir</translation>
 <translation id="6930134873084561197">Situs kerap memiliki cookie dan skrip yang berupaya mengidentifikasi Anda dan perangkat Anda. Mereka ingin mengetahui siapa Anda dan mengikuti Anda ke seantero web - melacak aktivitas Anda di setiap situs.\n\nBrave memblokir hal-hal ini agar Anda dapat meramban tanpa diikuti.</translation>
 <translation id="8553998445606452168">Seputar Brave Shields</translation>
@@ -323,6 +323,23 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="5806208250835099572">Brave Shields melindungi privasi daring Anda di setiap situs.</translation>
 <translation id="5617673581653540121">Koneksi Anda sekarang dienkripsi.</translation>
 <translation id="4055107796760496928">Jika tersedia, Brave secara otomatis mengubah koneksi jadi koneksi aman.</translation>
+<translation id="8869714780588464835">Bagikan kabar</translation>
+<translation id="7888588008014907646">Setiap hari saya menghemat data dengan menelusuri web menggunakan Brave.</translation>
+<translation id="5372054974373489308">1000 pelacak &amp; iklan diblokir!</translation>
+<translation id="2338952568654182692">5000 pelacak &amp; iklan diblokir!</translation>
+<translation id="5289711064670408815">10.000 pelacak &amp; iklan diblokir!</translation>
+<translation id="7150609425870119925">25.000 pelacak &amp; iklan diblokir!</translation>
+<translation id="7856423737692274943">75.000 pelacak &amp; iklan diblokir!</translation>
+<translation id="7252948690584461484">100.000 pelacak &amp; iklan diblokir!</translation>
+<translation id="7579633043057546002">250.000 pelacak &amp; iklan diblokir!</translation>
+<translation id="8710984962087186365">500.000 pelacak &amp; iklan diblokir!</translation>
+<translation id="4383614608366907253">1.000.000 pelacak &amp; iklan diblokir!</translation>
+<translation id="6819535527112707811">Selamat, Anda cukup istimewa.</translation>
+<translation id="5819231438994979709">Selamat. Anda telah menjadi bagian dari klub eksklusif.</translation>
+<translation id="5174835622895450943">Selamat. Anda telah bergabung dengan para pro.</translation>
+<translation id="4625546020186631261">Selamat. Anda telah menjadi Master.</translation>
+<translation id="4288835546846020774">Selamat. Anda telah menjadi Grand Master.</translation>
+<translation id="6863752373888328811">Selamat. Anda telah menjadi legendaris.</translation>
 <translation id="4776948189086901857">Brave bekerja di mana saja</translation>
 <translation id="1606322780901645965">Unduh Brave di brave.com di laptop atau tablet untuk meramban web yang lebih cepat dan privat</translation>
 <translation id="8374242949413616101">Perlindungan privasi</translation>
@@ -353,15 +370,15 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="7427567994475794038">Nyalakan Pelaporan Privasi untuk melihat berapa banyak pelacak &amp; iklan yang sudah diblokir dalam 3 jam terakhir.</translation>
 <translation id="2053891538879944400">Anda menghemat <ph name="DATA"/> <ph name="DATA_TEXT"/> data dengan peramban Brave.</translation>
 <translation id="8640064498452534195">Nyalakan Pelaporan Privasi untuk melihat berapa besar data yang Anda hemat.</translation>
-<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.&#128267;</translation>
+<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.🔋</translation>
 <translation id="1945330434665345785">Anda memblokir <ph name="COUNT"/> trackers &amp; iklan dengan peramban Brave minggu kemarin.</translation>
 <translation id="2883868922264431515">Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung website favorit Anda.</translation>
-<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.🔥</translation>
+<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.🔋</translation>
+<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.💨💨</translation>
 <translation id="7408493389591475748">Mulailah meramban untuk melihat pelaporan privasi</translation>
 <translation id="9080777565335515917">Atur Brave sebagai peramban default untuk meramban privat dan aman.</translation>
-<translation id="7801488941710395275">Izinkan Brave menunjukkan statistik privasi Anda</translation>
+<translation id="1390943217516275883">Izinkan Brave menunjukkan statistik privasi Anda</translation>
 <translation id="1763352720905582220">Mengirim laporan privasi mingguan</translation>
 <translation id="1811691435325545066">Kosongkan semua data pelaporan privasi</translation>
 <translation id="8089997572759938512">Atur ulang pelaporan privasi ke nol</translation>
@@ -482,4 +499,22 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0,00 BAT</translation>
 <translation id="4193129043743994339">0,00 USD</translation>
+<translation id="8792121506918889955">Kebijakan penanganan IP WebRTC</translation>
+<translation id="8798099450830957504">Default</translation>
+<translation id="1822560017823072927">Antarmuka pribadi dan umum baku</translation>
+<translation id="5825943197137337319">Hanya antarmuka publik baku</translation>
+<translation id="1689062823386843231">Nonaktifkan UDP yang tidak di-proxy</translation>
+<translation id="3171931580569169744">Aktifkan Kelompok Tab</translation>
+<translation id="347604927162577559">Data\nTersimpan</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651">Anda telah berkontribusi <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4376933248999950592">Anda menetapkan <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> untuk pencipta yang belum
+mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memberikan kontribusi
+sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Poin BAT</translation>
+<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">Izinkan Brave menunjukkan statistik privasi Anda</translation>
 </translationbundle>

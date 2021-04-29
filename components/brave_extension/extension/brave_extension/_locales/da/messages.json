@@ -179,6 +179,10 @@
     "message": "Administrér tilpassede filtre",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Gå i elementvælger-tilstand",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Avanceret visning",
     "description": "Message for the advanced view option"
