@@ -6,7 +6,7 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_panel_actions'
-import { WalletPanelReducerState } from '../constants/types'
+import { WalletPanelReducerState } from '../../constants/types'
 import { InitializedPayloadType } from '../constants/action_types'
 
 const defaultState: WalletPanelReducerState = {

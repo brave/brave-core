@@ -21,7 +21,7 @@ mojom("mojo_bindings") {
 transpile_web_ui("brave_wallet_page_ui") {
   entry_points = [ [
         "brave_wallet_page",
-        rebase_path("brave_wallet.tsx"),
+        rebase_path("page/wallet_page.tsx"),
       ] ]
   resource_name = "brave_wallet_page"
 }
@@ -35,7 +35,7 @@ pack_web_resources("brave_wallet_page_generated") {
 transpile_web_ui("brave_wallet_panel_ui") {
   entry_points = [ [
         "brave_wallet_panel",
-        rebase_path("brave_wallet_panel.tsx"),
+        rebase_path("panel/wallet_panel.tsx"),
       ] ]
   resource_name = "brave_wallet_panel"
   deps = [

@@ -10,14 +10,14 @@ import { initLocale } from 'brave-ui'
 import 'emptykit.css'
 
 // Fonts
-import '../../ui/webui/resources/fonts/poppins.css'
-import '../../ui/webui/resources/fonts/muli.css'
+import '../../../ui/webui/resources/fonts/poppins.css'
+import '../../../ui/webui/resources/fonts/muli.css'
 
 // Components
-import App from './components/app'
+import App from '../components/app'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
-import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 function initialize () {
   chrome.braveWallet.shouldPromptForSetup((prompt: boolean) => {
