@@ -18,7 +18,9 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
+#include "mojo/public/cpp/bindings/associated_receiver_set.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 
 #include "url/gurl.h"
 
@@ -29,7 +31,9 @@ class WebLocalFrame;
 namespace content_settings {
 
 // Handles blocking content per content settings for each RenderFrame.
-class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
+class BraveContentSettingsAgentImpl
+    : public ContentSettingsAgentImpl,
+      public brave_shields::mojom::BraveShields {
  public:
   BraveContentSettingsAgentImpl(content::RenderFrame* render_frame,
                                 bool should_whitelist,
@@ -64,12 +68,18 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
       const GURL& secondary_url);
 
   // RenderFrameObserver
-  bool OnMessageReceived(const IPC::Message& message) override;
-  void OnAllowScriptsOnce(const std::vector<std::string>& origins);
   void DidCommitProvisionalLoad(ui::PageTransition transition) override;
 
   bool IsScriptTemporilyAllowed(const GURL& script_url);
   bool AllowStorageAccessForMainFrameSync(StorageType storage_type);
+
+  // brave_shields::mojom::BraveShields.
+  void SetAllowScriptsFromOriginsOnce(
+      const std::vector<std::string>& origins) override;
+
+  void BindBraveShieldsReceiver(
+      mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShields>
+          pending_receiver);
 
   // Returns the associated remote used to send messages to the browser process,
   // lazily initializing it the first time it's used.
@@ -91,6 +101,9 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
 
   mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>
       brave_shields_remote_;
+
+  mojo::AssociatedReceiverSet<brave_shields::mojom::BraveShields>
+      brave_shields_receivers_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsAgentImpl);
 };

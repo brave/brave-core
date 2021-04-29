@@ -19,7 +19,6 @@ source_set("renderer") {
     "//brave/common",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_shields/common:mojom",
-    "//brave/content:common",
     "//brave/third_party/blink/renderer:renderer",
     "//chrome/common",
     "//components/content_settings/core/common",
