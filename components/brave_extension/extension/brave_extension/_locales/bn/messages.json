@@ -179,6 +179,10 @@
     "message": "কাস্টম ফিল্টারগুলো পরিচালনা করুন",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "উপকরণ বাছাইকারী মোড লিখুন",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "উন্নত ভিউ",
     "description": "Message for the advanced view option"

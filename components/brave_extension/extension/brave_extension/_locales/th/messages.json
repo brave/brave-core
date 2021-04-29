@@ -179,6 +179,10 @@
     "message": "จัดการตัวกรองแบบกำหนดเอง",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "เข้าสู่โหมดตัวเลือกองค์ประกอบ",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "มุมมองขั้นสูง",
     "description": "Message for the advanced view option"

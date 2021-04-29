@@ -179,6 +179,10 @@
     "message": "مدیریت فیلترهای سفارشی",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "ورود به حالت انتخابگر عنصر",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "نمای پیشرفته",
     "description": "Message for the advanced view option"

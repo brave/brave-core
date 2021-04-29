@@ -62,9 +62,19 @@
 <translation id="7643538479215207633">לפתוח באמצעות IPFS</translation>
 <translation id="3094628781200061820">פרסם והחזר קבצים מ-IPFS</translation>
 <translation id="1672270084584211506">Onion זמין</translation>
+<translation id="4901618511712685702">יבוא אל IPFS</translation>
+<translation id="6794469945030154569">עמוד זה</translation>
+<translation id="5037852323412456577">תמונה שנבחרה</translation>
+<translation id="2715839724138372481">סרטון שנבחר</translation>
+<translation id="4227945450504703638">שמע שנבחר</translation>
+<translation id="7895302206188277628">תוכן מקושר</translation>
+<translation id="4322612543319315652">ייבוא טקסט נבחר אל IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">חלון גלישה פרטי עם תור</translation>
 <translation id="4703780849509456860">פתחו קישור בחלון פרטי בעזרת Tor</translation>
 <translation id="3488584642074079080">פתיחת קישור בחלון גלישה פרטית של Brave עם Tor</translation>
+<translation id="7475547933708221517">קובץ מקומי שותף באמצעות IPFS</translation>
+<translation id="784573715436258741">שיתוף קובץ באמצעות IPFS</translation>
 <translation id="6313675821927505581">חלון פרטי חדש ב-Tor</translation>
 <translation id="2638041073279639246">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
@@ -148,7 +158,7 @@
 <translation id="4112587618563511470">קוד סנכרון לא חוקי, נא לבדוק ולנסות שוב.</translation>
 <translation id="2339730291919608488">השאר שרשרת סנכרון</translation>
 <translation id="115699408012835975">אם תאפס/י את הסנכרון, יהיה עליך להזין מחדש קוד סנכרון ממכשיר אחר על מנת לסנכרן באמצעותו. האם הנך בטוח/ה שברצונך להמשיך?</translation>
-<translation id="339086854515247923">האם הנך בטוח/ה שברצונך למחוק את המכשיר שנבחר משרשרת הסנכרון?</translation>
+<translation id="6092564993102418148">האם הנך בטוח/ה שברצונך למחוק את המכשיר שנבחר משרשרת הסנכרון?</translation>
 <translation id="3396347744975515056">Brave Sync שודרג ודורש התקנה</translation>
 <translation id="7473245612074035141">התחל התקנה</translation>
 <translation id="3411013544209536575">טיפים לעזרה</translation>
@@ -170,12 +180,13 @@
 <translation id="757886143331967039">טען הרחבת ארנקי קריפטו מבוטלים</translation>
 <translation id="6864914031231797928">אפשר התחברות באמצעות Google להרחבות</translation>
 <translation id="5927916530277631319">שיטה לזיהוי דומיינים בלתי ניתנים לעצירה</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> על DNS דרך HTTPS ושיקולי פרטיות בקשר עם Ethereum.</translation>
 <translation id="5248318250177143470">שיטה לזיהוי Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">שיטה לפתרון משאבי IPFS</translation>
 <translation id="1327977588028644528">שער</translation>
 <translation id="80225669816651290">צומת מקומי</translation>
 <translation id="4927734062756955434">כתובת השער הציבורי של IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>למידע נוסף<ph name="END_LINK_MPL"/> אודות הצומת המקומי של IPFS ושיקולי פרטיות של השער.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>מידע נוסף<ph name="END_LINK_MPL"/> על שיקולי פרטיות של שער ושל צומת IPFS מקומי.</translation>
 <translation id="8425213833346101688">שנה</translation>
 <translation id="557281710253742286">הגדר שער IPFS</translation>
 <translation id="8571837315037233299">כתובת השער</translation>
@@ -247,9 +258,7 @@
 <translation id="1959966725083452288">אווטאר בונבון Royal</translation>
 <translation id="2039034364578911089">אווטאר בונבון נינג'ה</translation>
 <translation id="239760341987199724">‏הגדר את Brave כדפדפן ברירת המחדל שלך</translation>
-<translation id="1391855377994926460">דפדפן Brave אינו מוגדר כעת כדפדפן ברירת המחדל שלך.
-הגדר/י את Brave כברירת המחדל שלך כדי להמשיך לגלוש מהר יותר -
-עד פי 6 מהר יותר באתרי החדשות העיקריים.</translation>
+<translation id="1391855377994926460">אפשר להמשיך לגלוש מהר יותר באינטרנט – אפילו מהר פי 6 באתרי החדשות העיקריים.</translation>
 <translation id="9218430445555521422">הגדר כברירת מחדל</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
 <translation id="4877147287319222750">הוסף לסרגל הצידי</translation>
@@ -271,7 +280,6 @@
 <translation id="8731422418734770661">הגדר ארנקי קריפטו</translation>
 <translation id="8199661191594897555">התחל ארנקי קריפטו וטען מחדש</translation>
 <translation id="8428213095426709021">הגדרות</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">למידע נוסף על IPFS ופרטיות</translation>
 <translation id="4552520379838695057">מצטערים, עמוד זה חסר.</translation>
 <translation id="2609895996619941644">האם ברצונכם לבדוק אם גרסה שמורה זמינה ב-Wayback Machine?</translation>

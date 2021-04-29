@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">Ao ativar [[title]], aceita os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Erro ao criar o cartão BAT do Brave Browser</translation>
 <translation id="6473583070570450185">Precisa de uma carteira verificada para proceder ao Login</translation>
-<translation id="2106271389438168634">Precisa no mínimo de 25 BAT para criar uma conta Uphold. Por favor, tente novamente após a verificação da sua carteira com a Uphold.</translation>
+<translation id="5949995321533425416">Precisa de um mínimo de <ph name="AMOUNT"/> BAT para criar uma carteira Uphold. Tente novamente após ter verificado a carteira com a Uphold.</translation>
 <translation id="7422678632904904341">Quantia</translation>
 <translation id="6969783933307596818">Atualizar automaticamente a cada 5 segundos</translation>
 <translation id="5025866799968038247">Informações do saldo</translation>
@@ -319,28 +319,36 @@
 <translation id="3922777918343537463">Cancelar Contribuição Mensal</translation>
 <translation id="9087994290002662101">Alterar valor</translation>
 <translation id="1969724076378550685">Confirmar cancelamento de contribuição mensal</translation>
+<translation id="2359808026110333948">Continuar</translation>
 <translation id="6238322297266927861">Valor da contribuição:</translation>
 <translation id="1723857724166389190">A sua contribuição mensal para este criador foi cancelada.</translation>
 <translation id="534368327994110883">Está a apoiar este criador atualmente</translation>
 <translation id="2621124276654521177">Contribuição mensal atual</translation>
+<translation id="7723816962634734185">Montante personalizado</translation>
+<translation id="7286679368056222644">Irá fazer uma contribuição mensal de</translation>
+<translation id="4088764345615745058">Montante de contribuição personalizado</translation>
+<translation id="864162897141534043">Está prestes a dar</translation>
 <translation id="3084276630953238154">Apareceu um erro selvagem</translation>
 <translation id="3263379510325043678">Erro de ligação do servidor</translation>
 <translation id="8994556588732085585">Por favor, para tentar novamente, feche e volte a abrir o banner de gorjetas.</translation>
+<translation id="8987454605694983241">ex.: <ph name="AMOUNT"/></translation>
+<translation id="4492470488449820476">A contribuição mínima é <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
 <translation id="4371618764691059036">A contribuição mensal foi enviada.</translation>
 <translation id="6356822617569064293">Data da próxima contribuição:</translation>
+<translation id="4783907814409710132">Sem pontos suficientes.</translation>
+<translation id="3593485149443019592">Sem tokens suficientes. <ph name="LINK_BEGIN"/>Adicione fundos<ph name="LINK_END"/>.</translation>
 <translation id="4622723187300249546">Contribuição esporádica</translation>
 <translation id="5268142130226208198">Valor da contribuição esporádica:</translation>
 <translation id="3669086939205397942">Espere, ainda não lhe é possível dar gorjeta</translation>
-<translation id="4758374243299807324">Publicação de [[user]]</translation>
-<translation id="1242162113777253768">Tweet de [[user]]</translation>
+<translation id="3288812755711687300">Publicação de <ph name="USER"/></translation>
+<translation id="5851002232791947896">Tweet de <ph name="USER"/></translation>
 <translation id="5531915212947569943">Lamentamos vê-lo partir…</translation>
 <translation id="1420756770787071946">Contribuir para este criador</translation>
-<translation id="3473919203449000069">Ao avançar, está a aceitar os<ph name="LINK_BEGIN"/>Termos do Serviço<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>Política de Privacidade<ph name="LINK_END"/>.</translation>
 <translation id="3271043362279673449">Agradecemos a sua contribuição!</translation>
 <translation id="379596083010863211">A sua contribuição esporádica foi enviada.</translation>
 <translation id="5096821444729034955">para publicação</translation>
 <translation id="2978223787436054634">Faça um tweet sobre o seu donativo</translation>
-<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Proceda a uma viagem rápida<ph name="LINK_END"/> or <ph name="LINK_BEGIN"/>learn more<ph name="LINK_END"/> for details.</translation>
+<translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Faça uma visita guiada<ph name="TOUR_LINK_END"/> ou <ph name="LEARN_LINK_BEGIN"/>saiba mais<ph name="LEARN_LINK_END"/>.</translation>
 <translation id="7465614181960492526">Ganhe Tokens &amp; Contribua</translation>
 <translation id="2731539192954672606">Ganhe tokens ao visualizar anúncios que respeitam a sua privacidade e apoie os seus sites preferidos e os criadores de conteúdo automaticamente.</translation>
 <translation id="1275213816424141989">Talvez mais tarde</translation>
@@ -352,11 +360,11 @@
 <translation id="3164498053837913829">(a partir dos seus ganhos com anúncios)</translation>
 <translation id="2070991379950719711">Comece a usar o Brave Rewards</translation>
 <translation id="6318696841371191107">Faça uma visita rápida</translation>
+<translation id="8465790416279415448">Ao continuar, aceita os <ph name="TOS_LINK_BEGIN"/>Termos de Utilização<ph name="TOS_LINK_END"/> e a <ph name="PP_LINK_BEGIN"/>Política de Privacidade<ph name="PP_LINK_END"/>.</translation>
 <translation id="2404165674840145940">Presentear com Brave Rewards</translation>
 <translation id="5820285701794581330">Ao usar o Brave Rewards, receberá BAT, que poderá usar para presentear os criadores.</translation>
 <translation id="5705882733397021510">Volte</translation>
 <translation id="185034574799484512">Proceda a uma viagem rápida</translation>
-<translation id="2359808026110333948">Continuar</translation>
 <translation id="8281886186245836920">Ignorar</translation>
 <translation id="1377600615067678409">Sair por agora</translation>
 <translation id="7930505144430343145">Bem-vindo ao Brave Rewards!</translation>
@@ -403,7 +411,7 @@
 <translation id="4396256076373444156">Ganhe pontos quando visualiza anúncios relevantes e que respeitam a sua privacidade.</translation>
 <translation id="2975780980638932742">Os Brave Ads chegaram!</translation>
 <translation id="3361548743396744457">Apoie os seus sites favoritos apenas ao navegar ou gratifique um site quando desejar.</translation>
-<translation id="6976444672879155794">Contribuir automaticamente [[processor]]</translation>
+<translation id="6976444672879155794">Contribuir [[processor]] automaticamente</translation>
 <translation id="4493850495402472953">e</translation>
 <translation id="8804164990146287819">Política de Privacidade</translation>
 <translation id="4281844954008187215">Termos de Serviço</translation>
@@ -448,7 +456,7 @@
 <translation id="418343137736963579">Número total de páginas que excluiu da contribuição automática.</translation>
 <translation id="1759104587873258696">expira em</translation>
 <translation id="6149218349077925111">para</translation>
-<translation id="8802504113265057166">O montante em [[currency]] não utilizado até à data de validade será automaticamente devolvido ao grupo de crescimento de utilizadores da Brave.</translation>
+<translation id="8802504113265057166">O montante em [[currency]] não utilizado até à data de validade será automaticamente devolvido ao User Growth Pool da Brave.</translation>
 <translation id="279567716178902927">Data de expiração da Oferta</translation>
 <translation id="2104073734684466851">Concessão</translation>
 <translation id="6476729769006815569">Olá, [[name]].</translation>
@@ -456,7 +464,7 @@
 <translation id="7335371657242627509">Incluir na Contribuição Automática</translation>
 <translation id="1864111464094315414">Início de sessão</translation>
 <translation id="4556504723624686474">A verificação da carteira permite-lhe gerir os seus fundos de maneira mais eficiente.</translation>
-<translation id="5594737784294211654">Precisa de um mínimo de 25 BAT para criar uma conta Uphold. Por favor, tente novamente mais tarde. <ph name="NEWLINE"/>Caso já tenha uma conta Uphold válida, efetue login.</translation>
+<translation id="5461792966682693675">Precisa de um mínimo de <ph name="AMOUNT"/> BAT para criar uma conta Uphold. Se já tiver uma conta Uphold verificada, inicie sessão.</translation>
 <translation id="3250511771491660127">Faça isto mensalmente</translation>
 <translation id="6028954173739504682">Gerir carteira</translation>
 <translation id="7886389832052393750">Apr</translation>
@@ -484,8 +492,6 @@
 <translation id="5736183007277264868">De momento não está disponível a concessão de tokens</translation>
 <translation id="8307851765167460403">Sem atividade ainda...</translation>
 <translation id="8589748782214271192">Não, Obrigado</translation>
-<translation id="3204579740854485097">Sem fundos de [[currency]] suficientes.</translation>
-<translation id="3330432260369310344">Sem fundos de [[currency]] suficientes.</translation>
 <translation id="3630697955794050612">desligado</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">ligar</translation>
@@ -556,7 +562,7 @@
 <translation id="4914597931214386232">Doações Token Reivindicadas</translation>
 <translation id="3494964159182650590">Resumo de Recompensas</translation>
 <translation id="1738658589626889850">Gravar como Ficheiro</translation>
-<translation id="2913994227901456490">Ver todos os [[numItems]] artigos</translation>
+<translation id="2913994227901456490">Ver todas as linhas ([[numItems]])</translation>
 <translation id="3010479539542250179">Ver todos os [[numSites]] sites</translation>
 <translation id="1549705559752367917">Enviar dica</translation>
 <translation id="3536298624341433814">Enviar a minha Gratificação</translation>
@@ -648,7 +654,7 @@
 <translation id="7840362246306242214">U.S. negociação de ações disponível na Uphold</translation>
 <translation id="3345432088196080137">Invista tão pouco quanto 1$ em ações em alta e troque fundos negociados como AAPL, TSLA ou AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/> sobre «Recompensas Brave»</translation>
-<translation id="629521674505004728">Ao clicar ao Começar a usar o Brave Rewards, concordo com <ph name="LINK_BEGIN"/>Termos de Serviço<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>Política de Privacidade<ph name="LINK_END"/>.</translation>
+<translation id="7443190393462029180">Ao clicar em Começar a usar o Brave Rewards, aceita os <ph name="TOS_LINK_BEGIN"/>Termos de Utilização<ph name="TOS_LINK_END"/> e a <ph name="PP_LINK_BEGIN"/>Política de Privacidade<ph name="PP_LINK_END"/>.</translation>
 <translation id="8344084848798035850">Atuais ganhos estimados para o presente mês.</translation>
 <translation id="5235444069025581717">Dicas e contribuições para este mês</translation>
 <translation id="1210965535849006928">Reivindicar as minhas Recompensas</translation>
@@ -756,10 +762,11 @@
 <translation id="5636651007798897342">Continuar pelo uso do servidor Cloudflare</translation>
 <translation id="2356070529366658676">Perguntar</translation>
 <translation id="2218918398178303658">DNS por HTTPS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Domínio Bloqueado</translation>
-<translation id="6631469728138660166">Site suspeito</translation>
+<translation id="6393849031898466746">Este site poderá tentar acompanhá-lo noutros sites</translation>
 <translation id="983774928604730749">O Brave impediu o seguinte site de carregar:</translation>
-<translation id="8250033559824599347">Este pode ser um site fraudulento, que o direciona para outros sites, para criar cookies de rastreamento ou executar outras ações invasivas da privacidade.</translation>
+<translation id="4781961723893779890">Este site poderá tentar associar alguns dos seus dados pessoais a um cookie antes de apresentar o conteúdo.</translation>
 <translation id="2459038234784107183">Não me avisem sobre este site novamente</translation>
 <translation id="8242426110754782860">Continuar</translation>
 <translation id="2501278716633472235">Voltar</translation>
@@ -817,8 +824,15 @@
 <translation id="4499666752625407848">Ocorreu um erro aquando da atualização.</translation>
 <translation id="62991515067726424">Este conteúdo foi carregado pelo protocolo IPFS</translation>
 <translation id="7263366446813126341">O sistema de ficheiros interplanetário (IPFS) é uma rede peer-to-peer pública para armazenamento e envio de dados. Pode saber mais acerca da integração do Brave ou configurar as definições do IPFS a qualquer momento.</translation>
+<translation id="3862600063748690056">Importação via IPFS concluída</translation>
+<translation id="8263749381887932384">Importação via IPFS parcialmente concluída</translation>
+<translation id="2145699434318651911">Erro ao importar via IPFS</translation>
+<translation id="5525148540855044244">Link partilhável copiado: <ph name="SHAREABLE_LINK"/></translation>
+<translation id="3741998951694470470">Erro ao obter dados para importar</translation>
+<translation id="7900950536120202771">Erro interno do nó do IPFS</translation>
+<translation id="1036635552229153800">Os dados foram carregados com sucesso, mas não foram movidos para o diretório brave-import. Pode fazê-lo manualmente na página de definições de importação.</translation>
 <translation id="7789840864192026963">Dar permissão</translation>
-<translation id="8092074243456635562">até o encerramento da página</translation>
+<translation id="7978789143098237970">até o encerramento da página</translation>
 <translation id="3523195733429162409">durante 24 horas</translation>
 <translation id="2373264732659722940">durante 1 semana</translation>
 <translation id="6318437367327684789">para sempre</translation>

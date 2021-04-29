@@ -179,6 +179,10 @@
     "message": "Pamahalaan ang mga custom na filter",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Pumasok sa element picker mode",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Advanced na View",
     "description": "Message for the advanced view option"

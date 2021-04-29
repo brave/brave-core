@@ -238,7 +238,7 @@
 <translation id="1737873393693460829">[[title]] 기능을 켜면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
 <translation id="2564425876266960486">Brave Browser BAT 카드 생성 오류</translation>
 <translation id="6473583070570450185">로그인하려면 인증된 지갑이 필요합니다</translation>
-<translation id="2106271389438168634">Uphold 지갑을 만들려면 최소 25 BAT가 있어야 합니다. Uphold로 지갑을 인증한 후에 다시 시도하십시오.</translation>
+<translation id="5949995321533425416">Uphold 지갑을 만들려면 최소 <ph name="AMOUNT"/>BAT가 필요합니다. Uphold로 지갑을 인증한 후 다시 시도하세요.</translation>
 <translation id="7422678632904904341">금액:</translation>
 <translation id="6969783933307596818">5초마다 자동으로 새로고침</translation>
 <translation id="5025866799968038247">잔액 정보</translation>
@@ -320,28 +320,36 @@
 <translation id="3922777918343537463">월간 기부 취소</translation>
 <translation id="9087994290002662101">금액 변경</translation>
 <translation id="1969724076378550685">월간 취소 확인</translation>
+<translation id="2359808026110333948">계속</translation>
 <translation id="6238322297266927861">기부 금액:</translation>
 <translation id="1723857724166389190">이 작성자에 대한 월간 기부가 취소되었습니다.</translation>
 <translation id="534368327994110883">현재 이 작성자를 지원하고 있습니다</translation>
 <translation id="2621124276654521177">현재 월간 기부</translation>
+<translation id="7723816962634734185">맞춤 금액</translation>
+<translation id="7286679368056222644">월별 지원금 설정액</translation>
+<translation id="4088764345615745058">맞춤 팁 금액</translation>
+<translation id="864162897141534043">팁을 보내려 합니다.</translation>
 <translation id="3084276630953238154">야생 버그가 나타났습니다</translation>
 <translation id="3263379510325043678">서버 연결 오류</translation>
 <translation id="8994556588732085585">다시 시도하려면 팁 배너를 닫았다가 다시 여세요.</translation>
+<translation id="8987454605694983241">예: <ph name="AMOUNT"/></translation>
+<translation id="4492470488449820476">최소 팁 금액: <ph name="AMOUNT"/><ph name="CURRENCY"/></translation>
 <translation id="4371618764691059036">월간 기부가 설정되었습니다.</translation>
 <translation id="6356822617569064293">다음 기부 날짜:</translation>
+<translation id="4783907814409710132">포인트가 부족합니다.</translation>
+<translation id="3593485149443019592">토큰이 부족합니다. $2의 <ph name="LINK_BEGIN"/>자금을 추가<ph name="LINK_END"/>.</translation>
 <translation id="4622723187300249546">일회성 팁</translation>
 <translation id="5268142130226208198">일회성 팁 액수:</translation>
 <translation id="3669086939205397942">잠깐만요, 아직 팁을 줄 수 없습니다</translation>
-<translation id="4758374243299807324">[[user]] 님의 게시물</translation>
-<translation id="1242162113777253768">[[user]] 님의 트윗</translation>
+<translation id="3288812755711687300"><ph name="USER"/> 님의 게시물</translation>
+<translation id="5851002232791947896"><ph name="USER"/> 님의 트윗</translation>
 <translation id="5531915212947569943">떠나신다니 안타깝습니다...</translation>
 <translation id="1420756770787071946">이 작성자 지원</translation>
-<translation id="3473919203449000069">계속 진행함으로써, 사용자는 <ph name="LINK_BEGIN"/>이용약관<ph name="LINK_END"/> 및 <ph name="LINK_BEGIN"/>개인정보처리방침<ph name="LINK_END"/>에 동의하게 됩니다.</translation>
 <translation id="3271043362279673449">지원해 주셔서 감사합니다!</translation>
 <translation id="379596083010863211">일회성 팁이 전송되었습니다.</translation>
 <translation id="5096821444729034955">그들의 게시물에 대해</translation>
 <translation id="2978223787436054634">사용자의 지원에 대한 트윗</translation>
-<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>간단히 살펴보거나<ph name="LINK_END"/> 또는 <ph name="LINK_BEGIN"/>더 알아보기<ph name="LINK_END"/> 하여 상세 내용을 알아봅니다.</translation>
+<translation id="6717671373796332174">자세한 정보는<ph name="TOUR_LINK_BEGIN"/>빠르게 둘러보기<ph name="TOUR_LINK_END"/> 또는 <ph name="LEARN_LINK_BEGIN"/>더 알아보기<ph name="LEARN_LINK_END"/>에서 확인하세요.</translation>
 <translation id="7465614181960492526">토큰 획득 &amp; 돌려주기</translation>
 <translation id="2731539192954672606">개인 정보를 존중하는 광고를 보고 토큰을 얻고 즐겨 찾는 사이트와 콘텐츠 크리에이터를 자동으로 지원하세요.</translation>
 <translation id="1275213816424141989">나중에</translation>
@@ -353,11 +361,11 @@
 <translation id="3164498053837913829">(광고 수입에서)</translation>
 <translation id="2070991379950719711">Brave Rewards 사용 시작</translation>
 <translation id="6318696841371191107">빠르게 투어하기</translation>
+<translation id="8465790416279415448">계속하면 <ph name="TOS_LINK_BEGIN"/>서비스 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인 정보 보호 정책<ph name="PP_LINK_END"/>에 동의하게 됩니다.</translation>
 <translation id="2404165674840145940">Brave Rewards 팁</translation>
 <translation id="5820285701794581330">Brave rewards를 사용하면 크리에이터에게 팁을 주는 데 사용할 수 있는 BAT를 얻을 수 있습니다.</translation>
 <translation id="5705882733397021510">돌아가기</translation>
 <translation id="185034574799484512">간단히 살펴봅시다</translation>
-<translation id="2359808026110333948">계속</translation>
 <translation id="8281886186245836920">건너뛰기</translation>
 <translation id="1377600615067678409">지금은 넘어가기</translation>
 <translation id="7930505144430343145">Brave Rewards에 오신 것을 환영합니다!</translation>
@@ -457,7 +465,7 @@
 <translation id="7335371657242627509">자동 기부에 포함하기</translation>
 <translation id="1864111464094315414">로그인</translation>
 <translation id="4556504723624686474">지갑을 인증하면 자금을 보다 효율적으로 관리할 수 있습니다.</translation>
-<translation id="5594737784294211654">Uphold 계정을 만들려면 최소 25 BAT가 있어야 합니다. 나중에 다시 시도하세요. <ph name="NEWLINE"/>인증된 Uphold 계정이 이미 있는 경우 계속해서 로그인하세요.</translation>
+<translation id="5461792966682693675">Uphold 지갑을 만들려면 최소 <ph name="AMOUNT"/>BAT가 필요합니다. 인증된 Uphold 계정이 이미 있는 경우, 로그인하세요.</translation>
 <translation id="3250511771491660127">이것을 매달 하기</translation>
 <translation id="6028954173739504682">월렛 관리</translation>
 <translation id="7886389832052393750">4월</translation>
@@ -485,8 +493,6 @@
 <translation id="5736183007277264868">현재 이용 가능한 토큰 보조금이 없습니다.</translation>
 <translation id="8307851765167460403">아직 활동 없음</translation>
 <translation id="8589748782214271192">아뇨, 괜찮아요</translation>
-<translation id="3204579740854485097">[[currency]] 잔액이 충분하지 않습니다.</translation>
-<translation id="3330432260369310344">[[currency]]가 충분하지 않습니다.</translation>
 <translation id="3630697955794050612">끄기</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">위에</translation>
@@ -652,7 +658,7 @@
 <translation id="7840362246306242214">미국 주식 거래 Uphold에서 가능</translation>
 <translation id="3345432088196080137">AAPL, TSLA 또는 AMZN 같은 인기 주식 및 상장지수펀드에 1달러만 투자하세요</translation>
 <translation id="4360054110030715117">Brave 상금에 대한 <ph name="LINK_BEGIN"/>자세한 정보 보기<ph name="LINK_END"/></translation>
-<translation id="629521674505004728">Brave Rewards 사용 시작을 클릭하면 <ph name="LINK_BEGIN"/>서비스 약관<ph name="LINK_END"/> 및 <ph name="LINK_BEGIN"/>개인 정보 보호 정책<ph name="LINK_END"/>에 동의하는 것입니다.</translation>
+<translation id="7443190393462029180">Brave Rewards 사용 시작을 클릭하면 <ph name="TOS_LINK_BEGIN"/>서비스 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인 정보 보호 정책<ph name="PP_LINK_END"/>에 동의하게 됩니다.</translation>
 <translation id="8344084848798035850">이번 달까지의 예상 수익</translation>
 <translation id="5235444069025581717">이번 달 팁과 기부</translation>
 <translation id="1210965535849006928">내 리워드 청구</translation>
@@ -760,10 +766,11 @@
 <translation id="5636651007798897342">Cloudflare 서버를 이용하여 계속 진행</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="2218918398178303658">HTTPS상의 DNS</translation>
+<translation id="1448289340149908413">이더리움</translation>
 <translation id="2468755552460246661">도메인 차단</translation>
-<translation id="6631469728138660166">앞쪽에 의심스러운 사이트</translation>
+<translation id="6393849031898466746">이 사이트는 다른 사이트에서도 귀하의 추적을 시도할 수 있습니다.</translation>
 <translation id="983774928604730749">Brave는 다음 사이트의 로드를 차단했습니다:</translation>
-<translation id="8250033559824599347">이 사이트는 사기성 사이트일 수 있으며, 추적 쿠키를 설정하기 위해 여러 사이트 사이를 이동하게 하거나 그 밖의 개인 정보를 침해할 수 있습니다.</translation>
+<translation id="4781961723893779890">이 사이트는 콘텐츠를 표시하기 전에 쿠키로 귀하의 개인 데이터 중 일부의 연결을 시도할 수 있습니다.</translation>
 <translation id="2459038234784107183">이 사이트에 대해 다시 경고하지 않음</translation>
 <translation id="8242426110754782860">계속</translation>
 <translation id="2501278716633472235">뒤로 이동</translation>
@@ -821,8 +828,15 @@
 <translation id="4499666752625407848">업데이트 중에 오류가 발생했습니다.</translation>
 <translation id="62991515067726424">이 콘텐츠는 IPFS 프로토콜을 통해 로드되었습니다.</translation>
 <translation id="7263366446813126341">IPFS(분산형 파일 시스템)는 피어 투 피어 데이터 저장 및 제공을 위한 공용 네트워크입니다. 언제든지 Brave에 통합된 요소와 IPFS 설정 구성 방법에 대해 자세히 알아보세요.</translation>
+<translation id="3862600063748690056">IPFS 가져오기 완료됨</translation>
+<translation id="8263749381887932384">IPFS 가져오기가 일부 완료됨</translation>
+<translation id="2145699434318651911">IPFS 가져오기 실패</translation>
+<translation id="5525148540855044244">공유 가능 링크 복사됨: <ph name="SHAREABLE_LINK"/></translation>
+<translation id="3741998951694470470">가져올 데이터 가져오기 실패</translation>
+<translation id="7900950536120202771">IPFS 노드 내부 오류</translation>
+<translation id="1036635552229153800">데이터가 성공적으로 업로드되었지만 brave-import 디렉토리로 이동하지 않았습니다. 가져오기 설정 페이지에서 이 작업을 수동으로 수행할 수 있습니다.</translation>
 <translation id="7789840864192026963">권한 부여</translation>
-<translation id="8092074243456635562">이 페이지를 닫을 때까지</translation>
+<translation id="7978789143098237970">이 페이지를 닫을 때까지</translation>
 <translation id="3523195733429162409">24시간 동안</translation>
 <translation id="2373264732659722940">1주 동안</translation>
 <translation id="6318437367327684789">영구적</translation>
