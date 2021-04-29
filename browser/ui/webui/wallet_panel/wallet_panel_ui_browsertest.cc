@@ -62,7 +62,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, InitialUIRendered) {
   const std::string wallet_panel_js =
-      "!!document.querySelector('wallet-panel-app')";
+      "!!document.querySelector('#mountPoint')";
   bool exists = content::EvalJs(webui_contents_.get(), wallet_panel_js,
                                 content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                 ISOLATED_WORLD_ID_CHROME_INTERNAL)
