@@ -15,6 +15,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -202,7 +203,7 @@ bool AdBlockServiceTest::StartAdBlockRegionalServices() {
 
 void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
   scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-      g_brave_browser_process->ad_block_service()->GetTaskRunner()));
+      g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
   ASSERT_TRUE(tr_helper->Run());
   scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
       base::CreateSingleThreadTaskRunner({BrowserThread::IO}).get()));
