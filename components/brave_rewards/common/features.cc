@@ -13,5 +13,8 @@ namespace features {
 const base::Feature kBitflyerFeature{"BraveRewardsBitflyer",
                                      base::FEATURE_DISABLED_BY_DEFAULT};
 
+const base::Feature kVerboseLoggingFeature{"BraveRewardsVerboseLogging",
+                                           base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace brave_rewards

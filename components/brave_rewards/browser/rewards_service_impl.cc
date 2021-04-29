@@ -332,6 +332,9 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
   content::URLDataSource::Add(profile_,
                               std::make_unique<BraveRewardsSource>(profile_));
   ready_ = std::make_unique<base::OneShotEvent>();
+
+  if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature))
+    persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -2275,15 +2278,12 @@ void RewardsServiceImpl::WriteDiagnosticLog(const std::string& file,
                                             const int line,
                                             const int verbose_level,
                                             const std::string& message) {
-  if (ledger_for_testing_ || !should_persist_logs_) {
+  if (ledger_for_testing_ || resetting_rewards_) {
     return;
   }
 
-  if (resetting_rewards_) {
-    return;
-  }
-
-  if (verbose_level > kDiagnosticLogMaxVerboseLevel) {
+  if (verbose_level > kDiagnosticLogMaxVerboseLevel ||
+      verbose_level > persist_log_level_) {
     return;
   }
 
@@ -2426,13 +2426,13 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       continue;
     }
 
+    // The "persist-logs" command-line flag is deprecated and will be removed
+    // in a future version. Use --enable-features=BraveRewardsVerboseLogging
+    // instead.
     if (name == "persist-logs") {
       const std::string lower = base::ToLowerASCII(value);
-
       if (lower == "true" || lower == "1") {
-        should_persist_logs_ = true;
-      } else {
-        should_persist_logs_ = false;
+        persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
       }
     }
 
