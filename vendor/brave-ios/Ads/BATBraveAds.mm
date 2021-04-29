@@ -99,7 +99,7 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
 @property(nonatomic) BATCommonOperations* commonOps;
 @property(nonatomic) BOOL networkConnectivityAvailable;
 @property(nonatomic, copy) NSString* storagePath;
-@property (nonatomic) dispatch_group_t prefsWriteGroup;
+@property(nonatomic) dispatch_group_t prefsWriteGroup;
 @property(nonatomic) dispatch_queue_t prefsWriteThread;
 @property(nonatomic) NSMutableDictionary* prefs;
 @property(nonatomic, copy) NSDictionary* adsResourceMetadata;
