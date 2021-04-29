@@ -5039,6 +5039,7 @@
 <translation id="6793723358811598107">'<ph name="CURRENTKEY"/>' 키는 이미 '<ph name="ACTION"/>' 작업에 할당되었습니다. 종료하려면 아무 키나 누르세요.</translation>
 <translation id="6795884519221689054">판다</translation>
 <translation id="6797493596609571643">문제가 발생했습니다.</translation>
+<translation id="679845623837196966">읽기 목록 표시</translation>
 <translation id="6798578729981748444">가져오기를 완료하려면 Firefox 창을 모두 닫으세요.</translation>
 <translation id="6798780071646309401">Caps Lock 사용</translation>
 <translation id="6798954102094737107">플러그인: <ph name="PLUGIN_NAME"/></translation>
@@ -7127,6 +7128,7 @@
       <ph name="LIST_ITEM"/>Brave 연결 진단 실행
     <ph name="END_LIST"/></translation>
 <translation id="916607977885256133">PIP 모드</translation>
+<translation id="9167063903968449027">읽기 목록 표시</translation>
 <translation id="9168436347345867845">나중에</translation>
 <translation id="9169496697824289689">단축키 보기</translation>
 <translation id="916964310188958970">이러한 추천이 표시된 이유는 무엇인가요?</translation>
@@ -7269,10 +7271,16 @@
 <translation id="5186185447130319458">시크릿 모드</translation>
 <translation id="2579188629646253712">시크릿 모드 종료하기</translation>
 <translation id="1001131747196960052">개인정보 보호 닫기</translation>
-<translation id="7475335772460644497">{COUNT, plural, =0 {Open all in &amp;private window} =1 {Open in &amp;private window} 기타{Open all ({COUNT}) in &amp;private window}}</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {모두 시크릿 창에서 열기}
+          =1 {시크릿 창에서 열기}
+          other {모두({COUNT}개) 시크릿 창에서 열기}}</translation>
 <translation id="2431625704210501303">&amp;시크릿 창에서 열기</translation>
 <translation id="4620367155626060530">북마크바 표시(&amp;S)</translation>
-<translation id="1448315815373449655">{COUNT, plural, =0 {Open All in &amp;Private Window} =1 {Open in &amp;Private Window} 기타  {Open All ({COUNT}) in &amp;Private Window}}</translation>
+<translation id="1448315815373449655">{COUNT, plural,
+          =0 {모두 시크릿 창에서 열기}
+          =1 {시크릿 창에서 열기}
+          other {모두({COUNT}개) 시크릿 창에서 열기}}</translation>
 <translation id="1985165269306590797">&amp; 시크릿 창에서 열기</translation>
 <translation id="4680518314108745448">북마크바 표시(&amp;S)</translation>
 <translation id="642436385689435488">모두 시크릿 창으로 열기</translation>

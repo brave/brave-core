@@ -10,6 +10,8 @@
 <translation id="9148058034647219655">બહાર નીકળો</translation>
 <translation id="520895744850022668">બધી જગ્યા પર HTTPS</translation>
 <translation id="8710614491157212477">શક્ય હોય ત્યારે HTTP ને બદલે HTTPS નો ઉપયોગ કરીને સમર્થિત સાઇટો ખોલે છે</translation>
+<translation id="2356070529366658676">કહો</translation>
+<translation id="4176463684765177261">અક્ષમ કરેલું</translation>
 <translation id="8387201461264842096">જાહેરાત અવરોધિત કરો</translation>
 <translation id="1934885595886623674">જાહેરાતો લોડ થવાથી રોકે છે</translation>
 <translation id="7458422973722236530">ફિંગરપ્રિન્ટિંગ સુરક્ષા</translation>
@@ -28,7 +30,6 @@
 <translation id="6332924730165919598">તમામ ટૅબ્સ બંધ કરવાથી Brave બંધ થાય છે</translation>
 <translation id="1580125697191336644">પ્રાયોગિક. જ્યારે ટૅબ સક્રિય ન હોય અથવા ઉપકરણનું સ્ક્રીન બંધ હોય ત્યારે પૃષ્ઠભૂમિમાં વિડીઓમાંથી ઑડિઓ ચલાવવાનું સક્ષમ કરે છે. જો આ સુવિધા કાર્યરત ન હોય તો ડેસ્કટૉપ મોડ પર સ્વિચ કરવાનો પ્રયાસ કરો.</translation>
 <translation id="59174027418879706">સક્ષમ</translation>
-<translation id="4176463684765177261">અક્ષમ કરેલું</translation>
 <translation id="4150201353443180367">ડિસ્પ્લે</translation>
 <translation id="2433507940547922241">દેખાવ</translation>
 <translation id="2804710924397009224">Brave પુરસ્કારો ચિહ્ન છુપાવો</translation>
@@ -82,7 +83,6 @@
 <translation id="8280223431922155812">નવેમ્બર</translation>
 <translation id="4254029385847607686">ડિસેમ્બર</translation>
 <translation id="3780605330121608425">તમારું વૉલેટ</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="1165667598801520610">ભંડોળ ઉમેરો</translation>
 <translation id="8428213095426709021">સેટિંગ્સ</translation>
 <translation id="8772672608371898774">Brave ચકાસાયેલ પ્રકાશક</translation>
@@ -102,6 +102,7 @@
 <translation id="7335371657242627509">આપમેળે-ફાળામાં સામેલ કરો</translation>
 <translation id="5463954686005964104">આ સાઇટને માસિક ટીપ આપો</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">તમે <ph name="BAT_VALUE"/> BAT નો ફાળો આપ્યો છે.</translation>
 <translation id="7997676409547731821">અપૂરતા ભંડોળને કારણે આપમેળે-ફાળો અને માસિક ટીપ્સ માટે તમારું શેડ્યૂલ કરેલ માસિક ચુકવણી પૂર્ણ થઈ શક્યું નથી. અમે 30 દિવસમાં ફરી પ્રયાસ કરીશું.</translation>
 <translation id="5306913077198665897">તમારી ટીપ પર પ્રક્રિયા કરવામાં સમસ્યા આવી, કૃપયા ફરી પ્રયાસ કરો.</translation>
 <translation id="2429828319207652823">તમારા યોગદાન પર પ્રક્રિયા કરવામાં સમસ્યા આવી.</translation>
@@ -116,6 +117,9 @@
 <translation id="7510166204621526816">Brave પુરસ્કારો સર્વર પ્રતિસાદ આપતું નથી. અમે તેને શક્ય તેટલી વહેલી તકે ઠીક કરીશું.</translation>
 <translation id="683765328936486920">YouTube પર</translation>
 <translation id="8969049974285901797">Twitch પર</translation>
+<translation id="3692362746128814480">તમે યોગદાન પ્રાપ્ત કરવા માટે હજી સુધી સાઇન અપ કર્યા નથી 
+તેવા નિર્માતાઓ માટે <ph name="BAT_VALUE"/> BAT નિયુક્ત કર્યા છે. તમારું બ્રાઉઝર તેઓની ચકાસણી કરે ત્યાં સુધી 
+અથવા 90 દિવસ પસાર ન થાય ત્યાં સુધી યોગદાન આપવાનો પ્રયત્ન કરશે.</translation>
 <translation id="6940273954212603510">કૃપયા કરીને</translation>
 <translation id="1036277985068412734">ભંડોળ ઉમેરો</translation>
 <translation id="3492491948683276944">માસિક ટીપ સેટ કરો</translation>
@@ -178,4 +182,5 @@
 <translation id="8688672835843460752">ઉપલબ્ધ</translation>
 <translation id="1078265935778232285">Brave Browser માં સ્વાગત છે</translation>
 <translation id="3479552764303398839">હમણાં નહીં</translation>
+<translation id="8798099450830957504">ડિફૉલ્ટ</translation>
 </translationbundle>

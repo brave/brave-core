@@ -19,6 +19,13 @@
 <translation id="8710614491157212477">সম্ভব হলে HTTP এর পরিবর্তে HTTPS ব্যবহার করে সমর্থিত সাইটগুলি খুলুন</translation>
 <translation id="4022987104439075738">IPFS গেটওয়ে</translation>
 <translation id="2688519859165248360">একটি IPFS গেটওয়ের মাধ্যমে IPFS রিসোর্সগুলোতে নেভিগেশন করার অনুমতি দেয়</translation>
+<translation id="7534079972563542000">অপ্রতিরোধ্য ডোমেইনসমূহ</translation>
+<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="3894650624018948468">সমাধান পদ্ধতি</translation>
+<translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
+<translation id="4176463684765177261">অক্ষম</translation>
+<translation id="2218918398178303658">HTTPS এর ওপরে DNS</translation>
+<translation id="1448289340149908413">ইথেরিয়াম</translation>
 <translation id="8387201461264842096">বিজ্ঞাপন ব্লক করা</translation>
 <translation id="1934885595886623674">বিজ্ঞাপনগুলি লোড হওয়া থেকে বাধা দেয়</translation>
 <translation id="7458422973722236530">আঙ্গুলের ছাপ নেওয়ার সুরক্ষা</translation>
@@ -27,7 +34,7 @@
 <translation id="1680858055899097121">ব্রাউজিং সেশন চলাকালীন ট্যাবগুলি অবিচল রাখবেন না</translation>
 <translation id="6469509880167172749">সম্পূর্ণভাবে ব্যক্তিগত পণ্যের বিশ্লেষকগুলি স্বয়ংক্রিয়ভাবে Brave এ পাঠান</translation>
 <translation id="7090566321964540749">এই নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে দেয়।</translation>
-<translation id="347604927162577559">ডেটা\nসংরক্ষিত হয়েছে</translation>
+<translation id="7977176350719484850">আনুমানিক ডেটা\nসাশ্রয়</translation>
 <translation id="9008534313521214777">আনুমানিক সময় \ এবং সংরক্ষণ</translation>
 <translation id="6572660632052512096">ডেস্কটপ মোড</translation>
 <translation id="1340503115760585811">নতুন ট্যাবগুলির জন্য ডেস্কটপ ভিউ সক্ষম করুন</translation>
@@ -41,7 +48,6 @@
 <translation id="6332924730165919598">সমস্ত ট্যাব বন্ধ করলে তা ব্রেভ বন্ধ করে</translation>
 <translation id="1580125697191336644">পরীক্ষামূলক। যখন ট্যাবটি সক্রিয় না থাকে বা ডিভাইস স্ক্রীন বন্ধ থাকে তখন পটভূমিতে ভিডিওর অডিও প্লে সক্ষম করে। এই বৈশিষ্ট্যটি কাজ না করলে ডেস্কটপ মোডে পাল্টানোর চেষ্টা করুন।</translation>
 <translation id="59174027418879706">সক্ষম করা হযেছে</translation>
-<translation id="4176463684765177261">অক্ষম</translation>
 <translation id="4150201353443180367">প্রদর্শন</translation>
 <translation id="2433507940547922241">উপস্থিতি</translation>
 <translation id="2804710924397009224">Brave রিওয়ার্ড আইকন লুকান</translation>
@@ -105,7 +111,6 @@
 <translation id="8280223431922155812">নভেম্বর</translation>
 <translation id="4254029385847607686">ডিসেম্বর</translation>
 <translation id="3780605330121608425">আপনার ওয়ালেট</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">অর্থ যোগ করুন</translation>
@@ -128,7 +133,7 @@
 <translation id="7335371657242627509">স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন</translation>
 <translation id="5463954686005964104">প্রতি মাসে সাইটে টিপ দিন</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4751553692764711651">আপনি অবদান রেখেছেন <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/>.</translation>
+<translation id="4781696154289395607">আপনি <ph name="BAT_VALUE"/> BAT এ অবদান রেখেছেন।</translation>
 <translation id="7997676409547731821">স্বতঃ-অবদান এবং মাসিক পরামর্শের জন্য আপনার সময়সূচিত মাসিক পেমেন্ট পর্যাপ্ত ফান্ড না থাকায় সম্পূর্ণ করা যাবে না। আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।</translation>
 <translation id="5306913077198665897">আপনার পরামর্শ প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="2429828319207652823">আপনার অনুদান প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে।</translation>
@@ -144,7 +149,9 @@
 <translation id="7510166204621526816">Brave পুরস্কারের সার্ভারটি কাজ করছে না। আমরা যত তাড়াতাড়ি সম্ভব এটির সমাধান করব।</translation>
 <translation id="683765328936486920">YouTube এ</translation>
 <translation id="8969049974285901797">Twitch এ</translation>
-<translation id="4376933248999950592">আপনি মনোনীত করেছেন <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> অবদান গ্রহণের জন্য এখনও সাইন আপ করেন নি এমন স্রষ্টাদের জন্য।আপনার ব্রাউজারটি যাচাই না করা অবধি অবদান রাখার চেষ্টা করবে বা যতক্ষণ না 90 দিন কাটছে।</translation>
+<translation id="3692362746128814480">আপনি অবদানগুলি গ্রহণ করতে এখনও পর্যন্ত সাইন আপ করেননি এমন নির্মাতার জন্য <ph name="BAT_VALUE"/> BAT
+ডিজাইন করেছেন। আপনার ব্রাউজার অবদান রাখার চেষ্টা চালিয়ে যাবে
+যতক্ষণ না তারা যাচাই করে বা 90 দিন কেটে যায়।</translation>
 <translation id="3101693828171454453">যথেষ্ট না <ph name="TOKEN"/></translation>
 <translation id="6940273954212603510">অনুগ্রহ করে</translation>
 <translation id="1036277985068412734">অর্থ যোগ করুন</translation>
@@ -219,15 +226,10 @@
 <translation id="7541582550122501404">অবদান মুলতুবি রয়েছে</translation>
 <translation id="8520059774736886747">সৃষ্টিকর্তা <ph name="PUBLISHER_NAME"/> একদম সাম্প্রতিক কালেই যাচাই করা হয়েছে</translation>
 <translation id="7924320838799747606">আপনার ব্যালেন্স পরিমাণ</translation>
-<translation id="6160106411363856968">BAP</translation>
-<translation id="1081826981536899387">BAT পয়েন্টগুলি</translation>
 <translation id="9212459913845238740">অনুদানজনিত পয়েন্ট দাবি করা হয়েছে</translation>
 <translation id="2132683977638223450">অনুদানজনিত পয়েন্ট বিনামূল্যে</translation>
 <translation id="1486343603936278248">স্মারক</translation>
 <translation id="8713995420537272453">পয়েন্ট</translation>
-<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
-<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
-<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
 <translation id="8522669544471808198">পটভূমির চিত্রগুলি দেখান</translation>
 <translation id="3870475560794762985">স্পনসর করা ছবিগুলি দেখান</translation>
@@ -294,6 +296,7 @@
 <translation id="7396366757003005317">ফ্রিঙ্গারপ্রিন্টিং ব্লক করা হয়েছে (কঠোর, সাইটগুলিকে ভাঙ্গতে পারে)</translation>
 <translation id="700453611199558021">ফ্রিঙ্গারপ্রিন্টিং ব্লক করা হয়েছে (আদর্শ)</translation>
 <translation id="769702552748212954">সমস্ত ফিঙ্গারপ্রিন্টিং এর অনুমতি দিন</translation>
+<translation id="876424292214881779">বিজ্ঞাপন এবং অন্যান্য সন্দেহজনক বিষয়গুলিকে ব্লক করা হয়েছে</translation>
 <translation id="5142293891785304489">ট্র্যাকার, বিজ্ঞাপন এবং মোর অবরুদ্ধ</translation>
 <translation id="6930134873084561197">সাইটগুলিতে অনেক সময়েই কুকিগুলি এবং স্ক্রিপ্টগুলি অন্তর্ভুক্ত থাকে যা আপনাকে এবং আপনার যন্ত্রকে শনাক্ত করার চেষ্টা করে। আপনি কে এবং প্রতিটি সাইটে আপনি কী করছেন তা জানতে সারা ওয়েব ট্র্যাকিং জুড়ে এইগুলিআপনাকে অনুসরণ করতে চায়।\n\nব্রেভ এই বিষয়গুলিকে অবরুদ্ধ করে দেয় যাতে আপনি চারপাশে অনুসৃত না হয়ে ব্রাউজ করতে পারেন।</translation>
 <translation id="8553998445606452168">ব্রেভ-এর শিল্ড-গুলির সম্পর্কে</translation>
@@ -321,6 +324,23 @@
 <translation id="5806208250835099572">Brave Shields প্রতিটি সাইটে আপনার অনলাইন গোপনীয়তা রক্ষা করে।</translation>
 <translation id="5617673581653540121">আপনার সংযোগটি এখন এনক্রিপ্ট করা হয়েছে।</translation>
 <translation id="4055107796760496928">যদি উপলভ্য থাকে তবে Brave আপনাকে স্বয়ংক্রিয়ভাবে সুরক্ষিত সংযোগে আপগ্রেড করে।</translation>
+<translation id="8869714780588464835">সংবাদটি শেয়ার করুন</translation>
+<translation id="7888588008014907646">প্রতিদিন আমি Brave দিয়ে ওয়েব ব্রাউজ করে ডেটা সাশ্রয় করি।</translation>
+<translation id="5372054974373489308">1000 ট্র্যাকার এবং বিজ্ঞাপন ব্লক করা হয়েছে!</translation>
+<translation id="2338952568654182692">5000 ট্র্যাকার এবং বিজ্ঞাপন ব্লক করা হয়েছে!</translation>
+<translation id="5289711064670408815">10,000 ট্র্যাকার এবং বিজ্ঞাপন ব্লক করা হয়েছে!</translation>
+<translation id="7150609425870119925">25,000 ট্র্যাকার এবং বিজ্ঞাপন ব্লক করা হয়েছে!</translation>
+<translation id="7856423737692274943">75,000 ট্র্যাকার এবং বিজ্ঞাপন ব্লক করা হয়েছে!</translation>
+<translation id="7252948690584461484">100,000 ট্র্যাকার এবং বিজ্ঞাপন ব্লক করা হয়েছে!</translation>
+<translation id="7579633043057546002">250,000 ট্র্যাকার এবং বিজ্ঞাপন ব্লক করা হয়েছে!</translation>
+<translation id="8710984962087186365">500,000 ট্র্যাকার এবং বিজ্ঞাপন ব্লক করা হয়েছে!</translation>
+<translation id="4383614608366907253">1,000,000 ট্র্যাকার এবং বিজ্ঞাপন ব্লক করা হয়েছে!</translation>
+<translation id="6819535527112707811">অভিনন্দন, আপনি একজন বিশেষ ব্যক্তি।</translation>
+<translation id="5819231438994979709">অভিনন্দন। আপনি’একটি এক্সক্লুসিভ ক্লাবের অংশ।</translation>
+<translation id="5174835622895450943">অভিনন্দন। আপনি প্রস-এ যোগদান করেছেন।</translation>
+<translation id="4625546020186631261">অভিনন্দন। আপনি’একজন মাষ্টার হয়ে গেছেন।</translation>
+<translation id="4288835546846020774">অভিনন্দন। আপনি’একজন গ্র্যান্ড মাষ্টার হয়ে গেছেন।</translation>
+<translation id="6863752373888328811">অভিনন্দন। আপনি কিংবদন্তী।</translation>
 <translation id="4776948189086901857">Brave সব জায়গায় কাজ করে</translation>
 <translation id="1606322780901645965">একটি আরো দ্রুত এবং আরো গোপনীয় ওয়েবের জন্য আপনার ল্যাপটপ বা ট্যাবলেটে brave.com এ Brave ডাউনলোড করুন</translation>
 <translation id="8374242949413616101">গোপনীয়তা রক্ষা</translation>
@@ -359,7 +379,7 @@
 <translation id="1880168210969863408">দারুণ! আপনি Brave ব্রাউজার দিয়ে 10 মিনিট লোডিং সময় বাঁচিয়েছেন।&#128168;&#128168;</translation>
 <translation id="7408493389591475748">গোপনীয়তা রিপোর্টিং দেখতে ব্রাউজিং শুরু করুন</translation>
 <translation id="9080777565335515917">গোপনীয় এবং নিরাপদ ব্রাউজাইংয়ের জন্য Brave কে আপনার ডিফল্ট ব্রাউজার হিসেবে সেট করুন।</translation>
-<translation id="7801488941710395275">brave কে আপনার গোপনীয়তার পরিসংখ্যান দেখার অনুমতি দিন</translation>
+<translation id="1390943217516275883">brave কে আপনার গোপনীয়তার পরিসংখ্যান দেখার অনুমতি দিন</translation>
 <translation id="1763352720905582220">একটি সাপ্তাহিক গোপনীয়তার রিপোর্ট পাঠায়</translation>
 <translation id="1811691435325545066">সকল গোপনীয়তার রিপোর্টের ডেটা সাফ করে</translation>
 <translation id="8089997572759938512">আপনার গোপনীয়তার রিপোর্টগুলিকে শূণ্যতে রিসেট করে</translation>
@@ -480,4 +500,10 @@
 <translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0.00 BAT</translation>
 <translation id="4193129043743994339">0.00 USD</translation>
+<translation id="8792121506918889955">WebRTC IP পরিচালনার নীতি</translation>
+<translation id="8798099450830957504">ডিফল্ট</translation>
+<translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
+<translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
+<translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
+<translation id="3171931580569169744">ট্যাব গ্রুপগুলি সক্রিয় করুন</translation>
 </translationbundle>

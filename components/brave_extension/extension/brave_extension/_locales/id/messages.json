@@ -171,9 +171,17 @@
     "message": "Ubah perisai global baku",
     "description": "Message for the button action linking to the settings page"
   },
+  "addBlockElement": {
+    "message": "Blokir elemen lewat pemilih",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
   "manageCustomFilters": {
     "message": "Kelola filter ubah suaian",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Masuk ke moda pemilih elemen",
+    "description": "Message for context menu that enables the element picker UI on the page."
   },
   "advancedView": {
     "message": "Tampilan Lanjutan",

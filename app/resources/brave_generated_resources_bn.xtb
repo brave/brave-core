@@ -62,9 +62,19 @@
 <translation id="7643538479215207633">IPFS ব্যবহার করে খুলুন</translation>
 <translation id="3094628781200061820">IPFS থেকে ফাইলগুলো প্রকাশ এবং পুনরুদ্ধার করুন</translation>
 <translation id="1672270084584211506">অনিয়ন উপলব্ধ</translation>
+<translation id="4901618511712685702">IPFS-এ আমদানি করুন</translation>
+<translation id="6794469945030154569">এই পৃষ্ঠা</translation>
+<translation id="5037852323412456577">নির্বাচিত ছবি</translation>
+<translation id="2715839724138372481">নির্বাচিত ভিডিও</translation>
+<translation id="4227945450504703638">নির্বাচিত অডিও</translation>
+<translation id="7895302206188277628">লিঙ্ক করা বিষয়বস্তু</translation>
+<translation id="4322612543319315652">নির্বাচিত পাঠ্য IPFS-এ আমদানি করুন</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="4703780849509456860">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3488584642074079080">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
+<translation id="7475547933708221517">IPFS ব্যবহার করে স্থানীয় ফাইল শেয়ার করুন</translation>
+<translation id="784573715436258741">IPFS ব্যবহার করে স্থানীয় ফাইল শেয়ার করুন</translation>
 <translation id="6313675821927505581">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="2638041073279639246">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
@@ -147,7 +157,7 @@
 <translation id="4112587618563511470">অবৈধ সিঙ্ক কোড, অনুগ্রহ করে চেক করুন এবং আবার চেষ্টা করুন।</translation>
 <translation id="2339730291919608488">Sync শৃঙ্খল ত্যাগ করুন</translation>
 <translation id="115699408012835975">আপনি যদি সিঙ্ক রিসেট করেন তহালে এর সাথে সিঙ্ক করার জন্য আপনাকে অন্য ডিভাইস থেকে একটি সিঙ্ক কোডটি পুনরায় প্রবেশ করতে হবে। আপনি কি এগিয়ে যাওয়ার বিষয়ে নিশ্চিত?</translation>
-<translation id="339086854515247923">আপনি কি সিঙ্ক চেন থেকে নির্বাচিত ডিভাইসটি মুছে ফেলার বিষয়ে নিশ্চিত?</translation>
+<translation id="6092564993102418148">আপনি কি সিঙ্ক চেন থেকে নির্বাচিত ডিভাইসটি মুছে ফেলার বিষয়ে নিশ্চিত?</translation>
 <translation id="3396347744975515056">Brave সিঙ্ক আপগ্রেড করা হয়েছে এবং সেটআপ করা প্রয়োজন</translation>
 <translation id="7473245612074035141">সেটআপ আরম্ভ করুন</translation>
 <translation id="3411013544209536575">সহায়ক পরামর্শসমূহ</translation>
@@ -169,12 +179,13 @@
 <translation id="757886143331967039">অবমানিত ক্রিপ্টো ওয়ালেটগুলোর এক্সটেনশন স্টার্টআপ-এ লোড করুন</translation>
 <translation id="6864914031231797928">এক্সটেনশনগুলির জন্য Google লগইন এর অনুমতি দিন</translation>
 <translation id="5927916530277631319">অপ্রতিরোধ্য ডোমেইনগুলোর সমস্যা সমাধানের উপায়</translation>
+<translation id="8412057160793088103">HTTPS এ DNS এবং ইথেরিয়াম গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK"/>আরো জানুন<ph name="END_LINK"/>।</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) সমাধানের উপায়</translation>
 <translation id="9170907049676078643">IPFS সংস্থানগুলি সমাধান করার পদ্ধতি</translation>
 <translation id="1327977588028644528">গেটওয়ে</translation>
 <translation id="80225669816651290">স্থানীয় নোড</translation>
 <translation id="4927734062756955434">IPFS পাবলিক গেটওয়ে ঠিকানা</translation>
-<translation id="5539104255771715383">IPFS স্থানীয় নোড এবং গেটওয়ে গোপনীয়তার গুরুত্বগুলো সম্পর্কে <ph name="BEGIN_LINK_MPL"/>আরও জানুন<ph name="END_LINK_MPL"/>।</translation>
+<translation id="3399481770463167943">IPFS স্থানীয় নোড এবং গেটওয়ে গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK_MPL"/>আরো জানুন<ph name="END_LINK_MPL"/>।</translation>
 <translation id="8425213833346101688">পরিবর্তন</translation>
 <translation id="557281710253742286">IPFS গেটওয়ে সেট করুন</translation>
 <translation id="8571837315037233299">গেটওয়ের ঠিকানা</translation>
@@ -246,9 +257,7 @@
 <translation id="1959966725083452288">অবতার বনবন রয়্যাল</translation>
 <translation id="2039034364578911089">অবতার বনবন নিনজা</translation>
 <translation id="239760341987199724">Brave কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
-<translation id="1391855377994926460">Brave ব্রাউজারটি বর্তমানে আপনার প্রধান ব্রাউজার হিসাবে নির্ধারণ করা নেই।
-ওয়েব ব্রাউজিং দ্রুত রাখতে Brave কে আপনার প্রধান ব্রাউজার হিসাবে সেট করুন -
-বড় নিউজ সাইটগুলিতে 6x পর্যন্ত দ্রুত।</translation>
+<translation id="1391855377994926460">আরো দ্রুত ওয়েব ব্রাউজ করুন - মুখ্য সংবাদের সাইটগুলিতে 6x পর্যন্ত দ্রুত ব্রাউজ করুন।</translation>
 <translation id="9218430445555521422">ডিফল্ট হিসেবে সেট করুন</translation>
 <translation id="3479552764303398839">এখনই নয়</translation>
 <translation id="4877147287319222750">সাইডবারে যোগ করুন</translation>
@@ -270,7 +279,6 @@
 <translation id="8731422418734770661">ক্রিপ্টো ওয়ালেট সেট আপ করুন</translation>
 <translation id="8199661191594897555">ক্রিপ্টো ওয়ালেটগুলি শুরু করুন এবং আবার লোড করুন</translation>
 <translation id="8428213095426709021">সেটিংস</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">IPFS এবং গোপনীয়তা সম্পর্কে আরও জানুন</translation>
 <translation id="4552520379838695057">দুঃখিত, ঐ পৃষ্ঠাটি পাওয়া যাচ্ছে না।</translation>
 <translation id="2609895996619941644">ওয়েব্যাক মেশিনে একটি সংরক্ষিত সংস্করণ উপলভ্য কিনা তা কি আপনি পরীক্ষা করতে চান?</translation>

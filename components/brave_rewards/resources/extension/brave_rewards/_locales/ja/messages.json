@@ -360,7 +360,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "やり直し",
+    "message": "再試行",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -629,7 +629,7 @@
     "message": "ウォレットを認証すると、資金をより効率的に管理することができます。",
     "description": "Text for login button"
   },
-  "loginMessageText": {
+  "loginMessageText":  {
     "message": "Upholdアカウントを作成するには、最低$amount$ BATが必要です。認証済みのUpholdアカウントをすでにお持ちの場合は、引き続きログインを行ってください。",
     "description": "Text for login button",
     "placeholders": {

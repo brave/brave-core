@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "برای ایجاد حساب Uphold، به حداقل 25 BAT نیاز دارید. لطفاً بعداً دوباره امتحان کنید. \nدر صورتی که ازقبل یک حساب تأییدشده Uphold دارید، ورود به سیستم را ادامه دهید.",
-    "description": "Text for login button"
+    "message": "برای ایجاد حساب Uphold، باید حداقل $amount$BAT داشته باشید. اگر ازقبل حساب Uphold تأییدشده‌ای دارید، ورود به سیستم را ادامه دهید.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "متصل",

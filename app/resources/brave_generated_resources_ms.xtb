@@ -62,9 +62,19 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7643538479215207633">Buka menggunakan IPFS</translation>
 <translation id="3094628781200061820">Terbitkan dan dapatkan semula fail dari IPFS</translation>
 <translation id="1672270084584211506">Onion Tersedia</translation>
+<translation id="4901618511712685702">Import ke IPFS</translation>
+<translation id="6794469945030154569">Halaman ini</translation>
+<translation id="5037852323412456577">Imej dipilih</translation>
+<translation id="2715839724138372481">Video dipilih</translation>
+<translation id="4227945450504703638">Audio dipilih</translation>
+<translation id="7895302206188277628">Kandungan dipautkan</translation>
+<translation id="4322612543319315652">Import teks Dipilih ke IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Tetingkap Peribadi baru dengan Tor</translation>
 <translation id="4703780849509456860">Buka Pautan dalam Tetingkap Peribadi dengan Tor</translation>
 <translation id="3488584642074079080">Buka Pautan dalam Tetingkap Peribadi Brave dengan Tor</translation>
+<translation id="7475547933708221517">Kongsi Fail Setempat Menggunakan IPFS</translation>
+<translation id="784573715436258741">Kongsi fail setempat menggunakan IPFS</translation>
 <translation id="6313675821927505581">Tetingkap persendirian baharu dengan Tor</translation>
 <translation id="2638041073279639246">Buka pautan dalam tetingkap persendirian dengan Tor</translation>
 <translation id="3425600262621021599">Buka pautan dalam tetingkap persendirian Brave dengan Tor</translation>
@@ -147,7 +157,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="4112587618563511470">Kod segerakan salah, sila semak dan cuba lagi.</translation>
 <translation id="2339730291919608488">Tinggalkan Rantaian Segerak</translation>
 <translation id="115699408012835975">Sekiranya anda menetapkan semula Penyegerakan, anda perlu memasukkan semula kod penyegerakan daripada peranti yang lain untuk menyegerak dengannya. Adakah anda pasti anda ingin meneruskannya?</translation>
-<translation id="339086854515247923">Adakah anda pasti mahu memadam peranti pilihan daripada rantaian diselaras?</translation>
+<translation id="6092564993102418148">Adakah anda pasti mahu memadam peranti pilihan daripada rantaian diselaras?</translation>
 <translation id="3396347744975515056">Segerakan Brave telah dinaik taraf dan memerlukan penetapan</translation>
 <translation id="7473245612074035141">Mulakan Tetapan</translation>
 <translation id="3411013544209536575">Tip Bantuan</translation>
@@ -169,12 +179,13 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="757886143331967039">Memuatkan sambungan Dompet Kripto yang tidak digunakan pada permulaan</translation>
 <translation id="6864914031231797928">Benarkan log masuk Google untuk sambungan</translation>
 <translation id="5927916530277631319">Kaedah untuk menyelesaikan Domain yang tidak dapat Dihentikan</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Ketahui Lebih Lanjut<ph name="END_LINK"/> tentang DNS berbanding pertimbangan privasi HTTPS dan Ethereum.</translation>
 <translation id="5248318250177143470">Kaedah untuk menyelesaikan Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Kaedah untuk menyelesaikan sumber IPFS</translation>
 <translation id="1327977588028644528">Get Laluan</translation>
 <translation id="80225669816651290">Nod tempatan</translation>
 <translation id="4927734062756955434">Alamat gerbang awam IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Ketahui lebih lanjut<ph name="END_LINK_MPL"/> tentang nod setempat IPFS dan pertimbangan privasi get laluan.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Ketahui lebih lanjut<ph name="END_LINK_MPL"/> tentang nod setempat IPFS dan pertimbangan privasi get laluan.</translation>
 <translation id="8425213833346101688">Tukar</translation>
 <translation id="557281710253742286">Tetapkan gerbang IPFS</translation>
 <translation id="8571837315037233299">Alamat gerbang</translation>
@@ -246,9 +257,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1959966725083452288">Avatar Diraja Bonbon</translation>
 <translation id="2039034364578911089">Avatar Ninja Bonbon</translation>
 <translation id="239760341987199724">Tetapkan Brave sebagai penyemak imbas lalai anda</translation>
-<translation id="1391855377994926460">Pelayar Brave tidak ditetapkan sebagai pelayar tetap anda.
-Tetapkan Brave sebagai pelayar tetap anda untuk terus melayari web dengan lebih pantas -
-sehingga 6 x lebih pantas pada laman berita utama.</translation>
+<translation id="1391855377994926460">Teruskan menyemak lalu web lebih pantas - sehingga 6x lebih pantas pada tapak berita utama.</translation>
 <translation id="9218430445555521422">Tetapkan sebagai lalai</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
 <translation id="4877147287319222750">Tambah ke bar sisi</translation>
@@ -270,7 +279,6 @@ sehingga 6 x lebih pantas pada laman berita utama.</translation>
 <translation id="8731422418734770661">Menetapkan Dompet Kripto</translation>
 <translation id="8199661191594897555">Mulakan Dompet Kripto dan tambah nilai</translation>
 <translation id="8428213095426709021">Tetapan</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Ketahui selanjutnya mengenai IPFS dan privasi</translation>
 <translation id="4552520379838695057">Maaf, laman tiada.</translation>
 <translation id="2609895996619941644">Adakah anda ingin memeriksa jika ada versi tersimpan di Wayback Machine?</translation>

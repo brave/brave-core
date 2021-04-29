@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Devi avere minimo 25 BAT per creare un account Uphold. Ti preghiamo di riprovare più tardi. \n Se hai già un account verificato Uphold, procedi con l'accesso.",
-    "description": "Text for login button"
+    "message": "Ti servono almeno $amount$ BAT per creare un portafoglio Uphold. Se hai già un account Uphold verificato, continua per eseguire il login.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Connessa",

@@ -62,9 +62,19 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="7643538479215207633">Åbn med IPFS</translation>
 <translation id="3094628781200061820">Udgiv og find filer fra IPFS</translation>
 <translation id="1672270084584211506">Onion tilgængelig</translation>
+<translation id="4901618511712685702">Importér til IPFS</translation>
+<translation id="6794469945030154569">Denne webside</translation>
+<translation id="5037852323412456577">Valgt billede</translation>
+<translation id="2715839724138372481">Valgt video</translation>
+<translation id="4227945450504703638">Valgt lyd</translation>
+<translation id="7895302206188277628">Forbundet indhold</translation>
+<translation id="4322612543319315652">Importér valgt tekst til IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nyt privat vindue med Tor</translation>
 <translation id="4703780849509456860">Åben link i Privat Vindue med Tor</translation>
 <translation id="3488584642074079080">Åbn link i Brave privat vindue med Tor</translation>
+<translation id="7475547933708221517">Del lokal file med IPFS</translation>
+<translation id="784573715436258741">Del lokal fil med IPFS</translation>
 <translation id="6313675821927505581">Nyt privat vindue med Tor</translation>
 <translation id="2638041073279639246">Åbn link i privat
 vindue med Tor</translation>
@@ -148,7 +158,7 @@ vindue med Tor</translation>
 <translation id="4112587618563511470">Ugyldig synkroniseringskode, kontrollér venligst og prøv igen.</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>
 <translation id="115699408012835975">Hvis du nulstiller synkronisering, skal du skrive en synkroniseringskode fra en anden enhed igen for at synkronisere med den. Er du sikker på, at du vil fortsætte?</translation>
-<translation id="339086854515247923">Er du sikker på, at du vil slette den valgte enhed fra synkroniseringskæden?</translation>
+<translation id="6092564993102418148">Er du sikker på, at du vil slette den valgte enhed fra synkroniseringskæden?</translation>
 <translation id="3396347744975515056">Brave Sync er blevet opgraderet og kræver opsætning</translation>
 <translation id="7473245612074035141">Begynd opsætning</translation>
 <translation id="3411013544209536575">Hjælperåd</translation>
@@ -170,12 +180,13 @@ vindue med Tor</translation>
 <translation id="757886143331967039">Indlæs forældet Crypto Wallets-udvidelse ved opstart</translation>
 <translation id="6864914031231797928">Tillad Google-login for udvidelser</translation>
 <translation id="5927916530277631319">Metode til at løsning af Unstoppable-domæner</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/> om overvejelser af DNS over HTTPS- og Ethereum-anonymitet.</translation>
 <translation id="5248318250177143470">Metode til løsning af Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Metode til løsning af IPF-ressourcer</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal node</translation>
 <translation id="4927734062756955434">Offentlige IPFS-gatewayadresse</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Læs mere<ph name="END_LINK_MPL"/> om IPFS-lokalnode og -gatewayovervejelser.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Læs mere<ph name="END_LINK_MPL"/> om overvejelser af IPFS-lokalnode- og gateway-anonymitet.</translation>
 <translation id="8425213833346101688">Skift</translation>
 <translation id="557281710253742286">Opsæt IPFS-gateway</translation>
 <translation id="8571837315037233299">Gatewayadresse</translation>
@@ -247,9 +258,7 @@ vindue med Tor</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
 <translation id="239760341987199724">Angiv Brave som din standardbrowser</translation>
-<translation id="1391855377994926460">Brave browser er i øjeblikket ikke indstillet som din standardbrowser.
-Indstil Brave som din standard for at fortsætte med at surfe på nettet hurtigere -
-op til 6 gange hurtigere på større nyhedswebsteder.</translation>
+<translation id="1391855377994926460">Surf på nettet hurtigere – op til 6x hurtigere på større nyhedswebsider.</translation>
 <translation id="9218430445555521422">Indstil som standard</translation>
 <translation id="3479552764303398839">Ikke nu</translation>
 <translation id="4877147287319222750">Føj til sidepanel</translation>
@@ -271,7 +280,6 @@ op til 6 gange hurtigere på større nyhedswebsteder.</translation>
 <translation id="8731422418734770661">Konfigurér krypto-wallets</translation>
 <translation id="8199661191594897555">Åbn Krypto-tegnebøger og genindlæs</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Lær mere om IPFS og databeskyttelse</translation>
 <translation id="4552520379838695057">Beklager, den side mangler.</translation>
 <translation id="2609895996619941644">Ønsker du at tjekke om en gemt version er tilgængelig på Wayback Machine?</translation>

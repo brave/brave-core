@@ -62,9 +62,19 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="7643538479215207633">Obrir amb IPFS</translation>
 <translation id="3094628781200061820">Publica i recupera fitxers de l'IPFS</translation>
 <translation id="1672270084584211506">Onion Disponible</translation>
+<translation id="4901618511712685702">Importa a IPFS</translation>
+<translation id="6794469945030154569">Aquesta pàgina</translation>
+<translation id="5037852323412456577">Imatge seleccionada</translation>
+<translation id="2715839724138372481">Vídeo seleccionat</translation>
+<translation id="4227945450504703638">Àudio seleccionat</translation>
+<translation id="7895302206188277628">Contingut vinculat</translation>
+<translation id="4322612543319315652">Importa el text seleccionat a IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nova finestra privada amb Tor</translation>
 <translation id="4703780849509456860">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3488584642074079080">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
+<translation id="7475547933708221517">Comparteix el fitxer local mitjançant IPFS</translation>
+<translation id="784573715436258741">Comparteix el fitxer local mitjançant IPFS</translation>
 <translation id="6313675821927505581">Nova finestra privada amb Tor</translation>
 <translation id="2638041073279639246">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3425600262621021599">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
@@ -147,7 +157,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="4112587618563511470">Codi de sincronització invàlid, si us plau comproveu-ho i torneu-ho a intentar.</translation>
 <translation id="2339730291919608488">Deixa la cadena de sincronització</translation>
 <translation id="115699408012835975">Si restabliu la sincronització, haureu de tornar a introduir un codi de sincronització d'un altre dispositiu per a poder-lo sincronitzar. Esteu segurs que voleu continuar?</translation>
-<translation id="339086854515247923">Esteu segurs que voleu eliminar el dispositiu seleccionat de la cadena de sincronització?</translation>
+<translation id="6092564993102418148">Esteu segurs que voleu eliminar el dispositiu seleccionat de la cadena de sincronització?</translation>
 <translation id="3396347744975515056">Brave Sync s'ha actualitzat i requereix configuració</translation>
 <translation id="7473245612074035141">Comenceu la Configuració</translation>
 <translation id="3411013544209536575">Consells d'ajuda</translation>
@@ -169,12 +179,13 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="757886143331967039">Carregar l'extensió Crypto Wallets obsoleta a l'inici</translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
 <translation id="5927916530277631319">Mètode per resoldre Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/> sobre DNS mitjançant HTTPS i consideracions de privacitat d'Ethereum.</translation>
 <translation id="5248318250177143470">Mètode per resoldre el servei de noms Ethereum (ENS)</translation>
 <translation id="9170907049676078643">Mètode per a resoldre els recursos IPFS</translation>
 <translation id="1327977588028644528">Passarel·la</translation>
 <translation id="80225669816651290">Node local</translation>
 <translation id="4927734062756955434">Adreça d'entrada IPFS pública</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Més informació<ph name="END_LINK_MPL"/> sobre el node local de l'IPFS i consideracions de privadesa de passarel·les.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Més informació<ph name="END_LINK_MPL"/> sobre el node local IPFS i consideracions de privacitat de passarel·les..</translation>
 <translation id="8425213833346101688">Canvia</translation>
 <translation id="557281710253742286">Configureu l'entrada IPFS</translation>
 <translation id="8571837315037233299">Adreça d'entrada</translation>
@@ -246,9 +257,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1959966725083452288">Avatar Bombó Reial</translation>
 <translation id="2039034364578911089">Avatar Bombó Ninja</translation>
 <translation id="239760341987199724">Defineix Brave com a navegador predeterminat</translation>
-<translation id="1391855377994926460">El navegador Brave no és el teu navegador per defecte.
-Configura Brave com el teu navegador per defecte per continuar navegant més ràpid -
-fins a 6 vegades més ràpid en els principals llocs web de notícies.</translation>
+<translation id="1391855377994926460">Exploreu la web amb més rapidesa, fins a 6 vegades més ràpid en les pàgines web de notícies principals.</translation>
 <translation id="9218430445555521422">Estableix com a predeterminat</translation>
 <translation id="3479552764303398839">Ara no</translation>
 <translation id="4877147287319222750">Afegeix a la barra lateral</translation>
@@ -270,7 +279,6 @@ fins a 6 vegades més ràpid en els principals llocs web de notícies.</translat
 <translation id="8731422418734770661">Configura Crypto Wallets</translation>
 <translation id="8199661191594897555">Comenceu els Crypto Moneders i torneu-ho a carregar</translation>
 <translation id="8428213095426709021">Configuració</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Esbrineu més sobre IPFS i la privacitat.</translation>
 <translation id="4552520379838695057">Ho sentim, no es pot trobar aquesta pàgina.</translation>
 <translation id="2609895996619941644">Voleu comprocar si hi ha una versió guardadad disponible a la Wayback Machine?</translation>

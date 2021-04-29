@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Tarvitset vähintään 25 BAT luodaksesi Uphold-tilin. Yritä myöhemmin uudelleen.\nJos olet jos vahvistanut Uphold-tilisi, jatka kirjautumiseen.",
-    "description": "Text for login button"
+    "message": "Tarvitset vähintään $amount$ BAT luodaksesi Uphold-tilin. Jos olet jos vahvistanut Uphold-tilisi, jatka kirjautumiseen.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Yhdistetty",

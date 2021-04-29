@@ -62,9 +62,19 @@
 <translation id="7643538479215207633">Ανοίξτε χρησιμοποιώντας IPFS</translation>
 <translation id="3094628781200061820">Δημοσίευση και ανάκτηση αρχείων από IFPS</translation>
 <translation id="1672270084584211506">Διαθέσιμο Onion</translation>
+<translation id="4901618511712685702">Εισαγωγή σε IPFS</translation>
+<translation id="6794469945030154569">Αυτή η σελίδα</translation>
+<translation id="5037852323412456577">Επιλεγμένη εικόνα</translation>
+<translation id="2715839724138372481">Επιλεγμένο βίντεο</translation>
+<translation id="4227945450504703638">Επιλεγμένο αρχείο ήχου</translation>
+<translation id="7895302206188277628">Περιεχόμενο συνδέσμου</translation>
+<translation id="4322612543319315652">Εισαγωγή επιλεγμένου κειμένου σε IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Νέο Ιδιωτικό Παράθυρο με Tor</translation>
 <translation id="4703780849509456860">Άνοιγμα Συνδέσμου σε Ιδιωτικό Παράθυρο με Tor</translation>
 <translation id="3488584642074079080">Άνοιγμα συνδέσμου σε Ιδιωτικό Παράθυρο Brave μέσω Tor</translation>
+<translation id="7475547933708221517">Κοινοποίηση τοπικού αρχείου μέσω IPFS</translation>
+<translation id="784573715436258741">Κοινοποίηση τοπικού αρχείου μέσω IPFS</translation>
 <translation id="6313675821927505581">Νέο ιδιωτικό παράθυρο με Tor</translation>
 <translation id="2638041073279639246">Ανοίξτε σύνδεσμο σε ιδιωτικό παράθυρο με Tor</translation>
 <translation id="3425600262621021599">Ανοίξτε σύνδεσμο σε ιδιωτικό παράθυρο Brave με Tor</translation>
@@ -147,7 +157,7 @@
 <translation id="4112587618563511470">Μη έγκυρος κωδικός συγχρονισμού, ελέγξτε και δοκιμάστε ξανά.</translation>
 <translation id="2339730291919608488">Αποχώρηση από αλυσίδα συγχρονισμού</translation>
 <translation id="115699408012835975">Εάν επαναφέρετε τον συγχρονισμό, θα πρέπει να εισαγάγετε ξανά έναν κωδικό συγχρονισμού από άλλη συσκευή για να κάνετε συγχρονισμό με αυτήν. Σίγουρα θέλετε να συνεχίσετε;</translation>
-<translation id="339086854515247923">Σίγουρα θέλετε να διαγράψετε την επιλεγμένη συσκευή από την αλυσίδα συγχρονισμού;</translation>
+<translation id="6092564993102418148">Σίγουρα θέλετε να διαγράψετε την επιλεγμένη συσκευή από την αλυσίδα συγχρονισμού;</translation>
 <translation id="3396347744975515056">Το Brave Sync έχει αναβαθμιστεί και απαιτεί ρύθμιση</translation>
 <translation id="7473245612074035141">Έναρξη Ρυθμίσεων</translation>
 <translation id="3411013544209536575">Βοηθητικές συμβουλές</translation>
@@ -169,12 +179,13 @@
 <translation id="757886143331967039">Φόρτωση καταργημένης επέκτασης Crypto Πορτοφολιών κατά την εκκίνηση</translation>
 <translation id="6864914031231797928">Να επιτρέπεται η σύνδεση Google για επεκτάσεις</translation>
 <translation id="5927916530277631319">Μέθοδος επίλυσης Ασταμάτητων Τομέων</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> σχετικά με το DNS αντί HTTPS και ζητήματα απορρήτου Ethereum.</translation>
 <translation id="5248318250177143470">Μέθοδος επίλυσης Υπηρεσίας Ονόματος Ethereum (ΥΟΕ)</translation>
 <translation id="9170907049676078643">Μέθοδος αποκρυπτογράφησης πόρων IPFS</translation>
 <translation id="1327977588028644528">Πύλη</translation>
 <translation id="80225669816651290">Τοπικός κόμβος</translation>
 <translation id="4927734062756955434">Διεύθυνση δημόσιας πύλης IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Μάθετε περισσότερα<ph name="END_LINK_MPL"/> για θέματα απορρήτου τοπικού κόμβου IPFS και πύλης.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Learn more<ph name="END_LINK_MPL"/> σχετικά με τοπικό κόμβο IPFS και ζητήματα απορρήτου πύλης.</translation>
 <translation id="8425213833346101688">Αλλαγή</translation>
 <translation id="557281710253742286">Ρύθμιση πύλης IPFS</translation>
 <translation id="8571837315037233299">Διεύθυνση πύλης</translation>
@@ -246,9 +257,7 @@
 <translation id="1959966725083452288">Άβαταρ Σοκολατάκι Βασιλικός</translation>
 <translation id="2039034364578911089">Άβαταρ Σοκολατάκι Νίντζα</translation>
 <translation id="239760341987199724">Ορισμός του Brave ως προεπιλεγμένου προγράμματος περιήγησης</translation>
-<translation id="1391855377994926460">Το πρόγραμμα περιήγησης Brave δεν έχει οριστεί για την ώρα ως το προεπιλεγμένο πρόγραμμα περιήγησής σας.
-Ορίστε το Brave ως προεπιλογή για να συνεχίσετε την περιήγηση στον ιστό πιο γρήγορα -
-έως και 6 φορές πιο γρήγορα σε σημαντικούς ιστότοπους ειδήσεων.</translation>
+<translation id="1391855377994926460">Συνεχίστε την περιήγηση στον Ιστό γρηγορότερα - έως και 6 φορές πιο γρήγορα σε σημαντικούς ιστότοπους ειδήσεων.</translation>
 <translation id="9218430445555521422">Ορισμός ως προεπιλογή</translation>
 <translation id="3479552764303398839">Όχι τώρα</translation>
 <translation id="4877147287319222750">Προσθήκη στην Πλευρική Γραμμή</translation>
@@ -270,7 +279,6 @@
 <translation id="8731422418734770661">Ρύθμιση Crypto Πορτοφολιών</translation>
 <translation id="8199661191594897555">Εκκίνηση του Crypto Wallets και επαναφόρτωση</translation>
 <translation id="8428213095426709021">Ρυθμίσεις</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Μάθετε περισσότερα για το IPFS και το απόρρητο</translation>
 <translation id="4552520379838695057">Λυπούμαστε, αυτή η σελίδα λείπει.</translation>
 <translation id="2609895996619941644">Θέλετε να ελέγξετε αν υπάρχει μια αποθηκευμένη έκδοση στο Wayback Machine;</translation>
