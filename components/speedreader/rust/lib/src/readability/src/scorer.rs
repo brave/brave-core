@@ -773,6 +773,22 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                         false
                     }
                 }
+                local_name!("svg") => {
+                    // If the SVG has a parent that is a <figure> it is probably
+                    // an icon to resize the image. This will not format
+                    // correctly in speedreader since images are styled as
+                    // "display: inline".
+                    for ancestor in handle.ancestors() {
+                        if ancestor
+                            .as_element()
+                            .map(|e| e.name.local == local_name!("figure"))
+                            .unwrap_or(false)
+                        {
+                            return true;
+                        }
+                    }
+                    false
+                }
                 _ => false,
             };
             if !delete {
