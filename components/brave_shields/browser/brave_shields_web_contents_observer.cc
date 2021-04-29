@@ -13,7 +13,6 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/render_messages.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/content/common/frame_messages.h"
@@ -94,8 +93,8 @@ BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
 
 BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
     WebContents* web_contents)
-    : WebContentsObserver(web_contents) {
-}
+    : WebContentsObserver(web_contents),
+      brave_shields_receivers_(web_contents, this) {}
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(
     RenderFrameHost* rfh) {
@@ -232,42 +231,26 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
 }
 #endif
 
-bool BraveShieldsWebContentsObserver::OnMessageReceived(
-    const IPC::Message& message, RenderFrameHost* render_frame_host) {
-  bool handled = true;
-  IPC_BEGIN_MESSAGE_MAP_WITH_PARAM(BraveShieldsWebContentsObserver,
-        message, render_frame_host)
-    IPC_MESSAGE_HANDLER(BraveViewHostMsg_JavaScriptBlocked,
-        OnJavaScriptBlockedWithDetail)
-    IPC_MESSAGE_HANDLER(BraveViewHostMsg_FingerprintingBlocked,
-        OnFingerprintingBlockedWithDetail)
-    IPC_MESSAGE_UNHANDLED(handled = false)
-  IPC_END_MESSAGE_MAP()
-  return handled;
-}
-
-void BraveShieldsWebContentsObserver::OnJavaScriptBlockedWithDetail(
-    RenderFrameHost* render_frame_host,
+void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
     const std::u16string& details) {
-  WebContents* web_contents =
-      WebContents::FromRenderFrameHost(render_frame_host);
-  if (!web_contents) {
+  WebContents* web_contents = WebContents::FromRenderFrameHost(
+      brave_shields_receivers_.GetCurrentTargetFrame());
+  if (!web_contents)
     return;
-  }
+
   DispatchBlockedEventForWebContents(brave_shields::kJavaScript,
-      base::UTF16ToUTF8(details), web_contents);
+                                     base::UTF16ToUTF8(details), web_contents);
 }
 
-void BraveShieldsWebContentsObserver::OnFingerprintingBlockedWithDetail(
-    RenderFrameHost* render_frame_host,
+void BraveShieldsWebContentsObserver::OnFingerprintingBlocked(
     const std::u16string& details) {
-  WebContents* web_contents =
-      WebContents::FromRenderFrameHost(render_frame_host);
-  if (!web_contents) {
+  WebContents* web_contents = WebContents::FromRenderFrameHost(
+      brave_shields_receivers_.GetCurrentTargetFrame());
+  if (!web_contents)
     return;
-  }
+
   DispatchBlockedEventForWebContents(brave_shields::kFingerprintingV2,
-      base::UTF16ToUTF8(details), web_contents);
+                                     base::UTF16ToUTF8(details), web_contents);
 }
 
 // static
