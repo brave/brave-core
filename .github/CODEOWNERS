@@ -20,9 +20,13 @@ components/services/bat_ledger/ @brave/rewards-client
 vendor/bat-native-ledger/ @brave/rewards-client
 
 # Ads
-vendor/bat-native-ads/ @tmancey
-components/brave_ads/ @tmancey
-components/services/bat_ads/ @tmancey
+browser/brave_ads/**/*[.cc, .mm, .h, .java] @brave/ads-client
+browser/ui/brave_ads/**/*[.cc, .mm, .h] @brave/ads-client
+components/brave_ads/**/*[.cc, .mm, .h] @brave/ads-client
+components/services/bat_ads/**/*[.cc, .mm, .h] @brave/ads-client
+vendor/bat-native-ads/**/*[.cc, .mm, .h] @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*[.cc, .mm, .h] @brave/ads-client @fmarier
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*[.cc, .mm, .h] @brave/ads-client @orspetol
 
 # Network
 browser/net/ @iefremov
