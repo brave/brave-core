@@ -131,12 +131,3 @@ export interface WalletPanelReducerState {
   connectedSiteOrigin: string
   accounts: WalletAccountType[]
 }
-
-export interface WalletPanelApiProxy {
-  showUI: () => {}
-  closeUI: () => {}
-}
-
-export interface APIProxy {
-  getInstance: () => WalletPanelApiProxy
-}

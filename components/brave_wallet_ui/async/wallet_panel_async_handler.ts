@@ -6,10 +6,10 @@
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../common/AsyncActionHandler'
 import * as Actions from '../actions/wallet_panel_actions'
-import { APIProxy, WalletPanelApiProxy, State, WalletPanelReducerState } from '../constants/types'
+import { State, WalletPanelReducerState } from '../constants/types'
 import { AccountPayloadType } from '../constants/action_types'
+import walletPanelApiProxy from '../wallet_panel_api_proxy.js'
 
-const walletPanelApiProxyImpl: APIProxy = require('../wallet_panel_api_proxy.js').default
 const handler = new AsyncActionHandler()
 
 function getState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): WalletPanelReducerState {
@@ -27,19 +27,19 @@ handler.on(Actions.initialize.getType(), async (store) => {
 })
 
 handler.on(Actions.cancelConnectToSite.getType(), async (store) => {
-  const apiProxy: WalletPanelApiProxy = walletPanelApiProxyImpl.getInstance()
+  const apiProxy = walletPanelApiProxy.getInstance()
   console.log('cancel connect to site!')
   apiProxy.closeUI()
 })
 
 handler.on(Actions.connectToSite.getType(), async (store, payload: AccountPayloadType) => {
-  const apiProxy: WalletPanelApiProxy = walletPanelApiProxyImpl.getInstance()
+  const apiProxy = walletPanelApiProxy.getInstance()
   console.log('Got connect to site for accounts: ', payload.selectedAccounts, 'for site:', payload.siteToConnectTo)
   apiProxy.closeUI()
 })
 
 handler.on(Actions.visibilityChanged.getType(), (store) => {
-  const apiProxy: WalletPanelApiProxy = walletPanelApiProxyImpl.getInstance()
+  const apiProxy = walletPanelApiProxy.getInstance()
   apiProxy.showUI()
 })
 
