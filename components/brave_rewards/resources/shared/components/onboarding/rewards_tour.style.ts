@@ -11,7 +11,6 @@ import acImage from './assets/tour_ac.svg'
 import tippingImage from './assets/tour_tipping.svg'
 import redeemImage from './assets/tour_redeem.svg'
 import completedImage from './assets/tour_completed.svg'
-import bitflyerPromoImage from './assets/bitflyer_promo.png'
 
 export const root = styled.div`
   font-family: var(--brave-font-heading);
@@ -108,12 +107,16 @@ export const stepGraphic = styled.div`
   }
 
   &.tour-graphic-bitflyer {
-    background-image: url('${bitflyerPromoImage}');
-    background-size: contain;
-    background-position: center 40px;
+    padding-top: 40px;
 
+    img {
+      width: 100%;
+    }
+
+    /* The narrow view does not have space to accomodate the promo image. */
     .tour-narrow & {
-      background: none;
+      padding-top: 0;
+      > * { display: none; }
     }
   }
 `

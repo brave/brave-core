@@ -12,23 +12,24 @@ using std::placeholders::_1;
 
 namespace {
 
-const int kCurrentVersionNumber = 8;
+const int kCurrentVersionNumber = 9;
 
 }  // namespace
 
 namespace ledger {
 namespace state {
 
-StateMigration::StateMigration(LedgerImpl* ledger) :
-    v1_(std::make_unique<StateMigrationV1>(ledger)),
-    v2_(std::make_unique<StateMigrationV2>(ledger)),
-    v3_(std::make_unique<StateMigrationV3>()),
-    v4_(std::make_unique<StateMigrationV4>(ledger)),
-    v5_(std::make_unique<StateMigrationV5>(ledger)),
-    v6_(std::make_unique<StateMigrationV6>(ledger)),
-    v7_(std::make_unique<StateMigrationV7>(ledger)),
-    v8_(std::make_unique<StateMigrationV8>(ledger)),
-    ledger_(ledger) {
+StateMigration::StateMigration(LedgerImpl* ledger)
+    : v1_(std::make_unique<StateMigrationV1>(ledger)),
+      v2_(std::make_unique<StateMigrationV2>(ledger)),
+      v3_(std::make_unique<StateMigrationV3>()),
+      v4_(std::make_unique<StateMigrationV4>(ledger)),
+      v5_(std::make_unique<StateMigrationV5>(ledger)),
+      v6_(std::make_unique<StateMigrationV6>(ledger)),
+      v7_(std::make_unique<StateMigrationV7>(ledger)),
+      v8_(std::make_unique<StateMigrationV8>(ledger)),
+      v9_(std::make_unique<StateMigrationV9>(ledger)),
+      ledger_(ledger) {
   DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_ && v8_);
 }
 
@@ -112,6 +113,10 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
     }
     case 8: {
       v8_->Migrate(migrate_callback);
+      return;
+    }
+    case 9: {
+      v9_->Migrate(migrate_callback);
       return;
     }
   }

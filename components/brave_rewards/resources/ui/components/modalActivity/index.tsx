@@ -59,6 +59,7 @@ export interface Props {
   id?: string
   summary: SummaryItem[]
   onlyAnonWallet?: boolean
+  walletType?: string
 }
 
 interface State {
@@ -125,6 +126,10 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
       const summaryItem = this.summary[item.type]
       if (!summaryItem) {
         return undefined
+      }
+
+      if (this.props.walletType === 'bitflyer' && item.type === 'contribute') {
+        return null
       }
 
       const negative = summaryItem.color === 'contribute'
@@ -245,7 +250,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
   }
 
   generateTabs = () => {
-    const tabs = [
+    let tabs = [
       {
         id: 'transactions',
         title: getLocale('transactions'),
@@ -267,6 +272,10 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
         content: this.getOneTimeTips
       }
     ]
+
+    if (this.props.walletType === 'bitflyer') {
+      tabs = tabs.filter(x => x.id !== 'autoContribute')
+    }
 
     return (
       <>

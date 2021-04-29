@@ -4,11 +4,14 @@
 
 import * as React from 'react'
 
-import { Locale } from '../../lib/locale_context'
+import { Locale, formatMessage } from '../../lib/locale_context'
+import { NewTabLink } from '../new_tab_link'
 import { RewardsTourProps } from './rewards_tour_props'
 import { SetupForm } from './setup_form'
 
 import * as style from './rewards_tour_panels.style'
+
+import bitflyerPromoImage from './assets/bitflyer_promo.png'
 
 interface TourPanel {
   id: string
@@ -118,33 +121,65 @@ export function getVerifyWalletPanel (
     return null
   }
 
-  let textKey = ''
-  let noteKey = ''
+  const { getString } = locale
+
+  let providerText: React.ReactNode = null
+  let providerNote: React.ReactNode = null
+  let learnMore: React.ReactNode = null
+  let content: React.ReactNode = null
+
   switch (props.externalWalletProvider) {
-    case 'bitflyer':
-      textKey = 'onboardingPanelBitflyerText'
-      noteKey = 'onboardingPanelBitflyerNote'
+    case 'bitflyer': {
+      providerText = getString('onboardingPanelBitflyerText')
+
+      providerNote = (
+        <style.verifyNote>
+          {getString('onboardingPanelBitflyerNote')}
+        </style.verifyNote>
+      )
+
+      learnMore = (
+        <style.verifyLearnMore>
+          {
+            formatMessage(getString('onboardingPanelBitflyerLearnMore'), {
+              tags: {
+                $1: (content) => (
+                  <NewTabLink href='https://brave.com/ja/users-bitflyer/'>
+                    {content}
+                  </NewTabLink>
+                )
+              }
+            })
+          }
+        </style.verifyLearnMore>
+      )
+
+      content = (
+        <NewTabLink href='https://bitflyer.com/static/lp03/?ns=display_brave_bf_brave&utm_source=brave&utm_medium=display&utm_campaign=bf_brave&utm_term=202104&utm_content='>
+          <img src={bitflyerPromoImage} />
+        </NewTabLink>
+      )
+
       break
+    }
     default:
       return null
   }
-
-  const { getString } = locale
 
   return {
     id: props.externalWalletProvider,
     heading: getString('onboardingPanelVerifyHeader'),
     text: (
       <>
-        {getString(textKey)}
+        {providerText}
         <style.verifySubtext>
           {getString('onboardingPanelVerifySubtext')}
-          <style.verifyNote>
-            {getString(noteKey)}
-          </style.verifyNote>
+          {providerNote}
         </style.verifySubtext>
+        {learnMore}
       </>
     ),
+    content,
     actions: (
       <style.verifyActions>
         <button className='verify-later' onClick={props.onDone}>
