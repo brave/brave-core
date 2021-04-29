@@ -209,9 +209,16 @@ private class ListController: UIViewController {
             Preferences.Playlist.lastPlayedItemTime.value = 0.0
         }
         
-        playerView.stop()
         playerView.pictureInPictureController?.delegate = nil
         playerView.pictureInPictureController?.stopPictureInPicture()
+        playerView.stop()
+        
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            if UIDevice.isIpad {
+                playerView.attachLayer()
+            }
+            delegate.playlistRestorationController = nil
+        }
     }
     
     override func viewDidLoad() {
@@ -1077,6 +1084,16 @@ extension ListController: VideoViewDelegate {
         switch playerView.repeatState {
         case .none:
             if isAtEnd {
+                playerView.pictureInPictureController?.delegate = nil
+                playerView.pictureInPictureController?.stopPictureInPicture()
+                playerView.stop()
+                
+                if let delegate = UIApplication.shared.delegate as? AppDelegate {
+                    if UIDevice.isIpad {
+                        playerView.attachLayer()
+                    }
+                    delegate.playlistRestorationController = nil
+                }
                 return
             }
             index += 1
