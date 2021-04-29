@@ -853,4 +853,16 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="6951743416068151209">URI proxy Tor</translation>
 <translation id="1671503397662036257">Stato della connessione Tor</translation>
 <translation id="6024292492796847324">Progresso dell'inizializzazione di Tor</translation>
+<translation id="2106271389438168634">Hai bisogno di un minimo di 25 BAT per creare un portafogli Uphold. Riprova dopo aver verificato il tuo portafogli con Uphold.</translation>
+<translation id="4758374243299807324">post di [[user]]</translation>
+<translation id="1242162113777253768">tweet di [[user]]</translation>
+<translation id="3473919203449000069">Procedendo, accetti i <ph name="LINK_BEGIN"/>Termini di servizio<ph name="LINK_END"/> e la <ph name="LINK_BEGIN"/>Politica sulla privacy<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Fai un breve tour<ph name="LINK_END"/> or <ph name="LINK_BEGIN"/>per conoscere meglio<ph name="LINK_END"/> i dettagli.</translation>
+<translation id="5594737784294211654">Hai bisogno di almeno 25 BAT per creare un account Uphold. Ti preghiamo di riprovare più tardi. <ph name="NEWLINE"/>Se hai già un account Uphold verificato, prosegui con l'accesso.</translation>
+<translation id="3204579740854485097">Non hai abbastanza [[currency]].</translation>
+<translation id="3330432260369310344">Non hai abbastanza [[currency]]. Per favore</translation>
+<translation id="629521674505004728">Cliccando Inizia su a usare Brave Rewards, accetti i the <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Sito sospetto in arrivo</translation>
+<translation id="8250033559824599347">Questo sito potrebbe essere fraudolento, farti rimbalzare tra vari siti per impostare cookie di tracciamento o eseguire altre azioni invasive della privacy.</translation>
+<translation id="8092074243456635562">finché non chiudo questa pagina</translation>
 </translationbundle>

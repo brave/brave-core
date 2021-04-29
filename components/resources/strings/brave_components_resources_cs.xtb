@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI Tor proxy</translation>
 <translation id="1671503397662036257">Status připojení Tor</translation>
 <translation id="6024292492796847324">Průběh inicializace Toru</translation>
+<translation id="2106271389438168634">Pro vytvoření peněženky ve službě Uphold budete potřebovat minimálně 25 BAT. Zkuste to prosím znovu po ověření peněženky ve službě Uphold.</translation>
+<translation id="4758374243299807324">Příspěvek uživatele [[user]]</translation>
+<translation id="1242162113777253768">Tweet uživatele [[user]]</translation>
+<translation id="3473919203449000069">Pokračováním souhlasíte s <ph name="LINK_BEGIN"/>Podmínkami služby<ph name="LINK_END"/> a <ph name="LINK_BEGIN"/>Ochranou soukromí<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/> Podívejte se na rychlou prohlídku<ph name="LINK_END"/> nebo <ph name="LINK_BEGIN"/>lvydělejte více<ph name="LINK_END"/> pro detaily.</translation>
+<translation id="5594737784294211654">Abyste mohli vytvořit účet Uphold, musíte mít minimálně 25 BAT. Zkuste to prosím později. <ph name="NEWLINE"/>Pokud již máte ověřený účet Uphold, pokračujte v přihlašování.</translation>
+<translation id="3204579740854485097">Nedostatek [[currency]].</translation>
+<translation id="3330432260369310344">Nedostatek [[currency]]. Prosím</translation>
+<translation id="629521674505004728">Kliknutím na Začít používat Brave Rewards souhlasíte s <ph name="LINK_BEGIN"/>Podmínkami služby<ph name="LINK_END"/> a <ph name="LINK_BEGIN"/>Ochranou soukromí<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Míříte na podezřelou stránku</translation>
+<translation id="8250033559824599347">Tento web může být podvodný, může vás přeposílat mezi různými weby, za účelem nastavení sledovacích souborů cookie nebo za účelem provádění jiných invazivních akcí v oblasti osobních údajů.</translation>
+<translation id="8092074243456635562">dokud tuto stránku nezavřu</translation>
 </translationbundle>

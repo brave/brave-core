@@ -849,4 +849,16 @@
 <translation id="6951743416068151209">URI del proxy Tor</translation>
 <translation id="1671503397662036257">Estado de la conexión de Tor</translation>
 <translation id="6024292492796847324">Progreso de inicialización de Tor</translation>
+<translation id="2106271389438168634">Necesita un mínimo de 25 BAT para crear una cartera en Uphold. Inténtelo de nuevo después de haber verificado su cartera con Uphold.</translation>
+<translation id="4758374243299807324">Publicación de [[user]]</translation>
+<translation id="1242162113777253768">Tuit de [[user]]</translation>
+<translation id="3473919203449000069">Al continuar, aceptas los <ph name="LINK_BEGIN"/>Términos de servicio<ph name="LINK_END"/> y la <ph name="LINK_BEGIN"/>Política de privacidad<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Haz un recorrido rápido<ph name="LINK_END"/> o <ph name="LINK_BEGIN"/>recibe más información<ph name="LINK_END"/> con los detalles.</translation>
+<translation id="5594737784294211654">Necesitas tener un mínimo de 25 BAT para crear una cuenta de Uphold. Inténtalo de nuevo más tarde. <ph name="NEWLINE"/>Si ya tienes una cuenta Uphold verificada, sigue iniciando sesión.</translation>
+<translation id="3204579740854485097">No hay suficientes [[currency]].</translation>
+<translation id="3330432260369310344">No hay suficientes [[currency]]. Por favor,</translation>
+<translation id="629521674505004728">Al hacer clic en Empezar a utilizar Brave Rewards, acepta las <ph name="LINK_BEGIN"/>Condiciones de uso<ph name="LINK_END"/> y la <ph name="LINK_BEGIN"/>Política de privacidad<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Sitio sospechoso por delante</translation>
+<translation id="8250033559824599347">Este sitio puede ser fraudulento, hacerle saltar de un sitio a otro para establecer cookies de rastreo o realizar otras acciones invasivas de la privacidad.</translation>
+<translation id="8092074243456635562">hasta que cierre esta página</translation>
 </translationbundle>

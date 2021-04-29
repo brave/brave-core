@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">Torin välityspalvelimen URI</translation>
 <translation id="1671503397662036257">Tor-yhteyden tila</translation>
 <translation id="6024292492796847324">Torin käynnistymisen edistyminen</translation>
+<translation id="2106271389438168634">Uphold-lompakon luomiseen tarvitaan vähintään 25 BATia. Todenna lompakkosi Upholdilla ja kokeile uudelleen.</translation>
+<translation id="4758374243299807324">Käyttäjän [[user]] julkaisu</translation>
+<translation id="1242162113777253768">Käyttäjän [[user]] twiitti</translation>
+<translation id="3473919203449000069">Jatkamalla hyväksyt <ph name="LINK_BEGIN"/>käyttöehdot<ph name="LINK_END"/> ja <ph name="LINK_BEGIN"/>yksityisyyskäytännön<ph name="LINK_END"/></translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Käy pikakierroksella<ph name="LINK_END"/> tai <ph name="LINK_BEGIN"/>lue lisää<ph name="LINK_END"/> saadaksesi lisätietoja.</translation>
+<translation id="5594737784294211654">Tarvitset vähintään 25 BAT luodaksesi Uphold-tilin. Yritä myöhemmin uudelleen. <ph name="NEWLINE"/>Jos sinulla on jo vahvistettu Uphold-tili, jatka kirjautumiseen.</translation>
+<translation id="3204579740854485097">Ei riittävästi [[currency]].</translation>
+<translation id="3330432260369310344">Ei riittävästi [[currency]]. Ole hyvä ja</translation>
+<translation id="629521674505004728">Aloita Brave-palkintojen käyttäminen -painiketta napsauttamalla ilmaiset hyväksyväsi <ph name="LINK_BEGIN"/>käyttöehdot<ph name="LINK_END"/> ja <ph name="LINK_BEGIN"/>tietosuojakäytännön<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Epäilyttävä sivusto edessäpäin</translation>
+<translation id="8250033559824599347">Tämä sivusto saattaa olla vilpillinen, siirtää sinua sivustosta toiseen seurantaevästeiden asettamista varten tai tekee muista yksityisyyttäsi loukkaavia toimenpiteitä.</translation>
+<translation id="8092074243456635562">kunnes suljen tämän sivun</translation>
 </translationbundle>

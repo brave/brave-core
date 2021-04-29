@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">Tor 프록시 URI</translation>
 <translation id="1671503397662036257">Tor 연결 상태</translation>
 <translation id="6024292492796847324">토르 초기화 진행률</translation>
+<translation id="2106271389438168634">Uphold 지갑을 만들려면 최소 25 BAT가 있어야 합니다. Uphold로 지갑을 인증한 후에 다시 시도하십시오.</translation>
+<translation id="4758374243299807324">[[user]] 님의 게시물</translation>
+<translation id="1242162113777253768">[[user]] 님의 트윗</translation>
+<translation id="3473919203449000069">계속 진행함으로써, 사용자는 <ph name="LINK_BEGIN"/>이용약관<ph name="LINK_END"/> 및 <ph name="LINK_BEGIN"/>개인정보처리방침<ph name="LINK_END"/>에 동의하게 됩니다.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>간단히 살펴보거나<ph name="LINK_END"/> 또는 <ph name="LINK_BEGIN"/>더 알아보기<ph name="LINK_END"/> 하여 상세 내용을 알아봅니다.</translation>
+<translation id="5594737784294211654">Uphold 계정을 만들려면 최소 25 BAT가 있어야 합니다. 나중에 다시 시도하세요. <ph name="NEWLINE"/>인증된 Uphold 계정이 이미 있는 경우 계속해서 로그인하세요.</translation>
+<translation id="3204579740854485097">[[currency]] 잔액이 충분하지 않습니다.</translation>
+<translation id="3330432260369310344">[[currency]]가 충분하지 않습니다.</translation>
+<translation id="629521674505004728">Brave Rewards 사용 시작을 클릭하면 <ph name="LINK_BEGIN"/>서비스 약관<ph name="LINK_END"/> 및 <ph name="LINK_BEGIN"/>개인 정보 보호 정책<ph name="LINK_END"/>에 동의하는 것입니다.</translation>
+<translation id="6631469728138660166">앞쪽에 의심스러운 사이트</translation>
+<translation id="8250033559824599347">이 사이트는 사기성 사이트일 수 있으며, 추적 쿠키를 설정하기 위해 여러 사이트 사이를 이동하게 하거나 그 밖의 개인 정보를 침해할 수 있습니다.</translation>
+<translation id="8092074243456635562">이 페이지를 닫을 때까지</translation>
 </translationbundle>

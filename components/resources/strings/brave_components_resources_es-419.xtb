@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI de proxy de Tor</translation>
 <translation id="1671503397662036257">Estado de conexión de Tor</translation>
 <translation id="6024292492796847324">Progreso de inicialización de Tor</translation>
+<translation id="2106271389438168634">Necesitas un mínimo de 25 BAT para crear una billetera de Uphold. Vuelve a intentarlo después de haber verificado tu billetera con Uphold.</translation>
+<translation id="4758374243299807324">Publicación de [[user]]</translation>
+<translation id="1242162113777253768">Tuit de [[user]]</translation>
+<translation id="3473919203449000069">Al continuar, aceptas las <ph name="LINK_BEGIN"/>condiciones del servicio<ph name="LINK_END"/> y la <ph name="LINK_BEGIN"/>política de privacidad<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Haz un recorrido rápido<ph name="LINK_END"/> u <ph name="LINK_BEGIN"/>obtén más información<ph name="LINK_END"/> para conocer los detalles.</translation>
+<translation id="5594737784294211654">Debes tener 25 BAT como mínimo para crear una cuenta de Uphold. Vuelve a intentarlo más tarde. <ph name="NEWLINE"/>Si ya tienes una cuenta de Uphold verificada, inicia sesión.</translation>
+<translation id="3204579740854485097">No tienes suficientes [[currency]].</translation>
+<translation id="3330432260369310344">No tienes suficientes [[currency]].</translation>
+<translation id="629521674505004728">Al hacer clic en Comenzar a utilizar Recompensas Brave, aceptas las <ph name="LINK_BEGIN"/>Condiciones del servicio<ph name="LINK_END"/> y la <ph name="LINK_BEGIN"/>Política de privacidad<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Sitio sospechoso</translation>
+<translation id="8250033559824599347">Este sitio puede ser fraudulento, llevarte de un sitio a otro para instalar cookies de rastreo o realizar otras acciones que invadan tu privacidad.</translation>
+<translation id="8092074243456635562">hasta que cierre la página</translation>
 </translationbundle>

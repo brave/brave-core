@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI proxy Tor</translation>
 <translation id="1671503397662036257">Stare conexiune Tor</translation>
 <translation id="6024292492796847324">Progres inițializare Tor</translation>
+<translation id="2106271389438168634">Aveți nevoie de minimum 25 BAT pentru a crea un portofel Uphold. Încercați din nou după ce v-ați confirmat portofelul la Uphold.</translation>
+<translation id="4758374243299807324">Postarea utilizatorului [[user]]</translation>
+<translation id="1242162113777253768">Tweet-ul utilizatorului [[user]]</translation>
+<translation id="3473919203449000069">Continuând, sunteți de acord cu <ph name="LINK_BEGIN"/>Termenii serviciului<ph name="LINK_END"/> și <ph name="LINK_BEGIN"/>Politica de confidențialitate<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Fă un tur rapid<ph name="LINK_END"/> sau <ph name="LINK_BEGIN"/>află mai multe<ph name="LINK_END"/> pentru detalii.</translation>
+<translation id="5594737784294211654">Trebuie să aveți minimum 25 BAT pentru a crea un cont Uphold. Vă rugăm să încercați din nou mai târziu. <ph name="NEWLINE"/>Dacă aveți deja un cont Uphold verificat, continuați cu conectarea.</translation>
+<translation id="3204579740854485097">Token-uri [[currency]] insuficiente.</translation>
+<translation id="3330432260369310344">Token-uri [[currency]] insuficiente. Adăugați fonduri.</translation>
+<translation id="629521674505004728">Dacă dați clic pe Începeți să folosiți Recompensele Brave, sunteți de acord cu <ph name="LINK_BEGIN"/>Termenii și condițiile<ph name="LINK_END"/> și <ph name="LINK_BEGIN"/>Politica de confidențialitate<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Accesați un site suspect</translation>
+<translation id="8250033559824599347">Este posibil ca acest site să fie fraudulos, să vă trimită între diferite site-uri pentru a seta cookie-uri de urmărire sau să efectueze alte acțiuni care încalcă confidențialitatea.</translation>
+<translation id="8092074243456635562">până închid această pagină</translation>
 </translationbundle>

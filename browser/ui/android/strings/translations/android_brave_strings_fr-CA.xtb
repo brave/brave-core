@@ -371,12 +371,12 @@ jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.<
 <translation id="7427567994475794038">Activez les rapports de confidentialité pour voir combien de traqueurs et de publicités ont été bloqués dans les 3 derniers jours.</translation>
 <translation id="2053891538879944400">Vous avez économisé <ph name="DATA"/> <ph name="DATA_TEXT"/> de données avec le navigateur Brave.</translation>
 <translation id="8640064498452534195">Activez les Rapports de confidentialité pour voir combien de données vous avez sauvegardées.</translation>
-<translation id="2252497442547961651">Le navigateur Brave utilise en moyenne 40 % de batterie en moins.&#128267;</translation>
+<translation id="2252497442547961651">Le navigateur Brave utilise en moyenne 40 % de batterie en moins.🔋</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traqueurs et publicités avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en regardant des publicités respectant la confidentialité et en soutenant vos sites web favoris.</translation>
-<translation id="5678925890616256956">Bravo! Vous avez bloqué 250 publicités et éléments de pistage avec le navigateur Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bravo! Vous avez économisé 10 Mo avec le navigateur Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bravo! Vous avez gagné 10 minutes de temps de chargement avec le navigateur Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bravo! Vous avez bloqué 250 publicités et éléments de pistage avec le navigateur Brave.🔥</translation>
+<translation id="9199047775708635708">Bravo! Vous avez économisé 10 Mo avec le navigateur Brave.🔋</translation>
+<translation id="1880168210969863408">Bravo! Vous avez gagné 10 minutes de temps de chargement avec le navigateur Brave.💨💨</translation>
 <translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
 <translation id="9080777565335515917">Configurez Brave comme navigateur par défaut pour une navigation confidentielle et sûre.</translation>
 <translation id="1390943217516275883">Autoriser Brave à afficher vos statistiques de confidentialité</translation>
@@ -506,4 +506,14 @@ jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.<
 <translation id="5825943197137337319">Interface publique par défaut uniquement</translation>
 <translation id="1689062823386843231">Désactiver le protocole UDP non proxy</translation>
 <translation id="3171931580569169744">Activer les groupes d'onglets</translation>
+<translation id="347604927162577559">Données\nsauvegardées</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651">Vous avez apporté une contribution de <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4376933248999950592">Vous avez désigné <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> pour les créateurs qui ne se sont pas encore inscrits pour recevoir des contributions. Votre navigateur continuera à essayer de contribuer jusqu'à ce qu'ils effectuent la vérification, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Points BAT</translation>
+<translation id="2802462801862186499">1 000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10 000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">Autoriser Brave à afficher vos statistiques de confidentialité</translation>
 </translationbundle>

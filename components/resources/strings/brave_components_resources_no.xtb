@@ -817,4 +817,16 @@
 <translation id="6951743416068151209">Tor-mellomtjener-URI</translation>
 <translation id="1671503397662036257">Tor-tilkoblingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialiseringsprosess</translation>
+<translation id="2106271389438168634">Du må ha minst 25 BAT for å opprette en Uphold-lommebok. Vennligst prøv igjen etter at du har verifisert lommeboken din med Uphold.</translation>
+<translation id="4758374243299807324">[[user]]s innlegg</translation>
+<translation id="1242162113777253768">[[user]]s tweet</translation>
+<translation id="3473919203449000069">Ved å fortsette godtar du <ph name="LINK_BEGIN"/>vilkårene for bruk<ph name="LINK_END"/> og <ph name="LINK_BEGIN"/>personvernerklæringen<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Ta en rask omvisning<ph name="LINK_END"/> eller <ph name="LINK_BEGIN"/>lær mer<ph name="LINK_END"/> for detaljer.</translation>
+<translation id="5594737784294211654">Du må ha minst 25 BAT for å opprette en Uphold-konto. Prøv på nytt senere. <ph name="NEWLINE"/>Hvis du allerede har en bekreftet Uphold-konto, kan du logge på.</translation>
+<translation id="3204579740854485097">Ikke mange nok [[currency]].</translation>
+<translation id="3330432260369310344">Ikke mange nok [[currency]]. Vennligst</translation>
+<translation id="629521674505004728">Ved å klikke på 'Begynn å bruke Brave Rewards' samtykker du til <ph name="LINK_BEGIN"/>Tjenestevilkårene<ph name="LINK_END"/> og <ph name="LINK_BEGIN"/>Personvernpolicyen<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Mistenkelig nettsted oppdaget</translation>
+<translation id="8250033559824599347">Dette nettstedet kan være bedragersk, viderekoble deg via diverse nettsteder for å lagre sporingskapsler eller utføre andre handlinger som invaderer personvernet.</translation>
+<translation id="8092074243456635562">til jeg lukker denne siden</translation>
 </translationbundle>

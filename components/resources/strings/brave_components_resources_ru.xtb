@@ -849,4 +849,16 @@
 <translation id="6951743416068151209">Ссылка прокси Tor</translation>
 <translation id="1671503397662036257">Статус соединения Tor</translation>
 <translation id="6024292492796847324">Прогресс инициализации Tor</translation>
+<translation id="2106271389438168634">Для создания кошелька Uphold вам нужно иметь минимум 25 BAT. Пожалуйста, повторите попытку после верификации своего кошелька в Uphold.</translation>
+<translation id="4758374243299807324">Публикация пользователя [[user]]</translation>
+<translation id="1242162113777253768">Твит пользователя [[user]]</translation>
+<translation id="3473919203449000069">Продолжая, вы принимаете <ph name="LINK_BEGIN"/>Условия предоставления услуг<ph name="LINK_END"/> и <ph name="LINK_BEGIN"/>Политику конфиденциальности<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Пройти короткий тур<ph name="LINK_END"/> или <ph name="LINK_BEGIN"/>узнать больше<ph name="LINK_END"/> для получения дополнительной информации.</translation>
+<translation id="5594737784294211654">Для создания аккаунта Uphold нужно иметь минимум 25 BAT. Пожалуйста, повторите попытку позже. <ph name="NEWLINE"/>Если у вас уже есть верифицированный аккаунт Uphold, перейдите ко входу в систему.</translation>
+<translation id="3204579740854485097">[[currency]]: недостаточно средств.</translation>
+<translation id="3330432260369310344">[[currency]]: недостаточно средств. Пожалуйста,</translation>
+<translation id="629521674505004728">Кликнув на Начать использовать Brave Rewards, вы соглашаетесь с <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/> и <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Впереди подозрительный сайт</translation>
+<translation id="8250033559824599347">Этот сайт может быть мошенническим, перенаправлять вас между различными сайтами для установки файлов cookie для отслеживания или выполнять другие действия, нарушающие конфиденциальность.</translation>
+<translation id="8092074243456635562">пока я не закрою эту страницу</translation>
 </translationbundle>

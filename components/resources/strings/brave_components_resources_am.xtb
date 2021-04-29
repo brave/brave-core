@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">የ ቶር ፕሮክሲ URI</translation>
 <translation id="1671503397662036257">የ ቶር ግንኙነት ሁኔታ</translation>
 <translation id="6024292492796847324">የ ቶር መነሻ እድገት</translation>
+<translation id="2106271389438168634">የተደገፈ ቦርሳ ለመፍጠር ቢያንስ 25 BAT ያስፈልግዎታል። እባክዎን ቦርሳዎን ከማስያዣ ጋር ካረጋገጡ እንደገና ይሞክሩ።</translation>
+<translation id="4758374243299807324">የ [[user]] ልጥፍ</translation>
+<translation id="1242162113777253768">የ [[user]] ትዊት</translation>
+<translation id="3473919203449000069">በመቀጠልዎ፣ እርስዎ በዚህ ተስማምተዋል <ph name="LINK_BEGIN"/>የአገልግሎት ሁኔታዎች<ph name="LINK_END"/> እና <ph name="LINK_BEGIN"/>የግላዊነት ፖሊሲ<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376">ለዝርዝር <ph name="LINK_BEGIN"/>Take a quick tour<ph name="LINK_END"/> or <ph name="LINK_BEGIN"/>learn more<ph name="LINK_END"/> ።</translation>
+<translation id="5594737784294211654">የመያዣ መለያ ለመፍጠር ቢያንስ 25 BAT ያስፈልግዎታል። እባክዎ ቆየት ብለው ይሞክሩ። <ph name="NEWLINE"/>አስቀድሞ የተረጋገጠ የመያዣ መለያ ካለዎት መግባትዎን ይቀጥሉ።</translation>
+<translation id="3204579740854485097">በቂ ያልሆነ [[currency]]።</translation>
+<translation id="3330432260369310344">በቂ  [[currency]] አይደለም። አባክዎን</translation>
+<translation id="629521674505004728">የ Brave ወሮታዎች ን መጠቀም ይጀምሩ የሚለውን በመጫን, እርስዎ ለ <ph name="LINK_BEGIN"/>የአገልግሎት ሁኔታዎች<ph name="LINK_END"/> እና <ph name="LINK_BEGIN"/>የግላዊነት ፖሊሲ<ph name="LINK_END"/>ተስማምተዋል።</translation>
+<translation id="6631469728138660166">አጠራጣሪ ጣቢያ ከፊት ለፊት</translation>
+<translation id="8250033559824599347">ይህ ጣቢያ አጭበርባሪ ሊሆን ይችላል፣ የመከታተያ ኩኪዎችን ለማቀናበርር በተለያዩ ጣቢያዎች መካከል እርስዎን ያመላልሳል፣ ወይም ሌሎች የግላዊነት ወራሪ እርምጃዎችን ሊያከናውን ይችላል።</translation>
+<translation id="8092074243456635562">ይህንን ገጽ እስኪዘጋ ድረስ</translation>
 </translationbundle>

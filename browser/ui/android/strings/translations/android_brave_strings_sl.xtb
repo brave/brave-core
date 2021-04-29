@@ -370,12 +370,12 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="7427567994475794038">Vključite prejemanje poročil o zasebnosti in preverite, koliko sledilnikov &amp; oglasov ste blokirali v zadnjih 3 urah.</translation>
 <translation id="2053891538879944400">Z brskalnikom Brave ste prihranili <ph name="DATA"/> <ph name="DATA_TEXT"/> podatkov.</translation>
 <translation id="8640064498452534195">Vključite prejemanje poročil o zasebnosti in preverite, kolikšno količino podatkov ste prihranili.</translation>
-<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.&#128267;</translation>
+<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.🔋</translation>
 <translation id="1945330434665345785">Z brskalnikom Brave ste v zadnjem tednu blokirali <ph name="COUNT"/> sledilnikov &amp; oglasov.</translation>
 <translation id="2883868922264431515">Zaslužite z ogledom oglasov, ki spoštujejo zasebnost, in podprite svoja najljubša spletna mesta.</translation>
-<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.🔥</translation>
+<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.🔋</translation>
+<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.💨💨</translation>
 <translation id="7408493389591475748">Začnite z brskanjem, da lahko pridobite poročilo o zasebnosti</translation>
 <translation id="9080777565335515917">Za zasebno in varno brskanje nastavite Brave kot privzeti brskalnik.</translation>
 <translation id="1390943217516275883">To brskalniku Brave omogoča prikaz statističnih podatkov o vaši zasebnosti</translation>
@@ -510,4 +510,14 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
 <translation id="3171931580569169744">Omogoči skupine zavihkov</translation>
+<translation id="347604927162577559">Prihranjeni\npodatki</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651">Prispevali ste <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/>.</translation>
+<translation id="4376933248999950592">Izbrali ste <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> za ustvarjalce, ki se še niso prijavili za prejemanje prispevkov. Vaš brskalnik bo še naprej poskušal prispevati, dokler se ne verificirajo oziroma dokler ne mine 90 dni.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Točke BAT</translation>
+<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">To brskalniku Brave omogoča prikaz statističnih podatkov o vaši zasebnosti</translation>
 </translationbundle>

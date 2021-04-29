@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">Tor strežnik URI</translation>
 <translation id="1671503397662036257">Stanje povezave Tor</translation>
 <translation id="6024292492796847324">Napredek pri inicializaciji Tor</translation>
+<translation id="2106271389438168634">Za denarnico Uphold potrebujete vsaj 25 BAT. Potrdite svojo denarnico na spletnem mestu Uphold in poskusite znova.</translation>
+<translation id="4758374243299807324">Objava uporabnika [[user]]</translation>
+<translation id="1242162113777253768">Tvit uporabnika [[user]]</translation>
+<translation id="3473919203449000069">Z nadaljevanjem soglašate s <ph name="LINK_BEGIN"/>Pogoji storitve<ph name="LINK_END"/> in <ph name="LINK_BEGIN"/>Politiko zasebnosti<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Pojdimo na kratek ogled<ph name="LINK_END"/> ali <ph name="LINK_BEGIN"/>si o tem preberite več<ph name="LINK_END"/> podrobnosti.</translation>
+<translation id="5594737784294211654">Za ustvarjanje računa Uphold morate imeti najmanj 25 BAT. Prosimo, poskusite kasneje. <ph name="NEWLINE"/>Če že imate preverjen račun Uphold, se še naprej prijavljajte.</translation>
+<translation id="3204579740854485097">Ni dovolj [[currency]].</translation>
+<translation id="3330432260369310344">Ni dovolj [[currency]]. Prosimo</translation>
+<translation id="629521674505004728">S klikom na Začni uporabljati Brave rewards se strinjate s <ph name="LINK_BEGIN"/>Pogoji storitve<ph name="LINK_END"/> in s <ph name="LINK_BEGIN"/>Politika zasebnosti<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Greste na sumljivo spletno mesto</translation>
+<translation id="8250033559824599347">To spletno mesto je lahko goljufivo, premetava vas med različnimi spletnimi mesti, da nastavi piškotke za sledenje ali izvede druga invazivna dejanja.</translation>
+<translation id="8092074243456635562">dokler ne zaprem te strani</translation>
 </translationbundle>

@@ -369,12 +369,12 @@
 <translation id="7427567994475794038">개인정보 보고서를 켜서 지난 3시간 동안 얼마나 많은 추적기 및 광고가 차단되었는지 확인하십시오.</translation>
 <translation id="2053891538879944400">Brave 브라우저로 <ph name="DATA"/> <ph name="DATA_TEXT"/> 데이터를 절약하셨습니다.</translation>
 <translation id="8640064498452534195">절약한 데이터 양을 보려면 개인정보 보고서를 켜십시오.</translation>
-<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.&#128267;</translation>
+<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.🔋</translation>
 <translation id="1945330434665345785">지난주 Brave 브라우저로 <ph name="COUNT"/> 추적기 및 광고를 차단하셨습니다.</translation>
 <translation id="2883868922264431515">개인정보 존중 광고를 시청하여 토큰을 획득하고 즐겨찾는 웹사이트를 지원하십시오.</translation>
-<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.&#128293;</translation>
-<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.&#128267;</translation>
-<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. &#128168; &#128168;</translation>
+<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.🔥</translation>
+<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.🔋</translation>
+<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. 💨 💨</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
 <translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
 <translation id="1390943217516275883">Brave가 개인정보 통계를 표시하도록 허용</translation>
@@ -508,4 +508,14 @@
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 <translation id="3171931580569169744">탭 그룹 활성화</translation>
+<translation id="347604927162577559">데이터\n절약됨</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651"><ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/>를 기부했습니다.</translation>
+<translation id="4376933248999950592">기부금 수령을 위한 신청 절차를 마치지 않은 제작자에게 <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/>를 지정했습니다. 브라우저의 기부 시도는 제작자가 확인할 때까지 또는 90일 동안 계속됩니다.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">BAT 포인트</translation>
+<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">Brave가 개인정보 통계를 표시하도록 허용</translation>
 </translationbundle>

@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Anda perlu mempunyai minimum $amount$ BAT untuk mencipta akaun Uphold. Jika anda telah mempunyai akaun Uphold yang telah disahkan, terus ke log masuk.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Anda perlu mempunyai minima 25 BAT untuk mencipta akaun Uphold. Sila cuba lagi kemudian. \nJika anda telah mempunyai akaun Uphold yang telah disahkan, terus ke log masuk. ",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Disambungkan",

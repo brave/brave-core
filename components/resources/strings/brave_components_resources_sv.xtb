@@ -853,4 +853,16 @@ startar du upp med nya
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor anslutningsstatus</translation>
 <translation id="6024292492796847324">Tor Initieringsförlopp</translation>
+<translation id="2106271389438168634">Du behöver minst 25 BAT för att skapa en Uphold-plånbok. Försök igen när du har verifierat din plånbok med Uphold.</translation>
+<translation id="4758374243299807324">[[user]]s inlägg</translation>
+<translation id="1242162113777253768">[[user]]s tweet</translation>
+<translation id="3473919203449000069">Genom att fortsätta godkänner du <ph name="LINK_BEGIN"/>Användarvillkor<ph name="LINK_END"/> och <ph name="LINK_BEGIN"/>Integritetspolicy<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Ta en snabb rundtur<ph name="LINK_END"/> eller <ph name="LINK_BEGIN"/>läs mer<ph name="LINK_END"/> för detaljer.</translation>
+<translation id="5594737784294211654">Du måste ha minst 25 BAT för att skapa ett Uphold-konto. Vänligen försök igen senare. <ph name="NEWLINE"/> Fortsätt att logga in om du redan har ett verifierat Uphold-konto.</translation>
+<translation id="3204579740854485097">Inte tillräckligt med [[currency]].</translation>
+<translation id="3330432260369310344">Inte tillräckligt med [[currency]]. Vänligen</translation>
+<translation id="629521674505004728">Genom att klicka på Börja använda Brave Rewards godkänner du <ph name="LINK_BEGIN"/>användarvillkoren<ph name="LINK_END"/> och <ph name="LINK_BEGIN"/>integritetspolicyn<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Misstänkt webbplats framåt</translation>
+<translation id="8250033559824599347">Den här webbplatsen kan vara bedräglig, skicka dig mellan olika webbplatser för att ställa in spårningscookies eller utföra andra integritetskränkande åtgärder.</translation>
+<translation id="8092074243456635562">tills jag stänger den här sidan</translation>
 </translationbundle>

@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">Tor Proxy URL</translation>
 <translation id="1671503397662036257">Tor Verbindungsstatus</translation>
 <translation id="6024292492796847324">Tor Initialisierung Fortschritt</translation>
+<translation id="2106271389438168634">Sie brauchen ein Minimum von 25 BAT, um eine Uphold Wallet zu erstellen. Bitte versuchen Sie es erneut, nachdem Sie Ihre Wallet mit Uphold verifiziert haben.</translation>
+<translation id="4758374243299807324">Beitrag von [[user]]</translation>
+<translation id="1242162113777253768">Tweet von [[user]]</translation>
+<translation id="3473919203449000069">Indem Sie fortfahren, stimmen Sie den <ph name="LINK_BEGIN"/>Nutzungsbedingungen<ph name="LINK_END"/> und <ph name="LINK_BEGIN"/>Datenschutzrichtlinien<ph name="LINK_END"/> zu.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Machen Sie eine schnelle Tour<ph name="LINK_END"/> oder <ph name="LINK_BEGIN"/>lernen Sie mehr,<ph name="LINK_END"/> um Einzelheiten zu erfahren.</translation>
+<translation id="5594737784294211654">Sie müssen mindestens 25 BAT haben, um ein Uphold-Konto zu erstellen. Bitte versuchen Sie es später erneut. <ph name="NEWLINE"/>Falls Sie bereits ein verifiziertes Uphold-Konto haben, fahren Sie mit der Anmeldung fort.</translation>
+<translation id="3204579740854485097">Nicht genug [[currency]].</translation>
+<translation id="3330432260369310344">Nicht genug [[currency]]. Bitte</translation>
+<translation id="629521674505004728">Durch Ihren Klick auf Brave Rewards jetzt nutzen stimmen Sie den <ph name="LINK_BEGIN"/>Nutzungsbedingungen<ph name="LINK_END"/> und der <ph name="LINK_BEGIN"/>Datenschutzrichtlinie<ph name="LINK_END"/> zu.</translation>
+<translation id="6631469728138660166">Verdächtige Seite voraus</translation>
+<translation id="8250033559824599347">Diese Website könnte betrügerisch sein, Sie zwischen verschiedenen Websites umleiten, um Tracking-Cookies zu setzen, oder andere datenschutzinvasive Aktionen ausführen.</translation>
+<translation id="8092074243456635562">bis ich diese Seite schließe</translation>
 </translationbundle>

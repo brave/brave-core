@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI پراکسی Tor</translation>
 <translation id="1671503397662036257">وضعیت اتصال Tor</translation>
 <translation id="6024292492796847324">پیشرفت مقداردهی اولیه Tor</translation>
+<translation id="2106271389438168634">برای ایجاد یک کیف پول Uphold، به حداقل 25 BAT نیاز دارید. لطفاً پس از اینکه کیف پولتان را در Uphold تأیید کردید، دوباره امتحان کنید.</translation>
+<translation id="4758374243299807324">پست [[user]]</translation>
+<translation id="1242162113777253768">توییت [[user]]</translation>
+<translation id="3473919203449000069">با ادامه دادن، شما با <ph name="LINK_BEGIN"/>شرایط خدمات<ph name="LINK_END"/> و <ph name="LINK_BEGIN"/>خط‌مشی رازداری<ph name="LINK_END"/> موافقت می‌کنید.</translation>
+<translation id="7285784253840999376">برای دریافت جزئیات، <ph name="LINK_BEGIN"/>گشت سریعی بزنید<ph name="LINK_END"/> یا <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
+<translation id="5594737784294211654">برای ایجاد حساب Uphold، به حداقل ‎BAT 25 نیاز دارید. لطفاً بعداً دوباره امتحان کنید. <ph name="NEWLINE"/>در صورتی که ازقبل یک حساب تأییدشده Uphold دارید، ورود به سیستم را ادامه دهید.</translation>
+<translation id="3204579740854485097">مقدار [[currency]] کافی نیست.</translation>
+<translation id="3330432260369310344">[[currency]] کافی نیست. لطفاً</translation>
+<translation id="629521674505004728">با کلیک کردن روی «شروع استفاده از Brave Rewards»، با <ph name="LINK_BEGIN"/>شرایط خدمات<ph name="LINK_END"/> و <ph name="LINK_BEGIN"/>خط مشی رازداری<ph name="LINK_END"/> موافقت می‌کنید.</translation>
+<translation id="6631469728138660166">سایت مشکوکی پیش‌رو است</translation>
+<translation id="8250033559824599347">این سایت ممکن است کلاهبرداری باشد، شما را بین سایت‌های مختلف جابه‌جا کند تا ردیابی کوکی تنظیم کند یا کنش‌های تهاجمی دیگری نسبت به حریم خصوصی انجام دهد.</translation>
+<translation id="8092074243456635562">تا وقتی این صفحه را ببندم</translation>
 </translationbundle>

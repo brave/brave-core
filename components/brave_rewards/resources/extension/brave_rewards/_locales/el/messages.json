@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Πρέπει να έχετε ελάχιστο $amount$ BAT για να δημιουργήσετε έναν Upholod λογαριασμό. Αν έχετε ήδη επαληθευμένο λογαριασμό, συνεχίστε για να συνδεθείτε.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Πρέπει να έχετε τουλάχιστον 25 BAT για να δημιουργήσετε έναν λογαριασμό Uphold. Παρακαλούμε δοκιμάστε ξανά αργότερα.\nΕάν έχετε ήδη έναν επαληθευμένο λογαριασμό Uphold, συνδεθείτε.",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Σε σύνδεση",

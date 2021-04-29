@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI на прокси за Tor</translation>
 <translation id="1671503397662036257">Състояние на връзката Tor</translation>
 <translation id="6024292492796847324">Напредък на инициализацията на Tor</translation>
+<translation id="2106271389438168634">Трябват ви минимум 25 BAT, за да създадете портфейл в Uphold. Моля, опитайте отново, след като потвърдите портфейла си с Uphold.</translation>
+<translation id="4758374243299807324">Публикацията на [[user]]</translation>
+<translation id="1242162113777253768">Туит на [[user]]</translation>
+<translation id="3473919203449000069">С продължаването си, Вие се съгласявате с the <ph name="LINK_BEGIN"/>Условията на ползване<ph name="LINK_END"/> и <ph name="LINK_BEGIN"/>Политиката за поверителност<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Направете кратка обиколка<ph name="LINK_END"/> или <ph name="LINK_BEGIN"/>научете повече<ph name="LINK_END"/> за подробности.</translation>
+<translation id="5594737784294211654">Трябва да имате минимум 25 BAT, за да създадете акаунт в Uphold. Моля, опитайте отново по-късно. <ph name="NEWLINE"/>Ако вече имате потвърден акаунт в Uphold, продължете, за да влезете.</translation>
+<translation id="3204579740854485097">Няма достатъчно [[currency]].</translation>
+<translation id="3330432260369310344">Няма достатъчно [[currency]]. Моля,</translation>
+<translation id="629521674505004728">Като щракнете върху „Започнете да използвате Brave Rewards“, вие приемате <ph name="LINK_BEGIN"/>Условията за ползване<ph name="LINK_END"/> и <ph name="LINK_BEGIN"/>Политиката за поверителност<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Подозрителен сайт пред Вас</translation>
+<translation id="8250033559824599347">Този сайт може да е измамен, да Ви пренасочва между различни сайтове, за да зададе бисквитки за проследяване или да извърши други действия, нарушаващи поверителността.</translation>
+<translation id="8092074243456635562">докато не затворя тази страница</translation>
 </translationbundle>

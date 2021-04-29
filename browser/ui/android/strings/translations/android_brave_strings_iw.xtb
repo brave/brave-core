@@ -371,12 +371,12 @@
 <translation id="7427567994475794038">הפעילו דוחות פרטיות כדי לראות כמה עוקבים &amp; פרסומות נחסמו ב-3 השעות האחרונות.</translation>
 <translation id="2053891538879944400">חסכתם <ph name="DATA"/> <ph name="DATA_TEXT"/> נתונים עם דפדפן Brave.</translation>
 <translation id="8640064498452534195">הפעילו דוחות פרטיות כדי לראות כמה נתונים חסכתם.</translation>
-<translation id="2252497442547961651">הדפדפן Brave משתמש בממוצא ב-40% פחות סוללה.&#128267;</translation>
+<translation id="2252497442547961651">הדפדפן Brave משתמש בממוצא ב-40% פחות סוללה.🔋</translation>
 <translation id="1945330434665345785">חסמתם <ph name="COUNT"/> עוקבים &amp; פרסומות עם דפדפן Brave בשבוע האחרון.</translation>
 <translation id="2883868922264431515">הרוויחו טוקנים על ידי הצגת מודעות השומרות על הפרטיות ותמכו באתרים האהובים עליכם.</translation>
-<translation id="5678925890616256956">יפה! חסמת 250 עוקבים ופרסומות amp;amp; באמצעות הדפדפן Brave.&#128293;</translation>
-<translation id="9199047775708635708">יפה! חסכת 10MB באמצעות הדפדפן Brave.&#128267;</translation>
-<translation id="1880168210969863408">יפה! חסכת 10 דקות של זמן טעינה באמצעות הדפדפן Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">יפה! חסמת 250 עוקבים ופרסומות amp;amp; באמצעות הדפדפן Brave.🔥</translation>
+<translation id="9199047775708635708">יפה! חסכת 10MB באמצעות הדפדפן Brave.🔋</translation>
+<translation id="1880168210969863408">יפה! חסכת 10 דקות של זמן טעינה באמצעות הדפדפן Brave.💨💨</translation>
 <translation id="7408493389591475748">התחל לגלוש כדי לראות דוחות פרטיות</translation>
 <translation id="9080777565335515917">הגדירו את Brave כדפדפן ברירת המחדל שלכם לגלישה פרטית ומאובטחת.</translation>
 <translation id="1390943217516275883">מאפשר ל-Brave להציג את סטטיסטיקת הפרטיות שלכם</translation>
@@ -506,4 +506,14 @@
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
 <translation id="3171931580569169744">הפיכת קבוצות של כרטיסיות לזמינה</translation>
+<translation id="347604927162577559">מידע\nנשמר</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651">תרמת <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4376933248999950592">ייעדת You've designated <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> עבור יוצרים שעדיין לא נרשמו לקבלת תרומות. הדפדפן שלך ימשיך לנסות לתרום עד אשר הם יאומתו, או עד שיחלפו 90 יום.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">נקודות BAT</translation>
+<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">מאפשר ל-Brave להציג את סטטיסטיקת הפרטיות שלכם</translation>
 </translationbundle>

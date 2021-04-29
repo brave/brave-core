@@ -299,4 +299,6 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="2808630562319398131">Restablecer datos de Recompensas Brave...</translation>
 <translation id="1224064034972923114">Ayúdanos a mejorar Brave enviando informes de errores de forma automática</translation>
 <translation id="3738833060602717053">Ayúdanos a mejorar <ph name="PRODUCT_NAME"/> enviando informes de errores de forma automática</translation>
+<translation id="339086854515247923">¿Seguro que quieres eliminar el dispositivo seleccionado de la cadena de sincronización?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Obtén más información<ph name="END_LINK_MPL"/> sobre las consideraciones de privacidad del nodo local y la puerta de enlace de IPFS.</translation>
 </translationbundle>

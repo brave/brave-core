@@ -849,4 +849,16 @@
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor kapcsolat állapota</translation>
 <translation id="6024292492796847324">Tor inicializálási állapot</translation>
+<translation id="2106271389438168634">Legalább 25 BAT szükséges egy Uphold pénztárca készítéséhez. Próbáld újra, ha ellenőrizted pénztárcádat az Upholdnál.</translation>
+<translation id="4758374243299807324">[[user]] bejegyzése</translation>
+<translation id="1242162113777253768">[[user]] tweetje</translation>
+<translation id="3473919203449000069">A folytatással elfogadod a <ph name="LINK_BEGIN"/>Szolgáltatási feltételeket<ph name="LINK_END"/> és az <ph name="LINK_BEGIN"/>Adatvédelmi szabályzatot<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Nézz meg egy gyors bemutatót<ph name="LINK_END"/> vagy <ph name="LINK_BEGIN"/>tudj meg többet <ph name="LINK_END"/> a részletekről.</translation>
+<translation id="5594737784294211654">Uphold fiók készítéséhez legalább 25 BAT-od kell legyen. Próbáld újra később. <ph name="NEWLINE"/>Ha már rendelkezel egy ellenőrzött Uphold fiókkal, folytasd a bejelentkezést.</translation>
+<translation id="3204579740854485097">Nincs elég [[currency]].</translation>
+<translation id="3330432260369310344">Nincs elég [[currency]]. Kérjük,</translation>
+<translation id="629521674505004728">A Használja a Brave Rewardsot gombra kattintva elfogadja a <ph name="LINK_BEGIN"/>Szolgáltatási feltételeket<ph name="LINK_END"/>és az <ph name="LINK_BEGIN"/>Adatvédelmi szabályzatot<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Gyanús webhely következik</translation>
+<translation id="8250033559824599347">Ez az oldal megpróbálhat becsapni, különböző oldalak között dobálni - hogy követő sütiket állítson be - vagy más adatvédelmet sértő műveleteket végezni.</translation>
+<translation id="8092074243456635562">amíg bezárom ezt az oldalt</translation>
 </translationbundle>

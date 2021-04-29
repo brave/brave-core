@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Для створення облікового запису Uphold вам потрібно мати щонайменше $amount$ BAT. Якщо ви вже маєте верифікований обліковий запис Uphold, виконайте вхід у систему.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Для створення облікового запису Uphold, вам потрібно мати щонайменше 25 BAT. Будь ласка, спробуйте пізніше. Якщо ви вже маєте верифікований обліковий запис Uphold -  перейдіть до Входу.",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Підключено",

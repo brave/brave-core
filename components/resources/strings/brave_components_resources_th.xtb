@@ -854,4 +854,16 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">สถานะการเชื่อมต่อ Tor</translation>
 <translation id="6024292492796847324">ความคืบหน้าการเริ่มต้น Tor</translation>
+<translation id="2106271389438168634">คุณต้องมีอย่างน้อย 25 BAT เพื่อสร้างวอลเล็ต Uphold โปรดลองใหม่อีกครั้งหลังทำการยืนยันวอลเล็ตของคุณกับ Uphold แล้ว</translation>
+<translation id="4758374243299807324">โพสต์ของ [[user]]</translation>
+<translation id="1242162113777253768">ทวีตของ [[user]]</translation>
+<translation id="3473919203449000069">ด้วยการดำเนินการต่อ คุณได้ยอมรับ <ph name="LINK_BEGIN"/>เงื่อนไขการให้บริการ<ph name="LINK_END"/> และ <ph name="LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>ดูบทแนะนำฉบับย่อ<ph name="LINK_END"/>หรือ<ph name="LINK_BEGIN"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/>เพื่อดูรายละเอียด</translation>
+<translation id="5594737784294211654">คุณจำเป็นต้องมีอย่างน้อย 25 BAT เพื่อสร้างบัญชี Uphold โปรดลองใหม่อีกครั้งภายหลัง <ph name="NEWLINE"/>หากคุณมีบัญชี Uphold ที่ได้รับการยืนยันตัวตนแล้ว ไปที่เข้าสู่ระบบต่อไป</translation>
+<translation id="3204579740854485097">[[currency]] ไม่เพียงพอ</translation>
+<translation id="3330432260369310344">[[currency]] ไม่เพียงพอ โปรด</translation>
+<translation id="629521674505004728">เมื่อคลิกเริ่มต้นใช้ Brave Reward จะถือว่าคุณยอมรับ <ph name="LINK_BEGIN"/>เงื่อนไขการใช้บริการ<ph name="LINK_END"/> และ <ph name="LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="LINK_END"/></translation>
+<translation id="6631469728138660166">เว็บไซต์น่าสงสัยที่กำลังจะเข้า</translation>
+<translation id="8250033559824599347">เว็บไซต์นี้อาจมีการหลอกลวง สลับเส้นทางของคุณไปมาระหว่างเว็บไซต์ต่างๆ เพื่อสร้างคุกกี้ติดตามข้อมูล หรือละเมิดความเป็นส่วนตัวด้วยการกระทำอื่นๆ</translation>
+<translation id="8092074243456635562">จนกว่าฉันจะปิดหน้านี้</translation>
 </translationbundle>

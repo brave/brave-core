@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">Stav pripojenia Tor</translation>
 <translation id="6024292492796847324">Priebeh inicializácie Tor</translation>
+<translation id="2106271389438168634">Na vytvorenie peňaženky Uphold potrebujete minimálne 25 tokenov BAT.</translation>
+<translation id="4758374243299807324">Príspevok používateľa [[user]]</translation>
+<translation id="1242162113777253768">Tweet používateľa [[user]]</translation>
+<translation id="3473919203449000069">Pokračovaním vyjadrujete súhlas s <ph name="LINK_BEGIN"/>Podmienkami poskytovaných služieb<ph name="LINK_END"/> a <ph name="LINK_BEGIN"/>Ochranou súkromia<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Urobte si rýchlu prehliadku<ph name="LINK_END"/> alebo <ph name="LINK_BEGIN"/>zistite viac<ph name="LINK_END"/> detailov.</translation>
+<translation id="5594737784294211654">Potrebujete minimálne 25 BAT na vytvorenie účtu Uphold. Prosím, skúste to znova neskôr. <ph name="NEWLINE"/>Ak už máte overený účet Uphold, pokračujte prihlásením.</translation>
+<translation id="3204579740854485097">Nedostatok [[currency]].</translation>
+<translation id="3330432260369310344">Nedostatok [[currency]]. Prosím,</translation>
+<translation id="629521674505004728">Kliknutím na Začať používať Odmeny Brave vyjadrujete súhlas s <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Prechádzate na podozrivú stránku</translation>
+<translation id="8250033559824599347">Táto stránka môže byť podvodná, môže vás nasmerovať cez rôzne weby, aby sa nastavili súbory cookie, alebo môže spôsobiť iné invazívne akcie týkajúce sa ochrany súkromia.</translation>
+<translation id="8092074243456635562">kým nezavriem túto stránku</translation>
 </translationbundle>

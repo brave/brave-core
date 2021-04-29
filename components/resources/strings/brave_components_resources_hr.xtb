@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI proxya Tor</translation>
 <translation id="1671503397662036257">Stanje povezanosti Tor</translation>
 <translation id="6024292492796847324">Napredak pokretanja Tor</translation>
+<translation id="2106271389438168634">Treba vam najmanje 25 BATA za stvaranje novčanika Uphold. Pokušajte ponovno nakon što ste provjerili svoj novčanik uslugom Uphold.</translation>
+<translation id="4758374243299807324">Objava korisnika [[user]]</translation>
+<translation id="1242162113777253768">Objava putem društvene mreže Twitter korisnika [[user]]</translation>
+<translation id="3473919203449000069">Nastavkom pristajete na <ph name="LINK_BEGIN"/>Uvjete pružanja usluge<ph name="LINK_END"/> i <ph name="LINK_BEGIN"/>Pravilnik o zaštiti privatnosti<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Napravite brzo razgledavanje <ph name="LINK_END"/> ili <ph name="LINK_BEGIN"/>saznajte više<ph name="LINK_END"/> za pojednosti.</translation>
+<translation id="5594737784294211654">Morate imati najmanje 25 BATA za stvaranje računa za uslugu Uphold. Pokušajte ponovno kasnije. <ph name="NEWLINE"/>Ako već imate provjereni račun za uslugu Uphold, nastavite do prijave.</translation>
+<translation id="3204579740854485097">Nema dovoljno [[currency]].</translation>
+<translation id="3330432260369310344">Nema dovoljno [[currency]]. Molim</translation>
+<translation id="629521674505004728">Ako kliknete na Počni upotrebljavati uslugu Brave Rewards, pristajete na <ph name="LINK_BEGIN"/>Uvjete pružanja usluge<ph name="LINK_END"/> i <ph name="LINK_BEGIN"/>Pravilnik o zaštiti privatnosti<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">U nastavku je sumnjivo mrežno mjesto</translation>
+<translation id="8250033559824599347">Ovo mrežno mjesto može biti prijevarno, njime se može provoditi prebacivanje između različitih mrežnih mjesta radi postavljanja kolačića za praćenje ili se mogu obavljati druge radnje kojima se krši privatnost.</translation>
+<translation id="8092074243456635562">dok ne zatvorim ovu stranicu</translation>
 </translationbundle>

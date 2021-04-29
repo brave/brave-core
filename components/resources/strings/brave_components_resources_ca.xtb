@@ -853,4 +853,17 @@
 <translation id="6951743416068151209">URI del proxy de Tor</translation>
 <translation id="1671503397662036257">Estat de la connexió de Tor</translation>
 <translation id="6024292492796847324">Progrés d'inicialització de Tor</translation>
+<translation id="2106271389438168634">Necessiteu un mínim de 25 BAT per crear una cartera de Uphold. Si us plau, torneu-ho a provar després d'haver verificat la seva cartera amb Uphold.</translation>
+<translation id="4758374243299807324">Publicació de [[user]]</translation>
+<translation id="1242162113777253768">Piulada de [[user]]</translation>
+<translation id="3473919203449000069">Si continueu, accepteu el
+<ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Feu un tour ràpid<ph name="LINK_END"/> o <ph name="LINK_BEGIN"/>esbrineu més<ph name="LINK_END"/> per a més detalls.</translation>
+<translation id="5594737784294211654">Necessiteu tenir com a mínim 25 BAT per a crear un compte Uphold. Si us plau torneu-ho a provar més tard. <ph name="NEWLINE"/>Si ja teniu un compte Uphold verificat, continueu a iniciar sessió</translation>
+<translation id="3204579740854485097">No hi ha suficients [[currency]].</translation>
+<translation id="3330432260369310344">No hi ha suficients [[currency]]. Si us plau</translation>
+<translation id="629521674505004728">Si cliqueu Començar a utilitzar Recompenses Brave, esteu acceptant els <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Lloc sospitós a continuació</translation>
+<translation id="8250033559824599347">És possible que aquest lloc sigui fraudulent, que reboti entre diversos llocs per establir galetes de seguiment o que faci altres accions invasives de privadesa.</translation>
+<translation id="8092074243456635562">fins que tanqui aquesta pàgina</translation>
 </translationbundle>

@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI du proxy Tor</translation>
 <translation id="1671503397662036257">État de la connexion Tor</translation>
 <translation id="6024292492796847324">Progression de l'initialisation de Tor</translation>
+<translation id="2106271389438168634">Vous devez disposez d'un minimum de 25 BAT pour créer un portefeuille Uphold. Veuillez réessayer après avoir vérifié votre portefeuille avec Uphold.</translation>
+<translation id="4758374243299807324">Publication de [[user]]</translation>
+<translation id="1242162113777253768">Tweet de [[user]]</translation>
+<translation id="3473919203449000069">En continuant, vous acceptez les <ph name="LINK_BEGIN"/>conditions d'utilisation<ph name="LINK_END"/> et la <ph name="LINK_BEGIN"/>politique de confidentialité<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Suivre une rapide visite guidée<ph name="LINK_END"/> ou <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/> pour plus de détails.</translation>
+<translation id="5594737784294211654">Vous devez disposer d'un minimum de 25 BAT pour créer un compte Uphold. Veuillez réessayer plus tard. <ph name="NEWLINE"/>Si vous avez déjà un compte Uphold vérifié, continuez pour vous connecter.</translation>
+<translation id="3204579740854485097">Vous n'avez pas assez de [[currency]].</translation>
+<translation id="3330432260369310344">Vous n'avez pas assez de [[currency]]. Veuillez</translation>
+<translation id="629521674505004728">En cliquant sur Commencer à utiliser Brave Rewards, vous acceptez les <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Site potentiellement dangereux détecté</translation>
+<translation id="8250033559824599347">Il est possible que ce site soit frauduleux, qu'il vous redirige vers d'autres sites pour générer des cookies de traçage, ou qu'il effectue d'autres opérations pouvant porter atteinte à votre vie privée.</translation>
+<translation id="8092074243456635562">jusqu'à la fermeture de la page</translation>
 </translationbundle>

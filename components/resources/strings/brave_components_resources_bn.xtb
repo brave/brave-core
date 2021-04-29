@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">টর প্রক্সি ইউআরআই</translation>
 <translation id="1671503397662036257">টর সংযোগের স্থিতি</translation>
 <translation id="6024292492796847324">টর ইনিশিয়ালাইজেশন অগ্রগতি</translation>
+<translation id="2106271389438168634">একটি আপহোল্ড ওয়ালেট তৈরি করতে আপনার অন্তত 25 BAT লাগবে। আপহোল্ড দিয়ে আপনার ওয়ালেট যাচাই করার পরে অনুগ্রহ করে চেষ্টা করুন।</translation>
+<translation id="4758374243299807324">[[user]] এর পোস্ট</translation>
+<translation id="1242162113777253768">[[user]] এর টুইট</translation>
+<translation id="3473919203449000069">এগিয়ে গিয়ে, আপনি <ph name="LINK_BEGIN"/>পরিষেবার শর্তাবলী<ph name="LINK_END"/> এবং <ph name="LINK_BEGIN"/>গোপনীয়তা নীতিতে<ph name="LINK_END"/> সম্মত হচ্ছেন।</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Take a quick tour<ph name="LINK_END"/> or <ph name="LINK_BEGIN"/>learn more<ph name="LINK_END"/>বিস্তারিত জানার জন্য।</translation>
+<translation id="5594737784294211654">একটি Uphold অ্যাকাউন্ট তৈরি করতে আপনার অন্তত 25 BAT থাকতে হবে। অনুগ্রহ করে পরে আবার চেষ্টা করুন। <ph name="NEWLINE"/>আপনার ইতিমধ্যে একটি যাচাইকৃত Uphold অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।</translation>
+<translation id="3204579740854485097">যথেষ্ট [[currency]] নেই।</translation>
+<translation id="3330432260369310344">যথেষ্ট [[currency]] নেই। অনুগ্রহ করে</translation>
+<translation id="629521674505004728">ক্লিক করে Brave Rewards ব্যবহার শুরু করুন, আপনি রাজি হন <ph name="LINK_BEGIN"/> পরিষেবার শর্তাদি<ph name="LINK_END"/> এবং <ph name="LINK_BEGIN"/>গোপনীয়তা নীতি <ph name="LINK_END"/></translation>
+<translation id="6631469728138660166">সামনে সন্দেহজনক সাইট আসছে</translation>
+<translation id="8250033559824599347">সাইটটি ভুয়া হতে পারে এবং আপনাকে বিভিন্ন সাইটে ঘুরিয়ে ট্র্যাকিং কুকিজ সেট করতে পারে, অথবা অন্যান্য গোপনীয়তা লঙ্ঘনকারী কাজ করতে পারে।</translation>
+<translation id="8092074243456635562">আমি এই পেজটি বন্ধ করা পর্যন্ত</translation>
 </translationbundle>

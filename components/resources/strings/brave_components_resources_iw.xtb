@@ -850,4 +850,16 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">סטטוס חיבור Tor</translation>
 <translation id="6024292492796847324">התקדמות אתחול Tor</translation>
+<translation id="2106271389438168634">נדרשים לכם מינימום של 25 BAT כדי ליצור ארנק Uphold. נא לנסות שוב לאחר שאימתתם את הארנק שלכם באמצעות Uphold.</translation>
+<translation id="4758374243299807324">פוסט של [[user]]</translation>
+<translation id="1242162113777253768">ציוץ של [[user]]</translation>
+<translation id="3473919203449000069">על ידי המשך, הנך מסכימ/ה ל-<ph name="LINK_BEGIN"/>תנאי השירות<ph name="LINK_END"/> ו-<ph name="LINK_BEGIN"/>מדיניות הפרטיות<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>ערכו סיור מהיר<ph name="LINK_END"/> או <ph name="LINK_BEGIN"/>למדו עוד<ph name="LINK_END"/> לפרטים.</translation>
+<translation id="5594737784294211654">דרוש לכם מינימום של 25 BAT כדי ליצור חשבון Uphold. נא לנסות שוב מאוחר יותר. <ph name="NEWLINE"/>אם כבר יש לכם חשבון Uphold מאומת, המשיכו להתחברות.</translation>
+<translation id="3204579740854485097">אין מספיק [[currency]].</translation>
+<translation id="3330432260369310344">אין מספיק [[currency]]. נא</translation>
+<translation id="629521674505004728">על ידי לחיצה על התחל להשתמש ב-Brave Rewards הנך מסכימ/ה ל<ph name="LINK_BEGIN"/>תנאי השירות<ph name="LINK_END"/> וכן <ph name="LINK_BEGIN"/>מדיניות הפרטיות<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">אתר חשוד לפניך</translation>
+<translation id="8250033559824599347">ייתכן שאתר זה הוא הונאה, יעביר בין בין אתרים שונים כדי להגדיר עוגיות מעקב, או לבצע פעולות אחרות של פלישה לפרטיות.</translation>
+<translation id="8092074243456635562">עד שאסגור דף זה</translation>
 </translationbundle>

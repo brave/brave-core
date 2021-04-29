@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Unahitaji kiwango cha chini zaidi cha $amount$BAT ili kufungua akaunti ya Uphold. Ikiwa tayari umethibitisha akaunti ya Uphold, ingia.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Unahitaji 25 BAT za chini zaidi ili kufungua akaunti ya Uphold. Tafadhali jaribu tena baadaye. \n Ikiwa tayari umethibitishwa akaunti ya Uphold, ingia.",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Umeunganishwa",

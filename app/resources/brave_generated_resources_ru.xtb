@@ -299,4 +299,6 @@
 <translation id="2808630562319398131">Сбросить данные Вознаграждений Brave...</translation>
 <translation id="1224064034972923114">Помогите улучшить Brave, автоматически отправляя отчеты о сбоях</translation>
 <translation id="3738833060602717053">Помогите улучшить <ph name="PRODUCT_NAME"/>, автоматически отправляя отчеты о сбоях</translation>
+<translation id="339086854515247923">Вы уверены, что хотите удалить выбранное устройство из цепочки синхронизации?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Узнайте больше<ph name="END_LINK_MPL"/> об обеспечении конфиденциальности на локальном узле и шлюзе IPFS.</translation>
 </translationbundle>

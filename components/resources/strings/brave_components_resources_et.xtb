@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">Tori puhverserveri URI</translation>
 <translation id="1671503397662036257">Tori ühenduse olek</translation>
 <translation id="6024292492796847324">Tori lähtestamise edenemine</translation>
+<translation id="2106271389438168634">Upholdi rahakoti loomiseks peab sul olema vähemalt 25 BATi. Proovi uuesti pärast Upholdi konto kinnitamist.</translation>
+<translation id="4758374243299807324">Kasutaja [[user]] postitus</translation>
+<translation id="1242162113777253768">Kasutaja [[user]] säuts</translation>
+<translation id="3473919203449000069">Jätkates nõustute <ph name="LINK_BEGIN"/>teenusetingimuste<ph name="LINK_END"/> ja <ph name="LINK_BEGIN"/>privaatsuspoliitikaga<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Tehke kiire ringkäik<ph name="LINK_END"/> või <ph name="LINK_BEGIN"/>lugege veelt<ph name="LINK_END"/>, et saada lisateavet.</translation>
+<translation id="5594737784294211654">Upholdi konto loomiseks peab teil olema vähemalt 25 BATi. Proovige hiljem uuesti. <ph name="NEWLINE"/>Kui teil on juba kinnitatud Upholdi konto, jätkake sisselogimisega.</translation>
+<translation id="3204579740854485097">Pole piisavalt valuutat [[currency]].</translation>
+<translation id="3330432260369310344">Pole piisavalt valuutat [[currency]]. Palun</translation>
+<translation id="629521674505004728">Klõpsates valikul "Alusta Brave Rewardsi kasutamist" nõustute <ph name="LINK_BEGIN"/>teenusetingimuste<ph name="LINK_END"/> ja <ph name="LINK_BEGIN"/>privaatsuspoliitikaga<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Ees on kahtlane sait</translation>
+<translation id="8250033559824599347">See sait võib olla petturlik, viia teid vaheldumisi eri saitidele, et seada jälitusküpsised või teha muud privaatsust riivavat.</translation>
+<translation id="8092074243456635562">kuni sulgen selle lehe</translation>
 </translationbundle>

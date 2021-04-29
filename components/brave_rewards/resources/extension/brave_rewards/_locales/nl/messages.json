@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Je hebt minimaal $amount$ BAT nodig om een Uphold-account te maken. Als je al een Uphold-account hebt, kun je doorgaan met aanmelden.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "U moet minimaal 25 BAT hebben om een Uphold-account aan te maken. Probeer het alstublieft later nogmaals. Als u reeds een geverifieerd Uphold-account heeft, ga dan door naar het inloggen. ",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Verbonden",

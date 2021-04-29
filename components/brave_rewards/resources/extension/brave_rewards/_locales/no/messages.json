@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Du må ha minst $amount$ BAT for å opprette en Uphold-konto. Om du allerede har en verifisert Uphold-konto, kan du fortsette med innloggingen.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Du må ha minst 25 BAT for å opprette en Uphold-konto. Prøv på nytt senere.\nHvis du allerede har bekreftet Uphold-kontoen din, kan du logge på.",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Tilkoblet",

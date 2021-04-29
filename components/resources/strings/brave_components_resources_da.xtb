@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor-forbindelsesstatus</translation>
 <translation id="6024292492796847324">Tor initialiseringsfremgang</translation>
+<translation id="2106271389438168634">Du skal bruge minimum 25 BAT for at oprette en Uphold-wallet. Prøv venligst igen, efter du har bekræftet din wallet hos Uphold.</translation>
+<translation id="4758374243299807324">Opslag fra [[user]]</translation>
+<translation id="1242162113777253768">Tweet fra [[user]]</translation>
+<translation id="3473919203449000069">Ved at fortsætte, accepterer du <ph name="LINK_BEGIN"/>Brugsvilkårene<ph name="LINK_END"/> og <ph name="LINK_BEGIN"/>Databeskyttelsespolitikken<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Tag en hurtig tur<ph name="LINK_END"/> eller <ph name="LINK_BEGIN"/>lær mere<ph name="LINK_END"/> for oplysninger.</translation>
+<translation id="5594737784294211654">Du skal have mindst 25 BAT for at oprette en Uphold-konto. Prøv igen senere. <ph name="NEWLINE"/>Hvis du allerede har en bekræftet Uphold-konto, skal du fortsætte for at logge ind.</translation>
+<translation id="3204579740854485097">Ikke nok [[currency]].</translation>
+<translation id="3330432260369310344">Ikke nok [[currency]]. Venligst</translation>
+<translation id="629521674505004728">Når du klikker på Begynd at bruge Brave Rewards, accepterer du <ph name="LINK_BEGIN"/>Servicevilkårene<ph name="LINK_END"/> og <ph name="LINK_BEGIN"/>Politikken om beskyttelse af persondata<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Mistænkeligt side forude</translation>
+<translation id="8250033559824599347">Denne side kan være en svindelside, sende dig til forskellige hjemmesider for at indstille sporingscookies, eller udføre andre datainvasive handlinger.</translation>
+<translation id="8092074243456635562">indtil jeg lukker denne side</translation>
 </translationbundle>

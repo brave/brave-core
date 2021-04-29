@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">عنوان URI لوكيل متصفح تور</translation>
 <translation id="1671503397662036257">حالة اتصال تور</translation>
 <translation id="6024292492796847324">التقدم المحرز في تهيئة متصفح تور</translation>
+<translation id="2106271389438168634">يجب أن يكون لديك 25 BAT كحد أدنى لإنشاء محفظة Uphold. الرجاء إعادة المحاولة بعد أن تقوم بتفعيل محفظتك مع Uphold.</translation>
+<translation id="4758374243299807324">منشور [[user]]</translation>
+<translation id="1242162113777253768">تغريدة [[user]]</translation>
+<translation id="3473919203449000069">بالمتابعة، فأنت توافق على <ph name="LINK_BEGIN"/>شروط الخدمة<ph name="LINK_END"/> و <ph name="LINK_BEGIN"/>سياسة الخصوصية<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>خذ جولة سريعة<ph name="LINK_END"/>أو<ph name="LINK_BEGIN"/>اعرف أكثر<ph name="LINK_END"/> للتفاصيل.</translation>
+<translation id="5594737784294211654">يجب أن يكون لديك 25 عملة BAT كحد أدنى لإنشاء حساب Uphold. يُرجى المحاولة مرة أخرى في وقت لاحق. <ph name="NEWLINE"/>إذا كان لديك بالفعل حساب Uphold تم التحقق منه ، فتابع تسجيل الدخول.</translation>
+<translation id="3204579740854485097">لا توجد [[currency]] كافية.</translation>
+<translation id="3330432260369310344">لا توجد [[currency]] كافية. يرجى</translation>
+<translation id="629521674505004728">بالنقر على البدء في استخدام Brave Rewards، فأنت توافق على <ph name="LINK_BEGIN"/>شروط الخدمة<ph name="LINK_END"/> و<ph name="LINK_BEGIN"/>سياسة الخصوصية<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">أمامك موقع إلكتروني مريب</translation>
+<translation id="8250033559824599347">قد يكون هذا الموقع احتيالياً، أو قد يقوم بالتنقل بك بين مواقع مختلفة لتثبيت ملفات تعريف الارتباط من أجل لتتبع، أو لتنفيذ إجراءات أخرى تخترق الخصوصية.</translation>
+<translation id="8092074243456635562">حتى أقوم بغلق هذه الصفحة</translation>
 </translationbundle>

@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI Tor Proxy</translation>
 <translation id="1671503397662036257">Status połączenia z siecią Tor</translation>
 <translation id="6024292492796847324">Postęp inicjalizacji sieci Tor</translation>
+<translation id="2106271389438168634">Do utworzenia portfela Uphold potrzebujesz co najmniej 25 BAT. Spróbuj ponownie po zweryfikowaniu portfela w Uphold.</translation>
+<translation id="4758374243299807324">Wpis użytkownika [[user]]</translation>
+<translation id="1242162113777253768">Tweet użytkownika [[user]]</translation>
+<translation id="3473919203449000069">Kontynuując, zgadzasz się na <ph name="LINK_BEGIN"/>Warunki użytkowania<ph name="LINK_END"/> i <ph name="LINK_BEGIN"/>Politykę prywatności<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Zrób szybki przegląd<ph name="LINK_END"/> lub <ph name="LINK_BEGIN"/>dowiedz się więcej<ph name="LINK_END"/> dla szczegółów</translation>
+<translation id="5594737784294211654">You need to have minimum 25 BAT to create an Uphold account. Please try again later. <ph name="NEWLINE"/>If you already have a verified Uphold account, continue to login.</translation>
+<translation id="3204579740854485097">Brak [[currency]].</translation>
+<translation id="3330432260369310344">Brak [[currency]]. Należy</translation>
+<translation id="629521674505004728">Stukając opcję Zacznij podczas korzystania z nagród Brave, zgadzają się Państwo na <ph name="LINK_BEGIN"/>Warunki świadczenia usług<ph name="LINK_END"/> i <ph name="LINK_BEGIN"/>Politykę prywatności<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Podejrzana witryna na horyzoncie</translation>
+<translation id="8250033559824599347">Ta witryna może być fałszywa, przekierowywać Cię do innych witryn w celu instalacji śledzących plików cookie lub wykonywać inne działania naruszające prywatność.</translation>
+<translation id="8092074243456635562">do zamknięcia przeze mnie tej strony</translation>
 </translationbundle>

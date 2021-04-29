@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI проксі-сервера Tor</translation>
 <translation id="1671503397662036257">Статус з'єднання Tor</translation>
 <translation id="6024292492796847324">Прогресс ініціалізації Tor</translation>
+<translation id="2106271389438168634">Для створення гаманця Uphold вам потрібно мати принаймні 25 BAT. Повторіть спробу після верифікації гаманця в Uphold.</translation>
+<translation id="4758374243299807324">Публікація користувача [[user]]</translation>
+<translation id="1242162113777253768">Твіт користувача [[user]]</translation>
+<translation id="3473919203449000069">Продовжуючи, ви погоджуєтесь з <ph name="LINK_BEGIN"/>Умовами надання послуг<ph name="LINK_END"/> та <ph name="LINK_BEGIN"/>Політикою приватності<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Перегляньте короткий огляд<ph name="LINK_END"/> або <ph name="LINK_BEGIN"/>дізнайтесь більше<ph name="LINK_END"/>, щоб ознайомитись з деталями.</translation>
+<translation id="5594737784294211654">Для створення облікового запису Uphold, вам потрібно мати щонайменше 25 BAT. Будь ласка, спробуйте пізніше. <ph name="NEWLINE"/>Якщо ви вже маєте верифікований обліковий запис Uphold -  перейдіть до Входу.</translation>
+<translation id="3204579740854485097">Недостатньо коштів ([[currency]]).</translation>
+<translation id="3330432260369310344">Недостатньо коштів ([[currency]]). Будь ласка,</translation>
+<translation id="629521674505004728">Натиснувши "Почати користуватися Brave Rewards", ви приймаєте <ph name="LINK_BEGIN"/>Умови надання послуг<ph name="LINK_END"/> та <ph name="LINK_BEGIN"/>Політику конфіденційності<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Попереду підозрілий сайт</translation>
+<translation id="8250033559824599347">Цей вебсайт може бути шахрайським, перекидати вас різними вебсайтами, щоб встановити файли cookie для відстеження або виконувати інші дії, що порушують конфіденційність.</translation>
+<translation id="8092074243456635562">поки я не закрию цю сторінку</translation>
 </translationbundle>

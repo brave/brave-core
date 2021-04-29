@@ -300,4 +300,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2808630562319398131">Nulstil Brave-belønningsdata...</translation>
 <translation id="1224064034972923114">Hjælp med at forbedre Brave ved automatisk at sende nedbrudsrapporter</translation>
 <translation id="3738833060602717053">Hjælp med at forbedre <ph name="PRODUCT_NAME"/> ved automatisk at sende nedbrudsrapporter</translation>
+<translation id="339086854515247923">Er du sikker på, at du vil slette den valgte enhed fra synkroniseringskæden?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Læs mere<ph name="END_LINK_MPL"/> om IPFS-lokalnode og -gatewayovervejelser.</translation>
 </translationbundle>

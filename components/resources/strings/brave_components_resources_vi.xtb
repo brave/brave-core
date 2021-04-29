@@ -849,4 +849,16 @@
 <translation id="6951743416068151209">URI Proxy Tor</translation>
 <translation id="1671503397662036257">Trạng thái Kết nối Tor</translation>
 <translation id="6024292492796847324">Quá trình Khởi tạo Tor</translation>
+<translation id="2106271389438168634">Bạn cần có tối thiểu 25 BAT để tạo ví Uphold. Vui lòng thử lại sau khi bạn đã xác minh ví của mình với Uphold.</translation>
+<translation id="4758374243299807324">Bài đăng của [[user]]</translation>
+<translation id="1242162113777253768">Tweet của [[user]]</translation>
+<translation id="3473919203449000069">Bằng việc tiếp tục, bạn đồng ý với <ph name="LINK_BEGIN"/>Điều khoản Dịch vụ<ph name="LINK_END"/> và <ph name="LINK_BEGIN"/>Chính sách Quyền riêng tư<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Hãy tham gia một hành trình ngắn<ph name="LINK_END"/> hoặc <ph name="LINK_BEGIN"/>tìm hiểu thêm<ph name="LINK_END"/> để biết thông tin chi tiết.</translation>
+<translation id="5594737784294211654">Bạn cần có tối thiểu 25 BAT để tạo tài khoản Uphold. Xin vui lòng thử lại sau. <ph name="NEWLINE"/>Nếu bạn đã có tài khoản Uphold được xác minh, hãy tiếp tục đăng nhập.</translation>
+<translation id="3204579740854485097">Không đủ [[currency]].</translation>
+<translation id="3330432260369310344">Không đủ [[currency]]. Vui lòng</translation>
+<translation id="629521674505004728">Bằng cách bấm vào Bắt đầu sử dụng Brave Rewards, bạn đồng ý với <ph name="LINK_BEGIN"/>Điều khoản Dịch vụ<ph name="LINK_END"/> và <ph name="LINK_BEGIN"/>Chính sách Quyền riêng tư<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Website đáng ngờ phía trước</translation>
+<translation id="8250033559824599347">Website này có thể là lừa đảo, chuyển bạn qua lại giữa các website khác nhau để đặt cookie theo dõi, hoặc thực hiện các hành động xâm phạm quyền riêng tư khác.</translation>
+<translation id="8092074243456635562">cho đến khi tôi đóng trang này</translation>
 </translationbundle>

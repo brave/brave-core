@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Treba vam najmanje $amount$ BATA za stvaranje računa za uslugu Uphold. Ako već imate provjereni račun za uslugu Uphold, nastavite do prijave.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Treba vam najmanje 25 BATA za stvaranje računa za uslugu Uphold. Pokušajte ponovno kasnije. Ako već imate provjereni račun za uslugu Uphold, nastavite do prijave.",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Spojeno",

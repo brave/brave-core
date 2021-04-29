@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Bir Uphold hesabı oluşturmak için en az $amount$ BAT sahibi olmanız gereklidir. Doğrulanmış bir Uphold hesabınız varsa oturum açın.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Bir Uphold hesabı yaratmak için en az 25 BAT'ye sahip olmalısınız. Lütfen daha sonra tekrar deneyin. Eğer zaten doğrulanmış bir Uphold hesabına sahipseniz, oturum açmak için devam edin.",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Bağlı",

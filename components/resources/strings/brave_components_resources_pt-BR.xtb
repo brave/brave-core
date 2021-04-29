@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">URI de Proxy Tor</translation>
 <translation id="1671503397662036257">Status de Conexão do Tor</translation>
 <translation id="6024292492796847324">Progresso de Inicialização do Tor</translation>
+<translation id="2106271389438168634">Você precisa de no mínimo 25 BAT para criar uma conta Uphold. Tente novamente depois de confirmar sua carteira com o Uphold.</translation>
+<translation id="4758374243299807324">Postagem de [[user]]</translation>
+<translation id="1242162113777253768">Tweet de [[user]]</translation>
+<translation id="3473919203449000069">Ao continuar, você concorda com os <ph name="LINK_BEGIN"/>Termos de Serviço<ph name="LINK_END"/> e com a <ph name="LINK_BEGIN"/>Política de Privacidade<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Faça um tour rápido<ph name="LINK_END"/> ou <ph name="LINK_BEGIN"/>saiba mais<ph name="LINK_END"/> para detalhes.</translation>
+<translation id="5594737784294211654">Você precisa ter, no mínimo, 25 BAT para criar uma conta no Uphold. Por favor, tente novamente mais tarde. <ph name="NEWLINE"/>Se você já tem uma conta verificada no Uphold, prossiga para fazer login.</translation>
+<translation id="3204579740854485097">[[currency]] insuficientes.</translation>
+<translation id="3330432260369310344">[[currency]] insuficientes.</translation>
+<translation id="629521674505004728">Ao clicar em Começar a usar as Recompensas do Brave, você concorda com os <ph name="LINK_BEGIN"/>Termos de Serviço<ph name="LINK_END"/> e <ph name="LINK_BEGIN"/>Política de Privacidade<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Site suspeito à frente</translation>
+<translation id="8250033559824599347">Este site pode ser fraudulento e direcioná-lo para vários sites a fim de definir cookies de rastreamento ou realizar outras ações invasivas de privacidade.</translation>
+<translation id="8092074243456635562">até eu fechar esta página</translation>
 </translationbundle>

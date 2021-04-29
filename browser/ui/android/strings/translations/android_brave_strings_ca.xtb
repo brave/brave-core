@@ -371,12 +371,12 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="7427567994475794038">Activeu els informes de privadesa per veure quants rastrejadors &amp;amp anuncis s'han bloquejat en les darreres 3 hores.</translation>
 <translation id="2053891538879944400">Heu desat <ph name="DATA"/> <ph name="DATA_TEXT"/> dades amb el navegador Brave.</translation>
 <translation id="8640064498452534195">Activeu els Informes de privadesa per veure quantes dades heu salvat.</translation>
-<translation id="2252497442547961651">El navegador Brave consumeix de mitjana un 40% menys de bateria.&#128267;</translation>
+<translation id="2252497442547961651">El navegador Brave consumeix de mitjana un 40% menys de bateria.🔋</translation>
 <translation id="1945330434665345785">Heu bloquejat <ph name="COUNT"/> rastrejadors &amp; anuncis amb navegador Brave la setmana passada.</translation>
 <translation id="2883868922264431515">Guanyeu tokens visualitzant anuncis que respectin la privadesa i donin suport als vostres llocs web preferits.</translation>
-<translation id="5678925890616256956">Genial! Heu bloquejat 250 seguidors i anuncis amb el navegador Brave.&#128293;</translation>
-<translation id="9199047775708635708">Genial! Heu estalviat 10 MB amb el navegador Brave.&#128267;</translation>
-<translation id="1880168210969863408">Genial! Heu estalviat 10 minuts de temps de càrrega amb el navegador Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Genial! Heu bloquejat 250 seguidors i anuncis amb el navegador Brave.🔥</translation>
+<translation id="9199047775708635708">Genial! Heu estalviat 10 MB amb el navegador Brave.🔋</translation>
+<translation id="1880168210969863408">Genial! Heu estalviat 10 minuts de temps de càrrega amb el navegador Brave.💨💨</translation>
 <translation id="7408493389591475748">Comenceu a navegar per veure els informes de privadesa</translation>
 <translation id="9080777565335515917">Definiu Brave com a navegador predeterminat per a una navegació privada i segura.</translation>
 <translation id="1390943217516275883">Permeti a Brave mostrar les vostres estadístiques de privadesa</translation>
@@ -512,4 +512,14 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="5825943197137337319">Només interfície pública predeterminada</translation>
 <translation id="1689062823386843231">Desactiva UDP que no sigui a través de proxy</translation>
 <translation id="3171931580569169744">Permet els grups de pestanyes</translation>
+<translation id="347604927162577559">Data\nSaved</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651">Has contribuït amb <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/>.</translation>
+<translation id="4376933248999950592">Has designat <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> per a creadors que encara no s'han registrat per rebre contribucions. El teu navegador continuarà intentant contribuir-hi fins que es verifiquin, o fins que hagin transcorregut 90 dies.</translation>
+<translation id="6160106411363856968">i cant</translation>
+<translation id="1081826981536899387">Punts BAT</translation>
+<translation id="2802462801862186499">1,000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5,000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10,000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">Permeti a Brave mostrar les vostres estadístiques de privadesa</translation>
 </translationbundle>

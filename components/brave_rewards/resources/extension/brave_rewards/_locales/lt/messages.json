@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Jums reikia turėti mažiausiai $amount$ BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Jei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Jums reikia turėti mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Bandykite dar kartą vėliau.\nJei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Prijungta",

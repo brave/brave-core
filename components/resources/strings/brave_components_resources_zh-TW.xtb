@@ -853,4 +853,16 @@
 <translation id="6951743416068151209">Tor 代理伺服器 URI</translation>
 <translation id="1671503397662036257">Tor 連線狀態</translation>
 <translation id="6024292492796847324">Tor 初始化進度</translation>
+<translation id="2106271389438168634">您至少需有 25 BAT 才能建立 Uphold 帳戶。請在您已和 Uphold 驗證過錢包後再試一次。</translation>
+<translation id="4758374243299807324">[[user]] 的貼文</translation>
+<translation id="1242162113777253768">[[user]] 的推文</translation>
+<translation id="3473919203449000069">繼續操作，即表示您同意 <ph name="LINK_BEGIN"/>服務條款<ph name="LINK_END"/> 與 <ph name="LINK_BEGIN"/>隱私權政策<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>快速瀏覽<ph name="LINK_END"/> 或 <ph name="LINK_BEGIN"/>深入了解<ph name="LINK_END"/> 細節。</translation>
+<translation id="5594737784294211654">您必須要至少有 25 BAT 以建立 Uphold 帳號。請稍後再試。 <ph name="NEWLINE"/>如果您已有驗證過的 Uphold 帳號，請繼續登入。</translation>
+<translation id="3204579740854485097">[[currency]] 不足。</translation>
+<translation id="3330432260369310344">[[currency]] 不足。請</translation>
+<translation id="629521674505004728">點擊「開始使用 Brave Rewards」，即表示您同意 <ph name="LINK_BEGIN"/>服務條款<ph name="LINK_END"/> 與 <ph name="LINK_BEGIN"/>隱私權政策<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">前方有可疑網站</translation>
+<translation id="8250033559824599347">此網站可能為詐欺網站，會將您反覆導向不同網站以設置追蹤 cookies，或執行其他侵犯隱私的動作。</translation>
+<translation id="8092074243456635562">直到我關閉此頁面</translation>
 </translationbundle>

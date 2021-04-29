@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Upholdi konto loomiseks on vaja vähemalt $amount$ BAT-i. Kui teil on juba kinnitatud Upholdi konto, siis jätkake sisselogimist.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Upholdi konto loomiseks peab teil olema vähemalt 25 BATi. Proovige hiljem uuesti. \n Kui teil on juba kinnitatud Upholdi konto, jätkake sisselogimisega.",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Ühendatud",

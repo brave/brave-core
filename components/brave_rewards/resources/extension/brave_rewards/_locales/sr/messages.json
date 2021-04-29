@@ -630,14 +630,8 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Potrebno je da imate najmanje $amount$ BATA da biste kreirali nalog na Uphold-u. Pokušajte ponovo kasnije.  Ako već imate verifikovani nalog na Uphold-u, nastavite da biste se prijavili.",
-    "description": "Text for login button",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "15"
-      }
-    }
+    "message": "Potrebno je da imate najmanje 25 BAT-a da biste kreirali nalog na Uphold-u. Pokušajte ponovo kasnije. \n Ako već imate verifikovani nalog na Uphold-u, nastavite da biste se prijavili.",
+    "description": "Text for login button"
   },
   "walletConnected":  {
     "message": "Повезан",

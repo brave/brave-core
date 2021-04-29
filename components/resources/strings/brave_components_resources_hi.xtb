@@ -850,4 +850,16 @@
 <translation id="6951743416068151209">टॉर प्रॉक्सी यूआराई</translation>
 <translation id="1671503397662036257">टॉर कनेक्शन की स्थिति</translation>
 <translation id="6024292492796847324">टॉर के शुरू होने की स्थिति</translation>
+<translation id="2106271389438168634">Uphold वॉलेट बनाने के लिए आपको न्यूनतम 25 BAT की ज़रूरत होती है। Uphold के साथ अपने वॉलेट को सत्यापित करने के बाद कृपया फिर कोशिश करें।</translation>
+<translation id="4758374243299807324">[[user]]’s पोस्ट</translation>
+<translation id="1242162113777253768">[[user]]’s ट्वीट</translation>
+<translation id="3473919203449000069">आगे बढ़ने पर,आप<ph name="LINK_BEGIN"/>सेवा की शर्तों<ph name="LINK_END"/> और <ph name="LINK_BEGIN"/>गोपनीयता नीति<ph name="LINK_END"/>से सहमत होते हैं।</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>विवरण के लिए <ph name="LINK_END"/> or <ph name="LINK_BEGIN"/>learn more<ph name="LINK_END"/> एक त्वरित टूर करें।</translation>
+<translation id="5594737784294211654">अपहोल्ड अकाउंट बनाने के लिए आपके पास न्यूनतम 25 BAT होना ज़रूरी है बाद में दोबारा कोशिश करें। <ph name="NEWLINE"/> यदि आपके पास वेरीफ़ाई अपफोल्ड अकाउंट पहले से है तो लॉग इन करना जारी रखें।</translation>
+<translation id="3204579740854485097">पर्याप्त {{currency}} नहीं है।</translation>
+<translation id="3330432260369310344">पर्याप्त {{currency}} नहीं है। कृपया</translation>
+<translation id="629521674505004728">ब्रेव रिवार्ड्स का उपयोग प्रारंभ करें पर क्लिक करके, आप <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/> और <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/> से सहमत होते हैं।</translation>
+<translation id="6631469728138660166">आगे संदिग्ध साइट है</translation>
+<translation id="8250033559824599347">यह साइट धोखे वाली हो सकती है, ट्रैकिंग कुकीज़ सेट करने या अन्य तरीकों से गोपनीयता भंग करने के लिए आपको विभिन्न साइटों के बीच घूमाएगी।</translation>
+<translation id="8092074243456635562">जब तक मैं इस पृष्ठ को बंद नहीं करता</translation>
 </translationbundle>

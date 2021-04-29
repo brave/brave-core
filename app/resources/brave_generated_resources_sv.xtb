@@ -299,4 +299,6 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="2808630562319398131">Återställ data för Brave Rewards...</translation>
 <translation id="1224064034972923114">Hjälp till att förbättra Brave genom att skicka kraschrapporter automatiskt</translation>
 <translation id="3738833060602717053">Hjälp till att förbättra <ph name="PRODUCT_NAME"/> genom att skicka kraschrapporter automatiskt</translation>
+<translation id="339086854515247923">Är du säker på att du vill ta bort den valda enheten från synkroniseringskedjan?</translation>
+<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Läs mer<ph name="END_LINK_MPL"/> om sekretessöverväganden för lokal IPFS-nod och -gateway.</translation>
 </translationbundle>

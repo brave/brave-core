@@ -371,12 +371,12 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="7427567994475794038">Aktivera integritetsrapporter för att se hur många trackers och annonser som har blockerats under de senaste 3 timmarna.</translation>
 <translation id="2053891538879944400">Du sparade <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave webbläsare.</translation>
 <translation id="8640064498452534195">Aktivera integritetsrapporter för att se hur mycket data du har sparat.</translation>
-<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blockerade <ph name="COUNT"/> trackers och annonser med Brave webbläsare förra veckan.</translation>
 <translation id="2883868922264431515">Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser.</translation>
-<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.&#128293;</translation>
-<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.&#128267;</translation>
-<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.🔥</translation>
+<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.🔋</translation>
+<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.💨💨</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
 <translation id="1390943217516275883">Låter Brave visa din integritetsstatistik</translation>
@@ -511,4 +511,14 @@ startar du upp med nya
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
 <translation id="3171931580569169744">Aktivera flikgrupper</translation>
+<translation id="347604927162577559">Data\nsparat</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="4751553692764711651">Du har bidragit med <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4376933248999950592">Du har allokerat <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> till skapare som ännu inte har registrerat sig för att ta emot bidrag. Din webbläsare kommer att försöka bidra tills de är verifierade, eller tills det har gått 90 dagar.</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">BAT-poäng</translation>
+<translation id="2802462801862186499">1 000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5 000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10 000 <ph name="TIP"/></translation>
+<translation id="7801488941710395275">Låter Brave visa din integritetsstatistik</translation>
 </translationbundle>

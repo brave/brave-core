@@ -849,4 +849,16 @@
 <translation id="6951743416068151209">URL du proxy Tor</translation>
 <translation id="1671503397662036257">État de la connexion à Tor</translation>
 <translation id="6024292492796847324">Progrès de l'initialisation de Tor</translation>
+<translation id="2106271389438168634">Vous avez besoin d'un minimum de 25 BAT pour créer un portefeuille Uphold. Veuillez essayer à nouveau après avoir vérifié votre portefeuille avec Uphold.</translation>
+<translation id="4758374243299807324">Publication de [[user]]</translation>
+<translation id="1242162113777253768">Tweet de [[user]]</translation>
+<translation id="3473919203449000069">En continuant, vous acceptez les <ph name="LINK_BEGIN"/>Conditions de services<ph name="LINK_END"/> et la <ph name="LINK_BEGIN"/>Politique de confidentialité<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Faites un tour rapide<ph name="LINK_END"/> ou <ph name="LINK_BEGIN"/>apprenez-en plus<ph name="LINK_END"/> pour plus de détails.</translation>
+<translation id="5594737784294211654">Vous devez avoir un minimum de 25 BAT pour créer un compte Uphold. Veuillez réessayer plus tard. <ph name="NEWLINE"/>Si vous avez déjà un compte Uphold vérifié, continuez pour vous connecter.</translation>
+<translation id="3204579740854485097">Vous n'avez pas assez de [[currency]].</translation>
+<translation id="3330432260369310344">Vous n'avez pas assez de [[currency]]. Veuillez</translation>
+<translation id="629521674505004728">En cliquant sur Commencer à utiliser Brave Rewards, vous acceptez les <ph name="LINK_BEGIN"/>Conditions d'utilisation<ph name="LINK_END"/> et <ph name="LINK_BEGIN"/>la Politique de confientialité<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Site suspect en vue</translation>
+<translation id="8250033559824599347">Ce site peut être frauduleux, vous faire passer d'un site à l'autre pour installer des témoins de suivi ou effectuer d'autres actions portant atteinte à votre vie privée.</translation>
+<translation id="8092074243456635562">jusqu'à ce que je ferme cette page</translation>
 </translationbundle>

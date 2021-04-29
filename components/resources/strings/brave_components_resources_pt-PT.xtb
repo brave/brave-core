@@ -849,4 +849,16 @@
 <translation id="6951743416068151209">URI de proxy do Tor</translation>
 <translation id="1671503397662036257">Estadp da Ligação Tor</translation>
 <translation id="6024292492796847324">Progresso de inicialização do Tor</translation>
+<translation id="2106271389438168634">Precisa no mínimo de 25 BAT para criar uma conta Uphold. Por favor, tente novamente após a verificação da sua carteira com a Uphold.</translation>
+<translation id="4758374243299807324">Publicação de [[user]]</translation>
+<translation id="1242162113777253768">Tweet de [[user]]</translation>
+<translation id="3473919203449000069">Ao avançar, está a aceitar os<ph name="LINK_BEGIN"/>Termos do Serviço<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>Política de Privacidade<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Proceda a uma viagem rápida<ph name="LINK_END"/> or <ph name="LINK_BEGIN"/>learn more<ph name="LINK_END"/> for details.</translation>
+<translation id="5594737784294211654">Precisa de um mínimo de 25 BAT para criar uma conta Uphold. Por favor, tente novamente mais tarde. <ph name="NEWLINE"/>Caso já tenha uma conta Uphold válida, efetue login.</translation>
+<translation id="3204579740854485097">Sem fundos de [[currency]] suficientes.</translation>
+<translation id="3330432260369310344">Sem fundos de [[currency]] suficientes.</translation>
+<translation id="629521674505004728">Ao clicar ao Começar a usar o Brave Rewards, concordo com <ph name="LINK_BEGIN"/>Termos de Serviço<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>Política de Privacidade<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Site suspeito</translation>
+<translation id="8250033559824599347">Este pode ser um site fraudulento, que o direciona para outros sites, para criar cookies de rastreamento ou executar outras ações invasivas da privacidade.</translation>
+<translation id="8092074243456635562">até o encerramento da página</translation>
 </translationbundle>

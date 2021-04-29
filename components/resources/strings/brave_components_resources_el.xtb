@@ -854,4 +854,16 @@
 <translation id="6951743416068151209">URI Διαχειριστή Μεσολάβησης Tor</translation>
 <translation id="1671503397662036257">Κατάσταση Σύνδεσης Tor</translation>
 <translation id="6024292492796847324">Πρόοδος Προετοιμασίας Tor</translation>
+<translation id="2106271389438168634">Χρειάζεστε τουλάχιστον 25 BAT για να δημιουργήσετε ένα πορτοφόλι Uphold. Παρακαλώ δοκιμάστε ξανά αφού έχετε επαληθεύσει το πορτοφόλι σας με το Uphold.</translation>
+<translation id="4758374243299807324">Ανάρτηση  [[user]]</translation>
+<translation id="1242162113777253768">Tweet [[user]]</translation>
+<translation id="3473919203449000069">Συνεχίζοντας, συμφωνείτε με <ph name="LINK_BEGIN"/>Όρους Υπηρεσίας<ph name="LINK_END"/> και <ph name="LINK_BEGIN"/>Πολιτική Απορρήτου<ph name="LINK_END"/>.</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Κάντε μια γρήγορη περιήγηση<ph name="LINK_END"/> ή <ph name="LINK_BEGIN"/>μάθετε περισσότερα<ph name="LINK_END"/> για λεπτομέρειες.</translation>
+<translation id="5594737784294211654">Πρέπει να έχετε τουλάχιστον 25 BAT για να δημιουργήσετε έναν λογαριασμό Uphold. Παρακαλούμε δοκιμάστε ξανά αργότερα. <ph name="NEWLINE"/>Εάν έχετε ήδη έναν επαληθευμένο λογαριασμό Uphold, συνδεθείτε.</translation>
+<translation id="3204579740854485097">Δεν υπάρχουν αρκετά [[currency]].</translation>
+<translation id="3330432260369310344">Δεν υπάρχουν αρκετά [[currency]].</translation>
+<translation id="629521674505004728">Κάνοντας κλικ στο κουμπί Έναρξη χρήσης του Brave Rewards, συμφωνείτε με τους <ph name="LINK_BEGIN"/>Όρους χρήσης<ph name="LINK_END"/> και με την <ph name="LINK_BEGIN"/>Πολιτική απορρήτου<ph name="LINK_END"/>.</translation>
+<translation id="6631469728138660166">Ύποπτος ιστότοπος μπροστά</translation>
+<translation id="8250033559824599347">Αυτός ο ιστότοπος μπορεί να είναι απατηλός, να σας αναπηδά μεταξύ των διαφόρων ιστότοπων για να ορίσετε cookie παρακολούθησης ή να εκτελεί άλλες επεμβατικές ενέργειες απορρήτου.</translation>
+<translation id="8092074243456635562">μέχρι να κλείσω αυτήν τη σελίδα</translation>
 </translationbundle>

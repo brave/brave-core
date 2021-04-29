@@ -852,4 +852,16 @@
 <translation id="6951743416068151209">TorプロキシURI</translation>
 <translation id="1671503397662036257">Tor接続ステータス</translation>
 <translation id="6024292492796847324">Tor初期化の進行状況</translation>
+<translation id="2106271389438168634">Upholdウォレットを作成するには、最低25 BATが必要です。Upholdでウォレットを認証した後、もう一度試してください。</translation>
+<translation id="4758374243299807324">[[user]]さんの投稿</translation>
+<translation id="1242162113777253768">[[user]]さんのツイート</translation>
+<translation id="3473919203449000069">続行することで、<ph name="LINK_BEGIN"/>利用規約<ph name="LINK_END"/> および <ph name="LINK_BEGIN"/>プライバシーポリシー<ph name="LINK_END"/>.に同意したこととなります。</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>クイックツアーをご覧ください<ph name="LINK_END"/>または<ph name="LINK_BEGIN"/>詳細について<ph name="LINK_END"/>詳しくはこちらをご覧ください。</translation>
+<translation id="5594737784294211654">Upholdアカウントを作成するには、最低25 BATが必要です。 後でもう一度やり直してください。<ph name="NEWLINE"/>認証済みのUpholdアカウントをすでにお持ちの場合は、引き続きログインしてください。</translation>
+<translation id="3204579740854485097">[[currency]]が不足しています。</translation>
+<translation id="3330432260369310344">[[currency]]が不足しています。</translation>
+<translation id="629521674505004728">[Brave Rewardsの使用を開始]をクリックすることで、あなたは<ph name="LINK_BEGIN"/>利用規約<ph name="LINK_END"/>と<ph name="LINK_BEGIN"/>プライバシーポリシー<ph name="LINK_END"/>に同意したことになります。</translation>
+<translation id="6631469728138660166">この先は疑わしいサイトです</translation>
+<translation id="8250033559824599347">このサイトは詐欺的なものであるか、あなたにさまざまなサイト間をあちこち移動させて追跡Cookieを設定するか、またはその他のプライバシー侵害行為を実行する可能性があります。</translation>
+<translation id="8092074243456635562">私がこのページを閉じるまで</translation>
 </translationbundle>
