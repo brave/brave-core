@@ -171,9 +171,17 @@
     "message": "Endre globale skjermstandarder",
     "description": "Message for the button action linking to the settings page"
   },
+  "addBlockElement": {
+    "message": "Blokker element via velger",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
   "manageCustomFilters": {
     "message": "Administrer spesialtilpassede filtre",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Gå inn i elementvelgermodus",
+    "description": "Message for context menu that enables the element picker UI on the page."
   },
   "advancedView": {
     "message": "Avansert visning",

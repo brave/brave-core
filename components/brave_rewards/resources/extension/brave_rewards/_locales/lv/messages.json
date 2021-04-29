@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Lai izveidotu Uphold kontu, jums vajag vismaz 25 BAT. Lūdzu, mēģiniet vēlreiz vēlāk. \nJa jums jau ir verificēts Uphold konts, turpiniet pieteikties.",
-    "description": "Text for login button"
+    "message": "Lai izveidotu Uphold kontu, jums nepieciešami vismaz $amount$ BAT. Ja jums jau ir verificēts Uphold konts, turpiniet pieteikties.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "pievienots",

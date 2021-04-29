@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold ಖಾತೆಯನ್ನು ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ 25 BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ. \n ನೀವು ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ Uphold ಖಾತೆಯನ್ನು ಹೊಂದಿದ್ದರೆ, ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ.",
-    "description": "Text for login button"
+    "message": "ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆ ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ $amount$ BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ನೀವು ಈಗಾಗಲೇ ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ಪರಿಶೀಲಿಸಿದ್ದರೆ, ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",

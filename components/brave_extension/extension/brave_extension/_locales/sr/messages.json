@@ -171,9 +171,17 @@
     "message": "Promenite podrazumevane vrednosti globalnog štita",
     "description": "Message for the button action linking to the settings page"
   },
+  "addBlockElement": {
+    "message": "Blokiraj element preko birača",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
   "manageCustomFilters": {
     "message": "Rukovanje prilagođenim filterima",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Uđi u režim birača elemenata",
+    "description": "Message for context menu that enables the element picker UI on the page."
   },
   "advancedView": {
     "message": "Više opcija prikaza",

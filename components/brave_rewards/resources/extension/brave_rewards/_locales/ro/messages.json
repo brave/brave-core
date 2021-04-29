@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Trebuie să aveți minimum 25BAT pentru a crea un cont Uphold. Vă rugăm să încercați din nou mai târziu.\nDacă aveți deja un cont Uphold verificat, continuați cu conectarea.",
-    "description": "Text for login button"
+    "message": "Aveți nevoie de cel puțin $amount$ BAT pentru a vă crea un cont Uphold. Dacă aveți deja un cont Uphold confirmat, accesați pagina de conectare.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Conectată",

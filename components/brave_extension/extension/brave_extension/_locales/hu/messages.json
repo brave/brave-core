@@ -171,9 +171,17 @@
     "message": "Globális pajzs alapbeállítások változtatása",
     "description": "Message for the button action linking to the settings page"
   },
+  "addBlockElement": {
+    "message": "Elem letiltása a választóval",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
   "manageCustomFilters": {
     "message": "Egyedi szűrők kezelése",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Elemválasztó mód megadása",
+    "description": "Message for context menu that enables the element picker UI on the page."
   },
   "advancedView": {
     "message": "Speciális nézet",
