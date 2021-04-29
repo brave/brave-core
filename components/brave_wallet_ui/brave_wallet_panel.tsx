@@ -44,6 +44,10 @@ function App () {
 }
 
 function Panel (props: Props) {
+  // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
+  // consider rendering a "loading" indicator when `hasInitialized === false`, and
+  // also using `React.lazy` to put all the main UI in a separate JS bundle and display
+  // that loading indicator ASAP.
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([
     props.panel.accounts[0]
   ])
@@ -108,21 +112,9 @@ function mapDispatchToProps (dispatch: Dispatch): Partial<Props> {
 
 const PanelWithState = connect(mapStateToProps, mapDispatchToProps)(Panel)
 
-function showUI () {
-  store.dispatch(WalletPanelActions.visibilityChanged())
-}
-
-function visibilityChangedListener () {
-  if (document.visibilityState === 'visible') {
-    showUI()
-  }
-}
-
 function initialize () {
   store.dispatch(WalletPanelActions.initialize())
-  showUI()
   render(<App />, document.getElementById('mountPoint'))
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
-document.addEventListener('visibilitychange', visibilityChangedListener)

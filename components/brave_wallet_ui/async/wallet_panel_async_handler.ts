@@ -18,12 +18,20 @@ function getState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): WalletPanelR
 
 handler.on(Actions.initialize.getType(), async (store) => {
   const state = getState(store)
-  // Don't initialize more than once.
-  if (!state.hasInitialized) {
-    store.dispatch(Actions.initialized({
-      isConnected: false
-    }))
+  // Sanity check we only initialize once
+  if (state.hasInitialized) {
+    return
   }
+  // Setup external events
+  document.addEventListener('visibilitychange', () => {
+    store.dispatch(Actions.visibilityChanged(document.visibilityState === 'visible'))
+  })
+  const apiProxy = walletPanelApiProxy.getInstance()
+  apiProxy.showUI()
+  // TODO: Fetch any data we need for initial display, instead of fake wait.
+  await new Promise(resolve => setTimeout(resolve, 400))
+  store.dispatch(Actions.initialized({isConnected: true}))
+  return
 })
 
 handler.on(Actions.cancelConnectToSite.getType(), async (store) => {
@@ -38,7 +46,10 @@ handler.on(Actions.connectToSite.getType(), async (store, payload: AccountPayloa
   apiProxy.closeUI()
 })
 
-handler.on(Actions.visibilityChanged.getType(), (store) => {
+handler.on(Actions.visibilityChanged.getType(), (store, isVisible) => {
+  if (!isVisible) {
+    return
+  }
   const apiProxy = walletPanelApiProxy.getInstance()
   apiProxy.showUI()
 })

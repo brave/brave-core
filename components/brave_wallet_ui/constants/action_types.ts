@@ -11,5 +11,5 @@ export type AccountPayloadType = {
 }
 
 export type InitializedPayloadType = {
-  isConnected: false
+  isConnected: boolean
 }
