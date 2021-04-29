@@ -50,7 +50,6 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
   bool AllowAutoplay(bool play_requested) override;
 
   bool AllowFingerprinting(bool enabled_per_settings) override;
-  void DidBlockFingerprinting(const std::u16string& details);
 
   BraveFarblingLevel GetBraveFarblingLevel() override;
 

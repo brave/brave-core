@@ -242,17 +242,6 @@ void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
                                      base::UTF16ToUTF8(details), web_contents);
 }
 
-void BraveShieldsWebContentsObserver::OnFingerprintingBlocked(
-    const std::u16string& details) {
-  WebContents* web_contents = WebContents::FromRenderFrameHost(
-      brave_shields_receivers_.GetCurrentTargetFrame());
-  if (!web_contents)
-    return;
-
-  DispatchBlockedEventForWebContents(brave_shields::kFingerprintingV2,
-                                     base::UTF16ToUTF8(details), web_contents);
-}
-
 // static
 void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
     PrefRegistrySimple* registry) {

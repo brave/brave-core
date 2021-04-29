@@ -233,12 +233,6 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   return allow;
 }
 
-void BraveContentSettingsAgentImpl::DidBlockFingerprinting(
-    const std::u16string& details) {
-  mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost> remote;
-  GetOrCreateBraveShieldsRemote()->OnFingerprintingBlocked(details);
-}
-
 bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
     const blink::WebFrame* frame,
     const GURL& secondary_url) {

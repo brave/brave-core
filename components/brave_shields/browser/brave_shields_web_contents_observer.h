@@ -61,7 +61,6 @@ class BraveShieldsWebContentsObserver
 
   // brave_shields::mojom::BraveShieldsHost.
   void OnJavaScriptBlocked(const std::u16string& details) override;
-  void OnFingerprintingBlocked(const std::u16string& details) override;
 
   // TODO(iefremov): Refactor this away or at least put into base::NoDestructor.
   // Protects global maps below from being concurrently written on the UI thread
