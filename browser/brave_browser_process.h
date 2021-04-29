@@ -37,7 +37,6 @@ class AdBlockService;
 class AdBlockCustomFiltersService;
 class AdBlockRegionalServiceManager;
 class HTTPSEverywhereService;
-class TrackingProtectionService;
 }  // namespace brave_shields
 
 namespace brave_stats {
@@ -86,8 +85,6 @@ class BraveBrowserProcess {
   virtual greaselion::GreaselionDownloadService*
   greaselion_download_service() = 0;
 #endif
-  virtual brave_shields::TrackingProtectionService*
-  tracking_protection_service() = 0;
   virtual brave_shields::HTTPSEverywhereService* https_everywhere_service() = 0;
   virtual brave_component_updater::LocalDataFilesService*
   local_data_files_service() = 0;

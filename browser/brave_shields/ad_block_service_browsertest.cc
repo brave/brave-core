@@ -15,12 +15,12 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/browser_process.h"
@@ -46,8 +46,6 @@ const char kDefaultAdBlockComponentTestId[] =
     "naccapggpomhlhoifnlebfoocegenbol";
 const char kRegionalAdBlockComponentTestId[] =
     "dlpmaigjliompnelofkljgcmlenklieh";
-const char kTrackingProtectionComponentTestId[] =
-    "eclbkhjphkhalklhipiicaldjbnhdfkc";
 
 const char kDefaultAdBlockComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtV7Vr69kkvSvu2lhcMDh"
@@ -65,14 +63,6 @@ const char kRegionalAdBlockComponentTest64PublicKey[] =
     "G8XBq/Y8FbBt+u+7skWQy3lVyRwFjeFu6cXVF4tcc06PNx5yLsbHQtSv8R+h1bWw"
     "ieMF3JB9CZPr+qDKIap+RZUfsraV47QebRi/JA17nbDMlXOmK7mILfFU7Jhjx04F"
     "LwIDAQAB";
-const char kTrackingProtectionComponentTest64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsleoSxQ3DN+6xym2P1uX"
-    "mN6ArIWd9Oru5CSjS0SRE5upM2EnAl/C20TP8JdIlPi/3tk/SN6Y92K3xIhAby5F"
-    "0rbPDSTXEWGy72tv2qb/WySGwDdvYQu9/J5sEDneVcMrSHcC0VWgcZR0eof4BfOy"
-    "fKMEnHX98tyA3z+vW5ndHspR/Xvo78B3+6HX6tyVm/pNlCNOm8W8feyfDfPpK2Lx"
-    "qRLB7PumyhR625txxolkGC6aC8rrxtT3oymdMfDYhB4BZBrzqdriyvu1NdygoEiF"
-    "WhIYw/5zv1NyIsfUiG8wIs5+OwS419z7dlMKsg1FuB2aQcDyjoXx1habFfHQfQwL"
-    "qwIDAQAB";
 
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using content::BrowserThread;
@@ -129,13 +119,6 @@ void AdBlockServiceTest::InitEmbeddedTestServer() {
 void AdBlockServiceTest::GetTestDataDir(base::FilePath* test_data_dir) {
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
-}
-
-void AdBlockServiceTest::InitTrackingProtectionService() {
-  brave_component_updater::LocalDataFilesService::
-      SetComponentIdAndBase64PublicKeyForTest(
-          kTrackingProtectionComponentTestId,
-          kTrackingProtectionComponentTest64PublicKey);
 }
 
 bool AdBlockServiceTest::InstallDefaultAdBlockExtension(
@@ -205,22 +188,6 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
           ->regional_services_.find(uuid);
   regional_service->second->OnComponentReady(ad_block_extension->id(),
                                              ad_block_extension->path(), "");
-  WaitForAdBlockServiceThreads();
-
-  return true;
-}
-
-bool AdBlockServiceTest::InstallTrackingProtectionExtension() {
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
-  const extensions::Extension* tracking_protection_extension = InstallExtension(
-      test_data_dir.AppendASCII("tracking-protection-data"), 1);
-  if (!tracking_protection_extension)
-    return false;
-
-  g_brave_browser_process->tracking_protection_service()->OnComponentReady(
-      tracking_protection_extension->id(),
-      tracking_protection_extension->path(), "");
   WaitForAdBlockServiceThreads();
 
   return true;

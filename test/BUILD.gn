@@ -601,7 +601,6 @@ if (!is_android) {
       "//brave/chromium_src/third_party/blink/renderer/core/frame/reporting_observer_browsertest.cc",
       "//brave/common/brave_channel_info_browsertest.cc",
       "//brave/components/brave_shields/browser/https_everywhere_service_browsertest.cc",
-      "//brave/components/brave_shields/browser/tracking_protection_service_browsertest.cc",
       "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_autoplay_browsertest.cc",
       "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_browsertest.cc",
       "//brave/components/l10n/browser/locale_helper_mock.cc",

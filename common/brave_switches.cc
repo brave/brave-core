@@ -39,10 +39,6 @@ const char kDisableMachineId[] = "disable-machine-id";
 // what you are doing.
 const char kDisableEncryptionWin[] = "disable-encryption-win";
 
-// This enables smart tracking protection
-const char kEnableSmartTrackingProtection[] =
-    "enable-smart-tracking-protection";
-
 const char kFastWidevineBundleUpdate[] = "fast-widevine-bundle-update";
 
 // Use custom update interval in sec
