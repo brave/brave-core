@@ -1347,7 +1347,7 @@ extension Strings {
         public static let playlistDiskSpaceWarningMessage =
             NSLocalizedString("playlist.playlistDiskSpaceWarningMessage",
                               bundle: .braveShared,
-                              value: "Adding video and audio files for offline use can use a lot of storage on your device. Please removes some files to free up storage space.",
+                              value: "Adding video and audio files for offline use can use a lot of storage on your device. Please remove some files to free up storage space.",
                               comment: "When the user's disk space is almost full")
     }
 }
