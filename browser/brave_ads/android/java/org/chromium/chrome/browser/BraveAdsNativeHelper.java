@@ -18,10 +18,6 @@ public class BraveAdsNativeHelper {
         return BraveAdsNativeHelperJni.get().isBraveAdsEnabled(profile);
     };
 
-    public static boolean nativeIsLocaleValid(Profile profile) {
-        return BraveAdsNativeHelperJni.get().isLocaleValid(profile);
-    };
-
     public static void nativeSetAdsEnabled(Profile profile) {
         BraveAdsNativeHelperJni.get().setAdsEnabled(profile);
     };
@@ -34,24 +30,27 @@ public class BraveAdsNativeHelper {
         return BraveAdsNativeHelperJni.get().isSupportedLocale(profile);
     };
 
-    public static void nativeAdNotificationClicked(Profile profile, String j_notification_id) {
-        BraveAdsNativeHelperJni.get().adNotificationClicked(profile, j_notification_id);
+    public static void nativeOnShowAdNotification(Profile profile, String j_notification_id) {
+        BraveAdsNativeHelperJni.get().onShowAdNotification(profile, j_notification_id);
     };
 
-    public static void nativeAdNotificationDismissed(
+    public static void nativeOnCloseAdNotification(
             Profile profile, String j_notification_id, boolean j_by_user) {
-        BraveAdsNativeHelperJni.get().adNotificationDismissed(
-                profile, j_notification_id, j_by_user);
+        BraveAdsNativeHelperJni.get().onCloseAdNotification(profile, j_notification_id, j_by_user);
+    };
+
+    public static void nativeOnClickAdNotification(Profile profile, String j_notification_id) {
+        BraveAdsNativeHelperJni.get().onClickAdNotification(profile, j_notification_id);
     };
 
     @NativeMethods
     interface Natives {
         boolean isBraveAdsEnabled(Profile profile);
-        boolean isLocaleValid(Profile profile);
         void setAdsEnabled(Profile profile);
-        boolean isNewlySupportedLocale(Profile profile);
         boolean isSupportedLocale(Profile profile);
-        void adNotificationClicked(Profile profile, String j_notification_id);
-        void adNotificationDismissed(Profile profile, String j_notification_id, boolean j_by_user);
+        boolean isNewlySupportedLocale(Profile profile);
+        void onShowAdNotification(Profile profile, String j_notification_id);
+        void onCloseAdNotification(Profile profile, String j_notification_id, boolean j_by_user);
+        void onClickAdNotification(Profile profile, String j_notification_id);
     }
 }

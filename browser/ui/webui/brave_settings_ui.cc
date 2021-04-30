@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"

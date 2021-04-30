@@ -688,6 +688,8 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
+  void OnGetBraveWalletForP3A(ledger::type::BraveWalletPtr wallet);
+
   bool Connected() const;
   void ConnectionClosed();
   void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;
@@ -790,7 +792,7 @@ class RewardsServiceImpl : public RewardsService,
   bool reset_states_;
   bool ledger_for_testing_ = false;
   bool resetting_rewards_ = false;
-  bool should_persist_logs_ = false;
+  int persist_log_level_ = 0;
 
   GetTestResponseCallback test_response_callback_;
 

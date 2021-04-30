@@ -208,24 +208,13 @@ base::Value AdRewards::GetAsDictionary() {
 bool AdRewards::SetFromDictionary(base::Value* dictionary) {
   DCHECK(dictionary);
 
-  base::Value* ad_rewards = dictionary->FindDictKey("ads_rewards");
-  if (!ad_rewards) {
-    return false;
-  }
-
-  base::DictionaryValue* ads_rewards_dictionary;
-  if (!ad_rewards->GetAsDictionary(&ads_rewards_dictionary)) {
-    return false;
-  }
-
-  if (!ad_grants_->SetFromDictionary(ads_rewards_dictionary) ||
-      !payments_->SetFromDictionary(ads_rewards_dictionary)) {
+  if (!ad_grants_->SetFromDictionary(dictionary) ||
+      !payments_->SetFromDictionary(dictionary)) {
     return false;
   }
 
   const base::Optional<double> unreconciled_estimated_pending_rewards =
-      ads_rewards_dictionary->FindDoubleKey(
-          "unreconciled_estimated_pending_rewards");
+      dictionary->FindDoubleKey("unreconciled_estimated_pending_rewards");
   unreconciled_estimated_pending_rewards_ =
       unreconciled_estimated_pending_rewards.value_or(0.0);
 
@@ -294,7 +283,8 @@ void AdRewards::OnGetPayments(const UrlResponse& url_response) {
   }
 
   if (!payments_->SetFromJson(url_response.body)) {
-    BLOG(0, "Failed to parse payment balance: " << url_response.body);
+    BLOG(0, "Failed to parse payment balance");
+    BLOG(6, "Payment balance response body: " << url_response.body);
     OnFailedToReconcileAdRewards();
     return;
   }
@@ -335,7 +325,8 @@ void AdRewards::OnGetAdGrants(const UrlResponse& url_response) {
   }
 
   if (!ad_grants_->SetFromJson(url_response.body)) {
-    BLOG(0, "Failed to parse ad grants: " << url_response.body);
+    BLOG(0, "Failed to parse ad grants");
+    BLOG(6, "Ad grants response body: " << url_response.body);
     OnFailedToReconcileAdRewards();
     return;
   }

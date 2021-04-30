@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -19,6 +18,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -196,6 +196,7 @@ void BraveBrowserCommandController::UpdateCommandForIpfs() {
   auto enabled = ipfs::IsIpfsMenuEnabled(browser_->profile());
   UpdateCommandEnabled(IDC_APP_MENU_IPFS, enabled);
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE, enabled);
+  UpdateCommandEnabled(IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER, enabled);
 }
 #endif
 
@@ -256,6 +257,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(IPFS_ENABLED)
     case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
       brave::ShareLocalFileUsingIPFS(browser_);
+      break;
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
+      brave::ShareLocalFolderUsingIPFS(browser_);
       break;
 #endif
     case IDC_TOGGLE_SPEEDREADER:

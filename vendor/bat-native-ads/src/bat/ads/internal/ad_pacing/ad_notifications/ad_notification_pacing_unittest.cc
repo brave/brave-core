@@ -65,7 +65,9 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
     ad_creative_1.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
     ad_creative_1.priority = 1;
     ad_creative_1.per_day = 3;
-    ad_creative_1.total_max = 4;
+    ad_creative_1.per_week = 4;
+    ad_creative_1.per_month = 5;
+    ad_creative_1.total_max = 6;
     ad_creative_1.segment = "Technology & Computing-Software";
     ad_creative_1.geo_targets = {"US"};
     ad_creative_1.target_url = "https://brave.com";
@@ -84,7 +86,9 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
     ad_creative_2.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
     ad_creative_2.priority = 2;
     ad_creative_2.per_day = 3;
-    ad_creative_2.total_max = 4;
+    ad_creative_1.per_week = 4;
+    ad_creative_1.per_month = 5;
+    ad_creative_2.total_max = 6;
     ad_creative_2.segment = "Food & Drink";
     ad_creative_2.geo_targets = {"US"};
     ad_creative_2.target_url = "https://brave.com";

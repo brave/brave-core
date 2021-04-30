@@ -206,6 +206,9 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
     ipfs_submenu_model_.AddItemWithStringId(
         IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE,
         IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE);
+    ipfs_submenu_model_.AddItemWithStringId(
+        IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER,
+        IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER);
     const int zoom_index = GetIndexOfCommandId(IDC_ZOOM_MENU);
     const int index = zoom_index - 1;
     InsertSubMenuWithStringIdAt(index, IDC_APP_MENU_IPFS, IDS_APP_MENU_IPFS,

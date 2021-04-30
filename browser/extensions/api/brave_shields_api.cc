@@ -9,7 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"

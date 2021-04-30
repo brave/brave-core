@@ -179,6 +179,10 @@
     "message": "Hallitse muokattuja suodattimia",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Siirry elementtien noutotilaan",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Tarkennettu näkymä",
     "description": "Message for the advanced view option"

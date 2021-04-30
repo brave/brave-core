@@ -117,8 +117,8 @@
           ],
           "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
           "perDay": 5,
-          "perMonth": 140,
-          "perWeek": 35,
+          "perWeek": 6,
+          "perMonth": 7,
           "splitTestGroup": "GroupB",
           "totalMax": 100,
           "value": "0.05"

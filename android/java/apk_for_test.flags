@@ -37,6 +37,8 @@
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** insertSiteSectionView(...);
     *** mSiteSectionView;
+    *** mTileGroup;
+    *** updateTileGridPlaceholderVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {

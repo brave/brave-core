@@ -10,7 +10,7 @@
 
 #include "base/memory/singleton.h"
 #include "base/path_service.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "brave/components/greaselion/browser/greaselion_service_impl.h"
 #include "chrome/common/chrome_paths.h"

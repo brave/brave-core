@@ -179,6 +179,10 @@
     "message": "맞춤 필터 관리",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "요소 선택기 모드 진입",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "고급 뷰",
     "description": "Message for the advanced view option"

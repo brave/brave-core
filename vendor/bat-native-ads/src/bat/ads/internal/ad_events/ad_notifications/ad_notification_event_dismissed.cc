@@ -24,7 +24,7 @@ void AdEventDismissed::FireEvent(const AdNotificationInfo& ad) {
                                                  << " and creative instance id "
                                                  << ad.creative_instance_id);
 
-  AdNotifications::Get()->Remove(ad.uuid, /* should dismiss */ false);
+  AdNotifications::Get()->Remove(ad.uuid);
 
   LogAdEvent(ad, ConfirmationType::kDismissed, [](const Result result) {
     if (result != Result::SUCCESS) {

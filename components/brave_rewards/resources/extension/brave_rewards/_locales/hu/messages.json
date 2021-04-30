@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold fiók készítéséhez legalább 25 BAT-od kell legyen. Próbáld újra később.\nFolytasd a belépést, ha már rendelkezel Uphold fiókkal.",
-    "description": "Text for login button"
+    "message": "Uphold-fiók létrehozásához legalább $amount$ BAT szükséges. Ha már van hitelesített Uphold-fiókod, lépj tovább a bejelentkezésre.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "Kapcsolódva",

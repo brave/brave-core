@@ -91,8 +91,6 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
-using std::placeholders::_1;
-using std::placeholders::_2;
 
 namespace brave_rewards {
 
@@ -166,7 +164,7 @@ std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
     return result;
   }
 
-  ExtractAndLogP3AStats(*dict);
+  p3a::ExtractAndLogStats(*dict);
   result.second = std::move(*dict);
 
   return result;
@@ -334,6 +332,9 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
   content::URLDataSource::Add(profile_,
                               std::make_unique<BraveRewardsSource>(profile_));
   ready_ = std::make_unique<base::OneShotEvent>();
+
+  if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature))
+    persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -418,8 +419,8 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
       StartLedgerProcessIfNecessary();
     } else {
       // Just record the disabled state.
-      RecordAutoContributionsState(
-          AutoContributionsP3AState::kWalletCreatedAutoContributeOff, 0);
+      p3a::RecordAutoContributionsState(
+          p3a::AutoContributionsState::kWalletCreatedAutoContributeOff, 0);
     }
   }
 
@@ -427,7 +428,8 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
     if (IsRewardsEnabled()) {
       RecordBackendP3AStats();
     } else {
-      RecordRewardsDisabledForSomeMetrics();
+      p3a::RecordRewardsDisabledForSomeMetrics();
+      p3a::RecordWalletState({.wallet_created = true});
     }
   }
 }
@@ -842,11 +844,21 @@ void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
   if (IsRewardsEnabled()) {
     RecordBackendP3AStats();
   } else {
-    RecordRewardsDisabledForSomeMetrics();
+    p3a::RecordRewardsDisabledForSomeMetrics();
   }
+
+  GetBraveWallet(
+      base::BindOnce(&RewardsServiceImpl::OnGetBraveWalletForP3A, AsWeakPtr()));
 
   for (auto& observer : observers_) {
     observer.OnRewardsInitialized(this);
+  }
+}
+
+void RewardsServiceImpl::OnGetBraveWalletForP3A(
+    ledger::type::BraveWalletPtr wallet) {
+  if (!wallet) {
+    p3a::RecordNoWalletCreatedForAllMetrics();
   }
 }
 
@@ -921,10 +933,10 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
   if (state.second.is_dict()) {
     // Record stats.
     RecordBackendP3AStats();
-    MaybeRecordInitialAdsP3AState(profile_->GetPrefs());
+    p3a::MaybeRecordInitialAdsState(profile_->GetPrefs());
   }
   if (state.first.empty()) {
-    RecordNoWalletCreatedForAllMetrics();
+    p3a::RecordNoWalletCreatedForAllMetrics();
   }
 
   // Run callbacks.
@@ -1311,6 +1323,9 @@ void RewardsServiceImpl::OnAttestPromotion(
     std::move(callback).Run(result, nullptr);
     return;
   }
+
+  PrefService* pref_service = profile_->GetPrefs();
+  pref_service->SetBoolean(prefs::kUserHasClaimedGrant, true);
 
   for (auto& observer : observers_) {
     observer.OnPromotionFinished(this, result, promotion->Clone());
@@ -2263,15 +2278,12 @@ void RewardsServiceImpl::WriteDiagnosticLog(const std::string& file,
                                             const int line,
                                             const int verbose_level,
                                             const std::string& message) {
-  if (ledger_for_testing_ || !should_persist_logs_) {
+  if (ledger_for_testing_ || resetting_rewards_) {
     return;
   }
 
-  if (resetting_rewards_) {
-    return;
-  }
-
-  if (verbose_level > kDiagnosticLogMaxVerboseLevel) {
+  if (verbose_level > kDiagnosticLogMaxVerboseLevel ||
+      verbose_level > persist_log_level_) {
     return;
   }
 
@@ -2414,13 +2426,13 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       continue;
     }
 
+    // The "persist-logs" command-line flag is deprecated and will be removed
+    // in a future version. Use --enable-features=BraveRewardsVerboseLogging
+    // instead.
     if (name == "persist-logs") {
       const std::string lower = base::ToLowerASCII(value);
-
       if (lower == "true" || lower == "1") {
-        should_persist_logs_ = true;
-      } else {
-        should_persist_logs_ = false;
+        persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
       }
     }
 
@@ -2767,19 +2779,28 @@ void RewardsServiceImpl::OnFetchBalance(
     FetchBalanceCallback callback,
     const ledger::type::Result result,
     ledger::type::BalancePtr balance) {
+  PrefService* pref_service = profile_->GetPrefs();
+
+  // Record wallet state stats
+  if (IsRewardsEnabled()) {
+    const bool grants_claimed =
+        pref_service->GetBoolean(prefs::kUserHasClaimedGrant);
+    p3a::RecordWalletState({.wallet_created = true,
+                            .rewards_enabled = true,
+                            .grants_claimed = grants_claimed,
+                            .funds_added = balance && balance->user_funds > 0});
+  }
+
   if (balance) {
     if (balance->total > 0) {
-      profile_->GetPrefs()->SetBoolean(prefs::kUserHasFunded, true);
+      pref_service->SetBoolean(prefs::kUserHasFunded, true);
     }
 
-    // Record stats.
-    double balance_minus_grant = CalcWalletBalanceForP3A(
-        balance->wallets,
-        balance->user_funds);
-    RecordWalletBalanceP3A(
-        true,
-        true,
-        static_cast<size_t>(balance_minus_grant));
+    // Record wallet balance stats
+    double balance_minus_grant =
+        p3a::CalcWalletBalance(balance->wallets, balance->user_funds);
+    p3a::RecordWalletBalance(true, true,
+                             static_cast<size_t>(balance_minus_grant));
   }
 
   std::move(callback).Run(result, std::move(balance));
@@ -3012,7 +3033,7 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
     queued_recurring = recurring_donation_size;
   }
 
-  RecordTipsState(true, true, tips, queued_recurring);
+  p3a::RecordTipsState(true, true, tips, queued_recurring);
 
   GetAutoContributeEnabled(base::BindOnce(
     &RewardsServiceImpl::OnRecordBackendP3AStatsAC,
@@ -3023,10 +3044,11 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
 void RewardsServiceImpl::OnRecordBackendP3AStatsAC(
     const int auto_contributions,
     bool ac_enabled) {
-  const auto auto_contributions_state = ac_enabled ?
-        AutoContributionsP3AState::kAutoContributeOn :
-        AutoContributionsP3AState::kWalletCreatedAutoContributeOff;
-  RecordAutoContributionsState(auto_contributions_state, auto_contributions);
+  const auto auto_contributions_state =
+      ac_enabled ? p3a::AutoContributionsState::kAutoContributeOn
+                 : p3a::AutoContributionsState::kWalletCreatedAutoContributeOff;
+  p3a::RecordAutoContributionsState(auto_contributions_state,
+                                    auto_contributions);
 }
 
 #if defined(OS_ANDROID)

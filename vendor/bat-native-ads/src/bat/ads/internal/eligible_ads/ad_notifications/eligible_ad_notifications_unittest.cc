@@ -46,6 +46,8 @@ class BatAdsEligibleAdNotificationsTest : public UnitTestBase {
       ad.advertiser_id = base::NumberToString(advertiser_id);
 
       ad.per_day = 1;
+      ad.per_week = 1;
+      ad.per_month = 1;
       ad.total_max = 1;
 
       ads.push_back(ad);

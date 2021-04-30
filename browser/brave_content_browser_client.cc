@@ -16,7 +16,7 @@
 #include "base/system/sys_info.h"
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
@@ -30,7 +30,6 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
-#include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -42,6 +41,7 @@
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -575,17 +575,17 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
       ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(
           handle, ipfs::IpfsServiceFactory::GetForContext(context),
-          g_brave_browser_process->GetApplicationLocale());
+          g_browser_process->GetApplicationLocale());
   if (ipfs_navigation_throttle)
     throttles.push_back(std::move(ipfs_navigation_throttle));
 #endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   std::unique_ptr<content::NavigationThrottle>
-      decentralized_dns_navigation_throttle = decentralized_dns::
-          DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
-              handle, g_brave_browser_process->local_state(),
-              g_brave_browser_process->GetApplicationLocale());
+      decentralized_dns_navigation_throttle =
+          decentralized_dns::DecentralizedDnsNavigationThrottle::
+              MaybeCreateThrottleFor(handle, g_browser_process->local_state(),
+                                     g_browser_process->GetApplicationLocale());
   if (decentralized_dns_navigation_throttle)
     throttles.push_back(std::move(decentralized_dns_navigation_throttle));
 #endif
@@ -597,7 +597,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
               g_brave_browser_process->ad_block_custom_filters_service(),
               HostContentSettingsMapFactory::GetForProfile(
                   Profile::FromBrowserContext(context)),
-              g_brave_browser_process->GetApplicationLocale()))
+              g_browser_process->GetApplicationLocale()))
     throttles.push_back(std::move(domain_block_navigation_throttle));
 
   return throttles;

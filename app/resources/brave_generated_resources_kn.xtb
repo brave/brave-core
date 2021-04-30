@@ -62,9 +62,19 @@
 <translation id="7643538479215207633">IPFS ಬಳಸಿ ತೆರೆಯಿರಿ</translation>
 <translation id="3094628781200061820">IPFS ನಿಂದ ಫೈಲ್‌ಗಳನ್ನು ಪ್ರಕಟಿಸಿ ಅಥವಾ ಪಡೆಯಿರಿ</translation>
 <translation id="1672270084584211506">Onion ಲಭ್ಯವಿದೆ</translation>
+<translation id="4901618511712685702">IPFS ಗೆ ಆಮದು ಮಾಡಿ</translation>
+<translation id="6794469945030154569">ಈ ಪುಟ</translation>
+<translation id="5037852323412456577">ಆಯ್ಕೆಮಾಡಲಾದ ಚಿತ್ರ</translation>
+<translation id="2715839724138372481">ಆಯ್ಕೆಮಾಡಲಾದ ವೀಡಿಯೊ</translation>
+<translation id="4227945450504703638">ಆಯ್ಕೆಮಾಡಲಾದ ಆಡಿಯೋ</translation>
+<translation id="7895302206188277628">ಲಿಂಕ್ ಮಾಡಲಾದ ವಿಷಯ</translation>
+<translation id="4322612543319315652">ಆಯ್ಕೆಮಾಡಲಾದ ಪಠ್ಯವನ್ನು IPFS ಗೆ ಆಮದು ಮಾಡಿ</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Tor ಜೊತೆಗೆ ಹೊಸ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="4703780849509456860">Tor ಜೊತೆಗೆ ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="3488584642074079080">Tor ಮೂಲಕ Brave ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
+<translation id="7475547933708221517">IPFS ಬಳಸಿಕೊಂಡು ಸ್ಥಳೀಯ ಫೈಲ್ ಹಂಚಿಕೊಳ್ಳಿ</translation>
+<translation id="784573715436258741">IPFS ಬಳಸಿಕೊಂಡು ಸ್ಥಳೀಯ ಫೈಲ್ ಹಂಚಿಕೊಳ್ಳಿ</translation>
 <translation id="6313675821927505581">Tor ಜೊತೆಗೆ ಹೊಸ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="2638041073279639246">Tor ಮೂಲಕ ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="3425600262621021599">Tor ಮೂಲಕ Brave ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
@@ -147,7 +157,7 @@
 <translation id="4112587618563511470">ಅಮಾನ್ಯ ಸಿಂಕ್ ಕೋಡ್, ದಯವಿಟ್ಟು ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="2339730291919608488">ಸಿಂಕ್ ಚೈನ್ ತೊರೆಯಿರಿ</translation>
 <translation id="115699408012835975">ನೀವು ಸಿಂಕ್ ಅನ್ನು ಮರುಹೊಂದಿಸಿದರೆ, ಅದರೊಂದಿಗೆ ಸಿಂಕ್ ಮಾಡಲು ನೀವು ಇನ್ನೊಂದು ಸಾಧನದಿಂದ ಸಿಂಕ್ ಕೋಡ್ ಅನ್ನು ಮರು ನಮೂದಿಸಬೇಕಾಗುತ್ತದೆ. ನೀವು ಮುಂದುವರಿಯಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
-<translation id="339086854515247923">ಸಿಂಕ್ ಚೈನ್‌ನಿಂದ ಆಯ್ಕೆಮಾಡಿದ ಸಾಧನವನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
+<translation id="6092564993102418148">ಸಿಂಕ್ ಚೈನ್‌ನಿಂದ ಆಯ್ಕೆಮಾಡಿದ ಸಾಧನವನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
 <translation id="3396347744975515056">Brave ಸಿಂಕ್ ಅನ್ನು ನವೀಕರಿಸಲಾಗಿದೆ ಮತ್ತು ಸೆಟಪ್ ಅಗತ್ಯವಿದೆ</translation>
 <translation id="7473245612074035141">ಸೆಟಪ್ ಆರಂಭಿಸಿ</translation>
 <translation id="3411013544209536575">ಸಹಾಯ ಸಲಹೆಗಳು</translation>
@@ -169,12 +179,13 @@
 <translation id="757886143331967039">ಪ್ರಾರಂಭದಲ್ಲಿಯೇ ಡೆಪ್ರೆಕೇಟೆಡ್ ಕ್ರಿಪ್ಟೋ ವ್ಯಾಲೆಟ್ ಎಕ್ಸ್‌ಟೆನ್ಶನ್ ಲೋಡ್ ಮಾಡಿ</translation>
 <translation id="6864914031231797928">ವಿಸ್ತರಣೆಗಳಿಗಾಗಿ Google ಲಾಗಿನ್ ಅನುಮತಿಸಿ</translation>
 <translation id="5927916530277631319">ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗದ ಡೊಮೇನ್‍ಗಳನ್ನು ಪರಿಹರಿಸಲು ಇರುವ ವಿಧಾನಗಳು</translation>
+<translation id="8412057160793088103">HTTPS ಮತ್ತು ಈಥೆರಿಯಮ್ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳಲ್ಲಿ DNS ಕುರಿತು <ph name="BEGIN_LINK"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">ಈಥೇರೆಯಮ್ ನೇಮ್ ಸರ್ವೀಸ್ (ENS) ಪರಿಹರಿಸಲು ವಿಧಾನ</translation>
 <translation id="9170907049676078643">IPFS ಸಂಪನ್ಮೂಲಗಳನ್ನು ಪರಿಹರಿಸುವ ವಿಧಾನ</translation>
 <translation id="1327977588028644528">ಗೇಟ್‌ವೇ</translation>
 <translation id="80225669816651290">ಸ್ಥಳೀಯ ನೋಡ್</translation>
 <translation id="4927734062756955434">IPFS ಸಾರ್ವಜನಿಕ ಗೇಟ್‌ವೇ ವಿಳಾಸ</translation>
-<translation id="5539104255771715383">IPFS ಸ್ಥಳೀಯ ನೋಡ್ ಮತ್ತು ಗೇಟ್‌ವೇ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳ ಕುರಿತು <ph name="BEGIN_LINK_MPL"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK_MPL"/>.</translation>
+<translation id="3399481770463167943">IPFS ಸ್ಥಳೀಯ ನೋಡ್ ಮತ್ತು ಗೇಟ್‌ವೇ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳ ಕುರಿತು <ph name="BEGIN_LINK_MPL"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK_MPL"/>.</translation>
 <translation id="8425213833346101688">ಬದಲಿಸಿ</translation>
 <translation id="557281710253742286">IPFS ಗೇಟ್‌ವೇ ಹೊಂದಿಸಿ</translation>
 <translation id="8571837315037233299">ಗೇಟ್‌ವೇ ವಿಳಾಸ</translation>
@@ -246,9 +257,7 @@
 <translation id="1959966725083452288">ಅವತಾರ್ ಬೋನ್‌ಬೋನ್ ರಾಯಲ್</translation>
 <translation id="2039034364578911089">ಅವತಾರ್ ಬೋನ್‍ಬೋನ್ ನಿಂಜಾ</translation>
 <translation id="239760341987199724">Brave ಅನ್ನು ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್‌ ರೂಪದಲ್ಲಿ ಹೊಂದಿಸಿ</translation>
-<translation id="1391855377994926460">Brave ಬ್ರೌಸರ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿ ಹೊಂದಿಸಲಾಗಿಲ್ಲ.
-ವೆಬ್ ಅನ್ನು ವೇಗವಾಗಿ ಬ್ರೌಸ್ ಮಾಡಲು ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಆಗಿ Brave ಅನ್ನು ಹೊಂದಿಸಿ -
-ಪ್ರಮುಖ ಸುದ್ದಿ ಸೈಟ್‌ಗಳಲ್ಲಿ 6x ವರೆಗೆ ವೇಗವಾಗಿದೆ.</translation>
+<translation id="1391855377994926460">ವೆಬ್ ಅನ್ನು ವೇಗವಾಗಿ ಬ್ರೌಸ್ ಮಾಡುತ್ತಿರಿ - ಪ್ರಮುಖ ಸುದ್ದಿ ಸೈಟ್‌ಗಳಲ್ಲಿ 6x ವರೆಗೆ ವೇಗ.</translation>
 <translation id="9218430445555521422">ಡಿಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
 <translation id="3479552764303398839">ಈಗ ಬೇಡ</translation>
 <translation id="4877147287319222750">ಸೈಡ್‌ಬಾರ್‌ಗೆ ಸೇರಿಸಿ</translation>
@@ -270,7 +279,6 @@
 <translation id="8731422418734770661">Crypto Wallets ಹೊಂದಿಸಿ</translation>
 <translation id="8199661191594897555">Crypto ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಪ್ರಾರಂಭಿಸಿ ಮತ್ತು ಮರುಲೋಡ್ ಮಾಡಿ</translation>
 <translation id="8428213095426709021">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">IPFS ಮತ್ತು ಗೌಪ್ಯತೆ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಿರಿ</translation>
 <translation id="4552520379838695057">ಕ್ಷಮಿಸಿ, ಆ ಪುಟ ಕಾಣೆಯಾಗಿದೆ.</translation>
 <translation id="2609895996619941644">ಉಳಿಸಿದ ಆವೃತ್ತಿಯು ವೇಬ್ಯಾಕ್ ಯಂತ್ರದಲ್ಲಿ ಲಭ್ಯವಿದೆಯೇ ಎಂಬುದನ್ನು ಪರಿಶೀಲಿಸಲು ಬಯಸುವಿರಾ?</translation>

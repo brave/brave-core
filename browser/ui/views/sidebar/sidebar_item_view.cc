@@ -6,19 +6,31 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 
 #include "brave/browser/themes/theme_properties.h"
-#include "brave/browser/ui/views/sidebar/sidebar_item_controller.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
 
-SidebarItemView::SidebarItemView(Delegate* delegate,
-                                 SidebarItemController* controller)
-    : SidebarButtonView(delegate), controller_(controller) {
-  DCHECK(controller_);
-}
+SidebarItemView::SidebarItemView(Delegate* delegate)
+    : SidebarButtonView(delegate) {}
 
 SidebarItemView::~SidebarItemView() = default;
+
+void SidebarItemView::DrawHorizontalBorder(bool top) {
+  DCHECK(!draw_horizontal_border_);
+
+  draw_horizontal_border_ = true;
+  draw_horizontal_border_top_ = top;
+  SchedulePaint();
+}
+
+void SidebarItemView::ClearHorizontalBorder() {
+  if (!draw_horizontal_border_)
+    return;
+
+  draw_horizontal_border_ = false;
+  SchedulePaint();
+}
 
 void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
   ImageButton::OnPaintBorder(canvas);
@@ -28,6 +40,22 @@ void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
     canvas->DrawImageInt(*bundle.GetImageSkiaNamed(IDR_SIDEBAR_ITEM_HIGHLIGHT),
                          0, 0);
+  }
+
+  const ui::ThemeProvider* theme_provider = GetThemeProvider();
+  if (draw_horizontal_border_ && theme_provider) {
+    constexpr float kHorizontalBorderWidth = 2;
+    gfx::Rect border_rect(GetLocalBounds());
+
+    if (!draw_horizontal_border_top_)
+      border_rect.set_y(border_rect.bottom() - kHorizontalBorderWidth);
+
+    border_rect.set_height(kHorizontalBorderWidth);
+
+    canvas->FillRect(
+        border_rect,
+        theme_provider->GetColor(
+            BraveThemeProperties::COLOR_SIDEBAR_ITEM_DRAG_INDICATOR_COLOR));
   }
 }
 
@@ -42,24 +70,4 @@ void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
               BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND));
     }
   }
-}
-
-bool SidebarItemView::OnMousePressed(const ui::MouseEvent& event) {
-  controller_->MaybeStartDrag();
-  return true;
-}
-
-bool SidebarItemView::OnMouseDragged(const ui::MouseEvent& event) {
-  controller_->ContinueDrag();
-  return true;
-}
-
-void SidebarItemView::OnMouseReleased(const ui::MouseEvent& event) {
-  SidebarButtonView::OnMouseReleased(event);
-
-  controller_->EndDrag();
-}
-
-void SidebarItemView::OnMouseCaptureLost() {
-  controller_->EndDrag();
 }

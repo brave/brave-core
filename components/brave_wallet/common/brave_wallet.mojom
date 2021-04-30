@@ -3,6 +3,6 @@ module brave_wallet.mojom;
 import "mojo/public/mojom/base/values.mojom";
 
 interface BraveWalletProvider {
-  Request(string json_payload) => (int32 status,
+  Request(string json_payload) => (int32 http_code,
                                    string response);
 };

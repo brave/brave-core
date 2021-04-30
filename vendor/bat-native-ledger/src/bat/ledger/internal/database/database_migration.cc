@@ -35,6 +35,7 @@
 #include "bat/ledger/internal/database/migration/migration_v3.h"
 #include "bat/ledger/internal/database/migration/migration_v30.h"
 #include "bat/ledger/internal/database/migration/migration_v31.h"
+#include "bat/ledger/internal/database/migration/migration_v32.h"
 #include "bat/ledger/internal/database/migration/migration_v4.h"
 #include "bat/ledger/internal/database/migration/migration_v5.h"
 #include "bat/ledger/internal/database/migration/migration_v6.h"
@@ -82,9 +83,15 @@ void DatabaseMigration::Start(
   // Migration 30 archives and clears the user's unblinded tokens table. It
   // is intended only for users transitioning from "BAP" (a Japan-specific
   // representation of BAT) to BAT with bitFlyer support.
+  //
+  // Migration 32 archives and clears additional data associated with BAP in
+  // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
-  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion))
+  std::string migration_v32 = "";
+  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion)) {
     migration_v30 = migration::v30;
+    migration_v32 = migration::v32;
+  }
 
   const std::vector<std::string> mappings{"",
                                           migration::v1,
@@ -117,7 +124,8 @@ void DatabaseMigration::Start(
                                           migration::v28,
                                           migration::v29,
                                           migration_v30,
-                                          migration::v31};
+                                          migration::v31,
+                                          migration_v32};
 
   DCHECK_LE(target_version, mappings.size());
 

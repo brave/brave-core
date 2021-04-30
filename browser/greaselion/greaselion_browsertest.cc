@@ -8,7 +8,7 @@
 #include "base/run_loop.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/browser/greaselion/greaselion_service_factory.h"

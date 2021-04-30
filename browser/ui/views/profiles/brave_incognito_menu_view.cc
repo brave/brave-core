@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"

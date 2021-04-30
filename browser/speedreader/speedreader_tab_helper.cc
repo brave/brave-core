@@ -5,7 +5,7 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"

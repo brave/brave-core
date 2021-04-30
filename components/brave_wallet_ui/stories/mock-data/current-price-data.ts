@@ -2,21 +2,30 @@ export const CurrentPriceMockData = [
   {
     name: 'Bitcoin',
     symbol: 'BTC',
-    price: 56806.36
+    usd: 56806.36,
+    btc: 1,
+    change24Hour: 2.3
+
   },
   {
     name: 'Binance Coin',
     symbol: 'BNB',
-    price: 381.24
+    usd: 502.24,
+    btc: 0.0098,
+    change24Hour: -4.6
   },
   {
     name: 'Ethereum',
     symbol: 'ETH',
-    price: 2156.20
+    usd: 2156.20,
+    btc: 0.042,
+    change24Hour: 0.2
   },
   {
     name: 'Basic Attention Token',
     symbol: 'BAT',
-    price: 1.34
+    usd: 1.34,
+    btc: 0.000022,
+    change24Hour: 20
   }
 ]

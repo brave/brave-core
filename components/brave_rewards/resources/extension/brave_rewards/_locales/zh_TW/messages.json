@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "您至少需有 25 BAT 才能建立 Uphold 帳戶。請稍後再試。\n如果您已有經驗證的 Uphold 帳戶，請繼續登入。",
-    "description": "Text for login button"
+    "message": "您至少需有 $amount$ BAT 才能建立 Uphold 帳號。如果您已有經驗證的 Uphold 帳戶，請繼續登入。",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "已連線",

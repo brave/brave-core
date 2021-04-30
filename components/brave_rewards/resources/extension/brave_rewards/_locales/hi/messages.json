@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "अपफोल्ड अकाउंट बनाने के लिए आपको न्यूनतम 25 BAT की ज़रूरत है। बाद में दोबारा कोशिश करें।\nयदि आपके पास वेरीफ़ाई अपफोल्ड अकाउंट पहले से है तो लॉग इन करना जारी रखें।",
-    "description": "Text for login button"
+    "message": "Upfold अकाउंट बनाने के लिए आपको न्यूनतम$amount$ BAT की ज़रूरत है. अगर  आपके पास पहले से ही वेरीफ़ाई किया हुआ Upfold अकाउंट है, तो लॉगिन करें.",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "कनेक्टेड",

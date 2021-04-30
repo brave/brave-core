@@ -179,6 +179,10 @@
     "message": "Aangepaste filters beheren",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Kiezermodus voor element openen",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Geavanceerde Weergave",
     "description": "Message for the advanced view option"

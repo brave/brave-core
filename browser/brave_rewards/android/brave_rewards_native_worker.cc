@@ -642,6 +642,7 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     dict.SetIntKey("status", static_cast<int32_t>(wallet->status));
     dict.SetStringKey("verify_url", wallet->verify_url);
     dict.SetStringKey("add_url", wallet->add_url);
+    dict.SetStringKey("type", wallet->type);
     dict.SetStringKey("withdraw_url", wallet->withdraw_url);
     dict.SetStringKey("user_name", wallet->user_name);
     dict.SetStringKey("account_url", wallet->account_url);

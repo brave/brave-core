@@ -10,6 +10,8 @@
 #include "base/strings/string16.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "chrome/browser/download/download_ui_model.h"
+#include "components/download/public/common/download_item.h"
 #include "components/strings/grit/components_strings.h"
 #include "services/network/public/cpp/is_potentially_trustworthy.h"
 #include "ui/base/l10n/l10n_util.h"

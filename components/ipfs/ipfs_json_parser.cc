@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <set>
 #include <vector>
 
 #include "brave/components/ipfs/ipfs_json_parser.h"
@@ -274,5 +275,75 @@ bool IPFSJSONParser::GetImportResponseFromJSON(const std::string& json,
   const std::string* size_value = response_dict->FindStringKey("Size");
   if (size_value)
     data->size = std::stoll(*size_value);
+  return true;
+}
+
+// static
+// Response Format for /api/v0/key/list
+// {"Keys" : [
+//   {"Name":"self","Id":"k51q...wal"}
+// ]}
+bool IPFSJSONParser::GetParseKeysFromJSON(
+    const std::string& json,
+    std::unordered_map<std::string, std::string>* data) {
+  DCHECK(data);
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
+            << " error is:" << value_with_error.error_message;
+    return false;
+  }
+
+  const base::Value* list = records_v->FindListKey("Keys");
+  if (!list) {
+    VLOG(1) << "Invalid response, missing required keys in value dictionary.";
+    return false;
+  }
+  auto& keys = *data;
+  for (const base::Value& val : list->GetList()) {
+    if (!val.is_dict()) {
+      continue;
+    }
+    const std::string* name = val.FindStringKey("Name");
+    const std::string* id = val.FindStringKey("Id");
+    if (!name || !id)
+      continue;
+
+    keys[*name] = *id;
+  }
+  return true;
+}
+
+// static
+// Response Format for /api/v0/key/gen
+// {"Name":"self","Id":"k51q...wal"}
+bool IPFSJSONParser::GetParseSingleKeyFromJSON(const std::string& json,
+                                               std::string* name,
+                                               std::string* value) {
+  DLOG(INFO) << "json:" << json;
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
+            << " error is:" << value_with_error.error_message;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict) || !response_dict) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+  const std::string* key_name = response_dict->FindStringKey("Name");
+  const std::string* key_id = response_dict->FindStringKey("Id");
+  if (!key_name || !key_id)
+    return false;
+  *name = *key_name;
+  *value = *key_id;
   return true;
 }

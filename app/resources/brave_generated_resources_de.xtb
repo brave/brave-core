@@ -62,9 +62,19 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="7643538479215207633">Mit IPFS öffnen</translation>
 <translation id="3094628781200061820">Alle Dateien vom IPFS veröffentlichen und abrufen</translation>
 <translation id="1672270084584211506">Onion Verfügbar</translation>
+<translation id="4901618511712685702">In IPFS importieren</translation>
+<translation id="6794469945030154569">Diese Seite</translation>
+<translation id="5037852323412456577">Ausgewähltes Bild</translation>
+<translation id="2715839724138372481">Ausgewähltes Video</translation>
+<translation id="4227945450504703638">Ausgewählter Ton</translation>
+<translation id="7895302206188277628">Verknüpfter Inhalt</translation>
+<translation id="4322612543319315652">Ausgewählten Text in IPFS importieren</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Neues privates Fenster mit Tor</translation>
 <translation id="4703780849509456860">Link in privatem Fenster mit Tor öffnen</translation>
 <translation id="3488584642074079080">Link in Brave in privatem Fenster mit Tor öffnen</translation>
+<translation id="7475547933708221517">Lokale Datei mit IPFS freigeben</translation>
+<translation id="784573715436258741">Geben Sie die lokale Datei mit IPFS frei</translation>
 <translation id="6313675821927505581">Neues privates Fenster mit Tor</translation>
 <translation id="2638041073279639246">Link in privatem Fenster mit Tor öffnen</translation>
 <translation id="3425600262621021599">Link in privatem Brave-Fenster mit Tor öffnen</translation>
@@ -147,7 +157,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4112587618563511470">Ungültiger Synchronisierungscode. Bitte prüfen Sie die Eingabe und versuchen Sie es erneut.</translation>
 <translation id="2339730291919608488">Sync-Kette verlassen</translation>
 <translation id="115699408012835975">Wenn Sie Sync zurücksetzen, müssen Sie, wenn Sie mit einem anderen Gerät synchronisieren möchten, erneut einen Synchronisierungscode von diesem eingeben. Sind Sie sicher, dass Sie fortfahren möchten?</translation>
-<translation id="339086854515247923">Sind Sie sicher, dass sie die ausgewählten Geräte aus der Sync-Kette entfernen wollen?</translation>
+<translation id="6092564993102418148">Sind Sie sicher, dass sie die ausgewählten Geräte aus der Sync-Kette entfernen wollen?</translation>
 <translation id="3396347744975515056">Brave Sync wurde aufgerüstet und macht eine Einrichtung notwendig</translation>
 <translation id="7473245612074035141">Einrichtung beginnen</translation>
 <translation id="3411013544209536575">Hilfstipps</translation>
@@ -169,12 +179,13 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="757886143331967039">Beim Start die veraltete Krypto-Wallets-Erweiterung laden</translation>
 <translation id="6864914031231797928">Google-Anmeldung bei Erweiterungen erlauben</translation>
 <translation id="5927916530277631319">Methode zum Auflösen unaufhaltsamer Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Erfahren Sie mehr<ph name="END_LINK"/> über DNS via HTTPS und Überlegungen zum Datenschutz von Ethereum.</translation>
 <translation id="5248318250177143470">Methode zum Auflösen des Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Methode zum Lösen von IPFS-Ressourcen</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokaler Knoten</translation>
 <translation id="4927734062756955434">Öffentliche IPFS-Gateway-Adresse</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Erfahren Sie mehr<ph name="END_LINK_MPL"/> über lokale IPFS-Knoten und Gateway-Datenschutz.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Erfahren Sie mehr<ph name="END_LINK_MPL"/> über lokale IPFS-Knoten und Gateway-Datenschutz.</translation>
 <translation id="8425213833346101688">Ändern</translation>
 <translation id="557281710253742286">IPFS-Gateway senden</translation>
 <translation id="8571837315037233299">Gateway-Adresse</translation>
@@ -246,9 +257,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1959966725083452288">Bonbon-Avatar Adliger</translation>
 <translation id="2039034364578911089">Bonbon-Avatar Ninja</translation>
 <translation id="239760341987199724">Brave als Standardbrowser festlegen</translation>
-<translation id="1391855377994926460">Der Brave-Browser ist derzeit nicht als Standardbrowser festgelegt.
-Stellen Sie Brave als Standard ein, um das Surfen im Internet schneller zu beschleunigen -
-auf wichtigen Nachrichtenseiten bis zu 6x schneller.</translation>
+<translation id="1391855377994926460">Surfen Sie schneller im Internet - bis zu 6x schneller auf wichtigen Nachrichtenwebsites.</translation>
 <translation id="9218430445555521422">Als Standardbrowser festlegen</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
 <translation id="4877147287319222750">Zur Seitenleiste hinzufügen</translation>
@@ -270,7 +279,6 @@ auf wichtigen Nachrichtenseiten bis zu 6x schneller.</translation>
 <translation id="8731422418734770661">Crypto Wallets einrichten</translation>
 <translation id="8199661191594897555">Crypto Wallets starten und neu laden</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Erfahren Sie mehr über IPFS und Datenschutz</translation>
 <translation id="4552520379838695057">Diese Seite fehlt leider.</translation>
 <translation id="2609895996619941644">Möchten Sie überprüfen, ob eine gespeicherte Version in der Wayback Machine verfügbar ist?</translation>

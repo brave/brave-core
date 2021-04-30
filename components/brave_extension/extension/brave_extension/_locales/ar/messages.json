@@ -179,6 +179,10 @@
     "message": "إدارة عوامل التصفية المخصصة",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "ادخل إلى وضع منتقي العناصر",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "عرض متقدم",
     "description": "Message for the advanced view option"

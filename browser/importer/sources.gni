@@ -3,11 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_chrome_browser_importer_sources = []
-brave_chrome_browser_importer_deps = []
+brave_browser_importer_sources = []
+brave_browser_importer_deps = []
 
 if (!is_android) {
-  brave_chrome_browser_importer_sources += [
+  brave_browser_importer_sources += [
     "//brave/browser/importer/brave_external_process_importer_client.cc",
     "//brave/browser/importer/brave_external_process_importer_client.h",
     "//brave/browser/importer/brave_external_process_importer_host.cc",
@@ -16,7 +16,7 @@ if (!is_android) {
     "//brave/browser/importer/brave_in_process_importer_bridge.h",
   ]
 
-  brave_chrome_browser_importer_deps += [
+  brave_browser_importer_deps += [
     "//base",
     "//brave/common/importer:interfaces",
     "//content/public/browser",

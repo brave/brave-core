@@ -15,6 +15,7 @@
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -144,7 +145,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferMultipleUntilIpfsProcessLaunched) {
   auto* service = ipfs_service(profile());
   ASSERT_TRUE(service);
   service->SetSkipGetConnectedPeersCallbackForTest(true);
-
+  service->GetIpnsKeysManager()->SetLoadCallbackForTest(base::DoNothing());
   bool was_navigation_resumed1 = false;
   auto throttle1 = CreateDeferredNavigation(
       service,
@@ -195,6 +196,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, SequentialRequests) {
       base::BindLambdaForTesting([&]() { was_navigation_resumed2 = true; }));
 
   service->SetAllowIpfsLaunchForTest(true);
+  service->GetIpnsKeysManager()->SetLoadCallbackForTest(base::DoNothing());
   service->RunLaunchDaemonCallbackForTest(true);
   throttle1->OnIpfsLaunched(true);
   EXPECT_FALSE(was_navigation_resumed1);
@@ -226,6 +228,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilPeersFetched) {
   service->SetSkipGetConnectedPeersCallbackForTest(true);
 
   service->SetAllowIpfsLaunchForTest(true);
+  service->GetIpnsKeysManager()->SetLoadCallbackForTest(base::DoNothing());
   service->RunLaunchDaemonCallbackForTest(true);
 
   bool was_navigation_resumed1 = false;
@@ -272,6 +275,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
   auto* service = ipfs_service(profile());
   ASSERT_TRUE(service);
   service->SetSkipGetConnectedPeersCallbackForTest(true);
+  service->GetIpnsKeysManager()->SetLoadCallbackForTest(base::DoNothing());
 
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());

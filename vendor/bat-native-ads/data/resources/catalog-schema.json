@@ -127,13 +127,13 @@
                             "required": [
                                 "creativeSetId",
                                 "perDay",
+                                "perWeek",
+                                "perMonth",
                                 "totalMax",
                                 "segments",
                                 "creatives",
                                 "oses",
                                 "channels",
-                                "perMonth",
-                                "perWeek",
                                 "value"
                             ],
                             "properties": {
@@ -143,13 +143,13 @@
                                 "perDay": {
                                     "type": "number"
                                 },
-                                "totalMax": {
+                                "perWeek": {
                                     "type": "number"
                                 },
                                 "perMonth": {
                                     "type": "number"
                                 },
-                                "perWeek": {
+                                "totalMax": {
                                     "type": "number"
                                 },
                                 "splitTestGroup": {

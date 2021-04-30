@@ -3,7 +3,6 @@ use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
-use htmlescape::decode_html;
 use kuchiki::NodeData::{
     Comment, Doctype, Document, DocumentFragment, Element, ProcessingInstruction, Text,
 };
@@ -109,25 +108,6 @@ impl PartialEq for TopCandidate {
 }
 
 impl Eq for TopCandidate {}
-
-#[derive(Debug)]
-pub struct Meta {
-    pub title: String,
-    pub author: String,
-    pub description: String,
-    pub charset: String,
-}
-
-impl Default for Meta {
-    fn default() -> Self {
-        Self {
-            title: Default::default(),
-            author: Default::default(),
-            description: Default::default(),
-            charset: "utf-8".to_string(),
-        }
-    }
-}
 
 /// Add https:// to the img src, if missing.
 pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
@@ -349,54 +329,6 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
     weight
 }
 
-/// Uses the <meta> elements to extract the article title.
-pub fn get_metadata(data: &ElementData, meta: &mut Meta) {
-    if let Some(property) = data.attributes.borrow().get(local_name!("property")) {
-        if let Some(mut content) = data.attributes.borrow().get(local_name!("content")) {
-            let mut key: Option<&mut String> = None;
-            match property.as_ref() {
-                "dc:title"
-                | "dcterm:title"
-                | "og:title"
-                | "weibo:article:title"
-                | "weibo:webpage:title"
-                | "title"
-                | "twitter:title" => {
-                    key = Some(&mut meta.title);
-                }
-                "description"
-                | "dc:description"
-                | "dcterm:description"
-                | "og:description"
-                | "weibo:article:description"
-                | "weibo:webpage:description"
-                | "twitter:description" => {
-                    key = Some(&mut meta.description);
-                    content = content
-                        .find(". ")
-                        .map(|pos| &content[..pos])
-                        .unwrap_or(content);
-                }
-                "dc:creator" | "dcterm:creator" | "author" => {
-                    key = Some(&mut meta.author);
-                }
-                _ => (),
-            }
-            if let Some(k) = key {
-                // It's common for titles and descriptions to have encoded HTML attributes like &#8211;
-                // These are important in the title cleaning phase, so we want those decoded. Other
-                // sites, like buzzfeed, encode HTML tags to bold the text. So after decoding,
-                // we delete anything that looks like an HTML tag.
-                if let Ok(s) = decode_html(content) {
-                    *k = DECODED_HTML_TAGS.replace_all(&s, "").into();
-                }
-            }
-        }
-    } else if let Some(charset) = data.attributes.borrow().get(local_name!("charset")) {
-        meta.charset = charset.to_string();
-    }
-}
-
 /// Do a subparse. The data inside of a noscript element is text. Send it through the parser and
 /// return the result if it is one img element.
 fn get_inner_img_from_noscript(handle: &Handle) -> Option<Handle> {
@@ -434,22 +366,16 @@ fn unwrap_noscript(
 
 /// Prepare the DOM for the candidate and cleaning steps. Delete "noisy" nodes and do small
 /// transformations.
-pub fn preprocess(mut dom: &mut Sink, handle: Handle, meta: &mut Meta) -> bool {
+pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
     if let Some(data) = handle.as_element() {
         match data.name.local {
-            local_name!("script")
-            | local_name!("noscript")
+            local_name!("noscript")
             | local_name!("link")
             | local_name!("nav")
-            | local_name!("style") => return true,
-            local_name!("title") => {
-                if meta.title.is_empty() {
-                    dom::extract_text(&handle, &mut meta.title, true);
-                }
-            }
-            local_name!("meta") => {
-                get_metadata(&data, meta);
-            }
+            | local_name!("style")
+            | local_name!("title")
+            | local_name!("script")
+            | local_name!("meta") => return true,
             local_name!("div") => {
                 // Convert all divs whose children contains only phrasing
                 // content to paragraphs. An example would look like this:
@@ -508,7 +434,7 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle, meta: &mut Meta) -> bool {
     let mut paragraph_nodes = vec![];
     let mut brs = vec![];
     for child in handle.children() {
-        let pending_removal = preprocess(&mut dom, child.clone(), meta);
+        let pending_removal = preprocess(&mut dom, child.clone());
         if pending_removal {
             useless_nodes.push(child.clone());
         }
@@ -846,6 +772,22 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                         }
                         false
                     }
+                }
+                local_name!("svg") => {
+                    // If the SVG has a parent that is a <figure> it is probably
+                    // an icon to resize the image. This will not format
+                    // correctly in speedreader since images are styled as
+                    // "display: inline".
+                    for ancestor in handle.ancestors() {
+                        if ancestor
+                            .as_element()
+                            .map(|e| e.name.local == local_name!("figure"))
+                            .unwrap_or(false)
+                        {
+                            return true;
+                        }
+                    }
+                    false
                 }
                 _ => false,
             };

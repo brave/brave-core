@@ -85,7 +85,7 @@ pub fn is_empty(handle: &Handle) -> bool {
             Element(ref value) => {
                 let tag_name = value.name.local.as_ref();
                 match tag_name.to_lowercase().as_ref() {
-                    "li" | "dt" | "dd" | "p" | "div" => {
+                    "li" | "dt" | "dd" | "p" | "div" | "span" => {
                         if !is_empty(&child) {
                             return false;
                         }
@@ -102,6 +102,7 @@ pub fn is_empty(handle: &Handle) -> bool {
         | Some(&local_name!("dd"))
         | Some(&local_name!("p"))
         | Some(&local_name!("div"))
+        | Some(&local_name!("span"))
         | Some(&local_name!("canvas")) => true,
         _ => false,
     }
@@ -131,6 +132,7 @@ pub fn has_link(handle: &Handle) -> bool {
 
 /// Returns all text data for an element, optionally traversing the entire tree rooted at handle.
 pub fn extract_text(handle: &Handle, text: &mut String, deep: bool) {
+    debug_assert!(handle.as_element().is_some(), "extract_text() should be called on Element");
     for child in handle.children() {
         match child.data() {
             Text(ref contents) => {
@@ -146,6 +148,21 @@ pub fn extract_text(handle: &Handle, text: &mut String, deep: bool) {
             _ => (),
         }
     }
+}
+
+/// Similar to extract_text(), but callers can pass in either an Element or a
+/// Text variant. If maybe_include_root is provided and the node is Text, the
+/// result will be returned immediately; otherwise behaves like extract_text().
+#[inline]
+pub fn extract_text_from_node(handle: &Handle, maybe_include_root: bool, deep: bool) -> String {
+    if maybe_include_root {
+        if let Some(ref contents) = handle.as_text() {
+            return contents.borrow().trim().to_string()
+        }
+    }
+    let mut text = String::new();
+    extract_text(handle, &mut text, deep);
+    text
 }
 
 /// Returns the length of all text in the tree rooted at handle.
@@ -374,7 +391,7 @@ pub fn create_element_simple(
 ) -> Handle {
     let name = QualName::new(None, ns!(), LocalName::from(local_name));
     let class_attr = Attribute {
-        name: QualName::new(None, ns!(), LocalName::from("class")),
+        name: QualName::new(None, ns!(), local_name!("class")),
         value: StrTendril::from_str(classes).unwrap_or_default(),
     };
     let elem = dom.create_element(name, vec![class_attr], ElementFlags::default());

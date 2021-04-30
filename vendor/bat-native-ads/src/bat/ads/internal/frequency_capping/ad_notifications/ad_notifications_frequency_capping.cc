@@ -18,6 +18,8 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_month_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_week_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/split_test_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
@@ -135,6 +137,16 @@ bool FrequencyCapping::ShouldExcludeAd(const CreativeAdInfo& ad) {
 
   PerHourFrequencyCap per_hour_frequency_cap(ad_events_);
   if (ShouldExclude(ad, &per_hour_frequency_cap)) {
+    should_exclude = true;
+  }
+
+  PerWeekFrequencyCap per_week_frequency_cap(ad_events_);
+  if (ShouldExclude(ad, &per_week_frequency_cap)) {
+    should_exclude = true;
+  }
+
+  PerMonthFrequencyCap per_month_frequency_cap(ad_events_);
+  if (ShouldExclude(ad, &per_month_frequency_cap)) {
     should_exclude = true;
   }
 

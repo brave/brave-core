@@ -7,6 +7,9 @@
 
 namespace ipfs {
 
+const char kAPIKeyGenerateEndpoint[] = "/api/v0/key/gen";
+const char kAPIKeyRemoveEndpoint[] = "/api/v0/key/rm";
+const char kAPIKeyListEndpoint[] = "/api/v0/key/list";
 const char kSwarmPeersPath[] = "/api/v0/swarm/peers";
 const char kConfigPath[] = "/api/v0/config";
 const char kArgQueryParam[] = "arg";
@@ -33,5 +36,6 @@ const char kImportCopyPath[] = "/api/v0/files/cp";
 const char kImportDirectory[] = "/brave-imports/";
 const char kIPFSImportMultipartContentType[] = "multipart/form-data;";
 const char kFileValueName[] = "file";
+const char kFileMimeType[] = "application/octet-stream";
 
 }  // namespace ipfs

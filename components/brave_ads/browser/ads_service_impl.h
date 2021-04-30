@@ -64,8 +64,6 @@ class SimpleURLLoader;
 
 namespace brave_ads {
 
-class AdsNotificationHandler;
-
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
                        public history::HistoryServiceObserver,
@@ -101,6 +99,11 @@ class AdsServiceImpl : public AdsService,
   std::string GetAutoDetectedAdsSubdivisionTargetingCode() const override;
   void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
+
+  void OnShowAdNotification(const std::string& notification_id) override;
+  void OnCloseAdNotification(const std::string& notification_id,
+                             const bool by_user) override;
+  void OnClickAdNotification(const std::string& notification_id) override;
 
   void ChangeLocale(const std::string& locale) override;
 
@@ -174,7 +177,6 @@ class AdsServiceImpl : public AdsService,
   void Shutdown() override;
 
  private:
-  friend class AdsNotificationHandler;
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
@@ -217,20 +219,10 @@ class AdsServiceImpl : public AdsService,
   void ProcessIdleState(const ui::IdleState idle_state, const int idle_time);
   int GetIdleTimeThreshold();
 
-  void OnShow(Profile* profile, const std::string& uuid);
-  void OnClose(Profile* profile,
-               const GURL& origin,
-               const std::string& uuid,
-               const bool by_user,
-               base::OnceClosure completed_closure);
-
-  void MaybeViewAdNotification();
-  void ViewAdNotification(const std::string& uuid);
-  void OnViewAdNotification(const std::string& json);
-  void RetryViewingAdNotification(const std::string& uuid);
-
-  void SetAdsServiceForNotificationHandler();
-  void ClearAdsServiceForNotificationHandler();
+  void MaybeOpenNewTabWithAd();
+  void OpenNewTabWithAd(const std::string& uuid);
+  void OnOpenNewTabWithAd(const std::string& json);
+  void RetryOpeningNewTabWithAd(const std::string& uuid);
 
   void OpenNewTabWithUrl(const std::string& url);
 
@@ -330,8 +322,7 @@ class AdsServiceImpl : public AdsService,
 
   bool CanShowBackgroundNotifications() const override;
 
-  void ShowNotification(
-      const ads::AdNotificationInfo& ad_notification) override;
+  void ShowNotification(const ads::AdNotificationInfo& info) override;
 
   void CloseNotification(const std::string& uuid) override;
 
@@ -432,7 +423,7 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_timers_;
 
-  std::string retry_viewing_ad_notification_with_uuid_;
+  std::string retry_opening_new_tab_for_ad_with_uuid_;
 
   base::OneShotTimer onboarding_timer_;
 

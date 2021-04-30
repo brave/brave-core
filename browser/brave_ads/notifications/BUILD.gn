@@ -1,16 +1,18 @@
 source_set("notifications") {
-  sources = [
-    "platform_bridge.cc",
-    "platform_bridge.h",
-  ]
+  sources = [ "ad_notification_platform_bridge.h" ]
+
+  if (is_android) {
+    sources += [ "ad_notification_platform_bridge_android.cc" ]
+  } else {
+    sources += [ "ad_notification_platform_bridge.cc" ]
+  }
 
   deps = [
     "//base",
     "//brave/browser/brave_ads",
-    "//brave/browser/profiles",
-    "//brave/components/brave_ads/browser",
-    "//brave/ui/brave_ads",
-    "//brave/ui/brave_ads/public/cpp",
+    "//brave/browser/profiles:util",
+    "//brave/browser/ui/brave_ads",
+    "//skia",
   ]
 
   if (is_android) {

@@ -19,10 +19,12 @@ export interface Props {
   priceData: PriceDataObjectType[]
 }
 
+// This is an animated Pulsating dot that will render at the end
+// of the line chart for the current price.
 const CustomReferenceDot = (props: any) => {
   return (
     <>
-      <circle fill='none' cx={props.cx} r='3' cy={props.cy} stroke='#51CF66' stroke-width='1'>
+      <circle fill='none' cx={props.cx} r='3' cy={props.cy} stroke='#51CF66' strokeWidth='1'>
         <animate attributeName='r' values='3;8;3;3' dur='3s' begin='0s' repeatCount='indefinite' />
         <animate attributeName='opacity' values='1;0;0;0' dur='3s' begin='0s' repeatCount='indefinite' />
       </circle >

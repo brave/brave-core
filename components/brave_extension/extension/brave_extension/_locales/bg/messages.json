@@ -179,6 +179,10 @@
     "message": "Управлявайте персонализираните филтри",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Влезте в режим избор на елементи",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Допълнителен изглед",
     "description": "Message for the advanced view option"

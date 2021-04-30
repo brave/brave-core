@@ -9,7 +9,6 @@
 
 #include "base/bind.h"
 #include "base/values.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/pref_names.h"
@@ -18,6 +17,7 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/about_flags.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
@@ -156,7 +156,7 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
       prefs::kEnableMediaRouter,
       base::Bind(&BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
                  base::Unretained(this)));
-  local_state_change_registrar_.Init(g_brave_browser_process->local_state());
+  local_state_change_registrar_.Init(g_browser_process->local_state());
 #if BUILDFLAG(ENABLE_TOR)
   local_state_change_registrar_.Add(
       tor::prefs::kTorDisabled,
@@ -286,7 +286,7 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   std::string feature_name(switches::kLoadMediaRouterComponentExtension);
   enabled ? feature_name += "@1" : feature_name += "@2";
   flags_ui::PrefServiceFlagsStorage flags_storage(
-      g_brave_browser_process->local_state());
+      g_browser_process->local_state());
   about_flags::SetFeatureEntryEnabled(&flags_storage, feature_name, true);
 }
 
@@ -327,7 +327,7 @@ void BraveDefaultExtensionsHandler::IsTorManaged(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
 
 #if BUILDFLAG(ENABLE_TOR)
-  const bool is_managed = g_brave_browser_process->local_state()
+  const bool is_managed = g_browser_process->local_state()
                               ->FindPreference(tor::prefs::kTorDisabled)
                               ->IsManaged();
 #else

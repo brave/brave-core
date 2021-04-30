@@ -179,6 +179,10 @@
     "message": "Διαχείριση προσαρμοσμένων φίλτρων",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
+  "elementPickerMode": {
+    "message": "Εισαγωγή λειτουργίας στοιχείου επιλογής",
+    "description": "Message for context menu that enables the element picker UI on the page."
+  },
   "advancedView": {
     "message": "Εμφάνιση για Προχωρημένους",
     "description": "Message for the advanced view option"

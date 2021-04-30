@@ -87,6 +87,11 @@ class AdsService : public KeyedService {
   virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
+  virtual void OnShowAdNotification(const std::string& notification_id) = 0;
+  virtual void OnCloseAdNotification(const std::string& notification_id,
+                                     const bool by_user) = 0;
+  virtual void OnClickAdNotification(const std::string& notification_id) = 0;
+
   virtual void ChangeLocale(const std::string& locale) = 0;
 
   virtual void OnHtmlLoaded(const SessionID& tab_id,

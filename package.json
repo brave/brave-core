@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.25.39",
+  "version": "1.26.4",
   "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -329,7 +329,6 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "throttleit": "^1.0.0",
-    "unique-selector": "^0.5.0",
     "webext-redux": "^2.1.4",
     "webtorrent": "^0.114.0"
   }

@@ -42,6 +42,10 @@ std::string PerDayFrequencyCap::get_last_message() const {
 
 bool PerDayFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
                                         const CreativeAdInfo& ad) {
+  if (ad.per_day == 0) {
+    return true;
+  }
+
   const std::deque<uint64_t> history =
       GetTimestampHistoryForAdEvents(ad_events);
 

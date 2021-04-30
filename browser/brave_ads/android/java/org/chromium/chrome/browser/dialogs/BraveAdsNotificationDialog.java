@@ -33,7 +33,7 @@ public class BraveAdsNotificationDialog {
     static AlertDialog mAdsDialog;
     static String mNotificationId;
 
-    public static void displayAdsNotification(Context context, final String notificationId,
+    public static void showAdNotification(Context context, final String notificationId,
             final String origin, final String title, final String body) {
         try {
             if (mAdsDialog != null) {
@@ -47,6 +47,11 @@ public class BraveAdsNotificationDialog {
         LayoutInflater inflater = LayoutInflater.from(context);
         b.setView(inflater.inflate(R.layout.brave_ads_custom_notification, null));
         mAdsDialog = b.create();
+
+        if (mNotificationId != null) {
+            BraveAdsNativeHelper.nativeOnShowAdNotification(
+                    Profile.getLastUsedRegularProfile(), mNotificationId);
+        }
 
         mAdsDialog.show();
 
@@ -76,7 +81,8 @@ public class BraveAdsNotificationDialog {
             public void onClick(View view) {
                 mAdsDialog.dismiss();
                 mAdsDialog = null;
-                BraveAdsNativeHelper.nativeAdNotificationDismissed(Profile.getLastUsedRegularProfile(), mNotificationId, true);
+                BraveAdsNativeHelper.nativeOnCloseAdNotification(
+                        Profile.getLastUsedRegularProfile(), mNotificationId, true);
                 mNotificationId = null;
             }
         });
@@ -95,7 +101,8 @@ public class BraveAdsNotificationDialog {
                 } else {
                     mAdsDialog.dismiss();
                     mAdsDialog = null;
-                    BraveAdsNativeHelper.nativeAdNotificationClicked(Profile.getLastUsedRegularProfile(), mNotificationId);
+                    BraveAdsNativeHelper.nativeOnClickAdNotification(
+                            Profile.getLastUsedRegularProfile(), mNotificationId);
                 }
                 mNotificationId = null;
             }
@@ -103,15 +110,10 @@ public class BraveAdsNotificationDialog {
     }
 
     @CalledByNative
-    public static void displayAdsNotification(final String notificationId,
-            final String origin, final String title, final String body) {
-        BraveAdsNotificationDialog.displayAdsNotification(
-            BraveActivity.getBraveActivity(),
-            notificationId,
-            origin,
-            title,
-            body
-        );
+    public static void showAdNotification(final String notificationId, final String origin,
+            final String title, final String body) {
+        BraveAdsNotificationDialog.showAdNotification(
+                BraveActivity.getBraveActivity(), notificationId, origin, title, body);
     }
 
     @CalledByNative
@@ -119,7 +121,8 @@ public class BraveAdsNotificationDialog {
         try {
             if (mNotificationId != null && mNotificationId.equals(notificationId) && mAdsDialog != null) {
                 mAdsDialog.dismiss();
-                BraveAdsNativeHelper.nativeAdNotificationDismissed(Profile.getLastUsedRegularProfile(), mNotificationId, false);
+                BraveAdsNativeHelper.nativeOnCloseAdNotification(
+                        Profile.getLastUsedRegularProfile(), mNotificationId, false);
             }
         } catch (IllegalArgumentException e) {
             mAdsDialog = null;

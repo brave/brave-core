@@ -26,9 +26,18 @@ export interface RPCAssetType {
   balance: number
 }
 
+export interface RPCTransactionType {
+  assetId: string
+  amount: number
+  to: string
+  from: string
+  hash: string
+}
+
 export interface RPCResponseType {
   address: string
   assets: RPCAssetType[]
+  transactions: RPCTransactionType[]
 }
 
 export type PanelTypes =
@@ -58,6 +67,11 @@ export type TopTabNavTypes =
   | 'apps'
   | 'accounts'
 
+export type BuySendSwapTypes =
+  | 'buy'
+  | 'send'
+  | 'swap'
+
 export type ChartTimelineType =
   | '5MIN'
   | '24HRS'
@@ -66,6 +80,11 @@ export type ChartTimelineType =
   | '3Months'
   | '1Year'
   | 'AllTime'
+
+export interface BuySendSwapObjectType {
+  name: string
+  id: BuySendSwapTypes
+}
 
 export interface TopTabNavObjectType {
   name: string

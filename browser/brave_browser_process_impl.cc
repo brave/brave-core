@@ -26,7 +26,6 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
-#include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -105,7 +104,7 @@ void InitSystemRequestHandlerCallback() {
 
 }  // namespace
 
-BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
+BraveBrowserProcess* g_brave_browser_process = nullptr;
 
 using content::BrowserThread;
 
@@ -184,7 +183,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_whitelist_service();
 #endif
-  tracking_protection_service();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
 #endif
@@ -259,16 +257,6 @@ BraveBrowserProcessImpl::greaselion_download_service() {
   return greaselion_download_service_.get();
 }
 #endif
-
-brave_shields::TrackingProtectionService*
-BraveBrowserProcessImpl::tracking_protection_service() {
-  if (!tracking_protection_service_) {
-    tracking_protection_service_ =
-        brave_shields::TrackingProtectionServiceFactory(
-            local_data_files_service());
-  }
-  return tracking_protection_service_.get();
-}
 
 brave_shields::HTTPSEverywhereService*
 BraveBrowserProcessImpl::https_everywhere_service() {

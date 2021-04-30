@@ -6,7 +6,7 @@
 #include <string>
 
 #include "base/android/jni_android.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/build/android/jni_headers/BraveActivity_jni.h"
 
