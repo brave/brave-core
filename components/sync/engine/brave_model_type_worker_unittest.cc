@@ -57,8 +57,8 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
 
     worker_ = std::make_unique<BraveModelTypeWorker>(
         type, state, !state.initial_sync_done(), cryptographer_.get(),
-        PassphraseType::kImplicitPassphrase, &mock_nudge_handler_,
-        std::move(processor), &cancelation_signal_);
+        /*encryption_enabled=*/false, PassphraseType::kImplicitPassphrase,
+        &mock_nudge_handler_, std::move(processor), &cancelation_signal_);
   }
 
   // Callback when processor got disconnected with sync.
