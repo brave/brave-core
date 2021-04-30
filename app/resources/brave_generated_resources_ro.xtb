@@ -62,9 +62,19 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7643538479215207633">Deschideți folosind IPFS</translation>
 <translation id="3094628781200061820">Publica și recupera fișiere de pe IPFS</translation>
 <translation id="1672270084584211506">Disponibil onion</translation>
+<translation id="4901618511712685702">Importați în IPFS</translation>
+<translation id="6794469945030154569">Această pagină</translation>
+<translation id="5037852323412456577">Imagine selectată</translation>
+<translation id="2715839724138372481">Videoclip selectat</translation>
+<translation id="4227945450504703638">Fișier audio selectat</translation>
+<translation id="7895302206188277628">Conținut corelat</translation>
+<translation id="4322612543319315652">Importați textul selectat în IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
 <translation id="4703780849509456860">Deschide Link în Fereastră Privată cu Tor</translation>
 <translation id="3488584642074079080">Deschide Link în Fereastra Privată Brave cu Tor</translation>
+<translation id="7475547933708221517">Distribuiți fișierul local cu ajutorul IPFS</translation>
+<translation id="784573715436258741">Distribuiți fișierul local cu ajutorul IPFS</translation>
 <translation id="6313675821927505581">Fereastră privată nouă cu Tor</translation>
 <translation id="2638041073279639246">Deschideți linkul în fereastră privată cu Tor</translation>
 <translation id="3425600262621021599">Deschideți linkul în fereastră privată Brave cu Tor</translation>
@@ -147,7 +157,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4112587618563511470">Cod de sincronizare nevalid, verificați și încercați din nou.</translation>
 <translation id="2339730291919608488">Părăsire lanț de sincronizare</translation>
 <translation id="115699408012835975">Dacă resetați sincronizarea, va trebui să reintroduceți un cod de sincronizare de la alt dispozitiv pentru a vă sincroniza cu acesta. Sigur doriți să continuați?</translation>
-<translation id="339086854515247923">Sunteți sigur că vreți să ștergeți dispozitivul selectat din lanțul de sincronizare?</translation>
+<translation id="6092564993102418148">Sunteți sigur că vreți să ștergeți dispozitivul selectat din lanțul de sincronizare?</translation>
 <translation id="3396347744975515056">S-a făcut upgrade pentru Brave Sync și necesită configurare</translation>
 <translation id="7473245612074035141">Începeți configurarea</translation>
 <translation id="3411013544209536575">Plăți ajutor</translation>
@@ -169,12 +179,13 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="757886143331967039">Încărcați extensia portofelelor crypto perimată la pornire</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
 <translation id="5927916530277631319">Metodă pentru a rezolva domeniile Unstoppable</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/> despre detaliile de considerațiile privind confidențialitatea DNS prin HTTPS și Ethereum.</translation>
 <translation id="5248318250177143470">Metodă pentru a rezolva Ethereum Name Service (ENS)</translation>
 <translation id="9170907049676078643">Metoda de rezolvare a resurselor IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nod local</translation>
 <translation id="4927734062756955434">Adresa ieșirii publice IPFS</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe<ph name="END_LINK_MPL"/> despre nodul local IPFS și considerațiile privind confidențialitatea gateway-ului.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe<ph name="END_LINK_MPL"/> despre nodul IPFS local și despre detaliile de confidențialitate ale gateway-ului.</translation>
 <translation id="8425213833346101688">Modifică</translation>
 <translation id="557281710253742286">Configurează ieșirea IPFS</translation>
 <translation id="8571837315037233299">Adresa de ieșire</translation>
@@ -246,9 +257,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1959966725083452288">Avatar Regal Bombon</translation>
 <translation id="2039034364578911089">Avatar Ninja Bombon</translation>
 <translation id="239760341987199724">Setați Brave ca browser prestabilit</translation>
-<translation id="1391855377994926460">Browser-ul Brave nu este setat ca browser prestabilit în acest moment.
-Setați Brave ca prestabilit pentru a naviga în continuare mai rapid pe internet -
-de până la 6 ori mai rapid pe site-urile de știri principale.</translation>
+<translation id="1391855377994926460">Navigați pe web mai rapid - de 6x mai rapid pe principalele site-uri de știri.</translation>
 <translation id="9218430445555521422">Setează ca prestabilit</translation>
 <translation id="3479552764303398839">Nu acum</translation>
 <translation id="4877147287319222750">Adăugați în bara laterală</translation>
@@ -270,7 +279,6 @@ de până la 6 ori mai rapid pe site-urile de știri principale.</translation>
 <translation id="8731422418734770661">Setați portofelele crypto</translation>
 <translation id="8199661191594897555">Porniți Crypto Wallets și reîncărcați</translation>
 <translation id="8428213095426709021">Setări</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Află mai multe despre IPFS și politica de confidențialitate</translation>
 <translation id="4552520379838695057">Ne pare rău, pagina aceea lipsește.</translation>
 <translation id="2609895996619941644">Vreți să verificați dacă este disponibilă o versiune salvată pe Wayback Machine?</translation>

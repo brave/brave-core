@@ -62,9 +62,19 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="7643538479215207633">Ava IPFS-i abil</translation>
 <translation id="3094628781200061820">Failide avaldamine ja toomine IPFS-ist</translation>
 <translation id="1672270084584211506">Onion on saadaval</translation>
+<translation id="4901618511712685702">Import IPFS-i</translation>
+<translation id="6794469945030154569">See leht</translation>
+<translation id="5037852323412456577">Valitud pilt</translation>
+<translation id="2715839724138372481">Valitud video</translation>
+<translation id="4227945450504703638">Valitud heli</translation>
+<translation id="7895302206188277628">Seotud sisu</translation>
+<translation id="4322612543319315652">Impordi valitud tekst IPFS-i</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Uus Tor'iga privaatne aken</translation>
 <translation id="4703780849509456860">Ava link Tor'iga privaatses aknas</translation>
 <translation id="3488584642074079080">Ava link Brave'i Tor'iga privaatses aknas</translation>
+<translation id="7475547933708221517">Jaga kohalikku faili IPFS-i kaudu</translation>
+<translation id="784573715436258741">Jaga kohalikku faili IPFS-i kaudu</translation>
 <translation id="6313675821927505581">Uus Tor'iga privaatne aken</translation>
 <translation id="2638041073279639246">Ava link Tor'iga privaatses aknas</translation>
 <translation id="3425600262621021599">Ava link Brave'i Tor'iga privaatses aknas</translation>
@@ -147,7 +157,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4112587618563511470">Kehtetu sünkroonimiskood, palun kontrolli ja proovi uuesti.</translation>
 <translation id="2339730291919608488">Välju ajakohastamisahelast</translation>
 <translation id="115699408012835975">Kui lähtestad sünkroonimise, siis pead sünkroonimiskoodi uuesti teisest seadmest sisestama, et sellega sünkroonida. Kas soovid kindlasti jätkata?</translation>
-<translation id="339086854515247923">Kas soovite kindlasti valitud seadme sünkroonimisahelast kustutada?</translation>
+<translation id="6092564993102418148">Kas soovite kindlasti valitud seadme sünkroonimisahelast kustutada?</translation>
 <translation id="3396347744975515056">Brave sünkroonimine on täiendatud ja vajab seadistamist</translation>
 <translation id="7473245612074035141">Alusta seadistust</translation>
 <translation id="3411013544209536575">Abi preemiad</translation>
@@ -169,12 +179,13 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="757886143331967039">Laadi käivitamisel ebasoovitatav krüptorahakottide laiend</translation>
 <translation id="6864914031231797928">Luba laiendustel Google'i sisselogimine</translation>
 <translation id="5927916530277631319">Unstoppable Domainsi resolvimismeetod</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/> funktsiooniga „DNS HTTPS-i kaudu“ ja Ethereumiga seotud privaatsuskaalutluste kohta.</translation>
 <translation id="5248318250177143470">Ethereumi nimeteenuse (ENS) resolvimismeetod</translation>
 <translation id="9170907049676078643">IPFS-ressursside teisendamise meetod</translation>
 <translation id="1327977588028644528">Lüüs</translation>
 <translation id="80225669816651290">Kohalik sõlm</translation>
 <translation id="4927734062756955434">IPFS-i avaliku lüüsi aadress</translation>
-<translation id="5539104255771715383"><ph name="BEGIN_LINK_MPL"/>Lisateave<ph name="END_LINK_MPL"/> IPFS-i kohaliku sõlme ja lüüsiga seotud privaatsuskaalutluste kohta.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Lisateave<ph name="END_LINK_MPL"/> IPFS-i kohaliku sõlme ja lüüsiga seotud privaatsuskaalutluste kohta.</translation>
 <translation id="8425213833346101688">Muuda</translation>
 <translation id="557281710253742286">Määrake IPFS-i lüüs</translation>
 <translation id="8571837315037233299">Lüüsi aadress</translation>
@@ -246,9 +257,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1959966725083452288">Avatar Bonbon kuninglik</translation>
 <translation id="2039034364578911089">Avatar Bonbon ninja</translation>
 <translation id="239760341987199724">Määra Brave vaikebrauseriks</translation>
-<translation id="1391855377994926460">Brave’i brauser pole praegu teie vaikebrauseriks seatud.
-Seadke Brave  vaikebrauseriks, et kiiremini surfata –
-suurematel uudistesaitidel kuni 6x kiiremini.</translation>
+<translation id="1391855377994926460">Saate jätkata kiiremat veebilehitsemist – suurematel uudisesaitidel kuni kuus korda kiiremini.</translation>
 <translation id="9218430445555521422">Seadista vaikebrauseriks</translation>
 <translation id="3479552764303398839">Mitte praegu</translation>
 <translation id="4877147287319222750">Lisa külgribale</translation>
@@ -270,7 +279,6 @@ suurematel uudistesaitidel kuni 6x kiiremini.</translation>
 <translation id="8731422418734770661">Crypto Walletsi seadistamine</translation>
 <translation id="8199661191594897555">Käivita krüptorahakotid ja laadi uuesti</translation>
 <translation id="8428213095426709021">Seaded</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="72868071984333667">Lisateave IPFS-i ja privaatsuse kohta</translation>
 <translation id="4552520379838695057">Vabandust, seda lehte pole.</translation>
 <translation id="2609895996619941644">Soovite kontrollida, kas ajamasinas on salvestatud versioon?</translation>

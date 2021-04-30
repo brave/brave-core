@@ -320,28 +320,36 @@
 <translation id="3922777918343537463">Скасувати щомісячний внесок</translation>
 <translation id="9087994290002662101">Змінити суму</translation>
 <translation id="1969724076378550685">Підтвердити скасування щомісячного платежу</translation>
+<translation id="2359808026110333948">Продовжити</translation>
 <translation id="6238322297266927861">Сума внеску:</translation>
 <translation id="1723857724166389190">Ваш щомісячний внесок цьому творцю було скасовано.</translation>
 <translation id="534368327994110883">Ви’ підтримуєте цього творця в даний момент</translation>
 <translation id="2621124276654521177">Поточний щомісячний внесок</translation>
+<translation id="7723816962634734185">Користувацька сума</translation>
+<translation id="7286679368056222644">Ваша щомісячна підтримка буде</translation>
+<translation id="4088764345615745058">Користувацька сума внеску</translation>
+<translation id="864162897141534043">Ви вже майже зробили внесок</translation>
 <translation id="3084276630953238154">Виникла стороння помилка</translation>
 <translation id="3263379510325043678">Помилка підключення до сервера</translation>
 <translation id="8994556588732085585">Будь ласка, закрийте та знову відкрийте банер для чайових, щоб повторити спробу.</translation>
+<translation id="8987454605694983241">наприклад, <ph name="AMOUNT"/></translation>
+<translation id="4492470488449820476">Мінімальний розмір внеску <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
 <translation id="4371618764691059036">Місячний внесок було надіслано.</translation>
 <translation id="6356822617569064293">Дата наступного внеску:</translation>
+<translation id="4783907814409710132">Недостатньо балів.</translation>
+<translation id="3593485149443019592">Недостатньо токенів. <ph name="LINK_BEGIN"/>Додайте кошти<ph name="LINK_END"/>.</translation>
 <translation id="4622723187300249546">Одноразові чайові</translation>
 <translation id="5268142130226208198">Розмір одноразових чайових:</translation>
 <translation id="3669086939205397942">Зачекайте, ви ще не можете давати чайові</translation>
-<translation id="4758374243299807324">Публікація користувача [[user]]</translation>
-<translation id="1242162113777253768">Твіт користувача [[user]]</translation>
+<translation id="3288812755711687300">Публікація <ph name="USER"/>’s</translation>
+<translation id="5851002232791947896">Твіт <ph name="USER"/>’s</translation>
 <translation id="5531915212947569943">Шкода, що ви нас залишаєте…</translation>
 <translation id="1420756770787071946">Підтримати цього творця</translation>
-<translation id="3473919203449000069">Продовжуючи, ви погоджуєтесь з <ph name="LINK_BEGIN"/>Умовами надання послуг<ph name="LINK_END"/> та <ph name="LINK_BEGIN"/>Політикою приватності<ph name="LINK_END"/>.</translation>
 <translation id="3271043362279673449">Дякуємо за підтримку!</translation>
 <translation id="379596083010863211">Ваші одноразові чайові надіслані.</translation>
 <translation id="5096821444729034955">за їхній допис</translation>
 <translation id="2978223787436054634">Напишіть твіт про вашу підтримку</translation>
-<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Перегляньте короткий огляд<ph name="LINK_END"/> або <ph name="LINK_BEGIN"/>дізнайтесь більше<ph name="LINK_END"/>, щоб ознайомитись з деталями.</translation>
+<translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>Перегляньте короткий огляд<ph name="TOUR_LINK_END"/> або <ph name="LEARN_LINK_BEGIN"/>дізнайтеся більше<ph name="LEARN_LINK_END"/>.</translation>
 <translation id="7465614181960492526">Заробляйте токени та допомагайте іншим</translation>
 <translation id="2731539192954672606">Заробляйте токени, переглядаючи рекламні оголошення, що не порушують вашу конфіденційність, та автоматично підтримуйте улюблені сайти та творців контенту.</translation>
 <translation id="1275213816424141989">Можливо, пізніше</translation>
@@ -353,11 +361,11 @@
 <translation id="3164498053837913829">(із вашого заробітку з оголошень)</translation>
 <translation id="2070991379950719711">Почати користуватися Brave Rewards</translation>
 <translation id="6318696841371191107">Пройдіть швидке ознайомлення</translation>
+<translation id="8465790416279415448">Продовжуючи, ви погоджуєтесь з <ph name="TOS_LINK_BEGIN"/>Умовами надання послуг<ph name="TOS_LINK_END"/> та <ph name="PP_LINK_BEGIN"/>Політикою конфіденційності<ph name="PP_LINK_END"/>.</translation>
 <translation id="2404165674840145940">Дати на чай за допомогою сервісу винагород Brave</translation>
 <translation id="5820285701794581330">Користуючись сервісом винагород Brave, ви почнете заробляти BAT, які зможете залишити творцям контенту у вигляді чайових.</translation>
 <translation id="5705882733397021510">Повернутися</translation>
 <translation id="185034574799484512">Давайте коротко розглянемо</translation>
-<translation id="2359808026110333948">Продовжити</translation>
 <translation id="8281886186245836920">Пропустити</translation>
 <translation id="1377600615067678409">Поки пропустити</translation>
 <translation id="7930505144430343145">Ласкаво просимо до Brave Rewards!</translation>
@@ -457,7 +465,7 @@
 <translation id="7335371657242627509">Включити в автоматичний внесок</translation>
 <translation id="1864111464094315414">Вхід</translation>
 <translation id="4556504723624686474">Верифікація гаманця дозволить вам більш ефективно керувати власними коштами.</translation>
-<translation id="5461792966682693675">Для створення облікового запису Uphold, вам потрібно мати щонайменше <ph name="AMOUNT"/> BAT. Якщо ви вже маєте верифікований обліковий запис Uphold -  перейдіть до Входу.</translation>
+<translation id="5461792966682693675">Для створення облікового запису Uphold, вам потрібно мати принаймні <ph name="AMOUNT"/> BAT. Якщо ви вже маєте верифікований обліковий запис Uphold, виконайте вхід у систему.</translation>
 <translation id="3250511771491660127">Повторювати щомісяця</translation>
 <translation id="6028954173739504682">Керуйте гаманцем</translation>
 <translation id="7886389832052393750">Кві</translation>
@@ -485,8 +493,6 @@
 <translation id="5736183007277264868">На даний момент не доступно жодних пожертвувань з токенів.</translation>
 <translation id="8307851765167460403">Немає даних…</translation>
 <translation id="8589748782214271192">Ні, дякую</translation>
-<translation id="3204579740854485097">Недостатньо коштів ([[currency]]).</translation>
-<translation id="3330432260369310344">Недостатньо коштів ([[currency]]). Будь ласка,</translation>
 <translation id="3630697955794050612">вимкнути</translation>
 <translation id="4921250468871504777">ОК</translation>
 <translation id="7866482334467279021">увімкнути</translation>
@@ -652,7 +658,7 @@
 <translation id="7840362246306242214">На Uphold доступна торгівля акціями США</translation>
 <translation id="3345432088196080137">Інвестуйте всього лише $1 у популярні акції та обмінюйте фонди, якими торгують, як AAPL, TSLA або AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Дізнайтеся більше<ph name="LINK_END"/> про Brave Rewards</translation>
-<translation id="629521674505004728">Натиснувши "Почати користуватися Brave Rewards", ви приймаєте <ph name="LINK_BEGIN"/>Умови надання послуг<ph name="LINK_END"/> та <ph name="LINK_BEGIN"/>Політику конфіденційності<ph name="LINK_END"/>.</translation>
+<translation id="7443190393462029180">Натиснувши «Почати користуватися Brave Rewards», ви приймаєте <ph name="TOS_LINK_BEGIN"/>Умови надання послуг<ph name="TOS_LINK_END"/> and <ph name="PP_LINK_BEGIN"/>Політику конфіденційності<ph name="PP_LINK_END"/>.</translation>
 <translation id="8344084848798035850">Приблизна сума винагород цього місяця</translation>
 <translation id="5235444069025581717">Чайові та внески цього місяця</translation>
 <translation id="1210965535849006928">Забрати мої Винагороди</translation>
@@ -760,10 +766,11 @@
 <translation id="5636651007798897342">Продовжити, використовуючи сервер Cloudflare</translation>
 <translation id="2356070529366658676">Запитати</translation>
 <translation id="2218918398178303658">DNS поверх HTTPS</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="2468755552460246661">Домен заблоковано</translation>
-<translation id="6631469728138660166">Попереду підозрілий сайт</translation>
+<translation id="6393849031898466746">Цей вебсайт може спробувати відстежити вас на інших вебсайтах</translation>
 <translation id="983774928604730749">Brave запобіг завантаженню наступного сайту:</translation>
-<translation id="8250033559824599347">Цей вебсайт може бути шахрайським, перекидати вас різними вебсайтами, щоб встановити файли cookie для відстеження або виконувати інші дії, що порушують конфіденційність.</translation>
+<translation id="4781961723893779890">Цей вебсайт може спробувати пов’язати деякі з ваших особистих даних з файлом cookie, перш ніж показати вміст.</translation>
 <translation id="2459038234784107183">Не попереджайте мене про цей сайт знову</translation>
 <translation id="8242426110754782860">Продовжити</translation>
 <translation id="2501278716633472235">Назад</translation>
@@ -821,8 +828,15 @@
 <translation id="4499666752625407848">Під час оновлення сталася помилка.</translation>
 <translation id="62991515067726424">Цей уміст було завантажено за допомогою протоколу  IPFS</translation>
 <translation id="7263366446813126341">Файлова система InterPlanetary (IPFS) — це загальнодоступна мережа для однорангового зберігання та надсилання даних. Ви можете дізнатися більше про інтеграцію у Brave або налаштувати систему IPFS будь-якої миті.</translation>
+<translation id="3862600063748690056">Імпорт IPFS завершено</translation>
+<translation id="8263749381887932384">Частковий імпорт IPFS завершено</translation>
+<translation id="2145699434318651911">Не вдалося імпортувати IPFS</translation>
+<translation id="5525148540855044244">Посилання для спільного використання скопійовано: <ph name="SHAREABLE_LINK"/></translation>
+<translation id="3741998951694470470">Не вдалося отримати дані для імпорту</translation>
+<translation id="7900950536120202771">Внутрішня помилка IPFS-вузла</translation>
+<translation id="1036635552229153800">Дані були успішно завантажені, але не переміщені в каталог brave-import. Це можна зробити вручну на сторінці налаштувань імпорту.</translation>
 <translation id="7789840864192026963">Надати дозвіл</translation>
-<translation id="8092074243456635562">поки я не закрию цю сторінку</translation>
+<translation id="7978789143098237970">поки я не закрию цю сторінку</translation>
 <translation id="3523195733429162409">на 24 години</translation>
 <translation id="2373264732659722940">на 1 тиждень</translation>
 <translation id="6318437367327684789">назавжди</translation>

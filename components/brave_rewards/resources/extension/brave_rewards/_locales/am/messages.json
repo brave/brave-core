@@ -630,8 +630,14 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "የመያዣ መለያ ለመፍጠር ቢያንስ 25 BAT ያስፈልግዎታል። እባክዎ ቆየት ብለው ይሞክሩ። \n አስቀድሞ የተረጋገጠ የመያዣ መለያ ካለዎት መግባትዎን ይቀጥሉ።",
-    "description": "Text for login button"
+    "message": "የ Uphold መለያ ለመፍጠር ቢያንስ $amount$ BAT ያስፈልግዎታል። ቀድሞውኑ የተረጋገጠ የ Uphold መለያ ካለዎት በመለያ ለመግባት ይቀጥሉ።",
+    "description": "Text for login button",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "15"
+      }
+    }
   },
   "walletConnected":  {
     "message": "ተያይዟል",

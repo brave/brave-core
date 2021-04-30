@@ -171,9 +171,17 @@
     "message": "글로벌 실드 디폴트 변경",
     "description": "Message for the button action linking to the settings page"
   },
+  "addBlockElement": {
+    "message": "선택기를 통한 요소 차단",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
   "manageCustomFilters": {
     "message": "맞춤 필터 관리",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "요소 선택기 모드 진입",
+    "description": "Message for context menu that enables the element picker UI on the page."
   },
   "advancedView": {
     "message": "고급 뷰",
