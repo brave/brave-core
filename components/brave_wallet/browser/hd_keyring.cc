@@ -19,6 +19,16 @@ HDKeyring::Type HDKeyring::type() const {
   return kDefault;
 }
 
+bool HDKeyring::empty() const {
+  return !root_ || !master_key_ || !accounts_.size();
+}
+
+void HDKeyring::ClearData() {
+  root_.reset();
+  master_key_.reset();
+  accounts_.clear();
+}
+
 void HDKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                    const std::string& hd_path) {
   if (!seed.empty()) {

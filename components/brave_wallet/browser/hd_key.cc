@@ -9,6 +9,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
@@ -50,6 +51,7 @@ HDKey::HDKey(uint8_t depth, uint32_t parent_fingerprint, uint32_t index)
 
 HDKey::~HDKey() {
   secp256k1_context_destroy(secp256k1_ctx_);
+  SecureZeroData(private_key_.data(), private_key_.size());
 }
 
 // static

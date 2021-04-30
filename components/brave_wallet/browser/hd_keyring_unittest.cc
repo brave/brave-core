@@ -121,4 +121,20 @@ TEST(HDKeyringUnitTest, SignMessage) {
           .empty());
 }
 
+TEST(HDKeyringUnitTest, ClearData) {
+  HDKeyring keyring;
+  std::vector<uint8_t> seed;
+  EXPECT_TRUE(keyring.empty());
+  EXPECT_TRUE(base::HexStringToBytes(
+      "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
+      "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
+      &seed));
+  keyring.ConstructRootHDKey(seed, "m/44'/60'/0'/0");
+  EXPECT_TRUE(keyring.empty());
+  keyring.AddAccounts();
+  EXPECT_FALSE(keyring.empty());
+  keyring.ClearData();
+  EXPECT_TRUE(keyring.empty());
+}
+
 }  // namespace brave_wallet
