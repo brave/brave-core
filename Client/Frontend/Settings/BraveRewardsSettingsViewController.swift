@@ -123,7 +123,14 @@ class BraveRewardsSettingsViewController: TableViewController {
         title = Strings.braveRewardsTitle
         
         rewards.startLedgerService { [weak self] in
-            self?.reloadSections()
+            guard let self = self else { return }
+            if let legacyWallet = self.legacyWallet, !legacyWallet.isInitialized {
+                legacyWallet.initializeLedgerService {
+                    self.reloadSections()
+                }
+            } else {
+                self.reloadSections()
+            }
         }
     }
 }

@@ -166,8 +166,13 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
                     }
                 }
             }
-            
-            self.reloadData()
+            if let legacyWallet = self.legacyWallet, !legacyWallet.isInitialized {
+                legacyWallet.initializeLedgerService({
+                    self.reloadData()
+                })
+            } else {
+                self.reloadData()
+            }
         }
         
         view.snp.makeConstraints {
