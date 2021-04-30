@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index e7f4572d2992fce8f72e23ce89c22bdaea49cf59..1ad45ad5c0949add8f817b1eead6a6d742745117 100644
+index 699ea49d5139a538e852aa2018eb6c84e3aeaf5b..15b70a92362fbbf9ca3462e2142221806df66ecb 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
 @@ -107,6 +107,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {

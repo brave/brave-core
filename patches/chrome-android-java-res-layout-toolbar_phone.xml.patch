@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/toolbar_phone.xml b/chrome/android/java/res/layout/toolbar_phone.xml
-index 85b766a50b49d415f0b89637e0af21ae3f31fce1..03f01ac1073bcef2ff2aa5b2c9397acbbf7e4d43 100644
+index 8ba029c3f9a138a01351cc0232a77e97491792df..c7e118e478fac17a9a6778b5c7ab74a7a44d0484 100644
 --- a/chrome/android/java/res/layout/toolbar_phone.xml
 +++ b/chrome/android/java/res/layout/toolbar_phone.xml
 @@ -13,6 +13,7 @@
@@ -18,7 +18,7 @@ index 85b766a50b49d415f0b89637e0af21ae3f31fce1..03f01ac1073bcef2ff2aa5b2c9397acb
  
      <org.chromium.chrome.browser.omnibox.LocationBarPhone
          android:id="@+id/location_bar"
-@@ -31,6 +33,7 @@
+@@ -33,6 +35,7 @@
          android:orientation="horizontal"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -26,7 +26,7 @@ index 85b766a50b49d415f0b89637e0af21ae3f31fce1..03f01ac1073bcef2ff2aa5b2c9397acb
          android:layout_gravity="top|end" >
  
          <ViewStub
-@@ -40,6 +43,7 @@
+@@ -42,6 +45,7 @@
              style="@style/ToolbarButton"
              android:paddingStart="@dimen/toolbar_phone_optional_button_padding"
              android:visibility="gone" />

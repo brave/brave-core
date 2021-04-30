@@ -1,17 +1,17 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 3369b5be61936c553f6bc9f694c6335f056e44f5..f9d007addb92a6f95388588c916f2fd86a1fa55c 100644
+index 8fc934acfddeb4f4c9551dbc1ccac75f6397a4fd..f007b861b7c59a7c97b19df7751f83fc342e4615 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -75,6 +75,8 @@ if (enable_swiftshader) {
    ]
  }
-
+ 
 +packaging_files_executables -= excluded_packaging_files_executables packaging_files_executables += brave_packaging_files_executables
 +
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
-
+ 
  copy("swiftshader_libs") {
-@@ -175,7 +177,9 @@ strip_binary("strip_chrome_binary") {
+@@ -176,7 +178,9 @@ strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    symbol_output = "$root_out_dir/chrome.debug"
    stripped_binary_output = "$root_out_dir/chrome.stripped"
@@ -19,17 +19,17 @@ index 3369b5be61936c553f6bc9f694c6335f056e44f5..f9d007addb92a6f95388588c916f2fd8
    deps = [ "//chrome" ]
 +  deps += strip_chrome_binary_deps
  }
-
+ 
  # This target builds all "normal" Linux installers.  You must set
-@@ -224,6 +228,7 @@ copy("common_packaging_files") {
+@@ -225,6 +229,7 @@ copy("common_packaging_files") {
    }
-
+ 
    sources += [ "//buildtools/third_party/eu-strip/bin/eu-strip" ]
 +  sources -= common_packaging_files_excluded_sources sources += common_packaging_files_sources
-
+ 
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
  }
-@@ -320,6 +325,7 @@ group("installer_deps") {
+@@ -321,6 +326,7 @@ group("installer_deps") {
      "//sandbox/linux:chrome_sandbox",
      "//third_party/crashpad/crashpad/handler:crashpad_handler",
    ]
@@ -37,17 +37,17 @@ index 3369b5be61936c553f6bc9f694c6335f056e44f5..f9d007addb92a6f95388588c916f2fd8
    if (enable_nacl) {
      public_deps += [
        "//components/nacl/loader:nacl_helper",
-@@ -357,6 +363,9 @@ group("installer_deps") {
+@@ -359,6 +365,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
 +  if (channel == "unstable" ) {
 +    channel = "dev"
 +  }
-
+ 
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -520,3 +529,6 @@ linux_package("beta") {
+@@ -522,3 +531,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

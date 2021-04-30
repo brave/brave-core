@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index 78e5b98aae6416eb28501ba3ddde1faa2c90ae5a..776fcabb3c05d510e7864e78f5728b3198c965ad 100644
+index 6a705a1babedb26e0bc117a390579764acd81fd9..b886c10e6abd9b2f0aff6c02eb338ceceba01ad6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 @@ -245,6 +245,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
                  /* observer = */ this, offlinePageBridge);
- 
+
          int maxRows = 2;
 +        maxRows = QueryTileSection.getMaxRowsForMostVisitedTiles(getContext());
          if (searchProviderIsGoogle && QueryTileUtils.isQueryTilesEnabledOnNTP()) {
