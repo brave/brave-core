@@ -11,6 +11,7 @@
 #include "base/files/file_util.h"
 #include "base/guid.h"
 #include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"

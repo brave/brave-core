@@ -13,6 +13,7 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/ftx/browser/ftx_json_parser.h"
 #include "brave/components/ftx/common/pref_names.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
