@@ -744,11 +744,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         // Find if tab exists
         if (tabIndex != TabModel.INVALID_TAB_INDEX) {
             tab = tabModel.getTabAt(tabIndex);
-            // Moving tab forward
-            tabModel.moveTab(tab.getId(), tabModel.getCount());
-            tabModel.setIndex(
-                TabModelUtils.getTabIndexById(tabModel, tab.getId()),
-                TabSelectionType.FROM_USER);
+            // Set active tab
+            tabModel.setIndex(tabIndex, TabSelectionType.FROM_USER);
             return tab;
         } else {
             return null;
