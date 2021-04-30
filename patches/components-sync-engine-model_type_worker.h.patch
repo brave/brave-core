@@ -1,10 +1,10 @@
 diff --git a/components/sync/engine/model_type_worker.h b/components/sync/engine/model_type_worker.h
-index 1fb0dfaa143fe0370ae67badee7b6df4b622706f..c5ea76e3f30c9cc5e9fafc2577d20508f72fa93e 100644
+index ad5e4c7228531646cb4dd401bde297613b8bfa7c..2a35606e620048c2ba8129c723b08bac869c6920 100644
 --- a/components/sync/engine/model_type_worker.h
 +++ b/components/sync/engine/model_type_worker.h
 @@ -154,6 +154,7 @@ class ModelTypeWorker : public UpdateHandler,
-     min_gu_responses_to_ignore_key_ = min_gu_responses_to_ignore_key;
-   }
+ 
+   bool IsEncryptionEnabledForTest() const { return encryption_enabled_; }
  
 + BRAVE_MODEL_TYPE_WORKER_H_
   private:

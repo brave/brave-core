@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index f117097edd87db9ad15123bceeb88af12b813879..00b12caac7465f403e82449367b0eafe7ed531be 100644
+index 47d6effe7e33e71bbe640943d2122133ede12a56..41b691217961c7d225e22dbecf1ba15e6beb700c 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -248,6 +248,7 @@ enum class ContentSettingsType : int32_t {
-   // the corresponding "guard" setting.
-   FILE_SYSTEM_ACCESS_CHOOSER_DATA,
+@@ -261,6 +261,7 @@ enum class ContentSettingsType : int32_t {
+   // associated with the relying party's origin.
+   FEDERATED_IDENTITY_REQUEST,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,
