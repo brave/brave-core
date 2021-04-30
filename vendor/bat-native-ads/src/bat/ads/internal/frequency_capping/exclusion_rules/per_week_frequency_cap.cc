@@ -1,33 +1,34 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_week_frequency_cap.h"
 
 #include <cstdint>
 #include <deque>
 
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 
-PerDayFrequencyCap::PerDayFrequencyCap(const AdEventList& ad_events)
+PerWeekFrequencyCap::PerWeekFrequencyCap(const AdEventList& ad_events)
     : ad_events_(ad_events) {}
 
-PerDayFrequencyCap::~PerDayFrequencyCap() = default;
+PerWeekFrequencyCap::~PerWeekFrequencyCap() = default;
 
-bool PerDayFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
+bool PerWeekFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
   if (!DoesRespectCap(filtered_ad_events, ad)) {
     last_message_ = base::StringPrintf(
         "creativeSetId %s has exceeded the "
-        "frequency capping for perDay",
+        "frequency capping for perWeek",
         ad.creative_set_id.c_str());
 
     return true;
@@ -36,13 +37,13 @@ bool PerDayFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   return false;
 }
 
-std::string PerDayFrequencyCap::get_last_message() const {
+std::string PerWeekFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool PerDayFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
-                                        const CreativeAdInfo& ad) {
-  if (ad.per_day == 0) {
+bool PerWeekFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
+                                         const CreativeAdInfo& ad) {
+  if (ad.per_week == 0) {
     return true;
   }
 
@@ -50,14 +51,15 @@ bool PerDayFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
       GetTimestampHistoryForAdEvents(ad_events);
 
   const uint64_t time_constraint =
-      base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
+      7 * (base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
-                                                       ad.per_day);
+                                                       ad.per_week);
 }
 
-AdEventList PerDayFrequencyCap::FilterAdEvents(const AdEventList& ad_events,
-                                               const CreativeAdInfo& ad) const {
+AdEventList PerWeekFrequencyCap::FilterAdEvents(
+    const AdEventList& ad_events,
+    const CreativeAdInfo& ad) const {
   AdEventList filtered_ad_events = ad_events;
 
   const auto iter = std::remove_if(

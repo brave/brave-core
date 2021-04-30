@@ -48,7 +48,9 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest, LoadFromDatabase) {
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;
   info.per_day = 3;
-  info.total_max = 4;
+  info.per_week = 4;
+  info.per_month = 5;
+  info.total_max = 6;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = {"US"};

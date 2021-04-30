@@ -82,8 +82,8 @@
           ],
           "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
           "perDay": 5,
-          "perMonth": 140,
-          "perWeek": 35,
+          "perWeek": 6,
+          "perMonth": 7,
           "totalMax": 100,
           "value": "value"
         }
@@ -156,8 +156,8 @@
           ],
           "creativeSetId": "25a11ff2-5dd2-4629-95f0-b717454911e8",
           "perDay": 5,
-          "perMonth": 140,
-          "perWeek": 35,
+          "perWeek": 6,
+          "perMonth": 7,
           "totalMax": 100,
           "value": "value"
         }
@@ -216,8 +216,8 @@
           ],
           "creativeSetId": "3e2e503a-dd38-42d1-9e26-1e5dbb66aada",
           "perDay": 5,
-          "perMonth": 140,
-          "perWeek": 35,
+          "perWeek": 6,
+          "perMonth": 7,
           "totalMax": 100,
           "value": "value"
         }

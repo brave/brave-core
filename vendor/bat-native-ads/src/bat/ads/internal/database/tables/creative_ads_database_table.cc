@@ -83,6 +83,8 @@ int CreativeAds::BindParameters(DBCommand* command,
     BindString(command, index++, creative_ad.creative_instance_id);
     BindBool(command, index++, creative_ad.conversion);
     BindInt(command, index++, creative_ad.per_day);
+    BindInt(command, index++, creative_ad.per_week);
+    BindInt(command, index++, creative_ad.per_month);
     BindInt(command, index++, creative_ad.total_max);
     BindString(command, index++, creative_ad.split_test_group);
     BindString(command, index++, creative_ad.target_url);
@@ -103,11 +105,13 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
       "(creative_instance_id, "
       "conversion, "
       "per_day, "
+      "per_week, "
+      "per_month, "
       "total_max, "
       "split_test_group, "
       "target_url) VALUES %s",
       get_table_name().c_str(),
-      BuildBindingParameterPlaceholders(6, count).c_str());
+      BuildBindingParameterPlaceholders(8, count).c_str());
 }
 
 void CreativeAds::CreateTableV13(DBTransaction* transaction) {
@@ -119,6 +123,8 @@ void CreativeAds::CreateTableV13(DBTransaction* transaction) {
       "ON CONFLICT REPLACE, "
       "conversion INTEGER NOT NULL DEFAULT 0, "
       "per_day INTEGER NOT NULL DEFAULT 0, "
+      "per_week INTEGER NOT NULL DEFAULT 0, "
+      "per_month INTEGER NOT NULL DEFAULT 0, "
       "total_max INTEGER NOT NULL DEFAULT 0, "
       "split_test_group TEXT, "
       "target_url TEXT NOT NULL)",

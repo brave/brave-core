@@ -1,9 +1,9 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_month_frequency_cap.h"
 
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
@@ -17,50 +17,50 @@ namespace {
 const char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 }  // namespace
 
-class BatAdsPerDayFrequencyCapTest : public UnitTestBase {
+class BatAdsPerMonthFrequencyCapTest : public UnitTestBase {
  protected:
-  BatAdsPerDayFrequencyCapTest() = default;
+  BatAdsPerMonthFrequencyCapTest() = default;
 
-  ~BatAdsPerDayFrequencyCapTest() override = default;
+  ~BatAdsPerMonthFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsPerDayFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsPerMonthFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.per_day = 2;
+  ad.per_month = 2;
 
   const AdEventList ad_events;
 
   // Act
-  PerDayFrequencyCap frequency_cap(ad_events);
+  PerMonthFrequencyCap frequency_cap(ad_events);
   const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerDayFrequencyCapTest, AllowAdIfZero) {
+TEST_F(BatAdsPerMonthFrequencyCapTest, AllowAdIfZero) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.per_day = 0;
+  ad.per_month = 0;
 
   const AdEventList ad_events;
 
   // Act
-  PerDayFrequencyCap frequency_cap(ad_events);
+  PerMonthFrequencyCap frequency_cap(ad_events);
   const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
+TEST_F(BatAdsPerMonthFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.per_day = 2;
+  ad.per_month = 2;
 
   AdEventList ad_events;
 
@@ -70,47 +70,18 @@ TEST_F(BatAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   ad_events.push_back(ad_event);
 
   // Act
-  PerDayFrequencyCap frequency_cap(ad_events);
+  PerMonthFrequencyCap frequency_cap(ad_events);
   const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerDayFrequencyCapTest,
-       AllowAdIfDoesNotExceedCapForMultipleTypes) {
+TEST_F(BatAdsPerMonthFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Month) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.per_day = 2;
-
-  AdEventList ad_events;
-
-  AdEventInfo ad_event_1 =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
-  ad_events.push_back(ad_event_1);
-
-  AdEventInfo ad_event_2 =
-      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
-  ad_events.push_back(ad_event_2);
-
-  AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-                                           ConfirmationType::kViewed);
-  ad_events.push_back(ad_event_3);
-
-  // Act
-  PerDayFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
-
-  // Assert
-  EXPECT_FALSE(should_exclude);
-}
-
-TEST_F(BatAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Day) {
-  // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.per_day = 2;
+  ad.per_month = 2;
 
   AdEventList ad_events;
 
@@ -120,21 +91,21 @@ TEST_F(BatAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(1));
+  FastForwardClockBy(base::TimeDelta::FromDays(28));
 
   // Act
-  PerDayFrequencyCap frequency_cap(ad_events);
+  PerMonthFrequencyCap frequency_cap(ad_events);
   const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerDayFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Day) {
+TEST_F(BatAdsPerMonthFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Month) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.per_day = 2;
+  ad.per_month = 2;
 
   AdEventList ad_events;
 
@@ -144,21 +115,21 @@ TEST_F(BatAdsPerDayFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Day) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromHours(23));
+  FastForwardClockBy(base::TimeDelta::FromDays(27));
 
   // Act
-  PerDayFrequencyCap frequency_cap(ad_events);
+  PerMonthFrequencyCap frequency_cap(ad_events);
   const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BatAdsPerDayFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
+TEST_F(BatAdsPerMonthFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.per_day = 2;
+  ad.per_month = 2;
 
   AdEventList ad_events;
 
@@ -169,7 +140,7 @@ TEST_F(BatAdsPerDayFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   ad_events.push_back(ad_event);
 
   // Act
-  PerDayFrequencyCap frequency_cap(ad_events);
+  PerMonthFrequencyCap frequency_cap(ad_events);
   const bool should_exclude = frequency_cap.ShouldExclude(ad);
 
   // Assert
