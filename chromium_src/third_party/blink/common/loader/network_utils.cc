@@ -5,6 +5,8 @@
 
 #include "third_party/blink/public/common/loader/network_utils.h"
 
+#include "url/gurl.h"
+
 #define IsURLHandledByNetworkService IsURLHandledByNetworkService_ChromiumImpl
 #include "../../../../../../third_party/blink/common/loader/network_utils.cc"
 #undef IsURLHandledByNetworkService
