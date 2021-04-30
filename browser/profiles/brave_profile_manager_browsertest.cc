@@ -200,8 +200,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
       g_browser_process->local_state());
 
   ProfileManager* profile_manager = g_browser_process->profile_manager();
-  base::FilePath last_used_path =
-      profile_manager->GetLastUsedProfileDir(profile_manager->user_data_dir());
+  base::FilePath last_used_path = profile_manager->GetLastUsedProfileDir();
   EXPECT_EQ(last_used_path.BaseName().AsUTF8Unsafe(), chrome::kInitialProfile);
 }
 #endif
