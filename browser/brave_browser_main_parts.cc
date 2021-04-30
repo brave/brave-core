@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_browser_main_parts.h"
 
+#include <utility>
+
 #include "base/command_line.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -25,6 +27,7 @@
 #include "base/files/file_util.h"
 #include "brave/components/tor/tor_constants.h"
 #include "chrome/browser/browser_process_impl.h"
+#include "chrome/browser/profiles/profile_attributes_init_params.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
@@ -76,10 +79,9 @@ void BraveBrowserMainParts::PostBrowserStart() {
     ProfileAttributesEntry* entry =
         storage.GetProfileAttributesWithPath(tor_legacy_path);
     if (!entry) {
-      storage.AddProfile(tor_legacy_path, std::u16string(), std::string(),
-                         std::u16string(),
-                         /* is_consented_primary_account*/ false, 0,
-                         std::string(), EmptyAccountId());
+      ProfileAttributesInitParams params;
+      params.profile_path = tor_legacy_path;
+      storage.AddProfile(std::move(params));
     }
 
     profile_manager->MaybeScheduleProfileForDeletion(
