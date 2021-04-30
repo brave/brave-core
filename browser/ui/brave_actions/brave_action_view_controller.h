@@ -38,31 +38,30 @@ class BraveActionViewController : public ExtensionActionViewController {
     bool IsEnabled(content::WebContents* web_contents) const override;
     gfx::Image GetIcon(content::WebContents* web_contents,
                        const gfx::Size& size) override;
-    bool DisabledClickOpensMenu() const override;
     ui::MenuModel* GetContextMenu() override;
     bool ExecuteActionUI(std::string relative_path);
     ToolbarActionViewController* GetExtensionViewController(
         const std::string& extension_id);
 
  private:
-    // New instances should be instantiated with Create().
-    BraveActionViewController(
-        scoped_refptr<const extensions::Extension> extension,
-        Browser* browser,
-        extensions::ExtensionAction* extension_action,
-        extensions::ExtensionRegistry* extension_registry,
-        ExtensionsContainer* extensions_container);
+  // New instances should be instantiated with Create().
+  BraveActionViewController(
+      scoped_refptr<const extensions::Extension> extension,
+      Browser* browser,
+      extensions::ExtensionAction* extension_action,
+      extensions::ExtensionRegistry* extension_registry,
+      ExtensionsContainer* extensions_container);
 
-    ExtensionActionViewController* GetPreferredPopupViewController() override;
-    bool TriggerPopupWithUrl(PopupShowAction show_action,
+  ExtensionActionViewController* GetPreferredPopupViewController() override;
+  bool TriggerPopupWithUrl(PopupShowAction show_action,
                            const GURL& popup_url,
                            bool grant_tab_permissions) override;
-    void OnPopupClosed() override;
-    // Returns the image source for the icon.
-    std::unique_ptr<BraveActionIconWithBadgeImageSource> GetIconImageSource(
-        content::WebContents* web_contents,
-        const gfx::Size& size);
-    DISALLOW_COPY_AND_ASSIGN(BraveActionViewController);
+  void OnPopupClosed() override;
+  // Returns the image source for the icon.
+  std::unique_ptr<BraveActionIconWithBadgeImageSource> GetIconImageSource(
+      content::WebContents* web_contents,
+      const gfx::Size& size);
+  DISALLOW_COPY_AND_ASSIGN(BraveActionViewController);
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_ACTIONS_BRAVE_ACTION_VIEW_CONTROLLER_H_

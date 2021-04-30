@@ -37,8 +37,7 @@
 #include "ui/gfx/scoped_canvas.h"
 
 // static
-std::unique_ptr<BraveActionViewController>
-BraveActionViewController::Create(
+std::unique_ptr<BraveActionViewController> BraveActionViewController::Create(
     const extensions::ExtensionId& extension_id,
     Browser* browser,
     ExtensionsContainer* extensions_container) {
@@ -78,11 +77,6 @@ bool BraveActionViewController::IsEnabled(
       !brave::IsRegularProfile(browser_->profile()))
     is_enabled = false;
   return is_enabled;
-}
-
-bool BraveActionViewController::DisabledClickOpensMenu() const {
-  // disabled is a per-tab state
-  return false;
 }
 
 ui::MenuModel* BraveActionViewController::GetContextMenu() {
