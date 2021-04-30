@@ -11,35 +11,94 @@ import SnapKit
 import Data
 import BraveUI
 
+private class ToastShadowView: UIView {
+    private var shadowLayer: CAShapeLayer?
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let path = UIBezierPath(roundedRect: bounds,
+                                cornerRadius: ButtonToastUX.toastButtonBorderRadius).cgPath
+        if let shadowLayer = shadowLayer {
+            shadowLayer.path = path
+            shadowLayer.shadowPath = path
+        } else {
+            shadowLayer = CAShapeLayer().then {
+                $0.path = path
+                $0.fillColor = UIColor.clear.cgColor
+                $0.shadowColor = UIColor.black.cgColor
+                $0.shadowPath = path
+                $0.shadowOffset = .zero
+                $0.shadowOpacity = 0.5
+                $0.shadowRadius = ButtonToastUX.toastButtonBorderRadius
+            }
+            
+            shadowLayer?.do {
+                layer.insertSublayer($0, at: 0)
+            }
+        }
+    }
+}
+
+private class HighlightableButton: UIButton {
+    private var shadowLayer: CAShapeLayer?
+    
+    var shadowLayerZOrder: Int {
+        guard let shadowLayer = shadowLayer else { return -1 }
+        return self.layer.sublayers?.firstIndex(of: shadowLayer) ?? -1
+    }
+    
+    var isShadowHidden: Bool = false {
+        didSet {
+            shadowLayer?.isHidden = isShadowHidden
+        }
+    }
+    
+    override var isHighlighted: Bool {
+        didSet {
+            backgroundColor = isHighlighted ? UIColor.white.withAlphaComponent(0.2) : .clear
+        }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let path = UIBezierPath(roundedRect: bounds,
+                                cornerRadius: ButtonToastUX.toastButtonBorderRadius).cgPath
+        if let shadowLayer = shadowLayer {
+            shadowLayer.path = path
+            shadowLayer.shadowPath = path
+        } else {
+            shadowLayer = CAShapeLayer().then {
+                $0.path = path
+                $0.fillColor = UIColor.clear.cgColor
+                $0.shadowColor = UIColor.black.cgColor
+                $0.shadowPath = path
+                $0.shadowOffset = .zero
+                $0.shadowOpacity = 0.5
+                $0.shadowRadius = ButtonToastUX.toastButtonBorderRadius
+            }
+            
+            shadowLayer?.do {
+                layer.insertSublayer($0, at: 0)
+            }
+        }
+    }
+}
+
 class PlaylistToast: Toast {
     private struct DesignUX {
         static let maxToastWidth: CGFloat = 450.0
     }
     
-    private class HighlightableButton: UIButton {
-        override var isHighlighted: Bool {
-            didSet {
-                backgroundColor = isHighlighted ? .white : .clear
-            }
-        }
-    }
-    
-    private let shadowLayer = CAShapeLayer().then {
-        $0.fillColor = nil
-        $0.shadowColor = UIColor.black.cgColor
-        $0.shadowOffset = CGSize(width: 2.0, height: 2.0)
-        $0.shadowOpacity = 0.15
-        $0.shadowRadius = ButtonToastUX.toastButtonBorderRadius
-    }
-    
+    private let toastShadowView = ToastShadowView()
     private lazy var gradientView = { () -> GradientView in
         let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
         return isDarkMode ? Gradients.Dark.gradient02 : Gradients.Light.gradient02
     }()
     
     private let button = HighlightableButton()
-    private var swipeStartLocation = CGPoint()
-    private let idealDismissDistance: CGFloat = 40.0
+    private var panState: CGPoint = .zero
     
     private let state: PlaylistItemAddedState
     var item: PlaylistInfo
@@ -50,7 +109,8 @@ class PlaylistToast: Toast {
         super.init(frame: .zero)
 
         self.completionHandler = completion
-        clipsToBounds = true
+        toastView.backgroundColor = .clear
+        clipsToBounds = false
 
         addSubview(createView(item, state))
 
@@ -63,20 +123,12 @@ class PlaylistToast: Toast {
             $0.height.equalTo(ButtonToastUX.toastHeight)
         }
         
-        toastView.addGestureRecognizer(UIPanGestureRecognizer(target: self,
-                                                              action: #selector(onSwipeToDismiss(_:))))
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onSwipeToDismiss(_:)))
+        toastView.addGestureRecognizer(panGesture)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: ButtonToastUX.toastButtonBorderRadius).cgPath
-        shadowLayer.shadowPath = shadowLayer.path
-        layer.insertSublayer(shadowLayer, at: 0)
     }
 
     func createView(_ item: PlaylistInfo, _ state: PlaylistItemAddedState) -> UIView {
@@ -111,13 +163,14 @@ class PlaylistToast: Toast {
                 $0.layer.borderColor = UIColor.Photon.white100.cgColor
                 $0.imageView?.tintColor = UIColor.Photon.white100
                 $0.setTitle(Strings.PlayList.toastAddToPlaylistOpenButton, for: [])
-                $0.setTitleColor(toastView.backgroundColor, for: .highlighted)
+                $0.setTitleColor(.white, for: .highlighted)
                 $0.titleLabel?.font = SimpleToastUX.toastFont
                 $0.titleLabel?.numberOfLines = 1
                 $0.titleLabel?.lineBreakMode = .byClipping
                 $0.titleLabel?.adjustsFontSizeToFitWidth = true
                 $0.titleLabel?.minimumScaleFactor = 0.1
-                $0.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+                $0.isShadowHidden = true
+                $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
             }
 
             self.button.snp.makeConstraints {
@@ -130,7 +183,12 @@ class PlaylistToast: Toast {
             horizontalStackView.addArrangedSubview(labelStackView)
             horizontalStackView.addArrangedSubview(button)
 
+            toastView.addSubview(toastShadowView)
             toastView.addSubview(horizontalStackView)
+            
+            toastShadowView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
 
             horizontalStackView.snp.makeConstraints {
                 $0.centerX.equalTo(toastView)
@@ -149,9 +207,8 @@ class PlaylistToast: Toast {
         
         self.button.do {
             $0.layer.cornerRadius = ButtonToastUX.toastButtonBorderRadius
-            $0.layer.masksToBounds = true
             $0.backgroundColor = .clear
-            $0.setTitleColor(toastView.backgroundColor, for: .highlighted)
+            $0.setTitleColor(.white, for: .highlighted)
             $0.imageView?.tintColor = UIColor.Photon.white100
             $0.appearanceTintColor = UIColor.Photon.white100
             $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
@@ -162,6 +219,7 @@ class PlaylistToast: Toast {
             $0.contentHorizontalAlignment = .left
             $0.contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 20.0)
             $0.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: -10.0)
+            $0.isShadowHidden = false
             $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
         }
         
@@ -177,7 +235,6 @@ class PlaylistToast: Toast {
         if state == .pendingUserAction {
             button.setImage(#imageLiteral(resourceName: "quick_action_new_tab").template, for: [])
             button.setTitle(Strings.PlayList.toastAddToPlaylistTitle, for: [])
-            toastView.backgroundColor = .clear
         } else {
             assertionFailure("Should Never get here. Others case are handled at the start of this function.")
         }
@@ -196,7 +253,6 @@ class PlaylistToast: Toast {
     }
     
     override func showToast(viewController: UIViewController? = nil, delay: DispatchTimeInterval, duration: DispatchTimeInterval?, makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void) {
-        
         super.showToast(viewController: viewController, delay: delay, duration: duration) {
             guard let viewController = viewController as? BrowserViewController else {
                 assertionFailure("Playlist Toast should only be presented on BrowserViewController")
@@ -211,27 +267,28 @@ class PlaylistToast: Toast {
         }
     }
     
+    override func dismiss(_ buttonPressed: Bool) {
+        self.dismiss(buttonPressed, animated: true)
+    }
+    
     func dismiss(_ buttonPressed: Bool, animated: Bool) {
-        if animated {
-            super.dismiss(buttonPressed)
-        } else {
-            if displayState == .pendingDismiss || displayState == .dismissed {
-                return
-            }
-            
-            displayState = .pendingDismiss
-            superview?.removeGestureRecognizer(gestureRecognizer)
-            layer.removeAllAnimations()
-            
-            UIView.animate(withDuration: 0.1, animations: {
-                self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
-                self.layoutIfNeeded()
-            }) { finished in
-                self.displayState = .dismissed
-                self.removeFromSuperview()
-                if !buttonPressed {
-                    self.completionHandler?(false)
-                }
+        if displayState == .pendingDismiss || displayState == .dismissed {
+            return
+        }
+        
+        displayState = .pendingDismiss
+        superview?.removeGestureRecognizer(gestureRecognizer)
+        layer.removeAllAnimations()
+    
+        let duration = animated ? SimpleToastUX.toastAnimationDuration : 0.1
+        UIView.animate(withDuration: duration, animations: {
+            self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
+            self.layoutIfNeeded()
+        }) { finished in
+            self.displayState = .dismissed
+            self.removeFromSuperview()
+            if !buttonPressed {
+                self.completionHandler?(false)
             }
         }
     }
@@ -244,48 +301,54 @@ class PlaylistToast: Toast {
         }
     }
     
+    private var shadowLayerZOrder: Int {
+        if state == .added || state == .existing {
+            // In this state, the shadow is on the toastView
+            let index = toastView.subviews.firstIndex(of: toastShadowView) ?? -1
+            return index + 1
+        }
+        // In this state, the shadow is on the button itself
+        return button.shadowLayerZOrder + 1
+    }
+    
     private func updateGradientView(traitCollection: UITraitCollection) {
         let isDarkMode = traitCollection.userInterfaceStyle == .dark
         
         gradientView.removeFromSuperview()
         gradientView = isDarkMode ? Gradients.Dark.gradient02 : Gradients.Light.gradient02
+        gradientView.do {
+            $0.layer.cornerRadius = ButtonToastUX.toastButtonBorderRadius
+            $0.layer.masksToBounds = true
+        }
         
         if state == .added || state == .existing {
-            toastView.backgroundColor = .clear
-            toastView.insertSubview(gradientView, at: 0)
-            gradientView.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
+            toastView.insertSubview(gradientView, at: shadowLayerZOrder)
         } else {
-            button.insertSubview(gradientView, at: 0)
-            gradientView.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
+            button.insertSubview(gradientView, at: shadowLayerZOrder)
+        }
+        
+        gradientView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
     @objc
     private func onSwipeToDismiss(_ recognizer: UIPanGestureRecognizer) {
+        // Distance travelled after decelerating to zero velocity at a constant rate
+        func project(initialVelocity: CGFloat, decelerationRate: CGFloat) -> CGFloat {
+            return (initialVelocity / 1000.0) * decelerationRate / (1.0 - decelerationRate)
+        }
+        
         if recognizer.state == .began {
-            swipeStartLocation = recognizer.location(in: self.toastView)
+            panState = toastView.center
         } else if recognizer.state == .ended {
-            let stopLocation = recognizer.location(in: self.toastView)
-            let dx = stopLocation.x - swipeStartLocation.x
-            let dy = stopLocation.y - swipeStartLocation.y
-            let distance = sqrt(dx * dx + dy * dy)
-
-            // Swiping up
-            if dy < -15.0 {
-                return
-            }
-            
-            // Swiping left or right
-            if (dx > idealDismissDistance * 2.0 || dx < -idealDismissDistance * 2.0) && abs(dy) < idealDismissDistance {
-                return
-            }
-            
-            if distance > idealDismissDistance {
-                self.dismiss(false)
+            let velocity = recognizer.velocity(in: toastView)
+            if abs(velocity.y) > abs(velocity.x) {
+                let y = min(panState.y, panState.y + recognizer.translation(in: toastView).y)
+                let projected = project(initialVelocity: velocity.y, decelerationRate: UIScrollView.DecelerationRate.normal.rawValue)
+                if y + projected > toastView.frame.maxY {
+                    dismiss(false)
+                }
             }
         }
     }
