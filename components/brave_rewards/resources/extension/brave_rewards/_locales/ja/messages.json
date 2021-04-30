@@ -360,7 +360,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "やり直し",
+    "message": "再試行",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -420,7 +420,7 @@
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
-    "message": "BAP",
+    "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
   "bap": {
@@ -528,7 +528,7 @@
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToProvider":  {
-    "message": "私の$provider$アカウントに移動する",
+    "message": "$provider$のアカウントに移動",
     "description": "CTA to open an external wallet account",
     "placeholders": {
       "provider": {
