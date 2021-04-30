@@ -2588,6 +2588,7 @@ extension BrowserViewController: ToolbarDelegate {
         let newTabIndex = index + (direction == .left ? -1 : 1)
         if newTabIndex >= 0 && newTabIndex < tabs.count {
             tabManager.selectTab(tabs[newTabIndex])
+            playlistToast?.dismiss(false)
         }
     }
 }
