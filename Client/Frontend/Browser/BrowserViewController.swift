@@ -226,7 +226,9 @@ class BrowserViewController: UIViewController {
         
         // Only start ledger service automatically if ads is enabled
         if rewards.isAdsEnabled {
-            rewards.startLedgerService(nil)
+            rewards.startLedgerService {
+                self.legacyWallet?.initializeLedgerService(nil)
+            }
         }
     }
     
