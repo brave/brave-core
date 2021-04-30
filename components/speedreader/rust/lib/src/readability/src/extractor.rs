@@ -814,6 +814,43 @@ mod tests {
     }
 
     #[test]
+    fn remove_svg_in_figure() {
+        // Test test case is based off Kotaku. Notice that if you hover over the
+        // image a zoom SVG appears, which we want removed.
+        // https://kotaku.com/watch-dogs-legion-will-eventually-get-60-fps-on-next-g-1846603174
+        let input = r#"
+        <body>
+          <p>Some Text Some text some text and some more text</p>
+          <figure class="element-image">
+            <picture>
+              <img alt="some text" src="some-image.jpg">
+            </picture>
+            <span class="inline-expand-image">
+            <svg class="centered-icon__svg" height="22" viewBox="0 0 22 22" width="22">
+                <path d="M3.4 20.2L9 14.5 7.5 13l-5.7 5.6L1 14H0v7.5l.5.5H8v-1l-4.6-.8M18.7 1.9L13 7.6 14.4 9l5.7-5.7.5 4.7h1.2V.6l-.5-.5H14v1.2l4.7.6"></path>
+            </svg>
+            </span>
+          </figure>
+        </body>"#;
+        let expected = r#"
+        <body id="article">
+          <p>Some Text Some text some text and some more text</p>
+          <figure class="element-image">
+            <picture>
+              <img alt="some text" src="some-image.jpg">
+            </picture>
+          </figure>
+        </body>"#;
+
+        let mut cursor = Cursor::new(input);
+        let product = extract(&mut cursor, None).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
     fn test_clean_title_colon() {
         let input = "The SoCal Weekly Digest: Welcome to our wonderful page";
         let expected = "Welcome to our wonderful page";

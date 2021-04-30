@@ -85,7 +85,7 @@ pub fn is_empty(handle: &Handle) -> bool {
             Element(ref value) => {
                 let tag_name = value.name.local.as_ref();
                 match tag_name.to_lowercase().as_ref() {
-                    "li" | "dt" | "dd" | "p" | "div" => {
+                    "li" | "dt" | "dd" | "p" | "div" | "span" => {
                         if !is_empty(&child) {
                             return false;
                         }
@@ -102,6 +102,7 @@ pub fn is_empty(handle: &Handle) -> bool {
         | Some(&local_name!("dd"))
         | Some(&local_name!("p"))
         | Some(&local_name!("div"))
+        | Some(&local_name!("span"))
         | Some(&local_name!("canvas")) => true,
         _ => false,
     }
