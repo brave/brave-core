@@ -5,21 +5,126 @@
 
 import * as React from 'react'
 import { render } from 'react-dom'
+import { connect, Provider } from 'react-redux'
+import { bindActionCreators, Dispatch } from 'redux'
 import { initLocale } from 'brave-ui'
 
-import 'emptykit.css'
+import * as WalletPageActions from './actions/wallet_page_actions'
+import { State, WalletPageReducerState } from '../constants/types'
+import store from './store'
 
-// Fonts
+import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
 
-// Components
-import App from '../components/app'
+import { WalletWidgetStandIn } from '../stories/style'
+import {
+  SideNav,
+  WalletPageLayout,
+  WalletSubViewLayout,
+  CryptoView
+} from '../components/desktop'
+import LegacyApp from '../components/legacy_app'
+import {
+  NavTypes,
+  NavObjectType
+} from '../constants/types'
+import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
+import BuySendSwap from '../components/buy-send-swap'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
+import walletDarkTheme from '../theme/wallet-dark'
+import walletLightTheme from '../theme/wallet-light'
+
+type Props = {
+  page: WalletPageReducerState
+  actions: typeof WalletPageActions
+}
+
+function App () {
+  const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
+  React.useEffect(() => {
+    chrome.braveTheme.getBraveThemeType(setInitialThemeType)
+  }, [])
+  return (
+    <Provider store={store}>
+      {initialThemeType &&
+      <BraveCoreThemeProvider
+        initialThemeType={initialThemeType}
+        dark={walletDarkTheme}
+        light={walletLightTheme}
+      >
+        <PageWithState
+        />
+      </BraveCoreThemeProvider>
+      }
+    </Provider>
+  )
+}
+
+function Page (props: Props) {
+  const [view, setView] = React.useState<NavTypes>('crypto')
+  const [linkedAccounts] = React.useState<NavObjectType[]>(LinkedAccountsOptions)
+
+  // In the future these will be actual paths
+  // for example wallet/rewards
+  const navigateTo = (path: NavTypes) => {
+    setView(path)
+  }
+
+  return (
+    <WalletPageLayout>
+        <SideNav
+          navList={NavOptions}
+          staticList={StaticOptions}
+          selectedButton={view}
+          onSubmit={navigateTo}
+          linkedAccountsList={linkedAccounts}
+        />
+        <WalletSubViewLayout>
+          {view === 'crypto' ? (
+            <CryptoView />
+          ) : (
+            <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <h2>{view} view</h2>
+            </div>
+          )}
+
+        </WalletSubViewLayout>
+        <WalletWidgetStandIn>
+          <BuySendSwap />
+        </WalletWidgetStandIn>
+      </WalletPageLayout>
+  )
+}
+
+function mapStateToProps (state: State): Partial<Props> {
+  return {
+    page: state.walletPageReducer
+  }
+}
+
+function mapDispatchToProps (dispatch: Dispatch): Partial<Props> {
+  return {
+    actions: bindActionCreators(WalletPageActions, store.dispatch.bind(store))
+  }
+}
+
+const PageWithState = connect(mapStateToProps, mapDispatchToProps)(Page)
 
 function initialize () {
+  chrome.braveWallet.isNativeWalletEnabled((new_wallet_enabled) => {
+    if (new_wallet_enabled) {
+      store.dispatch(WalletPageActions.initialize())
+      render(<App />, document.getElementById('root'))
+    } else {
+      initializeOldWallet ();
+    }
+  })
+}
+
+function initializeOldWallet () {
   chrome.braveWallet.shouldPromptForSetup((prompt: boolean) => {
     if (!prompt) {
       chrome.braveWallet.loadUI(() => {
@@ -27,12 +132,11 @@ function initialize () {
       })
       return
     }
-
-    renderWebUIView()
+    renderOldWebUIView()
   })
 }
 
-function renderWebUIView () {
+function renderOldWebUIView () {
   new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
   .then((themeType: chrome.braveTheme.ThemeType) => {
     window.i18nTemplate.process(window.document, window.loadTimeData)
@@ -46,7 +150,7 @@ function renderWebUIView () {
         dark={DarkTheme}
         light={Theme}
       >
-        <App />
+        <LegacyApp />
       </BraveCoreThemeProvider>,
       document.getElementById('root')
     )

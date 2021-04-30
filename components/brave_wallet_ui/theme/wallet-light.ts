@@ -4,13 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import ITheme from 'brave-ui/theme/theme-interface'
-import IThemeWalletPanel from './wallet-panel-theme'
+import IThemeWallet from './wallet-theme'
 import defaultTheme from 'brave-ui/theme/brave-default'
 import colors from 'brave-ui/theme/colors'
 
-const walletPanelLightTheme: ITheme & IThemeWalletPanel = {
+const walletLightTheme: ITheme & IThemeWallet = {
   ...defaultTheme,
-  name: 'Wallet Panel Light',
+  name: 'Wallet Light',
   color: {
     ...defaultTheme.color,
     text: colors.neutral900,
@@ -20,4 +20,4 @@ const walletPanelLightTheme: ITheme & IThemeWalletPanel = {
   }
 }
 
-export default walletPanelLightTheme
+export default walletLightTheme

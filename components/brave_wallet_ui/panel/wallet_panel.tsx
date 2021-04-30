@@ -8,8 +8,8 @@ import { render } from 'react-dom'
 import { connect, Provider } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 
-import walletPanelDarkTheme from './theme/wallet-panel-dark'
-import walletPanelLightTheme from './theme/wallet-panel-light'
+import walletDarkTheme from '../theme/wallet-dark'
+import walletLightTheme from '../theme/wallet-light'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import { ConnectWithSite } from '../components/extension'
 import { StyledExtensionWrapper } from '../stories/style'
@@ -46,8 +46,8 @@ function App () {
       {initialThemeType &&
       <BraveCoreThemeProvider
         initialThemeType={initialThemeType}
-        dark={walletPanelDarkTheme}
-        light={walletPanelLightTheme}
+        dark={walletDarkTheme}
+        light={walletLightTheme}
       >
         <PanelWithState />
       </BraveCoreThemeProvider>

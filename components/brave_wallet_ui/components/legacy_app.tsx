@@ -6,7 +6,7 @@
 import * as React from 'react'
 import OptIn from './opt-in'
 
-export default class App extends React.PureComponent<{}, {}> {
+export default class LegacyApp extends React.PureComponent<{}, {}> {
 
   onWalletOptin = () => {
     chrome.braveWallet.loadUI(() => {

@@ -123,6 +123,7 @@ export interface PriceDataObjectType {
 
 export interface State {
   walletPanelReducer: WalletPanelReducerState
+  walletPageReducer: WalletPageReducerState
 }
 
 export interface WalletPanelReducerState {
@@ -130,4 +131,8 @@ export interface WalletPanelReducerState {
   isConnected: boolean
   connectedSiteOrigin: string
   accounts: WalletAccountType[]
+}
+
+export interface WalletPageReducerState {
+  hasInitialized: boolean
 }
