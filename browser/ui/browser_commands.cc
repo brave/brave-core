@@ -6,7 +6,6 @@
 #include "brave/browser/ui/browser_commands.h"
 
 #include "base/files/file_path.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -22,6 +21,10 @@
 #include "chrome/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"

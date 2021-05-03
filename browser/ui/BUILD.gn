@@ -477,8 +477,6 @@ source_set("ui") {
     deps += [
       "webui/brave_wallet/page_handler",
       "//brave/components/brave_wallet_ui:mojo_bindings",
-      "//brave/components/brave_wallet_ui:page_generated_resources",
-      "//brave/components/brave_wallet_ui:panel_generated_resources",
     ]
   }
 
