@@ -6,10 +6,7 @@
 import * as React from 'react'
 
 // Components
-import {
-  SettingsRow,
-  SettingsText
-} from '../../../components/default'
+import { SettingsRow, SettingsText } from '../../../components/default'
 import { Toggle } from '../../../components/toggle'
 import { Select } from 'brave-ui/components'
 
@@ -26,14 +23,38 @@ interface Props {
   clockFormat: string
 }
 
-class ClockSettings extends React.PureComponent<Props, {}> {
-  onClockFormatChanged = (selectedValue: any) => {
-    this.props.actions.clockWidgetUpdated(
-      this.props.showClock,
-      selectedValue)
+export type ComponentType = 'dark' | 'light'
+
+class ClockSettings extends React.PureComponent<
+  Props,
+  { themeType: ComponentType }
+> {
+  
+  constructor(props: any) {
+    super(props)
+    this.state = { themeType: 'light' }
   }
 
-  render () {
+  getTheme = async (): Promise<String> => {
+    return new Promise((resolve) =>
+      chrome.braveTheme.getBraveThemeType(resolve)
+    ).then((themeType: chrome.braveTheme.ThemeType) => {
+      if (themeType === 'Dark') return 'dark'
+      else return 'light'
+    })
+  }
+
+  onClockFormatChanged = (selectedValue: any) => {
+    this.props.actions.clockWidgetUpdated(this.props.showClock, selectedValue)
+  }
+
+  async componentDidMount() {
+    this.getTheme().then((theme: ComponentType) =>
+      this.setState({ themeType: theme })
+    )
+  }
+
+  render() {
     const { toggleShowClock, showClock, clockFormat } = this.props
 
     let localeInfo = ''
@@ -47,21 +68,25 @@ class ClockSettings extends React.PureComponent<Props, {}> {
       <div>
         <SettingsRow>
           <SettingsText>{getLocale('showClock')}</SettingsText>
-          <Toggle
-            onChange={toggleShowClock}
-            checked={showClock}
-            size='large'
-          />
+          <Toggle onChange={toggleShowClock} checked={showClock} size='large' />
         </SettingsRow>
         <SettingsRow>
           <SettingsText>{getLocale('clockFormat')}</SettingsText>
           <Select
             value={clockFormat}
             onChange={this.onClockFormatChanged}
+            type={this.state.themeType}
           >
-            <div key='clock-default' data-value=''>{getLocale('clockFormatDefault')}{localeInfo}</div>
-            <div key='clock-12' data-value='12'>{getLocale('clockFormat12')}</div>
-            <div key='clock-24' data-value='24'>{getLocale('clockFormat24')}</div>
+            <div key='clock-default' data-value=''>
+              {getLocale('clockFormatDefault')}
+              {localeInfo}
+            </div>
+            <div key='clock-12' data-value='12'>
+              {getLocale('clockFormat12')}
+            </div>
+            <div key='clock-24' data-value='24'>
+              {getLocale('clockFormat24')}
+            </div>
           </Select>
         </SettingsRow>
       </div>
