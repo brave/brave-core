@@ -69,6 +69,11 @@ bool DecodeStringArray(const std::string& input,
 // an ERC-721 token for ENS and Unstoppable Domains.
 std::string Namehash(const std::string& name);
 
+// When we call memset in end of function to clean local variables
+// for security reason, compiler optimizer can remove such call.
+// So we use our own function for this purpose.
+void SecureZeroData(void* data, size_t size);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

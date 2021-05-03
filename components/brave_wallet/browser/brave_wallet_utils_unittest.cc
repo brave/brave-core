@@ -688,4 +688,18 @@ TEST(BraveWalletUtilsUnitTest, Namehash) {
       "0x77252571a99feee8f5e6b2f0c8b705407d395adc00b3c8ebcc7c19b2ea850013");
 }
 
+TEST(BraveWalletUtilsUnitTest, SecureZeroData) {
+  int a = 123;
+  SecureZeroData(&a, sizeof(a));
+  EXPECT_EQ(a, 0);
+  std::string b = "brave";
+  SecureZeroData(&b, sizeof(b));
+  EXPECT_TRUE(b.empty());
+  std::vector<uint8_t> c = {0xde, 0xad, 0xbe, 0xef};
+  SecureZeroData(&c, sizeof(c));
+  for (const auto& byte : c) {
+    EXPECT_EQ(byte, 0);
+  }
+}
+
 }  // namespace brave_wallet
