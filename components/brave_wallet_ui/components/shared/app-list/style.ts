@@ -15,7 +15,7 @@ export const CategoryRow = styled.div`
   flex-direction: row;
   width: 100%;
   padding: 8px 0px;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.separatorLine}`};
+  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
 `
 
 export const CategoryTitle = styled.span`
@@ -23,7 +23,7 @@ export const CategoryTitle = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 1%;
-  color: ${(p) => p.theme.palette.neutral700};
+  color: ${(p) => p.theme.color.text02};
   word-wrap: wrap;
 `
 

@@ -28,7 +28,7 @@ export const AddressText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.palette.neutral900};
+  color: ${(p) => p.theme.color.text01};
   margin: 0px 5px;
 `
 
@@ -38,7 +38,7 @@ export const DetailText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 400;
-  color: ${(p) => p.theme.palette.neutral700};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const FromCircle = styled.div<StyleProps>`
@@ -74,4 +74,5 @@ export const MoreIcon = styled(MoreVertRIcon)`
   width: auto;
   height: 26px;
   transform: rotate(90deg);
+  color: ${(p) => p.theme.color.interactive08};
 `

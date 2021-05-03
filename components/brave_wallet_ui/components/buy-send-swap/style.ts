@@ -25,7 +25,7 @@ export const MainContainerWrapper = styled.div<Partial<StyleProps>>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.palette.neutral000};
+  background-color: ${(p) => p.theme.color.background01};
   border-radius: 0px 0px 8px 8px;
 `
 
@@ -37,8 +37,8 @@ export const MainContainer = styled.div<Partial<StyleProps>>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.palette.white};
-  border: ${(p) => `2px solid ${p.theme.palette.grey100}`};
+  background-color: ${(p) => p.theme.color.background02};
+  border: ${(p) => `2px solid ${p.theme.color.divider01}`};
   border-radius: ${(p) =>
     p.selectedTab === 'buy' ? '0px 8px 8px 8px' : p.selectedTab === 'swap' ? '8px 0px 8px 8px' : '8px'}
 `
@@ -63,23 +63,24 @@ export const TabButton = styled.button<Partial<StyleProps>>`
   cursor: pointer;
   outline: none;
   background: ${(p) =>
-    p.isSelected ? p.theme.palette.white : p.theme.palette.neutral000};
+    p.isSelected ? p.theme.color.background02 : p.theme.color.background01};
   border-radius: 12px 12px 0px 0px;
   border: ${(p) =>
-    p.isSelected ? `2px solid ${p.theme.palette.grey100}` : `2px solid ${p.theme.palette.neutral000}`};
+    p.isSelected ? `2px solid ${p.theme.color.divider01}` : `2px solid ${p.theme.color.background01}`};
   border-bottom-width: 0px;
   z-index: ${(p) =>
     p.isSelected ? '2' : '0'};
   position: relative;
 `
 
-export const TabButtonText = styled.span`
+export const TabButtonText = styled.span<Partial<StyleProps>>`
   font-family: Poppins;
   font-size: 14px;
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.01em;
-	background: linear-gradient(128.18deg, #A43CE4 13.94%, #A72B6D 84.49%);
+  background: ${(p) =>
+    p.isSelected ? 'linear-gradient(128.18deg, #A43CE4 13.94%, #A72B6D 84.49%)' : `${p.theme.color.text02}`};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
@@ -87,7 +88,7 @@ export const TabButtonText = styled.span`
 export const RightDivider = styled.div<Partial<StyleProps>>`
   height: 20px;
   width: 1px;
-  background-color: ${(p) => p.selectedTab === 'buy' && p.tabID === 'send' ? p.theme.palette.grey100 : p.selectedTab === 'swap' && p.tabID === 'buy' ? p.theme.palette.grey100 : 'none'};
+  background-color: ${(p) => p.selectedTab === 'buy' && p.tabID === 'send' ? p.theme.color.divider01 : p.selectedTab === 'swap' && p.tabID === 'buy' ? p.theme.color.divider01 : 'none'};
   position: absolute;
   right: -2px;
   bottom: 4px;
@@ -96,7 +97,7 @@ export const RightDivider = styled.div<Partial<StyleProps>>`
 export const LeftDivider = styled.div<Partial<StyleProps>>`
   height: 20px;
   width: 1px;
-  background-color: ${(p) => p.selectedTab === 'buy' && p.tabID === 'swap' ? p.theme.palette.grey100 : p.selectedTab === 'swap' && p.tabID === 'send' ? p.theme.palette.grey100 : 'none'};
+  background-color: ${(p) => p.selectedTab === 'buy' && p.tabID === 'swap' ? p.theme.color.divider01 : p.selectedTab === 'swap' && p.tabID === 'send' ? p.theme.color.divider01 : 'none'};
   position: absolute;
   left: -2px;
   bottom: 4px;

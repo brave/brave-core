@@ -29,7 +29,7 @@ export const AssetName = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.neutral900};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const BalanceColumn = styled.div`
@@ -44,7 +44,7 @@ export const FiatBalanceText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.neutral900};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const AssetBalanceText = styled.span`
@@ -52,7 +52,7 @@ export const AssetBalanceText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.neutral600};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const AssetIcon = styled.div<StyleProps>`

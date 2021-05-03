@@ -26,7 +26,7 @@ const BuySendSwap = () => {
           <TabButton key={option.id} isSelected={selectedTab === option.id} onClick={changeTab(option.id)}>
             <RightDivider tabID={option.id} selectedTab={selectedTab} />
             <LeftDivider tabID={option.id} selectedTab={selectedTab} />
-            <TabButtonText>{option.name}</TabButtonText>
+            <TabButtonText isSelected={selectedTab === option.id}>{option.name}</TabButtonText>
           </TabButton>
         )}
       </ButtonRow>
