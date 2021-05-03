@@ -224,12 +224,6 @@ WalletButton* BraveBrowserView::GetWalletButton() {
 }
 
 void BraveBrowserView::CreateWalletBubble() {
-  // Do not spawn the bubble if using the WebUITabStrip.
-#if BUILDFLAG(ENABLE_WEBUI_TAB_STRIP)
-  if (WebUITabStripContainerView::UseTouchableTabStrip(browser_.get()))
-    return;
-#endif  // BUILDFLAG(ENABLE_WEBUI_TAB_STRIP)
-
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();
 }
