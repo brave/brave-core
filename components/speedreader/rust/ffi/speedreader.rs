@@ -39,6 +39,7 @@ impl OutputSink for ExternOutputSink {
 pub enum CRewriterType {
     RewriterStreaming,
     RewriterHeuristics,
+    RewriterReadability,
     RewriterUnknown,
 }
 
@@ -47,6 +48,7 @@ impl CRewriterType {
         match &self {
             CRewriterType::RewriterStreaming => Some(RewriterType::Streaming),
             CRewriterType::RewriterHeuristics => Some(RewriterType::Heuristics),
+            CRewriterType::RewriterReadability => Some(RewriterType::Readability),
             CRewriterType::RewriterUnknown => None,
         }
     }
@@ -57,6 +59,7 @@ impl From<RewriterType> for CRewriterType {
         match r_type {
             RewriterType::Streaming => CRewriterType::RewriterStreaming,
             RewriterType::Heuristics => CRewriterType::RewriterHeuristics,
+            RewriterType::Readability => CRewriterType::RewriterReadability,
             RewriterType::Unknown => CRewriterType::RewriterUnknown,
         }
     }
@@ -117,7 +120,7 @@ pub extern "C" fn find_type(
 ) -> CRewriterType {
     let url = unwrap_or_ret! { to_str!(url, url_len), CRewriterType::RewriterUnknown };
     let speedreader = to_ref!(speedreader);
-    let rewriter_type = speedreader.get_rewriter_type(url);
+    let rewriter_type = speedreader.get_rewriter_type_from_list(url);
     CRewriterType::from(rewriter_type)
 }
 
