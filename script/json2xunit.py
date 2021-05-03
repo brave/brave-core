@@ -10,8 +10,9 @@ on stdout. An optional first command line argument will be used as a name for
 the collection of test suites.
 
 This is a temporary hack until `--output' on Android is fixed. Only one global
-iteration is supported. In per-test iterations, only one is reported - the
-first successful one, or the first failed one.
+test iteration is supported (it seems only one is used anyway). In per-test
+iterations, only one is reported - the first successful one (or if there are no
+successful ones - the first failed one).
 """
 
 import collections
