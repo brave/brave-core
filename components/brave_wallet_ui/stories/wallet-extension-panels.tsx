@@ -1,11 +1,12 @@
 import * as React from 'react'
 
 // Components
-import { ConnectWithSite, ConnectedPanel, Panel } from '../components/extension'
+import { ConnectWithSite, ConnectedPanel, Panel, WelcomePanel } from '../components/extension'
 import { AppList } from '../components/shared'
 import { WalletAccountType, PanelTypes, AppObjectType, AppsListType } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import { filterAppList } from '../utils/filter-app-list'
+import LockPanel from '../components/extension/lock-panel'
 import {
   StyledExtensionWrapper,
   ScrollContainer
@@ -15,6 +16,9 @@ export default {
   title: 'Wallet/Extension/Panels',
   parameters: {
     layout: 'centered'
+  },
+  argTypes: {
+    locked: { control: { type: 'boolean', lock: false } }
   }
 }
 
@@ -95,7 +99,10 @@ _ConnectWithSite.story = {
   name: 'Connect With Site'
 }
 
-export const _ConnectedPanel = () => {
+export const _ConnectedPanel = (args: { locked: boolean }) => {
+  const { locked } = args
+  const [inputValue, setInputValue] = React.useState<string>('')
+  const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [selectedPanel, setSelectedPanel] = React.useState<PanelTypes>('main')
   const [panelTitle, setPanelTitle] = React.useState<string>('main')
   const [selectedAccount] = React.useState<WalletAccountType>(
@@ -146,40 +153,78 @@ export const _ConnectedPanel = () => {
     filterAppList(event, AppsList, setFilteredAppsList)
   }
 
+  const unlockWallet = () => {
+    setWalletLocked(false)
+  }
+
+  const handlePasswordChanged = (value: string) => {
+    setInputValue(value)
+  }
+
   return (
     <StyledExtensionWrapper>
-      {selectedPanel === 'main' ? (
-        <ConnectedPanel
-          selectedAccount={selectedAccount}
-          isConnected={walletConnected}
-          connectAction={toggleConnected}
-          navAction={navigateTo}
-        />
+      {walletLocked ? (
+        <LockPanel onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
       ) : (
-        <Panel
-          navAction={navigateTo}
-          title={panelTitle}
-          useSearch={selectedPanel === 'apps'}
-          searchAction={selectedPanel === 'apps' ? filterList : undefined}
-        >
-          {selectedPanel === 'apps' &&
-            <ScrollContainer>
-              <AppList
-                list={filteredAppsList}
-                favApps={favoriteApps}
-                addToFav={addToFavorites}
-                removeFromFav={removeFromFavorites}
-                action={browseMore}
-              />
-            </ScrollContainer>
-          }
-        </Panel>
-      )
-      }
+        <>
+          {selectedPanel === 'main' ? (
+            <ConnectedPanel
+              selectedAccount={selectedAccount}
+              isConnected={walletConnected}
+              connectAction={toggleConnected}
+              navAction={navigateTo}
+            />
+          ) : (
+            <Panel
+              navAction={navigateTo}
+              title={panelTitle}
+              useSearch={selectedPanel === 'apps'}
+              searchAction={selectedPanel === 'apps' ? filterList : undefined}
+            >
+              {selectedPanel === 'apps' &&
+                <ScrollContainer>
+                  <AppList
+                    list={filteredAppsList}
+                    favApps={favoriteApps}
+                    addToFav={addToFavorites}
+                    removeFromFav={removeFromFavorites}
+                    action={browseMore}
+                  />
+                </ScrollContainer>
+              }
+            </Panel>
+          )}
+        </>
+      )}
     </StyledExtensionWrapper>
   )
 }
 
+_ConnectedPanel.args = {
+  locked: false
+}
+
 _ConnectedPanel.story = {
   name: 'Connected With Site'
+}
+
+export const _SetupWallet = () => {
+
+  const onRestore = () => {
+    alert('Will navigate to full wallet restore page')
+  }
+
+  const onSetup = () => {
+    alert('Will navigate to full wallet onboarding page')
+  }
+
+  return (
+    <StyledExtensionWrapper>
+      <WelcomePanel onRestore={onRestore} onSetup={onSetup} />
+    </StyledExtensionWrapper>
+  )
+}
+
+_SetupWallet.story = {
+  name: 'Setup New Wallet'
 }

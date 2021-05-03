@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 interface StyleProps {
   buttonType: 'primary' | 'secondary'
+  disabled?: boolean
 }
 
 // Will need to change to brave-ui button
@@ -15,7 +16,7 @@ export const StyledButton = styled.button<StyleProps>`
 	padding: 10px 22px;
   outline: none;
 	background-color: ${(p) =>
-    p.buttonType === 'primary' ? p.theme.palette.blurple500 : 'transparent'};
+    p.disabled ? p.theme.color.disabled : p.buttonType === 'primary' ? p.theme.palette.blurple500 : 'transparent'};
 	border: ${(p) =>
     p.buttonType === 'primary'
       ? 'none'
@@ -23,7 +24,7 @@ export const StyledButton = styled.button<StyleProps>`
 	margin-right: ${(p) => (p.buttonType === 'primary' ? '0px' : '8px')};
 `
 
-export const ButtonText = styled.span<StyleProps>`
+export const ButtonText = styled.span<Partial<StyleProps>>`
 	font-size: 13px;
 	font-weight: 600;
 	line-height: 20px;
