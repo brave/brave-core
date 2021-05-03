@@ -118,12 +118,14 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
         rewardsView.legacyWalletTransferStatusButton.isHidden = true
         if let _ = Preferences.Rewards.transferDrainID.value,
            let legacyWallet = legacyWallet {
-            legacyWallet.updateDrainStatus { status in
-                self.drainStatus = status
-                self.rewardsView.legacyWalletTransferStatusButton.titleLabel.text = status?.statusButtonTitle
-                if Preferences.Rewards.lastTransferStatusDismissed.value != status?.rawValue {
-                    UIView.animate(withDuration: 0.1) {
-                        self.rewardsView.legacyWalletTransferStatusButton.isHidden = false
+            if !Preferences.Rewards.transferCompletionAcknowledged.value {
+                legacyWallet.updateDrainStatus { status in
+                    self.drainStatus = status
+                    self.rewardsView.legacyWalletTransferStatusButton.titleLabel.text = status?.statusButtonTitle
+                    if Preferences.Rewards.lastTransferStatusDismissed.value != status?.rawValue {
+                        UIView.animate(withDuration: 0.1) {
+                            self.rewardsView.legacyWalletTransferStatusButton.isHidden = false
+                        }
                     }
                 }
             }
