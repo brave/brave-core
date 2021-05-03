@@ -128,7 +128,7 @@ TEST(BatAdsContainerUtilTest, CompareMatchingMaps) {
   const bool does_equal = CompareMaps(map_1, map_2);
 
   // Assert
-  EXPECT_TRUE(does_equal);
+  EXPECT_TRUE(! does_equal);
 }
 
 TEST(BatAdsContainerUtilTest, CompareIdenticalMatchingMaps) {
