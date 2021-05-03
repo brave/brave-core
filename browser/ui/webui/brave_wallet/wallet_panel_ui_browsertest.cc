@@ -6,7 +6,7 @@
 #include <string>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/webui/wallet_panel/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -61,8 +61,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, InitialUIRendered) {
-  const std::string wallet_panel_js =
-      "!!document.querySelector('#mountPoint')";
+  const std::string wallet_panel_js = "!!document.querySelector('#mountPoint')";
   bool exists = content::EvalJs(webui_contents_.get(), wallet_panel_js,
                                 content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                 ISOLATED_WORLD_ID_CHROME_INTERNAL)

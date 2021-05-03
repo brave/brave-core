@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_WALLET_PANEL_WALLET_PANEL_UI_H_
-#define BRAVE_BROWSER_UI_WEBUI_WALLET_PANEL_WALLET_PANEL_UI_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_
+#define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_
 
 #include <memory>
 
 #include "base/macros.h"
-#include "brave/browser/ui/webui/wallet_panel/page_handler/wallet_panel_page_handler.h"
+#include "brave/browser/ui/webui/brave_wallet/page_handler/wallet_panel_page_handler.h"
 #include "brave/components/brave_wallet_ui/wallet_panel.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -47,4 +47,4 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_WALLET_PANEL_WALLET_PANEL_UI_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_

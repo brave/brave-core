@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/time/time.h"
-#include "brave/browser/ui/webui/wallet_panel/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "components/prefs/pref_change_registrar.h"

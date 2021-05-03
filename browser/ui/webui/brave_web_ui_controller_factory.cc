@@ -39,8 +39,8 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet_ui.h"
-#include "brave/browser/ui/webui/wallet_panel/wallet_panel_ui.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
