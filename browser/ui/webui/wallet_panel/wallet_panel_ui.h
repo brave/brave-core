@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/macros.h"
-#include "brave/browser/ui/webui/wallet_panel/wallet_panel_page_handler.h"
+#include "brave/browser/ui/webui/wallet_panel/page_handler/wallet_panel_page_handler.h"
 #include "brave/components/brave_wallet_ui/wallet_panel.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
