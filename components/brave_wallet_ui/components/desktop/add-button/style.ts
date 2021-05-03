@@ -19,14 +19,14 @@ export const StyledButton = styled.button<StyleProps>`
   border: ${(p) =>
     p.buttonType === 'primary'
       ? 'none'
-      : `1px solid ${p.theme.color.inputBorder}`};
+      : `1px solid ${p.theme.color.interactive08}`};
 `
 
 export const ButtonText = styled.span<StyleProps>`
   font-size: 13px;
   font-weight: 600;
   color: ${(p) =>
-    p.buttonType === 'primary' ? '#ffffff' : `${p.theme.color.text}`};
+    p.buttonType === 'primary' ? '#ffffff' : `${p.theme.color.interactive07}`};
 `
 
 export const PlusIcon = styled.div`
