@@ -61,7 +61,9 @@ class WalletTransferCompleteViewController: UIViewController, Themeable {
     }
     
     @objc private func tappedDone() {
-        Preferences.Rewards.transferCompletionAcknowledged.value = true
+        if status == .complete {
+            Preferences.Rewards.transferCompletionAcknowledged.value = true
+        }
         dismiss(animated: true)
     }
 }
