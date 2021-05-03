@@ -18,7 +18,7 @@ include = [
 ]
 
 [dependencies]
-adblock = "0.2.11"
+adblock = "0.3.10"
 flate2 = { version = "1.0.20", features = ["rust_backend"], default-features = false }
 html5ever = "0.25.1"
 kuchiki = { git = "https://github.com/brave/kuchiki", branch = "speedreader" }
