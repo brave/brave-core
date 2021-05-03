@@ -44,6 +44,6 @@ public class BravePasswordSettingsTest {
     @Test
     @SmallTest
     public void testCheckPasswordsIsRemoved() {
-        assertEquals(null, mSavePasswordPreferences.findPreference(PREF_CHECK_PASSWORDS));
+        assertEquals(1, mSavePasswordPreferences.findPreference(PREF_CHECK_PASSWORDS));
     }
 }

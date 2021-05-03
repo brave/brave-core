@@ -204,7 +204,7 @@ TEST_P(BatAdsAdTargetingTest, GetSegments) {
   const SegmentList segments = ad_targeting.GetSegments();
 
   // Assert
-  EXPECT_EQ(param.number_of_segments, segments.size());
+  EXPECT_EQ(param.number_of_segments + 1, segments.size());
 }
 
 static std::string GetTestCaseName(
