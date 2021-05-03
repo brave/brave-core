@@ -90,13 +90,9 @@ repack("resources") {
   }
 
   if (brave_wallet_enabled && !is_android) {
-    deps += [
-      "//brave/components/brave_wallet_ui:page_generated_resources",
-      "//brave/components/brave_wallet_ui:panel_generated_resources",
-    ]
+    deps += [ "//brave/components/brave_wallet_ui:resources" ]
     sources += [
-      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_generated.pak",
-      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_panel_generated.pak",
+      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
     ]
   }
 
