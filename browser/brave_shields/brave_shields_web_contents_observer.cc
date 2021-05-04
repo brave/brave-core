@@ -86,7 +86,9 @@ namespace brave_shields {
 
 base::NoDestructor<std::map<int, GURL>> frame_tree_node_id_to_tab_url_;
 
-BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {}
+BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
+  brave_shields_remotes_.clear();
+}
 
 BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
     WebContents* web_contents)
@@ -95,9 +97,8 @@ BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
   if (rfh && allowed_script_origins_.size()) {
-    mojo::AssociatedRemote<brave_shields::mojom::BraveShields> shields_remote;
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(&shields_remote);
-    shields_remote->SetAllowScriptsFromOriginsOnce(allowed_script_origins_);
+    GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
+        allowed_script_origins_);
   }
 
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
@@ -111,6 +112,7 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
 
 void BraveShieldsWebContentsObserver::RenderFrameDeleted(RenderFrameHost* rfh) {
   (*frame_tree_node_id_to_tab_url_).erase(rfh->GetFrameTreeNodeId());
+  brave_shields_remotes_.erase(rfh);
 }
 
 void BraveShieldsWebContentsObserver::RenderFrameHostChanged(
@@ -270,9 +272,8 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
 
   auto render_frame_hosts = navigation_handle->GetWebContents()->GetAllFrames();
   for (content::RenderFrameHost* rfh : render_frame_hosts) {
-    mojo::AssociatedRemote<brave_shields::mojom::BraveShields> shields_remote;
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(&shields_remote);
-    shields_remote->SetAllowScriptsFromOriginsOnce(allowed_script_origins_);
+    GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
+        allowed_script_origins_);
   }
 }
 
@@ -280,6 +281,18 @@ void BraveShieldsWebContentsObserver::AllowScriptsOnce(
     const std::vector<std::string>& origins,
     WebContents* contents) {
   allowed_script_origins_ = std::move(origins);
+}
+
+mojo::AssociatedRemote<brave_shields::mojom::BraveShields>&
+BraveShieldsWebContentsObserver::GetBraveShieldsRemote(
+    content::RenderFrameHost* rfh) {
+  if (!brave_shields_remotes_.contains(rfh)) {
+    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
+        &brave_shields_remotes_[rfh]);
+  }
+
+  DCHECK(brave_shields_remotes_[rfh].is_bound());
+  return brave_shields_remotes_[rfh];
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsWebContentsObserver)
