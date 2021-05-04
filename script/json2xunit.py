@@ -61,6 +61,7 @@ def main():
     output = transform(json.load(sys.stdin))
     test_count = reduce(add, (ts['test_count'] for ts in output.values()), 0)
     failure_count = reduce(add, (ts['failure_count'] for ts in output.values()), 0)
+
     print(f"""<?xml version="1.0" encoding="UTF-8"?>\n<testsuites name="tests" """
           f"""tests="{test_count}" errors="0" failures="{failure_count}" skip="0">""", end='')
     for test_suite in output.keys():
