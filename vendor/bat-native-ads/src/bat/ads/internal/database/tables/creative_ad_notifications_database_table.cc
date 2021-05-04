@@ -272,8 +272,8 @@ void CreativeAdNotifications::Migrate(DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 13: {
-      MigrateToV13(transaction);
+    case 14: {
+      MigrateToV14(transaction);
       break;
     }
 
@@ -424,7 +424,7 @@ CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
   return creative_ad_notification;
 }
 
-void CreativeAdNotifications::CreateTableV13(DBTransaction* transaction) {
+void CreativeAdNotifications::CreateTableV14(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -444,12 +444,12 @@ void CreativeAdNotifications::CreateTableV13(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAdNotifications::MigrateToV13(DBTransaction* transaction) {
+void CreativeAdNotifications::MigrateToV14(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV13(transaction);
+  CreateTableV14(transaction);
 }
 
 }  // namespace table
