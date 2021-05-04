@@ -13,6 +13,7 @@
 #include "components/sync/engine/cancelation_signal.h"
 #include "components/sync/nigori/cryptographer_impl.h"
 #include "components/sync/protocol/sync.pb.h"
+#include "components/sync/test/engine/fake_cryptographer.h"
 #include "components/sync/test/engine/mock_model_type_processor.h"
 #include "components/sync/test/engine/mock_nudge_handler.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -56,7 +57,7 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
                        base::Unretained(this)));
 
     worker_ = std::make_unique<BraveModelTypeWorker>(
-        type, state, !state.initial_sync_done(), cryptographer_.get(),
+        type, state, !state.initial_sync_done(), &cryptographer_,
         /*encryption_enabled=*/false, PassphraseType::kImplicitPassphrase,
         &mock_nudge_handler_, std::move(processor), &cancelation_signal_);
   }
@@ -80,7 +81,7 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
 
  private:
   const ModelType model_type_;
-  std::unique_ptr<CryptographerImpl> cryptographer_;
+  FakeCryptographer cryptographer_;
   CancelationSignal cancelation_signal_;
   std::unique_ptr<BraveModelTypeWorker> worker_;
   MockNudgeHandler mock_nudge_handler_;
