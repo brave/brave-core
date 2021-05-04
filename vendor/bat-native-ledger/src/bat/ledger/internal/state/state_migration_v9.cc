@@ -19,9 +19,11 @@ StateMigrationV9::StateMigrationV9(LedgerImpl* ledger) : ledger_(ledger) {}
 StateMigrationV9::~StateMigrationV9() = default;
 
 void StateMigrationV9::Migrate(ledger::ResultCallback callback) {
+#if !defined(OS_ANDROID)
   // Set the AC pref to false for all users located in a bitFlyer region.
   if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion))
     ledger_->ledger_client()->SetBooleanState(kAutoContributeEnabled, false);
+#endif
 
   callback(type::Result::LEDGER_OK);
 }
