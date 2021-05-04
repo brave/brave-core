@@ -193,6 +193,156 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "- %@";
 
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "이 동영상을 재생목록에 추가하시겠습니까?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Brave Playlist에 추가";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "이 동영상은 라이브 스트림이었거나 시간 제한에 도달했습니다. 새로고침하려면 링크를 다시 여세요.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "만료된 동영상";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "만료됨";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "리소스를 로드하는 중에 문제가 발생했습니다.";
+
+/* Text indicator on the table cell If a video is already downloaded */
+"playList.noItemLabelTitle" = "사용 가능한 항목 없음";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "알림";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "확인";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "PIP(Picture-In-Picture)를 표시하려는 중에 오류가 발생했습니다.";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "재생목록이 열렸을 때 자동 재생을 활성화/비활성화하는 옵션입니다. 이 옵션은 목록 내 다음 동영상이 로드되었을 때 자동 재생에는 영향을 미치지 않습니다.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "자동 재생";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "끔";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "켬";
+
+/* Option Text for Auto Save Only Wifi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Wi-Fi에서만";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsDescription" = "동영상 및 오디오를 오프라인 용도로 추가하면 기기 내 저장소 및 셀룰러 데이터를 많이 사용할 수 있습니다.";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "이 옵션을 선택하면 자동으로 재생목록 내 항목을 기기에 저장하여 인터넷 연결이 끊어진 상태에서도 재생할 수 있습니다.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsTitle" = "오프라인용으로 자동 저장";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "저장소 거의 가득 참";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "라이브 스트림";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "재생목록 미디어 및 오프라인 데이터";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "재생목록 오프라인 데이터";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "재설정";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "이 옵션을 선택하면 재생목록에서 모든 동영상이 제거되고 오프라인 모드 저장소에서 삭제됩니다.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "이 항목은 현재 오프라인 모드용으로 저장할 수 없습니다.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "문제가 발생했습니다.";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "재생목록";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "이 설정은 동영상 목록 위치를 왼쪽/오른쪽 간에 전환합니다.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "왼쪽";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "오른쪽";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "사이드바 위치";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "미디어(동영상/오디오)를 마지막에 종료한 시점부터 재생을 시작하는 기능을 활성화/비활성화하는 옵션입니다.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "종료한 위치에서 재생 시작";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionFooterText" = "이 옵션을 선택하면 일부 미디어 웹사이트에서 'Brave Playlist에 추가'할지 물어봅니다. 미디어를 길게 누르거나 \"다음 대상과 공유...\" 메뉴 버튼을 사용하여 미디어(비디오/오디오)를 추가할 수도 있습니다.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionTitle" = "\"Brave Playlist에 추가\" 표시";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "WebKit MediaSource API를 비활성화합니다.";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "웹 호환성";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "제거";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "오프라인 저장소에서 미디어가 삭제됩니다. 계속하시겠습니까?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "오프라인 데이터 삭제";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "목록에서 미디어 항목이 제거됩니다. 계속하시겠습니까?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "재생목록에서 미디어 항목을 제거하시겠습니까?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "다시 열기";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "오프라인용으로 저장됨";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "오프라인용으로 저장 중...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "죄송합니다";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Brave Playlist에 추가됨";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "열기";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Brave Playlist에 추가";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Brave Playlist에서 보기";
+
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "맥락 메뉴 닫기";
 
@@ -231,6 +381,66 @@
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransfer" = "레거시 월렛 이전";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "레거시 월렛 이전이 완료되었습니다!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "레거시 월렛 이전이 지연되었습니다...";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "레거시 월렛 이전이 진행 중입니다.";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "레거시 월렛 이전이 유효하지 않습니다.";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonPendingTitle" = "레거시 월렛 이전이 보류 중 상태입니다.";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusCompletedBody" = "레거시 월렛 이전이 완료되었습니다! 기존 잔액은 몇 분 후 데스크톱 Brave Rewards 월렛에 나타납니다.";
+
+/* Title shown above body of text explaining that their transfer is completed */
+"rewards.legacyWalletTransferStatusCompletedTitle" = "이전 완료!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusDelayedBody" = "레거시 월렛 이전이 지연되어 몇 분 후 재개합니다.";
+
+/* Title shown above body of text explaining that their transfer is delayed */
+"rewards.legacyWalletTransferStatusDelayedTitle" = "이전 지연됨";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInProgressBody" = "레거시 월렛 이전이 진행 중이며 몇 분 후 완료됩니다.";
+
+/* Title shown above body of text explaining that their transfer is in progress */
+"rewards.legacyWalletTransferStatusInProgressTitle" = "이전 진행 중";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInvalidBody" = "레거시 월렛 이전이 유효하지 않아 완료할 수 없습니다.";
+
+/* Title shown above body of text explaining that their transfer is invalid */
+"rewards.legacyWalletTransferStatusInvalidTitle" = "이전 유효하지 않음";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusPendingBody" = "레거시 월렛 이전이 보류 중 상태이며 곧 처리가 시작됩니다.";
+
+/* Title shown above body of text explaining that their transfer is pending */
+"rewards.legacyWalletTransferStatusPendingTitle" = "이전 보류 중";
+
+/* Completed as in: stating that the status of the users transfer is in completed */
+"rewards.legacyWalletTransferStatusShortformCompleted" = "완료!";
+
+/* Delayed as in: stating that the status of the users transfer is in delayed */
+"rewards.legacyWalletTransferStatusShortformDelayed" = "지연됨";
+
+/* In Progress as in: stating that the status of the users transfer is in progress */
+"rewards.legacyWalletTransferStatusShortformInProgress" = "진행 중";
+
+/* Invalid as in: stating that the status of the users transfer is invalid */
+"rewards.legacyWalletTransferStatusShortformInvalid" = "유효하지 않음";
+
+/* Pending as in: stating that the status of the users transfer is pending */
+"rewards.legacyWalletTransferStatusShortformPending" = "보류 중";
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferSubtitle" = "기존 토큰 일회성 이전";
@@ -275,7 +485,7 @@
 "rewards.walletTransferStepsTitle" = "일회성 이전 코드 스캔";
 
 /* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "월렛 이전";
+"rewards.walletTransferTitle" = "월렛 이전 상태";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "금액";
@@ -519,12 +729,6 @@
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "축하합니다. 정말 특별하십니다.";
-
-/* Subtitle for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningSubtitle" = "가능한 경우 Brave가 안전한 연결로 자동 업그레이드합니다.";
-
-/* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "연결이 암호화되었습니다.";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "살펴보기";
@@ -781,6 +985,9 @@
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "아래 정보는 어떤 것도 편집하지 마세요.";
 
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "이메일을 보낼 수 없습니다. 이메일 구성을 확인하세요.";
+
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "공유해도 괜찮은 정보를 선택하세요.\n\n초기에 공유해주시는 정보가 많을수록 지원 담당 직원이 문제를 해결해드리기 쉬워집니다.";
 
@@ -983,7 +1190,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "오류";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "구독 대금은 iTunes 계정을 통해 청구됩니다.\n\n구독을 구매하면 무료 평가판에서 미사용된 부분은 포기한 것으로 간주합니다.\n\n현재 구독 기간 종료 24시간 전에 취소하지 않으면 구독이 자동으로 갱신됩니다.\n\n구매 후 설정에서 구독을 관리할 수 있습니다.\n\nBrave를 사용하면 이용 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
+"vpn.vpnIAPBoilerPlate" = "구독 대금은 iTunes 계정을 통해 청구됩니다.\n\n구독을 구매하면 무료 평가판에서 미사용된 부분은 포기한 것으로 간주합니다.\n\n현재 구독 기간 종료 최소 24시간 전에 취소하지 않으면 구독이 자동으로 갱신됩니다.\n\n구매 후 설정에서 구독을 관리할 수 있습니다.\n\nBrave를 사용하면 이용 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Brave Firewall + VPN 구성이 재설정되고 모든 오류가 정정됩니다. 이 프로세스는 1분 정도 소요됩니다.";

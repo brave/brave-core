@@ -193,6 +193,156 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "på %@";
 
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "Vill du lägga till den här videon i din spellista?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Lägg till i Brave Playlist";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "Den här videon var en livestream eller tidsgränsen nåddes. Öppna länken igen för att uppdatera.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "Utgången video";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "Utgången";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "Det uppstod ett problem med att läsa in resursen!";
+
+/* Text indicator on the table cell If a video is already downloaded */
+"playList.noItemLabelTitle" = "Inga objekt tillgängliga";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "Meddelande";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "Okej";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "Tyvärr uppstod ett fel när bild i bild skulle visas.";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Det här alternativet aktiverar/inaktiverar automatisk uppspelning när spellistan öppnas. Det här alternativet kommer dock inte att påverka automatisk uppspelning när nästa video i listan läses in.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "Auto-uppspelning";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "Av";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "På";
+
+/* Option Text for Auto Save Only Wifi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Endast Wifi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Att lägga till video- och ljudfiler för offlineanvändning kan använda mycket lagringsutrymme på din enhet samt förbruka dina mobildata";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Det här alternativet behåller automatiskt dina spellistobjekt på din enhet så att du kan spela dem utan internetanslutning.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsTitle" = "Auto-spara för offline";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "Lagringsutrymmet är nästan fullt";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "Livestream";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Spellistmedia och offline-data";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Offline-data för spellista";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "Återställ";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "Det här alternativet tar bort alla videor från spellistan och offline-lagringsutrymmet.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "Tyvärr gick det inte att spara det här objektet för offlineläget just nu.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "Tyvärr, någonting gick fel";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Spellista";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "Den här inställningen ändrar videolistans plats från vänster sida/höger sida.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "Vänster";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "Höger";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "Sidofältets plats";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "Det här alternativet aktiverar/inaktiverar möjligheten att starta uppspelning av media (video/ljud) från den tidpunkt då du senast slutade.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Starta uppspelningen där jag senast slutade";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Det här alternativet kommer att be dig att \"Lägg till i Brave-spellista\" på vissa mediawebbplatser. Du kan fortfarande lägga till media (video/ljud) genom att trycka länge på media eller från menyknappen \"Dela med...\".";
+
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionTitle" = "Visa \"Lägg till i Brave Playlist\"";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "Inaktiverar WebKit MediaSource API";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Webbkompatibilitet";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "Ta bort";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "Detta tar bort mediet från offlinelagringen. Är du säker på att du vill fortsätta?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "Ta bort offlinedata";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "Detta tar bort medieobjektet från listan. Är du säker på att du vill fortsätta?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "Ta bort medieobjektet från spellistan?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "Öppna igen";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "Sparad för offline";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "Sparat för offline ...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "Tyvärr";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Tillagd i Brave Playlist";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "Öppna";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Lägg till i Brave Playlist";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Visa i Brave Playlist";
+
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Stäng kontextmenyn";
 
@@ -231,6 +381,66 @@
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransfer" = "Äldre plånboksöverföring";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Din äldre plånboksöverföring har slutförts!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Din äldre plånboksöverföring har försenats ...";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Din äldre plånboksöverföring pågår";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Din äldre plånboksöverföring är ogiltig";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Statusen för din äldre plånboksöverföring är väntande";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusCompletedBody" = "Din äldre plånboksöverföring är slutförd! Ditt befintliga saldo kan fortfarande dröja flera minuter innan det visas i din Brave Rewards-plånbok på dator.";
+
+/* Title shown above body of text explaining that their transfer is completed */
+"rewards.legacyWalletTransferStatusCompletedTitle" = "Överföring slutförd!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusDelayedBody" = "Din äldre plånboksöverföring har försenats och det kan ta flera minuter innan den återupptas.";
+
+/* Title shown above body of text explaining that their transfer is delayed */
+"rewards.legacyWalletTransferStatusDelayedTitle" = "Överföring försenad";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInProgressBody" = "Din äldre plånboksöverföring pågår och kan ta flera minuter att slutföra.";
+
+/* Title shown above body of text explaining that their transfer is in progress */
+"rewards.legacyWalletTransferStatusInProgressTitle" = "Överföring pågår";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInvalidBody" = "Din äldre plånboksöverföring kan inte slutföras";
+
+/* Title shown above body of text explaining that their transfer is invalid */
+"rewards.legacyWalletTransferStatusInvalidTitle" = "Överföring ogiltig";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusPendingBody" = "Statusen för din äldre plånboksöverföring är väntande och bör börja behandlas inom kort.";
+
+/* Title shown above body of text explaining that their transfer is pending */
+"rewards.legacyWalletTransferStatusPendingTitle" = "Överföring väntande";
+
+/* Completed as in: stating that the status of the users transfer is in completed */
+"rewards.legacyWalletTransferStatusShortformCompleted" = "Slutförd!";
+
+/* Delayed as in: stating that the status of the users transfer is in delayed */
+"rewards.legacyWalletTransferStatusShortformDelayed" = "Försenad";
+
+/* In Progress as in: stating that the status of the users transfer is in progress */
+"rewards.legacyWalletTransferStatusShortformInProgress" = "Pågående";
+
+/* Invalid as in: stating that the status of the users transfer is invalid */
+"rewards.legacyWalletTransferStatusShortformInvalid" = "Ogiltig";
+
+/* Pending as in: stating that the status of the users transfer is pending */
+"rewards.legacyWalletTransferStatusShortformPending" = "Väntande";
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferSubtitle" = "Engångsöverföring av befintliga token";
@@ -275,7 +485,7 @@
 "rewards.walletTransferStepsTitle" = "Skanna engångskod för överföring";
 
 /* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Plånboksöverföring";
+"rewards.walletTransferTitle" = "Status för plånboksöverföring";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Belopp";
@@ -519,12 +729,6 @@
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "Grattis. Du är verkligen speciell.";
-
-/* Subtitle for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningSubtitle" = "Brave uppgraderar dig till en säker anslutning automatiskt om den är tillgänglig.";
-
-/* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "Nu är din anslutning krypterad";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Ta en titt";
@@ -780,6 +984,9 @@
 
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Redigera inte någon information nedan";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Det går inte att skicka e-post. Kontrollera din e-postkonfiguration.";
 
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "Välj den information du är bekväm med att dela med oss.\n\nJu mer information du delar med dig till oss desto enklare blir det för vår supportpersonal att hjälpa dig med ditt problem.";

@@ -193,6 +193,156 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "(%@)";
 
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "你想新增此影片至播放清單嗎？";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "新增至 Brave 播放清單";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "此為直播影片或已達時間限制。請重新開啟連結以重新整理。";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "影片已到期";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "已到期";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "加載資源時出現問題！";
+
+/* Text indicator on the table cell If a video is already downloaded */
+"playList.noItemLabelTitle" = "沒有可用項目";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "通知";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "確定";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "抱歉，嘗試顯示子母畫面時發生錯誤。";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "開啟播放清單時，此選項將啟用／停用自動播放。但是，在加載清單中的下一個影片時，此選項將不會自動播放。";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "自動播放";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "關閉";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "開啟";
+
+/* Option Text for Auto Save Only Wifi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "僅使用 Wifi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsDescription" = "離線使用新增影片及音頻檔案可能佔用裝置的大量儲存空間及手機使用數據";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "此選項將自動儲存播放清單項目到裝置，因此你可以在沒有網路連線的情況下播放。";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsTitle" = "自動離線儲存";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "儲存空間快要滿了";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "直播";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "播放清單媒體與離線數據";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "播放清單離線數據";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "重設";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "此選項將刪除播放清單及離線模式下儲存的所有影片。";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "抱歉，目前無法將該項目儲存為離線模式。";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "抱歉，出現錯誤";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "播放清單";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "此設定將在左側／右側之間更改影片清單的位置。";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "左";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "右";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "側邊欄位置";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "此選項將啟用／停用從上次停止播放時開始播放媒體（影片／音頻）的功能。";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "從上次停止播放的位置開始播放";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionFooterText" = "此選項將要求在某些媒體網站上「新增至 Brave 播放清單」。你仍然可以長按媒體或從「與…共享」功能表按鈕新增媒體（影片／音頻）。";
+
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionTitle" = "顯示「新增至 Brave 播放清單」";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "停用 WebKit MediaSource API";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "網路相容性";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "刪除";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "這將刪除離線儲存的媒體。你確定要繼續嗎？";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "刪除離線數據";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "這將從清單刪除媒體項目。你確定要繼續嗎？";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "要從播放清單刪除媒體項目嗎？";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "重新開啟";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "已離線儲存";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "離線儲存中....";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "抱歉";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "新增至 Brave 播放清單";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "開啟";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "新增至 Brave 播放清單";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "檢視 Brave 播放清單";
+
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "關閉內容選單";
 
@@ -231,6 +381,66 @@
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransfer" = "舊版錢包轉帳";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "地址格式錢包轉帳已完成！";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "地址格式錢包轉帳已延遲...";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "地址格式錢包轉帳進行中";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "地址格式錢包轉帳失效";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonPendingTitle" = "地址格式錢包轉帳狀態為等待中";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusCompletedBody" = "地址格式錢包轉帳完成！ 你的現有餘額可能需要幾分鐘後才會顯示在桌面 Brave 獎勵錢包中。";
+
+/* Title shown above body of text explaining that their transfer is completed */
+"rewards.legacyWalletTransferStatusCompletedTitle" = "轉帳已完成！";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusDelayedBody" = "地址格式錢包轉帳已延遲，可能需要幾分鐘後才能恢復。";
+
+/* Title shown above body of text explaining that their transfer is delayed */
+"rewards.legacyWalletTransferStatusDelayedTitle" = "轉帳已延遲";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInProgressBody" = "地址格式錢包轉帳進行中，可能需要幾分鐘才能完成。";
+
+/* Title shown above body of text explaining that their transfer is in progress */
+"rewards.legacyWalletTransferStatusInProgressTitle" = "轉帳進行中";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInvalidBody" = "地址格式錢包轉帳失效，無法完成";
+
+/* Title shown above body of text explaining that their transfer is invalid */
+"rewards.legacyWalletTransferStatusInvalidTitle" = "轉帳失效";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusPendingBody" = "地址格式錢包轉帳狀態為等待中，將盡快開始處理。";
+
+/* Title shown above body of text explaining that their transfer is pending */
+"rewards.legacyWalletTransferStatusPendingTitle" = "轉帳等待中";
+
+/* Completed as in: stating that the status of the users transfer is in completed */
+"rewards.legacyWalletTransferStatusShortformCompleted" = "已完成！";
+
+/* Delayed as in: stating that the status of the users transfer is in delayed */
+"rewards.legacyWalletTransferStatusShortformDelayed" = "已延遲";
+
+/* In Progress as in: stating that the status of the users transfer is in progress */
+"rewards.legacyWalletTransferStatusShortformInProgress" = "進行中";
+
+/* Invalid as in: stating that the status of the users transfer is invalid */
+"rewards.legacyWalletTransferStatusShortformInvalid" = "失效";
+
+/* Pending as in: stating that the status of the users transfer is pending */
+"rewards.legacyWalletTransferStatusShortformPending" = "等待中";
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferSubtitle" = "一次轉出現有代幣";
@@ -275,7 +485,7 @@
 "rewards.walletTransferStepsTitle" = "掃描一次性轉帳碼";
 
 /* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "錢包轉帳";
+"rewards.walletTransferTitle" = "錢包轉帳狀態";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "金額";
@@ -519,12 +729,6 @@
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "恭喜，您已具有特別的地位。";
-
-/* Subtitle for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningSubtitle" = "如果條件允許，Brave 會自動將您升級為安全連線。";
-
-/* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "您的連線現已加密";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "立即查看";
@@ -781,6 +985,9 @@
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "請勿編輯下方任何資訊";
 
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "無法傳送電子郵件。請檢查電子郵件設定。";
+
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "請選取您願意提供的資訊。\n\n您主動提供的資訊越多，越有利於我們的支援人員協助您解決問題。";
 
@@ -983,7 +1190,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "錯誤";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "我們會透過您的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Brave 即表示您同意使用條款和隱私政策。";
+"vpn.vpnIAPBoilerPlate" = "我們會透過你的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Brave 即表示您同意使用條款及隱私權政策。";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "此程序會重設您的 Brave Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";

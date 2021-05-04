@@ -193,6 +193,156 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "pada %@";
 
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "Adakah anda mahu menambah video ini ke senarai main anda?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Tambah ke Senarai Main Brave";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "Video ini adalah strim langsung atau had masa dicapai. Sila buka semula pautan untuk segar semula.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "Video Tamat Tempoh";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "Tamat Tempoh";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "Terdapat masalah memuatkan sumber!";
+
+/* Text indicator on the table cell If a video is already downloaded */
+"playList.noItemLabelTitle" = "Tiada Item Tersedia";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "Notis";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "Okey";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "Maaf, ralat berlaku semasa cuba memaparkan gambar-dalam-gambar.";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Pilihan ini akan mendayakan/menyahdayakan main automatik apabila Senarai Main dibuka. Walau bagaimanapun, pilihan ini tidak akan mempengaruhi main automatik apabila video seterusnya dalam senarai dimuatkan.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "Main Auto";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "Dimatikan";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "Dihidupkan";
+
+/* Option Text for Auto Save Only Wifi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Hanya Wifi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Menambahkan fail video dan audio untuk penggunaan luar talian boleh menggunakan banyak storan pada peranti anda dan juga menggunakan data selular anda";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Pilihan ini akan menyimpan item senarai main anda pada peranti anda secara automatik supaya anda dapat memainkannya semasa anda tidak mempunyai sambungan internet.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsTitle" = "Simpan Auto untuk Luar Talian";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "Storan Hampir Penuh";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "Strim Langsung";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Media Senarai Main & Data Luar Talian";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Data Luar Talian Senarai Main";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "Tetap semula";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "Pilihan ini akan mengalih keluar semua video dari Senarai Main dan juga storan mod Luar Talian.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "Maaf, item ini tidak boleh disimpan untuk mod luar talian pada masa ini.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "Maaf, sesuatu tidak betul";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Senarai main";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "Tetapan ini akan mengubah lokasi senarai video antara sebelah kiri/kanan.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "Kiri";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "Kanan";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "Lokasi Bar Sisi";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "Pilihan ini akan mendayakan/menyahdayakan kemampuan untuk memulakan main balik media (video/audio) dari saat terakhir anda berhenti.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Mulakan Main Balik di tempat terakhir saya berhenti";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Pilihan ini akan meminta anda untuk 'Tambah ke Senarai Main Brave' di sesetengah laman web media. Anda masih boleh menambah media (video/audio) dengan menekan lama media, atau dari butang menu \"Kongsi Dengan...\".";
+
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionTitle" = "Tunjukkan \"Tambah ke Senarai Main Brave\"";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "Menyahdayakan API WebKit MediaSource";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Keserasian Web";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "Alih Keluar";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "Ini akan memadamkan media dari storan luar talian. Adakah anda pasti mahu meneruskan?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "Alih Keluar Data Luar Talian";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "Ini akan mengalih keluar item media dari senarai. Adakah anda pasti anda mahu meneruskan?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "Alih keluar Item Media dari Senarai Main?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "Buka Semula";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "Disimpan untuk Luar Talian";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "Menympan untuk Luar Talian...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "Maaf";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Ditambah ke Senarai Main Brave";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "Buka";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Tambah ke Senarai Main Brave";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Lihat dalam Senarai Main Brave";
+
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Tutup Menu Konteks";
 
@@ -231,6 +381,66 @@
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransfer" = "Pemindahan Dompet Legasi";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Pemindahan dompet legasi anda telah selesai!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Pemindahan dompet legasi anda telah ditangguhkan…";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Pemindahan dompet legasi anda sedang berjalan";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Pemindahan dompet legasi anda tidak sah";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Status pemindahan dompet lama anda belum selesai";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusCompletedBody" = "Pemindahan dompet legasi anda selesai! Baki anda yang sedia ada mungkin masih memerlukan beberapa minit untuk muncul pada dompet Brave Rewards desktop anda.";
+
+/* Title shown above body of text explaining that their transfer is completed */
+"rewards.legacyWalletTransferStatusCompletedTitle" = "Pemindahan Selesai!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusDelayedBody" = "Pemindahan dompet legasi anda telah ditangguhkan dan mungkin mengambil beberapa minit untuk disambung semula.";
+
+/* Title shown above body of text explaining that their transfer is delayed */
+"rewards.legacyWalletTransferStatusDelayedTitle" = "Pemindahan Tertunda";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInProgressBody" = "Pemindahan dompet legasi anda sedang berlangsung dan mungkin memerlukan beberapa minit untuk diselesaikan.";
+
+/* Title shown above body of text explaining that their transfer is in progress */
+"rewards.legacyWalletTransferStatusInProgressTitle" = "Pemindahan sedang Berlangsung";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInvalidBody" = "Pemindahan dompet lehasi anda tidak sah dan tidak dapat diselesaikan";
+
+/* Title shown above body of text explaining that their transfer is invalid */
+"rewards.legacyWalletTransferStatusInvalidTitle" = "Pemindahan Tidak Sah";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusPendingBody" = "Status pemindahan dompet legasi anda belum selesai dan akan segera diproses sebentar tadi.";
+
+/* Title shown above body of text explaining that their transfer is pending */
+"rewards.legacyWalletTransferStatusPendingTitle" = "Pemindahan Belum Selesai";
+
+/* Completed as in: stating that the status of the users transfer is in completed */
+"rewards.legacyWalletTransferStatusShortformCompleted" = "Selesai!";
+
+/* Delayed as in: stating that the status of the users transfer is in delayed */
+"rewards.legacyWalletTransferStatusShortformDelayed" = "Tertangguh";
+
+/* In Progress as in: stating that the status of the users transfer is in progress */
+"rewards.legacyWalletTransferStatusShortformInProgress" = "Sedang Berlangsung";
+
+/* Invalid as in: stating that the status of the users transfer is invalid */
+"rewards.legacyWalletTransferStatusShortformInvalid" = "Tidak Sah";
+
+/* Pending as in: stating that the status of the users transfer is pending */
+"rewards.legacyWalletTransferStatusShortformPending" = "Belum Selesai";
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferSubtitle" = "Pindah keluar sekali sahaja token sedia ada";
@@ -275,7 +485,7 @@
 "rewards.walletTransferStepsTitle" = "Imbas Kod Pemindahan Sekali Sahaja";
 
 /* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Pemindahan Dompet";
+"rewards.walletTransferTitle" = "Status Pemindahan Dompet";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Jumlah";
@@ -519,12 +729,6 @@
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "Tahniah. Anda agak berbakat.";
-
-/* Subtitle for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningSubtitle" = "Jika tersedia, Brave akan menaik taraf sambungan anda kepada sambungan selamat secara automatik. ";
-
-/* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "Sambungan anda kini disulitkan.";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Lihat";
@@ -781,6 +985,9 @@
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Jangan edit maklumat di bawah";
 
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Tidak dapat menghantar e-mel. Sila semak konfigurasi e-mel anda.";
+
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "Sila pilih maklumat yang anda selesa berkongsi dengan kami.\n\nSemakin banyak maklumat anda kongsi pada awalnya, semakin mudah kakitangan sokongan kami membantu menyelesaikan masalah anda.";
 
@@ -983,7 +1190,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Ralat";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Langganan akan dikenakan bayaran melalui akaun iTunes anda.\n\nSebarang bahagian percubaan percuma yang tidak digunakan, jika ditawarkan, akan lupus apabila anda membeli langganan.\n\nLangganan anda akan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh semasa.\n\nAnda boleh mengurus langganan anda dalam Tetapan.\n\nDengan menggunakan Brave, anda bersetuju dengan Terma Penggunaan dan Dasar Privasi.";
+"vpn.vpnIAPBoilerPlate" = "Langganan akan dikenakan bayaran melalui akaun iTunes anda.\n\nSebarang bahagian percubaan percuma yang tidak digunakan, jika ditawarkan, akan dibatalkan semasa anda membeli langganan.\n\nLangganan anda akan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh semasa.\n\nAnda boleh menguruskan langganan anda dalam Tetapan.\n\nDengan menggunakan Brave, anda bersetuju dengan Terma Penggunaan dan Dasar Privasi.";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Ini akan menetapkan semula konfigurasi Brave Firewall + VPN anda dan memperbaiki sebarang kesalahan. Proses ini mungkin mengambil masa sebentar.";

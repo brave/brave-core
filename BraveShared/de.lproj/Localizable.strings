@@ -193,6 +193,156 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "auf %@";
 
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "Möchten Sie dieses Video zu Ihrer Wiedergabeliste hinzufügen?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Zur Brave Playlist hinzufügen";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "Dieses Video war ein Livestream oder das Zeitlimit wurde erreicht. Bitte öffnen Sie den Link erneut um ihn neu zu laden.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "Abgelaufenes Video";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "Abgelaufen";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "Beim Laden der Ressource ist ein Fehler aufgetreten!";
+
+/* Text indicator on the table cell If a video is already downloaded */
+"playList.noItemLabelTitle" = "Es sind keine Elemente verfügbar";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "Hinweis";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "Okay";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "Es tut uns leid, bei der Bild-im-Bild-Darstellung ist ein Fehler aufgetreten.";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Mit dieser Option können Sie die automatische Wiedergabe, wenn die Wiedergabeliste geöffnet wird, aktivieren bzw. deaktivieren. Sie hat keine Auswirkungen auf die automatische Wiedergabe des nächsten Videos der Wiedergabeliste.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "Automatische Wiedergabe";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "Aus";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "An";
+
+/* Option Text for Auto Save Only Wifi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Nur über WLAN";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Das Herunterladen von Video- und Audiodateien für die Offline-Wiedergabe kann große Mengen an Speicherplatz sowie Datenvolumen erfordern ";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Mit dieser Option werden die Elemente Ihrer Wiedergabeliste automatisch auf Ihrem Gerät gespeichert, sodass Sie sie auch ohne Internetverbindung wiedergeben können.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsTitle" = "Automatisch offline speichern";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "Speicherplatz fast voll";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "Livestream";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Wiedergabelistenmedien und Offlinedaten";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Offlinedaten der Wiedergabeliste";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "Zurücksetzen";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "Diese Option löscht alle Videos aus der Wiedergabeliste sowie die Offlinedaten.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "Es tut uns leid, dieses Element konnte nicht offline gespeichert werden.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "Entschuldigen Sie, es ist ein Fehler aufgetreten";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Wiedergabeliste";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "Diese Einstellung legt fest, ob die Videoliste links oder rechts angezeigt wird.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "Links";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "Rechts";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "Position der Seitenleiste";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "Diese Option aktiviert bzw. deaktiviert die Möglichkeit, die Wiedergabe von Video- und Audiodateien an der Stelle wiederaufzunehmen, an der Sie beim letzten Mal aufgehört haben.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Wiedergabe vom letzten Punkt fortsetzen";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Diese Option zeigt auf manchen Medienwebseiten die Aufforderung „Zur Brave-Wiedergabeliste hinzufügen“ an. Unahängig davon können Sie Videos und Audiodateien auch hinzufügen, indem Sie sie gedrückt halten oder die „Teilen mit…“-Schaltfläche verwenden.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionTitle" = "„Zur Brave-Wiedergabeliste hinzufügen“ anzeigen";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "Deaktiviert die WebKit MediaSource-API";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Webkompatibilität";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "Entfernen";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "Hierdurch werden die Offline-Medien gelöscht. Wollen Sie wirklich fortfahren?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "Offline-Daten löschen";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "Dies entfernt die Medien aus der Liste. Wollen Sie wirklich fortfahren?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "Medien aus der Wiedergabeliste entfernen?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "Erneut öffnen";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "Offline gespeichert";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "Wird offline gespeichert…";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "Es tut uns leid";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Zur Brave-Wiedergabeliste hinzugefügt";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "Öffnen";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Zur Brave-Wiedergabeliste hinzufügen";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "In Brave-Wiedergabeliste anzeigen";
+
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Kontextmenü schließen";
 
@@ -231,6 +381,66 @@
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransfer" = "Transfer der alten Wallet";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Der Transfer Ihrer alten Wallet wurde abgeschlossen!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Der Transfer Ihrer alten Wallet verzögert sich…";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Der Transfer Ihrer alten Wallet läuft";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Der Transfer Ihrer alten Wallet ist ungültig";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Der Transfer Ihrer alten Wallet steht aus";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusCompletedBody" = "Der Transfer Ihrer alten Wallet wurde abgeschlossen. Es kann noch ein paar Minuten dauern, bis Ihr aktuelles Guthaben in der Brave Rewards Wallet auf dem Desktop angezeigt wird.";
+
+/* Title shown above body of text explaining that their transfer is completed */
+"rewards.legacyWalletTransferStatusCompletedTitle" = "Transfer abgeschlossen!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusDelayedBody" = "Der Transfer Ihrer alten Wallet verzögert sich und wird in ein paar Minuten fortgesetzt.";
+
+/* Title shown above body of text explaining that their transfer is delayed */
+"rewards.legacyWalletTransferStatusDelayedTitle" = "Transfer verzögert";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInProgressBody" = "Der Transfer Ihrer alten Wallet läuft und wird in wenigen Minuten abgeschlossen sein.";
+
+/* Title shown above body of text explaining that their transfer is in progress */
+"rewards.legacyWalletTransferStatusInProgressTitle" = "Transfer läuft";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInvalidBody" = "Der Transfer Ihrer alten Wallet ist ungültig und kann nicht abgeschlossen werden";
+
+/* Title shown above body of text explaining that their transfer is invalid */
+"rewards.legacyWalletTransferStatusInvalidTitle" = "Ungültiger Transfer";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusPendingBody" = "Der Transfer Ihrer alten Wallet steht aus und wird bald beginnen.";
+
+/* Title shown above body of text explaining that their transfer is pending */
+"rewards.legacyWalletTransferStatusPendingTitle" = "Ausstehender Transfer";
+
+/* Completed as in: stating that the status of the users transfer is in completed */
+"rewards.legacyWalletTransferStatusShortformCompleted" = "Abgeschlossen!";
+
+/* Delayed as in: stating that the status of the users transfer is in delayed */
+"rewards.legacyWalletTransferStatusShortformDelayed" = "Verzögert";
+
+/* In Progress as in: stating that the status of the users transfer is in progress */
+"rewards.legacyWalletTransferStatusShortformInProgress" = "Läuft";
+
+/* Invalid as in: stating that the status of the users transfer is invalid */
+"rewards.legacyWalletTransferStatusShortformInvalid" = "Ungültig";
+
+/* Pending as in: stating that the status of the users transfer is pending */
+"rewards.legacyWalletTransferStatusShortformPending" = "Ausstehend";
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferSubtitle" = "Einmaliger ausgehenden Transfer für bestehende Tokens";
@@ -275,7 +485,7 @@
 "rewards.walletTransferStepsTitle" = "Einmaligen Transfercode scannen";
 
 /* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Wallet-Transfer";
+"rewards.walletTransferTitle" = "Status des Wallet-Transfers";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Anzahl";
@@ -519,12 +729,6 @@
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "Glückwunsch. Sie sind etwas Besonderes.";
-
-/* Subtitle for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningSubtitle" = "Sofern verfügbar, wählt Brave automatisch eine sichere Verbindung für Sie.";
-
-/* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "Ihre Verbindung wird nun verschlüsselt.";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Schauen Sie sich das an";
@@ -781,6 +985,9 @@
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Bitte nehmen Sie keine Änderungen an den Daten unten vor";
 
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Es konnte keine E-Mail geschickt werden. Bitte überprüfen Sie Ihre E-Mail-Konfiguration.";
+
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "Bitte wählen Sie die Daten, die Sie mit uns teilen möchten.\n\nJe mehr Daten Sie direkt mit uns teilen, umso einfacher fällt es dem Support-Team, Ihr Problem zu lösen.";
 
@@ -983,7 +1190,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Fehler";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Abonnements werden über Ihr iTunes-Konto belastet.\n\nJeder nicht genutzte Teil der kostenlosen Testversion verfällt, wenn er angeboten wird, beim Kauf eines Abonnements.\n\nIhr Abonnement verlängert sich automatisch, es sei denn, es wird mindestens 24 Stunden vor dem Ende des aktuellen Zeitraums gekündigt.\n\nSie können Ihre Abonnements in den Einstellungen verwalten.\n\nDurch die Verwendung von Brave stimmen Sie den Nutzungsbedingungen und den Datenschutzbestimmungen zu.";
+"vpn.vpnIAPBoilerPlate" = "Abonnements werden über Ihr iTunes-Konto abgerechnet.\n\nWenn Ihnen eine kostenlose Testversion angeboten wurde, verfällt deren nicht genutzter Teil beim Kauf eines Abonnements.\n\nIhr Abonnement verlängert sich automatisch, wenn Sie es nicht mindestens 24 Stunden vor Ende des aktuellen Zeitraums kündigen.\n\nSie können Ihre Abonnements in den Einstellungen verwalten.\n\nDurch die Verwendung von Brave stimmen Sie den Nutzungsbedingungen und den Datenschutzbestimmungen zu.";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Hiermit wird Ihre Konfiguration für Brave Firewall + VPN zurückgesetzt, womit Fehler behoben werden können. Dieser Vorgang kann etwa eine Minute dauern.";
