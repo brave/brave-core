@@ -52,8 +52,8 @@ bool SplitTestFrequencyCap::DoesRespectCap(const CreativeAdInfo& ad) const {
   const base::Optional<std::string> split_test_group =
       GetSplitTestGroup(kStudyName);
   if (!split_test_group) {
-    // Always respect cap if browser didn't sign up to field trial
-    return true;
+    // Only respect cap if browser has signed up to a field trial
+    return ad.split_test_group.empty();
   }
 
   if (ad.split_test_group.empty()) {
