@@ -9,7 +9,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -30,7 +29,7 @@ bool AdBlockCustomFiltersService::Init() {
 
 std::string AdBlockCustomFiltersService::GetCustomFilters() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  PrefService* local_state = g_browser_process->local_state();
+  PrefService* local_state = delegate()->local_state();
   if (!local_state)
     return std::string();
   return local_state->GetString(kAdBlockCustomFilters);
@@ -39,7 +38,7 @@ std::string AdBlockCustomFiltersService::GetCustomFilters() {
 bool AdBlockCustomFiltersService::UpdateCustomFilters(
     const std::string& custom_filters) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  PrefService* local_state = g_browser_process->local_state();
+  PrefService* local_state = delegate()->local_state();
   if (!local_state)
     return false;
   local_state->SetString(kAdBlockCustomFilters, custom_filters);
@@ -56,7 +55,7 @@ bool AdBlockCustomFiltersService::UpdateCustomFilters(
 bool AdBlockCustomFiltersService::MigrateLegacyCosmeticFilters(
     const std::map<std::string, std::vector<std::string>> legacyFilters) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  PrefService* local_state = g_browser_process->local_state();
+  PrefService* local_state = delegate()->local_state();
   if (!local_state)
     return false;
   std::string filters_update = local_state->GetString(kAdBlockCustomFilters);
