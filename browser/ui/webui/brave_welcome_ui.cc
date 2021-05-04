@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/webui/settings/search_engines_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
+#include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -29,6 +30,18 @@
 using content::WebUIMessageHandler;
 
 namespace {
+
+void OpenJapanWelcomePage(Profile* profile) {
+  DCHECK(profile);
+  Browser* browser = chrome::FindBrowserWithProfile(profile);
+  if (browser) {
+    content::OpenURLParams open_params(
+        GURL("https://brave.com/ja/users-bitflyer/"), content::Referrer(),
+        WindowOpenDisposition::NEW_BACKGROUND_TAB,
+        ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+    browser->OpenURL(open_params);
+  }
+}
 
 void RecordP3AHistogram(int screen_number, bool finished) {
   int answer = 0;
@@ -119,6 +132,14 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       std::make_unique<settings::SearchEnginesHandler>(profile));
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
+
+  // Open additional page in Japanese region
+  int country_id = country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
+  if (country_id == country_codes::CountryStringToCountryID("JP")) {
+    base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
+        base::TimeDelta::FromSeconds(3));
+  }
 }
 
 BraveWelcomeUI::~BraveWelcomeUI() {
