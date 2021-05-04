@@ -151,6 +151,18 @@ void AdBlockSubscriptionService::OnSuccessfulDownload() {
                      last_update_attempt_ + kListUpdateInterval));
 }
 
+void AdBlockSubscriptionService::OnUnsuccessfulDownload() {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  last_update_attempt_ = base::Time::Now();
+
+  content::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockSubscriptionService::ScheduleRefreshOnUIThread,
+                     base::Unretained(this),
+                     last_update_attempt_ + kListUpdateInterval));
+}
+
 void AdBlockSubscriptionService::ScheduleRefreshOnUIThread(
     base::Time next_download_time) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);

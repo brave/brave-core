@@ -83,6 +83,7 @@ class AdBlockSubscriptionServiceManager : public ProfileManagerObserver {
     return download_manager_.get();
   }
 
+  void OnListDownloadFailure(const SubscriptionIdentifier& id);
   void OnNewListDownloaded(const SubscriptionIdentifier& id);
 
   void AddObserver(AdBlockSubscriptionServiceManagerObserver* observer);
@@ -101,6 +102,7 @@ class AdBlockSubscriptionServiceManager : public ProfileManagerObserver {
   void OnSystemProfileCreated(Profile* profile, Profile::CreateStatus status);
 
   void OnNewListDownloadedOnTaskRunner(const SubscriptionIdentifier& id);
+  void OnListDownloadFailureOnTaskRunner(const SubscriptionIdentifier& id);
 
   void NotifyObserversOfServiceEvent();
 

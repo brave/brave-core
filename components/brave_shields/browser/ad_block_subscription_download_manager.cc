@@ -140,15 +140,9 @@ void AdBlockSubscriptionDownloadManager::OnDownloadStarted(
 void AdBlockSubscriptionDownloadManager::OnDownloadSucceeded(
     const std::string& guid,
     std::unique_ptr<storage::BlobDataHandle> data_handle) {
-  GURL download_url;
   auto it = pending_download_guids_.find(guid);
-  if (it == pending_download_guids_.end()) {
-    // TODO fail gracefully (cleanup the file), or turn this into a proper
-    // assert
-    DCHECK(false);
-  } else {
-    download_url = it->second;
-  }
+  DCHECK(it != pending_download_guids_.end());
+  GURL download_url = it->second;
   pending_download_guids_.erase(guid);
 
   base::UmaHistogramBoolean(
@@ -164,11 +158,16 @@ void AdBlockSubscriptionDownloadManager::OnDownloadSucceeded(
 
 void AdBlockSubscriptionDownloadManager::OnDownloadFailed(
     const std::string& guid) {
+  auto it = pending_download_guids_.find(guid);
+  DCHECK(it != pending_download_guids_.end());
+  GURL download_url = it->second;
   pending_download_guids_.erase(guid);
 
   base::UmaHistogramBoolean(
       "BraveShields.AdBlockSubscriptionDownloadManager.DownloadSucceeded",
       false);
+
+  subscription_manager_->OnListDownloadFailure(download_url);
 }
 
 void AdBlockSubscriptionDownloadManager::EnsureDirExists(
@@ -178,10 +177,8 @@ void AdBlockSubscriptionDownloadManager::EnsureDirExists(
 
   base::FilePath destination_dir = DirForCustomSubscription(download_url);
   if (!base::CreateDirectory(destination_dir)) {
-    // TODO handle failure gracefully, cleanup original file
-    /*RecordCustomSubscriptionDownloadStatus(
-        CustomSubscriptionDownloadStatus::kFailedUnzipDirectoryCreation);*/
-    DCHECK(false);
+    subscription_manager_->OnListDownloadFailure(download_url);
+    return;
   }
 
   content::GetIOThreadTaskRunner({})->PostTask(
@@ -209,8 +206,7 @@ void AdBlockSubscriptionDownloadManager::WriteResultCallback(
     const GURL& download_url,
     storage::mojom::WriteBlobToFileResult result) {
   if (result != storage::mojom::WriteBlobToFileResult::kSuccess) {
-    // TODO gracefully handle failure here
-    DCHECK(false);
+    subscription_manager_->OnListDownloadFailure(download_url);
   }
 
   subscription_manager_->OnNewListDownloaded(download_url);

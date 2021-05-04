@@ -64,6 +64,7 @@ class AdBlockSubscriptionService : public AdBlockBaseService {
   void SetEnabled(bool enabled);
 
   void OnSuccessfulDownload();
+  void OnUnsuccessfulDownload();
 
  protected:
   bool Init() override;

@@ -359,6 +359,15 @@ void AdBlockSubscriptionServiceManager::OnNewListDownloaded(
           base::Unretained(this), id));
 }
 
+void AdBlockSubscriptionServiceManager::OnListDownloadFailure(
+    const SubscriptionIdentifier& id) {
+  delegate_->GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &AdBlockSubscriptionServiceManager::OnListDownloadFailureOnTaskRunner,
+          base::Unretained(this), id));
+}
+
 void AdBlockSubscriptionServiceManager::OnNewListDownloadedOnTaskRunner(
     const SubscriptionIdentifier& id) {
   DCHECK(delegate_->GetTaskRunner()->RunsTasksInCurrentSequence());
@@ -368,6 +377,28 @@ void AdBlockSubscriptionServiceManager::OnNewListDownloadedOnTaskRunner(
   }
 
   it->second->OnSuccessfulDownload();
+
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&AdBlockSubscriptionServiceManager::UpdateFilterListPrefs,
+                     base::Unretained(this), id, it->second->GetInfo()));
+
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(
+          &AdBlockSubscriptionServiceManager::NotifyObserversOfServiceEvent,
+          base::Unretained(this)));
+}
+
+void AdBlockSubscriptionServiceManager::OnListDownloadFailureOnTaskRunner(
+    const SubscriptionIdentifier& id) {
+  DCHECK(delegate_->GetTaskRunner()->RunsTasksInCurrentSequence());
+  auto it = subscription_services_.find(id);
+  if (it == subscription_services_.end()) {
+    return;
+  }
+
+  it->second->OnUnsuccessfulDownload();
 
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},

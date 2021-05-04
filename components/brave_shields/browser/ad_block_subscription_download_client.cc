@@ -82,7 +82,17 @@ void AdBlockSubscriptionDownloadClient::OnDownloadSucceeded(
       GetAdBlockSubscriptionDownloadManager();
   DCHECK(completion_info.blob_handle);
 
-  // TODO verify completion_info.response_headers filetype is text-like
+  std::string mimetype;
+  if (!completion_info.response_headers->GetMimeType(&mimetype)) {
+    download_manager->OnDownloadFailed(guid);
+    return;
+  }
+
+  if (mimetype != "text/plain") {
+    download_manager->OnDownloadFailed(guid);
+    return;
+  }
+
   if (download_manager) {
     download_manager->OnDownloadSucceeded(
         guid, std::make_unique<storage::BlobDataHandle>(
