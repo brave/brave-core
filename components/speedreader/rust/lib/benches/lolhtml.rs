@@ -10,7 +10,7 @@ fn bench_lolhtml(c: &mut Criterion) {
     let client = reqwest::blocking::Client::new();
     let data = client.get(article_url).send().unwrap().text().unwrap();
     let sr = speedreader::SpeedReader::default();
-    let config = sr.get_rewriter_type(article_url);
+    let config = sr.get_rewriter_type_from_list(article_url);
     assert!(config == speedreader::RewriterType::Streaming);
     let user_data = sr.get_opaque_config(article_url);
 

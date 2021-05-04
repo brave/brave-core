@@ -73,6 +73,30 @@ pub fn clean_attr(attr_name: &str, attrs: &mut Vec<Attribute>) {
     }
 }
 
+/// Get HTML <head> from a document
+#[inline]
+pub fn document_head(dom: &Sink) -> Option<Handle> {
+    let html = dom
+        .document_node
+        .children()
+        .find(|child| get_tag_name(&child) == Some(&local_name!("html")));
+    html?
+        .children()
+        .find(|child| get_tag_name(&child) == Some(&local_name!("head")))
+}
+
+/// Get HTML <body> from a document
+#[inline]
+pub fn document_body(dom: &Sink) -> Option<Handle> {
+    let html = dom
+        .document_node
+        .children()
+        .find(|child| get_tag_name(&child) == Some(&local_name!("html")));
+    html?
+        .children()
+        .find(|child| get_tag_name(&child) == Some(&local_name!("body")))
+}
+
 /// Recursively checks if an element or any of its children have text content.
 pub fn is_empty(handle: &Handle) -> bool {
     for child in handle.children() {
@@ -132,7 +156,10 @@ pub fn has_link(handle: &Handle) -> bool {
 
 /// Returns all text data for an element, optionally traversing the entire tree rooted at handle.
 pub fn extract_text(handle: &Handle, text: &mut String, deep: bool) {
-    debug_assert!(handle.as_element().is_some(), "extract_text() should be called on Element");
+    debug_assert!(
+        handle.as_element().is_some(),
+        "extract_text() should be called on Element"
+    );
     for child in handle.children() {
         match child.data() {
             Text(ref contents) => {
@@ -157,7 +184,7 @@ pub fn extract_text(handle: &Handle, text: &mut String, deep: bool) {
 pub fn extract_text_from_node(handle: &Handle, maybe_include_root: bool, deep: bool) -> String {
     if maybe_include_root {
         if let Some(ref contents) = handle.as_text() {
-            return contents.borrow().trim().to_string()
+            return contents.borrow().trim().to_string();
         }
     }
     let mut text = String::new();

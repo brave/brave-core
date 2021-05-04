@@ -87,7 +87,7 @@ TEST(SpeedreaderFFITest, HeuristicsRewriterType) {
   ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
   std::string url_str =
       "https://anotherexample.com/news/article/topic/index.html";
-  EXPECT_EQ(sr.RewriterTypeForURL(url_str), RewriterType::RewriterHeuristics);
+  EXPECT_EQ(sr.RewriterTypeForURL(url_str), RewriterType::RewriterUnknown);
 }
 
 TEST(SpeedreaderFFITest, UnknownRewriterType) {
