@@ -53,7 +53,7 @@ public class BraveSafetyCheckSettingsFragmentTest {
     @SmallTest
     public void testExactSameItemsAreThere() {
         assertNotEquals(null, mFragment.findPreference(PASSWORDS));
-        assertNotEquals(null, mFragment.findPreference(SAFE_BROWSING));
+        assertEquals(null, mFragment.findPreference(SAFE_BROWSING));
         assertNotEquals(null, mFragment.findPreference(UPDATES));
     }
 }
