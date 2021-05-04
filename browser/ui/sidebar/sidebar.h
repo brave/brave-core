@@ -11,7 +11,7 @@ namespace sidebar {
 // Interact with UI layer.
 class Sidebar {
  public:
-  virtual void ShowSidebar(bool show) = 0;
+  virtual void SetSidebarShowOption(int show_option) = 0;
   // Update current sidebar UI.
   virtual void UpdateSidebar() = 0;
 

@@ -39,6 +39,10 @@ class BraveBrowserView : public BrowserView {
   WalletButton* GetWalletButton();
   void StartTabCycling() override;
 
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  views::View* sidebar_host_view() { return sidebar_host_view_; }
+#endif
+
  private:
   class TabCyclingEventHandler;
 
@@ -61,6 +65,7 @@ class BraveBrowserView : public BrowserView {
   // GetContentsLayoutManager().
   views::View* original_contents_container_ = nullptr;
   SidebarContainerView* sidebar_container_view_ = nullptr;
+  views::View* sidebar_host_view_ = nullptr;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

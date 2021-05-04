@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 
 #include "brave/browser/themes/theme_properties.h"
@@ -12,17 +10,32 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_model_data.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/browser_context.h"
 #include "ui/base/theme_provider.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/webview/webview.h"
+#include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
+namespace {
+
+sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
+  return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
+}
+
+}  // namespace
+
 SidebarContainerView::SidebarContainerView(BraveBrowser* browser)
-    : browser_(browser) {}
+    : browser_(browser) {
+  SetNotifyEnterExitOnChild(true);
+}
 
 SidebarContainerView::~SidebarContainerView() = default;
 
@@ -36,10 +49,21 @@ void SidebarContainerView::Init() {
   UpdateChildViewVisibility();
 }
 
-void SidebarContainerView::ShowSidebar(bool show) {
-  sidebar_control_view_->SetVisible(show);
+void SidebarContainerView::SetSidebarShowOption(int show_option) {
+  if (show_option == sidebar::SidebarService::kShowAlways) {
+    ShowSidebar(true, false);
+    return;
+  }
 
-  InvalidateLayout();
+  if (show_option == sidebar::SidebarService::kShowNever) {
+    ShowSidebar(false, false);
+    return;
+  }
+
+  GetEventDetectWidget()->SetShowOnHover(
+      show_option == sidebar::SidebarService::kShowOnMouseOver);
+
+  ShowSidebar(false, true);
 }
 
 void SidebarContainerView::UpdateSidebar() {
@@ -102,6 +126,21 @@ void SidebarContainerView::OnThemeChanged() {
   UpdateBackgroundAndBorder();
 }
 
+void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
+  if (sidebar_panel_view_->GetVisible())
+    return;
+
+  const int show_option = GetSidebarService(browser_)->GetSidebarShowOption();
+  const bool show_options_widget =
+      show_option == sidebar::SidebarService::kShowOnMouseOver ||
+      show_option == sidebar::SidebarService::kShowOnClick;
+
+  if (!show_options_widget)
+    return;
+
+  ShowSidebar(false, true);
+}
+
 void SidebarContainerView::OnActiveIndexChanged(int old_index, int new_index) {
   if (new_index == -1) {
     sidebar_panel_view_->SetVisible(false);
@@ -116,5 +155,36 @@ void SidebarContainerView::OnActiveIndexChanged(int old_index, int new_index) {
     }
   }
 
+  InvalidateLayout();
+}
+
+SidebarShowOptionsEventDetectWidget*
+SidebarContainerView::GetEventDetectWidget() {
+  if (!show_options_widget_) {
+    show_options_widget_.reset(new SidebarShowOptionsEventDetectWidget(
+        static_cast<BraveBrowserView*>(
+            BrowserView::GetBrowserViewForBrowser(browser_)),
+        this));
+  }
+
+  return show_options_widget_.get();
+}
+
+void SidebarContainerView::ShowOptionsEventDetectWidget(int show_option) {
+  const bool show_event_detect_widget =
+      show_option == sidebar::SidebarService::kShowOnMouseOver ||
+      show_option == sidebar::SidebarService::kShowOnClick;
+  show_event_detect_widget ? GetEventDetectWidget()->Show()
+                           : GetEventDetectWidget()->Hide();
+}
+
+void SidebarContainerView::ShowSidebar() {
+  ShowSidebar(true, false);
+}
+
+void SidebarContainerView::ShowSidebar(bool show_sidebar,
+                                       bool show_event_detect_widget) {
+  sidebar_control_view_->SetVisible(show_sidebar);
+  ShowOptionsEventDetectWidget(show_event_detect_widget);
   InvalidateLayout();
 }

@@ -100,8 +100,8 @@ void SidebarController::SetSidebar(Sidebar* sidebar) {
 
 void SidebarController::UpdateSidebarVisibility() {
   DCHECK(sidebar_);
-  const int show_options = GetSidebarService(browser_)->GetSidebarShowOption();
-  sidebar_->ShowSidebar(show_options == sidebar::SidebarService::kShowAlways);
+  sidebar_->SetSidebarShowOption(
+      GetSidebarService(browser_)->GetSidebarShowOption());
 }
 
 }  // namespace sidebar

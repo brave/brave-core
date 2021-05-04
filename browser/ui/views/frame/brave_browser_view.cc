@@ -133,6 +133,8 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   contents_container_ = AddChildView(std::move(brave_contents_container));
   set_contents_view(contents_container_);
 
+  sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
+
   // Make sure |find_bar_host_view_| is the last child of BrowserView by
   // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
   // See the comments of BrowserView::find_bar_host_view().
