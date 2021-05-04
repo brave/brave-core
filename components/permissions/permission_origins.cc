@@ -8,16 +8,20 @@
 namespace permissions {
 
 PermissionOrigins::PermissionOrigins(const GURL& requesting_origin,
-                                     const GURL& embedding_origin)
+                                     const GURL& embedding_origin,
+                                     ContentSetting content_setting)
     : requesting_origin_(requesting_origin),
-      embedding_origin_(embedding_origin) {}
+      embedding_origin_(embedding_origin),
+      content_setting_(content_setting) {}
 
 PermissionOrigins::PermissionOrigins(const std::string* requesting_origin,
-                                     const std::string* embedding_origin)
+                                     const std::string* embedding_origin,
+                                     int content_setting)
     : requesting_origin_(GURL(*requesting_origin)),
       embedding_origin_(embedding_origin
                             ? base::make_optional<GURL>(*embedding_origin)
-                            : base::nullopt) {}
+                            : base::nullopt),
+      content_setting_(static_cast<ContentSetting>(content_setting)) {}
 
 PermissionOrigins::PermissionOrigins(const PermissionOrigins&) = default;
 PermissionOrigins& PermissionOrigins::operator=(const PermissionOrigins&) =
@@ -29,7 +33,8 @@ PermissionOrigins::~PermissionOrigins() = default;
 
 bool PermissionOrigins::operator==(const PermissionOrigins& rhs) const {
   auto tie = [](const PermissionOrigins& obj) {
-    return std::tie(obj.requesting_origin_, obj.embedding_origin_);
+    return std::tie(obj.requesting_origin_, obj.embedding_origin_,
+                    obj.content_setting_);
   };
   return tie(*this) == tie(rhs);
 }

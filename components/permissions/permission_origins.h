@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/optional.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "url/gurl.h"
 
 namespace permissions {
@@ -18,9 +19,11 @@ namespace permissions {
 class PermissionOrigins {
  public:
   PermissionOrigins(const GURL& requesting_origin,
-                    const GURL& embedding_origin);
+                    const GURL& embedding_origin,
+                    ContentSetting content_setting);
   PermissionOrigins(const std::string* requesting_origin,
-                    const std::string* embedding_origin);
+                    const std::string* embedding_origin,
+                    int content_setting);
   PermissionOrigins(const PermissionOrigins&);
   PermissionOrigins& operator=(const PermissionOrigins&);
   PermissionOrigins(PermissionOrigins&&) noexcept;
@@ -33,10 +36,12 @@ class PermissionOrigins {
   const GURL& embedding_origin() const {
     return embedding_origin_ ? *embedding_origin_ : requesting_origin_;
   }
+  ContentSetting content_setting() const { return content_setting_; }
 
  private:
   GURL requesting_origin_;
   base::Optional<GURL> embedding_origin_;
+  ContentSetting content_setting_;
 };
 
 }  // namespace permissions
