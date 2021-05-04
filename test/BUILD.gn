@@ -848,6 +848,7 @@ if (!is_android) {
       "//extensions/common:test_support",
       "//ppapi/buildflags",
       "//services/device/public/cpp:device_features",
+      "//services/network:network_service",
       "//third_party/blink/public/common",
       "//ui/compositor:test_support",
       "//ui/views",
