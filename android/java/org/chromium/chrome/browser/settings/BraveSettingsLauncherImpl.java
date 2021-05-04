@@ -12,7 +12,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.chromium.base.IntentUtils;
 import org.chromium.chrome.browser.safe_browsing.settings.BraveStandardProtectionSettingsFragment;
 import org.chromium.chrome.browser.safe_browsing.settings.StandardProtectionSettingsFragment;
 
@@ -31,5 +30,13 @@ public class BraveSettingsLauncherImpl extends SettingsLauncherImpl {
             }
         }
         super.launchSettingsActivity(context, fragment, fragmentArgs);
+    }
+
+    @Override
+    public Intent createSettingsActivityIntent(
+            Context context, @Nullable String fragmentName, @Nullable Bundle fragmentArgs) {
+        Intent intent = super.createSettingsActivityIntent(context, fragmentName, fragmentArgs);
+        intent.setClass(context, BraveSettingsActivity.class);
+        return intent;
     }
 }
