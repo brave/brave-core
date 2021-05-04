@@ -193,6 +193,156 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "у %@";
 
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "Хочете додати це відео до списку відтворення?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Додати у Brave Playlist";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "Це відео транслювалося в прямому ефірі, або було досягнуто ліміту тривалості. Для оновлення відкрийте посилання ще раз.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "Термін дії відео закінчився";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "Термін дії закінчився";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "Виникла проблема із завантаженням ресурсу!";
+
+/* Text indicator on the table cell If a video is already downloaded */
+"playList.noItemLabelTitle" = "Немає жодного доступного файлу";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "Примітка";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "Добре";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "На жаль, під час спроби відобразити картинку в картинці сталася помилка.";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Ця опція вмикає/вимикає автовідтворення під час відкриття списку відтворення. Але ця опція не впливає на автовідтворення під час завантаження наступного відео в списку.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "Автовідтворення";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "Вимк.";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "Увімк.";
+
+/* Option Text for Auto Save Only Wifi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Тільки через WiFi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Додавання відео- й аудіофайлів для використання офлайн може потребувати багато місця на вашому пристрої, а також використовувати мобільні дані";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Ця опція автоматично збереже елементи вашого списку відтворення на пристрої, щоб ви могли відтворювати їх за відсутності підключення до Інтернету.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsTitle" = "Автозбереження для доступу офлайн";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "Пам’ять майже заповнена";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "Пряма трансляція";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Медіафайли й офлайн-дані списків відтворення";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Дані списків відтворення офлайн";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "Скинути";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "Ця опція видалить усі відео зі списку відтворення, а також із офлайн-сховища.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "На жаль, наразі цей елемент не можна зберегти для режиму офлайн.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "На жаль, сталася помилка.";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Список відтворення";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "Це налаштування дає змогу змінити розташування списку відео з лівої сторони на праву.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "Ліворуч";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "Праворуч";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "Розташування бічної панелі";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "Цей параметр вмикає/вимикає можливість почати відтворення медіафайлів (відео/аудіо) з того моменту, на якому ви зупинилися минулого разу.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Почати відтворення з місця останньої зупинки";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Завдяки цій опції ви бачитимете елемент «Додати у Brave Playlist» на деяких медіасайтах. Ви як і раніше можете додавати медіафайли (відео/аудіо) тривалим натисканням на медіафайл або за допомогою кнопки меню «Поділитися з…».";
+
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionTitle" = "Показати «Додати у Brave Playlist»";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "Відключення API WebKit MediaSource";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Вебсумісність";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "Видалити";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "Це призведе до видалення медіафайлу з офлайн-сховища. Ви впевнені, що хочете продовжити?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "Видалити офлайн-дані";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "Це призведе до видалення медіафайлу зі списку. Ви впевнені, що хочете продовжити?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "Видалити медіафайл зі списку відтворення?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "Відкрити заново";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "збережено для доступу офлайн";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "Збереження для доступу офлайн…";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "Помилка";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Додано у Brave Playlist";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "Відкрити";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Додати у Brave Playlist";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Подивитися у Brave Playlist";
+
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Закрити контекстне меню";
 
@@ -231,6 +381,66 @@
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransfer" = "Переказ коштів із застарілого гаманця";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Перерахування коштів на ваш старий гаманець завершено!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "Перерахування коштів на ваш гаманець відкладено…";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "Перерахування коштів на ваш гаманець в процесі обробки";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "Перерахування коштів на ваш старий гаманець неможливе";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonPendingTitle" = "Статус перерахування коштів на ваш гаманець «На розгляді»";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusCompletedBody" = "Перерахування коштів на ваш гаманець завершено! Ваш оновлений баланс з’явиться в гаманці Brave Rewards протягом декількох хвилин.";
+
+/* Title shown above body of text explaining that their transfer is completed */
+"rewards.legacyWalletTransferStatusCompletedTitle" = "Перерахування коштів завершено!";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusDelayedBody" = "Перерахування коштів на ваш гаманець було відкладено, і відновлення процесу може зайняти кілька хвилин.";
+
+/* Title shown above body of text explaining that their transfer is delayed */
+"rewards.legacyWalletTransferStatusDelayedTitle" = "Перерахування коштів відкладено";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInProgressBody" = "Перерахування коштів на ваш гаманець у процесі, і завершення транзакції може зайняти кілька хвилин.";
+
+/* Title shown above body of text explaining that their transfer is in progress */
+"rewards.legacyWalletTransferStatusInProgressTitle" = "Перерахування коштів у процесі";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInvalidBody" = "Перерахування коштів на ваш гаманець неможливе і не може бути завершене";
+
+/* Title shown above body of text explaining that their transfer is invalid */
+"rewards.legacyWalletTransferStatusInvalidTitle" = "Перерахування коштів неможливе";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusPendingBody" = "Статус перерахування коштів на ваш гаманець «На розгляді», і операція має скоро завершитися.";
+
+/* Title shown above body of text explaining that their transfer is pending */
+"rewards.legacyWalletTransferStatusPendingTitle" = "Перерахування коштів на розгляді";
+
+/* Completed as in: stating that the status of the users transfer is in completed */
+"rewards.legacyWalletTransferStatusShortformCompleted" = "Завершено!";
+
+/* Delayed as in: stating that the status of the users transfer is in delayed */
+"rewards.legacyWalletTransferStatusShortformDelayed" = "Відкладено";
+
+/* In Progress as in: stating that the status of the users transfer is in progress */
+"rewards.legacyWalletTransferStatusShortformInProgress" = "У процесі";
+
+/* Invalid as in: stating that the status of the users transfer is invalid */
+"rewards.legacyWalletTransferStatusShortformInvalid" = "Неможливе";
+
+/* Pending as in: stating that the status of the users transfer is pending */
+"rewards.legacyWalletTransferStatusShortformPending" = "На розгляді";
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferSubtitle" = "Одноразовий переказ наявних токенів";
@@ -275,7 +485,7 @@
 "rewards.walletTransferStepsTitle" = "Сканування одноразового коду переказу";
 
 /* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Переказ коштів із гаманця";
+"rewards.walletTransferTitle" = "Статус перерахування коштів на гаманець";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Сума";
@@ -519,12 +729,6 @@
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
-
-/* Subtitle for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningSubtitle" = "За можливості бразуер Brave автоматично збільшить рівень безпеки підключення.";
-
-/* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "Ваше з’єднання зашифровано";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "Зверніть увагу";
@@ -781,6 +985,9 @@
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Не редагуйте наведену нижче інформацію";
 
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Неможливо надіслати лист на електронну пошту. Будь ласка, перевірте налаштування електронної пошти.";
+
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "Вкажіть, якою інформацією ви хотіли би з нами поділитись.\n\nЧим більше інформації ви надасте нам спочатку, тим легше нашій службі підтримки буде допомагати вам у вирішенні різноманітних проблем.";
 
@@ -983,7 +1190,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Помилка";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Оплата за підписки стягуватиметься з вашого рахунку iTunes.\n\nБудь-яку невикористану частину безкоштовного пробного періоду, якщо він є, буде втрачено після придбання підписки.\n\nПідписка поновлюватиметься автоматично, якщо її не буде скасовано щонайменше за 24 години до завершення поточного періоду.\n\nВи можете керувати підписками в меню налаштувань.\n\nКористуючись Brave, ви погоджуєтеся з Умовами використання й Політикою конфіденційності.";
+"vpn.vpnIAPBoilerPlate" = "Плата за підписку стягується з вашого рахунку в iTunes.\n\nБудь-яка невикористана частина безкоштовної пробної версії, якщо вона пропонується, втрачається під час покупки підписки.\n\nПідписка продовжується автоматично, якщо її не скасовано не менше ніж за 24 години до закінчення поточного періоду.\n\nВи можете керувати своїми підписками у налаштуваннях.\n\nВикористовуючи Brave, ви погоджуєтеся з Умовами користування та Політикою конфіденційності.";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Це дозволить скинути налаштування файрволу та VPN-розширення браузера Brave, а також виправити будь-які помилки. Цей процес може зайняти хвилину.";

@@ -193,6 +193,156 @@
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "on %@";
 
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "この動画をPlaylistに追加しますか？";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Brave Playlistに追加する";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "この動画はライブストリーミング動画であるか、期限切れです。再読み込みするには、リンクを再度開いてください。";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "期限切れの動画";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "期限切れ";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "リソースの読み込み中に問題が発生しました！";
+
+/* Text indicator on the table cell If a video is already downloaded */
+"playList.noItemLabelTitle" = "利用可能なアイテムがありません";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "注意";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "OK";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "すみません、エラーによりピクチャ・イン・ピクチャで表示できません。";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "この設定はPlaylistが開かれたときに自動で動画を再生する機能のオン/オフを切り替えますが、リスト上の次の動画がロードされたとき自動で再生する機能に対しての変更が行われません。";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "自動再生";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "オフ";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "オン";
+
+/* Option Text for Auto Save Only Wifi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Wifi接続時のみ";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsDescription" = "動画や音声ファイルをオフライン利用可能にする際、デバイスのデータ容量や通信量を大きく消費する可能性があります。";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "この設定を行うと、Playlistに追加されたアイテムを自動的にあなたのデバイスに保持し、インターネットに接続されていないときでも再生できるようになります。";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+"playlist.playlistAutoSaveSettingsTitle" = "オフライン再生のために自動保存する";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "データ容量がもうすぐいっぱいです";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "ライブストリーミング動画";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Playlistメディアとオフラインデータ";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Playlistオフラインデータ";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "リセットする";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "この設定を行うとPlaylistとオフライン再生用ストレージからすべての動画を削除します。";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "すみません、このアイテムは現在オフライン再生用に保存できません。";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "申し訳ありません、エラーが発生しました";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Playlist";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "この設定では動画リストの表示位置を左側/右側に切り替えます";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "左";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "右";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "サイドバーの位置";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "この設定は、前回の再生時に中断したメディア（動画もしくは音声）の続きから再生する機能のオン/オフを切り替えます。";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "前回の続きから再生";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionFooterText" = "この設定を行うと、いくつかのサイトで「Brave Playlistに追加する」メッセージが表示されます。オフにしても、動画や音声プレイヤーを長押しもしくはメニューボタンの「共有」からPlaylistに追加することができます。";
+
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+"playlist.playlistToastShowSettingsOptionTitle" = "「Brave Playlistに追加する」を表示する";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "WebKit MediaSource APIを無効化します";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Web互換性";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "削除する";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "メディアをオフライン再生用のストレージから消去します。本当によろしいですか？";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "オフライン再生用データを消去する";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "リストからメディアを削除します。本当によろしいですか？";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "メディアをPlaylistから削除しますか？";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "再度開く";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "オフライン再生のために保存中";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "オフライン再生のために保存中...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "申し訳ありません";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Brave Playlistに追加されました";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "開く";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Brave Playlistに追加する";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Brave Playlistで見る";
+
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "コンテキストメニューを閉じる";
 
@@ -231,6 +381,66 @@
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransfer" = "レガシーウォレットからの移行";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "旧ウォレットからの移行が完了しました！";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonDelayedTitle" = "旧ウォレットからの移行に遅れが生じています...";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInProgressTitle" = "旧ウォレットからの移行は進行中です";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "旧ウォレットからの移行が無効となりました";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusButtonPendingTitle" = "旧ウォレットからの移行ステータスはペンディング中です";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusCompletedBody" = "旧ウォレットからの移行が完了しました！もともとあった残高がデスクトップのBrave Rewardsウォレットに表示されるまでは数分かかることがあります。";
+
+/* Title shown above body of text explaining that their transfer is completed */
+"rewards.legacyWalletTransferStatusCompletedTitle" = "移行が完了しました！";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusDelayedBody" = "旧ウォレットの移行に遅れが生じており、再開まで数分かかることがございます。";
+
+/* Title shown above body of text explaining that their transfer is delayed */
+"rewards.legacyWalletTransferStatusDelayedTitle" = "移行に遅れが生じています。";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInProgressBody" = "旧ウォレットの移行は進行中です。完了まで数分かかる場合があります。";
+
+/* Title shown above body of text explaining that their transfer is in progress */
+"rewards.legacyWalletTransferStatusInProgressTitle" = "移行中";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusInvalidBody" = "旧ウォレットの移行が無効となり完了できませんでした";
+
+/* Title shown above body of text explaining that their transfer is invalid */
+"rewards.legacyWalletTransferStatusInvalidTitle" = "移行は無効となりました";
+
+/* No comment provided by engineer. */
+"rewards.legacyWalletTransferStatusPendingBody" = "旧ウォレットの移行ステータスはペンディング中です。まもなく処理が開始する見込みです。";
+
+/* Title shown above body of text explaining that their transfer is pending */
+"rewards.legacyWalletTransferStatusPendingTitle" = "移行はペンディング中です";
+
+/* Completed as in: stating that the status of the users transfer is in completed */
+"rewards.legacyWalletTransferStatusShortformCompleted" = "完了しました！";
+
+/* Delayed as in: stating that the status of the users transfer is in delayed */
+"rewards.legacyWalletTransferStatusShortformDelayed" = "遅れが生じています";
+
+/* In Progress as in: stating that the status of the users transfer is in progress */
+"rewards.legacyWalletTransferStatusShortformInProgress" = "進行中";
+
+/* Invalid as in: stating that the status of the users transfer is invalid */
+"rewards.legacyWalletTransferStatusShortformInvalid" = "無効";
+
+/* Pending as in: stating that the status of the users transfer is pending */
+"rewards.legacyWalletTransferStatusShortformPending" = "ペンディング";
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferSubtitle" = "既存のトークンの一度限りの移管";
@@ -275,7 +485,7 @@
 "rewards.walletTransferStepsTitle" = "一度限りの転送用のQRコードをスキャンする";
 
 /* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "ウォレット移行";
+"rewards.walletTransferTitle" = "ウォレット移行ステータス";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "総額";
@@ -519,12 +729,6 @@
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "おめでとうございます。あなたは特別な存在です。";
-
-/* Subtitle for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningSubtitle" = "可能な場合、Braveは安全な接続に自動でアップグレードします。";
-
-/* Title for Shield Education Encrypted Connection Warning */
-"shieldEducation.encryptedConnectionWarningTitle" = "接続は暗号化されています。";
 
 /* Action title for inspectable Education warnings */
 "shieldEducation.inspectTitle" = "見てみる";
@@ -781,6 +985,9 @@
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "この下の情報は編集・変更しないでください";
 
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "メールを送信できませんでした。Eメールの設定をご確認ください。";
+
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "私たちと共有してもよい情報を選択してください。\n\n最初に共有する情報が多ければ多いほど、サポートスタッフがお客様の課題解決をサポートしやすくなります。";
 
@@ -983,7 +1190,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "エラー";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "サブスクリプションは、iTunesアカウントを介して請求されます。\n\n無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\n\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\n\nサブスクリプションは「設定」で管理できます。\n\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
+"vpn.vpnIAPBoilerPlate" = "サブスクリプションはiTunesアカウントを通じて課金されます。\n無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\nサブスクリプションは「設定」で管理できます。\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "この操作を実行するとBrave ファイアウォール+ VPNの構成はリセットされ、すべてのエラーが修正されます。このプロセスには1分かかる場合があります。";

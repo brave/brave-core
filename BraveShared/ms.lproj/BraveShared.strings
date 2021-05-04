@@ -751,6 +751,9 @@
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Foto oleh %@";
 
+/* Playlist menu item */
+"PlaylistMenuItem" = "Senarai main";
+
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
 "PreviewActionAddToBookmarksActionTitle" = "Tambah kepada Penanda Buku";
 
