@@ -29,7 +29,9 @@ extension BraveRewardsViewController {
             $0.font = .systemFont(ofSize: 12)
         }
         
-        let publisherView = BraveRewardsPublisherView()
+        let publisherView = BraveRewardsPublisherView().then {
+            $0.isHidden = true
+        }
         let statusView = BraveRewardsStatusView()
         let legacyWalletTransferButton = LegacyWalletTransferButton().then {
             $0.isHidden = true
