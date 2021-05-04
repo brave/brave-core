@@ -150,6 +150,10 @@ void BraveTorClientUpdater::Cleanup() {
       user_data_dir_.AppendASCII(kTorClientComponentId);
   task_runner_->PostTask(FROM_HERE,
                          base::BindOnce(&DeleteDir, tor_component_dir));
+  task_runner_->PostTask(FROM_HERE,
+                         base::BindOnce(&DeleteDir, GetTorDataPath()));
+  task_runner_->PostTask(FROM_HERE,
+                         base::BindOnce(&DeleteDir, GetTorWatchPath()));
 }
 
 void BraveTorClientUpdater::SetExecutablePath(const base::FilePath& path) {
@@ -160,6 +164,18 @@ void BraveTorClientUpdater::SetExecutablePath(const base::FilePath& path) {
 
 base::FilePath BraveTorClientUpdater::GetExecutablePath() const {
   return executable_path_;
+}
+
+base::FilePath BraveTorClientUpdater::GetTorDataPath() const {
+  DCHECK(!user_data_dir_.empty());
+  return user_data_dir_.Append(FILE_PATH_LITERAL("tor"))
+      .Append(FILE_PATH_LITERAL("data"));
+}
+
+base::FilePath BraveTorClientUpdater::GetTorWatchPath() const {
+  DCHECK(!user_data_dir_.empty());
+  return user_data_dir_.Append(FILE_PATH_LITERAL("tor"))
+      .Append(FILE_PATH_LITERAL("watch"));
 }
 
 void BraveTorClientUpdater::OnComponentReady(

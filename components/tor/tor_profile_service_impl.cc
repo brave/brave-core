@@ -114,11 +114,9 @@ void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
 
 TorProfileServiceImpl::TorProfileServiceImpl(
     content::BrowserContext* context,
-    BraveTorClientUpdater* tor_client_updater,
-    const base::FilePath& user_data_dir)
+    BraveTorClientUpdater* tor_client_updater)
     : context_(context),
       tor_client_updater_(tor_client_updater),
-      user_data_dir_(user_data_dir),
       tor_launcher_factory_(TorLauncherFactory::GetInstance()),
       weak_ptr_factory_(this) {
   if (tor_launcher_factory_) {
@@ -155,21 +153,19 @@ void TorProfileServiceImpl::LaunchTor() {
   tor_launcher_factory_->LaunchTorProcess(config);
 }
 
-base::FilePath TorProfileServiceImpl::GetTorExecutablePath() {
+base::FilePath TorProfileServiceImpl::GetTorExecutablePath() const {
   return tor_client_updater_ ? tor_client_updater_->GetExecutablePath()
                              : base::FilePath();
 }
 
-base::FilePath TorProfileServiceImpl::GetTorDataPath() {
-  DCHECK(!user_data_dir_.empty());
-  return user_data_dir_.Append(FILE_PATH_LITERAL("tor"))
-      .Append(FILE_PATH_LITERAL("data"));
+base::FilePath TorProfileServiceImpl::GetTorDataPath() const {
+  return tor_client_updater_ ? tor_client_updater_->GetTorDataPath()
+                             : base::FilePath();
 }
 
-base::FilePath TorProfileServiceImpl::GetTorWatchPath() {
-  DCHECK(!user_data_dir_.empty());
-  return user_data_dir_.Append(FILE_PATH_LITERAL("tor"))
-      .Append(FILE_PATH_LITERAL("watch"));
+base::FilePath TorProfileServiceImpl::GetTorWatchPath() const {
+  return tor_client_updater_ ? tor_client_updater_->GetTorWatchPath()
+                             : base::FilePath();
 }
 
 void TorProfileServiceImpl::RegisterTorClientUpdater() {
@@ -230,11 +226,9 @@ TorProfileServiceImpl::CreateProxyConfigService() {
   // NotifyTorNewProxyURI because it is called once when tor control is ready.
   const std::string tor_proxy_uri = tor_launcher_factory_->GetTorProxyURI();
   if (tor_proxy_uri.empty()) {
-    proxy_config_service_ =
-      new net::ProxyConfigServiceTor();
+    proxy_config_service_ = new net::ProxyConfigServiceTor();
   } else {
-    proxy_config_service_ =
-      new net::ProxyConfigServiceTor(tor_proxy_uri);
+    proxy_config_service_ = new net::ProxyConfigServiceTor(tor_proxy_uri);
   }
   return std::unique_ptr<net::ProxyConfigServiceTor>(proxy_config_service_);
 }

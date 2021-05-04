@@ -7,12 +7,10 @@
 
 #include <memory>
 
-#include "base/path_service.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_profile_service_impl.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
@@ -60,16 +58,11 @@ TorProfileServiceFactory::~TorProfileServiceFactory() {}
 
 KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-  DCHECK(!user_data_dir.empty());
   std::unique_ptr<tor::TorProfileService> tor_profile_service(
       new tor::TorProfileServiceImpl(
-          context,
-          g_brave_browser_process
-              ? g_brave_browser_process->tor_client_updater()
-              : nullptr,
-          user_data_dir));
+          context, g_brave_browser_process
+                       ? g_brave_browser_process->tor_client_updater()
+                       : nullptr));
 
   return tor_profile_service.release();
 }
