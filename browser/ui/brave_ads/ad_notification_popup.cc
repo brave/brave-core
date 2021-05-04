@@ -433,7 +433,7 @@ void AdNotificationPopup::CreateWidgetView() {
   widget->Init(std::move(params));
 
   widget->SetOpacity(0.0);
-  widget->Show();
+  widget->ShowInactive();
 }
 
 void AdNotificationPopup::CloseWidgetView() {
