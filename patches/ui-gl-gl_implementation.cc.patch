@@ -1,0 +1,16 @@
+diff --git a/ui/gl/gl_implementation.cc b/ui/gl/gl_implementation.cc
+index b12af225f1dde84c25791d0f4badb0fcb9541add..5acbd036bd8ff8ea34c39fea79507b3199f3ffad 100644
+--- a/ui/gl/gl_implementation.cc
++++ b/ui/gl/gl_implementation.cc
+@@ -182,11 +182,7 @@ GLImplementationParts GetSoftwareGLImplementation() {
+ }
+ 
+ GLImplementationParts GetSoftwareGLForTestsImplementation() {
+-#if defined(OS_WIN)
+-  return GetSoftwareGLImplementation();
+-#else
+   return GetLegacySoftwareGLImplementation();
+-#endif
+ }
+ 
+ bool IsSoftwareGLImplementation(GLImplementationParts implementation) {
