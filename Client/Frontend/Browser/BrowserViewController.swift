@@ -67,8 +67,9 @@ class BrowserViewController: UIViewController {
 
     lazy var mailtoLinkHandler: MailtoLinkHandler = MailtoLinkHandler()
 
-    // Custom Search Engine
+    /// Custom Search Engine
     var openSearchEngine: OpenSearchReference?
+    var openSearchTextFieldInputAssistantBarButtonGroup = [UIBarButtonItemGroup]()
 
     lazy var customSearchEngineButton = OpenSearchEngineButton(hidesWhenDisabled: false).then {
         $0.addTarget(self, action: #selector(addCustomSearchEngineForFocusedElement), for: .touchUpInside)
