@@ -164,10 +164,6 @@ std::unique_ptr<storage::BlobDataBuilder> BuildBlobWithFolder(
 
 namespace ipfs {
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 8ba05e73c8 (Implemented IPFS import refactoring)
 std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
     const GURL& gurl,
     const std::string& method,
@@ -252,13 +248,8 @@ void CreateRequestForFile(const base::FilePath& upload_file_path,
                           size_t file_size) {
   std::string mime_boundary = net::GenerateMimeMultipartBoundary();
   auto blob_builder_callback =
-<<<<<<< HEAD
       base::BindOnce(&BuildBlobWithFile, upload_file_path, mime_type, filename,
                      mime_boundary, file_size);
-=======
-      base::BindOnce(&BuildBlobWithFile, upload_file_path, mime_type,
-                     filename, mime_boundary, file_size);
->>>>>>> 8ba05e73c8 (Implemented IPFS import refactoring)
   std::string content_type = ipfs::kIPFSImportMultipartContentType;
   content_type += " boundary=";
   content_type += mime_boundary;
@@ -266,20 +257,11 @@ void CreateRequestForFile(const base::FilePath& upload_file_path,
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), content::BrowserThread::IO},
       base::BindOnce(&CreateResourceRequest, std::move(blob_builder_callback),
-<<<<<<< HEAD
                      content_type, std::move(storage)),
       std::move(request_callback));
 }
 
 std::vector<ImportFileInfo> EnumerateDirectoryFiles(base::FilePath dir_path) {
-=======
-                    content_type, std::move(storage)),
-      std::move(request_callback));
-}
-
-std::vector<ImportFileInfo> EnumerateDirectoryFiles(
-    base::FilePath dir_path) {
->>>>>>> 8ba05e73c8 (Implemented IPFS import refactoring)
   std::vector<ImportFileInfo> files;
   base::FileEnumerator file_enum(
       dir_path, true,

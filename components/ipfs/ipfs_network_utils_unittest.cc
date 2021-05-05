@@ -16,13 +16,11 @@
 #include "services/network/public/cpp/data_element.h"
 #include "storage/browser/blob/blob_data_builder.h"
 #include "storage/browser/blob/blob_data_item.h"
-
-#include "services/network/public/cpp/data_element.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ipfs {
 
-class IpfsNetwrokUtilsUnitTest : public ChromeRenderViewHostTestHarness {
+class IpfsNetwrokUtilsUnitTest : public testing::Test {
  public:
   IpfsNetwrokUtilsUnitTest() {}
   ~IpfsNetwrokUtilsUnitTest() override = default;

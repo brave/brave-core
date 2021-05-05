@@ -14,7 +14,9 @@
 #include "base/callback.h"
 #include "base/containers/queue.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -24,6 +26,7 @@ class BrowserContext;
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
+struct ResourceRequest;
 }  // namespace network
 
 namespace ipfs {
@@ -43,6 +46,8 @@ class IpnsKeysManager : public IpfsServiceObserver {
   using GenerateKeyCallback =
       base::OnceCallback<void(bool, const std::string&, const std::string&)>;
   using RemoveKeyCallback = base::OnceCallback<void(const std::string&, bool)>;
+  using ImportKeyCallback =
+      base::OnceCallback<void(const std::string&, const std::string&, bool)>;
   using KeysMap = std::unordered_map<std::string, std::string>;
   void LoadKeys(LoadKeysCallback callback);
   void GenerateNewKey(const std::string& name, GenerateKeyCallback callback);
@@ -52,6 +57,9 @@ class IpnsKeysManager : public IpfsServiceObserver {
   const KeysMap& GetKeys() const { return keys_; }
   const std::string FindKey(const std::string& name) const;
 
+  void ImportKey(const base::FilePath& paths,
+                 const std::string& name,
+                 ImportKeyCallback callback);
   void SetServerEndpointForTest(const GURL& gurl);
   void SetLoadCallbackForTest(LoadKeysCallback callback);
 
@@ -61,7 +69,10 @@ class IpnsKeysManager : public IpfsServiceObserver {
 
   // ipfs::IpfsServiceObserver
   void OnIpfsShutdown() override;
-
+  void OnKeyImported(SimpleURLLoaderList::iterator iter,
+                     ImportKeyCallback callback,
+                     const std::string& key_name,
+                     std::unique_ptr<std::string> response_body);
   void OnKeyCreated(SimpleURLLoaderList::iterator iter,
                     GenerateKeyCallback callback,
                     std::unique_ptr<std::string> response_body);
@@ -69,11 +80,14 @@ class IpnsKeysManager : public IpfsServiceObserver {
                     const std::string& key_to_remove,
                     RemoveKeyCallback callback,
                     std::unique_ptr<std::string> response_body);
-
   void OnKeysLoaded(SimpleURLLoaderList::iterator iter,
                     std::unique_ptr<std::string> response_body);
 
   void NotifyKeysLoaded(bool result);
+
+  void UploadData(ImportKeyCallback callback,
+                  const std::string& name,
+                  std::unique_ptr<network::ResourceRequest> request);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
@@ -81,6 +95,7 @@ class IpnsKeysManager : public IpfsServiceObserver {
   base::queue<LoadKeysCallback> pending_load_callbacks_;
   content::BrowserContext* context_ = nullptr;
   GURL server_endpoint_;
+  base::WeakPtrFactory<IpnsKeysManager> weak_factory_{this};
 };
 
 }  // namespace ipfs

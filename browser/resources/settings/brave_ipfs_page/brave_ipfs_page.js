@@ -63,13 +63,12 @@ Polymer({
     });
     this.browserProxy_.getIPFSEnabled().then(enabled => {
       this.ipfsEnabled_ = enabled
-
     });
 
     this.addWebUIListener('brave-ipfs-node-status-changed', (launched) => {
       this.isLocalNodeLaunched_ = launched
     })
-
+    this.browserProxy_.notifyIpfsNodeStatus();
     window.addEventListener('load', this.onLoad_.bind(this));
   },
 
