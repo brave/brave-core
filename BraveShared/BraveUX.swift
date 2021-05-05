@@ -12,6 +12,7 @@ public struct BraveUX {
     public static let braveTermsOfUseURL = URL(string: "https://www.brave.com/terms_of_use")!
     public static let prefKeyOptInDialogWasSeen = "OptInDialogWasSeen"
     public static let prefKeyUserAllowsTelemetry = "userallowstelemetry"
+    public static let ntpTutorialPageURL = URL(string: "https://brave.com/ja/ntp-tutorial")
     
     public static let maxTabsInMemory = 9
     
