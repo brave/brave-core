@@ -148,8 +148,3 @@ std::unique_ptr<views::LabelButtonBorder> BraveRewardsActionStubView::
 SkColor BraveRewardsActionStubView::GetInkDropBaseColor() const {
   return GetToolbarInkDropBaseColor(this);
 }
-
-std::unique_ptr<views::InkDropHighlight>
-BraveRewardsActionStubView::CreateInkDropHighlight() const {
-  return CreateToolbarInkDropHighlight(this);
-}
