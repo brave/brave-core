@@ -11,6 +11,8 @@ source_set("browser") {
     "ad_block_base_service.h",
     "ad_block_custom_filters_service.cc",
     "ad_block_custom_filters_service.h",
+    "ad_block_pref_service.cc",
+    "ad_block_pref_service.h",
     "ad_block_regional_service.cc",
     "ad_block_regional_service.h",
     "ad_block_regional_service_manager.cc",
@@ -50,17 +52,21 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/common:pref_names",
     "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/content_settings/core/browser",
     "//brave/components/p3a",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
     "//brave/content:common",
     "//chrome/common",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//components/security_interstitials/content:security_interstitial_page",
     "//components/sessions",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
@@ -69,6 +75,10 @@ source_set("browser") {
     "//third_party/leveldatabase",
     "//url",
   ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/browser" ]
+  }
 
   if (enable_brave_perf_predictor) {
     deps += [ "//brave/components/brave_perf_predictor/browser" ]

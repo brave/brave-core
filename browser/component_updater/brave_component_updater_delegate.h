@@ -18,6 +18,8 @@ namespace base {
 class SequencedTaskRunner;
 }
 
+class PrefService;
+
 namespace brave {
 
 class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
@@ -38,6 +40,9 @@ class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
   void RemoveObserver(ComponentObserver* observer) override;
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
+
+  const std::string locale() const override;
+  PrefService* local_state() override;
 
  private:
   scoped_refptr<base::SequencedTaskRunner> task_runner_;

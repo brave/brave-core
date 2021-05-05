@@ -83,4 +83,8 @@ void BraveComponent::OnComponentRegistered(
   delegate->OnDemandUpdate(component_id);
 }
 
+BraveComponent::Delegate* BraveComponent::delegate() {
+  return delegate_;
+}
+
 }  // namespace brave_component_updater

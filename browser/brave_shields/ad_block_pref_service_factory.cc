@@ -4,7 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
+
+#include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_shields/browser/ad_block_pref_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -34,6 +36,7 @@ AdBlockPrefServiceFactory::~AdBlockPrefServiceFactory() {}
 KeyedService* AdBlockPrefServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new AdBlockPrefService(
+      g_brave_browser_process->ad_block_service(),
       Profile::FromBrowserContext(context)->GetPrefs());
 }
 

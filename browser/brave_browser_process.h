@@ -12,7 +12,6 @@
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
-#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
