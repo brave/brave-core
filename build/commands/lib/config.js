@@ -85,7 +85,7 @@ const Config = function () {
   this.targetArch = getNPMConfig(['target_arch']) || 'x64'
   this.targetOS = getNPMConfig(['target_os'])
   this.gypTargetArch = 'x64'
-  this.targetApkBase ='classic'
+  this.targetAndroidBase ='classic'
   this.braveGoogleApiKey = getNPMConfig(['brave_google_api_key']) || 'AIzaSyAQfxPJiounkhOjODEO5ZieffeBv6yft2Q'
   this.googleApiEndpoint = getNPMConfig(['brave_google_api_endpoint']) || 'https://www.googleapis.com/geolocation/v1/geolocate?key='
   this.googleDefaultClientId = getNPMConfig(['google_default_client_id']) || ''
@@ -327,7 +327,9 @@ Config.prototype.buildArgs = function () {
       args.chrome_public_manifest_package = 'com.brave.browser_nightly'
     }
 
-    args.target_apk_base = this.targetApkBase
+    args.target_android_base = this.targetAndroidBase
+    args.target_android_output_format =
+        this.targetAndroidOutputFormat || (this.buildConfig === 'Release' ? 'aab' : 'apk')
     args.android_override_version_name = this.androidOverrideVersionName
 
     args.brave_android_developer_options_code = this.braveAndroidDeveloperOptionsCode
@@ -516,8 +518,11 @@ Config.prototype.update = function (options) {
 
   if (options.target_os === 'android') {
     this.targetOS = 'android'
-    if (options.target_apk_base) {
-      this.targetApkBase = options.target_apk_base
+    if (options.target_android_base) {
+      this.targetAndroidBase = options.target_android_base
+    }
+    if (options.target_android_output_format) {
+      this.targetAndroidOutputFormat = options.target_android_output_format
     }
     if (options.android_override_version_name) {
       this.androidOverrideVersionName = options.android_override_version_name
