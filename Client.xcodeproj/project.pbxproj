@@ -442,6 +442,7 @@
 		2F44FCC51A9E85E900FD20CC /* SettingsTableSectionHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F44FCC41A9E85E900FD20CC /* SettingsTableSectionHeaderFooterView.swift */; };
 		2F44FCC71A9E8CF500FD20CC /* SearchSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F44FCC61A9E8CF500FD20CC /* SearchSettingsTableViewController.swift */; };
 		2F44FCCB1A9E972E00FD20CC /* SearchEnginePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F44FCCA1A9E972E00FD20CC /* SearchEnginePicker.swift */; };
+		2F45B40A263AF1C20033A594 /* BrowserViewController+ToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F45B409263AF1C20033A594 /* BrowserViewController+ToolbarDelegate.swift */; };
 		2F51767425E4024B00429692 /* PlaylistSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F51767325E4024B00429692 /* PlaylistSettingsViewController.swift */; };
 		2F55443225913BD5000E4689 /* OpenSearchEngineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F55443125913BD5000E4689 /* OpenSearchEngineButton.swift */; };
 		2F697F7E1A9FD22D009E03AE /* SearchEnginesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F697F7D1A9FD22D009E03AE /* SearchEnginesTests.swift */; };
@@ -1942,6 +1943,7 @@
 		2F44FCC41A9E85E900FD20CC /* SettingsTableSectionHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableSectionHeaderFooterView.swift; sourceTree = "<group>"; };
 		2F44FCC61A9E8CF500FD20CC /* SearchSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSettingsTableViewController.swift; sourceTree = "<group>"; };
 		2F44FCCA1A9E972E00FD20CC /* SearchEnginePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEnginePicker.swift; sourceTree = "<group>"; };
+		2F45B409263AF1C20033A594 /* BrowserViewController+ToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+ToolbarDelegate.swift"; sourceTree = "<group>"; };
 		2F51767325E4024B00429692 /* PlaylistSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistSettingsViewController.swift; sourceTree = "<group>"; };
 		2F55443125913BD5000E4689 /* OpenSearchEngineButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSearchEngineButton.swift; sourceTree = "<group>"; };
 		2F697F7D1A9FD22D009E03AE /* SearchEnginesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEnginesTests.swift; sourceTree = "<group>"; };
@@ -4847,6 +4849,7 @@
 				C8F457A71F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift */,
 				2F098F8A255F2D730084FB37 /* BrowserViewController+ReaderMode.swift */,
 				2FB9C2A02587E742009DA1FE /* BrowserViewController+ProductNotification.swift */,
+				2F45B409263AF1C20033A594 /* BrowserViewController+ToolbarDelegate.swift */,
 				0A91598822B834CE00CCC119 /* BVC+Rewards.swift */,
 				2F55443025913BAA000E4689 /* OpenSearch */,
 			);
@@ -7227,6 +7230,7 @@
 				27036EA325671817004EF6B6 /* FeedCardFooterButton.swift in Sources */,
 				0AADC4D520D2A6A200FDE368 /* PreloadedFavorites.swift in Sources */,
 				0AC77602242A6AE000139377 /* BuyVPNView.swift in Sources */,
+				2F45B40A263AF1C20033A594 /* BrowserViewController+ToolbarDelegate.swift in Sources */,
 				278C467823EDF0060083347F /* SimpleShieldsView.swift in Sources */,
 				5D24AF8421BA489A00F9506A /* ContentBlocker.swift in Sources */,
 				27829DE92548AA4F007CF0B2 /* BraveRewardsViewController.swift in Sources */,
