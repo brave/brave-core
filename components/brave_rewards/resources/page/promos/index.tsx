@@ -3,13 +3,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+
+import japanBg from './assets/japan_bg.png'
 import tapBg from './assets/tap_bg.svg'
 import upholdCardBg from './assets/uphold_card_bg.png'
 import upholdEquitiesBg from './assets/uphold_equities_bg.svg'
+
 import { StyledInfo } from '../../ui/components/sidebarPromo/style'
 import { getLocale } from '../../../../common/locale'
 
-export type PromoType = 'uphold-card' | 'tap-network' | 'uphold-equities'
+export type PromoType = 'japan' | 'tap-network' | 'uphold-card' | 'uphold-equities'
 
 export interface Promo {
   title: string
@@ -31,6 +34,8 @@ export const getActivePromos = (rewardsData: Rewards.State) => {
         promos.unshift('uphold-card')
       }
       promos.unshift('uphold-equities')
+    } else if (wallet.type === 'bitflyer') {
+      promos.unshift('japan')
     }
   }
 
@@ -39,6 +44,9 @@ export const getActivePromos = (rewardsData: Rewards.State) => {
 
 const getLink = (type: PromoType) => {
   switch (type) {
+    case 'japan': {
+      return 'https://try.bravesoftware.jp/ref/ja-wallet-1-may-2021/w.html'
+    }
     case 'tap-network': {
       return 'https://brave.tapnetwork.io'
     }
@@ -55,6 +63,19 @@ const getLink = (type: PromoType) => {
 
 export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
   switch (type) {
+    case 'japan':
+      return {
+        imagePath: japanBg,
+        link: getLink(type),
+        copy: (
+          <StyledInfo>
+            {'対象：bitFlyerアカウントでウォレット認証を完了したユーザー。'}
+          </StyledInfo>
+        ),
+        supportedLocales: ['JP'],
+        title: '1000円分BATプレゼント中!',
+        disclaimer: '* 終了条件: プレゼント累計金額が1000万円に到達 または 2021年6月末日。BATの配布は7月中旬予定。'
+      }
     case 'tap-network':
       return {
         imagePath: tapBg,
