@@ -248,7 +248,7 @@ void BraveP3AService::Init(
   log_store_->LoadPersistedUnsentLogs();
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
-    HandleHistogramChange(entry.first.as_string(), entry.second);
+    HandleHistogramChange(std::string(entry.first), entry.second);
   }
   histogram_values_ = {};
   // Do rotation if needed.
@@ -469,10 +469,10 @@ void BraveP3AService::OnHistogramChangedOnUI(const char* histogram_name,
 void BraveP3AService::HandleHistogramChange(base::StringPiece histogram_name,
                                             size_t bucket) {
   if (IsSuspendedMetric(histogram_name, bucket)) {
-    log_store_->RemoveValueIfExists(histogram_name.as_string());
+    log_store_->RemoveValueIfExists(std::string(histogram_name));
     return;
   }
-  log_store_->UpdateValue(histogram_name.as_string(), bucket);
+  log_store_->UpdateValue(std::string(histogram_name), bucket);
 }
 
 void BraveP3AService::OnLogUploadComplete(int response_code,

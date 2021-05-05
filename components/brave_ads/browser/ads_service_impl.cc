@@ -1793,7 +1793,7 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
   if (resource_bundle.IsGzipped(id)) {
     data_resource = resource_bundle.LoadDataResourceString(id);
   } else {
-    data_resource = resource_bundle.GetRawDataResource(id).as_string();
+    data_resource = std::string(resource_bundle.GetRawDataResource(id));
   }
 
   return data_resource;

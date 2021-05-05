@@ -160,7 +160,7 @@ std::string LoadDataResource(const int id) {
     return resource_bundle.LoadDataResourceString(id);
   }
 
-  return resource_bundle.GetRawDataResource(id).as_string();
+  return std::string(resource_bundle.GetRawDataResource(id));
 }
 
 bool IsVettedSearchEngine(const GURL& url) {
