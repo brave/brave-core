@@ -43,17 +43,17 @@
 
       <if expr="not is_android">
         <message name="IDS_NEW_TAB_OTR_HEADING" desc="Heading used when a profile opens an OTR window">
-          You’ve gone private
+          You’ve gone Private
         </message>
         <message name="IDS_NEW_TAB_OTR_DESCRIPTION" desc="Used when a profile opens an OTR window">
-          Pages you view in private tabs won’t stick around in your browser’s history, cookie store, or search history after you’ve closed all of your private tabs. Any files you download or bookmarks you create will be kept.
+          Pages you view in Private tabs won’t stick around in your browser’s history, cookie store, or search history after you’ve closed all of your Private tabs. Any files you download or bookmarks you create will be kept.
         </message>
         <message name="IDS_NEW_TAB_OTR_MESSAGE_WARNING" desc="OTR window warning message. This follows the IDS_NEW_TAB_OTR_DESCRIPTION paragraph">
-          However, you aren’t invisible. Going private doesn’t hide your browsing from your employer, your internet service provider, or the websites you visit.
+          However, you aren’t invisible. Going Private doesn’t hide your browsing from your employer, your internet service provider, or the websites you visit.
         </message>
       </if>
       <message name="IDS_NEW_TAB_OTR_TITLE" desc="Title of the Private new tab page. The Private mode provides private browsing experience by hiding browsing activity from other profiles using the same device. However, it does not make the user completely invisible or anonymous; please don't translate it as such." formatter_data="android_java">
-        You’ve gone private
+        You’ve gone Private
       </message>
       <message name="IDS_NEW_TAB_OTR_SUBTITLE" desc="Subtitle of the Private new tab page, explaining to the user that the Private mode hides their browsing activity from other profiles using the same device. The second sentence clarifies that there are two important exceptions from this rule - downloaded files and added bookmarks will be persisted even after the Private session is closed." formatter_data="android_java">
         Now you can browse privately, and other profiles who use this device won’t see your activity. However, downloads and bookmarks will be saved.

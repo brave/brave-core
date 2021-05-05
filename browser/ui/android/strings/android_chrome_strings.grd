@@ -10,7 +10,7 @@ FAQ:
   - Tell me more, please?
       Ok: http://www.chromium.org/developers/design-documents/ui-localization
 
-CHAR-LIMIT guidelines:
+CHAR_LIMIT guidelines:
   Certain strings need character limits to prevent a long translation from breaking the UI.
   Translators will ensure the translation fits within the limit, but may be forced to use odd
   abbreviations to do so. There is a tradeoff here, so only use character limits when they're
@@ -20,7 +20,7 @@ CHAR-LIMIT guidelines:
   translation will be cut off. On the other hand, an error message that can wrap over multiple lines
   doesn't need a limit.
 
-  * Most strings - No limit. Omit "[CHAR-LIMIT=...]" altogether.
+  * Most strings - No limit. Omit "[CHAR_LIMIT=...]" altogether.
   * Main menu items - 27, or 24 characters if it has a checkbox
   * Settings headers - 32 characters
   * Settings items - 32 characters
@@ -203,57 +203,57 @@ CHAR-LIMIT guidelines:
       <message name="IDS_SETTINGS" desc="Title for Brave's Settings.">
         Settings
       </message>
-      <message name="IDS_PREFS_SECTION_BASICS" desc="Title of &quot;Basics&quot; section of preferences. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_SECTION_BASICS" desc="Title of &quot;Basics&quot; section of preferences. [CHAR_LIMIT=32]">
         Basics
       </message>
-      <message name="IDS_PREFS_SECTION_ADVANCED" desc="Title of &quot;Advanced&quot; section of preferences. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_SECTION_ADVANCED" desc="Title of &quot;Advanced&quot; section of preferences. [CHAR_LIMIT=32]">
         Advanced
       </message>
-      <message name="IDS_ENTER_VR" desc="Menu item for entering VR. [CHAR-LIMIT=27]">
+      <message name="IDS_ENTER_VR" desc="Menu item for entering VR. [CHAR_LIMIT=27]">
         Enter VR
       </message>
 
       <!-- Notification channels -->
-      <message name="IDS_NOTIFICATION_CATEGORY_GROUP_GENERAL" desc="Subheading for &quot;General&quot; section of a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_GROUP_GENERAL" desc="Subheading for &quot;General&quot; section of a list of notification categories. [CHAR_LIMIT=32]">
         General
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_GROUP_SITES" desc="Subheading for &quot;Sites&quot; section of a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_GROUP_SITES" desc="Subheading for &quot;Sites&quot; section of a list of notification categories. [CHAR_LIMIT=32]">
         Sites
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_INCOGNITO" desc="Label for notification that indicates private mode is active, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_INCOGNITO" desc="Label for notification that indicates Private mode is active, within a list of notification categories. [CHAR_LIMIT=32]">
         Private
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_SHARING" desc="Label for sharing-related notifications, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_SHARING" desc="Label for sharing-related notifications, within a list of notification categories. [CHAR_LIMIT=32]">
         Sharing
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_BROWSER" desc="Label for browser-related notifications, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_BROWSER" desc="Label for browser-related notifications, within a list of notification categories. [CHAR_LIMIT=32]">
         Browser
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_SCREEN_CAPTURE" desc="Label for notifications shown when screen is sharing or recording, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_SCREEN_CAPTURE" desc="Label for notifications shown when screen is sharing or recording, within a list of notification categories. [CHAR_LIMIT=32]">
         Screen Capture
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_CONTENT_SUGGESTIONS" desc="Label for Content Suggestions, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_CONTENT_SUGGESTIONS" desc="Label for Content Suggestions, within a list of notification categories. [CHAR_LIMIT=32]">
         Content Suggestions
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_FULLSCREEN_CONTROLS" desc="Label for notification shown when fullscreen webapp is being shown, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_FULLSCREEN_CONTROLS" desc="Label for notification shown when fullscreen webapp is being shown, within a list of notification categories. [CHAR_LIMIT=32]">
         Full screen site controls
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_SITES" desc="Label for notifications from websites, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_SITES" desc="Label for notifications from websites, within a list of notification categories. [CHAR_LIMIT=32]">
         Sites
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_VR" desc="Label for notifications in VR, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_VR" desc="Label for notifications in VR, within a list of notification categories. [CHAR_LIMIT=32]">
         Virtual Reality
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_UPDATES" desc="Label for update notifications, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_UPDATES" desc="Label for update notifications, within a list of notification categories. [CHAR_LIMIT=32]">
         Updates
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_ANNOUNCEMENT" desc="Label for announcements notifications, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_ANNOUNCEMENT" desc="Label for announcements notifications, within a list of notification categories. [CHAR_LIMIT=32]">
         Announcements
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR_LIMIT=32]">
        Permission requests
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_PRICE_DROP" desc="Label for notification that indicates there is a lower price in an open tab, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_PRICE_DROP" desc="Label for notification that indicates there is a lower price in an open tab, within a list of notification categories. [CHAR_LIMIT=32]">
         Price drop alerts
       </message>
 
@@ -262,16 +262,16 @@ CHAR-LIMIT guidelines:
       </message>
 
       <!-- Sign-in, sync and personalization preferences -->
-      <message name="IDS_PREFS_SECTION_ACCOUNT" desc="Title for the group of account-related entries in Settings. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_SECTION_ACCOUNT" desc="Title for the group of account-related entries in Settings. [CHAR_LIMIT=32]">
         Account
       </message>
-      <message name="IDS_PREFS_SECTION_ACCOUNT_AND_GOOGLE_SERVICES" desc="Title for the group of account-related entries and google services in Settings. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_SECTION_ACCOUNT_AND_GOOGLE_SERVICES" desc="Title for the group of account-related entries and google services in Settings. [CHAR_LIMIT=32]">
         You and Brave
       </message>
-      <message name="IDS_SIGN_IN_TO_CHROME" desc="Title for the button to sign in to Brave using one's Brave account. [CHAR-LIMIT=27]">
+      <message name="IDS_SIGN_IN_TO_CHROME" desc="Title for the button to sign in to Brave using one's Brave account. [CHAR_LIMIT=27]">
         Sign in to Brave
       </message>
-      <message name="IDS_PREFS_SYNC_AND_SERVICES" desc="Title for Settings section to manage data collection for Sync and Brave services. [CHAR-LIMIT=40]">
+      <message name="IDS_PREFS_SYNC_AND_SERVICES" desc="Title for Settings section to manage data collection for Sync and Brave services. [CHAR_LIMIT=40]">
         Sync and Brave services
       </message>
       <message name="IDS_PREFS_SYNC_AND_SERVICES_CONTENT_DESCRIPTION" desc="The accessibility text to read when the 'Sync and Brave services' Settings page is opened from the sign-in page. This text is attached to the 'Navigate Up' button shown at the top of the screen. The first two sentences describe the screen that is currently shown to the user, while 'Navigate up' is a description for the button this text is attached to. 'Navigate up' should match TC ID 6794660482873516081.">
@@ -323,7 +323,7 @@ CHAR-LIMIT guidelines:
       <message name="IDS_SERVICES_CATEGORY_TITLE" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave sync chain.">
         Other Brave services
       </message>
-      <message name="IDS_PREFS_GOOGLE_SERVICES" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave sync chain. [CHAR-LIMIT=40]">
+      <message name="IDS_PREFS_GOOGLE_SERVICES" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave sync chain. [CHAR_LIMIT=40]">
         Brave services
       </message>
       <message name="IDS_ALLOW_CHROME_SIGNIN_TITLE" desc="Title for a checkbox in Brave services that controls sign-in and sync prompts.">
@@ -382,7 +382,7 @@ CHAR-LIMIT guidelines:
       </message>
 
       <!-- Metrics settings -->
-      <message name="IDS_PREFS_METRICS_SETTINGS" desc="Title for the page that allows the user to control how much usage data Brave uploads. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_METRICS_SETTINGS" desc="Title for the page that allows the user to control how much usage data Brave uploads. [CHAR_LIMIT=32]">
         Usage data
       </message>
       <message name="IDS_MANAGE_METRICS_SETTINGS" desc="The text for a preferences row to open metrics settings.">
@@ -411,7 +411,7 @@ CHAR-LIMIT guidelines:
       </message>
 
       <!-- Search engine settings -->
-      <message name="IDS_SEARCH_ENGINE_SETTINGS" desc="Title for Search Engine settings. [CHAR-LIMIT=32]">
+      <message name="IDS_SEARCH_ENGINE_SETTINGS" desc="Title for Search Engine settings. [CHAR_LIMIT=32]">
         Search engine
       </message>
       <message name="IDS_SEARCH_ENGINE_LOCATION_AND_NOTIFICATIONS_ALLOWED" desc="The text of a link displayed when location and notifications permissions for a particular search engine are allowed.">
@@ -454,46 +454,46 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PAYMENT_APPS_USAGE_MESSAGE" desc="Message to explain the usage of the listed payment apps.">
         On some websites, you can pay with above supported payment apps on your device.
       </message>
-      <message name="IDS_AUTOFILL_CREATE_PROFILE" desc="Button that allows the user to create a new profile (which contains the user's name, address, etc) that will be automatically filled into web page forms. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_CREATE_PROFILE" desc="Button that allows the user to create a new profile (which contains the user's name, address, etc) that will be automatically filled into web page forms. [CHAR_LIMIT=32]">
         Add address
       </message>
-      <message name="IDS_AUTOFILL_CREATE_CREDIT_CARD" desc="Button that allows the user to add a new card that will be automatically filled into web page forms. This can be either credit, debit, or prepaid card. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_CREATE_CREDIT_CARD" desc="Button that allows the user to add a new card that will be automatically filled into web page forms. This can be either credit, debit, or prepaid card. [CHAR_LIMIT=32]">
         Add card
       </message>
-      <message name="IDS_AUTOFILL_EDIT_CREDIT_CARD" desc="Button that allows the user to edit a card that can be automatically filled into web page forms. This can be either credit, debit, or prepaid card. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_EDIT_CREDIT_CARD" desc="Button that allows the user to edit a card that can be automatically filled into web page forms. This can be either credit, debit, or prepaid card. [CHAR_LIMIT=32]">
         Edit card
       </message>
-     <message name="IDS_AUTOFILL_PROFILE_EDITOR_COUNTRY" desc="Label for a spinner input field containing a list of countries or regions [CHAR-LIMIT=32]">
+     <message name="IDS_AUTOFILL_PROFILE_EDITOR_COUNTRY" desc="Label for a spinner input field containing a list of countries or regions [CHAR_LIMIT=32]">
         Country/Region
       </message>
-      <message name="IDS_AUTOFILL_PROFILE_EDITOR_HONORIFIC_PREFIX" desc="Label for text input field containing a title that can be auto-filled by Brave. [CHAR-LIMIT=32]" meaning="A 'Title' field in a web form could be a prefix like Ms., Mx., or Dr. or a position held, like Captain or Rabbi.">
+      <message name="IDS_AUTOFILL_PROFILE_EDITOR_HONORIFIC_PREFIX" desc="Label for text input field containing a title that can be auto-filled by Brave. [CHAR_LIMIT=32]" meaning="A 'Title' field in a web form could be a prefix like Ms., Mx., or Dr. or a position held, like Captain or Rabbi.">
         Title
       </message>
-      <message name="IDS_AUTOFILL_PROFILE_EDITOR_EMAIL_ADDRESS" desc="Label for text input field containing an e-mail address. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_PROFILE_EDITOR_EMAIL_ADDRESS" desc="Label for text input field containing an e-mail address. [CHAR_LIMIT=32]">
         Email
       </message>
-      <message name="IDS_AUTOFILL_PROFILE_EDITOR_PHONE_NUMBER" desc="Label for text input field containing a phone number. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_PROFILE_EDITOR_PHONE_NUMBER" desc="Label for text input field containing a phone number. [CHAR_LIMIT=32]">
         Phone
       </message>
-      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NAME" desc="Label for text input field containing the name on a credit card. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NAME" desc="Label for text input field containing the name on a credit card. [CHAR_LIMIT=32]">
         Name on card
       </message>
-      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NICKNAME" desc="Label for text input field containing the nickname on a credit card. [CHAR-LIMIT=25]">
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NICKNAME" desc="Label for text input field containing the nickname on a credit card. [CHAR_LIMIT=25]">
         Card nickname
       </message>
-      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_INVALID_NICKNAME" desc="Label for text input field containing the nickname on a credit card. [CHAR-LIMIT=25]">
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_INVALID_NICKNAME" desc="Label for text input field containing the nickname on a credit card. [CHAR_LIMIT=25]">
         Nickname can’t include numbers
       </message>
-      <message name="IDS_AUTOFILL_CARD_HOLDER_NAME" desc="Label for text input field containing the name on a credit card. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_CARD_HOLDER_NAME" desc="Label for text input field containing the name on a credit card. [CHAR_LIMIT=32]">
         Cardholder name
       </message>
-      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NUMBER" desc="Label for text input field containing a card number. This can be a credit, debit, or prepaid card. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NUMBER" desc="Label for text input field containing a card number. This can be a credit, debit, or prepaid card. [CHAR_LIMIT=32]">
         Card number
       </message>
-      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_EXPIRATION_DATE" desc="Label for text input field containing a credit card expiration date. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_EXPIRATION_DATE" desc="Label for text input field containing a credit card expiration date. [CHAR_LIMIT=32]">
         Expiration date
       </message>
-      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_BILLING_ADDRESS" desc="Label for a spinner input field containing a list of billing addresses for a credit card. [CHAR-LIMIT=32]">
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_BILLING_ADDRESS" desc="Label for a spinner input field containing a list of billing addresses for a credit card. [CHAR_LIMIT=32]">
         Billing address
       </message>
       <message name="IDS_AUTOFILL_DESCRIBE_LOCAL_COPY" desc="Text label that describes a Wallet credit card which has been copied to the local Brave instance.">
@@ -523,10 +523,10 @@ CHAR-LIMIT guidelines:
       </message>
 
       <!-- Password Settings -->
-      <message name="IDS_PASSWORD_SETTINGS_TITLE" desc="Title for the settings screen with saved passwords and the header for the list of saved passwords in that screen. [CHAR-LIMIT=32]">
+      <message name="IDS_PASSWORD_SETTINGS_TITLE" desc="Title for the settings screen with saved passwords and the header for the list of saved passwords in that screen. [CHAR_LIMIT=32]">
         Passwords
       </message>
-      <message name="IDS_PASSWORD_SETTINGS_SAVE_PASSWORDS" desc="Title for the checkbox toggling whether passwords are saved or not. [CHAR-LIMIT=32]">
+      <message name="IDS_PASSWORD_SETTINGS_SAVE_PASSWORDS" desc="Title for the checkbox toggling whether passwords are saved or not. [CHAR_LIMIT=32]">
         Save passwords
       </message>
       <message name="IDS_PASSWORDS_AUTO_SIGNIN_TITLE" desc="Title for checkbox to enable automatically signing the user in to websites">
@@ -547,7 +547,7 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PASSWORDS_CHECK_DESCRIPTION" desc="Text explaining the benefits of checking the passwords, to be displayed under the Check Passwords button title.">
         Keep your passwords safe from data breaches and other security issues
       </message>
-      <message name="IDS_SECTION_SAVED_PASSWORDS_EXCEPTIONS" desc="Header for the list of websites for which user selected to never save passwords. [CHAR-LIMIT=32]">
+      <message name="IDS_SECTION_SAVED_PASSWORDS_EXCEPTIONS" desc="Header for the list of websites for which user selected to never save passwords. [CHAR_LIMIT=32]">
         Never saved
       </message>
       <message name="IDS_MANAGE_PASSWORDS_TEXT" desc="Text for link to manage passwords on Account Central.">
@@ -722,10 +722,10 @@ CHAR-LIMIT guidelines:
       </message>
 
       <!-- Themes settings -->
-      <message name="IDS_THEME_SETTINGS" desc="Title for the Theme settings. [CHAR-LIMIT=32]">
+      <message name="IDS_THEME_SETTINGS" desc="Title for the Theme settings. [CHAR_LIMIT=32]">
         Theme
       </message>
-      <message name="IDS_THEMES_SYSTEM_DEFAULT_TITLE" desc="Title for the System Default option. [CHAR-LIMIT=32]">
+      <message name="IDS_THEMES_SYSTEM_DEFAULT_TITLE" desc="Title for the System Default option. [CHAR_LIMIT=32]">
         System default
       </message>
       <message name="IDS_THEMES_SYSTEM_DEFAULT_SUMMARY" desc="Summary for the System Default option.">
@@ -734,12 +734,12 @@ CHAR-LIMIT guidelines:
       <message name="IDS_THEMES_SYSTEM_DEFAULT_SUMMARY_API_29" desc="Summary for the System Default option (Android Q+).">
         Turn on dark theme when your device's dark theme or Battery Saver is on
       </message>
-      <message name="IDS_DARKEN_WEBSITES" desc="Title for the Darken websites option. [CHAR-LIMIT=32]">
+      <message name="IDS_DARKEN_WEBSITES" desc="Title for the Darken websites option. [CHAR_LIMIT=32]">
         Darken websites
       </message>
 
       <!-- Privacy and security preferences -->
-      <message name="IDS_PREFS_PRIVACY_SECURITY" desc="Title for the Privacy and Security preferences. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_PRIVACY_SECURITY" desc="Title for the Privacy and Security preferences. [CHAR_LIMIT=32]">
         Privacy and security
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_TITLE" desc="Name for the Contextual Search feature, which allows users to search for a term in a web page by tapping on it.">
@@ -862,7 +862,7 @@ Privacy Sandbox is still in active development and is available in selected regi
         Please verify that this is a valid provider or try again later
       </message>
 
-      <message name="IDS_CLEAR_BROWSING_DATA_TITLE" desc="Title of the Clear Browsing Data screen. [CHAR-LIMIT=32]">
+      <message name="IDS_CLEAR_BROWSING_DATA_TITLE" desc="Title of the Clear Browsing Data screen. [CHAR_LIMIT=32]">
         Clear browsing data
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_SUMMARY" desc="Summary of the settings item that opens the Clear Browsing Data dialog.">
@@ -918,7 +918,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLEAR_BROWSING_DATA_PROGRESS_TITLE" desc="Title for the progress dialog used when waiting for &quot;clear browsing data&quot; to complete.">
         Clearing browsing data
       </message>
-      <message name="IDS_CLEAR_DATA_DELETE" desc="Button that allows the user to clear their browsing data. [CHAR-LIMIT=30]">
+      <message name="IDS_CLEAR_DATA_DELETE" desc="Button that allows the user to clear their browsing data. [CHAR_LIMIT=30]">
         Clear data
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_PROGRESS_MESSAGE" desc="Message on the progress dialog used when waiting for &quot;clear browsing data&quot; to complete.">
@@ -945,10 +945,10 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLEAR_BROWSING_DATA_TAB_PERIOD_EVERYTHING" desc="The option to delete browsing data from the beginning of time.">
         All time
       </message>
-      <message name="IDS_IMPORTANT_SITES_TITLE" desc="Title of clear storage dialogs used in a couple different places to confirm clearing site storage data. [CHAR-LIMIT=24]">
+      <message name="IDS_IMPORTANT_SITES_TITLE" desc="Title of clear storage dialogs used in a couple different places to confirm clearing site storage data. [CHAR_LIMIT=24]">
         Also clear data from these sites?
       </message>
-      <message name="IDS_IMPORTANT_SITES_TITLE_WITH_APP" desc="Title of clear storage dialogs used in a couple different places to confirm clearing site storage data (when there are also apps involved). [CHAR-LIMIT=24]">
+      <message name="IDS_IMPORTANT_SITES_TITLE_WITH_APP" desc="Title of clear storage dialogs used in a couple different places to confirm clearing site storage data (when there are also apps involved). [CHAR_LIMIT=24]">
         Also clear data from these sites &amp; apps?
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_IMPORTANT_DIALOG_TEXT" desc="The text of the dialog presenting the user with 'important' sites that they can exclude from clearing.">
@@ -977,7 +977,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Safety check -->
-      <message name="IDS_PREFS_SAFETY_CHECK" desc="Title of the Safety check element in settings, allowing the user to check multiple areas of browser safety. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_SAFETY_CHECK" desc="Title of the Safety check element in settings, allowing the user to check multiple areas of browser safety. [CHAR_LIMIT=32]">
         Safety check
       </message>
       <message name="IDS_SAFETY_CHECK_DESCRIPTION" desc="Introduces the safety check categories to the user. Followed by several items, such as 'Safe Browsing', 'Updates', 'Passwords'.">
@@ -1068,7 +1068,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
        <!-- Safe Browsing preferences -->
-      <message name="IDS_PREFS_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing preferences. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing preferences. [CHAR_LIMIT=32]">
         Safe Browsing
       </message>
       <message name="IDS_PREFS_SAFE_BROWSING_SUMMARY" desc="Summary for the Safe Browsing preferences.">
@@ -1077,22 +1077,22 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_PREFS_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for the Safe Browsing preferences when Safe Browsing is off.">
         Safe Browsing is off
       </message>
-      <message name="IDS_PREFS_SECTION_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing section. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_SECTION_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing section. [CHAR_LIMIT=32]">
         Safe Browsing
       </message>
-      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_TITLE" desc="Title for Safe Browsing enhanced protection mode. [CHAR-LIMIT=32]">
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_TITLE" desc="Title for Safe Browsing enhanced protection mode. [CHAR_LIMIT=32]">
         Enhanced protection
       </message>
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY" desc="Summary for Safe Browsing enhanced protection mode.">
         Faster, proactive protection against dangerous websites, downloads, and extensions. Warns you about password breaches. Requires browsing data to be sent to Brave.
       </message>
-      <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_TITLE" desc="Title for Safe Browsing standard protection mode. [CHAR-LIMIT=32]">
+      <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_TITLE" desc="Title for Safe Browsing standard protection mode. [CHAR_LIMIT=32]">
         Standard protection
       </message>
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY" desc="Summary for Safe Browsing standard protection mode.">
         Standard protection against websites, downloads, and extensions that are known to be dangerous.
       </message>
-      <message name="IDS_SAFE_BROWSING_NO_PROTECTION_TITLE" desc="Title for Safe Browsing no protection mode. [CHAR-LIMIT=32]">
+      <message name="IDS_SAFE_BROWSING_NO_PROTECTION_TITLE" desc="Title for Safe Browsing no protection mode. [CHAR_LIMIT=32]">
         No protection (not recommended)
       </message>
       <message name="IDS_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
@@ -1148,7 +1148,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Accessibility preferences -->
-      <message name="IDS_PREFS_ACCESSIBILITY" desc="Title of Accessibility settings, which allows the user to change webpage font sizes. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_ACCESSIBILITY" desc="Title of Accessibility settings, which allows the user to change webpage font sizes. [CHAR_LIMIT=32]">
         Accessibility
       </message>
       <message name="IDS_FONT_SIZE" desc="Title for font size preference.">
@@ -1180,31 +1180,31 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Language Settings -->
-      <message name="IDS_LANGUAGE_SETTINGS" desc="Title for the Languages settings screen that allows users to manage their languages preferences. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGE_SETTINGS" desc="Title for the Languages settings screen that allows users to manage their languages preferences. [CHAR_LIMIT=32]">
         Languages
       </message>
-      <message name="IDS_APP_LANGUAGE_TITLE" desc="Title of Language settings section to change Brave’s user interface language. [CHAR-LIMIT=32]">
+      <message name="IDS_APP_LANGUAGE_TITLE" desc="Title of Language settings section to change Brave’s user interface language. [CHAR_LIMIT=32]">
         <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>’s language
       </message>
-      <message name="IDS_DEFAULT_LANG_SUBTITLE" desc="Subtite to use for the device’s default language. [CHAR-LIMIT=42]">
+      <message name="IDS_DEFAULT_LANG_SUBTITLE" desc="Subtite to use for the device’s default language. [CHAR_LIMIT=42]">
         Default device language
       </message>
-      <message name="IDS_ADD_LANGUAGE" desc="Title for the screen that allows users to add languages to their preferred language list. [CHAR-LIMIT=32]">
+      <message name="IDS_ADD_LANGUAGE" desc="Title for the screen that allows users to add languages to their preferred language list. [CHAR_LIMIT=32]">
         Add language
       </message>
-      <message name="IDS_CHANGE_CHROME_LANG" desc="Title of page to select a language within Brave's language settings. [CHAR-LIMIT=32]">
+      <message name="IDS_CHANGE_CHROME_LANG" desc="Title of page to select a language within Brave's language settings. [CHAR_LIMIT=32]">
         Change language
       </message>
-      <message name="IDS_LANGUAGES_SELECT" desc="Option in overflow menu on Language settings page to change Brave’s user interface language. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_SELECT" desc="Option in overflow menu on Language settings page to change Brave’s user interface language. [CHAR_LIMIT=32]">
         Select language
       </message>
-      <message name="IDS_LANGUAGES_SELECT_SUGGESTED" desc="Title appearing above list of languages ordered based on what users in that country might select. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_SELECT_SUGGESTED" desc="Title appearing above list of languages ordered based on what users in that country might select. [CHAR_LIMIT=32]">
         Suggested languages
       </message>
-      <message name="IDS_LANGUAGES_SELECT_OTHER" desc="Subtite appearing above list of all languages not likely to be selected by users in that country. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_SELECT_OTHER" desc="Subtite appearing above list of all languages not likely to be selected by users in that country. [CHAR_LIMIT=32]">
         Other languages
       </message>
-      <message name="IDS_LANGUAGES_CONTENT_TITLE" desc="Title of Language settings section to add or remove preferred content languages. Content languages are selected by the user and tell Brave what language the user prefers webpage content in.  [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_CONTENT_TITLE" desc="Title of Language settings section to add or remove preferred content languages. Content languages are selected by the user and tell Brave what language the user prefers webpage content in.  [CHAR_LIMIT=32]">
         Content languages
       </message>
       <message name="IDS_LANGUAGES_CONTENT_DESCRIPTION" desc="Description of Content language on the Language settings screen. Appears above a list of one or more languages that the user selects to tell Brave which languages they prefer webpage content in.">
@@ -1219,7 +1219,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_LANGUAGES_SEND_TRANSLATE_SWITCH" desc="Appears next to the switch controlling whether or not Brave will offer to translate pages in other languages.  When enabled the Brave Translate UI will be displayed on web pages that are not in the user's preferred language(s).">
         Offer to send pages in other languages to Brave Translate
       </message>
-      <message name="IDS_LANGUAGES_ITEM_OPTION_OFFER_TO_TRANSLATE" desc="Option in language item menu. User can click the 'Offer to translate' option to toggle whether they want Brave to translate pages in this language. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_ITEM_OPTION_OFFER_TO_TRANSLATE" desc="Option in language item menu. User can click the 'Offer to translate' option to toggle whether they want Brave to translate pages in this language. [CHAR_LIMIT=32]">
         Offer to translate
       </message>
       <message name="IDS_LANGUAGES_EXPLICIT_ASK_TITLE" desc="Title of the dialog that explicitly asks the user which languages they can read.">
@@ -1240,25 +1240,25 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_LANGUAGES_SRP_LOADING_TEXT" desc="Text to display while a language pack is being downloaded.">
         Loading <ph name="LANG">%1$s<ex>Hindi</ex></ph>
       </message>
-      <message name="IDS_LANGUAGES_SPLIT_DOWNLOADING" desc="Text to display next to a language when it is being downloaded to use as Brave's UI. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_SPLIT_DOWNLOADING" desc="Text to display next to a language when it is being downloaded to use as Brave's UI. [CHAR_LIMIT=32]">
         Downloading…
       </message>
       <message name="IDS_LANGUAGES_SPLIT_READY" desc="Text to display when a language pack has been downloaded. The user needs to restart Brave to use the new language as Brave's UI.">
         Language ready, restart <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
       </message>
-      <message name="IDS_LANGUAGES_INFOBAR_READY" desc="Infobar text to appear when a new language pack has been downloaded. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_INFOBAR_READY" desc="Infobar text to appear when a new language pack has been downloaded. [CHAR_LIMIT=32]">
         <ph name="LANG">%1$s<ex>Hindi</ex></ph> is ready.
       </message>
-      <message name="IDS_LANGUAGES_INFOBAR_RESTART" desc="The clickable link letting the user know they can click to restart Brave. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_INFOBAR_RESTART" desc="The clickable link letting the user know they can click to restart Brave. [CHAR_LIMIT=32]">
         Restart Brave
       </message>
-      <message name="IDS_LANGUAGES_SETTINGS_TITLE" desc="Title of Language settings section to control translation preferences. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_SETTINGS_TITLE" desc="Title of Language settings section to control translation preferences. [CHAR_LIMIT=32]">
         Translation settings
       </message>
-      <message name="IDS_LANGUAGES_SETTINGS_ADVANCED" desc="Title of Language settings section that will show advanced translation settings. [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_SETTINGS_ADVANCED" desc="Title of Language settings section that will show advanced translation settings. [CHAR_LIMIT=32]">
         Advanced
       </message>
-      <message name="IDS_LANGUAGES_SETTINGS_TARGET" desc="Title of Translation settings for the current translate targert. Tapping this opens a new screen to select the target language.  [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_SETTINGS_TARGET" desc="Title of Translation settings for the current translate targert. Tapping this opens a new screen to select the target language.  [CHAR_LIMIT=32]">
         Translate into this language
       </message>
       <message name="IDS_LANGUAGES_SETTINGS_AUTOMATIC" desc="Title of Translation settings that lists languages that should be automatically translated.">
@@ -1523,7 +1523,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- About Brave preferences -->
-      <message name="IDS_PREFS_ABOUT_CHROME" desc="Title for the About Brave page. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_ABOUT_CHROME" desc="Title for the About Brave page. [CHAR_LIMIT=32]">
         About Brave
       </message>
       <message name="IDS_LEGAL_INFORMATION_SUMMARY" desc="Summary for legal information" meaning="Android">
@@ -1543,10 +1543,10 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Account management UI strings. -->
-      <message name="IDS_ACCOUNT_MANAGEMENT_ADD_ACCOUNT_TITLE" desc="Button text for opening the add account dialog to add a new account to a user's profile. [CHAR-LIMIT=20]">
+      <message name="IDS_ACCOUNT_MANAGEMENT_ADD_ACCOUNT_TITLE" desc="Button text for opening the add account dialog to add a new account to a user's profile. [CHAR_LIMIT=20]">
         Add account
       </message>
-      <message name="IDS_ACCOUNT_MANAGEMENT_TITLE" desc="Header title for the account management screen. [CHAR-LIMIT=32]">
+      <message name="IDS_ACCOUNT_MANAGEMENT_TITLE" desc="Header title for the account management screen. [CHAR_LIMIT=32]">
         Signed in to Brave as
       </message>
       <message name="IDS_ACCOUNT_MANAGEMENT_SIGN_OUT" desc="Button text for signing out of Brave">
@@ -1610,7 +1610,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Legal information preferences -->
-      <message name="IDS_LEGAL_INFORMATION_TITLE" desc="Title for legal information [CHAR-LIMIT=32]">
+      <message name="IDS_LEGAL_INFORMATION_TITLE" desc="Title for legal information [CHAR_LIMIT=32]">
         Legal information
       </message>
       <message name="IDS_OPEN_SOURCE_LICENSE_TITLE" desc="Title for open source license">
@@ -1642,10 +1642,10 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Sign-in strings -->
-      <message name="IDS_SIGNOUT_TITLE" desc="Title for sign out of Brave dialog [CHAR-LIMIT=40]">
+      <message name="IDS_SIGNOUT_TITLE" desc="Title for sign out of Brave dialog [CHAR_LIMIT=40]">
         Sign out and turn off sync?
       </message>
-      <message name="IDS_SIGNOUT_MANAGED_ACCOUNT_TITLE" desc="Title for sign out of Brave dialog for enterprise account [CHAR-LIMIT=40]">
+      <message name="IDS_SIGNOUT_MANAGED_ACCOUNT_TITLE" desc="Title for sign out of Brave dialog for enterprise account [CHAR_LIMIT=40]">
         Clear your Brave data from this device?
       </message>
       <message name="IDS_SIGNOUT_MESSAGE" desc="Message to display in 'Sign out and turn off sync?' dialog">
@@ -1696,43 +1696,43 @@ Your Brave account may have other forms of browsing history like searches and ac
         Tabs that you've opened in Brave on your other devices will appear here.
       </message>
 
-      <message name="IDS_SEARCH_AND_BROWSE_CATEGORY" desc="Category to show the search and browse improvement toggle. [CHAR-LIMT=32]">
+      <message name="IDS_SEARCH_AND_BROWSE_CATEGORY" desc="Category to show the search and browse improvement toggle. [CHAR_LIMIT=32]">
         Search and browse
       </message>
-      <message name="IDS_SYNCING_CATEGORY" desc="Category to separate search and browse section with sync related data types. [CHAR-LIMT=32]">
+      <message name="IDS_SYNCING_CATEGORY" desc="Category to separate search and browse section with sync related data types. [CHAR_LIMIT=32]">
         Syncing
       </message>
-      <message name="IDS_SYNC_EVERYTHING_PREF" desc="Title for preference which enables sync'ing of all data types. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_EVERYTHING_PREF" desc="Title for preference which enables sync'ing of all data types. [CHAR_LIMIT=32]">
         Sync everything
       </message>
-      <message name="IDS_SYNC_AUTOFILL" desc="Title for preference which enables sync'ing of autofill. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_AUTOFILL" desc="Title for preference which enables sync'ing of autofill. [CHAR_LIMIT=32]">
         Addresses and more
       </message>
-      <message name="IDS_SYNC_BOOKMARKS" desc="Title for preference which enables sync'ing of bookmarks. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_BOOKMARKS" desc="Title for preference which enables sync'ing of bookmarks. [CHAR_LIMIT=32]">
         Bookmarks
       </message>
-      <message name="IDS_SYNC_HISTORY" desc="Title for preference which enables sync'ing of history data. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_HISTORY" desc="Title for preference which enables sync'ing of history data. [CHAR_LIMIT=32]">
         History
       </message>
-      <message name="IDS_SYNC_PASSWORDS" desc="Title for preference which enables sync'ing of passwords. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_PASSWORDS" desc="Title for preference which enables sync'ing of passwords. [CHAR_LIMIT=32]">
         Passwords
       </message>
-      <message name="IDS_SYNC_RECENT_TABS" desc="Title for preference which enables sync'ing of open tabs. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_RECENT_TABS" desc="Title for preference which enables sync'ing of open tabs. [CHAR_LIMIT=32]">
         Open tabs
       </message>
-      <message name="IDS_SYNC_SETTINGS" desc="Title for preference which enables sync'ing of settings. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_SETTINGS" desc="Title for preference which enables sync'ing of settings. [CHAR_LIMIT=32]">
         Settings
       </message>
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Brave Pay data for Autofill. 'Brave Pay' should not be translated as it is the product name.">
         Payment methods and addresses using Brave Pay
       </message>
-      <message name="IDS_SYNC_ENCRYPTION" desc="Preference category name for sync encryption. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_ENCRYPTION" desc="Preference category name for sync encryption. [CHAR_LIMIT=32]">
         Encryption
       </message>
       <message name="IDS_SYNC_MANAGE_DATA" desc="Title for link to Brave Dashboard to manage sync data.">
         Manage synced data
       </message>
-      <message name="IDS_SYNC_PASSPHRASE_TYPE_TITLE" desc="Title of sync passphrase type dialog. [CHAR-LIMIT=24]">
+      <message name="IDS_SYNC_PASSPHRASE_TYPE_TITLE" desc="Title of sync passphrase type dialog. [CHAR_LIMIT=24]">
         Encryption
       </message>
       <message name="IDS_SYNC_PASSPHRASE_TYPE_KEYSTORE" desc="Option to encrypt only passwords, using your Brave credentials.">
@@ -1747,16 +1747,16 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_PASSPHRASE_TYPE_CUSTOM_DIALOG_TITLE" desc="Dialog title for custom passphrase creation.">
         Create passphrase
       </message>
-      <message name="IDS_SIGN_IN_GOOGLE_ACCOUNT" desc="Title of sign in account selection dialog. [CHAR-LIMIT=32]">
+      <message name="IDS_SIGN_IN_GOOGLE_ACCOUNT" desc="Title of sign in account selection dialog. [CHAR_LIMIT=32]">
         Brave sync chain
       </message>
       <message name="IDS_SYNC_CUSTOM_PASSPHRASE" desc="Prompt user to create a custom sync password.">
         Passphrase encryption doesn’t include payment methods and addresses from Brave Pay. Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting you'll need to reset sync. <ph name="BEGIN_LINK">&lt;learnmore&gt;</ph>Learn more<ph name="END_LINK">&lt;/learnmore&gt;</ph>
       </message>
-      <message name="IDS_SYNC_ENTER_CUSTOM_PASSPHRASE_HINT" desc="Hint for the passphrase field when user is to type in a passphrase. [CHAR-LIMIT=30]">
+      <message name="IDS_SYNC_ENTER_CUSTOM_PASSPHRASE_HINT" desc="Hint for the passphrase field when user is to type in a passphrase. [CHAR_LIMIT=30]">
         Passphrase
       </message>
-      <message name="IDS_SYNC_ENTER_CUSTOM_PASSPHRASE_HINT_CONFIRM" desc="Hint for the passphrase confirmation field when user is to type in a passphrase. [CHAR-LIMIT=30]">
+      <message name="IDS_SYNC_ENTER_CUSTOM_PASSPHRASE_HINT_CONFIRM" desc="Hint for the passphrase confirmation field when user is to type in a passphrase. [CHAR_LIMIT=30]">
         Confirm passphrase
       </message>
       <message name="IDS_SYNC_ENTER_PASSPHRASE_BODY_WITH_DATE_ANDROID" desc="Instructions for the dialog where the user enters their Sync passphrase.">
@@ -1768,7 +1768,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_ACCOUNT_INFO" desc="The message that appears in the options dialog indicating that the user is signed in with the given email address.">
         Signed in as <ph name="USER_EMAIL_ADDRESS">%1$s<ex>foo@gmail.com</ex></ph>.
       </message>
-      <message name="IDS_SYNC_PASSPHRASE_CANNOT_BE_BLANK" desc="Inform user that they cannot use a blank password [CHAR-LIMIT=40]">
+      <message name="IDS_SYNC_PASSPHRASE_CANNOT_BE_BLANK" desc="Inform user that they cannot use a blank password [CHAR_LIMIT=40]">
         This field cannot be blank
       </message>
       <message name="IDS_SYNC_PASSPHRASE_RESET_INSTRUCTIONS" desc="Inform the user how they can reset their passphrase if they have forgotten it." meaning="Android">
@@ -1782,13 +1782,13 @@ Your Brave account may have other forms of browsing history like searches and ac
 
 To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<ph name="END_LINK">&lt;/resetlink&gt;</ph>
       </message>
-      <message name="IDS_SYNC_PASSPHRASE_INCORRECT" desc="Inform the user that the passphrase they entered for sync is incorrect. [CHAR-LIMIT=40]">
+      <message name="IDS_SYNC_PASSPHRASE_INCORRECT" desc="Inform the user that the passphrase they entered for sync is incorrect. [CHAR_LIMIT=40]">
         Incorrect passphrase
       </message>
-      <message name="IDS_SYNC_VERIFYING" desc="Inform the user that their sync encryption information is being verified. [CHAR-LIMIT=20]">
+      <message name="IDS_SYNC_VERIFYING" desc="Inform the user that their sync encryption information is being verified. [CHAR_LIMIT=20]">
         Verifying…
       </message>
-      <message name="IDS_SYNC_LOADING" desc="Preference title to let the user change their encryption password. [CHAR-LIMIT=20]">
+      <message name="IDS_SYNC_LOADING" desc="Preference title to let the user change their encryption password. [CHAR_LIMIT=20]">
         Loading…
       </message>
       <message name="IDS_SYNC_IMPORT_DATA_PROMPT" desc="Prompt for the user to choose how they want to handle their existing sync data">
@@ -1861,13 +1861,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Hint of sync error solution strings -->
-      <message name="IDS_SYNC_ERROR_CARD_TITLE" desc="Title of the Sync Error Card. [CHAR-LIMIT=32]">
+      <message name="IDS_SYNC_ERROR_CARD_TITLE" desc="Title of the Sync Error Card. [CHAR_LIMIT=32]">
         Sync isn't working
       </message>
-      <message name="IDS_PASSWORD_SYNC_ERROR_SUMMARY" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords can't be synced (due to missing trusted vault keys). [CHAR-LIMIT=32]">
+      <message name="IDS_PASSWORD_SYNC_ERROR_SUMMARY" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords can't be synced (due to missing trusted vault keys). [CHAR_LIMIT=32]">
         Password sync isn't working
       </message>
-      <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED_TITLE" desc="Title of the error message shown when sync setup was not complete. [CHAR-LIMIT=60]">
+      <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED_TITLE" desc="Title of the error message shown when sync setup was not complete. [CHAR_LIMIT=60]">
         Initial sync setup not finished
       </message>
       <message name="IDS_HINT_ANDROID_SYNC_DISABLED" desc="Hint message to resolve Android system sync is disabled error.">
@@ -1916,22 +1916,22 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Sync error strings -->
-      <message name="IDS_SYNC_ERROR_GENERIC" desc="Sync error string for generic error. [CHAR-LIMIT=80]">
+      <message name="IDS_SYNC_ERROR_GENERIC" desc="Sync error string for generic error. [CHAR_LIMIT=80]">
         Sync has stopped working
       </message>
-      <message name="IDS_SYNC_ERROR_GA" desc="Sync error string for when the needs to update the sign-in details [CHAR-LIMIT=80]">
+      <message name="IDS_SYNC_ERROR_GA" desc="Sync error string for when the needs to update the sign-in details [CHAR_LIMIT=80]">
         Please update your sign-in details.
       </message>
-      <message name="IDS_SYNC_ERROR_CONNECTION" desc="Sync error string for network connection. [CHAR-LIMIT=80]">
+      <message name="IDS_SYNC_ERROR_CONNECTION" desc="Sync error string for network connection. [CHAR_LIMIT=80]">
         Could not connect to the sync server.
       </message>
-      <message name="IDS_SYNC_ERROR_UPGRADE_CLIENT" desc="Sync error string for out-of-date client. [CHAR-LIMIT=80]">
+      <message name="IDS_SYNC_ERROR_UPGRADE_CLIENT" desc="Sync error string for out-of-date client. [CHAR_LIMIT=80]">
         <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph> is out of date.
       </message>
-      <message name="IDS_SYNC_ERROR_SERVICE_UNAVAILABLE" desc="Sync error string for service unavailable. [CHAR-LIMIT=80]">
+      <message name="IDS_SYNC_ERROR_SERVICE_UNAVAILABLE" desc="Sync error string for service unavailable. [CHAR_LIMIT=80]">
         The service is not available; try again later.
       </message>
-      <message name="IDS_POLICY_DIALOG_PROCEED" desc="Label on the button to accept the policy dialog during sign-in. [CHAR-LIMIT=20]">
+      <message name="IDS_POLICY_DIALOG_PROCEED" desc="Label on the button to accept the policy dialog during sign-in. [CHAR_LIMIT=20]">
         Accept and sign in
       </message>
       <message name="IDS_WIPING_PROFILE_DATA_TITLE" desc="Title for the progress dialog shown while profile data is being wiped after signing out of an enterprise account">
@@ -1945,14 +1945,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_STANDARD_STACK" desc="Content description for the standard stack selection 'button'.">
         Standard tabs
       </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the private stack selection 'button'.">
+      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_STANDARD_STACK_SELECTED" desc="Announcement when the standard tab stack is selected.">
         Switched to standard tabs
       </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK_SELECTED" desc="Announcement when the private tab stack is selected.">
-        Switched to private tabs
+      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK_SELECTED" desc="Announcement when the Private tab stack is selected.">
+        Switched to Private tabs
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_UNDO_TAB_CLOSED" desc="Content description for the undo tab closed 'button.">
         Reopen closed tab
@@ -1988,7 +1988,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DUPLICATE_DOWNLOAD_REQUEST_INFOBAR_TEXT" desc="Prompt text for the confirmation dialog asking whether the user really wants to download a file when a file with the same name is still being downloaded">
         Do you want to start downloading <ph name="FILE_NAME">^1<ex>specialfile.pdf</ex></ph> again?
       </message>
-      <message name="IDS_DUPLICATE_DOWNLOAD_INFOBAR_DOWNLOAD_BUTTON" desc="Label for the button that confirms that a user wants to download the file again. [CHAR-LIMIT=32]">
+      <message name="IDS_DUPLICATE_DOWNLOAD_INFOBAR_DOWNLOAD_BUTTON" desc="Label for the button that confirms that a user wants to download the file again. [CHAR_LIMIT=32]">
         Download
       </message>
 
@@ -2079,14 +2079,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Update to get your language in the latest version of Brave
       </message>
 
-      <message name="IDS_MENU_TRANSLATE" desc="Menu item for triggering a page translation. The word 'Translate' should match the translation in TC ID 1613971242435858090. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_TRANSLATE" desc="Menu item for triggering a page translation. The word 'Translate' should match the translation in TC ID 1613971242435858090. [CHAR_LIMIT=27]">
         Translate…
       </message>
 
-      <message name="IDS_MENU_PRINT" desc="Menu item for printing the current page. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_PRINT" desc="Menu item for printing the current page. [CHAR_LIMIT=27]">
         Print…
       </message>
-      <message name="IDS_MENU_SHARE_PAGE" desc="Menu item for sharing the current page. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_SHARE_PAGE" desc="Menu item for sharing the current page. [CHAR_LIMIT=27]">
         Share…
       </message>
       <message name="IDS_ACCESSIBILITY_MENU_SHARE_VIA" desc="Content description share current page via the most recently used application menu item">
@@ -2104,7 +2104,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_MENU_INFO" desc="Content description for the button which opens the page info popup, which displays security information and permissions for the current page">
         View site information
       </message>
-      <message name="IDS_ACCESSIBILITY_CONTENT_VIEW" desc="Content description for the content view that holds the web contents [CHAR-LIMIT=30]">
+      <message name="IDS_ACCESSIBILITY_CONTENT_VIEW" desc="Content description for the content view that holds the web contents [CHAR_LIMIT=30]">
         Web View
       </message>
 
@@ -2125,100 +2125,100 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- ContextMenu -->
-      <message name="IDS_CONTEXTMENU_OPEN_IN_OTHER_WINDOW" desc="Context sensitive menu item to open the selected link in the other window. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_OPEN_IN_OTHER_WINDOW" desc="Context sensitive menu item to open the selected link in the other window. [CHAR_LIMIT=30]">
         Open in other window
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_NEW_TAB" desc="Context sensitive menu item to open the selected link in a new tab. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_OPEN_IN_NEW_TAB" desc="Context sensitive menu item to open the selected link in a new tab. [CHAR_LIMIT=30]">
         Open in new tab
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_NEW_TAB_GROUP" desc="Context sensitive menu item to open the selected link in a new tab in a new group. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_OPEN_IN_NEW_TAB_GROUP" desc="Context sensitive menu item to open the selected link in a new tab in a new group. [CHAR_LIMIT=30]">
         Open in new tab in group
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a new private tab. [CHAR-LIMIT=30]">
-        Open in private tab
+      <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a new Private tab. [CHAR_LIMIT=30]">
+        Open in Private tab
       </message>
-      <message name="IDS_CONTEXTMENU_CALL" desc="Context sensitive menu for calling phone number. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_CALL" desc="Context sensitive menu for calling phone number. [CHAR_LIMIT=30]">
         Call
       </message>
-      <message name="IDS_CONTEXTMENU_COPY" desc="Context sensitive menu item for copying email address/phone number. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_COPY" desc="Context sensitive menu item for copying email address/phone number. [CHAR_LIMIT=30]">
         Copy
       </message>
-      <message name="IDS_CONTEXTMENU_SEND_MESSAGE" desc="Context sensitive menu item for sending an email message. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SEND_MESSAGE" desc="Context sensitive menu item for sending an email message. [CHAR_LIMIT=30]">
         Send message
       </message>
-      <message name="IDS_CONTEXTMENU_ADD_TO_CONTACTS" desc="Context sensitive menu item for adding an email address to contacts. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_ADD_TO_CONTACTS" desc="Context sensitive menu item for adding an email address to contacts. [CHAR_LIMIT=30]">
         Add to contacts
       </message>
-      <message name="IDS_CONTEXTMENU_COPY_LINK_ADDRESS" desc="Context sensitive menu item for copying the selected link URL / address. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_COPY_LINK_ADDRESS" desc="Context sensitive menu item for copying the selected link URL / address. [CHAR_LIMIT=30]">
         Copy link address
       </message>
-      <message name="IDS_CONTEXTMENU_COPY_LINK_TEXT" desc="Context sensitive menu item for copying the selected link's text. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_COPY_LINK_TEXT" desc="Context sensitive menu item for copying the selected link's text. [CHAR_LIMIT=30]">
         Copy link text
       </message>
-      <message name="IDS_CONTEXTMENU_SAVE_LINK" desc="Context sensitive menu item for saving the target of a link [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SAVE_LINK" desc="Context sensitive menu item for saving the target of a link [CHAR_LIMIT=30]">
         Download link
       </message>
-      <message name="IDS_CONTEXTMENU_SAVE_IMAGE" desc="Context sensitive menu item for saving the selected image. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SAVE_IMAGE" desc="Context sensitive menu item for saving the selected image. [CHAR_LIMIT=30]">
         Download image
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IMAGE" desc="Context sensitive menu item for opening/viewing the selected image. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_OPEN_IMAGE" desc="Context sensitive menu item for opening/viewing the selected image. [CHAR_LIMIT=30]">
         Open image
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IMAGE_IN_NEW_TAB" desc="Context sensitive menu item for opening/viewing the selected image in a new tab. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_OPEN_IMAGE_IN_NEW_TAB" desc="Context sensitive menu item for opening/viewing the selected image in a new tab. [CHAR_LIMIT=30]">
         Open image in new tab
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IMAGE_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected image. Note that 'preview' is a verb, not a noun. We're also labeling it *New* to draw attention to it when first released. The selected image link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_OPEN_IMAGE_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected image. Note that 'preview' is a verb, not a noun. We're also labeling it *New* to draw attention to it when first released. The selected image link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR_LIMIT=30]">
         Preview image <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_LOAD_ORIGINAL_IMAGE" desc="Context sensitive menu item for Lite mode low fidelity placeholder images that loads the original version in place. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_LOAD_ORIGINAL_IMAGE" desc="Context sensitive menu item for Lite mode low fidelity placeholder images that loads the original version in place. [CHAR_LIMIT=30]">
         Load image
       </message>
-      <message name="IDS_CONTEXTMENU_COPY_IMAGE" desc="Context sensitive menu item for copying the selected image to the system clipboard. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_COPY_IMAGE" desc="Context sensitive menu item for copying the selected image to the system clipboard. [CHAR_LIMIT=30]">
         Copy image
       </message>
-      <message name="IDS_CONTEXTMENU_SEARCH_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SEARCH_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR_LIMIT=30]">
         Search with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_SEARCH_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SEARCH_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR_LIMIT=30]">
         Search image with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_TRANSLATE_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive chip for deep linking into google lens for translate results. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_TRANSLATE_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive chip for deep linking into google lens for translate results. [CHAR_LIMIT=30]">
           Translate image with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_SHOP_SIMILAR_PRODUCTS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SHOP_SIMILAR_PRODUCTS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR_LIMIT=30]">
         Shop similar products <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_SHOP_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SHOP_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR_LIMIT=30]">
         Shop image with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_SEARCH_SIMILAR_PRODUCTS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SEARCH_SIMILAR_PRODUCTS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR_LIMIT=30]">
         Search similar products <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_SEARCH_WEB_FOR_IMAGE" desc="Context sensitive menu item for search-for-Image command in a new tab. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SEARCH_WEB_FOR_IMAGE" desc="Context sensitive menu item for search-for-Image command in a new tab. [CHAR_LIMIT=30]">
         Search <ph name="SEARCH_ENGINE">%1$s<ex>Brave</ex></ph> for this image
       </message>
-      <message name="IDS_CONTEXTMENU_SHARE_IMAGE" desc="Context sensitive menu item for sharing an image via the Android system share action. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SHARE_IMAGE" desc="Context sensitive menu item for sharing an image via the Android system share action. [CHAR_LIMIT=30]">
         Share image
       </message>
-      <message name="IDS_CONTEXTMENU_SHARE_LINK" desc="Context sensitive menu item for sharing a link via the Android system share action. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SHARE_LINK" desc="Context sensitive menu item for sharing a link via the Android system share action. [CHAR_LIMIT=30]">
         Share link
       </message>
-      <message name="IDS_CONTEXTMENU_SAVE_VIDEO" desc="Context sensitive menu item for saving the selected video. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_SAVE_VIDEO" desc="Context sensitive menu item for saving the selected video. [CHAR_LIMIT=30]">
         Download video
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_NEW_CHROME_TAB" desc="Context sensitive menu item to open the selected link in a new Brave tab from Brave Custom Tab. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_OPEN_IN_NEW_CHROME_TAB" desc="Context sensitive menu item to open the selected link in a new Brave tab from Brave Custom Tab. [CHAR_LIMIT=30]">
         Open in new Brave tab
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Brave private tab from Brave Custom Tab. [CHAR-LIMIT=30]">
-        Open in private tab
+      <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Brave Private tab from Brave Custom Tab. [CHAR_LIMIT=30]">
+        Open in Private tab
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected linked page.   Note that 'preview' is a verb, not a noun. We're also labeling it *New* to draw attention to it when first released. The selected link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_OPEN_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected linked page.   Note that 'preview' is a verb, not a noun. We're also labeling it *New* to draw attention to it when first released. The selected link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR_LIMIT=30]">
         Preview page <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_READ_LATER" desc="Context sensitive menu item for marking a link to be read later. We're also labeling it *New* to draw attention to it when first released. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_READ_LATER" desc="Context sensitive menu item for marking a link to be read later. We're also labeling it *New* to draw attention to it when first released. [CHAR_LIMIT=30]">
         Read later <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_PERFORMANCE_INFO_FAST" desc="This string is shown in the context sensitive menu for links and is shown underneath the link URL. It indicates to the user that the link's target page is fast-loading and responsive. [CHAR-LIMIT=30]">
+      <message name="IDS_CONTEXTMENU_PERFORMANCE_INFO_FAST" desc="This string is shown in the context sensitive menu for links and is shown underneath the link URL. It indicates to the user that the link's target page is fast-loading and responsive. [CHAR_LIMIT=30]">
         Fast page
       </message>
       <message name="IDS_CONTEXTMENU_SHARE_HIGHLIGHTING" desc="This string is shown in the context menu for resharing the link-to-text.">
@@ -2260,7 +2260,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Add to Home screen strings -->
-      <message name="IDS_MENU_OPEN_WEBAPK" desc="Menu item for opening the installed WebAPK associated with the current PWA. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_OPEN_WEBAPK" desc="Menu item for opening the installed WebAPK associated with the current PWA. [CHAR_LIMIT=27]">
         Open <ph name="WEBAPK_NAME">%1$s<ex>Telegram</ex></ph>
       </message>
       <message name="IDS_OPEN_WEBAPK_FAILED" desc="Opening of a WebAPK failed.">
@@ -2330,13 +2330,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Web Notifications API -->
-      <message name="IDS_NOTIFICATION_HIDDEN_TEXT" desc="Text shown in place of notification contents when the notification's contents have been hidden on a secure lockscreen [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_HIDDEN_TEXT" desc="Text shown in place of notification contents when the notification's contents have been hidden on a secure lockscreen [CHAR_LIMIT=32]">
         Contents hidden
       </message>
-      <message name="IDS_NOTIFICATION_SITE_SETTINGS_BUTTON" desc="Text of a button shown on notifications, that opens the Site Settings of the website that showed the notification. (If it isn't possible to fit within the char limit, the string will be ellipsized if 3 buttons are shown side by side, so try to ensure that the user can guess the meaning from the first 8 characters). [CHAR-LIMIT=9]">
+      <message name="IDS_NOTIFICATION_SITE_SETTINGS_BUTTON" desc="Text of a button shown on notifications, that opens the Site Settings of the website that showed the notification. (If it isn't possible to fit within the char limit, the string will be ellipsized if 3 buttons are shown side by side, so try to ensure that the user can guess the meaning from the first 8 characters). [CHAR_LIMIT=9]">
         Settings
       </message>
-      <message name="IDS_NOTIFICATION_MANAGE_BUTTON" desc="Text of a button shown on notifications, that opens the Brave notifications settings page. This allows users to edit notification settings when a site asks them to allow notifications. [CHAR-LIMIT=9]">
+      <message name="IDS_NOTIFICATION_MANAGE_BUTTON" desc="Text of a button shown on notifications, that opens the Brave notifications settings page. This allows users to edit notification settings when a site asks them to allow notifications. [CHAR_LIMIT=9]">
         Manage
       </message>
       <message name="IDS_NOTIFICATION_WORK_PROFILE_BADGE_CONTENT_DESCRIPTION" desc="Content description of the work profile badge in the notification.">
@@ -2353,7 +2353,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DOWNLOAD_NOTIFICATION_PENDING_ANOTHER_DOWNLOAD" desc="Download notification to be displayed when a download has been scheduled but has not started being fetched from the network because another download is currently being downloaded.">
         Waiting for another download…
       </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_INCOGNITO_SUBTEXT" desc="Displayed in private mode download notification as subtext.">
+      <message name="IDS_DOWNLOAD_NOTIFICATION_INCOGNITO_SUBTEXT" desc="Displayed in Private mode download notification as subtext.">
         Private tab
       </message>
       <message name="IDS_DOWNLOAD_CANT_OPEN_FILE" desc="Toast that appears when a downloaded file can't be opened.">
@@ -2380,7 +2380,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DOWNLOAD_FAILED_REASON_UNKNOWN_ERROR" desc="Message to explain that the download failed because unkown error.">
         <ph name="FILE_NAME">%1$s<ex>http://abc.com/test.pdf</ex></ph> download failed due to an unknown error.
       </message>
-      <message name="IDS_DOWNLOAD_STARTED" desc="Message to show when download has started [CHAR LIMIT=30]">
+      <message name="IDS_DOWNLOAD_STARTED" desc="Message to show when download has started [CHAR_LIMIT=30]">
         Downloading…
       </message>
       <message name="IDS_ONE_FILE_LEFT" desc="Message showing 1 file left">
@@ -2572,11 +2572,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Close Private tabs notification messages -->
-      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all private tabs on Android N+.">
+      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all Private tabs on Android N+.">
         Private Tabs
       </message>
-      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION" desc="Message on the notification that closes all private tabs.">
-        Close all private tabs
+      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION" desc="Message on the notification that closes all Private tabs.">
+        Close all Private tabs
       </message>
 
       <!-- Autofill/Wallet integration prompt -->
@@ -2609,7 +2609,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_FRE_SEND_REPORT_CHECK" desc="Text for asking the user to allow sending stats and crash reports">
         Help make Brave better by sending usage statistics and crash reports to Brave.
       </message>
-      <message name="IDS_FRE_ACCEPT_CONTINUE" desc="Text for first page accept and continue button [CHAR-LIMIT=20]">
+      <message name="IDS_FRE_ACCEPT_CONTINUE" desc="Text for first page accept and continue button [CHAR_LIMIT=20]">
         Accept &amp; continue
       </message>
       <message name="IDS_FRE_WELCOME" desc="Text for greeting the user on Brave First Run">
@@ -2626,12 +2626,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_ADD_ACCOUNT_TO_DEVICE" desc="Text for adding another Brave sync chain to device in the web sign-in flow and account picker dialog, users will be asked to add an account to his device when this text is tapped">
         Add account to device
       </message>
-      <message name="IDS_SIGNIN_INCOGNITO_BUTTON" desc="Button text to open the private interstitial in the web sign-in account picker bottom sheet">
+      <message name="IDS_SIGNIN_INCOGNITO_BUTTON" desc="Button text to open the Private interstitial in the web sign-in account picker bottom sheet">
         Open a Private tab
       </message>
 
       <!-- Strings for Private Interstitial. -->
-      <message name="IDS_INCOGNITO_INTERSTITIAL_TITLE" desc="The title of the private interstitial bottom sheet.">
+      <message name="IDS_INCOGNITO_INTERSTITIAL_TITLE" desc="The title of the Private interstitial bottom sheet.">
         Use Private to sign in
       </message>
       <message name="IDS_INCOGNITO_INTERSTITIAL_MESSAGE" desc="The content of Private interstitial which is shown when a user is in the sign-in flow and they want to go Private mode to continue signing in. Before they go Private mode they would be presented with a Private interstitial and this message is part of that interstitial which would inform how activity in Private may be visbile to others and how data from the Private session can be cleared.">
@@ -2640,7 +2640,7 @@ In Private, your activity <ph name="BEGIN_BOLD1">&lt;b1&gt;</ph>might still be v
 Data from your Private session will only be cleared from Brave when you <ph name="BEGIN_BOLD2">&lt;b2&gt;</ph>close all Private tabs<ph name="END_BOLD2">&lt;/b2&gt;</ph>.
       </message>
       <!-- Strings for Streamlined Signin and Unified Consent. -->
-      <message name="IDS_SIGNIN_TITLE" desc="Title for the screen that asks users to sign-in and turn on Sync. [CHAR-LIMIT=27]">
+      <message name="IDS_SIGNIN_TITLE" desc="Title for the screen that asks users to sign-in and turn on Sync. [CHAR_LIMIT=27]">
         Turn on sync?
       </message>
       <message name="IDS_SIGNIN_SYNC_TITLE" desc="Title of Sync feature for the screen that asks users to sign-in and turn on Sync.">
@@ -2655,10 +2655,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_SIGNIN_DETAILS_DESCRIPTION" desc="Message with a link to customize Sync settings. Shown on the screen that asks the user to turn on Sync.">
         You can always choose what to sync in <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>settings<ph name="END_LINK1">&lt;/LINK1&gt;</ph>.
       </message>
-      <message name="IDS_SIGNIN_ACCEPT_BUTTON" desc="Text for the confirmation button in the sign-in screen. By clicking this button users signs in and turns on Sync. [CHAR-LIMIT=20]">
+      <message name="IDS_SIGNIN_ACCEPT_BUTTON" desc="Text for the confirmation button in the sign-in screen. By clicking this button users signs in and turns on Sync. [CHAR_LIMIT=20]">
         Yes, I'm in
       </message>
-      <message name="IDS_SIGNIN_ACCOUNT_PICKER_DIALOG_TITLE" desc="The title for the dialog that shows the list of accounts on the device and asks the user to select one of these accounts. [CHAR-LIMIT=27]">
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_DIALOG_TITLE" desc="The title for the dialog that shows the list of accounts on the device and asks the user to select one of these accounts. [CHAR_LIMIT=27]">
         Choose an account
       </message>
       <message name="IDS_ACCOUNT_PICKER_BOTTOM_SHEET_ACCESSIBILITY_OPENED" is_accessibility_with_no_ui="true" desc="The accessibility text to read when account picker bottom sheet is opened.">
@@ -2733,7 +2733,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <!-- New Tab Page strings -->
-      <message name="IDS_RECENT_TABS" desc="Text for button to show 'Recent tabs', i.e. recently closed tabs and tabs that are open on other devices [CHAR-LIMIT=20]">
+      <message name="IDS_RECENT_TABS" desc="Text for button to show 'Recent tabs', i.e. recently closed tabs and tabs that are open on other devices [CHAR_LIMIT=20]">
         Recent tabs
       </message>
       <message name="IDS_MOST_VISITED_PLACEHOLDER_TITLE" desc="Header text shown on the new tab page when there are no most visited tiles yet.">
@@ -2961,96 +2961,96 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_BUTTON_NEW_TAB" desc="Button name for opening a new tab.">
         New tab
       </message>
-      <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new private browser tab.">
-        New private tab
+      <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new Private browser tab.">
+        New Private tab
       </message>
       <message name="IDS_CUSTOM_TAB_AMP_PUBLISHER_URL" desc="Text shown in a Custom Tab toolbar for a web page that is hosted by the Brave content delivery network but was originally published by someone else.">
         From <ph name="PUBLISHER_ORIGIN">&lt;pub&gt;%1$s&lt;/pub&gt;<ex>example.com</ex></ph> – <ph name="BEGIN_DEEMPHASIZED">&lt;bg&gt;</ph>delivered by Brave<ph name="END_DEEMPHASIZED">&lt;/bg&gt;</ph>
       </message>
 
       <!-- Main menu items -->
-      <message name="IDS_MENU_UPDATE" desc="Menu item for updating chrome. [CHAR-LIMIT=24]">
+      <message name="IDS_MENU_UPDATE" desc="Menu item for updating chrome. [CHAR_LIMIT=24]">
         Update Brave
       </message>
-      <message name="IDS_MENU_UPDATE_SUMMARY_DEFAULT" desc="Summary string for update menu item explaining that a newer version of Brave is available. [CHAR-LIMIT=30]">
+      <message name="IDS_MENU_UPDATE_SUMMARY_DEFAULT" desc="Summary string for update menu item explaining that a newer version of Brave is available. [CHAR_LIMIT=30]">
         Newer version is available
       </message>
-      <message name="IDS_MENU_UPDATE_UNSUPPORTED" desc="Menu item for when Brave can not be updated. [CHAR-LIMIT=24]">
+      <message name="IDS_MENU_UPDATE_UNSUPPORTED" desc="Menu item for when Brave can not be updated. [CHAR_LIMIT=24]">
         Brave can’t update
       </message>
-      <message name="IDS_MENU_UPDATE_UNSUPPORTED_SUMMARY_DEFAULT" desc="Summary string for update menu item explaining that the Android version on the device is unsupported. [CHAR-LIMIT=30]">
+      <message name="IDS_MENU_UPDATE_UNSUPPORTED_SUMMARY_DEFAULT" desc="Summary string for update menu item explaining that the Android version on the device is unsupported. [CHAR_LIMIT=30]">
         Android version is unsupported
       </message>
-      <message name="IDS_MENU_INLINE_UPDATE_DOWNLOADING" desc="Menu item for when Brave is in the process of updating. [CHAR-LIMIT=24]">
+      <message name="IDS_MENU_INLINE_UPDATE_DOWNLOADING" desc="Menu item for when Brave is in the process of updating. [CHAR_LIMIT=24]">
         Downloading…
       </message>
-      <message name="IDS_MENU_INLINE_UPDATE_FAILED" desc="Menu item for when Brave failed to download an update. [CHAR-LIMIT=24]">
+      <message name="IDS_MENU_INLINE_UPDATE_FAILED" desc="Menu item for when Brave failed to download an update. [CHAR_LIMIT=24]">
         Couldn’t download
       </message>
-      <message name="IDS_MENU_INLINE_UPDATE_READY" desc="Menu item text that is shown when Brave has downloaded an update for itself and is ready to be restarted, which will apply the update. [CHAR-LIMIT=24]">
+      <message name="IDS_MENU_INLINE_UPDATE_READY" desc="Menu item text that is shown when Brave has downloaded an update for itself and is ready to be restarted, which will apply the update. [CHAR_LIMIT=24]">
         Update ready
       </message>
-      <message name="IDS_MENU_INLINE_UPDATE_READY_SUMMARY" desc="Summary text that is shown when Brave has downloaded an update for itself and is ready to be restarted, which will apply the update.  This lets the user know the update will restart. [CHAR-LIMIT=24]">
+      <message name="IDS_MENU_INLINE_UPDATE_READY_SUMMARY" desc="Summary text that is shown when Brave has downloaded an update for itself and is ready to be restarted, which will apply the update.  This lets the user know the update will restart. [CHAR_LIMIT=24]">
         Restart Brave
       </message>
-      <message name="IDS_MENU_MOVE_TO_OTHER_WINDOW" desc="Menu item for moving the current tab into the other window. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_MOVE_TO_OTHER_WINDOW" desc="Menu item for moving the current tab into the other window. [CHAR_LIMIT=27]">
         Move to other window
       </message>
-      <message name="IDS_MENU_FORWARD" desc="Tooltip for the button to advance to the next web page. Verb. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_FORWARD" desc="Tooltip for the button to advance to the next web page. Verb. [CHAR_LIMIT=27]">
         Forward
       </message>
-      <message name="IDS_MENU_BOOKMARK" desc="Tooltip for the button to save the web page to 'Bookmarks' section. Verb. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_BOOKMARK" desc="Tooltip for the button to save the web page to 'Bookmarks' section. Verb. [CHAR_LIMIT=27]">
         Bookmark
       </message>
-      <message name="IDS_MENU_DOWNLOAD" desc="Tooltip for the button to download the current web page. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_DOWNLOAD" desc="Tooltip for the button to download the current web page. [CHAR_LIMIT=27]">
         Download
       </message>
-      <message name="IDS_MENU_PAGE_INFO" desc="Tooltip on Android for the button to view information about the current web page. Info is short for information.  [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_PAGE_INFO" desc="Tooltip on Android for the button to view information about the current web page. Info is short for information.  [CHAR_LIMIT=27]">
         Page info
       </message>
-      <message name="IDS_MENU_REFRESH" desc="Tooltip on Android for the button to refresh the current web page. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_REFRESH" desc="Tooltip on Android for the button to refresh the current web page. [CHAR_LIMIT=27]">
         Refresh
       </message>
-      <message name="IDS_MENU_STOP_REFRESH" desc="Tooltip on Android for the button to stop refreshing the current web page. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_STOP_REFRESH" desc="Tooltip on Android for the button to stop refreshing the current web page. [CHAR_LIMIT=27]">
         Stop refreshing
       </message>
-      <message name="IDS_MENU_NEW_TAB" desc="Menu item for opening a new tab. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_NEW_TAB" desc="Menu item for opening a new tab. [CHAR_LIMIT=27]">
         New tab
       </message>
-      <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new private tab that facilitates pseudononymous browsing. [CHAR-LIMIT=27]" meaning="Android menu">
-        New private tab
+      <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]" meaning="Android menu">
+        New Private tab
       </message>
-      <message name="IDS_MENU_BOOKMARKS" desc="Menu item for opening the bookmarks page that contains all the user's bookmarks. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_BOOKMARKS" desc="Menu item for opening the bookmarks page that contains all the user's bookmarks. [CHAR_LIMIT=27]">
         Bookmarks
       </message>
-      <message name="IDS_MENU_RECENT_TABS" desc="Menu item for opening the 'Recent tabs' page that shows recently closed tabs and pages the user has opened on his/her other devices. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_RECENT_TABS" desc="Menu item for opening the 'Recent tabs' page that shows recently closed tabs and pages the user has opened on his/her other devices. [CHAR_LIMIT=27]">
         Recent tabs
       </message>
-      <message name="IDS_MENU_HISTORY" desc="Menu item for opening the history page. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_HISTORY" desc="Menu item for opening the history page. [CHAR_LIMIT=27]">
         History
       </message>
-      <message name="IDS_MENU_DOWNLOADS" desc="Menu item for opening the downloads page. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_DOWNLOADS" desc="Menu item for opening the downloads page. [CHAR_LIMIT=27]">
         Downloads
       </message>
-      <message name="IDS_MENU_FIND_IN_PAGE" desc="Menu item allowing users to find text within the current page. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_FIND_IN_PAGE" desc="Menu item allowing users to find text within the current page. [CHAR_LIMIT=27]">
         Find in page
       </message>
-      <message name="IDS_MENU_FOLLOW" desc="Menu item allowing users to follow the current website. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_FOLLOW" desc="Menu item allowing users to follow the current website. [CHAR_LIMIT=27]">
         Follow
       </message>
-      <message name="IDS_MENU_FOLLOWING" desc="Menu item indicating the current website is followed, allowing users to unfollow the current website. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_FOLLOWING" desc="Menu item indicating the current website is followed, allowing users to unfollow the current website. [CHAR_LIMIT=27]">
         Following
       </message>
-      <message name="IDS_MENU_ITEM_REQUEST_DESKTOP_SITE" desc="Menu item allowing users to change the website from the mobile site to desktop site. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_ITEM_REQUEST_DESKTOP_SITE" desc="Menu item allowing users to change the website from the mobile site to desktop site. [CHAR_LIMIT=27]">
         Request desktop site
       </message>
-      <message name="IDS_MENU_ITEM_REQUEST_MOBILE_SITE" desc="Menu item allowing users to change the website from the desktop site to mobile site. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_ITEM_REQUEST_MOBILE_SITE" desc="Menu item allowing users to change the website from the desktop site to mobile site. [CHAR_LIMIT=27]">
         Request mobile site
       </message>
-      <message name="IDS_MENU_PAINT_PREVIEW_SHOW" desc="Menu item allowing users to capture and show a paint preview of a page. [CHAR-LIMIT=27]" translateable="false">
+      <message name="IDS_MENU_PAINT_PREVIEW_SHOW" desc="Menu item allowing users to capture and show a paint preview of a page. [CHAR_LIMIT=27]" translateable="false">
         Show Paint Preview
       </message>
-      <message name="IDS_MENU_REQUEST_DESKTOP_SITE" desc="Menu item in Brave's overflow/options menu. By default, when a user navigates to a web page, Brave shows the mobile site, that is, the version of the site designed for mobile phones. If this menu item is selected, however, Brave will try to load the 'desktop' site instead, i.e. the site designed for desktop computers or laptop computers, which have larger screens. [CHAR-LIMIT=24]">
+      <message name="IDS_MENU_REQUEST_DESKTOP_SITE" desc="Menu item in Brave's overflow/options menu. By default, when a user navigates to a web page, Brave shows the mobile site, that is, the version of the site designed for mobile phones. If this menu item is selected, however, Brave will try to load the 'desktop' site instead, i.e. the site designed for desktop computers or laptop computers, which have larger screens. [CHAR_LIMIT=24]">
         Desktop site
       </message>
       <message name="IDS_MENU_REQUEST_DESKTOP_SITE_ON" desc="Accessibility description for when Request Desktop Site is enabled.">
@@ -3059,33 +3059,33 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_MENU_REQUEST_DESKTOP_SITE_OFF" desc="Accessibility description for when Request Desktop Site is disabled.">
         Turn on Request desktop site
       </message>
-      <message name="IDS_MENU_READER_MODE_PREFS" desc="Menu item to show reader mode preferences pane, which allows users to change the appearance (font size, theme, etc.) of the page. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_READER_MODE_PREFS" desc="Menu item to show reader mode preferences pane, which allows users to change the appearance (font size, theme, etc.) of the page. [CHAR_LIMIT=27]">
         Appearance
       </message>
-      <message name="IDS_MENU_SETTINGS" desc="Menu item for opening browser settings. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_SETTINGS" desc="Menu item for opening browser settings. [CHAR_LIMIT=27]">
         Settings
       </message>
-      <message name="IDS_MENU_CLOSE_ALL_TABS" desc="Menu item for closing all open tabs. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_CLOSE_ALL_TABS" desc="Menu item for closing all open tabs. [CHAR_LIMIT=27]">
         Close all tabs
       </message>
-      <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open private tabs. [CHAR-LIMIT=27]">
-        Close private tabs
+      <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
+        Close Private tabs
       </message>
-      <message name="IDS_MENU_GROUP_TABS" desc="Menu item for grouping tabs. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_GROUP_TABS" desc="Menu item for grouping tabs. [CHAR_LIMIT=27]">
         Group tabs
       </message>
-      <message name="IDS_MENU_TRACK_PRICES" desc="Menu item for tracking prices on tabs. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_TRACK_PRICES" desc="Menu item for tracking prices on tabs. [CHAR_LIMIT=27]">
         Track prices
       </message>
-      <message name="IDS_MENU_GET_IMAGE_DESCRIPTIONS" desc="Menu item to start getting alt text accessibility image labels/descriptions [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_GET_IMAGE_DESCRIPTIONS" desc="Menu item to start getting alt text accessibility image labels/descriptions [CHAR_LIMIT=27]">
         Get image descriptions
       </message>
-      <message name="IDS_MENU_STOP_IMAGE_DESCRIPTIONS" desc="Menu item to stop getting alt text accessibility image labels/descriptions [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_STOP_IMAGE_DESCRIPTIONS" desc="Menu item to stop getting alt text accessibility image labels/descriptions [CHAR_LIMIT=27]">
         Stop image descriptions
       </message>
 
       <!-- Bookmarks strings -->
-      <message name="IDS_BOOKMARKS" desc="Title of the bookmarks page, which shows a list of the user's bookmarks. [CHAR-LIMIT=18]">
+      <message name="IDS_BOOKMARKS" desc="Title of the bookmarks page, which shows a list of the user's bookmarks. [CHAR_LIMIT=18]">
         Bookmarks
       </message>
       <message name="IDS_BOOKMARKS_FOLDER_EMPTY" desc="Text explaining that the currently selected bookmarks folder is empty.">
@@ -3099,55 +3099,55 @@ Data from your Private session will only be cleared from Brave when you <ph name
           =1 {<ph name="BOOKMARKS_COUNT_ONE">%1$d<ex>1</ex></ph> bookmark}
           other {<ph name="BOOKMARKS_COUNT_MANY">%1$d<ex>8</ex></ph> bookmarks}}
       </message>
-      <message name="IDS_BOOKMARK_PAGE_SAVED" desc="App-based message shown after user adds a new bookmark. [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_PAGE_SAVED" desc="App-based message shown after user adds a new bookmark. [CHAR_LIMIT=32]">
         Bookmarked in <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph>
       </message>
-      <message name="IDS_BOOKMARK_PAGE_SAVED_DEFAULT" desc="Default message shown after user adds a new bookmark. [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_PAGE_SAVED_DEFAULT" desc="Default message shown after user adds a new bookmark. [CHAR_LIMIT=32]">
         Bookmarked
       </message>
-      <message name="IDS_BOOKMARK_PAGE_SAVED_FOLDER" desc="Message shown after user adds a new bookmark. Also specifies in which folder the bookmark was added. [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_PAGE_SAVED_FOLDER" desc="Message shown after user adds a new bookmark. Also specifies in which folder the bookmark was added. [CHAR_LIMIT=32]">
         Bookmarked to <ph name="FOLDER_NAME">%1$s<ex>Mobile bookmarks</ex></ph>
       </message>
       <message name="IDS_BOOKMARK_PAGE_FAILED" desc="Message shown when the user tries to add a bookmark but the browser fails to save it.">
         Failed to add bookmark.
       </message>
-      <message name="IDS_BOOKMARK_PARENT_FOLDER" desc="Header text for title of parent folder of the bookmark [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_PARENT_FOLDER" desc="Header text for title of parent folder of the bookmark [CHAR_LIMIT=32]">
         Parent folder
       </message>
-      <message name="IDS_BOOKMARK_ITEM_SELECT" desc="Menu item text for selecting a bookmark [CHAR-LIMIT=24]">
+      <message name="IDS_BOOKMARK_ITEM_SELECT" desc="Menu item text for selecting a bookmark [CHAR_LIMIT=24]">
         Select
       </message>
-      <message name="IDS_BOOKMARK_ITEM_EDIT" desc="Menu item text for showing bookmark editing page [CHAR-LIMIT=24]">
+      <message name="IDS_BOOKMARK_ITEM_EDIT" desc="Menu item text for showing bookmark editing page [CHAR_LIMIT=24]">
         Edit
       </message>
-      <message name="IDS_BOOKMARK_ITEM_MOVE" desc="Menu item for moving a bookmark to a new folder [CHAR-LIMIT=24]">
+      <message name="IDS_BOOKMARK_ITEM_MOVE" desc="Menu item for moving a bookmark to a new folder [CHAR_LIMIT=24]">
         Move to…
       </message>
-      <message name="IDS_BOOKMARK_ITEM_DELETE" desc="Menu item text for deleting a bookmark [CHAR-LIMIT=24]">
+      <message name="IDS_BOOKMARK_ITEM_DELETE" desc="Menu item text for deleting a bookmark [CHAR_LIMIT=24]">
         Delete
       </message>
-      <message name="IDS_BOOKMARK_SHOW_IN_FOLDER" desc="Menu item text for opening the folder which contains the bookmark of interest. [CHAR-LIMIT=24]">
+      <message name="IDS_BOOKMARK_SHOW_IN_FOLDER" desc="Menu item text for opening the folder which contains the bookmark of interest. [CHAR_LIMIT=24]">
         Show in folder
       </message>
-      <message name="IDS_BOOKMARK_ADD_FOLDER" desc="Title for button to add a new bookmark folder [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_ADD_FOLDER" desc="Title for button to add a new bookmark folder [CHAR_LIMIT=32]">
         New folder…
       </message>
-      <message name="IDS_BOOKMARK_CHOOSE_FOLDER" desc="Title for the dialog that moves bookmarks to another folder [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_CHOOSE_FOLDER" desc="Title for the dialog that moves bookmarks to another folder [CHAR_LIMIT=32]">
         Choose folder
       </message>
-      <message name="IDS_BOOKMARK_ACTION_BAR_EDIT_FOLDER" desc="Button text for editing current folder action on the bookmark action bar [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_ACTION_BAR_EDIT_FOLDER" desc="Button text for editing current folder action on the bookmark action bar [CHAR_LIMIT=32]">
         Edit folder
       </message>
-      <message name="IDS_BOOKMARK_ACTION_BAR_MOVE" desc="Button text for bookmark move action on the bookmark action bar [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_ACTION_BAR_MOVE" desc="Button text for bookmark move action on the bookmark action bar [CHAR_LIMIT=32]">
         Move bookmarks
       </message>
-      <message name="IDS_BOOKMARK_ACTION_BAR_DELETE" desc="Button text for bookmark delete action on the bookmark action bar [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_ACTION_BAR_DELETE" desc="Button text for bookmark delete action on the bookmark action bar [CHAR_LIMIT=32]">
         Delete bookmarks
       </message>
-      <message name="IDS_BOOKMARK_ACTION_BAR_CLOSE" desc="Button text for closing the current bookmark dialog on the bookmark action bar [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_ACTION_BAR_CLOSE" desc="Button text for closing the current bookmark dialog on the bookmark action bar [CHAR_LIMIT=32]">
         Close dialog
       </message>
-      <message name="IDS_BOOKMARK_ACTION_BAR_SEARCH" desc="Button text for bookmark search action on the bookmark action bar [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_ACTION_BAR_SEARCH" desc="Button text for bookmark search action on the bookmark action bar [CHAR_LIMIT=32]">
         Search your bookmarks
       </message>
       <message name="IDS_BOOKMARK_NO_RESULT" desc="Text explaining that no bookmarks are found to match a search query">
@@ -3168,28 +3168,28 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_BOOKMARKS_BOTTOM_SHEET_CLOSED" desc="The accessibility string read when the bookmark bottom sheet is closed.">
         List of bookmark folders is closed
       </message>
-      <message name="IDS_EDIT_BOOKMARK" desc="The string prompting the user to edit the content of a bookmark. [CHAR-LIMIT=30]">
+      <message name="IDS_EDIT_BOOKMARK" desc="The string prompting the user to edit the content of a bookmark. [CHAR_LIMIT=30]">
         Edit bookmark
       </message>
-      <message name="IDS_ADD_FOLDER" desc="Title of the &quot;Add Folder&quot; form dialog. [CHAR-LIMIT=30]">
+      <message name="IDS_ADD_FOLDER" desc="Title of the &quot;Add Folder&quot; form dialog. [CHAR_LIMIT=30]">
         Add folder
       </message>
-      <message name="IDS_EDIT_FOLDER" desc="Title of the &quot;Edit Folder&quot; form dialog. [CHAR-LIMIT=30]">
+      <message name="IDS_EDIT_FOLDER" desc="Title of the &quot;Edit Folder&quot; form dialog. [CHAR_LIMIT=30]">
         Edit folder
       </message>
-      <message name="IDS_BOOKMARK_NAME" desc="Label specifying the title of the bookmark. [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_NAME" desc="Label specifying the title of the bookmark. [CHAR_LIMIT=32]">
         Name
       </message>
-      <message name="IDS_BOOKMARK_URL" desc="Label specifying the url of the bookmark. [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_URL" desc="Label specifying the url of the bookmark. [CHAR_LIMIT=32]">
         URL
       </message>
-      <message name="IDS_BOOKMARK_FOLDER" desc="Label specifying what folder a bookmark is in. [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_FOLDER" desc="Label specifying what folder a bookmark is in. [CHAR_LIMIT=32]">
         Folder
       </message>
-      <message name="IDS_BOOKMARK_MISSING_TITLE" desc="Error message appearing when a user tries to create/edit a bookmark or a folder without a title. [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_MISSING_TITLE" desc="Error message appearing when a user tries to create/edit a bookmark or a folder without a title. [CHAR_LIMIT=32]">
         Title required
       </message>
-      <message name="IDS_BOOKMARK_MISSING_URL" desc="Error message appearing when a user tries to create a bookmark without a url. [CHAR-LIMIT=32]">
+      <message name="IDS_BOOKMARK_MISSING_URL" desc="Error message appearing when a user tries to create a bookmark without a url. [CHAR_LIMIT=32]">
         URL required
       </message>
 
@@ -3203,7 +3203,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_READING_LIST_UNREAD" desc="The header for the unread section in the reading list UI.">
         Unread - Available offline
       </message>
-      <message name="IDS_READING_LIST_SAVED" desc="App-based message shown after user adds a new link to the reading list. [CHAR-LIMIT=32]">
+      <message name="IDS_READING_LIST_SAVED" desc="App-based message shown after user adds a new link to the reading list. [CHAR_LIMIT=32]">
         Added to reading list
       </message>
       <message name="IDS_READING_LIST_MARK_AS_READ" desc="The text for the action to mark the reading list as read.">
@@ -3285,37 +3285,37 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <!-- Omnibox -->
-      <message name="IDS_LOCATION_BAR_VERBOSE_STATUS_OFFLINE" desc="Verbose indication of offline status in the location bar. [CHAR-LIMIT=20]">
+      <message name="IDS_LOCATION_BAR_VERBOSE_STATUS_OFFLINE" desc="Verbose indication of offline status in the location bar. [CHAR_LIMIT=20]">
         Offline
       </message>
-      <message name="IDS_LOCATION_BAR_PAINT_PREVIEW_PAGE_STATUS" desc="An indication in the location bar that the page the user is viewing is a paint preview of the original page. [CHAR-LIMIT=10]">
+      <message name="IDS_LOCATION_BAR_PAINT_PREVIEW_PAGE_STATUS" desc="An indication in the location bar that the page the user is viewing is a paint preview of the original page. [CHAR_LIMIT=10]">
         Preview
       </message>
 
       <!-- Voice search -->
-      <message name="IDS_VOICE_SEARCH_ERROR" desc="Toast when the voice search activity couldn't be started. [CHAR-LIMIT=40]">
+      <message name="IDS_VOICE_SEARCH_ERROR" desc="Toast when the voice search activity couldn't be started. [CHAR_LIMIT=40]">
         No enabled voice search available
       </message>
 
       <message name="IDS_OPEN_IN_NEW_TAB_TOAST" desc="Toast displayed after a tab is opened in the background on a low end device.">
         Tab opened in background.
       </message>
-      <message name="IDS_MENU_OPEN_IN_CHROME" desc="Context sensitive menu item for opening a link in Brave. [CHAR-LIMIT=30]">
+      <message name="IDS_MENU_OPEN_IN_CHROME" desc="Context sensitive menu item for opening a link in Brave. [CHAR_LIMIT=30]">
         Open in Brave
       </message>
-      <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR-LIMIT=30]" translateable="false">
+      <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR_LIMIT=30]" translateable="false">
         Open in Private Brave
       </message>
-      <message name="IDS_MENU_OPEN_IN_PRODUCT" desc="App menu item for opening link in the browser. [CHAR-LIMIT=30]">
+      <message name="IDS_MENU_OPEN_IN_PRODUCT" desc="App menu item for opening link in the browser. [CHAR_LIMIT=30]">
         Open in <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph>
       </message>
-      <message name="IDS_MENU_OPEN_IN_PRODUCT_DEFAULT" desc="Default title for menu item for opening link in browser. [CHAR-LIMIT=30]">
+      <message name="IDS_MENU_OPEN_IN_PRODUCT_DEFAULT" desc="Default title for menu item for opening link in browser. [CHAR_LIMIT=30]">
         Open in browser
       </message>
       <message name="IDS_READER_VIEW_TEXT_ALT" desc="Message shown on the reader mode button bar, to invite the user to tap to open a reader mode. Reader mode extracts content and removes clutter from a web page and puts the result in a panel making it easier to read. This is used when &quot;Reader Mode for Accessibility&quot; is available.">
         Show simplified view
       </message>
-      <message name="IDS_CONTENT_PROVIDER_SEARCH_DESCRIPTION" desc="Description for Brave's entry in QSB's list of search suggestion providers [CHAR-LIMIT=32]">
+      <message name="IDS_CONTENT_PROVIDER_SEARCH_DESCRIPTION" desc="Description for Brave's entry in QSB's list of search suggestion providers [CHAR_LIMIT=32]">
         Bookmarks and web history
       </message>
       <message name="IDS_CHROME_SURVEY_PROMPT" desc="Message shown that invites the user to take a survey about Brave. 'Help' and 'improve' are imperative verbs. 'Take survey' is a tappable link. When tapped, a survey about Brave opens.">
@@ -3339,14 +3339,17 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">
         New tab
       </message>
-      <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new private tab view.">
-        New private tab
+      <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE_SECTION_HAS_UNREAD_CONTENT" desc="Content description for the unread content indicator on a New Tab Page section header">
+        Unread content
+      </message>
+      <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new Private tab view.">
+        New Private tab
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_TAB" desc="Content description for the new tab button.">
         New tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_INCOGNITO_TAB" desc="Content description for the new private tab button.">
-        New private tab
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_INCOGNITO_TAB" desc="Content description for the new Private tab button.">
+        New Private tab
       </message>
       <message name="IDS_ACCESSIBILITY_INCOGNITO_BADGE" desc="Content description for the badge indicating that the user is in Private mode.">
         Private mode
@@ -3381,11 +3384,11 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_EMPTY_NEW_TAB" desc="Content description for the new tab button.">
         New tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the private tabs toggle button when viewing standard tabs.">
-        Enter private mode
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the Private tabs toggle button when viewing standard tabs.">
+        Enter Private mode
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_INCOGNITO" desc="Content description for the private tabs toggle button when viewing private tabs.">
-        Leave private mode
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_INCOGNITO" desc="Content description for the Private tabs toggle button when viewing Private tabs.">
+        Leave Private mode
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_IDENTIFIER" desc="Content description for tabs that are not selected">
         Tab
@@ -3393,10 +3396,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_ACCESSIBILITY_TABSTRIP_IDENTIFIER_SELECTED" desc="Content description for the tab that is selected">
         Selected Tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER" desc="Content description for tabs that are not selected in private mode">
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER" desc="Content description for tabs that are not selected in Private mode">
         Private Tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER_SELECTED" desc="Content description for the tab that is selected in private mode">
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER_SELECTED" desc="Content description for the tab that is selected in Private mode">
         Selected Private Tab
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_BTN_REFINE" desc="Content description for the omnibox refine button followed with the text or URL that will be shown in the Omnibox if the user clicks the refine button, eg. User input 'The' may offer a suggestion 'The meaning of life' or 'thewirecutter.com'.">
@@ -3664,10 +3667,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_STORAGE_MANAGEMENT_UNIMPORTANT_SITE_DATA_DESCRIPTION" desc="Text to describe the data stored by unimportant or infrequent sites.">
         Stored data that Brave doesn't think is important (e.g. sites with no saved settings or that you don't visit often)
       </message>
-      <message name="IDS_STORAGE_MANAGEMENT_UNIMPORTANT_SITE_DATA_SIZE_LABEL" desc="Label for the data usage of site data for unimportant sites (followed by a number of megabytes). [CHAR-LIMIT=30]">
+      <message name="IDS_STORAGE_MANAGEMENT_UNIMPORTANT_SITE_DATA_SIZE_LABEL" desc="Label for the data usage of site data for unimportant sites (followed by a number of megabytes). [CHAR_LIMIT=30]">
         Unimportant data
       </message>
-      <message name="IDS_STORAGE_MANAGEMENT_CLEAR_UNIMPORTANT_SITE_DATA_BUTTON" desc="Text on the button to clear all Brave data. [CHAR LIMIT=30]">
+      <message name="IDS_STORAGE_MANAGEMENT_CLEAR_UNIMPORTANT_SITE_DATA_BUTTON" desc="Text on the button to clear all Brave data. [CHAR_LIMIT=30]">
         Free up space
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_CLEAR_UNIMPORTANT_DIALOG_TEXT" desc="Text of the clear unimportant site data dialog in the storage UI.">
@@ -3676,22 +3679,22 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_STORAGE_MANAGEMENT_SITE_DATA_DESCRIPTION" desc="Text to describe the data stored on the device by websites.">
         All data stored by sites, including cookies and other locally stored data
       </message>
-      <message name="IDS_STORAGE_MANAGEMENT_COMPUTING_SIZE" desc="String shown in place of the data usage while it's being calculated. [CHAR-LIMIT=30]">
+      <message name="IDS_STORAGE_MANAGEMENT_COMPUTING_SIZE" desc="String shown in place of the data usage while it's being calculated. [CHAR_LIMIT=30]">
         Computing…
       </message>
-      <message name="IDS_STORAGE_MANAGEMENT_STARTUP_FAILURE" desc="String shown in place of the data usage when starting the chrome native process failed. [CHAR-LIMIT=30]">
+      <message name="IDS_STORAGE_MANAGEMENT_STARTUP_FAILURE" desc="String shown in place of the data usage when starting the chrome native process failed. [CHAR_LIMIT=30]">
         Unknown
       </message>
-      <message name="IDS_STORAGE_MANAGEMENT_SITE_DATA_SIZE_LABEL" desc="Label for the data usage of site data (followed by a number of megabytes). [CHAR-LIMIT=30]">
+      <message name="IDS_STORAGE_MANAGEMENT_SITE_DATA_SIZE_LABEL" desc="Label for the data usage of site data (followed by a number of megabytes). [CHAR_LIMIT=30]">
         Site storage
       </message>
-      <message name="IDS_STORAGE_MANAGEMENT_MANAGE_SITE_DATA_BUTTON" desc="Text on the button allowing users to manage the space used by websites. [CHAR LIMIT=30]">
+      <message name="IDS_STORAGE_MANAGEMENT_MANAGE_SITE_DATA_BUTTON" desc="Text on the button allowing users to manage the space used by websites. [CHAR_LIMIT=30]">
         Manage
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_ALL_STORAGE_DESCRIPTION" desc="Text used to describe all storage space used by Brave.">
         Total data used by Brave, including accounts, bookmarks, and saved settings
       </message>
-      <message name="IDS_STORAGE_MANAGEMENT_CLEAR_ALL_DATA_BUTTON" desc="Text on the button to clear all Brave data. [CHAR LIMIT=30]">
+      <message name="IDS_STORAGE_MANAGEMENT_CLEAR_ALL_DATA_BUTTON" desc="Text on the button to clear all Brave data. [CHAR_LIMIT=30]">
         Clear All Data
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_RESET_APP_DIALOG_TITLE" desc="Title of the reset app dialog in the storage UI used to reset the app.">
@@ -3795,61 +3798,61 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <!-- Keyboard shortcuts in Android N-->
-      <message name="IDS_KEYBOARD_SHORTCUT_OPEN_NEW_TAB" desc="A text label that appears next to the keyboard shortcut to open a new tab in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_OPEN_NEW_TAB" desc="A text label that appears next to the keyboard shortcut to open a new tab in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_REOPEN_NEW_TAB" desc="A text label that appears next to the keyboard shortcut for reopening the last tab in the chrome app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_REOPEN_NEW_TAB" desc="A text label that appears next to the keyboard shortcut for reopening the last tab in the chrome app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Reopen the last closed tab
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab in Private mode
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_OPEN_MENU" desc="A text label that appears next to a keyboard shortcut that opens the overflow menu in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_OPEN_MENU" desc="A text label that appears next to a keyboard shortcut that opens the overflow menu in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open the menu
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_NEXT_TAB" desc="A text label that appears next to the keyboard shortcut that will move the user to the next tab in the Brave app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_NEXT_TAB" desc="A text label that appears next to the keyboard shortcut that will move the user to the next tab in the Brave app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Jump to the next tab
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_PREV_TAB" desc="A text label that appears next to the keyboard shortcut that will move the user to the previous tab in the Brave app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_PREV_TAB" desc="A text label that appears next to the keyboard shortcut that will move the user to the previous tab in the Brave app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Jump to the previous tab
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_CLOSE_TAB" desc="A text label that appears next to the keyboard shortcut that will close the current tab in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_CLOSE_TAB" desc="A text label that appears next to the keyboard shortcut that will close the current tab in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Close current tab
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_FIND_BAR" desc="A text label that appears next to the keyboard shortcut that will open the find bar that searches what is on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_FIND_BAR" desc="A text label that appears next to the keyboard shortcut that will open the find bar that searches what is on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open the Find Bar
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_ADDRESS_BAR" desc="A text label that appears next to the keyboard that will let you focus on the address bar on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_ADDRESS_BAR" desc="A text label that appears next to the keyboard that will let you focus on the address bar on the screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Jump to the address bar
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_BOOKMARK_MANAGER" desc="A text label that appears next to the keyboard shortcut that will open the bookmarks manager in Brave. On a tablet this is a new tab, on the phone this is a new activity. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_BOOKMARK_MANAGER" desc="A text label that appears next to the keyboard shortcut that will open the bookmarks manager in Brave. On a tablet this is a new tab, on the phone this is a new activity. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open the bookmarks manager
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_BOOKMARK_PAGE" desc="A text label that appears next to the keyboard shortcut that will bookmark the page that is currently on screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_BOOKMARK_PAGE" desc="A text label that appears next to the keyboard shortcut that will bookmark the page that is currently on screen. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Bookmark the current page
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_MANAGER" desc="A text label that appears next to the keyboard shorcut that will open up the history page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_MANAGER" desc="A text label that appears next to the keyboard shorcut that will open up the history page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open the history page
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_PRINT_PAGE" desc="A text label that appears next to the keyboard shortcut that will open the print page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_PRINT_PAGE" desc="A text label that appears next to the keyboard shortcut that will open the print page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open options to print page
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_ZOOM_IN" desc="A text label that appears next to the keyboard shortcut that will increase everything on the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_ZOOM_IN" desc="A text label that appears next to the keyboard shortcut that will increase everything on the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Make everything on the page bigger
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_ZOOM_OUT" desc="A text label that appears next to the keyboard shortcut that will decrease everything on the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_ZOOM_OUT" desc="A text label that appears next to the keyboard shortcut that will decrease everything on the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Make everything on the page smaller
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_RESET_ZOOM" desc="A text label that appears next to the keyboard shortcut that will reset the zoom back to the original size. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_RESET_ZOOM" desc="A text label that appears next to the keyboard shortcut that will reset the zoom back to the original size. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Return everything on the page to default size
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_RELOAD_PAGE" desc="A text label that appears next to the keyboard shortcut that will reload the current page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_RELOAD_PAGE" desc="A text label that appears next to the keyboard shortcut that will reload the current page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Reload the current page
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_RELOAD_NO_CACHE" desc="A text label that appears next to the keyboard shortcut that will reload the current page without a cache. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_RELOAD_NO_CACHE" desc="A text label that appears next to the keyboard shortcut that will reload the current page without a cache. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Reload the current page, ignoring cached content
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_HELP_CENTER" desc="A text label that appears next to the keyboard shortcut that will open the Brave Help Center in a new tab. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_HELP_CENTER" desc="A text label that appears next to the keyboard shortcut that will open the Brave Help Center in a new tab. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open the Brave Help Center in a new tab
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_TAB_GROUP_HEADER" desc="A text label that appears above a list of shortcuts that are related to the tab window. This group is part of several groups of keyboard shortcuts all shown in a dialog.">
@@ -3869,7 +3872,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_VR_PREPARING_VR_TOAST_STANDALONE_TEXT" desc="Text shown on a toast when Brave's VR browser could not be started due to the VR module missing.">
         Brave is still preparing for VR. Restart Brave later.
       </message>
-      <message name="IDS_VR_PREPARING_VR_NOTIFICATION_TITLE" desc="Title of a notifaction shown in VR if VR browser not ready yet. [CHAR-LIMIT=23]">
+      <message name="IDS_VR_PREPARING_VR_NOTIFICATION_TITLE" desc="Title of a notifaction shown in VR if VR browser not ready yet. [CHAR_LIMIT=23]">
         Something went wrong.
       </message>
       <message name="IDS_VR_PREPARING_VR_NOTIFICATION_BODY" desc="Body of a notifaction shown in VR if VR browser not ready yet.">
@@ -3991,7 +3994,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <!-- Launcher Shortcuts -->
-      <message name="IDS_DISABLED_INCOGNITO_LAUNCHER_SHORTCUT_MESSAGE" desc="Text for a toast displayed prompting the user to remove the disabled 'New private tab' app shortcut and recreate it.">
+      <message name="IDS_DISABLED_INCOGNITO_LAUNCHER_SHORTCUT_MESSAGE" desc="Text for a toast displayed prompting the user to remove the disabled 'New Private tab' app shortcut and recreate it.">
         Remove and recreate this shortcut
       </message>
 
@@ -4165,7 +4168,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
 
       <!-- Autofill Assistant preferences -->
       <!-- TODO(b/168178344): Move to Assistant settings strings section below. -->
-      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_TITLE" desc="Title for the Autofill Assistant preferences screen. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_TITLE" desc="Title for the Autofill Assistant preferences screen. [CHAR_LIMIT=32]">
         Brave Assistant in Brave
       </message>
       <message name="IDS_PREFS_AUTOFILL_ASSISTANT_SUMMARY" desc="Summary for the Autofill Assistant preferences screen.">
@@ -4490,17 +4493,20 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Failed to capture Paint Preview.
       </message>
       <message name="IDS_PAINT_PREVIEW_DEMO_PLAYBACK_START" desc="Toast message displayed when paint preview starts displaying. Used in paint preview demo mode." translateable="false">
-        Displaying Paint Preview. Press back to exit the Paint Preview demo.
+        Displaying Paint Preview.
       </message>
       <message name="IDS_PAINT_PREVIEW_DEMO_PLAYBACK_FAILURE" desc="Toast message displayed when there is a failure in playing back a paint preview for the demo. Used in paint preview demo mode." translateable="false">
         Paint Preview playback failed.
+      </message>
+      <message name="IDS_PAINT_PREVIEW_DEMO_NO_ACCESSIBILITY" desc="Toast message displayed when there is not accessibility support while playing back a paint preview for the demo. Used in paint preview demo mode." translateable="false">
+        Paint Preview does not have accessibility support.
       </message>
 
       <!-- Paint Preview Startup Experiment -->
       <message name="IDS_PAINT_PREVIEW_STARTUP_UPGRADE_SNACKBAR_MESSAGE" desc="Message displayed on a snackbar when a paint preview is shown on startup, telling the user that this is a preview of the page">
         Previewing this page
       </message>
-      <message name="IDS_PAINT_PREVIEW_STARTUP_UPGRADE_SNACKBAR_ACTION" desc="Text displayed on the action button of snackbar, promting user to switch to the live page and exit paint preivew. [CHAR-LIMIT=12]">
+      <message name="IDS_PAINT_PREVIEW_STARTUP_UPGRADE_SNACKBAR_ACTION" desc="Text displayed on the action button of snackbar, promting user to switch to the live page and exit paint preivew. [CHAR_LIMIT=12]">
         Reload
       </message>
       <message name="IDS_PAINT_PREVIEW_STARTUP_AUTO_UPGRADE_TOAST" desc="Text displayed as a toast message when paint preview         is automatically removed and live tab is shown.">
@@ -4548,7 +4554,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_IMAGE_DESCRIPTIONS_DIALOG_GET_DESCRIPTIONS_BUTTON" desc="Button for dialog to enable option to get image descriptions.">
         Get descriptions
       </message>
-      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_TITLE" desc="Title of the preference that allows user to update accessibility image descriptions settings. [CHAR-LIMIT=32]">
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_TITLE" desc="Title of the preference that allows user to update accessibility image descriptions settings. [CHAR_LIMIT=32]">
         Image descriptions
       </message>
       <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_TOGGLE_TITLE" desc="Title of the toggle to turn preference on and off for accessibility image descriptions.">

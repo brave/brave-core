@@ -319,6 +319,12 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_DESCRIPTION" desc="Description for section that lets users choose the language for web content. The web content languages will be served in the order of the list.">
     Web content available in multiple languages will use the first supported language from this list. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_WEBSITE_LANGUAGES_TITLE" desc="Title of section that lets users choose a list of languages for websites. The website languages will be given to websites in the order given by the list.">
+    Website languages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_WEBSITE_LANGUAGES_DESCRIPTION" desc="Description for section that lets users choose a list of languages for websites. The website languages will be given to websites in the order given by the list.">
+    Add and rank your preferred languages. Websites will show in your preferred languages, when possible. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_TRANSLATE_TARGET_LABEL" desc="The label of the toggle that enables the prompt to translate a page to users.">
     Language used when translating pages
   </message>
@@ -379,22 +385,22 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_DESCRIPTION" desc="Description for the list of languages that support spell check, from which users can enable or disable spell check for.">
     Languages for spell check are based on your language preference
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_SPELL_CHECK_LANGUAGES_TITLE" translateable="false" desc="Title for the dialog that allows users to select new languages to add to their list of spell check languages.">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_SPELL_CHECK_LANGUAGES_TITLE" desc="Title for the dialog that allows users to select new languages to add to their list of spell check languages.">
     Add spell check languages
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_SEARCH_SPELL_CHECK_LANGUAGES_LABEL" desc="Placeholder in the input field to search spell check languages.">
     Search languages
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_SUGGESTED_SPELL_CHECK_LANGUAGES_LABEL" translateable="false" desc="Title of the list of spell check languages suggested to users.">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SUGGESTED_SPELL_CHECK_LANGUAGES_LABEL" desc="Title of the list of spell check languages suggested to users.">
     Suggested
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_ALL_SPELL_CHECK_LANGUAGES_LABEL" translateable="false" desc="Title of the list of all spell check languages.">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ALL_SPELL_CHECK_LANGUAGES_LABEL" desc="Title of the list of all spell check languages.">
     All languages
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGE_NOT_ALLOWED" translateable="false" desc="Tooltip for policy icon when a spell check language is not allowed.">
-    Your administrator doesn't allow this spell check language
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGE_NOT_ALLOWED" desc="Tooltip for policy icon when a spell check language is not allowed.">
+    Your administrator doesn't allow this language
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_REMOVE_SPELL_CHECK_LANGUAGE_TOOLTIP" translateable="false" desc="Tooltip of the button that lets the user remove a given spell check language.">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_REMOVE_SPELL_CHECK_LANGUAGE_TOOLTIP" desc="Tooltip of the button that lets the user remove a given spell check language.">
     Remove <ph name="LANGUAGE_NAME">$1<ex>English (United States)</ex></ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED" desc="Error message when spell check dictionary download fails.">
@@ -2227,8 +2233,8 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_DEVICE_INITIALIZING" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is initializing.">
     Initializing
   </message>
-  <message name="IDS_SETTINGS_INTERNET_DEVICE_BUSY" desc="Settings &gt; Internet &gt; Message when a device (e.g a Cellular modem) is busy.">
-    Busy
+  <message name="IDS_SETTINGS_INTERNET_DEVICE_BUSY" desc="Settings &gt; Internet &gt; Message when the cellular modem is busy applying updates (e.g., installing an eSIM profile).">
+    Applying changes...
   </message>
   <message name="IDS_SETTINGS_INTERNET_JOIN_TYPE" desc="Title for the network configuration dialog for a new network.">
     Join <ph name="TYPE">$1<ex>WiFi</ex></ph> network
@@ -2293,8 +2299,26 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING_DISABLED" desc="Settings &gt; Internet &gt; Network details: Toggle sublabel when roaming is not allowed.">
     Roaming off
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_VPN_PREFERENCES" desc="Settings &gt; Internet &gt; VPN: Title of preferences group.">
+    VPN Preferences
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining that all internet traffic has to go through this VPN (virtual private network), and all other network connections are blocked.">
     Always connect through this VPN
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN_ENABLE_LABEL" desc="Settings &gt; Internet &gt; VPN: Toggle label to enable always-on VPN.">
+    Always-on VPN
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN_ENABLE_SUBLABEL" desc="Settings &gt; Internet &gt; VPN: Toggle sublabel to enable always-on VPN.">
+    Automatically connects when you log in
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN_LOCKDOWN_LABEL" desc="Settings &gt; Internet &gt; VPN: Label for the toggle that enables always-on VPN lockdown.">
+    Block traffic without VPN
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN_LOCKDOWN_SUBLABEL" desc="Settings &gt; Internet &gt; VPN: Sublabel for the toggle that enables always-on VPN lockdown.">
+    Brave browser and Android traffic will be blocked unless a VPN is connected
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN_SERVICE" desc="Settings &gt; Internet &gt; VPN: Label for the dropdown menu determining which VPN client will be automatically started on login.">
+    VPN service
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically connect to the network.">
     Automatically connect to this network
@@ -2309,10 +2333,10 @@ Press an assigned switch to remove assignment.
     Automatically connect to cellular network
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_MENU_REMOVE" desc="Settings &gt; Internet &gt; Network details &gt; Dot menu: Label for the button to remove an eSIM cellular network">
-    Remove profile
+    Remove Profile
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_MENU_RENAME" desc="Settings &gt; Internet &gt; Network details &gt; Dot menu: Label for the button to rename an eSIM cellular network">
-    Rename
+    Rename Profile
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_INSTALL_ERROR_DIALOG_TITLE" desc="Settings &gt; Network &gt; Mobile data &gt; Download &gt; Install error dialog: Title for the dialog prompting the user to enter the confirmation code required to activate the eSIM profile they are attempting to install">
     Set up new network
@@ -2338,8 +2362,23 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_DIALOG_CANCEL" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The Label for the dialog cancel button to rename an eSIM cellular network">
     Cancel
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_INPUT_SUBTITLE" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The Label for the dialog input that renames an eSIM cellular network, informing the user that letters, numbers and special characters are allowed.">
+    Name can use letters, numbers, and special characters
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_INPUT_CHARACTER_COUNT" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The Label for the dialog input that renames an eSIM cellular network, informing the user the number of characters they have inputted compared to the maximum number of characters allowed.">
+    <ph name="CURRENT_CHARACTER_COUNT">$1<ex>15</ex></ph>/<ph name="MAX_CHARACTER_COUNT">$2<ex>20</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_INPUT_A11Y_LABEL" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The a11y label for the dialog input that renames an eSIM cellular network, informing the user that letters, numbers and special characters are allowed, as well as the maximum number of characters permitted.">
+    Name can use letters, numbers, and special characters, and must be <ph name="MAX_CHARACTER_COUNT">$1<ex>20</ex></ph> characters or fewer
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_DIALOG_ERROR_TOAST" desc="Settings &gt; Internet &gt; Network details &gt; Rename eSIM cellular profile dialog: Message in toast shown when rename fails">
+    Profile could not be renamed. Please try again or contact your carrier for technical support.
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_TITLE" desc="Settings &gt; Internet &gt; Network details &gt;Remove profile dialog: Title remove esim profile dialog">
     Remove "<ph name="ESIM_PROFILE_NAME">$1<ex>Profile 1</ex></ph>"?
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_DESCRIPTION" desc="Settings &gt; Internet &gt; Network details &gt;Remove profile dialog: Description for the remove esim profile dialog, warning the user that they may not be to reinstall the profile they are about to remove.">
+    You may not be able to reinstall this profile
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_CANCEL" desc="Settings &gt; Internet &gt; Network details &gt;Remove profile dialog: The Label for the dialog cancel button to remove an eSIM cellular network">
     Cancel
@@ -2537,7 +2576,13 @@ Press an assigned switch to remove assignment.
     Show device EID and QR code popup
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_NO_CONNECTION_ERROR_TOAST" desc="Message in toast displayed when user tries to perform an eSIM operation when not connected to a non-cellular network.">
-    Establish an internet connection first
+    Connect to Wi-Fi or Ethernet to set up eSIM
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_ESIM_MOBILE_DATA_NOT_ENABLED_ERROR_TOAST" desc="Message in toast displayed when user tries to set up an eSIM profile when mobile data is not enabled.">
+    Enable mobile data to install an eSIM profile
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_ESIM_PROFILE_LIMIT_REACHED_ERROR_TOAST" desc="Message in toast displayed when user tries to set up an eSIM profile when they have reached the maximum number of allowed eSIM profiles installed.">
+    You can install up to <ph name="PROFILE_LIMIT">$1<ex>5</ex></ph> eSIM profiles on this device. To add another profile, first remove an existing profile.
   </message>
 
   <!-- Users Page (OS Settings) -->

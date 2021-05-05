@@ -10,7 +10,7 @@ FAQ:
   - Tell me more, please?
       Ok: http://www.chromium.org/developers/design-documents/ui-localization
 
-CHAR-LIMIT guidelines:
+CHAR_LIMIT guidelines:
   Certain strings need character limits to prevent a long translation from breaking the UI.
   Translators will ensure the translation fits within the limit, but may be forced to use odd
   abbreviations to do so. There is a tradeoff here, so only use character limits when they're
@@ -20,7 +20,7 @@ CHAR-LIMIT guidelines:
   translation will be cut off. On the other hand, an error message that can wrap over multiple lines
   doesn't need a limit.
 
-  * Most strings - No limit. Omit "[CHAR-LIMIT=...]" altogether.
+  * Most strings - No limit. Omit "[CHAR_LIMIT=...]" altogether.
   * Main menu items - 27, or 24 characters if it has a checkbox
   * Settings headers - 32 characters
   * Settings items - 32 characters
@@ -113,7 +113,7 @@ CHAR-LIMIT guidelines:
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
-      <message name="IDS_NOTIFICATION_CATEGORY_INCOGNITO" desc="Label for notification that indicates private mode is active, within a list of notification categories. [CHAR-LIMIT=32]">
+      <message name="IDS_NOTIFICATION_CATEGORY_INCOGNITO" desc="Label for notification that indicates Private mode is active, within a list of notification categories. [CHAR_LIMIT=32]">
         Private
       </message>
       <message name="IDS_USAGE_AND_CRASH_REPORTS_SUMMARY" desc="Description for 'Help improve Brave's features and performance' preference.">
@@ -129,33 +129,33 @@ CHAR-LIMIT guidelines:
       <message name="IDS_DATA_REDUCTION_DESCRIPTION_LITE_MODE" desc="Text describing how the Lite mode feature works. Seen only before the user has enabled the feature.">
         When Lite mode is on, Brave uses Brave servers to make pages load faster. Lite mode rewrites very slow pages to load only essential content. Lite mode does not apply to Private tabs.
       </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the private stack selection 'button'.">
+      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
       </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK_SELECTED" desc="Announcement when the private tab stack is selected.">
-        Switched to private tabs
+      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK_SELECTED" desc="Announcement when the Private tab stack is selected.">
+        Switched to Private tabs
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a new private tab. [CHAR-LIMIT=30]">
-        Open in private tab
+      <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a new Private tab. [CHAR_LIMIT=30]">
+        Open in Private tab
       </message>
-      <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Brave private tab from Brave Custom Tab. [CHAR-LIMIT=30]">
-        Open in private tab
+      <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Brave Private tab from Brave Custom Tab. [CHAR_LIMIT=30]">
+        Open in Private tab
       </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_INCOGNITO_SUBTEXT" desc="Displayed in private mode download notification as subtext.">
+      <message name="IDS_DOWNLOAD_NOTIFICATION_INCOGNITO_SUBTEXT" desc="Displayed in Private mode download notification as subtext.">
         Private tab
       </message>
-      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all private tabs on Android N+.">
+      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all Private tabs on Android N+.">
         Private Tabs
       </message>
-      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION" desc="Message on the notification that closes all private tabs.">
-        Close all private tabs
+      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION" desc="Message on the notification that closes all Private tabs.">
+        Close all Private tabs
       </message>
 
-      <message name="IDS_SIGNIN_INCOGNITO_BUTTON" desc="Button text to open the private interstitial in the web sign-in account picker bottom sheet">
+      <message name="IDS_SIGNIN_INCOGNITO_BUTTON" desc="Button text to open the Private interstitial in the web sign-in account picker bottom sheet">
         Open a Private tab
       </message>
 
-      <message name="IDS_INCOGNITO_INTERSTITIAL_TITLE" desc="The title of the private interstitial bottom sheet.">
+      <message name="IDS_INCOGNITO_INTERSTITIAL_TITLE" desc="The title of the Private interstitial bottom sheet.">
         Use Private to sign in
       </message>
       <message name="IDS_INCOGNITO_INTERSTITIAL_MESSAGE" desc="The content of Private interstitial which is shown when a user is in the sign-in flow and they want to go Private mode to continue signing in. Before they go Private mode they would be presented with a Private interstitial and this message is part of that interstitial which would inform how activity in Private may be visbile to others and how data from the Private session can be cleared.">
@@ -163,41 +163,41 @@ In Private, your activity <ph name="BEGIN_BOLD1">&lt;b1&gt;</ph>might still be v
 
 Data from your Private session will only be cleared from Brave when you <ph name="BEGIN_BOLD2">&lt;b2&gt;</ph>close all Private tabs<ph name="END_BOLD2">&lt;/b2&gt;</ph>.
       </message>
-      <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new private browser tab.">
-        New private tab
+      <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new Private browser tab.">
+        New Private tab
       </message>
-      <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new private tab that facilitates pseudononymous browsing. [CHAR-LIMIT=27]" meaning="Android menu">
-        New private tab
+      <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]" meaning="Android menu">
+        New Private tab
       </message>
-      <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open private tabs. [CHAR-LIMIT=27]">
-        Close private tabs
+      <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
+        Close Private tabs
       </message>
-      <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR-LIMIT=30]" translateable="false">
+      <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR_LIMIT=30]" translateable="false">
         Open in Private Brave
       </message>
-      <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new private tab view.">
-        New private tab
+      <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new Private tab view.">
+        New Private tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_INCOGNITO_TAB" desc="Content description for the new private tab button.">
-        New private tab
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_INCOGNITO_TAB" desc="Content description for the new Private tab button.">
+        New Private tab
       </message>
       <message name="IDS_ACCESSIBILITY_INCOGNITO_BADGE" desc="Content description for the badge indicating that the user is in Private mode.">
         Private mode
       </message>
 
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the private tabs toggle button when viewing standard tabs.">
-        Enter private mode
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the Private tabs toggle button when viewing standard tabs.">
+        Enter Private mode
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_INCOGNITO" desc="Content description for the private tabs toggle button when viewing private tabs.">
-        Leave private mode
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_INCOGNITO" desc="Content description for the Private tabs toggle button when viewing Private tabs.">
+        Leave Private mode
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER" desc="Content description for tabs that are not selected in private mode">
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER" desc="Content description for tabs that are not selected in Private mode">
         Private Tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER_SELECTED" desc="Content description for the tab that is selected in private mode">
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER_SELECTED" desc="Content description for the tab that is selected in Private mode">
         Selected Private Tab
       </message>
-      <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR-LIMIT=55]">
+      <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab in Private mode
       </message>
       <if expr="enable_arcore">

@@ -579,7 +579,7 @@ are declared in tools/grit/grit_rule.gni.
             Open link in new &amp;window
           </message>
           <!-- Also update IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP in google_chrome_strings.grd and chromium_strings.grd. -->
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in private window command">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in Private window command">
             Open link in &amp;private window
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKINPROFILES" desc="The name of the open a link as a different user context menu">
@@ -808,7 +808,7 @@ are declared in tools/grit/grit_rule.gni.
             Open Link in New &amp;Window
           </message>
           <!-- Also update IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP in google_chrome_strings.grd and chromium_strings.grd. -->
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in private window command">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKINPROFILES" desc="In Title Case: The name of the open a link as a different user context menu">
@@ -1043,8 +1043,8 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_NEW_WINDOW" desc="The text label of a menu item for opening a new window">
             &amp;New window
           </message>
-          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new private window">
-            New &amp;private window
+          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
+            New &amp;Private window
           </message>
           <message name="IDS_PIN_TO_START_SCREEN" desc="The text label of the Pin to start screen menu item">
             Pin this page to Start screen...
@@ -1123,7 +1123,7 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_NEW_WINDOW" desc="In Title Case: The text label of a menu item for opening a new window">
             &amp;New Window
           </message>
-          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new private window">
+          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new Private window">
             New &amp;Private Window
           </message>
           <message name="IDS_PIN_TO_START_SCREEN" desc="In Title Case: The text label of the Pin to start screen menu item">
@@ -2152,39 +2152,39 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- Abandon in-progress downloads confirmation dialog -->
-      <message name="IDS_ABANDON_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. If necessary, add '#' for plural cases. [ICU Syntax]">
+      <message name="IDS_ABANDON_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. If necessary, add '#' for plural cases. [ICU Syntax]">
         {NUM_DOWNLOAD, plural,
         =1 {Download is in progress} other {Downloads are in progress}}
       </message>
       <if expr="not use_titlecase">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_CONTINUE_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will continue the download without exiting.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_CONTINUE_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will continue the download without exiting.">
           Continue downloading
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_CONTINUE_BUTTON" desc="In Title Case: Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will continue the download without exiting.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_CONTINUE_BUTTON" desc="In Title Case: Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will continue the download without exiting.">
           Continue Downloading
         </message>
       </if>
       <if expr="not is_macosx">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
-          Exit private mode anyway?
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+          Exit Private mode anyway?
         </message>
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit guest mode anyway?
         </message>
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit
         </message>
       </if>
       <if expr="is_macosx">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
-          Quit private mode anyway?
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
+          Quit Private mode anyway?
         </message>
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Exit' to refer to closing a browser.">
           Exit guest mode anyway?
         </message>
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will abandon the download and quit. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last Private window while one or more downloads are in progress. When clicked, the button will abandon the download and quit. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
           Quit
         </message>
       </if>
@@ -3422,19 +3422,19 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_EXTENSION_PREFIX" desc="The prefix for a Task Manager extension row (always visible if the extension has a view)">
           Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private extension row (may not be visible if private is not open)">
+        <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private extension row (may not be visible if Private is not open)">
           Private Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_APP_PREFIX" desc="The prefix for a Task Manager app row (always visible if the app has a view)">
           App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private app row (may not be visible if the app is not open in private)">
+        <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private app row (may not be visible if the app is not open in Private)">
           Private App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_TAB_PREFIX" desc="The prefix for a Task Manager Tab row">
           Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private Tab row (may not be visible if private is not open)">
+        <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private Tab row (may not be visible if Private is not open)">
           Private Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_BACKGROUND_APP_PREFIX" desc="The prefix for a Task Manager background app task representing a BackgroundContents">
@@ -3488,13 +3488,13 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_SUBFRAME_PREFIX" desc="The prefix for a out-of-process-iframe row in the Task Manager (these processes are created when site isolation is enabled)">
           Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in private mode)">
+        <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in Private mode)">
           Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_PORTAL_PREFIX" desc="The prefix for a portal row in the Task Manager (these processes are created when portals is enabled)">
           Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in private mode)">
+        <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in Private mode)">
           Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_ARC_PREFIX" desc="The prefix for an ARC general process row">
@@ -3713,10 +3713,10 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <!-- Extension/App install dialog strings -->
-      <message name="IDS_EXTENSION_PROMPT_APP_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an app from private mode, prompting the user to allow or deny the request.">
+      <message name="IDS_EXTENSION_PROMPT_APP_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an app from Private mode, prompting the user to allow or deny the request.">
         <ph name="ORIGIN">$1<ex>http://www.google.com</ex></ph> wants to communicate with the app "<ph name="EXTENSION_NAME">$2<ex>Gmail</ex></ph>"
       </message>
-      <message name="IDS_EXTENSION_PROMPT_EXTENSION_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an extension from private mode, prompting the user to allow or deny the request.">
+      <message name="IDS_EXTENSION_PROMPT_EXTENSION_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an extension from Private mode, prompting the user to allow or deny the request.">
         <ph name="ORIGIN">$1<ex>http://www.google.com</ex></ph> wants to communicate with the extension "<ph name="EXTENSION_NAME">$2<ex>Gmail Checker</ex></ph>"
       </message>
       <message name="IDS_EXTENSION_PROMPT_WILL_HAVE_ACCESS_TO" desc="Second line in the content area of the extension or app installation prompt. Note that the exact wording is important. This should mean that the extension or app _can_ access the listed privileges, but not necessarily that it will or needs to.">
@@ -5175,7 +5175,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Clear input
       </message>
       <if expr="is_android or enable_vr">
-        <message name="IDS_SEARCH_OR_TYPE_WEB_ADDRESS" desc="Prompt to enter text into the text field that will either perform web searches or navigate to a website. [CHAR-LIMIT=38]" formatter_data="android_java">
+        <message name="IDS_SEARCH_OR_TYPE_WEB_ADDRESS" desc="Prompt to enter text into the text field that will either perform web searches or navigate to a website. [CHAR_LIMIT=38]" formatter_data="android_java">
           Search or type web address
         </message>
       </if>
@@ -5770,7 +5770,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!--Accessible name/action strings-->
-      <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a private window">
+      <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
       </message>
       <message name="IDS_ACCESSIBLE_GUEST_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a guest mode window">
@@ -5889,16 +5889,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         New! Control your music, videos, and more.
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        You can browse privately using a private window
+        You can browse privately using a Private window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_1" desc="Variations option 2. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Use the web without saving your browsing history with a private window
+        Use the web without saving your browsing history with a Private window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_2" desc="Variations option 3. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Using a shared computer? Try opening a private window.
+        Using a shared computer? Try opening a Private window.
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        To browse privately, click the dots icon menu to open a private window
+        To browse privately, click the dots icon menu to open a Private window
       </message>
       <message name="IDS_NEWTAB_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the New Tab button, which encourages users to use it.">
         Open a new tab with one click
@@ -5913,7 +5913,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         When you're ready, find your reading list here
       </message>
       <message name="IDS_READING_LIST_ENTRY_POINT_PROMO" desc="Text shown on promotional UI to encourage users to add a tab to their reading list">
-        Add this page to reading list
+        To add this page to your reading list, click the Bookmark icon
       </message>
       <message name="IDS_REOPEN_TAB_PROMO" desc="Text shown on promotional UI appearing next to the app menu button">
         Reopen a tab if you accidentally closed it
@@ -6025,10 +6025,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
           No thanks
         </message>
       </if>
-      <message name="IDS_PASSWORD_MANAGER_USERNAME_LABEL" desc="Label for the username field in a prompt to store new credential">
+      <message name="IDS_PASSWORD_MANAGER_USERNAME_LABEL" desc="Label for the username field in a prompt to store new credential" formatter_data="android_java">
         Username
       </message>
-      <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential">
+      <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential" formatter_data="android_java">
         Password
       </message>
       <if expr="not is_android">
@@ -6136,7 +6136,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_BLOCKLIST_BUTTON" desc="Mobile: Button text for the 'Save Password' infobar's 'Never remember for this site' option">
           Never
         </message>
-        <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="Label for the 'update' button in the Update Password infobar. This infobar asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update.">
+        <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="Label for the 'update' button in the Update Password infobar. This infobar asks if the user wishes to update the saved password for a site to a new password the user has just entered; the button applies the suggested update." formatter_data="android_java">
           Update
         </message>
         <message name="IDS_PASSWORD_SAVING_STATUS_TOGGLE" desc="Label for the toggle that shows whether saving passwords for the current site is enabled or disabled.">
@@ -6163,10 +6163,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
         </message>
-        <message name="IDS_UPDATE_PASSWORD_DIALOG_TITLE" desc="The title of the update password dialog.">
+        <message name="IDS_UPDATE_PASSWORD_DIALOG_TITLE" desc="The title of the update password dialog." formatter_data="android_java">
           Update password for <ph name="ORIGIN">%1$s<ex>example.com</ex></ph>
         </message>
-        <message name="IDS_UPDATE_PASSWORD_DIALOG_SIGNED_IN_DESCRIPTION" desc="The description at the bottom of update password dialog when the user is signed in.">
+        <message name="IDS_UPDATE_PASSWORD_DIALOG_SIGNED_IN_DESCRIPTION" desc="The description at the bottom of update password dialog when the user is signed in." formatter_data="android_java">
           Passwords are saved in your Brave sync chain (<ph name="ACCOUNT">%1$s<ex>user@gmail.com</ex></ph>) so you can use them on any device
         </message>
       </if>
@@ -8554,7 +8554,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NOTIFICATION_BUTTON_CLOSE" desc="Button label to close a notification">
         Close
       </message>
-      <message name="IDS_NOTIFICATION_BUTTON_MORE" desc="Label shown on the second button of a MAC OSX system notification used to expand further options. [CHAR-LIMIT=12]">
+      <message name="IDS_NOTIFICATION_BUTTON_MORE" desc="Label shown on the second button of a MAC OSX system notification used to expand further options. [CHAR_LIMIT=12]">
         More
       </message>
       <message name="IDS_NOTIFICATION_REPLY_PLACEHOLDER" desc="Placeholder text shown in the text box before any text is entered when replying directly to a notification.">
@@ -8707,7 +8707,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_NEW_WINDOW_MAC" desc="The Mac menu item for opening a new window in the file menu.">
           New Window
         </message>
-        <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new private window in the file menu.">
+        <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new Private window in the file menu.">
           New Private Window
         </message>
         <message name="IDS_BACKGROUND_APPS_MAC" desc="The Mac submenu for opening Background Apps.">
@@ -9591,8 +9591,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_APP_LIST_NEW_WINDOW" desc="The text label of the New Window menu item">
           New window
         </message>
-        <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New private window menu item">
-          New private window
+        <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New Private window menu item">
+          New Private window
         </message>
         <message name="IDS_APP_LIST_OEM_DEFAULT_FOLDER_NAME" desc="The default name for OEM folders in the App Launcher">
           OEM folder
@@ -10187,6 +10187,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
+    <!-- File Handling permission prompt -->
+    <if expr="not is_android">
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_TEXT" desc="Permission request shown if the user is opening a file using a PWA with registered file handlers. Follows a prompt: 'This site would like to:'">
+        Open <ph name="FILE_EXTENSIONS">$1<ex>.txt, .csv, .md</ex></ph> files
+      </message>
+      <message name="IDS_WEB_APP_FILE_HANDLING_EXTENSION_LIST_SEPARATOR" desc="Text/punctuation that separates a list of file types/extensions, such as .txt or .csv." meaning="List separator for file extensions.">
+         , '''
+      </message>
+    </if>
+
     <!-- Font Access chooser -->
     <if expr="not is_android">
       <message name="IDS_FONT_ACCESS_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce Local Font Access chooser details to the user in a popup when it is from a website.">
@@ -10750,7 +10760,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
    </if>
 
    <!-- Private Profile Menu bubble. -->
-    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the private version of profile menu.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
       Private
     </message>
     <message name="IDS_INCOGNITO_WINDOW_COUNT_MESSAGE" desc="The message showing the number of open incogntio windows. This is not used for zero windows.[ICU Syntax]">
@@ -10759,13 +10769,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
         other {# open windows}
       }
     </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CREATE_SHORTCUT_BUTTON" desc="Label of the button to create a desktop shortcut for private mode.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CREATE_SHORTCUT_BUTTON" desc="Label of the button to create a desktop shortcut for Private mode.">
       Create shortcut
     </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all private windows.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all Private windows.">
       Exit Private
     </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all private windows.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all Private windows.">
       Close Private
     </message>
 
