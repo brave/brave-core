@@ -1,19 +1,19 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index 445bb9455d25476df537562890af5b1fc799f561..d4b5e58d53dc39be0cfa2d9c2e22138bb6292e68 100644
+index 1c65ce48e6624e6f0dfeb0f12a370f3f3d17e997..1101da5a0d27fcda3778683d8ebe261413f36b0b 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
-@@ -2245,6 +2245,7 @@ void NavigationRequest::OnRequestRedirected(
+@@ -2283,6 +2283,7 @@ void NavigationRequest::OnRequestRedirected(
    common_params_->url = redirect_info.new_url;
    common_params_->method = redirect_info.new_method;
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
 +  BRAVE_ONREQUESTREDIRECTED_MAYBEHIDEREFERRER
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
-
-@@ -3412,6 +3413,7 @@ void NavigationRequest::OnStartChecksComplete(
+ 
+@@ -3446,6 +3447,7 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
-
+ 
 +  BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER
    // TODO(clamy): Avoid cloning the navigation params and create the
    // ResourceRequest directly here.

@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index 1d5fbf462b1f23f3db76b27575366588f19daa93..f7bc3b3a107572ae595c57c5b8309c674442a9c2 100644
+index 4e7fc84c780295169fe237d966acddca8d7c0f57..a9d3c5c96caa40dfe8fa0c1bd3e8167607dc237a 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-@@ -944,6 +944,7 @@ String HTMLCanvasElement::ToDataURLInternal(
+@@ -929,6 +929,7 @@ String HTMLCanvasElement::ToDataURLInternal(
      if (!data_buffer)
        return String("data:,");
-
+ 
 +    BRAVE_TO_DATA_URL_INTERNAL
      String data_url = data_buffer->ToDataURL(encoding_mime_type, quality);
      base::TimeDelta elapsed_time = base::TimeTicks::Now() - start_time;

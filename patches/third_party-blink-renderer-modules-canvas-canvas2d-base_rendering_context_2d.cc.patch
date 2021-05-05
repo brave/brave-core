@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 8940f363564d134f3c86c80a6bf6b965fbc3f3a7..d101968a55fbc040efc5434ea6454e55e5c2c05b 100644
+index 7fc1509dc7e540e4ed79e272d22d3ba9ff0eb7b9..234e17ecbddfb6e64519bd1e7e9805eef3187389 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -1814,6 +1814,7 @@ ImageData* BaseRenderingContext2D::getImageData(
+@@ -1827,6 +1827,7 @@ ImageData* BaseRenderingContext2D::getImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageDataInternal(
@@ -10,7 +10,7 @@ index 8940f363564d134f3c86c80a6bf6b965fbc3f3a7..d101968a55fbc040efc5434ea6454e55
      int sx,
      int sy,
      int sw,
-@@ -1997,6 +1998,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
+@@ -2010,6 +2011,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
      default:
        NOTREACHED();
    }

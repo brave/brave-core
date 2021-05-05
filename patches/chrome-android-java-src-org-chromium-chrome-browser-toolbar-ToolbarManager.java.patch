@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 204f006294a7a97cd42b99d0bda26160cc8098b0..34cfac1963220094bd3d1e54d657703f1cecb4a0 100644
+index 207f98003beb713d18fabf0b121784e3de2e7224..b3318988a3d67086d3098e7741057b66926862c3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 @@ -460,13 +460,13 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve

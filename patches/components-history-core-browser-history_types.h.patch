@@ -1,5 +1,5 @@
 diff --git a/components/history/core/browser/history_types.h b/components/history/core/browser/history_types.h
-index d68f3855ba0b3132063bbc19e452eebe8bd04f3a..7b14fa50589e1ab22c5737dd2d1d6bdc74788dba 100644
+index fc27e68eb9d2253f849d49053a81b73852e5fbf8..19196e1bd9150f2fc00e83d20e04e372f83387a6 100644
 --- a/components/history/core/browser/history_types.h
 +++ b/components/history/core/browser/history_types.h
 @@ -49,6 +49,8 @@ enum VisitSource {
