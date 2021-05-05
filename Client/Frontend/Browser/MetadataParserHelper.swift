@@ -37,14 +37,21 @@ class MetadataParserHelper: TabEventHandler {
             }
             
             guard let dict = result as? [String: Any],
-                  let data = try? JSONSerialization.data(withJSONObject: dict, options: []),
-                  let pageMetadata = try? JSONDecoder().decode(PageMetadata.self, from: data) else {
+                  let data = try? JSONSerialization.data(withJSONObject: dict, options: []) else {
                 log.debug("Page contains no metadata!")
                 return
             }
-
-            tab.pageMetadata = pageMetadata
-            TabEvent.post(.didLoadPageMetadata(pageMetadata), for: tab)
+            
+            do {
+                let pageMetadata = try JSONDecoder().decode(PageMetadata.self, from: data)
+                tab.pageMetadata = pageMetadata
+                TabEvent.post(.didLoadPageMetadata(pageMetadata), for: tab)
+            } catch {
+                log.error("Failed to parse metadata: \(error)")
+                // To avoid issues where `pageMetadata` points to the last website to successfully
+                // parse metadata, set to nil
+                tab.pageMetadata = nil
+            }
         }
     }
 }
