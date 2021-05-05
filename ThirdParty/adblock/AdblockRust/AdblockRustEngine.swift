@@ -22,21 +22,28 @@ public class AdblockRustEngine {
   public init(rules: String = "") { engine = engine_create(rules) }
   deinit { engine_destroy(engine) }
   
+  public static func setDomainResolver(_ resolver: @escaping C_DomainResolverCallback) {
+    set_domain_resolver(resolver)
+  }
+  
   public func shouldBlock(requestUrl: String, requestHost: String, sourceHost: String) -> Bool {
     if deserializationPending {
       return false
     }
     
-    var explicitCancel = false
-    var savedFromException = false
     let thirdPartyRequest = requestHost != sourceHost
     
     var emptyPointer: UnsafeMutablePointer<Int8>?
     
-    return engine_match(engine, requestUrl, requestHost,
-                        sourceHost, thirdPartyRequest, "script",
-                        &explicitCancel, &savedFromException,
-                        UnsafeMutablePointer(mutating: &emptyPointer))
+    var didMatchRule: Bool = false
+    var didMatchException: Bool = false
+    var didMatchImportant: Bool = false
+    
+    engine_match(engine, requestUrl, requestHost,
+                 sourceHost, thirdPartyRequest, "script",
+                 &didMatchRule, &didMatchException, &didMatchImportant,
+                 UnsafeMutablePointer(mutating: &emptyPointer))
+    return didMatchRule
   }
   
   @discardableResult public func set(data: Data) -> Bool {

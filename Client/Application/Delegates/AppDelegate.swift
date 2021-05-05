@@ -16,6 +16,7 @@ import BraveShared
 import Data
 import StoreKit
 import BraveRewards
+import AdblockRust
 
 private let log = Logger.browserLogger
 
@@ -236,6 +237,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         // Override point for customization after application launch.
         var shouldPerformAdditionalDelegateHandling = true
+        
+        AdblockRustEngine.setDomainResolver { urlCString, start, end in
+            guard let urlCString = urlCString else { return }
+            let urlString = String(cString: urlCString)
+            let parsableURLString: String = {
+                // Apple's URL implementation requires a URL be prefixed with a scheme to be
+                // parsed properly (otherwise URL(string: X) will resolve to placing the entire
+                // contents of X into the `path` property
+                if urlString.asURL?.scheme == nil {
+                    return "http://\(urlString)"
+                }
+                return urlString
+            }()
+            guard let url = URL(string: parsableURLString),
+                  let baseDomain = url.baseDomain,
+                  let range = urlString.range(of: baseDomain) else {
+                log.error("Failed to resolve domain ")
+                return
+            }
+            let startIndex: Int = urlString.distance(from: urlString.startIndex, to: range.lowerBound)
+            let endIndex: Int = urlString.distance(from: urlString.startIndex, to: range.upperBound)
+            start?.pointee = UInt32(startIndex)
+            end?.pointee = UInt32(endIndex)
+        }
 
         // BVC generally handles theme applying, but in some instances views are established
         // before then (e.g. passcode, so can be privacy concern, meaning this should be called ASAP)
