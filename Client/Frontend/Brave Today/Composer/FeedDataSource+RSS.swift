@@ -56,12 +56,13 @@ extension FeedDataSource {
     }
     
     /// Remove a users custom RSS feed to the list of sources
-    func removeRSSFeed(with url: URL) {
-        let feedUrl = url.absoluteString
+    func removeRSSFeed(_ location: RSSFeedLocation) {
+        let feedUrl = location.url.absoluteString
         if RSSFeedSource.get(with: feedUrl) == nil {
             return
         }
-        RSSFeedSource.delete(with: url.absoluteString)
+        RSSFeedSource.delete(with: feedUrl)
+        FeedSourceOverride.resetStatus(forId: location.id)
         setNeedsReloadCards()
     }
     
