@@ -13,7 +13,7 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/mac/mac_util.h"
-#include "brave/common/brave_channel_info.h"
+#include "brave/components/brave_ads/browser/features.h"
 #include "brave/components/brave_ads/browser/notification_helper_mac.h"
 #include "chrome/common/chrome_features.h"
 
@@ -24,7 +24,7 @@ NotificationHelperMac::NotificationHelperMac() = default;
 NotificationHelperMac::~NotificationHelperMac() = default;
 
 bool NotificationHelperMac::ShouldShowNotifications() {
-  if (brave::IsNightlyOrDeveloperBuild()) {
+  if (features::ShouldShowCustomAdNotifications()) {
     return true;
   }
 
@@ -34,7 +34,7 @@ bool NotificationHelperMac::ShouldShowNotifications() {
     return true;
   }
 
-  if (!base::FeatureList::IsEnabled(features::kNativeNotifications)) {
+  if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
     LOG(WARNING) << "Native notification feature is disabled so falling back to"
                     " Message Center";
     return true;

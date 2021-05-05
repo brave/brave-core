@@ -46,6 +46,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
+#include "brave/components/brave_ads/browser/features.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -60,6 +61,7 @@
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -72,7 +74,6 @@
 #endif
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
-#include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_constants.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
@@ -1739,7 +1740,7 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 }
 
 void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
-  if (brave::IsNightlyOrDeveloperBuild()) {
+  if (features::ShouldShowCustomAdNotifications()) {
     std::unique_ptr<AdNotificationPlatformBridge> platform_bridge =
         std::make_unique<AdNotificationPlatformBridge>(profile_);
 
@@ -1796,22 +1797,21 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
 
 void AdsServiceImpl::StartNotificationTimeoutTimer(const std::string& uuid) {
 #if defined(OS_ANDROID)
-  if (!brave::IsNightlyOrDeveloperBuild()) {
+  if (!features::ShouldShowCustomAdNotifications()) {
     return;
   }
 #endif
 
-#if !defined(OS_ANDROID)
-  const uint64_t timeout_in_seconds = 120;
-#else
-  const uint64_t timeout_in_seconds = 30;
-#endif
-
-  notification_timers_[uuid] = std::make_unique<base::OneShotTimer>();
+  const int timeout_in_seconds = features::AdNotificationTimeout();
+  if (timeout_in_seconds == 0) {
+    // Never time out
+    return;
+  }
 
   const base::TimeDelta timeout =
       base::TimeDelta::FromSeconds(timeout_in_seconds);
 
+  notification_timers_[uuid] = std::make_unique<base::OneShotTimer>();
   notification_timers_[uuid]->Start(
       FROM_HERE, timeout,
       base::BindOnce(&AdsServiceImpl::NotificationTimedOut, AsWeakPtr(), uuid));
@@ -1832,11 +1832,16 @@ bool AdsServiceImpl::StopNotificationTimeoutTimer(const std::string& uuid) {
 }
 
 bool AdsServiceImpl::ShouldShowNotifications() {
+  if (!features::IsAdNotificationsEnabled()) {
+    LOG(INFO) << "Notification not made: Feature is disabled";
+    return false;
+  }
+
   return NotificationHelper::GetInstance()->ShouldShowNotifications();
 }
 
 void AdsServiceImpl::CloseNotification(const std::string& uuid) {
-  if (brave::IsNightlyOrDeveloperBuild()) {
+  if (features::ShouldShowCustomAdNotifications()) {
     std::unique_ptr<AdNotificationPlatformBridge> platform_bridge =
         std::make_unique<AdNotificationPlatformBridge>(profile_);
 

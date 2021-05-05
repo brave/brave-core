@@ -21,6 +21,7 @@ source_set("brave_ads") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/app/vector_icons",
       "//brave/browser/profiles:util",
+      "//brave/components/brave_ads/browser",
       "//brave/components/brave_ads/common",
       "//components/prefs",
       "//skia",

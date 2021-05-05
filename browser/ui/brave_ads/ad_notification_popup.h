@@ -107,11 +107,11 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   AdNotification ad_notification_;
   AdNotification GetAdNotification() const;
 
-  gfx::Point GetDefaultOriginForSize(const gfx::Size& size) const;
-  gfx::Point GetOriginForSize(const gfx::Size& size) const;
+  gfx::Point GetDefaultOriginForSize(const gfx::Size& size);
+  gfx::Point GetOriginForSize(const gfx::Size& size);
   void SaveOrigin(const gfx::Point& origin) const;
 
-  gfx::Rect CalculateBounds() const;
+  gfx::Rect CalculateBounds();
 
   void RecomputeAlignment();
 
