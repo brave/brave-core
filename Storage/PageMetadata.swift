@@ -14,18 +14,9 @@ public struct PageMetadata: Decodable {
     public let providerName: String?
     public let faviconURL: String?
     public let largeIconURL: String?
-    public let keywordsString: String?
+    public let keywords: Set<String>?
     public let search: Link?
     public let feeds: [Link]
-    
-    public var keywords: Set<String> {
-        guard let string = keywordsString else {
-            return Set()
-        }
-
-        let strings = string.split(separator: ",", omittingEmptySubsequences: true).map(String.init)
-        return Set(strings)
-    }
     
     enum CodingKeys: String, CodingKey {
         case mediaURL = "image"
@@ -36,7 +27,7 @@ public struct PageMetadata: Decodable {
         case providerName = "provider"
         case faviconURL = "icon"
         case largeIconURL = "largeIcon"
-        case keywordsString = "keywords"
+        case keywords
         case search
         case feeds
     }
@@ -49,7 +40,7 @@ public struct PageMetadata: Decodable {
                 providerName: String?,
                 faviconURL: String? = nil,
                 largeIconURL: String? = nil,
-                keywords: String? = nil,
+                keywords: Set<String>? = nil,
                 search: Link? = nil,
                 feeds: [Link] = []) {
         self.siteURL = siteURL
@@ -60,7 +51,7 @@ public struct PageMetadata: Decodable {
         self.providerName = providerName
         self.faviconURL = faviconURL
         self.largeIconURL = largeIconURL
-        self.keywordsString = keywords
+        self.keywords = keywords
         self.search = search
         self.feeds = feeds
     }
