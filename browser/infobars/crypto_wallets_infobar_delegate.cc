@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/grit/chromium_strings.h"
@@ -31,8 +32,8 @@
 // static
 void CryptoWalletsInfoBarDelegate::Create(InfoBarService* infobar_service,
     CryptoWalletsInfoBarDelegate::InfobarSubType subtype) {
-  infobar_service->AddInfoBar(infobar_service->CreateConfirmInfoBar(
-      std::unique_ptr<ConfirmInfoBarDelegate>(
+  infobar_service->AddInfoBar(
+      CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
           new CryptoWalletsInfoBarDelegate(subtype))));
 }
 
