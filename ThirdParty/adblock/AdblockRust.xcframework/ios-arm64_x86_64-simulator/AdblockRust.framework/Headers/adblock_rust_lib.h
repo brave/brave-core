@@ -6,20 +6,26 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+/**
+ * Main adblocking engine that allows efficient querying of resources to block.
+ */
 typedef struct C_Engine C_Engine;
 
-typedef struct C_FList {
-  const char *uuid;
-  const char *url;
-  const char *title;
-  const char *lang;
-  const char *lang2;
-  const char *lang3;
-  const char *support_url;
-  const char *component_id;
-  const char *base64_public_key;
-  const char *desc;
-} C_FList;
+/**
+ * An external callback that receives a hostname and two out-parameters for start and end
+ * position. The callback should fill the start and end positions with the start and end indices
+ * of the domain part of the hostname.
+ */
+typedef void (*C_DomainResolverCallback)(const char*, uint32_t*, uint32_t*);
+
+/**
+ * Passes a callback to the adblock library, allowing it to be used for domain resolution.
+ *
+ * This is required to be able to use any adblocking functionality.
+ *
+ * Returns true on success, false if a callback was already set previously.
+ */
+bool set_domain_resolver(C_DomainResolverCallback resolver);
 
 /**
  * Create a new `Engine`.
@@ -28,15 +34,20 @@ struct C_Engine *engine_create(const char *rules);
 
 /**
  * Checks if a `url` matches for the specified `Engine` within the context.
+ *
+ * This API is designed for multi-engine use, so block results are used both as inputs and
+ * outputs. They will be updated to reflect additional checking within this engine, rather than
+ * being replaced with results just for this engine.
  */
-bool engine_match(struct C_Engine *engine,
+void engine_match(struct C_Engine *engine,
                   const char *url,
                   const char *host,
                   const char *tab_host,
                   bool third_party,
                   const char *resource_type,
-                  bool *explicit_cancel,
-                  bool *saved_from_exception,
+                  bool *did_match_rule,
+                  bool *did_match_exception,
+                  bool *did_match_important,
                   char **redirect);
 
 /**
@@ -52,7 +63,7 @@ bool engine_tag_exists(struct C_Engine *engine, const char *tag);
 /**
  * Adds a resource to the engine by name
  */
-void engine_add_resource(struct C_Engine *engine,
+bool engine_add_resource(struct C_Engine *engine,
                          const char *key,
                          const char *content_type,
                          const char *data);
@@ -61,8 +72,6 @@ void engine_add_resource(struct C_Engine *engine,
  * Adds a list of `Resource`s from JSON format
  */
 void engine_add_resources(struct C_Engine *engine, const char *resources);
-
-void engine_add_filter(struct C_Engine *engine, const char *filter);
 
 /**
  * Removes a tag to the engine for consideration
@@ -83,16 +92,6 @@ void engine_destroy(struct C_Engine *engine);
  * Destroy a `*c_char` once you are done with it.
  */
 void c_char_buffer_destroy(char *s);
-
-/**
- * Get the default list size. `category` must be one of "regions" or "default"
- */
-size_t filter_list_size(const char *category);
-
-/**
- * Get the specific default list size
- */
-struct C_FList filter_list_get(const char *category, size_t i);
 
 /**
  * Returns a set of cosmetic filtering resources specific to the given url, in JSON format

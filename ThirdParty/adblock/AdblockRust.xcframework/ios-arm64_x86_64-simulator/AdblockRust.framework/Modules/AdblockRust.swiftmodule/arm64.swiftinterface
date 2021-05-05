@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
 // swift-module-flags: -target arm64-apple-ios12.4-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name AdblockRust
 @_exported import AdblockRust
 import Foundation
@@ -7,6 +7,7 @@ import Swift
 public class AdblockRustEngine {
   public init(rules: Swift.String = "")
   @objc deinit
+  public static func setDomainResolver(_ resolver: AdblockRust.C_DomainResolverCallback)
   public func shouldBlock(requestUrl: Swift.String, requestHost: Swift.String, sourceHost: Swift.String) -> Swift.Bool
   @discardableResult
   public func set(data: Foundation.Data) -> Swift.Bool
