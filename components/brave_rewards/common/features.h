@@ -14,6 +14,7 @@ namespace brave_rewards {
 namespace features {
 
 extern const base::Feature kBitflyerFeature;
+extern const base::Feature kVerboseLoggingFeature;
 
 }  // namespace features
 }  // namespace brave_rewards
