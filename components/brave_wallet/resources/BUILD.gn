@@ -1,0 +1,18 @@
+import("//brave/components/common/typescript.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+transpile_web_ui("brave_wallet_script_resources") {
+  entry_points = [ [
+        "brave_wallet_script",
+        rebase_path("brave_wallet_provider.js"),
+      ] ]
+
+  resource_name = "brave_wallet_script"
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "brave_wallet_script"
+  output_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
+  deps = [ ":brave_wallet_script_resources" ]
+}

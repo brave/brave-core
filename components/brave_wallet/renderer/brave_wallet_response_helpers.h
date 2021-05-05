@@ -19,6 +19,7 @@ std::unique_ptr<base::Value> FormProviderResponse(ProviderErrors code,
 std::unique_ptr<base::Value> FormProviderResponse(
     const std::string& controller_response,
     bool* reject);
+std::string FormProviderErrorResponse(const std::string& controller_response);
 
 }  // namespace brave_wallet
 

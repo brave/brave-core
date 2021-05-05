@@ -10,9 +10,11 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/renderer/web3_provider_constants.h"
+#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
@@ -21,12 +23,52 @@
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
+#include "ui/base/resource/resource_bundle.h"
 
+namespace {
+
+static base::NoDestructor<std::string> g_provider_script("");
+
+const char kConnectEventScript[] =
+    R"((function() {
+          window.ethereum.emit('connect', '%s');
+        })();)";
+
+const char kDisconnectEventScript[] =
+    R"((function() {
+          window.ethereum.emit('disconnect', %s);
+        })();)";
+
+const char kChainChangedEventScript[] =
+    R"((function() {
+          window.ethereum.emit('chainChanged', '%s');
+        })();)";
+
+const char kAccountsChangedEventScript[] =
+    R"((function() {
+          window.ethereum.emit('accountsChanged', %s);
+        })();)";
+
+std::string LoadDataResource(const int id) {
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  if (resource_bundle.IsGzipped(id)) {
+    return resource_bundle.LoadDataResourceString(id);
+  }
+
+  return resource_bundle.GetRawDataResource(id).as_string();
+}
+
+}  // namespace
 
 namespace brave_wallet {
 
 BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame)
-    : render_frame_(render_frame) {}
+    : render_frame_(render_frame) {
+  if (g_provider_script->empty()) {
+    *g_provider_script =
+        LoadDataResource(IDR_BRAVE_WALLET_SCRIPT_BRAVE_WALLET_SCRIPT_BUNDLE_JS);
+  }
+}
 
 BraveWalletJSHandler::~BraveWalletJSHandler() = default;
 
@@ -49,6 +91,7 @@ void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
   v8::Context::Scope context_scope(context);
 
   CreateEthereumObject(isolate, context);
+  InjectInitScript();
 }
 
 void BraveWalletJSHandler::CreateEthereumObject(
@@ -107,6 +150,9 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
   if (!out || !out->is_dict() || !out->GetAsDictionary(&out_dict))
     return v8::Local<v8::Promise>();
 
+  // Hardcode id to 1 as it is unused
+  ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", 1));
+  ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", "2.0"));
   std::string formed_input;
   if (!base::JSONWriter::Write(*out_dict, &formed_input))
     return v8::Local<v8::Promise>();
@@ -163,6 +209,36 @@ void BraveWalletJSHandler::OnRequest(
   } else {
     ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
   }
+}
+
+void BraveWalletJSHandler::ExecuteScript(const std::string script) {
+  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+  if (web_frame->IsProvisional())
+    return;
+
+  web_frame->ExecuteScript(blink::WebString::FromUTF8(script));
+}
+
+void BraveWalletJSHandler::InjectInitScript() {
+  ExecuteScript(*g_provider_script);
+}
+
+void BraveWalletJSHandler::ConnectEvent(const std::string& chain_id) {
+  ExecuteScript(base::StringPrintf(kConnectEventScript, chain_id.c_str()));
+}
+
+void BraveWalletJSHandler::DisconnectEvent(const std::string& message) {
+  ExecuteScript(base::StringPrintf(kDisconnectEventScript,
+                                   FormProviderErrorResponse(message).c_str()));
+}
+
+void BraveWalletJSHandler::ChainChangedEvent(const std::string& chain_id) {
+  ExecuteScript(base::StringPrintf(kChainChangedEventScript, chain_id.c_str()));
+}
+
+void BraveWalletJSHandler::AccountsChangedEvent(const std::string& accounts) {
+  ExecuteScript(
+      base::StringPrintf(kAccountsChangedEventScript, accounts.c_str()));
 }
 
 }  // namespace brave_wallet

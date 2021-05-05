@@ -22,6 +22,10 @@ class BraveWalletJSHandler {
   ~BraveWalletJSHandler();
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
+  void ConnectEvent(const std::string& chain_id);
+  void DisconnectEvent(const std::string& message);
+  void ChainChangedEvent(const std::string& chain_id);
+  void AccountsChangedEvent(const std::string& accounts);
 
  private:
   void BindFunctionsToObject(v8::Isolate* isolate,
@@ -37,6 +41,8 @@ class BraveWalletJSHandler {
   void CreateEthereumObject(v8::Isolate* isolate,
                             v8::Local<v8::Context> context);
   bool EnsureConnected();
+  void InjectInitScript();
+  void ExecuteScript(const std::string script);
 
   // A function to be called from JS
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,
