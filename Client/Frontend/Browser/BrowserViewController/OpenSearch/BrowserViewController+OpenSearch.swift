@@ -86,10 +86,13 @@ extension BrowserViewController {
             return supportsAutoAdd
         }
         
+        if openSearchTextFieldInputAssistantBarButtonGroup.isEmpty {
+            openSearchTextFieldInputAssistantBarButtonGroup = webContentView.inputAssistantItem.trailingBarButtonGroups
+        }
+        
         if UIDevice.isIpad {
-            webContentView.inputAssistantItem.trailingBarButtonGroups +=
+            webContentView.inputAssistantItem.trailingBarButtonGroups = openSearchTextFieldInputAssistantBarButtonGroup +
                 [UIBarButtonItemGroup(barButtonItems: [UIBarButtonItem(customView: customSearchEngineButton)], representativeItem: nil)]
-
         } else {
             let argumentNextItem: [Any] = ["_n", "extI", "tem"]
             let argumentView: [Any] = ["v", "ie", "w"]
@@ -246,6 +249,7 @@ extension BrowserViewController: KeyboardHelperDelegate {
 
         if self.customSearchEngineButton.superview != nil {
             self.customSearchEngineButton.removeFromSuperview()
+            openSearchTextFieldInputAssistantBarButtonGroup.removeAll()
         }
 
         UIView.animate(withDuration: state.animationDuration) {
