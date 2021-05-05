@@ -116,7 +116,7 @@
 		      	android:layout_marginTop="16dp"
 		      	android:layout_marginEnd="16dp"
 		      	android:layout_marginStart="16dp"
-		      	android:weightSum="4"
+		      	android:weightSum="5"
 		      	android:orientation="horizontal">
 
 			    <TextView
@@ -126,6 +126,7 @@
 				    android:textSize="34sp"
 				    android:textStyle="bold"
 				    android:layout_marginEnd="16dp"
+				    android:gravity="center"
 					android:layout_weight="1"
 				    android:fontFamily="sans-serif"
 				    app:autoSizeMaxTextSize="34sp"
@@ -138,17 +139,17 @@
 				    android:id="@+id/site_block_text"
 				    android:layout_width="0dp"
 				    android:layout_height="wrap_content"
-				    android:textSize="13sp"
-				     android:gravity="center"
-				     android:layout_weight="1"
-				     android:text="@string/ads_and_other_things_blocked"
+				    android:textSize="12sp"
+				    android:gravity="center"
+				    android:layout_weight="2"
+				    android:text="@string/ads_and_other_things_blocked"
 				    android:layout_gravity="center_vertical"
 				    android:textColor="@color/shield_title_color"/>
 
 				<ImageView
 			        android:id="@+id/help"
 			        android:layout_width="0dp"
-			        android:layout_height="30dp"
+			        android:layout_height="24dp"
 			        android:layout_weight="1"
 			        android:src="@drawable/ic_help"
 				 />				
@@ -156,8 +157,7 @@
 				 <ImageView
 			        android:id="@+id/share"
 			        android:layout_width="0dp"
-			        android:layout_height="30dp"
-
+			        android:layout_height="24dp"
 			        android:layout_weight="1"
 			        android:src="@drawable/ic_share"
 				 />
