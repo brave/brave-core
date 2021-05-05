@@ -19,7 +19,6 @@ import("//brave/browser/ipfs/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
-import("//brave/browser/signin/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
@@ -320,7 +319,6 @@ brave_chrome_browser_sources += brave_browser_ipfs_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
-brave_chrome_browser_sources += brave_browser_signin_sources
 brave_chrome_browser_sources += brave_browser_speedreader_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_wallet_sources
@@ -340,7 +338,6 @@ brave_chrome_browser_deps += brave_browser_ipfs_deps
 brave_chrome_browser_deps += brave_browser_new_tab_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps
-brave_chrome_browser_deps += brave_browser_signin_deps
 brave_chrome_browser_deps += brave_browser_speedreader_deps
 brave_chrome_browser_deps += brave_browser_themes_deps
 brave_chrome_browser_deps += brave_browser_wallet_deps
