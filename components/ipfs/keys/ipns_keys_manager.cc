@@ -201,4 +201,11 @@ void IpnsKeysManager::SetServerEndpointForTest(const GURL& gurl) {
   server_endpoint_ = gurl;
 }
 
+const std::string IpnsKeysManager::FindKey(const std::string& name) const {
+  auto it = keys_.find(name);
+  if (it == keys_.end())
+    return std::string();
+  return it->second;
+}
+
 }  // namespace ipfs

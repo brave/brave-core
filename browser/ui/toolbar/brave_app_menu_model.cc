@@ -5,11 +5,17 @@
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
+#include <string>
+
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/grit/generated_resources.h"
 
 #if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/ipfs_helper.h"
+#include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image_skia.h"
@@ -205,12 +211,14 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
 
 #if BUILDFLAG(IPFS_ENABLED)
   if (IsCommandIdEnabled(IDC_APP_MENU_IPFS)) {
-    ipfs_submenu_model_.AddItemWithStringId(
+    int keys_command_index = IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START;
+    keys_command_index += AddIpfsImportMenuItem(
         IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE,
-        IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE);
-    ipfs_submenu_model_.AddItemWithStringId(
+        IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE, keys_command_index);
+    keys_command_index += AddIpfsImportMenuItem(
         IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER,
-        IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER);
+        IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER, keys_command_index);
+
     const int zoom_index = GetIndexOfCommandId(IDC_ZOOM_MENU);
     const int index = zoom_index - 1;
     InsertSubMenuWithStringIdAt(index, IDC_APP_MENU_IPFS, IDS_APP_MENU_IPFS,
@@ -225,6 +233,94 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
 #endif
 }
 
+void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
+#if BUILDFLAG(IPFS_ENABLED)
+  if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
+      id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
+    int ipfs_command = GetSelectedIPFSCommandId(id);
+    if (ipfs_command == -1)
+      return;
+    auto* submenu = ipns_submenu_models_[ipfs_command].get();
+    auto command_index = submenu->GetIndexOfCommandId(id);
+    if (command_index == -1)
+      return;
+    auto label = base::UTF16ToUTF8(submenu->GetLabelAt(command_index));
+    auto key_name = (command_index > 0) ? label : std::string();
+    ExecuteIPFSCommand(ipfs_command, key_name);
+    return;
+  }
+#endif
+  return AppMenuModel::ExecuteCommand(id, event_flags);
+}
+
+bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
+#if BUILDFLAG(IPFS_ENABLED)
+  content::BrowserContext* browser_context =
+      static_cast<content::BrowserContext*>(browser()->profile());
+  if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
+      id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
+    return ipfs::IpnsKeysAvailable(browser_context);
+  }
+  switch (id) {
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
+    case IDC_APP_MENU_IPFS:
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
+      return ipfs::IsIpfsMenuEnabled(browser_context);
+  }
+#endif
+  return AppMenuModel::IsCommandIdEnabled(id);
+}
+
+#if BUILDFLAG(IPFS_ENABLED)
+void BraveAppMenuModel::ExecuteIPFSCommand(int id, const std::string& key) {
+  auto* active_content = browser()->tab_strip_model()->GetActiveWebContents();
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_content);
+  if (!helper)
+    return;
+  switch (id) {
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
+      helper->ShowImportDialog(ui::SelectFileDialog::SELECT_OPEN_FILE, key);
+      break;
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
+      helper->ShowImportDialog(ui::SelectFileDialog::SELECT_EXISTING_FOLDER,
+                               key);
+      break;
+  }
+}
+
+int BraveAppMenuModel::GetSelectedIPFSCommandId(int id) const {
+  for (const auto& it : ipns_submenu_models_) {
+    auto index = it.second->GetIndexOfCommandId(id);
+    if (index == -1)
+      continue;
+    return it.first;
+  }
+  return -1;
+}
+int BraveAppMenuModel::AddIpfsImportMenuItem(int action_command_id,
+                                             int string_id,
+                                             int keys_command_id) {
+  content::BrowserContext* browser_context =
+      static_cast<content::BrowserContext*>(browser()->profile());
+  if (ipfs::IpnsKeysAvailable(browser_context)) {
+    DCHECK(!ipns_submenu_models_.count(action_command_id));
+    ipns_submenu_models_[action_command_id] =
+        std::make_unique<ui::SimpleMenuModel>(this);
+    auto* keys_submenu = ipns_submenu_models_[action_command_id].get();
+    DCHECK(keys_submenu);
+    auto* keys_manager = ipfs::GetIpnsKeysManager(browser_context);
+    DCHECK(keys_manager);
+    auto items_added =
+        ipfs::AddIpnsKeysToSubMenu(keys_submenu, keys_manager, keys_command_id);
+    ipfs_submenu_model_.AddSubMenuWithStringId(action_command_id, string_id,
+                                               keys_submenu);
+    return items_added;
+  }
+  ipfs_submenu_model_.AddItemWithStringId(action_command_id, string_id);
+  return 0;
+}
+#endif
 void BraveAppMenuModel::InsertAlternateProfileItems() {
   // Insert Open Guest Window and Create New Profile items just above
   // the zoom item unless these items are disabled.

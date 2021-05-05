@@ -98,14 +98,18 @@ class IpfsService : public KeyedService,
 
   void RestartDaemon();
   virtual void ImportFileToIpfs(const base::FilePath& path,
+                                const std::string& key,
                                 ipfs::ImportCompletedCallback callback);
 
   virtual void ImportDirectoryToIpfs(const base::FilePath& folder,
+                                     const std::string& key,
                                      ImportCompletedCallback callback);
   virtual void ImportLinkToIpfs(const GURL& url,
+                                const std::string& key,
                                 ImportCompletedCallback callback);
   virtual void ImportTextToIpfs(const std::string& text,
                                 const std::string& host,
+                                const std::string& key,
                                 ImportCompletedCallback callback);
   virtual void PreWarmShareableLink(const GURL& url);
 
