@@ -8,8 +8,8 @@ import Storage
 public final class FaviconMO: NSManagedObject, CRUD {
     
     @NSManaged public var url: String?
-    @NSManaged public var width: Int16
-    @NSManaged public var height: Int16
+    @NSManaged public var width: Int32
+    @NSManaged public var height: Int32
     @NSManaged public var type: Int16
     @NSManaged public var domain: Domain?
 
@@ -29,8 +29,8 @@ public final class FaviconMO: NSManagedObject, CRUD {
                                                           saveStrategy: strategy)
             }
             
-            let w = Int16(favicon.width ?? 0)
-            let h = Int16(favicon.height ?? 0)
+            let w = Int32(favicon.width ?? 0)
+            let h = Int32(favicon.height ?? 0)
             let t = Int16(favicon.type?.rawValue ?? 0)
             
             if w != item!.width && w > 0 {
