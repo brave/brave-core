@@ -9,24 +9,70 @@
 #include <string>
 #include <utility>
 
-#include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "base/memory/ptr_util.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 #include "chrome/browser/extensions/extension_view_host.h"
 #include "chrome/browser/extensions/extension_view_host_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/extensions/extensions_container.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_delegate.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/vector_icons/vector_icons.h"
 #include "extensions/browser/extension_action.h"
+#include "extensions/browser/extension_action_manager.h"
+#include "extensions/browser/extension_registry.h"
+#include "extensions/common/api/extension_action/action_info.h"
 #include "extensions/common/constants.h"
+#include "extensions/common/extension.h"
+#include "extensions/common/manifest_constants.h"
+#include "extensions/common/permissions/api_permission.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/canvas_image_source.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
+
+// static
+std::unique_ptr<BraveActionViewController>
+BraveActionViewController::Create(
+    const extensions::ExtensionId& extension_id,
+    Browser* browser,
+    ExtensionsContainer* extensions_container,
+    bool in_overflow_mode) {
+  DCHECK(browser);
+
+  auto* registry = extensions::ExtensionRegistry::Get(browser->profile());
+  scoped_refptr<const extensions::Extension> extension =
+      registry->enabled_extensions().GetByID(extension_id);
+  DCHECK(extension);
+  extensions::ExtensionAction* extension_action =
+      extensions::ExtensionActionManager::Get(browser->profile())
+          ->GetExtensionAction(*extension);
+  DCHECK(extension_action);
+
+  // WrapUnique() because the constructor is private.
+  return base::WrapUnique(new BraveActionViewController(
+      std::move(extension), browser, extension_action, registry,
+      extensions_container, in_overflow_mode));
+}
+
+BraveActionViewController::BraveActionViewController(
+    scoped_refptr<const extensions::Extension> extension,
+    Browser* browser,
+    extensions::ExtensionAction* extension_action,
+    extensions::ExtensionRegistry* extension_registry,
+    ExtensionsContainer* extensions_container,
+    bool in_overflow_mode)
+    : ExtensionActionViewController(std::move(extension),
+                                    browser,
+                                    extension_action,
+                                    extension_registry,
+                                    extensions_container,
+                                    in_overflow_mode) {}
 
 bool BraveActionViewController::IsEnabled(
     content::WebContents* web_contents) const {
