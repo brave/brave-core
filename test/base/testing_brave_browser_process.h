@@ -42,38 +42,6 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   // BraveBrowserProcess overrides:
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
-  brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service()
-      override;
-  brave_shields::AdBlockRegionalServiceManager*
-  ad_block_regional_service_manager() override;
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  brave_component_updater::ExtensionWhitelistService*
-  extension_whitelist_service() override;
-#endif
-#if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionDownloadService* greaselion_download_service() override;
-#endif
-  brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
-  brave_component_updater::LocalDataFilesService* local_data_files_service()
-      override;
-#if BUILDFLAG(ENABLE_TOR)
-  tor::BraveTorClientUpdater* tor_client_updater() override;
-#endif
-#if BUILDFLAG(IPFS_ENABLED)
-  ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
-#endif
-  brave::BraveP3AService* brave_p3a_service() override;
-  brave::BraveReferralsService* brave_referrals_service() override;
-  brave_stats::BraveStatsUpdater* brave_stats_updater() override;
-  ntp_background_images::NTPBackgroundImagesService*
-  ntp_background_images_service() override;
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
-      override;
-#endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  brave_ads::ResourceComponent* resource_component() override;
-#endif
 
   // Populate the mock process with services. Consumer is responsible for
   // cleaning these up after completion of a test.
