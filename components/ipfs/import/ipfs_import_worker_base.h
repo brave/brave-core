@@ -47,11 +47,13 @@ namespace ipfs {
 //   2. Sends blob to ifps using IPFS api (/api/v0/add)
 //   3. Creates target directory for import using IPFS api(/api/v0/files/mkdir)
 //   4. Moves objects to target directory using IPFS api(/api/v0/files/cp)
+//   5. Publishes objects under passed IPNS key(/api/v0/name/publish)
 class IpfsImportWorkerBase {
  public:
   IpfsImportWorkerBase(content::BrowserContext* context,
                        const GURL& endpoint,
-                       ImportCompletedCallback callback);
+                       ImportCompletedCallback callback,
+                       const std::string& key);
   virtual ~IpfsImportWorkerBase();
 
   IpfsImportWorkerBase(const IpfsImportWorkerBase&) = delete;
@@ -87,12 +89,15 @@ class IpfsImportWorkerBase {
   void OnImportFilesMoved(std::unique_ptr<std::string> response_body);
   bool ParseResponseBody(const std::string& response_body,
                          ipfs::ImportedData* data);
+  void PublishContent();
+  void OnContentPublished(std::unique_ptr<std::string> response_body);
   ImportCompletedCallback callback_;
   std::unique_ptr<ipfs::ImportedData> data_;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   GURL server_endpoint_;
+  std::string key_to_publish_;
   content::BrowserContext* browser_context_ = nullptr;
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
   base::WeakPtrFactory<IpfsImportWorkerBase> weak_factory_;

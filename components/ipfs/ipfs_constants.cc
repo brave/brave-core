@@ -11,6 +11,7 @@ const char kAPIKeyGenerateEndpoint[] = "/api/v0/key/gen";
 const char kAPIKeyRemoveEndpoint[] = "/api/v0/key/rm";
 const char kAPIKeyListEndpoint[] = "/api/v0/key/list";
 const char kSwarmPeersPath[] = "/api/v0/swarm/peers";
+const char kAPIPublishNameEndpoint[] = "/api/v0/name/publish";
 const char kConfigPath[] = "/api/v0/config";
 const char kArgQueryParam[] = "arg";
 const char kAddressesField[] = "Addresses";

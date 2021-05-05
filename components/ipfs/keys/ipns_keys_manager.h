@@ -50,6 +50,7 @@ class IpnsKeysManager : public IpfsServiceObserver {
   bool KeyExists(const std::string& name) const;
 
   const KeysMap& GetKeys() const { return keys_; }
+  const std::string FindKey(const std::string& name) const;
 
   void SetServerEndpointForTest(const GURL& gurl);
   void SetLoadCallbackForTest(LoadKeysCallback callback);

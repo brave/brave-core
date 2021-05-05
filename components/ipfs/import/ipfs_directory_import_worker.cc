@@ -106,8 +106,9 @@ IpfsDirectoryImportWorker::IpfsDirectoryImportWorker(
     content::BrowserContext* context,
     const GURL& endpoint,
     ImportCompletedCallback callback,
-    const base::FilePath& source_path)
-    : IpfsImportWorkerBase(context, endpoint, std::move(callback)),
+    const base::FilePath& source_path,
+    const std::string& key)
+    : IpfsImportWorkerBase(context, endpoint, std::move(callback), key),
       source_path_(source_path),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,

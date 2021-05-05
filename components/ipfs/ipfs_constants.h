@@ -33,6 +33,7 @@ extern const char kImportAddPath[];
 extern const char kImportMakeDirectoryPath[];
 extern const char kImportCopyPath[];
 extern const char kImportDirectory[];
+extern const char kAPIPublishNameEndpoint[];
 extern const char kIPFSImportMultipartContentType[];
 extern const char kFileValueName[];
 extern const char kFileMimeType[];

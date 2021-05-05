@@ -26,7 +26,8 @@ class IpfsLinkImportWorker : public IpfsImportWorkerBase {
   IpfsLinkImportWorker(content::BrowserContext* context,
                        const GURL& endpoint,
                        ImportCompletedCallback callback,
-                       const GURL& url);
+                       const GURL& url,
+                       const std::string& key);
   ~IpfsLinkImportWorker() override;
 
   IpfsLinkImportWorker(const IpfsLinkImportWorker&) = delete;

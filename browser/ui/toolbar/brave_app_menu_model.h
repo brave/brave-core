@@ -7,6 +7,8 @@
 #define BRAVE_BROWSER_UI_TOOLBAR_BRAVE_APP_MENU_MODEL_H_
 
 #include <memory>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -27,6 +29,8 @@ class BraveAppMenuModel : public AppMenuModel {
  private:
   // AppMenuModel overrides:
   void Build() override;
+  void ExecuteCommand(int id, int event_flags) override;
+  bool IsCommandIdEnabled(int id) const override;
 
   void InsertBraveMenuItems();
   void InsertAlternateProfileItems();
@@ -37,7 +41,15 @@ class BraveAppMenuModel : public AppMenuModel {
   int GetIndexOfBraveSidebarItem() const;
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
+  void ExecuteIPFSCommand(int id, const std::string& key);
+  int AddIpfsImportMenuItem(int action_command_id,
+                            int string_id,
+                            int keys_command_id);
+  int GetSelectedIPFSCommandId(int id) const;
+
   ui::SimpleMenuModel ipfs_submenu_model_;
+  std::unordered_map<int, std::unique_ptr<ui::SimpleMenuModel>>
+      ipns_submenu_models_;
 #endif
   std::vector<std::unique_ptr<ui::SimpleMenuModel>> sub_menus_;
 };

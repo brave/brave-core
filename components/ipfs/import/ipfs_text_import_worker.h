@@ -22,7 +22,8 @@ class IpfsTextImportWorker : public IpfsImportWorkerBase {
                        const GURL& endpoint,
                        ImportCompletedCallback callback,
                        const std::string& text,
-                       const std::string& host);
+                       const std::string& host,
+                       const std::string& key);
   ~IpfsTextImportWorker() override;
 
   IpfsTextImportWorker(const IpfsTextImportWorker&) = delete;

@@ -32,8 +32,9 @@ namespace ipfs {
 IpfsLinkImportWorker::IpfsLinkImportWorker(content::BrowserContext* context,
                                            const GURL& endpoint,
                                            ImportCompletedCallback callback,
-                                           const GURL& url)
-    : IpfsImportWorkerBase(context, endpoint, std::move(callback)),
+                                           const GURL& url,
+                                           const std::string& key)
+    : IpfsImportWorkerBase(context, endpoint, std::move(callback), key),
       weak_factory_(this) {
   DCHECK(context);
   DCHECK(endpoint.is_valid());
