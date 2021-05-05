@@ -686,6 +686,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "onboardingPanelVerifyNow", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW },  // NOLINT
         { "onboardingPanelBitflyerNote", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE },  // NOLINT
         { "onboardingPanelBitflyerText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT },  // NOLINT
+        { "onboardingPanelBitflyerLearnMore", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE },  // NOLINT
         { "oneTime", IDS_BRAVE_UI_ONE_TIME },
         { "oneTimeDonation", IDS_BRAVE_UI_ONE_TIME_DONATION },
         { "openBalance", IDS_BRAVE_UI_OPEN_BALANCE },
