@@ -237,14 +237,12 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
-  DCHECK(ctx->browser_context);
-
   // DoH or standard DNS queries won't be routed through Tor, so we need to
   // skip it.
   bool should_check_uncloaked =
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCnameUncloaking) &&
-      !ctx->browser_context->IsTor();
+      ctx->browser_context && !ctx->browser_context->IsTor();
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
