@@ -159,12 +159,37 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
     function $<setupLongPress>() {
         var timer = null;
         var touchDuration = 800;
-        var cancelDistance = 50;
+        var cancelDistance = 5;
         var touchEvent = null;
+        var X = 0;
+        var Y = 0;
+        
+        var event_options = {
+            "capture": true,
+            "passive": true,
+        };
+        
+        // When the long-press gesture is recognized, we want to disable all selections and context menus on the page
+        function clearSelection() {
+            var selection;
+            if ((selection = document.selection) && selection.empty) {
+                selection.empty();
+            } else {
+                if (window.getSelection) {
+                    window.getSelection().removeAllRanges();
+                }
+                
+                var element = document.activeElement;
+                if (element) {
+                    element.selectionStart = element.selectionEnd;
+                }
+            }
+        }
         
         function onLongPress() {
             timer = null;
             if (touchEvent) {
+                clearSelection();
                 $<onLongPressActivated>(touchEvent);
             }
         };
@@ -172,29 +197,38 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
         window.addEventListener("touchstart", function(event) {
             if (!timer) {
                 touchEvent = event;
+                X = event.touches[0].clientX;
+                Y = event.touches[0].clientY;
                 timer = setTimeout(onLongPress, touchDuration);
             }
-        }, true);
+        }, event_options);
         
         window.addEventListener("touchmove", function(event) {
             if (timer) {
-                var x = touchEvent.touches[0].clientX - event.touches[0].clientX;
-                var y = touchEvent.touches[0].clientY - event.touches[0].clientY;
-                var distance = Math.sqrt((x * y) + (y * y));
+                var x = X - event.changedTouches[0].clientX;
+                var y = Y - event.changedTouches[0].clientY;
+                var distance = Math.sqrt((x * x) + (y * y));
                 
                 if (distance >= cancelDistance) {
                     clearTimeout(timer);
                     timer = null;
                 }
             }
-        }, true);
+        }, event_options);
         
         window.addEventListener("touchend", function(event) {
             if (timer) {
                 clearTimeout(timer);
                 timer = null;
             }
-        }, true);
+        }, event_options);
+        
+        window.addEventListener("touchcancel", function(event) {
+            if (timer) {
+                clearTimeout(timer);
+                timer = null;
+            }
+        }, event_options);
     }
     
     // MARK: ---------------------------------------

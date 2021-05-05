@@ -102,6 +102,9 @@ class PlaylistHelper: TabContentScript {
             if item.detected {
                 self.delegate?.showPlaylistToast(info: item, itemState: .pendingUserAction)
             } else {
+                // Has to be done otherwise it is impossible to play a video after selecting its elements
+                UIMenuController.shared.hideMenu()
+                
                 let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
                 let alert = UIAlertController(
                     title: Strings.PlayList.addToPlayListAlertTitle, message: Strings.PlayList.addToPlayListAlertDescription, preferredStyle: style)
