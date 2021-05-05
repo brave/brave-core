@@ -1962,7 +1962,7 @@ void AdsServiceImpl::UrlRequest(ads::UrlRequestPtr url_request,
   auto url_loader_it =
       url_loaders_.insert(url_loaders_.end(), std::move(url_loader));
   url_loader_it->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      content::BrowserContext::GetDefaultStoragePartition(profile_)
+      profile_->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess()
           .get(),
       base::BindOnce(&AdsServiceImpl::OnURLRequestComplete,

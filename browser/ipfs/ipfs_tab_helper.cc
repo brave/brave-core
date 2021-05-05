@@ -101,8 +101,8 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       IpfsImportController(web_contents) {
   pref_service_ = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
-  auto* storage_partition = content::BrowserContext::GetDefaultStoragePartition(
-      web_contents->GetBrowserContext());
+  auto* storage_partition =
+      web_contents->GetBrowserContext()->GetDefaultStoragePartition();
 
   resolver_.reset(new IPFSHostResolver(storage_partition->GetNetworkContext(),
                                        kDnsDomainPrefix));

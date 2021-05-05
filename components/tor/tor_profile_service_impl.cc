@@ -193,11 +193,9 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
 
   // Force lookup to erase the old circuit and also get a callback
   // so we know when it is safe to reload the tab
-  auto* storage_partition =
-      BrowserContext::GetStoragePartitionForUrl(context_, url, false);
+  auto* storage_partition = context_->GetStoragePartitionForUrl(url, false);
   if (!storage_partition) {
-    storage_partition =
-        content::BrowserContext::GetDefaultStoragePartition(context_);
+    storage_partition = context_->GetDefaultStoragePartition();
   }
   auto proxy_lookup_client =
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));

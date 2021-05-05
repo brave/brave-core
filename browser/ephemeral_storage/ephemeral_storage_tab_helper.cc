@@ -119,8 +119,7 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
   auto* browser_context = web_contents()->GetBrowserContext();
   auto site_instance =
       content::SiteInstance::CreateForURL(browser_context, new_url);
-  auto* partition =
-      BrowserContext::GetStoragePartition(browser_context, site_instance.get());
+  auto* partition = browser_context->GetStoragePartition(site_instance.get());
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveEphemeralStorageKeepAlive) &&

@@ -54,9 +54,9 @@ BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
     : contents_(contents),
       wayback_machine_url_fetcher_(
           this,
-          content::BrowserContext::GetDefaultStoragePartition(
-              contents->GetBrowserContext())->
-                  GetURLLoaderFactoryForBrowserProcess()) {
+          contents->GetBrowserContext()
+              ->GetDefaultStoragePartition()
+              ->GetURLLoaderFactoryForBrowserProcess()) {
   pref_service_ = user_prefs::UserPrefs::Get(contents_->GetBrowserContext());
   SetLayoutManager(std::make_unique<views::FlexLayout>());
   InitializeChildren();
