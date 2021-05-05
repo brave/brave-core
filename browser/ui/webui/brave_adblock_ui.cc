@@ -16,10 +16,16 @@
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/singleton_tabs.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "net/base/filename_util.h"
 
 namespace {
 
@@ -46,6 +52,7 @@ class AdblockDOMHandler
   void HandleSetSubscriptionEnabled(const base::ListValue* args);
   void HandleDeleteSubscription(const base::ListValue* args);
   void HandleRefreshSubscription(const base::ListValue* args);
+  void HandleViewSubscriptionSource(const base::ListValue* args);
 
   void RefreshSubscriptionsList();
 
@@ -97,6 +104,10 @@ void AdblockDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_adblock.refreshSubscription",
       base::BindRepeating(&AdblockDOMHandler::HandleRefreshSubscription,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_adblock.viewSubscriptionSource",
+      base::BindRepeating(&AdblockDOMHandler::HandleViewSubscriptionSource,
                           base::Unretained(this)));
 
   service_observer_.Observe(g_brave_browser_process->ad_block_service()
@@ -231,6 +242,30 @@ void AdblockDOMHandler::HandleRefreshSubscription(const base::ListValue* args) {
   g_brave_browser_process->ad_block_service()
       ->subscription_service_manager()
       ->RefreshSubscription(list_url, true);
+}
+
+void AdblockDOMHandler::HandleViewSubscriptionSource(
+    const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 1U);
+  std::string list_url_string;
+  if (!args->GetString(0, &list_url_string)) {
+    return;
+  }
+  const GURL list_url = GURL(list_url_string);
+  if (!list_url.is_valid()) {
+    return;
+  }
+
+  const auto cached_list_path =
+      brave_shields::DirForCustomSubscription(list_url).AppendASCII(
+          brave_shields::kCustomSubscriptionListText);
+
+  const GURL file_url = net::FilePathToFileURL(cached_list_path);
+
+  auto* browser =
+      chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
+  NavigateParams params(GetSingletonTabNavigateParams(browser, file_url));
+  ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
 // Convenience method to push updated subscription information to the UI.

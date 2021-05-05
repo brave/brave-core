@@ -118,7 +118,7 @@ export class CustomSubscriptions extends React.Component<Props, State> {
   }
 
   onViewSource = (list_url: string, event: React.MouseEvent<HTMLButtonElement>) => {
-    window.open(list_url, '_blank')
+    this.props.actions.viewSubscriptionSource(list_url)
   }
 
   renderTable = (subscriptions: AdBlock.SubscriptionInfo[]) => {

@@ -55,6 +55,9 @@ const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State
     case types.ADBLOCK_REFRESH_SUBSCRIPTION:
       chrome.send('brave_adblock.refreshSubscription', [action.payload.listUrl])
       break
+    case types.ADBLOCK_VIEW_SUBSCRIPTION_SOURCE:
+      chrome.send('brave_adblock.viewSubscriptionSource', [action.payload.listUrl])
+      break
     case types.ADBLOCK_ON_GET_CUSTOM_FILTERS:
       state = { ...state, settings: { ...state.settings, customFilters: action.payload.customFilters } }
       break

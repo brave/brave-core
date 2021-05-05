@@ -59,3 +59,8 @@ export const refreshSubscription = (listUrl: string) =>
   action(types.ADBLOCK_REFRESH_SUBSCRIPTION, {
     listUrl
   })
+
+export const viewSubscriptionSource = (listUrl: string) =>
+  action(types.ADBLOCK_VIEW_SUBSCRIPTION_SOURCE, {
+    listUrl
+  })
