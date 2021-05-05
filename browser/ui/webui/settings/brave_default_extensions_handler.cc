@@ -10,12 +10,10 @@
 #include "base/bind.h"
 #include "base/values.h"
 #include "brave/browser/extensions/brave_component_loader.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
-#include "brave/components/ipfs/ipfs_service.h"
-#include "brave/components/ipfs/pref_names.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/component_loader.h"
@@ -56,6 +54,12 @@
 #include "brave/components/decentralized_dns/utils.h"
 #endif
 
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/pref_names.h"
+#endif
+
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
     : weak_ptr_factory_(this) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -67,6 +71,14 @@ BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() {}
 
 void BraveDefaultExtensionsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
+#if BUILDFLAG(IPFS_ENABLED)
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(profile_);
+  if (service) {
+    ipfs_service_observer_.Observe(service);
+  }
+#endif
+
   web_ui()->RegisterMessageCallback(
       "setWebTorrentEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetWebTorrentEnabled,
@@ -495,3 +507,22 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
                             base::Value(base::Value::Type::LIST));
 #endif
 }
+
+#if BUILDFLAG(IPFS_ENABLED)
+void BraveDefaultExtensionsHandler::OnIpfsLaunched(bool result, int64_t pid) {
+  if (!IsJavascriptAllowed())
+    return;
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(profile_);
+  bool launched = service && service->IsDaemonLaunched();
+  FireWebUIListener("brave-ipfs-node-status-changed", base::Value(launched));
+}
+void BraveDefaultExtensionsHandler::OnIpfsShutdown() {
+  if (!IsJavascriptAllowed())
+    return;
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(profile_);
+  bool launched = service && service->IsDaemonLaunched();
+  FireWebUIListener("brave-ipfs-node-status-changed", base::Value(launched));
+}
+#endif

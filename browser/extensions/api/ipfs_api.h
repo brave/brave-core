@@ -12,8 +12,23 @@
 
 class Profile;
 
+namespace ipfs {
+class IpnsKeysManager;
+}  // namespace ipfs
+
 namespace extensions {
 namespace api {
+
+class IpfsRemoveIpnsKeyFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.removeIpnsKey", UNKNOWN)
+
+ protected:
+  void OnKeyRemoved(::ipfs::IpnsKeysManager* manager, const std::string&, bool);
+
+  ~IpfsRemoveIpnsKeyFunction() override {}
+  ResponseAction Run() override;
+};
 
 class IpfsGetResolveMethodListFunction : public ExtensionFunction {
  public:
@@ -21,6 +36,31 @@ class IpfsGetResolveMethodListFunction : public ExtensionFunction {
 
  protected:
   ~IpfsGetResolveMethodListFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsAddIpnsKeyFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.addIpnsKey", UNKNOWN)
+
+ protected:
+  void OnKeyCreated(::ipfs::IpnsKeysManager* manager,
+                    bool result,
+                    const std::string& name,
+                    const std::string& value);
+
+  ~IpfsAddIpnsKeyFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsGetIpnsKeysListFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.getIpnsKeysList", UNKNOWN)
+
+ protected:
+  void OnKeysLoaded(::ipfs::IpnsKeysManager* manager, bool success);
+
+  ~IpfsGetIpnsKeysListFunction() override {}
   ResponseAction Run() override;
 };
 

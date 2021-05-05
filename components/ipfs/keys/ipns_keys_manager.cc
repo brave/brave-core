@@ -171,19 +171,15 @@ void IpnsKeysManager::OnKeysLoaded(SimpleURLLoaderList::iterator iter,
     response_code = url_loader->ResponseInfo()->headers->response_code();
   url_loaders_.erase(iter);
 
-  if (error_code != net::OK || response_code != net::HTTP_OK) {
-    VLOG(1) << "Fail to get keys from node, error_code = " << error_code
-            << " response_code = " << response_code;
-    return;
-  }
-
+  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
   std::unordered_map<std::string, std::string> new_keys;
-  bool success =
-      IPFSJSONParser::GetParseKeysFromJSON(*response_body, &new_keys);
+  success = success && response_body &&
+            IPFSJSONParser::GetParseKeysFromJSON(*response_body, &new_keys);
   if (success) {
     keys_.swap(new_keys);
   } else {
-    VLOG(1) << "Fail to parse keys from node response" << *response_body;
+    VLOG(1) << "Fail to load keys, error_code = " << error_code
+            << " response_code = " << response_code;
   }
   NotifyKeysLoaded(success);
 }

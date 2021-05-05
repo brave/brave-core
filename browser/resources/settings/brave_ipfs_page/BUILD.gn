@@ -14,6 +14,7 @@ group("web_modules") {
   public_deps = [
     ":brave_ipfs_page_module",
     ":modules",
+    ":p2p_keys_subpage_module",
     ":templatize",
   ]
 }
@@ -25,11 +26,20 @@ polymer_modulizer("brave_ipfs_page") {
   auto_imports = settings_auto_imports + [ "brave/browser/resources/settings/brave_ipfs_page/brave_ipfs_browser_proxy.html|BraveIPFSBrowserProxy, BraveIPFSBrowserProxyImpl" ]
   namespace_rewrites = settings_namespace_rewrites
 }
-
+polymer_modulizer("p2p_keys_subpage") {
+  js_file = "p2p_keys_subpage.js"
+  html_file = "p2p_keys_subpage.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports + [ "brave/browser/resources/settings/brave_ipfs_page/brave_ipfs_browser_proxy.html|BraveIPFSBrowserProxy, BraveIPFSBrowserProxyImpl" ]
+  namespace_rewrites = settings_namespace_rewrites
+}
 js_modulizer("modules") {
   input_files = [ "brave_ipfs_browser_proxy.js" ]
   namespace_rewrites = settings_namespace_rewrites
 }
 html_to_js("templatize") {
-  js_files = [ "change_ipfs_gateway_dialog.js" ]
+  js_files = [
+    "change_ipfs_gateway_dialog.js",
+    "add_p2p_key_dialog.js",
+  ]
 }

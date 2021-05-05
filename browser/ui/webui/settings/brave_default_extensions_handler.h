@@ -10,15 +10,26 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_service_observer.h"
+#endif
+
 class Profile;
 
-class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
+class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
+#if BUILDFLAG(IPFS_ENABLED)
+    ,
+                                      ipfs::IpfsServiceObserver
+#endif
+{
  public:
   BraveDefaultExtensionsHandler();
   ~BraveDefaultExtensionsHandler() override;
@@ -62,6 +73,12 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void OnMediaRouterEnabledChanged();
   bool IsRestartNeeded();
 
+#if BUILDFLAG(IPFS_ENABLED)
+  // ipfs::IpfsServiceObserver
+  void OnIpfsLaunched(bool result, int64_t pid) override;
+  void OnIpfsShutdown() override;
+#endif
+
 #if BUILDFLAG(ENABLE_WIDEVINE)
   bool was_widevine_enabled_ = false;
 #endif
@@ -69,6 +86,10 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   PrefChangeRegistrar pref_change_registrar_;
 #if BUILDFLAG(ENABLE_TOR)
   PrefChangeRegistrar local_state_change_registrar_;
+#endif
+#if BUILDFLAG(IPFS_ENABLED)
+  base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>
+      ipfs_service_observer_{this};
 #endif
   base::WeakPtrFactory<BraveDefaultExtensionsHandler> weak_ptr_factory_;
 
