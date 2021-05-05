@@ -642,7 +642,7 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "注意： 承認すると、あなたのトランザクションは$provider$から閲覧可能になります。。例えば、彼らはチップの受取人と金額を見ることができるようになります。",
+    "message": "注：ウォレットを認証すると、あなたの取引は$provider$に把握されるようになります。例えば、チップの送り先がbitFlyerと認証している場合、bitFlyerはチップの送り先や金額が把握可能となります。",
     "description": "Displayed in login modal for external wallet providers",
     "placeholders": {
       "provider": {
@@ -812,6 +812,18 @@
   "onboardingPanelBitflyerText": {
     "message": "ウォレットを認証しbitFlyerアカウントにリンクすると、Brave Rewardsで獲得したトークンを簡単に保管し管理することができます",
     "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "BraveブラウザとbitFlyerアカウントの連携方法について$link_begin$詳しくはこちら$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   },
   "bapDeprecationHeader": {
     "message": "日本の「Brave Rewards」は新しいシステムに移行を予定しています！",
