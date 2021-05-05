@@ -15,6 +15,7 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
@@ -33,6 +34,11 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
 namespace {
@@ -167,6 +173,19 @@ void BraveToolbarView::Init() {
   }
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  if (brave_wallet::IsNativeWalletEnabled()) {
+    wallet_ = new WalletButton(profile, profile->GetPrefs());
+    wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
+                                      ui::EF_MIDDLE_MOUSE_BUTTON);
+  }
+
+  if (wallet_) {
+    AddChildViewAt(wallet_, GetIndexOf(GetAppMenuButton()) - 1);
+    wallet_->UpdateImageAndText();
+  }
+#endif
+
   brave_initialized_ = true;
 }
 
@@ -192,6 +211,8 @@ void BraveToolbarView::OnThemeChanged() {
     bookmark_->UpdateImageAndText();
   if (display_mode_ == DisplayMode::NORMAL && speedreader_)
     speedreader_->UpdateImageAndText();
+  if (display_mode_ == DisplayMode::NORMAL && wallet_)
+    wallet_->UpdateImageAndText();
 }
 
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
@@ -209,6 +230,8 @@ void BraveToolbarView::LoadImages() {
     bookmark_->UpdateImageAndText();
   if (speedreader_)
     speedreader_->UpdateImageAndText();
+  if (wallet_)
+    wallet_->UpdateImageAndText();
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {

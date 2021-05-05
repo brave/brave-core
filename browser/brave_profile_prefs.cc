@@ -316,6 +316,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletPasswordEncryptorNonce, "");
   registry->RegisterStringPref(kBraveWalletEncryptedMnemonic, "");
   registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
+  registry->RegisterBooleanPref(kShowWalletIcon, true);
 #endif
 
   // Binance widget

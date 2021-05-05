@@ -13,6 +13,7 @@
 
 class BookmarkButton;
 class SpeedreaderButton;
+class WalletButton;
 
 class BraveToolbarView : public ToolbarView,
                          public ProfileAttributesStorage::Observer {
@@ -22,6 +23,7 @@ class BraveToolbarView : public ToolbarView,
 
   BookmarkButton* bookmark_button() const { return bookmark_; }
   SpeedreaderButton* speedreader_button() const { return speedreader_; }
+  WalletButton* wallet_button() const { return wallet_; }
   void Init() override;
   void Layout() override;
   void Update(content::WebContents* tab) override;
@@ -47,6 +49,7 @@ class BraveToolbarView : public ToolbarView,
   BooleanPrefMember edit_bookmarks_enabled_;
 
   SpeedreaderButton* speedreader_ = nullptr;
+  WalletButton* wallet_ = nullptr;
 
   BooleanPrefMember location_bar_is_wide_;
   // Whether this toolbar has been initialized.

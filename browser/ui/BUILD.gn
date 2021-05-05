@@ -11,6 +11,7 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("favicon_source") {
@@ -466,10 +467,20 @@ source_set("ui") {
 
   if (brave_wallet_enabled && !is_android) {
     sources += [
+      "views/toolbar/wallet_button.cc",
+      "views/toolbar/wallet_button.h",
+      "webui/brave_wallet/wallet_panel_ui.cc",
+      "webui/brave_wallet/wallet_panel_ui.h",
       "webui/brave_wallet_ui.cc",
       "webui/brave_wallet_ui.h",
     ]
-    deps += [ "//brave/components/brave_wallet_ui:generated_resources" ]
+    deps += [
+      "webui/brave_wallet/page_handler",
+      "//brave/components/brave_wallet_ui:brave_wallet_page_generated",
+      "//brave/components/brave_wallet_ui:brave_wallet_panel_generated",
+      "//brave/components/brave_wallet_ui:mojo_bindings",
+      "//brave/components/brave_wallet_ui:resources",
+    ]
   }
 
   if (toolkit_views) {

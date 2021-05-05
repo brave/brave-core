@@ -1112,6 +1112,7 @@
       <part file="ipfs_strings.grdp" />
       <part file="permissions_strings.grdp" />
       <part file="speedreader_strings.grdp" />
+      <part file="wallet_strings.grdp" />
       <part file="tor_strings.grdp" />
     </messages>
   </release>

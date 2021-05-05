@@ -8,14 +8,14 @@
 #include <memory>
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/brave_wallet/resources/grit/brave_wallet_generated_map.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "components/grit/brave_components_resources.h"
 
 BraveWalletUI::BraveWalletUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(web_ui, name, kBraveWalletGenerated,
-                              kBraveWalletGeneratedSize, IDR_BRAVE_WALLET_HTML,
-                              true /*disable_trusted_types_csp*/);
+  CreateAndAddWebUIDataSource(
+      web_ui, name, kBraveWalletPageGenerated, kBraveWalletPageGeneratedSize,
+      IDR_BRAVE_WALLET_HTML, true /*disable_trusted_types_csp*/);
 }
 
 BraveWalletUI::~BraveWalletUI() = default;

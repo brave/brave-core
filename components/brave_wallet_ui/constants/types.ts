@@ -120,3 +120,14 @@ export interface PriceDataObjectType {
   date: string
   close: number
 }
+
+export interface State {
+  walletPanelReducer: WalletPanelReducerState
+}
+
+export interface WalletPanelReducerState {
+  hasInitialized: boolean
+  isConnected: boolean
+  connectedSiteOrigin: string
+  accounts: WalletAccountType[]
+}
