@@ -104,7 +104,8 @@ extension FeedItem.Content {
     init?(from feedItem: JSONFeedItem, location: RSSFeedLocation) {
         guard let publishTime = feedItem.datePublished,
               let url = feedItem.url?.asURL,
-              let title = feedItem.title else {
+              let title = feedItem.title,
+              url.isWebPage() else {
             return nil
         }
         var description = ""
@@ -142,7 +143,8 @@ extension FeedItem.Content {
         guard let publishTime = feedItem.published,
               let href = feedItem.links?.first?.attributes?.href,
               let url = URL(string: href),
-              let title = feedItem.title else {
+              let title = feedItem.title,
+              url.isWebPage() else {
             return nil
         }
         var description = ""
@@ -183,7 +185,8 @@ extension FeedItem.Content {
         guard let publishTime = feedItem.pubDate,
               let href = feedItem.link,
               let url = URL(string: href),
-              let title = feedItem.title else {
+              let title = feedItem.title,
+              url.isWebPage() else {
             return nil
         }
         var description = ""
