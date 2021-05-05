@@ -30,6 +30,10 @@ public final class FeedSourceOverride: NSManagedObject, CRUD {
         }
     }
     
+    public class func resetStatus(forId id: String) {
+        getInternal(fromId: id)?.delete()
+    }
+    
     public class func resetSourceSelection() {
         deleteAll()
     }
