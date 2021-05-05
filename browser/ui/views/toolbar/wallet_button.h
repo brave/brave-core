@@ -24,7 +24,7 @@ class WalletButton : public ToolbarButton, public views::WidgetObserver {
   METADATA_HEADER(WalletButton);
 
  public:
-  WalletButton(Profile* profile, PrefService* prefs);
+  WalletButton(View* backup_anchor_view, Profile* profile, PrefService* prefs);
   ~WalletButton() override;
 
   WalletButton(const WalletButton&) = delete;
@@ -37,10 +37,11 @@ class WalletButton : public ToolbarButton, public views::WidgetObserver {
   void CloseWalletBubble();
 
   void UpdateImageAndText();
+  void InitBubbleManagerAnchor();
   void UpdateVisibility();
 
   WebUIBubbleManager* webui_bubble_manager_for_testing() {
-    return &webui_bubble_manager_;
+    return webui_bubble_manager_.get();
   }
 
  private:
@@ -50,9 +51,11 @@ class WalletButton : public ToolbarButton, public views::WidgetObserver {
   // views::WidgetObserver:
   void OnWidgetDestroying(views::Widget* widget) override;
 
-  WebUIBubbleManagerT<WalletPanelUI> webui_bubble_manager_;
+  std::unique_ptr<WebUIBubbleManagerT<WalletPanelUI>> webui_bubble_manager_;
 
   PrefService* prefs_ = nullptr;
+  View* backup_anchor_view_ = nullptr;
+  Profile* profile_;
   PrefChangeRegistrar pref_change_registrar_;
 
   views::MenuButtonController* menu_button_controller_ = nullptr;
