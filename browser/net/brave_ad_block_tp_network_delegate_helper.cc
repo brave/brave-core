@@ -215,17 +215,6 @@ void OnShouldBlockRequestResult(
   }
 }
 
-void ShouldBlockRequest(scoped_refptr<base::SequencedTaskRunner> task_runner,
-                        const ResponseCallback& next_callback,
-                        std::shared_ptr<BraveRequestInfo> ctx) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  task_runner->PostTaskAndReply(
-      FROM_HERE,
-      base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, base::nullopt),
-      base::BindOnce(&OnShouldBlockRequestResult, task_runner, next_callback,
-                     ctx));
-}
-
 void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
                                  std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -233,12 +222,15 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   DCHECK(!ctx->request_url.is_empty());
   DCHECK(!ctx->initiator_url.is_empty());
 
-  DCHECK(g_brave_browser_process);
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
   DCHECK(ctx->browser_context);
-  ShouldBlockRequest(task_runner, std::move(next_callback), ctx);
+  task_runner->PostTaskAndReply(
+      FROM_HERE,
+      base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, base::nullopt),
+      base::BindOnce(&OnShouldBlockRequestResult, task_runner, next_callback,
+                     ctx));
 }
 
 int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
