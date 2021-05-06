@@ -738,6 +738,31 @@ mod tests {
     }
 
     #[test]
+    fn rewrite_h1s_as_h2s() {
+        let input = r#"
+        <div>
+          <p>Here is some text and some more text</p>
+          <h1>A random h1 that isn't the title</h1>
+          <p>Even more text</p>
+        </div>
+        "#;
+        let expected = r#"
+        <div id="article">
+          <p>Here is some text and some more text</p>
+          <h2>A random h1 that isn't the title</h2>
+          <p>Even more text</p>
+        </div>
+        "#;
+
+        let mut cursor = Cursor::new(input);
+        let product = extract(&mut cursor, None).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
     fn br_chain_to_p_simple() {
         let input = r#"
         <body>

@@ -743,13 +743,25 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     if heading.is_empty() {
                         return true;
                     }
-                    if title_tokens.is_empty() {
-                        return false;
+                    if !title_tokens.is_empty() {
+                        let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
+                        let distance = title_tokens.difference(&heading_tokens).count() as f32;
+                        let similarity = 1.0 - distance / title_tokens.len() as f32;
+                        if similarity >= 0.75 {
+                            return true;
+                        }
                     }
-                    let heading_tokens = heading.split_whitespace().collect::<HashSet<_>>();
-                    let distance = title_tokens.difference(&heading_tokens).count() as f32;
-                    let similarity = 1.0 - distance / title_tokens.len() as f32;
-                    similarity >= 0.75
+                    if data.name.local == local_name!("h1") {
+                        // Rewrite any h1 elements as h2s. The only h1 in the
+                        // DOM should be the title.
+                        let name = QualName::new(None, ns!(), LocalName::from("h2"));
+                        let h2 = dom.create_element(name, vec![], ElementFlags::default());
+                        dom.reparent_children(&handle, &h2);
+                        dom.append_before_sibling(&handle, NodeOrText::AppendNode(h2));
+                        true
+                    } else {
+                        false
+                    }
                 }
                 local_name!("form")
                 | local_name!("table")
