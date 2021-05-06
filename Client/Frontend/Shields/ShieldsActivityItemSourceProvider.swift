@@ -119,7 +119,6 @@ class ImageActivityItemSource: NSObject, UIActivityItemSource {
         return activityValueType == nil ? image : imageWithText
     }
     
-    @available(iOS 13.0, *)
     func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
         let imageProvider = NSItemProvider(object: image)
         

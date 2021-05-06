@@ -22,6 +22,7 @@ import BraveUI
 import NetworkExtension
 import YubiKit
 import FeedKit
+import SwiftUI
 
 private let log = Logger.browserLogger
 
@@ -1574,10 +1575,8 @@ class BrowserViewController: UIViewController {
             topToolbar.didClickCancel()
         }
     }
-
-    func presentActivityViewController(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
-        let helper = ShareExtensionHelper(url: url, tab: tab)
-        
+    
+    func shareActivities(for url: URL, tab: Tab?, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) -> [UIActivity] {
         let findInPageActivity = FindInPageActivity() { [unowned self] in
             self.updateFindInPageVisibility(visible: true)
         }
@@ -1654,7 +1653,6 @@ class BrowserViewController: UIViewController {
                 }
             }
             
-            #if compiler(>=5.3)
             if #available(iOS 14.0, *), let webView = tab?.webView, tab?.temporaryDocument == nil {
                 let createPDFActivity = CreatePDFActivity(webView: webView) { [weak self] pdfData in
                     guard let self = self else { return }
@@ -1682,7 +1680,6 @@ class BrowserViewController: UIViewController {
                 }
                 activities.append(createPDFActivity)
             }
-            #endif
         } else {
             // Check if its a feed, url is a temp document file URL
             if let selectedTab = tabManager.selectedTab,
@@ -1724,10 +1721,20 @@ class BrowserViewController: UIViewController {
         if let playListActivityItem = addToPlayListActivityItem, playListActivityItem.enabled {
             activities.append(addToPlayListActivity)
         }
+      
+        return activities
+    }
+
+    func presentActivityViewController(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
+        let helper = ShareExtensionHelper(url: url, tab: tab)
         
-        if let playListActivityItem = openInPlaylistActivityItem, playListActivityItem.enabled {
-            activities.append(openInPlayListActivity)
-        }
+        let activities: [UIActivity] = shareActivities(
+            for: url,
+            tab: tab,
+            sourceView: sourceView,
+            sourceRect: sourceRect,
+            arrowDirection: arrowDirection
+        )
         
         let controller = helper.createActivityViewController(items: activities) { [weak self] completed, _, documentUrl  in
             guard let self = self else { return }
@@ -2621,7 +2628,11 @@ extension BrowserViewController: Themeable {
     func applyTheme(_ theme: Theme) {
         theme.applyAppearanceProperties()
         
-        styleChildren(theme: theme)
+        if PrivateBrowsingManager.shared.isPrivateBrowsing {
+            styleChildren(theme: Theme.from(id: Theme.DefaultTheme.private.rawValue))
+        } else {
+            styleChildren(theme: theme)
+        }
 
         statusBarOverlay.backgroundColor = topToolbar.backgroundColor
         setNeedsStatusBarAppearanceUpdate()

@@ -74,6 +74,13 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
         settingsTitle = title
         super.init(nibName: nil, bundle: nil)
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            updateThemeForUserInterfaceStyleChange()
+        }
+    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

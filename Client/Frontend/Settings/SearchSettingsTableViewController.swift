@@ -102,7 +102,7 @@ class SearchSettingsTableViewController: UITableViewController {
         }
 
         // Insert Done button if being presented outside of the Settings Nav stack
-        if !(navigationController is SettingsNavigationController) {
+        if navigationController?.viewControllers.first === self {
             navigationItem.leftBarButtonItem =
                 UIBarButtonItem(title: Strings.settingsSearchDoneButton, style: .done, target: self, action: #selector(dismissAnimated))
         }
@@ -117,6 +117,13 @@ class SearchSettingsTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         tableView.reloadData()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            updateThemeForUserInterfaceStyleChange()
+        }
     }
     
     // MARK: Internal

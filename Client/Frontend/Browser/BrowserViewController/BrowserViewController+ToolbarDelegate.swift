@@ -8,6 +8,7 @@ import BraveUI
 import Shared
 import BraveRewards
 import Storage
+import SwiftUI
 
 // MARK: - TopToolbarDelegate
 
@@ -401,10 +402,7 @@ extension BrowserViewController: TopToolbarDelegate {
     }
 }
 
-// MARK: ToolbarDelegate
-
 extension BrowserViewController: ToolbarDelegate {
-    
     func tabToolbarDidPressSearch(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
@@ -451,17 +449,36 @@ extension BrowserViewController: ToolbarDelegate {
     }
     
     func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol) {
-        let homePanel = MenuViewController(bvc: self, tab: tabManager.selectedTab)
-        let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
-        // Not dynamic, but trivial at this point, given how UI is currently setup
-        popover.color = Theme.of(tabManager.selectedTab).colors.home
-        popover.present(from: tabToolbar.menuButton, on: self)
+        let selectedTabURL: URL? = {
+            guard let url = tabManager.selectedTab?.url, !url.isLocal || url.isReaderModeURL else { return nil }
+            return url
+        }()
+        var activities: [UIActivity] = []
+        if let url = selectedTabURL, let tab = tabManager.selectedTab {
+            activities = shareActivities(for: url, tab: tab, sourceView: view, sourceRect: self.view.convert(self.topToolbar.menuButton.frame, from: self.topToolbar.menuButton.superview), arrowDirection: .up)
+        }
+        let menuController = MenuViewController(content: { menuController in
+            VStack(spacing: 6) {
+                featuresMenuSection(menuController)
+                Divider()
+                destinationMenuSection(menuController)
+                if let tabURL = selectedTabURL {
+                    Divider()
+                    activitiesMenuSection(menuController, tabURL: tabURL, activities: activities)
+                }
+            }
+        })
+        presentPanModal(menuController, sourceView: tabToolbar.menuButton, sourceRect: tabToolbar.menuButton.bounds)
+        if menuController.modalPresentationStyle == .popover {
+            menuController.popoverPresentationController?.popoverLayoutMargins = .init(equalInset: 4)
+            menuController.popoverPresentationController?.permittedArrowDirections = [.up]
+        }
     }
     
     func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
-
+    
     func tabToolbarDidLongPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         showAddTabContextMenu(sourceView: toolbar ?? topToolbar, button: button)
     }
@@ -497,7 +514,7 @@ extension BrowserViewController: ToolbarDelegate {
         UIImpactFeedbackGenerator(style: .heavy).bzzt()
         showBackForwardList()
     }
-
+    
     func tabToolbarDidPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         showTabTray()
     }
@@ -529,15 +546,15 @@ extension BrowserViewController: ToolbarDelegate {
         UIImpactFeedbackGenerator(style: .heavy).bzzt()
         present(controller, animated: true, completion: nil)
     }
-
-    private func showBackForwardList() {
+    
+    func showBackForwardList() {
         if let backForwardList = tabManager.selectedTab?.webView?.backForwardList {
             let backForwardViewController = BackForwardListViewController(profile: profile, backForwardList: backForwardList)
             backForwardViewController.tabManager = tabManager
             backForwardViewController.bvc = self
             backForwardViewController.modalPresentationStyle = .overCurrentContext
             backForwardViewController.backForwardTransitionDelegate = BackForwardListAnimator()
-            present(backForwardViewController, animated: true, completion: nil)
+            self.present(backForwardViewController, animated: true, completion: nil)
         }
     }
     

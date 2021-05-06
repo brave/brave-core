@@ -193,21 +193,21 @@ class Theme: Equatable, Decodable {
            // This is important, used when switching modes when no tab is present
            // TODO: Theme: unit test
             let themeBasedOnMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-                ? Preferences.General.themePrivateMode
-                : Preferences.General.themeNormalMode
-            return Theme.from(id: themeBasedOnMode.value)
+                ? DefaultTheme.dark.rawValue
+                : Preferences.General.themeNormalMode.value
+            return Theme.from(id: themeBasedOnMode)
        }
         
-        let themeType = { () -> Preferences.Option<String> in
+        let themeType = { () -> String in
             switch TabType.of(tab) {
             case .regular:
-                return Preferences.General.themeNormalMode
+                return Preferences.General.themeNormalMode.value
             case .private:
-                return Preferences.General.themePrivateMode
+                return DefaultTheme.dark.rawValue
             }
         }()
         
-        let chosenTheme = DefaultTheme(rawValue: themeType.value)
+        let chosenTheme = DefaultTheme(rawValue: themeType)
         return chosenTheme?.theme ?? DefaultTheme.system.theme
     }
     
