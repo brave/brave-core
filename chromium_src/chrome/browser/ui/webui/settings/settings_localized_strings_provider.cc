@@ -303,6 +303,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"ipfsRotateKeyDialogTitle", IDS_SETTINGS_IPFS_ROTATE_KEY_DIALOG_TITLE},
     {"ipfsRotationLaunchError", IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR},
     {"ipfsRotationStopError", IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR},
+    {"ipfsExportKey", IDS_SETTINGS_IPNS_KEY_EXPORT_ITEM},
+    {"ipfsKeyRemove", IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM},
+    {"ipfsExportKeysError", IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR},
   };
   html_source->AddLocalizedStrings(localized_strings);
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);

@@ -32,7 +32,7 @@
     margin-right: 5px;
   }
   #icon-button {
-    --cr-icon-image: url(chrome://resources/images/icon_delete_gray.svg);
+    display: none;
   }
   #icon-button-self {
     --cr-icon-image: url(chrome://resources/images/icon_refresh.svg);
@@ -65,7 +65,7 @@
     <div class="settings-row">
       <div class="flex cr-padded-text">
           $i18n{ipfsKeysListTitle}
-          <div class="secondary error-text" id="key-import-error" hidden="[[!importKeysError_]]">
+          <div class="secondary error-text" id="key-error" hidden="[[!importKeysError_]]">
           </div>
       </div>
       <cr-button on-click="onAddKeyTap_" >
@@ -86,7 +86,27 @@
                   on-click="onKeyActionTapped_"
                   itemName=[[item.name]]>
               </cr-icon-button>
+              <cr-icon-button class="icon-more-vert"
+                              id="key-dots"
+                              on-click="onKeyMenuTapped_"
+                              itemName=[[item.name]]
+                              focus-type="menu"
+                              hidden="[[isDefaultKey_(item.name)]]">
+              </cr-icon-button>
             </div>
+            <cr-lazy-render id="key-menu">
+              <template>
+                <cr-action-menu role-description="$i18n{menu}">
+                  <button class="dropdown-item" on-click="onExportTap_">
+                    $i18n{ipfsExportKey}
+                  </button>
+                  <button class="dropdown-item" id="remove"
+                      on-click="onKeyDeleteTapped_">
+                    $i18n{ipfsKeyRemove}
+                  </button>
+                </cr-action-menu>
+              </template>
+            </cr-lazy-render>
           </div>
         </template>
       </iron-list>
