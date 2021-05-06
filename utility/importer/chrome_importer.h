@@ -58,9 +58,7 @@ class ChromeImporter : public Importer {
   typedef std::map<int64_t, std::set<GURL>> FaviconMap;
 
   // Loads the urls associated with the favicons into favicon_map;
-  void ImportFaviconURLs(
-    sql::Database* db,
-    FaviconMap* favicon_map);
+  void ImportFaviconURLs(sql::Database* db, FaviconMap* favicon_map);
 
   // Loads and reencodes the individual favicons.
   void LoadFaviconData(sql::Database* db,
@@ -68,10 +66,10 @@ class ChromeImporter : public Importer {
                        favicon_base::FaviconUsageDataList* favicons);
 
   void RecursiveReadBookmarksFolder(
-    const base::DictionaryValue* folder,
-    const std::vector<base::string16>& parent_path,
-    bool is_in_toolbar,
-    std::vector<ImportedBookmarkEntry>* bookmarks);
+      const base::DictionaryValue* folder,
+      const std::vector<std::u16string>& parent_path,
+      bool is_in_toolbar,
+      std::vector<ImportedBookmarkEntry>* bookmarks);
 
   DISALLOW_COPY_AND_ASSIGN(ChromeImporter);
 };

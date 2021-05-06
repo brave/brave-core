@@ -57,15 +57,13 @@ const char kChromeHelpViaWebUIURL[] =
 const char kChromeNativeScheme[] = "chrome-native";
 
 const char kChromeSearchLocalNtpHost[] = "local-ntp";
-const char kChromeSearchLocalNtpUrl[] =
-    "chrome-search://local-ntp/local-ntp.html";
 
 const char kChromeSearchMostVisitedHost[] = "most-visited";
 const char kChromeSearchMostVisitedUrl[] = "chrome-search://most-visited/";
 
-const char kChromeSearchLocalNtpBackgroundUrl[] =
-    "chrome-search://local-ntp/background.jpg";
-const char kChromeSearchLocalNtpBackgroundFilename[] = "background.jpg";
+const char kChromeUIUntrustedNewTabPageBackgroundUrl[] =
+    "chrome-untrusted://background.jpg";
+const char kChromeUIUntrustedNewTabPageBackgroundFilename[] = "background.jpg";
 
 const char kChromeSearchRemoteNtpHost[] = "remote-ntp";
 
@@ -87,8 +85,6 @@ const char kContentSettingsExceptionsLearnMoreURL[] =
 const char kCookiesSettingsHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018205431-How-do-I-change-site-permissions-";
-const char kCpuX86Sse2ObsoleteURL[] =
-    "https://support.brave.com/";
 
 const char kCrashReasonURL[] =
     "https://support.brave.com/hc/en-us/articles/"
@@ -204,6 +200,9 @@ const char kUpgradeHelpCenterBaseURL[] =
     "360025390311-How-do-I-download-and-install-Brave-";
 
 const char kWhoIsMyAdministratorHelpURL[] =
+    "https://support.brave.com/";
+
+const char kCwsEnhancedSafeBrowsingLearnMoreURL[] =
     "https://support.brave.com/";
 
 #if defined(OS_ANDROID)

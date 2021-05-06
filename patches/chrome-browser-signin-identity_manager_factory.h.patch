@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/signin/identity_manager_factory.h b/chrome/browser/signin/identity_manager_factory.h
-index 57d8f7caedfb91d0a7bef5febd390d2df3497e29..ceeb6a1fddaf5c0f2df3a038cc199fcf77144c0e 100644
+index a5788b94bd1ecc73c7776ee8584343772aeca0bd..d62c498e090a860d1981d2ed1f277802feae50e1 100644
 --- a/chrome/browser/signin/identity_manager_factory.h
 +++ b/chrome/browser/signin/identity_manager_factory.h
-@@ -52,6 +52,7 @@ class IdentityManagerFactory : public BrowserContextKeyedServiceFactory {
+@@ -47,6 +47,7 @@ class IdentityManagerFactory : public BrowserContextKeyedServiceFactory {
    void AddObserver(Observer* observer);
    void RemoveObserver(Observer* observer);
  

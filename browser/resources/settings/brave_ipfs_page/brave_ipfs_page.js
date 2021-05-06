@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
  import './change_ipfs_gateway_dialog.js';
- import {PrefsBehavior} from '../prefs/prefs_behavior.m.js';
+ import {PrefsBehavior} from '../prefs/prefs_behavior.js';
 
 (function() {
 'use strict';
@@ -18,8 +18,8 @@ Polymer({
     WebUIListenerBehavior,
     PrefsBehavior
   ],
-  
-  /** 
+
+  /**
    * Keep it same as in IPFSResolveMethodTypes
    * in brave\components\ipfs\ipfs_constants.h */
   IPFSResolveMethodTypes: {
@@ -28,7 +28,7 @@ Polymer({
     IPFS_LOCAL: 2,
     IPFS_DISABLED: 3
   },
-  
+
   properties: {
     ipfsEnabled_: Boolean,
     showChangeIPFSGatewayDialog_: Boolean,
@@ -58,6 +58,7 @@ Polymer({
     });
     this.browserProxy_.getIPFSEnabled().then(enabled => {
       this.ipfsEnabled_ = enabled
+
     });
 
     window.addEventListener('load', this.onLoad_.bind(this));

@@ -31,7 +31,7 @@ bool IsIpfsEnabled(content::BrowserContext* context) {
   return ipfs::IsIpfsEnabled(context);
 }
 
-base::Value MakeSelectValue(const base::string16& name,
+base::Value MakeSelectValue(const std::u16string& name,
                             IPFSResolveMethodTypes value) {
   base::Value item(base::Value::Type::DICTIONARY);
   item.SetKey("value", base::Value(static_cast<int>(value)));

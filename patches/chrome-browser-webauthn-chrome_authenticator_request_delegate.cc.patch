@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc b/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc
-index 195c192aa77fd4abe12424c9daf0b2a2bd98db4a..6ae1267d62bc6bbb36800260c9b440ef504dc722 100644
+index 0da0e9208b4174929b70736955234280a7794713..9a6a110767f8ce9654b9a320b063c2df6f604fdb 100644
 --- a/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc
 +++ b/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc
-@@ -482,6 +482,7 @@ std::string TouchIdMetadataSecret(Profile* profile) {
- ChromeAuthenticatorRequestDelegate::TouchIdAuthenticatorConfig
- ChromeAuthenticatorRequestDelegate::TouchIdAuthenticatorConfigForProfile(
-     Profile* profile) {
+@@ -189,6 +189,7 @@ ChromeWebAuthenticationDelegate::TouchIdAuthenticatorConfigForProfile(
+         kWebAuthnTouchIdMetadataSecretPrefName,
+         base::Base64Encode(base::as_bytes(base::make_span(metadata_secret))));
+   }
 +  BRAVE_WEBAUTHN_KEYCHAIN_ACCESS_GROUP
    return TouchIdAuthenticatorConfig{kTouchIdKeychainAccessGroup,
-                                     TouchIdMetadataSecret(profile)};
+                                     std::move(metadata_secret)};
  }

@@ -23,7 +23,7 @@ WidevinePermissionRequest::WidevinePermissionRequest(
 
 WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
-base::string16 WidevinePermissionRequest::GetMessageTextFragment() const {
+std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
   return l10n_util::GetStringUTF16(
       GetWidevinePermissionRequestTextFrangmentResourceId(for_restart_));
 }
@@ -62,6 +62,6 @@ permissions::RequestType WidevinePermissionRequest::GetRequestType() const {
   return permissions::RequestType::kWidevine;
 }
 
-base::string16 WidevinePermissionRequest::GetExplanatoryMessageText() const {
+std::u16string WidevinePermissionRequest::GetExplanatoryMessageText() const {
   return l10n_util::GetStringUTF16(IDS_WIDEVINE_INSTALL_MESSAGE);
 }

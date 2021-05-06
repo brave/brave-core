@@ -59,7 +59,10 @@ class BraveIdentityManagerTest : public testing::Test {
     RecreateIdentityManager();
   }
 
-  ~BraveIdentityManagerTest() override { signin_client_.Shutdown(); }
+  ~BraveIdentityManagerTest() override {
+    identity_manager_->Shutdown();
+    signin_client_.Shutdown();
+  }
 
   BraveIdentityManagerTest(const BraveIdentityManagerTest&) = delete;
   BraveIdentityManagerTest& operator=(const BraveIdentityManagerTest&) = delete;
@@ -86,6 +89,9 @@ class BraveIdentityManagerTest : public testing::Test {
     // Remove observer first, otherwise IdentityManager destruction might
     // trigger a DCHECK because there are still living observers.
     identity_manager_observer_.reset();
+
+    if (identity_manager_)
+      identity_manager_->Shutdown();
     identity_manager_.reset();
 
     ASSERT_TRUE(temp_profile_dir_.CreateUniqueTempDir());
@@ -153,9 +159,10 @@ class BraveIdentityManagerTest : public testing::Test {
     init_params.primary_account_manager = std::move(primary_account_manager);
     init_params.token_service = std::move(token_service);
 
-    identity_manager_.reset(new BraveIdentityManager(std::move(init_params)));
-    identity_manager_observer_.reset(
-        new TestIdentityManagerObserver(identity_manager_.get()));
+    identity_manager_ =
+        std::make_unique<BraveIdentityManager>(std::move(init_params));
+    identity_manager_observer_ =
+        std::make_unique<TestIdentityManagerObserver>(identity_manager_.get());
   }
 
   void TriggerListAccounts() {

@@ -5,21 +5,28 @@
 
 package org.chromium.chrome.browser.signin;
 
+import android.accounts.Account;
+
+import androidx.annotation.MainThread;
+import androidx.annotation.Nullable;
+
+import org.chromium.base.Callback;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.browser.AppHooks;
 import org.chromium.chrome.browser.signin.services.SigninManager;
-import org.chromium.chrome.browser.sync.AndroidSyncSettings;
-import org.chromium.components.externalauth.ExternalAuthUtils;
 import org.chromium.components.signin.AccountTrackerService;
+import org.chromium.components.signin.base.CoreAccountInfo;
+import org.chromium.components.signin.identitymanager.AccountInfoService;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
+import org.chromium.components.signin.metrics.SigninAccessPoint;
+import org.chromium.components.signin.metrics.SignoutReason;
 
-public class BraveSigninManager extends SigninManagerImpl {
-    BraveSigninManager(long nativeSigninManagerAndroid, AccountTrackerService accountTrackerService,
-            IdentityManager identityManager, IdentityMutator identityMutator,
-            AndroidSyncSettings androidSyncSettings, ExternalAuthUtils externalAuthUtils) {
-        super(nativeSigninManagerAndroid, accountTrackerService, identityManager, identityMutator,
-                androidSyncSettings, externalAuthUtils);
+public class BraveSigninManager implements SigninManager {
+    private final IdentityManager mIdentityManager;
+
+    BraveSigninManager(IdentityManager identityManager) {
+        mIdentityManager = identityManager;
     }
 
     @Override
@@ -32,16 +39,79 @@ public class BraveSigninManager extends SigninManagerImpl {
         return false;
     }
 
+    @Override
+    public void isAccountManaged(String email, final Callback<Boolean> callback) {}
+
+    @Override
+    public String getManagementDomain() {
+        return "";
+    }
+
+    @Override
+    public void signOut(@SignoutReason int signoutSource, SignOutCallback signOutCallback,
+            boolean forceWipeUserData) {}
+
+    @Override
+    @MainThread
+    public void runAfterOperationInProgress(Runnable runnable) {}
+
+    @Override
+    public void signinAndEnableSync(@SigninAccessPoint int accessPoint, CoreAccountInfo accountInfo,
+            @Nullable SignInCallback callback) {}
+
+    @Override
+    @Deprecated
+    public void signinAndEnableSync(@SigninAccessPoint int accessPoint, Account account,
+            @Nullable SignInCallback callback) {}
+
+    @Override
+    public void signin(CoreAccountInfo accountInfo, @Nullable SignInCallback callback) {}
+
+    @Override
+    public void removeSignInAllowedObserver(SignInAllowedObserver observer) {}
+
+    @Override
+    public void addSignInAllowedObserver(SignInAllowedObserver observer) {}
+
+    @Override
+    public void removeSignInStateObserver(SignInStateObserver observer) {}
+
+    @Override
+    public void addSignInStateObserver(SignInStateObserver observer) {}
+
+    @Override
+    public boolean isForceSigninEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isSigninDisabledByPolicy() {
+        return false;
+    }
+
+    @Override
+    public void onFirstRunCheckDone() {}
+
+    @Override
+    public IdentityManager getIdentityManager() {
+        return mIdentityManager;
+    }
+
+    @Override
+    public String extractDomainName(String accountEmail) {
+        return "";
+    };
+
     @CalledByNative
-    private static SigninManager create(long nativeSigninManagerAndroid,
+    static SigninManager create(long nativeSigninManagerAndroid,
             AccountTrackerService accountTrackerService, IdentityManager identityManager,
             IdentityMutator identityMutator) {
-        assert nativeSigninManagerAndroid != 0;
-        assert accountTrackerService != null;
-        assert identityManager != null;
-        assert identityMutator != null;
-        return new BraveSigninManager(nativeSigninManagerAndroid, accountTrackerService,
-                identityManager, identityMutator, AndroidSyncSettings.get(),
-                ExternalAuthUtils.getInstance());
+        AccountInfoService.init(identityManager);
+        return new BraveSigninManager(identityManager);
+    }
+
+    @CalledByNative
+    void destroy() {
+        AccountInfoService.get().destroy();
     }
 }

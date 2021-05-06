@@ -26,13 +26,6 @@ ImageData* CanvasRenderingContext2D::getImageDataInternal(
     int sh,
     ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
-  const IdentifiableSurface surface = IdentifiableSurface::FromTypeAndToken(
-      IdentifiableSurface::Type::kCanvasReadback, GetContextType());
-  if (IdentifiabilityStudySettings::Get()->ShouldSample(surface)) {
-    blink::IdentifiabilityMetricBuilder(ukm_source_id_)
-        .Set(surface, 0)
-        .Record(ukm_recorder_);
-  }
   return BaseRenderingContext2D::getImageDataInternal(
       script_state, sx, sy, sw, sh, image_data_settings, exception_state);
 }

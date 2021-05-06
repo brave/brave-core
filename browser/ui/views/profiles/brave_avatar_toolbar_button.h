@@ -8,12 +8,14 @@
 
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 
+class BrowserView;
+
 class BraveAvatarToolbarButton : public AvatarToolbarButton {
  public:
-  explicit BraveAvatarToolbarButton(Browser* browser);
+  explicit BraveAvatarToolbarButton(BrowserView* browser_view);
 
   // ToolbarButton:
-  void SetHighlight(const base::string16& highlight_text,
+  void SetHighlight(const std::u16string& highlight_text,
                     base::Optional<SkColor> highlight_color) override;
   void UpdateColorsAndInsets() override;
 
@@ -22,7 +24,7 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
   ui::ImageModel GetAvatarIcon(
       ButtonState state,
       const gfx::Image& profile_identity_image) const override;
-  base::string16 GetAvatarTooltipText() const override;
+  std::u16string GetAvatarTooltipText() const override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveAvatarToolbarButton);
 };

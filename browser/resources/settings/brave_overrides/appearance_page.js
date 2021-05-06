@@ -5,7 +5,7 @@
 
 import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
-import {Router} from '../router.m.js'
+import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_appearance_page/super_referral.js'

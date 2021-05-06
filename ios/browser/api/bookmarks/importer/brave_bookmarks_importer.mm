@@ -51,7 +51,7 @@
 }
 
 - (ImportedBookmarkEntry)toChromiumImportedBookmark {
-  std::vector<base::string16> paths;
+  std::vector<std::u16string> paths;
   for (NSString* path in self.path) {
     paths.push_back(base::SysNSStringToUTF16(path));
   }
@@ -80,8 +80,8 @@
 
     // Create worker thread in which importer runs.
     // In Chromium, this is created with `base::Thread("import_thread")`
-    import_thread_ = base::CreateSequencedTaskRunner(
-        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+    import_thread_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   }
   return self;
@@ -104,11 +104,11 @@
   base::FilePath source_file_path = base::mac::NSStringToFilePath(filePath);
 
   // In Chromium, this is IDS_BOOKMARK_GROUP (804)
-  base::string16 top_level_folder_name = base::SysNSStringToUTF16(folderName);
+  std::u16string top_level_folder_name = base::SysNSStringToUTF16(folderName);
 
   auto start_import = [](BraveBookmarksImporter* weak_importer,
                          const base::FilePath& source_file_path,
-                         const base::string16& top_level_folder_name,
+                         const std::u16string& top_level_folder_name,
                          bool automaticImport,
                          std::function<void(BraveBookmarksImporterState,
                                             NSArray<BraveImportedBookmark*>*)>
@@ -140,7 +140,7 @@
       if (automaticImport) {
         auto complete_import =
             [](std::vector<ImportedBookmarkEntry> bookmarks,
-               const base::string16& top_level_folder_name,
+               const std::u16string& top_level_folder_name,
                std::function<void(BraveBookmarksImporterState,
                                   NSArray<BraveImportedBookmark*>*)> listener) {
               BookmarksImporter::AddBookmarks(top_level_folder_name, bookmarks);
@@ -148,10 +148,9 @@
             };
 
         // Import into the Profile/ChromeBrowserState on the main-thread.
-        base::PostTask(
-            FROM_HERE, {web::WebThread::UI},
-            base::BindOnce(complete_import, base::Passed(std::move(bookmarks)),
-                           top_level_folder_name, listener));
+        base::PostTask(FROM_HERE, {web::WebThread::UI},
+                       base::BindOnce(complete_import, std::move(bookmarks),
+                                      top_level_folder_name, listener));
       } else {
         listener(BraveBookmarksImporterStateCompleted,
                  [importer convertToIOSImportedBookmarks:bookmarks]);
@@ -173,12 +172,12 @@
      topLevelFolderName:(NSString*)folderName
            withListener:(void (^)(BraveBookmarksImporterState))listener {
   // In Chromium, this is IDS_BOOKMARK_GROUP (804)
-  base::string16 top_level_folder_name = base::SysNSStringToUTF16(folderName);
+  std::u16string top_level_folder_name = base::SysNSStringToUTF16(folderName);
 
   auto start_import =
       [](BraveBookmarksImporter* weak_importer,
          NSArray<BraveImportedBookmark*>* bookmarks,
-         const base::string16& top_level_folder_name,
+         const std::u16string& top_level_folder_name,
          std::function<void(BraveBookmarksImporterState)> listener) {
         // Import cancelled as the importer has been deallocated
         __strong BraveBookmarksImporter* importer = weak_importer;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/toolbar.js b/chrome/browser/resources/bookmarks/toolbar.js
-index 1969d05e733cd8571297523ad48c87ff62456b74..7da7ebc56e8308bd3c0f42051128826198421ad6 100644
+index 8bcc6560993fa3b4056d13a3448b3a0dc608a2f5..0020f984bf259afe53bef8263de0ef46f0ab8359 100644
 --- a/chrome/browser/resources/bookmarks/toolbar.js
 +++ b/chrome/browser/resources/bookmarks/toolbar.js
 @@ -3,7 +3,7 @@
@@ -8,6 +8,6 @@ index 1969d05e733cd8571297523ad48c87ff62456b74..7da7ebc56e8308bd3c0f420511288261
  import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.m.js';
 -import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
 +import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js';
- import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.m.js';
+ import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
  import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.js';
  import 'chrome://resources/cr_elements/icons.m.js';

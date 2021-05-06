@@ -38,7 +38,6 @@
 #include "components/offline_pages/core/offline_page_feature.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
-#include "components/safe_browsing/core/features.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -59,6 +58,7 @@
 #if defined(OS_ANDROID)
 #include "base/android/jni_android.h"
 #include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
+#include "components/signin/public/base/account_consistency_method.h"
 #else
 #include "chrome/browser/ui/profile_picker.h"
 #endif
@@ -224,16 +224,15 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kWebOTP.name,
     federated_learning::kFederatedLearningOfCohorts.name,
     federated_learning::kFlocIdComputedEventLogging.name,
-    federated_learning::kFlocIdSortingLshBasedComputation.name,
     kSharingQRCodeGenerator.name,
+    net::features::kFirstPartySets.name,
     network_time::kNetworkTimeServiceQuerying.name,
-    safe_browsing::kEnhancedProtection.name,
-    safe_browsing::kEnhancedProtectionMessageInInterstitials.name,
 #if defined(OS_ANDROID)
     features::kWebNfc.name,
     feed::kInterestFeedContentSuggestions.name,
     feed::kInterestFeedV2.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
+    signin::kMobileIdentityConsistency.name,
     translate::kTranslate.name,
 #else
     kEnableProfilePickerOnStartupFeature.name,

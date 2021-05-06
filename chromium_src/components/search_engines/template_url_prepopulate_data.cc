@@ -261,10 +261,10 @@ void UpdateTemplateURLDataKeyword(
   DCHECK(t_urld.get());
   switch (t_urld->prepopulate_id) {
     case PREPOPULATED_ENGINE_ID_GOOGLE:
-      t_urld->SetKeyword(base::ASCIIToUTF16(":g"));
+      t_urld->SetKeyword(u":g");
       break;
     case PREPOPULATED_ENGINE_ID_BING:
-      t_urld->SetKeyword(base::ASCIIToUTF16(":b"));
+      t_urld->SetKeyword(u":b");
       break;
   }
 }

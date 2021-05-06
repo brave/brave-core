@@ -6,19 +6,20 @@
 package org.chromium.chrome.browser.settings.themes;
 
 import android.content.Context;
-import androidx.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RadioGroup;
 
-import org.chromium.chrome.R;
-import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.components.user_prefs.UserPrefs;
+import androidx.preference.PreferenceViewHolder;
+
+import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.night_mode.R;
 import org.chromium.chrome.browser.night_mode.settings.RadioButtonGroupThemePreference;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
+import org.chromium.components.user_prefs.UserPrefs;
 
 public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioButtonGroupThemePreference {
 
@@ -50,7 +51,8 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
                 braveDefaultView.setChecked(true);
             }
         }
-        braveDefaultView.setPrimaryText(getContext().getResources().getString(R.string.brave_default));
+        braveDefaultView.setPrimaryText(
+                getContext().getResources().getString(org.chromium.chrome.R.string.brave_default));
     }
 
     @Override

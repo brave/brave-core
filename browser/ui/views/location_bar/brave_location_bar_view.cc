@@ -241,7 +241,7 @@ void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
 
 int BraveLocationBarView::GetBorderRadius() const {
   return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::EMPHASIS_HIGH, size());
+      views::Emphasis::kHigh, size());
 }
 
 SkPath BraveLocationBarView::GetFocusRingHighlightPath() const {

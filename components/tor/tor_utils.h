@@ -3,5 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// THIS FILE IS INTENTIONALLY EMPTY TO DISABLE TESTS FROM CHROMIUM UPSTREAM.
-// See https://github.com/brave/brave-browser/issues/8297 for more information.
+#ifndef BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
+#define BRAVE_COMPONENTS_TOR_TOR_UTILS_H_
+
+class PrefService;
+
+namespace tor {
+
+void MigrateLastUsedProfileFromLocalStatePrefs(PrefService* local_state);
+
+}  // namespace tor
+
+#endif  // BRAVE_COMPONENTS_TOR_TOR_UTILS_H_

@@ -76,7 +76,7 @@ void IPFSNotConnectedPage::PopulateInterstitialStrings(
   load_time_data->SetString(
       "explanationParagraph",
       l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_EXPLANATION));
-  load_time_data->SetString("finalParagraph", base::string16());
+  load_time_data->SetString("finalParagraph", std::u16string());
 }
 
 int IPFSNotConnectedPage::GetHTMLTemplateId() {

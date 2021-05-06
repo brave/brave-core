@@ -9,11 +9,12 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "base/files/file_util.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
@@ -98,12 +99,11 @@ void NTPBackgroundImagesSource::StartDataRequest(
 void NTPBackgroundImagesSource::GetImageFile(
     const base::FilePath& image_file_path,
     GotDataCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFileToString, image_file_path),
       base::BindOnce(&NTPBackgroundImagesSource::OnGotImageFile,
-                     weak_factory_.GetWeakPtr(),
-                     std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void NTPBackgroundImagesSource::OnGotImageFile(
