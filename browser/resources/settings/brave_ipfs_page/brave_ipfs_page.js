@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 import {PrefsBehavior} from '../prefs/prefs_behavior.js';
 import {Router, RouteObserverBehavior} from '../router.js';
+import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
 
 (function() {
 'use strict';
@@ -47,7 +48,7 @@ Polymer({
 
   /** @override */
   created: function() {
-    this.browserProxy_ = settings.BraveIPFSBrowserProxyImpl.getInstance();
+    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
   },
 
   /** @override */
