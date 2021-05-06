@@ -155,7 +155,7 @@ ChildProcessMonitor::~ChildProcessMonitor() {
     base::ThreadPool::PostTask(
         FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
         base::BindOnce(&base::EnsureProcessTerminated,
-                       Passed(&child_process_)));
+                       std::move(child_process_)));
 #else
     base::EnsureProcessTerminated(std::move(child_process_));
 #endif
