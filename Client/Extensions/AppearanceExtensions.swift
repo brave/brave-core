@@ -18,6 +18,7 @@ extension Theme {
         UIToolbar.appearance().barTintColor = colors.footer
         
         UINavigationBar.appearance().tintColor = colors.accent
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: colors.tints.home]
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: colors.tints.home]
         UINavigationBar.appearance().appearanceBarTintColor = colors.header
         
@@ -66,10 +67,15 @@ extension Theme {
         
         InsetButton.appearance(whenContainedInInstancesOf: [SearchSuggestionPromptView.self]).appearanceTextColor = colors.tints.home
         
-        // Overrides all views inside of itself
-        // According to docs, UIWindow override should be enough, but some labels on iOS 13 are still messed up without UIView override as well
-        // (e.g. shields panel)
-        UIWindow.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
-        UIView.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
+        // Overrides all views inside of itself when we're fixed to a specific theme
+        // Private browsing mode is also fixed to a specific theme
+        if PrivateBrowsingManager.shared.isPrivateBrowsing ||
+            Preferences.General.themeNormalMode.value != DefaultTheme.system.rawValue {
+            UIWindow.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
+            UIView.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
+        } else {
+            UIWindow.appearance().appearanceOverrideUserInterfaceStyle = .unspecified
+            UIView.appearance().appearanceOverrideUserInterfaceStyle = .unspecified
+        }
     }
 }

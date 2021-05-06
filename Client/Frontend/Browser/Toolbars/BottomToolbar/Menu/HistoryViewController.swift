@@ -151,6 +151,13 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         
         presentLongPressActions(gesture, urlString: urlString, isPrivateBrowsing: isPrivateBrowsing)
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            updateThemeForUserInterfaceStyleChange()
+        }
+    }
   
   func numberOfSections(in tableView: UITableView) -> Int {
     return frc?.sections?.count ?? 0

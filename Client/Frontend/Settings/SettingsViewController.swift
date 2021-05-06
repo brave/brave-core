@@ -543,12 +543,19 @@ extension TableViewController: Themeable {
     func applyTheme(_ theme: Theme) {
         styleChildren(theme: theme)
         tableView.reloadData()
-
-        //  View manipulations done via `apperance()` do not impact existing UI, so need to adjust manually
-        // exiting menus, so setting explicitly.
+        
+        // We need this specifically due to changes that happen to the theme from other controllers
+        // pushed from settings (e.g. Buy VPN screen, Appearance selection screen)
         navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
         navigationController?.navigationBar.barTintColor = UINavigationBar.appearance().appearanceBarTintColor
-        navigationController?.navigationBar.titleTextAttributes =
-            [NSAttributedString.Key.foregroundColor: theme.colors.tints.home]
+        navigationController?.navigationBar.titleTextAttributes = UINavigationBar.appearance().titleTextAttributes
+    }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            updateThemeForUserInterfaceStyleChange()
+            applyTheme(Theme.of(nil))
+        }
     }
 }

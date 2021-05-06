@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "PanModal",
+        "repositoryURL": "https://github.com/slackhq/PanModal",
+        "state": {
+          "branch": null,
+          "revision": "b012aecb6b67a8e46369227f893c12544846613f",
+          "version": "1.2.7"
+        }
+      },
+      {
         "package": "SDWebImage",
         "repositoryURL": "https://github.com/rs/SDWebImage",
         "state": {

@@ -42,6 +42,13 @@ class SyncViewController: UIViewController {
         }
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            updateThemeForUserInterfaceStyleChange()
+        }
+    }
+    
     // This is used for `appearance()` usage, so can target sync background views
     class SyncView: UIView {}
 }

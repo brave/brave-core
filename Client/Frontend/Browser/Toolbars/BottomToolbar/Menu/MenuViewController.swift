@@ -1,417 +1,317 @@
+// Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
-import Storage
+import PanModal
 import Shared
 import BraveShared
 import BraveUI
+import SwiftUI
 
-private class MenuCell: UITableViewCell {
-    let iconView = UIImageView().then {
-        $0.snp.makeConstraints { make in
-            make.width.equalTo(50)
+struct MenuItemHeaderView: View {
+    @ObservedObject var themeNormalMode = Preferences.General.themeNormalMode
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    var icon: UIImage
+    var title: String
+    
+    var body: some View {
+        HStack(spacing: 14) {
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(Color(Theme.of(nil).colors.addressBar))
+                .frame(width: 32, height: 32)
+                .overlay(
+                    Image(uiImage: icon)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding(6)
+                )
+                .shadow(color: Color.black.opacity(0.1), radius: 1, x: 0, y: 1)
+            Text(verbatim: title)
         }
-        $0.contentMode = .center
+        .foregroundColor(Color(Theme.of(nil).colors.tints.home))
     }
-    
-    let labelView = UILabel()
-    let iconLength: CGFloat = 50.0
-    
-    let toggleButton = UISwitch().then {
-        $0.isHidden = true
-        $0.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        // At the moment, this toggle is only for visuals, tapping on the cell itself is not different
-        // than tapping on the switch.
-        $0.isUserInteractionEnabled = false
-    }
-    
-    private let spinner = UIActivityIndicatorView().then {
-        $0.snp.makeConstraints { make in
-            make.size.equalTo(24)
-        }
-        $0.hidesWhenStopped = true
-        $0.isHidden = true
-    }
-    
-    let stackView = UIStackView().then {
-        $0.spacing = 4
-        $0.alignment = .center
-    }
-    
-    var isLoading = false {
-        didSet {
-            labelView.isEnabled = !isLoading
-            toggleButton.isHidden = isLoading
-            spinner.isHidden = !isLoading
-            
-            // on iOS12 if `isHidden` property is ignored if the spinner is animating.
-            if isLoading {
-                spinner.startAnimating()
-            } else {
-                spinner.stopAnimating()
-            }
+}
+
+private struct MenuView<Content: View>: View {
+    var content: Content
+    var body: some View {
+        ScrollView(.vertical) {
+            content
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity)
+                .accentColor(Color(BraveUX.braveOrange))
         }
     }
+}
+
+struct MenuItemButton: View {
+    @ObservedObject var themeNormalMode = Preferences.General.themeNormalMode
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     
-    convenience init(withToggle: Bool = false, fullLineSeparator: Bool = false) {
-        self.init()
-        toggleButton.isHidden = !withToggle
-        
-        separatorInset = .zero
-    }
+    var icon: UIImage
+    var title: String
+    var action: () -> Void
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(stackView)
-        
-        [iconView, labelView, toggleButton, spinner].forEach(stackView.addArrangedSubview(_:))
-        
-        stackView.snp.makeConstraints {
-            $0.leading.top.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(8)
+    var body: some View {
+        Button(action: action) {
+            MenuItemHeaderView(icon: icon, title: title)
+                .padding(.horizontal, 14)
+                .frame(maxWidth: .infinity, minHeight: 48.0, alignment: .leading)
         }
-        
-        separatorInset = UIEdgeInsets(top: 0, left: iconLength, bottom: 0, right: 0)
+        .buttonStyle(TableCellButtonStyle())
+    }
+}
+
+class MenuViewController: UINavigationController, UIPopoverPresentationControllerDelegate {
+    
+    private var menuNavigationDelegate: MenuNavigationControllerDelegate?
+    
+    init<MenuContent: View>(@ViewBuilder content: (MenuViewController) -> MenuContent) {
+        super.init(nibName: nil, bundle: nil)
+        viewControllers = [MenuHostingController(content: content(self))]
+        menuNavigationDelegate = MenuNavigationControllerDelegate(panModal: self)
+        delegate = menuNavigationDelegate
     }
     
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
     }
-    @available(*, unavailable)
-    override var textLabel: UILabel? {
-        return nil
+    
+    private var previousPreferredContentSize: CGSize?
+    func presentInnerMenu(_ viewController: UIViewController,
+                          expandToLongForm: Bool = true) {
+        let container = InnerMenuNavigationController(rootViewController: viewController)
+        container.delegate = menuNavigationDelegate
+        container.modalPresentationStyle = .overCurrentContext // over to fix the dismiss animation
+        container.innerMenuDismissed = { [weak self] in
+            guard let self = self else { return }
+            if !self.isDismissing {
+                self.panModalSetNeedsLayoutUpdate()
+            }
+            // Restore original content size
+            if let contentSize = self.previousPreferredContentSize {
+                self.preferredContentSize = contentSize
+            }
+        }
+        // Save current content size to be restored when inner menu is dismissed
+        if preferredContentSize.height < 580 {
+            previousPreferredContentSize = preferredContentSize
+            preferredContentSize = CGSize(width: 375, height: 580)
+        }
+        present(container, animated: true) {
+            self.panModalSetNeedsLayoutUpdate()
+        }
+        if expandToLongForm {
+            // Delay a fraction of a second to make the animation look more fluid
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                self.panModalTransition(to: .longForm)
+            }
+        }
     }
-    @available(*, unavailable)
-    override var imageView: UIImageView? {
-        return nil
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationBar.isTranslucent = false
+    }
+    
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        
+        // Bug with pan modal + hidden nav bar causes safe area insets to zero out
+        if view.safeAreaInsets == .zero, isPanModalPresented,
+           var insets = view.window?.safeAreaInsets {
+            // When that happens we re-set them via additionalSafeAreaInsets to the windows safe
+            // area insets. Since the pan modal appears over the entire screen we can safely use
+            // the windows safe area. Top will stay 0 since we are using non-translucent nav bar
+            // and the top never reachs the safe area (handled by pan modal)
+            insets.top = 0
+            additionalSafeAreaInsets = insets
+        }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
+    override var shouldAutorotate: Bool {
+        // Due to a bug in PanModal, the presenting controller does not receive safe area updates
+        // while a pan modal is presented, therefore for the time being, do not allow rotation
+        // while this menu is open.
+        //
+        // Issue: https://github.com/slackhq/PanModal/issues/139
+        false
+    }
+    
+    private var isDismissing = false
+    
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        if let _ = presentedViewController as? InnerMenuNavigationController,
+           presentingViewController?.presentedViewController === self {
+            isDismissing = true
+            presentingViewController?.dismiss(animated: flag, completion: completion)
+        } else {
+            super.dismiss(animated: flag, completion: completion)
+        }
+    }
+    
+    private var isPresentingInnerMenu: Bool {
+        presentedViewController is InnerMenuNavigationController
     }
 }
 
-class MenuViewController: UITableViewController {
-    
-    private struct UX {
-        static let rowHeight: CGFloat = 45
-        static let separatorColor = UIColor(white: 0.0, alpha: 0.1)
-        static let topBottomInset: CGFloat = 5
-    }
-    
-    private enum MenuButtons: Int, CaseIterable {
-        case vpn, settings, history, bookmarks, downloads, playlist, add, share
-        
-        var title: String {
-            switch self {
-            // This string should not be translated.
-            case .vpn: return "Brave VPN"
-            case .bookmarks: return Strings.bookmarksMenuItem
-            case .history: return Strings.historyMenuItem
-            case .settings: return Strings.settingsMenuItem
-            case .add: return Strings.addToMenuItem
-            case .share: return Strings.shareWithMenuItem
-            case .downloads: return Strings.downloadsMenuItem
-            case .playlist: return Strings.playlistMenuItem
+extension MenuViewController: PanModalPresentable {
+    var panScrollable: UIScrollView? {
+        // For SwiftUI:
+        //  - in iOS 13, ScrollView will exist within a host view
+        //  - in iOS 14, it will be a direct subview
+        // For UIKit:
+        //  - UITableViewController's view is a UITableView, thus the view itself is a UIScrollView
+        //  - For our non-UITVC's, the scroll view is a usually a subview of the main view
+        func _scrollViewChild(in parentView: UIView, depth: Int = 0) -> UIScrollView? {
+            if depth > 2 { return nil }
+            if let scrollView = parentView as? UIScrollView {
+                return scrollView
             }
-        }
-        
-        var icon: UIImage {
-            switch self {
-            case .vpn: return #imageLiteral(resourceName: "vpn_menu_icon").template
-            case .bookmarks: return #imageLiteral(resourceName: "menu_bookmarks").template
-            case .history: return #imageLiteral(resourceName: "menu-history").template
-            case .settings: return #imageLiteral(resourceName: "menu-settings").template
-            case .add: return #imageLiteral(resourceName: "menu-add-bookmark").template
-            case .share: return #imageLiteral(resourceName: "nav-share").template
-            case .downloads: return #imageLiteral(resourceName: "menu-downloads").template
-            case .playlist: return #imageLiteral(resourceName: "playlist_menu").template
+            for view in parentView.subviews {
+                if let scrollView = view as? UIScrollView {
+                    return scrollView
+                }
+                if !view.subviews.isEmpty, let childScrollView = _scrollViewChild(in: view, depth: depth + 1) {
+                    return childScrollView
+                }
             }
+            return nil
         }
+        if let vc = presentedViewController, !vc.isBeingPresented {
+            if let nc = vc as? UINavigationController, let vc = nc.topViewController {
+                let scrollView = _scrollViewChild(in: vc.view)
+                return scrollView
+            }
+            let scrollView = _scrollViewChild(in: vc.view)
+            return scrollView
+        }
+        guard let topVC = topViewController else { return nil }
+        topVC.view.layoutIfNeeded()
+        return _scrollViewChild(in: topVC.view)
     }
-    
-    private let bvc: BrowserViewController
-    private let tab: Tab?
-    
-    /// Keeping reference to it to monitor vpn status and set correct `isEnabled` status.
-    private var vpnMenuCell: MenuCell?
-    
-    private lazy var visibleButtons: [MenuButtons] = {
-        let allButtons = MenuButtons.allCases
-        
-        // Don't show url buttons if there is no url to pick(like on home screen)
-        var allWithoutUrlButtons = allButtons
-        allWithoutUrlButtons.removeAll { $0 == .add || $0 == .share }
-        
-        guard let url = tab?.url, (!url.isLocal || url.isReaderModeURL) else {
-            return allWithoutUrlButtons
-        }
-        return allButtons
-    }()
-    
-    // MARK: - Init
-    
-    init(bvc: BrowserViewController, tab: Tab?) {
-        self.bvc = bvc
-        self.tab = tab
+    var longFormHeight: PanModalHeight {
+        .maxHeight
+    }
+    var shortFormHeight: PanModalHeight {
+        isPresentingInnerMenu ? .maxHeight : .contentHeight(370)
+    }
+    var allowsExtendedPanScrolling: Bool {
+        true
+    }
+    var cornerRadius: CGFloat {
+        10.0
+    }
+    var anchorModalToLongForm: Bool {
+        isPresentingInnerMenu
+    }
+    var panModalBackgroundColor: UIColor {
+        UIColor(white: 0.0, alpha: 0.5)
+    }
+    var dragIndicatorBackgroundColor: UIColor {
+        UIColor(white: 0.95, alpha: 1.0)
+    }
+    var transitionDuration: Double {
+        0.35
+    }
+    var springDamping: CGFloat {
+        0.85
+    }
+}
 
-        super.init(nibName: nil, bundle: nil)
+private class MenuHostingController<MenuContent: View>: UIHostingController<MenuView<MenuContent>>, PreferencesObserver {
+    init(content: MenuContent) {
+        super.init(rootView: MenuView(content: content))
+        Preferences.General.themeNormalMode.observe(from: self)
+    }
+    
+    func preferencesDidChange(for key: String) {
+        view.backgroundColor = Theme.of(nil).colors.home
     }
     
     @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError()
     }
     
-    // MARK: - Lifecycle
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let animateNavBar = (navigationController?.isBeingPresented == false ? animated : false)
+        navigationController?.setNavigationBarHidden(true, animated: animateNavBar)
+        self.navigationController?.preferredContentSize = {
+            let controller = UIHostingController(rootView: self.rootView.content)
+            let size = controller.view.sizeThatFits(CGSize(width: 375, height: 0))
+            let navBarHeight = navigationController?.navigationBar.bounds.height ?? 0
+            let preferredPopoverWidth: CGFloat = 375.0
+            let minimumPopoverHeight: CGFloat = 240.0
+            let maximumPopoverHeight: CGFloat = 580.0
+            return CGSize(
+                width: preferredPopoverWidth,
+                // Have to increase the content size by the hidden nav bar height so that the size
+                // doesn't change when the user navigates within the menu where the nav bar is
+                // visible.
+                height: min(max(size.height + 16, minimumPopoverHeight), maximumPopoverHeight + navBarHeight)
+            )
+        }()
+        view.backgroundColor = Theme.of(nil).colors.home
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if navigationController?.isBeingDismissed == false {
+            navigationController?.setNavigationBarHidden(false, animated: animated)
+            navigationController?.preferredContentSize = CGSize(width: 375, height: 580)
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            view.backgroundColor = Theme.of(nil).colors.home
+        }
+    }
+}
+
+private class MenuNavigationControllerDelegate: NSObject, UINavigationControllerDelegate {
+    weak var panModal: (UIViewController & PanModalPresentable)?
+    init(panModal: UIViewController & PanModalPresentable) {
+        self.panModal = panModal
+        super.init()
+    }
+    func navigationController(
+        _ navigationController: UINavigationController,
+        didShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        panModal?.panModalSetNeedsLayoutUpdate()
+    }
+}
+
+private class InnerMenuNavigationController: UINavigationController {
+    var innerMenuDismissed: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.separatorColor = UX.separatorColor
-        tableView.rowHeight = UX.rowHeight
-        tableView.backgroundColor = .clear
-        
-        tableView.contentInset = UIEdgeInsets(top: UX.topBottomInset, left: 0,
-                                              bottom: UX.topBottomInset, right: 0)
-        
-        tableView.showsVerticalScrollIndicator = false
-        tableView.isScrollEnabled = false
-        
-        // Hide separator line of the last cell.
-        tableView.tableFooterView =
-            UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-        
-        let size = CGSize(width: 200, height: UIScreen.main.bounds.height)
-        
-        let fit = view.systemLayoutSizeFitting(
-            size,
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .defaultHigh
-        )
-        
-        preferredContentSize = CGSize(width: fit.width, height: fit.height + UX.topBottomInset * 2)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged),
-                                               name: .NEVPNStatusDidChange, object: nil)
+        // Needed or else pan modal top scroll insets are messed up for some reason
+        navigationBar.isTranslucent = false
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        innerMenuDismissed?()
     }
-    
-    // MARK: - Table view data source
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
-        
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        
-        guard let button = MenuButtons(rawValue: cell.tag) else {
-            assertionFailure("No cell with \(cell.tag) tag.")
-            return
-        }
-        
-        switch button {
-        case .vpn:
-            guard let menuCell = cell as? MenuCell else { return }
-            openVPNAction(menuCell: menuCell)
-        case .bookmarks: openBookmarks()
-        case .history: openHistory()
-        case .settings: openSettings()
-        case .add: openAddBookmark()
-        case .share: openShareSheet()
-        case .downloads: openDownloads()
-        case .playlist: openPlaylist()
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return visibleButtons.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let button = visibleButtons[indexPath.row]
-        let cell = { () -> MenuCell in
-            guard let button = MenuButtons(rawValue: indexPath.row) else {
-                assertionFailure("No cell with \(indexPath.row) tag.")
-                return MenuCell()
-            }
-            
-            switch button {
-            case .vpn:
-                let menuCell =  MenuCell(withToggle: true, fullLineSeparator: true)
-                
-                switch BraveVPN.vpnState {
-                case .notPurchased, .purchased, .expired:
-                    break
-                case .installed(let enabled):
-                    menuCell.toggleButton.isOn = enabled
-                    menuCell.isLoading = BraveVPN.reconnectPending
-                }
-                
-                vpnMenuCell = menuCell
-                
-                return menuCell
-            default:
-                return MenuCell()
-            }
-        }()
-        
-        cell.labelView.text = button.title
-        cell.iconView.image = button.icon
-        
-        let homeColor = Theme.of(tab).colors.tints.home
-        cell.iconView.tintColor = homeColor.withAlphaComponent(0.6)
-        cell.labelView.textColor = homeColor
-        cell.tag = button.rawValue
-        cell.backgroundColor = .clear
-        
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
-        cell?.contentView.backgroundColor = Theme.of(tab).colors.home.withAlphaComponent(0.5)
-    }
-    
-    override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
-        cell?.contentView.backgroundColor = .clear
-    }
-    
-    // MARK: - Actions
-    
-    private enum DoneButtonPosition { case left, right }
-    private typealias DoneButton = (style: UIBarButtonItem.SystemItem, position: DoneButtonPosition)
-    
-    private func open(_ viewController: UIViewController, doneButton: DoneButton,
-                      allowSwipeToDismiss: Bool = true, alwaysFullScreen: Bool = false) {
-        let nav = SettingsNavigationController(rootViewController: viewController)
-        
-        // All menu views should be opened in portrait on iPhones.
-        UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
-        
-        nav.isModalInPresentation = !allowSwipeToDismiss
-        
-        nav.modalPresentationStyle =
-            UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
-        
-        let button = UIBarButtonItem(barButtonSystemItem: doneButton.style,
-                                     target: nav,
-                                     action: #selector(nav.done))
-        
-        switch doneButton.position {
-            case .left: nav.navigationBar.topItem?.leftBarButtonItem = button
-            case .right: nav.navigationBar.topItem?.rightBarButtonItem = button
-        }
-        
-        dismissView()
-        bvc.present(nav, animated: true)
-    }
-    
-    private func openVPNAction(menuCell: MenuCell) {
-        let enabled = !menuCell.toggleButton.isOn
-        let vpnState = BraveVPN.vpnState
-        
-        /// Connecting to the vpn takes a while, that's why we have to show a spinner until it finishes.
-        if enabled {
-            menuCell.isLoading = true
-        }
-        
-        if !VPNProductInfo.isComplete {
-            let alert =
-                UIAlertController(title: Strings.VPN.errorCantGetPricesTitle,
-                                  message: Strings.VPN.errorCantGetPricesBody,
-                                  preferredStyle: .alert)
-            alert.addAction(.init(title: Strings.OKString, style: .default))
-            dismissView()
-            bvc.present(alert, animated: true)
-            // Reattempt to connect to the App Store to get VPN prices.
-            bvc.vpnProductInfo.load()
-            return
-        }
-        
-        switch BraveVPN.vpnState {
-        case .notPurchased, .purchased, .expired:
-            guard let vc = vpnState.enableVPNDestinationVC else { return }
-            open(vc, doneButton: DoneButton(style: .cancel, position: .left), allowSwipeToDismiss: true)
-        case .installed:
-            // Do not modify UISwitch state here, update it based on vpn status observer.
-            enabled ? BraveVPN.reconnect() : BraveVPN.disconnect()
-        }
-    }
-    
-    private func openBookmarks() {
-        let vc = BookmarksViewController(folder: Bookmarkv2.lastVisitedFolder(), isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
-        vc.toolbarUrlActionsDelegate = bvc
-        
-        open(vc, doneButton: DoneButton(style: .done, position: .right))
-    }
-    
-    private func openDownloads() {
-        let vc = DownloadsPanel(profile: bvc.profile)
-        let currentTheme = Theme.of(bvc.tabManager.selectedTab)
-        vc.applyTheme(currentTheme)
-        
-        open(vc, doneButton: DoneButton(style: .done, position: .right))
-    }
-    
-    private func openPlaylist() {
-        let playlistController = (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController ?? PlaylistViewController()
-        playlistController.modalPresentationStyle = .fullScreen
-                    
-        dismissView()
-        bvc.present(playlistController, animated: true)
-    }
-    
-    private func openAddBookmark() {
-        guard let title = tab?.displayTitle, let url = tab?.url else { return }
-        
-        let bookmarkUrl = url.decodeReaderModeURL ?? url
-        let mode = BookmarkEditMode.addBookmark(title: title, url: bookmarkUrl.absoluteString)
-        let vc = AddEditBookmarkTableViewController(mode: mode)
-        
-        open(vc, doneButton: DoneButton(style: .cancel, position: .left))
-    }
-    
-    private func openHistory() {
-        let vc = HistoryViewController(isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
-        vc.toolbarUrlActionsDelegate = bvc
-        
-        open(vc, doneButton: DoneButton(style: .done, position: .right))
-    }
-    
-    private func openSettings() {
-        let vc = SettingsViewController(profile: bvc.profile, tabManager: bvc.tabManager, feedDataSource: bvc.feedDataSource, rewards: bvc.rewards, legacyWallet: bvc.legacyWallet)
-        vc.settingsDelegate = bvc
-        open(vc, doneButton: DoneButton(style: .done, position: .right),
-             allowSwipeToDismiss: false)
-    }
-    
-    private func openShareSheet() {
-        dismissView()
-        bvc.tabToolbarDidPressShare()
-    }
-    
-    @objc func dismissView() {
-        dismiss(animated: true)
-    }
-    
-    @objc func vpnConfigChanged() {
-        guard let cell = vpnMenuCell else { return }
-        
-        cell.toggleButton.isOn = BraveVPN.isConnected
-        
-        if BraveVPN.isConnected {
-            cell.isLoading = false
-        }
-    }
-}
-
-// MARK: - PopoverContentComponent
-
-extension MenuViewController: PopoverContentComponent {
-    var extendEdgeIntoArrow: Bool { return false }
 }
 
 class ColorAwareNavigationController: UINavigationController {
