@@ -568,6 +568,9 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PASSWORD_ENTRY_EDIT_DELETION_DIALOG_BODY" desc="Text explaining the user that deleting the credential that they are viewing will not remove their account on the reaspective website.">
         Deleting this password will not delete your account on <ph name="SITE">%1$s<ex>example.com</ex></ph>
       </message>
+      <message name="IDS_PASSWORD_CHECK_DELETE_CREDENTIAL_DIALOG_BODY" desc="The body of a prompt to confirm that the user intends to delete the stored password.">
+        Deleting this password will not delete your account on <ph name="SITE">%1$s<ex>example.com</ex></ph>. Change your password or delete your account on <ph name="SITE">%1$s<ex>example.com</ex></ph> to keep it safe from others.
+      </message>
       <message name="IDS_PASSWORD_ENTRY_EDIT_DELETE_CREDENTIAL_DIALOG_TITLE" desc="The title of a prompt to confirm that the user intends to delete the stored password.">
         Delete password?
       </message>
@@ -1406,7 +1409,7 @@ Your Brave account may have other forms of browsing history like searches and ac
 
       <!-- Download later -->
       <message name="IDS_DOWNLOAD_LATER_DIALOG_TITLE" desc="Title of the download later dialog that let the user to choose the time to download.">
-        Choose when to download
+        Download later instead?
       </message>
       <message name="IDS_DOWNLOAD_LATER_DIALOG_SUBTITLE" desc="Subtitle of the download later dialog that let the user to choose the time to download.">
         You'll see a notification when this file is ready
@@ -1428,6 +1431,24 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_DOWNLOAD_LATER_PROMPT_ENABLED_TITLE" desc="A setting text to ask whether to show a dialog about when to download.">
         Ask when to save files
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_SLOW_NETWORK_SUBTITLE" desc="A subtitle in the download later dialog to inform the user about slow network connection.">
+        Your <ph name="CONNECTION_TYPE">%1$s<ex>2G</ex></ph> connection might slow down your download
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_2G_CONNECTION" desc="2G connection type.">
+        2G
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_BLUETOOTH_CONNECTION" desc="Bluetooth connection type.">
+        Bluetooth
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_WIFI_CONNECTION" desc="WIFI connection type.">
+        Wi-Fi
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_LARGE_FILE_SUBTITLE" desc="A subtitle in the download later dialog to inform the user about large download file size.">
+        This file is large (<ph name="FILE_SIZE">%1$s<ex>300MB</ex></ph>)
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_DIALOG_POSITIVE_BUTTON_TEXT" desc="The text of positive button on the download later dialog.">
+        Done
       </message>
 
       <!-- Downloads location -->
@@ -2010,13 +2031,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         <ph name="MESSAGE">%1$s<ex>Downloading file (200 MB)</ex></ph> <ph name="LINK_NAME">%2$s<ex>Details</ex></ph> button
       </message>
       <message name="IDS_DOWNLOAD_SCHEDULED_ON_WIFI" desc="Label describing that the download was scheduled to start on Wi-Fi.">
-        Download will start on Wi-Fi.
+        You’ll see a notification when this download starts on Wi-Fi.
       </message>
       <message name="IDS_DOWNLOAD_SCHEDULED_ON_DATE" desc="Label describing that the download was scheduled to start at a later date.">
-        Download will start on <ph name="date">%1$s<ex>Feb 28 2020</ex></ph>.
+        You’ll see a notification when this download starts on <ph name="date">%1$s<ex>Feb 28 2020</ex></ph>.
       </message>
       <message name="IDS_DOWNLOAD_SCHEDULED_ON_TIME" desc="Label describing that the download was scheduled to start at a later time.">
-        Download will start at <ph name="time">%1$s<ex>8:30PM</ex></ph>.
+        You’ll see a notification when this download starts at <ph name="time">%1$s<ex>8:30PM</ex></ph>.
       </message>
 
       <!-- Inline Update Infobar -->
@@ -3381,10 +3402,16 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Refine: <ph name="REFINE_TEXT">%1$s<ex>The meaning of life</ex></ph>
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_CONCEAL_CLIPBOARD_CONTENTS" desc="Content description for the omnibox clipboard conceal button.">
-        Conceal Clipboard Contents
+        Hide clipboard contents
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_REVEAL_CLIPBOARD_CONTENTS" desc="Content description for the omnibox clipboard reveal button.">
-        Reveal Clipboard Contents
+        Show clipboard contents
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_CONCEAL_BUTTON_ANNOUNCEMENT" desc="Accessibility announcement when the omnibox clipboard conceal button is clicked.">
+        Clipboard contents hidden
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_REVEAL_BUTTON_ANNOUNCEMENT" desc="Accessibility announcement when the omnibox clipboard reveal button is clicked.">
+        Clipboard contents shown
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_SWITCH_TO_TAB" desc="Content description for the omnibox switch to tab button.">
         Switch To Tab
