@@ -273,8 +273,10 @@ bool ParseJSON(base::StringPiece json,
 
   for (auto& entry : chromium_entries) {
     // leave test entries
-    if (entry->pinset != "test")
+    if (entry->pinset != "test") {
+      // Google has asked us not to include the pins that ship with Chrome.
       entry->pinset = "";
+    }
 
     if (!entry->force_https && entry->pinset.empty() && !entry->expect_ct)
       continue;
