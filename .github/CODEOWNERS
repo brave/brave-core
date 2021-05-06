@@ -20,13 +20,28 @@ components/services/bat_ledger/ @brave/rewards-client
 vendor/bat-native-ledger/ @brave/rewards-client
 
 # Ads
-browser/brave_ads/**/*[.cc, .mm, .h, .java] @brave/ads-client
-browser/ui/brave_ads/**/*[.cc, .mm, .h] @brave/ads-client
-components/brave_ads/**/*[.cc, .mm, .h] @brave/ads-client
-components/services/bat_ads/**/*[.cc, .mm, .h] @brave/ads-client
-vendor/bat-native-ads/**/*[.cc, .mm, .h] @brave/ads-client
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*[.cc, .mm, .h] @brave/ads-client @fmarier
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*[.cc, .mm, .h] @brave/ads-client @orspetol
+browser/brave_ads/**/*.cc @brave/ads-client
+browser/brave_ads/**/*.h @brave/ads-client
+browser/brave_ads/**/*.java @brave/ads-client
+browser/brave_ads/**/*.mm @brave/ads-client
+browser/ui/brave_ads/**/*.cc @brave/ads-client
+browser/ui/brave_ads/**/*.h @brave/ads-client
+browser/ui/brave_ads/**/*.mm @brave/ads-client
+components/brave_ads/**/*.cc @brave/ads-client
+components/brave_ads/**/*.h @brave/ads-client
+components/brave_ads/**/*.mm @brave/ads-client
+components/services/bat_ads/**/*.cc @brave/ads-client
+components/services/bat_ads/**/*.h @brave/ads-client
+components/services/bat_ads/**/*.mm @brave/ads-client
+vendor/bat-native-ads/**/*.cc @brave/ads-client
+vendor/bat-native-ads/**/*.h @brave/ads-client
+vendor/bat-native-ads/**/*.mm @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.cc @brave/ads-client @fmarier
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.h @brave/ads-client @fmarier
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.mm @brave/ads-client @fmarier
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.cc @brave/ads-client @orspetol
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.h @brave/ads-client @orspetol
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.mm @brave/ads-client @orspetol
 
 # Network
 browser/net/ @iefremov
