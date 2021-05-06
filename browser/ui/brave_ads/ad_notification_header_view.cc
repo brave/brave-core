@@ -67,7 +67,7 @@ AdNotificationHeaderView::AdNotificationHeaderView(const int width) {
 
 AdNotificationHeaderView::~AdNotificationHeaderView() = default;
 
-void AdNotificationHeaderView::SetTitle(const base::string16& text) {
+void AdNotificationHeaderView::SetTitle(const std::u16string& text) {
   DCHECK(title_label_);
   title_label_->SetText(text);
 

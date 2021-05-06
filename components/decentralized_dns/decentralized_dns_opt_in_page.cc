@@ -66,16 +66,15 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
     base::DictionaryValue* load_time_data) {
-  const std::vector<base::string16> message_params = {
-      base::ASCIIToUTF16("<a "
-                         "href='https://www.cloudflare.com/en-ca/"
-                         "distributed-web-gateway-terms/' target='_blank' "
-                         "rel='noopener noreferrer'>"),
-      base::ASCIIToUTF16("</a>"),
-      base::ASCIIToUTF16(
-          "<a href='https://www.cloudflare.com/en-ca/privacypolicy/' "
-          "target='_blank' rel='noopener noreferrer'>"),
-      base::ASCIIToUTF16("</a>"),
+  const std::vector<std::u16string> message_params = {
+      u"<a "
+      u"href='https://www.cloudflare.com/en-ca/"
+      u"distributed-web-gateway-terms/' target='_blank' "
+      u"rel='noopener noreferrer'>",
+      u"</a>",
+      u"<a href='https://www.cloudflare.com/en-ca/privacypolicy/' "
+      u"target='_blank' rel='noopener noreferrer'>",
+      u"</a>",
   };
 
   if (IsUnstoppableDomainsTLD(request_url_)) {
@@ -111,7 +110,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
       "dontProceedButtonText",
       l10n_util::GetStringUTF16(
           IDS_DECENTRALIZED_DNS_OPT_IN_DONT_PROCEED_BUTTON));
-  load_time_data->SetString("finalParagraph", base::string16());
+  load_time_data->SetString("finalParagraph", std::u16string());
 }
 
 int DecentralizedDnsOptInPage::GetHTMLTemplateId() {

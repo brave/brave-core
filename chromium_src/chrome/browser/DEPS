@@ -109,6 +109,7 @@ include_rules = [
   "+components/permissions",
   "+components/policy/policy_constants.h",
   "+components/policy/core/browser",
+  "+components/policy/core/common",
   "+components/prefs",
   "+components/safe_browsing/core/proto/csd.pb.h",
   "+components/search",

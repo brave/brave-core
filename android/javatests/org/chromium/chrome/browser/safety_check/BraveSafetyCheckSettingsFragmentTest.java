@@ -15,7 +15,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.util.browser.Features;
@@ -24,7 +23,6 @@ import org.chromium.chrome.test.util.browser.Features;
 // Main purpose of these tests id to detect that something new, that we may consider valuable, is
 // appeared in this section .
 @RunWith(ChromeJUnit4ClassRunner.class)
-@Features.EnableFeatures(ChromeFeatureList.SAFETY_CHECK_ANDROID)
 public class BraveSafetyCheckSettingsFragmentTest {
     private static final String PASSWORDS = "passwords";
     private static final String SAFE_BROWSING = "safe_browsing";

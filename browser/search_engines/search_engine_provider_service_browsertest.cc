@@ -29,8 +29,8 @@ using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
-  result.SetShortName(base::ASCIIToUTF16("test1"));
-  result.SetKeyword(base::ASCIIToUTF16("test.com"));
+  result.SetShortName(u"test1");
+  result.SetKeyword(u"test.com");
   result.SetURL("http://test.com/search?t={searchTerms}");
   return result;
 }
@@ -53,7 +53,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
 
   // Both mode should use same search engine if alternate pref is disabled.
-  base::string16 normal_search_engine =
+  std::u16string normal_search_engine =
       service->GetDefaultSearchProvider()->data().short_name();
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             incognito_service->GetDefaultSearchProvider()->data().short_name());
@@ -63,7 +63,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   brave::ToggleUseAlternativeSearchEngineProvider(profile);
   EXPECT_TRUE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
   EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
-            base::ASCIIToUTF16("DuckDuckGo"));
+            u"DuckDuckGo");
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             normal_search_engine);
 
@@ -81,7 +81,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   std::unique_ptr<TemplateURL> test_url(new TemplateURL(test_data));
   service->SetUserSelectedDefaultSearchProvider(test_url.get());
   EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
-            base::ASCIIToUTF16("test1"));
+            u"test1");
 }
 
 // For qwant region, just check that both profile uses same provider.
@@ -106,7 +106,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
 
   // Both mode should use same search engine.
-  base::string16 normal_search_engine =
+  std::u16string normal_search_engine =
       service->GetDefaultSearchProvider()->data().short_name();
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             incognito_service->GetDefaultSearchProvider()->data().short_name());
@@ -117,7 +117,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   std::unique_ptr<TemplateURL> test_url(new TemplateURL(test_data));
   service->SetUserSelectedDefaultSearchProvider(test_url.get());
   EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
-            base::ASCIIToUTF16("test1"));
+            u"test1");
 }
 
 // Check crash isn't happened with multiple private window is used.

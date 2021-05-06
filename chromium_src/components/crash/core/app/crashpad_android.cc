@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
+#include <set>
 
 #include "base/files/file_path.h"
 #include "components/crash/core/app/crashpad.h"

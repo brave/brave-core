@@ -416,19 +416,15 @@ ControlType GetNoScriptControlType(HostContentSettingsMap* map,
 }
 
 void DispatchBlockedEvent(const GURL& request_url,
-                          int render_frame_id,
-                          int render_process_id,
                           int frame_tree_node_id,
                           const std::string& block_type) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   BraveShieldsWebContentsObserver::DispatchBlockedEvent(
-      block_type, request_url.spec(), render_process_id, render_frame_id,
-      frame_tree_node_id);
+      block_type, request_url.spec(), frame_tree_node_id);
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
-      request_url.spec(), render_process_id, render_frame_id,
-      frame_tree_node_id);
+      request_url.spec(), frame_tree_node_id);
 #endif
 }
 

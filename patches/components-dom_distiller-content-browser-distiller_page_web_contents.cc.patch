@@ -1,5 +1,5 @@
 diff --git a/components/dom_distiller/content/browser/distiller_page_web_contents.cc b/components/dom_distiller/content/browser/distiller_page_web_contents.cc
-index 334896b125a156f774a9ebfe9931ba0ae53e917a..966fb47c0f8b99305a88fe725dedea48c47817c4 100644
+index 6dfc09c9cbbdf5b7692e44c8b47b70ccf9c690f1..a998eaf15ca3e8b65799deb2110a10a526c45aa8 100644
 --- a/components/dom_distiller/content/browser/distiller_page_web_contents.cc
 +++ b/components/dom_distiller/content/browser/distiller_page_web_contents.cc
 @@ -170,7 +170,9 @@ void DistillerPageWebContents::ExecuteJavaScript() {

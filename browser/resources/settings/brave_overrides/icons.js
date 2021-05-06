@@ -5,7 +5,7 @@
 
 import {OverrideIronIcons} from 'chrome://brave-resources/polymer_overriding.js'
 
-import '../icons.m.js'
+import '../icons.js'
 import '../brave_icons.m.js'
 
 OverrideIronIcons('settings', 'brave_settings', {

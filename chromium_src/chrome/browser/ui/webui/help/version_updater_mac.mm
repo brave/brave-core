@@ -107,11 +107,11 @@ void VersionUpdaterMac::CheckForUpdate(StatusCallback status_callback,
     }
   } else {
     status_callback_.Run(DISABLED, 0, false, false, std::string(), 0,
-                         base::string16());
+                         std::u16string());
   }
 #else
   status_callback_.Run(DISABLED, 0, false, false, std::string(), 0,
-                         base::string16());
+                       std::u16string());
 #endif
 }
 
@@ -127,7 +127,7 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
       base::mac::ObjCCastStrict<NSString>(
           [dictionary objectForKey:kAutoupdateStatusErrorMessages]));
 
-  base::string16 message;
+  std::u16string message;
 
   Status status;
   switch (sparkle_status) {

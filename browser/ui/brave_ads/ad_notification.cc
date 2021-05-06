@@ -8,13 +8,12 @@
 #include <vector>
 
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 
 namespace brave_ads {
 
 AdNotification::AdNotification(const std::string& id,
-                               const base::string16& title,
-                               const base::string16& body,
+                               const std::u16string& title,
+                               const std::u16string& body,
                                scoped_refptr<AdNotificationDelegate> delegate)
     : id_(id), title_(title), body_(body), delegate_(std::move(delegate)) {}
 
@@ -37,8 +36,8 @@ AdNotification& AdNotification::operator=(const AdNotification& other) =
 
 AdNotification::~AdNotification() = default;
 
-base::string16 AdNotification::accessible_name() const {
-  std::vector<base::string16> accessible_lines;
+std::u16string AdNotification::accessible_name() const {
+  std::vector<std::u16string> accessible_lines;
 
   if (!title_.empty()) {
     accessible_lines.push_back(title_);
@@ -48,7 +47,7 @@ base::string16 AdNotification::accessible_name() const {
     accessible_lines.push_back(body_);
   }
 
-  return base::JoinString(accessible_lines, base::ASCIIToUTF16("\n"));
+  return base::JoinString(accessible_lines, u"\n");
 }
 
 }  // namespace brave_ads

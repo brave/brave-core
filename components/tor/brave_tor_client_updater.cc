@@ -15,6 +15,7 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
 #include "brave/components/tor/pref_names.h"
@@ -114,8 +115,8 @@ BraveTorClientUpdater::BraveTorClientUpdater(
     PrefService* local_state,
     const base::FilePath& user_data_dir)
     : BraveComponent(component_delegate),
-      task_runner_(base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock()})),
+      task_runner_(
+          base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()})),
       registered_(false),
       local_state_(local_state),
       user_data_dir_(user_data_dir),

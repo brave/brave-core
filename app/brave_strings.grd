@@ -298,9 +298,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_ABOUT_TERMS_OF_SERVICE" desc="The terms of service label in the About box." translateable="false">
         Not used in Brave. Placeholder to keep resource maps in sync.
       </message>
-      <message name="IDS_CPU_X86_SSE2_OBSOLETE_SOON" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the computer they are using will soon be or is already unsupported.">
-        This computer will soon stop receiving Brave updates because its hardware is no longer supported.
-      </message>
       <if expr="is_macosx">
         <message name="IDS_MAC_10_10_OBSOLETE_SOON" desc="A message displayed on an at-launch infobar and About (Help) page warning the user that the OS version they are using will soon be or is already unsupported.">
           To get future Brave updates, you'll need OS X 10.11 or later. This computer is using OS X 10.10.
@@ -557,7 +554,6 @@ Brave is unable to recover your settings.
         Brave API keys are missing. Some functionality of Brave will be disabled.
       </message>
 
-      <!-- Extension/App install prompt -->
       <if expr="enable_extensions">
         <!-- Extension installed bubble -->
         <message name="IDS_EXTENSION_INSTALLED_HEADING" desc="Title of the extension-installed bubble. Instructs that the extension was installed.">
@@ -568,18 +564,6 @@ Brave is unable to recover your settings.
         <message name="IDS_EXTENSION_UNINSTALL_PROMPT_REMOVE_DATA_CHECKBOX" desc="Checkbox text to ask the user whether they want to remove associated data at uninstall time. Only used when uninstalling an app associated with a particular website.">
           Also clear data from Brave (<ph name="URL">$1<ex>www.google.com</ex></ph>)
         </message>
-
-        <!-- Extension context menu -->
-        <if expr="not use_titlecase">
-          <message name="IDS_EXTENSIONS_HIDE_BUTTON_IN_MENU" desc="The extension context menu item to hide the button in the application menu (sentence case).">
-            Hide in Brave menu
-          </message>
-        </if>
-        <if expr="use_titlecase">
-          <message name="IDS_EXTENSIONS_HIDE_BUTTON_IN_MENU" desc="The extension context menu item to hide the button in the application menu (title case).">
-            Hide in Brave Menu
-          </message>
-        </if>
       </if>
 
       <!-- chrome://settings/extensions page -->
@@ -591,9 +575,6 @@ Brave is unable to recover your settings.
       </message>
       <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_IN_CHROME" desc="The label to indicate that a shortcut will be triggerable only from within the Brave application.">
         In Brave
-      </message>
-      <message name="IDS_EXTENSIONS_BLOCKLISTED_NOT_ALLOWLISTED" desc="The text explaining the reason for disabling extension or app. The extension in question is not included in the Safe Browsing allowlist.">
-        Brave recommends disabling this extension because it does not currently meet Enhanced Safe Browsing standards.
       </message>
 
       <if expr="enable_extensions">
@@ -721,6 +702,11 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
+      <!-- NTP strings -->
+      <message name="IDS_NTP_CUSTOMIZE_BUTTON_LABEL" desc="Label for button on the New Tab Page that opens dialog to customize Brave browser.">
+        Customize Brave
+      </message>
+
       <!-- Signin Email Confirmation tab modal dialog -->
       <if expr="not chromeos">
         <message name="IDS_SIGNIN_EMAIL_CONFIRMATION_TITLE" desc="Title of the signin email confirmation tab modal dialog.">
@@ -728,8 +714,8 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
-      <!-- Dice Web Signin Interception Bubble-->
       <if expr="not chromeos and not is_android">
+        <!-- Dice Web Signin Interception Bubble-->
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_TITLE_V1" desc="Title of the web signin interception bubble">
           Continue in a new Brave profile?
         </message>
@@ -753,6 +739,11 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC_MANAGED_DEVICE" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed on a managed device">
           This will create a new Brave profile for <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>
+        </message>
+
+        <!-- Profile Customization Bubble-->
+        <message name="IDS_PROFILE_CUSTOMIZATION_TEXT" desc="Text of the profile customization bubble">
+          Customize your new Brave profile
         </message>
       </if>
 
@@ -780,15 +771,6 @@ Brave is unable to recover your settings.
       <if expr="chromeos">
         <message name="IDS_SIGNIN_ERROR_SECONDARY_ACCOUNT_DISPLAY_SOURCE" desc="Context title shown in the notification header of sign-in error notification for Chrome OS Secondary Accounts.">
           Chrome OS System
-        </message>
-        <message name="IDS_SYNC_NEEDS_KEYS_FOR_EVERYTHING_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to retrieve the sync encryption keys and resume sync.">
-          Chrome OS could not sync your data.
-        </message>
-        <message name="IDS_SYNC_NEEDS_KEYS_FOR_PASSWORDS_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to retrieve the sync encryption keys, required to resume syncing of passwords specifically (other sync data works normally).">
-          Chrome OS could not sync your passwords.
-        </message>
-        <message name="IDS_SYNC_PASSPHRASE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to update their sync passphrase.">
-          Chrome OS could not sync your data. Please update your Sync passphrase.
         </message>
         <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error notification when the user's sign-in credentials are out of date.">
           Chrome OS could not sync your data because your account sign-in details are out of date.
@@ -1178,8 +1160,8 @@ Brave is unable to recover your settings.
 
       </if>
 
-      <!-- Profile Picker -->
       <if expr="not chromeos and not is_android">
+        <!-- Profile Picker -->
         <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE" desc="Profile picker main view title">
           Welcome to Brave profiles
         </message>
@@ -1213,18 +1195,13 @@ Brave is unable to recover your settings.
         <message name="IDS_PROFILE_PICKER_PROFILE_SWITCH_SUBTITLE" desc="Profile picker profile switch subtitle">
           A Brave profile with this account already exists on this device
         </message>
-      </if>
 
-      <!-- Rosetta installation for protected media -->
-      <if expr="is_macosx">
-        <message name="IDS_ROSETTA_INSTALL_TITLE" desc="Title of the 'do you want to install Rosetta' dialog. Used when there is a page title.">
-          To enable Brave to play protected media, you need to install Rosetta. Do you want to install it now?
+        <!-- Profile switch IPH -->
+        <message name="IDS_PROFILE_SWITCH_PROMO" desc="Text of the In-Product-Help bubble for profile switching.">
+          You can switch between Brave profiles here
         </message>
-        <message name="IDS_ROSETTA_INSTALL_BODY" desc="Body text of the 'do you want to install Rosetta' dialog.">
-          Rosetta enables Brave to play the protected media on this page.
-        </message>
-        <message name="IDS_ROSETTA_INSTALL_RESTART_DIALOG" desc="Title text of the dialog once Rosetta is installed.">
-          To use Rosetta to play protected media, you must restart Brave.
+        <message name="IDS_PROFILE_SWITCH_PROMO_SCREENREADER" desc="Text announced by screenreaders to explain how to switch between profiles.">
+          <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+M</ex></ph> can switch between Brave profiles
         </message>
       </if>
 

@@ -92,7 +92,6 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
     request.headers.SetHeader(net::HttpRequestHeaders::kUserAgent, *user_agent);
   }
   request.request_initiator = origin;
-  request.render_frame_id = frame_id;
 
   auto proxy = std::make_unique<BraveProxyingWebSocket>(
       std::move(factory), request, std::move(handshake_client),

@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "ui/gfx/color_palette.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/views/animation/ink_drop.h"
@@ -61,9 +62,9 @@ std::unique_ptr<views::InkDrop> PaddedImageButton::CreateInkDrop() {
 void PaddedImageButton::OnThemeChanged() {
   ImageButton::OnThemeChanged();
 
-  const SkColor color = GetNativeTheme()->GetSystemColor(
-      ui::NativeTheme::kColorId_PaddedButtonInkDropColor);
-  SetInkDropBaseColor(color);
+  const SkColor background_color = GetNativeTheme()->GetSystemColor(
+      ui::NativeTheme::kColorId_WindowBackground);
+  SetInkDropBaseColor(color_utils::GetColorWithMaxContrast(background_color));
 }
 
 BEGIN_METADATA(PaddedImageButton, views::ImageButton)

@@ -1,0 +1,12 @@
+diff --git a/components/safe_browsing/core/common/safe_browsing_prefs.cc b/components/safe_browsing/core/common/safe_browsing_prefs.cc
+index 25d3c524502be64803d0e5d3f04638c4a7109080..88882424f4c77b51dd3365675795b68b69856b3e 100644
+--- a/components/safe_browsing/core/common/safe_browsing_prefs.cc
++++ b/components/safe_browsing/core/common/safe_browsing_prefs.cc
+@@ -137,6 +137,7 @@ bool IsSafeBrowsingEnabled(const PrefService& prefs) {
+ }
+ 
+ bool IsEnhancedProtectionEnabled(const PrefService& prefs) {
++  BRAVE_IS_ENHANCED_PROTECTION_ENABLED
+   // SafeBrowsingEnabled is checked too due to devices being out
+   // of sync or not on a version that includes SafeBrowsingEnhanced pref.
+   return prefs.GetBoolean(prefs::kSafeBrowsingEnhanced) &&

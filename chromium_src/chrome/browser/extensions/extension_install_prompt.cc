@@ -14,7 +14,7 @@
 #include "../../../../../chrome/browser/extensions/extension_install_prompt.cc"
 #undef GetDialogTitle
 
-base::string16 ExtensionInstallPrompt::Prompt::GetDialogTitle() const {
+std::u16string ExtensionInstallPrompt::Prompt::GetDialogTitle() const {
   if (!g_brave_browser_process->extension_whitelist_service()->IsVetted(
           extension())) {
     if (type_ == ExtensionInstallPrompt::INSTALL_PROMPT ||

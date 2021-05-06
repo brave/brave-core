@@ -8,6 +8,7 @@
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
+#include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -50,7 +51,7 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
   TabHoverCardBubbleViewBrowserTest()
       : animation_mode_reset_(gfx::AnimationTestApi::SetRichAnimationRenderMode(
             gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED)) {
-    TabHoverCardBubbleView::disable_animations_for_testing_ = true;
+    TabHoverCardController::disable_animations_for_testing_ = true;
   }
   ~TabHoverCardBubbleViewBrowserTest() override = default;
 
@@ -59,20 +60,20 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
     DialogBrowserTest::SetUp();
   }
 
-  static TabHoverCardBubbleView* GetHoverCard(const TabStrip* tabstrip) {
-    return tabstrip->hover_card_;
+  TabHoverCardBubbleView* GetHoverCard(const TabStrip* tab_strip) {
+    return tab_strip->hover_card_controller_->hover_card_;
   }
 
   static Widget* GetHoverCardWidget(TabHoverCardBubbleView* hover_card) {
     return hover_card->GetWidget();
   }
 
-  const base::string16& GetHoverCardTitle(
+  const std::u16string& GetHoverCardTitle(
       const TabHoverCardBubbleView* hover_card) {
     return hover_card->title_label_->GetText();
   }
 
-  const base::string16& GetHoverCardDomain(
+  const std::u16string& GetHoverCardDomain(
       const TabHoverCardBubbleView* hover_card) {
     return hover_card->domain_label_->GetText();
   }
@@ -81,7 +82,8 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
     // We don't use Tab::OnMouseEntered here to invoke the hover card because
     // that path is disabled in browser tests. If we enabled it, the real mouse
     // might interfere with the test.
-    tab_strip->UpdateHoverCard(tab_strip->tab_at(index));
+    tab_strip->UpdateHoverCard(tab_strip->tab_at(index),
+                               TabController::HoverCardUpdateType::kHover);
   }
 
   // DialogBrowserTest:
@@ -116,9 +118,8 @@ IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest,
   TabStrip* tab_strip =
       BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
   TabRendererData new_tab_data = TabRendererData();
-  new_tab_data.title = base::UTF8ToUTF16("Settings - Addresses and more");
-  new_tab_data.last_committed_url =
-      GURL("chrome://settings/addresses");
+  new_tab_data.title = u"Settings - Addresses and more";
+  new_tab_data.last_committed_url = GURL("chrome://settings/addresses");
   tab_strip->AddTabAt(1, new_tab_data, false);
 
   ShowUi("default");
@@ -127,8 +128,6 @@ IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest,
   EXPECT_TRUE(widget != nullptr);
   EXPECT_TRUE(widget->IsVisible());
   HoverMouseOverTabAt(tab_strip, 1);
-  EXPECT_EQ(GetHoverCardTitle(hover_card),
-            base::UTF8ToUTF16("Settings - Addresses and more"));
-  EXPECT_EQ(GetHoverCardDomain(hover_card),
-            base::UTF8ToUTF16("brave://settings"));
+  EXPECT_EQ(GetHoverCardTitle(hover_card), u"Settings - Addresses and more");
+  EXPECT_EQ(GetHoverCardDomain(hover_card), u"brave://settings");
 }

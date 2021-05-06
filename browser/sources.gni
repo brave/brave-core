@@ -239,6 +239,7 @@ if (enable_tor) {
     "//brave/browser/tor",
     "//brave/components/tor",
     "//brave/components/tor:pref_names",
+    "//brave/components/tor:utils",
   ]
 }
 

@@ -82,7 +82,8 @@ EphemeralStorageNamespaces::EphemeralStorageNamespaces(
     StorageController* controller,
     const String& session_storage_id,
     const String& local_storage_id)
-    : session_storage_(
+    : Supplement(nullptr),
+      session_storage_(
           MakeGarbageCollected<StorageNamespace>(controller,
                                                  session_storage_id)),
       local_storage_(MakeGarbageCollected<StorageNamespace>(controller,
@@ -110,10 +111,10 @@ EphemeralStorageNamespaces* EphemeralStorageNamespaces::From(
 
   auto* web_frame = WebLocalFrameImpl::FromFrame(window->GetFrame());
   WebViewImpl* webview = web_frame->ViewImpl();
-  if (!webview || !webview->Client())
+  if (!webview)
     return nullptr;
   String session_storage_id = StringToSessionStorageId(
-      String::FromUTF8(webview->Client()->GetSessionStorageNamespaceId()),
+      String::FromUTF8(webview->GetSessionStorageNamespaceId()),
       kSessionStorageSuffix);
 
   auto* security_origin =

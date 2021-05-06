@@ -1,8 +1,8 @@
 diff --git a/content/renderer/render_thread_impl.cc b/content/renderer/render_thread_impl.cc
-index ebc8e70064539c56293708dbf1cee5c2d4e508e7..3479305580b42b4bd61fe1f4d3463e3bad558c3c 100644
+index ed9d15a2832c8ca7fc919c12f4c80006063624b0..814d18b885ecfd95a98c9654d4be1491db9846dc 100644
 --- a/content/renderer/render_thread_impl.cc
 +++ b/content/renderer/render_thread_impl.cc
-@@ -941,6 +941,7 @@ void RenderThreadImpl::InitializeWebKit(mojo::BinderMap* binders) {
+@@ -962,6 +962,7 @@ void RenderThreadImpl::InitializeWebKit(mojo::BinderMap* binders) {
  }
  
  void RenderThreadImpl::RegisterSchemes() {

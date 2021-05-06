@@ -418,6 +418,7 @@ source_set("ui") {
       "//components/sessions",
       "//extensions/browser",
       "//extensions/common:common_constants",
+      "//ui/base/dragdrop:types",
     ]
   }
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.js b/chrome/browser/resources/settings/site_settings/constants.js
-index 1679cc0ddb9eab2879bc8260143c022b70c702c1..9a502ed2d44b1b8bd69670006beff8a473a09c63 100644
+index fb816c996282016f5142bcbf066002ba95dee384..7756a9aae3674ab38f17b34b2790d98b91c961c5 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.js
 +++ b/chrome/browser/resources/settings/site_settings/constants.js
-@@ -42,6 +42,7 @@ export const ContentSettingsTypes = {
+@@ -43,6 +43,7 @@ export const ContentSettingsTypes = {
    VR: 'vr',
    WINDOW_PLACEMENT: 'window-placement',
    ZOOM_LEVELS: 'zoom-levels',

@@ -47,7 +47,7 @@ class TipDialogDelegate : public ui::WebDialogDelegate {
   ~TipDialogDelegate() override;
 
   ui::ModalType GetDialogModalType() const override;
-  base::string16 GetDialogTitle() const override;
+  std::u16string GetDialogTitle() const override;
   GURL GetDialogContentURL() const override;
   void GetWebUIMessageHandlers(
       std::vector<WebUIMessageHandler*>* handlers) const override;
@@ -78,9 +78,9 @@ ui::ModalType TipDialogDelegate::GetDialogModalType() const {
   return ui::MODAL_TYPE_WINDOW;
 }
 
-base::string16 TipDialogDelegate::GetDialogTitle() const {
+std::u16string TipDialogDelegate::GetDialogTitle() const {
   // Only used on Windows?
-  return base::string16();
+  return std::u16string();
 }
 
 GURL TipDialogDelegate::GetDialogContentURL() const {
