@@ -4,16 +4,16 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
-import AsyncActionHandler from '../../common/AsyncActionHandler'
+import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as Actions from '../actions/wallet_panel_actions'
-import { State, WalletPanelReducerState } from '../constants/types'
+import { State, WalletPanelReducerState } from '../../constants/types'
 import { AccountPayloadType } from '../constants/action_types'
 
 const handler = new AsyncActionHandler()
 
 async function getAPIProxy () {
   // TODO(petemill): don't lazy import() if this actually makes the time-to-first-data slower!
-  const api = await import('../wallet_panel_api_proxy.js')
+  const api = await import('../../wallet_panel_api_proxy.js')
   return api.default.getInstance()
 }
 

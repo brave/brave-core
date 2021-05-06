@@ -10,12 +10,12 @@ import { bindActionCreators, Dispatch } from 'redux'
 
 import walletPanelDarkTheme from './theme/wallet-panel-dark'
 import walletPanelLightTheme from './theme/wallet-panel-light'
-import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
-import { ConnectWithSite } from './components/extension'
-import { StyledExtensionWrapper } from './stories/style'
+import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
+import { ConnectWithSite } from '../components/extension'
+import { StyledExtensionWrapper } from '../stories/style'
 import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
-import { State, WalletPanelReducerState, WalletAccountType } from './constants/types'
+import { State, WalletPanelReducerState, WalletAccountType } from '../constants/types'
 
 type Props = {
   panel: WalletPanelReducerState
