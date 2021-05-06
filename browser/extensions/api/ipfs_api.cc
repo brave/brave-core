@@ -15,6 +15,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/channel_info.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -39,10 +40,131 @@ base::Value MakeSelectValue(const base::string16& name,
   return item;
 }
 
+base::Value MakeValue(const std::string& name, const std::string& value) {
+  base::Value item(base::Value::Type::DICTIONARY);
+  item.SetKey("value", base::Value(value));
+  item.SetKey("name", base::Value(name));
+  return item;
+}
+
+base::Value MakeResponseFromMap(const ipfs::IpnsKeysManager::KeysMap& keys) {
+  base::Value list(base::Value::Type::LIST);
+  for (const auto& key : keys) {
+    list.Append(MakeValue(key.first, key.second));
+  }
+  std::string json_string;
+  base::JSONWriter::Write(list, &json_string);
+  return base::Value(json_string);
+}
 }  // namespace
 
 namespace extensions {
 namespace api {
+
+ExtensionFunction::ResponseAction IpfsRemoveIpnsKeyFunction::Run() {
+  if (!IsIpfsEnabled(browser_context()))
+    return RespondNow(Error("IPFS not enabled"));
+  ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
+  if (!ipfs_service) {
+    return RespondNow(Error("Could not obtain IPFS service"));
+  }
+  ::ipfs::IpnsKeysManager* key_manager = ipfs_service->GetIpnsKeysManager();
+  if (!ipfs_service->IsDaemonLaunched() || !key_manager) {
+    return RespondNow(Error("IPFS node is not launched"));
+  }
+  std::unique_ptr<ipfs::RemoveIpnsKey::Params> params(
+      ipfs::RemoveIpnsKey::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  key_manager->RemoveKey(
+      params->name, base::BindOnce(&IpfsRemoveIpnsKeyFunction::OnKeyRemoved,
+                                   base::Unretained(this), key_manager));
+  AddRef();
+  return RespondLater();
+}
+
+void IpfsRemoveIpnsKeyFunction::OnKeyRemoved(::ipfs::IpnsKeysManager* manager,
+                                             const std::string& name,
+                                             bool success) {
+  DCHECK(manager);
+  if (!success) {
+    Respond(Error("Unable to remove key"));
+    Release();
+    return;
+  }
+  Respond(OneArgument(base::Value(name)));
+  Release();
+}
+
+ExtensionFunction::ResponseAction IpfsAddIpnsKeyFunction::Run() {
+  if (!IsIpfsEnabled(browser_context()))
+    return RespondNow(Error("IPFS not enabled"));
+  ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
+  if (!ipfs_service) {
+    return RespondNow(Error("Could not obtain IPFS service"));
+  }
+  ::ipfs::IpnsKeysManager* key_manager = ipfs_service->GetIpnsKeysManager();
+  if (!ipfs_service->IsDaemonLaunched() || !key_manager) {
+    return RespondNow(Error("IPFS node is not launched"));
+  }
+  std::unique_ptr<ipfs::AddIpnsKey::Params> params(
+      ipfs::AddIpnsKey::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  key_manager->GenerateNewKey(
+      params->name, base::BindOnce(&IpfsAddIpnsKeyFunction::OnKeyCreated,
+                                   base::Unretained(this), key_manager));
+  AddRef();
+  return RespondLater();
+}
+
+void IpfsAddIpnsKeyFunction::OnKeyCreated(::ipfs::IpnsKeysManager* manager,
+                                          bool success,
+                                          const std::string& name,
+                                          const std::string& value) {
+  DCHECK(manager);
+  if (!success) {
+    Respond(Error("Unable to create key"));
+    Release();
+    return;
+  }
+  std::string json_string;
+  base::JSONWriter::Write(MakeValue(name, value), &json_string);
+  Respond(OneArgument(base::Value(json_string)));
+  Release();
+}
+
+ExtensionFunction::ResponseAction IpfsGetIpnsKeysListFunction::Run() {
+  if (!IsIpfsEnabled(browser_context()))
+    return RespondNow(Error("IPFS not enabled"));
+  ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
+  if (!ipfs_service) {
+    return RespondNow(Error("Could not obtain IPFS service"));
+  }
+  ::ipfs::IpnsKeysManager* key_manager = ipfs_service->GetIpnsKeysManager();
+  if (!ipfs_service->IsDaemonLaunched() || !key_manager) {
+    return RespondNow(Error("IPFS node is not launched"));
+  }
+  const auto& keys = key_manager->GetKeys();
+  if (!keys.size()) {
+    key_manager->LoadKeys(
+        base::BindOnce(&IpfsGetIpnsKeysListFunction::OnKeysLoaded,
+                       base::Unretained(this), key_manager));
+    AddRef();
+    return RespondLater();
+  }
+  return RespondNow(OneArgument(MakeResponseFromMap(keys)));
+}
+
+void IpfsGetIpnsKeysListFunction::OnKeysLoaded(::ipfs::IpnsKeysManager* manager,
+                                               bool success) {
+  DCHECK(manager);
+  if (!success) {
+    Respond(Error("Unable to load keys"));
+    Release();
+    return;
+  }
+  Respond(OneArgument(MakeResponseFromMap(manager->GetKeys())));
+  Release();
+}
 
 ExtensionFunction::ResponseAction IpfsGetResolveMethodListFunction::Run() {
   base::Value list(base::Value::Type::LIST);

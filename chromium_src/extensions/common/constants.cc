@@ -28,6 +28,7 @@ const char ipfs_companion_extension_public_key[] =
     "F9wthgFNxoIZiqbe0wTUZiNjC1bZPiAed3+WftK0/P6czFpIP4SzjXszVps93l+yI15OB7Voe"
     "Fu6oQk5G0d1/38W7GotUwIDAQAB";
 
+const char ipfs_persmission_extension_id[] = "afalakplffnnnlkncjhbmahjfjhmlkal";
 const char ipfs_companion_beta_extension_id[] =
     "hjoieblefckbooibpepigmacodalfndh";
 

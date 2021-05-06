@@ -38,8 +38,8 @@ class CreativeAds : public Table {
   std::string BuildInsertOrUpdateQuery(DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void CreateTableV13(DBTransaction* transaction);
-  void MigrateToV13(DBTransaction* transaction);
+  void CreateTableV14(DBTransaction* transaction);
+  void MigrateToV14(DBTransaction* transaction);
 };
 
 }  // namespace table

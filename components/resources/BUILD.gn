@@ -90,8 +90,10 @@ repack("resources") {
   }
 
   if (brave_wallet_enabled && !is_android) {
-    deps += [ "//brave/components/brave_wallet_ui:generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_generated.pak" ]
+    deps += [ "//brave/components/brave_wallet_ui:resources" ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
+    ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"
@@ -105,6 +107,7 @@ grit("strings") {
   defines = [
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
+    "brave_wallet_enabled=$brave_wallet_enabled",
     "decentralized_dns_enabled=$decentralized_dns_enabled",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "enable_tor=$enable_tor",

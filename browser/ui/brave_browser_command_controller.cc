@@ -189,6 +189,8 @@ void BraveBrowserCommandController::UpdateCommandForBraveSync() {
 
 void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, true);
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL, true);
+  UpdateCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL, true);
 }
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -264,6 +266,12 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #endif
     case IDC_TOGGLE_SPEEDREADER:
       brave::ToggleSpeedreader(browser_);
+      break;
+    case IDC_SHOW_BRAVE_WALLET_PANEL:
+      brave::ShowWalletBubble(browser_);
+      break;
+    case IDC_CLOSE_BRAVE_WALLET_PANEL:
+      brave::CloseWalletBubble(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

@@ -82,7 +82,10 @@ function testBasics() {
           chrome.ipfs.shutdown &&
           chrome.ipfs.getConfig &&
           chrome.ipfs.getExecutableAvailable &&
-          chrome.ipfs.resolveIPFSURI) {
+          chrome.ipfs.resolveIPFSURI &&
+          chrome.ipfs.getIpnsKeysList &&
+          chrome.ipfs.addIpnsKey &&
+          chrome.ipfs.removeIpnsKey) {
         chrome.test.succeed();
       } else {
         chrome.test.fail();

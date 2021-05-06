@@ -28,9 +28,9 @@ StateMigration::StateMigration(LedgerImpl* ledger)
       v6_(std::make_unique<StateMigrationV6>(ledger)),
       v7_(std::make_unique<StateMigrationV7>(ledger)),
       v8_(std::make_unique<StateMigrationV8>(ledger)),
-      v9_(std::make_unique<StateMigrationV9>(ledger)),
+      v9_(std::make_unique<StateMigrationV9>()),
       ledger_(ledger) {
-  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_ && v8_);
+  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_ && v8_ && v9_);
 }
 
 StateMigration::~StateMigration() = default;

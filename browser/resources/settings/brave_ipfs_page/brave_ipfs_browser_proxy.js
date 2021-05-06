@@ -27,8 +27,14 @@ export class BraveIPFSBrowserProxyImpl {
     chrome.send('setIPFSStorageMax', [value])
   }
 
-  launchIPFSService (value) {
-    chrome.send('launchIPFSService', [value])
+  launchIPFSService () {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.launch(resolve)
+    })
   }
 
   shutdownIPFSService () {
@@ -43,6 +49,39 @@ export class BraveIPFSBrowserProxyImpl {
         return
       }
       chrome.ipfs.getResolveMethodList(resolve)
+    })
+  }
+
+  /** @override */
+  getIpnsKeysList () {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.getIpnsKeysList(resolve)
+    })
+  }
+
+  /** @override */
+  addIpnsKey (name) {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.addIpnsKey(name, resolve)
+    })
+  }
+
+  /** @override */
+  removeIpnsKey (name) {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.removeIpnsKey(name, resolve)
     })
   }
 

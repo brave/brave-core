@@ -12,9 +12,9 @@ brave_browser_brave_shields_sources = [
 
 brave_browser_brave_shields_deps = [
   "//base",
+  "//brave/browser:browser_process",
   "//brave/components/brave_shields/browser",
   "//brave/components/brave_shields/common",
-  "//chrome/browser:browser_process",
   "//chrome/browser/profiles:profile",
   "//components/content_settings/core/browser",
   "//components/keyed_service/content",

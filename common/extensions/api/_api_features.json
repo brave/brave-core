@@ -109,7 +109,8 @@
       "chrome://settings/*",
       "chrome://newtab/*",
       "chrome://webcompat/*",
-      "chrome://wallet/*"
+      "chrome://wallet/*",
+      "chrome://wallet-panel.top-chrome/*"
     ]
   }],
   "greaselion": [{

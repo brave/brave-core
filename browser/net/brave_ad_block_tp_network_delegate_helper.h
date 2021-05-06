@@ -10,11 +10,20 @@
 
 #include "brave/browser/net/url_context.h"
 
+namespace network {
+class HostResolver;
+}  // namespace network
+
 namespace brave {
 
 int OnBeforeURLRequest_AdBlockTPPreWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
+
+// Be sure to reset this to `nullptr` when done testing to prevent future tests
+// from being affected.
+void SetAdblockCnameHostResolverForTesting(
+    network::HostResolver* host_resolver);
 
 }  // namespace brave
 

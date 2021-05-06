@@ -5,24 +5,18 @@
 
 #include "bat/ledger/internal/state/state_migration_v9.h"
 
-#include <string>
-
-#include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/option_keys.h"
-
 namespace ledger {
 namespace state {
 
-StateMigrationV9::StateMigrationV9(LedgerImpl* ledger) : ledger_(ledger) {}
+StateMigrationV9::StateMigrationV9() = default;
 
 StateMigrationV9::~StateMigrationV9() = default;
 
 void StateMigrationV9::Migrate(ledger::ResultCallback callback) {
-  // Set the AC pref to false for all users located in a bitFlyer region.
-  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion))
-    ledger_->ledger_client()->SetBooleanState(kAutoContributeEnabled, false);
-
+  // In version 9, we attempted to set the "ac enabled" pref to false for users
+  // in Japan as part of bitFlyer feature support. Later, it was determined
+  // that Android users in Japan *should* be allowed to AC and this migration
+  // was removed.
   callback(type::Result::LEDGER_OK);
 }
 

@@ -20,3 +20,5 @@ const char kBraveWalletPasswordEncryptorNonce[] =
 const char kBraveWalletEncryptedMnemonic[] = "brave.wallet.encrypted_mnemonic";
 const char kBraveWalletDefaultKeyringAccountNum[] =
     "brave.wallet.default_keyring_account_num";
+const char kShowWalletIconOnToolbar[] =
+    "brave.wallet.show_wallet_icon_on_toolbar";

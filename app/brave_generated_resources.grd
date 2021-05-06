@@ -745,6 +745,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP_DEPRECATED" desc="The description for always loading the Crypto Wallets extension on startup">
         Load deprecated Crypto Wallets extension on startup
       </message>
+      <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
+        Show Brave Wallet icon on toolbar
+      </message>
       <message name="IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS" desc="Label for a switch control which allows Google login for extension">
         Allow Google login for extensions
       </message>
@@ -756,6 +759,33 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_SETTINGS_RESOLVE_ENS_DESC" desc="The description for how to handle ENS">
         Method to resolve Ethereum Name Service (ENS)
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK" desc="The title of the link to open keys management block in IPFS settings">
+        Setup your IPNS keys
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK_DESC" desc="The description for the link to open keys management block in IPFS settings">
+        Sign content by the corresponding private key and publish it to IPNS
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_LIST_TITLE" desc="The title of the keys management list in IPFS settings">
+        Keys available for publishing
+      </message>
+      <message name="IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_TITLE" desc="The title of the dialog to add new key on IPFS Settings page">
+        Enter a name for the new key
+      </message>
+      <message name="IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_ERROR" desc="The error message for the add key dialog on IPFS Settings page if key name is invalid">
+        This name cannot be used
+      </message>
+      <message name="IDS_SETTINGS_IPNS_DELETE_KEY_CONFIRMATION" desc="Confirmation text for deleting a key from IPFS keys manager page">
+        Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>?
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_NODE_NOT_LAUNCHED" desc="The message when node is not running on IPFS keys manager page">
+        Node is not launched
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_START_NODE_ERROR" desc="The error message when node was unable to start on IPFS keys manager page">
+        IPFS service launch error, more information is available on the <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" style="text-decoration: underline;" href="chrome://ipfs-internals/"&gt;</ph>diagnostic page<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_SETTINGS_IPNS_KEYS_START_NODE" desc="The button text to start node on IPFS keys manager page">
+        Start node
       </message>
       <message name="IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC" desc="The description for how to handle IPFS URIs">
         Method to resolve IPFS resources

@@ -64,4 +64,12 @@ BraveComponentUpdaterDelegate::GetTaskRunner() {
   return task_runner_;
 }
 
+const std::string BraveComponentUpdaterDelegate::locale() const {
+  return g_browser_process->GetApplicationLocale();
+}
+
+PrefService* BraveComponentUpdaterDelegate::local_state() {
+  return g_browser_process->local_state();
+}
+
 }  // namespace brave

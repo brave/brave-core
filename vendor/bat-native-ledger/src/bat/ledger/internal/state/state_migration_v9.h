@@ -15,13 +15,10 @@ namespace state {
 
 class StateMigrationV9 {
  public:
-  explicit StateMigrationV9(LedgerImpl* ledger);
+  StateMigrationV9();
   ~StateMigrationV9();
 
   void Migrate(ledger::ResultCallback callback);
-
- private:
-  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace state

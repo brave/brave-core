@@ -113,6 +113,7 @@ template("transpile_web_ui") {
       # output_path arg must be relative to root_build_dir so that
       # depfile header format is correct (see docs above).
       "--output_path=" + rebase_path(gen_output_dir, root_build_dir),
+      "--root_gen_dir=" + rebase_path(root_gen_dir),
       "--grd_name=$grd_name",
       "--resource_name=$resource_name",
       "--depfile_path=" + rebase_path(depfile),

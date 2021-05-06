@@ -181,6 +181,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[kLoadCryptoWalletsOnStartup] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[kShowWalletIconOnToolbar] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // IPFS pref
 #if BUILDFLAG(IPFS_ENABLED)

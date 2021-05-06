@@ -42,7 +42,7 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
     : component_(new speedreader::SpeedreaderComponent(delegate)),
       speedreader_(new speedreader::SpeedReader) {
   if (base::FeatureList::IsEnabled(kSpeedreaderReadabilityBackend)) {
-    backend_ = RewriterType::RewriterHeuristics;
+    backend_ = RewriterType::RewriterReadability;
   }
 
   // Load the built-in stylesheet as the default

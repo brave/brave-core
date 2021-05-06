@@ -673,6 +673,8 @@ if (!is_android) {
         "//brave/browser/brave_wallet/eth_json_rpc_controller_browsertest.cc",
         "//brave/browser/extensions/api/brave_wallet_api_browsertest.cc",
         "//brave/browser/extensions/brave_wallet_apitest.cc",
+        "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
+        "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
       ]
 
       deps += [
@@ -848,6 +850,7 @@ if (!is_android) {
       "//extensions/common:test_support",
       "//ppapi/buildflags",
       "//services/device/public/cpp:device_features",
+      "//services/network:network_service",
       "//third_party/blink/public/common",
       "//ui/compositor:test_support",
       "//ui/views",

@@ -761,6 +761,11 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.LLVM_DOWNLOAD_GOLD_PLUGIN = '1'
     }
 
+    if (process.platform === 'win32') {
+      // Disable vcvarsall.bat telemetry.
+      env.VSCMD_SKIP_SENDTELEMETRY = '1'
+    }
+
     return {
       env,
       stdio: 'inherit',

@@ -18,6 +18,8 @@ class ContentsLayoutManager;
 class SidebarContainerView;
 #endif
 
+class WalletButton;
+
 class BraveBrowserView : public BrowserView {
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
@@ -32,7 +34,9 @@ class BraveBrowserView : public BrowserView {
       const std::string& target_language,
       translate::TranslateErrors::Type error_type,
       bool is_user_gesture) override;
-
+  void CreateWalletBubble();
+  void CloseWalletBubble();
+  WalletButton* GetWalletButton();
   void StartTabCycling() override;
 
  private:

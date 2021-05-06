@@ -85,6 +85,7 @@ brave_chrome_browser_sources = [
 brave_chrome_browser_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
+  "//brave/browser:browser_process",
   "//brave/browser/brave_ads",
   "//brave/browser/brave_ads/notifications",
   "//brave/browser/brave_stats:stats_updater",
@@ -194,6 +195,7 @@ if (brave_wallet_enabled) {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet_ui:mojo_bindings",
   ]
 }
 

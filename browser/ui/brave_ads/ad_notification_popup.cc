@@ -321,15 +321,12 @@ gfx::Point AdNotificationPopup::GetDefaultOriginForSize(
       display::Screen::GetScreen()->GetPrimaryDisplay().work_area();
 
 #if defined(OS_WIN)
-  // Bottom right to the left of Windows native notifications
-  const int kNativeNotificationWidth = 360;
-
+  // Top right
+  const int kTopPadding = 10;
   const int kRightPadding = 10;
-  const int kBottomPadding = 3;
 
-  const int x = work_area.right() - kNativeNotificationWidth -
-                (size.width() + kRightPadding);
-  const int y = work_area.bottom() - (size.height() + kBottomPadding);
+  const int x = work_area.right() - (size.width() + kRightPadding);
+  const int y = work_area.y() + kTopPadding;
 #elif defined(OS_MAC)
   // Top right to the left of macOS native notifications
   const int kNativeNotificationWidth = 360;
@@ -342,7 +339,7 @@ gfx::Point AdNotificationPopup::GetDefaultOriginForSize(
   const int y = work_area.y() + kTopPadding;
 #elif defined(OS_LINUX)
   // Top right
-  const int kTopPadding = 0;
+  const int kTopPadding = 10;
   const int kRightPadding = 10;
 
   const int x = work_area.right() - (size.width() + kRightPadding);
@@ -433,7 +430,7 @@ void AdNotificationPopup::CreateWidgetView() {
   widget->Init(std::move(params));
 
   widget->SetOpacity(0.0);
-  widget->Show();
+  widget->ShowInactive();
 }
 
 void AdNotificationPopup::CloseWidgetView() {

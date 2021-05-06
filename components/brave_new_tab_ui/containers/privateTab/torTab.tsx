@@ -24,7 +24,7 @@ import {
 } from '../../components/private'
 
 // Helpers
-import { getLocale } from '../../../common/locale'
+import { getLocale, getLocaleWithTag } from '../../../common/locale'
 
 // Assets
 const privateWindowImg = require('../../../img/newtab/private-window-tor.svg')
@@ -47,6 +47,25 @@ export default class TorTab extends React.PureComponent<Props, {}> {
     }
     return getLocale('torStatusDisconnected')
   }
+  renderTorTip () {
+    const { beforeTag, duringTag, afterTag } = getLocaleWithTag('torTip')
+    if (this.props.newTabData && !this.props.newTabData.torCircuitEstablished) {
+      return (
+        <Text>
+          {beforeTag}
+            <Link
+              href='chrome://settings/extensions'
+              style={{ margin: 0 }}
+            >
+            {duringTag}
+            </Link>
+          {afterTag}
+        </Text>
+      )
+    }
+    return ''
+  }
+
   render () {
     return (
       <Grid>
@@ -95,6 +114,7 @@ export default class TorTab extends React.PureComponent<Props, {}> {
         <Box>
           <Title>{getLocale('torStatus')}</Title>
           <Text>{this.torStatus}</Text>
+          {this.renderTorTip()}
         </Box>
       </Grid>
     )

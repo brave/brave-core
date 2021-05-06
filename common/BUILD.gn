@@ -54,6 +54,7 @@ source_set("pref_names") {
   visibility = brave_common_visibility_targets +
                # These are layering violation and need to be fixed
                [
+                 "//brave/components/brave_shields/browser",
                  "//brave/components/content_settings/core/browser",
                  "//brave/components/p3a",
                  "//brave/components/binance/browser",

@@ -54,6 +54,8 @@ class BraveTorClientUpdater : public BraveComponent {
   void Unregister();
   void Cleanup();
   base::FilePath GetExecutablePath() const;
+  base::FilePath GetTorDataPath() const;
+  base::FilePath GetTorWatchPath() const;
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() {
     return task_runner_;
   }

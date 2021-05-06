@@ -42,6 +42,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/chrome_browser_interface_binders.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -134,6 +135,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#if !defined(OS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/components/brave_wallet_ui/wallet_panel.mojom.h"
+#endif
 #endif
 
 #if !defined(OS_ANDROID)
@@ -284,6 +289,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     map->Add<brave_wallet::mojom::BraveWalletProvider>(
         base::BindRepeating(&MaybeBindBraveWalletProvider));
   }
+#if !defined(OS_ANDROID)
+  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+      wallet_panel::mojom::PageHandlerFactory, WalletPanelUI>(map);
+#endif
 #endif
 }
 
