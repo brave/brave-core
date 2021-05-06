@@ -18,6 +18,7 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
@@ -43,6 +44,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
+#include "brave/components/debounce/browser/debounce_throttle.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
@@ -528,6 +530,16 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     }
   }
 #endif  // ENABLE_SPEEDREADER
+
+  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
+      Profile::FromBrowserContext(browser_context));
+  if (std::unique_ptr<blink::URLLoaderThrottle> debounce_throttle =
+          debounce::DebounceThrottle::MaybeCreateThrottleFor(
+              debounce::DebounceServiceFactory::GetForBrowserContext(
+                  browser_context),
+              settings_map))
+    result.push_back(std::move(debounce_throttle));
+
   return result;
 }
 

@@ -53,6 +53,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
+  debounce::DebounceComponentInstaller* debounce_component_installer() override;
   brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
   brave_component_updater::LocalDataFilesService* local_data_files_service()
       override;

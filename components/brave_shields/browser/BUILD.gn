@@ -56,6 +56,7 @@ static_library("browser") {
     "//brave/components/brave_shields/common:mojom",
     "//brave/components/content_settings/core/browser",
     "//brave/components/content_settings/core/common",
+    "//brave/components/debounce/common",
     "//brave/components/p3a",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",

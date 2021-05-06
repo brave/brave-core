@@ -41,8 +41,7 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
                             const GURL& url,
                             PrefService* local_state = nullptr);
 // reset to the default value
-void ResetBraveShieldsEnabled(HostContentSettingsMap* map,
-                              const GURL& url);
+void ResetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
 
 void SetAdControlType(HostContentSettingsMap* map,
@@ -60,6 +59,8 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
 bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url);
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
+
+bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url);
 
 bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url);
 
@@ -85,8 +86,7 @@ void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
                                const GURL& url,
                                PrefService* local_state = nullptr);
 // reset to the default value
-void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
-                                 const GURL& url);
+void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url);
 bool GetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url);
 
 void SetNoScriptControlType(HostContentSettingsMap* map,
@@ -98,13 +98,11 @@ ControlType GetNoScriptControlType(HostContentSettingsMap* map,
 
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 
-bool MaybeChangeReferrer(
-    bool allow_referrers,
-    bool shields_up,
-    const GURL& current_referrer,
-    const GURL& target_url,
-    content::Referrer* output_referrer);
-
+bool MaybeChangeReferrer(bool allow_referrers,
+                         bool shields_up,
+                         const GURL& current_referrer,
+                         const GURL& target_url,
+                         content::Referrer* output_referrer);
 
 }  // namespace brave_shields
 
