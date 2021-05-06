@@ -35,14 +35,12 @@ class FakeIpfsService : public ipfs::IpfsService {
   ~FakeIpfsService() override {}
   void ImportTextToIpfs(const std::string& text,
                         const std::string& host,
-                        const std::string& key,
                         ipfs::ImportCompletedCallback callback) override {
     function_calls_["ImportTextToIpfs"]++;
     if (callback)
       std::move(callback).Run(data_);
   }
   void ImportLinkToIpfs(const GURL& url,
-                        const std::string& key,
                         ipfs::ImportCompletedCallback callback) override {
     function_calls_["ImportLinkToIpfs"]++;
     if (callback)
@@ -167,7 +165,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportTextToIpfs) {
   auto* controller = helper->GetImportController();
   controller->SetIpfsServiceForTesting(ipfs_service.get());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
-  controller->ImportTextToIpfs("test", std::string());
+  controller->ImportTextToIpfs("test");
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
   auto* web_content = browser()->tab_strip_model()->GetWebContentsAt(1);
   ASSERT_TRUE(web_content);
@@ -200,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportLinkToIpfs) {
   auto* controller = helper->GetImportController();
   controller->SetIpfsServiceForTesting(ipfs_service.get());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
-  controller->ImportLinkToIpfs(GURL("test.com"), std::string());
+  controller->ImportLinkToIpfs(GURL("test.com"));
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
   auto* web_content = browser()->tab_strip_model()->GetWebContentsAt(1);
   ASSERT_TRUE(web_content);
@@ -270,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest,
   auto* controller = helper->GetImportController();
   controller->SetIpfsServiceForTesting(ipfs_service.get());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
-  controller->ImportCurrentPageToIpfs(std::string());
+  controller->ImportCurrentPageToIpfs();
   run_loop.Run();
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
   auto* web_content = browser()->tab_strip_model()->GetWebContentsAt(1);

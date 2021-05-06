@@ -51,9 +51,8 @@ IpfsTextImportWorker::IpfsTextImportWorker(content::BrowserContext* context,
                                            const GURL& endpoint,
                                            ImportCompletedCallback callback,
                                            const std::string& text,
-                                           const std::string& host,
-                                           const std::string& key)
-    : IpfsImportWorkerBase(context, endpoint, std::move(callback), key) {
+                                           const std::string& host)
+    : IpfsImportWorkerBase(context, endpoint, std::move(callback)) {
   StartImportText(text, host);
 }
 

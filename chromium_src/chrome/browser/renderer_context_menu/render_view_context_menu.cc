@@ -4,8 +4,8 @@
 
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
-#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
@@ -26,14 +26,11 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/browser/ipfs/import/ipfs_import_controller.h"
-#include "brave/browser/ipfs/ipfs_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #endif
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
 // back to the Chromium one for the Chromium implementation.
@@ -103,14 +100,7 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
 {
 }
 
-BraveRenderViewContextMenu::~BraveRenderViewContextMenu() {}
-
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
-  if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
-      id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
-    return ipfs::IpnsKeysAvailable(browser_context_);
-  }
-
   switch (id) {
 #if BUILDFLAG(IPFS_ENABLED)
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
@@ -138,8 +128,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   }
 }
 #if BUILDFLAG(IPFS_ENABLED)
-void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id,
-                                                    const std::string& key) {
+void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(source_web_contents_);
   if (!helper)
@@ -149,51 +138,24 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id,
     return;
   switch (id) {
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
-      helper->ImportCurrentPageToIpfs(key);
+      helper->ImportCurrentPageToIpfs();
       break;
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS:
-      controller->ImportLinkToIpfs(params_.src_url, key);
+      controller->ImportLinkToIpfs(params_.src_url);
       break;
     case IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS:
-      controller->ImportLinkToIpfs(params_.link_url, key);
+      controller->ImportLinkToIpfs(params_.link_url);
       break;
     case IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS:
-      controller->ImportTextToIpfs(base::UTF16ToUTF8(params_.selection_text),
-                                   key);
+      controller->ImportTextToIpfs(base::UTF16ToUTF8(params_.selection_text));
       break;
   }
-}
-
-int BraveRenderViewContextMenu::GetSelectedIPFSCommandId(int id) const {
-  for (const auto& it : ipns_submenu_models_) {
-    auto index = it.second->GetIndexOfCommandId(id);
-    if (index == -1)
-      continue;
-    return it.first;
-  }
-  return -1;
 }
 #endif
 
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
-#if BUILDFLAG(IPFS_ENABLED)
-  if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
-      id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
-    int ipfs_command = GetSelectedIPFSCommandId(id);
-    if (ipfs_command == -1)
-      return;
-    auto* submenu = ipns_submenu_models_[ipfs_command].get();
-    auto command_index = submenu->GetIndexOfCommandId(id);
-    if (command_index == -1)
-      return;
-    auto label = base::UTF16ToUTF8(submenu->GetLabelAt(command_index));
-    auto key_name = (command_index > 0) ? label : std::string();
-    ExecuteIPFSCommand(ipfs_command, key_name);
-    return;
-  }
-#endif
   switch (id) {
 #if BUILDFLAG(IPFS_ENABLED)
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
@@ -202,7 +164,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS:
-      ExecuteIPFSCommand(id, std::string());
+      ExecuteIPFSCommand(id, event_flags);
       break;
 #endif
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
@@ -238,12 +200,6 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
   if (!ipfs::IsIpfsMenuEnabled(browser_context_))
     return false;
-
-  if (command >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
-      command <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
-    return ipfs::IpnsKeysAvailable(browser_context_);
-  }
-
   switch (command) {
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
       return true;
@@ -276,27 +232,6 @@ void BraveRenderViewContextMenu::SeIpfsIconAt(int index) {
   menu_model_.SetIcon(index, model);
 }
 
-int BraveRenderViewContextMenu::AddIpfsImportMenuItem(int action_command_id,
-                                                      int string_id,
-                                                      int keys_command_id) {
-  if (ipfs::IpnsKeysAvailable(browser_context_)) {
-    DCHECK(!ipns_submenu_models_.count(action_command_id));
-    ipns_submenu_models_[action_command_id] =
-        std::make_unique<ui::SimpleMenuModel>(this);
-    auto* keys_submenu = ipns_submenu_models_[action_command_id].get();
-    DCHECK(keys_submenu);
-    auto* keys_manager = ipfs::GetIpnsKeysManager(browser_context_);
-    DCHECK(keys_manager);
-    auto items_added =
-        ipfs::AddIpnsKeysToSubMenu(keys_submenu, keys_manager, keys_command_id);
-    ipfs_submenu_model_.AddSubMenuWithStringId(action_command_id, string_id,
-                                               keys_submenu);
-    return items_added;
-  }
-  ipfs_submenu_model_.AddItemWithStringId(action_command_id, string_id);
-  return 0;
-}
-
 void BraveRenderViewContextMenu::BuildIPFSMenu() {
   if (!ipfs::IsIpfsMenuEnabled(browser_context_))
     return;
@@ -304,40 +239,44 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
   if (index == -1)
     return;
-
-  int keys_command_index = IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START;
   if (!params_.selection_text.empty() &&
       params_.media_type == ContextMenuDataMediaType::kNone) {
-    keys_command_index += AddIpfsImportMenuItem(
-        IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT, keys_command_index);
+    menu_model_.InsertSeparatorAt(index,
+                                  ui::MenuSeparatorType::NORMAL_SEPARATOR);
+
+    menu_model_.InsertItemWithStringIdAt(
+        index, IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS,
+        IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT);
+    SeIpfsIconAt(index);
+    return;
   }
+
   if (source_web_contents_->GetURL().SchemeIsHTTPOrHTTPS()) {
-    keys_command_index += AddIpfsImportMenuItem(
+    ipfs_submenu_model_.AddItemWithStringId(
         IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_PAGE, keys_command_index);
+        IDS_CONTENT_CONTEXT_IMPORT_IPFS_PAGE);
   }
   if (params_.has_image_contents) {
-    keys_command_index += AddIpfsImportMenuItem(
+    ipfs_submenu_model_.AddItemWithStringId(
         IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_IMAGE, keys_command_index);
+        IDS_CONTENT_CONTEXT_IMPORT_IPFS_IMAGE);
   }
   if (content_type_->SupportsGroup(
           ContextMenuContentType::ITEM_GROUP_MEDIA_VIDEO)) {
-    keys_command_index += AddIpfsImportMenuItem(
+    ipfs_submenu_model_.AddItemWithStringId(
         IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_VIDEO, keys_command_index);
+        IDS_CONTENT_CONTEXT_IMPORT_IPFS_VIDEO);
   }
   if (content_type_->SupportsGroup(
           ContextMenuContentType::ITEM_GROUP_MEDIA_AUDIO)) {
-    keys_command_index += AddIpfsImportMenuItem(
+    ipfs_submenu_model_.AddItemWithStringId(
         IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_AUDIO, keys_command_index);
+        IDS_CONTENT_CONTEXT_IMPORT_IPFS_AUDIO);
   }
   if (!params_.link_url.is_empty()) {
-    keys_command_index += AddIpfsImportMenuItem(
+    ipfs_submenu_model_.AddItemWithStringId(
         IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_LINK, keys_command_index);
+        IDS_CONTENT_CONTEXT_IMPORT_IPFS_LINK);
   }
   if (!ipfs_submenu_model_.GetItemCount())
     return;

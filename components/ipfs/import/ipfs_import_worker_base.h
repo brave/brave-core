@@ -53,7 +53,7 @@ class IpfsImportWorkerBase {
   IpfsImportWorkerBase(content::BrowserContext* context,
                        const GURL& endpoint,
                        ImportCompletedCallback callback,
-                       const std::string& key);
+                       const std::string& key = std::string());
   virtual ~IpfsImportWorkerBase();
 
   IpfsImportWorkerBase(const IpfsImportWorkerBase&) = delete;

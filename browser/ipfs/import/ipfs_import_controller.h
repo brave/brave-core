@@ -44,12 +44,12 @@ class IpfsImportController : public ui::SelectFileDialog::Listener {
   IpfsImportController(const IpfsImportController&) = delete;
   IpfsImportController& operator=(const IpfsImportController&) = delete;
 
-  void ImportLinkToIpfs(const GURL& url, const std::string& key);
-  void ImportTextToIpfs(const std::string& text, const std::string& key);
+  void ImportLinkToIpfs(const GURL& url);
+  void ImportTextToIpfs(const std::string& text);
   void ImportFileToIpfs(const base::FilePath& path, const std::string& key);
   void ImportDirectoryToIpfs(const base::FilePath& path,
                              const std::string& key);
-  void ImportCurrentPageToIpfs(const std::string& key);
+  void ImportCurrentPageToIpfs();
 
   void ShowImportDialog(ui::SelectFileDialog::Type type,
                         const std::string& key);
@@ -70,7 +70,6 @@ class IpfsImportController : public ui::SelectFileDialog::Listener {
   void FileSelectionCanceled(void* params) override;
 
   void OnDownloadFinished(const base::FilePath& path,
-                          const std::string& key,
                           download::DownloadItem* download);
 
   void SaveWebPage(const base::FilePath& directory);

@@ -151,13 +151,6 @@ void IpnsKeysManager::LoadKeys(LoadKeysCallback callback) {
                                                 base::Unretained(this), iter));
 }
 
-void IpnsKeysManager::OnIpfsLaunched(bool result, int64_t pid) {
-  bool success = result && pid > 0;
-  if (!success)
-    return;
-  LoadKeys(base::NullCallback());
-}
-
 void IpnsKeysManager::OnIpfsShutdown() {
   keys_.clear();
 }

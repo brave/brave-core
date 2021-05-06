@@ -24,6 +24,7 @@ class IpfsServiceObserver : public base::CheckedObserver {
   virtual void OnInstallationEvent(ComponentUpdaterEvents event) {}
   virtual void OnGetConnectedPeers(bool succes,
                                    const std::vector<std::string>& peers) {}
+  virtual void OnIpnsKeysLoaded(bool success) {}
 };
 
 }  // namespace ipfs

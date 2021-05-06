@@ -77,6 +77,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   // ipfs::IpfsServiceObserver
   void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnIpfsShutdown() override;
+  void OnIpnsKeysLoaded(bool success) override;
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

@@ -60,7 +60,6 @@ class IpnsKeysManager : public IpfsServiceObserver {
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   // ipfs::IpfsServiceObserver
-  void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnIpfsShutdown() override;
 
   void OnKeyCreated(SimpleURLLoaderList::iterator iter,

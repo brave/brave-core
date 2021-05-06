@@ -105,11 +105,9 @@ class IpfsService : public KeyedService,
                                      const std::string& key,
                                      ImportCompletedCallback callback);
   virtual void ImportLinkToIpfs(const GURL& url,
-                                const std::string& key,
                                 ImportCompletedCallback callback);
   virtual void ImportTextToIpfs(const std::string& text,
                                 const std::string& host,
-                                const std::string& key,
                                 ImportCompletedCallback callback);
   virtual void PreWarmShareableLink(const GURL& url);
 
@@ -158,6 +156,7 @@ class IpfsService : public KeyedService,
   void OnIpfsDaemonCrashed(int64_t pid);
   // Notifies tasks waiting to start the service.
   void NotifyDaemonLaunched(bool result, int64_t pid);
+  void NotifyIpnsKeysLoaded(bool result);
   // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
   base::TimeDelta CalculatePeersRetryTime();
