@@ -7,7 +7,7 @@ import Foundation
 import BraveUI
 
 /// A self-sizing new tab collection view which just holds a themable view
-class NewTabCollectionViewCell<View: UIView & Themeable>: UICollectionViewCell, Themeable, CollectionViewReusable {
+class NewTabCollectionViewCell<View: UIView>: UICollectionViewCell, CollectionViewReusable {
     /// The content view
     let view = View()
     
@@ -17,10 +17,6 @@ class NewTabCollectionViewCell<View: UIView & Themeable>: UICollectionViewCell, 
         view.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-    
-    var themeableChildren: [Themeable?]? {
-        [view]
     }
     
     @available(*, unavailable)

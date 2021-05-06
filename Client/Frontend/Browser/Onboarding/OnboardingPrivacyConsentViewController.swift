@@ -15,7 +15,7 @@ class OnboardingPrivacyConsentViewController: OnboardingViewController {
     }
     
     override func loadView() {
-        view = View(theme: theme)
+        view = View()
     }
 
     override func viewDidLoad() {
@@ -41,10 +41,5 @@ class OnboardingPrivacyConsentViewController: OnboardingViewController {
         }
         
         delegate?.presentNextScreen(current: self)
-    }
-    
-    override func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        contentView.applyTheme(theme)
     }
 }

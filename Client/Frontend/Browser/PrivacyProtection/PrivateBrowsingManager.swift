@@ -4,13 +4,13 @@
 
 import Foundation
 import Data
+import Combine
 
-final class PrivateBrowsingManager {
+final class PrivateBrowsingManager: ObservableObject {
     
-    var isPrivateBrowsing = false {
+    @Published var isPrivateBrowsing = false {
         didSet {
             if oldValue != isPrivateBrowsing {
-                NotificationCenter.default.post(name: .privacyModeChanged, object: nil)
                 if !isPrivateBrowsing {
                     Domain.clearInMemoryDomains()
                 }
@@ -19,5 +19,4 @@ final class PrivateBrowsingManager {
     }
     
     static let shared = PrivateBrowsingManager()
-    
 }

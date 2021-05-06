@@ -7,18 +7,20 @@ import UIKit
 import Shared
 import BraveShared
 
-class SiteReportedView: UIStackView, Themeable {
+class SiteReportedView: UIStackView {
     
     let titleLabel = UILabel().then {
         $0.text = Strings.Shields.siteReportedTitle
         $0.font = .systemFont(ofSize: 24)
         $0.numberOfLines = 0
+        $0.textColor = .braveLabel
     }
     
     let bodyLabel = UILabel().then {
         $0.text = Strings.Shields.siteReportedBody
         $0.font = .systemFont(ofSize: 17)
         $0.numberOfLines = 0
+        $0.textColor = .braveLabel
     }
     
     override init(frame: CGRect) {
@@ -48,10 +50,5 @@ class SiteReportedView: UIStackView, Themeable {
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        titleLabel.textColor = theme.colors.tints.home
-        bodyLabel.textColor = theme.colors.tints.home
     }
 }

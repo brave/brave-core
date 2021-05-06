@@ -28,22 +28,23 @@ class InstallVPNViewController: UIViewController {
         installVPNView.installVPNButton.addTarget(self, action: #selector(installVPNAction), for: .touchUpInside)
         installVPNView.contactSupportButton.addTarget(self, action: #selector(contactSupportAction), for: .touchUpInside)
         navigationItem.setLeftBarButton(.init(barButtonSystemItem: .cancel, target: self, action: #selector(dismissView)), animated: true)
+        
+        navigationItem.standardAppearance = BraveVPNCommonUI.navigationBarAppearance
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // For some reason setting `barTintColor` for `formSheet` type of modal doesn't work
-        // in `viewDidLoad` method, doing it later as a workaround.
-        styleNavigationBar()
+        // navigationItem.standardAppearance does not support tinting the back button for some
+        // reason, so we still must apply a custom tint to the bar
+        navigationController?.navigationBar.tintColor = .white
     }
     
-    private func styleNavigationBar() {
-        navigationController?.navigationBar.do {
-            $0.tintColor = .white
-            $0.appearanceBarTintColor = #colorLiteral(red: 0.1529411765, green: 0.08235294118, blue: 0.3647058824, alpha: 1)
-            $0.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Reset styling set above
+        navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
     }
     
     @objc func installVPNAction() {

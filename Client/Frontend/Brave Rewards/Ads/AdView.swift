@@ -10,10 +10,10 @@ import Shared
 public class AdView: UIView {
   let adContentButton = AdContentButton()
   let openSwipeButton = AdSwipeButton(contentType: .text(Strings.Ads.open, textColor: .white)).then {
-    $0.backgroundColor = Colors.blurple500
+    $0.backgroundColor = .braveBlurple
   }
   let dislikeSwipeButton = AdSwipeButton(contentType: .image(UIImage(imageLiteralResourceName: "dislike-ad-icon"))).then {
-    $0.backgroundColor = Colors.red600
+    $0.backgroundColor = .braveErrorLabel
   }
   
   public override init(frame: CGRect) {

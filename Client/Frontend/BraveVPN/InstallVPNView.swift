@@ -57,7 +57,7 @@ extension InstallVPNViewController {
                     label.text = Strings.VPN.installProfileTitle
                     label.textAlignment = .center
                     label.font = .systemFont(ofSize: 20, weight: .medium)
-                    label.appearanceTextColor = .black
+                    label.textColor = .black
                     label.minimumScaleFactor = 0.5
                     label.adjustsFontSizeToFitWidth = true
                 }
@@ -66,7 +66,7 @@ extension InstallVPNViewController {
                     label.text = Strings.VPN.installProfileBody
                     label.numberOfLines = 0
                     label.font = .systemFont(ofSize: 18, weight: .medium)
-                    label.appearanceTextColor = #colorLiteral(red: 0.4745098039, green: 0.4745098039, blue: 0.4745098039, alpha: 1)
+                    label.textColor = #colorLiteral(red: 0.4745098039, green: 0.4745098039, blue: 0.4745098039, alpha: 1)
                     label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
                 }
                 
@@ -90,9 +90,9 @@ extension InstallVPNViewController {
         
         let installVPNButton = Button().then {
             $0.setTitle(Strings.VPN.installProfileButtonText, for: .normal)
-            $0.backgroundColor = BraveUX.braveOrange
+            $0.backgroundColor = .braveOrange
             $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-            $0.appearanceTextColor = .white
+            $0.titleLabel?.textColor = .white
             $0.snp.makeConstraints { make in
                 make.height.equalTo(44)
             }
@@ -106,7 +106,7 @@ extension InstallVPNViewController {
         let contactSupportButton = Button(type: .system).then {
             $0.setTitle(Strings.VPN.settingsContactSupport, for: .normal)
             $0.titleLabel?.font = .systemFont(ofSize: 16)
-            $0.appearanceTextColor = BraveUX.greyH
+            $0.titleLabel?.textColor = .braveLabel
             $0.snp.makeConstraints { make in
                 make.height.equalTo(44)
             }

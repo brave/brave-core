@@ -68,7 +68,7 @@ extension BrowserViewController: ReaderModeBarViewDelegate {
 
                 let setupPopover = { [unowned self] in
                     if let popoverPresentationController = readerModeStyleViewController.popoverPresentationController {
-                        popoverPresentationController.backgroundColor = UIColor.Photon.white100
+                        popoverPresentationController.backgroundColor = .white
                         popoverPresentationController.delegate = self
                         popoverPresentationController.sourceView = readerModeBar
                         popoverPresentationController.sourceRect = CGRect(x: readerModeBar.frame.width/2, y: UIConstants.toolbarHeight, width: 1, height: 1)
@@ -93,13 +93,6 @@ extension BrowserViewController: ReaderModeBarViewDelegate {
 
 extension BrowserViewController {
     
-    func updateReaderModeBar() {
-        if let readerModeBar = readerModeBar {
-            let theme = Theme.of(tabManager.selectedTab)
-            readerModeBar.applyTheme(theme)
-        }
-    }
-
     func showReaderModeBar(animated: Bool) {
         if self.readerModeBar == nil {
             let readerModeBar = ReaderModeBarView(frame: CGRect.zero)
@@ -113,8 +106,6 @@ extension BrowserViewController {
                 make.leading.trailing.equalTo(self.view)
             }
         }
-
-        updateReaderModeBar()
 
         updateViewConstraints()
     }

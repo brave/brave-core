@@ -161,8 +161,8 @@ final public class LinkLabel: UITextView {
   // MARK: - Private
   
   private struct UX {
-    static let textColor = Colors.grey000
-    static let linkColor = Colors.blue400
+    static let textColor = UIColor.braveLabel
+    static let linkColor = UIColor.braveBlurple
   }
 }
 

@@ -71,7 +71,7 @@ extension UIView {
         roundedLayer.mask = maskLayer
 
         layer.insertSublayer(roundedLayer, at: 0)
-        backgroundColor = UIColor.clear
+        backgroundColor = .clear
     }
 
     /**
@@ -112,11 +112,10 @@ extension UIView {
     /// Returns a line with height of 1pt. Used to imitate a separator line in custom views.
     static var separatorLine: UIView {
         let view = UIView().then {
-            $0.backgroundColor = UIColor(white: 0.0, alpha: 0.2)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.addConstraint(NSLayoutConstraint(item: $0, attribute: .height, relatedBy: .equal,
-                                                toItem: nil, attribute: .notAnAttribute, multiplier: 1,
-                                                constant: 0.5))
+            $0.backgroundColor = .braveSeparator
+            $0.snp.makeConstraints {
+                $0.height.equalTo(1.0 / UIScreen.main.scale)
+            }
         }
         
         return view

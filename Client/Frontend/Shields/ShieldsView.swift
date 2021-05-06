@@ -7,7 +7,7 @@ import Shared
 import BraveShared
 
 extension ShieldsViewController {
-    class View: UIView, Themeable {
+    class View: UIView {
         
         private let scrollView = UIScrollView().then {
             $0.delaysContentTouches = false
@@ -43,6 +43,8 @@ extension ShieldsViewController {
         override init(frame: CGRect) {
             super.init(frame: frame)
             
+            backgroundColor = .braveBackground
+            
             stackView.addArrangedSubview(simpleShieldView)
             stackView.addArrangedSubview(advancedControlsBar)
             stackView.addArrangedSubview(advancedShieldView)
@@ -63,16 +65,6 @@ extension ShieldsViewController {
             }
             
             contentView = stackView
-        }
-        
-        func applyTheme(_ theme: Theme) {
-            simpleShieldView.applyTheme(theme)
-            advancedControlsBar.applyTheme(theme)
-            advancedShieldView.applyTheme(theme)
-            reportBrokenSiteView.applyTheme(theme)
-            siteReportedView.applyTheme(theme)
-            
-            backgroundColor = theme.isDark ? BraveUX.popoverDarkBackground : UIColor.white
         }
         
         @available(*, unavailable)

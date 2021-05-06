@@ -58,14 +58,6 @@ class BraveVPNContactFormViewController: TableViewController {
     private var contactForm = ContactForm()
     
     override func viewDidLoad() {
-        // Not ideal to grab Theme globally
-        // but passing it here from other view controllers is problematic too.
-        // Navigation bar theme has to be updated here because
-        // some parent view controllers use custom colors for it(VPN Purple color)
-        let tabManager = (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.tabManager
-        let theme = Theme.of(tabManager?.selectedTab)
-        applyTheme(theme)
-        
         // MARK: Hostname
         let hostname = BraveVPN.hostname
         let hostnameRow = Row(text: Strings.VPN.contactFormHostname, accessory:

@@ -43,7 +43,7 @@ extension DataSource {
     }
 }
 
-protocol SettingsDelegate: class {
+protocol SettingsDelegate: AnyObject {
     func settingsOpenURLInNewTab(_ url: URL)
     func settingsOpenURLs(_ urls: [URL])
     func settingsDidFinish(_ settingsViewController: SettingsViewController)
@@ -81,19 +81,9 @@ class SettingsViewController: TableViewController {
         dataSource.sections = sections
         
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        applyTheme(theme)
         
-        guard let vpnRow = vpnRow else { return }
-        // This is a dynamic cell that must be updated based on vpn status.
-        if let indexPath = dataSource.indexPath(rowUUID: vpnRow.uuid, sectionUUID: featuresSection.uuid) {
-            let newVPNRow = vpnSettingsRow()
-            self.vpnRow = newVPNRow
-            dataSource.sections[indexPath.section].rows.remove(at: indexPath.row)
-            dataSource.sections[indexPath.section].rows.insert(newVPNRow, at: indexPath.row)
-        }
+        view.backgroundColor = .braveGroupedBackground
+        view.tintColor = .braveOrange
     }
     
     private func displayRewardsDebugMenu() {
@@ -105,10 +95,6 @@ class SettingsViewController: TableViewController {
     private func displayBraveTodayDebugMenu() {
         let settings = BraveTodayDebugSettingsController(dataSource: feedDataSource)
         navigationController?.pushViewController(settings, animated: true)
-    }
-    
-    private var theme: Theme {
-        Theme.of(tabManager.selectedTab)
     }
     
     private var sections: [Section] {
@@ -212,7 +198,7 @@ class SettingsViewController: TableViewController {
         
         section.rows.append(
             Row(text: Strings.PlayList.playListSectionTitle, selection: { [unowned self] in
-                let playlistSettings = PlaylistSettingsViewController(self.theme)
+                let playlistSettings = PlaylistSettingsViewController()
                 self.navigationController?.pushViewController(playlistSettings, animated: true)
             }, image: #imageLiteral(resourceName: "playlist_menu").template, accessory: .disclosureIndicator)
         )
@@ -272,16 +258,15 @@ class SettingsViewController: TableViewController {
             rows: []
         )
         
-        let themeSubtitle = Theme.DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.displayString
+        let themeSubtitle = DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.displayString
         var row = Row(text: Strings.themesDisplayBrightness, detailText: themeSubtitle, image: #imageLiteral(resourceName: "settings-appearance").template, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
         row.selection = { [unowned self] in
-            let optionsViewController = OptionSelectionViewController<Theme.DefaultTheme>(
-                options: Theme.DefaultTheme.normalThemesOptions,
-                selectedOption: Theme.DefaultTheme(rawValue: Preferences.General.themeNormalMode.value),
+            let optionsViewController = OptionSelectionViewController<DefaultTheme>(
+                options: DefaultTheme.normalThemesOptions,
+                selectedOption: DefaultTheme(rawValue: Preferences.General.themeNormalMode.value),
                 optionChanged: { [unowned self] _, option in
                     Preferences.General.themeNormalMode.value = option.rawValue
                     self.dataSource.reloadCell(row: row, section: display, displayText: option.displayString)
-                    self.applyTheme(self.theme)
                 }
             )
             optionsViewController.headerText = Strings.themesDisplayBrightness
@@ -343,12 +328,12 @@ class SettingsViewController: TableViewController {
                 return ("", UIColor.black)
             case .installed(let enabled):
                 if enabled {
-                    return (Strings.VPN.settingsVPNEnabled, #colorLiteral(red: 0.1607843137, green: 0.737254902, blue: 0.5647058824, alpha: 1))
+                    return (Strings.VPN.settingsVPNEnabled, .braveSuccessLabel)
                 } else {
-                    return (Strings.VPN.settingsVPNDisabled, BraveUX.red)
+                    return (Strings.VPN.settingsVPNDisabled, .braveErrorLabel)
                 }
             case .expired:
-                return (Strings.VPN.settingsVPNExpired, BraveUX.red)
+                return (Strings.VPN.settingsVPNExpired, .braveErrorLabel)
             }
         }()
         
@@ -536,26 +521,5 @@ class SettingsViewController: TableViewController {
         if dataSource.sections.isEmpty { return }
         dataSource.sections[0] = Section()
         Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
-    }
-}
-
-extension TableViewController: Themeable {
-    func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        tableView.reloadData()
-        
-        // We need this specifically due to changes that happen to the theme from other controllers
-        // pushed from settings (e.g. Buy VPN screen, Appearance selection screen)
-        navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
-        navigationController?.navigationBar.barTintColor = UINavigationBar.appearance().appearanceBarTintColor
-        navigationController?.navigationBar.titleTextAttributes = UINavigationBar.appearance().titleTextAttributes
-    }
-    
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            updateThemeForUserInterfaceStyleChange()
-            applyTheme(Theme.of(nil))
-        }
     }
 }

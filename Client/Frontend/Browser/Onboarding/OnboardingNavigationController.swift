@@ -87,15 +87,15 @@ class OnboardingNavigationController: UINavigationController {
         case rewardsAgreement
         
         /// Returns new ViewController associated with the screen type
-        func viewController(with profile: Profile, rewards: BraveRewards?, theme: Theme) -> OnboardingViewController {
+        func viewController(with profile: Profile, rewards: BraveRewards?) -> OnboardingViewController {
             switch self {
-            case .privacyConsent: return OnboardingPrivacyConsentViewController(profile: profile, rewards: rewards, theme: theme)
+            case .privacyConsent: return OnboardingPrivacyConsentViewController(profile: profile, rewards: rewards)
             case .searchEnginePicker:
-                return OnboardingSearchEnginesViewController(profile: profile, rewards: rewards, theme: theme)
+                return OnboardingSearchEnginesViewController(profile: profile, rewards: rewards)
             case .shieldsInfo:
-                return OnboardingShieldsViewController(profile: profile, rewards: rewards, theme: theme)
+                return OnboardingShieldsViewController(profile: profile, rewards: rewards)
             case .rewardsAgreement:
-                return OnboardingRewardsAgreementViewController(profile: profile, rewards: rewards, theme: theme)
+                return OnboardingRewardsAgreementViewController(profile: profile, rewards: rewards)
             }
         }
         
@@ -111,10 +111,10 @@ class OnboardingNavigationController: UINavigationController {
     
     private(set) var onboardingType: OnboardingType?
     
-    convenience init?(profile: Profile, onboardingType: OnboardingType, rewards: BraveRewards?, theme: Theme) {
+    convenience init?(profile: Profile, onboardingType: OnboardingType, rewards: BraveRewards?) {
         guard let firstScreen = onboardingType.screens.first else { return nil }
         
-        let firstViewController = firstScreen.viewController(with: profile, rewards: rewards, theme: theme)
+        let firstViewController = firstScreen.viewController(with: profile, rewards: rewards)
         self.init(rootViewController: firstViewController)
         self.onboardingType = onboardingType
         firstViewController.delegate = self
@@ -146,7 +146,7 @@ extension OnboardingNavigationController: Onboardable {
         let index = allScreens.firstIndex { $0.type == type(of: current) }
         
         guard let nextIndex = index?.advanced(by: 1),
-            let nextScreen = allScreens[safe: nextIndex]?.viewController(with: current.profile, rewards: current.rewards, theme: current.theme) else {
+            let nextScreen = allScreens[safe: nextIndex]?.viewController(with: current.profile, rewards: current.rewards) else {
                 log.info("Last screen reached, onboarding is complete")
                 onboardingDelegate?.onboardingCompleted(self)
                 return

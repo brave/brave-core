@@ -151,14 +151,14 @@ class VideoTrackerBar: UIView {
     private let currentTimeLabel = UILabel().then {
         $0.text = "00:00"
         $0.textColor = .white
-        $0.appearanceTextColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
+        $0.textColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
         $0.font = .systemFont(ofSize: 14.0, weight: .medium)
     }
     
     private let endTimeLabel = UILabel().then {
         $0.text = "00:00"
         $0.textColor = .white
-        $0.appearanceTextColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
+        $0.textColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
         $0.font = .systemFont(ofSize: 14.0, weight: .medium)
     }
     

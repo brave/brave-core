@@ -98,7 +98,7 @@ class ColoredDetailCell: UITableViewCell, Cell {
         imageView?.image = row.image
         
         guard let detailColor = row.context?[ColoredDetailCell.colorKey] as? UIColor else { return }
-        detailTextLabel?.appearanceTextColor = detailColor
+        detailTextLabel?.textColor = detailColor
     }
 }
 
@@ -108,6 +108,7 @@ class MultilineSubtitleCell: SubtitleCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         textLabel?.numberOfLines = 0
         detailTextLabel?.numberOfLines = 0
+        detailTextLabel?.textColor = .secondaryBraveLabel
     }
     
     required init?(coder aDecoder: NSCoder) {

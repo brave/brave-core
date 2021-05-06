@@ -37,7 +37,7 @@ class LargeFaviconView: UIView {
     }
     
     private let monogramFallbackLabel = UILabel().then {
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.isHidden = true
     }
     

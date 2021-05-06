@@ -5,6 +5,7 @@
 
 import UIKit
 import Shared
+import BraveUI
 
 // MARK: - SuggestionCellUX
 
@@ -205,11 +206,12 @@ private class SuggestionButton: InsetButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setTitleColor(UIConstants.highlightBlue, for: [])
+        setTitleColor(.braveInfoLabel, for: [])
         titleLabel?.font = DynamicFontHelper.defaultHelper.DefaultMediumFont
         layer.borderWidth = SuggestionCellUX.suggestionBorderWidth
         layer.cornerRadius = SuggestionCellUX.suggestionCornerRadius
-        layer.borderColor = UIConstants.highlightBlue.cgColor
+        layer.cornerCurve = .continuous
+        layer.borderColor = UIColor.braveInfoBorder.cgColor
         contentEdgeInsets = SuggestionCellUX.suggestionInsets
 
         accessibilityHint = Strings.searchesForSuggestionButtonAccessibilityText

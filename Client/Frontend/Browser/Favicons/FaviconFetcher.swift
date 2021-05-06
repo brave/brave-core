@@ -412,7 +412,7 @@ class FaviconFetcher {
     private var monogramFavicon: FaviconAttributes {
         func backgroundColor() -> UIColor {
             guard let hash = url.baseDomain?.hashValue else {
-                return UIColor.Photon.grey50
+                return .gray
             }
             let index = abs(hash) % (UIConstants.defaultColorStrings.count - 1)
             let colorHex = UIConstants.defaultColorStrings[index]
@@ -581,8 +581,8 @@ extension UIImageView {
             } else {
                 // Monogram favicon attributes
                 let label = self.monogramLabel ?? UILabel().then {
-                    $0.appearanceTextColor = .white
-                    $0.appearanceBackgroundColor = .clear
+                    $0.textColor = .white
+                    $0.backgroundColor = .clear
                     $0.minimumScaleFactor = 0.5
                 }
                 label.text = FaviconFetcher.monogramLetter(

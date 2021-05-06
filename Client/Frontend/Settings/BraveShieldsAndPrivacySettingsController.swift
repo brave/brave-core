@@ -39,10 +39,6 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         ]
     }
     
-    private var theme: Theme {
-        Theme.of(tabManager.selectedTab)
-    }
-    
     // MARK: - Sections
     
     private lazy var shieldsSection: Section = {
@@ -216,18 +212,6 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     }
     
     private func pboModeToggled(value: Bool) {
-        let applyThemeBlock = { [weak self] in
-            guard let self = self else { return }
-            // Need to flush the table, hacky, but works consistenly and well
-            let superView = self.tableView.superview
-            self.tableView.removeFromSuperview()
-            DispatchQueue.main.async {
-                // Let shield toggle change propagate, otherwise theme may not be set properly
-                superView?.addSubview(self.tableView)
-                self.applyTheme(self.theme)
-            }
-        }
-        
         if value {
             let alert = UIAlertController(title: Strings.privateBrowsingOnly, message: Strings.privateBrowsingOnlyWarning, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: { [weak self] _ in
@@ -260,7 +244,6 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
                         self.tabManager.removeAll()
                         
                         spinner.dismiss()
-                        applyThemeBlock()
                     }
                 }
             }))
@@ -268,7 +251,6 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
             self.present(alert, animated: true, completion: nil)
         } else {
             Preferences.Privacy.privateBrowsingOnly.value = value
-            applyThemeBlock()
         }
     }
     

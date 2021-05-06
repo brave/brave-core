@@ -6,18 +6,20 @@
 import Foundation
 import Shared
 
-class BraveRewardsSupportedCountView: UIStackView, Themeable {
+class BraveRewardsSupportedCountView: UIStackView {
     
     let countLabel = UILabel().then {
         $0.text = "0"
         $0.font = .systemFont(ofSize: 36)
         $0.setContentHuggingPriority(.required, for: .horizontal)
+        $0.textColor = .braveLabel
     }
     
     private let bodyLabel = UILabel().then {
         $0.text = Strings.Rewards.totalSupportedCount
         $0.numberOfLines = 0
         $0.font = .systemFont(ofSize: 15)
+        $0.textColor = .braveLabel
     }
     
     override init(frame: CGRect) {
@@ -35,11 +37,5 @@ class BraveRewardsSupportedCountView: UIStackView, Themeable {
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        let isDark = theme.isDark
-        countLabel.appearanceTextColor = isDark ? UIColor.white : UIColor.black
-        bodyLabel.appearanceTextColor = isDark ? UIColor.white : UIColor.black
     }
 }

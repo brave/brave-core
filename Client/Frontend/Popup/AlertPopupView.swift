@@ -42,7 +42,7 @@ class AlertPopupView: PopupView {
         }
         
         titleLabel = UILabel(frame: CGRect.zero)
-        titleLabel.textColor = BraveUX.greyJ
+        titleLabel.textColor = .bravePrimary
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: titleSize, weight: titleWeight)
         titleLabel.text = title
@@ -50,7 +50,7 @@ class AlertPopupView: PopupView {
         containerView.addSubview(titleLabel)
         
         messageLabel = UILabel(frame: CGRect.zero)
-        messageLabel.textColor = BraveUX.greyH
+        messageLabel.textColor = .braveLabel
         messageLabel.textAlignment = .center
         messageLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
         messageLabel.text = message
@@ -60,11 +60,12 @@ class AlertPopupView: PopupView {
         if let inputType = inputType {
             textField = UITextField(frame: CGRect.zero).then {
                 $0.keyboardType = inputType
-                $0.appearanceTextColor = .black
-                $0.attributedPlaceholder = NSAttributedString(string: inputPlaceholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: BraveUX.greyH])
+                $0.textColor = .braveLabel
+                $0.attributedPlaceholder = NSAttributedString(string: inputPlaceholder ?? "", attributes: [.foregroundColor: UIColor.secondaryBraveLabel])
                 $0.autocorrectionType = .no
                 $0.autocapitalizationType = .none
                 $0.layer.cornerRadius = 4
+                $0.layer.cornerCurve = .continuous
                 $0.layer.borderColor = UIColor(white: 0, alpha: 0.3).cgColor
                 $0.layer.borderWidth = 1
                 $0.delegate = self
@@ -78,7 +79,7 @@ class AlertPopupView: PopupView {
         
         setPopupContentView(view: containerView)
         setStyle(popupStyle: .dialog)
-        setDialogColor(color: BraveUX.popupDialogColorLight)
+        setDialogColor(color: .tertiaryBraveBackground)
     }
     
     func update(title: String) {

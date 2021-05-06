@@ -56,16 +56,20 @@ class SearchViewController: SiteTableViewController, LoaderListener {
 
     // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
     // scrollable container; searchEngineScrollViewContent contains the actual set of search engine buttons.
-    private let searchEngineScrollView = ButtonScrollView().then {
-        $0.layer.shadowRadius = 0
-        $0.layer.shadowOpacity = 100
-        $0.layer.shadowOffset = CGSize(width: 0, height: -SearchViewControllerUX.searchEngineTopBorderWidth)
-        $0.layer.shadowColor = SearchViewControllerUX.searchEngineScrollViewBorderColor
-        $0.clipsToBounds = false
-        $0.decelerationRate = UIScrollView.DecelerationRate.fast
+    private let searchEngineScrollView = ButtonScrollView().then { scrollView in
+        scrollView.decelerationRate = UIScrollView.DecelerationRate.fast
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.clipsToBounds = false
+        let border = UIView.separatorLine
+        scrollView.addSubview(border)
+        border.snp.makeConstraints {
+            $0.bottom.equalTo(scrollView.snp.top)
+            $0.leading.trailing.equalToSuperview()
+        }
     }
     private let searchEngineScrollViewContent = UIView().then {
-        $0.layer.backgroundColor = UIColor.clear.cgColor
+        $0.backgroundColor = .braveBackground
     }
     
     private lazy var bookmarkedBadge: UIImage = {
@@ -301,11 +305,12 @@ class SearchViewController: SiteTableViewController, LoaderListener {
 
         // search settings icon
         let searchButton = UIButton()
-        searchButton.setImage(#imageLiteral(resourceName: "quickSearch"), for: [])
+        searchButton.setImage(#imageLiteral(resourceName: "quickSearch").template, for: [])
         searchButton.imageView?.contentMode = .center
         searchButton.layer.backgroundColor = SearchViewControllerUX.engineButtonBackgroundColor
         searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
         searchButton.accessibilityLabel = Strings.searchSettingsButtonTitle
+        searchButton.tintColor = .braveOrange
 
         searchButton.imageView?.snp.makeConstraints { make in
             make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)

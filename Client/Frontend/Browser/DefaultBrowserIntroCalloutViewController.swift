@@ -10,45 +10,36 @@ import BraveUI
 
 private let log = Logger.browserLogger
 
-class DefaultBrowserIntroCalloutViewController: UIViewController, Themeable {
+class DefaultBrowserIntroCalloutViewController: UIViewController {
     
     private let openSettingsButton = Button(type: .system).then {
         $0.setTitle(Strings.DefaultBrowserCallout.introOpenSettingsButtonText, for: .normal)
-        $0.backgroundColor = BraveUX.braveOrange
+        $0.backgroundColor = .braveOrange
         $0.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        $0.appearanceTextColor = .white
+        $0.titleLabel?.textColor = .white
         $0.snp.makeConstraints { make in
             make.height.equalTo(44)
         }
         $0.contentEdgeInsets = .init(top: 0, left: 25, bottom: 0, right: 25)
         $0.layer.cornerRadius = 22
         $0.layer.cornerCurve = .continuous
+        $0.tintColor = .white
     }
     
     private let cancelButton = UIButton(type: .system).then {
         $0.setTitle(Strings.DefaultBrowserCallout.introSkipButtonText, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        $0.appearanceTextColor = Colors.grey600
+        $0.tintColor = .secondaryBraveLabel
     }
     
-    private let image = UIImageView()
-    
-    private let theme: Theme
-    
-    init(theme: Theme) {
-        self.theme = theme
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) { fatalError() }
+    private let image = UIImageView(image: #imageLiteral(resourceName: "default_browser_intro"))
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        
+        view.backgroundColor = .braveBackground
         
         setupViews()
-        applyTheme(theme)
         
         cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         openSettingsButton.addTarget(self, action: #selector(openSettingsAction), for: .touchUpInside)
@@ -93,7 +84,7 @@ class DefaultBrowserIntroCalloutViewController: UIViewController, Themeable {
                     $0.numberOfLines = 0
                     $0.textAlignment = .center
                     $0.font = .systemFont(ofSize: 17)
-                    $0.appearanceTextColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
+                    $0.textColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
                 })
             )
         }
@@ -134,11 +125,5 @@ class DefaultBrowserIntroCalloutViewController: UIViewController, Themeable {
         mainStackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(36)
         }
-    }
-    
-    // MARK: - Themeable
-    func applyTheme(_ theme: Theme) {
-        view.appearanceBackgroundColor = theme.isDark ? BraveUX.popoverDarkBackground : .white
-        image.image = theme.isDark ? #imageLiteral(resourceName: "default_browser_intro_dark") : #imageLiteral(resourceName: "default_browser_intro")
     }
 }

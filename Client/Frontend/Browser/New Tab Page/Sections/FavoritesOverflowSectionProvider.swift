@@ -11,7 +11,7 @@ import Shared
 
 private let log = Logger.browserLogger
 
-class FavoritesOverflowButton: SpringButton, Themeable {
+class FavoritesOverflowButton: SpringButton {
     private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
         $0.clipsToBounds = true
         $0.isUserInteractionEnabled = false
@@ -22,9 +22,11 @@ class FavoritesOverflowButton: SpringButton, Themeable {
         
         let label = UILabel().then {
             $0.text = Strings.NTP.showMoreFavorites
-            $0.appearanceTextColor = .white
+            $0.textColor = .white
             $0.font = UIFont.systemFont(ofSize: 12.0, weight: .medium)
         }
+        
+        backgroundView.layer.cornerCurve = .continuous
         
         addSubview(backgroundView)
         backgroundView.contentView.addSubview(label)

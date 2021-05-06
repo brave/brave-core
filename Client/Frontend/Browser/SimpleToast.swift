@@ -8,7 +8,7 @@ import Shared
 struct SimpleToastUX {
     static let toastHeight = bottomToolbarHeight
     static let toastAnimationDuration = 0.5
-    static let toastDefaultColor = UIColor.Photon.blue50
+    static let toastDefaultColor = UIColor.braveInfoBorder
     static let toastFont = UIFont.systemFont(ofSize: 15)
     static let toastDismissAfter = DispatchTimeInterval.milliseconds(4500) // 4.5 seconds.
     static let toastDelayBefore = DispatchTimeInterval.milliseconds(0) // 0 seconds
@@ -31,7 +31,7 @@ struct SimpleToast {
 
     fileprivate func createView() -> UILabel {
         let toast = UILabel()
-        toast.textColor = UIColor.Photon.white100
+        toast.textColor = .white
         toast.backgroundColor = SimpleToastUX.toastDefaultColor
         toast.font = SimpleToastUX.toastFont
         toast.textAlignment = .center

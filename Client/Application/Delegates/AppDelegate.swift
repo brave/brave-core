@@ -17,6 +17,7 @@ import Data
 import StoreKit
 import BraveRewards
 import AdblockRust
+import Combine
 
 private let log = Logger.browserLogger
 
@@ -229,6 +230,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         application.shortcutItems = Preferences.Privacy.privateBrowsingOnly.value ? [privateTabItem] : [newTabItem, privateTabItem]
     }
+    
+    private var cancellables: Set<AnyCancellable> = []
+    
+    private func updateTheme() {
+        guard let window = window,
+              let themeOverride = DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride else {
+            return
+        }
+        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+        let override: UIUserInterfaceStyle = isPrivateBrowsing ? .dark : themeOverride
+        UIView.transition(with: window, duration: 0.15, options: [.transitionCrossDissolve], animations: {
+            window.overrideUserInterfaceStyle = override
+        }, completion: nil)
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // IAPs can trigger on the app as soon as it launches,
@@ -261,17 +276,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             start?.pointee = UInt32(startIndex)
             end?.pointee = UInt32(endIndex)
         }
-
-        // BVC generally handles theme applying, but in some instances views are established
-        // before then (e.g. passcode, so can be privacy concern, meaning this should be called ASAP)
-        // In order to properly apply background and align this with the rest of the UI (keyboard / header)
-        // this needs to be called. UI could be handled internally to view systems,
-        // but then keyboard may misalign with Brave selected theme override
-        Theme.of(nil).applyAppearanceProperties()
         
         UIScrollView.doBadSwizzleStuff()
+        applyAppearanceDefaults()
         
-        window!.makeKeyAndVisible()
+        Preferences.General.themeNormalMode.objectWillChange
+            .merge(with: PrivateBrowsingManager.shared.objectWillChange)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateTheme()
+            }
+            .store(in: &cancellables)
+        
+        if let themeOverride = DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.userInterfaceStyleOverride {
+            window?.overrideUserInterfaceStyle = themeOverride
+        }
+        window?.tintColor = UIColor {
+            if $0.userInterfaceStyle == .dark {
+                return .braveLighterBlurple
+            }
+            return .braveBlurple
+        }
+        window?.makeKeyAndVisible()
         
         authenticator = AppAuthenticator(protectedWindow: window!, promptImmediately: true, isPasscodeEntryCancellable: false)
 

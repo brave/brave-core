@@ -52,8 +52,6 @@ extension Notification.Name {
     public static let thumbnailEditOn = Notification.Name("ThumbnailEditOn")
     public static let thumbnailEditOff = Notification.Name("ThumbnailEditOff")
     
-    public static let privacyModeChanged = Notification.Name("PrivacyModeChanged")
-    
     // MARK: - Rewards
     public static let adsOrRewardsToggledInSettings = Notification.Name("adsOrRewardsToggledInSettings")
 }

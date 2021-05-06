@@ -71,13 +71,13 @@ class PlaylistCell: UITableViewCell {
     }
     
     let titleLabel = UILabel().then {
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.numberOfLines = 2
         $0.font = .systemFont(ofSize: 16.0, weight: .medium)
     }
     
     let detailLabel = UILabel().then {
-        $0.appearanceTextColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
+        $0.textColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
         $0.font = .systemFont(ofSize: 14.0, weight: .regular)
     }
     
@@ -183,7 +183,7 @@ class PlaylistCell: UITableViewCell {
             return .zero
         }
 
-        set { //swiftlint:disable:this unused_setter_value
+        set { // swiftlint:disable:this unused_setter_value
             super.layoutMargins = .zero
         }
     }

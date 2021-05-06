@@ -7,7 +7,7 @@ import Foundation
 import BraveUI
 
 /// A new tab collection view cell where the view is horizontally centered and themeable.
-class NewTabCenteredCollectionViewCell<View: UIView & Themeable>: UICollectionViewCell, Themeable, CollectionViewReusable {
+class NewTabCenteredCollectionViewCell<View: UIView>: UICollectionViewCell, CollectionViewReusable {
     /// The content view
     let view = View()
     
@@ -18,10 +18,6 @@ class NewTabCenteredCollectionViewCell<View: UIView & Themeable>: UICollectionVi
             $0.top.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
-    }
-    
-    var themeableChildren: [Themeable?]? {
-        [view]
     }
     
     @available(*, unavailable)

@@ -18,6 +18,7 @@ class IndentedImageTableViewCell: UITableViewCell {
     
     let customImage = UIImageView().then {
         $0.image = #imageLiteral(resourceName: "shields-menu-icon")
+        $0.tintColor = .braveLabel
         $0.contentMode = .scaleAspectFit
         $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -25,16 +26,7 @@ class IndentedImageTableViewCell: UITableViewCell {
     
     let folderName = UILabel().then {
         $0.textAlignment = .left
-    }
-    
-    private var spacerLine: UIView {
-        let view = UIView().then {
-        $0.backgroundColor = .lightGray
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.addConstraint(NSLayoutConstraint(item: $0, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0.5))
-        }
-        
-        return view
+        $0.textColor = .braveLabel
     }
     
     convenience init(image: UIImage) {
@@ -49,10 +41,10 @@ class IndentedImageTableViewCell: UITableViewCell {
         indentationWidth = 20
         mainStackView.addArrangedSubview(customImage)
         
-        let transparentLine = spacerLine
+        let transparentLine = UIView.separatorLine
         transparentLine.backgroundColor = .clear
         
-        [transparentLine, folderName, spacerLine].forEach(folderNameStackView.addArrangedSubview)
+        [transparentLine, folderName, UIView.separatorLine].forEach(folderNameStackView.addArrangedSubview)
         
         mainStackView.addArrangedSubview(folderNameStackView)
         

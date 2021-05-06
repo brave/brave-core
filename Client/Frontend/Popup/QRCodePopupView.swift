@@ -15,7 +15,7 @@ class QRCodePopupView: PopupView {
     
     private let title = UILabel().then {
         $0.text = Strings.themeQRCodeShareTitle
-        $0.appearanceTextColor = .black
+        $0.textColor = .bravePrimary
         $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
         $0.font = UIFont.systemFont(ofSize: 16, weight: .medium)
     }
@@ -37,10 +37,9 @@ class QRCodePopupView: PopupView {
     private let shareButton = RoundInterfaceButton(type: .system).then {
         $0.setTitle(Strings.themeQRCodeShareButton, for: .normal)
         $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        $0.layer.borderColor = UIColor.orange.cgColor
         $0.layer.borderWidth = 1
         $0.snp.makeConstraints { $0.height.equalTo(44) }
-        $0.tintColor = BraveUX.braveOrange
+        $0.tintColor = .braveOrange
         $0.setImage(#imageLiteral(resourceName: "nav-share"), for: .normal)
         $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -18, bottom: 0, right: 0)
         $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 48, bottom: 0, right: 48)
@@ -49,7 +48,7 @@ class QRCodePopupView: PopupView {
     
     private let closeButton = UIButton().then {
         $0.setImage(#imageLiteral(resourceName: "close_popup").template, for: .normal)
-        $0.appearanceTintColor = .lightGray
+        $0.tintColor = .braveLabel
     }
     
     init(url: URL) {
@@ -59,6 +58,9 @@ class QRCodePopupView: PopupView {
         let contentView = UIView().then {
             $0.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
         }
+        
+        shareButton.layer.borderColor = UIColor.braveOrange
+            .resolvedColor(with: traitCollection).cgColor
         
         [qrCodeImage, title, shareButton, closeButton].forEach(contentView.addSubview(_:))
         
@@ -110,5 +112,13 @@ class QRCodePopupView: PopupView {
         filter?.setValue("H", forKey: "inputCorrectionLevel")
         
         return filter?.outputImage
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            shareButton.layer.borderColor = UIColor.braveOrange
+                .resolvedColor(with: traitCollection).cgColor
+        }
     }
 }

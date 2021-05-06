@@ -27,7 +27,7 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
     }
     
     override func loadView() {
-        view = View(theme: theme)
+        view = View()
     }
 
     override func viewDidLoad() {
@@ -42,7 +42,7 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         contentView.searchEnginesTable.register(SearchEngineCell.self, forCellReuseIdentifier: String(describing: SearchEngineCell.self))
         
         let tablebackground = UIView()
-        tablebackground.backgroundColor = OnboardingViewController.colorForTheme(theme)
+        tablebackground.backgroundColor = .braveBackground
         contentView.searchEnginesTable.backgroundView = tablebackground
         
         // This selection should only ever happen once.
@@ -70,11 +70,6 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         
         delegate?.presentNextScreen(current: self)
     }
-    
-    override func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        contentView.applyTheme(theme)
-    }
 }
 
 extension OnboardingSearchEnginesViewController: UITableViewDelegate {
@@ -88,7 +83,7 @@ extension OnboardingSearchEnginesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
+        headerView.backgroundColor = .clear
         return headerView
     }
 }
@@ -118,8 +113,8 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
         
         cell.searchEngineName = searchEngine.displayName
         cell.searchEngineImage = searchEngine.image
-        cell.selectedBackgroundColor = dark ? UIColor(rgb: 0x495057) : UIColor(rgb: 0xF0F2FF)
-        cell.textLabel?.textColor = dark ? UIColor.lightText : UIColor.darkText
+        cell.selectedBackgroundColor = UIColor.braveBlurple.withAlphaComponent(0.2)
+        cell.textLabel?.textColor = .braveLabel
         cell.backgroundColor = .clear
         return cell
     }

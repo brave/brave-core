@@ -81,7 +81,7 @@ protocol NewTabPageDelegate: AnyObject {
 
 /// The new tab page. Shows users a variety of information, including stats and
 /// favourites
-class NewTabPageViewController: UIViewController, Themeable {
+class NewTabPageViewController: UIViewController {
     weak var delegate: NewTabPageDelegate?
     
     /// The modules to show on the new tab page
@@ -152,7 +152,6 @@ class NewTabPageViewController: UIViewController, Themeable {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        applyTheme(Theme.of(tab))
         
         background.changed = { [weak self] in
             self?.setupBackgroundImage()
@@ -232,24 +231,6 @@ class NewTabPageViewController: UIViewController, Themeable {
         // to use it.
         backgroundView.layoutIfNeeded()
         calculateBackgroundCenterPoints()
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            // Reload UI
-            applyTheme(Theme.of(tab))
-        }
-    }
-    
-    var themeableChildren: [Themeable?]? {
-        [backgroundView]
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        collectionView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -858,11 +839,7 @@ extension NewTabPageViewController: UICollectionViewDataSource {
         sections[section].collectionView(collectionView, numberOfItemsInSection: section)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = sections[indexPath.section].collectionView(collectionView, cellForItemAt: indexPath)
-        if let themableCell = cell as? Themeable {
-            themableCell.applyTheme(Theme.of(tab))
-        }
-        return cell
+        sections[indexPath.section].collectionView(collectionView, cellForItemAt: indexPath)
     }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         sections[indexPath.section].collectionView?(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath) ?? UICollectionReusableView()

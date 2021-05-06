@@ -5,13 +5,13 @@
 import UIKit
 import Shared
 import BraveShared
+import BraveUI
 
 class SearchSuggestionPromptView: UIView {
     
     private let optionSelected: (Bool) -> Void
     
     private struct UX {
-        static let promptColor = UIConstants.panelBackgroundColor
         static let promptFont = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
         static let promptYesFont = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
         static let promptNoFont = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
@@ -23,17 +23,20 @@ class SearchSuggestionPromptView: UIView {
         
         super.init(frame: .zero)
         
+        backgroundColor = .secondaryBraveBackground
+        
         let promptBottomBorder = UIView()
-        promptBottomBorder.backgroundColor = BraveUX.greyD
+        promptBottomBorder.backgroundColor = .braveSeparator
         addSubview(promptBottomBorder)
         
         let promptImage = UIImageView()
         promptImage.image = #imageLiteral(resourceName: "search").template
-        promptImage.tintColor = UIColor.Photon.grey70
+        promptImage.tintColor = .braveLabel
         addSubview(promptImage)
         
         let promptLabel = UILabel()
         promptLabel.text = Strings.turnOnSearchSuggestions
+        promptLabel.textColor = .braveLabel
         promptLabel.font = UX.promptFont
         promptLabel.numberOfLines = 0
         promptLabel.lineBreakMode = .byWordWrapping
@@ -41,6 +44,7 @@ class SearchSuggestionPromptView: UIView {
         
         let promptYesButton = InsetButton()
         promptYesButton.setTitle(Strings.yes, for: .normal)
+        promptYesButton.setTitleColor(.braveLabel, for: .normal)
         promptYesButton.titleLabel?.font = UX.promptYesFont
         promptYesButton.titleEdgeInsets = UX.promptInsets
         // If the prompt message doesn't fit, this prevents it from pushing the buttons
@@ -51,6 +55,7 @@ class SearchSuggestionPromptView: UIView {
         
         let promptNoButton = InsetButton()
         promptNoButton.setTitle(Strings.no, for: .normal)
+        promptNoButton.setTitleColor(.braveLabel, for: .normal)
         promptNoButton.titleLabel?.font = UX.promptNoFont
         promptNoButton.titleEdgeInsets = UX.promptInsets
         // If the prompt message doesn't fit, this prevents it from pushing the buttons

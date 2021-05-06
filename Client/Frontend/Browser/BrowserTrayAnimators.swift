@@ -141,6 +141,7 @@ private extension BrowserToTrayAnimator {
         let expandedFrame = calculateExpandedCellFrameFromBVC(bvc)
         let cell = createTransitionCellFromTab(bvc.tabManager.selectedTab, withFrame: expandedFrame)
         cell.backgroundHolder.layer.cornerRadius = TabTrayControllerUX.cornerRadius
+        cell.backgroundHolder.layer.cornerCurve = .continuous
 
         // Take a snapshot of the collection view to perform the scaling/alpha effect
         let tabCollectionViewSnapshot = tabTray.collectionView.snapshotView(afterScreenUpdates: true)!
@@ -318,7 +319,6 @@ private func createTransitionCellFromTab(_ tab: Tab?, withFrame frame: CGRect) -
     } else {
         cell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
     }
-    cell.applyTheme(Theme.of(tab))
 
     return cell
 }

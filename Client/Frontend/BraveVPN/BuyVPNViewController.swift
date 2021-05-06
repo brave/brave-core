@@ -59,6 +59,8 @@ class BuyVPNViewController: UIViewController {
         
         title = Strings.VPN.vpnName
         
+        navigationItem.standardAppearance = BraveVPNCommonUI.navigationBarAppearance
+        
         navigationItem.rightBarButtonItem = .init(title: Strings.VPN.restorePurchases, style: .done,
                                                   target: self, action: #selector(restorePurchasesAction))
         
@@ -76,17 +78,16 @@ class BuyVPNViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // For some reason setting `barTintColor` for `formSheet` type of modal doesn't work
-        // in `viewDidLoad` method, doing it later as a workaround.
-        styleNavigationBar()
+        // navigationItem.standardAppearance does not support tinting the back button for some
+        // reason, so we still must apply a custom tint to the bar
+        navigationController?.navigationBar.tintColor = .white
     }
     
-    private func styleNavigationBar() {
-        navigationController?.navigationBar.do {
-            $0.tintColor = .white
-            $0.barTintColor = BraveVPNCommonUI.UX.purpleBackgroundColor
-            $0.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Reset styling set above
+        navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
     }
     
     // MARK: - Button actions

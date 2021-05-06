@@ -32,7 +32,7 @@ class NTPNotificationView: UIStackView {
         
         let title = UILabel().then {
             $0.text = Strings.braveRewardsTitle
-            $0.appearanceTextColor = config.textColor
+            $0.textColor = config.textColor
             $0.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         }
         
@@ -41,7 +41,7 @@ class NTPNotificationView: UIStackView {
     
     lazy var header = UILabel().then {
         $0.text = config.headerText
-        $0.appearanceTextColor = config.textColor
+        $0.textColor = config.textColor
         
         $0.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         
@@ -52,8 +52,8 @@ class NTPNotificationView: UIStackView {
     
     lazy var body = LinkLabel().then {
         $0.font = .systemFont(ofSize: 12.0)
-        $0.appearanceTextColor = config.textColor
-        $0.linkColor = BraveUX.braveOrange
+        $0.textColor = config.textColor
+        $0.linkColor = UIColor.braveOrange
         $0.text = config.bodyText?.text
         
         $0.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 313), for: .vertical)
@@ -63,8 +63,8 @@ class NTPNotificationView: UIStackView {
     
     lazy var primaryButton = RoundInterfaceButton(type: .system).then {
         $0.setTitle(config.primaryButtonConfig?.text, for: .normal)
-        $0.appearanceTextColor = .white
-        $0.backgroundColor = Colors.blurple500
+        $0.titleLabel?.textColor = .white
+        $0.backgroundColor = .braveBlurple
         $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
         $0.tintColor = .white
@@ -76,7 +76,7 @@ class NTPNotificationView: UIStackView {
     
     lazy var secondaryButton = RoundInterfaceButton(type: .system).then {
         $0.setTitle(config.secondaryButtonConfig?.text, for: .normal)
-        $0.appearanceTextColor = config.textColor
+        $0.titleLabel?.textColor = config.textColor
         $0.backgroundColor = .clear
         $0.tintColor = .white
         $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)

@@ -11,8 +11,6 @@ struct TwoLineCellUX {
     static let badgeSize: CGFloat = 16
     static let badgeMargin: CGFloat = 16
     static let borderFrameSize: CGFloat = 32
-    static let textColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.black : UIColor.Photon.grey80
-    static let detailTextColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.Photon.grey60 : UIColor.Photon.grey50
     static let detailTextTopMargin: CGFloat = 0
 }
 
@@ -34,6 +32,8 @@ class TwoLineTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
+        backgroundColor = .secondaryBraveBackground
+        
         contentView.addSubview(_textLabel)
         contentView.addSubview(_detailTextLabel)
 
@@ -206,17 +206,18 @@ private class TwoLineCellHelper {
         self.imageView = imageView
 
         if let headerView = self.container as? UITableViewHeaderFooterView {
-            headerView.contentView.backgroundColor = UIColor.clear
+            headerView.contentView.backgroundColor = .clear
         } else {
-            self.container?.backgroundColor = UIColor.clear
+            self.container?.backgroundColor = .clear
         }
 
-        textLabel.textColor = TwoLineCellUX.textColor
-        detailTextLabel.textColor = TwoLineCellUX.detailTextColor
+        textLabel.textColor = .braveLabel
+        detailTextLabel.textColor = .secondaryBraveLabel
         setupDynamicFonts()
 
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 6 // hmm
+        imageView.layer.cornerCurve = .continuous
         imageView.layer.masksToBounds = true
     }
 

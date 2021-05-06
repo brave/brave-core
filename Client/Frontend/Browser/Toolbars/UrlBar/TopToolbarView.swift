@@ -6,6 +6,7 @@ import Shared
 import SnapKit
 import BraveShared
 import Data
+import Combine
 
 private struct TopToolbarViewUX {
     static let locationPadding: CGFloat = 8
@@ -22,7 +23,7 @@ private struct TopToolbarViewUX {
     static let toolbarButtonInsets = UIEdgeInsets(equalInset: normalPadding)
 }
 
-protocol TopToolbarDelegate: class {
+protocol TopToolbarDelegate: AnyObject {
     func topToolbarDidPressTabs(_ topToolbar: TopToolbarView)
     func topToolbarDidPressReaderMode(_ topToolbar: TopToolbarView)
     /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
@@ -68,8 +69,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
         }
     }
     
-    fileprivate var currentTheme: Theme?
-    
     var toolbarIsShowing = false
     
     /// Overlay mode is the state where the lock/reader icons are hidden, the home panels are shown,
@@ -110,20 +109,23 @@ class TopToolbarView: UIView, ToolbarProtocol {
         return locationContainer
     }()
     
-    let line = UIView()
+    let line = UIView().then {
+        $0.backgroundColor = .braveSeparator
+    }
     
-    let tabsButton = TabsButton(top: true)
+    let tabsButton = TabsButton()
     
     fileprivate lazy var progressBar: GradientProgressBar = {
         let progressBar = GradientProgressBar()
         progressBar.clipsToBounds = false
+        progressBar.setGradientColors(startColor: .braveOrange, endColor: .braveOrange)
         return progressBar
     }()
     
     fileprivate lazy var cancelButton: UIButton = {
         let cancelButton = InsetButton()
         cancelButton.setTitle(Strings.cancelButtonTitle, for: .normal)
-        cancelButton.setTitleColor(BraveUX.cancelTextColor, for: .normal)
+        cancelButton.setTitleColor(UIColor.secondaryBraveLabel, for: .normal)
         cancelButton.accessibilityIdentifier = "topToolbarView-cancel"
         cancelButton.addTarget(self, action: #selector(didClickCancel), for: .touchUpInside)
         cancelButton.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -159,7 +161,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
         return backButton
     }()
 
-    lazy var actionButtons: [Themeable & UIButton] =
+    lazy var actionButtons: [UIButton] =
         [self.shareButton, self.tabsButton, self.bookmarkButton,
          self.forwardButton, self.backButton, self.menuButton].compactMap { $0 }
     
@@ -184,28 +186,20 @@ class TopToolbarView: UIView, ToolbarProtocol {
         locationView.shieldsButton.setImage(UIImage(imageLiteralResourceName: shieldIcon), for: .normal)
     }
     
+    private var privateModeCancellable: AnyCancellable?
+    private func updateColors(_ isPrivateBrowsing: Bool) {
+        if isPrivateBrowsing {
+            backgroundColor = .privateModeBackground
+        } else {
+            backgroundColor = .secondaryBraveBackground
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        commonInit()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-    
-    private let mainStackView = UIStackView().then {
-        $0.alignment = .center
-        $0.spacing = 8
-        $0.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    private let navigationStackView = UIStackView().then {
-        $0.distribution = .fillEqually
-        $0.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    private func commonInit() {
+        
+        backgroundColor = .secondaryBraveBackground
+        
         locationContainer.addSubview(locationView)
         
         [scrollToTopButton, line, tabsButton, progressBar, cancelButton].forEach(addSubview(_:))
@@ -241,6 +235,29 @@ class TopToolbarView: UIView, ToolbarProtocol {
         
         // Make sure we hide any views that shouldn't be showing in non-overlay mode.
         updateViewsForOverlayModeAndToolbarChanges()
+        
+        privateModeCancellable = PrivateBrowsingManager.shared
+            .$isPrivateBrowsing
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] isPrivateBrowsing in
+                self?.updateColors(isPrivateBrowsing)
+            })
+    }
+    
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+        fatalError()
+    }
+    
+    private let mainStackView = UIStackView().then {
+        $0.alignment = .center
+        $0.spacing = 8
+        $0.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    private let navigationStackView = UIStackView().then {
+        $0.distribution = .fillEqually
+        $0.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func setupConstraints() {
@@ -298,6 +315,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
         
         guard let locationTextField = locationTextField else { return }
         
+        locationTextField.backgroundColor = .braveBackground
         locationTextField.translatesAutoresizingMaskIntoConstraints = false
         locationTextField.autocompleteDelegate = self
         locationTextField.keyboardType = .webSearch
@@ -316,11 +334,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
             let insets = UIEdgeInsets(top: 0, left: TopToolbarViewUX.locationPadding,
                                       bottom: 0, right: TopToolbarViewUX.locationPadding)
             make.edges.equalTo(self.locationView).inset(insets)
-        }
-        
-        if let theme = currentTheme {
-            // If no theme exists here, then this will be styled after parent calls `applyTheme` at a later point
-            locationTextField.applyTheme(theme)
         }
     }
     
@@ -432,7 +445,13 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
     
     private func updateViewsForOverlayModeAndToolbarChanges() {
-        cancelButton.isHidden = !inOverlayMode
+        // UIStackView bug:
+        // Don't set `isHidden` to the same value on a view that adjusts layout of a UIStackView
+        // inside of a UIView.animate() block, otherwise on occasion the view will render but
+        // `isHidden` will still be true
+        if cancelButton.isHidden == inOverlayMode {
+            cancelButton.isHidden = !inOverlayMode
+        }
         progressBar.isHidden = inOverlayMode
         navigationStackView.isHidden = !toolbarIsShowing || inOverlayMode
         menuButton.isHidden = !toolbarIsShowing || inOverlayMode
@@ -589,25 +608,3 @@ extension TopToolbarView: AutocompleteTextFieldDelegate {
         leaveOverlayMode(didCancel: true)
     }
 }
-
-// MARK: - Themeable
-
-extension TopToolbarView: Themeable {
-    var themeableChildren: [Themeable?]? {
-        return [locationView, locationTextField] + actionButtons
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        
-        // Currently do not use gradient, hence same start/end color
-        progressBar.setGradientColors(startColor: theme.colors.accent, endColor: theme.colors.accent)
-        currentTheme = theme
-        cancelButton.setTitleColor(theme.colors.tints.header, for: .normal)
-        
-        backgroundColor = theme.colors.header
-        line.backgroundColor = theme.colors.border
-        line.alpha = theme.colors.transparencies.borderAlpha
-    }
-}
-

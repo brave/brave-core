@@ -10,7 +10,7 @@ import Data
 import BraveUI
 
 /// Displays shield settings and shield stats for a given URL
-class ShieldsViewController: UIViewController, PopoverContentComponent, Themeable {
+class ShieldsViewController: UIViewController, PopoverContentComponent {
     
     let tab: Tab
     private lazy var url: URL? = {
@@ -216,19 +216,6 @@ class ShieldsViewController: UIViewController, PopoverContentComponent, Themeabl
     
     override func loadView() {
         view = View()
-        applyTheme(Theme.of(nil))
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            applyTheme(Theme.of(nil))
-        }
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        shieldsView.applyTheme(theme)
     }
     
     override func viewDidLoad() {
@@ -303,15 +290,14 @@ class ShieldsViewController: UIViewController, PopoverContentComponent, Themeabl
     }
     
     @objc private func tappedAboutShieldsButton() {
-        let aboutShields = AboutShieldsViewController(tab: tab)
-        aboutShields.applyTheme(Theme.of(tab))
+        let aboutShields = AboutShieldsViewController()
         aboutShields.preferredContentSize = preferredContentSize
         navigationController?.pushViewController(aboutShields, animated: true)
     }
     
     @objc private func tappedShareShieldsButton() {
         let globalShieldsActivityController =
-            ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(theme: Theme.of(tab))
+            ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController()
         globalShieldsActivityController.popoverPresentationController?.sourceView = view
         
         present(globalShieldsActivityController, animated: true, completion: nil)

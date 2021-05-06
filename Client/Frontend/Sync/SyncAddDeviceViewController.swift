@@ -36,7 +36,7 @@ class SyncAddDeviceViewController: SyncViewController {
         let button = UIButton()
         button.setTitle(Strings.copyToClipboard, for: .normal)
         button.addTarget(self, action: #selector(SEL_copy), for: .touchUpInside)
-        button.setTitleColor(BraveUX.braveOrange, for: .normal)
+        button.setTitleColor(UIColor.braveOrange, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.isHidden = true
         return button
@@ -96,6 +96,7 @@ class SyncAddDeviceViewController: SyncViewController {
         containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.layer.cornerRadius = 8
+        containerView.layer.cornerCurve = .continuous
         containerView.layer.masksToBounds = true
 
         if !BraveSyncAPI.shared.isInSyncGroup {
@@ -129,7 +130,7 @@ class SyncAddDeviceViewController: SyncViewController {
         modeControl.isHidden = deviceType == .computer
         modeControl.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         
-        modeControl.selectedSegmentTintColor = BraveUX.braveOrange
+        modeControl.selectedSegmentTintColor = UIColor.braveOrange
         stackView.addArrangedSubview(modeControl)
         
         let titleDescriptionStackView = UIStackView()
@@ -140,11 +141,13 @@ class SyncAddDeviceViewController: SyncViewController {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
+        titleLabel.textColor = .braveLabel
         titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         titleDescriptionStackView.addArrangedSubview(titleLabel)
 
         descriptionLabel = UILabel()
         descriptionLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
+        descriptionLabel.textColor = .braveLabel
         descriptionLabel.numberOfLines = 0
         descriptionLabel.lineBreakMode = .byTruncatingTail
         descriptionLabel.textAlignment = .center
@@ -170,8 +173,8 @@ class SyncAddDeviceViewController: SyncViewController {
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.setTitle(Strings.done, for: .normal)
         doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
-        doneButton.appearanceTextColor = .white
-        doneButton.backgroundColor = BraveUX.braveOrange
+        doneButton.setTitleColor(.white, for: .normal)
+        doneButton.backgroundColor = .braveOrange
         doneButton.addTarget(self, action: #selector(SEL_done), for: .touchUpInside)
 
         doneEnterWordsStackView.addArrangedSubview(doneButton)
@@ -180,7 +183,7 @@ class SyncAddDeviceViewController: SyncViewController {
         enterWordsButton.translatesAutoresizingMaskIntoConstraints = false
         enterWordsButton.setTitle(Strings.showCodeWords, for: .normal)
         enterWordsButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
-        enterWordsButton.setTitleColor(BraveUX.greyH, for: .normal)
+        enterWordsButton.setTitleColor(.braveLabel, for: .normal)
         enterWordsButton.addTarget(self, action: #selector(SEL_showCodewords), for: .touchUpInside)
 
         doneEnterWordsStackView.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -219,7 +222,7 @@ class SyncAddDeviceViewController: SyncViewController {
             let attributedDescription = NSMutableAttributedString(string: description)
             
             if let lastSentenceRange = lastSentenceRange(text: description) {
-                attributedDescription.addAttribute(.foregroundColor, value: BraveUX.red, range: lastSentenceRange)
+                attributedDescription.addAttribute(.foregroundColor, value: UIColor.braveErrorLabel, range: lastSentenceRange)
             }
             
             descriptionLabel.attributedText = attributedDescription
@@ -234,7 +237,7 @@ class SyncAddDeviceViewController: SyncViewController {
             description.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: fontSize), range: boldRange)
             
             if let lastSentenceRange = lastSentenceRange(text: addDeviceWords) {
-                description.addAttribute(.foregroundColor, value: BraveUX.red, range: lastSentenceRange)
+                description.addAttribute(.foregroundColor, value: UIColor.braveErrorLabel, range: lastSentenceRange)
             }
             
             descriptionLabel.attributedText = description

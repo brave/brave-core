@@ -33,16 +33,16 @@ class FeedItemView: UIView {
     }
     /// The feed title label
     var titleLabel = UILabel().then {
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
     }
     /// An optional description label
     lazy var descriptionLabel = UILabel().then {
-        $0.appearanceTextColor = UIColor.white.withAlphaComponent(0.5)
+        $0.textColor = UIColor.white.withAlphaComponent(0.5)
     }
     /// The date of when the article was posted
     lazy var dateLabel = UILabel().then {
-        $0.appearanceTextColor = UIColor.white.withAlphaComponent(0.5)
+        $0.textColor = UIColor.white.withAlphaComponent(0.5)
     }
     /// The branding information (if applicable)
     lazy var brandContainerView = BrandContainerView()
@@ -156,7 +156,7 @@ extension FeedItemView {
             $0.text = Strings.BraveToday.promoted
             $0.numberOfLines = 1
             $0.font = .systemFont(ofSize: 12)
-            $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.8)
+            $0.textColor = UIColor(white: 1.0, alpha: 0.8)
             $0.setContentCompressionResistancePriority(.required, for: .horizontal)
         }
         
@@ -526,7 +526,7 @@ extension FeedItemView {
         }
         /// A label view for setting the brands name in plain text
         private(set) var textLabel = UILabel().then {
-            $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.7)
+            $0.textColor = UIColor(white: 1.0, alpha: 0.7)
             $0.numberOfLines = 0
         }
         /// The currently visible view in the container based on `viewingMode`.

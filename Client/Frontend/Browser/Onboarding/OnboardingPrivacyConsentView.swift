@@ -33,24 +33,26 @@ extension OnboardingPrivacyConsentViewController {
         
         private let titleLabel = CommonViews.primaryText(Strings.OBPrivacyConsentTitle).then {
             $0.font = .systemFont(ofSize: 20, weight: .semibold)
+            $0.textColor = .braveLabel
             $0.numberOfLines = 0
         }
         
         private let refProgramLabel = UILabel().then {
             $0.text = Strings.OBPrivacyConsentDetail
+            $0.textColor = .braveLabel
             $0.font = .systemFont(ofSize: 16, weight: .regular)
             $0.numberOfLines = 0
             $0.textAlignment = .left
             $0.minimumScaleFactor = 0.7
         }
         
-        init(theme: Theme) {
+        init() {
             super.init(frame: .zero)
             
+            backgroundColor = .braveBackground
+
             mainStackView.tag = OnboardingViewAnimationID.detailsContent.rawValue
             braveLogo.tag = OnboardingViewAnimationID.background.rawValue
-            
-            applyTheme(theme)
             
             mainStackView.addStackViewItems(
                 .view(.spacer(.vertical, amount: 1)),
@@ -77,11 +79,5 @@ extension OnboardingPrivacyConsentViewController {
         
         @available(*, unavailable)
         required init(coder: NSCoder) { fatalError() }
-        
-        func applyTheme(_ theme: Theme) {
-            backgroundColor = OnboardingViewController.colorForTheme(theme)
-            titleLabel.appearanceTextColor = theme.colors.tints.home
-            refProgramLabel.appearanceTextColor = theme.colors.tints.home
-        }
     }
 }

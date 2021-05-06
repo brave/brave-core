@@ -8,7 +8,7 @@ import SnapKit
 import BraveUI
 
 /// Non-interactive contents that appear behind the New Tab Page contents
-class NewTabPageBackgroundView: UIView, Themeable {
+class NewTabPageBackgroundView: UIView {
     /// The image wallpaper if the user has background images enabled
     let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
@@ -35,6 +35,14 @@ class NewTabPageBackgroundView: UIView, Themeable {
         super.init(frame: frame)
         
         clipsToBounds = true
+        backgroundColor = .init {
+            if $0.userInterfaceStyle == .dark {
+                return .secondaryBraveBackground
+            }
+            // We use a special color here unfortunately when there is no background because
+            // favorite cells have white text
+            return .init(rgb: 0x3b3e4f)
+        }
         
         addSubview(imageView)
         addSubview(gradientView)
@@ -49,13 +57,5 @@ class NewTabPageBackgroundView: UIView, Themeable {
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        if theme.isDark {
-            backgroundColor = theme.colors.home
-        } else {
-            backgroundColor = UIColor(red: 59.0/255.0, green: 62.0/255.0, blue: 79.0/255.0, alpha: 1.0)
-        }
     }
 }

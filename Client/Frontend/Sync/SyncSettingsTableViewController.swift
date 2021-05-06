@@ -41,14 +41,14 @@ class SyncSettingsTableViewController: UITableViewController {
         
         let text = UITextView().then {
             $0.text = Strings.syncSettingsHeader
-            $0.textContainerInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            $0.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
             $0.isEditable = false
             $0.isSelectable = false
-            $0.textColor = BraveUX.greyH
+            $0.textColor = .secondaryBraveLabel
             $0.textAlignment = .center
             $0.font = UIFont.systemFont(ofSize: 15)
             $0.isScrollEnabled = false
-            $0.backgroundColor = UIColor.clear
+            $0.backgroundColor = .clear
         }
         
         tableView.tableHeaderView = text
@@ -65,13 +65,6 @@ class SyncSettingsTableViewController: UITableViewController {
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self,
                                                                 action: #selector(doneTapped))
-        }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            updateThemeForUserInterfaceStyleChange()
         }
     }
     
@@ -242,6 +235,7 @@ class SyncSettingsTableViewController: UITableViewController {
             let deviceName = device.isCurrentDevice ? "\(name) (\(Strings.syncThisDevice))" : name
             
             cell.textLabel?.text = deviceName
+            cell.textLabel?.textColor = .braveLabel
         case Sections.buttons.rawValue:
             configureButtonCell(cell)
         default:
@@ -259,7 +253,7 @@ class SyncSettingsTableViewController: UITableViewController {
         cell.textLabel?.do {
             $0.text = Strings.syncAddAnotherDevice
             $0.textAlignment = .center
-            $0.appearanceTextColor = BraveUX.braveOrange
+            $0.textColor = .braveOrange
             $0.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)
         }
     }

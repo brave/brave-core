@@ -7,94 +7,69 @@ import SnapKit
 import Shared
 
 private struct TabsButtonUX {
-    static let cornerRadius: CGFloat = 2
+    static let cornerRadius: CGFloat = 3
     static let titleFont: UIFont = UIConstants.defaultChromeSmallFontBold
     static let borderStrokeWidth: CGFloat = 1.5
 }
 
 class TabsButton: UIButton {
-
-    private var textColor = UIColor.Photon.white100
-    private var highlightTextColor: UIColor?
     
-    private var currentCount: Int?
-    private var top: Bool
-
-    override var isHighlighted: Bool {
-        didSet {
-            updateButtonVisuals()
-        }
+    private let countLabel = UILabel().then {
+        $0.font = TabsButtonUX.titleFont
+        $0.textAlignment = .center
+        $0.isUserInteractionEnabled = false
+        $0.textColor = .braveLabel
     }
     
-    private func updateButtonVisuals() {
-        let highlightedTextColor = highlightTextColor ?? textColor
-        let foregroundColor = isHighlighted ? highlightedTextColor : textColor
-        countLabel.textColor = foregroundColor
-        borderView.color = foregroundColor
-    }
-
-    lazy var countLabel: UILabel = {
-        let label = UILabel()
-        label.font = TabsButtonUX.titleFont
-        label.layer.cornerRadius = TabsButtonUX.cornerRadius
-        label.textAlignment = .center
-        label.isUserInteractionEnabled = false
-        return label
-    }()
-
-    lazy var insideButton: UIView = {
-        let view = UIView()
-        view.clipsToBounds = false
-        view.isUserInteractionEnabled = false
-        return view
-    }()
-
-    fileprivate lazy var labelBackground: UIView = {
-        let background = UIView()
-        background.layer.cornerRadius = TabsButtonUX.cornerRadius
-        background.isUserInteractionEnabled = false
-        background.backgroundColor = .clear
-        return background
-    }()
-
-    fileprivate lazy var borderView: InnerStrokedView = {
-        let border = InnerStrokedView()
-        border.strokeWidth = TabsButtonUX.borderStrokeWidth
-        border.cornerRadius = TabsButtonUX.cornerRadius
-        border.isUserInteractionEnabled = false
-        return border
-    }()
-    
-    required init(top: Bool) {
-        self.top = top
-        super.init(frame: .zero)
-        [labelBackground, borderView, countLabel].forEach(insideButton.addSubview)
-        addSubview(insideButton)
-        isAccessibilityElement = true
-        accessibilityTraits.insert(.button)
-        self.accessibilityLabel = Strings.showTabs
+    private let borderView = UIView().then {
+        $0.layer.borderWidth = TabsButtonUX.borderStrokeWidth
+        $0.layer.cornerRadius = TabsButtonUX.cornerRadius
+        $0.layer.cornerCurve = .continuous
+        $0.isUserInteractionEnabled = false
     }
     
     override init(frame: CGRect) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func updateConstraints() {
-        super.updateConstraints()
-        [labelBackground, borderView, countLabel].forEach {
-            $0.snp.remakeConstraints { make in
-                make.edges.equalTo(insideButton)
-            }
+        super.init(frame: frame)
+        
+        accessibilityTraits.insert(.button)
+        isAccessibilityElement = true
+        accessibilityLabel = Strings.showTabs
+        
+        addSubview(borderView)
+        addSubview(countLabel)
+        
+        countLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
-        insideButton.snp.remakeConstraints { (make) -> Void in
-            make.size.equalTo(19)
-            make.center.equalTo(self)
+        borderView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.size.equalTo(19)
+        }
+        
+        borderView.layer.borderColor = UIColor.braveLabel.resolvedColor(with: traitCollection).cgColor
+    }
+    
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+        fatalError()
+    }
+    
+    override var isHighlighted: Bool {
+        didSet {
+            let color: UIColor = isHighlighted ? .braveOrange : .braveLabel
+            countLabel.textColor = color
+            borderView.layer.borderColor = color.resolvedColor(with: traitCollection).cgColor
         }
     }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // CGColor's do not get automatic updates
+        borderView.layer.borderColor = isHighlighted ? UIColor.braveOrange.cgColor :
+            UIColor.braveLabel.resolvedColor(with: traitCollection).cgColor
     }
+    
+    private var currentCount: Int?
     
     func updateTabCount(_ count: Int) {
         let count = max(count, 1)
@@ -106,14 +81,3 @@ class TabsButton: UIButton {
         self.accessibilityValue = countToBe
     }
 }
-
-extension TabsButton: Themeable {
-    func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        
-        textColor = top ? theme.colors.tints.header : theme.colors.tints.footer
-        highlightTextColor = theme.colors.accent
-        updateButtonVisuals()
-    }
-}
-

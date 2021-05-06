@@ -7,7 +7,7 @@ import Shared
 import BraveShared
 import BraveUI
 
-class SimpleShieldsView: UIView, Themeable {
+class SimpleShieldsView: UIView {
     
     let faviconImageView = UIImageView().then {
         $0.snp.makeConstraints {
@@ -20,23 +20,28 @@ class SimpleShieldsView: UIView, Themeable {
     
     let hostLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 25.0)
+        $0.textColor = .bravePrimary
     }
     
-    let shieldsSwitch = ShieldsSwitch()
+    let shieldsSwitch = ShieldsSwitch().then {
+        $0.offBackgroundColor = .secondaryBraveBackground
+    }
     
     private let braveShieldsLabel = UILabel().then {
         $0.text = Strings.Shields.statusTitle
         $0.font = .systemFont(ofSize: 16, weight: .medium)
+        $0.textColor = .braveLabel
     }
     
     let statusLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .bold)
         $0.text = Strings.Shields.statusValueUp.uppercased()
+        $0.textColor = .braveLabel
     }
     
     // Shields Up
     
-    class BlockCountView: UIView, Themeable {
+    class BlockCountView: UIView {
         
         private struct UX {
             static let descriptionEdgeInset = UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
@@ -72,6 +77,7 @@ class SimpleShieldsView: UIView, Themeable {
             $0.font = .systemFont(ofSize: 36)
             $0.setContentHuggingPriority(.required, for: .horizontal)
             $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+            $0.textColor = .braveLabel
         }
         
         private lazy var descriptionLabel = ViewLabel().then {
@@ -85,6 +91,7 @@ class SimpleShieldsView: UIView, Themeable {
             $0.backgroundColor = .clear
             $0.setContentCompressionResistancePriority(.required, for: .horizontal)
             $0.isAccessibilityElement = false
+            $0.textColor = .braveLabel
         }
         
         let infoButton = Button().then {
@@ -97,6 +104,7 @@ class SimpleShieldsView: UIView, Themeable {
             $0.setContentHuggingPriority(.required, for: .horizontal)
             $0.setContentCompressionResistancePriority(.required, for: .horizontal)
             $0.accessibilityLabel = Strings.Shields.aboutBraveShieldsTitle
+            $0.tintColor = .bravePrimary
         }
         
         let shareButton = Button().then {
@@ -109,6 +117,7 @@ class SimpleShieldsView: UIView, Themeable {
             $0.setContentHuggingPriority(.required, for: .horizontal)
             $0.setContentCompressionResistancePriority(.required, for: .horizontal)
             $0.accessibilityLabel = Strings.share
+            $0.tintColor = .bravePrimary
         }
         
         override init(frame: CGRect) {
@@ -117,6 +126,10 @@ class SimpleShieldsView: UIView, Themeable {
             isAccessibilityElement = true
             accessibilityTraits.insert(.button)
             accessibilityHint = Strings.Shields.blockedInfoButtonAccessibilityLabel
+            
+            descriptionStackView.addBackground(color: .secondaryBraveBackground, cornerRadius: 6.0)
+            infoStackView.addBackground(color: .secondaryBraveBackground, cornerRadius: 6.0)
+            shareStackView.addBackground(color: .secondaryBraveBackground, cornerRadius: 6.0)
             
             addSubview(contentStackView)
 
@@ -157,18 +170,6 @@ class SimpleShieldsView: UIView, Themeable {
         required init(coder: NSCoder) {
             fatalError()
         }
-        
-        func applyTheme(_ theme: Theme) {
-            countLabel.appearanceTextColor = theme.isDark ? .white : .black
-            descriptionLabel.appearanceTextColor = theme.isDark ? .white : .black
-            
-            let contentBackgroundColor = theme.isDark ? #colorLiteral(red: 0.1882352941, green: 0.2039215686, blue: 0.262745098, alpha: 1) : Colors.neutral000
-            descriptionStackView.addBackground(color: contentBackgroundColor, cornerRadius: 6.0)
-            infoStackView.addBackground(color: contentBackgroundColor, cornerRadius: 6.0)
-            shareStackView.addBackground(color: contentBackgroundColor, cornerRadius: 6.0)
-            shareButton.appearanceTintColor = theme.isDark ? . white : .black
-            infoButton.appearanceTintColor = theme.isDark ? .white : .black
-        }
     }
     
     let blockCountView = BlockCountView()
@@ -176,7 +177,7 @@ class SimpleShieldsView: UIView, Themeable {
     let footerLabel = UILabel().then {
         $0.text = Strings.Shields.siteBroken
         $0.font = .systemFont(ofSize: 13.0)
-        $0.appearanceTextColor = UIColor(rgb: 0x868e96)
+        $0.textColor = UIColor(rgb: 0x868e96)
         $0.numberOfLines = 0
     }
     
@@ -195,12 +196,14 @@ class SimpleShieldsView: UIView, Themeable {
         $0.text = Strings.Shields.shieldsDownDisclaimer
         $0.numberOfLines = 0
         $0.textAlignment = .center
+        $0.textColor = .braveLabel
     }
     
     let reportSiteButton = ActionButton(type: .system).then {
         $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         $0.titleEdgeInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
         $0.setTitle(Strings.Shields.reportABrokenSite, for: .normal)
+        $0.tintColor = .braveLabel
     }
     
     override init(frame: CGRect) {
@@ -244,18 +247,6 @@ class SimpleShieldsView: UIView, Themeable {
     required init(coder: NSCoder) {
         fatalError()
     }
-    
-    func applyTheme(_ theme: Theme) {
-        shieldsSwitch.offBackgroundColor = theme.isDark ?
-            UIColor(rgb: 0x26262E) :
-            UIColor(white: 0.9, alpha: 1.0)
-        blockCountView.applyTheme(theme)
-        braveShieldsLabel.textColor = theme.colors.tints.home
-        statusLabel.textColor = theme.colors.tints.home
-        hostLabel.textColor = theme.isDark ? .white : .black
-        shieldsDownDisclaimerLabel.textColor = theme.colors.tints.home
-        reportSiteButton.tintColor = theme.isDark ? Colors.grey200 : Colors.grey800
-    }
 }
 
 // MARK: - ShieldsStackView
@@ -286,6 +277,7 @@ extension SimpleShieldsView {
 
             if let radius = cornerRadius {
                 backgroundView.layer.cornerRadius = radius
+                backgroundView.layer.cornerCurve = .continuous
             }
 
             insertSubview(backgroundView, at: 0)

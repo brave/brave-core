@@ -8,31 +8,14 @@ import Shared
 import BraveRewards
 
 /// A base class to provide common implementations needed for user onboarding screens.
-class OnboardingViewController: UIViewController, Themeable {
+class OnboardingViewController: UIViewController {
     weak var delegate: Onboardable?
     var profile: Profile
     var rewards: BraveRewards?
-    var theme: Theme
     
-    /// Whether the on-boarding is dark or not, based solely on passed in theme
-    ///  Added explicitly to make removal easier in the future if just `theme` is used
-    var dark: Bool {
-        return theme.isDark
-    }
-    
-    static func colorForTheme(_ theme: Theme) -> UIColor {
-        return theme.isDark ? UIColor(rgb: 0x343A40) : UIColor(rgb: 0xFFFFFF)
-    }
-    
-    static func getUpdatedTheme() -> Theme {
-        let tabManager = (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.tabManager
-        return Theme.of(tabManager?.selectedTab)
-    }
-    
-    init(profile: Profile, rewards: BraveRewards?, theme: Theme) {
+    init(profile: Profile, rewards: BraveRewards?) {
         self.profile = profile
         self.rewards = rewards
-        self.theme = theme
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -66,7 +49,7 @@ class OnboardingViewController: UIViewController, Themeable {
         static func primaryButton(text: String = Strings.OBContinueButton) -> UIButton {
             let button = RoundInterfaceButton().then {
                 $0.setTitle(text, for: .normal)
-                $0.backgroundColor = BraveUX.braveOrange
+                $0.backgroundColor = .braveOrange
                 $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
             }
             
@@ -88,6 +71,7 @@ class OnboardingViewController: UIViewController, Themeable {
                 $0.text = text
                 $0.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.bold)
                 $0.textAlignment = .center
+                $0.textColor = .braveLabel
             }
             
             return label
@@ -99,22 +83,10 @@ class OnboardingViewController: UIViewController, Themeable {
                 $0.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular)
                 $0.textAlignment = .center
                 $0.numberOfLines = 0
+                $0.textColor = .braveLabel
             }
             
             return label
         }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            theme = OnboardingViewController.getUpdatedTheme()
-            applyTheme(theme)
-        }
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
     }
 }

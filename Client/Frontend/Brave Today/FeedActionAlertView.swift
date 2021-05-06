@@ -27,14 +27,14 @@ class FeedActionAlertView: UIView {
         $0.textAlignment = .center
         $0.numberOfLines = 0
         $0.font = .systemFont(ofSize: 16, weight: .semibold)
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
     }
     
     private let messageLabel = UILabel().then {
         $0.textAlignment = .center
         $0.numberOfLines = 0
         $0.font = .systemFont(ofSize: 14)
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         
     }
     

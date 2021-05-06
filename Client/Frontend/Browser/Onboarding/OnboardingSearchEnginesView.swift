@@ -30,6 +30,7 @@ extension OnboardingSearchEnginesViewController {
             $0.allowsMultipleSelection = false
             $0.alwaysBounceVertical = false
             $0.showsVerticalScrollIndicator = true
+            $0.backgroundColor = .braveBackground
         }
         
         let continueButton = CommonViews.primaryButton(text: Strings.OBSaveButton).then {
@@ -55,10 +56,12 @@ extension OnboardingSearchEnginesViewController {
         
         let titlePrimary = CommonViews.primaryText(Strings.OBSearchEngineTitle).then {
             $0.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
+            $0.textColor = .braveLabel
         }
         
         let titleSecondary = CommonViews.secondaryText(Strings.OBSearchEngineDetail).then {
             $0.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
+            $0.textColor = .braveLabel
         }
         
         private let titleStackView = UIStackView().then { stackView in
@@ -72,14 +75,15 @@ extension OnboardingSearchEnginesViewController {
             $0.spacing = 15.0
         }
         
-        private let containerView = UIView()
+        private let containerView = UIView().then {
+            $0.backgroundColor = .braveBackground
+        }
         
         private var logoCenterY: Constraint?
         
-        init(theme: Theme) {
-            super.init(frame: .zero)
+        override init(frame: CGRect) {
+            super.init(frame: frame)
             
-            applyTheme(theme)
             containerView.tag = OnboardingViewAnimationID.details.rawValue
             mainStackView.tag = OnboardingViewAnimationID.detailsContent.rawValue
             braveLogo.tag = OnboardingViewAnimationID.background.rawValue
@@ -136,14 +140,6 @@ extension OnboardingSearchEnginesViewController {
         
         @available(*, unavailable)
         required init(coder: NSCoder) { fatalError() }
-        
-        func applyTheme(_ theme: Theme) {
-            containerView.backgroundColor = OnboardingViewController.colorForTheme(theme)
-            searchEnginesTable.backgroundView?.backgroundColor = OnboardingViewController.colorForTheme(theme)
-            titlePrimary.appearanceTextColor = theme.colors.tints.home
-            titleSecondary.appearanceTextColor = theme.colors.tints.home
-            searchEnginesTable.reloadData()
-        }
         
         // MARK: - Animations
         
@@ -222,6 +218,7 @@ extension OnboardingSearchEnginesViewController {
             
             imageView?.contentMode = .scaleAspectFit
             layer.cornerRadius = UX.SearchEngineCell.cornerRadius
+            layer.cornerCurve = .continuous
             
             selectedBackgroundView = UIView().then {
                 $0.layer.cornerRadius = UX.SearchEngineCell.cornerRadius

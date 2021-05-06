@@ -18,7 +18,7 @@ extension BrowserViewController: DownloadQueueDelegate {
                 if buttonPressed, !downloadQueue.isEmpty {
                     downloadQueue.cancelAll()
 
-                    let downloadCancelledToast = ButtonToast(labelText: Strings.downloadCancelledToastLabelText, backgroundColor: UIColor.Photon.grey60, textAlignment: .center)
+                    let downloadCancelledToast = ButtonToast(labelText: Strings.downloadCancelledToastLabelText, backgroundColor: UIColor.braveLabel, textAlignment: .center)
 
                     self.show(toast: downloadCancelledToast)
                 }
@@ -53,8 +53,6 @@ extension BrowserViewController: DownloadQueueDelegate {
                     guard buttonPressed else { return }
                     
                     let downloadsPanel = DownloadsPanel(profile: self.profile)
-                    let currentTheme = Theme.of(self.tabManager.selectedTab)
-                    downloadsPanel.applyTheme(currentTheme)
                     let nav = SettingsNavigationController(rootViewController: downloadsPanel)
                     nav.modalPresentationStyle = .formSheet
                     nav.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: nav, action: #selector(nav.done))
@@ -64,7 +62,7 @@ extension BrowserViewController: DownloadQueueDelegate {
 
                 self.show(toast: downloadCompleteToast, duration: DispatchTimeInterval.seconds(8))
             } else {
-                let downloadFailedToast = ButtonToast(labelText: Strings.downloadFailedToastLabelText, backgroundColor: UIColor.Photon.grey60, textAlignment: .center)
+                let downloadFailedToast = ButtonToast(labelText: Strings.downloadFailedToastLabelText, backgroundColor: UIColor.braveLabel, textAlignment: .center)
 
                 self.show(toast: downloadFailedToast, duration: nil)
             }

@@ -38,10 +38,10 @@ class BraveTodayOptInView: UIView, FeedCardContent {
     let turnOnBraveTodayButton = ActionButton().then {
         $0.layer.borderWidth = 0
         $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
-        $0.titleLabel?.appearanceTextColor = .white
+        $0.titleLabel?.textColor = .white
         $0.setTitle(Strings.BraveToday.turnOnBraveToday, for: .normal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-        $0.backgroundColor = Colors.blurple400
+        $0.backgroundColor = .braveLighterBlurple
         $0.loaderView = LoaderView(size: .small).then {
             $0.tintColor = .white
         }
@@ -50,7 +50,7 @@ class BraveTodayOptInView: UIView, FeedCardContent {
     private let learnMoreButton = UIButton(type: .system).then {
         $0.setTitle(Strings.BraveToday.learnMoreTitle, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
-        $0.titleLabel?.appearanceTextColor = .white
+        $0.titleLabel?.textColor = .white
         $0.setTitleColor(.white, for: .normal)
     }
     
@@ -73,14 +73,14 @@ class BraveTodayOptInView: UIView, FeedCardContent {
             .view(UILabel().then {
                 $0.text = Strings.BraveToday.introCardTitle
                 $0.textAlignment = .center
-                $0.appearanceTextColor = .white
+                $0.textColor = .white
                 $0.font = .systemFont(ofSize: 18, weight: .semibold)
                 $0.numberOfLines = 0
             }),
             .view(UILabel().then {
                 $0.text = Strings.BraveToday.introCardBody
                 $0.textAlignment = .center
-                $0.appearanceTextColor = .white
+                $0.textColor = .white
                 $0.font = .systemFont(ofSize: 14)
                 $0.numberOfLines = 0
             }),
@@ -93,7 +93,7 @@ class BraveTodayOptInView: UIView, FeedCardContent {
                     .view(UILabel().then {
                         $0.text = Strings.BraveToday.introCardNewTextBody
                         $0.textAlignment = .center
-                        $0.appearanceTextColor = .white
+                        $0.textColor = .white
                         $0.font = .systemFont(ofSize: 13)
                         $0.numberOfLines = 0
                     })
@@ -148,15 +148,13 @@ class BraveTodayOptInView: UIView, FeedCardContent {
 
 /// Displays the word "New" with a gradient mask
 private class MaskedNewLabel: UIView {
-    private let gradientView = GradientView(
-        colors: [UIColor(rgb: 0x4C54D2), UIColor(rgb: 0xBF14A2), UIColor(rgb: 0xF73A1C)],   // light
-        positions: [0, 0.4, 1],
-        startPoint: .zero,
-        endPoint: .init(x: 1, y: 1)
-    )
+    private let gradientView = BraveGradientView.gradient02.then {
+        // New has a white background always behind it, so only light
+        $0.overrideUserInterfaceStyle = .light
+    }
     private let label = UILabel().then {
         $0.text = Strings.BraveToday.introCardNew.uppercased()
-        $0.appearanceTextColor = .black
+        $0.textColor = .black
         $0.font = .systemFont(ofSize: 12, weight: .bold)
     }
     override init(frame: CGRect) {
@@ -164,9 +162,7 @@ private class MaskedNewLabel: UIView {
         
         backgroundColor = .white
         layer.cornerRadius = 8
-        if #available(iOS 13.0, *) {
-            layer.cornerCurve = .continuous
-        }
+        layer.cornerCurve = .continuous
         
         gradientView.mask = label
         clipsToBounds = true

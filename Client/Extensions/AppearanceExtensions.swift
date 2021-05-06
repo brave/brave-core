@@ -4,78 +4,68 @@
 
 import Foundation
 import BraveShared
+import BraveUI
 
-extension Theme {
-    func applyAppearanceProperties() {
-        
-        // `appearance` modifications only impact UI items not current visible
-
+extension AppDelegate {
+    /// Setup basic control defaults based on Brave design system colors
+    ///
+    /// Only set values here that should be universally accepted as a default color for said
+    /// control. Do not apply appearance overrides here to solve for laziness of not wanting to set
+    /// a color multiple times.
+    ///
+    /// - warning: Be careful adjusting colors here, and make sure impact is well known
+    func applyAppearanceDefaults() {
         // important! for privacy concerns, otherwise UI can bleed through
-        UIView.appearance(whenContainedInInstancesOf: [BasePasscodeViewController.self]).appearanceBackgroundColor = colors.home
+        UIView.appearance(whenContainedInInstancesOf: [BasePasscodeViewController.self])
+            .backgroundColor = .braveBackground
         
-        UIToolbar.appearance().tintColor = colors.accent
-        UIToolbar.appearance().backgroundColor = colors.footer
-        UIToolbar.appearance().barTintColor = colors.footer
+        UIToolbar.appearance().do {
+            $0.tintColor = .braveOrange
+            $0.standardAppearance = {
+                let appearance = UIToolbarAppearance()
+                appearance.configureWithDefaultBackground()
+                appearance.backgroundColor = .braveBackground
+                return appearance
+            }()
+        }
         
-        UINavigationBar.appearance().tintColor = colors.accent
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: colors.tints.home]
-        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: colors.tints.home]
-        UINavigationBar.appearance().appearanceBarTintColor = colors.header
+        UINavigationBar.appearance().do {
+            $0.tintColor = .braveOrange
+            $0.standardAppearance = {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithDefaultBackground()
+                appearance.titleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+                appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.braveLabel]
+                appearance.backgroundColor = .braveBackground
+                return appearance
+            }()
+        }
         
-        UISwitch.appearance().appearanceOnTintColor = colors.accent
-        
-        // This is a subtle "abuse" of theme colors
-        // In order to properly style things, `addressBar` has been utilized to offer contrast to `home`/`header`, as many of the themes utilize similar colors.
-        // These used colors have been mapped, primarily for table usage, and to understand how table colors relate to each other.
-        // Any change to a single tableView property that currently uses one of these will probably have odd behavior and must be thoroughly tested
+        UISwitch.appearance().onTintColor = UIColor.braveOrange
         
         /// Used as color a table will use as the base (e.g. background)
-        let tablePrimaryColor = colors.home
+        let tablePrimaryColor = UIColor.braveGroupedBackground
         /// Used to augment `tablePrimaryColor` above
-        let tableSecondaryColor = colors.header
+        let tableSecondaryColor = UIColor.secondaryBraveGroupedBackground
         
-        // Will become the color for whatever in the table is .clear
-        // In some cases this is the header, footer, cell, or a combination of them.
-        // Be careful adjusting colors here, and make sure impact is well known
-        UITableView.appearance().appearanceBackgroundColor = tablePrimaryColor
-        UITableView.appearance().appearanceSeparatorColor = colors.border.withAlphaComponent(colors.transparencies.borderAlpha)
+        UITableView.appearance().backgroundColor = tablePrimaryColor
+        UITableView.appearance().separatorColor = .braveSeparator
         
-        UITableViewCell.appearance().tintColor = colors.accent
-        UITableViewCell.appearance().backgroundColor = tableSecondaryColor
-        
-        UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self]).tintColor = colors.tints.home
-        UIImageView.appearance(whenContainedInInstancesOf: [BraveRewardsSettingsViewController.self]).tintColor = colors.tints.home
-
-        UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self]).appearanceBackgroundColor = tablePrimaryColor
-        
-        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).appearanceTextColor = colors.tints.home
-        UILabel.appearance(whenContainedInInstancesOf: [UICollectionReusableView.self]).appearanceTextColor = colors.tints.home
-        
-        AddEditHeaderView.appearance().appearanceBackgroundColor = tableSecondaryColor
-        UITextField.appearance().appearanceTextColor = colors.tints.home
-        UITextField.appearance().keyboardAppearance = isDark ? .dark : .light
-        
-        // Sync items
-        SyncViewController.SyncView.appearance(whenContainedInInstancesOf: [UINavigationController.self]).appearanceBackgroundColor = colors.home
-        SyncDeviceTypeButton.appearance().appearanceBackgroundColor = colors.header
-        UIButton.appearance(
-            whenContainedInInstancesOf: [SyncViewController.self]).appearanceTextColor = colors.tints.home
-        
-        // Search
-        UIView.appearance(whenContainedInInstancesOf: [SearchViewController.self]).appearanceBackgroundColor = colors.home
-        InsetButton.appearance(whenContainedInInstancesOf: [SearchViewController.self]).appearanceBackgroundColor = .clear
-        
-        InsetButton.appearance(whenContainedInInstancesOf: [SearchSuggestionPromptView.self]).appearanceTextColor = colors.tints.home
-        
-        // Overrides all views inside of itself when we're fixed to a specific theme
-        // Private browsing mode is also fixed to a specific theme
-        if PrivateBrowsingManager.shared.isPrivateBrowsing ||
-            Preferences.General.themeNormalMode.value != DefaultTheme.system.rawValue {
-            UIWindow.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
-            UIView.appearance().appearanceOverrideUserInterfaceStyle = isDark ? .dark : .light
-        } else {
-            UIWindow.appearance().appearanceOverrideUserInterfaceStyle = .unspecified
-            UIView.appearance().appearanceOverrideUserInterfaceStyle = .unspecified
+        UITableViewCell.appearance().do {
+            $0.tintColor = .braveOrange
+            $0.backgroundColor = tableSecondaryColor
         }
+        
+        UIImageView.appearance(whenContainedInInstancesOf: [SettingsViewController.self])
+            .tintColor = .braveLabel
+
+        UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
+            .backgroundColor = tablePrimaryColor
+        
+        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = .braveLabel
+        UILabel.appearance(whenContainedInInstancesOf: [UICollectionReusableView.self])
+            .textColor = .braveLabel
+        
+        UITextField.appearance().textColor = .braveLabel
     }
 }

@@ -7,7 +7,7 @@ import Foundation
 import BraveUI
 import Shared
 
-class LegacyWalletTransferButton: UIControl, Themeable {
+class LegacyWalletTransferButton: UIControl {
     
     let dismissButton = Button(type: .system).then {
         $0.setImage(UIImage(imageLiteralResourceName: "close-medium").template, for: .normal)
@@ -24,14 +24,14 @@ class LegacyWalletTransferButton: UIControl, Themeable {
         $0.text = Strings.Rewards.legacyWalletTransfer
         $0.font = .systemFont(ofSize: 18, weight: .medium)
         $0.numberOfLines = 0
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
     }
     
     private let subtitleLabel = UILabel().then {
         $0.text = Strings.Rewards.legacyWalletTransferSubtitle
         $0.font = .systemFont(ofSize: 13)
         $0.numberOfLines = 0
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
     }
     
     override init(frame: CGRect) {
@@ -51,7 +51,7 @@ class LegacyWalletTransferButton: UIControl, Themeable {
         layer.cornerRadius = 8
         layer.cornerCurve = .continuous
         
-        backgroundColor = UIColor(rgb: 0x339AF0)
+        backgroundColor = .braveInfoLabel
         
         addSubview(stackView)
         addSubview(dismissButton)

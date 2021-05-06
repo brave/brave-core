@@ -14,7 +14,7 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
     }
     
     override func loadView() {
-        view = View(theme: theme)
+        view = View()
     }
 
     override func viewDidLoad() {
@@ -41,10 +41,5 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
         rewards?.isEnabled = true
         
         self.continueTapped()
-    }
-    
-    override func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        contentView.applyTheme(theme)
     }
 }

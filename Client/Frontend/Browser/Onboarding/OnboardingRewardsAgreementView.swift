@@ -14,7 +14,7 @@ extension OnboardingRewardsAgreementViewController {
         /// A negative spacing is needed to make rounded corners for details view visible.
         static let negativeSpacing: CGFloat = -16
         static let descriptionContentInset: CGFloat = 25
-        static let linkColor: UIColor = BraveUX.braveOrange
+        static let linkColor: UIColor = UIColor.braveOrange
         static let animationContentInset: CGFloat = 50.0
         static let checkboxInsets: CGFloat = -44.0
     }
@@ -25,7 +25,7 @@ extension OnboardingRewardsAgreementViewController {
         
         let turnOnButton = CommonViews.primaryButton(text: Strings.OBTurnOnButton).then {
             $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.OBTurnOnButton"
-            $0.backgroundColor = BraveUX.braveOrange
+            $0.backgroundColor = .braveOrange
             $0.titleLabel?.minimumScaleFactor = 0.75
         }
         
@@ -48,7 +48,9 @@ extension OnboardingRewardsAgreementViewController {
         }
         
         private let descriptionView = UIView().then {
+            $0.backgroundColor = .braveBackground
             $0.layer.cornerRadius = 12
+            $0.layer.cornerCurve = .continuous
             $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
         
@@ -59,10 +61,12 @@ extension OnboardingRewardsAgreementViewController {
         
         private let titleLabel = CommonViews.primaryText(Strings.OBRewardsAgreementTitle).then {
             $0.numberOfLines = 0
+            $0.textColor = .braveLabel
         }
         
         private let subtitleLabel = CommonViews.secondaryText(Strings.OBRewardsDetail).then {
             $0.numberOfLines = 0
+            $0.textColor = .braveLabel
         }
         
         private lazy var descriptionLabel = UITextView().then {
@@ -102,19 +106,18 @@ extension OnboardingRewardsAgreementViewController {
             $0.spacing = 15.0
         }
         
-        private func updateDescriptionLabel(for theme: Theme) {
+        private func updateDescriptionLabel() {
             descriptionLabel.attributedText = {
                 let fontSize: CGFloat = 14.0
-                let titleLabelColor = theme.colors.tints.home
                 
                 let text = NSMutableAttributedString(string: Strings.OBRewardsAgreementDetail, attributes: [
                     .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
-                    .foregroundColor: titleLabelColor
+                    .foregroundColor: UIColor.braveLabel
                 ])
                 
                 text.append(NSAttributedString(string: " ", attributes: [
                     .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
-                    .foregroundColor: titleLabelColor
+                    .foregroundColor: UIColor.braveLabel
                 ]))
                 
                 text.append(NSAttributedString(string: Strings.OBRewardsAgreementDetailLink, attributes: [
@@ -125,7 +128,7 @@ extension OnboardingRewardsAgreementViewController {
                 
                 text.append(NSAttributedString(string: ".", attributes: [
                     .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
-                    .foregroundColor: titleLabelColor
+                    .foregroundColor: UIColor.braveLabel
                 ]))
                 
                 let paragraphStyle = NSMutableParagraphStyle()
@@ -143,18 +146,17 @@ extension OnboardingRewardsAgreementViewController {
             descriptionLabel.isAccessibilityElement = true
         }
         
-        func updateSubtitleText(_ text: String, boldWords: Int, for theme: Theme) {
+        func updateSubtitleText(_ text: String, boldWords: Int) {
             let subTitle = text.boldWords(with: self.subtitleLabel.font, amount: boldWords)
             subTitle.addAttribute(.foregroundColor,
-                                  value: theme.colors.tints.home,
+                                  value: UIColor.braveLabel,
                                   range: NSRange(location: 0, length: subTitle.length))
             self.subtitleLabel.attributedText = subTitle
         }
         
-        init(theme: Theme) {
-            super.init(frame: .zero)
+        override init(frame: CGRect) {
+            super.init(frame: frame)
             
-            applyTheme(theme)
             mainStackView.tag = OnboardingViewAnimationID.details.rawValue
             descriptionStackView.tag = OnboardingViewAnimationID.detailsContent.rawValue
             imageView.tag = OnboardingViewAnimationID.background.rawValue
@@ -179,19 +181,6 @@ extension OnboardingRewardsAgreementViewController {
             
             skipButton.snp.makeConstraints {
                 $0.width.equalTo(turnOnButton.snp.width).priority(.low)
-            }
-        }
-        
-        func applyTheme(_ theme: Theme) {
-            descriptionView.backgroundColor = OnboardingViewController.colorForTheme(theme)
-            titleLabel.appearanceTextColor = theme.colors.tints.home
-            updateDescriptionLabel(for: theme)
-            
-            if let text = (subtitleLabel.attributedText?.mutableCopy() as? NSMutableAttributedString) {
-                text.addAttribute(.foregroundColor,
-                                  value: theme.colors.tints.home,
-                                  range: NSRange(location: 0, length: text.length))
-                subtitleLabel.attributedText = text
             }
         }
         

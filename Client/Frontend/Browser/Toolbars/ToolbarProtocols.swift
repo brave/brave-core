@@ -14,7 +14,7 @@ protocol ToolbarProtocol: class {
     var addTabButton: ToolbarButton { get }
     var searchButton: ToolbarButton { get }
     var menuButton: ToolbarButton { get }
-    var actionButtons: [Themeable & UIButton] { get }
+    var actionButtons: [UIButton] { get }
     
     func updateBackStatus(_ canGoBack: Bool)
     func updatePageStatus(_ isWebPage: Bool)

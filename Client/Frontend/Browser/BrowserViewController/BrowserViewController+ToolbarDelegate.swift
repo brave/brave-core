@@ -316,7 +316,6 @@ extension BrowserViewController: TopToolbarDelegate {
             let favoritesController = FavoritesViewController { [weak self] bookmark, action in
                 self?.handleFavoriteAction(favorite: bookmark, action: action)
             }
-            favoritesController.applyTheme(Theme.of(tabManager.selectedTab))
             self.favoritesController = favoritesController
             
             addChild(favoritesController)

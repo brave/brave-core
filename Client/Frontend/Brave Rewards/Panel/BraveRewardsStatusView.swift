@@ -7,7 +7,7 @@ import UIKit
 import BraveUI
 import Shared
 
-class BraveRewardsStatusView: UIView, Themeable {
+class BraveRewardsStatusView: UIView {
     enum VisibleStatus {
         case rewardsOff
         case rewardsOnNoCount
@@ -76,6 +76,8 @@ class BraveRewardsStatusView: UIView, Themeable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        backgroundColor = .secondaryBraveBackground
+        
         layer.cornerRadius = 8
         layer.cornerCurve = .continuous
         
@@ -97,20 +99,14 @@ class BraveRewardsStatusView: UIView, Themeable {
     required init(coder: NSCoder) {
         fatalError()
     }
-    
-    func applyTheme(_ theme: Theme) {
-        backgroundColor = theme.isDark ? UIColor(white: 0.2, alpha: 1.0) : UIColor(rgb: 0xE9E9F4)
-        countView.applyTheme(theme)
-        onView.applyTheme(theme)
-        offView.applyTheme(theme)
-    }
 }
 
-private class StatusLabelView: UIStackView, Themeable {
+private class StatusLabelView: UIStackView {
     let image: UIImage
     let text: String
     
     private let imageView = UIImageView().then {
+        $0.tintColor = .braveLabel
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
     
@@ -118,6 +114,7 @@ private class StatusLabelView: UIStackView, Themeable {
         $0.textAlignment = .left
         $0.numberOfLines = 0
         $0.font = .systemFont(ofSize: 15)
+        $0.textColor = .braveLabel
     }
     
     init(image: UIImage, text: String) {
@@ -136,12 +133,6 @@ private class StatusLabelView: UIStackView, Themeable {
             .view(imageView),
             .view(label)
         )
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        let isDark = theme.isDark
-        imageView.tintColor = isDark ? .white : Colors.neutral700
-        label.appearanceTextColor = isDark ? .white : .black
     }
     
     @available(*, unavailable)

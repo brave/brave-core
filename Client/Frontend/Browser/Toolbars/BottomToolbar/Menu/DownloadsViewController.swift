@@ -58,7 +58,9 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let welcomeLabel = UILabel()
     let overlayView = UIView()
-    let logoImageView = UIImageView(image: #imageLiteral(resourceName: "emptyDownloads").template)
+    let logoImageView = UIImageView(image: #imageLiteral(resourceName: "emptyDownloads").template).then {
+        $0.tintColor = .braveLabel
+    }
     
     // MARK: - Lifecycle
     init(profile: Profile) {
@@ -90,8 +92,6 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.register(TwoLineTableViewCell.self, forCellReuseIdentifier: "TwoLineTableViewCell")
         tableView.layoutMargins = .zero
         tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = UIColor.Photon.white100
-        tableView.separatorColor = UIColor.Photon.grey30
         tableView.accessibilityIdentifier = "DownloadsTable"
         tableView.cellLayoutMarginsFollowReadableWidth = false
         
@@ -106,13 +106,6 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
         // explicitly nil out its references to us to avoid crashes. Bug 1218826.
         tableView.dataSource = nil
         tableView.delegate = nil
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            updateThemeForUserInterfaceStyleChange()
-        }
     }
     
     @objc func notificationReceived(_ notification: Notification) {
@@ -217,7 +210,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     private func roundRectImageWithLabel(_ label: String, width: CGFloat, height: CGFloat,
                                          radius: CGFloat = 5.0, strokeWidth: CGFloat = 1.0,
-                                         strokeColor: UIColor = UIColor.Photon.grey60,
+                                         strokeColor: UIColor = .black,
                                          fontSize: CGFloat = 9.0) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0.0)
         let context = UIGraphicsGetCurrentContext()
@@ -259,7 +252,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     fileprivate func createEmptyStateOverlayView() -> UIView {
-        overlayView.backgroundColor = UIColor.Photon.white100
+        overlayView.backgroundColor = .secondaryBraveBackground
         
         overlayView.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
@@ -276,7 +269,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
         welcomeLabel.text = Strings.downloadsPanelEmptyStateTitle
         welcomeLabel.textAlignment = .center
         welcomeLabel.font = DynamicFontHelper.defaultHelper.DeviceFontLight
-        welcomeLabel.textColor = UIColor.Photon.grey50
+        welcomeLabel.textColor = .braveLabel
         welcomeLabel.numberOfLines = 0
         welcomeLabel.adjustsFontSizeToFitWidth = true
         
@@ -320,7 +313,8 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     func configureDownloadedFile(_ cell: UITableViewCell, for indexPath: IndexPath) -> UITableViewCell {
         if let downloadedFile = downloadedFileForIndexPath(indexPath), let cell = cell as? TwoLineTableViewCell {
             cell.setLines(downloadedFile.filename, detailText: downloadedFile.formattedSize)
-            cell.imageView?.image = iconForFileExtension(downloadedFile.fileExtension)
+            cell.imageView?.image = iconForFileExtension(downloadedFile.fileExtension)?.template
+            cell.imageView?.tintColor = .braveLabel
         }
         return cell
     }
@@ -390,21 +384,6 @@ extension DownloadsPanel: UIDocumentInteractionControllerDelegate {
     func documentInteractionControllerViewControllerForPreview(
         _ controller: UIDocumentInteractionController) -> UIViewController {
         return self
-    }
-}
-
-extension DownloadsPanel: Themeable {
-    
-    func applyTheme(_ theme: Theme) {
-        emptyStateOverlayView.removeFromSuperview()
-        emptyStateOverlayView = createEmptyStateOverlayView()
-        updateEmptyPanelState()
-        
-        welcomeLabel.appearanceTextColor = theme.colors.tints.home
-        overlayView.appearanceBackgroundColor = theme.colors.home
-        logoImageView.tintColor = theme.colors.tints.home
-        
-        tableView.reloadData()
     }
 }
 

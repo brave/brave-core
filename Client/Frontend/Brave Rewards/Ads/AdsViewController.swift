@@ -349,13 +349,3 @@ extension AdsViewController {
     })
   }
 }
-
-extension AdsViewController {
-  public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    
-    if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-        visibleAdView?.adContentButton.applyTheme(for: traitCollection)
-    }
-  }
-}

@@ -7,7 +7,7 @@ import Foundation
 import BraveUI
 import Shared
 
-class BraveRewardsPublisherView: UIStackView, Themeable {
+class BraveRewardsPublisherView: UIStackView {
     
     struct UX {
         static let hostLabelFontSize: CGFloat = 19.0
@@ -27,6 +27,7 @@ class BraveRewardsPublisherView: UIStackView, Themeable {
         $0.font = .systemFont(ofSize: UX.hostLabelFontSize)
         $0.textAlignment = .center
         $0.numberOfLines = 0
+        $0.textColor = .braveLabel
         // Stop it from becoming like 10 lines with 1 letter per line
         $0.setContentCompressionResistancePriority(.init(999), for: .horizontal)
     }
@@ -36,17 +37,13 @@ class BraveRewardsPublisherView: UIStackView, Themeable {
         $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.font = .systemFont(ofSize: 16)
+        $0.textColor = .braveLabel
     }
     
     let learnMoreButton = Button(type: .system).then {
         $0.setTitle(Strings.learnMore, for: .normal)
-        $0.appearanceTintColor = Colors.blurple400
+        $0.tintColor = .braveBlurple
         $0.isHidden = true
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        hostLabel.appearanceTextColor = theme.isDark ? .white : .black
-        bodyLabel.appearanceTextColor = theme.isDark ? .white : .black
     }
     
     override init(frame: CGRect) {

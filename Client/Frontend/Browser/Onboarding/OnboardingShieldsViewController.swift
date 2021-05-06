@@ -13,7 +13,7 @@ class OnboardingShieldsViewController: OnboardingViewController {
     }
     
     override func loadView() {
-        view = View(theme: theme)
+        view = View()
     }
 
     override func viewDidLoad() {
@@ -27,10 +27,5 @@ class OnboardingShieldsViewController: OnboardingViewController {
         Preferences.General.basicOnboardingProgress.value = OnboardingProgress.searchEngine.rawValue
             
         super.continueTapped()
-    }
-    
-    override func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        contentView.applyTheme(theme)
     }
 }

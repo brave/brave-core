@@ -86,7 +86,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
         // swiftlint:disable:next force_cast
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteCell.identifier, for: indexPath) as! FavoriteCell
         let fav = frc.object(at: IndexPath(item: indexPath.item, section: 0))
-        cell.textLabel.appearanceTextColor = .white
+        cell.textLabel.textColor = .white
         cell.textLabel.text = fav.displayTitle ?? fav.url
         if let url = fav.url?.asURL {
             // All favorites should have domain's, but it was noticed at one

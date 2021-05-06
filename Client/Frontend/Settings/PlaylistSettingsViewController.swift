@@ -47,12 +47,9 @@ enum PlayListDownloadType: String, CaseIterable, RepresentableOptionType {
 
 class PlaylistSettingsViewController: TableViewController {
 
-    let theme: Theme
-    
     // MARK: Lifecycle
     
-    init(_ theme: Theme) {
-        self.theme = theme
+    init() {
         super.init(style: .insetGrouped)
     }
     
@@ -99,7 +96,6 @@ class PlaylistSettingsViewController: TableViewController {
                     Preferences.Playlist.autoDownloadVideo.value = option.rawValue
 
                     self.dataSource.reloadCell(row: row, section: autoDownloadSection, displayText: option.displayString)
-                    self.applyTheme(self.theme)
                 }
             )
             optionsViewController.title = Strings.PlayList.playlistAutoSaveSettingsTitle
@@ -135,7 +131,6 @@ class PlaylistSettingsViewController: TableViewController {
                         Preferences.Playlist.listViewSide.value = option.rawValue
 
                         self.dataSource.reloadCell(row: row, section: sideSelectionSection, displayText: option.displayString)
-                        self.applyTheme(self.theme)
                     }
                 )
                 optionsViewController.title = Strings.PlayList.playlistSidebarLocationTitle

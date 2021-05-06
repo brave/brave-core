@@ -340,7 +340,7 @@ class PlaylistWebLoader: UIView {
         $0.preferences.javaScriptCanOpenWindowsAutomatically = false
         $0.allowsInlineMediaPlayback = true
         $0.ignoresViewportScaleLimits = true
-        //$0.mediaTypesRequiringUserActionForPlayback = []
+        // $0.mediaTypesRequiringUserActionForPlayback = []
     }, type: .private).then {
         $0.createWebview()
         $0.webView?.scrollView.layer.masksToBounds = true
