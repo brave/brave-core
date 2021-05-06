@@ -826,7 +826,7 @@ class BrowserViewController: UIViewController {
                 // Two scenarios if there are no tabs in tabmanager:
                 // 1. We have not restored tabs yet, attempt to restore or make a new tab if there is nothing.
                 // 2. We are in private browsing mode and need to add a new private tab.
-                tabToSelect = isPrivate ? self.tabManager.addTab(isPrivate: true) : self.tabManager.restoreAllTabs()
+                tabToSelect = isPrivate ? self.tabManager.addTab(isPrivate: true) : self.tabManager.restoreAllTabs
             } else {
                 tabToSelect = self.tabManager.tabsForCurrentMode.last
             }
