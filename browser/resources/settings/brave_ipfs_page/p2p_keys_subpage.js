@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 import {Router} from '../router.js';
+import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
 
 (function() {
   'use strict';
@@ -56,7 +57,7 @@ Polymer({
 
   /** @override */
   created: function() {
-    this.browserProxy_ = settings.BraveIPFSBrowserProxyImpl.getInstance();
+    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
     this.addWebUIListener('brave-ipfs-node-status-changed', (launched) => {
       this.onServiceLaunched(launched)
     })
