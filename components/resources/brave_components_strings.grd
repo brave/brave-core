@@ -334,6 +334,7 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED" desc="">Connected</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED" desc="">Disconnected</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING" desc="">Initializing [[percentage]]%</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_TIP" desc="">Having problems with Tor? Try <ph name="BEGIN_LINK">$1</ph>disabling private window with Tor<ph name="END_LINK">$2</ph> and turning it back on again.</message>
 
       <!-- WebUI adblock resources -->
       <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_TITLE" desc="Title for additional filters section">Additional Filters</message>

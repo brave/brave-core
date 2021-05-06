@@ -36,8 +36,7 @@ class TorProfileServiceImpl : public TorProfileService,
                               public TorLauncherObserver {
  public:
   TorProfileServiceImpl(content::BrowserContext* context,
-                        BraveTorClientUpdater* tor_client_updater,
-                        const base::FilePath& user_data_dir);
+                        BraveTorClientUpdater* tor_client_updater);
   ~TorProfileServiceImpl() override;
 
   // TorProfileService:
@@ -55,16 +54,15 @@ class TorProfileServiceImpl : public TorProfileService,
  private:
   void LaunchTor();
 
-  base::FilePath GetTorExecutablePath();
-  base::FilePath GetTorDataPath();
-  base::FilePath GetTorWatchPath();
+  base::FilePath GetTorExecutablePath() const;
+  base::FilePath GetTorDataPath() const;
+  base::FilePath GetTorWatchPath() const;
 
   // BraveTorClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
 
   content::BrowserContext* context_ = nullptr;
   BraveTorClientUpdater* tor_client_updater_ = nullptr;
-  base::FilePath user_data_dir_;
   TorLauncherFactory* tor_launcher_factory_;  // Singleton
   net::ProxyConfigServiceTor* proxy_config_service_;  // NOT OWNED
   base::WeakPtrFactory<TorProfileServiceImpl> weak_ptr_factory_;
