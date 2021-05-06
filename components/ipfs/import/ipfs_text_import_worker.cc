@@ -28,6 +28,7 @@ IpfsTextImportWorker::IpfsTextImportWorker(content::BrowserContext* context,
                                            ImportCompletedCallback callback,
                                            const std::string& text,
 <<<<<<< HEAD
+<<<<<<< HEAD
                                            const std::string& host)
     : IpfsImportWorkerBase(context, endpoint, std::move(callback)) {
   ImportText(text, host);
@@ -35,6 +36,10 @@ IpfsTextImportWorker::IpfsTextImportWorker(content::BrowserContext* context,
                                            const std::string& host,
                                            const std::string& key)
     : IpfsImportWorkerBase(context, endpoint, std::move(callback), key) {
+=======
+                                           const std::string& host)
+    : IpfsImportWorkerBase(context, endpoint, std::move(callback)) {
+>>>>>>> 935de1db9f (Remove keys submenu for tabs)
   StartImportText(text, host);
 >>>>>>> 7fb47a018f (Added IPNS keys manager UI to IPFS Settings)
 }

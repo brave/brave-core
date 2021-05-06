@@ -148,16 +148,14 @@ IpfsImportController::IpfsImportController(content::WebContents* web_contents)
   DCHECK(ipfs_service_);
 }
 
-void IpfsImportController::ImportLinkToIpfs(const GURL& url,
-                                            const std::string& key) {
+void IpfsImportController::ImportLinkToIpfs(const GURL& url) {
   DCHECK(ipfs_service_);
   ipfs_service_->ImportLinkToIpfs(
-      url, key,
-      base::BindOnce(&IpfsImportController::OnImportCompleted,
-                     weak_ptr_factory_.GetWeakPtr()));
+      url, base::BindOnce(&IpfsImportController::OnImportCompleted,
+                          weak_ptr_factory_.GetWeakPtr()));
 }
 
-void IpfsImportController::ImportCurrentPageToIpfs(const std::string& key) {
+void IpfsImportController::ImportCurrentPageToIpfs() {
   if (!web_contents_->IsSavable()) {
     VLOG(1) << "Unable to save pages with mime type:"
             << web_contents_->GetContentsMimeType();
@@ -170,11 +168,10 @@ void IpfsImportController::ImportCurrentPageToIpfs(const std::string& key) {
       base::BindOnce(&CreateTempDownloadDirectory,
                      GetDirectoryNameForWebPageImport(web_contents_->GetURL())),
       base::BindOnce(&IpfsImportController::SaveWebPage,
-                     weak_ptr_factory_.GetWeakPtr(), key));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
-void IpfsImportController::SaveWebPage(const std::string& key,
-                                       const base::FilePath& directory) {
+void IpfsImportController::SaveWebPage(const base::FilePath& directory) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (directory.empty()) {
     VLOG(1) << "Unable to create temporary directory for import";
@@ -193,7 +190,7 @@ void IpfsImportController::SaveWebPage(const std::string& key,
   save_package_observer_.reset(new SavePackageFinishedObserver(
       download_manager, saved_main_file_path,
       base::BindOnce(&IpfsImportController::OnDownloadFinished,
-                     weak_ptr_factory_.GetWeakPtr(), directory, key)));
+                     weak_ptr_factory_.GetWeakPtr(), directory)));
   web_contents_->SavePage(saved_main_file_path, saved_main_directory_path,
                           content::SAVE_PAGE_TYPE_AS_COMPLETE_HTML);
 }
@@ -206,14 +203,13 @@ bool IpfsImportController::HasInProgressDownload(download::DownloadItem* item) {
 
 void IpfsImportController::OnDownloadFinished(
     const base::FilePath& path,
-    const std::string& key,
     download::DownloadItem* download) {
   DCHECK(download);
   switch (download->GetState()) {
     case download::DownloadItem::COMPLETE:
       DCHECK(ipfs_service_);
       ipfs_service_->ImportDirectoryToIpfs(
-          path, key,
+          path, std::string(),
           base::BindOnce(&IpfsImportController::OnWebPageImportCompleted,
                          weak_ptr_factory_.GetWeakPtr(), path));
       break;
@@ -239,11 +235,10 @@ void IpfsImportController::ImportDirectoryToIpfs(const base::FilePath& path,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void IpfsImportController::ImportTextToIpfs(const std::string& text,
-                                            const std::string& key) {
+void IpfsImportController::ImportTextToIpfs(const std::string& text) {
   DCHECK(ipfs_service_);
   ipfs_service_->ImportTextToIpfs(
-      text, web_contents_->GetURL().host(), key,
+      text, web_contents_->GetURL().host(),
       base::BindOnce(&IpfsImportController::OnImportCompleted,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -361,7 +356,7 @@ void IpfsImportController::ShowImportDialog(ui::SelectFileDialog::Type type,
       ui::SelectFileDialog::FileTypeInfo::ANY_PATH_OR_URL;
   dialog_type_ = type;
   dialog_key_ = key;
-  select_file_dialog_->SelectFile(type, base::string16(), directory,
+  select_file_dialog_->SelectFile(type, std::u16string(), directory,
                                   &file_types, 0, base::FilePath::StringType(),
                                   parent_window, nullptr);
 }

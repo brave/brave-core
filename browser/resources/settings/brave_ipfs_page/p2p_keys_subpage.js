@@ -61,17 +61,23 @@ Polymer({
     this.addWebUIListener('brave-ipfs-node-status-changed', (launched) => {
       this.onServiceLaunched(launched)
     })
+    this.addWebUIListener('brave-ipfs-keys-loaded', (launched) => {
+      this.updateKeys()
+    })
   },
-  
-  onServiceLaunched: function(success) {
-    this.launchNodeButtonEnabled_ = true;
-    this.localNodeLaunched = success
-    if (success) {
+
+  toggleUILayout: function(launched) {
+    this.launchNodeButtonEnabled_ = !launched;
+    this.localNodeLaunched = launched
+    if (launched) {
       this.localNodeLaunchError_ = false;
-      this.updateKeys();
     } else {
       this.showAddp2pKeyDialog_ = false
     }
+  },
+
+  onServiceLaunched: function(success) {
+    this.toggleUILayout(success)
   },
 
   onStartNodeKeyTap_: function() {
@@ -86,6 +92,11 @@ Polymer({
   * @override */
   ready: function() {
     this.onServiceLaunched(this.localNodeLaunched)
+    window.addEventListener('load', this.onLoad_.bind(this));
+  },
+
+  onLoad_: function() {
+    this.updateKeys();
   },
 
   isDefaultKey_: function(name) {
@@ -98,7 +109,10 @@ Polymer({
 
   updateKeys: function() {
     this.browserProxy_.getIpnsKeysList().then(keys => {
+      if (!keys)
+        return;
       this.keys_ = JSON.parse(keys);
+      this.toggleUILayout(true)
     });
   },
 

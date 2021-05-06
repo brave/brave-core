@@ -919,7 +919,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfs) {
                           base::Unretained(this), expected_response));
 
   ipfs_service()->ImportTextToIpfs(
-      text, domain, std::string(),
+      text, domain,
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                      base::Unretained(this)));
   WaitForRequest();
@@ -942,7 +942,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTwiceTextToIpfs) {
                           base::Unretained(this), expected_response));
 
   ipfs_service()->ImportTextToIpfs(
-      text, domain, std::string(),
+      text, domain,
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                      base::Unretained(this)));
   WaitForRequest();
@@ -958,7 +958,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfs) {
                           base::Unretained(this), expected_response));
 
   ipfs_service()->ImportLinkToIpfs(
-      GetURL(test_host, kTestLinkImportPath), std::string(),
+      GetURL(test_host, kTestLinkImportPath),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                      base::Unretained(this)));
   WaitForRequest();
@@ -973,7 +973,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextToIpfsFail) {
   std::string host = "host";
 
   ipfs_service()->ImportTextToIpfs(
-      text, host, std::string(),
+      text, host,
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
                      base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
                      GetFileNameForText(text, host)));
@@ -986,7 +986,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsFail) {
                           base::Unretained(this)));
 
   ipfs_service()->ImportLinkToIpfs(
-      GetURL("b.com", kTestLinkImportPath), std::string(),
+      GetURL("b.com", kTestLinkImportPath),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
                      base::Unretained(this), ipfs::IPFS_IMPORT_ERROR_ADD_FAILED,
                      "link.png"));
@@ -999,7 +999,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportLinkToIpfsBadLink) {
                           base::Unretained(this)));
 
   ipfs_service()->ImportLinkToIpfs(
-      GetURL("b.com", kUnavailableLinkImportPath), std::string(),
+      GetURL("b.com", kUnavailableLinkImportPath),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedFail,
                      base::Unretained(this),
                      ipfs::IPFS_IMPORT_ERROR_REQUEST_EMPTY, ""));
@@ -1072,29 +1072,6 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileAndPinToIpfsSuccess) {
       base::FilePath(FILE_PATH_LITERAL("brave/test/data/adbanner.js")));
   ipfs_service()->ImportFileToIpfs(
       file_to_upload, std::string("test_key"),
-      base::BindOnce(&IpfsServiceBrowserTest::OnPublishCompletedSuccess,
-                     base::Unretained(this)));
-  WaitForRequest();
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportTextAndPin) {
-  std::string domain = "test.domain.com";
-  std::string text = "text to import";
-  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
-  std::string filename = domain;
-  filename += "_";
-  filename += std::to_string(key);
-  std::string expected_response = base::StringPrintf(
-      R"({"Name":"%s","Hash":"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU")"
-      R"(,"Size":"567857"})",
-      filename.c_str());
-
-  ResetTestServer(
-      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
-                          base::Unretained(this), expected_response));
-
-  ipfs_service()->ImportTextToIpfs(
-      text, domain, std::string("test_key"),
       base::BindOnce(&IpfsServiceBrowserTest::OnPublishCompletedSuccess,
                      base::Unretained(this)));
   WaitForRequest();

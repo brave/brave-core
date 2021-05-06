@@ -16,6 +16,12 @@
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
 #include "ui/base/models/simple_menu_model.h"
 
+#if BUILDFLAG(IPFS_ENABLED)
+namespace ipfs {
+class IpnsKeysManager;
+}  // namespace ipfs
+#endif
+
 class BraveAppMenuModel : public AppMenuModel {
  public:
   BraveAppMenuModel(ui::AcceleratorProvider* provider,
@@ -41,12 +47,16 @@ class BraveAppMenuModel : public AppMenuModel {
   int GetIndexOfBraveSidebarItem() const;
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
+  int FindCommandIndex(int command_id) const;
+  int AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
+                           ipfs::IpnsKeysManager* manager,
+                           int key_command_id);
   void ExecuteIPFSCommand(int id, const std::string& key);
   int AddIpfsImportMenuItem(int action_command_id,
                             int string_id,
                             int keys_command_id);
   int GetSelectedIPFSCommandId(int id) const;
-
+  int ipns_keys_title_item_index_ = -1;
   ui::SimpleMenuModel ipfs_submenu_model_;
   std::unordered_map<int, std::unique_ptr<ui::SimpleMenuModel>>
       ipns_submenu_models_;

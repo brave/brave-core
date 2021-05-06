@@ -525,4 +525,9 @@ void BraveDefaultExtensionsHandler::OnIpfsShutdown() {
   bool launched = service && service->IsDaemonLaunched();
   FireWebUIListener("brave-ipfs-node-status-changed", base::Value(launched));
 }
+void BraveDefaultExtensionsHandler::OnIpnsKeysLoaded(bool success) {
+  if (!IsJavascriptAllowed())
+    return;
+  FireWebUIListener("brave-ipfs-keys-loaded", base::Value(success));
+}
 #endif
