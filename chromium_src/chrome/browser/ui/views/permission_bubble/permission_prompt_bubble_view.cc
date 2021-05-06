@@ -220,13 +220,5 @@ void AddFootnoteViewIfNeeded(
   AddPermissionLifetimeComboboxIfNeeded(this, delegate_);                 \
   AddFootnoteViewIfNeeded(this, browser_);
 
-static const int IDS_PERMISSION_DENY_CHROMIUM_IMPL = IDS_PERMISSION_DENY;
-#undef IDS_PERMISSION_DENY
-#define IDS_PERMISSION_DENY                                                   \
-  (ShouldShowLifetimeOptions(delegate_) ? IDS_PERMISSIONS_BUBBLE_DENY_FOREVER \
-                                        : IDS_PERMISSION_DENY_CHROMIUM_IMPL)
-
 #include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
-#undef IDS_PERMISSION_DENY
-#define IDS_PERMISSION_DENY IDS_PERMISSION_DENY_CHROMIUM_IMPL
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW
