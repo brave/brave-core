@@ -3,11 +3,12 @@ use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
+use kuchiki::iter::NodeIterator;
 use kuchiki::NodeData::{
     Comment, Doctype, Document, DocumentFragment, Element, ProcessingInstruction, Text,
 };
 use kuchiki::NodeRef as Handle;
-use kuchiki::{ElementData, NodeRef, Sink};
+use kuchiki::{ElementData, Sink};
 use regex::Regex;
 use std::cmp::Ordering;
 use std::collections::{HashMap, HashSet};
@@ -336,10 +337,10 @@ fn get_inner_img_from_noscript(handle: &Handle) -> Option<Handle> {
     if let Some(contents) = child.as_text() {
         let inner = dom::parse_inner(&contents.borrow())?;
         if dom::is_single_image(&inner) {
-            if let Some(data) = inner.as_element() {
-                let img =
-                    NodeRef::new_element(data.name.clone(), data.attributes.borrow().map.clone());
+            if let Some(img) = dom::get_only_child_by_tag(&inner, &local_name!("img")) {
                 return Some(img);
+            } else {
+                return Some(inner);
             }
         }
     }
@@ -356,9 +357,9 @@ fn unwrap_noscript(
 ) {
     if let Some(img) = get_inner_img_from_noscript(handle) {
         new_children.push(img);
-        if let Some(prev) = dom::previous_element_sibling(handle) {
-            if dom::is_single_image(&prev) {
-                useless_nodes.push(prev);
+        for sibling in handle.preceding_siblings().elements() {
+            if dom::is_single_image(&sibling.as_node()) {
+                useless_nodes.push(sibling.as_node().clone());
             }
         }
     }
@@ -376,46 +377,6 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
             | local_name!("title")
             | local_name!("script")
             | local_name!("meta") => return true,
-            local_name!("div") => {
-                // Convert all divs whose children contains only phrasing
-                // content to paragraphs. An example would look like this:
-                //      <div>Here is a <a>link</a> <br></div>
-                //      <p>Here is a <a>link</a> <br></p>
-                let trim_whitespace = |dom: &mut Sink, p: &Handle| {
-                    while let Some(child) = p.last_child() {
-                        if !dom::is_whitespace(&child) {
-                            break;
-                        }
-                        dom.remove_from_parent(&child);
-                    }
-                };
-                let mut last_p: Option<Handle> = None;
-                for child in handle.children() {
-                    if dom::is_phrasing_content(&child) {
-                        if let Some(ref p) = last_p {
-                            if let Some(replacement) = dom::node_or_text(child.clone()) {
-                                dom.remove_from_parent(&child);
-                                dom.append(&p, replacement);
-                            }
-                        } else if !dom::is_whitespace(&child) {
-                            let name = QualName::new(None, ns!(), LocalName::from("p"));
-                            let p = dom.create_element(name, vec![], ElementFlags::default());
-                            dom.append_before_sibling(&child, NodeOrText::AppendNode(p.clone()));
-                            dom.remove_from_parent(&child);
-                            if let Some(replacement) = dom::node_or_text(child.clone()) {
-                                dom.append(&p, replacement);
-                            }
-                            last_p = Some(p);
-                        }
-                    } else if let Some(ref p) = last_p {
-                        trim_whitespace(dom, p);
-                        last_p = None;
-                    }
-                }
-                if let Some(ref p) = last_p {
-                    trim_whitespace(dom, p);
-                }
-            }
             _ => (),
         }
         for attr_name in ["id", "class", "itemProp"].iter() {
@@ -486,6 +447,48 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
     for node in useless_nodes.iter() {
         dom.remove_from_parent(node);
     }
+
+    if dom::get_tag_name(&handle) == Some(&local_name!("div")) {
+        // Convert all divs whose children contains only phrasing
+        // content to paragraphs. An example would look like this:
+        //      <div>Here is a <a>link</a> <br></div>
+        //      <p>Here is a <a>link</a> <br></p>
+        let trim_whitespace = |dom: &mut Sink, p: &Handle| {
+            while let Some(child) = p.last_child() {
+                if !dom::is_whitespace(&child) {
+                    break;
+                }
+                dom.remove_from_parent(&child);
+            }
+        };
+        let mut last_p: Option<Handle> = None;
+        for child in handle.children() {
+            if dom::is_phrasing_content(&child) {
+                if let Some(ref p) = last_p {
+                    if let Some(replacement) = dom::node_or_text(child.clone()) {
+                        dom.remove_from_parent(&child);
+                        dom.append(&p, replacement);
+                    }
+                } else if !dom::is_whitespace(&child) {
+                    let name = QualName::new(None, ns!(), LocalName::from("p"));
+                    let p = dom.create_element(name, vec![], ElementFlags::default());
+                    dom.append_before_sibling(&child, NodeOrText::AppendNode(p.clone()));
+                    dom.remove_from_parent(&child);
+                    if let Some(replacement) = dom::node_or_text(child.clone()) {
+                        dom.append(&p, replacement);
+                    }
+                    last_p = Some(p);
+                }
+            } else if let Some(ref p) = last_p {
+                trim_whitespace(dom, p);
+                last_p = None;
+            }
+        }
+        if let Some(ref p) = last_p {
+            trim_whitespace(dom, p);
+        }
+    }
+
     for node in paragraph_nodes.iter() {
         let name = QualName::new(None, ns!(), LocalName::from("p"));
         let p = dom.create_element(name, vec![], ElementFlags::default());

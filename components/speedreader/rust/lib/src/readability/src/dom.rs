@@ -4,7 +4,8 @@ use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{parse_document, ParseOpts};
 use html5ever::{Attribute, LocalName, QualName};
-use kuchiki::NodeData::{Comment, Element, Text};
+use kuchiki::iter::NodeIterator;
+use kuchiki::NodeData::{Element, Text};
 use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use std::str::FromStr;
@@ -319,20 +320,17 @@ pub fn parse_inner(contents: &str) -> Option<Handle> {
 
 /// Returns true if the handle contains only an image with no text content.
 pub fn is_single_image(handle: &Handle) -> bool {
-    match handle.data() {
-        Element(ref data) if data.name.local == local_name!("img") => return true,
-        Text(ref contents) if !contents.borrow().trim().is_empty() => return false,
-        Comment(_) => (),
-        _ => {
-            return false;
+    if let Some(ref data) = handle.as_element() {
+        if data.name.local == local_name!("img") {
+            return true;
+        }
+        let len = text_len(&handle);
+        let num_children = handle.children().elements().count();
+        if num_children == 1 && len == 0 {
+            return is_single_image(&handle.first_child().unwrap());
         }
     }
-
-    if let Some(ref first) = handle.first_child() {
-        return is_single_image(first);
-    } else {
-        return false;
-    }
+    false
 }
 
 // The commented out elements qualify as phrasing content but tend to be
