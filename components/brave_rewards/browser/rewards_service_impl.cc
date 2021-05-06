@@ -1294,6 +1294,10 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
 }
 
 void RewardsServiceImpl::OnRecoverWallet(const ledger::type::Result result) {
+  // Fetch balance after recovering wallet in order to initiate P3A
+  // stats collection
+  FetchBalance(base::DoNothing());
+
   for (auto& observer : observers_) {
     observer.OnRecoverWallet(this, result);
   }
@@ -2779,28 +2783,24 @@ void RewardsServiceImpl::OnFetchBalance(
     FetchBalanceCallback callback,
     const ledger::type::Result result,
     ledger::type::BalancePtr balance) {
-  PrefService* pref_service = profile_->GetPrefs();
-
-  // Record wallet state stats
+  // Record wallet P3A stats
   if (IsRewardsEnabled()) {
+    PrefService* pref_service = profile_->GetPrefs();
     const bool grants_claimed =
         pref_service->GetBoolean(prefs::kUserHasClaimedGrant);
     p3a::RecordWalletState({.wallet_created = true,
                             .rewards_enabled = true,
                             .grants_claimed = grants_claimed,
                             .funds_added = balance && balance->user_funds > 0});
-  }
-
-  if (balance) {
-    if (balance->total > 0) {
-      pref_service->SetBoolean(prefs::kUserHasFunded, true);
+    if (balance) {
+      if (balance->total > 0) {
+        pref_service->SetBoolean(prefs::kUserHasFunded, true);
+      }
+      double balance_minus_grant =
+          p3a::CalcWalletBalance(balance->wallets, balance->user_funds);
+      p3a::RecordWalletBalance(true, true,
+                               static_cast<size_t>(balance_minus_grant));
     }
-
-    // Record wallet balance stats
-    double balance_minus_grant =
-        p3a::CalcWalletBalance(balance->wallets, balance->user_funds);
-    p3a::RecordWalletBalance(true, true,
-                             static_cast<size_t>(balance_minus_grant));
   }
 
   std::move(callback).Run(result, std::move(balance));

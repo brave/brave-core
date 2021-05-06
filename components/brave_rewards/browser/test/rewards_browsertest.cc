@@ -344,7 +344,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNoNotice) {
-  response_->SetUserFundsBalance(true);
+  response_->SetUserFundsBalance(20.0);
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());

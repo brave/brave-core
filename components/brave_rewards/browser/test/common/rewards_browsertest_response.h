@@ -50,7 +50,7 @@ class RewardsBrowserTestResponse {
 
   void SetExternalBalance(const std::string& balance);
 
-  void SetUserFundsBalance(const bool user_funds);
+  void SetUserFundsBalance(const double user_funds);
 
  private:
   std::string wallet_;
@@ -75,7 +75,7 @@ class RewardsBrowserTestResponse {
   ledger::type::SKUOrderPtr order_;
   bool verified_wallet_ = false;
   std::string external_balance_ = "0.0";
-  bool user_funds_balance_ = false;
+  double user_funds_balance_ = 0.0;
   std::map<std::string, std::string> publisher_prefixes_;
 };
 
