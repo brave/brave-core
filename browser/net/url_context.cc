@@ -8,8 +8,8 @@
 #include <memory>
 #include <string>
 
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"

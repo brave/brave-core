@@ -18,13 +18,13 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -276,9 +276,9 @@ std::unique_ptr<AdBlockService> AdBlockServiceFactory(
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
-  registry->RegisterStringPref(kAdBlockCustomFilters, std::string());
-  registry->RegisterDictionaryPref(kAdBlockRegionalFilters);
-  registry->RegisterBooleanPref(kAdBlockCheckedDefaultRegion, false);
+  registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
+  registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
+  registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
 }
 
 }  // namespace brave_shields

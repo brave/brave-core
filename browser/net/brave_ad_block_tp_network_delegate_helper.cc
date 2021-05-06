@@ -14,12 +14,11 @@
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -87,7 +86,7 @@ void OnShouldBlockAdResult(const ResponseCallback& next_callback,
                            std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx->blocked_by == kAdBlocked) {
-    brave_shields::DispatchBlockedEvent(
+    brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
         ctx->request_url, ctx->frame_tree_node_id, brave_shields::kAds);
   }
   next_callback.Run();

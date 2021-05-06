@@ -11,6 +11,7 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -113,29 +114,29 @@ void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
 void JNI_BravePrefServiceBridge_SetThirdPartyGoogleLoginEnabled(
     JNIEnv* env,
     jboolean enabled) {
-  GetOriginalProfile()->GetPrefs()->SetBoolean(
-      kGoogleLoginControlType, enabled);
+  GetOriginalProfile()->GetPrefs()->SetBoolean(kGoogleLoginControlType,
+                                               enabled);
 }
 
 void JNI_BravePrefServiceBridge_SetThirdPartyFacebookEmbedEnabled(
     JNIEnv* env,
     jboolean enabled) {
   GetOriginalProfile()->GetPrefs()->SetBoolean(
-      kFBEmbedControlType, enabled);
+      brave_shields::prefs::kFBEmbedControlType, enabled);
 }
 
 void JNI_BravePrefServiceBridge_SetThirdPartyTwitterEmbedEnabled(
     JNIEnv* env,
     jboolean enabled) {
   GetOriginalProfile()->GetPrefs()->SetBoolean(
-      kTwitterEmbedControlType, enabled);
+      brave_shields::prefs::kTwitterEmbedControlType, enabled);
 }
 
 void JNI_BravePrefServiceBridge_SetThirdPartyLinkedinEmbedEnabled(
     JNIEnv* env,
     jboolean enabled) {
   GetOriginalProfile()->GetPrefs()->SetBoolean(
-      kLinkedInEmbedControlType, enabled);
+      brave_shields::prefs::kLinkedInEmbedControlType, enabled);
 }
 
 void JNI_BravePrefServiceBridge_SetAdBlockEnabled(

@@ -89,10 +89,6 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url);
 
-void DispatchBlockedEvent(const GURL& request_url,
-                          int frame_tree_node_id,
-                          const std::string& block_type);
-
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 
 bool MaybeChangeReferrer(
