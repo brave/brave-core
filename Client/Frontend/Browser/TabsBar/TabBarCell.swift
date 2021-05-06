@@ -17,15 +17,18 @@ class TabBarCell: UICollectionViewCell {
         let button = UIButton()
         button.addTarget(self, action: #selector(closeTab), for: .touchUpInside)
         button.setImage(#imageLiteral(resourceName: "close_tab_bar").template, for: .normal)
-        button.tintColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UIColor.white : UIColor.black
+        button.tintColor = .braveLabel
         // Close button is a bit wider to increase tap area, this aligns the 'X' image closer to the right.
         button.imageEdgeInsets.left = 6
         return button
     }()
     
-    private let separatorLine = UIView()
+    private let separatorLine = UIView().then {
+        $0.backgroundColor = .braveSeparator
+    }
     
     let separatorLineRight = UIView().then {
+        $0.backgroundColor = .braveSeparator
         $0.isHidden = true
     }
     
@@ -39,11 +42,20 @@ class TabBarCell: UICollectionViewCell {
     
     var closeTabCallback: ((Tab) -> Void)?
     
+    private let deselectedOverlayView = UIView().then {
+        $0.backgroundColor = UIColor {
+            if $0.userInterfaceStyle == .dark {
+                return UIColor.black.withAlphaComponent(0.25)
+            }
+            return UIColor.black.withAlphaComponent(0.05)
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clear
+        backgroundColor = .secondaryBraveBackground
         
-        [closeButton, titleLabel, separatorLine, separatorLineRight].forEach { contentView.addSubview($0) }
+        [deselectedOverlayView, closeButton, titleLabel, separatorLine, separatorLineRight].forEach { contentView.addSubview($0) }
         initConstraints()
         
         isSelected = false
@@ -54,6 +66,10 @@ class TabBarCell: UICollectionViewCell {
     }
     
     private func initConstraints() {
+        deselectedOverlayView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         titleLabel.snp.makeConstraints { make in
             make.top.bottom.equalTo(self)
             make.left.equalTo(self).inset(16)
@@ -87,30 +103,20 @@ class TabBarCell: UICollectionViewCell {
         }
     }
     
-    func configure(with theme: Theme? = nil) {
-        let theme = theme ?? Theme.of(tab)
-        closeButton.tintColor = theme.colors.tints.header
-        
-        separatorLine.backgroundColor =
-            theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
-        
-        separatorLineRight.backgroundColor =
-            theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
-        
+    func configure() {
         if isSelected {
             titleLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)
+            titleLabel.alpha = 1.0
             closeButton.isHidden = false
-            titleLabel.textColor = theme.colors.tints.header
-            backgroundColor = theme.colors.header
+            deselectedOverlayView.isHidden = true
         }
             // Prevent swipe and release outside- deselects cell.
         else if currentIndex != tabManager?.currentDisplayedIndex {
             titleLabel.font = UIFont.systemFont(ofSize: 12)
-            titleLabel.textColor = theme.colors.tints.header.withAlphaComponent(0.6)
+            titleLabel.alpha = 0.6
             closeButton.isHidden = true
-            backgroundColor = theme.colors.home
+            deselectedOverlayView.isHidden = false
         }
-
     }
     
     @objc func closeTab() {

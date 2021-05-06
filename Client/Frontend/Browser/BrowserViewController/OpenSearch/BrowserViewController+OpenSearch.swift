@@ -52,7 +52,7 @@ extension BrowserViewController {
         // Open Search guidlines requires Title to be same as Short Name but it is not enforced,
         // thus in case of yahoo.com the title is 'Yahoo Search' and Shortname is 'Yahoo'
         // We are checking referenceURL match to determine searchEngine is added or not
-        //In addition we are also checking if there is another engine with same name
+        // In addition we are also checking if there is another engine with same name
         
         let searchEngineExists = profile.searchEngines.orderedEngines.contains(where: {
             let nameExists = $0.shortName.lowercased() == referenceObject.title?.lowercased() ?? ""

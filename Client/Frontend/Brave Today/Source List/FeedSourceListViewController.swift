@@ -75,7 +75,7 @@ class FeedSourceListViewController: UITableViewController {
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.sectionIndexColor = BraveUX.braveOrange
+        tableView.sectionIndexColor = .braveOrange
         
         title = category ?? Strings.BraveToday.allSources
         if category != nil {

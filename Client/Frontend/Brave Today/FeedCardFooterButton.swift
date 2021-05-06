@@ -7,7 +7,7 @@ import Foundation
 
 class FeedCardFooterButton: UIControl {
     let label = UILabel().then {
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.font = .systemFont(ofSize: 14, weight: .semibold)
         $0.isAccessibilityElement = false
     }

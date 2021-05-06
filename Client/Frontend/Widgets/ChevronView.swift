@@ -49,7 +49,7 @@ class ChevronView: UIView {
                 self.direction = .left
             }
         }
-        self.backgroundColor = UIColor.clear
+        self.backgroundColor = .clear
         self.contentMode = .redraw
     }
 

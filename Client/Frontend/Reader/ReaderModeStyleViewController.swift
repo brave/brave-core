@@ -12,26 +12,26 @@ private struct ReaderModeStyleViewControllerUX {
     static let width = 270
     static let height = 4 * rowHeight
 
-    static let fontTypeRowBackground = UIColor.Photon.grey10
+    static let fontTypeRowBackground = UIColor.braveBackground
 
-    static let fontTypeTitleSelectedColor = UIColor.Photon.grey70
-    static let fontTypeTitleNormalColor = UIColor.Photon.grey40
+    static let fontTypeTitleSelectedColor = UIColor.braveLabel
+    static let fontTypeTitleNormalColor = UIColor.secondaryBraveLabel
 
-    static let fontSizeRowBackground = UIColor.Photon.grey20
-    static let fontSizeLabelColor = UIColor.Photon.grey70
-    static let fontSizeButtonTextColorEnabled = UIColor.Photon.grey70
-    static let fontSizeButtonTextColorDisabled = UIColor.Photon.grey40
+    static let fontSizeRowBackground = UIColor.secondaryBraveBackground
+    static let fontSizeLabelColor = UIColor.braveLabel
+    static let fontSizeButtonTextColorEnabled = UIColor.bravePrimary
+    static let fontSizeButtonTextColorDisabled = UIColor.braveDisabled
 
-    static let themeRowBackgroundColor = UIColor.Photon.white100
-    static let themeTitleColorLight = UIColor.Photon.grey70
-    static let themeTitleColorDark = UIColor.Photon.white100
-    static let themeTitleColorSepia = UIColor.Photon.grey70
-    static let themeBackgroundColorLight = UIColor.Photon.white100
-    static let themeBackgroundColorDark = UIColor.Photon.grey70
-    static let themeBackgroundColorSepia = UIColor.Defaults.lightBeige
+    static let themeRowBackgroundColor = UIColor.white
+    static let themeTitleColorLight = UIColor.darkText
+    static let themeTitleColorDark = UIColor.white
+    static let themeTitleColorSepia = UIColor.darkText
+    static let themeBackgroundColorLight = UIColor.white
+    static let themeBackgroundColorDark = UIColor.darkGray
+    static let themeBackgroundColorSepia = UIColor(rgb: 0xf0e6dc) // Light Beige
 
-    static let brightnessRowBackground = UIColor.Photon.grey20
-    static let brightnessSliderTintColor = UIColor.Photon.orange60
+    static let brightnessRowBackground = UIColor.secondaryBraveBackground
+    static let brightnessSliderTintColor = UIColor.braveOrange
     static let brightnessSliderWidth = 140
     static let brightnessIconOffset = 10
 }
@@ -67,7 +67,7 @@ class ReaderModeStyleViewController: UIViewController {
         fontTypeRow.backgroundColor = ReaderModeStyleViewControllerUX.fontTypeRowBackground
 
         fontTypeRow.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self.view)
+            make.top.equalTo(self.view.safeArea.top)
             make.left.right.equalTo(self.view)
             make.height.equalTo(ReaderModeStyleViewControllerUX.rowHeight)
         }
@@ -149,7 +149,8 @@ class ReaderModeStyleViewController: UIViewController {
             make.width.equalTo(ReaderModeStyleViewControllerUX.brightnessSliderWidth)
         }
 
-        let brightnessMinImageView = UIImageView(image: #imageLiteral(resourceName: "brightnessMin"))
+        let brightnessMinImageView = UIImageView(image: #imageLiteral(resourceName: "brightnessMin").template)
+        brightnessMinImageView.tintColor = .braveLabel
         brightnessRow.addSubview(brightnessMinImageView)
 
         brightnessMinImageView.snp.makeConstraints { (make) -> Void in
@@ -157,7 +158,8 @@ class ReaderModeStyleViewController: UIViewController {
             make.right.equalTo(slider.snp.left).offset(-ReaderModeStyleViewControllerUX.brightnessIconOffset)
         }
 
-        let brightnessMaxImageView = UIImageView(image: #imageLiteral(resourceName: "brightnessMax"))
+        let brightnessMaxImageView = UIImageView(image: #imageLiteral(resourceName: "brightnessMax").template)
+        brightnessMaxImageView.tintColor = .braveLabel
         brightnessRow.addSubview(brightnessMaxImageView)
 
         brightnessMaxImageView.snp.makeConstraints { (make) -> Void in

@@ -122,7 +122,7 @@ class RewardsDebugSettingsViewController: TableViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .braveGroupedBackground
         
         title = "Rewards QA Settings"
         navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))

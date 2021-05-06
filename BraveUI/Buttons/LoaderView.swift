@@ -76,7 +76,7 @@ public class LoaderView: UIView {
   
   override public var tintColor: UIColor! {
     didSet {
-      loaderLayer.strokeColor = tintColor.cgColor
+      loaderLayer.strokeColor = tintColor.resolvedColor(with: traitCollection).cgColor
     }
   }
   
@@ -112,7 +112,7 @@ public class LoaderView: UIView {
     let layer = CAShapeLayer()
     layer.lineCap = .round
     layer.strokeEnd = 0.5
-    layer.strokeColor = tintColor.cgColor
+    layer.strokeColor = tintColor.resolvedColor(with: traitCollection).cgColor
     layer.lineWidth = size.lineWidth
     layer.fillColor = nil
     layer.path = UIBezierPath(ovalIn: bounds.insetBy(dx: size.lineWidth / 2.0, dy: size.lineWidth / 2.0)).cgPath

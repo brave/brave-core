@@ -55,6 +55,8 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
     convenience init(title: String?, url: String?) {
         self.init(frame: .zero)
         
+        backgroundColor = .secondaryBraveGroupedBackground
+        
         guard let urlTextField = urlTextField else { fatalError("Url text field must be set up") }
         
         [UIView.separatorLine, contentStackView, UIView.separatorLine]

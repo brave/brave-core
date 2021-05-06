@@ -89,7 +89,7 @@ class FavoriteCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        backgroundColor = UIColor.clear
+        backgroundColor = .clear
     }
     
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

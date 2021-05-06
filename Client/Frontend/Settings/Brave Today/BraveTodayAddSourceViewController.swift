@@ -77,7 +77,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
     @objc private func textFieldTextChanged() {
         if let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? CenteredButtonCell {
             // Update the color of the search row when text field is non empty
-            cell.tintColor = isSearchEnabled && !isLoading ? BraveUX.braveOrange : Colors.grey500
+            cell.tintColor = isSearchEnabled && !isLoading ? .braveOrange : .braveDisabled
         }
     }
     
@@ -286,7 +286,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
             case 1:
                 let cell = tableView.dequeueReusableCell(for: indexPath) as CenteredButtonCell
                 cell.textLabel?.text = Strings.BraveToday.searchButtonTitle
-                cell.tintColor = isSearchEnabled && !isLoading ? BraveUX.braveOrange : Colors.grey500
+                cell.tintColor = isSearchEnabled && !isLoading ? .braveOrange : .braveDisabled
                 return cell
             default:
                 fatalError("No cell available for index path: \(indexPath)")
@@ -294,7 +294,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
         case 1:
             let cell = tableView.dequeueReusableCell(for: indexPath) as CenteredButtonCell
             cell.textLabel?.text = Strings.BraveToday.importOPML
-            cell.tintColor = BraveUX.braveOrange
+            cell.tintColor = .braveOrange
             return cell
         default:
             fatalError("No cell available for index path: \(indexPath)")

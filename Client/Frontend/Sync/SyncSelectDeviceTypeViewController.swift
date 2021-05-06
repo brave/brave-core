@@ -14,7 +14,7 @@ class SyncDeviceTypeButton: UIControl {
     var type: DeviceType!
     
     // Color for the opposite state of `pressed`
-    private var pressedReversedColor = BraveUX.braveOrange
+    private var pressedReversedColor = UIColor.braveOrange
     var pressed: Bool = false {
         didSet {
             if pressed == oldValue {
@@ -43,21 +43,24 @@ class SyncDeviceTypeButton: UIControl {
     convenience init(image: String, title: String, type: DeviceType) {
         self.init(frame: CGRect.zero)
         
+        backgroundColor = .braveBackground
         clipsToBounds = false
         layer.cornerRadius = 12
-        layer.shadowColor = BraveUX.greyJ.cgColor
+        layer.cornerCurve = .continuous
+        layer.shadowColor = UIColor(white: 0.2, alpha: 1.0).cgColor
         layer.shadowRadius = 3
         layer.shadowOpacity = 0.1
         layer.shadowOffset = CGSize(width: 0, height: 1)
         
         imageView.image = UIImage(named: image)
         imageView.contentMode = .center
-        imageView.tintColor = BraveUX.greyJ
+        imageView.tintColor = .braveLabel
         addSubview(imageView)
         
         label.text = title
         label.font = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.bold)
         label.textAlignment = .center
+        label.textColor = .braveLabel
         addSubview(label)
         
         self.type = type
@@ -106,6 +109,7 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
     let chooseDeviceLabel = UILabel().then {
         $0.text = Strings.syncChooseDeviceHeader
         $0.textAlignment = .center
+        $0.textColor = .braveLabel
         $0.numberOfLines = 0
         $0.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
     }
@@ -155,7 +159,7 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
 
         // This should be general, and abstracted
     
-        let spinner = UIActivityIndicatorView(style: .whiteLarge)
+        let spinner = UIActivityIndicatorView(style: .large)
         spinner.startAnimating()
         loadingView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         loadingView.isHidden = true

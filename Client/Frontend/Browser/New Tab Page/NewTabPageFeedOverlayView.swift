@@ -91,7 +91,7 @@ class NewContentAvailableButton: SpringButton {
         $0.textAlignment = .center
         $0.text = Strings.BraveToday.contentAvailableButtonTitle
         $0.numberOfLines = 0
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
     }
     
@@ -129,7 +129,8 @@ class NewContentAvailableButton: SpringButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = BraveUX.braveOrange
+        backgroundColor = .braveOrange
+        layer.cornerCurve = .continuous
         
         clipsToBounds = true
         layer.shadowOffset = CGSize(width: 0, height: 1)

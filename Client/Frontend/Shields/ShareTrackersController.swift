@@ -46,7 +46,7 @@ enum TrackingType: Equatable {
 
 // MARK: - ShareTrackersController
 
-class ShareTrackersController: UIViewController, Themeable, PopoverContentComponent {
+class ShareTrackersController: UIViewController, PopoverContentComponent {
     
     // MARK: Action
     
@@ -57,23 +57,17 @@ class ShareTrackersController: UIViewController, Themeable, PopoverContentCompon
     
     // MARK: Properties
     
-    private let theme: Theme
     private let trackingType: TrackingType
     
     private let shareTrackersView: ShareTrackersView
     
-    private lazy var gradientView = GradientView(
-        colors: [#colorLiteral(red: 0.968627451, green: 0.2274509804, blue: 0.1098039216, alpha: 1), #colorLiteral(red: 0.7490196078, green: 0.07843137255, blue: 0.6352941176, alpha: 1)],
-        positions: [0, 1],
-        startPoint: .zero,
-        endPoint: CGPoint(x: 1, y: 0.5))
+    private lazy var gradientView = BraveGradientView.gradient03
     
     var actionHandler: ((Action) -> Void)?
 
     // MARK: Lifecycle
     
-    init(theme: Theme, trackingType: TrackingType) {
-        self.theme = theme
+    init(trackingType: TrackingType) {
         self.trackingType = trackingType
         shareTrackersView = ShareTrackersView(trackingType: trackingType)
         
@@ -85,18 +79,12 @@ class ShareTrackersController: UIViewController, Themeable, PopoverContentCompon
         fatalError()
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            applyTheme(Theme.of(nil))
-        }
-    }
-    
     // MARK: Internal
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .braveInfoLabel
         
         shareTrackersView.actionHandler = { [weak self] action in
             guard let self = self else { return }
@@ -109,7 +97,6 @@ class ShareTrackersController: UIViewController, Themeable, PopoverContentCompon
             }
         }
         
-        applyTheme(theme)
         doLayout()
     }
     
@@ -133,19 +120,11 @@ class ShareTrackersController: UIViewController, Themeable, PopoverContentCompon
             }
         }
     }
-    
-    // MARK: Themeable
-    
-    func applyTheme(_ theme: Theme) {
-        view.backgroundColor = UIColor(rgb: 0x339AF0)
-        
-        shareTrackersView.applyTheme(theme)
-    }
 }
 
 // MARK: - ShareTrackersView
 
-private class ShareTrackersView: UIView, Themeable {
+private class ShareTrackersView: UIView {
 
     // MARK: UX
     
@@ -176,11 +155,13 @@ private class ShareTrackersView: UIView, Themeable {
         $0.backgroundColor = .clear
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)
         $0.numberOfLines = 0
+        $0.textColor = .white
     }
     
     private let subtitleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.numberOfLines = 0
+        $0.textColor = .white
     }
     
     private lazy var actionButton: InsetButton = {
@@ -189,11 +170,13 @@ private class ShareTrackersView: UIView, Themeable {
 
         actionButton.contentEdgeInsets = UX.actionButtonInsets
         actionButton.layer.cornerRadius = 20
+        actionButton.layer.cornerCurve = .continuous
         actionButton.clipsToBounds = true
         actionButton.layer.borderWidth = 1
         actionButton.layer.borderColor = UIColor.white.cgColor
         actionButton.titleLabel?.adjustsFontSizeToFitWidth = true
         actionButton.titleLabel?.allowsDefaultTighteningForTruncation = true
+        actionButton.setTitleColor(.white, for: .normal)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         return actionButton
     }()
@@ -287,13 +270,5 @@ private class ShareTrackersView: UIView, Themeable {
             default:
                 return
         }
-    }
-    
-    // MARK: Themeable
-    
-    func applyTheme(_ theme: Theme) {
-        titleLabel.appearanceTextColor = .white
-        subtitleLabel.appearanceTextColor = .white
-        actionButton.appearanceTextColor = .white
     }
 }

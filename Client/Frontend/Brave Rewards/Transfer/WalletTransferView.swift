@@ -8,10 +8,11 @@ import BraveUI
 import Shared
 
 extension WalletTransferViewController {
-    class WalletTransferView: UIView, Themeable {
+    class WalletTransferView: UIView {
         let cameraView = SyncCameraView().then {
             $0.backgroundColor = .black
             $0.layer.cornerRadius = 4
+            $0.layer.cornerCurve = .continuous
         }
         
         private let scrollView = UIScrollView()
@@ -24,22 +25,24 @@ extension WalletTransferViewController {
             $0.text = Strings.Rewards.walletTransferStepsTitle
             $0.font = .systemFont(ofSize: 17, weight: .semibold)
             $0.numberOfLines = 0
+            $0.textColor = .braveLabel
         }
         private let bodyLabel = UILabel().then {
             $0.text = Strings.Rewards.walletTransferStepsBody
             $0.font = .systemFont(ofSize: 17)
             $0.numberOfLines = 0
+            $0.textColor = .braveLabel
         }
         let learnMoreButton = UIButton(type: .system).then {
             $0.setTitle(Strings.learnMore, for: .normal)
-            $0.setTitleColor(Colors.blurple400, for: .normal)
+            $0.setTitleColor(.braveBlurple, for: .normal)
             $0.titleLabel?.font = .systemFont(ofSize: 17)
         }
         
         override init(frame: CGRect) {
             super.init(frame: frame)
             
-            backgroundColor = .white
+            backgroundColor = .secondaryBraveBackground
             
             addSubview(cameraView)
             addSubview(scrollView)
@@ -76,13 +79,6 @@ extension WalletTransferViewController {
         @available(*, unavailable)
         required init(coder: NSCoder) {
             fatalError()
-        }
-        
-        func applyTheme(_ theme: Theme) {
-            backgroundColor = theme.colors.home
-            titleLabel.textColor = theme.colors.tints.home
-            bodyLabel.textColor = theme.colors.tints.home
-            learnMoreButton.setTitleColor(theme.isDark ? Colors.blurple300 : Colors.blurple400, for: .normal)
         }
     }
 }

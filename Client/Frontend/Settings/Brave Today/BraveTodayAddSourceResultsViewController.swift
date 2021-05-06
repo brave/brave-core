@@ -118,7 +118,7 @@ class BraveTodayAddSourceResultsViewController: UITableViewController {
         }
         let cell = tableView.dequeueReusableCell(for: indexPath) as FeedLocationCell
         cell.imageView?.image = indexPath.section == 0 ? #imageLiteral(resourceName: "lock_verified").template : #imageLiteral(resourceName: "insecure-site-icon")
-        cell.imageView?.tintColor = Theme.of(nil).colors.tints.home
+        cell.imageView?.tintColor = .braveLabel
         cell.textLabel?.text = location.title
         cell.detailTextLabel?.text = location.url.absoluteString
         cell.accessoryType = selectedLocations.contains(location) ? .checkmark : .none

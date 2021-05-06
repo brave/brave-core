@@ -13,21 +13,21 @@ import BraveShared
 
 private let log = Logger.browserLogger
 
-private class RewardsInternalsSharableCell: UITableViewCell, TableViewReusable, Themeable {
+private class RewardsInternalsSharableCell: UITableViewCell, TableViewReusable {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
         textLabel?.numberOfLines = 0
         detailTextLabel?.numberOfLines = 0
         selectedBackgroundView = UIView()
+        selectedBackgroundView?.backgroundColor = .init {
+            $0.userInterfaceStyle == .dark ? UIColor(white: 0.2, alpha: 1.0) :
+                UIColor.braveOrange.withAlphaComponent(0.06)
+        }
     }
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        selectedBackgroundView?.backgroundColor = theme.isDark ? UIColor(white: 0.2, alpha: 1.0) : BraveUX.braveOrange.withAlphaComponent(0.06)
     }
 }
 
@@ -208,7 +208,6 @@ class RewardsInternalsShareController: UITableViewController {
             let cell = tableView.dequeueReusableCell(for: indexPath) as RewardsInternalsSharableCell
             cell.textLabel?.text = sharable.title
             cell.detailTextLabel?.text = sharable.description
-            cell.applyTheme(Theme.of(nil))
             return cell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "button", for: indexPath)

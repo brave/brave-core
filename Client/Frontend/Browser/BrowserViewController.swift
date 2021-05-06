@@ -23,6 +23,7 @@ import NetworkExtension
 import YubiKit
 import FeedKit
 import SwiftUI
+import class Combine.AnyCancellable
 
 private let log = Logger.browserLogger
 
@@ -67,7 +68,9 @@ class BrowserViewController: UIViewController {
     var loadQueue = Deferred<Void>()
 
     lazy var mailtoLinkHandler: MailtoLinkHandler = MailtoLinkHandler()
-
+    
+    private var privateModeCancellable: AnyCancellable?
+    
     /// Custom Search Engine
     var openSearchEngine: OpenSearchReference?
     var openSearchTextFieldInputAssistantBarButtonGroup = [UIBarButtonItemGroup]()
@@ -339,7 +342,6 @@ class BrowserViewController: UIViewController {
         // Observe some user preferences
         Preferences.Privacy.privateBrowsingOnly.observe(from: self)
         Preferences.General.tabBarVisibility.observe(from: self)
-        Preferences.General.themeNormalMode.observe(from: self)
         Preferences.General.alwaysRequestDesktopSite.observe(from: self)
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         Preferences.Privacy.blockAllCookies.observe(from: self)
@@ -443,16 +445,6 @@ class BrowserViewController: UIViewController {
         }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        let isDark = Theme.of(tabManager.selectedTab).isDark
-        if isDark {
-            return .lightContent
-        }
-        
-        // Light content, so using other status bar options
-        return .darkContent
-    }
-
     func shouldShowFooterForTraitCollection(_ previousTraitCollection: UITraitCollection) -> Bool {
         return previousTraitCollection.verticalSizeClass != .compact && previousTraitCollection.horizontalSizeClass != .regular
     }
@@ -478,9 +470,6 @@ class BrowserViewController: UIViewController {
             toolbar?.setSearchButtonState(url: tabManager.selectedTab?.url)
             footer.addSubview(toolbar!)
             toolbar?.tabToolbarDelegate = self
-
-            let theme = Theme.of(tabManager.selectedTab)
-            toolbar?.applyTheme(theme)
 
             updateTabCountUsingTabManager(self.tabManager)
         }
@@ -526,7 +515,6 @@ class BrowserViewController: UIViewController {
         
         if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
             // Reload UI
-            applyTheme(Theme.of(tabManager.selectedTab))
         }
     }
 
@@ -576,7 +564,7 @@ class BrowserViewController: UIViewController {
             self.topToolbar.locationContainer.alpha = 1
             self.presentedViewController?.popoverPresentationController?.containerView?.alpha = 1
             self.presentedViewController?.view.alpha = 1
-            self.view.backgroundColor = UIColor.clear
+            self.view.backgroundColor = .clear
         }, completion: { _ in
             self.webViewContainerBackdrop.alpha = 0
         })
@@ -608,7 +596,7 @@ class BrowserViewController: UIViewController {
         view.addLayoutGuide(pageOverlayLayoutGuide)
 
         webViewContainerBackdrop = UIView()
-        webViewContainerBackdrop.backgroundColor = UIColor.Photon.grey50
+        webViewContainerBackdrop.backgroundColor = .braveBackground
         webViewContainerBackdrop.alpha = 0
         view.addSubview(webViewContainerBackdrop)
 
@@ -617,6 +605,7 @@ class BrowserViewController: UIViewController {
 
         // Temporary work around for covering the non-clipped web view content
         statusBarOverlay = UIView()
+        statusBarOverlay.backgroundColor = .secondaryBraveBackground
         view.addSubview(statusBarOverlay)
 
         topTouchArea = UIButton()
@@ -690,8 +679,6 @@ class BrowserViewController: UIViewController {
         setupConstraints()
         
         updateRewardsButtonState()
-        
-        applyTheme(Theme.of(tabManager.selectedTab))
 
         // Setup UIDropInteraction to handle dragging and dropping
         // links into the view from other apps.
@@ -736,6 +723,17 @@ class BrowserViewController: UIViewController {
         if #available(iOS 14, *), !Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value {
             scheduleDefaultBrowserNotification()
         }
+        
+        privateModeCancellable = PrivateBrowsingManager.shared
+            .$isPrivateBrowsing
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] isPrivateBrowsing in
+                if isPrivateBrowsing {
+                    self?.statusBarOverlay.backgroundColor = .privateModeBackground
+                } else {
+                    self?.statusBarOverlay.backgroundColor = .secondaryBraveBackground
+                }
+            })
     }
     
     private func migrateToChromiumBookmarks(_ completion: @escaping (_ success: Bool) -> Void) {
@@ -1019,7 +1017,7 @@ class BrowserViewController: UIViewController {
         
         shouldShowIntroScreen = false
         
-        let vc = DefaultBrowserIntroCalloutViewController(theme: Theme.of(tabManager.selectedTab)) 
+        let vc = DefaultBrowserIntroCalloutViewController() 
         let idiom = UIDevice.current.userInterfaceIdiom
         vc.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
         present(vc, animated: true)
@@ -1782,7 +1780,6 @@ class BrowserViewController: UIViewController {
                 self.findInPageBar = findInPageBar
                 findInPageBar.delegate = self
                 alertStackView.addArrangedSubview(findInPageBar)
-                findInPageBar.applyTheme(Theme.of(tabManager.selectedTab))
 
                 findInPageBar.snp.makeConstraints { make in
                     make.height.equalTo(UIConstants.toolbarHeight)
@@ -2170,12 +2167,7 @@ extension BrowserViewController: TabManagerDelegate {
                     topToolbar.updateProgressBar(Float(selectedEstimatedProgress))
                 }
             }
-
-            let newTheme = Theme.of(tab)
-            if previous == nil || newTheme != Theme.of(previous) {
-                applyTheme(newTheme)
-            }
-
+            
             readerModeCache = ReaderMode.cache(for: tab)
             ReaderModeHandlers.readerModeCache = readerModeCache
 
@@ -2613,32 +2605,6 @@ extension BrowserViewController: TabTrayDelegate {
     }
 }
 
-// MARK: Browser Chrome Theming
-extension BrowserViewController: Themeable {
-    
-    var themeableChildren: [Themeable?]? {
-        return [topToolbar,
-                toolbar,
-                readerModeBar,
-                tabsBar,
-                tabManager.selectedTab?.newTabPageViewController,
-                favoritesController]
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        theme.applyAppearanceProperties()
-        
-        if PrivateBrowsingManager.shared.isPrivateBrowsing {
-            styleChildren(theme: Theme.from(id: Theme.DefaultTheme.private.rawValue))
-        } else {
-            styleChildren(theme: theme)
-        }
-
-        statusBarOverlay.backgroundColor = topToolbar.backgroundColor
-        setNeedsStatusBarAppearanceUpdate()
-    }
-}
-
 extension BrowserViewController: FindInPageBarDelegate, FindInPageHelperDelegate {
     func findInPage(_ findInPage: FindInPageBar, didTextChange text: String) {
         find(text, function: "find")
@@ -2829,8 +2795,6 @@ extension BrowserViewController: PreferencesObserver {
         switch key {
         case Preferences.General.tabBarVisibility.key:
             updateTabsBarVisibility()
-        case Preferences.General.themeNormalMode.key:
-            applyTheme(Theme.of(tabManager.selectedTab))
         case Preferences.Privacy.privateBrowsingOnly.key:
             let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
             switchToPrivacyMode(isPrivate: isPrivate)

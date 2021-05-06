@@ -7,7 +7,7 @@ import Shared
 import BraveShared
 import BraveUI
 
-class AdvancedControlsBarView: UIControl, Themeable {
+class AdvancedControlsBarView: UIControl {
     
     var isShowingAdvancedControls: Bool = false {
         didSet {
@@ -15,15 +15,20 @@ class AdvancedControlsBarView: UIControl, Themeable {
         }
     }
     
-    private let topBorderView = UIView()
+    private let topBorderView = UIView().then {
+        $0.backgroundColor = .braveSeparator
+    }
     
     private let label = UILabel().then {
         $0.text = Strings.Shields.advancedControls
         $0.font = .systemFont(ofSize: 16)
+        $0.textColor = .braveLabel
         $0.numberOfLines = 0
     }
     
     private let imageView = UIImageView().then {
+        $0.image = UIImage(named: "advanced-bar-chevron")?
+            .withRenderingMode(.alwaysOriginal)
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
     
@@ -35,6 +40,8 @@ class AdvancedControlsBarView: UIControl, Themeable {
             $0.spacing = 8
             $0.isUserInteractionEnabled = false
         }
+        
+        backgroundColor = .secondaryBraveBackground
         
         isAccessibilityElement = true
         accessibilityTraits.insert(.button)
@@ -57,14 +64,6 @@ class AdvancedControlsBarView: UIControl, Themeable {
             $0.top.bottom.equalTo(self).inset(10)
             $0.trailing.equalTo(self).inset(16)
         }
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        let isDark = theme.isDark
-        appearanceBackgroundColor = isDark ? Colors.grey900 : Colors.neutral000
-        topBorderView.backgroundColor = UIColor(white: isDark ? 1.0 : 0.0, alpha: 0.2)
-        imageView.image = UIImage(imageLiteralResourceName: isDark ? "advanced-bar-chevron-dark" : "advanced-bar-chevron").withRenderingMode(.alwaysOriginal)
-        label.textColor = theme.colors.tints.home
     }
     
     @available(*, unavailable)

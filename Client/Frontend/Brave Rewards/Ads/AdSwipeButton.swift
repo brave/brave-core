@@ -42,7 +42,7 @@ class AdSwipeButton: UIControl {
     case .text(let text, let textColor):
       let label = UILabel()
       label.text = text
-      label.appearanceTextColor = textColor
+      label.textColor = textColor
       label.textAlignment = .center
       label.font = .systemFont(ofSize: 14.0, weight: .semibold)
       clippedView.addSubview(label)
@@ -54,6 +54,7 @@ class AdSwipeButton: UIControl {
     layer.borderColor = UIColor.black.withAlphaComponent(0.15).cgColor
     layer.borderWidth = 1.0 / UIScreen.main.scale
     layer.cornerRadius = 10
+    layer.cornerCurve = .continuous
     layer.shadowColor = UIColor.black.cgColor
     layer.shadowOpacity = 0.25
     layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -63,6 +64,7 @@ class AdSwipeButton: UIControl {
       $0.edges.equalTo(self)
     }
     clippedView.layer.cornerRadius = layer.cornerRadius
+    clippedView.layer.cornerCurve = layer.cornerCurve
     clippedView.clipsToBounds = true
   }
   

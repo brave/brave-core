@@ -38,8 +38,9 @@ class SyncPairCameraViewController: SyncViewController {
         
         cameraView = SyncCameraView()
         cameraView.translatesAutoresizingMaskIntoConstraints = false
-        cameraView.backgroundColor = UIColor.black
+        cameraView.backgroundColor = .black
         cameraView.layer.cornerRadius = 4
+        cameraView.layer.cornerCurve = .continuous
         cameraView.layer.masksToBounds = true
         cameraView.scanCallback = { data in
             

@@ -7,7 +7,7 @@ import Foundation
 import Shared
 
 extension WalletTransferCompleteViewController {
-    class WalletTransferCompleteView: UIView, Themeable {
+    class WalletTransferCompleteView: UIView {
         
         private let scrollView = UIScrollView()
         private let stackView = UIStackView().then {
@@ -20,16 +20,19 @@ extension WalletTransferCompleteViewController {
             $0.text = Strings.Rewards.walletTransferCompleteTitle
             $0.numberOfLines = 0
             $0.font = .systemFont(ofSize: 17, weight: .semibold)
-            $0.appearanceTextColor = UIColor(rgb: 0x339AF0)
+            $0.textColor = .braveInfoLabel
         }
         let bodyLabel = UILabel().then {
             $0.text = Strings.Rewards.walletTransferCompleteBody
             $0.numberOfLines = 0
             $0.font = .systemFont(ofSize: 17)
+            $0.textColor = .braveLabel
         }
         
         override init(frame: CGRect) {
             super.init(frame: frame)
+            
+            backgroundColor = .secondaryBraveBackground
             
             addSubview(scrollView)
             scrollView.addSubview(stackView)
@@ -53,12 +56,6 @@ extension WalletTransferCompleteViewController {
         @available(*, unavailable)
         required init(coder: NSCoder) {
             fatalError()
-        }
-        
-        func applyTheme(_ theme: Theme) {
-            backgroundColor = theme.colors.home
-            titleLabel.textColor = theme.colors.tints.home
-            bodyLabel.textColor = theme.colors.tints.home
         }
     }
 }

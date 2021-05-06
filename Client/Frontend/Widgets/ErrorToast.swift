@@ -4,18 +4,18 @@
 
 import Foundation
 import SnapKit
+import BraveUI
 
 private struct ErrorToastDefaultUX {
     static let cornerRadius: CGFloat = 40
     static let margins = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
-    static let textColor = UIColor(rgb: 0xBD1531)
 }
 
 class ErrorToast: UIView {
     lazy var textLabel: UILabel = {
         let label = UILabel()
-        label.appearanceTextColor = ErrorToastDefaultUX.textColor
-        label.appearanceBackgroundColor = .clear
+        label.textColor = .braveErrorLabel
+        label.backgroundColor = .clear
         label.textAlignment = .center
         label.numberOfLines = 0
         return label

@@ -149,13 +149,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         Preferences.Chromium.lastBookmarksFolderNodeId.value = folder?.objectID ?? -1
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            updateThemeForUserInterfaceStyleChange()
-        }
-    }
-    
     override func reloadData() {
         do {
             // Recreate the frc if it was previously removed
@@ -314,6 +307,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             cell.imageView?.contentMode = .scaleAspectFit
             cell.imageView?.image = FaviconFetcher.defaultFaviconImage
             cell.imageView?.layer.cornerRadius = 6
+            cell.imageView?.layer.cornerCurve = .continuous
             cell.imageView?.layer.masksToBounds = true
             
             if let image = image {
@@ -376,7 +370,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             cell.textLabel?.font = UIFont.systemFont(ofSize: fontSize)
             cell.accessoryType = .none
         } else {
-            configCell(image: #imageLiteral(resourceName: "bookmarks_folder_hollow"))
+            configCell(image: #imageLiteral(resourceName: "bookmarks_folder_hollow").withTintColor(.braveLabel))
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: fontSize)
             cell.accessoryType = .disclosureIndicator
             if let twoLineCell = cell as? TwoLineTableViewCell {

@@ -24,7 +24,7 @@ class FeedGroupView: UIView {
     /// The title label appearing above the list of feeds
     let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 21, weight: .bold)
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.numberOfLines = 0
     }
     /// The buttons that contain each feed view
@@ -175,7 +175,7 @@ class NumberedFeedGroupView: FeedGroupView, FeedCardContent {
                         .view(UILabel().then {
                             $0.text = "\(view.offset + 1)"
                             $0.font = .systemFont(ofSize: 16, weight: .bold)
-                            $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.4)
+                            $0.textColor = UIColor(white: 1.0, alpha: 0.4)
                             $0.setContentHuggingPriority(.required, for: .horizontal)
                             $0.isAccessibilityElement = false
                         }),

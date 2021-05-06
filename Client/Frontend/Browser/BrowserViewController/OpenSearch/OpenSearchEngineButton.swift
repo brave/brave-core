@@ -26,14 +26,12 @@ class OpenSearchEngineButton: Button {
             case .disabled:
                 isLoading = false
                 setImage(#imageLiteral(resourceName: "AddSearch").template, for: .normal)
-                appearanceTintColor = UIColor.Photon.grey50
-                appearanceTextColor = UIColor.Photon.grey50
+                tintColor = .braveDisabled
                 isUserInteractionEnabled = false
             case .enabled:
                 isLoading = false
                 setImage(#imageLiteral(resourceName: "AddSearch").template, for: .normal)
-                appearanceTintColor = BraveUX.braveOrange
-                appearanceTextColor = BraveUX.braveOrange
+                tintColor = .braveOrange
                 isUserInteractionEnabled = true
             case .loading:
                 isLoading = true
@@ -49,6 +47,7 @@ class OpenSearchEngineButton: Button {
     override init(frame: CGRect) {
         self.action = .disabled
         super.init(frame: frame)
+        titleLabel?.textColor = .braveOrange
     }
 
     convenience init(title: String? = nil, hidesWhenDisabled: Bool) {
@@ -67,7 +66,7 @@ class OpenSearchEngineButton: Button {
     
     private func setTheme(with title: String?) {
         setImage(#imageLiteral(resourceName: "AddSearch").template, for: [])
-        titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+        titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         
         if let title = title {
             setImage(nil, for: .normal)
@@ -75,7 +74,7 @@ class OpenSearchEngineButton: Button {
         }
         
         loaderView = LoaderView(size: .small).then {
-            $0.tintColor = UIColor.Photon.grey50
+            $0.tintColor = .braveLabel
         }
     }
 }

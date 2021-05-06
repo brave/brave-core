@@ -8,7 +8,7 @@ import SnapKit
 import Shared
 import BraveShared
 
-protocol TabsBarViewControllerDelegate: class {
+protocol TabsBarViewControllerDelegate: AnyObject {
     func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab)
     func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton)
 }
@@ -23,7 +23,7 @@ class TabsBarViewController: UIViewController {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "add_tab").template, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
-        button.tintColor = UIColor.black
+        button.tintColor = .braveLabel
         button.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
         button.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:))))
@@ -48,14 +48,12 @@ class TabsBarViewController: UIViewController {
         return view
     }()
     
-    private let bottomLine = UIView()
+    private let bottomLine = UIView().then {
+        $0.backgroundColor = .braveSeparator
+    }
     
     fileprivate weak var tabManager: TabManager?
     fileprivate var tabList = WeakList<Tab>()
-    
-    /// See #3549. There is a problem with userInterfaceStyles that seems to affect theming TabBarCells
-    /// As a workaround we pass `Theme` used in theming `TabsBarViewController` to make sure both use the same theme.
-    private var lastUsedTheme: Theme?
     
     init(tabManager: TabManager) {
         self.tabManager = tabManager
@@ -68,6 +66,9 @@ class TabsBarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .secondaryBraveBackground
+        collectionView.backgroundColor = view.backgroundColor
         
         tabManager?.addDelegate(self)
         
@@ -106,6 +107,8 @@ class TabsBarViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         // Updating tabs here is especially handy when tabs are reordered from the tab tray.
         updateData()
     }
@@ -118,6 +121,12 @@ class TabsBarViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // Updates overflow colors which use CGColor's
+        overflowIndicators()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -167,7 +176,6 @@ class TabsBarViewController: UIViewController {
         if let cell = collectionView.cellForItem(at: selectedTabIndex) as? TabBarCell {
             cell.titleLabel.text = tab.displayTitle
         }
-        
     }
     
     func reloadDataAndRestoreSelectedTab() {
@@ -237,7 +245,7 @@ class TabsBarViewController: UIViewController {
     private func addScrollHint(for side: HintSide, maskLayer: CAGradientLayer) {
         maskLayer.removeFromSuperlayer()
         
-        guard let barsColor = collectionView.backgroundColor ?? view.backgroundColor else {
+        guard let barsColor = collectionView.backgroundColor?.resolvedColor(with: traitCollection) ?? view.backgroundColor else {
             // If not setup now, will be at some point, and then this can be flushed
             return
         }
@@ -259,7 +267,7 @@ class TabsBarViewController: UIViewController {
 // MARK: - UIScrollViewDelegate
 extension TabsBarViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        overflowIndicators()
+        updateOverflowIndicatorsLayout()
     }
 }
 
@@ -311,9 +319,7 @@ extension TabsBarViewController: UICollectionViewDataSource {
         cell.titleLabel.text = tab.displayTitle
         cell.currentIndex = indexPath.row
         cell.separatorLineRight.isHidden = (indexPath.row != tabList.count() - 1)
-        
-        // Cell theming fix #3549
-        cell.configure(with: lastUsedTheme)
+        cell.configure()
         
         cell.closeTabCallback = { [weak self] tab in
             guard let strongSelf = self, let tabManager = strongSelf.tabManager, let previousIndex = strongSelf.tabList.index(of: tab) else { return }
@@ -365,21 +371,5 @@ extension TabsBarViewController: TabManagerDelegate {
     func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
         assert(Thread.current.isMainThread)
         updateData()
-    }
-}
-
-extension TabsBarViewController: Themeable {
-    func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        lastUsedTheme = theme
-        
-        view.backgroundColor = theme.colors.header
-        plusButton.tintColor = theme.colors.tints.header
-        bottomLine.backgroundColor = theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
-        collectionView.backgroundColor = view.backgroundColor
-        // Updates overflow colors too
-        overflowIndicators()
-        
-        collectionView.reloadData()
     }
 }

@@ -8,18 +8,11 @@ import Storage
 struct SiteTableViewControllerUX {
     static let headerHeight = CGFloat(32)
     static let rowHeight = CGFloat(44)
-    static let headerBorderColor = UIColor.Photon.grey30.withAlphaComponent(0.8)
-    static let headerTextColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.black : UIColor.Photon.grey80
-    static let headerBackgroundColor = UIColor.Photon.grey10
     static let headerFont = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium)
     static let headerTextMargin = CGFloat(16)
 }
 
 class SiteTableViewHeader: UITableViewHeaderFooterView {
-    // I can't get drawRect to play nicely with the glass background. As a fallback
-    // we just use views for the top and bottom borders.
-    let topBorder = UIView()
-    let bottomBorder = UIView()
     let titleLabel = UILabel()
 
     override var textLabel: UILabel? {
@@ -29,27 +22,10 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
 
-        topBorder.backgroundColor = SiteTableViewControllerUX.headerBorderColor
-        bottomBorder.backgroundColor = SiteTableViewControllerUX.headerBorderColor
-        contentView.backgroundColor = SiteTableViewControllerUX.headerBackgroundColor
-
         titleLabel.font = DynamicFontHelper.defaultHelper.DeviceFontMediumBold
-        titleLabel.textColor = SiteTableViewControllerUX.headerTextColor
+        titleLabel.textColor = .braveLabel
 
-        addSubview(topBorder)
-        addSubview(bottomBorder)
         contentView.addSubview(titleLabel)
-
-        topBorder.snp.makeConstraints { make in
-            make.left.right.equalTo(self)
-            make.top.equalTo(self).offset(-0.5)
-            make.height.equalTo(0.5)
-        }
-
-        bottomBorder.snp.makeConstraints { make in
-            make.left.right.bottom.equalTo(self)
-            make.height.equalTo(0.5)
-        }
 
         // A table view will initialize the header with CGSizeZero before applying the actual size. Hence, the label's constraints
         // must not impose a minimum width on the content view.
@@ -98,8 +74,8 @@ class SiteTableViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.register(SiteTableViewHeader.self, forHeaderFooterViewReuseIdentifier: HeaderIdentifier)
         tableView.layoutMargins = .zero
         tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = UIConstants.panelBackgroundColor
-        tableView.separatorColor = UIConstants.separatorColor
+        tableView.backgroundColor = .secondaryBraveBackground
+        tableView.separatorColor = .braveSeparator
         tableView.accessibilityIdentifier = "SiteTable"
         tableView.cellLayoutMarginsFollowReadableWidth = false
 

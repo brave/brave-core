@@ -30,7 +30,7 @@ class BraveTodayEmptyFeedView: UIView, FeedCardContent {
     
     private let titleLabel = UILabel().then {
         $0.textAlignment = .center
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.font = .systemFont(ofSize: 22, weight: .semibold)
         $0.numberOfLines = 0
         $0.text = Strings.BraveToday.emptyFeedTitle
@@ -38,7 +38,7 @@ class BraveTodayEmptyFeedView: UIView, FeedCardContent {
     
     private let messageLabel = UILabel().then {
         $0.textAlignment = .center
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.font = .systemFont(ofSize: 16)
         $0.numberOfLines = 0
         $0.text = Strings.BraveToday.emptyFeedBody

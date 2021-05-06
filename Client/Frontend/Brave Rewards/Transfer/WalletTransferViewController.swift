@@ -8,7 +8,7 @@ import BraveRewards
 import Shared
 import BraveShared
 
-class WalletTransferViewController: UIViewController, Themeable {
+class WalletTransferViewController: UIViewController {
     
     let legacyWallet: BraveLedger
     var learnMoreHandler: (() -> Void)?
@@ -29,7 +29,6 @@ class WalletTransferViewController: UIViewController, Themeable {
     
     override func loadView() {
         view = WalletTransferView()
-        applyTheme(Theme.of(nil))
     }
     
     private var isTransferring: Bool = false
@@ -61,18 +60,6 @@ class WalletTransferViewController: UIViewController, Themeable {
             }
         }
         transferView.learnMoreButton.addTarget(self, action: #selector(tappedLearnMoreButton), for: .touchUpInside)
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            applyTheme(Theme.of(nil))
-        }
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        transferView.applyTheme(theme)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

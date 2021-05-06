@@ -44,8 +44,7 @@ extension BrowserViewController {
                 guard let onboarding = OnboardingNavigationController(
                     profile: profile,
                     onboardingType: .existingUserRewardsOff(currentProgress),
-                    rewards: rewards,
-                    theme: Theme.of(tabManager.selectedTab)
+                    rewards: rewards
                     ) else { return }
                 
                 onboarding.onboardingDelegate = self
@@ -66,8 +65,7 @@ extension BrowserViewController {
             guard !isRewardsEnabled, let onboarding = OnboardingNavigationController(
                 profile: profile,
                 onboardingType: .existingUserRewardsOff(currentProgress),
-                rewards: rewards,
-                theme: Theme.of(tabManager.selectedTab)
+                rewards: rewards
                 ) else { return }
             
             onboarding.onboardingDelegate = self
@@ -84,8 +82,7 @@ extension BrowserViewController {
             guard !isRewardsEnabled, let onboarding = OnboardingNavigationController(
                 profile: profile,
                 onboardingType: .existingUserRewardsOff(currentProgress),
-                rewards: rewards,
-                theme: Theme.of(tabManager.selectedTab)
+                rewards: rewards
                 ) else { return }
             
             onboarding.onboardingDelegate = self
@@ -102,8 +99,7 @@ extension BrowserViewController {
             guard let onboarding = OnboardingNavigationController(
                 profile: profile,
                 onboardingType: .newUser(currentProgress),
-                rewards: rewards,
-                theme: Theme.of(tabManager.selectedTab)
+                rewards: rewards
                 ) else { return }
             
             onboarding.onboardingDelegate = self

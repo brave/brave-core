@@ -11,7 +11,7 @@ private let log = Logger.browserLogger
 
 private struct QRCodeViewControllerUX {
     static let navigationBarBackgroundColor = UIColor.black
-    static let navigationBarTitleColor = UIColor.Photon.white100
+    static let navigationBarTitleColor = UIColor.white
     static let maskViewBackgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     static let isLightingNavigationItemColor = UIColor(red: 0.45, green: 0.67, blue: 0.84, alpha: 1)
 }
@@ -40,7 +40,7 @@ class QRCodeViewController: UIViewController {
     private lazy var instructionsLabel: UILabel = {
         let label = UILabel()
         label.text = Strings.scanQRCodeInstructionsLabel
-        label.textColor = UIColor.Photon.white100
+        label.textColor = .white
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
@@ -80,13 +80,13 @@ class QRCodeViewController: UIViewController {
 
         // Setup the NavigationItem
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "qrcode-goBack"), style: .plain, target: self, action: #selector(goBack))
-        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.Photon.white100
+        self.navigationItem.leftBarButtonItem?.tintColor = .white
 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "qrcode-light"), style: .plain, target: self, action: #selector(openLight))
         if captureDevice.hasTorch {
-            self.navigationItem.rightBarButtonItem?.tintColor = UIColor.Photon.white100
+            self.navigationItem.rightBarButtonItem?.tintColor = .white
         } else {
-            self.navigationItem.rightBarButtonItem?.tintColor = UIColor.Photon.grey50
+            self.navigationItem.rightBarButtonItem?.tintColor = .braveDisabled
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         }
 
@@ -187,7 +187,7 @@ class QRCodeViewController: UIViewController {
                 captureDevice.torchMode = AVCaptureDevice.TorchMode.off
                 captureDevice.unlockForConfiguration()
                 navigationItem.rightBarButtonItem?.image = #imageLiteral(resourceName: "qrcode-light")
-                navigationItem.rightBarButtonItem?.tintColor = UIColor.Photon.white100
+                navigationItem.rightBarButtonItem?.tintColor = .white
             } catch {
                 print(error)
             }

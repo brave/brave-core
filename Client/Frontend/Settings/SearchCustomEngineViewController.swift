@@ -241,9 +241,9 @@ extension SearchCustomEngineViewController: UITableViewDelegate, UITableViewData
 
         switch section {
             case Section.url.rawValue:
-                headerView.titleLabel.text = Strings.URL
+                headerView.titleLabel.text = Strings.URL.uppercased()
             default:
-                headerView.titleLabel.text = Strings.title
+                headerView.titleLabel.text = Strings.title.uppercased()
         }
         
         return headerView
@@ -587,15 +587,14 @@ fileprivate class SearchEngineTableViewHeader: UITableViewHeaderFooterView, Tabl
     // MARK: UX
     
     struct UX {
-        static let headerInset: CGFloat = 20
         static let addButtonInset: CGFloat = 10
     }
     
     // MARK: Properties
     
     var titleLabel = UILabel().then {
-        $0.font = UIFont.preferredFont(forTextStyle: .body)
-        $0.appearanceTextColor = UIColor.Photon.grey50
+        $0.font = UIFont.preferredFont(forTextStyle: .footnote)
+        $0.textColor = .secondaryBraveLabel
     }
 
     lazy var addEngineButton = OpenSearchEngineButton(
@@ -626,12 +625,12 @@ fileprivate class SearchEngineTableViewHeader: UITableViewHeaderFooterView, Tabl
     
     func setConstraints() {
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(UX.headerInset)
-            make.top.bottom.equalToSuperview().inset(UX.addButtonInset)
+            make.leading.equalTo(readableContentGuide)
+            make.bottom.equalToSuperview().inset(4)
         }
         
         addEngineButton.snp.makeConstraints { make in
-            make.trailing.equalTo(snp.trailing).inset(UX.headerInset)
+            make.trailing.equalTo(readableContentGuide)
             make.centerY.equalToSuperview()
             make.height.equalTo(snp.height)
         }
@@ -646,7 +645,7 @@ fileprivate class SearchEngineTableViewHeader: UITableViewHeaderFooterView, Tabl
 
 // MARK: URLInputTableViewCell
 
-fileprivate class URLInputTableViewCell: UITableViewCell, TableViewReusable, Themeable {
+fileprivate class URLInputTableViewCell: UITableViewCell, TableViewReusable {
 
     // MARK: UX
     
@@ -670,7 +669,6 @@ fileprivate class URLInputTableViewCell: UITableViewCell, TableViewReusable, The
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setup()
-        applyTheme(Theme.of(nil))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -688,6 +686,7 @@ fileprivate class URLInputTableViewCell: UITableViewCell, TableViewReusable, The
             $0.autocorrectionType = .no
             $0.spellCheckingType = .no
             $0.keyboardType = .URL
+            $0.textColor = .braveLabel
         }
         
         contentView.addSubview(textview)
@@ -697,10 +696,6 @@ fileprivate class URLInputTableViewCell: UITableViewCell, TableViewReusable, The
             make.bottom.top.equalToSuperview()
             make.height.equalTo(UX.textViewHeight)
         })
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        textview.appearanceTextColor = theme.isDark ? .white : .black
     }
 }
 

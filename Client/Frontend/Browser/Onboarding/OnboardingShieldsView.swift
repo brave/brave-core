@@ -39,7 +39,9 @@ extension OnboardingShieldsViewController {
         }
         
         private let descriptionView = UIView().then {
+            $0.backgroundColor = .braveBackground
             $0.layer.cornerRadius = 12
+            $0.layer.cornerCurve = .continuous
             $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
         
@@ -71,7 +73,7 @@ extension OnboardingShieldsViewController {
             $0.spacing = 15.0
         }
         
-        init(theme: Theme) {
+        override init(frame: CGRect) {
             if BraveRewards.isAvailable {
                 continueButton = CommonViews.primaryButton(text: Strings.OBContinueButton).then {
                     $0.accessibilityIdentifier = "OnboardingShieldsViewController.ContinueButton"
@@ -84,9 +86,8 @@ extension OnboardingShieldsViewController {
                 }
             }
             
-            super.init(frame: .zero)
+            super.init(frame: frame)
             
-            applyTheme(theme)
             mainStackView.tag = OnboardingViewAnimationID.details.rawValue
             descriptionStackView.tag = OnboardingViewAnimationID.detailsContent.rawValue
             imageView.tag = OnboardingViewAnimationID.background.rawValue
@@ -112,15 +113,6 @@ extension OnboardingShieldsViewController {
             skipButton.snp.makeConstraints {
                 $0.width.equalTo(continueButton.snp.width).priority(.low)
             }
-        }
-        
-        func applyTheme(_ theme: Theme) {
-            descriptionView.backgroundColor = OnboardingViewController.colorForTheme(theme)
-            textStackView.arrangedSubviews.forEach({
-                if let label = $0 as? UILabel {
-                    label.appearanceTextColor = theme.colors.tints.home
-                }
-            })
         }
         
         override func layoutSubviews() {

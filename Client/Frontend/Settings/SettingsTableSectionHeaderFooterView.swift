@@ -6,19 +6,6 @@ import Shared
 import BraveUI
 import UIKit
 
-struct SettingsUX {
-    static let tableViewHeaderBackgroundColor = UIConstants.appBackgroundColor
-    static let tableViewHeaderTextColor = UIColor.Photon.grey50
-    static let tableViewRowTextColor = UIColor.Photon.grey90
-    static let tableViewDisabledRowTextColor = UIColor.Photon.grey40
-    static let tableViewSeparatorColor = UIColor.Photon.grey30
-    static let tableViewHeaderFooterHeight = CGFloat(44)
-    static let tableViewRowErrorTextColor = UIColor.Photon.red50
-    static let tableViewRowWarningTextColor = UIColor.Photon.orange50
-    static let tableViewRowActionAccessoryColor = UIColor.Photon.blue50
-    static let tableViewRowSyncTextColor = UIColor.Photon.grey80
-}
-
 private struct SettingsTableSectionHeaderFooterViewUX {
     static let titleHorizontalPadding: CGFloat = 15
     static let titleVerticalPadding: CGFloat = 6

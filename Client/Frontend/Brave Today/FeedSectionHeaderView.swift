@@ -12,7 +12,7 @@ class FeedSectionHeaderView: UIView {
     private let backgroundView: UIVisualEffectView
     private let label = UILabel().then {
         $0.text = Strings.BraveToday.braveToday
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.font = .systemFont(ofSize: 18, weight: .semibold)
     }
     let settingsButton = UIButton(type: .system).then {

@@ -12,6 +12,7 @@ open class ActionButton: Button {
     
     backgroundColor = .clear
     layer.borderWidth = 1.0
+    layer.cornerCurve = .continuous
     tintColor = .white
   }
   
@@ -28,7 +29,7 @@ open class ActionButton: Button {
   
   override open var tintColor: UIColor! {
     didSet {
-      appearanceTextColor = tintColor
+      setTitleColor(tintColor, for: .normal)
       layer.borderColor = tintColor.withAlphaComponent(0.5).cgColor
     }
   }

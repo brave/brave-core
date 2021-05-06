@@ -5,12 +5,12 @@
 import Foundation
 import SnapKit
 import Shared
+import BraveUI
 
 class SnackBarUX {
     static var maxWidth: CGFloat = 400
-    static let borderWidth: CGFloat = 0.5
-    static let highlightColor = UIColor.Defaults.iOSHighlightBlue.withAlphaComponent(0.9)
-    static let highlightText = UIColor.Photon.blue60
+    static let borderWidth: CGFloat = 1.0 / UIScreen.main.scale
+    static let highlightColor = UIColor.braveInfoBorder.withAlphaComponent(0.9)
 }
 
 /**
@@ -23,12 +23,6 @@ class SnackButton: UIButton {
     let callback: SnackBarCallback?
     fileprivate var bar: SnackBar!
 
-    override open var isHighlighted: Bool {
-        didSet {
-            self.backgroundColor = isHighlighted ? SnackBarUX.highlightColor : .clear
-        }
-    }
-
     init(title: String, accessibilityIdentifier: String, callback: @escaping SnackBarCallback) {
         self.callback = callback
 
@@ -36,8 +30,8 @@ class SnackButton: UIButton {
 
         setTitle(title, for: .normal)
         titleLabel?.font = DynamicFontHelper.defaultHelper.DefaultMediumFont
-        setTitleColor(SnackBarUX.highlightText, for: .highlighted)
-        setTitleColor(SettingsUX.tableViewRowTextColor, for: .normal)
+        setTitleColor(.braveOrange, for: .highlighted)
+        setTitleColor(.braveLabel, for: .normal)
         addTarget(self, action: #selector(onClick), for: .touchUpInside)
         self.accessibilityIdentifier = accessibilityIdentifier
     }
@@ -52,7 +46,7 @@ class SnackButton: UIButton {
 
     func drawSeparator() {
         let separator = UIView()
-        separator.backgroundColor = UIConstants.borderColor
+        separator.backgroundColor = .braveSeparator
         self.addSubview(separator)
         separator.snp.makeConstraints { make in
             make.leading.equalTo(self)
@@ -64,7 +58,7 @@ class SnackButton: UIButton {
 }
 
 class SnackBar: UIView {
-    let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+    let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial))
 
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -84,8 +78,8 @@ class SnackBar: UIView {
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.backgroundColor = nil
         label.numberOfLines = 0
-        label.textColor = SettingsUX.tableViewRowTextColor
-        label.backgroundColor = UIColor.clear
+        label.textColor = .braveLabel
+        label.backgroundColor = .clear
         return label
     }()
 
@@ -121,7 +115,7 @@ class SnackBar: UIView {
         titleView.addArrangedSubview(textLabel)
 
         let separator = UIView()
-        separator.backgroundColor = UIConstants.borderColor
+        separator.backgroundColor = .braveSeparator
 
         addSubview(titleView)
         addSubview(separator)
@@ -145,9 +139,18 @@ class SnackBar: UIView {
             make.width.lessThanOrEqualTo(self).inset(UIConstants.defaultPadding * 2).priority(1000)
         }
 
-        backgroundColor = UIColor.clear
-        self.layer.borderWidth = SnackBarUX.borderWidth
-        self.layer.borderColor = UIConstants.borderColor.cgColor
+        backgroundColor = .clear
+        layer.borderWidth = SnackBarUX.borderWidth
+        layer.borderColor = UIColor.braveSeparator.resolvedColor(with: traitCollection).cgColor
+        layer.cornerRadius = 6
+        layer.cornerCurve = .continuous
+        clipsToBounds = true
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        self.layer.borderColor = UIColor.braveSeparator.resolvedColor(with: traitCollection).cgColor
     }
 
     required init?(coder aDecoder: NSCoder) {

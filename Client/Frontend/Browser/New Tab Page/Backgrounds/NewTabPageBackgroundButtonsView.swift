@@ -150,15 +150,16 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
 }
 
 extension NewTabPageBackgroundButtonsView {
-    private class ImageCreditButton: SpringButton, Themeable {
+    private class ImageCreditButton: SpringButton {
         private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
             $0.clipsToBounds = true
             $0.isUserInteractionEnabled = false
             $0.layer.cornerRadius = 4
+            $0.layer.cornerCurve = .continuous
         }
         
         let label = UILabel().then {
-            $0.appearanceTextColor = .white
+            $0.textColor = .white
             $0.font = UIFont.systemFont(ofSize: 12.0, weight: .medium)
         }
         

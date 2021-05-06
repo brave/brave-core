@@ -108,8 +108,8 @@ class SyncWelcomeViewController: SyncViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Strings.newSyncCode, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
-        button.appearanceTextColor = .white
-        button.backgroundColor = BraveUX.braveOrange
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .braveOrange
         button.addTarget(self, action: #selector(newToSyncAction), for: .touchUpInside)
 
         button.snp.makeConstraints { make in
@@ -124,7 +124,7 @@ class SyncWelcomeViewController: SyncViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Strings.scanSyncCode, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
-        button.setTitleColor(BraveUX.greyH, for: .normal)
+        button.setTitleColor(.braveLabel, for: .normal)
         button.addTarget(self, action: #selector(existingUserAction), for: .touchUpInside)
         return button
     }()

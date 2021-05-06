@@ -92,7 +92,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
   
   fileprivate func createEmptyStateOverview() -> UIView {
     let overlayView = UIView()
-    overlayView.backgroundColor = UIColor.white
+    overlayView.backgroundColor = .white
     
     return overlayView
   }
@@ -113,7 +113,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     }
     
     let site = frc!.object(at: indexPath)
-    cell.backgroundColor = UIColor.clear
+    cell.backgroundColor = .clear
     cell.setLines(site.title, detailText: site.url)
     
     cell.imageView?.contentMode = .scaleAspectFit
@@ -121,6 +121,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     cell.imageView?.layer.borderColor = BraveUX.faviconBorderColor.cgColor
     cell.imageView?.layer.borderWidth = BraveUX.faviconBorderWidth
     cell.imageView?.layer.cornerRadius = 6
+    cell.imageView?.layer.cornerCurve = .continuous
     cell.imageView?.layer.masksToBounds = true
     if let url = site.domain?.url?.asURL {
         cell.imageView?.loadFavicon(for: url)
@@ -150,13 +151,6 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         }
         
         presentLongPressActions(gesture, urlString: urlString, isPrivateBrowsing: isPrivateBrowsing)
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            updateThemeForUserInterfaceStyleChange()
-        }
     }
   
   func numberOfSections(in tableView: UITableView) -> Int {

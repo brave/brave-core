@@ -6,23 +6,10 @@ import UIKit
 import BraveShared
 import Shared
 
-class AboutShieldsViewController: UIViewController, Themeable {
-    
-    // For themeing
-    let tab: Tab
-    
-    init(tab: Tab) {
-        self.tab = tab
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-        fatalError()
-    }
-    
+class AboutShieldsViewController: UIViewController {
     private let textLabel = UILabel().then {
         $0.text = Strings.Shields.aboutBraveShieldsBody
+        $0.textColor = .braveLabel
         $0.font = .systemFont(ofSize: 16)
         $0.numberOfLines = 0
     }
@@ -32,6 +19,7 @@ class AboutShieldsViewController: UIViewController, Themeable {
         
         self.title = Strings.Shields.aboutBraveShieldsTitle
         
+        view.backgroundColor = .braveBackground
         view.addSubview(textLabel)
         
         textLabel.snp.makeConstraints {
@@ -51,18 +39,5 @@ class AboutShieldsViewController: UIViewController, Themeable {
             $0.height += 64
         }
         navigationController?.preferredContentSize = preferredContentSize
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        view.backgroundColor = theme.isDark ? BraveUX.popoverDarkBackground : UIColor.white
-        textLabel.textColor = theme.colors.tints.home
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            applyTheme(Theme.of(tab))
-        }
     }
 }

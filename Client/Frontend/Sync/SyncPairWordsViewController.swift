@@ -18,27 +18,34 @@ class SyncPairWordsViewController: SyncViewController {
     lazy var wordCountLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
-        label.appearanceTextColor = BraveUX.greyE
+        label.textColor = .braveLabel
         label.text = String(format: Strings.wordCount, 0)
         return label
     }()
     
     lazy var copyPasteButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "copy_paste"), for: .normal)
+        button.setImage(UIImage(named: "copy_paste")?.template, for: .normal)
         button.addTarget(self, action: #selector(SEL_paste), for: .touchUpInside)
+        button.tintColor = .braveLabel
         return button
     }()
     
     let useCameraButton = UIButton().then {
         $0.setTitle(Strings.syncSwitchBackToCameraButton, for: .normal)
         $0.addTarget(self, action: #selector(useCameraButtonTapped), for: .touchDown)
-        $0.setTitleColor(BraveUX.greyH, for: .normal)
+        $0.setTitleColor(.braveLabel, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
     }
     
     var loadingView: UIView!
-    let loadingSpinner = UIActivityIndicatorView(style: .whiteLarge)
+    let loadingSpinner = UIActivityIndicatorView(style: .large)
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        containerView.layer.shadowColor = UIColor.braveSeparator.cgColor
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +58,8 @@ class SyncPairWordsViewController: SyncViewController {
         
         containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.backgroundColor = UIColor.white
-        containerView.layer.shadowColor = UIColor(rgb: 0xC8C7CC).cgColor
+        containerView.backgroundColor = .braveBackground
+        containerView.layer.shadowColor = UIColor.braveSeparator.cgColor
         containerView.layer.shadowRadius = 0
         containerView.layer.shadowOpacity = 1.0
         containerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)

@@ -7,6 +7,7 @@ import LocalAuthentication
 import Static
 import SwiftKeychainWrapper
 import Shared
+import BraveUI
 
 class PasscodeSettingsViewController: TableViewController {
     
@@ -25,8 +26,8 @@ class PasscodeSettingsViewController: TableViewController {
         updateTitleForTouchIDState()
         
         tableView.accessibilityIdentifier = "PasscodeSettingsViewController.tableView"
-        tableView.separatorColor = UIConstants.tableViewSeparatorColor
-        tableView.backgroundColor = UIConstants.tableViewHeaderBackgroundColor
+        tableView.separatorColor = .braveSeparator
+        tableView.backgroundColor = .braveGroupedBackground
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -38,6 +38,7 @@ class PasscodeEntryViewController: BasePasscodeViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .secondaryBraveBackground
         title = Strings.authenticationEnterPasscodeTitle
         view.addSubview(passcodePane)
         passcodePane.snp.makeConstraints { make in

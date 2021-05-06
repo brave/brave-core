@@ -8,7 +8,7 @@ import Shared
 import BraveRewards
 import BraveShared
 
-class WalletTransferCompleteViewController: UIViewController, Themeable {
+class WalletTransferCompleteViewController: UIViewController {
     
     private let status: DrainStatus?
     
@@ -32,7 +32,6 @@ class WalletTransferCompleteViewController: UIViewController, Themeable {
     
     override func loadView() {
         view = WalletTransferCompleteView()
-        applyTheme(Theme.of(nil))
     }
     
     override func viewDidLoad() {
@@ -46,18 +45,6 @@ class WalletTransferCompleteViewController: UIViewController, Themeable {
             transferCompleteView.titleLabel.text = status.transferStatusTitle
             transferCompleteView.bodyLabel.text = status.transferStatusBody
         }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            applyTheme(Theme.of(nil))
-        }
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        transferCompleteView.applyTheme(theme)
     }
     
     @objc private func tappedDone() {

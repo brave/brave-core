@@ -21,8 +21,10 @@ class RoundInterfaceView: UIView {
 
 class SyncViewController: UIViewController {
 
-    override func loadView() {
-        view = SyncView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .secondaryBraveBackground
     }
     
     /// Perform a block of code only if user has a network connection, shows an error alert otherwise.
@@ -41,14 +43,4 @@ class SyncViewController: UIViewController {
             self?.navigationController?.popToRootViewController(animated: true)
         }
     }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            updateThemeForUserInterfaceStyleChange()
-        }
-    }
-    
-    // This is used for `appearance()` usage, so can target sync background views
-    class SyncView: UIView {}
 }

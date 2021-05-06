@@ -13,7 +13,6 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
         let button = self.createCameraButton()
         button.setTitle(Strings.grantCameraAccess, for: .normal)
         button.tintColor = .white
-        button.appearanceTextColor = .white
         button.addTarget(self, action: #selector(SEL_cameraAccess), for: .touchUpInside)
         return button
     }()
@@ -63,7 +62,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
         let button = RoundInterfaceButton(type: .roundedRect)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.bold)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = UIColor.clear
+        button.backgroundColor = .clear
         button.layer.borderColor = UIColor.white.withAlphaComponent(0.4).cgColor
         button.layer.borderWidth = 1.5
 
@@ -167,18 +166,18 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     func cameraOverlayError() {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         
-        cameraOverlayView.tintColor = UIColor.red
+        cameraOverlayView.tintColor = .red
         perform(#selector(cameraOverlayNormal), with: self, afterDelay: 1.0)
     }
     
     func cameraOverlaySucess() {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         
-        cameraOverlayView.tintColor = UIColor.green
+        cameraOverlayView.tintColor = .green
         perform(#selector(cameraOverlayNormal), with: self, afterDelay: 1.0)
     }
     
     @objc func cameraOverlayNormal() {
-        cameraOverlayView.tintColor = UIColor.white
+        cameraOverlayView.tintColor = .white
     }
 }

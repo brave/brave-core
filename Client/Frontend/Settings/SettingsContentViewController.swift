@@ -69,17 +69,10 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
         self.interstitialSpinnerView.startAnimating()
     }
 
-    init(backgroundColor: UIColor = UIColor.Photon.white100, title: NSAttributedString? = nil) {
+    init(backgroundColor: UIColor = UIColor.white, title: NSAttributedString? = nil) {
         interstitialBackgroundColor = backgroundColor
         settingsTitle = title
         super.init(nibName: nil, bundle: nil)
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            updateThemeForUserInterfaceStyleChange()
-        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -132,7 +125,7 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
         let error = UILabel()
         if let _ = settingsTitle {
             error.text = Strings.settingsContentLoadErrorMessage
-            error.textColor = UIColor.Photon.red60
+            error.textColor = .braveErrorLabel
             error.textAlignment = .center
         }
         error.isHidden = true

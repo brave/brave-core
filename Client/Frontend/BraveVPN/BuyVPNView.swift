@@ -74,7 +74,7 @@ extension BuyVPNViewController {
             let title = BraveVPNCommonUI.Views.ShrinkableLabel().then {
                 $0.text = Strings.VPN.freeTrial
                 $0.textAlignment = .center
-                $0.appearanceTextColor = .white
+                $0.textColor = .white
                 $0.isHidden = Preferences.VPN.freeTrialUsed.value
             }
             
@@ -123,7 +123,7 @@ extension BuyVPNViewController {
             $0.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
-            $0.appearanceTextColor = UIColor.white.withAlphaComponent(0.6)
+            $0.textColor = UIColor.white.withAlphaComponent(0.6)
         }
         
         // MARK: - Init/Lifecycle
@@ -370,6 +370,7 @@ extension BuyVPNViewController {
             }
             
             layer.cornerRadius = 12
+            layer.cornerCurve = .continuous
             layer.masksToBounds = true
             
             let mainStackView = UIStackView().then {
@@ -384,7 +385,7 @@ extension BuyVPNViewController {
                 
                 let titleLabel = BraveVPNCommonUI.Views.ShrinkableLabel().then {
                     $0.text = title
-                    $0.appearanceTextColor = UX.primaryTextColor
+                    $0.textColor = UX.primaryTextColor
                     $0.font = .systemFont(ofSize: 15, weight: .semibold)
                 }
                 
@@ -393,21 +394,19 @@ extension BuyVPNViewController {
                 }
                 
                 if let disclaimer = disclaimer {
-                    let gradient = GradientView(
-                        colors: [#colorLiteral(red: 0.968627451, green: 0.2274509804, blue: 0.1098039216, alpha: 1), #colorLiteral(red: 0.7490196078, green: 0.07843137255, blue: 0.6352941176, alpha: 1)],
-                        positions: [0, 1],
-                        startPoint: .zero,
-                        endPoint: CGPoint(x: 1, y: 0.5)).then {
+                    let gradient = BraveGradientView.gradient03.then {
                         $0.layer.cornerRadius = 4
+                        $0.layer.cornerCurve = .continuous
                     }
                     
                     let disclaimerLabel = DisclaimerLabel().then {
                         $0.text = disclaimer
                         $0.setContentHuggingPriority(UILayoutPriority(rawValue: 100), for: .horizontal)
-                        $0.appearanceTextColor = UX.primaryTextColor
+                        $0.textColor = UX.primaryTextColor
                         $0.font = .systemFont(ofSize: 12, weight: .bold)
                         // $0.backgroundColor = UX.disclaimerColor
                         $0.layer.cornerRadius = 4
+                        $0.layer.cornerCurve = .continuous
                         $0.layer.masksToBounds = true
                     }
                     
@@ -428,7 +427,7 @@ extension BuyVPNViewController {
                 
                 let detailLabel = BraveVPNCommonUI.Views.ShrinkableLabel().then {
                     $0.text = detail
-                    $0.appearanceTextColor = UX.secondaryTextColor
+                    $0.textColor = UX.secondaryTextColor
                     $0.font = .systemFont(ofSize: 15, weight: .regular)
                 }
                 
@@ -440,7 +439,7 @@ extension BuyVPNViewController {
                 
                 let priceLabel = BraveVPNCommonUI.Views.ShrinkableLabel().then {
                     $0.text = price
-                    $0.appearanceTextColor = UX.primaryTextColor
+                    $0.textColor = UX.primaryTextColor
                     $0.font = .systemFont(ofSize: 15, weight: .bold)
                 }
                 
@@ -454,7 +453,7 @@ extension BuyVPNViewController {
                         }
                         
                         $0.attributedText = strikeThroughText
-                        $0.appearanceTextColor = #colorLiteral(red: 1, green: 1, blue: 0.9411764706, alpha: 1).withAlphaComponent(0.6)
+                        $0.textColor = #colorLiteral(red: 1, green: 1, blue: 0.9411764706, alpha: 1).withAlphaComponent(0.6)
                         $0.font = .systemFont(ofSize: 13, weight: .regular)
                         $0.textAlignment = .right
                     }

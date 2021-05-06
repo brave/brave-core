@@ -7,8 +7,9 @@ import Foundation
 import BraveUI
 import Shared
 import BraveShared
+import Combine
 
-private class DuckDuckGoCalloutButton: SpringButton, Themeable {
+private class DuckDuckGoCalloutButton: SpringButton {
     fileprivate struct UX {
         static let logoSize = CGSize(width: 38, height: 38)
         static let padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20)
@@ -18,6 +19,7 @@ private class DuckDuckGoCalloutButton: SpringButton, Themeable {
         $0.clipsToBounds = true
         $0.isUserInteractionEnabled = false
         $0.layer.cornerRadius = 4
+        $0.layer.cornerCurve = .continuous
     }
     
     private let logoImageView = UIImageView(image: #imageLiteral(resourceName: "duckduckgo"))
@@ -26,7 +28,7 @@ private class DuckDuckGoCalloutButton: SpringButton, Themeable {
         $0.text = Strings.DDGPromotion
         $0.numberOfLines = 0
         $0.preferredMaxLayoutWidth = 180
-        $0.appearanceTextColor = .white
+        $0.textColor = .white
         $0.font = UIFont.systemFont(ofSize: 13.0, weight: .bold)
     }
     
@@ -37,6 +39,8 @@ private class DuckDuckGoCalloutButton: SpringButton, Themeable {
             $0.spacing = 12
             $0.alignment = .center
         }
+        
+        backgroundView.layer.cornerCurve = .continuous
         
         addSubview(backgroundView)
         backgroundView.contentView.addSubview(stackView)
@@ -65,16 +69,19 @@ class DuckDuckGoCalloutSectionProvider: NSObject, NTPObservableSectionProvider {
     
     private typealias DuckDuckGoCalloutCell = NewTabCenteredCollectionViewCell<DuckDuckGoCalloutButton>
     
+    private var privateModeCancellable: AnyCancellable?
+    
     init(profile: Profile, action: @escaping () -> Void) {
         self.profile = profile
         self.action = action
         super.init()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(privateModeChanged), name: .privacyModeChanged, object: nil)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+        privateModeCancellable = PrivateBrowsingManager.shared
+            .$isPrivateBrowsing
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] _ in
+                self?.privateModeChanged()
+            })
     }
     
     private var isShowingCallout: Bool {
@@ -84,7 +91,7 @@ class DuckDuckGoCalloutSectionProvider: NSObject, NTPObservableSectionProvider {
         return isPrivateBrowsing && !isSearchEngineSet && shouldShowPromo
     }
     
-    @objc private func privateModeChanged() {
+    private func privateModeChanged() {
         sectionDidChange?()
     }
     

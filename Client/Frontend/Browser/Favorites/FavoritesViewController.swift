@@ -30,7 +30,7 @@ private class FavoritesHeaderView: UICollectionReusableView {
     }
 }
 
-class FavoritesViewController: UIViewController, Themeable {
+class FavoritesViewController: UIViewController {
     
     var action: (Favorite, BookmarksAction) -> Void
     
@@ -42,7 +42,9 @@ class FavoritesViewController: UIViewController, Themeable {
         $0.minimumLineSpacing = 8
     }
     private let collectionView: UICollectionView
-    private let backgroundView = UIVisualEffectView()
+    private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial)).then {
+        $0.contentView.backgroundColor = UIColor.braveBackground.withAlphaComponent(0.5)
+    }
     
     init(action: @escaping (Favorite, BookmarksAction) -> Void) {
         self.action = action
@@ -101,13 +103,6 @@ class FavoritesViewController: UIViewController, Themeable {
         if let state = KeyboardHelper.defaultHelper.currentState {
             updateKeyboardInset(state, animated: false)
         }
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        let blurStyle: UIBlurEffect.Style = theme.isDark ? .dark : .extraLight
-        backgroundView.effect = UIBlurEffect(style: blurStyle)
-        backgroundView.contentView.backgroundColor = theme.colors.home.withAlphaComponent(0.5)
-        collectionView.reloadSections(IndexSet(integer: 0))
     }
     
     override func viewWillLayoutSubviews() {

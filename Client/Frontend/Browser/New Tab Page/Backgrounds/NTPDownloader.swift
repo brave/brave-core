@@ -9,7 +9,7 @@ import BraveRewards
 
 private let logger = Logger.browserLogger
 
-protocol NTPDownloaderDelegate: class {
+protocol NTPDownloaderDelegate: AnyObject {
     func onSponsorUpdated(sponsor: NTPSponsor?)
     func onThemeUpdated(theme: CustomTheme?)
     func preloadCustomTheme(theme: CustomTheme?)

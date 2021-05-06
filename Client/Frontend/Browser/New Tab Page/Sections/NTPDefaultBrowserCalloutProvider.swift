@@ -64,7 +64,7 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     }
 }
 
-private class DefaultBrowserCalloutView: SpringButton, Themeable {
+private class DefaultBrowserCalloutView: SpringButton {
     
     var closeHaandler: (() -> Void)?
     
@@ -77,7 +77,7 @@ private class DefaultBrowserCalloutView: SpringButton, Themeable {
     
     private let label = UILabel().then {
         $0.text = Strings.setDefaultBrowserCalloutTitle
-        $0.appearanceTextColor = .black
+        $0.textColor = .black
         $0.font = UIFont.systemFont(ofSize: 14.0, weight: .medium)
         $0.numberOfLines = 0
         $0.preferredMaxLayoutWidth = 280
@@ -89,7 +89,8 @@ private class DefaultBrowserCalloutView: SpringButton, Themeable {
         
         clipsToBounds = true
         layer.cornerRadius = 8
-        backgroundColor = #colorLiteral(red: 0.8588235294, green: 0.9568627451, blue: 0.862745098, alpha: 1)
+        layer.cornerCurve = .continuous
+        backgroundColor = .braveSuccessBackground
         
         addSubview(label)
         addSubview(closeButton)

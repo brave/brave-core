@@ -27,6 +27,7 @@ class BottomSheetViewController: UIViewController {
 
     let contentView = UIView().then {
         $0.layer.cornerRadius = 12
+        $0.layer.cornerCurve = .continuous
     }
     
     private let backgroundOverlayView = UIView().then {
@@ -36,12 +37,13 @@ class BottomSheetViewController: UIViewController {
     private let handleView = UIView().then {
         $0.backgroundColor = .black
         $0.alpha = 0.25
+        $0.layer.cornerCurve = .continuous
         $0.layer.cornerRadius = UX.handleHeight / 2
     }
     
     private let closeButton = UIButton().then {
         $0.setImage(#imageLiteral(resourceName: "close_popup").template, for: .normal)
-        $0.appearanceTintColor = .lightGray
+        $0.tintColor = .lightGray
     }
     
     // MARK: - Constraint properties

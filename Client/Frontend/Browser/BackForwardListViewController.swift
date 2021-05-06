@@ -11,7 +11,7 @@ import SnapKit
 
 private struct BackForwardViewUX {
     static let rowHeight: CGFloat = 50
-    static let backgroundColor = UIColor.Photon.grey10A40
+    static let backgroundColor: UIColor = .braveBackground
 }
 
 class BackForwardListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
@@ -31,10 +31,6 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
         tableView.alwaysBounceVertical = false
         tableView.register(BackForwardTableViewCell.self, forCellReuseIdentifier: self.BackForwardListCellIdentifier)
         tableView.backgroundColor = BackForwardViewUX.backgroundColor
-        let blurEffect = UIBlurEffect(style: .regular)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        tableView.backgroundView = blurEffectView
-        
         return tableView
     }()
     

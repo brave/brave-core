@@ -48,7 +48,9 @@ open class GradientProgressBar: UIProgressView {
     }
     
     func setGradientColors(startColor: UIColor, endColor: UIColor) {
-        gradientColors = [startColor, endColor, startColor, endColor, startColor, endColor, startColor].map { $0.cgColor }
+        gradientColors = [startColor, endColor, startColor, endColor, startColor, endColor, startColor].map {
+            $0.resolvedColor(with: traitCollection).cgColor
+        }
         gradientLayer.colors = gradientColors
     }
     
@@ -89,7 +91,7 @@ open class GradientProgressBar: UIProgressView {
         alphaMaskLayer.anchorPoint = .zero
         alphaMaskLayer.position = .zero
 
-        alphaMaskLayer.backgroundColor = UIColor.Photon.white100.cgColor
+        alphaMaskLayer.backgroundColor = UIColor.white.cgColor
     }
     
     private func setupGradientLayer() {

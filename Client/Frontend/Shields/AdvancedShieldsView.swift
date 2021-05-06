@@ -7,10 +7,7 @@ import Shared
 import BraveShared
 import BraveUI
 
-class AdvancedShieldsView: UIStackView, Themeable {
-    
-    var themeableChildren: [Themeable?]?
-    
+class AdvancedShieldsView: UIStackView {
     let siteTitle = HeaderTitleView()
     let adsTrackersControl = ToggleView(title: Strings.blockAdsAndTracking)
     let httpsUpgradesControl = ToggleView(title: Strings.HTTPSEverywhere)
@@ -22,19 +19,12 @@ class AdvancedShieldsView: UIStackView, Themeable {
     }
     let globalControlsButton = ChangeGlobalDefaultsView()
     
-    private func dividerView() -> UIView {
-        let divider = UIView()
-        divider.backgroundColor = BraveUX.colorForSidebarLineSeparators
-        divider.snp.makeConstraints { $0.height.equalTo(1.0 / UIScreen.main.scale) }
-        return divider
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         axis = .vertical
         
-        let rows: [UIView & Themeable] = [
+        let rows: [UIView] = [
             siteTitle,
             adsTrackersControl,
             httpsUpgradesControl,
@@ -50,8 +40,6 @@ class AdvancedShieldsView: UIStackView, Themeable {
             addArrangedSubview(sep)
             addArrangedSubview(row)
         }
-        
-        themeableChildren = separators + rows
     }
     
     @available(*, unavailable)
@@ -62,12 +50,12 @@ class AdvancedShieldsView: UIStackView, Themeable {
 
 extension AdvancedShieldsView {
     
-    class HeaderTitleView: UIView, Themeable {
+    class HeaderTitleView: UIView {
         
         let titleLabel = UILabel().then {
             $0.font = .systemFont(ofSize: 13.0)
             $0.numberOfLines = 0
-            $0.appearanceTextColor = Colors.grey700
+            $0.textColor = .secondaryBraveLabel
         }
         
         override init(frame: CGRect) {
@@ -87,17 +75,18 @@ extension AdvancedShieldsView {
     }
     
     /// A container displaying a toggle for the user
-    class ToggleView: UIView, Themeable {
+    class ToggleView: UIView {
         
         let titleLabel: UILabel = {
             let l = UILabel()
             l.font = .systemFont(ofSize: 15.0)
             l.numberOfLines = 0
+            l.textColor = .braveLabel
             return l
         }()
         
         let toggleSwitch = UISwitch().then {
-            $0.appearanceOnTintColor = BraveUX.braveOrange
+            $0.onTintColor = UIColor.braveOrange
         }
         var valueToggled: ((Bool) -> Void)?
         
@@ -156,51 +145,45 @@ extension AdvancedShieldsView {
         @objc private func switchValueChanged() {
             valueToggled?(toggleSwitch.isOn)
         }
-        
-        func applyTheme(_ theme: Theme) {
-            titleLabel.textColor = theme.colors.tints.home
-        }
     }
     
-    class SeparatorView: UIView, Themeable {
+    class SeparatorView: UIView {
         override init(frame: CGRect) {
             super.init(frame: frame)
             
             self.snp.makeConstraints {
                 $0.height.equalTo(1.0 / UIScreen.main.scale)
             }
+            backgroundColor = .braveSeparator
         }
         
         @available(*, unavailable)
         required init(coder: NSCoder) {
             fatalError()
         }
-        
-        func applyTheme(_ theme: Theme) {
-            backgroundColor = theme.isDark ?
-                UIColor(white: 1.0, alpha: 0.2) :
-                UIColor(white: 0.0, alpha: 0.2)
-        }
     }
 }
 
-final class ChangeGlobalDefaultsView: UIControl, Themeable {
+final class ChangeGlobalDefaultsView: UIControl {
     
     private let highlightedBackgroundView = UIView().then {
         $0.isUserInteractionEnabled = false
         $0.alpha = 0.0
+        $0.backgroundColor = UIColor.bravePrimary.withAlphaComponent(0.1)
     }
     private let imageView = UIImageView(image: UIImage(imageLiteralResourceName: "internet-block").template).then {
         $0.setContentHuggingPriority(.required, for: .horizontal)
+        $0.tintColor = .braveLabel
     }
     private let textLabel = UILabel().then {
         $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
         $0.font = .systemFont(ofSize: 15.0)
+        $0.textColor = .braveLabel
         $0.text = Strings.Shields.globalChangeButton
     }
     private let chevron = UIImageView(image: UIImage(imageLiteralResourceName: "chevron").template).then {
         $0.setContentHuggingPriority(.required, for: .horizontal)
-        $0.tintColor = UIColor(rgb: 0xD1D1D6)
+        $0.tintColor = .secondaryBraveLabel
     }
     
     override var isHighlighted: Bool {
@@ -247,13 +230,5 @@ final class ChangeGlobalDefaultsView: UIControl, Themeable {
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        highlightedBackgroundView.backgroundColor = theme.isDark ?
-            UIColor(white: 1.0, alpha: 0.1) :
-            UIColor(white: 0.0, alpha: 0.1)
-        imageView.tintColor = theme.isDark ? Colors.grey500 : Colors.grey700
-        textLabel.textColor = theme.colors.tints.home
     }
 }

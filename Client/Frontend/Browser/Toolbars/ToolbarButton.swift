@@ -16,6 +16,11 @@ class ToolbarButton: UIButton {
         super.init(frame: .zero)
         adjustsImageWhenHighlighted = false
         imageView?.contentMode = .scaleAspectFit
+        
+        selectedTintColor = .braveOrange
+        primaryTintColor = .braveLabel
+        tintColor = primaryTintColor
+        imageView?.tintColor = tintColor
     }
 
     override init(frame: CGRect) {
@@ -34,7 +39,7 @@ class ToolbarButton: UIButton {
     
     override open var isEnabled: Bool {
         didSet {
-            self.tintColor = isEnabled ? primaryTintColor : disabledTintColor
+            self.tintColor = primaryTintColor?.withAlphaComponent(isEnabled ? 1.0 : 0.4)
         }
     }
     
@@ -44,17 +49,4 @@ class ToolbarButton: UIButton {
         }
     }
     
-}
-
-extension ToolbarButton: Themeable {
-    func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        
-        selectedTintColor = theme.colors.accent
-        primaryTintColor = top ? theme.colors.tints.header : theme.colors.tints.footer
-        disabledTintColor = primaryTintColor?.withAlphaComponent(0.4)
-        
-        // Logic is slightly weird, but necessary for proper styling at launch
-        tintColor = isEnabled ? primaryTintColor : disabledTintColor
-    }
 }

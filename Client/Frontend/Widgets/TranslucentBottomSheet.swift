@@ -14,7 +14,7 @@ class TranslucentBottomSheet: UIViewController {
     
     let closeButton = UIButton().then {
         $0.setImage(#imageLiteral(resourceName: "close_translucent_popup").template, for: .normal)
-        $0.appearanceTintColor = .white
+        $0.tintColor = .white
     }
     
     init() {

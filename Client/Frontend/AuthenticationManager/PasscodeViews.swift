@@ -4,6 +4,7 @@
 
 import Foundation
 import SnapKit
+import BraveShared
 
 private struct PasscodeUX {
     static let titleVerticalSpacing: CGFloat = 32
@@ -12,7 +13,7 @@ private struct PasscodeUX {
     static let passcodeFieldSize: CGSize = CGSize(width: 160, height: 32)
 }
 
-@objc protocol PasscodeInputViewDelegate: class {
+@objc protocol PasscodeInputViewDelegate: AnyObject {
     func passcodeInputView(_ inputView: PasscodeInputView, didFinishEnteringCode code: String)
 }
 
@@ -44,6 +45,7 @@ class PasscodeInputView: UIView, UIKeyInput {
         self.passcodeSize = passcodeSize
         super.init(frame: frame)
         isOpaque = false
+        backgroundColor = .secondaryBraveBackground
     }
 
     convenience init(passcodeSize: Int) {
@@ -88,6 +90,12 @@ class PasscodeInputView: UIView, UIKeyInput {
         inputtedCode.remove(at: inputtedCode.index(before: inputtedCode.endIndex))
         setNeedsDisplay()
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        setNeedsDisplay()
+    }
 
     override func draw(_ rect: CGRect) {
         let circleSize = CGSize(width: 14, height: 14)
@@ -95,8 +103,8 @@ class PasscodeInputView: UIView, UIKeyInput {
         guard let context = UIGraphicsGetCurrentContext() else { return }
 
         context.setLineWidth(1)
-        context.setStrokeColor(UIConstants.passcodeDotColor.cgColor)
-        context.setFillColor(UIConstants.passcodeDotColor.cgColor)
+        context.setStrokeColor(UIColor.secondaryButtonTint.cgColor)
+        context.setFillColor(UIColor.secondaryButtonTint.cgColor)
 
         (0..<passcodeSize).forEach { index in
             let offset = floor(rect.width / CGFloat(passcodeSize))
@@ -122,6 +130,8 @@ class PasscodePane: UIView {
     fileprivate lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIConstants.defaultChromeFont
+        label.backgroundColor = .clear
+        label.textColor = .braveLabel
         label.isAccessibilityElement = true
         return label
     }()
@@ -143,6 +153,8 @@ class PasscodePane: UIView {
         codeInputView = PasscodeInputView(passcodeSize: passcodeSize)
         super.init(frame: .zero)
 
+        backgroundColor = .secondaryBraveBackground
+        
         titleLabel.text = title
         centerContainer.addSubview(titleLabel)
         centerContainer.addSubview(codeInputView)

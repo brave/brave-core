@@ -28,6 +28,7 @@ class SpinnerView: UIView {
     private let backgroundView = UIView().then {
         $0.layer.masksToBounds = true
         $0.layer.cornerRadius = CGFloat(DefaultUX.cornerRadius)
+        $0.layer.cornerCurve = .continuous
         $0.backgroundColor = DefaultUX.spinnerBackgroundColor
     }
     

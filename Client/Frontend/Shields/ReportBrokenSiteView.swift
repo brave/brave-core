@@ -8,28 +8,31 @@ import Shared
 import BraveShared
 import BraveUI
 
-class ReportBrokenSiteView: UIStackView, Themeable {
+class ReportBrokenSiteView: UIStackView {
     
     private let titleLabel = UILabel().then {
         $0.text = Strings.Shields.reportABrokenSite
+        $0.textColor = .braveLabel
         $0.font = .systemFont(ofSize: 24.0)
         $0.numberOfLines = 0
     }
     
     private let bodyLabelOne = UILabel().then {
         $0.text = Strings.Shields.reportBrokenSiteBody1
+        $0.textColor = .braveLabel
         $0.font = .systemFont(ofSize: 16.0)
         $0.numberOfLines = 0
     }
     
     private let bodyLabelTwo = UILabel().then {
         $0.text = Strings.Shields.reportBrokenSiteBody2
+        $0.textColor = .braveLabel
         $0.font = .systemFont(ofSize: 16.0)
         $0.numberOfLines = 0
     }
     
     let urlLabel = UILabel().then {
-        $0.appearanceTextColor = BraveUX.braveOrange
+        $0.textColor = .braveOrange
         $0.font = .systemFont(ofSize: 16.0)
         $0.numberOfLines = 0
     }
@@ -38,12 +41,13 @@ class ReportBrokenSiteView: UIStackView, Themeable {
         $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         $0.titleEdgeInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
         $0.setTitle(Strings.cancelButtonTitle, for: .normal)
+        $0.tintColor = .braveLabel
     }
     
     let submitButton = ActionButton(type: .system).then {
         $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         $0.titleEdgeInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
-        $0.backgroundColor = BraveUX.braveOrange
+        $0.backgroundColor = .braveOrange
         $0.setTitleColor(.white, for: .normal)
         $0.setTitle(Strings.Shields.reportBrokenSubmitButtonTitle, for: .normal)
         $0.layer.borderWidth = 0
@@ -77,12 +81,5 @@ class ReportBrokenSiteView: UIStackView, Themeable {
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
-    }
-    
-    func applyTheme(_ theme: Theme) {
-        titleLabel.textColor = theme.colors.tints.home
-        bodyLabelOne.textColor = theme.colors.tints.home
-        bodyLabelTwo.textColor = theme.colors.tints.home
-        cancelButton.tintColor = theme.isDark ? Colors.grey200 : Colors.grey800
     }
 }

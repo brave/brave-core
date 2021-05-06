@@ -89,6 +89,13 @@ class OptionSelectionViewController<OptionType: RepresentableOptionType>: TableV
         ]
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .braveGroupedBackground
+        view.tintColor = .braveOrange
+    }
+    
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError()

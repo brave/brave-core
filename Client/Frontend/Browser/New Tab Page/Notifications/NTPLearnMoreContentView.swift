@@ -33,7 +33,7 @@ extension NTPLearnMoreViewController {
             
             let title = UILabel().then {
                 $0.text = Strings.braveRewardsTitle
-                $0.appearanceTextColor = .black
+                $0.textColor = .black
                 $0.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
             }
             
@@ -62,7 +62,7 @@ extension NTPLearnMoreViewController {
         
         private lazy var header = UILabel().then {
             $0.text = config.headerText
-            $0.appearanceTextColor = .black
+            $0.textColor = .black
             
             $0.font = UIFont.systemFont(ofSize: 14, weight: .medium)
             
@@ -162,8 +162,8 @@ extension NTPLearnMoreViewController {
 private func detailLinkLabel(with text: String) -> LinkLabel {
     LinkLabel().then {
         $0.font = .systemFont(ofSize: 12.0)
-        $0.appearanceTextColor = UIColor(white: 0, alpha: 0.7)
-        $0.linkColor = BraveUX.braveOrange
+        $0.textColor = UIColor(white: 0, alpha: 0.7)
+        $0.linkColor = UIColor.braveOrange
         $0.text = text
         $0.textContainerInset = .zero
         $0.textContainer.lineFragmentPadding = 0
@@ -175,7 +175,7 @@ private func secondaryButton(title: String?) -> UIButton {
         if let title = title {
             $0.setTitle(title, for: .normal)
         }
-        $0.appearanceTextColor = .black
+        $0.titleLabel?.textColor = .black
         $0.contentHorizontalAlignment = .left
         $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)

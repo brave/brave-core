@@ -67,17 +67,3 @@ class UrlBarTextField: AutocompleteTextField {
         return tintedImage
     }
 }
-
-extension UrlBarTextField: Themeable {
-    
-    func applyTheme(_ theme: Theme) {
-        styleChildren(theme: theme)
-        
-        backgroundColor = theme.colors.addressBar.withAlphaComponent(theme.colors.transparencies.addressBarAlpha)
-        
-        let text = theme.colors.tints.header
-        textColor = text
-        clearButtonTintColor = text
-        highlightColor = text.withAlphaComponent(0.2)
-    }
-}
