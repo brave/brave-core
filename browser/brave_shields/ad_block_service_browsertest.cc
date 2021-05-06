@@ -23,6 +23,9 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -636,6 +639,221 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 #define MAYBE_CnameCloakedRequestsCanBeExcepted \
   CnameCloakedRequestsCanBeExcepted
 #endif
+
+// A test observer that allows blocking waits for the
+// AdBlockSubscriptionServiceManager to update the status of any registered
+// subscriptions.
+class TestAdBlockSubscriptionServiceManagerObserver
+    : public brave_shields::AdBlockSubscriptionServiceManagerObserver {
+ public:
+  // Constructs a TestAdBlockSubscriptionServiceManagerObserver which will
+  // observe |sub_service_manager| for updates to the status of any registered
+  // subscriptions.
+  TestAdBlockSubscriptionServiceManagerObserver(
+      brave_shields::AdBlockSubscriptionServiceManager* sub_service_manager)
+      : sub_service_manager_(sub_service_manager) {
+    sub_service_manager_->AddObserver(this);
+  }
+  ~TestAdBlockSubscriptionServiceManagerObserver() override {
+    sub_service_manager_->RemoveObserver(this);
+  }
+
+  TestAdBlockSubscriptionServiceManagerObserver(
+      const TestAdBlockSubscriptionServiceManagerObserver& other) = delete;
+  TestAdBlockSubscriptionServiceManagerObserver& operator=(
+      const TestAdBlockSubscriptionServiceManagerObserver& other) = delete;
+
+  // Waits for the notification from the subscription service manager to happen.
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  void OnServiceUpdateEvent() override { run_loop_.Quit(); }
+
+  base::RunLoop run_loop_;
+  brave_shields::AdBlockSubscriptionServiceManager* sub_service_manager_;
+};
+
+// Make sure a list added as a custom subscription works correctly
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL list_url = embedded_test_server()->GetURL("lists.com", "/list.txt");
+  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+  GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
+
+  auto* sub_service_manager = g_brave_browser_process->ad_block_service()
+                                  ->subscription_service_manager();
+
+  ASSERT_EQ(sub_service_manager->GetSubscriptions().size(), 0ULL);
+
+  // Register an observer for the subscription service manager
+  TestAdBlockSubscriptionServiceManagerObserver sub_observer(
+      sub_service_manager);
+
+  // Create a new subscription
+  sub_service_manager->CreateSubscription(list_url);
+
+  // Ensure the subscription is registered correctly
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].enabled, true);
+  }
+
+  // Wait for the subscription to be updated for the first time
+  sub_observer.Wait();
+
+  // Ensure that the status of the subscription has been updated accordingly
+  base::Time first_update;
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
+              subscriptions[0].last_update_attempt);
+    ASSERT_EQ(subscriptions[0].enabled, true);
+
+    first_update = subscriptions[0].last_successful_update_attempt;
+  }
+
+  // Make sure the list is applied during browsing
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_EQ(true,
+            EvalJs(contents, base::StringPrintf("setExpectations(0, 0, 0, 1);"
+                                                "xhr('%s')",
+                                                resource_url.spec().c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // Disable the list and ensure it is no longer applied
+  sub_service_manager->EnableSubscription(list_url, false);
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
+              subscriptions[0].last_update_attempt);
+    ASSERT_EQ(subscriptions[0].enabled, false);
+  }
+
+  ASSERT_EQ(true,
+            EvalJs(contents, base::StringPrintf("setExpectations(0, 0, 1, 1);"
+                                                "xhr('%s')",
+                                                resource_url.spec().c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // Refresh the subscription and ensure that it gets updated
+  TestAdBlockSubscriptionServiceManagerObserver sub_observer2(
+      sub_service_manager);
+  sub_service_manager->RefreshSubscription(list_url, true);
+  sub_observer2.Wait();
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_GT(subscriptions[0].last_update_attempt, first_update);
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
+              subscriptions[0].last_update_attempt);
+    ASSERT_EQ(subscriptions[0].enabled, false);
+  }
+
+  // Remove the list and ensure it is completely gone
+  sub_service_manager->DeleteSubscription(list_url);
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 0ULL);
+  }
+}
+
+// Make sure the state of a list that cannot be fetched is as expected
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeTo404List) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL list_url =
+      embedded_test_server()->GetURL("lists.com", "/this/list/does/not/exist");
+  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+  GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
+
+  auto* sub_service_manager = g_brave_browser_process->ad_block_service()
+                                  ->subscription_service_manager();
+
+  ASSERT_EQ(sub_service_manager->GetSubscriptions().size(), 0ULL);
+
+  // Register an observer for the subscription service manager
+  TestAdBlockSubscriptionServiceManagerObserver sub_observer(
+      sub_service_manager);
+
+  // Create a new subscription
+  sub_service_manager->CreateSubscription(list_url);
+
+  // Ensure the subscription is registered correctly
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].enabled, true);
+  }
+
+  // Wait for the subscription to be updated for the first time
+  LOG(ERROR) << "Waiting for subscription update";
+  sub_observer.Wait();
+
+  // Ensure that the status of the subscription has been updated accordingly
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_NE(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].enabled, true);
+  }
+}
+
+// Make sure that a list cannot be subscribed to twice
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToListUrlTwice) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL list_url =
+      embedded_test_server()->GetURL("lists.com", "/this/list/does/not/exist");
+  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+  GURL resource_url = embedded_test_server()->GetURL("b.com", "/logo.png");
+
+  auto* sub_service_manager = g_brave_browser_process->ad_block_service()
+                                  ->subscription_service_manager();
+
+  ASSERT_EQ(sub_service_manager->GetSubscriptions().size(), 0ULL);
+
+  // Register an observer for the subscription service manager
+  TestAdBlockSubscriptionServiceManagerObserver sub_observer(
+      sub_service_manager);
+
+  // Create a new subscription
+  sub_service_manager->CreateSubscription(list_url);
+
+  // Ensure the subscription is registered correctly
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+    ASSERT_EQ(subscriptions[0].list_url, list_url);
+    ASSERT_EQ(subscriptions[0].last_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].last_successful_update_attempt, base::Time());
+    ASSERT_EQ(subscriptions[0].enabled, true);
+  }
+
+  // Create a subscription with the same URL again
+  sub_service_manager->CreateSubscription(list_url);
+
+  // Ensure there's still only the original subscription
+  {
+    const auto subscriptions = sub_service_manager->GetSubscriptions();
+    ASSERT_EQ(subscriptions.size(), 1ULL);
+  }
+}
 
 // Make sure that CNAME cloaked network requests get blocked correctly and
 // issue the correct number of DNS resolutions
