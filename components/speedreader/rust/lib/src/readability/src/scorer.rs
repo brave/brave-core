@@ -781,12 +781,8 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                     // an icon to resize the image. This will not format
                     // correctly in speedreader since images are styled as
                     // "display: inline".
-                    for ancestor in handle.ancestors() {
-                        if ancestor
-                            .as_element()
-                            .map(|e| e.name.local == local_name!("figure"))
-                            .unwrap_or(false)
-                        {
+                    for ancestor in handle.ancestors().elements() {
+                        if ancestor.name.local == local_name!("figure") {
                             return true;
                         }
                     }
@@ -878,6 +874,11 @@ pub fn is_useless(handle: &Handle) -> bool {
         if heading_density < 0.9 && content_length < 25 && (img_count == 0 || img_count > 2) {
             return true;
         }
+    }
+
+    let svg_count = dom::count_nodes(&handle, &local_name!("svg"));
+    if svg_count > 1 && content_length < 75 {
+        return true;
     }
 
     let embed_count = dom::count_nodes(&handle, &local_name!("embed"));

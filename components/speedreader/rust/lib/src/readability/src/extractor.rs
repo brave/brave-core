@@ -851,6 +851,34 @@ mod tests {
     }
 
     #[test]
+    fn remove_elements_high_svg_density() {
+        let input = r#"
+        <body>
+          <p>Some Text Some text some text and some more text</p>
+          <div class="videoContainer">
+            <svg class=" play">
+            <use aria-hidden="false" xlink:href="\#play"></use>
+            </svg>
+            <svg class=" pause">
+            <use aria-hidden="false" xlink:href="\#pause"></use>
+            </svg>
+            <figure class=" img"><img src="some-image.jpg" class="photo" alt="" height="110" width="196" loading="lazy"></figure>
+          </div>
+        </body>"#;
+        let expected = r#"
+        <body id="article">
+          <p>Some Text Some text some text and some more text</p>
+        </body>"#;
+
+        let mut cursor = Cursor::new(input);
+        let product = extract(&mut cursor, None).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
     fn test_clean_title_colon() {
         let input = "The SoCal Weekly Digest: Welcome to our wonderful page";
         let expected = "Welcome to our wonderful page";
