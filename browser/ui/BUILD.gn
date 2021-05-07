@@ -363,6 +363,8 @@ source_set("ui") {
       "views/tabs/brave_alert_indicator.h",
       "views/tabs/brave_new_tab_button.cc",
       "views/tabs/brave_new_tab_button.h",
+      "views/tabs/brave_tab_search_button.cc",
+      "views/tabs/brave_tab_search_button.h",
       "views/toolbar/brave_toolbar_view.cc",
       "views/toolbar/brave_toolbar_view.h",
     ]
