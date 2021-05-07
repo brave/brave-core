@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
+import WebKit
 
 private let downloadOperationQueue = OperationQueue()
 
@@ -66,6 +67,7 @@ class HTTPDownload: Download {
     
     fileprivate(set) var session: URLSession?
     fileprivate(set) var task: URLSessionDownloadTask?
+    fileprivate(set) var cookieStore: WKHTTPCookieStore
     
     private var resumeData: Data?
     
@@ -78,7 +80,8 @@ class HTTPDownload: Download {
         return string.components(separatedBy: validFilenameSet).joined()
      }
     
-    init(preflightResponse: URLResponse, request: URLRequest) {
+    init(cookieStore: WKHTTPCookieStore, preflightResponse: URLResponse, request: URLRequest) {
+        self.cookieStore = cookieStore
         self.preflightResponse = preflightResponse
         self.request = request
         
@@ -94,7 +97,7 @@ class HTTPDownload: Download {
         
         self.totalBytesExpected = preflightResponse.expectedContentLength > 0 ? preflightResponse.expectedContentLength : nil
         
-        self.session = URLSession(configuration: .default, delegate: self, delegateQueue: downloadOperationQueue)
+        self.session = URLSession(configuration: .ephemeral, delegate: self, delegateQueue: downloadOperationQueue)
         self.task = session?.downloadTask(with: request)
     }
     
@@ -109,13 +112,18 @@ class HTTPDownload: Download {
     }
     
     override func resume() {
-        guard let resumeData = self.resumeData else {
-            task?.resume()
-            return
+        cookieStore.getAllCookies { [self] cookies in
+            cookies.forEach { cookie in
+                session?.configuration.httpCookieStorage?.setCookie(cookie)
+            }
+
+            guard let resumeData = self.resumeData else {
+                self.task?.resume()
+                return
+            }
+            self.task = session?.downloadTask(withResumeData: resumeData)
+            self.task?.resume()
         }
-        
-        task = session?.downloadTask(withResumeData: resumeData)
-        task?.resume()
     }
 }
 
