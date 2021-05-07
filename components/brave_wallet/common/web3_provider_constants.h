@@ -3,10 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_WEB3_PROVIDER_CONSTANTS_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_WEB3_PROVIDER_CONSTANTS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WEB3_PROVIDER_CONSTANTS_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WEB3_PROVIDER_CONSTANTS_H_
 
 namespace brave_wallet {
+
+extern const char kConnectEvent[];
+extern const char kDisconnectEvent[];
+extern const char kChainChangedEvent[];
+extern const char kAccountsChangedEvent[];
 
 enum class ProviderErrors {
   kUserRejectedRequest = 4001,  // User rejected the request
@@ -21,4 +26,4 @@ enum class ProviderErrors {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_WEB3_PROVIDER_CONSTANTS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WEB3_PROVIDER_CONSTANTS_H_

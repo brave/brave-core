@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_wallet/renderer/web3_provider_constants.h"
+#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 
 namespace brave_wallet {
 

@@ -7,6 +7,17 @@ source_set("common") {
     "features.cc",
     "features.h",
   ]
+  deps = [
+    "//base",
+    ":common_constants",
+  ]
+}
+
+source_set("common_constants") {
+  sources = [
+    "web3_provider_constants.cc",
+    "web3_provider_constants.h",
+  ]
   deps = [ ":mojom" ]
 }
 

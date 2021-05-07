@@ -22,6 +22,7 @@ class BraveWalletJSHandler {
   ~BraveWalletJSHandler();
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
+  void FireEvent(const std::string& event, const std::string& event_args);
   void ConnectEvent(const std::string& chain_id);
   void DisconnectEvent(const std::string& message);
   void ChainChangedEvent(const std::string& chain_id);
