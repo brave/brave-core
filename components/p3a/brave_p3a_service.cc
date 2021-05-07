@@ -20,9 +20,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/browser/version_info.h"
-#include "brave/common/brave_channel_info.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -32,6 +29,7 @@
 #include "brave/components/p3a/brave_p3a_switches.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/version_info/version_info.h"
 #include "brave/vendor/brave_base/random.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -197,8 +195,11 @@ base::TimeDelta TimeDeltaTillMonday(base::Time time) {
 
 }  // namespace
 
-BraveP3AService::BraveP3AService(PrefService* local_state)
-    : local_state_(local_state) {}
+BraveP3AService::BraveP3AService(PrefService* local_state,
+                                 std::string channel,
+                                 std::string week_of_install)
+    : local_state_(std::move(local_state)), channel_(std::move(channel)),
+      week_of_install_(week_of_install) {}
 
 BraveP3AService::~BraveP3AService() = default;
 
@@ -346,13 +347,12 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
 
 void BraveP3AService::InitPyxisMeta() {
   pyxis_meta_.platform = brave_stats::GetPlatformIdentifier();
-  pyxis_meta_.channel = brave::GetChannelName();
+  pyxis_meta_.channel = channel_;
   pyxis_meta_.version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
-  const std::string woi = local_state_->GetString(kWeekOfInstallation);
-  if (!woi.empty()) {
-    pyxis_meta_.date_of_install = brave_stats::GetYMDAsDate(woi);
+  if (!week_of_install_.empty()) {
+    pyxis_meta_.date_of_install = brave_stats::GetYMDAsDate(week_of_install_);
   } else {
     pyxis_meta_.date_of_install = base::Time::Now();
   }

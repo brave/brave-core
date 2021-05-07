@@ -35,7 +35,9 @@ class BraveP3AUploader;
 class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
                         public BraveP3ALogStore::Delegate {
  public:
-  explicit BraveP3AService(PrefService* local_state);
+  BraveP3AService(PrefService* local_state,
+                  std::string channel,
+                  std::string week_of_install);
 
   static void RegisterPrefs(PrefRegistrySimple* registry, bool first_run);
 
@@ -90,6 +92,9 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // General prefs:
   bool initialized_ = false;
   PrefService* local_state_ = nullptr;
+
+  const std::string channel_;
+  const std::string week_of_install_;
 
   // The average interval between uploading different values.
   base::TimeDelta average_upload_interval_;

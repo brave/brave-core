@@ -133,6 +133,7 @@ brave_chrome_browser_deps = [
   "//brave/components/sidebar/buildflags",
   "//brave/components/speedreader:buildflags",
   "//brave/components/tor/buildflags",
+  "//brave/components/version_info",
   "//brave/services/network/public/cpp",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles:profile",
