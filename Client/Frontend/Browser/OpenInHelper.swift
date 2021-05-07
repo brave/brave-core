@@ -44,17 +44,13 @@ extension String {
     }
 }
 
-protocol OpenInHelper {
-    init?(request: URLRequest?, response: URLResponse, canShowInWebView: Bool, forceDownload: Bool, browserViewController: BrowserViewController)
-    func open()
-}
-
-class DownloadHelper: NSObject, OpenInHelper {
+class DownloadHelper: NSObject {
     fileprivate let request: URLRequest
     fileprivate let preflightResponse: URLResponse
+    fileprivate let cookieStore: WKHTTPCookieStore
     fileprivate let browserViewController: BrowserViewController
 
-    required init?(request: URLRequest?, response: URLResponse, canShowInWebView: Bool, forceDownload: Bool, browserViewController: BrowserViewController) {
+    required init?(request: URLRequest?, response: URLResponse, cookieStore: WKHTTPCookieStore, canShowInWebView: Bool, forceDownload: Bool, browserViewController: BrowserViewController) {
         guard let request = request else {
             return nil
         }
@@ -67,6 +63,7 @@ class DownloadHelper: NSObject, OpenInHelper {
             return nil
         }
 
+        self.cookieStore = cookieStore
         self.request = request
         self.preflightResponse = response
         self.browserViewController = browserViewController
@@ -77,7 +74,7 @@ class DownloadHelper: NSObject, OpenInHelper {
             return
         }
         
-        let download = HTTPDownload(preflightResponse: preflightResponse, request: request)
+        let download = HTTPDownload(cookieStore: cookieStore, preflightResponse: preflightResponse, request: request)
         
         let expectedSize = download.totalBytesExpected != nil ? ByteCountFormatter.string(fromByteCount: download.totalBytesExpected!, countStyle: .file) : nil
         
@@ -111,7 +108,7 @@ class DownloadHelper: NSObject, OpenInHelper {
     }
 }
 
-class OpenPassBookHelper: NSObject, OpenInHelper {
+class OpenPassBookHelper: NSObject {
     fileprivate var url: URL
 
     fileprivate let browserViewController: BrowserViewController
