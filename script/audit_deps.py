@@ -30,6 +30,7 @@ CARGO_INCLUDE_PATHS = [
 
 # Ping security team before adding to ignored_npm_advisories
 ignored_npm_advisories = [
+    '1677',  # moderate DoS vector not yet fixed in Jest
     '1556'  # low-sev DoS vector that isn't fixed in some upstream packages
 ]
 
