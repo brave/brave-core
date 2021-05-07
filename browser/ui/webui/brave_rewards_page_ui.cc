@@ -319,9 +319,7 @@ const char kAutoDetectedAdsSubdivisionTargeting[] =
 
 RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 
-RewardsDOMHandler::~RewardsDOMHandler() {
-  OnJavascriptDisallowed();
-}
+RewardsDOMHandler::~RewardsDOMHandler() {}
 
 void RewardsDOMHandler::RegisterMessages() {
 #if defined(OS_ANDROID)
@@ -536,6 +534,10 @@ void RewardsDOMHandler::GetRewardsParameters(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnGetRewardsParameters(
     ledger::type::RewardsParametersPtr parameters) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::DictionaryValue data;
   if (parameters) {
     auto choices = std::make_unique<base::ListValue>();
@@ -553,6 +555,9 @@ void RewardsDOMHandler::OnGetRewardsParameters(
 
 void RewardsDOMHandler::OnRewardsInitialized(
     brave_rewards::RewardsService* rewards_service) {
+  if (!IsJavascriptAllowed())
+    return;
+
   CallJavascriptFunction(
       "brave_rewards.initialized",
       base::Value(0));
@@ -570,7 +575,7 @@ void RewardsDOMHandler::GetAutoContributeProperties(
 
 void RewardsDOMHandler::OnGetAutoContributeProperties(
     ledger::type::AutoContributePropertiesPtr properties) {
-  if (!properties)
+  if (!IsJavascriptAllowed() || !properties)
     return;
 
   base::DictionaryValue values;
@@ -591,6 +596,10 @@ void RewardsDOMHandler::OnFetchPromotions(
     brave_rewards::RewardsService* rewards_service,
     const ledger::type::Result result,
     const ledger::type::PromotionList& list) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::ListValue promotions;
   for (const auto& item : list) {
     auto dict = std::make_unique<base::DictionaryValue>();
@@ -621,6 +630,10 @@ void RewardsDOMHandler::OnClaimPromotion(
       const std::string& captcha_image,
       const std::string& hint,
       const std::string& captcha_id) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::DictionaryValue response;
   response.SetInteger("result", static_cast<int>(result));
   response.SetString("promotionId", promotion_id);
@@ -680,6 +693,10 @@ void RewardsDOMHandler::OnAttestPromotion(
     const std::string& promotion_id,
       const ledger::type::Result result,
       ledger::type::PromotionPtr promotion) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::DictionaryValue promotion_dict;
   promotion_dict.SetString("promotionId", promotion_id);
 
@@ -723,15 +740,21 @@ void RewardsDOMHandler::RecoverWallet(const base::ListValue *args) {
 void RewardsDOMHandler::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
     const ledger::type::Result result) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   CallJavascriptFunction(
         "brave_rewards.recoverWalletData",
         base::Value(static_cast<int>(result)));
 }
 
 void RewardsDOMHandler::OnGetReconcileStamp(uint64_t reconcile_stamp) {
-  std::string stamp = std::to_string(reconcile_stamp);
-  CallJavascriptFunction("brave_rewards.reconcileStamp",
-      base::Value(stamp));
+  if (IsJavascriptAllowed()) {
+    std::string stamp = std::to_string(reconcile_stamp);
+    CallJavascriptFunction("brave_rewards.reconcileStamp",
+        base::Value(stamp));
+  }
 }
 
 void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
@@ -774,6 +797,10 @@ void RewardsDOMHandler::OnExcludedSitesChanged(
     brave_rewards::RewardsService* rewards_service,
     std::string publisher_id,
     bool excluded) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   CallJavascriptFunction("brave_rewards.excludedSiteChanged");
 }
 
@@ -788,7 +815,8 @@ void RewardsDOMHandler::OnNotificationDeleted(
         notification) {
 #if defined(OS_ANDROID)
   if (notification.type_ ==
-      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT) {
+      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
+      && IsJavascriptAllowed()) {
     base::DictionaryValue finish;
     finish.SetInteger("status", false);
     finish.SetInteger("expiryTime", 0);
@@ -885,6 +913,10 @@ void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {
 }
 
 void RewardsDOMHandler::OnPublisherList(ledger::type::PublisherInfoList list) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   auto publishers = std::make_unique<base::ListValue>();
   for (auto const& item : list) {
     auto publisher = std::make_unique<base::DictionaryValue>();
@@ -907,6 +939,10 @@ void RewardsDOMHandler::OnPublisherList(ledger::type::PublisherInfoList list) {
 
 void RewardsDOMHandler::OnExcludedSiteList(
     ledger::type::PublisherInfoList list) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   auto publishers = std::make_unique<base::ListValue>();
   for (auto const& item : list) {
     auto publisher = std::make_unique<base::DictionaryValue>();
@@ -925,8 +961,10 @@ void RewardsDOMHandler::OnExcludedSiteList(
 }
 
 void RewardsDOMHandler::OnGetContributionAmount(double amount) {
-  CallJavascriptFunction("brave_rewards.contributionAmount",
-      base::Value(amount));
+  if (IsJavascriptAllowed()) {
+    CallJavascriptFunction("brave_rewards.contributionAmount",
+        base::Value(amount));
+  }
 }
 
 void RewardsDOMHandler::GetAutoContributionAmount(const base::ListValue* args) {
@@ -944,6 +982,10 @@ void RewardsDOMHandler::OnReconcileComplete(
     const double amount,
     const ledger::type::RewardsType type,
     const ledger::type::ContributionProcessor processor) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::DictionaryValue complete;
   complete.SetKey("result", base::Value(static_cast<int>(result)));
   complete.SetKey("type", base::Value(static_cast<int>(type)));
@@ -972,6 +1014,9 @@ void RewardsDOMHandler::GetRecurringTips(
 
 void RewardsDOMHandler::OnGetRecurringTips(
     ledger::type::PublisherInfoList list) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
   auto publishers = std::make_unique<base::ListValue>();
 
   for (auto const& item : list) {
@@ -994,6 +1039,9 @@ void RewardsDOMHandler::OnGetRecurringTips(
 }
 
 void RewardsDOMHandler::OnGetOneTimeTips(ledger::type::PublisherInfoList list) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
   auto publishers = std::make_unique<base::ListValue>();
 
   for (auto const& item : list) {
@@ -1035,7 +1083,7 @@ void RewardsDOMHandler::GetContributionList(const base::ListValue *args) {
 }
 
 void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
-  if (!ads_service_) {
+  if (!ads_service_ || !IsJavascriptAllowed()) {
     return;
   }
 
@@ -1093,6 +1141,10 @@ void RewardsDOMHandler::GetAdsHistory(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   CallJavascriptFunction("brave_rewards.adsHistory",
                                          ads_history);
 }
@@ -1115,6 +1167,10 @@ void RewardsDOMHandler::ToggleAdThumbUp(const base::ListValue* args) {
 void RewardsDOMHandler::OnToggleAdThumbUp(
     const std::string& creative_instance_id,
     const int action) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("action", base::Value(action));
@@ -1140,6 +1196,10 @@ void RewardsDOMHandler::ToggleAdThumbDown(const base::ListValue* args) {
 void RewardsDOMHandler::OnToggleAdThumbDown(
     const std::string& creative_instance_id,
     const int action) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("action", base::Value(action));
@@ -1163,6 +1223,10 @@ void RewardsDOMHandler::ToggleAdOptInAction(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnToggleAdOptInAction(const std::string& category,
                                               int action) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("category", base::Value(category));
   result.SetKey("action", base::Value(action));
@@ -1186,6 +1250,10 @@ void RewardsDOMHandler::ToggleAdOptOutAction(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnToggleAdOptOutAction(const std::string& category,
                                                int action) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("category", base::Value(category));
   result.SetKey("action", base::Value(action));
@@ -1210,6 +1278,10 @@ void RewardsDOMHandler::ToggleSaveAd(const base::ListValue* args) {
 void RewardsDOMHandler::OnToggleSaveAd(
     const std::string& creative_instance_id,
     bool saved) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("saved", base::Value(saved));
@@ -1233,6 +1305,10 @@ void RewardsDOMHandler::ToggleFlagAd(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnToggleFlagAd(
       const std::string& creative_instance_id, bool flagged) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("flagged", base::Value(flagged));
@@ -1266,7 +1342,7 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::SetBackupCompleted(const base::ListValue *args) {
-  if (rewards_service_) {
+  if (IsJavascriptAllowed() && rewards_service_) {
     rewards_service_->SetBackupCompleted();
   }
 }
@@ -1281,13 +1357,18 @@ void RewardsDOMHandler::GetPendingContributionsTotal(
 }
 
 void RewardsDOMHandler::OnGetPendingContributionsTotal(double amount) {
-  CallJavascriptFunction(
-      "brave_rewards.pendingContributionTotal", base::Value(amount));
+  if (IsJavascriptAllowed()) {
+    CallJavascriptFunction(
+        "brave_rewards.pendingContributionTotal", base::Value(amount));
+  }
 }
 
 void RewardsDOMHandler::OnPendingContributionSaved(
     brave_rewards::RewardsService* rewards_service,
     const ledger::type::Result result) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
   CallJavascriptFunction(
       "brave_rewards.onPendingContributionSaved",
       base::Value(static_cast<int>(result)));
@@ -1315,6 +1396,10 @@ void RewardsDOMHandler::OnGetStatement(const bool success,
     return;
   }
 
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::DictionaryValue history;
 
   history.SetDouble("adsEstimatedPendingRewards",
@@ -1336,8 +1421,10 @@ void RewardsDOMHandler::OnGetStatement(const bool success,
 
 void RewardsDOMHandler::OnStatementChanged(
     brave_rewards::RewardsService* rewards_service) {
-  CallJavascriptFunction(
-      "brave_rewards.statementChanged");
+  if (IsJavascriptAllowed()) {
+    CallJavascriptFunction(
+        "brave_rewards.statementChanged");
+  }
 }
 
 void RewardsDOMHandler::OnAdRewardsChanged() {
@@ -1348,13 +1435,19 @@ void RewardsDOMHandler::OnAdRewardsChanged() {
 void RewardsDOMHandler::OnRecurringTipSaved(
     brave_rewards::RewardsService* rewards_service,
     bool success) {
-  CallJavascriptFunction(
-      "brave_rewards.recurringTipSaved", base::Value(success));
+  if (IsJavascriptAllowed()) {
+    CallJavascriptFunction(
+        "brave_rewards.recurringTipSaved", base::Value(success));
+  }
 }
 
 void RewardsDOMHandler::OnRecurringTipRemoved(
     brave_rewards::RewardsService* rewards_service,
     bool success) {
+  if (!IsJavascriptAllowed()) {
+     return;
+  }
+
   CallJavascriptFunction(
       "brave_rewards.recurringTipRemoved", base::Value(success));
 }
@@ -1383,6 +1476,10 @@ void RewardsDOMHandler::GetPendingContributions(
 
 void RewardsDOMHandler::OnGetPendingContributions(
     ledger::type::PendingContributionInfoList list) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   auto contributions = std::make_unique<base::ListValue>();
   for (auto const& item : list) {
     auto contribution =
@@ -1431,14 +1528,20 @@ void RewardsDOMHandler::RemoveAllPendingContributions(
 void RewardsDOMHandler::OnPendingContributionRemoved(
     brave_rewards::RewardsService* rewards_service,
     const ledger::type::Result result) {
-  CallJavascriptFunction(
-      "brave_rewards.onRemovePendingContribution",
-      base::Value(static_cast<int>(result)));
+  if (IsJavascriptAllowed()) {
+    CallJavascriptFunction(
+        "brave_rewards.onRemovePendingContribution",
+        base::Value(static_cast<int>(result)));
+  }
 }
 
 void RewardsDOMHandler::OnFetchBalance(
     const ledger::type::Result result,
     ledger::type::BalancePtr balance) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::Value balance_value(base::Value::Type::DICTIONARY);
 
   if (balance) {
@@ -1481,27 +1584,29 @@ void RewardsDOMHandler::GetExternalWallet(const base::ListValue* args) {
 void RewardsDOMHandler::OnGetExternalWallet(
     const ledger::type::Result result,
     ledger::type::ExternalWalletPtr wallet) {
-  base::Value data(base::Value::Type::DICTIONARY);
+  if (IsJavascriptAllowed()) {
+    base::Value data(base::Value::Type::DICTIONARY);
 
-  data.SetIntKey("result", static_cast<int>(result));
-  base::Value wallet_dict(base::Value::Type::DICTIONARY);
+    data.SetIntKey("result", static_cast<int>(result));
+    base::Value wallet_dict(base::Value::Type::DICTIONARY);
 
-  if (wallet) {
-    wallet_dict.SetStringKey("type", wallet->type);
-    wallet_dict.SetStringKey("address", wallet->address);
-    wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
-    wallet_dict.SetStringKey("verifyUrl", wallet->verify_url);
-    wallet_dict.SetStringKey("addUrl", wallet->add_url);
-    wallet_dict.SetStringKey("withdrawUrl", wallet->withdraw_url);
-    wallet_dict.SetStringKey("userName", wallet->user_name);
-    wallet_dict.SetStringKey("accountUrl", wallet->account_url);
-    wallet_dict.SetStringKey("loginUrl", wallet->login_url);
+    if (wallet) {
+      wallet_dict.SetStringKey("type", wallet->type);
+      wallet_dict.SetStringKey("address", wallet->address);
+      wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
+      wallet_dict.SetStringKey("verifyUrl", wallet->verify_url);
+      wallet_dict.SetStringKey("addUrl", wallet->add_url);
+      wallet_dict.SetStringKey("withdrawUrl", wallet->withdraw_url);
+      wallet_dict.SetStringKey("userName", wallet->user_name);
+      wallet_dict.SetStringKey("accountUrl", wallet->account_url);
+      wallet_dict.SetStringKey("loginUrl", wallet->login_url);
+    }
+
+    data.SetKey("wallet", std::move(wallet_dict));
+
+    CallJavascriptFunction("brave_rewards.externalWallet",
+                                           data);
   }
-
-  data.SetKey("wallet", std::move(wallet_dict));
-
-  CallJavascriptFunction("brave_rewards.externalWallet",
-                                         data);
 }
 
 void RewardsDOMHandler::OnProcessRewardsPageUrl(
@@ -1509,6 +1614,10 @@ void RewardsDOMHandler::OnProcessRewardsPageUrl(
     const std::string& wallet_type,
     const std::string& action,
     const base::flat_map<std::string, std::string>& args) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::Value data(base::Value::Type::DICTIONARY);
   data.SetIntKey("result", static_cast<int>(result));
   data.SetStringKey("walletType", wallet_type);
@@ -1562,6 +1671,10 @@ void RewardsDOMHandler::OnDisconnectWallet(
 void RewardsDOMHandler::OnAdsEnabled(
     brave_rewards::RewardsService* rewards_service,
     bool ads_enabled) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   base::ListValue* emptyArgs = nullptr;
   GetAdsData(emptyArgs);
   GetAutoContributeProperties(emptyArgs);
@@ -1582,10 +1695,18 @@ void RewardsDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnUnblindedTokensReady(
     brave_rewards::RewardsService* rewards_service) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   CallJavascriptFunction("brave_rewards.unblindedTokensReady");
 }
 
 void RewardsDOMHandler::ReconcileStampReset() {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   CallJavascriptFunction("brave_rewards.reconcileStampReset");
 }
 
@@ -1594,7 +1715,7 @@ void RewardsDOMHandler::OnGetBalanceReport(
     const uint32_t year,
     const ledger::type::Result result,
     ledger::type::BalanceReportInfoPtr report) {
-  if (!report) {
+  if (!IsJavascriptAllowed() || !report) {
     return;
   }
 
@@ -1636,7 +1757,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
     const uint32_t month,
     const uint32_t year,
     ledger::type::MonthlyReportInfoPtr report) {
-  if (!report) {
+  if (!IsJavascriptAllowed() || !report) {
     return;
   }
 
@@ -1745,6 +1866,10 @@ void RewardsDOMHandler::GetAllMonthlyReportIds(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::GetCountryCode(const base::ListValue* args) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
   const std::string country_code = brave_l10n::GetCountryCode(locale);
@@ -1762,6 +1887,10 @@ void RewardsDOMHandler::CompleteReset(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnCompleteReset(const bool success) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   CallJavascriptFunction(
       "brave_rewards.completeReset", base::Value(success));
 }
@@ -1786,6 +1915,10 @@ void RewardsDOMHandler::OnWalletCreatedForPaymentId(
 }
 
 void RewardsDOMHandler::OnGetPaymentId(ledger::type::BraveWalletPtr wallet) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   std::string payment_id;
   if (wallet) {
     payment_id = wallet->payment_id;
@@ -1807,13 +1940,17 @@ void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& passphrase) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
   CallJavascriptFunction(
       "brave_rewards.walletPassphrase",
       base::Value(passphrase));
 }
 
 void RewardsDOMHandler::GetOnboardingStatus(const base::ListValue* args) {
-  if (!rewards_service_) {
+  if (!rewards_service_ || !IsJavascriptAllowed()) {
     return;
   }
   base::Value data(base::Value::Type::DICTIONARY);
