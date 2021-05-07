@@ -25,6 +25,14 @@ class TorWindowSearchEngineProviderService : public SearchEngineProviderService,
   explicit TorWindowSearchEngineProviderService(Profile* otr_profile);
   ~TorWindowSearchEngineProviderService() override;
 
+  TorWindowSearchEngineProviderService(
+      const TorWindowSearchEngineProviderService&) = delete;
+  TorWindowSearchEngineProviderService& operator=(
+      const TorWindowSearchEngineProviderService&) = delete;
+
+  // SearchEngineProviderService overrides:
+  void Shutdown() override;
+
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
@@ -36,8 +44,6 @@ class TorWindowSearchEngineProviderService : public SearchEngineProviderService,
   std::unique_ptr<TemplateURL> alternative_search_engine_url_for_tor_;
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       observation_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(TorWindowSearchEngineProviderService);
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_TOR_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_

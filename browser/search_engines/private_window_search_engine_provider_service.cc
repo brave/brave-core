@@ -5,7 +5,7 @@
 
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 
-#include "brave/components/search_engines/pref_names.h"
+#include "brave/components/search_engines/search_engines_pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/default_search_manager.h"
@@ -64,4 +64,9 @@ void PrivateWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   }
 
   ConfigureSearchEngineProvider();
+}
+
+void PrivateWindowSearchEngineProviderService::Shutdown() {
+  SearchEngineProviderService::Shutdown();
+  observation_.Reset();
 }

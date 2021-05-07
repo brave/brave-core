@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/macros.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
 
@@ -35,7 +34,7 @@ class SearchEngineProviderService : public KeyedService {
   void ChangeToAlternativeSearchEngineProvider();
   void ChangeToNormalWindowSearchEngineProvider();
 
-  bool ShouldUseExtensionSearchProvider();
+  bool ShouldUseExtensionSearchProvider() const;
   void UseExtensionSearchProvider();
 
   // Points off the record profile.

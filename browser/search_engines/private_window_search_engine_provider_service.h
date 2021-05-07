@@ -31,6 +31,7 @@ class PrivateWindowSearchEngineProviderService
 
   // SearchEngineProviderService overrides:
   void OnUseAlternativeSearchEngineProviderChanged() override;
+  void Shutdown() override;
 
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       observation_{this};

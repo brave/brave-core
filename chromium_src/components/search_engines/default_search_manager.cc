@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/search_engines/pref_names.h"
+#include "brave/components/search_engines/search_engines_pref_names.h"
 
 // When extension is loaded and it provides search provider as a default
 // provider, that search engine data is stored in

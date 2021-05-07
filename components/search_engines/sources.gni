@@ -9,4 +9,4 @@ brave_components_search_engines_prepopulated_engines_sources = [
 ]
 
 brave_components_search_engines_sources =
-    [ "//brave/components/search_engines/pref_names.h" ]
+    [ "//brave/components/search_engines/search_engines_pref_names.h" ]

@@ -92,6 +92,7 @@ void SearchEngineProviderService::UseExtensionSearchProvider() {
 
   const auto* extension_provider_url =
       original_template_url_service_->GetDefaultSearchProvider();
+  DCHECK(extension_provider_url);
   auto data = extension_provider_url->data();
   data.id = kInvalidTemplateURLID;
 
@@ -115,14 +116,16 @@ void SearchEngineProviderService::UseExtensionSearchProvider() {
 #endif
 }
 
-bool SearchEngineProviderService::ShouldUseExtensionSearchProvider() {
+bool SearchEngineProviderService::ShouldUseExtensionSearchProvider() const {
   return original_template_url_service_->IsExtensionControlledDefaultSearch();
 }
 
 bool SearchEngineProviderService::CouldAddExtensionTemplateURL(
     const TemplateURL* url) {
+  DCHECK(url);
   DCHECK_NE(TemplateURL::NORMAL, url->type());
   for (const auto* turl : otr_template_url_service_->GetTemplateURLs()) {
+    DCHECK(turl);
     if (url->type() == turl->type() &&
         url->GetExtensionId() == turl->GetExtensionId())
       return false;

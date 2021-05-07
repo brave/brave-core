@@ -6,7 +6,7 @@
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
-#include "brave/components/search_engines/pref_names.h"
+#include "brave/components/search_engines/search_engines_pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
@@ -18,7 +18,8 @@ TorWindowSearchEngineProviderService(Profile* otr_profile)
   DCHECK(otr_profile->IsTor());
 
   auto provider_data = GetInitialSearchEngineProvider(otr_profile->GetPrefs());
-  alternative_search_engine_url_for_tor_.reset(new TemplateURL(*provider_data));
+  alternative_search_engine_url_for_tor_ =
+      std::make_unique<TemplateURL>(*provider_data);
 
   ConfigureSearchEngineProvider();
 
@@ -27,6 +28,11 @@ TorWindowSearchEngineProviderService(Profile* otr_profile)
 
 TorWindowSearchEngineProviderService::~TorWindowSearchEngineProviderService() =
     default;
+
+void TorWindowSearchEngineProviderService::Shutdown() {
+  SearchEngineProviderService::Shutdown();
+  observation_.Reset();
+}
 
 void TorWindowSearchEngineProviderService::ConfigureSearchEngineProvider() {
   const bool use_extension_provider = ShouldUseExtensionSearchProvider();
