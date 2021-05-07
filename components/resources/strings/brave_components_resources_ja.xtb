@@ -393,6 +393,7 @@
 <translation id="5468234114288973517">ウォレットを認証する</translation>
 <translation id="6609621505400013054">bitFlyerウォレットは、株式会社 bitFlyerが運営するサービスです。</translation>
 <translation id="7258399883616914635">ウォレットを認証してbitFlyerアカウントと連携することで、Brave Rewardsによって獲得したトークンを保管・管理することができるようになります</translation>
+<translation id="1411121707906693782">BraveブラウザとbitFlyerアカウントの連携方法について<ph name="LINK_BEGIN"/>詳しくはこちら<ph name="LINK_END"/></translation>
 <translation id="5094577350232361255">について</translation>
 <translation id="4918086044614829423">承諾</translation>
 <translation id="5916290544882167205">「Brave Software」や「Brave」は、Brave Softwareの登録商標です。サイト名は、サイト所有者の商標または登録商標である可能性があります。</translation>
@@ -646,13 +647,13 @@
 <translation id="5796169459825124737">当ウォレットサービスは、<ph name="PROVIDER"/>によって提供されています。</translation>
 <translation id="6771734945114850124">政府発行の身分証明書をご用意ください。</translation>
 <translation id="8697510149346635496">Braveブラウザに貯まっているBATをウォレットに移動する</translation>
-<translation id="1481480653609649134">クレジットカードやその他の資金源で追加のBATを購入する</translation>
+<translation id="1481480653609649134">広告視聴で得られるBATをウォレットに貯める</translation>
 <translation id="9096003370755878766">ウォレットに貯めたBATを日本円に交換したり、日本円でBATを購入したりする</translation>
 <translation id="8558636200953226885">認証を行うと、次のことが可能となります。</translation>
 <translation id="3354315693758743702">ウォレットの認証は任意です。</translation>
 <translation id="4872388810065331182"><ph name="PROVIDER"/>との認証にあたっては、<ph name="PROVIDER"/>での本人確認手続きが必要です。</translation>
 <translation id="6938217233488972952">Brave Software Inc.は、あなたが<ph name="PROVIDER"/>のアカウントを開設する際に<ph name="PROVIDER"/>に提供する個人情報について処理、保存、アクセスすることは一切ありません。</translation>
-<translation id="2415586822982819406">注意： 承認すると、あなたのトランザクションは<ph name="PROVIDER"/>から閲覧可能になります。例えば、彼らはチップの受取人と金額を見ることができるようになります。</translation>
+<translation id="2415586822982819406">注：ウォレットを認証すると、あなたの取引は<ph name="PROVIDER"/>に把握されるようになります。例えば、チップの送り先が<ph name="PROVIDER"/>と認証している場合、<ph name="PROVIDER"/>はチップの送り先や金額が把握可能となります。</translation>
 <translation id="7404779623219601861">BATをギフトカードと交換する</translation>
 <translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
 <translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>
