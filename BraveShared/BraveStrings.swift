@@ -1448,10 +1448,10 @@ extension Strings {
                               value: "Blocks unwanted network connections",
                               comment: "Text for a checkbox to present the user benefits for using Brave VPN")
         
-        public static let checkboxProtectConnections =
-            NSLocalizedString("vpn.checkboxProtectConnections",
+        public static let checkboxGeoSelector =
+            NSLocalizedString("vpn.checkboxGeoSelector",
                               bundle: .braveShared,
-                              value: "Protects you from unwanted connections",
+                              value: "Choose your geo/country location",
                               comment: "Text for a checkbox to present the user benefits for using Brave VPN")
         
         public static let checkboxFast =

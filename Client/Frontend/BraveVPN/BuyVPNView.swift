@@ -14,7 +14,7 @@ extension BuyVPNViewController {
         
         private let checkmarkViewStrings =
             [Strings.VPN.checkboxBlockAds,
-             Strings.VPN.checkboxProtectConnections,
+             Strings.VPN.checkboxGeoSelector,
              Strings.VPN.checkboxNoIPLog,
              Strings.VPN.checkboxFast,
              Strings.VPN.checkboxEncryption,
