@@ -56,6 +56,7 @@ source_set("browser") {
     "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/common",
+    "//brave/components/brave_shields/common:mojom",
     "//brave/components/content_settings/core/browser",
     "//brave/components/p3a",
     "//brave/components/resources:static_resources_grit",
