@@ -81,6 +81,8 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      */
     private static final int BUTTON_ICON_COLOR_MATERIAL = 0xff757575;
 
+    private static Bitmap sBraveIcon;
+
     private final Context mContext;
 
     public BraveAdsNotificationBuilder(Context context) {
@@ -179,12 +181,15 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
     }
 
     private Bitmap getBraveIcon() {
-        int largeIconId = R.mipmap.app_icon;
-        Resources resources = mContext.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        int iconSize = dpToPx(metrics, MAX_ACTION_ICON_WIDTH_DP);
-        return Bitmap.createScaledBitmap(
-                BitmapFactory.decodeResource(resources, largeIconId), iconSize, iconSize, false);
+        if (sBraveIcon == null) {
+            int largeIconId = R.mipmap.app_icon;
+            Resources resources = mContext.getResources();
+            DisplayMetrics metrics = resources.getDisplayMetrics();
+            int iconSize = dpToPx(metrics, MAX_ACTION_ICON_WIDTH_DP);
+            sBraveIcon = Bitmap.createScaledBitmap(
+                    BitmapFactory.decodeResource(resources, largeIconId), iconSize, iconSize, true);
+        }
+        return sBraveIcon;
     }
 
     @Override
