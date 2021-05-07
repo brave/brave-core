@@ -47,5 +47,6 @@ export const localeStrings = {
   onboardingPanelVerifyLater: 'Do it later',
   onboardingPanelVerifyNow: 'Verify my wallet',
   onboardingPanelBitflyerNote: 'The bitFlyer wallet is a service managed by bitFlyer, Inc.',
-  onboardingPanelBitflyerText: 'By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily'
+  onboardingPanelBitflyerText: 'By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily',
+  onboardingPanelBitflyerLearnMore: '$1Learn more$2 about how to link your Brave browser with your bitFlyer account.'
 }

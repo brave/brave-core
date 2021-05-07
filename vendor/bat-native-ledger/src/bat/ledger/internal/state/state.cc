@@ -155,6 +155,11 @@ void State::GetScoreValues(double* a, double* b) {
 }
 
 void State::SetAutoContributeEnabled(bool enabled) {
+  // Auto-contribute is not supported for regions where bitFlyer is the external
+  // wallet provider. If AC is not supported, then always set the pref to false.
+  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion))
+    enabled = false;
+
   ledger_->database()->SaveEventLog(
       kAutoContributeEnabled,
       std::to_string(enabled));
