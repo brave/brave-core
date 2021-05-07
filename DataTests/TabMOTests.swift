@@ -184,6 +184,62 @@ class TabMOTests: CoreDataTestCase {
         XCTAssertEqual(all[2].syncUUID, objectsSortedByOrder[2].syncUUID)
     }
     
+    func testGetAllNoOlderThan() {
+        let staleTab1 = createAndWait(lastUpdateDate: dateFrom(string: "2021-01-01"))
+        let staleTab2 = createAndWait(lastUpdateDate: dateFrom(string: "2021-01-10"))
+        
+        let now = Date()
+        
+        // Now
+        let freshTab1 = createAndWait()
+        // Past 3 days
+        let freshTab2 = createAndWait(lastUpdateDate: now.advanced(by: -(3 * 60 * 60 * 24)))
+        // 3 days in the future
+        let freshTab3 = createAndWait(lastUpdateDate: now.advanced(by: 3 * 60 * 60 * 24))
+        
+        let all = TabMO.getAll()
+        XCTAssertEqual(all.count, 5)
+        
+        let freshOnly = TabMO.all(noOlderThan: 7 * 60 * 60 * 24)
+        XCTAssertEqual(freshOnly.count, 3)
+        
+        XCTAssert(freshOnly.contains(freshTab1))
+        XCTAssert(freshOnly.contains(freshTab2))
+        XCTAssert(freshOnly.contains(freshTab3))
+        XCTAssertFalse(freshOnly.contains(staleTab1))
+        XCTAssertFalse(freshOnly.contains(staleTab2))
+    }
+    
+    func testDeleteOlderThan() {
+        let staleTab1 = createAndWait(lastUpdateDate: dateFrom(string: "2021-01-01"))
+        let staleTab2 = createAndWait(lastUpdateDate: dateFrom(string: "2021-01-10"))
+        
+        let now = Date()
+        
+        // Now
+        let freshTab1 = createAndWait()
+        // Past 3 days
+        let freshTab2 = createAndWait(lastUpdateDate: now.advanced(by: -(3 * 60 * 60 * 24)))
+        // 3 days in the future
+        let freshTab3 = createAndWait(lastUpdateDate: now.advanced(by: 3 * 60 * 60 * 24))
+        
+        let all = TabMO.getAll()
+        XCTAssertEqual(all.count, 5)
+        
+        backgroundSaveAndWaitForExpectation {
+            TabMO.deleteAll(olderThan: 7 * 60 * 60 * 24)
+        }
+        
+        let allAfterDelete = TabMO.getAll()
+        XCTAssertEqual(allAfterDelete.count, 3)
+        
+        XCTAssert(allAfterDelete.contains(freshTab1))
+        XCTAssert(allAfterDelete.contains(freshTab2))
+        XCTAssert(allAfterDelete.contains(freshTab3))
+        XCTAssertFalse(allAfterDelete.contains(staleTab1))
+        XCTAssertFalse(allAfterDelete.contains(staleTab2))
+    }
+    
     func testGetFromId() {
         let wrongId = "999"
         let object = createAndWait()
@@ -192,14 +248,22 @@ class TabMOTests: CoreDataTestCase {
         XCTAssertNil(TabMO.get(fromId: wrongId))
     }
     
-    @discardableResult private func createAndWait() -> TabMO {
+    @discardableResult private func createAndWait(lastUpdateDate: Date = Date()) -> TabMO {
         let uuid = UUID().uuidString
 
         backgroundSaveAndWaitForExpectation {
-            _ = TabMO.create(uuidString: uuid)
+            TabMO.createInternal(uuidString: uuid, lastUpdateDate: lastUpdateDate)
         }
         
         return TabMO.get(fromId: uuid)!
+    }
+    
+    private func dateFrom(string: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")!
+        
+        return dateFormatter.date(from: string)!
     }
 }
 

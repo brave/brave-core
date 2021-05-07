@@ -3,12 +3,40 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
+import Shared
 import BraveShared
 
 enum TabBarVisibility: Int, CaseIterable {
     case never
     case always
     case landscapeOnly
+}
+
+extension Preferences {
+    enum AutoCloseTabsOption: Int, CaseIterable, RepresentableOptionType {
+        case manually
+        case oneDay, oneWeek, oneMonth
+        
+        var displayString: String {
+            switch self {
+            case .manually: return Strings.Settings.autocloseTabsManualOption
+            case .oneDay: return Strings.Settings.autocloseTabsOneDayOption
+            case .oneWeek: return Strings.Settings.autocloseTabsOneWeekOption
+            case .oneMonth: return Strings.Settings.autocloseTabsOneMonthOption
+            }
+        }
+        
+        /// Return time interval when to remove old tabs, or nil if no tabs should be removed.
+        var timeInterval: TimeInterval? {
+            let isPublic = AppConstants.buildChannel.isPublic
+            switch self {
+            case .manually: return nil
+            case .oneDay: return isPublic ? 1.days : 5.minutes
+            case .oneWeek: return isPublic ? 7.days : 10.minutes
+            case .oneMonth: return isPublic ? 30.days : 1.hours
+            }
+        }
+    }
 }
 
 // MARK: - Other Preferences
@@ -41,6 +69,9 @@ extension Preferences {
         static let blockPopups = Option<Bool>(key: "general.block-popups", default: true)
         /// Controls how the tab bar should be shown (or not shown)
         static let tabBarVisibility = Option<Int>(key: "general.tab-bar-visiblity", default: TabBarVisibility.always.rawValue)
+        /// After what time unused tabs should be auto-removed at app launch.
+        static let autocloseTabs = Option<Int>(key: "general.autoclose-tabs",
+                                                  default: AutoCloseTabsOption.manually.rawValue)
         /// Defines the user's normal browsing theme
         /// `system`, follows the current OS display mode
         static let themeNormalMode = Option<String>(key: "general.normal-mode-theme", default: DefaultTheme.system.rawValue)
