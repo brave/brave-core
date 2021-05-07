@@ -391,7 +391,10 @@ pub fn is_phrasing_content(handle: &Handle) -> bool {
 
             // We can't include these in PHRASING_ELEMS because they can contain
             // non-pharsing elements inside of them, so we search recursively.
-            if tag == &local_name!("a") || tag == &local_name!("del") || tag == &local_name!("ins")
+            if tag == &local_name!("a")
+                || tag == &local_name!("del")
+                || tag == &local_name!("ins")
+                || tag == &local_name!("font")
             {
                 for c in handle.children() {
                     if !is_phrasing_content(&c) {

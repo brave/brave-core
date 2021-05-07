@@ -237,9 +237,11 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     let mut meta = extract_metadata(dom);
     meta.title = clean_title(dom, meta.title);
 
-    // extracts title (if it exists) pre-processes the DOM by removing script
-    // tags, css, links
+    // pre-processes the DOM by removing script tags, css, links
     scorer::preprocess(&mut dom, handle.clone());
+
+    // Normalize DOM tags
+    scorer::replace_tags(&mut dom);
 
     // now that the dom has been preprocessed, get the set of potential dom
     // candidates and their scoring. a candidate contains the node parent of the
@@ -274,17 +276,23 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
             }
         }
         if top_candidates.len() == 0 {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidInput,
-                "No candidates found.",
-            ));
-        }
-        let max_index = util::max_elem_index(&top_candidates);
-        top_candidates.swap(0, max_index);
-        if let Some(new_top) = scorer::search_alternative_candidates(&top_candidates) {
-            top_candidate = new_top;
+            if let Some(body) = dom::document_body(&dom) {
+                top_candidate = body;
+                scorer::initialize_candidate(&top_candidate);
+            } else {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidInput,
+                    "No candidates found.",
+                ));
+            }
         } else {
-            top_candidate = top_candidates[0].node.clone();
+            let max_index = util::max_elem_index(&top_candidates);
+            top_candidates.swap(0, max_index);
+            if let Some(new_top) = scorer::search_alternative_candidates(&top_candidates) {
+                top_candidate = new_top;
+            } else {
+                top_candidate = top_candidates[0].node.clone();
+            }
         }
     }
 
@@ -560,6 +568,7 @@ mod tests {
         meta.title = clean_title(&dom, meta.title);
         let handle = dom.document_node.clone();
         scorer::preprocess(&mut dom, handle);
+        scorer::replace_tags(&mut dom);
         let content = dom.document_node.to_string();
         Ok(Product { meta, content })
     }
@@ -756,6 +765,62 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn rewrite_font_as_span() {
+        // <font> nodes whose children are all phrasing content are converted to <span>.
+        let input = r#"
+        <body>
+          <font color="\#aaaaaa">Some inline content</font>
+          <font color="\#bbbbbb"><a>Some inline link</a></font>
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head><body>
+          <span>Some inline content</span>
+          <span><a>Some inline link</a></span>
+        </body></html>
+        "#;
+
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn rewrite_font_as_div() {
+        // Based off of http://paulgraham.com/newideas.html. It makes heavy use
+        // of high text density inside of <font> tags. We handle this by first
+        // converting the <br> chains to <p> nodes in the preprocess pass. Then
+        // we convert the <font> to a <div> since the <p> nodes are not phrasing
+        // content.
+        let input = r#"
+        <body>
+          <font color="\#aaaaaa">
+          <br><br>Lots and lots of text goes here
+          <br><br>And some more text goes here
+          </font>
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head><body>
+          <div>
+            <p>Lots and lots of text goes here</p>
+            <p>And some more text goes here</p>
+          </div>
+        </body></html>
+        "#;
+
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
         assert_eq!(
             normalize_output(expected),
             normalize_output(&product.content)

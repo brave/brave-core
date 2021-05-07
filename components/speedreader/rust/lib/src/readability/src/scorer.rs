@@ -365,6 +365,41 @@ fn unwrap_noscript(
     }
 }
 
+/// Normalizes the dom by replacing tags we aren't interested in, to reduce the
+/// scoring set of elements we need to consider when cleaning and scoring.
+pub fn replace_tags(dom: &mut Sink) {
+    let mut replacements: Vec<(Handle, Handle)> = vec![];
+
+    // Replace <font> elements with either <span> or <div> nodes. Since
+    // Speedreader does it's own styling, <font> elements can cause problems for
+    // us. Although <font> elements are inlined, there are notable sites that
+    // have block elements as children. To get around this, we check its
+    // children for non-phrasing content, and replace it with a div in that
+    // case, or a span otherwise.
+    for node in dom
+        .document_node
+        .descendants()
+        .elements()
+        .filter(|e| e.name.local == local_name!("font"))
+    {
+        let h = node.as_node();
+        let local: LocalName;
+        if dom::is_phrasing_content(&h) {
+            local = local_name!("span");
+        } else {
+            local = local_name!("div");
+        }
+        let name = QualName::new(None, ns!(), local);
+        let span = dom.create_element(name, vec![], ElementFlags::default());
+        replacements.push((Handle::clone(&h), span));
+    }
+    for t in replacements {
+        dom.reparent_children(&t.0, &t.1);
+        dom.append_before_sibling(&t.0, NodeOrText::AppendNode(t.1));
+        dom.remove_from_parent(&t.0);
+    }
+}
+
 /// Prepare the DOM for the candidate and cleaning steps. Delete "noisy" nodes and do small
 /// transformations.
 pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
