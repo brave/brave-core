@@ -28,6 +28,8 @@
 
 namespace {
 
+using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
+
 // To use bold font for title at index 0.
 class ControlViewMenuModel : public ui::SimpleMenuModel {
  public:
@@ -135,16 +137,16 @@ void SidebarControlView::ShowContextMenuForViewImpl(
   context_menu_model_->AddTitle(
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_TITLE));
   context_menu_model_->AddCheckItem(
-      sidebar::SidebarService::kShowAlways,
+      static_cast<int>(ShowSidebarOption::kShowAlways),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
   context_menu_model_->AddCheckItem(
-      sidebar::SidebarService::kShowOnMouseOver,
+      static_cast<int>(ShowSidebarOption::kShowOnMouseOver),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
   context_menu_model_->AddCheckItem(
-      sidebar::SidebarService::kShowOnClick,
+      static_cast<int>(ShowSidebarOption::kShowOnClick),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ONCLICK));
   context_menu_model_->AddCheckItem(
-      sidebar::SidebarService::kShowNever,
+      static_cast<int>(ShowSidebarOption::kShowNever),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
   context_menu_runner_ = std::make_unique<views::MenuRunner>(
       context_menu_model_.get(), views::MenuRunner::CONTEXT_MENU);
@@ -156,13 +158,14 @@ void SidebarControlView::ShowContextMenuForViewImpl(
 void SidebarControlView::ExecuteCommand(int command_id, int event_flags) {
   auto* service =
       sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
-  service->SetSidebarShowOption(command_id);
+  service->SetSidebarShowOption(static_cast<ShowSidebarOption>(command_id));
 }
 
 bool SidebarControlView::IsCommandIdChecked(int command_id) const {
   const auto* service =
       sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
-  return command_id == service->GetSidebarShowOption();
+  return static_cast<ShowSidebarOption>(command_id) ==
+         service->GetSidebarShowOption();
 }
 
 void SidebarControlView::OnItemAdded(const sidebar::SidebarItem& item,

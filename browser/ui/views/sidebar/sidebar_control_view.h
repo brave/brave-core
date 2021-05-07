@@ -17,6 +17,7 @@
 class BraveBrowser;
 class SidebarButtonView;
 class SidebarItemsScrollView;
+class SidebarContainerView;
 
 namespace base {
 class CancelableTaskTracker;

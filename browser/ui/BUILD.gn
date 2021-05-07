@@ -320,6 +320,8 @@ source_set("ui") {
       "views/sidebar/sidebar_items_contents_view.h",
       "views/sidebar/sidebar_items_scroll_view.cc",
       "views/sidebar/sidebar_items_scroll_view.h",
+      "views/sidebar/sidebar_show_options_event_detect_widget.cc",
+      "views/sidebar/sidebar_show_options_event_detect_widget.h",
     ]
   }
 

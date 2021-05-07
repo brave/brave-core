@@ -59,7 +59,8 @@ void SidebarService::RegisterPrefs(PrefRegistrySimple* registry) {
     return;
 
   registry->RegisterListPref(kSidebarItems);
-  registry->RegisterIntegerPref(kSidebarShowOption, kShowAlways);
+  registry->RegisterIntegerPref(
+      kSidebarShowOption, static_cast<int>(ShowSidebarOption::kShowAlways));
 }
 
 SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
@@ -160,12 +161,12 @@ SidebarService::GetDefaultSidebarItemsFromCurrentItems() const {
   return items;
 }
 
-int SidebarService::GetSidebarShowOption() const {
-  return prefs_->GetInteger(kSidebarShowOption);
+SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
+  return static_cast<ShowSidebarOption>(prefs_->GetInteger(kSidebarShowOption));
 }
 
-void SidebarService::SetSidebarShowOption(int show_options) {
-  prefs_->SetInteger(kSidebarShowOption, show_options);
+void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
+  prefs_->SetInteger(kSidebarShowOption, static_cast<int>(show_options));
 }
 
 void SidebarService::LoadSidebarItems() {
