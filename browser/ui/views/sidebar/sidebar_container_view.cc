@@ -13,7 +13,6 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
-#include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -25,6 +24,8 @@
 #include "url/gurl.h"
 
 namespace {
+
+using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
 sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
@@ -49,19 +50,20 @@ void SidebarContainerView::Init() {
   UpdateChildViewVisibility();
 }
 
-void SidebarContainerView::SetSidebarShowOption(int show_option) {
-  if (show_option == sidebar::SidebarService::kShowAlways) {
+void SidebarContainerView::SetSidebarShowOption(
+    sidebar::SidebarService::ShowSidebarOption show_option) {
+  if (show_option == ShowSidebarOption::kShowAlways) {
     ShowSidebar(true, false);
     return;
   }
 
-  if (show_option == sidebar::SidebarService::kShowNever) {
+  if (show_option == ShowSidebarOption::kShowNever) {
     ShowSidebar(false, false);
     return;
   }
 
-  GetEventDetectWidget()->SetShowOnHover(
-      show_option == sidebar::SidebarService::kShowOnMouseOver);
+  GetEventDetectWidget()->SetShowOnHover(show_option ==
+                                         ShowSidebarOption::kShowOnMouseOver);
 
   ShowSidebar(false, true);
 }
@@ -130,10 +132,10 @@ void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
   if (sidebar_panel_view_->GetVisible())
     return;
 
-  const int show_option = GetSidebarService(browser_)->GetSidebarShowOption();
+  const auto show_option = GetSidebarService(browser_)->GetSidebarShowOption();
   const bool show_options_widget =
-      show_option == sidebar::SidebarService::kShowOnMouseOver ||
-      show_option == sidebar::SidebarService::kShowOnClick;
+      show_option == ShowSidebarOption::kShowOnMouseOver ||
+      show_option == ShowSidebarOption::kShowOnClick;
 
   if (!show_options_widget)
     return;
@@ -170,12 +172,8 @@ SidebarContainerView::GetEventDetectWidget() {
   return show_options_widget_.get();
 }
 
-void SidebarContainerView::ShowOptionsEventDetectWidget(int show_option) {
-  const bool show_event_detect_widget =
-      show_option == sidebar::SidebarService::kShowOnMouseOver ||
-      show_option == sidebar::SidebarService::kShowOnClick;
-  show_event_detect_widget ? GetEventDetectWidget()->Show()
-                           : GetEventDetectWidget()->Hide();
+void SidebarContainerView::ShowOptionsEventDetectWidget(bool show) {
+  show ? GetEventDetectWidget()->Show() : GetEventDetectWidget()->Hide();
 }
 
 void SidebarContainerView::ShowSidebar() {

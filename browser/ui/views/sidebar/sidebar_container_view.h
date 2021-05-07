@@ -12,6 +12,7 @@
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_show_options_event_detect_widget.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "ui/views/view.h"
 
 namespace views {
@@ -40,7 +41,8 @@ class SidebarContainerView
   void Init();
 
   // Sidebar overrides:
-  void SetSidebarShowOption(int show_option) override;
+  void SetSidebarShowOption(
+      sidebar::SidebarService::ShowSidebarOption show_option) override;
   void UpdateSidebar() override;
 
   // views::View overrides:
@@ -59,7 +61,7 @@ class SidebarContainerView
   void AddChildViews();
   void UpdateBackgroundAndBorder();
   void UpdateChildViewVisibility();
-  void ShowOptionsEventDetectWidget(int show_option);
+  void ShowOptionsEventDetectWidget(bool show);
   void ShowSidebar(bool show_sidebar, bool show_event_detect_widget);
   SidebarShowOptionsEventDetectWidget* GetEventDetectWidget();
 

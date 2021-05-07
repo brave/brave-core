@@ -71,7 +71,8 @@ void SidebarController::LoadAtTab(const GURL& url) {
   }
 }
 
-void SidebarController::OnShowSidebarOptionChanged(int option) {
+void SidebarController::OnShowSidebarOptionChanged(
+    SidebarService::ShowSidebarOption option) {
   // Clear active state whenever sidebar enabled state is changed.
   ActivateItemAt(-1);
   UpdateSidebarVisibility();

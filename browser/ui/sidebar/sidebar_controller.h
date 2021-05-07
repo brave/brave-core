@@ -51,7 +51,8 @@ class SidebarController : public SidebarService::Observer {
   SidebarModel* model() const { return sidebar_model_.get(); }
 
   // SidebarService::Observer overrides:
-  void OnShowSidebarOptionChanged(int option) override;
+  void OnShowSidebarOptionChanged(
+      SidebarService::ShowSidebarOption option) override;
 
  private:
   void OnPreferenceChanged(const std::string& pref_name);
