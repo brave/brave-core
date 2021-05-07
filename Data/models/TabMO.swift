@@ -45,6 +45,8 @@ public final class TabMO: NSManagedObject, CRUD {
     @NSManaged public var isSelected: Bool
     @NSManaged public var color: String?
     @NSManaged public var screenshotUUID: String?
+    /// Last time this tab was updated. Required for 'purge unused tabs' feature.
+    @NSManaged public var lastUpdate: Date?
     
     public override func prepareForDeletion() {
         super.prepareForDeletion()
@@ -62,15 +64,18 @@ public final class TabMO: NSManagedObject, CRUD {
     
     /// Creates new tab and returns its syncUUID. If you want to add urls to existing tabs use `update()` method.
     public class func create(uuidString: String = UUID().uuidString) -> String {
-        
+        createInternal(uuidString: uuidString, lastUpdateDate: Date())
+        return uuidString
+    }
+    
+    class func createInternal(uuidString: String, lastUpdateDate: Date) {
         DataController.perform(task: { context in
             let tab = TabMO(entity: entity(context), insertInto: context)
             // TODO: replace with logic to create sync uuid then buble up new uuid to browser.
             tab.syncUUID = uuidString
             tab.title = Strings.newTab
+            tab.lastUpdate = lastUpdateDate
         })
-        
-        return uuidString
     }
     
     // MARK: Read
@@ -78,6 +83,16 @@ public final class TabMO: NSManagedObject, CRUD {
     public class func getAll() -> [TabMO] {
         let sortDescriptors = [NSSortDescriptor(key: #keyPath(TabMO.order), ascending: true)]
         return all(sortDescriptors: sortDescriptors) ?? []
+    }
+    
+    public class func all(noOlderThan timeInterval: TimeInterval) -> [TabMO] {
+        let lastUpdateKeyPath = #keyPath(TabMO.lastUpdate)
+        let date = Date().advanced(by: -timeInterval) as NSDate
+        
+        let sortDescriptors = [NSSortDescriptor(key: #keyPath(TabMO.order), ascending: true)]
+        let predicate =
+            NSPredicate(format: "\(lastUpdateKeyPath) = nil OR \(lastUpdateKeyPath) > %@", date)
+        return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
     }
     
     public class func get(fromId id: String?) -> TabMO? {
@@ -101,6 +116,7 @@ public final class TabMO: NSManagedObject, CRUD {
             tabToUpdate.urlHistorySnapshot = tabData.history as NSArray
             tabToUpdate.urlHistoryCurrentIndex = tabData.historyIndex
             tabToUpdate.isSelected = tabData.isSelected
+            tabToUpdate.lastUpdate = Date()
         }
     }
     
@@ -147,6 +163,16 @@ public final class TabMO: NSManagedObject, CRUD {
     
     public class func deleteAllPrivateTabs() {
         deleteAll(predicate: NSPredicate(format: "isPrivate == true"), context: .new(inMemory: false))
+    }
+    
+    public class func deleteAll(olderThan timeInterval: TimeInterval) {
+        let lastUpdateKeyPath = #keyPath(TabMO.lastUpdate)
+        let date = Date().advanced(by: -timeInterval) as NSDate
+        
+        let predicate =
+            NSPredicate(format: "\(lastUpdateKeyPath) != nil AND \(lastUpdateKeyPath) < %@", date)
+        
+        self.deleteAll(predicate: predicate)
     }
 }
 

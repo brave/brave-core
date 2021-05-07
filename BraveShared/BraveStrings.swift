@@ -482,6 +482,38 @@ extension Strings {
                           bundle: .braveShared, value: "Close default browser callout", comment: "")
 }
 
+extension Strings {
+    public struct Settings {
+        public static let autocloseTabsSetting =
+            NSLocalizedString("settings.autocloseTabsSetting", tableName: "BraveShared",
+                              bundle: .braveShared, value: "Close Tabs",
+                              comment: "Name of app setting that allows users to automatically close tabs.")
+        public static let autocloseTabsSettingFooter =
+            NSLocalizedString("settings.autocloseTabsSettingFooter", tableName: "BraveShared",
+                              bundle: .braveShared, value: "Allow Brave to automatically close tabs that haven't recently been viewed.",
+                              comment: "Description of autoclose tabs feature.")
+        public static let autocloseTabsManualOption =
+            NSLocalizedString("settings.autocloseTabsManualOption", tableName: "BraveShared",
+                              bundle: .braveShared, value: "Manually",
+                              comment: "Settings option to never close tabs automatically, must be done manually")
+        public static let autocloseTabsOneDayOption =
+            NSLocalizedString("settings.autocloseTabsOneDayOption", tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "After One Day",
+                              comment: "Settings option to close old tabs after 1 day")
+        public static let autocloseTabsOneWeekOption =
+            NSLocalizedString("settings.autocloseTabsOneWeekOption", tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "After One Week",
+                              comment: "Settings option to close old tabs after 1 week")
+        public static let autocloseTabsOneMonthOption =
+            NSLocalizedString("settings.autocloseTabsOneMonthOption", tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "After One Month",
+                              comment: "Settings option to close old tabs after 1 month")
+    }
+}
+
 // MARK:- Error pages.
 extension Strings {
     public static let errorPagesAdvancedButton = NSLocalizedString("ErrorPagesAdvancedButton", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Advanced", comment: "Label for button to perform advanced actions on the error page")

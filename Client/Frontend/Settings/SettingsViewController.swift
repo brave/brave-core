@@ -306,6 +306,30 @@ class SettingsViewController: TableViewController {
             display.rows.append(row)
         }
         
+        let autoCloseSetting = Preferences
+            .AutoCloseTabsOption(rawValue: Preferences.General.autocloseTabs.value)?.displayString
+        var autoCloseTabsRow =
+            Row(text: Strings.Settings.autocloseTabsSetting,
+                detailText: autoCloseSetting, image: #imageLiteral(resourceName: "settings-autoclose-tabs").template,
+                accessory: .disclosureIndicator,
+                cellClass: MultilineSubtitleCell.self)
+        autoCloseTabsRow.selection = { [unowned self] in
+            let optionsViewController = OptionSelectionViewController<Preferences.AutoCloseTabsOption>(
+                options: Preferences.AutoCloseTabsOption.allCases,
+                selectedOption:
+                    Preferences.AutoCloseTabsOption(rawValue: Preferences.General.autocloseTabs.value),
+                optionChanged: { _, option in
+                    Preferences.General.autocloseTabs.value = option.rawValue
+                    self.dataSource.reloadCell(row: autoCloseTabsRow, section: display, displayText: option.displayString)
+                }
+            )
+            optionsViewController.headerText = Strings.Settings.autocloseTabsSetting
+            optionsViewController.footerText = Strings.Settings.autocloseTabsSettingFooter
+            self.navigationController?.pushViewController(optionsViewController, animated: true)
+        }
+        
+        display.rows.append(autoCloseTabsRow)
+        
         display.rows.append(contentsOf: [
             .boolRow(title: Strings.showBookmarkButtonInTopToolbar,
                      option: Preferences.General.showBookmarkToolbarShortcut,
