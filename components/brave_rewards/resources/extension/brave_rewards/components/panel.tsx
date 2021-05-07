@@ -603,7 +603,7 @@ export class Panel extends React.Component<Props, State> {
     const { wallets } = balance
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const notVerified = publisher && utils.isPublisherNotVerified(publisher.status)
-    const connected = publisher && utils.isPublisherConnected(publisher.status)
+    const connected = publisher && utils.isPublisherConnectedOrVerified(publisher.status)
     const status = utils.getWalletStatus(externalWallet)
 
     if (notVerified) {

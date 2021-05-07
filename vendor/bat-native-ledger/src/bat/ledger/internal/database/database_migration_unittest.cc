@@ -742,4 +742,17 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_31) {
   EXPECT_EQ(sql.ColumnInt64(0), 0);
 }
 
+TEST_F(LedgerDatabaseMigrationTest, Migration_32_NotBitflyerRegion) {
+  InitializeDatabaseAtVersion(30);
+  InitializeLedger();
+  EXPECT_EQ(CountTableRows("balance_report_info"), 1);
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_32_BitflyerRegion) {
+  InitializeDatabaseAtVersion(30);
+  client_.SetOptionForTesting(option::kIsBitflyerRegion, base::Value(true));
+  InitializeLedger();
+  EXPECT_EQ(CountTableRows("balance_report_info"), 0);
+}
+
 }  // namespace ledger

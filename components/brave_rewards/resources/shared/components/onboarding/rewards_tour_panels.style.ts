@@ -63,3 +63,16 @@ export const verifyActions = styled.div`
     background: var(--brave-color-brandBatActive);
   }
 `
+
+export const verifyLearnMore = styled.div`
+  margin-top: 11px;
+  font-size: 13px;
+  line-height: 19px;
+  padding-bottom: 20px;
+
+  a {
+    color: var(--brave-color-brandBat);
+    text-decoration: none;
+    font-weight: 600;
+  }
+`
