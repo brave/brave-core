@@ -56,7 +56,51 @@ class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
   DISALLOW_COPY_AND_ASSIGN(TestingBraveComponentUpdaterDelegate);
 };
 
-TEST(BraveAdBlockTPNetworkDelegateHelperTest, NoChangeURL) {
+class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
+ protected:
+  void SetUp() override {
+    // It appears that g_browser_process automatically gets created for unit
+    // tests. It should be possible to make that work for
+    // g_brave_browser_process as well.
+    TestingBraveBrowserProcess::CreateInstance();
+
+    brave_component_updater_delegate_ =
+        std::make_unique<TestingBraveComponentUpdaterDelegate>();
+
+    auto adblock_service = brave_shields::AdBlockServiceFactory(
+        brave_component_updater_delegate_.get());
+
+    TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
+        std::move(adblock_service));
+
+    g_brave_browser_process->ad_block_service()->Start();
+
+    on_completion_ =
+        base::Bind(&BraveAdBlockTPNetworkDelegateHelperTest::OnCompletion,
+                   base::Unretained(this));
+  }
+
+  // Ditto for the destructor.
+  void TearDown() override { TestingBraveBrowserProcess::DeleteInstance(); }
+
+  void ResetAdblockInstance(brave_shields::AdBlockBaseService* service,
+                            std::string rules,
+                            std::string resources) {
+    service->ResetForTest(rules, resources);
+  }
+
+  // Serves as `next_callback` for the request handler
+  void OnCompletion() {}
+
+  ResponseCallback on_completion_;
+
+  std::unique_ptr<TestingBraveComponentUpdaterDelegate>
+      brave_component_updater_delegate_;
+
+  content::BrowserTaskEnvironment task_environment_;
+};
+
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, NoChangeURL) {
   const GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
@@ -65,7 +109,7 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, NoChangeURL) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
   int rc =
       OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(), request_info);
@@ -73,7 +117,7 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
   const GURL url("devtools://devtools/");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   request_info->initiator_url =
@@ -84,45 +128,20 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
   EXPECT_EQ(rc, net::OK);
 }
 
-// Serves as `next_callback` for the request handler
-void OnSuccess() {}
-
-TEST(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
-  content::BrowserTaskEnvironment task_environment;
-
-  // It appears that g_browser_process automatically gets created for unit
-  // tests. It should be possible to make that work for g_brave_browser_process
-  // as well.
-  TestingBraveBrowserProcess::CreateInstance();
-
-  auto brave_component_updater_delegate =
-      std::make_unique<TestingBraveComponentUpdaterDelegate>();
-  auto adblock_service = brave_shields::AdBlockServiceFactory(
-      brave_component_updater_delegate.get());
-
-  // This would still have to be destroyed/reset after the test finishes,
-  // perhaps using scoped classes
-  TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
-      std::move(adblock_service));
-
-  g_brave_browser_process->ad_block_service()->Start();
-
-  // Required un-protecting the ResetForTest method, since this didn't work as a
-  // friend class
-  g_brave_browser_process->ad_block_service()->ResetForTest(
-      "||brave.com/test.txt", "");
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
+  ResetAdblockInstance(g_brave_browser_process->ad_block_service(),
+                       "||brave.com/test.txt", "");
 
   const GURL url("https://brave.com/test.txt");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   request_info->request_identifier = 1;
   request_info->resource_type = blink::mojom::ResourceType::kScript;
   request_info->initiator_url = GURL("https://brave.com");
-  int rc =
-      OnBeforeURLRequest_AdBlockTPPreWork(base::Bind(&OnSuccess), request_info);
+  int rc = OnBeforeURLRequest_AdBlockTPPreWork(on_completion_, request_info);
   EXPECT_TRUE(request_info->new_url_spec.empty());
   EXPECT_EQ(rc, net::ERR_IO_PENDING);
 
-  task_environment.RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   EXPECT_EQ(request_info->blocked_by, brave::kAdBlocked);
 }

@@ -22,6 +22,7 @@
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 class AdBlockServiceTest;
+class BraveAdBlockTPNetworkDelegateHelperTest;
 
 using brave_component_updater::BraveComponent;
 namespace adblock {
@@ -62,17 +63,16 @@ class AdBlockBaseService : public BaseBraveShieldsService {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  // This had to be un-protected, since the unit test doesn't work as a friend
-  // class.
-  void ResetForTest(const std::string& rules, const std::string& resources);
-
  protected:
   friend class ::AdBlockServiceTest;
+  friend class ::BraveAdBlockTPNetworkDelegateHelperTest;
+
   bool Init() override;
 
   void GetDATFileData(const base::FilePath& dat_file_path);
   void AddKnownTagsToAdBlockInstance();
   void AddKnownResourcesToAdBlockInstance();
+  void ResetForTest(const std::string& rules, const std::string& resources);
 
   std::unique_ptr<adblock::Engine> ad_block_client_;
 
