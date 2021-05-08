@@ -437,15 +437,18 @@ bool ParseJSON(base::StringPiece json,
       { "name": "variations.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
 
       // Rewards
+      { "name": "ads-serve.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "ads-static.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "api.rewards.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
+      { "name": "api.rewards.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
+      { "name": "api.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "grant.rewards.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "grant.rewards.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "grant.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "payment.rewards.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "payment.rewards.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "payment.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "api.rewards.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "api.rewards.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "api.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"}
+      { "name": "rewards.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"}
     ]})brave_json";
 
   return ParseJSON_ChromiumImpl(brave_json, entries, pinsets);
