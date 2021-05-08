@@ -6,7 +6,17 @@
 #include <utility>
 
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/test/base/testing_brave_browser_process.h"
+
+namespace tor {
+class BraveTorClientUpdater;
+}
+
+namespace ipfs {
+class BraveIpfsClientUpdater;
+}
 
 // static
 TestingBraveBrowserProcess* TestingBraveBrowserProcess::GetGlobal() {
@@ -33,6 +43,19 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
   DCHECK(ad_block_service_);
   return ad_block_service_.get();
 }
+
+#if BUILDFLAG(ENABLE_TOR)
+tor::BraveTorClientUpdater* TestingBraveBrowserProcess::tor_client_updater() {
+  return nullptr;
+}
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+ipfs::BraveIpfsClientUpdater*
+TestingBraveBrowserProcess::ipfs_client_updater() {
+  return nullptr;
+}
+#endif
 
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {

@@ -42,6 +42,12 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   // BraveBrowserProcess overrides:
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
+#if BUILDFLAG(ENABLE_TOR)
+  tor::BraveTorClientUpdater* tor_client_updater() override;
+#endif
+#if BUILDFLAG(IPFS_ENABLED)
+  ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
+#endif
 
   // Populate the mock process with services. Consumer is responsible for
   // cleaning these up after completion of a test.
