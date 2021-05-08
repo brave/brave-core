@@ -436,6 +436,12 @@ bool ParseJSON(base::StringPiece json,
       { "name": "translate-static.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "variations.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
 
+      // Creators
+      { "name": "creators.basicattentiontoken.org", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "creators.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "publishers.basicattentiontoken.org", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "publishers.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+
       // Rewards
       { "name": "ads-serve.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "ads-static.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
