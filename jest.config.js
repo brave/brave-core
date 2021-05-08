@@ -3,6 +3,7 @@
 
 module.exports = {
   preset: "ts-jest/presets/default",
+  testEnvironment: "<rootDir>/components/test/testEnvironment.js",
   moduleFileExtensions: [
     "js",
     "tsx",
