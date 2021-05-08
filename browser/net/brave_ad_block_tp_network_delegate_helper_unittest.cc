@@ -19,6 +19,9 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/log/net_log.h"
+#include "services/network/host_resolver.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using brave::ResponseCallback;
@@ -69,6 +72,11 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         std::move(adblock_service));
 
     g_brave_browser_process->ad_block_service()->Start();
+
+    host_resolver_ = std::make_unique<net::MockHostResolver>();
+    resolver_wrapper_ = std::make_unique<network::HostResolver>(
+        host_resolver_.get(), net::NetLog::Get());
+    brave::SetAdblockCnameHostResolverForTesting(resolver_wrapper_.get());
   }
 
   void ResetAdblockInstance(brave_shields::AdBlockBaseService* service,
@@ -101,6 +109,11 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
       brave_component_updater_delegate_;
 
   content::BrowserTaskEnvironment task_environment_;
+
+  std::unique_ptr<net::MockHostResolver> host_resolver_;
+
+ private:
+  std::unique_ptr<network::HostResolver> resolver_wrapper_;
 };
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, NoInitiatorURL) {
@@ -156,4 +169,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   EXPECT_TRUE(handled);
   EXPECT_EQ(request_info->blocked_by, brave::kAdBlocked);
   EXPECT_TRUE(request_info->new_url_spec.empty());
+  // It's unclear whether or not this is a Tor request, so no DNS queries are
+  // made (`browser_context` is `nullptr`).
+  EXPECT_EQ(0ULL, host_resolver_->num_resolve());
 }
