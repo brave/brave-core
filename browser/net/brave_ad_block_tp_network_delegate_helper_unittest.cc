@@ -74,10 +74,6 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         std::move(adblock_service));
 
     g_brave_browser_process->ad_block_service()->Start();
-
-    on_completion_ =
-        base::Bind(&BraveAdBlockTPNetworkDelegateHelperTest::OnCompletion,
-                   base::Unretained(this));
   }
 
   // Ditto for the destructor.
@@ -92,7 +88,22 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
   // Serves as `next_callback` for the request handler
   void OnCompletion() {}
 
-  ResponseCallback on_completion_;
+  // Returns true if the request handler deferred control back to the calling
+  // thread before completion, or true if it completed instantly.
+  bool CheckRequest(std::shared_ptr<brave::BraveRequestInfo> request_info) {
+    // request_identifier must be nonzero, or else nothing will be tested
+    request_info->request_identifier = 1;
+
+    auto cb = base::Bind(&BraveAdBlockTPNetworkDelegateHelperTest::OnCompletion,
+                         base::Unretained(this));
+
+    int rc = OnBeforeURLRequest_AdBlockTPPreWork(cb, request_info);
+    EXPECT_TRUE(rc == net::OK || rc == net::ERR_IO_PENDING);
+
+    task_environment_.RunUntilIdle();
+
+    return rc == net::ERR_IO_PENDING;
+  }
 
   std::unique_ptr<TestingBraveComponentUpdaterDelegate>
       brave_component_updater_delegate_;
@@ -100,21 +111,28 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
 };
 
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, NoChangeURL) {
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, NoInitiatorURL) {
   const GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  int rc =
-      OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(), request_info);
+  request_info->resource_type = blink::mojom::ResourceType::kScript;
+
+  bool handled = CheckRequest(request_info);
+
+  EXPECT_FALSE(handled);
+  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
   EXPECT_TRUE(request_info->new_url_spec.empty());
-  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
-  int rc =
-      OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(), request_info);
+  request_info->initiator_url = GURL("https://example.com");
+  request_info->resource_type = blink::mojom::ResourceType::kScript;
+
+  bool handled = CheckRequest(request_info);
+
+  EXPECT_FALSE(handled);
+  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
   EXPECT_TRUE(request_info->new_url_spec.empty());
-  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
@@ -122,10 +140,13 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   request_info->initiator_url =
       GURL("devtools://devtools/bundled/root/root.js");
-  int rc =
-      OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(), request_info);
+  request_info->resource_type = blink::mojom::ResourceType::kScript;
+
+  bool handled = CheckRequest(request_info);
+
+  EXPECT_FALSE(handled);
+  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
   EXPECT_TRUE(request_info->new_url_spec.empty());
-  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
@@ -137,11 +158,10 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   request_info->request_identifier = 1;
   request_info->resource_type = blink::mojom::ResourceType::kScript;
   request_info->initiator_url = GURL("https://brave.com");
-  int rc = OnBeforeURLRequest_AdBlockTPPreWork(on_completion_, request_info);
-  EXPECT_TRUE(request_info->new_url_spec.empty());
-  EXPECT_EQ(rc, net::ERR_IO_PENDING);
 
-  task_environment_.RunUntilIdle();
+  bool handled = CheckRequest(request_info);
 
+  EXPECT_TRUE(handled);
   EXPECT_EQ(request_info->blocked_by, brave::kAdBlocked);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
 }
