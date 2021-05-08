@@ -10,19 +10,51 @@
 #include <utility>
 #include <vector>
 
+#include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/component_updater/brave_component_updater_delegate.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/test/base/testing_brave_browser_process.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using brave::ResponseCallback;
+
+class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
+ public:
+  TestingBraveComponentUpdaterDelegate()
+      : task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})) {}
+  ~TestingBraveComponentUpdaterDelegate() override {}
+
+  using ComponentObserver = update_client::UpdateClient::Observer;
+  // brave_component_updater::BraveComponent::Delegate implementation
+  void Register(const std::string& component_name,
+                const std::string& component_base64_public_key,
+                base::OnceClosure registered_callback,
+                BraveComponent::ReadyCallback ready_callback) override {}
+  bool Unregister(const std::string& component_id) override { return true; }
+  void OnDemandUpdate(const std::string& component_id) override {}
+
+  void AddObserver(ComponentObserver* observer) override {}
+  void RemoveObserver(ComponentObserver* observer) override {}
+
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override {
+    return task_runner_;
+  }
+
+  const std::string locale() const override { return "en"; }
+  PrefService* local_state() override { return pref_service_.get(); }
+
+ private:
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+
+  std::unique_ptr<PrefService> pref_service_;
+
+  DISALLOW_COPY_AND_ASSIGN(TestingBraveComponentUpdaterDelegate);
+};
 
 TEST(BraveAdBlockTPNetworkDelegateHelperTest, NoChangeURL) {
   const GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
@@ -52,34 +84,6 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
   EXPECT_EQ(rc, net::OK);
 }
 
-// This namespace is copied from
-// components/brave_shields/browser/ad_block_service.cc
-//
-// It's required unless we can call `AdBlockService::Start()`, see below for
-// more info.
-namespace {
-
-// Extracts the start and end characters of a domain from a hostname.
-// Required for correct functionality of adblock-rust.
-void AdBlockServiceDomainResolver(const char* host,
-                                  uint32_t* start,
-                                  uint32_t* end) {
-  const auto host_str = std::string(host);
-  const auto domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      host_str,
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  const size_t match = host_str.rfind(domain);
-  if (match != std::string::npos) {
-    *start = match;
-    *end = match + domain.length();
-  } else {
-    *start = 0;
-    *end = host_str.length();
-  }
-}
-
-}  // namespace
-
 // Serves as `next_callback` for the request handler
 void OnSuccess() {}
 
@@ -92,7 +96,7 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   TestingBraveBrowserProcess::CreateInstance();
 
   auto brave_component_updater_delegate =
-      std::make_unique<brave::BraveComponentUpdaterDelegate>();
+      std::make_unique<TestingBraveComponentUpdaterDelegate>();
   auto adblock_service = brave_shields::AdBlockServiceFactory(
       brave_component_updater_delegate.get());
 
@@ -101,9 +105,7 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
       std::move(adblock_service));
 
-  // Normally called through AdBlockService::Start(), which requires
-  // registration of the extension
-  adblock::SetDomainResolver(AdBlockServiceDomainResolver);
+  g_brave_browser_process->ad_block_service()->Start();
 
   // Required un-protecting the ResetForTest method, since this didn't work as a
   // friend class
