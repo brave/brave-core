@@ -1,0 +1,20 @@
+diff --git a/chrome/test/base/chrome_unit_test_suite.cc b/chrome/test/base/chrome_unit_test_suite.cc
+index 1f940289d0c4b301385aa7c2382be4209656ff6d..8bcbc393e6b527f509a3c33aa9a2f2611e7b1293 100644
+--- a/chrome/test/base/chrome_unit_test_suite.cc
++++ b/chrome/test/base/chrome_unit_test_suite.cc
+@@ -79,6 +79,7 @@ class ChromeUnitTestSuiteInitializer : public testing::EmptyTestEventListener {
+     content::SetUtilityClientForTesting(utility_content_client_.get());
+ 
+     TestingBrowserProcess::CreateInstance();
++    TestingBraveBrowserProcess::CreateInstance();
+     // Make sure the loaded locale is "en-US".
+     if (ui::ResourceBundle::GetSharedInstance().GetLoadedLocaleForTesting() !=
+         kDefaultLocale) {
+@@ -101,6 +102,7 @@ class ChromeUnitTestSuiteInitializer : public testing::EmptyTestEventListener {
+     content::SetContentClient(nullptr);
+ 
+     TestingBrowserProcess::DeleteInstance();
++    TestingBraveBrowserProcess::DeleteInstance();
+     // Some tests cause ChildThreadImpl to initialize a PowerMonitor.
+     base::PowerMonitor::ShutdownForTesting();
+   }

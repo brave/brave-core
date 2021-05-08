@@ -59,11 +59,6 @@ class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
 class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
  protected:
   void SetUp() override {
-    // It appears that g_browser_process automatically gets created for unit
-    // tests. It should be possible to make that work for
-    // g_brave_browser_process as well.
-    TestingBraveBrowserProcess::CreateInstance();
-
     brave_component_updater_delegate_ =
         std::make_unique<TestingBraveComponentUpdaterDelegate>();
 
@@ -75,9 +70,6 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
 
     g_brave_browser_process->ad_block_service()->Start();
   }
-
-  // Ditto for the destructor.
-  void TearDown() override { TestingBraveBrowserProcess::DeleteInstance(); }
 
   void ResetAdblockInstance(brave_shields::AdBlockBaseService* service,
                             std::string rules,
