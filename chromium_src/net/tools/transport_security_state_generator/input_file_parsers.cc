@@ -442,6 +442,13 @@ bool ParseJSON(base::StringPiece json,
       { "name": "publishers.basicattentiontoken.org", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "publishers.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
 
+      // Wallet
+      { "name": "goerli-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "kovan-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "mainnet-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "rinkeby-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "ropsten-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+
       // Rewards
       { "name": "ads-serve.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "ads-static.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
