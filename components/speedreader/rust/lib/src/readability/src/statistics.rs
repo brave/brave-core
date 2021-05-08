@@ -59,16 +59,20 @@ static LIKELY_CANDIDATES: &'static [&'static str; 6] =
 // Stop calculating paragraph length after this limit is reached
 const TEXT_LENGTH_SATURATION: usize = 1000;
 
-// Throw out paragraphs less than 140 characters. This corresponds to roughly
-// two English sentences.
-const PARAGRAPH_LENGTH_THRESHOLD: usize = 140;
+// For documents tagged as an article, only consider paragraphs with at least
+// 140 characters. This roughly corresponds to two English sentences.
+const PARAGRAPH_LENGTH_THRESHOLD_ARTICLE: usize = 140;
+
+// For untagged documents, only consider paragraphs with at least 280
+// characters. This roughly corresponds four English sentences.
+const PARAGRAPH_LENGTH_THRESHOLD_WEBSITE: usize = 280;
 
 lazy_static! {
     // Upper bound of all moz scores, saturated with 6 paragraphs. This is a
     // pretty large over-estimate, and gives us a moz score around 176.
 
     static ref MOZ_SCORE_SATURATION: f64 =
-        6.0 * (TEXT_LENGTH_SATURATION as f64 - PARAGRAPH_LENGTH_THRESHOLD as f64).sqrt();
+        6.0 * (TEXT_LENGTH_SATURATION as f64 - PARAGRAPH_LENGTH_THRESHOLD_ARTICLE as f64).sqrt();
     static ref MOZ_SCORE_ALL_SQRT_SATURATION: f64 = 6.0 * (TEXT_LENGTH_SATURATION as f64).sqrt();
     static ref MOZ_SCORE_ALL_LINEAR_SATURATION: usize = 6 * TEXT_LENGTH_SATURATION;
 }
@@ -177,7 +181,7 @@ fn does_match_attrs(data: &ElementData, attrs: &[&str]) -> bool {
 /// in ReadableFeatures. All of these fields are saturated to a dom with 6
 /// readable paragraphs to save time, since that is well over a reasonable
 /// minimum score.
-fn collect_scores(node: &Handle, features: &mut ReadableFeatures) {
+fn collect_scores(node: &Handle, paragraph_len_threshold: usize, features: &mut ReadableFeatures) {
     let mut node_to_score: Option<Handle> = None;
     if let Some(ref node_data) = node.as_element() {
         if !is_visible(node_data) || features.fully_saturated() {
@@ -215,8 +219,8 @@ fn collect_scores(node: &Handle, features: &mut ReadableFeatures) {
                 let len = text_len_saturated(chosen);
 
                 // Standard Moz score in readability
-                if len >= PARAGRAPH_LENGTH_THRESHOLD {
-                    features.moz_score += ((len - PARAGRAPH_LENGTH_THRESHOLD) as f64).sqrt();
+                if len >= paragraph_len_threshold {
+                    features.moz_score += ((len - paragraph_len_threshold) as f64).sqrt();
                     features.moz_score = features.moz_score.min(*MOZ_SCORE_SATURATION);
                 }
 
@@ -234,7 +238,7 @@ fn collect_scores(node: &Handle, features: &mut ReadableFeatures) {
             }
         }
         for child in node.children() {
-            collect_scores(&child, features);
+            collect_scores(&child, paragraph_len_threshold, features);
         }
     }
 }
@@ -267,7 +271,12 @@ pub fn collect_statistics(dom: &Sink) -> Option<ReadableFeatures> {
     let head = dom::document_head(&dom)?;
     let body = dom::document_body(&dom)?;
     features.is_open_graph_article = is_open_graph_article(&head);
-    collect_scores(&body, &mut features);
+    let paragraph_len_threshold = if features.is_open_graph_article {
+        PARAGRAPH_LENGTH_THRESHOLD_ARTICLE
+    } else {
+        PARAGRAPH_LENGTH_THRESHOLD_WEBSITE
+    };
+    collect_scores(&body, paragraph_len_threshold, &mut features);
     Some(features)
 }
 
@@ -317,6 +326,7 @@ mod tests {
         // NOTE: strlen("this text is counted") == 20
         let input = r#"
 <html>
+<head><meta property="og:type" content="article"/></head>
 <body>
 <p class="something">this text is counted</p>
 <ul><li><p>skipped under list</p></li></ul>
@@ -337,10 +347,6 @@ this text is counted
         "#;
         let mut cursor = Cursor::new(input);
         let features = collect_statistics_for_test(&mut cursor).unwrap();
-        assert!(
-            !features.is_open_graph_article,
-            "Article falsely identified as open graph"
-        );
         // 187 = 20 + 167
         assert_eq!(187, features.moz_score_all_linear);
         // 17.3949 = sqrt(20) + sqrt(167)
