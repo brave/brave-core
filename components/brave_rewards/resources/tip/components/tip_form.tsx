@@ -79,6 +79,8 @@ export function TipForm () {
     host.state.adsPerHour || 0)
   const [onlyAnonWallet, setOnlyAnonWallet] = React.useState(
     Boolean(host.state.onlyAnonWallet))
+  const [walletInfo, setWalletInfo] = React.useState(
+    host.state.externalWalletInfo)
 
   const [tipAmount, setTipAmount] = React.useState(0)
   const [tipProcessed, setTipProcessed] = React.useState(false)
@@ -101,10 +103,11 @@ export function TipForm () {
       setAutoContributeAmount(state.autoContributeAmount || 0)
       setAdsPerHour(state.adsPerHour || 0)
       setOnlyAnonWallet(Boolean(state.onlyAnonWallet))
+      setWalletInfo(state.externalWalletInfo)
     })
   }, [host])
 
-  if (!rewardsParameters || !publisherInfo || !balanceInfo) {
+  if (!rewardsParameters || !publisherInfo || !balanceInfo || !walletInfo) {
     return <style.loading />
   }
 
@@ -113,15 +116,25 @@ export function TipForm () {
   }
 
   if (showTour) {
+    const externalWalletType = walletInfo ? walletInfo.type : ''
+
+    // Hide AC options in rewards onboarding for bitFlyer-associated regions.
+    let { autoContributeChoices } = rewardsParameters
+    if (externalWalletType === 'bitflyer') {
+      autoContributeChoices = []
+    }
+
     const onTourDone = () => setShowTour(false)
+
     return (
       <style.tour>
         <RewardsTour
           firstTimeSetup={!showOnboarding}
           onlyAnonWallet={onlyAnonWallet}
           adsPerHour={adsPerHour}
+          externalWalletProvider={externalWalletType}
           autoContributeAmount={autoContributeAmount}
-          autoContributeAmountOptions={rewardsParameters.autoContributeChoices}
+          autoContributeAmountOptions={autoContributeChoices}
           onAdsPerHourChanged={host.setAdsPerHour}
           onAutoContributeAmountChanged={host.setAutoContributeAmount}
           onDone={onTourDone}
