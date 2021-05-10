@@ -92,6 +92,7 @@ void PostOauth::Request(
   request->headers = RequestAuthorization();
   request->content_type = "application/x-www-form-urlencoded";
   request->method = type::UrlMethod::POST;
+  request->skip_log = true;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 

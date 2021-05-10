@@ -127,6 +127,7 @@ void PostOauth::Request(const std::string& external_account_id,
   request->headers = RequestAuthorization();
   request->content_type = "application/json";
   request->method = type::UrlMethod::POST;
+  request->skip_log = true;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
