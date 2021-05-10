@@ -912,7 +912,111 @@ if (!is_android) {
     public_deps = [ ":browser_tests_runner" ]
   }
 } else {  # if (!is_android) {
-  group("brave_browser_tests") {
+  test("brave_browser_tests") {
+    configs += [ "//build/config:precompiled_headers" ]
+    defines = [
+      "HAS_OUT_OF_PROC_TEST_RUNNER",
+      "CHROME_VERSION_MAJOR=" + chrome_version_major,
+    ]
+    use_default_launcher = false
+    android_manifest =
+        "${target_gen_dir}/brave_browser_tests_manifest/AndroidManifest.xml"
+    android_manifest_dep = ":brave_browser_tests_manifest"
+
+    deps = [
+      "//brave/app/theme:brave_theme_resources_grit",
+      "//brave/app/theme:brave_unscaled_resources_grit",
+      "//brave/browser/brave_ads",
+      "//brave/browser/ethereum_remote_client/buildflags",
+      "//brave/browser/net",
+      "//brave/browser/themes",
+      "//brave/common:pref_names",
+      "//brave/common:switches",
+      "//brave/components/brave_referrals/browser",
+      "//brave/components/brave_referrals/common",
+      "//brave/components/brave_rewards/common",
+      "//brave/components/brave_shields/browser",
+      "//brave/components/brave_shields/common",
+      "//brave/components/brave_sync:prefs",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wayback_machine",
+      "//brave/components/ipfs",
+      "//brave/components/ipfs/buildflags",
+      "//brave/components/l10n/browser",
+      "//brave/components/tor",
+      "//brave/components/tor:utils",
+      "//brave/components/tor/buildflags",
+      "//chrome:chrome_android_core",
+      "//chrome/android:app_hooks_java",
+      "//chrome/browser:browser_process",
+      "//chrome/browser/flags:flags_android",
+      "//chrome/browser/metrics:test_support",
+      "//chrome/test:android_browsertests_assets",
+      "//chrome/test:android_browsertests_java",
+      "//chrome/test:browser_tests_runner",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui_android",
+      "//components/bookmarks/browser",
+      "//components/browser_ui/widget/android:java",
+      "//components/content_settings/core/browser",
+      "//components/content_settings/renderer",
+      "//components/embedder_support",
+      "//components/externalauth/android:google_delegate_public_impl_java",
+      "//components/federated_learning",
+      "//components/language/core/common",
+      "//components/network_time",
+      "//components/spellcheck/browser",
+      "//services/device/public/cpp:device_features",
+
+      # TODO(crbug.com/961849): This is needed for ShellManager which is what
+      # the ChromeBrowserTestsActivity is using to build the java UI. It's
+      # likely we want to replace it with something new that uses ChromeWindow
+      # and CompositorViewHolder instead.
+      "//content/shell:content_shell_lib",
+      "//content/test:android_test_message_pump_support",
+      "//testing/android/native_test:native_test_support",
+    ]
+
+    # There are three types of tests that need to be rewritten for Android:
+    # 1. using extensions
+    # 2. using desktop specific UI elements (e.g. TabStripModelObserver)
+    # 3. using ui_test_utils.h
+    sources = [
+      "//brave/app/brave_main_delegate_browsertest.cc",
+      "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
+      "//brave/browser/brave_prefs_browsertest.cc",
+      "//brave/browser/brave_resources_browsertest.cc",
+      "//brave/browser/brave_shields/cookie_pref_service_browsertest.cc",
+      "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc",
+      "//brave/browser/net/brave_system_request_handler_browsertest.cc",
+      "//brave/browser/profiles/brave_profile_manager_browsertest.cc",
+      "//brave/chromium_src/components/content_settings/core/browser/brave_content_settings_registry_browsertest.cc",
+      "//brave/common/brave_channel_info_browsertest.cc",
+      "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_autoplay_browsertest.cc",
+      "//brave/components/l10n/browser/locale_helper_mock.cc",
+      "//brave/components/l10n/browser/locale_helper_mock.h",
+      "//chrome/test/android/browsertests_apk/android_browsertests_jni_onload.cc",
+      "//chrome/test/base/android/android_browser_test_browsertest_android.cc",
+    ]
+
+    data = [
+      "$root_out_dir/brave_100_percent.pak",
+      "$root_out_dir/brave_resources.pak",
+      "$root_gen_dir/chrome/android/chrome_apk_paks/chrome_100_percent.pak",
+      "$root_gen_dir/chrome/android/chrome_apk_paks/locales/en-US.pak",
+      "$root_gen_dir/chrome/android/chrome_apk_paks/resources.pak",
+      "$root_gen_dir/components/components_resources.pak",
+      "$root_gen_dir/components/dev_ui_components_resources.pak",
+      "$root_out_dir/browser_tests.pak",
+      "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
+    ]
+  }
+
+  jinja_template("brave_browser_tests_manifest") {
+    testonly = true
+    input = "//brave/android/browsertests_apk/AndroidManifest.xml.jinja2"
+    output =
+        "${target_gen_dir}/brave_browser_tests_manifest/AndroidManifest.xml"
   }
 }
 

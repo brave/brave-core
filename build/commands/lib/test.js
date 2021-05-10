@@ -1,5 +1,6 @@
 const path = require('path')
 
+const build = require('../lib/build')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const assert = require('assert')
@@ -21,7 +22,11 @@ const getTestsToRun = (config, suite) => {
 }
 
 const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options) => {
-  config.buildConfig = buildConfig
+  if (config.targetOS !== 'android')
+    config.buildConfig = buildConfig
+  else
+    config.buildConfig = 'Debug'
+
   config.update(options)
 
   let braveArgs = [
@@ -63,11 +68,18 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
 
   braveArgs = braveArgs.concat(passthroughArgs)
 
+  let buildTarget = suite
+  if (suite === 'brave_unit_tests' || suite === 'brave_browser_tests')
+    buildTarget = "brave/test:" + suite
+
+  config.buildTarget = buildTarget
+
   // Build the tests
-  if (suite === 'brave_unit_tests' || suite === 'brave_browser_tests') {
-    util.run('ninja', ['-C', config.outputDir, "brave/test:" + suite], config.defaultOptions)
+  if (config.targetOS === 'android' && suite === 'brave_browser_tests') {
+    // Only android browser tests use this standard build function, to minimize impact on other tests
+    build(buildConfig, options)
   } else {
-    util.run('ninja', ['-C', config.outputDir, suite], config.defaultOptions)
+    util.run('ninja', ['-C', config.outputDir, buildTarget], config.defaultOptions)
   }
 
   if (config.targetOS === 'ios') {

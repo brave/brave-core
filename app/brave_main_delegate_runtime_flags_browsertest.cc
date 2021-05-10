@@ -5,10 +5,15 @@
 
 #include "brave/common/brave_switches.h"
 #include "chrome/common/chrome_features.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 
-class BraveMainDelegateRuntimeFlagsBrowserTest : public InProcessBrowserTest {
+#if defined(OS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
+
+class BraveMainDelegateRuntimeFlagsBrowserTest : public PlatformBrowserTest {
  public:
   BraveMainDelegateRuntimeFlagsBrowserTest() {}
   ~BraveMainDelegateRuntimeFlagsBrowserTest() override {}

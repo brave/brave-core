@@ -480,8 +480,7 @@ void JNI_BravePrefServiceBridge_SetP3AEnabled(
   g_browser_process->local_state()->CommitPendingWrite();
 }
 
-jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(
-    JNIEnv* env) {
+static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
   return g_browser_process->local_state()->GetBoolean(
       brave::kP3AEnabled);
 }
@@ -508,7 +507,7 @@ jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(
 
 void JNI_BravePrefServiceBridge_SetP3AEnabled(JNIEnv* env, jboolean value) {}
 
-jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
+static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
   return false;
 }
 

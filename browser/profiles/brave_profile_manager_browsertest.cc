@@ -9,6 +9,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_utils.h"
 #include "chrome/browser/browser_process.h"
@@ -16,11 +17,8 @@
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/profiles/profile_window.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 
@@ -28,6 +26,14 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/features.h"
+#endif
+
+#if defined(OS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/browser/profiles/profile_window.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #endif
 
 namespace {
@@ -66,7 +72,7 @@ std::vector<TestProfileData> GetTestProfileData(
 
 }  // namespace
 
-class BraveProfileManagerTest : public InProcessBrowserTest {
+class BraveProfileManagerTest : public PlatformBrowserTest {
  public:
   BraveProfileManagerTest() {
 #if BUILDFLAG(IPFS_ENABLED)
@@ -144,36 +150,43 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   Profile* profile = ProfileManager::GetActiveUserProfile();
   Profile* otr_profile = profile->GetPrimaryOTRProfile();
 
+#if !defined(OS_ANDROID)
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
   ui_test_utils::WaitForBrowserToOpen();
 
   Profile* guest_profile =
       profile_manager->GetProfileByPath(ProfileManager::GetGuestProfilePath());
-  ASSERT_TRUE(otr_profile->IsOffTheRecord());
+
   ASSERT_TRUE(guest_profile->IsGuestSession());
+
+  EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(guest_profile),
+            nullptr);
+  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(guest_profile),
+            nullptr);
+#endif
+
+  ASSERT_TRUE(otr_profile->IsOffTheRecord());
 
   EXPECT_NE(
       brave_rewards::RewardsServiceFactory::GetForProfile(profile), nullptr);
   EXPECT_EQ(
       brave_rewards::RewardsServiceFactory::GetForProfile(otr_profile),
       nullptr);
-  EXPECT_EQ(
-      brave_rewards::RewardsServiceFactory::GetForProfile(guest_profile),
-      nullptr);
 
   EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr);
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(otr_profile),
-            nullptr);
-  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(guest_profile),
             nullptr);
 
 #if BUILDFLAG(IPFS_ENABLED)
   EXPECT_NE(ipfs::IpfsServiceFactory::GetForContext(profile), nullptr);
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(otr_profile), nullptr);
+#if !defined(OS_ANDROID)
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(guest_profile), nullptr);
+#endif
 #endif
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                        GetLastUsedProfileName) {
   g_browser_process->local_state()->SetString(
@@ -190,3 +203,4 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
       profile_manager->GetLastUsedProfileDir(profile_manager->user_data_dir());
   EXPECT_EQ(last_used_path.BaseName().AsUTF8Unsafe(), chrome::kInitialProfile);
 }
+#endif
