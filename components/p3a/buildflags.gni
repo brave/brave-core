@@ -1,3 +1,4 @@
 declare_args() {
   brave_p3a_enabled = true
+  brave_p3a_android_browsertest = false
 }

@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -49,7 +50,14 @@ public class P3aOnboardingActivity extends AppCompatActivity {
         CheckBox p3aOnboardingCheckbox = findViewById(R.id.p3a_onboarding_checkbox);
         boolean isP3aEnabled = true;
         try {
-            isP3aEnabled = BravePrefServiceBridge.getInstance().getP3AEnabled();
+            // This is a hack for an unsolved JNI problem on android browsertests
+            // It cannot be caught by Java because it is a native crash
+            // Probably have something to do with library haven't finished loading at the time
+            // this activity is initializing
+            if (BraveConfig.P3A_ANDROID_BROWSERTEST)
+                isP3aEnabled = false;
+            else
+                isP3aEnabled = BravePrefServiceBridge.getInstance().getP3AEnabled();
         } catch (Exception e) {
             Log.e("P3aOnboarding", e.getMessage());
         }
@@ -67,11 +75,15 @@ public class P3aOnboardingActivity extends AppCompatActivity {
                     }
                 });
         ImageView p3aOnboardingImg = findViewById(R.id.p3a_onboarding_img);
-        p3aOnboardingImg.setImageResource(isFirstInstall
-                        ? R.drawable.ic_brave_logo
-                        : (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                                        ? R.drawable.ic_spot_graphic_dark
-                                        : R.drawable.ic_spot_graphic));
+        // Same as above
+        if (BraveConfig.P3A_ANDROID_BROWSERTEST)
+            p3aOnboardingImg.setImageResource(R.drawable.ic_brave_logo);
+        else
+            p3aOnboardingImg.setImageResource(isFirstInstall
+                            ? R.drawable.ic_brave_logo
+                            : (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                                            ? R.drawable.ic_spot_graphic_dark
+                                            : R.drawable.ic_spot_graphic));
         TextView p3aOnboardingText = findViewById(R.id.p3a_onboarding_text);
         Button btnContinue = findViewById(R.id.btn_continue);
         btnContinue.setOnClickListener(new View.OnClickListener() {

@@ -26,4 +26,10 @@ public static final boolean P3A_ENABLED = BRAVE_ANDROID_P3A_ENABLED;
 #else
 public static final boolean P3A_ENABLED = false;
 #endif
+
+#if defined(BRAVE_ANDROID_P3A_BROWSERTEST)
+public static final boolean P3A_ANDROID_BROWSERTEST = BRAVE_ANDROID_P3A_BROWSERTEST;
+#else
+public static final boolean P3A_ANDROID_BROWSERTEST = false;
+#endif
 }
