@@ -667,6 +667,7 @@
 		44331DDA22552313007E3E93 /* LocationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44331DD922552313007E3E93 /* LocationContainerView.swift */; };
 		44331DDC22561F34007E3E93 /* ToolbarUrlActionsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44331DDB22561F34007E3E93 /* ToolbarUrlActionsDelegate.swift */; };
 		4452CAF0255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */; };
+		44994DBA2649B137000CC166 /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 44994DB92649B136000CC166 /* leaf.cer */; };
 		44FA2F3021F8DB1000EFA86A /* DataPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44FA2F2F21F8DB1000EFA86A /* DataPreferences.swift */; };
 		592F521E2217327C0078395E /* HttpCookieExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592F521D2217327B0078395E /* HttpCookieExtension.swift */; };
 		59350AFB22612D95004D7445 /* DisplayTextFieldTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59350AFA22612D95004D7445 /* DisplayTextFieldTest.swift */; };
@@ -737,7 +738,6 @@
 		5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */; };
 		5E34781022D7A1D200B0D5F8 /* ResourceDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E34780F22D7A1D200B0D5F8 /* ResourceDownloadManager.swift */; };
 		5E46C371234FACC600ACA8C1 /* root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C36D234FACC600ACA8C1 /* root.cer */; };
-		5E46C372234FACC600ACA8C1 /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C36E234FACC600ACA8C1 /* leaf.cer */; };
 		5E46C373234FACC600ACA8C1 /* intermediate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C36F234FACC600ACA8C1 /* intermediate.cer */; };
 		5E46C377234FB54000ACA8C1 /* untrusted.badssl.com-root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C375234FB53F00ACA8C1 /* untrusted.badssl.com-root.cer */; };
 		5E46C378234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C376234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer */; };
@@ -2171,6 +2171,7 @@
 		4452CA392552FC7F0053EFE6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4452CA3A2552FD360053EFE6 /* build_in_core.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_in_core.sh; sourceTree = "<group>"; };
 		4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBrowserIntroCalloutViewController.swift; sourceTree = "<group>"; };
+		44994DB92649B136000CC166 /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
 		449D5AE02628502B00C211D4 /* Model12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model12.xcdatamodel; sourceTree = "<group>"; };
 		44FA2F2F21F8DB1000EFA86A /* DataPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPreferences.swift; sourceTree = "<group>"; };
 		5902D2FF22DCD681002232FB /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/BraveShared.strings; sourceTree = "<group>"; };
@@ -2441,7 +2442,6 @@
 		5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ResourceDownloader.js; sourceTree = "<group>"; };
 		5E34780F22D7A1D200B0D5F8 /* ResourceDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDownloadManager.swift; sourceTree = "<group>"; };
 		5E46C36D234FACC600ACA8C1 /* root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = root.cer; sourceTree = "<group>"; };
-		5E46C36E234FACC600ACA8C1 /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
 		5E46C36F234FACC600ACA8C1 /* intermediate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = intermediate.cer; sourceTree = "<group>"; };
 		5E46C375234FB53F00ACA8C1 /* untrusted.badssl.com-root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "untrusted.badssl.com-root.cer"; sourceTree = "<group>"; };
 		5E46C376234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "untrusted.badssl.com-leaf.cer"; sourceTree = "<group>"; };
@@ -4755,7 +4755,7 @@
 			children = (
 				5E46C37B234FB9A700ACA8C1 /* self-signed.cer */,
 				5E46C36F234FACC600ACA8C1 /* intermediate.cer */,
-				5E46C36E234FACC600ACA8C1 /* leaf.cer */,
+				44994DB92649B136000CC166 /* leaf.cer */,
 				5E46C36D234FACC600ACA8C1 /* root.cer */,
 				5EA84393234F803C00076A91 /* expired.badssl.com */,
 			);
@@ -6408,8 +6408,8 @@
 				5E46C378234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer in Resources */,
 				5EA84391234F802C00076A91 /* expired.badssl.com-leaf.cer in Resources */,
 				5EA8438F234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer in Resources */,
+				44994DBA2649B137000CC166 /* leaf.cer in Resources */,
 				5E46C371234FACC600ACA8C1 /* root.cer in Resources */,
-				5E46C372234FACC600ACA8C1 /* leaf.cer in Resources */,
 				5E46C373234FACC600ACA8C1 /* intermediate.cer in Resources */,
 				5EA8438E234F802C00076A91 /* expired.badssl.com-root-ca.cer in Resources */,
 			);
