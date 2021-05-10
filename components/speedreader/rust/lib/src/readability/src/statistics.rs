@@ -1,7 +1,8 @@
-use crate::dom;
+use crate::{dom, util};
 use kuchiki::iter::NodeIterator;
 use kuchiki::NodeRef as Handle;
 use kuchiki::{ElementData, Sink};
+use util::count_ignore_consecutive_whitespace;
 
 #[derive(Default)]
 pub struct ReadableFeatures {
@@ -79,9 +80,12 @@ lazy_static! {
 
 /// Returns the length of all text in the tree rooted at handle.
 fn text_len_saturated(handle: &Handle) -> usize {
-    let mut len = 0;
+    let mut len: usize = 0;
     for contents in handle.descendants().text_nodes() {
-        len += contents.borrow().trim().chars().count();
+        // TODO(keur): Undecided, but it's possible don't actually care about
+        // undercounting the spaces here, and can simplify with
+        // contents.borrow().chars().filter(|c| !c.is_whitespace())
+        len += count_ignore_consecutive_whitespace(contents.borrow().trim().chars());
         if len > TEXT_LENGTH_SATURATION {
             return TEXT_LENGTH_SATURATION;
         }
@@ -319,6 +323,29 @@ mod tests {
             features.is_open_graph_article,
             "Article content not detected as opengraph"
         );
+    }
+
+    #[test]
+    fn test_dont_overcount_whitespace() {
+        let input = r#"
+        <html>
+          <head></head>
+          <body>
+            <p>
+                           1234567890
+                              1234567890
+                        1
+                        2
+                        3
+                        4
+                        5    6 7
+            </p>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let features = collect_statistics_for_test(&mut cursor).unwrap();
+        // 35 = 6 nl + 2 spaces + 27 digits
+        assert_eq!(35, features.moz_score_all_linear);
     }
 
     #[test]
