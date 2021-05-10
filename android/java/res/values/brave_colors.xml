@@ -137,6 +137,5 @@
 
     <color name="shields_tooltip_arrow_color_1">#DD295B</color>
     <color name="shields_tooltip_arrow_color_2">#2673DD</color>
-    <color name="rewards_tooltip_arrow_color">#A1A9F3</color>
     
 </resources>

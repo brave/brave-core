@@ -159,7 +159,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     private boolean mIsInitialNotificationPosted; // initial red circle notification
 
     private PopupWindowTooltip mShieldsPopupWindowTooltip;
-    private PopupWindowTooltip mRewardsPopupWindowTooltip;
 
     private boolean mIsBottomToolbarVisible;
 
@@ -374,8 +373,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                         OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
                     }
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
-                            && !isRewardsTooltipShown() && !isRewardsPanelOpened()) {
+                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
                         checkForTooltip(tab);
                     }
                 }
@@ -639,51 +637,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
     }
 
-    public void showRewardsTooltip() {
-        ShieldsTooltipEnum shieldsTooltipEnum = ShieldsTooltipEnum.BAP_DEPRECATION_TOOLTIP;
-        mRewardsPopupWindowTooltip = new PopupWindowTooltip.Builder(getContext())
-                                             .anchorView(mBraveRewardsButton)
-                                             .arrowColor(getContext().getResources().getColor(
-                                                     shieldsTooltipEnum.getArrowColor()))
-                                             .gravity(Gravity.BOTTOM)
-                                             .dismissOnOutsideTouch(true)
-                                             .dismissOnInsideTouch(false)
-                                             .modal(true)
-                                             .contentView(R.layout.brave_shields_tooltip_layout)
-                                             .build();
-        mRewardsPopupWindowTooltip.findViewById(R.id.shields_tooltip_layout)
-                .setBackgroundDrawable(ContextCompat.getDrawable(
-                        getContext(), shieldsTooltipEnum.getTooltipBackground()));
-
-        Button btnTooltip = mRewardsPopupWindowTooltip.findViewById(R.id.btn_tooltip);
-        btnTooltip.setText(getContext().getResources().getString(R.string.menu_learn_more));
-        btnTooltip.setVisibility(View.VISIBLE);
-        btnTooltip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismissRewardsTooltip();
-                if (BraveActivity.getBraveActivity() != null)
-                    BraveActivity.getBraveActivity().showDeprecateBAPDialog();
-            }
-        });
-
-        TextView tooltipTitle = mRewardsPopupWindowTooltip.findViewById(R.id.txt_tooltip_title);
-        SpannableStringBuilder ssb =
-                new SpannableStringBuilder(new StringBuilder("\t\t")
-                                                   .append(getContext().getResources().getString(
-                                                           shieldsTooltipEnum.getTitle()))
-                                                   .toString());
-        ssb.setSpan(new ImageSpan(
-                            getContext(), R.drawable.ic_warning_triangle, ImageSpan.ALIGN_BASELINE),
-                0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tooltipTitle.setText(ssb, TextView.BufferType.SPANNABLE);
-
-        TextView tooltipText = mRewardsPopupWindowTooltip.findViewById(R.id.txt_tooltip_text);
-        tooltipText.setText(getContext().getResources().getString(shieldsTooltipEnum.getText()));
-
-        mRewardsPopupWindowTooltip.show();
-    }
-
     public void dismissShieldsTooltip() {
         if (mShieldsPopupWindowTooltip != null && mShieldsPopupWindowTooltip.isShowing()) {
             mShieldsPopupWindowTooltip.dismiss();
@@ -698,24 +651,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
     }
 
-    public void dismissRewardsTooltip() {
-        if (mRewardsPopupWindowTooltip != null && mRewardsPopupWindowTooltip.isShowing()) {
-            mRewardsPopupWindowTooltip.dismiss();
-            mRewardsPopupWindowTooltip = null;
-        }
-    }
-
-    public boolean isRewardsTooltipShown() {
-        if (mRewardsPopupWindowTooltip != null) {
-            return mRewardsPopupWindowTooltip.isShowing();
-        }
-        return false;
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        dismissRewardsTooltip();
         dismissShieldsTooltip();
         reopenShieldsPanel();
     }
@@ -1131,13 +1069,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
     public void openRewardsPanel() {
         onClick(mBraveRewardsButton);
-    }
-
-    public boolean isRewardsPanelOpened() {
-        if (mRewardsPopup != null) {
-            return mRewardsPopup.isShowing();
-        }
-        return false;
     }
 
     public boolean isShieldsTooltipShown() {

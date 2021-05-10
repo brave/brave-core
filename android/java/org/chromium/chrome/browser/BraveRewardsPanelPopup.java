@@ -2066,6 +2066,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         loginPopupWindow.setContentView(loginPopupView);
 
         view.post(new Runnable() {
+            @Override
             public void run() {
                 if (SysUtils.isLowEndDevice()) {
                     loginPopupWindow.setAnimationStyle(0);
