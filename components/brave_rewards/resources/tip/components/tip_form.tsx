@@ -126,6 +126,11 @@ export function TipForm () {
 
     const onTourDone = () => setShowTour(false)
 
+    const onVerifyClick = () => {
+      window.open('chrome://rewards/#verify', '_blank')
+      setShowTour(false)
+    }
+
     return (
       <style.tour>
         <RewardsTour
@@ -137,6 +142,7 @@ export function TipForm () {
           autoContributeAmountOptions={autoContributeChoices}
           onAdsPerHourChanged={host.setAdsPerHour}
           onAutoContributeAmountChanged={host.setAutoContributeAmount}
+          onVerifyWalletClick={onVerifyClick}
           onDone={onTourDone}
         />
       </style.tour>
