@@ -521,6 +521,8 @@ void RewardsDOMHandler::OnJavascriptDisallowed() {
   if (ads_service_) {
     ads_service_->RemoveObserver(this);
   }
+  
+  weak_factory_.InvalidateWeakPtrs();
 }
 
 void RewardsDOMHandler::GetRewardsParameters(const base::ListValue* args) {
