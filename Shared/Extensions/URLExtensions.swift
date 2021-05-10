@@ -444,7 +444,8 @@ extension URL {
     // Check if the website is supporting showing Add To playlist toast
     public var isPlaylistSupportedSiteURL: Bool {
         let domain = self.hostSLD
-        var siteList = ["youtube", "vimeo", "twitch", "floatplane", "spotify", "soundcloud"]
+        var siteList = ["youtube", "vimeo", "twitch", "floatplane",
+                        "spotify", "soundcloud", "listennotes"]
         
         /// Additional sites for Japanese locale
         if Locale.current.regionCode == "JP" {
