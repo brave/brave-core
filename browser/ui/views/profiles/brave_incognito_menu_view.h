@@ -20,9 +20,9 @@ class BraveIncognitoMenuView : public IncognitoMenuView {
   friend class IncognitoMenuView;
 
   // views::BubbleDialogDelegateView:
-  base::string16 GetAccessibleWindowTitle() const override;
+  std::u16string GetAccessibleWindowTitle() const override;
 
-    // Button actions.
+  // Button actions.
   void OnExitButtonClicked() override;
 
   void AddTorButton();

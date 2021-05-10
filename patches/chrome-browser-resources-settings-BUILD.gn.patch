@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index b752f26146d90c86475be28fe2a5da68e0358749..64fbf76dfbed0a52a173e63cf34d71dc81971c74 100644
+index cdf4406a57c01010f065948d04f9c7a2219db82f..703af55d0a81da6195962f141a9beb5d6747b51f 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -46,6 +46,7 @@ if (optimize_webui) {
+@@ -44,6 +44,7 @@ if (optimize_webui) {
        "chrome://resources/mojo/mojo/public/js/bindings.js",
        "chrome://resources/mojo/skia/public/mojom/skcolor.mojom-webui.js",
      ]
@@ -10,7 +10,7 @@ index b752f26146d90c86475be28fe2a5da68e0358749..64fbf76dfbed0a52a173e63cf34d71dc
    }
  }
  
-@@ -93,6 +94,7 @@ generate_grd("build_grd") {
+@@ -91,6 +92,7 @@ generate_grd("build_grd") {
        "$target_gen_dir/$preprocess_gen_manifest",
      ]
    }

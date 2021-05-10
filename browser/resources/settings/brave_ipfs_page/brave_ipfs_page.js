@@ -1,8 +1,9 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-import {PrefsBehavior} from '../prefs/prefs_behavior.m.js';
-import {Router, RouteObserverBehavior} from '../router.m.js';
+import {PrefsBehavior} from '../prefs/prefs_behavior.js';
+import {Router, RouteObserverBehavior} from '../router.js';
+import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
 
 (function() {
 'use strict';
@@ -19,8 +20,8 @@ Polymer({
     PrefsBehavior,
     RouteObserverBehavior
   ],
-  
-  /** 
+
+  /**
    * Keep it same as in IPFSResolveMethodTypes
    * in brave\components\ipfs\ipfs_constants.h */
   IPFSResolveMethodTypes: {
@@ -29,7 +30,7 @@ Polymer({
     IPFS_LOCAL: 2,
     IPFS_DISABLED: 3
   },
-  
+
   properties: {
     ipfsEnabled_: Boolean,
     showChangeIPFSGatewayDialog_: Boolean,
@@ -47,7 +48,7 @@ Polymer({
 
   /** @override */
   created: function() {
-    this.browserProxy_ = settings.BraveIPFSBrowserProxyImpl.getInstance();
+    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
   },
 
   /** @override */
@@ -62,7 +63,7 @@ Polymer({
     });
     this.browserProxy_.getIPFSEnabled().then(enabled => {
       this.ipfsEnabled_ = enabled
-      
+
     });
 
     this.addWebUIListener('brave-ipfs-node-status-changed', (launched) => {
@@ -75,7 +76,7 @@ Polymer({
   setupOptionsVisibility: function() {
     const resolve_method = this.getPref('brave.ipfs.resolve_method').value;
     // Check if IPFS method is LOCAL_NODE
-    this.isLocalNodeEnabled_ = (resolve_method == this.IPFSResolveMethodTypes.IPFS_LOCAL) && 
+    this.isLocalNodeEnabled_ = (resolve_method == this.IPFSResolveMethodTypes.IPFS_LOCAL) &&
                                 this.ipfsEnabled_;
     this.showIPFSLearnMoreLink_ =
       (resolve_method == this.IPFSResolveMethodTypes.IPFS_ASK);

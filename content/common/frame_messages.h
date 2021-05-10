@@ -12,9 +12,9 @@
 #include "ipc/ipc_message_macros.h"
 
 // The message starter should be declared in ipc/ipc_message_start.h. Since
-// we don't want to patch Chromium, we just pretend to be Content Shell.
+// we don't want to patch Chromium, we just pretend to be something else.
 
-#define IPC_MESSAGE_START FrameMsgStart
+#define IPC_MESSAGE_START TestMsgStart
 
 // Tell RenderFrame(s) to temporary allow scripts from a list of origins once.
 IPC_MESSAGE_ROUTED1(

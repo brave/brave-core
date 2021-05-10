@@ -28,6 +28,8 @@ namespace {
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 
+using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
+
 class SidebarMenuModel : public ui::SimpleMenuModel,
                          public ui::SimpleMenuModel::Delegate {
  public:
@@ -70,21 +72,21 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
                  l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
   }
 
-  int ConvertIDCToSidebarShowOptions(int id) const {
+  ShowSidebarOption ConvertIDCToSidebarShowOptions(int id) const {
     switch (id) {
       case IDC_SIDEBAR_SHOW_OPTION_ALWAYS:
-        return sidebar::SidebarService::kShowAlways;
+        return ShowSidebarOption::kShowAlways;
       case IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER:
-        return sidebar::SidebarService::kShowOnMouseOver;
+        return ShowSidebarOption::kShowOnMouseOver;
       case IDC_SIDEBAR_SHOW_OPTION_ONCLICK:
-        return sidebar::SidebarService::kShowOnClick;
+        return ShowSidebarOption::kShowOnClick;
       case IDC_SIDEBAR_SHOW_OPTION_NEVER:
-        return sidebar::SidebarService::kShowNever;
+        return ShowSidebarOption::kShowNever;
       default:
         break;
     }
     NOTREACHED();
-    return -1;
+    return ShowSidebarOption::kShowAlways;
   }
 
   Browser* browser_ = nullptr;

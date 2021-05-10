@@ -13,11 +13,13 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
-#include "base/strings/string16.h"
+#include "brave/components/brave_shields/common/brave_shields.mojom.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+
 #include "url/gurl.h"
 
 namespace blink {
@@ -43,12 +45,11 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
   bool UseEphemeralStorageSync(StorageType storage_type) override;
   bool AllowStorageAccessSync(StorageType storage_type) override;
 
-  void BraveSpecificDidBlockJavaScript(const base::string16& details);
+  void BraveSpecificDidBlockJavaScript(const std::u16string& details);
 
   bool AllowAutoplay(bool play_requested) override;
 
   bool AllowFingerprinting(bool enabled_per_settings) override;
-  void DidBlockFingerprinting(const base::string16& details);
 
   BraveFarblingLevel GetBraveFarblingLevel() override;
 
@@ -70,6 +71,11 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
   bool IsScriptTemporilyAllowed(const GURL& script_url);
   bool AllowStorageAccessForMainFrameSync(StorageType storage_type);
 
+  // Returns the associated remote used to send messages to the browser process,
+  // lazily initializing it the first time it's used.
+  mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>&
+  GetOrCreateBraveShieldsRemote();
+
   // Origins of scripts which are temporary allowed for this frame in the
   // current load
   base::flat_set<std::string> temporarily_allowed_scripts_;
@@ -82,6 +88,9 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
 
   using StoragePermissionsKey = std::pair<url::Origin, StorageType>;
   base::flat_map<StoragePermissionsKey, bool> cached_storage_permissions_;
+
+  mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>
+      brave_shields_remote_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsAgentImpl);
 };

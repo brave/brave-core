@@ -10,6 +10,7 @@
 #include "base/files/file_util.h"
 #include "base/guid.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
@@ -27,9 +28,8 @@ IpfsFileImportWorker::IpfsFileImportWorker(content::BrowserContext* context,
     : IpfsImportWorkerBase(context, endpoint, std::move(callback)),
       weak_factory_(this) {
   std::string filename = path.BaseName().MaybeAsASCII();
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(&CalculateFileSize, path),
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()}, base::BindOnce(&CalculateFileSize, path),
       base::BindOnce(&IpfsFileImportWorker::CreateRequestWithFile,
                      weak_factory_.GetWeakPtr(), path, kFileMimeType,
                      filename));

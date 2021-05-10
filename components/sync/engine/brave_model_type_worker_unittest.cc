@@ -55,13 +55,8 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
         base::BindOnce(&BraveModelTypeWorkerTest::DisconnectProcessor,
                        base::Unretained(this)));
 
-    std::unique_ptr<Cryptographer> cryptographer_copy;
-    if (cryptographer_) {
-      cryptographer_copy = cryptographer_->Clone();
-    }
-
     worker_ = std::make_unique<BraveModelTypeWorker>(
-        type, state, !state.initial_sync_done(), std::move(cryptographer_copy),
+        type, state, !state.initial_sync_done(), cryptographer_.get(),
         PassphraseType::kImplicitPassphrase, &mock_nudge_handler_,
         std::move(processor), &cancelation_signal_);
   }

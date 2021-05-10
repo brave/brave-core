@@ -320,6 +320,8 @@ source_set("ui") {
       "views/sidebar/sidebar_items_contents_view.h",
       "views/sidebar/sidebar_items_scroll_view.cc",
       "views/sidebar/sidebar_items_scroll_view.h",
+      "views/sidebar/sidebar_show_options_event_detect_widget.cc",
+      "views/sidebar/sidebar_show_options_event_detect_widget.h",
     ]
   }
 
@@ -363,6 +365,8 @@ source_set("ui") {
       "views/tabs/brave_alert_indicator.h",
       "views/tabs/brave_new_tab_button.cc",
       "views/tabs/brave_new_tab_button.h",
+      "views/tabs/brave_tab_search_button.cc",
+      "views/tabs/brave_tab_search_button.h",
       "views/toolbar/brave_toolbar_view.cc",
       "views/toolbar/brave_toolbar_view.h",
     ]
@@ -418,6 +422,7 @@ source_set("ui") {
       "//components/sessions",
       "//extensions/browser",
       "//extensions/common:common_constants",
+      "//ui/base/dragdrop:types",
     ]
   }
 

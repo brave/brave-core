@@ -71,7 +71,8 @@ void SidebarController::LoadAtTab(const GURL& url) {
   }
 }
 
-void SidebarController::OnShowSidebarOptionChanged(int option) {
+void SidebarController::OnShowSidebarOptionChanged(
+    SidebarService::ShowSidebarOption option) {
   // Clear active state whenever sidebar enabled state is changed.
   ActivateItemAt(-1);
   UpdateSidebarVisibility();
@@ -84,7 +85,7 @@ void SidebarController::AddItemWithCurrentTab() {
   auto* active_contents = browser_->tab_strip_model()->GetActiveWebContents();
   DCHECK(active_contents);
   const GURL url = active_contents->GetVisibleURL();
-  const base::string16 title = active_contents->GetTitle();
+  const std::u16string title = active_contents->GetTitle();
   GetSidebarService(browser_)->AddItem(
       SidebarItem::Create(url, title, SidebarItem::Type::kTypeWeb, false));
 }
@@ -100,8 +101,8 @@ void SidebarController::SetSidebar(Sidebar* sidebar) {
 
 void SidebarController::UpdateSidebarVisibility() {
   DCHECK(sidebar_);
-  const int show_options = GetSidebarService(browser_)->GetSidebarShowOption();
-  sidebar_->ShowSidebar(show_options == sidebar::SidebarService::kShowAlways);
+  sidebar_->SetSidebarShowOption(
+      GetSidebarService(browser_)->GetSidebarShowOption());
 }
 
 }  // namespace sidebar

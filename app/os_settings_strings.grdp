@@ -172,6 +172,9 @@
   <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (BraveOS/BraveOS)">
     Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is up to date
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_MANAGED_END_OF_LIFE_SUBTITLE" desc="Subtitle used for End of Life section on the Additional details subpage of the ABout page for managed users.">
+    Updates are managed by your administrator
+  </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE_FUTURE" desc="Message used when end of life has not yet past current date in End of Life section on the About Page.">
     This device will get automatic software and security updates until <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
@@ -254,7 +257,7 @@
   <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON" desc="Text in the add fingerprint dialog telling users to place finger on the power button which is the sensor.">
     Touch the power button with your finger
   </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the power button. Only visible by screen reader software.">
+  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the power button. Only visible by screen reader software.">
     The fingerprint sensor is in the power button. Touch it lightly with any finger.
   </message>
   <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD" desc="Text in the add fingerprint dialog telling users to place finger on the sensor on the keyboard.">
@@ -263,11 +266,17 @@
   <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_LEFT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom left corner of the keyboard. Only visible by screen reader software.">
     The fingerprint sensor is the bottom left-hand key on your keyboard. Touch it lightly with any finger.
   </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom right corner of the keyboard. Only visible by screen reader software.">
+  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom right corner of the keyboard. Only visible by screen reader software.">
     The fingerprint sensor is the bottom right-hand key on your keyboard. Touch it lightly with any finger.
   </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_TOP_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the top right corner of the keyboard. Only visible by screen reader software.">
+  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_TOP_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the top right corner of the keyboard. Only visible by screen reader software.">
     The fingerprint sensor is the top right-hand key on your keyboard. Touch it lightly with any finger.
+  </message>
+  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_RIGHT_SIDE_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the right side of the chrome device. Only visible by screen reader software.">
+    The fingerprint sensor is on the right-hand side of your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Touch it lightly with any finger.
+  </message>
+  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_LEFT_SIDE_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the left side of the chrome device. Only visible by screen reader software.">
+    The fingerprint sensor is on the left-hand side of your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Touch it lightly with any finger.
   </message>
 
   <!-- Languages and Inputs (OS settings) -->
@@ -357,6 +366,15 @@
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_DESCRIPTION" desc="Description for the list of languages that support spell check, from which users can enable or disable spell check for.">
     Languages for spell check are based on your language preference
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_SPELL_CHECK_LANGUAGES_TITLE" translateable="false" desc="Title for the dialog that allows users to select new languages to add to their list of spell check languages.">
+    Add spell check languages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGE_NOT_ALLOWED" translateable="false" desc="Tooltip for policy icon when a spell check language is not allowed.">
+    Your administrator doesn't allow this spell check language
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_REMOVE_SPELL_CHECK_LANGUAGE_TOOLTIP" translateable="false" desc="Tooltip of the button that lets the user remove a given spell check language.">
+    Remove <ph name="LANGUAGE_NAME">$1<ex>English (United States)</ex></ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED" desc="Error message when spell check dictionary download fails.">
     Couldn’t download spell check dictionary
@@ -747,6 +765,9 @@
   <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_MOUNT_INVALID_SSO_URL_MESSAGE" desc="The message shown when mounting a new SMB share fails because the URL is an invalid format when SSO authentication is used.">
     Invalid URL format. Server must be specified as a host name when SSO authentication is used.
   </message>
+  <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_MOUNT_INVALID_USERNAME_MESSAGE" desc="The message shown when mounting a new SMB share fails because the username is invalid.">
+    Invalid username
+  </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_SUCCESS_MESSAGE" desc="The message shown when a new SMB share is successfully mounted.">
     Share mounted successfully.
   </message>
@@ -817,6 +838,9 @@
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_LABEL" desc="Label for checkbox which enables the fullscreen magnifier">
       Enable fullscreen magnifier
   </message>
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_HINT_LABEL" desc="Label for keyboard shortcut hint which tells how to enable and disable the fullscreen magnifier.">
+    Press Ctrl+<ph name="SEARCH_KEY_NAME">$1<ex>Search</ex></ph>+M to turn fullscreen magnifier on or off. Press Ctrl+Alt+Arrow keys to move around when zoomed in.
+  </message>
   <message name="IDS_SETTINGS_SCREEN_MANIFIER_MOUSE_FOLLOWING_MODE_CONTINUOUS" desc="Label for the radio button that allows the user to choose the 'continuous' mouse following mode for the full screen magnifier, which moves the zoomed-in screen continuously (underneath the cursor in the opposite direction) as the mouse moves towards the edges of the screen. This feature allows the user of full screen magnifier to choose how the zoomed-in screen moves as their mouse moves within the screen. The options are 'Move screen continuously as mouse moves', 'Move screen keeping mouse at center of screen', and 'Move screen when mouse touches edges of screen'.">
     Move screen continuously as mouse moves
   </message>
@@ -830,7 +854,11 @@
       Zoomed in screen follows keyboard focus
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_LABEL" desc="Label for dropdown menu which contains zoom levels for the fullscreen magnifier">
-    Fullscreen zoom level:
+    Fullscreen zoom level
+  </message>
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_HINT_LABEL" desc="Label for keyboard shortcut for adjusting the zoom levels for the fullscreen magnifier">
+    Press Ctrl+Alt+Brightness up to zoom in,
+and Ctrl+Alt+Brightness down to zoom out.
   </message>
   <message name="IDS_SETTINGS_DOCKED_MAGNIFIER_LABEL" desc="Label for checkbox which enables the docked magnifier">
     Enable docked magnifier
@@ -1020,6 +1048,9 @@
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_AUTO_SCAN_KEYBOARD_SPEED_LABEL" desc="Label for slider which sets the time interval for Switch Access to automatically scan to the next element while navigating in the keyboard. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Keyboard scanning speed
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_POINT_SCAN_SPEED_LABEL" desc="Label for slider which sets the speed of point scanning cursors for Switch Access, which move across the screen, allowing the user to choose a precise point to click. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Point scanning speed
   </message>
   <message name="IDS_SETTINGS_DURATION_IN_SECONDS" desc="A duration in seconds. Should be short.">
     <ph name="DURATION">$1<ex>1.5</ex></ph>s
@@ -1276,8 +1307,8 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_TEXT" desc="Text for 'secondary accounts disabled' message in Settings page.">
     Your administrator has disabled the addition of more Brave sync chains
   </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_TEXT_V2" desc="Text for 'secondary accounts disabled' message in Settings page.">
-   Your administrator doesn’t allow additional Brave sync chains
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_TEXT_V2" desc="Tooltip text for 'secondary accounts disabled' message in Settings page.">
+   Your administrator doesn’t allow additional Brave sync chains.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_CHILD_TEXT" desc="Text for 'secondary accounts disabled' message for child accounts in Settings page.">
     Addition of more Brave sync chains is disabled
@@ -2247,6 +2278,12 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically connect to the network.">
     Automatically connect to this network
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_HIDDEN" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox to set a wi-fi network as hidden.">
+    Hidden network
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_HIDDEN_SUBLABEL" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox to set a wi-fi network as hidden.">
+    Using a hidden network isn't recommended for security reasons.
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT_CELLULAR" desc="Settings &gt; Internet &gt; Mobile Data details: Label for the checkbox determining whether to automatically connect to the cellular network.">
     Automatically connect to cellular network
   </message>
@@ -2264,6 +2301,9 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_CELLULAR_SETUP_ESIM_PAGE_INSTALL_ERROR_DIALOG_CONFIRMATION_CODE_ERROR" desc="Settings &gt; Network &gt; Mobile data &gt; Download &gt; Install error dialog: Error indicating that installing the eSIM profile was unsuccessful.">
     Unable to connect to this profile. For technical support, please contact your carrier.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_INSTALL_ERROR_DIALOG_GENERIC_ERROR_MESSAGE" desc="Settings &gt; Network &gt; Mobile data &gt; Download &gt; Install error dialog: Message for the dialog informing the user that there was an error installing their eSIM profile.">
+    Profile could not be downloaded. Please try again later or contact carrier for help.
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_DIALOG_RENAME_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Rename profile dialog: Label for the dialog informing the user to rename an eSIM cellular network">
     Rename Profile
@@ -2291,6 +2331,21 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_DIALOG_CONNECTION_WARNING" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog | Remove profile dialog: The Label for the dialog warning message informing the user they may disconnect from their current cellular network connection if they proceed.">
     This may cause a brief cellular network disconnection.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_INSTALLING_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating current cellular network profile is being installed">
+    Installing profile. This may take up to 30 seconds.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_REMOVING_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating current cellular network profile is being removed">
+    Removing profile. This may take up to 30 seconds.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_RENAMING_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating current cellular network profile is being renamed">
+    Renaming profile. This may take up to 30 seconds.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_CONNECTING_TO_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating chromeOS device is connecting to selected cellular network profile">
+    Connecting to profile. This may take up to 30 seconds.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_REFRESHING_PROFILE_LIST" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating current cellular network profile list is being refreshed.">
+    Refreshing profile list. This may take up to 30 seconds.
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_ERROR_MESSAGE" desc="Settings &gt; Internet &gt; Network details &gt; Remove eSIM cellular profile dialog: Error message shown when remove fails">
     Profile could not be removed. Please try again or contact your carrier for technical support.
@@ -2373,12 +2428,6 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_WIFI_NETWORK_OUT_OF_RANGE" desc="Text shown when viewing the Wi-Fi network detail page when the currently-viewed Wi-Fi network has been lost (e.g., has gone out of range).">
     Network out of range
   </message>
-  <message name="IDS_SETTINGS_INTERNET_CELLULAR_CONTACT_SPECIFIC_CARRIER" desc="Text shown when the Bravebook cannot connect to a cellular network, which alerts the user to contact a specific carrier.">
-    Trouble connecting. Please contact <ph name="CARRIER_NAME">$1<ex>Brave Fi</ex></ph> for assistance.
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_CELLULAR_CONTACT_DEFAULT_CARRIER" desc="Text shown when the Bravebook cannot connect to a cellular network, which alerts the user to contact their carrier.">
-    Trouble connecting. Please contact your carrier for assistance.
-  </message>
   <message name="IDS_SETTINGS_INTERNET_CELLULAR_SETUP_DIALOG_TITLE" desc="The title text of the cellular setup dialog that allows users set up a new cellular network by activating a physical SIM card or setting up the device's built in eSIM.">
     Set up new network
   </message>
@@ -2455,16 +2504,19 @@ Press an assigned switch to remove assignment.
     Instant Tethering
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_NOT_SETUP_WITH_SETUP_LINK" desc="Text shown when viewing the Mobile data page and no eSIM profile is available">
-    No available eSIM profiles. Download a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularEsimLink"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>
+    No available eSIM profiles. Download a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularEsimLink"&gt;</ph>here.<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_INTERNET_PSIM_NOT_SETUP_WITH_SETUP_LINK" desc="Text shown when viewing the Mobile data page and no physical SIM profile is available">
-    No available SIM profiles. Setup a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularPsimLink"&gt;</ph>here.<ph name="END_LINK">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_INTERNET_PSIM_NOT_INSERTED_LABEL" desc="Text shown when viewing the Mobile data page and no physical SIM card is inserted">
+    No SIM card inserted
   </message>
   <message name="IDS_SETTINGS_INTERNET_TETHER_NOT_SETUP_WITH_LEARN_MORE_LINK" desc="Text shown when viewing the Mobile data page and no instant tether network is available">
     No device detected <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_SHOW_EID_POPUP_BUTTON_LABEL" desc="A11y and tooltop label for EID and QR code popup show button when viewing cellular network list">
     Show device EID and QR code popup
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_ESIM_NO_CONNECTION_ERROR_TOAST" desc="Message in toast displayed when user tries to perform an eSIM operation when not connected to a non-cellular network.">
+    Establish an internet connection first
   </message>
 
   <!-- Users Page (OS Settings) -->
@@ -2683,7 +2735,9 @@ Press an assigned switch to remove assignment.
     Change PIN
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NUM_FINGERPRINTS" desc="Text on the lock screen which tells users how many fingerprints they have enrolled.">
-    <ph name="NUM_FINGERPRINTS">$1<ex>1</ex></ph> fingerprints set up
+    {COUNT, plural,
+      =1 {1 fingerprint set up}
+      other {{COUNT} fingerprints set up}}
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NONE" desc="Text on the profiles page which notifies the user that the device will not show lock screen or prompt for auth after waking from sleep.">
     Sign in automatically
@@ -2823,6 +2877,9 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_KRB5_FAILED_TO_PARSE" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that cannot be parsed by the underlying Kerberos library for unknown reasons. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
     Failed to parse configuration
+  </message>
+  <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_TOO_MANY_NESTED_GROUPS" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that contains too many nested groups. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+    Too many nested groups: <ph name="ERROR_LINE">$1<ex>[appdefaults]</ex></ph>
   </message>
   <message name="IDS_SETTINGS_ADD_KERBEROS_ACCOUNT_REFRESH_BUTTON_LABEL" desc="Label of the action button on the 'Refresh a Kerberos tickets' dialog.">
     Refresh
@@ -3212,6 +3269,9 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_LESS_SECURE" desc="Text telling users that fingerprints might be less secure than strong PINs or passwords.">
     Note: Your fingerprint may be less secure than a strong password or PIN.
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_NOTICE" desc="Tooltip text telling users that fingerprint data never leaves their device.">
+    Your fingerprint data is stored securely and never leaves your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Setup Pin dialog (OS settings) -->

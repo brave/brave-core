@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinition
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
 import org.chromium.components.browser_ui.notifications.NotificationWrapper;
 import org.chromium.components.browser_ui.notifications.NotificationWrapperBuilder;
+import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
 
 /**
  * Builds a notification according to BraveAds spec.
@@ -80,6 +81,8 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      * Material Grey 600 - to be applied to action button icons in the Material theme.
      */
     private static final int BUTTON_ICON_COLOR_MATERIAL = 0xff757575;
+
+    private static Bitmap sBraveIcon;
 
     private final Context mContext;
 
@@ -179,17 +182,20 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
     }
 
     private Bitmap getBraveIcon() {
-        int largeIconId = R.mipmap.app_icon;
-        Resources resources = mContext.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        int iconSize = dpToPx(metrics, MAX_ACTION_ICON_WIDTH_DP);
-        return Bitmap.createScaledBitmap(
-                BitmapFactory.decodeResource(resources, largeIconId), iconSize, iconSize, false);
+        if (sBraveIcon == null) {
+            int largeIconId = R.mipmap.app_icon;
+            Resources resources = mContext.getResources();
+            DisplayMetrics metrics = resources.getDisplayMetrics();
+            int iconSize = dpToPx(metrics, MAX_ACTION_ICON_WIDTH_DP);
+            sBraveIcon = Bitmap.createScaledBitmap(
+                    BitmapFactory.decodeResource(resources, largeIconId), iconSize, iconSize, true);
+        }
+        return sBraveIcon;
     }
 
     @Override
     public NotificationBuilderBase addButtonAction(@Nullable Bitmap iconBitmap,
-            @Nullable CharSequence title, @Nullable PendingIntent intent) {
+            @Nullable CharSequence title, PendingIntentProvider intent) {
         return this;
     }
 
@@ -200,13 +206,13 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      */
     @Override
     public NotificationBuilderBase addTextAction(@Nullable Bitmap iconBitmap,
-            @Nullable CharSequence title, @Nullable PendingIntent intent, String placeholder) {
+            @Nullable CharSequence title, PendingIntentProvider intent, String placeholder) {
         return this;
     }
 
     @Override
     public NotificationBuilderBase addSettingsAction(
-            int iconId, @Nullable CharSequence title, @Nullable PendingIntent intent) {
+            int iconId, @Nullable CharSequence title, PendingIntentProvider intent) {
         return this;
     }
 

@@ -1,6 +1,5 @@
 import("//brave/build/config.gni")
 import("//brave/build/mac/config.gni")
-import("//build/config/mac/base_rules.gni")
 import("//build/util/branding.gni")
 import("//build/util/version.gni")
 import("//chrome/common/features.gni")

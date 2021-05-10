@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/strings/string16.h"
 #include "brave/browser/ui/brave_ads/ad_notification.h"
 #include "brave/browser/ui/brave_ads/ad_notification_control_buttons_view.h"
 #include "brave/browser/ui/brave_ads/ad_notification_header_view.h"
@@ -150,7 +149,7 @@ views::Label* TextAdNotificationView::CreateBodyLabel(
     const AdNotification& ad_notification) {
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
 
-  const base::string16 body = ad_notification.body();
+  const std::u16string body = ad_notification.body();
 
   views::Label* label = new views::Label(body);
 

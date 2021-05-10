@@ -131,6 +131,8 @@ fn main() {
     fs::create_dir_all("out").unwrap();
     let mut files = vec![];
 
+    extract_wrap("cnet_2", &mut files, &css);
+    extract_wrap("medium_2", &mut files, &css);
     extract_wrap("vanityfair_1", &mut files, &css);
     extract_wrap("bbc_2", &mut files, &css);
     extract_wrap("kotaku_1", &mut files, &css);
@@ -145,6 +147,7 @@ fn main() {
     extract_wrap("buzzfeed_1", &mut files, &css);
     extract_wrap("guardian_1", &mut files, &css);
     extract_wrap("cnet", &mut files, &css);
+    extract_wrap("graham_1", &mut files, &css);
     extract_wrap("cnn", &mut files, &css);
     extract_wrap("yahoo_1", &mut files, &css);
     extract_wrap("yahoo_2", &mut files, &css);

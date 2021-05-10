@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index af39c4566688786bb0a71dbec44c1a5dd8fdb435..2b7dd3d629dd0d64419ee94337416125ff9bf464 100644
+index f92f91351d68b3dbc581ea86a99fff0a179b2633..c18bc2703bc2f9d0c8c3941a4ffe0092b0f1f0d7 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -149,6 +149,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
@@ -9,8 +9,8 @@ index af39c4566688786bb0a71dbec44c1a5dd8fdb435..2b7dd3d629dd0d64419ee94337416125
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
- // TODO(crbug.com/1149878): After removing
-@@ -378,6 +379,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+ static_assert(base::size(kContentSettingsTypeGroupNames) ==
+@@ -376,6 +377,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

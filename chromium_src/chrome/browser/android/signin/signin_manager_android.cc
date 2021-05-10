@@ -14,10 +14,13 @@ class UnusedClass {
  private:
   void test() {
     Java_SigninManagerImpl_create(nullptr, 0ll, nullptr, nullptr, nullptr);
+    Java_SigninManagerImpl_destroy(nullptr, 0ll);
   }
 };
 }  // namespace
 
 #define Java_SigninManagerImpl_create Java_BraveSigninManager_create
+#define Java_SigninManagerImpl_destroy Java_BraveSigninManager_destroy
 #include "../../../../../../chrome/browser/android/signin/signin_manager_android.cc"  // NOLINT
 #undef Java_SigninManagerImpl_create
+#undef Java_SigninManagerImpl_destroy

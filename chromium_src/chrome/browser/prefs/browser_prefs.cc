@@ -9,9 +9,14 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/tor_utils.h"
+#endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
@@ -64,5 +69,10 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   // Added 11/2020.
   MigrateObsoleteWidevineLocalStatePrefs(local_state);
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  // Added 4/2021.
+  tor::MigrateLastUsedProfileFromLocalStatePrefs(local_state);
 #endif
 }

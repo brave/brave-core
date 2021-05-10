@@ -60,6 +60,20 @@ source_set("tor") {
   ]
 }
 
+source_set("utils") {
+  sources = [
+    "tor_utils.cc",
+    "tor_utils.h",
+  ]
+
+  deps = [
+    ":tor",
+    "//base",
+    "//chrome/common:constants",
+    "//components/prefs",
+  ]
+}
+
 source_set("pref_names") {
   sources = [
     "pref_names.cc",

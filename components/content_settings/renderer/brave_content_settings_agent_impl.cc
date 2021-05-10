@@ -14,7 +14,6 @@
 #include "base/feature_list.h"
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/common/render_messages.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/content/common/frame_messages.h"
@@ -23,6 +22,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
@@ -117,8 +117,9 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
-    const base::string16& details) {
-  Send(new BraveViewHostMsg_JavaScriptBlocked(routing_id(), details));
+    const std::u16string& details) {
+  mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost> remote;
+  GetOrCreateBraveShieldsRemote()->OnJavaScriptBlocked(details);
 }
 
 bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
@@ -232,11 +233,6 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   return allow;
 }
 
-void BraveContentSettingsAgentImpl::DidBlockFingerprinting(
-    const base::string16& details) {
-  Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
-}
-
 bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
@@ -320,6 +316,17 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
                "ContentSettingsAgentImpl::AllowAutoplay says so";
   }
   return allow;
+}
+
+mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>&
+BraveContentSettingsAgentImpl::GetOrCreateBraveShieldsRemote() {
+  if (!brave_shields_remote_) {
+    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
+        &brave_shields_remote_);
+  }
+
+  DCHECK(brave_shields_remote_.is_bound());
+  return brave_shields_remote_;
 }
 
 }  // namespace content_settings

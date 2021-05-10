@@ -1,8 +1,8 @@
 diff --git a/components/crash/core/browser/resources/crashes.js b/components/crash/core/browser/resources/crashes.js
-index 287eed28ae76ef4655441f376937ea395a405c57..d68f3bc8ac25c5a5e39675e9741513fb66bb7b6f 100644
+index 0d21ef1b4fa164495e7bba3f4e6f9aeac2e14253..0ed75777da7ae404c8630ef9a483ea684530a457 100644
 --- a/components/crash/core/browser/resources/crashes.js
 +++ b/components/crash/core/browser/resources/crashes.js
-@@ -91,7 +91,7 @@ function updateCrashList(
+@@ -108,7 +108,7 @@ function updateCrashList({
          crashLink.href = `https://goto.google.com/crash/${crash.id}`;
          crashLink.target = '_blank';
          crashLink.textContent = crash.id;

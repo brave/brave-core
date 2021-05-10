@@ -75,7 +75,7 @@
     int64_t id_ = static_cast<int64_t>(id);
 
     if ([guid length] > 0) {
-      base::string16 guid_string = base::SysNSStringToUTF16(guid);
+      std::u16string guid_string = base::SysNSStringToUTF16(guid);
       DCHECK(base::IsValidGUID(guid_string));
       guid_ = base::GUID::ParseCaseInsensitive(guid_string);
     } else {
@@ -359,7 +359,7 @@
         [[IOSBookmarkNode alloc] initWithNode:node model:model_];
     BookmarkFolder* ios_bookmark_folder = [[BookmarkFolder alloc] initWithNode:ios_bookmark_node
                                                               indentationLevel:depth];
-    
+
     if (included(ios_bookmark_folder)) {
       // Store the folder + its depth
       [result addObject:ios_bookmark_folder];
@@ -628,7 +628,7 @@
   DCHECK(bookmark_model_->loaded());
   bookmarks::QueryFields queryFields;
   queryFields.word_phrase_query.reset(
-      new base::string16(base::SysNSStringToUTF16(query)));
+      new std::u16string(base::SysNSStringToUTF16(query)));
   std::vector<const bookmarks::BookmarkNode*> results;
   GetBookmarksMatchingProperties(bookmark_model_, queryFields, maxCount,
                                  &results);

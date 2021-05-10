@@ -44,8 +44,8 @@ class BraveComponent {
     virtual scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() = 0;
 
     // hacky temporary workaround for g_browser_process
-    virtual const std::string locale() const;
-    virtual PrefService* local_state();
+    virtual const std::string locale() const = 0;
+    virtual PrefService* local_state() = 0;
   };
 
   explicit BraveComponent(Delegate* delegate);

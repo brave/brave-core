@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/json/json_writer.h"
-#include "base/strings/string16.h"
 #include "base/values.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
@@ -35,7 +34,7 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
   ~WebcompatReporterDialogDelegate() override;
 
   ui::ModalType GetDialogModalType() const override;
-  base::string16 GetDialogTitle() const override;
+  std::u16string GetDialogTitle() const override;
   GURL GetDialogContentURL() const override;
   void GetWebUIMessageHandlers(
       std::vector<WebUIMessageHandler*>* handlers) const override;
@@ -63,9 +62,9 @@ ui::ModalType WebcompatReporterDialogDelegate::GetDialogModalType() const {
   return ui::MODAL_TYPE_WINDOW;
 }
 
-base::string16 WebcompatReporterDialogDelegate::GetDialogTitle() const {
+std::u16string WebcompatReporterDialogDelegate::GetDialogTitle() const {
   // Only used on Windows?
-  return base::string16();
+  return std::u16string();
 }
 
 GURL WebcompatReporterDialogDelegate::GetDialogContentURL() const {

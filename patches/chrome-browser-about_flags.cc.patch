@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 1281ce53672f412451440eb29194acd1ed695ed4..0a3d50b6d6618691f6142e58f01bbc99d9df33c8 100644
+index 41b381acc941d469ec329e0d8bef834167b19e23..1acca5535dbea5132a7f1a37c0506d130a1205e9 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -307,14 +307,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
+@@ -309,14 +309,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
  const FeatureEntry::Choice kTraceUploadURL[] = {
      {flags_ui::kGenericExperimentChoiceDisabled, "", ""},
      {flag_descriptions::kTraceUploadUrlChoiceOther, switches::kTraceUploadURL,
@@ -21,7 +21,7 @@ index 1281ce53672f412451440eb29194acd1ed695ed4..0a3d50b6d6618691f6142e58f01bbc99
  
  const FeatureEntry::Choice kPassiveListenersChoices[] = {
      {flags_ui::kGenericExperimentChoiceDefault, "", ""},
-@@ -7285,6 +7285,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7273,6 +7273,7 @@ const FeatureEntry kFeatureEntries[] = {
      // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
      // Histograms" in tools/metrics/histograms/README.md (run the
      // AboutFlagsHistogramTest unit test to verify this process).

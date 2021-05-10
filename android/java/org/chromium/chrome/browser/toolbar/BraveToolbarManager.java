@@ -130,7 +130,7 @@ public class BraveToolbarManager extends ToolbarManager {
             ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             OneshotSupplier<ToolbarIntentMetadata> intentMetadataOneshotSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier, WindowAndroid windowAndroid,
-            Supplier<Boolean> isInOverviewModeSupplier, boolean isCustomTab,
+            Supplier<Boolean> isInOverviewModeSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
             StatusBarColorController statusBarColorController, AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
@@ -143,9 +143,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 layoutStateProviderSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
                 tabModelSelectorSupplier, startSurfaceSupplier, omniboxFocusStateSupplier,
                 intentMetadataOneshotSupplier, promoShownOneshotSupplier, windowAndroid,
-                isInOverviewModeSupplier, isCustomTab, modalDialogManagerSupplier,
-                statusBarColorController, appMenuDelegate, activityLifecycleDispatcher,
-                startSurfaceParentTabSupplier);
+                isInOverviewModeSupplier, modalDialogManagerSupplier, statusBarColorController,
+                appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier);
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mActivity = activity;

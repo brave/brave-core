@@ -18,13 +18,6 @@
 namespace permissions {
 namespace {
 
-const int IDS_PERMISSION_DENY_CHROMIUM_IMPL = IDS_PERMISSION_DENY;
-#undef IDS_PERMISSION_DENY
-#define IDS_PERMISSION_DENY                                  \
-  (ShouldShowLifetimeOptions(permission_prompt_->delegate()) \
-       ? IDS_PERMISSIONS_BUBBLE_DENY_FOREVER                 \
-       : IDS_PERMISSION_DENY_CHROMIUM_IMPL)
-
 void SetLifetimeOptions(const base::android::JavaRef<jobject>& j_delegate) {
   if (!base::FeatureList::IsEnabled(features::kPermissionLifetime)) {
     return;
@@ -39,7 +32,7 @@ void SetLifetimeOptions(const base::android::JavaRef<jobject>& j_delegate) {
 
   std::vector<PermissionLifetimeOption> lifetime_options =
       CreatePermissionLifetimeOptions();
-  std::vector<base::string16> lifetime_labels;
+  std::vector<std::u16string> lifetime_labels;
   for (const auto& lifetime_option : lifetime_options) {
     lifetime_labels.push_back(lifetime_option.label);
   }
@@ -80,13 +73,13 @@ void Java_PermissionDialogController_createDialog_BraveImpl(
 
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT \
   ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL \
+  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
 #define Java_PermissionDialogController_createDialog \
   Java_PermissionDialogController_createDialog_BraveImpl
 
 #include "../../../../../components/permissions/android/permission_dialog_delegate.cc"
 
 #undef Java_PermissionDialogController_createDialog
+#undef BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL
 #undef BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT
-
-#undef IDS_PERMISSION_DENY
-#define IDS_PERMISSION_DENY IDS_PERMISSION_DENY_CHROMIUM_IMPL

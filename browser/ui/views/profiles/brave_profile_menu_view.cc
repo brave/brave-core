@@ -32,11 +32,11 @@ void BraveProfileMenuView::BuildIdentity() {
   // Reset IdentityInfo to get rid of the subtitle string
   // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in").
   SetProfileIdentityInfo(
-      /*profile_name=*/base::string16(),
+      /*profile_name=*/std::u16string(),
       profile_attributes->GetProfileThemeColors().profile_highlight_color,
       /*edit_button=*/base::nullopt,
       ui::ImageModel::FromImage(profile_attributes->GetAvatarIcon()),
-      /*title=*/base::string16());
+      /*title=*/std::u16string());
 }
 
 // We don't want autofill buttons in this menu.

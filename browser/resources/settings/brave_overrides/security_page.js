@@ -13,6 +13,12 @@ RegisterPolymerTemplateModifications({
     } else {
       safeBrowsingReportingToggle.setAttribute('hidden', 'true')
     }
+    const safeBrowsingEnhanced = templateContent.getElementById('safeBrowsingEnhanced')
+    if (!safeBrowsingEnhanced) {
+      console.error('[Brave Settings Overrides] Could not find safeBrowsingEnhanced id on security page.')
+    } else {
+      safeBrowsingEnhanced.setAttribute('hidden', 'true')
+    }
     const passwordsLeakToggle = templateContent.getElementById('passwordsLeakToggle')
     if (!passwordsLeakToggle) {
       console.error('[Brave Settings Overrides] Could not find passwordsLeakToggle id on security page.')

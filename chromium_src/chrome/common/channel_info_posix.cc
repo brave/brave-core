@@ -12,7 +12,7 @@
 
 namespace chrome {
 
-std::string GetChannelName() {
+std::string GetChannelName(WithExtendedStable with_extended_stable) {
   std::string modifier;
   brave::GetChannelImpl(&modifier, nullptr);
   return modifier;
@@ -49,6 +49,11 @@ std::string GetDesktopName(base::Environment* env) {
 
 version_info::Channel GetChannel() {
   return brave::GetChannelImpl(nullptr, nullptr);
+}
+
+bool IsExtendedStableChannel() {
+  // No extended stable channel for Brave.
+  return false;
 }
 
 }  // namespace chrome

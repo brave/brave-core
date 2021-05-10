@@ -13,7 +13,6 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/render_messages.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/content/common/frame_messages.h"
@@ -80,63 +79,22 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
   }
 }
 
-WebContents* GetWebContents(
-    int render_process_id,
-    int render_frame_id,
-    int frame_tree_node_id) {
-  WebContents* web_contents =
-      WebContents::FromFrameTreeNodeId(frame_tree_node_id);
-  if (!web_contents) {
-    RenderFrameHost* rfh =
-        RenderFrameHost::FromID(render_process_id, render_frame_id);
-    if (!rfh) {
-      return nullptr;
-    }
-    web_contents =
-        WebContents::FromRenderFrameHost(rfh);
-  }
-  return web_contents;
-}
-
 }  // namespace
 
 namespace brave_shields {
 
 base::Lock BraveShieldsWebContentsObserver::frame_data_map_lock_;
-std::map<BraveShieldsWebContentsObserver::RenderFrameIdKey, GURL>
-    BraveShieldsWebContentsObserver::frame_key_to_tab_url_;
+
 std::map<int, GURL>
     BraveShieldsWebContentsObserver::frame_tree_node_id_to_tab_url_;
-
-BraveShieldsWebContentsObserver::RenderFrameIdKey::RenderFrameIdKey()
-    : render_process_id(content::ChildProcessHost::kInvalidUniqueID),
-      frame_routing_id(MSG_ROUTING_NONE) {}
-
-BraveShieldsWebContentsObserver::RenderFrameIdKey::RenderFrameIdKey(
-    int render_process_id,
-    int frame_routing_id)
-    : render_process_id(render_process_id),
-      frame_routing_id(frame_routing_id) {}
-
-bool BraveShieldsWebContentsObserver::RenderFrameIdKey::operator<(
-    const RenderFrameIdKey& other) const {
-  return std::tie(render_process_id, frame_routing_id) <
-         std::tie(other.render_process_id, other.frame_routing_id);
-}
-
-bool BraveShieldsWebContentsObserver::RenderFrameIdKey::operator==(
-    const RenderFrameIdKey& other) const {
-  return render_process_id == other.render_process_id &&
-         frame_routing_id == other.frame_routing_id;
-}
 
 BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
 }
 
 BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
     WebContents* web_contents)
-    : WebContentsObserver(web_contents) {
-}
+    : WebContentsObserver(web_contents),
+      brave_shields_receivers_(web_contents, this) {}
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(
     RenderFrameHost* rfh) {
@@ -150,8 +108,6 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(
     UpdateContentSettingsToRendererFrames(web_contents);
 
     base::AutoLock lock(frame_data_map_lock_);
-    const RenderFrameIdKey key(rfh->GetProcess()->GetID(), rfh->GetRoutingID());
-    frame_key_to_tab_url_[key] = web_contents->GetURL();
     frame_tree_node_id_to_tab_url_[rfh->GetFrameTreeNodeId()] =
         web_contents->GetURL();
   }
@@ -160,8 +116,6 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(
 void BraveShieldsWebContentsObserver::RenderFrameDeleted(
     RenderFrameHost* rfh) {
   base::AutoLock lock(frame_data_map_lock_);
-  const RenderFrameIdKey key(rfh->GetProcess()->GetID(), rfh->GetRoutingID());
-  frame_key_to_tab_url_.erase(key);
   frame_tree_node_id_to_tab_url_.erase(rfh->GetFrameTreeNodeId());
 }
 
@@ -181,30 +135,20 @@ void BraveShieldsWebContentsObserver::DidFinishNavigation(
   if (!web_contents() || !main_frame) {
     return;
   }
-  int process_id = main_frame->GetProcess()->GetID();
-  int routing_id = main_frame->GetRoutingID();
   int tree_node_id = main_frame->GetFrameTreeNodeId();
 
   base::AutoLock lock(frame_data_map_lock_);
-  frame_key_to_tab_url_[{process_id, routing_id}] = web_contents()->GetURL();
   frame_tree_node_id_to_tab_url_[tree_node_id] = web_contents()->GetURL();
 }
 
 // static
 GURL BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-    int render_process_id, int render_frame_id, int render_frame_tree_node_id) {
+    int render_frame_tree_node_id) {
   base::AutoLock lock(frame_data_map_lock_);
-  if (-1 != render_process_id && -1 != render_frame_id) {
-    auto iter = frame_key_to_tab_url_.find({render_process_id,
-                                            render_frame_id});
-    if (iter != frame_key_to_tab_url_.end()) {
-      return iter->second;
-    }
-  }
   if (-1 != render_frame_tree_node_id) {
-    auto iter2 = frame_tree_node_id_to_tab_url_.find(render_frame_tree_node_id);
-    if (iter2 != frame_tree_node_id_to_tab_url_.end()) {
-      return iter2->second;
+    auto iter = frame_tree_node_id_to_tab_url_.find(render_frame_tree_node_id);
+    if (iter != frame_tree_node_id_to_tab_url_.end()) {
+      return iter->second;
     }
   }
   return GURL();
@@ -224,13 +168,11 @@ void BraveShieldsWebContentsObserver::AddBlockedSubresource(
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     std::string block_type,
     std::string subresource,
-    int render_process_id,
-    int render_frame_id,
     int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  WebContents* web_contents = GetWebContents(render_process_id,
-    render_frame_id, frame_tree_node_id);
+  WebContents* web_contents =
+      WebContents::FromFrameTreeNodeId(frame_tree_node_id);
   DispatchBlockedEventForWebContents(block_type, subresource, web_contents);
 
   if (web_contents) {
@@ -289,42 +231,15 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
 }
 #endif
 
-bool BraveShieldsWebContentsObserver::OnMessageReceived(
-    const IPC::Message& message, RenderFrameHost* render_frame_host) {
-  bool handled = true;
-  IPC_BEGIN_MESSAGE_MAP_WITH_PARAM(BraveShieldsWebContentsObserver,
-        message, render_frame_host)
-    IPC_MESSAGE_HANDLER(BraveViewHostMsg_JavaScriptBlocked,
-        OnJavaScriptBlockedWithDetail)
-    IPC_MESSAGE_HANDLER(BraveViewHostMsg_FingerprintingBlocked,
-        OnFingerprintingBlockedWithDetail)
-    IPC_MESSAGE_UNHANDLED(handled = false)
-  IPC_END_MESSAGE_MAP()
-  return handled;
-}
-
-void BraveShieldsWebContentsObserver::OnJavaScriptBlockedWithDetail(
-    RenderFrameHost* render_frame_host,
-    const base::string16& details) {
-  WebContents* web_contents =
-      WebContents::FromRenderFrameHost(render_frame_host);
-  if (!web_contents) {
+void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
+    const std::u16string& details) {
+  WebContents* web_contents = WebContents::FromRenderFrameHost(
+      brave_shields_receivers_.GetCurrentTargetFrame());
+  if (!web_contents)
     return;
-  }
+
   DispatchBlockedEventForWebContents(brave_shields::kJavaScript,
-      base::UTF16ToUTF8(details), web_contents);
-}
-
-void BraveShieldsWebContentsObserver::OnFingerprintingBlockedWithDetail(
-    RenderFrameHost* render_frame_host,
-    const base::string16& details) {
-  WebContents* web_contents =
-      WebContents::FromRenderFrameHost(render_frame_host);
-  if (!web_contents) {
-    return;
-  }
-  DispatchBlockedEventForWebContents(brave_shields::kFingerprintingV2,
-      base::UTF16ToUTF8(details), web_contents);
+                                     base::UTF16ToUTF8(details), web_contents);
 }
 
 // static

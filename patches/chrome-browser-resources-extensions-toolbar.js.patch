@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/toolbar.js b/chrome/browser/resources/extensions/toolbar.js
-index 25a38b7082bb22450aff1560843ef8c67e9bd405..00647f14600d61b39f4f329b865cb80d2568648d 100644
+index e94afd0280a7fe1fc33e36109a707d2791ebfa58..c56ef089788e2ad05df46a72182220bb05b284e8 100644
 --- a/chrome/browser/resources/extensions/toolbar.js
 +++ b/chrome/browser/resources/extensions/toolbar.js
 @@ -4,7 +4,7 @@

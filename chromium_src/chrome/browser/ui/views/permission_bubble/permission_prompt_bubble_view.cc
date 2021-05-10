@@ -124,7 +124,7 @@ class PermissionLifetimeCombobox : public views::Combobox,
   // ui::ComboboxModel:
   int GetItemCount() const override { return lifetime_options_.size(); }
 
-  base::string16 GetItemAt(int index) const override {
+  std::u16string GetItemAt(int index) const override {
     return lifetime_options_[index].label;
   }
 
@@ -177,11 +177,11 @@ void AddFootnoteViewIfNeeded(
     return;
   }
 
-  std::vector<base::string16> replacements{
+  std::vector<std::u16string> replacements{
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_SITE_PERMISSION_LINK),
       l10n_util::GetStringUTF16(IDS_LEARN_MORE)};
   std::vector<size_t> offsets;
-  base::string16 footnote_text = base::ReplaceStringPlaceholders(
+  std::u16string footnote_text = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT),
       replacements, &offsets);
 
@@ -220,13 +220,5 @@ void AddFootnoteViewIfNeeded(
   AddPermissionLifetimeComboboxIfNeeded(this, delegate_);                 \
   AddFootnoteViewIfNeeded(this, browser_);
 
-static const int IDS_PERMISSION_DENY_CHROMIUM_IMPL = IDS_PERMISSION_DENY;
-#undef IDS_PERMISSION_DENY
-#define IDS_PERMISSION_DENY                                                   \
-  (ShouldShowLifetimeOptions(delegate_) ? IDS_PERMISSIONS_BUBBLE_DENY_FOREVER \
-                                        : IDS_PERMISSION_DENY_CHROMIUM_IMPL)
-
 #include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
-#undef IDS_PERMISSION_DENY
-#define IDS_PERMISSION_DENY IDS_PERMISSION_DENY_CHROMIUM_IMPL
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW

@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.test.filters.SmallTest;
 import android.view.View;
@@ -42,6 +43,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
@@ -78,6 +80,8 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings"));
         Assert.assertTrue(classExists("org/chromium/base/CommandLineInitUtil"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/appmenu/AppMenu"));
         Assert.assertTrue(classExists(
@@ -214,6 +218,9 @@ public class BytecodeTest {
                         "getModel", false, null));
         Assert.assertTrue(methodExists("org/chromium/components/permissions/PermissionDialogModel",
                 "getModel", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+                "createAdapterIfNecessary", false, null));
     }
 
     @Test
@@ -235,12 +242,13 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
-                OneshotSupplier.class, ObservableSupplier.class, ModalDialogManager.class,
+                OneshotSupplier.class, ObservableSupplier.class, SnackbarManager.class,
                 WebFeedBridge.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
-                "org/chromium/chrome/browser/tabmodel/BraveTabCreator", ChromeActivity.class,
+                "org/chromium/chrome/browser/tabmodel/BraveTabCreator", Activity.class,
                 WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
-                ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class));
+                ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class,
+                ObservableSupplier.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
                 BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
@@ -251,8 +259,8 @@ public class BytecodeTest {
                 ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
                 OneshotSupplier.class, boolean.class, ObservableSupplier.class,
                 OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, WindowAndroid.class, Supplier.class, boolean.class,
-                Supplier.class, StatusBarColorController.class, AppMenuDelegate.class,
+                OneshotSupplier.class, WindowAndroid.class, Supplier.class, Supplier.class,
+                StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -264,7 +272,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
-                ObservableSupplier.class, ModalDialogManager.class, WebFeedBridge.class));
+                ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
@@ -399,6 +407,9 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
                 "mToolbarView"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+                "mSearchEngineAdapter"));
     }
 
     @Test
