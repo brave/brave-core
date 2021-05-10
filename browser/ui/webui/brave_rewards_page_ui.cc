@@ -492,14 +492,11 @@ void RewardsDOMHandler::Init() {
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
 }
 
-void RewardsDOMHandler::IsInitialized(
-    const base::ListValue* args) {
+void RewardsDOMHandler::IsInitialized(const base::ListValue* args) {
   AllowJavascript();
 
   if (rewards_service_ && rewards_service_->IsInitialized()) {
-    CallJavascriptFunction(
-        "brave_rewards.initialized",
-        base::Value(0));
+    CallJavascriptFunction("brave_rewards.initialized", base::Value(0));
   }
 }
 
@@ -521,7 +518,7 @@ void RewardsDOMHandler::OnJavascriptDisallowed() {
   if (ads_service_) {
     ads_service_->RemoveObserver(this);
   }
-  
+
   weak_factory_.InvalidateWeakPtrs();
 }
 
@@ -551,8 +548,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
     data.SetDouble("autoContributeChoice", parameters->auto_contribute_choice);
     data.SetList("autoContributeChoices", std::move(choices));
   }
-  CallJavascriptFunction(
-        "brave_rewards.rewardsParameters", data);
+  CallJavascriptFunction("brave_rewards.rewardsParameters", data);
 }
 
 void RewardsDOMHandler::OnRewardsInitialized(
@@ -560,9 +556,7 @@ void RewardsDOMHandler::OnRewardsInitialized(
   if (!IsJavascriptAllowed())
     return;
 
-  CallJavascriptFunction(
-      "brave_rewards.initialized",
-      base::Value(0));
+  CallJavascriptFunction("brave_rewards.initialized", base::Value(0));
 }
 
 void RewardsDOMHandler::GetAutoContributeProperties(
@@ -589,9 +583,7 @@ void RewardsDOMHandler::OnGetAutoContributeProperties(
       properties->contribution_non_verified);
   values.SetBoolean("contributionVideos", properties->contribution_videos);
 
-  CallJavascriptFunction(
-    "brave_rewards.autoContributeProperties",
-    values);
+  CallJavascriptFunction("brave_rewards.autoContributeProperties", values);
 }
 
 void RewardsDOMHandler::OnFetchPromotions(
@@ -643,9 +635,7 @@ void RewardsDOMHandler::OnClaimPromotion(
   response.SetString("captchaId", captcha_id);
   response.SetString("hint", hint);
 
-  CallJavascriptFunction(
-      "brave_rewards.claimPromotion",
-      response);
+  CallJavascriptFunction("brave_rewards.claimPromotion", response);
 }
 
 void RewardsDOMHandler::ClaimPromotion(const base::ListValue* args) {
@@ -675,9 +665,7 @@ void RewardsDOMHandler::AttestPromotion(const base::ListValue *args) {
   if (!rewards_service_) {
     base::DictionaryValue finish;
     finish.SetInteger("status", 1);
-    CallJavascriptFunction(
-      "brave_rewards.promotionFinish",
-      finish);
+    CallJavascriptFunction("brave_rewards.promotionFinish", finish);
   }
 
   const std::string promotion_id = args->GetList()[0].GetString();
@@ -712,9 +700,7 @@ void RewardsDOMHandler::OnAttestPromotion(
   finish.SetInteger("result", static_cast<int>(result));
   finish.SetKey("promotion", std::move(promotion_dict));
 
-  CallJavascriptFunction(
-      "brave_rewards.promotionFinish",
-      finish);
+  CallJavascriptFunction("brave_rewards.promotionFinish", finish);
 }
 
 void RewardsDOMHandler::OnPromotionFinished(
@@ -746,16 +732,14 @@ void RewardsDOMHandler::OnRecoverWallet(
     return;
   }
 
-  CallJavascriptFunction(
-        "brave_rewards.recoverWalletData",
-        base::Value(static_cast<int>(result)));
+  CallJavascriptFunction("brave_rewards.recoverWalletData",
+                         base::Value(static_cast<int>(result)));
 }
 
 void RewardsDOMHandler::OnGetReconcileStamp(uint64_t reconcile_stamp) {
   if (IsJavascriptAllowed()) {
     std::string stamp = std::to_string(reconcile_stamp);
-    CallJavascriptFunction("brave_rewards.reconcileStamp",
-        base::Value(stamp));
+    CallJavascriptFunction("brave_rewards.reconcileStamp", base::Value(stamp));
   }
 }
 
@@ -816,9 +800,9 @@ void RewardsDOMHandler::OnNotificationDeleted(
     const brave_rewards::RewardsNotificationService::RewardsNotification&
         notification) {
 #if defined(OS_ANDROID)
-  if (notification.type_ ==
-      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
-      && IsJavascriptAllowed()) {
+  if (notification.type_ == brave_rewards::RewardsNotificationService::
+                                REWARDS_NOTIFICATION_GRANT &&
+      IsJavascriptAllowed()) {
     base::DictionaryValue finish;
     finish.SetInteger("status", false);
     finish.SetInteger("expiryTime", 0);
@@ -934,9 +918,7 @@ void RewardsDOMHandler::OnPublisherList(ledger::type::PublisherInfoList list) {
     publishers->Append(std::move(publisher));
   }
 
-  CallJavascriptFunction(
-      "brave_rewards.contributeList",
-      *publishers);
+  CallJavascriptFunction("brave_rewards.contributeList", *publishers);
 }
 
 void RewardsDOMHandler::OnExcludedSiteList(
@@ -957,15 +939,13 @@ void RewardsDOMHandler::OnExcludedSiteList(
     publishers->Append(std::move(publisher));
   }
 
-  CallJavascriptFunction(
-      "brave_rewards.excludedList",
-      *publishers);
+  CallJavascriptFunction("brave_rewards.excludedList", *publishers);
 }
 
 void RewardsDOMHandler::OnGetContributionAmount(double amount) {
   if (IsJavascriptAllowed()) {
     CallJavascriptFunction("brave_rewards.contributionAmount",
-        base::Value(amount));
+                           base::Value(amount));
   }
 }
 
@@ -992,9 +972,7 @@ void RewardsDOMHandler::OnReconcileComplete(
   complete.SetKey("result", base::Value(static_cast<int>(result)));
   complete.SetKey("type", base::Value(static_cast<int>(type)));
 
-  CallJavascriptFunction(
-      "brave_rewards.reconcileComplete",
-      complete);
+  CallJavascriptFunction("brave_rewards.reconcileComplete", complete);
 }
 
 void RewardsDOMHandler::RemoveRecurringTip(const base::ListValue *args) {
@@ -1036,8 +1014,7 @@ void RewardsDOMHandler::OnGetRecurringTips(
     publishers->Append(std::move(publisher));
   }
 
-  CallJavascriptFunction("brave_rewards.recurringTips",
-                                         *publishers);
+  CallJavascriptFunction("brave_rewards.recurringTips", *publishers);
 }
 
 void RewardsDOMHandler::OnGetOneTimeTips(ledger::type::PublisherInfoList list) {
@@ -1061,9 +1038,7 @@ void RewardsDOMHandler::OnGetOneTimeTips(ledger::type::PublisherInfoList list) {
     publishers->Append(std::move(publisher));
   }
 
-  CallJavascriptFunction(
-      "brave_rewards.currentTips",
-      *publishers);
+  CallJavascriptFunction("brave_rewards.currentTips", *publishers);
 }
 
 void RewardsDOMHandler::GetOneTimeTips(const base::ListValue *args) {
@@ -1147,8 +1122,7 @@ void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.adsHistory",
-                                         ads_history);
+  CallJavascriptFunction("brave_rewards.adsHistory", ads_history);
 }
 
 void RewardsDOMHandler::ToggleAdThumbUp(const base::ListValue* args) {
@@ -1176,8 +1150,7 @@ void RewardsDOMHandler::OnToggleAdThumbUp(
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp",
-                                         result);
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp", result);
 }
 
 void RewardsDOMHandler::ToggleAdThumbDown(const base::ListValue* args) {
@@ -1205,8 +1178,7 @@ void RewardsDOMHandler::OnToggleAdThumbDown(
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown",
-                                         result);
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown", result);
 }
 
 void RewardsDOMHandler::ToggleAdOptInAction(const base::ListValue* args) {
@@ -1232,8 +1204,7 @@ void RewardsDOMHandler::OnToggleAdOptInAction(const std::string& category,
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("category", base::Value(category));
   result.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdOptInAction",
-                                         result);
+  CallJavascriptFunction("brave_rewards.onToggleAdOptInAction", result);
 }
 
 void RewardsDOMHandler::ToggleAdOptOutAction(const base::ListValue* args) {
@@ -1259,8 +1230,7 @@ void RewardsDOMHandler::OnToggleAdOptOutAction(const std::string& category,
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("category", base::Value(category));
   result.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdOptOutAction",
-                                         result);
+  CallJavascriptFunction("brave_rewards.onToggleAdOptOutAction", result);
 }
 
 void RewardsDOMHandler::ToggleSaveAd(const base::ListValue* args) {
@@ -1287,8 +1257,7 @@ void RewardsDOMHandler::OnToggleSaveAd(
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("saved", base::Value(saved));
-  CallJavascriptFunction("brave_rewards.onToggleSaveAd",
-                                         result);
+  CallJavascriptFunction("brave_rewards.onToggleSaveAd", result);
 }
 
 void RewardsDOMHandler::ToggleFlagAd(const base::ListValue* args) {
@@ -1314,8 +1283,7 @@ void RewardsDOMHandler::OnToggleFlagAd(
   base::Value result(base::Value::Type::DICTIONARY);
   result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("flagged", base::Value(flagged));
-  CallJavascriptFunction("brave_rewards.onToggleFlagAd",
-                                         result);
+  CallJavascriptFunction("brave_rewards.onToggleFlagAd", result);
 }
 
 void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
@@ -1360,8 +1328,8 @@ void RewardsDOMHandler::GetPendingContributionsTotal(
 
 void RewardsDOMHandler::OnGetPendingContributionsTotal(double amount) {
   if (IsJavascriptAllowed()) {
-    CallJavascriptFunction(
-        "brave_rewards.pendingContributionTotal", base::Value(amount));
+    CallJavascriptFunction("brave_rewards.pendingContributionTotal",
+                           base::Value(amount));
   }
 }
 
@@ -1371,9 +1339,8 @@ void RewardsDOMHandler::OnPendingContributionSaved(
   if (!IsJavascriptAllowed()) {
     return;
   }
-  CallJavascriptFunction(
-      "brave_rewards.onPendingContributionSaved",
-      base::Value(static_cast<int>(result)));
+  CallJavascriptFunction("brave_rewards.onPendingContributionSaved",
+                         base::Value(static_cast<int>(result)));
 }
 
 void RewardsDOMHandler::OnPublisherListNormalized(
@@ -1417,15 +1384,13 @@ void RewardsDOMHandler::OnGetStatement(const bool success,
 
   history.SetInteger("adsReceivedThisMonth", ads_received_this_month);
 
-  CallJavascriptFunction(
-      "brave_rewards.statement", history);
+  CallJavascriptFunction("brave_rewards.statement", history);
 }
 
 void RewardsDOMHandler::OnStatementChanged(
     brave_rewards::RewardsService* rewards_service) {
   if (IsJavascriptAllowed()) {
-    CallJavascriptFunction(
-        "brave_rewards.statementChanged");
+    CallJavascriptFunction("brave_rewards.statementChanged");
   }
 }
 
@@ -1438,8 +1403,8 @@ void RewardsDOMHandler::OnRecurringTipSaved(
     brave_rewards::RewardsService* rewards_service,
     bool success) {
   if (IsJavascriptAllowed()) {
-    CallJavascriptFunction(
-        "brave_rewards.recurringTipSaved", base::Value(success));
+    CallJavascriptFunction("brave_rewards.recurringTipSaved",
+                           base::Value(success));
   }
 }
 
@@ -1447,11 +1412,11 @@ void RewardsDOMHandler::OnRecurringTipRemoved(
     brave_rewards::RewardsService* rewards_service,
     bool success) {
   if (!IsJavascriptAllowed()) {
-     return;
+    return;
   }
 
-  CallJavascriptFunction(
-      "brave_rewards.recurringTipRemoved", base::Value(success));
+  CallJavascriptFunction("brave_rewards.recurringTipRemoved",
+                         base::Value(success));
 }
 
 void RewardsDOMHandler::SetInlineTippingPlatformEnabled(
@@ -1504,9 +1469,7 @@ void RewardsDOMHandler::OnGetPendingContributions(
     contributions->Append(std::move(contribution));
   }
 
-  CallJavascriptFunction(
-      "brave_rewards.pendingContributions",
-      *contributions);
+  CallJavascriptFunction("brave_rewards.pendingContributions", *contributions);
 }
 
 void RewardsDOMHandler::RemovePendingContribution(
@@ -1531,9 +1494,8 @@ void RewardsDOMHandler::OnPendingContributionRemoved(
     brave_rewards::RewardsService* rewards_service,
     const ledger::type::Result result) {
   if (IsJavascriptAllowed()) {
-    CallJavascriptFunction(
-        "brave_rewards.onRemovePendingContribution",
-        base::Value(static_cast<int>(result)));
+    CallJavascriptFunction("brave_rewards.onRemovePendingContribution",
+                           base::Value(static_cast<int>(result)));
   }
 }
 
@@ -1606,8 +1568,7 @@ void RewardsDOMHandler::OnGetExternalWallet(
 
     data.SetKey("wallet", std::move(wallet_dict));
 
-    CallJavascriptFunction("brave_rewards.externalWallet",
-                                           data);
+    CallJavascriptFunction("brave_rewards.externalWallet", data);
   }
 }
 
@@ -1631,8 +1592,7 @@ void RewardsDOMHandler::OnProcessRewardsPageUrl(
   }
   data.SetKey("args", std::move(new_args));
 
-  CallJavascriptFunction("brave_rewards.processRewardsPageUrl",
-                                         data);
+  CallJavascriptFunction("brave_rewards.processRewardsPageUrl", data);
 }
 
 void RewardsDOMHandler::ProcessRewardsPageUrl(const base::ListValue* args) {
@@ -1665,9 +1625,7 @@ void RewardsDOMHandler::OnDisconnectWallet(
   data.SetIntKey("result", static_cast<int>(result));
   data.SetStringKey("walletType", wallet_type);
 
-  CallJavascriptFunction(
-      "brave_rewards.disconnectWallet",
-      data);
+  CallJavascriptFunction("brave_rewards.disconnectWallet", data);
 }
 
 void RewardsDOMHandler::OnAdsEnabled(
@@ -1690,9 +1648,7 @@ void RewardsDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
 
   const bool allow = rewards_service_->OnlyAnonWallet();
 
-  CallJavascriptFunction(
-      "brave_rewards.onlyAnonWallet",
-      base::Value(allow));
+  CallJavascriptFunction("brave_rewards.onlyAnonWallet", base::Value(allow));
 }
 
 void RewardsDOMHandler::OnUnblindedTokensReady(
@@ -1733,9 +1689,7 @@ void RewardsDOMHandler::OnGetBalanceReport(
   data.SetIntKey("year", year);
   data.SetKey("report", std::move(report_base));
 
-  CallJavascriptFunction(
-      "brave_rewards.balanceReport",
-      data);
+  CallJavascriptFunction("brave_rewards.balanceReport", data);
 }
 
 void RewardsDOMHandler::GetBalanceReport(const base::ListValue* args) {
@@ -1822,9 +1776,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
 
   data.SetKey("report", std::move(report_base));
 
-  CallJavascriptFunction(
-    "brave_rewards.monthlyReport",
-    data);
+  CallJavascriptFunction("brave_rewards.monthlyReport", data);
 }
 
 void RewardsDOMHandler::GetMonthlyReport(const base::ListValue* args) {
@@ -1852,9 +1804,7 @@ void RewardsDOMHandler::OnGetAllMonthlyReportIds(
     list.Append(base::Value(item));
   }
 
-  CallJavascriptFunction(
-      "brave_rewards.monthlyReportIds",
-      list);
+  CallJavascriptFunction("brave_rewards.monthlyReportIds", list);
 }
 
 void RewardsDOMHandler::GetAllMonthlyReportIds(const base::ListValue* args) {
@@ -1876,8 +1826,8 @@ void RewardsDOMHandler::GetCountryCode(const base::ListValue* args) {
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
-  CallJavascriptFunction(
-      "brave_rewards.countryCode", base::Value(country_code));
+  CallJavascriptFunction("brave_rewards.countryCode",
+                         base::Value(country_code));
 }
 
 void RewardsDOMHandler::CompleteReset(const base::ListValue* args) {
@@ -1893,8 +1843,7 @@ void RewardsDOMHandler::OnCompleteReset(const bool success) {
     return;
   }
 
-  CallJavascriptFunction(
-      "brave_rewards.completeReset", base::Value(success));
+  CallJavascriptFunction("brave_rewards.completeReset", base::Value(success));
 }
 
 void RewardsDOMHandler::GetPaymentId(const base::ListValue* args) {
@@ -1926,9 +1875,7 @@ void RewardsDOMHandler::OnGetPaymentId(ledger::type::BraveWalletPtr wallet) {
     payment_id = wallet->payment_id;
   }
 
-  CallJavascriptFunction(
-      "brave_rewards.paymentId",
-      base::Value(payment_id));
+  CallJavascriptFunction("brave_rewards.paymentId", base::Value(payment_id));
 }
 
 void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
@@ -1946,9 +1893,8 @@ void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& passphrase) {
     return;
   }
 
-  CallJavascriptFunction(
-      "brave_rewards.walletPassphrase",
-      base::Value(passphrase));
+  CallJavascriptFunction("brave_rewards.walletPassphrase",
+                         base::Value(passphrase));
 }
 
 void RewardsDOMHandler::GetOnboardingStatus(const base::ListValue* args) {
@@ -1957,9 +1903,7 @@ void RewardsDOMHandler::GetOnboardingStatus(const base::ListValue* args) {
   }
   base::Value data(base::Value::Type::DICTIONARY);
   data.SetBoolKey("showOnboarding", rewards_service_->ShouldShowOnboarding());
-  CallJavascriptFunction(
-      "brave_rewards.onboardingStatus",
-      data);
+  CallJavascriptFunction("brave_rewards.onboardingStatus", data);
 }
 
 void RewardsDOMHandler::SaveOnboardingResult(const base::ListValue* args) {
