@@ -42,7 +42,15 @@ using PermissionDecidedCallback =
 constexpr base::StringPiece kOneTypeOneExpirationPrefValue = R"({
   "$1": {
     "$2": [
-      {"ro": "$3"}
+      {"ro": "$3", "cs": 1}
+    ]
+  }
+})";
+
+constexpr base::StringPiece kOneTypeOneExpirationWithCsPrefValue = R"({
+  "$1": {
+    "$2": [
+      {"ro": "$3", "cs": $4}
     ]
   }
 })";
@@ -50,8 +58,8 @@ constexpr base::StringPiece kOneTypeOneExpirationPrefValue = R"({
 constexpr base::StringPiece kOneTypeSameTimeExpirationsPrefValue = R"({
   "$1": {
     "$2": [
-      {"ro": "$3"},
-      {"ro": "$4"}
+      {"ro": "$3", "cs": 1},
+      {"ro": "$4", "cs": 1}
     ],
   }
 })";
@@ -59,10 +67,10 @@ constexpr base::StringPiece kOneTypeSameTimeExpirationsPrefValue = R"({
 constexpr base::StringPiece kOneTypeTwoExpirationsPrefValue = R"({
   "$1": {
     "$2": [
-      {"ro": "$3"}
+      {"ro": "$3", "cs": 1}
     ],
     "$4": [
-      {"ro": "$5"}
+      {"ro": "$5", "cs": 1}
     ]
   }
 })";
@@ -70,12 +78,12 @@ constexpr base::StringPiece kOneTypeTwoExpirationsPrefValue = R"({
 constexpr base::StringPiece kTwoTypesOneExpirationPrefValue = R"({
   "$1": {
     "$2": [
-      {"ro": "$3"}
+      {"ro": "$3", "cs": 1}
     ]
   },
   "$4": {
     "$5": [
-      {"ro": "$6"}
+      {"ro": "$6", "cs": 1}
     ]
   }
 })";
@@ -153,12 +161,11 @@ class PermissionLifetimeManagerTest : public testing::Test {
 
   const util::WallClockTimer& timer() { return *manager()->expiration_timer_; }
 
-  std::unique_ptr<PermissionRequestImpl> CreateRequestAndAllowContentSetting(
+  std::unique_ptr<PermissionRequestImpl> CreateRequestAndChooseContentSetting(
       const GURL& origin,
       ContentSettingsType content_type,
-      base::TimeDelta lifetime) {
-    const ContentSetting content_setting =
-        ContentSetting::CONTENT_SETTING_ALLOW;
+      base::TimeDelta lifetime,
+      ContentSetting content_setting) {
     EXPECT_EQ(host_content_settings_map_->GetContentSetting(origin, origin,
                                                             content_type),
               GetDefaultContentSetting(content_type));
@@ -174,6 +181,14 @@ class PermissionLifetimeManagerTest : public testing::Test {
         base::OnceClosure());
     request->SetLifetime(lifetime);
     return request;
+  }
+
+  std::unique_ptr<PermissionRequestImpl> CreateRequestAndAllowContentSetting(
+      const GURL& origin,
+      ContentSettingsType content_type,
+      base::TimeDelta lifetime) {
+    return CreateRequestAndChooseContentSetting(
+        origin, content_type, lifetime, ContentSetting::CONTENT_SETTING_ALLOW);
   }
 
   ContentSetting GetDefaultContentSetting(
@@ -224,39 +239,44 @@ class PermissionLifetimeManagerTest : public testing::Test {
 };
 
 TEST_F(PermissionLifetimeManagerTest, SetAndResetAfterExpiration) {
-  auto request(CreateRequestAndAllowContentSetting(
-      kOrigin, ContentSettingsType::NOTIFICATIONS, kLifetime));
-  const base::Time expected_expiration_time =
-      base::Time::Now() + *request->GetLifetime();
-  manager()->PermissionDecided(*request, kOrigin, kOrigin,
-                               ContentSetting::CONTENT_SETTING_ALLOW, false);
-  EXPECT_TRUE(timer().IsRunning());
+  for (ContentSetting content_setting :
+       {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK}) {
+    auto request(CreateRequestAndChooseContentSetting(
+        kOrigin, ContentSettingsType::NOTIFICATIONS, kLifetime,
+        content_setting));
+    const base::Time expected_expiration_time =
+        base::Time::Now() + *request->GetLifetime();
+    manager()->PermissionDecided(*request, kOrigin, kOrigin, content_setting,
+                                 false);
+    EXPECT_TRUE(timer().IsRunning());
 
-  browser_task_environment_.RunUntilIdle();
-  // Setting should be intact.
-  ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
-                       ContentSetting::CONTENT_SETTING_ALLOW);
-  // Forward time a little, setting still should be intact.
-  browser_task_environment_.FastForwardBy(kOneSecond);
-  ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
-                       ContentSetting::CONTENT_SETTING_ALLOW);
+    browser_task_environment_.RunUntilIdle();
+    // Setting should be intact.
+    ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
+                         content_setting);
+    // Forward time a little, setting still should be intact.
+    browser_task_environment_.FastForwardBy(kOneSecond);
+    ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
+                         content_setting);
 
-  // Check data stored in prefs.
-  CheckExpirationsPref(
-      FROM_HERE, kOneTypeOneExpirationPrefValue,
-      {"notifications",
-       std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
-                          .InMicroseconds()),
-       kOrigin.spec()});
+    // Check data stored in prefs.
+    CheckExpirationsPref(
+        FROM_HERE, kOneTypeOneExpirationWithCsPrefValue,
+        {"notifications",
+         std::to_string(expected_expiration_time.ToDeltaSinceWindowsEpoch()
+                            .InMicroseconds()),
+         kOrigin.spec(), std::to_string(content_setting)});
 
-  // Forward time, this should trigger a setting reset to default state.
-  browser_task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
-  ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
-                       ContentSetting::CONTENT_SETTING_DEFAULT);
+    // Forward time, this should trigger a setting reset to default state.
+    browser_task_environment_.FastForwardBy(*request->GetLifetime() -
+                                            kOneSecond);
+    ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
+                         ContentSetting::CONTENT_SETTING_DEFAULT);
 
-  // Prefs data should be empty.
-  CheckExpirationsPref(FROM_HERE, "{}");
-  EXPECT_FALSE(timer().IsRunning());
+    // Prefs data should be empty.
+    CheckExpirationsPref(FROM_HERE, "{}");
+    EXPECT_FALSE(timer().IsRunning());
+  }
 }
 
 TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {

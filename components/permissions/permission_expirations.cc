@@ -33,6 +33,7 @@ namespace {
 // Pref data keys.
 constexpr base::StringPiece kRequestingOriginKey = "ro";
 constexpr base::StringPiece kEmbeddingOriginKey = "eo";
+constexpr base::StringPiece kContentSettingKey = "cs";
 
 }  // namespace
 
@@ -311,8 +312,10 @@ PermissionExpirations::ParseExpiringPermissions(
     if (!requesting_origin) {
       continue;
     }
-    expiring_permissions.push_back(
-        PermissionOrigins(requesting_origin, embedding_origin));
+    base::Optional<int> content_setting = item.FindIntKey(kContentSettingKey);
+    expiring_permissions.push_back(PermissionOrigins(
+        requesting_origin, embedding_origin,
+        content_setting.value_or(ContentSetting::CONTENT_SETTING_ALLOW)));
   }
 
   return expiring_permissions;
@@ -332,6 +335,7 @@ base::Value PermissionExpirations::ExpiringPermissionsToValue(
       value.SetStringKey(kEmbeddingOriginKey,
                          expiring_permission.embedding_origin().spec());
     }
+    value.SetIntKey(kContentSettingKey, expiring_permission.content_setting());
     items.push_back(std::move(value));
   }
 

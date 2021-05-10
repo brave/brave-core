@@ -76,9 +76,11 @@ void PermissionLifetimeManager::PermissionDecided(
     ContentSetting content_setting,
     bool is_one_time) {
   if (!permission_request.SupportsLifetime() ||
-      content_setting != ContentSetting::CONTENT_SETTING_ALLOW || is_one_time) {
-    // Only interested in ALLOW and non one-time (Chromium geolocation-specific)
-    // decisions.
+      (content_setting != ContentSetting::CONTENT_SETTING_ALLOW &&
+       content_setting != ContentSetting::CONTENT_SETTING_BLOCK) ||
+      is_one_time) {
+    // Only interested in ALLOW/BLOCK and non one-time (Chromium
+    // geolocation-specific) decisions.
     return;
   }
 
@@ -119,12 +121,14 @@ void PermissionLifetimeManager::PermissionDecided(
     }
     permission_expirations_.AddExpiringPermission(
         content_type, PermissionExpirationKey(std::move(key)),
-        PermissionOrigins(requesting_origin, embedding_origin));
+        PermissionOrigins(requesting_origin, embedding_origin,
+                          content_setting));
   } else {
     const base::Time expiration_time = base::Time::Now() + *lifetime;
     permission_expirations_.AddExpiringPermission(
         content_type, PermissionExpirationKey(expiration_time),
-        PermissionOrigins(requesting_origin, embedding_origin));
+        PermissionOrigins(requesting_origin, embedding_origin,
+                          content_setting));
     UpdateExpirationTimer();
   }
 }
@@ -165,7 +169,7 @@ void PermissionLifetimeManager::OnContentSettingChanged(
         }
         return host_content_settings_map->GetContentSetting(
                    origins.requesting_origin(), origins.embedding_origin(),
-                   content_type) != CONTENT_SETTING_ALLOW;
+                   content_type) != origins.content_setting();
       },
       base::Unretained(host_content_settings_map_),
       base::Unretained(&primary_pattern), base::Unretained(&secondary_pattern),
