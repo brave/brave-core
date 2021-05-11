@@ -1241,7 +1241,7 @@ extension Strings {
         public static let playlistAutoPlaySettingsOptionFooterText =
             NSLocalizedString("playlist.playlistAutoPlaySettingsOptionFooterText",
                               bundle: .braveShared,
-                              value: "This option will enable/disable auto-play when Playlist is opened. However this option will not effect auto-play when next-video on the list is loaded.",
+                              value: "This option will enable/disable auto-play when Playlist is opened. However, this option will not affect auto-play when loading the next video on the list.",
                               comment: "Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play")
         
         public static let playlistSidebarLocationTitle =
@@ -1272,19 +1272,19 @@ extension Strings {
             NSLocalizedString("playlist.playlistAutoSaveSettingsTitle",
                               bundle: .braveShared,
                               value: "Auto-Save for Offline",
-                              comment: "Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)")
+                              comment: "Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)")
         
         public static let playlistAutoSaveSettingsDescription =
             NSLocalizedString("playlist.playlistAutoSaveSettingsDescription",
                               bundle: .braveShared,
                               value: "Adding video and audio files for offline use can use a lot of storage on your device as well as use your cellular data",
-                              comment: "Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)")
+                              comment: "Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)")
         
         public static let playlistAutoSaveSettingsFooterText =
             NSLocalizedString("playlist.playlistAutoSaveSettingsFooterText",
                               bundle: .braveShared,
-                              value: "This option will automatically keep your playlist items on your device so you can play them while you dont have the internet connection.",
-                              comment: "Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi))")
+                              value: "This option will automatically keep your playlist items on your device so you can play them without an internet connection.",
+                              comment: "Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi))")
         
         public static let playlistStartPlaybackSettingsOptionTitle =
             NSLocalizedString("playlist.playlistStartPlaybackSettingsOptionTitle",
@@ -1313,8 +1313,8 @@ extension Strings {
         public static let playlistAutoSaveOptionOnlyWifi =
             NSLocalizedString("playlist.playlistAutoSaveOptionOnlyWifi",
                               bundle: .braveShared,
-                              value: "Only Wifi",
-                              comment: "Option Text for Auto Save Only Wifi Option")
+                              value: "Only Wi-Fi",
+                              comment: "Option Text for Auto Save Only Wi-Fi Option")
         
         public static let playlistOfflineDataToggleOption =
             NSLocalizedString("playlist.playlistOfflineDataToggleOption",
