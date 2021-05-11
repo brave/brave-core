@@ -172,33 +172,44 @@ class PlaylistManager: NSObject {
     }
     
     func delete(item: PlaylistInfo) {
-        do {
-            if let assetUrl = downloadManager.localAsset(for: item.pageSrc)?.url {
-                try FileManager.default.removeItem(at: assetUrl)
+        cancelDownload(item: item)
+        
+        if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
+           cacheItem.cachedData != nil {
+            // Do NOT delete the item if we can't delete it's local cache.
+            // That will cause zombie items.
+            if deleteCache(item: item) {
                 PlaylistItem.removeItem(item)
-                
                 delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
-            } else {
-                PlaylistItem.removeItem(item)
             }
-        } catch {
-            log.error("An error occured deleting Playlist Item \(item.name): \(error)")
+        } else {
+            PlaylistItem.removeItem(item)
+            delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
         }
     }
     
-    func deleteCache(item: PlaylistInfo) {
-        do {
-            if let assetUrl = downloadManager.localAsset(for: item.pageSrc)?.url {
-                try FileManager.default.removeItem(at: assetUrl)
+    func deleteCache(item: PlaylistInfo) -> Bool {
+        cancelDownload(item: item)
+        
+        if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
+           let cachedData = cacheItem.cachedData {
+            var isStale = false
+            
+            do {
+                let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
+                try FileManager.default.removeItem(at: url)
                 PlaylistItem.updateCache(pageSrc: item.pageSrc, cachedData: nil)
                 delegate?.onDownloadStateChanged(id: item.pageSrc, state: .invalid, displayName: nil, error: nil)
+                return true
+            } catch {
+                log.error("An error occured deleting Playlist Cached Item \(item.name): \(error)")
+                return false
             }
-        } catch {
-            log.error("An error occured deleting Playlist Cached Item \(item.name): \(error)")
         }
+        return true
     }
     
-    func deleteAllItems(cacheOnly: Bool = false) {
+    func deleteAllItems(cacheOnly: Bool) {
         // This is the only way to have the system kill picture in picture as the restoration controller is deallocated
         // And that means the video is deallocated, its AudioSession is stopped, and the Picture-In-Picture controller is deallocated.
         // This is because `AVPictureInPictureController` is NOT a view controller and there is no way to dismiss it
@@ -206,14 +217,7 @@ class PlaylistManager: NSObject {
         // We could also call `AVPictureInPictureController.stopPictureInPicture` BUT we'd still have to deallocate all resources.
         // At least this way, we deallocate both AND pip is stopped in the destructor of `PlaylistViewController->ListController`
         (UIApplication.shared.delegate as? AppDelegate)?.playlistRestorationController = nil
-        
-        func clearCache(item: PlaylistInfo) throws {
-            if let assetUrl = downloadManager.localAsset(for: item.pageSrc)?.url {
-                try FileManager.default.removeItem(at: assetUrl)
-                PlaylistItem.updateCache(pageSrc: item.pageSrc, cachedData: nil)
-            }
-        }
-        
+ 
         guard let playlistItems = frc.fetchedObjects else {
             log.error("An error occured while fetching Playlist Objects")
             return
@@ -222,13 +226,12 @@ class PlaylistManager: NSObject {
         for playlistItem in playlistItems {
             let item = PlaylistInfo(item: playlistItem)
             
-            do {
-                try clearCache(item: item)
-                if !cacheOnly {
-                    PlaylistItem.removeItem(item)
-                }
-            } catch {
-                log.error("An error occured deleting Playlist Cached Item \(item.name): \(error)")
+            if !deleteCache(item: item) {
+                continue
+            }
+            
+            if !cacheOnly {
+                PlaylistItem.removeItem(item)
             }
         }
     }

@@ -164,7 +164,7 @@ class PlaylistSettingsViewController: TableViewController {
                         preferredStyle: style)
                     
                     alert.addAction(UIAlertAction(title: Strings.PlayList.playlistResetAlertTitle, style: .default, handler: { _ in
-                        PlaylistManager.shared.deleteAllItems()
+                        PlaylistManager.shared.deleteAllItems(cacheOnly: false)
                     }))
                     alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
                     self.present(alert, animated: true, completion: nil)

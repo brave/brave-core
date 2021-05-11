@@ -196,6 +196,15 @@ class PlayListCacheClearable: Clearable {
     func clear() -> Success {
         DispatchQueue.main.async {
             PlaylistManager.shared.deleteAllItems(cacheOnly: true)
+            
+            // Backup in case there is folder corruption, so we delete the cache anyway
+            if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
+                do {
+                    try FileManager.default.removeItem(at: playlistDirectory)
+                } catch {
+                    log.error("Error Deleting Playlist directory: \(error)")
+                }
+            }
         }
         return succeed()
     }
@@ -211,7 +220,16 @@ class PlayListDataClearable: Clearable {
     
     func clear() -> Success {
         DispatchQueue.main.async {
-            PlaylistManager.shared.deleteAllItems()
+            PlaylistManager.shared.deleteAllItems(cacheOnly: false)
+            
+            // Backup in case there is folder corruption, so we delete the cache anyway
+            if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
+                do {
+                    try FileManager.default.removeItem(at: playlistDirectory)
+                } catch {
+                    log.error("Error Deleting Playlist directory: \(error)")
+                }
+            }
         }
         return succeed()
     }
