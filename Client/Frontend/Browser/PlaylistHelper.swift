@@ -26,7 +26,7 @@ protocol PlaylistHelperDelegate: NSObject {
     func dismissPlaylistToast(animated: Bool)
 }
 
-class PlaylistHelper: TabContentScript {
+class PlaylistHelper: NSObject, TabContentScript {
     fileprivate weak var tab: Tab?
     public weak var delegate: PlaylistHelperDelegate?
     private var url: URL?
@@ -36,6 +36,7 @@ class PlaylistHelper: TabContentScript {
     init(tab: Tab) {
         self.tab = tab
         self.url = tab.url
+        super.init()
         
         urlObserver = tab.webView?.observe(\.url, options: [.new], changeHandler: { [weak self] _, change in
             guard let self = self, let url = change.newValue else { return }
@@ -45,6 +46,10 @@ class PlaylistHelper: TabContentScript {
                 self.delegate?.dismissPlaylistToast(animated: false)
                 self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
             }
+        })
+        
+        tab.webView?.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(onLongPressedWebView(_:))).then {
+            $0.delegate = self
         })
     }
     
@@ -123,5 +128,30 @@ class PlaylistHelper: TabContentScript {
                 self.delegate?.showPlaylistAlert(alert)
             }
         }
+    }
+}
+
+extension PlaylistHelper: UIGestureRecognizerDelegate {
+    @objc
+    func onLongPressedWebView(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .began,
+           let webView = tab?.webView {
+            let touchPoint = gestureRecognizer.location(in: webView)
+            
+            let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+            let javascript = String(format: "window.onLongPressActivated_%@(%f, %f)", token, touchPoint.x, touchPoint.y)
+            webView.evaluateJavaScript(javascript) // swiftlint:disable:this safe_javascript
+        }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if otherGestureRecognizer.isKind(of: UILongPressGestureRecognizer.self) {
+            return true
+        }
+        return false
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
     }
 }
