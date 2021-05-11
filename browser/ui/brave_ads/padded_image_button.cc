@@ -21,9 +21,17 @@
 namespace brave_ads {
 
 namespace {
+
 constexpr SkColor kBackgroundColor = SK_ColorTRANSPARENT;
-constexpr gfx::Insets kBorderInset(6);
+
+constexpr gfx::Insets kBorderInset(
+    /* top */ 4,
+    /* left */ 4,
+    /* bottom */ 0,
+    /* right */ 4);
+
 const float kVisibleOpacity = 0.12f;
+
 }  // namespace
 
 PaddedImageButton::PaddedImageButton(PressedCallback callback)

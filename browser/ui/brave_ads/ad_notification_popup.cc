@@ -13,6 +13,7 @@
 #include "brave/browser/ui/brave_ads/ad_notification_view.h"
 #include "brave/browser/ui/brave_ads/ad_notification_view_factory.h"
 #include "brave/browser/ui/brave_ads/bounds_util.h"
+#include "brave/components/brave_ads/browser/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -29,6 +30,7 @@
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/shadow_util.h"
 #include "ui/gfx/shadow_value.h"
 #include "ui/gfx/skia_paint_util.h"
@@ -48,9 +50,6 @@ namespace {
 // TODO(https://github.com/brave/brave-browser/issues/14957): Decouple
 // AdNotificationPopup management to NotificationPopupCollection
 std::map<std::string, AdNotificationPopup*> g_ad_notification_popups;
-
-constexpr base::TimeDelta kFadeDuration =
-    base::TimeDelta::FromMilliseconds(200);
 
 const int kShadowElevation = 5;
 
@@ -315,41 +314,44 @@ AdNotification AdNotificationPopup::GetAdNotification() const {
   return ad_notification_;
 }
 
-gfx::Point AdNotificationPopup::GetDefaultOriginForSize(
-    const gfx::Size& size) const {
-  const gfx::Rect work_area =
+gfx::Point AdNotificationPopup::GetDefaultOriginForSize(const gfx::Size& size) {
+  const gfx::Rect display_bounds =
+      display::Screen::GetScreen()->GetPrimaryDisplay().bounds();
+
+  const gfx::Rect display_work_area =
       display::Screen::GetScreen()->GetPrimaryDisplay().work_area();
 
-#if defined(OS_WIN)
-  // Top right
-  const int kTopPadding = 10;
-  const int kRightPadding = 10;
+  // Calculate position
+  const double width = static_cast<double>(display_bounds.width());
+  const double normalized_display_coordinate_x =
+      features::AdNotificationNormalizedDisplayCoordinateX();
+  int x = static_cast<int>(width * normalized_display_coordinate_x);
+  x -= size.width() / 2.0;
 
-  const int x = work_area.right() - (size.width() + kRightPadding);
-  const int y = work_area.y() + kTopPadding;
-#elif defined(OS_MAC)
-  // Top right to the left of macOS native notifications
-  const int kNativeNotificationWidth = 360;
+  const double height = static_cast<double>(display_bounds.height());
+  const double normalized_display_coordinate_y =
+      features::AdNotificationNormalizedDisplayCoordinateY();
+  int y = static_cast<int>(height * normalized_display_coordinate_y);
+  y -= size.height() / 2.0;
 
-  const int kTopPadding = 10;
-  const int kRightPadding = 10;
+  const gfx::Point origin(x, y);
 
-  const int x = work_area.right() - kNativeNotificationWidth -
-                (size.width() + kRightPadding);
-  const int y = work_area.y() + kTopPadding;
-#elif defined(OS_LINUX)
-  // Top right
-  const int kTopPadding = 10;
-  const int kRightPadding = 10;
+  // Adjust to fit display work area
+  gfx::Rect bounds(origin, size);
+  bounds.AdjustToFit(display_work_area);
 
-  const int x = work_area.right() - (size.width() + kRightPadding);
-  const int y = work_area.y() + kTopPadding;
-#endif
+  // Apply insets
+  const gfx::Vector2d insets(features::AdNotificationInsetX(),
+                             features::AdNotificationInsetY());
+  bounds += insets;
 
-  return gfx::Point(x, y);
+  // Adjust to fit display work area
+  bounds.AdjustToFit(display_work_area);
+
+  return bounds.origin();
 }
 
-gfx::Point AdNotificationPopup::GetOriginForSize(const gfx::Size& size) const {
+gfx::Point AdNotificationPopup::GetOriginForSize(const gfx::Size& size) {
   if (!profile_->GetPrefs()->HasPrefPath(
           prefs::kAdNotificationLastScreenPositionX) ||
       !profile_->GetPrefs()->HasPrefPath(
@@ -371,7 +373,7 @@ void AdNotificationPopup::SaveOrigin(const gfx::Point& origin) const {
                                    origin.y());
 }
 
-gfx::Rect AdNotificationPopup::CalculateBounds() const {
+gfx::Rect AdNotificationPopup::CalculateBounds() {
   DCHECK(ad_notification_view_);
   gfx::Size size = ad_notification_view_->size();
   DCHECK(!size.IsEmpty());
@@ -448,13 +450,21 @@ void AdNotificationPopup::CloseWidgetView() {
 
 void AdNotificationPopup::FadeIn() {
   animation_state_ = AnimationState::kFadeIn;
-  animation_->SetDuration(kFadeDuration);
+
+  const base::TimeDelta fade_duration =
+      base::TimeDelta::FromMilliseconds(features::AdNotificationFadeDuration());
+  animation_->SetDuration(fade_duration);
+
   StartAnimation();
 }
 
 void AdNotificationPopup::FadeOut() {
   animation_state_ = AnimationState::kFadeOut;
-  animation_->SetDuration(kFadeDuration);
+
+  const base::TimeDelta fade_duration =
+      base::TimeDelta::FromMilliseconds(features::AdNotificationFadeDuration());
+  animation_->SetDuration(fade_duration);
+
   StartAnimation();
 }
 

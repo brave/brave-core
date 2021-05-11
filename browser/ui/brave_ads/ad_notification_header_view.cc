@@ -54,9 +54,9 @@ constexpr SkColor kDarkModeTitleColor = SkColorSetRGB(0xe3, 0xe6, 0xec);
 const gfx::HorizontalAlignment kTitleHorizontalAlignment = gfx::ALIGN_LEFT;
 const gfx::VerticalAlignment kTitleVerticalAlignment = gfx::ALIGN_BOTTOM;
 
-constexpr gfx::Insets kTitleBorderInsets(/* top */ 10,
-                                         /* left */ 6,
-                                         /* bottom */ 6,
+constexpr gfx::Insets kTitleBorderInsets(/* top */ 11,
+                                         /* left */ 10,
+                                         /* bottom */ 3,
                                          /* right */ 0);
 
 }  // namespace

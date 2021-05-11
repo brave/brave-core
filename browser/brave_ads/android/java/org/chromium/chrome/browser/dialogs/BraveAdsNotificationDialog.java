@@ -44,6 +44,8 @@ public class BraveAdsNotificationDialog {
         }
         AlertDialog.Builder b = new AlertDialog.Builder(context);
 
+        mNotificationId = notificationId;
+
         LayoutInflater inflater = LayoutInflater.from(context);
         b.setView(inflater.inflate(R.layout.brave_ads_custom_notification, null));
         mAdsDialog = b.create();
@@ -75,7 +77,6 @@ public class BraveAdsNotificationDialog {
         ((TextView) mAdsDialog.findViewById(R.id.brave_ads_custom_notification_header)).setText(title);
         ((TextView) mAdsDialog.findViewById(R.id.brave_ads_custom_notification_body)).setText(body);
 
-        mNotificationId = notificationId;
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

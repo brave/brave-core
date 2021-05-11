@@ -12,7 +12,7 @@
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
 #include "base/win/windows_version.h"
-#include "brave/common/brave_channel_info.h"
+#include "brave/components/brave_ads/browser/features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/installer/util/install_util.h"
@@ -65,7 +65,7 @@ NotificationHelperWin::NotificationHelperWin() = default;
 NotificationHelperWin::~NotificationHelperWin() = default;
 
 bool NotificationHelperWin::ShouldShowNotifications() {
-  if (brave::IsNightlyOrDeveloperBuild()) {
+  if (features::ShouldShowCustomAdNotifications()) {
     return true;
   }
 
@@ -81,7 +81,7 @@ bool NotificationHelperWin::ShouldShowNotifications() {
     return true;
   }
 
-  if (!base::FeatureList::IsEnabled(features::kNativeNotifications)) {
+  if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
     LOG(WARNING) << "Native notification feature is disabled so falling back to"
                     " Message Center";
     return true;

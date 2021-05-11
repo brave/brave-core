@@ -24,13 +24,4 @@ std::string GetChannelName() {
 #endif  // !OFFICIAL_BUILD
 }
 
-bool IsNightlyOrDeveloperBuild() {
-#if defined(OFFICIAL_BUILD)
-  return chrome::GetChannel() == version_info::Channel::CANARY ||
-      chrome::GetChannel() == version_info::Channel::UNKNOWN;
-#else  // OFFICIAL_BUILD
-  return true;
-#endif  // !OFFICIAL_BUILD
-}
-
 }  // namespace brave

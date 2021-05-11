@@ -18,9 +18,9 @@ namespace {
 constexpr SkColor kBackgroundColor = SK_ColorTRANSPARENT;
 
 constexpr gfx::Insets kBorderInset(
-    /* top */ 4,
+    /* top */ 2,
     /* left */ 6,
-    /* bottom */ 6,
+    /* bottom */ 0,
     /* right */ 6);
 
 }  // namespace

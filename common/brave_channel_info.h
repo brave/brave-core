@@ -9,10 +9,7 @@
 #include <string>
 
 namespace brave {
-
 std::string GetChannelName();
-bool IsNightlyOrDeveloperBuild();
-
 }
 
 #endif  // BRAVE_COMMON_BRAVE_CHANNEL_INFO_H_

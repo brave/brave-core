@@ -21,7 +21,6 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/result.h"
-#include "brave/common/brave_channel_info.h"
 
 #if defined(OS_ANDROID)
 #include "base/android/build_info.h"
@@ -182,10 +181,6 @@ uint64_t AdNotifications::Count() const {
 
 #if defined(OS_ANDROID)
 void AdNotifications::RemoveAllAfterReboot() {
-  if (brave::IsNightlyOrDeveloperBuild()) {
-    return;
-  }
-
   database::table::AdEvents database_table;
   database_table.GetAll([=](const Result result, const AdEventList& ad_events) {
     if (result != Result::SUCCESS) {
@@ -209,10 +204,6 @@ void AdNotifications::RemoveAllAfterReboot() {
 }
 
 void AdNotifications::RemoveAllAfterUpdate() {
-  if (brave::IsNightlyOrDeveloperBuild()) {
-    return;
-  }
-
   const std::string current_version_code =
       base::android::BuildInfo::GetInstance()->package_version_code();
 

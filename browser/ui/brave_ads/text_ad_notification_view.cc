@@ -12,6 +12,7 @@
 #include "brave/browser/ui/brave_ads/ad_notification_control_buttons_view.h"
 #include "brave/browser/ui/brave_ads/ad_notification_header_view.h"
 #include "brave/browser/ui/brave_ads/insets_util.h"
+#include "build/build_config.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
@@ -30,11 +31,11 @@ namespace brave_ads {
 namespace {
 
 const int kNotificationWidth = 350;
-const int kNotificationHeight = 104;
+const int kNotificationHeight = 100;
 
 constexpr gfx::Insets kContainerViewInsideBorderInsets(
     /* top */ 0,
-    /* left */ 16,
+    /* left */ 20,
     /* bottom */ 10,
     /* right */ 10);
 
@@ -50,7 +51,14 @@ constexpr SkColor kLightModeBodyColor = SkColorSetRGB(0x45, 0x49, 0x55);
 constexpr SkColor kDarkModeBodyColor = SkColorSetRGB(0xd7, 0xdb, 0xe2);
 
 const int kBodyMaximumLines = 2;
-const int kBodyLineSpacing = 3;
+
+#if defined(OS_WIN)
+const int kBodyLineSpacing = 0;
+#elif defined(OS_MAC)
+const int kBodyLineSpacing = 2;
+#elif defined(OS_LINUX)
+const int kBodyLineSpacing = 2;
+#endif
 
 const gfx::HorizontalAlignment kBodyHorizontalAlignment = gfx::ALIGN_LEFT;
 const gfx::VerticalAlignment kBodyVerticalAlignment = gfx::ALIGN_TOP;
@@ -176,7 +184,8 @@ views::Label* TextAdNotificationView::CreateBodyLabel(
   AdjustInsetsForFontList(&border_insets, font_list);
   label->SetBorder(views::CreateEmptyBorder(border_insets));
 
-  const int width = View::width() - GetInsets().width();
+  const int width = View::width() - kContainerViewInsideBorderInsets.width() -
+                    border_insets.width();
   label->SizeToFit(width);
 
   label->SetHandlesTooltips(false);
