@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_ADD_BUTTON_H_
 
 #include "base/scoped_observation.h"
+#include "base/timer/timer.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
@@ -24,15 +25,18 @@ class SidebarItemAddButton : public SidebarButtonView,
 
   // SidebarButtonView overrides:
   void OnMouseEntered(const ui::MouseEvent& event) override;
+  void OnMouseExited(const ui::MouseEvent& event) override;
   void OnGestureEvent(ui::GestureEvent* event) override;
 
   // views::WidgetObserver overrides:
   void OnWidgetDestroying(views::Widget* widget) override;
 
  private:
-  void ShowBubble();
+  void ShowBubbleWithDelay();
+  void DoShowBubble();
 
   BraveBrowser* browser_;
+  base::OneShotTimer timer_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
       this};
 };
