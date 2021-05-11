@@ -25,6 +25,10 @@ class Migration {
         if !Preferences.Chromium.syncV2BookmarksMigrationCompleted.value {
             braveCoreBookmarksMigrator = BraveCoreMigrator()
         }
+        
+        if !Preferences.Migration.playlistV1FileSettingsLocationCompleted.value {
+            movePlaylistV1Items()
+        }
     }
     
     static func moveDatabaseToApplicationDirectory() {
@@ -59,6 +63,50 @@ class Migration {
                                      destinationName: "CookiesData.json",
                                      destinationLocation: .applicationSupportDirectory)
     }
+    
+    private static func movePlaylistV1Items() {
+        // If moving the file fails, we'll never bother trying again.
+        // It doesn't hurt and the user can easily delete it themselves.
+        defer {
+            Preferences.Migration.playlistV1FileSettingsLocationCompleted.value = true
+        }
+        
+        guard let libraryPath = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first,
+              let playlistDirectory = PlaylistDownloadManager.playlistDirectory else {
+            return
+        }
+
+        let errorPath = "PlaylistV1FileSettingsLocationCompletion"
+        do {
+            let urls = try FileManager.default.contentsOfDirectory(at: libraryPath,
+                                                                   includingPropertiesForKeys: nil,
+                                                                   options: [.skipsHiddenFiles])
+            for url in urls where url.absoluteString.contains("com.apple.UserManagedAssets") {
+                do {
+                    let assets = try FileManager.default.contentsOfDirectory(at: url,
+                                                                             includingPropertiesForKeys: nil,
+                                                                             options: [.skipsHiddenFiles])
+                    assets.forEach({
+                        if let item = PlaylistItem.cachedItem(cacheURL: $0),
+                           let pageSrc = item.pageSrc {
+                            let destination = playlistDirectory.appendingPathComponent($0.lastPathComponent)
+                            
+                            do {
+                                try FileManager.default.moveItem(at: $0, to: destination)
+                                try PlaylistItem.updateCache(pageSrc: pageSrc, cachedData: destination.bookmarkData())
+                            } catch {
+                                log.error("Moving Playlist Item for \(errorPath) failed: \(error)")
+                            }
+                        }
+                    })
+                } catch {
+                    log.error("Moving Playlist Item for \(errorPath) failed: \(error)")
+                }
+            }
+        } catch {
+            log.error("Moving Playlist Files for \(errorPath) failed: \(error)")
+        }
+    }
 }
 
 fileprivate extension Preferences {
@@ -70,6 +118,8 @@ fileprivate extension Preferences {
         /// for user downloaded files.
         static let documentsDirectoryCleanupCompleted =
             Option<Bool>(key: "migration.documents-dir-completed", default: false)
+        static let playlistV1FileSettingsLocationCompleted =
+            Option<Bool>(key: "migration.playlistv1-file-settings-location-completed", default: false)
     }
     
     /// Migrate the users preferences from prior versions of the app (<2.0)

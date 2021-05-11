@@ -69,6 +69,18 @@ final public class PlaylistItem: NSManagedObject, CRUD {
         return false
     }
     
+    public static func cachedItem(cacheURL: URL) -> PlaylistItem? {
+        return PlaylistItem.all()?.first(where: {
+            var isStale = false
+            
+            if let cacheData = $0.cachedData,
+               let url = try? URL(resolvingBookmarkData: cacheData, bookmarkDataIsStale: &isStale) {
+                return url.path == cacheURL.path
+            }
+            return false
+        })
+    }
+    
     public static func updateItem(_ item: PlaylistInfo, completion: (() -> Void)? = nil) {
         if itemExists(item) {
             DataController.perform(context: .new(inMemory: false), save: false) { context in
