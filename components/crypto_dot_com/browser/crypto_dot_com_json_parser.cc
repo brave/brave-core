@@ -55,10 +55,11 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
   const base::Value* l = data->FindKey("l");
   const base::Value* price = data->FindKey("a");
 
-  if (!(v && v->is_double()) ||
-      !(h && h->is_double()) ||
-      !(l && l->is_double()) ||
-      !(price && price->is_double())) {
+  // Number could be double or int.
+  if (!(v && (v->is_double() || v->is_int())) ||
+      !(h && (h->is_double() || h->is_int())) ||
+      !(l && (l->is_double() || l->is_int())) ||
+      !(price && (price->is_double() || price->is_int()))) {
     info->insert({"volume", std::string()});
     info->insert({"price", std::string()});
     return false;
