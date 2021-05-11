@@ -6,13 +6,16 @@
 #include "brave/components/brave_wallet/renderer/brave_wallet_js_handler.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
-#include "brave/components/brave_wallet/renderer/web3_provider_constants.h"
+#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
@@ -21,12 +24,75 @@
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
+#include "ui/base/resource/resource_bundle.h"
 
+namespace {
+
+static base::NoDestructor<std::string> g_provider_script("");
+
+// Hardcode id to 1 as it is unused
+const uint32_t kRequestId = 1;
+const char kRequestJsonRPC[] = "2.0";
+
+std::string LoadDataResource(const int id) {
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  if (resource_bundle.IsGzipped(id)) {
+    return resource_bundle.LoadDataResourceString(id);
+  }
+
+  return resource_bundle.GetRawDataResource(id).as_string();
+}
+
+v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
+                                      v8::Local<v8::Value> object,
+                                      const std::u16string& name) {
+  v8::Isolate* isolate = context->GetIsolate();
+  v8::Local<v8::String> name_str =
+      gin::ConvertToV8(isolate, name).As<v8::String>();
+  v8::Local<v8::Object> object_obj;
+  if (!object->ToObject(context).ToLocal(&object_obj)) {
+    return v8::MaybeLocal<v8::Value>();
+  }
+
+  return object_obj->Get(context, name_str);
+}
+
+void CallMethodOfObject(blink::WebLocalFrame* web_frame,
+                        const std::u16string& object_name,
+                        const std::u16string& method_name,
+                        base::Value arguments) {
+  if (web_frame->IsProvisional())
+    return;
+  v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
+  v8::Context::Scope context_scope(context);
+  v8::Local<v8::Value> object;
+  v8::Local<v8::Value> method;
+  if (!GetProperty(context, context->Global(), object_name).ToLocal(&object) ||
+      !GetProperty(context, object, method_name).ToLocal(&method)) {
+     return;
+  }
+  std::vector<v8::Local<v8::Value>> args;
+  for (auto const& argument : arguments.GetList()) {
+    args.push_back(content::V8ValueConverter::Create()->ToV8Value(&argument,
+                                                                  context));
+  }
+
+  web_frame->ExecuteMethodAndReturnValue(
+      v8::Local<v8::Function>::Cast(method), object,
+      static_cast<int>(args.size()), args.data()).ToLocalChecked();
+}
+
+}  // namespace
 
 namespace brave_wallet {
 
 BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame)
-    : render_frame_(render_frame) {}
+    : render_frame_(render_frame) {
+  if (g_provider_script->empty()) {
+    *g_provider_script =
+        LoadDataResource(IDR_BRAVE_WALLET_SCRIPT_BRAVE_WALLET_SCRIPT_BUNDLE_JS);
+  }
+}
 
 BraveWalletJSHandler::~BraveWalletJSHandler() = default;
 
@@ -49,6 +115,7 @@ void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
   v8::Context::Scope context_scope(context);
 
   CreateEthereumObject(isolate, context);
+  InjectInitScript();
 }
 
 void BraveWalletJSHandler::CreateEthereumObject(
@@ -107,6 +174,9 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
   if (!out || !out->is_dict() || !out->GetAsDictionary(&out_dict))
     return v8::Local<v8::Promise>();
 
+  // Hardcode id to 1 as it is unused
+  ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", kRequestId));
+  ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
   std::string formed_input;
   if (!base::JSONWriter::Write(*out_dict, &formed_input))
     return v8::Local<v8::Promise>();
@@ -163,6 +233,45 @@ void BraveWalletJSHandler::OnRequest(
   } else {
     ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
   }
+}
+
+void BraveWalletJSHandler::ExecuteScript(const std::string script) {
+  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+  if (web_frame->IsProvisional())
+    return;
+
+  web_frame->ExecuteScript(blink::WebString::FromUTF8(script));
+}
+
+void BraveWalletJSHandler::InjectInitScript() {
+  ExecuteScript(*g_provider_script);
+}
+
+void BraveWalletJSHandler::FireEvent(const std::string& event,
+                                     const std::string& event_args) {
+  base::Value args = base::Value(base::Value::Type::LIST);
+  args.Append(event);
+  args.Append(event_args);
+  CallMethodOfObject(render_frame_->GetWebFrame(),
+                     u"ethereum",
+                     u"emit",
+                     std::move(args));
+}
+
+void BraveWalletJSHandler::ConnectEvent(const std::string& chain_id) {
+  FireEvent(kConnectEvent, chain_id);
+}
+
+void BraveWalletJSHandler::DisconnectEvent(const std::string& message) {
+  FireEvent(kDisconnectEvent, message);
+}
+
+void BraveWalletJSHandler::ChainChangedEvent(const std::string& chain_id) {
+  FireEvent(kChainChangedEvent, chain_id);
+}
+
+void BraveWalletJSHandler::AccountsChangedEvent(const std::string& accounts) {
+  FireEvent(kAccountsChangedEvent, accounts);
 }
 
 }  // namespace brave_wallet
