@@ -241,7 +241,7 @@ extension Preferences {
         static let lastPlayedItemTime = Option<Double>(key: "playlist.last.played.item.time", default: 0.0)
         /// Whether to play the video when controller loaded
         static let firstLoadAutoPlay = Option<Bool>(key: "playlist.firstLoadAutoPlay", default: false)
-        /// The Option to download video yes / no / only wifi
+        /// The Option to download video yes / no / only wi-fi
         static let autoDownloadVideo = Option<String>(key: "playlist.autoDownload", default: PlayListDownloadType.on.rawValue)
         /// The Option to disable playlist MediaSource web-compatibility
         static let webMediaSourceCompatibility = Option<Bool>(key: "playlist.webMediaSourceCompatibility", default: UIDevice.isIpad)
