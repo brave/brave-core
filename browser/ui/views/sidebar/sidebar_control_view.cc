@@ -11,8 +11,8 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -183,11 +183,8 @@ void SidebarControlView::AddChildViews() {
       AddChildView(std::make_unique<SidebarItemsScrollView>(browser_));
 
   sidebar_item_add_view_ =
-      AddChildView(std::make_unique<SidebarButtonView>(nullptr));
+      AddChildView(std::make_unique<SidebarItemAddButton>(browser_));
   sidebar_item_add_view_->set_context_menu_controller(this);
-  sidebar_item_add_view_->SetCallback(
-      base::BindRepeating(&SidebarControlView::OnButtonPressed,
-                          base::Unretained(this), sidebar_item_add_view_));
 
   sidebar_settings_view_ =
       AddChildView(std::make_unique<SidebarButtonView>(nullptr));
@@ -197,13 +194,6 @@ void SidebarControlView::AddChildViews() {
 }
 
 void SidebarControlView::OnButtonPressed(views::View* view) {
-  if (view == sidebar_item_add_view_) {
-    auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
-        new SidebarAddItemBubbleDelegateView(browser_, view));
-    bubble->Show();
-    return;
-  }
-
   if (view == sidebar_settings_view_) {
     browser_->sidebar_controller()->LoadAtTab(
         GURL(chrome::kChromeUISettingsURL));
