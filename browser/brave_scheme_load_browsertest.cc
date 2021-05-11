@@ -235,3 +235,8 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        WalletPageIsNotAllowedInPrivateWindow) {
   TestURLIsNotLoadedInPrivateWindow("brave://wallet");
 }
+
+IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
+                       BraveSyncPageIsNotAllowedInPrivateWindow) {
+  TestURLIsNotLoadedInPrivateWindow("brave://sync");
+}
