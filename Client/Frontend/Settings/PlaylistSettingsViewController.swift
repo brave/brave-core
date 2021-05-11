@@ -67,9 +67,16 @@ class PlaylistSettingsViewController: TableViewController {
             Section(
                 rows: [
                     .boolRow(title: Strings.PlayList.playlistToastShowSettingsOptionTitle,
-                             option: Preferences.Playlist.showToastForAdd)
+                             option: Preferences.Playlist.showToastForAdd),
                 ],
                 footer: .title(Strings.PlayList.playlistToastShowSettingsOptionFooterText)
+            ),
+            Section(
+                rows: [
+                    .boolRow(title: Strings.PlayList.playlistLongPressSettingsOptionTitle,
+                             option: Preferences.Playlist.enableLongPressAddToPlaylist),
+                ],
+                footer: .title(Strings.PlayList.playlistLongPressSettingsOptionFooterText)
             ),
             Section(
                 rows: [

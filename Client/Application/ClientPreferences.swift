@@ -247,6 +247,9 @@ extension Preferences {
         static let webMediaSourceCompatibility = Option<Bool>(key: "playlist.webMediaSourceCompatibility", default: UIDevice.isIpad)
         /// The option to start the playback where user left-off
         static let playbackLeftOff = Option<Bool>(key: "playlist.playbackLeftOff", default: true)
+        /// The option to disable long-press-to-add-to-playlist gesture.
+        static let enableLongPressAddToPlaylist =
+            Option<Bool>(key: "playlist.longPressAddToPlaylist", default: true)
     }
 }
 
