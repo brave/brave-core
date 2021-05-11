@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { combineReducers } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 
-import panelReducer from './panel_reducer'
-import walletReducer from '../../common/reducers/wallet_reducer'
+// Utils
+import reducers from './reducers'
+import walletPageAsyncHandler from './async/wallet_page_async_handler'
 
-export default combineReducers({
-  panel: panelReducer,
-  wallet: walletReducer
-})
+export default createStore(
+    reducers,
+    applyMiddleware(walletPageAsyncHandler)
+)

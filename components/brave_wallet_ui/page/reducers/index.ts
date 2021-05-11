@@ -5,10 +5,10 @@
 
 import { combineReducers } from 'redux'
 
-import panelReducer from './panel_reducer'
+import pageReducer from './page_reducer'
 import walletReducer from '../../common/reducers/wallet_reducer'
 
 export default combineReducers({
-  panel: panelReducer,
+  page: pageReducer,
   wallet: walletReducer
 })
