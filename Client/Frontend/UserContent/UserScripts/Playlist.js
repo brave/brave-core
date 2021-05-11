@@ -98,137 +98,66 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
         }
     }
     
-    function $<onLongPressActivated>(event) {
-        var target = event.target;
-
-        var targetVideo = target.closest("video");
-        var targetAudio = target.closest("audio");
-
-        // Video or Audio might have some sort of overlay..
-        // Like player controls for pause/play, etc..
-        // So we search for video/audio elements relative to touch position.
-        if (!targetVideo && !targetAudio) {
-            var touchX = event.touches[0].clientX + window.scrollX;
-            var touchY = event.touches[0].clientY + window.scrollY;
-        
-            var videoElements = document.querySelectorAll('video');
-            for (element of videoElements) {
-                var rect = element.getBoundingClientRect();
-                var x = rect.left + window.scrollX;
-                var y = rect.top + window.scrollY;
-                var w = rect.right - rect.left;
-                var h = rect.bottom - rect.top;
-                
-                if (touchX >= x && touchX <= (x + w) && touchY >= y && touchY <= (y + h)) {
-                    targetVideo = element;
-                    break;
-                }
-            }
-            
-            var audioElements = document.querySelectorAll('audio');
-            for (element of audioElements) {
-                var rect = element.getBoundingClientRect();
-                var x = rect.left + window.scrollX;
-                var y = rect.top + window.scrollY;
-                var w = rect.right - rect.left;
-                var h = rect.bottom - rect.top;
-                
-                if (touchX >= x && touchX <= (x + w) && touchY >= y && touchY <= (y + h)) {
-                    targetAudio = element;
-                    break;
-                }
-            }
-            
-            //No elements found nearby so do nothing..
-            if (!targetVideo && !targetAudio) {
-                //webkit.messageHandlers.$<handler>.postMessage({});
-                return;
-            }
-        }
-        
-        //Elements found
-        if (targetVideo) {
-            $<notify>(targetVideo, 'video');
-        }
-
-        if (targetAudio) {
-            $<notify>(targetAudio, 'audio');
-        }
-    }
-    
     function $<setupLongPress>() {
-        var timer = null;
-        var touchDuration = 800;
-        var cancelDistance = 5;
-        var touchEvent = null;
-        var X = 0;
-        var Y = 0;
-        
-        var event_options = {
-            "capture": true,
-            "passive": true,
-        };
-        
-        // When the long-press gesture is recognized, we want to disable all selections and context menus on the page
-        function clearSelection() {
-            var selection;
-            if ((selection = document.selection) && selection.empty) {
-                selection.empty();
-            } else {
-                if (window.getSelection) {
-                    window.getSelection().removeAllRanges();
-                }
-                
-                var element = document.activeElement;
-                if (element) {
-                    element.selectionStart = element.selectionEnd;
-                }
-            }
-        }
-        
-        function onLongPress() {
-            timer = null;
-            if (touchEvent) {
-                clearSelection();
-                $<onLongPressActivated>(touchEvent);
-            }
-        };
+        Object.defineProperty(window, '$<onLongPressActivated>', {
+          value:
+            function(localX, localY) {
+                var target = document.elementFromPoint(localX, localY);
+                var targetVideo = target ? target.closest("video") : null;
+                var targetAudio = target ? target.closest("audio") : null;
 
-        window.addEventListener("touchstart", function(event) {
-            if (!timer) {
-                touchEvent = event;
-                X = event.touches[0].clientX;
-                Y = event.touches[0].clientY;
-                timer = setTimeout(onLongPress, touchDuration);
-            }
-        }, event_options);
-        
-        window.addEventListener("touchmove", function(event) {
-            if (timer) {
-                var x = X - event.changedTouches[0].clientX;
-                var y = Y - event.changedTouches[0].clientY;
-                var distance = Math.sqrt((x * x) + (y * y));
+                // Video or Audio might have some sort of overlay..
+                // Like player controls for pause/play, etc..
+                // So we search for video/audio elements relative to touch position.
+                if (!targetVideo && !targetAudio) {
+                    var touchX = localX + window.scrollX;
+                    var touchY = localY + window.scrollY;
                 
-                if (distance >= cancelDistance) {
-                    clearTimeout(timer);
-                    timer = null;
+                    var videoElements = document.querySelectorAll('video');
+                    for (element of videoElements) {
+                        var rect = element.getBoundingClientRect();
+                        var x = rect.left + window.scrollX;
+                        var y = rect.top + window.scrollY;
+                        var w = rect.right - rect.left;
+                        var h = rect.bottom - rect.top;
+                        
+                        if (touchX >= x && touchX <= (x + w) && touchY >= y && touchY <= (y + h)) {
+                            targetVideo = element;
+                            break;
+                        }
+                    }
+                    
+                    var audioElements = document.querySelectorAll('audio');
+                    for (element of audioElements) {
+                        var rect = element.getBoundingClientRect();
+                        var x = rect.left + window.scrollX;
+                        var y = rect.top + window.scrollY;
+                        var w = rect.right - rect.left;
+                        var h = rect.bottom - rect.top;
+                        
+                        if (touchX >= x && touchX <= (x + w) && touchY >= y && touchY <= (y + h)) {
+                            targetAudio = element;
+                            break;
+                        }
+                    }
+                    
+                    //No elements found nearby so do nothing..
+                    if (!targetVideo && !targetAudio) {
+                        //webkit.messageHandlers.$<handler>.postMessage({});
+                        return;
+                    }
+                }
+                
+                //Elements found
+                if (targetVideo) {
+                    $<notify>(targetVideo, 'video');
+                }
+
+                if (targetAudio) {
+                    $<notify>(targetAudio, 'audio');
                 }
             }
-        }, event_options);
-        
-        window.addEventListener("touchend", function(event) {
-            if (timer) {
-                clearTimeout(timer);
-                timer = null;
-            }
-        }, event_options);
-        
-        window.addEventListener("touchcancel", function(event) {
-            if (timer) {
-                clearTimeout(timer);
-                timer = null;
-            }
-        }, event_options);
+        });
     }
     
     // MARK: ---------------------------------------
