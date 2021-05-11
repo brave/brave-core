@@ -10,7 +10,6 @@
 
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
-#include "base/strings/string16.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
@@ -46,7 +45,7 @@ std::string LoadDataResource(const int id) {
 
 v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
                                       v8::Local<v8::Value> object,
-                                      const base::string16& name) {
+                                      const std::u16string& name) {
   v8::Isolate* isolate = context->GetIsolate();
   v8::Local<v8::String> name_str =
       gin::ConvertToV8(isolate, name).As<v8::String>();
@@ -59,8 +58,8 @@ v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
 }
 
 void CallMethodOfObject(blink::WebLocalFrame* web_frame,
-                        const base::string16& object_name,
-                        const base::string16& method_name,
+                        const std::u16string& object_name,
+                        const std::u16string& method_name,
                         base::Value arguments) {
   if (web_frame->IsProvisional())
     return;
@@ -254,8 +253,8 @@ void BraveWalletJSHandler::FireEvent(const std::string& event,
   args.Append(event);
   args.Append(event_args);
   CallMethodOfObject(render_frame_->GetWebFrame(),
-                     STRING16_LITERAL("ethereum"),
-                     STRING16_LITERAL("emit"),
+                     u"ethereum",
+                     u"emit",
                      std::move(args));
 }
 
