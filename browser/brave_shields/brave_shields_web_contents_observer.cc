@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 
 #include <map>
 #include <memory>
@@ -11,8 +11,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/content/common/frame_messages.h"
@@ -23,18 +25,18 @@
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "content/browser/renderer_host/frame_tree_node.h"
-#include "content/browser/renderer_host/navigator.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_message_macros.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/api/brave_shields.h"
@@ -52,14 +54,14 @@ using content::WebContents;
 
 namespace {
 
-// Content Settings are only sent to the main frame currently.
-// Chrome may fix this at some point, but for now we do this as a work-around.
-// You can verify if this is fixed by running the following test:
-// npm run test -- brave_browser_tests --filter=BraveContentSettingsAgentImplBrowserTest.*  // NOLINT
-// Chrome seems to also have a bug with RenderFrameHostChanged not updating
-// the content settings so this is fixed here too. That case is covered in
-// tests by:
-// npm run test -- brave_browser_tests --filter=BraveContentSettingsAgentImplBrowserTest.*  // NOLINT
+// Content Settings are only sent to the main frame currently. Chrome may fix
+// this at some point, but for now we do this as a work-around. You can verify
+// if this is fixed by running the following test: npm run test --
+// brave_browser_tests --filter=BraveContentSettingsAgentImplBrowserTest.*
+// Chrome seems to also have a bug with RenderFrameHostChanged not updating the
+// content settings so this is fixed here too. That case is covered in tests by:
+// npm run test -- brave_browser_tests
+// --filter=BraveContentSettingsAgentImplBrowserTest.*
 void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
   for (content::RenderFrameHost* frame : web_contents->GetAllFrames()) {
     Profile* profile =
@@ -68,8 +70,7 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
         HostContentSettingsMapFactory::GetForProfile(profile);
     RendererContentSettingRules rules;
     GetRendererContentSettingRules(map, &rules);
-    IPC::ChannelProxy* channel =
-        frame->GetProcess()->GetChannel();
+    IPC::ChannelProxy* channel = frame->GetProcess()->GetChannel();
     // channel might be NULL in tests.
     if (channel) {
       mojo::AssociatedRemote<chrome::mojom::RendererConfiguration> rc_interface;
@@ -83,44 +84,37 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
 
 namespace brave_shields {
 
-base::Lock BraveShieldsWebContentsObserver::frame_data_map_lock_;
+base::NoDestructor<std::map<int, GURL>> frame_tree_node_id_to_tab_url_;
 
-std::map<int, GURL>
-    BraveShieldsWebContentsObserver::frame_tree_node_id_to_tab_url_;
-
-BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {
-}
+BraveShieldsWebContentsObserver::~BraveShieldsWebContentsObserver() {}
 
 BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
     WebContents* web_contents)
     : WebContentsObserver(web_contents),
       brave_shields_receivers_(web_contents, this) {}
 
-void BraveShieldsWebContentsObserver::RenderFrameCreated(
-    RenderFrameHost* rfh) {
+void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
   if (rfh && allowed_script_origins_.size()) {
-    rfh->Send(new BraveFrameMsg_AllowScriptsOnce(
-          rfh->GetRoutingID(), allowed_script_origins_));
+    rfh->Send(new BraveFrameMsg_AllowScriptsOnce(rfh->GetRoutingID(),
+                                                 allowed_script_origins_));
   }
 
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {
     UpdateContentSettingsToRendererFrames(web_contents);
 
-    base::AutoLock lock(frame_data_map_lock_);
-    frame_tree_node_id_to_tab_url_[rfh->GetFrameTreeNodeId()] =
+    (*frame_tree_node_id_to_tab_url_)[rfh->GetFrameTreeNodeId()] =
         web_contents->GetURL();
   }
 }
 
-void BraveShieldsWebContentsObserver::RenderFrameDeleted(
-    RenderFrameHost* rfh) {
-  base::AutoLock lock(frame_data_map_lock_);
-  frame_tree_node_id_to_tab_url_.erase(rfh->GetFrameTreeNodeId());
+void BraveShieldsWebContentsObserver::RenderFrameDeleted(RenderFrameHost* rfh) {
+  (*frame_tree_node_id_to_tab_url_).erase(rfh->GetFrameTreeNodeId());
 }
 
 void BraveShieldsWebContentsObserver::RenderFrameHostChanged(
-    RenderFrameHost* old_host, RenderFrameHost* new_host) {
+    RenderFrameHost* old_host,
+    RenderFrameHost* new_host) {
   if (old_host) {
     RenderFrameDeleted(old_host);
   }
@@ -137,17 +131,17 @@ void BraveShieldsWebContentsObserver::DidFinishNavigation(
   }
   int tree_node_id = main_frame->GetFrameTreeNodeId();
 
-  base::AutoLock lock(frame_data_map_lock_);
-  frame_tree_node_id_to_tab_url_[tree_node_id] = web_contents()->GetURL();
+  (*frame_tree_node_id_to_tab_url_)[tree_node_id] = web_contents()->GetURL();
 }
 
 // static
 GURL BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
     int render_frame_tree_node_id) {
-  base::AutoLock lock(frame_data_map_lock_);
-  if (-1 != render_frame_tree_node_id) {
-    auto iter = frame_tree_node_id_to_tab_url_.find(render_frame_tree_node_id);
-    if (iter != frame_tree_node_id_to_tab_url_.end()) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (render_frame_tree_node_id != RenderFrameHost::kNoFrameTreeNodeId) {
+    auto iter =
+        (*frame_tree_node_id_to_tab_url_).find(render_frame_tree_node_id);
+    if (iter != (*frame_tree_node_id_to_tab_url_).end()) {
       return iter->second;
     }
   }
@@ -166,11 +160,12 @@ void BraveShieldsWebContentsObserver::AddBlockedSubresource(
 
 // static
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
-    std::string block_type,
-    std::string subresource,
-    int frame_tree_node_id) {
+    const GURL& request_url,
+    int frame_tree_node_id,
+    const std::string& block_type) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
+  auto subresource = request_url.spec();
   WebContents* web_contents =
       WebContents::FromFrameTreeNodeId(frame_tree_node_id);
   DispatchBlockedEventForWebContents(block_type, subresource, web_contents);
@@ -178,13 +173,12 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
   if (web_contents) {
     BraveShieldsWebContentsObserver* observer =
         BraveShieldsWebContentsObserver::FromWebContents(web_contents);
-    if (observer &&
-        !observer->IsBlockedSubresource(subresource)) {
+    if (observer && !observer->IsBlockedSubresource(subresource)) {
       observer->AddBlockedSubresource(subresource);
-      PrefService* prefs = Profile::FromBrowserContext(
-          web_contents->GetBrowserContext())->
-          GetOriginalProfile()->
-          GetPrefs();
+      PrefService* prefs =
+          Profile::FromBrowserContext(web_contents->GetBrowserContext())
+              ->GetOriginalProfile()
+              ->GetPrefs();
 
       if (block_type == kAds) {
         prefs->SetUint64(kAdsBlocked, prefs->GetUint64(kAdsBlocked) + 1);
@@ -192,39 +186,42 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
         prefs->SetUint64(kHttpsUpgrades, prefs->GetUint64(kHttpsUpgrades) + 1);
       } else if (block_type == kJavaScript) {
         prefs->SetUint64(kJavascriptBlocked,
-            prefs->GetUint64(kJavascriptBlocked) + 1);
+                         prefs->GetUint64(kJavascriptBlocked) + 1);
       } else if (block_type == kFingerprintingV2) {
         prefs->SetUint64(kFingerprintingBlocked,
-            prefs->GetUint64(kFingerprintingBlocked) + 1);
+                         prefs->GetUint64(kFingerprintingBlocked) + 1);
       }
     }
   }
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+  brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
+      request_url.spec(), frame_tree_node_id);
+#endif
 }
 
 #if !defined(OS_ANDROID)
 // static
 void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
-    const std::string& block_type, const std::string& subresource,
+    const std::string& block_type,
+    const std::string& subresource,
     WebContents* web_contents) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (!web_contents) {
     return;
   }
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  EventRouter* event_router = EventRouter::Get(profile);
-  if (profile && event_router) {
+  EventRouter* event_router =
+      EventRouter::Get(web_contents->GetBrowserContext());
+  if (event_router) {
     extensions::api::brave_shields::OnBlocked::Details details;
     details.tab_id = extensions::ExtensionTabUtil::GetTabId(web_contents);
     details.block_type = block_type;
     details.subresource = subresource;
     std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_shields::OnBlocked::Create(details)
-          .release());
+        extensions::api::brave_shields::OnBlocked::Create(details).release());
     std::unique_ptr<Event> event(
         new Event(extensions::events::BRAVE_AD_BLOCKED,
-          extensions::api::brave_shields::OnBlocked::kEventName,
-          std::move(args)));
+                  extensions::api::brave_shields::OnBlocked::kEventName,
+                  std::move(args)));
     event_router->BroadcastEvent(std::move(event));
   }
 #endif
@@ -271,12 +268,13 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
   }
 
   navigation_handle->GetWebContents()->SendToAllFrames(
-      new BraveFrameMsg_AllowScriptsOnce(
-        MSG_ROUTING_NONE, allowed_script_origins_));
+      new BraveFrameMsg_AllowScriptsOnce(MSG_ROUTING_NONE,
+                                         allowed_script_origins_));
 }
 
 void BraveShieldsWebContentsObserver::AllowScriptsOnce(
-    const std::vector<std::string>& origins, WebContents* contents) {
+    const std::vector<std::string>& origins,
+    WebContents* contents) {
   allowed_script_origins_ = std::move(origins);
 }
 

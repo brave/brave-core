@@ -12,11 +12,11 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/values.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -48,9 +48,9 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   // Enable the default regional list, but only do this once so that
   // user can override this setting in the future
   bool checked_default_region =
-      local_state->GetBoolean(kAdBlockCheckedDefaultRegion);
+      local_state->GetBoolean(prefs::kAdBlockCheckedDefaultRegion);
   if (!checked_default_region) {
-    local_state->SetBoolean(kAdBlockCheckedDefaultRegion, true);
+    local_state->SetBoolean(prefs::kAdBlockCheckedDefaultRegion, true);
     auto it = brave_shields::FindAdBlockFilterListByLocale(regional_catalog_,
                                                            delegate_->locale());
     if (it == regional_catalog_.end())
@@ -61,7 +61,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   // Start all regional services associated with enabled filter lists
   base::AutoLock lock(regional_services_lock_);
   const base::DictionaryValue* regional_filters_dict =
-      local_state->GetDictionary(kAdBlockRegionalFilters);
+      local_state->GetDictionary(prefs::kAdBlockRegionalFilters);
   for (base::DictionaryValue::Iterator it(*regional_filters_dict);
        !it.IsAtEnd(); it.Advance()) {
     const std::string uuid = it.key();
@@ -95,7 +95,7 @@ void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
   PrefService* local_state = delegate_->local_state();
   if (!local_state)
     return;
-  DictionaryPrefUpdate update(local_state, kAdBlockRegionalFilters);
+  DictionaryPrefUpdate update(local_state, prefs::kAdBlockRegionalFilters);
   base::DictionaryValue* regional_filters_dict = update.Get();
   auto regional_filter_dict = std::make_unique<base::DictionaryValue>();
   regional_filter_dict->SetBoolean("enabled", enabled);
@@ -286,7 +286,7 @@ AdBlockRegionalServiceManager::GetRegionalLists() {
   if (!local_state)
     return nullptr;
   const base::DictionaryValue* regional_filters_dict =
-      local_state->GetDictionary(kAdBlockRegionalFilters);
+      local_state->GetDictionary(prefs::kAdBlockRegionalFilters);
 
   auto list_value = std::make_unique<base::ListValue>();
   for (const auto& region_list : regional_catalog_) {

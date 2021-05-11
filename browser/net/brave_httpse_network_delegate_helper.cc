@@ -12,23 +12,23 @@
 #include "base/task/post_task.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/net_errors.h"
 
+using brave_shields::BraveShieldsWebContentsObserver;
 using content::BrowserThread;
 
 namespace brave {
 
-void OnBeforeURLRequest_HttpseFileWork(
-    std::shared_ptr<BraveRequestInfo> ctx) {
+void OnBeforeURLRequest_HttpseFileWork(std::shared_ptr<BraveRequestInfo> ctx) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_NE(ctx->request_identifier, 0U);
-  g_brave_browser_process->https_everywhere_service()->
-    GetHTTPSURL(&ctx->request_url, ctx->request_identifier, &ctx->new_url_spec);
+  g_brave_browser_process->https_everywhere_service()->GetHTTPSURL(
+      &ctx->request_url, ctx->request_identifier, &ctx->new_url_spec);
 }
 
 void OnBeforeURLRequest_HttpsePostFileWork(
@@ -38,7 +38,7 @@ void OnBeforeURLRequest_HttpsePostFileWork(
 
   if (!ctx->new_url_spec.empty() &&
     ctx->new_url_spec != ctx->request_url.spec()) {
-    brave_shields::DispatchBlockedEvent(
+    brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
         ctx->request_url, ctx->frame_tree_node_id,
         brave_shields::kHTTPUpgradableResources);
   }
@@ -72,20 +72,21 @@ int OnBeforeURLRequest_HttpsePreFileWork(
   }
 
   if (is_valid_url) {
-    if (!g_brave_browser_process->https_everywhere_service()->
-        GetHTTPSURLFromCacheOnly(&ctx->request_url,
-                                 ctx->request_identifier,
-                                 &ctx->new_url_spec)) {
-      g_brave_browser_process->https_everywhere_service()->
-        GetTaskRunner()->PostTaskAndReply(FROM_HERE,
-          base::Bind(OnBeforeURLRequest_HttpseFileWork, ctx),
-          base::Bind(base::IgnoreResult(
-              &OnBeforeURLRequest_HttpsePostFileWork),
-              next_callback, ctx));
+    if (!g_brave_browser_process->https_everywhere_service()
+             ->GetHTTPSURLFromCacheOnly(&ctx->request_url,
+                                        ctx->request_identifier,
+                                        &ctx->new_url_spec)) {
+      g_brave_browser_process->https_everywhere_service()
+          ->GetTaskRunner()
+          ->PostTaskAndReply(
+              FROM_HERE, base::Bind(OnBeforeURLRequest_HttpseFileWork, ctx),
+              base::Bind(
+                  base::IgnoreResult(&OnBeforeURLRequest_HttpsePostFileWork),
+                  next_callback, ctx));
       return net::ERR_IO_PENDING;
     } else {
       if (!ctx->new_url_spec.empty()) {
-        brave_shields::DispatchBlockedEvent(
+        brave_shields::BraveShieldsWebContentsObserver::DispatchBlockedEvent(
             ctx->request_url, ctx->frame_tree_node_id,
             brave_shields::kHTTPUpgradableResources);
       }

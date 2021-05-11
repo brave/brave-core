@@ -5,6 +5,7 @@
 
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
@@ -57,12 +58,12 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kAdControlType));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kGoogleLoginControlType));
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kFBEmbedControlType));
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kTwitterEmbedControlType));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(kLinkedInEmbedControlType));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      brave_shields::prefs::kFBEmbedControlType));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      brave_shields::prefs::kTwitterEmbedControlType));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      brave_shields::prefs::kLinkedInEmbedControlType));
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(

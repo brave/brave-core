@@ -9,9 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -23,10 +21,6 @@
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#endif
 
 using content::Referrer;
 
@@ -413,19 +407,6 @@ ControlType GetNoScriptControlType(HostContentSettingsMap* map,
 
   return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                           : ControlType::BLOCK;
-}
-
-void DispatchBlockedEvent(const GURL& request_url,
-                          int frame_tree_node_id,
-                          const std::string& block_type) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  BraveShieldsWebContentsObserver::DispatchBlockedEvent(
-      block_type, request_url.spec(), frame_tree_node_id);
-
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-  brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
-      request_url.spec(), frame_tree_node_id);
-#endif
 }
 
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url) {

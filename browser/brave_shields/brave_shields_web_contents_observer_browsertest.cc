@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/common/brave_paths.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -48,9 +48,9 @@ class TestBraveShieldsWebContentsObserver
 
 }  // namespace
 
-class BraveShieldsWebContentsObserverTest : public InProcessBrowserTest {
+class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
  public:
-  BraveShieldsWebContentsObserverTest() {}
+  BraveShieldsWebContentsObserverBrowserTest() {}
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -91,7 +91,7 @@ class BraveShieldsWebContentsObserverTest : public InProcessBrowserTest {
   TestBraveShieldsWebContentsObserver* brave_shields_web_contents_observer_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverTest,
+IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
                        JavaScriptBlockedEvents) {
   const GURL& url = GURL("a.com");
 

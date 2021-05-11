@@ -6,11 +6,11 @@
 #include "brave/components/brave_shields/browser/ad_block_pref_service.h"
 
 #include "base/bind.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
@@ -19,13 +19,13 @@ namespace brave_shields {
 namespace {
 
 std::string GetTagFromPrefName(const std::string& pref_name) {
-  if (pref_name == kFBEmbedControlType) {
+  if (pref_name == prefs::kFBEmbedControlType) {
     return brave_shields::kFacebookEmbeds;
   }
-  if (pref_name == kTwitterEmbedControlType) {
+  if (pref_name == prefs::kTwitterEmbedControlType) {
     return brave_shields::kTwitterEmbeds;
   }
-  if (pref_name == kLinkedInEmbedControlType) {
+  if (pref_name == prefs::kLinkedInEmbedControlType) {
     return brave_shields::kLinkedInEmbeds;
   }
   return "";
@@ -39,20 +39,22 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
   pref_change_registrar_.reset(new PrefChangeRegistrar());
   pref_change_registrar_->Init(prefs_);
   pref_change_registrar_->Add(
-      kFBEmbedControlType,
+      prefs::kFBEmbedControlType,
       base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
-                          base::Unretained(this), kFBEmbedControlType));
+                          base::Unretained(this), prefs::kFBEmbedControlType));
   pref_change_registrar_->Add(
-      kTwitterEmbedControlType,
+      prefs::kTwitterEmbedControlType,
       base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
-                          base::Unretained(this), kTwitterEmbedControlType));
+                          base::Unretained(this),
+                          prefs::kTwitterEmbedControlType));
   pref_change_registrar_->Add(
-      kLinkedInEmbedControlType,
+      prefs::kLinkedInEmbedControlType,
       base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
-                          base::Unretained(this), kLinkedInEmbedControlType));
-  OnPreferenceChanged(kFBEmbedControlType);
-  OnPreferenceChanged(kTwitterEmbedControlType);
-  OnPreferenceChanged(kLinkedInEmbedControlType);
+                          base::Unretained(this),
+                          prefs::kLinkedInEmbedControlType));
+  OnPreferenceChanged(prefs::kFBEmbedControlType);
+  OnPreferenceChanged(prefs::kTwitterEmbedControlType);
+  OnPreferenceChanged(prefs::kLinkedInEmbedControlType);
 }
 
 AdBlockPrefService::~AdBlockPrefService() = default;

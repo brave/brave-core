@@ -25,10 +25,6 @@ const char kThresholdCheckMade[] = "brave.stats.threshold_check_made";
 // threshold ping was sent.
 const char kThresholdQuery[] = "brave.stats.threshold_query";
 const char kWeekOfInstallation[] = "brave.stats.week_of_installation";
-const char kAdBlockCheckedDefaultRegion[] =
-    "brave.ad_block.checked_default_region";
-const char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
-const char kAdBlockRegionalFilters[] = "brave.ad_block.regional_filters";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";
 const char kAskWidevineInstall[] = "brave.ask_widevine_install";
 const char kUseAlternativeSearchEngineProvider[] =
@@ -52,9 +48,6 @@ const char kShieldsStatsBadgeVisible[] =
     "brave.shields.stats_badge_visible";
 const char kAdControlType[] = "brave.ad_default";
 const char kGoogleLoginControlType[] = "brave.google_login_default";
-const char kFBEmbedControlType[] = "brave.fb_embed_default";
-const char kTwitterEmbedControlType[] = "brave.twitter_embed_default";
-const char kLinkedInEmbedControlType[] = "brave.linkedin_embed_default";
 const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
 const char kHangoutsEnabled[] = "brave.hangouts_enabled";
 const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";

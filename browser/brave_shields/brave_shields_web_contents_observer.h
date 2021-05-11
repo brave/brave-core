@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
+#ifndef BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
+#define BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
 
 #include <map>
 #include <set>
@@ -39,9 +39,9 @@ class BraveShieldsWebContentsObserver
       const std::string& block_type,
       const std::string& subresource,
       content::WebContents* web_contents);
-  static void DispatchBlockedEvent(std::string block_type,
-                                   std::string subresource,
-                                   int frame_tree_node_id);
+  static void DispatchBlockedEvent(const GURL& request_url,
+                                   int frame_tree_node_id,
+                                   const std::string& block_type);
   static GURL GetTabURLFromRenderFrameInfo(int render_frame_tree_node_id);
   void AllowScriptsOnce(const std::vector<std::string>& origins,
                         content::WebContents* web_contents);
@@ -62,12 +62,6 @@ class BraveShieldsWebContentsObserver
   // brave_shields::mojom::BraveShieldsHost.
   void OnJavaScriptBlocked(const std::u16string& details) override;
 
-  // TODO(iefremov): Refactor this away or at least put into base::NoDestructor.
-  // Protects global maps below from being concurrently written on the UI thread
-  // and read on the IO thread.
-  static base::Lock frame_data_map_lock_;
-  static std::map<int, GURL> frame_tree_node_id_to_tab_url_;
-
  private:
   friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
   std::vector<std::string> allowed_script_origins_;
@@ -84,4 +78,4 @@ class BraveShieldsWebContentsObserver
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
+#endif  // BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_

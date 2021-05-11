@@ -9,6 +9,7 @@
 
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
@@ -17,7 +18,7 @@
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -170,9 +171,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);
   registry->RegisterBooleanPref(kGoogleLoginControlType, true);
-  registry->RegisterBooleanPref(kFBEmbedControlType, true);
-  registry->RegisterBooleanPref(kTwitterEmbedControlType, true);
-  registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);
+  registry->RegisterBooleanPref(brave_shields::prefs::kFBEmbedControlType,
+                                true);
+  registry->RegisterBooleanPref(brave_shields::prefs::kTwitterEmbedControlType,
+                                true);
+  registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
+                                false);
 
 #if BUILDFLAG(IPFS_ENABLED)
   ipfs::IpfsService::RegisterPrefs(registry);

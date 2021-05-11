@@ -6,9 +6,9 @@
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 
 #include "base/logging.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -17,11 +17,10 @@ using brave_component_updater::BraveComponent;
 namespace brave_shields {
 
 AdBlockCustomFiltersService::AdBlockCustomFiltersService(
-    BraveComponent::Delegate* delegate) : AdBlockBaseService(delegate) {
-}
+    BraveComponent::Delegate* delegate)
+    : AdBlockBaseService(delegate) {}
 
-AdBlockCustomFiltersService::~AdBlockCustomFiltersService() {
-}
+AdBlockCustomFiltersService::~AdBlockCustomFiltersService() {}
 
 bool AdBlockCustomFiltersService::Init() {
   return UpdateCustomFilters(GetCustomFilters());
@@ -32,7 +31,7 @@ std::string AdBlockCustomFiltersService::GetCustomFilters() {
   PrefService* local_state = delegate()->local_state();
   if (!local_state)
     return std::string();
-  return local_state->GetString(kAdBlockCustomFilters);
+  return local_state->GetString(prefs::kAdBlockCustomFilters);
 }
 
 bool AdBlockCustomFiltersService::UpdateCustomFilters(
@@ -41,7 +40,7 @@ bool AdBlockCustomFiltersService::UpdateCustomFilters(
   PrefService* local_state = delegate()->local_state();
   if (!local_state)
     return false;
-  local_state->SetString(kAdBlockCustomFilters, custom_filters);
+  local_state->SetString(prefs::kAdBlockCustomFilters, custom_filters);
 
   GetTaskRunner()->PostTask(
       FROM_HERE,
@@ -58,7 +57,8 @@ bool AdBlockCustomFiltersService::MigrateLegacyCosmeticFilters(
   PrefService* local_state = delegate()->local_state();
   if (!local_state)
     return false;
-  std::string filters_update = local_state->GetString(kAdBlockCustomFilters);
+  std::string filters_update =
+      local_state->GetString(prefs::kAdBlockCustomFilters);
 
   filters_update +=
       "\n\n! Filters migrated from "
@@ -89,8 +89,8 @@ void AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<AdBlockCustomFiltersService>
-AdBlockCustomFiltersServiceFactory(BraveComponent::Delegate* delegate) {
+std::unique_ptr<AdBlockCustomFiltersService> AdBlockCustomFiltersServiceFactory(
+    BraveComponent::Delegate* delegate) {
   return std::make_unique<AdBlockCustomFiltersService>(delegate);
 }
 
