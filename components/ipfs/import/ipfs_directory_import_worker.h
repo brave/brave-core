@@ -21,16 +21,6 @@
 
 namespace ipfs {
 
-struct ImportFileInfo {
-  ImportFileInfo(base::FilePath full_path,
-                 base::FileEnumerator::FileInfo information) {
-    path = full_path;
-    info = information;
-  }
-  base::FilePath path;
-  base::FileEnumerator::FileInfo info;
-};
-
 class IpfsDirectoryImportWorker : public IpfsImportWorkerBase {
  public:
   IpfsDirectoryImportWorker(content::BrowserContext* context,
@@ -43,17 +33,14 @@ class IpfsDirectoryImportWorker : public IpfsImportWorkerBase {
   IpfsDirectoryImportWorker(const IpfsDirectoryImportWorker&) = delete;
   IpfsDirectoryImportWorker& operator=(const IpfsDirectoryImportWorker&) =
       delete;
-
+  void ImportFolder(const base::FilePath folder_path);
  private:
   void OnImportDataAvailable(const base::FilePath path);
 
-  void CreateRequestWithFolder(const std::string& mime_boundary,
-                               std::vector<ImportFileInfo> files);
   void OnImportAddComplete(std::unique_ptr<std::string> response_body);
 
   base::FilePath source_path_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
-  scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   base::WeakPtrFactory<IpfsDirectoryImportWorker> weak_factory_;
 };
 

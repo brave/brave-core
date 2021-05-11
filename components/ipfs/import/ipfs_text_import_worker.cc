@@ -32,6 +32,7 @@ IpfsTextImportWorker::IpfsTextImportWorker(content::BrowserContext* context,
                                            const std::string& host)
     : IpfsImportWorkerBase(context, endpoint, std::move(callback)) {
   ImportText(text, host);
+<<<<<<< HEAD
 =======
                                            const std::string& host,
                                            const std::string& key)
@@ -42,11 +43,34 @@ IpfsTextImportWorker::IpfsTextImportWorker(content::BrowserContext* context,
 >>>>>>> 935de1db9f (Remove keys submenu for tabs)
   StartImportText(text, host);
 >>>>>>> 7fb47a018f (Added IPNS keys manager UI to IPFS Settings)
+=======
+>>>>>>> e45207ba3b (Added keys import)
 }
 
 IpfsTextImportWorker::~IpfsTextImportWorker() = default;
 
 
+<<<<<<< HEAD
 
+=======
+void IpfsTextImportWorker::ImportText(const std::string& text,
+                                      const std::string& host) {
+  if (text.empty() || host.empty()) {
+    NotifyImportCompleted(IPFS_IMPORT_ERROR_REQUEST_EMPTY);
+    return;
+  }
+  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
+  std::string filename = host;
+  filename += "_";
+  filename += std::to_string(key);
+  auto blob_storage_context_getter =
+    content::BrowserContext::GetBlobStorageContext(GetBrowserContext());
+
+  auto upload_callback =
+      base::BindOnce(&IpfsTextImportWorker::UploadData, GetWeakPtr());
+  CreateRequestForText(text, filename, std::move(blob_storage_context_getter),
+                         std::move(upload_callback));
+}
+>>>>>>> e45207ba3b (Added keys import)
 
 }  // namespace ipfs

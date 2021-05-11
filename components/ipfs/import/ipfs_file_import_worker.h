@@ -30,7 +30,6 @@ class IpfsFileImportWorker : public IpfsImportWorkerBase {
   IpfsFileImportWorker& operator=(const IpfsFileImportWorker&) = delete;
 
  private:
-  base::WeakPtrFactory<IpfsFileImportWorker> weak_factory_;
 };
 
 }  // namespace ipfs

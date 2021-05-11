@@ -28,8 +28,8 @@ class IpfsTextImportWorker : public IpfsImportWorkerBase {
   IpfsTextImportWorker(const IpfsTextImportWorker&) = delete;
   IpfsTextImportWorker& operator=(const IpfsTextImportWorker&) = delete;
 
- private:
-  void StartImportText(const std::string& text, const std::string& host);
+  void ImportText(const std::string& text, const std::string& host);
+
 };
 
 }  // namespace ipfs

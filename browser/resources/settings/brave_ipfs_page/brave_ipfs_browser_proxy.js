@@ -13,6 +13,7 @@ export class BraveIPFSBrowserProxy {
   getIPFSResolveMethodList () {}
   getIPFSEnabled () {}
   setIPFSStorageMax (value) {}
+  importIpnsKey () {}
 }
 
 /**
@@ -25,6 +26,10 @@ export class BraveIPFSBrowserProxyImpl {
 
   setIPFSStorageMax (value) {
     chrome.send('setIPFSStorageMax', [value])
+  }
+
+  importIpnsKey (value) {
+    chrome.send('importIpnsKey', [value])
   }
 
   launchIPFSService () {

@@ -26,14 +26,9 @@ IpfsFileImportWorker::IpfsFileImportWorker(content::BrowserContext* context,
                                            ImportCompletedCallback callback,
                                            const base::FilePath& path,
                                            const std::string& key)
-    : IpfsImportWorkerBase(context, endpoint, std::move(callback), key),
-      weak_factory_(this) {
+    : IpfsImportWorkerBase(context, endpoint, std::move(callback), key) {
   std::string filename = path.BaseName().MaybeAsASCII();
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()}, base::BindOnce(&CalculateFileSize, path),
-      base::BindOnce(&IpfsFileImportWorker::CreateRequestWithFile,
-                     weak_factory_.GetWeakPtr(), path, kFileMimeType,
-                     filename));
+  ImportFile(path, kFileMimeType, filename);
 }
 
 IpfsFileImportWorker::~IpfsFileImportWorker() = default;

@@ -70,6 +70,13 @@ class IpfsImportWorkerBase {
 
   scoped_refptr<network::SharedURLLoaderFactory> GetUrlLoaderFactory();
 
+  scoped_refptr<network::SharedURLLoaderFactory> GetUrlLoaderFactory();
+  content::BrowserContext* GetBrowserContext();
+  
+  base::WeakPtr<IpfsImportWorkerBase> GetWeakPtr() {
+    return weak_factory_.GetWeakPtr();
+  }
+  
   virtual void NotifyImportCompleted(ipfs::ImportState state);
 
  private:

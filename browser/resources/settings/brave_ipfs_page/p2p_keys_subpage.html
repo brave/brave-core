@@ -55,13 +55,15 @@
     <div class="settings-row">
       <div class="flex cr-padded-text">
           $i18n{ipfsKeysListTitle}
+          <div class="secondary error-text" id="key-import-error" hidden="[[!importKeysError_]]">
+          </div>
       </div>
       <cr-button on-click="onAddKeyTap_" >
         $i18n{add}
       </cr-button>
     </div>
     <div class="flex" id="listContainer">
-      <iron-list items="[[keys_]]" class="flex"
+      <iron-list items="[[keys_]]" class="flex" id="keysList"
           preserve-focus risk-selection>
         <template>
           <div class="settings-box">

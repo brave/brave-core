@@ -65,7 +65,10 @@ Polymer({
     this.isNameValid_ = value;
     this.isSubmitButtonEnabled_ = value;
   },
-
+  onImportKeyTap_: function(item) {
+    this.browserProxy_.importIpnsKey(this.$.key.value)
+    this.fire('close');
+  },
   handleSubmit_: function() {
     var name = this.$.key.value
     this.browserProxy_.addIpnsKey(name).then(json => {

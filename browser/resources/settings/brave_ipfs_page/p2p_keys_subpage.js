@@ -47,6 +47,10 @@ Polymer({
       type: Boolean,
       value: false,
     },
+    importKeysError_: {
+      type: Boolean,
+      value: false,
+    },
     showAddp2pKeyDialog_: {
       type: Boolean,
       value: false,
@@ -64,13 +68,28 @@ Polymer({
     this.addWebUIListener('brave-ipfs-keys-loaded', (launched) => {
       this.updateKeys()
     })
+    this.addWebUIListener('brave-ipfs-key-imported', (key, value, success) => {
+      this.importKeysError_ = !success
+      if (this.importKeysError_ ) {
+        const errorLabel = (this.$$('#key-import-error'));
+        errorLabel.textContent = this.i18n('ipfsImporKeysError', key)
+        return;
+      }
+      this.keys_.push({ "name" : key, "value" : value});
+      const keysList =
+          /** @type {IronListElement} */ (this.$$('#keysList'));
+      if (keysList) {
+        keysList.notifyResize();
+      }
+    })
   },
 
   toggleUILayout: function(launched) {
     this.launchNodeButtonEnabled_ = !launched;
     this.localNodeLaunched = launched
+    this.importKeysError_ = false
     if (launched) {
-      this.localNodeLaunchError_ = false;
+      this.localNodeLaunchError_ = false
     } else {
       this.showAddp2pKeyDialog_ = false
     }

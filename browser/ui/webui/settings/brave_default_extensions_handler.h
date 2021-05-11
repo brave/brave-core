@@ -20,6 +20,7 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
+#include "ui/shell_dialogs/select_file_dialog.h"
 #endif
 
 class Profile;
@@ -27,7 +28,8 @@ class Profile;
 class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
 #if BUILDFLAG(IPFS_ENABLED)
     ,
-                                      ipfs::IpfsServiceObserver
+                                      ipfs::IpfsServiceObserver,
+                                      public ui::SelectFileDialog::Listener
 #endif
 {
  public:
@@ -46,6 +48,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void SetIPFSCompanionEnabled(const base::ListValue* args);
   void SetMediaRouterEnabled(const base::ListValue* args);
   void SetIPFSStorageMax(const base::ListValue* args);
+  void ImportIpnsKey(const base::ListValue* args);
   void LaunchIPFSService(const base::ListValue* args);
   void ShutdownIPFSService(const base::ListValue* args);
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -74,10 +77,21 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   bool IsRestartNeeded();
 
 #if BUILDFLAG(IPFS_ENABLED)
+  // ui::SelectFileDialog::Listener
+  void FileSelected(const base::FilePath& path,
+                    int index,
+                    void* params) override;
+  void FileSelectionCanceled(void* params) override;
+
+  void OnKeyImported(const std::string& key,
+                     const std::string& value,
+                     bool success);
   // ipfs::IpfsServiceObserver
   void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnIpfsShutdown() override;
   void OnIpnsKeysLoaded(bool success) override;
+  std::string dialog_key_;
+  scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
