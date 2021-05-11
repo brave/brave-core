@@ -117,7 +117,8 @@ export function getVerifyWalletPanel (
   locale: Locale,
   props: RewardsTourProps
 ): TourPanel | null {
-  if (!props.firstTimeSetup || props.onlyAnonWallet) {
+  if (!props.firstTimeSetup || props.onlyAnonWallet ||
+      !props.onVerifyWalletClick) {
     return null
   }
 
@@ -144,7 +145,7 @@ export function getVerifyWalletPanel (
             formatMessage(getString('onboardingPanelBitflyerLearnMore'), {
               tags: {
                 $1: (content) => (
-                  <NewTabLink href='https://brave.com/ja/users-bitflyer/'>
+                  <NewTabLink key='learn-more' href='https://brave.com/ja/users-bitflyer/'>
                     {content}
                   </NewTabLink>
                 )
