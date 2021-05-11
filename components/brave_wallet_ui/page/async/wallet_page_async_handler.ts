@@ -6,16 +6,16 @@
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as Actions from '../actions/wallet_page_actions'
-import { State, WalletPageReducerState } from '../../constants/types'
+import { PageState, WalletPageState } from '../../constants/types'
 
 const handler = new AsyncActionHandler()
 
-function getState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): WalletPageReducerState {
-  return (store.getState() as State).walletPageReducer
+function getPageState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PageState {
+  return (store.getState() as WalletPageState).page
 }
 
 handler.on(Actions.initialize.getType(), async (store) => {
-  const state = getState(store)
+  const state = getPageState(store)
   // Sanity check we only initialize once
   if (state.hasInitialized) {
     return

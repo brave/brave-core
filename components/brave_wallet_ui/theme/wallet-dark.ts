@@ -10,7 +10,7 @@ import colors from 'brave-ui/theme/colors'
 
 const walletDarkTheme: ITheme & IThemeWallet = {
   ...defaultTheme,
-  name: 'Wallet  Dark',
+  name: 'Wallet Dark',
   color: {
     ...defaultTheme.color,
     text: colors.white,

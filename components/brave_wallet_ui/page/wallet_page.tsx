@@ -27,8 +27,9 @@ import LegacyApp from '../components/legacy_app'
 import {
   NavTypes,
   NavObjectType,
-  State,
-  WalletPageReducerState
+  WalletState,
+  PageState,
+  WalletPageState
 } from '../constants/types'
 import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
@@ -39,7 +40,8 @@ import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 
 type Props = {
-  page: WalletPageReducerState
+  wallet: WalletState
+  page: PageState
   actions: typeof WalletPageActions
 }
 
@@ -79,9 +81,10 @@ function Page (props: Props) {
   )
 }
 
-function mapStateToProps (state: State): Partial<Props> {
+function mapStateToProps (state: WalletPageState): Partial<Props> {
   return {
-    page: state.walletPageReducer
+    page: state.page,
+    wallet: state.wallet
   }
 }
 

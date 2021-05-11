@@ -15,16 +15,18 @@ import { ConnectWithSite } from '../components/extension'
 import { StyledExtensionWrapper } from '../stories/style'
 import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
-import { State, WalletPanelReducerState, WalletAccountType } from '../constants/types'
+import { WalletState, PanelState, WalletPanelState, WalletAccountType } from '../constants/types'
 
 type Props = {
-  panel: WalletPanelReducerState
+  panel: PanelState
+  wallet: WalletState
   actions: typeof WalletPanelActions
 }
 
-function mapStateToProps (state: State): Partial<Props> {
+function mapStateToProps (state: WalletPanelState): Partial<Props> {
   return {
-    panel: state.walletPanelReducer
+    panel: state.panel,
+    wallet: state.wallet
   }
 }
 

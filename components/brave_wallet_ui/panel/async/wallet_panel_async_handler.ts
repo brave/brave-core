@@ -6,7 +6,7 @@
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as Actions from '../actions/wallet_panel_actions'
-import { State, WalletPanelReducerState } from '../../constants/types'
+import { WalletPanelState, PanelState } from '../../constants/types'
 import { AccountPayloadType } from '../constants/action_types'
 
 const handler = new AsyncActionHandler()
@@ -17,12 +17,12 @@ async function getAPIProxy () {
   return api.default.getInstance()
 }
 
-function getState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): WalletPanelReducerState {
-  return (store.getState() as State).walletPanelReducer
+function getPanelState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PanelState {
+  return (store.getState() as WalletPanelState).panel
 }
 
 handler.on(Actions.initialize.getType(), async (store) => {
-  const state = getState(store)
+  const state = getPanelState(store)
   // Sanity check we only initialize once
   if (state.hasInitialized) {
     return

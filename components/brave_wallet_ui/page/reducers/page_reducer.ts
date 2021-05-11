@@ -6,16 +6,16 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_page_actions'
-import { WalletPageReducerState } from '../../constants/types'
+import { PageState } from '../../constants/types'
 import { InitializedPayloadType } from '../constants/action_types'
 
-const defaultState: WalletPageReducerState = {
+const defaultState: PageState = {
   hasInitialized: false
 }
 
-const reducer = createReducer<WalletPageReducerState>({}, defaultState)
+const reducer = createReducer<PageState>({}, defaultState)
 
-reducer.on(Actions.initialized, (state: WalletPageReducerState, payload: InitializedPayloadType) => {
+reducer.on(Actions.initialized, (state: PageState, payload: InitializedPayloadType) => {
   return {
     ...state,
     hasInitialized: true,

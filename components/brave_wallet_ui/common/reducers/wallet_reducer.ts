@@ -2,13 +2,14 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* global window */
 
-import { combineReducers } from 'redux'
+import { createReducer } from 'redux-act'
+import { WalletState } from '../../constants/types'
 
-import panelReducer from './panel_reducer'
-import walletReducer from '../../common/reducers/wallet_reducer'
+const defaultState: WalletState = {
+}
 
-export default combineReducers({
-  panel: panelReducer,
-  wallet: walletReducer
-})
+const reducer = createReducer<WalletState>({}, defaultState)
+
+export default reducer

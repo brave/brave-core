@@ -5,9 +5,10 @@
 
 import { combineReducers } from 'redux'
 
-// Utils
-import walletPageReducer from './wallet_page_reducer'
+import pageReducer from './page_reducer'
+import walletReducer from '../../common/reducers/wallet_reducer'
 
 export default combineReducers({
-  walletPageReducer
+  page: pageReducer,
+  wallet: walletReducer
 })

@@ -6,10 +6,10 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_panel_actions'
-import { WalletPanelReducerState } from '../../constants/types'
+import { PanelState } from '../../constants/types'
 import { InitializedPayloadType } from '../constants/action_types'
 
-const defaultState: WalletPanelReducerState = {
+const defaultState: PanelState = {
   hasInitialized: false,
   // TODO(bbondy): isConnected, connectedSiteOrigin, and accounts is just test
   // data to start with until the keyring controller is ready.
@@ -36,9 +36,9 @@ const defaultState: WalletPanelReducerState = {
   }]
 }
 
-const reducer = createReducer<WalletPanelReducerState>({}, defaultState)
+const reducer = createReducer<PanelState>({}, defaultState)
 
-reducer.on(Actions.initialized, (state: WalletPanelReducerState, payload: InitializedPayloadType) => {
+reducer.on(Actions.initialized, (state: PanelState, payload: InitializedPayloadType) => {
   return {
     ...state,
     hasInitialized: true,
