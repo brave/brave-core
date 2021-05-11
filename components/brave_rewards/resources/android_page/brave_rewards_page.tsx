@@ -25,6 +25,9 @@ window.cr.define('brave_rewards', function () {
   'use strict'
 
   function initialize () {
+    // Notify WebUI message handler that page is ready for callbacks.
+    chrome.send('pageReady')
+
     window.i18nTemplate.process(window.document, window.loadTimeData)
     if (window.loadTimeData && window.loadTimeData.data_) {
       initLocale(window.loadTimeData.data_)

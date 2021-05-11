@@ -64,6 +64,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RegisterMessages() override;
 
  private:
+  void PageReady(const base::ListValue* args);
   void IsInitialized(const base::ListValue* args);
   void GetRewardsParameters(const base::ListValue* args);
   void GetAutoContributeProperties(const base::ListValue* args);
@@ -480,6 +481,9 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.saveOnboardingResult",
       base::BindRepeating(&RewardsDOMHandler::SaveOnboardingResult,
       base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "pageReady", base::BindRepeating(&RewardsDOMHandler::PageReady,
+                                       base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
@@ -492,8 +496,13 @@ void RewardsDOMHandler::Init() {
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
 }
 
-void RewardsDOMHandler::IsInitialized(const base::ListValue* args) {
+void RewardsDOMHandler::PageReady(const base::ListValue* args) {
   AllowJavascript();
+}
+
+void RewardsDOMHandler::IsInitialized(const base::ListValue* args) {
+  if (!IsJavascriptAllowed())
+    return;
 
   if (rewards_service_ && rewards_service_->IsInitialized()) {
     CallJavascriptFunction("brave_rewards.initialized", base::Value(0));
@@ -663,9 +672,7 @@ void RewardsDOMHandler::ClaimPromotion(const base::ListValue* args) {
 void RewardsDOMHandler::AttestPromotion(const base::ListValue *args) {
   CHECK_EQ(2U, args->GetSize());
   if (!rewards_service_) {
-    base::DictionaryValue finish;
-    finish.SetInteger("status", 1);
-    CallJavascriptFunction("brave_rewards.promotionFinish", finish);
+    return;
   }
 
   const std::string promotion_id = args->GetList()[0].GetString();
@@ -1621,6 +1628,9 @@ void RewardsDOMHandler::OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,
       const ledger::type::Result result,
       const std::string& wallet_type) {
+  if (!IsJavascriptAllowed())
+    return;
+
   base::Value data(base::Value::Type::DICTIONARY);
   data.SetIntKey("result", static_cast<int>(result));
   data.SetStringKey("walletType", wallet_type);
@@ -1642,7 +1652,7 @@ void RewardsDOMHandler::OnAdsEnabled(
 }
 
 void RewardsDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
-  if (!rewards_service_) {
+  if (!rewards_service_ || !IsJavascriptAllowed()) {
     return;
   }
 
@@ -1799,6 +1809,9 @@ void RewardsDOMHandler::GetMonthlyReport(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnGetAllMonthlyReportIds(
     const std::vector<std::string>& ids) {
+  if (!IsJavascriptAllowed())
+    return;
+
   base::Value list(base::Value::Type::LIST);
   for (const auto& item : ids) {
     list.Append(base::Value(item));
