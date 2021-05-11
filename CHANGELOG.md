@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.25](https://github.com/brave/brave-ios/releases/tag/v1.25)
+
+- Added Playlists. ([#3368](https://github.com/brave/brave-ios/issues/3368))
+- Added setting for “Show Last Visited Bookmarks”. ([#3371](https://github.com/brave/brave-ios/issues/3371))
+- Dropped support for iOS 12. ([#3369](https://github.com/brave/brave-ios/issues/3369))
+- Updated legacy wallet transfer UI to display progress and current state of pending transfers. ([#3162](https://github.com/brave/brave-ios/issues/3162))
+- Updated HTTPS Everywhere data files. ([#3358](https://github.com/brave/brave-ios/issues/3358))
+- Updated themes to match Brave color palettes. ([#3482](https://github.com/brave/brave-ios/issues/3482))
+- Removed educational notification for HTTPS upgrade. ([#3556](https://github.com/brave/brave-ios/issues/3556))
+- Fixed context menu not being displayed when double tapping in URL input. ([#3444](https://github.com/brave/brave-ios/issues/3444))
+- Fixed rewards outbound calls being made when no interaction with rewards has occurred. ([#3410](https://github.com/brave/brave-ios/issues/3410))
+- Fixed tab bar theme not changing when device theme is changed via iOS control center. ([#3549](https://github.com/brave/brave-ios/issues/3549))
+- Fixed duplicate text appearing on VPN subscription modal. ([#3484](https://github.com/brave/brave-ios/issues/3484))
+
 ## [1.24](https://github.com/brave/brave-ios/releases/tag/v1.24)
 
 - Implemented opt-in for Brave Today. ([#3374](https://github.com/brave/brave-ios/issues/3374))
