@@ -1596,20 +1596,6 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now
       </message>
-      <message name="IDS_REWARDS_TOOLTIP_TITLE" desc="Rewards tooltip title">
-        Brave Rewards in Japan is switching to a new system!
-      </message>
-      <message name="IDS_REWARDS_TOOLTIP_TEXT" desc="Rewards tooltip text">
-        Starting March 13th, you won’t be able to use your BAP. But once you
-        update to the new system in April, you’ll start off with new tokens!
-      </message>
-      <message name="IDS_REWARDS_MODAL_TEXT" desc="Rewards modal text">
-        As part of this transition, the tipping and contribution features in
-        your browser will be temporarily unavailable starting March 13th, and
-        your BAP balance will show 0.0 until you have updated to the new system
-        in April. Once you’re on the new system, you’ll start off with new
-        tokens!
-      </message>
       <message name="IDS_VALUE_1" desc="value for 1">
         1
       </message>

@@ -36,7 +36,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveSyncReflectionUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveUphold.java",
   "../../brave/android/java/org/chromium/chrome/browser/CrossPromotionalModalDialogFragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/DeprecateBAPModalDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/InternetConnection.java",
   "../../brave/android/java/org/chromium/chrome/browser/QRCodeShareDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/SetDefaultBrowserActivity.java",
