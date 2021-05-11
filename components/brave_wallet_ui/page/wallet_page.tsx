@@ -10,7 +10,6 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { initLocale } from 'brave-ui'
 
 import * as WalletPageActions from './actions/wallet_page_actions'
-import { State, WalletPageReducerState } from '../constants/types'
 import store from './store'
 
 import 'emptykit.css'
@@ -27,7 +26,9 @@ import {
 import LegacyApp from '../components/legacy_app'
 import {
   NavTypes,
-  NavObjectType
+  NavObjectType,
+  State,
+  WalletPageReducerState
 } from '../constants/types'
 import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
@@ -40,27 +41,6 @@ import walletLightTheme from '../theme/wallet-light'
 type Props = {
   page: WalletPageReducerState
   actions: typeof WalletPageActions
-}
-
-function App () {
-  const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
-  React.useEffect(() => {
-    chrome.braveTheme.getBraveThemeType(setInitialThemeType)
-  }, [])
-  return (
-    <Provider store={store}>
-      {initialThemeType &&
-      <BraveCoreThemeProvider
-        initialThemeType={initialThemeType}
-        dark={walletDarkTheme}
-        light={walletLightTheme}
-      >
-        <PageWithState
-        />
-      </BraveCoreThemeProvider>
-      }
-    </Provider>
-  )
 }
 
 function Page (props: Props) {
@@ -113,13 +93,34 @@ function mapDispatchToProps (dispatch: Dispatch): Partial<Props> {
 
 const PageWithState = connect(mapStateToProps, mapDispatchToProps)(Page)
 
+function App () {
+  const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
+  React.useEffect(() => {
+    chrome.braveTheme.getBraveThemeType(setInitialThemeType)
+  }, [])
+  return (
+    <Provider store={store}>
+      {initialThemeType &&
+      <BraveCoreThemeProvider
+        initialThemeType={initialThemeType}
+        dark={walletDarkTheme}
+        light={walletLightTheme}
+      >
+        <PageWithState
+        />
+      </BraveCoreThemeProvider>
+      }
+    </Provider>
+  )
+}
+
 function initialize () {
-  chrome.braveWallet.isNativeWalletEnabled((new_wallet_enabled) => {
-    if (new_wallet_enabled) {
+  chrome.braveWallet.isNativeWalletEnabled((enabled: boolean) => {
+    if (enabled) {
       store.dispatch(WalletPageActions.initialize())
       render(<App />, document.getElementById('root'))
     } else {
-      initializeOldWallet ();
+      initializeOldWallet()
     }
   })
 }

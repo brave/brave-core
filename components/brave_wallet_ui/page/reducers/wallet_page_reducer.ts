@@ -10,7 +10,7 @@ import { WalletPageReducerState } from '../../constants/types'
 import { InitializedPayloadType } from '../constants/action_types'
 
 const defaultState: WalletPageReducerState = {
-  hasInitialized: false,
+  hasInitialized: false
 }
 
 const reducer = createReducer<WalletPageReducerState>({}, defaultState)

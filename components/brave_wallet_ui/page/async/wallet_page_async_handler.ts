@@ -22,7 +22,7 @@ handler.on(Actions.initialize.getType(), async (store) => {
   }
   // TODO: Fetch any data we need for initial display, instead of fake wait.
   await new Promise(resolve => setTimeout(resolve, 400))
-  store.dispatch(Actions.initialized({isConnected: true}))
+  store.dispatch(Actions.initialized({ isConnected: true }))
   return
 })
 

@@ -316,6 +316,7 @@ declare namespace chrome.braveWallet {
   const shouldCheckForDapps: (callback: (dappDetection: boolean) => void) => void
   const shouldPromptForSetup: (callback: (dappDetection: boolean) => void) => void
   const loadUI: (callback: () => void) => void
+  const isNativeWalletEnabled: (callback: (enabled: boolean) => void) => void
 }
 
 declare namespace chrome.ipfs {
