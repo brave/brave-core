@@ -310,6 +310,8 @@ source_set("ui") {
       "views/sidebar/sidebar_container_view.h",
       "views/sidebar/sidebar_control_view.cc",
       "views/sidebar/sidebar_control_view.h",
+      "views/sidebar/sidebar_item_add_button.cc",
+      "views/sidebar/sidebar_item_add_button.h",
       "views/sidebar/sidebar_item_added_feedback_bubble.cc",
       "views/sidebar/sidebar_item_added_feedback_bubble.h",
       "views/sidebar/sidebar_item_drag_context.cc",
