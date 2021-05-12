@@ -30,9 +30,6 @@ class PaddedImageButton : public views::ImageButton {
 
   void AdjustBorderInsetToFitHeight(const int height);
 
-  // views::InkDropHostView:
-  std::unique_ptr<views::InkDrop> CreateInkDrop() override;
-
   // views::Button:
   void OnThemeChanged() override;
 

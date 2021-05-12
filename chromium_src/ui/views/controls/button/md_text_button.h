@@ -38,7 +38,6 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   ~MdTextButton() override;
 
   // InkDrop
-  std::unique_ptr<InkDrop> CreateInkDrop() override;
   std::unique_ptr<views::InkDropHighlight> CreateInkDropHighlight()
       const override;
 

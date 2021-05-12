@@ -76,6 +76,9 @@ MdTextButton::MdTextButton(PressedCallback callback,
   SetCornerRadius(100);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
+  views::InkDrop::UseInkDropForFloodFillRipple(ink_drop(),
+                                               /*highlight_on_hover=*/false,
+                                               /*highlight_on_focus=*/true);
 }
 
 MdTextButton::~MdTextButton() = default;
@@ -105,17 +108,6 @@ void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
     canvas->DrawRoundRect(gfx::RectF(GetLocalBounds()), GetCornerRadius(),
                           flags);
   }
-}
-
-std::unique_ptr<InkDrop> MdTextButton::CreateInkDrop() {
-  // We don't need a highlight on hover, the hover color
-  // is handled by the OnPaintBackground and brave-style doesn't
-  // have a shadow. Plus, it's very difficult (impossible?) to create
-  // a drop-shadow when clipping the ink drop to the rounded button.
-  std::unique_ptr<InkDrop> ink_drop = InkDropHostView::CreateInkDrop();
-  ink_drop->SetShowHighlightOnFocus(true);
-  ink_drop->SetShowHighlightOnHover(false);
-  return ink_drop;
 }
 
 std::unique_ptr<views::InkDropHighlight> MdTextButton::CreateInkDropHighlight()

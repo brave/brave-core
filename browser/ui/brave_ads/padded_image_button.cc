@@ -36,6 +36,10 @@ const float kVisibleOpacity = 0.12f;
 
 PaddedImageButton::PaddedImageButton(PressedCallback callback)
     : views::ImageButton(callback) {
+  views::InkDrop::UseInkDropForSquareRipple(ink_drop(),
+                                            /*highlight_on_hover=*/false,
+                                            /*highlight_on_focus=*/false);
+
   SetBackground(views::CreateSolidBackground(kBackgroundColor));
 
   SetBorder(views::CreateEmptyBorder(kBorderInset));
@@ -58,13 +62,6 @@ void PaddedImageButton::AdjustBorderInsetToFitHeight(const int height) {
 
   insets += gfx::Insets(0, 0, /* bottom */ inset, 0);
   SetBorder(views::CreateEmptyBorder(insets));
-}
-
-std::unique_ptr<views::InkDrop> PaddedImageButton::CreateInkDrop() {
-  std::unique_ptr<views::InkDropImpl> ink_drop = CreateDefaultInkDropImpl();
-  ink_drop->SetShowHighlightOnHover(false);
-  ink_drop->SetShowHighlightOnFocus(false);
-  return std::move(ink_drop);
 }
 
 void PaddedImageButton::OnThemeChanged() {
