@@ -16,13 +16,13 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/content/common/frame_messages.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
@@ -77,27 +77,14 @@ BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     std::unique_ptr<Delegate> delegate)
     : ContentSettingsAgentImpl(render_frame,
                                should_whitelist,
-                               std::move(delegate)) {}
+                               std::move(delegate)) {
+  render_frame->GetAssociatedInterfaceRegistry()->AddInterface(
+      base::BindRepeating(
+          &BraveContentSettingsAgentImpl::BindBraveShieldsReceiver,
+          base::Unretained(this)));
+}
 
 BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {}
-
-bool BraveContentSettingsAgentImpl::OnMessageReceived(
-    const IPC::Message& message) {
-  bool handled = true;
-  IPC_BEGIN_MESSAGE_MAP(BraveContentSettingsAgentImpl, message)
-    IPC_MESSAGE_HANDLER(BraveFrameMsg_AllowScriptsOnce, OnAllowScriptsOnce)
-    IPC_MESSAGE_UNHANDLED(handled = false)
-  IPC_END_MESSAGE_MAP()
-
-  if (handled)
-    return true;
-  return ContentSettingsAgentImpl::OnMessageReceived(message);
-}
-
-void BraveContentSettingsAgentImpl::OnAllowScriptsOnce(
-    const std::vector<std::string>& origins) {
-  preloaded_temporarily_allowed_scripts_ = std::move(origins);
-}
 
 void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
     ui::PageTransition transition) {
@@ -316,6 +303,17 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
                "ContentSettingsAgentImpl::AllowAutoplay says so";
   }
   return allow;
+}
+
+void BraveContentSettingsAgentImpl::SetAllowScriptsFromOriginsOnce(
+    const std::vector<std::string>& origins) {
+  preloaded_temporarily_allowed_scripts_ = std::move(origins);
+}
+
+void BraveContentSettingsAgentImpl::BindBraveShieldsReceiver(
+    mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShields>
+        pending_receiver) {
+  brave_shields_receivers_.Add(this, std::move(pending_receiver));
 }
 
 mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>&

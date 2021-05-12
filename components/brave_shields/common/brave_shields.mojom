@@ -11,3 +11,9 @@ interface BraveShieldsHost {
   // passing the details in |details| as a 16-bit string.
   OnJavaScriptBlocked(mojo_base.mojom.String16 details);
 };
+
+interface BraveShields {
+  // Tell the associated RenderFrame(s) to temporary allow scripts from a list
+  // of origins once.
+  SetAllowScriptsFromOriginsOnce(array<string> origins);
+};
