@@ -131,15 +131,17 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   web_ui->AddMessageHandler(
       std::make_unique<settings::SearchEnginesHandler>(profile));
 
-  profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
-
   // Open additional page in Japanese region
-  int country_id = country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
-  if (country_id == country_codes::CountryStringToCountryID("JP")) {
-    base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
-        FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
-        base::TimeDelta::FromSeconds(3));
+  if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
+    int country_id = country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
+    if (country_id == country_codes::CountryStringToCountryID("JP")) {
+      base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+          FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
+          base::TimeDelta::FromSeconds(3));
+    }
   }
+
+  profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 }
 
 BraveWelcomeUI::~BraveWelcomeUI() {
