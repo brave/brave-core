@@ -8,4 +8,7 @@ specific_include_rules = {
   "speedreader_throttle.h": [
     "+third_party/blink/public",
   ],
+  "speedreader_util.h": [
+    "+third_party/re2",
+  ],
 }
