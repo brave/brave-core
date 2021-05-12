@@ -405,7 +405,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
                 style: .default,
                 handler: { [weak self] _ in
                     self?.toolbarUrlActionsDelegate?.batchOpen(urls)
-                    self?.dismiss(animated: true)
+                    self?.presentingViewController?.dismiss(animated: true)
                 }
             )
         ]
@@ -438,7 +438,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
                 self.showEditBookmarkController(bookmark: bookmark)
             } else {
                 if let url = URL(string: bookmark.url ?? "") {
-                    dismiss(animated: true) {
+                    presentingViewController?.dismiss(animated: true) {
                         self.toolbarUrlActionsDelegate?.select(url: url, visitType: .bookmark)
                     }
                 }

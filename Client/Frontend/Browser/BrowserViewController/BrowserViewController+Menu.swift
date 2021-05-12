@@ -53,6 +53,10 @@ extension BrowserViewController {
         VStack(alignment: .leading, spacing: 0) {
             MenuTabDetailsView(tab: tabManager.selectedTab, url: tabURL)
             VStack(spacing: 0) {
+                MenuItemButton(icon: #imageLiteral(resourceName: "nav-share").template, title: Strings.shareWithMenuItem) {
+                    self.dismiss(animated: true)
+                    self.tabToolbarDidPressShare()
+                }
                 MenuItemButton(icon: #imageLiteral(resourceName: "menu-add-bookmark").template, title: Strings.addToMenuItem) {
                     self.dismiss(animated: true) {
                         self.openAddBookmark()
@@ -64,10 +68,6 @@ extension BrowserViewController {
                             activity.perform()
                         }
                     }
-                }
-                MenuItemButton(icon: #imageLiteral(resourceName: "nav-share").template, title: Strings.shareWithMenuItem) {
-                    self.dismiss(animated: true)
-                    self.tabToolbarDidPressShare()
                 }
             }
         }
