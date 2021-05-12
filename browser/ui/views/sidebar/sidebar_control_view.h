@@ -16,6 +16,7 @@
 
 class BraveBrowser;
 class SidebarButtonView;
+class SidebarItemAddButton;
 class SidebarItemsScrollView;
 class SidebarContainerView;
 
@@ -62,6 +63,9 @@ class SidebarControlView : public views::View,
 
   void Update();
 
+  bool IsItemReorderingInProgress() const;
+  bool IsBubbleWidgetVisible() const;
+
  private:
   void AddChildViews();
 
@@ -74,7 +78,7 @@ class SidebarControlView : public views::View,
 
   BraveBrowser* browser_ = nullptr;
   SidebarItemsScrollView* sidebar_items_view_ = nullptr;
-  SidebarButtonView* sidebar_item_add_view_ = nullptr;
+  SidebarItemAddButton* sidebar_item_add_view_ = nullptr;
   SidebarButtonView* sidebar_settings_view_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> context_menu_model_;
   std::unique_ptr<views::MenuRunner> context_menu_runner_;

@@ -77,6 +77,9 @@ class SidebarItemsScrollView : public views::View,
   void OnFaviconUpdatedForItem(const sidebar::SidebarItem& item,
                                const gfx::ImageSkia& image) override;
 
+  bool IsItemReorderingInProgress() const;
+  bool IsBubbleVisible() const;
+
  private:
   void UpdateArrowViewsTheme();
   void UpdateArrowViewsEnabledState();

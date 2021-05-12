@@ -37,7 +37,7 @@ void SidebarItemAddButton::OnWidgetDestroying(views::Widget* widget) {
 }
 
 void SidebarItemAddButton::ShowBubbleWithDelay() {
-  if (observation_.IsObserving())
+  if (IsBubbleVisible())
     return;
 
   if (timer_.IsRunning())
@@ -54,4 +54,8 @@ void SidebarItemAddButton::DoShowBubble() {
       new SidebarAddItemBubbleDelegateView(browser_, this));
   observation_.Observe(bubble);
   bubble->Show();
+}
+
+bool SidebarItemAddButton::IsBubbleVisible() const {
+  return observation_.IsObserving();
 }

@@ -265,3 +265,20 @@ void SidebarControlView::UpdateSettingsButtonState() {
         bundle.GetImageSkiaNamed(IDR_SIDEBAR_SETTINGS_FOCUSED));
   }
 }
+
+bool SidebarControlView::IsItemReorderingInProgress() const {
+  return sidebar_items_view_->IsItemReorderingInProgress();
+}
+
+bool SidebarControlView::IsBubbleWidgetVisible() const {
+  if (context_menu_runner_ && context_menu_runner_->IsRunning())
+    return true;
+
+  if (sidebar_item_add_view_->IsBubbleVisible())
+    return true;
+
+  if (sidebar_items_view_->IsBubbleVisible())
+    return true;
+
+  return false;
+}

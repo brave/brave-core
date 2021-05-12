@@ -18,8 +18,12 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/browser_context.h"
 #include "ui/base/theme_provider.h"
+#include "ui/events/event_observer.h"
+#include "ui/events/types/event_type.h"
+#include "ui/gfx/geometry/point.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/webview/webview.h"
+#include "ui/views/event_monitor.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -33,8 +37,43 @@ sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
 
 }  // namespace
 
+class SidebarContainerView::BrowserWindowEventObserver
+    : public ui::EventObserver {
+ public:
+  explicit BrowserWindowEventObserver(SidebarContainerView* host)
+      : host_(host) {}
+  ~BrowserWindowEventObserver() override = default;
+  BrowserWindowEventObserver(const BrowserWindowEventObserver&) = delete;
+  BrowserWindowEventObserver& operator=(const BrowserWindowEventObserver&) =
+      delete;
+
+  void OnEvent(const ui::Event& event) override {
+    DCHECK(event.IsMouseEvent());
+    const auto* mouse_event = event.AsMouseEvent();
+
+    gfx::Point window_event_position = mouse_event->location();
+    // Convert window position to sidebar view's coordinate and check whether
+    // it's included in sidebar ui or not.
+    // If it's not included and sidebar could be hidden, stop monitoring and
+    // hide UI.
+    views::View::ConvertPointFromWidget(host_->sidebar_control_view_,
+                                        &window_event_position);
+    if (!host_->sidebar_control_view_->GetLocalBounds().Contains(
+            window_event_position) &&
+        !host_->ShouldShowSidebar()) {
+      host_->StopBrowserWindowEventMonitoring();
+      host_->ShowSidebar(false, true);
+    }
+  }
+
+ private:
+  SidebarContainerView* host_ = nullptr;
+};
+
 SidebarContainerView::SidebarContainerView(BraveBrowser* browser)
-    : browser_(browser) {
+    : browser_(browser),
+      browser_window_event_observer_(
+          std::make_unique<BrowserWindowEventObserver>(this)) {
   SetNotifyEnterExitOnChild(true);
 }
 
@@ -128,17 +167,25 @@ void SidebarContainerView::OnThemeChanged() {
   UpdateBackgroundAndBorder();
 }
 
-void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
-  if (sidebar_panel_view_->GetVisible())
-    return;
+bool SidebarContainerView::ShouldShowSidebar() const {
+  return sidebar_panel_view_->GetVisible() ||
+         sidebar_control_view_->IsItemReorderingInProgress() ||
+         sidebar_control_view_->IsBubbleWidgetVisible();
+}
 
+void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
   const auto show_option = GetSidebarService(browser_)->GetSidebarShowOption();
-  const bool show_options_widget =
+  const bool autohide_sidebar =
       show_option == ShowSidebarOption::kShowOnMouseOver ||
       show_option == ShowSidebarOption::kShowOnClick;
 
-  if (!show_options_widget)
+  if (!autohide_sidebar)
     return;
+
+  if (ShouldShowSidebar()) {
+    StartBrowserWindowEventMonitoring();
+    return;
+  }
 
   ShowSidebar(false, true);
 }
@@ -185,4 +232,17 @@ void SidebarContainerView::ShowSidebar(bool show_sidebar,
   sidebar_control_view_->SetVisible(show_sidebar);
   ShowOptionsEventDetectWidget(show_event_detect_widget);
   InvalidateLayout();
+}
+
+void SidebarContainerView::StartBrowserWindowEventMonitoring() {
+  if (browser_window_event_monitor_)
+    return;
+
+  browser_window_event_monitor_ = views::EventMonitor::CreateWindowMonitor(
+      browser_window_event_observer_.get(), GetWidget()->GetNativeWindow(),
+      {ui::ET_MOUSE_MOVED});
+}
+
+void SidebarContainerView::StopBrowserWindowEventMonitoring() {
+  browser_window_event_monitor_.reset();
 }

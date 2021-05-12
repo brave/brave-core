@@ -31,6 +31,8 @@ class SidebarItemAddButton : public SidebarButtonView,
   // views::WidgetObserver overrides:
   void OnWidgetDestroying(views::Widget* widget) override;
 
+  bool IsBubbleVisible() const;
+
  private:
   void ShowBubbleWithDelay();
   void DoShowBubble();
