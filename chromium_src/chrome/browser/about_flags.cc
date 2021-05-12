@@ -119,7 +119,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES
 #endif
 
-#define BRAVE_FEATURE_ENTRIES                                               \
+#define BRAVE_FEATURE_ENTRIES ,                                             \
     {"use-dev-updater-url",                                                 \
      flag_descriptions::kUseDevUpdaterUrlName,                              \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,               \
