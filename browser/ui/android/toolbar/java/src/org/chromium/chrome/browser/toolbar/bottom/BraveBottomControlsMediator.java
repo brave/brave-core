@@ -44,6 +44,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
         // We should keep it visible if bottom toolbar is visible.
         super.setBottomControlsVisible(mBottomToolbarVisibleSupplier.get() || visible);
         mTabGroupUiVisibleSupplier.set(visible);
+        updateYOffset();
     }
 
     public void setBottomToolbarVisible(boolean visible) {
@@ -51,6 +52,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
         // We should keep it visible if tag group UI is visible.
         super.setBottomControlsVisible(mTabGroupUiVisibleSupplier.get() || visible);
         mBottomToolbarVisibleSupplier.set(visible);
+        updateYOffset();
     }
 
     public ObservableSupplierImpl<Boolean> getBottomToolbarVisibleSupplier() {
@@ -65,5 +67,14 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
         // Double the height if both bottom controls are visible
         mBottomControlsHeight = bothBottomControlsVisible ? mBottomControlsHeightDouble
                                                           : mBottomControlsHeightSingle;
+    }
+
+    private void updateYOffset() {
+        // This indicates that both controls are visible, but bottom toolbar has already been
+        // scrolled down, so we move scroll further for tab groups control.
+        if (mBottomControlsHeight == mBottomControlsHeightDouble
+                && mBrowserControlsSizer.getBottomControlOffset() == mBottomControlsHeightSingle) {
+            mModel.set(BottomControlsProperties.Y_OFFSET, mBottomControlsHeightDouble);
+        }
     }
 }
