@@ -118,6 +118,9 @@ void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock);
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock);
+void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
+              const std::string& name,
+              const std::string& filename);
 
 void MockLoadUserModelForId(const std::unique_ptr<AdsClientMock>& mock);
 
