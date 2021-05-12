@@ -327,9 +327,6 @@ content::WebContents* BraveActionsContainer::GetCurrentWebContents() {
   return browser_->tab_strip_model()->GetActiveWebContents();
 }
 
-void BraveActionsContainer::OnToolbarActionViewDragDone() {
-}
-
 views::LabelButton* BraveActionsContainer::GetOverflowReferenceView() const {
   // Our action views should always be visible,
   // so we should not need another view.
