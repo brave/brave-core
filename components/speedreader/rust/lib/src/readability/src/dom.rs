@@ -1,4 +1,5 @@
 use crate::html5ever::tree_builder::TreeSink;
+use crate::util::count_ignore_consecutive_whitespace;
 use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
@@ -195,17 +196,9 @@ pub fn extract_text_from_node(handle: &Handle, maybe_include_root: bool, deep: b
 
 /// Returns the length of all text in the tree rooted at handle.
 pub fn text_len(handle: &Handle) -> usize {
-    let mut len = 0;
-    for child in handle.children() {
-        match child.data() {
-            Text(ref contents) => {
-                len += contents.borrow().trim().chars().count();
-            }
-            Element(_) => {
-                len += text_len(&child);
-            }
-            _ => (),
-        }
+    let mut len: usize = 0;
+    for contents in handle.descendants().text_nodes() {
+        len += count_ignore_consecutive_whitespace(contents.borrow().trim().chars());
     }
     len
 }

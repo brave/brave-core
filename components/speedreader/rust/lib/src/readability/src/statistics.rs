@@ -1,7 +1,8 @@
-use crate::dom;
+use crate::{dom, util};
 use kuchiki::iter::NodeIterator;
 use kuchiki::NodeRef as Handle;
 use kuchiki::{ElementData, Sink};
+use util::count_ignore_consecutive_whitespace;
 
 #[derive(Default)]
 pub struct ReadableFeatures {
@@ -59,10 +60,6 @@ static LIKELY_CANDIDATES: &'static [&'static str; 6] =
 // Stop calculating paragraph length after this limit is reached
 const TEXT_LENGTH_SATURATION: usize = 1000;
 
-// For documents tagged as an article, only consider paragraphs with at least
-// 140 characters. This roughly corresponds to two English sentences.
-const PARAGRAPH_LENGTH_THRESHOLD_ARTICLE: usize = 140;
-
 // For untagged documents, only consider paragraphs with at least 280
 // characters. This roughly corresponds four English sentences.
 const PARAGRAPH_LENGTH_THRESHOLD_WEBSITE: usize = 280;
@@ -72,16 +69,19 @@ lazy_static! {
     // pretty large over-estimate, and gives us a moz score around 176.
 
     static ref MOZ_SCORE_SATURATION: f64 =
-        6.0 * (TEXT_LENGTH_SATURATION as f64 - PARAGRAPH_LENGTH_THRESHOLD_ARTICLE as f64).sqrt();
+        6.0 * (TEXT_LENGTH_SATURATION as f64 - PARAGRAPH_LENGTH_THRESHOLD_WEBSITE as f64).sqrt();
     static ref MOZ_SCORE_ALL_SQRT_SATURATION: f64 = 6.0 * (TEXT_LENGTH_SATURATION as f64).sqrt();
     static ref MOZ_SCORE_ALL_LINEAR_SATURATION: usize = 6 * TEXT_LENGTH_SATURATION;
 }
 
 /// Returns the length of all text in the tree rooted at handle.
 fn text_len_saturated(handle: &Handle) -> usize {
-    let mut len = 0;
+    let mut len: usize = 0;
     for contents in handle.descendants().text_nodes() {
-        len += contents.borrow().trim().chars().count();
+        // TODO(keur): Undecided, but it's possible don't actually care about
+        // undercounting the spaces here, and can simplify with
+        // contents.borrow().chars().filter(|c| !c.is_whitespace())
+        len += count_ignore_consecutive_whitespace(contents.borrow().trim().chars());
         if len > TEXT_LENGTH_SATURATION {
             return TEXT_LENGTH_SATURATION;
         }
@@ -184,23 +184,25 @@ fn does_match_attrs(data: &ElementData, attrs: &[&str]) -> bool {
 fn collect_scores(node: &Handle, paragraph_len_threshold: usize, features: &mut ReadableFeatures) {
     let mut node_to_score: Option<Handle> = None;
     if let Some(ref node_data) = node.as_element() {
-        if !is_visible(node_data) || features.fully_saturated() {
+        // We want to stop recursing when:
+        //   (1) The node is the beginning of a list
+        //   (2) The node is not visible
+        //   (3) The feature vector is fully saturated.
+        if Some(&local_name!("li")) == dom::get_tag_name(node)
+            || !is_visible(node_data)
+            || features.fully_saturated()
+        {
             return;
         }
         match node_data.name.local {
             local_name!("p") | local_name!("pre") => {
-                if let Some(ref parent) = node.parent() {
-                    if Some(&local_name!("li")) != dom::get_tag_name(parent) {
-                        // Not under a list, we want to score this.
-                        node_to_score = Some(Handle::clone(&node));
-                    }
-                }
+                node_to_score = Some(Handle::clone(&node));
             }
             local_name!("br") => {
                 if let Some(ref sibling) = node.previous_sibling() {
                     if sibling.as_text().is_some() {
                         if let Some(ref parent) = node.parent() {
-                            if Some(&local_name!("div")) != dom::get_tag_name(&parent) {
+                            if Some(&local_name!("div")) == dom::get_tag_name(&parent) {
                                 // We matched <div>text content<br>. Arc90 converts these
                                 // into <p> nodes, so let's score them too.
                                 node_to_score = Some(Handle::clone(&parent));
@@ -271,12 +273,7 @@ pub fn collect_statistics(dom: &Sink) -> Option<ReadableFeatures> {
     let head = dom::document_head(&dom)?;
     let body = dom::document_body(&dom)?;
     features.is_open_graph_article = is_open_graph_article(&head);
-    let paragraph_len_threshold = if features.is_open_graph_article {
-        PARAGRAPH_LENGTH_THRESHOLD_ARTICLE
-    } else {
-        PARAGRAPH_LENGTH_THRESHOLD_WEBSITE
-    };
-    collect_scores(&body, paragraph_len_threshold, &mut features);
+    collect_scores(&body, PARAGRAPH_LENGTH_THRESHOLD_WEBSITE, &mut features);
     Some(features)
 }
 
@@ -322,23 +319,61 @@ mod tests {
     }
 
     #[test]
+    fn test_dont_overcount_whitespace() {
+        let input = r#"
+        <html>
+          <head></head>
+          <body>
+            <p>
+                           1234567890
+                              1234567890
+                        1
+                        2
+                        3
+                        4
+                        5    6 7
+            </p>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let features = collect_statistics_for_test(&mut cursor).unwrap();
+        // 35 = 6 nl + 2 spaces + 27 digits
+        assert_eq!(35, features.moz_score_all_linear);
+    }
+
+    #[test]
+    fn test_dont_count_nested_list() {
+        let input = r#"
+        <html>
+          <head></head>
+          <body>
+            <ul>
+              <li><div><div><div><p>1234567890</p></div></div></div></li>
+            </ul>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let features = collect_statistics_for_test(&mut cursor).unwrap();
+        assert_eq!(0, features.moz_score_all_linear);
+    }
+
+    #[test]
     fn test_moz_score_features_unsaturated() {
         // NOTE: strlen("this text is counted") == 20
         let input = r#"
 <html>
 <head><meta property="og:type" content="article"/></head>
 <body>
-<p class="something">this text is counted</p>
+<p class="something">this text is countedthis text is counted</p>
 <ul><li><p>skipped under list</p></li></ul>
 <p class="something">
-this text is counted
-this text is counted
-this text is counted
-this text is counted
-this text is counted
-this text is counted
-this text is counted
-this text is counted
+this text is countedthis text is counted
+this text is countedthis text is counted
+this text is countedthis text is counted
+this text is countedthis text is counted
+this text is countedthis text is counted
+this text is countedthis text is counted
+this text is countedthis text is counted
 </p>
 <div style='display:none'><p>skipped display none</p></div>
 <div style='visibility:hidden'><p>skipped visibility hidden</p></div>
@@ -347,13 +382,14 @@ this text is counted
         "#;
         let mut cursor = Cursor::new(input);
         let features = collect_statistics_for_test(&mut cursor).unwrap();
-        // 187 = 20 + 167
-        assert_eq!(187, features.moz_score_all_linear);
-        // 17.3949 = sqrt(20) + sqrt(167)
-        assert_approx_eq!(17.3949, features.moz_score_all_sqrt, 1e-4);
-        // 5.1962 = sqrt(167-140)
-        // Note, the first <p> is ignored since it has len < 140
-        assert_approx_eq!(5.1962, features.moz_score, 1e-4);
+        // 40 from first <p>, 286 = 40 * 6 from the block, 5 newlines
+        // 326 = 40 + 286
+        assert_eq!(326, features.moz_score_all_linear);
+        // 23.2361 = sqrt(40) + sqrt(286)
+        assert_approx_eq!(23.2361, features.moz_score_all_sqrt, 1e-4);
+        // 2.4495 = sqrt(286 - 280)
+        // Note, the first <p> is ignored since it has len < 280
+        assert_approx_eq!(2.4495, features.moz_score, 1e-4);
     }
 
     #[test]
