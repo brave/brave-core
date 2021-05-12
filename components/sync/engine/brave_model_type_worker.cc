@@ -37,21 +37,17 @@ base::TimeDelta kMinimalTimeBetweenResetMarker =
 BraveModelTypeWorker::BraveModelTypeWorker(
     ModelType type,
     const sync_pb::ModelTypeState& initial_state,
-    bool trigger_initial_sync,
     Cryptographer* cryptographer,
     bool encryption_enabled,
     PassphraseType passphrase_type,
     NudgeHandler* nudge_handler,
-    std::unique_ptr<ModelTypeProcessor> model_type_processor,
     CancelationSignal* cancelation_signal)
     : ModelTypeWorker(type,
                       initial_state,
-                      trigger_initial_sync,
                       cryptographer,
                       encryption_enabled,
                       passphrase_type,
                       nudge_handler,
-                      std::move(model_type_processor),
                       cancelation_signal) {}
 
 BraveModelTypeWorker::~BraveModelTypeWorker() {}

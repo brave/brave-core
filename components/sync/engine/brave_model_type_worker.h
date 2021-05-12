@@ -36,12 +36,10 @@ class BraveModelTypeWorker : public ModelTypeWorker {
  public:
   BraveModelTypeWorker(ModelType type,
                        const sync_pb::ModelTypeState& initial_state,
-                       bool trigger_initial_sync,
                        Cryptographer* cryptographer,
                        bool encryption_enabled,
                        PassphraseType passphrase_type,
                        NudgeHandler* nudge_handler,
-                       std::unique_ptr<ModelTypeProcessor> model_type_processor,
                        CancelationSignal* cancelation_signal);
   ~BraveModelTypeWorker() override;
   BraveModelTypeWorker(const BraveModelTypeWorker&) = delete;
