@@ -26,6 +26,7 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/background.h"

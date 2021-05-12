@@ -23,6 +23,7 @@
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/highlight_path_generator.h"

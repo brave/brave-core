@@ -25,6 +25,7 @@
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep_default.h"
 #include "ui/gfx/image/canvas_image_source.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/animation/ink_drop_impl.h"

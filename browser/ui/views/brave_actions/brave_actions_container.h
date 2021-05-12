@@ -22,6 +22,7 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/common/extension.h"
+#include "ui/gfx/skia_util.h"
 #include "ui/views/view.h"
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
