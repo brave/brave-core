@@ -256,6 +256,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_PRICE_DROP" desc="Label for notification that indicates there is a lower price in an open tab, within a list of notification categories. [CHAR_LIMIT=32]">
         Price drop alerts
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_SECURITY_KEY" desc="Label for a category of notifications that tells the user that they can sign in on a different computer by using this device [CHAR_LIMIT=32]">
+        Sign-in verifications
+      </message>
 
       <message name="IDS_UNSUPPORTED" desc="Message displayed to the user when an attempted action is not supported.">
         Unsupported
@@ -370,15 +373,6 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_USAGE_AND_CRASH_REPORTS_SUMMARY" desc="Description for 'Help improve Brave's features and performance' preference.">
         Automatically sends crash reports to Brave
-      </message>
-      <message name="IDS_CANCEL_SYNC_DIALOG_TITLE" desc="The title of a dialog that is shown when users tries closing 'Sync and Brave services' preferences without confirming the changes.">
-        Cancel sync?
-      </message>
-      <message name="IDS_CANCEL_SYNC_DIALOG_MESSAGE" desc="The text of a dialog that is shown when users tries closing 'Sync and Brave services' preferences without confirming the changes.">
-        You can turn on sync anytime in settings
-      </message>
-      <message name="IDS_CANCEL_SYNC_BUTTON" desc="The text of a button in a dialog that is shown when users tries closing 'Sync and Brave services' preferences without confirming the changes.">
-        Cancel sync
       </message>
 
       <!-- Metrics settings -->
@@ -1435,9 +1429,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_DOWNLOAD_LATER_BLUETOOTH_CONNECTION" desc="Bluetooth connection type.">
         Bluetooth
       </message>
-      <message name="IDS_DOWNLOAD_LATER_WIFI_CONNECTION" desc="WIFI connection type.">
-        Wi-Fi
-      </message>
       <message name="IDS_DOWNLOAD_LATER_LARGE_FILE_SUBTITLE" desc="A subtitle in the download later dialog to inform the user about large download file size.">
         This file is large (<ph name="FILE_SIZE">%1$s<ex>300MB</ex></ph>)
       </message>
@@ -2117,6 +2108,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PASSWORD_GENERATION_DIALOG_USE_PASSWORD_BUTTON" desc="Text for a button belonging to the modal dialog that displayes a generated password. Can be used by the user to accept the generated password.">
         Use password
+      </message>
+      <message name="IDS_PASSWORD_FILLING_REAUTH_PROMPT_TITLE" desc="The title of the authentication dialog displayed before the password manager fills a saved password into a website.">
+        Verify it’s you
       </message>
 
       <!-- Runtime permission strings -->
@@ -2846,6 +2840,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_NTP_FOR_YOU" desc="Title in the feed header for interest-based feed.">For you</message>
       <message name="IDS_NTP_FOLLOWING" desc="Title in the feed header for user-customized following feed.">Following</message>
+      <message name="IDS_ACCESSIBILITY_NTP_FOLLOWING_UNREAD_CONTENT" desc="Content description for the feed header for user-customized following feed, when unread content is available.">
+      Following, unread stories ready
+      </message>
       <message name="IDS_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed.">
         Control your stories and activity here
       </message>
@@ -3338,9 +3335,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">
         New tab
-      </message>
-      <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE_SECTION_HAS_UNREAD_CONTENT" desc="Content description for the unread content indicator on a New Tab Page section header">
-        Unread content
       </message>
       <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new Private tab view.">
         New Private tab

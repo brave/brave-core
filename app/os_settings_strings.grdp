@@ -14,6 +14,9 @@
   <message name="IDS_SETTINGS_DEVICE_ON" desc="In Settings pages, the label when a bluetooth, wifi, or mobile device is on (enabled)." meaning="Device is enabled.">
     On
   </message>
+  <message name="IDS_SETTINGS_DISMISS" desc="Label to dismiss a shortcut reminder.">
+    Dismiss
+  </message>
 
   <!--Main Page-->
   <message name="IDS_SETTINGS_SECONDARY_USER_BANNER" desc="Banner displayed in settings page when the user is secondary in a multi-profile session.">
@@ -168,6 +171,15 @@
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_CONSTRAINTS" desc="Label describing the requirements for the text of the device hostname.">
     Name can use letters, numbers, and hyphens (-)
+  </message>
+  <message name="IDS_SETTINGS_UPGRADE_TRY_AGAIN" desc="Status label: Update check error (BraveOS/BraveOS)">
+    Couldn't update your Bravebook. Please try again later.
+  </message>
+  <message name="IDS_SETTINGS_UPGRADE_DOWNLOAD_ERROR" desc="Status label: Update check download error(BraveOS/BraveOS)">
+    There was an issue downloading the update. Please try again later.
+  </message>
+  <message name="IDS_SETTINGS_UPGRADE_ADMINISTRATOR_ERROR" desc="Status label: Update blocked by policy (BraveOS/BraveOS)">
+    This update is blocked by your administrator
   </message>
   <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (BraveOS/BraveOS)">
     Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is up to date
@@ -351,6 +363,15 @@
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_METHOD_LIST_TITLE" desc="Title for the list of enabled input methods (keyboard layouts and input method editors).">
     Input methods
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SHORTCUT_REMINDER_TITLE" desc="Title for the reminder to the user that some shortcuts are available for this feature.">
+    Keyboard shortcut available
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SHORTCUT_REMINDER_LAST_USED_IME_DESCRIPTION" desc="The body of the shortcut reminder for switching to the last used input method. Note that 'Ctrl' shouldn't be translated in almost all languages.">
+    To switch to the last used input method, press <ph name="BEGIN_SHORTCUT">&lt;kbd&gt;</ph><ph name="BEGIN_CTRL">&lt;kbd&gt;</ph>Ctrl<ph name="END_CTRL">&lt;/kbd&gt;</ph><ph name="SEPARATOR">+</ph><ph name="BEGIN_SPACE">&lt;kbd&gt;</ph>Space<ph name="END_SPACE">&lt;/kbd&gt;</ph><ph name="END_SHORTCUT">&lt;/kbd&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SHORTCUT_REMINDER_NEXT_IME_DESCRIPTION" desc="The body of the shortcut reminder for switching to the next input method. Note that 'Ctrl' shouldn't be translated in almost all languages, and 'Shift' shouldn't be translated in most languages.">
+    To switch to the next input method, press <ph name="BEGIN_SHORTCUT">&lt;kbd&gt;</ph><ph name="BEGIN_CTRL">&lt;kbd&gt;</ph>Ctrl<ph name="END_CTRL">&lt;/kbd&gt;</ph><ph name="SEPARATOR1">+</ph><ph name="BEGIN_SHIFT">&lt;kbd&gt;</ph>Shift<ph name="END_SHIFT">&lt;/kbd&gt;</ph><ph name="SEPARATOR2">+</ph><ph name="BEGIN_SPACE">&lt;kbd&gt;</ph>Space<ph name="END_SPACE">&lt;/kbd&gt;</ph><ph name="END_SHORTCUT">&lt;/kbd&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_OPEN_OPTIONS_PAGE_LABEL" desc="Description read by screenreader for the button to open the settings page for a input method (keyboard layout and input method editor).">
     Open settings page for <ph name="INPUT_METHOD_NAME">$1<ex>US keyboard</ex></ph>
@@ -752,6 +773,17 @@
     Search and Assistant
   </message>
 
+  <!-- Search subpage (OS settings) -->
+  <message name="IDS_SETTINGS_SEARCH_SUBPAGE_TITLE" desc="Name of the settings subpage for Search.">
+    Search
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE" desc="Title for a toggle that controls the Quick Answers feature.">
+    Quick Answers
+  </message>
+  <message name="IDS_SETTINGS_QUICK_ANSWERS_ENABLE_DESCRIPTION" desc="Sub label for the Quick Answers toggle.">
+    With a right-click or long press, show related info for your text selection
+  </message>
+
   <!-- Files Page (OS settings) -->
   <message name="IDS_OS_SETTINGS_FILES" desc="Name of the settings page which displays file preferences.">
     Files
@@ -861,6 +893,9 @@
   </message>
   <message name="IDS_SETTINGS_CHROMEVOX_OPTIONS_LABEL" desc="Label for button to open BraveVox options.">
       Open BraveVox settings
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_TUTORIAL_LABEL" desc="Label for button to open BraveVox tutorial.">
+    Open BraveVox tutorial
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_LABEL" desc="Label for checkbox which enables the fullscreen magnifier">
       Enable fullscreen magnifier
@@ -976,6 +1011,15 @@ and Ctrl+Alt+Brightness down to zoom out.
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LABEL" desc="Label for checkbox which enables the ability to speak into text fields">
     Enable dictation (speak to type)
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_SUBTITLE_SODA_DOWNLOAD_COMPLETE" desc="Description explaining that the speech recognition library download has completed.">
+    Speech files downloaded
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_SUBTITLE_SODA_DOWNLOAD_PROGRESS" desc="Description explaining the progress for the speech recognition library download.">
+    Downloading speech recognition files... <ph name="PERCENT">$1<ex>17</ex></ph>%
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_SUBTITLE_SODA_DOWNLOAD_ERROR" desc="Description explaining that there was an error with the speech recognition library download.">
+    Can't download speech files. Dictation will continue to work by sending your voice to Brave.
   </message>
   <message name="IDS_SETTINGS_ON_SCREEN_KEYBOARD_LABEL" desc="Label for checkbox which enables an on-screen keyboard.">
     Enable on-screen keyboard
@@ -2368,6 +2412,9 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_INPUT_CHARACTER_COUNT" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The Label for the dialog input that renames an eSIM cellular network, informing the user the number of characters they have inputted compared to the maximum number of characters allowed.">
     <ph name="CURRENT_CHARACTER_COUNT">$1<ex>15</ex></ph>/<ph name="MAX_CHARACTER_COUNT">$2<ex>20</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_DONE_BUTTON_A11Y_LABEL" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The accessibility label for done button in the rename profile dialog.">
+    Rename profile to <ph name="PROFILE_NAME">$1<ex>Verizon</ex></ph>
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_INPUT_A11Y_LABEL" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The a11y label for the dialog input that renames an eSIM cellular network, informing the user that letters, numbers and special characters are allowed, as well as the maximum number of characters permitted.">
     Name can use letters, numbers, and special characters, and must be <ph name="MAX_CHARACTER_COUNT">$1<ex>20</ex></ph> characters or fewer
   </message>
@@ -2388,6 +2435,12 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_OKAY" desc="Settings &gt; Internet &gt; Network details &gt; Remove eSIM cellular profile dialog: The Label for the dialog okay button">
     Okay
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_A11Y_CANCEL" desc="Settings &gt; Internet &gt; Network details &gt; Remove eSIM cellular profile dialog: A11Y label for cancel button.">
+    Cancel removal of eSIM profile named <ph name="PROFILE_NAME">$1<ex>Verizon</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_A11Y_REMOVE" desc="Settings &gt; Internet &gt; Network details &gt; Remove eSIM cellular profile dialog: A11Y label for remove button.">
+    Remove eSIM profile named <ph name="PROFILE_NAME">$1<ex>Verizon</ex></ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_DIALOG_CONNECTION_WARNING" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog | Remove profile dialog: The Label for the dialog warning message informing the user they may disconnect from their current cellular network connection if they proceed.">
     This may cause a brief cellular network disconnection.
@@ -3085,11 +3138,29 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_FACTORY_RESET_WARNING" desc="Warning text in the 'Factory Reset' window">
     A restart is required before your device can be reset with Powerwash. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_FACTORY_RESET_ESIM_WARNING_TITLE" desc="Name of the 'Factory reset' window">
+    Remove eSIM profiles before Powerwash
+  </message>
+  <message name="IDS_SETTINGS_FACTORY_RESET_ESIM_WARNING" desc="Warning text in the 'Factory Reset' window informing the user that the eSIM profiles they have installed won't be removed by a factory reset. Contains a url to the mobile data subpage.">
+    Powerwashing your device won't remove your eSIM profiles. Go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Mobile Settings<ph name="LINK_END">&lt;/a&gt;</ph> to manually remove these profiles.
+  </message>
+  <message name="IDS_SETTINGS_FACTORY_RESET_ESIM_LIST_TITLE" desc="Title for the list showing installed eSIM profiles in the 'Factory Reset' window.">
+    Active profiles
+  </message>
+  <message name="IDS_SETTINGS_FACTORY_RESET_ESIM_LIST_ITEM_TITLE" desc="Label for an eSIM profile shown in the 'Factory Reset' window displaying its name and provider.">
+    <ph name="NETWORK_NAME">$1<ex>My Verizon eSIM</ex></ph> - <ph name="SPAN_START">&lt;span id="providerName"&gt;</ph><ph name="CARRIER_NAME">$2<ex>Verizon Wireless</ex></ph><ph name="SPAN_END">&lt;/span&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_FACTORY_RESET_ESIM_WARNING_CHECKBOX_LABEL" desc="Label for checkbox in the 'Factory Reset' window that confirms that the user is aware that the eSIM profiles they have installed won't be removed by a factory reset.">
+    I understand that installed eSIM profiles will not be removed by Powerwash
+  </message>
   <message name="IDS_SETTINGS_FACTORY_RESET_BUTTON_LABEL" desc="Label for the factory reset button.">
     Reset
   </message>
   <message name="IDS_SETTINGS_FACTORY_RESET_BUTTON_ROLE" desc="A label to be read aloud by screen readers when the Reset button is focused. This button initiates the device factory reset flow.">
     Reset Button
+  </message>
+  <message name="IDS_SETTINGS_FACTORY_CONTINUE_BUTTON_LABEL" desc="Label for the button that navigates from the eSIM warning to the 'Factory Reset' UI.">
+    Continue
   </message>
 
   <!-- Brave Assistant Page (OS Settings)-->
@@ -3652,7 +3723,7 @@ Press an assigned switch to remove assignment.
     Disabling can make your peripherals perform better, but may expose your personal data through unauthorized usage.
   </message>
   <message name="IDS_OS_SETTINGS_DISABLE_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_SUB_DESCRIPTION" desc="The description of the dialog that states that disabling peripheral data acces protection may reset the user's peripherals and may take a few seconds.">
-    Your displays and peripherals may reset briefly. This may take a few seconds to take effect.
+    Your displays and peripherals may reset briefly. For this change to take effect, unplug and replug your peripherals.
   </message>
   <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_CANCEL_BUTTON_LABEL" desc="The label of the cancel button for the data access protection confirmation dialog">
     Cancel

@@ -5516,6 +5516,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DRIVE_SENTENCE" desc="Name of the Drive module in sentence case shown in various UIs.">
         Google Drive files
       </message>
+      <message name="IDS_NTP_MODULES_DRIVE_SENTENCE2" desc="Variant of the name of the Drive module in sentence case shown in various UIs.">
+        Drive files
+      </message>
       <message name="IDS_NTP_MODULES_DUMMY_LOWER" translateable="false" desc="Name of the dummy module in lowercase shown in various UIs.">
         this module
       </message>
@@ -5528,17 +5531,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module and various other UIs.">
         From your Google Drive
       </message>
+      <message name="IDS_NTP_MODULES_DRIVE_INFO" desc="Text shown in the body of the info dialog of the drive module.">
+        You’re seeing your recent and suggested documents based on your previous activity using Google Drive.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        Learn about the data Google Drive collects and why <ph name="BEGIN_LINK">&lt;a href="https://support.google.com/drive/answer/2450387" target="_blank" rel="noopener noreferrer"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>.
+      </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_TITLE" desc="Title shown on the info dialog of a task module.">
         Why am I seeing this?
       </message>
-      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_1" desc="First paragraph shown in the body of the info dialog of a task module.">
-        You're seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
-      </message>
-      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_2" desc="Second paragraph shown in the body of the info dialog of a task module.">
-        Learn about the data Brave collects and why at <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>policies.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+      <message name="IDS_NTP_MODULES_TASKS_INFO" desc="Text shown in the body of the info dialog of a task module.">
+        You're seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK">&lt;a href="https://myactivity.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        Learn about the data Brave collects and why at <ph name="BEGIN_LINK">&lt;a href="https://policies.google.com/" target="_blank" rel="noopener noreferrer"&gt;</ph>policies.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_CLOSE" desc="Text shown on close button of a task module.">
         Close
@@ -5675,6 +5684,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLTIP_CHROMELABS_BUTTON" desc="The tooltip for the Brave Labs button in the toolbar">
         Enable featured experiments
       </message>
+      <message name="IDS_TOOLTIP_LEFT_ALIGNED_SIDE_PANEL_BUTTON" desc="The tooltip for the left aligned side panel toggle button">
+        Toggle left aligned side panel
+      </message>
       <message name="IDS_TOOLTIP_CHROMELABS_COMBOBOX" desc="The tooltip for the Brave Labs combobox to select between experiment states">
         Select experiment state for <ph name="EXPERIMENT_NAME">$1<ex>Tab Scrolling</ex></ph>
       </message>
@@ -5808,6 +5820,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_CHROMELABS_BUTTON" desc="The accessible name for the Brave Labs experiments button">
         Experiments
+      </message>
+      <message name="IDS_ACCNAME_LEFT_ALIGNED_SIDE_PANEL_BUTTON" desc="The accessible name for the left aligned side panel toggle button">
+        Left aligned side panel
       </message>
       <message name="IDS_ACCESSIBLE_TEXT_CHROMELABS_BUTTON_ADDED_BY_ENTERPRISE_POLICY" desc="The text read out by the screen reader when the Brave Labs experiments button is added to the toolbar by an enterprise policy change.">
         Enterprise policy changed. Experiments button added to toolbar. Click the button to open a dialog to enable experiments.
@@ -7320,6 +7335,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Can't create QR code
       </message>
 
+      <!-- Sharing Hub feature strings. -->
+      <message name="IDS_SHARING_HUB_TITLE" desc="The title for the Sharing Hub feature.">
+        Share
+      </message>
+      <message name="IDS_SHARING_HUB_TOOLTIP" desc="Tooltip for the Sharing Hub feature omnibox icon.">
+        Share this page
+      </message>
+      <message name="IDS_SHARING_HUB_COPY_LINK_LABEL" desc="The text label for the copy link button in the Sharing Hub dialog and app menu.">
+        Copy link
+      </message>
+      <message name="IDS_SHARING_HUB_SAVE_PAGE_LABEL" desc="The text label for the save page button in the Sharing Hub dialog and app menu.">
+        Save page as...
+      </message>
+      <message name="IDS_SHARING_HUB_MEDIA_ROUTER_LABEL" desc="The text label for the media router button in the Sharing Hub dialog and app menu.">
+        Cast...
+      </message>
+
       <!-- Clipboard History Menu feature. -->
       <message name="IDS_CONTEXT_MENU_SHOW_CLIPBOARD_HISTORY_MENU" desc="Show the clipboard history menu.">
           Clipboard
@@ -7920,7 +7952,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Continue
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_GUEST_LINK" desc="Text of the link to offer switching to a Guest profile">
-            Not your device? Use <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>Guest mode<ph name="END_LINK">&lt;/a&gt;</ph>.
+            Not your device? Use <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank" rel="noopener noreferrer"&gt;</ph>Guest mode<ph name="END_LINK">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
           This will separate your browsing from <ph name="EXISTING_USER">$1<ex>bob@example.com</ex></ph>
@@ -10153,13 +10185,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Finding serial devices...
       </message>
       <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site when the vendor name is available by a numeric product ID must be used.">
-        USB devices with product ID <ph name="PRODUCT_ID">$1<ex>0x12AB</ex></ph> from <ph name="VENDOR_NAME">$2<ex>Brave</ex></ph>
+        USB device from <ph name="VENDOR_NAME">$2<ex>Brave</ex></ph> (product <ph name="PRODUCT_ID">$1<ex>0x12AB</ex></ph>)
       </message>
       <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available.">
-        USB devices with product ID <ph name="PRODUCT_ID">$1<ex>0x12AB</ex></ph> from vendor <ph name="VENDOR_ID">$2<ex>0x12AB</ex></ph>
+        USB device (<ph name="VENDOR_ID">$2<ex>12AB</ex></ph>:<ph name="PRODUCT_ID">$1<ex>12AB</ex></ph>)
       </message>
       <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
-        USB devices from vendor <ph name="VENDOR_ID">$1<ex>123</ex></ph>
+        USB devices from vendor <ph name="VENDOR_ID">$1<ex>12AB</ex></ph>
       </message>
       <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor.">
         USB devices from <ph name="VENDOR_NAME">$1<ex>Brave</ex></ph>
@@ -10594,10 +10626,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         A notification was sent to your phone to confirm it's you.
       </message>
 
-      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key. The second placeholder will be replaced by the contents of the translated string IDS_WEBAUTHN_CABLEV2_SERVERLINK_TROUBLE. A placeholder is used for this because that link will be styled as a clickable link. The word 'Yes' will appear on the phone and is TC ID 6139894934866548097.">
-        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. Tap Yes to confirm it's you. <ph name="LINK"><ex>Didn't get it?</ex>$2</ph>
+      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
+        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. To confirm it's you, follow the steps there.
       </message>
-      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_TROUBLE" desc="This message is shown as a link inside of IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION and replaces placeholder two. The 'it' referenced here is the notification mentioned in that message.">
+      <message name="IDS_WEBAUTHN_CABLEV2_SERVERLINK_TROUBLE" desc="This message is shown as a link below IDS_WEBAUTHN_CABLEV2_SERVERLINK_DESCRIPTION. The 'it' referenced here is the notification mentioned in that message.">
         Didn't get it?
       </message>
       <message name="IDS_WEBAUTHN_CABLEV2_AOA_TITLE" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key. The 'cable' is a physical USB cable.">

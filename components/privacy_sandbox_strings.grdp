@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <message name="IDS_PRIVACY_SANDBOX_FLOC_INVALID" desc="A message shown in place of the user's FLoC ID if the ID is invalid for any reason, such as not enough data to compute it">
+    ID currently invalid
+  </message>
+</grit-part>

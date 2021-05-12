@@ -615,6 +615,9 @@ Brave is unable to recover your settings.
         <message name="IDS_UPDATE_NOW" desc="In Title Case: The text label of the Update Brave Now menu item">
           Update &amp;Brave
         </message>
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="In Title Case: The text label of the Update Brave menu item, when relaunch to update experiment is enabled">
+          Relaunch to Update &amp;Brave
+        </message>
       </if>
       <if expr="not use_titlecase and not chromeos">
         <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
@@ -623,6 +626,9 @@ Brave is unable to recover your settings.
         <message name="IDS_UPDATE_NOW" desc="The text label of the Update Brave Now menu item">
           Update &amp;Brave
         </message>
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the Update Brave menu item, when relaunch to update experiment is enabled">
+          Relaunch to update &amp;Brave
+        </message>
       </if>
       <if expr="chromeos">
         <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
@@ -630,6 +636,9 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_UPDATE_NOW" desc="The text label of the Update Chrome OS Now menu item">
           Update &amp;Chrome OS
+        </message>
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the Update Chrome OS menu item, when relaunch to update experiment is enabled">
+          Relaunch to update &amp;Chrome OS
         </message>
       </if>
 
