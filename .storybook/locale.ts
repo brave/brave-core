@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const locale: Record<string, string> = {
+let locale: Record<string, string> = {
   about: 'about',
   accept: 'Accept',
   activityCopy: ' Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.',
@@ -350,4 +350,13 @@ const locale: Record<string, string> = {
   braveTodayDisableSourceCommand: 'Disable content from $1',
 }
 
-export default locale
+export function provideStrings (strings: Record<string, string>) {
+  locale = {
+    ...locale,
+    ...strings
+  }
+}
+
+export function getString (key: string): string {
+  return locale[key] || key
+}
