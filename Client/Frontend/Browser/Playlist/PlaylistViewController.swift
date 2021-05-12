@@ -808,7 +808,7 @@ extension ListController: UITableViewDelegate {
                     let alert = UIAlertController(
                         title: Strings.PlayList.removePlaylistOfflineDataAlertTitle, message: Strings.PlayList.removePlaylistOfflineDataAlertMessage, preferredStyle: style)
                     
-                    alert.addAction(UIAlertAction(title: Strings.PlayList.removeActionButtonTitle, style: .default, handler: { _ in
+                    alert.addAction(UIAlertAction(title: Strings.PlayList.removeActionButtonTitle, style: .destructive, handler: { _ in
                         PlaylistManager.shared.deleteCache(item: currentItem)
                         self.tableView.reloadRows(at: [indexPath], with: .automatic)
                     }))
@@ -828,7 +828,7 @@ extension ListController: UITableViewDelegate {
             let alert = UIAlertController(
                 title: Strings.PlayList.removePlaylistVideoAlertTitle, message: Strings.PlayList.removePlaylistVideoAlertMessage, preferredStyle: style)
             
-            alert.addAction(UIAlertAction(title: Strings.PlayList.removeActionButtonTitle, style: .default, handler: { _ in
+            alert.addAction(UIAlertAction(title: Strings.PlayList.removeActionButtonTitle, style: .destructive, handler: { _ in
                 PlaylistManager.shared.delete(item: currentItem)
 
                 if self.currentlyPlayingItemIndex == indexPath.row {
