@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/signin/public/identity_manager/brave_identity_manager.h"
-
 #include <utility>
 #include <vector>
 
@@ -160,7 +158,7 @@ class BraveIdentityManagerTest : public testing::Test {
     init_params.token_service = std::move(token_service);
 
     identity_manager_ =
-        std::make_unique<BraveIdentityManager>(std::move(init_params));
+        std::make_unique<IdentityManager>(std::move(init_params));
     identity_manager_observer_ =
         std::make_unique<TestIdentityManagerObserver>(identity_manager_.get());
   }
