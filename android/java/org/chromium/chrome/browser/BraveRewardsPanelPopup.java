@@ -1692,6 +1692,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
                 Button btnVerifyWallet = (Button) root.findViewById(R.id.btn_verify_wallet);
                 btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button);
+                if (mExternalWallet != null
+                        && mExternalWallet.getType().equals(BraveUphold.BITFLYER)) {
+                    btnVerifyWallet.setVisibility(View.INVISIBLE);
+                }
             }
             walletDetailsReceived = true;
         } else if (errorCode == BraveRewardsNativeWorker.LEDGER_ERROR) {   // No Internet connection

@@ -36,6 +36,7 @@ public class BraveUphold implements BraveRewardsObserver {
 
     // Wallet types
     public static final String UPHOLD = "uphold";
+    public static final String BITFLYER = "bitflyer";
 
     private static int UNKNOWN_ERROR_CODE = -1;
 
