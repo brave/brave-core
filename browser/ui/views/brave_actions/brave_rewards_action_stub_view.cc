@@ -63,6 +63,10 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
       profile_(profile),
       delegate_(delegate) {
   ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
+  ink_drop()->SetBaseColorCallback(base::BindRepeating(
+      [](InkDropHostView* host) { return GetToolbarInkDropBaseColor(host); },
+      this));
+
   SetHasInkDropActionOnClick(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   ink_drop()->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
@@ -144,8 +148,4 @@ std::unique_ptr<views::LabelButtonBorder> BraveRewardsActionStubView::
   border->set_insets(
       gfx::Insets(0, 0, 0, 0));
   return border;
-}
-
-SkColor BraveRewardsActionStubView::GetInkDropBaseColor() const {
-  return GetToolbarInkDropBaseColor(this);
 }

@@ -33,7 +33,6 @@ class BraveRewardsActionStubView : public views::LabelButton {
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
       const override;
-  SkColor GetInkDropBaseColor() const override;
 
   SkPath GetHighlightPath() const;
 
