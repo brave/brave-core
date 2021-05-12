@@ -451,3 +451,11 @@ bool SidebarItemsScrollView::CanStartDragForView(views::View* sender,
 
   return false;
 }
+
+bool SidebarItemsScrollView::IsItemReorderingInProgress() const {
+  return drag_context_->source_index() != -1;
+}
+
+bool SidebarItemsScrollView::IsBubbleVisible() const {
+  return contents_view_->IsBubbleVisible();
+}

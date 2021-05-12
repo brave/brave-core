@@ -8,12 +8,15 @@
 
 #include <memory>
 
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
 #include "ui/views/view.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_observer.h"
 
 namespace views {
 class MenuRunner;
@@ -25,6 +28,7 @@ class SidebarItemView;
 class SidebarItemsContentsView : public views::View,
                                  public SidebarButtonView::Delegate,
                                  public views::ContextMenuController,
+                                 public views::WidgetObserver,
                                  public ui::SimpleMenuModel::Delegate {
  public:
   SidebarItemsContentsView(BraveBrowser* browser,
@@ -46,6 +50,9 @@ class SidebarItemsContentsView : public views::View,
                                   const gfx::Point& point,
                                   ui::MenuSourceType source_type) override;
 
+  // views::WidgetObserver overrides:
+  void OnWidgetDestroying(views::Widget* widget) override;
+
   // ui::SimpleMenuModel::Delegate overrides:
   void ExecuteCommand(int command_id, int event_flags) override;
 
@@ -66,6 +73,8 @@ class SidebarItemsContentsView : public views::View,
   // Returns drag indicator index.
   int DrawDragIndicator(views::View* source, const gfx::Point& position);
   void ClearDragIndicator();
+
+  bool IsBubbleVisible() const;
 
  private:
   enum ContextMenuIDs {
@@ -102,6 +111,9 @@ class SidebarItemsContentsView : public views::View,
   sidebar::SidebarModel* sidebar_model_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> context_menu_model_;
   std::unique_ptr<views::MenuRunner> context_menu_runner_;
+  // Observe to know whether item added feedback bubble is visible or not.
+  base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
+      this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEMS_CONTENTS_VIEW_H_

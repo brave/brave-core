@@ -64,6 +64,7 @@ class SidebarContainerView
   void ShowOptionsEventDetectWidget(bool show);
   void ShowSidebar(bool show_sidebar, bool show_event_detect_widget);
   SidebarShowOptionsEventDetectWidget* GetEventDetectWidget();
+  bool ShouldHideSidebar() const;
 
   BraveBrowser* browser_ = nullptr;
   sidebar::SidebarModel* sidebar_model_ = nullptr;

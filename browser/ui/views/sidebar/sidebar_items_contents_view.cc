@@ -242,9 +242,11 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
     views::View* anchor_view) {
   // Only launch feedback bubble for active browser window.
   DCHECK_EQ(browser_, BrowserList::GetInstance()->GetLastActive());
+  DCHECK(!observation_.IsObserving());
 
   auto* bubble = views::BubbleDialogDelegateView::CreateBubble(
       new SidebarItemAddedFeedbackBubble(anchor_view, this));
+  observation_.Observe(bubble);
   bubble->Show();
 }
 
@@ -395,4 +397,18 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
 
   NOTREACHED();
   return gfx::ImageSkia();
+}
+
+void SidebarItemsContentsView::OnWidgetDestroying(views::Widget* widget) {
+  observation_.Reset();
+}
+
+bool SidebarItemsContentsView::IsBubbleVisible() const {
+  if (context_menu_runner_ && context_menu_runner_->IsRunning())
+    return true;
+
+  if (observation_.IsObserving())
+    return true;
+
+  return false;
 }

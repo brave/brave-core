@@ -128,8 +128,14 @@ void SidebarContainerView::OnThemeChanged() {
   UpdateBackgroundAndBorder();
 }
 
+bool SidebarContainerView::ShouldHideSidebar() const {
+  return sidebar_panel_view_->GetVisible() ||
+         sidebar_control_view_->IsItemReorderingInProgress() ||
+         sidebar_control_view_->IsBubbleWidgetVisible();
+}
+
 void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
-  if (sidebar_panel_view_->GetVisible())
+  if (ShouldHideSidebar())
     return;
 
   const auto show_option = GetSidebarService(browser_)->GetSidebarShowOption();
