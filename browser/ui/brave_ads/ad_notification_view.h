@@ -7,8 +7,8 @@
 #define BRAVE_BROWSER_UI_BRAVE_ADS_AD_NOTIFICATION_VIEW_H_
 
 #include "brave/browser/ui/brave_ads/ad_notification.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/animation/ink_drop_host_view.h"
-#include "ui/views/metadata/metadata_header_macros.h"
 
 namespace gfx {
 class Canvas;

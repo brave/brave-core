@@ -16,8 +16,8 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "ui/views/metadata/metadata_impl_macros.h"
 
 WalletButton::WalletButton(View* backup_anchor_view,
                            Profile* profile,
