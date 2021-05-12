@@ -79,6 +79,15 @@ MdTextButton::MdTextButton(PressedCallback callback,
   views::InkDrop::UseInkDropForFloodFillRipple(ink_drop(),
                                                /*highlight_on_hover=*/false,
                                                /*highlight_on_focus=*/true);
+  ink_drop()->SetCreateHighlightCallback(base::BindRepeating(
+      [](InkDropHostView* host) {
+        const SkColor fill_color = SK_ColorTRANSPARENT;
+        gfx::RectF boundsF(host->GetLocalBounds());
+        return std::make_unique<InkDropHighlight>(
+            boundsF.size(), static_cast<MdTextButton*>(host)->GetCornerRadius(),
+            boundsF.CenterPoint(), fill_color);
+      },
+      this));
 }
 
 MdTextButton::~MdTextButton() = default;
@@ -108,15 +117,6 @@ void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
     canvas->DrawRoundRect(gfx::RectF(GetLocalBounds()), GetCornerRadius(),
                           flags);
   }
-}
-
-std::unique_ptr<views::InkDropHighlight> MdTextButton::CreateInkDropHighlight()
-    const {
-  // Blank ink drop highlight, not needed
-  const SkColor fill_color = SK_ColorTRANSPARENT;
-  gfx::RectF boundsF(GetLocalBounds());
-  return std::make_unique<InkDropHighlight>(boundsF.size(), GetCornerRadius(),
-                                            boundsF.CenterPoint(), fill_color);
 }
 
 }  // namespace views

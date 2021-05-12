@@ -37,10 +37,6 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
                         int button_context = style::CONTEXT_BUTTON_MD);
   ~MdTextButton() override;
 
-  // InkDrop
-  std::unique_ptr<views::InkDropHighlight> CreateInkDropHighlight()
-      const override;
-
   SkPath GetHighlightPath() const;
 
  protected:
