@@ -61,10 +61,10 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
           std::u16string()),
       profile_(profile),
       delegate_(delegate) {
-  SetInkDropMode(InkDropMode::ON);
+  ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
   SetHasInkDropActionOnClick(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
-  SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
+  ink_drop()->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
   // Create badge-and-image source like an extension icon would
   auto preferred_size = GetPreferredSize();
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();

@@ -46,8 +46,8 @@ PaddedImageButton::PaddedImageButton(PressedCallback callback)
 
   SetAnimateOnStateChange(false);
 
-  SetInkDropMode(InkDropMode::ON);
-  SetInkDropVisibleOpacity(kVisibleOpacity);
+  ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
+  ink_drop()->SetVisibleOpacity(kVisibleOpacity);
   SetHasInkDropActionOnClick(true);
 }
 
@@ -69,7 +69,8 @@ void PaddedImageButton::OnThemeChanged() {
 
   const SkColor background_color = GetNativeTheme()->GetSystemColor(
       ui::NativeTheme::kColorId_WindowBackground);
-  SetInkDropBaseColor(color_utils::GetColorWithMaxContrast(background_color));
+  ink_drop()->SetBaseColor(
+      color_utils::GetColorWithMaxContrast(background_color));
 }
 
 BEGIN_METADATA(PaddedImageButton, views::ImageButton)

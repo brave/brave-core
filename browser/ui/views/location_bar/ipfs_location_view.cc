@@ -77,11 +77,11 @@ class IPFSLocationButtonView : public views::LabelButton {
     SetEnabledTextColors(kTextColor);
     SetHorizontalAlignment(gfx::ALIGN_RIGHT);
     SetImageLabelSpacing(6);
-    SetInkDropMode(InkDropMode::ON);
+    ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
     SetBorder(views::CreateEmptyBorder(
         GetLayoutInsets(LOCATION_BAR_ICON_INTERIOR_PADDING)));
     SetHasInkDropActionOnClick(true);
-    SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
+    ink_drop()->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
     UpdateBorder();
     // Ensure focus ring follows border
     views::HighlightPathGenerator::Install(
