@@ -47,16 +47,6 @@ ImageData* BaseRenderingContext2D::getImageData(
     int sy,
     int sw,
     int sh,
-    ExceptionState& exception_state) {
-  NOTREACHED();
-  return nullptr;
-}
-
-ImageData* BaseRenderingContext2D::getImageData(
-    int sx,
-    int sy,
-    int sw,
-    int sh,
     ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
   NOTREACHED();
@@ -83,17 +73,6 @@ ImageData* BaseRenderingContext2D::getImageDataInternal_Unused(
     ExceptionState& exception_state) {
   NOTREACHED();
   return nullptr;
-}
-
-ImageData* BaseRenderingContext2D::getImageData(
-    ScriptState* script_state,
-    int sx,
-    int sy,
-    int sw,
-    int sh,
-    ExceptionState& exception_state) {
-  return getImageDataInternal(script_state, sx, sy, sw, sh, nullptr,
-                              exception_state);
 }
 
 ImageData* BaseRenderingContext2D::getImageData(
