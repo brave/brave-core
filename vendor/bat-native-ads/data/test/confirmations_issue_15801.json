@@ -1,0 +1,64 @@
+{
+  "ads_rewards": {
+    "grants_balance": 40.355,
+    "payments": [
+      {
+        "balance": 0.6075,
+        "month": "2021-05",
+        "transaction_count": "108"
+      },
+      {
+        "balance": 2.6895,
+        "month": "2021-04",
+        "transaction_count": "275"
+      },
+      {
+        "balance": 6.015,
+        "month": "2021-03",
+        "transaction_count": "498"
+      },
+      {
+        "balance": 6.235,
+        "month": "2021-02",
+        "transaction_count": "430"
+      },
+      {
+        "balance": 3.1,
+        "month": "2021-01",
+        "transaction_count": "273"
+      },
+      {
+        "balance": 10.66,
+        "month": "2020-12",
+        "transaction_count": "390"
+      },
+      {
+        "balance": 5.795,
+        "month": "2020-11",
+        "transaction_count": "198"
+      },
+      {
+        "balance": 6.8,
+        "month": "2020-10",
+        "transaction_count": "228"
+      },
+      {
+        "balance": 2.05,
+        "month": "2020-09",
+        "transaction_count": "93"
+      }
+    ],
+    "unreconciled_estimated_pending_rewards": 0.41750000000000015
+  },
+  "catalog_issuers": {
+  },
+  "confirmations": {
+    "failed_confirmations": []
+  },
+  "next_token_redemption_date_in_seconds": "4102444799",
+  "transaction_history": {
+    "transactions": []
+  },
+  "unblinded_payment_tokens": [],
+  "unblinded_tokens": []
+}
