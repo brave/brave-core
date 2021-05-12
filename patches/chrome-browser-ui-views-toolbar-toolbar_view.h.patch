@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index fd9e929d7324b5e2d2ffc82299f5924981a835ba..d328e81b0b0b7ca207b0d4a5c45136e947dfbead 100644
+index a672a866bed0c3728b0adf27b1237c90ebcc8675..97ab61a9212fb48a745858bdac918592293c7338 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -93,12 +93,14 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -25,7 +25,7 @@ index fd9e929d7324b5e2d2ffc82299f5924981a835ba..d328e81b0b0b7ca207b0d4a5c45136e9
    void ShowBookmarkBubble(const GURL& url,
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
-@@ -188,6 +191,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -189,6 +192,7 @@ class ToolbarView : public views::AccessiblePaneView,
    friend class AvatarToolbarButtonBrowserTest;
  
   protected:
@@ -33,7 +33,7 @@ index fd9e929d7324b5e2d2ffc82299f5924981a835ba..d328e81b0b0b7ca207b0d4a5c45136e9
    // This controls Toolbar, LocationBar and CustomTabBar visibility.
    // If we don't set all three, tab navigation from the app menu breaks
    // on Chrome OS.
-@@ -238,6 +242,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -239,6 +243,7 @@ class ToolbarView : public views::AccessiblePaneView,
    void OnChromeLabsPrefChanged();
  
    // Loads the images for all the child views.

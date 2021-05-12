@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.cc b/chrome/browser/ui/extensions/extension_action_view_controller.cc
-index d0f640c2d1647a94d92e3e5e763714dd2edcc4e6..1ac0b33daee8542d8bc5c07b287b3e2f8424adcc 100644
+index f15dba73a0b60eb75e4cbd70097ec8ec46993c00..40e6e93687a4caf93afc525f97f7b5b527c002d9 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.cc
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.cc
-@@ -51,7 +51,6 @@ ExtensionActionViewController::Create(
-     ExtensionsContainer* extensions_container,
-     bool in_overflow_mode) {
+@@ -50,7 +50,6 @@ ExtensionActionViewController::Create(
+     Browser* browser,
+     ExtensionsContainer* extensions_container) {
    DCHECK(browser);
 -  DCHECK(extensions_container);
  

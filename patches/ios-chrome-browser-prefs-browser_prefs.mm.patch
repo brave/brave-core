@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 9747d2f74006b412d3c325b95368064a635d153e..a25d0c3ffaff4b6b24ace73e0c1ef6096c94322c 100644
+index f22d914a541a60c9e9c0bb13b26f6ad8c29c88a3..c54ae0bed2b8af1fd7c4662a49ba78215b21b034 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -260,6 +260,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -262,6 +262,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterIntegerPref(kPasswordManagerOnboardingState, 0);
    registry->RegisterBooleanPref(kWasOnboardingFeatureCheckedBefore, false);
    registry->RegisterDictionaryPref(kDomainsWithCookiePref);

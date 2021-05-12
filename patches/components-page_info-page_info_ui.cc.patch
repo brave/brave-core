@@ -1,5 +1,5 @@
 diff --git a/components/page_info/page_info_ui.cc b/components/page_info/page_info_ui.cc
-index 96a800c45a257825eb216c66c56a5af5651357f2..675bc366940fea6c9c065c8094caf416948def33 100644
+index d34cecf07f07bd7bd7fafec529a54cf41a258d47..91f15f9087e514ec126f7e91587d1ae9beb1e834 100644
 --- a/components/page_info/page_info_ui.cc
 +++ b/components/page_info/page_info_ui.cc
 @@ -658,6 +658,7 @@ const ui::ImageModel PageInfoUI::GetPermissionIcon(

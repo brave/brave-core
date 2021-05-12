@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/alert_indicator.h b/chrome/browser/ui/views/tabs/alert_indicator.h
-index 364fef52f0e8ade9a9099cc879de0e0db132204e..b0f781db92edca41ec6275bd65f10dddfccc66af 100644
+index b582f834bd77730d9f543ca9ed91f7c4e1c5b997..2c8c83b454836aa275419168f01c8b968ee4e2b9 100644
 --- a/chrome/browser/ui/views/tabs/alert_indicator.h
 +++ b/chrome/browser/ui/views/tabs/alert_indicator.h
 @@ -50,6 +50,7 @@ class AlertIndicator : public views::ImageView {

@@ -1,8 +1,8 @@
 diff --git a/content/browser/webui/web_ui_impl.cc b/content/browser/webui/web_ui_impl.cc
-index fc6ab536ec7e688dd5719fc17959a99bfc464afc..be648d52c1fe00a30e3a13705ecf2743153fef2e 100644
+index 64b34f48daf570d6a0096f7af4c89d052070fc9d..772e1b91dadde3d17426f9dacd350de2ec8d32f0 100644
 --- a/content/browser/webui/web_ui_impl.cc
 +++ b/content/browser/webui/web_ui_impl.cc
-@@ -70,6 +70,7 @@ WebUIImpl::WebUIImpl(WebContentsImpl* contents, RenderFrameHostImpl* frame_host)
+@@ -69,6 +69,7 @@ WebUIImpl::WebUIImpl(WebContentsImpl* contents, RenderFrameHostImpl* frame_host)
        web_contents_(contents),
        web_contents_observer_(new WebUIMainFrameObserver(this, contents)) {
    DCHECK(contents);

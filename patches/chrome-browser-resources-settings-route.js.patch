@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index c93ec1d033f388be94d9bd4cac38f780bc5265f2..32e33b0661e91e85702e562aa8a59e7aa2790ec4 100644
+index f06ebc15766edb341378ce0c709769ba69666272..0c58d074855cfc9a0c759680aa7c8f98c5752035 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -36,7 +36,9 @@ function addPrivacyChildRoutes(r) {
+@@ -39,7 +39,9 @@ function addPrivacyChildRoutes(r) {
  
    // TODO(tommycli): Find a way to refactor these repetitive category
    // routes.

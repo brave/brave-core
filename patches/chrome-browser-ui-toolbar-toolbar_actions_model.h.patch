@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model.h b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-index 36dfee1d046e31629f08ad1288a2f57623038e23..f7a9f376805ad457c41e2a15a847f638833cf7c1 100644
+index 56d46065c33f64450c4ecebb925f351837cdf96f..801e862518d8149af4e78663fb25970aa0595e43 100644
 --- a/chrome/browser/ui/toolbar/toolbar_actions_model.h
 +++ b/chrome/browser/ui/toolbar/toolbar_actions_model.h
 @@ -27,6 +27,7 @@ class Browser;
@@ -10,7 +10,7 @@ index 36dfee1d046e31629f08ad1288a2f57623038e23..f7a9f376805ad457c41e2a15a847f638
  
  namespace extensions {
  class ExtensionActionManager;
-@@ -46,6 +47,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
+@@ -45,6 +46,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
                              public extensions::ExtensionManagement::Observer,
                              public KeyedService {
   public:
@@ -18,12 +18,12 @@ index 36dfee1d046e31629f08ad1288a2f57623038e23..f7a9f376805ad457c41e2a15a847f638
    using ActionId = std::string;
  
    ToolbarActionsModel(Profile* profile,
-@@ -204,7 +206,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
-   size_t FindNewPositionFromLastKnownGood(const ActionId& action_id);
+@@ -152,7 +154,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
+   void RemovePref(const ActionId& action_id);
  
    // Returns true if the given |extension| should be added to the toolbar.
 -  bool ShouldAddExtension(const extensions::Extension* extension);
 +  virtual bool ShouldAddExtension(const extensions::Extension* extension);
  
-   // Adds or removes the given |extension| from the toolbar model.
-   void AddExtension(const extensions::Extension* extension);
+   // Returns true if |action_id| is in the toolbar model.
+   bool HasAction(const ActionId& action_id) const;
