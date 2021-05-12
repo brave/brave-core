@@ -24,6 +24,105 @@ class BatAdsAdRewardsIntegrationTest : public UnitTestBase {
   }
 };
 
+TEST_F(BatAdsAdRewardsIntegrationTest,
+       GetAdRewardsNotUpdatedDueToLossOfPrecisionIssue15801) {
+  // Arrange
+  const URLEndpoints endpoints = {
+      {"/v1/confirmation/payment/c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+       {{net::HTTP_OK,
+         R"([
+              {
+                "month":"2021-05",
+                "transactionCount":"180",
+                "balance":"1.025"
+              },
+              {
+                "month":"2021-04",
+                "transactionCount":"275",
+                "balance":"2.6895"
+              },
+              {
+                "month":"2021-03",
+                "transactionCount":"498",
+                "balance":"6.015"
+              },
+              {
+                "month":"2021-02",
+                "transactionCount":"430",
+                "balance":"6.235"
+              },
+              {
+                "month":"2021-01",
+                "transactionCount":"273",
+                "balance":"3.1"
+              },
+              {
+                "month":"2020-12",
+                "transactionCount":"390",
+                "balance":"10.66"
+              },
+              {
+                "month":"2020-11",
+                "transactionCount":"198",
+                "balance":"5.795"
+              },
+              {
+                "month":"2020-10",
+                "transactionCount":"228",
+                "balance":"6.8"
+              },
+              {
+                "month":"2020-09",
+                "transactionCount":"93",
+                "balance":"2.05"
+              }
+            ])"}}},
+      {"/v1/promotions/ads/grants/"
+       "summary?paymentId=c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+       {{net::HTTP_OK,
+         R"({
+              "type" : "ads",
+              "amount" : "42.98",
+              "lastClaim" : "2021-05-06T20:55:56Z"
+            })"}}}};
+
+  MockUrlRequest(ads_client_mock_, endpoints);
+
+  MockLoad(ads_client_mock_, "confirmations.json",
+           "confirmations_issue_15801.json");
+
+  InitializeAds();
+
+  AdvanceClock(TimeFromDateString("19 May 2021"));
+
+  // Act
+  GetAds()->GetAccountStatement(
+      [](const bool success, const StatementInfo& statement) {
+        ASSERT_TRUE(success);
+
+        // Jimmy: Estimated pending rewards 4.147 BAT
+        //        Next payment date Jun 5
+
+        StatementInfo expected_statement;
+        expected_statement.next_payment_date =
+            TimestampFromDateString("5 June 2021");
+
+        // Calculated by subtracting the ad grant balance from the accumulated
+        // payment balances
+        expected_statement.estimated_pending_rewards = 1.3895;
+
+        // Calculated from the above payment balance for May
+        expected_statement.earnings_this_month = 1.025;
+
+        // Calculated from the above payment balance for April
+        expected_statement.earnings_last_month = 2.6895;
+
+        EXPECT_EQ(expected_statement, statement);
+      });
+
+  // Assert
+}
+
 TEST_F(BatAdsAdRewardsIntegrationTest, GetAdRewardsFromEndPoints) {
   // Arrange
   const URLEndpoints endpoints = {
