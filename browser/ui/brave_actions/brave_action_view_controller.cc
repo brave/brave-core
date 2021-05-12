@@ -160,6 +160,5 @@ BraveActionViewController::GetIconImageSource(
   // If the extension doesn't want to run on the active web contents, we
   // grayscale it to indicate that.
   image_source->set_grayscale(!IsEnabled(web_contents));
-  image_source->set_paint_page_action_decoration(false);
   return image_source;
 }

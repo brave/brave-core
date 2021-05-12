@@ -94,7 +94,6 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
           SK_ColorWHITE,
           kRewardsBadgeBg));
   image_source->SetBadge(std::move(badge));
-  image_source->set_paint_page_action_decoration(false);
   gfx::ImageSkia icon(gfx::Image(
       gfx::ImageSkia(
           std::move(image_source),
