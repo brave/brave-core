@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-index bac0f9abf00b58c512acacd9ff87a3cf2100555f..e90d78313548f65ca065e5d402d41b216f1e9ecd 100644
+index 9783aef36a0ee9f764c88b120092b201cfa8ba63..14ace4b01219c3c2c6b2ca2912949299dc10d311 100644
 --- a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 @@ -75,10 +75,10 @@
@@ -20,9 +20,9 @@ index bac0f9abf00b58c512acacd9ff87a3cf2100555f..e90d78313548f65ca065e5d402d41b21
 @@ -93,7 +93,7 @@
      // pixel manipulation
      [RaisesException] ImageData createImageData(ImageData imagedata);
-     [RaisesException] ImageData createImageData(long sw, long sh);
--    [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
+     [RaisesException] ImageData createImageData(long sw, long sh, optional ImageDataSettings imageDataSettings = {});
+-    [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh, optional ImageDataSettings imageDataSettings = {});
++    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh, optional ImageDataSettings imageDataSettings = {});
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
  
