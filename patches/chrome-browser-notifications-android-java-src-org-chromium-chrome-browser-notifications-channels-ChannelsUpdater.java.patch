@@ -1,8 +1,8 @@
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java
-index 245275bc2884870b34bfa7b174fd7fed2dc40184..e1b2e04b535eae147fd7d14d9463d0c10aadc2fc 100644
---- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java
-+++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java
-@@ -42,7 +42,7 @@ public class ChannelsUpdater {
+diff --git a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java
+index daab1a4437c61300b82ae26d91b48c22d539b653..24afd23109d162ee7eed31202a8371d5eda9c14f 100644
+--- a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java
++++ b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java
+@@ -41,7 +41,7 @@ public class ChannelsUpdater {
                  // when mIsAtLeastO is false.
                  INSTANCE = new ChannelsUpdater(true /* isAtLeastO */,
                          SharedPreferencesManager.getInstance(),

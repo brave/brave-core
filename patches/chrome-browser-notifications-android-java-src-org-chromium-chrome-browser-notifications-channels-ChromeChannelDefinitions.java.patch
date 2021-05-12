@@ -1,8 +1,8 @@
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-index bc6ad6815cf2f5fe687b871dd8019aa2ec9a785f..c92ca88fae11427fd4111b9e6d4fe7299754ca20 100644
---- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-+++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-@@ -44,7 +44,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+diff --git a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
+index 80f53e6240dfc8687d850d3a34d682bfb08f464e..757dc6d05e919715bf107323bf0be7bf15ae7b3b 100644
+--- a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
++++ b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
+@@ -43,7 +43,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
       * set of channels returned by {@link #getStartupChannelIds()} or {@link #getLegacyChannelIds()}
       * changes.
       */
@@ -11,7 +11,7 @@ index bc6ad6815cf2f5fe687b871dd8019aa2ec9a785f..c92ca88fae11427fd4111b9e6d4fe729
  
      private static class LazyHolder {
          private static ChromeChannelDefinitions sInstance = new ChromeChannelDefinitions();
-@@ -64,6 +64,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -69,6 +69,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
       * more detailed instructions.
       */
      @StringDef({ChannelId.BROWSER, ChannelId.DOWNLOADS, ChannelId.INCOGNITO,
@@ -19,8 +19,8 @@ index bc6ad6815cf2f5fe687b871dd8019aa2ec9a785f..c92ca88fae11427fd4111b9e6d4fe729
              ChannelId.MEDIA_PLAYBACK, ChannelId.SCREEN_CAPTURE, ChannelId.CONTENT_SUGGESTIONS,
              ChannelId.WEBAPP_ACTIONS, ChannelId.SITES, ChannelId.SHARING, ChannelId.UPDATES,
              ChannelId.COMPLETED_DOWNLOADS, ChannelId.PERMISSION_REQUESTS,
-@@ -94,7 +95,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
-         String PRICE_DROP = "shopping_price_drop_alerts";
+@@ -100,7 +101,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+         String SECURITY_KEY = "security_key";
      }
  
 -    @StringDef({ChannelGroupId.GENERAL, ChannelGroupId.SITES})
@@ -28,7 +28,7 @@ index bc6ad6815cf2f5fe687b871dd8019aa2ec9a785f..c92ca88fae11427fd4111b9e6d4fe729
      @Retention(RetentionPolicy.SOURCE)
      public @interface ChannelGroupId {
          String SITES = "sites";
-@@ -123,6 +124,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -129,6 +130,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
              Map<String, PredefinedChannel> map = new HashMap<>();
              Set<String> startup = new HashSet<>();
  
@@ -36,7 +36,7 @@ index bc6ad6815cf2f5fe687b871dd8019aa2ec9a785f..c92ca88fae11427fd4111b9e6d4fe729
              map.put(ChannelId.BROWSER,
                      PredefinedChannel.create(ChannelId.BROWSER,
                              R.string.notification_category_browser,
-@@ -245,6 +247,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -258,6 +260,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
          static final Map<String, PredefinedChannelGroup> MAP;
          static {
              Map<String, PredefinedChannelGroup> map = new HashMap<>();
