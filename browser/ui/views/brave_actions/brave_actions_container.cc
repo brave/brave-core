@@ -210,8 +210,7 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
     // If we do require notifications when popups are open or closed,
     // then we should inherit and pass |this| through.
     actions_[id].view_controller_ = BraveActionViewController::Create(
-        extension->id(), browser_, empty_extensions_container_.get(),
-        /*in_overflow_mode*/ false);
+        extension->id(), browser_, empty_extensions_container_.get());
     // The button view
     actions_[id].view_ = std::make_unique<BraveActionView>(
         actions_[id].view_controller_.get(), this);

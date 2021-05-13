@@ -41,8 +41,7 @@ std::unique_ptr<BraveActionViewController>
 BraveActionViewController::Create(
     const extensions::ExtensionId& extension_id,
     Browser* browser,
-    ExtensionsContainer* extensions_container,
-    bool in_overflow_mode) {
+    ExtensionsContainer* extensions_container) {
   DCHECK(browser);
 
   auto* registry = extensions::ExtensionRegistry::Get(browser->profile());
@@ -57,7 +56,7 @@ BraveActionViewController::Create(
   // WrapUnique() because the constructor is private.
   return base::WrapUnique(new BraveActionViewController(
       std::move(extension), browser, extension_action, registry,
-      extensions_container, in_overflow_mode));
+      extensions_container));
 }
 
 BraveActionViewController::BraveActionViewController(
@@ -65,14 +64,12 @@ BraveActionViewController::BraveActionViewController(
     Browser* browser,
     extensions::ExtensionAction* extension_action,
     extensions::ExtensionRegistry* extension_registry,
-    ExtensionsContainer* extensions_container,
-    bool in_overflow_mode)
+    ExtensionsContainer* extensions_container)
     : ExtensionActionViewController(std::move(extension),
                                     browser,
                                     extension_action,
                                     extension_registry,
-                                    extensions_container,
-                                    in_overflow_mode) {}
+                                    extensions_container) {}
 
 bool BraveActionViewController::IsEnabled(
     content::WebContents* web_contents) const {

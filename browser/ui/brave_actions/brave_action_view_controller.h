@@ -33,8 +33,7 @@ class BraveActionViewController : public ExtensionActionViewController {
     static std::unique_ptr<BraveActionViewController> Create(
         const extensions::ExtensionId& extension_id,
         Browser* browser,
-        ExtensionsContainer* extensions_container,
-        bool in_overflow_mode);
+        ExtensionsContainer* extensions_container);
 
     bool IsEnabled(content::WebContents* web_contents) const override;
     gfx::Image GetIcon(content::WebContents* web_contents,
@@ -52,8 +51,7 @@ class BraveActionViewController : public ExtensionActionViewController {
         Browser* browser,
         extensions::ExtensionAction* extension_action,
         extensions::ExtensionRegistry* extension_registry,
-        ExtensionsContainer* extensions_container,
-        bool in_overflow_mode);
+        ExtensionsContainer* extensions_container);
 
     ExtensionActionViewController* GetPreferredPopupViewController() override;
     bool TriggerPopupWithUrl(PopupShowAction show_action,
