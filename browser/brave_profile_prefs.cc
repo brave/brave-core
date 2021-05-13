@@ -139,6 +139,8 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterIntegerPref(
       kAlternativeSearchEngineProviderInTor,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
+  // Added 05/2021
+  registry->RegisterBooleanPref(kBraveTodayIntroDismissed, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -304,7 +306,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Brave Today
   registry->RegisterDictionaryPref(kBraveTodaySources);
-  registry->RegisterBooleanPref(kBraveTodayIntroDismissed, false);
+  registry->RegisterBooleanPref(kBraveTodayOptedIn, false);
   registry->RegisterListPref(kBraveTodayWeeklySessionCount);
   registry->RegisterListPref(kBraveTodayWeeklyCardViewsCount);
   registry->RegisterListPref(kBraveTodayWeeklyCardVisitsCount);

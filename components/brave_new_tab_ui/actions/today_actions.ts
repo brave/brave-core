@@ -17,6 +17,8 @@ type DataReceivedPayload = {
 }
 export const dataReceived = createAction<DataReceivedPayload>('dataReceived')
 
+export const optIn = createAction('optedIn')
+
 /**
  * Scroll has reached a position so that another page of content is needed
  */

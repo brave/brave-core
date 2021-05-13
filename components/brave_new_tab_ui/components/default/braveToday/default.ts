@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 const blurOut = keyframes`
   from {
@@ -102,4 +102,66 @@ export const PublisherLogo = styled('img')<{}>`
   background-color: rgba(188,188,188,0.2);
   margin-top: 12px;
   display: inline-block;
+`
+
+export const Button = styled('button')<{}>`
+  appearance: none;
+  cursor: pointer;
+  display: block;
+  border-radius: 24px;
+  background: none;
+  padding: 15px 34px;
+  color: white;
+  border: none;
+  font-weight: 800;
+  cursor: pointer;
+  background: rgba(33, 37, 41, .8);
+  backdrop-filter: blur(8px);
+  outline: none;
+  border: none;
+  transition: opacity 1s ease-in-out, background .124s ease-in-out;
+  &:hover {
+    background: rgba(255, 255, 255, .2);
+  }
+  &:active {
+    background: rgba(255, 255, 255, .4);
+  }
+  &:focus-visible {
+    box-shadow: 0 0 0 1px ${p => p.theme.color.brandBrave};
+  }
+`
+
+type CardButtonProps = {
+  isMainFocus?: boolean
+}
+export const CardButton = styled(Button)<CardButtonProps>`
+  backdrop-filter: none;
+  background: rgba(255, 255, 255, .24);
+  ${p => p.isMainFocus && css`
+    display: block;
+    width: 100%;
+  `}
+`
+
+export const TertiaryButton = styled('button')<{}>`
+  appearance: none;
+  cursor: pointer;
+  font-family: Poppins;
+  font-weight: 600;
+  font-size: 13px;
+  background: none;
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  color: white;
+  &:hover {
+    color: #ddd;
+  }
+  &:active {
+    transform: translate(1px, 1px)
+  }
+  &:focus-visible {
+    box-shadow: 0 0 0 1px ${p => p.theme.color.brandBrave};
+  }
 `

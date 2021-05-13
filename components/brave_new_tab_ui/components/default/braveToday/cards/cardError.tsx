@@ -48,9 +48,9 @@ export default function CardError () {
         <Heading>
           Oops…
         </Heading>
-        <Card.Text>
+        <Card.Paragraph>
           Brave Today is experiencing some issues. Try again.
-        </Card.Text>
+        </Card.Paragraph>
       </Content>
     </Card.Intro>
   )

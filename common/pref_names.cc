@@ -62,6 +62,7 @@ const char kNewTabPageShowTogether[] = "brave.new_tab_page.show_together";
 const char kNewTabPageShowsOptions[] = "brave.new_tab_page.shows_options";
 const char kBraveTodaySources[] = "brave.today.sources";
 const char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
+const char kBraveTodayOptedIn[] = "brave.today.opted_in";
 const char kBraveTodayWeeklySessionCount[] =
     "brave.today.p3a_weekly_session_count";
 const char kBraveTodayWeeklyCardViewsCount[] =

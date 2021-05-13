@@ -40,10 +40,6 @@ const StoreProvider: React.FunctionComponent = ({ children }) => {
   )
 }
 
-function dismissBraveTodayIntroCard () {
-  console.log('brave today intro card dismissed')
-}
-
 export default {
   title: 'New Tab',
   decorators: [
@@ -75,7 +71,6 @@ export const Regular = () => {
       saveShowFTX={doNothing}
       saveBrandedWallpaperOptIn={doNothing}
       saveSetAllStackWidgets={doNothing}
-      onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
     />
   )
 }

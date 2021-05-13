@@ -55,6 +55,7 @@ extern const char kNewTabPageShowTogether[];
 extern const char kNewTabPageShowsOptions[];
 extern const char kBraveTodaySources[];
 extern const char kBraveTodayIntroDismissed[];
+extern const char kBraveTodayOptedIn[];
 extern const char kBraveTodayWeeklySessionCount[];
 extern const char kBraveTodayWeeklyCardViewsCount[];
 extern const char kBraveTodayWeeklyCardVisitsCount[];

@@ -29,7 +29,7 @@ export const defaultState: NewTab.State = {
   showFTX: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
-  isBraveTodayIntroDismissed: false,
+  isBraveTodayOptedIn: false,
   showEmptyPage: false,
   togetherSupported: false,
   geminiSupported: false,

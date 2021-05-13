@@ -149,6 +149,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Brave today prefs
+  (*s_brave_allowlist)[kBraveTodayOptedIn] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kBraveTodaySources] =
       settings_api::PrefType::PREF_TYPE_DICTIONARY;
   // Clear browsing data on exit prefs.

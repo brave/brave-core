@@ -104,10 +104,10 @@ export default function Sources (props: SourcesProps) {
   const onBack = React.useCallback(() => {
     props.setCategory('')
   }, [props.setCategory])
-  // No publishers
+  // No publishers, could be because hasn't opted-in yet
   // TODO(petemill): error state
   if (!props.publishers) {
-    return <div>Loading...</div>
+    return null
   }
   // Category list
   if (!props.category) {
