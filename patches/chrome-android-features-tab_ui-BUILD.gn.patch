@@ -1,8 +1,8 @@
 diff --git a/chrome/android/features/tab_ui/BUILD.gn b/chrome/android/features/tab_ui/BUILD.gn
-index dd226de107fc488d25ea342019baaaf809978ca3..5778a75368de560e511c0f056ba5d182feddffa5 100644
+index 5947cb28ae1aac0f062c5cb21667bfd31603b449..4f12dd4e6f8318374fe2d47efe727a52b0a14232 100644
 --- a/chrome/android/features/tab_ui/BUILD.gn
 +++ b/chrome/android/features/tab_ui/BUILD.gn
-@@ -191,6 +191,7 @@ android_library("java") {
+@@ -194,6 +194,7 @@ android_library("java") {
      "java/src/org/chromium/chrome/browser/tasks/tab_management/suggestions/TabSuggestionsRanker.java",
      "java/src/org/chromium/chrome/browser/tasks/tab_management/suggestions/TabSuggestionsServerFetcher.java",
    ]
