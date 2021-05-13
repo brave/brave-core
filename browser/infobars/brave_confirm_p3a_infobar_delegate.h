@@ -11,13 +11,17 @@
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "url/gurl.h"
 
-class InfoBarService;
 class PrefService;
+
+namespace infobars {
+class ContentInfoBarManager;
+}  // namespace infobars
 
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class BraveConfirmP3AInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
-  static void Create(InfoBarService* infobar_service, PrefService* local_state);
+  static void Create(infobars::ContentInfoBarManager* infobar_manager,
+                     PrefService* local_state);
 
  private:
   explicit BraveConfirmP3AInfoBarDelegate(PrefService* local_state);

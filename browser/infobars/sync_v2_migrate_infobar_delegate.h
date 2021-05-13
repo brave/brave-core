@@ -12,7 +12,6 @@
 #include "url/gurl.h"
 
 class Browser;
-class InfoBarService;
 class Profile;
 class PrefService;
 
@@ -20,11 +19,17 @@ namespace brave_sync {
 class Prefs;
 }  // namespace brave_sync
 
+namespace infobars {
+class ContentInfoBarManager;
+}  // namespace infobars
+
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class SyncV2MigrateInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
-  static void Create(InfoBarService* infobar_service, bool is_v2_user,
-                                            Profile* profile, Browser* browser);
+  static void Create(infobars::ContentInfoBarManager* infobar_manager,
+                     bool is_v2_user,
+                     Profile* profile,
+                     Browser* browser);
 
  private:
   explicit SyncV2MigrateInfoBarDelegate(Browser* browser, Profile* profile);

@@ -239,6 +239,7 @@ if (is_android) {
     "//brave/browser/infobars",
     "//brave/browser/ui/bookmark",
     "//brave/components/weekly_storage",
+    "//components/infobars/content",
   ]
 }
 

@@ -17,11 +17,11 @@
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/chrome_typography.h"
 #include "components/grit/components_scaled_resources.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -101,15 +101,16 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
 }
 
 void BraveWaybackMachineInfoBarContentsView::HideInfobar() {
-  InfoBarService* infobar_service = InfoBarService::FromWebContents(contents_);
-  if (!infobar_service)
+  infobars::ContentInfoBarManager* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(contents_);
+  if (!infobar_manager)
     return;
 
-  for (size_t i = 0; i < infobar_service->infobar_count(); ++i) {
-    infobars::InfoBar* infobar = infobar_service->infobar_at(i);
+  for (size_t i = 0; i < infobar_manager->infobar_count(); ++i) {
+    infobars::InfoBar* infobar = infobar_manager->infobar_at(i);
     if (infobar->delegate()->GetIdentifier() ==
         BraveWaybackMachineInfoBarDelegate::WAYBACK_MACHINE_INFOBAR_DELEGATE) {
-      infobar_service->RemoveInfoBar(infobar);
+      infobar_manager->RemoveInfoBar(infobar);
       break;
     }
   }

@@ -13,8 +13,8 @@
 #include "brave/components/p3a/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/grit/chromium_strings.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
@@ -22,8 +22,9 @@
 #include "ui/views/vector_icons.h"
 
 // static
-void BraveConfirmP3AInfoBarDelegate::Create(InfoBarService* infobar_service,
-                                            PrefService* local_state) {
+void BraveConfirmP3AInfoBarDelegate::Create(
+    infobars::ContentInfoBarManager* infobar_manager,
+    PrefService* local_state) {
   // Don't show infobar if:
   // - P3A is disabled
   // - notice has already been acknowledged
@@ -35,7 +36,7 @@ void BraveConfirmP3AInfoBarDelegate::Create(InfoBarService* infobar_service,
     }
   }
 
-  infobar_service->AddInfoBar(
+  infobar_manager->AddInfoBar(
       CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
           new BraveConfirmP3AInfoBarDelegate(local_state))));
 }

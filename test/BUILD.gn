@@ -379,8 +379,8 @@ test("brave_unit_tests") {
       "//chrome/browser/extensions",
       "//components/crx_file",
       "//components/policy/core/common:test_support",
-      "//extensions/browser:test_support",
       "//extensions/browser",
+      "//extensions/browser:test_support",
       "//url",
     ]
   }
@@ -728,6 +728,8 @@ if (!is_android) {
         "//brave/components/brave_wallet/browser",
         "//brave/components/brave_wallet/common",
         "//brave/components/brave_wallet/common:mojom",
+        "//components/infobars/content",
+        "//components/infobars/core",
       ]
     }
 
