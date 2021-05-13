@@ -8,49 +8,11 @@ import Shared
 import Storage
 import XCTest
 
-open class MockTabQueue: TabQueue {
-    open func addToQueue(_ tab: ShareItem) -> Success {
-        return succeed()
-    }
-
-    open func getQueuedTabs() -> Deferred<Maybe<Cursor<ShareItem>>> {
-        return deferMaybe(ArrayCursor<ShareItem>(data: []))
-    }
-
-    open func clearQueuedTabs() -> Success {
-        return succeed()
-    }
-}
-
-open class MockPanelDataObservers: PanelDataObservers {
-    override init(profile: Profile) {
-        super.init(profile: profile)
-        self.activityStream = MockActivityStreamDataObserver(profile: profile)
-    }
-}
-
-open class MockActivityStreamDataObserver: DataObserver {
-    public var profile: Profile
-    public weak var delegate: DataObserverDelegate?
-
-    init(profile: Profile) {
-        self.profile = profile
-    }
-
-    public func refreshIfNeeded(forceHighlights highlights: Bool, forceTopSites topsites: Bool) {
-
-    }
-}
-
 open class MockProfile: Profile {
     
     // Read/Writeable properties for mocking
     public var files: FileAccessor
-    public var logins: BrowserLogins & SyncableLogins & ResettableSyncStorage
-
-    public lazy var panelDataObservers: PanelDataObservers = {
-        return MockPanelDataObservers(profile: self)
-    }()
+    public var logins: BrowserLogins
 
     fileprivate let name: String = "mockaccount"
 
@@ -85,9 +47,5 @@ open class MockProfile: Profile {
 
     lazy public var prefs: Prefs = {
         return MockProfilePrefs()
-    }()
-
-    lazy public var recentlyClosedTabs: ClosedTabsStore = {
-        return ClosedTabsStore(prefs: self.prefs)
     }()
 }

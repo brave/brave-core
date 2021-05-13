@@ -50,14 +50,12 @@ class ProfileFileAccessor: FileAccessor {
 /**
  * A Profile manages access to the user's data.
  */
-protocol Profile: class {
+protocol Profile: AnyObject {
     var prefs: Prefs { get }
     var searchEngines: SearchEngines { get }
     var files: FileAccessor { get }
-    var logins: BrowserLogins & SyncableLogins & ResettableSyncStorage { get }
+    var logins: BrowserLogins { get }
     var certStore: CertStore { get }
-    var recentlyClosedTabs: ClosedTabsStore { get }
-    var panelDataObservers: PanelDataObservers { get }
 
     var isShutdown: Bool { get }
     
@@ -177,10 +175,6 @@ open class BrowserProfile: Profile {
         return name
     }
 
-    lazy var panelDataObservers: PanelDataObservers = {
-        return PanelDataObservers(profile: self)
-    }()
-
     lazy var searchEngines: SearchEngines = {
         return SearchEngines(files: self.files)
     }()
@@ -197,11 +191,7 @@ open class BrowserProfile: Profile {
         return CertStore()
     }()
 
-    lazy var recentlyClosedTabs: ClosedTabsStore = {
-        return ClosedTabsStore(prefs: self.prefs)
-    }()
-
-    lazy var logins: BrowserLogins & SyncableLogins & ResettableSyncStorage = {
+    lazy var logins: BrowserLogins = {
         return SQLiteLogins(db: self.loginsDB)
     }()
 }

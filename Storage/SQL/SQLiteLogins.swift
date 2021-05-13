@@ -75,25 +75,6 @@ open class SQLiteLogins: BrowserLogins {
         return login
     }
 
-    class func localLoginFactory(_ row: SDRow) -> LocalLogin {
-        let login = self.constructLogin(row, c: LocalLogin.self)
-
-        login.localModified = row.getTimestamp("local_modified") ?? 0
-        login.isDeleted = row.getBoolean("is_deleted")
-        login.syncStatus = SyncStatus(rawValue: row["sync_status"] as! Int)!
-
-        return login
-    }
-
-    class func mirrorLoginFactory(_ row: SDRow) -> MirrorLogin {
-        let login = self.constructLogin(row, c: MirrorLogin.self)
-
-        login.serverModified = row.getTimestamp("server_modified")!
-        login.isOverridden = row.getBoolean("is_overridden")
-
-        return login
-    }
-
     fileprivate class func loginFactory(_ row: SDRow) -> Login {
         return self.constructLogin(row, c: Login.self)
     }
@@ -304,7 +285,7 @@ open class SQLiteLogins: BrowserLogins {
                 is_deleted,
                 sync_status
             )
-            VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, 0, \(SyncStatus.new.rawValue))
+            VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, 0, \(LoginsSchema.SyncStatus.new.rawValue))
             """
 
         return db.run(sql, withArgs: args)
@@ -441,13 +422,13 @@ open class SQLiteLogins: BrowserLogins {
         // Immediately delete anything that's marked as new -- i.e., it's never reached
         // the server.
         let delete =
-            "DELETE FROM loginsL WHERE guid IN \(inClause) AND sync_status = \(SyncStatus.new.rawValue)"
+            "DELETE FROM loginsL WHERE guid IN \(inClause) AND sync_status = \(LoginsSchema.SyncStatus.new.rawValue)"
 
         // Otherwise, mark it as changed.
         let update = """
             UPDATE loginsL SET
                 local_modified = \(nowMillis),
-                sync_status = \(SyncStatus.changed.rawValue),
+                sync_status = \(LoginsSchema.SyncStatus.changed.rawValue),
                 is_deleted = 1,
                 password = '',
                 hostname = '',
@@ -463,7 +444,7 @@ open class SQLiteLogins: BrowserLogins {
                 guid, local_modified, is_deleted, sync_status, hostname, timeCreated, timePasswordChanged, password, username
             )
             SELECT
-                guid, \(nowMillis), 1, \(SyncStatus.changed.rawValue), '', timeCreated, \(nowMillis)000, '', ''
+                guid, \(nowMillis), 1, \(LoginsSchema.SyncStatus.changed.rawValue), '', timeCreated, \(nowMillis)000, '', ''
             FROM loginsM
             WHERE guid IN \(inClause)
             """
@@ -483,13 +464,13 @@ open class SQLiteLogins: BrowserLogins {
         // Immediately delete anything that's marked as new -- i.e., it's never reached
         // the server. If Sync isn't set up, this will be everything.
         let delete =
-            "DELETE FROM loginsL WHERE sync_status = \(SyncStatus.new.rawValue)"
+            "DELETE FROM loginsL WHERE sync_status = \(LoginsSchema.SyncStatus.new.rawValue)"
 
         let nowMillis = Date.now()
 
         // Mark anything we haven't already deleted.
         let update =
-            "UPDATE loginsL SET local_modified = \(nowMillis), sync_status = \(SyncStatus.changed.rawValue), is_deleted = 1, password = '', hostname = '', username = '' WHERE is_deleted = 0"
+            "UPDATE loginsL SET local_modified = \(nowMillis), sync_status = \(LoginsSchema.SyncStatus.changed.rawValue), is_deleted = 1, password = '', hostname = '', username = '' WHERE is_deleted = 0"
 
         // Copy all the remaining rows from our mirror, marking them as locally deleted. The
         // OR IGNORE will cause conflicts due to non-unique guids to be dropped, preserving
@@ -499,7 +480,7 @@ open class SQLiteLogins: BrowserLogins {
                 guid, local_modified, is_deleted, sync_status, hostname, timeCreated, timePasswordChanged, password, username
             )
             SELECT
-                guid, \(nowMillis), 1, \(SyncStatus.changed.rawValue), '', timeCreated, \(nowMillis)000, '', ''
+                guid, \(nowMillis), 1, \(LoginsSchema.SyncStatus.changed.rawValue), '', timeCreated, \(nowMillis)000, '', ''
             FROM loginsM
             """
 
@@ -512,412 +493,25 @@ open class SQLiteLogins: BrowserLogins {
     }
 }
 
-// When a server change is detected (e.g., syncID changes), we should consider shifting the contents
-// of the mirror into the local overlay, allowing a content-based reconciliation to occur on the next
-// full sync. Or we could flag the mirror as to-clear, download the server records and un-clear, and
-// resolve the remainder on completion. This assumes that a fresh start will typically end up with
-// the exact same records, so we might as well keep the shared parents around and double-check.
-extension SQLiteLogins: SyncableLogins {
-    /**
-     * Delete the login with the provided GUID. Succeeds if the GUID is unknown.
-     */
-    public func deleteByGUID(_ guid: GUID, deletedAt: Timestamp) -> Success {
-        // Simply ignore the possibility of a conflicting local change for now.
-        let local = "DELETE FROM loginsL WHERE guid = ?"
-        let remote = "DELETE FROM loginsM WHERE guid = ?"
-        let args: Args = [guid]
-
-        return self.db.run(local, withArgs: args) >>> { self.db.run(remote, withArgs: args) }
+class NoSuchRecordError: MaybeErrorType {
+    let guid: GUID
+    init(guid: GUID) {
+        self.guid = guid
     }
-
-    func getExistingMirrorRecordByGUID(_ guid: GUID) -> Deferred<Maybe<MirrorLogin?>> {
-        let sql = "SELECT * FROM loginsM WHERE guid = ? LIMIT 1"
-        let args: Args = [guid]
-        return self.db.runQuery(sql, args: args, factory: SQLiteLogins.mirrorLoginFactory) >>== { deferMaybe($0[0]) }
-    }
-
-    func getExistingLocalRecordByGUID(_ guid: GUID) -> Deferred<Maybe<LocalLogin?>> {
-        let sql = "SELECT * FROM loginsL WHERE guid = ? LIMIT 1"
-        let args: Args = [guid]
-        return self.db.runQuery(sql, args: args, factory: SQLiteLogins.localLoginFactory) >>== { deferMaybe($0[0]) }
-    }
-
-    fileprivate func storeReconciledLogin(_ login: Login) -> Success {
-        let dateMilli = Date.now()
-
-        let args: Args = [
-            dateMilli,            // local_modified
-            login.httpRealm,
-            login.formSubmitURL,
-            login.usernameField,
-            login.passwordField,
-            login.timeLastUsed,
-            login.timePasswordChanged,
-            login.timesUsed,
-            login.password,
-            login.hostname,
-            login.username,
-            login.guid,
-        ]
-
-        let update = """
-            UPDATE loginsL SET
-                local_modified = ?,
-                httpRealm = ?,
-                formSubmitURL = ?,
-                usernameField = ?,
-                passwordField = ?,
-                timeLastUsed = ?,
-                timePasswordChanged = ?,
-                timesUsed = ?,
-                password = ?,
-                hostname = ?,
-                username = ?,
-                sync_status = \(SyncStatus.changed.rawValue)
-            WHERE guid = ?
-            """
-
-        return self.db.run(update, withArgs: args)
-    }
-
-    public func applyChangedLogin(_ upstream: ServerLogin) -> Success {
-        // Our login storage tracks the shared parent from the last sync (the "mirror").
-        // This allows us to conclusively determine what changed in the case of conflict.
-        //
-        // Our first step is to determine whether the record is changed or new: i.e., whether
-        // or not it's present in the mirror.
-        //
-        // TODO: these steps can be done in a single query. Make it work, make it right, make it fast.
-        // TODO: if there's no mirror record, all incoming records can be applied in one go; the only
-        // reason we need to fetch first is to establish the shared parent. That would be nice.
-        let guid = upstream.guid
-        return self.getExistingMirrorRecordByGUID(guid) >>== { mirror in
-            return self.getExistingLocalRecordByGUID(guid) >>== { local in
-                return self.applyChangedLogin(upstream, local: local, mirror: mirror)
-            }
-        }
-    }
-
-    fileprivate func applyChangedLogin(_ upstream: ServerLogin, local: LocalLogin?, mirror: MirrorLogin?) -> Success {
-        // Once we have the server record, the mirror record (if any), and the local overlay (if any),
-        // we can always know which state a record is in.
-
-        // If it's present in the mirror, then we can proceed directly to handling the change;
-        // we assume that once a record makes it into the mirror, that the local record association
-        // has already taken place, and we're tracking local changes correctly.
-        if let mirror = mirror {
-            log.debug("Mirror record found for changed record \(mirror.guid).")
-            if let local = local {
-                log.debug("Changed local overlay found for \(local.guid). Resolving conflict with 3WM.")
-                // * Changed remotely and locally (conflict). Resolve the conflict using a three-way merge: the
-                //   local mirror is the shared parent of both the local overlay and the new remote record.
-                //   Apply results as in the co-creation case.
-                return self.resolveConflictBetween(local: local, upstream: upstream, shared: mirror)
-            }
-
-            log.debug("No local overlay found. Updating mirror to upstream.")
-            // * Changed remotely but not locally. Apply the remote changes to the mirror.
-            //   There is no local overlay to discard or resolve against.
-            return self.updateMirrorToLogin(upstream, fromPrevious: mirror)
-        }
-
-        // * New both locally and remotely with no shared parent (cocreation).
-        //   Or we matched the GUID, and we're assuming we just forgot the mirror.
-        //
-        //   Merge and apply the results remotely, writing the result into the mirror and discarding the overlay
-        //   if the upload succeeded. (Doing it in this order allows us to safely replay on failure.)
-        //
-        //   If the local and remote record are the same, this is trivial.
-        //   At this point we also switch our local GUID to match the remote.
-        if let local = local {
-            // We might have randomly computed the same GUID on two devices connected
-            // to the same Sync account.
-            // With our 9-byte GUIDs, the chance of that happening is very small, so we
-            // assume that this device has previously connected to this account, and we
-            // go right ahead with a merge.
-            log.debug("Local record with GUID \(local.guid) but no mirror. This is unusual; assuming disconnect-reconnect scenario. Smushing.")
-            return self.resolveConflictWithoutParentBetween(local: local, upstream: upstream)
-        }
-
-        // If it's not present, we must first check whether we have a local record that's substantially
-        // the same -- the co-creation or re-sync case.
-        //
-        // In this case, we apply the server record to the mirror, change the local record's GUID,
-        // and proceed to reconcile the change on a content basis.
-        return self.findLocalRecordByContent(upstream) >>== { local in
-            if let local = local {
-                log.debug("Local record \(local.guid) content-matches new remote record \(upstream.guid). Smushing.")
-                return self.resolveConflictWithoutParentBetween(local: local, upstream: upstream)
-            }
-
-            // * New upstream only; no local overlay, content-based merge,
-            //   or shared parent in the mirror. Insert it in the mirror.
-            log.debug("Never seen remote record \(upstream.guid). Mirroring.")
-            return self.insertNewMirror(upstream)
-        }
-    }
-
-    // N.B., the final guid is sometimes a WHERE and sometimes inserted.
-    fileprivate func mirrorArgs(_ login: ServerLogin) -> Args {
-        let args: Args = [
-            login.serverModified,
-            login.httpRealm,
-            login.formSubmitURL,
-            login.usernameField,
-            login.passwordField,
-            login.timesUsed,
-            login.timeLastUsed,
-            login.timePasswordChanged,
-            login.timeCreated,
-            login.password,
-            login.hostname,
-            login.username,
-            login.guid,
-        ]
-        return args
-    }
-
-    /**
-     * Called when we have a changed upstream record and no local changes.
-     * There's no need to flip the is_overridden flag.
-     */
-    fileprivate func updateMirrorToLogin(_ login: ServerLogin, fromPrevious previous: Login) -> Success {
-        let args = self.mirrorArgs(login)
-        let sql = """
-            UPDATE loginsM SET
-                server_modified = ?,
-                httpRealm = ?,
-                formSubmitURL = ?,
-                usernameField = ?,
-                passwordField = ?,
-                -- These we need to coalesce, because we might be supplying zeroes if the remote has
-                -- been overwritten by an older client. In this case, preserve the old value in the
-                -- mirror.
-                timesUsed = coalesce(nullif(?, 0), timesUsed),
-                timeLastUsed = coalesce(nullif(?, 0), timeLastUsed),
-                timePasswordChanged = coalesce(nullif(?, 0), timePasswordChanged),
-                timeCreated = coalesce(nullif(?, 0), timeCreated),
-                password = ?,
-                hostname = ?,
-                username = ?
-            WHERE guid = ?
-            """
-
-        return self.db.run(sql, withArgs: args)
-    }
-
-    /**
-     * Called when we have a completely new record. Naturally the new record
-     * is marked as non-overridden.
-     */
-    fileprivate func insertNewMirror(_ login: ServerLogin, isOverridden: Int = 0) -> Success {
-        let args = self.mirrorArgs(login)
-        let sql = """
-            INSERT OR IGNORE INTO loginsM (
-                is_overridden, server_modified,
-                httpRealm, formSubmitURL, usernameField,
-                passwordField, timesUsed, timeLastUsed, timePasswordChanged, timeCreated,
-                password, hostname, username, guid
-            ) VALUES (\(isOverridden), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
-
-        return self.db.run(sql, withArgs: args)
-    }
-
-    /**
-     * We assume a local record matches if it has the same username (password can differ),
-     * hostname, httpRealm. We also check that the formSubmitURLs are either blank or have the
-     * same host and port.
-     *
-     * This is roughly the same as desktop's .matches():
-     * <https://mxr.mozilla.org/mozilla-central/source/toolkit/components/passwordmgr/nsLoginInfo.js#41>
-     */
-    fileprivate func findLocalRecordByContent(_ login: Login) -> Deferred<Maybe<LocalLogin?>> {
-        let primary =
-            "SELECT * FROM loginsL WHERE hostname IS ? AND httpRealm IS ? AND username IS ?"
-
-        var args: Args = [login.hostname, login.httpRealm, login.username]
-        let sql: String
-
-        if login.formSubmitURL == nil {
-            sql = primary + " AND formSubmitURL IS NULL"
-        } else if login.formSubmitURL!.isEmpty {
-            sql = primary
-        } else {
-            if let hostPort = login.formSubmitURL?.asURL?.hostPort {
-                // Substring check will suffice for now. TODO: proper host/port check after fetching the cursor.
-                sql = primary + " AND (formSubmitURL = '' OR (instr(formSubmitURL, ?) > 0))"
-                args.append(hostPort)
-            } else {
-                log.warning("Incoming formSubmitURL is non-empty but is not a valid URL with a host. Not matching local.")
-                return deferMaybe(nil)
-            }
-        }
-
-        return self.db.runQuery(sql, args: args, factory: SQLiteLogins.localLoginFactory)
-          >>== { cursor in
-            switch cursor.count {
-            case 0:
-                return deferMaybe(nil)
-            case 1:
-                // Great!
-                return deferMaybe(cursor[0])
-            default:
-                // TODO: join against the mirror table to exclude local logins that
-                // already match a server record.
-                // Right now just take the first.
-                log.warning("Got \(cursor.count) local logins with matching details! This is most unexpected.")
-                return deferMaybe(cursor[0])
-            }
-        }
-    }
-
-    fileprivate func resolveConflictBetween(local: LocalLogin, upstream: ServerLogin, shared: Login) -> Success {
-        // Attempt to compute two delta sets by comparing each new record to the shared record.
-        // Then we can merge the two delta sets -- either perfectly or by picking a winner in the case
-        // of a true conflict -- and produce a resultant record.
-
-        let localDeltas = (local.localModified, local.deltas(from: shared))
-        let upstreamDeltas = (upstream.serverModified, upstream.deltas(from: shared))
-
-        let mergedDeltas = Login.mergeDeltas(a: localDeltas, b: upstreamDeltas)
-
-        // Not all Sync clients handle the optional timestamp fields introduced in Bug 555755.
-        // We might get a server record with no timestamps, and it will differ from the original
-        // mirror!
-        // We solve that by refusing to generate deltas that discard information. We'll preserve
-        // the local values -- either from the local record or from the last shared parent that
-        // still included them -- and propagate them back to the server.
-        // It's OK for us to reconcile and reupload; it causes extra work for every client, but
-        // should not cause looping.
-        let resultant = shared.applyDeltas(mergedDeltas)
-
-        // We can immediately write the downloaded upstream record -- the old one -- to
-        // the mirror store.
-        // We then apply this record to the local store, and mark it as needing upload.
-        // When the reconciled record is uploaded, it'll be flushed into the mirror
-        // with the correct modified time.
-        return self.updateMirrorToLogin(upstream, fromPrevious: shared)
-            >>> { self.storeReconciledLogin(resultant) }
-    }
-
-    fileprivate func resolveConflictWithoutParentBetween(local: LocalLogin, upstream: ServerLogin) -> Success {
-        // Do the best we can. Either the local wins and will be
-        // uploaded, or the remote wins and we delete our overlay.
-        if local.timePasswordChanged > upstream.timePasswordChanged {
-            log.debug("Conflicting records with no shared parent. Using newer local record.")
-            return self.insertNewMirror(upstream, isOverridden: 1)
-        }
-
-        log.debug("Conflicting records with no shared parent. Using newer remote record.")
-        let args: Args = [local.guid]
-        return self.insertNewMirror(upstream, isOverridden: 0)
-            >>> { self.db.run("DELETE FROM loginsL WHERE guid = ?", withArgs: args) }
-    }
-
-    public func getModifiedLoginsToUpload() -> Deferred<Maybe<[Login]>> {
-        let sql =
-            "SELECT * FROM loginsL WHERE sync_status IS NOT \(SyncStatus.synced.rawValue) AND is_deleted = 0"
-
-        // Swift 2.0: use Cursor.asArray directly.
-        return self.db.runQuery(sql, args: nil, factory: SQLiteLogins.loginFactory)
-          >>== { deferMaybe($0.asArray()) }
-    }
-
-    public func getDeletedLoginsToUpload() -> Deferred<Maybe<[GUID]>> {
-        // There are no logins that are marked as deleted that were not originally synced --
-        // others are deleted immediately.
-        let sql = "SELECT guid FROM loginsL WHERE is_deleted = 1"
-
-        // Swift 2.0: use Cursor.asArray directly.
-        return self.db.runQuery(sql, args: nil, factory: { return $0["guid"] as! GUID })
-            >>== { deferMaybe($0.asArray()) }
-    }
-
-    /**
-     * Chains through the provided timestamp.
-     */
-    public func markAsSynchronized<T: Collection>(_ guids: T, modified: Timestamp) -> Deferred<Maybe<Timestamp>> where T.Iterator.Element == GUID {
-        // Update the mirror from the local record that we just uploaded.
-        // sqlite doesn't support UPDATE FROM, so instead of running 10 subqueries * n GUIDs,
-        // we issue a single DELETE and a single INSERT on the mirror, then throw away the
-        // local overlay that we just uploaded with another DELETE.
-        log.debug("Marking \(guids.count) GUIDs as synchronized.")
-
-        let queries: [(String, Args?)] = chunkCollection(guids, by: BrowserDB.maxVariableNumber) { guids in
-            let args: Args = guids.map { $0 }
-            let inClause = BrowserDB.varlist(args.count)
-
-            let delMirror = "DELETE FROM loginsM WHERE guid IN \(inClause)"
-
-            let insMirror = """
-                INSERT OR IGNORE INTO loginsM (
-                    is_overridden, server_modified,
-                    httpRealm, formSubmitURL, usernameField,
-                    passwordField, timesUsed, timeLastUsed, timePasswordChanged, timeCreated,
-                    password, hostname, username, guid
-                )
-                SELECT
-                    0, \(modified),
-                    httpRealm, formSubmitURL, usernameField,
-                    passwordField, timesUsed, timeLastUsed, timePasswordChanged, timeCreated,
-                    password, hostname, username, guid
-                FROM loginsL
-                WHERE guid IN \(inClause)
-                """
-
-            let delLocal = "DELETE FROM loginsL WHERE guid IN \(inClause)"
-
-            return [(delMirror, args),
-                    (insMirror, args),
-                    (delLocal, args)]
-        }
-
-        return self.db.run(queries)
-         >>> always(modified)
-    }
-
-    public func markAsDeleted<T: Collection>(_ guids: T) -> Success where T.Iterator.Element == GUID {
-        log.debug("Marking \(guids.count) GUIDs as deleted.")
-
-        let queries: [(String, Args?)] = chunkCollection(guids, by: BrowserDB.maxVariableNumber) { guids in
-            let args: Args = guids.map { $0 }
-            let inClause = BrowserDB.varlist(args.count)
-            return [("DELETE FROM loginsM WHERE guid IN \(inClause)", args),
-                    ("DELETE FROM loginsL WHERE guid IN \(inClause)", args)]
-        }
-
-        return self.db.run(queries)
-    }
-
-    public func hasSyncedLogins() -> Deferred<Maybe<Bool>> {
-        let checkLoginsMirror = "SELECT 1 FROM loginsM"
-        let checkLoginsLocal = "SELECT 1 FROM loginsL WHERE sync_status IS NOT \(SyncStatus.new.rawValue)"
-
-        let sql = "\(checkLoginsMirror) UNION ALL \(checkLoginsLocal)"
-        return self.db.queryReturnsResults(sql)
+    var description: String {
+        return "No such record: \(guid)."
     }
 }
 
-extension SQLiteLogins: ResettableSyncStorage {
-    /**
-     * Clean up any metadata.
-     * TODO: is this safe for a regular reset? It forces a content-based merge.
-     */
-    public func resetClient() -> Success {
-        // Clone all the mirrors so we don't lose data.
-        return self.cloneMirrorToOverlay(whereClause: nil, args: nil)
-
-        // Drop all of the mirror data.
-        >>> { self.db.run("DELETE FROM loginsM") }
-
-        // Mark all of the local data as new.
-        >>> { self.db.run("UPDATE loginsL SET sync_status = \(SyncStatus.new.rawValue)") }
+extension SDRow {
+    func getTimestamp(_ column: String) -> Timestamp? {
+        return (self[column] as? NSNumber)?.uint64Value
     }
-}
 
-extension SQLiteLogins: AccountRemovalDelegate {
-    public func onRemovedAccount() -> Success {
-        return self.resetClient()
+    func getBoolean(_ column: String) -> Bool {
+        if let val = self[column] as? Int {
+            return val != 0
+        }
+        return false
     }
 }

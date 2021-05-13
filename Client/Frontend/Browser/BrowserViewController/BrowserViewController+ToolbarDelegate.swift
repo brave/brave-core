@@ -158,13 +158,13 @@ extension BrowserViewController: TopToolbarDelegate {
     }
 
     func topToolbar(_ topToolbar: TopToolbarView, didSubmitText text: String) {
-        processAddressBar(text: text, visitType: nil)
+        processAddressBar(text: text)
     }
 
-    func processAddressBar(text: String, visitType: VisitType?) {
+    func processAddressBar(text: String) {
         if let fixupURL = URIFixup.getURL(text) {
             // The user entered a URL, so use it.
-            finishEditingAndSubmit(fixupURL, visitType: visitType ?? .typed)
+            finishEditingAndSubmit(fixupURL, isBookmark: false)
             return
         }
 
@@ -177,7 +177,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
         if let searchURL = engine.searchURLForQuery(text) {
             // We couldn't find a matching search keyword, so do a search query.
-            finishEditingAndSubmit(searchURL, visitType: VisitType.typed)
+            finishEditingAndSubmit(searchURL, isBookmark: false)
         } else {
             // We still don't have a valid URL, so something is broken. Give up.
             print("Error handling URL entry: \"\(text)\".")

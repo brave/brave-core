@@ -121,7 +121,6 @@ class BrowserViewController: UIViewController {
     // Tracking navigation items to record history types.
     // TODO: weak references?
     var ignoredNavigation = Set<WKNavigation>()
-    var typedNavigation = [WKNavigation: VisitType]()
     var navigationToolbar: ToolbarProtocol {
         return toolbar ?? topToolbar
     }
@@ -1240,11 +1239,13 @@ class BrowserViewController: UIViewController {
         }
     }
     
-    func finishEditingAndSubmit(_ url: URL, visitType: VisitType) {
-        if url.isBookmarklet {
+    func finishEditingAndSubmit(_ url: URL, isBookmark: Bool) {
+        if url.isBookmarklet, isBookmark {
             topToolbar.leaveOverlayMode()
             
-            guard let tab = tabManager.selectedTab else {
+            guard let tab = tabManager.selectedTab,
+                  let webView = tab.webView,
+                  let code = url.bookmarkletCodeComponent else {
                 return
             }
             
@@ -1252,13 +1253,9 @@ class BrowserViewController: UIViewController {
             // Disable any sort of privileged execution contexts
             // IE: The user must explicitly tap a bookmark they have saved.
             // Block all other contexts such as redirects, downloads, embed, linked, etc..
-            if visitType == .bookmark {
-                if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
-                    webView.evaluateSafeJavaScript(functionName: code, sandboxed: false, asFunction: false) { _, error in
-                        if let error = error {
-                            log.error(error)
-                        }
-                    }
+            webView.evaluateSafeJavaScript(functionName: code, sandboxed: false, asFunction: false) { _, error in
+                if let error = error {
+                    log.error(error)
                 }
             }
         } else {
@@ -1933,7 +1930,7 @@ extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
 extension BrowserViewController: QRCodeViewControllerDelegate {
     func didScanQRCodeWithURL(_ url: URL) {
         openBlankNewTab(attemptLocationFieldFocus: false)
-        finishEditingAndSubmit(url, visitType: VisitType.typed)
+        finishEditingAndSubmit(url, isBookmark: false)
     }
 
     func didScanQRCodeWithText(_ text: String) {
@@ -2109,7 +2106,7 @@ extension BrowserViewController: TabDelegate {
 
 extension BrowserViewController: SearchViewControllerDelegate {
     func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL) {
-        finishEditingAndSubmit(url, visitType: VisitType.typed)
+        finishEditingAndSubmit(url, isBookmark: false)
     }
 
     func searchViewController(_ searchViewController: SearchViewController, didLongPressSuggestion suggestion: String) {
@@ -2239,9 +2236,6 @@ extension BrowserViewController: TabManagerDelegate {
         // tabDelegate is a weak ref (and the tab's webView may not be destroyed yet)
         // so we don't expcitly unset it.
         topToolbar.leaveOverlayMode(didCancel: true)
-        if let url = tab.url, !url.isAboutURL && !tab.isPrivate {
-            profile.recentlyClosedTabs.addTab(url as URL, title: tab.title, faviconURL: tab.displayFavicon?.url)
-        }
         updateTabsBarVisibility()
         
         rewards.reportTabClosed(tabId: tab.rewardsId)
@@ -2659,15 +2653,15 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
     
     func openInNewTab(_ url: URL, isPrivate: Bool) {
         topToolbar.leaveOverlayMode()
-        select(url, visitType: .unknown, action: .openInNewTab(isPrivate: isPrivate))
+        select(url, isBookmark: false, action: .openInNewTab(isPrivate: isPrivate))
     }
     
     func copy(_ url: URL) {
-        select(url, visitType: .unknown, action: .copy)
+        select(url, isBookmark: false, action: .copy)
     }
     
     func share(_ url: URL) {
-        select(url, visitType: .unknown, action: .share)
+        select(url, isBookmark: false, action: .share)
     }
     
     func batchOpen(_ urls: [URL]) {
@@ -2675,14 +2669,14 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
         self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
     }
     
-    func select(url: URL, visitType: VisitType) {
-        select(url, visitType: visitType, action: .openInCurrentTab)
+    func select(url: URL, isBookmark: Bool) {
+        select(url, isBookmark: isBookmark, action: .openInCurrentTab)
     }
     
-    private func select(_ url: URL, visitType: VisitType, action: ToolbarURLAction) {
+    private func select(_ url: URL, isBookmark: Bool, action: ToolbarURLAction) {
         switch action {
         case .openInCurrentTab:
-            finishEditingAndSubmit(url, visitType: visitType)
+            finishEditingAndSubmit(url, isBookmark: isBookmark)
         case .openInNewTab(let isPrivate):
             let tab = tabManager.addTab(PrivilegedRequest(url: url) as URLRequest, afterTab: tabManager.selectedTab, isPrivate: isPrivate)
             if isPrivate && !PrivateBrowsingManager.shared.isPrivateBrowsing {
@@ -2720,7 +2714,7 @@ extension BrowserViewController: NewTabPageDelegate {
         if inNewTab {
             tabManager.addTabAndSelect(isPrivate: isPrivate)
         }
-        processAddressBar(text: input, visitType: .bookmark)
+        processAddressBar(text: input)
     }
     
     func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {
