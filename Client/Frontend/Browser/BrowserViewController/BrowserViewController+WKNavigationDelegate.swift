@@ -106,14 +106,14 @@ extension BrowserViewController: WKNavigationDelegate {
         return url.scheme == "rewards" && url.host == "uphold"
     }
 
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
         guard let url = navigationAction.request.url else {
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             return
         }
         
         if let customHeader = UserReferralProgram.shouldAddCustomHeader(for: navigationAction.request) {
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             var newRequest = navigationAction.request
             UrpLog.log("Adding custom header: [\(customHeader.field): \(customHeader.value)] for domain: \(newRequest.url?.absoluteString ?? "404")")
             newRequest.addValue(customHeader.value, forHTTPHeaderField: customHeader.field)
@@ -122,24 +122,24 @@ extension BrowserViewController: WKNavigationDelegate {
         }
 
         if url.scheme == "about" {
-            decisionHandler(.allow)
+            decisionHandler(.allow, preferences)
             return
         }
         
         if url.isBookmarklet {
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             return
         }
 
         if !navigationAction.isAllowed && navigationAction.navigationType != .backForward {
             log.warning("Denying unprivileged request: \(navigationAction.request)")
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             return
         }
         
         if let safeBrowsing = safeBrowsing, safeBrowsing.shouldBlock(url) {
             safeBrowsing.showMalwareWarningPage(forUrl: url, inWebView: webView)
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             return
         }
         
@@ -149,7 +149,7 @@ extension BrowserViewController: WKNavigationDelegate {
             switch universalLink {
             case .buyVPN:
                 presentCorrespondingVPNViewController()
-                decisionHandler(.cancel)
+                decisionHandler(.cancel, preferences)
                 return
             }
         }
@@ -158,7 +158,7 @@ extension BrowserViewController: WKNavigationDelegate {
         // gives us the exact same behaviour as Safari.
         if url.scheme == "tel" || url.scheme == "facetime" || url.scheme == "facetime-audio" {
             handleExternalURL(url)
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             return
         }
 
@@ -168,20 +168,20 @@ extension BrowserViewController: WKNavigationDelegate {
 
         if isAppleMapsURL(url) {
             handleExternalURL(url)
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             return
         }
 
         if isStoreURL(url) {
             handleExternalURL(url)
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             return
         }
 
         // Handles custom mailto URL schemes.
         if url.scheme == "mailto" {
             handleExternalURL(url)
-            decisionHandler(.cancel)
+            decisionHandler(.cancel, preferences)
             return
         }
         
@@ -239,7 +239,12 @@ extension BrowserViewController: WKNavigationDelegate {
                         domainForShields.isShieldExpected(.FpProtection, considerAllShieldsOption: true)
                 }
 
-                webView.configuration.preferences.javaScriptEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
+                let isScriptsEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
+                if #available(iOS 14.0, *) {
+                    preferences.allowsContentJavaScript = isScriptsEnabled
+                } else {
+                    webView.configuration.preferences.javaScriptEnabled = isScriptsEnabled
+                }
             }
             
             // Cookie Blocking code below
@@ -260,7 +265,7 @@ extension BrowserViewController: WKNavigationDelegate {
                 self.tabManager.selectedTab?.blockAllAlerts = false
             }
             
-            decisionHandler(.allow)
+            decisionHandler(.allow, preferences)
             return
         }
 
@@ -278,7 +283,7 @@ extension BrowserViewController: WKNavigationDelegate {
                 }
             }
         }
-        decisionHandler(.cancel)
+        decisionHandler(.cancel, preferences)
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
@@ -351,13 +356,6 @@ extension BrowserViewController: WKNavigationDelegate {
         // If none of our helpers are responsible for handling this response,
         // just let the webview handle it as normal.
         decisionHandler(.allow)
-    }
-    
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-        
-        self.webView(webView, decidePolicyFor: navigationAction) {
-            decisionHandler($0, preferences)
-        }
     }
 
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
