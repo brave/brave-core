@@ -4,26 +4,49 @@ import {
   SideNav,
   WalletPageLayout,
   WalletSubViewLayout,
-  CryptoView
+  CryptoView,
+  LockScreen
 } from '../components/desktop'
 import {
   NavTypes,
   NavObjectType
 } from '../constants/types'
+import Onboarding from './screens/onboarding'
 import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
+import { recoveryPhrase } from './mock-data/user-accounts'
 export default {
-  title: 'Wallet/Desktop'
+  title: 'Wallet/Desktop',
+  argTypes: {
+    onboarding: { control: { type: 'boolean', onboard: false } },
+    locked: { control: { type: 'boolean', lock: false } }
+  }
 }
 
-export const _DesktopWalletConcept = () => {
+export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
+  const { onboarding, locked } = args
   const [view, setView] = React.useState<NavTypes>('crypto')
   const [linkedAccounts] = React.useState<NavObjectType[]>(LinkedAccountsOptions)
+  const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
+  const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
+  const [inputValue, setInputValue] = React.useState<string>('')
 
   // In the future these will be actual paths
   // for example wallet/rewards
   const navigateTo = (path: NavTypes) => {
     setView(path)
+  }
+
+  const completeWalletSetup = () => {
+    setNeedsOnboarding(false)
+  }
+
+  const unlockWallet = () => {
+    setWalletLocked(false)
+  }
+
+  const handlePasswordChanged = (value: string) => {
+    setInputValue(value)
   }
 
   return (
@@ -35,21 +58,39 @@ export const _DesktopWalletConcept = () => {
         onSubmit={navigateTo}
         linkedAccountsList={linkedAccounts}
       />
-      <WalletSubViewLayout>
-        {view === 'crypto' ? (
-          <CryptoView />
+      {needsOnboarding ?
+        (
+          <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={completeWalletSetup} />
         ) : (
-          <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <h2>{view} view</h2>
-          </div>
+          <WalletSubViewLayout>
+            {view === 'crypto' ? (
+              <>
+                {walletLocked ? (
+                  <LockScreen onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
+                ) : (
+                  <CryptoView />
+                )}
+              </>
+            ) : (
+              <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <h2>{view} view</h2>
+              </div>
+            )}
+          </WalletSubViewLayout>
         )}
 
-      </WalletSubViewLayout>
       <WalletWidgetStandIn>
-        <BuySendSwap />
+        {!needsOnboarding && !walletLocked &&
+          <BuySendSwap />
+        }
       </WalletWidgetStandIn>
     </WalletPageLayout>
   )
+}
+
+_DesktopWalletConcept.args = {
+  onboarding: false,
+  locked: false
 }
 
 _DesktopWalletConcept.story = {

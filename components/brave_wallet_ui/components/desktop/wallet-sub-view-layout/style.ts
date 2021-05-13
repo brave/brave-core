@@ -8,4 +8,5 @@ export const StyledWrapper = styled('div') <{}>`
   flex: 1;
   height: 100%;
   padding: 0px 25px;
+  background-color: ${(p) => p.theme.color.background02};
  `

@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { DesktopComponentWrapper, DesktopComponentWrapperRow, WalletWidgetStandIn } from './style'
-import { SideNav, TopTabNav, ChartControlBar } from '../components/desktop'
+import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout } from '../components/desktop'
 import { NavTypes, NavObjectType, TopTabNavTypes, ChartTimelineType } from '../constants/types'
 import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
 import BuySendSwap from '../components/buy-send-swap'
+import Onboarding from './screens/onboarding'
+import { recoveryPhrase } from './mock-data/user-accounts'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -92,4 +94,21 @@ export const _BuySendSwap = () => {
 
 _BuySendSwap.story = {
   name: 'Buy/Send/Swap'
+}
+
+export const _Onboarding = () => {
+
+  const complete = () => {
+    alert('Wallet Setup Complete!!!')
+  }
+
+  return (
+    <WalletPageLayout>
+      <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={complete} />
+    </WalletPageLayout>
+  )
+}
+
+_Onboarding.story = {
+  name: 'Onboarding'
 }

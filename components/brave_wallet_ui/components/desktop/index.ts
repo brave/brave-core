@@ -10,7 +10,15 @@ import PortfolioAssetItem from './portfolio-asset-item'
 import PortfolioAccountItem from './portfolio-account-item'
 import PortfolioTransactionItem from './portfolio-transaction-item'
 import AddButton from './add-button'
+import LockScreen from './lock-screen'
 import { CryptoView, PortfolioView } from './views'
+import {
+  OnboardingWelcome,
+  OnboardingBackup,
+  OnboardingRecovery,
+  OnboardingVerify,
+  OnboardingCreatePassword
+} from './wallet-onboarding'
 
 export {
   SideNavButton,
@@ -26,5 +34,11 @@ export {
   PortfolioTransactionItem,
   AddButton,
   CryptoView,
-  PortfolioView
+  PortfolioView,
+  OnboardingWelcome,
+  OnboardingBackup,
+  OnboardingRecovery,
+  OnboardingVerify,
+  OnboardingCreatePassword,
+  LockScreen
 }

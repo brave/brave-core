@@ -17,3 +17,18 @@ export const mockUserAccounts: UserAccountType[] = [
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426'
   }
 ]
+
+export const recoveryPhrase = [
+  'tomato',
+  'green',
+  'velvet',
+  'wishful',
+  'span',
+  'celery',
+  'atoms',
+  'stone',
+  'parent',
+  'stop',
+  'bowl',
+  'exercise'
+]
