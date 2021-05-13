@@ -26,7 +26,7 @@ extension BrowserViewController: UIDropInteractionDelegate {
                 return
             }
 
-            self.finishEditingAndSubmit(url, visitType: VisitType.typed)
+            self.finishEditingAndSubmit(url, isBookmark: false)
         }
     }
 }

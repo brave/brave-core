@@ -175,30 +175,6 @@ class Tab: NSObject {
         self.type = type
     }
 
-    class func toTab(_ tab: Tab) -> RemoteTab? {
-        if let displayURL = tab.url?.displayURL, RemoteTab.shouldIncludeURL(displayURL) {
-            let history = Array(tab.historyList.filter(RemoteTab.shouldIncludeURL).reversed())
-            return RemoteTab(clientGUID: nil,
-                URL: displayURL,
-                title: tab.displayTitle,
-                history: history,
-                lastUsed: Date.now(),
-                icon: nil)
-        } else if let sessionData = tab.sessionData, !sessionData.urls.isEmpty {
-            let history = Array(sessionData.urls.filter(RemoteTab.shouldIncludeURL).reversed())
-            if let displayURL = history.first {
-                return RemoteTab(clientGUID: nil,
-                    URL: displayURL,
-                    title: tab.displayTitle,
-                    history: history,
-                    lastUsed: sessionData.lastUsedTime,
-                    icon: nil)
-            }
-        }
-
-        return nil
-    }
-
     weak var navigationDelegate: WKNavigationDelegate? {
         didSet {
             if let webView = webView {
@@ -649,7 +625,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandler {
     }
 }
 
-private protocol TabWebViewDelegate: class {
+private protocol TabWebViewDelegate: AnyObject {
     func tabWebView(_ tabWebView: TabWebView, didSelectFindInPageForSelection selection: String)
 }
 

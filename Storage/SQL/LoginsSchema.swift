@@ -19,6 +19,17 @@ private let AllTables: [String] = [
 private let log = Logger.syncLogger
 
 open class LoginsSchema: Schema {
+    public enum SyncStatus: Int {
+        // Ordinarily not needed; synced items are removed from the overlay. But they start here when cloned.
+        case synced = 0
+
+        // A material change that we want to upload on next sync.
+        case changed = 1
+
+        // Created locally.
+        case new = 2
+    }
+    
     static let defaultVersion = 3
     
     public var name: String { return "LOGINS" }

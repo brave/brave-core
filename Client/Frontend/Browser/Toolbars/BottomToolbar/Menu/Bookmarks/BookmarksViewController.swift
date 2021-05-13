@@ -439,7 +439,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             } else {
                 if let url = URL(string: bookmark.url ?? "") {
                     presentingViewController?.dismiss(animated: true) {
-                        self.toolbarUrlActionsDelegate?.select(url: url, visitType: .bookmark)
+                        self.toolbarUrlActionsDelegate?.select(url: url, isBookmark: true)
                     }
                 }
             }

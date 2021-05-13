@@ -890,52 +890,6 @@ fileprivate class EmptyPrivateTabsView: UIView {
     }
 }
 
-extension TabTrayController: TabPeekDelegate {
-
-    func tabPeekDidAddBookmark(_ tab: Tab) {
-        delegate?.tabTrayDidAddBookmark(tab)
-    }
-
-    func tabPeekDidCloseTab(_ tab: Tab) {
-        if let index = self.tabDataSource.tabs.firstIndex(of: tab),
-            let cell = self.collectionView?.cellForItem(at: IndexPath(item: index, section: 0)) as? TabCell {
-            cell.close()
-        }
-    }
-
-    func tabPeekRequestsPresentationOf(_ viewController: UIViewController) {
-        delegate?.tabTrayRequestsPresentationOf(viewController)
-    }
-}
-
-extension TabTrayController: UIViewControllerPreviewingDelegate {
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let collectionView = collectionView else { return nil }
-
-        let convertedLocation = self.view.convert(location, to: collectionView)
-
-        guard let indexPath = collectionView.indexPathForItem(at: convertedLocation),
-            let cell = collectionView.cellForItem(at: indexPath) else { return nil }
-
-        let tab = tabDataSource.tabs[indexPath.row]
-        let tabVC = TabPeekViewController(tab: tab, delegate: self)
-        if let browserProfile = profile as? BrowserProfile {
-            tabVC.setState(withProfile: browserProfile)
-        }
-        previewingContext.sourceRect = self.view.convert(cell.frame, from: collectionView)
-
-        return tabVC
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        guard let tpvc = viewControllerToCommit as? TabPeekViewController else { return }
-        tabManager.selectTab(tpvc.tab)
-        navigationController?.popViewController(animated: true)
-        delegate?.tabTrayDidDismiss(self)
-    }
-}
-
 extension TabTrayController: UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {
     // Returning None here makes sure that the Popover is actually presented as a Popover and
     // not as a full-screen modal, which is the default on compact device classes.

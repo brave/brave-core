@@ -110,15 +110,6 @@ extension BrowserDB {
         return cursor[0]
     }
 
-    func getSyncStatusForGUID(_ guid: GUID) -> SyncStatus? {
-        let args: Args = [guid]
-        let cursor = self.runQuery("SELECT sync_status FROM bookmarksLocal WHERE guid = ?", args: args, factory: { $0[0] as! Int }).value.successValue!
-        if let raw = cursor[0] {
-            return SyncStatus(rawValue: raw)
-        }
-        return nil
-    }
-
     func getChildrenOfFolder(_ folder: GUID) -> [GUID] {
         let args: Args = [folder]
         let sql = """
