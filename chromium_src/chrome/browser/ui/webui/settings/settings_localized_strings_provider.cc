@@ -301,9 +301,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ipfsStorageMaxValue",
       std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));
 
-  std::u16string ipfs_method_desc =
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_IPFS_METHOD_DESC,
-                                 base::ASCIIToUTF16(ipfs::kIPFSLearnMoreURL));
+  std::u16string ipfs_method_desc = l10n_util::GetStringFUTF16(
+      IDS_SETTINGS_IPFS_METHOD_DESC,
+      base::ASCIIToUTF16(ipfs::kIPFSLearnMorePrivacyURL));
   html_source->AddString("ipfsMethodDesc", ipfs_method_desc);
 
   html_source->AddString(
