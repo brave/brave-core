@@ -16,10 +16,13 @@ import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPublisher.PublisherStatus;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.embedder_support.util.UrlConstants;
 
@@ -459,8 +462,11 @@ public class BraveRewardsNativeWorker {
     }
 
     public void StartProcess() {
-        synchronized (lock) {
-            BraveRewardsNativeWorkerJni.get().startProcess(mNativeBraveRewardsNativeWorker);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            synchronized (lock) {
+                BraveRewardsNativeWorkerJni.get().startProcess(mNativeBraveRewardsNativeWorker);
+            }
         }
     }
 
