@@ -9,6 +9,9 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#if BUILDFLAG(IPFS_ENABLED)
+#include "components/prefs/pref_change_registrar.h"
+#endif
 
 // This namespace is needed for a chromium_src override
 namespace chrome {
@@ -44,6 +47,11 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
                                           base::TimeTicks time_stamp);
+#if BUILDFLAG(IPFS_ENABLED)
+  void UpdateCommandForIpfs();
+
+  PrefChangeRegistrar profile_pref_registrar_;
+#endif
 
   Browser* const browser_;
 
