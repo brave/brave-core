@@ -2952,12 +2952,15 @@ void RewardsServiceImpl::ShowNotification(
 // JP to show "BAP" instead of "BAT". When we are sure that those branches are
 // no longer needed, this function should be removed.
 bool RewardsServiceImpl::OnlyAnonWallet() const {
-#if !defined(OS_ANDROID)
+#if defined(OS_ANDROID)
+  // Android should no longer show "BAP" or have any BAP-related restrictions.
+  return false;
+#else
   if (base::FeatureList::IsEnabled(features::kBitflyerFeature))
     return false;
-#endif
 
   return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
+#endif
 }
 
 void RewardsServiceImpl::RecordBackendP3AStats() {
