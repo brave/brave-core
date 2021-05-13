@@ -30,7 +30,10 @@ CARGO_INCLUDE_PATHS = [
 
 # Ping security team before adding to ignored_npm_advisories
 ignored_npm_advisories = [
-    '1556'  # low-sev DoS vector that isn't fixed in some upstream packages
+    '1677',  # moderate DoS vector not yet fixed in Jest
+    '1556',  # low-sev DoS vector that isn't fixed in some upstream packages
+    '1693',   # moderate RxDoS vector, we don't use postcss, storybook not yet updated
+    '1700'   # high RxDoS vector, we don't use MDX in storybook, mdx-js in storybook not yet updated
 ]
 
 
