@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/desktop.template b/chrome/installer/linux/common/desktop.template
-index 73bb065f5c0d4c462ca2c6a872c56068ea98ec43..df5b8e18e2e288f21a0826c3e5b8f41c1d213e37 100644
+index 73bb065f5c0d4c462ca2c6a872c56068ea98ec43..9af65726bde897c48deb6b686a5b2b716cabe54a 100644
 --- a/chrome/installer/linux/common/desktop.template
 +++ b/chrome/installer/linux/common/desktop.template
 @@ -111,7 +111,7 @@ Terminal=false
@@ -7,7 +7,7 @@ index 73bb065f5c0d4c462ca2c6a872c56068ea98ec43..df5b8e18e2e288f21a0826c3e5b8f41c
  Type=Application
  Categories=Network;WebBrowser;
 -MimeType=application/pdf;application/rdf+xml;application/rss+xml;application/xhtml+xml;application/xhtml_xml;application/xml;image/gif;image/jpeg;image/png;image/webp;text/html;text/xml;x-scheme-handler/ftp;x-scheme-handler/http;x-scheme-handler/https;
-+MimeType=application/pdf;application/rdf+xml;application/rss+xml;application/xhtml+xml;application/xhtml_xml;application/xml;image/gif;image/jpeg;image/png;image/webp;text/html;text/xml;x-scheme-handler/ftp;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ipfs;x-scheme-handler/ipns;
++MimeType=application/pdf;application/rdf+xml;application/rss+xml;application/xhtml+xml;application/xhtml_xml;application/xml;image/gif;image/jpeg;image/png;image/webp;text/html;text/xml;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ipfs;x-scheme-handler/ipns;
  Actions=new-window;new-private-window;
  
  [Desktop Action new-window]
