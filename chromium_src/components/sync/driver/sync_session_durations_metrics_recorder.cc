@@ -23,6 +23,8 @@ void SyncSessionDurationsMetricsRecorder::OnStateChanged(
     syncer::SyncService* sync) {}
 void SyncSessionDurationsMetricsRecorder::OnRefreshTokenUpdatedForAccount(
     const CoreAccountInfo& account_info) {}
+void SyncSessionDurationsMetricsRecorder::OnPrimaryAccountChanged(
+    const signin::PrimaryAccountChangeEvent& event) {}
 void SyncSessionDurationsMetricsRecorder::OnRefreshTokenRemovedForAccount(
     const CoreAccountId& account_id) {}
 void SyncSessionDurationsMetricsRecorder::OnRefreshTokensLoaded() {}
