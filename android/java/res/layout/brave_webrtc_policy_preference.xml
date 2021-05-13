@@ -11,6 +11,19 @@
     android:orientation="vertical"
     android:focusable="false">
 
+
+    <TextView
+        android:id="@+id/learn_more_webrtc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/brave_theme_color"
+        android:layout_marginEnd="20dp"
+        android:gravity="left"
+        android:text="@string/menu_learn_more"/>
+
     <org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout
         android:id="@+id/radio_button_layout"
         android:layout_width="match_parent"

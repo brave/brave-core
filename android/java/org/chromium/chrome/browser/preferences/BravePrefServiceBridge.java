@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.preferences;
 
 import androidx.annotation.NonNull;
 
+import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
@@ -76,11 +77,40 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setAdBlockEnabled(enabled);
     }
 
+    public void setNoScriptControlType(String type) {
+        BravePrefServiceBridgeJni.get().setNoScriptControlType(type);
+    }
+
+    public String getNoScriptControlType() {
+        return BravePrefServiceBridgeJni.get().getNoScriptControlType();
+    }
+
+    public void setCookiesBlockType(String type) {
+        BravePrefServiceBridgeJni.get().setCookiesBlockType(type);
+    }
+
+    public String getCookiesBlockType() {
+        return BravePrefServiceBridgeJni.get().getCookiesBlockType();
+    }
+
     /**
      * @param whether Fingerprinting Protection should be enabled.
      */
-    public void setFingerprintingProtectionEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setFingerprintingProtectionEnabled(enabled);
+
+    public void setFingerprintingControlType(String type) {
+        BravePrefServiceBridgeJni.get().setFingerprintingControlType(type);
+    }
+
+    public String getFingerprintingControlType() {
+        return BravePrefServiceBridgeJni.get().getFingerprintingControlType();
+    }
+
+    public void setCosmeticFilteringControlType(int type) {
+        BravePrefServiceBridgeJni.get().setCosmeticFilteringControlType(type);
+    }
+
+    public String getCosmeticFilteringControlType() {
+        return BravePrefServiceBridgeJni.get().getCosmeticFilteringControlType();
     }
 
     public void setPlayYTVideoInBrowserEnabled(boolean enabled) {
@@ -228,10 +258,21 @@ public class BravePrefServiceBridge {
 
     @NativeMethods
     interface Natives {
+        void setCosmeticFilteringControlType(int type);
+        String getCosmeticFilteringControlType();
+
+        void setCookiesBlockType(String type);
+        String getCookiesBlockType();
+
+        void setFingerprintingControlType(String type);
+        String getFingerprintingControlType();
+
+        void setNoScriptControlType(String type);
+        String getNoScriptControlType();
+
         void setHTTPSEEnabled(boolean enabled);
         void setIpfsGatewayEnabled(boolean enabled);
         void setAdBlockEnabled(boolean enabled);
-        void setFingerprintingProtectionEnabled(boolean enabled);
 
         void setThirdPartyGoogleLoginEnabled(boolean enabled);
         void setThirdPartyFacebookEmbedEnabled(boolean enabled);

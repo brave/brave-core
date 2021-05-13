@@ -147,9 +147,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
         Upgrade connections to HTTPS
+      </message>      
+      <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH_SUMMARY" desc="Summary for HTTPS Everywhere.">
+        Opens some sites using a secure HTTPS connection instead of plain HTTP.
       </message>
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SWITCH" desc="Switch for Block Scripts.">
         Block Scripts
+      </message>      
+      <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SUMMARY" desc="Switch for Block Scripts summary.">
+        Blocks Javascript (may break sites)
       </message>
       <message name="IDS_BRAVE_SHIELDS_ADS_AND_TRACKERS" desc="Ads and Trackers blocked.">
         Block cross-site trackers
@@ -174,7 +180,22 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_PREFS_SECTION_SEARCH_ENGINE" desc="Title for search engine section that can select DSE of normal and private tab">
         Search engine
+      </message>      
+      <message name="IDS_PREFS_SECTION_ONLINE_CHECKOUT" desc="Title for online checkout section">
+        Online checkout
+      </message>      
+      <message name="IDS_PREFS_SUPPORT_SECTION" desc="Title for the support section ">
+        Support
       </message>
+      <message name="IDS_PREFS_SECTION_FEATURES" desc="Title for Brave-specific features section">
+        Features
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AND_PRIVACY" desc="Label for the settings related to shields and privacy">
+        Brave shields &amp; privacy 
+      </message>
+      <message name="IDS_BRAVE_SEARCH_ENGINES" desc="Label for the settings related to the search engines">
+        Search engines
+      </message>      
       <message name="IDS_PREFS_STANDARD_SEARCH_ENGINE" desc="Title for standard tab search engine option">
         Standard Tab
       </message>
@@ -231,15 +252,22 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_CLOSE_TABS_ON_EXIT_TITLE" desc="Title for closing tabs on exit.">
         Close tabs on exit
+      </message>      
+      <message name="IDS_BLOCK_TRACKERS_ADS_TITLE" desc="Title for Block trackers and ads.">
+        Block trackers &amp; ads
       </message>
+      <message name="IDS_BLOCK_TRACKERS_ADS_SUMMARY" desc="Text summary for Block trackers and ads.">
+        Prevents ads, popups, and trackers from loading
+      </message>      
+
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_TITLE" desc="Title for checkbox of send p3a analytics.">
-        Automatically send completely private product analytics to Brave
+        Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_SUMMARY" desc="Summary for checkbox of send p3a analytics.">
-        This anonymous info only lets Brave estimate the overall usage of certain features.
+        This completely anonymised info helps Brave estimate the overall usage of certain features and make it better for you.    
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_DATA_SAVED" desc="Title for the data saved stats">
         Est. Data\nSaved
@@ -270,6 +298,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_PREFS_SECTION_CONTROLS" desc="Title for controls section in main preferences screen">
         Controls
+      </message>      
+      <message name="IDS_PREFS_SECTION_BRAVE_SHIELDS_GLOBALS" desc="Title for Brave shields global defaults section in the privacy preferences screen">
+        Brave shields global defaults
+      </message>      
+      <message name="IDS_PREFS_SECTION_OTHER_PRIVACY_SETTINGS" desc="Title for Other privacy settings section in the privacy preferences screen">
+        Other privacy settings
+      </message>      
+      <message name="IDS_PREFS_SECTION_CLEAR_DATA" desc="Title for Clear private data automatically section in the privacy preferences screen">
+        Clear browsing data
+      </message>     
+      <message name="IDS_PREFS_CLEAR_DATA_BUTTON" desc="Title for Clear private data button in the privacy preferences screen">
+        Clear private data
+      </message>      
+      <message name="IDS_PREFS_CLEAR_DATA_TEXT" desc="Text summary for Clear private data button in the privacy preferences screen">
+        Deletes the above private data immediately
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK" desc="Title for background video playback preference in controls section">
         Background video playback
@@ -291,6 +334,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_PREFS_APPEARANCE" desc="Title of Appearance settings, which allows the user to change display settings. [CHAR-LIMIT=32]">
         Appearance
+      </message>      
+      <message name="IDS_PREFS_WELCOME_TOUR" desc="Title of Welcome tour">
+        Welcome tour
+      </message>      
+      <message name="IDS_PREFS_REPORT_BROKEN_SITE" desc="Title of Report broken site settings">
+        Report broken site
       </message>
       <message name="IDS_HIDE_BRAVE_REWARDS_ICON_TITLE" desc="Title for preference that hides or shows Brave Rewards icon.">
         Hide Brave Rewards Icon
@@ -461,7 +510,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="Your wallet title">
         Your wallet
-      </message>
+      </message>  
+<!--  <message name="IDS_BRAVE_TODAY" desc="Title for Brave today settings">
+        Brave today
+      </message>      
+      <message name="IDS_BRAVE_VPN" desc="Title for Brave vpn settings">
+        Brave VPN
+      </message> -->
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         <ph name="VALUE">%1$s<ex>0.0</ex></ph>
       </message>
@@ -957,6 +1012,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_PREFS_RATE_BRAVE" desc="Title for rate brave settings option.">
         Rate Brave
       </message>
+      <message name="IDS_PREFS_SECTION_GENERAL" desc="Title for the general section in settings.">
+        General
+      </message>       
+      <message name="IDS_PREFS_ABOUT_SECTION" desc="Title for the about section in settings.">
+        About
+      </message>      
       <message name="IDS_RATE" desc="Text for rate brave dialog button.">
         Rate
       </message>
@@ -999,6 +1060,30 @@ until they verify, or until 90 days have passed.
       <message name="IDS_SPONSORED_IMAGES_BOTTOM_SHEET_TEXT" desc="Text for SI bottom sheet.">
         For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.
       </message>
+      <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_1" desc="Text for block trackers and ads option.">
+        Block trackers &amp; ads (Aggressive)  
+      </message>
+      <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_2" desc="Text for block trackers and ads  option.">
+        Block trackers &amp; ads (Standard)  
+      </message>
+      <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_3" desc="Text for block trackers and ads  option.">
+        Allow all trackers &amp; ads
+      </message>        
+      <message name="IDS_BLOCK_TRACKERS_ADS_ALLOW_ALL" desc="Text for block trackers and ads  option.">
+        Allow all
+      </message>
+      <message name="IDS_BLOCK_STRICT" desc="Text for pref chosen state.">
+        Strict
+      </message>
+      <message name="IDS_BLOCK_AGGRESSIVE" desc="Text for pref chosen state.">
+        Aggressive
+      </message>      
+      <message name="IDS_BLOCK_STANDARD" desc="Text for pref chosen state.">
+        Standard
+      </message>
+      <message name="IDS_BLOCK_NONE" desc="Text for pref chosen state.">
+        Allow all
+      </message>            
       <message name="IDS_BLOCK_CROSS_SITE_COOKIES" desc="Title for shields option.">
         Block cross-site cookies
       </message>
@@ -1016,15 +1101,21 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING" desc="Title for shields option.">
         Block Fingerprinting
+      </message>       
+      <message name="IDS_SHIELDS_SUMMARY" desc="Title for shields option.">
+        These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.
+      </message>      
+      <message name="IDS_BLOCK_FINGERPRINTING_SUMMARY" desc="Summary for fingerprinting in privacy settings.">
+        Makes it harder for sites to recognize your device's distinctive characteristics.
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
         Prevents browser from recognizing your device
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_1" desc="Title for shields option.">
-        Fingerprinting blocked(strict, may break sites)
+        Fingerprinting blocked (strict, may break sites)
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_2" desc="Title for shields option.">
-        Fingerprinting blocked(standard)
+        Fingerprinting blocked (standard)
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_3" desc="Title for shields option.">
         Allow all fingerprinting
@@ -1283,6 +1374,12 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_CLEAR_BRAVE_STATS_DATA" desc="Brave stats pref summary text">
         Clear all privacy reports data
+      </message>      
+      <message name="IDS_CLEAR_ON_EXIT" desc="Brave clear data on exit pref title">
+        Clear data on exit
+      </message>        
+      <message name="IDS_CLEAR_ON_EXIT_SUMMARY" desc="Brave clear data on exit pref text">
+        Clears all browsing data
       </message>
       <message name="IDS_RESETS_YOUR_BRAVE_STATS" desc="Brave stats pref summary text">
         Resets your privacy reports to zero

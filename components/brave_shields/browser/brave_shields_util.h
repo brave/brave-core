@@ -23,7 +23,14 @@ class PrefService;
 
 namespace brave_shields {
 
-enum ControlType { ALLOW = 0, BLOCK, BLOCK_THIRD_PARTY, DEFAULT, INVALID };
+enum ControlType {
+  ALLOW = 0,
+  BLOCK,
+  BLOCK_THIRD_PARTY,
+  DEFAULT,
+  INVALID,
+  AGGRESSIVE
+};
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);

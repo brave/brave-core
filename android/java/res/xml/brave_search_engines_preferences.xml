@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.search_engines.settings.BraveStandardSearchEnginePreference"
+        android:key="standard_search_engine"
+        android:order="1"
+        android:title="@string/prefs_standard_search_engine"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.search_engines.settings.BravePrivateSearchEnginePreference"
+        android:key="private_search_engine"
+        android:order="2"
+        android:title="@string/prefs_private_search_engine"/>
+</PreferenceScreen>
