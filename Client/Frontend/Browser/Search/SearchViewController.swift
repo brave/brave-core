@@ -61,11 +61,12 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.clipsToBounds = false
+        scrollView.backgroundColor = .braveBackground
         let border = UIView.separatorLine
         scrollView.addSubview(border)
         border.snp.makeConstraints {
             $0.bottom.equalTo(scrollView.snp.top)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalTo(scrollView.frameLayoutGuide)
         }
     }
     private let searchEngineScrollViewContent = UIView().then {
