@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "base/time/time_override.h"
 #include "components/sync/engine/cancelation_signal.h"
 #include "components/sync/nigori/cryptographer_impl.h"
@@ -81,6 +82,7 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
   }
 
  private:
+  base::test::SingleThreadTaskEnvironment task_environment;
   const ModelType model_type_;
   FakeCryptographer cryptographer_;
   CancelationSignal cancelation_signal_;
