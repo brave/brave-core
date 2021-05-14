@@ -34,9 +34,6 @@ import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 
 public class BravePrivacySettings extends PrivacySettings {
-
-
-    
     // Chromium Prefs
     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
     private static final String PREF_NETWORK_PREDICTIONS = "preload_pages";
@@ -90,10 +87,10 @@ public class BravePrivacySettings extends PrivacySettings {
             PREF_SOCIAL_BLOCKING_GOOGLE, PREF_SOCIAL_BLOCKING_FACEBOOK,
             PREF_SOCIAL_BLOCKING_TWITTER, PREF_SOCIAL_BLOCKING_LINKEDIN,
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
-            PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_CAN_MAKE_PAYMENT, PREF_NETWORK_PREDICTIONS, PREF_SECURE_DNS,
-            PREF_DO_NOT_TRACK, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEARCH_SUGGESTIONS,
-            PREF_AUTOCOMPLETE_TOP_SITES, PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES,
-            PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX
+            PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_CAN_MAKE_PAYMENT, PREF_NETWORK_PREDICTIONS,
+            PREF_SECURE_DNS, PREF_DO_NOT_TRACK, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A,
+            PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES,
+            PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX
 
     };
 
@@ -107,8 +104,6 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mAutocompleteBraveSuggestedSites;
     private ChromeSwitchPreference mHttpsePref;
-    private ChromeBaseCheckBoxPreference mIpfsGatewayPref;
-    private ChromeBaseCheckBoxPreference mAdBlockPref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mBlockScriptsPref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
@@ -132,16 +127,10 @@ public class BravePrivacySettings extends PrivacySettings {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
 
         mHttpsePref = (ChromeSwitchPreference) findPreference(PREF_HTTPSE);
-        mHttpsePref.setOnPreferenceChangeListener(this);        
+        mHttpsePref.setOnPreferenceChangeListener(this);
 
         mCanMakePayment = (ChromeSwitchPreference) findPreference(PREF_CAN_MAKE_PAYMENT);
         mCanMakePayment.setOnPreferenceChangeListener(this);
-
-        // mIpfsGatewayPref = (ChromeBaseCheckBoxPreference) findPreference(PREF_IPFS_GATEWAY);
-        // mIpfsGatewayPref.setOnPreferenceChangeListener(this);
-
-        // mAdBlockPref = (ChromeBaseCheckBoxPreference) findPreference(PREF_AD_BLOCK);
-        // mAdBlockPref.setOnPreferenceChangeListener(this);
 
         mAdsTrakersBlockPref = (BraveDialogPreference) findPreference(PREF_BLOCK_TRACKERS_ADS);
         mAdsTrakersBlockPref.setOnPreferenceChangeListener(this);
@@ -149,9 +138,6 @@ public class BravePrivacySettings extends PrivacySettings {
         mBlockCrosssiteCookies =
                 (BraveDialogPreference) findPreference(PREF_BLOCK_CROSS_SITE_COOKIES);
         mBlockCrosssiteCookies.setOnPreferenceChangeListener(this);
-
-        mBlockScriptsPref = (ChromeSwitchPreference) findPreference(PREF_BLOCK_SCRIPTS);
-        mBlockScriptsPref.setOnPreferenceChangeListener(this);
 
         mBlockScriptsPref = (ChromeSwitchPreference) findPreference(PREF_BLOCK_SCRIPTS);
         mBlockScriptsPref.setOnPreferenceChangeListener(this);
@@ -205,7 +191,7 @@ public class BravePrivacySettings extends PrivacySettings {
         removePreferenceIfPresent(PREF_UNSTOPPABLE_DOMAINS);
     }
 
-    // used for displaying BraveDialogPreference 
+    // used for displaying BraveDialogPreference
     @Override
     public void onDisplayPreferenceDialog(Preference preference) {
         if (preference instanceof BraveDialogPreference) {
@@ -334,7 +320,6 @@ public class BravePrivacySettings extends PrivacySettings {
     }
 
     private void updatePreferences() {
-
         for (int i = 0; i < NEW_PRIVACY_PREFERENCE_ORDER.length; i++) {
             if (findPreference(NEW_PRIVACY_PREFERENCE_ORDER[i]) != null) {
                 findPreference(NEW_PRIVACY_PREFERENCE_ORDER[i]).setOrder(i);
@@ -344,10 +329,15 @@ public class BravePrivacySettings extends PrivacySettings {
         String fingerprinting = BravePrefServiceBridge.getInstance().getFingerprintingControlType();
         String cosmeticFiltering =
                 BravePrefServiceBridge.getInstance().getCosmeticFilteringControlType();
-        String ctlType = BravePrefServiceBridge.getInstance().getNoScriptControlType();
         String cookiesBlockType = BravePrefServiceBridge.getInstance().getCookiesBlockType();
         String getNoScriptControlType =
                 BravePrefServiceBridge.getInstance().getNoScriptControlType();
+
+        if (getNoScriptControlType.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
+            mBlockScriptsPref.setChecked(true);
+        } else {
+            mBlockScriptsPref.setChecked(false);
+        }
 
         if (cosmeticFiltering.equals(BraveShieldsContentSettings.AGGRESSIVE)) {
             mAdsTrakersBlockPref.setCheckedIndex(0);
@@ -393,11 +383,14 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
 
-        mCanMakePayment.setTitle(getActivity().getResources().getString(R.string.settings_can_make_payment_toggle_label));
-        mCanMakePayment.setSummary("");        
+        mCanMakePayment.setTitle(getActivity().getResources().getString(
+                R.string.settings_can_make_payment_toggle_label));
+        mCanMakePayment.setSummary("");
 
-        mSendP3A.setTitle(getActivity().getResources().getString(R.string.send_p3a_analytics_title));
-        mSendP3A.setSummary(getActivity().getResources().getString(R.string.send_p3a_analytics_summary));
+        mSendP3A.setTitle(
+                getActivity().getResources().getString(R.string.send_p3a_analytics_title));
+        mSendP3A.setSummary(
+                getActivity().getResources().getString(R.string.send_p3a_analytics_summary));
 
         if (BraveConfig.P3A_ENABLED) {
             mSendP3A.setChecked(BravePrefServiceBridge.getInstance().getP3AEnabled());

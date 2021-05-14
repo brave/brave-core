@@ -18,8 +18,8 @@ import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
-import org.chromium.chrome.R;
 import org.chromium.base.Log;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.ui.UiUtils;
@@ -29,7 +29,6 @@ import org.chromium.ui.UiUtils;
  */
 public class BraveWebrtcPolicyPreferencesFragment extends BravePreferenceFragment {
     static final String PREF_WEBRTC_POLICY = "webrtc_policy";
-
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {

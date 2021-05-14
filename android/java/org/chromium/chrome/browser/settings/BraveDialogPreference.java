@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -27,19 +27,19 @@ public class BraveDialogPreference extends DialogPreference {
         setDialogLayoutResource(R.layout.brave_dialog_preference);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.brave_list_preference);
 
-        // set dialog entries
+        // Sets dialog entries
         CharSequence[] entries = a.getTextArray(R.styleable.brave_list_preference_dialog_entries);
         if (entries != null) {
             this.setDialogEntries(entries);
         }
 
-        // set dialog subtitle
+        // Sets dialog subtitle
         String subtitle = a.getString(R.styleable.brave_list_preference_dialog_subtitle);
         if (subtitle != null) {
             this.setDialogSubtitle(subtitle);
         }
 
-        // set default checked index
+        // Sets default checked index
         int defaultChecked = a.getInt(R.styleable.brave_list_preference_dialog_default_index, 1);
         this.setCheckedIndex(defaultChecked);
 

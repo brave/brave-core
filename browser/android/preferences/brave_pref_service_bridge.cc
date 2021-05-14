@@ -5,7 +5,6 @@
 
 #include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 
-#include <android/log.h>
 #include "base/android/jni_string.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
@@ -28,11 +27,6 @@
 #include "components/prefs/pref_service.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "url/gurl.h"
-#define TAG "BRAVESETTINGS"
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__)
-#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, TAG, __VA_ARGS__)
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__)
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -207,7 +201,6 @@ JNI_BravePrefServiceBridge_GetCosmeticFilteringControlType(JNIEnv* env) {
   brave_shields::ControlType control_type_ad = brave_shields::GetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
       GURL());
-
 
   if (control_type_ad == ControlType::ALLOW) {
     if (cosmetic_type == ControlType::ALLOW) {

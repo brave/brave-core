@@ -113,9 +113,8 @@ import java.util.Set;
  * Brave's extension for ChromeActivity
  */
 @JNINamespace("chrome::android")
-public abstract class BraveActivity<C extends ChromeActivityComponent> extends ChromeActivity
-        implements BrowsingDataBridge.OnClearBrowsingDataListener {
-
+public abstract class BraveActivity<C extends ChromeActivityComponent>
+        extends ChromeActivity implements BrowsingDataBridge.OnClearBrowsingDataListener {
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;

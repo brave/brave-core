@@ -6,7 +6,11 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Browser;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -17,12 +21,6 @@ import androidx.preference.PreferenceViewHolder;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout;
-
-import android.content.Intent;
-import android.provider.Browser;
-import android.net.Uri;
-import android.view.View;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,8 +43,8 @@ public class BraveWebrtcPolicyPreference
     private RadioButtonWithDescriptionLayout mGroup;
     private TextView mLearnMore;
     private ArrayList<RadioButtonWithDescription> mButtons;
-            protected static final String FALLBACK_SUPPORT_URL = "https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
-
+    protected static final String FALLBACK_SUPPORT_URL =
+            "https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
 
     public BraveWebrtcPolicyPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -87,8 +85,8 @@ public class BraveWebrtcPolicyPreference
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(FALLBACK_SUPPORT_URL));
-                // Let Chrome know that this intent is from Chrome, so that it does not close the app when
-                // the user presses 'back' button.
+                // Let Chrome know that this intent is from Chrome, so that it does not close the
+                // app when the user presses 'back' button.
                 intent.putExtra(Browser.EXTRA_APPLICATION_ID, getContext().getPackageName());
                 intent.putExtra(Browser.EXTRA_CREATE_NEW_TAB, true);
                 intent.setPackage(getContext().getPackageName());
