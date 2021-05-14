@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
-import { ConnectWithSite } from '../components/extension'
+import { ConnectWithSite, WelcomePanel } from '../components/extension'
 import { StyledExtensionWrapper } from '../stories/style'
 import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
@@ -70,18 +70,30 @@ function Panel (props: Props) {
       props.actions.cancelConnectToSite()
     }
   }
+  const onRestore = () => {
+    chrome.tabs.create({ url: 'chrome://wallet#restore' })
+  }
+  const onSetup = () => {
+    chrome.tabs.create({ url: 'chrome://wallet' })
+  }
+  const isWalletSetup = false
   return (
     <StyledExtensionWrapper>
-      <ConnectWithSite
-        siteURL={props.panel.connectedSiteOrigin}
-        isReady={readyToConnect}
-        accounts={props.panel.accounts}
-        primaryAction={primaryAction}
-        secondaryAction={secondaryAction}
-        selectAccount={selectAccount}
-        removeAccount={removeAccount}
-        selectedAccounts={selectedAccounts}
-      />
+      { !isWalletSetup ?
+        (<WelcomePanel onRestore={onRestore} onSetup={onSetup} />)
+        :
+        (<ConnectWithSite
+            siteURL={props.panel.connectedSiteOrigin}
+            isReady={readyToConnect}
+            accounts={props.panel.accounts}
+            primaryAction={primaryAction}
+            secondaryAction={secondaryAction}
+            selectAccount={selectAccount}
+            removeAccount={removeAccount}
+            selectedAccounts={selectedAccounts}
+        />
+        )
+      }
     </StyledExtensionWrapper>
   )
 }
