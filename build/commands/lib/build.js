@@ -32,9 +32,9 @@ const touchOverriddenFiles = () => {
     // Exclude test files
     if (file.indexOf('browsertest') > -1 || file.indexOf('unittest') > -1) { return false }
 
-    // Only includes cc and h files.
+    // Only include overridable files.
     const ext = path.extname(file)
-    if (ext !== '.cc' && ext !== '.h' && ext !== '.mm') { return false }
+    if (ext !== '.cc' && ext !== '.h' && ext !== '.mm' && ext !== '.mojom') { return false }
 
     return true
   }

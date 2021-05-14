@@ -406,6 +406,14 @@ const util = {
     fs.copySync(srcDir, dstDir)
   },
 
+  // Add mojom ast patcher.
+  addMojomAstPatcher: () => {
+    console.log('add mojom ast patcher...')
+    const srcDir = path.join(config.braveCoreDir, 'mojo', 'public', 'tools', 'mojom', 'mojom', 'parse')
+    const dstDir = path.join(config.srcDir, 'mojo', 'public', 'tools', 'mojom', 'mojom', 'parse')
+    fs.copySync(srcDir, dstDir)
+  },
+
   // TODO(bridiver) - this should move to gn and windows should call signApp like other platforms
   signWinBinaries: () => {
     // Copy & sign only binaries for widevine sig file generation.
@@ -507,6 +515,7 @@ const util = {
       util.updateOmahaMidlFiles()
       util.buildRedirectCCTool()
     }
+    util.addMojomAstPatcher();
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
