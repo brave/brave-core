@@ -222,8 +222,11 @@ StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage() {
   if (!namespaces)
     return nullptr;
 
-  auto storage_area =
-      namespaces->local_storage()->GetCachedArea(window->GetSecurityOrigin());
+  auto* controller = StorageController::GetInstance();
+  controller->ClearAreasIfNeeded();
+  auto storage_area = base::MakeRefCounted<CachedStorageArea>(
+      CachedStorageArea::AreaType::kSessionStorage, window->GetSecurityOrigin(),
+      controller->TaskRunner(), namespaces->local_storage());
 
   // Ephemeral localStorage never persists stored data, which is also how
   // sessionStorage works. Due to this, when opening up a new ephemeral
