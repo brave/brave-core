@@ -6,13 +6,22 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_H_
 
-#define BRAVE_CONTENT_SETTINGS_H                  \
-  ContentSettingsForOneType autoplay_rules;       \
-  ContentSettingsForOneType fingerprinting_rules; \
-  ContentSettingsForOneType brave_shields_rules;
+#define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
 #include "../../../../../../components/content_settings/core/common/content_settings.h"
 
-#undef BRAVE_CONTENT_SETTINGS_H
+#undef RendererContentSettingRules
+
+struct RendererContentSettingRules
+    : public RendererContentSettingRules_ChromiumImpl {
+  RendererContentSettingRules();
+  ~RendererContentSettingRules();
+
+  static bool IsRendererContentSetting(ContentSettingsType content_type);
+
+  ContentSettingsForOneType autoplay_rules;
+  ContentSettingsForOneType fingerprinting_rules;
+  ContentSettingsForOneType brave_shields_rules;
+};
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_H_
