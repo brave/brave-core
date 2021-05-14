@@ -11,6 +11,7 @@ namespace ipfs {
 extern const char kAPIKeyListEndpoint[];
 extern const char kAPIKeyGenerateEndpoint[];
 extern const char kAPIKeyRemoveEndpoint[];
+extern const char kAPIKeyImportEndpoint[];
 extern const char kSwarmPeersPath[];
 extern const char kConfigPath[];
 extern const char kArgQueryParam[];
@@ -38,6 +39,8 @@ extern const char kAPIPublishNameEndpoint[];
 extern const char kIPFSImportMultipartContentType[];
 extern const char kFileValueName[];
 extern const char kFileMimeType[];
+extern const char kDirectoryMimeType[];
+extern const char kIPFSImportTextMimeType[];
 
 // Keep it synced with IPFSResolveMethodTypes in
 // browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js
