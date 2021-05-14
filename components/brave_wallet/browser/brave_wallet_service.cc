@@ -64,6 +64,8 @@ BraveWalletService::BraveWalletService(
 
   rpc_controller_ = std::make_unique<brave_wallet::EthJsonRpcController>(
       context, brave_wallet::Network::kMainnet);
+  keyring_controller_ = std::make_unique<brave_wallet::KeyringController>(
+      user_prefs::UserPrefs::Get(context_));
 }
 
 BraveWalletService::~BraveWalletService() {}
@@ -186,6 +188,11 @@ void BraveWalletService::ResetCryptoWallets() {
 
 brave_wallet::EthJsonRpcController* BraveWalletService::rpc_controller() const {
   return rpc_controller_.get();
+}
+
+brave_wallet::KeyringController* BraveWalletService::keyring_controller()
+    const {
+  return keyring_controller_.get();
 }
 
 // Generates a random 32 byte root seed and stores it in prefs

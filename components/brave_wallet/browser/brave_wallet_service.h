@@ -22,6 +22,7 @@
 #include "base/scoped_observer.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"
@@ -57,6 +58,7 @@ class BraveWalletService : public KeyedService,
   using LoadUICallback = base::OnceCallback<void()>;
 
   brave_wallet::EthJsonRpcController* rpc_controller() const;
+  brave_wallet::KeyringController* keyring_controller() const;
 
   void ResetCryptoWallets();
   std::string GetWalletSeed(std::vector<uint8_t> key);
@@ -112,6 +114,7 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate_;
   std::unique_ptr<brave_wallet::EthJsonRpcController> rpc_controller_;
+  std::unique_ptr<brave_wallet::KeyringController> keyring_controller_;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   ScopedObserver<extensions::ExtensionRegistry,
                  extensions::ExtensionRegistryObserver>
