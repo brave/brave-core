@@ -151,13 +151,6 @@ void IpnsKeysManager::LoadKeys(LoadKeysCallback callback) {
                                                 base::Unretained(this), iter));
 }
 
-void IpnsKeysManager::OnIpfsLaunched(bool result, int64_t pid) {
-  bool success = result && pid > 0;
-  if (!success)
-    return;
-  LoadKeys(base::NullCallback());
-}
-
 void IpnsKeysManager::OnIpfsShutdown() {
   keys_.clear();
 }
@@ -199,6 +192,13 @@ void IpnsKeysManager::NotifyKeysLoaded(bool result) {
 
 void IpnsKeysManager::SetServerEndpointForTest(const GURL& gurl) {
   server_endpoint_ = gurl;
+}
+
+const std::string IpnsKeysManager::FindKey(const std::string& name) const {
+  auto it = keys_.find(name);
+  if (it == keys_.end())
+    return std::string();
+  return it->second;
 }
 
 }  // namespace ipfs

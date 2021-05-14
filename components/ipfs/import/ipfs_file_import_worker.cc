@@ -24,8 +24,9 @@ namespace ipfs {
 IpfsFileImportWorker::IpfsFileImportWorker(content::BrowserContext* context,
                                            const GURL& endpoint,
                                            ImportCompletedCallback callback,
-                                           const base::FilePath& path)
-    : IpfsImportWorkerBase(context, endpoint, std::move(callback)),
+                                           const base::FilePath& path,
+                                           const std::string& key)
+    : IpfsImportWorkerBase(context, endpoint, std::move(callback), key),
       weak_factory_(this) {
   std::string filename = path.BaseName().MaybeAsASCII();
   base::ThreadPool::PostTaskAndReplyWithResult(

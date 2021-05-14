@@ -60,9 +60,11 @@ namespace ipfs {
 
 IpfsImportWorkerBase::IpfsImportWorkerBase(content::BrowserContext* context,
                                            const GURL& endpoint,
-                                           ImportCompletedCallback callback)
+                                           ImportCompletedCallback callback,
+                                           const std::string& key)
     : callback_(std::move(callback)),
       server_endpoint_(endpoint),
+      key_to_publish_(key),
       browser_context_(context),
       io_task_runner_(base::CreateSequencedTaskRunner(
           {base::MayBlock(), content::BrowserThread::IO,
@@ -269,8 +271,45 @@ void IpfsImportWorkerBase::OnImportFilesMoved(
     VLOG(1) << "error_code:" << error_code << " response_code:" << response_code
             << " response_body:" << *response_body;
   }
+  if (!data_->hash.empty() && !key_to_publish_.empty()) {
+    PublishContent();
+    return;
+  }
   NotifyImportCompleted(success ? IPFS_IMPORT_SUCCESS
                                 : IPFS_IMPORT_ERROR_MOVE_FAILED);
+}
+
+void IpfsImportWorkerBase::PublishContent() {
+  DCHECK(!url_loader_);
+  std::string from = "/ipfs/" + data_->hash;
+  GURL url = net::AppendQueryParameter(
+      server_endpoint_.Resolve(kAPIPublishNameEndpoint), "arg", from);
+  url = net::AppendQueryParameter(url, "key", key_to_publish_);
+
+  url_loader_ = CreateURLLoader(url, "POST");
+  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsImportWorkerBase::OnContentPublished,
+                     base::Unretained(this)));
+}
+
+void IpfsImportWorkerBase::OnContentPublished(
+    std::unique_ptr<std::string> response_body) {
+  int error_code = url_loader_->NetError();
+  int response_code = -1;
+  if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
+    response_code = url_loader_->ResponseInfo()->headers->response_code();
+  url_loader_.reset();
+  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  if (success)
+    data_->published_key = key_to_publish_;
+  if (!success) {
+    VLOG(1) << "error_code:" << error_code << " response_code:" << response_code
+            << " response_body:" << *response_body;
+  }
+
+  NotifyImportCompleted(success ? IPFS_IMPORT_SUCCESS
+                                : IPFS_IMPORT_ERROR_PUBLISH_FAILED);
 }
 
 void IpfsImportWorkerBase::NotifyImportCompleted(ipfs::ImportState state) {

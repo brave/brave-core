@@ -118,6 +118,7 @@ IpfsService::IpfsService(content::BrowserContext* context,
 
 IpfsService::~IpfsService() {
   RemoveObserver(ipns_keys_manager_.get());
+  Shutdown();
 }
 
 // static
@@ -230,6 +231,11 @@ base::FilePath IpfsService::GetConfigFilePath() const {
 
 void IpfsService::NotifyDaemonLaunched(bool result, int64_t pid) {
   bool success = result && pid > 0;
+  if (success && ipns_keys_manager_) {
+    ipns_keys_manager_->LoadKeys(base::BindOnce(
+        &IpfsService::NotifyIpnsKeysLoaded, weak_factory_.GetWeakPtr()));
+  }
+
   while (!pending_launch_callbacks_.empty()) {
     if (pending_launch_callbacks_.front())
       std::move(pending_launch_callbacks_.front()).Run(success);
@@ -237,6 +243,12 @@ void IpfsService::NotifyDaemonLaunched(bool result, int64_t pid) {
   }
   for (auto& observer : observers_) {
     observer.OnIpfsLaunched(result, pid);
+  }
+}
+
+void IpfsService::NotifyIpnsKeysLoaded(bool result) {
+  for (auto& observer : observers_) {
+    observer.OnIpnsKeysLoaded(result);
   }
 }
 
@@ -259,6 +271,7 @@ void IpfsService::Shutdown() {
 }
 
 void IpfsService::ImportFileToIpfs(const base::FilePath& path,
+                                   const std::string& key,
                                    ipfs::ImportCompletedCallback callback) {
   if (path.empty()) {
     if (callback)
@@ -268,19 +281,20 @@ void IpfsService::ImportFileToIpfs(const base::FilePath& path,
   ReentrancyCheck reentrancy_check(&reentrancy_guard_);
   if (!IsDaemonLaunched()) {
     StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportFileToIpfs,
-                                        weak_factory_.GetWeakPtr(), path,
+                                        weak_factory_.GetWeakPtr(), path, key,
                                         std::move(callback)));
     return;
   }
-  size_t key = base::FastHash(base::as_bytes(base::make_span(path.value())));
-  if (importers_.count(key))
+  size_t hash = base::FastHash(base::as_bytes(base::make_span(path.value())));
+  if (importers_.count(hash))
     return;
 
   auto import_completed_callback =
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
-                     std::move(callback), key);
-  importers_[key] = std::make_unique<IpfsFileImportWorker>(
-      context_, server_endpoint_, std::move(import_completed_callback), path);
+                     std::move(callback), hash);
+  importers_[hash] = std::make_unique<IpfsFileImportWorker>(
+      context_, server_endpoint_, std::move(import_completed_callback), path,
+      key);
 }
 
 void IpfsService::ImportLinkToIpfs(const GURL& url,
@@ -298,18 +312,19 @@ void IpfsService::ImportLinkToIpfs(const GURL& url,
                                         std::move(callback)));
     return;
   }
-  size_t key = base::FastHash(base::as_bytes(base::make_span(url.spec())));
-  if (importers_.count(key))
+  size_t hash = base::FastHash(base::as_bytes(base::make_span(url.spec())));
+  if (importers_.count(hash))
     return;
 
   auto import_completed_callback =
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
-                     std::move(callback), key);
-  importers_[key] = std::make_unique<IpfsLinkImportWorker>(
+                     std::move(callback), hash);
+  importers_[hash] = std::make_unique<IpfsLinkImportWorker>(
       context_, server_endpoint_, std::move(import_completed_callback), url);
 }
 
 void IpfsService::ImportDirectoryToIpfs(const base::FilePath& folder,
+                                        const std::string& key,
                                         ImportCompletedCallback callback) {
   if (folder.empty()) {
     if (callback)
@@ -319,19 +334,20 @@ void IpfsService::ImportDirectoryToIpfs(const base::FilePath& folder,
   ReentrancyCheck reentrancy_check(&reentrancy_guard_);
   if (!IsDaemonLaunched()) {
     StartDaemonAndLaunch(base::BindOnce(&IpfsService::ImportDirectoryToIpfs,
-                                        weak_factory_.GetWeakPtr(), folder,
+                                        weak_factory_.GetWeakPtr(), folder, key,
                                         std::move(callback)));
     return;
   }
-  size_t key =
+  size_t hash =
       base::FastHash(base::as_bytes(base::make_span(folder.MaybeAsASCII())));
-  if (importers_.count(key))
+  if (importers_.count(hash))
     return;
   auto import_completed_callback =
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
-                     std::move(callback), key);
-  importers_[key] = std::make_unique<IpfsDirectoryImportWorker>(
-      context_, server_endpoint_, std::move(import_completed_callback), folder);
+                     std::move(callback), hash);
+  importers_[hash] = std::make_unique<IpfsDirectoryImportWorker>(
+      context_, server_endpoint_, std::move(import_completed_callback), folder,
+      key);
 }
 
 void IpfsService::ImportTextToIpfs(const std::string& text,
@@ -349,13 +365,13 @@ void IpfsService::ImportTextToIpfs(const std::string& text,
                                         std::move(callback)));
     return;
   }
-  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
-  if (importers_.count(key))
+  size_t hash = base::FastHash(base::as_bytes(base::make_span(text)));
+  if (importers_.count(hash))
     return;
   auto import_completed_callback =
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
-                     std::move(callback), key);
-  importers_[key] = std::make_unique<IpfsTextImportWorker>(
+                     std::move(callback), hash);
+  importers_[hash] = std::make_unique<IpfsTextImportWorker>(
       context_, server_endpoint_, std::move(import_completed_callback), text,
       host);
 }

@@ -20,6 +20,7 @@
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
@@ -208,8 +209,9 @@ void IpfsImportController::OnDownloadFinished(
     case download::DownloadItem::COMPLETE:
       DCHECK(ipfs_service_);
       ipfs_service_->ImportDirectoryToIpfs(
-          path, base::BindOnce(&IpfsImportController::OnWebPageImportCompleted,
-                               weak_ptr_factory_.GetWeakPtr(), path));
+          path, std::string(),
+          base::BindOnce(&IpfsImportController::OnWebPageImportCompleted,
+                         weak_ptr_factory_.GetWeakPtr(), path));
       break;
     case download::DownloadItem::CANCELLED:
       base::ThreadPool::PostTask(
@@ -224,11 +226,13 @@ void IpfsImportController::OnDownloadFinished(
   save_package_observer_.reset();
 }
 
-void IpfsImportController::ImportDirectoryToIpfs(const base::FilePath& path) {
+void IpfsImportController::ImportDirectoryToIpfs(const base::FilePath& path,
+                                                 const std::string& key) {
   DCHECK(ipfs_service_);
   ipfs_service_->ImportDirectoryToIpfs(
-      path, base::BindOnce(&IpfsImportController::OnImportCompleted,
-                           weak_ptr_factory_.GetWeakPtr()));
+      path, key,
+      base::BindOnce(&IpfsImportController::OnImportCompleted,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void IpfsImportController::ImportTextToIpfs(const std::string& text) {
@@ -239,11 +243,13 @@ void IpfsImportController::ImportTextToIpfs(const std::string& text) {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void IpfsImportController::ImportFileToIpfs(const base::FilePath& path) {
+void IpfsImportController::ImportFileToIpfs(const base::FilePath& path,
+                                            const std::string& key) {
   DCHECK(ipfs_service_);
   ipfs_service_->ImportFileToIpfs(
-      path, base::BindOnce(&IpfsImportController::OnImportCompleted,
-                           weak_ptr_factory_.GetWeakPtr()));
+      path, key,
+      base::BindOnce(&IpfsImportController::OnImportCompleted,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 GURL IpfsImportController::CreateAndCopyShareableLink(
@@ -251,6 +257,12 @@ GURL IpfsImportController::CreateAndCopyShareableLink(
   if (data.hash.empty())
     return GURL();
   std::string ipfs = ipfs::kIPFSScheme + std::string("://") + data.hash;
+  if (!data.published_key.empty()) {
+    auto key = ipfs_service_->GetIpnsKeysManager()->FindKey(data.published_key);
+    if (!key.empty()) {
+      ipfs = ipfs::kIPNSScheme + std::string("://") + key;
+    }
+  }
   auto shareable_link =
       ipfs::ToPublicGatewayURL(GURL(ipfs), web_contents_->GetBrowserContext());
   if (!shareable_link.is_valid())
@@ -308,10 +320,10 @@ void IpfsImportController::FileSelected(const base::FilePath& path,
                                         void* params) {
   switch (dialog_type_) {
     case ui::SelectFileDialog::SELECT_OPEN_FILE:
-      ImportFileToIpfs(path);
+      ImportFileToIpfs(path, dialog_key_);
       break;
     case ui::SelectFileDialog::SELECT_EXISTING_FOLDER:
-      ImportDirectoryToIpfs(path);
+      ImportDirectoryToIpfs(path, dialog_key_);
       break;
     default:
       NOTREACHED() << "Only existing file or directory import supported";
@@ -319,13 +331,16 @@ void IpfsImportController::FileSelected(const base::FilePath& path,
   }
   dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
   select_file_dialog_.reset();
+  dialog_key_.clear();
 }
 
 void IpfsImportController::FileSelectionCanceled(void* params) {
   select_file_dialog_.reset();
+  dialog_key_.clear();
 }
 
-void IpfsImportController::ShowImportDialog(ui::SelectFileDialog::Type type) {
+void IpfsImportController::ShowImportDialog(ui::SelectFileDialog::Type type,
+                                            const std::string& key) {
   select_file_dialog_ = ui::SelectFileDialog::Create(
       this, std::make_unique<ChromeSelectFilePolicy>(web_contents_));
   if (!select_file_dialog_) {
@@ -340,6 +355,7 @@ void IpfsImportController::ShowImportDialog(ui::SelectFileDialog::Type type) {
   file_types.allowed_paths =
       ui::SelectFileDialog::FileTypeInfo::ANY_PATH_OR_URL;
   dialog_type_ = type;
+  dialog_key_ = key;
   select_file_dialog_->SelectFile(type, std::u16string(), directory,
                                   &file_types, 0, base::FilePath::StringType(),
                                   parent_window, nullptr);

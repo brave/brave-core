@@ -20,6 +20,7 @@ enum ImportState {
   IPFS_IMPORT_ERROR_ADD_FAILED,
   IPFS_IMPORT_ERROR_MKDIR_FAILED,
   IPFS_IMPORT_ERROR_MOVE_FAILED,
+  IPFS_IMPORT_ERROR_PUBLISH_FAILED,
 };
 
 struct ImportedData {
@@ -27,6 +28,7 @@ struct ImportedData {
   ~ImportedData();
 
   std::string hash;
+  std::string published_key;
   int64_t size = -1;
   std::string directory;
   std::string filename;

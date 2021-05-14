@@ -50,6 +50,7 @@ class IpnsKeysManager : public IpfsServiceObserver {
   bool KeyExists(const std::string& name) const;
 
   const KeysMap& GetKeys() const { return keys_; }
+  const std::string FindKey(const std::string& name) const;
 
   void SetServerEndpointForTest(const GURL& gurl);
   void SetLoadCallbackForTest(LoadKeysCallback callback);
@@ -59,7 +60,6 @@ class IpnsKeysManager : public IpfsServiceObserver {
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   // ipfs::IpfsServiceObserver
-  void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnIpfsShutdown() override;
 
   void OnKeyCreated(SimpleURLLoaderList::iterator iter,

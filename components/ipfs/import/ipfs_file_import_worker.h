@@ -22,7 +22,8 @@ class IpfsFileImportWorker : public IpfsImportWorkerBase {
   IpfsFileImportWorker(content::BrowserContext* context,
                        const GURL& endpoint,
                        ImportCompletedCallback callback,
-                       const base::FilePath& path);
+                       const base::FilePath& path,
+                       const std::string& key);
   ~IpfsFileImportWorker() override;
 
   IpfsFileImportWorker(const IpfsFileImportWorker&) = delete;

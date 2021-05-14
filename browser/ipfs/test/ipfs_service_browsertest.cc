@@ -246,6 +246,14 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       const std::string& expected_response,
       const net::test_server::HttpRequest& request) {
     const GURL gurl = request.GetURL();
+    if (gurl.path_piece() == kAPIPublishNameEndpoint) {
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_OK);
+      http_response->set_content_type("application/json");
+      http_response->set_content(expected_response);
+      return http_response;
+    }
     if (gurl.path_piece() == kImportAddPath) {
       auto http_response =
           std::make_unique<net::test_server::BasicHttpResponse>();
@@ -519,10 +527,23 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(error, "");
   }
 
+  void OnPublishCompletedSuccess(const ipfs::ImportedData& data) {
+    ASSERT_FALSE(data.hash.empty());
+    ASSERT_FALSE(data.filename.empty());
+    ASSERT_FALSE(data.directory.empty());
+    ASSERT_FALSE(data.published_key.empty());
+    ASSERT_EQ(data.state, ipfs::IPFS_IMPORT_SUCCESS);
+    ASSERT_GT(data.size, -1);
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+  }
+
   void OnImportCompletedSuccess(const ipfs::ImportedData& data) {
     ASSERT_FALSE(data.hash.empty());
     ASSERT_FALSE(data.filename.empty());
     ASSERT_FALSE(data.directory.empty());
+    ASSERT_TRUE(data.published_key.empty());
     ASSERT_EQ(data.state, ipfs::IPFS_IMPORT_SUCCESS);
     ASSERT_GT(data.size, -1);
     if (wait_for_request_) {
@@ -1003,7 +1024,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileToIpfsSuccess) {
   auto file_to_upload = embedded_test_server()->GetFullPathFromSourceDirectory(
       base::FilePath(FILE_PATH_LITERAL("brave/test/data/adbanner.js")));
   ipfs_service()->ImportFileToIpfs(
-      file_to_upload,
+      file_to_upload, std::string(),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
                      base::Unretained(this)));
   WaitForRequest();
@@ -1019,8 +1040,39 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportDirectoryToIpfsSuccess) {
   auto test_path = embedded_test_server()->GetFullPathFromSourceDirectory(
       base::FilePath(folder));
   ipfs_service()->ImportDirectoryToIpfs(
-      test_path,
+      test_path, std::string(),
       base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportAndPinDirectorySuccess) {
+  std::string expected_response =
+      R"({"Name":"autoplay-whitelist-data", "Size":"567857", "Hash": "QmYbK4SLa"})";
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+  auto* folder = FILE_PATH_LITERAL("brave/test/data/autoplay-whitelist-data");
+  auto test_path = embedded_test_server()->GetFullPathFromSourceDirectory(
+      base::FilePath(folder));
+  ipfs_service()->ImportDirectoryToIpfs(
+      test_path, std::string("pin"),
+      base::BindOnce(&IpfsServiceBrowserTest::OnPublishCompletedSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileAndPinToIpfsSuccess) {
+  std::string expected_response =
+      R"({"Name":"adbanner.js", "Size":"567857", "Hash": "QmYbK4SLa"})";
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
+                          base::Unretained(this), expected_response));
+  auto file_to_upload = embedded_test_server()->GetFullPathFromSourceDirectory(
+      base::FilePath(FILE_PATH_LITERAL("brave/test/data/adbanner.js")));
+  ipfs_service()->ImportFileToIpfs(
+      file_to_upload, std::string("test_key"),
+      base::BindOnce(&IpfsServiceBrowserTest::OnPublishCompletedSuccess,
                      base::Unretained(this)));
   WaitForRequest();
 }

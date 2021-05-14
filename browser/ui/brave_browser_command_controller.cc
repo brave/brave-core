@@ -149,9 +149,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, add_new_profile_enabled);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
   UpdateCommandEnabled(IDC_TOGGLE_SPEEDREADER, true);
-#if BUILDFLAG(IPFS_ENABLED)
-  UpdateCommandForIpfs();
-#endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -192,15 +189,6 @@ void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL, true);
   UpdateCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL, true);
 }
-
-#if BUILDFLAG(IPFS_ENABLED)
-void BraveBrowserCommandController::UpdateCommandForIpfs() {
-  auto enabled = ipfs::IsIpfsMenuEnabled(browser_->profile());
-  UpdateCommandEnabled(IDC_APP_MENU_IPFS, enabled);
-  UpdateCommandEnabled(IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE, enabled);
-  UpdateCommandEnabled(IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER, enabled);
-}
-#endif
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     int id,
@@ -256,14 +244,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_OPEN_GUEST_PROFILE:
       brave::OpenGuestProfile();
       break;
-#if BUILDFLAG(IPFS_ENABLED)
-    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
-      brave::ShareLocalFileUsingIPFS(browser_);
-      break;
-    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
-      brave::ShareLocalFolderUsingIPFS(browser_);
-      break;
-#endif
     case IDC_TOGGLE_SPEEDREADER:
       brave::ToggleSpeedreader(browser_);
       break;

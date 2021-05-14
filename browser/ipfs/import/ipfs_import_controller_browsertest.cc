@@ -47,12 +47,14 @@ class FakeIpfsService : public ipfs::IpfsService {
       std::move(callback).Run(data_);
   }
   void ImportFileToIpfs(const base::FilePath& path,
+                        const std::string& key,
                         ipfs::ImportCompletedCallback callback) override {
     function_calls_["ImportFileToIpfs"]++;
     if (callback)
       std::move(callback).Run(data_);
   }
   void ImportDirectoryToIpfs(const base::FilePath& path,
+                             const std::string& key,
                              ipfs::ImportCompletedCallback callback) override {
     function_calls_["ImportDirectoryToIpfs"]++;
     if (callback)
@@ -129,7 +131,8 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportFileToIpfs) {
   auto* controller = helper->GetImportController();
   controller->SetIpfsServiceForTesting(ipfs_service.get());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
-  controller->ImportFileToIpfs(base::FilePath(FILE_PATH_LITERAL("fake.file")));
+  controller->ImportFileToIpfs(base::FilePath(FILE_PATH_LITERAL("fake.file")),
+                               std::string());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
   auto* web_content = browser()->tab_strip_model()->GetWebContentsAt(1);
   ASSERT_TRUE(web_content);
@@ -229,7 +232,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportDirectoryToIpfs) {
   controller->SetIpfsServiceForTesting(ipfs_service.get());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
   controller->ImportDirectoryToIpfs(
-      base::FilePath(FILE_PATH_LITERAL("test.file")));
+      base::FilePath(FILE_PATH_LITERAL("test.file")), std::string());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
   auto* web_content = browser()->tab_strip_model()->GetWebContentsAt(1);
   ASSERT_TRUE(web_content);

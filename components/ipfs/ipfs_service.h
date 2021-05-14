@@ -98,9 +98,11 @@ class IpfsService : public KeyedService,
 
   void RestartDaemon();
   virtual void ImportFileToIpfs(const base::FilePath& path,
+                                const std::string& key,
                                 ipfs::ImportCompletedCallback callback);
 
   virtual void ImportDirectoryToIpfs(const base::FilePath& folder,
+                                     const std::string& key,
                                      ImportCompletedCallback callback);
   virtual void ImportLinkToIpfs(const GURL& url,
                                 ImportCompletedCallback callback);
@@ -154,6 +156,7 @@ class IpfsService : public KeyedService,
   void OnIpfsDaemonCrashed(int64_t pid);
   // Notifies tasks waiting to start the service.
   void NotifyDaemonLaunched(bool result, int64_t pid);
+  void NotifyIpnsKeysLoaded(bool result);
   // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
   base::TimeDelta CalculatePeersRetryTime();

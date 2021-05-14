@@ -46,11 +46,13 @@ class IpfsImportController : public ui::SelectFileDialog::Listener {
 
   void ImportLinkToIpfs(const GURL& url);
   void ImportTextToIpfs(const std::string& text);
-  void ImportFileToIpfs(const base::FilePath& path);
-  void ImportDirectoryToIpfs(const base::FilePath& path);
+  void ImportFileToIpfs(const base::FilePath& path, const std::string& key);
+  void ImportDirectoryToIpfs(const base::FilePath& path,
+                             const std::string& key);
   void ImportCurrentPageToIpfs();
 
-  void ShowImportDialog(ui::SelectFileDialog::Type type);
+  void ShowImportDialog(ui::SelectFileDialog::Type type,
+                        const std::string& key);
   bool HasInProgressDownload(download::DownloadItem* item);
 
   void SetIpfsServiceForTesting(ipfs::IpfsService* service) {
@@ -82,6 +84,7 @@ class IpfsImportController : public ui::SelectFileDialog::Listener {
   std::unique_ptr<SavePackageFinishedObserver> save_package_observer_;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
   ui::SelectFileDialog::Type dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
+  std::string dialog_key_;
 
   content::WebContents* web_contents_ = nullptr;
   ipfs::IpfsService* ipfs_service_ = nullptr;
