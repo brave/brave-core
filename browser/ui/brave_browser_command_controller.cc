@@ -37,6 +37,7 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/pref_names.h"
 #endif
 
 namespace {
@@ -149,6 +150,14 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, add_new_profile_enabled);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
   UpdateCommandEnabled(IDC_TOGGLE_SPEEDREADER, true);
+#if BUILDFLAG(IPFS_ENABLED)
+  UpdateCommandForIpfs();
+  profile_pref_registrar_.Init(browser_->profile()->GetPrefs());
+  profile_pref_registrar_.Add(
+      kIPFSResolveMethod,
+      base::BindRepeating(&BraveBrowserCommandController::UpdateCommandForIpfs,
+                          base::Unretained(this)));
+#endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
