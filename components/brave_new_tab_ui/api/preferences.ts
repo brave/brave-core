@@ -68,6 +68,10 @@ export function saveShowCryptoDotCom (value: boolean): void {
   sendSavePref('showCryptoDotCom', value)
 }
 
+export function saveShowFTX (value: boolean): void {
+  sendSavePref('showFTX', value)
+}
+
 export function saveIsBraveTodayIntroDismissed (value: boolean): void {
   sendSavePref('isBraveTodayIntroDismissed', value)
 }

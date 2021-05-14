@@ -11,6 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -367,6 +368,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "geminiWidgetUnitPrice", IDS_GEMINI_WIDGET_UNIT_PRICE },
         { "geminiWidgetTotalPrice", IDS_GEMINI_WIDGET_TOTAL_PRICE },
         { "geminiWidgetTotalAmount", IDS_GEMINI_WIDGET_TOTAL_AMOUNT },
+        { "cryptoConvertAmountPlaceholder", IDS_CRYPTO_CONVERT_AMOUNT_PLACEHOLDER },      // NOLINT
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
         { "cryptoDotComWidgetShowPrice", IDS_CRYPTO_DOT_COM_WIDGET_SHOW_PRICE },
         { "cryptoDotComWidgetBuy", IDS_BINANCE_WIDGET_BUY },
@@ -377,6 +379,32 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "cryptoDotComWidgetGraph", IDS_CRYPTO_DOT_COM_WIDGET_GRAPH },
         { "cryptoDotComWidgetPairs", IDS_CRYPTO_DOT_COM_WIDGET_PAIRS },
         { "cryptoDotComWidgetVolume", IDS_CRYPTO_DOT_COM_WIDGET_VOLUME },
+#endif
+#if BUILDFLAG(ENABLE_FTX)
+        { "ftxMoreMarketsLink", IDS_FTX_MORE_MARKETS_LINK },
+        { "ftxWidgetDescription", IDS_FTX_WIDGET_DESCRIPTION },
+        { "ftxMarkets", IDS_FTX_MARKETS },
+        { "ftxConvert", IDS_FTX_CONVERT },
+        { "ftxSummary", IDS_FTX_SUMMARY },
+        { "ftxIntro", IDS_FTX_INTRO },
+        { "ftxViewMarkets", IDS_FTX_VIEW_MARKETS },
+        { "ftxConnect", IDS_FTX_CONNECT },
+        { "ftxGraphLabel", IDS_FTX_GRAPH_LABEL },
+        { "ftxVolumeLabel", IDS_FTX_VOLUME_LABEL },
+        { "ftxConversionPreviewLabel", IDS_FTX_CONVERSION_PREVIEW_LABEL },
+        { "ftxConversionPreviewTitle", IDS_FTX_CONVERSION_PREVIEW_TITLE },
+        { "ftxConversionQuantityLabel", IDS_FTX_CONVERSION_QUANTITY_LABEL },
+        { "ftxConversionPriceLabel", IDS_FTX_CONVERSION_PRICE_LABEL },
+        { "ftxConversionProceedsLabel", IDS_FTX_CONVERSION_PROCEEDS_LABEL },
+        { "ftxConversionSubmittingLabel", IDS_FTX_CONVERSION_SUBMITTING_LABEL },
+        { "ftxConversionConfirmLabel", IDS_FTX_CONVERSION_CONFIRM_LABEL },
+        { "ftxConversionCancelLabel", IDS_FTX_CONVERSION_CANCEL_LABEL },
+        { "ftxConversionSuccessTitle", IDS_FTX_CONVERSION_SUCCESS_TITLE },
+        { "ftxConversionDoneLabel", IDS_FTX_CONVERSION_DONE_LABEL },
+        { "ftxConversionBalanceNeeded", IDS_FTX_CONVERSION_BALANCE_NEEDED },
+        { "ftxConversionAmountAvailable", IDS_FTX_CONVERSION_AMOUNT_AVAILABLE },
+        { "ftxSummaryBlurLabel", IDS_FTX_SUMMARY_BLUR_LABEL },
+        { "ftxSummaryRevealLabel", IDS_FTX_SUMMARY_REVEAL_LABEL },
 #endif
       }
     }, {

@@ -32,6 +32,7 @@ import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -286,6 +287,10 @@ if (enable_widevine) {
 if (enable_brave_perf_predictor) {
   brave_chrome_browser_deps +=
       [ "//brave/components/brave_perf_predictor/browser" ]
+}
+
+if (enable_ftx) {
+  brave_chrome_browser_deps += [ "//brave/browser/ftx" ]
 }
 
 if (is_win && is_official_build) {

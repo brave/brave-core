@@ -68,10 +68,11 @@ export const getLocaleWithTags = (key: string, tags: number, replacements?: Reco
 }
 
 /**
- * Allows an html or xml tag to be injected in to a string by extracting
+ * Allows an html or xml tag, or React component etc., to be injected in to a string by extracting
  * the components of the string before, during and after the tag.
  * Usage:
  *    splitStringForTag('my string with some $1bold text$2')
+ *    splitStringForTag('Get more info at $1')
  *
  * @export
  * @param {string} text
@@ -83,10 +84,22 @@ export function splitStringForTag (text: string, tagStartNumber: number = 1): Sp
   const tagClosePlaceholder = `$${tagStartNumber + 1}`
   const tagStartIndex: number = text.indexOf(tagOpenPlaceholder)
   const tagEndIndex: number = text.lastIndexOf(tagClosePlaceholder)
-  const isValid = (tagStartIndex !== -1 && tagEndIndex !== -1)
-  const beforeTag = !isValid ? text : text.substring(0, tagStartIndex)
-  const duringTag = isValid ? text.substring(tagStartIndex + tagOpenPlaceholder.length, tagEndIndex) : null
-  const afterTag = isValid ? text.substring(tagEndIndex + tagClosePlaceholder.length) : null
+  const isValid = (tagStartIndex !== -1)
+  let beforeTag = text
+  let duringTag: string | null = null
+  let afterTag: string | null = null
+  if (isValid) {
+    beforeTag = text.substring(0, tagStartIndex)
+    if (tagEndIndex !== -1) {
+      // Handle we have 'open' and 'close' tags
+      duringTag = text.substring(tagStartIndex + tagOpenPlaceholder.length, tagEndIndex)
+      afterTag = text.substring(tagEndIndex + tagClosePlaceholder.length)
+    } else {
+      // Hande we have a single replacement block
+      afterTag = text.substring(tagStartIndex + tagOpenPlaceholder.length)
+    }
+  }
+
   return {
     beforeTag,
     duringTag,

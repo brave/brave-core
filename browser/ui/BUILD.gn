@@ -4,6 +4,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
@@ -235,6 +236,7 @@ source_set("ui") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
+    "//brave/components/ftx/browser/buildflags:buildflags",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
@@ -489,6 +491,10 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui:mojo_bindings",
       "//brave/components/brave_wallet_ui:resources",
     ]
+  }
+
+  if (enable_ftx) {
+    deps += [ "//brave/components/ftx/common" ]
   }
 
   if (toolkit_views) {

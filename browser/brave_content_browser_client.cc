@@ -36,6 +36,7 @@
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
@@ -125,6 +126,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(GEMINI_ENABLED)
 #include "brave/browser/gemini/gemini_protocol_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_FTX)
+#include "brave/browser/ftx/ftx_protocol_handler.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -338,6 +343,14 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     gemini::HandleGeminiProtocol(url, std::move(web_contents_getter),
                                  page_transition, has_user_gesture,
                                  initiating_origin);
+    return true;
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_FTX)
+  if (ftx::IsFTXProtocol(url)) {
+    ftx::HandleFTXProtocol(url, std::move(web_contents_getter), page_transition,
+                           has_user_gesture, initiating_origin);
     return true;
   }
 #endif

@@ -93,6 +93,8 @@ const Config = function () {
   this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
   this.binanceClientId = getNPMConfig(['binance_client_id']) || ''
+  this.ftxClientId = getNPMConfig(['ftx_client_id']) || ''
+  this.ftxClientSecret = getNPMConfig(['ftx_client_secret']) || ''
   this.bitflyerClientId = getNPMConfig(['bitflyer_client_id']) || ''
   this.bitflyerClientSecret = getNPMConfig(['bitflyer_client_secret']) || ''
   this.bitflyerStagingClientId = getNPMConfig(['bitflyer_staging_client_id']) || ''
@@ -217,6 +219,8 @@ Config.prototype.buildArgs = function () {
     google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
     binance_client_id: this.binanceClientId,
+    ftx_client_id: this.ftxClientId,
+    ftx_client_secret: this.ftxClientSecret,
     bitflyer_client_id: this.bitflyerClientId,
     bitflyer_client_secret: this.bitflyerClientSecret,
     bitflyer_staging_client_id: this.bitflyerStagingClientId,
@@ -367,6 +371,8 @@ Config.prototype.buildArgs = function () {
     // not have a default value for this. But we'll
     // eventually want it on Android, so keeping CI
     // unchanged and deleting here for now.
+    delete args.ftx_client_id
+    delete args.ftx_client_secret
     delete args.gemini_client_id
     delete args.gemini_client_secret
   }
@@ -411,6 +417,8 @@ Config.prototype.buildArgs = function () {
     delete args.brave_stats_updater_url
     delete args.brave_infura_project_id
     delete args.binance_client_id
+    delete args.ftx_client_id
+    delete args.ftx_client_secret
     delete args.bitflyer_client_id
     delete args.bitflyer_client_secret
     delete args.bitflyer_staging_client_id
@@ -575,6 +583,14 @@ Config.prototype.update = function (options) {
 
   if (options.binance_client_id) {
     this.binanceClientId = options.binance_client_id
+  }
+
+  if (options.ftx_client_id) {
+    this.ftxClientId = options.ftx_client_id
+  }
+
+  if (options.ftx_client_secret) {
+    this.ftxClientSecret = options.ftx_client_secret
   }
 
   if (options.bitflyer_client_id) {

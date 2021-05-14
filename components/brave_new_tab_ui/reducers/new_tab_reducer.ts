@@ -48,6 +48,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         togetherSupported: initialDataPayload.togetherSupported,
         geminiSupported: initialDataPayload.geminiSupported,
         cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
+        ftxSupported: initialDataPayload.ftxSupported,
         binanceSupported: initialDataPayload.binanceSupported
       }
       if (state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored) {
