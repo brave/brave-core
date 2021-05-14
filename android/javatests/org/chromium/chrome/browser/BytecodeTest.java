@@ -305,6 +305,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
                 "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate",
                 Context.class, BrowserContextHandle.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/components/browser_ui/notifications/NotificationManagerProxyImpl",
+                "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl",
+                Context.class));
     }
 
     @Test

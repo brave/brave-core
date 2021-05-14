@@ -28,7 +28,7 @@ import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ApplicationStatus;
-import org.chromium.chrome.R;
+import org.chromium.chrome.browser.notifications.R;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
 import org.chromium.components.browser_ui.notifications.NotificationWrapper;
@@ -143,18 +143,19 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
         // Note: under the hood this is not a NotificationCompat builder so be mindful of the
         // API level of methods you call on the builder.
         // TODO(crbug.com/697104) We should probably use a Compat builder.
-        String channelId =  (ApplicationStatus.hasVisibleActivities()) ?
-                BraveChannelDefinitions.ChannelId.BRAVE_ADS :
-                BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND;
+        String channelId = (ApplicationStatus.hasVisibleActivities())
+                ? BraveChannelDefinitions.ChannelId.BRAVE_ADS
+                : BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND;
         NotificationWrapperBuilder builder =
-                NotificationWrapperBuilderFactory.createNotificationWrapperBuilder(false /* preferCompat */,
-                        channelId, mRemotePackageForBuilderContext, metadata);
+                NotificationWrapperBuilderFactory.createNotificationWrapperBuilder(
+                        false /* preferCompat */, channelId, mRemotePackageForBuilderContext,
+                        metadata);
         builder.setTicker(mTickerText);
         builder.setContentIntent(mContentIntent);
         builder.setDeleteIntent(mDeleteIntent);
 
-        int priority = (ApplicationStatus.hasVisibleActivities()) ? Notification.PRIORITY_HIGH :
-                Notification.PRIORITY_LOW;
+        int priority = (ApplicationStatus.hasVisibleActivities()) ? Notification.PRIORITY_HIGH
+                                                                  : Notification.PRIORITY_LOW;
         builder.setPriorityBeforeO(priority);
         builder.setDefaults(mDefaults);
         if (mVibratePattern != null) builder.setVibrate(mVibratePattern);

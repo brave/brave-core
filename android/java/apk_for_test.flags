@@ -292,3 +292,11 @@
     *** isGridTabSwitcherEnabled(...);
     *** isTabGroupsAndroidEnabled(...);
 }
+
+-keep class org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.BraveNotificationManagerProxyImpl {
+    public <init>(...);
+}

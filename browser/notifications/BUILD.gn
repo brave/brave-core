@@ -1,4 +1,7 @@
 import("//chrome/common/features.gni")
+if (is_android) {
+  import("//build/config/android/rules.gni")
+}
 
 source_set("notifications") {
   # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
@@ -42,6 +45,57 @@ source_set("notifications") {
     deps += [
       "//base",
       "//chrome/common",
+    ]
+  }
+}
+
+if (is_android) {
+  android_library("java") {
+    sources = [
+      "android/java/src/org/chromium/chrome/browser/notifications/BraveAdsNotificationBuilder.java",
+      "android/java/src/org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl.java",
+    ]
+
+    deps = [
+      ":brave_java",
+      ":java_resources",
+      "//base:base_java",
+      "//chrome/android:chrome_base_module_resources",
+      "//chrome/browser/notifications:java",
+      "//chrome/browser/notifications:java_resources",
+      "//components/browser_ui/notifications/android:java",
+      "//third_party/androidx:androidx_annotation_annotation_java",
+      "//ui/android:ui_no_recycler_view_java",
+    ]
+
+    resources_package = "org.chromium.chrome.browser.notifications"
+  }
+
+# TODO(samartnik): we are unable to avoid this patch since we directly patch
+# `ChromeChannelDefinitions.java`. There is no straightforward conversion of
+# those patches to bytecode patching so we need to find a way to
+# workaround those patches https://github.com/brave/brave-browser/issues/15867.
+  android_library("brave_java") {
+    sources = [
+      "android/java/src/org/chromium/chrome/browser/notifications/channels/BraveChannelDefinitions.java",
+    ]
+
+    deps = [
+      ":java_resources",
+      "//components/browser_ui/notifications/android:java",
+    ]
+
+    resources_package = "org.chromium.chrome.browser.notifications"
+  }
+
+  android_resources("java_resources") {
+    sources = [
+      "android/java/res/layout/web_notification_big_brave_ads.xml",
+      "android/java/res/layout/web_notification_brave_ads.xml",
+    ]
+
+    deps = [
+      "//brave/build/android:android_brave_strings_grd",
     ]
   }
 }

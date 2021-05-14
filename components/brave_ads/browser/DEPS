@@ -1,3 +1,4 @@
+
 include_rules = [
   "+bat/ads",
   "-bat/ads/internal",
@@ -58,6 +59,7 @@ specific_include_rules = {
     "+brave/browser/brave_ads/android/jni_headers/BraveAdsSignupDialog_jni.h",
     "+brave/common/brave_channel_info.h",
     "+chrome/android/chrome_jni_headers/NotificationSystemStatusUtil_jni.h",
+    "+chrome/browser/notifications/jni_headers/NotificationSystemStatusUtil_jni.h",
     "+chrome/browser/notifications/notification_channels_provider_android.h",
     "+chrome/common/chrome_features.h",
     "+chrome/install_static/install_util.h",
