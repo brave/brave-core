@@ -1,13 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..51308b5bf609288edb885cc6ad82f7ba76c654ab 100644
+index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..1be168dddf273d27d28935d2d4d2e64a57796779 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-@@ -1,3 +1,4 @@
-+<link rel="import" href="../brave_privacy_page/brave_personalization_options.html">
-     <style include="settings-shared">
-       :host(.list-frame) settings-toggle-button {
-         padding-inline-end: 0;
-@@ -8,6 +9,7 @@
+@@ -8,6 +8,7 @@
          border-top: none;
        }
      </style>
@@ -15,7 +10,7 @@ index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..51308b5bf609288edb885cc6ad82f7ba
  <if expr="not chromeos">
      <settings-toggle-button id="signinAllowedToggle"
          class="hr"
-@@ -20,6 +22,7 @@
+@@ -20,6 +21,7 @@
          no-set-pref>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -23,15 +18,7 @@ index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..51308b5bf609288edb885cc6ad82f7ba
      <settings-toggle-button id="searchSuggestToggle"
          class="hr"
          hidden="[[!pageVisibility.searchPrediction]]"
-@@ -27,6 +30,7 @@
-         label="$i18n{searchSuggestPref}"
-         sub-label="$i18n{searchSuggestPrefDesc}">
-     </settings-toggle-button>
-+    <settings-brave-personalization-options prefs="{{prefs}}"></settings-brave-personalization-options>
- <if expr="_google_chrome">
- <if expr="chromeos">
-     <settings-toggle-button class="hr"
-@@ -35,6 +39,8 @@
+@@ -35,6 +37,8 @@
          sub-label="$i18n{enablePersonalizationLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
@@ -40,7 +27,7 @@ index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..51308b5bf609288edb885cc6ad82f7ba
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          class="hr"
-@@ -50,13 +56,15 @@
+@@ -50,13 +54,15 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -57,7 +44,7 @@ index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..51308b5bf609288edb885cc6ad82f7ba
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
          class="hr"
-@@ -76,6 +84,7 @@
+@@ -76,6 +82,7 @@
        </settings-toggle-button>
      </template>
  
@@ -65,7 +52,7 @@ index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..51308b5bf609288edb885cc6ad82f7ba
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -88,3 +97,4 @@
+@@ -88,3 +95,4 @@
        <cr-button on-click="onRestartTap_">$i18n{restart}</cr-button>
      </cr-toast>
  </if>
