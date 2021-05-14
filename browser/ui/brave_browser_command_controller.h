@@ -47,11 +47,6 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
                                           base::TimeTicks time_stamp);
-#if BUILDFLAG(IPFS_ENABLED)
-  void UpdateCommandForIpfs();
-
-  PrefChangeRegistrar profile_pref_registrar_;
-#endif
 
   Browser* const browser_;
 
