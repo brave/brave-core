@@ -11,6 +11,7 @@ import { StyledExtensionWrapper } from '../stories/style'
 import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import { WalletState, PanelState, WalletPanelState, WalletAccountType } from '../constants/types'
+import LockPanel from '../components/extension/lock-panel'
 
 type Props = {
   panel: PanelState
@@ -50,6 +51,8 @@ function Panel (props: Props) {
     )
     setSelectedAccounts(newList)
   }
+  const [walletLocked, setWalletLocked] = React.useState<boolean>(true)
+  const [inputValue, setInputValue] = React.useState<string>('')
   const onSubmit = () => {
     props.actions.connectToSite({
       selectedAccounts,
@@ -70,17 +73,26 @@ function Panel (props: Props) {
       props.actions.cancelConnectToSite()
     }
   }
+  const unlockWallet = () => {
+    setWalletLocked(false)
+  }
+  const handlePasswordChanged = (value: string) => {
+    setInputValue(value)
+  }
   const onRestore = () => {
     chrome.tabs.create({ url: 'chrome://wallet#restore' })
   }
   const onSetup = () => {
     chrome.tabs.create({ url: 'chrome://wallet' })
   }
+
   const isWalletSetup = false
   return (
     <StyledExtensionWrapper>
       { !isWalletSetup ?
         (<WelcomePanel onRestore={onRestore} onSetup={onSetup} />)
+        : walletLocked ?
+        (<LockPanel onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />)
         :
         (<ConnectWithSite
             siteURL={props.panel.connectedSiteOrigin}
