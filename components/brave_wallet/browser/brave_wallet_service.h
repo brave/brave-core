@@ -56,7 +56,7 @@ class BraveWalletService : public KeyedService,
   ~BraveWalletService() override;
   using LoadUICallback = base::OnceCallback<void()>;
 
-  brave_wallet::EthJsonRpcController* controller() const;
+  brave_wallet::EthJsonRpcController* rpc_controller() const;
 
   void ResetCryptoWallets();
   std::string GetWalletSeed(std::vector<uint8_t> key);
@@ -111,7 +111,7 @@ class BraveWalletService : public KeyedService,
   content::BrowserContext* context_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate_;
-  std::unique_ptr<brave_wallet::EthJsonRpcController> controller_;
+  std::unique_ptr<brave_wallet::EthJsonRpcController> rpc_controller_;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   ScopedObserver<extensions::ExtensionRegistry,
                  extensions::ExtensionRegistryObserver>

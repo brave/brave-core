@@ -22,8 +22,8 @@ void BraveWalletProviderImpl::Request(const std::string& json_payload,
   if (!wallet_service_)
     return;
 
-  auto* controller = wallet_service_->controller();
-  controller->Request(
+  auto* rpc_controller = wallet_service_->rpc_controller();
+  rpc_controller->Request(
       json_payload,
       base::BindOnce(&BraveWalletProviderImpl::OnResponse,
                      weak_factory_.GetWeakPtr(), std::move(callback)),

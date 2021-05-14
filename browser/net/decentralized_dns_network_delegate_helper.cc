@@ -45,7 +45,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       return net::OK;
     }
 
-    service->controller()->UnstoppableDomainsProxyReaderGetMany(
+    service->rpc_controller()->UnstoppableDomainsProxyReaderGetMany(
         kProxyReaderContractAddress, ctx->request_url.host(),
         std::vector<std::string>(std::begin(kRecordKeys),
                                  std::end(kRecordKeys)),

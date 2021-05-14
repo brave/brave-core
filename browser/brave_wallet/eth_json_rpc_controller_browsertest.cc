@@ -101,8 +101,8 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_->Start());
-    auto* controller = GetEthJsonRpcController();
-    controller->SetCustomNetwork(https_server_->base_url());
+    auto* rpc_controller = GetEthJsonRpcController();
+    rpc_controller->SetCustomNetwork(https_server_->base_url());
   }
 
   void OnResponse(const int status,
@@ -165,7 +165,7 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
   }
 
   brave_wallet::EthJsonRpcController* GetEthJsonRpcController() {
-    return GetBraveWalletService()->controller();
+    return GetBraveWalletService()->rpc_controller();
   }
 
  private:
@@ -180,16 +180,16 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, Request) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  auto* controller = GetEthJsonRpcController();
-  controller->Request(R"({
+  auto* rpc_controller = GetEthJsonRpcController();
+  rpc_controller->Request(R"({
       "id":1,
       "jsonrpc":"2.0",
       "method":"eth_blockNumber",
       "params":[]
     })",
-                      base::BindOnce(&EthJsonRpcBrowserTest::OnResponse,
-                                     base::Unretained(this)),
-                      true);
+                          base::BindOnce(&EthJsonRpcBrowserTest::OnResponse,
+                                         base::Unretained(this)),
+                          true);
   WaitForResponse(R"({
       "jsonrpc": "2.0",
       "id": 1,
@@ -200,36 +200,38 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, Request) {
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, RequestError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* controller = GetEthJsonRpcController();
-  controller->Request("",
-                      base::BindOnce(&EthJsonRpcBrowserTest::OnResponse,
-                                     base::Unretained(this)),
-                      true);
+  auto* rpc_controller = GetEthJsonRpcController();
+  rpc_controller->Request("",
+                          base::BindOnce(&EthJsonRpcBrowserTest::OnResponse,
+                                         base::Unretained(this)),
+                          true);
   WaitForResponse("", false);
 }
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalance) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  auto* controller = GetEthJsonRpcController();
-  controller->GetBalance("0x4e02f254184E904300e0775E4b8eeCB1",
-                         base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
-                                        base::Unretained(this)));
+  auto* rpc_controller = GetEthJsonRpcController();
+  rpc_controller->GetBalance(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
+                     base::Unretained(this)));
   WaitForResponse("0xb539d5", true);
 }
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalanceServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* controller = GetEthJsonRpcController();
-  controller->GetBalance("0x4e02f254184E904300e0775E4b8eeCB1",
-                         base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
-                                        base::Unretained(this)));
+  auto* rpc_controller = GetEthJsonRpcController();
+  rpc_controller->GetBalance(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
+                     base::Unretained(this)));
   WaitForResponse("", false);
 }
 
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetERC20TokenBalance) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
-  auto* controller = GetEthJsonRpcController();
-  controller->GetERC20TokenBalance(
+  auto* rpc_controller = GetEthJsonRpcController();
+  rpc_controller->GetERC20TokenBalance(
       "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
       "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&EthJsonRpcBrowserTest::OnGetERC20TokenBalance,
@@ -242,8 +244,8 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetERC20TokenBalance) {
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest,
                        UnstoppableDomainsProxyReaderGetMany) {
   ResetHTTPSServer(base::BindRepeating(&HandleUnstoppableDomainsRequest));
-  auto* controller = GetEthJsonRpcController();
-  controller->UnstoppableDomainsProxyReaderGetMany(
+  auto* rpc_controller = GetEthJsonRpcController();
+  rpc_controller->UnstoppableDomainsProxyReaderGetMany(
       "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
       "brave.crypto" /* domain */,
       {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
@@ -271,8 +273,8 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest,
 IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest,
                        UnstoppableDomainsProxyReaderGetManyServerError) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
-  auto* controller = GetEthJsonRpcController();
-  controller->UnstoppableDomainsProxyReaderGetMany(
+  auto* rpc_controller = GetEthJsonRpcController();
+  rpc_controller->UnstoppableDomainsProxyReaderGetMany(
       "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
       "brave.crypto" /* domain */,
       {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",

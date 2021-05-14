@@ -62,7 +62,7 @@ BraveWalletService::BraveWalletService(
   extension_registry_observer_.Add(extensions::ExtensionRegistry::Get(context));
 #endif
 
-  controller_ = std::make_unique<brave_wallet::EthJsonRpcController>(
+  rpc_controller_ = std::make_unique<brave_wallet::EthJsonRpcController>(
       context, brave_wallet::Network::kMainnet);
 }
 
@@ -184,8 +184,8 @@ void BraveWalletService::ResetCryptoWallets() {
 #endif
 }
 
-brave_wallet::EthJsonRpcController* BraveWalletService::controller() const {
-  return controller_.get();
+brave_wallet::EthJsonRpcController* BraveWalletService::rpc_controller() const {
+  return rpc_controller_.get();
 }
 
 // Generates a random 32 byte root seed and stores it in prefs
