@@ -69,11 +69,9 @@ void RecordAdEvent(const AdEventInfo& ad_event) {
   const std::string confirmation_type_as_string =
       std::string(ad_event.confirmation_type);
 
-  const base::Time time = base::Time::Now();
-  const uint64_t timestamp = static_cast<uint64_t>(time.ToDoubleT());
-
   AdsClientHelper::Get()->RecordAdEvent(ad_type_as_string,
-                                        confirmation_type_as_string, timestamp);
+                                        confirmation_type_as_string,
+                                        ad_event.timestamp);
 }
 
 std::deque<uint64_t> GetAdEvents(const AdType& ad_type,
