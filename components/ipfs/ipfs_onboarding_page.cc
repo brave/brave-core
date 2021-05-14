@@ -198,7 +198,7 @@ void IPFSOnboardingPage::CommandReceived(const std::string& command) {
       UsePublicGateway();
       break;
     case IPFSOnboardingCommandId::LEARN_MORE:
-      controller()->OpenUrlInNewForegroundTab(GURL(kIPFSLearnMoreURL));
+      controller()->OpenUrlInNewForegroundTab(GURL(kIPFSLearnMorePrivacyURL));
       break;
     case IPFSOnboardingCommandId::OPEN_SETTINGS:
       controller()->OpenUrlInNewForegroundTab(GURL(ipfs::kIPFSSettingsURL));
