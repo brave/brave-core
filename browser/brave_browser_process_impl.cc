@@ -98,7 +98,8 @@ namespace {
 // Initializes callback for SystemRequestHandler
 void InitSystemRequestHandlerCallback() {
   network::SystemRequestHandler::OnBeforeSystemRequestCallback
-      before_system_request_callback = base::Bind(brave::OnBeforeSystemRequest);
+      before_system_request_callback =
+          base::BindRepeating(brave::OnBeforeSystemRequest);
   network::SystemRequestHandler::GetInstance()
       ->RegisterOnBeforeSystemRequestCallback(before_system_request_callback);
 }
@@ -146,14 +147,14 @@ void BraveBrowserProcessImpl::Init() {
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,
-      base::Bind(&BraveBrowserProcessImpl::OnBraveDarkModeChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveBrowserProcessImpl::OnBraveDarkModeChanged,
+                          base::Unretained(this)));
 
 #if BUILDFLAG(ENABLE_TOR)
   pref_change_registrar_.Add(
       tor::prefs::kTorDisabled,
-      base::Bind(&BraveBrowserProcessImpl::OnTorEnabledChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveBrowserProcessImpl::OnTorEnabledChanged,
+                          base::Unretained(this)));
 #endif
 
   InitSystemRequestHandlerCallback();

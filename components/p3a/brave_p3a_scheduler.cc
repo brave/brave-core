@@ -44,8 +44,8 @@ base::TimeDelta BackOffUploadInterval(base::TimeDelta interval) {
 }  // namespace
 
 BraveP3AScheduler::BraveP3AScheduler(
-    const base::Closure& upload_callback,
-    const base::Callback<base::TimeDelta(void)>& get_interval_callback)
+    const base::RepeatingClosure& upload_callback,
+    const base::RepeatingCallback<base::TimeDelta(void)>& get_interval_callback)
     : metrics::MetricsScheduler(upload_callback,
                                 false /* fast_startup_for_testing */),
       get_interval_callback_(get_interval_callback),

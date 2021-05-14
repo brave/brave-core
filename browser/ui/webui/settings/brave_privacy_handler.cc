@@ -31,8 +31,8 @@ BravePrivacyHandler::BravePrivacyHandler() {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   local_state_change_registrar_.Add(
       brave::kP3AEnabled,
-      base::Bind(&BravePrivacyHandler::OnP3AEnabledChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BravePrivacyHandler::OnP3AEnabledChanged,
+                          base::Unretained(this)));
 #endif
 }
 

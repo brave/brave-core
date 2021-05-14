@@ -22,7 +22,7 @@ void OnFileTypePoliciesRegistered() {
 void RegisterFileTypePoliciesComponent(ComponentUpdateService* cus) {
   auto installer = base::MakeRefCounted<ComponentInstaller>(
       std::make_unique<FileTypePoliciesComponentInstallerPolicy>());
-  installer->Register(cus, base::Bind(&OnFileTypePoliciesRegistered));
+  installer->Register(cus, base::BindOnce(&OnFileTypePoliciesRegistered));
 }
 
 }  // namespace component_updater

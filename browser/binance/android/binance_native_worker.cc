@@ -104,7 +104,7 @@ BinanceNativeWorker::GetOAuthClientUrl(JNIEnv* env) {
 
 void BinanceNativeWorker::GetAccessToken(JNIEnv* env) {
   if (binance_service_) {
-    binance_service_->GetAccessToken(base::Bind(
+    binance_service_->GetAccessToken(base::BindOnce(
         &BinanceNativeWorker::OnGetAccessToken, weak_factory_.GetWeakPtr()));
   }
 }
@@ -139,8 +139,8 @@ void BinanceNativeWorker::OnGetAccessToken(bool success) {
 void BinanceNativeWorker::GetAccountBalances(JNIEnv* env) {
   if (binance_service_) {
     binance_service_->GetAccountBalances(
-        base::Bind(&BinanceNativeWorker::OnGetAccountBalances,
-                   weak_factory_.GetWeakPtr()));
+        base::BindOnce(&BinanceNativeWorker::OnGetAccountBalances,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -164,8 +164,8 @@ void BinanceNativeWorker::GetConvertQuote(
         base::android::ConvertJavaStringToUTF8(env, from),
         base::android::ConvertJavaStringToUTF8(env, to),
         base::android::ConvertJavaStringToUTF8(env, amount),
-        base::Bind(&BinanceNativeWorker::OnGetConvertQuote,
-                   weak_factory_.GetWeakPtr()));
+        base::BindOnce(&BinanceNativeWorker::OnGetConvertQuote,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -184,7 +184,7 @@ void BinanceNativeWorker::OnGetConvertQuote(const std::string& quote_id,
 
 void BinanceNativeWorker::GetCoinNetworks(JNIEnv* env) {
   if (binance_service_) {
-    binance_service_->GetCoinNetworks(base::Bind(
+    binance_service_->GetCoinNetworks(base::BindOnce(
         &BinanceNativeWorker::OnGetCoinNetworks, weak_factory_.GetWeakPtr()));
   }
 }
@@ -206,8 +206,8 @@ void BinanceNativeWorker::GetDepositInfo(
     binance_service_->GetDepositInfo(
         base::android::ConvertJavaStringToUTF8(env, symbol),
         base::android::ConvertJavaStringToUTF8(env, ticker_network),
-        base::Bind(&BinanceNativeWorker::OnGetDepositInfo,
-                   weak_factory_.GetWeakPtr()));
+        base::BindOnce(&BinanceNativeWorker::OnGetDepositInfo,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -227,8 +227,8 @@ void BinanceNativeWorker::ConfirmConvert(
   if (binance_service_) {
     binance_service_->ConfirmConvert(
         base::android::ConvertJavaStringToUTF8(env, quote_id),
-        base::Bind(&BinanceNativeWorker::OnConfirmConvert,
-                   weak_factory_.GetWeakPtr()));
+        base::BindOnce(&BinanceNativeWorker::OnConfirmConvert,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -242,7 +242,7 @@ void BinanceNativeWorker::OnConfirmConvert(bool success,
 
 void BinanceNativeWorker::GetConvertAssets(JNIEnv* env) {
   if (binance_service_) {
-    binance_service_->GetConvertAssets(base::Bind(
+    binance_service_->GetConvertAssets(base::BindOnce(
         &BinanceNativeWorker::OnGetConvertAssets, weak_factory_.GetWeakPtr()));
   }
 }
@@ -259,7 +259,7 @@ void BinanceNativeWorker::OnGetConvertAssets(
 
 void BinanceNativeWorker::RevokeToken(JNIEnv* env) {
   if (binance_service_) {
-    binance_service_->RevokeToken(base::Bind(
+    binance_service_->RevokeToken(base::BindOnce(
         &BinanceNativeWorker::OnRevokeToken, weak_factory_.GetWeakPtr()));
   }
 }

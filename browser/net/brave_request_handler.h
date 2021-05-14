@@ -21,8 +21,6 @@ class PrefChangeRegistrar;
 // API).
 class BraveRequestHandler {
  public:
-  using ResponseCallback = base::Callback<void(const base::DictionaryValue&)>;
-
   BraveRequestHandler();
   ~BraveRequestHandler();
 

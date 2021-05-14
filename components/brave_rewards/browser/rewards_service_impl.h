@@ -75,16 +75,17 @@ namespace brave_rewards {
 class RewardsNotificationServiceImpl;
 class RewardsBrowserTest;
 
-using GetEnvironmentCallback = base::Callback<void(ledger::type::Environment)>;
-using GetDebugCallback = base::Callback<void(bool)>;
-using GetReconcileIntervalCallback = base::Callback<void(int32_t)>;
-using GetShortRetriesCallback = base::Callback<void(bool)>;
-using GetTestResponseCallback =
-    base::Callback<void(const std::string& url,
-                        int32_t method,
-                        int* response_status_code,
-                        std::string* response,
-                        base::flat_map<std::string, std::string>* headers)>;
+using GetEnvironmentCallback =
+    base::OnceCallback<void(ledger::type::Environment)>;
+using GetDebugCallback = base::OnceCallback<void(bool)>;
+using GetReconcileIntervalCallback = base::OnceCallback<void(int32_t)>;
+using GetShortRetriesCallback = base::OnceCallback<void(bool)>;
+using GetTestResponseCallback = base::RepeatingCallback<void(
+    const std::string& url,
+    int32_t method,
+    int* response_status_code,
+    std::string* response,
+    base::flat_map<std::string, std::string>* headers)>;
 
 using ExternalWalletAuthorizationCallback =
     base::OnceCallback<void(
@@ -130,17 +131,15 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& solution,
       AttestPromotionCallback callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
-  void GetActivityInfoList(
-      const uint32_t start,
-      const uint32_t limit,
-      ledger::type::ActivityInfoFilterPtr filter,
-      const GetPublisherInfoListCallback& callback) override;
+  void GetActivityInfoList(const uint32_t start,
+                           const uint32_t limit,
+                           ledger::type::ActivityInfoFilterPtr filter,
+                           GetPublisherInfoListCallback callback) override;
 
-  void GetExcludedList(const GetPublisherInfoListCallback& callback) override;
+  void GetExcludedList(GetPublisherInfoListCallback callback) override;
 
-  void OnGetPublisherInfoList(
-      const GetPublisherInfoListCallback& callback,
-      ledger::type::PublisherInfoList list);
+  void OnGetPublisherInfoList(GetPublisherInfoListCallback callback,
+                              ledger::type::PublisherInfoList list);
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
   void OnShow(SessionID tab_id) override;
@@ -157,17 +156,16 @@ class RewardsServiceImpl : public RewardsService,
                   const GURL& referrer,
                   const std::string& post_data) override;
   std::string URIEncode(const std::string& value) override;
-  void GetReconcileStamp(const GetReconcileStampCallback& callback) override;
+  void GetReconcileStamp(GetReconcileStampCallback callback) override;
   void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) override;
   void GetPublisherMinVisitTime(
-      const GetPublisherMinVisitTimeCallback& callback) override;
-  void GetPublisherMinVisits(
-      const GetPublisherMinVisitsCallback& callback) override;
+      GetPublisherMinVisitTimeCallback callback) override;
+  void GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) override;
   void GetPublisherAllowNonVerified(
-      const GetPublisherAllowNonVerifiedCallback& callback) override;
+      GetPublisherAllowNonVerifiedCallback callback) override;
   void GetPublisherAllowVideos(
-      const GetPublisherAllowVideosCallback& callback) override;
+      GetPublisherAllowVideosCallback callback) override;
   void RestorePublishers() override;
   void GetBalanceReport(
       const uint32_t month,
@@ -179,7 +177,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& favicon_url,
       const std::string& publisher_blob) override;
   void GetAutoContributionAmount(
-      const GetAutoContributionAmountCallback& callback) override;
+      GetAutoContributionAmountCallback callback) override;
   void GetPublisherBanner(const std::string& publisher_id,
                           GetPublisherBannerCallback callback) override;
   void OnPublisherBanner(GetPublisherBannerCallback callback,
@@ -199,18 +197,18 @@ class RewardsServiceImpl : public RewardsService,
 
   void HandleFlags(const std::string& options);
   void SetEnvironment(ledger::type::Environment environment);
-  void GetEnvironment(const GetEnvironmentCallback& callback);
+  void GetEnvironment(GetEnvironmentCallback callback);
   void SetDebug(bool debug);
-  void GetDebug(const GetDebugCallback& callback);
+  void GetDebug(GetDebugCallback callback);
   void SetReconcileInterval(const int32_t interval);
   void GetReconcileInterval(GetReconcileIntervalCallback callback);
   void SetShortRetries(bool short_retries);
-  void GetShortRetries(const GetShortRetriesCallback& callback);
+  void GetShortRetries(GetShortRetriesCallback callback);
 
   void GetAutoContributeProperties(
-      const GetAutoContributePropertiesCallback& callback) override;
+      GetAutoContributePropertiesCallback callback) override;
   void GetPendingContributionsTotal(
-      const GetPendingContributionsTotalCallback& callback) override;
+      GetPendingContributionsTotalCallback callback) override;
 
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
   void RefreshPublisher(
@@ -353,7 +351,8 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationAddFundsForTesting(
       base::OnceCallback<void(bool)> callback);
   void CheckInsufficientFundsForTesting();
-  void ForTestingSetTestResponseCallback(GetTestResponseCallback callback);
+  void ForTestingSetTestResponseCallback(
+      const GetTestResponseCallback& callback);
 
  private:
   friend class ::RewardsFlagBrowserTest;
@@ -669,7 +668,7 @@ class RewardsServiceImpl : public RewardsService,
 
   // Mojo Proxy methods
   void OnGetAutoContributeProperties(
-      const GetAutoContributePropertiesCallback& callback,
+      GetAutoContributePropertiesCallback callback,
       ledger::type::AutoContributePropertiesPtr props);
   void OnGetRewardsInternalsInfo(GetRewardsInternalsInfoCallback callback,
                                  ledger::type::RewardsInternalsInfoPtr info);

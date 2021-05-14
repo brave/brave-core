@@ -26,8 +26,8 @@ BraveAppearanceHandler::BraveAppearanceHandler() {
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
       kBraveDarkMode,
-      base::Bind(&BraveAppearanceHandler::OnBraveDarkModeChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveAppearanceHandler::OnBraveDarkModeChanged,
+                          base::Unretained(this)));
 }
 
 BraveAppearanceHandler::~BraveAppearanceHandler() = default;

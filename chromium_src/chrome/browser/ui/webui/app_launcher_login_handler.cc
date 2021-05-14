@@ -24,5 +24,5 @@ void AppLauncherLoginHandler::RegisterMessages() {
 
   AppLauncherLoginHandler::RegisterMessages_ChromiumImpl();
   profile_info_watcher_ = std::make_unique<ProfileInfoWatcher>(
-      Profile::FromWebUI(web_ui()), base::Bind(DummyCallback));
+      Profile::FromWebUI(web_ui()), base::BindRepeating(DummyCallback));
 }

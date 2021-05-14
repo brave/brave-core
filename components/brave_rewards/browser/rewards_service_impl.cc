@@ -382,31 +382,29 @@ void RewardsServiceImpl::Init(
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
   profile_pref_change_registrar_.Add(
-      prefs::kHideButton, base::Bind(&RewardsServiceImpl::OnPreferenceChanged,
-                                     base::Unretained(this)));
+      prefs::kHideButton,
+      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
+                          base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       prefs::kInlineTipTwitterEnabled,
-      base::Bind(
-          &RewardsServiceImpl::OnPreferenceChanged,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
+                          base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       prefs::kInlineTipRedditEnabled,
-      base::Bind(
-          &RewardsServiceImpl::OnPreferenceChanged,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
+                          base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       prefs::kInlineTipGithubEnabled,
-      base::Bind(
-          &RewardsServiceImpl::OnPreferenceChanged,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
+                          base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       prefs::kAutoContributeEnabled,
-      base::Bind(
-          &RewardsServiceImpl::OnPreferenceChanged,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
+                          base::Unretained(this)));
   profile_pref_change_registrar_.Add(
-      ads::prefs::kEnabled, base::Bind(&RewardsServiceImpl::OnPreferenceChanged,
-                                       base::Unretained(this)));
+      ads::prefs::kEnabled,
+      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
+                          base::Unretained(this)));
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
@@ -464,7 +462,7 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
             .Pass());
 
     bat_ledger_service_.set_disconnect_handler(
-      base::Bind(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
+        base::BindOnce(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
   }
 
   ledger::type::Environment environment = ledger::type::Environment::STAGING;
@@ -616,36 +614,32 @@ void RewardsServiceImpl::GetActivityInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::type::ActivityInfoFilterPtr filter,
-    const GetPublisherInfoListCallback& callback) {
+    GetPublisherInfoListCallback callback) {
   if (!Connected()) {
     return;
   }
 
   bat_ledger_->GetActivityInfoList(
-      start,
-      limit,
-      std::move(filter),
-      base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList,
-                     AsWeakPtr(),
-                     callback));
+      start, limit, std::move(filter),
+      base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList, AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::GetExcludedList(
-    const GetPublisherInfoListCallback& callback) {
+    GetPublisherInfoListCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetExcludedList(base::BindOnce(
-      &RewardsServiceImpl::OnGetPublisherInfoList,
-      AsWeakPtr(),
-      callback));
+  bat_ledger_->GetExcludedList(
+      base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList, AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::OnGetPublisherInfoList(
-    const GetPublisherInfoListCallback& callback,
+    GetPublisherInfoListCallback callback,
     ledger::type::PublisherInfoList list) {
-  callback.Run(std::move(list));
+  std::move(callback).Run(std::move(list));
 }
 
 void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
@@ -863,14 +857,14 @@ void RewardsServiceImpl::OnGetBraveWalletForP3A(
 }
 
 void RewardsServiceImpl::OnGetAutoContributeProperties(
-    const GetAutoContributePropertiesCallback& callback,
+    GetAutoContributePropertiesCallback callback,
     ledger::type::AutoContributePropertiesPtr properties) {
   if (!properties) {
-    callback.Run(nullptr);
+    std::move(callback).Run(nullptr);
     return;
   }
 
-  callback.Run(std::move(properties));
+  std::move(callback).Run(std::move(properties));
 }
 
 void RewardsServiceImpl::OnGetRewardsInternalsInfo(
@@ -880,15 +874,14 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
 }
 
 void RewardsServiceImpl::GetAutoContributeProperties(
-    const GetAutoContributePropertiesCallback& callback) {
+    GetAutoContributePropertiesCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetAutoContributeProperties(base::BindOnce(
-        &RewardsServiceImpl::OnGetAutoContributeProperties,
-        AsWeakPtr(),
-        callback));
+  bat_ledger_->GetAutoContributeProperties(
+      base::BindOnce(&RewardsServiceImpl::OnGetAutoContributeProperties,
+                     AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnReconcileComplete(
@@ -1345,13 +1338,12 @@ void RewardsServiceImpl::OnAttestPromotion(
   std::move(callback).Run(result, std::move(promotion));
 }
 
-void RewardsServiceImpl::GetReconcileStamp(
-    const GetReconcileStampCallback& callback)  {
+void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetReconcileStamp(callback);
+  bat_ledger_->GetReconcileStamp(std::move(callback));
 }
 
 void RewardsServiceImpl::EnableGreaseLion() {
@@ -1584,12 +1576,12 @@ uint64_t RewardsServiceImpl::GetUint64Option(const std::string& name) const {
 }
 
 void RewardsServiceImpl::GetPublisherMinVisitTime(
-    const GetPublisherMinVisitTimeCallback& callback) {
+    GetPublisherMinVisitTimeCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetPublisherMinVisitTime(callback);
+  bat_ledger_->GetPublisherMinVisitTime(std::move(callback));
 }
 
 void RewardsServiceImpl::SetPublisherMinVisitTime(
@@ -1602,12 +1594,12 @@ void RewardsServiceImpl::SetPublisherMinVisitTime(
 }
 
 void RewardsServiceImpl::GetPublisherMinVisits(
-    const GetPublisherMinVisitsCallback& callback) {
+    GetPublisherMinVisitsCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetPublisherMinVisits(callback);
+  bat_ledger_->GetPublisherMinVisits(std::move(callback));
 }
 
 void RewardsServiceImpl::SetPublisherMinVisits(int visits) const {
@@ -1619,12 +1611,12 @@ void RewardsServiceImpl::SetPublisherMinVisits(int visits) const {
 }
 
 void RewardsServiceImpl::GetPublisherAllowNonVerified(
-    const GetPublisherAllowNonVerifiedCallback& callback) {
+    GetPublisherAllowNonVerifiedCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetPublisherAllowNonVerified(callback);
+  bat_ledger_->GetPublisherAllowNonVerified(std::move(callback));
 }
 
 void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
@@ -1636,12 +1628,12 @@ void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
 }
 
 void RewardsServiceImpl::GetPublisherAllowVideos(
-    const GetPublisherAllowVideosCallback& callback) {
+    GetPublisherAllowVideosCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetPublisherAllowVideos(callback);
+  bat_ledger_->GetPublisherAllowVideos(std::move(callback));
 }
 
 void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
@@ -1829,12 +1821,12 @@ void RewardsServiceImpl::OnPanelPublisherInfo(
 }
 
 void RewardsServiceImpl::GetAutoContributionAmount(
-    const GetAutoContributionAmountCallback& callback) {
+    GetAutoContributionAmountCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetAutoContributionAmount(callback);
+  bat_ledger_->GetAutoContributionAmount(std::move(callback));
 }
 
 void RewardsServiceImpl::FetchFavIcon(
@@ -1858,8 +1850,9 @@ void RewardsServiceImpl::FetchFavIcon(
   if (image_service) {
     current_media_fetchers_[url] = image_service->RequestImage(
         parsedUrl,
-        base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted, AsWeakPtr(),
-                   callback, favicon_key, parsedUrl),
+        base::BindOnce(&RewardsServiceImpl::OnFetchFavIconCompleted,
+                       AsWeakPtr(), std::move(callback), favicon_key,
+                       parsedUrl),
         GetNetworkTrafficAnnotationTagForFaviconFetch());
   }
 }
@@ -2131,9 +2124,8 @@ void RewardsServiceImpl::RemoveRecurringTip(
   }
 
   bat_ledger_->RemoveRecurringTip(
-    publisher_key,
-    base::Bind(&RewardsServiceImpl::OnRecurringTip,
-               AsWeakPtr()));
+      publisher_key,
+      base::BindOnce(&RewardsServiceImpl::OnRecurringTip, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::OnSetPublisherExclude(
@@ -2209,9 +2201,8 @@ void RewardsServiceImpl::OnNotificationTimerFired() {
   bat_ledger_->GetCreationStamp(
       base::BindOnce(&RewardsServiceImpl::MaybeShowBackupNotification,
         AsWeakPtr()));
-  GetReconcileStamp(
-      base::Bind(&RewardsServiceImpl::MaybeShowAddFundsNotification,
-        AsWeakPtr()));
+  GetReconcileStamp(base::BindOnce(
+      &RewardsServiceImpl::MaybeShowAddFundsNotification, AsWeakPtr()));
   FetchPromotions();
 }
 
@@ -2550,13 +2541,12 @@ void RewardsServiceImpl::CheckInsufficientFundsForTesting() {
   MaybeShowNotificationAddFunds();
 }
 
-void RewardsServiceImpl::GetEnvironment(
-    const GetEnvironmentCallback& callback) {
-  bat_ledger_service_->GetEnvironment(callback);
+void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
+  bat_ledger_service_->GetEnvironment(std::move(callback));
 }
 
-void RewardsServiceImpl::GetDebug(const GetDebugCallback& callback) {
-  bat_ledger_service_->GetDebug(callback);
+void RewardsServiceImpl::GetDebug(GetDebugCallback callback) {
+  bat_ledger_service_->GetDebug(std::move(callback));
 }
 
 void RewardsServiceImpl::GetReconcileInterval(
@@ -2564,9 +2554,8 @@ void RewardsServiceImpl::GetReconcileInterval(
   bat_ledger_service_->GetReconcileInterval(std::move(callback));
 }
 
-void RewardsServiceImpl::GetShortRetries(
-    const GetShortRetriesCallback& callback) {
-  bat_ledger_service_->GetShortRetries(callback);
+void RewardsServiceImpl::GetShortRetries(GetShortRetriesCallback callback) {
+  bat_ledger_service_->GetShortRetries(std::move(callback));
 }
 
 void RewardsServiceImpl::SetEnvironment(ledger::type::Environment environment) {
@@ -2586,7 +2575,7 @@ void RewardsServiceImpl::SetShortRetries(bool short_retries) {
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotal(
-    const GetPendingContributionsTotalCallback& callback) {
+    GetPendingContributionsTotalCallback callback) {
   if (!Connected()) {
     return;
   }
@@ -3193,7 +3182,7 @@ void RewardsServiceImpl::PendingContributionSaved(
 }
 
 void RewardsServiceImpl::ForTestingSetTestResponseCallback(
-    GetTestResponseCallback callback) {
+    const GetTestResponseCallback& callback) {
   test_response_callback_ = callback;
 }
 
@@ -3404,7 +3393,7 @@ void RewardsServiceImpl::GetWalletPassphrase(
     return;
   }
 
-  bat_ledger_->GetWalletPassphrase(callback);
+  bat_ledger_->GetWalletPassphrase(std::move(callback));
 }
 
 void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {

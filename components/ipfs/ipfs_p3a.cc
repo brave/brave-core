@@ -110,8 +110,9 @@ void IpfsP3A::OnIpfsLaunched(bool result, int64_t pid) {
   }
 
   daemon_start_time_ = base::TimeTicks::Now();
-  timer_.Start(FROM_HERE, base::TimeDelta::FromMinutes(kP3ATimerInterval),
-               base::Bind(&IpfsP3A::RecordDaemonUsage, base::Unretained(this)));
+  timer_.Start(
+      FROM_HERE, base::TimeDelta::FromMinutes(kP3ATimerInterval),
+      base::BindRepeating(&IpfsP3A::RecordDaemonUsage, base::Unretained(this)));
 }
 
 void IpfsP3A::OnIpfsShutdown() {

@@ -135,13 +135,13 @@ void BraveToolbarView::Init() {
   // track changes in bookmarks enabled setting
   edit_bookmarks_enabled_.Init(
       bookmarks::prefs::kEditBookmarksEnabled, profile->GetPrefs(),
-      base::Bind(&BraveToolbarView::OnEditBookmarksEnabledChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveToolbarView::OnEditBookmarksEnabledChanged,
+                          base::Unretained(this)));
   // track changes in wide locationbar setting
   location_bar_is_wide_.Init(
       kLocationBarIsWide, profile->GetPrefs(),
-      base::Bind(&BraveToolbarView::OnLocationBarIsWideChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveToolbarView::OnLocationBarIsWideChanged,
+                          base::Unretained(this)));
 
   const auto callback = [](Browser* browser, int command,
                            const ui::Event& event) {

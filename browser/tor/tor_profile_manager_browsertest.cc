@@ -63,7 +63,7 @@ Profile* SwitchToTorProfile(Profile* parent_profile,
   base::RunLoop run_loop;
   TorProfileManager::SwitchToTorProfile(
       parent_profile,
-      base::Bind(&OnUnblockOnProfileCreation, &run_loop, factory));
+      base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop, factory));
   run_loop.Run();
 
   BrowserList* browser_list = BrowserList::GetInstance();

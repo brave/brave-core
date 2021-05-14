@@ -27,7 +27,7 @@ void RegisterCRLSetComponent(ComponentUpdateService* cus) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<CRLSetPolicy>());
   installer->Register(g_browser_process->component_updater(),
-                      base::Bind(&OnCRLSetRegistered));
+                      base::BindOnce(&OnCRLSetRegistered));
 }
 
 }  // namespace component_updater

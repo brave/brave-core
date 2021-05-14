@@ -354,10 +354,9 @@ void BraveReferralsService::OnReferralInitLoadComplete(
         ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
     open_url_params.extra_headers = FormatExtraHeaders(headers, gurl);
 #if defined(OS_ANDROID)
-    base::Callback<void(content::WebContents*)> callback =
-        base::Bind([](content::WebContents*) {});
     ServiceTabLauncher::GetInstance()->LaunchTab(
-        last_used_profile, open_url_params, callback);
+        last_used_profile, open_url_params,
+        base::BindOnce([](content::WebContents*) {}));
 #else
     chrome::ScopedTabbedBrowserDisplayer browser_displayer(last_used_profile);
     browser_displayer.browser()->OpenURL(open_url_params);
@@ -365,7 +364,7 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   }
 
   task_runner_->PostTask(
-      FROM_HERE, base::Bind(&DeletePromoCodeFile, GetPromoCodeFileName()));
+      FROM_HERE, base::BindOnce(&DeletePromoCodeFile, GetPromoCodeFileName()));
 }
 
 void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(

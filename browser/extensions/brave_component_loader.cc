@@ -52,8 +52,8 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
   pref_change_registrar_.Init(profile_prefs_);
   pref_change_registrar_.Add(
       brave_rewards::prefs::kAutoContributeEnabled,
-      base::Bind(&BraveComponentLoader::CheckRewardsStatus,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveComponentLoader::CheckRewardsStatus,
+                          base::Unretained(this)));
 #endif
 }
 
@@ -102,10 +102,10 @@ void BraveComponentLoader::AddExtension(const std::string& extension_id,
                                         const std::string& public_key) {
   brave::RegisterComponent(
       g_browser_process->component_updater(), name, public_key,
-      base::Bind(&BraveComponentLoader::OnComponentRegistered,
-                 base::Unretained(this), extension_id),
-      base::Bind(&BraveComponentLoader::OnComponentReady,
-                 base::Unretained(this), extension_id, true));
+      base::BindOnce(&BraveComponentLoader::OnComponentRegistered,
+                     base::Unretained(this), extension_id),
+      base::BindRepeating(&BraveComponentLoader::OnComponentReady,
+                          base::Unretained(this), extension_id, true));
 }
 
 void BraveComponentLoader::AddHangoutServicesExtension() {

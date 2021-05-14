@@ -27,8 +27,8 @@ BraveProfileSyncService::BraveProfileSyncService(
   brave_sync_prefs_change_registrar_.Init(sync_client_->GetPrefService());
   brave_sync_prefs_change_registrar_.Add(
       brave_sync::Prefs::GetSeedPath(),
-      base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
+                          base::Unretained(this)));
   GetBraveSyncAuthManager()->DeriveSigningKeys(brave_sync_prefs_.GetSeed());
 
   profile_service_delegate_->set_profile_sync_service(this);

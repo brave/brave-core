@@ -172,25 +172,28 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
   pref_change_registrar_.Init(prefs);
   pref_change_registrar_.Add(
       kBraveEnabledMediaRouter,
-      base::Bind(&BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(
+          &BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
+          base::Unretained(this)));
   pref_change_registrar_.Add(
       prefs::kEnableMediaRouter,
-      base::Bind(&BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(
+          &BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
+          base::Unretained(this)));
   local_state_change_registrar_.Init(g_browser_process->local_state());
 #if BUILDFLAG(ENABLE_TOR)
   local_state_change_registrar_.Add(
       tor::prefs::kTorDisabled,
-      base::Bind(&BraveDefaultExtensionsHandler::OnTorEnabledChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveDefaultExtensionsHandler::OnTorEnabledChanged,
+                          base::Unretained(this)));
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   local_state_change_registrar_.Add(
       kWidevineOptedIn,
-      base::Bind(&BraveDefaultExtensionsHandler::OnWidevineEnabledChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(
+          &BraveDefaultExtensionsHandler::OnWidevineEnabledChanged,
+          base::Unretained(this)));
 #endif
 }
 
