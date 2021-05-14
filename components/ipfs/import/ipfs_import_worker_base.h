@@ -59,26 +59,20 @@ class IpfsImportWorkerBase {
   IpfsImportWorkerBase(const IpfsImportWorkerBase&) = delete;
   IpfsImportWorkerBase& operator=(const IpfsImportWorkerBase&) = delete;
 
+  void ImportFile(const base::FilePath upload_file_path);
+  void ImportFile(const base::FilePath upload_file_path,
+                  const std::string& mime_type,
+                  const std::string& filename);
+  void ImportText(const std::string& text, const std::string& host);
+  void ImportFolder(const base::FilePath folder_path);
+
  protected:
-  void StartImport(BlobBuilderCallback blob_builder_callback,
-                   const std::string& content_type,
-                   const std::string& filename);
   scoped_refptr<network::SharedURLLoaderFactory> GetUrlLoaderFactory();
 
   virtual void NotifyImportCompleted(ipfs::ImportState state);
 
-  void CreateRequestWithFile(const base::FilePath upload_file_path,
-                             const std::string& mime_type,
-                             const std::string& filename,
-                             int64_t file_size);
-
  private:
-  std::unique_ptr<network::ResourceRequest> CreateResourceRequest(
-      BlobBuilderCallback blob_builder_callback,
-      const std::string& content_type,
-      content::BrowserContext::BlobContextGetter storage_context_getter);
-  // Uploading blob functions
-  void UploadDataUI(std::unique_ptr<network::ResourceRequest> request);
+  void UploadData(std::unique_ptr<network::ResourceRequest> request);
 
   void OnImportAddComplete(std::unique_ptr<std::string> response_body);
 
@@ -99,7 +93,6 @@ class IpfsImportWorkerBase {
   GURL server_endpoint_;
   std::string key_to_publish_;
   content::BrowserContext* browser_context_ = nullptr;
-  scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
   base::WeakPtrFactory<IpfsImportWorkerBase> weak_factory_;
 };
 

@@ -7,9 +7,13 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_browser_context.h"
+#include "services/network/public/cpp/data_element.h"
 #include "storage/browser/blob/blob_data_builder.h"
 #include "storage/browser/blob/blob_data_item.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -21,7 +25,32 @@ class IpfsNetwrokUtilsUnitTest : public testing::Test {
   IpfsNetwrokUtilsUnitTest() {}
   ~IpfsNetwrokUtilsUnitTest() override = default;
 
+  void SetUp() override {
+    browser_context_ = std::make_unique<content::TestBrowserContext>();
+  }
+
+  base::FilePath CreateCustomTestFile(const base::FilePath& dir,
+                                      const std::string& filename,
+                                      const std::string& content) {
+    base::FilePath file_path = dir.AppendASCII(filename);
+
+    base::WriteFile(file_path, content);
+    return file_path;
+  }
+  content::BrowserContext* browser_context() { return browser_context_.get(); }
+  void ValidateRequest(base::OnceClosure callback,
+                       std::unique_ptr<network::ResourceRequest> request) {
+    ASSERT_TRUE(request.get());
+    ASSERT_EQ(request->request_body->elements()->size(), size_t(1));
+    ASSERT_EQ(request->request_body->elements()->front().type(),
+              network::mojom::DataElementDataView::Tag::kDataPipe);
+    if (callback)
+      std::move(callback).Run();
+  }
+
  private:
+  content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<content::BrowserContext> browser_context_;
 };
 
 TEST_F(IpfsNetwrokUtilsUnitTest, AddMultipartHeaderForUploadWithFileName) {
@@ -40,24 +69,6 @@ TEST_F(IpfsNetwrokUtilsUnitTest, AddMultipartHeaderForUploadWithFileName) {
   EXPECT_STREQ(ref_output, post_data.c_str());
 }
 
-TEST_F(IpfsNetwrokUtilsUnitTest, BuildFileBlob) {
-  base::FilePath upload_file_path(FILE_PATH_LITERAL("test_file"));
-  size_t file_size = 100;
-  std::string mime_type = "test/type";
-  std::string filename = "test_name";
-  std::string mime_boundary = "mime_boundary";
-  std::unique_ptr<storage::BlobDataBuilder> builder = BuildBlobWithFile(
-      upload_file_path, file_size, mime_type, filename, mime_boundary);
-
-  EXPECT_EQ(builder->items().size(), (size_t)3);
-  EXPECT_EQ(builder->items()[0]->item()->type(),
-            storage::BlobDataItem::Type::kBytes);
-  EXPECT_EQ(builder->items()[1]->item()->type(),
-            storage::BlobDataItem::Type::kFile);
-  EXPECT_EQ(builder->items()[2]->item()->type(),
-            storage::BlobDataItem::Type::kBytes);
-}
-
 TEST_F(IpfsNetwrokUtilsUnitTest, FileSizeCalculation) {
   base::ScopedTempDir dir;
   ASSERT_TRUE(dir.CreateUniqueTempDir());
@@ -71,6 +82,60 @@ TEST_F(IpfsNetwrokUtilsUnitTest, FileSizeCalculation) {
   base::FilePath nonexistent_file_path =
       dir.GetPath().Append(FILE_PATH_LITERAL("fake.file"));
   EXPECT_EQ(CalculateFileSize(nonexistent_file_path), -1);
+}
+
+TEST_F(IpfsNetwrokUtilsUnitTest, CreateRequestForFileTest) {
+  base::ScopedTempDir dir;
+  ASSERT_TRUE(dir.CreateUniqueTempDir());
+  std::string content = "test\n\rmultiline\n\rcontent";
+  std::string filename = "test_name";
+  base::FilePath upload_file_path =
+      CreateCustomTestFile(dir.GetPath(), filename, content);
+  size_t file_size = content.size();
+  std::string mime_type = "test/type";
+  std::string mime_boundary = "mime_boundary";
+  auto storage =
+      content::BrowserContext::GetBlobStorageContext(browser_context());
+  base::RunLoop run_loop;
+  auto upload_callback =
+      base::BindOnce(&IpfsNetwrokUtilsUnitTest::ValidateRequest,
+                     base::Unretained(this), run_loop.QuitClosure());
+  CreateRequestForFile(upload_file_path, storage, mime_type, filename,
+                       std::move(upload_callback), file_size);
+  run_loop.Run();
+}
+
+TEST_F(IpfsNetwrokUtilsUnitTest, CreateRequestForTextTest) {
+  std::string text = "test\n\rmultiline\n\rcontent";
+  std::string filename = "test_name";
+  std::string mime_type = "test/type";
+  std::string mime_boundary = "mime_boundary";
+  auto storage =
+      content::BrowserContext::GetBlobStorageContext(browser_context());
+  base::RunLoop run_loop;
+  auto upload_callback =
+      base::BindOnce(&IpfsNetwrokUtilsUnitTest::ValidateRequest,
+                     base::Unretained(this), run_loop.QuitClosure());
+  CreateRequestForText(text, filename, storage, std::move(upload_callback));
+  run_loop.Run();
+}
+
+TEST_F(IpfsNetwrokUtilsUnitTest, CreateRequestForFolderTest) {
+  base::ScopedTempDir dir;
+  ASSERT_TRUE(dir.CreateUniqueTempDir());
+  std::string content = "test\n\rmultiline\n\rcontent";
+  std::string filename = "test_name";
+  CreateCustomTestFile(dir.GetPath(), filename, content);
+  std::string mime_type = "test/type";
+  std::string mime_boundary = "mime_boundary";
+  auto storage =
+      content::BrowserContext::GetBlobStorageContext(browser_context());
+  base::RunLoop run_loop;
+  auto upload_callback =
+      base::BindOnce(&IpfsNetwrokUtilsUnitTest::ValidateRequest,
+                     base::Unretained(this), run_loop.QuitClosure());
+  CreateRequestForFolder(dir.GetPath(), storage, std::move(upload_callback));
+  run_loop.Run();
 }
 
 }  // namespace ipfs

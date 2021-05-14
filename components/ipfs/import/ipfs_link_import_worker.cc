@@ -82,10 +82,7 @@ void IpfsLinkImportWorker::OnImportDataAvailable(base::FilePath path) {
   if (filename.empty())
     filename = import_url_.host();
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()}, base::BindOnce(&CalculateFileSize, path),
-      base::BindOnce(&IpfsLinkImportWorker::CreateRequestWithFile,
-                     weak_factory_.GetWeakPtr(), path, mime_type, filename));
+  ImportFile(path, mime_type, filename);
 }
 
 void IpfsLinkImportWorker::RemoveDownloadedFile() {

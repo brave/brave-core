@@ -16,11 +16,8 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
-#include "brave/components/ipfs/import/ipfs_directory_import_worker.h"
-#include "brave/components/ipfs/import/ipfs_file_import_worker.h"
 #include "brave/components/ipfs/import/ipfs_import_worker_base.h"
 #include "brave/components/ipfs/import/ipfs_link_import_worker.h"
-#include "brave/components/ipfs/import/ipfs_text_import_worker.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_ports.h"
@@ -292,9 +289,9 @@ void IpfsService::ImportFileToIpfs(const base::FilePath& path,
   auto import_completed_callback =
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
                      std::move(callback), hash);
-  importers_[hash] = std::make_unique<IpfsFileImportWorker>(
-      context_, server_endpoint_, std::move(import_completed_callback), path,
-      key);
+  importers_[hash] = std::make_unique<IpfsImportWorkerBase>(
+      context_, server_endpoint_, std::move(import_completed_callback), key);
+  importers_[hash]->ImportFile(path);
 }
 
 void IpfsService::ImportLinkToIpfs(const GURL& url,
@@ -345,9 +342,9 @@ void IpfsService::ImportDirectoryToIpfs(const base::FilePath& folder,
   auto import_completed_callback =
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
                      std::move(callback), hash);
-  importers_[hash] = std::make_unique<IpfsDirectoryImportWorker>(
-      context_, server_endpoint_, std::move(import_completed_callback), folder,
-      key);
+  importers_[hash] = std::make_unique<IpfsImportWorkerBase>(
+      context_, server_endpoint_, std::move(import_completed_callback), key);
+  importers_[hash]->ImportFolder(folder);
 }
 
 void IpfsService::ImportTextToIpfs(const std::string& text,
@@ -371,9 +368,10 @@ void IpfsService::ImportTextToIpfs(const std::string& text,
   auto import_completed_callback =
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
                      std::move(callback), hash);
-  importers_[hash] = std::make_unique<IpfsTextImportWorker>(
-      context_, server_endpoint_, std::move(import_completed_callback), text,
-      host);
+  importers_[hash] = std::make_unique<IpfsImportWorkerBase>(
+      context_, server_endpoint_, std::move(import_completed_callback));
+
+  importers_[hash]->ImportText(text, host);
 }
 
 void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,

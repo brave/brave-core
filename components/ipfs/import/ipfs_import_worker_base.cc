@@ -14,6 +14,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -66,10 +67,6 @@ IpfsImportWorkerBase::IpfsImportWorkerBase(content::BrowserContext* context,
       server_endpoint_(endpoint),
       key_to_publish_(key),
       browser_context_(context),
-      io_task_runner_(base::CreateSequencedTaskRunner(
-          {base::MayBlock(), content::BrowserThread::IO,
-           base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       weak_factory_(this) {
   DCHECK(context);
   DCHECK(endpoint.is_valid());
@@ -81,73 +78,60 @@ IpfsImportWorkerBase::IpfsImportWorkerBase(content::BrowserContext* context,
 
 IpfsImportWorkerBase::~IpfsImportWorkerBase() = default;
 
-void IpfsImportWorkerBase::CreateRequestWithFile(
-    const base::FilePath upload_file_path,
-    const std::string& mime_type,
-    const std::string& filename,
-    int64_t file_size) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  std::string mime_boundary = net::GenerateMimeMultipartBoundary();
-  auto blob_builder_callback =
-      base::BindOnce(&BuildBlobWithFile, upload_file_path, file_size, mime_type,
-                     filename, mime_boundary);
-  std::string content_type = kIPFSImportMultipartContentType;
-  content_type += " boundary=";
-  content_type += mime_boundary;
-  StartImport(std::move(blob_builder_callback), content_type, filename);
+void IpfsImportWorkerBase::ImportFile(const base::FilePath path) {
+  ImportFile(path, kFileMimeType, path.BaseName().MaybeAsASCII());
 }
 
-void IpfsImportWorkerBase::StartImport(
-    BlobBuilderCallback blob_builder_callback,
-    const std::string& content_type,
-    const std::string& filename) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+void IpfsImportWorkerBase::ImportFile(const base::FilePath upload_file_path,
+                                      const std::string& mime_type,
+                                      const std::string& filename) {
   data_->filename = filename;
+  auto blob_storage_getter =
+      content::BrowserContext::GetBlobStorageContext(browser_context_);
+
+  auto upload_callback = base::BindOnce(&IpfsImportWorkerBase::UploadData,
+                                        weak_factory_.GetWeakPtr());
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&ipfs::CalculateFileSize, upload_file_path),
+      base::BindOnce(&CreateRequestForFile, upload_file_path,
+                     std::move(blob_storage_getter), mime_type, filename,
+                     std::move(upload_callback)));
+}
+
+void IpfsImportWorkerBase::ImportFolder(const base::FilePath folder_path) {
   auto blob_storage_context_getter =
       content::BrowserContext::GetBlobStorageContext(browser_context_);
-  base::PostTaskAndReplyWithResult(
-      io_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&IpfsImportWorkerBase::CreateResourceRequest,
-                     base::Unretained(this), std::move(blob_builder_callback),
-                     content_type, std::move(blob_storage_context_getter)),
-      base::BindOnce(&IpfsImportWorkerBase::UploadDataUI,
-                     weak_factory_.GetWeakPtr()));
+
+  auto upload_callback = base::BindOnce(&IpfsImportWorkerBase::UploadData,
+                                        weak_factory_.GetWeakPtr());
+  data_->filename = folder_path.BaseName().MaybeAsASCII();
+  CreateRequestForFolder(folder_path, std::move(blob_storage_context_getter),
+                         std::move(upload_callback));
 }
 
-std::unique_ptr<network::ResourceRequest>
-IpfsImportWorkerBase::CreateResourceRequest(
-    BlobBuilderCallback blob_builder_callback,
-    const std::string& content_type,
-    content::BrowserContext::BlobContextGetter storage_context_getter) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-  std::unique_ptr<storage::BlobDataBuilder> blob_builder =
-      std::move(blob_builder_callback).Run();
+void IpfsImportWorkerBase::ImportText(const std::string& text,
+                                      const std::string& host) {
+  if (text.empty() || host.empty()) {
+    NotifyImportCompleted(IPFS_IMPORT_ERROR_REQUEST_EMPTY);
+    return;
+  }
+  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
+  std::string filename = host;
+  filename += "_";
+  filename += std::to_string(key);
+  auto blob_storage_context_getter =
+      content::BrowserContext::GetBlobStorageContext(browser_context_);
 
-  auto storage_context = std::move(storage_context_getter).Run();
-  std::unique_ptr<storage::BlobDataHandle> blob_handle =
-      storage_context->AddFinishedBlob(std::move(blob_builder));
-
-  auto blob = blink::mojom::SerializedBlob::New();
-  blob->uuid = blob_handle->uuid();
-  blob->size = blob_handle->size();
-  storage::BlobImpl::Create(
-      std::make_unique<storage::BlobDataHandle>(*blob_handle),
-      blob->blob.InitWithNewPipeAndPassReceiver());
-  // Use a Data Pipe to transfer the blob.
-  mojo::PendingRemote<network::mojom::DataPipeGetter> data_pipe_getter_remote;
-  mojo::Remote<blink::mojom::Blob> blob_remote(std::move(blob->blob));
-  blob_remote->AsDataPipeGetter(
-      data_pipe_getter_remote.InitWithNewPipeAndPassReceiver());
-
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->request_body = new network::ResourceRequestBody();
-  request->request_body->AppendDataPipe(std::move(data_pipe_getter_remote));
-  request->headers.SetHeader(net::HttpRequestHeaders::kContentType,
-                             content_type);
-  return request;
+  auto upload_callback = base::BindOnce(&IpfsImportWorkerBase::UploadData,
+                                        weak_factory_.GetWeakPtr());
+  data_->filename = filename;
+  CreateRequestForText(text, filename, std::move(blob_storage_context_getter),
+                       std::move(upload_callback));
 }
 
-void IpfsImportWorkerBase::UploadDataUI(
+void IpfsImportWorkerBase::UploadData(
     std::unique_ptr<network::ResourceRequest> request) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!request)
@@ -323,4 +307,5 @@ scoped_refptr<network::SharedURLLoaderFactory>
 IpfsImportWorkerBase::GetUrlLoaderFactory() {
   return url_loader_factory_;
 }
+
 }  // namespace ipfs
