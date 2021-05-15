@@ -767,7 +767,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Method to resolve Ethereum Name Service (ENS)
       </message>
       <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK" desc="The title of the link to open keys management block in IPFS settings">
-        Setup your IPNS keys
+        Set up your IPNS keys
       </message>
       <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK_DESC" desc="The description for the link to open keys management block in IPFS settings">
         Sign content by the corresponding private key and publish it to IPNS
