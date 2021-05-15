@@ -426,14 +426,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             @Override
             public void onClick(View v) {
                 mMainLayout.setVisibility(View.GONE);
-                Log.d("CRASHING", "shareImage click ... ");
                 if (BraveStatsUtil.hasWritePermission(BraveActivity.getBraveActivity())) {
-                                    Log.d("CRASHING", "shareImage sharing  ... ");
-
                     BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
-                } else {
-                                                        Log.d("CRASHING", "shareImage not sharing  ... ");
-
                 }
             }
         });

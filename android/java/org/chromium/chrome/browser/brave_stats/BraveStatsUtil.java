@@ -15,18 +15,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.os.Environment;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import org.chromium.base.Log;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -41,6 +39,10 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,14 +50,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 public class BraveStatsUtil {
     public static final short MILLISECONDS_PER_ITEM = 50;
     public static final int SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM = 3867;
+    public static final String TAG = "BraveStatsUtil";
     /*
      * Gets string view of specific time in seconds for Brave stats
      */
@@ -171,26 +169,19 @@ public class BraveStatsUtil {
     }
 
     public static void shareStatsAction(View view) {
-        Log.d("CRASHING", "shareStatsAction :");
         try {
             Context context = ContextUtils.getApplicationContext();
             Bitmap bmp = convertToBitmap(view);
-            // ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            // bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            Log.d("CRASHING", "getting path :");
-            
             String path = "";
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 path = MediaStore.Images.Media.insertImage(
-                    context.getContentResolver(), bmp, "tempimage", null);Log.d("CRASHING", "path :"+path);
+                        context.getContentResolver(), bmp, "tempimage", null);
             } else {
                 storeImage(bmp);
                 path = getOutputMediaFile().getAbsolutePath();
             }
-            Log.d("CRASHING", "path:"+getOutputMediaFile().getPath());
-            Log.d("CRASHING", "path:"+getOutputMediaFile().getAbsolutePath());
-            Uri uri = Uri.parse(path);Log.d("CRASHING", "uri :"+uri);
+
+            Uri uri = Uri.parse(path);
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -203,16 +194,15 @@ public class BraveStatsUtil {
             Intent shareIntent = Intent.createChooser(sendIntent, " ");
             shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(shareIntent);
-        } catch (Exception e){
-            Log.d("CRASHING", "exception :"+e);
+        } catch (Exception e) {
+            Log.e(TAG, "exception :" + e);
         }
     }
 
     private static void storeImage(Bitmap image) {
         File pictureFile = getOutputMediaFile();
         if (pictureFile == null) {
-            Log.d("CRASHING",
-                    "Error creating media file, check storage permissions: ");// e.getMessage());
+            Log.e(TAG, "Error creating media file, check storage permissions: ");
             return;
         }
         try {
@@ -220,33 +210,25 @@ public class BraveStatsUtil {
             image.compress(Bitmap.CompressFormat.PNG, 90, fos);
             fos.close();
         } catch (FileNotFoundException e) {
-            Log.d("CRASHING", "File not found: " + e.getMessage());
+            Log.e(TAG, "File not found: " + e.getMessage());
         } catch (IOException e) {
-            Log.d("CRASHING", "Error accessing file: " + e.getMessage());
+            Log.e(TAG, "Error accessing file: " + e.getMessage());
         }
     }
 
-        /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
-                + "/Android/data/"
-                + ContextUtils.getApplicationContext().getPackageName()
-                + "/Files");
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile() {
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory() + "/Android/data/"
+                + ContextUtils.getApplicationContext().getPackageName() + "/Files");
 
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
                 return null;
             }
         }
-        // Create a media file name
+
         File mediaFile;
-        String mImageName="share_stats.jpg";
+        String mImageName = "share_stats.jpg";
         mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
         return mediaFile;
     }
