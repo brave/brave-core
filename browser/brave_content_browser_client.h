@@ -28,6 +28,9 @@ class RenderProcessHost;
 namespace blink {
 class AssociatedInterfaceRegistry;
 }  // namespace blink
+namespace web_pref {
+struct WebPreferences;
+}  // namespace web_pref
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
@@ -115,6 +118,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       service_manager::BinderRegistry* registry,
       blink::AssociatedInterfaceRegistry* associated_registry,
       content::RenderProcessHost* render_process_host) override;
+
+  bool OverrideWebPreferencesAfterNavigation(
+      content::WebContents* web_contents,
+      blink::web_pref::WebPreferences* prefs) override;
 
  private:
   uint64_t session_token_;
