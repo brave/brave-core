@@ -27,7 +27,7 @@
 
 namespace {
 
-// We have to check both domain and _dnslink.domain
+// We have to check both domain and _dnslink.domain.
 // https://dnslink.io/#can-i-use-dnslink-in-non-dns-systems
 const char kDnsDomainPrefix[] = "_dnslink.";
 
