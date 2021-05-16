@@ -27,7 +27,7 @@ impl ReadableFeatures {
 
 // Elements with ids and classes with these values are unlikely to contain
 // readable content.
-static UNLIKELY_CANDIDATES: &'static [&'static str; 22] = &[
+static UNLIKELY_CANDIDATES: &'static [&'static str; 23] = &[
     "banner",
     "combx",
     "comment",
@@ -36,6 +36,7 @@ static UNLIKELY_CANDIDATES: &'static [&'static str; 22] = &[
     "extra",
     "foot",
     "header",
+    "masthead",
     "menu",
     "related",
     "remark",

@@ -20,16 +20,16 @@ pub static UNLIKELY_CANDIDATES: &str = "(?i)-ad-|ai2html|banner\
     |breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|foot|gdpr\
     |header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
     |social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup\
-    |yom-remote";
-pub static LIKELY_CANDIDATES: &str = "(?i)and|article|body|column|main\
-    |shadow\
-    |a";
+    |masthead|yom-remote";
+pub static LIKELY_CANDIDATES: &str = "(?i)and|article|body|column|content|main\
+    |shadow";
 pub static POSITIVE_CANDIDATES: &str = "(?i)article|body|content|entry|hentry|h-entry|\
         main|page|pagination|post|text|blog|story";
 pub static NEGATIVE_CANDIDATES: &str = "(?i)-ad-|hidden|^hid$| hid$| hid |\
         ^hid |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|\
         masthead|media|meta|outbrain|promo|related|scroll|share|shoutbox|\
-        sidebar|skyscraper|sponsor|shopping|tags|tool|widget";
+        sidebar|skyscraper|sponsor|shopping|tags|tool|widget|ai2html|legends|\
+        social|sponsor|ad-break";
 pub static HTML_TAGS: &str = r"<[^>]*>";
 static BLOCK_CHILD_TAGS: [&LocalName; 9] = [
     &local_name!("a"),
@@ -779,23 +779,23 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
             let mut related_siblings = vec![];
             let top_attrs = top_elem.attributes.borrow();
             let top_class = top_attrs.get("class");
-            let content_bonus = top_elem.score.get() * 0.2;
+            let sibling_threshold = f32::max(top_elem.score.get() * 0.2, 10.0);
             for sibling in parent.children() {
+                if sibling == top_candidate {
+                    continue;
+                }
                 if let Some(elem) = sibling.as_element() {
-                    top_class
-                        .and_then(|top_class| {
-                            elem.attributes.borrow().get("class").and_then(|class| {
-                                if class == top_class {
-                                    Some(content_bonus)
-                                } else {
-                                    None
-                                }
-                            })
-                        })
-                        .unwrap_or(0.0);
+                    // Increase consideration if the sibling shares the same
+                    // class name as the top scorer.
+                    let bonus = match (top_class, elem.attributes.borrow().get("class")) {
+                        (Some(c0), Some(c1)) if c0 == c1 => top_elem.score.get() * 0.2,
+                        _ => 0.0,
+                    };
 
                     let mut append = false;
-                    if Some(&local_name!("p")) == dom::get_tag_name(&sibling) {
+                    if elem.score.get() + bonus >= sibling_threshold {
+                        append = true;
+                    } else if Some(&local_name!("p")) == dom::get_tag_name(&sibling) {
                         let link_density = get_link_density(&sibling);
                         let content_length = dom::text_len(&sibling);
                         if content_length > 80 && link_density < 0.25 {
