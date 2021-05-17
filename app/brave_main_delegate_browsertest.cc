@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/domain_reliability/service_factory.h"
-#include "chrome/browser/sharing/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -77,12 +76,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kSignedExchangePrefetchCacheForNavigations,
       &features::kSignedExchangeSubresourcePrefetch,
       &features::kSubresourceWebBundles,
-      &features::kTabHoverCards,
       &features::kWebOTP,
       &federated_learning::kFederatedLearningOfCohorts,
       &federated_learning::kFlocIdComputedEventLogging,
       &kEnableProfilePickerOnStartupFeature,
-      &kSharingQRCodeGenerator,
       &net::features::kFirstPartySets,
       &network_time::kNetworkTimeServiceQuerying,
   };
