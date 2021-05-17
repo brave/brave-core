@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { DesktopComponentWrapper, DesktopComponentWrapperRow, WalletWidgetStandIn } from './style'
 import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout } from '../components/desktop'
-import { NavTypes, NavObjectType, TopTabNavTypes, ChartTimelineType } from '../constants/types'
-import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
+import { NavTypes, TopTabNavTypes, ChartTimelineType } from '../constants/types'
+import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
 import BuySendSwap from '../components/buy-send-swap'
@@ -18,7 +18,6 @@ export default {
 
 export const _DesktopSideNav = () => {
   const [selectedButton, setSelectedButton] = React.useState<NavTypes>('crypto')
-  const [linkedAccounts] = React.useState<NavObjectType[]>([LinkedAccountsOptions[0]])
 
   const navigateTo = (path: NavTypes) => {
     setSelectedButton(path)
@@ -28,10 +27,8 @@ export const _DesktopSideNav = () => {
     <DesktopComponentWrapper>
       <SideNav
         navList={NavOptions}
-        staticList={StaticOptions}
         selectedButton={selectedButton}
         onSubmit={navigateTo}
-        linkedAccountsList={linkedAccounts}
       />
     </DesktopComponentWrapper>
   )

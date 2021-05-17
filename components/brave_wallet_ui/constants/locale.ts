@@ -40,17 +40,12 @@ const locale = {
   sideNavCrypto: 'Crypto',
   sideNavRewards: 'Rewards',
   sideNavCards: 'Cards',
-  sideNavLinkedAccounts: 'Linked Accounts',
-  sideNavLockWallet: 'Lock Wallet',
-  sideNavGemini: 'Gemini',
-  sideNavCreators: 'Creators',
 
   // Top Nav Tab Buttons
   topNavPortfolio: 'Portfolio',
+  topTabPrices: 'Prices',
+  topTabDefi: 'Defi',
   topNavNFTS: 'NFTs',
-  topNavInvest: 'Invest',
-  topNavLending: 'Lending',
-  topNavApps: 'Apps',
   topNavAccounts: 'Accounts',
 
   // Chart Timeline Buttons

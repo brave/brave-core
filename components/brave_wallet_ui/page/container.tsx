@@ -23,12 +23,11 @@ import {
 } from '../components/desktop'
 import {
   NavTypes,
-  NavObjectType,
   WalletState,
   PageState,
   WalletPageState
 } from '../constants/types'
-import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
+import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
 
 type Props = {
@@ -39,7 +38,6 @@ type Props = {
 
 function Container (props: Props) {
   const [view, setView] = React.useState<NavTypes>('crypto')
-  const [linkedAccounts] = React.useState<NavObjectType[]>(LinkedAccountsOptions)
 
   // In the future these will be actual paths
   // for example wallet/rewards
@@ -49,27 +47,25 @@ function Container (props: Props) {
 
   return (
     <WalletPageLayout>
-        <SideNav
-          navList={NavOptions}
-          staticList={StaticOptions}
-          selectedButton={view}
-          onSubmit={navigateTo}
-          linkedAccountsList={linkedAccounts}
-        />
-        <WalletSubViewLayout>
-          {view === 'crypto' ? (
-            <CryptoView />
-          ) : (
-            <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <h2>{view} view</h2>
-            </div>
-          )}
+      <SideNav
+        navList={NavOptions}
+        selectedButton={view}
+        onSubmit={navigateTo}
+      />
+      <WalletSubViewLayout>
+        {view === 'crypto' ? (
+          <CryptoView />
+        ) : (
+          <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <h2>{view} view</h2>
+          </div>
+        )}
 
-        </WalletSubViewLayout>
-        <WalletWidgetStandIn>
-          <BuySendSwap />
-        </WalletWidgetStandIn>
-      </WalletPageLayout>
+      </WalletSubViewLayout>
+      <WalletWidgetStandIn>
+        <BuySendSwap />
+      </WalletWidgetStandIn>
+    </WalletPageLayout>
   )
 }
 

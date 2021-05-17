@@ -6,12 +6,7 @@ import {
   RewardsIconL,
   RewardsIconD,
   CreditCardIconL,
-  CreditCardIconD,
-  PuzzleIconL,
-  PuzzleIconD,
-  LockIconL,
-  LockIconD,
-  GeminiIcon
+  CreditCardIconD
 } from '../assets/svg-icons/nav-button-icons'
 
 export const NavOptions: NavObjectType[] = [
@@ -32,35 +27,5 @@ export const NavOptions: NavObjectType[] = [
     primaryIcon: CreditCardIconL,
     secondaryIcon: CreditCardIconD,
     id: 'cards'
-  },
-  {
-    name: locale.sideNavLinkedAccounts,
-    primaryIcon: PuzzleIconL,
-    secondaryIcon: PuzzleIconD,
-    id: 'linked_accounts'
-  }
-]
-
-export const LinkedAccountsOptions: NavObjectType[] = [
-  {
-    name: locale.sideNavGemini,
-    primaryIcon: GeminiIcon,
-    secondaryIcon: GeminiIcon,
-    id: 'gemini'
-  },
-  {
-    name: locale.sideNavCreators,
-    primaryIcon: RewardsIconL,
-    secondaryIcon: RewardsIconD,
-    id: 'creators'
-  }
-]
-
-export const StaticOptions: NavObjectType[] = [
-  {
-    name: locale.sideNavLockWallet,
-    primaryIcon: LockIconL,
-    secondaryIcon: LockIconD,
-    id: 'lock_wallet'
   }
 ]

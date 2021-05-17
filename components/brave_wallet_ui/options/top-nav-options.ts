@@ -7,20 +7,16 @@ export const TopNavOptions: TopTabNavObjectType[] = [
     name: locale.topNavPortfolio
   },
   {
+    id: 'prices',
+    name: locale.topTabPrices
+  },
+  {
+    id: 'defi',
+    name: locale.topTabDefi
+  },
+  {
     id: 'nfts',
     name: locale.topNavNFTS
-  },
-  {
-    id: 'invest',
-    name: locale.topNavInvest
-  },
-  {
-    id: 'lending',
-    name: locale.topNavLending
-  },
-  {
-    id: 'apps',
-    name: locale.topNavApps
   },
   {
     id: 'accounts',

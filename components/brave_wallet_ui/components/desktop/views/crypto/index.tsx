@@ -56,7 +56,7 @@ const CryptoView = () => {
           onSubmit={tabTo}
         />
       }
-      {selectedTab === 'apps' &&
+      {selectedTab === 'defi' &&
         <>
           <SearchBar
             placeholder={locale.searchText}
@@ -74,7 +74,7 @@ const CryptoView = () => {
       {selectedTab === 'portfolio' &&
         <PortfolioView toggleNav={toggleNav} />
       }
-      {selectedTab !== 'portfolio' && selectedTab !== 'apps' &&
+      {selectedTab !== 'portfolio' && selectedTab !== 'defi' &&
         <h2>{selectedTab} view</h2>
       }
     </StyledWrapper>
