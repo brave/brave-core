@@ -4,9 +4,6 @@
 
 import * as React from 'react'
 
-// CSS normalizer
-import 'emptykit.css'
-
 // Components group
 import AdvancedView from './advancedView'
 import SimpleView from './simpleView'

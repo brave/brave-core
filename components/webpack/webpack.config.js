@@ -5,7 +5,6 @@
 
 const path = require('path')
 const GenerateDepfilePlugin = require('./webpack-plugin-depfile')
-const webpack = require('webpack')
 
 module.exports = (env, argv) => ({
   devtool: argv.mode === 'development' ? '#inline-source-map' : false,

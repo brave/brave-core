@@ -11,8 +11,10 @@ import { Store } from 'webext-redux'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import BraveShields from './containers/app'
 import { getViewPreferences } from './background/api/shieldsAPI'
-require('../../../../ui/webui/resources/fonts/muli.css')
-require('../../../../ui/webui/resources/fonts/poppins.css')
+
+import '../../../../ui/webui/resources/css/reset.css'
+import '../../../../ui/webui/resources/fonts/muli.css'
+import '../../../../ui/webui/resources/fonts/poppins.css'
 
 const store: any = new Store({
   portName: 'BRAVE'

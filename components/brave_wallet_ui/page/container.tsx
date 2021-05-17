@@ -10,10 +10,6 @@ import { bindActionCreators, Dispatch } from 'redux'
 import * as WalletPageActions from './actions/wallet_page_actions'
 import store from './store'
 
-import 'emptykit.css'
-import '../../../ui/webui/resources/fonts/poppins.css'
-import '../../../ui/webui/resources/fonts/muli.css'
-
 import { WalletWidgetStandIn } from '../stories/style'
 import {
   SideNav,
