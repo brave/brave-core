@@ -72,7 +72,8 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
       u"distributed-web-gateway-terms/' target='_blank' "
       u"rel='noopener noreferrer'>",
       u"</a>",
-      u"<a href='https://www.cloudflare.com/en-ca/privacypolicy/' "
+      u"<a href='https://developers.cloudflare.com/"
+      u"1.1.1.1/privacy/public-dns-resolver' "
       u"target='_blank' rel='noopener noreferrer'>",
       u"</a>",
   };
