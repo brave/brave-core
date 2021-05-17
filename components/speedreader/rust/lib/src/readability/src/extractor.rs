@@ -1,6 +1,4 @@
-use crate::dom;
-use crate::scorer;
-use crate::util;
+use crate::{dom, scorer, util};
 use chrono::DateTime;
 use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
@@ -9,7 +7,6 @@ use html5ever::tree_builder::TreeSink;
 use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use regex::Regex;
-use scorer::TopCandidate;
 use std::collections::{HashMap, HashSet};
 use std::default::Default;
 use std::io::Read;
@@ -38,12 +35,6 @@ static JSONLD_ARTICLE_TYPES: [&str; 19] = [
     "TechArticle",
     "APIReference",
 ];
-
-// The number of candidates to consider when choosing the "top" candidate. These
-// top candidates are used in the alternative candidates part of the algorithm.
-// This number is taken from the Mozilla implementation.
-// https://github.com/mozilla/readability/blob/e2aea3121a9bb6e05478edc1596026c41c782779/Readability.js#L111
-const NUM_TOP_CANDIDATES: usize = 5;
 
 lazy_static! {
     static ref SEPARATORS: Regex = Regex::new(r#"\s+[\|\\/>»]\s+"#).unwrap();
@@ -243,58 +234,9 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     // Normalize DOM tags
     scorer::replace_tags(&mut dom);
 
-    // now that the dom has been preprocessed, get the set of potential dom
-    // candidates and their scoring. a candidate contains the node parent of the
-    // dom tree branch and its score. in practice, this function will go through
-    // the dom and populate `candidates` data structure
-    scorer::find_candidates(&mut dom, handle);
-
     // top candidate is the top scorer among the tree dom's candidates. this is
     // the subtree that will be considered for final rendering
-    let top_candidate: Handle;
-
-    {
-        // scores all candidate nodes
-        let mut top_candidates: Vec<TopCandidate> = vec![];
-        for node in dom.document_node.descendants().filter(|d| {
-            d.as_element()
-                .map(|e| e.is_candidate.get())
-                .unwrap_or(false)
-        }) {
-            let elem = node.as_element().unwrap();
-            let score = elem.score.get() * (1.0 - scorer::get_link_density(&node));
-            elem.score.set(score);
-
-            if top_candidates.len() < NUM_TOP_CANDIDATES {
-                top_candidates.push(TopCandidate { node });
-            } else {
-                let min_index = util::min_elem_index(&top_candidates);
-                let min = &mut top_candidates[min_index];
-                if score > min.score() {
-                    *min = TopCandidate { node }
-                }
-            }
-        }
-        if top_candidates.len() == 0 {
-            if let Some(body) = dom::document_body(&dom) {
-                top_candidate = body;
-                scorer::initialize_candidate(&top_candidate);
-            } else {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::InvalidInput,
-                    "No candidates found.",
-                ));
-            }
-        } else {
-            let max_index = util::max_elem_index(&top_candidates);
-            top_candidates.swap(0, max_index);
-            if let Some(new_top) = scorer::search_alternative_candidates(&top_candidates) {
-                top_candidate = new_top;
-            } else {
-                top_candidate = top_candidates[0].node.clone();
-            }
-        }
-    }
+    let top_candidate = scorer::get_top_candidate(dom, &handle, true)?;
 
     // Append siblings of the new root with related content.
     scorer::append_related_siblings(&mut dom, top_candidate.clone());
@@ -749,18 +691,18 @@ mod tests {
     #[test]
     fn rewrite_h1s_as_h2s() {
         let input = r#"
-        <div>
+        <body><div>
           <p>Here is some text and some more text</p>
           <h1>A random h1 that isn't the title</h1>
           <p>Even more text</p>
-        </div>
+        </div></body>
         "#;
         let expected = r#"
-        <div id="article">
+        <body id="article"><div>
           <p>Here is some text and some more text</p>
           <h2>A random h1 that isn't the title</h2>
           <p>Even more text</p>
-        </div>
+        </div></body>
         "#;
 
         let mut cursor = Cursor::new(input);
@@ -966,6 +908,33 @@ mod tests {
             normalize_output(expected),
             normalize_output(&product.content)
         );
+    }
+
+    #[test]
+    fn top_candidate_has_unlikely_tags() {
+        // On the first run, the pass, "sidebar" will be ignored because usually it
+        // indicates page noise. Once no other candidate is found, it will be
+        // reconsidered and chosen as the top candidate on the second pass.
+
+        // Let's create a lot of high scoring paragraphs to offset the negative
+        // score incurred by the unlikely tag.
+        let mut p_blob = String::new();
+        for _ in 0..15 {
+            let mut large_p_node = String::new();
+            large_p_node.push_str("<p>");
+            for _ in 0..10 {
+                large_p_node.push_str("yes, this text is counted.");
+            }
+            large_p_node.push_str("</p>");
+            p_blob.push_str(&large_p_node);
+        }
+        let input = format!(
+            r#"<html><body><div class="sidebar">{}</div></body></html>"#,
+            p_blob
+        );
+        let mut cursor = Cursor::new(input);
+        let product = extract(&mut cursor, None).unwrap();
+        assert!(product.content.len() > 150);
     }
 
     #[test]

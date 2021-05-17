@@ -1,4 +1,4 @@
-use crate::dom;
+use crate::{dom, util};
 use html5ever::tendril::StrTendril;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
@@ -20,16 +20,16 @@ pub static UNLIKELY_CANDIDATES: &str = "(?i)-ad-|ai2html|banner\
     |breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|foot|gdpr\
     |header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
     |social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup\
-    |yom-remote";
-pub static LIKELY_CANDIDATES: &str = "(?i)and|article|body|column|main\
-    |shadow\
-    |a";
+    |masthead|yom-remote";
+pub static LIKELY_CANDIDATES: &str = "(?i)and|article|body|column|content|main\
+    |shadow";
 pub static POSITIVE_CANDIDATES: &str = "(?i)article|body|content|entry|hentry|h-entry|\
         main|page|pagination|post|text|blog|story";
 pub static NEGATIVE_CANDIDATES: &str = "(?i)-ad-|hidden|^hid$| hid$| hid |\
         ^hid |banner|combx|comment|com-|contact|foot|footer|footnote|gdpr|\
         masthead|media|meta|outbrain|promo|related|scroll|share|shoutbox|\
-        sidebar|skyscraper|sponsor|shopping|tags|tool|widget";
+        sidebar|skyscraper|sponsor|shopping|tags|tool|widget|ai2html|legends|\
+        social|sponsor|ad-break";
 pub static HTML_TAGS: &str = r"<[^>]*>";
 static BLOCK_CHILD_TAGS: [&LocalName; 9] = [
     &local_name!("a"),
@@ -65,6 +65,15 @@ static PRESENTATIONAL_ATTRIBUTES: [&LocalName; 12] = [
 ];
 
 static DECAY_FACTOR: f32 = 3.0;
+
+// The number of candidates to consider when choosing the "top" candidate. These
+// top candidates are used in the alternative candidates part of the algorithm.
+// This number is taken from the Mozilla implementation.
+// https://github.com/mozilla/readability/blob/e2aea3121a9bb6e05478edc1596026c41c782779/Readability.js#L111
+static NUM_TOP_CANDIDATES: usize = 5;
+
+// The minimum score to be considered as a top candidate under strict heuristics.
+static CANDIDATE_SCORE_THRESHOLD: f32 = 5.0;
 
 lazy_static! {
     static ref PUNCTUATIONS: Regex = Regex::new(PUNCTUATIONS_REGEX).unwrap();
@@ -304,7 +313,7 @@ pub fn calc_content_score(handle: &Handle) -> f32 {
     let mut text = String::new();
     dom::extract_text(handle, &mut text, true);
     let mat = PUNCTUATIONS.find_iter(&text);
-    score += mat.count() as f32;
+    score += f32::min(mat.count() as f32, 3.0);
     score += f32::min(f32::floor(text.chars().count() as f32 / 100.0), 3.0);
     score
 }
@@ -413,16 +422,6 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
             | local_name!("script")
             | local_name!("meta") => return true,
             _ => (),
-        }
-        for attr_name in ["id", "class", "itemProp"].iter() {
-            if let Some(val) = data.attributes.borrow().get(*attr_name) {
-                if data.name.local != local_name!("body")
-                    && UNLIKELY.is_match(&val)
-                    && !LIKELY.is_match(&val)
-                {
-                    return true;
-                }
-            }
         }
     }
     let mut useless_nodes = vec![];
@@ -571,11 +570,103 @@ pub fn preprocess(mut dom: &mut Sink, handle: Handle) -> bool {
     false
 }
 
+/// Find the candidate with the top score to be the new root.
+pub fn get_top_candidate(
+    dom: &Sink,
+    root: &Handle,
+    strip_unlikely_tags: bool,
+) -> Result<Handle, std::io::Error> {
+    // Now that the dom has been processed, get a set of potential dom
+    // candidates and their scoring. `is_candidate` and `score` are attributes
+    // of `ElementData` that get modified.
+    find_candidates(dom, root, strip_unlikely_tags);
+
+    let top_candidate: Handle;
+
+    // scores all candidate nodes
+    let mut top_candidates: Vec<TopCandidate> = vec![];
+    for elem in dom
+        .document_node
+        .descendants()
+        .elements()
+        .filter(|e| e.is_candidate.get())
+    {
+        let node = elem.as_node();
+        let score = elem.score.get() * (1.0 - get_link_density(&node));
+        elem.score.set(score);
+
+        if top_candidates.len() < NUM_TOP_CANDIDATES {
+            top_candidates.push(TopCandidate {
+                node: Handle::clone(node),
+            });
+        } else {
+            let min_index = util::min_elem_index(&top_candidates);
+            let min = &mut top_candidates[min_index];
+            if score > min.score() {
+                *min = TopCandidate {
+                    node: Handle::clone(node),
+                }
+            }
+        }
+    }
+    if top_candidates.len() == 0
+        || dom::is_empty(&top_candidates[0].node)
+        || top_candidates[0].score() < CANDIDATE_SCORE_THRESHOLD
+    {
+        if strip_unlikely_tags {
+            // We didn't find a candidate. We may have been too aggressive
+            // deleting nodes by tag. Let's re-run a more lax version of the
+            // algorithm.
+            return get_top_candidate(dom, root, false);
+        }
+        if let Some(body) = dom::document_body(&dom) {
+            top_candidate = body;
+            initialize_candidate(&top_candidate);
+        } else {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "No candidates found.",
+            ));
+        }
+    } else {
+        let max_index = util::max_elem_index(&top_candidates);
+        top_candidates.swap(0, max_index);
+        if let Some(new_top) = search_alternative_candidates(&top_candidates) {
+            top_candidate = new_top;
+        } else {
+            top_candidate = Handle::clone(&top_candidates[0].node);
+        }
+    }
+    Ok(top_candidate)
+}
+
 /// Walk the DOM and mark all candidate nodes.
-pub fn find_candidates(mut dom: &mut Sink, handle: Handle) {
+pub fn find_candidates(dom: &Sink, handle: &Handle, skip_unlikely: bool) {
     // is candidate iif length of the text in handle is larger than 20 words AND
     // its tag is `div`, `article`, `center`, `section` while not in containing
     // nodes in BLOCK_CHILD_TAGS
+
+    if skip_unlikely
+        && handle
+            .as_element()
+            .map(|data| {
+                for attr_name in ["id", "class", "itemProp"].iter() {
+                    if let Some(val) = data.attributes.borrow().get(*attr_name) {
+                        if data.name.local != local_name!("body")
+                            && data.name.local != local_name!("main")
+                            && UNLIKELY.is_match(&val)
+                            && !LIKELY.is_match(&val)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                false
+            })
+            .unwrap_or(false)
+    {
+        return;
+    }
 
     if is_candidate(&handle) {
         debug_assert!(handle.as_element().is_some());
@@ -621,7 +712,7 @@ pub fn find_candidates(mut dom: &mut Sink, handle: Handle) {
 
     // for all the current child's node, execute recursively find_candidates()
     for child in handle.children() {
-        find_candidates(&mut dom, child.clone());
+        find_candidates(dom, &child, skip_unlikely);
     }
 }
 
@@ -688,23 +779,23 @@ pub fn append_related_siblings(dom: &mut Sink, top_candidate: Handle) {
             let mut related_siblings = vec![];
             let top_attrs = top_elem.attributes.borrow();
             let top_class = top_attrs.get("class");
-            let content_bonus = top_elem.score.get() * 0.2;
+            let sibling_threshold = f32::max(top_elem.score.get() * 0.2, 10.0);
             for sibling in parent.children() {
+                if sibling == top_candidate {
+                    continue;
+                }
                 if let Some(elem) = sibling.as_element() {
-                    top_class
-                        .and_then(|top_class| {
-                            elem.attributes.borrow().get("class").and_then(|class| {
-                                if class == top_class {
-                                    Some(content_bonus)
-                                } else {
-                                    None
-                                }
-                            })
-                        })
-                        .unwrap_or(0.0);
+                    // Increase consideration if the sibling shares the same
+                    // class name as the top scorer.
+                    let bonus = match (top_class, elem.attributes.borrow().get("class")) {
+                        (Some(c0), Some(c1)) if c0 == c1 => top_elem.score.get() * 0.2,
+                        _ => 0.0,
+                    };
 
                     let mut append = false;
-                    if Some(&local_name!("p")) == dom::get_tag_name(&sibling) {
+                    if elem.score.get() + bonus >= sibling_threshold {
+                        append = true;
+                    } else if Some(&local_name!("p")) == dom::get_tag_name(&sibling) {
                         let link_density = get_link_density(&sibling);
                         let content_length = dom::text_len(&sibling);
                         if content_length > 80 && link_density < 0.25 {
