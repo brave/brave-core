@@ -38,6 +38,9 @@ def _AstDefinitionPred(brave_definition, ast_definition):
 
 # Returns required action from a definition attributes list.
 def _GetBraveDefinitionAction(brave_definition):
+  if isinstance(brave_definition, ast.Const):
+    # Const can only be added.
+    return _DEFINITION_ADD
   if brave_definition.attribute_list:
     for attribute in brave_definition.attribute_list:
       if attribute.key == 'BraveAdd':
@@ -70,8 +73,17 @@ def _ExtendAstDefinition(brave_definition, ast_definition):
   elif isinstance(brave_definition, ast.Interface) or \
        isinstance(brave_definition, ast.Struct) or \
        isinstance(brave_definition, ast.Union):
-    for item in brave_definition.body:
-      _CheckDefinitionDoesntExist(item, ast_definition.body)
+    items_to_append = []
+    for item in reversed(brave_definition.body.items):
+      if isinstance(item, ast.Const) or \
+         isinstance(item, ast.Enum):
+         # Handle nested types.
+        _ApplyBraveDefinition(item, ast_definition.body)
+      else:
+        _CheckDefinitionDoesntExist(item, ast_definition.body)
+        items_to_append.append(item)
+    # Restore members order and append them as declared.
+    for item in reversed(items_to_append):
       ast_definition.body.Append(item)
   else:
     raise ValueError("Unhandled definition: %s" % brave_definition.mojom_name)
@@ -82,7 +94,10 @@ def _ApplyBraveDefinition(brave_definition, ast_definitions):
   definition_action = _GetBraveDefinitionAction(brave_definition)
   if definition_action == _DEFINITION_ADD:
     _CheckDefinitionDoesntExist(brave_definition, ast_definitions)
-    ast_definitions.append(brave_definition)
+    if isinstance(ast_definitions, ast.NodeListBase):
+      ast_definitions.Insert(brave_definition)
+    else:
+      ast_definitions.insert(0, brave_definition)
   elif definition_action == _DEFINITION_EXTEND:
     ast_definition_to_extend = _FindMatchingDefinition(brave_definition, ast_definitions)
     if not ast_definition_to_extend:
@@ -104,8 +119,16 @@ def _ApplyBraveAstChanges(brave_ast, ast):
     if not any(_AstImportPred(brave_import, imp) for imp in ast.import_list):
       ast.import_list.Append(brave_import)
 
-  # Add/extend mojo definitions.
-  for brave_definition in brave_ast.definition_list:
+  # Add/extend mojo definitions and keep the type dependency order valid.
+  #
+  # At a later stage a mojo generator expects all types to be in order of use.
+  # To acknowledge this we insert all new definitions in reversed order at
+  # 0-position which will effectively place them in the right order as it was
+  # declared in chromium_src/**/*.mojom *before* all existing definitions in the
+  # original mojom.
+  #
+  # Enum values, struct/union members, interface methods are always appended.
+  for brave_definition in reversed(brave_ast.definition_list):
     _ApplyBraveDefinition(brave_definition, ast.definition_list)
 
 
