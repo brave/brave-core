@@ -9,6 +9,8 @@
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
@@ -73,6 +75,14 @@ class SidebarShowOptionsEventDetectWidget::ContentsView : public views::View {
 
     delegate_->ShowSidebar();
     return true;
+  }
+
+  std::u16string GetTooltipText(const gfx::Point& p) const override {
+    if (show_on_hover_)
+      return View::GetTooltipText(p);
+
+    return l10n_util::GetStringUTF16(
+        IDS_SIDEBAR_TOOLTIP_ON_SHOW_OPTIONS_WIDGET);
   }
 
   void set_show_on_hover(bool show_on_hover) { show_on_hover_ = show_on_hover; }
