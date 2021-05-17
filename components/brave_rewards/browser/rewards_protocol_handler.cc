@@ -61,7 +61,7 @@ void LoadRewardsURL(
   // Only accept rewards scheme from allowed domains
   const std::string bitflyer_staging_host = GURL(BITFLYER_STAGING_URL).host();
   const char* kAllowedDomains[] = {
-      "bitflyer.jp",                  // bitFlyer production
+      "bitflyer.com",                 // bitFlyer production
       bitflyer_staging_host.c_str(),  // bitFlyer staging
       "uphold.com",                   // Uphold staging/production
   };

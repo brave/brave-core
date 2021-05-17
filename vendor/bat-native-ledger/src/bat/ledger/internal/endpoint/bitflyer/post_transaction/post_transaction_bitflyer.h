@@ -11,7 +11,7 @@
 #include "bat/ledger/internal/bitflyer/bitflyer.h"
 #include "bat/ledger/ledger.h"
 
-// POST https://bitflyer.jp/api/link/v1/coin/withdraw-to-deposit-id/request
+// POST https://bitflyer.com/api/link/v1/coin/withdraw-to-deposit-id/request
 //
 // Request body:
 // {

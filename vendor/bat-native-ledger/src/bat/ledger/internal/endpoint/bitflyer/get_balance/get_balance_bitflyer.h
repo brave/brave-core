@@ -10,7 +10,7 @@
 
 #include "bat/ledger/ledger.h"
 
-// GET https://bitflyer.jp/api/link/v1/account/inventory
+// GET https://bitflyer.com/api/link/v1/account/inventory
 //
 // Success code:
 // HTTP_OK (200)
