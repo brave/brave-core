@@ -6,12 +6,26 @@
 #include "brave/chromium_src/chrome/browser/profiles/profile.h"
 
 #include "brave/components/tor/tor_constants.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/extensions/brave_extension_pref_store.h"
+#endif
 
 #define BRAVE_ALLOWS_BROWSER_WINDOWS *this == TorID() ||
 
 #define IsIncognitoProfile IsIncognitoProfile_ChromiumImpl
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#define ExtensionPrefStore BraveExtensionPrefStore
+#endif
+
 #include "../../../../../chrome/browser/profiles/profile.cc"
 #undef IsIncognitoProfile
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#undef ExtensionPrefStore
+#endif
 
 // static
 const Profile::OTRProfileID Profile::OTRProfileID::TorID() {

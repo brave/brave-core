@@ -15,7 +15,6 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/prepopulated_engines.h"
-#include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
@@ -110,33 +109,6 @@ void SearchEngineProviderService::UseExtensionSearchProvider() {
 
     otr_template_url_service_->Add(std::move(turl));
   }
-
-  // Clear default provider's guid to prevent unnecessary
-  // |kDefaultSearchProviderDataPrefName| update when search provider's favicon
-  // url is updated. If this is not cleared,  previous non-extension default
-  // search provider's guid is stored.
-  // For example, TemplateURLService::MaybeUpdateDSEViaPrefs() could update
-  // |kDefaultSearchProviderDataPrefName| if previous default search
-  // provider is qwant and current one is from extension and user searches
-  // with qwant keyword(:q) and it's favicon url is updated.
-  // Why we should prevent this? If not prevented, this user pref is updated.
-  // Then, this update pref's data is loaded again by
-  // DefaultSearchManager::LoadDefaultSearchEngineFromPrefs().
-  // Here, we have different behavior from upstream.
-  // In upstream, DSM still get extension's provider data from
-  // |pref_service_->GetDictionary(kDefaultSearchProviderDataPrefName)| because
-  // extension controlled prefs has more higher priority than user set pref.
-  // So, still DefaultSearchManager::extension_default_search_| stores extension
-  // search provider.
-  // Howeveer, we manually set |kDefaultSearchProviderDataPrefName|. So,
-  // It's replaced with qwant provider. It was extension search provider.
-  // This only happens when |kSyncedDefaultSearchProviderGUID| and favicon
-  // udpated search provider is same. (See the condition in
-  // TemplateURLService::MaybeUpdateDSEViaPrefs())
-  // And there is no side-effect when this prefs update is skipped because
-  // it can be updated again when qwant is default search provider.
-  otr_profile_->GetPrefs()->SetString(prefs::kSyncedDefaultSearchProviderGUID,
-                                      data.sync_guid);
 
   otr_profile_->GetPrefs()->Set(
       DefaultSearchManager::kDefaultSearchProviderDataPrefName,

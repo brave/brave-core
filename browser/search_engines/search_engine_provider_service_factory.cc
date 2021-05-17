@@ -17,7 +17,6 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-#include "components/search_engines/search_engines_pref_names.h"
 
 namespace {
 
@@ -101,6 +100,4 @@ SearchEngineProviderServiceFactory::ServiceIsCreatedWithBrowserContext() const {
 void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
-  registry->RegisterBooleanPref(prefs::kDefaultSearchProviderByExtension,
-                                false);
 }

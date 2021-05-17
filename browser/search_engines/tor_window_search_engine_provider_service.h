@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/search_engines/search_engine_provider_service.h"
 #include "components/search_engines/template_url_service.h"
@@ -44,6 +45,7 @@ class TorWindowSearchEngineProviderService : public SearchEngineProviderService,
   std::unique_ptr<TemplateURL> alternative_search_engine_url_for_tor_;
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       observation_{this};
+  base::WeakPtrFactory<TorWindowSearchEngineProviderService> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_TOR_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_
