@@ -117,6 +117,10 @@ export interface PriceDataObjectType {
 }
 
 export interface WalletState {
+  hasInitialized: boolean
+  isWalletCreated: boolean
+  isWalletLocked: boolean
+  isWalletRecoveryVerified: boolean
 }
 
 export interface PanelState {
@@ -139,4 +143,8 @@ export interface WalletPageState {
 export interface WalletPanelState {
   wallet: WalletState
   panel: PanelState
+}
+
+export interface WalletAPIHandler {
+  initialize: () => { isWalletCreated: boolean }
 }

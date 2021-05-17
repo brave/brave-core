@@ -6,10 +6,24 @@
 
 import { createReducer } from 'redux-act'
 import { WalletState } from '../../constants/types'
+import * as WalletActions from '../actions/wallet_actions'
+import { InitializedPayloadType } from '../constants/action_types'
 
 const defaultState: WalletState = {
+  hasInitialized: false,
+  isWalletCreated: false,
+  isWalletLocked: true,
+  isWalletRecoveryVerified: false
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
+
+reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadType) => {
+  return {
+    ...state,
+    hasInitialized: true,
+    isWalletCreated: payload.isWalletCreated
+  }
+})
 
 export default reducer

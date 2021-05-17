@@ -4,8 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createAction } from 'redux-act'
-import { AccountPayloadType } from '../constants/action_types'
+import { InitializedPayloadType } from '../constants/action_types'
 
-export const connectToSite = createAction<AccountPayloadType>('connectToSite')
-export const cancelConnectToSite = createAction('cancelConnectToSite')
-export const visibilityChanged = createAction<boolean>('visibilityChanged')
+export const initialize = createAction('initialize')
+export const initialized = createAction<InitializedPayloadType>('initialized')

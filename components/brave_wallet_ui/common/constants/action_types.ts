@@ -3,9 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { WalletAccountType } from '../../constants/types'
-
-export type AccountPayloadType = {
-  selectedAccounts: WalletAccountType[]
-  siteToConnectTo: string
+export type InitializedPayloadType = {
+  isWalletCreated: boolean
 }

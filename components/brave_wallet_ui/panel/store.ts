@@ -5,11 +5,11 @@
 
 import { createStore, applyMiddleware } from 'redux'
 
-// Utils
 import reducers from './reducers'
 import walletPanelAsyncHandler from './async/wallet_panel_async_handler'
+import walletAsyncHandler from '../common/async/wallet_async_handler'
 
 export default createStore(
     reducers,
-    applyMiddleware(walletPanelAsyncHandler)
+    applyMiddleware(walletAsyncHandler, walletPanelAsyncHandler)
 )

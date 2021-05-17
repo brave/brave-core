@@ -46,18 +46,15 @@ function Container (props: Props) {
     setView(path)
   }
   const complete = () => {
-    console.log('Complete!')
+    props.actions.walletSetupComplete()
   }
 
   const passwordProvided = (password: string) => {
-    console.log('!!passwordProvided: ', password)
     props.actions.createWallet({ password })
   }
 
-  console.log('mnemonic is:', props.page.mnemonic)
-  const isWalletSetup = false
   const recoveryPhrase = (props.page.mnemonic || '').split(' ')
-  if (!isWalletSetup) {
+  if (!props.wallet.isWalletCreated) {
     return (
       <WalletPageLayout>
         <Onboarding

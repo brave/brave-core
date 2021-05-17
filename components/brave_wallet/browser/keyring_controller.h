@@ -47,6 +47,7 @@ class KeyringController {
   std::string GetMnemonicForDefaultKeyring();
   // Must unlock before using this API otherwise it will return nullptr
   HDKeyring* GetDefaultKeyring();
+  bool IsDefaultKeyringCreated();
 
   bool IsLocked() const;
   void Lock();

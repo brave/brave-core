@@ -208,4 +208,8 @@ bool KeyringController::CreateDefaultKeyringInternal(
   return true;
 }
 
+bool KeyringController::IsDefaultKeyringCreated() {
+  return prefs_->HasPrefPath(kBraveWalletEncryptedMnemonic);
+}
+
 }  // namespace brave_wallet

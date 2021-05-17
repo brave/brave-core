@@ -51,7 +51,6 @@ function Panel (props: Props) {
     )
     setSelectedAccounts(newList)
   }
-  const [walletLocked, setWalletLocked] = React.useState<boolean>(true)
   const [inputValue, setInputValue] = React.useState<string>('')
   const onSubmit = () => {
     props.actions.connectToSite({
@@ -74,7 +73,6 @@ function Panel (props: Props) {
     }
   }
   const unlockWallet = () => {
-    setWalletLocked(false)
   }
   const handlePasswordChanged = (value: string) => {
     setInputValue(value)
@@ -86,12 +84,11 @@ function Panel (props: Props) {
     chrome.tabs.create({ url: 'chrome://wallet' })
   }
 
-  const isWalletSetup = false
   return (
     <StyledExtensionWrapper>
-      { !isWalletSetup ?
+      { !props.wallet.isWalletCreated ?
         (<WelcomePanel onRestore={onRestore} onSetup={onSetup} />)
-        : walletLocked ?
+        : props.wallet.isWalletLocked ?
         (<LockPanel onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />)
         :
         (<ConnectWithSite

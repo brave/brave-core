@@ -5,15 +5,13 @@
 /* global window */
 
 import { createReducer } from 'redux-act'
-import * as Actions from '../actions/wallet_panel_actions'
 import { PanelState } from '../../constants/types'
-import { InitializedPayloadType } from '../constants/action_types'
 
 const defaultState: PanelState = {
-  hasInitialized: false,
   // TODO(bbondy): isConnected, connectedSiteOrigin, and accounts is just test
   // data to start with until the keyring controller is ready.
   isConnected: false,
+  hasInitialized: false,
   connectedSiteOrigin: 'https://app.uniswap.org',
   accounts: [{
     id: '1',
@@ -37,13 +35,5 @@ const defaultState: PanelState = {
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
-
-reducer.on(Actions.initialized, (state: PanelState, payload: InitializedPayloadType) => {
-  return {
-    ...state,
-    hasInitialized: true,
-    isConnected: payload.isConnected
-  }
-})
 
 export default reducer

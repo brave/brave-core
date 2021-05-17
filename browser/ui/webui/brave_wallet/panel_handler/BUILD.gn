@@ -3,10 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-source_set("page_handler") {
+source_set("panel_handler") {
   sources = [
-    "wallet_page_handler.cc",
-    "wallet_page_handler.h",
+    "wallet_panel_handler.cc",
+    "wallet_panel_handler.h",
   ]
   deps = [
     "//brave/components/brave_wallet_ui:mojo_bindings",
