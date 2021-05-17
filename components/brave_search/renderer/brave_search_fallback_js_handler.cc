@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_search/renderer/brave_search_js_handler.h"
+#include "brave/components/brave_search/renderer/brave_search_fallback_js_handler.h"
 
 #include <utility>
 
@@ -20,16 +20,16 @@
 
 namespace brave_search {
 
-BraveSearchJSHandler::BraveSearchJSHandler(
+BraveSearchFallbackJSHandler::BraveSearchFallbackJSHandler(
     v8::Local<v8::Context> v8_context,
     blink::ThreadSafeBrowserInterfaceBrokerProxy* broker)
     : broker_(broker),
       context_(v8_context->GetIsolate(), v8_context),
       isolate_(v8_context->GetIsolate()) {}
 
-BraveSearchJSHandler::~BraveSearchJSHandler() = default;
+BraveSearchFallbackJSHandler::~BraveSearchFallbackJSHandler() = default;
 
-bool BraveSearchJSHandler::EnsureConnected() {
+bool BraveSearchFallbackJSHandler::EnsureConnected() {
   if (!brave_search_fallback_.is_bound() && broker_) {
     broker_->GetInterface(brave_search_fallback_.BindNewPipeAndPassReceiver());
   }
@@ -37,19 +37,19 @@ bool BraveSearchJSHandler::EnsureConnected() {
   return brave_search_fallback_.is_bound();
 }
 
-v8::Local<v8::Context> BraveSearchJSHandler::Context() {
+v8::Local<v8::Context> BraveSearchFallbackJSHandler::Context() {
   return v8::Local<v8::Context>::New(isolate_, context_);
 }
 
-v8::Isolate* BraveSearchJSHandler::GetIsolate() {
+v8::Isolate* BraveSearchFallbackJSHandler::GetIsolate() {
   return isolate_;
 }
 
-void BraveSearchJSHandler::Invalidate() {
+void BraveSearchFallbackJSHandler::Invalidate() {
   context_.Reset();
 }
 
-void BraveSearchJSHandler::AddJavaScriptObject() {
+void BraveSearchFallbackJSHandler::AddJavaScriptObject() {
   v8::HandleScope handle_scope(isolate_);
   if (Context().IsEmpty())
     return;
@@ -59,7 +59,7 @@ void BraveSearchJSHandler::AddJavaScriptObject() {
   BindFunctionsToObject();
 }
 
-void BraveSearchJSHandler::BindFunctionsToObject() {
+void BraveSearchFallbackJSHandler::BindFunctionsToObject() {
   v8::Local<v8::Object> global = Context()->Global();
   v8::Local<v8::Object> brave_obj;
   v8::Local<v8::Value> brave_value;
@@ -75,12 +75,12 @@ void BraveSearchJSHandler::BindFunctionsToObject() {
 
   BindFunctionToObject(
       brave_obj, "fetchBackupResults",
-      base::BindRepeating(&BraveSearchJSHandler::FetchBackupResults,
+      base::BindRepeating(&BraveSearchFallbackJSHandler::FetchBackupResults,
                           base::Unretained(this)));
 }
 
 template <typename Sig>
-void BraveSearchJSHandler::BindFunctionToObject(
+void BraveSearchFallbackJSHandler::BindFunctionToObject(
     v8::Local<v8::Object> javascript_object,
     const std::string& name,
     const base::RepeatingCallback<Sig>& callback) {
@@ -92,7 +92,7 @@ void BraveSearchJSHandler::BindFunctionToObject(
       .Check();
 }
 
-v8::Local<v8::Promise> BraveSearchJSHandler::FetchBackupResults(
+v8::Local<v8::Promise> BraveSearchFallbackJSHandler::FetchBackupResults(
     const std::string& query_string,
     const std::string& lang,
     const std::string& country,
@@ -109,7 +109,7 @@ v8::Local<v8::Promise> BraveSearchJSHandler::FetchBackupResults(
     promise_resolver->Reset(isolate_, resolver.ToLocalChecked());
     brave_search_fallback_->FetchBackupResults(
         query_string, lang, country, geo, filter_explicit_results,
-        base::BindOnce(&BraveSearchJSHandler::OnFetchBackupResults,
+        base::BindOnce(&BraveSearchFallbackJSHandler::OnFetchBackupResults,
                        base::Unretained(this), std::move(promise_resolver)));
 
     return resolver.ToLocalChecked()->GetPromise();
@@ -118,7 +118,7 @@ v8::Local<v8::Promise> BraveSearchJSHandler::FetchBackupResults(
   return v8::Local<v8::Promise>();
 }
 
-void BraveSearchJSHandler::OnFetchBackupResults(
+void BraveSearchFallbackJSHandler::OnFetchBackupResults(
     std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
     const std::string& response) {
   v8::HandleScope handle_scope(isolate_);
