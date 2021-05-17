@@ -44,6 +44,7 @@
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
+#include "media/base/media_switches.h"
 #include "net/base/features.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
@@ -226,6 +227,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kWebOTP.name,
     federated_learning::kFederatedLearningOfCohorts.name,
     federated_learning::kFlocIdComputedEventLogging.name,
+    media::kLiveCaption.name,
     net::features::kFirstPartySets.name,
     network::features::kTrustTokens.name,
     network_time::kNetworkTimeServiceQuerying.name,

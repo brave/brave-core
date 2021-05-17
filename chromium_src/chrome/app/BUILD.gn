@@ -5,6 +5,7 @@
 
 group("app") {
   deps = [
-    "//google_apis"
+    "//google_apis",
+    "//media",
   ]
 }

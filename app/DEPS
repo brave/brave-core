@@ -29,6 +29,7 @@ include_rules = [
   "+components/dom_distiller/core/dom_distiller_switches.h",
   "+google_apis/gaia",
   "+gpu/config",
+  "+media/base/media_switches.h",
   "+services/device",
   "+services/network",
   "-third_party/blink",
