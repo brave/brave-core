@@ -61,8 +61,6 @@ public class BraveAdsNotificationDialog {
         WindowManager.LayoutParams wlp = window.getAttributes();
 
         wlp.gravity = Gravity.TOP;
-        wlp.dimAmount = 0.0f;
-        wlp.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 
         mAdsDialog.setCanceledOnTouchOutside(false);
         mAdsDialog.setCancelable(false);
@@ -71,6 +69,8 @@ public class BraveAdsNotificationDialog {
 
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHI‌​ND);
 
         ImageView closeButton = mAdsDialog.findViewById(R.id.brave_ads_custom_notification_close_button);
 
