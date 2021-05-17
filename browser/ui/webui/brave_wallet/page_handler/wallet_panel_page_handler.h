@@ -38,6 +38,7 @@ class WalletPanelPageHandler : public wallet_panel::mojom::PageHandler,
   // wallet_panel::mojom::PageHandler:
   void ShowUI() override;
   void CloseUI() override;
+  void CreateWallet(const std::string& password, CreateWalletCallback) override;
 
  private:
   bool webui_hidden_ = false;

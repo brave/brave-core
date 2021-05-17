@@ -6,3 +6,11 @@
 export type InitializedPayloadType = {
   isConnected: boolean
 }
+
+export type CreateWalletPayloadType = {
+  password: string
+}
+
+export type WalletCreatedPayloadType = {
+  mnemonic: string
+}

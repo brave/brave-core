@@ -48,26 +48,22 @@ function Container (props: Props) {
   const complete = () => {
     console.log('Complete!')
   }
-  const recoveryPhrase = [
-    'tomato',
-    'green',
-    'velvet',
-    'wishful',
-    'span',
-    'celery',
-    'atoms',
-    'stone',
-    'parent',
-    'stop',
-    'bowl',
-    'exercise'
-  ]
 
+  const passwordProvided = (password: string) => {
+    console.log('!!passwordProvided: ', password)
+    props.actions.createWallet({ password })
+  }
+
+  console.log('mnemonic is:', props.page.mnemonic)
   const isWalletSetup = false
+  const recoveryPhrase = (props.page.mnemonic || '').split(' ')
   if (!isWalletSetup) {
     return (
       <WalletPageLayout>
-        <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={complete} />
+        <Onboarding
+          recoveryPhrase={recoveryPhrase}
+          onPasswordProvided={passwordProvided}
+          onSubmit={complete} />
       </WalletPageLayout>
     )
   }

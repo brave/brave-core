@@ -128,6 +128,7 @@ export interface PanelState {
 
 export interface PageState {
   hasInitialized: boolean
+  mnemonic?: string
 }
 
 export interface WalletPageState {

@@ -7,8 +7,15 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as Actions from '../actions/wallet_page_actions'
 import { PageState, WalletPageState } from '../../constants/types'
+import { CreateWalletPayloadType } from '../constants/action_types'
 
 const handler = new AsyncActionHandler()
+
+async function getAPIProxy () {
+  // TODO(petemill): don't lazy import() if this actually makes the time-to-first-data slower!
+  const api = await import('../../wallet_panel_api_proxy.js')
+  return api.default.getInstance()
+}
 
 function getPageState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PageState {
   return (store.getState() as WalletPageState).page
@@ -24,6 +31,14 @@ handler.on(Actions.initialize.getType(), async (store) => {
   await new Promise(resolve => setTimeout(resolve, 400))
   store.dispatch(Actions.initialized({ isConnected: true }))
   return
+})
+
+handler.on(Actions.createWallet.getType(), async (store, payload: CreateWalletPayloadType) => {
+  const apiProxy = await getAPIProxy()
+  const mnemonic = await apiProxy.createWallet(payload.password);
+  console.log('createWallet!!!!!', payload, mnemonic);
+
+  store.dispatch(Actions.walletCreated({ mnemonic }))
 })
 
 export default handler.middleware

@@ -7,7 +7,7 @@
 import { createReducer } from 'redux-act'
 import * as Actions from '../actions/wallet_page_actions'
 import { PageState } from '../../constants/types'
-import { InitializedPayloadType } from '../constants/action_types'
+import { InitializedPayloadType, WalletCreatedPayloadType } from '../constants/action_types'
 
 const defaultState: PageState = {
   hasInitialized: false
@@ -21,6 +21,19 @@ reducer.on(Actions.initialized, (state: PageState, payload: InitializedPayloadTy
     hasInitialized: true,
     isConnected: payload.isConnected
   }
+})
+
+reducer.on(Actions.walletCreated, (state: PageState, payload: WalletCreatedPayloadType) => {
+  console.log('walletCreated!!!!!', payload, state);
+  return {
+    ...state,
+    mnemonic: payload.mnemonic
+  }
+})
+
+reducer.on(Actions.walletSetupComplete, (state: PageState) => {
+  delete state['mnemonic']
+  return state
 })
 
 export default reducer

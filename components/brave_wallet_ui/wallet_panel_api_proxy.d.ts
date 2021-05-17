@@ -7,4 +7,5 @@ export default class APIProxy {
   static getInstance: () => APIProxy
   showUI: () => {}
   closeUI: () => {}
+  createWallet: (string) => string
 }
