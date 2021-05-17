@@ -22,7 +22,6 @@
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
-#include "chrome/browser/sharing/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
@@ -220,12 +219,10 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kSignedExchangePrefetchCacheForNavigations.name,
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kSubresourceWebBundles.name,
-    features::kTabHoverCards.name,
     features::kWebOTP.name,
     federated_learning::kFederatedLearningOfCohorts.name,
     federated_learning::kFlocIdComputedEventLogging.name,
     federated_learning::kFlocIdSortingLshBasedComputation.name,
-    kSharingQRCodeGenerator.name,
     network_time::kNetworkTimeServiceQuerying.name,
     safe_browsing::kEnhancedProtection.name,
     safe_browsing::kEnhancedProtectionMessageInInterstitials.name,
