@@ -41,7 +41,6 @@ public class BraveAdsNotificationDialog {
 
     // Track when touch events on the dialog are down and when they are up
     static float mYDown;
-    static float mYUp;
 
     public static void showAdNotification(Context context, final String notificationId,
             final String origin, final String title, final String body) {
@@ -93,36 +92,36 @@ public class BraveAdsNotificationDialog {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 float deltaY;
+                float deltaYDp;
                 float y;
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        mYDown = event.getY();
+                        mYDown = v.getY() - event.getRawY();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        y = event.getY();
-                        deltaY = mYDown - y;
+                        deltaY = event.getRawY() + mYDown;
                         if (deltaY > 0) {
-                            v.animate().translationY(-1 * deltaY);
+                          deltaY = 0;
                         }
+                        v.animate()
+                          .y(deltaY)
+                          .setDuration(0).start();
                         break;
                     case MotionEvent.ACTION_UP:
-                        mYUp = event.getY();
                         if (mYDown != 0.0f) {
-                            deltaY = mYDown - mYUp;
+                            deltaYDp = pxToDp(event.getRawY() + mYDown, context.getResources().getDisplayMetrics());
                         } else {
                             return false;
                         }
-                        if (pxToDp(deltaY, context.getResources().getDisplayMetrics()) > MIN_DISTANCE_FOR_DISMISS) {
+                        if (deltaYDp < -1 * MIN_DISTANCE_FOR_DISMISS) {
                             mAdsDialog.dismiss();
                             mAdsDialog = null;
                             BraveAdsNativeHelper.nativeOnCloseAdNotification(
                                     Profile.getLastUsedRegularProfile(),
                                     mNotificationId, false);
                             mNotificationId = null;
-                        } else if (deltaY < 0) {
-                            // Swiped down
-                            v.animate().translationY(0);
-                        } else if (deltaY < MAX_DISTANCE_FOR_TAP) {
+                        } else if (deltaYDp <= MAX_DISTANCE_FOR_TAP &&
+                            deltaYDp >= (-1 * MAX_DISTANCE_FOR_TAP)) {
                             adsDialogTapped(origin);
                         } else {
                             v.animate().translationY(0);
