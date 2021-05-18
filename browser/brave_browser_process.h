@@ -70,6 +70,8 @@ class ResourceComponent;
 
 class BraveBrowserProcess {
  public:
+  BraveBrowserProcess();
+  virtual ~BraveBrowserProcess();
   virtual void StartBraveServices();
   virtual brave_shields::AdBlockService* ad_block_service();
   virtual brave_shields::AdBlockCustomFiltersService*

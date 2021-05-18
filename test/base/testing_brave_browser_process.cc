@@ -32,10 +32,14 @@ void TestingBraveBrowserProcess::CreateInstance() {
 
 // static
 void TestingBraveBrowserProcess::DeleteInstance() {
+  BraveBrowserProcess* browser_process = g_brave_browser_process;
   g_brave_browser_process = nullptr;
+  delete browser_process;
 }
 
 TestingBraveBrowserProcess::TestingBraveBrowserProcess() {}
+
+TestingBraveBrowserProcess::~TestingBraveBrowserProcess() {}
 
 void TestingBraveBrowserProcess::StartBraveServices() {}
 

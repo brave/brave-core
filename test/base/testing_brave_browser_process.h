@@ -56,7 +56,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
  private:
   // See CreateInstance() and DestroyInstance() above.
   TestingBraveBrowserProcess();
-  ~TestingBraveBrowserProcess();
+  ~TestingBraveBrowserProcess() override;
 
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
 };

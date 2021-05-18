@@ -79,6 +79,12 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     brave::SetAdblockCnameHostResolverForTesting(resolver_wrapper_.get());
   }
 
+  void TearDown() override {
+    // The AdBlockBaseService destructor must be called before the task runner
+    // is destroyed.
+    TestingBraveBrowserProcess::DeleteInstance();
+  }
+
   void ResetAdblockInstance(brave_shields::AdBlockBaseService* service,
                             std::string rules,
                             std::string resources) {

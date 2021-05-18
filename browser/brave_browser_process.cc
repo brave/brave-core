@@ -65,6 +65,10 @@ class ResourceComponent;
 
 void BraveBrowserProcess::StartBraveServices() {}
 
+BraveBrowserProcess::BraveBrowserProcess() {}
+
+BraveBrowserProcess::~BraveBrowserProcess() {}
+
 brave_shields::AdBlockService* BraveBrowserProcess::ad_block_service() {
   DCHECK(false);
   return nullptr;
