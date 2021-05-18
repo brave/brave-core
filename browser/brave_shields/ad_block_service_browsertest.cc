@@ -616,6 +616,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsGetBlocked) {
 
   brave::SetAdblockCnameHostResolverForTesting(&resolver);
 
+  WaitForAdBlockServiceThreads();
+
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
   content::WebContents* contents =
@@ -700,6 +702,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
   network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
 
   brave::SetAdblockCnameHostResolverForTesting(&resolver);
+
+  WaitForAdBlockServiceThreads();
 
   ui_test_utils::NavigateToURL(browser(), tab_url);
 
