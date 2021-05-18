@@ -49,6 +49,14 @@ BraveProxyingWebSocket::~BraveProxyingWebSocket() {
   if (ctx_) {
     request_handler_->OnURLRequestDestroyed(ctx_);
   }
+  if (on_before_send_headers_callback_) {
+    std::move(on_before_send_headers_callback_)
+        .Run(net::ERR_ABORTED, base::nullopt);
+  }
+  if (on_headers_received_callback_) {
+    std::move(on_headers_received_callback_)
+        .Run(net::ERR_ABORTED, base::nullopt, base::nullopt);
+  }
 }
 
 // static
