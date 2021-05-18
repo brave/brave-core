@@ -17,6 +17,7 @@ bool ParseCertificatesFile(base::StringPiece certs_input, Pinsets* pinsets) {
   base::StringPiece brave_certs = R"brave_certs(TestSPKI
 sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 
+# =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
 AmazonRootCA1
 -----BEGIN CERTIFICATE-----
@@ -347,6 +348,7 @@ zj0EAwMDaAAwZQIwe3lORlCEwkSHRhtFcP9Ymd70/aTSVaYgLXTWNLxBo1BfASdW
 tL4ndQavEi51mI38AjEAi/V3bNTIZargCyzuFJ0nN6T5U6VR5CmD1/iQMVtCnwr1
 /q4AaOeMSQ+2b1tbFfLn
 -----END CERTIFICATE-----
+# =====END BRAVE ROOTS ASC=====
 )brave_certs";
 
   return ParseCertificatesFile_ChromiumImpl(brave_certs, pinsets);
@@ -408,6 +410,7 @@ bool ParseJSON(base::StringPiece json,
       { "name": "updates.bravesoftware.com", "mode": "force-https", "policy": "custom"},
       { "name": "updates-cdn.bravesoftware.com", "mode": "force-https", "policy": "custom"},
 
+      // =====BEGIN BRAVE HOSTS JSON=====
       // Brave
       { "name": "adblock-data.s3.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "brave-core-ext.s3.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
@@ -466,6 +469,7 @@ bool ParseJSON(base::StringPiece json,
       { "name": "payment.rewards.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "payment.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "rewards.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"}
+      // =====END BRAVE HOSTS JSON=====
     ]})brave_json";
 
   return ParseJSON_ChromiumImpl(brave_json, entries, pinsets);
