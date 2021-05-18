@@ -1071,6 +1071,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE" desc="Title of sidebar add item bubble">
           Add to Sidebar
         </message>
+        <message name="IDS_SIDEBAR_TOOLTIP_ON_SHOW_OPTIONS_WIDGET" desc="Label of tooltip of sidebar show options widget area">
+          Show sidebar
+        </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
         </message>
