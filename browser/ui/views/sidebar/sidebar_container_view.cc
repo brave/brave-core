@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 
+#include "base/bind.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -173,6 +174,12 @@ bool SidebarContainerView::ShouldShowSidebar() const {
          sidebar_control_view_->IsBubbleWidgetVisible();
 }
 
+void SidebarContainerView::OnMouseEntered(const ui::MouseEvent& event) {
+  // Cancel hide schedule when mouse entered again quickly.
+  if (sidebar_hide_timer_.IsRunning())
+    sidebar_hide_timer_.Stop();
+}
+
 void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
   const auto show_option = GetSidebarService(browser_)->GetSidebarShowOption();
   const bool autohide_sidebar =
@@ -229,7 +236,24 @@ void SidebarContainerView::ShowSidebar() {
 
 void SidebarContainerView::ShowSidebar(bool show_sidebar,
                                        bool show_event_detect_widget) {
-  sidebar_control_view_->SetVisible(show_sidebar);
+  sidebar_hide_timer_.Stop();
+
+  if (show_sidebar) {
+    // Show immediately.
+    sidebar_control_view_->SetVisible(true);
+    ShowOptionsEventDetectWidget(show_event_detect_widget);
+    InvalidateLayout();
+  } else {
+    constexpr int kHideDelayInMS = 400;
+    sidebar_hide_timer_.Start(
+        FROM_HERE, base::TimeDelta::FromMilliseconds(kHideDelayInMS),
+        base::BindOnce(&SidebarContainerView::DoHideSidebar,
+                       base::Unretained(this), show_event_detect_widget));
+  }
+}
+
+void SidebarContainerView::DoHideSidebar(bool show_event_detect_widget) {
+  sidebar_control_view_->SetVisible(false);
   ShowOptionsEventDetectWidget(show_event_detect_widget);
   InvalidateLayout();
 }
