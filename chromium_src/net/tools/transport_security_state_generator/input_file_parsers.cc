@@ -403,6 +403,11 @@ bool ParseJSON(base::StringPiece json,
       }
     ],
     "entries": [
+      // Critical endpoints that should remain unpinned so that they always work.
+      { "name": "laptop-updates.brave.com", "mode": "force-https", "policy": "custom"},
+      { "name": "updates.bravesoftware.com", "mode": "force-https", "policy": "custom"},
+      { "name": "updates-cdn.bravesoftware.com", "mode": "force-https", "policy": "custom"},
+
       // Brave
       { "name": "adblock-data.s3.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "brave-core-ext.s3.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
@@ -415,7 +420,6 @@ bool ParseJSON(base::StringPiece json,
       { "name": "extensionupdater.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "gaia.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "go-updater.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "laptop-updates.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "mobile-data.s3.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "p2a.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "p3a.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
