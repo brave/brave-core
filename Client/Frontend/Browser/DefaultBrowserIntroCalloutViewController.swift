@@ -16,20 +16,19 @@ class DefaultBrowserIntroCalloutViewController: UIViewController {
         $0.setTitle(Strings.DefaultBrowserCallout.introOpenSettingsButtonText, for: .normal)
         $0.backgroundColor = .braveOrange
         $0.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        $0.titleLabel?.textColor = .white
+        $0.setTitleColor(.white, for: .normal)
         $0.snp.makeConstraints { make in
             make.height.equalTo(44)
         }
         $0.contentEdgeInsets = .init(top: 0, left: 25, bottom: 0, right: 25)
         $0.layer.cornerRadius = 22
         $0.layer.cornerCurve = .continuous
-        $0.tintColor = .white
     }
     
     private let cancelButton = UIButton(type: .system).then {
         $0.setTitle(Strings.DefaultBrowserCallout.introSkipButtonText, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        $0.tintColor = .secondaryBraveLabel
+        $0.setTitleColor(.secondaryBraveLabel, for: .normal)
     }
     
     private let image = UIImageView(image: #imageLiteral(resourceName: "default_browser_intro"))

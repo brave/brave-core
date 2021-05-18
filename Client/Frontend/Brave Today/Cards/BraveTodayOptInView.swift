@@ -38,7 +38,7 @@ class BraveTodayOptInView: UIView, FeedCardContent {
     let turnOnBraveTodayButton = ActionButton().then {
         $0.layer.borderWidth = 0
         $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
-        $0.titleLabel?.textColor = .white
+        $0.setTitleColor(.white, for: .normal)
         $0.setTitle(Strings.BraveToday.turnOnBraveToday, for: .normal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
         $0.backgroundColor = .braveLighterBlurple
@@ -50,7 +50,6 @@ class BraveTodayOptInView: UIView, FeedCardContent {
     private let learnMoreButton = UIButton(type: .system).then {
         $0.setTitle(Strings.BraveToday.learnMoreTitle, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
-        $0.titleLabel?.textColor = .white
         $0.setTitleColor(.white, for: .normal)
     }
     

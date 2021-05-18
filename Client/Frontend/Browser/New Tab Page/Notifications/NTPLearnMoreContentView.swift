@@ -175,7 +175,7 @@ private func secondaryButton(title: String?) -> UIButton {
         if let title = title {
             $0.setTitle(title, for: .normal)
         }
-        $0.titleLabel?.textColor = .black
+        $0.setTitleColor(.black, for: .normal)
         $0.contentHorizontalAlignment = .left
         $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
