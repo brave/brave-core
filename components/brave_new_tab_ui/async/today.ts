@@ -7,6 +7,7 @@ import AsyncActionHandler from '../../common/AsyncActionHandler'
 import * as Background from '../../common/Background'
 import * as Actions from '../actions/today_actions'
 import { ApplicationState } from '../reducers'
+import { saveIsBraveTodayOptedIn } from '../api/preferences'
 
 function storeInHistoryState (data: Object) {
   const oldHistoryState = (typeof history.state === 'object') ? history.state : {}
@@ -44,6 +45,10 @@ handler.on(
     }
   }
 )
+
+handler.on(Actions.optIn.getType(), async () => {
+  saveIsBraveTodayOptedIn(true)
+})
 
 handler.on(Actions.ensureSettingsData.getType(), async (store) => {
   const state = store.getState() as ApplicationState

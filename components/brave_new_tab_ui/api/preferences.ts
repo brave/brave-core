@@ -72,8 +72,8 @@ export function saveShowFTX (value: boolean): void {
   sendSavePref('showFTX', value)
 }
 
-export function saveIsBraveTodayIntroDismissed (value: boolean): void {
-  sendSavePref('isBraveTodayIntroDismissed', value)
+export function saveIsBraveTodayOptedIn (value: boolean): void {
+  sendSavePref('isBraveTodayOptedIn', value)
 }
 
 export function saveSetAllStackWidgets (value: boolean): void {

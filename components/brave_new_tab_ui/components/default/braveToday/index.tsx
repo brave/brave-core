@@ -5,15 +5,10 @@
 
 import * as React from 'react'
 import * as BraveTodayElement from './default'
-import CardIntro from './cards/cardIntro'
+import CardOptIn from './cards/cardOptIn'
 import CardLoading from './cards/cardLoading'
 import { ReadFeedItemPayload } from '../../../actions/today_actions'
 const Content = React.lazy(() => import('./content'))
-
-type State = {
-  hasInteractionStarted: boolean
-  isIntroCardVisible: boolean
-}
 
 export type OnReadFeedItem = (args: ReadFeedItemPayload) => any
 export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
@@ -21,13 +16,14 @@ export type OnPromotedItemViewed = (item: BraveToday.FeedItem) => any
 
 export type Props = {
   isFetching: boolean
+  hasInteracted: boolean
   isUpdateAvailable: boolean
-  isIntroDismissed: boolean
+  isOptedIn: boolean
   feed?: BraveToday.Feed
   publishers?: BraveToday.Publishers
   articleToScrollTo?: BraveToday.FeedItem
   displayedPageCount: number
-  onInteracting: (interacting: boolean) => any
+  onInteracting: () => any
   onReadFeedItem: OnReadFeedItem
   onPromotedItemViewed: OnPromotedItemViewed
   onFeedItemViewedCountChanged: (feedItemsViewed: number) => any
@@ -36,65 +32,71 @@ export type Props = {
   onCustomizeBraveToday: () => any
   onRefresh: () => any
   onCheckForUpdate: () => any
-  onReadCardIntro: () => any
+  onOptIn: () => any
+  onDisable: () => unknown
 }
 
 export const attributeNameCardCount = 'data-today-card-count'
 
-class BraveToday extends React.PureComponent<Props, State> {
-  braveTodayHitsViewportObserver: IntersectionObserver
-  scrollTriggerToFocusBraveToday: any // React.RefObject<any>
+const intersectionOptions = { root: null, rootMargin: '0px', threshold: 0.25 }
 
-  constructor (props: Props) {
-    super(props)
-    // Don't remove Intro Card until the page refreshes
-    this.state = {
-      hasInteractionStarted: false,
-      isIntroCardVisible: !props.isIntroDismissed
-    }
-  }
-
-  componentDidMount () {
-    const options = { root: null, rootMargin: '0px', threshold: 0.25 }
-
-    this.braveTodayHitsViewportObserver = new
-      IntersectionObserver(this.handleBraveTodayHitsViewportObserver, options)
-
-    // Handle first card showing up so we can hide secondary UI
-    this.braveTodayHitsViewportObserver.observe(this.scrollTriggerToFocusBraveToday)
-  }
-
-  handleBraveTodayHitsViewportObserver = (entries: IntersectionObserverEntry[]) => {
+export default function BraveTodayContent (props: Props) {
+  const handleHitsViewportObserver = React.useCallback<IntersectionObserverCallback>((entries) => {
+    // When the scroll trigger, hits the viewport, notify externally, and since
+    // we won't get updated with that result, change our internal state.
     const isIntersecting = entries.some(entry => entry.isIntersecting)
-    this.props.onInteracting(isIntersecting)
     if (isIntersecting) {
-      this.setState({ hasInteractionStarted: true })
+      props.onInteracting()
     }
-  }
+  }, [props.onInteracting])
 
-  render () {
-    const shouldDisplayContent =
-      this.state.hasInteractionStarted ||
-      !!this.props.articleToScrollTo
+  const viewportObserver = React.useRef<IntersectionObserver>()
+  React.useEffect(() => {
+    // Setup intersection observer params
+    console.log('setting today viewport observer, should only happen once')
+    viewportObserver.current = new IntersectionObserver(handleHitsViewportObserver, intersectionOptions)
+  }, [ handleHitsViewportObserver ])
 
-    return (
-      <BraveTodayElement.Section>
-        <div
-          ref={scrollTrigger => (this.scrollTriggerToFocusBraveToday = scrollTrigger)}
-          style={{ position: 'sticky', top: '100px' }}
-        />
-        { !this.props.isIntroDismissed &&
-        <CardIntro onRead={this.props.onReadCardIntro} />
-        }
-        { shouldDisplayContent &&
-        <React.Suspense fallback={(<CardLoading />)}>
-          <Content {...this.props} />
-        </React.Suspense>
-        }
+  const scrollTrigger = React.useRef<HTMLDivElement>(null)
 
-      </BraveTodayElement.Section>
-    )
-  }
+  React.useEffect(() => {
+    // When we have an element to observe, set it as the target
+    const observer = viewportObserver.current
+    // Don't do anything if we're still setting up, or if we've already
+    // observed and set `hasInteracted`.
+    if (!observer || !scrollTrigger.current || !props.isOptedIn || props.hasInteracted) {
+      return
+    }
+    observer.observe(scrollTrigger.current)
+    return () => {
+      // Cleanup current observer if we get a new observer, or a new element to observe
+      observer.disconnect()
+    }
+  }, [ scrollTrigger.current, viewportObserver.current, props.isOptedIn, props.hasInteracted ])
+
+  // Only load all the content DOM elements if we're
+  // scrolled far down enough, otherwise it's too easy to scroll down
+  // by accident and get all the elements added.
+  // Also sanity check isOptedIn, but without it there shouldn't be any content
+  // anyway.
+  const shouldDisplayContent = props.isOptedIn &&
+    (props.hasInteracted || !!props.articleToScrollTo)
+
+  return (
+    <BraveTodayElement.Section>
+      <div
+        ref={scrollTrigger}
+        style={{ position: 'sticky', top: '100px' }}
+      />
+      { !props.isOptedIn &&
+      <CardOptIn onOptIn={props.onOptIn} onDisable={props.onDisable} />
+      }
+      { shouldDisplayContent &&
+      <React.Suspense fallback={(<CardLoading />)}>
+        <Content {...props} />
+      </React.Suspense>
+      }
+
+    </BraveTodayElement.Section>
+  )
 }
-
-export default BraveToday

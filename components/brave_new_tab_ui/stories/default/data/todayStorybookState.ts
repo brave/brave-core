@@ -2,13 +2,15 @@ import { boolean } from '@storybook/addon-knobs'
 import { BraveTodayState } from '../../../reducers/today'
 
 export default function getTodayState (): BraveTodayState {
+  const hasDataError = boolean('Today data fetch error?', false)
   return {
     isFetching: boolean('Today is fetching?', false),
+    hasInteracted: boolean('Today has interacted?', true),
     isUpdateAvailable: boolean('Is Today update available?', false),
     currentPageIndex: 10,
     cardsViewed: 0,
     cardsVisited: 0,
-    publishers: {
+    publishers: hasDataError ? undefined : {
       ['5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
         publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
         publisher_name: `Test Publisher 1`,
@@ -73,7 +75,7 @@ export default function getTodayState (): BraveTodayState {
         user_enabled: null
       }
     },
-    feed: {
+    feed: hasDataError ? undefined : {
       hash: `123abc`,
       featuredArticle: {
         category: `Top News`,

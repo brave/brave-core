@@ -10,6 +10,7 @@ export type BraveTodayState = {
   // Are we in the middle of checking for new data
   isFetching: boolean | string
   isUpdateAvailable: boolean
+  hasInteracted: boolean
   // How many pages have been displayed so far for the current data
   currentPageIndex: number
   cardsViewed: number
@@ -29,6 +30,7 @@ function storeInHistoryState (data: Object) {
 const defaultState: BraveTodayState = {
   isFetching: true,
   isUpdateAvailable: false,
+  hasInteracted: false,
   currentPageIndex: 0,
   cardsViewed: 0,
   cardsVisited: 0
@@ -58,6 +60,7 @@ export default reducer
 
 reducer.on(Actions.interactionBegin, (state, payload) => ({
   ...state,
+  hasInteracted: true,
   isFetching: true
 }))
 

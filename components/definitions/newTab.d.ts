@@ -105,7 +105,7 @@ declare namespace NewTab {
     clockFormat: string
     showTopSites: boolean
     showRewards: boolean
-    isBraveTodayIntroDismissed: boolean
+    isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
   }
 

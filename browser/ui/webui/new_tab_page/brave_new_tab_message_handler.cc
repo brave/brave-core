@@ -109,9 +109,8 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "isBrandedWallpaperNotificationDismissed",
       prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
-  pref_data.SetBoolean(
-      "isBraveTodayIntroDismissed",
-      prefs->GetBoolean(kBraveTodayIntroDismissed));
+  pref_data.SetBoolean("isBraveTodayOptedIn",
+                       prefs->GetBoolean(kBraveTodayOptedIn));
   pref_data.SetBoolean(
       "showBinance",
       prefs->GetBoolean(kNewTabPageShowBinance));
@@ -323,6 +322,11 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::Bind(&BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
       base::Unretained(this)));
   }
+  // News
+  pref_change_registrar_.Add(
+      kBraveTodayOptedIn,
+      base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                 base::Unretained(this)));
   // New Tab Page preferences
   pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
@@ -470,8 +474,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showToday") {
     settingsKey = kNewTabPageShowToday;
-  } else if (settingsKeyInput == "isBraveTodayIntroDismissed") {
-    settingsKey = kBraveTodayIntroDismissed;
+  } else if (settingsKeyInput == "isBraveTodayOptedIn") {
+    settingsKey = kBraveTodayOptedIn;
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {

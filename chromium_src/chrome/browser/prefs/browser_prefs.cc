@@ -60,6 +60,8 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 
   // Added 04/2021
   profile->GetPrefs()->ClearPref(kAlternativeSearchEngineProviderInTor);
+  // Added 05/2021
+  profile->GetPrefs()->ClearPref(kBraveTodayIntroDismissed);
 }
 
 // This method should be periodically pruned of year+ old migrations.

@@ -45,7 +45,7 @@ export default function BraveTodayPrefs (props: Props) {
     <Styled.Section>
       {!category && (
         <SettingsRow>
-          <SettingsText>Show Brave Today</SettingsText>
+          <SettingsText>{getLocale('braveTodayOptInActionLabel')}</SettingsText>
           <Toggle
             checked={props.showToday}
             onChange={props.toggleShowToday}
@@ -53,7 +53,7 @@ export default function BraveTodayPrefs (props: Props) {
           />
         </SettingsRow>
       )}
-      {props.showToday &&
+      {props.showToday && props.publishers && Object.keys(props.publishers).length &&
       <Sources category={category} setCategory={setCategory} {...props} />
       }
       {!category && (

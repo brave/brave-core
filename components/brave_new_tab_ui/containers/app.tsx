@@ -32,10 +32,6 @@ interface Props {
   ftx: FTXState
 }
 
-function dismissBraveTodayIntroCard () {
-  PreferencesAPI.saveIsBraveTodayIntroDismissed(true)
-}
-
 function DefaultPage (props: Props) {
   const { newTabData, braveTodayData, gridSitesData, actions } = props
 
@@ -63,7 +59,6 @@ function DefaultPage (props: Props) {
         saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}
         saveShowFTX={PreferencesAPI.saveShowFTX}
         saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
-        onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
         saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
       />
     )
