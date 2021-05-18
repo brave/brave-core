@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "Przepraszamy, wystąpił błąd podczas próby wyświetlenia obrazu w obrazie.";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "Ta opcja włączy/wyłączy autoodtwarzanie, gdy zostanie otwarta lista odtwarzania. Opcja ta nie będzie jednak powodować automatycznego odtwarzania, gdy załadowany zostanie następny film z listy.";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Ta opcja włączy/wyłączy automatyczne odtwarzanie, gdy otwarta jest Lista odtwarzania. Jednakże opcja nie wpłynie na automatyczne odtwarzanie, gdy ładowany jest kolejny film z listy.";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Automatyczne odtwarzanie";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "Wł.";
 
-/* Option Text for Auto Save Only Wifi Option */
+/* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Tylko Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "Dodawanie plików wideo i audio do użytku w trybie offline może zajmować dużo miejsca na urządzeniu, a także wykorzystywać transfer danych przez sieć komórkową.";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Ta opcja automatycznie przechowuje pozycje na liście odtwarzania w urządzeniu, dzięki czemu możesz je odtwarzać, gdy nie masz połączenia z Internetem.";
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Ta opcja automatycznie przechowuje elementy listy odtwarzania w urządzeniu, dzięki czemu można je odtwarzać bez połączenia z Internetem.";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Automatyczne zapisywanie do użytku w trybie offline";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Pliki wideo i audio dodawane do użytku w trybie offline mogą zajmować dużo miejsca w pamięci urządzenia. Usuń niektóre pliki, aby zwolnić miejsce w pamięci.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Pamięć masowa prawie pełna";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Rozpocznij odtwarzanie od miejsca, w którym ostatnio je przerwałem";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Ta opcja spowoduje wyświetlenie pytania o \"Dodaj do listy odtwarzania w Brave\" na niektórych stronach internetowych z multimediami. Nadal możesz dodawać media (wideo/audio), naciskając je długo lub korzystając z przycisku menu \"Udostępnij za pomocą...\".";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Po włączeniu tej funkcji pasek będzie automatycznie wyświetlany na większości stron internetowych z multimediami, ułatwiając dodawanie tych plików wideo/audio do Listy odtwarzania.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "Pokaż \"Dodaj do listy odtwarzania w Brave\"";
 
 /* Description for Playlist setting */
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "Obsługuje prędkości do 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "Wybierz swoją geolokalizację/lokalizację";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "Pozwala zachować anonimowość w Internecie";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "Nigdy nie udostępniamy ani nie sprzedajemy Twoich danych";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Chroni Cię przed niechcianymi połączeniami";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Potwierdzenie transakcji z App Store";

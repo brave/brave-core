@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "При переходе в режим «Картинка в картинке» произошла ошибка";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "Вы можете включать и отключать функцию автовоспроизведения, когда открыт плейлист. Этот параметр не влияет на автовоспроизведение, если следующее видео в плейлисте уже загружено.";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Параметр включает или отключает автовоспроизведение открытого плейлиста, но не влияет на то, загружается ли следующее видео из списка автоматически.";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Автовоспроизведение";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "Включить";
 
-/* Option Text for Auto Save Only Wifi Option */
-"playlist.playlistAutoSaveOptionOnlyWifi" = "Только Wi-Fi";
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Только по Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "Сохраненные файлы занимают место в хранилище устройства. Кроме того, при скачивании аудио и видео может использоваться мобильный интернет.";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Этот параметр позволяет автоматически скачивать контент из плейлиста на устройство, чтобы вы могли воспроизводить видео без подключения к Интернету.";
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Этот параметр позволяет автоматически скачивать видео из плейлиста на устройство, чтобы вы могли воспроизводить ролики без подключения к Интернету.";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Автосохранение для офлайн-доступа";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Скачанные аудио- и видеофайлы занимают много места на устройстве. Чтобы освободить пространство, удалите некоторые из них.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Хранилище почти заполнено";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Начинать воспроизведение с того места, где вы остановились";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Если вы включите эту настройку, на некоторых сайтах будет появляться кнопка «Добавить в плейлист Brave». Вы по-прежнему сможете добавлять аудио и видео, используя долгое нажатие или кнопку «Поделиться…».";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Если включить этот параметр, на большинстве сайтов с медиаконтентом будет показываться панель, с помощью которой можно легко добавлять аудио- и видеофайлы в свой плейлист.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "Показывать кнопку «Добавить в плейлист Brave»";
 
 /* Description for Playlist setting */
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "Поддерживает скорость соединения до 100 Мб/с";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "Выбирайте свое местоположение";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "Обеспечивает вашу анонимность в сети";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "Мы никому не раскрываем и не продаем ваши данные";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Защита от нежелательных соединений";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Квитанция от AppStore";

@@ -964,6 +964,24 @@
 /* No comment provided by engineer. */
 "Settings" = "Innstillinger";
 
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "Manuelt";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "Etter én dag";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "Etter én måned";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "Etter én uke";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "Lukk faner";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "La Brave automatisk lukke faner som ikke har blitt vist i det siste.";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Kunne ikke laste inn side.";
 

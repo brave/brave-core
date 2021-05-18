@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "Maaf, ralat berlaku semasa cuba memaparkan gambar-dalam-gambar.";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "Pilihan ini akan mendayakan/menyahdayakan main automatik apabila Senarai Main dibuka. Walau bagaimanapun, pilihan ini tidak akan mempengaruhi main automatik apabila video seterusnya dalam senarai dimuatkan.";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Pilihan ini akan mendayakan/menyahdayakan main automatik apabila Senarai Main dibuka. Walau bagaimanapun, pilihan ini tidak akan mempengaruhi main automatik apabila memuatkan video seterusnya dalam senarai.";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Main Auto";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "Dihidupkan";
 
-/* Option Text for Auto Save Only Wifi Option */
-"playlist.playlistAutoSaveOptionOnlyWifi" = "Hanya Wifi";
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Hanya Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "Menambahkan fail video dan audio untuk penggunaan luar talian boleh menggunakan banyak storan pada peranti anda dan juga menggunakan data selular anda";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Pilihan ini akan menyimpan item senarai main anda pada peranti anda secara automatik supaya anda dapat memainkannya semasa anda tidak mempunyai sambungan internet.";
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Pilihan ini akan menyimpan item senarai main anda pada peranti anda secara automatik supaya anda dapat memainkannya tanpa sambungan internet.";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Simpan Auto untuk Luar Talian";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Menambah fail video dan audio untuk penggunaan luar talian boleh menggunakan banyak storan pada peranti anda. Sila alih keluar sesetengah fail untuk mengosongkan ruang storan.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Storan Hampir Penuh";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Mulakan Main Balik di tempat terakhir saya berhenti";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Pilihan ini akan meminta anda untuk 'Tambah ke Senarai Main Brave' di sesetengah laman web media. Anda masih boleh menambah media (video/audio) dengan menekan lama media, atau dari butang menu \"Kongsi Dengan...\".";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Apabila didayakan, bar akan muncul secara automatik di kebanyakan laman web media menjadikannya lebih mudah untuk menambah fail video/audio tersebut ke Senarai Main anda.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "Tunjukkan \"Tambah ke Senarai Main Brave\"";
 
 /* Description for Playlist setting */
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "Menyokong kelajuan hingga 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "Pilih lokasi geo/negara anda";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "Menyimpan anda tanpa nama dalam talian";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "Kami tidak pernah berkongsi atau menjual maklumat anda";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Melindungi anda daripad sambungan yang tidak diingini";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Resit App Store";

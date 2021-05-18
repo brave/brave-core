@@ -197,7 +197,7 @@
 "playList.addToPlayListAlertDescription" = "是否要将此视频添加至播放列表？";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "添加至 Brave 播放列表";
+"playList.addToPlayListAlertTitle" = "添加至 Brave Playlist";
 
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "此视频是直播流媒体或超出了时长限制。请重新打开此链接以刷新。";
@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "抱歉，尝试显示画中画时出错。";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "播放列表打开后，此选项会启用/禁用自动播放。但是，列表中的下一视频加载后，此选项不会影响自动播放功能。";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "播放列表打开后，此选项会启用/禁用自动播放。但是，加载列表中的下一视频时，此选项不会影响自动播放功能。";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "自动播放";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "开";
 
-/* Option Text for Auto Save Only Wifi Option */
+/* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "仅 Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "添加视频和音频文件供离线使用，可能使用设备大量存储空间以及使用您的蜂窝数据";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "此选项会自动将您的播放列表项目保留在设备中，即使您没有网络连接，依然能够播放这些内容。";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "自动离线保存";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "添加视频和音频文件供离线使用，可能使用设备大量存储空间。请清除部分文件，以释放存储空间。";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "存储将满";
@@ -254,7 +257,7 @@
 "playlist.playlistLiveMediaStream" = "直播流媒体";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "播放列表媒体和离线数据";
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Playlist 媒体和离线数据";
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "播放列表离线数据";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "从我上次停止播放的位置开始播放 ";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "部分媒体网站上，此选项会询问您是否“添加至 Brave 播放列表”。您仍可通过长按媒体文件或从“共享对象...”菜单按钮添加媒体（视频/音频）。";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "启用后，大部分多媒体网站上均会自动显示一条栏，以供轻松将视频/音频文件添加至播放列表。";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "显示“添加至 Brave 播放列表”";
 
 /* Description for Playlist setting */
@@ -338,10 +343,10 @@
 "playList.toastAddToPlaylistOpenButton" = "打开";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "添加至 Brave 播放列表";
+"playList.toastAddToPlaylistTitle" = "添加至 Brave Playlist";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "在 Brave 播放列表中查看";
+"playList.toastExitingItemPlaylistTitle" = "在 Brave Playlist 中查看";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "关闭 Context 菜单";
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "最高支持 100 Mbps 的速度";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "选择地理/国家位置";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "让您匿名在线";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "我们绝不会分享或出售您的信息";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "保护您免受不必要的连接的打扰";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStore 收据";

@@ -964,6 +964,24 @@
 /* No comment provided by engineer. */
 "Settings" = "设置";
 
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "手动";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "一天后";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "一个月后";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "一周后";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "关闭标签";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "允许 Brave 自动关闭最近未查看的标签。";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "无法加载页面。";
 
