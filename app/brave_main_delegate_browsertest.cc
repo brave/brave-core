@@ -25,6 +25,7 @@
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
+#include "media/base/media_switches.h"
 #include "net/base/features.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
@@ -67,6 +68,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
       &autofill::features::kAutofillEnableAccountWalletStorage,
       &autofill::features::kAutofillServerCommunication,
+      &blink::features::kFledgeInterestGroupAPI,
+      &blink::features::kFledgeInterestGroups,
+      &blink::features::kHandwritingRecognitionWebPlatformApi,
+      &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
       &blink::features::kInterestCohortAPIOriginTrial,
       &blink::features::kInterestCohortFeaturePolicy,
       &blink::features::kTextFragmentAnchor,
@@ -83,7 +88,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &federated_learning::kFlocIdComputedEventLogging,
       &kEnableProfilePickerOnStartupFeature,
       &kSharingQRCodeGenerator,
+      &media::kLiveCaption,
       &net::features::kFirstPartySets,
+      &network::features::kTrustTokens,
       &network_time::kNetworkTimeServiceQuerying,
   };
 
