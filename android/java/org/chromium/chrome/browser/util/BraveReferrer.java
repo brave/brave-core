@@ -129,6 +129,9 @@ public class BraveReferrer implements InstallReferrerStateListener {
             case InstallReferrerResponse.SERVICE_UNAVAILABLE:
                 Log.e(TAG, "Connection couldn't be established");
                 break;
+            default:
+                Log.e(TAG, "Other error: " + responseCode);
+                break;
         }
     }
 
