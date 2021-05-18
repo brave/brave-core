@@ -12,6 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/number_util.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
@@ -122,7 +123,7 @@ bool Payments::DidReconcileBalance(
   }
 
   const double delta = GetBalance() - last_balance;
-  if (delta >= unreconciled_estimated_pending_rewards) {
+  if (DoubleIsGreaterEqual(delta, unreconciled_estimated_pending_rewards)) {
     return true;
   }
 
