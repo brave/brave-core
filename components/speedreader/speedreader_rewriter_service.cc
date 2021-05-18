@@ -42,8 +42,8 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
     brave_component_updater::BraveComponent::Delegate* delegate)
     : component_(new speedreader::SpeedreaderComponent(delegate)),
       speedreader_(new speedreader::SpeedReader) {
-  if (base::FeatureList::IsEnabled(kSpeedreaderReadabilityBackend)) {
-    backend_ = RewriterType::RewriterReadability;
+  if (base::FeatureList::IsEnabled(kSpeedreaderLegacyBackend)) {
+    backend_ = RewriterType::RewriterStreaming;
   }
 
   // Load the built-in stylesheet as the default
