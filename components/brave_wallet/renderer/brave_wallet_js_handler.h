@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -16,17 +17,19 @@
 
 namespace brave_wallet {
 
-class BraveWalletJSHandler {
+class BraveWalletJSHandler : public mojom::EventsListener {
  public:
   explicit BraveWalletJSHandler(content::RenderFrame* render_frame);
-  ~BraveWalletJSHandler();
+  ~BraveWalletJSHandler() override;
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
-  void FireEvent(const std::string& event, const std::string& event_args);
-  void ConnectEvent(const std::string& chain_id);
+  void FireEvent(const std::string& event, base::Value event_args);
+  void ConnectEvent();
+  void OnGetChainId(const std::string& chain_id);
   void DisconnectEvent(const std::string& message);
-  void ChainChangedEvent(const std::string& chain_id);
   void AccountsChangedEvent(const std::string& accounts);
+
+  void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
   void BindFunctionsToObject(v8::Isolate* isolate,
@@ -45,9 +48,11 @@ class BraveWalletJSHandler {
   void InjectInitScript();
   void ExecuteScript(const std::string script);
 
-  // A function to be called from JS
+  // Functions to be called from JS
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,
                                  v8::Local<v8::Value> input);
+  v8::Local<v8::Value> IsConnected();
+
   void OnRequest(v8::Global<v8::Promise::Resolver> promise_resolver,
                  v8::Isolate* isolate,
                  v8::Global<v8::Context> context_old,
@@ -55,7 +60,10 @@ class BraveWalletJSHandler {
                  const std::string& response);
 
   content::RenderFrame* render_frame_;
-  mojo::Remote<brave_wallet::mojom::BraveWalletProvider> brave_wallet_provider_;
+  mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
+  mojo::Receiver<mojom::EventsListener> receiver_{this};
+  bool is_connected_;
+  std::string chain_id_;
 };
 
 }  // namespace brave_wallet

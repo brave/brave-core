@@ -31,6 +31,7 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
       base::Optional<blink::WebNavigationType> navigation_type) override;
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
+  void DidFinishLoad() override;
 
  private:
   // RenderFrameObserver implementation.

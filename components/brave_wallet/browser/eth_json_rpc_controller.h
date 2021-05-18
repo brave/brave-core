@@ -13,7 +13,9 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/observer_list_threadsafe.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -61,6 +63,10 @@ class EthJsonRpcController {
   GURL GetNetworkURL() const;
   void SetNetwork(Network network);
   void SetCustomNetwork(const GURL& provider_url);
+
+  void AddObserver(BraveWalletProviderEventsObserver* observer);
+  void RemoveObserver(BraveWalletProviderEventsObserver* observer);
+
   // Returns the chain ID for a network or an empty string if no standard
   // chain ID is defined for the specified network.
   static std::string GetChainIDFromNetwork(Network network);
@@ -92,6 +98,8 @@ class EthJsonRpcController {
   GURL network_url_;
   SimpleURLLoaderList url_loaders_;
   Network network_;
+  scoped_refptr<base::ObserverListThreadSafe<BraveWalletProviderEventsObserver>>
+      observers_;
 };
 
 }  // namespace brave_wallet

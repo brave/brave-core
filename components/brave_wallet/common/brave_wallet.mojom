@@ -2,7 +2,13 @@ module brave_wallet.mojom;
 
 import "mojo/public/mojom/base/values.mojom";
 
+interface EventsListener {
+  ChainChangedEvent(string chain_id);
+};
+
 interface BraveWalletProvider {
+  Init(pending_remote<EventsListener> events_listener);
   Request(string json_payload) => (int32 http_code,
                                    string response);
+  GetChainId() => (string chain_id);
 };

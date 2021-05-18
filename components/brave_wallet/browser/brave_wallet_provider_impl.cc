@@ -16,7 +16,13 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
     base::WeakPtr<BraveWalletService> wallet_service)
     : wallet_service_(wallet_service), weak_factory_(this) {}
 
-BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
+BraveWalletProviderImpl::~BraveWalletProviderImpl() {
+  if (!wallet_service_)
+    return;
+
+  auto* controller = wallet_service_->controller();
+  controller->RemoveObserver(this);
+}
 
 void BraveWalletProviderImpl::Request(const std::string& json_payload,
                                       RequestCallback callback) {
@@ -39,6 +45,34 @@ void BraveWalletProviderImpl::OnResponse(
   // Do we need to pass headers map to a renderer? We would need to convert
   // it to base::flat_map in that case
   std::move(callback).Run(http_code, response);
+}
+
+void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {
+  if (!wallet_service_)
+    return;
+
+  auto* controller = wallet_service_->controller();
+  std::move(callback).Run(
+      EthJsonRpcController::GetChainIDFromNetwork(controller->GetNetwork()));
+}
+
+void BraveWalletProviderImpl::Init(
+    ::mojo::PendingRemote<mojom::EventsListener> events_listener) {
+  if (!events_listener_.is_bound()) {
+    events_listener_.Bind(std::move(events_listener));
+    if (!wallet_service_)
+      return;
+
+    auto* controller = wallet_service_->controller();
+    controller->AddObserver(this);
+  }
+}
+
+void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
+  if (!events_listener_.is_bound())
+    return;
+
+  events_listener_->ChainChangedEvent(chain_id);
 }
 
 }  // namespace brave_wallet
