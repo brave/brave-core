@@ -111,7 +111,11 @@ const locale = {
 
   // Lock Screen
   lockScreenTitle: 'Enter password to unlock wallet',
-  lockScreenButton: 'Unlock'
+  lockScreenButton: 'Unlock',
+
+  // Wallet More Popup
+  walletPopupSettings: 'Settings',
+  walletPopupLock: 'Lock Crypto Wallet'
 }
 
 export default locale

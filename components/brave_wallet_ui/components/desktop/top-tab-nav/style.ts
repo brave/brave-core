@@ -11,12 +11,12 @@ export const StyledWrapper = styled.div`
 `
 
 export const MoreRow = styled.div`
-	display: flex;
+  display: flex;
   width: 100%;
-	align-items: flex-end;
-	justify-content: center;
+  align-items: flex-end;
+  justify-content: center;
   flex-direction: column;
-	cursor: pointer;
+  cursor: pointer;
   outline: none;
   padding: 10px 0px 0px 0px;
   border: none;
@@ -49,4 +49,5 @@ export const MoreIcon = styled(MoreVertRIcon)`
   width: 20px;
   transform: rotate(90deg);
   height: 20px;
+  color: ${(p) => p.theme.color.interactive07};
 `

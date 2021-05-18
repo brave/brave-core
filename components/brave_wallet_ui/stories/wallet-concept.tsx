@@ -43,6 +43,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setWalletLocked(false)
   }
 
+  const lockWallet = () => {
+    setWalletLocked(true)
+  }
+
   const handlePasswordChanged = (value: string) => {
     setInputValue(value)
   }
@@ -64,7 +68,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                 {walletLocked ? (
                   <LockScreen onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
                 ) : (
-                  <CryptoView />
+                  <CryptoView onLockWallet={lockWallet} />
                 )}
               </>
             ) : (

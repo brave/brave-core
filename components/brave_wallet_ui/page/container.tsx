@@ -45,6 +45,10 @@ function Container (props: Props) {
     setView(path)
   }
 
+  const onLockWallet = () => {
+    // Logic here to lock wallet
+  }
+
   return (
     <WalletPageLayout>
       <SideNav
@@ -54,7 +58,7 @@ function Container (props: Props) {
       />
       <WalletSubViewLayout>
         {view === 'crypto' ? (
-          <CryptoView />
+          <CryptoView onLockWallet={onLockWallet} />
         ) : (
           <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <h2>{view} view</h2>
