@@ -10,7 +10,7 @@
 
 #include "bat/ledger/ledger.h"
 
-// POST https://bitflyer.jp/api/link/v1/token
+// POST https://bitflyer.com/api/link/v1/token
 //
 // Request body:
 // {
