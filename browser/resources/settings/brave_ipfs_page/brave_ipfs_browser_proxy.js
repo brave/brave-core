@@ -2,60 +2,70 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
+// clang-format off
+// #import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
+// clang-format on
 
-/** @interface */
-export class BraveIPFSBrowserProxy {
+cr.define('settings', function () {
+  /** @interface */
+  /* #export */ class BraveIPFSBrowserProxy {
+    /**
+     * @param {boolean} value name.
+     */
+    setIPFSCompanionEnabled(value) { }
+    getIPFSResolveMethodList() { }
+    getIPFSEnabled() { }
+    setIPFSStorageMax(value) { }
+  }
+
   /**
-   * @param {boolean} value name.
+   * @implements {settings.BraveIPFSBrowserProxy}
    */
-  setIPFSCompanionEnabled (value) {}
-  getIPFSResolveMethodList () {}
-  getIPFSEnabled () {}
-  setIPFSStorageMax (value) {}
-}
+  /* #export */ class BraveIPFSBrowserProxyImpl {
+    setIPFSCompanionEnabled(value) {
+      chrome.send('setIPFSCompanionEnabled', [value])
+    }
 
-/**
- * @implements {settings.BraveIPFSBrowserProxy}
- */
-export class BraveIPFSBrowserProxyImpl {
-  setIPFSCompanionEnabled (value) {
-    chrome.send('setIPFSCompanionEnabled', [value])
+    setIPFSStorageMax(value) {
+      chrome.send('setIPFSStorageMax', [value])
+    }
+
+    launchIPFSService(value) {
+      chrome.send('launchIPFSService', [value])
+    }
+
+    shutdownIPFSService() {
+      chrome.send('shutdownIPFSService', [])
+    }
+
+    /** @overrides */
+    getIPFSResolveMethodList() {
+      return new Promise(resolve => {
+        if (!chrome.ipfs) {
+          resolve(false)
+          return
+        }
+        chrome.ipfs.getResolveMethodList(resolve)
+      })
+    }
+
+    /** @overrides */
+    getIPFSEnabled() {
+      return new Promise(resolve => {
+        if (!chrome.ipfs) {
+          resolve(false)
+          return
+        }
+        chrome.ipfs.getIPFSEnabled(resolve)
+      })
+    }
   }
 
-  setIPFSStorageMax (value) {
-    chrome.send('setIPFSStorageMax', [value])
-  }
+  cr.addSingletonGetter(BraveIPFSBrowserProxyImpl)
 
-  launchIPFSService (value) {
-    chrome.send('launchIPFSService', [value])
-  }
-
-  shutdownIPFSService () {
-    chrome.send('shutdownIPFSService', [])
-  }
-
-  /** @override */
-  getIPFSResolveMethodList () {
-    return new Promise(resolve => {
-      if (!chrome.ipfs) {
-        resolve(false)
-        return
-      }
-      chrome.ipfs.getResolveMethodList(resolve)
-    })
-  }
-
-  /** @override */
-  getIPFSEnabled () {
-    return new Promise(resolve => {
-      if (!chrome.ipfs) {
-        resolve(false)
-        return
-      }
-      chrome.ipfs.getIPFSEnabled(resolve)
-    })
-  }
-}
-
-cr.addSingletonGetter(BraveIPFSBrowserProxyImpl)
+  // #cr_define_end
+  return {
+    BraveIPFSBrowserProxy: BraveIPFSBrowserProxy,
+    BraveIPFSBrowserProxyImpl: BraveIPFSBrowserProxyImpl,
+  };
+});
