@@ -1,11 +1,9 @@
-import("//build/buildflag_header.gni")
 import("//brave/components/p3a/buildflags.gni")
+import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [
-    "BRAVE_P3A_ENABLED=$brave_p3a_enabled",
-  ]
+  flags = [ "BRAVE_P3A_ENABLED=$brave_p3a_enabled" ]
 }
 
 source_set("p3a") {
@@ -46,4 +44,3 @@ source_set("p3a") {
     "//url",
   ]
 }
-

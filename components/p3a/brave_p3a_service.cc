@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/command_line.h"
 #include "base/i18n/timezone.h"
@@ -198,7 +199,8 @@ base::TimeDelta TimeDeltaTillMonday(base::Time time) {
 BraveP3AService::BraveP3AService(PrefService* local_state,
                                  std::string channel,
                                  std::string week_of_install)
-    : local_state_(std::move(local_state)), channel_(std::move(channel)),
+    : local_state_(std::move(local_state)),
+      channel_(std::move(channel)),
       week_of_install_(week_of_install) {}
 
 BraveP3AService::~BraveP3AService() = default;

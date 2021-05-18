@@ -23,8 +23,5 @@ source_set("browser") {
     "//url",
   ]
 
-  public_deps = [
-    "buildflags"
-  ]
-
+  public_deps = [ "buildflags" ]
 }
