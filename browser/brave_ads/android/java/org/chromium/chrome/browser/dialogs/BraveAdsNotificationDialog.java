@@ -78,9 +78,6 @@ public class BraveAdsNotificationDialog {
 
         window.setAttributes(wlp);
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -101,7 +98,7 @@ public class BraveAdsNotificationDialog {
                     case MotionEvent.ACTION_MOVE:
                         deltaY = event.getRawY() + mYDown;
                         if (deltaY > 0) {
-                          deltaY = 0;
+                            deltaY = 0;
                         }
                         v.animate()
                           .y(deltaY)
