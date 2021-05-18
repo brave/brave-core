@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "Beklager, det oppsto en feil under forsøk på å vise et bilde-i-bilde.";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "Dette alternativet aktiverer/deaktiverer automatisk avspilling når spillelisten åpnes. Dette alternativet påvirker imidlertid ikke automatisk avspilling når neste video på listen lastes inn.";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Dette alternativet aktiverer/deaktiverer automatisk avspilling når spillelisten åpnes. Dette alternativet påvirker imidlertid ikke automatisk avspilling når den neste videoen på listen lastes inn.";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Automatisk avspilling";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "På";
 
-/* Option Text for Auto Save Only Wifi Option */
-"playlist.playlistAutoSaveOptionOnlyWifi" = "Kun Wifi";
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Kun Wi-fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "Å legge til video- og lydfiler for frakoblet bruk kan ta opp mye lagringsplass på enheten din, samt bruke din mobildata";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Dette alternativet beholder automatisk elementene i spillelisten på enheten din, slik at du kan spille dem av når du ikke er tilkoblet Internett.";
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Dette alternativet beholder automatisk elementene i spillelisten på enheten din, slik at du kan spille dem av uten Internett-tilkobling.";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Lagre automatisk for frakoblet modus";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Å legge til video- og lydfiler for frakoblet bruk kan ta opp mye lagringsplass på enheten din. Fjern noen filer for å frigjøre lagringsplass.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Nesten tom for lagringsplass";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Start avspilling fra der jeg var";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Dette alternativet ber deg om å «Legge til i Brave-spilleliste» på enkelte medienettsteder. Du kan fortsatt legge til media (video/lyd) ved å trykke på og holde inne ønskede media, eller fra menyknappen «Del med ...».";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Når dette aktiveres, vises en stolpe automatisk på de fleste medienettsteder, hvilket gjør det lettere å legge til video-/ lydfilene i spillelisten din.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "Vis «Legg til i Brave-spilleliste»";
 
 /* Description for Playlist setting */
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "Støtter hastigheter på opptil 100 Mbit/s";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "Velg geografisk beliggenhet/land";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "Holder deg anonym på nettet";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "Vi vil aldri dele eller selge informasjonen din";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Beskytter deg mot uønskede forbindelser";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStore-kvittering";

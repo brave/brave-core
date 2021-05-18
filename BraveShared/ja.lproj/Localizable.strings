@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "すみません、エラーによりピクチャ・イン・ピクチャで表示できません。";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "この設定はPlaylistが開かれたときに自動で動画を再生する機能のオン/オフを切り替えますが、リスト上の次の動画がロードされたとき自動で再生する機能に対しての変更が行われません。";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "この設定は、Playlistが開かれたときに自動再生が行われる機能のオン/オフを行います。ただし、この設定を行っても再生リストの次の動画がロードされた際自動で再生する挙動の変更はされません。";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "自動再生";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "オン";
 
-/* Option Text for Auto Save Only Wifi Option */
-"playlist.playlistAutoSaveOptionOnlyWifi" = "Wifi接続時のみ";
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Wi-Fi接続時のみ";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "動画や音声ファイルをオフライン利用可能にする際、デバイスのデータ容量や通信量を大きく消費する可能性があります。";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "この設定を行うと、Playlistに追加されたアイテムを自動的にあなたのデバイスに保持し、インターネットに接続されていないときでも再生できるようになります。";
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "この設定を行うと、Playlistに追加されたアイテムが、オフライン再生のために自動でデバイスに保存されます。";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "オフライン再生のために自動保存する";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "動画や音声をオフライン使用のために保存することは、デバイスのデータ容量を大きく消費することがあります。容量を確保するため、いくつかのファイルを削除してください。";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "データ容量がもうすぐいっぱいです";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "前回の続きから再生";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "この設定を行うと、いくつかのサイトで「Brave Playlistに追加する」メッセージが表示されます。オフにしても、動画や音声プレイヤーを長押しもしくはメニューボタンの「共有」からPlaylistに追加することができます。";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "オンにすると、多くの動画・音声メディアのウェブサイトで、動画や音声を簡単にPlaylistに追加するためのバーが自動で表示されます。";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "「Brave Playlistに追加する」を表示する";
 
 /* Description for Playlist setting */
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "最大100Mbpsの速度をサポート";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "あなたの位置/国を選択する";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "オンラインでの匿名性を維持";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "あなたの情報を第三者に共有・販売しません";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "不要な通信をブロック";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStoreレシート";

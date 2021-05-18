@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "Maaf, telah terjadi kesalahan saat mencoba menampilkan gambar-dalam-gambar.";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "Opsi ini akan mengaktifkan/menonaktifkan pemutar otomatis saat Daftar Putar dibuka. Namun piihan ini tidak aman memengaruhi pemutar otomatis saat video berikutnya dalam daftar tersebut telah dimuat.";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Opsi ini akan mengaktifkan/menonaktifkan putar-otomatis saat daftar Putar dibuka. Namun, opsi ini tidak akan memengaruhi putar-otomatis saat memuat video berikutnya di dalam daftar.";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Pemutar Otomatis";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "Hidupkan";
 
-/* Option Text for Auto Save Only Wifi Option */
-"playlist.playlistAutoSaveOptionOnlyWifi" = "Hanya Wifi";
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Hanya Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "Menambahkan berkas video dan audio untuk penggunaan luring dapat menghabiskan banyak penyimpanan di perangkat Anda, selain juga menggunakan data seluler Anda";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Opsi ini akan secara otomatis menyimpan daftar putar Anda di perangkat Anda sehingga Anda dapat memutarnya saat sedang tidak tersambung ke Internet.";
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Opsi ini akan secara otomatis menyimpan daftar putar Anda di perangkat Anda sehingga Anda dapat memutarnya tanpa koneksi Internet.";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Simpan Otomatis untuk Luring";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Menambahkan berkas video dan audio untuk penggunaan luring dapat menghabiskan banyak penyimpanan di perangkat Anda. Silakan hapus beberapa berkas untuk menyediakan lebih banyak ruang penyimpanan.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Penyimpanan Hampir Penuh";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Mulai Putar Ulang dari saat saya terakhir memutarnya";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Opsi ini akan meminta Anda untuk 'Menambahkan ke Daftar Putar Brave' Anda pada sejumlah situs web media. Anda dapat tetap menambahkan media (video/audio) dengan lama menekan media, atau dari tombol menu \"Bagikan Dengan...\".";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Saat diaktifkan, sebuah bilah akan secara otomatis muncul di sebagian besar situs web media, sehingga menambahkan berkas video/audio ke Daftar Putar Anda menjadi lebih mudah.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "Tampilkan \"Tambahkan ke Daftar Putar Brave\"";
 
 /* Description for Playlist setting */
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "Mendukung kecepatan hingga 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "Pilih lokasi geo/negara Anda";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "Menjaga Anda tetap anonim selama online";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "Kami tidak pernah membagikan atau menjual informasi Anda";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Melindungi Anda dari koneksi yang tak diinginkan";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Tanda Terima Apple Store";

@@ -964,6 +964,24 @@
 /* No comment provided by engineer. */
 "Settings" = "Настройки";
 
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "Вручную";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "Через день";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "Через месяц";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "Через неделю";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "Закрывать вкладки";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "Brave будет автоматически закрывать вкладки, которые давно не просматривались.";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Не удалось загрузить страницу.";
 

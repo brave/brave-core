@@ -197,10 +197,10 @@
 "playList.addToPlayListAlertDescription" = "你想新增此影片至播放清單嗎？";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "新增至 Brave 播放清單";
+"playList.addToPlayListAlertTitle" = "新增至 Brave Playlist";
 
 /* The description for the alert that shows up when an item is expired */
-"playList.expiredAlertDescription" = "此為直播影片或已達時間限制。請重新開啟連結以重新整理。";
+"playList.expiredAlertDescription" = "此為直播影片或已達時間限制。請重新整理並重新開啟連結。";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "影片已到期";
@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "抱歉，嘗試顯示子母畫面時發生錯誤。";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "開啟播放清單時，此選項將啟用／停用自動播放。但是，在加載清單中的下一個影片時，此選項將不會自動播放。";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "此選項會在播放清單開啟時啟用/停用自動播放功能。不過，載入清單中的下一部影片時，自動播放功能不會受到影響。";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "自動播放";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "開啟";
 
-/* Option Text for Auto Save Only Wifi Option */
-"playlist.playlistAutoSaveOptionOnlyWifi" = "僅使用 Wifi";
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "僅使用 Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "離線使用新增影片及音頻檔案可能佔用裝置的大量儲存空間及手機使用數據";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "此選項將自動儲存播放清單項目到裝置，因此你可以在沒有網路連線的情況下播放。";
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "此選項會自動將您的播放清單項目保存在裝置上，以便您在沒有網路連線的情況下播放。";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "自動離線儲存";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "如果新增影片和音訊檔案以供離線使用，會佔用大量裝置儲存空間。請移除部分檔案，以釋出儲存空間。";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "儲存空間快要滿了";
@@ -254,7 +257,7 @@
 "playlist.playlistLiveMediaStream" = "直播";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "播放清單媒體與離線數據";
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Playlist 媒體與離線數據";
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "播放清單離線數據";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "從上次停止播放的位置開始播放";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "此選項將要求在某些媒體網站上「新增至 Brave 播放清單」。你仍然可以長按媒體或從「與…共享」功能表按鈕新增媒體（影片／音頻）。";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "啟用時，大多數媒體網站上都會自動顯示動作列，讓您更容易將這些影片/音訊檔案新增至播放清單。";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "顯示「新增至 Brave 播放清單」";
 
 /* Description for Playlist setting */
@@ -338,10 +343,10 @@
 "playList.toastAddToPlaylistOpenButton" = "開啟";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "新增至 Brave 播放清單";
+"playList.toastAddToPlaylistTitle" = "新增至 Brave Playlist";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "檢視 Brave 播放清單";
+"playList.toastExitingItemPlaylistTitle" = "檢視 Brave Playlist";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "關閉內容選單";
@@ -383,7 +388,7 @@
 "rewards.legacyWalletTransfer" = "舊版錢包轉帳";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "地址格式錢包轉帳已完成！";
+"rewards.legacyWalletTransferStatusButtonCompletedTitle" = "舊錢包轉帳已完成！";
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonDelayedTitle" = "地址格式錢包轉帳已延遲...";
@@ -392,7 +397,7 @@
 "rewards.legacyWalletTransferStatusButtonInProgressTitle" = "地址格式錢包轉帳進行中";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "地址格式錢包轉帳失效";
+"rewards.legacyWalletTransferStatusButtonInvalidTitle" = "舊錢包轉帳失效";
 
 /* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonPendingTitle" = "地址格式錢包轉帳狀態為等待中";
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "最高可支援 100 Mbps 的速度";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "選擇您的地理/國家/地區位置";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "讓您在線上保持匿名狀態";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "我們絕不會洩漏或販賣您的資訊";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "杜絕不需要的連線";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "App Store 收據";

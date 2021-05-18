@@ -964,6 +964,24 @@
 /* No comment provided by engineer. */
 "Settings" = "Tetapan";
 
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "Secara manual";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "Selepas Satu Hari";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "Selepas Satu Bulan";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "Selepas Satu Minggu";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "Tutup Tab";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "Benarkan Brave menutup tab secara automatik yang belum dilihat baru-baru ini.";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Tidak dapat memuat halaman.";
 

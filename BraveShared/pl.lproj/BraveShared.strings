@@ -964,6 +964,24 @@
 /* No comment provided by engineer. */
 "Settings" = "Ustawienia";
 
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "Ręcznie";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "Po jednym dniu";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "Po miesiącu";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "Po tygodniu";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "Zamknij karty";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "Zezwól Brave na automatyczne zamykanie kart, które nie były ostatnio przeglądane.";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nie można załadować strony.";
 

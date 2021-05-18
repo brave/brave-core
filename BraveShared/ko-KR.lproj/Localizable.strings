@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "PIP(Picture-In-Picture)를 표시하려는 중에 오류가 발생했습니다.";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "재생목록이 열렸을 때 자동 재생을 활성화/비활성화하는 옵션입니다. 이 옵션은 목록 내 다음 동영상이 로드되었을 때 자동 재생에는 영향을 미치지 않습니다.";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "재생목록이 열렸을 때 자동 재생을 활성화/비활성화하는 옵션입니다. 이 옵션은 목록 내 다음 동영상을 로드할 때 자동 재생에는 영향을 미치지 않습니다.";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "자동 재생";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "켬";
 
-/* Option Text for Auto Save Only Wifi Option */
+/* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Wi-Fi에서만";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "동영상 및 오디오를 오프라인 용도로 추가하면 기기 내 저장소 및 셀룰러 데이터를 많이 사용할 수 있습니다.";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "이 옵션을 선택하면 자동으로 재생목록 내 항목을 기기에 저장하여 인터넷 연결이 끊어진 상태에서도 재생할 수 있습니다.";
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "이 옵션을 선택하면 자동으로 재생목록 내 항목을 기기에 저장하여 인터넷 연결이 없는 상태에서도 재생할 수 있습니다.";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "오프라인용으로 자동 저장";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "동영상 및 오디오를 오프라인 용도로 추가하면 기기 내 저장소를 많이 사용할 수 있습니다. 일부 파일을 삭제하여 저장소 공간을 확보하세요.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "저장소 거의 가득 참";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "종료한 위치에서 재생 시작";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "이 옵션을 선택하면 일부 미디어 웹사이트에서 'Brave Playlist에 추가'할지 물어봅니다. 미디어를 길게 누르거나 \"다음 대상과 공유...\" 메뉴 버튼을 사용하여 미디어(비디오/오디오)를 추가할 수도 있습니다.";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "활성화하면 창에 대부분의 미디어 웹사이트가 자동으로 표시되어 동영상/오디오를 재생목록으로 쉽게 추가할 수 있습니다.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "\"Brave Playlist에 추가\" 표시";
 
 /* Description for Playlist setting */
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "최대 100Mbps의 속도 지원";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "지역/국가 위치 선택";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "익명 온라인 상태 유지";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "사용자 정보 공유 또는 판매 절대 없음";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "원치 않는 연결로부터 보호";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "App Store 영수증";

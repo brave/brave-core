@@ -964,6 +964,24 @@
 /* No comment provided by engineer. */
 "Settings" = "Configurações";
 
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "Manualmente";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "Depois de um dia";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "Depois de um mês";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "Depois de uma semana";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "Fechar abas";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "Permita que o Brave feche automaticamente as abas que não foram visualizadas recentemente.";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Não foi possível carregar a página.";
 

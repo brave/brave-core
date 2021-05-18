@@ -224,7 +224,7 @@
 "playList.pictureInPictureErrorTitle" = "Ocorreu um erro ao tentar exibir o picture-in-picture.";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "Esta opção ativará/desativará a reprodução automática quando a playlist for aberta. No entanto, isso não afetará a reprodução automática quando o próximo vídeo da lista for carregado.";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Esta opção ativará/desativará a reprodução automática quando a Playlist for aberta. No entanto, isso não afetará a reprodução automática ao carregar o próximo vídeo da lista.";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Reprodução automática";
@@ -235,17 +235,20 @@
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "Ativar";
 
-/* Option Text for Auto Save Only Wifi Option */
+/* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Somente Wi-Fi";
 
-/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsDescription" = "A adição de arquivos de vídeo e áudio para uso off-line pode consumir muito espaço de armazenamento no seu dispositivo, além de utilizar seus dados móveis";
 
-/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi)) */
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Esta opção manterá automaticamente os itens da sua playlist no seu dispositivo para que você possa reproduzi-los sem uma conexão com a internet.";
 
-/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wifi) */
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Salvamento automático para uso off-line";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "A adição de arquivos de vídeo e áudio para uso off-line pode consumir muito espaço de armazenamento no seu dispositivo. Remova alguns arquivos para liberar espaço.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "O armazenamento está quase cheio";
@@ -292,10 +295,12 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Continuar reprodução de onde parei da última vez";
 
-/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast */
-"playlist.playlistToastShowSettingsOptionFooterText" = "Esta opção pedirá para você \"Adicionar à Brave Playlist\" em alguns sites de mídia. Você ainda poderá adicionar mídia (vídeo/áudio) mantendo o item pressionado ou usando o botão de menu \"Compartilhar com...\"";
+/* Footer Text for the Playlist Settings Option for Enable/Disable Add Toast
+   Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistToastShowSettingsOptionFooterText" = "Quando esta opção estiver ativada, uma barra será exibida automaticamente na maioria dos sites de mídia, facilitando a adição desses arquivos de vídeo/áudio à sua Playlist.";
 
-/* Title for the Playlist Settings Option for Enable/Disable Add Toast */
+/* Title for the Playlist Settings Option for Enable/Disable Add Toast
+   Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistToastShowSettingsOptionTitle" = "Mostrar a mensagem \"Adicionar à Brave Playlist\"";
 
 /* Description for Playlist setting */
@@ -965,13 +970,13 @@
 "vpn.checkboxFast" = "É compatível com velocidades de até 100 Mbps";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoSelector" = "Escolha seu país/região geográfica";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoIPLog" = "Garante seu anonimato on-line";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "Nunca compartilhamos nem vendemos suas informações";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Protege você de conexões indesejadas";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Recibo da App Store";
