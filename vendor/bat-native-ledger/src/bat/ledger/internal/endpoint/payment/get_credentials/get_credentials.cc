@@ -59,6 +59,7 @@ type::Result GetCredentials::CheckStatusCode(const int status_code) {
   }
 
   if (status_code != net::HTTP_OK) {
+    BLOG(0, "Unexpected HTTP status: " << status_code);
     return type::Result::RETRY;
   }
 

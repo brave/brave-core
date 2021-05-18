@@ -56,10 +56,12 @@ std::string GetMe::GetUrl() {
 
 type::Result GetMe::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_UNAUTHORIZED) {
+    BLOG(0, "Unauthorized access");
     return type::Result::EXPIRED_TOKEN;
   }
 
   if (status_code != net::HTTP_OK) {
+    BLOG(0, "Unexpected HTTP status: " << status_code);
     return type::Result::LEDGER_ERROR;
   }
 

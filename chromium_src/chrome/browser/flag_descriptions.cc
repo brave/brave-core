@@ -57,6 +57,14 @@ const char kBraveSyncDescription[] =
 const char kBraveIpfsName[] = "Enable IPFS";
 const char kBraveIpfsDescription[] =
     "Enable native support of IPFS.";
+const char kBraveRewardsVerboseLoggingName[] =
+    "Enable Brave Rewards verbose logging";
+const char kBraveRewardsVerboseLoggingDescription[] =
+    "Enables detailed logging of Brave Rewards system events to a log file "
+    "stored on your device. Please note that this log file could include "
+    "information such as browsing history and credentials such as passwords "
+    "and access tokens depending on your activity. Please do not share it "
+    "unless asked to by Brave staff.";
 const char kBraveRewardsBitflyerName[] = "Enable bitFlyer for Brave Rewards";
 const char kBraveRewardsBitflyerDescription[] =
     "Enables support for bitFlyer as an external wallet provider for Brave "
