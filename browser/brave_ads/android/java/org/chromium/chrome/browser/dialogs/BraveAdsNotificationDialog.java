@@ -70,8 +70,8 @@ public class BraveAdsNotificationDialog {
         WindowManager.LayoutParams wlp = window.getAttributes();
 
         wlp.gravity = Gravity.TOP;
-        wlp.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-          WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        wlp.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 
         mAdsDialog.setCanceledOnTouchOutside(false);
         mAdsDialog.setCancelable(false);
@@ -85,49 +85,49 @@ public class BraveAdsNotificationDialog {
         ((TextView) mAdsDialog.findViewById(R.id.brave_ads_custom_notification_body)).setText(body);
 
         mNotificationId = notificationId;
-        mAdsDialog.findViewById(R.id.brave_ads_custom_notification_popup).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                float deltaY;
-                float deltaYDp;
-                float y;
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        mYDown = v.getY() - event.getRawY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        deltaY = event.getRawY() + mYDown;
-                        if (deltaY > 0) {
-                            deltaY = 0;
+        mAdsDialog.findViewById(R.id.brave_ads_custom_notification_popup)
+                .setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        float deltaY;
+                        float deltaYDp;
+                        float y;
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                mYDown = v.getY() - event.getRawY();
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                deltaY = event.getRawY() + mYDown;
+                                if (deltaY > 0) {
+                                    deltaY = 0;
+                                }
+                                v.animate().y(deltaY).setDuration(0).start();
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                if (mYDown != 0.0f) {
+                                    deltaYDp = pxToDp(event.getRawY() + mYDown,
+                                            context.getResources().getDisplayMetrics());
+                                } else {
+                                    return false;
+                                }
+                                if (deltaYDp < -1 * MIN_DISTANCE_FOR_DISMISS) {
+                                    mAdsDialog.dismiss();
+                                    mAdsDialog = null;
+                                    BraveAdsNativeHelper.nativeOnCloseAdNotification(
+                                            Profile.getLastUsedRegularProfile(), mNotificationId,
+                                            false);
+                                    mNotificationId = null;
+                                } else if (deltaYDp <= MAX_DISTANCE_FOR_TAP
+                                        && deltaYDp >= (-1 * MAX_DISTANCE_FOR_TAP)) {
+                                    adsDialogTapped(origin);
+                                } else {
+                                    v.animate().translationY(0);
+                                }
+                                break;
                         }
-                        v.animate()
-                          .y(deltaY)
-                          .setDuration(0).start();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if (mYDown != 0.0f) {
-                            deltaYDp = pxToDp(event.getRawY() + mYDown, context.getResources().getDisplayMetrics());
-                        } else {
-                            return false;
-                        }
-                        if (deltaYDp < -1 * MIN_DISTANCE_FOR_DISMISS) {
-                            mAdsDialog.dismiss();
-                            mAdsDialog = null;
-                            BraveAdsNativeHelper.nativeOnCloseAdNotification(
-                                    Profile.getLastUsedRegularProfile(),
-                                    mNotificationId, false);
-                            mNotificationId = null;
-                        } else if (deltaYDp <= MAX_DISTANCE_FOR_TAP &&
-                            deltaYDp >= (-1 * MAX_DISTANCE_FOR_TAP)) {
-                            adsDialogTapped(origin);
-                        } else {
-                            v.animate().translationY(0);
-                        }
-                        break;
-                }
-                return true;
-            }
-        });
+                        return true;
+                    }
+                });
     }
 
     private static void adsDialogTapped(final String origin) {
@@ -136,7 +136,8 @@ public class BraveAdsNotificationDialog {
             mAdsDialog = null;
             ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
             if (chromeTabbedActivity != null) {
-                chromeTabbedActivity.getTabCreator(false).launchUrl(origin, TabLaunchType.FROM_CHROME_UI);
+                chromeTabbedActivity.getTabCreator(false).launchUrl(
+                        origin, TabLaunchType.FROM_CHROME_UI);
             }
         } else {
             mAdsDialog.dismiss();
@@ -174,5 +175,4 @@ public class BraveAdsNotificationDialog {
     private static int pxToDp(float value, DisplayMetrics metrics) {
         return Math.round(value / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
-
 }
