@@ -47,6 +47,10 @@ Polymer({
       type: Boolean,
       value: false,
     },
+    importKeysError_: {
+      type: Boolean,
+      value: false,
+    },
     showAddp2pKeyDialog_: {
       type: Boolean,
       value: false,
@@ -61,16 +65,33 @@ Polymer({
     this.addWebUIListener('brave-ipfs-node-status-changed', (launched) => {
       this.onServiceLaunched(launched)
     })
-    this.addWebUIListener('brave-ipfs-keys-loaded', (launched) => {
+    this.addWebUIListener('brave-ipfs-keys-loaded', (success) => {
       this.updateKeys()
     })
+    this.addWebUIListener('brave-ipfs-key-imported', (key, value, success) => {
+      this.importKeysError_ = !success
+      if (this.importKeysError_ ) {
+        const errorLabel = (this.$$('#key-import-error'));
+        errorLabel.textContent = this.i18n('ipfsImporKeysError', key)
+        return;
+      }
+      this.keys_.push({ "name" : key, "value" : value});
+      this.notifyKeylist();
+    })
   },
-
+  notifyKeylist: function() {
+    const keysList =
+    /** @type {IronListElement} */ (this.$$('#keysList'));
+    if (keysList) {
+      keysList.notifyResize();
+    }
+  },
   toggleUILayout: function(launched) {
     this.launchNodeButtonEnabled_ = !launched;
     this.localNodeLaunched = launched
+    this.importKeysError_ = false
     if (launched) {
-      this.localNodeLaunchError_ = false;
+      this.localNodeLaunchError_ = false
     } else {
       this.showAddp2pKeyDialog_ = false
     }
@@ -78,6 +99,9 @@ Polymer({
 
   onServiceLaunched: function(success) {
     this.toggleUILayout(success)
+    if (success) {
+      this.updateKeys();
+    }
   },
 
   onStartNodeKeyTap_: function() {
@@ -91,12 +115,7 @@ Polymer({
   /*++++++
   * @override */
   ready: function() {
-    this.onServiceLaunched(this.localNodeLaunched)
-    window.addEventListener('load', this.onLoad_.bind(this));
-  },
-
-  onLoad_: function() {
-    this.updateKeys();
+    this.browserProxy_.notifyIpfsNodeStatus();
   },
 
   isDefaultKey_: function(name) {
@@ -113,6 +132,7 @@ Polymer({
         return;
       this.keys_ = JSON.parse(keys);
       this.toggleUILayout(true)
+      this.notifyKeylist();
     });
   },
 

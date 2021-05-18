@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
 
+#include <memory>
 #include <string>
 
 #include "base/bind.h"
@@ -25,6 +26,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "components/flags_ui/flags_ui_constants.h"
@@ -57,6 +59,7 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "brave/components/ipfs/pref_names.h"
 #endif
 
@@ -77,6 +80,26 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
   if (service) {
     ipfs_service_observer_.Observe(service);
   }
+  web_ui()->RegisterMessageCallback(
+      "notifyIpfsNodeStatus",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::CheckIpfsNodeStatus,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setIPFSStorageMax",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetIPFSStorageMax,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "importIpnsKey",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::ImportIpnsKey,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "launchIPFSService",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::LaunchIPFSService,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "shutdownIPFSService",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::ShutdownIPFSService,
+                          base::Unretained(this)));
 #endif
 
   web_ui()->RegisterMessageCallback(
@@ -102,19 +125,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setMediaRouterEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setIPFSStorageMax",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::SetIPFSStorageMax,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "launchIPFSService",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::LaunchIPFSService,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "shutdownIPFSService",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::ShutdownIPFSService,
-                          base::Unretained(this)));
-
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
@@ -509,21 +519,79 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
 }
 
 #if BUILDFLAG(IPFS_ENABLED)
-void BraveDefaultExtensionsHandler::OnIpfsLaunched(bool result, int64_t pid) {
-  if (!IsJavascriptAllowed())
+void BraveDefaultExtensionsHandler::FileSelected(const base::FilePath& path,
+                                                 int index,
+                                                 void* params) {
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(profile_);
+  if (!service)
     return;
+  service->GetIpnsKeysManager()->ImportKey(
+      path, dialog_key_,
+      base::BindOnce(&BraveDefaultExtensionsHandler::OnKeyImported,
+                     base::Unretained(this)));
+  select_file_dialog_.reset();
+  dialog_key_.clear();
+}
+
+void BraveDefaultExtensionsHandler::OnKeyImported(const std::string& key,
+                                                  const std::string& value,
+                                                  bool success) {
+  FireWebUIListener("brave-ipfs-key-imported", base::Value(key),
+                    base::Value(value), base::Value(success));
+}
+
+void BraveDefaultExtensionsHandler::FileSelectionCanceled(void* params) {
+  select_file_dialog_.reset();
+  dialog_key_.clear();
+}
+
+void BraveDefaultExtensionsHandler::ImportIpnsKey(const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  std::string key_name;
+  args->GetString(0, &key_name);
+  auto* web_contents = web_ui()->GetWebContents();
+  select_file_dialog_ = ui::SelectFileDialog::Create(
+      this, std::make_unique<ChromeSelectFilePolicy>(web_contents));
+  if (!select_file_dialog_) {
+    VLOG(1) << "Export already in progress";
+    return;
+  }
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  const base::FilePath directory = profile->last_selected_directory();
+  gfx::NativeWindow parent_window = web_contents->GetTopLevelNativeWindow();
+  ui::SelectFileDialog::FileTypeInfo file_types;
+  file_types.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
+  dialog_key_ = key_name;
+  select_file_dialog_->SelectFile(
+      ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(), directory,
+      &file_types, 0, FILE_PATH_LITERAL("key"), parent_window, nullptr);
+}
+
+void BraveDefaultExtensionsHandler::CheckIpfsNodeStatus(
+    const base::ListValue* args) {
+  NotifyNodeStatus();
+}
+
+void BraveDefaultExtensionsHandler::NotifyNodeStatus() {
   ipfs::IpfsService* service =
       ipfs::IpfsServiceFactory::GetForContext(profile_);
   bool launched = service && service->IsDaemonLaunched();
   FireWebUIListener("brave-ipfs-node-status-changed", base::Value(launched));
 }
+
+void BraveDefaultExtensionsHandler::OnIpfsLaunched(bool result, int64_t pid) {
+  if (!IsJavascriptAllowed())
+    return;
+  NotifyNodeStatus();
+}
+
 void BraveDefaultExtensionsHandler::OnIpfsShutdown() {
   if (!IsJavascriptAllowed())
     return;
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(profile_);
-  bool launched = service && service->IsDaemonLaunched();
-  FireWebUIListener("brave-ipfs-node-status-changed", base::Value(launched));
+  NotifyNodeStatus();
 }
 void BraveDefaultExtensionsHandler::OnIpnsKeysLoaded(bool success) {
   if (!IsJavascriptAllowed())

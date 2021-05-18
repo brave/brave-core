@@ -2,6 +2,9 @@
 <script type="module" src="../settings_shared_css.js"></script>
 
 <style include="settings-shared">
+  #submit {
+    margin-left : 10px;
+  }
 </style>
 <cr-dialog show-close-button show-on-attach>
   <div slot="title">$i18n{ipfsAddKeyDialogTitle}</div>
@@ -14,9 +17,12 @@
     </cr-input>
   </div>
   <div slot="button-container">
+    <cr-button class="action-button" on-click="onImportKeyTap_" disabled="[[!isSubmitButtonEnabled_]]">
+      $i18n{ipfsKeyImport}
+    </cr-button>
     <cr-button class="action-button" id="submit" on-click="handleSubmit_"
         disabled="[[!isSubmitButtonEnabled_]]">
-    Submit
+      $i18n{ipfsKeyGenerate}
     </cr-button>
   </div>
 </cr-dialog>
