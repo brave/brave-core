@@ -54,6 +54,7 @@ const CryptoView = () => {
           tabList={TopNavOptions}
           selectedTab={selectedTab}
           onSubmit={tabTo}
+          hasMoreButton={true}
         />
       }
       {selectedTab === 'defi' &&
