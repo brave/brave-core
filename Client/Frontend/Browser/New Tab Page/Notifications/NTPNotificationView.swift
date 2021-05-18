@@ -63,11 +63,10 @@ class NTPNotificationView: UIStackView {
     
     lazy var primaryButton = RoundInterfaceButton(type: .system).then {
         $0.setTitle(config.primaryButtonConfig?.text, for: .normal)
-        $0.titleLabel?.textColor = .white
         $0.backgroundColor = .braveBlurple
         $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
-        $0.tintColor = .white
+        $0.setTitleColor(.white, for: .normal)
         if config.primaryButtonConfig?.showCoinIcon == true {
             $0.setImage(#imageLiteral(resourceName: "turn_rewards_on_money_icon"), for: .normal)
             $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
@@ -76,7 +75,7 @@ class NTPNotificationView: UIStackView {
     
     lazy var secondaryButton = RoundInterfaceButton(type: .system).then {
         $0.setTitle(config.secondaryButtonConfig?.text, for: .normal)
-        $0.titleLabel?.textColor = config.textColor
+        $0.setTitleColor(config.textColor, for: .normal)
         $0.backgroundColor = .clear
         $0.tintColor = .white
         $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)

@@ -50,7 +50,7 @@ class EnableVPNSettingHeader: UIView {
         $0.setTitle(title, for: .normal)
         $0.backgroundColor = .braveOrange
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        $0.titleLabel?.textColor = .white
+        $0.setTitleColor(.white, for: .normal)
         $0.snp.makeConstraints { make in
             make.height.equalTo(44)
             make.width.greaterThanOrEqualTo(120)

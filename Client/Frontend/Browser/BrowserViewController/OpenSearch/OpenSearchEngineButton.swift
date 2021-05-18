@@ -47,7 +47,7 @@ class OpenSearchEngineButton: Button {
     override init(frame: CGRect) {
         self.action = .disabled
         super.init(frame: frame)
-        titleLabel?.textColor = .braveOrange
+        setTitleColor(.braveOrange, for: .normal)
     }
 
     convenience init(title: String? = nil, hidesWhenDisabled: Bool) {
