@@ -527,6 +527,7 @@ brave_java_resources = [
   "java/res/drawable/ac_radio_button_selector.xml",
   "java/res/drawable/ac_radio_group_bg.xml",
   "java/res/drawable/ac_text_selector.xml",
+  "java/res/drawable/ads_custom_notification_border.xml",
   "java/res/drawable/bat_ads_close_button.xml",
   "java/res/drawable/bat_ads_logo_button.xml",
   "java/res/drawable/bat_panel_gradient.xml",
