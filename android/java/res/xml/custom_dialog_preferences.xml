@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.example.myapplication.custom.CustomDialogPrefFragmentDialog
+        android:key="custom_dialog"
+        android:dialogLayout="@layout/brave_dialog_preference"
+        />
+</PreferenceScreen>

@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.collection.ArraySet;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -32,6 +33,7 @@ import org.json.JSONException;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.CollectionUtil;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
@@ -56,6 +58,8 @@ import org.chromium.chrome.browser.SetDefaultBrowserActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
+import org.chromium.chrome.browser.browsing_data.ClearBrowsingDataFragmentAdvanced;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
@@ -97,17 +101,20 @@ import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Brave's extension for ChromeActivity
  */
 @JNINamespace("chrome::android")
-public abstract class BraveActivity<C extends ChromeActivityComponent> extends ChromeActivity {
+public abstract class BraveActivity<C extends ChromeActivityComponent>
+        extends ChromeActivity implements BrowsingDataBridge.OnClearBrowsingDataListener {
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
@@ -121,6 +128,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String P3A_URL = "https://brave.com/p3a";
     public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/#rewards";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
+    private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     public static final String OPEN_URL = "open_url";
 
     public static final String BRAVE_PRODUCTION_PACKAGE_NAME = "com.brave.browser";
@@ -131,6 +139,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final int DAYS_4 = 4;
     private static final int DAYS_5 = 5;
     private static final int DAYS_12 = 12;
+    private static final int ALL_TIME = 4;
 
     /**
      * Settings for sending local notification reminders.
@@ -146,6 +155,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private static final List<String> yandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
+
+    public final class DialogOption {
+        public static final int CLEAR_HISTORY = 0;
+        public static final int CLEAR_COOKIES_AND_SITE_DATA = 1;
+        public static final int CLEAR_CACHE = 2;
+        public static final int CLEAR_PASSWORDS = 3;
+        public static final int CLEAR_FORM_DATA = 4;
+        public static final int CLEAR_SITE_SETTINGS = 5;
+        public static final int NUM_ENTRIES = 6;
+    }
 
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
@@ -191,12 +210,30 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void initializeState() {
         super.initializeState();
+
         if (isNoRestoreState()) {
             CommandLine.getInstance().appendSwitch(ChromeSwitches.NO_RESTORE_STATE);
         }
 
+        if (isClearBrowsingDataOnExit()) {
+            List<Integer> dataTypes = Arrays.asList(DialogOption.CLEAR_HISTORY,
+                    DialogOption.CLEAR_COOKIES_AND_SITE_DATA, DialogOption.CLEAR_CACHE,
+                    DialogOption.CLEAR_PASSWORDS, DialogOption.CLEAR_FORM_DATA,
+                    DialogOption.CLEAR_SITE_SETTINGS);
+
+            int[] dataTypesArray = CollectionUtil.integerListToIntArray(new ArrayList<>(dataTypes));
+            int timePeriod = ALL_TIME; // 4 from @TimePeriod interface
+
+            // has onBrowsingDataCleared() as an @Override callback from implementing
+            // BrowsingDataBridge.OnClearBrowsingDataListener
+            BrowsingDataBridge.getInstance().clearBrowsingData(this, dataTypesArray, timePeriod);
+        }
+
         BraveSearchEngineUtils.initializeBraveSearchEngineStates(getTabModelSelector());
     }
+
+    @Override
+    public void onBrowsingDataCleared() {}
 
     @Override
     public void onResume() {
@@ -535,6 +572,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private boolean isNoRestoreState() {
         return ContextUtils.getAppSharedPreferences().getBoolean(PREF_CLOSE_TABS_ON_EXIT, false);
+    }
+
+    private boolean isClearBrowsingDataOnExit() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(PREF_CLEAR_ON_EXIT, false);
     }
 
     public void handleBraveSetDefaultBrowserDialog() {

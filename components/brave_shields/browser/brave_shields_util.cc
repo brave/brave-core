@@ -69,6 +69,8 @@ std::string ControlTypeToString(ControlType type) {
       return "allow";
     case ControlType::BLOCK:
       return "block";
+    case ControlType::AGGRESSIVE:
+      return "aggressive";
     case ControlType::BLOCK_THIRD_PARTY:
       return "block_third_party";
     case ControlType::DEFAULT:
@@ -84,6 +86,8 @@ ControlType ControlTypeFromString(const std::string& string) {
     return ControlType::ALLOW;
   } else if (string == "block") {
     return ControlType::BLOCK;
+  } else if (string == "aggressive") {
+    return ControlType::AGGRESSIVE;
   } else if (string == "block_third_party") {
     return ControlType::BLOCK_THIRD_PARTY;
   } else if (string == "default") {
