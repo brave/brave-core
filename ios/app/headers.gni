@@ -9,5 +9,6 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h",
   "//brave/ios/browser/api/bookmarks/importer/brave_bookmarks_importer.h",
   "//brave/ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter.h",
+  "//brave/ios/browser/api/networking/brave_certificate_model.h",
   "//brave/ios/browser/api/sync/brave_sync_api.h",
 ]
