@@ -54,17 +54,12 @@ export type NavTypes =
   | 'crypto'
   | 'rewards'
   | 'cards'
-  | 'linked_accounts'
-  | 'gemini'
-  | 'creators'
-  | 'lock_wallet'
 
 export type TopTabNavTypes =
   | 'portfolio'
+  | 'prices'
+  | 'defi'
   | 'nfts'
-  | 'invest'
-  | 'lending'
-  | 'apps'
   | 'accounts'
 
 export type BuySendSwapTypes =

@@ -8,11 +8,10 @@ import {
   LockScreen
 } from '../components/desktop'
 import {
-  NavTypes,
-  NavObjectType
+  NavTypes
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
-import { LinkedAccountsOptions, NavOptions, StaticOptions } from '../options/side-nav-options'
+import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
 import { recoveryPhrase } from './mock-data/user-accounts'
 export default {
@@ -26,7 +25,6 @@ export default {
 export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
   const { onboarding, locked } = args
   const [view, setView] = React.useState<NavTypes>('crypto')
-  const [linkedAccounts] = React.useState<NavObjectType[]>(LinkedAccountsOptions)
   const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [inputValue, setInputValue] = React.useState<string>('')
@@ -46,6 +44,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setWalletLocked(false)
   }
 
+  const lockWallet = () => {
+    setWalletLocked(true)
+  }
+
   const handlePasswordChanged = (value: string) => {
     setInputValue(value)
   }
@@ -54,10 +56,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     <WalletPageLayout>
       <SideNav
         navList={NavOptions}
-        staticList={StaticOptions}
         selectedButton={view}
         onSubmit={navigateTo}
-        linkedAccountsList={linkedAccounts}
       />
       {needsOnboarding ?
         (
@@ -69,7 +69,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                 {walletLocked ? (
                   <LockScreen onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
                 ) : (
-                  <CryptoView />
+                  <CryptoView onLockWallet={lockWallet} />
                 )}
               </>
             ) : (

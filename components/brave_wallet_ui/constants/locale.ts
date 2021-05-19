@@ -40,17 +40,12 @@ const locale = {
   sideNavCrypto: 'Crypto',
   sideNavRewards: 'Rewards',
   sideNavCards: 'Cards',
-  sideNavLinkedAccounts: 'Linked Accounts',
-  sideNavLockWallet: 'Lock Wallet',
-  sideNavGemini: 'Gemini',
-  sideNavCreators: 'Creators',
 
   // Top Nav Tab Buttons
   topNavPortfolio: 'Portfolio',
+  topTabPrices: 'Prices',
+  topTabDefi: 'Defi',
   topNavNFTS: 'NFTs',
-  topNavInvest: 'Invest',
-  topNavLending: 'Lending',
-  topNavApps: 'Apps',
   topNavAccounts: 'Accounts',
 
   // Chart Timeline Buttons
@@ -116,7 +111,11 @@ const locale = {
 
   // Lock Screen
   lockScreenTitle: 'Enter password to unlock wallet',
-  lockScreenButton: 'Unlock'
+  lockScreenButton: 'Unlock',
+
+  // Wallet More Popup
+  walletPopupSettings: 'Settings',
+  walletPopupLock: 'Lock Crypto Wallet'
 }
 
 export default locale
