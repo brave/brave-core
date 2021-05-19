@@ -37,6 +37,7 @@ public class BraveClassAdapter {
         chain = new BraveSettingsLauncherImplClassAdapter(chain);
         chain = new BraveSingleCategorySettingsClassAdapter(chain);
         chain = new BraveSiteSettingsDelegateClassAdapter(chain);
+        chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);

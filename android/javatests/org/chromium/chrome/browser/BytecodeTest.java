@@ -7,6 +7,7 @@ package org.chromium.chrome.browser;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.test.filters.SmallTest;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,10 @@ import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.init.StartupTabPreloader;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
+import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
+import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
+import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
@@ -49,6 +54,7 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.embedder_support.browser_context.BrowserContextHandle;
+import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -159,6 +165,9 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/tasks/tab_management/TabUiFeatureUtilities"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/status/StatusMediator"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/omnibox/status/BraveStatusMediator"));
     }
 
     @Test
@@ -311,6 +320,14 @@ public class BytecodeTest {
                 "org/chromium/components/browser_ui/notifications/NotificationManagerProxyImpl",
                 "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl",
                 Context.class));
+        Assert.assertTrue(
+                constructorsMatch("org/chromium/chrome/browser/omnibox/status/StatusMediator",
+                        "org/chromium/chrome/browser/omnibox/status/BraveStatusMediator",
+                        PropertyModel.class, Resources.class, Context.class,
+                        UrlBarEditingTextStateProvider.class, boolean.class,
+                        LocationBarDataProvider.class, PermissionDialogController.class,
+                        SearchEngineLogoUtils.class, OneshotSupplier.class, Supplier.class,
+                        PageInfoIPHController.class, WindowAndroid.class));
     }
 
     @Test
