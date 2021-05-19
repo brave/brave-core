@@ -529,7 +529,7 @@ void BraveDefaultExtensionsHandler::FileSelected(const base::FilePath& path,
   service->GetIpnsKeysManager()->ImportKey(
       path, dialog_key_,
       base::BindOnce(&BraveDefaultExtensionsHandler::OnKeyImported,
-                     base::Unretained(this)));
+                     weak_ptr_factory_.GetWeakPtr()));
   select_file_dialog_.reset();
   dialog_key_.clear();
 }
