@@ -6,7 +6,8 @@ import {
   Description,
   IconBackground,
   PageIcon,
-  TermsRow
+  TermsRow,
+  SkipButton
 } from './style'
 import { NavButton } from '../../../extension'
 import locale from '../../../../constants/locale'
@@ -16,10 +17,11 @@ export interface Props {
   onSubmit: () => void
   isBackupTermsAccepted: boolean
   onSubmitTerms: (key: string, selected: boolean) => void
+  onSkipBackup: () => void
 }
 
 function OnboardingRecovery (props: Props) {
-  const { onSubmit, isBackupTermsAccepted, onSubmitTerms } = props
+  const { onSubmit, isBackupTermsAccepted, onSubmitTerms, onSkipBackup } = props
 
   return (
     <StyledWrapper>
@@ -34,6 +36,7 @@ function OnboardingRecovery (props: Props) {
         </Checkbox>
       </TermsRow>
       <NavButton disabled={!isBackupTermsAccepted} buttonType='primary' text={locale.buttonContinue} onSubmit={onSubmit} />
+      <SkipButton onClick={onSkipBackup}>Skip</SkipButton>
     </StyledWrapper>
   )
 }

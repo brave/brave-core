@@ -71,3 +71,22 @@ export const PageIcon = styled.div`
   height: 92px;
   background: url(${FlashdriveIcon});
 `
+
+export const SkipButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 19px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.text03};
+  margin-top: 12px;
+`

@@ -37,7 +37,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setView(path)
   }
 
-  const completeWalletSetup = () => {
+  // recoveryVerified Prop will be used in a future PR.
+  const completeWalletSetup = (recoveryVerified: boolean) => {
     setNeedsOnboarding(false)
   }
 
