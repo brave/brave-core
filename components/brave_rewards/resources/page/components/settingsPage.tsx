@@ -274,6 +274,7 @@ class SettingsPage extends React.Component<Props, State> {
           walletType={walletType}
           displayCloseButton={true}
           onClick={this.onRedirectError}
+          onClose={this.actions.hideRedirectModal}
         />
       )
     }
