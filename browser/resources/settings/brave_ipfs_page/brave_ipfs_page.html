@@ -4,6 +4,7 @@
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
 <link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
 <link rel="import" href="p2p_keys_subpage.html">
+<link rel="import" href="ipfs_peers_subpage.html">
 <link rel="import" href="change_ipfs_gateway_dialog.js">
 <script type="module" src="brave_ipfs_browser_proxy.js"></script>
 <script type="module" src="../settings_page/settings_section.js"></script>
@@ -118,6 +119,24 @@
           page-title="$i18n{ipfsIpnsKeysLinkTitle}">
           <settings-p2p-keys-subpage local-node-method="[[isLocalNodeEnabled_]]" local-node-launched="[[isLocalNodeLaunched_]]">
           </settings-p2p-keys-subpage>
+        </settings-subpage>
+      </template>
+    </settings-animated-pages>
+    <settings-animated-pages id="ipfs-peers" section="ipfs">
+      <div route-path="default">
+        <cr-link-row id="peersLinkRow"
+          class="hr" label="$i18n{ipfsPeersLinkTitle}"
+          sub-label="[[ipfsPeersLinkTitleDesc]]"
+          on-click="onIpfsPeersEditorClick_"
+          role-description="$i18n{subpageArrowRoleDescription}">
+        </cr-link-row>
+      </div>
+      <template  is="dom-if" route-path="/ipfs/peers">
+        <settings-subpage
+          associated-control="[[$$('#ipfsPeersLinkRow')]]"
+          page-title="$i18n{ipfsPeersLinkTitle}">
+          <settings-ipfs-peers-subpage local-node-method="[[isLocalNodeEnabled_]]" local-node-launched="[[isLocalNodeLaunched_]]">
+          </settings-ipfs-peers-subpage>
         </settings-subpage>
       </template>
     </settings-animated-pages>

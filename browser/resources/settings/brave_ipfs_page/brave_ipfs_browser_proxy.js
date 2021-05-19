@@ -45,7 +45,13 @@ export class BraveIPFSBrowserProxyImpl {
   }
 
   shutdownIPFSService () {
-    chrome.send('shutdownIPFSService', [])
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.shutdown(resolve)
+    })
   }
 
   /** @override */
@@ -58,7 +64,39 @@ export class BraveIPFSBrowserProxyImpl {
       chrome.ipfs.getResolveMethodList(resolve)
     })
   }
+  
+  /** @override */
+  removeIpfsPeer (id, address) {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.removeIpfsPeer(id, address, resolve)
+    })
+  }
+  /** @override */
+  getIpfsPeersList () {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.getIpfsPeersList(resolve)
+    })
+  }
 
+  /** @override */
+  addIpfsPeer (value) {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.addIpfsPeer(value, resolve)
+    })
+  }
+  
   /** @override */
   getIpnsKeysList () {
     return new Promise(resolve => {

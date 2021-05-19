@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/ipfs/features.h"
@@ -299,6 +300,35 @@ GURL ResolveWebUIFilesLocation(const std::string& directory,
 bool IsIpfsMenuEnabled(content::BrowserContext* browser_context) {
   return ipfs::IsIpfsEnabled(browser_context) &&
          ipfs::IsLocalGatewayConfigured(browser_context);
+}
+
+// Extracts Address and PeerID from peer connection strings like:
+// /ip4/104.131.131.82/udp/4001/quic/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
+// /p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
+// QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
+bool ParsePeerConnectionString(const std::string& value,
+                               std::string* id,
+                               std::string* address) {
+  if (!id || !address)
+    return false;
+  std::vector<std::string> parts = base::SplitStringUsingSubstr(
+      value, "/p2p/", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  std::string extracted_id = (parts.size() == 2) ? parts[1] : value;
+  std::string extracted_address =
+      (parts.size() == 2) ? parts[0] : std::string();
+
+  bool valid_cid = IsValidCID(extracted_id);
+  // For compatibility we allow PeerIDs started from 1,
+  // like 12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
+  // only if p2p is present
+  bool legacy_peer_id = (!extracted_id.empty() && !extracted_address.empty() &&
+                         extracted_id.at(0) == '1');
+  bool valid = valid_cid || legacy_peer_id;
+  if (valid) {
+    *id = extracted_id;
+    *address = extracted_address;
+  }
+  return valid;
 }
 
 }  // namespace ipfs

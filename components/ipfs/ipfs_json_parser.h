@@ -35,6 +35,13 @@ class IPFSJSONParser {
   static bool GetParseSingleKeyFromJSON(const std::string& json,
                                         std::string* name,
                                         std::string* value);
+  static bool GetPeersFromConfigJSON(const std::string& json,
+                                     std::vector<std::string>* peers);
+  static std::string PutNewPeerToConfigJSON(const std::string& json,
+                                            const std::string& peer);
+  static std::string RemovePeerFromConfigJSON(const std::string& json,
+                                              const std::string& peer_id,
+                                              const std::string& address);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_JSON_PARSER_H_

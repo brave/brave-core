@@ -4,12 +4,55 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <set>
+#include <utility>
 #include <vector>
 
 #include "brave/components/ipfs/ipfs_json_parser.h"
 
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "brave/components/ipfs/ipfs_utils.h"
+
+namespace {
+
+base::Value* FindPeerElement(base::Value* root, const std::string& peer_id) {
+  for (base::Value& val : root->GetList()) {
+    base::Value* id = val.FindKey("ID");
+    bool has_peer = id && id->is_string();
+    if (!has_peer)
+      continue;
+
+    if (id->GetString() != peer_id)
+      continue;
+    return &val;
+  }
+  return nullptr;
+}
+
+bool RemoveElementFromList(base::Value* root,
+                           const base::Value& item_to_remove) {
+  DCHECK(root);
+  base::ListValue* list = nullptr;
+  if (!root->GetAsList(&list) || !list)
+    return false;
+  size_t removed_index = 0;
+  return list->Remove(item_to_remove, &removed_index);
+}
+
+bool RemoveValueFromList(base::Value* root,
+                         const std::string& value_to_remove) {
+  DCHECK(root);
+  for (base::Value& item : root->GetList()) {
+    auto current = item.GetString();
+    if (current != value_to_remove)
+      continue;
+    return RemoveElementFromList(root, item);
+  }
+  return false;
+}
+
+}  // namespace
 
 // static
 // Response Format for /api/v0/swarm/peers
@@ -323,7 +366,6 @@ bool IPFSJSONParser::GetParseKeysFromJSON(
 bool IPFSJSONParser::GetParseSingleKeyFromJSON(const std::string& json,
                                                std::string* name,
                                                std::string* value) {
-  DLOG(INFO) << "json:" << json;
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -346,4 +388,145 @@ bool IPFSJSONParser::GetParseSingleKeyFromJSON(const std::string& json,
   *name = *key_name;
   *value = *key_id;
   return true;
+}
+
+// static
+// Puts new adress for existing peer or adds a new peer to config
+// https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#peering
+std::string IPFSJSONParser::PutNewPeerToConfigJSON(const std::string& json,
+                                                   const std::string& peer) {
+  std::string peer_id;
+  std::string address;
+  if (!ipfs::ParsePeerConnectionString(peer, &peer_id, &address))
+    return std::string();
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    VLOG(1) << "Could not parse JSON, JSON is: " << json;
+    return std::string();
+  }
+  base::Value* peering = records_v->FindKey("Peering");
+  if (!peering) {
+    records_v->SetKey("Peering", base::Value(base::Value::Type::DICTIONARY));
+    peering = records_v->FindKey("Peering");
+  }
+  DCHECK(peering);
+  base::Value* peers_arr = peering->FindListKey("Peers");
+  if (!peers_arr) {
+    base::Value item(base::Value::Type::LIST);
+    peering->SetPath("Peers", std::move(item));
+    peers_arr = peering->FindListKey("Peers");
+  }
+  DCHECK(peers_arr);
+  DCHECK(peers_arr->is_list());
+  base::Value* peer_to_update = FindPeerElement(peers_arr, peer_id);
+  if (!peer_to_update) {
+    base::Value item(base::Value::Type::DICTIONARY);
+    item.SetKey("ID", base::Value(peer_id));
+    peers_arr->Append(std::move(item));
+    peer_to_update = FindPeerElement(peers_arr, peer_id);
+  }
+  DCHECK(peer_to_update);
+  if (!address.empty()) {
+    base::Value item(address);
+    base::Value* addresses = peer_to_update->FindListKey("Addrs");
+    if (addresses) {
+      addresses->Append(std::move(item));
+    } else {
+      base::Value list(base::Value::Type::LIST);
+      list.Append(std::move(item));
+      peer_to_update->SetKey("Addrs", std::move(list));
+    }
+  }
+
+  std::string json_string;
+  base::JSONWriter::Write(records_v.value(), &json_string);
+  return json_string;
+}
+
+// static
+// Gets peer list from Peering.Peers config
+// https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#peering
+bool IPFSJSONParser::GetPeersFromConfigJSON(const std::string& json,
+                                            std::vector<std::string>* peers) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    VLOG(1) << "Could not parse JSON, JSON is: " << json;
+    return false;
+  }
+  const base::Value* peers_arr = records_v->FindPath("Peering.Peers");
+  if (!peers_arr || !peers_arr->is_list()) {
+    VLOG(1) << "Invalid json, can not find Peers array.";
+    return false;
+  }
+
+  for (const base::Value& val : peers_arr->GetList()) {
+    const base::Value* peer = val.FindKey("ID");
+    const base::Value* addr = val.FindListKey("Addrs");
+
+    bool has_addr = addr && addr->is_list() && !addr->GetList().empty();
+    bool has_peer = peer && peer->is_string();
+    if (!has_addr && !has_peer) {
+      continue;
+    }
+    auto peer_id = peer->GetString();
+    std::string value;
+    if (has_addr) {
+      for (const base::Value& item : addr->GetList()) {
+        auto address = item.GetString();
+        if (address.empty())
+          continue;
+        auto value = address + "/p2p/" + peer_id;
+        peers->push_back(value);
+      }
+    } else {
+      peers->push_back(peer_id);
+    }
+  }
+  return true;
+}
+
+// static
+// Removes a peer or peer address from Peering.Peers config
+// https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#peering
+std::string IPFSJSONParser::RemovePeerFromConfigJSON(
+    const std::string& json,
+    const std::string& peer_id,
+    const std::string& peer_address) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    VLOG(1) << "Could not parse JSON, JSON is: " << json;
+    return std::string();
+  }
+  base::Value* peers_arr = records_v->FindPath("Peering.Peers");
+  if (!peers_arr || !peers_arr->is_list())
+    return json;
+  base::Value* peer_to_update = FindPeerElement(peers_arr, peer_id);
+  if (!peer_to_update)
+    return json;
+  DCHECK(peer_to_update);
+  if (!peer_address.empty()) {
+    base::Value* addresses = peer_to_update->FindListKey("Addrs");
+    if (!addresses)
+      return json;
+    if (!RemoveValueFromList(addresses, peer_address))
+      return json;
+    if (addresses->GetList().empty())
+      RemoveElementFromList(peers_arr, *peer_to_update);
+  } else {
+    RemoveElementFromList(peers_arr, *peer_to_update);
+  }
+
+  std::string json_string;
+  base::JSONWriter::Write(records_v.value(), &json_string);
+  return json_string;
 }

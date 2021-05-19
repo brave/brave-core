@@ -47,10 +47,6 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void SetHangoutsEnabled(const base::ListValue* args);
   void SetIPFSCompanionEnabled(const base::ListValue* args);
   void SetMediaRouterEnabled(const base::ListValue* args);
-  void SetIPFSStorageMax(const base::ListValue* args);
-  void ImportIpnsKey(const base::ListValue* args);
-  void LaunchIPFSService(const base::ListValue* args);
-  void ShutdownIPFSService(const base::ListValue* args);
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   void SetBraveWalletEnabled(const base::ListValue* args);
 #endif
@@ -77,6 +73,10 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   bool IsRestartNeeded();
 
 #if BUILDFLAG(IPFS_ENABLED)
+  void SetIPFSStorageMax(const base::ListValue* args);
+  void ImportIpnsKey(const base::ListValue* args);
+  void LaunchIPFSService(const base::ListValue* args);
+
   // ui::SelectFileDialog::Listener
   void FileSelected(const base::FilePath& path,
                     int index,

@@ -96,10 +96,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "launchIPFSService",
       base::BindRepeating(&BraveDefaultExtensionsHandler::LaunchIPFSService,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "shutdownIPFSService",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::ShutdownIPFSService,
-                          base::Unretained(this)));
 #endif
 
   web_ui()->RegisterMessageCallback(
@@ -398,45 +394,6 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
   }
 }
 
-void BraveDefaultExtensionsHandler::ShutdownIPFSService(
-    const base::ListValue* args) {
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (!service) {
-    return;
-  }
-  if (service->IsDaemonLaunched())
-    service->ShutdownDaemon(base::NullCallback());
-}
-
-void BraveDefaultExtensionsHandler::LaunchIPFSService(
-    const base::ListValue* args) {
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (!service) {
-    return;
-  }
-  if (!service->IsDaemonLaunched())
-    service->LaunchDaemon(base::NullCallback());
-}
-
-void BraveDefaultExtensionsHandler::SetIPFSStorageMax(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-  CHECK(profile_);
-  int storage_max_gb = 0;
-  args->GetInteger(0, &storage_max_gb);
-  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  prefs->SetInteger(kIpfsStorageMax, storage_max_gb);
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (!service) {
-    return;
-  }
-  if (service->IsDaemonLaunched()) {
-    service->RestartDaemon();
-  }
-}
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
     const base::ListValue* args) {
@@ -522,6 +479,35 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
 }
 
 #if BUILDFLAG(IPFS_ENABLED)
+void BraveDefaultExtensionsHandler::LaunchIPFSService(
+    const base::ListValue* args) {
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(profile_);
+  if (!service) {
+    return;
+  }
+  if (!service->IsDaemonLaunched())
+    service->LaunchDaemon(base::NullCallback());
+}
+
+void BraveDefaultExtensionsHandler::SetIPFSStorageMax(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  int storage_max_gb = 0;
+  args->GetInteger(0, &storage_max_gb);
+  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+  prefs->SetInteger(kIpfsStorageMax, storage_max_gb);
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(profile_);
+  if (!service) {
+    return;
+  }
+  if (service->IsDaemonLaunched()) {
+    service->RestartDaemon();
+  }
+}
+
 void BraveDefaultExtensionsHandler::FileSelected(const base::FilePath& path,
                                                  int index,
                                                  void* params) {

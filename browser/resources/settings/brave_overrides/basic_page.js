@@ -83,6 +83,7 @@ RegisterPolymerTemplateModifications({
     if (pageVisibility.braveIPFS) {
       r.BRAVE_IPFS = r.BASIC.createSection('/ipfs', 'ipfs')
       r.BRAVE_IPFS_KEYS = r.BRAVE_IPFS.createChild('/ipfs/keys');
+      r.BRAVE_IPFS_PEERS = r.BRAVE_IPFS.createChild('/ipfs/peers');
     }
     if (pageVisibility.braveWallet) {
       r.BRAVE_WALLET = r.BASIC.createSection('/wallet', 'wallet')
