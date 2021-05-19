@@ -39,6 +39,7 @@ namespace {
 // Default order in which engines will appear in the UI.
 const std::vector<BravePrepopulatedEngineID> brave_engines_default = {
     PREPOPULATED_ENGINE_ID_GOOGLE,
+    PREPOPULATED_ENGINE_ID_BRAVE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_BING,
@@ -48,6 +49,7 @@ const std::vector<BravePrepopulatedEngineID> brave_engines_default = {
 // Variations of the order / default options by country.
 const std::vector<BravePrepopulatedEngineID> brave_engines_with_ecosia = {
     PREPOPULATED_ENGINE_ID_GOOGLE,
+    PREPOPULATED_ENGINE_ID_BRAVE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_BING,
@@ -57,6 +59,7 @@ const std::vector<BravePrepopulatedEngineID> brave_engines_with_ecosia = {
 
 const std::vector<BravePrepopulatedEngineID> brave_engines_with_yandex = {
     PREPOPULATED_ENGINE_ID_YANDEX,
+    PREPOPULATED_ENGINE_ID_BRAVE,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
     PREPOPULATED_ENGINE_ID_QWANT,
@@ -66,6 +69,7 @@ const std::vector<BravePrepopulatedEngineID> brave_engines_with_yandex = {
 
 const std::vector<BravePrepopulatedEngineID> brave_engines_DE = {
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
+    PREPOPULATED_ENGINE_ID_BRAVE,
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_BING,
@@ -75,6 +79,7 @@ const std::vector<BravePrepopulatedEngineID> brave_engines_DE = {
 
 const std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
     PREPOPULATED_ENGINE_ID_QWANT,
+    PREPOPULATED_ENGINE_ID_BRAVE,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
     PREPOPULATED_ENGINE_ID_BING,
@@ -84,6 +89,7 @@ const std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
 
 const std::vector<BravePrepopulatedEngineID> brave_engines_AU_IE = {
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
+    PREPOPULATED_ENGINE_ID_BRAVE,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_BING,
@@ -93,6 +99,7 @@ const std::vector<BravePrepopulatedEngineID> brave_engines_AU_IE = {
 
 const std::vector<BravePrepopulatedEngineID> brave_engines_NZ = {
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
+    PREPOPULATED_ENGINE_ID_BRAVE,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_BING,

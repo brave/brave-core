@@ -89,6 +89,8 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_YAHOO_UK,
   PREPOPULATED_ENGINE_ID_YAHOO_VE,
   PREPOPULATED_ENGINE_ID_YAHOO_VN,
+
+  PREPOPULATED_ENGINE_ID_BRAVE,
 };
 
 extern const PrepopulatedEngine duckduckgo;
@@ -101,6 +103,7 @@ extern const PrepopulatedEngine brave_ecosia;
 extern const PrepopulatedEngine qwant;
 extern const PrepopulatedEngine startpage;
 extern const PrepopulatedEngine brave_yandex;
+extern const PrepopulatedEngine brave_search;
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap();
