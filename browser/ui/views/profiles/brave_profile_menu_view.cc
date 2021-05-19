@@ -36,7 +36,7 @@ void BraveProfileMenuView::BuildIdentity() {
       profile_attributes->GetProfileThemeColors().profile_highlight_color,
       /*edit_button=*/base::nullopt,
       ui::ImageModel::FromImage(profile_attributes->GetAvatarIcon()),
-      /*title=*/std::u16string());
+      /*title=*/profile_attributes->GetName());
 }
 
 // We don't want autofill buttons in this menu.
