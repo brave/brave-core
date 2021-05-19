@@ -1,0 +1,133 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("extensions") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  cflags = [
+    "-fobjc-weak",
+    "-fobjc-abi-version=2",
+    "-fobjc-legacy-dispatch",
+    "-Wno-objc-property-synthesis",
+    "-Wno-sign-compare",
+    "-DBRAVE_CORE",
+  ]
+
+  sources = [
+    "BraveCertificateAuthorityInformationAccessExtensionModel.h",
+    "BraveCertificateAuthorityInformationAccessExtensionModel.mm",
+    "BraveCertificateAuthorityKeyIdentifierExtensionModel.h",
+    "BraveCertificateAuthorityKeyIdentifierExtensionModel.mm",
+    "BraveCertificateBasicConstraintsExtensionModel.h",
+    "BraveCertificateBasicConstraintsExtensionModel.mm",
+    "BraveCertificateCRLDistributionPointsExtensionModel.h",
+    "BraveCertificateCRLDistributionPointsExtensionModel.mm",
+    "BraveCertificateCRLNumberExtensionModel.h",
+    "BraveCertificateCRLNumberExtensionModel.mm",
+    "BraveCertificateCRLReasonExtensionModel.h",
+    "BraveCertificateCRLReasonExtensionModel.mm",
+    "BraveCertificateDeltaCRLExtensionModel.h",
+    "BraveCertificateDeltaCRLExtensionModel.mm",
+    "BraveCertificateExtendedKeyUsageExtensionModel.h",
+    "BraveCertificateExtendedKeyUsageExtensionModel.mm",
+    #"BraveCertificateExtensionGeneralNameModel.h",
+    "BraveCertificateExtensionGeneralNameModel.mm",
+    #"BraveCertificateExtensionModel.h",
+    "BraveCertificateExtensionModel.mm",
+    #"BraveCertificateExtensionModel_Priv.h",
+    "BraveCertificateGenericExtensionModel.h",
+    "BraveCertificateGenericExtensionModel.mm",
+    "BraveCertificateInhibitAnyPolicyExtensionModel.h",
+    "BraveCertificateInhibitAnyPolicyExtensionModel.mm",
+    "BraveCertificateInvalidityDateExtensionModel.h",
+    "BraveCertificateInvalidityDateExtensionModel.mm",
+    "BraveCertificateIssuerAlternativeNameExtensionModel.h",
+    "BraveCertificateIssuerAlternativeNameExtensionModel.mm",
+    "BraveCertificateIssuerExtensionModel.h",
+    "BraveCertificateIssuerExtensionModel.mm",
+    "BraveCertificateIssuingDistributionPointExtensionModel.h",
+    "BraveCertificateIssuingDistributionPointExtensionModel.mm",
+    "BraveCertificateKeyUsageExtensionModel.h",
+    "BraveCertificateKeyUsageExtensionModel.mm",
+    "BraveCertificateNameConstraintsExtensionModel.h",
+    "BraveCertificateNameConstraintsExtensionModel.mm",
+    "BraveCertificateNetscapeCertTypeExtensionModel.h",
+    "BraveCertificateNetscapeCertTypeExtensionModel.mm",
+    "BraveCertificateNetscapeStringExtensionModel.h",
+    "BraveCertificateNetscapeStringExtensionModel.mm",
+    "BraveCertificateNetscapeURLExtensionModel.h",
+    "BraveCertificateNetscapeURLExtensionModel.mm",
+    "BraveCertificatePKIXOCSPCRLIDExtensionModel.h",
+    "BraveCertificatePKIXOCSPCRLIDExtensionModel.mm",
+    "BraveCertificatePKIXOCSPNonceExtensionModel.h",
+    "BraveCertificatePKIXOCSPNonceExtensionModel.mm",
+    "BraveCertificatePoliciesExtensionModel.h",
+    "BraveCertificatePoliciesExtensionModel.mm",
+    "BraveCertificatePolicyConstraintsExtensionModel.h",
+    "BraveCertificatePolicyConstraintsExtensionModel.mm",
+    "BraveCertificatePolicyMappingsExtensionModel.h",
+    "BraveCertificatePolicyMappingsExtensionModel.mm",
+    "BraveCertificatePrivateKeyUsagePeriodExtensionModel.h",
+    "BraveCertificatePrivateKeyUsagePeriodExtensionModel.mm",
+    "BraveCertificateProxyCertInfoExtensionModel.h",
+    "BraveCertificateProxyCertInfoExtensionModel.mm",
+    "BraveCertificateSCTExtensionModel.h",
+    "BraveCertificateSCTExtensionModel.mm",
+    "BraveCertificateSXNetExtensionModel.h",
+    "BraveCertificateSXNetExtensionModel.mm",
+    "BraveCertificateSubjectAlternativeNameExtensionModel.h",
+    "BraveCertificateSubjectAlternativeNameExtensionModel.mm",
+    "BraveCertificateSubjectInformationAccessExtensionModel.h",
+    "BraveCertificateSubjectInformationAccessExtensionModel.mm",
+    "BraveCertificateSubjectKeyIdentifierExtensionModel.h",
+    "BraveCertificateSubjectKeyIdentifierExtensionModel.mm",
+    "BraveCertificateTLSFeatureExtensionModel.h",
+    "BraveCertificateTLSFeatureExtensionModel.mm",
+  ]
+
+  deps = [
+    ":general_extensions",
+    "//brave/ios/browser/api/networking/common",
+    "//brave/ios/browser/api/networking/utils",
+    "//third_party/boringssl",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "Security.framework",
+  ]
+}
+
+source_set("general_extensions") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  cflags = [
+    "-fobjc-weak",
+    "-fobjc-abi-version=2",
+    "-fobjc-legacy-dispatch",
+    "-Wno-objc-property-synthesis",
+    "-Wno-sign-compare",
+    "-DBRAVE_CORE",
+  ]
+
+  sources = [
+    "BraveCertificateExtensionModel.h",
+    "BraveCertificateExtensionModel_Priv.h",
+    "BraveCertificateExtensionGeneralNameModel.h",
+  ]
+
+  deps = [
+    "//brave/ios/browser/api/networking/common",
+    "//third_party/boringssl",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "Security.framework",
+  ]
+}

@@ -6,7 +6,7 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("networking") {
+source_set("utils") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   cflags = [
@@ -14,15 +14,15 @@ source_set("networking") {
   ]
 
   sources = [
-    "brave_certificate_model.h",
-    "brave_certificate_model.mm",
+    "brave_certificate_ios_utils.h",
+    "brave_certificate_ios_utils.mm",
+    "brave_certificate_utils.h",
+    "brave_certificate_utils.cc",
   ]
 
   deps = [
-    "common",
-    "models",
-    "models/extensions:general_extensions",
-    "utils",
+    "//brave/ios/browser/api/networking/common",
+    "//brave/ios/browser/api/networking/models/extensions:general_extensions",
     "//third_party/boringssl",
   ]
 

@@ -1,0 +1,57 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+brave_core_networking_public_headers = [
+    "//brave/ios/browser/api/networking/networking_api.h",
+    "//brave/ios/browser/api/networking/brave_certificate_model.h",
+    "//brave/ios/browser/api/networking/common/brave_certificate_enums.h",
+
+    # utils
+    "//brave/ios/browser/api/networking/utils/brave_certificate_ios_utils.h",
+    "//brave/ios/browser/api/networking/utils/brave_certificate_utils.h",
+
+    # models
+    "//brave/ios/browser/api/networking/models/BraveCertificateFingerprint.h",
+    "//brave/ios/browser/api/networking/models/BraveCertificateIssuerName.h",
+    "//brave/ios/browser/api/networking/models/BraveCertificatePublicKeyInfo.h",
+    "//brave/ios/browser/api/networking/models/BraveCertificateSignature.h",
+    "//brave/ios/browser/api/networking/models/BraveCertificateSubjectModel.h",
+
+    # extensions
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateAuthorityInformationAccessExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateAuthorityKeyIdentifierExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateBasicConstraintsExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateCRLDistributionPointsExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateCRLNumberExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateCRLReasonExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateDeltaCRLExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateExtendedKeyUsageExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateExtensionGeneralNameModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateGenericExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateInhibitAnyPolicyExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateInvalidityDateExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateIssuerAlternativeNameExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateIssuerExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateIssuingDistributionPointExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateKeyUsageExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateNameConstraintsExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateNetscapeCertTypeExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateNetscapeStringExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateNetscapeURLExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificatePKIXOCSPCRLIDExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificatePKIXOCSPNonceExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificatePoliciesExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificatePolicyConstraintsExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificatePolicyMappingsExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificatePrivateKeyUsagePeriodExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateProxyCertInfoExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateSCTExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateSXNetExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateSubjectAlternativeNameExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateSubjectInformationAccessExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateSubjectKeyIdentifierExtensionModel.h",
+    "//brave/ios/browser/api/networking/models/extensions/BraveCertificateTLSFeatureExtensionModel.h",
+]
