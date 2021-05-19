@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -38,6 +39,10 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +53,7 @@ import java.util.Locale;
 public class BraveStatsUtil {
     public static final short MILLISECONDS_PER_ITEM = 50;
     public static final int SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM = 3867;
+    public static final String TAG = "BraveStatsUtil";
     /*
      * Gets string view of specific time in seconds for Brave stats
      */
@@ -163,25 +169,68 @@ public class BraveStatsUtil {
     }
 
     public static void shareStatsAction(View view) {
-        Context context = ContextUtils.getApplicationContext();
-        Bitmap bmp = convertToBitmap(view);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        String path = MediaStore.Images.Media.insertImage(
-                context.getContentResolver(), bmp, "tempimage", null);
-        Uri uri = Uri.parse(path);
+        try {
+            Context context = ContextUtils.getApplicationContext();
+            Bitmap bmp = convertToBitmap(view);
+            String path = "";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                path = MediaStore.Images.Media.insertImage(
+                        context.getContentResolver(), bmp, "tempimage", null);
+            } else {
+                storeImage(bmp);
+                path = getOutputMediaFile().getAbsolutePath();
+            }
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT,
-                context.getResources().getString(R.string.brave_stats_share_text));
-        sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        sendIntent.setType("image/text");
+            Uri uri = Uri.parse(path);
 
-        Intent shareIntent = Intent.createChooser(sendIntent, " ");
-        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(shareIntent);
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,
+                    context.getResources().getString(R.string.brave_stats_share_text));
+            sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            sendIntent.setType("image/text");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, " ");
+            shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(shareIntent);
+        } catch (Exception e) {
+            Log.e(TAG, "exception :" + e);
+        }
+    }
+
+    private static void storeImage(Bitmap image) {
+        File pictureFile = getOutputMediaFile();
+        if (pictureFile == null) {
+            Log.e(TAG, "Error creating media file, check storage permissions: ");
+            return;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            image.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.e(TAG, "Error accessing file: " + e.getMessage());
+        }
+    }
+
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile() {
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory() + "/Android/data/"
+                + ContextUtils.getApplicationContext().getPackageName() + "/Files");
+
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+
+        File mediaFile;
+        String mImageName = "share_stats.jpg";
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
+        return mediaFile;
     }
 
     public static View getLayout(int layoutId) {
