@@ -76,7 +76,6 @@ class BraveBrowsingHistoryDriver : public history::BrowsingHistoryDriver {
   ChromeBrowserState* browser_state_;  // weak
   __weak id<BraveHistoryDriverDelegate> delegate_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowsingHistoryDriver);
 };
 
 NS_ASSUME_NONNULL_END

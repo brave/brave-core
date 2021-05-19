@@ -42,7 +42,7 @@
 #pragma mark - IOSHistoryNode
 
 @interface IOSHistoryNode () {
-  base::string16 title_;
+  std::u16string title_;
   GURL gurl_;
   base::Time date_added_;
 }
