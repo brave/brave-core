@@ -10,7 +10,7 @@ import {
 
 export interface Props {
   recoveryPhrase: string[]
-  onSubmit: () => void
+  onSubmit: (recoveryVerified: boolean) => void
 }
 
 function Onboarding (props: Props) {
@@ -29,10 +29,14 @@ function Onboarding (props: Props) {
 
   const nextStep = () => {
     if (onboardingStep === 4) {
-      onSubmit()
+      onSubmit(true)
     } else {
       setOnboardingStep(onboardingStep + 1)
     }
+  }
+
+  const onSkipBackup = () => {
+    onSubmit(false)
   }
 
   const checkedBox = (key: string, selected: boolean) => {
@@ -124,6 +128,7 @@ function Onboarding (props: Props) {
         <OnboardingBackup
           onSubmit={nextStep}
           onSubmitTerms={checkedBox}
+          onSkipBackup={onSkipBackup}
           isBackupTermsAccepted={backupTerms}
         />
       }
