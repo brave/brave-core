@@ -54,9 +54,8 @@ class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
   void OnLoadDATFileData(GetDATFileDataResult result);
   void OnLoadStylesheet(std::string stylesheet);
 
-  // This is currently the only backend reachable from browser code, so
-  // let's make it the default.
-  RewriterType backend_ = RewriterType::RewriterStreaming;
+  // Default backend is an Arc90 implementation.
+  RewriterType backend_ = RewriterType::RewriterHeuristics;
 
   std::string content_stylesheet_;
   std::unique_ptr<speedreader::SpeedreaderComponent> component_;

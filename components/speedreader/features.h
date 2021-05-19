@@ -12,7 +12,7 @@ struct Feature;
 
 namespace speedreader {
 extern const base::Feature kSpeedreaderFeature;
-extern const base::Feature kSpeedreaderReadabilityBackend;
+extern const base::Feature kSpeedreaderLegacyBackend;
 }  // namespace speedreader
 
 #endif  // BRAVE_COMPONENTS_SPEEDREADER_FEATURES_H_
