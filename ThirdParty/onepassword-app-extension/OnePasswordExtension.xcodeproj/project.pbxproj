@@ -14,6 +14,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4484BAF62654227D0099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		610A5F782653B3C7003CAA48 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		61178BD22653B37800F30399 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		611C82D92653B3CF00FA08A6 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/OnePasswordExtension.strings"; sourceTree = "<group>"; };
@@ -155,6 +156,7 @@
 				uk,
 				zh,
 				"zh-TW",
+				tr,
 			);
 			mainGroup = 9C3F4D821A59ACDC004B3ECE;
 			productRefGroup = 9C3F4D8D1A59ACDC004B3ECE /* Products */;
@@ -209,6 +211,7 @@
 				6150FD1B2653B3E800EBC472 /* uk */,
 				61611D2A2653B3F000BCFB91 /* zh */,
 				617355A82653B3F9003B9683 /* zh-TW */,
+				4484BAF62654227D0099A205 /* tr */,
 			);
 			name = OnePasswordExtension.strings;
 			sourceTree = "<group>";

@@ -1,0 +1,228 @@
+/* Accessibility label for the Menu button. */
+"AppMenuButtonAccessibilityLabel" = "Menü";
+
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "Panoya Kopyalanan URL";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Masaüstü Sitesi İste";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Mobil Site İste";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"BackTitle" = "Geri";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Son Ziyaret Edilen Yer İşaretlerini Göster";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "İptal";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Bu karşıdan yüklemeyi iptal etmek istediğinizden emin misiniz?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Yeniden başlat";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Karşıdan yüklemeyi iptal et";
+
+/* Cancel button */
+"CancelString" = "İptal";
+
+/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "Tüm Sekmeleri Kapat";
+
+/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseTabFromTabTrayKeyCodeTitle" = "Seçili Sekmeyi Kapat";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"CloseTabTitle" = "Sekmeyi Kapat";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Geç";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Yeni Sekme açıldı";
+
+/* The title for the button that lets you copy the url from the location bar. */
+"CopyAddressTitle" = "Adresi Kopyala";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Karşıdan Yükleme İptal Edildi";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Karşıdan Yükleme Başarısız Oldu";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$ @";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "%d dosyadan 1'i";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$ @";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "İndirilenler";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Bu bağlantıyı App Store uygulamasında açmak istiyor musunuz?";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"FindTitle" = "Bul";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ForwardTitle" = "İleri";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Başla";
+
+/* Message displayed when the user has a copied link on the clipboard */
+"GoToCopiedLink" = "Kopyalanan bağlantıya gidilsin mi?";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "Kaydetme";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "Güncelleştirme";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Oturum Açma Bilgisini Kaydet";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Güncelleştir";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewPrivateTabTitle" = "Yeni Gizli Sekme";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewTabTitle" = "Yeni Sekme";
+
+/* OK button */
+"OKString" = "Tamam";
+
+/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Yeni Sekme Aç";
+
+/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Seçili Sekmeyi Aç";
+
+/* The title for the button that lets you paste and go to a URL */
+"PasteAndGoTitle" = "Yapıştır ve Git";
+
+/* The title for the button that lets you paste into the location bar */
+"PasteTitle" = "Yapıştır";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Okuyucu Modu kullanılabilir";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Metin boyutunu sıfırla";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ReloadPageTitle" = "Sayfayı Yeniden Yükle";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "%@ için parola kaydedilsin mi?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "%2$@ için %1$@ oturum açma bilgileri kaydedilsin mi?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "Tamam";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "Taramak için QR kodunu çerçeve içinde hizalayın";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "Veriler geçersiz";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Lütfen 'Ayarlar' -> 'Gizlilik' -> 'Kamera'dan Brave'in cihazınızın kamerasına erişmesine izin verin.";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "QR Kodunu Tara";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"SelectLocationBarTitle" = "Konum Çubuğu Seç";
+
+/* Alert dialog body when the user opens the home page for the first time. */
+"SetHomePageDialogMessage" = "Bunu istediğiniz zaman Ayarlar'dan değiştirebilirsiniz";
+
+/* Button cancelling changes setting the home page for the first time. */
+"SetHomePageDialogNo" = "İptal";
+
+/* Alert dialog title when the user opens the home page for the first time. */
+"SetHomePageDialogTitle" = "Bu web sayfasını giriş sayfanız olarak kullanmak istiyor musunuz?";
+
+/* Button accepting changes setting the home page for the first time. */
+"SetHomePageDialogYes" = "Ana Sayfayı Ayarla";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "Genel";
+
+/* Option in settings to show a blank page when you open a new tab */
+"SettingsNewTabBlankPage" = "Boş Sayfa Göster";
+
+/* Option in settings to show your homepage when you open a new tab */
+"SettingsNewTabHomePage" = "Ana Sayfanızı Gösterin";
+
+/* Option in settings to show top sites when you open a new tab */
+"SettingsNewTabTopSites" = "En İyi Sitelerinizi Gösterin";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Tamamlandı";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchEditButton" = "Düzenle";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowNextTabTitle" = "Sonraki Sekmeyi Göster";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowPreviousTabTitle" = "Önceki Sekmeyi Göster";
+
+/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"ShowTabTrayFromTabKeyCodeTitle" = "Tüm Sekmeleri Göster";
+
+/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToNonPBMKeyCodeTitle" = "Normal Gezinme Modu";
+
+/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToPBMKeyCodeTitle" = "Gizli Gezinme Modu";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "geri almak";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d sekme kapatıldı";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "Tamam";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "Geçiş Cüzdan'a eklenirken bir hata oluştu. Lütfen daha sonra yeniden deneyin.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "Geçiş Eklenemedi";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave geçersiz bir adrese sahip olduğundan sayfayı açamıyor.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "Sayfa Açılamıyor";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "%2$@ için %1$@ oturum açma bilgisi güncellensin mi?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "%2$@ için %1$@ oturum açma bilgisi güncellensin mi?";
+
+/* List section title for when to use Face ID */
+"UseFaceID" = "Face ID Kullan";
+
+/* List section title for when to use Touch ID */
+"UseTouchID" = "Touch ID'i kullanma";
+

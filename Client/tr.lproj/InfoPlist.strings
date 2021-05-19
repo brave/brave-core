@@ -1,0 +1,35 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "1Password Dolgu Tarayıcı Eylemi";
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NFCReaderUsageDescription" = "Uygulamanın Yubikey'inizle iletişim kurmak için NFC okumasına erişmesi gerekir.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Bu, fotoğraf çekmenizi ve yüklemenizi sağlar.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Brave, kayıtlı oturum açma bilgilerinize erişmek için Face ID gerektirir.";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "Ziyaret ettiğiniz web siteleri konumunuzu isteyebilir.";
+
+/* Privacy - Microphone Usage Description */
+"NSMicrophoneUsageDescription" = "Bu, video çekmenizi ve yüklemenizi sağlar.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Bu, fotoğrafları kaydetmenizi sağlar.";
+
+/* (No Comment) */
+"OPML File" = "OPML Dosyası";
+
+/* (No Comment) */
+"ShortcutItemTitleNewPrivateTab" = "Yeni Gizli Sekme";
+
+/* (No Comment) */
+"ShortcutItemTitleNewTab" = "Yeni Sekme";
+
+/* (No Comment) */
+"ShortcutItemTitleQRCode" = "QR Kodunu Tara";
+

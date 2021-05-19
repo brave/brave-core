@@ -52,44 +52,6 @@ extension Date {
         return Date(timeIntervalSince1970: Double(microsecondTimestamp) / 1000000)
     }
 
-    public func toRelativeTimeString() -> String {
-        let now = Date()
-
-        let units: Set<Calendar.Component> = [.second, .minute, .day, .weekOfYear, .month, .year, .hour]
-        let components = Calendar.current.dateComponents(units, from: self, to: now)
-
-        if components.year! > 0 {
-            return String(format: DateFormatter.localizedString(from: self, dateStyle: .short, timeStyle: .short))
-        }
-
-        if components.month == 1 {
-            return String(format: Strings.timeConstantMoreThanMonthAgoText)
-        }
-
-        if components.month! > 1 {
-            return String(format: DateFormatter.localizedString(from: self, dateStyle: .short, timeStyle: .short))
-        }
-
-        if components.weekOfYear! > 0 {
-            return String(format: Strings.timeConstantMoreThanWeekAgoText)
-        }
-
-        if components.day == 1 {
-            return String(format: Strings.timeConstantYesterdayText)
-        }
-
-        if components.day! > 1 {
-            return String(format: Strings.timeConstantThisWeekText, String(describing: components.day))
-        }
-
-        if components.hour! > 0 || components.minute! > 0 {
-            let absoluteTime = DateFormatter.localizedString(from: self, dateStyle: .none, timeStyle: .short)
-            return String(format: Strings.timeConstantTodayAtFormat, absoluteTime)
-        }
-
-        return String(format: Strings.timeConstantJustNowText)
-    }
-
     public func toRFC822String() -> String {
         return rfc822DateFormatter.string(from: self)
     }
@@ -164,14 +126,4 @@ public func decimalSecondsStringToTimestamp(_ input: String) -> Timestamp? {
 public func millisecondsToDecimalSeconds(_ input: Timestamp) -> String {
     let val: Double = Double(input) / 1000
     return String(format: "%.2F", val)
-}
-
-// PRAGMA MARK: TimeConstants.swift
-extension Strings {
-    public static let timeConstantMoreThanMonthAgoText = NSLocalizedString("TimeConstantMoreThanMonthAgoText", tableName: "Shared", bundle: Bundle.shared, value: "more than a month ago", comment: "Relative date for dates older than a month and less than two months.")
-    public static let timeConstantMoreThanWeekAgoText = NSLocalizedString("TimeConstantMoreThanWeekAgoText", tableName: "Shared", bundle: Bundle.shared, value: "more than a week ago", comment: "Description for a date more than a week ago, but less than a month ago.")
-    public static let timeConstantYesterdayText = NSLocalizedString("TimeConstantYesterdayText", tableName: "Shared", bundle: Bundle.shared, value: "yesterday", comment: "Relative date for yesterday.")
-    public static let timeConstantThisWeekText = NSLocalizedString("TimeConstantThisWeekText", tableName: "Shared", bundle: Bundle.shared, value: "this week", comment: "Relative date for date in past week.")
-    public static let timeConstantTodayAtFormat = NSLocalizedString("TimeConstantTodayAtFormat", tableName: "Shared", bundle: Bundle.shared, value: "today at %@", comment: "Relative date for date older than a minute.")
-    public static let timeConstantJustNowText = NSLocalizedString("TimeConstantJustNowText", tableName: "Shared", bundle: Bundle.shared, value: "just now", comment: "Relative time for a tab that was visited within the last few moments.")
 }

@@ -45,7 +45,7 @@ if [ ! -d "translated-xliffs" ] ; then
   report_error 4 "ERROR: \"translated-xliffs\" directory not found"
 fi
 
-language_codes=(fr pl ru de zh zh_TW id_ID it ja ko_KR ms pt_BR es uk nb sv)
+language_codes=(fr pl ru de zh zh_TW id_ID it ja ko_KR ms pt_BR es uk nb sv tr)
 
 for language_code in ${language_codes[@]} ; do
   echo "Downloading translations for language code \""$language_code"\""
