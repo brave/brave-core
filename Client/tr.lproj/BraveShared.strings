@@ -1,0 +1,21 @@
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "İstemci hatası";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Ödeme isteğinde geçersiz ayrıntılar";
+
+/* Suffix for error strings */
+"tryAgain" = ", lütfen yeniden deneyin.";
+
+/* Error handling U2F authentication. */
+"U2FAuthenticationError" = "Güvenlik anahtarınızın kimliği doğrulanırken hata oluştu";
+
+/* Error handling U2F registration. */
+"U2FRegistrationError" = "Güvenlik anahtarınız kaydedilirken hata oluştu";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Desteklenmeyen ödeme araçları";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Kullanıcı iptal etti";
+
