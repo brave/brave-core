@@ -16,9 +16,9 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "build/build_config.h"
 #include "brave/common/importer/scoped_copy_file.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
+#include "build/build_config.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "chrome/common/importer/importer_data_types.h"
@@ -37,8 +37,8 @@
 #include "url/gurl.h"
 
 #if defined(OS_LINUX)
-#include "components/os_crypt/key_storage_config_linux.h"
 #include "chrome/grit/chromium_strings.h"
+#include "components/os_crypt/key_storage_config_linux.h"
 #include "ui/base/l10n/l10n_util.h"
 #endif  // defined(OS_LINUX)
 
@@ -136,9 +136,9 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
   return true;
 }
 
-base::string16 DecryptedCardFromColumn(const sql::Statement& s,
+std::u16string DecryptedCardFromColumn(const sql::Statement& s,
                                        int column_index) {
-  base::string16 credit_card_number;
+  std::u16string credit_card_number;
   int encrypted_number_len = s.ColumnByteLength(column_index);
   if (encrypted_number_len) {
     std::string encrypted_number;
@@ -176,15 +176,13 @@ bool PasswordFormToImportedPasswordForm(
 
 }  // namespace
 
-ChromeImporter::ChromeImporter() {
-}
+ChromeImporter::ChromeImporter() {}
 
-ChromeImporter::~ChromeImporter() {
-}
+ChromeImporter::~ChromeImporter() {}
 
 void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
-                                  uint16_t items,
-                                  ImporterBridge* bridge) {
+                                 uint16_t items,
+                                 ImporterBridge* bridge) {
   bridge_ = bridge;
   source_path_ = source_profile.source_path;
 
@@ -235,12 +233,12 @@ void ChromeImporter::ImportHistory() {
   }
 
   const char query[] =
-    "SELECT u.url, u.title, v.visit_time, u.typed_count, u.visit_count "
-    "FROM urls u JOIN visits v ON u.id = v.url "
-    "WHERE hidden = 0 "
-    "AND (transition & ?) != 0 "  // CHAIN_END
-    "AND (transition & ?) NOT IN (?, ?, ?)";  // No SUBFRAME or
-                                              // KEYWORD_GENERATED
+      "SELECT u.url, u.title, v.visit_time, u.typed_count, u.visit_count "
+      "FROM urls u JOIN visits v ON u.id = v.url "
+      "WHERE hidden = 0 "
+      "AND (transition & ?) != 0 "              // CHAIN_END
+      "AND (transition & ?) NOT IN (?, ?, ?)";  // No SUBFRAME or
+                                                // KEYWORD_GENERATED
 
   sql::Statement s(db.GetUniqueStatement(query));
   s.BindInt64(0, ui::PAGE_TRANSITION_CHAIN_END);
@@ -256,7 +254,7 @@ void ChromeImporter::ImportHistory() {
     ImporterURLRow row(url);
     row.title = s.ColumnString16(1);
     row.last_visit =
-      base::Time::FromDoubleT(chromeTimeToDouble((s.ColumnInt64(2))));
+        base::Time::FromDoubleT(chromeTimeToDouble((s.ColumnInt64(2))));
     row.hidden = false;
     row.typed_count = s.ColumnInt(3);
     row.visit_count = s.ColumnInt(4);
@@ -270,8 +268,7 @@ void ChromeImporter::ImportHistory() {
 
 void ChromeImporter::ImportBookmarks() {
   std::string bookmarks_content;
-  base::FilePath bookmarks_path =
-    source_path_.Append(
+  base::FilePath bookmarks_path = source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Bookmarks")));
   ScopedCopyFile copy_bookmark_file(bookmarks_path);
   if (!copy_bookmark_file.copy_success())
@@ -280,7 +277,7 @@ void ChromeImporter::ImportBookmarks() {
   base::ReadFileToString(copy_bookmark_file.copied_file_path(),
                          &bookmarks_content);
   base::Optional<base::Value> bookmarks_json =
-    base::JSONReader::Read(bookmarks_content);
+      base::JSONReader::Read(bookmarks_content);
   const base::DictionaryValue* bookmark_dict;
   if (!bookmarks_json || !bookmarks_json->GetAsDictionary(&bookmark_dict))
     return;
@@ -291,8 +288,8 @@ void ChromeImporter::ImportBookmarks() {
   if (bookmark_dict->GetDictionary("roots", &roots)) {
     // Importing bookmark bar items
     if (roots->GetDictionary("bookmark_bar", &bookmark_bar)) {
-      std::vector<base::string16> path;
-      base::string16 name;
+      std::vector<std::u16string> path;
+      std::u16string name;
       bookmark_bar->GetString("name", &name);
 
       path.push_back(name);
@@ -300,8 +297,8 @@ void ChromeImporter::ImportBookmarks() {
     }
     // Importing other items
     if (roots->GetDictionary("other", &other)) {
-      std::vector<base::string16> path;
-      base::string16 name;
+      std::vector<std::u16string> path;
+      std::u16string name;
       other->GetString("name", &name);
 
       path.push_back(name);
@@ -310,14 +307,11 @@ void ChromeImporter::ImportBookmarks() {
   }
   // Write into profile.
   if (!bookmarks.empty() && !cancelled()) {
-    const base::string16& first_folder_name =
-      base::UTF8ToUTF16("Imported from Chrome");
-    bridge_->AddBookmarks(bookmarks, first_folder_name);
+    bridge_->AddBookmarks(bookmarks, u"Imported from Chrome");
   }
 
   // Import favicons.
-  base::FilePath favicons_path =
-    source_path_.Append(
+  base::FilePath favicons_path = source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Favicons")));
   if (!base::PathExists(favicons_path))
     return;
@@ -340,9 +334,8 @@ void ChromeImporter::ImportBookmarks() {
   }
 }
 
-void ChromeImporter::ImportFaviconURLs(
-  sql::Database* db,
-  FaviconMap* favicon_map) {
+void ChromeImporter::ImportFaviconURLs(sql::Database* db,
+                                       FaviconMap* favicon_map) {
   const char query[] = "SELECT icon_id, page_url FROM icon_mapping;";
   sql::Statement s(db->GetUniqueStatement(query));
 
@@ -357,11 +350,12 @@ void ChromeImporter::LoadFaviconData(
     sql::Database* db,
     const FaviconMap& favicon_map,
     favicon_base::FaviconUsageDataList* favicons) {
-  const char query[] = "SELECT f.url, fb.image_data "
-                       "FROM favicons f "
-                       "JOIN favicon_bitmaps fb "
-                       "ON f.id = fb.icon_id "
-                       "WHERE f.id = ?;";
+  const char query[] =
+      "SELECT f.url, fb.image_data "
+      "FROM favicons f "
+      "JOIN favicon_bitmaps fb "
+      "ON f.id = fb.icon_id "
+      "WHERE f.id = ?;";
   sql::Statement s(db->GetUniqueStatement(query));
 
   if (!s.is_valid())
@@ -393,10 +387,10 @@ void ChromeImporter::LoadFaviconData(
 }
 
 void ChromeImporter::RecursiveReadBookmarksFolder(
-  const base::DictionaryValue* folder,
-  const std::vector<base::string16>& parent_path,
-  bool is_in_toolbar,
-  std::vector<ImportedBookmarkEntry>* bookmarks) {
+    const base::DictionaryValue* folder,
+    const std::vector<std::u16string>& parent_path,
+    bool is_in_toolbar,
+    std::vector<ImportedBookmarkEntry>* bookmarks) {
   const base::ListValue* children;
   if (folder->GetList("children", &children)) {
     for (const auto& value : *children) {
@@ -404,7 +398,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
       if (!value.GetAsDictionary(&dict))
         continue;
       std::string date_added, type, url;
-      base::string16 name;
+      std::u16string name;
       dict->GetString("date_added", &date_added);
       dict->GetString("name", &name);
       dict->GetString("type", &type);
@@ -420,12 +414,12 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
           entry.url = GURL();
           entry.path = parent_path;
           entry.title = name;
-          entry.creation_time =
-            base::Time::FromDoubleT(chromeTimeToDouble(std::stoll(date_added)));
+          entry.creation_time = base::Time::FromDoubleT(
+              chromeTimeToDouble(std::stoll(date_added)));
           bookmarks->push_back(entry);
         }
 
-        std::vector<base::string16> path = parent_path;
+        std::vector<std::u16string> path = parent_path;
         path.push_back(name);
         RecursiveReadBookmarksFolder(dict, path, is_in_toolbar, bookmarks);
       } else if (type == "url") {
@@ -435,7 +429,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
         entry.path = parent_path;
         entry.title = name;
         entry.creation_time =
-          base::Time::FromDoubleT(chromeTimeToDouble(std::stoll(date_added)));
+            base::Time::FromDoubleT(chromeTimeToDouble(std::stoll(date_added)));
         bookmarks->push_back(entry);
       }
     }
@@ -508,15 +502,13 @@ void ChromeImporter::ImportPayments() {
   auto* brave_bridge =
       static_cast<BraveExternalProcessImporterBridge*>(bridge_.get());
   while (s.Step()) {
-    const base::string16 card_number = DecryptedCardFromColumn(s, 3);
+    const std::u16string card_number = DecryptedCardFromColumn(s, 3);
     // Empty means decryption is failed. Or chrome's data is invalid.
     // Skip it.
     if (card_number.empty())
       continue;
-    brave_bridge->SetCreditCard(s.ColumnString16(0),
-                                s.ColumnString16(1),
-                                s.ColumnString16(2),
-                                card_number,
+    brave_bridge->SetCreditCard(s.ColumnString16(0), s.ColumnString16(1),
+                                s.ColumnString16(2), card_number,
                                 s.ColumnString(4));
   }
 }

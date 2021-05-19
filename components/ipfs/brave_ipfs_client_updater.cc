@@ -10,6 +10,7 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
 #include "components/component_updater/component_updater_service.h"
@@ -26,8 +27,8 @@ BraveIpfsClientUpdater::BraveIpfsClientUpdater(
     BraveComponent::Delegate* delegate,
     const base::FilePath& user_data_dir)
     : BraveComponent(delegate),
-      task_runner_(base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock()})),
+      task_runner_(
+          base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()})),
       registered_(false),
       user_data_dir_(user_data_dir),
       weak_ptr_factory_(this) {}

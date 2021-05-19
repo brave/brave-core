@@ -7,13 +7,13 @@
 
 // This is the provider for Brave Suggested Sites
 SuggestedSitesMatch::SuggestedSitesMatch(const std::string& match_string,
-    const GURL& destination_url,
-    const GURL& stripped_destination_url, const base::string16& display) :
-        match_string_(match_string),
-  destination_url_(destination_url),
-  stripped_destination_url_(stripped_destination_url),
-  display_(display) {
-}
+                                         const GURL& destination_url,
+                                         const GURL& stripped_destination_url,
+                                         const std::u16string& display)
+    : match_string_(match_string),
+      destination_url_(destination_url),
+      stripped_destination_url_(stripped_destination_url),
+      display_(display) {}
 
 SuggestedSitesMatch::SuggestedSitesMatch(const SuggestedSitesMatch& other) {
   match_string_ = other.match_string_;

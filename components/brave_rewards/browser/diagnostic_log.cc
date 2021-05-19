@@ -13,7 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
-#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 
 namespace {
 
@@ -286,9 +286,8 @@ namespace brave_rewards {
 DiagnosticLog::DiagnosticLog(const base::FilePath& file_path,
                              int64_t max_file_size,
                              int keep_num_lines)
-    : file_task_runner_(base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock(),
-           base::TaskPriority::USER_VISIBLE,
+    : file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       file_path_(file_path),
       max_file_size_(max_file_size),

@@ -20,12 +20,12 @@
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
-#include "components/safe_browsing/core/features.h"
 #include "components/security_state/core/features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
+#include "media/base/media_switches.h"
 #include "net/base/features.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
@@ -68,6 +68,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
       &autofill::features::kAutofillEnableAccountWalletStorage,
       &autofill::features::kAutofillServerCommunication,
+      &blink::features::kFledgeInterestGroupAPI,
+      &blink::features::kFledgeInterestGroups,
+      &blink::features::kHandwritingRecognitionWebPlatformApi,
+      &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
       &blink::features::kInterestCohortAPIOriginTrial,
       &blink::features::kInterestCohortFeaturePolicy,
       &blink::features::kTextFragmentAnchor,
@@ -82,12 +86,12 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kWebOTP,
       &federated_learning::kFederatedLearningOfCohorts,
       &federated_learning::kFlocIdComputedEventLogging,
-      &federated_learning::kFlocIdSortingLshBasedComputation,
       &kEnableProfilePickerOnStartupFeature,
       &kSharingQRCodeGenerator,
+      &media::kLiveCaption,
+      &net::features::kFirstPartySets,
+      &network::features::kTrustTokens,
       &network_time::kNetworkTimeServiceQuerying,
-      &safe_browsing::kEnhancedProtection,
-      &safe_browsing::kEnhancedProtectionMessageInInterstitials,
   };
 
   for (const auto* feature : disabled_features)

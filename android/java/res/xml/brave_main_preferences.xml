@@ -12,12 +12,12 @@
         android:order="0"
         android:title="@string/prefs_section_search_engine"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveStandardSearchEnginePreference"
+        android:fragment="org.chromium.chrome.browser.search_engines.settings.BraveStandardSearchEnginePreference"
         android:key="standard_search_engine"
         android:order="1"
         android:title="@string/prefs_standard_search_engine"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BravePrivateSearchEnginePreference"
+        android:fragment="org.chromium.chrome.browser.search_engines.settings.BravePrivateSearchEnginePreference"
         android:key="private_search_engine"
         android:order="2"
         android:title="@string/prefs_private_search_engine"/>

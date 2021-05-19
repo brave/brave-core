@@ -30,6 +30,7 @@ js_modulizer("modules") {
   input_files = [ "brave_ipfs_browser_proxy.js" ]
   namespace_rewrites = settings_namespace_rewrites
 }
+
 html_to_js("templatize") {
   js_files = [ "change_ipfs_gateway_dialog.js" ]
 }

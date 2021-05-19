@@ -1,0 +1,12 @@
+diff --git a/components/security_interstitials/content/cert_report_helper.cc b/components/security_interstitials/content/cert_report_helper.cc
+index 448759d7a69eaba26b1daa5a37a5c444bf704d1c..b51348fe4b2a7d5838b488d2015a9a5a6c202375 100644
+--- a/components/security_interstitials/content/cert_report_helper.cc
++++ b/components/security_interstitials/content/cert_report_helper.cc
+@@ -205,6 +205,7 @@ bool CertReportHelper::ShouldShowEnhancedProtectionMessage() {
+   // the window is not incognito AND
+   // Safe Browsing is not managed by policy AND
+   // the user is not already in enhanced protection mode.
++  BRAVE_CERT_REPORT_HELPER_SHOULD_SHOW_ENHANCED_PROTECTION_MESSAGE
+   if (!can_show_enhanced_protection_message_) {
+     return false;
+   }

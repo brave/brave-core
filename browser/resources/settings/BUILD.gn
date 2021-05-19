@@ -102,6 +102,7 @@ preprocess_if_expr("preprocess") {
     "brave_overrides/passwords_section.js",
     "brave_overrides/payments_section.js",
     "brave_overrides/people_page.js",
+    "brave_overrides/personalization_options.js",
     "brave_overrides/printing_page.js",
     "brave_overrides/reset_profile_dialog.js",
     "brave_overrides/safety_check_passwords_child.js",

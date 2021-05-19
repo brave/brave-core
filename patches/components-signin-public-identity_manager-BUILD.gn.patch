@@ -1,5 +1,5 @@
 diff --git a/components/signin/public/identity_manager/BUILD.gn b/components/signin/public/identity_manager/BUILD.gn
-index a28cbfd17ca7d8f3e24f0d9690dfffdb06829d8f..66559c07b501292ea635dab053beb1498a33ba4e 100644
+index dbe5921029b933cc0726793221a4aa676689bfbf..1cf95581ca971fa8bf5de6318e9a0c224c25d159 100644
 --- a/components/signin/public/identity_manager/BUILD.gn
 +++ b/components/signin/public/identity_manager/BUILD.gn
 @@ -7,6 +7,7 @@ import("//build/config/chromeos/ui_mode.gni")

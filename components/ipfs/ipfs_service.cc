@@ -14,6 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ipfs/import/ipfs_directory_import_worker.h"
 #include "brave/components/ipfs/import/ipfs_file_import_worker.h"
@@ -116,9 +117,8 @@ IpfsService::IpfsService(content::BrowserContext* context,
       user_data_dir_(user_data_dir),
       ipfs_client_updater_(ipfs_client_updater),
       channel_(channel),
-      file_task_runner_(base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock(),
-           base::TaskPriority::BEST_EFFORT,
+      file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ipfs_p3a(this, context),
       weak_factory_(this) {

@@ -54,7 +54,7 @@ class PassThroughDelegate : public brave_ads::NotificationDelegate {
   }
 
   void Click(const base::Optional<int>& button_index,
-             const base::Optional<base::string16>& reply) override {
+             const base::Optional<std::u16string>& reply) override {
     std::unique_ptr<brave_ads::AdsNotificationHandler> handler =
         std::make_unique<brave_ads::AdsNotificationHandler>(
             static_cast<content::BrowserContext*>(profile_));

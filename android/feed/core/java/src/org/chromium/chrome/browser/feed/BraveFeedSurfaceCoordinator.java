@@ -36,18 +36,17 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     private FrameLayout mRootView;
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
-            TabModelSelector tabModelSelector, WindowAndroid windowAndroid,
-            @Nullable SnapScrollHelper snapScrollHelper, @Nullable View ntpHeader,
-            @Nullable SectionHeaderView sectionHeaderView, FeedV1ActionOptions actionOptions,
+            WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
+            @Nullable View ntpHeader, @Nullable SectionHeaderView sectionHeaderView,
             boolean showDarkBackground, FeedSurfaceDelegate delegate,
             @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
             boolean isPlaceholderShownInitially, BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate) {
-        super(activity, snackbarManager, tabModelSelector, windowAndroid, snapScrollHelper,
-                ntpHeader, sectionHeaderView, actionOptions, showDarkBackground, delegate,
-                pageNavigationDelegate, profile, isPlaceholderShownInitially, bottomSheetController,
-                shareDelegateSupplier, externalScrollableContainerDelegate);
+        super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
+                sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
+                isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
+                externalScrollableContainerDelegate);
     }
 
     @Override
@@ -76,5 +75,9 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mRootView.addView(mScrollViewForPolicy);
         mScrollViewForPolicy.setFillViewport(true);
         mScrollViewForPolicy.requestFocus();
+    }
+
+    public boolean isEnhancedProtectionPromoEnabled() {
+        return false;
     }
 }

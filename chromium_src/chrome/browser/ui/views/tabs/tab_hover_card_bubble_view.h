@@ -24,7 +24,6 @@ class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
   using TabHoverCardBubbleView_ChromiumImpl::
       TabHoverCardBubbleView_ChromiumImpl;
 
- private:
   void UpdateCardContent(const Tab* tab) override;
 
   DISALLOW_COPY_AND_ASSIGN(TabHoverCardBubbleView);

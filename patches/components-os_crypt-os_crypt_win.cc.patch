@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/os_crypt_win.cc b/components/os_crypt/os_crypt_win.cc
-index 42753a38a61bf748189b9a50d1594f95ae981303..ff4bb76e0d8c17cb4fe94262a16599548be752be 100644
+index 51433a89264cb10ed6d19a96afbf228358afd6d0..f67c5511b6c0369e633ff4fcdd06f434b177431a 100644
 --- a/components/os_crypt/os_crypt_win.cc
 +++ b/components/os_crypt/os_crypt_win.cc
 @@ -135,6 +135,7 @@ bool OSCrypt::DecryptString16(const std::string& ciphertext,

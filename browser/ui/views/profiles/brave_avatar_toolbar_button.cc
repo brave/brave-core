@@ -14,6 +14,7 @@
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
@@ -39,30 +40,30 @@ class BraveToolbarButtonHighlightPathGenerator
     gfx::Rect rect(view->size());
     rect.Inset(GetToolbarInkDropInsets(view));
     SkPath path;
-    path.addRoundRect(gfx::RectToSkRect(rect),
-                      kHighlightRadius, kHighlightRadius);
+    path.addRoundRect(gfx::RectToSkRect(rect), kHighlightRadius,
+                      kHighlightRadius);
     return path;
   }
 };
 }  // namespace
 
-BraveAvatarToolbarButton::BraveAvatarToolbarButton(Browser* browser)
-    : AvatarToolbarButton(browser) {
+BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
+    : AvatarToolbarButton(browser_view) {
   // Replace ToolbarButton's highlight path generator.
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveToolbarButtonHighlightPathGenerator>());
 }
 
 void BraveAvatarToolbarButton::SetHighlight(
-    const base::string16& highlight_text,
+    const std::u16string& highlight_text,
     base::Optional<SkColor> highlight_color) {
-  base::string16 revised_highlight_text;
+  std::u16string revised_highlight_text;
   if (browser_->profile()->IsTor()) {
     revised_highlight_text =
         l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL);
   } else if (browser_->profile()->IsGuestSession()) {
     // We only want the icon for Guest profiles.
-    revised_highlight_text = base::string16();
+    revised_highlight_text = std::u16string();
   } else {
     revised_highlight_text = highlight_text;
   }
@@ -85,8 +86,7 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
     SetBackground(views::CreateBackgroundFromPainter(
         views::Painter::CreateSolidRoundRectPainter(
             is_tor ? kPrivateTorAvatarBGColor : kPrivateAvatarBGColor,
-            kHighlightRadius,
-            paint_insets)));
+            kHighlightRadius, paint_insets)));
 
     // We give more margins to horizontally.
     gfx::Insets target_insets =
@@ -112,15 +112,14 @@ ui::ImageModel BraveAvatarToolbarButton::GetAvatarIcon(
 
   if (browser_->profile()->IsGuestSession()) {
     return ui::ImageModel::FromVectorIcon(
-        kUserMenuGuestIcon,
-        GetForegroundColor(state),
+        kUserMenuGuestIcon, GetForegroundColor(state),
         ui::TouchUiController::Get()->touch_ui() ? 24 : 20);
   }
 
   return AvatarToolbarButton::GetAvatarIcon(state, gaia_account_image);
 }
 
-base::string16 BraveAvatarToolbarButton::GetAvatarTooltipText() const {
+std::u16string BraveAvatarToolbarButton::GetAvatarTooltipText() const {
   if (browser_->profile()->IsTor())
     return l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_TOOLTIP_TEXT);
 

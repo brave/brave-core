@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge_unittest.cc b/components/sync_device_info/device_info_sync_bridge_unittest.cc
-index ca48859c9390beed7fee40205da013fea437aa7a..1819d4d7f2dda0b357b172700bfcd7f9b62bd3a5 100644
+index f2c086c04e771c0ac61a0f1e1491a11b1cfe56ec..745aa1adf2414d38d757da339c4ca7c9f3736638 100644
 --- a/components/sync_device_info/device_info_sync_bridge_unittest.cc
 +++ b/components/sync_device_info/device_info_sync_bridge_unittest.cc
-@@ -864,7 +864,7 @@ TEST_F(DeviceInfoSyncBridgeTest, ApplySyncChangesWithLocalGuid) {
+@@ -900,7 +900,7 @@ TEST_F(DeviceInfoSyncBridgeTest, ApplySyncChangesWithLocalGuid) {
    auto error_on_delete = bridge()->ApplySyncChanges(
        bridge()->CreateMetadataChangeList(), std::move(entity_change_list));
    EXPECT_FALSE(error_on_delete);

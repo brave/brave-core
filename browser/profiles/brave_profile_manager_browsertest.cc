@@ -10,6 +10,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
+#include "brave/components/tor/tor_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -41,8 +42,8 @@ void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
 }
 
 struct TestProfileData {
-  base::string16 profile_name;
-  base::string16 profile_name_expected_after_migration;
+  std::u16string profile_name;
+  std::u16string profile_name_expected_after_migration;
   bool force_default_name;
   base::FilePath profile_path;
 };
@@ -50,21 +51,15 @@ struct TestProfileData {
 std::vector<TestProfileData> GetTestProfileData(
     ProfileManager* profile_manager) {
   const std::vector<TestProfileData> profile_data = {
-    {
-      base::ASCIIToUTF16("Person 1"),
-      base::ASCIIToUTF16("Profile 1"), true,
-      profile_manager->user_data_dir().Append(
-          profile_manager->GetInitialProfileDir())},
-    {
-      base::ASCIIToUTF16("Person 2"),
-      base::ASCIIToUTF16("Profile 2"), true,
-      profile_manager->user_data_dir().Append(
-          FILE_PATH_LITERAL("testprofile2"))},
-    {
-      base::ASCIIToUTF16("ZZCustom 3"),
-      base::ASCIIToUTF16("ZZCustom 3"), false,
-      profile_manager->user_data_dir().Append(
-          FILE_PATH_LITERAL("testprofile3"))},
+      {u"Person 1", u"Profile 1", true,
+       profile_manager->user_data_dir().Append(
+           profile_manager->GetInitialProfileDir())},
+      {u"Person 2", u"Profile 2", true,
+       profile_manager->user_data_dir().Append(
+           FILE_PATH_LITERAL("testprofile2"))},
+      {u"ZZCustom 3", u"ZZCustom 3", false,
+       profile_manager->user_data_dir().Append(
+           FILE_PATH_LITERAL("testprofile3"))},
   };
   return profile_data;
 }
@@ -109,8 +104,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
     base::RunLoop run_loop;
     profile_manager->CreateProfileAsync(
         profile_data[i].profile_path,
-        base::Bind(&OnUnblockOnProfileCreation, &run_loop), base::string16(),
-        std::string());
+        base::Bind(&OnUnblockOnProfileCreation, &run_loop));
     run_loop.Run();
     ProfileAttributesEntry* entry =
         storage.GetProfileAttributesWithPath(profile_data[i].profile_path);
@@ -185,9 +179,14 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   g_browser_process->local_state()->SetString(
       prefs::kProfileLastUsed,
       base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe());
+
+  // The migration happens during the initialization of the browser process, so
+  // we need to explicitly call the method here to test it actually works.
+  tor::MigrateLastUsedProfileFromLocalStatePrefs(
+      g_browser_process->local_state());
+
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   base::FilePath last_used_path =
-      g_browser_process->profile_manager()->GetLastUsedProfileDir(
-          profile_manager->user_data_dir());
+      profile_manager->GetLastUsedProfileDir(profile_manager->user_data_dir());
   EXPECT_EQ(last_used_path.BaseName().AsUTF8Unsafe(), chrome::kInitialProfile);
 }

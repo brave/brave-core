@@ -49,19 +49,20 @@ public class BraveNewTabPage extends NewTabPage {
 
     @Override
     protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
-            SnackbarManager snackbarManager, TabModelSelector tabModelSelector, NewTabPageUma uma,
-            boolean isInNightMode, BottomSheetController bottomSheetController,
+            SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
+            BottomSheetController bottomSheetController,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier) {
-        super.initializeMainView(activity, windowAndroid, snackbarManager, tabModelSelector, uma,
-                isInNightMode, bottomSheetController, shareDelegateSupplier);
+        super.initializeMainView(activity, windowAndroid, snackbarManager, uma, isInNightMode,
+                bottomSheetController, shareDelegateSupplier);
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
         assert !FeedFeatures.isFeedEnabled();
         mFeedSurfaceProvider = new BraveFeedSurfaceCoordinator(activity, snackbarManager,
-                tabModelSelector, windowAndroid,
-                new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout), mNewTabPageLayout,
-                null, null, isInNightMode, this, mNewTabPageManager.getNavigationDelegate(),
-                profile, false, bottomSheetController, shareDelegateSupplier, null);
+                windowAndroid, new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout),
+                mNewTabPageLayout, null, isInNightMode, this,
+                mNewTabPageManager.getNavigationDelegate(), profile,
+                /* isPlaceholderShownInitially= */ false, bottomSheetController,
+                shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null);
     }
 }

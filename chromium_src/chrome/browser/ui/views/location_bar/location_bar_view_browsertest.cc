@@ -26,7 +26,7 @@ struct SecurityIndicatorTestParams {
   net::CertStatus cert_status;
   security_state::SecurityLevel security_level;
   bool should_show_text;
-  base::string16 indicator_text;
+  std::u16string indicator_text;
 };
 
 class SecurityIndicatorTest
@@ -113,7 +113,7 @@ IN_PROC_BROWSER_TEST_P(SecurityIndicatorTest, CheckIndicatorText) {
   ResetInterceptor();
 }
 
-const base::string16 kEmptyString = base::string16();
+const std::u16string kEmptyString = std::u16string();
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SecurityIndicatorTest,

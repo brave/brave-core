@@ -6,7 +6,6 @@
 #include "chrome/browser/ui/webui/settings/settings_localized_strings_provider.h"
 
 #include "base/stl_util.h"
-#include "base/strings/string16.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/version_info.h"
@@ -291,7 +290,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ipfsStorageMaxValue",
       std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));
 
-  base::string16 ipfs_method_desc =
+  std::u16string ipfs_method_desc =
       l10n_util::GetStringFUTF16(IDS_SETTINGS_IPFS_METHOD_DESC,
                                  base::ASCIIToUTF16(ipfs::kIPFSLearnMoreURL));
   html_source->AddString("ipfsMethodDesc", ipfs_method_desc);
@@ -310,7 +309,7 @@ void BraveAddResources(content::WebUIDataSource* html_source,
 
 void BraveAddAboutStrings(content::WebUIDataSource* html_source,
                           Profile* profile) {
-  base::string16 license = l10n_util::GetStringFUTF16(
+  std::u16string license = l10n_util::GetStringFUTF16(
       IDS_BRAVE_VERSION_UI_LICENSE, base::ASCIIToUTF16(kBraveLicenseUrl),
       base::ASCIIToUTF16(chrome::kChromeUICreditsURL),
       base::ASCIIToUTF16(kBraveBuildInstructionsUrl),

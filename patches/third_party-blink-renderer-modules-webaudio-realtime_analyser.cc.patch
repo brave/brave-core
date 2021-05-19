@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-index b11a828870692b31a029231499c1bf3df4f3ef42..c8801853042e3f90a6032d8aa2c08e4e137a00c4 100644
+index 059a80ed7ab5c4851a7cc5f5f943e752dcfaff90..beb190bec044b030683bbd1d133e8887ec2701fa 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
 @@ -197,6 +197,7 @@ void RealtimeAnalyser::ConvertFloatToDb(DOMFloat32Array* destination_array) {

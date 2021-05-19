@@ -139,7 +139,8 @@ void AdsTabHelper::DidFinishNavigation(
   RunIsolatedJavaScript(render_frame_host);
 }
 
-void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
+void AdsTabHelper::DocumentOnLoadCompletedInMainFrame(
+    content::RenderFrameHost* render_frame_host) {
   if (!IsAdsEnabled() || !should_process_) {
     return;
   }
@@ -147,9 +148,6 @@ void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
   std::unique_ptr<dom_distiller::SourcePageHandleWebContents> handle =
       std::make_unique<dom_distiller::SourcePageHandleWebContents>(
           web_contents(), false);
-
-  content::RenderFrameHost* render_frame_host =
-      handle->web_contents()->GetMainFrame();
 
   RunIsolatedJavaScript(render_frame_host);
 }

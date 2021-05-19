@@ -13,7 +13,6 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
-#include "base/strings/string16.h"
 
 namespace brave_ads {
 
@@ -29,7 +28,7 @@ class NotificationObserver {
   // |reply| is filled in if there was an input field associated with the
   // button.
   virtual void Click(const base::Optional<int>& button_index,
-                     const base::Optional<base::string16>& reply) {}
+                     const base::Optional<std::u16string>& reply) {}
 };
 
 // Ref counted version of NotificationObserver, required to satisfy
@@ -71,7 +70,7 @@ class HandleNotificationClickDelegate : public NotificationDelegate {
 
   // NotificationDelegate overrides:
   void Click(const base::Optional<int>& button_index,
-             const base::Optional<base::string16>& reply) override;
+             const base::Optional<std::u16string>& reply) override;
 
  protected:
   ~HandleNotificationClickDelegate() override;

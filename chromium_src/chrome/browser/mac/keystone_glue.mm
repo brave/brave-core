@@ -20,11 +20,11 @@ bool KeystoneEnabled() {
 #endif
 }
 
-base::string16 CurrentlyInstalledVersion() {
+std::u16string CurrentlyInstalledVersion() {
 #if BUILDFLAG(ENABLE_SPARKLE)
   return sparkle_glue::CurrentlyInstalledVersion();
 #else
-  return base::string16();
+  return std::u16string();
 #endif
 }
 

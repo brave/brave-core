@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "base/strings/string16.h"
 #include "brave/common/importer/profile_import.mojom.h"
 #include "chrome/browser/importer/external_process_importer_client.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -37,12 +36,11 @@ class BraveExternalProcessImporterClient
   void OnImportItemFinished(importer::ImportItem import_item) override;
 
   // brave::mojom::ProfileImportObserver overrides:
-  void OnCreditCardImportReady(
-      const base::string16& name_on_card,
-      const base::string16& expiration_month,
-      const base::string16& expiration_year,
-      const base::string16& decrypted_card_number,
-      const std::string& origin) override;
+  void OnCreditCardImportReady(const std::u16string& name_on_card,
+                               const std::u16string& expiration_month,
+                               const std::u16string& expiration_year,
+                               const std::u16string& decrypted_card_number,
+                               const std::string& origin) override;
 
  protected:
   ~BraveExternalProcessImporterClient() override;

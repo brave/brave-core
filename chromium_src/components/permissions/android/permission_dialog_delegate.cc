@@ -32,7 +32,7 @@ void SetLifetimeOptions(const base::android::JavaRef<jobject>& j_delegate) {
 
   std::vector<PermissionLifetimeOption> lifetime_options =
       CreatePermissionLifetimeOptions();
-  std::vector<base::string16> lifetime_labels;
+  std::vector<std::u16string> lifetime_labels;
   for (const auto& lifetime_option : lifetime_options) {
     lifetime_labels.push_back(lifetime_option.label);
   }
