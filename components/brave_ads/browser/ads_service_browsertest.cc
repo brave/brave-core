@@ -102,17 +102,25 @@ class TestRewardsServiceObserver
   ~TestRewardsServiceObserver() override = default;
 
   void WaitForRewardsInitialization() {
+    if (rewards_initialized_) {
+      return;
+    }
+
     run_loop_ = std::make_unique<base::RunLoop>();
     run_loop_->Run();
   }
 
   // RewardsServiceObserver implementation
   void OnRewardsInitialized(brave_rewards::RewardsService* service) override {
-    run_loop_->Quit();
+    rewards_initialized_ = true;
+    if (run_loop_) {
+      run_loop_->Quit();
+    }
   }
 
  private:
   std::unique_ptr<base::RunLoop> run_loop_;
+  bool rewards_initialized_ = false;
 };
 
 class BraveAdsBrowserTest : public InProcessBrowserTest,
