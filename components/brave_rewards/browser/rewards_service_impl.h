@@ -21,6 +21,7 @@
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
 #include "base/sequence_checker.h"
+#include "base/threading/sequence_bound.h"
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
@@ -381,6 +382,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnDiagnosticLogDeletedForCompleteReset(SuccessCallback callback,
                                               bool success);
+
+  void OnDatabaseDeletedForCompleteReset(SuccessCallback callback,
+                                         bool success);
 
   void Reset();
 
@@ -770,7 +774,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_list_path_;
 
   std::unique_ptr<DiagnosticLog> diagnostic_log_;
-  std::unique_ptr<ledger::LedgerDatabase> ledger_database_;
+  base::SequenceBound<ledger::LedgerDatabase> ledger_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;
