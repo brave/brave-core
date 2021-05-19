@@ -25,12 +25,12 @@ source_set("stats_updater") {
 
   deps = [
     "//base",
-    "//brave/browser:version_info",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_stats/browser",
     "//brave/components/rpill/common",
+    "//brave/components/version_info",
     "//brave/vendor/bat-native-ads",
     "//chrome/common",
     "//components/prefs",

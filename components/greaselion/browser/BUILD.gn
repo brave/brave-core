@@ -13,8 +13,8 @@ source_set("browser") {
 
   deps = [
     "//base",
-    "//brave/browser:version_info",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/version_info",
     "//chrome/browser/extensions:extensions",
     "//components/version_info",
     "//content/public/browser",
@@ -23,8 +23,5 @@ source_set("browser") {
     "//url",
   ]
 
-  public_deps = [
-    "buildflags"
-  ]
-
+  public_deps = [ "buildflags" ]
 }

@@ -17,6 +17,7 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
+#include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -312,7 +313,9 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   if (brave_p3a_service_) {
     return brave_p3a_service_.get();
   }
-  brave_p3a_service_ = new brave::BraveP3AService(local_state());
+  brave_p3a_service_ = base::MakeRefCounted<brave::BraveP3AService>(
+      local_state(), brave::GetChannelName(),
+      local_state()->GetString(kWeekOfInstallation));
   brave_p3a_service()->InitCallbacks();
   return brave_p3a_service_.get();
 }

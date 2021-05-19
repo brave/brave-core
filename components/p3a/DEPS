@@ -1,14 +1,6 @@
 include_rules = [
+  "+brave/components/version_info",
   "+content/public/browser",
   "+services/network/public",
   "+third_party/metrics_proto",
 ]
-
-# Existing exceptions
-specific_include_rules = {
-  "brave_p3a_service.c": [
-    "+brave/browser/version_info.h",
-    "+brave/common/brave_channel_info.h",
-    "+brave/common/pref_names.h",
-  ],
-}

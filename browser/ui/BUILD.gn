@@ -236,8 +236,8 @@ source_set("ui") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
-    "//brave/components/ftx/browser/buildflags:buildflags",
     "//brave/components/decentralized_dns/buildflags",
+    "//brave/components/ftx/browser/buildflags:buildflags",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",
@@ -332,7 +332,6 @@ source_set("ui") {
   if (!is_android) {
     deps += [
       "//brave/app:brave_generated_resources_grit",
-      "//brave/browser:version_info",
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
       "//brave/components/brave_new_tab_ui:generated_resources",
@@ -340,6 +339,7 @@ source_set("ui") {
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:profile_sync_service_helper",
       "//brave/components/brave_welcome_ui:generated_resources",
+      "//brave/components/version_info",
       "//chrome/app:chromium_strings",
       "//components/sync_device_info",
       "//third_party/blink/public/common",
