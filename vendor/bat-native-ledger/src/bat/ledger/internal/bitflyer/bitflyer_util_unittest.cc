@@ -83,14 +83,15 @@ TEST_F(BitflyerUtilTest, GetAuthorizeUrl) {
   std::string result =
       bitflyer::GetAuthorizeUrl("my-state", "my-code-verifier");
   ASSERT_EQ(result,
-            "https://bitflyer.jp/ex/OAuth/authorize"
-            "?client_id=" BITFLYER_CLIENT_ID
-            "&scope=assets create_deposit_id withdraw_to_deposit_id"
-            "&redirect_uri=rewards://bitflyer/authorization"
-            "&state=my-state"
-            "&response_type=code"
-            "&code_challenge_method=S256"
-            "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w");
+            std::string(kUrlProduction) +
+                "/ex/OAuth/authorize"
+                "?client_id=" BITFLYER_CLIENT_ID
+                "&scope=assets create_deposit_id withdraw_to_deposit_id"
+                "&redirect_uri=rewards://bitflyer/authorization"
+                "&state=my-state"
+                "&response_type=code"
+                "&code_challenge_method=S256"
+                "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w");
 
   // staging
   ledger::_environment = type::Environment::STAGING;
@@ -110,7 +111,7 @@ TEST_F(BitflyerUtilTest, GetAddUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = bitflyer::GetAddUrl();
-  ASSERT_EQ(result, "https://bitflyer.jp/ex/Home?login=1");
+  ASSERT_EQ(result, std::string(kUrlProduction) + "/ex/Home?login=1");
 
   // staging
   ledger::_environment = type::Environment::STAGING;
@@ -122,7 +123,7 @@ TEST_F(BitflyerUtilTest, GetWithdrawUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = bitflyer::GetWithdrawUrl();
-  ASSERT_EQ(result, "https://bitflyer.jp/ex/Home?login=1");
+  ASSERT_EQ(result, std::string(kUrlProduction) + "/ex/Home?login=1");
 
   // staging
   ledger::_environment = type::Environment::STAGING;
@@ -138,17 +139,17 @@ TEST_F(BitflyerUtilTest, GetWallet) {
   ASSERT_TRUE(!result);
 
   const std::string wallet = R"({
-    "account_url": "https://bitflyer.jp/ex/Home?login=1",
+    "account_url": "https://bitflyer.com/ex/Home?login=1",
     "add_url": "",
     "address": "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
     "fees": {},
-    "login_url": "https://sandbox.bitflyer.jp/authorize/4c2b665ca060d",
+    "login_url": "https://sandbox.bitflyer.com/authorize/4c2b665ca060d",
     "one_time_string": "1F747AE0A708E47ED7E650BF1856B5A4EF7E36833BDB1158A108F8",
     "code_verifier": "1234567890",
     "status": 2,
     "token": "4c80232r219c30cdf112208890a32c7e00",
     "user_name": "test",
-    "verify_url": "https://sandbox.bitflyer.jp/authorize/4c2b665ca060d",
+    "verify_url": "https://sandbox.bitflyer.com/authorize/4c2b665ca060d",
     "withdraw_url": ""
   })";
 

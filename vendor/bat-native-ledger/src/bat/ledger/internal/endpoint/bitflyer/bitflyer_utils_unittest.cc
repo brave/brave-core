@@ -31,7 +31,7 @@ TEST(BitflyerUtilsTest, GetServerUrlStaging) {
 TEST(BitflyerUtilsTest, GetServerUrlProduction) {
   ledger::_environment = type::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, "https://bitflyer.jp/test");
+  ASSERT_EQ(url, "https://bitflyer.com/test");
 }
 
 }  // namespace bitflyer
