@@ -42,7 +42,7 @@ index 9d44cc4f4f998dfe32e4933de20029584924877d..3224ec0f125b0a508cf7687329884bc4
  
 +<!--
      <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
-+-->
++--> <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
  
      {% block extra_uses_permissions %}
      {% endblock %}
