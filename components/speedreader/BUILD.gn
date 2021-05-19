@@ -32,6 +32,8 @@ source_set("speedreader") {
     "speedreader_throttle.h",
     "speedreader_url_loader.cc",
     "speedreader_url_loader.h",
+    "speedreader_util.cc",
+    "speedreader_util.h",
   ]
 
   deps = [
@@ -44,7 +46,8 @@ source_set("speedreader") {
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//third_party/blink/public/common",
-    "//ui/base",  # For ResourceBundle, consider getting rid of this?
+    "//third_party/re2",
+    "//ui/base",  # For ResourceBundle, consider getting rid of this ?
     "//url",
   ]
 }

@@ -455,8 +455,10 @@ test("brave_unit_tests") {
   }
 
   if (enable_speedreader) {
-    sources +=
-        [ "//brave/components/speedreader/rust/ffi/speedreader_unittest.cc" ]
+    sources += [
+      "//brave/components/speedreader/rust/ffi/speedreader_unittest.cc",
+      "//brave/components/speedreader/speedreader_util_unittest.cc",
+    ]
 
     deps += [ "//brave/components/speedreader" ]
   }
