@@ -32,6 +32,7 @@ class PlaylistHelper: NSObject, TabContentScript {
     private var url: URL?
     private var playlistItems = Set<String>()
     private var urlObserver: NSObjectProtocol?
+    private static let queue = DispatchQueue(label: "com.playlisthelper.queue", qos: .userInitiated)
     
     init(tab: Tab) {
         self.tab = tab
@@ -62,70 +63,95 @@ class PlaylistHelper: NSObject, TabContentScript {
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        
-        guard let item = PlaylistInfo.from(message: message),
-              !item.src.isEmpty else {
-            delegate?.openInPlayListActivity(info: nil)
-            delegate?.addToPlayListActivity(info: nil, itemDetected: false)
-            return
-        }
-        
-        if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
-            delegate?.openInPlayListActivity(info: nil)
-            delegate?.addToPlayListActivity(info: nil, itemDetected: false)
-            return
-        }
-        
-        // We have to create an AVURLAsset here to determine if the item is playable
-        // because otherwise it will add an invalid item to playlist that can't be played.
-        // IE: WebM videos aren't supported so can't be played.
-        // Therefore we shouldn't prompt the user to add to playlist.
-        if let url = URL(string: item.src), !AVURLAsset(url: url).isPlayable {
-            delegate?.openInPlayListActivity(info: nil)
-            delegate?.addToPlayListActivity(info: nil, itemDetected: false)
-            return
-        }
-        
-        log.debug("FOUND VIDEO ITEM ON PAGE: \(message.body)")
-        
-        if PlaylistItem.itemExists(item) {
-            delegate?.openInPlayListActivity(info: item)
-            delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+        PlaylistHelper.queue.async { [weak self] in
+            guard let self = self else { return }
             
-            PlaylistItem.updateItem(item) {
-                log.debug("Playlist Item Updated")
-                
-                if !self.playlistItems.contains(item.src) {
-                    self.playlistItems.insert(item.src)
-                    self.delegate?.showPlaylistToast(info: item, itemState: .existing)
+            guard let item = DispatchQueue.main.sync(execute: { PlaylistInfo.from(message: message) }),
+                  !item.src.isEmpty else {
+                ensureMainThread {
+                    self.delegate?.openInPlayListActivity(info: nil)
+                    self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
                 }
+                return
             }
-        } else {
-            delegate?.openInPlayListActivity(info: nil)
-            delegate?.addToPlayListActivity(info: item, itemDetected: true)
             
-            if item.detected {
-                self.delegate?.showPlaylistToast(info: item, itemState: .pendingUserAction)
-            } else {
-                // Has to be done otherwise it is impossible to play a video after selecting its elements
-                UIMenuController.shared.hideMenu()
+            if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
+                ensureMainThread {
+                    self.delegate?.openInPlayListActivity(info: nil)
+                    self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+                }
+                return
+            }
+            
+            // We have to create an AVURLAsset here to determine if the item is playable
+            // because otherwise it will add an invalid item to playlist that can't be played.
+            // IE: WebM videos aren't supported so can't be played.
+            // Therefore we shouldn't prompt the user to add to playlist.
+            if let url = URL(string: item.src) {
+                let asset = AVURLAsset(url: url)
                 
-                let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
-                let alert = UIAlertController(
-                    title: Strings.PlayList.addToPlayListAlertTitle, message: Strings.PlayList.addToPlayListAlertDescription, preferredStyle: style)
-                
-                alert.addAction(UIAlertAction(title: Strings.PlayList.addToPlayListAlertTitle, style: .default, handler: { _ in
-                    // Update playlist with new items..
-                    PlaylistItem.addItem(item, cachedData: nil) {
-                        PlaylistManager.shared.autoDownload(item: item)
-                        
-                        log.debug("Playlist Item Added")
-                        self.delegate?.showPlaylistToast(info: item, itemState: .added)
-                        UIImpactFeedbackGenerator(style: .medium).bzzt()
+                asset.loadValuesAsynchronously(forKeys: ["playable"]) {
+                    var error: NSError?
+                    let status = asset.statusOfValue(forKey: "playable", error: &error)
+                    let isPlayable = status == .loaded
+                    
+                    if let error = error {
+                        log.error("Couldn't load asset's playability: \(error)")
                     }
-                }))
-                alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
-                self.delegate?.showPlaylistAlert(alert)
+                    
+                    if !isPlayable {
+                        ensureMainThread {
+                            self.delegate?.openInPlayListActivity(info: nil)
+                            self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+                        }
+                        return
+                    }
+                    
+                    ensureMainThread {
+                        log.debug("FOUND VIDEO ITEM ON PAGE: \(message.body)")
+                        
+                        if PlaylistItem.itemExists(item) {
+                            self.delegate?.openInPlayListActivity(info: item)
+                            self.delegate?.addToPlayListActivity(info: nil, itemDetected: false)
+                            
+                            PlaylistItem.updateItem(item) {
+                                log.debug("Playlist Item Updated")
+                                
+                                if !self.playlistItems.contains(item.src) {
+                                    self.playlistItems.insert(item.src)
+                                    self.delegate?.showPlaylistToast(info: item, itemState: .existing)
+                                }
+                            }
+                        } else {
+                            self.delegate?.openInPlayListActivity(info: nil)
+                            self.delegate?.addToPlayListActivity(info: item, itemDetected: true)
+                            
+                            if item.detected {
+                                self.delegate?.showPlaylistToast(info: item, itemState: .pendingUserAction)
+                            } else {
+                                // Has to be done otherwise it is impossible to play a video after selecting its elements
+                                UIMenuController.shared.hideMenu()
+                                
+                                let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
+                                let alert = UIAlertController(
+                                    title: Strings.PlayList.addToPlayListAlertTitle, message: Strings.PlayList.addToPlayListAlertDescription, preferredStyle: style)
+                                
+                                alert.addAction(UIAlertAction(title: Strings.PlayList.addToPlayListAlertTitle, style: .default, handler: { _ in
+                                    // Update playlist with new items..
+                                    PlaylistItem.addItem(item, cachedData: nil) {
+                                        PlaylistManager.shared.autoDownload(item: item)
+                                        
+                                        log.debug("Playlist Item Added")
+                                        self.delegate?.showPlaylistToast(info: item, itemState: .added)
+                                        UIImpactFeedbackGenerator(style: .medium).bzzt()
+                                    }
+                                }))
+                                alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
+                                self.delegate?.showPlaylistAlert(alert)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
