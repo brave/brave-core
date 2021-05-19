@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PAGE_HANDLER_WALLET_PANEL_PAGE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PAGE_HANDLER_WALLET_PANEL_PAGE_HANDLER_H_
 
+#include <string>
+
 #include "brave/components/brave_wallet_ui/wallet_panel.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"

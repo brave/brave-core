@@ -71,7 +71,7 @@ function Onboarding (props: Props) {
       array[j] = temp
     }
     return array
-  }, [])
+  }, [recoveryPhrase])
 
   const showError = () => {
     setVerifyError(true)
