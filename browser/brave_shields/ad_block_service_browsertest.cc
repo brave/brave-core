@@ -581,9 +581,23 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+// These tests fail intermittently on macOS; see
+// https://github.com/brave/brave-browser/issues/15912
+#if defined(OS_MAC)
+#define MAYBE_CnameCloakedRequestsGetBlocked \
+  DISABLED_CnameCloakedRequestsGetBlocked
+#define MAYBE_CnameCloakedRequestsCanBeExcepted \
+  DISABLED_CnameCloakedRequestsCanBeExcepted
+#else
+#define MAYBE_CnameCloakedRequestsGetBlocked CnameCloakedRequestsGetBlocked
+#define MAYBE_CnameCloakedRequestsCanBeExcepted \
+  CnameCloakedRequestsCanBeExcepted
+#endif
+
 // Make sure that CNAME cloaked network requests get blocked correctly and
 // issue the correct number of DNS resolutions
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsGetBlocked) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_CnameCloakedRequestsGetBlocked) {
   UpdateAdBlockInstanceWithRules("||cname-cloak-endpoint.tracking.com^");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("a.com", kAdBlockTestPage);
@@ -666,7 +680,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsGetBlocked) {
 
 // Make sure that an exception for a URL can apply to a blocking decision made
 // to its CNAME-uncloaked equivalent.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_CnameCloakedRequestsCanBeExcepted) {
   UpdateAdBlockInstanceWithRules(
       "||cname-cloak-endpoint.tracking.com^\n"
       "@@||a.com/logo-unblock.png|");
