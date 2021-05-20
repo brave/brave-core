@@ -10,6 +10,8 @@ import * as WalletActions from '../../common/actions/wallet_actions'
 import { WalletPanelState, PanelState } from '../../constants/types'
 import { AccountPayloadType } from '../constants/action_types'
 
+type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
+
 const handler = new AsyncActionHandler()
 
 async function getAPIProxy () {
@@ -20,6 +22,17 @@ async function getAPIProxy () {
 
 function getPanelState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PanelState {
   return (store.getState() as WalletPanelState).panel
+}
+
+async function getWalletHandler() {
+  const apiProxy = await getAPIProxy()
+  return await apiProxy.getWalletHandler()
+}
+
+async function refreshWalletInfo(store: Store) {
+  const walletHandler = await getWalletHandler()
+  const result = await walletHandler.getWalletInfo()
+  store.dispatch(WalletActions.initialized(result))
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
@@ -50,6 +63,7 @@ handler.on(PanelActions.visibilityChanged.getType(), async (store, isVisible) =>
   if (!isVisible) {
     return
   }
+  await refreshWalletInfo(store)
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
 })

@@ -26,7 +26,6 @@ reducer.on(Actions.walletSetupComplete, (state: PageState) => {
   delete state['mnemonic']
   return {
     ...state,
-    isWalletCreated: true
   }
 })
 

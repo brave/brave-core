@@ -37,7 +37,9 @@ interface PageHandler {
 
 // Browser-side handler for common panel / page things
 interface WalletHandler {
-  Initialize() => (bool isWalletCreated);
+  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked);
+  LockWallet();
+  UnlockWallet(string password) => (bool isWalletUnlocked);
 };
 
 // WebUI-side handler for requests from the browser.

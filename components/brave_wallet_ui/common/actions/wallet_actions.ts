@@ -4,7 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createAction } from 'redux-act'
-import { InitializedPayloadType } from '../constants/action_types'
+import { InitializedPayloadType, UnlockWalletPayloadType } from '../constants/action_types'
 
 export const initialize = createAction('initialize')
 export const initialized = createAction<InitializedPayloadType>('initialized')
+export const lockWallet = createAction('lockWallet')
+export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet')

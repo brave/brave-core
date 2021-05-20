@@ -22,7 +22,8 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
   return {
     ...state,
     hasInitialized: true,
-    isWalletCreated: payload.isWalletCreated
+    isWalletCreated: payload.isWalletCreated,
+    isWalletLocked: payload.isWalletLocked
   }
 })
 

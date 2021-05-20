@@ -32,9 +32,26 @@ WalletHandler::WalletHandler(
 
 WalletHandler::~WalletHandler() = default;
 
-void WalletHandler::Initialize(InitializeCallback callback) {
+void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   auto* profile = Profile::FromWebUI(web_ui_);
   auto* keyring_controller =
       GetBraveWalletService(profile)->keyring_controller();
-  std::move(callback).Run(keyring_controller->IsDefaultKeyringCreated());
+  std::move(callback).Run(keyring_controller->IsDefaultKeyringCreated(),
+                          keyring_controller->IsLocked());
+}
+
+void WalletHandler::LockWallet() {
+  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* keyring_controller =
+      GetBraveWalletService(profile)->keyring_controller();
+  keyring_controller->Lock();
+}
+
+void WalletHandler::UnlockWallet(const std::string& password,
+                                 UnlockWalletCallback callback) {
+  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* keyring_controller =
+      GetBraveWalletService(profile)->keyring_controller();
+  bool result = keyring_controller->Unlock(password);
+  std::move(callback).Run(result);
 }

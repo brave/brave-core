@@ -5,4 +5,9 @@
 
 export type InitializedPayloadType = {
   isWalletCreated: boolean
+  isWalletLocked: boolean
+}
+
+export type UnlockWalletPayloadType = {
+  password: string
 }

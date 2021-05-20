@@ -146,5 +146,10 @@ export interface WalletPanelState {
 }
 
 export interface WalletAPIHandler {
-  initialize: () => { isWalletCreated: boolean }
+  getWalletInfo: () => {
+    isWalletCreated: boolean,
+    isWalletLocked: boolean
+  }
+  lockWallet: () => void
+  unlockWallet: (password: string) => void
 }

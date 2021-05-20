@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 
 import * as WalletPageActions from './actions/wallet_page_actions'
+import * as WalletActions from '../common/actions/wallet_actions'
 import store from './store'
 
 import 'emptykit.css'
@@ -19,7 +20,8 @@ import {
   SideNav,
   WalletPageLayout,
   WalletSubViewLayout,
-  CryptoView
+  CryptoView,
+  LockScreen
 } from '../components/desktop'
 import {
   NavTypes,
@@ -34,23 +36,39 @@ import Onboarding from '../stories/screens/onboarding'
 type Props = {
   wallet: WalletState
   page: PageState
-  actions: typeof WalletPageActions
+  walletPageActions: typeof WalletPageActions
+  walletActions: typeof WalletActions
 }
 
 function Container (props: Props) {
   const [view, setView] = React.useState<NavTypes>('crypto')
+  const [inputValue, setInputValue] = React.useState<string>('')
 
   // In the future these will be actual paths
   // for example wallet/rewards
   const navigateTo = (path: NavTypes) => {
     setView(path)
   }
-  const complete = () => {
-    props.actions.walletSetupComplete()
+
+  // recoveryVerified Prop will be used in a future PR.
+  const completeWalletSetup = (recoveryVerified: boolean) => {
+    props.walletPageActions.walletSetupComplete()
   }
 
   const passwordProvided = (password: string) => {
-    props.actions.createWallet({ password })
+    props.walletPageActions.createWallet({ password })
+  }
+
+  const unlockWallet = () => {
+    props.walletActions.unlockWallet({ password: inputValue })
+  }
+
+  const lockWallet = () => {
+    props.walletActions.lockWallet()
+  }
+
+  const handlePasswordChanged = (value: string) => {
+    setInputValue(value)
   }
 
   const recoveryPhrase = (props.page.mnemonic || '').split(' ')
@@ -60,13 +78,9 @@ function Container (props: Props) {
         <Onboarding
           recoveryPhrase={recoveryPhrase}
           onPasswordProvided={passwordProvided}
-          onSubmit={complete} />
+          onSubmit={completeWalletSetup} />
       </WalletPageLayout>
     )
-  }
-
-  const onLockWallet = () => {
-    // Logic here to lock wallet
   }
 
   return (
@@ -78,13 +92,18 @@ function Container (props: Props) {
       />
       <WalletSubViewLayout>
         {view === 'crypto' ? (
-          <CryptoView onLockWallet={onLockWallet} />
+          <>
+            { props.wallet.isWalletLocked ? (
+              <LockScreen onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
+            ) : (
+              <CryptoView onLockWallet={lockWallet} />
+            )}
+          </>
         ) : (
           <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <h2>{view} view</h2>
           </div>
         )}
-
       </WalletSubViewLayout>
       <WalletWidgetStandIn>
         <BuySendSwap />
@@ -102,7 +121,8 @@ function mapStateToProps (state: WalletPageState): Partial<Props> {
 
 function mapDispatchToProps (dispatch: Dispatch): Partial<Props> {
   return {
-    actions: bindActionCreators(WalletPageActions, store.dispatch.bind(store))
+    walletPageActions: bindActionCreators(WalletPageActions, store.dispatch.bind(store)),
+    walletActions: bindActionCreators(WalletActions, store.dispatch.bind(store))
   }
 }
 

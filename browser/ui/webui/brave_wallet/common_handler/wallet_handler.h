@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_COMMON_HANDLER_WALLET_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_COMMON_HANDLER_WALLET_HANDLER_H_
 
+#include <string>
+
 #include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -30,7 +32,9 @@ class WalletHandler : public wallet_ui::mojom::WalletHandler {
   ~WalletHandler() override;
 
   // wallet_ui::mojom::WalletHandler:
-  void Initialize(InitializeCallback) override;
+  void GetWalletInfo(GetWalletInfoCallback) override;
+  void LockWallet() override;
+  void UnlockWallet(const std::string& password, UnlockWalletCallback) override;
 
  private:
   mojo::Receiver<wallet_ui::mojom::WalletHandler> receiver_;
