@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/resources/bookmarks/toolbar.js b/chrome/browser/resources/bookmarks/toolbar.js
-index 9b603b5e7a8c94de0251eb5cc8cea380350c5d58..4d1fe89bd0d48ab8effc7bcb87d516bfcc8cab10 100644
+index 0e5cdde9cf5e0fe520147f4cf4c08b03305ec257..fb7b010b6c8d727b993adf67f2b962ebb2f24909 100644
 --- a/chrome/browser/resources/bookmarks/toolbar.js
 +++ b/chrome/browser/resources/bookmarks/toolbar.js
-@@ -3,7 +3,7 @@
- // found in the LICENSE file.
+@@ -8,7 +8,7 @@ import 'chrome://resources/cr_elements/icons.m.js';
+ import './shared_style.js';
+ import './strings.m.js';
  
- import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.m.js';
--import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
+-import {CrToolbarElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
 +import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js';
- import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
- import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.js';
- import 'chrome://resources/cr_elements/icons.m.js';
+ import {CrToolbarSearchFieldElement} from 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar_search_field.js';
+ import {assert} from 'chrome://resources/js/assert.m.js';
+ import {StoreObserver} from 'chrome://resources/js/cr/ui/store.m.js';
