@@ -102,9 +102,6 @@ void SidebarContainerView::SetSidebarShowOption(
     return;
   }
 
-  GetEventDetectWidget()->SetShowOnHover(show_option ==
-                                         ShowSidebarOption::kShowOnMouseOver);
-
   ShowSidebar(false, true);
 }
 
@@ -232,6 +229,11 @@ void SidebarContainerView::ShowOptionsEventDetectWidget(bool show) {
 
 void SidebarContainerView::ShowSidebar() {
   ShowSidebar(true, false);
+}
+
+bool SidebarContainerView::ShouldShowOnHover() {
+  const auto show_option = GetSidebarService(browser_)->GetSidebarShowOption();
+  return show_option == ShowSidebarOption::kShowOnMouseOver;
 }
 
 void SidebarContainerView::ShowSidebar(bool show_sidebar,
