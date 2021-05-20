@@ -15,7 +15,7 @@ private let log = Logger.browserLogger
 class PlaylistMediaInfo: NSObject {
     private weak var playerView: VideoView?
     private var webLoader: PlaylistWebLoader?
-    private var playerStatusObserver: StreamObserver?
+    private var playerStatusObserver: PlaylistPlayerStatusObserver?
     private var rateObserver: NSKeyValueObservation?
     public var nowPlayingInfo: PlaylistInfo? {
         didSet {
@@ -202,7 +202,7 @@ extension PlaylistMediaInfo: MPPlayableContentDelegate {
                         self.playerView?.load(url: url, resourceDelegate: nil, autoPlayEnabled: autoPlayEnabled)
                         
                         if let player = self.playerView?.player {
-                            self.playerStatusObserver = StreamObserver(player: player, onStatusChanged: { status in
+                            self.playerStatusObserver = PlaylistPlayerStatusObserver(player: player, onStatusChanged: { status in
                                 self.playerStatusObserver = nil
 
                                 DispatchQueue.main.async {
@@ -237,47 +237,6 @@ extension PlaylistMediaInfo: MPPlayableContentDelegate {
             completion(.none)
         }
     }
-    
-    private class StreamObserver: NSObject {
-        private var context = 0
-        private weak var player: AVPlayer?
-        private var item: AVPlayerItem?
-        private var onStatusChanged: (AVPlayerItem.Status) -> Void
-        private var currentItemObserver: NSKeyValueObservation?
-        private var itemStatusObserver: NSKeyValueObservation?
-        
-        init(player: AVPlayer, onStatusChanged: @escaping (AVPlayerItem.Status) -> Void) {
-            self.onStatusChanged = onStatusChanged
-            super.init()
-            
-            self.player = player
-            currentItemObserver = player.observe(\AVPlayer.currentItem, options: [.new], changeHandler: { [weak self] _, change in
-                guard let self = self else { return }
-                
-                if let newItem = change.newValue {
-                    self.item = newItem
-                    self.itemStatusObserver = newItem?.observe(\AVPlayerItem.status, options: [.new], changeHandler: { [weak self] _, change in
-                        guard let self = self else { return }
-                        
-                        let status = change.newValue ?? .unknown
-                        switch status {
-                        case .readyToPlay:
-                            log.debug("Player Item Status: Ready")
-                            self.onStatusChanged(.readyToPlay)
-                        case .failed:
-                            log.debug("Player Item Status: Failed")
-                            self.onStatusChanged(.failed)
-                        case .unknown:
-                            log.debug("Player Item Status: Unknown")
-                            self.onStatusChanged(.unknown)
-                        @unknown default:
-                            assertionFailure("Unknown Switch Case for AVPlayerItemStatus")
-                        }
-                    })
-                }
-            })
-        }
-    }
 }
 
 extension PlaylistMediaInfo {
@@ -298,6 +257,47 @@ extension PlaylistMediaInfo {
             log.error("Error copying thumbnail for playlist url: \(url) -  \(error)")
         }
         return nil
+    }
+}
+
+class PlaylistPlayerStatusObserver: NSObject {
+    private var context = 0
+    private weak var player: AVPlayer?
+    private var item: AVPlayerItem?
+    private var onStatusChanged: (AVPlayerItem.Status) -> Void
+    private var currentItemObserver: NSKeyValueObservation?
+    private var itemStatusObserver: NSKeyValueObservation?
+    
+    init(player: AVPlayer, onStatusChanged: @escaping (AVPlayerItem.Status) -> Void) {
+        self.onStatusChanged = onStatusChanged
+        super.init()
+        
+        self.player = player
+        currentItemObserver = player.observe(\AVPlayer.currentItem, options: [.new], changeHandler: { [weak self] _, change in
+            guard let self = self else { return }
+            
+            if let newItem = change.newValue {
+                self.item = newItem
+                self.itemStatusObserver = newItem?.observe(\AVPlayerItem.status, options: [.new], changeHandler: { [weak self] _, change in
+                    guard let self = self else { return }
+                    
+                    let status = change.newValue ?? .unknown
+                    switch status {
+                    case .readyToPlay:
+                        log.debug("Player Item Status: Ready")
+                        self.onStatusChanged(.readyToPlay)
+                    case .failed:
+                        log.debug("Player Item Status: Failed")
+                        self.onStatusChanged(.failed)
+                    case .unknown:
+                        log.debug("Player Item Status: Unknown")
+                        self.onStatusChanged(.unknown)
+                    @unknown default:
+                        assertionFailure("Unknown Switch Case for AVPlayerItemStatus")
+                    }
+                })
+            }
+        })
     }
 }
 
