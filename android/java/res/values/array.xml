@@ -21,12 +21,6 @@
         <item>@string/block_fingerprinting_option_1</item>
         <item>@string/block_fingerprinting_option_2</item>
         <item>@string/block_fingerprinting_option_3</item>
-    </string-array>    
-
-    <string-array name="values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
     </string-array>
 
 </resources>

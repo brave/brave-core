@@ -178,9 +178,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_REWARDS" desc="Content description for the button that is enable, disable Brave Rewards.">
         Manage Brave Rewards
       </message>
-      <message name="IDS_PREFS_SECTION_SEARCH_ENGINE" desc="Title for search engine section that can select DSE of normal and private tab">
-        Search engine
-      </message>
       <message name="IDS_PREFS_SECTION_ONLINE_CHECKOUT" desc="Title for online checkout section">
         Online checkout
       </message>
@@ -205,18 +202,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>
-      <message name="IDS_HTTPSE_TITLE" desc="Title for HTTPS Everywhere.">
-        HTTPS Everywhere
-      </message>
-      <message name="IDS_HTTPSE_SUMMARY" desc="Summary for HTTPS Everywhere.">
-        Opens supported sites using HTTPS instead of HTTP when possible
-      </message>
-      <message name="IDS_IPFS_GATEWAY_TITLE" desc="Title for IPFS setting.">
-        IPFS Gateway
-      </message>
-      <message name="IDS_IPFS_GATEWAY_SUMMARY" desc="Summary for IPFS gateway setting.">
-        Allows for navigation to IPFS resources through an IPFS Gateway
-      </message>
       <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
         Unstoppable Domains
       </message>
@@ -238,15 +223,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_RESOLVE_METHOD_ETHEREUM" desc="Text for resolve method Ethereum.">
         Ethereum
       </message>
-      <message name="IDS_AD_BLOCK_TITLE" desc="Title for ad block.">
-        Ad Block
-      </message>
-      <message name="IDS_AD_BLOCK_SUMMARY" desc="Summary for ad block.">
-        Prevents ads from loading
-      </message>
-      <message name="IDS_FINGERPRINTING_PROTECTION_TITLE" desc="Title for fingerprinting protection.">
-        Fingerprinting Protection
-      </message>
       <message name="IDS_FINGERPRINTING_PROTECTION_SUMMARY" desc="Summary for fingerprinting protection.">
         Prevents browser from fingerprinting
       </message>
@@ -257,7 +233,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Block trackers &amp; ads
       </message>
       <message name="IDS_BLOCK_TRACKERS_ADS_SUMMARY" desc="Text summary for Block trackers and ads.">
-        Prevents ads, popups, and trackers from loading
+        Prevents trackers &amp; ads from loading and showing in webpages
       </message>
 
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
@@ -296,9 +272,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
         If enabled, videos will be played in Brave instead of corresponding app
       </message>
-      <message name="IDS_PREFS_SECTION_CONTROLS" desc="Title for controls section in main preferences screen">
-        Controls
-      </message>
       <message name="IDS_PREFS_SECTION_BRAVE_SHIELDS_GLOBALS" desc="Title for Brave shields global defaults section in the privacy preferences screen">
         Brave shields global defaults
       </message>
@@ -307,12 +280,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_PREFS_SECTION_CLEAR_DATA" desc="Title for Clear private data automatically section in the privacy preferences screen">
         Clear browsing data
-      </message>
-      <message name="IDS_PREFS_CLEAR_DATA_BUTTON" desc="Title for Clear private data button in the privacy preferences screen">
-        Clear private data
-      </message>
-      <message name="IDS_PREFS_CLEAR_DATA_TEXT" desc="Text summary for Clear private data button in the privacy preferences screen">
-        Deletes the above private data immediately
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK" desc="Title for background video playback preference in controls section">
         Background video playback
@@ -334,12 +301,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_PREFS_APPEARANCE" desc="Title of Appearance settings, which allows the user to change display settings. [CHAR-LIMIT=32]">
         Appearance
-      </message>
-      <message name="IDS_PREFS_WELCOME_TOUR" desc="Title of Welcome tour">
-        Welcome tour
-      </message>
-      <message name="IDS_PREFS_REPORT_BROKEN_SITE" desc="Title of Report broken site settings">
-        Report broken site
       </message>
       <message name="IDS_HIDE_BRAVE_REWARDS_ICON_TITLE" desc="Title for preference that hides or shows Brave Rewards icon.">
         Hide Brave Rewards Icon
@@ -1069,21 +1030,6 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_3" desc="Text for block trackers and ads option.">
         Allow all trackers &amp; ads
       </message>
-      <message name="IDS_BLOCK_TRACKERS_ADS_ALLOW_ALL" desc="Text for block trackers and ads option.">
-        Allow all
-      </message>
-      <message name="IDS_BLOCK_STRICT" desc="Text for pref chosen state.">
-        Strict
-      </message>
-      <message name="IDS_BLOCK_AGGRESSIVE" desc="Text for pref chosen state.">
-        Aggressive
-      </message>
-      <message name="IDS_BLOCK_STANDARD" desc="Text for pref chosen state.">
-        Standard
-      </message>
-      <message name="IDS_BLOCK_NONE" desc="Text for pref chosen state.">
-        Allow all
-      </message>
       <message name="IDS_BLOCK_CROSS_SITE_COOKIES" desc="Title for shields option.">
         Block cross-site cookies
       </message>
@@ -1105,9 +1051,6 @@ until they verify, or until 90 days have passed.
       <message name="IDS_SHIELDS_SUMMARY" desc="Title for shields option.">
         These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.
       </message>
-      <message name="IDS_BLOCK_FINGERPRINTING_SUMMARY" desc="Summary for fingerprinting in privacy settings.">
-        Makes it harder for sites to recognize your device's distinctive characteristics.
-      </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
         Prevents browser from recognizing your device
       </message>
@@ -1122,9 +1065,6 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_ADS_AND_OTHER_THINGS_BLOCKED" desc="Text for shields option.">
         Ads and other creepy things blocked
-      </message>
-      <message name="IDS_SHARE_ADS_AND_OTHER_THINGS_BLOCKED" desc="Text for shields option.">
-        Trackers, ads, and\nmore blocked
       </message>
       <message name="IDS_SHIELDS_ABOUT_TEXT" desc="About Text for shields option.">
         Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.
