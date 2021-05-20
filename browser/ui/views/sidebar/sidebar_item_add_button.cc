@@ -19,7 +19,7 @@ void SidebarItemAddButton::OnMouseEntered(const ui::MouseEvent& event) {
 }
 
 void SidebarItemAddButton::OnMouseExited(const ui::MouseEvent& event) {
-  SidebarButtonView::OnMouseEntered(event);
+  SidebarButtonView::OnMouseExited(event);
   // Don't show bubble if user goes outo from add item quickly.
   timer_.Stop();
 }
