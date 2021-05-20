@@ -1,0 +1,47 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//chrome/common/features.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+
+preprocess_folder = "preprocessed"
+preprocess_page_manifest = "preprocessed_page_manifest.json"
+
+transpile_web_ui("brave_wallet_page_ui") {
+  entry_points = [ [
+        "brave_wallet_page",
+        rebase_path("wallet_page.tsx"),
+      ] ]
+  resource_name = "brave_wallet_page"
+  deps = [
+    ":preprocess_page",
+    ":wallet_page_api_proxy",
+    "//brave/components/brave_wallet_ui:mojo_bindings_js",
+    "//brave/components/brave_wallet_ui:preprocess_mojo",
+  ]
+}
+
+pack_web_resources("brave_wallet_page_generated") {
+  resource_name = "brave_wallet_page"
+  output_dir = "$root_gen_dir/brave/components/brave_wallet_page/resources"
+  deps = [ ":brave_wallet_page_ui" ]
+}
+
+preprocess_if_expr("preprocess_page") {
+  in_folder = "./"
+  out_folder = "$target_gen_dir/$preprocess_folder"
+  out_manifest = "$target_gen_dir/$preprocess_page_manifest"
+  in_files = [ "wallet_page_api_proxy.js" ]
+}
+
+js_library("wallet_page_api_proxy") {
+  deps = [
+    "//brave/components/brave_wallet_ui:mojo_bindings_js_library_for_compile",
+    "//ui/webui/resources/js:cr.m",
+    "//url/mojom:url_mojom_gurl_js_library_for_compile",
+  ]
+}
