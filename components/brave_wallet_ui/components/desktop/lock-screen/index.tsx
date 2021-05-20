@@ -37,9 +37,20 @@ function LockScreen (props: Props) {
       </IconBackground>
       <Title>{locale.lockScreenTitle}</Title>
       <InputColumn>
-        <Input type='password' placeholder={locale.createPasswordInput} onChange={inputPassword} onKeyDown={handleKeyDown} />
+        <Input
+          type='password'
+          placeholder={locale.createPasswordInput}
+          onChange={inputPassword}
+          onKeyDown={handleKeyDown}
+          autoFocus={true}
+        />
       </InputColumn>
-      <NavButton buttonType='primary' text={locale.lockScreenButton} onSubmit={onSubmit} disabled={disabled} />
+      <NavButton
+        buttonType='primary'
+        text={locale.lockScreenButton}
+        onSubmit={onSubmit}
+        disabled={disabled}
+      />
     </StyledWrapper>
   )
 }
