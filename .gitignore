@@ -4,9 +4,6 @@
 /components/brave_new_tab_ui/data/LICENSE
 /components/brave_webtorrent/extension/out/
 /components/brave_rewards/resources/extension/brave_rewards/out/
-/components/brave_sync/extension/brave-sync/
-/components/brave_sync/extension/brave-sync-android/
-/components/brave_sync/extension/brave-crypto/
 /components/third_party/adblock/LICENSE
 /components/third_party/local_data/LICENSE
 /dist/

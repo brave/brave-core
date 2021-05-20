@@ -18,7 +18,6 @@ from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
 # Use all (sub)paths except these for npm audit.
 NPM_EXCLUDE_PATHS = [
     'build',
-    os.path.join('components', 'brave_sync', 'extension', 'brave-sync', 'node_modules'),
     os.path.join('node_modules'),
     os.path.join('vendor', 'brave-extension', 'node_modules'),
 ]

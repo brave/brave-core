@@ -4,6 +4,5 @@
     "./components/**/*"
   ],
   "exclude": [
-    "./components/brave_sync/extension"
   ]
 }
