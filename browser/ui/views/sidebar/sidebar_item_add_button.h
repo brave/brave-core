@@ -37,8 +37,11 @@ class SidebarItemAddButton : public SidebarButtonView,
   void ShowBubbleWithDelay();
   void DoShowBubble();
 
+  void UpdateButtonImages();
+
   BraveBrowser* browser_;
   base::OneShotTimer timer_;
+  base::CallbackListSubscription on_enabled_changed_subscription_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
       this};
 };
