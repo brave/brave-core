@@ -60,6 +60,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.ClearBrowsingDataFragmentAdvanced;
+import org.chromium.chrome.browser.browsing_data.TimePeriod;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
@@ -139,7 +140,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     private static final int DAYS_4 = 4;
     private static final int DAYS_5 = 5;
     private static final int DAYS_12 = 12;
-    private static final int ALL_TIME = 4;
 
     /**
      * Settings for sending local notification reminders.
@@ -222,11 +222,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                     DialogOption.CLEAR_SITE_SETTINGS);
 
             int[] dataTypesArray = CollectionUtil.integerListToIntArray(new ArrayList<>(dataTypes));
-            int timePeriod = ALL_TIME; // 4 from @TimePeriod interface
 
             // has onBrowsingDataCleared() as an @Override callback from implementing
             // BrowsingDataBridge.OnClearBrowsingDataListener
-            BrowsingDataBridge.getInstance().clearBrowsingData(this, dataTypesArray, timePeriod);
+            BrowsingDataBridge.getInstance().clearBrowsingData(
+                    this, dataTypesArray, TimePeriod.ALL_TIME);
         }
 
         BraveSearchEngineUtils.initializeBraveSearchEngineStates(getTabModelSelector());

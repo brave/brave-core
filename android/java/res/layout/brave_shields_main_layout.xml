@@ -34,7 +34,7 @@
 		      	android:orientation="horizontal"
         		tools:ignore="UseCompoundDrawables">
 
-			    <ImageView 
+			    <ImageView
 			    	android:id="@+id/site_favicon"
 				    android:layout_width="24dp"
 				    android:layout_height="24dp"
@@ -151,14 +151,16 @@
 			        android:layout_width="0dp"
 			        android:layout_height="24dp"
 			        android:layout_weight="1"
+			        android:contentDescription="@null"
 			        android:src="@drawable/ic_help"
-				 />				
+				 />
 
 				 <ImageView
 			        android:id="@+id/share"
 			        android:layout_width="0dp"
 			        android:layout_height="24dp"
 			        android:layout_weight="1"
+			        android:contentDescription="@null"
 			        android:src="@drawable/ic_share"
 				 />
 
@@ -177,7 +179,7 @@
 				android:layout_marginBottom="8dp"
 				android:text="@string/site_broken_text"/>
 
-			<include 
+			<include
 				android:id="@+id/brave_shields_toggle_layout_id"
 				layout="@layout/brave_shields_toggle_layout"/>
 
@@ -185,29 +187,29 @@
 				android:id="@+id/brave_shields_secondary_layout_id"
 				layout="@layout/brave_shields_secondary_layout"/>
 
-			<include 
+			<include
 				android:id="@+id/brave_shields_privacy_report_layout_id"
 				layout="@layout/brave_shields_toggle_layout"/>
 
 		</LinearLayout>
 
-		<include 
+		<include
 			android:id="@+id/brave_shields_block_cookies_layout_id"
 			layout="@layout/brave_shields_option_layout"/>
 
-		<include 
+		<include
 			android:id="@+id/brave_shields_block_fingerprinting_layout_id"
 			layout="@layout/brave_shields_option_layout"/>
 
-		<include 
+		<include
 			android:id="@+id/brave_shields_about_layout_id"
 			layout="@layout/brave_shields_option_layout"/>
 
-		<include 
+		<include
 			android:id="@+id/brave_shields_report_site_layout_id"
 			layout="@layout/report_broken_site_layout"/>
 
-		<include 
+		<include
 			android:id="@+id/brave_shields_thank_you_layout_id"
 			layout="@layout/brave_shields_thank_you_layout"/>
 

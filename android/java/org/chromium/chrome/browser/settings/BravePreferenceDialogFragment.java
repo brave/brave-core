@@ -79,6 +79,7 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
         String subtitle = dialogPreference.getDialogSubtitle();
         TextView subTitle = view.findViewById(R.id.summary);
         subTitle.setText(subtitle);
+        subTitle.refreshDrawableState();
         mRadioGroup = view.findViewById(R.id.options);
         mDialogEntries = dialogPreference.getDialogEntries();
 
