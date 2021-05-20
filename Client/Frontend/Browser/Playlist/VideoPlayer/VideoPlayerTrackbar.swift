@@ -24,6 +24,7 @@ private class VideoSliderBar: UIControl {
         super.init(frame: frame)
         
         tracker.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(onPanned(_:))))
+        background.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onPanned(_:))))
         
         addSubview(background)
         addSubview(boundaryView)
@@ -84,6 +85,11 @@ private class VideoSliderBar: UIControl {
             }
         }
         
+        let adjustedBounds = background.bounds.inset(by: touchInsets)
+        if adjustedBounds.contains(point) {
+            return background
+        }
+        
         return super.hitTest(point, with: event)
     }
     
@@ -96,11 +102,16 @@ private class VideoSliderBar: UIControl {
             }
         }
         
+        let adjustedBounds = background.bounds.inset(by: touchInsets)
+        if adjustedBounds.contains(point) {
+            return true
+        }
+        
         return super.point(inside: point, with: event)
     }
     
     @objc
-    private func onPanned(_ recognizer: UIPanGestureRecognizer) {
+    private func onPanned(_ recognizer: UIGestureRecognizer) {
         let offset = min(boundaryView.bounds.size.width, max(0.0, recognizer.location(in: boundaryView).x))
         
         value = offset / boundaryView.bounds.size.width
