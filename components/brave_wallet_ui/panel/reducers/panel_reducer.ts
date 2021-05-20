@@ -13,25 +13,6 @@ const defaultState: PanelState = {
   isConnected: false,
   hasInitialized: false,
   connectedSiteOrigin: 'https://app.uniswap.org',
-  accounts: [{
-    id: '1',
-    name: 'Account 1',
-    address: '0x7d66cD_INVALID-ADDRESS_332f3Cd06C',
-    balance: 0.31178,
-    asset: 'eth'
-  }, {
-    id: '2',
-    name: 'Account 2',
-    address: '0x73A29A1_INVALID-ADDRESS_F8895bDCf',
-    balance: 0.31178,
-    asset: 'eth'
-  }, {
-    id: '3',
-    name: 'Account 3',
-    address: '0x3f29A1da_INVALID-ADDRESS_7895b426',
-    balance: 0.31178,
-    asset: 'eth'
-  }]
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)

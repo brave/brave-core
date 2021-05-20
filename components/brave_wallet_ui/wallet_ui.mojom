@@ -37,7 +37,7 @@ interface PageHandler {
 
 // Browser-side handler for common panel / page things
 interface WalletHandler {
-  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked);
+  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked, array<string> accounts);
   LockWallet();
   UnlockWallet(string password) => (bool isWalletUnlocked);
 };

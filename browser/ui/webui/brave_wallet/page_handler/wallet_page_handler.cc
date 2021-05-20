@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
@@ -41,7 +42,10 @@ void WalletPageHandler::CreateWallet(const std::string& password,
   auto* profile = Profile::FromWebUI(web_ui_);
   auto* keyring_controller =
       GetBraveWalletService(profile)->keyring_controller();
-  keyring_controller->CreateDefaultKeyring(password);
+  auto* keyring = keyring_controller->CreateDefaultKeyring(password);
+  if (keyring) {
+    keyring->AddAccounts();
+  }
   std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
 }
 

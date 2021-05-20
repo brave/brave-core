@@ -41,7 +41,7 @@ function Panel (props: Props) {
   // also using `React.lazy` to put all the main UI in a separate JS bundle and display
   // that loading indicator ASAP.
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([
-    props.panel.accounts[0]
+    //props.wallet.accounts[0]
   ])
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
   const selectAccount = (account: WalletAccountType) => {
@@ -88,6 +88,10 @@ function Panel (props: Props) {
     chrome.tabs.create({ url: 'chrome://wallet' })
   }
 
+  if (!props.wallet.hasInitialized) {
+    return null
+  }
+
   return (
     <StyledExtensionWrapper>
       { !props.wallet.isWalletCreated ?
@@ -98,7 +102,7 @@ function Panel (props: Props) {
         (<ConnectWithSite
             siteURL={props.panel.connectedSiteOrigin}
             isReady={readyToConnect}
-            accounts={props.panel.accounts}
+            accounts={props.wallet.accounts}
             primaryAction={primaryAction}
             secondaryAction={secondaryAction}
             selectAccount={selectAccount}

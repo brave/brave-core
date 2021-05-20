@@ -5,10 +5,13 @@
 
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
@@ -34,10 +37,17 @@ WalletHandler::~WalletHandler() = default;
 
 void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   auto* profile = Profile::FromWebUI(web_ui_);
+  std::vector<std::string> accounts;
   auto* keyring_controller =
       GetBraveWalletService(profile)->keyring_controller();
+
+  auto* default_keyring = keyring_controller->GetDefaultKeyring();
+  if (default_keyring) {
+    accounts = default_keyring->GetAccounts();
+  }
+
   std::move(callback).Run(keyring_controller->IsDefaultKeyringCreated(),
-                          keyring_controller->IsLocked());
+                          keyring_controller->IsLocked(), accounts);
 }
 
 void WalletHandler::LockWallet() {

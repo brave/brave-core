@@ -121,13 +121,13 @@ export interface WalletState {
   isWalletCreated: boolean
   isWalletLocked: boolean
   isWalletRecoveryVerified: boolean
+  accounts: WalletAccountType[]
 }
 
 export interface PanelState {
   hasInitialized: boolean
   isConnected: boolean
   connectedSiteOrigin: string
-  accounts: WalletAccountType[]
 }
 
 export interface PageState {
@@ -149,6 +149,7 @@ export interface WalletAPIHandler {
   getWalletInfo: () => {
     isWalletCreated: boolean,
     isWalletLocked: boolean
+    accounts: string[]
   }
   lockWallet: () => void
   unlockWallet: (password: string) => void
