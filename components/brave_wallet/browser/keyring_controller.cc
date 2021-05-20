@@ -123,9 +123,6 @@ void KeyringController::Lock() {
 }
 
 bool KeyringController::Unlock(const std::string& password) {
-  if (!default_keyring_)
-    return false;
-
   if (!ResumeDefaultKeyring(password)) {
     encryptor_.reset();
     return false;
