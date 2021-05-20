@@ -45,6 +45,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
@@ -56,6 +57,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -521,6 +523,14 @@ bool AdsServiceImpl::IsEnabled() const {
   return GetBooleanPref(ads::prefs::kEnabled);
 }
 
+bool AdsServiceImpl::ShouldStart() const {
+  // TODO(Moritz Haller): We are not notified if user switches off NTP images toggle (only works for NTP *sponsored* images toggle)
+  // GetBooleanPref(ntp_background_images::prefs::kNewTabPageShowBackgroundImage)
+  return GetBooleanPref(ads::prefs::kEnabled) ||
+      GetBooleanPref(ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage) ||
+      GetBooleanPref(kNewTabPageShowToday);
+}
+
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
   uint64_t ads_per_hour = GetUint64Pref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == 0) {
@@ -652,6 +662,18 @@ void AdsServiceImpl::Initialize() {
       brave_rewards::prefs::kWalletBrave,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
+  profile_pref_change_registrar_.Add(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+
+  profile_pref_change_registrar_.Add(
+    ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+
+  profile_pref_change_registrar_.Add(
+      kNewTabPageShowToday,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+
   MaybeStart(false);
 }
 
@@ -732,7 +754,7 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
     return;
   }
 
-  if (!IsEnabled()) {
+  if (!ShouldStart()) {
     Stop();
     return;
   }
@@ -1672,20 +1694,17 @@ bool AdsServiceImpl::PrefExists(const std::string& path) const {
   return profile_->GetPrefs()->HasPrefPath(path);
 }
 
+// TODO(Moritz Haller): where are ads + rewards services created?
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == ads::prefs::kEnabled) {
     rewards_service_->OnAdsEnabled(IsEnabled());
 
-    if (IsEnabled()) {
-      MaybeStart(false);
-    } else {
+    if (!IsEnabled()) {
       // Record "special value" to prevent sending this week's data to P2A
       // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
       // |brave_p3a_service.cc|
       SuspendP2AHistograms();
       VLOG(1) << "P2A histograms suspended";
-
-      Stop();
     }
 
     // Record P3A.
@@ -1695,6 +1714,16 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
     StartCheckIdleStateTimer();
   } else if (pref == brave_rewards::prefs::kWalletBrave) {
     OnWalletUpdated();
+  }
+
+  if (ShouldStart() && !connected()) {
+    VLOG(0) << "*** START based OnPrefsChanged";
+    MaybeStart(false);
+  }
+
+  if (!ShouldStart()) {
+    VLOG(0) << "*** STOP based OnPrefsChanged";
+    Stop();
   }
 }
 

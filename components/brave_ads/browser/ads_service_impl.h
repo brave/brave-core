@@ -311,6 +311,8 @@ class AdsServiceImpl : public AdsService,
 
   bool connected();
 
+  bool ShouldStart() const;
+
   // AdsClient implementation
   bool IsNetworkConnectionAvailable() const override;
 
