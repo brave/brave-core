@@ -202,6 +202,9 @@ void Uphold::DisconnectWallet(const bool manual) {
   }
 
   wallet = ResetWallet(std::move(wallet));
+  if (manual) {
+    wallet->status = type::WalletStatus::NOT_CONNECTED;
+  }
 
   const bool shutting_down = ledger_->IsShuttingDown();
 

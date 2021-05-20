@@ -284,7 +284,8 @@ enum UrlMethod {
   GET = 0,
   PUT = 1,
   POST = 2,
-  PATCH = 3
+  PATCH = 3,
+  DEL = 4
 };
 
 enum ActivityMonth {
