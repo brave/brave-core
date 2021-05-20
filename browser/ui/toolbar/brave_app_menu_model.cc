@@ -109,6 +109,11 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
 // The length of the key is divided to this constant and the last part is taken.
 int kKeyTrimRate = 5;
 
+bool IsIpfsServiceLaunched(content::BrowserContext* browser_context) {
+  auto* service = ipfs::IpfsServiceFactory::GetForContext(browser_context);
+  return service && service->IsDaemonLaunched();
+}
+
 ipfs::IpnsKeysManager* GetIpnsKeysManager(
     content::BrowserContext* browser_context) {
   DCHECK(browser_context);
@@ -290,11 +295,13 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
     }
     return true;
   }
+
   switch (id) {
     case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
     case IDC_APP_MENU_IPFS:
     case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
-      return ipfs::IsIpfsMenuEnabled(browser_context);
+      return ipfs::IsIpfsMenuEnabled(browser_context) &&
+             IsIpfsServiceLaunched(browser_context);
   }
 #endif
   return AppMenuModel::IsCommandIdEnabled(id);
