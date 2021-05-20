@@ -212,38 +212,6 @@ void SidebarControlView::UpdateItemAddButtonState() {
       !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     should_enable = false;
   }
-
-  SkColor button_base_color = SK_ColorWHITE;
-  SkColor button_disabled_color = SK_ColorWHITE;
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-    button_base_color = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
-    button_disabled_color = theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_ADD_BUTTON_DISABLED);
-  }
-
-  // Update add button image based on enabled state.
-  sidebar_item_add_view_->SetImage(views::Button::STATE_NORMAL, nullptr);
-  sidebar_item_add_view_->SetImage(views::Button::STATE_DISABLED, nullptr);
-  sidebar_item_add_view_->SetImage(views::Button::STATE_HOVERED, nullptr);
-  sidebar_item_add_view_->SetImage(views::Button::STATE_PRESSED, nullptr);
-  auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  if (should_enable) {
-    sidebar_item_add_view_->SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarAddItemIcon, button_base_color));
-    sidebar_item_add_view_->SetImage(
-        views::Button::STATE_HOVERED,
-        bundle.GetImageSkiaNamed(IDR_SIDEBAR_ITEM_ADD_FOCUSED));
-    sidebar_item_add_view_->SetImage(
-        views::Button::STATE_PRESSED,
-        bundle.GetImageSkiaNamed(IDR_SIDEBAR_ITEM_ADD_FOCUSED));
-  } else {
-    sidebar_item_add_view_->SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kSidebarAddItemIcon, button_disabled_color));
-  }
-
   sidebar_item_add_view_->SetEnabled(should_enable);
 }
 
