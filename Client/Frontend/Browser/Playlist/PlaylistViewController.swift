@@ -12,6 +12,7 @@ import AVFoundation
 import SDWebImage
 import CoreData
 import Data
+import Combine
 
 private let log = Logger.browserLogger
 
@@ -176,6 +177,7 @@ private class ListController: UIViewController {
     private var currentlyPlayingItemIndex = -1
     private var autoPlayEnabled = true
     private var playerController: AVPlayerViewController?
+    private var playerStatusObserver: PlaylistPlayerStatusObserver?
     
     private lazy var activityIndicator = UIActivityIndicatorView(style: .medium).then {
         $0.isHidden = true
@@ -211,9 +213,12 @@ private class ListController: UIViewController {
             Preferences.Playlist.lastPlayedItemTime.value = 0.0
         }
         
+        playerStatusObserver = nil
         playerView.pictureInPictureController?.delegate = nil
         playerView.pictureInPictureController?.stopPictureInPicture()
         playerView.stop()
+        
+        NotificationCenter.default.removeObserver(self)
         
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
             if UIDevice.isIpad {
@@ -230,6 +235,7 @@ private class ListController: UIViewController {
     
         setTheme()
         setup()
+        setupNotifications()
 
         fetchResults()
     }
@@ -265,6 +271,34 @@ private class ListController: UIViewController {
         playerView.delegate = self
     }
     
+    private func setupNotifications() {
+        // Instead of observing every single second the player's time changes,
+        // we observe when the user terminates the app to update the last playing time.
+        // We do the same in the deinit of this controller.
+        // This is necessary because `deinit` isn't called on termination and it would be an insane
+        // performance issue to write to preferences every time the player's time changes.
+        
+        let updatedAppStatuses = [
+            UIApplication.willResignActiveNotification,
+            UIApplication.willTerminateNotification,
+            UIApplication.didEnterBackgroundNotification
+        ]
+        
+        updatedAppStatuses.forEach({
+            NotificationCenter.default.addObserver(self, selector: #selector(updateLastPlayedItemTime(_:)), name: $0, object: nil)
+        })
+    }
+    
+    @objc
+    func updateLastPlayedItemTime(_ notification: Notification) {
+        if let playTime = playerView.player.currentItem?.currentTime(),
+           Preferences.Playlist.playbackLeftOff.value {
+            Preferences.Playlist.lastPlayedItemTime.value = playTime.seconds
+        } else {
+            Preferences.Playlist.lastPlayedItemTime.value = 0.0
+        }
+    }
+    
     private func fetchResults() {
         playerView.setControlsEnabled(playerView.player.currentItem != nil)
         updateTableBackgroundView()
@@ -292,17 +326,32 @@ private class ListController: UIViewController {
                             let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
                             self.displayExpiredResourceError(item: item)
                         case .none:
-                            let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
-                            let lastPlayedTime = Preferences.Playlist.lastPlayedItemTime.value
-                            
-                            if item.pageSrc == Preferences.Playlist.lastPlayedItemUrl.value &&
-                                lastPlayedTime > 0.0 &&
-                                lastPlayedTime < self.playerView.player.currentItem?.duration.seconds ?? 0.0 &&
-                                Preferences.Playlist.playbackLeftOff.value {
-                                self.playerView.seek(to: Preferences.Playlist.lastPlayedItemTime.value)
+                            let seekLastPlayedItem = { [weak self] in
+                                guard let self = self else { return }
+                                let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
+                                let lastPlayedTime = Preferences.Playlist.lastPlayedItemTime.value
+                                
+                                if item.pageSrc == Preferences.Playlist.lastPlayedItemUrl.value &&
+                                    lastPlayedTime > 0.0 &&
+                                    Preferences.Playlist.playbackLeftOff.value {
+                                    self.playerView.seek(to: Preferences.Playlist.lastPlayedItemTime.value)
+                                }
+                                
+                                self.updateLastPlayedItem(indexPath: indexPath)
                             }
                             
-                            self.updateLastPlayedItem(indexPath: indexPath)
+                            if self.playerView.player.status == .readyToPlay {
+                                seekLastPlayedItem()
+                            } else {
+                                self.playerStatusObserver = PlaylistPlayerStatusObserver(player: self.playerView.player, onStatusChanged: { [weak self] status in
+                                    guard let self = self else { return }
+                                    
+                                    log.debug("Player Status: \(status)")
+                                    
+                                    seekLastPlayedItem()
+                                    self.playerStatusObserver = nil
+                                })
+                            }
                         }
                     })
                 } else {
