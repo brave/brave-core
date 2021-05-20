@@ -175,12 +175,27 @@ bool SidebarContainerView::ShouldShowSidebar() const {
 }
 
 void SidebarContainerView::OnMouseEntered(const ui::MouseEvent& event) {
+  const auto show_option = GetSidebarService(browser_)->GetSidebarShowOption();
+  const bool autohide_sidebar =
+      show_option == ShowSidebarOption::kShowOnMouseOver ||
+      show_option == ShowSidebarOption::kShowOnClick;
+
+  // When user select to non-autohide option like "Never" option,
+  // hide timer is scheduled but this view can get mouse event when context
+  // menu is hidden. In this case, this should not be cancelled.
+  if (!autohide_sidebar)
+    return;
+
   // Cancel hide schedule when mouse entered again quickly.
-  if (sidebar_hide_timer_.IsRunning())
-    sidebar_hide_timer_.Stop();
+  sidebar_hide_timer_.Stop();
 }
 
 void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
+  // When context menu is shown, this view can get this exited callback.
+  // In that case, ignore this callback because mouse is still in this view.
+  if (IsMouseHovered())
+    return;
+
   const auto show_option = GetSidebarService(browser_)->GetSidebarShowOption();
   const bool autohide_sidebar =
       show_option == ShowSidebarOption::kShowOnMouseOver ||
