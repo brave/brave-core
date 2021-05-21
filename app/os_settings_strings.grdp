@@ -301,6 +301,9 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_PAGE_TITLE" desc="A page under “Languages and inputs” section in the OS settings page that users can add, remove and manage input methods.">
     Inputs
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_PAGE_TITLE_V2" desc="A page under “Languages and inputs” section in the OS settings page that users can add, remove and manage input methods.">
+    Inputs and keyboards
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_DEVICE_LANGUAGE_TITLE" desc="The label for the section where users can see their device language. This language will be used for system surfaces (launcher, shelf, and notifications etc.).">
     Device language
   </message>
@@ -454,45 +457,17 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_NO_DICTIONARY_WORDS_LABEL" desc="Placeholder that is shown when there are no custom words in the list of saved custom words dictionary.">
     Saved custom words will appear here
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_LIST_TITLE" desc="Title for the list of the user's preferred written languages.">
-    Languages
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_ORDERING_INSTRUCTIONS" desc="Explanatory message about ordering the list of languages.">
-    Add languages or reorder list. <ph name="BEGIN_LINK">&lt;a&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_INPUT_METHODS_LIST_TITLE" desc="Title for the current input method in the header for the collapsible list of enabled input methods (keyboard layouts and input method editors).">
-    Input method
-  </message>
   <message name="IDS_SETTINGS_LANGUAGES_INPUT_METHOD_ENABLED" desc="Label underneath the currently active input method in the list of enabled input methods.">
     Enabled
   </message>
-  <message name="IDS_SETTINGS_LANGUAGES_INPUT_METHODS_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the input options (keyboard and keyboard layouts). Only visible by screen reader software.">
-    Show input options
-  </message>
   <message name="IDS_SETTINGS_LANGUAGES_INPUT_METHODS_MANAGED_BY_POLICY" desc="Label which is shown on the manage input methods page if input methods are managed by policy.">
     Your administrator has limited the available input methods.
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_INPUT_METHODS_MANAGE" desc="Button under the list of input methods which opens a sub-page that lets the user enable or disable keyboard layouts and input method editors.">
-    Manage input methods
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_MANAGE_INPUT_METHODS_TITLE" desc="Name of the settings sub-page which allows enabling and disabling input methods.">
-    Manage input methods
   </message>
   <message name="IDS_SETTINGS_LANGUAGES_INPUT_METHOD_OPTIONS_TITLE" translateable="false" desc="Name of the settings sub-page which allows changing input method options.">
     Input method options
   </message>
   <message name="IDS_SETTINGS_LANGUAGES_SHOW_IME_MENU" desc="The label for the toggle button controlling showing the IME menu in the shelf.">
     Show input options in the shelf
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_RESTART_TO_DISPLAY_LANGUAGE" desc="The aria label to be read aloud to describe a button for restarting the device to change the device's UI language.">
-    Restart device to show system text in <ph name="LANGUAGE">$1<ex>English</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_DISPLAY_IN_THIS_LANGUAGE" desc="The label used for a button that changes the UI language.">
-    Show system text in this language
-  </message>
-  <!-- The non-Chrome OS string is in settings_google_chrome_strings.grdp -->
-  <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
-    System text is shown in this language
   </message>
 
   <!-- Suggestions Section -->
@@ -1186,6 +1161,24 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_INTRO_BODY" desc="The message displayed on the first page of the Switch Access setup guide, instructing the user to confirm that their external switch is appropriately connected to the chromebook. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     To get started, please make sure your USB or Bluetooth switch is connected to your Bravebook. You can also use keyboard keys.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_SWITCH_COUNT_TITLE" desc="The title for the page of the Switch Access setup guide where the user selects the number of switches they are going to use. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Do you want to assign additional switches?
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_1_SWITCH" desc="The label for the option to use only one switch (already assigned), within the Switch Access setup guide. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    I only use one switch
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_2_SWITCHES" desc="The label for the option to use two switches (with one already assigned), within the Switch Access setup guide. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Assign one more switch
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_2_SWITCHES_DESCRIPTION" desc="The description for the option to use two switches (with one already assigned), within the Switch Access setup guide. It details that the second switch will be 'next' and move focus to the next item onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Assign this switch to "Next" to move to the next item on the page
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_3_SWITCHES" desc="The label for the option to use three switches (with one already assigned), within the Switch Access setup guide. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Assign two more switches
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_3_SWITCHES_DESCRIPTION" desc="The description for the option to use three switches (with one already assigned), within the Switch Access setup guide. It details that the switches will be 'next' and 'previous', and used for navigating the items onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) ton control the computer.">
+    Assign them to "Next" and "Previous" to move between items on the page
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_PAIR_BLUETOOTH" desc="A button in the Switch Access setup guide that takes the user to a page where they can pair a bluetooth switch device. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Pair Bluetooth switch
@@ -2335,13 +2328,13 @@ Press an assigned switch to remove assignment.
     Allow mobile data roaming
   </message>
   <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING_ENABLED_HOME" desc="Settings &gt; Internet &gt; Network details: Toggle sublabel when roaming is allowed and it's connected to the home network.">
-    On, not roaming
+    Not currently roaming
   </message>
   <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING_ENABLED_ROAMING" desc="Settings &gt; Internet &gt; Network details: Toggle sublabel when roaming is allowed and it's connected to a roaming network">
-    On, roaming
+    Currently roaming
   </message>
   <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING_DISABLED" desc="Settings &gt; Internet &gt; Network details: Toggle sublabel when roaming is not allowed.">
-    Roaming off
+    Off
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_VPN_PREFERENCES" desc="Settings &gt; Internet &gt; VPN: Title of preferences group.">
     VPN Preferences
@@ -2406,6 +2399,9 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_DIALOG_CANCEL" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The Label for the dialog cancel button to rename an eSIM cellular network">
     Cancel
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_INPUT_TITLE" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The title for the dialog input that renames an eSIM cellular network.">
+    New profile name
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_INPUT_SUBTITLE" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog: The Label for the dialog input that renames an eSIM cellular network, informing the user that letters, numbers and special characters are allowed.">
     Name can use letters, numbers, and special characters
   </message>
@@ -2442,23 +2438,23 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_A11Y_REMOVE" desc="Settings &gt; Internet &gt; Network details &gt; Remove eSIM cellular profile dialog: A11Y label for remove button.">
     Remove eSIM profile named <ph name="PROFILE_NAME">$1<ex>Verizon</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_INTERNET_ESIM_DIALOG_CONNECTION_WARNING" desc="Settings &gt; Internet &gt; Network details &gt;Rename profile dialog | Remove profile dialog: The Label for the dialog warning message informing the user they may disconnect from their current cellular network connection if they proceed.">
-    This may cause a brief cellular network disconnection.
+  <message name="IDS_SETTINGS_INTERNET_ESIM_DIALOG_CONNECTION_WARNING" desc="Settings &gt; Internet &gt; Network details &gt; Rename profile dialog | Remove profile dialog: The Label for the dialog warning message informing the user they may disconnect from their current cellular network connection if they proceed.">
+    This may cause your mobile network to briefly disconnect
   </message>
-  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_INSTALLING_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating current cellular network profile is being installed">
-    Installing profile. This may take up to 30 seconds.
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_INSTALLING_PROFILE" desc="Settings &gt; Internet &gt; Mobile data: Message indicating that an eSIM profile is being installed and notifying the user why mobile settings are temporarily disabled.">
+    Adding profile. This may take a few minutes.
   </message>
-  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_REMOVING_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating current cellular network profile is being removed">
-    Removing profile. This may take up to 30 seconds.
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_REMOVING_PROFILE" desc="Settings &gt; Internet &gt; Mobile data: Message indicating that an eSIM profile is being uninstalled and notifying the user why mobile settings are temporarily disabled.">
+    Removing profile. This may take a few minutes.
   </message>
-  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_RENAMING_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating current cellular network profile is being renamed">
-    Renaming profile. This may take up to 30 seconds.
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_RENAMING_PROFILE" desc="Settings &gt; Internet &gt; Mobile data: Message indicating that an eSIM profile is being renamed and notifying the user why mobile settings are temporarily disabled.">
+    Renaming profile. This may take a few minutes.
   </message>
-  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_CONNECTING_TO_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating chromeOS device is connecting to selected cellular network profile">
-    Connecting to profile. This may take up to 30 seconds.
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_CONNECTING_TO_PROFILE" desc="Settings &gt; Internet &gt; Mobile data: Message indicating that an eSIM profile connection is currently in progress and notifying the user why mobile settings are temporarily disabled.">
+    Connecting to profile. This may take a few minutes.
   </message>
-  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_REFRESHING_PROFILE_LIST" desc="Settings &gt; Internet &gt; Network details &gt; Cellular banner: Message indicating current cellular network profile list is being refreshed.">
-    Refreshing profile list. This may take up to 30 seconds.
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_CELLULAR_REFRESHING_PROFILE_LIST" desc="Settings &gt; Internet &gt; Mobile data: Message indicating that the list of eSIM profiles is being refreshed and notifying the user why mobile settings are temporarily disabled.">
+    Refreshing profile list. This may take a few minutes.
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_REMOVE_PROFILE_DIALOG_ERROR_MESSAGE" desc="Settings &gt; Internet &gt; Network details &gt; Remove eSIM cellular profile dialog: Error message shown when remove fails">
     Profile could not be removed. Please try again or contact your carrier for technical support.
@@ -2521,13 +2517,13 @@ Press an assigned switch to remove assignment.
     Show proxy settings
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared.">
-    Other users of this device can use this network.
+    Other users of this device can use this network
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED_OWNER" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared and was configured by the current user.">
-    You are sharing this network with other users of this device.
+    You are sharing this network with other users of this device
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED_NOT_OWNER" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared with you (by another user or configured before login).">
-    This network is shared with you.
+    This network is shared with you
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_NOT_SYNCED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is not synced to the user's account.">
     This network is not synced to your account. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -2617,7 +2613,7 @@ Press an assigned switch to remove assignment.
     Instant Tethering
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_NOT_SETUP_WITH_SETUP_LINK" desc="Text shown when viewing the Mobile data page and no eSIM profile is available">
-    No available eSIM profiles. Download a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularEsimLink"&gt;</ph>here.<ph name="END_LINK">&lt;/a&gt;</ph>
+    No available eSIM profiles. Download a new <ph name="BEGIN_LINK">&lt;a href="#" id="cellularEsimLink"&gt;</ph>profile.<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_PSIM_NOT_INSERTED_LABEL" desc="Text shown when viewing the Mobile data page and no physical SIM card is inserted">
     No SIM card inserted
@@ -3142,7 +3138,7 @@ Press an assigned switch to remove assignment.
     Remove eSIM profiles before Powerwash
   </message>
   <message name="IDS_SETTINGS_FACTORY_RESET_ESIM_WARNING" desc="Warning text in the 'Factory Reset' window informing the user that the eSIM profiles they have installed won't be removed by a factory reset. Contains a url to the mobile data subpage.">
-    Powerwashing your device won't remove your eSIM profiles. Go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Mobile Settings<ph name="LINK_END">&lt;/a&gt;</ph> to manually remove these profiles.
+    Powerwashing your device won't remove your eSIM profiles. Go to <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Mobile Settings<ph name="LINK_END">&lt;/a&gt;</ph> to manually remove these profiles.
   </message>
   <message name="IDS_SETTINGS_FACTORY_RESET_ESIM_LIST_TITLE" desc="Title for the list showing installed eSIM profiles in the 'Factory Reset' window.">
     Active profiles

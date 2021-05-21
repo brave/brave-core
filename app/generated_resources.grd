@@ -4993,8 +4993,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Experimental Lacros Infobar-->
-      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE" desc="Message shown when user uses Lacros, an experimental feature.">
-        Lacros is an experimental Browser. Please report issues with: Help &gt; "Report an issue..." The standard browser can be found by typing "Brave" into Launcher.
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE" desc="Message shown when user launches Lacros, an experimental feature, for the first time.">
+        Lacros is an experimental Browser. Please report issues with: Help &gt; "Report an issue...".
+      </message>
+
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE_PRIMARY" desc="Addendum which is sometimes added to the initial warning message.">
+        The standard browser can be found by typing "Brave" into Launcher.
+      </message>
+
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE_MANAGED" desc="Addendum which is sometimes added to the initial warning message.">
+        For more information, contact your administrator.
+      </message>
+
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_LEARN_MORE" desc="A section of text that the user can click on to learn more about Lacros.">
+        Learn More
       </message>
 
       <!-- Bad Flags Infobar-->
@@ -5519,6 +5531,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DRIVE_SENTENCE2" desc="Variant of the name of the Drive module in sentence case shown in various UIs.">
         Drive files
       </message>
+      <message name="IDS_NTP_MODULES_DRIVE_FILES_SENTENCE" desc="Name of the files in the Drive module in sentence case shown in various UIs.">
+        Files
+      </message>
+      <message name="IDS_NTP_MODULES_DRIVE_FILES_LOWER" desc="Name of the files in the Drive module in lowercase shown in various UIs.">
+        these files
+      </message>
       <message name="IDS_NTP_MODULES_DUMMY_LOWER" translateable="false" desc="Name of the dummy module in lowercase shown in various UIs.">
         this module
       </message>
@@ -5935,6 +5953,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_DESKTOP_PWA_INSTALL_PROMO" desc="Text shown on promotional UI appearing next to the PWA install icon">
         To get back here quickly, install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> by clicking the install button
+      </message>
+      <message name="IDS_UPDATED_CONNECTION_SECURITY_INDICATORS_PROMO" desc="Text shown on promotional UI appearing next to the new omnibox connection security icon">
+        Your connection is always secure unless Brave tells you otherwise
       </message>
       <message name="IDS_REOPEN_TAB_PROMO_SCREENREADER" desc="Text announced encouraging users to reopen a tab with the given shortcut">
         <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> can reopen accidentally closed tabs
@@ -7373,12 +7394,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_DESCRIPTION" desc="Second line of text displayed in a Remote Copy notification.">
         Press <ph name="MODIFIER_KEY_DESCRIPTION">$1<ex>Ctrl+V</ex></ph> to paste
       </message>
-      <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_PREPARING_DOWNLOAD" desc="Subtext shown in a Remote Copy notification while preparing the image download.">
-        Preparing download
-      </message>
-      <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_PROCESSING_IMAGE" desc="Subtext shown in a Remote Copy notification while processing the received image.">
-        Processing image
-      </message>
       <message name="IDS_OMNIBOX_TOOLTIP_SMS_REMOTE_FETCHER" translateable="false" desc="The label of item for sms remote fetcher in the omnibox for showing device name when one device is available.">
         Tap the notification on <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph> to verify your phone number
       </message>
@@ -8281,9 +8296,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SYNC_ERROR_USER_MENU_RETRIEVE_KEYS_BUTTON" desc="Button in the header of desktop user menu that prompts the user to reauthentication to fix the sync error affecting encrypted datatypes.">
         Verify it's you
       </message>
-      <message name="IDS_SYNC_ERROR_USER_MENU_SIGNIN_AGAIN_BUTTON" desc="Button in the header of desktop user menu that signs out and signs back in in an attempt to resolve an unrecoverable error.">
-        Sign in again
-      </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_SIGNOUT_BUTTON" desc="Button in the header of desktop user menu for managed users to sign out in an attempt to resolve an unrecoverable error.">
         Sign out
       </message>
@@ -8424,10 +8436,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_CUSTOM_WITH_DATE" desc="Text of the radio that when selected enables full encryption.">
           Data was encrypted with your sync passphrase on
-          <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
-        </message>
-        <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_GOOGLE_WITH_DATE" desc="Text of the radio that when selected enables full encryption.">
-          Data was encrypted with your Brave password as of
           <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
         </message>
 
@@ -9673,9 +9681,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_MULTIPLE_SCREEN_NAME" desc="Name for screens in the desktop media picker UI when there are multiple monitors.">
         {SCREEN_INDEX, plural, =1{Screen #} other{Screen #}}
       </message>
-      <message name="IDS_DESKTOP_MEDIA_PRESENTER_TOOLS" desc="Text for the checkbox on window picker dialog, when checked the presenter tools will be shown.">
-        Presenter Tools
-      </message>
       <if expr="toolkit_views">
         <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_THIS_TAB" desc="Text for one of the dialog-tabs on the media picker dialog. This dialog-tab controls sharing the current tab.">
           This Tab
@@ -10045,14 +10050,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <if expr="not is_android">
       <!-- Device Chooser Prompt -->
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce Bluetooth chooser details to the user in a popup when it is from a website.">
-        <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to pair
-      </message>
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_PROMPT_EXTENSION_NAME" desc="The label that is used to introduce Bluetooth chooser details to the user in a popup when it is from a Brave extension.">
         "<ph name="CHROME_EXTENSION_NAME">$1<ex>Brave Extension Name</ex></ph>" wants to pair
-      </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no Bluetooth devices were found matching the requirements that the application provided.">
-        No compatible devices found.
       </message>
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_TURN_ADAPTER_OFF" desc="Text of a link the user can click to get help information when Bluetooth adapter is turned off.">
         <ph name="TURN_ON_BLUETOOTH_LINK">$1<ex>Turn on Bluetooth</ex></ph> to allow pairing
@@ -10069,15 +10068,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_RE_SCAN_TOOLTIP" desc="Tooltip for the button that lets the user start a new scan for Bluetooth devices.">
         Re-scan Bluetooth devices
       </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_SCANNING_LABEL" desc="Text on label that indicates a scan for Bluetooth devices is in progress.">
-        Scanning...
-      </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_SCANNING_LABEL_TOOLTIP" desc="Tooltip for the label that shows while scanning for Bluetooth devices.">
-        Scanning for Bluetooth devices...
-      </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_PAIR_BUTTON_TEXT" desc="Label on the button that closes the Bluetooth chooser popup and pairs the selected device.">
-        Pair
-      </message>
       <message name="IDS_DEVICE_CHOOSER_GET_HELP_LINK_WITH_SCANNING_STATUS" desc="This text is shown at the bottom of the chooser popup with a link to 'Get help'.">
         Get help<ph name="SCANNING_STATUS">$1<ex> while scanning for devices...</ex></ph>
       </message>
@@ -10091,32 +10081,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <ph name="DEVICE_NAME">$1<ex>device name</ex></ph> - Paired
       </message>
     </if>
-    <message name="IDS_USB_DEVICE_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce USB chooser details to the user in a popup when it is from a website.">
-      <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect
-    </message>
     <message name="IDS_USB_DEVICE_CHOOSER_PROMPT_EXTENSION_NAME" desc="The label that is used to introduce USB chooser details to the user in a popup when it is from a Brave extension.">
       "<ph name="CHROME_EXTENSION_NAME">$1<ex>Brave Extension Name</ex></ph>" wants to connect
     </message>
     <message name="IDS_DEVICE_CHOOSER_DEVICE_NAME_WITH_ID" desc="To distinguish devices with the same name, the device chooser shows the device name with id.">
       <ph name="DEVICE_NAME">$1<ex>device name</ex></ph> (<ph name="DEVICE_ID">$2<ex>device id</ex></ph>)
     </message>
-    <message name="IDS_DEVICE_CHOOSER_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no USB devices were found matching the requirements that the application provided.">
-      No compatible devices found.
-    </message>
     <message name="IDS_DEVICE_CHOOSER_ACCNAME_COMPATIBLE_DEVICES_LIST" desc="The accessible name for the list of compatible devices, read to screen reader users when navigating to the container.">
       Compatible devices
-    </message>
-    <message name="IDS_USB_DEVICE_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the USB chooser popup and connects the selected device.">
-      Connect
-    </message>
-    <message name="IDS_USB_DEVICE_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of USB devices.">
-      Finding devices...
-    </message>
-    <message name="IDS_USB_DEVICE_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of USB devices.">
-      Finding USB devices...
-    </message>
-    <message name="IDS_DEVICE_CHOOSER_CANCEL_BUTTON_TEXT" desc="Label on the button that closes the chooser popup without selecting an option.">
-      Cancel
     </message>
 
     <!-- Device Chooser Device Name Unknown -->
@@ -10535,9 +10507,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_USB" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication) plugged in to the USB port of the computer.">
         USB security key
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_NFC" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication) connected to the computer over Near-Field Communication.">
-        NFC security key
-      </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_INTERNAL" desc="Menu item text. The user selects this to use a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader.">
         This device
       </message>
@@ -10607,9 +10576,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_PAIR_PHONE" desc="Menu item text. The user selects this to begin the process of pairing with a previously unknown smartphone.">
         Pair with new phone
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_NFC" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a security key (an external physical device for user authentication) connected to the computer over Near-Field Communication.">
-        Verify via NFC
-      </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_INTERNAL" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader.">
         Use this device
       </message>
@@ -10640,6 +10606,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_CABLEV2_AOA_REQUEST_DESCRIPTION" desc="Potentially displayed in a permissions dialog on Android to describe the type of request that a computer, that is connected over USB, is making. In this context the request from the computer is to use the Android device as a security key. A 'security key' is typically a physical USB token used for authentication (e.g. a gNubby) but in this case the phone is acting as one. The translation of 'security key' should match the phrase used in TC IDs such as 1685482178220389035 and 7775033610159191691">
         Security key request
+      </message>
+      <message name="IDS_WEBAUTHN_CABLEV2_2ND_FACTOR_DESCRIPTION" desc="The contents of a dialog shown when the user tries to sign-in using a phone as a security key, or tries to register their phone as a security key for a future sign-in. A security key is traditionally a small USB device that is touched to confirm a sign-in (e.g. a gNubby) and, in this context, the phone is replacing the need for a separate device. The placeholder for the notification title will be replaced with the string that will appear in the notification on the phone. These messages are 4300134428943426639 and 581442427601260656.">
+        <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. To confirm it's you, tap the “<ph name="NOTIFICATIONTITLE"><ex>Verify with this phone</ex>$2</ph>” notification and follow the steps.
       </message>
 
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
@@ -10788,6 +10757,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_DENY" desc="Button label on a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
          No thanks
+      </message>
+   </if>
+
+   <!-- WebAuthn strings that are used on both Android and Desktop -->
+   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android">
+      <message name="IDS_CABLEV2_MAKE_CREDENTIAL_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to register their phone for signing into that website." formatter_data="android_java">
+        Verify with this phone
+      </message>
+
+      <message name="IDS_CABLEV2_GET_ASSERTION_NOTIFICATION_TITLE" desc="The title of a notification shown on Android that informs the user that a website wishes to use their phone to sign them in on another computer." formatter_data="android_java">
+        Verify your identity
       </message>
    </if>
 

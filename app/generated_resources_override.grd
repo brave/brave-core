@@ -905,6 +905,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       </if>
 
+   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android">
+      </if>
+
    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
       Private
     </message>

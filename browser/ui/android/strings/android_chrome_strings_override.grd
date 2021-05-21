@@ -145,6 +145,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_DOWNLOAD_NOTIFICATION_INCOGNITO_SUBTEXT" desc="Displayed in Private mode download notification as subtext.">
         Private tab
       </message>
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states history is not saved in Private mode.">
+        History isn’t saved in Private
+      </message>
       <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all Private tabs on Android N+.">
         Private Tabs
       </message>

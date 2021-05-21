@@ -1261,6 +1261,21 @@
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TRIALS_DISABLED" desc="A short description that informs the user that the Privacy Sandbox trial features are disabled.">
     Trial features are off
   </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_HEADING" desc="The heading of the card which displays the user's Federated Learning of Cohorts (FLoC) settings">
+    Federated Learning of Cohorts
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_EXPLANATION" desc="Explanation of Federated Learning of Cohorts (FLoC) which appears at the top of the FLoC settings card">
+    FLoC provides a privacy-preserving mechanism for interest-based ad selection.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_COHORT" desc="The text used to label the user's current Federated Learning of Cohorts (FLoC) cohort">
+    FLoC ID
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_COHORT_UPDATED" desc="The text used to label when the user's current Federated Learning of Cohorts (FLoC) cohort was last updated">
+    Updated
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_RESET_COHORT" desc="The text used to label the button which allows a user to reset their Federated Learning of Cohorts (FLoC) cohort identifier">
+    Reset ID
+  </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_COOKIES_DIALOG" desc="Text of a dialog shown to users when they interacted with cookies to make them aware of the Privacy Sandbox.">
     Learn about and control new technologies that aim to replace third-party cookies
   </message>
@@ -1453,7 +1468,7 @@
     Uses cookies to remember your preferences, even if you don’t visit those pages
   </message>
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_DESC_COOKIES_PAGE" desc="On the cookies page, the secondary text next to the checkbox that enables prediction of network actions.">
-    Pre-fetches information from pages, including pages you have not yet visited. Information fetched may include cookies, if you allow cookies.
+    Preloads pages that Brave thinks you might visit. To do this, Brave may use cookies, if you allow cookies, and may encrypt and send pages through Brave to hide your identity from sites.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION" desc="The section title of 'Protects you and your device from dangerous sites'">
     Google Safe Browsing (protects you and your device from dangerous sites)
@@ -1747,16 +1762,16 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_MANAGE_EXTENSION" desc="Text displayed for a button that allows the user to manage a Brave extension">
     Manage
   </message>
-  <message name="IDS_SETTINGS_SEARCH_ENGINES_TRIGGER_OPTIONS" desc="Label for scoped search mode trigger options section">
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TITLE" desc="Label for scoped search mode trigger options section">
     Keyboard shortcuts for search keywords
   </message>
-  <message name="IDS_SETTINGS_SEARCH_ENGINES_TRIGGER_DESCRIPTION" desc="Text explaining how to use keyword mode">
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_DESCRIPTION" desc="Text explaining how to use keyword mode">
     In the address bar, enter the keyword for the website you want to search. Then, use a keyboard shortcut to continue.
   </message>
-  <message name="IDS_SETTINGS_SEARCH_ENGINES_TRIGGER_SPACE_ENABLED" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_SPACE_OR_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
     Space or Tab
   </message>
-  <message name="IDS_SETTINGS_SEARCH_ENGINES_TRIGGER_SPACE_DISABLED" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
     Tab
   </message>
 
@@ -2838,9 +2853,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CONTENT_MORE" desc="The text on the button used to toggle the display of additional content settings.">
     Additional content settings
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOURCE_DRM_DISABLED" desc="A label shown when the protected content / protected media identifier permission on the Site Details page is disabled because the user has turned off using unique identifiers to access protected content.">
-    To change this setting, first <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>turn on identifiers<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWLISTED" desc="A subtitle for the ‘Allowlisted’ setting, shown if a WebUI's permission is internally allowlisted by Brave.">
     Allowlisted internally
