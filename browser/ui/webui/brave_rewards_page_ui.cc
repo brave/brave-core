@@ -538,7 +538,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   if (parameters) {
     auto choices = std::make_unique<base::ListValue>();
     for (double const& choice : parameters->auto_contribute_choices) {
-      choices->AppendDouble(choice);
+      choices->Append(choice);
     }
 
     data.SetDouble("rate", parameters->rate);
