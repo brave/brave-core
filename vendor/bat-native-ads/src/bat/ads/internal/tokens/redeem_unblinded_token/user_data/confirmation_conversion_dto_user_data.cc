@@ -7,10 +7,10 @@
 
 #include <utility>
 
-#include "base/optional.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "bat/ads/internal/security/conversions/conversions_util.h"
 #include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace dto {
@@ -20,7 +20,7 @@ namespace {
 
 const char kAlgorithm[] = "crypto_box_curve25519xsalsa20poly1305";
 
-base::Optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
+absl::optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
     const ConversionQueueItemInfo& conversion_queue_item) {
   VerifiableConversionInfo verifiable_conversion;
   verifiable_conversion.id = conversion_queue_item.conversion_id;
@@ -28,7 +28,7 @@ base::Optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
       conversion_queue_item.advertiser_public_key;
 
   if (!verifiable_conversion.IsValid()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   return security::EnvelopeSeal(verifiable_conversion);
@@ -40,7 +40,7 @@ base::DictionaryValue GetConversion(
     const ConversionQueueItemInfo& conversion_queue_item) {
   base::DictionaryValue user_data;
 
-  const base::Optional<security::VerifiableConversionEnvelopeInfo> envelope =
+  const absl::optional<security::VerifiableConversionEnvelopeInfo> envelope =
       GetEnvelope(conversion_queue_item);
   if (envelope) {
     base::DictionaryValue dictionary;

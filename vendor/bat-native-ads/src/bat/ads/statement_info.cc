@@ -72,7 +72,7 @@ std::string StatementInfo::ToJson() const {
 }
 
 bool StatementInfo::FromJson(const std::string& json) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
   }

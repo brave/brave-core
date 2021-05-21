@@ -77,7 +77,7 @@ std::string GetBlindedCredsJSON(
 
 std::unique_ptr<base::ListValue> ParseStringToBaseList(
     const std::string& string_list) {
-  base::Optional<base::Value> value = base::JSONReader::Read(string_list);
+  absl::optional<base::Value> value = base::JSONReader::Read(string_list);
   if (!value || !value->is_list()) {
     return std::make_unique<base::ListValue>();
   }

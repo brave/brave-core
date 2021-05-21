@@ -66,7 +66,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
-      const base::Optional<std::string>& user_agent,
+      const absl::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
       content::BrowserContext* browser_context,

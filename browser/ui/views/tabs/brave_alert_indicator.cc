@@ -15,13 +15,14 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkPathTypes.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
 
 namespace {
 
-bool IsAudioState(const base::Optional<TabAlertState>& state) {
+bool IsAudioState(const absl::optional<TabAlertState>& state) {
   return (state.has_value() && (state.value() == TabAlertState::AUDIO_PLAYING ||
                                 state.value() == TabAlertState::AUDIO_MUTING));
 }
@@ -96,10 +97,8 @@ void BraveAlertIndicator::OnMouseReleased(const ui::MouseEvent& event) {
   auto* web_contents = tab_strip_model->GetWebContentsAt(tab_index);
   if (web_contents == nullptr)
     return;
-  chrome::SetTabAudioMuted(web_contents,
-                           !web_contents->IsAudioMuted(),
-                           TabMutedReason::CONTENT_SETTING,
-                           std::string());
+  chrome::SetTabAudioMuted(web_contents, !web_contents->IsAudioMuted(),
+                           TabMutedReason::CONTENT_SETTING, std::string());
 }
 
 void BraveAlertIndicator::OnMouseEntered(const ui::MouseEvent& event) {

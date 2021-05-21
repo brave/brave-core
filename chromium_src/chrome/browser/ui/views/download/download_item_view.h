@@ -10,7 +10,6 @@
 // download_item_view.h, all the original headers need to be added.
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/time/time.h"
@@ -19,6 +18,7 @@
 #include "chrome/browser/download/download_ui_model.h"
 #include "chrome/browser/icon_loader.h"
 #include "chrome/browser/ui/views/download/download_shelf_context_menu_view.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"

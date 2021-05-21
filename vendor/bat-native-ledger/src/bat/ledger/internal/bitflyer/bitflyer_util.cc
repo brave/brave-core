@@ -89,7 +89,7 @@ type::ExternalWalletPtr GetWallet(LedgerImpl* ledger) {
     return nullptr;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(wallet_string);
+  absl::optional<base::Value> value = base::JSONReader::Read(wallet_string);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of Bitflyer wallet failed");
     return nullptr;

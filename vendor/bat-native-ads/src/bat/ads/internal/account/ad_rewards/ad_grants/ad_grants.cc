@@ -17,7 +17,7 @@ AdGrants::AdGrants() = default;
 AdGrants::~AdGrants() = default;
 
 bool AdGrants::SetFromJson(const std::string& json) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
   }
@@ -37,7 +37,7 @@ bool AdGrants::SetFromJson(const std::string& json) {
 bool AdGrants::SetFromDictionary(base::Value* dictionary) {
   DCHECK(dictionary);
 
-  const base::Optional<double> balance =
+  const absl::optional<double> balance =
       dictionary->FindDoubleKey("grants_balance");
   if (!balance) {
     return false;

@@ -22,13 +22,13 @@ class CosmeticResourceMergeTest : public testing::Test {
           const std::string& b,
           bool force_hide,
           const std::string& expected) {
-    base::Optional<base::Value> a_val = base::JSONReader::Read(a);
+    absl::optional<base::Value> a_val = base::JSONReader::Read(a);
     ASSERT_TRUE(a_val);
 
-    base::Optional<base::Value> b_val = base::JSONReader::Read(b);
+    absl::optional<base::Value> b_val = base::JSONReader::Read(b);
     ASSERT_TRUE(b_val);
 
-    const base::Optional<base::Value> expected_val =
+    const absl::optional<base::Value> expected_val =
         base::JSONReader::Read(expected);
     ASSERT_TRUE(expected_val);
 

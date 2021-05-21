@@ -58,7 +58,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -115,8 +115,8 @@ TEST_F(BatAdsTabManagerTest, UpdatedIncognitoTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, true);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
-  EXPECT_EQ(base::nullopt, tab);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  EXPECT_EQ(absl::nullopt, tab);
 }
 
 TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenUpdatingIncognitoTab) {
@@ -142,7 +142,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedOccludedTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", false, false);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -176,7 +176,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithSameUrl) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -216,7 +216,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com/about", true, false);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -258,8 +258,8 @@ TEST_F(BatAdsTabManagerTest, ClosedTab) {
   TabManager::Get()->OnClosed(1);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
-  EXPECT_EQ(base::nullopt, tab);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  EXPECT_EQ(absl::nullopt, tab);
 }
 
 TEST_F(BatAdsTabManagerTest, RecordEventWhenClosingTab) {
@@ -404,7 +404,7 @@ TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
   TabManager::Get()->OnUpdated(2, "https://brave.com", true, false);
 
   // Act
-  base::Optional<TabInfo> tab = TabManager::Get()->GetVisible();
+  absl::optional<TabInfo> tab = TabManager::Get()->GetVisible();
 
   // Assert
   TabInfo expected_tab;
@@ -420,7 +420,7 @@ TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
   TabManager::Get()->OnUpdated(2, "https://brave.com", true, false);
 
   // Act
-  base::Optional<TabInfo> tab = TabManager::Get()->GetLastVisible();
+  absl::optional<TabInfo> tab = TabManager::Get()->GetLastVisible();
 
   // Assert
   TabInfo expected_tab;
@@ -435,7 +435,7 @@ TEST_F(BatAdsTabManagerTest, GetTabForId) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Act
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   // Assert
   TabInfo expected_tab;
@@ -450,10 +450,10 @@ TEST_F(BatAdsTabManagerTest, GetTabWithInvalidId) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Act
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(2);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(2);
 
   // Assert
-  EXPECT_EQ(base::nullopt, tab);
+  EXPECT_EQ(absl::nullopt, tab);
 }
 
 }  // namespace ads

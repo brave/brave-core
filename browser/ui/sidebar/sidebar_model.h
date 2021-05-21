@@ -11,12 +11,12 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "base/optional.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model_data.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_service_observer.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class CancelableTaskTracker;

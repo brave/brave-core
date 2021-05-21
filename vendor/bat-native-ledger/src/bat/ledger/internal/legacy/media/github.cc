@@ -43,7 +43,7 @@ std::string GitHub::GetLinkType(const std::string& url) {
 bool GitHub::GetJSONIntValue(const std::string& key,
       const std::string& json_string,
       int64_t* result) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json_string);
+  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
   if (!value || !value->is_dict()) {
     return false;
   }
@@ -65,7 +65,7 @@ bool GitHub::GetJSONIntValue(const std::string& key,
 bool GitHub::GetJSONStringValue(const std::string& key,
       const std::string& json_string,
       std::string* result) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json_string);
+  absl::optional<base::Value> value = base::JSONReader::Read(json_string);
   if (!value || !value->is_dict()) {
     return false;
   }

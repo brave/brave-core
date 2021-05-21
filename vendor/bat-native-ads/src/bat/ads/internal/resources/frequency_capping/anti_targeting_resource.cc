@@ -63,13 +63,13 @@ AntiTargetingInfo AntiTargeting::get() const {
 bool AntiTargeting::FromJson(const std::string& json) {
   AntiTargetingInfo anti_targeting;
 
-  base::Optional<base::Value> root = base::JSONReader::Read(json);
+  absl::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root) {
     BLOG(1, "Failed to load from JSON, root missing");
     return false;
   }
 
-  if (base::Optional<int> version = root->FindIntPath("version")) {
+  if (absl::optional<int> version = root->FindIntPath("version")) {
     if (features::GetAntiTargetingResourceVersion() != *version) {
       BLOG(1, "Failed to load from JSON, version missing");
       return false;

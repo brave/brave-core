@@ -58,7 +58,7 @@ BraveUpdateClientConfig::~BraveUpdateClientConfig() = default;
 // static
 scoped_refptr<ChromeUpdateClientConfig> BraveUpdateClientConfig::Create(
     content::BrowserContext* context,
-    base::Optional<GURL> update_url_override) {
+    absl::optional<GURL> update_url_override) {
   FactoryCallback& factory = GetFactoryCallback();
   return factory.is_null() ? base::MakeRefCounted<BraveUpdateClientConfig>(
                                  context, update_url_override)

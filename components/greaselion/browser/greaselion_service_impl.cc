@@ -42,6 +42,7 @@
 #include "extensions/common/file_util.h"
 #include "extensions/common/manifest_constants.h"
 #include "extensions/common/mojom/manifest.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 using extensions::Extension;
@@ -58,7 +59,7 @@ constexpr char kRunAtDocumentStart[] = "document_start";
 // NOTE: This function does file IO and should not be called on the UI thread.
 // NOTE: The caller takes ownership of the directory at extension->path() on the
 // returned object.
-base::Optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
+absl::optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
 ConvertGreaselionRuleToExtensionOnTaskRunner(
     const greaselion::GreaselionRule& rule,
     const base::FilePath& install_dir) {
@@ -66,13 +67,13 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
       extensions::file_util::GetInstallTempDir(install_dir);
   if (install_temp_dir.empty()) {
     LOG(ERROR) << "Could not get path to profile temp directory";
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   base::ScopedTempDir temp_dir;
   if (!temp_dir.CreateUniqueTempDirUnderPath(install_temp_dir)) {
     LOG(ERROR) << "Could not create Greaselion temp directory";
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   // Create the manifest
@@ -150,7 +151,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   // files to disk.
   if (!serializer.Serialize(*root)) {
     LOG(ERROR) << "Could not write Greaselion manifest";
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   // Copy the messages directory to our extension directory.
@@ -160,7 +161,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
             temp_dir.GetPath().AppendASCII("_locales"), true)) {
       LOG(ERROR) << "Could not copy Greaselion messages directory at path: "
                  << rule.messages().LossyDisplayName();
-      return base::nullopt;
+      return absl::nullopt;
     }
   }
 
@@ -170,7 +171,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
                         temp_dir.GetPath().Append(script.BaseName()))) {
       LOG(ERROR) << "Could not copy Greaselion script at path: "
           << script.LossyDisplayName();
-      return base::nullopt;
+      return absl::nullopt;
     }
   }
 
@@ -181,7 +182,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   if (!extension.get()) {
     LOG(ERROR) << "Could not load Greaselion extension";
     LOG(ERROR) << error;
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   // Take ownership of this temporary directory so it's deleted when
@@ -293,7 +294,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
 }
 
 void GreaselionServiceImpl::PostConvert(
-    base::Optional<GreaselionConvertedExtension> converted_extension) {
+    absl::optional<GreaselionConvertedExtension> converted_extension) {
   if (!converted_extension) {
     all_rules_installed_successfully_ = false;
     pending_installs_ -= 1;

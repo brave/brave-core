@@ -14,6 +14,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/base/host_port_pair.h"
 #include "net/dns/public/dns_protocol.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
@@ -80,7 +81,7 @@ void IPFSHostResolver::Resolve(const net::HostPortPair& host,
 void IPFSHostResolver::OnComplete(
     int result,
     const net::ResolveErrorInfo& error_info,
-    const base::Optional<net::AddressList>& list) {
+    const absl::optional<net::AddressList>& list) {
   if (result != net::OK) {
     VLOG(1) << "DNS resolving error:" << net::ErrorToString(result)
             << " for host: " << prefix_ + resolving_host_;

@@ -33,6 +33,7 @@
 #include "components/webdata/common/webdata_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -85,7 +86,7 @@ bool SetEncryptionKeyForPasswordImporting(
     const base::FilePath& local_state_path) {
   std::string local_state_content;
   base::ReadFileToString(local_state_path, &local_state_content);
-  base::Optional<base::Value> local_state =
+  absl::optional<base::Value> local_state =
       base::JSONReader::Read(local_state_content);
   if (auto* base64_encrypted_key =
           local_state->FindStringPath(kOsCryptEncryptedKeyPrefName)) {
@@ -276,7 +277,7 @@ void ChromeImporter::ImportBookmarks() {
 
   base::ReadFileToString(copy_bookmark_file.copied_file_path(),
                          &bookmarks_content);
-  base::Optional<base::Value> bookmarks_json =
+  absl::optional<base::Value> bookmarks_json =
       base::JSONReader::Read(bookmarks_content);
   const base::DictionaryValue* bookmark_dict;
   if (!bookmarks_json || !bookmarks_json->GetAsDictionary(&bookmark_dict))

@@ -41,7 +41,7 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
   const std::string type = std::string(confirmation.type);
   dto.SetKey("type", base::Value(type));
 
-  base::Optional<base::Value> user_data =
+  absl::optional<base::Value> user_data =
       base::JSONReader::Read(confirmation.user_data);
   if (user_data && user_data->is_dict()) {
     base::DictionaryValue* user_data_dictionary = nullptr;

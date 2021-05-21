@@ -12,7 +12,10 @@ source_set("notifications") {
     "ads_notification_handler.h",
   ]
 
-  deps = [ "//chrome/browser/notifications" ]
+  deps = [
+    "//chrome/browser/notifications",
+    "//third_party/abseil-cpp:absl",
+  ]
 
   if (is_mac) {
     sources += [
@@ -71,14 +74,12 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.notifications"
   }
 
-# TODO(samartnik): we are unable to avoid this patch since we directly patch
-# `ChromeChannelDefinitions.java`. There is no straightforward conversion of
-# those patches to bytecode patching so we need to find a way to
-# workaround those patches https://github.com/brave/brave-browser/issues/15867.
+  # TODO(samartnik): we are unable to avoid this patch since we directly patch
+  # `ChromeChannelDefinitions.java`. There is no straightforward conversion of
+  # those patches to bytecode patching so we need to find a way to
+  # workaround those patches https://github.com/brave/brave-browser/issues/15867.
   android_library("brave_java") {
-    sources = [
-      "android/java/src/org/chromium/chrome/browser/notifications/channels/BraveChannelDefinitions.java",
-    ]
+    sources = [ "android/java/src/org/chromium/chrome/browser/notifications/channels/BraveChannelDefinitions.java" ]
 
     deps = [
       ":java_resources",
@@ -94,8 +95,6 @@ if (is_android) {
       "android/java/res/layout/web_notification_brave_ads.xml",
     ]
 
-    deps = [
-      "//brave/build/android:android_brave_strings_grd",
-    ]
+    deps = [ "//brave/build/android:android_brave_strings_grd" ]
   }
 }

@@ -32,13 +32,13 @@ class BatAdsPipelineUtilTest : public UnitTestBase {
 
 TEST_F(BatAdsPipelineUtilTest, ParsePipelineJSONTest) {
   // Arrange
-  const base::Optional<std::string> opt_value =
+  const absl::optional<std::string> opt_value =
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
   ASSERT_TRUE(opt_value.has_value());
   const std::string json = opt_value.value();
 
   // Act
-  const base::Optional<pipeline::PipelineInfo> pipeline_info =
+  const absl::optional<pipeline::PipelineInfo> pipeline_info =
       pipeline::ParsePipelineJSON(json);
 
   // Assert

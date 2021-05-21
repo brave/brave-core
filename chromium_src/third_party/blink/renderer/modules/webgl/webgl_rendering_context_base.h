@@ -12,7 +12,7 @@
 
 #define getSupportedExtensions           \
   getSupportedExtensions_ChromiumImpl(); \
-  base::Optional<Vector<String>> getSupportedExtensions
+  absl::optional<Vector<String>> getSupportedExtensions
 
 #include "../../../../../../third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h"
 

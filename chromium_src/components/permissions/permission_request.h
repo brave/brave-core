@@ -22,8 +22,8 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
   ~PermissionRequest() override;
 
   virtual bool SupportsLifetime() const;
-  void SetLifetime(base::Optional<base::TimeDelta> lifetime);
-  const base::Optional<base::TimeDelta>& GetLifetime() const;
+  void SetLifetime(absl::optional<base::TimeDelta> lifetime);
+  const absl::optional<base::TimeDelta>& GetLifetime() const;
 
   // We disable upstream's IsDuplicateOf() via a define above and re-declare it
   // here to workaround the fact that the PermissionRequest_ChromiumImpl rename
@@ -31,7 +31,7 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
   virtual bool IsDuplicateOf(PermissionRequest* other_request) const;
 
  private:
-  base::Optional<base::TimeDelta> lifetime_;
+  absl::optional<base::TimeDelta> lifetime_;
 };
 
 }  // namespace permissions

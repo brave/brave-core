@@ -68,7 +68,7 @@ BraveShieldsUrlCosmeticResourcesFunction::Run() {
 std::unique_ptr<base::ListValue>
 BraveShieldsUrlCosmeticResourcesFunction::GetUrlCosmeticResourcesOnTaskRunner(
     const std::string& url) {
-  base::Optional<base::Value> resources =
+  absl::optional<base::Value> resources =
       g_brave_browser_process->ad_block_service()->UrlCosmeticResources(url);
 
   if (!resources || !resources->is_dict()) {
@@ -113,7 +113,7 @@ std::unique_ptr<base::ListValue> BraveShieldsHiddenClassIdSelectorsFunction::
         const std::vector<std::string>& classes,
         const std::vector<std::string>& ids,
         const std::vector<std::string>& exceptions) {
-  base::Optional<base::Value> hide_selectors =
+  absl::optional<base::Value> hide_selectors =
       g_brave_browser_process->ad_block_service()->HiddenClassIdSelectors(
           classes, ids, exceptions);
 

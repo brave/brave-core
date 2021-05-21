@@ -21,12 +21,12 @@ bool PermissionRequest::SupportsLifetime() const {
   return false;
 }
 
-void PermissionRequest::SetLifetime(base::Optional<base::TimeDelta> lifetime) {
+void PermissionRequest::SetLifetime(absl::optional<base::TimeDelta> lifetime) {
   DCHECK(SupportsLifetime());
   lifetime_ = std::move(lifetime);
 }
 
-const base::Optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
+const absl::optional<base::TimeDelta>& PermissionRequest::GetLifetime() const {
   DCHECK(SupportsLifetime());
   return lifetime_;
 }

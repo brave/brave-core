@@ -25,6 +25,7 @@
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/navigation_entry.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -58,12 +59,12 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarViewFocusRingHighlightPathGenerator);
 };
 
-base::Optional<SkColor> GetFocusRingColor(Profile* profile) {
+absl::optional<SkColor> GetFocusRingColor(Profile* profile) {
   constexpr SkColor kPrivateFocusRingColor = SkColorSetRGB(0xC6, 0xB3, 0xFF);
   constexpr SkColor kTorPrivateFocusRingColor = SkColorSetRGB(0xCF, 0xAB, 0xE2);
   if (brave::IsRegularProfile(profile) || profile->IsGuestSession()) {
     // Don't update color.
-    return base::nullopt;
+    return absl::nullopt;
   }
   if (profile->IsTor())
     return kTorPrivateFocusRingColor;

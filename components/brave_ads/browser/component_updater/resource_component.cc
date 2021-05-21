@@ -10,13 +10,13 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
-#include "base/optional.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -73,12 +73,12 @@ void ResourceComponent::NotifyObservers(const std::string& id) {
   }
 }
 
-base::Optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
+absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
                                                           const int version) {
   const std::string index = GetIndex(id, version);
   const auto iter = resources_.find(index);
   if (iter == resources_.end()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   const ResourceInfo resource = iter->second;
@@ -91,7 +91,7 @@ void ResourceComponent::RegisterComponentForCountryCode(
     const std::string& country_code) {
   DCHECK(!country_code.empty());
 
-  const base::Optional<ComponentInfo> component =
+  const absl::optional<ComponentInfo> component =
       GetComponentInfo(country_code);
   if (!component) {
     VLOG(1) << "Ads resource not supported for " << country_code;
@@ -110,7 +110,7 @@ void ResourceComponent::RegisterComponentForLanguageCode(
     const std::string& language_code) {
   DCHECK(!language_code.empty());
 
-  const base::Optional<ComponentInfo> component =
+  const absl::optional<ComponentInfo> component =
       GetComponentInfo(language_code);
   if (!component) {
     VLOG(1) << "Ads resource not supported for " << language_code;
@@ -152,13 +152,13 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
                                       const std::string& json) {
   VLOG(8) << "resource manifest: " << json;
 
-  base::Optional<base::Value> manifest = base::JSONReader::Read(json);
+  absl::optional<base::Value> manifest = base::JSONReader::Read(json);
   if (!manifest) {
     VLOG(1) << "Failed to parse resource manifest";
     return;
   }
 
-  const base::Optional<int> schemaVersion =
+  const absl::optional<int> schemaVersion =
       manifest->FindIntPath(kSchemaVersionPath);
   if (!schemaVersion) {
     VLOG(1) << "Resource schema version is missing";
@@ -186,7 +186,7 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     }
     resource.id = *id;
 
-    const base::Optional<int> version =
+    const absl::optional<int> version =
         resource_value.FindIntPath(kResourceVersionPath);
     if (!version) {
       VLOG(1) << *id << " resource version is missing";

@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/api/socket/tcp_socket.cc b/extensions/browser/api/socket/tcp_socket.cc
-index f8bd9bda89a172e04c55c181137aa893fc19d171..9017f9a082946fd6d49fe8a75b35f6b89c8fdc8a 100644
+index f8bd9bda89a172e04c55c181137aa893fc19d171..73f6d2413e2be765574382e653e3bf69abaf73c3 100644
 --- a/extensions/browser/api/socket/tcp_socket.cc
 +++ b/extensions/browser/api/socket/tcp_socket.cc
 @@ -156,8 +156,16 @@ void TCPSocket::Disconnect(bool socket_destroying) {
@@ -14,7 +14,7 @@ index f8bd9bda89a172e04c55c181137aa893fc19d171..9017f9a082946fd6d49fe8a75b35f6b8
 +  }
 +  if (accept_callback_) {
 +    std::move(accept_callback_)
-+        .Run(net::ERR_CONNECTION_CLOSED, mojo::NullRemote(), base::nullopt,
++        .Run(net::ERR_CONNECTION_CLOSED, mojo::NullRemote(), absl::nullopt,
 +            mojo::ScopedDataPipeConsumerHandle(),
 +            mojo::ScopedDataPipeProducerHandle());
 +  }

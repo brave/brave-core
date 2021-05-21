@@ -14,12 +14,12 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
-#include "base/optional.h"
 #include "base/threading/thread_checker.h"
 #include "components/update_client/component.h"
 #include "components/update_client/configurator.h"
 #include "components/update_client/persisted_data.h"
 #include "components/update_client/update_client_errors.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace update_client {
 
@@ -57,7 +57,7 @@ class SequentialUpdateChecker : public UpdateChecker {
  private:
   void CheckNext();
   void UpdateResultAvailable(
-      const base::Optional<ProtocolParser::Results>& results,
+      const absl::optional<ProtocolParser::Results>& results,
       ErrorCategory error_category,
       int error,
       int retry_after_sec);

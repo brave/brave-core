@@ -18,6 +18,7 @@
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using content::BrowserContext;
 using content::NavigationHandle;
@@ -149,7 +150,7 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
   std::string local_partition_id =
       StringToSessionStorageId(new_domain, kLocalStorageSuffix);
   local_storage_namespace_ = content::CreateSessionStorageNamespace(
-      partition, local_partition_id, base::nullopt);
+      partition, local_partition_id, absl::nullopt);
 
   // Session storage is always per-tab and never per-TLD, so we always delete
   // and recreate the session storage when switching domains.
@@ -168,11 +169,11 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
       partition, session_partition_id,
       // clone the namespace if there is an opener
       // https://html.spec.whatwg.org/multipage/browsers.html#copy-session-storage
-      rfh ? base::make_optional<std::string>(StringToSessionStorageId(
+      rfh ? absl::make_optional<std::string>(StringToSessionStorageId(
                 content::GetSessionStorageNamespaceId(
                     WebContents::FromRenderFrameHost(rfh)),
                 kSessionStorageSuffix))
-          : base::nullopt);
+          : absl::nullopt);
 
   tld_ephemeral_lifetime_ = content::TLDEphemeralLifetime::GetOrCreate(
       browser_context, partition, new_domain);

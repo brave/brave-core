@@ -142,7 +142,7 @@ void TabManager::OnMediaStopped(const int32_t id) {
 }
 
 bool TabManager::IsPlayingMedia(const int32_t id) const {
-  const base::Optional<TabInfo> tab = GetForId(id);
+  const absl::optional<TabInfo> tab = GetForId(id);
   if (!tab) {
     return false;
   }
@@ -150,17 +150,17 @@ bool TabManager::IsPlayingMedia(const int32_t id) const {
   return tab->is_playing_media;
 }
 
-base::Optional<TabInfo> TabManager::GetVisible() const {
+absl::optional<TabInfo> TabManager::GetVisible() const {
   return GetForId(visible_tab_id_);
 }
 
-base::Optional<TabInfo> TabManager::GetLastVisible() const {
+absl::optional<TabInfo> TabManager::GetLastVisible() const {
   return GetForId(last_visible_tab_id_);
 }
 
-base::Optional<TabInfo> TabManager::GetForId(const int32_t id) const {
+absl::optional<TabInfo> TabManager::GetForId(const int32_t id) const {
   if (tabs_.find(id) == tabs_.end()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   return tabs_.at(id);

@@ -14,13 +14,13 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/optional.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -78,12 +78,12 @@ class AdsClientMock;
 
 base::FilePath GetTestPath();
 
-base::Optional<std::string> ReadFileFromTestPathToString(
+absl::optional<std::string> ReadFileFromTestPathToString(
     const std::string& name);
 
 base::FilePath GetResourcesPath();
 
-base::Optional<std::string> ReadFileFromResourcePathToString(
+absl::optional<std::string> ReadFileFromResourcePathToString(
     const std::string& name);
 
 void SetEnvironment(const Environment environment);

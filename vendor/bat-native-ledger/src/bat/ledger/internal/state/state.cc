@@ -32,7 +32,7 @@ std::string VectorDoubleToString(const std::vector<double>& items) {
 }
 
 std::vector<double> StringToVectorDouble(const std::string& items_string) {
-  base::Optional<base::Value> list = base::JSONReader::Read(items_string);
+  absl::optional<base::Value> list = base::JSONReader::Read(items_string);
   if (!list || !list->is_list()) {
     return {};
   }

@@ -11,6 +11,7 @@
 #include "cc/paint/paint_flags.h"
 #include "chrome/grit/theme_resources.h"
 #include "extensions/common/constants.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/canvas.h"
@@ -21,19 +22,19 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/skia_paint_util.h"
 
-base::Optional<int>
+absl::optional<int>
 BraveActionIconWithBadgeImageSource::GetCustomGraphicSize() {
   return kBraveActionGraphicSize;
 }
 
-base::Optional<int>
+absl::optional<int>
 BraveActionIconWithBadgeImageSource::GetCustomGraphicXOffset() {
   return std::floor(
       (size().width() - kBraveActionRightMargin - kBraveActionGraphicSize) /
       2.0);
 }
 
-base::Optional<int>
+absl::optional<int>
 BraveActionIconWithBadgeImageSource::GetCustomGraphicYOffset() {
   return std::floor((size().height() - kBraveActionGraphicSize) / 2.0);
 }

@@ -20,6 +20,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "net/cookies/site_for_cookies.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 BraveProxyingWebSocket::BraveProxyingWebSocket(
     WebSocketFactory factory,
@@ -51,11 +52,11 @@ BraveProxyingWebSocket::~BraveProxyingWebSocket() {
   }
   if (on_before_send_headers_callback_) {
     std::move(on_before_send_headers_callback_)
-        .Run(net::ERR_ABORTED, base::nullopt);
+        .Run(net::ERR_ABORTED, absl::nullopt);
   }
   if (on_headers_received_callback_) {
     std::move(on_headers_received_callback_)
-        .Run(net::ERR_ABORTED, base::nullopt, base::nullopt);
+        .Run(net::ERR_ABORTED, absl::nullopt, absl::nullopt);
   }
 }
 
@@ -65,7 +66,7 @@ BraveProxyingWebSocket* BraveProxyingWebSocket::ProxyWebSocket(
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const base::Optional<std::string>& user_agent,
+    const absl::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -262,7 +263,7 @@ void BraveProxyingWebSocket::OnBeforeRequestComplete(int error_code) {
 
 void BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy(
     int error_code,
-    const base::Optional<net::HttpRequestHeaders>& headers) {
+    const absl::optional<net::HttpRequestHeaders>& headers) {
   DCHECK(proxy_has_extra_headers() ||
          !receiver_as_handshake_client_.is_bound());
   if (error_code != net::OK) {
@@ -308,8 +309,9 @@ void BraveProxyingWebSocket::OnBeforeSendHeadersComplete(int error_code) {
   }
 
   if (on_before_send_headers_callback_)
-    std::move(on_before_send_headers_callback_).Run(
-        error_code, base::Optional<net::HttpRequestHeaders>(request_.headers));
+    std::move(on_before_send_headers_callback_)
+        .Run(error_code,
+             absl::optional<net::HttpRequestHeaders>(request_.headers));
 
   if (!proxy_has_extra_headers())
     ContinueToStartRequest(error_code);
@@ -352,11 +354,11 @@ void BraveProxyingWebSocket::ContinueToStartRequest(int error_code) {
 
 void BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy(
     int error_code,
-    const base::Optional<std::string>& headers,
-    const base::Optional<GURL>& url) {
+    const absl::optional<std::string>& headers,
+    const absl::optional<GURL>& url) {
   if (on_headers_received_callback_)
     std::move(on_headers_received_callback_)
-        .Run(net::OK, headers, base::nullopt);
+        .Run(net::OK, headers, absl::nullopt);
 
   if (override_headers_) {
     response_.headers = override_headers_;
@@ -385,7 +387,7 @@ void BraveProxyingWebSocket::OnHeadersReceivedComplete(int error_code) {
             weak_factory_.GetWeakPtr()));
   } else {
     OnHeadersReceivedCompleteFromProxy(
-        error_code, base::Optional<std::string>(headers), base::nullopt);
+        error_code, absl::optional<std::string>(headers), absl::nullopt);
   }
 }
 

@@ -22,7 +22,7 @@ Payments::Payments() = default;
 Payments::~Payments() = default;
 
 bool Payments::SetFromJson(const std::string& json) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_list()) {
     return false;
   }
@@ -56,7 +56,7 @@ bool Payments::SetFromDictionary(base::Value* dictionary) {
     PaymentInfo payment;
 
     // Balance
-    const base::Optional<double> balance = dictionary->FindDoubleKey("balance");
+    const absl::optional<double> balance = dictionary->FindDoubleKey("balance");
     if (!balance) {
       continue;
     }

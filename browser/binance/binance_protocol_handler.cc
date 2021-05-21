@@ -21,15 +21,15 @@
 #include "content/public/browser/browser_thread.h"
 #include "net/base/escape.h"
 #include "net/base/url_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
 
-void LoadNewTabURL(
-    const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
-    ui::PageTransition page_transition,
-    bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
+void LoadNewTabURL(const GURL& url,
+                   content::WebContents::OnceGetter web_contents_getter,
+                   ui::PageTransition page_transition,
+                   bool has_user_gesture,
+                   const absl::optional<url::Origin>& initiating_origin) {
   content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents) {
     return;
@@ -74,7 +74,7 @@ void HandleBinanceProtocol(const GURL& url,
                            content::WebContents::OnceGetter web_contents_getter,
                            ui::PageTransition page_transition,
                            bool has_user_gesture,
-                           const base::Optional<url::Origin>& initiator) {
+                           const absl::optional<url::Origin>& initiator) {
   DCHECK(IsBinanceProtocol(url));
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},

@@ -62,7 +62,7 @@ void TextProcessing::SetInfo(const PipelineInfo& info) {
 }
 
 bool TextProcessing::FromJson(const std::string& json) {
-  base::Optional<PipelineInfo> pipeline_info = ParsePipelineJSON(json);
+  absl::optional<PipelineInfo> pipeline_info = ParsePipelineJSON(json);
 
   if (pipeline_info.has_value()) {
     SetInfo(pipeline_info.value());

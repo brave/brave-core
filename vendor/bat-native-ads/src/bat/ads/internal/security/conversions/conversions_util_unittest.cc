@@ -24,11 +24,11 @@ namespace {
 
 const size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
 
-base::Optional<std::string> EnvelopeOpen(
+absl::optional<std::string> EnvelopeOpen(
     const VerifiableConversionEnvelopeInfo envelope,
     const std::string& advertiser_secret_key_base64) {
   if (!envelope.IsValid()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   std::vector<uint8_t> advertiser_secret_key =
@@ -63,11 +63,11 @@ TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealShortMessage) {
   verifiable_conversion.public_key = advertiser_public_key;
 
   // Act
-  const base::Optional<VerifiableConversionEnvelopeInfo> envelope =
+  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
       EnvelopeSeal(verifiable_conversion);
 
   // Assert
-  EXPECT_EQ(base::nullopt, envelope);
+  EXPECT_EQ(absl::nullopt, envelope);
 }
 
 TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealLongMessage) {
@@ -83,11 +83,11 @@ TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealLongMessage) {
   verifiable_conversion.public_key = advertiser_public_key;
 
   // Act
-  const base::Optional<VerifiableConversionEnvelopeInfo> envelope =
+  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
       EnvelopeSeal(verifiable_conversion);
 
   // Assert
-  EXPECT_EQ(base::nullopt, envelope);
+  EXPECT_EQ(absl::nullopt, envelope);
 }
 
 TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealInvalidMessage) {
@@ -103,11 +103,11 @@ TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealInvalidMessage) {
   verifiable_conversion.public_key = advertiser_public_key;
 
   // Act
-  const base::Optional<VerifiableConversionEnvelopeInfo> envelope =
+  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
       EnvelopeSeal(verifiable_conversion);
 
   // Assert
-  EXPECT_EQ(base::nullopt, envelope);
+  EXPECT_EQ(absl::nullopt, envelope);
 }
 
 TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealWithInvalidPublicKey) {
@@ -123,11 +123,11 @@ TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealWithInvalidPublicKey) {
   verifiable_conversion.public_key = advertiser_public_key;
 
   // Act
-  const base::Optional<VerifiableConversionEnvelopeInfo> envelope =
+  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
       EnvelopeSeal(verifiable_conversion);
 
   // Assert
-  EXPECT_EQ(base::nullopt, envelope);
+  EXPECT_EQ(absl::nullopt, envelope);
 }
 
 TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSeal) {
@@ -143,12 +143,12 @@ TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSeal) {
   verifiable_conversion.public_key = advertiser_public_key;
 
   // Act
-  const base::Optional<VerifiableConversionEnvelopeInfo> envelope =
+  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
       EnvelopeSeal(verifiable_conversion);
 
-  ASSERT_NE(base::nullopt, envelope);
+  ASSERT_NE(absl::nullopt, envelope);
 
-  const base::Optional<std::string> result =
+  const absl::optional<std::string> result =
       EnvelopeOpen(envelope.value(), advertiser_secret_key);
 
   // Assert

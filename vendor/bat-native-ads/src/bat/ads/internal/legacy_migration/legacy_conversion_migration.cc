@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/json/json_reader.h"
-#include "base/optional.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -18,6 +17,7 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/result.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace conversions {
@@ -31,33 +31,33 @@ const char kTimestampKey[] = "timestamp_in_seconds";
 const char kCreativeSetIdKey[] = "creative_set_id";
 const char kCreativeInstanceIdKey[] = "uuid";
 
-base::Optional<ConversionQueueItemInfo> GetFromDictionary(
+absl::optional<ConversionQueueItemInfo> GetFromDictionary(
     const base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
 
   // Timestamp
   const std::string* timestamp_value = dictionary->FindStringKey(kTimestampKey);
   if (!timestamp_value) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   int64_t timestamp;
   if (!base::StringToInt64(*timestamp_value, &timestamp)) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   // Creative set id
   const std::string* creative_set_id_value =
       dictionary->FindStringKey(kCreativeSetIdKey);
   if (!creative_set_id_value) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   // Creative instance id
   const auto* creative_instance_id_value =
       dictionary->FindStringKey(kCreativeInstanceIdKey);
   if (!creative_instance_id_value) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   ConversionQueueItemInfo conversion_queue_item;
@@ -68,7 +68,7 @@ base::Optional<ConversionQueueItemInfo> GetFromDictionary(
   return conversion_queue_item;
 }
 
-base::Optional<ConversionQueueItemList> GetFromList(const base::Value* list) {
+absl::optional<ConversionQueueItemList> GetFromList(const base::Value* list) {
   DCHECK(list);
   DCHECK(list->is_list());
 
@@ -76,19 +76,19 @@ base::Optional<ConversionQueueItemList> GetFromList(const base::Value* list) {
 
   for (const auto& value : list->GetList()) {
     if (!value.is_dict()) {
-      return base::nullopt;
+      return absl::nullopt;
     }
 
     const base::DictionaryValue* dictionary = nullptr;
     value.GetAsDictionary(&dictionary);
     if (!dictionary) {
-      return base::nullopt;
+      return absl::nullopt;
     }
 
-    const base::Optional<ConversionQueueItemInfo> conversion_queue_item =
+    const absl::optional<ConversionQueueItemInfo> conversion_queue_item =
         GetFromDictionary(dictionary);
     if (!conversion_queue_item) {
-      return base::nullopt;
+      return absl::nullopt;
     }
 
     conversion_queue_items.push_back(conversion_queue_item.value());
@@ -97,20 +97,20 @@ base::Optional<ConversionQueueItemList> GetFromList(const base::Value* list) {
   return conversion_queue_items;
 }
 
-base::Optional<ConversionQueueItemList> FromJson(const std::string& json) {
-  const base::Optional<base::Value> value = base::JSONReader::Read(json);
+absl::optional<ConversionQueueItemList> FromJson(const std::string& json) {
+  const absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   const base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   const base::Value* list = dictionary->FindListKey(kListKey);
   if (!list) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   return GetFromList(list);
@@ -140,7 +140,7 @@ void Migrate(InitializeCallback callback) {
           return;
         }
 
-        const base::Optional<ConversionQueueItemList> conversion_queue_items =
+        const absl::optional<ConversionQueueItemList> conversion_queue_items =
             FromJson(json);
 
         if (!conversion_queue_items) {

@@ -87,6 +87,7 @@
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -1983,7 +1984,7 @@ void AdsServiceImpl::Save(const std::string& name,
 void AdsServiceImpl::LoadAdsResource(const std::string& id,
                                      const int version,
                                      ads::LoadCallback callback) {
-  const base::Optional<base::FilePath> path =
+  const absl::optional<base::FilePath> path =
       g_brave_browser_process->resource_component()->GetPath(id, version);
 
   if (!path) {
@@ -2039,7 +2040,7 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
                                     const std::string& value) {
   switch (type) {
     case ads::P2AEventType::kListType: {
-      base::Optional<base::Value> maybe_list = base::JSONReader::Read(value);
+      absl::optional<base::Value> maybe_list = base::JSONReader::Read(value);
       if (!maybe_list || !maybe_list->is_list()) {
         break;
       }

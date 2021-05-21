@@ -430,7 +430,7 @@ void AdNotifications::OnLoaded(const Result result, const std::string& json) {
 }
 
 bool AdNotifications::FromJson(const std::string& json) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
   }

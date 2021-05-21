@@ -1132,7 +1132,7 @@ void ParseCaptchaResponse(
     std::string* image,
     std::string* id,
     std::string* hint) {
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  absl::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     return;
   }
