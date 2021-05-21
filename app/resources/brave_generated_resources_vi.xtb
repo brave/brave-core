@@ -69,15 +69,19 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4227945450504703638">Âm thanh đã chọn</translation>
 <translation id="7895302206188277628">Nội dung liên kết</translation>
 <translation id="4322612543319315652">Nhập văn bản đã chọn vào IPFS</translation>
+<translation id="8883166554766780543">Nhập và sao chép liên kết tới ảnh chụp nhanh IPFS</translation>
+<translation id="3654831858282189202">Xuất bản bằng khóa IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Cửa sổ Riêng tư với Tor Mới</translation>
 <translation id="4703780849509456860">Mở Liên kết trong Cửa sổ Riêng tư với Tor</translation>
 <translation id="3488584642074079080">Mở Liên kết trong Cửa sổ Riêng tư với Tor của Brave</translation>
 <translation id="7475547933708221517">Chia sẻ tệp cục bộ sử dụng IPFS</translation>
+<translation id="2286177249736199435">Chia sẻ thư mục cục bộ bằng IPFS</translation>
 <translation id="784573715436258741">Chia sẻ tệp cục bộ sử dụng IPFS</translation>
 <translation id="6313675821927505581">Mở cửa sổ cá nhân mới với công nghệ Tor</translation>
 <translation id="2638041073279639246">Mở liên kết trong cửa sổ cá nhân mới với công nghệ Tor</translation>
 <translation id="3425600262621021599">Mở liên kết trong cửa sổ cá nhân Brave với công nghệ Tor</translation>
+<translation id="575838692088926391">Chia sẻ thư mục cục bộ bằng IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Dịch vụ Bat Ads</translation>
 <translation id="7924918279836988121">Dịch vụ Sổ cái Bat</translation>
@@ -157,7 +161,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4112587618563511470">Mã đồng bộ hóa không hợp lệ, xin vui lòng kiểm tra và thử lại.</translation>
 <translation id="2339730291919608488">Rời chuỗi đồng bộ</translation>
 <translation id="115699408012835975">Nếu bạn đặt lại Đồng bộ hóa, bạn sẽ phải nhập lại mã đồng bộ hóa từ một thiết bị khác để đồng bộ hóa với thiết bị đó. Bạn có chắc muốn tiếp tục không?</translation>
-<translation id="6092564993102418148">Bạn có chắc chắn muốn xóa thiết bị đã chọn khỏi chuỗi đồng bộ hóa không?</translation>
+<translation id="6092564993102418148">Bạn có chắc chắn muốn gỡ thiết bị đã chọn khỏi chuỗi đồng bộ hóa không?</translation>
 <translation id="3396347744975515056">Brave Sync đã được nâng cấp và cần phải thiết lập</translation>
 <translation id="7473245612074035141">Bắt đầu Thiết lập</translation>
 <translation id="3411013544209536575">Lời khuyên trợ giúp</translation>
@@ -177,10 +181,23 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="7090046810227878892">Nhà cung cấp Ethereum để sử dụng Dapps</translation>
 <translation id="5913089932885076110">Tải Ví Tiền điện tử lúc khởi động</translation>
 <translation id="757886143331967039">Tải phần mở rộng không dùng đến của Ví tiền Crypto khi khởi động</translation>
+<translation id="1834467296210148203">Hiển thị biểu tượng Ví Brave trên thanh công cụ</translation>
 <translation id="6864914031231797928">Cho phép đăng nhập bằng Google cho các tiện ích mở rộng</translation>
 <translation id="5927916530277631319">Phương thức phân giải tên miền Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về DNS trên HTTPS và các cân nhắc quyền riêng tư của Ethereum.</translation>
 <translation id="5248318250177143470">Phương thức phân giải tên miền ENS (Dịch vụ Cung cấp Tên miền Ethereum)</translation>
+<translation id="7024553202001112871">Thiết lập khóa IPNS của bạn</translation>
+<translation id="951216659045543447">Ký nội dung bằng khóa riêng tư tương ứng và xuất bản lên IPNS</translation>
+<translation id="7611728475758612204">Các khóa có sẵn để xuất bản</translation>
+<translation id="911363100236037920">Nhập tên cho khóa mới</translation>
+<translation id="6358469157239228181">Tên này không thể sử dụng</translation>
+<translation id="8996633027318264334">Bạn có thực sự muốn xóa <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Nút không được khởi chạy</translation>
+<translation id="616058968889448209">Lỗi khởi chạy dịch vụ IPFS, thông tin thêm có sẵn trên <ph name="BEGIN_LINK"/>trang chẩn đoán<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619"><ph name="KEY_NAME"/> nhập khóa không thành công</translation>
+<translation id="8275038454117074363">Nhập</translation>
+<translation id="3654980960391973513">Nhập khóa</translation>
+<translation id="5531501313997312487">Nút Bắt đầu</translation>
 <translation id="9170907049676078643">Phương thức giải quyết tài nguyên IPFS</translation>
 <translation id="1327977588028644528">Cổng vào</translation>
 <translation id="80225669816651290">Nút cục bộ</translation>
@@ -260,7 +277,10 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="1391855377994926460">Hãy tiếp tục duyệt web nhanh hơn - nhanh hơn đến 6 lần trên những trang tin tức lớn.</translation>
 <translation id="9218430445555521422">Đặt làm mặc định</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
+<translation id="6040143037577758943">Đóng</translation>
+<translation id="5600566490506283344">Thông báo quảng cáo Brave</translation>
 <translation id="4877147287319222750">Thêm vào Thanh bên</translation>
+<translation id="4233010476457917696">Hiển thị thanh bên</translation>
 <translation id="5404213409401164238">Hiển thị Thanh bên</translation>
 <translation id="7561196759112975576">Luôn luôn</translation>
 <translation id="7060352228894039151">Khi di chuột qua</translation>

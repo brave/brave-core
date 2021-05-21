@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">الصوت المحدد</translation>
 <translation id="7895302206188277628">المحتوى ذو الصلة</translation>
 <translation id="4322612543319315652">استيراد النص المحدد إلى IPFS</translation>
+<translation id="8883166554766780543">الاستيراد ونسخ الرابط في صيغة لقطة من لقطات IPFS</translation>
+<translation id="3654831858282189202">النشر بواسطة مفتاح IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">نافذة جديدة وخاصة بـTor</translation>
 <translation id="4703780849509456860">افتح الرابط في نافذة خاصة بـ Tor</translation>
 <translation id="3488584642074079080">افتح الرابط في نافذة Brave الخاصة بـ Tor</translation>
 <translation id="7475547933708221517">مشاركة الملف المحلي باستخدام IPFS</translation>
+<translation id="2286177249736199435">مشاركة مجلد محلي باستخدام IPFS</translation>
 <translation id="784573715436258741">مشاركة الملف المحلي باستخدام IPFS</translation>
 <translation id="6313675821927505581">نافذة خاصة جديدة من خلال Tor</translation>
 <translation id="2638041073279639246">افتح الرابط في نافذة خاصة، باستخدام Tor</translation>
 <translation id="3425600262621021599">افتح الرابط في نافذة Brave خاصة، باستخدام Tor</translation>
+<translation id="575838692088926391">مشاركة مجلد محلي باستخدام IPFS</translation>
 <translation id="5410152065859052603">برنامج تور (Tor)</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">مزوّد منصة إيثريوم لاستخدام تطبيقات Dapps</translation>
 <translation id="5913089932885076110">تحميل Crypto Wallets عند بدء التشغيل</translation>
 <translation id="757886143331967039">تحميل الملحق الخاص بمحافظ العملات المشفرة التي تم الحد من استخدامها عند بدء التشغيل</translation>
+<translation id="1834467296210148203">إظهار رمز Brave Wallet على شريط الأدوات</translation>
 <translation id="6864914031231797928">قم بالسماح بتسجيل الدخول إلى Google للحصول على الإضافات</translation>
 <translation id="5927916530277631319">طريقة لمعالجة النطاقات التي لا يمكن إيقافها</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>تعرّف على المزيد<ph name="END_LINK"/> حول اعتبارات خصوصية إيثريوم وبروتوكول DNS عبر HTTPS.</translation>
 <translation id="5248318250177143470">طريقة لمعالجة خدمة اسم إيثريوم (ENS)</translation>
+<translation id="7024553202001112871">إعداد مفاتيح IPNS الخاصة بك</translation>
+<translation id="951216659045543447">توقيع المحتوى بواسطة المفتاح الخاص المتوافق ونشره على IPNS</translation>
+<translation id="7611728475758612204">المفاتيح المتوفرة للنشر</translation>
+<translation id="911363100236037920">إدخال اسم للمفتاح الجديد</translation>
+<translation id="6358469157239228181">يتعذر استخدام هذا الاسم</translation>
+<translation id="8996633027318264334">هل تريد بالفعل حذف <ph name="KEY_NAME"/>؟</translation>
+<translation id="910215077892371264">لم يتم تشغيل العقدة</translation>
+<translation id="616058968889448209">حدث خطأ أثناء تشغيل خدمة IPFS، تتوفر المزيد من المعلومات على <ph name="BEGIN_LINK"/>صفحة التشخيص<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">فشل استيراد المفتاح '<ph name="KEY_NAME"/>'</translation>
+<translation id="8275038454117074363">الاستيراد</translation>
+<translation id="3654980960391973513">إنشاء</translation>
+<translation id="5531501313997312487">بدء العقدة</translation>
 <translation id="9170907049676078643">طريقة حل موارد IPFS</translation>
 <translation id="1327977588028644528">المدخل</translation>
 <translation id="80225669816651290">عقدة محلية</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">استمتع بتصفّح الويب بسرعةٍ أكبر - حتى 6 مرات أكثر على مواقع الأخبار الرئيسية.</translation>
 <translation id="9218430445555521422">تعيين كافتراضي</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
+<translation id="6040143037577758943">إغلاق</translation>
+<translation id="5600566490506283344">إشعار Brave Ad</translation>
 <translation id="4877147287319222750">أضف إلى الشريط الجانبي</translation>
+<translation id="4233010476457917696">إظهار الشريط الجانبي</translation>
 <translation id="5404213409401164238">إظهار الشريط الجانبي</translation>
 <translation id="7561196759112975576">دائماً</translation>
 <translation id="7060352228894039151">عند تحريك الفأرة</translation>

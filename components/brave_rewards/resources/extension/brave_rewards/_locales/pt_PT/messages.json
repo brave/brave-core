@@ -819,6 +819,18 @@
     "message": "Ao verificar e associar a carteira a uma conta bitFlyer, poderá guardar e gerir mais facilmente os tokens que tiver recebido com Brave Rewards",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Saiba mais$link_end$ sobre como ligar o seu navegador Brave à sua conta bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "No Japão, a Brave Rewards está em processo de mudança para um novo sistema!",
     "description": "Header text for BAP deprecation warning message"

@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Anzisha simu zisizo na kikomo na marafiki na wafanyakazi wenza katika Brave Together.</translation>
 <translation id="7115051913071512405">Ijaribu</translation>
 <translation id="7415602225677446066">Hadithi bora za leo katika mlisho wa faragha kabisa, kwa ajili yako tu.</translation>
-<translation id="8607689491789524900">Brave Today inaoana na mambo yanayokuvutia kwenye kifaa chako ili taarifa yako binafsi isiwahi kutoka kwenye kivinjari chako. Maudhui mapya yamesasishwa siku nzima.</translation>
+<translation id="6903061332999399632">Brave News inatumia matangazo yaliyolinganishwa kwa njia ya faragha na kutotambulisha kwenye kifaa chako. Maelezo yako binafsi yanakuwa ya faragha wakati wote, kulingana na <ph name="LINK_START"/>sera yetu ya faragha<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Onyesha Brave News</translation>
+<translation id="780301667611848630">La, asante</translation>
 <translation id="9164544612367905452">Inatafuta…</translation>
 <translation id="1276592121036104130">Pakia maudhui mapya</translation>
-<translation id="4210987321913275328">Sogeza kwa Brave Today</translation>
-<translation id="3122595178900736207">Badilisha vyanzo vya Brave Today</translation>
-<translation id="2197023915568148978">Badilisha machaguo yako yote ya mchapishaji wa Brave Today kuwa chaguomsingi yake?</translation>
+<translation id="2875288128871360696">Sogeza upate Brave Today</translation>
+<translation id="8510120023634509743">Badilisha vyanzo vya Brave News</translation>
+<translation id="75825199302994272">Badilisha machaguo yako yote ya mchapishaji wa Brave News kuwa chaguomsingi yake?</translation>
 <translation id="954001034349395856">Vyanzo vyote</translation>
 <translation id="8890516388109605451">Vyanzo</translation>
 <translation id="5158129253322921540">Lemaza maudhui kutoka <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Umeunganishwa</translation>
 <translation id="8030169304546394654">Imeondolewa</translation>
 <translation id="3149306599361260465">Kuanzisha [[percentage]]%</translation>
+<translation id="3258793718986637767">Unatatizika na Tor? Jaribu <ph name="BEGIN_LINK"/>kufunga dirisha la faragha lililo na Tor<ph name="END_LINK"/> ma uliwashe tena.</translation>
 <translation id="4272382368346338917">Vichujio vya Ziada</translation>
 <translation id="8949292968394988358">Onyo: Kuwasha vichujio vingi sana kutahafifisha ufanisi</translation>
 <translation id="8686201964111147748">Jumla ya matangazo na vifuatiliaji vilivyozuiwa:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Thibitisha pochi yangu</translation>
 <translation id="6609621505400013054">Pochi ya bitFlyer ni huduma inayodhibitiwa na bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Kwa kuthibitisha pochi yako na kuiunganisha kwenye akaunti ya bitFlyer, utaweza kuhifadhi na kudhibiti tokeni ulizopata kupitia Brave Rewards kwa urahisi zaidi</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Pata maelezo zaidi<ph name="LINK_END"/> kuhusu jinsi ya kuunganisha kivinjari chako cha Brave na akaunti yako ya bitFlyer.</translation>
 <translation id="5094577350232361255">kuhusu</translation>
 <translation id="4918086044614829423">Kubali</translation>
 <translation id="5916290544882167205">Programu ya Brave. Brave ni alama ya biashara iliyosajiliwa ya Brave Software. Majina ya tovuti yanaweza kuwa alama za biashara au alama za biashara zilizosajiliwa za mmiliki wa tovuti.</translation>
@@ -736,6 +740,7 @@
 <translation id="1833248467354516560">Bei</translation>
 <translation id="4763179765154524864">Jumla ya Matumizi</translation>
 <translation id="8851480289992540512">Jumla Imepokelewa</translation>
+<translation id="8624961452383848703">Ningependa kubadilisha...</translation>
 <translation id="616639131065447379">Karibu Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets hukuwezesha kutumia cryptocurrency na rasilimali zinazohusinana katika Brave. Crypto Wallets hutumia tokeni za Ethereum kama vile ETH na BAT, na pia vikusanywa na hukuwezesha kufanya kazi na programu na kandarasi nyingine mahiri. Yote haya yanawalenga watu wanaofahamu Ethereum na mifumo mingine ya blockchain au wanaofurahia kujifunza.</translation>
 <translation id="4855440621031541830">Tumia tu Crypto Wallets ikiwa unakubali kwamba ni wewe unayewajibikia hatari zote zinazohusishwa na matumizi haya na kuwa Brave Software haiwajibiki wala kulaumiwa kwa hasara yoyote ikiwa ni pamoja na hasara zinazoandamana ambazo unaweza kupitia kutokana na matumizi haya.</translation>
@@ -831,16 +836,17 @@
 <translation id="3741998951694470470">Imeshindwa kupata data ya kuleta</translation>
 <translation id="7900950536120202771">Hitilafu ya ndani ya nodi ya IPFS</translation>
 <translation id="1036635552229153800">Data ilipakiwa lakini haikuhamishwa hadi kwenye saraka ya kuleta ya brave. Unaweza kufanya hili mwenyewe kwenye ukurasa wa mipangilio ya kuleta.</translation>
-<translation id="7789840864192026963">Toa ruhusa</translation>
-<translation id="7978789143098237970">hadi nifunge ukurasa huu</translation>
+<translation id="572392919096807438">Kumbuka uamuzi wangu</translation>
+<translation id="7978789143098237970">hadi nifunge tovuti hii</translation>
 <translation id="3523195733429162409">kwa saa 24</translation>
 <translation id="2373264732659722940">kwa wiki 1</translation>
 <translation id="6318437367327684789">milele</translation>
-<translation id="7463327191540031132">Zuia milele</translation>
 <translation id="8797999629784150206">Unaweza kubadilisha <ph name="SITE_PERMISSIONS"/> wakati wowote. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">ruhusa ya tovuti</translation>
 <translation id="7701466644604753106">WASHA Speedreader</translation>
 <translation id="763042262431778831">ZIMA Speedreader</translation>
+<translation id="1544192797660353713">Pochi</translation>
+<translation id="8488282162676695335">Pochi ya Brave</translation>
 <translation id="3155170474926428993">Kifungua Tor</translation>
 <translation id="3745016858329272300">Maelezo ya Jumla</translation>
 <translation id="4045404575593562245">Matukio ya Udhibiti wa Tor</translation>
@@ -849,4 +855,21 @@
 <translation id="6951743416068151209">Tor Wakala URI</translation>
 <translation id="1671503397662036257">Tor Hali ya Uunganisho</translation>
 <translation id="6024292492796847324">Tor Maendeleo ya Uanzishaji</translation>
+<translation id="7586151660465233733">Masoko zaidi kwenye <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Tazama masoko na uuze crypto kwenye FTX</translation>
+<translation id="5963745988819586370">Masoko</translation>
+<translation id="3795943412467785186">Unganisha akaunti ya FTX ili uone salio la akaunti, gundua masoko ya baadaye na ubadilishe crypto.</translation>
+<translation id="926958206891985289">Tazama Masoko ya Baadaye</translation>
+<translation id="6804537228302563756">Unganisha Akaunti</translation>
+<translation id="5019698312620117604">Historia ya bei ya saa 24</translation>
+<translation id="8720719072204443171">Kiwango cha saa 24</translation>
+<translation id="3891414008432200754">Bei</translation>
+<translation id="7723176927437578611">Mazao</translation>
+<translation id="2983078329159689577">Inawasilisha...</translation>
+<translation id="6641102760094059194">Thibitisha (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Ubadilishaji Umefaulu!</translation>
+<translation id="7590653073560839711">Unahitaji salio katika angalau sarafu moja ili ubadilishe.</translation>
+<translation id="4390079506197726228">Iliyopo <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Ficha masalio yako ili yasionekane</translation>
+<translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 </translationbundle>

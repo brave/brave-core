@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">নির্বাচিত অডিও</translation>
 <translation id="7895302206188277628">লিঙ্ক করা বিষয়বস্তু</translation>
 <translation id="4322612543319315652">নির্বাচিত পাঠ্য IPFS-এ আমদানি করুন</translation>
+<translation id="8883166554766780543">ইমপোর্ট করুন এবং IPFS স্ন্যাপশট-এ লিংক কপি করুন</translation>
+<translation id="3654831858282189202">IPNS কি-র সাথে পাবলিশ করুন</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="4703780849509456860">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3488584642074079080">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="7475547933708221517">IPFS ব্যবহার করে স্থানীয় ফাইল শেয়ার করুন</translation>
+<translation id="2286177249736199435">IPFS ব্যবহার করে স্থানীয় ফোল্ডার শেয়ার করুন</translation>
 <translation id="784573715436258741">IPFS ব্যবহার করে স্থানীয় ফাইল শেয়ার করুন</translation>
 <translation id="6313675821927505581">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="2638041073279639246">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
+<translation id="575838692088926391">IPFS ব্যবহার করে স্থানীয় ফোল্ডার শেয়ার করুন</translation>
 <translation id="5410152065859052603">টর</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
@@ -157,7 +161,7 @@
 <translation id="4112587618563511470">অবৈধ সিঙ্ক কোড, অনুগ্রহ করে চেক করুন এবং আবার চেষ্টা করুন।</translation>
 <translation id="2339730291919608488">Sync শৃঙ্খল ত্যাগ করুন</translation>
 <translation id="115699408012835975">আপনি যদি সিঙ্ক রিসেট করেন তহালে এর সাথে সিঙ্ক করার জন্য আপনাকে অন্য ডিভাইস থেকে একটি সিঙ্ক কোডটি পুনরায় প্রবেশ করতে হবে। আপনি কি এগিয়ে যাওয়ার বিষয়ে নিশ্চিত?</translation>
-<translation id="6092564993102418148">আপনি কি সিঙ্ক চেন থেকে নির্বাচিত ডিভাইসটি মুছে ফেলার বিষয়ে নিশ্চিত?</translation>
+<translation id="6092564993102418148">আপনি কি সিঙ্ক চেন থেকে নির্বাচিত ডিভাইসটি সরিয়ে দিতে নিশ্চিত?</translation>
 <translation id="3396347744975515056">Brave সিঙ্ক আপগ্রেড করা হয়েছে এবং সেটআপ করা প্রয়োজন</translation>
 <translation id="7473245612074035141">সেটআপ আরম্ভ করুন</translation>
 <translation id="3411013544209536575">সহায়ক পরামর্শসমূহ</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">ড্যাপস ব্যবহারের জন্য ইথেরিয়াম সরবরাহকারী</translation>
 <translation id="5913089932885076110">শুরু করার সময়ে ক্রিপ্টো ওয়ালেটগুলি লোড করুন</translation>
 <translation id="757886143331967039">অবমানিত ক্রিপ্টো ওয়ালেটগুলোর এক্সটেনশন স্টার্টআপ-এ লোড করুন</translation>
+<translation id="1834467296210148203">টুলবারে Brave ওয়ালেট আইকন দেখান</translation>
 <translation id="6864914031231797928">এক্সটেনশনগুলির জন্য Google লগইন এর অনুমতি দিন</translation>
 <translation id="5927916530277631319">অপ্রতিরোধ্য ডোমেইনগুলোর সমস্যা সমাধানের উপায়</translation>
 <translation id="8412057160793088103">HTTPS এ DNS এবং ইথেরিয়াম গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK"/>আরো জানুন<ph name="END_LINK"/>।</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) সমাধানের উপায়</translation>
+<translation id="7024553202001112871">আপনার IPNS কিগুলি সেট করুন</translation>
+<translation id="951216659045543447">সংশ্লিষ্ট প্রাইভেট কি দিয়ে বিষয়টি সই করে IPNS-এ পাবলিশ করুন</translation>
+<translation id="7611728475758612204">পাবলিশ করার জন্য কিগুলি উপলভ্য আছে</translation>
+<translation id="911363100236037920">নতুন কি-টির জন্য একটি নাম প্রবিষ্ট করুন</translation>
+<translation id="6358469157239228181">এই নামটি ব্যবহার করা যাবে না</translation>
+<translation id="8996633027318264334">আপনি কি সত্যি <ph name="KEY_NAME"/> মুছে ফেলতে চান?</translation>
+<translation id="910215077892371264">নোড লঞ্চ করা হয়নি</translation>
+<translation id="616058968889448209">IPFS পরিষেবা লঞ্চ করার ত্রুটি, <ph name="BEGIN_LINK"/>ডায়াগনস্টিক পৃষ্ঠাতে<ph name="END_LINK"/> আরো তথ্য পাওয়া যাবে</translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' কি ইমপোর্ট করা ব্যর্থ হয়েছে</translation>
+<translation id="8275038454117074363">আমদানি</translation>
+<translation id="3654980960391973513">সৃষ্টি করুন</translation>
+<translation id="5531501313997312487">নোড চালু করুন</translation>
 <translation id="9170907049676078643">IPFS সংস্থানগুলি সমাধান করার পদ্ধতি</translation>
 <translation id="1327977588028644528">গেটওয়ে</translation>
 <translation id="80225669816651290">স্থানীয় নোড</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">আরো দ্রুত ওয়েব ব্রাউজ করুন - মুখ্য সংবাদের সাইটগুলিতে 6x পর্যন্ত দ্রুত ব্রাউজ করুন।</translation>
 <translation id="9218430445555521422">ডিফল্ট হিসেবে সেট করুন</translation>
 <translation id="3479552764303398839">এখনই নয়</translation>
+<translation id="6040143037577758943">বন্ধ</translation>
+<translation id="5600566490506283344">Brave অ্যাড বিজ্ঞপ্তি</translation>
 <translation id="4877147287319222750">সাইডবারে যোগ করুন</translation>
+<translation id="4233010476457917696">সাইডবার দেখান</translation>
 <translation id="5404213409401164238">সাইডবার দেখান</translation>
 <translation id="7561196759112975576">সবসময়য়</translation>
 <translation id="7060352228894039151">মাউসওভারে</translation>

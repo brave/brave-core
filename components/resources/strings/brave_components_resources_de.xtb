@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Beginnen Sie unbegrenzte Anrufe mit Freunden und Kollegen in Brave Together.</translation>
 <translation id="7115051913071512405">Probieren Sie es aus</translation>
 <translation id="7415602225677446066">Die wichtigsten Themen des Tages in einem absolut privaten Feed, nur für Sie zusammengestellt.</translation>
-<translation id="8607689491789524900">Brave Today gleicht Ihre Interesse auf Ihrem Gerät an, so dass Ihre persönlichen Daten niemals Ihren Browser verlassen. Neue Inhalte werden den Tag über geladen.</translation>
+<translation id="6903061332999399632">Brave News ist werbefinanziert. Dabei wird komplett vertrauliche und anonymisierte Werbung genutzt, die auf Ihrem Gerät zugeordnet wird. Die Vertraulichkeit Ihrer persönlichen Daten gemäß unserer <ph name="LINK_START"/>Datenschutzerklärung<ph name="LINK_END"/> ist somit stets gewahrt.</translation>
+<translation id="7823038307453615214">Brave News anzeigen</translation>
+<translation id="780301667611848630">Kein Interesse</translation>
 <translation id="9164544612367905452">Wird abgerufen…</translation>
 <translation id="1276592121036104130">Neue Inhalte laden</translation>
-<translation id="4210987321913275328">Scrollen Sie, um Brave Today zu sehen</translation>
-<translation id="3122595178900736207">Quellen für Brave Today zurücksetzen</translation>
-<translation id="2197023915568148978">Möchten Sie Ihre gesamte Brave-Today-Publisherauswahl auf den Standard zurücksetzen?</translation>
+<translation id="2875288128871360696">Scrollen Sie, um Brave News zu sehen</translation>
+<translation id="8510120023634509743">Quellen für Brave News zurücksetzen</translation>
+<translation id="75825199302994272">Möchten Sie die Brave-News-Herausgeberauswahl auf den Standard zurücksetzen?</translation>
 <translation id="954001034349395856">Alle Quellen</translation>
 <translation id="8890516388109605451">Quellen</translation>
 <translation id="5158129253322921540">Inhalte von <ph name="PUBLISHER_NAME"/> deaktivieren</translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Verbunden</translation>
 <translation id="8030169304546394654">Verbindung getrennt</translation>
 <translation id="3149306599361260465">Initialisieren [[percentage]] %</translation>
+<translation id="3258793718986637767">Haben Sie Probleme mit Tor? Versuchen Sie, <ph name="BEGIN_LINK"/>privates Fenster mit Tor<ph name="END_LINK"/> aus- und wieder anzuschalten.</translation>
 <translation id="4272382368346338917">Zusätzliche Filter</translation>
 <translation id="8949292968394988358">Achtung: Wenn Sie zu viele Filter anschalten, wird die Leistung vermindert</translation>
 <translation id="8686201964111147748">Anzahl aller blockierten Anzeigen und Tracker:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Meine Wallet verifizieren</translation>
 <translation id="6609621505400013054">Die bitFlyer-Wallet ist ein von bitFlyer, Inc. verwalteter Dienst.</translation>
 <translation id="7258399883616914635">Nach der Verifizierung Ihrer Wallet und ihrer Verknüpfung mit einem bitFlyer-Konto können Sie die durch Brave Rewards verdienten Token leichter speichern und verwalten.</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Mehr darüber erfahren<ph name="LINK_END"/>, wie Sie Ihren Brave-Browser mit Ihrem bitFlyer-Konto verlinken können.</translation>
 <translation id="5094577350232361255">über</translation>
 <translation id="4918086044614829423">Annehmen</translation>
 <translation id="5916290544882167205">Brave Software. Brave ist ein eingetragenes Markenzeichen von Brave Software. Webseitennamen können Marken oder eingetragene Marken des Webseiteneigentümers sein.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Stückpreis</translation>
 <translation id="4763179765154524864">Ausgegebene Summe</translation>
 <translation id="8851480289992540512">Empfangene Summe</translation>
+<translation id="8624961452383848703">Ich möchte umtauschen:</translation>
 <translation id="616639131065447379">Willkommen bei Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets lässt Sie mit Kryptowährung und ähnlichen Assets arbeiten. Crypto Wallets unterstützt Ethereum-Tokens wie ETH und BAT sowie Collectibles und lässt Sie mit ÐApps und anderen Smart Contracts arbeiten. All das ist für Leute gedacht, die mit Ethereum und anderen Blockchain-Systemen vertraut sind — oder es gern lernen wollen.</translation>
 <translation id="4855440621031541830">Benutzen Sie Crypto Wallets nur, wenn Sie akzeptieren, dass Sie allein für jedes Risiko, das mit dieser Nutzung verbunden ist, verantwortlich sind und dass Brave Software keine Verantwortung für irgendwelche Verluste einschließlich zufälliger oder mittelbarer Verluste, die Sie infolge dieser Nutzung erleiden könnten, trägt.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Fehler beim Abrufen der Daten für den Import</translation>
 <translation id="7900950536120202771">Interner Fehler des IPFS-Knotens</translation>
 <translation id="1036635552229153800">Die Daten wurden erfolgreich hochgeladen, aber nicht in das Brave-Import-Verzeichnis verschoben. Sie können dies manuell auf der Seite mit den Importeinstellungen erledigen.</translation>
-<translation id="7789840864192026963">Berechtigung erteilen</translation>
+<translation id="572392919096807438">Meine Entscheidung speichern</translation>
 <translation id="7978789143098237970">bis ich diese Seite schließe</translation>
 <translation id="3523195733429162409">für 24 Stunden</translation>
 <translation id="2373264732659722940">für eine Woche</translation>
 <translation id="6318437367327684789">für immer</translation>
-<translation id="7463327191540031132">Für immer blockieren</translation>
 <translation id="8797999629784150206">Sie können Ihre <ph name="SITE_PERMISSIONS"/> jederzeit ändern. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">Site-Berechtigung</translation>
 <translation id="7701466644604753106">Speedreader EINSCHALTEN</translation>
 <translation id="763042262431778831">Speedreader ABSCHALTEN</translation>
+<translation id="1544192797660353713">Wallet</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
 <translation id="3745016858329272300">Allgemeine Information</translation>
 <translation id="4045404575593562245">Tor Kontroll Ereignisse</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">Tor Proxy URL</translation>
 <translation id="1671503397662036257">Tor Verbindungsstatus</translation>
 <translation id="6024292492796847324">Tor Initialisierung Fortschritt</translation>
+<translation id="7586151660465233733">Weitere Märkte auf <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Sehen Sie sich auf FTX Märkte an und tauschen Sie Kryptowährungen um</translation>
+<translation id="5963745988819586370">Märkte</translation>
+<translation id="3795943412467785186">Verbinden Sie Ihr FTX-Konto, um den Kontostand einzusehen, die Terminbörsen zu durchsuchen und Kryptowährungen umzutauschen.</translation>
+<translation id="926958206891985289">Terminbörsen ansehen</translation>
+<translation id="6804537228302563756">Konto verbinden</translation>
+<translation id="5019698312620117604">Preisverlauf über die letzten 24 Stunden</translation>
+<translation id="8720719072204443171">24-Stunden-Volumen</translation>
+<translation id="3891414008432200754">Preis</translation>
+<translation id="7723176927437578611">Ertrag</translation>
+<translation id="2983078329159689577">Wird übertragen...</translation>
+<translation id="6641102760094059194">Bestätigen (<ph name="NUMBER_OF_SECONDS_LEFT"/> Sek.)</translation>
+<translation id="2280055104463448482">Umtausch erfolgreich!</translation>
+<translation id="7590653073560839711">Für einen Umtausch brauchen Sie Guthaben in mindestens einer Währung.</translation>
+<translation id="4390079506197726228">Verfügbar: <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Guthabenanzeige ausblenden</translation>
+<translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 </translationbundle>

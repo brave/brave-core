@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Izinkan tweet tersemat Twitter</translation>
 <translation id="958971637207126733">Izinkan kiriman tersemat LinkedIn</translation>
 <translation id="6302422639282249274">Kelola Brave Rewards</translation>
-<translation id="1506061864768559482">Mesin pencari</translation>
 <translation id="1468415711258933398">Tab Standar</translation>
 <translation id="3377025655491224618">Tab Pribadi</translation>
 <translation id="9148058034647219655">Keluar</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="8710614491157212477">Jika memungkinkan, buka situs yang didukung menggunakan HTTPS ketimbang HTTP</translation>
-<translation id="4022987104439075738">Gateway IPFS</translation>
-<translation id="2688519859165248360">Memungkinkan navigasi untuk sumber daya IFFS melalui Gerbang IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metode Penyelesaian</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Dinonaktifkan</translation>
 <translation id="2218918398178303658">DNS atas HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Blokir Iklan</translation>
-<translation id="1934885595886623674">Cegah pemuatan iklan</translation>
-<translation id="7458422973722236530">Perlindungan Sidik Jari</translation>
 <translation id="5787084571334399599">Mencegah pencatatan sidik-jari-peramban</translation>
 <translation id="7459000603787995422">Tutup tab saat keluar</translation>
 <translation id="1680858055899097121">Jangan simpan tab antar sesi penjelajahan</translation>
-<translation id="6469509880167172749">Secara otomatis mengirim analisis produk pribadi ke Brave</translation>
-<translation id="7090566321964540749">Info anonim ini hanya memungkinkan Brave memperkirakan penggunaan keseluruhan dari fitur tertentu.</translation>
+<translation id="7142548388914389999">Secara otomatis mengirim analisis produk pribadi ke Brave</translation>
+<translation id="5469408008145872264">Info anonim ini hanya memungkinkan Brave memperkirakan penggunaan keseluruhan dari fitur tertentu.</translation>
 <translation id="7977176350719484850">Perkiraan Data\nDihemat</translation>
 <translation id="9008534313521214777">Est. Waktu\nDihemat</translation>
 <translation id="6572660632052512096">Mode Desktop</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Lebih suka tampilan versi desktop</translation>
 <translation id="1842747674580016420">Pemutaran video di Brave</translation>
 <translation id="5368992950177874750">Bila diaktifkan, video akan diputar di Brave alih-alih pada aplikasi yang terkait</translation>
-<translation id="2645380101799517405">Kontrol</translation>
 <translation id="5965081608816406060">Pemutaran video di latar</translation>
 <translation id="6332924730165919598">Menutup semua tab akan menutup Brave</translation>
 <translation id="1580125697191336644">Eksperimental. Aktifkan pemutaran audio dari video di latar ketika tab tidak aktif atau layar perangkat dimatikan. Coba beralih ke mode desktop jika fitur ini tak bekerja.</translation>
@@ -292,11 +283,10 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="5657156137487675418">Izinkan semua kuki</translation>
 <translation id="3895527457258986253">Blokir Penyidikjarian</translation>
 <translation id="184568144098869637">Mencegah peramban mengenali perangkat Anda</translation>
-<translation id="7396366757003005317">Penyidikjari diblokir(ketat, dapat memacetkan situs)</translation>
-<translation id="700453611199558021">Penyidikjari diblokir(standar)</translation>
+<translation id="7445306466605902444">Penyidikjari diblokir(ketat, dapat memacetkan situs)</translation>
+<translation id="5582686930349810484">Penyidikjari diblokir(standar)</translation>
 <translation id="769702552748212954">Izinkan semua pemindaian sidik jari</translation>
 <translation id="876424292214881779">Iklan dan hal mencurigakan lainnya diblokir</translation>
-<translation id="5142293891785304489">Pelacak, iklan, dan\nlainnya diblokir</translation>
 <translation id="6930134873084561197">Situs kerap memiliki cookie dan skrip yang berupaya mengidentifikasi Anda dan perangkat Anda. Mereka ingin mengetahui siapa Anda dan mengikuti Anda ke seantero web - melacak aktivitas Anda di setiap situs.\n\nBrave memblokir hal-hal ini agar Anda dapat meramban tanpa diikuti.</translation>
 <translation id="8553998445606452168">Seputar Brave Shields</translation>
 <translation id="8912304686498704084">PASANG</translation>
@@ -309,7 +299,6 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
-<translation id="7182293319417450928">Saldo minimal sebesar 25 BAT diperlukan untuk verifikasi.</translation>
 <translation id="1275664486910646411">Tampilkan situs teratas di isi otomatis</translation>
 <translation id="5516010970279932133">Tampilkan situs rekomendasi di isi otomatis</translation>
 <translation id="5370478469168390143">Simpan Data Online</translation>
@@ -378,7 +367,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Mulailah meramban untuk melihat pelaporan privasi</translation>
 <translation id="9080777565335515917">Atur Brave sebagai peramban default untuk meramban privat dan aman.</translation>
-<translation id="1390943217516275883">Izinkan Brave menunjukkan statistik privasi Anda</translation>
+<translation id="1390943217516275883">Izinkan Brave untuk menunjukkan statistik privasi Anda</translation>
 <translation id="1763352720905582220">Mengirim laporan privasi mingguan</translation>
 <translation id="1811691435325545066">Kosongkan semua data pelaporan privasi</translation>
 <translation id="8089997572759938512">Atur ulang pelaporan privasi ke nol</translation>
@@ -483,9 +472,6 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="3184805785843994538">Brave Shields memblokir pelacak &amp; iklan, menghemat kuota data, dan menghemat waktu Anda di setiap situs yang Anda kunjungi.</translation>
 <translation id="8722651357687610395">Setel Brave sebagai peramban baku</translation>
 <translation id="3479552764303398839">Jangan sekarang</translation>
-<translation id="6232491755501685494">Brave Rewards di Jepang beralih ke sistem baru!</translation>
-<translation id="7444515017164572362">Mulai 13 Maret, Anda tidak dapat menggunakan BAP. Tapi setelah Anda diperbarui ke sistem baru pada bulan April, Anda akan memulai dengan token baru!</translation>
-<translation id="8587285254008006694">Sebagai bagian dari transisi ini, fitur memberi tip dan kontribusi di peramban Anda sementara tidak tersedia mulai 13 Maret, dan saldo BAP Anda akan menunjukkan 0,0 sampai Anda diperbarui ke sistem baru pada bulan April. Setelah Anda menggunakan sistem baru, Anda akan memulai dengan token baru!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -505,4 +491,9 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="5825943197137337319">Hanya antarmuka publik baku</translation>
 <translation id="1689062823386843231">Nonaktifkan UDP yang tidak di-proxy</translation>
 <translation id="3171931580569169744">Aktifkan Kelompok Tab</translation>
+<translation id="5587305863196367357">Memverifikasi dompet memungkinkan Anda untuk mengelola, menambahkan &amp; menarik dana dengan lebih mudah</translation>
+<translation id="5760671211380791582">Anda tidak memiliki cukup BAT.</translation>
+<translation id="6960458596933484861">Anda perlu minimal 15 BAT untuk membuat dompet Uphold yang terverifikasi. Silakan coba kembali nanti.</translation>
+<translation id="4389085954549744469">Jika Anda telah memiliki dompet Uphold yang terverifikasi, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">lanjut untuk masuk</translation>
 </translationbundle>

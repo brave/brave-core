@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">Выбранное аудио</translation>
 <translation id="7895302206188277628">Связанный контент</translation>
 <translation id="4322612543319315652">Импортировать выбранный текст в IPFS</translation>
+<translation id="8883166554766780543">Импорт и копирование ссылки в снимок IPFS</translation>
+<translation id="3654831858282189202">Опубликовать с ключом IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Новое Приватное Окно с Тор</translation>
 <translation id="4703780849509456860">Открыть Ссылку в Приватном Окне с Тор</translation>
 <translation id="3488584642074079080">Открыть Ссылку в Приватном Окне Brave с Тор</translation>
 <translation id="7475547933708221517">Поделиться файлом с помощью IPFS</translation>
+<translation id="2286177249736199435">Поделиться папкой с помощью IPFS</translation>
 <translation id="784573715436258741">Поделиться файлом с помощью IPFS</translation>
 <translation id="6313675821927505581">Новое Приватное окно с Tor</translation>
 <translation id="2638041073279639246">Открыть ссылку в Приватном окне с Tor</translation>
 <translation id="3425600262621021599">Открыть ссылку в Приватном окне Brave с Tor</translation>
+<translation id="575838692088926391">Поделиться папкой с помощью IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">Провайдер Эфириума для использования Dapps</translation>
 <translation id="5913089932885076110">Загружать криптовалютные кошельки при запуске</translation>
 <translation id="757886143331967039">Загружать устаревшее расширение Crypto Wallets при запуске</translation>
+<translation id="1834467296210148203">Показывает значок кошелька Brave на панели инструментов.</translation>
 <translation id="6864914031231797928">Разрешить вход с помощью Google для расширений</translation>
 <translation id="5927916530277631319">Метод устранения Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Узнайте больше<ph name="END_LINK"/> о DNS по HTTPS и об обеспечении конфиденциальности Ethereum.</translation>
 <translation id="5248318250177143470">Метод разрешения службы имен Ethereum (ENS)</translation>
+<translation id="7024553202001112871">Настроить ключи IPNS</translation>
+<translation id="951216659045543447">Подпишите содержимое соответствующим закрытым ключом и опубликуйте в IPNS.</translation>
+<translation id="7611728475758612204">Доступные для публикации ключи</translation>
+<translation id="911363100236037920">Введите название нового ключа</translation>
+<translation id="6358469157239228181">Это название нельзя использовать</translation>
+<translation id="8996633027318264334">Вы действительно хотите удалить <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Узел не запускается</translation>
+<translation id="616058968889448209">Ошибка запуска сервиса IPFS. Больше информации доступно на <ph name="BEGIN_LINK"/>странице диагностики<ph name="END_LINK"/>.</translation>
+<translation id="6912148685459054619">Не удалось импортировать ключ '<ph name="KEY_NAME"/>'.</translation>
+<translation id="8275038454117074363">Импортировать</translation>
+<translation id="3654980960391973513">Сгенерировать</translation>
+<translation id="5531501313997312487">Запустить узел</translation>
 <translation id="9170907049676078643">Метод преобразования IPFS-ресурсов</translation>
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локальный узел</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">Популярные сайты с новостями загружаются до 6 раз быстрее.</translation>
 <translation id="9218430445555521422">Сделать браузером по умолчанию</translation>
 <translation id="3479552764303398839">Не сейчас</translation>
+<translation id="6040143037577758943">Закрыть</translation>
+<translation id="5600566490506283344">Уведомление о рекламе Brave</translation>
 <translation id="4877147287319222750">Добавить к боковой панели</translation>
+<translation id="4233010476457917696">Показать боковую панель</translation>
 <translation id="5404213409401164238">Показать боковую панель</translation>
 <translation id="7561196759112975576">Всегда</translation>
 <translation id="7060352228894039151">При наведении курсора</translation>

@@ -819,6 +819,18 @@
     "message": "En vérifiant votre portefeuille et en l'associant à un compte bitFlyer, vous pourrez conserver et gérer plus facilement les jetons gagnés via Brave Rewards",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Apprenez-en plus $link_end$sur la façon de lier votre navigateur Brave avec votre compte bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards au Japon passe à un nouveau système !",
     "description": "Header text for BAP deprecation warning message"

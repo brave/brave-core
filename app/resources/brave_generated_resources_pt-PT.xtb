@@ -69,15 +69,19 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4227945450504703638">Áudio selecionado</translation>
 <translation id="7895302206188277628">Conteúdo associado</translation>
 <translation id="4322612543319315652">Importar texto selecionado para IPFS</translation>
+<translation id="8883166554766780543">Importar e copiar link para instântaneo IPFS</translation>
+<translation id="3654831858282189202">Publicar com chave IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nova Janela Privada com o Tor</translation>
 <translation id="4703780849509456860">Abrir Ligação em Janela Privada com o Tor</translation>
 <translation id="3488584642074079080">Abrir Ligação em Janela Privada Brave com o Tor</translation>
 <translation id="7475547933708221517">Partilhar ficheiro local via IPFS</translation>
+<translation id="2286177249736199435">Partilhar pasta local utilizando IPFS</translation>
 <translation id="784573715436258741">Partilhar ficheiro local via IPFS</translation>
 <translation id="6313675821927505581">Nova janela privada com Tor</translation>
 <translation id="2638041073279639246">Abrir ligação em janela privada com Tor</translation>
 <translation id="3425600262621021599">Abrir ligação em janela privada Brave com Tor</translation>
+<translation id="575838692088926391">Partilhar pasta local utilizando IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Serviço de anúncios BAT</translation>
 <translation id="7924918279836988121">Serviço de Ledger Bat</translation>
@@ -157,7 +161,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4112587618563511470">Código de sincronização inválido; por favor, verifique e tente de novo.</translation>
 <translation id="2339730291919608488">Sair da cadeia de sincronização</translation>
 <translation id="115699408012835975">Caso vise proceder à redefinição da Sincronização, precisará reintroduzir um código de sincronização de um outro dispositivo para os sincronizar. Tem a certeza que pretende continuar?</translation>
-<translation id="6092564993102418148">Confirma que pretende eliminar o dispositivo selecionado da cadeia de sincronização?</translation>
+<translation id="6092564993102418148">Tem a certeza de que pretende remover o dispositivo selecionado da cadeia de sincronização?</translation>
 <translation id="3396347744975515056">A Brave Sync foi atualizada e precisa ser configurada</translation>
 <translation id="7473245612074035141">Iniciar Configuração</translation>
 <translation id="3411013544209536575">Ajuda</translation>
@@ -177,10 +181,23 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="7090046810227878892">Provedor Ethereum para utilização de aplicações descentralizadas (Dapps)</translation>
 <translation id="5913089932885076110">Carregar Crypto Wallets na inicialização</translation>
 <translation id="757886143331967039">Carrega a extensão descontinuada Crypto Wallets na inicialização</translation>
+<translation id="1834467296210148203">Mostrar ícone da carteira do Brave na barra de ferramentas</translation>
 <translation id="6864914031231797928">Autorizar logins do Google para extensões</translation>
 <translation id="5927916530277631319">Método para resolver Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> acerca da privacidade de DNS por HTTPS e da Ethereum.</translation>
 <translation id="5248318250177143470">Método para resolver Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Configurar as suas chaves IPNS</translation>
+<translation id="951216659045543447">Assine conteúdo pela chave privada correspondente e publique em IPNS</translation>
+<translation id="7611728475758612204">Chaves disponíveis para publicar</translation>
+<translation id="911363100236037920">Introduza um nome para a nova chave</translation>
+<translation id="6358469157239228181">Não é possível utilizar este nome</translation>
+<translation id="8996633027318264334">Pretende realmente eliminar <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">O nó ainda não está lançado</translation>
+<translation id="616058968889448209">Erro ao iniciar o serviço IPFS. Pode obter mais informações na <ph name="BEGIN_LINK"/>página de diagnóstico<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Falha ao importar a chave '<ph name="KEY_NAME"/>'</translation>
+<translation id="8275038454117074363">Importar</translation>
+<translation id="3654980960391973513">Gerar</translation>
+<translation id="5531501313997312487">Nó de início</translation>
 <translation id="9170907049676078643">Método para solucionar métodos IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nó local</translation>
@@ -260,7 +277,10 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1391855377994926460">Navegue mais rápido — até 6x mais rápido nos sites de notícias principais.</translation>
 <translation id="9218430445555521422">Definir como predefinição</translation>
 <translation id="3479552764303398839">Agora não</translation>
+<translation id="6040143037577758943">Fechar</translation>
+<translation id="5600566490506283344">Notificação de anúncios Brave</translation>
 <translation id="4877147287319222750">Adicionar à barra lateral</translation>
+<translation id="4233010476457917696">Mostrar barra lateral</translation>
 <translation id="5404213409401164238">Mostrar barra lateral</translation>
 <translation id="7561196759112975576">Sempre</translation>
 <translation id="7060352228894039151">Ao passar o rato</translation>

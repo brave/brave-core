@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Start unlimited calls with friends and colleagues in Brave Together.</translation>
 <translation id="7115051913071512405">Try it out</translation>
 <translation id="7415602225677446066">Today's top stories in a completely private feed, just for you.</translation>
-<translation id="8607689491789524900">Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated throughout the day.</translation>
+<translation id="6903061332999399632">Brave News is ad-supported with completely private and anonymised ads matched on your device. Your personal information always stays private, per our <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Show Brave News</translation>
+<translation id="780301667611848630">No, thanks</translation>
 <translation id="9164544612367905452">Fetching…</translation>
 <translation id="1276592121036104130">Load new content</translation>
-<translation id="4210987321913275328">Scroll for Brave Today</translation>
-<translation id="3122595178900736207">Reset Brave Today sources</translation>
-<translation id="2197023915568148978">Reset all your Brave Today publisher choices to their default?</translation>
+<translation id="2875288128871360696">Scroll for Brave News</translation>
+<translation id="8510120023634509743">Reset Brave News sources</translation>
+<translation id="75825199302994272">Reset all your Brave News publisher choices to their default?</translation>
 <translation id="954001034349395856">All sources</translation>
 <translation id="8890516388109605451">Sources</translation>
 <translation id="5158129253322921540">Disable content from <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Connected</translation>
 <translation id="8030169304546394654">Disconnected</translation>
 <translation id="3149306599361260465">Initialising [[percentage]]%</translation>
+<translation id="3258793718986637767">Having problems with Tor? Try <ph name="BEGIN_LINK"/>disabling private window with Tor<ph name="END_LINK"/> and turning it back on again.</translation>
 <translation id="4272382368346338917">Additional Filters</translation>
 <translation id="8949292968394988358">Warning: Turning on too many filters will degrade performance</translation>
 <translation id="8686201964111147748">Total ads and trackers blocked:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Verify my wallet</translation>
 <translation id="6609621505400013054">The bitFlyer wallet is a service managed by bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> about how to link your Brave browser with your bitFlyer account.</translation>
 <translation id="5094577350232361255">about</translation>
 <translation id="4918086044614829423">Accept</translation>
 <translation id="5916290544882167205">Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Unit price</translation>
 <translation id="4763179765154524864">Total spent</translation>
 <translation id="8851480289992540512">Total received</translation>
+<translation id="8624961452383848703">I want to convert …</translation>
 <translation id="616639131065447379">Welcome to Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets lets you work with cryptocurrency and related assets in Brave. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems — or are excited to learn.</translation>
 <translation id="4855440621031541830">Only use Crypto Wallets if you accept that you alone are responsible for all risk associated with this use, and that Brave Software bears no responsibility or liability for any losses, including incidental or consequential losses you might suffer as a result of this use.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Failed to fetch data for import</translation>
 <translation id="7900950536120202771">IPFS node internal error</translation>
 <translation id="1036635552229153800">The data was successfully uploaded but not moved to the brave-import directory. You can do this manually on the import settings page.</translation>
-<translation id="7789840864192026963">Give permission</translation>
-<translation id="7978789143098237970">until I close this page</translation>
+<translation id="572392919096807438">Remember my decision</translation>
+<translation id="7978789143098237970">until I close this site</translation>
 <translation id="3523195733429162409">for 24 hours</translation>
 <translation id="2373264732659722940">for 1 week</translation>
 <translation id="6318437367327684789">forever</translation>
-<translation id="7463327191540031132">Block forever</translation>
 <translation id="8797999629784150206">You can change your <ph name="SITE_PERMISSIONS"/> at any time. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">site permission</translation>
 <translation id="7701466644604753106">Turn ON speedreader</translation>
 <translation id="763042262431778831">Turn OFF speedreader</translation>
+<translation id="1544192797660353713">Wallet</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">General info</translation>
 <translation id="4045404575593562245">Tor control events</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">Tor connection status</translation>
 <translation id="6024292492796847324">Tor initialization progress</translation>
+<translation id="7586151660465233733">More markets on <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">View markets and trade crypto on FTX</translation>
+<translation id="5963745988819586370">Markets</translation>
+<translation id="3795943412467785186">Connect FTX account to view account balance, explore futures markets &amp; convert crypto.</translation>
+<translation id="926958206891985289">View future markets</translation>
+<translation id="6804537228302563756">Connect account</translation>
+<translation id="5019698312620117604">24-hour price history</translation>
+<translation id="8720719072204443171">24-hour volume</translation>
+<translation id="3891414008432200754">Price</translation>
+<translation id="7723176927437578611">Proceeds</translation>
+<translation id="2983078329159689577">Submitting …</translation>
+<translation id="6641102760094059194">Confirm (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Conversion successful!</translation>
+<translation id="7590653073560839711">You need a balance in at least one currency in order to perform a conversion.</translation>
+<translation id="4390079506197726228">Available <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Hide your balances from display</translation>
+<translation id="4548946945059463969">Reveal your balances on screen</translation>
 </translationbundle>

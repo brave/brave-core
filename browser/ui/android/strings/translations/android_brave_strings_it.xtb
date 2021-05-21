@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Consenti tweet incorporati su Twitter</translation>
 <translation id="958971637207126733">Permetti i post integrati di LinkedIn</translation>
 <translation id="6302422639282249274">Gestisci le Ricompense di Brave</translation>
-<translation id="1506061864768559482">Motore di ricerca</translation>
 <translation id="1468415711258933398">Scheda standard</translation>
 <translation id="3377025655491224618">Scheda di navigazione in incognito</translation>
 <translation id="9148058034647219655">Esci</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="8710614491157212477">Apre i siti compatibili utilizzando HTTPS invece di HTTP quando è possibile.</translation>
-<translation id="4022987104439075738">Gateway IPFS</translation>
-<translation id="2688519859165248360">Consente la navigazione nelle risorse IPFS tramite un gateway IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metodo di risoluzione</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Disabilitato</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Blocco degli annunci</translation>
-<translation id="1934885595886623674">Impedisce il caricamento di pubblicità</translation>
-<translation id="7458422973722236530">Protezione con le Impronte Digitali</translation>
 <translation id="5787084571334399599">Impedisce al browser di rilevare le impronte digitali</translation>
 <translation id="7459000603787995422">Chiudi le schede quando esci</translation>
 <translation id="1680858055899097121">Non rimanere nelle schede tra una sessione di navigazione e l'altra</translation>
-<translation id="6469509880167172749">Invia automaticamente analisi di prodotto completamente private a Brave</translation>
-<translation id="7090566321964540749">Queste informazioni anonime consentono a Brave di stimare solo l'utilizzo complessivo di alcune funzioni.</translation>
+<translation id="7142548388914389999">Invia automaticamente analisi di prodotto completamente private a Brave</translation>
+<translation id="5469408008145872264">Queste informazioni anonime consentono a Brave di stimare solo l'utilizzo complessivo di alcune funzioni.</translation>
 <translation id="7977176350719484850">Dati\nrisparmiati</translation>
 <translation id="9008534313521214777">Tempo stimato\nRisparmiato</translation>
 <translation id="6572660632052512096">Modalità Desktop</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Preferisco la versione desktop dei siti</translation>
 <translation id="1842747674580016420">Riproduzione dei video in Brave</translation>
 <translation id="5368992950177874750">Se sono abilitati, i video saranno riprodotti in Brave invece che nell'applicazione corrispondente.</translation>
-<translation id="2645380101799517405">Controlli</translation>
 <translation id="5965081608816406060">Riproduzione del video di sfondo</translation>
 <translation id="6332924730165919598">La chiusura di tutte le schede chiude Brave</translation>
 <translation id="1580125697191336644">Sperimentale. Permette di riprodurre l'audio dal video in sfondo quando la scheda non è attiva o lo schermo del dispositivo è spento. Prova a passare alla modalità desktop se questa caratteristica non funziona.</translation>
@@ -292,11 +283,10 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="5657156137487675418">Consenti tutti i cookie</translation>
 <translation id="3895527457258986253">Blocca le impronte digitali</translation>
 <translation id="184568144098869637">Impedisce al browser di riconoscere il dispositivo</translation>
-<translation id="7396366757003005317">Impronta digitale bloccata(stretto, potrebbe interferire con le funzionalità dei siti)</translation>
-<translation id="700453611199558021">Blocco impronta digitale(standard)</translation>
+<translation id="7445306466605902444">Impronta digitale bloccata(stretto, potrebbe interferire con le funzionalità dei siti)</translation>
+<translation id="5582686930349810484">Blocco impronta digitale(standard)</translation>
 <translation id="769702552748212954">Consenti tutte le impronte digitali</translation>
 <translation id="876424292214881779">annunci pubblicitari o elementi indesiderati bloccati</translation>
-<translation id="5142293891785304489">Tracker, annunci e\naltro bloccati</translation>
 <translation id="6930134873084561197">I siti spesso includono cookie e script che cercano di identificare te e il tuo dispositivo. Vogliono capire chi tu sia e seguirti in tutto il web tracciando quello che fai su ogni sito.\n\nBrave li blocca in modo che tu possa navigare senza essere seguito in giro.</translation>
 <translation id="8553998445606452168">Su Brave Shields</translation>
 <translation id="8912304686498704084">SU</translation>
@@ -309,7 +299,6 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="5299848999918506028">Grazie!</translation>
 <translation id="76550953340008122">Grazie, hai fatto notare agli sviluppatori di Brave che qualcosa non va su questo sito. Faremo del nostro meglio per rimediare!</translation>
 <translation id="650318023204990401">Controlli avanzati</translation>
-<translation id="7182293319417450928">Per la verifica è richiesto un saldo minimo di 25 BAT.</translation>
 <translation id="1275664486910646411">Mostra i siti più visitati nel completamento automatico</translation>
 <translation id="5516010970279932133">Mostra siti suggeriti nel completamento automatico</translation>
 <translation id="5370478469168390143">Salva dati online</translation>
@@ -378,7 +367,7 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Comincia a navigare per visualizzare il report sulla privacy</translation>
 <translation id="9080777565335515917">Imposta Brave come browser di default per una navigazione privata e sicura.</translation>
-<translation id="1390943217516275883">Permetti a Brave di mostrare le tue statistiche privacy</translation>
+<translation id="1390943217516275883">Permette a Brave di mostrare le tue statistiche in tema di privacy</translation>
 <translation id="1763352720905582220">Inoltra un report settimanale sulla privacy</translation>
 <translation id="1811691435325545066">Cancella tutti i dati dei report sulla privacy</translation>
 <translation id="8089997572759938512">Resetta a zero i report sulla privacy</translation>
@@ -483,13 +472,6 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="3184805785843994538">Brave Shields blocca tracciatori e pubblicità, risparmia il consumo di dati e ti fa risparmiare tempo su ogni sito che visiti.</translation>
 <translation id="8722651357687610395">Imposta Brave come default</translation>
 <translation id="3479552764303398839">Non adesso</translation>
-<translation id="6232491755501685494">Brave Rewards in Giappone sta passando a un nuovo sistema!</translation>
-<translation id="7444515017164572362">A partire dal 13 marzo non potrai usare i tuoi BAP. Dopo che sarai passato
-        al nuovo sistema ad aprile, potrai ricominciare con i nuovi token!</translation>
-<translation id="8587285254008006694">Per permettere questa transizione, le funzionalità di mance e contributi del
-        tuo browser saranno temporaneamente non disponibili dal 13 marzo e
-        il tuo saldo BAP sarà 0,0 finché non passerai al nuovo sistema
-        ad aprile. Quando passerai al nuovo sistema, inizierai con i nuovi token!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -509,4 +491,9 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="5825943197137337319">Solamente l'interfaccia pubblica predefinita</translation>
 <translation id="1689062823386843231">Disabilita UDP senza proxy</translation>
 <translation id="3171931580569169744">Attiva schede gruppi</translation>
+<translation id="5587305863196367357">Se verifichi il portafoglio puoi gestire il tuo denaro più agevolmente, facendo depositi e prelievi</translation>
+<translation id="5760671211380791582">Non hai abbastanza BAT.</translation>
+<translation id="6960458596933484861">Per creare un portafoglio Uphold verificato devi avere almeno 15 BAT. Riprova in seguito.</translation>
+<translation id="4389085954549744469">Se hai già un account Uphold verificato, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continua per eseguire l’accesso</translation>
 </translationbundle>

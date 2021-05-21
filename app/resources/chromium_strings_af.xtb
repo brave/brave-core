@@ -12,7 +12,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="4798342026247191171">Stel jou nuwe Brave-profiel op</translation>
 <translation id="113959764510199339">Brave probeer tans om wagwoorde te wys.</translation>
 <translation id="8132634101975074716">Jy is by Brave aangemeld!</translation>
-<translation id="7370605478942575409">Om Rosetta te gebruik om beskermde media te speel, moet jy Brave herbegin.</translation>
 <translation id="7419046106786626209">Brave-bedryfstelsel kon nie jou data sinkroniseer nie, omdat Sinkronisering nie vir jou domein beskikbaar is nie.</translation>
 <translation id="5147525139567260139">Deel 'n Brave-oortjie</translation>
 <translation id="1530633922026945685">Brave moet toestemming hê om toegang te kry tot jou kamera om 'n 3D-kaart van jou omgewing te skep</translation>
@@ -25,8 +24,8 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="1775322105159056176">Brave kan nie die verstekblaaier bepaal of stel nie</translation>
 <translation id="9220324636239049437">Dit sal 1 item op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
 <translation id="831418749472885028"><ph name="BEGIN_LINK"/>Meld by Brave aan<ph name="END_LINK"/> om te kyk of jou ander wagwoorde teen dataskendings en ander sekuriteitkwessies beveilig word.</translation>
+<translation id="142389341645668510">Pasmaak Brave</translation>
 <translation id="8745514854244955877">Brave – Netwerkaanmelding – <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">Brave-bedryfstelsel kon nie jou wagwoorde sinkroniseer nie.</translation>
 <translation id="5659384504794665581">As jy 'n rekenaar deel, kan vriende en familie apart blaai en Brave opstel net soos hulle dit wil hê.</translation>
 <translation id="5997267581285668459">Opsioneel: Help om Brave-bedryfstelselkenmerke en -werkverrigting beter te maak deur outomaties diagnostiese en gebruiksdata na Brave toe te stuur.</translation>
 <translation id="9095263438435683933">Meld op albei toestelle by Brave aan om 'n nommer van hier af na jou Android-foon te stuur.</translation>
@@ -40,10 +39,8 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="7933006624150961626">Meld aan sodat jy sinkronisering kan aanskakel om op al jou toestelle toegang tot jou Brave-goed te kry.</translation>
 <translation id="7291143854620707672">Enige Brave-data wat tydens die gebruik van hierdie profiel gegenereer word (soos die skepping van boekmerke, geskiedenis, wagwoorde, en ander instellings) kan deur die werkprofieladministrateur verwyder word. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Brave-bedryfstelsel moet herbegin word om die opdatering toe te pas.</translation>
-<translation id="3913823837305937258">Hierdie rekenaar sal binnekort nie meer Brave-opdaterings ontvang nie want sy hardeware word nie meer gesteun nie.</translation>
 <translation id="7387051847644272380">'n Bedryfstelselfout het voorgekom met installering. Laai Brave asseblief weer af.</translation>
 <translation id="2648689842065142443">As jy 'n toestel deel, kan vriende en familie apart blaai en Brave opstel net soos hulle dit wil hê</translation>
-<translation id="3749489756681759571">Brave beveel aan dat hierdie uitbreiding gedeaktiveer word omdat dit nie aan Verbeterde Veiligblaai-standaarde voldoen nie.</translation>
 <translation id="6791166902140255175">Brave-oortjie</translation>
 <translation id="8372880274820509128">Brave sal jou data enkripteer vir bykomende sekuriteit.</translation>
 <translation id="2770231113462710648">Verander verstekblaaier na:</translation>
@@ -62,6 +59,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="7365690458036015383">Die installeerder kon nie die argief se saampersing omkeer nie. Laai Brave asseblief weer af.</translation>
 <translation id="8919461291440820124">Brave gebruik tans jou mikrofoon.</translation>
 <translation id="4805806622840861220">Herbegin Brave</translation>
+<translation id="1742948938503172561">Pasmaak jou nuwe Brave-profiel</translation>
 <translation id="1477146545787277177">Sjoe! Brave het omgeval. Wil jy nou herbegin?</translation>
 <translation id="7503098128120083822">Brave wil jou wagwoorde uitvoer.</translation>
 <translation id="2585240446624043880">Brave kan nie sy datagids lees of daarheen skryf nie:
@@ -76,6 +74,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="2450003541323895471">Met Brave-profiele kan jy al jou Brave-goed skei. Skep profiele vir vriende en familielede, of verdeel tussen werk en pret.</translation>
 <translation id="9216183508558772570">Brave sal jou in kennis stel wanneer jy met 'n gekompromitteerde wagwoord aanmeld</translation>
 <translation id="5853262807109651878">Dit sal <ph name="ITEMS_COUNT"/> items op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
+<translation id="2024972335338126423"><ph name="SHORTCUT"/> kan tussen Brave-profiele wissel</translation>
 <translation id="8703492925273919597">Maak asseblief alle Brave-vensters toe en probeer weer.</translation>
 <translation id="1384923383737428730">Daar is skadelike sagteware op jou rekenaar. Brave kan dit verwyder, jou instellings teruglaai en uitbreidings deaktiveer om jou blaaier weer normaal te laat werk.</translation>
 <translation id="7029305463989165490">Meld op albei toestelle by Brave aan om 'n nommer van <ph name="ORIGIN"/> af na jou Android-foon te stuur.</translation>
@@ -132,11 +131,11 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="696826782632239602">Brave het toegang tot jou ligging nodig om jou ligging met hierdie werf te deel</translation>
 <translation id="1744365871163268756">Wag terwyl Brave die jongste stelselopdaterings installeer.</translation>
 <translation id="3861679447659630159">Brave probeer tans om wagwoorde te wysig. Tik jou Windows-wagwoord in om dit toe te laat.</translation>
+<translation id="232381795826373334">Maak PDF's in Brave oop</translation>
 <translation id="1026406809507858026">{0,plural, =0{'n Brave-opdatering is beskikbaar}=1{'n Brave-opdatering is beskikbaar}other{'n Brave-opdatering is al # dae lank beskikbaar}}</translation>
 <translation id="95624393026532554">Brave vereis Windows 7 of nuwer.</translation>
 <translation id="5646769069113654257">Herbegin Brave asseblief nou</translation>
 <translation id="2335583906071111058">Wys Brave in hierdie taal</translation>
-<translation id="3009727137063767373">Om dit vir Brave moontlik te maak om beskermde media te speel, moet jy Rosetta installeer. Wil jy dit nou installeer?</translation>
 <translation id="4331809312908958774">Brave-bedryfstelsel</translation>
 <translation id="7207456302801184289">Welkom by Brave</translation>
 <translation id="5895138241574237353">Herbegin</translation>
@@ -152,10 +151,10 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="492209281555538239">Brave sal hierdie wagwoord in jou Brave-rekening stoor. Jy sal dit nie hoef te onthou nie.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> is gevaarlik en daarom het Brave dit geblokkeer.</translation>
 <translation id="7006260220514217183">Veiligblaai is afgeskakel. Brave beveel aan dat jy dit aanskakel.</translation>
+<translation id="4060970194201477024">Jy kan hier tussen Brave-profiele wissel</translation>
 <translation id="4368341489795135329">Maak seker dat jy by Brave aangemeld is op jou <ph name="TARGET_DEVICE_NAME"/> en probeer dan weer stuur.</translation>
 <translation id="8320964054148936490">Hierdie rekenaar het reeds 'n meer onlangse weergawe van Brave. As die sagteware nie werk nie, deïnstalleer Brave en probeer weer.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave sal nou herbegin}=1{Brave sal oor 1 sekonde herbegin}other{Brave sal oor # sekondes herbegin}}</translation>
-<translation id="3127818369811890733">Brave-bedryfstelsel kon nie jou data sinkroniseer nie.</translation>
 <translation id="5019879183386042809">Maak Brave die verstekblaaier</translation>
 <translation id="428541510811554120">Brave kan nie nagaan of daar opdaterings is nie. Probeer om jou internetverbinding na te gaan.</translation>
 <translation id="7445061995866044926">Meld by Brave af?</translation>
@@ -188,18 +187,15 @@ Sommige kenmerke sal dalk nie beskikbaar wees nie. Spesifiseer 'n ander profielg
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (na Brave gekopieer)</translation>
 <translation id="2301993384336631869">Brave is opgedateer, maar jy het dit vir minstens 30 dae nie gebruik nie.</translation>
-<translation id="8522287263361940593">Rosetta maak dit vir Brave moontlik om die beskemde media op hierdie bladsy te speel.</translation>
 <translation id="8828443087767259398">Brave het Bluetooth-toegang nodig om voort te gaan met 
  saambinding. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Swak wagwoorde is maklik om te raai. Laat Brave <ph name="BEGIN_LINK"/>sterk wagwoorde vir jou skep en onthou<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Brave het toestemming nodig om toegang te kry tot jou mikrofoon vir hierdie werf</translation>
 <translation id="1785833016412082453">Brave kan nie jou uitbreidings nagaan nie. Probeer later weer.</translation>
 <translation id="1705567146636171298">Dateer Brave op</translation>
-<translation id="123620459398936149">Brave-bedryfstelsel kon nie jou data sinkroniseer nie. Dateer asseblief jou Sinkroniseringwagfrase op.</translation>
 <translation id="5499063270485366718">As 'n prent nie 'n nuttige beskrywing het nie, sal Brave probeer om een vir jou te verskaf. Prente word na Brave toe gestuur om beskrywings te skep.</translation>
 <translation id="1197672524850678392">Kon nie Brave begin nie. Probeer weer.</translation>
 <translation id="3405035915691517126">Brave kan nie jou wagwoorde nagaan nie. Probeer weer ná 24 uur.</translation>
-<translation id="5660079256336839395">Versteek in Brave-kieslys</translation>
 <translation id="5516268345616100622">Taakbestuurder – Brave</translation>
 <translation id="61852838583753520">Dateer Brave-bedryfstelsel op</translation>
 <translation id="1864557848095568223">Dateer tans Brave op</translation>
@@ -235,7 +231,6 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="6755885556185485672">Chrome OS het nie reg toegemaak nie.</translation>
 <translation id="2925193881330501265">Jy was as <ph name="USER_EMAIL_ADDRESS"/> by Brave aangemeld. Gebruik asseblief dieselfde rekening om weer aan te meld.</translation>
 <translation id="6915252145142862992">Dit is 'n sekondêre installering van Brave en kan nie jou verstekblaaier gemaak word nie.</translation>
-<translation id="4054452651944170004">Versteek in Brave-kieslys</translation>
 <translation id="7685904775439037072">Sodra Brave toegang het, sal webwerwe jou kan vra vir toegang.</translation>
 <translation id="9067428552314418522">Hierdie lêer is gevaarlik en daarom het Brave dit geblokkeer.</translation>
 <translation id="8207657266087451193">As 'n prent nie 'n nuttige beskrywing het nie, sal Brave probeer om een vir jou te verskaf. Prente word na Brave toe gestuur om beskrywings te skep. Jy kan dit enige tyd in instellings afskakel.</translation>

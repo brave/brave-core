@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Inițiezi un număr nelimitat de apeluri cu prietenii și colegii în Brave Together.</translation>
 <translation id="7115051913071512405">Încearcă</translation>
 <translation id="7415602225677446066">Cele mai interesante articole de astăzi într-un flux complet privat, doar pentru dvs.</translation>
-<translation id="8607689491789524900">Brave Today face potriviri cu interesele de pe dispozitivul dvs., astfel încât informațiile personale nu părăsesc niciodată browserul. Conținut nou, actualizat pe parcursul zilei.</translation>
+<translation id="6903061332999399632">Brave News acceptă reclame complet private și anonime în funcție de interesele dvs. pe dispozitivul utilizat. Datele cu caracter personal rămân întotdeauna confidențiale în conformitate cu <ph name="LINK_START"/>politica noastră de confidențialitate<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Afișați Brave News</translation>
+<translation id="780301667611848630">Nu, mulțumesc</translation>
 <translation id="9164544612367905452">Se preia…</translation>
 <translation id="1276592121036104130">Încărcați conținut nou</translation>
-<translation id="4210987321913275328">Derulați pentru Brave Today</translation>
-<translation id="3122595178900736207">Resetați sursele Brave Today</translation>
-<translation id="2197023915568148978">Vreți să resetați toate opțiunile editorului Brave Today la valorile prestabilite?</translation>
+<translation id="2875288128871360696">Derulați pentru Brave News</translation>
+<translation id="8510120023634509743">Resetați sursele Brave News</translation>
+<translation id="75825199302994272">Doriți să resetați toate opțiunile pentru editorul Brave News la valorile prestabilite?</translation>
 <translation id="954001034349395856">Toate sursele</translation>
 <translation id="8890516388109605451">Surse</translation>
 <translation id="5158129253322921540">Dezactivați conținutul de la <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Conectată</translation>
 <translation id="8030169304546394654">Deconectat</translation>
 <translation id="3149306599361260465">Se inițializează [[percentage]]%</translation>
+<translation id="3258793718986637767">Aveți probleme cu Tor? Încercați <ph name="BEGIN_LINK"/>să dezactivați fereastra incognito Tor<ph name="END_LINK"/> și să o deschideți din nou.</translation>
 <translation id="4272382368346338917">Filtre suplimentare</translation>
 <translation id="8949292968394988358">Atenție: Activarea unui număr prea mare de filtre va afecta funcționarea</translation>
 <translation id="8686201964111147748">Numărul total de reclame și urmăriri blocate:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Confirmă portofelul meu</translation>
 <translation id="6609621505400013054">Portofelul bitFlyer este un serviciu administrat de bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Prin confirmarea portofelului dvs. și conectarea acestuia la un cont bitFlyer, veți putea stoca și gestiona mai ușor token-urile câștigate prin Brave Rewards</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/> despre cum puteți conecta browserul Brave la contul bitFlyer.</translation>
 <translation id="5094577350232361255">despre</translation>
 <translation id="4918086044614829423">Accept</translation>
 <translation id="5916290544882167205">Brave Software. Brave este o marcă înregistrată a Brave Software. Este posibil ca numele site-urilor să fie mărci sau mărci înregistrate ale proprietarilor site-urilor.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Preț unitar</translation>
 <translation id="4763179765154524864">Total cheltuit</translation>
 <translation id="8851480289992540512">Total primit</translation>
+<translation id="8624961452383848703">Vreau să schimb...</translation>
 <translation id="616639131065447379">Bine ați venit la Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets vă permite să lucrați cu criptomonedă și active asociate în Brave. Crypto Wallets acceptă tokenuri Ethereum, ca ETH și BAT, precum și  obiecte de colecție, și vă permite să lucrați cu aplicațiiÐ și alte contracte inteligente. Toate acestea sunt dedicate celor care sunt familiarizați cu Ethereum și alte sisteme blockchain — sau sunt nerăbdători să învețe.</translation>
 <translation id="4855440621031541830">Utilizați Crypto Wallets doar dacă acceptați că doar dvs. sunteți responsabil pentru toate riscurile asociate cu folosirea acestei aplicații și că Brave Software nu își asumă nicio responsabilitate sau răspundere pentru orice pierderi, inclusiv pierderi accidentale sau pe cale de consecință, pe care ați putea să le suferiți în urma utilizării aplicației.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Datele pentru importare nu pot fi accesate</translation>
 <translation id="7900950536120202771">Eroare internă nod IPFS</translation>
 <translation id="1036635552229153800">Datele au fost încărcate cu succes, însă nu au fost mutate în directorul de importare Brave. Aveți posibilitatea să faceți acest lucru manual pe pagina setărilor de importare.</translation>
-<translation id="7789840864192026963">Acordați permisiunea</translation>
-<translation id="7978789143098237970">până închid această pagină</translation>
+<translation id="572392919096807438">Reține decizia mea</translation>
+<translation id="7978789143098237970">până închid acest site</translation>
 <translation id="3523195733429162409">24 de ore</translation>
 <translation id="2373264732659722940">1 săptămână</translation>
 <translation id="6318437367327684789">totdeauna</translation>
-<translation id="7463327191540031132">Blocați pentru totdeauna</translation>
 <translation id="8797999629784150206">Puteți să schimbați <ph name="SITE_PERMISSIONS"/> oricând. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">permisiunea site-ului</translation>
 <translation id="7701466644604753106">Pornește Speedreader</translation>
 <translation id="763042262431778831">Oprește Speedreader</translation>
+<translation id="1544192797660353713">Portofel</translation>
+<translation id="8488282162676695335">Portofelul Brave</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="3745016858329272300">Informații generale</translation>
 <translation id="4045404575593562245">Evenimente control Tor</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">URI proxy Tor</translation>
 <translation id="1671503397662036257">Stare conexiune Tor</translation>
 <translation id="6024292492796847324">Progres inițializare Tor</translation>
+<translation id="7586151660465233733">Mai multe piețe pe <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Vedeți piețe și tranzacționați criptomonede pe FTX</translation>
+<translation id="5963745988819586370">Piețe</translation>
+<translation id="3795943412467785186">Conectați contul FTX, pentru a vedea soldul contului și pentru a explora piețele Futures și a tranzacționa criptomonede.</translation>
+<translation id="926958206891985289">Vedeți piețele Futures</translation>
+<translation id="6804537228302563756">Conectați contul</translation>
+<translation id="5019698312620117604">Istoricul prețului în 24 de ore</translation>
+<translation id="8720719072204443171">Volum în 24 de ore</translation>
+<translation id="3891414008432200754">Preț</translation>
+<translation id="7723176927437578611">Suma primită</translation>
+<translation id="2983078329159689577">Se trimite...</translation>
+<translation id="6641102760094059194">Confirmați (<ph name="NUMBER_OF_SECONDS_LEFT"/>sec.)</translation>
+<translation id="2280055104463448482">Conversie reușită!</translation>
+<translation id="7590653073560839711">Pentru a realiza o conversie, trebuie să aveți un sold disponibil în cel puțin o monedă.</translation>
+<translation id="4390079506197726228">Disponibil <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Nu afișați soldurile</translation>
+<translation id="4548946945059463969">Afișați soldurile pe ecran</translation>
 </translationbundle>

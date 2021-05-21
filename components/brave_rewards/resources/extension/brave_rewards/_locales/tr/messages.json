@@ -819,6 +819,18 @@
     "message": "Cüzdanınızı doğrulayarak ve bir bitFlyer hesabına bağlayarak, Brave Rewards aracılığıyla kazandığınız tokenleri daha kolay depolayabilecek ve yönetebileceksiniz",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "Brave tarayıcınızı bitFlyer hesabınızla nasıl bağlayacağınız hakkında $link_begin$daha fazla bilgi alın$link_end$.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Ödülleri Japonya'da yeni bir sisteme geçiyor!",
     "description": "Header text for BAP deprecation warning message"

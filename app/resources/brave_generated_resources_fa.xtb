@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">صدای انتخاب‌شده</translation>
 <translation id="7895302206188277628">محتوای این پیوند</translation>
 <translation id="4322612543319315652">وارد کردن نوشتار انتخاب‌شده در IPFS</translation>
+<translation id="8883166554766780543">وارد کردن و کپی کردن پیوند به عکس فوری IPFS</translation>
+<translation id="3654831858282189202">انتشار با کلید IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Window with Tor خصوصی جدید</translation>
 <translation id="4703780849509456860">باز کردن پیوند در Window with Tor خصوصی</translation>
 <translation id="3488584642074079080">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
 <translation id="7475547933708221517">اشتراک‌گذاری فایل محلی بااستفاده از IPFS</translation>
+<translation id="2286177249736199435">اشتراک‌گذاری پوشه محلی با استفاده از IPFS</translation>
 <translation id="784573715436258741">اشتراک‌گذاری فایل محلی با استفاده از IPFS</translation>
 <translation id="6313675821927505581">Window with Tor خصوصی جدید</translation>
 <translation id="2638041073279639246">باز کردن پیوند در Window with Tor خصوصی</translation>
 <translation id="3425600262621021599">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
+<translation id="575838692088926391">اشتراک‌گذاری پوشه محلی با استفاده از IPFS</translation>
 <translation id="5410152065859052603">تور</translation>
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
 <translation id="7924918279836988121">سرویس بت لجر</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">ارائه‌دهنده Ethereum برای استفاده از Dapps</translation>
 <translation id="5913089932885076110">بارگیری «کیف پول‌های رمزگذاری‌شده» در شروع به کار</translation>
 <translation id="757886143331967039">بار کردن افزونه منسوخ Crypto Wallets رمزگذاری‌شده هنگام شروع به کار</translation>
+<translation id="1834467296210148203">نمایش آیکون «کیف پول Brave» در نوار ابزار</translation>
 <translation id="6864914031231797928">مجاز کردن ورود به سیستم Google برای افزونه‌ها</translation>
 <translation id="5927916530277631319">روش تحلیل دامنه‌های توقف‌ناپذیر</translation>
 <translation id="8412057160793088103">درباره DNS ازطریق HTTPS و ملاحضات حریم‌خصوصی اتریوم <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="5248318250177143470">روشی برای تحلیل «سرویس نام اتریوم» (ENS)</translation>
+<translation id="7024553202001112871">کلیدهای IPNS خود را تنظیم کنید</translation>
+<translation id="951216659045543447">محتوا را با کلید خصوصی مربوطه امضا کنید و آن را در IPNS منتشر کنید</translation>
+<translation id="7611728475758612204">کلیدها برای انتشار در دسترس هستند</translation>
+<translation id="911363100236037920">نامی را برای کلید جدید وارد کنید</translation>
+<translation id="6358469157239228181">این نام قابل استفاده نیست</translation>
+<translation id="8996633027318264334">آیا واقعاً می‌خواهید <ph name="KEY_NAME"/> را حذف کنید؟</translation>
+<translation id="910215077892371264">گره راه‌اندازی نمی‌شود</translation>
+<translation id="616058968889448209">خطا در راه‌اندازی سرویس IPFS، اطلاعات بیشتر در <ph name="BEGIN_LINK"/>صفحه عیب‌یابی<ph name="END_LINK"/> موجود است</translation>
+<translation id="6912148685459054619">کلید «<ph name="KEY_NAME"/>» وارد نشد</translation>
+<translation id="8275038454117074363">وارد کردن</translation>
+<translation id="3654980960391973513">ایجاد</translation>
+<translation id="5531501313997312487">گره شروع</translation>
 <translation id="9170907049676078643">روشی برای تحلیل منابع IPFS</translation>
 <translation id="1327977588028644528">دروازه</translation>
 <translation id="80225669816651290">گره محلی</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">همچنان وب را سریع‌تر - تا 6 برابر سریع‌تر در سایت‌های خبری اصلی - مرور کنید.</translation>
 <translation id="9218430445555521422">تنظیم به‌عنوان پیش‌فرض</translation>
 <translation id="3479552764303398839">اکنون نه</translation>
+<translation id="6040143037577758943">بستن</translation>
+<translation id="5600566490506283344">اعلان آگهی Brave</translation>
 <translation id="4877147287319222750">افزودن به نوار جانبی</translation>
+<translation id="4233010476457917696">نمایش نوار جانبی</translation>
 <translation id="5404213409401164238">نمایش نوار جانبی</translation>
 <translation id="7561196759112975576">همیشه</translation>
 <translation id="7060352228894039151">با حرکت ماوس</translation>

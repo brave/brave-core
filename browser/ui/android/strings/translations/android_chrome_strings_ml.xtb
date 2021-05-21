@@ -37,10 +37,11 @@
 <translation id="1227058898775614466">നാവിഗേഷന്‍ ചരിത്രം</translation>
 <translation id="1231733316453485619">സമന്വയിപ്പിക്കൽ ഓണാക്കണോ?</translation>
 <translation id="123724288017357924">കാഷെ ചെയ്‌ത ഉള്ളടക്കം ഒഴിവാക്കി കൊണ്ട്, നിലവിലെ പേജ് റീലോഡ് ചെയ്യുക</translation>
+<translation id="1240288207750131269"><ph name="LANG"/> ലോഡ് ചെയ്യുന്നു</translation>
 <translation id="124678866338384709">നിലവിലെ ടാബ് അടയ്‌ക്കുക</translation>
 <translation id="1996480094660735607">Brave ഡൂഡിൽ: <ph name="DOODLE_DESCRIPTION"/></translation>
-<translation id="1263231323834454256">വായനാ ലിസ്റ്റ്</translation>
 <translation id="1266864766717917324"><ph name="CONTENT_TYPE"/> പങ്കിടാനായില്ല</translation>
+<translation id="1276279242344007853">നിങ്ങൾ പിന്തുടരുന്ന സൈറ്റുകൾ മാനേജ് ചെയ്യുക</translation>
 <translation id="1283039547216852943">വികസിപ്പിക്കാൻ ടാപ്പ് ചെയ്യുക</translation>
 <translation id="1285310382777185058">ഭാഷ മാറ്റുക</translation>
 <translation id="1291207594882862231">ചരിത്രവും കുക്കികളും സൈറ്റ് വിവരവും കാഷെയും മായ്‌ക്കുക...</translation>
@@ -54,7 +55,6 @@
 <translation id="1327257854815634930">നാവിഗേഷൻ ചരിത്രം തുറന്നിരിക്കുന്നു</translation>
 <translation id="6773423637732432200">Brave അപ്‌ഡേറ്റ് ചെയ്യാനാവില്ല. കൂടുതൽ ഓപ്‌ഷനുകൾ</translation>
 <translation id="3169981355900570544">Brave ഫീച്ചർ കുറുക്കുവഴികൾ</translation>
-<translation id="133857033449832692"><ph name="LANG"/> ഡൗൺലോഡ് ചെയ്യുന്നു…</translation>
 <translation id="1344653310988386453">ഹൈലൈറ്റിലേക്കുള്ള ലിങ്ക് ഉൾപ്പെടുത്തുക</translation>
 <translation id="1347468774581902829">ആക്റ്റിവിറ്റി മാനേജ് ചെയ്യുക</translation>
 <translation id="1360432990279830238">സൈൻ ഔട്ട് ചെയ്‌ത് സമന്വയം ഓഫാക്കണോ?</translation>
@@ -72,6 +72,8 @@
 <translation id="1416550906796893042">ആപ്പ് പതിപ്പ്</translation>
 <translation id="1430915738399379752">അച്ചടിക്കുക</translation>
 <translation id="1450753235335490080"><ph name="CONTENT_TYPE"/> പങ്കിടാനാവുന്നില്ല</translation>
+<translation id="5598889255595678761">Brave-ന്റെ ഭാഷ തിരഞ്ഞെടുക്കുക</translation>
+<translation id="147113415845704694">“ഇന്നത്തെ കാലാവസ്ഥ എന്താണ്?” എന്ന് പറഞ്ഞ് ശ്രമിക്കുക</translation>
 <translation id="1477626028522505441">സെർവർ പ്രശ്‌നങ്ങൾ കാരണം <ph name="FILE_NAME"/> ഡൗൺലോഡ് ചെയ്യാനായില്ല.</translation>
 <translation id="1492417797159476138">ഈ സൈറ്റിനായി നിങ്ങൾ ഇതിനകം തന്നെ ഈ ഉപയോക്തൃനാമം സംരക്ഷിച്ചു</translation>
 <translation id="1506061864768559482">തിരയൽ യന്ത്രം</translation>
@@ -90,6 +92,7 @@
 <translation id="1641113438599504367">സുരക്ഷിത ബ്രൗസിംഗ്</translation>
 <translation id="164269334534774161">നിങ്ങൾ ഈ പേജിന്റെ <ph name="CREATION_TIME"/> മുതലുള്ള ഓഫ്‌ലൈൻ പകർപ്പാണ് കാണുന്നത്</translation>
 <translation id="1644574205037202324">ചരിത്രം</translation>
+<translation id="160450840812032879">Brave ഹോംപേജിൽ വീഡിയോ പ്രിവ്യൂകൾ എങ്ങനെ സ്വയമേവ പ്ലേ ചെയ്യുമെന്ന് തിരഞ്ഞെടുക്കുക.</translation>
 <translation id="1670399744444387456">അടിസ്ഥാനം</translation>
 <translation id="1671236975893690980">ഡൗൺലോഡ് തീർച്ചപ്പെടുത്തിയിട്ടില്ല...</translation>
 <translation id="1672586136351118594">വീണ്ടും കാണിക്കരുത്</translation>
@@ -140,7 +143,6 @@
 <translation id="1987739130650180037"><ph name="MESSAGE"/> <ph name="LINK_NAME"/> ബട്ടൺ</translation>
 <translation id="1993768208584545658"><ph name="SITE"/> ജോടിയാക്കാൻ താൽപ്പര്യപ്പെടുന്നു</translation>
 <translation id="2000419248597011803">നിങ്ങളുടെ ഡിഫോൾട്ട് തിരയൽ എഞ്ചിനിലേക്ക് വിലാസ ബാറിൽ നിന്നും തിരയൽ ബോക്‌സിൽ നിന്നുമുള്ള തിരയലുകളും കുറച്ച് കുക്കികളും അയയ്ക്കുന്നു</translation>
-<translation id="1320169905922104972">Brave Pay ഉപയോഗിക്കുന്ന ക്രെഡിറ്റ് കാർഡുകളും വിലാസങ്ങളും</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# ഫയല്‍}other{# ഫയലുകൾ}}</translation>
 <translation id="2017836877785168846">വിലാസ ബാറിലെ ചരിത്രവും സ്വയം പൂർത്തീകരണങ്ങളും മായ്ക്കുന്നു.</translation>
 <translation id="2021896219286479412">പൂർണ്ണ സ്ക്രീൻ സൈറ്റ് നിയന്ത്രണങ്ങൾ</translation>
@@ -166,6 +168,7 @@
 <translation id="796823723482603597">Brave നൽകുന്നത്</translation>
 <translation id="2131665479022868825"><ph name="DATA"/> ലാഭിച്ചു</translation>
 <translation id="213279576345780926"><ph name="TAB_TITLE"/> അടച്ചു</translation>
+<translation id="2139186145475833000">ഹോംസ്‌ക്രീനിൽ ചേർക്കുക</translation>
 <translation id="6516933364477884970">Brave-മായി പങ്കിടാൻ നിങ്ങൾക്ക് താൽപ്പര്യമുള്ളത് തിരഞ്ഞെടുക്കുക. Brave-ന്റെ ഫീച്ചറുകളും പ്രകടനവും സ്ഥിരതയും മെച്ചപ്പെടുത്താൻ നിങ്ങൾ പങ്കിടുന്ന മെട്രിക്കുകൾ ഉപയോഗിക്കും.</translation>
 <translation id="2154484045852737596">കാർഡ് എഡിറ്റ് ചെയ്യുക</translation>
 <translation id="2154710561487035718">URL പകര്‍ത്തുക</translation>
@@ -179,6 +182,7 @@
 <translation id="3842811252050200766">Brave-ന്റെ ഏറ്റവും ശക്‌തമായ സുരക്ഷ നേടുക</translation>
 <translation id="2200113223741723867">ഉപയോഗ ഡാറ്റ പങ്കിടൽ മാനേജ് ചെയ്യുക</translation>
 <translation id="2227444325776770048"><ph name="USER_FULL_NAME"/> എന്ന പേരിൽ തുടരുക</translation>
+<translation id="22320125457191592">നിങ്ങൾക്കായി</translation>
 <translation id="7956662517480676674">സമന്വയവും Brave സേവനങ്ങളും</translation>
 <translation id="2239812875700136898">'Discover-നുള്ള ഓപ്‌ഷനുകൾ' ബട്ടൺ അമർത്തി നിങ്ങളുടെ സ്‌റ്റോറികൾ നിയന്ത്രിക്കുക</translation>
 <translation id="2259659629660284697">പാസ്‌വേഡുകൾ എക്‌സ്‌പോർട്ട് ചെയ്യുക...</translation>
@@ -203,6 +207,7 @@
 <translation id="2353636109065292463">നിങ്ങളുടെ ഇന്‍റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുന്നു</translation>
 <translation id="2359808026110333948">തുടരുക</translation>
 <translation id="2369533728426058518">തുറന്നിരിക്കുന്ന ടാബുകൾ</translation>
+<translation id="2386938421315164605">വിഷയങ്ങൾ മറയ്‌ക്കുകയും മറച്ചത് പഴയപടിയാക്കുകയും ചെയ്യുക</translation>
 <translation id="2387895666653383613">ടെക്‌സ്റ്റ് സ്‌കെയിലിംഗ്</translation>
 <translation id="2394602618534698961">നിങ്ങൾ ഡൗൺലോഡ് ചെയ്യുന്ന ഫയലുകൾ ഇവിടെ ദൃശ്യമാകും</translation>
 <translation id="801672626447970525">നിങ്ങൾ Brave അക്കൗണ്ടിൽ സൈൻ ഇൻ ചെയ്യുമ്പോൾ ഈ ഫീച്ചർ ഓണാകും</translation>
@@ -227,11 +232,12 @@
 <translation id="2517472476991765520">സ്‌കാൻ ചെയ്യുക</translation>
 <translation id="7340390500800578919">ലൈറ്റ് മോഡിൽ Brave, പേജുകൾ വേഗത്തിൽ ലോഡ് ചെയ്യുകയും 60 ശതമാനം വരെ കുറവ് ഡാറ്റ ഉപയോഗിക്കുകയും ചെയ്യുന്നു. നിങ്ങൾ സന്ദർശിക്കുന്ന പേജുകൾ ഓപ്‌റ്റിമൈസ് ചെയ്യാൻ Brave നിങ്ങളുടെ വെബ് ട്രാഫിക് Brave-ന് അയയ്ക്കുന്നു. <ph name="BEGIN_LINK"/>കൂടുതലറിയുക<ph name="END_LINK"/></translation>
 <translation id="284843628681142937">Brave-ൽ നിങ്ങൾ സന്ദർശിക്കുന്ന പേജുകളുടെ URL-കൾ അയയ്ക്കുന്നു</translation>
+<translation id="2527779675047087889">ക്ലിപ്പ്ബോർഡിലെ ഉള്ളടക്കങ്ങൾ മറയ്ക്കുക</translation>
 <translation id="2532336938189706096">വെബ് കാഴ്‌ച</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> ഇനങ്ങൾ ഇല്ലാതാക്കി</translation>
 <translation id="2536728043171574184">ഈ പേജിന്റെ ഒരു ഓഫ്‌ലൈൻ പതിപ്പ് കാണുന്നു</translation>
-<translation id="2537178555904266562">പാസ്‌വേഡുകൾ സമന്വയിപ്പിക്കുന്നതിൽ പിശക്</translation>
 <translation id="2546283357679194313">കുക്കികളും സൈറ്റ് ഡാറ്റയും</translation>
+<translation id="2561519700418191927">വീഡിയോ പ്രിവ്യൂകൾ</translation>
 <translation id="2567385386134582609">ചിത്രം</translation>
 <translation id="5079947353572974060">മറ്റ് ഭാഷകളിലുള്ള പേജുകൾ Brave Translate-ലേക്ക് അയയ്ക്കുന്നു</translation>
 <translation id="2324920234469020158">ഇത്, Brave പ്രധാനമായി കണക്കാക്കാത്ത സൈറ്റുകളുടെ കുക്കികളും കാഷെയും മറ്റ് വിവരങ്ങളും മായ്‌ക്കും.</translation>
@@ -240,6 +246,7 @@
 <translation id="2612676031748830579">കാർഡ് നമ്പർ</translation>
 <translation id="2625189173221582860">പാസ്‌വേഡ് പകർത്തി</translation>
 <translation id="2631006050119455616">ലാഭിച്ചത്</translation>
+<translation id="2645657967708199252"><ph name="CONNECTION_TYPE"/> കണക്ഷൻ നിങ്ങളുടെ ഡൗൺലോഡിന്റെ വേഗത കുറച്ചേക്കാം</translation>
 <translation id="2647434099613338025">ഭാഷ ചേര്‍ക്കുക</translation>
 <translation id="2650751991977523696">ഫയൽ വീണ്ടും ഡൗൺലോഡ് ചെയ്യണോ?</translation>
 <translation id="2651091186440431324">{FILE_COUNT,plural, =1{# ഓഡിയോ ഫയൽ}other{# ഓഡിയോ ഫയലുകള്‍}}</translation>
@@ -247,12 +254,12 @@
 <translation id="4550860619133710557">Brave ഉപയോഗിക്കുന്നതിലൂടെ, നിങ്ങൾ <ph name="BEGIN_LINK1"/>Brave സേവന നിബന്ധനകളും<ph name="END_LINK1"/> <ph name="BEGIN_LINK2"/>Brave, Chrome OS അധിക സേവന നിബന്ധനകളും<ph name="END_LINK2"/> അംഗീകരിക്കുന്നു. <ph name="BEGIN_LINK3"/>Family Link ഉപയോഗിച്ച് മാനേജ് ചെയ്യുന്ന Brave അക്കൗണ്ടുകൾക്കുള്ള സ്വകാര്യതാ കുറിപ്പും<ph name="END_LINK3"/> ബാധകമാണ്.</translation>
 <translation id="2704606927547763573">പകർത്തി</translation>
 <translation id="2707726405694321444">പേജ് പുതുക്കുക</translation>
-<translation id="2709516037105925701">സ്വയമേവ പൂരിപ്പിക്കൽ</translation>
 <translation id="271033894570825754">പുതിയത്</translation>
 <translation id="2718352093833049315">Wi-Fi യിൽ മാത്രം</translation>
 <translation id="2718846868787000099">നിങ്ങൾ തിരഞ്ഞെടുത്ത ഭാഷകളിൽ ഉള്ളടക്കം കാണിക്കുന്നതിന്, സന്ദർശിക്കുന്ന സൈറ്റുകൾക്ക് നിങ്ങളുടെ മുൻഗണനകൾ കാണാൻ കഴിയും</translation>
 <translation id="2723001399770238859">ഓഡിയോ</translation>
 <translation id="2728754400939377704">സൈറ്റ് അനുസരിച്ച് അടുക്കുക</translation>
+<translation id="2739256783402597439">2G</translation>
 <translation id="2744248271121720757">പെട്ടെന്ന് തിരയാനോ ബന്ധപ്പെട്ട പ്രവർത്തനങ്ങൾ കാണാനോ ഒരു വാക്കിൽ ടാപ്പ് ചെയ്യുക</translation>
 <translation id="2760989362628427051">നിങ്ങളുടെ ഉപകരണത്തിന്റെ ഡാർക്ക് തീമോ ബാറ്ററി ലാഭിക്കലോ ഓണായിരിക്കുമ്പോൾ ഡാർക്ക് തീം ഓണാക്കുക</translation>
 <translation id="2762000892062317888">ഇപ്പോൾ</translation>
@@ -261,16 +268,17 @@
 <translation id="2779651927720337254">പരാജയപ്പെട്ടു</translation>
 <translation id="2781151931089541271">ഒരു സെക്കൻഡ് ശേഷിക്കുന്നു</translation>
 <translation id="1379423114029199501">Brave-ൻ്റെ ഏറ്റവും പുതിയ പതിപ്പിൽ നിങ്ങളുടെ ഭാഷ ലഭ്യമാക്കാൻ അപ്‌ഡേറ്റ് ചെയ്യൂ</translation>
-<translation id="2810645512293415242">ഡാറ്റ ലാഭിക്കുന്നതിനും വേഗത്തിൽ ലോഡ് ചെയ്യുന്നതിനുമായി ലളിതവൽക്കരിച്ചിരിക്കുന്ന പേജ്.</translation>
+<translation id="2805756323405976993">ആപ്സ്</translation>
 <translation id="7068873021383263704">നിങ്ങളുടെ <ph name="BEGIN_LINK"/>Brave അക്കൗണ്ടിൽ<ph name="END_LINK"/> സംരക്ഷിച്ച പാസ്‌വേഡുകൾ കാണുക, മാനേജ് ചെയ്യുക</translation>
 <translation id="2818669890320396765">നിങ്ങളുടെ എല്ലാ ഉപകരണങ്ങളിലും ബുക്ക്‌മാർക്കുകൾ ലഭിക്കാൻ, സൈൻ ഇൻ ചെയ്‌ത് സമന്വയിപ്പിക്കൽ ഓണാക്കുക</translation>
 <translation id="2827278682606527653">പകുതി ഉയരത്തിലുള്ള ഫീഡ് കാർഡ് മെനു</translation>
+<translation id="2830783625999891985">ക്ലിപ്പ്ബോർഡ് ഉള്ളടക്കം മറച്ചിരിക്കുന്നു</translation>
+<translation id="2839327205551510876"><ph name="SITE_NAME"/> പിന്തുടരുന്നത് ഒഴിവാക്കി</translation>
 <translation id="2841216154655874070">{NUM_DAYS,plural, =1{ഒരു ദിവസം മുമ്പ് പരിശോധിച്ചു}other{# ദിവസം മുമ്പ് പരിശോധിച്ചു}}</translation>
 <translation id="2842985007712546952">പാരന്റ് ഫോൾഡർ</translation>
 <translation id="2856503607207334158">സൈൻ ഇൻ ചെയ്യാനായില്ല</translation>
 <translation id="2860954141821109167">ഈ ഉപകരണത്തിൽ ഫോൺ ആപ്പ് പ്രവർത്തനക്ഷമമാക്കിയിട്ടുണ്ടെന്ന് ഉറപ്പാക്കുക</translation>
 <translation id="2870560284913253234">സൈറ്റ്</translation>
-<translation id="2876369937070532032">നിങ്ങളുടെ സുരക്ഷ അപകടത്തിലാകുമ്പോൾ നിങ്ങൾ സന്ദർശിക്കുന്ന ചില പേജുകളുടെ URL-കൾ Brave-ലേക്ക് അയയ്ക്കുന്നു</translation>
 <translation id="8541922081612557424">Brave-നെ കുറിച്ച്</translation>
 <translation id="2891154217021530873">പേജ് ലോഡുചെയ്യുന്നത് നിർത്തുക</translation>
 <translation id="2892647708214602204">ഈ ഫയലുകൾ തയ്യാറാകുമ്പോൾ നിങ്ങളൊരു അറിയിപ്പ് കാണും</translation>
@@ -281,6 +289,7 @@
 <translation id="7339921667754113786">Brave അറിയിപ്പുകൾ പ്ലാറ്റ്‌ഫോം</translation>
 <translation id="2923908459366352541">പേര് അസാധുവാണ്</translation>
 <translation id="6355102470683871794">Brave <ph name="APP_NAME"/> സ്‌റ്റോറേജ്</translation>
+<translation id="2932222164150889403">നിങ്ങളുടെ കീബോഡ് മാറില്ല</translation>
 <translation id="2942036813789421260">പ്രിവ്യു ടാബ് അടച്ചു</translation>
 <translation id="2956410042958133412"><ph name="PARENT_NAME_1"/>, <ph name="PARENT_NAME_2"/> എന്നിവരാണ് ഈ അക്കൗണ്ട് നിയന്ത്രിക്കുന്നത്.</translation>
 <translation id="2961208450284224863">{READING_LIST_UNREAD_PAGE_COUNT,plural, =1{വായിക്കാത്ത <ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE"/> പേജ്}other{വായിക്കാത്ത <ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> പേജുകൾ}}</translation>
@@ -293,13 +302,14 @@
 <translation id="3016635187733453316">ഈ ഉപകരണം ഇന്റർനെറ്റിലേക്ക് കണക്‌റ്റ് ചെയ്‌തിട്ടുണ്ടെന്ന് ഉറപ്പാക്കുക</translation>
 <translation id="3029704984691124060">പാസ്‌ഫ്രെയ്‌സുകൾ പൊരുത്തപ്പെടുന്നില്ല</translation>
 <translation id="3031225630520268969">Assistant ശബ്‌ദ തിരയൽ സമ്മത UI</translation>
-<translation id="3034163383943672781"><ph name="DATE"/>-ന് ഡൗൺലോഡ് ആരംഭിക്കും.</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>സഹായം തേടുക<ph name="END_LINK"/></translation>
+<translation id="3046945242843292318">അടുത്ത തവണ കൂടുതൽ വേഗത്തിൽ ഈ സൈറ്റിലേക്ക് എത്തുക</translation>
 <translation id="305593374596241526">ലൊക്കേഷൻ ഓഫാണ്; <ph name="BEGIN_LINK"/>Android ക്രമീകരണത്തിൽ<ph name="END_LINK"/> അത് ഓണാക്കുക.</translation>
 <translation id="3058498974290601450">നിങ്ങൾക്ക് ഏത് സമയത്തും ക്രമീകരണത്തിൽ സമന്വയം ഓണാക്കാവുന്നതാണ്</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> ബുക്ക്‌മാർക്ക്}other{<ph name="BOOKMARKS_COUNT_MANY"/> ബുക്ക്‌മാർക്കുകൾ}}</translation>
 <translation id="6153252609477956632">Brave-ൽ നിങ്ങൾക്ക് താൽപ്പര്യമുള്ള വിഷയങ്ങളിലെ ലേഖനങ്ങൾ കാണൂ</translation>
 <translation id="3070005020161560471">സ്വയമേവ വിവർത്തനം ചെയ്യുക</translation>
+<translation id="3091010850649238832">ക്ലിപ്പ്ബോർഡിലെ ഉള്ളടക്കങ്ങൾ കാണിക്കുക</translation>
 <translation id="821565628224723530">മെച്ചപ്പെട്ട വിവരണങ്ങൾ നിങ്ങൾക്ക് നൽകുന്നതിന് ചില ചിത്രങ്ങൾ Brave-ന് അയയ്ക്കുന്നു</translation>
 <translation id="3114507951000454849">ഇന്നത്തെ വാർത്തകൾ വായിക്കൂ <ph name="NEWS_ICON"/></translation>
 <translation id="3123734510202723619">അറിയിപ്പുകൾ</translation>
@@ -308,12 +318,12 @@
 <translation id="3157842584138209013">'കൂടുതൽ ഓപ്ഷനുകൾ' ബട്ടണിൽ നിങ്ങൾ എത്ര ഡാറ്റ ലാഭിച്ചെന്ന് കാണുക</translation>
 <translation id="3166827708714933426">ടാബ്, വിൻഡോ കുറുക്കുവഴികൾ</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3201899458094819285">സുരക്ഷിത ബ്രൗസിംഗ് (അപകടകരമായ സൈറ്റുകളിൽ നിന്ന് നിങ്ങളെയും ഉപകരണത്തെയും പരിരക്ഷിക്കുന്നു)</translation>
 <translation id="3205824638308738187">ഏതാണ്ട് പൂർത്തിയായി!</translation>
 <translation id="3207960819495026254">ബുക്ക്‌മാർക്കുചെയ്‌തു</translation>
 <translation id="3208584281581115441">ഇപ്പോൾ പരിശോധിക്കുക</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> ഇല്ലാതാക്കി</translation>
 <translation id="321773570071367578">നിങ്ങൾ പാസ്‌ഫ്രെയ്‌സ് മറന്നുപോയെങ്കിലോ ഈ ക്രമീകരണം മാറ്റണമെങ്കിലോ, <ph name="BEGIN_LINK"/>സമന്വയം റീസെറ്റ് ചെയ്യുക<ph name="END_LINK"/></translation>
+<translation id="3220943972464248773">നിങ്ങളുടെ പാസ്‌വേഡുകൾ സമന്വയിപ്പിക്കാൻ, ഇത് നിങ്ങൾ തന്നെയാണെന്ന് പരിശോധിച്ചുറപ്പിക്കുക</translation>
 <translation id="9047551989591319903">സുരക്ഷാ കീ ആയി Brave</translation>
 <translation id="3232754137068452469">വെബ് ആപ്പ്</translation>
 <translation id="3236059992281584593">ഒരു മിനിറ്റ് ശേഷിക്കുന്നു</translation>
@@ -332,12 +342,11 @@
 <translation id="3290991969712132877">ഇവിടെ വേഗത്തിൽ എത്താൻ, കൂടുതൽ ഓപ്ഷനുകൾ മെനുവിൽ പോയി നിങ്ങളുടെ ഹോം സ്‌ക്രീനിലേക്ക് ഈ പേജ് ചേർക്കുക</translation>
 <translation id="3295530008794733555">വേഗത്തിൽ ബ്രൗസ് ചെയ്യൂ. കുറച്ച് ഡാറ്റ ഉപയോഗിക്കൂ.</translation>
 <translation id="3297344142967351106">ശബ്ദ സഹായം</translation>
-<translation id="3298243779924642547">ലൈറ്റ്</translation>
 <translation id="3303414029551471755">ഉള്ളടക്കം ഡൗൺലോഡ് ചെയ്യുന്നതിലേക്ക് തുടരണോ?</translation>
 <translation id="5294439808117722387">നിലവിൽ നിങ്ങൾ സമന്വയ, Brave സേവന ക്രമീകരണം ഇഷ്‌ടാനുസൃതമാക്കുന്നു. സമന്വയിപ്പിക്കൽ ഓണാക്കുന്നത് പൂർത്തിയാക്കാൻ, സ്‌ക്രീനിൻ്റെ ചുവടുവശത്തിന് സമീപമുള്ള 'സ്ഥിരീകരിക്കുക' ടാപ്പ് ചെയ്യുക. മുകളിലേക്ക് നാവിഗേറ്റ് ചെയ്യുക</translation>
 <translation id="3334729583274622784">ഫയൽ എക്സ്റ്റൻഷൻ മാറ്റണോ?</translation>
 <translation id="3341058695485821946">നിങ്ങൾ എത്ര ഡാറ്റ ലാഭിച്ചെന്ന് കാണുക</translation>
-<translation id="8134317863207426198">Brave നല്‍കുന്ന ലൈറ്റ് പേജ്. അസ്സല്‍ പേജ് ലോഡ് ചെയ്യാന്‍ 'അസ്സൽ ലോഡ് ചെയ്യൽ' ബട്ടണ്‍ ടാപ്പ് ചെയ്യുക.</translation>
+<translation id="3341262203274374114">പിന്തുടരുന്നത് ഒഴിവാക്കാനാകുന്നില്ല. എന്തോ കുഴപ്പമുണ്ടായി.</translation>
 <translation id="3359667936385849800">നിങ്ങളുടെ നിലവിലെ സേവന ദാതാവിനെ ഉപയോഗിക്കുക</translation>
 <translation id="3367813778245106622">സമന്വയിപ്പിക്കാൻ തുടങ്ങുന്നതിന്, വീണ്ടും സൈൻ ഇൻ ചെയ്യുക</translation>
 <translation id="337236281855091893">തിരയുന്നതിന്, പദത്തിൽ ടാപ്പ് ചെയ്യുന്നതിന് പകരം അതിൽ സ്‌പർശിച്ച് പിടിക്കുക</translation>
@@ -372,6 +381,7 @@
 <translation id="3542235761944717775"><ph name="KILOBYTES"/> KB ലഭ്യമാണ്</translation>
 <translation id="3549657413697417275">ചരിത്രം തിരയുക</translation>
 <translation id="3557336313807607643">കോൺടാക്‌റ്റുകളിലേക്ക് ചേർക്കുക</translation>
+<translation id="3563767357928833671">ക്ലിപ്പ്ബോർഡ് ഉള്ളടക്കം കാണിച്ചിരിക്കുന്നു</translation>
 <translation id="1908301351964700579">Brave ഇപ്പോഴും VR-നായി തയ്യാറെടുത്തുകൊണ്ടിരിക്കുകയാണ്. Brave പിന്നീട് റീസ്‌റ്റാർട്ട് ചെയ്യുക.</translation>
 <translation id="3568688522516854065">നിങ്ങളുടെ മറ്റ് ഉപകരണങ്ങളിൽ നിന്നുള്ള ടാബുകൾ ലഭിക്കാൻ, സൈൻ ഇൻ ചെയ്‌ത് സമന്വയിപ്പിക്കൽ ഓണാക്കുക</translation>
 <translation id="3587482841069643663">എല്ലാം</translation>
@@ -385,9 +395,9 @@
 <translation id="363596933471559332">സൂക്ഷിച്ചിരിക്കുന്ന ക്രെഡൻഷ്യലുകൾ ഉപയോഗിച്ച് വെബ്‌സൈറ്റുകളിലേക്ക് സ്വയമേവ സൈൻ ഇൻ ചെയ്യുക. ഫീച്ചർ ഓഫായിരിക്കുമ്പോൾ, ഒരു വെബ്‌സൈറ്റിലേക്ക് സൈൻ ഇൻ ചെയ്യുന്നതിനുമുമ്പ് പരിശോധിച്ചുറപ്പിക്കാൻ ഓരോ തവണയും നിങ്ങളോടാവശ്യപ്പെടും.</translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="3658159451045945436">പുനഃസജ്ജീകരിക്കുന്നത്, സന്ദർശിച്ച സൈറ്റുകളുടെ ലിസ്‌റ്റ് അടക്കമുള്ള ഡാറ്റ ലാഭിക്കൽ ചരിത്രത്തെ മായ്ക്കുന്നു.</translation>
+<translation id="3677911431265050325">മൊബൈൽ സൈറ്റ് അഭ്യർത്ഥിക്കുക</translation>
 <translation id="3687645719033307815">നിങ്ങൾ ഈ പേജിന്റെ പ്രിവ്യൂ ആണ് കാണുന്നത്</translation>
 <translation id="3692944402865947621">സ്റ്റോറേജ് ലൊക്കേഷൻ കണ്ടെത്താനാകാത്തതിനാൽ <ph name="FILE_NAME"/> ഡൗൺലോഡ് ചെയ്യുന്നത് പരാജയപ്പെട്ടു.</translation>
-<translation id="3701167022068948696">ഇപ്പോൾ പരിഹരിക്കുക</translation>
 <translation id="371230970611282515">അപകടകരമായ ഇവന്റുകൾ നടക്കുന്നതിന് മുമ്പ് അവ പ്രവചിക്കുകയും നിങ്ങൾക്ക് മുന്നറിയിപ്പ് നൽകുകയും ചെയ്യുന്നു.</translation>
 <translation id="3714981814255182093">കണ്ടെത്തൽ ബാർ തുറക്കുക</translation>
 <translation id="5805364706385912897">ഈ പേജ് ഒരുപാട് മെമ്മറി ഉപയോഗിക്കുന്നു, അതിനാൽ Brave ഇത് താൽക്കാലികമായി അവസാനിപ്പിച്ചു.</translation>
@@ -403,6 +413,7 @@
 <translation id="3773856050682458546">അടിസ്ഥാന ഡാറ്റയും നിങ്ങൾ സന്ദർശിക്കുന്ന വെബ്സൈറ്റുകളെയും ഉപയോഗിക്കുന്ന ആപ്പുകളെയും കുറിച്ചുള്ള വിവരങ്ങളും</translation>
 <translation id="3775705724665058594">നിങ്ങളുടെ ഉപകരണങ്ങളിലേക്ക് അയയ്‌ക്കുക</translation>
 <translation id="3778956594442850293">ഹോം സ്‌ക്രീനിലേക്ക് ചേർത്തു</translation>
+<translation id="3803784507854318295">സ്വയമേവ പ്ലേ ചെയ്യൽ മാനേജ് ചെയ്യുക</translation>
 <translation id="3810838688059735925">വീഡിയോ</translation>
 <translation id="3810973564298564668">മാനേജ് ചെയ്യുക</translation>
 <translation id="3819178904835489326"><ph name="NUMBER_OF_DOWNLOADS"/> ഡൗൺലോഡുകൾ ഇല്ലാതാക്കി</translation>
@@ -420,8 +431,8 @@
 <translation id="6208931723626310729">നിങ്ങളുടെ Brave അക്കൗണ്ടിൽ സൈൻ ഇൻ ചെയ്യുമ്പോൾ Brave സൈൻ ഇൻ നിർദ്ദേശങ്ങൾ കാണിക്കുക</translation>
 <translation id="395206256282351086">തിരയലും സൈറ്റ് നിർദ്ദേശങ്ങളും പ്രവർത്തനരഹിതമാക്കി</translation>
 <translation id="6945986954012067786">{NUM_IN_PROGRESS,plural, =1{നിങ്ങളുടെ പേജ് തയ്യാറാകുമ്പോൾ Brave ലോഡ് ചെയ്യും}other{നിങ്ങളുടെ പേജുകൾ തയ്യാറാകുമ്പോൾ Brave ലോഡ് ചെയ്യും}}</translation>
+<translation id="3962957115499249330">വൈഫൈയിൽ ഈ ഡൗൺലോഡ് ആരംഭിക്കുമ്പോൾ നിങ്ങൾ ഒരു അറിയിപ്പ് കാണും.</translation>
 <translation id="8997474919031554666">പാസ്‌ഫ്രെയ്‌സ് എൻക്രിപ്ഷനിൽ, Brave Pay-ൽ നിന്നുള്ള പേയ്മെന്‍റ് രീതികളും വിലാസങ്ങളും ഉൾപ്പെടുന്നില്ല. നിങ്ങളുടെ പാസ്‌ഫ്രെയ്‌സുള്ള വ്യക്തിക്ക് മാത്രമേ എൻക്രി‌പ്‌റ്റ് ചെയ്‌ത ഡാറ്റ വായിക്കാനാവൂ. പാസ്‌ഫ്രെയ്‌സ് Brave-ലേക്ക് അയയ്‌ക്കുകയോ സംഭരിക്കുകയോ ചെയ്യുന്നില്ല. പാസ്‌ഫ്രെയ്‌സ് മറന്നുപോവുകയോ ഈ ക്രമീകരണം മാറ്റുകയോ ചെയ്യണമെങ്കിൽ, സമന്വയം പുനഃക്രമീകരിക്കേണ്ടി വരും. <ph name="BEGIN_LINK"/>കൂടുതലറിയുക<ph name="END_LINK"/></translation>
-<translation id="3967822245660637423">ഡൗൺലോഡ് പൂർത്തിയായി</translation>
 <translation id="1453002554835005700">Brave-ന് നിങ്ങളുടെ പാസ്‌വേഡുകൾ പരിശോധിക്കാനാകുന്നില്ല</translation>
 <translation id="7961941514656597723"><ph name="APP_NAME"/>, Brave-ൽ തുറക്കും. തുടരുന്നതിലൂടെ, നിങ്ങൾ <ph name="BEGIN_LINK1"/>Brave സേവന നിബന്ധനകളും<ph name="END_LINK1"/> <ph name="BEGIN_LINK2"/>Brave, Chrome OS അധിക സേവന നിബന്ധനകളും<ph name="END_LINK2"/> അംഗീകരിക്കുന്നു. <ph name="BEGIN_LINK3"/>Family Link ഉപയോഗിച്ച് മാനേജ് ചെയ്യുന്ന Brave അക്കൗണ്ടുകൾക്കുള്ള സ്വകാര്യതാ കുറിപ്പും<ph name="END_LINK3"/> ബാധകമാണ്.</translation>
 <translation id="397583555483684758">'സമന്വയം' പ്രവർത്തനം നിർത്തി</translation>
@@ -431,6 +442,8 @@
 <translation id="3988213473815854515">ലൊക്കേഷൻ അനുവദനീയം</translation>
 <translation id="3988466920954086464">വേഗത്തിലുള്ള തിരയൽ ഫലങ്ങൾ ഈ പാനലിൽ കാണുക</translation>
 <translation id="4000212216660919741">ഓഫ്‌ലൈൻ ഹോം</translation>
+<translation id="4016425174436051808">പിന്തുടരാനാകുന്നില്ല. എന്തോ കുഴപ്പമുണ്ടായി.</translation>
+<translation id="3664806817143660247">നിങ്ങളുടെ Brave അക്കൗണ്ടിലെ ഡാറ്റ നിയന്ത്രിക്കുക</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# മണിക്കൂർ}other{# മണിക്കൂർ}}</translation>
 <translation id="4045764304651014138">ഉപയോഗ ഡാറ്റ</translation>
 <translation id="4056223980640387499">സിപിയ</translation>
@@ -441,6 +454,7 @@
 <translation id="4095146165863963773">ആപ്പ് ഡാറ്റ ഇല്ലാതാക്കണോ?</translation>
 <translation id="4095189195365058471">പിന്നീട് വായിക്കുക <ph name="BEGIN_NEW"/>പുതിയത്<ph name="END_NEW"/></translation>
 <translation id="673197144963363525">Brave-ലേക്ക് ഉപയോഗ വിവരക്കണക്കുകളും ക്രാഷ് റിപ്പോർട്ടുകളും അയയ്‌ക്കുന്നതിലൂടെ Brave-നെ മികച്ചതാക്കാൻ സഹായിക്കുക.</translation>
+<translation id="410351446219883937">സ്വയം പ്ലേചെയ്യൽ</translation>
 <translation id="4108314971463891922">പിന്തുടരുക</translation>
 <translation id="4108998448622696017">അപകടകരമായ ഇവന്റുകൾ നടക്കുമ്പോൾ അവ കണ്ടെത്തുകയും നിങ്ങൾക്ക് മുന്നറിയിപ്പ് നൽകുകയും ചെയ്യുന്നു.</translation>
 <translation id="4116038641877404294">ഓഫ്‌ലൈനായി ഉപയോഗിക്കാൻ പേജുകൾ ഡൗൺലോഡ് ചെയ്യുക</translation>
@@ -461,12 +475,14 @@
 <translation id="4256782883801055595">ഓപ്പൺ സോഴ്‌സ് ലൈസൻസുകൾ</translation>
 <translation id="4263656433980196874">Assistant ശബ്‌ദ തിരയൽ സമ്മത UI പൂർണ്ണ ഉയരത്തിൽ തുറന്നിരിക്കുന്നു</translation>
 <translation id="4269820728363426813">ലിങ്ക് വിലാസം പകർത്തുക</translation>
+<translation id="4290281343757112331">പകരം പിന്നീട് ഡൗൺലോഡ് ചെയ്യണോ?</translation>
 <translation id="4298388696830689168">ലിങ്ക് ചെയ്‌ത സൈറ്റുകൾ</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="4307992518367153382">അടിസ്ഥാനങ്ങള്‍</translation>
 <translation id="4314815835985389558">സമന്വയിപ്പിക്കൽ മാനേജ് ചെയ്യുക</translation>
 <translation id="4320177379694898372">ഇന്റർനെറ്റ് കണക്ഷനൊന്നുമില്ല</translation>
 <translation id="4321739720395210191">നിങ്ങളുടെ ക്യാമറ തുറക്കാനാവുന്നില്ല. നിങ്ങളുടെ ഉപകരണം റീസ്റ്റാർട്ട് ചെയ്‌ത് വീണ്ടും ശ്രമിക്കുക.</translation>
+<translation id="433213510553688132">പിന്തുടരുന്നു...</translation>
 <translation id="4335835283689002019">സുരക്ഷിത ബ്രൗസിംഗ് ഓഫാണ്</translation>
 <translation id="4351244548802238354">ഡയലോഗ് അടയ്‌ക്കുക</translation>
 <translation id="4378154925671717803">ഫോൺ</translation>
@@ -476,14 +492,15 @@
 <translation id="4411535500181276704">ലൈറ്റ് മോഡ്</translation>
 <translation id="5749788945734786627">നിങ്ങളുടെ Brave അക്കൗണ്ട് മാനേജ് ചെയ്യുക</translation>
 <translation id="4427306783828095590">ഫിഷിംഗും മാല്‍വെയറും ബ്ലോക്ക് ചെയ്യുന്നതിന് മെച്ചപ്പെടുത്തിയ പരിരക്ഷ കൂടുതൽ കാര്യങ്ങൾ ചെയ്യുന്നു</translation>
-<translation id="8856898588039823173">Brave നൽകുന്ന ലൈറ്റ് പേജ്. യഥാർത്ഥ പേജ് ലോഡ് ചെയ്യാൻ ടാപ്പ് ചെയ്യുക.</translation>
 <translation id="4452411734226507615"><ph name="TAB_TITLE"/> ടാബ് അടയ്ക്കുക</translation>
 <translation id="4452548195519783679"><ph name="FOLDER_NAME"/> ഫോൾഡറിലേക്ക് ബുക്ക്മാർക്ക് ചെയ്‌തു</translation>
 <translation id="4472118726404937099">ഉപകരണങ്ങളിൽ ഉടനീളം സമന്വയിപ്പിക്കാനും വ്യക്തിപരമാക്കാനും, സൈൻ ഇൻ ചെയ്‌ത് സമന്വയിപ്പിക്കൽ ഓണാക്കുക</translation>
 <translation id="918192811481327695">Brave-ന്റെ ഫീച്ചറുകളും പ്രകടനവും മെച്ചപ്പെടുത്താൻ സഹായിക്കുക</translation>
 <translation id="3133489217401741157">Brave-നുള്ള <ph name="MODULE"/> ഇൻസ്‌റ്റാൾ ചെയ്യുന്നു…</translation>
 <translation id="53119194224775367">Brave-ന്റെ എല്ലാ ആപ്പ് വിവരങ്ങളും ശാശ്വതമായി ഇല്ലാതാക്കും. ഇതിൽ എല്ലാ ഫയലുകളും ക്രമീകരണവും അക്കൗണ്ടുകളും ഡാറ്റാബേസുകളും മറ്റും ഉൾപ്പെടുന്നു.</translation>
+<translation id="3966104135245031874">സമന്വയിപ്പിച്ച പാസ്‌വേഡുകൾ നിങ്ങളുടെ Brave അക്കൗണ്ട് ഉപയോഗിച്ച് എൻക്രിപ്റ്റ് ചെയ്യുക</translation>
 <translation id="4493497663118223949">ലൈറ്റ് മോഡ് ഓണാണ്</translation>
+<translation id="4504667196171871375">വൈഫൈയിലും മൊബൈൽ ഡാറ്റയിലും</translation>
 <translation id="4508528996305412043">ഫീഡ് കാർഡ് മെനു തുറന്നു</translation>
 <translation id="4508642716788467538">നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക</translation>
 <translation id="4513387527876475750">{DAYS,plural, =1{# ദിവസം മുമ്പ്}other{# ദിവസം മുമ്പ്}}</translation>
@@ -501,11 +518,13 @@
 <translation id="4561979708150884304">കണക്ഷൻ ഇല്ല</translation>
 <translation id="4565377596337484307">പാസ്‌വേഡ് മറയ്ക്കുക</translation>
 <translation id="4572422548854449519">മാനേജ് ചെയ്‌ത അക്കൗണ്ടിലേക്ക് സൈൻ ഇൻ ചെയ്യുക</translation>
+<translation id="4576892426230499203">മറ്റൊരു പരിശോധിച്ചുറപ്പിക്കൽ ഓപ്ഷൻ പരീക്ഷിക്കുക</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{# മിനിറ്റ് മുമ്പ്}other{# മിനിറ്റ് മുമ്പ്}}</translation>
 <translation id="4587589328781138893">Sites</translation>
 <translation id="4594952190837476234">ഈ ഓഫ്‌ലൈൻ പേജ് <ph name="CREATION_TIME"/> -ന് സൃഷ്‌ടിച്ചതാണ്, അതിനാൽ ഓൺലൈൻ പതിപ്പിൽ നിന്ന് വ്യത്യസ്തമായിരിക്കാം.</translation>
 <translation id="4605958867780575332">നീക്കംചെയ്‌ത ഇനം: <ph name="ITEM_TITLE"/></translation>
 <translation id="4616150815774728855"><ph name="WEBAPK_NAME"/> തുറക്കുക</translation>
+<translation id="4619564267100705184">ഇത് നിങ്ങൾ തന്നെയാണെന്ന് പരിശോധിച്ചുറപ്പിക്കുക</translation>
 <translation id="4634124774493850572">പാസ്‌വേഡ് ഉപയോഗിക്കുക</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{അപഹരിക്കപ്പെട്ട ഒരു പാസ്‌വേഡ്}other{അപഹരിക്കപ്പെട്ട # പാസ്‌വേഡുകൾ}}</translation>
 <translation id="4650364565596261010">സിസ്‌റ്റം ഡിഫോൾട്ട്</translation>
@@ -525,7 +544,6 @@
 <translation id="4939482511480190003">Brave മെച്ചപ്പെടുത്താൻ സഹായിക്കുക. <ph name="BEGIN_LINK"/>സർവേയിൽ പങ്കെടുക്കുക.<ph name="END_LINK"/></translation>
 <translation id="47217992755561375">നിങ്ങളുടെ പ്രധാന സൈറ്റുകൾ കാണുക</translation>
 <translation id="4732120983431207637">സ്‌റ്റാക്ക് അൺവൈൻഡർ</translation>
-<translation id="4732693703583195378">നിങ്ങളുടെ ടാബ്‌ലെറ്റിന്റെ ഹോം സ്ക്രീനിലേക്ക് ഈ സൈറ്റ് ചേർക്കുന്നതിലൂടെ ഇവിടെ എളുപ്പം എത്താനാകും</translation>
 <translation id="4738836084190194332">അവസാനം സമന്വയിപ്പിച്ചത്: <ph name="WHEN"/></translation>
 <translation id="4749960740855309258">പുതിയൊരു ടാബ് തുറക്കുക</translation>
 <translation id="4759238208242260848">ഡൌണ്‍ലോഡുകള്‍</translation>
@@ -564,7 +582,7 @@
 <translation id="4925120120285606924">സ്‌ക്രീൻഷോട്ട് <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">നിങ്ങളുടെ പാസ്‌വേഡുകൾ, ടെക്സ്റ്റ് ഫയൽ ആയി എക്സ്പോർട്ട് ചെയ്യുന്നതും ഡൗൺലോഡ് ചെയ്യുന്നതുമാണ്. ലക്ഷ്യസ്ഥാന ഫോൾഡറിലേക്ക് ആക്സസുള്ള ഏതൊരു വ്യക്തിക്കും ആപ്പിനും അവ ദൃശ്യമാവും.</translation>
 <translation id="1955495299630319741"><ph name="DOMAIN_NAME"/> മാനേജ് ചെയ്യുന്ന അക്കൗണ്ടിൽ നിന്ന് സൈൻ ഔട്ട് ചെയ്യുന്നതിനാൽ, ഈ ഉപകരണത്തിൽ നിന്ന് നിങ്ങളുടെ Brave ഡാറ്റ ഇല്ലാതാക്കപ്പെടും. അത് തുടർന്നും നിങ്ങളുടെ Brave അക്കൗണ്ടിൽ ഉണ്ടായിരിക്കുന്നതാണ്.</translation>
-<translation id="4936039914467572121">ഈ സൈറ്റിലേക്ക് വേഗത്തിൽ എത്തുക</translation>
+<translation id="4941179133499732445">നിങ്ങളുടെ ശബ്‌ദം ഉപയോഗിച്ച് തിരയാൻ മൈക്കിൽ ടാപ്പ് ചെയ്യുക</translation>
 <translation id="4943703118917034429">വെർച്വൽ റിയാലിറ്റി</translation>
 <translation id="4943872375798546930">ഫലങ്ങളൊന്നുമില്ല</translation>
 <translation id="4961107849584082341">ഈ പേജ് ഏത് ഭാഷയിലേക്കും വിവര്‍ത്തനം ചെയ്യുക</translation>
@@ -579,11 +597,12 @@
 <translation id="5011311129201317034"><ph name="SITE"/> കണക്‌റ്റുചെയ്യാൻ താൽപ്പര്യപ്പെടുന്നു</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="5039804452771397117">അനുവദിക്കൂ</translation>
-<translation id="5040262127954254034">സ്വകാര്യത</translation>
+<translation id="5061533557687621530">കാലാവസ്ഥ പരിശോധിക്കാൻ, മൈക്കിൽ ടാപ്പ് ചെയ്ത് “ഇന്നത്തെ കാലാവസ്ഥ എന്താണ്?” എന്ന് പറയുക</translation>
 <translation id="5087580092889165836">കാർഡ് ചേർക്കുക</translation>
 <translation id="5091249083535528968">വിപുലീകൃത ഉപയോഗ ഡാറ്റ</translation>
 <translation id="509429900233858213">ഒരു പിശക് സംഭവിച്ചു.</translation>
 <translation id="510275257476243843">ഒരു മണിക്കൂർ ശേഷിക്കുന്നു</translation>
+<translation id="5118713593561876160">താൽപ്പര്യങ്ങൾ</translation>
 <translation id="5127805178023152808">സമന്വയം ഓഫാണ്</translation>
 <translation id="5132942445612118989">നിങ്ങളുടെ പാസ്‌വേഡുകളും ചരിത്രവും മറ്റും എല്ലാ ഉപകരണങ്ങളിലും സമന്വയിപ്പിക്കുക</translation>
 <translation id="5136035049889637840">സമാന ഉൽപ്പന്നം വാങ്ങൂ <ph name="BEGIN_NEW"/>പുതിയത്<ph name="END_NEW"/></translation>
@@ -591,20 +610,25 @@
 <translation id="5152843274749979095">ഉപയോഗിക്കാനാവുന്ന ആപ്‌സൊന്നും ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല</translation>
 <translation id="5161254044473106830">പേര് ആവശ്യമാണ്</translation>
 <translation id="5162754098604580781">{FILE_COUNT,plural, =1{ഒരു ഡൗൺലോഡ് പരാജയപ്പെട്ടു.}other{# ഡൗൺലോഡുകൾ പരാജയപ്പെട്ടു.}}</translation>
+<translation id="5168824020667180049"><ph name="SITE_NAME"/> പിന്തുടരുന്നു</translation>
 <translation id="5170568018924773124">ഫോള്‍ഡറില്‍ കാണിക്കുക</translation>
 <translation id="8445059357334030806">Brave-ൽ തുറക്കുക</translation>
+<translation id="5188992787241350004">നിങ്ങളുടെ ശബ്‌ദം ഉപയോഗിച്ച് തിരയൂ</translation>
 <translation id="5191251636205085390">മൂന്നാം കക്ഷി കുക്കികൾക്ക് പകരം നിലവിൽ വരാൻ പോകുന്ന പുതിയ സാങ്കേതികവിദ്യകളെക്കുറിച്ച് അറിയുകയും അവയെ നിയന്ത്രിക്കുകയും ചെയ്യുക</translation>
 <translation id="5193988420012215838">നിങ്ങളുടെ ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</translation>
 <translation id="5199929503336119739">ഔദ്യോഗിക പ്രൊഫൈൽ</translation>
+<translation id="5201464744567315552"><ph name="TIME"/>-ന് ഈ ഡൗൺലോഡ് ആരംഭിക്കുമ്പോൾ നിങ്ങൾ ഒരു അറിയിപ്പ് കാണും.</translation>
 <translation id="5204967432542742771">പാസ്‌വേഡ് നല്‍കുക</translation>
 <translation id="5210286577605176222">മുമ്പത്തെ ടാബിലേക്ക് പോകുക</translation>
 <translation id="5210365745912300556">ടാബ് അടയ്ക്കൂക</translation>
 <translation id="5213672942202814946">ശബ്ദ തിരയൽ ഉപയോഗിക്കൂ</translation>
+<translation id="1051285409463218679">Brave Pay ഉപയോഗിക്കുന്ന വിലാസങ്ങളും പേയ്മെന്റ് രീതികളും</translation>
 <translation id="5222676887888702881">സൈൻ ഔട്ട് ചെയ്യുക</translation>
 <translation id="5227554086496586518">തിരയൽ ഫലങ്ങൾ കാണാൻ ടാപ്പ് ചെയ്യുക</translation>
 <translation id="5230560987958996918"><ph name="SITE"/> എന്നതിന് സമീപമുള്ള Bluetooth ഉപകരണങ്ങൾ സ്‌കാൻ ചെയ്യണമെന്നുണ്ട്. ഇനിപ്പറയുന്ന ഉപകരണങ്ങൾ കണ്ടെത്തി:</translation>
 <translation id="5233638681132016545">പുതിയ ടാബ്</translation>
 <translation id="5250483651202458397">സ്‌ക്രീൻഷോട്ട്. അടയ്ക്കാൻ ടാപ്പ് ചെയ്യുക.</translation>
+<translation id="5262378156578470238"><ph name="DATE"/>-ന് ഈ ഡൗൺലോഡ് ആരംഭിക്കുമ്പോൾ നിങ്ങൾ ഒരു അറിയിപ്പ് കാണും.</translation>
 <translation id="526421993248218238">ഈ പേജ് ലോഡ് ചെയ്യാനായില്ല</translation>
 <translation id="5271967389191913893">ഡൗൺലോഡ് ചെയ്യേണ്ട ഉള്ളടക്കം ഉപകരണത്തിന് തുറക്കാനാവില്ല.</translation>
 <translation id="5292796745632149097">ഇതിലേക്ക് അയയ്ക്കുക</translation>
@@ -630,6 +654,7 @@
 <translation id="5441522332038954058">വിലാസ ബാറിലേക്ക് പോകുക</translation>
 <translation id="544776284582297024">ടാബുകൾ തുറക്കാനും ഒരേ സമയം വ്യത്യസ്‌ത പേജുകൾ സന്ദർശിക്കാനും 'തുറന്നിരിക്കുന്ന ടാബുകൾ' ബട്ടൺ ടാപ്പ് ചെയ്യുക</translation>
 <translation id="545042621069398927">നിങ്ങളുടെ ഡൗൺലോഡ് വേഗത്തിലാക്കുന്നു.</translation>
+<translation id="5454166040603940656"><ph name="PROVIDER"/> എന്നതിനൊപ്പം</translation>
 <translation id="5456381639095306749">പേജ് ഡൗൺലോഡ് ചെയ്യുക</translation>
 <translation id="548278423535722844">മാപ്‌സ് ആപ്പിൽ തുറക്കുക</translation>
 <translation id="7176798998723526245">Navigate Brave</translation>
@@ -671,7 +696,6 @@
 <translation id="572328651809341494">അടുത്തിടെയുള്ള ടാബുകൾ</translation>
 <translation id="5723735397759933332">HTTPS പേജുകളിൽ ചിത്രങ്ങൾ ഒപ്റ്റിമൈസ് ചെയ്യുന്നതിലൂടെ, ലൈറ്റ് മോഡ് ഇപ്പോൾ നിങ്ങൾക്കായി കൂടുതൽ ഡാറ്റ ലാഭിക്കുന്നു.</translation>
 <translation id="5726692708398506830">പേജിൽ എല്ലാം വലുതായി നൽകുക</translation>
-<translation id="5732819098735351888">വൈഫൈയിൽ ഡൗൺലോഡ് ആരംഭിക്കും.</translation>
 <translation id="5733983706093266635">QR കോഡ് സൃഷ്‌ടിക്കാനാകുന്നില്ല. URL-ൽ <ph name="CHARACTER_LIMIT"/> പ്രതീകങ്ങളിൽ കൂടുതൽ അടങ്ങിയിരിക്കുന്നു.</translation>
 <translation id="5748802427693696783">സ്റ്റാൻഡേർഡ് ടാബുകളിലേക്ക് മാറി</translation>
 <translation id="3088191967551450609">ഫയലുകൾ ഡൗൺലോഡ് ചെയ്യാൻ Brave-ന് സ്റ്റോറേജ് ആക്‌സസ് ആവശ്യമുണ്ട്.</translation>
@@ -703,6 +727,7 @@
 <translation id="5864174910718532887">വിശദാംശങ്ങൾ: സൈറ്റിൻ്റെ പേരനുസരിച്ച് അടുക്കിയത്</translation>
 <translation id="5864419784173784555">മറ്റൊരു ഡൗൺലോഡിനായി കാത്തിരിക്കുന്നു…</translation>
 <translation id="5869522115854928033">സംരക്ഷിച്ച പാസ്‌വേഡുകള്‍</translation>
+<translation id="5880748256563468367">ഫീഡിലേക്ക് പോകുക</translation>
 <translation id="9037412730408024068">ടാസ്‌ക്കുകൾ പൂർത്തിയാക്കാൻ നിങ്ങളെ സഹായിക്കുന്നതിനായി, നിങ്ങൾ അസിസ്‌റ്റന്റ് ഉപയോഗിക്കുന്ന സൈറ്റുകളുടെ URL-കളും അവയുടെ ഉള്ളടക്കവും അസിസ്‌റ്റന്റിലൂടെ നിങ്ങൾ സമർപ്പിക്കുന്ന വിവരങ്ങളും Brave-ന് ലഭിക്കും.</translation>
 <translation id="5919204609460789179">സമന്വയിപ്പിക്കാൻ തുടങ്ങുന്നതിന്, <ph name="PRODUCT_NAME"/> അപ്‌ഡേറ്റ് ചെയ്യുക</translation>
 <translation id="5937580074298050696"><ph name="AMOUNT"/> സംരക്ഷിച്ചു</translation>
@@ -720,6 +745,8 @@
 <translation id="5979084224081478209">പാസ്‌വേഡ് പരിശോധിക്കൂ</translation>
 <translation id="1455125811784733159">അദൃശ്യ ടാബ് തുറക്കുക</translation>
 <translation id="6456271171669383967">Brave ഉപയോഗിക്കുക</translation>
+<translation id="6000203700195075278">വീണ്ടും പിന്തുടരുക</translation>
+<translation id="1224925568717290201"><ph name="BEGIN_LINK1"/>തിരയൽ<ph name="END_LINK1"/> അല്ലെങ്കിൽ മറ്റ് തരത്തിലുള്ള ചരിത്രം മായ്ക്കാൻ <ph name="BEGIN_LINK2"/>എന്റെ Brave ആക്റ്റിവിറ്റി<ph name="END_LINK2"/> സന്ദർശിക്കുക</translation>
 <translation id="6005538289190791541">നിർദ്ദേശിച്ച പാസ്‌വേഡ്</translation>
 <translation id="6036057147555329831">അധിക ICU</translation>
 <translation id="6039379616847168523">അടുത്ത ടാബിലേക്ക് പോകുക</translation>
@@ -745,7 +772,6 @@
 <translation id="6159335304067198720"><ph name="PERCENT"/> ഡാറ്റ ലാഭിക്കൽ</translation>
 <translation id="6186394685773237175">അപഹരിക്കപ്പെട്ട പാസ്‌വേഡുകളൊന്നും കണ്ടെത്തിയില്ല</translation>
 <translation id="6192907950379606605">ചിത്ര വിവരണങ്ങൾ നേടുക</translation>
-<translation id="6206830853671714236">എപ്പോൾ ഡൗൺലോഡ് ചെയ്യണമെന്ന് തിരഞ്ഞെടുക്കുക</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/> അല്ലേ?</translation>
 <translation id="6211386937064921208">ഈ പേജ് പ്രിവ്യു ചെയ്യുന്നു</translation>
 <translation id="6218096829563201111">സമാന ഉൽപ്പന്നം തിരയൂ <ph name="BEGIN_NEW"/>പുതിയത്<ph name="END_NEW"/></translation>
@@ -766,12 +792,14 @@
 <translation id="6316139424528454185">Android പതിപ്പ് പിന്തുണയ്‌ക്കുന്നതല്ല</translation>
 <translation id="6324034347079777476">Android സിസ്‌റ്റം സമന്വയിപ്പിക്കൽ പ്രവർത്തനരഹിതമാക്കി</translation>
 <translation id="6324977638108296054">ഹൈലൈറ്റിലേക്കുള്ള ലിങ്ക് സൃഷ്‌ടിക്കാനാകുന്നില്ല</translation>
+<translation id="6324997754869598316">(പിശക് <ph name="ERROR_CODE"/>)</translation>
 <translation id="6333140779060797560"><ph name="APPLICATION"/> വഴി പങ്കിടുക</translation>
 <translation id="6337234675334993532">എന്‍ക്രിപ്ഷന്‍</translation>
 <translation id="6341580099087024258">ഫയലുകൾ എവിടെയാണ് സംരക്ഷിക്കേണ്ടതെന്ന് ചോദിക്കുക</translation>
 <translation id="6342069812937806050">ഇപ്പോള്‍‌</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 എന്നതും ‌മറ്റ് <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> പേയ്‌മെന്റ് രീതികളും}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 എന്നതും ‌മറ്റ് <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> പേയ്‌മെന്റ് രീതികളും}}</translation>
 <translation id="6345878117466430440">വായിച്ചതായി അടയാളപ്പെടുത്തുക</translation>
+<translation id="6363990818884053551">സമന്വയിപ്പിക്കാൻ തുടങ്ങുന്നതിന്, ഇത് നിങ്ങൾ തന്നെയാണെന്ന് പരിശോധിച്ചുറപ്പിക്കുക</translation>
 <translation id="6364438453358674297">ചരിത്രത്തിൽ നിന്ന് നിർദ്ദേശം നീക്കംചെയ്യണോ?</translation>
 <translation id="6378173571450987352">വിശദാംശങ്ങൾ: ഉപയോഗിച്ച ഡാറ്റയുടെ അളവനുസരിച്ച് അടുക്കിയത്</translation>
 <translation id="4993481112200507346"><ph name="APP_NAME"/>, Brave-ൽ തുറക്കും. തുടരുന്നതിലൂടെ, നിങ്ങൾ <ph name="BEGIN_LINK1"/>Brave സേവന നിബന്ധനകളും<ph name="END_LINK1"/> <ph name="BEGIN_LINK2"/>Brave, Chrome OS അധിക സേവന നിബന്ധനകളും<ph name="END_LINK2"/> അംഗീകരിക്കുന്നു.</translation>
@@ -781,6 +809,7 @@
 <translation id="6402652558933147609"><ph name="VIOLATED_URL"/> -ൽ <ph name="ERROR_CODE"/></translation>
 <translation id="6404511346730675251">ബുക്ക്‌മാർക്ക് എഡിറ്റ് ചെയ്യുക</translation>
 <translation id="6406506848690869874">Sync</translation>
+<translation id="6407224748847589805">നിങ്ങളുടെ കമ്പ്യൂട്ടറിലേക്ക് കണക്റ്റ് ചെയ്യാനാകുന്നില്ല. മറ്റൊരു പരിശോധിച്ചുറപ്പിക്കൽ ഓപ്ഷൻ പരീക്ഷിക്കുക.</translation>
 <translation id="6410404864818553978">അടിസ്ഥാന ഉപയോഗ ഡാറ്റ</translation>
 <translation id="6410883413783534063">ഒരേ സമയം വ്യത്യസ്‌ത പേജുകൾ സന്ദർശിക്കാൻ ടാബുകൾ തുറക്കുക</translation>
 <translation id="7810992039564280750">Brave-ൽ സംഭരിച്ചിരിക്കുന്ന സുരക്ഷിതമല്ലാത്ത സൈറ്റുകളുടെ ലിസ്റ്റ് ഉപയോഗിച്ച് URL-കൾ പരിശോധിക്കുന്നു. ഒരു സൈറ്റ് നിങ്ങളുടെ പാസ്‌വേഡ് മോഷ്‌ടിക്കാൻ ശ്രമിക്കുമ്പോഴോ നിങ്ങൾ ഒരു ദോഷകരമായ ഫയൽ ഡൗൺലോഡ് ചെയ്യുമ്പോഴോ, പേജ് ഉള്ളടക്കത്തിന്റെ ബിറ്റുകൾ ഉൾപ്പെടെയുള്ള URL-കളും Brave സുരക്ഷിത ബ്രൗസിംഗിലേക്ക് അയച്ചേക്കാം.</translation>
@@ -834,6 +863,7 @@
 <translation id="666731172850799929"><ph name="APP_NAME"/>-ൽ തുറക്കുക</translation>
 <translation id="7392539049993970338">Brave സ്വകാര്യതാ അറിയിപ്പ്</translation>
 <translation id="6671495933530132209">ചിത്രം പകർത്തുക</translation>
+<translation id="6674571176963658787">സമന്വയിപ്പിക്കാൻ തുടങ്ങുന്നതിന്, നിങ്ങളുടെ പാസ്‌ഫ്രെയ്‌സ് നൽകുക</translation>
 <translation id="8581481290581777242">ഉപകരണത്തില്‍ നിന്ന് Brave ഡാറ്റ മായ്ക്കണോ?</translation>
 <translation id="6697492270171225480">ഒരു പേജ് കണ്ടെത്താനാകുന്നില്ലെങ്കിൽ, സമാന പേജുകൾക്കായുള്ള നിർദ്ദേശങ്ങൾ കാണിക്കുക</translation>
 <translation id="6698801883190606802">സമന്വിത ഡാറ്റ നിയന്ത്രിക്കുക</translation>
@@ -848,7 +878,6 @@
 <translation id="8418237809013783651">Brave-ലേക്ക് സെെൻ ഇൻ ചെയ്യുക, തുറന്നു.</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612"><ph name="TAB_TITLE"/>, ടാബ്, തിരഞ്ഞെടുത്തു</translation>
-<translation id="4991384657077828949">Brave സുരക്ഷ മെച്ചപ്പെടുത്താൻ സഹായിക്കുക</translation>
 <translation id="6846298663435243399">ലോഡുചെയ്യുന്നു...</translation>
 <translation id="6850409657436465440">നിങ്ങളുടെ ഡൗൺലോഡ് ഇപ്പോഴും പുരോഗതിയിലാണ്</translation>
 <translation id="6850830437481525139"><ph name="TAB_COUNT"/> ടാബുകൾ അടച്ചു</translation>
@@ -875,6 +904,7 @@
 <translation id="6981982820502123353">ഉപയോഗസഹായി</translation>
 <translation id="6989267951144302301">ഡൗൺലോഡ് ചെയ്യാനായില്ല</translation>
 <translation id="6995899638241819463">പാസ്‌വേഡുകൾ, ഡാറ്റാ ലംഘനത്തിന്റെ ഭാഗമായി വെളിപ്പെട്ടാൽ നിങ്ങൾക്ക് മുന്നറിയിപ്പ് നൽകുന്നു</translation>
+<translation id="7001056293070445572">ഈ ഫയൽ വലുതാണ് (<ph name="FILE_SIZE"/>)</translation>
 <translation id="7015203776128479407">പ്രാഥമിക സമന്വയ സജ്ജീകരണം പൂർത്തിയാക്കിയിട്ടില്ല. സമന്വയം ഓഫാണ്.</translation>
 <translation id="7022756207310403729">ബ്രൗസറിൽ തുറക്കുക</translation>
 <translation id="702463548815491781">TalkBack അല്ലെങ്കിൽ ആക്‌സസ് മാറുക ഓണായിരിക്കുമ്പോൾ ശുപാർശ ചെയ്യുന്നു</translation>
@@ -890,9 +920,9 @@
 <translation id="8208853227947884571">Brave അപ് റ്റു ഡേറ്റാണ്</translation>
 <translation id="7106762743910369165">നിങ്ങളുടെ സ്ഥാപനമാണ് നിങ്ങളുടെ ബ്രൗസർ മാനേജ് ചെയ്യുന്നത്</translation>
 <translation id="1968157943459987269">ചരിത്രവും വിലാസ ബാറിലെ സ്വയം പൂർത്തീകരണങ്ങളും മായ്ക്കുന്നു. നിങ്ങളുടെ Brave അക്കൗണ്ടിന് <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> എന്നതിൽ മറ്റ് തരത്തിലുള്ള ബ്രൗസിംഗ് ചരിത്രമുണ്ടായിരിക്കാം.</translation>
+<translation id="7134993907760847334">സൈൻ ഇൻ ചെയ്‌തിരിക്കുന്ന എല്ലാ ഉപകരണത്തിൽ നിന്നും ചരിത്രം മായ്‌ക്കുന്നു.</translation>
 <translation id="7138678301420049075">മറ്റുള്ളവ</translation>
 <translation id="7146622961999026732">ഈ സൈറ്റുകളും ആപ്പുകളും നിങ്ങൾക്ക് പ്രാധാന്യമുള്ളവയാകാം:</translation>
-<translation id="7149158118503947153"><ph name="DOMAIN_NAME"/>-ല്‍ നിന്ന് <ph name="BEGIN_LINK"/>യഥാര്‍ത്ഥ പേജ് ലോഡ് ചെയ്യുക<ph name="END_LINK"/></translation>
 <translation id="7149893636342594995">അവസാന 24 മണിക്കൂർ</translation>
 <translation id="7173114856073700355">ക്രമീകരണം തുറക്കുക</translation>
 <translation id="7177466738963138057">നിങ്ങൾക്കിത് പിന്നീട് ക്രമീകരണങ്ങളിൽ മാറ്റാനാവും</translation>
@@ -967,7 +997,7 @@
 <translation id="7630202231528827509">ദാതാവിന്റെ URL</translation>
 <translation id="7638584964844754484">പാസ്‌ഫ്രെയ്‌സ് തെറ്റാണ്</translation>
 <translation id="7641339528570811325">ബ്രൗസിംഗ് ഡാറ്റ മായ്‌ക്കുക...</translation>
-<translation id="3598578758776312506">Brave ക്രെഡെൻഷ്യലുകൾ ഉപയോഗിച്ച് പാസ്‌വേഡുകൾ എൻക്രിപ്റ്റ് ചെയ്യുക</translation>
+<translation id="7646772052135772216">പാസ്‍വേഡ് സമന്വയം പ്രവർത്തിക്കുന്നില്ല</translation>
 <translation id="7658239707568436148">റദ്ദാക്കൂ</translation>
 <translation id="7665369617277396874">അക്കൗണ്ട് ചേർക്കുക</translation>
 <translation id="766587987807204883">ഇവിടെ ദൃശ്യമാകുന്ന ലേഖനങ്ങൾ നിങ്ങൾ ഓഫ്‌ലൈൻ ആകുന്ന സമയത്ത് പോലും വായിക്കാം</translation>
@@ -976,7 +1006,6 @@
 <translation id="7704317875155739195">സ്വമേധയാ പൂർത്തിയാക്കുന്ന തിരയലുകളും URL-കളും</translation>
 <translation id="7707922173985738739">മൊബൈൽ ഡാറ്റ ഉപയോഗിക്കുക</translation>
 <translation id="7725024127233776428">നിങ്ങൾ ബുക്ക്‌മാർക്ക് ചെയ്യുന്ന പേജുകൾ ഇവിടെ ദൃശ്യമാകും</translation>
-<translation id="1943176487615318915">അപകടകരമായ ആപ്പുകളും സൈറ്റുകളും കണ്ടെത്തുന്നതിന്, നിങ്ങൾ സന്ദർശിക്കുന്ന ചില പേജുകളുടെ URL, പരിമിത സിസ്റ്റം വിവരങ്ങൾ, ചില പേജ് ഉള്ളടക്കം എന്നിവ Brave Brave-ന് അയയ്ക്കുന്നു</translation>
 <translation id="7757787379047923882"><ph name="DEVICE_NAME"/> ഉപകരണത്തിൽ നിന്ന് പങ്കിട്ട ടെക്‌സ്റ്റ്</translation>
 <translation id="7761849928583394409">തീയതിയും സമയവും തിരഞ്ഞെടുക്കുക</translation>
 <translation id="7762668264895820836">SD കാർഡ് <ph name="SD_CARD_NUMBER"/></translation>
@@ -986,10 +1015,10 @@
 <translation id="7774809984919390718">{PAYMENT_METHOD,plural, =1{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 എന്നതും ‌മറ്റ് <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> പേയ്‌മെന്റ് രീതികളും}other{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 എന്നതും ‌മറ്റ് <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> പേയ്‌മെന്റ് രീതികളും}}</translation>
 <translation id="7778840695157240389">പുതിയ സ്‌റ്റോറികൾക്ക് പിന്നീട് വീണ്ടും പരിശോധിക്കൂ</translation>
 <translation id="4885054029571583374">വെബിൽ തിരയാനും നിങ്ങൾ തുറന്ന സൈറ്റുകളുമായി ഇടപഴകാനും Brave Assistant മികച്ച ശബ്‌ദാനുഭവം നൽകുന്നു. നിങ്ങൾ Brave Assistant ഉപയോഗിക്കുന്ന സൈറ്റുകളുടെ URL-ഉം അവയുടെ ഉള്ളടക്കവും ഇതിന് ലഭിക്കും.</translation>
-<translation id="7790349552933995572">ഹോം സ്ക്രീൻ</translation>
 <translation id="7791543448312431591">ചേര്‍ക്കൂ</translation>
 <translation id="7798392620021911922"><ph name="TAB_COUNT"/> ടാബുകൾ പുനഃസ്ഥാപിച്ചു</translation>
 <translation id="780301667611848630">വേണ്ട നന്ദി</translation>
+<translation id="7808889146555843082">ഈ പാസ്‌വേഡ് ഇല്ലാതാക്കുന്നത് <ph name="SITE"/> -ലെ നിങ്ങളുടെ അക്കൗണ്ട് ഇല്ലാതാക്കില്ല. നിങ്ങളുടെ <ph name="SITE"/> -ലെ അക്കൗണ്ട് മറ്റുള്ളവരിൽ നിന്ന് സുരക്ഷിതമായി സൂക്ഷിക്കാൻ അതിന്റെ പാസ്‌വേഡ് മാറ്റുകയോ അത് ഇല്ലാതാക്കുകയോ ചെയ്യുക.</translation>
 <translation id="7810647596859435254">ഇത് ഉപയോഗിച്ച് തുറക്കുക...</translation>
 <translation id="7815484226266492798">നീളത്തിലുള്ള സ്ക്രീന്‍ഷോട്ട്</translation>
 <translation id="7821588508402923572">നിങ്ങൾ ലാഭിച്ച ഡാറ്റ ഇവിടെ ദൃശ്യമാവും</translation>
@@ -997,6 +1026,7 @@
 <translation id="7068829570137757602">Brave സേവനങ്ങൾ</translation>
 <translation id="784934925303690534">സമയ ശ്രേണി</translation>
 <translation id="7851858861565204677">മറ്റ് ഉപകരണങ്ങൾ</translation>
+<translation id="7853202427316060426">പ്രവർത്തനം</translation>
 <translation id="7857691613771368249">ഫയലുകൾ എപ്പോൾ സംരക്ഷിക്കണമെന്ന് ചോദിക്കുക</translation>
 <translation id="7859988229622350291">ഒരിക്കലും വിവർത്തനം ചെയ്യരുത്</translation>
 <translation id="7875915731392087153">ഇമെയിൽ സൃഷ്‌ടിക്കുക</translation>
@@ -1013,6 +1043,7 @@
 <translation id="7930998711684428189">പാസ്‌വേഡുകൾ, ഡാറ്റാ ലംഘനത്തിന്റെ ഭാഗമായി വെളിപ്പെട്ടാൽ നിങ്ങൾക്ക് മുന്നറിയിപ്പ് നൽകുന്നു.</translation>
 <translation id="7942131818088350342"><ph name="PRODUCT_NAME"/> കാലഹരണപ്പെട്ടതാണ്.</translation>
 <translation id="7947953824732555851">അംഗീകരിച്ച് സൈൻ ഇൻ ചെയ്യുക</translation>
+<translation id="7961015016161918242">ഒരിക്കലും</translation>
 <translation id="7961926449547174351">നിങ്ങൾ സ്‌റ്റോറേജ് ആക്‌സസ് പ്രവർത്തനരഹിതമാക്കിയിരിക്കുന്നു, ക്രമീകരണത്തിൽ പോയി അത് പ്രവർത്തനക്ഷമമാക്കുക.</translation>
 <translation id="7963646190083259054">വെണ്ടർ:</translation>
 <translation id="5149323899804758325">QR കോഡ് സ്‌കാൻ ചെയ്യുന്നതിന് നിങ്ങളുടെ ക്രമീകരണം മാറ്റുക, ഇങ്ങനെ ചെയ്യുന്നതിലൂടെ Brave-ന് നിങ്ങളുടെ ക്യാമറ ഉപയോഗിക്കാം</translation>
@@ -1078,6 +1109,7 @@
 <translation id="834313815369870491">സൈറ്റുകൾ ഒരിക്കലും വിവർത്തനം ചെയ്യരുത്</translation>
 <translation id="8349013245300336738">ഉപയോഗിച്ച ഡാറ്റയുടെ അളവിനനുസരിച്ച് അടുക്കുക</translation>
 <translation id="835847953965672673"><ph name="NUMBER_OF_DOWNLOADS"/> ഡൗൺലോഡുകൾ പുനഃസ്ഥാപിച്ചു</translation>
+<translation id="8362134094656482681">നിങ്ങൾക്ക് താൽപ്പര്യമുള്ള വിഷയങ്ങൾ മാനേജ് ചെയ്യുക</translation>
 <translation id="8364299278605033898">ജനപ്രിയ വെബ്‌സൈറ്റുകൾ കാണുക</translation>
 <translation id="8368027906805972958">പരിചിതമല്ലാത്തതോ പിന്തുണയ്‌ക്കാത്തതോ ആയ ഉപകരണം (<ph name="DEVICE_ID"/>)</translation>
 <translation id="8372925856448695381"><ph name="LANG"/> തയ്യാറാണ്.</translation>
@@ -1092,6 +1124,7 @@
 <translation id="8445448999790540984">പാസ്‌വേഡുകൾ എക്‌സ്‌പോർട്ട് ചെയ്യാനാവുന്നില്ല</translation>
 <translation id="8461694314515752532">നിങ്ങളുടെ സമന്വയ പാസ്‌ഫ്രെയ്‌സ് ഉപയോഗിച്ച്, സമന്വയിപ്പിച്ച ഡാറ്റ എൻക്രി‌പ്‌റ്റ് ചെയ്യുക</translation>
 <translation id="8466613982764129868"><ph name="TARGET_DEVICE_NAME"/> ഉപകരണം ഇന്റർനെറ്റിലേക്ക് കണക്‌റ്റ് ചെയ്‌തിട്ടുണ്ടെന്ന് ഉറപ്പാക്കുക</translation>
+<translation id="8473863474539038330">വിലാസങ്ങളും മറ്റും</translation>
 <translation id="8481980314595922412">ട്രയൽ ഫീച്ചറുകൾ ഓണാണ്</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="8489271220582375723">ചരിത്ര പേജ് തുറക്കുക</translation>
@@ -1108,6 +1141,7 @@
 <translation id="8559990750235505898">പേജുകൾ മറ്റ് ഭാഷകളിലേക്ക് വിവർത്തനം ചെയ്യാനുള്ള ഓഫർ</translation>
 <translation id="8560602726703398413">ബുക്ക്‌മാർക്കുകളിൽ നിങ്ങളുടെ വായനാ ലിസ്‌റ്റ് കണ്ടെത്തൂ</translation>
 <translation id="8562452229998620586">സംരക്ഷിച്ച പാസ്‌വേഡുകൾ ഇവിടെ ദൃശ്യമാകും.</translation>
+<translation id="856481929701340285">ഡെസ്‌ക്‌ടോപ്പ് സൈറ്റ് അഭ്യർത്ഥിക്കുക</translation>
 <translation id="8569404424186215731"><ph name="DATE"/> മുതൽ</translation>
 <translation id="8571213806525832805">കഴിഞ്ഞ 4 ആഴ്ച</translation>
 <translation id="8572344201470131220">ചിത്രം പകർത്തി</translation>
@@ -1130,16 +1164,19 @@
 <translation id="8699120352855309748">ഈ ഭാഷകൾ വിവർത്തനം ചെയ്യേണ്ട</translation>
 <translation id="8712637175834984815">മനസ്സിലായി</translation>
 <translation id="8725066075913043281">വീണ്ടും ശ്രമിക്കുക</translation>
+<translation id="8730621377337864115">പൂർത്തിയാക്കി</translation>
 <translation id="8748850008226585750">കോൺടാക്‌റ്റുകൾ മറച്ചു</translation>
 <translation id="8773160212632396039">അഭ്യർത്ഥന പ്രോസസ് ചെയ്യുന്നു</translation>
 <translation id="8788265440806329501">നാവിഗേഷന്‍ ചരിത്രം അടച്ചു</translation>
 <translation id="8788968922598763114">അവസാനം അടച്ച ടാബ് വീണ്ടും തുറക്കുക</translation>
 <translation id="8798449543960971550">വായിച്ചവ</translation>
 <translation id="8812260976093120287">ചില വെബ്‌സൈറ്റുകളിൽ, നിങ്ങളുടെ ഉപകരണത്തിൽ ഉപയോഗിക്കാവുന്നതും മുകളിൽ പറഞ്ഞിരിക്കുന്നതുമായ പേയ്‌മെന്റ് ആപ്പുകൾ വഴി പണമടയ്‌ക്കാം.</translation>
+<translation id="8814190375133053267">Wi-Fi</translation>
 <translation id="881688628773363275">പ്രിവ്യൂ ചെയ്യാൻ ശ്രമിക്കുന്ന ടാബ് ഉള്ളടക്കം കാണാനാകില്ല.</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
 <translation id="883806473910249246">ഉള്ളടക്കം ഡൗൺലോഡ് ചെയ്യുമ്പോൾ ഒരു പിശകുണ്ടായി.</translation>
 <translation id="8840953339110955557">ഈ പേജ് ഓൺലൈൻ പതിപ്പിൽ നിന്ന് വ്യത്യസ്തമായിരിക്കാം.</translation>
+<translation id="8849001918648564819">മറച്ചിരിക്കുന്നു</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, ടാബ്</translation>
 <translation id="8854223127042600341">നിങ്ങളുടെ ഓഫ്‌ലൈൻ ഫയലുകൾ കാണുക</translation>
 <translation id="8856607253650333758">വിവരണങ്ങൾ നേടുക</translation>
@@ -1171,10 +1208,10 @@
 <translation id="9063523880881406963">'ഡെസ്‌ക്‌ടോപ്പ് സൈറ്റ് അഭ്യർത്ഥിക്കുക' ഓഫാക്കുക</translation>
 <translation id="9065203028668620118">എഡിറ്റ് ചെയ്യുക</translation>
 <translation id="5496925146144075335">Brave അപ്രധാനമായി കാണുന്ന സംഭരിച്ച ഡാറ്റ (ഉദാ: ക്രമീകരണം സംരക്ഷിച്ചിട്ടില്ലാത്തതോ നിങ്ങൾ ഇടയ്‌ക്കിടെ സന്ദർശിക്കാത്തതോ ആയ സൈറ്റുകൾ)</translation>
-<translation id="9069543557624799859"><ph name="TIME"/>-ന് ഡൗൺലോഡ് ആരംഭിക്കും.</translation>
 <translation id="9069999660519089861">വായിക്കാത്ത പേജുകൾ ഇല്ല</translation>
 <translation id="9070377983101773829">ശബ്ദ തിരയൽ ആരംഭിക്കുക</translation>
 <translation id="8494430740943879273">Brave നിർദേശിക്കുന്ന വ്യക്തിപരമാക്കിയ ഉള്ളടക്കം ലഭിക്കാൻ, സൈൻ ഇൻ ചെയ്‌ത് സമന്വയിപ്പിക്കൽ ഓണാക്കുക</translation>
+<translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9086302186042011942">സമന്വയിപ്പിക്കുന്നു</translation>
 <translation id="9086455579313502267">നെറ്റ്‌വർക്ക് ആക്സസ് ചെയ്യാനാകുന്നില്ല</translation>
 <translation id="9100505651305367705">പിന്തുണയുള്ളപ്പോൾ, ലളിതമാക്കിയ കാഴ്ചയിൽ ലേഖനങ്ങൾ കാണിക്കുന്ന സൗകര്യം നൽകുക</translation>
@@ -1187,10 +1224,8 @@
 <translation id="9133703968756164531"><ph name="ITEM_NAME"/> (<ph name="ITEM_ID"/>)</translation>
 <translation id="9137013805542155359">യഥാര്‍ത്ഥമായത് കാണിക്കുക</translation>
 <translation id="9148126808321036104">വീണ്ടും പ്രവേശിക്കുക</translation>
-<translation id="9149286894143103695">നിങ്ങളുടെ ഫോണിന്റെ ഹോം സ്ക്രീനിലേക്ക് ഈ സൈറ്റ് ചേർക്കുന്നതിലൂടെ ഇവിടെ എളുപ്പം എത്താനാകും</translation>
 <translation id="9155898266292537608">ഒരു വാക്കിൽ പെട്ടെന്ന് ടാപ്പ് ചെയ്‌തും നിങ്ങൾക്ക് തിരയാൻ കഴിയും</translation>
 <translation id="9169507124922466868">നാവിഗേഷൻ ചരിത്രം പകുതിയായി തുറന്നിരിക്കുന്നു</translation>
-<translation id="9191031968346938109">ഇതിലേക്ക് ചേർക്കുക…</translation>
 <translation id="9199368092038462496">{NUM_MINS,plural, =1{ഒരു മിനിറ്റ് മുമ്പ് പരിശോധിച്ചു}other{# മിനിറ്റ് മുമ്പ് പരിശോധിച്ചു}}</translation>
 <translation id="9204836675896933765">ഒരു ഫയൽ ശേഷിക്കുന്നു</translation>
 <translation id="9206873250291191720">A</translation>
@@ -1206,7 +1241,6 @@
 <translation id="962979164594783469">ഈ ആപ്പ് ഇൻസ്‌റ്റാൾ ചെയ്യുക</translation>
 <translation id="968900484120156207">നിങ്ങൾ സന്ദർശിക്കുന്ന പേജുകൾ ഇവിടെ ദൃശ്യമാകും</translation>
 <translation id="970715775301869095"><ph name="MINUTES"/> മിനിറ്റ് ശേഷിക്കുന്നു</translation>
-<translation id="974555521953189084">സമന്വയിപ്പിക്കൽ തുടങ്ങുന്നതിന് പാസ്‌ഫ്രെയ്‌സ് നൽകുക</translation>
 <translation id="981121421437150478">ഓഫ്‌ലൈൻ</translation>
 <translation id="983192555821071799">ടാബെല്ലാം അടയ്‌ക്കൂ</translation>
 <translation id="987264212798334818">പൊതുവായ</translation>

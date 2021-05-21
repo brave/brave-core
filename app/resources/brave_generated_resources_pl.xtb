@@ -69,15 +69,19 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="4227945450504703638">Wybrany dźwięk</translation>
 <translation id="7895302206188277628">Powiązane treści</translation>
 <translation id="4322612543319315652">Importuj wybrany tekst do IPFS</translation>
+<translation id="8883166554766780543">Zaimportuj i skopiuj link do migawki IPFS</translation>
+<translation id="3654831858282189202">Publikuj za pomocą klucza IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nowe okno prywatne z obsługą sieci Tor</translation>
 <translation id="4703780849509456860">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3488584642074079080">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="7475547933708221517">Udostępnij plik lokalny, używając IPFS</translation>
+<translation id="2286177249736199435">Udostępnij lokalny folder, używając IPFS</translation>
 <translation id="784573715436258741">Udostępnij plik lokalny, używając IPFS</translation>
 <translation id="6313675821927505581">Nowe okno prywatne z obsługą sieci Tor</translation>
 <translation id="2638041073279639246">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3425600262621021599">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
+<translation id="575838692088926391">Udostępnij lokalny folder, używając IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Usługa reklam Bat</translation>
 <translation id="7924918279836988121">Usługa Ledger Bat</translation>
@@ -157,7 +161,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="4112587618563511470">Kod synchronizacji jest nieprawidłowy. Sprawdź go i spróbuj ponownie.</translation>
 <translation id="2339730291919608488">Opuść łańcuch synchronizacji</translation>
 <translation id="115699408012835975">Jeśli zresetujesz synchronizację, będziesz musiał ponownie wpisać kod synchronizacji z innego urządzenia, aby zsynchronizować się z nim. Na pewno chcesz kontynuować?</translation>
-<translation id="6092564993102418148">Czy na pewno usunąć wybrane urządzenie z łańcucha synchronizacji?</translation>
+<translation id="6092564993102418148">Czy na pewno chcesz usunąć wybrane urządzenie z łańcucha synchronizacji?</translation>
 <translation id="3396347744975515056">Synchronizacja Brave została zaktualizowana i wymaga skonfigurowania</translation>
 <translation id="7473245612074035141">Rozpocznij konfigurację</translation>
 <translation id="3411013544209536575">Pomocne podpowiedzi</translation>
@@ -177,10 +181,23 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="7090046810227878892">Dostawca Ethereum do korzystania z Dapps</translation>
 <translation id="5913089932885076110">Wczytuj portfele kryptowalut podczas uruchamiania</translation>
 <translation id="757886143331967039">Wczytaj stare rozszerzenie portfeli kryptowaluty podczas uruchomienia</translation>
+<translation id="1834467296210148203">Pokaż ikonę Brave Wallet na pasku narzędzi</translation>
 <translation id="6864914031231797928">Zezwól na logowanie Google w przypadku rozszerzeń</translation>
 <translation id="5927916530277631319">Metoda rozwiązywania Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/> o DNS over HTTPS i uwzględnieniu prywatności Ethereum</translation>
 <translation id="5248318250177143470">Metoda rozwiązywania Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Skonfiguruj swoje klucze IPNS</translation>
+<translation id="951216659045543447">Podpisz zawartość za pomocą odpowiedniego klucza prywatnego i opublikuj ją w IPNS</translation>
+<translation id="7611728475758612204">Klucze dostępne do publikacji</translation>
+<translation id="911363100236037920">Wprowadź nazwę dla nowego klucza</translation>
+<translation id="6358469157239228181">Tej nazwy nie można użyć</translation>
+<translation id="8996633027318264334">Czy naprawdę chcesz usunąć <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Węzeł nie został uruchomiony</translation>
+<translation id="616058968889448209">Błąd uruchomienia usługi IPFS, więcej informacji jest dostępnych na stronie diagnostycznej <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' import klucza nie powiódł się</translation>
+<translation id="8275038454117074363">Importuj</translation>
+<translation id="3654980960391973513">Wygeneruj</translation>
+<translation id="5531501313997312487">Węzeł wyjściowy</translation>
 <translation id="9170907049676078643">Metoda rozwiązania zasobów IPFS</translation>
 <translation id="1327977588028644528">Brama</translation>
 <translation id="80225669816651290">Węzeł lokalny</translation>
@@ -260,7 +277,10 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="1391855377994926460">Przeglądaj sieć szybciej - do sześciu razy szybciej na największych portalach informacyjnych.</translation>
 <translation id="9218430445555521422">Ustaw jako domyślną</translation>
 <translation id="3479552764303398839">Nie teraz</translation>
+<translation id="6040143037577758943">Zamknij</translation>
+<translation id="5600566490506283344">Powiadomienie Brave Ad</translation>
 <translation id="4877147287319222750">Dodaj do paska bocznego</translation>
+<translation id="4233010476457917696">Pokaż pasek boczny</translation>
 <translation id="5404213409401164238">Pokaż boczny pasek.</translation>
 <translation id="7561196759112975576">Zawsze</translation>
 <translation id="7060352228894039151">Po najechaniu myszką</translation>

@@ -819,6 +819,18 @@
     "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವ ಮೂಲಕ ಮತ್ತು ಅದನ್ನು bitFlyer ಖಾತೆಗೆ ಲಿಂಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು ಹೆಚ್ಚು ಸುಲಭವಾಗಿ Brave Rewards ಮೂಲಕ ಗಳಿಸಿದ ಟೋಕನ್ಗಳನ್ನು ಸಂಗ್ರಹಿಸಲು ಮತ್ತು ನಿರ್ವಹಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "ನಿಮ್ಮ Brave ಬ್ರೌಸರ್ ಅನ್ನು ನಿಮ್ಮ bitFlyer ಖಾತೆಯೊಂದಿಗೆ ಹೇಗೆ ಲಿಂಕ್ ಮಾಡುವುದು ಎಂಬ ಕುರಿತು $link_begin$ಹೆಚ್ಚು ತಿಳಿಯಿರಿ$link_end$.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "ಜಪಾನ್ ನಲ್ಲಿನ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್ ಒಂದು ಹೊಸ ಸಿಸ್ಟಮ್ ಗೆ ಬದಲಾಗುತ್ತಿದೆ.",
     "description": "Header text for BAP deprecation warning message"

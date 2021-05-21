@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Permitir tweets incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir publicações integradas LinkedIn</translation>
 <translation id="6302422639282249274">Gerir Recompensas Brave</translation>
-<translation id="1506061864768559482">Motor de pesquisa</translation>
 <translation id="1468415711258933398">Separador padrão</translation>
 <translation id="3377025655491224618">Separador privado</translation>
 <translation id="9148058034647219655">Sair</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="8710614491157212477">Abre os sites suportados utilizando HTTPS em vez de HTTP</translation>
-<translation id="4022987104439075738">Gateway IPFS</translation>
-<translation id="2688519859165248360">Permite navegar recursos IPFS através de uma porta IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Resolver método</translation>
@@ -26,15 +21,12 @@
 <translation id="4176463684765177261">Desativada</translation>
 <translation id="2218918398178303658">DNS por HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Bloqueio de anúncios</translation>
-<translation id="1934885595886623674">Evita que os anúncios carreguem</translation>
-<translation id="7458422973722236530">Proteção por impressão digital</translation>
 <translation id="5787084571334399599">Evita que o navegador utilize a impressão digital</translation>
 <translation id="7459000603787995422">Fechar separadores ao sair</translation>
 <translation id="1680858055899097121">Não manter separadores entre sessões de navegação</translation>
-<translation id="6469509880167172749">Envie automaticamente análises de produtos totalmente confidenciais à Brave</translation>
-<translation id="7090566321964540749">Esta informação anónima apenas permite que o Brave estime a utilização geral de certas funcionalidades.</translation>
-<translation id="7977176350719484850">Est. de dados \npoupados</translation>
+<translation id="7142548388914389999">Envie automaticamente análises de produtos totalmente confidenciais à Brave</translation>
+<translation id="5469408008145872264">Esta informação anónima apenas permite que o Brave estime a utilização geral de certas funcionalidades.</translation>
+<translation id="7977176350719484850">Est. dados\npoupados</translation>
 <translation id="9008534313521214777">Estimativa Tempo\nEconomizado</translation>
 <translation id="6572660632052512096">Modo desktop</translation>
 <translation id="1340503115760585811">Ativar «Visualização da Área de Trabalho» para os novos separadores</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Preferir versão desktop dos sites</translation>
 <translation id="1842747674580016420">Reprodução de vídeos no Brave</translation>
 <translation id="5368992950177874750">Se ativado, os vídeos serão reproduzidos no Brave e não na aplicação de vídeo</translation>
-<translation id="2645380101799517405">Controlos</translation>
 <translation id="5965081608816406060">Reprodução de vídeo em segundo plano</translation>
 <translation id="6332924730165919598">Fechar todos os separadores fecha o Brave</translation>
 <translation id="1580125697191336644">Experimental. Ativa a reprodução de áudio dos vídeos em segundo plano quando o separador não está ativo ou o ecrã do dispositivo está desligado. Tente passar para o modo desktop se esta funcionalidade não estiver a funcionar.</translation>
@@ -291,11 +282,10 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="5657156137487675418">Permitir todas as cookies</translation>
 <translation id="3895527457258986253">Bloquear Impressão Digital</translation>
 <translation id="184568144098869637">Evita que o navegador reconheça o seu dispositivo</translation>
-<translation id="7396366757003005317">Impressão digital bloqueada (estrita, pode abrir sites)</translation>
-<translation id="700453611199558021">Impressão digital bloqueada(padrão)</translation>
+<translation id="7445306466605902444">Impressão digital bloqueada (estrita, pode abrir sites)</translation>
+<translation id="5582686930349810484">Impressão digital bloqueada(padrão)</translation>
 <translation id="769702552748212954">Permitir todas as identificações</translation>
 <translation id="876424292214881779">Anúncios e outras coisas arrepiantes bloqueadas</translation>
-<translation id="5142293891785304489">Rastreadores, anúncios e\nmais bloqueados</translation>
 <translation id="6930134873084561197">Muitas vezes, os sites incluem cookies e scripts que procuram identificá-lo e ao seu dispositivo.  A sua pretensão consiste na descoberta de quem você é e o que faz em cada site pelo rastreamento da web.\n\nBrave bloqueia-os para que possa navegar sem ser seguido.</translation>
 <translation id="8553998445606452168">Sobre as Proteções do Brave</translation>
 <translation id="8912304686498704084">PARA CIMA</translation>
@@ -308,7 +298,6 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="5299848999918506028">Obrigado!</translation>
 <translation id="76550953340008122">Obrigado por comunicar aos desenvolvedores da Brave que há algo de errado com o site. Daremos o nosso melhor para o consertar.</translation>
 <translation id="650318023204990401">Controlos avançados</translation>
-<translation id="7182293319417450928">É necessário um saldo mínimo de 25 MTD para a verificação.</translation>
 <translation id="1275664486910646411">Mostrar os sites principais em preenchimento automático</translation>
 <translation id="5516010970279932133">Mostrar os sites sugeridos em preenchimento automático</translation>
 <translation id="5370478469168390143">Guardar Dados Online</translation>
@@ -333,11 +322,11 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="7579633043057546002">250 000 rastreadores e anúncios bloqueados.</translation>
 <translation id="8710984962087186365">500 000 rastreadores e anúncios bloqueados.</translation>
 <translation id="4383614608366907253">1 000 000 rastreadores e anúncios bloqueados.</translation>
-<translation id="6819535527112707811">Parabéns.</translation>
+<translation id="6819535527112707811">Parabéns. Juntou-se aos grandes.</translation>
 <translation id="5819231438994979709">Parabéns. Faz parte de um clube exclusivo.</translation>
 <translation id="5174835622895450943">Parabéns. Entrou na liga profissional.</translation>
-<translation id="4625546020186631261">Parabéns. É agora mestre.</translation>
-<translation id="4288835546846020774">Parabéns. Está no topo do mundo.</translation>
+<translation id="4625546020186631261">Parabéns. Acabou de se tornar mestre.</translation>
+<translation id="4288835546846020774">Parabéns. Já é uma lenda.</translation>
 <translation id="6863752373888328811">Parabéns. Está no topo do mundo.</translation>
 <translation id="4776948189086901857">Brave funciona em qualquer lugar</translation>
 <translation id="1606322780901645965">Descarregue Brave para o seu computador ou tablet em  brave.com, para uma net mais rápida e privada</translation>
@@ -377,7 +366,7 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="1880168210969863408">Fantástico! Economizou 10 minutos a carregar com o browser Brave.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Comece a navegar para visualizar os relatórios de privacidade</translation>
 <translation id="9080777565335515917">Defina Brave como o seu browser padrão para uma navegação privada e segura.</translation>
-<translation id="1390943217516275883">Permita à brave apresentar-lhe as suas estatísticas de privacidade</translation>
+<translation id="1390943217516275883">Permite ao Brave apresentar as suas estatísticas de privacidade</translation>
 <translation id="1763352720905582220">Envia um relatório de privacidade semanal</translation>
 <translation id="1811691435325545066">Limpar todos os dados dos relatórios de privacidade</translation>
 <translation id="8089997572759938512">Redefine os seus relatórios de privacidade para zero</translation>
@@ -482,14 +471,6 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="3184805785843994538">O Brave Shields bloqueia rastreadores &amp; anúncios, economiza dados e tempo em todos os sites por si visitados</translation>
 <translation id="8722651357687610395">Definir o Brave como padrão</translation>
 <translation id="3479552764303398839">Agora não</translation>
-<translation id="6232491755501685494">A Brave Rewards no Japão está a mudar para um novo sistema! in</translation>
-<translation id="7444515017164572362">A partir do dia 13 de não lhe será mais possível usar os seus BAPs.  Mas, uma vez feita 
-        a atualização para o novo sistema em abril, ser-lhe-á possível usar os novos tokens.</translation>
-<translation id="8587285254008006694">Como parte desta transição, as gorjetas e as funcionalidades de contribuição presentes 
-        no serão navegador ficarão indisponíveis a partir do dia 13 de marco, e 
-        o seu balança BAP indicará 0.0, exceto caso tenha atualizado para o novo sistema
-        em abril. Uma vez por si concluída a adesão ao novo sistema, é-lhe possível iniciar com os novos 
-        tokens!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -509,4 +490,9 @@ até que verifiquem, ou até terem passado 90 dias.</translation>
 <translation id="5825943197137337319">Apenas pré-definida interface pública</translation>
 <translation id="1689062823386843231">Desativar UDP não-proxy</translation>
 <translation id="3171931580569169744">Ativar grupos de separadores</translation>
+<translation id="5587305863196367357">A verificação da carteira permite-lhe gerir os seus fundos mais facilmente, adicionar e retirar fundos.</translation>
+<translation id="5760671211380791582">Não tem BAT suficiente.</translation>
+<translation id="6960458596933484861">Precisa de ter, no mínimo, 15 BAT para criar uma carteira Uphold verificada. Tente novamente mais tarde.</translation>
+<translation id="4389085954549744469">Já tem uma conta Uphold verificada, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continue para o início de sessão</translation>
 </translationbundle>

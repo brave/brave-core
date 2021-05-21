@@ -69,15 +69,19 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="4227945450504703638">Valt ljud</translation>
 <translation id="7895302206188277628">Länkat innehåll</translation>
 <translation id="4322612543319315652">Importera vald text till IPFS</translation>
+<translation id="8883166554766780543">Importera och kopiera länk till IPFS-ögonblicksbild</translation>
+<translation id="3654831858282189202">Publicera med IPNS-nyckel</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nytt privat fönster med Tor</translation>
 <translation id="4703780849509456860">Öppna länk i privat fönster med Tor</translation>
 <translation id="3488584642074079080">Öppna länken med Tor i ett privat Bravefönster</translation>
 <translation id="7475547933708221517">Dela lokal fil med IPFS</translation>
+<translation id="2286177249736199435">Dela lokal mapp med IPFS</translation>
 <translation id="784573715436258741">Dela lokal fil med IPFS</translation>
 <translation id="6313675821927505581">Nytt privat fönster med Tor</translation>
 <translation id="2638041073279639246">Öppna länk i nytt privat fönster med Tor</translation>
 <translation id="3425600262621021599">Öppna länk i Brave i ett privat fönster med Tor</translation>
+<translation id="575838692088926391">Dela lokal mapp med IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT-annonstjänst</translation>
 <translation id="7924918279836988121">Bat huvudbokstjänst</translation>
@@ -157,7 +161,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="4112587618563511470">Ogiltig synkningskod, kontrollera och prova igen.</translation>
 <translation id="2339730291919608488">Lämna synkkedja</translation>
 <translation id="115699408012835975">Om du nollställer Synk måste du skriva in en synkningskod från en annan enhet för att synka med den. Är du säker på att du vill gå vidare?</translation>
-<translation id="6092564993102418148">Är du säker på att du vill ta bort den valda enheten från synkroniseringskedjan?</translation>
+<translation id="6092564993102418148">Vill du ta bort den valda enheten från synkroniseringskedjan?</translation>
 <translation id="3396347744975515056">Brave Sync har uppgraderats och måste installeras</translation>
 <translation id="7473245612074035141">Påbörja installation</translation>
 <translation id="3411013544209536575">Hjälpdricks</translation>
@@ -177,10 +181,23 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="7090046810227878892">Ethereum-leverantör för användning av Dapps</translation>
 <translation id="5913089932885076110">Ladda Crypto Wallets vid start</translation>
 <translation id="757886143331967039">Ladda föråldrat Crypto Wallets-tillägg vid start</translation>
+<translation id="1834467296210148203">Visa Brave Wallet-ikon i verktygsfältet</translation>
 <translation id="6864914031231797928">Tillåt Google-inloggning för tillägg</translation>
 <translation id="5927916530277631319">Metod för att lösa ostoppbara domäner</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/> om sekretessöverväganden för DNS över HTTPS och Ethereum.</translation>
 <translation id="5248318250177143470">Metod för att lösa Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Konfigurera dina IPNS-nycklar</translation>
+<translation id="951216659045543447">Signera innehåll med motsvarande privata nyckel och publicera på IPNS</translation>
+<translation id="7611728475758612204">Nycklar tillgängliga för publicering</translation>
+<translation id="911363100236037920">Ange ett namn för den nya nyckeln</translation>
+<translation id="6358469157239228181">Det här namnet kan inte användas</translation>
+<translation id="8996633027318264334">Vill du ta bort <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Noden har inte startat</translation>
+<translation id="616058968889448209">IPFS-tjänsten har startfel, mer information finns tillgänglig på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' nyckelimport misslyckades</translation>
+<translation id="8275038454117074363">Importera</translation>
+<translation id="3654980960391973513">Skapa</translation>
+<translation id="5531501313997312487">Starta nod</translation>
 <translation id="9170907049676078643">Metod för att lösa IPFS-resurser</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal nod</translation>
@@ -260,7 +277,10 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1391855377994926460">Fortsätt surfa snabbare på webben – upp till sex gånger snabbare på större nyhetssajter.</translation>
 <translation id="9218430445555521422">Använd som standard</translation>
 <translation id="3479552764303398839">Inte nu</translation>
+<translation id="6040143037577758943">Stäng</translation>
+<translation id="5600566490506283344">Brave-annonsavisering</translation>
 <translation id="4877147287319222750">Lägg till i sidofält</translation>
+<translation id="4233010476457917696">Visa sidofält</translation>
 <translation id="5404213409401164238">Visa sidofält</translation>
 <translation id="7561196759112975576">Alltid</translation>
 <translation id="7060352228894039151">Vid musöverdragning</translation>

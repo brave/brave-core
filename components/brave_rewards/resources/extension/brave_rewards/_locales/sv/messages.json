@@ -819,6 +819,18 @@
     "message": "Genom att verifiera din plånbok och länka den till ett bitFlyer-konto kan du enklare lagra och hantera de tokens du har tjänat ihop genom Bravebelöningar",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Läs mer$link_end$ om hur du länkar din Brave-webbläsare med ditt bitFlyer-konto.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards i Japan byter till ett nytt system!",
     "description": "Header text for BAP deprecation warning message"

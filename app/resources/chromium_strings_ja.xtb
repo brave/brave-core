@@ -10,7 +10,6 @@
 <translation id="4798342026247191171">新しい Brave プロファイルの設定</translation>
 <translation id="113959764510199339">Brave はパスワードを表示しようとしています。</translation>
 <translation id="8132634101975074716">Brave にログインしました</translation>
-<translation id="7370605478942575409">Rosetta を使用して、保護されたメディアを再生するには、Brave を再起動する必要があります。</translation>
 <translation id="7419046106786626209">お使いのドメインでは同期を利用できないため、Chrome OS はデータを同期できませんでした。</translation>
 <translation id="5147525139567260139">Brave タブの共有</translation>
 <translation id="1530633922026945685">周囲の 3D マップを作成するには、Brave にカメラの使用を許可する必要があります</translation>
@@ -23,8 +22,8 @@
 <translation id="1775322105159056176">Brave では既定のブラウザを判定または設定できません</translation>
 <translation id="9220324636239049437">このデバイスから 1 件の項目を削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="831418749472885028">他のパスワードにデータ侵害などセキュリティに関する問題がないかどうかを確認するには、<ph name="BEGIN_LINK"/>Brave にログイン<ph name="END_LINK"/>してください。</translation>
+<translation id="142389341645668510">Brave をカスタマイズ</translation>
 <translation id="8745514854244955877">Brave - ネットワークにログイン - <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">Chrome OS でパスワードを同期できませんでした。</translation>
 <translation id="5659384504794665581">パソコンを共有している場合、友だちや家族はそれぞれ Brave を自分専用のブラウザとして自分用の設定をして使うことができます。</translation>
 <translation id="5997267581285668459">オプション: 診断と使用状況のデータを Brave に自動送信して Chrome OS の機能と動作の改善に役立てる。</translation>
 <translation id="9095263438435683933">Android スマートフォンに番号を送信するには、両方のデバイスで Brave にログインしてください。</translation>
@@ -38,10 +37,8 @@
 <translation id="7933006624150961626">お使いのすべてのデバイスで Brave の設定やデータを使用するには、ログインしてください。ログインすると同期を有効にできます。</translation>
 <translation id="7291143854620707672">このプロファイルの使用中に生成された Brave データ（ブックマーク、履歴、パスワード、他の設定など）は、仕事用プロファイルの管理者によって削除される場合があります。<ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">アップデートを適用するには Chrome OS を再起動する必要があります。</translation>
-<translation id="3913823837305937258">このパソコンは、ハードウェアのサポートが終了しているため、まもなく Brave アップデートの受信を停止します。</translation>
 <translation id="7387051847644272380">インストール中にオペレーティング システム エラーが発生しました。Brave をダウンロードし直してください。</translation>
 <translation id="2648689842065142443">デバイスを共有している場合でも、友だちや家族はそれぞれ Brave を自分専用のブラウザとして自分用の設定をして使うことができます</translation>
-<translation id="3749489756681759571">この拡張機能は、現在、セーフ ブラウジング保護強化機能の基準を満たしていないため、無効にすることをおすすめします。</translation>
 <translation id="6791166902140255175">Brave タブ</translation>
 <translation id="8372880274820509128">セキュリティ強化のため、Brave ではデータが暗号化されます。</translation>
 <translation id="2770231113462710648">既定のブラウザを変更:</translation>
@@ -60,6 +57,7 @@
 <translation id="7365690458036015383">インストーラ アーカイブを解凍できませんでした。Brave をダウンロードし直してください。</translation>
 <translation id="8919461291440820124">Brave がマイクを使用しています。</translation>
 <translation id="4805806622840861220">Brave を再起動します</translation>
+<translation id="1742948938503172561">新しい Brave プロフィールをカスタマイズ</translation>
 <translation id="1477146545787277177">エラー: Brave で問題が発生しました。今すぐ再起動しますか？</translation>
 <translation id="7503098128120083822">Brave からパスワードをエクスポートするための許可を求められています。</translation>
 <translation id="2585240446624043880">Brave はこのデータ ディレクトリへの読み書きを実行できません:
@@ -74,6 +72,7 @@
 <translation id="2450003541323895471">Brave プロフィールを使うと、Brave のあらゆる項目や設定を個別に管理できます。友達や家族のプロフィールを作成したり、仕事とプライベートでプロフィールを使い分けたりできます。</translation>
 <translation id="9216183508558772570">不正使用されたパスワードでログインした場合、Brave で通知します</translation>
 <translation id="5853262807109651878">このデバイスから <ph name="ITEMS_COUNT"/> 件の項目を削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
+<translation id="2024972335338126423">Brave プロフィールを切り替えるには、<ph name="SHORTCUT"/> を使用します</translation>
 <translation id="8703492925273919597">すべての Brave ウィンドウを閉じてからもう一度お試しください。</translation>
 <translation id="1384923383737428730">お使いのパソコンに有害なソフトウェアが見つかりました。Brave では、ブラウザを正常な動作に戻すためにこのソフトウェアを削除し、設定を復元して、拡張機能を無効化することができます。</translation>
 <translation id="7029305463989165490"><ph name="ORIGIN"/> から Android スマートフォンに番号を送信するには、両方のデバイスで Brave にログインしてください。</translation>
@@ -130,11 +129,11 @@
 <translation id="696826782632239602">このサイトで現在地を共有するには、Brave で位置情報の使用を許可する必要があります</translation>
 <translation id="1744365871163268756">Brave は最新のシステム アップデートをインストールしています。しばらくお待ちください。</translation>
 <translation id="3861679447659630159">Brave でパスワードを編集しようとしています。続行するには、Windows のパスワードを入力してください。</translation>
+<translation id="232381795826373334">Brave で PDF を開く</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave のアップデートが利用可能です}=1{Brave のアップデートが利用可能です}other{Brave のアップデートが利用可能になってから # 日経過しています}}</translation>
 <translation id="95624393026532554">Brave のご利用には Windows 7 以上が必要です。</translation>
 <translation id="5646769069113654257">今すぐ Brave を再起動してください</translation>
 <translation id="2335583906071111058">Brave をこの言語で表示</translation>
-<translation id="3009727137063767373">保護されたメディアを Brave で再生できるようにするには、Rosetta をインストールする必要があります。今すぐインストールしますか？</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="7207456302801184289">Brave へようこそ</translation>
 <translation id="5895138241574237353">再起動</translation>
@@ -150,10 +149,10 @@
 <translation id="492209281555538239">このパスワードは Brave アカウントに保存されるため、覚えておく必要はありません。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> は危険なファイルであるため、Brave でブロックしました。</translation>
 <translation id="7006260220514217183">セーフ ブラウジングがオフになっています。Brave はオンにすることをおすすめしています。</translation>
+<translation id="4060970194201477024">こちらで Brave プロフィールを切り替えることができます</translation>
 <translation id="4368341489795135329"><ph name="TARGET_DEVICE_NAME"/> で Brave にログインしていることを確認してから、もう一度送信してください。</translation>
 <translation id="8320964054148936490">新しいバージョンの Brave が既にインストールされています。ソフトウェアが動作しない場合は、Brave をアンインストールしてからもう一度お試しください。</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave は今すぐ再起動されます}=1{Brave は 1 秒後に再起動されます}other{Brave は # 秒後に再起動されます}}</translation>
-<translation id="3127818369811890733">Chrome OS でデータを同期できませんでした。</translation>
 <translation id="5019879183386042809">Brave を既定のブラウザにする</translation>
 <translation id="428541510811554120">Brave がアップデートを確認できません。インターネット接続を確認してみてください。</translation>
 <translation id="7445061995866044926">Brave からログアウトしますか？</translation>
@@ -186,17 +185,14 @@
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay（Brave にコピー）</translation>
 <translation id="2301993384336631869">Brave が更新されましたが、30 日以上使用されていません。</translation>
-<translation id="8522287263361940593">Rosetta をインストールすると、このページ上の保護されたメディアを Brave で再生できるようになります。</translation>
 <translation id="8828443087767259398">Brave でペアリングを続行するには、Bluetooth へのアクセスが必要です。<ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">脆弱なパスワードは簡単に推測されてしまいます。Brave で<ph name="BEGIN_LINK"/>安全性の高いパスワードを自動生成して保存する<ph name="END_LINK"/>ことができます。</translation>
 <translation id="3335606533094650083">このサイトを利用するには、Brave でマイクの使用を許可する必要があります</translation>
 <translation id="1785833016412082453">Brave で拡張機能を確認できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="1705567146636171298">Brave を更新</translation>
-<translation id="123620459398936149">Chrome OS はデータを同期できませんでした。同期パスフレーズを更新してください。</translation>
 <translation id="5499063270485366718">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave に画像が送信されます。</translation>
 <translation id="1197672524850678392">Brave を起動できませんでした。もう一度お試しください。</translation>
 <translation id="3405035915691517126">Brave でパスワードを確認できません。24 時間後にもう一度お試しください。</translation>
-<translation id="5660079256336839395">Brave メニューで非表示</translation>
 <translation id="5516268345616100622">タスク マネージャ - Brave</translation>
 <translation id="61852838583753520">Chrome OS を更新(&amp;C)</translation>
 <translation id="1864557848095568223">Brave を更新しています</translation>
@@ -232,7 +228,6 @@
 <translation id="6755885556185485672">Chrome OS は正しく終了しませんでした。</translation>
 <translation id="2925193881330501265">Brave に <ph name="USER_EMAIL_ADDRESS"/> としてログインしていました。再度ログインするには同じアカウントを使用してください。</translation>
 <translation id="6915252145142862992">この Brave はセカンダリ インストールのため、既定のブラウザには設定できません。</translation>
-<translation id="4054452651944170004">Brave メニューで非表示</translation>
 <translation id="7685904775439037072">Brave にアクセスを許可すると、ウェブサイトからアクセスをリクエストできるようになります。</translation>
 <translation id="9067428552314418522">このファイルは危険なファイルであるため、Brave でブロックしました。</translation>
 <translation id="8207657266087451193">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave に画像が送信されます。この機能は設定でいつでも無効にできます。</translation>

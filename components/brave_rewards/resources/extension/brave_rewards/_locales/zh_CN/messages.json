@@ -819,6 +819,18 @@
     "message": "通过验证您的钱包并将其连接到 bitFlyer 帐户，您将能够更容易地存储和管理您通过 Brave Rewards 赚到的代币",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$详细了解$link_end$如何将你的 Brave 浏览器与 bitFlyer 账户关联。",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "日本的 Brave Rewards 即将切换到新系统！",
     "description": "Header text for BAP deprecation warning message"

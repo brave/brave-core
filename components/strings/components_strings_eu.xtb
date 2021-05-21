@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="eu">
+<translation id="1003222766972176318">Abisua: gordetako eskaintza erabilgarri dago</translation>
 <translation id="1008557486741366299">Ez une honetan</translation>
 <translation id="100957008357583611">Kokapena erabili nahi duzu?</translation>
 <translation id="1010200102790553230">Kargatu orria geroago</translation>
@@ -11,6 +12,7 @@
 <translation id="1028781062521375153">Ikusi xehetasunak</translation>
 <translation id="1030706264415084469"><ph name="URL"/> webguneak datu asko gorde nahi ditu gailuan modu iraunkorrean</translation>
 <translation id="1032854598605920125">Biratu eskuinera</translation>
+<translation id="1036224116832931580">Dino jokoa. Sakatu salto egin eta jolasteko.</translation>
 <translation id="1036348656032585052">Desaktibatu</translation>
 <translation id="1038106730571050514">Erakutsi iradokizunak</translation>
 <translation id="1038842779957582377">izen ezezaguna</translation>
@@ -246,6 +248,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="1807246157184219062">Argia</translation>
 <translation id="1807528111851433570">Hasierako orria</translation>
 <translation id="1812527064848182527">horizontala</translation>
+<translation id="1814698615734239189">Gailu mugikorretarako diseinatuta dago aplikazioa. Bateragarritasun modua aktibatuta dago. Tamaina aldatzeko aukera gaitzen baduzu, agian arazoak izango dituzu; esaterako, baliteke aplikazioa berrabiaraztea.</translation>
 <translation id="1821930232296380041">Eskaera edo eskaera-parametro baliogabeak</translation>
 <translation id="1822540298136254167">Ikusi dituzun webguneak eta bertan emandako denbora</translation>
 <translation id="1826516787628120939">Egiaztatzen</translation>
@@ -266,11 +269,11 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="1914326953223720820">Deskonprimatze-zerbitzua</translation>
 <translation id="1915697529809968049">Touch ID erabili nahi duzu CVC kodearen ordez?</translation>
 <translation id="1916770123977586577">Kargatu berriro orria eguneratutako ezarpenak webgunean aplika daitezen</translation>
-<translation id="688541908229382784">Erabiltzen duzun webgune edo aplikazio batean datuen isilpekotasuna urratu denez, zure pasahitza atzitzeko aukera izan dute. <ph name="ORIGIN"/> webguneko pasahitza berehala aldatzea gomendatzen du Brave-k.</translation>
 <translation id="1919345977826869612">Iragarkiak</translation>
 <translation id="1919367280705858090">Lortu errore-mezu jakin bati buruzko laguntza</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Bat ere ez}=1{1 webgune}other{# webgune}}</translation>
 <translation id="1947454675006758438">Grapa bat goian, eskuinetara</translation>
+<translation id="1958218078413065209">Lortu duzun puntuazio handiena <ph name="SCORE"/> da.</translation>
 <translation id="990584554013599191">Sareko segurtasuna hobetzen laguntzeko, bidali <ph name="BEGIN_WHITEPAPER_LINK"/>ireki dituzun orrietako batzuen URLak, sistemari buruzko informazio mugatua eta orrietako edukiaren zati bat<ph name="END_WHITEPAPER_LINK"/> Brave-ri. <ph name="BEGIN_PRIVACY_PAGE_LINK"/>Pribatutasun-gidalerroak<ph name="END_PRIVACY_PAGE_LINK"/></translation>
 <translation id="1962204205936693436"><ph name="DOMAIN"/> domeinuko laster-markak</translation>
 <translation id="1973335181906896915">Serializazio-errorea</translation>
@@ -283,6 +286,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="2001146170449793414">{COUNT,plural, =1{eta beste 1}other{eta beste #}}</translation>
 <translation id="2003709556000175978">Berrezarri pasahitza orain</translation>
 <translation id="2003775180883135320">Lau zulo goian</translation>
+<translation id="2342444980304536062">Kudeatu baimenak eta webguneetan gordetako datuak Brave-ren ezarpenetan</translation>
 <translation id="2025115093177348061">Errealitate areagotua</translation>
 <translation id="2025186561304664664">Proxya automatikoki konfiguratzeko ezarrita dago.</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>Proxya eta suebakia egiaztatu<ph name="END_LINK"/>.</translation>
@@ -295,6 +299,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="2079545284768500474">Desegin</translation>
 <translation id="20817612488360358">Erabiltzeko ezarri dira sistemaren proxy-ezarpenak, baina proxy-konfigurazio esplizitu bat ere zehaztu da.</translation>
 <translation id="2082238445998314030"><ph name="RESULT_NUMBER"/>/<ph name="TOTAL_RESULTS"/> emaitza</translation>
+<translation id="7333248841044450790">Sinkronizazioa kudeatzeko botoia, sakatu Sartu Brave-ren ezarpenetara joan, eta sinkronizatzen den informazioa kudeatzeko</translation>
 <translation id="2091887806945687916">Soinua</translation>
 <translation id="2094505752054353250">Domeinuak ez datoz bat</translation>
 <translation id="2096368010154057602">Departamentua</translation>
@@ -347,7 +352,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="225207911366869382">Balioa zaharregia da gidalerro honetarako.</translation>
 <translation id="2258928405015593961">Idatzi etorkizuneko iraungitze-data bat eta saiatu berriro</translation>
 <translation id="225943865679747347">Errore-kodea: <ph name="ERROR_CODE"/></translation>
-<translation id="2262243747453050782">HTTP errorea</translation>
+<translation id="2262243747453050782">HTTParen errorea</translation>
 <translation id="2267047181501709434">Zure nortasuna egiaztatzen…</translation>
 <translation id="2270484714375784793">Telefono-zenbakia</translation>
 <translation id="2276057643614339130">Inprimatze-oinarria</translation>
@@ -359,6 +364,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="2293443924986248631">Aktibatzen bada, webguneek ezingo dituzte erabili sarean jarraipena egiten dizuten cookieak. Baliteke webgune batzuetako eginbideek ez funtzionatzea.</translation>
 <translation id="6148139222908395733">Bisitatzen dituzun orrien URLak Brave Cloud-era edo hirugarrenetara bidaltzen dira analizatzeko. Adibidez, seguruak ez diren webguneak hautemateko aztertuko dira, agian.</translation>
 <translation id="2297722699537546652">B5 (gutun-azala)</translation>
+<translation id="2144551375735610273">Cookieak kudeatzeko botoia, sakatu Sartu Brave-ren ezarpenetara joan, eta cookieen hobespenak kudeatzeko</translation>
 <translation id="2300306941146563769">Kargatu gabe</translation>
 <translation id="2310021320168182093">Chou2 (gutun-azala)</translation>
 <translation id="2316887270356262533">1 MB baino gutxiago utziko ditu libre. Webgune batzuk mantsoago kargatuko dira bisitatzen dituzun hurrengoan.</translation>
@@ -391,6 +397,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="2465402087343596252">Architecture-E</translation>
 <translation id="2465655957518002998">Aukeratu entrega-metodoa</translation>
 <translation id="2465688316154986572">Grapatu</translation>
+<translation id="6412121772078350683"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, sakatu tabuladorea eta, ondoren, sakatu Sartu Brave-ren ezarpenetara joan, eta Arakatze segurua eta beste gauza batzuk kudeatzeko</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Sare-diagnostikoak exekutatzen<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">1etik N-rako ordena</translation>
 <translation id="2470767536994572628">Oharpenak editatzen dituzunean, orri bakarreko ikuspegira eta jatorrizko biratzera itzuliko da dokumentua</translation>
@@ -398,6 +405,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="2482878487686419369">Jakinarazpenak</translation>
 <translation id="248348093745724435">Makinaren gidalerroa</translation>
 <translation id="2491120439723279231">Zerbitzariaren ziurtagiriak erroreak dauzka.</translation>
+<translation id="2491414235131909199">Luzapen batek blokeatu du orria</translation>
 <translation id="2493640343870896922">Letter-Plus</translation>
 <translation id="2495083838625180221">JSON analizatzailea</translation>
 <translation id="5047769237368272183">Hautatuta badago, Brave-ek txartelaren kopia bat gordeko du gailuan, inprimakiak bizkorrago betetzeko.</translation>
@@ -408,6 +416,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="2521385132275182522">Grapa bat behean, eskuinetara</translation>
 <translation id="2523886232349826891">Gailu honetan soilik gordeko da</translation>
 <translation id="2524461107774643265">Gehitu informazio gehiago</translation>
+<translation id="2526590354069164005">Ordenagailua</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{eta beste bat}other{eta beste #}}</translation>
 <translation id="2536110899380797252">Gehitu helbidea</translation>
 <translation id="2539524384386349900">Hauteman</translation>
@@ -514,7 +523,6 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="2991174974383378012">Webguneekin partekatzea</translation>
 <translation id="2991571918955627853">Une honetan ezin zara joan <ph name="SITE"/> webgunera, webguneak HSTS darabilelako. Sareko erroreak eta erasoak aldi baterakoak izan ohi dira; beraz, geroago funtzionatuko du orriak, segur aski.</translation>
 <translation id="2995517112308048736">Fitxategiaren tamaina:</translation>
-<translation id="6683975920571472553">Brave-ren iradokizunak</translation>
 <translation id="3002501248619246229">Egiaztatu sarrerako erretiluaren euskarria</translation>
 <translation id="3005723025932146533">Erakutsi gordetako kopia</translation>
 <translation id="3008447029300691911">Idatzi <ph name="CREDIT_CARD"/> txartelaren CVC kodea. Berretsi ondoren, webgune honekin partekatuko dira txartelaren xehetasunak.</translation>
@@ -527,7 +535,9 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3037605927509011580">Hutsegite bat izan da.</translation>
 <translation id="3041612393474885105">Ziurtagiriari buruzko informazioa</translation>
 <translation id="3060227939791841287">C9 (gutun-azala)</translation>
+<translation id="4836986635834556421"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>: sakatu tabuladorea eta, ondoren, sakatu Sartu segurtasun-egiaztapena egiteko Brave-ren ezarpenetan</translation>
 <translation id="3061707000357573562">Adabaki-zerbitzua</translation>
+<translation id="306573536155379004">Hasi da jokoa.</translation>
 <translation id="3080254622891793721">Grafikoa</translation>
 <translation id="3086579638707268289">Webgunean egiten ari zarena gainbegiratzen ari dira</translation>
 <translation id="3087734570205094154">Behekoa</translation>
@@ -556,6 +566,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3188393374551744535">Kontuaren saldoa</translation>
 <translation id="3194737229810486521"><ph name="URL"/> webguneak datuak gorde nahi ditu gailuan modu iraunkorrean</translation>
 <translation id="3195213714973468956"><ph name="SERVER_NAME"/> zerbitzariko <ph name="PRINTER_NAME"/> inprimagailua</translation>
+<translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, sakatu tabuladorea eta, ondoren, sakatu Sartu Brave-ren ezarpenetara joan, eta sinkronizatzen den informazioa kudeatzeko</translation>
 <translation id="320323717674993345">Utzi bertan behera ordainketa</translation>
 <translation id="3207960819495026254">Laster-marka gisa gordea</translation>
 <translation id="3209034400446768650">Baliteke orriak dirua kobratzea</translation>
@@ -570,9 +581,12 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3229041911291329567">Gailuaren eta arakatzailearen bertsioari buruzko informazioa</translation>
 <translation id="323107829343500871">Idatzi <ph name="CREDIT_CARD"/> txartelaren CVC kodea</translation>
 <translation id="3234666976984236645">Hauteman beti webgune honetako eduki garrantzitsua</translation>
+<translation id="3252266817569339921">Frantsesa</translation>
 <translation id="3266793032086590337">Balioa (gatazka)</translation>
+<translation id="3268451620468152448">Ireki fitxak</translation>
 <translation id="3270847123878663523">&amp;Desegin berrantolatzea</translation>
 <translation id="3274521967729236597">Pa-Kai</translation>
+<translation id="3282085321714087552">Zure erakundeak (<ph name="ENROLLMENT_DOMAIN"/>) ezarpenei eta gidalerroei buruzko informazioa bidali du, besteak beste, jarraian ageri diren webguneetara.</translation>
 <translation id="3282497668470633863">Gehitu titularra</translation>
 <translation id="3286372614333682499">bertikala</translation>
 <translation id="3287510313208355388">Deskargatu konektatuta dagoenean</translation>
@@ -599,6 +613,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3371076217486966826"><ph name="URL"/> webguneak hauek egin nahi ditu:
       • Inguruaren 3D-ko mapa bat sortu eta kameraren posizioaren jarraipena egin.
       • Kamera erabili.</translation>
+<translation id="3372389303668969359">Ordainketa-metodoa erabilita gailuaren bidez ordaintzen duzun hurrengo aldian zeu zarela bizkor egiaztatzeko erabil dezakezu Windows Hello.</translation>
 <translation id="337363190475750230">Hornitu gabe</translation>
 <translation id="3377144306166885718">Zerbitzariak TLSren bertsio zaharkitu bat erabili du.</translation>
 <translation id="3377188786107721145">Errore bat gertatu da errorea analizatzean</translation>
@@ -610,6 +625,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3395827396354264108">Jasotze-metodoa</translation>
 <translation id="3399952811970034796">Entregatzeko helbidea</translation>
 <translation id="3402261774528610252">Webgunea kargatzeko erabilitako konexioa TLS 1.0 edo TLS 1.1 da, baina hura zaharkituta dago eta desgaitu egingo da etorkizunean. Desgaitu ondoren, erabiltzaileek ezingo dute kargatu webgunea. Zerbitzariak TLS 1.2 bertsioa edo berriago bat gaitu behar du.</translation>
+<translation id="3409896703495473338">Kudeatu segurtasun-ezarpenak</translation>
 <translation id="3414952576877147120">Tamaina:</translation>
 <translation id="25726459489263481">Kargatzen edo eransten dituzun fitxategiak Brave Cloud-i edo hirugarrenei bidaltzen zaizkie, azter ditzaten. Adibidez, baliteke fitxategiak eskaneatzea kontuzko datuak edo malwarea duten ikusteko.</translation>
 <translation id="3422248202833853650">Saiatu beste programa batzuk ixten memoria gehiago uzteko erabilgarri.</translation>
@@ -620,6 +636,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3428151540071562330">DnsOverHttpsTemplates aukeraren zerbitzariko txantiloien URI batek edo gehiagok ez dute balio, eta ez dira erabiliko.</translation>
 <translation id="3431636764301398940">Gorde txartela gailu honetan</translation>
 <translation id="3432601291244612633">Itxi orria</translation>
+<translation id="3435896845095436175">Gaitu</translation>
 <translation id="4527130811319726464">Erabili Brave-ko kontuan gordetako pasahitzak</translation>
 <translation id="3443726618221119081">Juuro-Ku-Kai</translation>
 <translation id="3447661539832366887">Gailuaren jabeak Dinosaur jokoa desaktibatu du.</translation>
@@ -638,6 +655,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="350069200438440499">Fitxategiaren izena:</translation>
 <translation id="3507936815618196901">Sortu inguruaren 3D-ko mapa bat eta egin kameraren posizioaren jarraipena</translation>
 <translation id="3512163584740124171">Ez ikusi egin zaio gidalerro honi, gidalerro-talde bereko beste gidalerro batek lehentasun handiagoa duelako.</translation>
+<translation id="6733862566637706294">Helbideak kudeatzeko botoia, sakatu Sartu Brave-ren ezarpenetara joan, eta helbideak gehitzeko eta kudeatzeko</translation>
 <translation id="3518941727116570328">Objektu bat baino gehiago kudeatzea</translation>
 <translation id="3528171143076753409">Zerbitzariaren ziurtagiria ez da fidagarria.</translation>
 <translation id="3528485271872257980">Marroi iluna</translation>
@@ -667,6 +685,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3615877443314183785">Idatzi balio duen iraungitze-data bat</translation>
 <translation id="36224234498066874">Garbitu arakatze-datuak…</translation>
 <translation id="362276910939193118">Erakutsi historia osoa</translation>
+<translation id="4329899880759895965">Ezkutuko modutik irteten zarenean, saioa hasteko datuak gailu honetan gordeko dira.</translation>
 <translation id="3630155396527302611">Dagoeneko zerrendatu bada sarean sartzeko baimena duen
        programa gisa, kendu zerrendatik eta gehitu berriro.</translation>
 <translation id="3630699740441428070">Gailu honen administratzaileek konfiguratu dute sareko konexioa. Hortaz, litekeena da sareko trafikoa ikusi ahal izatea (besteak beste, bisitatzen dituzun webguneak).</translation>
@@ -720,7 +739,6 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3807366285948165054">Irudia X ardatzaren arabera aldatuta</translation>
 <translation id="3807873520724684969">Eduki kaltegarria blokeatu da.</translation>
 <translation id="3808375843007691220">Abisua: eginbide esperimentalak daude hemen!</translation>
-<translation id="3810973564298564668">Kudeatu</translation>
 <translation id="3816482573645936981">Balioa (ordeztua)</translation>
 <translation id="382518646247711829">Proxy-zerbitzari bat erabiltzen baduzu…</translation>
 <translation id="3827112369919217609">Absolutua</translation>
@@ -728,6 +746,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3831915413245941253"><ph name="ENROLLMENT_DOMAIN"/> domeinuak luzapenak instalatu ditu funtzio gehigarriak izan ditzazun. Luzapenek zenbait datu atzi ditzakete.</translation>
 <translation id="3832522519263485449">Hainbat zulo ezkerrean</translation>
 <translation id="3835233591525155343">Gailuaren erabilera</translation>
+<translation id="3841184659773414994">Fitxategi-kudeatzaileak</translation>
 <translation id="385051799172605136">Atzera</translation>
 <translation id="3858027520442213535">Eguneratu data eta ordua</translation>
 <translation id="3884278016824448484">Gailu-identifikatzaile gatazkatsua</translation>
@@ -754,6 +773,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="3964661563329879394">{COUNT,plural, =0{Bat ere ez}=1{1 webgunetatik }other{# webgunetatik }}</translation>
 <translation id="397105322502079400">Kalkulatzen…</translation>
 <translation id="3973234410852337861">Blokeatuta dago <ph name="HOST_NAME"/></translation>
+<translation id="5066241626630788624">"Egin Brave-ren segurtasun-egiaztapena" botoia: sakatu "Sartu" segurtasun-egiaztapena egiteko Brave-ren ezarpenetan</translation>
 <translation id="2321540973325616220">Webgune hau faltsua edo iruzurrezkoa izan litekeela zehaztu du Brave-k.
 
     Abisu honek dioena oker dagoela uste baduzu, joan https://bugs.chromium.org/p/chromium/issues/entry?template=Safety+Tips+Appeals helbidera.</translation>
@@ -801,6 +821,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="4173315687471669144">Foolscap</translation>
 <translation id="4173827307318847180">{MORE_ITEMS,plural, =1{beste <ph name="ITEM_COUNT"/> elementu}other{beste <ph name="ITEM_COUNT"/> elementu}}</translation>
 <translation id="4176463684765177261">Desgaituta</translation>
+<translation id="125281860123224067"><ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, sakatu tabuladorea eta, ondoren, sakatu Sartu Brave-ko dokumentu bat sortzeko</translation>
 <translation id="4179515394835346607"><ph name="ROW_NAME"/>: <ph name="ROW_CONTENT"/></translation>
 <translation id="4194250254487269611">Ezin da gorde txartela une honetan</translation>
 <translation id="4196861286325780578">&amp;Berregin mugitzea</translation>
@@ -813,6 +834,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="4220128509585149162">Hutsegiteak</translation>
 <translation id="422022731706691852">Baliteke <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> webguneko erasotzaileak zu iruzurtzen saiatzea sarea arakatzea oztopatuko dizuten programak instala ditzazun. Besteak beste, hasierako orria alda lezakete edo ikusten dituzun webguneetan iragarki gehiago erakuts litzakete programok. <ph name="BEGIN_LEARN_MORE_LINK"/>Lortu informazio gehiago<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Exekutatu sare-diagnostikoak<ph name="END_LINK"/>.</translation>
+<translation id="4105395338091503638">Egin segurtasun-egiaztapena Brave-ren ezarpenetan</translation>
 <translation id="4234495348042597185"><ph name="BEGIN_LINK"/>Joan <ph name="SITE"/> webgunera<ph name="END_LINK"/></translation>
 <translation id="4235360514405112390">Balio du</translation>
 <translation id="4250431568374086873">Webgune honetarako konexioa ez da guztiz segurua</translation>
@@ -835,6 +857,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="4305817255990598646">Aldatu</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">Blokeatu (lehenetsia)</translation>
+<translation id="4314815835985389558">Kudeatu sinkronizazioa</translation>
 <translation id="4318312030194671742">Webguneen aurrebistak konposatzeko zerbitzua</translation>
 <translation id="4318566738941496689">Gailuaren izena eta sareko helbidea</translation>
 <translation id="4325863107915753736">Ezin izan da aurkitu artikulua</translation>
@@ -842,6 +865,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="4329871760342656885">Errore bat gertatu da gidalerroa analizatzean: <ph name="ERROR"/></translation>
 <translation id="4331519897422864041">5. pilatzailea</translation>
 <translation id="4331708818696583467">Ez da segurua</translation>
+<translation id="5792122559159836842">Iragarki honek gailuko baliabide gehiegi erabili ditu; ondorioz, Brave-k kendu egin du.</translation>
 <translation id="6116812392674177288">Ordenagailu hau ez da enpresak kudeatzen duen gailu gisa hauteman; beraz, Brave Webstore dendan ostatatutako luzapenak soilik instala daitezke automatikoki gidalerroaren bidez. Honako hau da Brave Webstore denda eguneratzeko URLa: "<ph name="CWS_UPDATE_URL"/>".</translation>
 <translation id="4346197816712207223">Onartzen diren kreditu-txartelak</translation>
 <translation id="4346833872170306413">Roc-16K</translation>
@@ -849,7 +873,6 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="4358059973562876591">Baliteke zehaztu dituzun txantiloiak ez aplikatzea, DnsOverHttpsMode gidalerroaren errore bat dela eta.</translation>
 <translation id="4358461427845829800">Kudeatu ordainketa-metodoak…</translation>
 <translation id="4367563149485757821">Number-12 (gutun-azala)</translation>
-<translation id="7954571639479265338">{1,plural, =0{Erabiltzen duzun webgune edo aplikazio batean datuen isilpekotasuna urratu denez, <ph name="ORIGIN"/> webgunean gordeta zeneukan pasahitza atzitzeko aukera izan dute. <ph name="ORIGIN"/> webguneko pasahitza berehala aldatzea gomendatzen du Brave-k.}=1{Erabiltzen duzun webgune edo aplikazio batean datuen isilpekotasuna urratu denez, <ph name="ORIGIN"/> eta beste webgune batean gordeta zeneukan pasahitza atzitzeko aukera izan dute. Gordetako pasahitzak seguru daudela egiaztatzea gomendatzen du Brave-k.}other{Erabiltzen duzun webgune edo aplikazio batean datuen isilpekotasuna urratu denez, <ph name="ORIGIN"/> eta beste <ph name="SITES_COUNT"/> webgunetan gordeta zeneukan pasahitza atzitzeko aukera izan dute. Gordetako pasahitzak seguru daudela egiaztatzea gomendatzen du Brave-k.}}</translation>
 <translation id="437058704415269440">Kontuaren saldoa</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
 <translation id="4372948949327679948"><ph name="VALUE_TYPE"/> balioa espero zen.</translation>
@@ -865,11 +888,13 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="4434045419905280838">Leiho gainerak. / Birbideratzeak</translation>
 <translation id="4435702339979719576">Postcard)</translation>
 <translation id="443673843213245140">Proxya erabiltzeko aukera desgaitu da, baina proxy-konfigurazio esplizitua zehaztu da.</translation>
+<translation id="4464826014807964867">Zure erakundeari buruzko informazioa duten webguneak</translation>
 <translation id="4466881336512663640">Inprimakiko aldaketak galdu egingo dira. Ziur aurrera egin nahi duzula?</translation>
 <translation id="4476953670630786061">Inprimaki hau ez da segurua. Desaktibatu egin da automatikoki betetzeko aukera.</translation>
 <translation id="4477350412780666475">Hurrengo pista</translation>
 <translation id="4482953324121162758">Webgune hau ez da itzuliko.</translation>
 <translation id="4490717597759821841">A7</translation>
+<translation id="3966104135245031874">Enkriptatu sinkronizatutako pasahitzak Brave-ko kontuarekin</translation>
 <translation id="3614771894046523359">Eginbide hauek modu lehenetsian daude desgaituta. Ez dira egongo erabilgarri Brave-ren hurrengo bertsioetan.</translation>
 <translation id="4493480324863638523">URLak ez du balio. Eskema estandarreko URLa izan behar du, hala nola "http://adibidea.eus" edo "https://adibidea.eus".</translation>
 <translation id="4503882053543859973">Architecture-D</translation>
@@ -931,6 +956,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="4756388243121344051">&amp;Historia</translation>
 <translation id="4758311279753947758">Gehitu harremanetarako informazioa</translation>
 <translation id="4761104368405085019">Erabili mikrofonoa</translation>
+<translation id="1980929286541331105">Egin Brave-ren segurtasun-egiaztapena</translation>
 <translation id="4764776831041365478">Baliteke <ph name="URL"/> helbideko web-orria tarte batez ez funtzionatzea edo beste web-helbide batera betiko aldatu izatea.</translation>
 <translation id="4766713847338118463">Bi grapa behean</translation>
 <translation id="4768815695067202997"><ph name="BEGIN_BOLD"/>
@@ -957,6 +983,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="4819347708020428563">Ikuspegi lehenetsian editatu nahi dituzu oharpenak?</translation>
 <translation id="484462545196658690">Automatikoa</translation>
 <translation id="4850886885716139402">Ikusi</translation>
+<translation id="485316830061041779">Alemana</translation>
 <translation id="4854362297993841467">Ez dago erabilgarri entrega-metodo hori. Saiatu beste metodo batekin.</translation>
 <translation id="4876188919622883022">Ikuspegi sinplifikatua</translation>
 <translation id="4876305945144899064">Ez dago erabiltzaile-izenik</translation>
@@ -1013,6 +1040,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="5045550434625856497">Pasahitz okerra</translation>
 <translation id="5056549851600133418">Zuretzako artikuluak</translation>
 <translation id="5061227663725596739"><ph name="LOOKALIKE_DOMAIN"/> esan nahi al zenuen?</translation>
+<translation id="5066056036849835175">Inprimaketa-historia</translation>
 <translation id="5068524481479508725">A10</translation>
 <translation id="5068778127327928576">{NUM_COOKIES,plural, =1{(1 erabiltzen)}other{(# erabiltzen)}}</translation>
 <translation id="5070335125961472645"><ph name="BEGIN_LINK"/>Proxyaren helbidea egiaztatu<ph name="END_LINK"/>.</translation>
@@ -1034,7 +1062,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="5126510351761255129">Egiaztatu txartela</translation>
 <translation id="5135404736266831032">Kudeatu helbideak…</translation>
 <translation id="5138227688689900538">Erakutsi gutxiago</translation>
-<translation id="7186167407612593632">Enkriptatu sinkronizatutako pasahitzak Brave kredentzialekin</translation>
+<translation id="514010763713772514">Erosi bizkorrago hurrengoan</translation>
 <translation id="5145883236150621069">Errore-kode gidalerroaren erantzunean dago</translation>
 <translation id="5146995429444047494"><ph name="ORIGIN"/> webgunearen jakinarazpenak blokeatu egin dira</translation>
 <translation id="5148809049217731050">Ahoz gora</translation>
@@ -1078,7 +1106,6 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="5287456746628258573">Webgune honek segurtasun-konfigurazio zaharkitu bat erabiltzen du; ondorioz, baliteke zure informazioa (adibidez, pasahitzak edo kreditu-txartelen zenbakiak) agerian uztea webgune honetara bidaltzen duzunean.</translation>
 <translation id="5288108484102287882">Gidalerroetako balioen baliozkotzeak abisu batzuk sortu ditu</translation>
 <translation id="5289384342738547352">Dokumentu bat baino gehiago kudeatzea</translation>
-<translation id="3764885446986388155">Erabiltzen duzun webgune edo aplikazio batean datuen isilpekotasuna urratu denez, zure pasahitza atzitzeko aukera izan dute. Gordetako pasahitzak seguru daudela egiaztatzea gomendatzen du Brave-k.</translation>
 <translation id="5299298092464848405">Errore bat gertatu da gidalerroak analizatzean</translation>
 <translation id="5300589172476337783">Erakutsi</translation>
 <translation id="5306593769196050043">Bi orriak</translation>
@@ -1093,6 +1120,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="5327248766486351172">Izena</translation>
 <translation id="5329858041417644019">Gailuak ez du kudeatzailerik</translation>
 <translation id="5332219387342487447">Bidalketa-metodoa</translation>
+<translation id="5038014878861342914">Brave-k erabili berri duzun pasahitza aurkitu du datuen isilpekotasunaren urratze batean. Zure kontuak babesteko, gordeta dauzkazun pasahitzak egiaztatzea gomendatzen dizugu.</translation>
 <translation id="5334013548165032829">Sistemaren erregistroen xehetasunak</translation>
 <translation id="5340250774223869109">Aplikazioa blokeatuta dago</translation>
 <translation id="534295439873310000">NFC darabilten gailuak</translation>
@@ -1110,6 +1138,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="541416427766103491">4. pilatzailea</translation>
 <translation id="5421136146218899937">Garbitu arakatze-datuak…</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> webguneak jakinarazpenak bidali nahi dizkizu</translation>
+<translation id="5428105026674456456">Espaniarra</translation>
 <translation id="542872847390508405">Gonbidatu gisa arakatzen ari zara</translation>
 <translation id="5430298929874300616">Kendu laster-marka</translation>
 <translation id="5439770059721715174">Eskemaren baliozkotze-errorea gertatu da ("<ph name="ERROR_PATH"/>"): <ph name="ERROR"/></translation>
@@ -1119,6 +1148,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="5455374756549232013">Gidalerroaren denbora-zigiluak ez du balio</translation>
 <translation id="5457113250005438886">Ez du balio</translation>
 <translation id="5458150163479425638">{CONTACT,plural, =0{<ph name="CONTACT_PREVIEW"/>}=1{<ph name="CONTACT_PREVIEW"/> eta beste <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/>}other{<ph name="CONTACT_PREVIEW"/> eta beste <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/>}}</translation>
+<translation id="5469868506864199649">Italiarra</translation>
 <translation id="5470861586879999274">&amp;Berregin editatzea</translation>
 <translation id="5478437291406423475">B6/C4 (gutun-azala)</translation>
 <translation id="5481076368049295676">Baliteke edukiak software kaltegarria instalatzen saiatzea zure informazioa lapurtu edo ezabatzeko. <ph name="BEGIN_LINK"/>Erakutsi, hala ere<ph name="END_LINK"/></translation>
@@ -1142,6 +1172,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="5540224163453853">Ezin izan da aurkitu eskatutako artikulua.</translation>
 <translation id="5541086400771735334">7. postontzia</translation>
 <translation id="5541546772353173584">Gehitu helbide elektronikoa</translation>
+<translation id="3931483091767045023">Segurtasun-ezarpenak kudeatzeko botoia, sakatu Sartu Brave-ren ezarpenetara joan, eta Arakatze segurua eta beste gauza batzuk kudeatzeko</translation>
 <translation id="5545756402275714221">Zuretzako artikuluak</translation>
 <translation id="6084314943327785510">Sarean argitaratu diren zerrendetan zure pasahitzak dauden egiaztatzen du noizean behin Brave-k. Hori egiteko, pasahitzak eta erabiltzaile-izenak enkriptatu egiten ditu, inork ezin ditzan irakurri, Brave barne.</translation>
 <translation id="5556459405103347317">Kargatu berriro</translation>
@@ -1188,7 +1219,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="57094364128775171">Iradoki pasahitz seguru bat…</translation>
 <translation id="5710435578057952990">Ez da egiaztatu webgune honen identitatea.</translation>
 <translation id="571403275720188526">(arm64)</translation>
-<translation id="5720705177508910913">Uneko erabiltzailea</translation>
+<translation id="5720705177508910913">Oraingo erabiltzailea</translation>
 <translation id="5728056243719941842">C5 (gutun-azala)</translation>
 <translation id="3006790309890592320">Pasahitza beste webgune batzuetan ere erabili baduzu, hura berrezartzea gomendatzen du Brave-k.</translation>
 <translation id="5576538372759072019">{NUM_CARDS,plural, =1{Gorde txartela Brave-ko kontuan}other{Gorde txartelak Brave-ko kontuan}}</translation>
@@ -1204,6 +1235,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="5784606427469807560">Arazo bat izan da txartela berrestean. Egiaztatu Internetera konektatuta zaudela eta saiatu berriro.</translation>
 <translation id="5785756445106461925">Gainera, orri honetan seguruak ez diren beste baliabide batzuk daude. Bidean dauden bitartean, beste pertsonek baliabide horiek ikus ditzakete eta erasotzaileek aldatu egin ditzakete orriaren portaera aldatzeko.</translation>
 <translation id="5786044859038896871">Txartelaren datuak betetzea nahi duzu?</translation>
+<translation id="3985758120980526872">Brave-k erabili berri duzun pasahitza aurkitu du datuen isilpekotasunaren urratze batean. Pasahitz hori berehala aldatzea gomendatzen dizugu.</translation>
 <translation id="5798290721819630480">Aldaketak baztertu nahi dituzu?</translation>
 <translation id="5803412860119678065"><ph name="CARD_DETAIL"/> txartelaren datuak betetzea nahi duzu?</translation>
 <translation id="5804241973901381774">Baimenak</translation>
@@ -1250,7 +1282,6 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="5984570616552610254">Gelako hezetasuna</translation>
 <translation id="598637245381783098">Ezin da ireki ordainketa-aplikazioa</translation>
 <translation id="5989320800837274978">Ez da zehaztu proxy-zerbitzari finkorik, ezta .pac scripteko URLrik ere.</translation>
-<translation id="5990559369517809815">Luzapenak zerbitzariari egindako eskaerak blokeatu ditu.</translation>
 <translation id="5992691462791905444">Z-erako tolestura laburra</translation>
 <translation id="6000758707621254961">"<ph name="SEARCH_TEXT"/>" bilaketak <ph name="RESULT_COUNT"/> emaitza ditu</translation>
 <translation id="6008122969617370890">N-tik 1erako ordena</translation>
@@ -1368,6 +1399,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="6446608382365791566">Gehitu informazio gehiago</translation>
 <translation id="6447842834002726250">Cookieak</translation>
 <translation id="6451458296329894277">Berretsi inprimakia berriro bidali nahi duzula</translation>
+<translation id="6456955391422100996">Kendu da iragarkia.</translation>
 <translation id="6457206614190510200">Grapa bidezko koadernatzea</translation>
 <translation id="6458606150257356946">Itsatsi halere</translation>
 <translation id="6465306955648956876">Kudeatu pasahitzak…</translation>
@@ -1391,8 +1423,10 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="6579630537141957243">MIDI gailua konektatu nahi duzu?</translation>
 <translation id="6579990219486187401">Arrosa argia</translation>
 <translation id="6583674473685352014">B6 (gutun-azala)</translation>
+<translation id="5302585261530504168">Brave-k erabili berri duzun pasahitza aurkitu du datuen isilpekotasunaren urratze batean. Zure kontuak babesteko, pasahitz hori aldatzea eta gordeta dauzkazun pasahitzak egiaztatzea gomendatzen dizugu.</translation>
 <translation id="6587923378399804057">Kopiatu duzun esteka</translation>
 <translation id="6591833882275308647"><ph name="DEVICE_TYPE"/> gailuak ez du kudeatzailerik</translation>
+<translation id="7150996650768688560">Webguneen ezarpenak kudeatzeko botoia, sakatu Sartu Brave-ren ezarpenetara joan, eta baimenak eta webguneetan gordetako datuak kudeatzeko</translation>
 <translation id="6596325263575161958">Enkriptatze aukerak</translation>
 <translation id="6604181099783169992">Mugimenduaren eta argiaren sentsoreak</translation>
 <translation id="6609880536175561541">Prc7 (gutun-azala)</translation>
@@ -1447,6 +1481,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="6852204201400771460">Berriro kargatu nahi duzu aplikazioa?</translation>
 <translation id="6865412394715372076">Txartela ezin da egiaztatu une honetan</translation>
 <translation id="6874604403660855544">&amp;Berregin gehitzea</translation>
+<translation id="5856252669085142737">Sortu Brave-ko dokumentu bat bizkor</translation>
 <translation id="6884662655240309489">Tamaina: 1</translation>
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
 <translation id="7265969755975834932">Brave-k sinplifikatu egin du orri hau errazago irakurri ahal izan dadin. Segurua ez den konexio baten bidez eskuratu du jatorrizko orria.</translation>
@@ -1456,10 +1491,12 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="6898699227549475383">Erakundea (O)</translation>
 <translation id="6907293445143367439">Eman hau egiteko baimena <ph name="SITE_NAME"/> webguneari:</translation>
 <translation id="6910240653697687763"><ph name="URL"/> webguneak MIDI gailuen kontrol osoa nahi du</translation>
+<translation id="2672063697570996083">Brave-ko dokumentu bat sortzeko botoia, sakatu Sartu Brave-ko dokumentu bat bizkor sortzeko</translation>
 <translation id="6915804003454593391">Erabiltzailea:</translation>
 <translation id="6722453239914327220">Izen hori Brave-ko kontukoa da</translation>
 <translation id="6944692733090228304"><ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> erakundeak kudeatzen ez duen webgune batean idatzi duzu pasahitza. Kontua babesteko, ez erabili berriro pasahitz hori beste aplikazio eta webguneetan.</translation>
 <translation id="6945221475159498467">Hautatu</translation>
+<translation id="6948051842255602737">Amaitu da partida. Hau da zure puntuazioa: <ph name="SCORE"/>.</translation>
 <translation id="6948701128805548767">Jasotze-metodoak eta -eskakizunak ikusteko, hautatu helbide bat</translation>
 <translation id="6949872517221025916">Berrezarri pasahitza</translation>
 <translation id="6950684638814147129">Errore bat gertatu da JSON balio bat analizatzean: <ph name="ERROR"/></translation>
@@ -1484,6 +1521,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="7004583254764674281">Erabili Windows Hello txartelak bizkorrago berresteko</translation>
 <translation id="7006930604109697472">Bidali hala ere</translation>
 <translation id="7012363358306927923">China UnionPay</translation>
+<translation id="7012404007611495949">Tamaina aldatzeko ezarpenak</translation>
 <translation id="7014741021609395734">Zoom-maila</translation>
 <translation id="7016992613359344582">Behin edo gehiagotan kobratzen saia liteke, eta baliteke zordunketa horiek begien bistakoak ez izatea.</translation>
 <translation id="7029809446516969842">Pasahitzak</translation>
@@ -1493,6 +1531,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="7053983685419859001">Blokeatu</translation>
 <translation id="7058163556978339998">Webgunearen ziurtagiria <ph name="ISSUER"/> hornitzaileak jaulki duela egiaztatu du <ph name="BROWSER"/> arakatzaileak.</translation>
 <translation id="7062635574500127092">Anila</translation>
+<translation id="5320462991730735481">Gehitu eta kudeatu helbideak Brave-ren ezarpenetan</translation>
 <translation id="7064851114919012435">Harremanetarako informazioa</translation>
 <translation id="70705239631109039">Konexioa ez da guztiz segurua</translation>
 <translation id="7072826695771387770">Segurua ez den gertaera bat egon da</translation>
@@ -1502,6 +1541,7 @@ Bestela, pribatutasun-ezarpenek blokeatu egingo dute baimen hori. Baimen honekin
 <translation id="7083258188081898530">9. erretilua</translation>
 <translation id="7086090958708083563">Erabiltzaileak eskatutako kargatzea</translation>
 <translation id="7087282848513945231">Konderria</translation>
+<translation id="1313878436434241688"><ph name="MANAGE_SITE_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, sakatu tabuladorea eta, ondoren, sakatu Sartu Brave-ren ezarpenetara joan, eta baimenak eta webguneetan gordetako datuak kudeatzeko</translation>
 <translation id="7108338896283013870">Ezkutatu</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> webguneak kamera erabili nahi du</translation>
 <translation id="7108819624672055576">Luzapen batek baimendu du</translation>
@@ -1567,6 +1607,7 @@ Xehetasun gehiago:
 <translation id="7349430561505560861">A4-Extra</translation>
 <translation id="7353601530677266744">Agindu-lerroa</translation>
 <translation id="7359588939039777303">Blokeatu egin dira iragarkiak</translation>
+<translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, sakatu tabuladorea eta, ondoren, sakatu Sartu Brave-ren ezarpenetara joan, eta helbideak gehitzeko eta kudeatzeko</translation>
 <translation id="7365849542400970216">Gailuaren erabilera ezagutzeko baimena eman nahi diozu?</translation>
 <translation id="7372973238305370288">bilaketa-emaitza</translation>
 <translation id="3898257577441589237">Gailuan instalatu duzun edo dizuten ziurtagiri baten ondorioz gertatu da arazoa. Brave-k ez du jotzen fidagarritzat ziurtagiria, jakina baita sareak atzeman eta kontrolatzeko erabiltzen dela. Legezko kasu batzuetan kontrolatzen bada ere (hala nola ikastetxearen edo enpresaren sareetan), egoeraz jabe zaitezen nahi du Brave-k, nahiz eta saihestu ezin. Sarea atzitzen duen edozein arakatzaile edo aplikaziotan egiten da gainbegiratzea.</translation>
@@ -1605,7 +1646,6 @@ Xehetasun gehiago:
 <translation id="7473891865547856676">Ez, eskerrik asko</translation>
 <translation id="7481312909269577407">Aurrera</translation>
 <translation id="7485870689360869515">Ez da daturik aurkitu</translation>
-<translation id="3692186536781145635">Erabiltzen duzun webgune edo aplikazio batean datuen isilpekotasuna urratu denez, zure pasahitza atzitzeko aukera izan dute. Gordetako pasahitzak seguru daudela egiaztatzea eta <ph name="ORIGIN"/> webguneko pasahitza berehala aldatzea gomendatzen du Brave-k.</translation>
 <translation id="7495528107193238112">Eduki hori blokeatuta dago. Jarri harremanetan webgunearen arduradunarekin arazoa konpontzeko.</translation>
 <translation id="7498234416455752244">Jarraitu editatzen</translation>
 <translation id="7508255263130623398">Itzuli den gidalerroaren gailu IDa hutsik dago edo ez dator bat gailuaren IDarekin</translation>
@@ -1627,6 +1667,7 @@ Xehetasun gehiago:
 <translation id="7549584377607005141">Web-orriak lehen idatzitako datuak behar ditu behar bezala bistaratzeko. Datuak berriro bidal ditzakezu, baina, hori eginez gero, orriak lehen egindako ekintza bera gauzatuko du berriro.</translation>
 <translation id="5474381306981932386">Gailuko eta Brave-ko erabiltzaile-izenak</translation>
 <translation id="7552846755917812628">Saiatu hauek egiten:</translation>
+<translation id="7554475479213504905">Kargatu berriro eta erakutsi, hala ere</translation>
 <translation id="7554791636758816595">Fitxa berria</translation>
 <translation id="7567204685887185387">Zerbitzari honek ezin izan du egiaztatu <ph name="DOMAIN"/> domeinua denik. Bere segurtasun-ziurtagiria iruzurrezko moduan igorrita egon liteke. Baliteke gaizki konfiguratuta dagoelako izatea edo erasotzaile batek zure konexioa atzeman duelako izatea.</translation>
 <translation id="7569983096843329377">Beltza</translation>
@@ -1658,7 +1699,7 @@ Xehetasun gehiago:
 <translation id="7658239707568436148">Utzi</translation>
 <translation id="7662298039739062396">Luzapen batek kontrolatzen du ezarpena</translation>
 <translation id="7663736086183791259">Ziurtagiria <ph name="CERTIFICATE_VALIDITY"/></translation>
-<translation id="7667346355482952095">Itzuli den gidalerro-tokena hutsik dago edo ez dator bat uneko tokenarekin</translation>
+<translation id="7667346355482952095">Itzuli den gidalerro-tokena hutsik dago edo ez dator bat oraingo tokenarekin</translation>
 <translation id="7668654391829183341">Identifikatu ezin den gailua</translation>
 <translation id="7669271284792375604">Webgune honetako erasotzaileak zu engainatzen saia litezke, sarea arakatzea oztopatuko dizuten programak instala ditzazun. Besteak beste, hasierako orria alda lezakete edo ikusten dituzun webguneetan iragarki gehiago erakuts litzakete programok.</translation>
 <translation id="7673278391011283842">6. postontzia</translation>
@@ -1707,6 +1748,7 @@ Xehetasun gehiago:
 <translation id="7836231406687464395">Postfix (gutun-azala)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Bat ere ez}=1{1 aplikazio (<ph name="EXAMPLE_APP_1"/>)}=2{2 aplikazio (<ph name="EXAMPLE_APP_1"/> eta <ph name="EXAMPLE_APP_2"/>)}other{# aplikazio (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> eta<ph name="AND_MORE"/>)}}</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
+<translation id="7858035578849836010">Fitxategiak ireki fitxategi moten loturekin.</translation>
 <translation id="7862185352068345852">Webgunetik irten nahi duzu?</translation>
 <translation id="7865448901209910068">Abiadurarik onena</translation>
 <translation id="1012292338579042608">Webgune engainagarri batean idatzi duzu pasahitza. <ph name="WEBSITE_1"/> eta <ph name="WEBSITE_2"/> webguneetarako eta pasahitz hori erabili duzun beste webgune batzuetarako gordetako pasahitzak egiaztatzea gomendatzen dizu Brave-k.</translation>
@@ -1728,11 +1770,13 @@ Xehetasun gehiago:
 <translation id="7938958445268990899">Zerbitzariaren ziurtagiriak ez du oraindik balio.</translation>
 <translation id="7942349550061667556">Gorria</translation>
 <translation id="7947285636476623132">Egiaztatu iraungitze-urtea eta saiatu berriro</translation>
+<translation id="1535074845255182168">Kudeatu cookieen hobespenak Brave-ren ezarpenetan</translation>
 <translation id="7951415247503192394">(32 bit)</translation>
 <translation id="7953569069500808819">Goiko ertza josita</translation>
 <translation id="7956713633345437162">Mugikorreko laster-markak</translation>
 <translation id="7961015016161918242">Inoiz ez</translation>
 <translation id="7966803981046576691">Laneko kontu mota</translation>
+<translation id="79682505114836835">"<ph name="VALUE"/>" kolore hamaseitar baliogabea da.</translation>
 <translation id="7976214039405368314">Eskaera gehiegi daude</translation>
 <translation id="7977538094055660992">Irteera-gailua</translation>
 <translation id="7977894662897852582">Edp</translation>
@@ -1759,11 +1803,13 @@ Xehetasun gehiago:
 <translation id="8066955247577885446">Arazoren bat izan da.</translation>
 <translation id="5442778523450464826">Webgune engainagarri batean idatzi duzu pasahitza. Brave-ek lagundu egin diezazuke. Pasahitza aldatzeko eta Brave-ri agian kontua arriskuan dagoela jakinarazteko, egin klik Babestu kontua botoian.</translation>
 <translation id="8074253406171541171">10x13 (gutun-azala)</translation>
+<translation id="8075898834294118863">Kudeatu webguneen ezarpenak</translation>
 <translation id="8078141288243656252">Ezin da oharpenik egin dokumentua biratuta dagoenean</translation>
 <translation id="8079031581361219619">Webgunea berriz kargatu nahi duzu?</translation>
 <translation id="8086971161893892807">Zirriborroa</translation>
 <translation id="8088680233425245692">Ezin izan da ikusi artikulua.</translation>
 <translation id="808894953321890993">Aldatu pasahitza</translation>
+<translation id="8090329638663751802">Ordainketa-metodoa erabilita gailuaren bidez ordaintzen duzun hurrengo aldian zeu zarela bizkor egiaztatzeko erabil dezakezu Touch ID.</translation>
 <translation id="8090403583893450254">Tamaina: 20</translation>
 <translation id="8091372947890762290">Aktibazioa zain dago zerbitzarian</translation>
 <translation id="8092774999298748321">More bizia</translation>
@@ -1781,6 +1827,7 @@ Xehetasun gehiago:
 <translation id="8157295877370077682">Irten webgunetik</translation>
 <translation id="8163866351304776260">Lau zulo ezkerrean</translation>
 <translation id="4351627595884993315">Saioa hasita duzunez, txartelak Brave-ko kontuan gordetzeko aukera ematen dizu Brave-k. Aukera hori aldatzeko, joan Ezarpenak atalera.</translation>
+<translation id="8176440868214972690">Gailuaren administratzaileak ezarpenei eta gidalerroei buruzko informazioa bidali du, besteak beste, jarraian ageri diren webguneetara.</translation>
 <translation id="8184538546369750125">Erabili lehenespen globala (Baimendu)</translation>
 <translation id="8194797478851900357">&amp;Desegin mugitzea</translation>
 <translation id="8201077131113104583">"<ph name="EXTENSION_ID"/>" IDa duen luzapena eguneratzeko URLak ez du balio.</translation>
@@ -1794,6 +1841,7 @@ Xehetasun gehiago:
 <translation id="3272614036080146686">Webgune engainagarri batean idatzi duzu pasahitza. <ph name="WEBSITE_1"/> webgunera eta pasahitza erabili duzun beste webgune batzuetara joatea eta pasahitza aldatzea gomendatzen dizu Brave-ek.</translation>
 <translation id="8228419419708659934">Bi orriko ikuspegia</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
+<translation id="8230159728600632642">Ez galdetu berriro aplikazio honetan</translation>
 <translation id="8232343881378637145">Plataformaren tenperatura</translation>
 <translation id="8241707690549784388">Bilatzen ari zaren orriak idatzi duzun informazioa erabili du. Orrira itzultzen bazara, baliteke egin dituzun ekintzak errepikatzea. Jarraitu nahi duzu?</translation>
 <translation id="8241712895048303527">Blokeatu webgune honetan</translation>
@@ -1804,6 +1852,7 @@ Xehetasun gehiago:
 <translation id="825929999321470778">Erakutsi gordetako pasahitz guztiak</translation>
 <translation id="8261506727792406068">Ezabatu</translation>
 <translation id="8262952874573525464">Beheko ertza josita</translation>
+<translation id="826298712171642726">Tamaina aldatzeko aukera gaitu?</translation>
 <translation id="8265992338205884890">Ikusgai dauden datuak</translation>
 <translation id="8267698848189296333"><ph name="USERNAME"/> gisa saioa hasten</translation>
 <translation id="8269242089528251720">Dokumentu bereiziak / Elkartutako kopiak</translation>
@@ -1811,12 +1860,14 @@ Xehetasun gehiago:
 <translation id="8277900682056760511">Ordainketa kudeatzeko orria irekita dago</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Ezagutu zure gailu-identifikatzaile esklusiboa</translation>
+<translation id="4596532552309852907">Kudeatu Arakatze segurua eta beste gauza batzuk Brave-ren ezarpenetan</translation>
 <translation id="8286036467436129157">Hasi saioa</translation>
 <translation id="8288807391153049143">Erakutsi ziurtagiria</translation>
 <translation id="8289355894181816810">Ez badakizu ziur horrek zer esan nahi duen, jarri harremanetan sarearen administratzailearekin.</translation>
 <translation id="8293206222192510085">Gehitu laster-marka</translation>
 <translation id="8294431847097064396">Iturburua</translation>
 <translation id="8298115750975731693">Baliteke darabilzun Wi-Fi konexioaren (<ph name="WIFI_NAME"/>) <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> orrira joan behar izatea.</translation>
+<translation id="8299269255470343364">Japoniarra</translation>
 <translation id="8303854710873047864">"<ph name="SECTION"/>" atala ikusten ari zara</translation>
 <translation id="830498451218851433">Erdibitzeko tolestura</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
@@ -1837,6 +1888,7 @@ Xehetasun gehiago:
 <translation id="8380941800586852976">Arriskutsua</translation>
 <translation id="8381674639488873545">Behin edo gehiagotan kobratzen saia liteke, eta baliteke zordunketa horiek begien bistakoak ez izatea. <ph name="BEGIN_LINK"/>Erakutsi hala ere<ph name="END_LINK"/>.</translation>
 <translation id="8390725133630534698">Administratzailearen gidalerroek blokeatu egin dute <ph name="ORIGIN_NAME"/> domeinuko edukia <ph name="VM_NAME"/> makinara partekatzeko aukera</translation>
+<translation id="15931837016421186">Kudeatu sinkronizatzen den informazioa Brave-ren ezarpenetan</translation>
 <translation id="8412145213513410671">Hutsegiteak (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">Pasaesaldi berbera bi aldiz idatzi behar duzu.</translation>
 <translation id="8416694386774425977">Sarearen konfigurazioak ez du balio eta ezin izan da inportatu.
@@ -1844,12 +1896,14 @@ Xehetasun gehiago:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/>, <ph name="SECOND_LABEL"/>, <ph name="THIRD_LABEL"/></translation>
 <translation id="8428213095426709021">Ezarpenak</translation>
+<translation id="5808418475906247813"><ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, sakatu tabuladorea eta, ondoren, sakatu Sartu Brave-ren ezarpenetara joan, eta cookieen hobespenak kudeatzeko</translation>
 <translation id="8433057134996913067">Hori eginez gero, webgune gehienetako saioa amaituko duzu.</translation>
 <translation id="8437238597147034694">&amp;Desegin mugitzea</translation>
 <translation id="8438786541497918448">Kamera eta mikrofonoa erabili nahi dituzu?</translation>
 <translation id="8446884382197647889">Lortu informazio gehiago</translation>
 <translation id="8457125768502047971">Zehaztugabea</translation>
 <translation id="8461694314515752532">Enkriptatu sinkronizatutako datuak sinkronizazio-pasaesaldiarekin</translation>
+<translation id="8463101686637053101">Dino jokoa. Sakatu zuriune-barra salto egin eta jolasteko.</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{1 kreditu-txartel}other{# kreditu-txartel}}</translation>
 <translation id="8473863474539038330">Helbideak eta beste</translation>
 <translation id="8474910779563686872">Erakutsi garatzailearen xehetasunak</translation>
@@ -1862,6 +1916,7 @@ Xehetasun gehiago:
 <translation id="8503813439785031346">Erabiltzaile-izena</translation>
 <translation id="8507227106804027148">Agindu-lerroa</translation>
 <translation id="8508648098325802031">Bilaketa-ikonoa</translation>
+<translation id="8511402995811232419">Kudeatu cookieak</translation>
 <translation id="1426902392270366682">Brave-ko kontua babesten eta pasahitza aldatzen lagun diezazuke Brave-k.</translation>
 <translation id="1215802963054007211">Garbitu arakatze-historia, cookieak, cachea eta beste Brave-ren ezarpenetan</translation>
 <translation id="8533619373899488139">Joan &lt;strong&gt;chrome://policy&lt;/strong&gt; orrira sistemaren administratzaileak blokeatutako URLen zerrenda eta aplikatutako gidalerroak ikusteko.</translation>
@@ -1894,6 +1949,7 @@ Xehetasun gehiago:
 <translation id="8625384913736129811">Gorde txartela gailu honetan</translation>
 <translation id="8627040765059109009">Berrekin zaio pantaila-argazkiak ateratzeko aukerari</translation>
 <translation id="8663226718884576429">Eskaeraren laburpena, <ph name="TOTAL_LABEL"/>, xehetasun gehiago</translation>
+<translation id="8666678546361132282">Ingelesa</translation>
 <translation id="867224526087042813">Sinadura</translation>
 <translation id="8676424191133491403">Atzerapenik gabe</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, erantzuna, <ph name="ANSWER"/></translation>
@@ -1961,6 +2017,7 @@ Xehetasun gehiago:
 <translation id="7757992844965332255">Txartela Brave-ko kontuan gorde nahi duzu?</translation>
 <translation id="8932102934695377596">Erlojua atzeratuta duzu</translation>
 <translation id="893332455753468063">Gehitu izena</translation>
+<translation id="9024947311616864177">Sortu Brave-ko dokumentu bat</translation>
 <translation id="8942355029279167844">Administratzaileak diagnostiko-datuak biltzeko baimena eman dio <ph name="APP_NAME"/> aplikazioari, produktuaren esperientzia hobetzeko helburuarekin. Informazio gehiago lortzeko, joan <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/> helbidera.</translation>
 <translation id="8943282376843390568">Lima</translation>
 <translation id="8957210676456822347">Atari gatibuetako baimena</translation>
@@ -1978,6 +2035,7 @@ Xehetasun gehiago:
 <translation id="8996941253935762404">Webgune honek programa kaltegarriak ditu</translation>
 <translation id="8997023839087525404">Zerbitzariak aurkeztu duen ziurtagiria ez da publikoki ezagutarazi ziurtagirien gardentasun-gidalerroa erabilita. Ziurtagiri batzuek nahitaez bete behar dute gidalerro hura, fidagarriak direla ziurtatzeko eta erasotzaileengandik babesteko.</translation>
 <translation id="9001074447101275817"><ph name="DOMAIN"/> proxyak erabiltzaile-izena eta pasahitza behar ditu.</translation>
+<translation id="9001963517402879850">Egin salto!</translation>
 <translation id="9004367719664099443">Errealitate birtualeko saioa abian da</translation>
 <translation id="9005998258318286617">Ezin izan da kargatu PDF dokumentua.</translation>
 <translation id="9008201768610948239">Egin ez ikusi</translation>

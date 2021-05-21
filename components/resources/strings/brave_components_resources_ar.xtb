@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">ابدأ مكالمات غير محدودة مع الأصدقاء والزملاء في Brave Together.</translation>
 <translation id="7115051913071512405">جربه</translation>
 <translation id="7415602225677446066">أهم أخبار اليوم في موجز خاص تماماً، من أجلك فقط.</translation>
-<translation id="8607689491789524900">يطابق Brave Today اهتماماتك الموجودة على جهازك لذا فإن معلوماتك الشخصية لا تغادر متصفحك أبداً. محتوى جديد يتم تحديثه على مدار اليوم.</translation>
+<translation id="6903061332999399632">Brave News مدعومة بالإعلانات، وتطرح إعلانات خاصة ومجهولة المصدر بشكل تام تطابق بيانات التصفح الموجودة على جهازك. وتظل معلوماتك الشخصية خاصة دائمًا وفقًا <ph name="LINK_START"/>لسياسة الخصوصية<ph name="LINK_END"/> السائدة لدينا.</translation>
+<translation id="7823038307453615214">إظهار Brave News</translation>
+<translation id="780301667611848630">لا، شكرًا</translation>
 <translation id="9164544612367905452">جاري إحضار…</translation>
 <translation id="1276592121036104130">تحميل محتوى جديد</translation>
-<translation id="4210987321913275328">انتقل إلى Brave Today</translation>
-<translation id="3122595178900736207">إعادة تعيين مصادر Brave Today</translation>
-<translation id="2197023915568148978">هل تريد إعادة تعيين جميع اختيارات ناشر Brave Today إلى وضعها الافتراضي؟</translation>
+<translation id="2875288128871360696">الانتقال إلى Brave News</translation>
+<translation id="8510120023634509743">إعادة تعيين مصادر Brave News</translation>
+<translation id="75825199302994272">هل تريد إعادة تعيين جميع اختيارات ناشر Brave News إلى وضعها الافتراضي؟</translation>
 <translation id="954001034349395856">جميع المصادر</translation>
 <translation id="8890516388109605451">المصادر</translation>
 <translation id="5158129253322921540">قم بتعطيل المحتوى المُنشأ من قبل <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">متصل</translation>
 <translation id="8030169304546394654">قُطع الاتصال</translation>
 <translation id="3149306599361260465">جارِ التهيئة [[percentage]]%</translation>
+<translation id="3258793718986637767">هل تواجه مشكلة مع ميزة Tor؟ حاول <ph name="BEGIN_LINK"/>تعطيل نافذة التصفح الخاصة المفعلة فيها ميزة Tor<ph name="END_LINK"/> وإعادة تشغيل هذه النافذة مرة أخرى.</translation>
 <translation id="4272382368346338917">المرشحات الإضافية</translation>
 <translation id="8949292968394988358">تحذير: سيؤدي تشغيل العديد من المرشحات إلى انخفاض الأداء</translation>
 <translation id="8686201964111147748">إجمالي الإعلانات وبرامج التتبع التي تم حجبها:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">التحقق من محفظتي</translation>
 <translation id="6609621505400013054">محفظة bitFlyer هي خدمة تديرها شركة bitFlyer، Inc</translation>
 <translation id="7258399883616914635">من خلال التحقق من محفظتك وربطها بحساب bitFlyer، ستتمكن من تخزين الرموز المميزة التي اكتسبتها من خلال Brave Rewards وإدارتها بسهولة أكبر</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>اعرف المزيد<ph name="LINK_END"/> عن كيفية الربط بين متصفح Brave الخاص بك وحسابك على bitFlyer.</translation>
 <translation id="5094577350232361255">معلومات</translation>
 <translation id="4918086044614829423">قبول</translation>
 <translation id="5916290544882167205">Brave Software. تعتبر Brave علامة تجارية مسجلة لشركة Brave Software. قد تكون أسماء المواقع علامات تجارية أو علامات تجارية مسجلة لصاحب الموقع.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">سعر الوحدة</translation>
 <translation id="4763179765154524864">إجمالي ما أُنفق</translation>
 <translation id="8851480289992540512">إجمالي المستلم</translation>
+<translation id="8624961452383848703">أريد تحويل…</translation>
 <translation id="616639131065447379">أهلاً بك في Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">تتيح لك Crypto Wallets العمل مع العملات المشفرة والأصول ذات الصلة في Brave. تدعم Crypto Wallets رموز Ethereum مثل ETH و BAT بالإضافة إلى المقتنيات، كما تتيح لك العمل مع Ðالتطبيقات والعقود الذكية الأخرى. كل هذا مخصص للأشخاص الذين هم على دراية بـ Ethereum وأنظمة سلسلة الكتل الأخرى — أو في شوقٍ للتعلم.</translation>
 <translation id="4855440621031541830">استخدم Crypto Wallets فقط إذا كنت تقر بأنك وحدك مسؤول عن جميع المخاطر المرتبطة بهذا الاستخدام، وأن Brave Software لا تتحمل أي مسؤولية أو تبعة عن أي خسائر بما في ذلك الخسائر العرضية أو التبعية التي قد تتعرض لها نتيجةً لهذا الاستخدام.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">فشل إحضار البيانات للاستيراد</translation>
 <translation id="7900950536120202771">خطأ داخلي في عقدة IPFS</translation>
 <translation id="1036635552229153800">تم تحميل البيانات بنجاح، ولكن لم تنتقل إلى دليل العناصر المستوردة من brave. يمكنك القيام بذلك يدويًا في صفحة إعدادات الاستيراد.</translation>
-<translation id="7789840864192026963">منح إذن</translation>
-<translation id="7978789143098237970">حتى أقوم بغلق هذه الصفحة</translation>
+<translation id="572392919096807438">تذكر قراري</translation>
+<translation id="7978789143098237970">حتى أغلق هذا الموقع</translation>
 <translation id="3523195733429162409">لمدة 24 ساعة</translation>
 <translation id="2373264732659722940">لمدة أسبوع واحد</translation>
 <translation id="6318437367327684789">للأبد</translation>
-<translation id="7463327191540031132">حظر للأبد</translation>
 <translation id="8797999629784150206">يمكنك تغيير <ph name="SITE_PERMISSIONS"/> في أي وقت. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">إذن الموقع</translation>
 <translation id="7701466644604753106">تشغيل قارئ السرعة</translation>
 <translation id="763042262431778831">أوقف قارئ السرعة</translation>
+<translation id="1544192797660353713">المحفظة</translation>
+<translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">عنوان URI لوكيل متصفح تور</translation>
 <translation id="1671503397662036257">حالة اتصال تور</translation>
 <translation id="6024292492796847324">التقدم المحرز في تهيئة متصفح تور</translation>
+<translation id="7586151660465233733">مزيد من الأسواق على <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">عرض الأسواق وتداول العملات المشفرة على FTX</translation>
+<translation id="5963745988819586370">الأسواق</translation>
+<translation id="3795943412467785186">اتصل بحساب FTX لعرض رصيد الحساب، واستكشاف أسواق العقود الآجلة، وتحويل العملات المشفرة.</translation>
+<translation id="926958206891985289">عرض أسواق العقود الآجلة</translation>
+<translation id="6804537228302563756">الاتصال بالحساب</translation>
+<translation id="5019698312620117604">نشاط السعر خلال 24 ساعة</translation>
+<translation id="8720719072204443171">حجم التداول خلال 24 ساعة</translation>
+<translation id="3891414008432200754">السعر</translation>
+<translation id="7723176927437578611">الأرباح</translation>
+<translation id="2983078329159689577">جارٍ الإرسال…</translation>
+<translation id="6641102760094059194">تأكيد (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">تم التحويل بنجاح!</translation>
+<translation id="7590653073560839711">إنك تحتاج إلى رصيد بعملة واحدة على الأقل من أجل إجراء عملية تحويل.</translation>
+<translation id="4390079506197726228">متوفر <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">إخفاء أرصدتك من العرض</translation>
+<translation id="4548946945059463969">الكشف عن أرصدتك على الشاشة</translation>
 </translationbundle>

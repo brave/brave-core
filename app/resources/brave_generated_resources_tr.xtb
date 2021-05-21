@@ -69,15 +69,19 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="4227945450504703638">Seçilen ses</translation>
 <translation id="7895302206188277628">Bağlantılı içerik</translation>
 <translation id="4322612543319315652">Seçilen Metni IPFS'ye Aktar</translation>
+<translation id="8883166554766780543">IPFS anlık görüntü bağlantısını içe aktarın ve kopyalayın</translation>
+<translation id="3654831858282189202">IPNS anahtarıyla yayınlayın</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Yeni Tor ile Özel Pencere</translation>
 <translation id="4703780849509456860">Bağlantıyı Tor içeren Özel Pencereyle Aç</translation>
 <translation id="3488584642074079080">Tor ile Brave Özel Pencere Açma Linki</translation>
 <translation id="7475547933708221517">IPFS Kullanarak Yerel Dosya Paylaş</translation>
+<translation id="2286177249736199435">IPFS Kullanarak Yerel Klasör Paylaşın</translation>
 <translation id="784573715436258741">IPFS kullanarak yerel dosya paylaş</translation>
 <translation id="6313675821927505581">Tor ile yeni özel pencere</translation>
 <translation id="2638041073279639246">Bağlantıyı Tor ile özel pencerede aç</translation>
 <translation id="3425600262621021599">Bağlantıyı Brave'de Tor ile özel pencerede aç</translation>
+<translation id="575838692088926391">IPFS kullanarak yerel klasör paylaşın</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Reklam Servisi</translation>
 <translation id="7924918279836988121">Bat Ledger Servisi</translation>
@@ -157,7 +161,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="4112587618563511470">Eş zamanlama kodu geçersiz, lütfen kontrol edip tekrar deneyin.</translation>
 <translation id="2339730291919608488">Senkronizasyon Zincirinden Ayrıl</translation>
 <translation id="115699408012835975">Eş Zamanlamayı sıfırlarsanız, başka bir cihaza eş zamanlamada bulunmak için o cihazdan bir eş zamanlama kodunu tekrar girmeniz gerekecek. Devam etmek istediğinize emin misiniz?</translation>
-<translation id="6092564993102418148">Eşitleme zincirinden seçilen cihazı silmek istediğinizden emin misiniz?</translation>
+<translation id="6092564993102418148">Seçilen cihazı senkronizasyon zincirinden kaldırmak istediğinizden emin misiniz?</translation>
 <translation id="3396347744975515056">Brave Eş Zamanlama güncellendi ve kurulması gerekli</translation>
 <translation id="7473245612074035141">Kuruluma Başla</translation>
 <translation id="3411013544209536575">Yardım ipuçları</translation>
@@ -177,10 +181,23 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7090046810227878892">Dapps kullanmak için Ethereum sağlayıcı</translation>
 <translation id="5913089932885076110">Başlangıçta Kripto Cüzdanı Yükle</translation>
 <translation id="757886143331967039">Onaylanmamış Kripto Cüzdanlar uzantısını başlangıçta yükle</translation>
+<translation id="1834467296210148203">Brave Cüzdan simgesini araç çubuğunda göster</translation>
 <translation id="6864914031231797928">Uzantılar için Google ile oturum açmaya izin ver</translation>
 <translation id="5927916530277631319">Unstoppable Domains'i çözmenin yolu</translation>
 <translation id="8412057160793088103">HTTPS üzerinden DNS ve Ethereum gizliliğiyle ilgili hususlar hakkında <ph name="BEGIN_LINK"/>Daha Fazla Bilgi Edinin<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) çözümlemesi için yol</translation>
+<translation id="7024553202001112871">IPNS anahtarlarınızı kurun</translation>
+<translation id="951216659045543447">İçeriği karşılık gelen özel anahtarla imzalayın ve IPNS'ye göndererek yayınlayın</translation>
+<translation id="7611728475758612204">Yayınlamaya uygun anahtarlar</translation>
+<translation id="911363100236037920">Yeni anahtar için bir isim girin</translation>
+<translation id="6358469157239228181">Bu isim kullanılamaz</translation>
+<translation id="8996633027318264334"><ph name="KEY_NAME"/> öğesini silmeyi gerçekten istiyor musunuz?</translation>
+<translation id="910215077892371264">Düğüm başlatılmadı</translation>
+<translation id="616058968889448209">IPFS hizmeti başlatma hatası, daha fazla bilgiye <ph name="BEGIN_LINK"/>tanılama sayfasından<ph name="END_LINK"/> ulaşılabilir</translation>
+<translation id="6912148685459054619">"<ph name="KEY_NAME"/>" anahtarı içe aktarılamadı</translation>
+<translation id="8275038454117074363">Al</translation>
+<translation id="3654980960391973513">Oluştur</translation>
+<translation id="5531501313997312487">Düğümü başlat</translation>
 <translation id="9170907049676078643">IPFS kaynaklarını çözmek için yöntem</translation>
 <translation id="1327977588028644528">Ağ geçidi</translation>
 <translation id="80225669816651290">Yerel düğüm</translation>
@@ -260,7 +277,10 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="1391855377994926460">Web'de daha hızlı gezinmeye devam edin. Başlıca haber sitelerinde 6 kata kadar daha hızlı gezinin.</translation>
 <translation id="9218430445555521422">Varsayılan olarak ayarla</translation>
 <translation id="3479552764303398839">Şimdi değil</translation>
+<translation id="6040143037577758943">Kapat</translation>
+<translation id="5600566490506283344">Brave Reklam Bildirimi</translation>
 <translation id="4877147287319222750">Kenar çubuğuna ekle</translation>
+<translation id="4233010476457917696">Kenar çubuğunu göster</translation>
 <translation id="5404213409401164238">Kenar çubuğunu göster</translation>
 <translation id="7561196759112975576">Her zaman</translation>
 <translation id="7060352228894039151">Fare imleci üzerindeyken</translation>

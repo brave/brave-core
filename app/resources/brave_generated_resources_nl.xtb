@@ -70,15 +70,19 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="4227945450504703638">Geselecteerde audio</translation>
 <translation id="7895302206188277628">Gekoppelde inhoud</translation>
 <translation id="4322612543319315652">Geselecteerde tekst naar IPFS importeren</translation>
+<translation id="8883166554766780543">Koppeling importeren en kopiëren naar IPFS-momentopname</translation>
+<translation id="3654831858282189202">Publiceren met IPNS-sleutel</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nieuw Privévenster in Tor</translation>
 <translation id="4703780849509456860">Open Link in Privévenster in Tor</translation>
 <translation id="3488584642074079080">Open Link met Brave Privévenster met Tor</translation>
 <translation id="7475547933708221517">Lokaal bestand delen met IPFS</translation>
+<translation id="2286177249736199435">Lokale map delen met IPFS</translation>
 <translation id="784573715436258741">Lokaal bestand delen met IPFS</translation>
 <translation id="6313675821927505581">Nieuw privévenster met Tor</translation>
 <translation id="2638041073279639246">Een link in een privévenster met Tor openen</translation>
 <translation id="3425600262621021599">Een link in een Brave privévenster met Tor openen</translation>
+<translation id="575838692088926391">Lokale map delen met IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-service</translation>
 <translation id="7924918279836988121">Batregisterservice</translation>
@@ -178,10 +182,23 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="7090046810227878892">Ethereum-provider voor het gebruik van Dapps</translation>
 <translation id="5913089932885076110">Laad Crypto Wallets bij het opstarten</translation>
 <translation id="757886143331967039">Laad de verouderde Crypto Wallets extensie bij het opstarten</translation>
+<translation id="1834467296210148203">Brave Wallet-pictogram in werkbalk tonen</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
 <translation id="5927916530277631319">Methode om Unstoppable Domains op te lossen</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over DNS via HTTPS en privacy-overwegingen voor Ethereum.</translation>
 <translation id="5248318250177143470">Methode om Ethereum Name Service (ENS) op te lossen</translation>
+<translation id="7024553202001112871">Uw IPNS-sleutels instellen</translation>
+<translation id="951216659045543447">Content tekenen op basis van de bijbehorende privésleutel en publiceren in IPNS</translation>
+<translation id="7611728475758612204">Sleutels beschikbaar voor publiceren</translation>
+<translation id="911363100236037920">Een naam invoeren voor de nieuwe sleutel</translation>
+<translation id="6358469157239228181">Deze naam mag niet worden gebruikt</translation>
+<translation id="8996633027318264334">Weet u zeker dat u <ph name="KEY_NAME"/> wilt verwijderen?</translation>
+<translation id="910215077892371264">Knooppunt is niet gestart</translation>
+<translation id="616058968889448209">IPFS-fout bij starten van de service. Meer informatie is beschikbaar op de <ph name="BEGIN_LINK"/>pagina met diagnostische gegevens<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Importeren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
+<translation id="8275038454117074363">Importeren</translation>
+<translation id="3654980960391973513">Genereren</translation>
+<translation id="5531501313997312487">Beginknooppunt</translation>
 <translation id="9170907049676078643">Methode voor het oplossen van IPFS-bronnen</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokale node</translation>
@@ -261,7 +278,10 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1391855377994926460">Sneller online browsen - tot wel 6 keer sneller op populaire nieuwswebsites.</translation>
 <translation id="9218430445555521422">Instellen als standaard</translation>
 <translation id="3479552764303398839">Niet nu</translation>
+<translation id="6040143037577758943">Sluit</translation>
+<translation id="5600566490506283344">Brave-advertentiemelding</translation>
 <translation id="4877147287319222750">Toevoegen aan zijbalk</translation>
+<translation id="4233010476457917696">Zijbalk weergeven</translation>
 <translation id="5404213409401164238">Zijbalk weergeven</translation>
 <translation id="7561196759112975576">Altijd</translation>
 <translation id="7060352228894039151">Bij mouseover</translation>
