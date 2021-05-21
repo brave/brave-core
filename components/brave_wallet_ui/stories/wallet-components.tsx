@@ -99,9 +99,13 @@ export const _Onboarding = () => {
     alert('Wallet Setup Complete!!!')
   }
 
+  const passwordProvided = (password: string) => {
+    console.log('Password provided')
+  }
+
   return (
     <WalletPageLayout>
-      <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={complete} />
+      <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={complete} onPasswordProvided={passwordProvided} />
     </WalletPageLayout>
   )
 }

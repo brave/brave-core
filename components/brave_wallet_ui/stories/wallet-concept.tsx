@@ -40,6 +40,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setNeedsOnboarding(false)
   }
 
+  const passwordProvided = (password: string) => {
+    console.log('Password provided')
+  }
+
   const unlockWallet = () => {
     setWalletLocked(false)
   }
@@ -61,7 +65,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       />
       {needsOnboarding ?
         (
-          <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={completeWalletSetup} />
+          <Onboarding recoveryPhrase={recoveryPhrase} onSubmit={completeWalletSetup} onPasswordProvided={passwordProvided} />
         ) : (
           <WalletSubViewLayout>
             {view === 'crypto' ? (
