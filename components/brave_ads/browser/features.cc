@@ -19,7 +19,7 @@ namespace {
 // notifications
 const char kFieldTrialParameterShouldShowCustomAdNotifications[] =
     "should_show_custom_notifications";
-const bool kDefaultShouldShowCustomAdNotifications = true;
+const bool kDefaultShouldShowCustomAdNotifications = false;
 
 // Ad notification timeout in seconds. Set to 0 to never time out
 const char kFieldTrialParameterAdNotificationTimeout[] =
