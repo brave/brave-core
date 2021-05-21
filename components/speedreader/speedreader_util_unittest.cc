@@ -26,6 +26,16 @@ TEST(SpeedreaderUtilTest, URLHasHints) {
   EXPECT_TRUE(URLReadableHintExtractor::GetInstance()->HasHints(
       GURL("https://www.nature.com/articles/d41586-021-01332-0")));
 
+  // Has "story" in path
+  EXPECT_TRUE(URLReadableHintExtractor::GetInstance()->HasHints(
+      GURL("https://www.architecturaldigest.com/story/"
+           "new-york-city-approved-floating-pool-east-river")));
+
+  // Has "entry" in path
+  EXPECT_TRUE(URLReadableHintExtractor::GetInstance()->HasHints(
+      GURL("https://www.huffpost.com/entry/"
+           "asap-rocky-rihanna-relationship_n_60a53b3ce4b09092480b8249")));
+
   // Ignore case on article
   EXPECT_TRUE(URLReadableHintExtractor::GetInstance()->HasHints(
       GURL("https://lwn.net/Articles/414618/")));
@@ -34,5 +44,15 @@ TEST(SpeedreaderUtilTest, URLHasHints) {
   EXPECT_TRUE(URLReadableHintExtractor::GetInstance()->HasHints(
       GURL("https://blog.twitter.com/engineering/en_us/topics/open-source/2021/"
            "dropping-cache-didnt-drop-cache.html")));
+
+  // "story" is final component (no trailing "/")
+  EXPECT_TRUE(URLReadableHintExtractor::GetInstance()->HasHints(GURL(
+      "https://abcnews.go.com/Politics/"
+      "state-dept-ends-policy-denying-us-citizenship-children/"
+      "story?id=77743483&cid=clicksource_4380645_5_film_strip_icymi_hed")));
+
+  // 'b' follows "story"
+  EXPECT_FALSE(URLReadableHintExtractor::GetInstance()->HasHints(
+      GURL("https://fake.com/storyboard")));
 }
 }  // namespace speedreader

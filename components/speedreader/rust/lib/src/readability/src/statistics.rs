@@ -61,9 +61,9 @@ static LIKELY_CANDIDATES: &'static [&'static str; 6] =
 // Stop calculating paragraph length after this limit is reached
 const TEXT_LENGTH_SATURATION: usize = 1000;
 
-// For untagged documents, only consider paragraphs with at least 280
-// characters. This roughly corresponds four English sentences.
-const PARAGRAPH_LENGTH_THRESHOLD_WEBSITE: usize = 280;
+// For untagged documents, only consider paragraphs with at least 140
+// characters. This roughly corresponds two English sentences.
+const PARAGRAPH_LENGTH_THRESHOLD_WEBSITE: usize = 140;
 
 lazy_static! {
     // Upper bound of all moz scores, saturated with 6 paragraphs. This is a
