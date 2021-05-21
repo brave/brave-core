@@ -170,6 +170,7 @@ test("brave_unit_tests") {
     "//brave/components/tor:tor_unit_tests",
     "//brave/components/tor/buildflags",
     "//brave/components/weekly_storage",
+    "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net/proxy_resolution:unit_tests",
     "//brave/vendor/bat-native-ledger/test:bat_native_ledger_tests",
     "//brave/vendor/brave_base",

@@ -1,0 +1,16 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("interfaces") {
+  sources = [ "test_module.mojom" ]
+  public_deps = [ "//mojo/public/mojom/base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_ast_patcher_unittest.cc" ]
+  deps = [
+    ":interfaces",
+    "//mojo/public/cpp/bindings",
+    "//testing/gtest:gtest",
+  ]
+}
