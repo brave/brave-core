@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.h b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-index 9cd5dba13d976ba804074189bda7a5c1031a1b1a..824ba713d702f244a28ba4b21ce9a190962bd357 100644
+index a70cd56cf2dc17fc30058c17d1912161b77e177f..7e63bacc36132ff971ca5a0940e0ea5141b61e9a 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view_base.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-@@ -171,6 +171,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
+@@ -168,6 +168,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
    void set_perform_menu_actions_for_testing(bool perform_menu_actions) {
      perform_menu_actions_ = perform_menu_actions;
    }

@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/key_storage_keyring.cc b/components/os_crypt/key_storage_keyring.cc
-index 409bd27cbc0877634d7d9809575cfa5f60ba04c2..311c3f4e65dd18ab3c84ac989cc85e4527cd0c19 100644
+index 29720b8e8ff81791970e054050b37bbc5f338eb3..1b84b3e68ae2de2685224018226ea230877b17ef 100644
 --- a/components/os_crypt/key_storage_keyring.cc
 +++ b/components/os_crypt/key_storage_keyring.cc
 @@ -18,7 +18,7 @@ namespace {
@@ -11,7 +11,7 @@ index 409bd27cbc0877634d7d9809575cfa5f60ba04c2..311c3f4e65dd18ab3c84ac989cc85e45
  #endif
  
  const GnomeKeyringPasswordSchema kSchema = {
-@@ -49,6 +49,7 @@ base::Optional<std::string> KeyStorageKeyring::GetKeyImpl() {
+@@ -49,6 +49,7 @@ absl::optional<std::string> KeyStorageKeyring::GetKeyImpl() {
    gchar* password_c = nullptr;
    GnomeKeyringResult result =
        GnomeKeyringLoader::gnome_keyring_find_password_sync_ptr(

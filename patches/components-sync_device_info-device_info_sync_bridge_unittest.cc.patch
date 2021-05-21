@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge_unittest.cc b/components/sync_device_info/device_info_sync_bridge_unittest.cc
-index f2c086c04e771c0ac61a0f1e1491a11b1cfe56ec..745aa1adf2414d38d757da339c4ca7c9f3736638 100644
+index 4172f9adc4741215e5655fa4768af220c2b00940..46f431f21e5ed76682a921e76547f08b02bb0767 100644
 --- a/components/sync_device_info/device_info_sync_bridge_unittest.cc
 +++ b/components/sync_device_info/device_info_sync_bridge_unittest.cc
 @@ -900,7 +900,7 @@ TEST_F(DeviceInfoSyncBridgeTest, ApplySyncChangesWithLocalGuid) {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_icon.cc b/chrome/browser/ui/views/tabs/tab_icon.cc
-index 8eac9dc6fbe2c26dbcd3afeaf04188fdff9d4b2c..4fa5b088ec171f3500fb1955f84c3bf995ab4a89 100644
+index 7317e66270f558fbffc2596d7df748e37fe1c3c7..24b09c4d7ecf2def1d984e9abab60f9a322de1d0 100644
 --- a/chrome/browser/ui/views/tabs/tab_icon.cc
 +++ b/chrome/browser/ui/views/tabs/tab_icon.cc
-@@ -368,7 +368,7 @@ void TabIcon::SetIcon(const GURL& url, const gfx::ImageSkia& icon) {
+@@ -369,7 +369,7 @@ void TabIcon::SetIcon(const GURL& url, const gfx::ImageSkia& icon) {
  
    favicon_ = icon;
  
