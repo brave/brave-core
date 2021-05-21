@@ -14,8 +14,9 @@
 namespace brave_ads {
 
 BackgroundHelperWin::BackgroundHelperWin() {
-  singleton_hwnd_observer_.reset(new gfx::SingletonHwndObserver(
-      base::Bind(&BackgroundHelperWin::OnWndProc, base::Unretained(this))));
+  singleton_hwnd_observer_.reset(
+      new gfx::SingletonHwndObserver(base::BindRepeating(
+          &BackgroundHelperWin::OnWndProc, base::Unretained(this))));
 }
 
 BackgroundHelperWin::~BackgroundHelperWin() {}

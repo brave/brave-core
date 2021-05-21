@@ -10,7 +10,6 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "extensions/browser/extension_function.h"
 
@@ -93,7 +92,6 @@ class BraveRewardsTipSiteFunction : public ExtensionFunction {
 
 class BraveRewardsTipUserFunction : public ExtensionFunction {
  public:
-  BraveRewardsTipUserFunction();
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipUser", UNKNOWN)
 
  protected:
@@ -108,8 +106,6 @@ class BraveRewardsTipUserFunction : public ExtensionFunction {
       ledger::type::PublisherInfoPtr info);
   void OnTipUserSavePublisherInfo(const ledger::type::Result result);
   void ShowTipDialog();
-
-  base::WeakPtrFactory<BraveRewardsTipUserFunction> weak_factory_;
 };
 
 class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {

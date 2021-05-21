@@ -14,15 +14,16 @@ namespace brave {
 class BraveP3AScheduler : public metrics::MetricsScheduler {
  public:
   explicit BraveP3AScheduler(
-      const base::Closure& upload_callback,
-      const base::Callback<base::TimeDelta(void)>& get_interval_callback);
+      const base::RepeatingClosure& upload_callback,
+      const base::RepeatingCallback<base::TimeDelta(void)>&
+          get_interval_callback);
   ~BraveP3AScheduler() override;
 
   void UploadFinished(bool ok);
 
  private:
   // Provides us with the interval between successful uploads.
-  base::Callback<base::TimeDelta(void)> get_interval_callback_;
+  base::RepeatingCallback<base::TimeDelta(void)> get_interval_callback_;
 
   // Initial time to wait between upload retry attempts.
   const base::TimeDelta initial_backoff_interval_;

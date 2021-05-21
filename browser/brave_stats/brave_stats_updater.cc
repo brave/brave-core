@@ -329,8 +329,8 @@ void BraveStatsUpdater::QueueServerPing() {
     pref_change_registrar_->Init(pref_service_);
     pref_change_registrar_->Add(
         kReferralInitialization,
-        base::Bind(&BraveStatsUpdater::OnReferralInitialization,
-                   base::Unretained(this)));
+        base::BindRepeating(&BraveStatsUpdater::OnReferralInitialization,
+                            base::Unretained(this)));
   }
   if (ads_enabled) {
     DetectUncertainFuture();

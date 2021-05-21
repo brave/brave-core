@@ -56,8 +56,8 @@ SpeedreaderComponent::SpeedreaderComponent(Delegate* delegate)
     whitelist_path_watcher_ = std::make_unique<base::FilePathWatcher>();
     if (!whitelist_path_watcher_->Watch(
             whitelist_path, base::FilePathWatcher::Type::kNonRecursive,
-            base::Bind(&SpeedreaderComponent::OnWhitelistFileReady,
-                       weak_factory_.GetWeakPtr()))) {
+            base::BindRepeating(&SpeedreaderComponent::OnWhitelistFileReady,
+                                weak_factory_.GetWeakPtr()))) {
       LOG(ERROR) << "SpeedReader could not watch filesystem for changes"
                  << " at path " << whitelist_path.LossyDisplayName();
     }

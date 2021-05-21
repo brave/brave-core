@@ -297,30 +297,39 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   PrefService* prefs = profile_->GetPrefs();
   pref_change_registrar_.Init(prefs);
   // Stats
-  pref_change_registrar_.Add(kAdsBlocked,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kTrackersBlocked,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kJavascriptBlocked,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kHttpsUpgrades,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kFingerprintingBlocked,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kAdsBlocked,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kTrackersBlocked,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kJavascriptBlocked,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kHttpsUpgrades,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kFingerprintingBlocked,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
+                          base::Unretained(this)));
 
   if (IsPrivateNewTab(profile_)) {
     // Private New Tab Page preferences
-    pref_change_registrar_.Add(kUseAlternativeSearchEngineProvider,
-      base::Bind(&BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
-      base::Unretained(this)));
-    pref_change_registrar_.Add(kAlternativeSearchEngineProviderInTor,
-      base::Bind(&BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
-      base::Unretained(this)));
+    pref_change_registrar_.Add(
+        kUseAlternativeSearchEngineProvider,
+        base::BindRepeating(
+            &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
+            base::Unretained(this)));
+    pref_change_registrar_.Add(
+        kAlternativeSearchEngineProviderInTor,
+        base::BindRepeating(
+            &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
+            base::Unretained(this)));
   }
   // News
   pref_change_registrar_.Add(
@@ -328,49 +337,61 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
                  base::Unretained(this)));
   // New Tab Page preferences
-  pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowSponsoredImagesBackgroundImage,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowClock,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageClockFormat,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowStats,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowToday,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowRewards,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kBrandedWallpaperNotificationDismissed,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowBinance,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowTogether,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowGemini,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowBackgroundImage,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowSponsoredImagesBackgroundImage,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowClock,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageClockFormat,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowStats,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowToday,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowRewards,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kBrandedWallpaperNotificationDismissed,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowBinance,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowTogether,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kNewTabPageShowGemini,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  pref_change_registrar_.Add(kCryptoDotComNewTabPageShowCryptoDotCom,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kCryptoDotComNewTabPageShowCryptoDotCom,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
 #endif
 #if BUILDFLAG(ENABLE_FTX)
   pref_change_registrar_.Add(
       kFTXNewTabPageShowFTX,
-      base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

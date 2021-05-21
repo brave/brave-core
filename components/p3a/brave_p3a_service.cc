@@ -268,10 +268,10 @@ void BraveP3AService::Init(
   // Init other components.
   uploader_.reset(new BraveP3AUploader(
       url_loader_factory, upload_server_url_, GURL(kP2AServerUrl),
-      base::Bind(&BraveP3AService::OnLogUploadComplete, this)));
+      base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this)));
 
   upload_scheduler_.reset(new BraveP3AScheduler(
-      base::Bind(&BraveP3AService::StartScheduledUpload, this),
+      base::BindRepeating(&BraveP3AService::StartScheduledUpload, this),
       (randomize_upload_interval_
            ? base::BindRepeating(GetRandomizedUploadInterval,
                                  average_upload_interval_)

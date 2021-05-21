@@ -210,17 +210,19 @@ GreaselionDownloadService::GreaselionDownloadService(
          base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN, base::MayBlock()});
     dev_mode_path_watcher_ = std::make_unique<base::FilePathWatcher>();
 
-    using Callback = base::RepeatingCallback<void(bool)>;
+    using DevModeLocalFileChangedCallback = base::RepeatingCallback<void(bool)>;
     base::FilePathWatcher::Callback file_path_watcher_callback =
         base::BindRepeating(
             [](scoped_refptr<base::SequencedTaskRunner> main_sequence,
-               const Callback& callback, const base::FilePath&, bool error) {
+               const DevModeLocalFileChangedCallback& callback,
+               const base::FilePath&, bool error) {
               main_sequence->PostTask(FROM_HERE,
                                       base::BindOnce(callback, error));
             },
             base::SequencedTaskRunnerHandle::Get(),
-            base::Bind(&GreaselionDownloadService::OnDevModeLocalFileChanged,
-                       weak_factory_.GetWeakPtr()));
+            base::BindRepeating(
+                &GreaselionDownloadService::OnDevModeLocalFileChanged,
+                weak_factory_.GetWeakPtr()));
 
     // Start the watcher on a background sequence, reporting all events back to
     // this sequence. base::Unretained is safe because the watcher instance
@@ -233,13 +235,14 @@ GreaselionDownloadService::GreaselionDownloadService(
                        resource_dir_, base::FilePathWatcher::Type::kRecursive,
                        file_path_watcher_callback),
         base::BindOnce(
-            [](Callback callback, bool start_result) {
+            [](DevModeLocalFileChangedCallback callback, bool start_result) {
               if (!start_result) {
                 callback.Run(/*error=*/true);
               }
             },
-            base::Bind(&GreaselionDownloadService::OnDevModeLocalFileChanged,
-                       weak_factory_.GetWeakPtr())));
+            base::BindRepeating(
+                &GreaselionDownloadService::OnDevModeLocalFileChanged,
+                weak_factory_.GetWeakPtr())));
   }
 #endif
   DETACH_FROM_SEQUENCE(sequence_checker_);

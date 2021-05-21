@@ -104,7 +104,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
     base::RunLoop run_loop;
     profile_manager->CreateProfileAsync(
         profile_data[i].profile_path,
-        base::Bind(&OnUnblockOnProfileCreation, &run_loop));
+        base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop));
     run_loop.Run();
     ProfileAttributesEntry* entry =
         storage.GetProfileAttributesWithPath(profile_data[i].profile_path);

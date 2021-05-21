@@ -64,12 +64,13 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
     test_https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     test_https_server_->RegisterRequestHandler(
-        base::Bind(&HandleOnionLocation));
+        base::BindRepeating(&HandleOnionLocation));
     ASSERT_TRUE(test_https_server_->Start());
 
     test_http_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTP));
-    test_http_server_->RegisterRequestHandler(base::Bind(&HandleOnionLocation));
+    test_http_server_->RegisterRequestHandler(
+        base::BindRepeating(&HandleOnionLocation));
     ASSERT_TRUE(test_http_server_->Start());
   }
 

@@ -298,9 +298,10 @@ void TipMessageHandler::GetPublisherBanner(const base::ListValue* args) {
     return;
   }
 
-  rewards_service_->GetPublisherBanner(publisher_key, base::Bind(
-      &TipMessageHandler::GetPublisherBannerCallback,
-      weak_factory_.GetWeakPtr()));
+  rewards_service_->GetPublisherBanner(
+      publisher_key,
+      base::BindOnce(&TipMessageHandler::GetPublisherBannerCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::GetRewardsParameters(const base::ListValue* args) {
@@ -308,9 +309,9 @@ void TipMessageHandler::GetRewardsParameters(const base::ListValue* args) {
     return;
   }
 
-  rewards_service_->GetRewardsParameters(base::Bind(
-      &TipMessageHandler::GetRewardsParametersCallback,
-      weak_factory_.GetWeakPtr()));
+  rewards_service_->GetRewardsParameters(
+      base::BindOnce(&TipMessageHandler::GetRewardsParametersCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::GetOnboardingStatus(const base::ListValue* args) {
@@ -354,9 +355,9 @@ void TipMessageHandler::GetReconcileStamp(const base::ListValue* args) {
     return;
   }
 
-  rewards_service_->GetReconcileStamp(base::Bind(
-      &TipMessageHandler::GetReconcileStampCallback,
-      weak_factory_.GetWeakPtr()));
+  rewards_service_->GetReconcileStamp(
+      base::BindOnce(&TipMessageHandler::GetReconcileStampCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::GetAutoContributeAmount(const base::ListValue* args) {
@@ -365,8 +366,8 @@ void TipMessageHandler::GetAutoContributeAmount(const base::ListValue* args) {
   }
 
   rewards_service_->GetAutoContributionAmount(
-      base::Bind(&TipMessageHandler::GetAutoContributeAmountCallback,
-                 weak_factory_.GetWeakPtr()));
+      base::BindOnce(&TipMessageHandler::GetAutoContributeAmountCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::SetAutoContributeAmount(const base::ListValue* args) {

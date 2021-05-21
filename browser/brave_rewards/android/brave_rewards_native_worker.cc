@@ -218,10 +218,8 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
   }
 
   if (rewards_service) {
-    rewards_service->FetchBalance(
-      base::Bind(
-        &BraveRewardsNativeWorker::OnBalance,
-        weak_factory_.GetWeakPtr()));
+    rewards_service->FetchBalance(base::BindOnce(
+        &BraveRewardsNativeWorker::OnBalance, weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -265,9 +263,8 @@ void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::StartProcess(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->StartProcess(base::Bind(
-          &BraveRewardsNativeWorker::OnStartProcess,
-          weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->StartProcess(base::BindOnce(
+        &BraveRewardsNativeWorker::OnStartProcess, weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -389,17 +386,17 @@ base::android::ScopedJavaLocalRef<jobjectArray>
 
 void BraveRewardsNativeWorker::GetPendingContributionsTotal(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetPendingContributionsTotal(base::Bind(
-          &BraveRewardsNativeWorker::OnGetPendingContributionsTotal,
-          weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->GetPendingContributionsTotal(base::BindOnce(
+        &BraveRewardsNativeWorker::OnGetPendingContributionsTotal,
+        weak_factory_.GetWeakPtr()));
   }
 }
 
 void BraveRewardsNativeWorker::GetRecurringDonations(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetRecurringTips(base::Bind(
-          &BraveRewardsNativeWorker::OnGetRecurringTips,
-          weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->GetRecurringTips(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetRecurringTips,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -426,8 +423,8 @@ bool BraveRewardsNativeWorker::IsCurrentPublisherInRecurrentDonations(
 void BraveRewardsNativeWorker::GetAutoContributeProperties(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetAutoContributeProperties(
-        base::Bind(&BraveRewardsNativeWorker::OnGetAutoContributeProperties,
-                   weak_factory_.GetWeakPtr()));
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetAutoContributeProperties,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -452,17 +449,17 @@ bool BraveRewardsNativeWorker::IsAutoContributeEnabled(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetReconcileStamp(base::Bind(
-            &BraveRewardsNativeWorker::OnGetGetReconcileStamp,
-            weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->GetReconcileStamp(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetGetReconcileStamp,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
 void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->CompleteReset(base::Bind(
-           &BraveRewardsNativeWorker::OnResetTheWholeState,
-           weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->CompleteReset(
+        base::BindOnce(&BraveRewardsNativeWorker::OnResetTheWholeState,
+                       weak_factory_.GetWeakPtr()));
   } else {
     JNIEnv* env = base::android::AttachCurrentThread();
 
@@ -680,8 +677,8 @@ void BraveRewardsNativeWorker::ProcessRewardsPageUrl(JNIEnv* env,
     std::string cpath = base::android::ConvertJavaStringToUTF8(env, path);
     std::string cquery = base::android::ConvertJavaStringToUTF8(env, query);
     auto callback =
-        base::Bind(&BraveRewardsNativeWorker::OnProcessRewardsPageUrl,
-                   weak_factory_.GetWeakPtr());
+        base::BindOnce(&BraveRewardsNativeWorker::OnProcessRewardsPageUrl,
+                       weak_factory_.GetWeakPtr());
     brave_rewards_service_->ProcessRewardsPageUrl(cpath, cquery, callback);
   }
 }

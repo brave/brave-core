@@ -71,7 +71,7 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     embedded_test_server()->RegisterRequestHandler(
-        base::Bind(&HandleRequestForStats));
+        base::BindRepeating(&HandleRequestForStats));
     ASSERT_TRUE(embedded_test_server()->Start());
     command_line->AppendSwitchASCII(
         brave_stats::switches::kBraveStatsUpdaterServer,

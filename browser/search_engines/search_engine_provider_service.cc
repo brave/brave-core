@@ -36,8 +36,8 @@ SearchEngineProviderService::SearchEngineProviderService(
   use_alternative_search_engine_provider_.Init(
       kUseAlternativeSearchEngineProvider,
       otr_profile_->GetOriginalProfile()->GetPrefs(),
-      base::Bind(&SearchEngineProviderService::OnPreferenceChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&SearchEngineProviderService::OnPreferenceChanged,
+                          base::Unretained(this)));
 
   std::vector<TemplateURLPrepopulateData::BravePrepopulatedEngineID>
       alt_search_providers = {

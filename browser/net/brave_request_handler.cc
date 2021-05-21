@@ -78,26 +78,27 @@ BraveRequestHandler::~BraveRequestHandler() = default;
 
 void BraveRequestHandler::SetupCallbacks() {
   brave::OnBeforeURLRequestCallback callback =
-      base::Bind(brave::OnBeforeURLRequest_SiteHacksWork);
+      base::BindRepeating(brave::OnBeforeURLRequest_SiteHacksWork);
   before_url_request_callbacks_.push_back(callback);
 
-  callback = base::Bind(brave::OnBeforeURLRequest_AdBlockTPPreWork);
+  callback = base::BindRepeating(brave::OnBeforeURLRequest_AdBlockTPPreWork);
   before_url_request_callbacks_.push_back(callback);
 
-  callback = base::Bind(brave::OnBeforeURLRequest_HttpsePreFileWork);
+  callback = base::BindRepeating(brave::OnBeforeURLRequest_HttpsePreFileWork);
   before_url_request_callbacks_.push_back(callback);
 
-  callback = base::Bind(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
+  callback =
+      base::BindRepeating(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED) && BUILDFLAG(BRAVE_WALLET_ENABLED)
-  callback = base::Bind(
+  callback = base::BindRepeating(
       decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  callback = base::Bind(brave_rewards::OnBeforeURLRequest);
+  callback = base::BindRepeating(brave_rewards::OnBeforeURLRequest);
   before_url_request_callbacks_.push_back(callback);
 #endif
 
@@ -112,35 +113,35 @@ void BraveRequestHandler::SetupCallbacks() {
     callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
     before_url_request_callbacks_.push_back(callback);
     brave::OnHeadersReceivedCallback ipfs_headers_received_callback =
-        base::Bind(ipfs::OnHeadersReceived_IPFSRedirectWork);
+        base::BindRepeating(ipfs::OnHeadersReceived_IPFSRedirectWork);
     headers_received_callbacks_.push_back(ipfs_headers_received_callback);
   }
 #endif
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
-      base::Bind(brave::OnBeforeStartTransaction_SiteHacksWork);
+      base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
-  start_transaction_callback =
-      base::Bind(brave::OnBeforeStartTransaction_GlobalPrivacyControlWork);
+  start_transaction_callback = base::BindRepeating(
+      brave::OnBeforeStartTransaction_GlobalPrivacyControlWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   start_transaction_callback =
-      base::Bind(brave::OnBeforeStartTransaction_ReferralsWork);
+      base::BindRepeating(brave::OnBeforeStartTransaction_ReferralsWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   brave::OnHeadersReceivedCallback headers_received_callback =
-      base::Bind(webtorrent::OnHeadersReceived_TorrentRedirectWork);
+      base::BindRepeating(webtorrent::OnHeadersReceived_TorrentRedirectWork);
   headers_received_callbacks_.push_back(headers_received_callback);
 #endif
 
   if (base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveAdblockCspRules)) {
     brave::OnHeadersReceivedCallback headers_received_callback2 =
-        base::Bind(brave::OnHeadersReceived_AdBlockCspWork);
+        base::BindRepeating(brave::OnHeadersReceived_AdBlockCspWork);
     headers_received_callbacks_.push_back(headers_received_callback2);
   }
 }
@@ -153,8 +154,8 @@ void BraveRequestHandler::InitPrefChangeRegistrar() {
   pref_change_registrar_->Init(prefs);
   pref_change_registrar_->Add(
       kReferralHeaders,
-      base::Bind(&BraveRequestHandler::OnReferralHeadersChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveRequestHandler::OnReferralHeadersChanged,
+                          base::Unretained(this)));
   // Retrieve current referral headers, if any.
   OnReferralHeadersChanged();
 #endif
@@ -268,8 +269,8 @@ void BraveRequestHandler::RunNextCallback(
       brave::OnBeforeURLRequestCallback callback =
           before_url_request_callbacks_[ctx->next_url_request_index++];
       brave::ResponseCallback next_callback =
-          base::Bind(&BraveRequestHandler::RunNextCallback,
-                     weak_factory_.GetWeakPtr(), ctx);
+          base::BindRepeating(&BraveRequestHandler::RunNextCallback,
+                              weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
@@ -284,8 +285,8 @@ void BraveRequestHandler::RunNextCallback(
       brave::OnBeforeStartTransactionCallback callback =
           before_start_transaction_callbacks_[ctx->next_url_request_index++];
       brave::ResponseCallback next_callback =
-          base::Bind(&BraveRequestHandler::RunNextCallback,
-                     weak_factory_.GetWeakPtr(), ctx);
+          base::BindRepeating(&BraveRequestHandler::RunNextCallback,
+                              weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(ctx->headers, next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
@@ -299,8 +300,8 @@ void BraveRequestHandler::RunNextCallback(
       brave::OnHeadersReceivedCallback callback =
           headers_received_callbacks_[ctx->next_url_request_index++];
       brave::ResponseCallback next_callback =
-          base::Bind(&BraveRequestHandler::RunNextCallback,
-                     weak_factory_.GetWeakPtr(), ctx);
+          base::BindRepeating(&BraveRequestHandler::RunNextCallback,
+                              weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(ctx->original_response_headers,
                         ctx->override_response_headers,
                         ctx->allowed_unsafe_redirect_url, next_callback, ctx);

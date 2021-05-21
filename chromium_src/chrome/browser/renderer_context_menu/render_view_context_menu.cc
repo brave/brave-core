@@ -170,7 +170,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
       TorProfileManager::SwitchToTorProfile(
           GetProfile(),
-          base::Bind(
+          base::BindRepeating(
               OnProfileCreated, params_.link_url,
               content::Referrer(
                   GURL(), network::mojom::ReferrerPolicy::kStrictOrigin)));
