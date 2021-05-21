@@ -8,7 +8,7 @@
 
 #include "brave/browser/ui/brave_ads/ad_notification.h"
 #include "ui/base/metadata/metadata_header_macros.h"
-#include "ui/views/animation/ink_drop_host_view.h"
+#include "ui/views/view.h"
 
 namespace gfx {
 class Canvas;
@@ -17,7 +17,7 @@ class Point;
 
 namespace brave_ads {
 
-class AdNotificationView : public views::InkDropHostView {
+class AdNotificationView : public views::View {
  public:
   METADATA_HEADER(AdNotificationView);
 
@@ -29,7 +29,7 @@ class AdNotificationView : public views::InkDropHostView {
 
   void OnCloseButtonPressed();
 
-  // views::InkDropHostView:
+  // views::View:
   void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   bool OnMousePressed(const ui::MouseEvent& event) override;
   bool OnMouseDragged(const ui::MouseEvent& event) override;

@@ -80,7 +80,7 @@ MdTextButton::MdTextButton(PressedCallback callback,
                                                /*highlight_on_hover=*/false,
                                                /*highlight_on_focus=*/true);
   ink_drop()->SetCreateHighlightCallback(base::BindRepeating(
-      [](InkDropHostView* host) {
+      [](Button* host) {
         const SkColor fill_color = SK_ColorTRANSPARENT;
         gfx::RectF boundsF(host->GetLocalBounds());
         return std::make_unique<InkDropHighlight>(

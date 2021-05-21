@@ -21,16 +21,16 @@
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/image/canvas_image_source.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep_default.h"
-#include "ui/gfx/image/canvas_image_source.h"
 #include "ui/gfx/skia_util.h"
-#include "ui/views/view.h"
-#include "ui/views/view_class_properties.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/view.h"
+#include "ui/views/view_class_properties.h"
 
 namespace {
 
@@ -64,7 +64,7 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
       delegate_(delegate) {
   ink_drop()->SetMode(views::InkDropHost::InkDropMode::ON);
   ink_drop()->SetBaseColorCallback(base::BindRepeating(
-      [](InkDropHostView* host) { return GetToolbarInkDropBaseColor(host); },
+      [](views::View* host) { return GetToolbarInkDropBaseColor(host); },
       this));
 
   SetHasInkDropActionOnClick(true);
