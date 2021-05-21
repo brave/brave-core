@@ -676,10 +676,10 @@ void BraveRewardsNativeWorker::ProcessRewardsPageUrl(JNIEnv* env,
   if (brave_rewards_service_) {
     std::string cpath = base::android::ConvertJavaStringToUTF8(env, path);
     std::string cquery = base::android::ConvertJavaStringToUTF8(env, query);
-    auto callback =
+    brave_rewards_service_->ProcessRewardsPageUrl(
+        cpath, cquery,
         base::BindOnce(&BraveRewardsNativeWorker::OnProcessRewardsPageUrl,
-                       weak_factory_.GetWeakPtr());
-    brave_rewards_service_->ProcessRewardsPageUrl(cpath, cquery, callback);
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
