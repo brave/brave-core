@@ -254,7 +254,7 @@ TEST_F(KeyringControllerUnitTest, RestoreDefaultKeyring) {
   EXPECT_EQ(controller.RestoreDefaultKeyring(seed_phrase, ""), nullptr);
 }
 
-TEST_F(KeyringControllerUnitTest, ResumeDefaultKeyring) {
+TEST_F(KeyringControllerUnitTest, UnlockResumesDefaultKeyring) {
   std::string salt;
   std::string mnemonic;
   std::string nonce;
@@ -269,7 +269,8 @@ TEST_F(KeyringControllerUnitTest, ResumeDefaultKeyring) {
   {
     // KeyringController is now destructed, simlulating relaunch
     KeyringController controller(GetPrefs());
-    HDKeyring* keyring = controller.ResumeDefaultKeyring("brave");
+    ASSERT_TRUE(controller.Unlock("brave"));
+    HDKeyring* keyring = controller.GetDefaultKeyring();
     EXPECT_EQ(GetPrefs()->GetString(kBraveWalletPasswordEncryptorSalt), salt);
     EXPECT_EQ(GetPrefs()->GetString(kBraveWalletPasswordEncryptorNonce), nonce);
     EXPECT_EQ(GetPrefs()->GetString(kBraveWalletEncryptedMnemonic), mnemonic);
@@ -279,9 +280,9 @@ TEST_F(KeyringControllerUnitTest, ResumeDefaultKeyring) {
   {
     KeyringController controller(GetPrefs());
     // wrong password
-    EXPECT_EQ(controller.ResumeDefaultKeyring("brave123"), nullptr);
+    ASSERT_FALSE(controller.Unlock("brave123"));
     // empty password
-    EXPECT_EQ(controller.ResumeDefaultKeyring(""), nullptr);
+    ASSERT_FALSE(controller.Unlock(""));
   }
 }
 
