@@ -1142,7 +1142,7 @@ until they verify, or until 90 days have passed.
         Share the news
       </message>
       <message name="IDS_BRAVE_STATS_SHARE_TEXT" desc="Text sent when sharing the stats">
-        Every day I save data by browsing the web with Brave.
+        Every day I save data by browsing the Web with Brave.
       </message>
       <message name="IDS_BRAVE_STATS_SHARE_TOOLTIP_TIER1_TITLE" desc="Shields tootltip title">
         1000 trackers &amp; ads blocked!
