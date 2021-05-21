@@ -24,6 +24,7 @@ import { CalendarIcon } from './icons/calendar_icon'
 import * as style from './bat_tip_form.style'
 
 const minimumTip = 0.25
+const maximumTip = 100
 const tipAmountStep = 0.25
 
 function getInsufficientFundsMessage (locale: Locale, onlyAnon: boolean) {
@@ -123,6 +124,7 @@ export function BatTipForm (props: Props) {
                 amount={tipAmount}
                 exchangeRate={rewardsParameters.rate}
                 amountStep={tipAmountStep}
+                maximumAmount={maximumTip}
                 onAmountChange={setTipAmount}
                 onHideInput={hideCustomInput}
               />
