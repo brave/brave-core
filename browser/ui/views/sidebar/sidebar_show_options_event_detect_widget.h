@@ -23,6 +23,7 @@ class SidebarShowOptionsEventDetectWidget : public views::ViewObserver,
   class Delegate {
    public:
     virtual void ShowSidebar() = 0;
+    virtual bool ShouldShowOnHover() = 0;
 
    protected:
     virtual ~Delegate() {}
@@ -40,8 +41,6 @@ class SidebarShowOptionsEventDetectWidget : public views::ViewObserver,
   void Show();
   void Hide();
 
-  void SetShowOnHover(bool show_on_hover);
-
   // views::ViewObserver overrides:
   void OnViewBoundsChanged(views::View* observed_view) override;
 
@@ -53,6 +52,7 @@ class SidebarShowOptionsEventDetectWidget : public views::ViewObserver,
 
   BraveBrowserView* browser_view_ = nullptr;
   ContentsView* contents_view_ = nullptr;
+  Delegate* delegate_ = nullptr;
   std::unique_ptr<views::Widget> widget_;
   base::ScopedObservation<views::View, views::ViewObserver> observation_{this};
 };

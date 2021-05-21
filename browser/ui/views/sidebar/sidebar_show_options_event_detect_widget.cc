@@ -57,7 +57,7 @@ class SidebarShowOptionsEventDetectWidget::ContentsView : public views::View {
   ContentsView& operator=(const ContentsView&) = delete;
 
   void OnMouseEntered(const ui::MouseEvent& event) override {
-    if (show_on_hover_) {
+    if (delegate_->ShouldShowOnHover()) {
       delegate_->ShowSidebar();
     } else {
       SetBackground(std::make_unique<WidgetBackground>());
@@ -69,7 +69,7 @@ class SidebarShowOptionsEventDetectWidget::ContentsView : public views::View {
   }
 
   bool OnMousePressed(const ui::MouseEvent& event) override {
-    if (show_on_hover_) {
+    if (delegate_->ShouldShowOnHover()) {
       return View::OnMousePressed(event);
     }
 
@@ -78,26 +78,23 @@ class SidebarShowOptionsEventDetectWidget::ContentsView : public views::View {
   }
 
   std::u16string GetTooltipText(const gfx::Point& p) const override {
-    if (show_on_hover_)
+    if (delegate_->ShouldShowOnHover())
       return View::GetTooltipText(p);
 
     return l10n_util::GetStringUTF16(
         IDS_SIDEBAR_TOOLTIP_ON_SHOW_OPTIONS_WIDGET);
   }
 
-  void set_show_on_hover(bool show_on_hover) { show_on_hover_ = show_on_hover; }
-
  private:
-  // true for showing sidebar on hover. false for showing sidebar on hover and
-  // click this area.
-  bool show_on_hover_ = false;
   SidebarShowOptionsEventDetectWidget::Delegate* delegate_ = nullptr;
 };
 
 SidebarShowOptionsEventDetectWidget::SidebarShowOptionsEventDetectWidget(
     BraveBrowserView* browser_view,
     Delegate* delegate)
-    : browser_view_(browser_view) {
+    : browser_view_(browser_view), delegate_(delegate) {
+  DCHECK(browser_view_);
+  DCHECK(delegate_);
   observation_.Observe(browser_view_->contents_container());
   widget_ = CreateWidget(delegate);
 
@@ -148,12 +145,11 @@ void SidebarShowOptionsEventDetectWidget::OnViewBoundsChanged(
 
 void SidebarShowOptionsEventDetectWidget::AdjustWidgetBounds() {
   auto rect = browser_view_->contents_container()->bounds();
+  constexpr int kWidgetNarrowWidth = 7;
   constexpr int kWidgetWidth = 30;
-  rect.set_width(kWidgetWidth);
+  const int widget_width =
+      delegate_->ShouldShowOnHover() ? kWidgetNarrowWidth : kWidgetWidth;
+  rect.set_width(widget_width);
   contents_view_->SetPreferredSize(rect.size());
   widget_->SetBounds(rect);
-}
-
-void SidebarShowOptionsEventDetectWidget::SetShowOnHover(bool show_on_hover) {
-  contents_view_->set_show_on_hover(show_on_hover);
 }

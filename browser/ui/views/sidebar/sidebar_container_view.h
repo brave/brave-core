@@ -56,6 +56,7 @@ class SidebarContainerView
 
   // SidebarShowOptionsEventDetectWidget::Delegate overrides:
   void ShowSidebar() override;
+  bool ShouldShowOnHover() override;
 
   // sidebar::SidebarModel::Observer overrides:
   void OnActiveIndexChanged(int old_index, int new_index) override;
