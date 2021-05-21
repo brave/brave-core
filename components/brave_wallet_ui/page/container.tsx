@@ -78,7 +78,8 @@ function Container (props: Props) {
         <Onboarding
           recoveryPhrase={recoveryPhrase}
           onPasswordProvided={passwordProvided}
-          onSubmit={completeWalletSetup} />
+          onSubmit={completeWalletSetup}
+        />
       </WalletPageLayout>
     )
   }

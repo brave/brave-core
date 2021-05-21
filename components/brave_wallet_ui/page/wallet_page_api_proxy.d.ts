@@ -8,5 +8,5 @@ import { WalletAPIHandler } from './constants/types'
 export default class APIProxy {
   static getInstance: () => APIProxy
   getWalletHandler: () => WalletAPIHandler
-  createWallet: (string) => { mnemonic: string }
+  createWallet: (password: string) => { mnemonic: string }
 }

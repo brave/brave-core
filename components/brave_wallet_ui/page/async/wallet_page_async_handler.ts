@@ -19,12 +19,12 @@ async function getAPIProxy () {
   return api.default.getInstance()
 }
 
-async function getWalletHandler() {
+async function getWalletHandler () {
   const apiProxy = await getAPIProxy()
-  return await apiProxy.getWalletHandler()
+  return apiProxy.getWalletHandler()
 }
 
-async function refreshWalletInfo(store: Store) {
+async function refreshWalletInfo (store: Store) {
   const walletHandler = await getWalletHandler()
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized(result))
@@ -32,7 +32,7 @@ async function refreshWalletInfo(store: Store) {
 
 handler.on(WalletPageActions.createWallet.getType(), async (store, payload: CreateWalletPayloadType) => {
   const apiProxy = await getAPIProxy()
-  const result = await apiProxy.createWallet(payload.password);
+  const result = apiProxy.createWallet(payload.password)
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
 

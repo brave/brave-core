@@ -16,7 +16,7 @@ import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
-function initialize() {
+function initialize () {
   chrome.braveWallet.shouldPromptForSetup((prompt: boolean) => {
     if (!prompt) {
       chrome.braveWallet.loadUI(() => {
@@ -28,7 +28,7 @@ function initialize() {
   })
 }
 
-function renderUI() {
+function renderUI () {
   new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
   .then((themeType: chrome.braveTheme.ThemeType) => {
     window.i18nTemplate.process(window.document, window.loadTimeData)

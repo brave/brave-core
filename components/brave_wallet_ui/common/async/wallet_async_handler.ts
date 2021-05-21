@@ -12,17 +12,17 @@ type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
 const handler = new AsyncActionHandler()
 
-async function getWalletHandler() {
+async function getWalletHandler () {
   let api
   if (window.location.hostname === 'wallet-panel.top-chrome') {
     api = await import('../../panel/wallet_panel_api_proxy.js')
   } else {
     api = await import('../../page/wallet_page_api_proxy.js')
   }
-  return await api.default.getInstance().getWalletHandler()
+  return api.default.getInstance().getWalletHandler()
 }
 
-async function refreshWalletInfo(store: Store) {
+async function refreshWalletInfo (store: Store) {
   const walletHandler = await getWalletHandler()
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized(result))
@@ -44,4 +44,4 @@ handler.on(WalletActions.unlockWallet.getType(), async (store, payload: UnlockWa
   await refreshWalletInfo(store)
 })
 
-export default handler.middleware;
+export default handler.middleware

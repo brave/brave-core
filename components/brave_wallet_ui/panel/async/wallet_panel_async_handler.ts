@@ -24,12 +24,12 @@ function getPanelState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PanelSt
   return (store.getState() as WalletPanelState).panel
 }
 
-async function getWalletHandler() {
+async function getWalletHandler () {
   const apiProxy = await getAPIProxy()
-  return await apiProxy.getWalletHandler()
+  return apiProxy.getWalletHandler()
 }
 
-async function refreshWalletInfo(store: Store) {
+async function refreshWalletInfo (store: Store) {
   const walletHandler = await getWalletHandler()
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized(result))

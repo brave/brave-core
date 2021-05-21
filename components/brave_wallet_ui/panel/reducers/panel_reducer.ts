@@ -12,7 +12,7 @@ const defaultState: PanelState = {
   // data to start with until the keyring controller is ready.
   isConnected: false,
   hasInitialized: false,
-  connectedSiteOrigin: 'https://app.uniswap.org',
+  connectedSiteOrigin: 'https://app.uniswap.org'
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)

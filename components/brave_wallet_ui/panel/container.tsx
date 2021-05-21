@@ -40,9 +40,7 @@ function Panel (props: Props) {
   // consider rendering a "loading" indicator when `hasInitialized === false`, and
   // also using `React.lazy` to put all the main UI in a separate JS bundle and display
   // that loading indicator ASAP.
-  const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([
-    //props.wallet.accounts[0]
-  ])
+  const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
   const selectAccount = (account: WalletAccountType) => {
     const newList = [...selectedAccounts, account]
