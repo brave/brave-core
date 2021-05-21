@@ -83,7 +83,7 @@ void AdsTabHelper::RunIsolatedJavaScript(
                      weak_factory_.GetWeakPtr()));
 
   dom_distiller::RunIsolatedJavaScript(
-      render_frame_host, "document.body.innerText",
+      render_frame_host, "document?.body?.innerText",
       base::BindOnce(&AdsTabHelper::OnJavaScriptTextResult,
                      weak_factory_.GetWeakPtr()));
 }
