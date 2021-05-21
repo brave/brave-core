@@ -1098,6 +1098,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_SIDEBAR_SHOW_OPTION_NEVER" desc="Label for show sidebar on click option">
           Never
         </message>
+        <message name="IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP" desc="Tooltip text for sidebar settings button">
+          Show settings
+        </message>
         <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED_DESC" desc="Label for show sidebar option in settings">
           Enabled
         </message>

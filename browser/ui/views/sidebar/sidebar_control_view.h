@@ -7,22 +7,19 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTROL_VIEW_H_
 
 #include <memory>
+#include <string>
 
 #include "base/scoped_observer.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
 #include "ui/views/view.h"
 
 class BraveBrowser;
-class SidebarButtonView;
 class SidebarItemAddButton;
 class SidebarItemsScrollView;
 class SidebarContainerView;
-
-namespace base {
-class CancelableTaskTracker;
-}  // namespace base
 
 namespace views {
 class MenuRunner;
@@ -33,6 +30,7 @@ class MenuRunner;
 class SidebarControlView : public views::View,
                            public views::ContextMenuController,
                            public ui::SimpleMenuModel::Delegate,
+                           public SidebarButtonView::Delegate,
                            public sidebar::SidebarModel::Observer {
  public:
   explicit SidebarControlView(BraveBrowser* browser);
@@ -54,6 +52,9 @@ class SidebarControlView : public views::View,
   // ui::SimpleMenuModel::Delegate overrides:
   void ExecuteCommand(int command_id, int event_flags) override;
   bool IsCommandIdChecked(int command_id) const override;
+
+  // SidebarButtonView::Delegate overrides:
+  std::u16string GetTooltipTextFor(const views::View* view) const override;
 
   // sidebar::SidebarModel::Observer overrides:
   void OnItemAdded(const sidebar::SidebarItem& item,
