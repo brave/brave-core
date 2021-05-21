@@ -483,8 +483,8 @@ source_set("ui") {
       "webui/brave_wallet/wallet_page_ui.h",
       "webui/brave_wallet/wallet_panel_ui.cc",
       "webui/brave_wallet/wallet_panel_ui.h",
-      "webui/brave_wallet_ui.cc",
-      "webui/brave_wallet_ui.h",
+      "webui/brave_wallet/deprecated_brave_wallet_ui.cc",
+      "webui/brave_wallet/deprecated_brave_wallet_ui.h",
     ]
     deps += [
       "webui/brave_wallet/common_handler",

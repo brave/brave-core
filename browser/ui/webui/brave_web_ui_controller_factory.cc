@@ -41,7 +41,7 @@
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#include "brave/browser/ui/webui/brave_wallet_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/deprecated_brave_wallet_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
@@ -81,7 +81,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     if (brave_wallet::IsNativeWalletEnabled()) {
       return new WalletPageUI(web_ui);
     }
-    return new BraveWalletUI(web_ui, url.host());
+    return new DeprecatedBraveWalletUI(web_ui, url.host());
   } else if (host == kWalletPanelHost) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)
