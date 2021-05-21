@@ -24,6 +24,12 @@ function LockPanel (props: Props) {
     onPasswordChanged(event.target.value)
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && !disabled) {
+      onSubmit()
+    }
+  }
+
   return (
     <StyledWrapper>
       <IconBackground>
@@ -31,9 +37,20 @@ function LockPanel (props: Props) {
       </IconBackground>
       <Title>{locale.lockScreenTitle}</Title>
       <Column>
-        <Input type='password' placeholder={locale.createPasswordInput} onChange={inputPassword} />
+        <Input
+          type='password'
+          placeholder={locale.createPasswordInput}
+          onChange={inputPassword}
+          onKeyDown={handleKeyDown}
+          autoFocus={true}
+        />
       </Column>
-      <NavButton buttonType='primary' text={locale.lockScreenButton} onSubmit={onSubmit} disabled={disabled} />
+      <NavButton
+        buttonType='primary'
+        text={locale.lockScreenButton}
+        onSubmit={onSubmit}
+        disabled={disabled}
+      />
     </StyledWrapper>
   )
 }

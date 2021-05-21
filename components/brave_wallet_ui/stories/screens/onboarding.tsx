@@ -8,6 +8,8 @@ import {
   OnboardingCreatePassword
 } from '../../components/desktop'
 
+import { BackButton } from '../../components/shared'
+
 export interface Props {
   recoveryPhrase: string[]
   onSubmit: (recoveryVerified: boolean) => void
@@ -33,6 +35,10 @@ function Onboarding (props: Props) {
     } else {
       setOnboardingStep(onboardingStep + 1)
     }
+  }
+
+  const onBack = () => {
+    setOnboardingStep(onboardingStep - 1)
   }
 
   const onSkipBackup = () => {
@@ -110,6 +116,9 @@ function Onboarding (props: Props) {
 
   return (
     <WalletSubViewLayout>
+      {onboardingStep !== 0 &&
+        <BackButton onSubmit={onBack} />
+      }
       {onboardingStep === 0 &&
         <OnboardingWelcome
           onRestore={onRestore}

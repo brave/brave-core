@@ -17,7 +17,7 @@ import { ChartTimelineOptions } from '../../../../options/chart-timeline-options
 import { AssetOptions } from '../../../../options/asset-options'
 
 // Components
-import { SearchBar } from '../../../shared'
+import { SearchBar, BackButton } from '../../../shared'
 import {
   ChartControlBar,
   LineChart,
@@ -41,8 +41,6 @@ import {
   BalanceTitle,
   BalanceText,
   ButtonRow,
-  BackButton,
-  BackIcon,
   AssetIcon,
   AssetRow,
   PriceRow,
@@ -241,7 +239,7 @@ const Portfolio = (props: Props) => {
         {!selectedAsset ? (
           <BalanceTitle>{locale.balance}</BalanceTitle>
         ) : (
-          <BackButton onClick={goBack}><BackIcon />{locale.back}</BackButton>
+          <BackButton onSubmit={goBack} />
         )}
         <ChartControlBar
           onSubmit={changeTimeline}

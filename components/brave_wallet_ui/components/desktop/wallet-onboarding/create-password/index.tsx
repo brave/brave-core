@@ -29,6 +29,12 @@ function OnboardingCreatePassword (props: Props) {
     onConfirmPasswordChanged(event.target.value)
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && !disabled) {
+      onSubmit()
+    }
+  }
+
   return (
     <StyledWrapper>
       <IconBackground>
@@ -37,7 +43,7 @@ function OnboardingCreatePassword (props: Props) {
       <Title>{locale.createPasswordTitle}</Title>
       <InputColumn>
         <Input type='password' placeholder={locale.createPasswordInput} onChange={inputPassword} />
-        <Input type='password' placeholder={locale.createPasswordInput2} onChange={confirmPassword} />
+        <Input type='password' placeholder={locale.createPasswordInput2} onChange={confirmPassword} onKeyDown={handleKeyDown} />
       </InputColumn>
       <NavButton buttonType='primary' text={locale.buttonContinue} onSubmit={onSubmit} disabled={disabled} />
     </StyledWrapper>
