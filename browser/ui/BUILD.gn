@@ -490,7 +490,7 @@ source_set("ui") {
       "webui/brave_wallet/common_handler",
       "webui/brave_wallet/page_handler",
       "webui/brave_wallet/panel_handler",
-      "//brave/components/brave_wallet_ui:deprecated_brave_wallet_page_generated",
+      "//brave/components/brave_wallet_ui/deprecated_page:deprecated_brave_wallet_page_generated",
       "//brave/components/brave_wallet_ui:mojo_bindings",
       "//brave/components/brave_wallet_ui:resources",
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",

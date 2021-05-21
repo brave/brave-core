@@ -17,24 +17,9 @@ mojom("mojo_bindings") {
   public_deps = [ "//mojo/public/mojom/base" ]
 }
 
-transpile_web_ui("deprecated_brave_wallet_page_ui") {
-  entry_points = [ [
-        "deprecated_brave_wallet_page",
-        rebase_path("deprecated_page/deprecated_wallet_page.tsx"),
-      ] ]
-  resource_name = "deprecated_brave_wallet_page"
-}
-
-pack_web_resources("deprecated_brave_wallet_page_generated") {
-  resource_name = "deprecated_brave_wallet_page"
-  output_dir =
-      "$root_gen_dir/brave/components/deprecated_brave_wallet_page/resources"
-  deps = [ ":deprecated_brave_wallet_page_ui" ]
-}
-
 repack("resources") {
   deps = [
-    ":deprecated_brave_wallet_page_generated",
+    "deprecated_page:deprecated_brave_wallet_page_generated",
     "page:brave_wallet_page_generated",
     "panel:brave_wallet_panel_generated",
   ]
