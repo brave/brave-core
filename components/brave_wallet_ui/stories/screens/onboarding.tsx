@@ -7,7 +7,7 @@ import {
   OnboardingVerify,
   OnboardingCreatePassword
 } from '../../components/desktop'
-
+import { RecoveryObject } from '../../constants/types'
 import { BackButton } from '../../components/shared'
 
 export interface Props {
@@ -21,7 +21,7 @@ function Onboarding (props: Props) {
   const [onboardingStep, setOnboardingStep] = React.useState<number>(0)
   const [backupTerms, setBackupTerms] = React.useState<boolean>(false)
   const [backedUp, setBackedUp] = React.useState<boolean>(false)
-  const [sortedPhrase, setSortedPhrase] = React.useState<string[]>([])
+  const [sortedPhrase, setSortedPhrase] = React.useState<RecoveryObject[]>([])
   const [verifyError, setVerifyError] = React.useState<boolean>(false)
   const [password, setPassword] = React.useState<string>('')
   const [confirmedPassword, setConfirmedPassword] = React.useState<string>('')
@@ -59,13 +59,13 @@ function Onboarding (props: Props) {
     }
   }
 
-  const selectWord = (word: string) => {
+  const selectWord = (word: RecoveryObject) => {
     const newList = [...sortedPhrase, word]
     setSortedPhrase(newList)
     setVerifyError(false)
   }
 
-  const unSelectWord = (word: string) => {
+  const unSelectWord = (word: RecoveryObject) => {
     const newList = sortedPhrase.filter((key) => key !== word)
     setSortedPhrase(newList)
   }
@@ -78,7 +78,7 @@ function Onboarding (props: Props) {
       array[i] = array[j]
       array[j] = temp
     }
-    return array
+    return array.map((str, index) => ({ value: str, id: index + 1 }))
   }, [recoveryPhrase])
 
   const showError = () => {
@@ -87,7 +87,7 @@ function Onboarding (props: Props) {
   }
 
   const checkPhrase = () => {
-    if (sortedPhrase.length === recoveryPhrase.length && sortedPhrase.every((v, i) => v === recoveryPhrase[i])) {
+    if (sortedPhrase.length === recoveryPhrase.length && sortedPhrase.every((v, i) => v.value === recoveryPhrase[i])) {
       nextStep()
     } else {
       setSortedPhrase([])

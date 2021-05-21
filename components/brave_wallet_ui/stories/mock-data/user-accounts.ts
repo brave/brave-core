@@ -24,7 +24,7 @@ export const recoveryPhrase = [
   'velvet',
   'wishful',
   'span',
-  'celery',
+  'bowl',
   'atoms',
   'stone',
   'parent',
