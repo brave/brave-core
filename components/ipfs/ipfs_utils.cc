@@ -21,6 +21,7 @@
 #include "content/public/browser/browser_context.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
 namespace {
@@ -31,6 +32,12 @@ GURL AppendLocalPort(const std::string& port) {
   replacements.SetPortStr(port);
   return gateway.ReplaceComponents(replacements);
 }
+
+// RegEx to validate the node name:
+// go-ipfs_v0.9.0-rc1_windows-amd64 - valid
+// go-ipfs_v0.9.0_windows-amd64 - valid
+constexpr char kExecutableRegEx[] =
+    "go-ipfs_v(\\d+\\.\\d+\\.\\d+)(-rc\\d+)?\\_\\w+-amd64";
 
 // Valid CID multibase prefix, "code" character
 // from https://github.com/multiformats/multibase/blob/master/multibase.csv
@@ -329,6 +336,10 @@ bool ParsePeerConnectionString(const std::string& value,
     *address = extracted_address;
   }
   return valid;
+}
+
+bool IsValidNodeFilename(const std::string& filename) {
+  return RE2::FullMatch(filename, kExecutableRegEx);
 }
 
 }  // namespace ipfs

@@ -12,6 +12,7 @@
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/process/launch.h"
+#include "brave/components/services/ipfs/ipfs_service_utils.h"
 
 namespace {
 
@@ -105,36 +106,42 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
   if (!base::PathExists(config_path)) {
     // run ipfs init to gen config
     if (!LaunchProcessAndExit(config->binary_path, {"init"}, options)) {
-      std::move(callback).Run(false, -1);
+      if (callback)
+        std::move(callback).Run(false, -1);
       return;
     }
+  }
+  std::string data;
+  if (!base::ReadFileToString(config_path, &data)) {
+    VLOG(1) << "Unable to read the ipfs config:" << config_path;
+    if (callback)
+      std::move(callback).Run(false, -1);
+    return;
+  }
+
+  std::string updated_config;
+  if (!ipfs::UpdateConfigJSON(data, config.get(), &updated_config)) {
+    VLOG(1) << "Unable to update the ipfs config:" << config_path;
+    if (callback)
+      std::move(callback).Run(false, -1);
+    return;
+  }
+  if (!base::WriteFile(config_path, updated_config)) {
+    VLOG(1) << "Unable to write the ipfs config:" << config_path;
+    if (callback)
+      std::move(callback).Run(false, -1);
+    return;
   }
 
   std::initializer_list<std::initializer_list<std::string>> config_args = {
       {"shutdown"},  // Cleanup left-over daemon process.
-      {"config", "Addresses.API", "/ip4/127.0.0.1/tcp/" + config->api_port},
-      {"config", "Addresses.Gateway",
-       "/ip4/127.0.0.1/tcp/" + config->gateway_port},
-      {"config", "--json", "Addresses.Swarm",
-       "[\"/ip4/0.0.0.0/tcp/" + config->swarm_port + "\", \"/ip6/::/tcp/" +
-           config->swarm_port + "\"]"},
-      {"config", "Datastore.GCPeriod", "1h"},
-      {"config", "--json", "Swarm.ConnMgr.LowWater", "50"},
-      {"config", "--json", "Swarm.ConnMgr.HighWater", "300"}};
+  };
 
   for (auto args : config_args) {
     if (!LaunchProcessAndExit(config->binary_path, args, options)) {
       std::move(callback).Run(false, -1);
       return;
     }
-  }
-
-  // Configure storage
-  if (!LaunchProcessAndExit(
-          config->binary_path,
-          {"config", "Datastore.StorageMax", config->storage_max}, options)) {
-    std::move(callback).Run(false, -1);
-    return;
   }
 
   child_monitor_ = std::make_unique<brave::ChildProcessMonitor>();

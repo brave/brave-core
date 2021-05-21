@@ -13,8 +13,8 @@
 #include "base/task/thread_pool.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "components/component_updater/component_updater_service.h"
-#include "third_party/re2/src/re2/re2.h"
 
 namespace ipfs {
 
@@ -57,8 +57,7 @@ base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
   for (base::FilePath current = traversal.Next(); !current.empty();
        current = traversal.Next()) {
     base::FileEnumerator::FileInfo file_info = traversal.GetInfo();
-    if (!RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
-                        "go-ipfs_v\\d+\\.\\d+\\.\\d+\\_\\w+-amd64"))
+    if (!ipfs::IsValidNodeFilename(file_info.GetName().MaybeAsASCII()))
       continue;
     executable_path = current;
     break;

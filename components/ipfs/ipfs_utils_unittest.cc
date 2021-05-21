@@ -596,3 +596,21 @@ TEST_F(IpfsUtilsUnitTest, ParsePeerConnectionStringTest) {
       value, "12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2",
       "/ip4/46.21.210.45/udp/14406/quic"));
 }
+
+TEST_F(IpfsUtilsUnitTest, ValidateNodeFilename) {
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc1_windows-amd64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc21_windows-amd64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_windows-amd64"));
+
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc1_darwin-amd64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc21_darwin-amd64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_darwin-amd64"));
+
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc1_linux-amd64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc21_linux-amd64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_linux-amd64"));
+
+  ASSERT_FALSE(ipfs::IsValidNodeFilename(""));
+  ASSERT_FALSE(ipfs::IsValidNodeFilename("ipfs.exe"));
+  ASSERT_FALSE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_linux"));
+}

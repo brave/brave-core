@@ -165,6 +165,7 @@ test("brave_unit_tests") {
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/p3a",
     "//brave/components/permissions:unit_tests",
+    "//brave/components/services/ipfs/test:ipfs_service_unit_tests",
     "//brave/components/sidebar:unit_tests",
     "//brave/components/tor:tor_unit_tests",
     "//brave/components/tor/buildflags",
