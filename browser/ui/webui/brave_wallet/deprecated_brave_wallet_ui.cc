@@ -14,10 +14,10 @@
 DeprecatedBraveWalletUI::DeprecatedBraveWalletUI(content::WebUI* web_ui,
                                                  const std::string& name)
     : WebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(
-      web_ui, name, kDeprecatedBraveWalletPageGenerated,
-      kDeprecatedBraveWalletPageGeneratedSize,
-      IDR_BRAVE_DEPRECATED_WALLET_HTML, true /*disable_trusted_types_csp*/);
+  CreateAndAddWebUIDataSource(web_ui, name, kDeprecatedBraveWalletPageGenerated,
+                              kDeprecatedBraveWalletPageGeneratedSize,
+                              IDR_BRAVE_DEPRECATED_WALLET_HTML,
+                              true /*disable_trusted_types_csp*/);
 }
 
 DeprecatedBraveWalletUI::~DeprecatedBraveWalletUI() = default;

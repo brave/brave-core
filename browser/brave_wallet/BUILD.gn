@@ -1,3 +1,4 @@
+import("//brave/browser/brave_wallet/sources.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -8,9 +9,11 @@ source_set("brave_wallet") {
     "brave_wallet_delegate_impl.cc",
     "brave_wallet_delegate_impl.h",
   ]
+  sources += brave_browser_wallet_sources
   deps = [
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
+    "//chrome/browser/profiles:profiles",
     "//content/public/browser",
     "//extensions/buildflags",
   ]
@@ -20,5 +23,6 @@ source_set("brave_wallet") {
       "//chrome/browser/extensions:extensions",
       "//extensions/browser",
     ]
+    deps += brave_browser_wallet_deps
   }
 }

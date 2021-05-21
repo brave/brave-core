@@ -39,9 +39,9 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/deprecated_brave_wallet_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/deprecated_brave_wallet_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 

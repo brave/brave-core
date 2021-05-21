@@ -683,6 +683,7 @@ if (!is_android) {
       ]
 
       deps += [
+        "//brave/browser/brave_wallet",
         "//brave/browser/infobars",
         "//brave/components/brave_wallet/browser",
         "//brave/components/brave_wallet/common",
