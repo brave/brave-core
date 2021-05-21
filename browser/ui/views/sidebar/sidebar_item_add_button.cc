@@ -45,6 +45,10 @@ void SidebarItemAddButton::OnGestureEvent(ui::GestureEvent* event) {
   }
 }
 
+void SidebarItemAddButton::AddedToWidget() {
+  UpdateButtonImages();
+}
+
 void SidebarItemAddButton::OnWidgetDestroying(views::Widget* widget) {
   observation_.Reset();
 }

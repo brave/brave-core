@@ -27,6 +27,7 @@ class SidebarItemAddButton : public SidebarButtonView,
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnGestureEvent(ui::GestureEvent* event) override;
+  void AddedToWidget() override;
 
   // views::WidgetObserver overrides:
   void OnWidgetDestroying(views::Widget* widget) override;
