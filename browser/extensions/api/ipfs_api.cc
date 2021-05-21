@@ -78,7 +78,7 @@ ExtensionFunction::ResponseAction IpfsRemoveIpnsKeyFunction::Run() {
   key_manager->RemoveKey(
       params->name, base::BindOnce(&IpfsRemoveIpnsKeyFunction::OnKeyRemoved,
                                    base::RetainedRef(this), key_manager));
-  return RespondLater();
+  return did_respond() ? AlreadyResponded() : RespondLater();
 }
 
 void IpfsRemoveIpnsKeyFunction::OnKeyRemoved(::ipfs::IpnsKeysManager* manager,
@@ -108,7 +108,7 @@ ExtensionFunction::ResponseAction IpfsAddIpnsKeyFunction::Run() {
   key_manager->GenerateNewKey(
       params->name, base::BindOnce(&IpfsAddIpnsKeyFunction::OnKeyCreated,
                                    base::RetainedRef(this), key_manager));
-  return RespondLater();
+  return did_respond() ? AlreadyResponded() : RespondLater();
 }
 
 void IpfsAddIpnsKeyFunction::OnKeyCreated(::ipfs::IpnsKeysManager* manager,
@@ -217,7 +217,7 @@ ExtensionFunction::ResponseAction IpfsLaunchFunction::Run() {
   GetIpfsService(browser_context())
       ->LaunchDaemon(base::BindOnce(&IpfsLaunchFunction::OnLaunch,
                                     base::RetainedRef(this)));
-  return RespondLater();
+  return did_respond() ? AlreadyResponded() : RespondLater();
 }
 
 void IpfsLaunchFunction::OnLaunch(bool launched) {
@@ -231,7 +231,7 @@ ExtensionFunction::ResponseAction IpfsShutdownFunction::Run() {
   GetIpfsService(browser_context())
       ->ShutdownDaemon(base::BindOnce(&IpfsShutdownFunction::OnShutdown,
                                       base::RetainedRef(this)));
-  return RespondLater();
+  return did_respond() ? AlreadyResponded() : RespondLater();
 }
 
 void IpfsShutdownFunction::OnShutdown(bool shutdown) {
