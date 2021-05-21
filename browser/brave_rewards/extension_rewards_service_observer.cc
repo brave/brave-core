@@ -32,13 +32,10 @@ void ExtensionRewardsServiceObserver::OnRewardsInitialized(
     return;
   }
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::Initialized::Create(0).release());
-
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::Initialized::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::Initialized::Create(0)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -63,15 +60,12 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
   publisher.provider = info->provider;
   publisher.fav_icon_url = info->favicon_url;
   publisher.publisher_key = info->id;
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnPublisherData::Create(windowId,
-                                                              publisher)
-          .release());
 
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_ON_PUBLISHER_DATA,
       extensions::api::brave_rewards::OnPublisherData::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnPublisherData::Create(windowId,
+                                                              publisher)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -100,14 +94,11 @@ void ExtensionRewardsServiceObserver::OnFetchPromotions(
     promotion.amount = item->approximate_value;
   }
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnPromotions::Create(
-          static_cast<int>(result), promotions)
-            .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnPromotions::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnPromotions::Create(
+          static_cast<int>(result), promotions)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -129,13 +120,11 @@ void ExtensionRewardsServiceObserver::OnPromotionFinished(
   promotion_api.expires_at = promotion->expires_at;
   promotion_api.amount = promotion->approximate_value;
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnPromotionFinish::Create
-      (static_cast<int>(result), promotion_api).release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnPromotionFinish::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnPromotionFinish::Create(
+          static_cast<int>(result), promotion_api)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -147,13 +136,10 @@ void ExtensionRewardsServiceObserver::OnAdsEnabled(
     return;
   }
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnAdsEnabled::Create(
-          ads_enabled).release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnAdsEnabled::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnAdsEnabled::Create(ads_enabled)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -165,13 +151,11 @@ void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
     return;
   }
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnPendingContributionSaved::Create(
-          static_cast<int>(result)).release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnPendingContributionSaved::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnPendingContributionSaved::Create(
+          static_cast<int>(result))));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -198,15 +182,11 @@ void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
     publisher.status = static_cast<int>(item->status);
   }
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::
-      OnPublisherListNormalized::Create(publishers)
-          .release());
-
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnPublisherListNormalized::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnPublisherListNormalized::Create(
+          publishers)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -223,13 +203,10 @@ void ExtensionRewardsServiceObserver::OnExcludedSitesChanged(
   result.publisher_key = publisher_key;
   result.excluded = excluded;
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnExcludedSitesChanged::Create(result)
-          .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnExcludedSitesChanged::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnExcludedSitesChanged::Create(result)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -241,13 +218,10 @@ void ExtensionRewardsServiceObserver::OnRecurringTipSaved(
     return;
   }
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnRecurringTipSaved::Create(
-          success).release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnRecurringTipSaved::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnRecurringTipSaved::Create(success)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -259,13 +233,10 @@ void ExtensionRewardsServiceObserver::OnRecurringTipRemoved(
     return;
   }
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnRecurringTipRemoved::Create(
-          success).release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnRecurringTipRemoved::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnRecurringTipRemoved::Create(success)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -278,13 +249,11 @@ void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
     return;
   }
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnPendingContributionRemoved::Create(
-          static_cast<int>(result)).release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnPendingContributionRemoved::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnPendingContributionRemoved::Create(
+          static_cast<int>(result))));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -304,13 +273,10 @@ void ExtensionRewardsServiceObserver::OnReconcileComplete(
   properties.result = static_cast<int>(result);
   properties.type = static_cast<int>(type);
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnReconcileComplete::Create(properties)
-          .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnReconcileComplete::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnReconcileComplete::Create(properties)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -327,13 +293,10 @@ void ExtensionRewardsServiceObserver::OnDisconnectWallet(
   properties.result = static_cast<int>(result);
   properties.wallet_type = wallet_type;
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnDisconnectWallet::Create(properties)
-          .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnDisconnectWallet::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnDisconnectWallet::Create(properties)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -361,13 +324,10 @@ void ExtensionRewardsServiceObserver::OnCompleteReset(const bool success) {
   extensions::api::brave_rewards::OnCompleteReset::Properties properties;
   properties.success = success;
 
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnCompleteReset::Create(properties)
-          .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnCompleteReset::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnCompleteReset::Create(properties)));
   event_router->BroadcastEvent(std::move(event));
 }
 
