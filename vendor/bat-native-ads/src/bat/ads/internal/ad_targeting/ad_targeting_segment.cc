@@ -25,7 +25,7 @@ SegmentList DeserializeSegments(const std::string& json) {
     return segments;
   }
 
-  for (const auto& value : *list) {
+  for (const auto& value : list->GetList()) {
     if (!value.is_string()) {
       NOTREACHED();
       continue;

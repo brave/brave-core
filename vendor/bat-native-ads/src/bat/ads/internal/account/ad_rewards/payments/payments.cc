@@ -211,7 +211,7 @@ PaymentList Payments::GetFromList(base::ListValue* list) const {
 
   PaymentList payments;
 
-  for (auto& value : *list) {
+  for (auto& value : list->GetList()) {
     base::DictionaryValue* dictionary = nullptr;
     if (!value.GetAsDictionary(&dictionary)) {
       continue;

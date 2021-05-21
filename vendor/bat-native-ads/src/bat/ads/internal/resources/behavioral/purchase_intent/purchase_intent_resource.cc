@@ -100,7 +100,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
   }
 
   std::vector<std::string> segments;
-  for (auto& segment : *list3) {
+  for (auto& segment : list3->GetList()) {
     segments.push_back(segment.GetString());
   }
 
@@ -178,7 +178,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
   }
 
   // For each set of sites and segments
-  for (auto& set : *list1) {
+  for (auto& set : list1->GetList()) {
     if (!set.is_dict()) {
       BLOG(1, "Failed to load from JSON, site set not of type dict");
       return false;
@@ -193,7 +193,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
     }
 
     std::vector<std::string> site_segments;
-    for (auto& seg : *seg_list) {
+    for (auto& seg : seg_list->GetList()) {
       site_segments.push_back(segments.at(seg.GetInt()));
     }
 
@@ -205,7 +205,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
       return false;
     }
 
-    for (const auto& site : *site_list) {
+    for (const auto& site : site_list->GetList()) {
       PurchaseIntentSiteInfo info;
       info.segments = site_segments;
       info.url_netloc = site.GetString();
