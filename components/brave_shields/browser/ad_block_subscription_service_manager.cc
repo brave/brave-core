@@ -14,15 +14,11 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
-#include "brave/browser/download/brave_download_service_factory.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/common/pref_names.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile_key.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -30,66 +26,15 @@
 
 namespace brave_shields {
 
-void AdBlockSubscriptionServiceManager::OnSystemProfileCreated(
-    Profile* profile,
-    Profile::CreateStatus status) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(profile->IsSystemProfile());
-  DCHECK_NE(status, Profile::CREATE_STATUS_LOCAL_FAIL);
-  if (status != Profile::CREATE_STATUS_INITIALIZED) {
-    return;
-  }
-
-  InitializeDownloadManager(profile);
-}
-
-// Force the system profile to be created. Without this call, it is eventually
-// lazy-loaded by other services using the same mechanism.
-void AdBlockSubscriptionServiceManager::InitializeSystemProfile() {
-  g_browser_process->profile_manager()->CreateProfileAsync(
-      ProfileManager::GetSystemProfilePath(),
-      base::BindRepeating(
-          &AdBlockSubscriptionServiceManager::OnSystemProfileCreated,
-          weak_ptr_factory_.GetWeakPtr()));
-}
-
 AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
-    brave_component_updater::BraveComponent::Delegate* delegate)
-    : delegate_(delegate), initialized_(false) {
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  DCHECK(profile_manager);
-
-  auto system_profile_path = ProfileManager::GetSystemProfilePath();
-  auto* profile = profile_manager->GetProfileByPath(system_profile_path);
-
-  PrefService* local_state = delegate_->local_state();
-  if (!local_state) {
-    return;
-  }
-
-  if (profile) {
-    InitializeDownloadManager(profile);
-  } else {
-    // If no other profiles exist, then we need to wait for one to be
-    // initialized before continuing.
-    if (profile_manager->GetLoadedProfiles().empty()) {
-      g_browser_process->profile_manager()->AddObserver(this);
-    } else {
-      InitializeSystemProfile();
-    }
-  }
-}
-
-void AdBlockSubscriptionServiceManager::OnProfileAdded(Profile* profile) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (profile == ProfileManager::GetPrimaryUserProfile()) {
-    ProfileManager* profile_manager = g_browser_process->profile_manager();
-    DCHECK(profile_manager);
-
-    profile_manager->RemoveObserver(this);
-
-    InitializeSystemProfile();
-  }
+    brave_component_updater::BraveComponent::Delegate* delegate,
+    DownloadManagerGetter download_manager_getter)
+    : delegate_(delegate),
+      initialized_(false) {
+  download_manager_getter.Run(
+      base::BindOnce(
+          &AdBlockSubscriptionServiceManager::OnGetDownloadManager,
+          weak_ptr_factory_.GetWeakPtr()))
 }
 
 AdBlockSubscriptionServiceManager::~AdBlockSubscriptionServiceManager() {}
@@ -110,6 +55,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
                      base::Unretained(this), list_url,
                      subscription_service->GetInfo()));
 
+  // this could allow more than one service for a given url
   subscription_services_.insert(
       std::make_pair(list_url, std::move(subscription_service)));
 
@@ -164,19 +110,13 @@ void AdBlockSubscriptionServiceManager::RefreshSubscription(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto it = subscription_services_.find(id);
   DCHECK(it != subscription_services_.end());
+  // check for null
   download_manager_->StartDownload(it->second->GetInfo().list_url, from_ui);
 }
 
-void AdBlockSubscriptionServiceManager::InitializeDownloadManager(
-    Profile* system_profile) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
-  auto* profile_key = system_profile->GetProfileKey();
-
-  download_manager_ = std::make_unique<AdBlockSubscriptionDownloadManager>(
-      BraveDownloadServiceFactory::GetForKey(profile_key), this,
-      base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT}));
+void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
+    std::make_unique<AdBlockSubscriptionDownloadManager> download_manager) {
+  download_manager_ = std::move(download_manager);
 }
 
 void AdBlockSubscriptionServiceManager::StartSubscriptionServices() {

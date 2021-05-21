@@ -18,10 +18,13 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "build/build_config.h"
 #include "components/download/public/background_service/download_service.h"
+#include "components/services/storage/public/mojom/blob_storage_context.mojom.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "storage/browser/blob/blob_data_handle.h"
+#include "storage/browser/blob/blob_impl.h"
+#include "storage/browser/blob/blob_storage_context.h"
 #include "storage/browser/blob/write_blob_to_file.h"
 
 namespace brave_shields {
@@ -137,25 +140,6 @@ void AdBlockSubscriptionDownloadManager::OnDownloadStarted(
   }
 }
 
-void AdBlockSubscriptionDownloadManager::OnDownloadSucceeded(
-    const std::string& guid,
-    std::unique_ptr<storage::BlobDataHandle> data_handle) {
-  auto it = pending_download_guids_.find(guid);
-  DCHECK(it != pending_download_guids_.end());
-  GURL download_url = it->second;
-  pending_download_guids_.erase(guid);
-
-  base::UmaHistogramBoolean(
-      "BraveShields.AdBlockSubscriptionDownloadManager.DownloadSucceeded",
-      true);
-
-  background_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdBlockSubscriptionDownloadManager::EnsureDirExists,
-                     base::Unretained(this), download_url,
-                     std::move(data_handle)));
-}
-
 void AdBlockSubscriptionDownloadManager::OnDownloadFailed(
     const std::string& guid) {
   auto it = pending_download_guids_.find(guid);
@@ -170,36 +154,55 @@ void AdBlockSubscriptionDownloadManager::OnDownloadFailed(
   subscription_manager_->OnListDownloadFailure(download_url);
 }
 
-void AdBlockSubscriptionDownloadManager::EnsureDirExists(
-    const GURL download_url,
-    std::unique_ptr<storage::BlobDataHandle> data_handle) {
-  DCHECK(background_task_runner_->RunsTasksInCurrentSequence());
+bool EnsureDirExists(const base::FilePath& destination_dir) {
+  return base::CreateDirectory(destination_dir);
+}
 
-  base::FilePath destination_dir = DirForCustomSubscription(download_url);
-  if (!base::CreateDirectory(destination_dir)) {
+void AdBlockSubscriptionDownloadManager::OnDownloadSucceeded(
+    const std::string& guid,
+    std::unique_ptr<storage::BlobDataHandle> data_handle) {
+  auto it = pending_download_guids_.find(guid);
+  DCHECK(it != pending_download_guids_.end());
+  GURL download_url = it->second;
+  pending_download_guids_.erase(guid);
+
+  base::UmaHistogramBoolean(
+      "BraveShields.AdBlockSubscriptionDownloadManager.DownloadSucceeded",
+      true);
+
+  background_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&EnsureDirExists,
+                     DirForCustomSubscription(download_url)),
+      base::BindOnce(&AdBlockSubscriptionDownloadManager::OnDirCreated,
+                     ui_weak_ptr_factory_.GetWeakPtr(), std::move(data_handle),
+                     download_url));
+}
+
+void AdBlockSubscriptionDownloadManager::OnDirCreated(
+    std::unique_ptr<storage::BlobDataHandle> data_handle,
+    const GURL& download_url,
+    bool created) {
+  if (!created) {
     subscription_manager_->OnListDownloadFailure(download_url);
     return;
   }
 
-  content::GetIOThreadTaskRunner({})->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdBlockSubscriptionDownloadManager::WriteBlobOnIOThread,
-                     base::Unretained(this), download_url,
-                     std::move(data_handle), destination_dir));
-}
+  base::FilePath list_path = DirForCustomSubscription(download_url)
+                                 .AppendASCII(kCustomSubscriptionListText);
 
-void AdBlockSubscriptionDownloadManager::WriteBlobOnIOThread(
-    const GURL& download_url,
-    std::unique_ptr<storage::BlobDataHandle> data_handle,
-    const base::FilePath destination_dir) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-  base::FilePath list_text_dest =
-      destination_dir.AppendASCII(kCustomSubscriptionListText);
+  auto context = std::make_unique<storage::BlobStorageContext>();
+  mojo::Remote<storage::mojom::BlobStorageContext> remote_context;
+  context->Bind(remote_context.BindNewPipeAndPassReceiver());
 
-  WriteBlobToFile(std::move(data_handle), list_text_dest, true, base::nullopt,
-                  base::BindRepeating(
-                      &AdBlockSubscriptionDownloadManager::WriteResultCallback,
-                      ui_weak_ptr_factory_.GetWeakPtr(), download_url));
+  mojo::PendingRemote<blink::mojom::Blob> blob_remote;
+  auto receiver = blob_remote.InitWithNewPipeAndPassReceiver();
+  storage::BlobImpl::Create(std::move(data_handle), std::move(receiver));
+
+  remote_context->WriteBlobToFile(
+      std::move(blob_remote), list_path, true, base::nullopt,
+      base::BindOnce(&AdBlockSubscriptionDownloadManager::WriteResultCallback,
+                     ui_weak_ptr_factory_.GetWeakPtr(), download_url));
 }
 
 void AdBlockSubscriptionDownloadManager::WriteResultCallback(

@@ -84,16 +84,11 @@ class AdBlockSubscriptionDownloadManager {
   // Invoked when the download as specified by |failed_download_guid| failed.
   void OnDownloadFailed(const std::string& failed_download_guid);
 
-  // Invoked after OnDownloadSucceeded to create the directory the download will
-  // be saved to, if necessary. Must be called on the background thread, as it
-  // performs file I/O.
-  void EnsureDirExists(const GURL download_url,
-                       std::unique_ptr<storage::BlobDataHandle> data_handle);
-  // Invoked after EnsureDirExists to write the newly downloaded blob to disk in
-  // |destination_dir|. Must run on the browser's IO thread.
-  void WriteBlobOnIOThread(const GURL& download_url,
-                           std::unique_ptr<storage::BlobDataHandle> data_handle,
-                           const base::FilePath destination_dir);
+  void OnDirCreated(
+    std::unique_ptr<storage::BlobDataHandle> data_handle,
+    const GURL& download_url,
+    bool created);
+
   // Invoked after WriteBlobOnIOThread to report the status of writing the blob
   // to disk.
   void WriteResultCallback(const GURL& download_url,
