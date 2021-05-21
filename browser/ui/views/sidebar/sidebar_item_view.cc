@@ -71,3 +71,11 @@ void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
     }
   }
 }
+
+bool SidebarItemView::ShouldHandleLongPress() const {
+  return true;
+}
+
+void SidebarItemView::OnMouseLongPressed() {
+  ShowContextMenu(GetBoundsInScreen().CenterPoint(), ui::MENU_SOURCE_MOUSE);
+}
