@@ -272,6 +272,12 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
     ExecuteIPFSCommand(ipfs_command, key_name);
     return;
   }
+  switch (id) {
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
+    case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
+      ExecuteIPFSCommand(id, std::string());
+      return;
+  }
 #endif
   return AppMenuModel::ExecuteCommand(id, event_flags);
 }
