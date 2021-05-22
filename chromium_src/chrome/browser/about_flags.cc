@@ -176,7 +176,8 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      FEATURE_VALUE_TYPE(permissions::features::kPermissionLifetime)},       \
     {"brave-rewards-verbose-logging",                                       \
      flag_descriptions::kBraveRewardsVerboseLoggingName,                    \
-     flag_descriptions::kBraveRewardsVerboseLoggingDescription, kOsDesktop, \
+     flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
+     kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
     {"brave-rewards-bitflyer",                                              \
      flag_descriptions::kBraveRewardsBitflyerName,                          \
