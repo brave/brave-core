@@ -7,17 +7,25 @@
 
 #include <memory>
 #include <string>
+#include <utility>
+#include <vector>
 
+#include "base/files/file_util.h"
 #include "base/json/json_writer.h"
+#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/extensions/api/ipfs.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/channel_info.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ipfs::IPFSResolveMethodTypes;
@@ -56,10 +64,148 @@ base::Value MakeResponseFromMap(const ipfs::IpnsKeysManager::KeysMap& keys) {
   base::JSONWriter::Write(list, &json_string);
   return base::Value(json_string);
 }
+
+base::Value MakePeersResponseFromVector(
+    const std::vector<std::string>& source) {
+  base::Value list(base::Value::Type::LIST);
+  for (const auto& item : source) {
+    std::string id;
+    std::string address;
+    if (!ipfs::ParsePeerConnectionString(item, &id, &address))
+      continue;
+    list.Append(MakeValue(id, address));
+  }
+  std::string json_string;
+  base::JSONWriter::Write(list, &json_string);
+  return base::Value(json_string);
+}
+
+bool WriteFileOnFileThread(const base::FilePath& path,
+                           const std::string& value) {
+  return base::WriteFile(path, value.c_str(), value.size());
+}
+
 }  // namespace
 
 namespace extensions {
 namespace api {
+
+ExtensionFunction::ResponseAction IpfsRemoveIpfsPeerFunction::Run() {
+  if (!IsIpfsEnabled(browser_context()))
+    return RespondNow(Error("IPFS not enabled"));
+  ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
+  if (!ipfs_service) {
+    return RespondNow(Error("Could not obtain IPFS service"));
+  }
+  std::unique_ptr<ipfs::RemoveIpfsPeer::Params> params(
+      ipfs::RemoveIpfsPeer::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  ipfs_service->GetConfig(
+      base::BindOnce(&IpfsRemoveIpfsPeerFunction::OnConfigLoaded,
+                     base::RetainedRef(this), params->id, params->address));
+  return RespondLater();
+}
+
+void IpfsRemoveIpfsPeerFunction::OnConfigLoaded(const std::string& peer_id,
+                                                const std::string& address,
+                                                bool success,
+                                                const std::string& config) {
+  if (!success) {
+    return Respond(Error("Unable to load config"));
+  }
+  std::string new_config =
+      IPFSJSONParser::RemovePeerFromConfigJSON(config, peer_id, address);
+  if (new_config.empty()) {
+    VLOG(1) << "New config is empty, probably passed incorrect values";
+    return Respond(OneArgument(base::Value(false)));
+  }
+  ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
+  if (!ipfs_service) {
+    return Respond(Error("Could not obtain IPFS service"));
+  }
+  auto config_path = ipfs_service->GetConfigFilePath();
+  auto write_callback =
+      base::BindOnce(&WriteFileOnFileThread, config_path, new_config);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()}, std::move(write_callback),
+      base::BindOnce(&IpfsRemoveIpfsPeerFunction::OnConfigUpdated,
+                     base::RetainedRef(this)));
+}
+
+void IpfsRemoveIpfsPeerFunction::OnConfigUpdated(bool success) {
+  Respond(OneArgument(base::Value(success)));
+}
+
+ExtensionFunction::ResponseAction IpfsAddIpfsPeerFunction::Run() {
+  if (!IsIpfsEnabled(browser_context()))
+    return RespondNow(Error("IPFS not enabled"));
+  ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
+  if (!ipfs_service) {
+    return RespondNow(Error("Could not obtain IPFS service"));
+  }
+  std::unique_ptr<ipfs::AddIpfsPeer::Params> params(
+      ipfs::AddIpfsPeer::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  ipfs_service->GetConfig(
+      base::BindOnce(&IpfsAddIpfsPeerFunction::OnConfigLoaded,
+                     base::RetainedRef(this), params->value));
+  return RespondLater();
+}
+
+void IpfsAddIpfsPeerFunction::OnConfigLoaded(const std::string& peer,
+                                             bool success,
+                                             const std::string& config) {
+  if (!success) {
+    return Respond(Error("Unable to load config"));
+  }
+  std::string new_config = IPFSJSONParser::PutNewPeerToConfigJSON(config, peer);
+  if (new_config.empty()) {
+    VLOG(1) << "New config is empty, probably passed incorrect values";
+    return Respond(OneArgument(base::Value(false)));
+  }
+  ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
+  if (!ipfs_service) {
+    return Respond(Error("Could not obtain IPFS service"));
+  }
+  auto config_path = ipfs_service->GetConfigFilePath();
+  auto write_callback =
+      base::BindOnce(&WriteFileOnFileThread, config_path, new_config);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()}, std::move(write_callback),
+      base::BindOnce(&IpfsAddIpfsPeerFunction::OnConfigUpdated,
+                     base::RetainedRef(this)));
+}
+
+void IpfsAddIpfsPeerFunction::OnConfigUpdated(bool success) {
+  Respond(OneArgument(base::Value(success)));
+}
+
+ExtensionFunction::ResponseAction IpfsGetIpfsPeersListFunction::Run() {
+  if (!IsIpfsEnabled(browser_context()))
+    return RespondNow(Error("IPFS not enabled"));
+  ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
+  if (!ipfs_service) {
+    return RespondNow(Error("Could not obtain IPFS service"));
+  }
+  if (!ipfs_service->IsIPFSExecutableAvailable()) {
+    return RespondNow(Error("Could not obtain IPFS executable"));
+  }
+  ipfs_service->GetConfig(base::BindOnce(
+      &IpfsGetIpfsPeersListFunction::OnConfigLoaded, base::RetainedRef(this)));
+  return RespondLater();
+}
+
+void IpfsGetIpfsPeersListFunction::OnConfigLoaded(bool success,
+                                                  const std::string& config) {
+  if (!success) {
+    return Respond(Error("Unable to load config"));
+  }
+  std::vector<std::string> peers;
+  if (!IPFSJSONParser::GetPeersFromConfigJSON(config, &peers)) {
+    VLOG(1) << "Unable to parse peers in config";
+  }
+  Respond(OneArgument(MakePeersResponseFromVector(peers)));
+}
 
 ExtensionFunction::ResponseAction IpfsRemoveIpnsKeyFunction::Run() {
   if (!IsIpfsEnabled(browser_context()))

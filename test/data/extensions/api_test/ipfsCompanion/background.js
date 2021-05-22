@@ -83,6 +83,9 @@ function testBasics() {
           chrome.ipfs.getConfig &&
           chrome.ipfs.getExecutableAvailable &&
           chrome.ipfs.resolveIPFSURI &&
+          chrome.ipfs.getIpfsPeersList &&
+          chrome.ipfs.addIpfsPeer &&
+          chrome.ipfs.removeIpfsPeer &&
           chrome.ipfs.getIpnsKeysList &&
           chrome.ipfs.addIpnsKey &&
           chrome.ipfs.removeIpnsKey) {

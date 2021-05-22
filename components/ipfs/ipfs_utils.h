@@ -59,6 +59,10 @@ bool TranslateIPFSURI(const GURL& url,
                       bool use_subdomain);
 bool IsIpfsMenuEnabled(content::BrowserContext* browser_context);
 
+bool ParsePeerConnectionString(const std::string& value,
+                               std::string* id,
+                               std::string* address);
+
 }  // namespace ipfs
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_

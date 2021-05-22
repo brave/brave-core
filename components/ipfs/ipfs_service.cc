@@ -10,6 +10,8 @@
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
+#include "base/process/launch.h"
+#include "base/process/process.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -567,7 +569,8 @@ void IpfsService::GetConfig(GetConfigCallback callback) {
 
 void IpfsService::OnConfigLoaded(GetConfigCallback callback,
                                  const std::pair<bool, std::string>& result) {
-  std::move(callback).Run(result.first, result.second);
+  if (callback)
+    std::move(callback).Run(result.first, result.second);
 }
 
 bool IpfsService::IsIPFSExecutableAvailable() const {

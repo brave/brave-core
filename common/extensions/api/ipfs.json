@@ -32,6 +32,78 @@
         ]
       },
       {
+        "name": "getIpfsPeersList",
+        "type": "function",
+        "description": "Get list of peers",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when the peers list is fetched",
+            "parameters": [
+              {
+                "name": "peers",
+                "type": "string",
+                "description": "json stringified avalable peers list"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "removeIpfsPeer",
+        "type": "function",
+        "description": "Removes ipfs peer",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "The id of a peer"
+          },
+          {
+            "name": "address",
+            "type": "string",
+            "description": "The address of a peer"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when the peer is removed",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean",
+                "description": "result of operation"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "addIpfsPeer",
+        "type": "function",
+        "description": "Adds new ipfs peer",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "string",
+            "description": "The name of new peer"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when peer is created",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean",
+                "description": "result of config update operation"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "addIpnsKey",
         "type": "function",
         "description": "Adds new ipns key",

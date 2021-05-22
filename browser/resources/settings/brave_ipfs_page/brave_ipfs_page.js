@@ -57,6 +57,7 @@ Polymer({
     this.onChangeIpfsStorageMax_ = this.onChangeIpfsStorageMax_.bind(this)
     this.onChangeIpfsMethod_ = this.onChangeIpfsMethod_.bind(this)
     this.onP2pKeysEditorClick_ = this.onP2pKeysEditorClick_.bind(this)
+    this.onIpfsPeersEditorClick_ = this.onIpfsPeersEditorClick_.bind(this)
 
     this.browserProxy_.getIPFSResolveMethodList().then(list => {
       this.ipfsResolveMethod_ = JSON.parse(list)
@@ -90,12 +91,14 @@ Polymer({
       router.navigateTo(router.getRoutes().BRAVE_IPFS);
     }
   },
-
+  onIpfsPeersEditorClick_: function() {
+    const router = Router.getInstance();
+    router.navigateTo(router.getRoutes().BRAVE_IPFS_PEERS);
+  },
   onP2pKeysEditorClick_: function() {
     const router = Router.getInstance();
     router.navigateTo(router.getRoutes().BRAVE_IPFS_KEYS);
   },
-
   onChangeIpfsMethod_: function() {
     let local_node_used = this.isLocalNodeEnabled_
     this.setupOptionsVisibility();
@@ -105,7 +108,7 @@ Polymer({
         this.isLocalNodeLaunched_ = success
       });
     } else if (local_node_used && !this.isLocalNodeEnabled_) {
-      this.browserProxy_.shutdownIPFSService();
+      this.browserProxy_.shutdownIPFSService().then(() => {})
     }
   },
 
@@ -113,10 +116,15 @@ Polymer({
     const router = Router.getInstance();
     return (router.getCurrentRoute() == router.getRoutes().BRAVE_IPFS_KEYS);
   },
+  isPeersEditorRoute: function () {
+    const router = Router.getInstance();
+    return (router.getCurrentRoute() == router.getRoutes().BRAVE_IPFS_PEERS);
+  },
 
   /** @protected */
   currentRouteChanged: function() {
-    this.mainBlockVisibility_ = this.isKeysEditorRoute() ? 'hidden' : ''
+    let hidden = this.isPeersEditorRoute() || this.isKeysEditorRoute()
+    this.mainBlockVisibility_ = hidden ? 'hidden' : ''
   },
 
   onChangeIpfsStorageMax_: function() {

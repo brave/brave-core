@@ -1,0 +1,25 @@
+<script type="module" src="brave_ipfs_browser_proxy.js"></script>
+<script type="module" src="../settings_shared_css.js"></script>
+
+<style include="settings-shared">
+  #submit {
+    margin-left : 10px;
+  }
+</style>
+<cr-dialog show-close-button show-on-attach>
+  <div slot="title">$i18n{ipfsAddPeerDialogTitle}</div>
+  <div slot="body">
+    <cr-input id="peer" label=""
+        type="text" placeholder="$i18n{ipfsAddPeerDialogPlacehodler}" invalid="[[!validValue_]]"
+        error-message="$i18n{ipfsAddPeerDialogError}" spellcheck="false"
+        on-input=nameChanged_
+        autofocus>
+    </cr-input>
+  </div>
+  <div slot="button-container">
+    <cr-button class="action-button" id="submit" on-click="handleSubmit_"
+        disabled="[[!isSubmitButtonEnabled_]]">
+      Submit
+    </cr-button>
+  </div>
+</cr-dialog>

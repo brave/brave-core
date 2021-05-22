@@ -19,6 +19,47 @@ class IpnsKeysManager;
 namespace extensions {
 namespace api {
 
+class IpfsGetIpfsPeersListFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.getIpfsPeersList", UNKNOWN)
+
+ protected:
+  void OnConfigLoaded(bool success, const std::string& config);
+  ~IpfsGetIpfsPeersListFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsAddIpfsPeerFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.addIpfsPeer", UNKNOWN)
+
+ protected:
+  void OnPeerAdded(bool result, const std::string& value);
+  void OnConfigLoaded(const std::string& peer,
+                      bool success,
+                      const std::string& config);
+  void OnConfigUpdated(bool success);
+
+  ~IpfsAddIpfsPeerFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsRemoveIpfsPeerFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.removeIpfsPeer", UNKNOWN)
+
+ protected:
+  void OnPeerAdded(bool result, const std::string& value);
+  void OnConfigLoaded(const std::string& peer_id,
+                      const std::string& address,
+                      bool success,
+                      const std::string& config);
+  void OnConfigUpdated(bool success);
+
+  ~IpfsRemoveIpfsPeerFunction() override {}
+  ResponseAction Run() override;
+};
+
 class IpfsRemoveIpnsKeyFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("ipfs.removeIpnsKey", UNKNOWN)

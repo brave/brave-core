@@ -39,6 +39,17 @@ class IpfsUtilsUnitTest : public testing::Test {
   const GURL& public_gateway() { return public_gateway_; }
   PrefService* prefs() { return &prefs_; }
 
+  bool ValidatePeerAddress(const std::string& value,
+                           const std::string& expected_id,
+                           const std::string& expected_address) {
+    std::string id;
+    std::string address;
+    bool result = ipfs::ParsePeerConnectionString(value, &id, &address);
+    EXPECT_EQ(id, expected_id);
+    EXPECT_EQ(address, expected_address);
+    return result;
+  }
+
   void SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes type) {
     prefs_.SetInteger(kIPFSResolveMethod, static_cast<int>(type));
   }
@@ -551,4 +562,37 @@ TEST_F(IpfsUtilsUnitTest, IsIpfsMenuEnabled) {
   SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
   ASSERT_TRUE(ipfs::IsLocalGatewayConfigured(context()));
   ASSERT_TRUE(ipfs::IsIpfsMenuEnabled(context()));
+}
+
+TEST_F(IpfsUtilsUnitTest, ParsePeerConnectionStringTest) {
+  std::string id;
+  std::string address;
+  ASSERT_FALSE(ipfs::ParsePeerConnectionString("test", nullptr, nullptr));
+  ASSERT_FALSE(ipfs::ParsePeerConnectionString("test", nullptr, &address));
+  ASSERT_FALSE(ipfs::ParsePeerConnectionString("test", &id, nullptr));
+  ASSERT_TRUE(id.empty());
+  ASSERT_TRUE(address.empty());
+
+  std::string value =
+      "/ip4/104.131.131.82/udp/4001/quic/p2p/"
+      "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ";
+  ASSERT_TRUE(ValidatePeerAddress(
+      value, "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ",
+      "/ip4/104.131.131.82/udp/4001/quic"));
+
+  value = "/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ";
+  ASSERT_TRUE(ValidatePeerAddress(
+      value, "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ", ""));
+
+  value = "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ";
+  ASSERT_TRUE(ValidatePeerAddress(
+      value, "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ", ""));
+  value = "12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2";
+  ASSERT_FALSE(ValidatePeerAddress(value, "", ""));
+  value =
+      "/ip4/46.21.210.45/udp/14406/quic/p2p/"
+      "12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2";
+  ASSERT_TRUE(ValidatePeerAddress(
+      value, "12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2",
+      "/ip4/46.21.210.45/udp/14406/quic"));
 }
