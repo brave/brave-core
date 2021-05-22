@@ -18,18 +18,13 @@ const amountFormat = new Intl.NumberFormat(undefined, {
   maximumFractionDigits: 2
 })
 
-const highPrecisionFormat = new Intl.NumberFormat(undefined, {
-  minimumIntegerDigits: 1,
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 5
-})
-
 type InputMode = 'bat' | 'exchange'
 
 interface Props {
   amount: number
   exchangeRate: number
   amountStep: number
+  maximumAmount: number
   onAmountChange: (amount: number) => void
   onHideInput: () => void
 }
@@ -51,7 +46,13 @@ export function CustomAmountInput (props: Props) {
 
   const getBatValue = (inputValue: number) => {
     inputValue = inputValue || 0
-    return inputMode === 'bat' ? inputValue : inputValue / props.exchangeRate
+    return Math.min(props.maximumAmount, inputMode === 'bat'
+      ? inputValue
+      : inputValue / props.exchangeRate)
+  }
+
+  const roundExchangeUp = (value: number) => {
+    return Math.ceil(value * 100) / 100
   }
 
   const onBlur = (evt: React.FocusEvent<HTMLInputElement>) => {
@@ -64,9 +65,9 @@ export function CustomAmountInput (props: Props) {
       return
     }
 
-    setControlValue(inputMode === 'bat'
-      ? amountFormat.format(value)
-      : highPrecisionFormat.format(value * props.exchangeRate))
+    setControlValue(amountFormat.format(inputMode === 'bat'
+      ? value
+      : roundExchangeUp(value * props.exchangeRate)))
 
     if (props.amount !== value) {
       props.onAmountChange(value)
@@ -92,8 +93,13 @@ export function CustomAmountInput (props: Props) {
     : props.amount
 
   const toggleMode = () => {
-    setControlValue(highPrecisionFormat.format(dependentAmount))
-    setInputMode(inputMode === 'bat' ? 'exchange' : 'bat')
+    if (inputMode === 'bat') {
+      setControlValue(amountFormat.format(roundExchangeUp(dependentAmount)))
+      setInputMode('exchange')
+    } else {
+      setControlValue(amountFormat.format(dependentAmount))
+      setInputMode('bat')
+    }
   }
 
   return (
