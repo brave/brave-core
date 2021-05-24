@@ -111,6 +111,13 @@
     *** mIncognitoStateProvider;
     *** mTabCountProvider;
     *** mTabGroupUi;
+    *** mBottomSheetController;
+    *** mActivityLifecycleDispatcher;
+    *** mIsWarmOnResumeSupplier;
+    *** mTabContentManager;
+    *** mTabCreatorManager;
+    *** mOverviewModeBehaviorSupplier;
+    *** mSnackbarManager;
     *** onOrientationChange(...);
     *** updateButtonStatus(...);
     *** updateBookmarkButtonStatus(...);

@@ -26,6 +26,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
+import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
@@ -41,6 +42,7 @@ import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
+import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
@@ -52,6 +54,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.embedder_support.browser_context.BrowserContextHandle;
 import org.chromium.components.permissions.PermissionDialogController;
@@ -292,7 +295,9 @@ public class BytecodeTest {
                 OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
                 OneshotSupplier.class, WindowAndroid.class, Supplier.class, Supplier.class,
                 StatusBarColorController.class, AppMenuDelegate.class,
-                ActivityLifecycleDispatcher.class, Supplier.class));
+                ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
+                Supplier.class, TabContentManager.class, TabCreatorManager.class,
+                OneshotSupplier.class, SnackbarManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -310,8 +315,11 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator",
-                ViewGroup.class, ThemeColorProvider.class, ScrimCoordinator.class,
-                ObservableSupplier.class));
+                Activity.class, ViewGroup.class, ThemeColorProvider.class, ScrimCoordinator.class,
+                ObservableSupplier.class, BottomSheetController.class,
+                ActivityLifecycleDispatcher.class, Supplier.class, TabModelSelector.class,
+                TabContentManager.class, ViewGroup.class, Supplier.class, TabCreatorManager.class,
+                Supplier.class, OneshotSupplier.class, SnackbarManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
                 "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate",
@@ -413,6 +421,20 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCountProvider"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabGroupUi"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBottomSheetController"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
+                "mActivityLifecycleDispatcher"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mIsWarmOnResumeSupplier"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabContentManager"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCreatorManager"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
+                "mOverviewModeBehaviorSupplier"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mTabSwitcherModeCoordinatorPhone"));
