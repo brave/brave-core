@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 86739218b10256a9bb8a19cefa9501844b4216de..fc6fc5d5028c31a218d6607915c192894a4928ed 100644
+index f117097edd87db9ad15123bceeb88af12b813879..00b12caac7465f403e82449367b0eafe7ed531be 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -243,6 +243,7 @@ enum class ContentSettingsType : int32_t {
-   // access files through drag & drop or clipboard paste operations.
-   FILE_HANDLING,
+@@ -248,6 +248,7 @@ enum class ContentSettingsType : int32_t {
+   // the corresponding "guard" setting.
+   FILE_SYSTEM_ACCESS_CHOOSER_DATA,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,

@@ -6,9 +6,9 @@ index 3abd4d8f056cdfc2f9542794a2192d32b9390d34..8c5bf8b833e9d62f9c94c0b8352cf7ba
    // Note: we intentionally leave the pending entry in place for renderer debug
    // URLs, unlike the cases below where we clear it if the navigation doesn't
    // proceed.
--  if (IsRendererDebugURL(params.url)) {
+-  if (blink::IsRendererDebugURL(params.url)) {
 +  const GURL url = params.url.SchemeIs(url::kJavaScriptScheme) ? params.url : pending_entry_->GetURL();
-+  if (IsRendererDebugURL(url)) {
++  if (blink::IsRendererDebugURL(url)) {
      // Renderer-debug URLs won't go through NavigationThrottlers so we have to
      // check them explicitly. See bug 913334.
      if (GetContentClient()->browser()->ShouldBlockRendererDebugURL(
@@ -17,9 +17,9 @@ index 3abd4d8f056cdfc2f9542794a2192d32b9390d34..8c5bf8b833e9d62f9c94c0b8352cf7ba
        DiscardPendingEntry(false);
        return;
      }
-
+ 
 -    HandleRendererDebugURL(node, params.url);
 +    HandleRendererDebugURL(node, url);
      return;
    }
-
+ 

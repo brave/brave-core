@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index 5906e8452977cd100487f58874703f8766582ec8..ddbfa12431a34e394088cc5686dd239c1b4db793 100644
+index 07844f2bcf15a1d6fb23b690a94489cb2816a58a..ff777f1266ae510123f33dc936a041f5fe4ec65c 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -94,6 +94,7 @@ constexpr HistogramValue kHistogramValue[] = {
-     {ContentSettingsType::FILE_SYSTEM_LAST_PICKED_DIRECTORY, 73},
+@@ -95,6 +95,7 @@ constexpr HistogramValue kHistogramValue[] = {
      {ContentSettingsType::DISPLAY_CAPTURE, 74},
      {ContentSettingsType::FILE_HANDLING, 75},
+     {ContentSettingsType::FILE_SYSTEM_ACCESS_CHOOSER_DATA, 76},
 +    BRAVE_HISTOGRAM_VALUE_LIST
  };
  

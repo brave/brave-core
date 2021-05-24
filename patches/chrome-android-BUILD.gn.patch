@@ -2,19 +2,20 @@ diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
 index 3d9b54ec4b5e69c5f439df5e0323b53cd17dab96..96310aebbcece67c81859c0f1916041c29d97318 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -239,6 +239,7 @@ android_resources("chrome_app_java_resources") {
+@@ -240,6 +240,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/androidx:androidx_preference_preference_java",
      "//third_party/androidx:androidx_recyclerview_recyclerview_java",
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
  }
-
+ 
  if (enable_vr) {
 @@ -571,6 +572,7 @@ android_library("chrome_java") {
-
+ 
    deps += feed_deps
+   deps += web_feed_deps
 +  deps += brave_chrome_java_deps
-
+ 
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
 @@ -601,6 +603,7 @@ android_library("chrome_java") {
@@ -22,7 +23,7 @@ index 3d9b54ec4b5e69c5f439df5e0323b53cd17dab96..96310aebbcece67c81859c0f1916041c
      "//net:effective_connection_type_java",
    ]
 +  srcjar_deps += brave_chrome_java_srcjar_deps
-
+ 
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
 @@ -696,6 +699,7 @@ java_group("chrome_all_java") {
@@ -39,7 +40,7 @@ index 3d9b54ec4b5e69c5f439df5e0323b53cd17dab96..96310aebbcece67c81859c0f1916041c
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
-
+ 
  # TODO(crbug.com/1112471): Get this to run cleanly under Python 3.
 @@ -1978,6 +1983,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
@@ -54,6 +55,6 @@ index 3d9b54ec4b5e69c5f439df5e0323b53cd17dab96..96310aebbcece67c81859c0f1916041c
      "//third_party/androidx:androidx_browser_browser_java",
    ]
 +  sources += brave_java_base_module_sources deps += brave_java_base_module_deps
-
+ 
    # More deps for DFMs.
    if (dfmify_dev_ui) {

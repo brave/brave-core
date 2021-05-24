@@ -4,25 +4,25 @@ index f85dc6aec4940cd52f833e99ebd31f1dd3aac950..7a924e92b7724f23e9d24ed16c2f3e61
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
 @@ -109,6 +109,7 @@ class LocationBarView : public LocationBar,
    int GetBorderRadius() const;
-
+ 
    // Initializes the LocationBarView.
 +  virtual
    void Init();
-
+ 
    // True if this instance has been initialized by calling Init, which can only
 @@ -166,6 +167,7 @@ class LocationBarView : public LocationBar,
-
+ 
    // Updates the controller, and, if |contents| is non-null, restores saved
    // state that the tab holds.
 +  virtual
    void Update(content::WebContents* contents);
-
+ 
    // Clears the location bar's state for |contents|.
 @@ -240,6 +242,7 @@ class LocationBarView : public LocationBar,
    std::vector<ContentSettingImageView*>& GetContentSettingViewsForTest() {
      return content_setting_views_;
    }
 +  BRAVE_LOCATION_BAR_VIEW_H_
-
+ 
   private:
    FRIEND_TEST_ALL_PREFIXES(SecurityIndicatorTest, CheckIndicatorText);
