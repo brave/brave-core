@@ -18,11 +18,14 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
+#include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/default_style.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -234,6 +237,15 @@ void SidebarItemsContentsView::SetDefaultImageAt(
 }
 
 void SidebarItemsContentsView::ShowItemAddedFeedbackBubble() {
+  auto* prefs = browser_->profile()->GetPrefs();
+  const int current_count =
+      prefs->GetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount);
+  // Don't show feedback bubble more than three times.
+  if (current_count >= 3)
+    return;
+  prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount,
+                    current_count + 1);
+
   auto* lastly_added_view = children()[children().size() - 1];
   ShowItemAddedFeedbackBubble(lastly_added_view);
 }
