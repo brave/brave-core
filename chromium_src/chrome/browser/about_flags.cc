@@ -24,6 +24,7 @@
 #include "components/prefs/pref_service.h"
 #include "net/base/features.h"
 
+using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
 using brave_shields::features::kBraveAdblockCspRules;
@@ -130,6 +131,10 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                  \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll,   \
      FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},                    \
+    {"brave-adblock-cname-uncloaking",                                      \
+     flag_descriptions::kBraveAdblockCnameUncloakingName,                   \
+     flag_descriptions::kBraveAdblockCnameUncloakingDescription, kOsAll,    \
+     FEATURE_VALUE_TYPE(kBraveAdblockCnameUncloaking)},                     \
     {"brave-adblock-cosmetic-filtering",                                    \
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                 \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll,  \

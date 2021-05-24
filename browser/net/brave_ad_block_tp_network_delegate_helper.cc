@@ -241,7 +241,10 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
 
   // DoH or standard DNS queries won't be routed through Tor, so we need to
   // skip it.
-  bool should_check_uncloaked = !ctx->browser_context->IsTor();
+  bool should_check_uncloaked =
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockCnameUncloaking) &&
+      !ctx->browser_context->IsTor();
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
