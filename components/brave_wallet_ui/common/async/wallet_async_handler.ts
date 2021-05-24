@@ -7,12 +7,13 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import { UnlockWalletPayloadType } from '../constants/action_types'
+import { WalletAPIHandler } from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
 const handler = new AsyncActionHandler()
 
-async function getWalletHandler () {
+async function getWalletHandler (): Promise<WalletAPIHandler> {
   let api
   if (window.location.hostname === 'wallet-panel.top-chrome') {
     api = await import('../../panel/wallet_panel_api_proxy.js')

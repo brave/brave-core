@@ -23,10 +23,9 @@ reducer.on(Actions.walletCreated, (state: PageState, payload: WalletCreatedPaylo
 })
 
 reducer.on(Actions.walletSetupComplete, (state: PageState) => {
-  delete state['mnemonic']
-  return {
-    ...state
-  }
+  const newState = { ...state }
+  delete newState.mnemonic
+  return newState
 })
 
 export default reducer

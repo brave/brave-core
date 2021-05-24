@@ -80,10 +80,10 @@ function Panel (props: Props) {
     setInputValue(value)
   }
   const onRestore = () => {
-    chrome.tabs.create({ url: 'chrome://wallet#restore' })
+    props.walletPanelActions.restoreWallet()
   }
   const onSetup = () => {
-    chrome.tabs.create({ url: 'chrome://wallet' })
+    props.walletPanelActions.setupWallet()
   }
 
   if (!props.wallet.hasInitialized) {

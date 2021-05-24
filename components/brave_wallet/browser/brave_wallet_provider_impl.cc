@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 
 namespace brave_wallet {
 

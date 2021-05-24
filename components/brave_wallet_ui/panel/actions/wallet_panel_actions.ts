@@ -9,3 +9,5 @@ import { AccountPayloadType } from '../constants/action_types'
 export const connectToSite = createAction<AccountPayloadType>('connectToSite')
 export const cancelConnectToSite = createAction('cancelConnectToSite')
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
+export const setupWallet = createAction('setupWallet')
+export const restoreWallet = createAction('restoreWallet')

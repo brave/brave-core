@@ -7,7 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { WalletPanelState, PanelState } from '../../constants/types'
+import { WalletPanelState, PanelState, WalletAPIHandler } from '../../constants/types'
 import { AccountPayloadType } from '../constants/action_types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -24,7 +24,7 @@ function getPanelState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PanelSt
   return (store.getState() as WalletPanelState).panel
 }
 
-async function getWalletHandler () {
+async function getWalletHandler (): Promise<WalletAPIHandler> {
   const apiProxy = await getAPIProxy()
   return apiProxy.getWalletHandler()
 }
@@ -66,6 +66,14 @@ handler.on(PanelActions.visibilityChanged.getType(), async (store, isVisible) =>
   await refreshWalletInfo(store)
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
+})
+
+handler.on(PanelActions.setupWallet.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://wallet' })
+})
+
+handler.on(PanelActions.restoreWallet.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://wallet#restore' })
 })
 
 export default handler.middleware

@@ -145,12 +145,14 @@ export interface WalletPanelState {
   panel: PanelState
 }
 
+export interface WalletInfo {
+  isWalletCreated: boolean,
+  isWalletLocked: boolean
+  accounts: string[]
+}
+
 export interface WalletAPIHandler {
-  getWalletInfo: () => {
-    isWalletCreated: boolean,
-    isWalletLocked: boolean
-    accounts: string[]
-  }
-  lockWallet: () => void
-  unlockWallet: (password: string) => void
+  getWalletInfo: () => Promise<WalletInfo>
+  lockWallet: () => Promise<void>
+  unlockWallet: (password: string) => Promise<void>
 }

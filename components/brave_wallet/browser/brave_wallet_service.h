@@ -21,8 +21,6 @@
 #include "base/observer_list.h"
 #include "base/scoped_observer.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"
@@ -44,6 +42,11 @@ class SequencedTaskRunner;
 namespace content {
 class BrowserContext;
 }  // namespace content
+
+namespace brave_wallet {
+class KeyringController;
+class EthJsonRpcController;
+}  // namespace brave_wallet
 
 class BraveWalletService : public KeyedService,
 #if BUILDFLAG(ENABLE_EXTENSIONS)

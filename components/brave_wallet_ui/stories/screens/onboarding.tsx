@@ -32,7 +32,9 @@ function Onboarding (props: Props) {
     if (onboardingStep === 4) {
       onSubmit(true)
       return
-    } else if (onboardingStep === 1) {
+    }
+
+    if (onboardingStep === 1) {
       onPasswordProvided(password)
     }
     setOnboardingStep(onboardingStep + 1)

@@ -76,7 +76,7 @@ class KeyringController {
   std::vector<uint8_t> GetOrCreateNonce();
   bool CreateEncryptor(const std::string& password);
   bool CreateDefaultKeyringInternal(const std::string& mnemonic);
-  // It's used to reconstruct same default keyring bewteen browser relaunch
+  // It's used to reconstruct same default keyring between browser relaunch
   HDKeyring* ResumeDefaultKeyring(const std::string& password);
 
   std::unique_ptr<PasswordEncryptor> encryptor_;

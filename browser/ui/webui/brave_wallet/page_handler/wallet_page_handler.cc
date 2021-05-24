@@ -11,7 +11,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
-#include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
@@ -39,9 +39,9 @@ WalletPageHandler::~WalletPageHandler() = default;
 
 void WalletPageHandler::CreateWallet(const std::string& password,
                                      CreateWalletCallback callback) {
-  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
   auto* keyring_controller =
-      GetBraveWalletService(profile)->keyring_controller();
+      GetBraveWalletService(browser_context)->keyring_controller();
   auto* keyring = keyring_controller->CreateDefaultKeyring(password);
   if (keyring) {
     keyring->AddAccounts();

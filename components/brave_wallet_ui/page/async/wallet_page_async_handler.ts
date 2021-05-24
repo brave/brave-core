@@ -8,6 +8,7 @@ import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { CreateWalletPayloadType } from '../constants/action_types'
+import { WalletAPIHandler } from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -19,7 +20,7 @@ async function getAPIProxy () {
   return api.default.getInstance()
 }
 
-async function getWalletHandler () {
+async function getWalletHandler (): Promise<WalletAPIHandler> {
   const apiProxy = await getAPIProxy()
   return apiProxy.getWalletHandler()
 }
@@ -32,7 +33,7 @@ async function refreshWalletInfo (store: Store) {
 
 handler.on(WalletPageActions.createWallet.getType(), async (store, payload: CreateWalletPayloadType) => {
   const apiProxy = await getAPIProxy()
-  const result = apiProxy.createWallet(payload.password)
+  const result = await apiProxy.createWallet(payload.password)
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
 
