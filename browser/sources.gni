@@ -11,6 +11,7 @@ import("//brave/browser/component_updater/sources.gni")
 import("//brave/browser/crypto_dot_com/sources.gni")
 import("//brave/browser/decentralized_dns/sources.gni")
 import("//brave/browser/download/sources.gni")
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/gemini/sources.gni")
 import("//brave/browser/greaselion/sources.gni")
 import("//brave/browser/importer/sources.gni")
@@ -198,6 +199,11 @@ if (brave_wallet_enabled) {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet_ui:mojo_bindings",
   ]
+}
+
+if (ethereum_remote_client_enabled) {
+  brave_chrome_browser_deps +=
+      [ "//brave/browser/ethereum_remote_client:browser" ]
 }
 
 if (enable_brave_sync) {

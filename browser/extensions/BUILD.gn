@@ -1,8 +1,8 @@
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/config.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
@@ -92,20 +92,23 @@ source_set("extensions") {
     deps += [ "//brave/components/sidebar" ]
   }
 
-  if (brave_wallet_enabled) {
+  # It seems like this brave_wallet_api should be renamed to ethereum_remote_client_api.
+  # However this is not possible right now because the ethereum-remote-client extension
+  # uses chrome.braveWallet, so the API is intentionally not being renamed now.
+  if (ethereum_remote_client_enabled) {
     sources += [
       "api/brave_wallet_api.cc",
       "api/brave_wallet_api.h",
-      "brave_wallet_util.cc",
-      "brave_wallet_util.h",
+      "ethereum_remote_client_util.cc",
+      "ethereum_remote_client_util.h",
     ]
     configs += [
       ":infura_config",
       ":brave_services_config",
     ]
     deps += [
+      "//brave/browser/ethereum_remote_client",
       "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/common",
     ]
   }
 

@@ -85,7 +85,7 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_page/brave_wallet_page.grd": {
     "includes": [43600],
   },
-  "<(ROOT_GEN_DIR)/brave/web-ui-deprecated_brave_wallet_page/deprecated_brave_wallet_page.grd": {
+  "<(ROOT_GEN_DIR)/brave/web-ui-ethereum_remote_client_page/ethereum_remote_client_page.grd": {
     "includes": [43675],
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_panel/brave_wallet_panel.grd": {

@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_content_browser_client.h"
 
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -16,8 +16,8 @@
 #include "extensions/common/extension_builder.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "content/public/common/content_client.h"
 

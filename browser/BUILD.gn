@@ -18,6 +18,7 @@ source_set("browser_process") {
   sources = [ "brave_browser_process.h" ]
 
   deps = [
+    "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/components/brave_ads/browser/buildflags",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/greaselion/browser/buildflags",

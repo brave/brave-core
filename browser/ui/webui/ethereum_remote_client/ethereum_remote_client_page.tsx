@@ -8,13 +8,13 @@ import { render } from 'react-dom'
 import { initLocale } from 'brave-ui'
 
 import 'emptykit.css'
-import '../../../ui/webui/resources/fonts/poppins.css'
-import '../../../ui/webui/resources/fonts/muli.css'
+import '../../../../ui/webui/resources/fonts/poppins.css'
+import '../../../../ui/webui/resources/fonts/muli.css'
 
-import LegacyApp from '../components/legacy_app'
+import LegacyApp from './components/legacy_app'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
-import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../../../components/common/BraveCoreThemeProvider'
 
 function initialize () {
   chrome.braveWallet.shouldPromptForSetup((prompt: boolean) => {

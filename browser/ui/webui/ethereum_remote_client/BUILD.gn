@@ -1,0 +1,22 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//chrome/common/features.gni")
+
+transpile_web_ui("ethereum_remote_client_page_ui") {
+  entry_points = [ [
+        "ethereum_remote_client_page",
+        rebase_path("ethereum_remote_client_page.tsx"),
+      ] ]
+  resource_name = "ethereum_remote_client_page"
+}
+
+pack_web_resources("ethereum_remote_client_page_generated") {
+  resource_name = "ethereum_remote_client_page"
+  output_dir =
+      "$root_gen_dir/brave/components/ethereum_remote_client_page/resources"
+  deps = [ ":ethereum_remote_client_page_ui" ]
+}

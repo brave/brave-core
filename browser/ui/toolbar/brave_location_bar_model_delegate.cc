@@ -6,17 +6,17 @@
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "extensions/buildflags/buildflags.h"
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #endif
 
 BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(Browser* browser)
@@ -33,7 +33,7 @@ void BraveLocationBarModelDelegate::FormattedStringFromURL(
                                            u"brave://");
   }
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   if (url.SchemeIs(kChromeExtensionScheme) &&
       url.host() == ethereum_remote_client_extension_id) {
     base::ReplaceFirstSubstringAfterOffset(

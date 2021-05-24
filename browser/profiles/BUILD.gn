@@ -38,7 +38,6 @@ source_set("profiles") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",

@@ -1,3 +1,4 @@
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import(
     "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
@@ -92,13 +93,23 @@ repack("resources") {
   }
 
   if (brave_wallet_enabled) {
-    if (!is_android) {
-      deps += [ "//brave/components/brave_wallet_ui:resources" ]
-      sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak" ]
+    if (!is_android && !is_ios) {
+      deps += [
+        "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+        "//brave/components/brave_wallet_ui:resources",
+      ]
+      sources += [
+        "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
+        "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak",
+      ]
     }
+  }
 
-    deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
+  if (ethereum_remote_client_enabled) {
+    if (!is_android && !is_ios) {
+      sources += [ "$root_gen_dir/brave/components/ethereum_remote_client_page/resources/ethereum_remote_client_page_generated.pak" ]
+      deps += [ "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated" ]
+    }
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"
@@ -113,6 +124,7 @@ grit("strings") {
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
     "brave_wallet_enabled=$brave_wallet_enabled",
+    "ethereum_remote_client_enabled=$ethereum_remote_client_enabled",
     "decentralized_dns_enabled=$decentralized_dns_enabled",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "enable_tor=$enable_tor",

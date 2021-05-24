@@ -7,12 +7,12 @@
 #include "../../../../../chrome/browser/history/history_utils.cc"  // NOLINT
 #undef CanAddURLToHistory
 
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/common/url_constants.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #endif
 
 bool CanAddURLToHistory(const GURL& url) {
@@ -20,7 +20,7 @@ bool CanAddURLToHistory(const GURL& url) {
     return false;
 
   bool is_brave_scheme = url.SchemeIs(content::kBraveUIScheme);
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   bool is_wallet_host =
       url.SchemeIs(kChromeExtensionScheme) &&
       url.host() == ethereum_remote_client_extension_id;

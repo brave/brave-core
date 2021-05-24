@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/pref_names.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -30,7 +30,12 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+#include "brave/browser/ethereum_remote_client/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
@@ -82,16 +87,18 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #endif
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  EXPECT_EQ(
-      browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider),
-      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
-                           ? BraveWalletWeb3ProviderTypes::BRAVE_WALLET
-                           : BraveWalletWeb3ProviderTypes::ASK));
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
       kLoadCryptoWalletsOnStartup));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets));
+#endif
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  EXPECT_EQ(
+      browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider),
+      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
+                           ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
+                           : brave_wallet::Web3ProviderTypes::ASK));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kShowWalletIconOnToolbar));
 #endif

@@ -17,15 +17,17 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
     : profile_(profile) {
   PrefService* pref_service = profile->GetPrefs();
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   brave_wallet_web3_provider_.Init(kBraveWalletWeb3Provider, pref_service);
+#endif
 
   pref_change_registrar_.Init(pref_service);
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -88,10 +90,11 @@ void BraveRendererUpdater::UpdateRenderer(
     mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
         renderer_configuration) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  bool use_brave_web3_provider = (static_cast<BraveWalletWeb3ProviderTypes>(
-                                      brave_wallet_web3_provider_.GetValue()) ==
-                                  BraveWalletWeb3ProviderTypes::BRAVE_WALLET) &&
-                                 brave_wallet::IsAllowedForContext(profile_);
+  bool use_brave_web3_provider =
+      (static_cast<brave_wallet::Web3ProviderTypes>(
+           brave_wallet_web3_provider_.GetValue()) ==
+       brave_wallet::Web3ProviderTypes::BRAVE_WALLET) &&
+      brave_wallet::IsAllowedForContext(profile_);
 
   (*renderer_configuration)
       ->SetConfiguration(
