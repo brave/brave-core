@@ -91,6 +91,7 @@ brave_chrome_browser_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/brave_ads",
   "//brave/browser/brave_ads/notifications",
+  "//brave/browser/brave_ads/tooltips",
   "//brave/browser/component_updater",
   "//brave/browser/content_settings",
   "//brave/browser/ephemeral_storage",

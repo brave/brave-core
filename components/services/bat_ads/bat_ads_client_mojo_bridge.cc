@@ -258,6 +258,32 @@ std::string BatAdsClientMojoBridge::LoadResourceForId(
   return value;
 }
 
+void OnGetScheduledCaptcha(const ads::GetScheduledCaptchaCallback& callback,
+                           const std::string& captcha_id) {
+  callback(captcha_id);
+}
+
+void BatAdsClientMojoBridge::GetScheduledCaptcha(
+    const std::string& payment_id,
+    ads::GetScheduledCaptchaCallback callback) {
+  if (!connected()) {
+    return callback("");
+  }
+
+  bat_ads_client_->GetScheduledCaptcha(
+      payment_id, base::BindOnce(&OnGetScheduledCaptcha, std::move(callback)));
+}
+
+void BatAdsClientMojoBridge::ShowScheduledCaptchaNotification(
+    const std::string& payment_id,
+    const std::string& captcha_id) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->ShowScheduledCaptchaNotification(payment_id, captcha_id);
+}
+
 void OnRunDBTransaction(
     const ads::RunDBTransactionCallback& callback,
     ads::DBCommandResponsePtr response) {

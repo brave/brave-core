@@ -13,11 +13,15 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/wallet/wallet.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens.h"
+#include "brave/browser/brave_ads/tooltips/ad_tooltip_platform_bridge.h"
+#include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
+#include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
 
 namespace ads {
 
@@ -38,12 +42,14 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
 
   ad_rewards_->set_delegate(this);
   redeem_unblinded_payment_tokens_->set_delegate(this);
+  refill_unblinded_tokens_->set_delegate(this);
 }
 
 Account::~Account() {
   confirmations_->RemoveObserver(this);
   ad_rewards_->set_delegate(nullptr);
   redeem_unblinded_payment_tokens_->set_delegate(nullptr);
+  refill_unblinded_tokens_->set_delegate(nullptr);
 }
 
 void Account::AddObserver(AccountObserver* observer) {
@@ -206,6 +212,17 @@ void Account::OnFailedToRedeemUnblindedPaymentTokens() {
 
 void Account::OnDidRetryRedeemingUnblindedPaymentTokens() {
   BLOG(1, "Retry redeeming unblinded payment tokens");
+}
+
+void Account::OnCaptchaRequiredToRefillUnblindedTokens(
+    const std::string& captcha_id) {
+  BLOG(1, "Captcha required to refill unblinded tokens");
+
+  const WalletInfo wallet = GetWallet();
+  const std::string wallet_id = wallet.id;
+
+  AdsClientHelper::Get()->ShowScheduledCaptchaNotification(wallet_id,
+                                                           captcha_id);
 }
 
 }  // namespace ads

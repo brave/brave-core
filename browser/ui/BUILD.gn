@@ -230,6 +230,7 @@ source_set("ui") {
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
     "//brave/browser/ui/brave_ads",
+    "//brave/browser/ui/brave_tooltips",
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/common:pref_names",

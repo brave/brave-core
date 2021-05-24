@@ -1,0 +1,21 @@
+source_set("brave_adaptive_captcha") {
+  sources = [
+    "brave_adaptive_captcha.cc",
+    "brave_adaptive_captcha.h",
+    "environment.h",
+    "get_adaptive_captcha_challenge.cc",
+    "get_adaptive_captcha_challenge.h",
+    "server_util.cc",
+    "server_util.h",
+    "url_loader.cc",
+    "url_loader.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser:browser_process",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/cpp",
+  ]
+}

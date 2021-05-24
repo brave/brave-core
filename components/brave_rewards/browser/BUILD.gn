@@ -64,6 +64,7 @@ static_library("browser") {
 
     deps += [
       "//brave/app:brave_generated_resources_grit",
+      "//brave/components/brave_adaptive_captcha",
       "//brave/components/brave_ads/browser/buildflags",
       "//brave/components/resources",
       "//brave/components/services/bat_ledger/public/cpp",
