@@ -67,9 +67,12 @@ bool BraveTabContextMenuContents::GetAcceleratorForCommandId(
     return false;
 
   int browser_cmd;
+  views::Widget* widget =
+      BrowserView::GetBrowserViewForBrowser(controller_->browser())
+          ->GetWidget();
   return TabStripModel::ContextMenuCommandToBrowserCommand(command_id,
-                                                           &browser_cmd) ?
-      tab_->GetWidget()->GetAccelerator(browser_cmd, accelerator) : false;
+                                                           &browser_cmd) &&
+         widget->GetAccelerator(browser_cmd, accelerator);
 }
 
 void BraveTabContextMenuContents::ExecuteCommand(int command_id,
