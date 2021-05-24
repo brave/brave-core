@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.25.1](https://github.com/brave/brave-ios/releases/tag/v1.25.1)
+
+- Fixed several performance issues due to Playlist. ([#3665](https://github.com/brave/brave-ios/issues/3665))
+- Fixed “Add to Brave Playlist” toast being displayed even though Playlist has been disabled. ([#3656](https://github.com/brave/brave-ios/issues/3656))
+- Fixed Playlist toast being displayed when scrubbing through videos. ([#3616](https://github.com/brave/brave-ios/issues/3616))
+
 ## [1.25](https://github.com/brave/brave-ios/releases/tag/v1.25)
 
 - Added Playlists. ([#3368](https://github.com/brave/brave-ios/issues/3368))
