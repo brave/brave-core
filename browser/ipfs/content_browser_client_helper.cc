@@ -80,12 +80,17 @@ bool HandleIPFSURLRewrite(
     }
   }
 
-  if (decentralized_dns::IsENSTLD(*url) &&
+  bool resolve_ens = decentralized_dns::IsENSTLD(*url) &&
       decentralized_dns::IsENSResolveMethodEthereum(
-          g_browser_process->local_state()) &&
-      IsLocalGatewayConfigured(prefs)) {
+          g_browser_process->local_state());
+  bool resolve_ud = decentralized_dns::IsUnstoppableDomainsTLD(*url) &&
+      decentralized_dns::IsUnstoppableDomainsResolveMethodEthereum(
+          g_browser_process->local_state());
+  if ((resolve_ens || resolve_ud) &&
+      IsLocalGatewayConfigured(browser_context)) {
     return true;
   }
+
   return false;
 }
 

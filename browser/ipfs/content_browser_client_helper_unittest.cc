@@ -23,6 +23,7 @@
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -37,6 +38,11 @@
 namespace {
 
 constexpr char kTestProfileName[] = "TestProfile";
+
+const GURL& GetDecentralizedTLDURL() {
+  static const GURL url("https://brave.crypto/");
+  return url;
+}
 
 const GURL& GetIPFSURI() {
   static const GURL ipfs_url(
@@ -73,8 +79,8 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
     TestingBrowserProcess* browser_process = TestingBrowserProcess::GetGlobal();
     profile_manager_.reset(new TestingProfileManager(browser_process));
     ASSERT_TRUE(profile_manager_->SetUp());
-
     profile_ = profile_manager_->CreateTestingProfile(kTestProfileName);
+    local_state_ = profile_manager_->local_state();
 
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
@@ -85,8 +91,17 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
     profile_ = nullptr;
     profile_manager_->DeleteTestingProfile(kTestProfileName);
   }
-
+  bool ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes type) {
+    local_state()->SetInteger(
+        decentralized_dns::kUnstoppableDomainsResolveMethod,
+        static_cast<int>(type));
+    GURL ipfs_uri = GetDecentralizedTLDURL();
+    bool result = HandleIPFSURLRewrite(&ipfs_uri, browser_context());
+    EXPECT_EQ(ipfs_uri, GetDecentralizedTLDURL());
+    return result;
+  }
   content::WebContents* web_contents() { return web_contents_.get(); }
+  PrefService* local_state() { return local_state_->Get(); }
 
   // Helper that creates simple test guest profile.
   std::unique_ptr<TestingProfile> CreateGuestProfile() {
@@ -117,6 +132,7 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
   content::RenderViewHostTestEnabler test_render_host_factories_;
   std::unique_ptr<content::WebContents> web_contents_;
   Profile* profile_;
+  ScopedTestingLocalState* local_state_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
   base::test::ScopedFeatureList feature_list_;
 
@@ -287,6 +303,37 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteInternal) {
   ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_GATEWAY));
   ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_ASK));
   ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_DISABLED));
+}
+
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteCrypto) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+  ASSERT_TRUE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+  ASSERT_FALSE(ResolveUnstoppableURL(
+      decentralized_dns::ResolveMethodTypes::DNS_OVER_HTTPS));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
+
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+  ASSERT_FALSE(ResolveUnstoppableURL(
+      decentralized_dns::ResolveMethodTypes::DNS_OVER_HTTPS));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
+
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+  ASSERT_FALSE(ResolveUnstoppableURL(
+      decentralized_dns::ResolveMethodTypes::DNS_OVER_HTTPS));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
 }
 
 }  // namespace ipfs
