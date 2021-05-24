@@ -1,10 +1,10 @@
 diff --git a/components/permissions/request_type.h b/components/permissions/request_type.h
-index a2519ae4340ff4be1dbc4b07f01efeab15142e92..6bff4e33c135009d9dece2ab51f4db49fc46d8e3 100644
+index 8cd80a3c07d2ff5683f42826dcb6433803ad2ae0..24dc7dcfde8a01a5e5cb0d5a7a183cbc21c74586 100644
 --- a/components/permissions/request_type.h
 +++ b/components/permissions/request_type.h
-@@ -53,6 +53,7 @@ enum class RequestType {
- #if !defined(OS_ANDROID)
-   kWindowPlacement,
+@@ -56,6 +56,7 @@ enum class RequestType {
+ #else
+   kMaxValue = kVrSession
  #endif
 +  BRAVE_REQUEST_TYPES
  };

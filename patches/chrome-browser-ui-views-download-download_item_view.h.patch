@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index 76f8240995ed4f2d52318a57fa7e0b13b862511a..42187aa41cb392dacdbc1d97adab35694e94d347 100644
+index 82a1f02a9a9194fff0785b6bf2dc06478af3666f..061a79e583df5056c1ab1e86b025d264bd7b8268 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
-@@ -115,6 +115,7 @@ class DownloadItemView : public views::View,
+@@ -116,6 +116,7 @@ class DownloadItemView : public views::View,
    void OnPaintBackground(gfx::Canvas* canvas) override;
    void OnPaint(gfx::Canvas* canvas) override;
    void OnThemeChanged() override;
 +  BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_
  
-  private:
-   // Returns the mode that best reflects the current model state.
+   // ui::LayerDelegate:
+   void OnDeviceScaleFactorChanged(float old_device_scale_factor,

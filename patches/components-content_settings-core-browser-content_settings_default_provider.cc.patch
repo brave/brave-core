@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 4b4c23346ec51e15ea949442d1ba82b6dc36624c..4e631dc8d86433150c80d4ed5a86fe8a58a395ba 100644
+index 4f0094b939c4eedc99adddf72f2f0beafca67fd7..ef377ad73110bea3dd0b2de7af883df12c5d0822 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -388,6 +388,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -382,6 +382,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
    prefs_->ClearPref(kObsoletePluginsDataDefaultPref);
  #endif  // !defined(OS_ANDROID)
  #endif  // !defined(OS_IOS)

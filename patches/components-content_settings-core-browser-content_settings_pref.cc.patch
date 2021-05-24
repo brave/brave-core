@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref.cc b/components/content_settings/core/browser/content_settings_pref.cc
-index dcfb882f82c9734aaa629c65d60f0382d65f2b2c..c8b5a71c38dc3a9f5b508b3752f7379f463fc038 100644
+index 633f3520e8abd9571ff29bffaf1cc57316de1939..3db0f186fadf6b9dee3315fe5cc033898b9221e7 100644
 --- a/components/content_settings/core/browser/content_settings_pref.cc
 +++ b/components/content_settings/core/browser/content_settings_pref.cc
-@@ -160,6 +160,7 @@ bool ContentSettingsPref::SetWebsiteSetting(
+@@ -159,6 +159,7 @@ bool ContentSettingsPref::SetWebsiteSetting(
    DCHECK(thread_checker_.CalledOnValidThread());
    DCHECK(prefs_);
    DCHECK(primary_pattern != ContentSettingsPattern::Wildcard() ||

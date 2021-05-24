@@ -8,5 +8,5 @@ index 8f54d7a1cc96c6db7022c8b7cad38ff22b706547..a8cc5ec84da7d44d082b13879970ba87
    }
 +  import("//brave/components/signin/internal/identity_manager/sources.gni") sources += brave_components_signin_internal_identity_manager_sources
  }
- 
+
  source_set("unit_tests") {

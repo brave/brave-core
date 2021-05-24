@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
-index 8f0f84a46bd2604792b6198dc7f83c31a2549aca..de714b41d0b2996692484a760544e553a83927aa 100644
+index db79fc3db5e8945cc463b4fadac89dde57cd91b3..d476a9086165cb6015b267a1f002b2e147c3bf02 100644
 --- a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
 +++ b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
-@@ -50,6 +50,7 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
+@@ -47,6 +47,7 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
    void ClearPreviewImage();
    void SetPreviewImage(gfx::ImageSkia preview_image);
  

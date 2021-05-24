@@ -1,8 +1,8 @@
 diff --git a/components/sync/protocol/protocol_sources.gni b/components/sync/protocol/protocol_sources.gni
-index 39de476ba9db51cb656a87520f279773b5518fb1..8a2ea37bf05b8594e5454d9837983e822dbac3df 100644
+index a6f961159359285c20b96692a70910b110bdfc8f..22623f0f79995ece43f904d77891afe6d37fea0a 100644
 --- a/components/sync/protocol/protocol_sources.gni
 +++ b/components/sync/protocol/protocol_sources.gni
-@@ -75,3 +75,4 @@ foreach(base, sync_protocol_bases) {
+@@ -74,3 +74,4 @@ foreach(base, sync_protocol_bases) {
    sync_protocol_pyprotos +=
        [ "$root_out_dir/pyproto/components/sync/protocol/${base}_pb2.py" ]
  }

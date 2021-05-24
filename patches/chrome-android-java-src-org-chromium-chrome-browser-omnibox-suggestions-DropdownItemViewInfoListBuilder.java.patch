@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
-index 48bf3aa294f98b7cac941ecdd1005c5c80de61f6..06687cde6229bc6107f087c8930cbce9368762b1 100644
+index 9a8adf73f731a5febebb90c618ff3a0e3c7a7137..30ef44d1b9388be630ec7c21834bd16dad7d2d3e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
-@@ -96,7 +96,7 @@ class DropdownItemViewInfoListBuilder {
-         final Supplier<BookmarkBridge> bookmarkSupplier = () -> mBookmarkBridge;
+@@ -94,7 +94,7 @@ class DropdownItemViewInfoListBuilder {
+                 () -> mShareDelegateSupplier == null ? null : mShareDelegateSupplier.get();
  
          mHeaderProcessor = new HeaderProcessor(context, host, delegate);
 -        registerSuggestionProcessor(new EditUrlSuggestionProcessor(
