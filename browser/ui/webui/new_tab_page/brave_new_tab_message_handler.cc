@@ -337,8 +337,8 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   // News
   pref_change_registrar_.Add(
       kBraveTodayOptedIn,
-      base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
   // New Tab Page preferences
   pref_change_registrar_.Add(
       kNewTabPageShowBackgroundImage,
