@@ -115,6 +115,36 @@ void AdsClientMojoBridge::LoadResourceForId(
   std::move(callback).Run(ads_client_->LoadResourceForId(id));
 }
 
+// static
+void AdsClientMojoBridge::OnGetScheduledCaptcha(
+    CallbackHolder<GetScheduledCaptchaCallback>* holder,
+    const std::string& captcha_id) {
+  DCHECK(holder);
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(captcha_id);
+  }
+
+  delete holder;
+}
+
+void AdsClientMojoBridge::GetScheduledCaptcha(
+    const std::string& payment_id,
+    GetScheduledCaptchaCallback callback) {
+  // this gets deleted in OnGetScheduledCaptcha
+  auto* holder = new CallbackHolder<GetScheduledCaptchaCallback>(
+      AsWeakPtr(), std::move(callback));
+  ads_client_->GetScheduledCaptcha(
+      payment_id,
+      std::bind(AdsClientMojoBridge::OnGetScheduledCaptcha, holder, _1));
+}
+
+void AdsClientMojoBridge::ShowScheduledCaptchaNotification(
+    const std::string& payment_id,
+    const std::string& captcha_id) {
+  ads_client_->ShowScheduledCaptchaNotification(payment_id, captcha_id);
+}
+
 void AdsClientMojoBridge::Log(
     const std::string& file,
     const int32_t line,

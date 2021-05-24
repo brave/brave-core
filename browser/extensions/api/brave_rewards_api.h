@@ -450,6 +450,28 @@ class BraveRewardsShouldShowOnboardingFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetScheduledCaptchaInfoFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getScheduledCaptchaInfo", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetScheduledCaptchaInfoFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsUpdateScheduledCaptchaResultFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.updateScheduledCaptchaResult",
+                             UNKNOWN)
+
+ protected:
+  ~BraveRewardsUpdateScheduledCaptchaResultFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsEnableRewardsFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.enableRewards", UNKNOWN)

@@ -153,6 +153,8 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
   }
   const isInitialized: (callback: (initialized: boolean) => void) => {}
+  const getScheduledCaptchaInfo: (callback: (result: boolean, scheduledCaptcha: ScheduledCaptcha) => void) => {}
+  const updateScheduledCaptchaResult: (result: boolean) => void
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
 
   function enableRewards (): void

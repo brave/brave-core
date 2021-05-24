@@ -250,6 +250,21 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       state.enabledAC = payload.enabled
       break
     }
+    case types.ON_GET_SCHEDULED_CAPTCHA_INFO: {
+      if (payload.result) {
+        state = { ...state }
+        state.scheduledCaptcha = payload.scheduledCaptcha
+      } else {
+        state = {
+          ...state,
+          scheduledCaptcha: {
+            url: '',
+            maxAttemptsExceeded: false
+          }
+        }
+      }
+      break
+    }
     case types.ON_SHOULD_SHOW_ONBOARDING: {
       const completed = onboardingCompletedStore.load()
       state = {

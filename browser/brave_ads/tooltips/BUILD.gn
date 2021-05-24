@@ -1,0 +1,18 @@
+source_set("tooltips") {
+  sources = [
+    "ads_captcha_tooltip.cc",
+    "ads_captcha_tooltip.h",
+    "ads_tooltips_controller.cc",
+    "ads_tooltips_controller.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/brave_ads",
+    "//brave/browser/profiles:util",
+    "//brave/browser/ui/brave_ads",
+    "//brave/browser/ui/brave_tooltips",
+    "//chrome/browser/profiles:profile",
+    "//skia",
+  ]
+}

@@ -13,6 +13,7 @@ declare namespace RewardsExtension {
     tipAmounts: Record<string, number[]>
     externalWallet?: ExternalWallet
     initializing: boolean
+    scheduledCaptcha: ScheduledCaptcha
     showOnboarding: boolean
     adsPerHour: number
     autoContributeAmount: number
@@ -25,6 +26,11 @@ declare namespace RewardsExtension {
   interface ComponentProps {
     actions: any
     rewardsPanelData: State
+  }
+
+  interface ScheduledCaptcha {
+    url: string
+    maxAttemptsExceeded: boolean
   }
 
   export enum PublisherStatus {

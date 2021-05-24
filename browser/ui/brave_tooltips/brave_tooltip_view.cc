@@ -262,9 +262,6 @@ void BraveTooltipView::UpdateTitleLabelColors() {
   title_label_->SetEnabledColor(should_use_dark_colors
                                     ? kDarkModeTitleTextColor
                                     : kLightModeTitleTextColor);
-  title_label_->SetEnabledColor(should_use_dark_colors
-                                    ? kDarkModeTitleTextColor
-                                    : kLightModeTitleTextColor);
   title_label_->SetBackgroundColor(SK_ColorTRANSPARENT);
 }
 

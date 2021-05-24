@@ -23,6 +23,7 @@
 #include "bat/ads/database.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
@@ -39,6 +40,10 @@
 #include "ui/base/idle/idle.h"
 
 #include "base/task/cancelable_task_tracker.h"
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha.h"
+#endif
 
 using brave_ads::ResourceComponent;
 using brave_rewards::RewardsNotificationService;
@@ -63,6 +68,8 @@ class SimpleURLLoader;
 }  // namespace network
 
 namespace brave_ads {
+
+class AdsTooltipsController;
 
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
@@ -99,6 +106,10 @@ class AdsServiceImpl : public AdsService,
   std::string GetAutoDetectedAdsSubdivisionTargetingCode() const override;
   void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
+
+  void ShowScheduledCaptcha(const std::string& payment_id,
+                            const std::string& captcha_id) override;
+  void SnoozeScheduledCaptcha() override;
 
   void OnShowAdNotification(const std::string& notification_id) override;
   void OnCloseAdNotification(const std::string& notification_id,
@@ -389,6 +400,15 @@ class AdsServiceImpl : public AdsService,
 
   std::string LoadResourceForId(const std::string& id) override;
 
+  void GetScheduledCaptcha(const std::string& payment_id,
+                           ads::GetScheduledCaptchaCallback callback) override;
+
+  void OnGetScheduledCaptcha(ads::GetScheduledCaptchaCallback callback,
+                             const std::string& captcha_id);
+
+  void ShowScheduledCaptchaNotification(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
+
   void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         ads::RunDBTransactionCallback callback) override;
 
@@ -475,6 +495,11 @@ class AdsServiceImpl : public AdsService,
 
   NotificationDisplayService* display_service_;     // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  brave_adaptive_captcha::BraveAdaptiveCaptcha adaptive_captcha_;
+  std::unique_ptr<AdsTooltipsController> ads_tooltips_controller_;
+#endif
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;

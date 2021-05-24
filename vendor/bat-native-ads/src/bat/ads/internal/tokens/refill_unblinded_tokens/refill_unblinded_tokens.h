@@ -44,6 +44,10 @@ class RefillUnblindedTokens {
 
   void Refill();
 
+  void MaybeGetScheduledCaptcha();
+  void GetScheduledCaptcha();
+  void OnGetScheduledCaptcha(const std::string& captcha_id);
+
   void RequestSignedTokens();
   void OnRequestSignedTokens(const mojom::UrlResponse& url_response);
 

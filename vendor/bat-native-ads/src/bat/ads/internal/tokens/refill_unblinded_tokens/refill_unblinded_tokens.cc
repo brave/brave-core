@@ -23,6 +23,7 @@
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -108,7 +109,39 @@ void RefillUnblindedTokens::Refill() {
 
   nonce_ = "";
 
+  MaybeGetScheduledCaptcha();
+}
+
+void RefillUnblindedTokens::MaybeGetScheduledCaptcha() {
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  GetScheduledCaptcha();
+#else
   RequestSignedTokens();
+#endif
+}
+
+void RefillUnblindedTokens::GetScheduledCaptcha() {
+  BLOG(1, "GetScheduledCaptcha");
+
+  auto captcha_callback =
+      std::bind(&RefillUnblindedTokens::OnGetScheduledCaptcha, this,
+                std::placeholders::_1);
+  AdsClientHelper::Get()->GetScheduledCaptcha(wallet_.id,
+                                              std::move(captcha_callback));
+}
+
+void RefillUnblindedTokens::OnGetScheduledCaptcha(
+    const std::string& captcha_id) {
+  BLOG(1, "OnGetScheduledCaptcha");
+
+  if (captcha_id.empty()) {
+    RequestSignedTokens();
+    return;
+  }
+
+  if (delegate_) {
+    delegate_->OnCaptchaRequiredToRefillUnblindedTokens(captcha_id);
+  }
 }
 
 void RefillUnblindedTokens::RequestSignedTokens() {
@@ -350,7 +383,7 @@ void RefillUnblindedTokens::OnRetry() {
   }
 
   if (nonce_.empty()) {
-    RequestSignedTokens();
+    MaybeGetScheduledCaptcha();
   } else {
     GetSignedTokens();
   }

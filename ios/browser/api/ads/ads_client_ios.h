@@ -48,6 +48,10 @@ class AdsClientIOS : public ads::AdsClient {
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
   std::string LoadResourceForId(const std::string& id) override;
+  void GetScheduledCaptcha(const std::string& payment_id,
+                           ads::GetScheduledCaptchaCallback callback) override;
+  void ShowScheduledCaptchaNotification(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
   void Log(const char* file,
            const int line,
            const int verbose_level,

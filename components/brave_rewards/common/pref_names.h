@@ -9,6 +9,11 @@
 namespace brave_rewards {
 namespace prefs {
 
+extern const char kScheduledCaptchaId[];
+extern const char kScheduledCaptchaPaymentId[];
+extern const char kScheduledCaptchaSnoozeCount[];
+extern const char kScheduledCaptchaFailedAttempts[];
+extern const char kScheduledCaptchaPaused[];
 extern const char kHideButton[];
 extern const char kEnabled[];  // DEPRECATED
 extern const char kNotifications[];

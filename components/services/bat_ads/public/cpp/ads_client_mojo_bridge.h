@@ -57,6 +57,10 @@ class AdsClientMojoBridge
   void LoadResourceForId(
       const std::string& id,
       LoadResourceForIdCallback callback) override;
+  void GetScheduledCaptcha(const std::string& payment_id,
+                           GetScheduledCaptchaCallback callback) override;
+  void ShowScheduledCaptchaNotification(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
   void Log(
       const std::string& file,
       const int32_t line,
@@ -178,6 +182,10 @@ class AdsClientMojoBridge
 
   static void OnURLRequest(CallbackHolder<UrlRequestCallback>* holder,
                            const ads::mojom::UrlResponse& url_response);
+
+  static void OnGetScheduledCaptcha(
+      CallbackHolder<GetScheduledCaptchaCallback>* holder,
+      const std::string& captcha_id);
 
   static void OnRunDBTransaction(
       CallbackHolder<RunDBTransactionCallback>* holder,

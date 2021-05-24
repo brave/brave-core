@@ -1,3 +1,4 @@
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/vendor/bat-native-ledger/config.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -22,6 +23,7 @@ static_library("browser") {
     "rewards_notification_service_observer.h",
     "rewards_p3a.cc",
     "rewards_p3a.h",
+    "rewards_panel_delegate.h",
     "rewards_protocol_handler.cc",
     "rewards_protocol_handler.h",
     "rewards_service.cc",
@@ -69,6 +71,11 @@ static_library("browser") {
 
   if (enable_ipfs) {
     deps += [ "//brave/components/ipfs" ]
+  }
+
+  if (brave_adaptive_captcha_enabled) {
+    deps +=
+        [ "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha" ]
   }
 
   public_deps += [ "//brave/vendor/bat-native-ledger:headers" ]

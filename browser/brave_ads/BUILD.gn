@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 
 source_set("brave_ads") {
   # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
@@ -14,6 +15,7 @@ source_set("brave_ads") {
   deps = [
     "//base",
     "//brave/browser/profiles:util",
+    "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/brave_ads/browser",
     "//components/dom_distiller/content/browser",
     "//components/keyed_service/content",
@@ -21,4 +23,9 @@ source_set("brave_ads") {
     "//content/public/browser",
     "//ui/base",
   ]
+
+  if (brave_adaptive_captcha_enabled) {
+    deps +=
+        [ "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha" ]
+  }
 }

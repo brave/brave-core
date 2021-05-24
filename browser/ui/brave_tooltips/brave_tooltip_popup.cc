@@ -108,6 +108,8 @@ void BraveTooltipPopup::CloseWidget() {
 }
 
 void BraveTooltipPopup::OnOkButtonPressed() {
+  tooltip_->PerformOkButtonAction();
+
   BraveTooltipDelegate* delegate = tooltip_->delegate();
   if (delegate) {
     delegate->OnTooltipOkButtonPressed(tooltip_->id());
@@ -120,6 +122,8 @@ void BraveTooltipPopup::OnCancelButtonPressed() {
   if (!tooltip_->attributes().cancel_button_enabled()) {
     return;
   }
+
+  tooltip_->PerformCancelButtonAction();
 
   BraveTooltipDelegate* delegate = tooltip_->delegate();
   if (delegate) {

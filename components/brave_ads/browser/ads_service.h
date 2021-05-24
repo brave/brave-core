@@ -92,6 +92,10 @@ class AdsService : public KeyedService {
   virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
+  virtual void ShowScheduledCaptcha(const std::string& payment_id,
+                                    const std::string& captcha_id) = 0;
+  virtual void SnoozeScheduledCaptcha() = 0;
+
   virtual void OnShowAdNotification(const std::string& notification_id) = 0;
   virtual void OnCloseAdNotification(const std::string& notification_id,
                                      const bool by_user) = 0;

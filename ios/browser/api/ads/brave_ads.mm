@@ -1145,6 +1145,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   callback(/* success */ false, "");
 }
 
+- (void)getScheduledCaptcha:(const std::string&)payment_id
+                   callback:(ads::GetScheduledCaptchaCallback)callback {
+}
+
+- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
+                               captchaId:(const std::string&)captcha_id {
+}
+
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
