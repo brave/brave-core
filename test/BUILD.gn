@@ -29,6 +29,21 @@ if (is_android) {
   import("//chrome/android/chrome_public_apk_tmpl.gni")
 }
 
+static_library("test_support") {
+  testonly = true
+  sources = [
+    "//brave/test/base/testing_brave_browser_process.cc",
+    "//brave/test/base/testing_brave_browser_process.h",
+  ]
+
+  deps = [
+    "//brave/browser",
+    "//brave/components/brave_shields/browser",
+    "//brave/components/ipfs/buildflags",
+    "//brave/components/tor/buildflags",
+  ]
+}
+
 static_library("brave_test_support_unit") {
   testonly = true
 
@@ -50,6 +65,7 @@ static_library("brave_test_support_unit") {
   ]
 
   deps = [
+    ":test_support",
     "//brave/browser/profiles",
     "//brave/common:pref_names",
     "//components/gcm_driver",
@@ -112,8 +128,6 @@ test("brave_unit_tests") {
     "//brave/components/p3a/brave_p2a_protocols_unittest.cc",
     "//brave/components/translate/core/browser/translate_language_list_unittest.cc",
     "//brave/components/weekly_storage/weekly_storage_unittest.cc",
-    "//brave/test/base/testing_brave_browser_process.cc",
-    "//brave/test/base/testing_brave_browser_process.h",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
     "//brave/vendor/brave_base/random_unittest.cc",
     "//chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.cc",
@@ -124,6 +138,7 @@ test("brave_unit_tests") {
   defines = brave_service_key_defines
 
   deps = [
+    ":test_support",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources_grit",
     "//brave/base:base_unittests",
