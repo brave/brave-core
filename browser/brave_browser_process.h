@@ -72,39 +72,40 @@ class BraveBrowserProcess {
  public:
   BraveBrowserProcess();
   virtual ~BraveBrowserProcess();
-  virtual void StartBraveServices();
-  virtual brave_shields::AdBlockService* ad_block_service();
+  virtual void StartBraveServices() = 0;
+  virtual brave_shields::AdBlockService* ad_block_service() = 0;
   virtual brave_shields::AdBlockCustomFiltersService*
-  ad_block_custom_filters_service();
+  ad_block_custom_filters_service() = 0;
   virtual brave_shields::AdBlockRegionalServiceManager*
-  ad_block_regional_service_manager();
+  ad_block_regional_service_manager() = 0;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   virtual brave_component_updater::ExtensionWhitelistService*
-  extension_whitelist_service();
+  extension_whitelist_service() = 0;
 #endif
 #if BUILDFLAG(ENABLE_GREASELION)
-  virtual greaselion::GreaselionDownloadService* greaselion_download_service();
+  virtual greaselion::GreaselionDownloadService*
+  greaselion_download_service() = 0;
 #endif
-  virtual brave_shields::HTTPSEverywhereService* https_everywhere_service();
+  virtual brave_shields::HTTPSEverywhereService* https_everywhere_service() = 0;
   virtual brave_component_updater::LocalDataFilesService*
-  local_data_files_service();
+  local_data_files_service() = 0;
 #if BUILDFLAG(ENABLE_TOR)
-  virtual tor::BraveTorClientUpdater* tor_client_updater();
+  virtual tor::BraveTorClientUpdater* tor_client_updater() = 0;
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  virtual ipfs::BraveIpfsClientUpdater* ipfs_client_updater();
+  virtual ipfs::BraveIpfsClientUpdater* ipfs_client_updater() = 0;
 #endif
-  virtual brave::BraveP3AService* brave_p3a_service();
-  virtual brave::BraveReferralsService* brave_referrals_service();
-  virtual brave_stats::BraveStatsUpdater* brave_stats_updater();
+  virtual brave::BraveP3AService* brave_p3a_service() = 0;
+  virtual brave::BraveReferralsService* brave_referrals_service() = 0;
+  virtual brave_stats::BraveStatsUpdater* brave_stats_updater() = 0;
   virtual ntp_background_images::NTPBackgroundImagesService*
-  ntp_background_images_service();
+  ntp_background_images_service() = 0;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   virtual speedreader::SpeedreaderRewriterService*
-  speedreader_rewriter_service();
+  speedreader_rewriter_service() = 0;
 #endif
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-  virtual brave_ads::ResourceComponent* resource_component();
+  virtual brave_ads::ResourceComponent* resource_component() = 0;
 #endif
 };
 
