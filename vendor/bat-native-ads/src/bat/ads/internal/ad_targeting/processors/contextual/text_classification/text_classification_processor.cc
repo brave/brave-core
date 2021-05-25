@@ -9,6 +9,13 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 
+#include "third_party/cld_3/src/src/nnet_language_identifier.h"
+#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
+
+//DEBUGGIN
+#include <iostream>
+
 namespace ads {
 namespace ad_targeting {
 namespace processor {
@@ -31,6 +38,17 @@ std::string GetTopSegmentFromPageProbabilities(
   return iter->first;
 }
 
+chrome_lang_id::NNetLanguageIdentifier::Result detect_page_language(const std::string& text) {
+
+  const std::string contents = text;
+
+  chrome_lang_id::NNetLanguageIdentifier lang_id;
+  const chrome_lang_id::NNetLanguageIdentifier::Result lang_id_result =
+      lang_id.FindTopNMostFreqLangs(contents, /*num_langs=*/1).at(0);
+
+  return lang_id_result;
+}
+
 }  // namespace
 
 TextClassification::TextClassification(resource::TextClassification* resource)
@@ -47,6 +65,20 @@ void TextClassification::Process(const std::string& text) {
          "not initialized");
     return;
   }
+
+  const chrome_lang_id::NNetLanguageIdentifier::Result detected_lang = detect_page_language(text);
+  std::cerr << "LANGUAGE DETECTOR:"
+            << detected_lang.language << " " 
+            << detected_lang.probability << "\n";
+
+  const std::string locale = brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string language_code = brave_l10n::GetLanguageCode(locale);
+  std::cerr << "LANGUAGE CODE FOR LOCALE:"
+            << language_code << "for " 
+            << locale << "\n";
+
+  //TODO: Prevent classification if locale doesn't match detected language
+  // if detection confidence not enough bypass and go with locale
 
   ml::pipeline::TextProcessing* text_proc_pipeline = resource_->get();
 
