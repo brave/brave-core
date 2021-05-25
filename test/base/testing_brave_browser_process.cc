@@ -50,20 +50,20 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
 
 brave_shields::AdBlockCustomFiltersService*
 TestingBraveBrowserProcess::ad_block_custom_filters_service() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 
 brave_shields::AdBlockRegionalServiceManager*
 TestingBraveBrowserProcess::ad_block_regional_service_manager() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 brave_component_updater::ExtensionWhitelistService*
 TestingBraveBrowserProcess::extension_whitelist_service() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 #endif
@@ -71,20 +71,20 @@ TestingBraveBrowserProcess::extension_whitelist_service() {
 #if BUILDFLAG(ENABLE_GREASELION)
 greaselion::GreaselionDownloadService*
 TestingBraveBrowserProcess::greaselion_download_service() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 #endif
 
 brave_shields::HTTPSEverywhereService*
 TestingBraveBrowserProcess::https_everywhere_service() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 
 brave_component_updater::LocalDataFilesService*
 TestingBraveBrowserProcess::local_data_files_service() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 
@@ -102,39 +102,39 @@ TestingBraveBrowserProcess::ipfs_client_updater() {
 #endif
 
 brave::BraveP3AService* TestingBraveBrowserProcess::brave_p3a_service() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 
 brave::BraveReferralsService*
 TestingBraveBrowserProcess::brave_referrals_service() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 
 brave_stats::BraveStatsUpdater*
 TestingBraveBrowserProcess::brave_stats_updater() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 
 ntp_background_images::NTPBackgroundImagesService*
 TestingBraveBrowserProcess::ntp_background_images_service() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 speedreader::SpeedreaderRewriterService*
 TestingBraveBrowserProcess::speedreader_rewriter_service() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
-  DCHECK(false);
+  NOTREACHED();
   return nullptr;
 }
 #endif
