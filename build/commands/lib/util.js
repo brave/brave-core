@@ -512,8 +512,12 @@ const util = {
     if (config.ignore_compile_failure)
       num_compile_failure = 0
 
-    const args = util.buildArgsToString(config.buildArgs())
-    util.run('gn', ['gen', config.outputDir, '--args="' + args + '"'], options)
+    // Path to build.ninja in output directory. If doesn't exist, "gn gen" should be executed
+    const buildNinjaFile = path.join(config.outputDir, 'build.ninja')
+    if (!config.auto_gn_gen || !fs.existsSync(buildNinjaFile)) {
+      const args = util.buildArgsToString(config.buildArgs())
+      util.run('gn', ['gen', config.outputDir, '--args="' + args + '"'], options)
+    }
 
     let ninjaOpts = [
       '-C', config.outputDir, config.buildTarget,
