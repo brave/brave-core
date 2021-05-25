@@ -91,9 +91,17 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     if (secure_dns_config.mode() == net::SecureDnsMode::kSecure)
       optional_parameters->source = net::HostResolverSource::DNS;
 
+    auto* web_contents =
+        content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
+    if (!web_contents) {
+      start_time_ = base::TimeTicks::Now();
+      this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(), base::nullopt);
+      return;
+    }
+
     network::mojom::NetworkContext* network_context =
         content::BrowserContext::GetDefaultStoragePartition(
-            ctx->browser_context)
+            web_contents->GetBrowserContext())
             ->GetNetworkContext();
 
     start_time_ = base::TimeTicks::Now();
