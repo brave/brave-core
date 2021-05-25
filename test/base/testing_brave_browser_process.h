@@ -87,4 +87,14 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
 };
 
+class TestingBraveBrowserProcessInitializer {
+ public:
+  TestingBraveBrowserProcessInitializer();
+  TestingBraveBrowserProcessInitializer(
+      const TestingBraveBrowserProcessInitializer&) = delete;
+  TestingBraveBrowserProcessInitializer& operator=(
+      const TestingBraveBrowserProcessInitializer&) = delete;
+  ~TestingBraveBrowserProcessInitializer();
+};
+
 #endif  // BRAVE_TEST_BASE_TESTING_BRAVE_BROWSER_PROCESS_H_

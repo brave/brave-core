@@ -143,3 +143,14 @@ void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {
   ad_block_service_ = std::move(service);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+TestingBraveBrowserProcessInitializer::TestingBraveBrowserProcessInitializer() {
+  TestingBraveBrowserProcess::CreateInstance();
+}
+
+TestingBraveBrowserProcessInitializer::
+    ~TestingBraveBrowserProcessInitializer() {
+  TestingBraveBrowserProcess::DeleteInstance();
+}
