@@ -92,7 +92,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
   
   fileprivate func createEmptyStateOverview() -> UIView {
     let overlayView = UIView()
-    overlayView.backgroundColor = .white
+    overlayView.backgroundColor = .secondaryBraveBackground
     
     return overlayView
   }
