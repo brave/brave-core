@@ -1,9 +1,7 @@
-//
-//  brave_certificate_utils.mm
-//  CertificateViewer
-//
-//  Created by Brandon on 2021-05-18.
-//
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave_certificate_utils.h"
 

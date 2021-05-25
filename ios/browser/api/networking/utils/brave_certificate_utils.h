@@ -1,12 +1,10 @@
-//
-//  brave_certificate_utils.h
-//  CertificateViewer
-//
-//  Created by Brandon on 2021-05-18.
-//
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef brave_certificate_utils_h
-#define brave_certificate_utils_h
+#ifndef BRAVE_IOS_BROWSER_API_NETWORKING_UTILS_BRAVE_CERTIFICATE_UTILS_H_
+#define BRAVE_IOS_BROWSER_API_NETWORKING_UTILS_BRAVE_CERTIFICATE_UTILS_H_
 
 #if defined(BRAVE_CORE) // Compiling in Brave-Core
   #include "third_party/boringssl/src/include/openssl/x509.h"
@@ -88,4 +86,4 @@ private:
 };
 } // namespace x509_utils
 
-#endif /* brave_certificate_utils_h */
+#endif  //  BRAVE_IOS_BROWSER_API_NETWORKING_UTILS_BRAVE_CERTIFICATE_UTILS_H_

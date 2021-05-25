@@ -22,20 +22,24 @@
   #include <openssl/x509v3.h>
 #endif
 
+@interface BraveCertificateProxyPolicyExtensionModel()
+@property(nonatomic, strong, readwrite) NSString* language;
+@property(nonatomic, strong, readwrite) NSString* policyText;
+@end
 
 @implementation BraveCertificateProxyPolicyExtensionModel
-- (void)setLanguage:(NSString*)language {
-  _language = language;
-}
-
-- (void)setPolicyText:(NSString*)policyText {
-  _policyText = policyText;
+- (instancetype)init {
+  if ((self = [super init])) {
+    _language = [[NSString alloc] init];
+    _policyText = [[NSString alloc] init];
+  }
+  return self;
 }
 @end
 
 @implementation BraveCertificateProxyCertInfoExtensionModel
 - (void)parseExtension:(X509_EXTENSION*)extension {
-  _pathLengthConstraint = -1; //infinite
+  _pathLengthConstraint = -1; // infinite - spec defines -1 as infinite instead of NSIntegerMax
   
   PROXY_CERT_INFO_EXTENSION* proxy_cert_info = static_cast<PROXY_CERT_INFO_EXTENSION*>(X509V3_EXT_d2i(extension));
   if (proxy_cert_info) {
@@ -48,14 +52,14 @@
       
       ASN1_OBJECT* policy_language = proxy_cert_info->proxyPolicy->policyLanguage;
       if (policy_language) {
-        [_proxyPolicy setLanguage:brave::string_to_ns(
-                                      x509_utils::string_from_ASN1_OBJECT(policy_language, false))];
+        _proxyPolicy.language = brave::string_to_ns(
+                                    x509_utils::string_from_ASN1_OBJECT(policy_language, false));
       }
       
       ASN1_OCTET_STRING* policy_text = proxy_cert_info->proxyPolicy->policy;
       if (policy_text) {
-        [_proxyPolicy setPolicyText:brave::string_to_ns(
-                                        x509_utils::string_from_ASN1STRING(policy_text))];
+        _proxyPolicy.policyText = brave::string_to_ns(
+                                      x509_utils::string_from_ASN1STRING(policy_text));
       }
     }
     PROXY_CERT_INFO_EXTENSION_free(proxy_cert_info);

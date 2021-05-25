@@ -100,6 +100,6 @@
     }
   }
 
-  printf("%s\n", result.c_str());
+  NSLog(@"%s\n", result.c_str());
 }
 @end

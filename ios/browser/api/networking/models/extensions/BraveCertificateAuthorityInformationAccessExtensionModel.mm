@@ -25,7 +25,9 @@
 
 @implementation BraveCertificateAuthorityInformationAccessExtensionModel
 - (void)parseExtension:(X509_EXTENSION*)extension {
-  _oid_name = [[NSString alloc] init];
+  //NID_sinfo_access and NID_info_access share the same structures of ACCESS_DESCRIPTION stacks
+  
+  _oidName = [[NSString alloc] init];
   _oid = [[NSString alloc] init];
   NSMutableArray* locations = [[NSMutableArray alloc] init];
   
@@ -35,7 +37,7 @@
     for (std::size_t i = 0; i < sk_ACCESS_DESCRIPTION_num(info_access); ++i) {
       ACCESS_DESCRIPTION* desc = sk_ACCESS_DESCRIPTION_value(info_access, static_cast<int>(i));
       if (desc) {
-        _oid_name = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(desc->method, false));
+        _oidName = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(desc->method, false));
         _oid = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(desc->method, true));
 
         if (desc->location) {

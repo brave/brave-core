@@ -4,6 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import <Foundation/Foundation.h>
+
+#ifndef BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_EXTENSIONS_BRAVE_CERTIFICATE_KEY_USAGE_EXTENSION_H_
+#define BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_EXTENSIONS_BRAVE_CERTIFICATE_KEY_USAGE_EXTENSION_H_
+
 #import "BraveCertificateExtensionModel.h"
 #if defined(BRAVE_CORE) // Compiling in Brave-Core
   #import "brave/ios/browser/api/networking/common/brave_certificate_enums.h"
@@ -19,3 +23,5 @@ OBJC_EXPORT
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif  //  BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_EXTENSIONS_BRAVE_CERTIFICATE_KEY_USAGE_EXTENSION_H_

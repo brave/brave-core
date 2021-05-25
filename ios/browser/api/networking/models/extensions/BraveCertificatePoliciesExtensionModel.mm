@@ -22,6 +22,24 @@
   #include <openssl/x509v3.h>
 #endif
 
+@interface BraveCertificatePolicyInfoQualifierNoticeExtensionModel()
+@property(nonatomic, strong, readwrite) NSString* organization;
+@property(nonatomic, strong, readwrite) NSArray<NSString*>* noticeNumbers;
+@property(nonatomic, strong, readwrite) NSString* explicitText;
+@end
+
+@interface BraveCertificatePolicyInfoQualifierExtensionModel()
+@property(nonatomic, assign, readwrite) NSInteger pqualId;
+@property(nonatomic, strong, readwrite) NSString* cps;
+@property(nullable, nonatomic, strong, readwrite) BraveCertificatePolicyInfoQualifierNoticeExtensionModel* notice;
+@property(nonatomic, strong, readwrite) NSString* unknown;
+@end
+
+@interface BraveCertificatePolicyInfoExtensionModel()
+@property(nonatomic, strong, readwrite) NSString* oid;
+@property(nonatomic, strong, readwrite) NSArray<BraveCertificatePolicyInfoQualifierExtensionModel*>* qualifiers;
+@end
+
 
 @implementation BraveCertificatePolicyInfoQualifierNoticeExtensionModel
 - (instancetype)init {
@@ -32,45 +50,17 @@
   }
   return self;
 }
-
-- (void)setOrganization:(NSString*)organization {
-  _organization = organization;
-}
-
-- (void)setNoticeNumbers:(NSArray<NSString*>*)noticeNumbers {
-  _noticeNumbers = noticeNumbers;
-}
-
-- (void)setExplicitText:(NSString*)explicitText {
-  _explicitText = explicitText;
-}
 @end
 
 @implementation BraveCertificatePolicyInfoQualifierExtensionModel
 - (instancetype)init {
   if ((self = [super init])) {
-    _pqualid = 0;
+    _pqualId = 0;
     _cps = [[NSString alloc] init];
     _notice = nil;
     _unknown = [[NSString alloc] init];
   }
   return self;
-}
-
-- (void)setPqualid:(NSInteger)pqualid {
-  _pqualid = pqualid;
-}
-
-- (void)setCps:(NSString*)cps {
-  _cps = cps;
-}
-
-- (void)setNotice:(BraveCertificatePolicyInfoQualifierNoticeExtensionModel*)notice {
-  _notice = notice;
-}
-
-- (void)setUnknown:(NSString*)unknown {
-  _unknown = unknown;
 }
 @end
 
@@ -81,14 +71,6 @@
     _qualifiers = @[];
   }
   return self;
-}
-
-- (void)setOid:(NSString*)oid {
-  _oid = oid;
-}
-
-- (void)setQualifiers:(NSArray<BraveCertificatePolicyInfoQualifierExtensionModel*>*)qualifiers {
-  _qualifiers = qualifiers;
 }
 @end
 
@@ -103,27 +85,27 @@
       POLICYINFO* info = sk_POLICYINFO_value(policies, static_cast<int>(i));
       if (info) {
         auto* policy = [[BraveCertificatePolicyInfoExtensionModel alloc] init];
-        [policy setOid:brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(info->policyid, true))];
+        policy.oid = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(info->policyid, true));
         
         if (info->qualifiers) {
           NSMutableArray* qualifiers = [[NSMutableArray alloc] init];
           
-          for (std::size_t i = 0; i < sk_POLICYQUALINFO_num(info->qualifiers); ++i) {
+          for (std::size_t j = 0; j < sk_POLICYQUALINFO_num(info->qualifiers); ++j) {
             POLICYQUALINFO* qualifier_info =
-                                  sk_POLICYQUALINFO_value(info->qualifiers, static_cast<int>(i));
+                                  sk_POLICYQUALINFO_value(info->qualifiers, static_cast<int>(j));
             if (qualifier_info) {
               auto* info = [[BraveCertificatePolicyInfoQualifierExtensionModel alloc] init];
               switch (OBJ_obj2nid(qualifier_info->pqualid)) {
                 case NID_id_qt_cps: {
                   //ASN1_IA5STRING
-                  [info setPqualid:NID_id_qt_cps];
-                  [info setCps:brave::string_to_ns(
-                                        x509_utils::string_from_ASN1STRING(qualifier_info->d.cpsuri))];
+                  info.pqualId = NID_id_qt_cps;
+                  info.cps = brave::string_to_ns(
+                                      x509_utils::string_from_ASN1STRING(qualifier_info->d.cpsuri));
                 }
                   break;
 
                 case NID_id_qt_unotice: {
-                  [info setPqualid:NID_id_qt_unotice];
+                  info.pqualId = NID_id_qt_unotice;
                   USERNOTICE* user_notice = qualifier_info->d.usernotice;
                   if (user_notice) {
                     auto* notice = [[BraveCertificatePolicyInfoQualifierNoticeExtensionModel alloc] init];
@@ -131,39 +113,37 @@
                     //i2d_USERNOTICE
                     if (user_notice->noticeref) {
                       NOTICEREF* notice_ref = user_notice->noticeref;
-                      [notice setOrganization:brave::string_to_ns(
-                                                  x509_utils::string_from_ASN1STRING(notice_ref->organization))];
+                      notice.organization = brave::string_to_ns(
+                                                x509_utils::string_from_ASN1STRING(notice_ref->organization));
                       
                       if (notice_ref->noticenos) {
                         NSMutableArray* noticeNumbers = [[NSMutableArray alloc] init];
-                        for (std::size_t i = 0; i < sk_ASN1_INTEGER_num(notice_ref->noticenos); ++i) {
+                        for (std::size_t k = 0; k < sk_ASN1_INTEGER_num(notice_ref->noticenos); ++k) {
                           ASN1_INTEGER* number =
-                              sk_ASN1_INTEGER_value(notice_ref->noticenos, static_cast<int>(i));
+                              sk_ASN1_INTEGER_value(notice_ref->noticenos, static_cast<int>(k));
                           if (number) {
                             [noticeNumbers addObject:brave::string_to_ns(
                                                               x509_utils::string_from_ASN1INTEGER(number))];
                           }
                         }
-                        [notice setNoticeNumbers:noticeNumbers];
+                        notice.noticeNumbers = noticeNumbers;
                       }
                     }
                     
                     if (user_notice->exptext) {
-                      //printf("\n");
-                      [notice setExplicitText:brave::string_to_ns(
-                                                        x509_utils::string_from_ASN1STRING(user_notice->exptext))];
+                      notice.explicitText = brave::string_to_ns(
+                                                      x509_utils::string_from_ASN1STRING(user_notice->exptext));
                     }
                     
-                    [info setNotice:notice];
+                    info.notice = notice;
                   }
                 }
                   break;
 
                 default: {
-                  [info setPqualid:OBJ_obj2nid(qualifier_info->pqualid)];
-                  [info setUnknown:brave::string_to_ns(
-                                      x509_utils::string_from_ASN1_OBJECT(qualifier_info->pqualid, false))];
-                  //printf("    Unknown Qualifier: %s\n", qualifier_id.c_str());
+                  info.pqualId = OBJ_obj2nid(qualifier_info->pqualid);
+                  info.unknown = brave::string_to_ns(
+                                    x509_utils::string_from_ASN1_OBJECT(qualifier_info->pqualid, false));
                 }
                   break;
               }
@@ -172,7 +152,7 @@
             }
           }
           
-          [policy setQualifiers:qualifiers];
+          policy.qualifiers = qualifiers;
         }
         
         [result addObject:policy];

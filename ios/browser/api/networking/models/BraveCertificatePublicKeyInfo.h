@@ -5,6 +5,9 @@
 
 #import <Foundation/Foundation.h>
 
+#ifndef BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_BRAVE_CERTIFICATE_PUBLIC_KEY_INFO_H_
+#define BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_BRAVE_CERTIFICATE_PUBLIC_KEY_INFO_H_
+
 #if defined(BRAVE_CORE) // Compiling in Brave-Core
   #import "brave/ios/browser/api/networking/common/brave_certificate_enums.h"
 #else
@@ -29,3 +32,5 @@ OBJC_EXPORT
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif  //  BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_BRAVE_CERTIFICATE_PUBLIC_KEY_INFO_H_

@@ -157,7 +157,10 @@
                 const ASN1_STRING* sequence = reinterpret_cast<const ASN1_STRING*>(param);
                 _curveName = brave::string_to_ns(
                                               x509_utils::string_from_ASN1STRING(sequence));
+                //BoringSSL doesn't let us parse this, but technically, we can use:
+                //Works in OpenSSL though
                 //EC_KEY* ec_key = d2i_ECParameters(nullptr, &data, length);
+                //For now, leave it
               } else if (param_type == V_ASN1_OBJECT) {
                 const ASN1_OBJECT* object = reinterpret_cast<const ASN1_OBJECT*>(param);
                 _curveName = brave::string_to_ns(
@@ -167,7 +170,11 @@
                                                   x509_utils::EC_curve_nid2nist(nid));
                 _keySizeInBits = x509_utils::EC_curve_nid2num_bits(nid);
                 _keyBytesSize = _keySizeInBits / 8;
+
+                //BoringSSL would fail to create a group based on the nid
+                //Works in OpenSSL though
                 //EC_GROUP* group = EC_GROUP_new_by_curve_name(nid);
+                //For now, leave it
               }
             }
               break;
@@ -186,7 +193,9 @@
       }
     }
     
+    //Alternative to d2i is:
     //int key_usage = X509_get_key_usage(certificate)
+    //But if we use it, it would require manual bit-toggling
     ASN1_BIT_STRING* key_usage = static_cast<ASN1_BIT_STRING*>(
                                                  X509_get_ext_d2i(certificate,
                                                                   NID_key_usage,

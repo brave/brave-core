@@ -46,6 +46,9 @@
                                              x509_utils::string_from_ASN1_OBJECT(object, true));
       }
       
+      //Alternative to just hex-encoding the sequence,
+      //is to unpack it and return all of the PSS parameters
+      //Not needed for now
       //const RSA_PSS_PARAMS *RSA_get0_pss_params(const RSA *r)
       //ASN1_TYPE_unpack_sequence(param, param_type);
       

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BraveCertificateBasicModel_h
-#define BraveCertificateBasicModel_h
+#ifndef BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_BRAVE_CERTIFICATE_PRIV_H_
+#define BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_BRAVE_CERTIFICATE_PRIV_H_
 
 #if defined(BRAVE_CORE) // Compiling in Brave-Core
   #import "brave/ios/browser/api/networking/common/brave_certificate_enums.h"
@@ -52,4 +52,4 @@
 - (instancetype)initWithCertificate:(X509*)certificate withType:(BraveFingerprintType)type;
 @end
 
-#endif /* BraveCertificateBasicModel_h */
+#endif  //  BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_BRAVE_CERTIFICATE_PRIV_H_

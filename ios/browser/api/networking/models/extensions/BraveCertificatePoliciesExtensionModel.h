@@ -6,6 +6,9 @@
 #import <Foundation/Foundation.h>
 #import "BraveCertificateExtensionModel.h"
 
+#ifndef BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_EXTENSIONS_BRAVE_CERTIFICATE_POLICIES_EXTENSION_H_
+#define BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_EXTENSIONS_BRAVE_CERTIFICATE_POLICIES_EXTENSION_H_
+
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
@@ -17,7 +20,7 @@ OBJC_EXPORT
 
 OBJC_EXPORT
 @interface BraveCertificatePolicyInfoQualifierExtensionModel: NSObject
-@property(nonatomic, assign, readonly) NSInteger pqualid;
+@property(nonatomic, assign, readonly) NSInteger pqualId;
 @property(nonatomic, strong, readonly) NSString* cps;
 @property(nullable, nonatomic, strong, readonly) BraveCertificatePolicyInfoQualifierNoticeExtensionModel* notice;
 @property(nonatomic, strong, readonly) NSString* unknown;
@@ -35,3 +38,5 @@ OBJC_EXPORT
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif  //  BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_EXTENSIONS_BRAVE_CERTIFICATE_POLICIES_EXTENSION_H_

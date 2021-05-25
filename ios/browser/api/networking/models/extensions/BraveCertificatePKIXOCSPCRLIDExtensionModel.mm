@@ -25,7 +25,11 @@
 
 @implementation BraveCertificatePKIXOCSPCRLIDExtensionModel
 - (void)parseExtension:(X509_EXTENSION*)extension {
+  _nonce = [[NSString alloc] init];
+  
   //OCSP_CRLID structure not exposed..
   //OCSP_CRLID* crlId = static_cast<OCSP_CRLID*>(X509V3_EXT_d2i(extension));
+
+  NSAssert(NO, @"DO NOT USE YET AS API IS NOT EXPOSED -- Use BraveCertificateGenericExtensionModel instead");
 }
 @end

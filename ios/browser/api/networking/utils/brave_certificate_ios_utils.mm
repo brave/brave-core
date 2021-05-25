@@ -1,9 +1,7 @@
-//
-//  brave_certificate_ios_utils.mm
-//  CertificateViewer
-//
-//  Created by Brandon on 2021-05-18.
-//
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #if defined(BRAVE_CORE)
   #import "brave/ios/browser/api/networking/utils/brave_certificate_ios_utils.h"
@@ -35,11 +33,11 @@
 // Forward declared class
 
 @interface BraveCertificateExtensionGeneralNameModel()
-- (void)setType:(NSInteger)type;
-- (void)setOther:(NSString*)other;
-- (void)setNameAssigner:(NSString*)nameAssigner;
-- (void)setPartyName:(NSString*)partyName;
-- (void)setDirName:(NSDictionary<NSString*, NSString*>*)dirName;
+@property(nonatomic, assign, readwrite) BraveGeneralNameType type;
+@property(nonatomic, strong, readwrite) NSString* other;
+@property(nonatomic, strong, readwrite) NSString* nameAssigner;
+@property(nonatomic, strong, readwrite) NSString* partyName;
+@property(nonatomic, strong, readwrite) NSDictionary<NSString*, NSString*>* dirName;
 @end
 
 namespace brave {
@@ -358,8 +356,8 @@ BraveCertificateExtensionGeneralNameModel* convert_general_name(GENERAL_NAME* na
     
     switch (type) {
       case GEN_EDIPARTY: {
-        [result setNameAssigner:brave::string_to_ns(name_assigner)];
-        [result setPartyName:brave::string_to_ns(party_name)];
+        result.nameAssigner = brave::string_to_ns(name_assigner);
+        result.partyName = brave::string_to_ns(party_name);
       }
         break;
         
@@ -369,13 +367,13 @@ BraveCertificateExtensionGeneralNameModel* convert_general_name(GENERAL_NAME* na
           for (auto it = dir_name.begin(); it != dir_name.end(); ++it) {
             [dirName setObject:brave::string_to_ns(it->second) forKey:brave::string_to_ns(it->first)];
           }
-          [result setDirName:dirName];
+          result.dirName = dirName;
         }
       }
         break;
         
       default: {
-        [result setOther:brave::string_to_ns(other)];
+        result.other = brave::string_to_ns(other);
       }
         break;
     }

@@ -5,6 +5,11 @@
 
 #import "brave_certificate_model.h"
 
+#if defined(DEBUG)
+  #include <ios>
+  #include <sstream>
+#endif // DEBUG
+
 #if defined(BRAVE_CORE) // Compiling in Brave-Core
   #include "third_party/boringssl/src/include/openssl/opensslconf.h"
   #if TARGET_CPU_ARM
@@ -88,8 +93,6 @@
 // Netscape Certificate Extensions - Largely Obsolete
 #import "brave/ios/browser/api/networking/models/extensions/BraveCertificateNetscapeCertTypeExtensionModel.h"
 #import "brave/ios/browser/api/networking/models/extensions/BraveCertificateNetscapeURLExtensionModel.h"
-#import "brave/ios/browser/api/networking/models/extensions/BraveCertificateNetscapeURLExtensionModel.h"
-#import "brave/ios/browser/api/networking/models/extensions/BraveCertificateNetscapeURLExtensionModel.h"
 #import "brave/ios/browser/api/networking/models/extensions/BraveCertificateNetscapeStringExtensionModel.h"
 
 // Miscellaneous Certificate Extensions
@@ -138,8 +141,6 @@
 
 // Netscape Certificate Extensions - Largely Obsolete
 #import "BraveCertificateNetscapeCertTypeExtensionModel.h"
-#import "BraveCertificateNetscapeURLExtensionModel.h"
-#import "BraveCertificateNetscapeURLExtensionModel.h"
 #import "BraveCertificateNetscapeURLExtensionModel.h"
 #import "BraveCertificateNetscapeStringExtensionModel.h"
 
@@ -306,7 +307,11 @@
     {NID_ext_key_usage, [BraveCertificateExtendedKeyUsageExtensionModel class]},
     {NID_subject_key_identifier, [BraveCertificateSubjectKeyIdentifierExtensionModel class]},
     {NID_authority_key_identifier, [BraveCertificateAuthorityKeyIdentifierExtensionModel class]},
+    #ifndef OPENSSL_IS_BORINGSSL
     {NID_private_key_usage_period, [BraveCertificatePrivateKeyUsagePeriodExtensionModel class]},
+    #else // Chromium's BoringSSL is missing so much stuff!
+    {NID_private_key_usage_period, [BraveCertificateGenericExtensionModel class]},
+    #endif
     {NID_subject_alt_name, [BraveCertificateSubjectAlternativeNameExtensionModel class]},
     {NID_issuer_alt_name, [BraveCertificateIssuerAlternativeNameExtensionModel class]},
     {NID_info_access, [BraveCertificateAuthorityInformationAccessExtensionModel class]},
@@ -405,6 +410,7 @@
   _extensions = parsed_extensions;
 }
 
+#if defined(DEBUG)
 - (void)debugExtensions {
   const STACK_OF(X509_EXTENSION)* extensions_list = X509_get0_extensions(x509_cert_);
   if (extensions_list) {
@@ -416,38 +422,33 @@
         ASN1_OBJECT* object = X509_EXTENSION_get_object(extension);
         bool is_critical = X509_EXTENSION_get_critical(extension);
         
-        std::string result = x509_utils::string_from_ASN1_OBJECT(object, false);
-        result += ": ";
-        result += is_critical ? "true" : "false";
-        result += "\n--------------------------\n";
+        std::ostringstream result(x509_utils::string_from_ASN1_OBJECT(object, false));
+        result << ": " << is_critical;
+        result << "\n--------------------------\n";
         
         // Extension is possibly supported. Decompose it into the generic models.
         int nid = OBJ_obj2nid(object);
         auto* model = [[BraveCertificateGenericExtensionModel alloc] initWithType:nid withExtension:extension];
         if (model.extensionType == BraveGenericExtensionType_STRING) {
-          result += [[model stringValue] UTF8String];
-          result += "\n";
+          result << [[model stringValue] UTF8String] << "\n";
         } else if (model.extensionType == BraveGenericExtensionType_KEY_VALUE) {
           for (BraveCertificateGenericExtensionPairModel* pair in model.arrayValue) {
             if (![[pair key] length]) {
-              result += [[pair value] UTF8String];
+              result << [[pair value] UTF8String];
             } else if (![[pair value] length]) {
-              result += [[pair key] UTF8String];
+              result << [[pair key] UTF8String];
             } else {
-              result += [[pair key] UTF8String];
-              result += ": ";
-              result += [[pair value] UTF8String];
+              result << [[pair key] UTF8String] << ": " << [[pair value] UTF8String];
             }
-            result += "\n";
+            result << "\n";
           }
         } else if (model.extensionType == BraveGenericExtensionType_HEX_STRING) {
-          result += [[model stringValue] UTF8String];
-          result += "\n";
+          result << [[model stringValue] UTF8String] << "\n";
         } else {
           NSAssert(NO, @"INVALID EXTENSION TYPE!");
         }
 
-        printf("\n%s\n", result.c_str());
+        NSLog(@"\n%s\n", result.str().c_str());
       }
     }
   }
@@ -469,5 +470,6 @@
     }
   }
 }
+#endif  //  DEBUG
 @end
 

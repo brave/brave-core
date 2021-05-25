@@ -23,6 +23,12 @@
 #endif
 
 
+@interface BraveCertificateExtensionGeneralSubtreeModel()
+@property(nonatomic, strong, readwrite) NSArray<BraveCertificateExtensionGeneralNameModel*>* names;
+@property(nonatomic, strong, readwrite) NSString* minimum;
+@property(nonatomic, strong, readwrite) NSString* maximum;
+@end
+
 @implementation BraveCertificateExtensionGeneralSubtreeModel
 - (instancetype)init {
   if ((self = [super init])) {
@@ -31,18 +37,6 @@
     _maximum = [[NSString alloc] init];
   }
   return self;
-}
-
-- (void)setNames:(NSArray<BraveCertificateExtensionGeneralNameModel*>*)names {
-  _names = names;
-}
-
-- (void)setMinimum:(NSString*)minimum {
-  _minimum = minimum;
-}
-
-- (void)setMaximum:(NSString*)maximum {
-  _maximum = maximum;
 }
 @end
 
@@ -79,14 +73,14 @@
       if (subtree->base) {
         [names addObject:brave::convert_general_name(subtree->base)];
       }
-      [tree setNames:names];
+      tree.names = names;
       
       if (subtree->minimum) {
-        [tree setMinimum:brave::string_to_ns(x509_utils::string_from_ASN1INTEGER(subtree->minimum))];
+        tree.minimum = brave::string_to_ns(x509_utils::string_from_ASN1INTEGER(subtree->minimum));
       }
       
       if (subtree->maximum) {
-        [tree setMaximum:brave::string_to_ns(x509_utils::string_from_ASN1INTEGER(subtree->maximum))];
+        tree.maximum = brave::string_to_ns(x509_utils::string_from_ASN1INTEGER(subtree->maximum));
       }
       
       [result addObject:tree];

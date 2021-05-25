@@ -1,12 +1,10 @@
-//
-//  brave_certificate_ios_utils.h
-//  CertificateViewer
-//
-//  Created by Brandon on 2021-05-18.
-//
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef brave_certificate_ios_utils_h
-#define brave_certificate_ios_utils_h
+#ifndef BRAVE_IOS_BROWSER_API_NETWORKING_UTILS_BRAVE_CERTIFICATE_IOS_H_
+#define BRAVE_IOS_BROWSER_API_NETWORKING_UTILS_BRAVE_CERTIFICATE_IOS_H_
 
 #import <Foundation/Foundation.h>
 #include <string>
@@ -42,4 +40,4 @@ BraveCertificateExtensionGeneralNameModel* convert_general_name(GENERAL_NAME* na
 NSDictionary<NSString*, NSString*>* convert_X509_NAME_ENTRIES(STACK_OF(X509_NAME_ENTRY)* entries);
 } // namespace brave
 
-#endif /* brave_certificate_ios_utils_h */
+#endif  //  BRAVE_IOS_BROWSER_API_NETWORKING_UTILS_BRAVE_CERTIFICATE_IOS_H_

@@ -22,6 +22,11 @@
   #include <openssl/x509v3.h>
 #endif
 
+@interface BraveCertificatePolicyMappingExtensionModel()
+@property(nonatomic, strong, readwrite) NSString* issuerDomainPolicy;
+@property(nonatomic, strong, readwrite) NSString* subjectDomainPolicy;
+@end
+
 
 @implementation BraveCertificatePolicyMappingExtensionModel
 - (instancetype)init {
@@ -30,14 +35,6 @@
     _subjectDomainPolicy = [[NSString alloc] init];
   }
   return self;
-}
-
-- (void)setIssuerDomainPolicy:(NSString*)issuerDomainPolicy {
-  _issuerDomainPolicy = issuerDomainPolicy;
-}
-
-- (void)setSubjectDomainPolicy:(NSString*)subjectDomainPolicy {
-  _subjectDomainPolicy = subjectDomainPolicy;
 }
 @end
 
@@ -53,13 +50,13 @@
       if (policy_mapping) {
         auto* mapping = [[BraveCertificatePolicyMappingExtensionModel alloc] init];
         if (policy_mapping->issuerDomainPolicy) {
-          [mapping setIssuerDomainPolicy:brave::string_to_ns(
-                                                  x509_utils::string_from_ASN1_OBJECT(policy_mapping->issuerDomainPolicy, false))];
+          mapping.issuerDomainPolicy = brave::string_to_ns(
+                                                x509_utils::string_from_ASN1_OBJECT(policy_mapping->issuerDomainPolicy, false));
         }
         
         if (policy_mapping->subjectDomainPolicy) {
-          [mapping setSubjectDomainPolicy:brave::string_to_ns(
-                                                   x509_utils::string_from_ASN1_OBJECT(policy_mapping->subjectDomainPolicy, false))];
+          mapping.subjectDomainPolicy = brave::string_to_ns(
+                                                  x509_utils::string_from_ASN1_OBJECT(policy_mapping->subjectDomainPolicy, false));
         }
         [result addObject:mapping];
       }

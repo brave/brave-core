@@ -16,24 +16,4 @@
   }
   return self;
 }
-
-- (void)setType:(NSInteger)type {
-  _type = type;
-}
-
-- (void)setOther:(NSString*)other {
-  _other = other;
-}
-
-- (void)setNameAssigner:(NSString*)nameAssigner {
-  _nameAssigner = nameAssigner;
-}
-
-- (void)setPartyName:(NSString*)partyName {
-  _partyName = partyName;
-}
-
-- (void)setDirName:(NSDictionary<NSString*, NSString*>*)dirName {
-  _dirName = dirName;
-}
 @end

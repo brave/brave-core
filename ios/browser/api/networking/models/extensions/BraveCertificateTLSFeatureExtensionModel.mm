@@ -34,22 +34,11 @@
       ASN1_INTEGER* value = sk_ASN1_INTEGER_value(tls_feature, static_cast<int>(i));
       if (value) {
         long tls_extension_id = ASN1_INTEGER_get(value);
+
+        //5 = status_request
+        //17 = status_request_v2
+        //unknown = UNKNOWN TLS FEATURE (Must Staple)
         [features addObject:@(tls_extension_id)];
-        /*switch (tls_extension_id) { //0..65535
-          case 5: {
-            //status_request
-          }
-            break;
-          case 17: {
-            //status_request_v2
-          }
-            break;
-            
-          default: {
-            //UNKNOWN TLS FEATURE (Must Staple)
-          }
-            break;
-        }*/
       }
     }
     TLS_FEATURE_free(tls_feature);

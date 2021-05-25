@@ -29,6 +29,18 @@
 #endif
 
 #ifndef OPENSSL_NO_CT
+@interface BraveCertificateSCTModel()
+@property(nonatomic, assign, readwrite) NSInteger version;
+@property(nonatomic, assign, readwrite) NSInteger logEntryType;
+@property(nonatomic, strong, readwrite) NSString* logId;
+@property(nonatomic, strong, readwrite) NSDate* timestamp;
+@property(nonatomic, strong, readwrite) NSString* extensions;
+@property(nonatomic, assign, readwrite) NSInteger signatureNid;
+@property(nonatomic, strong, readwrite) NSString* signatureName;
+@property(nonatomic, strong, readwrite) NSString* signature;
+@property(nullable, nonatomic, strong, readwrite) NSString* hexRepresentation;
+@end
+
 @implementation BraveCertificateSCTModel
 - (instancetype)init {
   if ((self = [super init])) {
@@ -38,42 +50,6 @@
     _timestamp = [NSDate dateWithTimeIntervalSince1970:0];
   }
   return self;
-}
-
-- (void)setVersion:(NSInteger)version {
-  _version = version;
-}
-
-- (void)setLogEntryType:(NSInteger)logEntryType {
-  _logEntryType = logEntryType;
-}
-
-- (void)setLogId:(NSString*)logId {
-  _logId = logId;
-}
-
-- (void)setTimestamp:(NSDate*)timestamp {
-  _timestamp = timestamp;
-}
-
-- (void)setExtensions:(NSString*)extensions {
-  _extensions = extensions;
-}
-
-- (void)setSignatureNid:(NSInteger)signatureNid {
-  _signatureNid = signatureNid;
-}
-
-- (void)setSignatureName:(NSString*)signatureName {
-  _signatureName = signatureName;
-}
-
-- (void)setSignature:(NSString*)signature {
-  _signature = signature;
-}
-
-- (void)setHexRepresentation:(NSString*)hexRepresentation {
-  _hexRepresentation = hexRepresentation;
 }
 @end
 
@@ -92,7 +68,7 @@
       
       sct_version_t version = SCT_get_version(sct);
       if (version == SCT_VERSION_NOT_SET) {
-        [ext setHexRepresentation:[[NSString alloc] init]];
+        ext.hexRepresentation = [[NSString alloc] init];
         
         int length = i2o_SCT(sct, nullptr);
         if (length > 0) {
@@ -102,19 +78,19 @@
           sct_data.resize(length);
           
           if (sct_data.size() > 0) {
-            [ext setHexRepresentation:brave::string_to_ns(
-                                              x509_utils::hex_string_from_bytes(sct_data))];
+            ext.hexRepresentation = brave::string_to_ns(
+                                            x509_utils::hex_string_from_bytes(sct_data));
           }
         }
         continue;
       }
       
-      [ext setVersion:version]; //version + 1
-      [ext setHexRepresentation:nil];
+      ext.version = version; //version + 1
+      ext.hexRepresentation = nil;
       
       ct_log_entry_type_t log_entry_type = SCT_get_log_entry_type(sct);
       if (log_entry_type != CT_LOG_ENTRY_TYPE_NOT_SET) {
-        [ext setLogEntryType:log_entry_type];
+        ext.logEntryType = log_entry_type;
         
         unsigned char* log_id_buffer = nullptr;
         std::size_t log_id_length = SCT_get0_log_id(sct, &log_id_buffer);
@@ -123,14 +99,14 @@
           std::memcpy(&log_id_data[0], log_id_buffer, log_id_length);
           OPENSSL_free(log_id_buffer);
           
-          [ext setLogId:brave::string_to_ns(x509_utils::hex_string_from_bytes(log_id_data))];
+          ext.logId = brave::string_to_ns(x509_utils::hex_string_from_bytes(log_id_data));
         } else {
-          [ext setLogId:[[NSString alloc] init]];
+          ext.logId = [[NSString alloc] init];
         }
       }
       
       std::uint64_t timestamp = SCT_get_timestamp(sct);
-      [ext setTimestamp:brave::date_to_ns(timestamp)];
+      ext.timestamp = brave::date_to_ns(timestamp);
       
       unsigned char* extension_buffer = nullptr;
       std::size_t extension_length = SCT_get0_extensions(sct, &extension_buffer);
@@ -139,20 +115,20 @@
         std::memcpy(&extension_data[0], extension_buffer, extension_length);
         OPENSSL_free(extension_buffer);
         
-        [ext setExtensions:brave::string_to_ns(x509_utils::hex_string_from_bytes(extension_data))];
+        ext.extensions = brave::string_to_ns(x509_utils::hex_string_from_bytes(extension_data));
       } else {
-        [ext setExtensions:[[NSString alloc] init]];
+        ext.extensions = [[NSString alloc] init];
       }
       
       int signature_nid = SCT_get_signature_nid(sct);
-      [ext setSignatureNid:signature_nid];
+      ext.signatureNid = signature_nid;
       
       if (signature_nid != NID_undef) {
         // NID_sha256
         // NID_ecdsa_with_SHA256
-        [ext setSignatureName:brave::string_to_ns(OBJ_nid2ln(signature_nid))];
+        ext.signatureName = brave::string_to_ns(OBJ_nid2ln(signature_nid));
       } else {
-        [ext setSignatureName:[[NSString alloc] init]];
+        ext.signatureName = [[NSString alloc] init];
       }
       
       unsigned char* signature_buffer = nullptr;
@@ -162,10 +138,10 @@
         std::memcpy(&signature_data[0], signature_buffer, signature_length);
         OPENSSL_free(signature_buffer);
         
-        [ext setSignature:brave::string_to_ns(
-                                      x509_utils::hex_string_from_bytes(signature_data))];
+        ext.signature = brave::string_to_ns(
+                                    x509_utils::hex_string_from_bytes(signature_data));
       } else {
-        [ext setSignature:[[NSString alloc] init]];
+        ext.signature = [[NSString alloc] init];
       }
       
       [result addObject:ext];

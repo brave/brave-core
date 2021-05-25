@@ -22,9 +22,23 @@
   #include <openssl/x509v3.h>
 #endif
 
-
+#ifndef OPENSSL_IS_BORINGSSL
 @implementation BraveCertificatePrivateKeyUsagePeriodExtensionModel
 - (void)parseExtension:(X509_EXTENSION*)extension {
-  
+  PKEY_USAGE_PERIOD* key_usage_period = static_cast<PKEY_USAGE_PERIOD*>(X509V3_EXT_d2i(extension));
+  if (key_usage_period) {
+    // OpenSSL documentation:
+    // The functions starting with ASN1_TIME will operate on either format.
+    // So we can convert ASN1_GENERALIZED_TIME to timestamp using the same function.
+    if (key_usage_period->notBefore) {
+      _notBefore = brave::date_to_ns(x509_utils::date_from_ASN1TIME(key_usage_period->notBefore));
+    }
+
+    if (key_usage_period->notAfter) {
+      _notAfter = brave::date_to_ns(x509_utils::date_from_ASN1TIME(key_usage_period->notAfter));
+    }
+    PKEY_USAGE_PERIOD_free(key_usage_period);
+  }
 }
 @end
+#endif  //  OPENSSL_IS_BORINGSSL

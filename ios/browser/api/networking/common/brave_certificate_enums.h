@@ -1,12 +1,10 @@
-//
-//  brave_certificate_enums.h
-//  CertificateViewer
-//
-//  Created by Brandon on 2021-05-18.
-//
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef brave_certificate_enums_h
-#define brave_certificate_enums_h
+#ifndef BRAVE_IOS_BROWSER_API_NETWORKING_COMMON_BRAVE_CERTIFICATE_ENUMS_H_
+#define BRAVE_IOS_BROWSER_API_NETWORKING_COMMON_BRAVE_CERTIFICATE_ENUMS_H_
 
 #import <Foundation/Foundation.h>
 
@@ -116,4 +114,4 @@ typedef NS_ENUM(NSUInteger, BraveGenericExtensionType) {
   BraveGenericExtensionType_HEX_STRING
 };
 
-#endif /* brave_certificate_enums_h */
+#endif /* BRAVE_IOS_BROWSER_API_NETWORKING_COMMON_BRAVE_CERTIFICATE_ENUMS_H_ */

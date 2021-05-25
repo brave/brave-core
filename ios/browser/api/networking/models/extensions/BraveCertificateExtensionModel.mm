@@ -45,6 +45,6 @@
 }
 
 - (void)parseExtension:(X509_EXTENSION*)extension {
-  NSAssert(NO, @"SHOULD NOT BE CALLED!");
+  NSAssert(NO, @"SHOULD NOT BE CALLED! - Subclass needs to implement this function");
 }
 @end
