@@ -69,15 +69,19 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4227945450504703638">Valitud heli</translation>
 <translation id="7895302206188277628">Seotud sisu</translation>
 <translation id="4322612543319315652">Impordi valitud tekst IPFS-i</translation>
+<translation id="8883166554766780543">Impordi ja kopeeri link IPFSi hetkvõttesse</translation>
+<translation id="3654831858282189202">Avalda IPNS-võtmega</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Uus Tor'iga privaatne aken</translation>
 <translation id="4703780849509456860">Ava link Tor'iga privaatses aknas</translation>
 <translation id="3488584642074079080">Ava link Brave'i Tor'iga privaatses aknas</translation>
 <translation id="7475547933708221517">Jaga kohalikku faili IPFS-i kaudu</translation>
+<translation id="2286177249736199435">Jaga kohalikku kausta IPFSi kaudu</translation>
 <translation id="784573715436258741">Jaga kohalikku faili IPFS-i kaudu</translation>
 <translation id="6313675821927505581">Uus Tor'iga privaatne aken</translation>
 <translation id="2638041073279639246">Ava link Tor'iga privaatses aknas</translation>
 <translation id="3425600262621021599">Ava link Brave'i Tor'iga privaatses aknas</translation>
+<translation id="575838692088926391">Jaga kohalikku kataloogi IPFSi kaudu</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat reklaamide teenus</translation>
 <translation id="7924918279836988121">BAT-registri teenus</translation>
@@ -157,7 +161,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4112587618563511470">Kehtetu sünkroonimiskood, palun kontrolli ja proovi uuesti.</translation>
 <translation id="2339730291919608488">Välju ajakohastamisahelast</translation>
 <translation id="115699408012835975">Kui lähtestad sünkroonimise, siis pead sünkroonimiskoodi uuesti teisest seadmest sisestama, et sellega sünkroonida. Kas soovid kindlasti jätkata?</translation>
-<translation id="6092564993102418148">Kas soovite kindlasti valitud seadme sünkroonimisahelast kustutada?</translation>
+<translation id="6092564993102418148">Kas soovite valitud seadme kindlasti sünkroonimisahelast kustutada?</translation>
 <translation id="3396347744975515056">Brave sünkroonimine on täiendatud ja vajab seadistamist</translation>
 <translation id="7473245612074035141">Alusta seadistust</translation>
 <translation id="3411013544209536575">Abi preemiad</translation>
@@ -177,10 +181,23 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="7090046810227878892">Ethereumi pakkuja Dappsi kasutamiseks</translation>
 <translation id="5913089932885076110">Lae käivitades krüptorahakotid</translation>
 <translation id="757886143331967039">Laadi käivitamisel ebasoovitatav krüptorahakottide laiend</translation>
+<translation id="1834467296210148203">Näita tööriistaribal Brave Walleti ikooni</translation>
 <translation id="6864914031231797928">Luba laiendustel Google'i sisselogimine</translation>
 <translation id="5927916530277631319">Unstoppable Domainsi resolvimismeetod</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/> funktsiooniga „DNS HTTPS-i kaudu“ ja Ethereumiga seotud privaatsuskaalutluste kohta.</translation>
 <translation id="5248318250177143470">Ethereumi nimeteenuse (ENS) resolvimismeetod</translation>
+<translation id="7024553202001112871">Sätesta oma IPNS-võtmed</translation>
+<translation id="951216659045543447">Allkirjasta sisu vastava privaatvõtmega ja avalda IPNS-is</translation>
+<translation id="7611728475758612204">Avaldamiseks saadaolevad võtmed</translation>
+<translation id="911363100236037920">Sisesta uuele võtmele nimi</translation>
+<translation id="6358469157239228181">Seda nime ei saa kasutada</translation>
+<translation id="8996633027318264334">Kas soovid kindlasti <ph name="KEY_NAME"/> kustutada?</translation>
+<translation id="910215077892371264">Sõlme pole käivitatud</translation>
+<translation id="616058968889448209">Tõrge IPFS-teenuse kävitamisel, lisateave saadaval <ph name="BEGIN_LINK"/>diagnostika lehel<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' võtme importimine ebaõnnestus</translation>
+<translation id="8275038454117074363">Impordi</translation>
+<translation id="3654980960391973513">Genereeri</translation>
+<translation id="5531501313997312487">Käivita sõlm</translation>
 <translation id="9170907049676078643">IPFS-ressursside teisendamise meetod</translation>
 <translation id="1327977588028644528">Lüüs</translation>
 <translation id="80225669816651290">Kohalik sõlm</translation>
@@ -202,7 +219,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1765684547504191670">Kasutab meedia marsruuteri komponenti, et lubada brauseris Chromecast.</translation>
 <translation id="9156965752763025780">Teie muudatused jõustuvad järgmine kord, kui Bravei taaskäivitate.</translation>
 <translation id="7179921470347911571">Taaskäivita kohe</translation>
-<translation id="8068526464562249859">Kasutab IPFS-i kaaslaiendit, et lisada Brave'i täiustatud IPFS-i tugi, sealhulgas juurdepääs  IPFS-i tavatoimingutele brauseririba kaudu.</translation>
+<translation id="8068526464562249859">Kasutab IPFS-i kaaslaiendit, et lisada Brave'i täiustatud IPFS-i tugi, sealhulgas juurdepääs IPFS-i tavatoimingutele brauseririba kaudu.</translation>
 <translation id="8137559199583651773">Laienduste haldamine</translation>
 <translation id="7013485839273047434">Hangi rohkem laiendusi</translation>
 <translation id="4928988318462976765">Veebilaienduste pood</translation>
@@ -260,7 +277,10 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1391855377994926460">Saate jätkata kiiremat veebilehitsemist – suurematel uudisesaitidel kuni kuus korda kiiremini.</translation>
 <translation id="9218430445555521422">Seadista vaikebrauseriks</translation>
 <translation id="3479552764303398839">Mitte praegu</translation>
+<translation id="6040143037577758943">Sulge</translation>
+<translation id="5600566490506283344">Brave Adi teade</translation>
 <translation id="4877147287319222750">Lisa külgribale</translation>
+<translation id="4233010476457917696">Näita külgriba</translation>
 <translation id="5404213409401164238">Näita külgriba</translation>
 <translation id="7561196759112975576">Alati</translation>
 <translation id="7060352228894039151">Hiire peale liikumisel</translation>

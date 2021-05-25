@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Rozpocznij nielimitowane połączenia z przyjaciółmi i kolegami z pracy w Brave Together.</translation>
 <translation id="7115051913071512405">Wypróbuj</translation>
 <translation id="7415602225677446066">Topowe wiadomości dnia w całkowicie prywatnym kanale, tylko dla Ciebie.</translation>
-<translation id="8607689491789524900">Przeglądarka Brave łączy Twoje zainteresowania na Twoim urządzeniu, więc Twoje dane osobowe nigdy nie opuszczają Twojej przeglądarki. W ciągu dnia dodawane są nowe treści.</translation>
+<translation id="6903061332999399632">Brave News są wspierane reklamami z wykorzystaniem całkowicie prywatnych i anonimowych reklam dopasowanych do Twojego urządzenia. Twoje dane osobowe zawsze pozostają prywatne, zgodnie z naszą <ph name="LINK_START"/>polityką prywatności<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Pokaż Brave News</translation>
+<translation id="780301667611848630">Nie, dziękuję</translation>
 <translation id="9164544612367905452">Trwa pobieranie…</translation>
 <translation id="1276592121036104130">Wczytaj nowe treści.</translation>
-<translation id="4210987321913275328">Przewiń, by przeglądać Brave Today.</translation>
-<translation id="3122595178900736207">Zresetuj źródła Brave Today.</translation>
-<translation id="2197023915568148978">Czy zresetować wszystkie Twoje wybory wydawców Brave Today do domyślnych ustawień?</translation>
+<translation id="2875288128871360696">Przewiń do Brave News</translation>
+<translation id="8510120023634509743">Resetuj źródła Brave News</translation>
+<translation id="75825199302994272">Przywrócić wszystkie wybory wydawcy Brave News do wartości domyślnych?</translation>
 <translation id="954001034349395856">Wszystkie źródła</translation>
 <translation id="8890516388109605451">Źródła</translation>
 <translation id="5158129253322921540">Wyłącz treści od <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Połączone</translation>
 <translation id="8030169304546394654">Rozłączony</translation>
 <translation id="3149306599361260465">Inicjowanie [[percentage]]%</translation>
+<translation id="3258793718986637767">Masz problemy z Tor? Spróbuj <ph name="BEGIN_LINK"/>wyłączyć prywatne okno z Tor<ph name="END_LINK"/> i włączyć je ponownie.</translation>
 <translation id="4272382368346338917">Dodatkowe filtry</translation>
 <translation id="8949292968394988358">Ostrzeżenie: Włączenie zbyt wielu filtrów obniży wydajność</translation>
 <translation id="8686201964111147748">Zablokowane reklamy i skrypty śledzące:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Zweryfikuj mój portfel</translation>
 <translation id="6609621505400013054">Portfel bitFlyer jest zarządzany przez bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Weryfikując swój portfel i łącząc go z kontem bitFlyer, możesz łatwiej przechowywać i zarządzać tokenami zdobytymi dzięki Brave Rewards</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/> o tym, jak połączyć przeglądarkę Brave z kontem bitFlyer.</translation>
 <translation id="5094577350232361255">informacje</translation>
 <translation id="4918086044614829423">Akceptuj</translation>
 <translation id="5916290544882167205">Brave Software. Brave jest zarejestrowanym znakiem towarowym Brave Software. Nazwy witryn mogą być znakami towarowymi bądź zarejestrowanymi znakami towarowymi ich właścicieli.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Cena jednostkowa</translation>
 <translation id="4763179765154524864">Wydano ogółem</translation>
 <translation id="8851480289992540512">Otrzymano ogółem</translation>
+<translation id="8624961452383848703">Chcę przeliczyć...</translation>
 <translation id="616639131065447379">Witamy w portfelach kryptowalut Brave</translation>
 <translation id="1740464057879304704">Portfele kryptowalut pozwalają Ci pracować z kryptowalutą i powiązanymi aktywami w Brave. Portfele kryptowalut obsługują tokeny Ethereum, takie jak ETH i BAT, jak również należności, i umożliwiają pracę z Ðaplikacjami i innymi inteligentnymi kontraktami. Wszystko to przeznaczone jest dla osób, które znają Ethereum i inne systemy blockchain — lub chcą je poznać.</translation>
 <translation id="4855440621031541830">Używaj portfeli kryptowalut tylko wtedy, gdy akceptujesz, że ponosisz całą odpowiedzialność za wszelkie ryzyko powiązane z użytkowaniem, a także to, że Brave Software nie ponosi żadnej odpowiedzialności za jakiekolwiek straty, w tym straty wypadkowe i wynikowe, których możesz doznać na skutek użytkowania.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Nie udało się pobrać danych do importu</translation>
 <translation id="7900950536120202771">Błąd wewnętrzny węzła IPFS</translation>
 <translation id="1036635552229153800">Dane zostały pomyślnie przesłane, ale nie zostały przeniesione do katalogu brave-import. Możesz to zrobić ręcznie na stronie ustawień importu.</translation>
-<translation id="7789840864192026963">Udziel uprawnień</translation>
-<translation id="7978789143098237970">do zamknięcia przeze mnie tej strony</translation>
+<translation id="572392919096807438">Zapamiętaj moją decyzję</translation>
+<translation id="7978789143098237970">dopóki nie zamknę tej strony</translation>
 <translation id="3523195733429162409">na 24 godziny</translation>
 <translation id="2373264732659722940">na 1 tydzień</translation>
 <translation id="6318437367327684789">na zawsze</translation>
-<translation id="7463327191540031132">Zablokuj na zawsze</translation>
 <translation id="8797999629784150206">Możesz zmienić <ph name="SITE_PERMISSIONS"/> w dowolnym momencie. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">uprawnienia witryny</translation>
 <translation id="7701466644604753106">Włącz Speedreader</translation>
 <translation id="763042262431778831">Wyłącz Speedreader</translation>
+<translation id="1544192797660353713">Portfel</translation>
+<translation id="8488282162676695335">Portfel Brave</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
 <translation id="3745016858329272300">Ogólne informacje</translation>
 <translation id="4045404575593562245">Wydarzenia kontrolne sieci Tor</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">URI Tor Proxy</translation>
 <translation id="1671503397662036257">Status połączenia z siecią Tor</translation>
 <translation id="6024292492796847324">Postęp inicjalizacji sieci Tor</translation>
+<translation id="7586151660465233733">Więcej rynków na <ph name="SITE_NAME"/>.</translation>
+<translation id="952067063131306699">Zobacz rynki i handluj kryptowalutami na FTX</translation>
+<translation id="5963745988819586370">Rynki</translation>
+<translation id="3795943412467785186">Podłącz konto FTX, aby wyświetlić stan konta, zbadać rynki kontraktów terminowych i przeliczać kryptowaluty.</translation>
+<translation id="926958206891985289">Zobacz przyszłe rynki</translation>
+<translation id="6804537228302563756">Podłącz konto</translation>
+<translation id="5019698312620117604">Historia cen z 24 godzin</translation>
+<translation id="8720719072204443171">Poziom z 24 godzin</translation>
+<translation id="3891414008432200754">Cena</translation>
+<translation id="7723176927437578611">Wpływy</translation>
+<translation id="2983078329159689577">Zgłaszanie...</translation>
+<translation id="6641102760094059194">Potwierdź (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Przeliczenie zakończone sukcesem!</translation>
+<translation id="7590653073560839711">Aby dokonać przeliczenia, musisz mieć saldo w co najmniej jednej walucie.</translation>
+<translation id="4390079506197726228">Dostępne <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
+<translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 </translationbundle>

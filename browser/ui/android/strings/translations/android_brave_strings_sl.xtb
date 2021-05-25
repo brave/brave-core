@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
 <translation id="6302422639282249274">Upravljaj storitev Brave Rewards</translation>
-<translation id="1506061864768559482">Iskalnik</translation>
 <translation id="1468415711258933398">Standardni zavihek</translation>
 <translation id="3377025655491224618">Zavihek brez beleženja zgodovine</translation>
 <translation id="9148058034647219655">Zapri</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="8710614491157212477">Odpre podprte spletne strani, ki uporabljajo HTTPS namesto HTTP, če je mogoče</translation>
-<translation id="4022987104439075738">Prehod IPFS</translation>
-<translation id="2688519859165248360">Omogoča navigacijo do virov IPFS prek prehoda IPFS</translation>
 <translation id="7534079972563542000">Neustavljive domene</translation>
 <translation id="6513892817556267573">Imenske storitve Ethereum</translation>
 <translation id="3894650624018948468">Način reševanja</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Onemogočeno</translation>
 <translation id="2218918398178303658">DNS preko HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Blokiranje oglasov</translation>
-<translation id="1934885595886623674">Onemogoča nalaganje oglasov</translation>
-<translation id="7458422973722236530">Zaščita proti ustvarjanju prstnih odtisov</translation>
 <translation id="5787084571334399599">Preprečuje strežniku ustvarjanje prstnih odtisov</translation>
 <translation id="7459000603787995422">Zapri zavihke ob izhodu</translation>
 <translation id="1680858055899097121">Ne ohranjaj zavihkov med sejami brskanja</translation>
-<translation id="6469509880167172749">Samodejno pošlji popolnoma zasebno analizo izdelkov na Brave</translation>
-<translation id="7090566321964540749">Ta anonimna informacija programski opremi Brave samo omogoča, da oceni splošno uporabo nekaterih funkcij.</translation>
+<translation id="7142548388914389999">Samodejno pošlji popolnoma zasebno analizo izdelkov na Brave</translation>
+<translation id="5469408008145872264">Ta anonimna informacija programski opremi Brave samo omogoča, da oceni splošno uporabo nekaterih funkcij.</translation>
 <translation id="7977176350719484850">Pribl. podatkov\nShranjeno</translation>
 <translation id="9008534313521214777">Pribl. čas\nSaved</translation>
 <translation id="6572660632052512096">Namizni način</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Prednostna namizna različica spletnih strani</translation>
 <translation id="1842747674580016420">Predvajanje videoposnetka v brskalniku Brave</translation>
 <translation id="5368992950177874750">Če je možnost omogočena, se bodo videoposnetki predvajali v brskalniku Brave namesto v ustrezni aplikaciji</translation>
-<translation id="2645380101799517405">Nadzorni elementi</translation>
 <translation id="5965081608816406060">Predvajanje videoposnetka v ozadju</translation>
 <translation id="6332924730165919598">Če zaprete vse zavihke, se zapre tudi brskalnik Brave</translation>
 <translation id="1580125697191336644">Eksperimentalno. Omogoči predvajanje zvoka iz videoposnetka v ozadju, kadar zavihek ni aktiven ali je zaslon naprave izklopljen. Poskusite preklopiti v namizni način, če ta funkcija ne deluje.</translation>
@@ -292,11 +283,10 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="5657156137487675418">Dovoli vse piškotke</translation>
 <translation id="3895527457258986253">Blokiraj ustvarjanje prstnih odtisov</translation>
 <translation id="184568144098869637">Brskalniku prepreči, da bi prepoznal vašo napravo</translation>
-<translation id="7396366757003005317">Prstni odtisi blokirani (strogo, lahko vdrejo v spletna mesta)</translation>
-<translation id="700453611199558021">Prstni odtis je blokiran (standardno)</translation>
+<translation id="7445306466605902444">Prstni odtisi blokirani (strogo, lahko vdrejo v spletna mesta)</translation>
+<translation id="5582686930349810484">Prstni odtis je blokiran (standardno)</translation>
 <translation id="769702552748212954">Dovoli vsa ustvarjanja prstnih odtisov</translation>
 <translation id="876424292214881779">Oglasi in ostali neželeni poskusi blokirani</translation>
-<translation id="5142293891785304489">Sledilci, oglasi in\nveč blokad za</translation>
 <translation id="6930134873084561197">Spletna mesta pogosto vključujejo piškotke in skripte, ki poskušajo prepoznati vas in vašo napravo. Želijo ugotoviti, kdo ste in vas spremljati po spletu - spremljati, kaj počnete na vsakem posameznem spletnem mestu.\nBrave to blokira, da lahko brskate, ne da bi vas povsod spremljali.</translation>
 <translation id="8553998445606452168">O Brave Shields</translation>
 <translation id="8912304686498704084">GOR</translation>
@@ -309,7 +299,6 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="5299848999918506028">Hvala!</translation>
 <translation id="76550953340008122">Hvala, ker ste obvestili razvijalce Brave, da je s to spletno stranjo nekaj narobe. Potrudili se bomo, da to popravimo!</translation>
 <translation id="650318023204990401">Napredne nastavitve</translation>
-<translation id="7182293319417450928">Za potrditev potrebujete stanje najmanj 25 BAT.</translation>
 <translation id="1275664486910646411">V samodejnem dokončanju prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="5516010970279932133">V samodejnem dokončanju prikaži predlagana spletna mesta</translation>
 <translation id="5370478469168390143">Podatke shrani na spletu</translation>
@@ -378,7 +367,7 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Začnite z brskanjem, da lahko pridobite poročilo o zasebnosti</translation>
 <translation id="9080777565335515917">Za zasebno in varno brskanje nastavite Brave kot privzeti brskalnik.</translation>
-<translation id="1390943217516275883">To brskalniku Brave omogoča prikaz statističnih podatkov o vaši zasebnosti</translation>
+<translation id="1390943217516275883">Storitvi Brave omogoča prikaz vaših statistik zasebnosti</translation>
 <translation id="1763352720905582220">Pošilja tedenska poročila o zasebnosti</translation>
 <translation id="1811691435325545066">Počisti podatke o poročilih o zasebnosti</translation>
 <translation id="8089997572759938512">Število poročil o zasebnosti ponastavi na vrednost nič</translation>
@@ -483,14 +472,6 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="3184805785843994538">Brave Shields blokira sledilce i oglase, shranjuje podatke in prihrani čas na vsakem spletnem mestu, ki ga obiščete.</translation>
 <translation id="8722651357687610395">Privzeto nastavite Brave</translation>
 <translation id="3479552764303398839">Ne zdaj</translation>
-<translation id="6232491755501685494">Brave Rewards na Japonskem prehaja na nov sistem!</translation>
-<translation id="7444515017164572362">Od 13. marca svojega BAP ne boste mogli več uporabljati. Ko pa se
-        aprila posodobite na nov sistem, boste začeli z novimi žetoni!</translation>
-<translation id="8587285254008006694">Kot del tega prehoda funkcije odlaganja in prispevanja v
-        vašem brskalniku od 13. marca začasno ne bodo na voljo,
-        vaše stanje BAP bo prikazovalo 0.0, dokler se ne posodobite na nov sistem
-        v aprilu. Ko boste že v novem sistemu, boste začeli z novimi 
-        žetoni!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -510,4 +491,9 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
 <translation id="3171931580569169744">Omogoči skupine zavihkov</translation>
+<translation id="5587305863196367357">Preverjanje denarnice vam omogoča enostavno upravljanje s sredstvi in s tem omogoči dvig</translation>
+<translation id="5760671211380791582">Nimate dovolj BAT.</translation>
+<translation id="6960458596933484861">Za ustvarjanje preverjene denarnice Uphold morate imeti najmanj 15 BAT. Prosim poskusite kasneje.</translation>
+<translation id="4389085954549744469">Če že imate preverjen račun Uphold, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">nadaljujte s prijavo</translation>
 </translationbundle>

@@ -819,6 +819,18 @@
     "message": "Подтвердите ваш кошелек и свяжите его с аккаунтом bitFlyer. Хранить баллы Brave Rewards и управлять ими станет еще удобнее.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Подробнее$link_end$ о том, как привязать аккаунт bitFlyer к браузеру Brave.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards в Японии переходит на новую систему!",
     "description": "Header text for BAP deprecation warning message"

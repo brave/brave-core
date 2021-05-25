@@ -69,15 +69,19 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4227945450504703638">Valittu äänitiedosto</translation>
 <translation id="7895302206188277628">Linkitetty sisältö</translation>
 <translation id="4322612543319315652">Tuo valittu teksti IPFS:ään</translation>
+<translation id="8883166554766780543">Tuo ja kopioi linkki IPFS-tilannekuvaan</translation>
+<translation id="3654831858282189202">Julkaise IPNS-avaimella</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Uusi Tor-yksityisikkuna</translation>
 <translation id="4703780849509456860">Avaa linkki yksityisessä ikkunassa tai Tor-selaimessa</translation>
 <translation id="3488584642074079080">Avaa linkki Braven yksityisessä ikkunassa Tor-verkossa</translation>
 <translation id="7475547933708221517">Jaa paikallinen tiedosto IPFS:n avulla</translation>
+<translation id="2286177249736199435">Jaa paikallinen kansio IPFS:n avulla</translation>
 <translation id="784573715436258741">Jaa paikallinen tiedosto IPFS:n avulla</translation>
 <translation id="6313675821927505581">Uusi yksityisikkuna käyttäen Tor-verkkoa</translation>
 <translation id="2638041073279639246">Avaa linkki yksityisessä ikkunassa käyttäen Tor-verkkoa</translation>
 <translation id="3425600262621021599">Avaa linkki Braven yksityisikkunassa käyttäen Tor-verkkoa</translation>
+<translation id="575838692088926391">Jaa paikallinen kansio IPFS:n avulla</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat-mainospalvelu</translation>
 <translation id="7924918279836988121">BAT-tilikirjapalvelu</translation>
@@ -157,7 +161,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4112587618563511470">Virheellinen synkronointikoodi. Tarkista koodi ja yritä uudelleen.</translation>
 <translation id="2339730291919608488">Jätä synkronointiketju</translation>
 <translation id="115699408012835975">Jos palautat synkronoinnin alkutilaan, niin sinun on annettava muiden laitteiden synkronointikoodit voidaksesi synkronoida kyseisen laitteen.</translation>
-<translation id="6092564993102418148">Haluatko varmasti poistaa valitut laitteet synkronointiketjusta?</translation>
+<translation id="6092564993102418148">Haluatko varmasti poistaa valitun laitteen synkronointiketjusta?</translation>
 <translation id="3396347744975515056">Brave Sync on päivitetty ja vaatii määrityksen</translation>
 <translation id="7473245612074035141">Aloita määrittäminen</translation>
 <translation id="3411013544209536575">Apuvinkkejä</translation>
@@ -177,10 +181,23 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="7090046810227878892">Ethereum-tarjoaja Dappsin käyttämiseen</translation>
 <translation id="5913089932885076110">Lataa Crypto Wallets käynnistyksen yhteydessä</translation>
 <translation id="757886143331967039">Lataa vanhentunut kryptovaluuttalaajennus käynnistyksen yhteydessä</translation>
+<translation id="1834467296210148203">Näytä Brave-lompakon kuvake työkalupalkissa</translation>
 <translation id="6864914031231797928">Salli laajennuksille Google-kirjautuminen</translation>
 <translation id="5927916530277631319">Pysäyttämättömien verkkotunnusten käsittelytapa</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/> DNS:n ja HTTPS-protokollan sekä Ethereumin tietosuojanäkökohdista.</translation>
 <translation id="5248318250177143470">ENS-palvelun (Ethereum Name Service) selvityskeino</translation>
+<translation id="7024553202001112871">Määritä IPNS-avaimesi</translation>
+<translation id="951216659045543447">Allekirjoita sisältö vastaavalla yksityisellä avaimella ja julkaise se IPNS:ssä</translation>
+<translation id="7611728475758612204">Julkaisemiselle saatavilla olevat avaimet</translation>
+<translation id="911363100236037920">Anna nimi uudelle avaimelle</translation>
+<translation id="6358469157239228181">Tätä nimeä ei voi käyttää</translation>
+<translation id="8996633027318264334">Haluatko varmasti poistaa <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Solmua ei ole käynnistetty</translation>
+<translation id="616058968889448209">IPFS-palvelun käynnistysvirhe, lisätietoja saatavilla <ph name="BEGIN_LINK"/>diagnostiikkasivulta<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' avaimen tuonti epäonnistui</translation>
+<translation id="8275038454117074363">Tuo</translation>
+<translation id="3654980960391973513">Luo</translation>
+<translation id="5531501313997312487">Aloitussolmu</translation>
 <translation id="9170907049676078643">IPFS-resurssien selvitystapa</translation>
 <translation id="1327977588028644528">Yhdyskäytävä</translation>
 <translation id="80225669816651290">Paikallinen solmu</translation>
@@ -260,7 +277,10 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="1391855377994926460">Jatka verkon selailua nopeammin – jopa 6x nopeammin suosituilla uutissivustoilla.</translation>
 <translation id="9218430445555521422">Aseta oletusselaimeksi</translation>
 <translation id="3479552764303398839">Ei nyt</translation>
+<translation id="6040143037577758943">Sulje</translation>
+<translation id="5600566490506283344">Brave Ad -ilmoitus</translation>
 <translation id="4877147287319222750">Lisää sivupalkkiin</translation>
+<translation id="4233010476457917696">Näytä sivupalkki</translation>
 <translation id="5404213409401164238">Näytä sivupalkki</translation>
 <translation id="7561196759112975576">Aina</translation>
 <translation id="7060352228894039151">Hiiren kursorin alla</translation>

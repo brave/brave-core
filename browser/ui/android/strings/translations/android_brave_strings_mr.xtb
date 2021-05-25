@@ -11,17 +11,11 @@
 <translation id="5165042248369837294">ट्विटरला एम्बेड केलेल्या ट्विटस परवानगी द्या</translation>
 <translation id="958971637207126733">लिंक्डइन एम्बेड केलेल्या पोस्टना परवानगी द्या</translation>
 <translation id="6302422639282249274">Brave (ब्रेव्ह) पुरस्कार व्यवस्थापित करा</translation>
-<translation id="1506061864768559482">शोध इंजिन</translation>
 <translation id="1468415711258933398">मानक टॅब</translation>
 <translation id="3377025655491224618">गुप्त टॅब</translation>
 <translation id="9148058034647219655">निर्गमन</translation>
-<translation id="520895744850022668">एचटीटीपीएस सर्वत्र</translation>
-<translation id="8710614491157212477">शक्य असल्यास HTTP ऐवजी HTTPS वापरुन समर्थित साइट्स उघडते</translation>
 <translation id="2356070529366658676">विचारा</translation>
 <translation id="4176463684765177261">अक्षम</translation>
-<translation id="8387201461264842096">जाहिरात ब्लॉक</translation>
-<translation id="1934885595886623674">जाहिराती लोड होण्यापासून प्रतिबंधित करते</translation>
-<translation id="7458422973722236530">फिंगरप्रिंटिंग संरक्षण</translation>
 <translation id="5787084571334399599">ब्राउझरला फिंगरप्रिंटिंगपासून प्रतिबंधित करते</translation>
 <translation id="7459000603787995422">बाहेर पडताना टॅब बंद करा</translation>
 <translation id="1680858055899097121">ब्राउझिंग सत्र दरम्यान टॅब टिकवून ठेवू नका</translation>
@@ -31,7 +25,6 @@
 <translation id="807636106793708118">साइटची मोबाइल आवृत्ती पसंत करा</translation>
 <translation id="4479934682648362332">साइटची डेस्कटॉप आवृत्ती पसंत करा</translation>
 <translation id="1842747674580016420">ब्रेव्हमध्ये व्हिडिओ प्लेबॅक</translation>
-<translation id="2645380101799517405">नियंत्रणे</translation>
 <translation id="59174027418879706">सक्षम केलेले</translation>
 <translation id="4150201353443180367">डिस्प्ले करा</translation>
 <translation id="2433507940547922241">स्वरूप</translation>

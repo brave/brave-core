@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">在 Brave Together 中与朋友和同事开始无限量通话。</translation>
 <translation id="7115051913071512405">了解详情</translation>
 <translation id="7415602225677446066">完全私密的今日热门新闻，专为您打造。</translation>
-<translation id="8607689491789524900">Brave Today 符合您设备上显示的兴趣，因此您的个人信息永远不会离开浏览器。全天更新新内容。</translation>
+<translation id="6903061332999399632">Brave News 通过在您的设备上提供与您匹配的完全私密且匿名的广告接受广告支持。您的个人信息依据我们的<ph name="LINK_START"/>隐私政策<ph name="LINK_END"/>始终处于保密状态。</translation>
+<translation id="7823038307453615214">显示 Brave News</translation>
+<translation id="780301667611848630">不用了，谢谢</translation>
 <translation id="9164544612367905452">正在提取…</translation>
 <translation id="1276592121036104130">加载新内容</translation>
-<translation id="4210987321913275328">滚动查找 Brave Today</translation>
-<translation id="3122595178900736207">重置 Brave Today 源</translation>
-<translation id="2197023915568148978">是否要将 Brave Today 发布者的所有选项重置为默认设置？</translation>
+<translation id="2875288128871360696">滚动 Brave News</translation>
+<translation id="8510120023634509743">重置 Brave News 源</translation>
+<translation id="75825199302994272">是否要将 Brave News 发布者选项全部重置为默认值？</translation>
 <translation id="954001034349395856">所有源</translation>
 <translation id="8890516388109605451">来源</translation>
 <translation id="5158129253322921540">禁用来自<ph name="PUBLISHER_NAME"/>的内容</translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">已连接</translation>
 <translation id="8030169304546394654">已断开连接</translation>
 <translation id="3149306599361260465">初始化完成比例为 [[percentage]]%</translation>
+<translation id="3258793718986637767">使用 Tor 遇到问题？请尝试<ph name="BEGIN_LINK"/> 禁用 Tor 私密窗口<ph name="END_LINK"/>，然后再次开启。</translation>
 <translation id="4272382368346338917">附加过滤器</translation>
 <translation id="8949292968394988358">警告：开启太多过滤器会降低性能</translation>
 <translation id="8686201964111147748">已拦截的广告和追踪器总数：</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">验证我的钱包</translation>
 <translation id="6609621505400013054">bitFlyer 钱包是由 bitFlyer, Inc.管理的一项服务</translation>
 <translation id="7258399883616914635">通过验证您的钱包并将其连接到 bitFlyer 帐户，您将能够更容易地存储和管理您通过 Brave Rewards 赚到的代币</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>详细了解<ph name="LINK_END"/> 如何将你的 Brave 浏览器与 bitFlyer 账户关联。</translation>
 <translation id="5094577350232361255">关于</translation>
 <translation id="4918086044614829423">接受</translation>
 <translation id="5916290544882167205">Brave Software。Brave 是 Brave Software 的注册商标。网站名称可能是网站所有者的商标或注册商标。</translation>
@@ -741,6 +745,7 @@
 <translation id="1833248467354516560">单价</translation>
 <translation id="4763179765154524864">总消费额</translation>
 <translation id="8851480289992540512">收到的总额</translation>
+<translation id="8624961452383848703">我想兑换...</translation>
 <translation id="616639131065447379">欢迎使用 Brave 加密钱包</translation>
 <translation id="1740464057879304704">加密钱包可以让您处理加密货币和 Brave 中的相关资产。加密钱包支持以太坊代币，如 ETH 和 BAT，以及收藏品，并允许您使用 Ðapp 和其他智能合约。所有这些都是为那些熟悉以太坊和其他区块链系统—或对学习感到兴奋的人准备的。</translation>
 <translation id="4855440621031541830">只有在您接受您独自承担与此项使用相关的所有风险，并且 Brave Software 对任何损失（包括因此项使用而可能遭受的附带或后果性损失）不承担任何责任的情况下，才可使用加密钱包。</translation>
@@ -836,16 +841,17 @@
 <translation id="3741998951694470470">获取待导入的数据失败</translation>
 <translation id="7900950536120202771">IPFS 节点内部错误</translation>
 <translation id="1036635552229153800">数据已成功上传，但未移动到 brave-import 目录。您可以在导入设置页面上手动执行此操作。</translation>
-<translation id="7789840864192026963">授予权限</translation>
-<translation id="7978789143098237970">直到我关闭此页面</translation>
+<translation id="572392919096807438">记住我的决定</translation>
+<translation id="7978789143098237970">知道我关闭这个站点</translation>
 <translation id="3523195733429162409">24 小时</translation>
 <translation id="2373264732659722940">1 周</translation>
 <translation id="6318437367327684789">始终</translation>
-<translation id="7463327191540031132">始终被阻止</translation>
 <translation id="8797999629784150206">你可以随时更改你的 <ph name="SITE_PERMISSIONS"/> 。<ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">网站许可</translation>
 <translation id="7701466644604753106">开启 Speedreader</translation>
 <translation id="763042262431778831">关闭 Speedreader</translation>
+<translation id="1544192797660353713">钱包</translation>
+<translation id="8488282162676695335">Brave 钱包</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -854,4 +860,21 @@
 <translation id="6951743416068151209">Tor 代理 URI</translation>
 <translation id="1671503397662036257">Tor 连接状态</translation>
 <translation id="6024292492796847324">Tor 的初始化进度</translation>
+<translation id="7586151660465233733">访问 <ph name="SITE_NAME"/> 探索更多市场</translation>
+<translation id="952067063131306699">在 FTX 查看市场和交易加密货币</translation>
+<translation id="5963745988819586370">市场</translation>
+<translation id="3795943412467785186">关联 FTX 账户以查看账户余额，查看期货市场以及兑换加密货币。</translation>
+<translation id="926958206891985289">查看期货市场</translation>
+<translation id="6804537228302563756">关联账户</translation>
+<translation id="5019698312620117604">24 小时历史价格</translation>
+<translation id="8720719072204443171">24 小时金额</translation>
+<translation id="3891414008432200754">价格</translation>
+<translation id="7723176927437578611">实收</translation>
+<translation id="2983078329159689577">正在提交...</translation>
+<translation id="6641102760094059194">确认（<ph name="NUMBER_OF_SECONDS_LEFT"/> 秒）</translation>
+<translation id="2280055104463448482">兑换成功！</translation>
+<translation id="7590653073560839711">您必须具有至少一种货币的余额，才能进行兑换。</translation>
+<translation id="4390079506197726228">可兑换 <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">隐藏余额</translation>
+<translation id="4548946945059463969">在屏幕上显示余额</translation>
 </translationbundle>

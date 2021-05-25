@@ -66,12 +66,14 @@
 <translation id="5735801688206890393">Start ubegrensede samtaler med venner og kolleger i Brave Together.</translation>
 <translation id="7115051913071512405">Prøv det</translation>
 <translation id="7415602225677446066">Dagens topphistorier i en helt privat strøm, bare for deg.</translation>
-<translation id="8607689491789524900">Brave Today matcher interessene dine på enheten din slik at personopplysningene dine aldri forlater nettleseren din. Nytt innhold oppdateres gjennom hele dagen.</translation>
+<translation id="6903061332999399632">Brave News er støttet av reklame med fullstendig private og anonymiserte reklamer som samsvarer på enheten din. Din personlige informasjon vil alltid forbli privat, per våre <ph name="LINK_START"/>retningslinjer for personvern<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Vis Brave News</translation>
+<translation id="780301667611848630">Nei takk</translation>
 <translation id="9164544612367905452">Henter ...</translation>
 <translation id="1276592121036104130">Last inn nytt innhold</translation>
-<translation id="4210987321913275328">Skroll for Brave Today</translation>
-<translation id="3122595178900736207">Resett Brave Today-kilder</translation>
-<translation id="2197023915568148978">Still alle Brave Today-utgiveranbefalinger tilbake til sine standardverdier?</translation>
+<translation id="2875288128871360696">Bla for Brave News</translation>
+<translation id="8510120023634509743">Tilbakestill Brave News-kilder</translation>
+<translation id="75825199302994272">Vil du tilbakestille alle valgene dine for Brave News-utgivere til standard?</translation>
 <translation id="954001034349395856">Alle kilder</translation>
 <translation id="8890516388109605451">Kilder</translation>
 <translation id="5158129253322921540">Deaktiver innhold fra <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Tilkoblet</translation>
 <translation id="8030169304546394654">Koblet fra</translation>
 <translation id="3149306599361260465">Starter [[percentage]]%</translation>
+<translation id="3258793718986637767">Har du problemer med Tor? Prøv å <ph name="BEGIN_LINK"/>deaktivere et privat vindu med Tor<ph name="END_LINK"/> og skru det på igjen.</translation>
 <translation id="4272382368346338917">Tilleggsfiltre</translation>
 <translation id="8949292968394988358">Advarsel: For mange filtre vil redusere ytelsen</translation>
 <translation id="8686201964111147748">Totalt antall blokkerte annonser og sporingskapsler:</translation>
@@ -365,6 +368,7 @@
 <translation id="5468234114288973517">Bekreft lommeboken min</translation>
 <translation id="6609621505400013054">BitFlyer-lommeboken er en tjeneste som administreres av bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Ved å bekrefte lommeboken din og knytte den til en bitFlyer-konto, vil du lettere kunne lagre og administrere tokener du har tjent gjennom Brave Rewards.</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Finn ut mer<ph name="LINK_END"/> om hvordan du knytter Brave-nettleseren din til bitFlyer-kontoen din.</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Aksepter</translation>
 <translation id="5916290544882167205">Brave Software. Brave er et registrert varemerke for Brave Software. Navn på nettsteder kan være varemerker eller registrerte varemerker for eieren av det aktuelle nettstedet.</translation>
@@ -703,6 +707,7 @@
 <translation id="1833248467354516560">Enhetspris</translation>
 <translation id="4763179765154524864">Totalt brukt</translation>
 <translation id="8851480289992540512">Mottatt totalt</translation>
+<translation id="8624961452383848703">Jeg vil konvertere ...</translation>
 <translation id="616639131065447379">Velkommen til Braves kryptolommebok</translation>
 <translation id="1740464057879304704">Kryptolommeboken lar deg jobbe med kryptovaluta og relaterte aktiva i Brave. Kryptolommeboken støtter både Ethereum-tokener som ETH og BAT og samleobjekter, og lar deg jobbe med Ðapper og andre smartkontrakter. Alt dette er ment for folk som er kjent med Ethereum og andre blokkjedesystemer, — eller er ivrige etter å lære.</translation>
 <translation id="4855440621031541830">Bruk kryptolommebøker kun hvis du aksepterer at du ene og alene er ansvarlig for all risk assosiert med bruken av disse, og at Brave-programvaren bærer intet ansvar for tap, enten tilfeldig eller som følge av bruken av disse.</translation>
@@ -798,16 +803,17 @@
 <translation id="3741998951694470470">Kunne ikke hente data for import</translation>
 <translation id="7900950536120202771">Intern feil i IPFS-node</translation>
 <translation id="1036635552229153800">Dataene ble lastet opp, men ble ikke flyttet til katalogen for Brave-import. Du kan gjøre dette manuelt på siden for importinnstillinger.</translation>
-<translation id="7789840864192026963">Gi tillatelse</translation>
-<translation id="7978789143098237970">til jeg lukker denne siden</translation>
+<translation id="572392919096807438">Husk avgjørelsen</translation>
+<translation id="7978789143098237970">inntil jeg lukker denne siden</translation>
 <translation id="3523195733429162409">i 24 timer</translation>
 <translation id="2373264732659722940">i én uke</translation>
 <translation id="6318437367327684789">for alltid</translation>
-<translation id="7463327191540031132">Blokker for alltid</translation>
 <translation id="8797999629784150206">Du kan når som helst endre <ph name="SITE_PERMISSIONS"/> dine. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">nettstedstillatelse</translation>
 <translation id="7701466644604753106">Slå PÅ Hurtigleser</translation>
 <translation id="763042262431778831">Slå AV Hurtigleser</translation>
+<translation id="1544192797660353713">Lommebok</translation>
+<translation id="8488282162676695335">Brave-lommebok</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="3745016858329272300">Generell informasjon</translation>
 <translation id="3662406032239313663">Logger</translation>
@@ -817,4 +823,21 @@
 <translation id="6951743416068151209">Tor-mellomtjener-URI</translation>
 <translation id="1671503397662036257">Tor-tilkoblingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialiseringsprosess</translation>
+<translation id="7586151660465233733">Flere markeder på <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Se markeder og handle krypto på FTX</translation>
+<translation id="5963745988819586370">Markeder</translation>
+<translation id="3795943412467785186">Koble til FTX-kontoen for å se kontosaldo, utforske fremtidige markeder, og konvertere krypto.</translation>
+<translation id="926958206891985289">Vis fremtidige markeder</translation>
+<translation id="6804537228302563756">Koble til konto</translation>
+<translation id="5019698312620117604">24-timers prishistorikk</translation>
+<translation id="8720719072204443171">24-timers volum</translation>
+<translation id="3891414008432200754">Pris</translation>
+<translation id="7723176927437578611">Inntekter</translation>
+<translation id="2983078329159689577">Sender inn ...</translation>
+<translation id="6641102760094059194">Bekreft (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Konvertering utført!</translation>
+<translation id="7590653073560839711">Du trenger en saldo med minst én valuta for å kunne utføre en konvertering.</translation>
+<translation id="4390079506197726228">Tilgjengelig <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
+<translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 </translationbundle>

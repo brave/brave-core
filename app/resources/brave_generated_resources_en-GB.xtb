@@ -69,15 +69,19 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="4227945450504703638">Selected audio</translation>
 <translation id="7895302206188277628">Linked content</translation>
 <translation id="4322612543319315652">Import Selected text to IPFS</translation>
+<translation id="8883166554766780543">Import and copy link to IPFS snapshot</translation>
+<translation id="3654831858282189202">Publish with IPNS key</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">New Private Window with Tor</translation>
 <translation id="4703780849509456860">Open Link in Private Window with Tor</translation>
 <translation id="3488584642074079080">Open Link in Brave Private Window with Tor</translation>
 <translation id="7475547933708221517">Share Local File Using IPFS</translation>
+<translation id="2286177249736199435">Share local folder using IPFS</translation>
 <translation id="784573715436258741">Share local file using IPFS</translation>
 <translation id="6313675821927505581">New private window with Tor</translation>
 <translation id="2638041073279639246">Open link in private window with Tor</translation>
 <translation id="3425600262621021599">Open link in Brave private window with Tor</translation>
+<translation id="575838692088926391">Share local folder using IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads Service</translation>
 <translation id="7924918279836988121">Bat Ledger Service</translation>
@@ -157,7 +161,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="4112587618563511470">Invalid sync code, please check and try again.</translation>
 <translation id="2339730291919608488">Leave Sync Chain</translation>
 <translation id="115699408012835975">If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?</translation>
-<translation id="6092564993102418148">Are you sure you want to delete selected device from sync chain?</translation>
+<translation id="6092564993102418148">Are you sure you want to remove the selected device from the sync chain?</translation>
 <translation id="3396347744975515056">Brave Sync has been upgraded and requires setup</translation>
 <translation id="7473245612074035141">Begin Setup</translation>
 <translation id="3411013544209536575">Help tips</translation>
@@ -177,10 +181,23 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="7090046810227878892">Ethereum provider for using Dapps</translation>
 <translation id="5913089932885076110">Load Crypto Wallets on start-up</translation>
 <translation id="757886143331967039">Load deprecated Crypto Wallets extension on startup</translation>
+<translation id="1834467296210148203">Show Brave wallet icon on toolbar</translation>
 <translation id="6864914031231797928">Allow Google login for extensions</translation>
 <translation id="5927916530277631319">Method to resolve Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> about DNS over HTTPS and Ethereum privacy considerations.</translation>
 <translation id="5248318250177143470">Method to resolve Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Set up your IPNS keys</translation>
+<translation id="951216659045543447">Sign content by the corresponding private key and publish it to IPNS</translation>
+<translation id="7611728475758612204">Keys available for publishing</translation>
+<translation id="911363100236037920">Enter a name for the new key</translation>
+<translation id="6358469157239228181">This name cannot be used</translation>
+<translation id="8996633027318264334">Do you really want to delete <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Node is not launched</translation>
+<translation id="616058968889448209">IPFS service launch error, more information is available on the <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' key import failed</translation>
+<translation id="8275038454117074363">Import</translation>
+<translation id="3654980960391973513">Generate</translation>
+<translation id="5531501313997312487">Start node</translation>
 <translation id="9170907049676078643">Method to resolve IPFS resources</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Local node</translation>
@@ -260,7 +277,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="1391855377994926460">Keep browsing the web faster - up to 6x faster on major news sites.</translation>
 <translation id="9218430445555521422">Set as default</translation>
 <translation id="3479552764303398839">Not now</translation>
+<translation id="6040143037577758943">Close</translation>
+<translation id="5600566490506283344">Brave ad notification</translation>
 <translation id="4877147287319222750">Add to sidebar</translation>
+<translation id="4233010476457917696">Show sidebar</translation>
 <translation id="5404213409401164238">Show sidebar</translation>
 <translation id="7561196759112975576">Always</translation>
 <translation id="7060352228894039151">On mouseover</translation>

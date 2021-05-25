@@ -103,15 +103,19 @@ Binance
 <translation id="4227945450504703638">चुना गया ऑडियो</translation>
 <translation id="7895302206188277628">लिंक किया गया कंटेंट</translation>
 <translation id="4322612543319315652">चुने गए टेक्स्ट IPFS में इम्पोर्ट करें</translation>
+<translation id="8883166554766780543">IPFS स्नैपशॉट के लिए लिंक इम्पोर्ट और कॉपी करें</translation>
+<translation id="3654831858282189202">IPNS की के साथ प्रकाशित करें</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="7475547933708221517">IPFS का इस्तेमाल करके लोकल फ़ाइल शेयर करें</translation>
+<translation id="2286177249736199435">IPFS का इस्तेमाल करके लोकल फ़ोल्डर शेयर करें</translation>
 <translation id="784573715436258741">IPFS का इस्तेमाल करके लोकल फ़ाइल शेयर करें</translation>
 <translation id="6313675821927505581">Tor के साथ नई प्राइवेट विंडो</translation>
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
+<translation id="575838692088926391">IPFS का इस्तेमाल करके लोकल फ़ोल्डर शेयर करें</translation>
 <translation id="5410152065859052603">टोर</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="7924918279836988121">Bat खाता सेवाएं</translation>
@@ -191,7 +195,7 @@ Binance
 <translation id="4112587618563511470">अमान्य सिंक कोड, कृपया जाँच करें और पुनः प्रयास करें।</translation>
 <translation id="2339730291919608488">सिंक चेन छोड़ें</translation>
 <translation id="115699408012835975">यदि आप सिंक रिसेट करते हैं, तो आपको इसके साथ सिंक करने के लिए किसी अन्य डिवाइस से सिंक कोड को फ़िर से दर्ज करना होगा। क्या आप वाकई आगे बढ़ना चाहते हैं?</translation>
-<translation id="6092564993102418148">क्या आप वाकई चयनित डिवाइस को सिंक चेन से हटाना चाहते हैं?</translation>
+<translation id="6092564993102418148">क्या आप वाकई में चुने गए डिवाइस को सिंक चेन से हटाना चाहते हैं?</translation>
 <translation id="3396347744975515056">Brave सिंक को अपग्रेड किया गया है और सेटअप की आवश्यकता है</translation>
 <translation id="7473245612074035141">सेटअप शुरू करें</translation>
 <translation id="3411013544209536575">सहायक सुझाव</translation>
@@ -211,10 +215,23 @@ Binance
 <translation id="7090046810227878892">Dapps का उपयोग करने के लिए एथेरियम प्रदाता</translation>
 <translation id="5913089932885076110">शुरुआत में क्रिप्टो वॉलेट लोड करें</translation>
 <translation id="757886143331967039">स्टार्टअप पर डेप्रीकेटेड क्रिप्टो वॉलेट के एक्सटेंशन लोड करें</translation>
+<translation id="1834467296210148203">टूलबार पर Brave वॉलेट आइकन दिखाएं</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
 <translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
 <translation id="8412057160793088103">HTTPS और Ethereum गोपनीयता विचारों पर DNS के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
 <translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
+<translation id="7024553202001112871">IPNS की सेट अप करें</translation>
+<translation id="951216659045543447">संबंधित निजी की द्वारा कंटेंट पर साइन करें और इसे IPNS पर प्रकाशित करें</translation>
+<translation id="7611728475758612204">प्रकाशन के लिए उपलब्ध की</translation>
+<translation id="911363100236037920">नई की के लिए नया नाम एंटर करें</translation>
+<translation id="6358469157239228181">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
+<translation id="8996633027318264334">क्या आप वाकई <ph name="KEY_NAME"/> हटाना चाहते हैं?</translation>
+<translation id="910215077892371264">नोड लांच नहीं किया गया</translation>
+<translation id="616058968889448209">IPFS सेवा लॉन्च गड़बड़ी, पर अधिक जानकारी उपलब्ध है।<ph name="BEGIN_LINK"/>निदान पेज<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
+<translation id="8275038454117074363">आयात करें</translation>
+<translation id="3654980960391973513">जेनरेट करें</translation>
+<translation id="5531501313997312487">स्टार्ट नोड</translation>
 <translation id="9170907049676078643">IPFS संसाधनों को सुलझाने की विधि</translation>
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="80225669816651290">लोकल नोड</translation>
@@ -294,7 +311,10 @@ Binance
 <translation id="1391855377994926460">वेब तेज़ी से ब्राउज़ करना जारी रखें - प्रमुख समाचार साइटों पर 6 गुना तेज़ी से.</translation>
 <translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
+<translation id="6040143037577758943">बंद करें</translation>
+<translation id="5600566490506283344">Brave विज्ञापन नोटिफ़िकेशन</translation>
 <translation id="4877147287319222750">साइडबार में जोड़ें</translation>
+<translation id="4233010476457917696">साइडबार दिखाएं</translation>
 <translation id="5404213409401164238">साइडबार दिखाएं</translation>
 <translation id="7561196759112975576">हमेशा</translation>
 <translation id="7060352228894039151">माउसओवर पर</translation>

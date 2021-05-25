@@ -171,17 +171,13 @@
     "message": "變更全域防護預設值",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "透過選取器封鎖元素",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "管理自訂過濾器",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "進入元素選擇器模式",
-    "description": "Message for context menu that enables the element picker UI on the page."
+    "message": "封鎖元素",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "進階檢視",

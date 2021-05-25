@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Mulakan panggilan tanpa had dengan rakan-rakan dan rakan sekerja dalam Brave Together.</translation>
 <translation id="7115051913071512405">Cubalah ia</translation>
 <translation id="7415602225677446066">Cerita terhangat hari ini dalam suapan yang peribadi sepenuhnya, hanya untuk anda.</translation>
-<translation id="8607689491789524900">Brave Today memadankan minat anda kepada peranti anda jadi maklumat peribadi anda tidak akan meninggalkan pelayar anda. Kandungan baharu dikemas kini sepanjang hari.</translation>
+<translation id="6903061332999399632">Brave News disokong oleh iklan dengan iklan yang sepenuhnya peribadi dan tanpa nama dipadankan pada peranti anda. Maklumat peribadi anda sentiasa dirahsiakan, menurut <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/> kami.</translation>
+<translation id="7823038307453615214">Tunjukkan Brave News</translation>
+<translation id="780301667611848630">Tidak, terima kasih</translation>
 <translation id="9164544612367905452">Mendapatkan…</translation>
 <translation id="1276592121036104130">Muatkan kandungan baharu</translation>
-<translation id="4210987321913275328">Tatal untuk Brave Today</translation>
-<translation id="3122595178900736207">Tetapkan semula sumber Brave Today</translation>
-<translation id="2197023915568148978">Tetapkan semula semua pilihan penerbit Brave Today kepada pilihan lalai mereka?</translation>
+<translation id="2875288128871360696">Tatal untuk Brave News</translation>
+<translation id="8510120023634509743">Tetapkan semula sumber Brave News</translation>
+<translation id="75825199302994272">Tetapkan semula semua pilihan penerbit Brave News kepada pilihan lalainya?</translation>
 <translation id="954001034349395856">Semua sumber</translation>
 <translation id="8890516388109605451">Sumber</translation>
 <translation id="5158129253322921540">Nyahdayakan kandungan daripada <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Disambungkan</translation>
 <translation id="8030169304546394654">Sambungan Terputus</translation>
 <translation id="3149306599361260465">Memulakan [[percentage]]%</translation>
+<translation id="3258793718986637767">Mengalami masalah dengan Tor? Cuba <ph name="BEGIN_LINK"/>menyahdayakan tetingkap peribadi dengan Tor<ph name="END_LINK"/> dan menghidupkannya semula.</translation>
 <translation id="4272382368346338917">Penapis Tambahan</translation>
 <translation id="8949292968394988358">Amaran: Menghidupkan terlalu banyak penapis akan menjejaskan prestasi</translation>
 <translation id="8686201964111147748">Jumlah iklan dan penjejak yang disekat:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Sahkan dompet saya</translation>
 <translation id="6609621505400013054">Dompet bitFlyer adalah perkhidmatan yang diuruskan oleh bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Dengan mengesahkan dompet anda dan memautkannya ke akaun bitFlyer, anda akan dapat menyimpan dan menguruskan token yang anda peroleh melalui Brave Rewards dengan lebih mudah</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/> mengenai cara memautkan pelayar Brave anda dengan akaun bitFlyer anda.</translation>
 <translation id="5094577350232361255">tentang</translation>
 <translation id="4918086044614829423">Terima</translation>
 <translation id="5916290544882167205">Brave Software. Brave adalah tanda dagangan berdaftar Brave Software. Nama tapak boleh menjadi tanda dagangan atau tanda dagangan berdaftar pemilik tapak.</translation>
@@ -741,6 +745,7 @@ Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph na
 <translation id="1833248467354516560">Harga Unit</translation>
 <translation id="4763179765154524864">Jumlah Dibelanjakan</translation>
 <translation id="8851480289992540512">Jumlah diterima</translation>
+<translation id="8624961452383848703">Saya mahu menukar…</translation>
 <translation id="616639131065447379">Selamat datang ke Dompet Kripto Brave</translation>
 <translation id="1740464057879304704">Dompet Kripto membolehkan anda bekerja dengan mata wang kripto dan aset-aset yang berkaitan di Brave. Dompet Kripto menyokong token Ethereum seperti ETH dan BAT, dan juga barangan koleksi, dan membolehkan anda bekerja dengan Ðaplikasi dan kontrak-kontrak pintar yang lain. Semua ini adalah untuk mereka yang mengenali Ethereum dan sistem-sistem rangkaian sekatan yang lain — atau teruja untuk belajar.</translation>
 <translation id="4855440621031541830">Hanya guna Dompet Kripto sekiranya anda menerima bahawa anda sendiri bertanggungjawab ke atas segala risiko yang berkaitan dengan penggunaan ini, dan bahawa Perisian Brave tidak akan memikul tanggungjawab mahupun liabiliti ke atas sebarang kerugian ketika kerugian kebetulan atau akibat yang anda mungkin akan alami akibat penggunaan ini.</translation>
@@ -836,16 +841,17 @@ Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph na
 <translation id="3741998951694470470">Gagal mengambil data untuk import</translation>
 <translation id="7900950536120202771">Ralat dalaman nod IPFS</translation>
 <translation id="1036635552229153800">Data berjaya dimuat naik tetapi tidak dialihkan ke direktori import-brave. Anda boleh melakukan ini secara manual di halaman tetapan import.</translation>
-<translation id="7789840864192026963">Memberi kebenaran</translation>
-<translation id="7978789143098237970">sehingga saya menutup halaman ini</translation>
+<translation id="572392919096807438">Ingat keputusan saya</translation>
+<translation id="7978789143098237970">sehingga saya menutup tapak ini</translation>
 <translation id="3523195733429162409">untuk 24 jam</translation>
 <translation id="2373264732659722940">untuk 1 minggu</translation>
 <translation id="6318437367327684789">secara kekal</translation>
-<translation id="7463327191540031132">Menyekat secara kekal</translation>
 <translation id="8797999629784150206">Anda boleh menukar <ph name="SITE_PERMISSIONS"/> anda pada bila-bila masa sahaja. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">kebenaran laman web</translation>
 <translation id="7701466644604753106">HIDUPKAN Pembaca Kelajuan</translation>
 <translation id="763042262431778831">MATIKAN Pembaca Kelajuan</translation>
+<translation id="1544192797660353713">Dompet</translation>
+<translation id="8488282162676695335">Dompet Brave</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>
@@ -854,4 +860,21 @@ Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph na
 <translation id="6951743416068151209">URI Proksi Tor</translation>
 <translation id="1671503397662036257">Status Sambungan Tor</translation>
 <translation id="6024292492796847324">Kemajuan Permulaan Tor</translation>
+<translation id="7586151660465233733">Lebih banyak pasaran di <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Lihat pasaran dan dagang kripto di FTX</translation>
+<translation id="5963745988819586370">Pasaran</translation>
+<translation id="3795943412467785186">Sambungkan akaun FTX untuk melihat baki akaun, meneroka pasaran hadapan, &amp; menukar kripto.</translation>
+<translation id="926958206891985289">Lihat Pasaran Hadapan</translation>
+<translation id="6804537228302563756">Sambungkan Akaun</translation>
+<translation id="5019698312620117604">Sejarah harga 24 jam</translation>
+<translation id="8720719072204443171">Jumlah 24 jam</translation>
+<translation id="3891414008432200754">Harga</translation>
+<translation id="7723176927437578611">Hasil</translation>
+<translation id="2983078329159689577">Menyerahkan...</translation>
+<translation id="6641102760094059194">Sahkan (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Penukaran Berjaya</translation>
+<translation id="7590653073560839711">Anda memerlukan baki sekurang-kurangnya satu mata wang untuk melakukan penukaran.</translation>
+<translation id="4390079506197726228">Tersedia <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
+<translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 </translationbundle>

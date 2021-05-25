@@ -819,6 +819,18 @@
     "message": "Ved å bekrefte lommeboken din og knytte den til en bitFlyer-konto, vil du lettere kunne lagre og administrere tokener du har tjent gjennom Brave Rewards.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Finn ut mer$link_end$ om hvordan du knytter Brave-nettleseren din til bitFlyer-kontoen din.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards i Japan bytter nå til et nytt system!",
     "description": "Header text for BAP deprecation warning message"

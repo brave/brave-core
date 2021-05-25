@@ -69,15 +69,19 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4227945450504703638">Odabrani zvuk</translation>
 <translation id="7895302206188277628">Povezani sadržaj</translation>
 <translation id="4322612543319315652">Uvezi odabrani tekst u IPFS</translation>
+<translation id="8883166554766780543">Uvesti i kopirati link na IPFS snimak</translation>
+<translation id="3654831858282189202">Objaviti sa IPNS ključem</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Novi privatni prozor sa Tor-om</translation>
 <translation id="4703780849509456860">Otvorite vezu u privatnom prozoru sa Tor-om</translation>
 <translation id="3488584642074079080">Otvorite vezu u Brejv privatnom Vinousu sa Torom</translation>
 <translation id="7475547933708221517">Podeli lokalnu datoteku IPFS-om</translation>
+<translation id="2286177249736199435">Podeliti lokalnu datoteku IPFS-om</translation>
 <translation id="784573715436258741">Podeli lokalnu datoteku IPFS-om</translation>
 <translation id="6313675821927505581">Novi privatni prozor sa Tor-om</translation>
 <translation id="2638041073279639246">Otvori vezu u privatnom prozoru sa Tor-om</translation>
 <translation id="3425600262621021599">Otvori vezu u Brave privatnom prozoru sa Tor-om</translation>
+<translation id="575838692088926391">Podeliti lokalnu datoteku IPFS-om</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads usluga</translation>
 <translation id="7924918279836988121">Usluga knjiženja BAT</translation>
@@ -177,10 +181,23 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="7090046810227878892">Ethereum provajder za korišćenje Dapps-a</translation>
 <translation id="5913089932885076110">Učitajte kripto novčanike pri pokretanju</translation>
 <translation id="757886143331967039">Učitajte pri pokretanju zastarelo proširenje kripto novčanika</translation>
+<translation id="1834467296210148203">Prikazati ikonicu Brave novčanika na traci sa alatkama</translation>
 <translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
 <translation id="5927916530277631319">Metod za razrešavanje Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o razmatranjima privatnosti  DNS-a putem HTTPS-a i Ethereuma.</translation>
 <translation id="5248318250177143470">Metod za razrešavanje Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Postavite vaše IPNS ključeve</translation>
+<translation id="951216659045543447">Potpišite sadržaj odgovarajućim privatnim ključem i objavite ga na IPNS</translation>
+<translation id="7611728475758612204">Dostupni ključevi za objavu</translation>
+<translation id="911363100236037920">Unesite naziv za novi ključ</translation>
+<translation id="6358469157239228181">Ovaj naziv ne može da se koristi</translation>
+<translation id="8996633027318264334">Da li zaista želite da izbrišete <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Čvor nije pokrenut</translation>
+<translation id="616058968889448209">Greška u pokretanju IPFS servisa, više informacija je dostupno na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Uvoz ključa '<ph name="KEY_NAME"/>' nije uspeo</translation>
+<translation id="8275038454117074363">Uvoz</translation>
+<translation id="3654980960391973513">Generisati</translation>
+<translation id="5531501313997312487">Pokrenuti čvor</translation>
 <translation id="9170907049676078643">Metoda za rešavanje IPFS resursa</translation>
 <translation id="1327977588028644528">Мрежни пролаз</translation>
 <translation id="80225669816651290">Lokalni čvor</translation>
@@ -260,7 +277,10 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1391855377994926460">Nastavite brže pregledavati mrežu – do 6 puta brže na velikim novinskim stranicama.</translation>
 <translation id="9218430445555521422">Подеси као подразумеван</translation>
 <translation id="3479552764303398839">Не сада</translation>
+<translation id="6040143037577758943">Затвори</translation>
+<translation id="5600566490506283344">Brave Ad obaveštenje</translation>
 <translation id="4877147287319222750">Dodaj bočnoj traci</translation>
+<translation id="4233010476457917696">Prikazati bočnu traku</translation>
 <translation id="5404213409401164238">Prikaži bočnu traku</translation>
 <translation id="7561196759112975576">Uvek</translation>
 <translation id="7060352228894039151">Pri prelasku mišem</translation>

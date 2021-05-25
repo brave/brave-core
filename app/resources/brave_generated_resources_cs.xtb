@@ -69,15 +69,19 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4227945450504703638">Vybrané audio</translation>
 <translation id="7895302206188277628">Související obsah</translation>
 <translation id="4322612543319315652">Importovat vybraný text do IPFS</translation>
+<translation id="8883166554766780543">Importovat a kopírovat odkaz do snímku IPFS</translation>
+<translation id="3654831858282189202">Zveřejnit s klíčem IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nové soukromé okno v prohlížeči Tor</translation>
 <translation id="4703780849509456860">Otevřít odkaz v soukromém okně prohlížeče Tor</translation>
 <translation id="3488584642074079080">Otevřít odkaz v soukromém oknu Brave pomocí prohlížeče Tor</translation>
 <translation id="7475547933708221517">Sdílet místní soubor pomocí IPFS</translation>
+<translation id="2286177249736199435">Sdílet místní složku pomocí IPFS</translation>
 <translation id="784573715436258741">Sdílet místní soubor pomocí IPFS</translation>
 <translation id="6313675821927505581">Nové soukromé okno přes Tor</translation>
 <translation id="2638041073279639246">Otevřít odkaz v soukromém okně přes Tor</translation>
 <translation id="3425600262621021599">Otevřít odkaz v soukromém okně Brave přes Tor</translation>
+<translation id="575838692088926391">Sdílet místní složku pomocí IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Služba reklam BAT</translation>
 <translation id="7924918279836988121">Služba účetní knihy Bat</translation>
@@ -157,7 +161,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4112587618563511470">Nesprávný synchronizační kód, prosím zkontrolujte správnost a zkuste synchronizaci znovu.</translation>
 <translation id="2339730291919608488">Opustit synchronizační skupinu</translation>
 <translation id="115699408012835975">Pokud resetujete synchronizaci, budete muset opětovně zadat synchronizační kód z jiného zařízení, abyste s ním provedli synchronizaci. Opravdu chcete pokračovat?</translation>
-<translation id="6092564993102418148">Opravdu chcete zvolené zařízení odstranit ze synchronizačního řetězce?</translation>
+<translation id="6092564993102418148">Jste si jisti, že chcete odstranit zvolené zařízení z řetězce synchronizace?</translation>
 <translation id="3396347744975515056">Brave synchronizace byla aktualizována a vyžaduje nové nastavení</translation>
 <translation id="7473245612074035141">Začít nastavení</translation>
 <translation id="3411013544209536575">Asistenční tipy</translation>
@@ -177,10 +181,23 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="7090046810227878892">Poskytovatel Etherea pro používání Dapps</translation>
 <translation id="5913089932885076110">Načíst Kryptopeněženky při zapnutí</translation>
 <translation id="757886143331967039">Načíst rozšíření pro zastaralé krypto peněženky při spuštění</translation>
+<translation id="1834467296210148203">Zobrazit ikonu peněženky Brave na liště nástrojů</translation>
 <translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Googlu</translation>
 <translation id="5927916530277631319">Způsob řešení služby Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/> o ochraně osobních údajů pomocí protokolu DNS přes HTTPS a Ethereum.</translation>
 <translation id="5248318250177143470">Způsob řešení služby ENS (Ethereum Name Service)</translation>
+<translation id="7024553202001112871">Nastavit vaše klíče IPNS</translation>
+<translation id="951216659045543447">Podepsat obsah odpovídajícím soukromým klíčem a zveřejnit jej na IPNS</translation>
+<translation id="7611728475758612204">Klíče dostupné ke zveřejnění</translation>
+<translation id="911363100236037920">Zadejte název nového klíče</translation>
+<translation id="6358469157239228181">Tento název nelze použít</translation>
+<translation id="8996633027318264334">Opravdu chcete odstranit <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Uzel není spuštěn</translation>
+<translation id="616058968889448209">Chyba spuštění služby IPFS, více informací je dostupných na <ph name="BEGIN_LINK"/>stránce diagnostiky<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Import klíče '<ph name="KEY_NAME"/>' se nezdařil</translation>
+<translation id="8275038454117074363">Nahrát</translation>
+<translation id="3654980960391973513">Generovat</translation>
+<translation id="5531501313997312487">Výchozí uzel</translation>
 <translation id="9170907049676078643">Metoda řešení prostředků IPFS</translation>
 <translation id="1327977588028644528">Brána</translation>
 <translation id="80225669816651290">Lokální uzel</translation>
@@ -260,7 +277,10 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1391855377994926460">Procházejte web tak rychle i nadále – na hlavních zpravodajských webech až 6krát rychleji.</translation>
 <translation id="9218430445555521422">Nastavit jako výchozí</translation>
 <translation id="3479552764303398839">Teď ne</translation>
+<translation id="6040143037577758943">Zavřít</translation>
+<translation id="5600566490506283344">Upozornění na reklamu Brave</translation>
 <translation id="4877147287319222750">Přidat na postranní panel</translation>
+<translation id="4233010476457917696">Zobrazit postranní lištu</translation>
 <translation id="5404213409401164238">Zobrazit postranní panel</translation>
 <translation id="7561196759112975576">Vždy</translation>
 <translation id="7060352228894039151">Po přejetí myší</translation>

@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Починайте дзвонити друзям та колегам без обмежень у Brave Together.</translation>
 <translation id="7115051913071512405">Спробуйте</translation>
 <translation id="7415602225677446066">Найпопулярніші сьогоднішні історії в абсолютно приватній стрічці, тільки для вас.</translation>
-<translation id="8607689491789524900">Brave Today враховує ваші інтереси на вашому пристрої, тому ваша особиста інформація ніколи не вийде за межі браузера. Новий контент з'являється протягом дня.</translation>
+<translation id="6903061332999399632">Brave News підтримує рекламу з повністю приватними й анонімними оголошеннями, підібраними для вашого пристрою. Ваша особиста інформація завжди залишається конфіденційною, згідно з нашою <ph name="LINK_START"/>Політикою конфіденційності<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Показати Brave News</translation>
+<translation id="780301667611848630">Ні, дякую</translation>
 <translation id="9164544612367905452">Отримуємо контент…</translation>
 <translation id="1276592121036104130">Завантажити новий контент</translation>
-<translation id="4210987321913275328">Прокрутіть у Brave Today</translation>
-<translation id="3122595178900736207">Скинути джерела Brave Today</translation>
-<translation id="2197023915568148978">Скинути усі ваші налаштування видавця в Brave Today до їхніх стандартних значень?</translation>
+<translation id="2875288128871360696">Прокрутити Brave News</translation>
+<translation id="8510120023634509743">Скинути джерела Brave News</translation>
+<translation id="75825199302994272">Скинути всі ваші налаштування дописувача в Brave News до їхніх стандартних значень?</translation>
 <translation id="954001034349395856">Усі джерела</translation>
 <translation id="8890516388109605451">Джерела</translation>
 <translation id="5158129253322921540">Відключити контент <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Підключено</translation>
 <translation id="8030169304546394654">Від'єднано</translation>
 <translation id="3149306599361260465">Ініціалізація: [[percentage]] %</translation>
+<translation id="3258793718986637767">Виникли проблеми з Tor? Спробуйте<ph name="BEGIN_LINK"/>відключити конфіденційне вікно з Tor<ph name="END_LINK"/> і потім знову включити його.</translation>
 <translation id="4272382368346338917">Додаткові фільтри</translation>
 <translation id="8949292968394988358">Увага: увімкнення надто великої кількості фільтрів знижує продуктивність</translation>
 <translation id="8686201964111147748">Загальна кількість заблокованих реклам та відстежувачів:</translation>
@@ -341,8 +344,8 @@
 <translation id="4622723187300249546">Одноразові чайові</translation>
 <translation id="5268142130226208198">Розмір одноразових чайових:</translation>
 <translation id="3669086939205397942">Зачекайте, ви ще не можете давати чайові</translation>
-<translation id="3288812755711687300">Публікація <ph name="USER"/>’s</translation>
-<translation id="5851002232791947896">Твіт <ph name="USER"/>’s</translation>
+<translation id="3288812755711687300">Публікація користувача <ph name="USER"/></translation>
+<translation id="5851002232791947896">Твіт користувача <ph name="USER"/></translation>
 <translation id="5531915212947569943">Шкода, що ви нас залишаєте…</translation>
 <translation id="1420756770787071946">Підтримати цього творця</translation>
 <translation id="3271043362279673449">Дякуємо за підтримку!</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Верифікувати мій гаманець</translation>
 <translation id="6609621505400013054">Гаманець bitFlyer — це сервіс, роботою якого керує компанія bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Виконавши верифікацію гаманця і прив’язавши його до облікового запису bitFlyer, ви зможете зберігати зароблені за допомогою Винагород Brave токени і керувати ними в більш простий спосіб.</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Дізнайтеся детальніше<ph name="LINK_END"/>, як зв’язати браузер Brave з вашим обліковим записом bitFlyer.</translation>
 <translation id="5094577350232361255">про</translation>
 <translation id="4918086044614829423">Прийняти</translation>
 <translation id="5916290544882167205">Brave Software. Brave - це зареєстрований знак для товарів та послуг Brave Software. Назви сайтів можуть бути торговими марками або зареєстрованими знаками для товарів та послуг власника сайту.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Ціна одиниці</translation>
 <translation id="4763179765154524864">Усього витрачено</translation>
 <translation id="8851480289992540512">Усього отримано</translation>
+<translation id="8624961452383848703">Я хочу обміняти…</translation>
 <translation id="616639131065447379">Ласкаво просимо до Криптогаманців Brave</translation>
 <translation id="1740464057879304704">Криптогаманці дозволяють вам працювати з криптовалютою та відповідними активами в Brave. Криптогаманці підтримують токени Ethereum, такі як ETH та BAT, а також колекційні матеріали, та дозволяють вам працювати з Ðпрограмами та іншими смарт-контрактами. Все це призначене для людей, які знайомі з Ethereum та іншими блокчейн-системами — або хочуть цьому навчитися.</translation>
 <translation id="4855440621031541830">Користуйтеся криптовалютами лише в разі, коли ви повністю приймаєте відповідальність за всі ризики, пов'язані з таким використанням, і погоджуєтеся, що Brave Software не несе відповідальності за будь-які збитки, включаючи випадкові або наслідкові втрати, які ви можете зазнати в результаті цього використання.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Не вдалося отримати дані для імпорту</translation>
 <translation id="7900950536120202771">Внутрішня помилка IPFS-вузла</translation>
 <translation id="1036635552229153800">Дані були успішно завантажені, але не переміщені в каталог brave-import. Це можна зробити вручну на сторінці налаштувань імпорту.</translation>
-<translation id="7789840864192026963">Надати дозвіл</translation>
+<translation id="572392919096807438">Запам’ятати моє рішення</translation>
 <translation id="7978789143098237970">поки я не закрию цю сторінку</translation>
 <translation id="3523195733429162409">на 24 години</translation>
 <translation id="2373264732659722940">на 1 тиждень</translation>
 <translation id="6318437367327684789">назавжди</translation>
-<translation id="7463327191540031132">Заблокувати назавжди</translation>
 <translation id="8797999629784150206">Ви можете змінити ваші <ph name="SITE_PERMISSIONS"/> у будь-який час. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">дозволи сайту</translation>
 <translation id="7701466644604753106">УВІМКНУТИ Speedreader</translation>
 <translation id="763042262431778831">ВИМКНУТИ Speedreader</translation>
+<translation id="1544192797660353713">Гаманець</translation>
+<translation id="8488282162676695335">Гаманець Brave</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Загальна інформація</translation>
 <translation id="4045404575593562245">Події управління Tor</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">URI проксі-сервера Tor</translation>
 <translation id="1671503397662036257">Статус з'єднання Tor</translation>
 <translation id="6024292492796847324">Прогресс ініціалізації Tor</translation>
+<translation id="7586151660465233733">Більше ринків на <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Перегляд ринків і бірж криптовалют на FTX</translation>
+<translation id="5963745988819586370">Ринки</translation>
+<translation id="3795943412467785186">Підключіть рахунок FTX, щоб переглядати баланс рахунку, вивчати фондові ринки й обмінювати криптовалюти.</translation>
+<translation id="926958206891985289">Переглянути фондові ринки</translation>
+<translation id="6804537228302563756">Прив’язати обліковий запис</translation>
+<translation id="5019698312620117604">Добова історія цін</translation>
+<translation id="8720719072204443171">Добовий обсяг</translation>
+<translation id="3891414008432200754">Ціна</translation>
+<translation id="7723176927437578611">Надходження</translation>
+<translation id="2983078329159689577">Обробка…</translation>
+<translation id="6641102760094059194">Підтвердити (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Обмін завершено!</translation>
+<translation id="7590653073560839711">Для здійснення операції обміну вам потрібно мати баланс принаймні в одній валюті.</translation>
+<translation id="4390079506197726228">Доступно <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Приховати баланси по вашим рахункам з екрана</translation>
+<translation id="4548946945059463969">Відобразити баланси на екрані</translation>
 </translationbundle>

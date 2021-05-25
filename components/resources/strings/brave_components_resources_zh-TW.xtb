@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">在 Brave Together 中與朋友和同事開始無限通話。</translation>
 <translation id="7115051913071512405">歡迎試用</translation>
 <translation id="7415602225677446066">完全私人的今日頭條新聞，專為您而生。</translation>
-<translation id="8607689491789524900">Brave Today 比對您在裝置上的興趣，因此您的個人資訊永遠不會離開瀏覽器。新內容全天候更新。</translation>
+<translation id="6903061332999399632">Brave 新聞是以您的裝置上使用完全私人且匿名的廣告的支援。根據我們的 <ph name="LINK_START"/>隱私權政策<ph name="LINK_END"/>，您的個人資訊將會永遠保持私密。</translation>
+<translation id="7823038307453615214">顯示 Brave News</translation>
+<translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="9164544612367905452">正在擷取……</translation>
 <translation id="1276592121036104130">載入新內容</translation>
-<translation id="4210987321913275328">捲動 Brave Today</translation>
-<translation id="3122595178900736207">重設 Brave Today 來源</translation>
-<translation id="2197023915568148978">重設您所有的 Brave Today 發佈者選擇回預設值？</translation>
+<translation id="2875288128871360696">捲動取得 Brave 新聞</translation>
+<translation id="8510120023634509743">重設 Brave 新聞來源</translation>
+<translation id="75825199302994272">重設您所有的 Brave 新聞發佈者選擇回預設值？</translation>
 <translation id="954001034349395856">所有來源</translation>
 <translation id="8890516388109605451">來源</translation>
 <translation id="5158129253322921540">停用從 <ph name="PUBLISHER_NAME"/> 而來的內容</translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">已連線</translation>
 <translation id="8030169304546394654">已取消連結</translation>
 <translation id="3149306599361260465">正在初始化 [[percentage]]%</translation>
+<translation id="3258793718986637767">有 Tor 方面的問題嗎？試試看 <ph name="BEGIN_LINK"/> 停用使用 Tor 的隱私視窗 <ph name="END_LINK"/>，然後重新開啟吧。</translation>
 <translation id="4272382368346338917">額外的過濾器</translation>
 <translation id="8949292968394988358">警告：開啟太多過濾器可能會導致效能降低</translation>
 <translation id="8686201964111147748">總廣告與追蹤器封鎖數量：</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">驗證我的錢包</translation>
 <translation id="6609621505400013054">bitFlyer 錢包是由 bitFlyer, Inc. 管理的服務</translation>
 <translation id="7258399883616914635">驗證您的錢包並將其連結至 bitFlyer 帳戶，您將能更輕鬆地儲存並管理透過 Brave Rewards 賺取的代幣</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/>關於如何將您的 Brave 瀏覽器連結到您的 bitFlyer 帳號。</translation>
 <translation id="5094577350232361255">關於</translation>
 <translation id="4918086044614829423">接受</translation>
 <translation id="5916290544882167205">Brave Software。Brave 是 Brave Software 的註冊商標。網站名稱可能為網站所有者的商標或註冊商標。</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">單價</translation>
 <translation id="4763179765154524864">總計花出</translation>
 <translation id="8851480289992540512">總計收到</translation>
+<translation id="8624961452383848703">我想要轉換……</translation>
 <translation id="616639131065447379">歡迎使用 Brave 加密錢包</translation>
 <translation id="1740464057879304704">加密錢包讓您可以在 Brave 中使用加密貨幣與相關資產。加密錢包支援如 ETH 與 BAT 等的以太坊權杖，以及其他收藏品，並讓您可以使用 Dapps 與其他智慧合約。這些東西全都是針對熟悉以太坊與其他區塊鏈系統或樂於學習的人們。</translation>
 <translation id="4855440621031541830">僅當您接受獨自承單與所有使用的風險時才使用加密錢包，且 Brave Software 對因使用此軟體而可能造成的任何損失（包含任何直接或間接的損失）不負任何責任。</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">無法擷取要匯入的資料</translation>
 <translation id="7900950536120202771">IPFS 節點內部錯誤</translation>
 <translation id="1036635552229153800">資料已成功上傳，但未移動至 brave-import 目錄。您可以在匯入設定頁面手動執行此動作。</translation>
-<translation id="7789840864192026963">賦予權限</translation>
-<translation id="7978789143098237970">直到我關閉此頁面</translation>
+<translation id="572392919096807438">記住我的決定</translation>
+<translation id="7978789143098237970">直到我關閉此網站</translation>
 <translation id="3523195733429162409">24 小時</translation>
 <translation id="2373264732659722940">1 週</translation>
 <translation id="6318437367327684789">永遠</translation>
-<translation id="7463327191540031132">永遠封鎖</translation>
 <translation id="8797999629784150206">您可隨時變更您的<ph name="SITE_PERMISSIONS"/>。<ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">網站權限</translation>
 <translation id="7701466644604753106">開啟 Speedreader</translation>
 <translation id="763042262431778831">關閉 Speedreader</translation>
+<translation id="1544192797660353713">錢包</translation>
+<translation id="8488282162676695335">Brave 錢包</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">Tor 代理伺服器 URI</translation>
 <translation id="1671503397662036257">Tor 連線狀態</translation>
 <translation id="6024292492796847324">Tor 初始化進度</translation>
+<translation id="7586151660465233733"><ph name="SITE_NAME"/> 上的更多市場</translation>
+<translation id="952067063131306699">檢視市場並在 FTX 上交易加密貨幣</translation>
+<translation id="5963745988819586370">市場</translation>
+<translation id="3795943412467785186">連結 FTX 帳號並檢視帳號餘額、探索期貨市場並轉換加密貨幣。</translation>
+<translation id="926958206891985289">檢視期貨市場</translation>
+<translation id="6804537228302563756">連結帳號</translation>
+<translation id="5019698312620117604">24 小時價格歷史</translation>
+<translation id="8720719072204443171">24 小時成交量</translation>
+<translation id="3891414008432200754">價格</translation>
+<translation id="7723176927437578611">繼續</translation>
+<translation id="2983078329159689577">正在提交……</translation>
+<translation id="6641102760094059194">確認 (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">轉換成功！</translation>
+<translation id="7590653073560839711">您需要至少一種貨幣的餘額才能執行轉換。</translation>
+<translation id="4390079506197726228">可用的 <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">隱藏您顯示中的餘額</translation>
+<translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 </translationbundle>

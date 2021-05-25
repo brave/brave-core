@@ -819,6 +819,18 @@
     "message": "Patvirtindami savo piniginę ir susiedami ją su „bitFlyer“ paskyra, galėsite lengviau laikyti ir tvarkyti žetonus, pelnytus per „Brave Rewards“",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Sužinokite daugiau$link_end$ apie tai, kaip susieti „Brave“ naršyklę su turima „bitFlyer“ sąskaita.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "„Brave Rewards“ Japonijoje pereina prie naujos sistemos!",
     "description": "Header text for BAP deprecation warning message"

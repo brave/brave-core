@@ -819,6 +819,18 @@
     "message": "Keď svoju peňaženku overíte a prepojíte s účtom bitFlyer, budete môcť jednoduchšie ukladať a spravovať tokeny, ktoré ste získali cez odmeny Brave",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Získajte viac informácií$link_end$ o tom, ako prepojiť prehliadač Brave s vašim účtom bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave odmeny prechádzajú v Japonsku na nový systém!",
     "description": "Header text for BAP deprecation warning message"

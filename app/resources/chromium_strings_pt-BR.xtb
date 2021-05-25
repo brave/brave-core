@@ -10,7 +10,6 @@
 <translation id="4798342026247191171">Configure seu novo perfil do Brave</translation>
 <translation id="113959764510199339">O Brave está tentando mostrar senhas.</translation>
 <translation id="8132634101975074716">Você está conectado ao Brave.</translation>
-<translation id="7370605478942575409">Para usar o Rosetta para reproduzir mídia protegida, reinicie o Brave.</translation>
 <translation id="7419046106786626209">O Chrome OS não pôde sincronizar seus dados porque a sincronização não está disponível para seu domínio.</translation>
 <translation id="5147525139567260139">Compartilhar uma guia do Brave</translation>
 <translation id="1530633922026945685">O Brave precisa de permissão para acessar sua câmera e criar um mapa 3D do ambiente a sua volta</translation>
@@ -23,8 +22,8 @@
 <translation id="1775322105159056176">O Brave não pode determinar ou definir o navegador padrão</translation>
 <translation id="9220324636239049437">Essa ação excluirá 1 item deste dispositivo. Para recuperar seus dados mais tarde, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Para verificar se suas outras senhas estão protegidas contra violações de dados e outros problemas de segurança, <ph name="BEGIN_LINK"/>faça login no Brave<ph name="END_LINK"/>.</translation>
+<translation id="142389341645668510">Personalizar o Brave</translation>
 <translation id="8745514854244955877">Brave - Login na rede - <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">Não foi possível sincronizar suas senhas no Chrome OS.</translation>
 <translation id="5659384504794665581">Se você usa um computador compartilhado, seus amigos e familiares podem navegar separadamente e configurar o Brave da maneira que desejarem.</translation>
 <translation id="5997267581285668459">Opcional: ajude a melhorar os recursos e o desempenho do Chrome OS enviando automaticamente dados de uso e diagnóstico ao Brave.</translation>
 <translation id="9095263438435683933">Para enviar um número daqui para seu smartphone Android, faça login no Brave nos dois dispositivos.</translation>
@@ -38,10 +37,8 @@
 <translation id="7933006624150961626">Para ter acesso aos recursos do Brave em todos os seus dispositivos, faça login e ative a sincronização.</translation>
 <translation id="7291143854620707672">Quaisquer dados do Brave gerados quando este perfil estiver sendo usado (como a criação de favoritos, histórico, senhas e outras configurações) podem ser removidos pelo administrador do perfil de trabalho. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">É necessário reiniciar o Chrome OS para que a atualização seja aplicada.</translation>
-<translation id="3913823837305937258">Este computador em breve parará de receber atualizações do Brave, porque seu hardware não é mais suportado.</translation>
 <translation id="7387051847644272380">Ocorreu um erro no sistema operacional durante a instalação. Faça o download do Brave novamente.</translation>
 <translation id="2648689842065142443">Se você compartilha um dispositivo, seus amigos e familiares podem navegar separadamente e configurar o Brave da maneira que quiserem</translation>
-<translation id="3749489756681759571">O Brave recomenda desativar essa extensão porque ela não atende aos padrões do Navegação segura com maior proteção.</translation>
 <translation id="6791166902140255175">Guia do Brave</translation>
 <translation id="8372880274820509128">Para maior segurança, o Brave criptografará seus dados.</translation>
 <translation id="2770231113462710648">Alterar navegador padrão para:</translation>
@@ -60,6 +57,7 @@
 <translation id="7365690458036015383">Ocorreu uma falha no instalador ao descompactar o arquivo. Faça o download do Brave novamente.</translation>
 <translation id="8919461291440820124">O Brave está usando seu microfone.</translation>
 <translation id="4805806622840861220">Reiniciar Brave</translation>
+<translation id="1742948938503172561">Personalize seu novo perfil do Brave</translation>
 <translation id="1477146545787277177">O Brave travou. Reiniciar agora?</translation>
 <translation id="7503098128120083822">O Brave quer exportar suas senhas.</translation>
 <translation id="2585240446624043880">O Brave não pode ler e gravar neste diretório de dados: <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -72,6 +70,7 @@
 <translation id="2450003541323895471">Você pode usar os perfis do Brave para separar todos seus dados nele. Crie perfis para amigos e familiares ou separe trabalho e lazer.</translation>
 <translation id="9216183508558772570">O Brave enviará uma notificação quando você fizer login com uma senha comprometida</translation>
 <translation id="5853262807109651878">Essa ação excluirá <ph name="ITEMS_COUNT"/> itens deste dispositivo. Para recuperar seus dados mais tarde, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
+<translation id="2024972335338126423">O atalho <ph name="SHORTCUT"/> permite alternar entre os perfis do Brave</translation>
 <translation id="8703492925273919597">Feche todas as janelas do Brave e tente novamente.</translation>
 <translation id="1384923383737428730">Há um software nocivo no seu computador. O Brave pode removê-lo, restaurar as configurações e desativar as extensões para que o navegador volte a funcionar normalmente.</translation>
 <translation id="7029305463989165490">Para enviar um número de <ph name="ORIGIN"/> ao seu smartphone Android, faça login no Brave nos dois dispositivos.</translation>
@@ -128,11 +127,11 @@
 <translation id="696826782632239602">O Brave precisa acessar seu local para compartilhá-lo com este site</translation>
 <translation id="1744365871163268756">Aguarde enquanto o Brave instala as últimas atualizações do sistema.</translation>
 <translation id="3861679447659630159">O Brave está tentando editar senhas. Digite a senha do Windows para permitir essa ação.</translation>
+<translation id="232381795826373334">Abrir PDFs no Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Uma atualização do Brave está disponível}=1{Uma atualização do Brave está disponível}one{Uma atualização do Brave está disponível há # dia}other{Uma atualização do Brave está disponível há # dias}}</translation>
 <translation id="95624393026532554">O Brave requer o Windows 7 ou versão superior.</translation>
 <translation id="5646769069113654257">Reinicie o Brave agora</translation>
 <translation id="2335583906071111058">Exibir Brave neste idioma</translation>
-<translation id="3009727137063767373">Para permitir que o Brave reproduza mídia protegida, instale o Rosetta. Quer instalar agora?</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
@@ -148,10 +147,10 @@
 <translation id="492209281555538239">O Brave salvará essa senha na sua Conta do Brave. Você não precisará se lembrar dela.</translation>
 <translation id="4168372721886011198">O arquivo <ph name="FILE_NAME"/> é perigoso. Por isso ele foi bloqueado pelo Brave.</translation>
 <translation id="7006260220514217183">O "Navegação segura" está desativado. O Brave recomenda ativá-lo.</translation>
+<translation id="4060970194201477024">Aqui, você pode alternar entre os perfis do Brave</translation>
 <translation id="4368341489795135329">Verifique se sua conta está conectada ao Brave no <ph name="TARGET_DEVICE_NAME"/> e tente fazer o envio novamente.</translation>
 <translation id="8320964054148936490">Este computador já tem uma versão mais recente do Brave. Se o software não estiver funcionando, desinstale o Brave e tente novamente.</translation>
 <translation id="3574823187131579180">{0,plural, =0{O Brave será reiniciado agora}=1{O Brave será reiniciado em 1 segundo}one{O Brave será reiniciado em # segundo}other{O Brave será reiniciado em # segundos}}</translation>
-<translation id="3127818369811890733">Não foi possível sincronizar seus dados no Chrome OS.</translation>
 <translation id="5019879183386042809">Tornar o Brave o navegador padrão</translation>
 <translation id="428541510811554120">O Brave não pode verificar se há atualizações. Verifique sua conexão com a Internet.</translation>
 <translation id="7445061995866044926">Sair do Brave?</translation>
@@ -182,18 +181,15 @@
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copiado para o Brave)</translation>
 <translation id="2301993384336631869">O Brave foi atualizado, mas não é utilizado há pelo menos 30 dias.</translation>
-<translation id="8522287263361940593">O Rosetta permite que o Brave reproduza a mídia protegida nesta página.</translation>
 <translation id="8828443087767259398">O Brave precisa acessar o Bluetooth para continuar o 
  pareamento. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Senhas fracas são fáceis de adivinhar. Deixe o Brave <ph name="BEGIN_LINK"/>criar e guardar senhas fortes para você<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">O Brave precisa de permissão para este site acessar seu microfone</translation>
 <translation id="1785833016412082453">O Brave não pode verificar suas extensões. Tente mais tarde.</translation>
 <translation id="1705567146636171298">Atualizar o Brave</translation>
-<translation id="123620459398936149">O Chrome OS não pôde sincronizar seus dados. Atualize sua senha de sincronização.</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave para a criação de descrições.</translation>
 <translation id="1197672524850678392">Não foi possível iniciar o Brave. Tente novamente.</translation>
 <translation id="3405035915691517126">Não foi possível verificar suas senhas. Tente novamente em 24 horas.</translation>
-<translation id="5660079256336839395">Esconder no menu do Brave</translation>
 <translation id="5516268345616100622">Gerenciador de tarefas - Brave</translation>
 <translation id="61852838583753520">Atualizar o &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Atualizando o Brave</translation>
@@ -226,7 +222,6 @@
 <translation id="6755885556185485672">O Chrome OS não foi encerrado corretamente.</translation>
 <translation id="2925193881330501265">Você estava conectado ao Brave como <ph name="USER_EMAIL_ADDRESS"/>. Use a mesma conta para fazer login novamente.</translation>
 <translation id="6915252145142862992">Como esta é uma instalação secundária do Brave, ele não pode se tornar seu navegador padrão.</translation>
-<translation id="4054452651944170004">Esconder no menu do Brave</translation>
 <translation id="7685904775439037072">Assim que o Brave tiver acesso, os sites poderão solicitar acesso.</translation>
 <translation id="9067428552314418522">Esse arquivo é perigoso, por isso ele foi bloqueado pelo Brave.</translation>
 <translation id="8207657266087451193">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave para a criação de descrições. É possível desativar essa opção nas configurações a qualquer momento.</translation>

@@ -12,7 +12,6 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="4798342026247191171">Podesite nov Brave profil</translation>
 <translation id="113959764510199339">Brave pokušava da prikaže lozinke.</translation>
 <translation id="8132634101975074716">Prijavljeni ste na Brave!</translation>
-<translation id="7370605478942575409">Da biste koristili aplikaciju Rosetta za puštanje zaštićenog medijskog sadržaja, morate da restartujete Brave.</translation>
 <translation id="7419046106786626209">Chrome OS ne može da sinhronizuje podatke jer Sinhronizacija nije dostupna za domen.</translation>
 <translation id="5147525139567260139">Delite Brave karticu</translation>
 <translation id="1530633922026945685">Brave traži dozvolu da pristupi kameri da bi napravio 3D mapu okruženja</translation>
@@ -25,8 +24,8 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="1775322105159056176">Brave ne može da odredi ni da podesi podrazumevani pregledač</translation>
 <translation id="9220324636239049437">Ovim ćete izbrisati 1 stavku sa ovog uređaja. Da biste kasnije vratili podatke, prijavite se u Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Da biste proverili da li su ostale lozinke bezbedne od upada u podatke i drugih bezbednosnih problema, <ph name="BEGIN_LINK"/>prijavite se u Brave<ph name="END_LINK"/>.</translation>
+<translation id="142389341645668510">Prilagodite Brave</translation>
 <translation id="8745514854244955877">Brave – prijavljivanje na mrežu – <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">Chrome OS nije uspeo da sinhronizuje lozinke.</translation>
 <translation id="5659384504794665581">Ako delite računar, prijatelji i porodica mogu zasebno da pregledaju i da podese Brave baš onako kako žele.</translation>
 <translation id="5997267581285668459">Opcionalno: Automatski šaljite Brave-u dijagnostiku i podatke o korišćenju da biste nam pomogli da poboljšamo funkcije i učinak Chrome OS-a.</translation>
 <translation id="9095263438435683933">Da biste poslali broj sa ovog uređaja na Android telefon, prijavite se u Brave na oba uređaja.</translation>
@@ -40,10 +39,8 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="7933006624150961626">Da biste pristupali Brave sadržaju na svim uređajima, prijavite se da biste mogli da uključite sinhronizaciju.</translation>
 <translation id="7291143854620707672">Administrator poslovnog profila može da ukloni sve podatke Brave-a koji se generišu tokom korišćenja ovog profila (poput pravljenja obeleživača, istorije, lozinki i drugih podešavanja). <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Treba da restartujete Chrome OS da biste primenili ažuriranje.</translation>
-<translation id="3913823837305937258">Ovaj računar će uskoro prestati da prima ažuriranja za Brave jer njegov hardver više nije podržan.</translation>
 <translation id="7387051847644272380">Tokom instalacije je došlo do greške u operativnom sistemu. Preuzmite Brave ponovo.</translation>
 <translation id="2648689842065142443">Ako delite uređaj, prijatelji i porodica mogu zasebno da pregledaju i da podese Brave baš onako kako žele</translation>
-<translation id="3749489756681759571">Brave preporučuje da onemogućite ovaj dodatak jer trenutno ne zadovoljava standarde poboljšanog bezbednog pregledanja.</translation>
 <translation id="6791166902140255175">Kartica Brave</translation>
 <translation id="8372880274820509128">Brave će šifrovati podatke radi dodatne sigurnosti.</translation>
 <translation id="2770231113462710648">Promeni podrazumevani pregledač u:</translation>
@@ -62,6 +59,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="7365690458036015383">Program za instalaciju nije uspeo da dekomprimuje arhivu. Preuzmite Brave ponovo.</translation>
 <translation id="8919461291440820124">Brave koristi mikrofon.</translation>
 <translation id="4805806622840861220">Ponovo pokreni Brave</translation>
+<translation id="1742948938503172561">Prilagodite novi Brave profil</translation>
 <translation id="1477146545787277177">Opa! Brave je otkazao. Želite li da ga odmah ponovo pokrenete?</translation>
 <translation id="7503098128120083822">Brave želi da izveze lozinke.</translation>
 <translation id="2585240446624043880">Brave ne može da čita podatke iz direktorijuma sa podacima niti da ih upisuje u njega:
@@ -76,6 +74,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="2450003541323895471">Pomoću Brave profila možete da razdvojite sve Brave sadržaje. Napravite profile za prijatelje i porodicu ili razdvojite posao i zabavu.</translation>
 <translation id="9216183508558772570">Brave će vas obavestiti kada se prijavite pomoću ugrožene lozinke</translation>
 <translation id="5853262807109651878">Ovim ćete izbrisati <ph name="ITEMS_COUNT"/> stavke(i) sa ovog uređaja. Da biste kasnije vratili podatke, prijavite se u Brave kao <ph name="USER_EMAIL"/>.</translation>
+<translation id="2024972335338126423">Pomoću prečice <ph name="SHORTCUT"/> možete da prelazite sa jednog Brave profila na drugi</translation>
 <translation id="8703492925273919597">Zatvorite sve Brave prozore i pokušajte ponovo.</translation>
 <translation id="1384923383737428730">Na računaru postoji štetan softver. Brave može da ga ukloni, vrati podešavanja i onemogući dodatke da bi pregledač mogao ponovo da radi uobičajeno.</translation>
 <translation id="7029305463989165490">Da biste poslali broj sa <ph name="ORIGIN"/> na Android telefon, prijavite se u Brave na oba uređaja.</translation>
@@ -132,11 +131,11 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="696826782632239602">Brave traži pristup vašoj lokaciji da biste je delili sa ovim sajtom</translation>
 <translation id="1744365871163268756">Sačekajte da Brave instalira najnovija ažuriranja sistema.</translation>
 <translation id="3861679447659630159">Brave pokušava da izmeni lozinke. Unesite lozinku za Windows da biste to omogućili.</translation>
+<translation id="232381795826373334">Otvarajte PDF-ove u Brave-u</translation>
 <translation id="1026406809507858026">{0,plural, =0{Ažuriranje za Brave je dostupno}=1{Ažuriranje za Brave je dostupno}one{Ažuriranje za Brave je dostupno već # dan}few{Ažuriranje za Brave je dostupno već # dana}other{Ažuriranje za Brave je dostupno već # dana}}</translation>
 <translation id="95624393026532554">Za Brave je potreban Windows 7 ili novija verzija.</translation>
 <translation id="5646769069113654257">Restartujte Brave</translation>
 <translation id="2335583906071111058">Prikazuj Brave na ovom jeziku</translation>
-<translation id="3009727137063767373">Da biste omogućili da Brave pušta zaštićeni medijski sadržaj, morate da instalirate aplikaciju Rosetta. Da li želite da je odmah instalirate?</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="7207456302801184289">Dobro došli u Brave</translation>
 <translation id="5895138241574237353">Pokreni ponovo</translation>
@@ -152,10 +151,10 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="492209281555538239">Brave će sačuvati ovu lozinku na Brave nalogu. Nećete morati da je pamtite.</translation>
 <translation id="4168372721886011198">Datoteka <ph name="FILE_NAME"/> je opasna, pa ju je Brave blokirao.</translation>
 <translation id="7006260220514217183">Bezbedno pregledanje je isključeno. Brave preporučuje da ga uključite.</translation>
+<translation id="4060970194201477024">Ovde možete da prelazite sa jednog Brave profila na drugi</translation>
 <translation id="4368341489795135329">Uverite se da ste prijavljeni u Brave na uređaju <ph name="TARGET_DEVICE_NAME"/> i probajte da pošaljete ponovo.</translation>
 <translation id="8320964054148936490">Ovaj računar već ima noviju verziju Brave-a. Ako softver ne funkcioniše, deinstalirajte Brave i pokušajte ponovo.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Ponovo ćemo pokrenuti Brave}=1{Ponovo ćemo pokrenuti Brave za 1 sekundu}one{Ponovo ćemo pokrenuti Brave za # sekundu}few{Ponovo ćemo pokrenuti Brave za # sekunde}other{Ponovo ćemo pokrenuti Brave za # sekundi}}</translation>
-<translation id="3127818369811890733">Chrome OS nije uspeo da sinhronizuje podatke.</translation>
 <translation id="5019879183386042809">Podesi Brave za podrazumevani pregledač</translation>
 <translation id="428541510811554120">Brave ne može da traži ažuriranja. Proverite internet vezu.</translation>
 <translation id="7445061995866044926">Želite li da se odjavite iz Brave-a?</translation>
@@ -188,18 +187,15 @@ Neke funkcije će možda biti nedostupne. Navedite drugi direktorijum profila i
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kopirano u Brave)</translation>
 <translation id="2301993384336631869">Brave je ažuriran, ali ga niste koristili najmanje 30 dana.</translation>
-<translation id="8522287263361940593">Rosetta omogućava Brave pušta zaštićeni medijski sadržaj na ovoj stranici.</translation>
 <translation id="8828443087767259398">Brave zahteva pristup Bluetooth-u radi nastavljanja sa 
  uparivanjem. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Slabe lozinke lako mogu da se pogode. Dozvolite da Brave <ph name="BEGIN_LINK"/>pravi i pamti jake lozinke za vas<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Brave traži dozvolu da pristupi mikrofonu za ovaj sajt</translation>
 <translation id="1785833016412082453">Brave ne može da vam proverava dodatke. Probajte ponovo kasnije.</translation>
 <translation id="1705567146636171298">Ažuriraj Brave</translation>
-<translation id="123620459398936149">Chrome OS ne može da sinhronizuje podatke. Ažurirajte pristupnu frazu za Sinhronizaciju.</translation>
 <translation id="5499063270485366718">Ako slika nema koristan opis, Brave će probati da vam ga pruži. Slike se šalju Brave-u radi pravljenja opisa.</translation>
 <translation id="1197672524850678392">Nije moguće pokrenuti Brave. Pokušajte ponovo.</translation>
 <translation id="3405035915691517126">Brave ne može da vam proverava lozinke. Probajte ponovo za 24 sata.</translation>
-<translation id="5660079256336839395">Sakrij u Brave meniju</translation>
 <translation id="5516268345616100622">Menadžer zadataka – Brave</translation>
 <translation id="61852838583753520">Ažuriraj &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Ažuriranje Brave-a</translation>
@@ -235,7 +231,6 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="6755885556185485672">Chrome OS se nije ispravno zatvorio.</translation>
 <translation id="2925193881330501265">Bili ste prijavljeni na Brave kao <ph name="USER_EMAIL_ADDRESS"/>. Koristite isti nalog da biste se ponovo prijavili.</translation>
 <translation id="6915252145142862992">Ovo je sekundarna instalacija Brave-a pa ne možete da ga podesite kao podrazumevani pregledač.</translation>
-<translation id="4054452651944170004">Sakrij u Brave meniju</translation>
 <translation id="7685904775439037072">Kada Brave dobije pristup, veb-sajtovi će moći da zatraže pristup.</translation>
 <translation id="9067428552314418522">Ova datoteka je opasna, pa ju je Brave blokirao.</translation>
 <translation id="8207657266087451193">Ako slika nema koristan opis, Brave će probati da vam ga pruži. Slike se šalju Brave-u radi pravljenja opisa. To možete da isključite u podešavanjima u svakom trenutku.</translation>

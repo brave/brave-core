@@ -819,6 +819,18 @@
     "message": "על ידי אימות הארנק שלכם וקישורו לחשבון bitFlyer, תוכלו לאחסן ולנהל את האסימונים שהרווחתם באמצעות  Brave Rewards ביתר קלות.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$למידע נוסף$link_end$ אודות אופן הקישור של דפדפן Brave עם חשבון ה-bitFlyer שלכם.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards ביפן עובר למערכת חדשה!",
     "description": "Header text for BAP deprecation warning message"

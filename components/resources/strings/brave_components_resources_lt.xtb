@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Naudokitės neribotų pokalbių su draugais ir kolegomis paslauga programoje „Brave Together“.</translation>
 <translation id="7115051913071512405">Išbandykite</translation>
 <translation id="7415602225677446066">Šiandienos populiariausios istorijos visiškai privačiame sklaidos kanale – tik jums.</translation>
-<translation id="8607689491789524900">„Brave Today“ atitinka jūsų interesus jūsų įrenginyje, todėl iš naršyklės jūsų asmeninė informacija niekada neperduodama. Naujo turinio pateikiama visą dieną.</translation>
+<translation id="6903061332999399632">„Brave News“ remia reklamos – visiškai privačios ir anoniminės reklamos rodomos jūsų įrenginyje. Jūsų asmeninė informacija lieka privati, kaip nustato mūsų <ph name="LINK_START"/>privatumo politika<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Rodyti „Brave News“</translation>
+<translation id="780301667611848630">Ačiū, ne</translation>
 <translation id="9164544612367905452">Gaunama…</translation>
 <translation id="1276592121036104130">Įkelti naują turinį</translation>
-<translation id="4210987321913275328">Slinkite, jei norite pasiekti „Brave Today“</translation>
-<translation id="3122595178900736207">Iš naujo nustatyti „Brave Today“ šaltinius</translation>
-<translation id="2197023915568148978">Atkurti visų jūsų „Brave Today“ leidėjų pasirinkimų numatytąsias nuostatas?</translation>
+<translation id="2875288128871360696">Slinkite, jei norite pasiekti „Brave News“</translation>
+<translation id="8510120023634509743">Iš naujo nustatyti „Brave News“ šaltinius</translation>
+<translation id="75825199302994272">Atkurti visų jūsų „Brave News“ leidėjų pasirinkimų numatytąsias nuostatas?</translation>
 <translation id="954001034349395856">Visi šaltiniai</translation>
 <translation id="8890516388109605451">Šaltiniai</translation>
 <translation id="5158129253322921540">Išjungti turinį iš <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Prijungta</translation>
 <translation id="8030169304546394654">Atsijungta</translation>
 <translation id="3149306599361260465">Inicijuojama [[percentage]] %</translation>
+<translation id="3258793718986637767">Kilo sunkumų naudojant „Tor“? Pabandykite <ph name="BEGIN_LINK"/>išjungti inkognito langą su „Tor“<ph name="END_LINK"/> ir vėl jį įjungti.</translation>
 <translation id="4272382368346338917">Papildomi filtrai</translation>
 <translation id="8949292968394988358">Įspėjimas. Įjungus per daug filtrų sumažėja efektyvumas</translation>
 <translation id="8686201964111147748">Iš viso užblokuotų reklamų ir sekiklių:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Patvirtinti mano piniginę</translation>
 <translation id="6609621505400013054">„bitFlyer“ piniginė yra „bitFlyer, Inc.“ valdoma paslauga.</translation>
 <translation id="7258399883616914635">Patvirtindami savo piniginę ir susiedami ją su „bitFlyer“ paskyra, galėsite lengviau laikyti ir tvarkyti žetonus, pelnytus per „Brave Rewards“</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/> apie tai, kaip susieti „Brave“ naršyklę su turima „bitFlyer“ sąskaita.</translation>
 <translation id="5094577350232361255">apie</translation>
 <translation id="4918086044614829423">Priimti</translation>
 <translation id="5916290544882167205">„Brave Software“. „Brave“ yra registruotasis „Brave Software“ prekių ženklas. Svetainių pavadinimai gali būti jų savininkų prekių ženklai arba registruotieji prekių ženklai.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Vieneto kaina</translation>
 <translation id="4763179765154524864">Iš viso išleista</translation>
 <translation id="8851480289992540512">Iš viso gauta</translation>
+<translation id="8624961452383848703">Noriu konvertuoti...</translation>
 <translation id="616639131065447379">Sveikiname atradus „Brave“ kriptovaliutų pinigines</translation>
 <translation id="1740464057879304704">Kriptovaliutų piniginės leidžia tvarkyti kriptovaliutas ir susijusį turtą „Brave“ naršyklėje. Kriptovaliutų piniginės palaiko eterio (angl. „Ethereum“) žetonus, kaip antai ETH ir BAT, bei kolekcines priemones, taip pat leidžia dirbti su Ðprogramėlėmis ir kitomis išmaniosiomis sutartimis. Visa tai skirta žmonėms, susipažinusiems arba norintiems susipažinti su eteriu ir kitomis blokų grandinės sistemomis —.</translation>
 <translation id="4855440621031541830">Kriptovaliutų pinigines naudokite tik tada, jei sutinkate visą su jų naudojimu susijusią riziką prisiimti patys ir sutinkate, kad „Brave Software“ neprisiims jokios atsakomybės už jokius nuostolius, tarp jų ir netyčinius bei pasekminius nuostolius, kuriuos galite patirti dėl tokio naudojimo.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Nepavyko gauti duomenų importavimui</translation>
 <translation id="7900950536120202771">IPFS mazgo vidinė klaida</translation>
 <translation id="1036635552229153800">Duomenys buvo sėkmingai nusiųsti, bet neperkelti į „Brave“ importavimo katalogą. Tai galite padaryti rankiniu būdu importavimo nuostatų puslapyje.</translation>
-<translation id="7789840864192026963">Duoti leidimą</translation>
-<translation id="7978789143098237970">kol neuždarysiu šio puslapio</translation>
+<translation id="572392919096807438">Įsiminti mano sprendimą</translation>
+<translation id="7978789143098237970">kol neuždarysiu šios svetainės</translation>
 <translation id="3523195733429162409">24 valandoms</translation>
 <translation id="2373264732659722940">1 savaitei</translation>
 <translation id="6318437367327684789">visam laikui</translation>
-<translation id="7463327191540031132">Užblokuoti visam laikui</translation>
 <translation id="8797999629784150206">Savo <ph name="SITE_PERMISSIONS"/> galite pakeisti bet kuriuo metu. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">svetainės leidimas</translation>
 <translation id="7701466644604753106">ĮJUNGTI spartųjį skaitlį</translation>
 <translation id="763042262431778831">IŠJUNGTI spartųjį skaitlį</translation>
+<translation id="1544192797660353713">Piniginė</translation>
+<translation id="8488282162676695335">„Brave“ piniginė</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="3745016858329272300">Bendroji informacija</translation>
 <translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">„Tor“ tarpinio serverio URL</translation>
 <translation id="1671503397662036257">„Tor“ ryšio būsena</translation>
 <translation id="6024292492796847324">„Tor“ inicijavimo pažanga</translation>
+<translation id="7586151660465233733">Daugiau rinkų svetainėje <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">FTX galite peržiūrėti rinkas ir prekiauti kriptovaliutomis</translation>
+<translation id="5963745988819586370">Rinkos</translation>
+<translation id="3795943412467785186">Prijunkite FTX sąskaitą, kad galėtumėte peržiūrėti sąskaitos likutį, tirti būsimas rinkas ir konvertuoti kriptovaliutą.</translation>
+<translation id="926958206891985289">Peržiūrėti būsimas rinkas</translation>
+<translation id="6804537228302563756">Prijungti paskyrą</translation>
+<translation id="5019698312620117604">24 val. kainų istorija</translation>
+<translation id="8720719072204443171">24 val. apimtis</translation>
+<translation id="3891414008432200754">Kaina</translation>
+<translation id="7723176927437578611">Tęsia</translation>
+<translation id="2983078329159689577">Pateikiama...</translation>
+<translation id="6641102760094059194">Patvirtinti (<ph name="NUMBER_OF_SECONDS_LEFT"/>sek.)</translation>
+<translation id="2280055104463448482">Keitimas sėkmingas</translation>
+<translation id="7590653073560839711">Kad galėtumėte atlikti keitimą, jums reikia likučio mažiausiai viena valiuta.</translation>
+<translation id="4390079506197726228">Prieinama <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Slėpti likučius ekrane</translation>
+<translation id="4548946945059463969">Likučius matykite ekrane</translation>
 </translationbundle>

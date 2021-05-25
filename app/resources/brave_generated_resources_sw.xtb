@@ -69,15 +69,19 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="4227945450504703638">Sauti Iliyoteuliwa</translation>
 <translation id="7895302206188277628">Maudhui yaliyounganishwa</translation>
 <translation id="4322612543319315652">Leta maandishi Yaliyoteuliwa kwenye IPFS</translation>
+<translation id="8883166554766780543">Leta na unakili kiungo kwenye picha ya IPFS</translation>
+<translation id="3654831858282189202">Chapisha kwa ufunguo wa IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Dirisha Jipya Binafsi na Tor</translation>
 <translation id="4703780849509456860">Fungua kiungo kwenye Dirisha Binafsi kwa Tor</translation>
 <translation id="3488584642074079080">Fungua kiungo kwenye Dirisha Binafsi la Brave kwa Tor</translation>
 <translation id="7475547933708221517">Shiriki Faili ya Ndani Ukitumia IPFS</translation>
+<translation id="2286177249736199435">Shiriki Folda ya Ndani Ukitumia IPFS</translation>
 <translation id="784573715436258741">Shiriki faili ya ndani ukitumia IPFS</translation>
 <translation id="6313675821927505581">Dirisha Jipya la Binafsi na Tor</translation>
 <translation id="2638041073279639246">Fungua kiungo kwenye dirisha la binafsi na Tor</translation>
 <translation id="3425600262621021599">Fungua kiungo kwenye dirisha la binafsi la Brave na Tor</translation>
+<translation id="575838692088926391">Shiriki folda ya ndani ukitumia IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Huduma ya Matangazo ya Bat</translation>
 <translation id="7924918279836988121">Huduma ya Leja ya Bat</translation>
@@ -157,7 +161,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="4112587618563511470">Msimbo wa usawazishaji si sahihi, tafadhali angalia na ujaribu tena.</translation>
 <translation id="2339730291919608488">Ondoka katika Mnyororo wa Kuoanisha</translation>
 <translation id="115699408012835975">Ukiweka upya kipengele cha Usawazishaji, utahitaji kuweka tena msimbo wa usawazishaji kutoka kwenye kifaa kingine ili uweze kukitumia kusawazisha. Je, una uhakika kuwa ungependa kuendelea?</translation>
-<translation id="6092564993102418148">Je, una uhakika unataka kufuta kifaa kilichoteuliwa kwenye mfumo wa ulandanishaji?</translation>
+<translation id="6092564993102418148">Je, una uhakika unataka kuondoa kifaa kilichoteuliwa kwenye mfumo wa ulandanishaji?</translation>
 <translation id="3396347744975515056">Kipengele cha Usawazishaji wa Brave kimesasishwa na kinahitaji kuwekewa mipangilio</translation>
 <translation id="7473245612074035141">Anza Kuweka Mipangilio</translation>
 <translation id="3411013544209536575">Vidokezo vya usaidizi</translation>
@@ -177,10 +181,23 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="7090046810227878892">Mtoa huduma wa Ethereum kwa kutumia Dapps</translation>
 <translation id="5913089932885076110">Pakia Crypto Wallets mwanzoni</translation>
 <translation id="757886143331967039">Pakia kiendelezi cha Pochi za Crypto kilichopingwa kwenye mwanzo</translation>
+<translation id="1834467296210148203">Onyesha ikoni ya Brave Wallet kwenye upau zana</translation>
 <translation id="6864914031231797928">Ruhusu kuingia kwa Google kwa ajili hya viendelezi</translation>
 <translation id="5927916530277631319">Mbinu ya kusuluhisha Vikoa Visivyoweza Kusimamishwa</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Pata Maelezo Zaidi<ph name="END_LINK"/> kuhusu DNS badala ya mazingatio ya faragha ya lango ya HTTPS na Ethereum.</translation>
 <translation id="5248318250177143470">Mbinu ya kusuluhisha Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Weka funguo zako za IPNS</translation>
+<translation id="951216659045543447">Tia sahihi maudhui kulingana na ufunguo wa faragha unaooana na uyachapishe kwenye IPNS</translation>
+<translation id="7611728475758612204">Funguo zinapatikana kwa uchapishaji</translation>
+<translation id="911363100236037920">Weka jina la ufunguo mpya</translation>
+<translation id="6358469157239228181">Jina hili haliwezi kutumiwa</translation>
+<translation id="8996633027318264334">Je, una uhakika unataka kufuta <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Nodi haijafunguka</translation>
+<translation id="616058968889448209">Hitilafu ya kufungua huduma ya IPFS, maelezo zaidi yanapatikana kwenye <ph name="BEGIN_LINK"/>ukurasa wa uchunguzi<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Uleteaji ufunguo wa '<ph name="KEY_NAME"/>' haijafaulu</translation>
+<translation id="8275038454117074363">Ingiza</translation>
+<translation id="3654980960391973513">Zalisha</translation>
+<translation id="5531501313997312487">Nodi ya kuanza</translation>
 <translation id="9170907049676078643">Mbinu ya kutatua rasilimali za IPFS</translation>
 <translation id="1327977588028644528">Lango</translation>
 <translation id="80225669816651290">Fundo la karibu</translation>
@@ -261,7 +278,10 @@ Zawadi za Avatar Paladin</translation>
 <translation id="1391855377994926460">Endelea kuvinjari wavuti haraka - hadi mara 6 haraka zaidi kwenye tovuti kuu za habari.</translation>
 <translation id="9218430445555521422">Weka iwe chaguomsingi</translation>
 <translation id="3479552764303398839">Si sasa</translation>
+<translation id="6040143037577758943">Funga</translation>
+<translation id="5600566490506283344">Arifa ya Matangazo ya Brave</translation>
 <translation id="4877147287319222750">Ongeza kwenye Sidebar</translation>
+<translation id="4233010476457917696">Onyesha utepe</translation>
 <translation id="5404213409401164238">Onyesha Sidebar</translation>
 <translation id="7561196759112975576">Kila wakati</translation>
 <translation id="7060352228894039151">Katika kipanya</translation>

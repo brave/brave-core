@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">เริ่มโทรหาเพื่อนและผู้ร่วมงานแบบไร้ขีดจำกัดใน Brave Together</translation>
 <translation id="7115051913071512405">ลองเลย</translation>
 <translation id="7415602225677446066">เรื่องเด่นประจำวันนี้ในฟีดที่มีความเป็นส่วนตัวเต็มขั้น สำหรับคุณเท่านั้น</translation>
-<translation id="8607689491789524900">Brave Today จะจับคู่สิ่งที่คุณสนใจบนอุปกรณ์ของคุณ เพื่อให้ข้อมูลส่วนตัวของคุณไม่เคยเล็ดลอดออกจากเบราว์เซอร์ และมีการอัพเดทเนื้อหาใหม่ตลอดทั้งวัน</translation>
+<translation id="6903061332999399632">Brave News ได้รับการสนับสนุนการโฆษณาด้วยโฆษณาส่วนตัวและไม่ระบุชื่อ ซึ่งตรงกับอุปกรณ์ของคุณ ข้อมูลส่วนบุคคลของคุณจะยังคงเป็นส่วนตัวเสมอตาม<ph name="LINK_START"/>นโยบายความเป็นส่วนตัว<ph name="LINK_END"/>ของเรา</translation>
+<translation id="7823038307453615214">แสดง Brave News</translation>
+<translation id="780301667611848630">ไม่ ขอบคุณ</translation>
 <translation id="9164544612367905452">กำลังดึงข้อมูล…</translation>
 <translation id="1276592121036104130">โหลดเนื้อหาใหม่</translation>
-<translation id="4210987321913275328">เลื่อนดู Brave Today</translation>
-<translation id="3122595178900736207">รีเซ็ตแหล่งข้อมูล Brave Today</translation>
-<translation id="2197023915568148978">รีเซ็ตตัวเลือกผู้เผยแพร่ Brave Today ทั้งหมดเป็นค่าเริ่มต้นใช่หรือไม่</translation>
+<translation id="2875288128871360696">เลื่อนดู Brave News</translation>
+<translation id="8510120023634509743">รีเซ็ตแหล่งข้อมูล Brave News</translation>
+<translation id="75825199302994272">รีเซ็ตตัวเลือกผู้เผยแพร่ Brave News ของคุณทั้งหมดเป็นค่าเริ่มต้นใช่หรือไม่</translation>
 <translation id="954001034349395856">แหล่งข้อมูลทั้งหมด</translation>
 <translation id="8890516388109605451">แหล่งที่มา</translation>
 <translation id="5158129253322921540">ปิดใช้งานเนื้อหาจาก <ph name="PUBLISHER_NAME"/></translation>
@@ -111,6 +113,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3368922792935385530">เชื่อมต่อแล้ว</translation>
 <translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
 <translation id="3149306599361260465">กำลังเริ่มต้น [[percentage]]%</translation>
+<translation id="3258793718986637767">พบปัญหากับ Tor ใช่หรือไม่ โปรดลอง<ph name="BEGIN_LINK"/>ปิดใช้งานหน้าต่างส่วนตัวด้วย Tor<ph name="END_LINK"/> และเปิดใช้งานอีกครั้ง</translation>
 <translation id="4272382368346338917">ตัวกรองเพิ่มเติม</translation>
 <translation id="8949292968394988358">คำเตือน: การเปิดตัวกรองมากเกินไปจะทำให้ประสิทธิภาพลดลง</translation>
 <translation id="8686201964111147748">จำนวนโฆษณาและตัวติดตามทั้งหมดที่บล็อก:</translation>
@@ -329,7 +332,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7723816962634734185">จำนวนแบบกำหนดเอง</translation>
 <translation id="7286679368056222644">การสนับสนุนรายเดือนของคุณจะเป็น</translation>
 <translation id="4088764345615745058">จำนวนทิปแบบกำหนดเอง</translation>
-<translation id="864162897141534043">คุณกำลังจะให้ทิป</translation>
+<translation id="864162897141534043">คุณจะให้ทิป</translation>
 <translation id="3084276630953238154">ตรวจพบบั๊กตัวฉกาจ</translation>
 <translation id="3263379510325043678">การเชื่อมต่อเซิร์ฟเวอร์ขัดข้อง</translation>
 <translation id="8994556588732085585">โปรดปิดแล้วเปิดแบนเนอร์แสดงเคล็ดลับใหม่เพื่อลองอีกครั้ง</translation>
@@ -391,6 +394,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5468234114288973517">ยืนยันกระเป๋าเงินของฉัน</translation>
 <translation id="6609621505400013054">กระเป๋าเงิน bitFlyer เป็นบริการที่จัดการโดย bitFlyer, Inc</translation>
 <translation id="7258399883616914635">เมื่อยืนยันกระเป๋าเงินของคุณและเชื่อมโยงกับบัญชี bitFlyer คุณจะสามารถจัดเก็บและจัดการโทเค็นที่คุณได้รับผ่าน Brave Rewards ได้ง่ายขึ้น</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/>เกี่ยวกับวิธีเชื่อมโยงเบราว์เซอร์ Brave กับบัญชี bitFlyer ของคุณ</translation>
 <translation id="5094577350232361255">เกี่ยวกับ</translation>
 <translation id="4918086044614829423">ยอมรับ</translation>
 <translation id="5916290544882167205">Brave Software, Brave เป็นเครื่องหมายการค้าที่จดทะเบียนของ Brave Software ชื่อเว็บไซต์อาจเป็นเครื่องหมายการค้าหรือเครื่องหมายการค้าที่จดทะเบียนของเจ้าของเว็บไซต์</translation>
@@ -741,6 +745,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1833248467354516560">ราคาต่อหน่วย</translation>
 <translation id="4763179765154524864">ใช้ไปทั้งหมด</translation>
 <translation id="8851480289992540512">ได้รับทั้งหมด</translation>
+<translation id="8624961452383848703">ฉันต้องการแปลง…</translation>
 <translation id="616639131065447379">ขอต้อนรับสู่ Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets ให้คุณทำงานกับสกุลเงินคริปโตและสินทรัพย์ที่เกี่ยวข้องใน Brave Crypto Wallets รองรับโทเคน Ethereum เช่น ETH และ BAT เช่นเดียวกับของสะสม และให้คุณทำงานกับ Ðapps และสัญญาอัจฉริยะอื่น ๆ ทั้งหมดนี้เพื่อคนที่คุ้นเคยกับ Ethereum และระบบบล็อกเชนอื่น ๆ — หรืออยากเรียนรู้</translation>
 <translation id="4855440621031541830">ใช้ Crypto Wallets เฉพาะเมื่อคุณยอมรับว่าคุณคนเดียวที่รับผิดชอบต่อความเสี่ยงทั้งหมดที่เกี่ยวข้องกับการใช้นี้และ Brave Software ไม่มีส่วนรับผิดชอบหรือความรับผิดใด ๆ ต่อการสูญเสียใด  ๆ รวมทั้งความสูญเสียแบบไม่ได้ตั้งใจหรือเป็นผลสืบเนื่องจากการใช้นี้</translation>
@@ -835,17 +840,18 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5525148540855044244">คัดลอกลิงก์ที่แชร์ได้: <ph name="SHAREABLE_LINK"/></translation>
 <translation id="3741998951694470470">ไม่สามารถดึงข้อมูลเพื่อนำเข้าได้</translation>
 <translation id="7900950536120202771">ข้อผิดพลาดภายในโหนด IPFS</translation>
-<translation id="1036635552229153800">อัปโหลดข้อมูลสำเร็จแล้ว แต่ยังไม่ได้ย้ายไปยังไดเร็กทอรีนำเข้าของ Brave โดยคุณสามารถทำได้ด้วยตนเองในหน้าการตั้งค่าการนำเข้า</translation>
-<translation id="7789840864192026963">ให้สิทธิ์</translation>
-<translation id="7978789143098237970">จนกว่าฉันจะปิดหน้านี้</translation>
+<translation id="1036635552229153800">อัปโหลดข้อมูลสำเร็จแล้ว แต่ยังไม่ได้ย้ายไปยังไดเร็กทอรี brave-import โดยคุณสามารถทำได้ด้วยตนเองในหน้าการตั้งค่าการนำเข้า</translation>
+<translation id="572392919096807438">จดจำการตัดสินใจของฉัน</translation>
+<translation id="7978789143098237970">จนกว่าฉันจะปิดเว็บไซต์นี้</translation>
 <translation id="3523195733429162409">เป็นเวลา 24 ชั่วโมง</translation>
 <translation id="2373264732659722940">เป็นเวลา 1 สัปดาห์</translation>
 <translation id="6318437367327684789">ทุกครั้ง</translation>
-<translation id="7463327191540031132">บล็อคทุกครั้ง</translation>
 <translation id="8797999629784150206">คุณสามารถเปลี่ยนแปลง<ph name="SITE_PERMISSIONS"/>ได้ทุกเมื่อ <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">การให้สิทธิ์แก่เว็บไซต์</translation>
 <translation id="7701466644604753106">เปิด Speedreader</translation>
 <translation id="763042262431778831">ปิด Speedreader</translation>
+<translation id="1544192797660353713">วอลเล็ท</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
 <translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>
@@ -854,4 +860,21 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">สถานะการเชื่อมต่อ Tor</translation>
 <translation id="6024292492796847324">ความคืบหน้าการเริ่มต้น Tor</translation>
+<translation id="7586151660465233733">ตลาดซื้อขายเพิ่มเติมที่ <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">ดูตลาดซื้อขายและเทรดคริปโตบน FTX</translation>
+<translation id="5963745988819586370">ตลาดซื้อขาย</translation>
+<translation id="3795943412467785186">เชื่อมต่อบัญชี FTX เพื่อดูยอดคงเหลือในบัญชี สำรวจตลาดซื้อขายในอนาคตและแปลงคริปโต</translation>
+<translation id="926958206891985289">ดูตลาดซื้อขายในอนาคต</translation>
+<translation id="6804537228302563756">เชื่อมต่อบัญชี</translation>
+<translation id="5019698312620117604">ประวัติราคาในช่วง 24 ชั่วโมง</translation>
+<translation id="8720719072204443171">ปริมาณการซื้อขายในช่วง 24 ชั่วโมง</translation>
+<translation id="3891414008432200754">ราคา</translation>
+<translation id="7723176927437578611">ดำเนินการต่อ</translation>
+<translation id="2983078329159689577">กำลังส่ง…</translation>
+<translation id="6641102760094059194">ยืนยัน (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">การแปลงเสร็จสมบูรณ์!</translation>
+<translation id="7590653073560839711">คุณต้องมียอดคงเหลือเป็นสกุลเงินอย่างน้อยหนึ่งสกุลเพื่อทำการแปลง</translation>
+<translation id="4390079506197726228">มีอยู่ <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
+<translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 </translationbundle>

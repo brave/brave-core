@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Започнете неограничени разговори с приятели и колеги в Brave Together.</translation>
 <translation id="7115051913071512405">Опитайте</translation>
 <translation id="7415602225677446066">Водещите истории от днес в напълно личен канал, само за вас.</translation>
-<translation id="8607689491789524900">Brave Today отговаря на вашите интереси на вашето устройство, така че личната ви информация никога не напуска браузъра ви. Новото съдържание се актуализира през целия ден.</translation>
+<translation id="6903061332999399632">Brave Новини се поддържа от изцяло частни и анонимизирани реклами, съгласувани с Вашето устройство. Вашата лична информация остава винаги конфиденциална съгласно нашата <ph name="LINK_START"/>политика за поверителност<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Показване на Brave Новини</translation>
+<translation id="780301667611848630">Не, благодаря</translation>
 <translation id="9164544612367905452">Извлича се...</translation>
 <translation id="1276592121036104130">Зареждане на ново съдържание</translation>
-<translation id="4210987321913275328">Превъртете за Brave Today</translation>
-<translation id="3122595178900736207">Нулиране на източниците на Brave Today</translation>
-<translation id="2197023915568148978">Да се възстановят ли всичките ви избрани издатели в Brave Today до тези по подразбиране?</translation>
+<translation id="2875288128871360696">Превъртaне за Brave Новини</translation>
+<translation id="8510120023634509743">Нулиране на източниците на Brave Новини</translation>
+<translation id="75825199302994272">Да бъдат ли нулирани всички избрани издатели на Brave Новини и да бъдат възстановени тези по подразбиране?</translation>
 <translation id="954001034349395856">Всички източници</translation>
 <translation id="8890516388109605451">Източници</translation>
 <translation id="5158129253322921540">Деактивирайте съдържанието от <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Установена е връзка</translation>
 <translation id="8030169304546394654">Разкачен</translation>
 <translation id="3149306599361260465">Инициализиране  [[percentage]]%</translation>
+<translation id="3258793718986637767">Имате проблеми с Tor? Опитайте <ph name="BEGIN_LINK"/>деактивиране на поверителен прозорец с Tor<ph name="END_LINK"/>и отново го активирайте.</translation>
 <translation id="4272382368346338917">Допълнителни филтри</translation>
 <translation id="8949292968394988358">Внимание: включване на твърде много филтри ще понижи качеството</translation>
 <translation id="8686201964111147748">Общо блокирани реклами и проследяващи скриптове:</translation>
@@ -328,7 +331,7 @@
 <translation id="7723816962634734185">Персонализирана сума</translation>
 <translation id="7286679368056222644">Месечната ви поддръжка ще бъде</translation>
 <translation id="4088764345615745058">Персонализирана сума за възнаграждение</translation>
-<translation id="864162897141534043">Вие ще оставите възнаграждение</translation>
+<translation id="864162897141534043">На път сте да оставите възнаграждение</translation>
 <translation id="3084276630953238154">Появи се странна грешка</translation>
 <translation id="3263379510325043678">Грешка във връзката със сървъра</translation>
 <translation id="8994556588732085585">Моля, затворете и отворете отново банера за подпомагане, за да опитате отново.</translation>
@@ -341,8 +344,8 @@
 <translation id="4622723187300249546">Еднократен бакшиш</translation>
 <translation id="5268142130226208198">Еднократна сума за бакшиша:</translation>
 <translation id="3669086939205397942">Изчакайте, още не можете да подпомагате</translation>
-<translation id="3288812755711687300"><ph name="USER"/>публикация</translation>
-<translation id="5851002232791947896"><ph name="USER"/>туит</translation>
+<translation id="3288812755711687300">публикация на <ph name="USER"/></translation>
+<translation id="5851002232791947896">туит на <ph name="USER"/></translation>
 <translation id="5531915212947569943">Съжаляваме, че напускате…</translation>
 <translation id="1420756770787071946">Подкрепете този създател</translation>
 <translation id="3271043362279673449">Благодарим Ви за подкрепата!</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Потвърди моя портфейл</translation>
 <translation id="6609621505400013054">Портфейлът bitFlyer е услуга, управлявана от bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Чрез потвърждаване на вашия портфейл и свързването му към bitFlyer акаунта, вие ще можете по-лесно да съхранявате и управлявате вашите токени, които сте спечелили през Brave Rewards.</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Научете повече<ph name="LINK_END"/> относно това как да свържете Вашия Brave браузер с Вашия bitFlyer акаунт.</translation>
 <translation id="5094577350232361255">за</translation>
 <translation id="4918086044614829423">Приемам</translation>
 <translation id="5916290544882167205">Brave Software. Brave е регистрирана търговска марка на Brave Software. Имената на сайтове могат да бъдат търговски марки или регистрирани търговски марки на собственика на сайта.</translation>
@@ -658,7 +662,7 @@
 <translation id="7840362246306242214">В Uphold се предлага търговия с акции в САЩ</translation>
 <translation id="3345432088196080137">Инвестирайте суми, започващи от само $1, в популярни акции и борсово търгувани акции като AAPL, TSLA или AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Научете повече <ph name="LINK_END"/> за Brave Rewards</translation>
-<translation id="7443190393462029180">Като щракнете върху „Започнете да използвате Brave Rewards“, вие приемате <ph name="TOS_LINK_BEGIN"/>Условията за ползване<ph name="TOS_LINK_END"/> и <ph name="PP_LINK_BEGIN"/>Политиката за поверителност<ph name="PP_LINK_END"/>.</translation>
+<translation id="7443190393462029180">Щраквайки върху „Започнете да използвате Brave Rewards“, вие приемате <ph name="TOS_LINK_BEGIN"/>Условията за ползване<ph name="TOS_LINK_END"/> и <ph name="PP_LINK_BEGIN"/>Политиката за поверителност<ph name="PP_LINK_END"/>.</translation>
 <translation id="8344084848798035850">Прогнозна печалба към момента за този месец</translation>
 <translation id="5235444069025581717">Бакшиши и принос този месец</translation>
 <translation id="1210965535849006928">Поискайте моите Награди</translation>
@@ -739,6 +743,7 @@
 <translation id="1833248467354516560">Единична цена</translation>
 <translation id="4763179765154524864">Общо похарчени</translation>
 <translation id="8851480289992540512">Общо получени</translation>
+<translation id="8624961452383848703">Искам да конвертирам...</translation>
 <translation id="616639131065447379">Добре дошли в Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets ви позволява да работите с криптовалута и свързани активи в Brave. Crypto Wallets поддържа токени на Ethereum като ETH и BAT, както и колекционерски артикули и ви позволява да работите с приложения и други смарт договори. Всичко това е предназначено за хора, които са запознати с Ethereum и други блокчейн системи или са въодушевени да научат.</translation>
 <translation id="4855440621031541830">Използвайте Crypto Wallets, само ако приемате, че единствено вие носите отговорност за целия риск, свързан с тази употреба, и че Brave Software не носи отговорност или задължение за загуби, включително случайни или последващи загуби, които бихте могли да понесете в резултат на тази употреба.</translation>
@@ -834,17 +839,18 @@
 <translation id="5525148540855044244">Връзка, която може да се сподели е копирана: <ph name="SHAREABLE_LINK"/></translation>
 <translation id="3741998951694470470">Грешка при извличане на данни за импортиране</translation>
 <translation id="7900950536120202771">Вътрешна грешка в IPFS възела</translation>
-<translation id="1036635552229153800">Данните бяха успешно качени, но не са пренесени в директорията за импортиране на brave. Можете да направите това ръчно от страницата за настройки на импортирането.</translation>
-<translation id="7789840864192026963">Дайте разрешение</translation>
-<translation id="7978789143098237970">докато не затворя тази страница</translation>
+<translation id="1036635552229153800">Данните бяха успешно качени, но не са пренесени в директорията brave-import. Можете да направите това ръчно от страницата за настройки на импортирането.</translation>
+<translation id="572392919096807438">Запомняне на решението ми</translation>
+<translation id="7978789143098237970">до затваряне на този сайт</translation>
 <translation id="3523195733429162409">за 24 часа</translation>
 <translation id="2373264732659722940">за 1 седмица</translation>
 <translation id="6318437367327684789">завинаги</translation>
-<translation id="7463327191540031132">Блокирайте завинаги</translation>
 <translation id="8797999629784150206">Можете да промените вашите <ph name="SITE_PERMISSIONS"/> по всяко време. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">разрешение на сайта</translation>
 <translation id="7701466644604753106">ВКЛЮЧВАНЕ на Speedreader</translation>
 <translation id="763042262431778831">ИЗКЛЮЧВАНЕ на Speedreader</translation>
+<translation id="1544192797660353713">Портфейл</translation>
+<translation id="8488282162676695335">Портфейл в Brave</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="3745016858329272300">Обща информация</translation>
 <translation id="4045404575593562245">Събития за контрол на Tor</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">URI на прокси за Tor</translation>
 <translation id="1671503397662036257">Състояние на връзката Tor</translation>
 <translation id="6024292492796847324">Напредък на инициализацията на Tor</translation>
+<translation id="7586151660465233733">Включване на повече пазари<ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Преглед на пазарите и търгуване с криптовалута в FTX</translation>
+<translation id="5963745988819586370">Пазари</translation>
+<translation id="3795943412467785186">Свързване на FXT акаунт за преглед на салдо по сметка, изследване на фючърсните пазари и обмен на криптовалута.</translation>
+<translation id="926958206891985289">Преглед на фючърсните пазари</translation>
+<translation id="6804537228302563756">Свързване на акаунт</translation>
+<translation id="5019698312620117604">24-часова хронология на цените</translation>
+<translation id="8720719072204443171">24-часов обем</translation>
+<translation id="3891414008432200754">Цена</translation>
+<translation id="7723176927437578611">Постъпления</translation>
+<translation id="2983078329159689577">Изпращане...</translation>
+<translation id="6641102760094059194">Потвърждаване (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Успешно конвертиране</translation>
+<translation id="7590653073560839711">Необходимо е да имате салдо в поне една валута, за да извършите конвертиране.</translation>
+<translation id="4390079506197726228">Налични <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Скриване на салдата от дисплея</translation>
+<translation id="4548946945059463969">Показване на салдата на екрана</translation>
 </translationbundle>

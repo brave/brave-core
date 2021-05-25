@@ -171,17 +171,13 @@
     "message": "Changer les paramètres Global Shield par défaut",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Bloquer l'élément via le sélecteur",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Gérer les filtres personnalisés",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Activer le mode sélecteur d'élément",
-    "description": "Message for context menu that enables the element picker UI on the page."
+    "message": "Élément bloqué",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "Affichage avancé",

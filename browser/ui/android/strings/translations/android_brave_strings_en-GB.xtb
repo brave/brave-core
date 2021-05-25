@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Allow Twitter embedded tweets</translation>
 <translation id="958971637207126733">Allow LinkedIn embedded posts</translation>
 <translation id="6302422639282249274">Manage Brave Rewards</translation>
-<translation id="1506061864768559482">Search engine</translation>
 <translation id="1468415711258933398">Standard tab</translation>
 <translation id="3377025655491224618">Incognito Tab</translation>
 <translation id="9148058034647219655">Exit</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="8710614491157212477">Opens supported sites using HTTPS instead of HTTP when possible</translation>
-<translation id="4022987104439075738">IPFS Gateway</translation>
-<translation id="2688519859165248360">Allows for navigation to IPFS resources through an IPFS Gateway</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Resolve Method</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Disabled</translation>
 <translation id="2218918398178303658">DNS over HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Ad block</translation>
-<translation id="1934885595886623674">Prevents ads from loading</translation>
-<translation id="7458422973722236530">Fingerprinting Protection</translation>
 <translation id="5787084571334399599">Prevents browser from fingerprinting</translation>
 <translation id="7459000603787995422">Close tabs on exit</translation>
 <translation id="1680858055899097121">Don't persist tabs between browsing sessions</translation>
-<translation id="6469509880167172749">Automatically send completely private product analytics to Brave</translation>
-<translation id="7090566321964540749">This anonymous info only lets Brave estimate the overall usage of certain features.</translation>
+<translation id="7142548388914389999">Automatically send completely private product analytics to Brave</translation>
+<translation id="5469408008145872264">This anonymous info only lets Brave estimate the overall usage of certain features.</translation>
 <translation id="7977176350719484850">Est. Data\nSaved</translation>
 <translation id="6572660632052512096">Desktop mode</translation>
 <translation id="1340503115760585811">Enable desktop view for new tabs</translation>
@@ -42,7 +34,6 @@
 <translation id="4479934682648362332">Prefer desktop version of sites</translation>
 <translation id="1842747674580016420">Video playback in Brave</translation>
 <translation id="5368992950177874750">If enabled, videos will be played in Brave instead of corresponding app</translation>
-<translation id="2645380101799517405">Controls</translation>
 <translation id="5965081608816406060">Background video playback</translation>
 <translation id="6332924730165919598">Closing all tabs closes Brave</translation>
 <translation id="1580125697191336644">Experimental. Enables play audio from video in background when tab is not active or device screen is turned off. Try to switch to desktop mode if this feature is not working.</translation>
@@ -279,11 +270,10 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="5657156137487675418">Allow all cookies</translation>
 <translation id="3895527457258986253">Block fingerprinting</translation>
 <translation id="184568144098869637">Prevents browser from recognising your device</translation>
-<translation id="7396366757003005317">Fingerprinting blocked (strict, may break sites)</translation>
-<translation id="700453611199558021">Fingerprinting blocked (standard)</translation>
+<translation id="7445306466605902444">Fingerprinting blocked (strict, may break sites)</translation>
+<translation id="5582686930349810484">Fingerprinting blocked (standard)</translation>
 <translation id="769702552748212954">Allow all fingerprinting</translation>
 <translation id="876424292214881779">Ads and other creepy things blocked</translation>
-<translation id="5142293891785304489">Trackers, ads, and\nmore blocked</translation>
 <translation id="6930134873084561197">Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking to see what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.</translation>
 <translation id="8553998445606452168">About Brave Shields</translation>
 <translation id="8912304686498704084">UP</translation>
@@ -296,7 +286,6 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="5299848999918506028">Thank you!</translation>
 <translation id="76550953340008122">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
 <translation id="650318023204990401">Advanced controls</translation>
-<translation id="7182293319417450928">A minimum balance of 25 BAT is required to verify.</translation>
 <translation id="1275664486910646411">Show top sites in autocomplete</translation>
 <translation id="5516010970279932133">Show suggested sites in autocomplete</translation>
 <translation id="5370478469168390143">Save Data Online</translation>
@@ -470,14 +459,6 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="3184805785843994538">Brave Shields blocks trackers &amp; ads, saves data and saves you time on every site you visit.</translation>
 <translation id="8722651357687610395">Set Brave as default</translation>
 <translation id="3479552764303398839">Not now</translation>
-<translation id="6232491755501685494">Brave Rewards in Japan is switching to a new system!</translation>
-<translation id="7444515017164572362">From 13 March, you won’t be able to use your BAP. But once you
-        update to the new system in April, you’ll start off with new tokens!</translation>
-<translation id="8587285254008006694">As part of this transition, the tipping and contribution features in
-        your browser will be temporarily unavailable from 13 March and
-        your BAP balance will show 0.0 until you have updated to the new system
-        in April. Once you’re on the new system, you’ll start off with new
-        tokens!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -497,4 +478,9 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="5825943197137337319">Default public interface only</translation>
 <translation id="1689062823386843231">Disable non-proxied UDP</translation>
 <translation id="3171931580569169744">Enable Tab Groups</translation>
+<translation id="5587305863196367357">Verifying wallet allows you to manage your funds easily, adding &amp; withdrawing</translation>
+<translation id="5760671211380791582">You don't have enough BAT.</translation>
+<translation id="6960458596933484861">You need to have minimum of 15 BAT to create a verified Uphold wallet. Please try again later.</translation>
+<translation id="4389085954549744469">If you already have a verified Uphold account, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continue to login</translation>
 </translationbundle>

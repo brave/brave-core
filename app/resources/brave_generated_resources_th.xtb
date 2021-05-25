@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">เสียงที่เลือก</translation>
 <translation id="7895302206188277628">เนื้อหาที่เชื่อมโยง</translation>
 <translation id="4322612543319315652">นำเข้าข้อความที่เลือกไปยัง IPFS</translation>
+<translation id="8883166554766780543">นำเข้าและคัดลอกลิงค์ไปยังสแนปชอต IPFS</translation>
+<translation id="3654831858282189202">เผยแพร่ด้วยคีย์ IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">การสร้างวินโดว์ส่วนบุคคลกับทอร์</translation>
 <translation id="4703780849509456860">เปิดลิงก์ในหน้าต่างส่วนตัวพร้อม Tor</translation>
 <translation id="3488584642074079080">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave พร้อม Tor</translation>
 <translation id="7475547933708221517">แบ่งปันไฟล์ในเครื่องโดยใช้ IPFS</translation>
+<translation id="2286177249736199435">แบ่งปันโฟลเดอร์ภายในเครื่องโดยใช้ IPFS</translation>
 <translation id="784573715436258741">แบ่งปันฟล์ในเครื่องโดยใช้ IPFS</translation>
 <translation id="6313675821927505581">หน้าต่างส่วนตัวใหม่ด้วย Tor</translation>
 <translation id="2638041073279639246">เปิดลิงก์ในหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="3425600262621021599">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave ด้วย Tor</translation>
+<translation id="575838692088926391">แบ่งปันโฟลเดอร์ในเครื่องโดยใช้ IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
@@ -157,7 +161,7 @@
 <translation id="4112587618563511470">รหัสซิงค์ไม่ถูกต้อง โปรดตรวจสอบแล้วลองอีกครั้ง</translation>
 <translation id="2339730291919608488">ออกจากกลุ่มการซิงค์</translation>
 <translation id="115699408012835975">หากคุณรีเซ็ตซิงค์ คุณจะต้องกรอกรหัสซิงค์ใหม่จากอุปกรณ์อื่นเพื่อที่จะซิงค์กับอุปกรณ์นั้น ๆ แน่ใจว่าต้องการดำเนินการต่อ?</translation>
-<translation id="6092564993102418148">แน่ใจว่าต้องการลบอุปกรณ์ที่เลือกจากห่วงการซิงค์?</translation>
+<translation id="6092564993102418148">คุณแน่ใจหรือไม่ว่าต้องการลบอุปกรณ์ที่เลือกจากซิงค์เชน</translation>
 <translation id="3396347744975515056">Brave Sync ได้อัปเกรดและต้องการติดตั้ง</translation>
 <translation id="7473245612074035141">เริ่มติดตั้ง</translation>
 <translation id="3411013544209536575">เคล็ดลับช่วยเหลือ</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">ผู้ให้บริการ Ethereum สำหรับใช้งาน Dapps</translation>
 <translation id="5913089932885076110">โหลด Crypto Wallets เมื่อเริ่มต้น</translation>
 <translation id="757886143331967039">โหลดส่วนขยายกระเป๋าเงินดิจิตอลที่เลิกใช้แล้วเมื่อเริ่มต้นระบบ</translation>
+<translation id="1834467296210148203">แสดงไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
 <translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
 <translation id="5927916530277631319">วิธีการแปลงที่อยู่ของ Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/> เกี่ยวกับ DNS ตลอดจนการพิจารณาความเป็นส่วนตัวของ HTTPS และ Ethereum</translation>
 <translation id="5248318250177143470">วิธีการแปลงที่อยู่ของ Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">ตั้งค่าคีย์ IPNS  ของคุณ</translation>
+<translation id="951216659045543447">เซ็นชื่อเนื้อหาด้วยคีย์ส่วนตัวที่เกี่ยวข้องและเผยแพร่ไปยัง IPNS</translation>
+<translation id="7611728475758612204">คีย์สำหรับการเผยแพร่</translation>
+<translation id="911363100236037920">ระบุชื่อสำหรับคีย์นี้</translation>
+<translation id="6358469157239228181">ไม่สามารถใช้ชื่อนี้ได้</translation>
+<translation id="8996633027318264334">คุณต้องการลบ <ph name="KEY_NAME"/> ใช่หรือไม่</translation>
+<translation id="910215077892371264">โหนดไม่ได้เปิดใช้งาน</translation>
+<translation id="616058968889448209">เกิดข้อผิดพลาดในการเปิดใช้งานบริการ IPFS สามารถดูข้อมูลเพิ่มเติมได้ที่<ph name="BEGIN_LINK"/>หน้าการวินิจฉัย<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">การนำเข้าคีย์ '<ph name="KEY_NAME"/>' ล้มเหลว</translation>
+<translation id="8275038454117074363">นำเข้า</translation>
+<translation id="3654980960391973513">สร้าง</translation>
+<translation id="5531501313997312487">เริ่มต้นใช้งานโหนด</translation>
 <translation id="9170907049676078643">วิธีแก้ปัญหาเกี่ยวกับทรัพยากร IPFS</translation>
 <translation id="1327977588028644528">เกตเวย์</translation>
 <translation id="80225669816651290">โหนดภายใน</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">ท่องเว็บได้เร็วขึ้น - สูงสุด 6 เท่าในเว็บไซต์ข่าวหลัก</translation>
 <translation id="9218430445555521422">ตั้งเป็นค่าเริ่มต้น</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
+<translation id="6040143037577758943">ปิด</translation>
+<translation id="5600566490506283344">การแจ้งเตือน Brave Ad</translation>
 <translation id="4877147287319222750">เพิ่มลงในแถบด้านข้าง</translation>
+<translation id="4233010476457917696">แสดงแถบด้านข้าง</translation>
 <translation id="5404213409401164238">แสดงแถบด้านข้าง</translation>
 <translation id="7561196759112975576">เสมอ</translation>
 <translation id="7060352228894039151">วางเมาส์เหนือ</translation>

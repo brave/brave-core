@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Bắt đầu cuộc gọi không giới hạn với bạn bè và đồng nghiệp trong Brave Together.</translation>
 <translation id="7115051913071512405">Dùng thử</translation>
 <translation id="7415602225677446066">Các tin bài hàng đầu của ngày hôm nay trong một nguồn cấp tin hoàn toàn riêng tư, chỉ dành cho bạn.</translation>
-<translation id="8607689491789524900">Brave Today hiển thị nội dung phù hợp với sở thích của bạn trên thiết bị, vì vậy thông tin cá nhân của bạn không bao giờ bị lộ ra khỏi trình duyệt của bạn. Nội dung mới được cập nhật trong ngày.</translation>
+<translation id="6903061332999399632">Brave Tin tức được hỗ trợ quảng cáo với các quảng cáo hoàn toàn riêng tư và ẩn danh phù hợp trên thiết bị của bạn. Thông tin cá nhân của bạn luôn được bảo mật, theo <ph name="LINK_START"/>chính sách bảo mật<ph name="LINK_END"/> của chúng tôi.</translation>
+<translation id="7823038307453615214">Hiển thị Brave Tin tức</translation>
+<translation id="780301667611848630">Không, cảm ơn</translation>
 <translation id="9164544612367905452">Đang tải...</translation>
 <translation id="1276592121036104130">Tải nội dung mới</translation>
-<translation id="4210987321913275328">Cuộn để xem nội dung Brave Today</translation>
-<translation id="3122595178900736207">Đặt lại nguồn Brave Today</translation>
-<translation id="2197023915568148978">Thiết lập lại tất cả các lựa chọn nhà xuất bản Brave Today của bạn về mặc định của họ?</translation>
+<translation id="2875288128871360696">Cuộn để xem Brave Tin tức</translation>
+<translation id="8510120023634509743">Đặt lại nguồn Brave Tin tức</translation>
+<translation id="75825199302994272">Thiết lập lại tất cả các lựa chọn nhà xuất bản Brave News của bạn về mặc định?</translation>
 <translation id="954001034349395856">Tất cả các nguồn</translation>
 <translation id="8890516388109605451">Nguồn</translation>
 <translation id="5158129253322921540">Vô hiệu hóa nội dung từ <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Đã kết nối</translation>
 <translation id="8030169304546394654">Đã ngắt kết nối</translation>
 <translation id="3149306599361260465">Đang khởi tạo [[percentage]]%</translation>
+<translation id="3258793718986637767">Gặp sự cố với Tor? Thử <ph name="BEGIN_LINK"/>tắt cửa sổ riêng với Tor<ph name="END_LINK"/> và bật lại lần nữa.</translation>
 <translation id="4272382368346338917">Bộ lọc thêm</translation>
 <translation id="8949292968394988358">Lưu ý: Bật quá nhiều bộ lọc sẽ làm giảm hiệu năng</translation>
 <translation id="8686201964111147748">Tổng số quảng cáo và trình theo dõi đã chặn:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Xác thực ví của tôi</translation>
 <translation id="6609621505400013054">Ví bitFlyer là một dịch vụ do bitFlyer, Inc quản lý.</translation>
 <translation id="7258399883616914635">Với việc xác thực ví của bạn và liên kết ví với một tài khoản bitFlyer, bạn sẽ có thể lưu trữ và quản lý các token mà bạn đã kiếm được thông qua Brave Rewards dễ dàng hơn</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/> về cách liên kết trình duyệt Brave với tài khoản bitFlyer của bạn.</translation>
 <translation id="5094577350232361255">về</translation>
 <translation id="4918086044614829423">Chấp nhận</translation>
 <translation id="5916290544882167205">Brave Software. Brave là thương hiệu đã đăng ký của Brave Software. Tên các website có thể là thương hiệu hoặc thương hiệu đã đăng ký của chủ sở hữu trang.</translation>
@@ -736,6 +740,7 @@
 <translation id="1833248467354516560">Đơn Giá</translation>
 <translation id="4763179765154524864">Tổng số Tiền Đã chi</translation>
 <translation id="8851480289992540512">Tổng số Token Đã nhận</translation>
+<translation id="8624961452383848703">Tôi muốn chuyển đổi...</translation>
 <translation id="616639131065447379">Chào mừng bạn đến với Ví Tiền điện tử Brave</translation>
 <translation id="1740464057879304704">Ví Tiền điện tử cho phép bạn làm việc với tiền điện tử và các tài sản liên quan trong Brave. Ví Tiền điện tử hỗ trợ các token Ethereum như ETH và BAT, cũng như các bộ sưu tập tiền điện tử, và cho phép bạn làm việc với các ứng dụng và hợp đồng thông minh khác. Tất cả điều này dành cho những người quen thuộc với Ethereum và các hệ thống blockchain khác hoặc hào hứng tìm hiểu.</translation>
 <translation id="4855440621031541830">Chỉ sử dụng Ví Tiền điện tử nếu bạn chấp nhận rằng một mình bạn chịu trách nhiệm cho mọi rủi ro liên quan đến việc sử dụng này và Phần mềm Brave không chịu trách nhiệm hoặc nghĩa vụ đối với bất kỳ tổn thất nào kể cả tổn thất ngẫu nhiên hoặc do hậu quả mà bạn có thể phải chịu do việc sử dụng này.</translation>
@@ -831,16 +836,17 @@
 <translation id="3741998951694470470">Không tải được dữ liệu để nhập</translation>
 <translation id="7900950536120202771">Lỗi nội bộ nút IPFS</translation>
 <translation id="1036635552229153800">Dữ liệu đã được tải lên thành công nhưng chưa được chuyển đến thư mục brave-import. Bạn có thể thực hiện điều này một cách thủ công trên trang cài đặt nhập.</translation>
-<translation id="7789840864192026963">Cấp quyền</translation>
+<translation id="572392919096807438">Ghi nhớ quyết định của tôi</translation>
 <translation id="7978789143098237970">cho đến khi tôi đóng trang này</translation>
 <translation id="3523195733429162409">trong 24 giờ</translation>
 <translation id="2373264732659722940">trong 1 tuần</translation>
 <translation id="6318437367327684789">vĩnh viễn</translation>
-<translation id="7463327191540031132">Chặn vĩnh viễn</translation>
 <translation id="8797999629784150206">Bạn có thể thay đổi <ph name="SITE_PERMISSIONS"/> của mình bất cứ lúc nào. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">cấp quyền website</translation>
 <translation id="7701466644604753106">BẬT Trình đọc tốc độ</translation>
 <translation id="763042262431778831">TẮT Trình đọc tốc độ</translation>
+<translation id="1544192797660353713">Ví</translation>
+<translation id="8488282162676695335">Ví Brave</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -849,4 +855,21 @@
 <translation id="6951743416068151209">URI Proxy Tor</translation>
 <translation id="1671503397662036257">Trạng thái Kết nối Tor</translation>
 <translation id="6024292492796847324">Quá trình Khởi tạo Tor</translation>
+<translation id="7586151660465233733">Thêm thị trường trên <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Xem thị trường và giao dịch tiền điện tử trên FTX</translation>
+<translation id="5963745988819586370">Thị trường</translation>
+<translation id="3795943412467785186">Kết nối tài khoản FTX để xem số dư tài khoản, khám phá thị trường tương lai, &amp; chuyển đổi tiền điện tử.</translation>
+<translation id="926958206891985289">Xem thị trường tương lai</translation>
+<translation id="6804537228302563756">Kết nối tài khoản</translation>
+<translation id="5019698312620117604">Lịch sử giá 24 giờ</translation>
+<translation id="8720719072204443171">Khối lượng 24 giờ</translation>
+<translation id="3891414008432200754">Giá</translation>
+<translation id="7723176927437578611">Tiền nhận được</translation>
+<translation id="2983078329159689577">Đang gửi...</translation>
+<translation id="6641102760094059194">Xác nhận (<ph name="NUMBER_OF_SECONDS_LEFT"/>giây)</translation>
+<translation id="2280055104463448482">Chuyển đổi thành công!</translation>
+<translation id="7590653073560839711">Bạn cần có số dư bằng ít nhất một loại tiền tệ để thực hiện chuyển đổi.</translation>
+<translation id="4390079506197726228">Có sẵn<ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
+<translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 </translationbundle>

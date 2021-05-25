@@ -819,6 +819,18 @@
     "message": "Dengan mengesahkan dompet anda dan memautkannya ke akaun bitFlyer, anda akan dapat menyimpan dan menguruskan token yang anda peroleh melalui Brave Rewards dengan lebih mudah",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Ketahui lebih lanjut$link_end$ mengenai cara memautkan pelayar Brave anda dengan akaun bitFlyer anda.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Ganjaran Brave di Jepun beralih ke sistem baharu!",
     "description": "Header text for BAP deprecation warning message"
