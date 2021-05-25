@@ -14,10 +14,12 @@
   if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
     if (WebContentSettingsClient* settings =                              \
             brave::GetContentSettingsClientFor(context)) {                \
+      SkPixmap image_data_pixmap = image_data->GetSkPixmap();             \
       brave::BraveSessionCache::From(*context).PerturbPixels(             \
           settings,                                                       \
-          static_cast<const unsigned char*>(data_array->BaseAddress()),   \
-          data_array->byteLength());                                      \
+          static_cast<const unsigned char*>(                              \
+              image_data_pixmap.writable_addr()),                         \
+          image_data_pixmap.computeByteSize());                           \
     }                                                                     \
   }
 
