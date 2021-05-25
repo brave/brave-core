@@ -629,13 +629,14 @@
 - (void)searchWithQuery:(NSString*)query
                maxCount:(NSUInteger)maxCount
              completion:(void(^)(NSArray<IOSBookmarkNode*>*))completion {
-  auto search_with_query = [](BraveBookmarksAPI* weak_bookmarks_api,
-                              NSString* query,
+    
+  __weak BraveBookmarksAPI* weak_bookmarks_api = self;
+  auto search_with_query = ^(NSString* query,
                               NSUInteger maxCount,
                               std::function<void(
                                   NSArray<IOSBookmarkNode*>*)
                               > completion) {
-    __strong BraveBookmarksAPI* bookmarks_api = weak_bookmarks_api;
+    BraveBookmarksAPI* bookmarks_api = weak_bookmarks_api;
     if (!bookmarks_api) {
       completion(@[]);
       return;
@@ -663,12 +664,10 @@
     completion(nodes);
   };
     
-  __weak BraveBookmarksAPI* weakSelf = self;
   base::PostTask(
       FROM_HERE,
       {web::WebThread::UI},
       base::BindOnce(search_with_query,
-                     weakSelf,
                      query,
                      maxCount,
                      completion));
