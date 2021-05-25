@@ -89,17 +89,12 @@ export function CustomAmountInput (props: Props) {
   }
 
   const dependentAmount = inputMode === 'bat'
-    ? props.amount * props.exchangeRate
+    ? roundExchangeUp(props.amount * props.exchangeRate)
     : props.amount
 
   const toggleMode = () => {
-    if (inputMode === 'bat') {
-      setControlValue(amountFormat.format(roundExchangeUp(dependentAmount)))
-      setInputMode('exchange')
-    } else {
-      setControlValue(amountFormat.format(dependentAmount))
-      setInputMode('bat')
-    }
+    setControlValue(amountFormat.format(dependentAmount))
+    setInputMode(inputMode === 'bat' ? 'exchange' : 'bat')
   }
 
   return (
