@@ -122,6 +122,9 @@ void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock);
+void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
+              const std::string& name,
+              const std::string& filename);
 
 void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock);
 
