@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-index 31a22fa48c001a07d1b848c107d22c7d1342c2a6..598a94a2cb71897c4ace95dbecfb8cd9bf57a51d 100644
+index 31a22fa48c001a07d1b848c107d22c7d1342c2a6..70adc89b0c804f28d8c94e6217d9dd650f97a5ac 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 @@ -2920,6 +2920,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(
@@ -122,15 +122,7 @@ index 31a22fa48c001a07d1b848c107d22c7d1342c2a6..598a94a2cb71897c4ace95dbecfb8cd9
    return EnsureNotNull(shader->Source());
  }
  
-@@ -3868,6 +3883,7 @@ base::Optional<Vector<String>>
- WebGLRenderingContextBase::getSupportedExtensions() {
-   if (isContextLost())
-     return base::nullopt;
-+  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT
- 
-   Vector<String> result;
- 
-@@ -3890,6 +3906,7 @@ ScriptValue WebGLRenderingContextBase::getTexParameter(
+@@ -3890,6 +3905,7 @@ ScriptValue WebGLRenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -138,7 +130,7 @@ index 31a22fa48c001a07d1b848c107d22c7d1342c2a6..598a94a2cb71897c4ace95dbecfb8cd9
    if (!ValidateTextureBinding("getTexParameter", target))
      return ScriptValue::CreateNull(script_state->GetIsolate());
    switch (pname) {
-@@ -3924,6 +3941,7 @@ ScriptValue WebGLRenderingContextBase::getUniform(
+@@ -3924,6 +3940,7 @@ ScriptValue WebGLRenderingContextBase::getUniform(
      const WebGLUniformLocation* uniform_location) {
    if (!ValidateWebGLProgramOrShader("getUniform", program))
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -146,7 +138,7 @@ index 31a22fa48c001a07d1b848c107d22c7d1342c2a6..598a94a2cb71897c4ace95dbecfb8cd9
    DCHECK(uniform_location);
    if (uniform_location->Program() != program) {
      SynthesizeGLError(GL_INVALID_OPERATION, "getUniform",
-@@ -4183,6 +4201,7 @@ WebGLUniformLocation* WebGLRenderingContextBase::getUniformLocation(
+@@ -4183,6 +4200,7 @@ WebGLUniformLocation* WebGLRenderingContextBase::getUniformLocation(
      const String& name) {
    if (!ValidateWebGLProgramOrShader("getUniformLocation", program))
      return nullptr;
@@ -154,7 +146,7 @@ index 31a22fa48c001a07d1b848c107d22c7d1342c2a6..598a94a2cb71897c4ace95dbecfb8cd9
    if (!ValidateLocationLength("getUniformLocation", name))
      return nullptr;
    if (!ValidateString("getUniformLocation", name))
-@@ -4207,6 +4226,7 @@ ScriptValue WebGLRenderingContextBase::getVertexAttrib(
+@@ -4207,6 +4225,7 @@ ScriptValue WebGLRenderingContextBase::getVertexAttrib(
      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -162,7 +154,7 @@ index 31a22fa48c001a07d1b848c107d22c7d1342c2a6..598a94a2cb71897c4ace95dbecfb8cd9
    if (index >= max_vertex_attribs_) {
      SynthesizeGLError(GL_INVALID_VALUE, "getVertexAttrib",
                        "index out of range");
-@@ -4284,6 +4304,7 @@ int64_t WebGLRenderingContextBase::getVertexAttribOffset(GLuint index,
+@@ -4284,6 +4303,7 @@ int64_t WebGLRenderingContextBase::getVertexAttribOffset(GLuint index,
                                                           GLenum pname) {
    if (isContextLost())
      return 0;
@@ -170,7 +162,7 @@ index 31a22fa48c001a07d1b848c107d22c7d1342c2a6..598a94a2cb71897c4ace95dbecfb8cd9
    GLvoid* result = nullptr;
    // NOTE: If pname is ever a value that returns more than 1 element
    // this will corrupt memory.
-@@ -4631,6 +4652,7 @@ void WebGLRenderingContextBase::ReadPixelsHelper(GLint x,
+@@ -4631,6 +4651,7 @@ void WebGLRenderingContextBase::ReadPixelsHelper(GLint x,
                                                   int64_t offset) {
    if (isContextLost())
      return;
