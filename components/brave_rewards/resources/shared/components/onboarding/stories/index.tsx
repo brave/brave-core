@@ -55,6 +55,7 @@ function getRewardsTourProps () {
     autoContributeAmountOptions: [5, 10, 15, 20, 25, 50, 100],
     onAdsPerHourChanged: actionLogger('onAdsPerHourChanged'),
     onAutoContributeAmountChanged: actionLogger('onAcAmountChanged'),
+    onVerifyWalletClick: actionLogger('onVerifyWalletClick'),
     onDone: actionLogger('onDone')
   }
 }

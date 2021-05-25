@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-import warningCircleImage from './assets/warning_circle.svg'
+import warningCircleImage from '../../assets/warning_circle.svg'
 
 export const formText = styled.div`
   color: var(--brave-color-brandBat);
