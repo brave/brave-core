@@ -156,3 +156,8 @@ export interface WalletAPIHandler {
   lockWallet: () => Promise<void>
   unlockWallet: (password: string) => Promise<void>
 }
+
+export interface RecoveryObject {
+  value: string,
+  id: number
+}
