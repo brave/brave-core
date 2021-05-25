@@ -1,0 +1,22 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("brave_vpn") {
+  sources = [
+    "brave_vpn_connection_info.cc",
+    "brave_vpn_connection_info.h",
+    "brave_vpn_connection_manager.cc",
+    "brave_vpn_connection_manager.h",
+  ]
+
+  deps = [ "//base" ]
+
+  if (is_win) {
+    sources += [
+      "brave_vpn_connection_manager_win.cc",
+      "brave_vpn_connection_manager_win.h",
+    ]
+  }
+}
