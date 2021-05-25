@@ -146,7 +146,7 @@ def PatchMojomAst(mojom_abspath, ast, enabled_features):
 
   # Get the original chromium dir location.
   chromium_original_dir = os.path.abspath(os.path.join(this_py_path,
-                                                       *[os.pardir] * 7))
+                                                       *[os.pardir] * 10))
 
   if len(chromium_original_dir) >= len(mojom_abspath) + 1:
     raise RuntimeError("Could not get original chromium src dir")
