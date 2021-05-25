@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
 <translation id="6302422639282249274">管理 Brave 獎賞</translation>
-<translation id="1506061864768559482">搜尋引擎</translation>
 <translation id="1468415711258933398">標準分頁</translation>
 <translation id="3377025655491224618">無痕式分頁</translation>
 <translation id="9148058034647219655">結束</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="8710614491157212477">盡可能使用 HTTPS（而非 HTTP）打開所支援的網站</translation>
-<translation id="4022987104439075738">IPFS 閘道器</translation>
-<translation id="2688519859165248360">允許透過 IPFS 閘道器瀏覽至 IPFS 資源</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">以太坊域名服務</translation>
 <translation id="3894650624018948468">解決方法</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">已停用</translation>
 <translation id="2218918398178303658">透過 HTTPS 的 DNS</translation>
 <translation id="1448289340149908413">以太坊</translation>
-<translation id="8387201461264842096">廣告攔截</translation>
-<translation id="1934885595886623674">防止載入廣告</translation>
-<translation id="7458422973722236530">指紋保護</translation>
 <translation id="5787084571334399599">防止瀏覽器存取指紋</translation>
 <translation id="7459000603787995422">退出時關閉分頁</translation>
 <translation id="1680858055899097121">終止瀏覽後不要保留分頁</translation>
-<translation id="6469509880167172749">自動傳送完全私密的產品分析給 Brave</translation>
-<translation id="7090566321964540749">此匿名資訊只會讓 Brave 評估特定功能的整題使用量。</translation>
+<translation id="7142548388914389999">自動傳送完全私密的產品分析給 Brave</translation>
+<translation id="5469408008145872264">此匿名資訊只會讓 Brave 評估特定功能的整題使用量。</translation>
 <translation id="7977176350719484850">預估節省\n時間</translation>
 <translation id="9008534313521214777">預估時間\n節省了</translation>
 <translation id="6572660632052512096">桌面模式</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">建議使用桌面版網站</translation>
 <translation id="1842747674580016420">在 Brave 播放影片</translation>
 <translation id="5368992950177874750">如啟用，影片將改為在 Brave 播放，而非在原先預設的應用程式</translation>
-<translation id="2645380101799517405">控件</translation>
 <translation id="5965081608816406060">背景影片播放</translation>
 <translation id="6332924730165919598">如關閉所有分頁，Brave 也會隨之關閉</translation>
 <translation id="1580125697191336644">實驗性。當分頁處於閒置狀態或裝置螢幕已關掉，可在背景播放影片中的音訊。若此功能未能正常運作，請嘗試切換至桌面模式。</translation>
@@ -290,11 +281,10 @@
 <translation id="5657156137487675418">允許所有 cookie</translation>
 <translation id="3895527457258986253">封鎖指紋識別</translation>
 <translation id="184568144098869637">防止瀏覽器識別您的裝置</translation>
-<translation id="7396366757003005317">特徵辨識封鎖（嚴格，可能會破壞網站內容）</translation>
-<translation id="700453611199558021">特徵辨識封鎖（標準）</translation>
+<translation id="7445306466605902444">特徵辨識封鎖（嚴格，可能會破壞網站內容）</translation>
+<translation id="5582686930349810484">特徵辨識封鎖（標準）</translation>
 <translation id="769702552748212954">允許所有指紋追蹤</translation>
 <translation id="876424292214881779">已封鎖廣告與其他令人毛骨悚然的東西</translation>
-<translation id="5142293891785304489">封鎖追蹤器、廣告和\n更多</translation>
 <translation id="6930134873084561197">網站時常包含 cookies 和 scripts，它們會試著辨認你和你的裝置。它們想要知道你是誰，並追蹤您在每個網站做什麼。\n\n Brave 會封鎖這些東西，讓您在不被跟蹤的狀態下進行瀏覽。</translation>
 <translation id="8553998445606452168">關於 Brave Shields</translation>
 <translation id="8912304686498704084">上</translation>
@@ -307,7 +297,6 @@
 <translation id="5299848999918506028">感謝！</translation>
 <translation id="76550953340008122">感謝讓 Brave 開發者知道此網站會壞掉。我們將會盡力修復它。</translation>
 <translation id="650318023204990401">進階控制</translation>
-<translation id="7182293319417450928">需要至少 25 BAT 的餘額才可進行驗證</translation>
 <translation id="1275664486910646411">在自動完成中顯示熱門網站</translation>
 <translation id="5516010970279932133">在自動完成中顯示建議的網站</translation>
 <translation id="5370478469168390143">降低線上使用流量</translation>
@@ -376,7 +365,7 @@
 <translation id="1880168210969863408">不錯！您已經以 Brave 瀏覽器節省 10 分鐘的載入時間。&#128168;&#128168;</translation>
 <translation id="7408493389591475748">開始瀏覽來觀看隱私權報告</translation>
 <translation id="9080777565335515917">將 Brave 設定為您的預設瀏覽器供私密和穩妥的瀏覽。</translation>
-<translation id="1390943217516275883">容許 brave 來顯示您的隱私權統計數字</translation>
+<translation id="1390943217516275883">容許 Brave 來顯示您的隱私權統計數字</translation>
 <translation id="1763352720905582220">送出每週隱私權報告</translation>
 <translation id="1811691435325545066">清除所有隱私權報告資料</translation>
 <translation id="8089997572759938512">將您的隱私權報告重設為零</translation>
@@ -481,14 +470,6 @@
 <translation id="3184805785843994538">Brave Shields 封鎖追蹤器與廣告，節省流量，並節省您造訪每個網站的時間。</translation>
 <translation id="8722651357687610395">將 Brave 設為預設值</translation>
 <translation id="3479552764303398839">現在不要</translation>
-<translation id="6232491755501685494">日本的 Brave Rewards 正在切換到新系統！</translation>
-<translation id="7444515017164572362">從 3 月 13 日開始，您將無法使用您的 BAP。但是一旦您
-        在 4 月更新至新系統，就將開始使用新代幣！</translation>
-<translation id="8587285254008006694">作為此轉換的一部分，從 3 月 13 日開始，您的
-        瀏覽器中的小費和貢獻功能，將暫時無法使用，並且
-        您的 BAP 餘額將顯示為 0.0，直到 4 月更新至新系統
-        為止。一旦您在新的系統上，就將開始使用新
-        代幣！</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -508,4 +489,9 @@
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
 <translation id="3171931580569169744">啟用分頁群組</translation>
+<translation id="5587305863196367357">驗證錢包讓您能更有簡單地管理資金、存款與提款</translation>
+<translation id="5760671211380791582">您沒有足夠的 BAT。</translation>
+<translation id="6960458596933484861">您必須至少有 15 BAT 才能建立驗證過得 Uphold 錢包。請稍後再試。</translation>
+<translation id="4389085954549744469">如果您有已驗證過的 Uphold 帳號，<ph name="CONTINUE_TO_LOGIN"/>。</translation>
+<translation id="6146966915297143881">繼續登入</translation>
 </translationbundle>

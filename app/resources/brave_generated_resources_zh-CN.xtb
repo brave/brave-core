@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">已选音频</translation>
 <translation id="7895302206188277628">关联内容</translation>
 <translation id="4322612543319315652">将所选文本导入 IPFS</translation>
+<translation id="8883166554766780543">导入并复制链接到 IPFS 快照</translation>
+<translation id="3654831858282189202">使用 IPNS 密钥发布</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">用 Tor 打开新的私人窗口</translation>
 <translation id="4703780849509456860">用 Tor 在私人窗口中打开链接</translation>
 <translation id="3488584642074079080">用 Tor 在 Brave 私人窗口中打开链接</translation>
 <translation id="7475547933708221517">使用 IPFS 共享本地文件</translation>
+<translation id="2286177249736199435">使用 IPFS 分享本地文件夹</translation>
 <translation id="784573715436258741">使用 IPFS 共享本地文件</translation>
 <translation id="6313675821927505581">用 Tor 打开新的隐私窗口</translation>
 <translation id="2638041073279639246">用 Tor 在隐私窗口中打开</translation>
 <translation id="3425600262621021599">用 Tor 在 Brave 隐私窗口中打开链接</translation>
+<translation id="575838692088926391">使用 IPFS 共享本地文件夹</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
@@ -157,7 +161,7 @@
 <translation id="4112587618563511470">同步代码无效，请检查并重试。</translation>
 <translation id="2339730291919608488">离开同步链</translation>
 <translation id="115699408012835975">如果您重置同步，则您需要重新输入另一台设备的同步代码，以便与其进行同步。您确定想要继续吗？</translation>
-<translation id="6092564993102418148">确定要从同步链中删除所选设备吗？</translation>
+<translation id="6092564993102418148">你确定要从同步链中删除所选设备吗?</translation>
 <translation id="3396347744975515056">Brave 同步已升级，并需要进行设置</translation>
 <translation id="7473245612074035141">开始设置</translation>
 <translation id="3411013544209536575">支助赏金</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">使用 Dapps 的 Ethereum 提供商</translation>
 <translation id="5913089932885076110">启动时加载加密钱包</translation>
 <translation id="757886143331967039">在启动时加载已弃用 Crypto Wallets 扩展程序</translation>
+<translation id="1834467296210148203">在工具栏上显示 Brave Wallet 图标</translation>
 <translation id="6864914031231797928">允许 Google 登录以获取扩展程序</translation>
 <translation id="5927916530277631319">解决无法停止域这个问题的方法</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/> 关于DNS over HTTPS和以太坊的隐私考虑。</translation>
 <translation id="5248318250177143470">解决以太坊名称服务（ENS）相关问题的方法</translation>
+<translation id="7024553202001112871">设置你的 IPNS 密钥</translation>
+<translation id="951216659045543447">用对应的私钥对内容进行签名并发布到 IPNS</translation>
+<translation id="7611728475758612204">可用于发布的密钥</translation>
+<translation id="911363100236037920">输入新密钥的名称</translation>
+<translation id="6358469157239228181">不能使用此名称</translation>
+<translation id="8996633027318264334">你真想要删除 <ph name="KEY_NAME"/> 吗？</translation>
+<translation id="910215077892371264">节点未启动</translation>
+<translation id="616058968889448209">IPFS 服务启动错误，更多信息见 <ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 密钥导入失败</translation>
+<translation id="8275038454117074363">导入</translation>
+<translation id="3654980960391973513">生成</translation>
+<translation id="5531501313997312487">启动节点</translation>
 <translation id="9170907049676078643">解决 IPFS 资源问题的方法</translation>
 <translation id="1327977588028644528">网关</translation>
 <translation id="80225669816651290">本地节点</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">保持浏览网页的速度更快——在主要的新闻网站上最多快6倍。</translation>
 <translation id="9218430445555521422">设为默认浏览器</translation>
 <translation id="3479552764303398839">以后再说</translation>
+<translation id="6040143037577758943">关闭</translation>
+<translation id="5600566490506283344">Brave 广告通知</translation>
 <translation id="4877147287319222750">添加到侧边栏</translation>
+<translation id="4233010476457917696">显示侧边栏</translation>
 <translation id="5404213409401164238">显示侧边栏</translation>
 <translation id="7561196759112975576">始终</translation>
 <translation id="7060352228894039151">鼠标悬停时</translation>

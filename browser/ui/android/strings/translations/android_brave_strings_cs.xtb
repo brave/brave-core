@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Povolit sdílení zpráv z Twitteru</translation>
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
 <translation id="6302422639282249274">Spravovat odměny Brave</translation>
-<translation id="1506061864768559482">Vyhledávač</translation>
 <translation id="1468415711258933398">Standardní karta</translation>
 <translation id="3377025655491224618">Soukromá karta</translation>
 <translation id="9148058034647219655">Ukončit</translation>
-<translation id="520895744850022668">HTTPS všude</translation>
-<translation id="8710614491157212477">Pokud je to možné, otevře podporované stránky pomocí HTTPS namísto HTTP</translation>
-<translation id="4022987104439075738">Brána IPFS</translation>
-<translation id="2688519859165248360">Umožňuje navigaci k prostředkům IPFS prostřednictvím brány IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Služba Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metoda řešení</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Zakázáno</translation>
 <translation id="2218918398178303658">DNS přes HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Blokování reklam</translation>
-<translation id="1934885595886623674">Zabránit načítání reklam</translation>
-<translation id="7458422973722236530">Ochrana pomocí otisku prstu</translation>
 <translation id="5787084571334399599">Nezanechávejte po sobě stopy v prohlížeči</translation>
 <translation id="7459000603787995422">Po ukončení zavřít karty</translation>
 <translation id="1680858055899097121">Nesetrvávat v kartách mezi relacemi prohlížení</translation>
-<translation id="6469509880167172749">Automaticky posílat zcela soukromé produktové analýzy společnosti Brave</translation>
-<translation id="7090566321964540749">Tyto anonymní informace prohlížeči Brave umožní pouze odhadnout celkové využití určitých funkcí.</translation>
+<translation id="7142548388914389999">Automaticky posílat zcela soukromé produktové analýzy společnosti Brave</translation>
+<translation id="5469408008145872264">Tyto anonymní informace prohlížeči Brave umožní pouze odhadnout celkové využití určitých funkcí.</translation>
 <translation id="7977176350719484850">Odhadovaná uložená data</translation>
 <translation id="9008534313521214777">Odh. ušetřená\ndoba</translation>
 <translation id="6572660632052512096">Režim stolního počítače</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Upřednostňovat verzi stránek pro stolní počítače</translation>
 <translation id="1842747674580016420">Přehrávání videa v Brave</translation>
 <translation id="5368992950177874750">Pokud je tato možnost povolena, videa budou namísto odpovídající aplikace přehrávána v Brave</translation>
-<translation id="2645380101799517405">Ovládací prvky</translation>
 <translation id="5965081608816406060">Přehrávání videa na pozadí</translation>
 <translation id="6332924730165919598">Zavřením všech karet zavřete Brave</translation>
 <translation id="1580125697191336644">Pokusné. Umožňuje přehrávání zvuku z videa na pozadí, když karta není aktivní nebo je vypnutá obrazovka zařízení. Pokud tato funkce nefunguje, zkuste přepnout do režimu plochy.</translation>
@@ -290,11 +281,10 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="5657156137487675418">Povolit všechny soubory cookies</translation>
 <translation id="3895527457258986253">Blokovat otisky prstů</translation>
 <translation id="184568144098869637">Zabraňuje prohlížeči rozpoznávat vaše zařízení</translation>
-<translation id="7396366757003005317">Získávání otisku blokováno (striktně, weby nemusí správně fungovat)</translation>
-<translation id="700453611199558021">Získávání otisku blokováno (standardně)</translation>
+<translation id="7445306466605902444">Získávání otisku blokováno (striktně, weby nemusí správně fungovat)</translation>
+<translation id="5582686930349810484">Získávání otisku blokováno (standardně)</translation>
 <translation id="769702552748212954">Povolit všechna získávání otisku</translation>
 <translation id="876424292214881779">Reklamy a další otravnosti jsou zablokovány</translation>
-<translation id="5142293891785304489">Zablokováno sledování reklamy a další</translation>
 <translation id="6930134873084561197">Stránky často obsahují cookies a skripty, které se pokoušejí poznat vás a vaše zařízení. Chtějí pracovat s daty o vaší totožnosti a sledovat vás skrze internetovou dokumentaci toho, co děláte na každé stránce.\n\nBrave tyto věci blokuje, abyste mohli prohlížet bez toho, abyste byli sledováni.</translation>
 <translation id="8553998445606452168">O Štítech Brave</translation>
 <translation id="8912304686498704084">NAHORU</translation>
@@ -307,7 +297,6 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="5299848999918506028">Děkujeme!</translation>
 <translation id="76550953340008122">Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!</translation>
 <translation id="650318023204990401">Pokročilé nastavení</translation>
-<translation id="7182293319417450928">Pro ověření je vyžadován minimální rozpočet 25 BAT.</translation>
 <translation id="1275664486910646411">Ukazovat nejoblíbenější stránky v automatickém dokončení</translation>
 <translation id="5516010970279932133">Ukazovat navržené stránky v automatickém dokončení</translation>
 <translation id="5370478469168390143">Uložit data online</translation>
@@ -376,7 +365,7 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="1880168210969863408">Krása! S prohlížečem Brave jste si během načítání stránek ušetřili 10 minut. &#128168;&#128168;</translation>
 <translation id="7408493389591475748">Hlášení o porušení soukromí uvidíte, jakmile začnete procházet web</translation>
 <translation id="9080777565335515917">Nastavte prohlížeč Brave jako výchozí prohlížeč pro soukromé a bezpečné prohlížení stránek.</translation>
-<translation id="1390943217516275883">Umožňuje prohlížeči Brave zobrazit statistiky soukromí</translation>
+<translation id="1390943217516275883">Umožňuje společnosti Brave zobrazovat statistiky ochrany osobních údajů</translation>
 <translation id="1763352720905582220">Odešle týdenní hlášení o porušení soukromí</translation>
 <translation id="1811691435325545066">Vymazat všechna data hlášení o porušení soukromí</translation>
 <translation id="8089997572759938512">Vynuluje vaše hlášení o porušení soukromí</translation>
@@ -481,14 +470,6 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="3184805785843994538">Funkce Brave Shields blokuje sledovače a reklamy, šetří data a při návštěvě každého webu vám šetří čas.</translation>
 <translation id="8722651357687610395">Nastavit Brave jako výchozí</translation>
 <translation id="3479552764303398839">Teď ne</translation>
-<translation id="6232491755501685494">Brave Rewards v Japonsku přechází na nový systém!</translation>
-<translation id="7444515017164572362">Od 13. března už nebudete moci využít své BAP. Ale jakmile
-        v dubnu aktualizujete na nový systém, odstartujete s novými tokeny!</translation>
-<translation id="8587285254008006694">Součástí tohoto přechodu bude, že funkce příspěvků a odměn budou ve
-        vašem prohlížeči dočasně nedostupné (od 13. března) a
-        váš zůstatek BAP bude zobrazovat částku 0,0 až do té doby, než provedete v dubnu aktualizaci na nový
-        systém. Jakmile budete v novém systému, odstartujete s novými
-        tokeny!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -508,4 +489,9 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="5825943197137337319">Pouze výchozí veřejné rozhraní</translation>
 <translation id="1689062823386843231">Deaktivujte službu UDP bez proxy</translation>
 <translation id="3171931580569169744">Povolit skupiny záložek</translation>
+<translation id="5587305863196367357">Ověření peněženky vám umožní snadno spravovat své finanční prostředky, přidávat a vybírat</translation>
+<translation id="5760671211380791582">Nemáte dostatek BAT.</translation>
+<translation id="6960458596933484861">Potřebujete mít minimálně 15 BAT, abyste mohli vytvořit ověřenou peněženku služby Uphold. Zkuste to prosím znovu později.</translation>
+<translation id="4389085954549744469">Pokud již máte ověřený účet služby Uphold, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">pokračujte k přihlášení</translation>
 </translationbundle>

@@ -819,6 +819,18 @@
     "message": "Verifikovanjem vašeg novčanika i njegovim povezivanjem sa bitFlyer nalogom, lakše ćete moći da čuvate i održavate tokene koje ste zaradili kroz Brave Rewards",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Saznajte više$link_end$ o tome kako da povežete vaš Brave pretraživač s vašim bitFlyer nalogom.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards se prebacuje na novi sistem u Japanu!",
     "description": "Header text for BAP deprecation warning message"

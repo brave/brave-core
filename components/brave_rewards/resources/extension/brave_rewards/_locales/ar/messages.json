@@ -819,6 +819,18 @@
     "message": "من خلال التحقق من محفظتك وربطها بحساب bitFlyer، ستتمكن من تخزين الرموز المميزة التي اكتسبتها من خلال مكآفات Brave وإدارتها بسهولة أكبر",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$اعرف المزيد$link_end$ عن كيفية الربط بين متصفح Brave الخاص بك وحسابك على bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "برنامج Brave Rewards في اليابان يتحول إلى نظام جديد!",
     "description": "Header text for BAP deprecation warning message"

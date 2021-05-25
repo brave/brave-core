@@ -819,6 +819,18 @@
     "message": "Če preverite svojo denarnico in jo povežete z računom bitFlyer, boste lažje shranili in upravljali žetone, ki ste jih zaslužili z Brave Rewards.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Preberite več$link_end$o tem, kako povezati svoj brskalnik Brave z vašim računom bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards na Japonskem prehaja na nov sistem!",
     "description": "Header text for BAP deprecation warning message"

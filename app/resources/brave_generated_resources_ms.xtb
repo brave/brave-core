@@ -69,15 +69,19 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="4227945450504703638">Audio dipilih</translation>
 <translation id="7895302206188277628">Kandungan dipautkan</translation>
 <translation id="4322612543319315652">Import teks Dipilih ke IPFS</translation>
+<translation id="8883166554766780543">Import dan salin pautan ke petikan IPFS</translation>
+<translation id="3654831858282189202">Terbitkan dengan kunci IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Tetingkap Peribadi baru dengan Tor</translation>
 <translation id="4703780849509456860">Buka Pautan dalam Tetingkap Peribadi dengan Tor</translation>
 <translation id="3488584642074079080">Buka Pautan dalam Tetingkap Peribadi Brave dengan Tor</translation>
 <translation id="7475547933708221517">Kongsi Fail Setempat Menggunakan IPFS</translation>
+<translation id="2286177249736199435">Kongsi Folder Setempat Menggunakan IPFS</translation>
 <translation id="784573715436258741">Kongsi fail setempat menggunakan IPFS</translation>
 <translation id="6313675821927505581">Tetingkap persendirian baharu dengan Tor</translation>
 <translation id="2638041073279639246">Buka pautan dalam tetingkap persendirian dengan Tor</translation>
 <translation id="3425600262621021599">Buka pautan dalam tetingkap persendirian Brave dengan Tor</translation>
+<translation id="575838692088926391">Kongsi folder setempat menggunakan IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Perkhidmatan Bat Ads</translation>
 <translation id="7924918279836988121">Perkhidmatan Lejar BAT</translation>
@@ -157,7 +161,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="4112587618563511470">Kod segerakan salah, sila semak dan cuba lagi.</translation>
 <translation id="2339730291919608488">Tinggalkan Rantaian Segerak</translation>
 <translation id="115699408012835975">Sekiranya anda menetapkan semula Penyegerakan, anda perlu memasukkan semula kod penyegerakan daripada peranti yang lain untuk menyegerak dengannya. Adakah anda pasti anda ingin meneruskannya?</translation>
-<translation id="6092564993102418148">Adakah anda pasti mahu memadam peranti pilihan daripada rantaian diselaras?</translation>
+<translation id="6092564993102418148">Adakah anda pasti anda mahu mengalih keluar peranti yang dipilih dari rantaian segerak?</translation>
 <translation id="3396347744975515056">Segerakan Brave telah dinaik taraf dan memerlukan penetapan</translation>
 <translation id="7473245612074035141">Mulakan Tetapan</translation>
 <translation id="3411013544209536575">Tip Bantuan</translation>
@@ -177,10 +181,23 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7090046810227878892">Penyedia Ethereum untuk menggunakan Dapps</translation>
 <translation id="5913089932885076110">Muatkan Dompet Kripto ketika bermula</translation>
 <translation id="757886143331967039">Memuatkan sambungan Dompet Kripto yang tidak digunakan pada permulaan</translation>
+<translation id="1834467296210148203">Tunjukkan ikon Dompet Brave pada bar alat</translation>
 <translation id="6864914031231797928">Benarkan log masuk Google untuk sambungan</translation>
 <translation id="5927916530277631319">Kaedah untuk menyelesaikan Domain yang tidak dapat Dihentikan</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Ketahui Lebih Lanjut<ph name="END_LINK"/> tentang DNS berbanding pertimbangan privasi HTTPS dan Ethereum.</translation>
 <translation id="5248318250177143470">Kaedah untuk menyelesaikan Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Sediakan kunci IPNS</translation>
+<translation id="951216659045543447">Tandatangani kandungan dengan kunci peribadi yang berkaitan dan terbitkan ke IPNS</translation>
+<translation id="7611728475758612204">Kunci tersedia untuk penerbitan</translation>
+<translation id="911363100236037920">Masukkan nama untuk kunci baharu</translation>
+<translation id="6358469157239228181">Nama ini tidak boleh digunakan</translation>
+<translation id="8996633027318264334">Adakah anda benar-benar mahu memadam <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Nod tidak dilancarkan</translation>
+<translation id="616058968889448209">Ralat pelancaran perkhidmatan IPFS, lebih banyak maklumat tersedia di <ph name="BEGIN_LINK"/>halaman diagnostik<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' import kunci gagal</translation>
+<translation id="8275038454117074363">Import</translation>
+<translation id="3654980960391973513">Jana</translation>
+<translation id="5531501313997312487">Mulakan nod</translation>
 <translation id="9170907049676078643">Kaedah untuk menyelesaikan sumber IPFS</translation>
 <translation id="1327977588028644528">Get Laluan</translation>
 <translation id="80225669816651290">Nod tempatan</translation>
@@ -260,7 +277,10 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1391855377994926460">Teruskan menyemak lalu web lebih pantas - sehingga 6x lebih pantas pada tapak berita utama.</translation>
 <translation id="9218430445555521422">Tetapkan sebagai lalai</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
+<translation id="6040143037577758943">Tutup</translation>
+<translation id="5600566490506283344">Pemberitahuan Iklan Brave</translation>
 <translation id="4877147287319222750">Tambah ke bar sisi</translation>
+<translation id="4233010476457917696">Tunjukkan bar sisi</translation>
 <translation id="5404213409401164238">Tunjukkan Bar Sisi</translation>
 <translation id="7561196759112975576">Sentiasa</translation>
 <translation id="7060352228894039151">Pada tetikus di atas</translation>

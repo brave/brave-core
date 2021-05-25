@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Brave Together에서 친구들, 동료들과 무제한 통화를 시작하세요.</translation>
 <translation id="7115051913071512405">시도해 보기</translation>
 <translation id="7415602225677446066">나만을 위한 완벽한 비공개 피드의 오늘의 주요 스토리입니다.</translation>
-<translation id="8607689491789524900">Brave Today는 개인 정보가 브라우저에서 떠나지 않도록 장치에 대한 관심사를 일치시킵니다. 하루 종일 새로운 콘텐츠가 업데이트됩니다.</translation>
+<translation id="6903061332999399632">Brave News는 광고의 도움으로 제공되는 서비스로, 기기에 맞춘 비공개 익명 광고를 표시합니다. <ph name="LINK_START"/>개인정보처리방침<ph name="LINK_END"/>에 따라 모든 개인정보는 비공개로 유지됩니다.</translation>
+<translation id="7823038307453615214">Brave News 표시</translation>
+<translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="9164544612367905452">가져 오는 중…</translation>
 <translation id="1276592121036104130">새 콘텐츠 로드하기</translation>
-<translation id="4210987321913275328">Brave Today 스크롤</translation>
-<translation id="3122595178900736207">Brave Today 소스 재설정</translation>
-<translation id="2197023915568148978">모든 Brave Today 게시자 선택을 기본값으로 재설정하시겠습니까?</translation>
+<translation id="2875288128871360696">Brave Today 스크롤</translation>
+<translation id="8510120023634509743">Brave News 소스 재설정</translation>
+<translation id="75825199302994272">모든 Brave News 게시자 선택을 기본값으로 재설정하시겠습니까?</translation>
 <translation id="954001034349395856">모든 소스</translation>
 <translation id="8890516388109605451">소스</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/> 콘텐츠 비활성화</translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">연결됨</translation>
 <translation id="8030169304546394654">연결 해제됨</translation>
 <translation id="3149306599361260465">초기화 중 [[percentage]]%</translation>
+<translation id="3258793718986637767">Tor에 문제가 있습니까? Try <ph name="BEGIN_LINK"/>Tor를 사용한 시크릿 창을 비활성화<ph name="END_LINK"/>한 다음 다시 활성화해 보세요.</translation>
 <translation id="4272382368346338917">추가 필터</translation>
 <translation id="8949292968394988358">경고: 너무 많은 필터를 켜면 성능이 저하됩니다</translation>
 <translation id="8686201964111147748">차단된 총 광고 및 트래커 수:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">내 월렛 검증하기</translation>
 <translation id="6609621505400013054">bitFlyer 월렛은 bitFlyer, Inc.에서 관리하는 서비스입니다.</translation>
 <translation id="7258399883616914635">월렛을 검증하여 bitFlyer 계정에 연결하면 Brave Rewards를 통해 적립된 토큰을 더욱 쉽게 저장하고 관리할 수 있습니다.</translation>
+<translation id="1411121707906693782">Brave 브라우저를 bitFlyer 계정에 연결하는 방법을 <ph name="LINK_BEGIN"/>자세히 알아보세요<ph name="LINK_END"/>.</translation>
 <translation id="5094577350232361255">대하여</translation>
 <translation id="4918086044614829423">수락</translation>
 <translation id="5916290544882167205">Brave Software. Brave는 Brave Software의 등록 상표입니다. 사이트 이름은 사이트 소유자의 상표 또는 등록 상표일 수 있습니다.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">단가</translation>
 <translation id="4763179765154524864">총 사용량</translation>
 <translation id="8851480289992540512">받은 총계</translation>
+<translation id="8624961452383848703">환전하고 싶음...</translation>
 <translation id="616639131065447379">Brave 암호 지갑에 오신 것을 환영합니다</translation>
 <translation id="1740464057879304704">암호 지갑을 사용하면 Brave의 암호 화폐 및 관련 자산으로 작업할 수 있습니다. 암호 지갑은 수집품뿐만 아니라 ETH 및 BAT와 같은 이더리움 토큰을 지원하며 Ð앱 및 기타 스마트 계약을 처리할 수 있습니다. 이 모든 것은 이더리움 및 기타 블록 체인 시스템에 익숙하거나 — 배우기를 기대하는 사람들을 위한 것입니다.</translation>
 <translation id="4855440621031541830">이 사용과 관련된 모든 위험에 대한 책임은 귀하에게 있으며 Brave 소프트웨어가 이 사용으로 인해 발생할 수 있는 우발적 또는 결과적 손실을 포함한 모든 손실에 대해 책임을지지 않음을 인정하는 경우에만 암호 지갑을 사용하세요.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">가져올 데이터 가져오기 실패</translation>
 <translation id="7900950536120202771">IPFS 노드 내부 오류</translation>
 <translation id="1036635552229153800">데이터가 성공적으로 업로드되었지만 brave-import 디렉토리로 이동하지 않았습니다. 가져오기 설정 페이지에서 이 작업을 수동으로 수행할 수 있습니다.</translation>
-<translation id="7789840864192026963">권한 부여</translation>
+<translation id="572392919096807438">선택사항 저장</translation>
 <translation id="7978789143098237970">이 페이지를 닫을 때까지</translation>
 <translation id="3523195733429162409">24시간 동안</translation>
 <translation id="2373264732659722940">1주 동안</translation>
 <translation id="6318437367327684789">영구적</translation>
-<translation id="7463327191540031132">영구적으로 차단</translation>
 <translation id="8797999629784150206">언제든 <ph name="SITE_PERMISSIONS"/>을 변경할 수 있습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">사이트 권한</translation>
 <translation id="7701466644604753106">스피드리더 켜기</translation>
 <translation id="763042262431778831">스피드리더 끄기</translation>
+<translation id="1544192797660353713">월렛</translation>
+<translation id="8488282162676695335">Brave 월렛</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">Tor 프록시 URI</translation>
 <translation id="1671503397662036257">Tor 연결 상태</translation>
 <translation id="6024292492796847324">토르 초기화 진행률</translation>
+<translation id="7586151660465233733"><ph name="SITE_NAME"/>에서 시장 더 보기</translation>
+<translation id="952067063131306699">FTX에서 시장 보기 및 암호화폐 거래</translation>
+<translation id="5963745988819586370">시장</translation>
+<translation id="3795943412467785186">FTX 계정을 연결하면 계정 잔액을 보고, 선물 시장을 확인하고, 암호화폐를 환전할 수 있습니다.</translation>
+<translation id="926958206891985289">선물 시장 보기</translation>
+<translation id="6804537228302563756">계정 연결</translation>
+<translation id="5019698312620117604">24시간 가격 추이</translation>
+<translation id="8720719072204443171">24시간 거래량</translation>
+<translation id="3891414008432200754">가격</translation>
+<translation id="7723176927437578611">계속</translation>
+<translation id="2983078329159689577">제출 중...</translation>
+<translation id="6641102760094059194">확인(<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">환전 성공!</translation>
+<translation id="7590653073560839711">환전을 수행하려면 하나 이상의 통화에 잔액이 있어야 합니다.</translation>
+<translation id="4390079506197726228"><ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/> 사용 가능</translation>
+<translation id="6973157709854838218">화면에서 잔액 숨김</translation>
+<translation id="4548946945059463969">화면에 잔액 표시</translation>
 </translationbundle>

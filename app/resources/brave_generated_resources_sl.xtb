@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">Izbrana raba zvoka</translation>
 <translation id="7895302206188277628">Izbrana vsebina</translation>
 <translation id="4322612543319315652">Uvozi izbrano besedilo v IPFS</translation>
+<translation id="8883166554766780543">Uvoz in kopiranje povezave do posnetka IPFS</translation>
+<translation id="3654831858282189202">Objavi s ključem IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Novo zasebno okno v brskalniku Tor</translation>
 <translation id="4703780849509456860">Odpri povezavo v zasebnem oknu v brskalniku Tor</translation>
 <translation id="3488584642074079080">Odpri povezavo v zasebnem oknu Brave v brskalniku Tor</translation>
 <translation id="7475547933708221517">Skupna raba lokalne datoteke z uporabo IPFS</translation>
+<translation id="2286177249736199435">Skupna raba lokalne mape z uporabo IPFS</translation>
 <translation id="784573715436258741">Skupna raba lokalne datoteke z uporabo IPFS</translation>
 <translation id="6313675821927505581">Novo zasebno okno z uporabo brskalnika Tor</translation>
 <translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo brskalnika Tor</translation>
 <translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo brskalnika Tor</translation>
+<translation id="575838692088926391">Skupna raba lokalne mape z uporabo IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Storitev oglasov Bat Ads</translation>
 <translation id="7924918279836988121">Storitev poslovne knjige Bat</translation>
@@ -157,7 +161,7 @@
 <translation id="4112587618563511470">Neveljavna koda za sinhronizacijo, preverite in poskusite znova.</translation>
 <translation id="2339730291919608488">Zapusti sinhronizacijsko verigo</translation>
 <translation id="115699408012835975">Če sinhronizacijo ponastavite, boste morali kodo za sinhronizacijo znova vnesti iz druge naprave, da jo boste lahko sinhronizirali. Ali ste prepričani, da želite nadaljevati?</translation>
-<translation id="6092564993102418148">Ali ste prepričani, da želite izbrisati izbrano napravo iz sinhronizacijske verige?</translation>
+<translation id="6092564993102418148">Ali ste prepričani, da želite odstraniti izbrano napravo iz sinhronizacijske verige?</translation>
 <translation id="3396347744975515056">Sinhronizacija Brave je bila nadgrajena in zahteva nastavitev</translation>
 <translation id="7473245612074035141">Začetek nastavitev</translation>
 <translation id="3411013544209536575">Pomoč in nasveti</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">Ponudnik Ethereum za uporabo storitve Dapps</translation>
 <translation id="5913089932885076110">Kripto denarnice naloži ob zagonu</translation>
 <translation id="757886143331967039">Ob zagonu naložite zastarelo razširitev kripto denarnice</translation>
+<translation id="1834467296210148203">Pokaži ikono Brave Wallet v orodni vrstici</translation>
 <translation id="6864914031231797928">Dovoli Googlovo prijavo za razširitve</translation>
 <translation id="5927916530277631319">Način za reševanje neustavljivih domen</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Preberite si več<ph name="END_LINK"/> o zasebnosti DNS preko HTTPS in Ethereum.</translation>
 <translation id="5248318250177143470">Metoda za razrešitev imenske storitve Ethereum (ENS)</translation>
+<translation id="7024553202001112871">Nastavite vaše ključe IPNS</translation>
+<translation id="951216659045543447">Vsebino podpišite z ustreznim zasebnim ključem in jo objavite v IPNS</translation>
+<translation id="7611728475758612204">Ključi, ki so na voljo za objavo</translation>
+<translation id="911363100236037920">Vnesite ime novega ključa</translation>
+<translation id="6358469157239228181">Tega imena ni mogoče uporabiti</translation>
+<translation id="8996633027318264334">ALi res želite izbrisati <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Vozlišče se ni zagnalo</translation>
+<translation id="616058968889448209">Napaka pri zagonu storitve IPFS, več informacij je na voljo na strani za diagnostiko <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Uvoz '<ph name="KEY_NAME"/>' ni uspešen</translation>
+<translation id="8275038454117074363">Uvoz</translation>
+<translation id="3654980960391973513">Generiraj</translation>
+<translation id="5531501313997312487">Zaženi vozlišče</translation>
 <translation id="9170907049676078643">Metoda za reševanje virov IPFS</translation>
 <translation id="1327977588028644528">Prehod</translation>
 <translation id="80225669816651290">Lokalno vozlišče</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">Brskajte po spletu hitreje - do 6-krat hitreje na glavnih spletnih mestih z novicami.</translation>
 <translation id="9218430445555521422">Nastavi za privzeti brskalnik</translation>
 <translation id="3479552764303398839">Ne zdaj</translation>
+<translation id="6040143037577758943">Zapri</translation>
+<translation id="5600566490506283344">Obvestilo Brave Ad</translation>
 <translation id="4877147287319222750">Dodaj v stransko vrstico</translation>
+<translation id="4233010476457917696">Pokaži stransko vrstico</translation>
 <translation id="5404213409401164238">Pokaži stransko vrstico</translation>
 <translation id="7561196759112975576">Always</translation>
 <translation id="7060352228894039151">Ob prehodu miške</translation>

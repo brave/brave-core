@@ -819,6 +819,18 @@
     "message": "Weryfikując swój portfel i łącząc go z kontem bitFlyer, możesz łatwiej przechowywać i zarządzać tokenami zdobytymi dzięki Brave Rewards",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Dowiedz się więcej$link_end$ o tym, jak połączyć przeglądarkę Brave z kontem bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Nagrody Brave w Japonii przełączane są na nowy system!",
     "description": "Header text for BAP deprecation warning message"

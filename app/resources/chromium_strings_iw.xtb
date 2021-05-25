@@ -10,7 +10,6 @@
 <translation id="4798342026247191171">‏הגדרת הפרופיל החדש שלך ב-Brave</translation>
 <translation id="113959764510199339">‏Brave מנסה להציג סיסמאות.</translation>
 <translation id="8132634101975074716">‏נכנסת ל-Brave!</translation>
-<translation id="7370605478942575409">‏כדי להשתמש ב-Rosetta כדי להפעיל קובצי מדיה מוגנים, עליך להפעיל מחדש את Brave.</translation>
 <translation id="7419046106786626209">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך מפני שסנכרון אינו זמין עבור הדומיין שלך.</translation>
 <translation id="5147525139567260139">‏שיתוף כרטיסיית Brave</translation>
 <translation id="1530633922026945685">‏Brave זקוק להרשאת גישה למצלמה כדי ליצור מפה תלת-ממדית של הסביבה שלך</translation>
@@ -23,8 +22,8 @@
 <translation id="1775322105159056176">‏ב-Brave לא ניתן לקבוע או להגדיר את דפדפן ברירת המחדל</translation>
 <translation id="9220324636239049437">‏הפעולה הזו תמחק פריט אחד מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, היכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">‏כדי לבדוק אם שאר הסיסמאות מוגנות מפני פרצות באבטחת מידע ובעיות אבטחה אחרות, <ph name="BEGIN_LINK"/>יש להיכנס ל-Brave<ph name="END_LINK"/>.</translation>
+<translation id="142389341645668510">‏התאמה אישית של Brave</translation>
 <translation id="8745514854244955877">‏Brave – כניסה לרשת – <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">‏מערכת Chrome OS לא הצליחה לסנכרן את הסיסמאות שלך.</translation>
 <translation id="5659384504794665581">‏אם משתפים מחשב, חברים ובני משפחה יכולים לגלוש בנפרד ולהגדיר את Brave בדיוק כפי שהם רוצים.</translation>
 <translation id="5997267581285668459">‏אופציונלי: שליחה אוטומטית של נתוני אבחון ושימוש אל Brave תעזור לשפר את התכונות ואת הביצועים של Chrome OS.</translation>
 <translation id="9095263438435683933">‏כדי לשלוח מספר מכאן לטלפון Android, יש להיכנס ל-Brave בשני המכשירים.</translation>
@@ -38,10 +37,8 @@
 <translation id="7933006624150961626">‏לקבלת גישה לפריטים שלך ב-Brave בכל המכשירים שלך, יש להיכנס לחשבון כדי שניתן יהיה להפעיל את הסנכרון.</translation>
 <translation id="7291143854620707672">‏המנהל של פרופיל העבודה יכול להסיר נתוני Brave שמופקים בזמן השימוש בפרופיל (כמו יצירת סימניות, היסטוריה, סיסמאות והגדרות נוספות). <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">‏כדי להחיל עדכון זה, יש להפעיל מחדש את Chrome OS.</translation>
-<translation id="3913823837305937258">‏קבלת העדכונים של Brave תופסק בקרוב למחשב זה מאחר שהחומרה שלו אינה נתמכת עוד.</translation>
 <translation id="7387051847644272380">‏במהלך ההתקנה ארעה שגיאה של מערכת ההפעלה. יש להוריד שוב את Brave.</translation>
 <translation id="2648689842065142443">‏אם משתפים מכשיר, חברים ובני משפחה יכולים לגלוש בנפרד ולהגדיר את Brave בדיוק כפי שהם רוצים</translation>
-<translation id="3749489756681759571">‏Brave ממליץ להשבית את התוסף הזה, כי בשלב זה הוא לא עומד בתקנים של הגרסה המשופרת של הגלישה הבטוחה.</translation>
 <translation id="6791166902140255175">‏כרטיסייה של Brave</translation>
 <translation id="8372880274820509128">‏לשיפור האבטחה, Brave יצפין את הנתונים.</translation>
 <translation id="2770231113462710648">שינוי דפדפן ברירת המחדל ל:</translation>
@@ -60,6 +57,7 @@
 <translation id="7365690458036015383">‏המתקין לא הצליח לבטל את דחיסת הארכיון. יש להוריד שוב את Brave.</translation>
 <translation id="8919461291440820124">‏Brave משתמש במיקרופון שלך.</translation>
 <translation id="4805806622840861220">‏הפעלה מחדש של Brave</translation>
+<translation id="1742948938503172561">‏התאמה אישית של פרופיל Brave החדש</translation>
 <translation id="1477146545787277177">‏וואו! Brave קרס. להפעיל מחדש עכשיו?</translation>
 <translation id="7503098128120083822">‏Brave רוצה לייצא את הסיסמאות שלך.</translation>
 <translation id="2585240446624043880">‏Brave אינו יכול לקרוא ולכתוב בספריית הנתונים שלו: <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -72,6 +70,7 @@
 <translation id="2450003541323895471">‏באמצעות פרופילים ב-Brave, מפרידים את כל הפריטים ב-Brave. יוצרים פרופילים המיועדים לחברים ולבני משפחה או פרופילים נפרדים לעבודה ולבילויים בשעות הפנאי.</translation>
 <translation id="9216183508558772570">‏אם מערכת Brave תזהה שנכנסת עם סיסמה שנחשפה, היא תתריע לך על כך</translation>
 <translation id="5853262807109651878">‏פעולה זו תמחק <ph name="ITEMS_COUNT"/> פריטים מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, יש להיכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
+<translation id="2024972335338126423">‏ניתן לעבור בין פרופילים של Brave באמצעות <ph name="SHORTCUT"/></translation>
 <translation id="8703492925273919597">‏יש לסגור את כל חלונות Brave ולנסות שוב.</translation>
 <translation id="1384923383737428730">‏יש במחשב שלך תוכנה מזיקה. Brave יכול להסיר אותה, לשחזר את ההגדרות שלך ולהשבית תוספים כדי שהדפדפן יחזור שוב לפעולה רגילה.</translation>
 <translation id="7029305463989165490">‏כדי לשלוח מספר מ-<ph name="ORIGIN"/> לטלפון Android שלך, צריך להיכנס אל Brave בשני המכשירים.</translation>
@@ -128,11 +127,11 @@
 <translation id="696826782632239602">‏Brave זקוק לגישה למיקום שלך כדי לשתף אותו עם האתר הזה</translation>
 <translation id="1744365871163268756">‏יש להמתין בזמן ש-Brave מתקין את עדכוני המערכת האחרונים.</translation>
 <translation id="3861679447659630159">‏Brave מנסה לערוך את הסיסמאות. כדי לאפשר זאת, יש להזין את הסיסמה שלך ל-Windows.</translation>
+<translation id="232381795826373334">‏פתיחה של קובצי PDF ב-Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{‏יש עדכון ל-Brave}=1{‏יש עדכון ל-Brave}two{‏עדכון של Brave זמין כבר # ימים}many{‏עדכון של Brave זמין כבר # ימים}other{‏עדכון של Brave זמין כבר # ימים}}</translation>
 <translation id="95624393026532554">‏כדי להשתמש ב-Brave יש צורך ב-Windows מגרסה 7 ואילך.</translation>
 <translation id="5646769069113654257">‏יש להפעיל מחדש את Brave</translation>
 <translation id="2335583906071111058">‏הצגת Brave בשפה זו</translation>
-<translation id="3009727137063767373">‏כדי לאפשר ל-Brave להפעיל קובצי מדיה מוגנים, עליך להתקין את מערכת Rosetta. רוצה להתקין עכשיו?</translation>
 <translation id="4331809312908958774">‏מערכת ההפעלה של Brave</translation>
 <translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
 <translation id="5895138241574237353">הפעלה מחדש</translation>
@@ -148,10 +147,10 @@
 <translation id="492209281555538239">‏הסיסמה הזאת תישמר על ידי Brave בחשבון Brave שלך. אין צורך לזכור אותה.</translation>
 <translation id="4168372721886011198">‏<ph name="FILE_NAME"/> מסוכן, ולכן Brave חסם אותו.</translation>
 <translation id="7006260220514217183">‏הגלישה הבטוחה כבויה. ההמלצה של Brave היא להפעיל אותה.</translation>
+<translation id="4060970194201477024">‏כאן ניתן לעבור בין פרופילים של Brave</translation>
 <translation id="4368341489795135329">‏יש לוודא שנכנסת ל-Brave ב-<ph name="TARGET_DEVICE_NAME"/> שלך ולשלוח שוב.</translation>
 <translation id="8320964054148936490">‏במחשב זה קיימת כבר גרסה מתקדמת יותר של Brave. אם התוכנה אינה פועלת, יש להסיר את ההתקנה של Brave ולנסות שוב.</translation>
 <translation id="3574823187131579180">{0,plural, =0{‏Brave יופעל מחדש עכשיו}=1{‏Brave יופעל מחדש בעוד שנייה אחת}two{‏Brave יופעל מחדש בעוד # שניות}many{‏Brave יופעל מחדש בעוד # שניות}other{‏Brave יופעל מחדש בעוד # שניות}}</translation>
-<translation id="3127818369811890733">‏מערכת Chrome OS לא הצליחה לסנכרן את הנתונים שלך.</translation>
 <translation id="5019879183386042809">‏יש להפוך את Brave לדפדפן ברירת המחדל</translation>
 <translation id="428541510811554120">‏Brave לא יכול לחפש עדכונים. יש לבדוק את החיבור לאינטרנט.</translation>
 <translation id="7445061995866044926">‏האם לצאת מ-Brave?</translation>
@@ -184,18 +183,15 @@
 <translation id="7830723774663008396">‏Brave‏ - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">‏Brave Pay (‏הועתק ל-Brave)</translation>
 <translation id="2301993384336631869">‏Brave עודכן, אך לא השתמשת בו לפחות 30 ימים.</translation>
-<translation id="8522287263361940593">‏Rosetta מאפשרת ל-Brave להפעיל קובצי מדיה מוגנים בדף זה.</translation>
 <translation id="8828443087767259398">‏ל-Brave נדרשת גישה ל-Bluetooth כדי להמשיך 
  את ההתאמה. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">‏קל לנחש סיסמאות חלשות. באמצעות Brave אפשר <ph name="BEGIN_LINK"/>ליצור ולזכור סיסמאות חזקות<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">‏Brave זקוק להרשאת גישה למיקרופון בשביל האתר הזה</translation>
 <translation id="1785833016412082453">‏Brave לא יכול לבדוק את התוספים שלך. כדאי לנסות שוב מאוחר יותר.</translation>
 <translation id="1705567146636171298">‏יש לעדכן את Brave‏</translation>
-<translation id="123620459398936149">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך. יש לעדכן את משפט הסיסמה שלך לסנכרון.</translation>
 <translation id="5499063270485366718">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave.</translation>
 <translation id="1197672524850678392">‏לא ניתן היה להפעיל את Brave. יש לנסות שוב.</translation>
 <translation id="3405035915691517126">‏Brave לא יכול לבדוק את הסיסמאות שלך. יש לנסות שוב בעוד 24 שעות.</translation>
-<translation id="5660079256336839395">‏הסתרה בתפריט Brave</translation>
 <translation id="5516268345616100622">‏מנהל המשימות - Brave</translation>
 <translation id="61852838583753520">‏עדכון &amp;מערכת ההפעלה של Brave‏</translation>
 <translation id="1864557848095568223">‏העדכון של Brave‏ מתבצע</translation>
@@ -231,7 +227,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="6755885556185485672">‏כיבוי Chrome OS לא בוצע כהלכה.</translation>
 <translation id="2925193881330501265">‏נכנסת ל-Brave כ-<ph name="USER_EMAIL_ADDRESS"/>. יש להשתמש באותו חשבון כדי להיכנס שוב.</translation>
 <translation id="6915252145142862992">‏זוהי התקנה משנית של Brave, ולא ניתן להפוך אותו לדפדפן ברירת המחדל שלך.</translation>
-<translation id="4054452651944170004">‏הסתרה בתפריט Brave</translation>
 <translation id="7685904775439037072">‏אחרי מתן גישה ל-Brave, אתרים יוכלו לבקש ממך גישה.</translation>
 <translation id="9067428552314418522">‏Brave‏ חסם את הקובץ הזה כי הוא מסוכן.</translation>
 <translation id="8207657266087451193">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave. אפשר להשבית את האפשרות הזו בכל זמן דרך ההגדרות.</translation>

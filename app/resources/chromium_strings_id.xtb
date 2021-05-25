@@ -10,7 +10,6 @@
 <translation id="4798342026247191171">Siapkan profil Brave baru Anda</translation>
 <translation id="113959764510199339">Brave mencoba menampilkan sandi.</translation>
 <translation id="8132634101975074716">Anda sudah masuk ke Brave!</translation>
-<translation id="7370605478942575409">Untuk memutar media yang dilindungi menggunakan Rosetta, Anda harus memulai ulang Brave.</translation>
 <translation id="7419046106786626209">Chrome OS tidak dapat menyinkronkan data Anda karena Sinkronisasi tidak tersedia untuk domain Anda.</translation>
 <translation id="5147525139567260139">Bagikan tab Brave</translation>
 <translation id="1530633922026945685">Brave memerlukan izin untuk mengakses kamera guna membuat peta 3D untuk area di sekeliling Anda.</translation>
@@ -23,8 +22,8 @@
 <translation id="1775322105159056176">Brave tidak dapat menentukan atau menyetel browser default</translation>
 <translation id="9220324636239049437">Tindakan ini akan menghapus 1 item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Untuk memeriksa apakah sandi Anda yang lain aman dari pelanggaran data dan masalah keamanan lainnya, <ph name="BEGIN_LINK"/>login ke Brave<ph name="END_LINK"/>.</translation>
+<translation id="142389341645668510">Sesuaikan Brave</translation>
 <translation id="8745514854244955877">Brave - Login Jaringan - <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">Chrome OS tidak dapat menyinkronkan sandi Anda.</translation>
 <translation id="5659384504794665581">Jika Anda berbagi komputer, teman dan keluarga bisa menjelajah secara terpisah dan menyiapkan Brave sesuai keinginannya.</translation>
 <translation id="5997267581285668459">Opsional: Bantu sempurnakan fitur dan performa Chrome OS dengan mengirimkan data diagnostik dan penggunaan secara otomatis ke Brave.</translation>
 <translation id="9095263438435683933">Untuk mengirimkan nomor dari sini ke ponsel Android Anda, login ke Brave di kedua perangkat.</translation>
@@ -38,10 +37,8 @@
 <translation id="7933006624150961626">Untuk mengakses aktivitas Brave di semua perangkat, login agar Anda dapat mengaktifkan sinkronisasi.</translation>
 <translation id="7291143854620707672">Data Brave yang dibuat selama penggunaan profil ini (seperti pembuatan bookmark, histori, sandi, dan setelan lain) dapat dihapus oleh administrator profil kerja. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Chrome OS harus dimulai ulang untuk menerapkan pembaruan.</translation>
-<translation id="3913823837305937258">Komputer ini akan segera berhenti menerima pembaruan Brave karena perangkat kerasnya tidak didukung lagi.</translation>
 <translation id="7387051847644272380">Terjadi kesalahan pada sistem operasi saat pemasangan berlangsung. Download Brave lagi.</translation>
 <translation id="2648689842065142443">Jika Anda berbagi perangkat, teman dan keluarga dapat menjelajah secara terpisah dan menyiapkan Brave sesuai keinginannya</translation>
-<translation id="3749489756681759571">Brave merekomendasikan untuk menonaktifkan ekstensi ini karena saat ini belum memenuhi standar Safe Browsing yang Disempurnakan.</translation>
 <translation id="6791166902140255175">Tab Brave</translation>
 <translation id="8372880274820509128">Untuk keamanan tambahan, Brave akan mengenkripsi data Anda.</translation>
 <translation id="2770231113462710648">Ubah browser default ke:</translation>
@@ -60,6 +57,7 @@
 <translation id="7365690458036015383">Pemasang gagal membatalkan kompresi arsip. Download Brave lagi.</translation>
 <translation id="8919461291440820124">Brave menggunakan mikrofon Anda.</translation>
 <translation id="4805806622840861220">Luncurkan ulang Brave</translation>
+<translation id="1742948938503172561">Sesuaikan profil Brave baru Anda</translation>
 <translation id="1477146545787277177">Aduh! Brave ngadat. Luncurkan ulang sekarang?</translation>
 <translation id="7503098128120083822">Brave ingin mengekspor sandi.</translation>
 <translation id="2585240446624043880">Brave tidak dapat membaca dan menulis ke direktori datanya:
@@ -74,6 +72,7 @@
 <translation id="2450003541323895471">Dengan profil Brave, Anda dapat memisahkan semua aktivitas Brave Anda. Buat profil untuk teman dan keluarga, atau pisahkan antara aktivitas kerja dan hiburan.</translation>
 <translation id="9216183508558772570">Brave akan memberi tahu Anda saat Anda login dengan sandi yang telah dibobol</translation>
 <translation id="5853262807109651878">Tindakan ini akan menghapus <ph name="ITEMS_COUNT"/> item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
+<translation id="2024972335338126423"><ph name="SHORTCUT"/> dapat membuat berpindah-pindah profil Brave</translation>
 <translation id="8703492925273919597">Tutup semua jendela Brave dan coba lagi.</translation>
 <translation id="1384923383737428730">Ada software berbahaya di komputer Anda. Brave dapat menghapusnya, memulihkan setelan Anda, dan menonaktifkan ekstensi agar browser berfungsi kembali secara normal.</translation>
 <translation id="7029305463989165490">Untuk mengirimkan nomor dari <ph name="ORIGIN"/> ke ponsel Android Anda, login ke Brave di kedua perangkat.</translation>
@@ -130,11 +129,11 @@
 <translation id="696826782632239602">Brave memerlukan akses ke lokasi Anda untuk berbagi lokasi dengan situs ini</translation>
 <translation id="1744365871163268756">Harap tunggu selagi Brave memasang pembaruan sistem terkini.</translation>
 <translation id="3861679447659630159">Brave mencoba mengedit sandi. Ketik sandi Windows Anda untuk mengizinkannya.</translation>
+<translation id="232381795826373334">Buka PDF di Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Update Brave tersedia}=1{Update Brave tersedia}other{Update Brave telah tersedia selama # hari}}</translation>
 <translation id="95624393026532554">Brave memerlukan Windows 7 atau lebih tinggi.</translation>
 <translation id="5646769069113654257">Mulai ulang Brave sekarang</translation>
 <translation id="2335583906071111058">Tampilkan Brave dalam bahasa ini</translation>
-<translation id="3009727137063767373">Agar Brave dapat memutar media yang dilindungi, Anda harus menginstal Rosetta. Ingin menginstalnya sekarang?</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="7207456302801184289">Selamat Datang di Brave</translation>
 <translation id="5895138241574237353">Mulai Ulang</translation>
@@ -150,10 +149,10 @@
 <translation id="492209281555538239">Brave akan menyimpan sandi ini di Akun Brave. Anda tidak perlu mengingatnya.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, sehingga Brave memblokirnya.</translation>
 <translation id="7006260220514217183">Safe Browsing nonaktif. Brave merekomendasikan untuk mengaktifkannya.</translation>
+<translation id="4060970194201477024">Anda dapat berpindah-pindah profil Brave di sini</translation>
 <translation id="4368341489795135329">Pastikan Anda login ke Brave di <ph name="TARGET_DEVICE_NAME"/> Anda, lalu coba kirimkan lagi.</translation>
 <translation id="8320964054148936490">Komputer ini sudah memiliki versi Brave yang lebih baru. Jika software tidak bekerja, harap coba uninstal Brave, lalu cobalah kembali.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave akan diluncurkan ulang sekarang}=1{Brave akan diluncurkan ulang dalam 1 detik}other{Brave akan diluncurkan ulang dalam # detik}}</translation>
-<translation id="3127818369811890733">Chrome OS tidak dapat menyinkronkan data Anda.</translation>
 <translation id="5019879183386042809">Jadikan Brave browser default</translation>
 <translation id="428541510811554120">Brave tidak dapat memeriksa update. Coba periksa koneksi internet Anda.</translation>
 <translation id="7445061995866044926">Keluar dari Brave?</translation>
@@ -186,18 +185,15 @@ Sebagian fitur mungkin tidak tersedia. Tentukan direktori profil yang berbeda at
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (disalin ke Brave)</translation>
 <translation id="2301993384336631869">Brave telah diperbarui, tetapi Anda belum menggunakannya selama setidaknya 30 hari.</translation>
-<translation id="8522287263361940593">Rosetta memungkinkan Brave memutar media yang dilindungi di halaman ini.</translation>
 <translation id="8828443087767259398">Brave memerlukan akses Bluetooth untuk melanjutkan 
  penyambungan. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Sandi yang lemah mudah ditebak. Izinkan Brave <ph name="BEGIN_LINK"/>membuat dan mengingat sandi yang kuat untuk Anda<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Brave memerlukan izin akses ke mikrofon untuk situs ini</translation>
 <translation id="1785833016412082453">Brave tidak dapat memeriksa ekstensi Anda. Coba lagi nanti.</translation>
 <translation id="1705567146636171298">Perbarui Brave</translation>
-<translation id="123620459398936149">Chrome OS tidak dapat menyinkronkan data Anda. Perbarui frasa sandi Sinkronisasi Anda.</translation>
 <translation id="5499063270485366718">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave.</translation>
 <translation id="1197672524850678392">Tidak dapat meluncurkan Brave. Harap coba lagi.</translation>
 <translation id="3405035915691517126">Brave tidak dapat memeriksa sandi Anda. Coba lagi setelah 24 jam.</translation>
-<translation id="5660079256336839395">Sembunyikan di Menu Brave</translation>
 <translation id="5516268345616100622">Pengelola Tugas - Brave</translation>
 <translation id="61852838583753520">Pembaruan &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Memperbarui Brave</translation>
@@ -233,7 +229,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="6755885556185485672">OS Brave tidak dimatikan dengan benar.</translation>
 <translation id="2925193881330501265">Anda telah masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Gunakan akun yang sama untuk masuk kembali.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan Brave sekunder, dan tidak dapat digunakan sebagai browser default.</translation>
-<translation id="4054452651944170004">Sembunyikan di menu Brave</translation>
 <translation id="7685904775439037072">Setelah Brave memiliki akses, situs dapat meminta akses dari Anda.</translation>
 <translation id="9067428552314418522">File ini berbahaya, jadi Brave telah memblokirnya.</translation>
 <translation id="8207657266087451193">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave. Anda dapat menonaktifkannya kapan saja di setelan.</translation>

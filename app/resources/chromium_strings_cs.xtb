@@ -12,7 +12,6 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="4798342026247191171">Nastavení nového profilu Brave</translation>
 <translation id="113959764510199339">Brave se pokouší zobrazit hesla.</translation>
 <translation id="8132634101975074716">Jste přihlášeni do prohlížeče Brave.</translation>
-<translation id="7370605478942575409">Aby bylo možné přehrávat chráněná média pomocí nástroje Rosetta, je třeba restartovat Brave.</translation>
 <translation id="7419046106786626209">Chrome OS nemůže synchronizovat data, protože Synchronizace ve vaší doméně není k dispozici.</translation>
 <translation id="5147525139567260139">Sdílet kartu prohlížeče Brave</translation>
 <translation id="1530633922026945685">Prohlížeč Brave potřebuje oprávnění k přístupu k fotoaparátu, aby mohl vytvořit 3D mapu vašeho okolí</translation>
@@ -25,8 +24,8 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="1775322105159056176">Brave nemůže určit ani nastavit výchozí prohlížeč</translation>
 <translation id="9220324636239049437">Z tohoto zařízení bude smazána 1 položka. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Chcete-li zkontrolovat, zda jsou ostatní hesla v bezpečí před porušením zabezpečení údajů a ostatními bezpečnostními hrozbami, <ph name="BEGIN_LINK"/>přihlaste se do prohlížeče Brave<ph name="END_LINK"/>.</translation>
+<translation id="142389341645668510">Přizpůsobit prohlížeč Brave</translation>
 <translation id="8745514854244955877">Brave – přihlášení k síti – <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">Chrome OS vaše hesla nemohl synchronizovat.</translation>
 <translation id="5659384504794665581">Pokud počítač sdílíte s kamarády a členy rodiny, každý může web procházet samostatně a nastavit si Brave podle svých požadavků.</translation>
 <translation id="5997267581285668459">Volitelné: Pomozte se zlepšováním funkcí a výkonu operačního systému Chrome OS tím, že budete do Googlu automaticky odesílat diagnostické údaje a údaje o využití.</translation>
 <translation id="9095263438435683933">Pokud odtud chcete odeslat číslo do telefonu Android, v obou zařízeních se přihlaste do prohlížeče Brave.</translation>
@@ -40,10 +39,8 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="7933006624150961626">Chcete-li mít ve všech zařízeních přístup k údajům z prohlížeče Brave, přihlaste se, abyste mohli zapnout synchronizaci.</translation>
 <translation id="7291143854620707672">Veškerá data prohlížeče Brave vygenerovaná během používání tohoto profilu (jako je vytvoření záložek, historie, hesel a další nastavení) může administrátor pracovního profilu odstranit. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Aktualizace se použije po restartování systému Chrome OS.</translation>
-<translation id="3913823837305937258">Tento počítač brzy přestane dostávat aktualizace prohlížeče Brave, protože jeho hardware již není podporován.</translation>
 <translation id="7387051847644272380">Během instalace došlo k chybě operačního systému. Stáhněte prosím Brave znovu.</translation>
 <translation id="2648689842065142443">Pokud zařízení sdílíte s přáteli a členy rodiny, každý může procházet internet samostatně a nastavit si Brave tak, jak potřebuje</translation>
-<translation id="3749489756681759571">Brave doporučuje toto rozšíření zakázat, protože v současné době nesplňuje standardy Vylepšeného Bezpečného prohlížení.</translation>
 <translation id="6791166902140255175">Karta prohlížeče Brave</translation>
 <translation id="8372880274820509128">V zájmu lepšího zabezpečení bude Brave šifrovat vaše data.</translation>
 <translation id="2770231113462710648">Změnit výchozí prohlížeč na:</translation>
@@ -62,6 +59,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="7365690458036015383">Instalačnímu programu se nepodařilo rozbalit archiv. Stáhněte prosím Brave znovu.</translation>
 <translation id="8919461291440820124">Brave používá váš mikrofon.</translation>
 <translation id="4805806622840861220">Restartovat Brave</translation>
+<translation id="1742948938503172561">Přizpůsobte si svůj nový profil Brave</translation>
 <translation id="1477146545787277177">Ouha! Prohlížeč Brave spadl. Chcete jej znovu spustit?</translation>
 <translation id="7503098128120083822">Brave chce exportovat vaše hesla.</translation>
 <translation id="2585240446624043880">Brave nemůže číst ani zapisovat do svého datového adresáře:
@@ -76,6 +74,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="2450003541323895471">Pomocí profilů Brave můžete všechny své údaje v prohlížeči Brave uchovávat odděleně. Vytvořte profily pro přátele a rodinu nebo rozdělte činnosti mezi práci a zábavu.</translation>
 <translation id="9216183508558772570">Pokud se přihlásíte pomocí prolomeného hesla, Brave vám to oznámí</translation>
 <translation id="5853262807109651878">Z tohoto zařízení bude smazán následující počet položek: <ph name="ITEMS_COUNT"/>. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
+<translation id="2024972335338126423">Zkratkou <ph name="SHORTCUT"/> lze přepínat mezi profily Brave</translation>
 <translation id="8703492925273919597">Zavřete prosím všechna okna prohlížeče Brave a zkuste to znovu.</translation>
 <translation id="1384923383737428730">Máte v počítači škodlivý software. Brave ho může odstranit, obnovit vaše nastavení a zakázat rozšíření, aby prohlížeč opět fungoval jako obvykle.</translation>
 <translation id="7029305463989165490">Chcete-li poslat číslo z webu <ph name="ORIGIN"/> na svůj telefon Android, v obou zařízeních se přihlaste do prohlížeče Brave.</translation>
@@ -132,11 +131,11 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="696826782632239602">Prohlížeč Brave potřebuje přístup k vaší poloze, aby ji mohl sdílet s tímto webem</translation>
 <translation id="1744365871163268756">Počkejte prosím, než Brave nainstaluje nejnovější aktualizace systému.</translation>
 <translation id="3861679447659630159">Brave se pokouší upravit hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
+<translation id="232381795826373334">Otevírat soubory PDF v Chromiu</translation>
 <translation id="1026406809507858026">{0,plural, =0{Je k dispozici aktualizace prohlížeče Brave}=1{Je k dispozici aktualizace prohlížeče Brave}few{Již # dny je k dispozici aktualizace prohlížeče Brave}many{Již # dne je k dispozici aktualizace prohlížeče Brave}other{Již # dní je k dispozici aktualizace prohlížeče Brave}}</translation>
 <translation id="95624393026532554">Brave vyžaduje systém Windows 7 nebo vyšší.</translation>
 <translation id="5646769069113654257">Restartujte Brave</translation>
 <translation id="2335583906071111058">Zobrazit Brave v tomto jazyce</translation>
-<translation id="3009727137063767373">Aby prohlížeč Brave mohl přehrávat chráněná média, je třeba nainstalovat nástroj Rosetta. Chcete ho nainstalovat hned?</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="7207456302801184289">Vítejte v prohlížeči Brave</translation>
 <translation id="5895138241574237353">Restartovat</translation>
@@ -152,10 +151,10 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="492209281555538239">Brave vám toto heslo uloží do účtu Brave. Nebudete si ho muset pamatovat.</translation>
 <translation id="4168372721886011198">Soubor <ph name="FILE_NAME"/> je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
 <translation id="7006260220514217183">Bezpečné prohlížení je vypnuté. Brave ho doporučuje zapnout.</translation>
+<translation id="4060970194201477024">Zde můžete přepínat mezi profily Brave</translation>
 <translation id="4368341489795135329">Zkontrolujte, zda jste v zařízení <ph name="TARGET_DEVICE_NAME"/> přihlášeni do prohlížeče Brave, a potom zkuste číslo odeslat znovu.</translation>
 <translation id="8320964054148936490">V tomto počítači je již nainstalována novější verze prohlížeče Brave. Jestliže tento software nefunguje, odinstalujte Brave a zkuste to znovu.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave se nyní restartuje}=1{Brave se za 1 sekundu restartuje}few{Brave se za # sekundy restartuje}many{Brave se za # sekundy restartuje}other{Brave se za # sekund restartuje}}</translation>
-<translation id="3127818369811890733">Chrome OS vaše data nemohl synchronizovat.</translation>
 <translation id="5019879183386042809">Nastavit Brave jako výchozí prohlížeč</translation>
 <translation id="428541510811554120">Brave nemůže vyhledat dostupné aktualizace. Zkuste zkontrolovat připojení k internetu.</translation>
 <translation id="7445061995866044926">Odhlásit se z prohlížeče Brave?</translation>
@@ -188,18 +187,15 @@ Některé funkce mohou být nedostupné. Zadejte prosím jiný adresář profilu
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (zkopírováno do prohlížeče Brave)</translation>
 <translation id="2301993384336631869">Prohlížeč Brave byl aktualizován, ale minimálně po 30 dnů jste jej nepoužili.</translation>
-<translation id="8522287263361940593">Rosetta umožňuje prohlížeči Brave na této stránce přehrávat chráněná média.</translation>
 <translation id="8828443087767259398">Brave potřebuje přístup k Bluetooth, aby bylo možné
  pokračovat v párování. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Slabá hesla lze snadno uhodnout. Brave vám může <ph name="BEGIN_LINK"/>vytvářet a ukládat silná hesla<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Brave pro tento web potřebuje oprávnění k přístupu k mikrofonu</translation>
 <translation id="1785833016412082453">Brave nemůže zkontrolovat vaše rozšíření. Zkuste to později.</translation>
 <translation id="1705567146636171298">Aktualizovat Brave</translation>
-<translation id="123620459398936149">Chrome OS vaše data nemohl synchronizovat. Aktualizujte prosím heslovou frázi pro synchronizaci.</translation>
 <translation id="5499063270485366718">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu.</translation>
 <translation id="1197672524850678392">Brave nelze spustit. Zkuste to znovu.</translation>
 <translation id="3405035915691517126">Brave nemůže zkontrolovat hesla. Zkuste to znovu za 24 hodin.</translation>
-<translation id="5660079256336839395">Skrýt v nabídce Brave</translation>
 <translation id="5516268345616100622">Správce úloh – Brave</translation>
 <translation id="61852838583753520">Aktualizovat &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Aktualizace prohlížeče Brave</translation>
@@ -234,7 +230,6 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="6755885556185485672">Systém Chrome OS nebyl řádně ukončen.</translation>
 <translation id="2925193881330501265">K prohlížeči Brave jste byli přihlášeni s účtem <ph name="USER_EMAIL_ADDRESS"/>. Přihlaste se prosím znovu pomocí stejného účtu.</translation>
 <translation id="6915252145142862992">Toto je druhá instalace prohlížeče Brave. Tuto instalaci nelze nastavit jako výchozí prohlížeč.</translation>
-<translation id="4054452651944170004">Skrýt v nabídce Brave</translation>
 <translation id="7685904775439037072">Až bude mít Brave přístup, budou vás weby moci požádat o přístup.</translation>
 <translation id="9067428552314418522">Tento soubor je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
 <translation id="8207657266087451193">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu. Tuto funkci můžete kdykoliv vypnout v nastavení.</translation>

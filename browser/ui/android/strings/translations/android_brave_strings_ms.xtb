@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Benarkan Twitter memasukkan tweet</translation>
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
 <translation id="6302422639282249274">Uruskan Ganjaran Brave</translation>
-<translation id="1506061864768559482">Enjin carian</translation>
 <translation id="1468415711258933398">Tab Standard</translation>
 <translation id="3377025655491224618">Tab Inkognito</translation>
 <translation id="9148058034647219655">Keluar</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="8710614491157212477">Membuka laman web yang disokong menggunakan HTTPS dan bukan HTTP apabila boleh</translation>
-<translation id="4022987104439075738">Gerbang IPFS</translation>
-<translation id="2688519859165248360">Membolehkan navigasi ke sumber IPFS melalui Get Laluan IPFS</translation>
 <translation id="7534079972563542000">Domain yang tidak dapat Dihentikan</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Kaedah Selesai</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Dilumpuhkan</translation>
 <translation id="2218918398178303658">DNS melalui HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Sekatan Iklan</translation>
-<translation id="1934885595886623674">Mengelakkan iklan daripada dimuatkan</translation>
-<translation id="7458422973722236530">Perlindungan Pencapjarian</translation>
 <translation id="5787084571334399599">Mengelakkan pelayar daripada melakukan pengecapan jari</translation>
 <translation id="7459000603787995422">Tutup tab semasa keluar</translation>
 <translation id="1680858055899097121">Jangan kekalkan tab antara sesi pelayaran</translation>
-<translation id="6469509880167172749">Hantar analitik produk persendirian secara automatik sepenuhnya kepada Brave</translation>
-<translation id="7090566321964540749">Maklumat awanama ini hanya membolehkan Brave menganggarkan penggunaan keseluruhan ciri-ciri tertentu.</translation>
+<translation id="7142548388914389999">Hantar analitik produk persendirian secara automatik sepenuhnya kepada Brave</translation>
+<translation id="5469408008145872264">Maklumat awanama ini hanya membolehkan Brave menganggarkan penggunaan keseluruhan ciri-ciri tertentu.</translation>
 <translation id="7977176350719484850">Anggaran Data\nDijimatkan</translation>
 <translation id="9008534313521214777">Anggaran Masa\nDijimat</translation>
 <translation id="6572660632052512096">Mod Desktop</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Utamakan laman web versi desktop</translation>
 <translation id="1842747674580016420">Main balik video dalam Brave</translation>
 <translation id="5368992950177874750">Jika didayakan, video akan dimainkan di dalam Brave dan bukan di dalam aplikasi berkaitan</translation>
-<translation id="2645380101799517405">Kawalan</translation>
 <translation id="5965081608816406060">Main semula video latar belakang</translation>
 <translation id="6332924730165919598">Brave akan ditutup apabila semua tab ditutup</translation>
 <translation id="1580125697191336644">Dalam percubaan. Mendayakan main audio daripada video di latar belakang apabila tab tidak aktif atau skrin peranti dimatikan. Cuba tukar kepada mod desktop jika ciri ini tidak berfungsi.</translation>
@@ -292,11 +283,10 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="5657156137487675418">Benarkan semua kuki</translation>
 <translation id="3895527457258986253">Sekat Cetakan Jari</translation>
 <translation id="184568144098869637">Mengelakkan pelayar daripada mengenali peranti anda</translation>
-<translation id="7396366757003005317">Pengecapjarian disekat(ketat, boleh menjejaskan laman web)</translation>
-<translation id="700453611199558021">Pengecapjarian disekat(standard)</translation>
+<translation id="7445306466605902444">Pengecapjarian disekat(ketat, boleh menjejaskan laman web)</translation>
+<translation id="5582686930349810484">Pengecapjarian disekat(standard)</translation>
 <translation id="769702552748212954">Benarkan semua pengecapan jari</translation>
 <translation id="876424292214881779">Iklan dan perkara buruk lain disekat</translation>
-<translation id="5142293891785304489">Penjejak, iklan dan\nbanyak lagi disekat</translation>
 <translation id="6930134873084561197">Laman kerap memasukkan kuki dan skrip yang cuba mengenal pasti anda dan peranti anda. Mereka ingin mengetahui siapakah anda dan mengikuti anda ke seluruh internet - menjejaki apa yang anda lakukan di setiap laman.\n\nBrave akan menyekat perkara-perkara ini supaya anda boleh berlayar tanpa diikuti.</translation>
 <translation id="8553998445606452168">Mengenai Brave Shields</translation>
 <translation id="8912304686498704084">ATAS</translation>
@@ -309,7 +299,6 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih kerana memberitahu pembangun Brave bahawa terdapat sesuatu yang tidak kena dengan laman ini. Kami akan melakukan yang terbaik untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kawalan lanjutan</translation>
-<translation id="7182293319417450928">Baki minimum sebanyak 25 BAT diperlukan untuk menentusah.</translation>
 <translation id="1275664486910646411">Paparkan laman teratas dalam autolengkap</translation>
 <translation id="5516010970279932133">Paparkan laman dicadangkan dalam autolengkap</translation>
 <translation id="5370478469168390143">Simpan Data Dalam Talian</translation>
@@ -483,14 +472,6 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="3184805785843994538">Perisai Brave menyekat penjejak &amp; ads, menyimpan data, dan menjimatkan masa anda di setiap tapak web yang anda layari.</translation>
 <translation id="8722651357687610395">Tetapkan Brave sebagai lalai</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
-<translation id="6232491755501685494">Brave Rewards di Jepun beralih ke sistem baharu!</translation>
-<translation id="7444515017164572362">Mulai 13 Mac, anda tidak dapat menggunakan BAP anda. Tetapi selepas sistem anda
-         dikemas kini ke sistem baharu pada bulan April, anda akan bermula dengan token baharu!</translation>
-<translation id="8587285254008006694">Sebagai sebahagian daripada peralihan ini, tetapan pemberian tip dan sumbangan di
-         pelayar anda tidak akan tersedia buat sementara waktu mulai 13 Mac, dan
-         baki BAP anda akan menunjukkan 0.0 sehingga anda mengemas kini sistem baharu
-         dalam bulan April. Setelah sistem baharu anda dikemas kini, anda akan bermula dengan token
-         baharu!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -510,4 +491,9 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="5825943197137337319">Antara muka awam asal sahaja</translation>
 <translation id="1689062823386843231">Lumpuhkan UDP bukan proksi</translation>
 <translation id="3171931580569169744">Dayakan Kumpulan Tab</translation>
+<translation id="5587305863196367357">Menentusahkan dompet membolehkan anda menguruskan dana anda dengan mudah, menambah.&amp; mengeluarkan.</translation>
+<translation id="5760671211380791582">Anda tidak mempunyai BAT yang mencukupi.</translation>
+<translation id="6960458596933484861">Anda perlu mempunyai minimum 15 BAT untuk mencipta dompet Uphold yang ditentusahkan. Sila cuba lagi kemudian.</translation>
+<translation id="4389085954549744469">Jika anda sudah mempunyai akaun Uphold yang ditentusahkan, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">teruskan ke log masuk</translation>
 </translationbundle>

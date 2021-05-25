@@ -69,15 +69,19 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="4227945450504703638">Audio seleccionado</translation>
 <translation id="7895302206188277628">Contenido vinculado</translation>
 <translation id="4322612543319315652">Importar el texto seleccionado a IPFS</translation>
+<translation id="8883166554766780543">Importar y copiar el enlace a la instantánea de IPFS</translation>
+<translation id="3654831858282189202">Publicar con clave IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nueva ventana privada con Tor</translation>
 <translation id="4703780849509456860">Abrir vínculo en una ventana privada con Tor</translation>
 <translation id="3488584642074079080">Abrir vínculo en una ventana privada de Brave con Tor</translation>
 <translation id="7475547933708221517">Compartir archivo local con IPFS</translation>
+<translation id="2286177249736199435">Compartir carpeta local mediante IPFS</translation>
 <translation id="784573715436258741">Compartir archivo local con IPFS</translation>
 <translation id="6313675821927505581">Nueva ventana privada con Tor</translation>
 <translation id="2638041073279639246">Abrir vínculo en una ventana privada con Tor</translation>
 <translation id="3425600262621021599">Abrir vínculo en una ventana privada de Brave con Tor</translation>
+<translation id="575838692088926391">Compartir carpeta local mediante IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Servicio publicitario BAT</translation>
 <translation id="7924918279836988121">Servicio de contabilidad de BAT</translation>
@@ -157,7 +161,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="4112587618563511470">Código de sincronización no válido, revísalo y vuelve a intentarlo.</translation>
 <translation id="2339730291919608488">Dejar cadena de sincronización</translation>
 <translation id="115699408012835975">Si restableces la sincronización, deberás volver a ingresar un código de sincronización desde otro dispositivo para poder sincronizarlo. ¿Estás seguro de que quieres continuar?</translation>
-<translation id="6092564993102418148">¿Seguro que quieres eliminar el dispositivo seleccionado de la cadena de sincronización?</translation>
+<translation id="6092564993102418148">¿Confirmas que deseas eliminar el dispositivo seleccionado de la cadena de sincronización?</translation>
 <translation id="3396347744975515056">Brave Sync ha sido actualizado y requiere configuración</translation>
 <translation id="7473245612074035141">Comenzar la configuración</translation>
 <translation id="3411013544209536575">Consejos útiles</translation>
@@ -177,10 +181,23 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="7090046810227878892">Proveedor de Ethereum para usar Dapps</translation>
 <translation id="5913089932885076110">Cargar Crypto Wallets al iniciar</translation>
 <translation id="757886143331967039">Cargar extensión de Crypto Wallets obsoleta al iniciar</translation>
+<translation id="1834467296210148203">Mostrar el ícono de la billetera de Brave en la barra de herramientas</translation>
 <translation id="6864914031231797928">Permitir inicio de sesión de Google en extensiones</translation>
 <translation id="5927916530277631319">Método para resolver dominios imparables</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Obtén más información<ph name="END_LINK"/> sobre las consideraciones de privacidad de Ethereum y sobre el DNS mediante HTTPS.</translation>
 <translation id="5248318250177143470">Método para resolver Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Configura tus claves IPNS</translation>
+<translation id="951216659045543447">Firma contenido con la clave privada correspondiente y publícalo en IPNS.</translation>
+<translation id="7611728475758612204">Claves disponibles para publicar</translation>
+<translation id="911363100236037920">Introduce un nombre para la clave nueva</translation>
+<translation id="6358469157239228181">Este nombre no se puede usar.</translation>
+<translation id="8996633027318264334">¿Realmente deseas eliminar a <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">El nodo no se inicia.</translation>
+<translation id="616058968889448209">Error de inicio del servicio de IPFS; hay más información disponible en la <ph name="BEGIN_LINK"/>página de diagnóstico<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Error de la importación de la clave '<ph name="KEY_NAME"/>'</translation>
+<translation id="8275038454117074363">Importar</translation>
+<translation id="3654980960391973513">Generar</translation>
+<translation id="5531501313997312487">Iniciar el nodo</translation>
 <translation id="9170907049676078643">Método para resolver recursos de IPFS</translation>
 <translation id="1327977588028644528">Puerta de enlace</translation>
 <translation id="80225669816651290">Nodo local</translation>
@@ -260,7 +277,10 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="1391855377994926460">Navega más rápido en la red: hasta 6 veces más rápido en los sitios principales de noticias.</translation>
 <translation id="9218430445555521422">Establecer como predeterminado</translation>
 <translation id="3479552764303398839">Ahora no</translation>
+<translation id="6040143037577758943">Cerrar</translation>
+<translation id="5600566490506283344">Notificación de anuncio de Brave</translation>
 <translation id="4877147287319222750">Agregar a la barra lateral</translation>
+<translation id="4233010476457917696">Mostrar la barra lateral</translation>
 <translation id="5404213409401164238">Mostrar la barra lateral</translation>
 <translation id="7561196759112975576">Siempre</translation>
 <translation id="7060352228894039151">Al pasar el cursor</translation>

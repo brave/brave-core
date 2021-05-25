@@ -819,6 +819,18 @@
     "message": "अपने वॉलेट की पुष्टि करके और इसे एक बिटफ़ायर खाते से लिंक करके, आप Brave  पुरस्कार के माध्यम से अर्जित टोकन को स्टोर और प्रबंधित कर पाएंगे।",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "अपने Brave ब्राउज़र को अपने bitFlyer अकाउंट से कैसे लिंक करें इसके बारे में $link_begin$और जानें$link_end$.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "जापान में ब्रेव रिवार्ड्स नए सिस्टम में पलायन कर रहे हैं!",
     "description": "Header text for BAP deprecation warning message"

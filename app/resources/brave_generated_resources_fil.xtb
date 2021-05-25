@@ -69,15 +69,19 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4227945450504703638">Napiling audio</translation>
 <translation id="7895302206188277628">Naka-link na content</translation>
 <translation id="4322612543319315652">I-import sa IPFS ang Napiling text</translation>
+<translation id="8883166554766780543">I-import at kopyahin ang link sa snapshot ng IPFS</translation>
+<translation id="3654831858282189202">I-publish gamit ang key ng IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Bagong Pribadong Window na may Tor</translation>
 <translation id="4703780849509456860">Buksan ang Link sa Pribadong Window na may Tor</translation>
 <translation id="3488584642074079080">Buksan ang Link sa Bagong Pribadong Window ng Brave na may Tor</translation>
 <translation id="7475547933708221517">Ibahagi ang Lokal na File Gamit ang IPFS</translation>
+<translation id="2286177249736199435">Ibahagi ang Lokal na Folder Gamit ang IPFS</translation>
 <translation id="784573715436258741">Ibahagi ang lokal na file gamit ang IPFS</translation>
 <translation id="6313675821927505581">Bagong pribadong window na may Tor</translation>
 <translation id="2638041073279639246">Buksan ang link sa pribadong window gamit ang Tor</translation>
 <translation id="3425600262621021599">Buksan ang link sa pribadong window ng Brave gamit ang Tor</translation>
+<translation id="575838692088926391">Ibahagi ang lokal na folder gamit ang IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Serbisyo ng Mga Ad ng Bat</translation>
 <translation id="7924918279836988121">Serbisyong Ledger ng Bat</translation>
@@ -157,7 +161,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4112587618563511470">Invalid ang sync code, pakitingnan at subukan ulit.</translation>
 <translation id="2339730291919608488">Umalis sa Chain ng Pag-sync</translation>
 <translation id="115699408012835975">Kung ire-reset mo ang Sync, kakailanganin mong mag-enter ulit ng sync code mula sa ibang device upang makapag-sync dito. Sigurado ka bang gusto mong magpatuloy?</translation>
-<translation id="6092564993102418148">Sigurado ka bang gusto mong i-delete ang napiling device sa sync chain?</translation>
+<translation id="6092564993102418148">Sigurado ka bang gusto mong alisin ang napiling device sa sync chain?</translation>
 <translation id="3396347744975515056">Ang Brave Sync ay na-upgrade at nangangailangan ng setup</translation>
 <translation id="7473245612074035141">Simulan ang Setup</translation>
 <translation id="3411013544209536575">Mga tulong na tip</translation>
@@ -177,10 +181,23 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="7090046810227878892">Provider ng Ethereum para sa paggamit ng Dapps</translation>
 <translation id="5913089932885076110">I-load ang Crypto Wallets sa startup</translation>
 <translation id="757886143331967039">I-load ang hindi na ginagamit na extension ng Crypto Wallets sa startup</translation>
+<translation id="1834467296210148203">Ipakita ang icon ng Brave Wallet sa toolbar</translation>
 <translation id="6864914031231797928">Payagan ang mga pag-log in sa Google para sa mga extension</translation>
 <translation id="5927916530277631319">Pamamaraan para lutasin ang Mga Hindi Napipigilang Domain</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Matuto Pa<ph name="END_LINK"/> tungkol sa DNS over HTTPS at mga pagsasaalang-alang sa privacy ng Ethereum.</translation>
 <translation id="5248318250177143470">Pamamaraan para lutasin ang Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">I-set up ang iyong mga key ng IPNS</translation>
+<translation id="951216659045543447">Mag-sign ng content sa pamamagitan ng kaukulang pribadong key at i-publish ito sa IPNS</translation>
+<translation id="7611728475758612204">Mga key na available para sa pag-publish</translation>
+<translation id="911363100236037920">Maglagay ng pangalan para sa bagong key</translation>
+<translation id="6358469157239228181">Hindi puwedeng gamitin ang pangalang ito</translation>
+<translation id="8996633027318264334">Gusto mo ba talagang i-delete ang <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Hindi nailunsad ang node</translation>
+<translation id="616058968889448209">Error sa paglunsad ng serbisyo ng IPFS, available ang higit pang impormasyon sa <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Hindi na-import ang key na '<ph name="KEY_NAME"/>'</translation>
+<translation id="8275038454117074363">I-import</translation>
+<translation id="3654980960391973513">Buuin</translation>
+<translation id="5531501313997312487">Simulan ang node</translation>
 <translation id="9170907049676078643">Paraan para lutasin ang mga resource ng IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal na node</translation>
@@ -260,7 +277,10 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1391855377994926460">Patuloy na mag-browse sa web nang mas mabilis - mas mabilis nang hanggang 6x sa mga pangunahing site ng balita.</translation>
 <translation id="9218430445555521422">Itakda bilang default</translation>
 <translation id="3479552764303398839">Hindi ngayon</translation>
+<translation id="6040143037577758943">Isara</translation>
+<translation id="5600566490506283344">Notification ng Brave Ad</translation>
 <translation id="4877147287319222750">Idagdag sa Sidebar</translation>
+<translation id="4233010476457917696">Ipakita ang sidebar</translation>
 <translation id="5404213409401164238">Ipakita ang Sidebar</translation>
 <translation id="7561196759112975576">Palagi</translation>
 <translation id="7060352228894039151">Sa mouseover</translation>

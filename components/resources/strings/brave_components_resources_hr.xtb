@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Započnite neograničene pozive s prijateljima i kolegama u značajci Brave Together.</translation>
 <translation id="7115051913071512405">Isprobajte je</translation>
 <translation id="7415602225677446066">Današnje najpopularnije priče u potpuno privatnom sažetku sadržaja samo za vas.</translation>
-<translation id="8607689491789524900">Uslugom Brave Today uparuju se interesi s vašeg uređaja pa vaši osobni podatci uvijek ostaju u pregledniku. Novi se sadržaj ažurira tijekom dana.</translation>
+<translation id="6903061332999399632">Usluga Brave News podržava se oglasima s potpuno privatnim i anonimnim usklađenim oglasima na vašem uređaju. Vaše osobne informacije uvijek su privatne u skladu s našim <ph name="LINK_START"/>pravilnikom o privatnosti<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Prikaži uslugu Brave News</translation>
+<translation id="780301667611848630">Ne, hvala</translation>
 <translation id="9164544612367905452">Dohvaćanje…</translation>
 <translation id="1276592121036104130">Učitaj novi sadržaj</translation>
-<translation id="4210987321913275328">Pomiči do usluge Brave Today</translation>
-<translation id="3122595178900736207">Ponovno postavi izvore usluge Brave Today</translation>
-<translation id="2197023915568148978">Treba li ponovno postaviti sve vaše odabire izdavača u usluzi Brave Today na zadane postavke?</translation>
+<translation id="2875288128871360696">Pomiči do novosti preglednika Brave</translation>
+<translation id="8510120023634509743">Ponovno postavi izvore usluge Brave News</translation>
+<translation id="75825199302994272">Treba li ponovno postaviti sve vaše odabire izdavača u usluzi Brave News na zadane postavke?</translation>
 <translation id="954001034349395856">Svi izvori</translation>
 <translation id="8890516388109605451">Izvori</translation>
 <translation id="5158129253322921540">Onemogući sadržaj izdavača <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Spojeno</translation>
 <translation id="8030169304546394654">Prekinuta veza</translation>
 <translation id="3149306599361260465">Inicijaliziranje [[percentage]]%</translation>
+<translation id="3258793718986637767">Imate problema s uslugom Tor? Pokušajte <ph name="BEGIN_LINK"/>onemogućiti privatni prozor s uslugom Tor<ph name="END_LINK"/> i ponovno ga omogućiti.</translation>
 <translation id="4272382368346338917">Dodatni filtri</translation>
 <translation id="8949292968394988358">Upozorenje: uključivanjem previše filtara smanjuje se učinkovitost</translation>
 <translation id="8686201964111147748">Ukupan broj blokiranih reklama i elemenata za praćenje:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Potvrdi moj novčanik</translation>
 <translation id="6609621505400013054">Novčanik bitFlyer usluga je kojom upravlja poduzeće bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Potvrđivanjem svojeg novčanika i njegovim povezivanjem s računom usluge bitFlyer možete jednostavnije pohranjivati i upravljati tokenima zarađenim putem usluge Brave Rewards</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/> o povezivanju preglednika Brave sa svojim računom bitFlyer.</translation>
 <translation id="5094577350232361255">opis</translation>
 <translation id="4918086044614829423">Prihvati</translation>
 <translation id="5916290544882167205">Brave Software. Brave je registrirani zaštitni znak poduzeća Brave Software. Nazivi mrežnih mjesta mogu biti zaštitni znakovi ili registrirani zaštitni znakovi vlasnika tih mjesta.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Cijena jedinice</translation>
 <translation id="4763179765154524864">Ukupno potrošeno</translation>
 <translation id="8851480289992540512">Ukupno primljeno</translation>
+<translation id="8624961452383848703">Želim pretvoriti…</translation>
 <translation id="616639131065447379">Dobro došli u Braveove kriptovalutne novčanike</translation>
 <translation id="1740464057879304704">Kriptovalutnim novčanicima omogućava vam se rukovanje kriptovalutama i pridruženim imovinama u pregledniku Brave. Kriptovalutnim novčanicima podržavaju se tokeni Ethereum poput ETH i BAT, kao i prikupljanja, te vam se omogućava rad s Ðaplikacijama i drugim pametnim ugovorima. Sve navedeno namijenjeno je osobama koje poznaju Ethereum i druge sustave za podatkovne blokove —ili su željni učenja.</translation>
 <translation id="4855440621031541830">Upotrebljavajte kriptovalutne novčanike samo ako prihvaćate da samostalno snosite sve rizike vezane uz uporabi te da softver Brave nema nikakvu odgovornost ili ne snosi nikakvu odgovornost za bilo koje gubitke uključujući slučajne ili posljedične gubitke kojima se možete izložiti uslijed uporabe.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Nije uspjelo dohvaćanje podataka za uvoz</translation>
 <translation id="7900950536120202771">Unutarnja greška čvora sustava IPFS</translation>
 <translation id="1036635552229153800">Podatci su se uspješno prenijeli, ali nisu se prebacili u direktorij za uvoz preglednika Brave. Možete to obaviti ručno putem stranice postavki uvoza.</translation>
-<translation id="7789840864192026963">Daj dopuštenje</translation>
-<translation id="7978789143098237970">dok ne zatvorim ovu stranicu</translation>
+<translation id="572392919096807438">Zapamti moju odluku</translation>
+<translation id="7978789143098237970">dok ne zatvorim ovo mrežno mjesto</translation>
 <translation id="3523195733429162409">na 24 sata</translation>
 <translation id="2373264732659722940">na 1 tjedan</translation>
 <translation id="6318437367327684789">zauvijek</translation>
-<translation id="7463327191540031132">Blokiraj zauvijek</translation>
 <translation id="8797999629784150206">Možete promijeniti <ph name="SITE_PERMISSIONS"/> u bilo kojem trenutku. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">dopuštenje za mrežno mjesto</translation>
 <translation id="7701466644604753106">UKLJUČI mjerač brzine</translation>
 <translation id="763042262431778831">ISKLJUČI mjerač brzine</translation>
+<translation id="1544192797660353713">Novčanik</translation>
+<translation id="8488282162676695335">Novčanik Brave</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
 <translation id="3745016858329272300">Opće informacije</translation>
 <translation id="4045404575593562245">Događaji kontrole Tor</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">URI proxya Tor</translation>
 <translation id="1671503397662036257">Stanje povezanosti Tor</translation>
 <translation id="6024292492796847324">Napredak pokretanja Tor</translation>
+<translation id="7586151660465233733">Više tržišta na <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Pregledaj tržišta i trguj kriptovalutama putem značajke FTX</translation>
+<translation id="5963745988819586370">Tržišta</translation>
+<translation id="3795943412467785186">Povežite račun FTX za prikazivanje raspoloživog iznosa računa, istraživanje budućih tržišta, &amp; pretvaranje kriptovaluta.</translation>
+<translation id="926958206891985289">Prikaži buduća tržišta</translation>
+<translation id="6804537228302563756">Poveži račun</translation>
+<translation id="5019698312620117604">Povijest cijena u 24 sata</translation>
+<translation id="8720719072204443171">Volumen u 24 sata</translation>
+<translation id="3891414008432200754">Cijena</translation>
+<translation id="7723176927437578611">Prihodi</translation>
+<translation id="2983078329159689577">Slanje…</translation>
+<translation id="6641102760094059194">Potvrdi (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Uspješna pretvorba!</translation>
+<translation id="7590653073560839711">Treba vam raspoloživi iznos u barem jednoj valuti za obavljanje pretvorbe.</translation>
+<translation id="4390079506197726228">Dostupno <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
+<translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 </translationbundle>

@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Povoliť embedované tweety pre Twitter</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
 <translation id="6302422639282249274">Spravovať Brave odmeny</translation>
-<translation id="1506061864768559482">Vyhľadávač</translation>
 <translation id="1468415711258933398">Štandardná karta</translation>
 <translation id="3377025655491224618">Karta inkognito</translation>
 <translation id="9148058034647219655">Ukončiť</translation>
-<translation id="520895744850022668">HTTPS všade</translation>
-<translation id="8710614491157212477">Ak je to možné, otvoria sa podporované webstránky pomocou protokolu HTTPS namiesto protokolu HTTP</translation>
-<translation id="4022987104439075738">Brána IPFS</translation>
-<translation id="2688519859165248360">Umožňuje prechod k zdrojom IPFS cez bránu IPFS</translation>
 <translation id="7534079972563542000">Nezastaviteľné domény</translation>
 <translation id="6513892817556267573">služba Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metóda Resolve</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Deaktivované</translation>
 <translation id="2218918398178303658">DNS cez HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Ad Block</translation>
-<translation id="1934885595886623674">Zabraňuje načítaniu reklám</translation>
-<translation id="7458422973722236530">Ochrana pred fingerprinting</translation>
 <translation id="5787084571334399599">Zabraňuje prehliadaču získať odtlačky prstov</translation>
 <translation id="7459000603787995422">Zatvoriť karty pri ukončení prehliadania</translation>
 <translation id="1680858055899097121">Neotvárajte karty medzi prehliadanými reláciami</translation>
-<translation id="6469509880167172749">Automatické odosielanie výlučne vlastných produktových analýz do Brave</translation>
-<translation id="7090566321964540749">Táto anonymná informácia umožní Brave len odhadnúť celkové využívanie určitých funkcií .</translation>
+<translation id="7142548388914389999">Automatické odosielanie výlučne vlastných produktových analýz do Brave</translation>
+<translation id="5469408008145872264">Táto anonymná informácia umožní Brave len odhadnúť celkové využívanie určitých funkcií .</translation>
 <translation id="7977176350719484850">Odhad. dáta\nUšetrené</translation>
 <translation id="9008534313521214777">Predpokladaný čas\nUšetrený</translation>
 <translation id="6572660632052512096">Desktop mód</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Preferovať verziu stránok pre počítače</translation>
 <translation id="1842747674580016420">Prehrávanie videa v prehliadači Brave</translation>
 <translation id="5368992950177874750">Ak je povolené, videá sa budú prehrávať v prehliadači Brave namiesto zodpovedajúcej aplikácie</translation>
-<translation id="2645380101799517405">Kontroly</translation>
 <translation id="5965081608816406060">Prehrávanie videa na pozadí</translation>
 <translation id="6332924730165919598">Zatvorením všetkých kariet sa zavrie prehliadač Brave</translation>
 <translation id="1580125697191336644">Experimentálny. Umožňuje prehrávanie zvuku z videa na pozadí, keď karta nie je aktívna alebo obrazovka zariadenia je vypnutá. Ak táto funkcia nefunguje, skúste prepnúť do desktop módu.</translation>
@@ -291,11 +282,10 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="5657156137487675418">Povoliť všetky súbory cookies</translation>
 <translation id="3895527457258986253">Blokovať Odtlačky prstov</translation>
 <translation id="184568144098869637">Zabraňuje prehliadaču rozpoznať vaše zariadenie</translation>
-<translation id="7396366757003005317">Odtlačky prstov blokované (striktne, môžu poškodiť stránky)</translation>
-<translation id="700453611199558021">Odtlačok prsta blokovaný (štandard)</translation>
+<translation id="7445306466605902444">Odtlačky prstov blokované (striktne, môžu poškodiť stránky)</translation>
+<translation id="5582686930349810484">Odtlačok prsta blokovaný (štandard)</translation>
 <translation id="769702552748212954">Povoliť všetky odtlačky prstov</translation>
 <translation id="876424292214881779">Blokovanie reklám a ďalších nechutných záležitostí</translation>
-<translation id="5142293891785304489">Sledovacie zariadenia, reklamy a blokované</translation>
 <translation id="6930134873084561197">Webové stránky často obsahujú súbory cookie a skripty, ktoré sa snažia identifikovať vás a vaše zariadenie. Chcú zistiť, kto ste, a sledovať čo robíte na každej stránke naprieč webom.\n\nBrave tieto veci blokuje, takže môžete prehliadať bez toho, aby ste boli všade prenasledovaní.</translation>
 <translation id="8553998445606452168">O Brave štítoch</translation>
 <translation id="8912304686498704084">HORE</translation>
@@ -308,7 +298,6 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="5299848999918506028">Ďakujeme!</translation>
 <translation id="76550953340008122">Ďakujeme, že ste vývojárom Brave oznámili, že na tejto stránke je niečo chybné. Urobíme všetko pre to, aby sme to napravili!</translation>
 <translation id="650318023204990401">Pokročilé ovládanie</translation>
-<translation id="7182293319417450928">Na overenie sa vyžaduje minimálny zostatok 25 BAT.</translation>
 <translation id="1275664486910646411">Zobraziť najlepšie stránky v automatickom dopĺňaní</translation>
 <translation id="5516010970279932133">Zobraziť navrhované stránky v automatickom dopĺňaní</translation>
 <translation id="5370478469168390143">Uložiť dáta online</translation>
@@ -377,7 +366,7 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="1880168210969863408">Super! V Brave ste ušetrili 10 minút času načítavania.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Na zobrazenie hlásenia o súkromí začnite prehliadať</translation>
 <translation id="9080777565335515917">Nastaviť Brave ako predvolený prehliadač pre súkromné a zabezpečené prehliadanie.</translation>
-<translation id="1390943217516275883">Povoľte prehliadaču Brave, aby vám zobrazil údaje o súkromí</translation>
+<translation id="1390943217516275883">Umožňuje prehliadaču Brave zobraziť vaše štatistiky ochrany osobných údajov</translation>
 <translation id="1763352720905582220">Posiela týždenné hlásenie o súkromí</translation>
 <translation id="1811691435325545066">Vymazať všetky údaje Hlásení o súkromí</translation>
 <translation id="8089997572759938512">Vynulovať vaše hlásenia o súkromí</translation>
@@ -482,14 +471,6 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="3184805785843994538">Brave Shields blokuje sledovače &amp; reklamy, šetrí dáta a šetrí váš čas na každej stránke, ktorú navštívite.</translation>
 <translation id="8722651357687610395">Nastaviť Brave ako predvolené</translation>
 <translation id="3479552764303398839">Teraz nie</translation>
-<translation id="6232491755501685494">Brave Rewards v Japonsku prechádza na nový systém!</translation>
-<translation id="7444515017164572362">Od 13. marca nebudete môcť používať svoj BAP. Ale keď si už
-        v apríli inovujete nový systém, začnete s novými tokenmi!</translation>
-<translation id="8587285254008006694">V rámci tohto prechodu budú funkcie na poskytnutie príspevkov a darov
-         vo vašom prehliadači dočasne nedostupné od 13. marca a
-         váš zostatok BAP bude zobrazovať 0,0, až kým neaktualizujete nový systém
-         v apríli. Keď začnete používať nový systém, začnete aj s novými
-         tokenmi!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -509,4 +490,9 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
 <translation id="1689062823386843231">Deaktivovať nezastupované UDP</translation>
 <translation id="3171931580569169744">Povoliť skupiny kariet</translation>
+<translation id="5587305863196367357">Overenie peňaženky vám umožní jednoduchú správu vašich finančných prostriedkov pomocou vkladu a výberu</translation>
+<translation id="5760671211380791582">Nemáte dostatok BAT.</translation>
+<translation id="6960458596933484861">Na vytvorenie overenej peňaženky Uphold musíte mať minimálne 15 BAT. Skúste to znovu neskôr.</translation>
+<translation id="4389085954549744469">Ak už máte overený účet Uphold, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">pokračujte v prihlasovaní</translation>
 </translationbundle>

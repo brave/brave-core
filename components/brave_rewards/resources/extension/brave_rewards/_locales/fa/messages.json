@@ -819,6 +819,18 @@
     "message": "با تأیید کیف پول و پیوند دادن آن به حساب bitFlyer، می‌توانید توکن‌هایی را که ازطریق «پاداش‌های Brave» کسب کرده‌اید آسان‌تر ذخیره و مدیریت کنید.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "درباره نحوه پیوند دادن مرورگر Brave خود با حساب bitFlyer، ‍$link_begin$بیشتر بدانید$link_end$.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards در ژاپن در حال جابجایی به یک سیستم جدید است!",
     "description": "Header text for BAP deprecation warning message"

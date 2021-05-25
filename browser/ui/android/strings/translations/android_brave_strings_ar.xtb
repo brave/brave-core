@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
 <translation id="6302422639282249274">إدارة مكافآت Brave</translation>
-<translation id="1506061864768559482">محرك البحث</translation>
 <translation id="1468415711258933398">علامة تبويب قياسية</translation>
 <translation id="3377025655491224618">علامة تبويب للتصفح المتخفي</translation>
 <translation id="9148058034647219655">إنهاء</translation>
-<translation id="520895744850022668">HTTPS في كل مكان</translation>
-<translation id="8710614491157212477">يفتح المواقع المدعومة باستخدام HTTPS بدلاً من HTTP عندما يكون ذلك ممكناً</translation>
-<translation id="4022987104439075738">بوابة IPFS</translation>
-<translation id="2688519859165248360">يسمح بالانتقال إلى موارد IPFS من خلال بوابة IPFS</translation>
 <translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
 <translation id="6513892817556267573">خدمة اسم إيثريوم</translation>
 <translation id="3894650624018948468">طريقة الحل</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">غير مفعّل</translation>
 <translation id="2218918398178303658">بروتوكول DNS عبر HTTPS</translation>
 <translation id="1448289340149908413">إيثريوم</translation>
-<translation id="8387201461264842096">حظر الإعلان</translation>
-<translation id="1934885595886623674">يمنع الإعلانات من التحميل</translation>
-<translation id="7458422973722236530">حماية البصمات</translation>
 <translation id="5787084571334399599">يمنع المتصفح من استخدام البصمة</translation>
 <translation id="7459000603787995422">غلق علامات التبويب عند الخروج</translation>
 <translation id="1680858055899097121">لا تواصل استخدام علامات التبويب بين جلسات التصفح</translation>
-<translation id="6469509880167172749">إرسال تحليلات المنتج الخاصة بالكامل تلقائيًا إلى Brave</translation>
-<translation id="7090566321964540749">تتيح هذه المعلومات المُجهلة فقط لمتصفح Brave تقدير الاستخدام الكلي لبعض الميزات.</translation>
+<translation id="7142548388914389999">إرسال تحليلات المنتج الخاصة بالكامل تلقائيًا إلى Brave</translation>
+<translation id="5469408008145872264">تتيح هذه المعلومات المُجهلة فقط لمتصفح Brave تقدير الاستخدام الكلي لبعض الميزات.</translation>
 <translation id="7977176350719484850">البيانات التقديرية المحفوظة</translation>
 <translation id="9008534313521214777">الوقت المقدر\nالذي تم توفيره</translation>
 <translation id="6572660632052512096">نمط سطح المكتب</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">يفضل إصدار سطح المكتب  للمواقع</translation>
 <translation id="1842747674580016420">إعادة تشغيل الفيديو في متصفح Brave</translation>
 <translation id="5368992950177874750">في حالة التمكين، سيتم تشغيل مقاطع الفيديو في متصفح Brave بدلاً من التطبيق المقابل</translation>
-<translation id="2645380101799517405">أدوات التحكم</translation>
 <translation id="5965081608816406060">إعادة تشغيل الفيديو في الخلفية</translation>
 <translation id="6332924730165919598">يؤدي إغلاق جميع علامات التبويب إلى إغلاق Brave</translation>
 <translation id="1580125697191336644">إصدار تجريبي. لتمكين تشغيل الصوت من الفيديو الجاري في الخلفية عندما لا تكون علامة التبويب نشطة أو عند إطفاء شاشة الجهاز. في حال عدم عمل هذه الميزة على أكمل وجه حاول التحويل إلى وضع سطح المكتب.</translation>
@@ -291,11 +282,10 @@
 <translation id="5657156137487675418">السماح بجميع ملفات تعريف الارتباط</translation>
 <translation id="3895527457258986253">حجب مسح البصمة</translation>
 <translation id="184568144098869637">يمنع المتصفح من التعرف على جهازك</translation>
-<translation id="7396366757003005317">تسجيل البصمة محظور (في الوضع الصارم، قد يخرق المواقع)</translation>
-<translation id="700453611199558021">تسجيل البصمة محظور (في الوضع القياسي)</translation>
+<translation id="7445306466605902444">تسجيل البصمة محظور (في الوضع الصارم، قد يخرق المواقع)</translation>
+<translation id="5582686930349810484">تسجيل البصمة محظور (في الوضع القياسي)</translation>
 <translation id="769702552748212954">السماح بجميع عمليات أخذ البصمات</translation>
 <translation id="876424292214881779">الإعلانات والأشياء المريبة الأخرى التي تم حظرها</translation>
-<translation id="5142293891785304489">تم حظر برامج تتبع وإعلانات وأكثر</translation>
 <translation id="6930134873084561197">غالبًا ما تتضمن المواقع ملفات تعريف ارتباط ونصوص برمجية تحاول التعرف على هويتك وجهازك. إنهم يريدون معرفة هويتك ومتابعتك عبر الويب لتتبع ما تفعله في كل موقع.\n\nيحجب Brave هذه الأشياء عنك لكي تتمكن من التصفح دون أن يتم تتبعك.</translation>
 <translation id="8553998445606452168">حول Brave Shields</translation>
 <translation id="8912304686498704084">قيد التشغيل</translation>
@@ -308,7 +298,6 @@
 <translation id="5299848999918506028">شكراً لك!</translation>
 <translation id="76550953340008122">شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!</translation>
 <translation id="650318023204990401">الضوابط المتقدمة</translation>
-<translation id="7182293319417450928">مطلوب 25 BAT كحد أدنى للتحقق.</translation>
 <translation id="1275664486910646411">أظهر المواقع الأكثر تقدما بشكل إكمال تلقائي</translation>
 <translation id="5516010970279932133">أظهر المواقع المقترحة بشكل إكمال تلقائي</translation>
 <translation id="5370478469168390143">حفظ البيانات عبر الإنترنت</translation>
@@ -482,14 +471,6 @@
 <translation id="3184805785843994538">تمنع Brave Shields برامج التتبع &amp; والإعلانات، وتحفظ البيانات، وتوفر لك الوقت في كل موقع تزوره.</translation>
 <translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
-<translation id="6232491755501685494">جاري تحويل Brave Rewards في اليابان إلى نظام جديد!</translation>
-<translation id="7444515017164572362">بدءاً من 13 مارس، لن تتمكن ’ من استخدام رصيدك من BAP. ولكن بمجرد
-         التحديث إلى النظام الجديد في أبريل، ستبدأ ’ باستخدام عملات رمزية جديدة!</translation>
-<translation id="8587285254008006694">كجزء من هذا الانتقال، ستكون ميزتا الإكرامية والمساهمة غير متاحتين  
-        في متصفحك مؤقتاً اعتباراً من 13 مارس، و
-         سيظهر رصيدك في BAP 0.0 حتى تقوم بالتحديث إلى النظام الجديد
-         في أبريل. بمجرد تشغيلك ’ نظامنا الجديد، سوف ’ تبدأ باستخدام 
-        عملات رمزية جديدة!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -509,4 +490,9 @@
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
 <translation id="3171931580569169744">تمكين معلومات علامات التبويب</translation>
+<translation id="5587305863196367357">يسمح لك اعتماد المحفظة بإدارة أموالك بسهولة وإضافة الأموال وسحبها</translation>
+<translation id="5760671211380791582">ليس لديك ما يكفي من BAT.</translation>
+<translation id="6960458596933484861">يتعين أن يكون لديك 15 BAT كحد أدنى لإنشاء محفظة Uphold معتمدة. يُرجى إعادة المحاولة لاحقًا.</translation>
+<translation id="4389085954549744469">إذا كان لديك بالفعل حساب Uphold مُتحقق منه، <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">يمكنك المتابعة إلى تسجيل الدخول</translation>
 </translationbundle>

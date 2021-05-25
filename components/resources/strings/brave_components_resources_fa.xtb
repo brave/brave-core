@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">در Brave Together، تماس‌های نامحدود با دوستان و همکاران را شروع کنید.</translation>
 <translation id="7115051913071512405">آن را امتحان کنید</translation>
 <translation id="7415602225677446066">داستان‌های برتر امروز در فیدی کاملاً خصوصی، فقط برای شما.</translation>
-<translation id="8607689491789524900">Brave Today با علایق شما در دستگاهتان مطابقت دارد، بنابراین اطلاعات شخصی‌تان هیچ‌گاه از مرورگر خارج نمی‌شود. محتوای جدید در سراسر روز به‌روزرسانی شد.</translation>
+<translation id="6903061332999399632">Brave News با آگهی‌های مطابقی که به‌صورت کاملاً خصوصی و ناشناس در دستگاه شما نشان داده می‌شوند پشتیبانی می‌شود. طبق <ph name="LINK_START"/>خط مشی حریم خصوصی<ph name="LINK_END"/> ما، اطلاعات شخصی شما همواره خصوصی باقی می‌ماند.</translation>
+<translation id="7823038307453615214">نمایش Brave News</translation>
+<translation id="780301667611848630">نه متشکرم</translation>
 <translation id="9164544612367905452">واکشی…</translation>
 <translation id="1276592121036104130">بار کردن محتوای جدید</translation>
-<translation id="4210987321913275328">در Brave Today پیمایش کنید</translation>
-<translation id="3122595178900736207">بازنشانی منابع Brave Today</translation>
-<translation id="2197023915568148978">همه انتخاب‌های ناشر Brave Today به تنظیمات پیش‌فرض بازنشانی شود؟</translation>
+<translation id="2875288128871360696">در Brave News پیمایش کنید</translation>
+<translation id="8510120023634509743">بازنشانی منابع Brave News</translation>
+<translation id="75825199302994272">همه انتخاب‌های شما برای ناشر Brave News به مقادیر پیش‌فرض بازنشانی شوند؟</translation>
 <translation id="954001034349395856">همه منابع</translation>
 <translation id="8890516388109605451">منابع</translation>
 <translation id="5158129253322921540">محتوا از <ph name="PUBLISHER_NAME"/> غیرفعال شود</translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">متصل</translation>
 <translation id="8030169304546394654">ارتباط قطع شد</translation>
 <translation id="3149306599361260465">مقداردهی اولیه [[percentage]]%</translation>
+<translation id="3258793718986637767">مشکلی با Tor دارید؟ <ph name="BEGIN_LINK"/>غیرفعال کردن پنجره خصوصی با Tor<ph name="END_LINK"/> را امتحان کنید و مجدداً آن را روشن کنید.</translation>
 <translation id="4272382368346338917">فیلترهای بیشتر</translation>
 <translation id="8949292968394988358">هشدار: با روشن کردن تعداد فیلترهای بسیار زیاد، عملکرد کاهش می‌یابد</translation>
 <translation id="8686201964111147748">مجموع آگهی‌ها و ردیاب‌های مسدودشده:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">تأیید کیف پول</translation>
 <translation id="6609621505400013054">کیف پول bitFlyer سرویسی است که توسط bitFlyer Inc مدیریت می‌شود.</translation>
 <translation id="7258399883616914635">با تأیید کیف پول و پیوند دادن آن به حساب bitFlyer، می‌توانید توکن‌هایی را که ازطریق «پاداش‌های Brave» کسب کرده‌اید آسان‌تر ذخیره و مدیریت کنید.</translation>
+<translation id="1411121707906693782">درباره نحوه پیوند دادن مرورگر Brave خود با حساب bitFlyer‏، <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="5094577350232361255">درباره</translation>
 <translation id="4918086044614829423">پذیرفتن</translation>
 <translation id="5916290544882167205">Brave Software‏. Brave نشان تجاری ثبت‌شده Brave Software است. ممکن است نام سایت‌ها، نشان‌های تجاری یا نشان‌های تجاری ثبت‌شده مالک آن سایت‌ها باشد.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">قیمت واحد</translation>
 <translation id="4763179765154524864">کل هزینه</translation>
 <translation id="8851480289992540512">مجموع دریافت‌شده</translation>
+<translation id="8624961452383848703">می‌خواهم تبدیل کنم…</translation>
 <translation id="616639131065447379">به «کیف پول‌های رمزگذاری‌شده Brave» خوش آمدید</translation>
 <translation id="1740464057879304704">«کیف پول‌های رمزگذاری‌شده» به شما امکان می‌دهند با رمزارز و دارایی‌های مربوط به آن در Brave کار کنید. «کیف پول‌های رمزگذاری‌شده» از توکن‌های «اتریم»، مانند ETH و BAT و همچنین از موارد قابل وصول پشتیبانی می‌کنند و به شما امکان می‌دهند با برنامه‌ها و سایر قراردادهای هوشمند کار کنید. همه این قابلیت‌ها برای افرادی طراحی شده‌اند که با «اتریم» و سایر سیستم‌های زنجیره بلوکی آشنا هستند یا برای یادگیری در مورد آنها هیجان‌زده هستند.</translation>
 <translation id="4855440621031541830">تنها در صورتی از «کیف پول‌های رمزگذاری‌شده» استفاده کنید که می‌پذیرید در قبال تمام خطراتی که این استفاده در پی دارد، تنها شما مسئول هستید و می‌پذیرید که Brave Software در قبال هرگونه ضرر، شامل ضررهای ضمنی یا تبعی که ممکن است در نتیجه این استفاده بر شما تحمیل شود، هیچ‌گونه مسئولیت یا تعهدی ندارد.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">واکشی داده برای وارد کردن انجام نشد</translation>
 <translation id="7900950536120202771">خطای داخلی گره IPFS</translation>
 <translation id="1036635552229153800">داده با موفقیت آپلود شد اما به فهرست راهنمای brave-import منتقل نشد. می‌توانید این کار را به‌صورت دستی در صفحه تنظیمات وارد کردن انجام دهید.</translation>
-<translation id="7789840864192026963">مجوز دادن</translation>
-<translation id="7978789143098237970">تا وقتی این صفحه را ببندم</translation>
+<translation id="572392919096807438">تصمیم من به یاد سپرده شود</translation>
+<translation id="7978789143098237970">تا وقتی این سایت را ببندم</translation>
 <translation id="3523195733429162409">برای 24 ساعت</translation>
 <translation id="2373264732659722940">برای 1 هفته</translation>
 <translation id="6318437367327684789">همیشه</translation>
-<translation id="7463327191540031132">مسدود برای همیشه</translation>
 <translation id="8797999629784150206">هرزمان خواستید، می‌توانید <ph name="SITE_PERMISSIONS"/> را تغییر دهید. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">مجوز سایت</translation>
 <translation id="7701466644604753106">روشن کردن تندخوان</translation>
 <translation id="763042262431778831">خاموش کردن تندخوان</translation>
+<translation id="1544192797660353713">کیف پول</translation>
+<translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">URI پراکسی Tor</translation>
 <translation id="1671503397662036257">وضعیت اتصال Tor</translation>
 <translation id="6024292492796847324">پیشرفت مقداردهی اولیه Tor</translation>
+<translation id="7586151660465233733">بازارهای بیشتر در <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">مشاهده بازارها و تبادل رمزارزها در FTX</translation>
+<translation id="5963745988819586370">بازارها</translation>
+<translation id="3795943412467785186">حساب FTX را متصل کنید تا موجودی حساب را مشاهده کنید، در بازارهای آینده کاوش کنید و رمزارزها را تبدیل کنید.</translation>
+<translation id="926958206891985289">مشاهده بازارهای آینده</translation>
+<translation id="6804537228302563756">متصل کردن حساب</translation>
+<translation id="5019698312620117604">سابقه قیمت در 24 ساعت</translation>
+<translation id="8720719072204443171">حجم 24 ساعته</translation>
+<translation id="3891414008432200754">قیمت</translation>
+<translation id="7723176927437578611">عایدات</translation>
+<translation id="2983078329159689577">در حال ارسال…</translation>
+<translation id="6641102760094059194">تأیید (<ph name="NUMBER_OF_SECONDS_LEFT"/> ثانیه)</translation>
+<translation id="2280055104463448482">با موفقیت تبدیل شد!</translation>
+<translation id="7590653073560839711">به‌منظور انجام دادن تبدیل، باید حداقل در یک ارز موجودی داشته باشید.</translation>
+<translation id="4390079506197726228"><ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/> موجود</translation>
+<translation id="6973157709854838218">پنهان کردن موجودی‌های شما از نمایشگر</translation>
+<translation id="4548946945059463969">نشان دادن موجودی‌های شما روی صفحه‌نمایش</translation>
 </translationbundle>

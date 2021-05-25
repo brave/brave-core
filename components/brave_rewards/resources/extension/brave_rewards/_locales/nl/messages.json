@@ -819,6 +819,18 @@
     "message": "Door je wallet te verifiëren en deze te koppelen aan een bitFlyer-account, kun je de tokens die je hebt verdiend via Brave Rewards eenvoudig opslaan en beheren",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Meer informatie$link_end$ over hoe u uw Brave-browser kunt koppelen aan uw bitFlyer-account.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards in Japan gaat over op een nieuw systeem!",
     "description": "Header text for BAP deprecation warning message"

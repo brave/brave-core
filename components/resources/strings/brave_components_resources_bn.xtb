@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Brave এ বন্ধুদের এবং সহকর্মীদের নিয়ে একসাথে সীমাহীন কলগুলি শুরু করুন।</translation>
 <translation id="7115051913071512405">চেষ্টা কর</translation>
 <translation id="7415602225677446066">আজকের শীর্ষস্থানীয় গল্পগুলি পুরোপুরি ব্যক্তিগত ফিডে,কেবলমাত্র আপনার জন্য ।</translation>
-<translation id="8607689491789524900">Brave Today আপনার ডিভাইসে আপনার আগ্রহের সাথে মেলে যাতে আপনার ব্যক্তিগত তথ্য আপনার ব্রাউজারটি কখনও না ছাড়ে। দিন জুড়ে নতুন বিষয়বস্তু আপডেট করা হয়।</translation>
+<translation id="6903061332999399632">Brave নিউজ অ্যাড-সমর্থিত। এটি সম্পূর্ণ ব্যক্তিগত এবং নামহীন অ্যাড দেখায় আপনার ডিভাইসটির সাথে মিলিয়ে। আমাদের <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/> অনুযায়ী আপনার ব্যক্তিগত তথ্য সবসময় ব্যক্তিগতভাবেই সুরক্ষিত রাখা হয়।</translation>
+<translation id="7823038307453615214">Brave নিউজ দেখান</translation>
+<translation id="780301667611848630">না থাক</translation>
 <translation id="9164544612367905452">আনছে …</translation>
 <translation id="1276592121036104130">নতুন বিষয়বস্তু লোড করুন</translation>
-<translation id="4210987321913275328">Brave Today এর জন্য স্ক্রোল করুন।</translation>
-<translation id="3122595178900736207">Brave Today এর উৎস পুনরায় সেট করুন</translation>
-<translation id="2197023915568148978">আপনার সমস্ত  Brave Today প্রকাশকের পছন্দগুলি তাদের ডিফল্টে পুনরায় সেট করবেন?</translation>
+<translation id="2875288128871360696">Brave নিউজের জন্য স্ক্রোল করুন</translation>
+<translation id="8510120023634509743">Brave নিউজ উৎসগুলি রিসেট করুন</translation>
+<translation id="75825199302994272">আপনার সমস্ত Brave নিউজ পাবলিশার নির্বাচনগুলি তাদের ডিফল্ট অবস্থায় রিসেট করা হবে?</translation>
 <translation id="954001034349395856">সমস্ত উৎসগুলি</translation>
 <translation id="8890516388109605451">উৎস</translation>
 <translation id="5158129253322921540">বিষয়বস্তুগুলি ডিসেবল করুন <ph name="PUBLISHER_NAME"/> থেকে ;</translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">সংযুক্ত</translation>
 <translation id="8030169304546394654">সংযোগবিচ্ছিন্ন</translation>
 <translation id="3149306599361260465">শুরু হচ্ছে [[percentage]]%</translation>
+<translation id="3258793718986637767">Tor-এর সাথে কোনো সমস্যা হচ্ছে? <ph name="BEGIN_LINK"/>Tor-এর ব্যক্তিগত উইন্ডো নিষ্ক্রিয় করুন<ph name="END_LINK"/> এবং সেটিকে আবার চালু করে দেখুন।</translation>
 <translation id="4272382368346338917">অতিরিক্ত বৈশিষ্ট্যগুলি যোগ করুন</translation>
 <translation id="8949292968394988358">সতর্কীকরণ: অনেক ফিল্টার চালু করলে কর্মক্ষমতা হ্রাস করা হবে</translation>
 <translation id="8686201964111147748">যতগুলি বিজ্ঞাপন এবং ট্র্যাকার ব্লক করা হয়েছে:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">আমার ওয়ালেট যাচাই করুন</translation>
 <translation id="6609621505400013054">bitFlyer ওয়ালেট হল bitFlyer, Inc. দ্বারা পরিচালিত একটি পরিষেবা।</translation>
 <translation id="7258399883616914635">আপনার ওয়ালেট ভেরিফাই করে এবং সেটি একটি bitFlyer অ্যাকাউন্টের সাথে লিঙ্ক করে, Brave Rewards এর মাধ্যমে আপনার উপার্জিত টোকেনগুলো আপনি আরও সহজে সংরক্ষণ ও পরিচালনা করতে পারবেন</translation>
+<translation id="1411121707906693782">আপনার bitFlyer অ্যাকাউন্টের সাথে Brave ব্রাউজারটি কিভাবে সংযুত করবেন সে সম্বন্ধে <ph name="LINK_BEGIN"/>আরো জানুন<ph name="LINK_END"/>।</translation>
 <translation id="5094577350232361255">সম্বন্ধে</translation>
 <translation id="4918086044614829423">স্বীকার</translation>
 <translation id="5916290544882167205">ব্রেভ সফটওয়্যার। ব্রেভ হল ব্রেভ সফটওয়্যার-এর একটি নিবন্ধিত ট্রেডমার্ক। সাইটের নামগুলি ট্রেডমার্ক বা সাইটের মালিকের নিবন্ধিত ট্রেডমার্কও হতে পারে।</translation>
@@ -718,7 +722,7 @@
 <translation id="2122225204180056042">আপনি পাবেন</translation>
 <translation id="8131740175452115882">নিশ্চিত করুন</translation>
 <translation id="8688672835843460752">উপলভ্য</translation>
-<translation id="4584930231524505442">আমি রূপান্তর করতে চাই...</translation>
+<translation id="4584930231524505442">আমি … পরিবর্তন করতে চাই</translation>
 <translation id="6755546361496900700">রূপান্তর প্রিভিউ করুন</translation>
 <translation id="2956070106555335453">সংক্ষিপ্তসার</translation>
 <translation id="439104575421522802">সেশনের মেয়াদ শেষ হয়েছে</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">ইউনিট মূল্য</translation>
 <translation id="4763179765154524864">মোট খরচ করা হয়েছে</translation>
 <translation id="8851480289992540512">মোট পাওয়া গেছে</translation>
+<translation id="8624961452383848703">আমি পরিবর্তন করতে চাই…</translation>
 <translation id="616639131065447379">ব্রেভ ক্রিপ্টো ওয়ালেটে স্বাগতম</translation>
 <translation id="1740464057879304704">ক্রিপ্টো ওয়ালেটস আপনাকে ক্রিপ্টোকারেন্সি এবং ব্রেভ-এ সম্পর্কিত সম্পদের সাথে কাজ করতে দেয়। ক্রিপ্টো ওয়ালেটস ইথেরিয়াম টোকেনগুলির মতো ETH এবং BAT, আর এর সঙ্গেসঙ্গে সংগ্রহযোগ্যগুলি সমর্থন করে এবং আপনাকে Ðঅ্যাপগুলি এবং অন্যান্য স্মার্ট চুক্তি সহ কাজ করতে দেয়। এই সবগুলি এমন লোকদের জন্য করা হয়েছে যারা ইথেরিয়াম এবং অন্যান্য শৃঙ্খল-বদ্ধ সিস্টেমের সাথে পরিচিত — বা শিখতে উৎসাহিত হয়।</translation>
 <translation id="4855440621031541830">যদি আপনি স্বীকার করেন যে এই ব্যবহারের সাথে যুক্ত সমস্ত ঝুঁকির জন্য আপনি একা দায়বদ্ধ তবেই কেবলমাত্র ক্রিপ্টো ওয়ালেটগুলি ব্যবহার করুন, এবং ওই ব্রেভ সফ্টওয়্যার এই প্রকার ব্যবহারের ফলে আপনি যে প্রাসঙ্গিক বা ফলস্বরূপ ক্ষতির সম্মুখীন হতে পারেন তার কোনও ক্ষতি বা দায়বদ্ধতা বহন করে না।</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">আমদানির জন্য ডেটা টেনে আনতে ব্যর্থ হয়েছে</translation>
 <translation id="7900950536120202771">IPFS নোড অভ্যন্তরীণ ত্রুটি</translation>
 <translation id="1036635552229153800">ডেটাটি সফলভাবে আপলোড করা হয়েছে কিন্তু brave-আমদানি ডিরেক্টরিতে সরানো হয়নি। আপনি আমদানি সেটিংস পৃষ্ঠায় এটি ম্যানুয়ালি করতে পারেন।</translation>
-<translation id="7789840864192026963">অনুমতি দিন</translation>
-<translation id="7978789143098237970">আমি এই পেজটি বন্ধ করা পর্যন্ত</translation>
+<translation id="572392919096807438">Remember my decision</translation>
+<translation id="7978789143098237970">আমি যতক্ষুন না এই সাইটটি বন্ধ করি</translation>
 <translation id="3523195733429162409">24 ঘণ্টার জন্য</translation>
 <translation id="2373264732659722940">1 সপ্তাহের জন্য</translation>
 <translation id="6318437367327684789">সবসময়</translation>
-<translation id="7463327191540031132">চিরতরে ব্লক করুন</translation>
 <translation id="8797999629784150206">আপনি যেকোনো সময় আপনার <ph name="SITE_PERMISSIONS"/> পরিবর্তন করতে পারেন। <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">সাইট পারমিশন</translation>
 <translation id="7701466644604753106">স্পীডরিডার চালু করুন</translation>
 <translation id="763042262431778831">স্পীডরিডার বন্ধ করুন</translation>
+<translation id="1544192797660353713">ওয়ালেট</translation>
+<translation id="8488282162676695335">Brave ওয়ালেট</translation>
 <translation id="3155170474926428993">টর লঞ্চার</translation>
 <translation id="3745016858329272300">সাধারণ তথ্য</translation>
 <translation id="4045404575593562245">টর নিয়ন্ত্রণ ইভেন্টগুলি</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">টর প্রক্সি ইউআরআই</translation>
 <translation id="1671503397662036257">টর সংযোগের স্থিতি</translation>
 <translation id="6024292492796847324">টর ইনিশিয়ালাইজেশন অগ্রগতি</translation>
+<translation id="7586151660465233733"><ph name="SITE_NAME"/>-এ আরো মার্কেট পাওয়া যাবে</translation>
+<translation id="952067063131306699">FTX-এ মার্কেট দেখুন এবং ক্রিপ্টো ট্রেডিং করুন</translation>
+<translation id="5963745988819586370">মার্কেট</translation>
+<translation id="3795943412467785186">অ্যাকাউন্ট ব্যালান্স দেখতে, ফিউচা্র্স মার্কেট খোজখবর নিতে, এবং ক্রিপ্টো পরিবর্তন করতে FTX-এ সংযোগ করুন।</translation>
+<translation id="926958206891985289">ফিউচা্র্স মার্কেট দেখুন</translation>
+<translation id="6804537228302563756">অ্যাকাউন্ট সংযুক্ত করুন</translation>
+<translation id="5019698312620117604">24 ঘন্টার মূল্যের ইতিহাস</translation>
+<translation id="8720719072204443171">24 ঘন্টার ভলিউম</translation>
+<translation id="3891414008432200754">মূল্য</translation>
+<translation id="7723176927437578611">লাভ</translation>
+<translation id="2983078329159689577">দাখিল করা হচ্ছে…</translation>
+<translation id="6641102760094059194">(<ph name="NUMBER_OF_SECONDS_LEFT"/>s) নিশ্চিত করুন</translation>
+<translation id="2280055104463448482">পরিবর্তন সফল হয়েছে!</translation>
+<translation id="7590653073560839711">একটি পরিবর্তন করার জন্য আপনার কোনো একটি মুদ্রাতে কিছু ব্যালান্স থাকা প্রয়োজন।</translation>
+<translation id="4390079506197726228"><ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/> উপলভ্য</translation>
+<translation id="6973157709854838218">ডিস্প্লে থেকে আপনার ব্যালান্স লুকিয়ে রাখুন</translation>
+<translation id="4548946945059463969">আপনার ব্যালান্সগুলি স্ক্রিনে দেখান</translation>
 </translationbundle>

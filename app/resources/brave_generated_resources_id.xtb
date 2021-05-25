@@ -69,15 +69,19 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="4227945450504703638">Audio yang dipilih</translation>
 <translation id="7895302206188277628">Konten ditautkan</translation>
 <translation id="4322612543319315652">Impor Teks yang dipilih ke IPFS</translation>
+<translation id="8883166554766780543">Impor dan salin tautan ke sekilas info tentang IPFS</translation>
+<translation id="3654831858282189202">Publikasikan dengan kunci IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Jendela Pribadi dengan Tor Baru</translation>
 <translation id="4703780849509456860">Buka Tautan di Jendela Pribadi dengan Tor</translation>
 <translation id="3488584642074079080">Buka Tautan di Jendela Pribadi dengan Tor Brave</translation>
 <translation id="7475547933708221517">Berbagi Berkas Lokal Menggunakan IPFS</translation>
+<translation id="2286177249736199435">Bagikan Folder Lokal Dengan Menggunakan IPFS</translation>
 <translation id="784573715436258741">Berbagi berkas lokal menggunakan IPFS</translation>
 <translation id="6313675821927505581">Jendela pribadi dengan Tor baru</translation>
 <translation id="2638041073279639246">Buka tautan di jendela pribadi dengan Tor</translation>
 <translation id="3425600262621021599">Buka tautan di jendela pribadi dengan Tor Brave</translation>
+<translation id="575838692088926391">Bagikan folder lokal dengan menggunakan IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Layanan Iklan Bat</translation>
 <translation id="7924918279836988121">Layanan Buku Besar BAT</translation>
@@ -177,10 +181,23 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="7090046810227878892">Penyedia Ethereum untuk menggunakan Dapps</translation>
 <translation id="5913089932885076110">Muat Crypto Wallets saat memulai</translation>
 <translation id="757886143331967039">Muat ekstensi Dompet Kripto yang ditanggalkan pada saat mulai</translation>
+<translation id="1834467296210148203">Tampilkan ikon Brave Wallet pada bilah alat</translation>
 <translation id="6864914031231797928">Izinkan login Google untuk ekstensi</translation>
 <translation id="5927916530277631319">Metode untuk menelusuri Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Pelajari Lebih Lanjut<ph name="END_LINK"/> tentang DNS over HTTPS dan pertimbangan privasi Ethereum.</translation>
 <translation id="5248318250177143470">Metode untuk menelusuri Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Atur kunci IPNS Anda</translation>
+<translation id="951216659045543447">Tandai konten dengan kunci privat yang terkait dan publikasikan ke IPNS</translation>
+<translation id="7611728475758612204">Kunci yang tersedia untuk penerbitan</translation>
+<translation id="911363100236037920">Masukkan nama untuk kunci baru</translation>
+<translation id="6358469157239228181">Nama ini tidak dapat digunakan</translation>
+<translation id="8996633027318264334">Anda benar-benar ingin menghapus <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Simpul tidak diluncurkan</translation>
+<translation id="616058968889448209">Kesalahan dalam peluncuran layanan IPFS, informasi lebih lanjut tersedia di <ph name="BEGIN_LINK"/>halaman diagnostik<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Impor kunci '<ph name="KEY_NAME"/>' telah gagal</translation>
+<translation id="8275038454117074363">Impor</translation>
+<translation id="3654980960391973513">Hasilkan</translation>
+<translation id="5531501313997312487">Mulai simpul</translation>
 <translation id="9170907049676078643">Metode untuk mengatasi sumber daya IPFS</translation>
 <translation id="1327977588028644528">Gerbang</translation>
 <translation id="80225669816651290">Node lokal</translation>
@@ -260,7 +277,10 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1391855377994926460">Terus menelusuri web dengan lebih cepat - hingga 6x lebih cepat pada situs berita utama.</translation>
 <translation id="9218430445555521422">Setel sebagai default</translation>
 <translation id="3479552764303398839">Jangan sekarang</translation>
+<translation id="6040143037577758943">Tutup</translation>
+<translation id="5600566490506283344">Notifikasi Brave Ad</translation>
 <translation id="4877147287319222750">Tambah ke Bilah sisi</translation>
+<translation id="4233010476457917696">Tampilkan bilah sisi</translation>
 <translation id="5404213409401164238">Tampilkan Bilah Sisi</translation>
 <translation id="7561196759112975576">Selalu</translation>
 <translation id="7060352228894039151">Saat mouseover</translation>

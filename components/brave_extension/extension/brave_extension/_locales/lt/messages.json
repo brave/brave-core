@@ -171,17 +171,13 @@
     "message": "Keisti globaliojo skydo numatytąsias nuostatas",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Blokuoti elementą per išrinkiklį",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Tvarkyti tinkintus filtrus",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Įjungti parinkiklio režimą",
-    "description": "Message for context menu that enables the element picker UI on the page."
+    "message": "Blokuoti elementą",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "Išplėstinis rodinys",
