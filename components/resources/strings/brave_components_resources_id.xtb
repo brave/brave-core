@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Mulai panggilan unlimited dengan teman dan rekan di Brave Together.</translation>
 <translation id="7115051913071512405">Coba</translation>
 <translation id="7415602225677446066">Berita utama hari ini di linimasa yang sepenuhnya pribadi, hanya untuk Anda.</translation>
-<translation id="8607689491789524900">Brave Hari Ini disesuaikan dengan minat Anda pada perangkat Anda sehingga informasi pribadi Anda tidak pernah keluar dari peramban. Konten baru diperbarui sepanjang hari.</translation>
+<translation id="6903061332999399632">Brave News didukung oleh iklan dengan iklan yang sepenuhnya privat dan anonim yang disesuaikan dengan perangkat Anda. Informasi pribadi Anda akan selalu dirahasiakan, sesuai dengan <ph name="LINK_START"/>kebijakan privasi<ph name="LINK_END"/> kami.</translation>
+<translation id="7823038307453615214">Tampilkan Brave News</translation>
+<translation id="780301667611848630">Lain kali</translation>
 <translation id="9164544612367905452">Mengambil#8230;</translation>
 <translation id="1276592121036104130">Muat konten baru</translation>
-<translation id="4210987321913275328">Gulirkan Layar untuk melihat Brave Hari Ini</translation>
-<translation id="3122595178900736207">Reset sumber Brave Hari Ini</translation>
-<translation id="2197023915568148978">Reset semua pilihan penerbit Brave Hari Ini jadi setelan baku?</translation>
+<translation id="2875288128871360696">Gulirkan layar untuk melihat Brave News</translation>
+<translation id="8510120023634509743">Atur ulang sumber Brave News</translation>
+<translation id="75825199302994272">Atur ulang semua pilihan penerbit Brave News Anda ke pengaturan bawaan mereka?</translation>
 <translation id="954001034349395856">Semua sumber</translation>
 <translation id="8890516388109605451">Sumber</translation>
 <translation id="5158129253322921540">Nonaktifkan konten dari <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Tersambung</translation>
 <translation id="8030169304546394654">Terputus</translation>
 <translation id="3149306599361260465">Menginisialisasi [[percentage]]%</translation>
+<translation id="3258793718986637767">Bermasalah dengan Tor? Silakan <ph name="BEGIN_LINK"/>nonaktifkan jendela privat dengan Tor<ph name="END_LINK"/> dan kemudian aktifkan kembali.</translation>
 <translation id="4272382368346338917">Filter Tambahan</translation>
 <translation id="8949292968394988358">Peringatan: Mengaktifkan terlalu banyak filter dapat menurunkan kinerja</translation>
 <translation id="8686201964111147748">Total iklan dan pelacak yang diblokir:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Verifikasi dompet saya</translation>
 <translation id="6609621505400013054">Dompet bitFlyer adalah layanan dari bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Dengan memverifikasi dompet Anda dan menautkannya ke akun bitFlyer, Anda akan dapat dengan lebih mudah menyimpan dan mengelola token yang telah Anda dapatkan melalui program Brave Rewards.</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/> tentang cara menautkan peramban Brave Anda dengan akun bitFlyer Anda.</translation>
 <translation id="5094577350232361255">sekitar</translation>
 <translation id="4918086044614829423">Terima</translation>
 <translation id="5916290544882167205">Brave Software. Brave adalah merek dagang dari Brave Software. Nama situs mungkin merk dagang atau merek terdaftar dari pemilik situs.</translation>
@@ -736,6 +740,7 @@
 <translation id="1833248467354516560">Harga Satuan</translation>
 <translation id="4763179765154524864">Total Pengeluaran</translation>
 <translation id="8851480289992540512">Total Diterima</translation>
+<translation id="8624961452383848703">Saya ingin menukar…</translation>
 <translation id="616639131065447379">Selamat Datang di Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets mengizinkan Anda bekerja dengan mata uang kripto dan aset terkait di Brave. Crypto Wallets mendukung token Ethereum seperti ETH dan BAT, serta barang koleksi, dan mengizinkan Anda bekerja dengan Ðaplikasi dan kontrak cerdas lainnya. Kesemua ini diperuntukkan bagi mereka yang akrab dengan Ethereum dan sistem blockchain lainnya — atau ingin mempelajarinya.</translation>
 <translation id="4855440621031541830">Hanya gunakan Crypto Wallets jika Anda menerima bahwa Anda sendiri bertanggung jawab atas semua risiko terkait penggunaan ini, dan bahwa Brave Software tidak memikul tanggung jawab atau liabilitas untuk segala kerugian termasuk kerugian insidental atau konsekuensial yang mungkin Anda alami sebagai hasil dari penggunaan ini.</translation>
@@ -831,16 +836,17 @@
 <translation id="3741998951694470470">Gagal mengambil data untuk impor</translation>
 <translation id="7900950536120202771">Kesalahan internal simpul IPFS</translation>
 <translation id="1036635552229153800">Data berhasil diunggah tetapi tidak berpindah ke direktori impor brave. Anda dapat melakukannya secara manual pada halaman pengaturan impor.</translation>
-<translation id="7789840864192026963">Beri izin</translation>
-<translation id="7978789143098237970">sampai saya menutup halaman ini</translation>
+<translation id="572392919096807438">Ingat keputusan saya</translation>
+<translation id="7978789143098237970">sampai saya menutup situs ini</translation>
 <translation id="3523195733429162409">selama 24 jam</translation>
 <translation id="2373264732659722940">selama 1 minggu</translation>
 <translation id="6318437367327684789">selamanya</translation>
-<translation id="7463327191540031132">Blokir selamanya</translation>
 <translation id="8797999629784150206">Anda dapat mengubah <ph name="SITE_PERMISSIONS"/> Anda kapan saja. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">izin situs</translation>
 <translation id="7701466644604753106">NYALAKAN Speedreader</translation>
 <translation id="763042262431778831">MATIKAN Speedreader</translation>
+<translation id="1544192797660353713">Dompet</translation>
+<translation id="8488282162676695335">Dompet Brave.</translation>
 <translation id="3155170474926428993">Peluncur Tor</translation>
 <translation id="3745016858329272300">Info Umum</translation>
 <translation id="4045404575593562245">Peristiwa Kendali Tor</translation>
@@ -849,4 +855,21 @@
 <translation id="6951743416068151209">URI Proksi Tor</translation>
 <translation id="1671503397662036257">Status Koneksi Tor</translation>
 <translation id="6024292492796847324">Proses Inisialisasi Tor</translation>
+<translation id="7586151660465233733">Lebih banyak bursa tentang <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Lihat bursa dan bertransaksi kripto di FTX</translation>
+<translation id="5963745988819586370">Bursa</translation>
+<translation id="3795943412467785186">Sambungkan ke akun FTX untuk melihat saldo akun, mengeksplorasi pasar berjangka, &amp; menukar kripto.</translation>
+<translation id="926958206891985289">Lihat Pasar Berjangka</translation>
+<translation id="6804537228302563756">Sambungkan Akun</translation>
+<translation id="5019698312620117604">Riwayat harga dalam 24 jam</translation>
+<translation id="8720719072204443171">Volume 24 jam</translation>
+<translation id="3891414008432200754">Harga</translation>
+<translation id="7723176927437578611">Lanjutkan</translation>
+<translation id="2983078329159689577">Mengirimkan…</translation>
+<translation id="6641102760094059194">Konfirmasikan (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Penukaran Berhasil!</translation>
+<translation id="7590653073560839711">Anda memerlukan saldo dalam minimal satu mata uang agar dapat melakukan penukaran.</translation>
+<translation id="4390079506197726228">Tersedia <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Sembunyikan saldo Anda agar tidak ditampilkan</translation>
+<translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 </translationbundle>

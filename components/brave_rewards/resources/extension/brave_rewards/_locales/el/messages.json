@@ -819,6 +819,18 @@
     "message": "Με την επαλήθευση και σύνδεση του πορτοφολιού σας με έναν λογαριασμό bitFlyer, θα έχετε τη δυνατότητα να αποθηκεύετε και να διαχειρίζεστε πιο εύκολα τις μάρκες που έχετε κερδίσει μέσω Brave Rewards",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Μάθετε περισσότερα$link_end$ σχετικά με τον τρόπο σύνδεσης του Brave browser με τον λογαριασμό σας bitFlyer. ",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Οι Ανταμοιβές Brave στην Ιαπωνία μεταβαίνουν σε ένα νέο σύστημα!",
     "description": "Header text for BAP deprecation warning message"

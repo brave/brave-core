@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Brave Together ನಲ್ಲಿ ಸ್ನೇಹಿತರು ಮತ್ತು ಸಹೋದ್ಯೋಗಿಗಳ ಜೊತೆಗೆ ಅನಿಯಮಿತ ಕರೆಗಳನ್ನು ಆರಂಭಿಸಿ.</translation>
 <translation id="7115051913071512405">ಅದನ್ನು ಪ್ರಯತ್ನಿಸಿ ನೋಡಿ</translation>
 <translation id="7415602225677446066">ಇಂದಿನ ಉನ್ನತ ಕಥೆಗಳು ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಫೀಡ್‌ನಲ್ಲಿ, ಕೇವಲ ನಿಮಗಾಗಿ.</translation>
-<translation id="8607689491789524900">ಇಂದು Brave ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿನ ನಿಮ್ಮ ಆಸಕ್ತಿಗಳಿಗೆ ಹೊಂದಿಕೆಯಾಗುತ್ತದೆ ಆದ್ದರಿಂದ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯು ನಿಮ್ಮ ಬ್ರೌಸರ್ ಅನ್ನು ಎಂದಿಗೂ ಬಿಡುವುದಿಲ್ಲ. ಹೊಸ ವಿಷಯವನ್ನು ದಿನವಿಡೀ ನವೀಕರಿಸಲಾಗಿದೆ.</translation>
+<translation id="6903061332999399632">Brave ಸುದ್ದಿ ಎನ್ನುವುದು ಜಾಹೀರಾತಿನಿಂದ ಬೆಂಬಲಿತವಾಗಿದ್ದು ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಮತ್ತು ಅನಾಮಧೇಯಗೊಳಿಸಿದ ಜಾಹೀರಾತುಗಳನ್ನು ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ. ನಮ್ಮ <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/> ಪ್ರಕಾರ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯು ಸದಾ ಖಾಸಗಿಯಾಗಿ ಉಳಿಯುತ್ತದೆ.</translation>
+<translation id="7823038307453615214">Brave ಸುದ್ದಿ ತೋರಿಸಿ</translation>
+<translation id="780301667611848630">ಬೇಡ, ಧನ್ಯವಾದಗಳು</translation>
 <translation id="9164544612367905452">ಪಡೆಯಲಾಗುತ್ತಿದೆ…</translation>
 <translation id="1276592121036104130">ಹೊಸ ವಿಷಯವನ್ನು ಲೋಡ್ ಮಾಡಿ</translation>
-<translation id="4210987321913275328">ಇಂದು Brave ಗಾಗಿ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ</translation>
-<translation id="3122595178900736207">ಇಂದಿನ Brave ಮೂಲಗಳನ್ನು ಮರುಹೊಂದಿಸಿ</translation>
-<translation id="2197023915568148978">ಇಂದಿನ ನಿಮ್ಮ ಎಲ್ಲಾ Brave ಅನ್ನು ಪ್ರಕಾಶಕರ ಆಯ್ಕೆಗಳನ್ನು ಅವರ ಡಿಫಾಲ್ಟ್‌ಗೆ ಮರುಹೊಂದಿಸುವುದೇ?</translation>
+<translation id="2875288128871360696">Brave ಸುದ್ದಿ ಗಾಗಿ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ</translation>
+<translation id="8510120023634509743">Brave ಸುದ್ದಿ ಮೂಲಗಳನ್ನು ಮರುಹೊಂದಿಸಿ</translation>
+<translation id="75825199302994272">ನಿಮ್ಮ ಎಲ್ಲಾ Brave ಸುದ್ದಿ ಪ್ರಕಾಶಕರ ಆಯ್ಕೆಗಳನ್ನು ಅವುಗಳ ಡೀಫಾಲ್ಟ್‌ಗೆ ಮರುಹೊಂದಿಸುವುದೇ?</translation>
 <translation id="954001034349395856">ಎಲ್ಲಾ ಮೂಲಗಳು</translation>
 <translation id="8890516388109605451">ಮೂಲಗಳು</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/> ನಿಂದ ವಿಷಯವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">ಸಂಪರ್ಕಿಸಲಾಗಿದೆ</translation>
 <translation id="8030169304546394654">ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="3149306599361260465">[[percentage]]% ಆರಂಭಿಸಲಾಗುತ್ತಿದೆ</translation>
+<translation id="3258793718986637767">Tor ಕುರಿತಂತೆ ಸಮಸ್ಯೆಗಳನ್ನು ಹೊಂದಿರುವಿರಾ? <ph name="BEGIN_LINK"/>Tor ಮೂಲಕ ಖಾಸಗಿ ವಿಂಡೋ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು<ph name="END_LINK"/> ಮತ್ತು ಅದನ್ನು ಮತ್ತೊಮ್ಮೆ ಆನ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="4272382368346338917">ಹೆಚ್ಚುವರಿ ಫಿಲ್ಟರ್‌ಗಳು</translation>
 <translation id="8949292968394988358">ಎಚ್ಚರಿಕೆ: ಹೆಚ್ಚಿನ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಆನ್ ಮಾಡುವುದರಿಂದ ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಕಡಿಮೆ ಮಾಡುತ್ತದೆ</translation>
 <translation id="8686201964111147748">ನಿರ್ಬಂಧಿಸಲಾದ ಒಟ್ಟು ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಟ್ರ್ಯಾಕರ್‌ಗಳು:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">ನನ್ನ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ</translation>
 <translation id="6609621505400013054">bitFlyer ವ್ಯಾಲೆಟ್ ಎನ್ನುವುದು bitFlyer, Inc ನಿರ್ವಹಿಸಿರುವ ಸೇವೆಯಾಗಿದೆ.</translation>
 <translation id="7258399883616914635">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವ ಮೂಲಕ ಮತ್ತು ಅದನ್ನು bitFlyer ಖಾತೆಗೆ ಲಿಂಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು ಹೆಚ್ಚು ಸುಲಭವಾಗಿ Brave Rewards ಮೂಲಕ ಗಳಿಸಿದ ಟೋಕನ್ಗಳನ್ನು ಸಂಗ್ರಹಿಸಲು ಮತ್ತು ನಿರ್ವಹಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ</translation>
+<translation id="1411121707906693782">ನಿಮ್ಮ Brave ಬ್ರೌಸರ್ ಅನ್ನು ನಿಮ್ಮ bitFlyer ಖಾತೆಯೊಂದಿಗೆ ಹೇಗೆ ಲಿಂಕ್ ಮಾಡುವುದು ಎಂಬ ಕುರಿತು <ph name="LINK_BEGIN"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="LINK_END"/>.</translation>
 <translation id="5094577350232361255">ಕುರಿತು</translation>
 <translation id="4918086044614829423">ಸಮ್ಮತಿಸು</translation>
 <translation id="5916290544882167205">Brave ಇದು Brave Software ನ ನೋಂದಾಯಿತ ಟ್ರೇಡ್‌ಮಾರ್ಕ್ ಆಗಿದೆ. ಸೈಟ್ ಹೆಸರುಗಳು ಟ್ರೇಡ್‌ಮಾರ್ಕ್‌ಗಳಿಂದ ಕೂಡಿರಬಹುದು ಅಥವಾ ಸೈಟ್ ಮಾಲೀಕರ ನೋಂದಾಯಿತ ಟ್ರೇಡ್‌ಮಾರ್ಕ್‌ಗಳಾಗಿರಬಹುದು.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">ಯೂನಿಟ್ ದರ</translation>
 <translation id="4763179765154524864">ಒಟ್ಟು ಖರ್ಚು ಮಾಡಿರುವುದು</translation>
 <translation id="8851480289992540512">ಒಟ್ಟು ಸ್ವೀಕರಿಸಲಾಗಿದೆ</translation>
+<translation id="8624961452383848703">ನಾನು ಇದನ್ನು ಪರಿವರ್ತಿಸಲು ಬಯಸುತ್ತೇನೆ…</translation>
 <translation id="616639131065447379">Brave Crypto ವ್ಯಾಲೆಟ್‌ಗಳಿಗೆ ಸ್ವಾಗತ</translation>
 <translation id="1740464057879304704">Crypto ವ್ಯಾಲೆಟ್‌ಗಳು Brave ‌ನಲ್ಲಿ ಕ್ರಿಪ್ಟೋಕರೆನ್ಸಿ ಮತ್ತು ಸಂಬಂಧಿತ  ಸ್ವತ್ತುಗಳೊಂದಿಗೆ ಕೆಲಸ ಮಾಡಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ. Crypto ವ್ಯಾಲೆಟ್‌ಗಳು ETH ಮತ್ತು BAT ನಂತಹ Ethereum ಟೋಕನ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ, ಜೊತೆಗೆ ಸಂಗ್ರಹಣೆಗಳು Ð ಆ್ಯಪ್‌ಗಳು ಮತ್ತು ಇತರ ಸ್ಮಾರ್ಟ್ ಒಪ್ಪಂದಗಳೊಂದಿಗೆ ಕೆಲಸ ಮಾಡಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ. ಇವೆಲ್ಲವೂ Ethereum ಮತ್ತು ಇತರ ಬ್ಲಾಕ್‌ಚೈನ್ ವ್ಯವಸ್ಥೆಗಳೊಂದಿಗೆ ಪರಿಚಿತವಾಗಿರುವ — ಅಥವಾ ಕಲಿಯಲು ಉತ್ಸುಕರಾಗಿರುವ ಜನರಿಗೆ ಮಾತ್ರ.</translation>
 <translation id="4855440621031541830">ಈ ಬಳಕೆಗೆ ಸಂಬಂಧಿಸಿದ ಎಲ್ಲಾ ಅಪಾಯಗಳಿಗೆ ನೀವು ಮಾತ್ರ ಜವಾಬ್ದಾರರು ಎಂದು ನೀವು ಒಪ್ಪಿಕೊಂಡರೆ ಮಾತ್ರ Crypto ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಬಳಸಿ ಮತ್ತು ಈ ಬಳಕೆಯ ಪರಿಣಾಮವಾಗಿ ನೀವು ಅನುಭವಿಸಬಹುದಾದ ಪ್ರಾಸಂಗಿಕ ಅಥವಾ ಪರಿಣಾಮಕಾರಿ ನಷ್ಟಗಳು ಸೇರಿದಂತೆ ಯಾವುದೇ ನಷ್ಟಗಳಿಗೆ Brave Software ಯಾವುದೇ ಜವಾಬ್ದಾರಿ ಅಥವಾ ಹೊಣೆಗಾರಿಕೆಯನ್ನು ಹೊಂದಿರುವುದಿಲ್ಲ.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">ಆಮದು ಮಾಡುವುದಕ್ಕಾಗಿ ಡೇಟಾ ಪಡೆಯಲು ವಿಫಲಗೊಂಡಿದೆ</translation>
 <translation id="7900950536120202771">IPFS ನೋಡ್ ಆಂತರಿಕ ದೋಷ</translation>
 <translation id="1036635552229153800">ಡೇಟಾವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ ಆದರೆ brave-ಆಮದು ಡೈರೆಕ್ಟರಿಗೆ ಸರಿಸಲಾಗಿಲ್ಲ. ನೀವು ಇದನ್ನು ಆಮದು ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಪುಟದಲ್ಲಿ ಹಸ್ತಚಾಲಿತವಾಗಿ ಮಾಡಬಹುದು.</translation>
-<translation id="7789840864192026963">ಅನುಮತಿ ನೀಡಿ</translation>
-<translation id="7978789143098237970">ನಾನು ಈ ಪುಟ ಮುಚ್ಚುವವರೆಗೆ</translation>
+<translation id="572392919096807438">ನನ್ನ ನಿರ್ಧಾರವನ್ನು ನೆನಪಿಡು</translation>
+<translation id="7978789143098237970">ನಾನು ಈ ಸೈಟ್ ಮುಚ್ಚುವ ತನಕ</translation>
 <translation id="3523195733429162409">24 ಗಂಟೆಗಳಿಗಾಗಿ</translation>
 <translation id="2373264732659722940">1 ವಾರಕ್ಕಾಗಿ</translation>
 <translation id="6318437367327684789">ಎಂದಿಗೂ</translation>
-<translation id="7463327191540031132">ಶಾಶ್ವತವಾಗಿ ನಿರ್ಬಂಧಿಸು</translation>
 <translation id="8797999629784150206">ನೀವು ಯಾವುದೇ ಸಮಯದಲ್ಲಿ <ph name="SITE_PERMISSIONS"/> ಬದಲಿಸಬಹುದು. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">ಸೈಟ್ ಅನುಮತಿ</translation>
 <translation id="7701466644604753106">ಸ್ಪೀಡ್‌ರೀಡರ್ ಆನ್ ಮಾಡಿ</translation>
 <translation id="763042262431778831">ಸ್ಪೀಡ್‌ರೀಡರ್ ಆಫ್ ಮಾಡಿ</translation>
+<translation id="1544192797660353713">ವ್ಯಾಲೆಟ್</translation>
+<translation id="8488282162676695335">Brave ವ್ಯಾಲೆಟ್</translation>
 <translation id="3155170474926428993">Tor ಲಾಂಚರ್</translation>
 <translation id="3745016858329272300">ಸಾಮಾನ್ಯ ಮಾಹಿತಿ</translation>
 <translation id="4045404575593562245">ಟೋರ್ ನಿಯಂತ್ರಣ ಈವೆಂಟ್‌ಗಳು</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">ಟೋರ್ ಪ್ರಾಕ್ಸಿ URI</translation>
 <translation id="1671503397662036257">ಟೋರ್ ಸಂಪರ್ಕ ಸ್ಥಿತಿ</translation>
 <translation id="6024292492796847324">ಟೋರ್ ಪ್ರಾರಂಭಗೊಳಿಸುವಿಕೆ ಪ್ರಗತಿ</translation>
+<translation id="7586151660465233733"><ph name="SITE_NAME"/> ನಲ್ಲಿ ಹೆಚ್ಚಿನ ಮಾರುಕಟ್ಟೆಗಳು</translation>
+<translation id="952067063131306699">FTX ನಲ್ಲಿ ಮಾರುಕಟ್ಟೆಗಳನ್ನು ನೋಡಿ ಮತ್ತು ಕ್ರಿಪ್ಟೋ ಟ್ರೇಡ್ ಮಾಡಿ</translation>
+<translation id="5963745988819586370">ಮಾರುಕಟ್ಟೆಗಳು</translation>
+<translation id="3795943412467785186">ಖಾತೆ ಬ್ಯಾಲೆನ್ಸ್ ವೀಕ್ಷಿಸಲು, ಭವಿಷ್ಯದ ಮಾರುಕಟ್ಟೆಗಳನ್ನು ಅನ್ವೇಷಿಸಲು ಮತ್ತು ಕ್ರಿಪ್ಟೋ ಪರಿವರ್ತಿಸಲು FTX ಖಾತೆಗೆ ಸಂಪರ್ಕ ಮಾಡಿ.</translation>
+<translation id="926958206891985289">ಫ್ಯೂಚರ್ ಮಾರ್ಕೆಟ್‌ಗಳನ್ನು ನೋಡಿ</translation>
+<translation id="6804537228302563756">ಖಾತೆ ಸಂಪರ್ಕಿಸಿ</translation>
+<translation id="5019698312620117604">24 ಗಂಟೆ ದರ ಇತಿಹಾಸ</translation>
+<translation id="8720719072204443171">24 ಗಂಟೆ ಪ್ರಮಾಣ</translation>
+<translation id="3891414008432200754">ದರ</translation>
+<translation id="7723176927437578611">ಆದಾಯಗಳು</translation>
+<translation id="2983078329159689577">ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ…</translation>
+<translation id="6641102760094059194">ದೃಢಪಡಿಸಿ (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">ಸಂಭಾಷಣೆ ಯಶಸ್ವಿಯಾಗಿದೆ!</translation>
+<translation id="7590653073560839711">ಪರಿವರ್ತನೆಯನ್ನು ನಿರ್ವಹಿಸುವುದಕ್ಕಾಗಿ ಕನಿಷ್ಠ ಒಂದು ಕರೆನ್ಸಿಯಲ್ಲಿ ನೀವು ಬ್ಯಾಲೆನ್ಸ್ ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ.</translation>
+<translation id="4390079506197726228">ಲಭ್ಯ <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳು ಪ್ರದರ್ಶಗೊಳ್ಳದಂತೆ ಮರೆಮಾಡಿ</translation>
+<translation id="4548946945059463969">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳನ್ನು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ತೋರಿಸಿ</translation>
 </translationbundle>

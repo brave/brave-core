@@ -819,6 +819,18 @@
     "message": "Kun vahvistat lompakkosi ja linkität sen bitFlyer-tiliin, voit helpommin tallentaa ja hallita Brave Rewardsin kautta ansaitsemiasi poletteja",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Lue lisää$link_end$ siitä, miten voit linkittää Brave-selaimesi bitFlyer-tiliisi.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Japanin Brave Rewards ottaa käyttöön uuden järjestelmän!",
     "description": "Header text for BAP deprecation warning message"

@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Ξεκινήστε τις απεριόριστες κλήσεις με φίλους και συναδέλφους στο Brave Together.</translation>
 <translation id="7115051913071512405">Δοκιμάστε το</translation>
 <translation id="7415602225677446066">Οι κορυφαίες ιστορίες σήμερα σε μια εντελώς ιδιωτική ροή ιστοριών, μόνο για εσάς.</translation>
-<translation id="8607689491789524900">Το Brave Today διασταυρώνει τα ενδιαφέροντά σας στη συσκευή σας, ώστε τα προσωπικά σας στοιχεία να μένουν πάντα στο πρόγραμμα περιήγησής σας. Το νέο περιεχόμενο ενημερώνεται καθόλη τη διάρκεια της μέρας.</translation>
+<translation id="6903061332999399632">Το Brave News λειτουργεί με διαφημίσεις. Παρέχει απόλυτα ιδιωτικές και ανωνυμοποιημένες διαφημίσεις, αντιστοιχισμένες με τη συσκευή σας. Τα προσωπικά σας στοιχεία παραμένουν απόρρητα, σε συμμόρφωση με την <ph name="LINK_START"/>πολιτική απορρήτου<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Εμφάνιση Brave News</translation>
+<translation id="780301667611848630">Όχι, ευχαριστώ</translation>
 <translation id="9164544612367905452">Γίνεται λήψη…</translation>
 <translation id="1276592121036104130">Φόρτωση νέου περιεχομένου</translation>
-<translation id="4210987321913275328">Μεταβείτε στο Brave Today</translation>
-<translation id="3122595178900736207">Επαναφορά των πηγών του Brave Today</translation>
-<translation id="2197023915568148978">Επαναφορά όλων των επιλογών του εκδότη Brave Today στην προεπιλογή τους;</translation>
+<translation id="2875288128871360696">Κύλιση για εμφάνιση Brave News</translation>
+<translation id="8510120023634509743">Επαναφορά των πηγών του Brave News</translation>
+<translation id="75825199302994272">Επαναφορά όλων των επιλογών του εκδότη Brave News στην προεπιλογή τους;</translation>
 <translation id="954001034349395856">Όλες οι πηγές</translation>
 <translation id="8890516388109605451">Πηγές</translation>
 <translation id="5158129253322921540">Απενεργοποιήστε το περιεχόμενο από το <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Σε σύνδεση</translation>
 <translation id="8030169304546394654">Αποσυνδέθηκε</translation>
 <translation id="3149306599361260465">Προετοιμασία [[percentage]]%</translation>
+<translation id="3258793718986637767">Αντιμετωπίζετε πρόβλημα με το Tor; Δοκιμάστε να <ph name="BEGIN_LINK"/>απενεργοποιήσετε το ιδιωτικό παράθυρο με το Tor<ph name="END_LINK"/> και να το επανενεργοποιήσετε.</translation>
 <translation id="4272382368346338917">Πρόσθετα Φίλτρα</translation>
 <translation id="8949292968394988358">Προειδοποίηση: Η ενεργοποίηση παρά πολλών φίλτρων θα υποβαθμίσει την απόδοση</translation>
 <translation id="8686201964111147748">Συνολικές διαφημίσεις και ιχνηλάτες που αποκλείστηκαν:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Επαλήθευση πορτοφολιού</translation>
 <translation id="6609621505400013054">Το πορτοφόλι bitFlyer είναι μια υπηρεσία που διαχειρίζεται η bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Με την επαλήθευση και σύνδεση του πορτοφολιού σας με έναν λογαριασμό bitFlyer, θα έχετε τη δυνατότητα να αποθηκεύετε και να διαχειρίζεστε πιο εύκολα τις μάρκες που έχετε κερδίσει μέσω Brave Rewards</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> σχετικά με τον τρόπο σύνδεσης του Brave browser με τον λογαριασμό σας bitFlyer.</translation>
 <translation id="5094577350232361255">σχετικά</translation>
 <translation id="4918086044614829423">Αποδοχή</translation>
 <translation id="5916290544882167205">Λογισμικό Brave. Το Brave είναι εμπορικό σήμα κατατεθέν της Brave Software. Τα ονόματα των ιστοτόπων ενδέχεται να είναι εμπορικά σήματα ή σήματα κατατεθέντα του κατόχου του ιστοτόπου.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Τιμή μονάδας</translation>
 <translation id="4763179765154524864">Ξοδεύτηκαν συνολικά</translation>
 <translation id="8851480289992540512">Σύνολο που ελήφθη</translation>
+<translation id="8624961452383848703">Θέλω να μετατρέψω…</translation>
 <translation id="616639131065447379">Καλώς ήρθατε στο Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Το Crypto Wallets σας επιτρέπει να χρησιμοποιείτε κρυπτονομίσματα και συγγενή επενδυτικά στοιχεία στο Brave. Το Crypto Wallets υποστηρίζει μάρκες Ethereum όπως οι ETH και BAT, καθώς επίσης και συλλεκτικά, ενώ σας επιτρέπει να χειρίζεστε Ðεφαρμογές και άλλα έξυπνα συμβόλαια. Όλα αυτά προορίζονται για άτομα εξοικειωμένα με το Ethereum και άλλα συστήματα blockchain — ή πρόθυμα να τα μάθουν.</translation>
 <translation id="4855440621031541830">Χρησιμοποιείτε το Crypto Wallets μόνο εάν αποδέχεστε ότι εσείς μόνο εσείς είστε υπεύθυνος για όλα τα ρίσκα που απορρέουν από τη χρήση του και ότι ότι το Brave Software δεν φέρει καμία ευθύνη ή οφειλή για οποιαδήποτε απώλεια συμπεριλαμβανομένων αμελητέων ή σημαντικών απωλειών που ίσως υποστείτε ως συνέπεια της χρήσης αυτής.</translation>
@@ -835,17 +840,18 @@
 <translation id="3741998951694470470">Αποτυχία ανάκτησης δεδομένων για εισαγωγή</translation>
 <translation id="7900950536120202771">Εσωτερικό σφάλμα κόμβου IPFS</translation>
 <translation id="1036635552229153800">Τα δεδομένα μετααφορτώθηκαν επιτυχώς, αλλά δεν μετακινήθηκαν στον κατάλογο εισαγωγής brave-import. Μπορείτε να μετακινήσετε τα δεδομένα μη αυτόματα από τη σελίδα ρυθμίσεων εισαγωγής.</translation>
-<translation id="7789840864192026963">Δώστε άδεια</translation>
-<translation id="7978789143098237970">μέχρι να κλείσω αυτήν τη σελίδα</translation>
+<translation id="572392919096807438">Απομνημόνευση της απόφασής μου</translation>
+<translation id="7978789143098237970">μέχρι να κλείσω αυτόν τον ιστότοπο</translation>
 <translation id="3523195733429162409">για 24 ώρες</translation>
 <translation id="2373264732659722940">για 1 εβδομάδα</translation>
 <translation id="6318437367327684789">για πάντα</translation>
-<translation id="7463327191540031132">Αποκλεισμός για πάντα</translation>
 <translation id="8797999629784150206">Μπορείτε να αλλάξετε τα <ph name="SITE_PERMISSIONS"/> οποιαδήποτε στιγμή.
 <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">άδεια ιστότοπου</translation>
 <translation id="7701466644604753106">Ενεργοποιήστε το Γρήγορο Γράψιμο</translation>
 <translation id="763042262431778831">Απενεργοποιήστε το Γρήγορο Γράψιμο</translation>
+<translation id="1544192797660353713">Πορτοφόλι</translation>
+<translation id="8488282162676695335">Πορτοφόλι Brave</translation>
 <translation id="3155170474926428993">Άνοιγμα Tor</translation>
 <translation id="3745016858329272300">Γενικές Πληροφορίες</translation>
 <translation id="4045404575593562245">Συμβάντα Ελέγχου Tor</translation>
@@ -854,4 +860,21 @@
 <translation id="6951743416068151209">URI Διαχειριστή Μεσολάβησης Tor</translation>
 <translation id="1671503397662036257">Κατάσταση Σύνδεσης Tor</translation>
 <translation id="6024292492796847324">Πρόοδος Προετοιμασίας Tor</translation>
+<translation id="7586151660465233733">Δείτε περισσότερες αγορές στο <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Δείτε τις αγορές και κάντε συναλλαγές με crypto στο FTX</translation>
+<translation id="5963745988819586370">Αγορές</translation>
+<translation id="3795943412467785186">Συνδέστε τον λογαριασμό FTX για να δείτε το υπόλοιπο, να εξερευνήσετε τις προθεσμιακές αγορές και να κάνετε μετατροπή σε crypto.</translation>
+<translation id="926958206891985289">Εμφάνιση προθεσμιακών αγορών</translation>
+<translation id="6804537228302563756">Σύνδεση λογαριασμού</translation>
+<translation id="5019698312620117604">Ιστορικό τιμής 24ώρου</translation>
+<translation id="8720719072204443171">Όγκος 24ώρου</translation>
+<translation id="3891414008432200754">Τιμή</translation>
+<translation id="7723176927437578611">Εισπράξεις</translation>
+<translation id="2983078329159689577">Γίνεται υποβολή...</translation>
+<translation id="6641102760094059194">Απομένουν (<ph name="NUMBER_OF_SECONDS_LEFT"/>δευτερόλεπτα για επιβεβαίωση)</translation>
+<translation id="2280055104463448482">Επιτυχής μετατροπή!</translation>
+<translation id="7590653073560839711">Για να μπορείτε να κάνετε μια μετατροπή, χρειάζεστε υπόλοιπο σε τουλάχιστον ένα νόμισμα.</translation>
+<translation id="4390079506197726228">Διαθέσιμο ποσό <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Κρύψτε τα υπόλοιπά σας από την οθόνη</translation>
+<translation id="4548946945059463969">Εμφανίστε τα υπόλοιπά σας στην οθόνη</translation>
 </translationbundle>

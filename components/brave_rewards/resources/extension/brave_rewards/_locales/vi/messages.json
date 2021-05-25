@@ -819,6 +819,18 @@
     "message": "Với việc xác thực ví của bạn và liên kết ví với một tài khoản bitFlyer, bạn sẽ có thể lưu trữ và quản lý các token mà bạn đã kiếm được thông qua Brave Rewards dễ dàng hơn",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Tìm hiểu thêm$link_end$ về cách liên kết trình duyệt Brave với tài khoản bitFlyer của bạn.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards ở Nhật Bản đang chuyển sang một hệ thống mới!",
     "description": "Header text for BAP deprecation warning message"

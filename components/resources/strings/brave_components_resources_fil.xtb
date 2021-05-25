@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Magsimula ng mga unlimited na tawag sa mga kaibigan at kasamahan sa Brave Together.</translation>
 <translation id="7115051913071512405">Subukan ito</translation>
 <translation id="7415602225677446066">Mga nangungunang kuwento ngayong araw sa ganap na pribadong feed, para lang sa iyo.</translation>
-<translation id="8607689491789524900">Itinutugma ng Brave Today ang iyong mga interes sa device mo para hindi kailanman maaalis sa iyong browser ang personal mong impormasyon. Ina-update ang bagong content sa buong araw.</translation>
+<translation id="6903061332999399632">Ang Brave News ay sinusuportahan ng ad na may mga ganap na pribado at naka-anonymize na ad na tumutugma sa iyong device. Mananatiling pribado ang personal na impormasyon mo kahit kailan, alinsunod sa aming <ph name="LINK_START"/>patakaran sa privacy<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Ipakita ang Brave News</translation>
+<translation id="780301667611848630">Hindi salamat</translation>
 <translation id="9164544612367905452">Fini-fetch…</translation>
 <translation id="1276592121036104130">Mag-load ng bagong content</translation>
-<translation id="4210987321913275328">Mag-scroll para sa Brave Today</translation>
-<translation id="3122595178900736207">I-reset ang mga source ng Brave Today</translation>
-<translation id="2197023915568148978">I-reset ang lahat ng iyong pagpipilian ng publisher ng Brave Today sa default ng mga ito?</translation>
+<translation id="2875288128871360696">Mag-scroll para sa Brave News</translation>
+<translation id="8510120023634509743">I-reset ang mga source ng Brave News</translation>
+<translation id="75825199302994272">I-reset ang lahat ng iyong piniling publisher sa Brave News sa default ng mga ito?</translation>
 <translation id="954001034349395856">Lahat ng source</translation>
 <translation id="8890516388109605451">Mga Source</translation>
 <translation id="5158129253322921540">I-disable ang content mula sa <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Nakakonekta</translation>
 <translation id="8030169304546394654">Nadiskonekta</translation>
 <translation id="3149306599361260465">Sinisimulan [[percentage]]%</translation>
+<translation id="3258793718986637767">Nagkakaproblema sa Tor? Subukang <ph name="BEGIN_LINK"/>i-disable ang pribadong window sa Tor<ph name="END_LINK"/> at i-on ulit ito.</translation>
 <translation id="4272382368346338917">Mga Karagdagang Filter</translation>
 <translation id="8949292968394988358">Babala: Ang pag-on sa masyadong maraming filter ay makakabawas sa performance</translation>
 <translation id="8686201964111147748">Kabuuang mga ad at tracker na na-block:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">I-verify ang aking wallet</translation>
 <translation id="6609621505400013054">Ang bitFlyer wallet ay isang serbisyong pinapamahalaan ng bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Sa pamamagitan ng pag-verify sa iyong wallet at pag-link nito sa isang bitFlyer account, madali mong maso-store at mapapamahalaan ang mga token na nakuha mo sa pamamagitan ng Brave Rewards</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/> tungkol sa kung paano i-link ang iyong Brave browser sa bitFlyer account mo.</translation>
 <translation id="5094577350232361255">tungkol sa</translation>
 <translation id="4918086044614829423">Tanggapin</translation>
 <translation id="5916290544882167205">Brave Software. Ang Brave ay isang rehistradong trademark ng Brave Software. Ang mga pangalan ng site ay maaaring mga trademark o mga rehistradong trademark ng may-ari ng site.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Presyo ng Unit</translation>
 <translation id="4763179765154524864">Kabuuang Ginastos</translation>
 <translation id="8851480289992540512">Kabuuang Natanggap</translation>
+<translation id="8624961452383848703">Gusto kong mag-convert ng…</translation>
 <translation id="616639131065447379">Maligayang pagdating sa Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Nagbibigay-daan sa iyo ang Crypto Wallets na makagamit ng cryptocurrency at mga nauugnay na asset sa Brave. Sinusuportahan ng Crypto Wallets ang mga Ethereum token gaya ng ETH at BAT, pati na rin ang mga collectible, at nagbibigay-daan ito sa iyong makagamit ng Ðmga app at iba pang smart contract. Ang lahat ng ito ay nilayon para sa mga taong pamilyar sa Ethereum at iba pang blockchain system — o nasasabik na matutunan ang mga ito.</translation>
 <translation id="4855440621031541830">Gamitin lang ang Crypto Wallets kung tinatanggap mo na ikaw lang ang responsable para sa lahat ng panganib na nauugnay sa paggamit na ito, at walang responsibilidad o pananagutan ang Brave Software para sa anumang mga pagkalugi kabilang ang kaugnay o kinahinatnang pagkalugi na posible mong maranasan bilang resulta ng paggamit na ito.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Hindi nakuha ang data para sa pag-import</translation>
 <translation id="7900950536120202771">Internal na error sa node ng IPFS</translation>
 <translation id="1036635552229153800">Na-upload na ang data ngunit hindi ito nailipat sa brave-import directory. Manual mo itong magagawa sa page ng mga setting ng pag-import.</translation>
-<translation id="7789840864192026963">Magbigay ng pahintulot</translation>
-<translation id="7978789143098237970">hanggang sa isara ko ang page na ito</translation>
+<translation id="572392919096807438">Tandaan ang aking pasya</translation>
+<translation id="7978789143098237970">hanggang sa isara ko ang site na ito</translation>
 <translation id="3523195733429162409">sa loob ng 24 na oras</translation>
 <translation id="2373264732659722940">sa loob ng 1 linggo</translation>
 <translation id="6318437367327684789">magpakailanman</translation>
-<translation id="7463327191540031132">I-block nang tuluyan</translation>
 <translation id="8797999629784150206">Puwede mong baguhin ang iyong <ph name="SITE_PERMISSIONS"/> anumang oras. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">pahintulot sa site</translation>
 <translation id="7701466644604753106">I-ON ang Speedreader</translation>
 <translation id="763042262431778831">I-OFF ang Speedreader</translation>
+<translation id="1544192797660353713">Wallet</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3155170474926428993">Launcher ng Tor</translation>
 <translation id="3745016858329272300">Pangkalahatang Impormasyon</translation>
 <translation id="4045404575593562245">Mga Control Event ng Tor</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">URI ng Proxy ng Tor</translation>
 <translation id="1671503397662036257">Status ng Koneksyon ng Tor</translation>
 <translation id="6024292492796847324">Pag-usad ng Pagsisimula ng Tor</translation>
+<translation id="7586151660465233733">Higit pang merkado sa <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Tumingin ng mga merkado at mag-trade ng crypto sa FTX</translation>
+<translation id="5963745988819586370">Mga Merkado</translation>
+<translation id="3795943412467785186">Magkonekta ng FTX account para tingnan ang balanse sa account, mag-explore ng mga merkado sa hinaharap, at mag-convert ng crypto.</translation>
+<translation id="926958206891985289">Tumingin ng Mga Merkado sa Hinaharap</translation>
+<translation id="6804537228302563756">Magkonekta ng Account</translation>
+<translation id="5019698312620117604">History ng presyo sa loob ng 24 oras</translation>
+<translation id="8720719072204443171">Dami sa loob ng 24 oras</translation>
+<translation id="3891414008432200754">Presyo</translation>
+<translation id="7723176927437578611">Kita</translation>
+<translation id="2983078329159689577">Isinusumite…</translation>
+<translation id="6641102760094059194">May (<ph name="NUMBER_OF_SECONDS_LEFT"/>s) para kumpirmahin</translation>
+<translation id="2280055104463448482">Tagumpay ang Pag-convert!</translation>
+<translation id="7590653073560839711">Kailangan mo ng balanse sa kahit isang currency lang para makapagsagawa ng pag-convert.</translation>
+<translation id="4390079506197726228">May <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/> na available</translation>
+<translation id="6973157709854838218">Itago ang iyong mga balanse sa display</translation>
+<translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 </translationbundle>

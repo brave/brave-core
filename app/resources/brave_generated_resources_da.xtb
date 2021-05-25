@@ -69,16 +69,20 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="4227945450504703638">Valgt lyd</translation>
 <translation id="7895302206188277628">Forbundet indhold</translation>
 <translation id="4322612543319315652">Importér valgt tekst til IPFS</translation>
+<translation id="8883166554766780543">Importér og kopiér link til IPFS-snapshot</translation>
+<translation id="3654831858282189202">Udgiv med IPNS-nøgle</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nyt privat vindue med Tor</translation>
 <translation id="4703780849509456860">Åben link i Privat Vindue med Tor</translation>
 <translation id="3488584642074079080">Åbn link i Brave privat vindue med Tor</translation>
 <translation id="7475547933708221517">Del lokal file med IPFS</translation>
+<translation id="2286177249736199435">Del lokal mappe via IPFS</translation>
 <translation id="784573715436258741">Del lokal fil med IPFS</translation>
 <translation id="6313675821927505581">Nyt privat vindue med Tor</translation>
 <translation id="2638041073279639246">Åbn link i privat
 vindue med Tor</translation>
 <translation id="3425600262621021599">Åbn link i Brave privat vindue med Tor</translation>
+<translation id="575838692088926391">Del lokal mappe via IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7924918279836988121">Bat Regnskabsservice</translation>
@@ -158,7 +162,7 @@ vindue med Tor</translation>
 <translation id="4112587618563511470">Ugyldig synkroniseringskode, kontrollér venligst og prøv igen.</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>
 <translation id="115699408012835975">Hvis du nulstiller synkronisering, skal du skrive en synkroniseringskode fra en anden enhed igen for at synkronisere med den. Er du sikker på, at du vil fortsætte?</translation>
-<translation id="6092564993102418148">Er du sikker på, at du vil slette den valgte enhed fra synkroniseringskæden?</translation>
+<translation id="6092564993102418148">Er du sikker på, at du vil fjerne den valgte enhed fra synkroniseringskæden?</translation>
 <translation id="3396347744975515056">Brave Sync er blevet opgraderet og kræver opsætning</translation>
 <translation id="7473245612074035141">Begynd opsætning</translation>
 <translation id="3411013544209536575">Hjælperåd</translation>
@@ -178,10 +182,23 @@ vindue med Tor</translation>
 <translation id="7090046810227878892">Ethereum-udbyder til brug af Dapps</translation>
 <translation id="5913089932885076110">Hent Krypto-tegnebøger ved opstart</translation>
 <translation id="757886143331967039">Indlæs forældet Crypto Wallets-udvidelse ved opstart</translation>
+<translation id="1834467296210148203">Vis ikon for Brave Wallet på værktøjslinje</translation>
 <translation id="6864914031231797928">Tillad Google-login for udvidelser</translation>
 <translation id="5927916530277631319">Metode til at løsning af Unstoppable-domæner</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/> om overvejelser af DNS over HTTPS- og Ethereum-anonymitet.</translation>
 <translation id="5248318250177143470">Metode til løsning af Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Sæt dine IPNS-nøgler op</translation>
+<translation id="951216659045543447">Underskriv indhold med den tilhørende private nøgle, og udgiv det på IPNS.</translation>
+<translation id="7611728475758612204">Nøgler, der kan udgives</translation>
+<translation id="911363100236037920">Angiv navn for ny nøgle</translation>
+<translation id="6358469157239228181">Dette navn kan ikke bruges</translation>
+<translation id="8996633027318264334">Vil du gerne slette <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Node er ikke startet</translation>
+<translation id="616058968889448209">Opstartsfejl for IPFS-service. Se flere oplysninger på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' importering af nøgle mislykkedes</translation>
+<translation id="8275038454117074363">Importer</translation>
+<translation id="3654980960391973513">Opret</translation>
+<translation id="5531501313997312487">Start node</translation>
 <translation id="9170907049676078643">Metode til løsning af IPF-ressourcer</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal node</translation>
@@ -261,7 +278,10 @@ vindue med Tor</translation>
 <translation id="1391855377994926460">Surf på nettet hurtigere – op til 6x hurtigere på større nyhedswebsider.</translation>
 <translation id="9218430445555521422">Indstil som standard</translation>
 <translation id="3479552764303398839">Ikke nu</translation>
+<translation id="6040143037577758943">Luk</translation>
+<translation id="5600566490506283344">Brave annoncenotifikation</translation>
 <translation id="4877147287319222750">Føj til sidepanel</translation>
+<translation id="4233010476457917696">Vis sidepanel</translation>
 <translation id="5404213409401164238">Vis sidepanel</translation>
 <translation id="7561196759112975576">Altid</translation>
 <translation id="7060352228894039151">Ved musemarkering</translation>

@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">התחילו שיחות ללא הגבלה עם חברים ועמיתים ב- Brave Together.</translation>
 <translation id="7115051913071512405">נסו את זה</translation>
 <translation id="7415602225677446066">הסיפורים המובילים של היום בפיד פרטי לחלוטין, בדיוק בשבילכם.</translation>
-<translation id="8607689491789524900">Brave Today תואם את תחומי העניין שלכם במכשיר שלכם, כך שהמידע האישי שלכם לעולם לא עוזב את הדפדפן שלכם. תוכן חדש מעודכן לאורך כל היום.</translation>
+<translation id="6903061332999399632">Brave News נתמך על ידי פרסום מודעות  במכשירכם, שהתאמתן מתבצעת באופן פרטי ואנונימי לחלוטין. המידע האישי שלכם נשאר תמיד פרטי, לפי <ph name="LINK_START"/>מדיניות הפרטיות<ph name="LINK_END"/> שלנו.</translation>
+<translation id="7823038307453615214">הצג את Brave News</translation>
+<translation id="780301667611848630">לא תודה</translation>
 <translation id="9164544612367905452">מביא…</translation>
 <translation id="1276592121036104130">טען תוכן חדש</translation>
-<translation id="4210987321913275328">יש לגלול מטה עבור Brave Today</translation>
-<translation id="3122595178900736207">אפס את מקורות Brave Today</translation>
-<translation id="2197023915568148978">האם לאפס את כל אפשרויות מפרסם Brave Today לברירת המחדל שלהן?</translation>
+<translation id="2875288128871360696">יש לגלול על מנת לעבור אל Brave News</translation>
+<translation id="8510120023634509743">אפס את מקורות Brave News</translation>
+<translation id="75825199302994272">האם לאפס את כל אפשרויות המפרסם של Brave News לברירת המחדל שלהן?</translation>
 <translation id="954001034349395856">כל המקורות</translation>
 <translation id="8890516388109605451">מקורות</translation>
 <translation id="5158129253322921540">השבת תוכן מאת <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">מחובר</translation>
 <translation id="8030169304546394654">מנותק</translation>
 <translation id="3149306599361260465">מאתחל [[percentage]]%</translation>
+<translation id="3258793718986637767">נתקלים בתקלות עם Tor? נסו <ph name="BEGIN_LINK"/>השבתת חלון פרטי עם Tor Tor<ph name="END_LINK"/> והפעילו אותו חזרה.</translation>
 <translation id="4272382368346338917">מסננים נוספים</translation>
 <translation id="8949292968394988358">אזהרה: הפעלת מסננים רבים מדי תפגום בביצועים</translation>
 <translation id="8686201964111147748">סך כל המודעות והעוקבים שנחסמו:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">אמתו את הארנק שלי</translation>
 <translation id="6609621505400013054">ארנק bitFlyer הוא שירות המנוהל על ידי bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">על ידי אימות הארנק שלכם וקישורו לחשבון bitFlyer, תוכלו לאחסן ולנהל את האסימונים שהרווחתם באמצעות  Brave Rewards ביתר קלות.</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>למידע נוסף<ph name="LINK_END"/> אודות אופן הקישור של דפדפן Brave עם חשבון ה-bitFlyer שלכם.</translation>
 <translation id="5094577350232361255">אודות</translation>
 <translation id="4918086044614829423">אשר</translation>
 <translation id="5916290544882167205">Brave .Brave Software הוא סימן מסחרי רשום של Brave Software. שמות אתרים עשויים להיות סימנים מסחריים או סימנים מסחריים רשומים של בעל האתר.</translation>
@@ -736,6 +740,7 @@
 <translation id="1833248467354516560">מחיר ליחידה</translation>
 <translation id="4763179765154524864">הוצאה כוללת</translation>
 <translation id="8851480289992540512">סך הכל שהתקבל</translation>
+<translation id="8624961452383848703">אני רוצה להמיר...</translation>
 <translation id="616639131065447379">ברוכים הבאים לארנקי קריפטו Brave</translation>
 <translation id="1740464057879304704">ארנקי קריפטו מאפשרים לך לעבוד עם מטבע קריפטו ונכסים קשורים ב-Brave. ארנקי קריפטו תומכים בטוקני את'ריום כמו ETH ו-BAT, כמו גם דברים שניתן לאסוף, ומאפשרים לך לעבוד עם  Ðאפליקציות וחוזים חכמים אחרים. כל זה מיועד לאנשים שמכירים את את'ריום ומערכות בלוקצ'יין אחרות — או שנלהבים ללמוד.</translation>
 <translation id="4855440621031541830">השתמש/י בארנקי קריפטו רק אם את/ה מסכימ/ה לכך שאת/ה בלבד אחראי/ת לכל סיכון הקשור בשימוש זה, וכי Brave Software אינה נושאת בכל אחריות להפסד כלשהו לרבות הפסדים אקראיים או הפסדים מהם הנך עלול/ה לסבול כתוצאה משימוש זה.</translation>
@@ -831,17 +836,18 @@
 <translation id="3741998951694470470">קבלת נתונים ליבוא נכשלה</translation>
 <translation id="7900950536120202771">שגיאה פנימית של צומת IPFS</translation>
 <translation id="1036635552229153800">הנתונים הועלו בהצלחה אך לא הועברו לספריה brave-import. אפשר לעשות זאת ידנית בדף הגדרות היבוא.</translation>
-<translation id="7789840864192026963">תן הרשאה</translation>
-<translation id="7978789143098237970">עד שאסגור דף זה</translation>
+<translation id="572392919096807438">זכור את ההחלטה שלי</translation>
+<translation id="7978789143098237970">עד שאסגור אתר זה</translation>
 <translation id="3523195733429162409">ל-24 שעות</translation>
 <translation id="2373264732659722940">לשבוע 1</translation>
 <translation id="6318437367327684789">לתמיד</translation>
-<translation id="7463327191540031132">חסום לצמיתות</translation>
 <translation id="8797999629784150206">באפשרותך לשנות את ה-<ph name="SITE_PERMISSIONS"/> שלך בכל עת.
  <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">הרשאת אתר</translation>
 <translation id="7701466644604753106">הפעלת Speedreader</translation>
 <translation id="763042262431778831">כיבוי Speedreader</translation>
+<translation id="1544192797660353713">ארנק</translation>
+<translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>
@@ -850,4 +856,21 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">סטטוס חיבור Tor</translation>
 <translation id="6024292492796847324">התקדמות אתחול Tor</translation>
+<translation id="7586151660465233733">שווקים נוספים ב-<ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">צפו בשווקים וקנו קריפטו ב-FTX</translation>
+<translation id="5963745988819586370">שווקים</translation>
+<translation id="3795943412467785186">חברו חשבון FTX על מנת לצפות ביתרות החשבון, לחשוף שווקים עתידיים ולהמיר קריפטו.</translation>
+<translation id="926958206891985289">לצפייה בשווקים עתידיים</translation>
+<translation id="6804537228302563756">חבר חשבון</translation>
+<translation id="5019698312620117604">היסטוריית מחירים - 24 שעות</translation>
+<translation id="8720719072204443171">נפח של 24 שעות</translation>
+<translation id="3891414008432200754">מחיר</translation>
+<translation id="7723176927437578611">המשך</translation>
+<translation id="2983078329159689577">שולח...</translation>
+<translation id="6641102760094059194">אשר (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">ההמרה בוצעה בהצלחה!</translation>
+<translation id="7590653073560839711">לביצוע המרה, אתם חייבים יתרה במטבע אחד לפחות.</translation>
+<translation id="4390079506197726228"><ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/> זמינים</translation>
+<translation id="6973157709854838218">הסתר יתרות בתצוגה</translation>
+<translation id="4548946945059463969">הציגו את היתרות על המסך</translation>
 </translationbundle>

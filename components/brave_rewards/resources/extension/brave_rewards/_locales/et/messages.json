@@ -819,6 +819,18 @@
     "message": "Kui kinnitate oma rahakoti ja seote selle bitFlyeri kontoga, saate Brave Rewardsi kaudu teenitud tokeneid lihtsamalt säilitada ja hallata.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Vaata lisateavet$link_end$ selle kohta, kuidas oma Brave’i brauser bitFlyeri kontoga linkida.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards läheb Jaapanis üle uuele süsteemile.",
     "description": "Header text for BAP deprecation warning message"

@@ -69,15 +69,19 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4227945450504703638">Contenu audio sélectionné</translation>
 <translation id="7895302206188277628">Contenu du lien</translation>
 <translation id="4322612543319315652">Importer le texte sélectionné sur IPFS</translation>
+<translation id="8883166554766780543">Importer et copier le lien vers un instantané IPFS</translation>
+<translation id="3654831858282189202">Publier avec la clé IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nouvelle Fenêtre Privée avec Tor</translation>
 <translation id="4703780849509456860">Ouvrir le Lien dans une Fenêtre Privée avec Tor</translation>
 <translation id="3488584642074079080">Ouvrir le Lien dans une Fenêtre Privée Brave avec Tor</translation>
 <translation id="7475547933708221517">Partager le fichier local via IPFS</translation>
+<translation id="2286177249736199435">Partagez un fichier local avec IPFS</translation>
 <translation id="784573715436258741">Partager le fichier local via IPFS</translation>
 <translation id="6313675821927505581">Nouvelle fenêtre privée avec Tor</translation>
 <translation id="2638041073279639246">Ouvrir le lien dans une fenêtre privée avec Tor</translation>
 <translation id="3425600262621021599">Ouvrir le lien dans une fenêtre privée Brave avec Tor</translation>
+<translation id="575838692088926391">Partager un fichier local utilisant IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Service de publicités BAT</translation>
 <translation id="7924918279836988121">Service Bat Ledger</translation>
@@ -157,7 +161,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4112587618563511470">Code de synchronisation invalide, veuillez le vérifier et réessayer.</translation>
 <translation id="2339730291919608488">Quitter la chaîne de synchronisation</translation>
 <translation id="115699408012835975">Si vous réinitialisez Sync, vous devrez saisir à nouveau un code de synchronisation provenant d'un autre appareil afin de vous synchroniser avec celui-ci. Êtes-vous sûr(e) de vouloir continuer ?</translation>
-<translation id="6092564993102418148">Êtes-vous sûr(e) de vouloir supprimer l'appareil sélectionné de la chaîne de synchronisation ?</translation>
+<translation id="6092564993102418148">Êtes-vous sûr de vouloir supprimer l'appareil sélectionné de la chaîne de synchronisation?</translation>
 <translation id="3396347744975515056">Brave Sync a été mis à jour et doit être configuré</translation>
 <translation id="7473245612074035141">Commencer la configuration</translation>
 <translation id="3411013544209536575">Conseils d'aide</translation>
@@ -177,10 +181,23 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="7090046810227878892">Fournisseur d'Ethereum pour l'utilisation de Dapps</translation>
 <translation id="5913089932885076110">Charger les portefeuilles de crypto-monnaies au démarrage</translation>
 <translation id="757886143331967039">Charger l'extension Crypto Wallets obsolète au démarrage</translation>
+<translation id="1834467296210148203">Afficher l'icône Portefeuille Brave dans la barre d'outils</translation>
 <translation id="6864914031231797928">Autoriser la connexion Google pour les extensions</translation>
 <translation id="5927916530277631319">Méthode de résolution des domaines Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/> sur les considérations relatives au DNS via HTTPS et à Ethereum.</translation>
 <translation id="5248318250177143470">Méthode de résolution des domaines Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Mettez en place votre clé IPNS</translation>
+<translation id="951216659045543447">Signez le contenu avec la clé privée correspondante et publiez le dans IPNS</translation>
+<translation id="7611728475758612204">Clés prêtes à être publiées</translation>
+<translation id="911363100236037920">Entrez un nom pour une nouvelle clé</translation>
+<translation id="6358469157239228181">Ce nom ne peut pas être utilisé</translation>
+<translation id="8996633027318264334">Êtes-vous vraiment sûr de vouloir supprimer <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Le nœud n'est pas lancé</translation>
+<translation id="616058968889448209">Erreur du lancement du service IPFS, plus d'informations sont disponibles sur <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Échec lors de l'importation de la clé « <ph name="KEY_NAME"/> »</translation>
+<translation id="8275038454117074363">Importer</translation>
+<translation id="3654980960391973513">Générer</translation>
+<translation id="5531501313997312487">Nœud de départ</translation>
 <translation id="9170907049676078643">Méthode de résolution des ressources IPFS</translation>
 <translation id="1327977588028644528">Passerelle</translation>
 <translation id="80225669816651290">Nœud local</translation>
@@ -260,7 +277,10 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1391855377994926460">Continuez à naviguer sur le Web encore plus rapidement. Les principaux sites d'actualité chargent jusqu'à 6 fois plus vite.</translation>
 <translation id="9218430445555521422">Définir comme navigateur par défaut</translation>
 <translation id="3479552764303398839">Pas maintenant</translation>
+<translation id="6040143037577758943">Fermer</translation>
+<translation id="5600566490506283344">Notification de Pub Brave</translation>
 <translation id="4877147287319222750">Ajouter à la barre latérale</translation>
+<translation id="4233010476457917696">Afficher la barre latérale</translation>
 <translation id="5404213409401164238">Afficher la barre latérale</translation>
 <translation id="7561196759112975576">Toujours</translation>
 <translation id="7060352228894039151">Au passage de la souris</translation>

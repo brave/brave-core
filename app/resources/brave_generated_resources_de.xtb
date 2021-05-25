@@ -69,15 +69,19 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4227945450504703638">Ausgewählter Ton</translation>
 <translation id="7895302206188277628">Verknüpfter Inhalt</translation>
 <translation id="4322612543319315652">Ausgewählten Text in IPFS importieren</translation>
+<translation id="8883166554766780543">Importieren und Link in IPFS-Snapshot kopieren</translation>
+<translation id="3654831858282189202">Mit IPNS-Schlüssel veröffentlichen</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Neues privates Fenster mit Tor</translation>
 <translation id="4703780849509456860">Link in privatem Fenster mit Tor öffnen</translation>
 <translation id="3488584642074079080">Link in Brave in privatem Fenster mit Tor öffnen</translation>
 <translation id="7475547933708221517">Lokale Datei mit IPFS freigeben</translation>
+<translation id="2286177249736199435">Lokalen Ordner mit IPFS freigeben</translation>
 <translation id="784573715436258741">Geben Sie die lokale Datei mit IPFS frei</translation>
 <translation id="6313675821927505581">Neues privates Fenster mit Tor</translation>
 <translation id="2638041073279639246">Link in privatem Fenster mit Tor öffnen</translation>
 <translation id="3425600262621021599">Link in privatem Brave-Fenster mit Tor öffnen</translation>
+<translation id="575838692088926391">Lokalen Ordner mit IPFS freigeben</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-Service</translation>
 <translation id="7924918279836988121">Bat-Ledger-Dienst</translation>
@@ -157,7 +161,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4112587618563511470">Ungültiger Synchronisierungscode. Bitte prüfen Sie die Eingabe und versuchen Sie es erneut.</translation>
 <translation id="2339730291919608488">Sync-Kette verlassen</translation>
 <translation id="115699408012835975">Wenn Sie Sync zurücksetzen, müssen Sie, wenn Sie mit einem anderen Gerät synchronisieren möchten, erneut einen Synchronisierungscode von diesem eingeben. Sind Sie sicher, dass Sie fortfahren möchten?</translation>
-<translation id="6092564993102418148">Sind Sie sicher, dass sie die ausgewählten Geräte aus der Sync-Kette entfernen wollen?</translation>
+<translation id="6092564993102418148">Sind Sie sicher, dass Sie das ausgewählte Gerät aus der Synchronisierungskette entfernen wollen?</translation>
 <translation id="3396347744975515056">Brave Sync wurde aufgerüstet und macht eine Einrichtung notwendig</translation>
 <translation id="7473245612074035141">Einrichtung beginnen</translation>
 <translation id="3411013544209536575">Hilfstipps</translation>
@@ -177,10 +181,23 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="7090046810227878892">Ethereum-Anbieter zur Nutzung von Dapps</translation>
 <translation id="5913089932885076110">Crypto Wallets bei Start laden</translation>
 <translation id="757886143331967039">Beim Start die veraltete Krypto-Wallets-Erweiterung laden</translation>
+<translation id="1834467296210148203">Brave-Wallet-Symbol in der Werkzeugleiste anzeigen</translation>
 <translation id="6864914031231797928">Google-Anmeldung bei Erweiterungen erlauben</translation>
 <translation id="5927916530277631319">Methode zum Auflösen unaufhaltsamer Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Erfahren Sie mehr<ph name="END_LINK"/> über DNS via HTTPS und Überlegungen zum Datenschutz von Ethereum.</translation>
 <translation id="5248318250177143470">Methode zum Auflösen des Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">IPNS-Schlüssel einrichten</translation>
+<translation id="951216659045543447">Inhalt mit dem entsprechenden privaten Schlüssel signieren und auf IPNS veröffentlichen</translation>
+<translation id="7611728475758612204">Für die Veröffentlichung verfügbare Schlüssel</translation>
+<translation id="911363100236037920">Geben Sie einen Namen für den neuen Schlüssel ein</translation>
+<translation id="6358469157239228181">Dieser Name kann nicht verwendet werden</translation>
+<translation id="8996633027318264334">Wollen Sie <ph name="KEY_NAME"/> wirklich löschen?</translation>
+<translation id="910215077892371264">Der Knoten wurde nicht gestartet</translation>
+<translation id="616058968889448209">Fehler beim Starten des IFPS-Dienstes. Weitere Informationen finden Sie auf der <ph name="BEGIN_LINK"/>Diagnoseseite<ph name="END_LINK"/>.</translation>
+<translation id="6912148685459054619">Import des „<ph name="KEY_NAME"/>“-Schlüssels fehlgeschlagen</translation>
+<translation id="8275038454117074363">Importieren</translation>
+<translation id="3654980960391973513">Erzeugen</translation>
+<translation id="5531501313997312487">Knoten starten</translation>
 <translation id="9170907049676078643">Methode zum Lösen von IPFS-Ressourcen</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokaler Knoten</translation>
@@ -260,7 +277,10 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1391855377994926460">Surfen Sie schneller im Internet - bis zu 6x schneller auf wichtigen Nachrichtenwebsites.</translation>
 <translation id="9218430445555521422">Als Standardbrowser festlegen</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
+<translation id="6040143037577758943">Schließen</translation>
+<translation id="5600566490506283344">Brave-Werbebenachrichtigung</translation>
 <translation id="4877147287319222750">Zur Seitenleiste hinzufügen</translation>
+<translation id="4233010476457917696">Seitenleiste anzeigen</translation>
 <translation id="5404213409401164238">Seitenleiste anzeigen</translation>
 <translation id="7561196759112975576">Immer</translation>
 <translation id="7060352228894039151">Wenn die Mouse darüber ist</translation>

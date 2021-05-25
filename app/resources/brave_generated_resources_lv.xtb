@@ -69,15 +69,19 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="4227945450504703638">Atlasītais audio</translation>
 <translation id="7895302206188277628">Saistītais saturs</translation>
 <translation id="4322612543319315652">Importēt atlasīto tekstu IPFS</translation>
+<translation id="8883166554766780543">Importēt un kopēt saili uz IPFS momentuzņēmumu</translation>
+<translation id="3654831858282189202">Publicēt ar IPNS atslēgu</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Jauns inkognito logs Tor</translation>
 <translation id="4703780849509456860">Atvērt saiti inkognito logā Tor</translation>
 <translation id="3488584642074079080">Atvērt saiti Brave inkognito logā Tor</translation>
 <translation id="7475547933708221517">Kopīgot lokālo failu, izmantojot IPFS</translation>
+<translation id="2286177249736199435">Kopīgot lokālo mapi, izmantojot IPFS</translation>
 <translation id="784573715436258741">Kopīgot lokālo failu, izmantojot IPFS</translation>
 <translation id="6313675821927505581">Jauns inkognito logs, izmantojot Tor</translation>
 <translation id="2638041073279639246">Atvērt saiti inkognito logā, izmantojot Tor</translation>
 <translation id="3425600262621021599">Atvērt saiti Brave inkognito logā, izmantojot Tor</translation>
+<translation id="575838692088926391">Kopīgot lokālo mapi, izmantojot IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7924918279836988121">BAT norēķinu pakalpojums</translation>
@@ -177,10 +181,23 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="7090046810227878892">Ethereum nodrošinātājs Dapps lietošanai</translation>
 <translation id="5913089932885076110">Ielādēt kripto makus startēšanas brīdī</translation>
 <translation id="757886143331967039">Ielādēt novecojušu Crypto Wallets paplašinājumu startējot</translation>
+<translation id="1834467296210148203">Rādīt Brave maka ikonu rīkjoslā</translation>
 <translation id="6864914031231797928">Atļaut Google pieteikšanos paplašinājumiem</translation>
 <translation id="5927916530277631319">Neapturamo domēnu atrisināšanas metode</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/> par DNS protokolā HTTPS un Ethereum konfidencialitātes apsvērumiem.</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) atrisināšanas metode</translation>
+<translation id="7024553202001112871">Iestatiet savas IPNS atslēgas</translation>
+<translation id="951216659045543447">Parakstiet saturu ar attiecīgo privāto atslēgu un publicējiet to IPNS</translation>
+<translation id="7611728475758612204">Publicēšanai pieejamās atslēgas</translation>
+<translation id="911363100236037920">Ievadiet jaunās atslēgas nosaukumu</translation>
+<translation id="6358469157239228181">Šo nosaukumu nevar izmantot</translation>
+<translation id="8996633027318264334">Vai tiešām vēlaties dzēst <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Mezgls nav palaists</translation>
+<translation id="616058968889448209">IPFS pakalpojuma palaišanas kļūda, papildu informācija ir pieejama <ph name="BEGIN_LINK"/>diagnostikas lapā<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' atslēgas importēšana neizdevās</translation>
+<translation id="8275038454117074363">Importēt</translation>
+<translation id="3654980960391973513">Ģenerēt</translation>
+<translation id="5531501313997312487">Sākt mezglu</translation>
 <translation id="9170907049676078643">IPFS resursu risināšanas metode</translation>
 <translation id="1327977588028644528">Vārteja</translation>
 <translation id="80225669816651290">Vietējais mezgls</translation>
@@ -260,7 +277,10 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1391855377994926460">Turpiniet pārlūkot tīmekli ātrāk – līdz pat 6 reizes ātrāk lielākajās ziņu vietnēs.</translation>
 <translation id="9218430445555521422">Iestatīt kā noklusējumu</translation>
 <translation id="3479552764303398839">Vēlāk</translation>
+<translation id="6040143037577758943">Aizvērt</translation>
+<translation id="5600566490506283344">Brave Ad paziņojums</translation>
 <translation id="4877147287319222750">Pievienot sānjoslai</translation>
+<translation id="4233010476457917696">Rādīt sānjoslu</translation>
 <translation id="5404213409401164238">Rādīt sānjoslu</translation>
 <translation id="7561196759112975576">Vienmēr</translation>
 <translation id="7060352228894039151">Uzbraucot ar peles kursoru</translation>

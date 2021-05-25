@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">Επιλεγμένο αρχείο ήχου</translation>
 <translation id="7895302206188277628">Περιεχόμενο συνδέσμου</translation>
 <translation id="4322612543319315652">Εισαγωγή επιλεγμένου κειμένου σε IPFS</translation>
+<translation id="8883166554766780543">Εισαγωγή και αντιγραφή συνδέσμου σε στιγμιότυπο IPFS</translation>
+<translation id="3654831858282189202">Δημοσίευση με το κλειδί IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Νέο Ιδιωτικό Παράθυρο με Tor</translation>
 <translation id="4703780849509456860">Άνοιγμα Συνδέσμου σε Ιδιωτικό Παράθυρο με Tor</translation>
 <translation id="3488584642074079080">Άνοιγμα συνδέσμου σε Ιδιωτικό Παράθυρο Brave μέσω Tor</translation>
 <translation id="7475547933708221517">Κοινοποίηση τοπικού αρχείου μέσω IPFS</translation>
+<translation id="2286177249736199435">Κοινή χρήση Τοπικού Φακέλου Χρησιμοποιώντας IPFS</translation>
 <translation id="784573715436258741">Κοινοποίηση τοπικού αρχείου μέσω IPFS</translation>
 <translation id="6313675821927505581">Νέο ιδιωτικό παράθυρο με Tor</translation>
 <translation id="2638041073279639246">Ανοίξτε σύνδεσμο σε ιδιωτικό παράθυρο με Tor</translation>
 <translation id="3425600262621021599">Ανοίξτε σύνδεσμο σε ιδιωτικό παράθυρο Brave με Tor</translation>
+<translation id="575838692088926391">Κοινή χρήση τοπικού φακέλου χρησιμοποιώντας IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
 <translation id="7924918279836988121">Υπηρεσία Bat Ledger</translation>
@@ -157,7 +161,7 @@
 <translation id="4112587618563511470">Μη έγκυρος κωδικός συγχρονισμού, ελέγξτε και δοκιμάστε ξανά.</translation>
 <translation id="2339730291919608488">Αποχώρηση από αλυσίδα συγχρονισμού</translation>
 <translation id="115699408012835975">Εάν επαναφέρετε τον συγχρονισμό, θα πρέπει να εισαγάγετε ξανά έναν κωδικό συγχρονισμού από άλλη συσκευή για να κάνετε συγχρονισμό με αυτήν. Σίγουρα θέλετε να συνεχίσετε;</translation>
-<translation id="6092564993102418148">Σίγουρα θέλετε να διαγράψετε την επιλεγμένη συσκευή από την αλυσίδα συγχρονισμού;</translation>
+<translation id="6092564993102418148">Είστε βέβαιοι ότι θέλετε να καταργήσετε την επιλεγμένη συσκευή από την αλυσίδα συγχρονισμού;</translation>
 <translation id="3396347744975515056">Το Brave Sync έχει αναβαθμιστεί και απαιτεί ρύθμιση</translation>
 <translation id="7473245612074035141">Έναρξη Ρυθμίσεων</translation>
 <translation id="3411013544209536575">Βοηθητικές συμβουλές</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">Πάροχος Ethereum για τη χρήση Dapps</translation>
 <translation id="5913089932885076110">Φόρτωση Crypto Wallets κατά την έναρξη</translation>
 <translation id="757886143331967039">Φόρτωση καταργημένης επέκτασης Crypto Πορτοφολιών κατά την εκκίνηση</translation>
+<translation id="1834467296210148203">Εμφάνιση του εικονιδίου του Πορτοφολιού Brave στη γραμμή εργαλείων</translation>
 <translation id="6864914031231797928">Να επιτρέπεται η σύνδεση Google για επεκτάσεις</translation>
 <translation id="5927916530277631319">Μέθοδος επίλυσης Ασταμάτητων Τομέων</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> σχετικά με το DNS αντί HTTPS και ζητήματα απορρήτου Ethereum.</translation>
 <translation id="5248318250177143470">Μέθοδος επίλυσης Υπηρεσίας Ονόματος Ethereum (ΥΟΕ)</translation>
+<translation id="7024553202001112871">Ρυθμίστε τα IPNS κλειδιά σας</translation>
+<translation id="951216659045543447">Υπογράψτε το περιεχόμενο από το αντίστοιχο ιδιωτικό κλειδί και δημοσιεύστε το στο IPNS</translation>
+<translation id="7611728475758612204">Διαθέσιμα κλειδιά για δημοσίευση</translation>
+<translation id="911363100236037920">Εισαγάγετε ένα όνομα για το νέο κλειδί</translation>
+<translation id="6358469157239228181">Αυτό το όνομα δεν μπορεί να χρησιμοποιηθεί</translation>
+<translation id="8996633027318264334">Θέλετε πραγματικά να διαγράψετε <ph name="KEY_NAME"/>;</translation>
+<translation id="910215077892371264">Ο κόμβος δεν έχει ξεκινήσει</translation>
+<translation id="616058968889448209">Σφάλμα εκκίνησης υπηρεσίας IPFS, περισσότερες πληροφορίες είναι διαθέσιμες στο <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Η εισαγωγή του κλειδιού '<ph name="KEY_NAME"/>' απέτυχε</translation>
+<translation id="8275038454117074363">Εισαγωγή</translation>
+<translation id="3654980960391973513">Δημιουργία</translation>
+<translation id="5531501313997312487">Έναρξη κόμβου</translation>
 <translation id="9170907049676078643">Μέθοδος αποκρυπτογράφησης πόρων IPFS</translation>
 <translation id="1327977588028644528">Πύλη</translation>
 <translation id="80225669816651290">Τοπικός κόμβος</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">Συνεχίστε την περιήγηση στον Ιστό γρηγορότερα - έως και 6 φορές πιο γρήγορα σε σημαντικούς ιστότοπους ειδήσεων.</translation>
 <translation id="9218430445555521422">Ορισμός ως προεπιλογή</translation>
 <translation id="3479552764303398839">Όχι τώρα</translation>
+<translation id="6040143037577758943">Κλείσιμο</translation>
+<translation id="5600566490506283344">Ειδοποίηση Διαφήμισης Brave</translation>
 <translation id="4877147287319222750">Προσθήκη στην Πλευρική Γραμμή</translation>
+<translation id="4233010476457917696">Εμφάνιση πλευρικής γραμμής</translation>
 <translation id="5404213409401164238">Εμφάνιση Πλευρικής Γραμμής</translation>
 <translation id="7561196759112975576">Πάντα</translation>
 <translation id="7060352228894039151">Με πέρασμα του ποντικιού από πάνω</translation>

@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Starta obegränsade samtal med vänner och kollegor i Brave tillsammans.</translation>
 <translation id="7115051913071512405">Prova den</translation>
 <translation id="7415602225677446066">Dagens topphistorier i ett helt privat flöde, bara för dig.</translation>
-<translation id="8607689491789524900">Brave Today matchar dina intressen på din enhet så att din personliga information aldrig lämnar din webbläsare. Nytt innehåll uppdateras hela dagen.</translation>
+<translation id="6903061332999399632">Brave News stöds av annonser med helt privata och anonymiserade annonser som matchas på din enhet. Dina personuppgifter förblir alltid privata, enligt vår <ph name="LINK_START"/>Sekretesspolicy<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Visa Brave News</translation>
+<translation id="780301667611848630">Nej tack</translation>
 <translation id="9164544612367905452">Hämtar</translation>
 <translation id="1276592121036104130">Ladda nytt innehåll</translation>
-<translation id="4210987321913275328">Bläddra för Brave Today</translation>
-<translation id="3122595178900736207">Återställ Brave Today-källor</translation>
-<translation id="2197023915568148978">Återställ alla dina Brave Today-utgivarval till standard?</translation>
+<translation id="2875288128871360696">Bläddra för Brave News</translation>
+<translation id="8510120023634509743">Återställ Brave News-källor</translation>
+<translation id="75825199302994272">Återställ alla dina Brave News-utgivarval till standard?</translation>
 <translation id="954001034349395856">Alla källor</translation>
 <translation id="8890516388109605451">Källor</translation>
 <translation id="5158129253322921540">Inaktivera innehåll från <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Ansluten</translation>
 <translation id="8030169304546394654">Frånkopplad</translation>
 <translation id="3149306599361260465">Initierar [[percentage]] %</translation>
+<translation id="3258793718986637767">Har du problem med Tor? Prova att <ph name="BEGIN_LINK"/>inaktivera privata fönster med Tor<ph name="END_LINK"/> och starta det igen.</translation>
 <translation id="4272382368346338917">Ytterligare filter</translation>
 <translation id="8949292968394988358">Varning: om du aktiverar för många filter kan prestanda bli lidande</translation>
 <translation id="8686201964111147748">Totalt antal annonser och spårningsprogram som har blockerats:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Verifiera min plånbok</translation>
 <translation id="6609621505400013054">Plånboken bitFlyer är en tjänst som hanteras av bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Genom att verifiera din plånbok och länka den till ett bitFlyer-konto kan du enklare lagra och hantera de tokens du har tjänat ihop genom Bravebelöningar</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/> om hur du länkar din Brave-webbläsare med ditt bitFlyer-konto.</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Acceptera</translation>
 <translation id="5916290544882167205">Brave Software. Brave är ett registrerat varumärke tillhörande Brave Software. Namn på sajter kan vara skyddade namn eller registrerade varumärken tillhörande respektive sajts ägare.</translation>
@@ -740,6 +744,7 @@ startar du upp med nya
 <translation id="1833248467354516560">Enhetspris</translation>
 <translation id="4763179765154524864">Totalt spenderat</translation>
 <translation id="8851480289992540512">Totalt mottaget</translation>
+<translation id="8624961452383848703">Jag vill konvertera ...</translation>
 <translation id="616639131065447379">Välkommen till Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets låter dig arbeta med kryptovalutor och liknande tillgångar i Brave. Crypto Wallets stödjer Ethereum-polletter som ETH och BAT samt samlarsaker, och låter dig arbeta med Ðappar och andra smarta kontrakt. Allt detta är avsett för dem som är bekanta med Ethereum och andra blockkedjesystem — eller ser fram emot att lära sig.</translation>
 <translation id="4855440621031541830">Använd bara Crypto Wallets om du går med på att du ensam tar på dig all risk som är förknippad med användningen, och att Brave Software inte tar något ansvar för förluster, inbegripande tillfälliga förluster eller följdförluster som användningen medför.</translation>
@@ -835,16 +840,17 @@ startar du upp med nya
 <translation id="3741998951694470470">Kunde inte hämta data för import</translation>
 <translation id="7900950536120202771">IPFS-nod har internt fel</translation>
 <translation id="1036635552229153800">Data laddades upp men flyttades inte till katalogen brave-import. Du kan göra detta manuellt på sidan importinställningar.</translation>
-<translation id="7789840864192026963">Ge tillåtelse</translation>
-<translation id="7978789143098237970">tills jag stänger den här sidan</translation>
+<translation id="572392919096807438">Kom ihåg detta</translation>
+<translation id="7978789143098237970">tills jag stänger denna webbplats</translation>
 <translation id="3523195733429162409">i 24 timmar</translation>
 <translation id="2373264732659722940">i 1 vecka</translation>
 <translation id="6318437367327684789">för alltid</translation>
-<translation id="7463327191540031132">Blockera för alltid</translation>
 <translation id="8797999629784150206">Du kan ändra dina <ph name="SITE_PERMISSIONS"/> när som helst. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">webbplatsbehörighet</translation>
 <translation id="7701466644604753106">Slå PÅ snabbläsaren</translation>
 <translation id="763042262431778831">Slå AV snabbläsaren</translation>
+<translation id="1544192797660353713">Plånbok</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="3745016858329272300">Allmän information</translation>
 <translation id="4045404575593562245">Tor kontrollhändelse</translation>
@@ -853,4 +859,21 @@ startar du upp med nya
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor anslutningsstatus</translation>
 <translation id="6024292492796847324">Tor Initieringsförlopp</translation>
+<translation id="7586151660465233733">Fler marknader på <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Visa marknader och handla krypto på FTX</translation>
+<translation id="5963745988819586370">Marknader</translation>
+<translation id="3795943412467785186">Anslut FTX-konto för att visa kontosaldo, utforska futures-marknader och konvertera krypto.</translation>
+<translation id="926958206891985289">Visa futures-marknader</translation>
+<translation id="6804537228302563756">Anslut konto</translation>
+<translation id="5019698312620117604">24 timmars prishistorik</translation>
+<translation id="8720719072204443171">24 timmars volym</translation>
+<translation id="3891414008432200754">Pris</translation>
+<translation id="7723176927437578611">Intäkter</translation>
+<translation id="2983078329159689577">Skickar ...</translation>
+<translation id="6641102760094059194">Bekräfta (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Konvertering lyckades!</translation>
+<translation id="7590653073560839711">Du behöver ett saldo i minst en valuta för att kunna utföra en konvertering.</translation>
+<translation id="4390079506197726228">Tillgänglig <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Dölj dina saldon från att visas</translation>
+<translation id="4548946945059463969">Visa dina saldon på skärmen</translation>
 </translationbundle>

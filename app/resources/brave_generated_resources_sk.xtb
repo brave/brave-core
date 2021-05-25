@@ -69,15 +69,19 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4227945450504703638">Vybraný zvuk</translation>
 <translation id="7895302206188277628">Prepojený obsah</translation>
 <translation id="4322612543319315652">Importovať vybraný text do IPFS</translation>
+<translation id="8883166554766780543">Importovať a kopírovať odkaz do výpisu IPFS</translation>
+<translation id="3654831858282189202">Zverejniť pomocou kľúča IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nové súkromné okno s Torom</translation>
 <translation id="4703780849509456860">Otvoriť odkaz v súkromnom okne s Torom</translation>
 <translation id="3488584642074079080">Torom otvoriť odkaz v súkromnom okne Brave</translation>
 <translation id="7475547933708221517">Zdieľanie lokálneho súboru pomocou IPFS</translation>
+<translation id="2286177249736199435">Zdieľať lokálny priečinok pomocou IPFS</translation>
 <translation id="784573715436258741">Zdieľať lokálny súbor pomocou IPFS</translation>
 <translation id="6313675821927505581">Nové súkromné okno s Torom</translation>
 <translation id="2638041073279639246">Otvoriť odkaz v súkromnom okne s Torom</translation>
 <translation id="3425600262621021599">Otvoriť odkaz v súkromnom okne Brave s Torom</translation>
+<translation id="575838692088926391">Zdieľať lokálny priečinok pomocou IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Reklamná služba Bat</translation>
 <translation id="7924918279836988121">Služba Bat ledger</translation>
@@ -157,7 +161,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4112587618563511470">Neplatný synchronizačný kód, skontrolujte ho a skúste to znova.</translation>
 <translation id="2339730291919608488">Ukončiť synchronizačný reťazec</translation>
 <translation id="115699408012835975">Ak resetujete synchronizáciu, budete musieť znova synchronizovať kód z iného zariadenia, aby ste ho mohli synchronizovať. Naozaj chcete pokračovať?</translation>
-<translation id="6092564993102418148">Ste si istý, že chcete vymazať vybrané zariadenie z reťazca sync?</translation>
+<translation id="6092564993102418148">Ste si istí, že chcete odstrániť zvolené zariadenie zo synchronizačného reťazca?</translation>
 <translation id="3396347744975515056">Synchronizácia aplikácie Brave bola vylepšená a potrebuje inštaláciu</translation>
 <translation id="7473245612074035141">Začať inštaláciu</translation>
 <translation id="3411013544209536575">Pomocník</translation>
@@ -177,10 +181,23 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7090046810227878892">Poskytovateľ Ethereum na používanie Dapps</translation>
 <translation id="5913089932885076110">Načítať Crypto Wallets pri štarte</translation>
 <translation id="757886143331967039">Načítať pri spustení zastarané rozšírenie kryptopeňaženiek</translation>
+<translation id="1834467296210148203">Zobraziť ikonu Brave Wallet na paneli s nástrojmi</translation>
 <translation id="6864914031231797928">Povoliť prihlasovanie Google pre rozšírenia</translation>
 <translation id="5927916530277631319">Metóda riešenia nezastaviteľných domén</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/> o DNS prostredníctvom protokolu HTTPS a aspektoch ochrany súkromia Etherea.</translation>
 <translation id="5248318250177143470">Metóda riešenia služby Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Nastavte si svoje kľúče IPNS</translation>
+<translation id="951216659045543447">Podpíšte obsah zodpovedajúcim súkromným kľúčom a zverejnite ho na IPNS</translation>
+<translation id="7611728475758612204">Dostupné kľúče na zverejnenie</translation>
+<translation id="911363100236037920">Zadajte názov pre nový kľúč</translation>
+<translation id="6358469157239228181">Tento názov nie je možné použiť</translation>
+<translation id="8996633027318264334">Naozaj chcete odstrániť <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Uzol nie je spustený</translation>
+<translation id="616058968889448209">Chyba spustenia služby IPFS, viac informácií je k dispozícii na <ph name="BEGIN_LINK"/>diagnostickej stránke<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' importovanie kľúča zlyhalo</translation>
+<translation id="8275038454117074363">Import</translation>
+<translation id="3654980960391973513">Generovať</translation>
+<translation id="5531501313997312487">Spúšťací uzol</translation>
 <translation id="9170907049676078643">Metóda riešenia zdrojov IPFS</translation>
 <translation id="1327977588028644528">Brána</translation>
 <translation id="80225669816651290">Lokálny uzol</translation>
@@ -260,7 +277,10 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="1391855377994926460">Prehľadávajte web rýchlejšie – až 6× rýchlejšie na hlavných spravodajských webových lokalitách.</translation>
 <translation id="9218430445555521422">Nastaviť ako predvolený</translation>
 <translation id="3479552764303398839">Teraz nie</translation>
+<translation id="6040143037577758943">Zavrieť</translation>
+<translation id="5600566490506283344">Upozornenie na reklamu Brave</translation>
 <translation id="4877147287319222750">Pridať na bočný panel</translation>
+<translation id="4233010476457917696">Zobraziť bočný panel</translation>
 <translation id="5404213409401164238">Zobraziť bočný panel</translation>
 <translation id="7561196759112975576">Vždy</translation>
 <translation id="7060352228894039151">Pri prejdení myšou</translation>

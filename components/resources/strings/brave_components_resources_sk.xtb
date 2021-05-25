@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Začnite neobmedzené hovory s priateľmi a kolegami v službe Brave Spolu.</translation>
 <translation id="7115051913071512405">Vyskúšajte to</translation>
 <translation id="7415602225677446066">Najlepšie príbehy dneška v úplne súkromnom informačnom kanáli, len pre vás.</translation>
-<translation id="8607689491789524900">Brave Dnes zodpovedá vašim záujmom na vašom zariadení, takže vaše osobné informácie nikdy neopustia váš prehliadač. Nový obsah aktualizovaný počas celého dňa.</translation>
+<translation id="6903061332999399632">Služba Brave News podporuje reklamy s úplne súkromnými a anonymizovanými reklamami zhodnými s vaším zariadením. Vaše osobné údaje zostanú vždy súkromné v súlade s našimi <ph name="LINK_START"/>zásadami ochrany osobných údajov<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Zobraziť službu Brave News</translation>
+<translation id="780301667611848630">Nie, ďakujem</translation>
 <translation id="9164544612367905452">Načítava sa…</translation>
 <translation id="1276592121036104130">Nahrať nový obsah</translation>
-<translation id="4210987321913275328">Prejdite na Brave Dnes</translation>
-<translation id="3122595178900736207">Obnovte zdroje služby Brave Dnes</translation>
-<translation id="2197023915568148978">Obnoviť všetky možnosti vydavateľa Brave Dnes na predvolené hodnoty?</translation>
+<translation id="2875288128871360696">Prejsť na službu Brave News</translation>
+<translation id="8510120023634509743">Vynulovať zdroje služby Brave News</translation>
+<translation id="75825199302994272">Chcete vynulovať všetky možnosti vydavateľa služby Brave News na predvolené hodnoty?</translation>
 <translation id="954001034349395856">Všetky zdroje</translation>
 <translation id="8890516388109605451">Zdroje</translation>
 <translation id="5158129253322921540">Zakázať obsah od <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Pripojené</translation>
 <translation id="8030169304546394654">Prerušené spojenie</translation>
 <translation id="3149306599361260465">Inicializuje sa [[percentage]] %</translation>
+<translation id="3258793718986637767">Máte problémy so softvérom Tor? Skúste <ph name="BEGIN_LINK"/>zablokovať súkromné okno pomocou softvéru Tor<ph name="END_LINK"/> a znova ho zapnite.</translation>
 <translation id="4272382368346338917">Ďalšie filtre</translation>
 <translation id="8949292968394988358">Upozornenie: Zapnutie príliš veľkého počtu filtrov zníži výkon</translation>
 <translation id="8686201964111147748">Počet zablokovaných reklám a sledovaní vašej aktivity:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Overiť peňaženku</translation>
 <translation id="6609621505400013054">Peňaženka bitFlyer je služba spravovaná spoločnosťou bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Keď svoju peňaženku overíte a prepojíte s účtom bitFlyer, budete môcť jednoduchšie ukladať a spravovať tokeny, ktoré ste získali cez odmeny Brave</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Získajte viac informácií<ph name="LINK_END"/> o tom, ako prepojiť prehliadač Brave s vašim účtom bitFlyer.</translation>
 <translation id="5094577350232361255">o</translation>
 <translation id="4918086044614829423">Prijať</translation>
 <translation id="5916290544882167205">Brave softvér. Brave je registrovaná ochranná známka Brave Software. Názvy stránok môžu byť ochranné známky alebo registrované ochranné známky vlastníka stránok.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Jednotková cena</translation>
 <translation id="4763179765154524864">Minutých celkom</translation>
 <translation id="8851480289992540512">Získaných celkom:</translation>
+<translation id="8624961452383848703">Chcem zameniť…</translation>
 <translation id="616639131065447379">Vitajte v Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets vám v Brave umožňuje pracovať s kryptomenami a súvisiacimi aktívami. Crypto Wallets podporuje tokeny Ethereum, ako sú ETH a BAT, ako aj zberateľské predmety, a umožňuje vám pracovať s Ðaplikáciami a inými inteligentnými zmluvami. To všetko je určené pre ľudí, ktorí poznajú Ethereum a iné blockchain systémy — alebo sa s nadšením naučia.</translation>
 <translation id="4855440621031541830">Crypto Wallets používajte iba vtedy, ak súhlasíte s tým, že budete zodpovedať za všetky riziká spojené s ich používaním, a že Brave Software nenesie žiadnu zodpovednosť a neručí za akékoľvek straty, vrátane náhodných alebo následných, ktoré by vám mohli vzniknúť v dôsledku ich použitia.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Nepodarilo sa načítať údaje na import</translation>
 <translation id="7900950536120202771">Interná chyba uzla IPFS</translation>
 <translation id="1036635552229153800">Údaje sa úspešne nahrali, nepresunuli sa však do adresára na import z prehliadača Brave. Môžete to urobiť manuálne na stránke nastavení importu.</translation>
-<translation id="7789840864192026963">Dať povolenie</translation>
+<translation id="572392919096807438">Zapamätať si toto rozhodnutie</translation>
 <translation id="7978789143098237970">kým nezavriem túto stránku</translation>
 <translation id="3523195733429162409">na 24 hodín</translation>
 <translation id="2373264732659722940">na 1 týždeň</translation>
 <translation id="6318437367327684789">navždy</translation>
-<translation id="7463327191540031132">Blokovať navždy</translation>
 <translation id="8797999629784150206">Svoje <ph name="SITE_PERMISSIONS"/> môžete zmeniť kedykoľvek. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">povolenie stránky</translation>
 <translation id="7701466644604753106">Zapnite Speedreader</translation>
 <translation id="763042262431778831">Vypnúť Speedreader</translation>
+<translation id="1544192797660353713">Peňaženka</translation>
+<translation id="8488282162676695335">Peňaženka Brave</translation>
 <translation id="3155170474926428993">Spúšťač Tor</translation>
 <translation id="3745016858329272300">Všeobecné informácie</translation>
 <translation id="4045404575593562245">Udalosti riadenia Tor</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">Stav pripojenia Tor</translation>
 <translation id="6024292492796847324">Priebeh inicializácie Tor</translation>
+<translation id="7586151660465233733">Viac trhov na webovej stránke <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Zobraziť trhy a obchodovať s kryptomenami na FTX</translation>
+<translation id="5963745988819586370">Trhy</translation>
+<translation id="3795943412467785186">Pripojiť účet FTX a pozrieť si zostatok na účte, preskúmať termínované trhy a zameniť kryptomeny.</translation>
+<translation id="926958206891985289">Zobraziť termínované trhy</translation>
+<translation id="6804537228302563756">Pripojiť účet</translation>
+<translation id="5019698312620117604">24 hodinová cenová história</translation>
+<translation id="8720719072204443171">24 hodinový objem</translation>
+<translation id="3891414008432200754">Cena</translation>
+<translation id="7723176927437578611">Výnos</translation>
+<translation id="2983078329159689577">Prebieha odosielanie...</translation>
+<translation id="6641102760094059194">Potvrdiť (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Zámena prebehla úspešne!</translation>
+<translation id="7590653073560839711">Na realizovanie zámeny potrebujete zostatok v aspoň jednej mene.</translation>
+<translation id="4390079506197726228">K dispozícii <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Skryť vaše zostatky na displeji</translation>
+<translation id="4548946945059463969">Ukázať vaše zostatky na obrazovke</translation>
 </translationbundle>

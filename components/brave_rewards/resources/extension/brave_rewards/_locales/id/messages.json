@@ -819,6 +819,18 @@
     "message": "Dengan memverifikasi dompet Anda dan menautkannya ke akun bitFlyer, Anda akan dapat dengan lebih mudah menyimpan dan mengelola token yang telah Anda dapatkan melalui program Brave Rewards.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Pelajari lebih lanjut$link_end$ tentang cara menautkan peramban Brave Anda dengan akun bitFlyer Anda.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards di Jepang beralih ke sistem baru!",
     "description": "Header text for BAP deprecation warning message"

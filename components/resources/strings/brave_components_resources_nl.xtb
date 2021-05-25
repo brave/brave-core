@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Begin onbeperkte gesprekken met vrienden en collega's in Brave Together.</translation>
 <translation id="7115051913071512405">Probeer het uit</translation>
 <translation id="7415602225677446066">De topverhalen van vandaag in een volledige privé-feed, speciaal voor jou.</translation>
-<translation id="8607689491789524900">Brave Today wordt afgestemd op de interesses op uw apparaat, zodat uw persoonlijke gegevens nooit uw browser verlaten. Nieuwe inhoud wordt gedurende de ganse dag bijgewerkt.</translation>
+<translation id="6903061332999399632">Brave News maakt gebruik van advertenties die volledig privé en anoniem zijn en worden aangepast aan uw apparaat. Uw persoonlijke gegevens blijven altijd privé zoals beschreven in ons <ph name="LINK_START"/>privacybeleid<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Brave News tonen</translation>
+<translation id="780301667611848630">Nee, bedankt</translation>
 <translation id="9164544612367905452">Ophalen…</translation>
 <translation id="1276592121036104130">Nieuwe inhoud laden</translation>
-<translation id="4210987321913275328">Scroll voor Brave Today</translation>
-<translation id="3122595178900736207">Brave Today-bronnen resetten</translation>
-<translation id="2197023915568148978">Al uw instellingen als Brave Today-uitgever terugzetten naar hun standaardwaarden?</translation>
+<translation id="2875288128871360696">Scrol voor Brave News</translation>
+<translation id="8510120023634509743">Brave News-bronnen opnieuw instellen</translation>
+<translation id="75825199302994272">Wilt u al uw instellingen als Brave News-uitgever terugzetten naar de standaardwaarden?</translation>
 <translation id="954001034349395856">Alle bronnen</translation>
 <translation id="8890516388109605451">Bronnen</translation>
 <translation id="5158129253322921540">Inhoud van <ph name="PUBLISHER_NAME"/> uitschakelen</translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Verbonden</translation>
 <translation id="8030169304546394654">Verbinding verbroken</translation>
 <translation id="3149306599361260465">Initialiseren, [[percentage]]%</translation>
+<translation id="3258793718986637767">Ervaart u problemen met Tor? <ph name="BEGIN_LINK"/>Schakel privévensters uit met Tor<ph name="END_LINK"/> en schakel deze vervolgens weer in.</translation>
 <translation id="4272382368346338917">Extra filters</translation>
 <translation id="8949292968394988358">Waarschuwing: als u teveel filters instelt, heeft dit een negatieve uitwerking op de prestaties</translation>
 <translation id="8686201964111147748">Totaal aantal geblokkeerde advertenties en trackers:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Mijn wallet verifiëren</translation>
 <translation id="6609621505400013054">De bitFlyer-wallet is een service die wordt beheerd door fitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Door je wallet te verifiëren en deze te koppelen aan een bitFlyer-account, kun je de tokens die je hebt verdiend met Brave Rewards eenvoudig opslaan en beheren</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/> over hoe u uw Brave-browser kunt koppelen aan uw bitFlyer-account.</translation>
 <translation id="5094577350232361255">over</translation>
 <translation id="4918086044614829423">Accepteren</translation>
 <translation id="5916290544882167205">Brave Software. Brave is een geregistreerd handelsmerk van Brave Software. Sitenamen kunnen handelsmerken of geregistreerde handelsmerken zijn van de site-eigenaar.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Prijs per eenheid</translation>
 <translation id="4763179765154524864">Totaaluitgaven</translation>
 <translation id="8851480289992540512">Totaal ontvangen</translation>
+<translation id="8624961452383848703">Ik wil deze cryptovaluta converteren…</translation>
 <translation id="616639131065447379">Welkom bij Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Met Crypto Wallets kun je werken met cryptocurrency en aanverwante middelen in Brave. Crypto Wallets ondersteunt Ethereum tokens zoals ETH en BAT, evenals collectibles, en staat je toe om te werken met Ðapps en andere slimme contracten. Dit alles is bedoeld voor mensen die bekend zijn met Ethereum en andere blockchain-systemen — of die het graag willen leren.</translation>
 <translation id="4855440621031541830">Gebruik Crypto Wallets alleen als je accepteert dat jij persoonlijk verantwoordelijk bent voor alle risico's die verbonden zijn aan dit gebruik, en dat Brave Software geen verantwoordelijkheid of aansprakelijkheid draagt voor eventuele verliezen, inclusief incidentele of indirecte schade die je zou kunnen lijden als gevolg van dit gebruik.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Kan gegevens voor import niet ophalen</translation>
 <translation id="7900950536120202771">Interne fout bij IPFS-knooppunt</translation>
 <translation id="1036635552229153800">De gegevens zijn geüpload maar zijn niet naar de importmap van Brave verplaatst. Je kunt dit handmatig doen via de pagina voor instellingen van importeren.</translation>
-<translation id="7789840864192026963">Toestemming geven</translation>
-<translation id="7978789143098237970">totdat ik de pagina sluit</translation>
+<translation id="572392919096807438">Mijn keuze onthouden</translation>
+<translation id="7978789143098237970">totdat ik de website sluit</translation>
 <translation id="3523195733429162409">voor 24 uur</translation>
 <translation id="2373264732659722940">voor 1 week</translation>
 <translation id="6318437367327684789">voor altijd</translation>
-<translation id="7463327191540031132">Blokkeer voor altijd</translation>
 <translation id="8797999629784150206">U kunt uw <ph name="SITE_PERMISSIONS"/> op ieder moment wijzigen. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">site rechten</translation>
 <translation id="7701466644604753106">Schakel Speedreader in</translation>
 <translation id="763042262431778831">Schakel Speedreader UIT</translation>
+<translation id="1544192797660353713">Wallet</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">Tor Proxy-URI</translation>
 <translation id="1671503397662036257">Tor-verbindingsstatus</translation>
 <translation id="6024292492796847324">Tor-initialisatievoortgang</translation>
+<translation id="7586151660465233733">Meer markten op <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Markten bekijken en crypto verhandelen op FTX</translation>
+<translation id="5963745988819586370">Markten</translation>
+<translation id="3795943412467785186">Koppel een FTX-account om accountsaldo te bekijken, futuresmarkten te verkennen en crypto te converteren.</translation>
+<translation id="926958206891985289">Futuresmarkten bekijken</translation>
+<translation id="6804537228302563756">Account koppelen</translation>
+<translation id="5019698312620117604">24-uurs prijshistorie</translation>
+<translation id="8720719072204443171">24-uurs volume</translation>
+<translation id="3891414008432200754">Prijs</translation>
+<translation id="7723176927437578611">Opbrengst</translation>
+<translation id="2983078329159689577">Indienen…</translation>
+<translation id="6641102760094059194">(<ph name="NUMBER_OF_SECONDS_LEFT"/>s) bevestigen</translation>
+<translation id="2280055104463448482">Conversie voltooid.</translation>
+<translation id="7590653073560839711">U moet saldo in ten minste één valuta hebben om te converteren.</translation>
+<translation id="4390079506197726228"><ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/> beschikbaar</translation>
+<translation id="6973157709854838218">Uw saldo verbergen</translation>
+<translation id="4548946945059463969">Uw saldo tonen</translation>
 </translationbundle>

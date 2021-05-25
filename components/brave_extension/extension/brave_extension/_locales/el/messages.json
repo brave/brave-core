@@ -171,17 +171,13 @@
     "message": "Αλλάξτε τις προεπιλογές καθολικής ασπίδας",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Αποκλείστε το στοιχείο μέσω του επιλογέα",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Διαχείριση προσαρμοσμένων φίλτρων",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Εισαγωγή λειτουργίας στοιχείου επιλογής",
-    "description": "Message for context menu that enables the element picker UI on the page."
+    "message": "Αποκλεισμός στοιχείου",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "Εμφάνιση για Προχωρημένους",

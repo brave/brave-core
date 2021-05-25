@@ -37,10 +37,11 @@
 <translation id="1227058898775614466">Историја на навигација</translation>
 <translation id="1231733316453485619">Да се вклучи синхронизација?</translation>
 <translation id="123724288017357924">Вчитај тековна страница, без кеширана содржина</translation>
+<translation id="1240288207750131269">Се вчитува <ph name="LANG"/></translation>
 <translation id="124678866338384709">Затвори ја тековната картичка</translation>
 <translation id="1996480094660735607">Brave Doodle: <ph name="DOODLE_DESCRIPTION"/></translation>
-<translation id="1263231323834454256">Список за читање</translation>
 <translation id="1266864766717917324">Не може да се сподели <ph name="CONTENT_TYPE"/></translation>
+<translation id="1276279242344007853">Управувајте со сајтовите што ги следите</translation>
 <translation id="1283039547216852943">Допрете за да се прошири</translation>
 <translation id="1285310382777185058">Изменете го јазикот</translation>
 <translation id="1291207594882862231">Исчистете ги историјата, колачињата, податоците на сајтот, кешот…</translation>
@@ -54,7 +55,6 @@
 <translation id="1327257854815634930">Отворена е историјата на навигација</translation>
 <translation id="6773423637732432200">Brave не може да се ажурира. Повеќе опции</translation>
 <translation id="3169981355900570544">Кратенки за функциите на Brave</translation>
-<translation id="133857033449832692">Се презема <ph name="LANG"/>…</translation>
 <translation id="1344653310988386453">Вклучи линк до нагласената ставка</translation>
 <translation id="1347468774581902829">Управувајте со активноста</translation>
 <translation id="1360432990279830238">Одјавете се и исклучете синхронизација?</translation>
@@ -72,6 +72,8 @@
 <translation id="1416550906796893042">Верзија на апликација</translation>
 <translation id="1430915738399379752">Печати</translation>
 <translation id="1450753235335490080">Не може да се сподели <ph name="CONTENT_TYPE"/></translation>
+<translation id="5598889255595678761">Изберете јазик за Brave</translation>
+<translation id="147113415845704694">Пробајте со „What’s the weather today?“ (Какво е времето денес?)</translation>
 <translation id="1477626028522505441">Преземањето на <ph name="FILE_NAME"/> не успеа поради проблеми со серверот.</translation>
 <translation id="1492417797159476138">Веќе го зачувавте ова корисничко име за сајтов</translation>
 <translation id="1506061864768559482">Пребарувач</translation>
@@ -90,6 +92,7 @@
 <translation id="1641113438599504367">Безбедно прелистување</translation>
 <translation id="164269334534774161">Гледате офлајн копија на страницата од <ph name="CREATION_TIME"/></translation>
 <translation id="1644574205037202324">Историја</translation>
+<translation id="160450840812032879">Изберете како автоматски ќе се прикажуваат прегледите на видеа на почетната страница на Brave.</translation>
 <translation id="1670399744444387456">Основно</translation>
 <translation id="1671236975893690980">Преземањето чека на ред…</translation>
 <translation id="1672586136351118594">Не прикажувај повторно</translation>
@@ -140,7 +143,6 @@
 <translation id="1987739130650180037"><ph name="MESSAGE"/> <ph name="LINK_NAME"/> копче</translation>
 <translation id="1993768208584545658"><ph name="SITE"/> сака да се спари</translation>
 <translation id="2000419248597011803">Испраќа колачиња и пребарувања од лентата за адреси и полето за пребарување во вашиот стандарден пребарувач</translation>
-<translation id="1320169905922104972">Кредитни картички и адреси преку Brave Pay</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# датотека}one{# датотека}other{# датотеки}}</translation>
 <translation id="2017836877785168846">Ги брише историјата и автоматските довршувања во лентата за адреси.</translation>
 <translation id="2021896219286479412">Контроли на сајтот на цел екран</translation>
@@ -166,6 +168,7 @@
 <translation id="796823723482603597">Овозможено од Brave</translation>
 <translation id="2131665479022868825">Зачувани: <ph name="DATA"/></translation>
 <translation id="213279576345780926">Се затвори <ph name="TAB_TITLE"/></translation>
+<translation id="2139186145475833000">Додај на почетниот екран</translation>
 <translation id="6516933364477884970">Изберете какви податоци за користењето сакате да споделувате со Brave. Метриката што ја споделувате ќе се користи за подобрување на функциите, изведбата и стабилноста на Brave.</translation>
 <translation id="2154484045852737596">Уредете ја картичката</translation>
 <translation id="2154710561487035718">Копирај URL</translation>
@@ -179,6 +182,7 @@
 <translation id="3842811252050200766">Добијте ја најсилната безбедност на Brave</translation>
 <translation id="2200113223741723867">Управувајте со споделувањето податоци за користењето</translation>
 <translation id="2227444325776770048">Продолжи како <ph name="USER_FULL_NAME"/></translation>
+<translation id="22320125457191592">За вас</translation>
 <translation id="7956662517480676674">Синхронизација и услуги на Brave</translation>
 <translation id="2239812875700136898">Контролирајте ги сториите од копчето „Опции за Discover“</translation>
 <translation id="2259659629660284697">Извезување лозинки…</translation>
@@ -203,6 +207,7 @@
 <translation id="2353636109065292463">Се проверува вашата интернет-врска</translation>
 <translation id="2359808026110333948">Продолжи</translation>
 <translation id="2369533728426058518">отворени картички</translation>
+<translation id="2386938421315164605">Сокривајте и прикажувајте теми</translation>
 <translation id="2387895666653383613">Скалирање текст</translation>
 <translation id="2394602618534698961">Датотеките што ќе ги преземете ќе се појават тука</translation>
 <translation id="801672626447970525">Функцијава е вклучена кога ќе се најавите на сметката на Brave</translation>
@@ -227,11 +232,12 @@
 <translation id="2517472476991765520">Скенирај</translation>
 <translation id="7340390500800578919">Во Lite-режим, Brave побрзо ги вчитува страниците и користи до 60 проценти помалку интернет. За да ги оптимизира страниците што ги посетувате, Brave го испраќа вашиот сообраќај на интернет во Brave. <ph name="BEGIN_LINK"/>Дознајте повеќе<ph name="END_LINK"/></translation>
 <translation id="284843628681142937">Испраќа URL-адреси од страници што ги посетувате до Brave</translation>
+<translation id="2527779675047087889">Сокриј содржини од привремената меморија</translation>
 <translation id="2532336938189706096">Преглед на веб</translation>
 <translation id="2534155362429831547">Избришани се <ph name="NUMBER_OF_ITEMS"/> ставки</translation>
 <translation id="2536728043171574184">Се прикажува офлајн копија на страницата</translation>
-<translation id="2537178555904266562">Грешка при синхронизирање на лозинките</translation>
 <translation id="2546283357679194313">Колачиња и податоци од сајтот</translation>
+<translation id="2561519700418191927">Прегледи на видео</translation>
 <translation id="2567385386134582609">СЛИКА</translation>
 <translation id="5079947353572974060">Понудувај да се испраќаат страници на други јазици во „Преведи на Brave“</translation>
 <translation id="2324920234469020158">Ова ќе ги избрише колачињата, кешот и другите податоци од сајтовите за коишто Brave смета дека не се важни.</translation>
@@ -240,6 +246,7 @@
 <translation id="2612676031748830579">Број на картичка</translation>
 <translation id="2625189173221582860">Лозинката е копирана</translation>
 <translation id="2631006050119455616">Заштедено</translation>
+<translation id="2645657967708199252">Вашата <ph name="CONNECTION_TYPE"/> врска може да го забави преземањето</translation>
 <translation id="2647434099613338025">Додајте јазик</translation>
 <translation id="2650751991977523696">Дали да се преземе датотеката повторно?</translation>
 <translation id="2651091186440431324">{FILE_COUNT,plural, =1{# аудиодатотека}one{# аудиодатотека}other{# аудиодатотеки}}</translation>
@@ -247,12 +254,12 @@
 <translation id="4550860619133710557">Ако користите Brave, се согласувате со <ph name="BEGIN_LINK1"/>Условите за користење на Brave<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Дополнителните услови за користење на Brave и Chrome OS<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Известувањето за приватност за сметките на Brave управувани со Family Link<ph name="END_LINK3"/> исто така важи.</translation>
 <translation id="2704606927547763573">Копирано</translation>
 <translation id="2707726405694321444">Освежи ја страницата</translation>
-<translation id="2709516037105925701">Автоматско пополнување</translation>
 <translation id="271033894570825754">Ново</translation>
 <translation id="2718352093833049315">Само преку Wi-Fi</translation>
 <translation id="2718846868787000099">За да се прикажат содржини за вашите претпочитани јазици, сајтовите што ги посетувате можат да ги видат вашите претпочитања</translation>
 <translation id="2723001399770238859">аудио</translation>
 <translation id="2728754400939377704">Подреди според сајт</translation>
+<translation id="2739256783402597439">2G</translation>
 <translation id="2744248271121720757">Допрете даден збор за да пребарувате веднаш или за да видите слични дејства</translation>
 <translation id="2760989362628427051">Вклучува темна тема кога е вклучена темната тема или „Штедачот на батерија“ на уредот</translation>
 <translation id="2762000892062317888">пред малку</translation>
@@ -261,16 +268,17 @@
 <translation id="2779651927720337254">не успеа</translation>
 <translation id="2781151931089541271">Остана 1 секунда</translation>
 <translation id="1379423114029199501">Ажурирајте за да го добиете вашиот јазик во најновата верзија на Brave</translation>
-<translation id="2810645512293415242">Поедноставена страница за побрзо вчитување и зачувување податоци.</translation>
+<translation id="2805756323405976993">Апликации</translation>
 <translation id="7068873021383263704">Прегледајте ги и управувајте со зачуваните лозинки во вашата <ph name="BEGIN_LINK"/>сметка на Brave<ph name="END_LINK"/></translation>
 <translation id="2818669890320396765">За да ги добиете обележувачите на сите ваши уреди, најавете се и вклучете ја синхронизацијата</translation>
 <translation id="2827278682606527653">Менито на картичката за активност е отворено на половина екран</translation>
+<translation id="2830783625999891985">Содржините од привремената меморија се сокриени</translation>
+<translation id="2839327205551510876">Се отследи <ph name="SITE_NAME"/></translation>
 <translation id="2841216154655874070">{NUM_DAYS,plural, =1{Проверено пред 1 ден}one{Проверено пред # ден}other{Проверено пред # дена}}</translation>
 <translation id="2842985007712546952">Надредена папка</translation>
 <translation id="2856503607207334158">Неуспешно најавување</translation>
 <translation id="2860954141821109167">Проверете дали е овозможена апликација за телефон на уредов</translation>
 <translation id="2870560284913253234">Локација</translation>
-<translation id="2876369937070532032">Испраќа URL-адреси од некои страници што ги посетувате до Brave, во случаите кога ви е загрозена безбедноста</translation>
 <translation id="8541922081612557424">За Brave</translation>
 <translation id="2891154217021530873">Сопри го вчитувањето на страницата</translation>
 <translation id="2892647708214602204">Ќе видите известување кога датотекава ќе биде подготвена</translation>
@@ -281,6 +289,7 @@
 <translation id="7339921667754113786">Платформа за известувања на Brave</translation>
 <translation id="2923908459366352541">Името е неважечко</translation>
 <translation id="6355102470683871794">Достапен простор на Brave <ph name="APP_NAME"/></translation>
+<translation id="2932222164150889403">Вашата тастатура нема да се смени</translation>
 <translation id="2942036813789421260">Картичката за преглед е затворена</translation>
 <translation id="2956410042958133412"><ph name="PARENT_NAME_1"/> и <ph name="PARENT_NAME_2"/> управуваат со оваа сметка.</translation>
 <translation id="2961208450284224863">{READING_LIST_UNREAD_PAGE_COUNT,plural, =1{<ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE"/> непрочитана страница}one{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрочитана страница}other{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрочитани страници}}</translation>
@@ -293,13 +302,14 @@
 <translation id="3016635187733453316">Проверете дали уредов е поврзан на интернет</translation>
 <translation id="3029704984691124060">Лозинките-фрази не се совпаѓаат</translation>
 <translation id="3031225630520268969">Кориснички интерфејс за согласност за гласовно пребарување со „Помошникот“</translation>
-<translation id="3034163383943672781">Преземањето ќе започне на <ph name="DATE"/>.</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>Побарајте помош<ph name="END_LINK"/></translation>
+<translation id="3046945242843292318">Стигнете на сајтов побрзо следниот пат</translation>
 <translation id="305593374596241526">Локацијата е исклучена, вклучете ја во <ph name="BEGIN_LINK"/>Поставки за Android<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">Може да ја исклучите синхронизацијата во секое време во „Поставки“</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> обележувач}one{<ph name="BOOKMARKS_COUNT_MANY"/> обележувач}other{<ph name="BOOKMARKS_COUNT_MANY"/> обележувачи}}</translation>
 <translation id="6153252609477956632">Статии за она што ве интересира на Brave</translation>
 <translation id="3070005020161560471">Автоматски преведувај</translation>
+<translation id="3091010850649238832">Прикажи содржини од привремената меморија</translation>
 <translation id="821565628224723530">Некои слики се испраќаат во Brave за да им се подобрат описите</translation>
 <translation id="3114507951000454849">Прочитајте ги денешните вести <ph name="NEWS_ICON"/></translation>
 <translation id="3123734510202723619">Соопштенија</translation>
@@ -308,12 +318,12 @@
 <translation id="3157842584138209013">Видете колку мобилен интернет сте заштедиле преку копчето „Повеќе опции“</translation>
 <translation id="3166827708714933426">Кратенки за картичката и прозорецот</translation>
 <translation id="3169472444629675720">Откриј</translation>
-<translation id="3201899458094819285">Безбедно прелистување (ве заштитува вас и вашиот уред од опасни сајтови)</translation>
 <translation id="3205824638308738187">Речиси готово!</translation>
 <translation id="3207960819495026254">Обележано</translation>
 <translation id="3208584281581115441">Провери сега</translation>
 <translation id="3211426585530211793">Избришана е ставката <ph name="ITEM_TITLE"/></translation>
 <translation id="321773570071367578">Ако сте ја заборавиле лозинката или сакате да ја измените поставкава, <ph name="BEGIN_LINK"/>ресетирајте ја синхронизацијата<ph name="END_LINK"/></translation>
+<translation id="3220943972464248773">За да ги синхронизирате лозинките, потврдете дека сте вие</translation>
 <translation id="9047551989591319903">Brave како безбедносен клуч</translation>
 <translation id="3232754137068452469">Веб-апликација</translation>
 <translation id="3236059992281584593">Остана 1 минута</translation>
@@ -332,12 +342,11 @@
 <translation id="3290991969712132877">За побрз пристап до страницава, додајте ја на почетниот екран преку копчето „Повеќе опции“</translation>
 <translation id="3295530008794733555">Прелистувајте побрзо. Користете помалку мобилен интернет.</translation>
 <translation id="3297344142967351106">Гласовна помош</translation>
-<translation id="3298243779924642547">Lite</translation>
 <translation id="3303414029551471755">Продолжете со преземање на содржината?</translation>
 <translation id="5294439808117722387">Моментално ги приспособувате поставките за синхронизација и услугата Brave. За да го завршите вклучувањето на синхронизацијата, допрете на копчето „Потврди“ долу на екранот. Движете се нагоре</translation>
 <translation id="3334729583274622784">Дали да се промени наставката на датотеката?</translation>
 <translation id="3341058695485821946">Видете колку мобилен интернет сте заштедиле</translation>
-<translation id="8134317863207426198">Lite-страница овозможена од Brave. Допрете го копчето за вчитување на оригиналот за да се вчита оригиналната страница.</translation>
+<translation id="3341262203274374114">Не може да се отследи. Нешто тргна наопаку.</translation>
 <translation id="3359667936385849800">Користете го тековниот давател на услуги</translation>
 <translation id="3367813778245106622">Најавете се повторно за да започнете со синхронизација</translation>
 <translation id="337236281855091893">За пребарување, допрете и задржете збор наместо само да го допрете</translation>
@@ -372,6 +381,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="3542235761944717775">Достапни се <ph name="KILOBYTES"/> KB</translation>
 <translation id="3549657413697417275">Пребарајте ја историјата</translation>
 <translation id="3557336313807607643">Додај во контакти</translation>
+<translation id="3563767357928833671">Прикажани се содржини од привремената меморија</translation>
 <translation id="1908301351964700579">Brave сѐ уште се подготвува за VR. Рестартирајте го Brave подоцна.</translation>
 <translation id="3568688522516854065">За да ги добиете вашите картички од другите уреди, најавете се и вклучете ја синхронизацијата</translation>
 <translation id="3587482841069643663">Сите</translation>
@@ -385,9 +395,9 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="363596933471559332">Автоматски најавувајте се на веб-сајтови со складирани акредитиви. Кога функцијата е исклучена, ќе се бара проверка од вас секогаш пред најавување на веб-сајт.</translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="3658159451045945436">Ако се ресетира, ќе се избрише историјата на заштеден интернет, заедно со списокот со посетени сајтови.</translation>
+<translation id="3677911431265050325">Побарај мобилна верзија на сајтот</translation>
 <translation id="3687645719033307815">Гледате преглед на страницава</translation>
 <translation id="3692944402865947621">Преземањето на <ph name="FILE_NAME"/> не успеа бидејќи локацијата за складирање не е достапна.</translation>
-<translation id="3701167022068948696">Поправи сега</translation>
 <translation id="371230970611282515">Предвидува опасни настани и ве предупредува пред да се случат.</translation>
 <translation id="3714981814255182093">Отворете ја Лентата за пребарување</translation>
 <translation id="5805364706385912897">Страницава користи премногу меморија, па Brave ја паузираше.</translation>
@@ -403,6 +413,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="3773856050682458546">Основни податоци плус информации за веб-сајтовите што ги посетувате и апликациите што ги користите</translation>
 <translation id="3775705724665058594">Испратете до вашите уреди</translation>
 <translation id="3778956594442850293">Додадено на почетен екран</translation>
+<translation id="3803784507854318295">Управувајте со автоматска репродукција</translation>
 <translation id="3810838688059735925">Видео</translation>
 <translation id="3810973564298564668">Управувај</translation>
 <translation id="3819178904835489326"><ph name="NUMBER_OF_DOWNLOADS"/> преземања се избришани</translation>
@@ -420,8 +431,8 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="6208931723626310729">Прикажувај потсетници за најавување на Brave при најавување на сметката на Brave</translation>
 <translation id="395206256282351086">Пребарувањето и предлозите за сајтови се оневозможени</translation>
 <translation id="6945986954012067786">{NUM_IN_PROGRESS,plural, =1{Brave ќе ја вчита страницата кога ќе биде спремна}one{Brave ќе ги вчита страниците кога ќе бидат спремни}other{Brave ќе ги вчита страниците кога ќе бидат спремни}}</translation>
+<translation id="3962957115499249330">Ќе видите известување кога преземањево ќе започне на Wi-Fi.</translation>
 <translation id="8997474919031554666">Шифрирањето на лозинката не ги вклучува начините на плаќање и адресите од Brave Pay. Само некој што ја има вашата лозинка може да ги чита вашите шифрирани податоци. Лозинката не се испраќа, ниту зачувува во Brave. Доколку ја заборавите лозинката или сакате да ја промените поставкава, ќе треба да ја ресетирате синхронизацијата. <ph name="BEGIN_LINK"/>Дознајте повеќе<ph name="END_LINK"/></translation>
-<translation id="3967822245660637423">Преземањето е завршено</translation>
 <translation id="1453002554835005700">Brave не може да ги провери вашите лозинки</translation>
 <translation id="7961941514656597723"><ph name="APP_NAME"/> ќе се отвори во Brave. Ако продолжите, се согласувате со <ph name="BEGIN_LINK1"/>Условите за користење на Brave<ph name="END_LINK1"/>и <ph name="BEGIN_LINK2"/>Дополнителните услови за користење на Brave и Chrome OS<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Известувањето за приватност за сметките на Brave управувани со Family Link<ph name="END_LINK3"/> исто така важи.</translation>
 <translation id="397583555483684758">Синхронизирањето престана да работи</translation>
@@ -431,6 +442,8 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="3988213473815854515">Локацијата е дозволена</translation>
 <translation id="3988466920954086464">Гледајте инстант резултати од пребарување на таблава</translation>
 <translation id="4000212216660919741">Офлајн</translation>
+<translation id="4016425174436051808">Не може да се следи. Нешто тргна наопаку.</translation>
+<translation id="3664806817143660247">Контролирајте ги податоците од вашите сметки на Brave</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# ч.}one{# ч.}other{# ч.}}</translation>
 <translation id="4045764304651014138">Податоци за користењето</translation>
 <translation id="4056223980640387499">Sepia</translation>
@@ -441,6 +454,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="4095146165863963773">Избриши ги податоците на апликацијата?</translation>
 <translation id="4095189195365058471">Прочитајте подоцна <ph name="BEGIN_NEW"/>Ново<ph name="END_NEW"/></translation>
 <translation id="673197144963363525">Помогнете да го подобриме Brave со автоматско испраќање статистика за користење и извештаи за падови до Brave.</translation>
+<translation id="410351446219883937">Автоматска репродукција</translation>
 <translation id="4108314971463891922">Следи</translation>
 <translation id="4108998448622696017">Открива опасни настани и ве предупредува кога ќе се случат.</translation>
 <translation id="4116038641877404294">Преземете ги страниците за да ги користите офлајн</translation>
@@ -461,12 +475,14 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="4256782883801055595">Лиценци за отворен код</translation>
 <translation id="4263656433980196874">Корисничкиот интерфејс за согласност за гласовно пребарување со „Помошникот“ е отворен на цел екран</translation>
 <translation id="4269820728363426813">Копирај адреса на врска</translation>
+<translation id="4290281343757112331">Да се преземе подоцна?</translation>
 <translation id="4298388696830689168">Поврзани сајтови</translation>
 <translation id="4303044213806199882">chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="4307992518367153382">Основи</translation>
 <translation id="4314815835985389558">Управувајте со синхронизацијата</translation>
 <translation id="4320177379694898372">Нема интернет поврзување</translation>
 <translation id="4321739720395210191">Камерата не може да се отвори. Рестартирајте го уредот и обидете се повторно.</translation>
+<translation id="433213510553688132">Се следи…</translation>
 <translation id="4335835283689002019">„Безбедното прелистување“ е исклучено</translation>
 <translation id="4351244548802238354">Затвори дијалог</translation>
 <translation id="4378154925671717803">Телефон</translation>
@@ -476,14 +492,15 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="4411535500181276704">Лесен режим</translation>
 <translation id="5749788945734786627">Управувајте со сметката на Brave</translation>
 <translation id="4427306783828095590">„Подобрената заштита“ помага при блокирање кражби на идентитетот и злонамерен софтвер</translation>
-<translation id="8856898588039823173">Lite-страница овозможена од Brave. Допрете за да се вчита оригиналот.</translation>
 <translation id="4452411734226507615">Затвори ја картичката <ph name="TAB_TITLE"/></translation>
 <translation id="4452548195519783679">Додаден е обележувач во <ph name="FOLDER_NAME"/></translation>
 <translation id="4472118726404937099">За да ги синхронизирате и персонализирате уредите, најавете се и вклучете ја синхронизацијата</translation>
 <translation id="918192811481327695">Помогнете да се подобрат функциите и изведбата на Brave</translation>
 <translation id="3133489217401741157">Се инсталира <ph name="MODULE"/> за Brave…</translation>
 <translation id="53119194224775367">Сите податоци од апликациите на Brave ќе се избришат трајно. Тука спаѓаат сите датотеки, поставки, сметки, бази на податоци итн.</translation>
+<translation id="3966104135245031874">Шифрирај синхронизирани лозинки со сметката на Brave</translation>
 <translation id="4493497663118223949">„Лесниот режим“ е вклучен</translation>
+<translation id="4504667196171871375">Преку Wi-Fi и мобилен интернет</translation>
 <translation id="4508528996305412043">Менито на картичката за активност е отворено</translation>
 <translation id="4508642716788467538">Изберете јазик</translation>
 <translation id="4513387527876475750">{DAYS,plural, =1{Пред # ден}one{Пред # ден}other{Пред # дена}}</translation>
@@ -501,11 +518,13 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="4561979708150884304">Нема интернет-врска</translation>
 <translation id="4565377596337484307">Сокриј ја лозинката</translation>
 <translation id="4572422548854449519">Најавете се на управувана сметка</translation>
+<translation id="4576892426230499203">Обидете се со друга опција за потврда</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{Пред # минута}one{Пред # минута}other{Пред # минути}}</translation>
 <translation id="4587589328781138893">Сајтови</translation>
 <translation id="4594952190837476234">Офлајн страницава е од <ph name="CREATION_TIME"/> и може да се разликува од онлајн верзијата.</translation>
 <translation id="4605958867780575332">Отстранета ставка: <ph name="ITEM_TITLE"/></translation>
 <translation id="4616150815774728855">Отвори <ph name="WEBAPK_NAME"/></translation>
+<translation id="4619564267100705184">Потврдете дека сте вие</translation>
 <translation id="4634124774493850572">Употреби ја лозинката</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{1 компромитирана лозинка}one{# компромитирана лозинка}other{# компромитирани лозинки}}</translation>
 <translation id="4650364565596261010">Стандардна поставка за системот</translation>
@@ -525,7 +544,6 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="4939482511480190003">Помогнете да се подобри Brave. <ph name="BEGIN_LINK"/>Учествувајте во анкетата<ph name="END_LINK"/></translation>
 <translation id="47217992755561375">Видете ги вашите најдобри сајтови</translation>
 <translation id="4732120983431207637">Модул за продолжување претходни задачи</translation>
-<translation id="4732693703583195378">Додајте го сајтов на почетниот екран на таблетот за да имате полесен пристап до него</translation>
 <translation id="4738836084190194332">Последна синхронизација: <ph name="WHEN"/></translation>
 <translation id="4749960740855309258">Отворете нова картичка</translation>
 <translation id="4759238208242260848">Преземања</translation>
@@ -564,7 +582,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="4925120120285606924">Слика од екранот <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">Вашите лозинки ќе се извезат и преземат како текстуална датотека. Тие ќе бидат видливи за секого и за секоја апликација со пристап до дестинациската папка.</translation>
 <translation id="1955495299630319741">Бидејќи се одјавувате од сметка управувана од <ph name="DOMAIN_NAME"/>, вашите податоци на Brave ќе се избришат од уредов. Тие ќе останат во вашата сметка на Brave.</translation>
-<translation id="4936039914467572121">Побрзо пристапувајте до сајтов</translation>
+<translation id="4941179133499732445">Допрете го микрофонот за да пребарувате со гласот</translation>
 <translation id="4943703118917034429">Виртуелна реалност</translation>
 <translation id="4943872375798546930">Нема резултати</translation>
 <translation id="4961107849584082341">Преведете ја страницава на кој било јазик</translation>
@@ -579,11 +597,12 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="5011311129201317034"><ph name="SITE"/> сака да се поврзе</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="5039804452771397117">Дозволи</translation>
-<translation id="5040262127954254034">Приватност</translation>
+<translation id="5061533557687621530">За да го проверите времето, допрете го микрофонот и кажете „What’s the weather today?“ (Какво е времето денес?)</translation>
 <translation id="5087580092889165836">Додај картичка</translation>
 <translation id="5091249083535528968">Проширени податоци за користењето</translation>
 <translation id="509429900233858213">Настана грешка.</translation>
 <translation id="510275257476243843">Остана 1 час</translation>
+<translation id="5118713593561876160">Интереси</translation>
 <translation id="5127805178023152808">Синхронизацијата е исклучена</translation>
 <translation id="5132942445612118989">Синхронизирајте ги лозинките, историјата и друго на сите уреди</translation>
 <translation id="5136035049889637840">Купувај слични производи <ph name="BEGIN_NEW"/>Ново<ph name="END_NEW"/></translation>
@@ -591,20 +610,25 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="5152843274749979095">Не се инсталирани поддржани апликации</translation>
 <translation id="5161254044473106830">Потребен е наслов</translation>
 <translation id="5162754098604580781">{FILE_COUNT,plural, =1{1 неуспешно преземање.}one{# неуспешно преземање.}other{# неуспешни преземања.}}</translation>
+<translation id="5168824020667180049">Се следи <ph name="SITE_NAME"/></translation>
 <translation id="5170568018924773124">Прикажи во папка</translation>
 <translation id="8445059357334030806">Отвори во Brave</translation>
+<translation id="5188992787241350004">Пребарувајте со гласот</translation>
 <translation id="5191251636205085390">Дознајте за новите технологии што имаат за цел да ги заменат колачињата на трети лица и контролирајте ги</translation>
 <translation id="5193988420012215838">Копирано во привремената меморија</translation>
 <translation id="5199929503336119739">Работен профил</translation>
+<translation id="5201464744567315552">Ќе видите известување кога преземањево ќе започне во <ph name="TIME"/>.</translation>
 <translation id="5204967432542742771">Внеси лозинка</translation>
 <translation id="5210286577605176222">Скокнете на претходната картичка</translation>
 <translation id="5210365745912300556">Затвори ја картичката</translation>
 <translation id="5213672942202814946">Користење гласовно пребарување</translation>
+<translation id="1051285409463218679">Начини на плаќање и адреси преку Brave Pay</translation>
 <translation id="5222676887888702881">Одјави се</translation>
 <translation id="5227554086496586518">Допрете за да ги видите резултатите од пребарувањето</translation>
 <translation id="5230560987958996918"><ph name="SITE"/> сака да скенира за уреди со Bluetooth во близина. Најдени се следниве уреди:</translation>
 <translation id="5233638681132016545">Нова картичка</translation>
 <translation id="5250483651202458397">Слика од екранот. Допрете за да се затвори.</translation>
+<translation id="5262378156578470238">Ќе видите известување кога преземањево ќе започне на <ph name="DATE"/>.</translation>
 <translation id="526421993248218238">Страницава не може да се вчита</translation>
 <translation id="5271967389191913893">Уредот не може да ја отвори содржината за да се преземе.</translation>
 <translation id="5292796745632149097">Испрати до</translation>
@@ -630,6 +654,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="5441522332038954058">Скокнете на лентата за адреса</translation>
 <translation id="544776284582297024">За да отворате картички и да посетувате различни страници во исто време, допрете го копчето за отворање картички</translation>
 <translation id="545042621069398927">Го забрзуваме вашето преземање.</translation>
+<translation id="5454166040603940656">со <ph name="PROVIDER"/></translation>
 <translation id="5456381639095306749">Преземете ја страницата</translation>
 <translation id="548278423535722844">Отвори во апликацијата „Карти“</translation>
 <translation id="7176798998723526245">Навигација во Brave</translation>
@@ -671,7 +696,6 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="572328651809341494">Неодамнешни картички</translation>
 <translation id="5723735397759933332">Lite-режимот отсега ќе ви штеди повеќе интернет со оптимизирање слики на HTTPS-страниците.</translation>
 <translation id="5726692708398506830">Зголеми сѐ што се наоѓа на страницата</translation>
-<translation id="5732819098735351888">Преземањето ќе започне преку Wi-Fi.</translation>
 <translation id="5733983706093266635">Не може да се создаде QR-код. URL-адресата има повеќе од <ph name="CHARACTER_LIMIT"/> знаци.</translation>
 <translation id="5748802427693696783">Префрлено на стандардни картички</translation>
 <translation id="3088191967551450609">На Brave му треба пристап до меморијата за да презема датотеки.</translation>
@@ -703,6 +727,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="5864174910718532887">Детали: подредени по име на сајт</translation>
 <translation id="5864419784173784555">Се чека друго преземање…</translation>
 <translation id="5869522115854928033">Зачувани лозинки</translation>
+<translation id="5880748256563468367">Оди на активноста</translation>
 <translation id="9037412730408024068">За да ви помогне да завршувате задачи, Brave ќе ги добива URL-адресите и содржините на сајтовите на кои го користите „Помошникот“, како и податоците што ги испраќате преку „Помошникот“</translation>
 <translation id="5919204609460789179">Ажурирајте го <ph name="PRODUCT_NAME"/> за да започнете со синхронизирање</translation>
 <translation id="5937580074298050696">Заштедено: <ph name="AMOUNT"/></translation>
@@ -720,6 +745,8 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="5979084224081478209">Провери ги лозинките</translation>
 <translation id="1455125811784733159">Отвори картичка „Инкогнито“</translation>
 <translation id="6456271171669383967">Задржи го Brave</translation>
+<translation id="6000203700195075278">Следете пак</translation>
+<translation id="1224925568717290201">За да избришете <ph name="BEGIN_LINK1"/>пребарување<ph name="END_LINK1"/> или друг тип историја, одете на <ph name="BEGIN_LINK2"/>Моја активност на Brave<ph name="END_LINK2"/></translation>
 <translation id="6005538289190791541">Предложена лозинка</translation>
 <translation id="6036057147555329831">Дополнителен ICU</translation>
 <translation id="6039379616847168523">Скокнете на следната картичка</translation>
@@ -745,7 +772,6 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="6159335304067198720"><ph name="PERCENT"/> заштеда на податоци</translation>
 <translation id="6186394685773237175">Не се најдени компромитирани лозинки</translation>
 <translation id="6192907950379606605">Добивајте описи на слики</translation>
-<translation id="6206830853671714236">Изберете кога да се преземе</translation>
 <translation id="6210748933810148297">Не сте <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Преглед на страницава</translation>
 <translation id="6218096829563201111">Пребарај слични производи <ph name="BEGIN_NEW"/>Ново<ph name="END_NEW"/></translation>
@@ -766,12 +792,14 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="6316139424528454185">Верзијата на Android не е поддржана</translation>
 <translation id="6324034347079777476">Синхронизацијата на системот Android е оневозможена</translation>
 <translation id="6324977638108296054">Не може да се создаде линк до нагласената ставка</translation>
+<translation id="6324997754869598316">(Грешка <ph name="ERROR_CODE"/>)</translation>
 <translation id="6333140779060797560">Сподели преку <ph name="APPLICATION"/></translation>
 <translation id="6337234675334993532">Шифрирање</translation>
 <translation id="6341580099087024258">Прашај каде да зачувуваш датотеки</translation>
 <translation id="6342069812937806050">Пред малку</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>… и уште <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}one{<ph name="SHIPPING_ADDRESS_PREVIEW"/>… и уште <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>… и уште <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}}</translation>
 <translation id="6345878117466430440">Означи како прочитано</translation>
+<translation id="6363990818884053551">За да започне синхронизацијата, потврдете дека сте вие</translation>
 <translation id="6364438453358674297">Да се отстрани предлогот од историјата?</translation>
 <translation id="6378173571450987352">Детали: подредени по количината на податоци што се користат</translation>
 <translation id="4993481112200507346"><ph name="APP_NAME"/> ќе се отвори во Brave. Ако продолжите, се согласувате со <ph name="BEGIN_LINK1"/>Условите за користење на Brave<ph name="END_LINK1"/>и <ph name="BEGIN_LINK2"/>Дополнителните услови за користење на Brave и Chrome OS<ph name="END_LINK2"/>.</translation>
@@ -781,6 +809,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="6402652558933147609"><ph name="ERROR_CODE"/> на <ph name="VIOLATED_URL"/></translation>
 <translation id="6404511346730675251">Измени обележувач</translation>
 <translation id="6406506848690869874">Синхронизација</translation>
+<translation id="6407224748847589805">Не може да се поврзе со вашиот компјутер. Обидете се со друга опција за потврда.</translation>
 <translation id="6410404864818553978">Основни податоци за користењето</translation>
 <translation id="6410883413783534063">Отворете картички за да посетувате различни страници во исто време</translation>
 <translation id="7810992039564280750">Ги проверува URL-адресите во список со небезбедни сајтови меморирани во Brave. Ако некој сајт се обиде да ви ја украде лозинката или кога ќе преземете штетна датотека, Brave може да испрати и URL-адреси, вклучувајќи и делови од содржините на страницата, во „Безбедно прелистување“.</translation>
@@ -834,6 +863,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="666731172850799929">Отвори во <ph name="APP_NAME"/></translation>
 <translation id="7392539049993970338">Известување за приватност на Brave</translation>
 <translation id="6671495933530132209">Копирај слика</translation>
+<translation id="6674571176963658787">За да започне синхронизацијата, внесете ја лозинката</translation>
 <translation id="8581481290581777242">Да се избришат податоците на Brave од уредов?</translation>
 <translation id="6697492270171225480">Прикажувај предлози за слични страници кога страницата не може да се најде</translation>
 <translation id="6698801883190606802">Управувајте со синхронизираните податоци</translation>
@@ -848,7 +878,6 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="8418237809013783651">Најавете се на Brave, отворено.</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="6824899148643461612">Избрана е картичката <ph name="TAB_TITLE"/></translation>
-<translation id="4991384657077828949">Помогнете да се подобри безбедноста на Brave</translation>
 <translation id="6846298663435243399">Се вчитува…</translation>
 <translation id="6850409657436465440">Вашето преземање е сѐ уште е во тек</translation>
 <translation id="6850830437481525139"><ph name="TAB_COUNT"/> затворени картички</translation>
@@ -875,6 +904,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="6981982820502123353">Пристапност</translation>
 <translation id="6989267951144302301">Не може да се преземе</translation>
 <translation id="6995899638241819463">Добијте предупредување ако лозинките се откриени при упад во податоците</translation>
+<translation id="7001056293070445572">Датотекава е голема (<ph name="FILE_SIZE"/>)</translation>
 <translation id="7015203776128479407">Првичното поставување на синхронизацијата не беше завршено. Синхронизацијата е исклучена.</translation>
 <translation id="7022756207310403729">Отвори во прелистувач</translation>
 <translation id="702463548815491781">Препорачано при вклучен TalkBack или „Пристап со прекинувачи“</translation>
@@ -890,9 +920,9 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="8208853227947884571">Brave е ажуриран</translation>
 <translation id="7106762743910369165">Вашата организација управува со прелистувачот</translation>
 <translation id="1968157943459987269">Ја чисти историјата и автоматските довршувања во лентата за адреси. Вашата сметка на Brave можеби има други видови историја на прелистување на <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="7134993907760847334">Ќе ја исчисти историјата од сите најавени уреди.</translation>
 <translation id="7138678301420049075">Друго</translation>
 <translation id="7146622961999026732">Изгледа дека сајтовиве и апликацииве ви се важни:</translation>
-<translation id="7149158118503947153"><ph name="BEGIN_LINK"/>Вчитај ја оригиналната страница<ph name="END_LINK"/> од <ph name="DOMAIN_NAME"/></translation>
 <translation id="7149893636342594995">Изминатите 24 часа</translation>
 <translation id="7173114856073700355">Отвори „Поставки“</translation>
 <translation id="7177466738963138057">Може да го промените ова подоцна во „Поставки“</translation>
@@ -967,7 +997,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="7630202231528827509">URL на операторот</translation>
 <translation id="7638584964844754484">Погрешна лозинка-фраза</translation>
 <translation id="7641339528570811325">Исчисти податоци од прелистување…</translation>
-<translation id="3598578758776312506">Шифрирај ги лозинките со акредитиви на Brave</translation>
+<translation id="7646772052135772216">Синхронизацијата на лозинките не работи</translation>
 <translation id="7658239707568436148">Откажи</translation>
 <translation id="7665369617277396874">Додајте сметка</translation>
 <translation id="766587987807204883">Статиите се појавуваат тука, а може да се читаат кога сте офлајн</translation>
@@ -976,7 +1006,6 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="7704317875155739195">Автоматски довршувај ги пребарувањата и URL-адресите</translation>
 <translation id="7707922173985738739">Ќе користи мобилен интернет</translation>
 <translation id="7725024127233776428">Страниците што ќе ги обележите се појавуваат тука</translation>
-<translation id="1943176487615318915">За да открие опасни апликации и сајтови, Brave испраќа URL-адреси од некои страници што ги посетувате, ограничени информации за системот и некои содржини од страниците до Brave</translation>
 <translation id="7757787379047923882">Текстот е споделен од <ph name="DEVICE_NAME"/></translation>
 <translation id="7761849928583394409">Изберете датум и време</translation>
 <translation id="7762668264895820836">SD-картичка <ph name="SD_CARD_NUMBER"/></translation>
@@ -986,10 +1015,10 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="7774809984919390718">{PAYMENT_METHOD,plural, =1{<ph name="PAYMENT_METHOD_PREVIEW"/>… и уште <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}one{<ph name="PAYMENT_METHOD_PREVIEW"/>… и уште <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}other{<ph name="PAYMENT_METHOD_PREVIEW"/>… и уште <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}}</translation>
 <translation id="7778840695157240389">Проверете подоцна дали има нови статии</translation>
 <translation id="4885054029571583374">„Помошникот на Brave“ обезбедува подобро доживување при гласовното пребарување на интернет и интеракцијата со отворените сајтови. „Помошникот на Brave“ ќе ги добива URL-адресите и содржините на сајтовите што ги користите со него.</translation>
-<translation id="7790349552933995572">Почетен екран</translation>
 <translation id="7791543448312431591">Додај</translation>
 <translation id="7798392620021911922">Вратени се <ph name="TAB_COUNT"/> картички</translation>
 <translation id="780301667611848630">Не, фала</translation>
+<translation id="7808889146555843082">Со бришењето на лозинкава нема да се избрише вашата сметка на <ph name="SITE"/>. Променете ја лозинката или избришете ја сметката на <ph name="SITE"/> за да ја заштитите од другите.</translation>
 <translation id="7810647596859435254">Отвори со…</translation>
 <translation id="7815484226266492798">Копче за долга слика од екранот</translation>
 <translation id="7821588508402923572">Заштедата на сообраќајот ќе се појави тука</translation>
@@ -997,6 +1026,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="7068829570137757602">Услуги на Brave</translation>
 <translation id="784934925303690534">Временски период</translation>
 <translation id="7851858861565204677">Други уреди</translation>
+<translation id="7853202427316060426">Активност</translation>
 <translation id="7857691613771368249">Прашувај кога да се зачувуваат датотеки</translation>
 <translation id="7859988229622350291">Никогаш не преведувај</translation>
 <translation id="7875915731392087153">Создајте е-пошта</translation>
@@ -1013,6 +1043,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="7930998711684428189">Ве предупредува ако лозинките се откриени при упад во податоците.</translation>
 <translation id="7942131818088350342"><ph name="PRODUCT_NAME"/> е застарен.</translation>
 <translation id="7947953824732555851">Прифати и најави се</translation>
+<translation id="7961015016161918242">Никогаш</translation>
 <translation id="7961926449547174351">Сте го оневозможиле пристапот до „Капацитет“, одете во „Поставки“ за да го овозможите.</translation>
 <translation id="7963646190083259054">Продавач:</translation>
 <translation id="5149323899804758325">За да скенирате QR-код, променете ги поставките за да може Brave да ја користи вашата камера</translation>
@@ -1078,6 +1109,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="834313815369870491">Никогаш не преведувај сајтови</translation>
 <translation id="8349013245300336738">Подреди по количина на искористен сообраќај</translation>
 <translation id="835847953965672673">Вратени се <ph name="NUMBER_OF_DOWNLOADS"/> преземања</translation>
+<translation id="8362134094656482681">Управувајте со темите што ве интересираат</translation>
 <translation id="8364299278605033898">Разгледајте ги популарните веб-сајтови</translation>
 <translation id="8368027906805972958">Непознат или неподдржан уред (<ph name="DEVICE_ID"/>)</translation>
 <translation id="8372925856448695381"><ph name="LANG"/> е подготвен.</translation>
@@ -1092,6 +1124,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="8445448999790540984">Не може да се извезат лозинките</translation>
 <translation id="8461694314515752532">Шифрирајте ги синхронизираните податоци со сопствената лозинка за синхронизација</translation>
 <translation id="8466613982764129868">Проверете дали <ph name="TARGET_DEVICE_NAME"/> е поврзан на интернет</translation>
+<translation id="8473863474539038330">Адреси и друго</translation>
 <translation id="8481980314595922412">Пробните функции се вклучени</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="8489271220582375723">Отворете ја страницата „Историја“</translation>
@@ -1108,6 +1141,7 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="8559990750235505898">Понудувај превод на страниците на други јазици</translation>
 <translation id="8560602726703398413">Најдете го списокот за читање во „Обележувачи“</translation>
 <translation id="8562452229998620586">Зачуваните лозинки ќе се појават тука.</translation>
+<translation id="856481929701340285">Барај лок. на раб. пов.</translation>
 <translation id="8569404424186215731">од <ph name="DATE"/></translation>
 <translation id="8571213806525832805">Изминатите 4 седмици</translation>
 <translation id="8572344201470131220">Сликата е копирана</translation>
@@ -1130,16 +1164,19 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="8699120352855309748">Не нуди превод за овие јазици</translation>
 <translation id="8712637175834984815">Сфатив</translation>
 <translation id="8725066075913043281">Обидете се повторно</translation>
+<translation id="8730621377337864115">Готово</translation>
 <translation id="8748850008226585750">Содржината е скриена</translation>
 <translation id="8773160212632396039">Се обработува барањето</translation>
 <translation id="8788265440806329501">Историјата на навигација е затворена</translation>
 <translation id="8788968922598763114">Повторно отворете ја последната затворена картичка</translation>
 <translation id="8798449543960971550">Прочитано</translation>
 <translation id="8812260976093120287">На некои веб-сајтови, може да плаќате со горенаведените поддржани апликации за плаќање на вашиот уред.</translation>
+<translation id="8814190375133053267">Wi-Fi</translation>
 <translation id="881688628773363275">Содржините на картичката „Преглед“ не се видливи.</translation>
 <translation id="8820817407110198400">Обележувачи</translation>
 <translation id="883806473910249246">Грешка при преземањето на содржината.</translation>
 <translation id="8840953339110955557">Страницава може да се разликува од онлајн верзијата.</translation>
+<translation id="8849001918648564819">Сокриен</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, картичка</translation>
 <translation id="8854223127042600341">Погледнете ги вашите офлајн датотеки</translation>
 <translation id="8856607253650333758">Добивај описи</translation>
@@ -1171,10 +1208,10 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="9063523880881406963">Исклучи „Барај локација на работна површина“</translation>
 <translation id="9065203028668620118">Измени</translation>
 <translation id="5496925146144075335">Складирани податоци за кои Brave смета дека не се важни (на пр., сајтови без зачувани поставки или коишто не ги посетувате често)</translation>
-<translation id="9069543557624799859">Преземањето ќе започне во <ph name="TIME"/>.</translation>
 <translation id="9069999660519089861">Нема непрочитани страници</translation>
 <translation id="9070377983101773829">Започнете гласовно пребарување</translation>
 <translation id="8494430740943879273">За да добивате персонализирани содржини предложени од Brave, најавете се и вклучете ја синхронизацијата</translation>
+<translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9086302186042011942">Синхронизирање</translation>
 <translation id="9086455579313502267">Не може да се пристапи на мрежата</translation>
 <translation id="9100505651305367705">Понуди прикажување статии во поедноставен приказ ако е поддржано</translation>
@@ -1187,10 +1224,8 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="9133703968756164531"><ph name="ITEM_NAME"/> (<ph name="ITEM_ID"/>)</translation>
 <translation id="9137013805542155359">Покажи оригинална страница</translation>
 <translation id="9148126808321036104">Најави се повторно</translation>
-<translation id="9149286894143103695">Додајте го сајтов на почетниот екран на телефонот за да имате полесен пристап до него</translation>
 <translation id="9155898266292537608">Може да пребарувате и со брзо допирање збор</translation>
 <translation id="9169507124922466868">Историјата на навигација е отворена до половина екран</translation>
-<translation id="9191031968346938109">Додај во…</translation>
 <translation id="9199368092038462496">{NUM_MINS,plural, =1{Проверено пред 1 минута}one{Проверено пред # минута}other{Проверено пред # минути}}</translation>
 <translation id="9204836675896933765">Преостанува 1 датотека</translation>
 <translation id="9206873250291191720">A</translation>
@@ -1206,7 +1241,6 @@ Privacy Sandbox сѐ уште активно се развива и таа е д
 <translation id="962979164594783469">Инсталирајте ја апликацијава</translation>
 <translation id="968900484120156207">Страниците што ги посетувате се појавуваат тука</translation>
 <translation id="970715775301869095">Останаа <ph name="MINUTES"/> минути</translation>
-<translation id="974555521953189084">Внесете ја лозинката за да започнете со синхронизација</translation>
 <translation id="981121421437150478">Без мрежа</translation>
 <translation id="983192555821071799">Затвори ги сите картички</translation>
 <translation id="987264212798334818">Општо</translation>

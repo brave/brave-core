@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Feu trucades il·limitades amb amics i companys de treball a Brave Together.</translation>
 <translation id="7115051913071512405">Proveu-lo</translation>
 <translation id="7415602225677446066">Les històries més destacades d'avui a un feed completament privat, només per a tu.</translation>
-<translation id="8607689491789524900">Brave Today fa coincidir els vostres interessos al dispositiu així la vostra informació personal no se'n va mai del navegador. Durant el dia s'actualitza nou contingut.</translation>
+<translation id="6903061332999399632">Brave News és un servei finançat a través de publicitat amb anuncis totalment privats i anonimitzats emparellats al teu dispositiu. La teva informació personal sempre romandrà privada, d'acord amb la nostra <ph name="LINK_START"/>política de privadesa<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Mostra Brave News</translation>
+<translation id="780301667611848630">No, gràcies</translation>
 <translation id="9164544612367905452">Buscant…</translation>
 <translation id="1276592121036104130">Carregueu contingut nou</translation>
-<translation id="4210987321913275328">Desplaceu-vos per Brave Today</translation>
-<translation id="3122595178900736207">Reinicieu les fonts de Brave Today</translation>
-<translation id="2197023915568148978">Voleu restablir totes les opcions editades de Brave Today a les predeterminades?</translation>
+<translation id="2875288128871360696">Desplaça't per a Brave News</translation>
+<translation id="8510120023634509743">Restableix les fonts de Brave News</translation>
+<translation id="75825199302994272">Vols restablir totes les opcions editades de Brave News als seus valors predeterminats?</translation>
 <translation id="954001034349395856">Totes les fonts</translation>
 <translation id="8890516388109605451">Fonts</translation>
 <translation id="5158129253322921540">Deshabiliteu el contingut de <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Connectat</translation>
 <translation id="8030169304546394654">Sense connexió</translation>
 <translation id="3149306599361260465">S'està inicialitzant [[percentage]]%</translation>
+<translation id="3258793718986637767">Tens problemes amb Tor? Prova de <ph name="BEGIN_LINK"/>deshabilitar la finestra privada amb Tor<ph name="END_LINK"/> i tornar-la a obrir.</translation>
 <translation id="4272382368346338917">Filtres addicionals</translation>
 <translation id="8949292968394988358">Advertiment: Si actives massa filtres, es degradarà el rendiment</translation>
 <translation id="8686201964111147748">Total d'anuncis i rastrejadors blocats:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Verifica la meva cartera</translation>
 <translation id="6609621505400013054">La cartera bitFlyer és un servei que gestiona bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">En verificar la teva cartera i vincular-la a un compte de bitFlyer, pots emmagatzemar i gestionar els tokens que hagis guanyat amb Brave Rewards més fàcilment</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Aprèn més<ph name="LINK_END"/> sobre com enllaçar el teu navegador Brave amb el teu compte de bitFlyer.</translation>
 <translation id="5094577350232361255">quant a</translation>
 <translation id="4918086044614829423">Accepta</translation>
 <translation id="5916290544882167205">Brave Software. Brave és una marca registrada de Brave Software. Els noms del lloc poden ser marques comercials o marques registrades del propietari del lloc</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Preu per unitat</translation>
 <translation id="4763179765154524864">Total Gastat</translation>
 <translation id="8851480289992540512">Total Rebut</translation>
+<translation id="8624961452383848703">Vull convertir...</translation>
 <translation id="616639131065447379">Benvinguts a Crypto Monedes Brave</translation>
 <translation id="1740464057879304704">Els Moneders Crypto us permeten treballar amb cryptomoneda i actius relacionats a Brave. Els Moneders Crypto són compatibles amb tokens Ethereum com ETH i BAT, així com col·leccionables, i us permet treballar amb Ð aplicacions i altres contractes intel·ligents. Tot això està pensat per a persones familiars amb Ethereum i altres sistemes de bloqueig en cadena — o que estan impacients per aprendre.</translation>
 <translation id="4855440621031541830">Utilitzeu Crypto Moneders només si accepteu que sou l'únic responsable per a tots els riscos associats amb aquest ús, i que el Software de Brave no assumeix cap responsabilitat per a cap pèrdua incloses les accidentals o conseqüents que pugueu patir com a resultat del seu ús.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Error en obtenir les dades per a la importació</translation>
 <translation id="7900950536120202771">Error intern del node IPFS</translation>
 <translation id="1036635552229153800">Les dades s'han carregat correctament, però no s'han mogut al directori d'importació de brave. Podeu fer-ho manualment a la pàgina de configuració de la importació.</translation>
-<translation id="7789840864192026963">Dóna permís</translation>
-<translation id="7978789143098237970">fins que tanqui aquesta pàgina</translation>
+<translation id="572392919096807438">Recorda la meva decisió</translation>
+<translation id="7978789143098237970">fins que no tanqui aquest lloc</translation>
 <translation id="3523195733429162409">durant 24 hores</translation>
 <translation id="2373264732659722940">durant 1 setmana</translation>
 <translation id="6318437367327684789">per sempre</translation>
-<translation id="7463327191540031132">Bloqueja per sempre</translation>
 <translation id="8797999629784150206">Pots canviar <ph name="SITE_PERMISSIONS"/> en qualsevol moment. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">permís del lloc</translation>
 <translation id="7701466644604753106">Activar el lector de velocitat</translation>
 <translation id="763042262431778831">Desactivar el lector de velocitat</translation>
+<translation id="1544192797660353713">Cartera</translation>
+<translation id="8488282162676695335">Cartera Brave</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="3745016858329272300">Informació general</translation>
 <translation id="4045404575593562245">Esdeveniments de control de Tor</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">URI del proxy de Tor</translation>
 <translation id="1671503397662036257">Estat de la connexió de Tor</translation>
 <translation id="6024292492796847324">Progrés d'inicialització de Tor</translation>
+<translation id="7586151660465233733">Més mercats a <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Veure mercats i fer transaccions amb criptomoneda a FTX</translation>
+<translation id="5963745988819586370">Mercats</translation>
+<translation id="3795943412467785186">Conecta un compte FTX per a veure el saldo del compte, explorar futurs mercats i convertir criptomoneda.</translation>
+<translation id="926958206891985289">Veure Mercats futurs</translation>
+<translation id="6804537228302563756">Conecta un compte</translation>
+<translation id="5019698312620117604">Historial de preus de 24 hores</translation>
+<translation id="8720719072204443171">Volum de 24 hores</translation>
+<translation id="3891414008432200754">Preu</translation>
+<translation id="7723176927437578611">Ingressos</translation>
+<translation id="2983078329159689577">Enviant...</translation>
+<translation id="6641102760094059194">Confirma en (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">La conversió s'ha completat amb èxit!</translation>
+<translation id="7590653073560839711">Necessites tenir saldo com a mínim en una divisa per realitzar una conversió.</translation>
+<translation id="4390079506197726228">Disponible <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
+<translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 </translationbundle>

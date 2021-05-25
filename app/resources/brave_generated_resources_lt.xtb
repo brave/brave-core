@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">Pasirinktas garsas</translation>
 <translation id="7895302206188277628">Susietas turinys</translation>
 <translation id="4322612543319315652">Importuoti pažymėtą tekstą į IPFS</translation>
+<translation id="8883166554766780543">Importuoti ir kopijuoti nuorodą į IPFS momentinę kopiją</translation>
+<translation id="3654831858282189202">Publikuoti su IPNS raktu</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Naujas inkognito langas su „Tor“</translation>
 <translation id="4703780849509456860">Atverti nuorodą inkognito lange su „Tor“</translation>
 <translation id="3488584642074079080">Atverti nuorodą „Brave“ inkognito lange su „Tor“</translation>
 <translation id="7475547933708221517">Bendrinti vietinį failą naudojant IPFS</translation>
+<translation id="2286177249736199435">Bendrinti vietinį aplanką naudojant IPFS</translation>
 <translation id="784573715436258741">Bendrinti vietinį failą naudojant IPFS</translation>
 <translation id="6313675821927505581">Naujas privatus langas su Tor</translation>
 <translation id="2638041073279639246">Atidaryti saitą privačiame lange su Tor</translation>
 <translation id="3425600262621021599">Atidaryti saitą Brave privačiame lange su Tor</translation>
+<translation id="575838692088926391">Bendrinti vietinį aplanką naudojant IPFS</translation>
 <translation id="5410152065859052603">„Tor“</translation>
 <translation id="2515126961943087659">„Bat Ads“ paslauga</translation>
 <translation id="7924918279836988121">BAT žurnalo paslauga</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">Decentralizuotų programėlių „Ethereum“ teikėjas</translation>
 <translation id="5913089932885076110">Užkrauti kriptovaliutų pinigines paleidus kompiuterį</translation>
 <translation id="757886143331967039">Užkrauti nebenaudojamų kriptovaliutų piniginių plėtinį paleidžiant</translation>
+<translation id="1834467296210148203">Rodyti „Brave Wallet“ piktogramą įrankių juostoje</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
 <translation id="5927916530277631319">„Unstoppable Domains“ sprendimo būdas</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/> apie DNS per HTTPS ir eterio privatumo nuostatas.</translation>
 <translation id="5248318250177143470">Eterio pavadinimų paslaugos (ENS) sprendimo būdas</translation>
+<translation id="7024553202001112871">Nustatykite savo IPNS raktus</translation>
+<translation id="951216659045543447">Pasirašykite turinį atitinkamu asmeniniu raktu ir paskelbkite jį IPNS</translation>
+<translation id="7611728475758612204">Raktai, kuriuos galima skelbti</translation>
+<translation id="911363100236037920">Įveskite naujo rakto pavadinimą</translation>
+<translation id="6358469157239228181">Šio pavadinimo naudoti negalima</translation>
+<translation id="8996633027318264334">Ar tikrai norite ištrinti „<ph name="KEY_NAME"/>"?</translation>
+<translation id="910215077892371264">Mazgas nepaleistas</translation>
+<translation id="616058968889448209">IPFS tarnybos paleidimo klaida, daugiau informacijos rasite <ph name="BEGIN_LINK"/>diagnostikos puslapyje<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">„<ph name="KEY_NAME"/>“ rakto importuoti nepavyko</translation>
+<translation id="8275038454117074363">Importuoti</translation>
+<translation id="3654980960391973513">Generuoti</translation>
+<translation id="5531501313997312487">Pradėti mazgą</translation>
 <translation id="9170907049676078643">IPFS išteklių nustatymo metodas</translation>
 <translation id="1327977588028644528">Tinklų sietuvas</translation>
 <translation id="80225669816651290">Vietinis mazgas</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">Saityne naršykite sparčiau – pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="9218430445555521422">Nustatyti kaip numatytąją</translation>
 <translation id="3479552764303398839">Ne dabar</translation>
+<translation id="6040143037577758943">Uždaryti</translation>
+<translation id="5600566490506283344">„Brave Ad“ pranešimas</translation>
 <translation id="4877147287319222750">Pridėti į šoninę juostą</translation>
+<translation id="4233010476457917696">Rodyti šoninę juostą</translation>
 <translation id="5404213409401164238">Rodyti šoninę juostą</translation>
 <translation id="7561196759112975576">Visada</translation>
 <translation id="7060352228894039151">Užvedus pelę</translation>

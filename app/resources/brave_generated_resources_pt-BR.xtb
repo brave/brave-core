@@ -69,15 +69,19 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4227945450504703638">Áudio selecionado</translation>
 <translation id="7895302206188277628">Conteúdo vinculado</translation>
 <translation id="4322612543319315652">Importar texto selecionado para o IPFS</translation>
+<translation id="8883166554766780543">Importar e copiar link para instantâneo do IPFS</translation>
+<translation id="3654831858282189202">Publicar com chave do IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nova Janela Privada com Tor</translation>
 <translation id="4703780849509456860">Abrir Link em Janela Privada com Tor</translation>
 <translation id="3488584642074079080">Abrir o Link em Janela Privada da Brave com Tor</translation>
 <translation id="7475547933708221517">Compartilhar arquivo local usando o IPFS</translation>
+<translation id="2286177249736199435">Compartilhar pasta local usando o IPFS</translation>
 <translation id="784573715436258741">Compartilhar arquivo local usando o IPFS</translation>
 <translation id="6313675821927505581">Nova janela privada com o Tor</translation>
 <translation id="2638041073279639246">Abrir link em janela privada com o Tor</translation>
 <translation id="3425600262621021599">Abrir link em janela privada do Brave com o Tor</translation>
+<translation id="575838692088926391">Compartilhar pasta local usando o IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Serviço de Anúncios Bat</translation>
 <translation id="7924918279836988121">Serviço Ledger do BAT</translation>
@@ -157,7 +161,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4112587618563511470">Código de sincronização inválido. Por favor, verifique e tente novamente.</translation>
 <translation id="2339730291919608488">Sair da cadeia de sincronização</translation>
 <translation id="115699408012835975">Se redefinir a sincronização, você terá que digitar um código de sincronização novamente de outro dispositivo para sincronizar com ele. Tem certeza de que deseja prosseguir?</translation>
-<translation id="6092564993102418148">Tem certeza de que deseja deletar o dispositivo selecionado desta cadeia de sincronização?</translation>
+<translation id="6092564993102418148">Tem certeza de que deseja remover o dispositivo selecionado da cadeia de sincronização?</translation>
 <translation id="3396347744975515056">O Brave Sync foi atualizado e precisa de configuração</translation>
 <translation id="7473245612074035141">Iniciar configuração</translation>
 <translation id="3411013544209536575">Dicas de ajuda</translation>
@@ -177,10 +181,23 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="7090046810227878892">Provedor Ethereum para usar Dapps</translation>
 <translation id="5913089932885076110">Abrir o Crypto Wallets ao iniciar</translation>
 <translation id="757886143331967039">Carregar extensão descontinuada Crypto Wallets na inicialização</translation>
+<translation id="1834467296210148203">Mostrar ícone da Brave Wallet na barra de ferramentas</translation>
 <translation id="6864914031231797928">Permitir a autenticação do Google para as extensões</translation>
 <translation id="5927916530277631319">Método para lidar com Domínios Imparáveis</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> sobre as considerações relacionadas à privacidade do DNS via HTTPS e do Ethereum.</translation>
 <translation id="5248318250177143470">Método para lidar com o Serviço de Nome Ethereum (ENS)</translation>
+<translation id="7024553202001112871">Configure suas chaves do IPNS</translation>
+<translation id="951216659045543447">Assine conteúdo com base na chave privada correspondente e publique-o no IPNS</translation>
+<translation id="7611728475758612204">Chaves disponíveis para publicação</translation>
+<translation id="911363100236037920">Insira um nome para a nova chave</translation>
+<translation id="6358469157239228181">Não é possível usar esse nome</translation>
+<translation id="8996633027318264334">Você quer mesmo excluir <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">O nó não foi iniciado</translation>
+<translation id="616058968889448209">Erro de inicialização do serviço do IPFS. Mais informações estão disponíveis na <ph name="BEGIN_LINK"/>página de diagnóstico<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Houve uma falha na importação da chave "<ph name="KEY_NAME"/>"</translation>
+<translation id="8275038454117074363">Importar</translation>
+<translation id="3654980960391973513">Gerar</translation>
+<translation id="5531501313997312487">Iniciar nó</translation>
 <translation id="9170907049676078643">Método para resolver recursos de IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nó local</translation>
@@ -260,7 +277,10 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1391855377994926460">Continue navegando mais rápido na web (até 6 vezes mais rápido nos principais sites de notícias).</translation>
 <translation id="9218430445555521422">Definir como padrão</translation>
 <translation id="3479552764303398839">Não agora</translation>
+<translation id="6040143037577758943">Fechar</translation>
+<translation id="5600566490506283344">Notificação de anúncio do Brave</translation>
 <translation id="4877147287319222750">Adicionar à Barra Lateral</translation>
+<translation id="4233010476457917696">Mostrar barra lateral</translation>
 <translation id="5404213409401164238">Exibir Barra Lateral</translation>
 <translation id="7561196759112975576">Sempre</translation>
 <translation id="7060352228894039151">Ao passar o mouse</translation>

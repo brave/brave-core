@@ -171,17 +171,13 @@
     "message": "Canvia els paràmetres per defecte de l’escut global",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "Bloqueja l'element a través del selector",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "Gestiona els filtres personalitzats",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Introduïu el mode de recol·lector de l'element",
-    "description": "Message for context menu that enables the element picker UI on the page."
+    "message": "Block element",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "Vista avançada",
