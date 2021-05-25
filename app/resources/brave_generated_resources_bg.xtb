@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">Избран аудиозапис</translation>
 <translation id="7895302206188277628">Свързано съдържание</translation>
 <translation id="4322612543319315652">Импортирай Избран текст в IPFS</translation>
+<translation id="8883166554766780543">Въвеждане и копиране на връзка към моментна снимка в IPFS</translation>
+<translation id="3654831858282189202">Публикуване с IPNS ключ</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Нов поверителен прозорец с Tor</translation>
 <translation id="4703780849509456860">Отвори връзката в поверителен прозорец с Tor</translation>
 <translation id="3488584642074079080">Отваряне на връзката в Поверителен прозорец на Brave чрез Tor</translation>
 <translation id="7475547933708221517">Сподели Локален Файл чрез IPFS</translation>
+<translation id="2286177249736199435">Споделяне на локална папка чрез IPFS</translation>
 <translation id="784573715436258741">Сподели локален файл чрез IPFS</translation>
 <translation id="6313675821927505581">Нов поверителен прозорец с Tor</translation>
 <translation id="2638041073279639246">Отворете линка в поверителен прозорец с Tor</translation>
 <translation id="3425600262621021599">Отворете линка в Brave поверителен прозорец с Tor</translation>
+<translation id="575838692088926391">Споделяне на локална папка чрез IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Услуга за BAT реклами</translation>
 <translation id="7924918279836988121">Услуга "Bat Ledger"</translation>
@@ -157,7 +161,7 @@
 <translation id="4112587618563511470">Невалиден код за синхронизация, моля, проверете и опитайте отново.</translation>
 <translation id="2339730291919608488">Излизане от веригата за синхронизиране</translation>
 <translation id="115699408012835975">Ако рестартирате синхронизирането, ще трябва да въведете отново код за синхронизиране от друго устройство, за да го синхронизирате. Наистина ли искате да продължите?</translation>
-<translation id="6092564993102418148">Наистина ли искате да изтриете избраното устройство от веригата за синхронизиране?</translation>
+<translation id="6092564993102418148">Наистина ли желаете да премахнете избраното устройство от веригата за синхронизиране?</translation>
 <translation id="3396347744975515056">Синхронизирането на Brave е надстроено и изисква настройка</translation>
 <translation id="7473245612074035141">Начало на настройката</translation>
 <translation id="3411013544209536575">Съвети за помощ</translation>
@@ -177,15 +181,28 @@
 <translation id="7090046810227878892">Доставчик на Ethereum за използване на Dapps</translation>
 <translation id="5913089932885076110">Зареждане на Crypto Wallets при стартиране</translation>
 <translation id="757886143331967039">Заредете отхвърлено разширение за крипто портфейли при стартиране</translation>
+<translation id="1834467296210148203">Показване на иконата на Brave портфейла в лентата с инструменти</translation>
 <translation id="6864914031231797928">Разрешаване на вход за Google за разширения</translation>
 <translation id="5927916530277631319">Метод за разрешаване на Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/> за DNS върху HTTPS и съображенията за поверителност на Етериум.</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/> за DNS върху HTTPS и съображенията за поверителност на Ethereum .</translation>
 <translation id="5248318250177143470">Метод за разрешаване на Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Настройване на Вашите IPNS ключове</translation>
+<translation id="951216659045543447">Подписване на съдържанието чрез съответния частен ключ и публикуването му в IPNS</translation>
+<translation id="7611728475758612204">Налични ключове за публикуване</translation>
+<translation id="911363100236037920">Въведете име за новия ключ</translation>
+<translation id="6358469157239228181">Това име не може да бъде използвано</translation>
+<translation id="8996633027318264334">Наистина ли желаете да изтриете <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Възелът не е стартиран</translation>
+<translation id="616058968889448209">Грешка при стартиране на услугата IPFS, повече информация можете да откриете на <ph name="BEGIN_LINK"/>страницата за диагностика<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' въвеждането на ключа е неуспешно</translation>
+<translation id="8275038454117074363">Импортиране</translation>
+<translation id="3654980960391973513">Генериране</translation>
+<translation id="5531501313997312487">Стартиране на възела</translation>
 <translation id="9170907049676078643">Метод за достигане до IPFS ресурси</translation>
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локален възел</translation>
 <translation id="4927734062756955434">Адрес на публичния IPFS шлюз</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Научете повече<ph name="END_LINK_MPL"/> за локалния IPFS възел и за съображенията за поверителност на портала.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Научете повече<ph name="END_LINK_MPL"/>за локалния IPFS възел и за съображенията за поверителност на портала.</translation>
 <translation id="8425213833346101688">Промяна</translation>
 <translation id="557281710253742286">Задайте IPFS шлюз</translation>
 <translation id="8571837315037233299">Адрес на шлюза</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">Продължете по-бързото си сърфиране в мрежата - до 6 пъти по-бързо в най-големите новинарски сайтове.</translation>
 <translation id="9218430445555521422">Задаване по подразбиране</translation>
 <translation id="3479552764303398839">Не сега</translation>
+<translation id="6040143037577758943">Затваряне</translation>
+<translation id="5600566490506283344">Известие за Brave Реклама</translation>
 <translation id="4877147287319222750">Добавяне към страничната лента</translation>
+<translation id="4233010476457917696">Показване на страничната лента</translation>
 <translation id="5404213409401164238">Показване на страничната лента</translation>
 <translation id="7561196759112975576">Винаги</translation>
 <translation id="7060352228894039151">При задържане на курсора</translation>

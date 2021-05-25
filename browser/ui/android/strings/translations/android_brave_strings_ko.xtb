@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="6302422639282249274">Brave Rewards 관리</translation>
-<translation id="1506061864768559482">검색 엔진</translation>
 <translation id="1468415711258933398">일반 탭</translation>
 <translation id="3377025655491224618">시크릿 탭</translation>
 <translation id="9148058034647219655">나가기</translation>
-<translation id="520895744850022668">모든 사이트에서 HTTPS 사용</translation>
-<translation id="8710614491157212477">가능할 경우 HTTP 대신 HTTPS를 이용해 지원되는 사이트를 엽니다</translation>
-<translation id="4022987104439075738">IPFS 게이트웨이</translation>
-<translation id="2688519859165248360">IPFS 게이트웨이를 통한 IPFS 리소스 탐색 허용</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">해결 방법</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">사용 중지</translation>
 <translation id="2218918398178303658">HTTPS상의 DNS</translation>
 <translation id="1448289340149908413">이더리움</translation>
-<translation id="8387201461264842096">광고 차단</translation>
-<translation id="1934885595886623674">광고 불러오기 방지</translation>
-<translation id="7458422973722236530">지문 보호</translation>
 <translation id="5787084571334399599">브라우저의 지문 채취를 방지</translation>
 <translation id="7459000603787995422">나갈 때 탭 닫기</translation>
 <translation id="1680858055899097121">브라우징 세션 간에 탭을 유지하지 마십시오</translation>
-<translation id="6469509880167172749">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
-<translation id="7090566321964540749">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
+<translation id="7142548388914389999">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
+<translation id="5469408008145872264">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
 <translation id="7977176350719484850">절약 예상\n데이터량</translation>
 <translation id="9008534313521214777">시간\n절약됨</translation>
 <translation id="6572660632052512096">데스크톱 모드</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">데스크톱 버전 사이트 선호</translation>
 <translation id="1842747674580016420">Brave에서 비디오 녹화 재생</translation>
 <translation id="5368992950177874750">사용 시 동영상이 대응하는 앱 대신 Brave에서 재생됩니다</translation>
-<translation id="2645380101799517405">제어</translation>
 <translation id="5965081608816406060">백그라운드 동영상 재생</translation>
 <translation id="6332924730165919598">모든 탭을 닫으면 Brave를 닫습니다</translation>
 <translation id="1580125697191336644">실험 기능. 탭이 활성화 상태가 아니거나 기기 화면이 꺼져 있을 때 백그라운드에서 동영상의 소리를 재생합니다. 이 기능이 작동하지 않으면 데스크톱 모드로 전환해 보세요.</translation>
@@ -291,11 +282,10 @@
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="3895527457258986253">지문 차단</translation>
 <translation id="184568144098869637">브라우저가 귀하의 기기를 인식하지 못하도록 방지</translation>
-<translation id="7396366757003005317">지문 차단 (엄격, 사이트 장애 발생 가능)</translation>
-<translation id="700453611199558021">지문 차단 (표준)</translation>
+<translation id="7445306466605902444">지문 차단 (엄격, 사이트 장애 발생 가능)</translation>
+<translation id="5582686930349810484">지문 차단 (표준)</translation>
 <translation id="769702552748212954">모든 지문 인식 허용</translation>
 <translation id="876424292214881779">광고 및 기타 불쾌한 것 차단됨</translation>
-<translation id="5142293891785304489">추적기, 광고 및\n기타 차단됨</translation>
 <translation id="6930134873084561197">사이트에는 종종 사용자와 사용자의 기기를 식별하는 쿠키 및 스크립트가 포함됩니다. 그들은 사용자가 누구인지 알아내고 모든 웹사이트에서 사용자가 하는 일을 웹을 통해 추적하기를 원합니다.\n\nBrave는 이러한 것들을 차단하여 사용자는 추적을 당하지 않고 탐색할 수 있습니다.</translation>
 <translation id="8553998445606452168">Brave 실드 정보</translation>
 <translation id="8912304686498704084">위</translation>
@@ -308,7 +298,6 @@
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
 <translation id="650318023204990401">고급 컨트롤</translation>
-<translation id="7182293319417450928">확인하려면 최소 25 BAT의 잔액이 필요합니다.</translation>
 <translation id="1275664486910646411">자동 완성에 탑 사이트 표시</translation>
 <translation id="5516010970279932133">자동 완성에 추천 사이트 표시</translation>
 <translation id="5370478469168390143">온라인에서 절약한 데이터</translation>
@@ -377,7 +366,7 @@
 <translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. &#128168; &#128168;</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
 <translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
-<translation id="1390943217516275883">Brave가 개인정보 통계를 표시하도록 허용</translation>
+<translation id="1390943217516275883">Brave가 비공개 통계를 표시할 수 있도록 허용</translation>
 <translation id="1763352720905582220">매주 개인정보 보고서 전송</translation>
 <translation id="1811691435325545066">모든 개인정보 보고서 데이터 지우기</translation>
 <translation id="8089997572759938512">개인정보 보고서를 0으로 재설정</translation>
@@ -482,13 +471,6 @@
 <translation id="3184805785843994538">Brave Shields는 트래커 &amp; 광고를 차단하고, 데이터를 절약하고, 방문하는 모든 사이트에서 시간을 아껴줍니다.</translation>
 <translation id="8722651357687610395">Brave를 기본으로 설정</translation>
 <translation id="3479552764303398839">나중에</translation>
-<translation id="6232491755501685494">일본 내 Brave Rewards가 새로운 시스템으로 전환됩니다!</translation>
-<translation id="7444515017164572362">3월 13일부터는 BAP를 사용할 수 없습니다. 하지만 4월에 새로운 시스템으로
-        업데이트하면, 새 토큰으로 시작할 수 있습니다!</translation>
-<translation id="8587285254008006694">이러한 전환의 일환으로 3월 13일부터 브라우저에서 팁 주기 및 기부 기능을
-        일시적으로 사용할 수 없으며, 4월에 새로운 시스템으로 업데이트될 때까지
-        BAP 잔액은 0.0으로 표시됩니다. 새로운 시스템에 접속하게 되면 새 토큰으로
-        시작할 수 있습니다!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -508,4 +490,9 @@
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 <translation id="3171931580569169744">탭 그룹 활성화</translation>
+<translation id="5587305863196367357">지갑을 확인하면 자금 관리, 추가, 인출이 쉬워집니다.</translation>
+<translation id="5760671211380791582">BAT가 충분하지 않습니다.</translation>
+<translation id="6960458596933484861">확인된 Uphold 지갑을 만들려면 최소 15BAT가 필요합니다. 다시 시도하세요.</translation>
+<translation id="4389085954549744469">이미 확인된 Uphold 계정이 있는 경우, <ph name="CONTINUE_TO_LOGIN"/>하세요.</translation>
+<translation id="6146966915297143881">로그인하여 계속</translation>
 </translationbundle>

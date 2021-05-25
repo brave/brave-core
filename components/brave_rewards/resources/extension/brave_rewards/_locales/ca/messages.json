@@ -819,6 +819,18 @@
     "message": "En verificar la teva cartera i vincular-la a un compte de bitFlyer, podràs emmagatzemar i gestionar els tokens que hagis guanyat amb Brave Rewards més fàcilment",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Aprèn més$link_end$ sobre com enllaçar el teu navegador Brave amb el teu compte de bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Els Premis Brave al Japó canvien a un sistema nou!",
     "description": "Header text for BAP deprecation warning message"

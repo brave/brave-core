@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Brave Together में दोस्तों और सहयोगियों के साथ असीमित कॉल शुरू करें।</translation>
 <translation id="7115051913071512405">इसे आज़माएँ</translation>
 <translation id="7415602225677446066">आज की शीर्ष कहानियाँ पूरी तरह से निजी फीड में, सिर्फ आपके लिए।</translation>
-<translation id="8607689491789524900">ब्रेव टूडे आपके डिवाइस पर आपकी रुचियों को मैच कराता है, इसलिए आपकी व्यक्तिगत जानकारी कभी भी आपके ब्राउज़र को नहीं छोड़ती है। दिन भर नया कंटेंट अपडेट किया जाता है।</translation>
+<translation id="6903061332999399632">Brave न्यूज़ आपके डिवाइस पर मेल खाने वाले पूरी तरह से निजी और अज्ञात विज्ञापनों के से विज्ञापन-समर्थित है. हमारी <ph name="LINK_START"/>गोपनीयता नीति<ph name="LINK_END"/> के अनुसार आपकी व्यक्तिगत जानकारी हमेशा निजी रहती है.</translation>
+<translation id="7823038307453615214">Brave न्यूज़ दिखाएँ</translation>
+<translation id="780301667611848630">नहीं, रहने दें</translation>
 <translation id="9164544612367905452">ला रहा है…</translation>
 <translation id="1276592121036104130">नया कंटेंट लोड करें</translation>
-<translation id="4210987321913275328">ब्रेव टूडे के लिए स्क्रॉल करें</translation>
-<translation id="3122595178900736207">ब्रेव टूडे के स्रोतों को रीसेट करें</translation>
-<translation id="2197023915568148978">अपने सभी ब्रेव टूडे के प्रकाशक विकल्पों को उनके डिफ़ॉल्ट पर रीसेट करें?</translation>
+<translation id="2875288128871360696">Brave न्यूज़ के लिए स्क्रॉल करें</translation>
+<translation id="8510120023634509743">Brave न्यूज़ के सोर्स को रीसेट करें</translation>
+<translation id="75825199302994272">अपने सभी Brave न्यूज़ के प्रकाशक विकल्पों को उनके डिफ़ॉल्ट पर रीसेट करें?</translation>
 <translation id="954001034349395856">सभी स्रोत</translation>
 <translation id="8890516388109605451">स्रोत</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>
@@ -111,6 +113,7 @@
 <translation id="3368922792935385530">कनेक्टेड</translation>
 <translation id="8030169304546394654">डिसकनेक्ट करें</translation>
 <translation id="3149306599361260465">शुरू कर रहे हैं {{percentage}}%</translation>
+<translation id="3258793718986637767">Tor के साथ समस्या हो रही है? <ph name="BEGIN_LINK"/>Tor<ph name="END_LINK"/> के साथ निजी विंडो को इनेबल करने और इसे फिर से चालू करने की कोशिश करें</translation>
 <translation id="4272382368346338917">अतिरिक्त फ़िल्टर</translation>
 <translation id="8949292968394988358">चेतावनी: अत्यधिक फ़िल्टर चालू करने से प्रदर्शन में गिरावट आएगी</translation>
 <translation id="8686201964111147748">अवरुद्ध किए गए कुल विज्ञापन और ट्रैकर:</translation>
@@ -391,6 +394,7 @@
 <translation id="5468234114288973517">मेरा वॉलेट सत्यापित करें</translation>
 <translation id="6609621505400013054">The bitFlyer वॉलेट bitFlyer, Inc द्वारा प्रबंधित सेवा है।</translation>
 <translation id="7258399883616914635">अपने वॉलेट की पुष्टि करके और इसे एक बिटफ़ायर खाते से लिंक करके, आप Brave  पुरस्कार के माध्यम से अर्जित टोकन को स्टोर और प्रबंधित कर पाएंगे।</translation>
+<translation id="1411121707906693782">अपने Brave ब्राउज़र को अपने bitFlyer अकाउंट से कैसे लिंक करें, इसके बारे में <ph name="LINK_BEGIN"/>अधिक जानें<ph name="LINK_END"/>।</translation>
 <translation id="5094577350232361255">बारे में</translation>
 <translation id="4918086044614829423">स्वीकार करें</translation>
 <translation id="5916290544882167205">Brave सॉफ़्टवेयर। Brave, Brave सॉफ़्टवेयर का एक पंजीकृत ट्रेडमार्क है। साइट के नाम साइट के मालिकों के ट्रेडमार्क या पंजीकृत ट्रेडमार्क हो सकते हैं।</translation>
@@ -737,6 +741,7 @@
 <translation id="1833248467354516560">यूनिट मूल्य</translation>
 <translation id="4763179765154524864">कुल खर्च किया</translation>
 <translation id="8851480289992540512">कुल प्राप्त हुआ</translation>
+<translation id="8624961452383848703">मैं कन्वर्ट करना चाहता हूं...</translation>
 <translation id="616639131065447379">Brave क्रिप्टो वॉलेट में स्वागत है</translation>
 <translation id="1740464057879304704">क्रिप्टो वॉलेट आपको Brave में क्रिप्टोकरेंसी और संबंधित एसेट के साथ काम करने की सुविधा देता है। क्रिप्टो वॉलेट ETH और BAT जैसे एथेरियम टोकन के समर्थन के साथ ही संग्रहणीय है और आपको ऐप्स और अन्य स्मार्ट अनुबंधों के साथ काम करने की सुविधा देता है। यह सब उन लोगों के लिए है जो एथेरियम और अन्य ब्लॉकचैन सिस्टम से परिचित हैं या सीखने के लिए उत्साहित हैं।</translation>
 <translation id="4855440621031541830">क्रिप्टो वॉलेट का उपयोग केवल तब करें जब आप स्वीकार करते हैं कि आप इस उपयोग से जुड़े सभी जोखिमों के लिए अकेले जिम्मेदार हैं और इस उपयोग के परिणामस्वरूप आपको होनेवाले किसी भी संभावित आकस्मिक या परिणामी नुकसान सहित किसी भी नुकसान के Brave सॉफ़्टवेयर की कोई ज़िम्मेदारी या दायित्व नहीं है।</translation>
@@ -832,16 +837,17 @@
 <translation id="3741998951694470470">इम्पोर्ट करने के लिए डेटा नहीं आ पाया</translation>
 <translation id="7900950536120202771">IPFS नोड की अंदरूनी गड़बड़ी</translation>
 <translation id="1036635552229153800">डेटा सफलतापूर्वक अपलोड किया गया था, लेकिन Brave-इम्पोर्ट डायरेक्टरी में नहीं ले जाया गया. आप इसे मैन्युअल रूप से इम्पोर्ट आयात सेटिंग्स पेज पर कर सकते हैं.</translation>
-<translation id="7789840864192026963">अनुमति दें</translation>
-<translation id="7978789143098237970">जब तक मैं इस पृष्ठ को बंद नहीं करता</translation>
+<translation id="572392919096807438">मेरेे निर्णय को याद रखें</translation>
+<translation id="7978789143098237970">जब तक मैं इस पेज को बंद नहीं करता</translation>
 <translation id="3523195733429162409">24 घंटे के लिए</translation>
 <translation id="2373264732659722940">1 सप्ताह के लिए</translation>
 <translation id="6318437367327684789">हमेशा के लिए</translation>
-<translation id="7463327191540031132">हमेशा के लिए ब्लॉक करें</translation>
 <translation id="8797999629784150206">आप अपना <ph name="SITE_PERMISSIONS"/> at any time. <ph name="LEARN_MORE"/> बदल सकते हैं</translation>
 <translation id="581582843259146919">साइट की अनुमति</translation>
 <translation id="7701466644604753106">स्पीड रीडर चालू करें</translation>
 <translation id="763042262431778831">स्‍पीडरीडर बंद करें</translation>
+<translation id="1544192797660353713">वॉलेट</translation>
+<translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -850,4 +856,21 @@
 <translation id="6951743416068151209">टॉर प्रॉक्सी यूआराई</translation>
 <translation id="1671503397662036257">टॉर कनेक्शन की स्थिति</translation>
 <translation id="6024292492796847324">टॉर के शुरू होने की स्थिति</translation>
+<translation id="7586151660465233733"><ph name="SITE_NAME"/> पर और मार्केट</translation>
+<translation id="952067063131306699">FTX पर मार्केट देखें और क्रिप्टो ट्रेड करें</translation>
+<translation id="5963745988819586370">मार्केट</translation>
+<translation id="3795943412467785186">अकाउंट की राशि देखने के लिए FTX अकाउंट से कनेक्ट करें, भविष्य के मार्केट आज़माएँ, &amp; क्रिप्टो में बदलें.</translation>
+<translation id="926958206891985289">भविष्य के बाजार देखें</translation>
+<translation id="6804537228302563756">अकाउंट कनेक्ट करें</translation>
+<translation id="5019698312620117604">24 घंटे का मूल्य इतिहास</translation>
+<translation id="8720719072204443171">24 घंटे की मात्रा</translation>
+<translation id="3891414008432200754">मूल्य</translation>
+<translation id="7723176927437578611">बढ़ें</translation>
+<translation id="2983078329159689577">सबमिट किया जा रहा है...</translation>
+<translation id="6641102760094059194">(<ph name="NUMBER_OF_SECONDS_LEFT"/>s)को कन्फ़र्म करें</translation>
+<translation id="2280055104463448482">बदलाव सफ़ल रहा</translation>
+<translation id="7590653073560839711">बदलने के लिए आपको कम से कम एक मुद्रा में शेष राशि की आवश्यकता होगी.</translation>
+<translation id="4390079506197726228"><ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/> उपलब्ध है</translation>
+<translation id="6973157709854838218">अपना बैलेंस दिखाने से छुपाएं</translation>
+<translation id="4548946945059463969">अपना बैलेंस स्क्रीन पर दिखाएं</translation>
 </translationbundle>

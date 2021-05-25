@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Permitir tweets incrustados de Twitter</translation>
 <translation id="958971637207126733">Permitir mensajes incrustados de LinkedIn</translation>
 <translation id="6302422639282249274">Gestionar Brave Rewards</translation>
-<translation id="1506061864768559482">Motor de búsqueda</translation>
 <translation id="1468415711258933398">Pestaña Estándar</translation>
 <translation id="3377025655491224618">Pestaña Privada</translation>
 <translation id="9148058034647219655">Salir</translation>
-<translation id="520895744850022668">HTTPS en cualquier sitio</translation>
-<translation id="8710614491157212477">Abre sitios compatibles que utilicen HTTPS en lugar de HTTP cuando sea posible.</translation>
-<translation id="4022987104439075738">Puerta de enlace IPFS</translation>
-<translation id="2688519859165248360">Permite la navegación hacia recursos IPFS mediante una puerta de enlace IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Servicio de nombres de Ethereum</translation>
 <translation id="3894650624018948468">Resolver el método</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Deshabilitado</translation>
 <translation id="2218918398178303658">DNS sobre HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Ad Block</translation>
-<translation id="1934885595886623674">Evita que se carguen los anuncios</translation>
-<translation id="7458422973722236530">Protección de huella digital</translation>
 <translation id="5787084571334399599">Evita que el navegador tome tu huella digital</translation>
 <translation id="7459000603787995422">Cerrar pestañas al salir</translation>
 <translation id="1680858055899097121">No guardar las pestañas entre sesiones de navegación</translation>
-<translation id="6469509880167172749">Enviar automáticamente los análisis de productos de manera completamente privada a Brave</translation>
-<translation id="7090566321964540749">Esta información anónima solo le permite a Brave estimar el uso general de ciertas funciones.</translation>
+<translation id="7142548388914389999">Enviar automáticamente los análisis de productos de manera completamente privada a Brave</translation>
+<translation id="5469408008145872264">Esta información anónima solo le permite a Brave estimar el uso general de ciertas funciones.</translation>
 <translation id="7977176350719484850">Est. de datos\nahorrados</translation>
 <translation id="9008534313521214777">Estimación de tiempo ahorrado</translation>
 <translation id="6572660632052512096">Modo Escritorio</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Preferir la versión de escritorio de los sitios web</translation>
 <translation id="1842747674580016420">Reproducción de vídeo en Brave</translation>
 <translation id="5368992950177874750">Si está habilitado, los vídeos se reproducirán en Brave en vez de en la aplicación correspondiente</translation>
-<translation id="2645380101799517405">Controles</translation>
 <translation id="5965081608816406060">Reproducción de vídeo en segundo plano</translation>
 <translation id="6332924730165919598">Cerrando todas las pestañas se cierra Brave</translation>
 <translation id="1580125697191336644">Experimental. Permite reproducir audio de vídeo en segundo plano cuando la pestaña no está activa o la pantalla del dispositivo está apagada. Intenta cambiar al modo de escritorio si esta característica no funciona.</translation>
@@ -293,11 +284,10 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="5657156137487675418">Permitir todas las cookies</translation>
 <translation id="3895527457258986253">Bloquear fingerprinting</translation>
 <translation id="184568144098869637">Impide que el navegador reconozca tu dispositivo</translation>
-<translation id="7396366757003005317">Bloqueo de huellas digitales (estricto, podría romper sitios)</translation>
-<translation id="700453611199558021">Bloqueo de huellas digitales (estándar)</translation>
+<translation id="7445306466605902444">Bloqueo de huellas digitales (estricto, podría romper sitios)</translation>
+<translation id="5582686930349810484">Bloqueo de huellas digitales (estándar)</translation>
 <translation id="769702552748212954">Permitir cualquier fingerprinting</translation>
 <translation id="876424292214881779">Anuncios y otros elementos desagradables bloqueados</translation>
-<translation id="5142293891785304489">Bloqueo de programas de seguimiento y anuncios, \nentre otros</translation>
 <translation id="6930134873084561197">Los sitios a menudo incluyen cookies y secuencias de comandos que intentan identificarle a usted y al dispositivo. Quieren saber quién es y controlarle a través de un mecanismo de seguimiento web para conocer lo que hace en cada sitio.n\nBrave bloquea estos mecanismos para que pueda navegar sin que le sigan.</translation>
 <translation id="8553998445606452168">Acerca de Escudos Brave</translation>
 <translation id="8912304686498704084">ACTIVOS</translation>
@@ -310,7 +300,6 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="5299848999918506028">¡Gracias!</translation>
 <translation id="76550953340008122">Gracias por informar a los desarrolladores de Brave sobre posibles errores en este sitio. ¡Haremos todo lo posible para arreglarlo!</translation>
 <translation id="650318023204990401">Controles avanzados</translation>
-<translation id="7182293319417450928">Se requiere un saldo mínimo de 25 BAT para hacer la verificación.</translation>
 <translation id="1275664486910646411">Mostrar los sitios principales en autocompletar</translation>
 <translation id="5516010970279932133">Mostrar los sitios sugeridos en autocompletar</translation>
 <translation id="5370478469168390143">Guardar datos en línea</translation>
@@ -379,7 +368,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="1880168210969863408">¡Genial! Te has ahorrado 10 minutos de tiempo de carga con el navegador Brave.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Empiece a navegar para ver el informe de privacidad</translation>
 <translation id="9080777565335515917">Establezca Brave como su navegador predeterminado para tener una navegación privada y segura.</translation>
-<translation id="1390943217516275883">Permite a brave mostrar sus estadísticas de privacidad.</translation>
+<translation id="1390943217516275883">Permite a Brave mostrar tus estadísticas de privacidad</translation>
 <translation id="1763352720905582220">Envía un informe de privacidad semanal</translation>
 <translation id="1811691435325545066">Eliminar todos los datos de informes de privacidad</translation>
 <translation id="8089997572759938512">Restablece tus informes de privacidad a cero</translation>
@@ -484,9 +473,6 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="3184805785843994538">Brave Shields bloquea los rastreadores y los anuncios, ahorra datos y le permite aprovechar el tiempo en cada sitio que visita.</translation>
 <translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
 <translation id="3479552764303398839">Ahora no</translation>
-<translation id="6232491755501685494">Brave Rewards en Japón cambia de sistema.</translation>
-<translation id="7444515017164572362">A partir del 13 de marzo, ya no podrás usar tu BAP. Pero una vez que actualices al nuevo sistema en abril, ¡podrás volver a empezar con fichas nuevas!</translation>
-<translation id="8587285254008006694">Como parte de esta transición, las funciones de contribución y propinas de tu navegador dejarán de estar disponibles a partir del 13 de marzo, y tu saldo de BAP mostrará 0.0 hasta que hayas actualizado al nuevo sistema en abril. Una vez que uses el nuevo sistema, ¡volverás a comenzar con nuevas fichas!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -506,4 +492,9 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="5825943197137337319">Solo interfaz pública por defecto</translation>
 <translation id="1689062823386843231">Desactivar el UDP sin proxy</translation>
 <translation id="3171931580569169744">Habilitar grupos de pestañas</translation>
+<translation id="5587305863196367357">Verificar tu cartera te permite gestionar tus fondos de manera más eficaz, añadiéndolos y retirándolos.</translation>
+<translation id="5760671211380791582">No tienes suficientes BAT.</translation>
+<translation id="6960458596933484861">Necesitas 15 BAT como mínimo para crear una cartera Uphold verificada. Inténtalo de nuevo más tarde.</translation>
+<translation id="4389085954549744469">Si ya tienes una cuenta Uphold verificada, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continúa para iniciar sesión</translation>
 </translationbundle>

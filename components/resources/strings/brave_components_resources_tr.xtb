@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Brave Together'da dostlarınız ve iş arkadaşlarınızla sınırsız aramalar başlatın.</translation>
 <translation id="7115051913071512405">Deneyin</translation>
 <translation id="7415602225677446066">Bugünün en çok okunan hikayeleri tamamen özel bir akışta, yalnızca sizin için.</translation>
-<translation id="8607689491789524900">Brave Today, cihazınızdaki ilgi alanlarınızı eşleştirir, böylece kişisel bilgileriniz tarayıcınızdan asla ayrılmaz. Gün boyunca güncellenen yeni içerikler.</translation>
+<translation id="6903061332999399632">Brave News, cihazınızda eşlenen tamamen gizli ve anomimleştirilmiş reklamlarla desteklenir. Sahip olduğumuz <ph name="LINK_START"/>privacy policy<ph name="LINK_END"/> uyarınca kişisel bilgileriniz daima gizli kalır.</translation>
+<translation id="7823038307453615214">Brave News'i Göster</translation>
+<translation id="780301667611848630">Hayır, teşekkürler</translation>
 <translation id="9164544612367905452">Getiriliyor</translation>
 <translation id="1276592121036104130">Yeni içerik yükle</translation>
-<translation id="4210987321913275328">Brave Today için Kaydırın</translation>
-<translation id="3122595178900736207">Brave Today kaynaklarını sıfırlayın</translation>
-<translation id="2197023915568148978">Tüm Brave Today yayıncı seçimleriniz varsayılan haline sıfırlansın mı?</translation>
+<translation id="2875288128871360696">Brave News için kaydırın</translation>
+<translation id="8510120023634509743">Brave News kaynaklarını sıfırla</translation>
+<translation id="75825199302994272">Tüm Brave News yayıncı seçimleriniz varsayılan haline sıfırlansın mı?</translation>
 <translation id="954001034349395856">Tüm kaynaklar</translation>
 <translation id="8890516388109605451">Kaynaklar</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>'den içeriği devre dışı bırakın</translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">Bağlı</translation>
 <translation id="8030169304546394654">Bağlantı kesildi</translation>
 <translation id="3149306599361260465">%[[percentage]] başlatılıyor</translation>
+<translation id="3258793718986637767">Tor ile sorun mu yaşıyorsunuz? <ph name="BEGIN_LINK"/>Tor ile gizli pencereyi devre dışı bırakıp<ph name="END_LINK"/> tekrar açmayı deneyin.</translation>
 <translation id="4272382368346338917">Ek Filtreler</translation>
 <translation id="8949292968394988358">Uyarı: Çok fazla filtre açmak performansı düşürecektir</translation>
 <translation id="8686201964111147748">Engellenen toplam reklam ve izleyici:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Cüzdanımı doğrula</translation>
 <translation id="6609621505400013054">bitFlyer cüzdanı; bitFlyer, Inc tarafından yönetilen bir hizmettir.</translation>
 <translation id="7258399883616914635">Cüzdanınızı doğrulayarak ve bir bitFlyer hesabına bağlayarak, Brave Rewards aracılığıyla kazandığınız tokenleri daha kolay depolayabilecek ve yönetebileceksiniz</translation>
+<translation id="1411121707906693782">Brave tarayıcınızı bitFlyer hesabınızla nasıl bağlayacağınız hakkında <ph name="LINK_BEGIN"/>daha fazla bilgi alın<ph name="LINK_END"/>.</translation>
 <translation id="5094577350232361255">hakkında</translation>
 <translation id="4918086044614829423">Kabul et</translation>
 <translation id="5916290544882167205">Brave Software. Brave, Brave Software'in tescilli bir markasıdır. Site isimleri marka ya da site sahibinin tescilli markası olabilir.</translation>
@@ -736,6 +740,7 @@
 <translation id="1833248467354516560">Birim Fiyatı</translation>
 <translation id="4763179765154524864">Toplam Harcama</translation>
 <translation id="8851480289992540512">Toplam Alınan</translation>
+<translation id="8624961452383848703">Dönüştürmek istiyorum...</translation>
 <translation id="616639131065447379">Brave Kripto Cüzdan'a Hoşgeldiniz</translation>
 <translation id="1740464057879304704">Kripto Cüzdan, Brave'de kripto para birimi ve ilgili varlıklar ile çalışmanızı sağlar. Kripto Cüzdan, tahsil edilebilenler kadar ETH ve BAT gibi Ethereum jetonlarını da destekler ve Ðuygulamalr ile diğer akıllı kontratlar ile çalışmanıza izin verir. Bunların hepsi Ethereum'a ve diğer blok zinciri sistemlerine — aşina olanlar ile öğrenmeye hevesli olanlar içindir.</translation>
 <translation id="4855440621031541830">Kripto Cüzdanı, bu kullanımdan doğabilecek tüm risklerden sadece kendinizin sorumlu olduğunu ve Brave Yazılımının, tesadüfen veya sonunda bu kullanımdan yaşayabileceğiniz zararlar dahil, hiçbir sorumluluk ya da yükümlülük taşımadığını kabul ediyorsanız kullanın.</translation>
@@ -831,16 +836,17 @@
 <translation id="3741998951694470470">İçe aktarılacak veri getirilemedi</translation>
 <translation id="7900950536120202771">IPFS düğümü dahili hatası</translation>
 <translation id="1036635552229153800">Veri başarıyla yüklendi ancak brave-import dizinine taşınmadı. İçe aktarma ayarları sayfasında bu işlemi manuel olarak yapabilirsiniz.</translation>
-<translation id="7789840864192026963">İzin ver</translation>
-<translation id="7978789143098237970">ben bu sayfayı kapatana kadar</translation>
+<translation id="572392919096807438">Kararımı hatırla</translation>
+<translation id="7978789143098237970">ben siteyi kapatana kadar</translation>
 <translation id="3523195733429162409">24 saat için</translation>
 <translation id="2373264732659722940">1 hafta için</translation>
 <translation id="6318437367327684789">hep</translation>
-<translation id="7463327191540031132">Hep engelle</translation>
 <translation id="8797999629784150206"><ph name="SITE_PERMISSIONS"/> istediğiniz zaman değiştirebilirsiniz. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">site izni</translation>
 <translation id="7701466644604753106">Speedreader'ı Aç</translation>
 <translation id="763042262431778831">Speedreader'ı Kapat</translation>
+<translation id="1544192797660353713">Cüzdan</translation>
+<translation id="8488282162676695335">Brave Cüzdan</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>
@@ -849,4 +855,21 @@
 <translation id="6951743416068151209">Tor Proxy URL'si</translation>
 <translation id="1671503397662036257">Tor Bağlantı Durumu</translation>
 <translation id="6024292492796847324">Tor Başlatma İlerlemesi</translation>
+<translation id="7586151660465233733">Daha fazla piyasa <ph name="SITE_NAME"/> adresinde</translation>
+<translation id="952067063131306699">FTX'de piyasaları görüntüleyin ve kripto ticareti yapın</translation>
+<translation id="5963745988819586370">Piyasalar</translation>
+<translation id="3795943412467785186">Hesap bakiyesini görüntülemek, vadeli işlem piyasalarını keşfetmek ve kripto dönüştürmek için FTX hesabını bağlayın.</translation>
+<translation id="926958206891985289">Vadeli İşlem Piyasalarını Görüntüle</translation>
+<translation id="6804537228302563756">Hesabı Bağla</translation>
+<translation id="5019698312620117604">24 saatlik fiyat geçmişi</translation>
+<translation id="8720719072204443171">24 saatlik hacim</translation>
+<translation id="3891414008432200754">Fiyat</translation>
+<translation id="7723176927437578611">Gelir</translation>
+<translation id="2983078329159689577">Gönderiliyor...</translation>
+<translation id="6641102760094059194">Onayla (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Dönüştürme Başarılı!</translation>
+<translation id="7590653073560839711">Dönüştürme yapmak için en az bir para biriminde bakiyeniz olmalıdır.</translation>
+<translation id="4390079506197726228">Mevcut <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Bakiyenizi ekranda gizleyin</translation>
+<translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 </translationbundle>

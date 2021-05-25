@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Permite tweet-uri încorporate Twitter</translation>
 <translation id="958971637207126733">Permite postări LinkedIn încorporate</translation>
 <translation id="6302422639282249274">Administrați recompensele Brave</translation>
-<translation id="1506061864768559482">Motor de căutare</translation>
 <translation id="1468415711258933398">Pagină standard</translation>
 <translation id="3377025655491224618">Filă incognito</translation>
 <translation id="9148058034647219655">Ieși</translation>
-<translation id="520895744850022668">HTTPS peste tot</translation>
-<translation id="8710614491157212477">Deschide site-urile acceptate folosind HTTPS în loc de HTTP, atunci când este posibil</translation>
-<translation id="4022987104439075738">Gateway IPFS</translation>
-<translation id="2688519859165248360">Permite navigarea spre resurse IPFS printr-un gateway IPFS</translation>
 <translation id="7534079972563542000">Domenii Unstoppable</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metodă de rezolvare</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Dezactivat</translation>
 <translation id="2218918398178303658">DNS prin HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Blocare reclame</translation>
-<translation id="1934885595886623674">Împiedică încărcarea reclamelor</translation>
-<translation id="7458422973722236530">Protecție amprentare</translation>
 <translation id="5787084571334399599">Previne amprentarea browserului</translation>
 <translation id="7459000603787995422">Închideți paginile la ieșire</translation>
 <translation id="1680858055899097121">Nu păstra paginile între sesiunile de navigare</translation>
-<translation id="6469509880167172749">Trimiteți automat statistici de produs complet private către Brave</translation>
-<translation id="7090566321964540749">Folosind aceste informații anonime, Brave poate numai să estimeze utilizarea totală a anumitor funcții.</translation>
+<translation id="7142548388914389999">Trimiteți automat statistici de produs complet private către Brave</translation>
+<translation id="5469408008145872264">Folosind aceste informații anonime, Brave poate numai să estimeze utilizarea totală a anumitor funcții.</translation>
 <translation id="7977176350719484850">Date est.\neconomisite</translation>
 <translation id="9008534313521214777">Timp\neconomisit estimat</translation>
 <translation id="6572660632052512096">Mod desktop</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Se preferă versiunea desktop a siteurilor</translation>
 <translation id="1842747674580016420">Redare video în Brave</translation>
 <translation id="5368992950177874750">Dacă este activat, fișierele video vor fi redate pe Brave în loc de aplicația corespondentă</translation>
-<translation id="2645380101799517405">Controale</translation>
 <translation id="5965081608816406060">Redare fișier video în fundal</translation>
 <translation id="6332924730165919598">Închiderea tuturor paginilor închide și Brave</translation>
 <translation id="1580125697191336644">Experimental. Permite redarea audio de pe video în fundal când pagina nu este activă sau ecranul dispozitivului este închis. Încercați să treceți pe modul desktop dacă această funcție nu funcționează.</translation>
@@ -292,11 +283,10 @@ lună...</translation>
 <translation id="5657156137487675418">Permite toate cookie-urile</translation>
 <translation id="3895527457258986253">Blocare amprentare</translation>
 <translation id="184568144098869637">Împiedică browserul să vă recunoască dispozitivul</translation>
-<translation id="7396366757003005317">Amprentare blocată (strictă, poate să afecteze siteurile)</translation>
-<translation id="700453611199558021">Amprentare blocată (standard)</translation>
+<translation id="7445306466605902444">Amprentare blocată (strictă, poate să afecteze siteurile)</translation>
+<translation id="5582686930349810484">Amprentare blocată (standard)</translation>
 <translation id="769702552748212954">Permite toată amprentarea</translation>
 <translation id="876424292214881779">Reclame și alte chestii dubioase blocate</translation>
-<translation id="5142293891785304489">Trackere, reclame și\nmulte altele blocate</translation>
 <translation id="6930134873084561197">Site-urile adesea includ module cookie și scripturi care încearcă să vă identifice pe dvs. și dispozitivul dvs. Vor să afle cine sunteți și vă urmăresc pe internet, monitorizându-vă activitatea pe fiecare site.\n\nBrave le blochează astfel încât să puteți naviga pe internet fără să fiți urmărit.</translation>
 <translation id="8553998445606452168">Despre scuturile Brave</translation>
 <translation id="8912304686498704084">SUS</translation>
@@ -309,7 +299,6 @@ lună...</translation>
 <translation id="5299848999918506028">Mulțumim!</translation>
 <translation id="76550953340008122">Vă mulțumim că i-ați anunțat pe dezvoltatorii Brave că ceva nu este în regulă cu acest site. Vom face tot ce ne stă în putință ca să rezolvăm problema!</translation>
 <translation id="650318023204990401">Controale avansate</translation>
-<translation id="7182293319417450928">Un sold minim de 25 BAT este necesar pentru verificare.</translation>
 <translation id="1275664486910646411">Afișați site-urile în completarea automată</translation>
 <translation id="5516010970279932133">Afișați site-urile sugerate în completarea automată</translation>
 <translation id="5370478469168390143">Salvați datele online</translation>
@@ -483,14 +472,6 @@ lună...</translation>
 <translation id="3184805785843994538">Brave Shield blochează programele de urmărire și reclamele, economisește date și timp pe fiecare website pe care îl accesați.</translation>
 <translation id="8722651357687610395">Setați Brave ca browser prestabilit</translation>
 <translation id="3479552764303398839">Nu acum</translation>
-<translation id="6232491755501685494">Brave Rewards din Japonia trece la un sistem nou!</translation>
-<translation id="7444515017164572362">Începând cu 13 martie, nu veți putea să folosiți BAP. Dar după ce
-        faceți actualizarea către noul sistem în aprilie, veți începe cu tokenuri noi!</translation>
-<translation id="8587285254008006694">Ca parte a acestei tranziții, funcțiile de trimitere de bacșiș și contribuire din
-        browser-ul dvs. vor fi indisponibile temporar începând cu 13 martie, iar
-        soldul dvs. BAP va afișa 0,0 până când faceți actualizarea către noul sistem
-        în aprilie. După ce veți intra în sistemul nou, veți începe cu
-        tokenuri noi!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -510,4 +491,9 @@ lună...</translation>
 <translation id="5825943197137337319">Doar interfața publică implicită</translation>
 <translation id="1689062823386843231">Dezactivează UDP fără proxy</translation>
 <translation id="3171931580569169744">Activați grupurile de file</translation>
+<translation id="5587305863196367357">După ce confirmați portofelul, puteți gestiona fondurile mai eficient, având posibilitatea de a efectua depuneri și retrageri</translation>
+<translation id="5760671211380791582">Nu aveți suficiente token-uri BAT.</translation>
+<translation id="6960458596933484861">Aveți nevoie de minimum 15 BAT pentru a crea un portofel Uphold confirmat. Încercați din nou mai târziu!</translation>
+<translation id="4389085954549744469">Dacă aveți deja un cont Uphold confirmat, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continuați la conectare</translation>
 </translationbundle>

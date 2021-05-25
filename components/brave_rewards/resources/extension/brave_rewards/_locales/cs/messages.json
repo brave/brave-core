@@ -819,6 +819,18 @@
     "message": "Ověření peněženky a její propojení s účtem bitFlyer vám umožní snáze ukládat a spravovat tokeny, které jste získali prostřednictvím Brave Rewards",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Zjistěte více$link_end$ o tom, jak propojit váš prohlížeč Brave s vaším účtem bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards v Japonsku přechází na nový systém!",
     "description": "Header text for BAP deprecation warning message"

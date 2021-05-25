@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Embedded tweets van Twitter toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
 <translation id="6302422639282249274">Beheer Brave Rewards</translation>
-<translation id="1506061864768559482">Zoekmachine</translation>
 <translation id="1468415711258933398">Standaard Tab</translation>
 <translation id="3377025655491224618">Incognitotabblad</translation>
 <translation id="9148058034647219655">Sluiten</translation>
-<translation id="520895744850022668">Overal HTTPS</translation>
-<translation id="8710614491157212477">Opent indien mogelijk ondersteunde sites met HTTPS in plaats van HTTP</translation>
-<translation id="4022987104439075738">IPFS-gateway</translation>
-<translation id="2688519859165248360">Staat navigatie naar IPFS-hulpmiddelen toe met een IPFS-gateway</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Methode omzetten</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Uitgeschakeld</translation>
 <translation id="2218918398178303658">DNS met HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Advertentieblok</translation>
-<translation id="1934885595886623674">Voorkomt dat advertenties worden geladen</translation>
-<translation id="7458422973722236530">Vingerafdrukbescherming</translation>
 <translation id="5787084571334399599">Voorkomt dat de browser vingerafdrukken neemt</translation>
 <translation id="7459000603787995422">Tabbladen sluiten bij afsluiten</translation>
 <translation id="1680858055899097121">Blijf niet tussen tabbladen doorbladeren.</translation>
-<translation id="6469509880167172749">Stuur automatisch volledig privé productanalyses naar Brave</translation>
-<translation id="7090566321964540749">Met deze anonieme info kan Brave alleen het algehele gebruik van bepaalde functies schatten.</translation>
+<translation id="7142548388914389999">Stuur automatisch volledig privé productanalyses naar Brave</translation>
+<translation id="5469408008145872264">Met deze anonieme info kan Brave alleen het algehele gebruik van bepaalde functies schatten.</translation>
 <translation id="7977176350719484850">Geschatte hoeveelheid\ndata bespaard</translation>
 <translation id="9008534313521214777">Gem. Bespaarde\nTijd</translation>
 <translation id="6572660632052512096">Desktop-modus</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Voorkeur voor desktopversie van sites</translation>
 <translation id="1842747674580016420">Video afspelen in Brave</translation>
 <translation id="5368992950177874750">Indien ingeschakeld, worden video's afgespeeld in Brave in plaats van de bijbehorende app</translation>
-<translation id="2645380101799517405">Besturing</translation>
 <translation id="5965081608816406060">Achtergrondvideo afspelen</translation>
 <translation id="6332924730165919598">Als je alle tabbladen sluit, wordt Brave gesloten</translation>
 <translation id="1580125697191336644">Experimenteel. Hiermee kun je audio van video op de achtergrond afspelen wanneer het tabblad niet actief is of het apparaatscherm is uitgeschakeld. Probeer over te schakelen naar de bureaubladmodus als deze functie niet werkt.</translation>
@@ -291,11 +282,10 @@ deze maand...</translation>
 <translation id="5657156137487675418">Sta alle cookies toe</translation>
 <translation id="3895527457258986253">Blokkeer fingerprinting</translation>
 <translation id="184568144098869637">Voorkomt dat browsers je apparaat herkennen</translation>
-<translation id="7396366757003005317">Vingerafdruk geblokkeerd(strikt, kan ervoor zorgen dat sites niet werken)</translation>
-<translation id="700453611199558021">Vingerafdruk geblokkeerd(standaard)</translation>
+<translation id="7445306466605902444">Vingerafdruk geblokkeerd(strikt, kan ervoor zorgen dat sites niet werken)</translation>
+<translation id="5582686930349810484">Vingerafdruk geblokkeerd(standaard)</translation>
 <translation id="769702552748212954">Sta alle vingerafdrukken toe</translation>
 <translation id="876424292214881779">Advertenties en andere griezelige dingen zijn geblokkeerd</translation>
-<translation id="5142293891785304489">Trackers, advertenties en meer geblokkeerd</translation>
 <translation id="6930134873084561197">Sites bevatten vaak cookies en scripts die zowel jou als je apparaat proberen te identificeren. Ze willen erachter komen wie je bent en je volgen over het hele web; ze volgen op elke site wat je doet.\n\nBrave blokkeert deze dingen, zodat je kunt surfen zonder dat je gevolgd wordt.</translation>
 <translation id="8553998445606452168">Over Brave Shields</translation>
 <translation id="8912304686498704084">BOVEN</translation>
@@ -308,7 +298,6 @@ deze maand...</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
 <translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
 <translation id="650318023204990401">Geavanceerde instellingen</translation>
-<translation id="7182293319417450928">Een minimumsaldo van 25 BAT is vereist om te controleren.</translation>
 <translation id="1275664486910646411">Toon top sites voor automatisch aanvullen</translation>
 <translation id="5516010970279932133">Toon voorgesteld sites voor automatisch aanvullen</translation>
 <translation id="5370478469168390143">Sla gegevens online op</translation>
@@ -484,14 +473,6 @@ Beschikbaar</translation>
 <translation id="3184805785843994538">Brave Shields blokkeert trackers &amp; advertenties, bespaart data, en bespaart tijd op elke website die u bezoekt.</translation>
 <translation id="8722651357687610395">Stel Brave in als standaard</translation>
 <translation id="3479552764303398839">Niet nu</translation>
-<translation id="6232491755501685494">Brave Rewards gaat in Japan over naar een nieuw systeem!</translation>
-<translation id="7444515017164572362">Vanaf 13 maart kunt u uw BAP niet meer gebruiken. Maar zodra u
-        in April update naar het nieuwe systeem, zult u beginnen met nieuwe tokens!</translation>
-<translation id="8587285254008006694">Als onderdeel van deze overgang zullen de fooi- en bijdragefuncties in
-        uw browser vanaf 13 maart tijdelijk niet beschikbaar zijn, en
-        uw BAP-saldo zal 0,0 aangeven totdat u bent overgeschakeld op het nieuwe systeem
-        in april. Zodra u op het nieuwe systeem bent, zult u beginnen met nieuwe
-        tokens!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -511,4 +492,9 @@ Beschikbaar</translation>
 <translation id="5825943197137337319">Alleen standaard openbare interface</translation>
 <translation id="1689062823386843231">Deactiveer non-proxied UDP</translation>
 <translation id="3171931580569169744">Tabbladgroepen inschakelen</translation>
+<translation id="5587305863196367357">Door uw wallet te verifiëren, kunt u uw geld efficiënter beheren en eenvoudiger geld toevoegen en opnemen</translation>
+<translation id="5760671211380791582">U hebt niet genoeg BAT.</translation>
+<translation id="6960458596933484861">U moet minimaal 15 BAT hebben om een Uphold-wallet aan te maken. Probeer het later opnieuw.</translation>
+<translation id="4389085954549744469">Indien u al een geverifieerd Uphold-account hebt, kunt u zich <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">aanmelden</translation>
 </translationbundle>

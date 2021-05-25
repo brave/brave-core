@@ -67,19 +67,21 @@
 <translation id="3159285901314605198">背景画像</translation>
 <translation id="385051799172605136">戻る</translation>
 <translation id="9024104284526126630">Braveでプライベート通話を開始できます。</translation>
-<translation id="5735801688206890393">「Brave Together」で友人や同僚と無制限の通話を開始します。</translation>
-<translation id="7115051913071512405">お試しください</translation>
+<translation id="5735801688206890393">「Brave Together」で友人や同僚と無制限の通話を始めよう。</translation>
+<translation id="7115051913071512405">試してみる</translation>
 <translation id="7415602225677446066">Brave Todayは、読みたい記事が上がってくるプライベート・ニュースリーダー。</translation>
-<translation id="8607689491789524900">300以上のメディアから、コンテンツの追加が可能です。あなたの興味とのマッチングはデバイス上で完結するため、個人情報は一切、外に出ません。記事は1日中、更新されます。</translation>
-<translation id="9164544612367905452">フェッチしています…</translation>
+<translation id="6903061332999399632">Brave Newsでは、デバイスに一致する匿名化された完全非公開の広告提供があります。お客様の個人情報は、当社<ph name="LINK_START"/>プライバシーポリシー<ph name="LINK_END"/>に従い常に非公開のままです。</translation>
+<translation id="7823038307453615214">Brave Newsを表示</translation>
+<translation id="780301667611848630">利用しない</translation>
+<translation id="9164544612367905452">コンテンツを取得しています…</translation>
 <translation id="1276592121036104130">新しいコンテンツを読み込む</translation>
-<translation id="4210987321913275328">Brave Todayのスクロール</translation>
-<translation id="3122595178900736207">Brave Todayのソースをリセット</translation>
-<translation id="2197023915568148978">すべてのBrave Todayのパブリッシャーの選択をデフォルトにリセットしますか？</translation>
+<translation id="2875288128871360696">Brave Newsをスクロールして閲覧</translation>
+<translation id="8510120023634509743">Brave Newsのソースをリセット</translation>
+<translation id="75825199302994272">Brave Newsパブリッシャーのすべての選択をデフォルトにリセットしますか？</translation>
 <translation id="954001034349395856">すべてのソース</translation>
 <translation id="8890516388109605451">ソース</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>のコンテンツを無効にする</translation>
-<translation id="3189348785087463371">プロモートされました</translation>
+<translation id="3189348785087463371">プロモーション</translation>
 <translation id="1776831331757823105">時刻表示</translation>
 <translation id="7791543448312431591">追加</translation>
 <translation id="7679334366167089823">プライバシーを尊重する広告を見てトークンを獲得しましょう。</translation>
@@ -113,6 +115,7 @@
 <translation id="3368922792935385530">接続済み</translation>
 <translation id="8030169304546394654">切断されました</translation>
 <translation id="3149306599361260465">[[percentage]]%初期化中</translation>
+<translation id="3258793718986637767">Torに問題がある場合は、<ph name="BEGIN_LINK"/>Torを使用したプライベートウィンドウを無効に<ph name="END_LINK"/>してからもう一度開きます。</translation>
 <translation id="4272382368346338917">追加フィルター設定</translation>
 <translation id="8949292968394988358">警告：フィルターを設定し過ぎるとパフォーマンスが悪化します。</translation>
 <translation id="8686201964111147748">ブロック済みの広告とトラッカーの総数：</translation>
@@ -322,12 +325,12 @@
 <translation id="5814098892838785557">このクリエイターのサポートをやめてもよろしいですか？</translation>
 <translation id="3922777918343537463">毎月の寄付をキャンセルする</translation>
 <translation id="9087994290002662101">金額を変更</translation>
-<translation id="1969724076378550685">毎月のキャンセルを確認</translation>
+<translation id="1969724076378550685">毎月の支援のキャンセルを確認</translation>
 <translation id="2359808026110333948">続ける</translation>
 <translation id="6238322297266927861">寄付額：</translation>
 <translation id="1723857724166389190">このクリエイターへの毎月の寄付はキャンセルされました。</translation>
 <translation id="534368327994110883">あなたは現在このクリエイターをサポートしています</translation>
-<translation id="2621124276654521177">現在の月の寄付</translation>
+<translation id="2621124276654521177">現在の毎月の寄付</translation>
 <translation id="7723816962634734185">カスタム金額</translation>
 <translation id="7286679368056222644">毎月のサポート内容:</translation>
 <translation id="4088764345615745058">カスタムチップ金額</translation>
@@ -346,22 +349,22 @@
 <translation id="3669086939205397942">ちょっと待ってください、まだチップを渡すことはできません</translation>
 <translation id="3288812755711687300"><ph name="USER"/>の投稿</translation>
 <translation id="5851002232791947896"><ph name="USER"/>のツイート</translation>
-<translation id="5531915212947569943">あなたが去っていくは寂しいです…</translation>
+<translation id="5531915212947569943">お別れするのは寂しいです…</translation>
 <translation id="1420756770787071946">このクリエイターをサポート</translation>
 <translation id="3271043362279673449">サポートありがとうございます！</translation>
 <translation id="379596083010863211">ワンタイムチップが送信されました。</translation>
 <translation id="5096821444729034955">投稿に</translation>
 <translation id="2978223787436054634">サポートについてツイートする</translation>
 <translation id="6717671373796332174"><ph name="TOUR_LINK_BEGIN"/>クイックツアー<ph name="TOUR_LINK_END"/>をご覧いただくか、<ph name="LEARN_LINK_BEGIN"/>こちら<ph name="LEARN_LINK_END"/>から詳細をご覧ください。</translation>
-<translation id="7465614181960492526">トークンを獲得して還元する</translation>
+<translation id="7465614181960492526">トークンを獲得して還元しよう</translation>
 <translation id="2731539192954672606">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのサイトやコンテンツクリエイターを自動的にサポートします。</translation>
 <translation id="1275213816424141989">あとで</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
-<translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsロックスターとして歴史に名を残すための仕組みについてブラッシュアップしてください！</translation>
+<translation id="8622329973403382303">クイックツアーを見て仕組みを理解し、Rewardsロックスターとして歴史に名を残しましょう！</translation>
 <translation id="3115702351969988294">どれくらいの頻度で広告を見たいですか。</translation>
 <translation id="7532131110478098401">(1時間当たりの広告)</translation>
 <translation id="2951964054390325080">お気に入りのクリエイターに毎月どれだけ寄付したいですか。</translation>
-<translation id="3164498053837913829">(広告収入から)</translation>
+<translation id="3164498053837913829">(広告閲覧報酬収入から)</translation>
 <translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
 <translation id="6318696841371191107">クイックツアーに参加</translation>
 <translation id="8465790416279415448">続行することで、<ph name="TOS_LINK_BEGIN"/>利用規約<ph name="TOS_LINK_END"/>および<ph name="PP_LINK_BEGIN"/>プライバシーポリシー<ph name="PP_LINK_END"/>に同意するものとします。</translation>
@@ -383,7 +386,7 @@
 <translation id="6042317056594735519">チッピングは、あなたが好きなコンテンツやクリエイターを個人的に応援し、サポートする方法の1つです。チッピングしよう！</translation>
 <translation id="7509452925943421624">トークンで何ができますか？</translation>
 <translation id="5876169128756792273">トークンはクリエイターをサポートする以外にも使用できます。加盟店が参加すると、デジタルコンテンツやその他の商品を購入することができます。</translation>
-<translation id="1402530520078693620">最後に、基本設定を設定しましょう</translation>
+<translation id="1402530520078693620">最後に、基本設定を行いましょう</translation>
 <translation id="3494356595346329740">この設定は後で変更できます。</translation>
 <translation id="827315274423079662">やったー、準備完了です！</translation>
 <translation id="8268038362451312235">Brave Rewardsに参加することは、ウェブをより良い場所に変えていく助けになる素晴らしいことです！</translation>
@@ -740,6 +743,7 @@
 <translation id="1833248467354516560">ユニット価格</translation>
 <translation id="4763179765154524864">合計の費やした時間</translation>
 <translation id="8851480289992540512">受け取った合計</translation>
+<translation id="8624961452383848703">取引希望数量…</translation>
 <translation id="616639131065447379">Brave クリプトウォレットへようこそ</translation>
 <translation id="1740464057879304704">クリプトウォレットでは仮想通貨や関連する資産を Brave内で取り扱いできます。クリプトウォレットはETHやBATなどのイーサリアムのトークンやコレクティブに対応しており、Ðのアプリやその他のスマートコントラクトにも対応しています。これらは全てイーサリアムやその他のブロックチェーンシステム—を良くご存知の方や、これから学びたい方向けの機能です。</translation>
 <translation id="4855440621031541830">この使用に関連するすべてのリスクの責任はあなた自身にあり、Brave Softwareがこの使用の結果として被る可能性のある偶発的、または結果的損失を含むいかなる損失についても責任または義務を負わないことを受け入れる場合にのみ、クリプトウォレットを使用してください。</translation>
@@ -835,16 +839,17 @@
 <translation id="3741998951694470470">インポートするデータの取得に失敗しました</translation>
 <translation id="7900950536120202771">IPFSノード内部エラー</translation>
 <translation id="1036635552229153800">データは正常にアップロードされましたが、Braveのインポートディレクトリに移動されませんでした。この操作はインポート設定ページで手動で行うことができます。</translation>
-<translation id="7789840864192026963">許可を与える</translation>
-<translation id="7978789143098237970">私がこのページを閉じるまで</translation>
+<translation id="572392919096807438">この選択を保存</translation>
+<translation id="7978789143098237970">このサイトを閉じるまで</translation>
 <translation id="3523195733429162409">24時間</translation>
 <translation id="2373264732659722940">1週間</translation>
 <translation id="6318437367327684789">無期限</translation>
-<translation id="7463327191540031132">永久にブロックする</translation>
 <translation id="8797999629784150206"><ph name="SITE_PERMISSIONS"/>をいつでも変更できます。 <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">サイトのアクセス許可</translation>
 <translation id="7701466644604753106">Speedreaderをオンにする</translation>
 <translation id="763042262431778831">Speedreaderをオフにする</translation>
+<translation id="1544192797660353713">ウォレット</translation>
+<translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -853,4 +858,21 @@
 <translation id="6951743416068151209">TorプロキシURI</translation>
 <translation id="1671503397662036257">Tor接続ステータス</translation>
 <translation id="6024292492796847324">Tor初期化の進行状況</translation>
+<translation id="7586151660465233733">その他の市場を確認するには、<ph name="SITE_NAME"/>へ</translation>
+<translation id="952067063131306699">FTXで暗号通貨の市場を確認し、取引</translation>
+<translation id="5963745988819586370">市場</translation>
+<translation id="3795943412467785186">FTXアカウントを接続すると、アカウントの残高確認や先物市場の探索、暗号通貨の取引などが可能になります。</translation>
+<translation id="926958206891985289">先物市場を表示</translation>
+<translation id="6804537228302563756">アカウントを接続</translation>
+<translation id="5019698312620117604">24時間変動値</translation>
+<translation id="8720719072204443171">24時間取引量</translation>
+<translation id="3891414008432200754">価格</translation>
+<translation id="7723176927437578611">収益</translation>
+<translation id="2983078329159689577">送信中…</translation>
+<translation id="6641102760094059194">確認 (<ph name="NUMBER_OF_SECONDS_LEFT"/>秒)</translation>
+<translation id="2280055104463448482">交換が完了しました！</translation>
+<translation id="7590653073560839711">交換するには、1つ以上の通貨で残高が必要です。</translation>
+<translation id="4390079506197726228"><ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/>利用可能</translation>
+<translation id="6973157709854838218">残高を非表示</translation>
+<translation id="4548946945059463969">画面に残高を表示</translation>
 </translationbundle>

@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">選択された音声</translation>
 <translation id="7895302206188277628">リンクされたコンテンツ</translation>
 <translation id="4322612543319315652">選択したテキストをIPFSにインポート</translation>
+<translation id="8883166554766780543">インポートしてリンクをIPFSスナップショットにコピー</translation>
+<translation id="3654831858282189202">IPNSキーで公開</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
 <translation id="4703780849509456860">トーアのプライベートウィンドウでリンクを開く</translation>
 <translation id="3488584642074079080">Braveプライベートウィンドウ+Tor でリンクを開く</translation>
 <translation id="7475547933708221517">IPFSを使用してローカルファイルを共有</translation>
+<translation id="2286177249736199435">IPFSを使用してローカルフォルダを共有</translation>
 <translation id="784573715436258741">IPFSを使用してローカルファイルを共有</translation>
 <translation id="6313675821927505581">Torで新しいプライベートウィンドウを開く</translation>
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
+<translation id="575838692088926391">IPFSを使用してローカルフォルダを共有</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
@@ -158,7 +162,7 @@
 <translation id="4112587618563511470">同期コードが無効ですので、確認してからやり直してください。</translation>
 <translation id="2339730291919608488">同期チェーンから離れる</translation>
 <translation id="115699408012835975">Syncをリセットすると、データを同期するためには別なデバイスから同期コードを再入力する必要があります。本当に続行してもよろしいですか？</translation>
-<translation id="6092564993102418148">選択したデバイスを、同期チェーンから削除してもよろしいですか？</translation>
+<translation id="6092564993102418148">選択したデバイスを同期チェーンから削除してもよろしいですか？</translation>
 <translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
 <translation id="7473245612074035141">セットアップ開始</translation>
 <translation id="3411013544209536575">ヘルプのヒント</translation>
@@ -178,10 +182,23 @@
 <translation id="7090046810227878892">Dappsを使用するためのイーサリアムプロバイダー</translation>
 <translation id="5913089932885076110">開始時にクリプトウォレットをロードする</translation>
 <translation id="757886143331967039">起動時に非推奨のCryptoウォレット拡張機能を読み込む</translation>
+<translation id="1834467296210148203">Brave Walletのアイコンをツールバーに表示</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
 <translation id="5927916530277631319">「Unstoppable Domains」を解決する方法</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>からDNS over HTTPSとイーサリアムのプライバシーへの考慮に関する詳細をご確認ください。</translation>
 <translation id="5248318250177143470">イーサリアムネームサービス（ENS）を解決する方法</translation>
+<translation id="7024553202001112871">IPNSキーを設定</translation>
+<translation id="951216659045543447">対応する秘密キーでコンテンツに署名しIPNSへ公開</translation>
+<translation id="7611728475758612204">公開用キーを利用可能</translation>
+<translation id="911363100236037920">新しいキーの名前を入力</translation>
+<translation id="6358469157239228181">この名前は使用できません</translation>
+<translation id="8996633027318264334"><ph name="KEY_NAME"/>を削除しますか？</translation>
+<translation id="910215077892371264">ノードが起動されていません</translation>
+<translation id="616058968889448209">IPFSサービス起動エラー。詳細は<ph name="BEGIN_LINK"/>診断ページ<ph name="END_LINK"/>を参照</translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' キーのインポートに失敗しました</translation>
+<translation id="8275038454117074363">追加</translation>
+<translation id="3654980960391973513">生成</translation>
+<translation id="5531501313997312487">ノードの開始</translation>
 <translation id="9170907049676078643">IPFSリソースを解決する方法</translation>
 <translation id="1327977588028644528">ゲートウェイ</translation>
 <translation id="80225669816651290">ローカルノード</translation>
@@ -261,7 +278,10 @@
 <translation id="1391855377994926460">ウェブの閲覧をより高速に - 主要なニュースサイトよりも最大6倍速</translation>
 <translation id="9218430445555521422">デフォルトとして設定</translation>
 <translation id="3479552764303398839">後で</translation>
+<translation id="6040143037577758943">閉じる</translation>
+<translation id="5600566490506283344">Brave Adの通知</translation>
 <translation id="4877147287319222750">サイドバーに追加</translation>
+<translation id="4233010476457917696">サイドバーを表示</translation>
 <translation id="5404213409401164238">サイドバーを表示</translation>
 <translation id="7561196759112975576">常に</translation>
 <translation id="7060352228894039151">マウスオーバーで</translation>

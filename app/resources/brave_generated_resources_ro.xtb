@@ -69,15 +69,19 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4227945450504703638">Fișier audio selectat</translation>
 <translation id="7895302206188277628">Conținut corelat</translation>
 <translation id="4322612543319315652">Importați textul selectat în IPFS</translation>
+<translation id="8883166554766780543">Importați și copiați linkul la instantaneul IPFS</translation>
+<translation id="3654831858282189202">Publicați cu cheia IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
 <translation id="4703780849509456860">Deschide Link în Fereastră Privată cu Tor</translation>
 <translation id="3488584642074079080">Deschide Link în Fereastra Privată Brave cu Tor</translation>
 <translation id="7475547933708221517">Distribuiți fișierul local cu ajutorul IPFS</translation>
+<translation id="2286177249736199435">Distribuiți dosarul local cu ajutorul IPFS</translation>
 <translation id="784573715436258741">Distribuiți fișierul local cu ajutorul IPFS</translation>
 <translation id="6313675821927505581">Fereastră privată nouă cu Tor</translation>
 <translation id="2638041073279639246">Deschideți linkul în fereastră privată cu Tor</translation>
 <translation id="3425600262621021599">Deschideți linkul în fereastră privată Brave cu Tor</translation>
+<translation id="575838692088926391">Distribuiți dosarul local cu ajutorul IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
 <translation id="7924918279836988121">Serviciu Bat Ledger</translation>
@@ -157,7 +161,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4112587618563511470">Cod de sincronizare nevalid, verificați și încercați din nou.</translation>
 <translation id="2339730291919608488">Părăsire lanț de sincronizare</translation>
 <translation id="115699408012835975">Dacă resetați sincronizarea, va trebui să reintroduceți un cod de sincronizare de la alt dispozitiv pentru a vă sincroniza cu acesta. Sigur doriți să continuați?</translation>
-<translation id="6092564993102418148">Sunteți sigur că vreți să ștergeți dispozitivul selectat din lanțul de sincronizare?</translation>
+<translation id="6092564993102418148">Sigur doriți să eliminați dispozitivul selectat din lanțul de sincronizare?</translation>
 <translation id="3396347744975515056">S-a făcut upgrade pentru Brave Sync și necesită configurare</translation>
 <translation id="7473245612074035141">Începeți configurarea</translation>
 <translation id="3411013544209536575">Plăți ajutor</translation>
@@ -177,10 +181,23 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7090046810227878892">Furnizor Ethereum pentru utilizarea Dapps</translation>
 <translation id="5913089932885076110">Încărcare Crypto Wallets la pornire</translation>
 <translation id="757886143331967039">Încărcați extensia portofelelor crypto perimată la pornire</translation>
+<translation id="1834467296210148203">Afișați pictograma Brave Wallet în bara de instrumente</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
 <translation id="5927916530277631319">Metodă pentru a rezolva domeniile Unstoppable</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/> despre detaliile de considerațiile privind confidențialitatea DNS prin HTTPS și Ethereum.</translation>
 <translation id="5248318250177143470">Metodă pentru a rezolva Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Configurați cheile dvs. IPNS</translation>
+<translation id="951216659045543447">Semnați conținutul cu o cheie privată corespunzătoare și publicați-l pe IPNS</translation>
+<translation id="7611728475758612204">Chei disponibile pentru publicare</translation>
+<translation id="911363100236037920">Introduceți un nume pentru cheia nouă</translation>
+<translation id="6358469157239228181">Acest nume nu poate fi utilizat</translation>
+<translation id="8996633027318264334">Sigur doriți să ștergeți cheia <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Nodul nu este lansat</translation>
+<translation id="616058968889448209">Eroare la lansarea serviciului IPFS. Sunt disponibile informații suplimentare în <ph name="BEGIN_LINK"/>pagina de diagnosticare<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">Eroare la importarea cheii '<ph name="KEY_NAME"/>'</translation>
+<translation id="8275038454117074363">Importă</translation>
+<translation id="3654980960391973513">Generare</translation>
+<translation id="5531501313997312487">Start nod</translation>
 <translation id="9170907049676078643">Metoda de rezolvare a resurselor IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nod local</translation>
@@ -260,7 +277,10 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1391855377994926460">Navigați pe web mai rapid - de 6x mai rapid pe principalele site-uri de știri.</translation>
 <translation id="9218430445555521422">Setează ca prestabilit</translation>
 <translation id="3479552764303398839">Nu acum</translation>
+<translation id="6040143037577758943">Închide</translation>
+<translation id="5600566490506283344">Notificare Brave Ad</translation>
 <translation id="4877147287319222750">Adăugați în bara laterală</translation>
+<translation id="4233010476457917696">Afișați bara laterală</translation>
 <translation id="5404213409401164238">Afișați bara laterală</translation>
 <translation id="7561196759112975576">Întotdeauna</translation>
 <translation id="7060352228894039151">Când treceți cu mouse-ul deasupra</translation>

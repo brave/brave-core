@@ -67,12 +67,14 @@
 <translation id="5735801688206890393">Sāciet neierobežotus zvanus ar draugiem un kolēģiem, izmantojot Brave Together.</translation>
 <translation id="7115051913071512405">Izmēģiniet</translation>
 <translation id="7415602225677446066">Šodienas populārākie stāsti pilnīgi privātā plūsmā tieši jums.</translation>
-<translation id="8607689491789524900">Brave Today atbilst interesēm jūsu ierīcē, tādēļ jūsu personiskā informācija nekad nenonāk tālāk par pārlūkprogrammu. Jauns saturs tiek atjaunināts visas dienas garumā.</translation>
+<translation id="6903061332999399632">Brave News darbību nodrošina pilnīgi privātas un anonimizētas reklāmas, kas tiek personalizētas jūsu ierīcē. Jūsu personas dati vienmēr ir privāti saskaņā ar mūsu <ph name="LINK_START"/>konfidencialitātes politiku<ph name="LINK_END"/>.</translation>
+<translation id="7823038307453615214">Rādīt Brave News</translation>
+<translation id="780301667611848630">Nē, paldies</translation>
 <translation id="9164544612367905452">Notiek iegūšana…</translation>
 <translation id="1276592121036104130">Ielādēt jaunu saturu</translation>
-<translation id="4210987321913275328">Ritiniet līdz Brave Today</translation>
-<translation id="3122595178900736207">Atiestatīt Brave Today avotus</translation>
-<translation id="2197023915568148978">Vai atiestatīt visas Brave Today izdevēju izvēles uz to noklusējuma iestatījumiem?</translation>
+<translation id="2875288128871360696">Ritināt līdz Brave News</translation>
+<translation id="8510120023634509743">Atiestatīt Brave News avotus</translation>
+<translation id="75825199302994272">Vai atiestatīt visas Brave News izdevēju izvēles uz to noklusējuma iestatījumiem?</translation>
 <translation id="954001034349395856">Visi avoti</translation>
 <translation id="8890516388109605451">Avoti</translation>
 <translation id="5158129253322921540">Atspējot saturu no <ph name="PUBLISHER_NAME"/></translation>
@@ -110,6 +112,7 @@
 <translation id="3368922792935385530">pievienots</translation>
 <translation id="8030169304546394654">Atvienots</translation>
 <translation id="3149306599361260465">Inicializē [[percentage]] %</translation>
+<translation id="3258793718986637767">Radušās problēmas ar Tor? Mēģiniet <ph name="BEGIN_LINK"/>atspējot inkognito logu ar Tor<ph name="END_LINK"/> un to atkal ieslēgt.</translation>
 <translation id="4272382368346338917">Papildu filtri</translation>
 <translation id="8949292968394988358">Brīdinājums. Pārāk daudzu filtru iespējošana samazinās veiktspēju.</translation>
 <translation id="8686201964111147748">Kopējais bloķēto reklāmu un izsekotāju skaits:</translation>
@@ -390,6 +393,7 @@
 <translation id="5468234114288973517">Verificēt maku</translation>
 <translation id="6609621505400013054">bitFlyer maks ir pakalpojums, ko pārvalda bitFlyer, Inc.</translation>
 <translation id="7258399883616914635">Pēc jūsu maka verifikācijas un savienošanas ar bitFlyer kontu jūs varēsit vienkāršāk uzglabāt un pārvaldīt žetonus, izmantojot Brave Rewards</translation>
+<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/> par Brave pārlūka saistīšanu ar bitFlyer kontu.</translation>
 <translation id="5094577350232361255">par</translation>
 <translation id="4918086044614829423">Pieņemt</translation>
 <translation id="5916290544882167205">“Brave Software”. Brave ir “Brave Software” reģistrēta preču zīme. Vietņu nosaukumi var būt vietnes īpašnieka preču zīmes vai reģistrētas preču zīmes.</translation>
@@ -740,6 +744,7 @@
 <translation id="1833248467354516560">Vienības cena</translation>
 <translation id="4763179765154524864">Kopā izdots</translation>
 <translation id="8851480289992540512">Kopā saņemts</translation>
+<translation id="8624961452383848703">Es vēlos konvertēt...</translation>
 <translation id="616639131065447379">Laipni lūdzam Brave kripto makos!</translation>
 <translation id="1740464057879304704">Kripto maki ļauj Brave vidē strādāt ar kriptovalūtām un saistītajiem aktīviem. Kripto maki atbalsta tādus Ethereum marķierus kā ETH un BAT, kā arī citas kolekcionējamās vienības, kā arī ļauj strādāt ar Ðlietotnēm un citiem viedajiem līgumiem. Visas šīs funkcijas ir paredzētas cilvēkiem, kuri pārzina Ethereum un citas blokķēžu sistēmas — vai vēlas tās apgūt.</translation>
 <translation id="4855440621031541830">Izmantojiet kripto makus tikai tad, ja piekrītat, ka pilnībā atbildat par visiem ar šī pakalpojuma izmantošanu saistītajiem riskiem un Brave Software nekādā veidā neatbild par jebkādiem zaudējumiem, tai skaitā nejaušiem vai secīgiem zaudējumiem, kas jums var rasties šī pakalpojuma lietošanas rezultātā, un tam nav nekādu saistību attiecībā uz šādiem zaudējumiem.</translation>
@@ -835,16 +840,17 @@
 <translation id="3741998951694470470">Neizdevās ienest datus importēšanai</translation>
 <translation id="7900950536120202771">IPFS mezgla iekšējā kļūda</translation>
 <translation id="1036635552229153800">Dati tika veiksmīgi augšupielādēti, bet netika pārvietoti uz direktoriju brave-import. Jūs to varat izdarīt manuāli importēšanas iestatījumu lapā.</translation>
-<translation id="7789840864192026963">Sniegt atļauju</translation>
-<translation id="7978789143098237970">līdz šo lapu aizvēršu</translation>
+<translation id="572392919096807438">Atcerēties manu lēmumu</translation>
+<translation id="7978789143098237970">līdz šo vietni aizvēršu</translation>
 <translation id="3523195733429162409">uz 24 stundām</translation>
 <translation id="2373264732659722940">uz 1 nedēļu</translation>
 <translation id="6318437367327684789">uz visiem laikiem</translation>
-<translation id="7463327191540031132">Bloķēt uz visiem laikiem</translation>
 <translation id="8797999629784150206">Jūs varat nomainīt savas <ph name="SITE_PERMISSIONS"/> jebkurā laikā. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">vietnes atļauja</translation>
 <translation id="7701466644604753106">Ieslēgt ātro lasītāju</translation>
 <translation id="763042262431778831">Izslēgt ātro lasītāju</translation>
+<translation id="1544192797660353713">Maks</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3155170474926428993">Tor palaidējs</translation>
 <translation id="3745016858329272300">Vispārīga informācija</translation>
 <translation id="4045404575593562245">Tor kontroles notikumi</translation>
@@ -853,4 +859,21 @@
 <translation id="6951743416068151209">Tor starpniekservera URL</translation>
 <translation id="1671503397662036257">Tor savienojuma statuss</translation>
 <translation id="6024292492796847324">Tor inicializēšanas progress</translation>
+<translation id="7586151660465233733">Vairāk tirgu vietnē <ph name="SITE_NAME"/></translation>
+<translation id="952067063131306699">Skatīt tirgus un pārdot kriptovalūtu FTX</translation>
+<translation id="5963745988819586370">Tirgi</translation>
+<translation id="3795943412467785186">Pievienojiet FTX kontu, lai skatītu konta bilanci, izpētītu nākotnes tirgus un konvertētu kriptovalūtu.</translation>
+<translation id="926958206891985289">Skatīt nākotnes tirgus</translation>
+<translation id="6804537228302563756">Pievienot kontu</translation>
+<translation id="5019698312620117604">24 stundu cenu vēsture</translation>
+<translation id="8720719072204443171">24 stundu apjoms</translation>
+<translation id="3891414008432200754">Cena</translation>
+<translation id="7723176927437578611">Ieņēmumi</translation>
+<translation id="2983078329159689577">Notiek iesniegšana...</translation>
+<translation id="6641102760094059194">Apstiprināt (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
+<translation id="2280055104463448482">Konvertācija veiksmīga!</translation>
+<translation id="7590653073560839711">Lai veiktu konvertāciju, jums nepieciešama bilance vismaz vienā valūtā.</translation>
+<translation id="4390079506197726228">Pieejams <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
+<translation id="6973157709854838218">Paslēpt bilanci no displeja</translation>
+<translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 </translationbundle>

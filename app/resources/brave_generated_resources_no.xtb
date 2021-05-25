@@ -69,15 +69,19 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4227945450504703638">Valgt lydfil</translation>
 <translation id="7895302206188277628">Lenket innhold</translation>
 <translation id="4322612543319315652">Importer valgt tekst til IPFS</translation>
+<translation id="8883166554766780543">Importer og kopier kobling til IPFS-øyeblikksbilde</translation>
+<translation id="3654831858282189202">Publiser med IPNS-nøkkel</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Nytt privatvindu med Tor</translation>
 <translation id="4703780849509456860">Åpne lenke i privatvindu med Tor</translation>
 <translation id="3488584642074079080">Åpne lenke i Brave-privatvindu med Tor</translation>
 <translation id="7475547933708221517">Del lokal fil ved hjelp av IPFS</translation>
+<translation id="2286177249736199435">Del lokal mappe ved å bruke IPFS</translation>
 <translation id="784573715436258741">Del lokal fil ved hjelp av IPFS</translation>
 <translation id="6313675821927505581">Nytt privat vindu med Tor</translation>
 <translation id="2638041073279639246">Åpne lenke i privat vindu med Tor</translation>
 <translation id="3425600262621021599">Åpne lenke i Brave privat vindu med Tor</translation>
+<translation id="575838692088926391">Del lokal mappe ved å bruke IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-tjeneste</translation>
 <translation id="7924918279836988121">Bat-reskontrotjeneste</translation>
@@ -138,7 +142,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1061533051865606843">Legg til ny enhet</translation>
 <translation id="5093410893656857925">Velg enhetstype</translation>
 <translation id="2339730291919608488">Forlat synkroniseringskjede</translation>
-<translation id="6092564993102418148">Er du sikker på at du vil slette den valgte enheten fra synkroniseringskjeden?</translation>
+<translation id="6092564993102418148">Er du sikker på at du vil fjerne den valgte enheten fra synkroniseringskjeden?</translation>
 <translation id="3411013544209536575">Hjelpetips</translation>
 <translation id="2775956301559569472">Vis Wayback Machine-beskjed på 404-sider</translation>
 <translation id="1807246157184219062">Lyst</translation>
@@ -156,10 +160,23 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="7090046810227878892">Ethereum-leverandør for bruk av Dapps</translation>
 <translation id="5913089932885076110">Last inn kryptolommeboken ved oppstart</translation>
 <translation id="757886143331967039">Last inn avviklet Kryptolommebøker-utvidelse ved oppstart</translation>
+<translation id="1834467296210148203">Vis Brave Wallet-ikonet i sidefelt</translation>
 <translation id="6864914031231797928">Tillat Google-pålogging for utvidelser</translation>
 <translation id="5927916530277631319">Metode for oppslag av ustoppelige domener</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Les mer<ph name="END_LINK"/> om DNS over personvernhensyn med HTTPS og Ethereum.</translation>
 <translation id="5248318250177143470">Metode for oppslag av Ethereum-navnetjeneste (ENS)</translation>
+<translation id="7024553202001112871">Still inn IPNS-nøklene dine</translation>
+<translation id="951216659045543447">Signér innhold med den samsvarende private nøkkelen, og publiser det i IPNS</translation>
+<translation id="7611728475758612204">Nøkler som er tilgjengelige for publisering</translation>
+<translation id="911363100236037920">Angi et navn for den nye nøkkelen</translation>
+<translation id="6358469157239228181">Dette navnet kan ikke brukes</translation>
+<translation id="8996633027318264334">Vil du virkelig slette <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Noden er ikke sendt ut</translation>
+<translation id="616058968889448209">Feil ved lansering av IPFS-tjeneste, mer informasjon er tilgjengelig på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>'-nøkkelimport mislyktes</translation>
+<translation id="8275038454117074363">Importer</translation>
+<translation id="3654980960391973513">Generer</translation>
+<translation id="5531501313997312487">Start noden</translation>
 <translation id="9170907049676078643">Metode for å løse IPFS-ressurser</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal node</translation>
@@ -239,7 +256,10 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1391855377994926460">Fortsett å surfe raskere på nettet – opptil 6 ganger raskere på store nyhetssider.</translation>
 <translation id="9218430445555521422">Bruk som standard</translation>
 <translation id="3479552764303398839">Ikke nå</translation>
+<translation id="6040143037577758943">Lukk</translation>
+<translation id="5600566490506283344">Varsel om Brave-reklame</translation>
 <translation id="4877147287319222750">Legg til i sidestolpe</translation>
+<translation id="4233010476457917696">Vis sidefelt</translation>
 <translation id="5404213409401164238">Vis sidestolpe</translation>
 <translation id="7561196759112975576">Alltid</translation>
 <translation id="7060352228894039151">Når musemarkøren beveges over</translation>

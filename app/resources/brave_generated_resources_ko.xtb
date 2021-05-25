@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">선택한 오디오</translation>
 <translation id="7895302206188277628">연결된 콘텐츠</translation>
 <translation id="4322612543319315652">선택한 텍스트를 IPFS로 가져오기</translation>
+<translation id="8883166554766780543">IPFS 스냅샷 링크 가져오기 및 복사</translation>
+<translation id="3654831858282189202">IPNS 키로 게시</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Tor와 함께하는 새로운 비공개 윈도우</translation>
 <translation id="4703780849509456860">Tor와 함께 비공개 윈도우에서 링크 열기</translation>
 <translation id="3488584642074079080">Brave 비공개 창의 링크를 Tor로 열기</translation>
 <translation id="7475547933708221517">IPFS를 사용하여 로컬 파일 공유</translation>
+<translation id="2286177249736199435">IPFS를 사용하여 로컬 폴더 공유</translation>
 <translation id="784573715436258741">IPFS를 사용하여 로컬 파일 공유</translation>
 <translation id="6313675821927505581">Tor를 이용한 새로운 비공개 윈도우</translation>
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
+<translation id="575838692088926391">IPFS를 사용하여 로컬 폴더 공유</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
@@ -157,7 +161,7 @@
 <translation id="4112587618563511470">잘못된 동기화 코드입니다. 확인하고 다시 시도해주세요.</translation>
 <translation id="2339730291919608488">동기화 체인에서 나가기</translation>
 <translation id="115699408012835975">동기화를 초기화하면 다른 기기에서 동기화 코드를 다시 입력해야 동기화를 진행할 수 있습니다. 이대로 계속하시겠어요?</translation>
-<translation id="6092564993102418148">동기화 체인에서 선택한 장치를 정말 삭제하시겠습니까?</translation>
+<translation id="6092564993102418148">선택한 기기를 동기화 체인에서 제거하시겠습니까?</translation>
 <translation id="3396347744975515056">Brave Sync가 업그레이드되었고 설정이 필요합니다</translation>
 <translation id="7473245612074035141">설정 시작하기</translation>
 <translation id="3411013544209536575">도움말 팁</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">Dapps 사용을 위한 이더리움 공급자</translation>
 <translation id="5913089932885076110">시작 시 암호 지갑 로드</translation>
 <translation id="757886143331967039">시작 시 더 이상 사용하지 않는 Crypto 월렛 확장 프로그램을 로드</translation>
+<translation id="1834467296210148203">툴바에 Brave 월렛 아이콘 표시</translation>
 <translation id="6864914031231797928">확장 프로그램에 대한 Google 로그인 허용</translation>
 <translation id="5927916530277631319">Unstoppable Domains 해석 방법</translation>
 <translation id="8412057160793088103">HTTPS를 통한 DNS 및 이더리움 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK"/>자세히 알아보세요<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">Ethereum Name Service(ENS) 해석 방법</translation>
+<translation id="7024553202001112871">IPNS 키 설정</translation>
+<translation id="951216659045543447">해당 비공개 키로 콘텐츠에 서명하고 IPNS에 게시</translation>
+<translation id="7611728475758612204">키 게시 가능</translation>
+<translation id="911363100236037920">새 키 이름 입력</translation>
+<translation id="6358469157239228181">사용할 수 없는 이름</translation>
+<translation id="8996633027318264334"><ph name="KEY_NAME"/>를 삭제하시겠습니까?</translation>
+<translation id="910215077892371264">노드가 시작되지 않음</translation>
+<translation id="616058968889448209">IPFS 서비스 런처 오류. 자세한 정보는 <ph name="BEGIN_LINK"/>진단 페이지<ph name="END_LINK"/>에서 확인하세요.</translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 키 가져오기 실패</translation>
+<translation id="8275038454117074363">가져오기</translation>
+<translation id="3654980960391973513">생성</translation>
+<translation id="5531501313997312487">시작 노드</translation>
 <translation id="9170907049676078643">IPFS 리소스 리졸빙에 사용하는 방법</translation>
 <translation id="1327977588028644528">게이트웨이</translation>
 <translation id="80225669816651290">로컬 노드</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">더욱 빠른 웹 브라우징 - 주요 뉴스 사이트 속도가 최대 6배 빨라집니다.</translation>
 <translation id="9218430445555521422">기본 브라우저로 설정</translation>
 <translation id="3479552764303398839">나중에</translation>
+<translation id="6040143037577758943">닫기</translation>
+<translation id="5600566490506283344">Brave 광고 알림</translation>
 <translation id="4877147287319222750">사이드바에 추가</translation>
+<translation id="4233010476457917696">사이드바 표시</translation>
 <translation id="5404213409401164238">사이드바 표시</translation>
 <translation id="7561196759112975576">항상</translation>
 <translation id="7060352228894039151">온마우스오버</translation>

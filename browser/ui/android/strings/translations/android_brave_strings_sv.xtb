@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
 <translation id="6302422639282249274">Hantera Brave Rewards</translation>
-<translation id="1506061864768559482">Sökmotor</translation>
 <translation id="1468415711258933398">Standardflik</translation>
 <translation id="3377025655491224618">Inkognitoflik</translation>
 <translation id="9148058034647219655">Avsluta</translation>
-<translation id="520895744850022668">HTTPS överallt</translation>
-<translation id="8710614491157212477">Öppnar sidor som stöds med HTTPS istället för HTTP när det är möjligt</translation>
-<translation id="4022987104439075738">IPFS-gateway</translation>
-<translation id="2688519859165248360">Möjliggör navigering till IPFS-resurser via en IPFS-gateway</translation>
 <translation id="7534079972563542000">Ostoppbara domäner</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Lösningsmetod</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Inaktiverad</translation>
 <translation id="2218918398178303658">DNS över HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Annonsblockering</translation>
-<translation id="1934885595886623674">Förhindrar att annonser laddas</translation>
-<translation id="7458422973722236530">Fingeravtrycksskydd</translation>
 <translation id="5787084571334399599">Förhindrar webbläsaren från signaturinsamling</translation>
 <translation id="7459000603787995422">Stäng flikar vid avslut</translation>
 <translation id="1680858055899097121">Behåll inte flikarna mellan surfsessioner</translation>
-<translation id="6469509880167172749">Skicka automatiskt helt privat produktanalys till Brave</translation>
-<translation id="7090566321964540749">Denna anonyma information används endast för att Brave ska kunna uppskatta generella användningen av vissa funktioner.</translation>
+<translation id="7142548388914389999">Skicka automatiskt helt privat produktanalys till Brave</translation>
+<translation id="5469408008145872264">Denna anonyma information används endast för att Brave ska kunna uppskatta generella användningen av vissa funktioner.</translation>
 <translation id="7977176350719484850">Uppsk. data\nsparade</translation>
 <translation id="9008534313521214777">Ung. tid\nsparad</translation>
 <translation id="6572660632052512096">Skrivbordsläge</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Föredra skrivbordsversionen av webbplatser</translation>
 <translation id="1842747674580016420">Videouppspelning i Brave</translation>
 <translation id="5368992950177874750">Om det är aktiverat kommer videor att spelas upp i Brave istället för i motsvarande app</translation>
-<translation id="2645380101799517405">Kontroller</translation>
 <translation id="5965081608816406060">Videouppspelning i bakgrunden</translation>
 <translation id="6332924730165919598">Att stänga alla flikar stänger Brave</translation>
 <translation id="1580125697191336644">Experimentellt. Aktiverar uppspelning av ljud från video i bakgrunden när fliken inte är aktiv eller enhetens skärm är avstängd. Prova att växla till skrivbordsläge om funktionen inte fungerar.</translation>
@@ -293,11 +284,10 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="5657156137487675418">Tillåt alla kakor</translation>
 <translation id="3895527457258986253">Blockera fingeravtrycksläsning</translation>
 <translation id="184568144098869637">Förhindrar att webbläsaren känner igen din enhet</translation>
-<translation id="7396366757003005317">Fingeravtryck blockerat (strikt, kan göra att webbplatser inte fungerar)</translation>
-<translation id="700453611199558021">Fingeravtryck blockerat (standard)</translation>
+<translation id="7445306466605902444">Fingeravtryck blockerat (strikt, kan göra att webbplatser inte fungerar)</translation>
+<translation id="5582686930349810484">Fingeravtryck blockerat (standard)</translation>
 <translation id="769702552748212954">Tillåt att alla fingeravtryck tas</translation>
 <translation id="876424292214881779">annonser och andra oönskade saker har blockerats</translation>
-<translation id="5142293891785304489">Spårning, annonser, och\nmer blockeras</translation>
 <translation id="6930134873084561197">Sajter har ofta cookies och skript som försöker identifiera dig och din enhet. De vill ta reda på vem du är och vad du gör på webben, på varenda sajt.\n\nBrave blockerar sådana saker, så att du kan surfa utan att någon bevakar dig.</translation>
 <translation id="8553998445606452168">Om Brave-sköldar</translation>
 <translation id="8912304686498704084">UPP</translation>
@@ -310,7 +300,6 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="5299848999918506028">Tack!</translation>
 <translation id="76550953340008122">Tack för att du lät Braves utvecklare veta att något är fel på denna webbplats. Vi ska göra vårt bästa för att fixa det!</translation>
 <translation id="650318023204990401">Avancerade kontroller</translation>
-<translation id="7182293319417450928">Ett minsta saldo om 25 BAT krävs för att verifiera.</translation>
 <translation id="1275664486910646411">Visa toppsajter i automatisk komplettering</translation>
 <translation id="5516010970279932133">Visa förslag på sajter i automatisk komplettering</translation>
 <translation id="5370478469168390143">Spara data online</translation>
@@ -379,7 +368,7 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
-<translation id="1390943217516275883">Låter Brave visa din integritetsstatistik</translation>
+<translation id="1390943217516275883">Tillåt Brave att visa din integritetsstatistik</translation>
 <translation id="1763352720905582220">Skickar en integritetsrapport varje vecka</translation>
 <translation id="1811691435325545066">Rensa alla data för integritetsrapporter</translation>
 <translation id="8089997572759938512">Återställer dina integritetsrapporter till noll</translation>
@@ -484,14 +473,6 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="3184805785843994538">Brave Shields blockar spårare &amp; annonser samt sparar data och tid på varje sajt du besöker.</translation>
 <translation id="8722651357687610395">Ställ in Brave som ordinarie.</translation>
 <translation id="3479552764303398839">Inte nu</translation>
-<translation id="6232491755501685494">Brave Rewards i Japan går över till ett nytt system!</translation>
-<translation id="7444515017164572362">Med start 13:e mars kommer du inte att kunna använda din BAP. Men när du
-         uppdaterar till det nya systemet i april startar du med nya tokens!</translation>
-<translation id="8587285254008006694">Som en del av denna övergång kommer funktionerna för dricks och donationer i din webbläsare att inte vara tillgängliga temporärt med start 13:e mars, och
-         ditt BAP-saldo kommer att visa 0.0 tills du har uppdaterat till det nya systemet
-          i april. När du är i det nya systemet
-startar du upp med nya
-          tokens!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -511,4 +492,9 @@ startar du upp med nya
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
 <translation id="3171931580569169744">Aktivera flikgrupper</translation>
+<translation id="5587305863196367357">Genom att verifiera plånboken kan du hantera dina pengar enkelt och sätta in och ta ut pengar</translation>
+<translation id="5760671211380791582">Du har inte tillräckligt med BAT.</translation>
+<translation id="6960458596933484861">Du måste ha minst 15 BAT för att skapa en verifierad Uphold-plånbok. Försök igen senare.</translation>
+<translation id="4389085954549744469">Om du redan har ett verifierat Uphold-konto kan du <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">fortsätta till inloggning</translation>
 </translationbundle>

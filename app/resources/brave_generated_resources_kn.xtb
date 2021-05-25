@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">ಆಯ್ಕೆಮಾಡಲಾದ ಆಡಿಯೋ</translation>
 <translation id="7895302206188277628">ಲಿಂಕ್ ಮಾಡಲಾದ ವಿಷಯ</translation>
 <translation id="4322612543319315652">ಆಯ್ಕೆಮಾಡಲಾದ ಪಠ್ಯವನ್ನು IPFS ಗೆ ಆಮದು ಮಾಡಿ</translation>
+<translation id="8883166554766780543">ಆಮದು ಮಾಡಿ ಮತ್ತು ಲಿಂಕ್ ಅನ್ನು IPFS ಸ್ನ್ಯಾಪ್‌ಶಾಟ್‌ಗೆ ನಕಲಿಸಿ</translation>
+<translation id="3654831858282189202">IPNS ಕೀ ಮೂಲಕ ಪ್ರಕಟಿಸಿ</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Tor ಜೊತೆಗೆ ಹೊಸ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="4703780849509456860">Tor ಜೊತೆಗೆ ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="3488584642074079080">Tor ಮೂಲಕ Brave ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="7475547933708221517">IPFS ಬಳಸಿಕೊಂಡು ಸ್ಥಳೀಯ ಫೈಲ್ ಹಂಚಿಕೊಳ್ಳಿ</translation>
+<translation id="2286177249736199435">IPFS ಬಳಸಿಕೊಂಡು ಸ್ಥಳೀಯ ಫೋಲ್ಡರ್ ಹಂಚಿಕೊಳ್ಳಿ</translation>
 <translation id="784573715436258741">IPFS ಬಳಸಿಕೊಂಡು ಸ್ಥಳೀಯ ಫೈಲ್ ಹಂಚಿಕೊಳ್ಳಿ</translation>
 <translation id="6313675821927505581">Tor ಜೊತೆಗೆ ಹೊಸ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="2638041073279639246">Tor ಮೂಲಕ ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="3425600262621021599">Tor ಮೂಲಕ Brave ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
+<translation id="575838692088926391">IPFS ಬಳಸಿಕೊಂಡು ಸ್ಥಳೀಯ ಫೋಲ್ಡರ್ ಹಂಚಿಕೊಳ್ಳಿ</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat ಜಾಹೀರಾತುಗಳ ಸೇವೆ</translation>
 <translation id="7924918279836988121">Bat Ledger ಸೇವೆ</translation>
@@ -157,7 +161,7 @@
 <translation id="4112587618563511470">ಅಮಾನ್ಯ ಸಿಂಕ್ ಕೋಡ್, ದಯವಿಟ್ಟು ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="2339730291919608488">ಸಿಂಕ್ ಚೈನ್ ತೊರೆಯಿರಿ</translation>
 <translation id="115699408012835975">ನೀವು ಸಿಂಕ್ ಅನ್ನು ಮರುಹೊಂದಿಸಿದರೆ, ಅದರೊಂದಿಗೆ ಸಿಂಕ್ ಮಾಡಲು ನೀವು ಇನ್ನೊಂದು ಸಾಧನದಿಂದ ಸಿಂಕ್ ಕೋಡ್ ಅನ್ನು ಮರು ನಮೂದಿಸಬೇಕಾಗುತ್ತದೆ. ನೀವು ಮುಂದುವರಿಯಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
-<translation id="6092564993102418148">ಸಿಂಕ್ ಚೈನ್‌ನಿಂದ ಆಯ್ಕೆಮಾಡಿದ ಸಾಧನವನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
+<translation id="6092564993102418148">ಆಯ್ಕೆಮಾಡಿದ ಸಾಧನವನ್ನು ಸಿಂಕ್ ಚೈನ್‌ನಿಂದ ತೆಗೆದುಹಾಕಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
 <translation id="3396347744975515056">Brave ಸಿಂಕ್ ಅನ್ನು ನವೀಕರಿಸಲಾಗಿದೆ ಮತ್ತು ಸೆಟಪ್ ಅಗತ್ಯವಿದೆ</translation>
 <translation id="7473245612074035141">ಸೆಟಪ್ ಆರಂಭಿಸಿ</translation>
 <translation id="3411013544209536575">ಸಹಾಯ ಸಲಹೆಗಳು</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">Dapps ಬಳಸಲು ಎಥೆರಿಯಮ್ ಒದಗಿಸುವವರು</translation>
 <translation id="5913089932885076110">ಪ್ರಾರಂಭದಲ್ಲಿ Crypto ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಲೋಡ್ ಮಾಡಿ</translation>
 <translation id="757886143331967039">ಪ್ರಾರಂಭದಲ್ಲಿಯೇ ಡೆಪ್ರೆಕೇಟೆಡ್ ಕ್ರಿಪ್ಟೋ ವ್ಯಾಲೆಟ್ ಎಕ್ಸ್‌ಟೆನ್ಶನ್ ಲೋಡ್ ಮಾಡಿ</translation>
+<translation id="1834467296210148203">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ Brave ವ್ಯಾಲೆಟ್ ತೋರಿಸಿ</translation>
 <translation id="6864914031231797928">ವಿಸ್ತರಣೆಗಳಿಗಾಗಿ Google ಲಾಗಿನ್ ಅನುಮತಿಸಿ</translation>
 <translation id="5927916530277631319">ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗದ ಡೊಮೇನ್‍ಗಳನ್ನು ಪರಿಹರಿಸಲು ಇರುವ ವಿಧಾನಗಳು</translation>
 <translation id="8412057160793088103">HTTPS ಮತ್ತು ಈಥೆರಿಯಮ್ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳಲ್ಲಿ DNS ಕುರಿತು <ph name="BEGIN_LINK"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK"/>.</translation>
 <translation id="5248318250177143470">ಈಥೇರೆಯಮ್ ನೇಮ್ ಸರ್ವೀಸ್ (ENS) ಪರಿಹರಿಸಲು ವಿಧಾನ</translation>
+<translation id="7024553202001112871">ನಿಮ್ಮ IPNS ಕೀಗಳನ್ನು ಸೆಟಪ್ ಮಾಡಿ</translation>
+<translation id="951216659045543447">ಅನುಕ್ರಮವಾದ ಖಾಸಗಿ ಕೀ ಪ್ರಕಾರ ವಿಷಯಕ್ಕೆ ಸಹಿ ಮಾಡಿ ಮತ್ತು ಅದನ್ನು IPNS ಗೆ ಪ್ರಕಟಿಸಿ</translation>
+<translation id="7611728475758612204">ಕೀಗಳು ಪ್ರಕಟಣೆಗೆ ಲಭ್ಯವಿವೆ</translation>
+<translation id="911363100236037920">ಹೊಸ ಕೀ ಗಾಗಿ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</translation>
+<translation id="6358469157239228181">ಈ ಹೆಸರನ್ನು ಬಳಸಲಾಗುವುದಿಲ್ಲ</translation>
+<translation id="8996633027318264334">ನೀವು ನಿಜವಾಗಿಯೂ <ph name="KEY_NAME"/> ಅಳಿಸಲು ಬಯಸುವಿರಾ?</translation>
+<translation id="910215077892371264">ನೋಡ್ ಆರಂಭಿಸಲಾಗಿಲ್ಲ</translation>
+<translation id="616058968889448209">IPFS ಸೇವೆ ಆರಂಭಿಸುವಿಕೆ ದೋಷ, ಹೆಚ್ಚಿನ ಮಾಹಿತಿ <ph name="BEGIN_LINK"/>ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ಪುಟ<ph name="END_LINK"/>ದಲ್ಲಿ ಲಭ್ಯವಿದೆ</translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' ಕೀ ಆಮದು ವಿಫಲಗೊಂಡಿದೆ</translation>
+<translation id="8275038454117074363">ಆಮದು</translation>
+<translation id="3654980960391973513">ಜನರೇಟ್ ಮಾಡಿ</translation>
+<translation id="5531501313997312487">ಪ್ರಾರಂಭ ನೋಡ್</translation>
 <translation id="9170907049676078643">IPFS ಸಂಪನ್ಮೂಲಗಳನ್ನು ಪರಿಹರಿಸುವ ವಿಧಾನ</translation>
 <translation id="1327977588028644528">ಗೇಟ್‌ವೇ</translation>
 <translation id="80225669816651290">ಸ್ಥಳೀಯ ನೋಡ್</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">ವೆಬ್ ಅನ್ನು ವೇಗವಾಗಿ ಬ್ರೌಸ್ ಮಾಡುತ್ತಿರಿ - ಪ್ರಮುಖ ಸುದ್ದಿ ಸೈಟ್‌ಗಳಲ್ಲಿ 6x ವರೆಗೆ ವೇಗ.</translation>
 <translation id="9218430445555521422">ಡಿಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
 <translation id="3479552764303398839">ಈಗ ಬೇಡ</translation>
+<translation id="6040143037577758943">ಮುಚ್ಚಿರಿ</translation>
+<translation id="5600566490506283344">Brave ಜಾಹೀರಾತು ಅಧಿಸೂಚನೆ</translation>
 <translation id="4877147287319222750">ಸೈಡ್‌ಬಾರ್‌ಗೆ ಸೇರಿಸಿ</translation>
+<translation id="4233010476457917696">ಸೈಡ್‌ಬಾರ್ ತೋರಿಸಿ</translation>
 <translation id="5404213409401164238">ಸೈಡ್‌ಬಾರ್ ತೋರಿಸಿ</translation>
 <translation id="7561196759112975576">ಯಾವಾಗಲೂ</translation>
 <translation id="7060352228894039151">ಮೌಸ್ಓವರ್‌ನಲ್ಲಿ</translation>

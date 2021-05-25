@@ -819,6 +819,18 @@
     "message": "Pēc jūsu maka verifikācijas un savienošanas ar bitFlyer kontu jūs varēsit vienkāršāk uzglabāt un pārvaldīt tokenus, izmantojot Brave Rewards",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Uzziniet vairāk$link_end$ par Brave pārlūka saistīšanu ar bitFlyer kontu.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave balvas Japānā pāriet uz jaunu sistēmu!",
     "description": "Header text for BAP deprecation warning message"

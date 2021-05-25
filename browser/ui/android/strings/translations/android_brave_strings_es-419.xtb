@@ -11,30 +11,23 @@
 <translation id="5165042248369837294">Permitir tuits integrados de Twitter</translation>
 <translation id="958971637207126733">Permitir publicaciones integradas de LinkedIn</translation>
 <translation id="6302422639282249274">Administrar Recompensas Brave</translation>
-<translation id="1506061864768559482">Motor de búsqueda</translation>
 <translation id="1468415711258933398">Pestaña estándar</translation>
 <translation id="3377025655491224618">Pestaña de incógnito</translation>
 <translation id="9148058034647219655">Salir</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="8710614491157212477">Abre sitios compatibles que usan HTTPS en lugar de HTTP si es posible</translation>
-<translation id="4022987104439075738">Puerta de enlace a IPFS</translation>
-<translation id="2688519859165248360">Permite la navegación a los recursos de IPFS a través de una puerta de enlace de IPFS.</translation>
 <translation id="7534079972563542000">Dominios imparables</translation>
-<translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="6513892817556267573">Servicio de DNS de Ethereum</translation>
 <translation id="3894650624018948468">Método de resolución</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
 <translation id="2218918398178303658">DNS mediante HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Bloqueo de anuncios</translation>
-<translation id="1934885595886623674">Evita que se carguen anuncios</translation>
-<translation id="7458422973722236530">Protección de huellas digitales</translation>
 <translation id="5787084571334399599">No permite que el navegador use técnicas de huella digital</translation>
 <translation id="7459000603787995422">Cierra las pestañas al salir</translation>
 <translation id="1680858055899097121">No recuperar las pestañas al abrir una nueva sesión de navegación</translation>
-<translation id="6469509880167172749">Envía automáticamente análisis del producto totalmente privados a Brave</translation>
-<translation id="7090566321964540749">Esta información anónima solo le permite a Brave calcular el uso general de determinadas funciones.</translation>
+<translation id="7142548388914389999">Envía automáticamente análisis del producto totalmente privados a Brave</translation>
+<translation id="5469408008145872264">Esta información anónima solo le permite a Brave calcular el uso general de determinadas funciones.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
+<translation id="9008534313521214777">Tiempo ahorrado estimado</translation>
 <translation id="6572660632052512096">Modo de escritorio</translation>
 <translation id="1340503115760585811">Activa la vista de escritorio en nuevas pestañas</translation>
 <translation id="7924540991929826186">Usar la versión móvil de los sitios en pestañas nuevas (recomendado)</translation>
@@ -42,7 +35,6 @@
 <translation id="4479934682648362332">Prefiere la versión de escritorio de los sitios</translation>
 <translation id="1842747674580016420">Reproducción de videos en Brave</translation>
 <translation id="5368992950177874750">Si lo activas, los videos se reproducirán en Brave en lugar de en la app correspondiente</translation>
-<translation id="2645380101799517405">Controles</translation>
 <translation id="5965081608816406060">Reproducción de video en segundo plano</translation>
 <translation id="6332924730165919598">Cerrar todas las pestañas cierra Brave</translation>
 <translation id="1580125697191336644">Experimental. Habilita el audio del video en segundo plano cuando la pestaña no está activa o la pantalla del dispositivo está apagada. Intenta pasar al modo de escritorio si esta característica no funciona.</translation>
@@ -50,6 +42,7 @@
 <translation id="4150201353443180367">Pantalla</translation>
 <translation id="2433507940547922241">Diseño</translation>
 <translation id="2804710924397009224">Ocultar ícono de Recompensas Brave</translation>
+<translation id="7289740269305509613">Oculta el ícono de Recompensas de Brave</translation>
 <translation id="8495235435594442882">Activar la barra de herramientas de la parte inferior</translation>
 <translation id="6587448235155023666">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
 <translation id="8701563696941209024">REINICIAR AHORA</translation>
@@ -61,6 +54,7 @@
 <translation id="5806601733251372221">Escudos de Brave</translation>
 <translation id="8537217141725709400">Gane <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
+<translation id="5870330605209713397">viendo anuncios respetuosos de tu privacidad y, de manera predeterminada, apoya a tus sitios y creadores de contenido favoritos.</translation>
 <translation id="4281844954008187215">Condiciones de servicio</translation>
 <translation id="6871397658902960384">Empieza a navegar</translation>
 <translation id="454386012157232640">No vi ningún anuncio</translation>
@@ -281,11 +275,10 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="5657156137487675418">Permitir todas las cookies</translation>
 <translation id="3895527457258986253">Bloquear los reconocimientos de huellas digitales</translation>
 <translation id="184568144098869637">Evita que el navegador reconozca tu dispositivo</translation>
-<translation id="7396366757003005317">Creación de huellas digitales bloqueada (estricto, puede inhabilitar sitios)</translation>
-<translation id="700453611199558021">Creación de huella digital del dispositivo bloqueada (estándar)</translation>
+<translation id="7445306466605902444">Creación de huellas digitales bloqueada (estricto, puede inhabilitar sitios)</translation>
+<translation id="5582686930349810484">Creación de huella digital del dispositivo bloqueada (estándar)</translation>
 <translation id="769702552748212954">Permitir todos los reconocimientos de huellas digitales</translation>
 <translation id="876424292214881779">Bloqueo de anuncios y otras cosas raras</translation>
-<translation id="5142293891785304489">Rastreadores, anuncios y\notros elementos bloqueados</translation>
 <translation id="6930134873084561197">Los sitios suelen incluir cookies y scripts que intentan identificarte e identificar tu dispositivo. Quieren saber quién eres y te siguen por toda la Web registrando lo que haces en cada sitio.\n\nBrave bloquea todo esto, para que puedas navegar sin que nadie te persiga.</translation>
 <translation id="8553998445606452168">Acerca de Brave Shields</translation>
 <translation id="8912304686498704084">ACTIVADO</translation>
@@ -298,7 +291,6 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="5299848999918506028">¡Gracias!</translation>
 <translation id="76550953340008122">Gracias por informar a los desarrolladores de Brave de que hay un problema en este sitio. Haremos todo lo posible por solucionarlo.</translation>
 <translation id="650318023204990401">Controles avanzados</translation>
-<translation id="7182293319417450928">Se requiere un saldo mínimo de 25 BAT para la verificación.</translation>
 <translation id="1275664486910646411">Mostrar los sitios principales en la opción de autocompletar</translation>
 <translation id="5516010970279932133">Mostrar los sitios sugeridos en la opción de autocompletar</translation>
 <translation id="5370478469168390143">Guardar datos en línea</translation>
@@ -472,14 +464,6 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="3184805785843994538">Brave Shields bloquea rastreadores y anuncios, además de ahorrarte datos y tiempo en todos los sitios que visitas.</translation>
 <translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
 <translation id="3479552764303398839">Ahora no</translation>
-<translation id="6232491755501685494">¡Brave Rewards está cambiando a un nuevo sistema en Japón!</translation>
-<translation id="7444515017164572362">A partir del 13 de marzo, no podrás usar tus BAP. Sin embargo, una vez que
-        actualices al nuevo sistema en abril, ¡comenzarás con nuevos tokens!</translation>
-<translation id="8587285254008006694">Como parte de esta transición, las funciones de propinas y contribuciones de
-        tu navegador no estarán disponibles temporalmente a partir del 13 de marzo, y
-        tu saldo de BAP se mostrará en 0.0 hasta que hayas actualizado al nuevo sistema
-        en abril. Una vez que tengas el nuevo sistema, ¡comenzarás con nuevos
-        tokens!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -499,4 +483,9 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="5825943197137337319">Solo la interfaz pública predeterminada</translation>
 <translation id="1689062823386843231">Desactivar UDP sin proxy</translation>
 <translation id="3171931580569169744">Permitir los grupos de pestañas</translation>
+<translation id="5587305863196367357">Verificar la billetera te permite gestionar tus fondos con facilidad, ya sea al ingresarlos o retirarlos</translation>
+<translation id="5760671211380791582">No tienes BAT suficientes.</translation>
+<translation id="6960458596933484861">Necesitas tener un mínimo de 15 BAT para crear una billetera de Uphold verificada. Inténtalo de nuevo más tarde.</translation>
+<translation id="4389085954549744469">Si ya tienes una cuenta de Uphold verificada, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">continúa para iniciar sesión</translation>
 </translationbundle>

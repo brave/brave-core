@@ -630,7 +630,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Uphold-fiók létrehozásához legalább $amount$ BAT szükséges. Ha már van hitelesített Uphold-fiókod, lépj tovább a bejelentkezésre.",
+    "message": "Uphold-fiók létrehozásához legalább $amount$ BAT szükséges. Ha már van hitelesített Uphold-fiókja, lépjen tovább a bejelentkezésre.",
     "description": "Text for login button",
     "placeholders": {
       "amount": {
@@ -818,6 +818,18 @@
   "onboardingPanelBitflyerText": {
     "message": "A pénztárcája megerősítésével, valamint annak a bitFlyer-fiókjához kapcsolásával könnyebben tudja tárolni és kezelni a Brave Rewardson keresztül megszerzett tokenjeit.",
     "description": ""
+  },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Tudjon meg többet$link_end$ a Brave böngésző bitFlyer-fiókkal történő összekapcsolásának menetéről.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
   },
   "bapDeprecationHeader": {
     "message": "A Brave Rewards Japánban egy új rendszerre vált!",

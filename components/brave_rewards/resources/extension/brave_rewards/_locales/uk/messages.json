@@ -819,6 +819,18 @@
     "message": "Виконавши верифікацію гаманця та прив’язавши його до облікового запису bitFlyer, ви зможете зберігати зароблені за допомогою Винагород Brave токени і керувати ними в більш простий спосіб.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Дізнайтеся детальніше$link_end$, як зв’язати браузер Brave з вашим обліковим записом bitFlyer.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards у Японії переходять на нову систему!",
     "description": "Header text for BAP deprecation warning message"

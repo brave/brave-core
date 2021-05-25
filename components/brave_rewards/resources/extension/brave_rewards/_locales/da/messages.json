@@ -819,6 +819,18 @@
     "message": "Ved at bekræfte din tegnebog og knytte den til en bitFlyer-konto kan du nemmere opbevare og administrere de polletter, du har tjent gennem Brave Rewards.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Se mere$link_end$ om, hvordan du forbinder din Brave-browser med din bitFlyer-konto.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Brave Rewards i Japan skifter til et nyt system!",
     "description": "Header text for BAP deprecation warning message"
