@@ -5,10 +5,12 @@
 
 source_set("page_handler") {
   sources = [
-    "wallet_panel_page_handler.cc",
-    "wallet_panel_page_handler.h",
+    "wallet_page_handler.cc",
+    "wallet_page_handler.h",
   ]
   deps = [
+    "//brave/browser/brave_wallet",
+    "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet_ui:mojo_bindings",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",

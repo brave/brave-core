@@ -11,7 +11,7 @@ import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import store from './store'
-import * as WalletPanelActions from './actions/wallet_panel_actions'
+import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
 
 function App () {
@@ -35,7 +35,7 @@ function App () {
 }
 
 function initialize () {
-  store.dispatch(WalletPanelActions.initialize())
+  store.dispatch(WalletActions.initialize())
   render(<App />, document.getElementById('mountPoint'))
 }
 

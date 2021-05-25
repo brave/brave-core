@@ -48,15 +48,18 @@ WalletPanelUI::~WalletPanelUI() = default;
 WEB_UI_CONTROLLER_TYPE_IMPL(WalletPanelUI)
 
 void WalletPanelUI::BindInterface(
-    mojo::PendingReceiver<wallet_panel::mojom::PageHandlerFactory> receiver) {
-  page_factory_receiver_.reset();
-  page_factory_receiver_.Bind(std::move(receiver));
+    mojo::PendingReceiver<wallet_ui::mojom::PanelHandlerFactory> receiver) {
+  panel_factory_receiver_.reset();
+  panel_factory_receiver_.Bind(std::move(receiver));
 }
 
-void WalletPanelUI::CreatePageHandler(
-    mojo::PendingRemote<wallet_panel::mojom::Page> page,
-    mojo::PendingReceiver<wallet_panel::mojom::PageHandler> receiver) {
+void WalletPanelUI::CreatePanelHandler(
+    mojo::PendingRemote<wallet_ui::mojom::Page> page,
+    mojo::PendingReceiver<wallet_ui::mojom::PanelHandler> panel_receiver,
+    mojo::PendingReceiver<wallet_ui::mojom::WalletHandler> wallet_receiver) {
   DCHECK(page);
-  page_handler_ = std::make_unique<WalletPanelPageHandler>(
-      std::move(receiver), std::move(page), web_ui(), this);
+  panel_handler_ = std::make_unique<WalletPanelHandler>(
+      std::move(panel_receiver), std::move(page), web_ui(), this);
+  wallet_handler_ = std::make_unique<WalletHandler>(
+      std::move(wallet_receiver), std::move(page), web_ui(), this);
 }

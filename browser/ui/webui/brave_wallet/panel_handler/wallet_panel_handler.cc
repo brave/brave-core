@@ -3,15 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/brave_wallet/page_handler/wallet_panel_page_handler.h"
+#include "brave/browser/ui/webui/brave_wallet/panel_handler/wallet_panel_handler.h"
 
 #include <utility>
 
-#include "content/public/browser/web_ui.h"
-
-WalletPanelPageHandler::WalletPanelPageHandler(
-    mojo::PendingReceiver<wallet_panel::mojom::PageHandler> receiver,
-    mojo::PendingRemote<wallet_panel::mojom::Page> page,
+WalletPanelHandler::WalletPanelHandler(
+    mojo::PendingReceiver<wallet_ui::mojom::PanelHandler> receiver,
+    mojo::PendingRemote<wallet_ui::mojom::Page> page,
     content::WebUI* web_ui,
     ui::MojoBubbleWebUIController* webui_controller)
     : receiver_(this, std::move(receiver)),
@@ -21,23 +19,22 @@ WalletPanelPageHandler::WalletPanelPageHandler(
   Observe(web_ui_->GetWebContents());
 }
 
-WalletPanelPageHandler::~WalletPanelPageHandler() = default;
+WalletPanelHandler::~WalletPanelHandler() = default;
 
-void WalletPanelPageHandler::ShowUI() {
+void WalletPanelHandler::ShowUI() {
   auto embedder = webui_controller_->embedder();
   if (embedder) {
     embedder->ShowUI();
   }
 }
 
-void WalletPanelPageHandler::CloseUI() {
+void WalletPanelHandler::CloseUI() {
   auto embedder = webui_controller_->embedder();
   if (embedder) {
     embedder->CloseUI();
   }
 }
 
-void WalletPanelPageHandler::OnVisibilityChanged(
-    content::Visibility visibility) {
+void WalletPanelHandler::OnVisibilityChanged(content::Visibility visibility) {
   webui_hidden_ = visibility == content::Visibility::HIDDEN;
 }

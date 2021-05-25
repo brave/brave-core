@@ -44,6 +44,30 @@
       "chrome://newtab/*"
     ]
   }],
+  "tabs": [{
+    "channel": "stable",
+    "extension_types": ["extension", "legacy_packaged_app"],
+    "contexts": ["blessed_extension"],
+    "default_parent": true
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://bookmarks/*",
+      "chrome://read-later.top-chrome/*",
+      "chrome://tab-strip/*",
+      "chrome://wallet-panel.top-chrome/*",
+      "chrome://wallet/*"
+    ]
+  }, {
+    "channel": "stable",
+    "contexts": ["webui_untrusted"],
+    "matches": [
+      "chrome-untrusted://crosh/*",
+      "chrome-untrusted://terminal/*"
+    ],
+    "platforms": ["chromeos"]
+  }],
   "extension.inIncognitoContext": [{
     "contexts": ["blessed_extension", "unblessed_extension", "content_script"]
   }, {

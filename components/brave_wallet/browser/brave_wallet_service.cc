@@ -19,6 +19,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -62,8 +64,10 @@ BraveWalletService::BraveWalletService(
   extension_registry_observer_.Add(extensions::ExtensionRegistry::Get(context));
 #endif
 
-  controller_ = std::make_unique<brave_wallet::EthJsonRpcController>(
+  rpc_controller_ = std::make_unique<brave_wallet::EthJsonRpcController>(
       context, brave_wallet::Network::kMainnet);
+  keyring_controller_ = std::make_unique<brave_wallet::KeyringController>(
+      user_prefs::UserPrefs::Get(context_));
 }
 
 BraveWalletService::~BraveWalletService() {}
@@ -184,8 +188,13 @@ void BraveWalletService::ResetCryptoWallets() {
 #endif
 }
 
-brave_wallet::EthJsonRpcController* BraveWalletService::controller() const {
-  return controller_.get();
+brave_wallet::EthJsonRpcController* BraveWalletService::rpc_controller() const {
+  return rpc_controller_.get();
+}
+
+brave_wallet::KeyringController* BraveWalletService::keyring_controller()
+    const {
+  return keyring_controller_.get();
 }
 
 // Generates a random 32 byte root seed and stores it in prefs

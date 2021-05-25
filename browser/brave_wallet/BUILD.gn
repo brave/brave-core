@@ -5,12 +5,18 @@ assert(brave_wallet_enabled)
 
 source_set("brave_wallet") {
   sources = [
+    "brave_wallet_context_utils.cc",
+    "brave_wallet_context_utils.h",
     "brave_wallet_delegate_impl.cc",
     "brave_wallet_delegate_impl.h",
+    "brave_wallet_service_factory.cc",
+    "brave_wallet_service_factory.h",
   ]
   deps = [
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
+    "//chrome/browser/profiles:profiles",
+    "//components/keyed_service/content:content",
     "//content/public/browser",
     "//extensions/buildflags",
   ]

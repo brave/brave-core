@@ -12,11 +12,12 @@ import { BackButton } from '../../components/shared'
 
 export interface Props {
   recoveryPhrase: string[]
+  onPasswordProvided: (password: string) => void
   onSubmit: (recoveryVerified: boolean) => void
 }
 
 function Onboarding (props: Props) {
-  const { recoveryPhrase, onSubmit } = props
+  const { recoveryPhrase, onPasswordProvided, onSubmit } = props
   const [onboardingStep, setOnboardingStep] = React.useState<number>(0)
   const [backupTerms, setBackupTerms] = React.useState<boolean>(false)
   const [backedUp, setBackedUp] = React.useState<boolean>(false)
@@ -32,9 +33,13 @@ function Onboarding (props: Props) {
   const nextStep = () => {
     if (onboardingStep === 4) {
       onSubmit(true)
-    } else {
-      setOnboardingStep(onboardingStep + 1)
+      return
     }
+
+    if (onboardingStep === 1) {
+      onPasswordProvided(password)
+    }
+    setOnboardingStep(onboardingStep + 1)
   }
 
   const onBack = () => {
@@ -74,7 +79,7 @@ function Onboarding (props: Props) {
       array[j] = temp
     }
     return array
-  }, [])
+  }, [recoveryPhrase])
 
   const showError = () => {
     setVerifyError(true)

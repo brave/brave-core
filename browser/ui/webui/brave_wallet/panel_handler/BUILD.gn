@@ -1,0 +1,20 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("panel_handler") {
+  sources = [
+    "wallet_panel_handler.cc",
+    "wallet_panel_handler.h",
+  ]
+  deps = [
+    "//brave/browser/brave_wallet",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet_ui:mojo_bindings",
+    "//chrome/browser/profiles:profile",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//ui/webui:webui",
+  ]
+}

@@ -5,25 +5,40 @@
 
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
-import * as Actions from '../actions/wallet_page_actions'
-import { PageState, WalletPageState } from '../../constants/types'
+import * as WalletPageActions from '../actions/wallet_page_actions'
+import * as WalletActions from '../../common/actions/wallet_actions'
+import { CreateWalletPayloadType } from '../constants/action_types'
+import { WalletAPIHandler } from '../../constants/types'
+
+type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
 const handler = new AsyncActionHandler()
 
-function getPageState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PageState {
-  return (store.getState() as WalletPageState).page
+async function getAPIProxy () {
+  // TODO(petemill): don't lazy import() if this actually makes the time-to-first-data slower!
+  const api = await import('../wallet_page_api_proxy.js')
+  return api.default.getInstance()
 }
 
-handler.on(Actions.initialize.getType(), async (store) => {
-  const state = getPageState(store)
-  // Sanity check we only initialize once
-  if (state.hasInitialized) {
-    return
-  }
-  // TODO: Fetch any data we need for initial display, instead of fake wait.
-  await new Promise(resolve => setTimeout(resolve, 400))
-  store.dispatch(Actions.initialized({ isConnected: true }))
-  return
+async function getWalletHandler (): Promise<WalletAPIHandler> {
+  const apiProxy = await getAPIProxy()
+  return apiProxy.getWalletHandler()
+}
+
+async function refreshWalletInfo (store: Store) {
+  const walletHandler = await getWalletHandler()
+  const result = await walletHandler.getWalletInfo()
+  store.dispatch(WalletActions.initialized(result))
+}
+
+handler.on(WalletPageActions.createWallet.getType(), async (store, payload: CreateWalletPayloadType) => {
+  const apiProxy = await getAPIProxy()
+  const result = await apiProxy.createWallet(payload.password)
+  store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
+})
+
+handler.on(WalletPageActions.walletSetupComplete.getType(), async (store) => {
+  await refreshWalletInfo(store)
 })
 
 export default handler.middleware

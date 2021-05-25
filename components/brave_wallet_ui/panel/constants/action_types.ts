@@ -9,7 +9,3 @@ export type AccountPayloadType = {
   selectedAccounts: WalletAccountType[]
   siteToConnectTo: string
 }
-
-export type InitializedPayloadType = {
-  isConnected: boolean
-}

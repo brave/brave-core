@@ -117,17 +117,22 @@ export interface PriceDataObjectType {
 }
 
 export interface WalletState {
+  hasInitialized: boolean
+  isWalletCreated: boolean
+  isWalletLocked: boolean
+  isWalletRecoveryVerified: boolean
+  accounts: WalletAccountType[]
 }
 
 export interface PanelState {
   hasInitialized: boolean
   isConnected: boolean
   connectedSiteOrigin: string
-  accounts: WalletAccountType[]
 }
 
 export interface PageState {
   hasInitialized: boolean
+  mnemonic?: string
 }
 
 export interface WalletPageState {
@@ -138,4 +143,16 @@ export interface WalletPageState {
 export interface WalletPanelState {
   wallet: WalletState
   panel: PanelState
+}
+
+export interface WalletInfo {
+  isWalletCreated: boolean,
+  isWalletLocked: boolean
+  accounts: string[]
+}
+
+export interface WalletAPIHandler {
+  getWalletInfo: () => Promise<WalletInfo>
+  lockWallet: () => Promise<void>
+  unlockWallet: (password: string) => Promise<void>
 }

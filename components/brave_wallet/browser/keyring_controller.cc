@@ -123,9 +123,6 @@ void KeyringController::Lock() {
 }
 
 bool KeyringController::Unlock(const std::string& password) {
-  if (!default_keyring_)
-    return false;
-
   if (!ResumeDefaultKeyring(password)) {
     encryptor_.reset();
     return false;
@@ -206,6 +203,10 @@ bool KeyringController::CreateDefaultKeyringInternal(
   default_keyring_->ConstructRootHDKey(*seed, "m/44'/60'/0'/0");
 
   return true;
+}
+
+bool KeyringController::IsDefaultKeyringCreated() {
+  return prefs_->HasPrefPath(kBraveWalletEncryptedMnemonic);
 }
 
 }  // namespace brave_wallet
