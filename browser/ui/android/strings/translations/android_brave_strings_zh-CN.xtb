@@ -358,12 +358,12 @@
 <translation id="7427567994475794038">启用“隐私报告”查看一下在过去 3 小时内有多少跟踪器和广告被屏蔽了。</translation>
 <translation id="2053891538879944400">您用 Brave 浏览器节省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 的数据。</translation>
 <translation id="8640064498452534195">打开“隐私报告”看看您已节省了多少数据。</translation>
-<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。&#128267;</translation>
+<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。🔋</translation>
 <translation id="1945330434665345785">您上周用 Brave  屏蔽了 <ph name="COUNT"/> 个跟踪器和广告。</translation>
 <translation id="2883868922264431515">通过查看尊重隐私的广告来赚取令牌和支持您喜欢的网站。</translation>
-<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。&#128293;</translation>
-<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。&#128267;</translation>
-<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。🔥</translation>
+<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。🔋</translation>
+<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。💨💨</translation>
 <translation id="7408493389591475748">开始浏览以查看隐私报告</translation>
 <translation id="9080777565335515917">将 Brave 设为您的默认浏览器，以进行安全的私人浏览。</translation>
 <translation id="1390943217516275883">允许 Brave 展示你的隐私统计数据</translation>
@@ -495,4 +495,26 @@
 <translation id="6960458596933484861">您需要至少有 15 个 BAT 才能创建验证过的 Uphold 钱包。请稍后重试。</translation>
 <translation id="4389085954549744469">如果您已经有了验证过的 Uphold 账户，请<ph name="CONTINUE_TO_LOGIN"/>。</translation>
 <translation id="6146966915297143881">继续登录</translation>
+<translation id="1506061864768559482">搜索引擎</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="8710614491157212477">当可用时，使用 HTTPS 代替 HTTP 访问支持的网站</translation>
+<translation id="4022987104439075738">IPFS网关</translation>
+<translation id="2688519859165248360">允许通过 IPFS 网关导航到 IPFS 资源</translation>
+<translation id="8387201461264842096">广告区块</translation>
+<translation id="1934885595886623674">防止广告加载</translation>
+<translation id="7458422973722236530">指纹保护</translation>
+<translation id="6469509880167172749">将完全的隐私产品分析信息自动发送给 Brave Software</translation>
+<translation id="7090566321964540749">该匿名信息仅使 Brave 能够估计某些功能的整体使用情况。</translation>
+<translation id="2645380101799517405">控件</translation>
+<translation id="7396366757003005317">指纹被屏蔽（严格，可能会破坏站点）</translation>
+<translation id="700453611199558021">指纹被屏蔽（标准）</translation>
+<translation id="5142293891785304489">跟踪器、广告和\n等已被屏蔽</translation>
+<translation id="7182293319417450928">至少需要 25 个 BAT 余额来验证。</translation>
+<translation id="6232491755501685494">日本的 Brave Rewards 即将切换到新系统！</translation>
+<translation id="7444515017164572362">从 3 月 13 日开始，您将无法使用 BAP。但是一旦你
+在 4 月更新到新系统后，您将以新令牌开始！</translation>
+<translation id="8587285254008006694">作为此过渡的一部分，从 3 月 13 日起，您的浏览器中的打赏功能和
+        捐款功能将暂时不可用，并且，在您在四月份更新到新系统之前，
+        您的 BAP 余额将显示为 0.0。在使用新系统后，您将开始使用新
+        的令牌！</translation>
 </translationbundle>

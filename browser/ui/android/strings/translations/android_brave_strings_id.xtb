@@ -359,12 +359,12 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="7427567994475794038">Nyalakan Pelaporan Privasi untuk melihat berapa banyak pelacak &amp; iklan yang sudah diblokir dalam 3 jam terakhir.</translation>
 <translation id="2053891538879944400">Anda menghemat <ph name="DATA"/> <ph name="DATA_TEXT"/> data dengan peramban Brave.</translation>
 <translation id="8640064498452534195">Nyalakan Pelaporan Privasi untuk melihat berapa besar data yang Anda hemat.</translation>
-<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.&#128267;</translation>
+<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.🔋</translation>
 <translation id="1945330434665345785">Anda memblokir <ph name="COUNT"/> trackers &amp; iklan dengan peramban Brave minggu kemarin.</translation>
 <translation id="2883868922264431515">Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung website favorit Anda.</translation>
-<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.🔥</translation>
+<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.🔋</translation>
+<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.💨💨</translation>
 <translation id="7408493389591475748">Mulailah meramban untuk melihat pelaporan privasi</translation>
 <translation id="9080777565335515917">Atur Brave sebagai peramban default untuk meramban privat dan aman.</translation>
 <translation id="1390943217516275883">Izinkan Brave untuk menunjukkan statistik privasi Anda</translation>
@@ -496,4 +496,22 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="6960458596933484861">Anda perlu minimal 15 BAT untuk membuat dompet Uphold yang terverifikasi. Silakan coba kembali nanti.</translation>
 <translation id="4389085954549744469">Jika Anda telah memiliki dompet Uphold yang terverifikasi, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">lanjut untuk masuk</translation>
+<translation id="1506061864768559482">Mesin pencari</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="8710614491157212477">Jika memungkinkan, buka situs yang didukung menggunakan HTTPS ketimbang HTTP</translation>
+<translation id="4022987104439075738">Gateway IPFS</translation>
+<translation id="2688519859165248360">Memungkinkan navigasi untuk sumber daya IFFS melalui Gerbang IPFS</translation>
+<translation id="8387201461264842096">Blokir Iklan</translation>
+<translation id="1934885595886623674">Cegah pemuatan iklan</translation>
+<translation id="7458422973722236530">Perlindungan Sidik Jari</translation>
+<translation id="6469509880167172749">Secara otomatis mengirim analisis produk pribadi ke Brave</translation>
+<translation id="7090566321964540749">Info anonim ini hanya memungkinkan Brave memperkirakan penggunaan keseluruhan dari fitur tertentu.</translation>
+<translation id="2645380101799517405">Kontrol</translation>
+<translation id="7396366757003005317">Penyidikjari diblokir(ketat, dapat memacetkan situs)</translation>
+<translation id="700453611199558021">Penyidikjari diblokir(standar)</translation>
+<translation id="5142293891785304489">Pelacak, iklan, dan\nlainnya diblokir</translation>
+<translation id="7182293319417450928">Saldo minimal sebesar 25 BAT diperlukan untuk verifikasi.</translation>
+<translation id="6232491755501685494">Brave Rewards di Jepang beralih ke sistem baru!</translation>
+<translation id="7444515017164572362">Mulai 13 Maret, Anda tidak dapat menggunakan BAP. Tapi setelah Anda diperbarui ke sistem baru pada bulan April, Anda akan memulai dengan token baru!</translation>
+<translation id="8587285254008006694">Sebagai bagian dari transisi ini, fitur memberi tip dan kontribusi di peramban Anda sementara tidak tersedia mulai 13 Maret, dan saldo BAP Anda akan menunjukkan 0,0 sampai Anda diperbarui ke sistem baru pada bulan April. Setelah Anda menggunakan sistem baru, Anda akan memulai dengan token baru!</translation>
 </translationbundle>

@@ -358,12 +358,12 @@
 <translation id="7427567994475794038">개인정보 보고서를 켜서 지난 3시간 동안 얼마나 많은 추적기 및 광고가 차단되었는지 확인하십시오.</translation>
 <translation id="2053891538879944400">Brave 브라우저로 <ph name="DATA"/> <ph name="DATA_TEXT"/> 데이터를 절약하셨습니다.</translation>
 <translation id="8640064498452534195">절약한 데이터 양을 보려면 개인정보 보고서를 켜십시오.</translation>
-<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.&#128267;</translation>
+<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.🔋</translation>
 <translation id="1945330434665345785">지난주 Brave 브라우저로 <ph name="COUNT"/> 추적기 및 광고를 차단하셨습니다.</translation>
 <translation id="2883868922264431515">개인정보 존중 광고를 시청하여 토큰을 획득하고 즐겨찾는 웹사이트를 지원하십시오.</translation>
-<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.&#128293;</translation>
-<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.&#128267;</translation>
-<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. &#128168; &#128168;</translation>
+<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.🔥</translation>
+<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.🔋</translation>
+<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. 💨 💨</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
 <translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
 <translation id="1390943217516275883">Brave가 비공개 통계를 표시할 수 있도록 허용</translation>
@@ -495,4 +495,26 @@
 <translation id="6960458596933484861">확인된 Uphold 지갑을 만들려면 최소 15BAT가 필요합니다. 다시 시도하세요.</translation>
 <translation id="4389085954549744469">이미 확인된 Uphold 계정이 있는 경우, <ph name="CONTINUE_TO_LOGIN"/>하세요.</translation>
 <translation id="6146966915297143881">로그인하여 계속</translation>
+<translation id="1506061864768559482">검색 엔진</translation>
+<translation id="520895744850022668">모든 사이트에서 HTTPS 사용</translation>
+<translation id="8710614491157212477">가능할 경우 HTTP 대신 HTTPS를 이용해 지원되는 사이트를 엽니다</translation>
+<translation id="4022987104439075738">IPFS 게이트웨이</translation>
+<translation id="2688519859165248360">IPFS 게이트웨이를 통한 IPFS 리소스 탐색 허용</translation>
+<translation id="8387201461264842096">광고 차단</translation>
+<translation id="1934885595886623674">광고 불러오기 방지</translation>
+<translation id="7458422973722236530">지문 보호</translation>
+<translation id="6469509880167172749">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
+<translation id="7090566321964540749">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
+<translation id="2645380101799517405">제어</translation>
+<translation id="7396366757003005317">지문 차단 (엄격, 사이트 장애 발생 가능)</translation>
+<translation id="700453611199558021">지문 차단 (표준)</translation>
+<translation id="5142293891785304489">추적기, 광고 및\n기타 차단됨</translation>
+<translation id="7182293319417450928">확인하려면 최소 25 BAT의 잔액이 필요합니다.</translation>
+<translation id="6232491755501685494">일본 내 Brave Rewards가 새로운 시스템으로 전환됩니다!</translation>
+<translation id="7444515017164572362">3월 13일부터는 BAP를 사용할 수 없습니다. 하지만 4월에 새로운 시스템으로
+        업데이트하면, 새 토큰으로 시작할 수 있습니다!</translation>
+<translation id="8587285254008006694">이러한 전환의 일환으로 3월 13일부터 브라우저에서 팁 주기 및 기부 기능을
+        일시적으로 사용할 수 없으며, 4월에 새로운 시스템으로 업데이트될 때까지
+        BAP 잔액은 0.0으로 표시됩니다. 새로운 시스템에 접속하게 되면 새 토큰으로
+        시작할 수 있습니다!</translation>
 </translationbundle>

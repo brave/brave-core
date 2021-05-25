@@ -359,12 +359,12 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="7427567994475794038">Attiva il Report Privacy per vedere quanti tracker &amp;ad sono state bloccate nelle ultime 3 ore.</translation>
 <translation id="2053891538879944400">Hai risparmiato <ph name="DATA"/> <ph name="DATA_TEXT"/> dati con Brave browser.</translation>
 <translation id="8640064498452534195">Attiva il Report Privacy per vedere quanti dati hai risparmiato.</translation>
-<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.&#128267;</translation>
+<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.🔋</translation>
 <translation id="1945330434665345785">Hai bloccato <ph name="COUNT"/> tracker &amp; ad con Brave browser la scorsa settimana.</translation>
 <translation id="2883868922264431515">Guadagna token guardando ad tutela-privacy e supporta i tuoi siti preferiti.</translation>
-<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.&#128293;</translation>
-<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.&#128267;</translation>
-<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.🔥</translation>
+<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.🔋</translation>
+<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.💨💨</translation>
 <translation id="7408493389591475748">Comincia a navigare per visualizzare il report sulla privacy</translation>
 <translation id="9080777565335515917">Imposta Brave come browser di default per una navigazione privata e sicura.</translation>
 <translation id="1390943217516275883">Permette a Brave di mostrare le tue statistiche in tema di privacy</translation>
@@ -496,4 +496,26 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="6960458596933484861">Per creare un portafoglio Uphold verificato devi avere almeno 15 BAT. Riprova in seguito.</translation>
 <translation id="4389085954549744469">Se hai già un account Uphold verificato, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">continua per eseguire l’accesso</translation>
+<translation id="1506061864768559482">Motore di ricerca</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="8710614491157212477">Apre i siti compatibili utilizzando HTTPS invece di HTTP quando è possibile.</translation>
+<translation id="4022987104439075738">Gateway IPFS</translation>
+<translation id="2688519859165248360">Consente la navigazione nelle risorse IPFS tramite un gateway IPFS</translation>
+<translation id="8387201461264842096">Blocco degli annunci</translation>
+<translation id="1934885595886623674">Impedisce il caricamento di pubblicità</translation>
+<translation id="7458422973722236530">Protezione con le Impronte Digitali</translation>
+<translation id="6469509880167172749">Invia automaticamente analisi di prodotto completamente private a Brave</translation>
+<translation id="7090566321964540749">Queste informazioni anonime consentono a Brave di stimare solo l'utilizzo complessivo di alcune funzioni.</translation>
+<translation id="2645380101799517405">Controlli</translation>
+<translation id="7396366757003005317">Impronta digitale bloccata(stretto, potrebbe interferire con le funzionalità dei siti)</translation>
+<translation id="700453611199558021">Blocco impronta digitale(standard)</translation>
+<translation id="5142293891785304489">Tracker, annunci e\naltro bloccati</translation>
+<translation id="7182293319417450928">Per la verifica è richiesto un saldo minimo di 25 BAT.</translation>
+<translation id="6232491755501685494">Brave Rewards in Giappone sta passando a un nuovo sistema!</translation>
+<translation id="7444515017164572362">A partire dal 13 marzo non potrai usare i tuoi BAP. Dopo che sarai passato
+        al nuovo sistema ad aprile, potrai ricominciare con i nuovi token!</translation>
+<translation id="8587285254008006694">Per permettere questa transizione, le funzionalità di mance e contributi del
+        tuo browser saranno temporaneamente non disponibili dal 13 marzo e
+        il tuo saldo BAP sarà 0,0 finché non passerai al nuovo sistema
+        ad aprile. Quando passerai al nuovo sistema, inizierai con i nuovi token!</translation>
 </translationbundle>

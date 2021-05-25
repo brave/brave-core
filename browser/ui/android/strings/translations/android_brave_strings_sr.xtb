@@ -358,12 +358,12 @@ meseca...</translation>
 <translation id="7427567994475794038">Uključite Izveštaje o privatnosti da biste videli koliko je pratilaca &amp; reklama blokirano u poslednja 3 sata.</translation>
 <translation id="2053891538879944400">Sačuvali ste <ph name="DATA"/> <ph name="DATA_TEXT"/> podataka sa svojim pregledačem.</translation>
 <translation id="8640064498452534195">Uključite Izveštaje o privatnosti da biste videli koliko ste podataka sačuvali.</translation>
-<translation id="2252497442547961651">Brave pretraživač u proseku troši 40% manje baterije.&#128267;</translation>
+<translation id="2252497442547961651">Brave pretraživač u proseku troši 40% manje baterije.🔋</translation>
 <translation id="1945330434665345785">Blokirali ste <ph name="COUNT"/> pratioca &amp; reklama sa Brave pregledačem prošle nedelje.</translation>
 <translation id="2883868922264431515">Zaradite tokene gledajući reklame koji poštuju privatnost i podržite svoje omiljene veb lokacije.</translation>
-<translation id="5678925890616256956">Lep! Blokirali ste 250 praćenja &amp; oglasa uz pomoć Brave pregledača.&#128293;</translation>
-<translation id="9199047775708635708">Lepo! Uštedeli ste 10MB pomoću Brave pretraživača.&#128267;</translation>
-<translation id="1880168210969863408">Lepo! Uštedeli ste 10 minuta vremena učitavanja pomoću Brave pretraživača.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Lep! Blokirali ste 250 praćenja &amp; oglasa uz pomoć Brave pregledača.🔥</translation>
+<translation id="9199047775708635708">Lepo! Uštedeli ste 10MB pomoću Brave pretraživača.🔋</translation>
+<translation id="1880168210969863408">Lepo! Uštedeli ste 10 minuta vremena učitavanja pomoću Brave pretraživača.💨💨</translation>
 <translation id="7408493389591475748">Započnite pregledanje da biste videli izveštaje o privatnosti</translation>
 <translation id="9080777565335515917">Postavite Brave kao svoj podrazumevani pregledač za privatno i sigurno pregledanje.</translation>
 <translation id="1390943217516275883">Omogućuje da Brave prikazuje vašu statistiku privatnosti</translation>
@@ -495,4 +495,27 @@ meseca...</translation>
 <translation id="6960458596933484861">Treba vam najmanje 15 BAT-a da biste kreirali verifikovani Uphold novčanik. Molimo pokušajte ponovo kasnije.</translation>
 <translation id="4389085954549744469">Ako već imate verifikovani Uphold nalog, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">nastavite s prijavom</translation>
+<translation id="1506061864768559482">Претраживач</translation>
+<translation id="520895744850022668">HTTPS svuda</translation>
+<translation id="8710614491157212477">Otvara podržane lokacije koristeći HTTPS umesto HTTP kad god je moguće</translation>
+<translation id="4022987104439075738">IPFS mrežni prolaz</translation>
+<translation id="2688519859165248360">Dopušta navigaciju do IPFS resursa kroz IPFS mrežni prolaz</translation>
+<translation id="8387201461264842096">Ad Block</translation>
+<translation id="1934885595886623674">Spreči reklame da se učitaju</translation>
+<translation id="7458422973722236530">Zaštita otiskom prsta</translation>
+<translation id="6469509880167172749">Automatski pošalji potpuno privatnu analitiku proizvoda Brave-u</translation>
+<translation id="7090566321964540749">Ova anonimna informacija samo Brave-u dozvoljava da procenjuje ukupno korišćenje određenih karakteristika.</translation>
+<translation id="2645380101799517405">Kontrole</translation>
+<translation id="7396366757003005317">Otisak prsta je blokiran (strogo, može da pokvari sajtove)</translation>
+<translation id="700453611199558021">Otisak prsta je blokiran (standardno)</translation>
+<translation id="5142293891785304489">Praćenja, reklame i\n više blokiranog</translation>
+<translation id="7182293319417450928">Za potvrdu je potreban minimalni balans od 25 BAT</translation>
+<translation id="6232491755501685494">Brave Rewards u Japanu prelazi na novi sistem!</translation>
+<translation id="7444515017164572362">Počev od 13. marta, nećete’ biti u mogućnosti da koristite svoj BAP. Međutim, čim
+        budete izvršili ažuriranja na novi sistem u aprilu, počećete’ sa novim tokenima!</translation>
+<translation id="8587285254008006694">Kao deo ovog prelaza, funkcija napojnica i doprinosa u
+        pregledaču će privremeno biti nedostupna počev od 13. marta, a
+        Vaš BAP saldo će pokazivati 0,0 sve dok ne izvršite ažuriranje na novi sistem
+        u aprilu. Čim budete’ bili na novom sistemu, počećete’ sa novim
+        tokenima!</translation>
 </translationbundle>

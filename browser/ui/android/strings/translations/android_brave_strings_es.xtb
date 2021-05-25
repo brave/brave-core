@@ -360,12 +360,12 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="7427567994475794038">Active los informes de privacidad para ver cuántos rastreadores y anuncios se han bloqueado en las últimas 3 horas.</translation>
 <translation id="2053891538879944400">Ha ahorrado <ph name="DATA"/> <ph name="DATA_TEXT"/> datos con el navegador Brave.</translation>
 <translation id="8640064498452534195">Active los informes de privacidad para ver cuántos datos ha ahorrado.</translation>
-<translation id="2252497442547961651">El navegador Brave usa un 40 % menos de batería en promedio.&#128267;</translation>
+<translation id="2252497442547961651">El navegador Brave usa un 40 % menos de batería en promedio.🔋</translation>
 <translation id="1945330434665345785">Bloqueó <ph name="COUNT"/> rastreadores y anuncios con el navegador Brave la semana pasada.</translation>
 <translation id="2883868922264431515">Gane tokens al ver anuncios que respetan la privacidad y apoye a sus sitios web favoritos.</translation>
-<translation id="5678925890616256956">¡Genial! Has bloqueado 250 rastreadores &amp; anuncios con el navegador Brave.&#128293;</translation>
-<translation id="9199047775708635708">¡Genial! Te has ahorrado 10 MB con el navegador Brave.&#128267;</translation>
-<translation id="1880168210969863408">¡Genial! Te has ahorrado 10 minutos de tiempo de carga con el navegador Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">¡Genial! Has bloqueado 250 rastreadores &amp; anuncios con el navegador Brave.🔥</translation>
+<translation id="9199047775708635708">¡Genial! Te has ahorrado 10 MB con el navegador Brave.🔋</translation>
+<translation id="1880168210969863408">¡Genial! Te has ahorrado 10 minutos de tiempo de carga con el navegador Brave.💨💨</translation>
 <translation id="7408493389591475748">Empiece a navegar para ver el informe de privacidad</translation>
 <translation id="9080777565335515917">Establezca Brave como su navegador predeterminado para tener una navegación privada y segura.</translation>
 <translation id="1390943217516275883">Permite a Brave mostrar tus estadísticas de privacidad</translation>
@@ -497,4 +497,22 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="6960458596933484861">Necesitas 15 BAT como mínimo para crear una cartera Uphold verificada. Inténtalo de nuevo más tarde.</translation>
 <translation id="4389085954549744469">Si ya tienes una cuenta Uphold verificada, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">continúa para iniciar sesión</translation>
+<translation id="1506061864768559482">Motor de búsqueda</translation>
+<translation id="520895744850022668">HTTPS en cualquier sitio</translation>
+<translation id="8710614491157212477">Abre sitios compatibles que utilicen HTTPS en lugar de HTTP cuando sea posible.</translation>
+<translation id="4022987104439075738">Puerta de enlace IPFS</translation>
+<translation id="2688519859165248360">Permite la navegación hacia recursos IPFS mediante una puerta de enlace IPFS</translation>
+<translation id="8387201461264842096">Ad Block</translation>
+<translation id="1934885595886623674">Evita que se carguen los anuncios</translation>
+<translation id="7458422973722236530">Protección de huella digital</translation>
+<translation id="6469509880167172749">Enviar automáticamente los análisis de productos de manera completamente privada a Brave</translation>
+<translation id="7090566321964540749">Esta información anónima solo le permite a Brave estimar el uso general de ciertas funciones.</translation>
+<translation id="2645380101799517405">Controles</translation>
+<translation id="7396366757003005317">Bloqueo de huellas digitales (estricto, podría romper sitios)</translation>
+<translation id="700453611199558021">Bloqueo de huellas digitales (estándar)</translation>
+<translation id="5142293891785304489">Bloqueo de programas de seguimiento y anuncios, \nentre otros</translation>
+<translation id="7182293319417450928">Se requiere un saldo mínimo de 25 BAT para hacer la verificación.</translation>
+<translation id="6232491755501685494">Brave Rewards en Japón cambia de sistema.</translation>
+<translation id="7444515017164572362">A partir del 13 de marzo, ya no podrás usar tu BAP. Pero una vez que actualices al nuevo sistema en abril, ¡podrás volver a empezar con fichas nuevas!</translation>
+<translation id="8587285254008006694">Como parte de esta transición, las funciones de contribución y propinas de tu navegador dejarán de estar disponibles a partir del 13 de marzo, y tu saldo de BAP mostrará 0.0 hasta que hayas actualizado al nuevo sistema en abril. Una vez que uses el nuevo sistema, ¡volverás a comenzar con nuevas fichas!</translation>
 </translationbundle>

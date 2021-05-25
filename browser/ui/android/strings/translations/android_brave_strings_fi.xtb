@@ -360,12 +360,12 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="7427567994475794038">Kytke yksityisyysraportit päälle, niin näet miten monta seurainta &amp; mainosta on estetty viimeisen kolmen tunnin aikana.</translation>
 <translation id="2053891538879944400">Säästit Brave-selaimella <ph name="DATA"/> <ph name="DATA_TEXT"/> dataa.</translation>
 <translation id="8640064498452534195">Kytke yksityisyysraportit päälle, niin näet miten paljon dataa olet säästänyt.</translation>
-<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.&#128267;</translation>
+<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.🔋</translation>
 <translation id="1945330434665345785">Estit Brave-selaimella viime viikolla <ph name="COUNT"/> seurainta &amp; mainosta.</translation>
 <translation id="2883868922264431515">Tienaa poletteja katselemalla yksityisyyttä kunnioittavia mainoksia ja tue suosikkisivustojasi.</translation>
-<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.&#128293;</translation>
-<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.&#128267;</translation>
-<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.🔥</translation>
+<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.🔋</translation>
+<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.💨💨</translation>
 <translation id="7408493389591475748">Aloita selailu yksityisyysraporttien näkemiseksi</translation>
 <translation id="9080777565335515917">Tee Bravesta oletusselaimesi ja nauti yksityisestä ja turvallisesta selaamisesta.</translation>
 <translation id="1390943217516275883">Sallii Braven näyttää yksityisyystilastosi</translation>
@@ -497,4 +497,27 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="6960458596933484861">Sinulla täytyy olla vähintään 15 BATtia luodaksesi todennetun Uphold-lompakon. Yritä myöhemmin uudelleen.</translation>
 <translation id="4389085954549744469">Jos sinulla on jo todennettu Uphold-tili, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
 <translation id="6146966915297143881">jatka sisäänkirjautumista</translation>
+<translation id="1506061864768559482">Hakukone</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="8710614491157212477">Avaa tuetut sivustot käyttämällä HTTPS:ää HTTP:n sijaan, kun se on mahdollista</translation>
+<translation id="4022987104439075738">IPFS-portti</translation>
+<translation id="2688519859165248360">Sallii navigoinnin IPFS resursseihin IPFS-portin kautta</translation>
+<translation id="8387201461264842096">Mainosten esto</translation>
+<translation id="1934885595886623674">Estää mainosten latautumisen</translation>
+<translation id="7458422973722236530">Tunnistesuojaus</translation>
+<translation id="6469509880167172749">Lähetä Bravelle automaattisesti täysin yksityisenä pysyvää tuoteanalytiikkaa</translation>
+<translation id="7090566321964540749">Tämä anonyymi tieto sallii Braven arvioida tiettyjen ominaisuuksien kokonaiskäyttöä.</translation>
+<translation id="2645380101799517405">Painikkeet</translation>
+<translation id="7396366757003005317">Yksilöllinen seuranta estetty (ehdoton, voi rikkoa sivustoja)</translation>
+<translation id="700453611199558021">Yksilöllinen seuranta estetty (vakio)</translation>
+<translation id="5142293891785304489">Seuraimet, mainokset ja\nmuuta estetty</translation>
+<translation id="7182293319417450928">Vahvistaminen vaatii vähintään 25 BAT:n minimisaldon</translation>
+<translation id="6232491755501685494">Japanin Brave Rewards vaihtaa uuteen järjestelmään!</translation>
+<translation id="7444515017164572362">Voit käyttää BAP:tasi 13. maaliskuuta alkaen. Sitten kun olet
+        päivittänyt käyttöösi uuden järjestelmän huhtikuussa saat itsellesi uusia maksutunnuksia!</translation>
+<translation id="8587285254008006694">Tämän siirtymän myötä tippaus- ja lahjoitusominaisuudet
+        ovat tilapäisesti poissa käytöstä selaimessasi 13. maaliskuuta alkaen, minkä lisäksi
+        BAP-saldonasi näkyy 0.0 siihen asti kunnes olet päivittänyt järjestelmän uuteen versioon
+        huhtikuussa. Siirryttyäsi uuteen järjestelmään saat käyttöösi uudet
+        maksutunnukset!</translation>
 </translationbundle>
