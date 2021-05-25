@@ -12,10 +12,6 @@ import Container from './container'
 import * as WalletPageActions from './actions/wallet_page_actions'
 import store from './store'
 
-import 'emptykit.css'
-import '../../../ui/webui/resources/fonts/poppins.css'
-import '../../../ui/webui/resources/fonts/muli.css'
-
 import LegacyApp from '../components/legacy_app'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'

@@ -1,8 +1,7 @@
-import 'emptykit.css'
+import '../ui/webui/resources/css/reset.css'
+
 import * as React from 'react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
-import { addParameters } from '@storybook/react'
-import { initLocale } from 'brave-ui/helpers'
 import { getString } from './locale'
 import ThemeProvider from '../components/common/StorybookThemeProvider'
 

@@ -4,9 +4,6 @@
 
 import * as React from 'react'
 
-// CSS normalizer
-import 'emptykit.css'
-
 // Feature-specific components
 import { ShieldsPanel } from '../../components'
 

@@ -7,15 +7,12 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { bindActionCreators } from 'redux'
-require('emptykit.css')
 
 import { LocaleContext } from '../shared/lib/locale_context'
 import { WithThemeVariables } from '../shared/components/with_theme_variables'
 
 // Components
 import App from './components/app'
-require('../../../../ui/webui/resources/fonts/muli.css')
-require('../../../../ui/webui/resources/fonts/poppins.css')
 
 // Utils
 import store from './store'

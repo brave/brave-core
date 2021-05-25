@@ -10,12 +10,13 @@ import { Store } from 'webext-redux'
 import Theme from 'brave-ui/theme/brave-default'
 import { ThemeProvider } from 'styled-components'
 import { initLocale } from 'brave-ui/helpers'
-require('emptykit.css')
-require('../../../../../ui/webui/resources/fonts/muli.css')
-require('../../../../../ui/webui/resources/fonts/poppins.css')
 
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { WithThemeVariables } from '../../shared/components/with_theme_variables'
+
+import '../../../../../ui/webui/resources/css/reset.css'
+import '../../../../../ui/webui/resources/fonts/muli.css'
+import '../../../../../ui/webui/resources/fonts/poppins.css'
 
 // Components
 import App from './components/app'
