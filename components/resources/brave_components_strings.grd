@@ -414,6 +414,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED" desc="">Disabled</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_QR_BOX_TEXT" desc="">QR Code for iOS Rewards users transferring BAT</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_QR_BOX_BUTTON" desc="">QR Code</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_SERVER_DISCONNECT_FAILED" desc="">Sorry, there was an error when trying to disconnect your <ph name="PROVIDER">$1</ph> account. Please try again in a little while.</message>
       <message name="IDS_BRAVE_UI_BAT_REWARDS_TEXT" desc="">BAT</message>
       <message name="IDS_BRAVE_UI_BAP_REWARDS_TEXT" desc="">BAP</message>
       <message name="IDS_BRAVE_UI_BAT_POINTS_TEXT" desc="">BAT Points</message>

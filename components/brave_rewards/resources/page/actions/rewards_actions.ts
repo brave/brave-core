@@ -321,6 +321,8 @@ export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RE
 
 export const getPaymentId = () => action(types.GET_PAYMENT_ID)
 
+export const disconnectWalletError = () => action(types.DISCONNECT_WALLET_ERROR)
+
 export const onPaymentId = (paymentId: string) => action(types.ON_PAYMENT_ID, {
   paymentId
 })

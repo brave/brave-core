@@ -22,6 +22,7 @@ export const defaultState: Rewards.State = {
   donationAbilityTwitter: true,
   reconcileStamp: 0,
   ui: {
+    disconnectWalletError: false,
     emptyWallet: true,
     modalBackup: false,
     modalRedirect: 'hide',
