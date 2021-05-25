@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">የተመረጠ ድምጽ</translation>
 <translation id="7895302206188277628">የተገናኘ ይዘት</translation>
 <translation id="4322612543319315652">የተመረጠውን ጽሑፍ ወደ IPFS ያስመጡ</translation>
+<translation id="8883166554766780543">ወደ IPFS ቅጽበታዊ ገጽ እይታ የሚልከውን ማስፈንጠሪያ ያስመጡ እና ይቅዱ</translation>
+<translation id="3654831858282189202">በ IPNS ቁልፍ ያትሙ</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">አዲስ የግል መስኮት በ Brave</translation>
 <translation id="4703780849509456860">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3488584642074079080">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
 <translation id="7475547933708221517">IPFS ን በመጠቀም የውስጥ ፋይልን ያጋሩ</translation>
+<translation id="2286177249736199435">IPFS ን በመጠቀም የግል አቃፊዎን ያጋሩ</translation>
 <translation id="784573715436258741">IPFS ን በመጠቀም የውስጥ ፋይልን ያጋሩ</translation>
 <translation id="6313675821927505581">አዲስ የግል መስኮት በ Brave</translation>
 <translation id="2638041073279639246">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3425600262621021599">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
+<translation id="575838692088926391">IPFSን በመጠቀም የግል አቃፊዎን ያጋሩ</translation>
 <translation id="5410152065859052603">ቶር</translation>
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
@@ -157,7 +161,7 @@
 <translation id="4112587618563511470">ልክ ያልሆነ የማመሳሰል ኮድ ፣ እባክዎ ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
 <translation id="2339730291919608488">ከማመሳሰል ሰንሰለት ይውጡ</translation>
 <translation id="115699408012835975">ማመሳሰልን ዳግም ካቀናበሩ እሱን ለማመሳሰል ከሌላ መሣሪያ ላይ የአስምር ኮድ ድጋሚ ማስገባት ይኖርብዎታል። እርግጠኛ ነዎት ለመቀጠል ይፈልጋሉ?</translation>
-<translation id="6092564993102418148">የተመረጠውን መሣሪያ ከ አስምር ሰንሰለት ለመሰረዝ እርግጠኛ ነዎት?</translation>
+<translation id="6092564993102418148">እርግጠኛ ነዎት የተመረጠውን መሳሪያ ከማመሳሰል ሰንሰለት ላይ ማስወገድ ይፈልጋሉ?</translation>
 <translation id="3396347744975515056">ብራቭ ማመሳሰል የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
 <translation id="7473245612074035141">ማዋቀር ይጀምሩ</translation>
 <translation id="3411013544209536575">የእገዛ ምክሮች</translation>
@@ -177,10 +181,23 @@
 <translation id="7090046810227878892">Dapps ን ለመጠቀም የ Ethereum አቅራቢ</translation>
 <translation id="5913089932885076110">የ Crypto ዋሌቶችን መነሻ ላይ ጫን</translation>
 <translation id="757886143331967039">ጅምር ላይ የተበላሸ የCrypto ዋሌቶች ቅጥያ ጫን</translation>
+<translation id="1834467296210148203">የመሳሪያ አሞሌ ላይ የብሬቭን ቦርሳ አዶን አሳይ</translation>
 <translation id="6864914031231797928">ለቅጥያዎች የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
 <translation id="5927916530277631319">የማይቆሙ ጎራዎችን የመፍታት ዘዴ</translation>
 <translation id="8412057160793088103">ስለ DNS በHTTPS እና በEthereum ግላዊነት ግምቶች ለማወቅ <ph name="BEGIN_LINK"/>የበለጠ ለመማር<ph name="END_LINK"/>፤ ይጎብኙ።</translation>
 <translation id="5248318250177143470">የEthereum ስም አገልግሎት (ENS) የአፈታት ዘዴ</translation>
+<translation id="7024553202001112871">የ IPNS ቁልፎችዎን ያዋቅሩ</translation>
+<translation id="951216659045543447">ይዘቱን በተዛማጅ የግል ቁልፍ ይፈርሙና ወደ IPNS ያትሙ</translation>
+<translation id="7611728475758612204">ለህትመት የሚሆኑ ቁልፎች</translation>
+<translation id="911363100236037920">ለአዲሱ ቁልፍ ስም ያስገቡ</translation>
+<translation id="6358469157239228181">ይህ ስም መጠቀም አይቻልም</translation>
+<translation id="8996633027318264334">በእውነት ይህንን  ​ <ph name="KEY_NAME"/>መሰረዝ ይፈልጋሉ?</translation>
+<translation id="910215077892371264">የተገናኘው መሳሪያዎ አልተነሳም</translation>
+<translation id="616058968889448209">የ IPFS አገልግሎትን በማስጀመር ላይ ስህተት፣ ተጨማሪ መረጃ እዚህ ላይ ይገኛል<ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/>​</translation>
+<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' ቁልፍን ማስመጣት አልተሳካም</translation>
+<translation id="8275038454117074363">ያስመጡ</translation>
+<translation id="3654980960391973513">ይፍጠሩ</translation>
+<translation id="5531501313997312487">የተገናኝ መሳሪያዎን ያስጀምሩ</translation>
 <translation id="9170907049676078643">የ IPFS ሀብቶችን የፍታት ዘዴ</translation>
 <translation id="1327977588028644528">አግባቢ ፍኖት</translation>
 <translation id="80225669816651290">አካባቢያዊ መገናኛ</translation>
@@ -260,7 +277,10 @@
 <translation id="1391855377994926460">ድረ-ገጹን በፍጥነት ማሰስዎን ይቀጥሉ - በዋና ዋና የዜና ጣቢያዎች እስከ 6x የበለጠ ፍጥነት ያለው።</translation>
 <translation id="9218430445555521422">እንደወረደ አዘጋጀው</translation>
 <translation id="3479552764303398839">አሁን አይደለም</translation>
+<translation id="6040143037577758943">ዝጋ</translation>
+<translation id="5600566490506283344">የ Brave Ad ማስታወቂያ</translation>
 <translation id="4877147287319222750">ወደ Sidebar ያክሉ</translation>
+<translation id="4233010476457917696">የጎን አሞሌን አሳይ</translation>
 <translation id="5404213409401164238">Sidebar አሳይ</translation>
 <translation id="7561196759112975576">ሁልጊዜ</translation>
 <translation id="7060352228894039151">በ ማውዝኦቨር</translation>

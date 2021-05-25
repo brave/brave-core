@@ -819,6 +819,18 @@
     "message": "Sa pamamagitan ng pag-verify sa iyong wallet at pag-link nito sa isang bitFlyer account, madali mong maso-store at mapapamahalaan ang mga token na nakuha mo sa pamamagitan ng Brave Rewards",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "$link_begin$Matuto pa$link_end$ tungkol sa kung paano i-link ang iyong Brave browser sa bitFlyer account mo.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "Lilipat sa bagong system ang Brave Rewards sa Japan!",
     "description": "Header text for BAP deprecation warning message"

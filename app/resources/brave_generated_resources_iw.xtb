@@ -69,15 +69,19 @@
 <translation id="4227945450504703638">שמע שנבחר</translation>
 <translation id="7895302206188277628">תוכן מקושר</translation>
 <translation id="4322612543319315652">ייבוא טקסט נבחר אל IPFS</translation>
+<translation id="8883166554766780543">יבוא והעתקה של קישור לתמונת IPFS</translation>
+<translation id="3654831858282189202">פרסם עם מפתח IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">חלון גלישה פרטי עם תור</translation>
 <translation id="4703780849509456860">פתחו קישור בחלון פרטי בעזרת Tor</translation>
 <translation id="3488584642074079080">פתיחת קישור בחלון גלישה פרטית של Brave עם Tor</translation>
 <translation id="7475547933708221517">קובץ מקומי שותף באמצעות IPFS</translation>
+<translation id="2286177249736199435">שתפו תיקייה מקומית באמצעות IPFS</translation>
 <translation id="784573715436258741">שיתוף קובץ באמצעות IPFS</translation>
 <translation id="6313675821927505581">חלון פרטי חדש ב-Tor</translation>
 <translation id="2638041073279639246">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
+<translation id="575838692088926391">שתפו תיקייה מקומית באמצעות IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
@@ -158,7 +162,7 @@
 <translation id="4112587618563511470">קוד סנכרון לא חוקי, נא לבדוק ולנסות שוב.</translation>
 <translation id="2339730291919608488">השאר שרשרת סנכרון</translation>
 <translation id="115699408012835975">אם תאפס/י את הסנכרון, יהיה עליך להזין מחדש קוד סנכרון ממכשיר אחר על מנת לסנכרן באמצעותו. האם הנך בטוח/ה שברצונך להמשיך?</translation>
-<translation id="6092564993102418148">האם הנך בטוח/ה שברצונך למחוק את המכשיר שנבחר משרשרת הסנכרון?</translation>
+<translation id="6092564993102418148">האם אתם בטוחים שברצונכם להסיר את המכשיר שנבחר משרשרת הסנכרון?</translation>
 <translation id="3396347744975515056">Brave Sync שודרג ודורש התקנה</translation>
 <translation id="7473245612074035141">התחל התקנה</translation>
 <translation id="3411013544209536575">טיפים לעזרה</translation>
@@ -178,10 +182,23 @@
 <translation id="7090046810227878892">ספק Ethereum לשימוש ב-Dapps</translation>
 <translation id="5913089932885076110">טען ארנקי קריפטו בהפעלה</translation>
 <translation id="757886143331967039">טען הרחבת ארנקי קריפטו מבוטלים</translation>
+<translation id="1834467296210148203">הצג את סמל Brave Wallet בסרגל הכלים</translation>
 <translation id="6864914031231797928">אפשר התחברות באמצעות Google להרחבות</translation>
 <translation id="5927916530277631319">שיטה לזיהוי דומיינים בלתי ניתנים לעצירה</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> על DNS דרך HTTPS ושיקולי פרטיות בקשר עם Ethereum.</translation>
 <translation id="5248318250177143470">שיטה לזיהוי Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">הגדירו את מפתחות IPNS שלכם</translation>
+<translation id="951216659045543447">חתמו על תוכן לפי המפתח הפרטי המתאים ופרסמו אותו ב-IPNS</translation>
+<translation id="7611728475758612204">מפתחות זמינים לפרסום</translation>
+<translation id="911363100236037920">הזינו שם עבור המפתח החדש</translation>
+<translation id="6358469157239228181">לא ניתן להשתמש בשם זה</translation>
+<translation id="8996633027318264334">הקובץ <ph name="KEY_NAME"/> יימחק. להמשיך?</translation>
+<translation id="910215077892371264">הצומת לא הופעל</translation>
+<translation id="616058968889448209">שירות IPFS הציג שגיאה, פרטים נוספים זמינים ב-<ph name="BEGIN_LINK"/>דף הדיאגנוזה<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">הורדת המפתח '<ph name="KEY_NAME"/>' נכשלה</translation>
+<translation id="8275038454117074363">ייבוא</translation>
+<translation id="3654980960391973513">החל</translation>
+<translation id="5531501313997312487">צומת התחלה</translation>
 <translation id="9170907049676078643">שיטה לפתרון משאבי IPFS</translation>
 <translation id="1327977588028644528">שער</translation>
 <translation id="80225669816651290">צומת מקומי</translation>
@@ -261,7 +278,10 @@
 <translation id="1391855377994926460">אפשר להמשיך לגלוש מהר יותר באינטרנט – אפילו מהר פי 6 באתרי החדשות העיקריים.</translation>
 <translation id="9218430445555521422">הגדר כברירת מחדל</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
+<translation id="6040143037577758943">סגור</translation>
+<translation id="5600566490506283344">התראת Brave Ad</translation>
 <translation id="4877147287319222750">הוסף לסרגל הצידי</translation>
+<translation id="4233010476457917696">הצג סרגל צידי</translation>
 <translation id="5404213409401164238">הצג סרגל צידי</translation>
 <translation id="7561196759112975576">תמיד</translation>
 <translation id="7060352228894039151">במעבר עם העכבר</translation>

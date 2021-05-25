@@ -11,29 +11,21 @@
 <translation id="5165042248369837294">Luba Twitteri manustatud säutsud</translation>
 <translation id="958971637207126733">Luba LinkedIni manustatud postitused</translation>
 <translation id="6302422639282249274">Halda Brave Rewardsi</translation>
-<translation id="1506061864768559482">Otsingumootor</translation>
 <translation id="1468415711258933398">Tavaline kaart</translation>
 <translation id="3377025655491224618">Privaatne kaart</translation>
 <translation id="9148058034647219655">Välju</translation>
-<translation id="520895744850022668">HTTPS Kõikjal</translation>
-<translation id="8710614491157212477">Avab toetatud saidid võimalusel HTTPSiga HTTP asemel</translation>
-<translation id="4022987104439075738">IPFS-i lüüs</translation>
-<translation id="2688519859165248360">Võimaldab navigeerimist IPFS-i ressursside juurde IPFS-i lüüsi kaudu.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
-<translation id="6513892817556267573">Ethereumi nimeteenud</translation>
+<translation id="6513892817556267573">Ethereumi nimeteenus</translation>
 <translation id="3894650624018948468">Otsustamismeetod</translation>
 <translation id="2356070529366658676">Küsi</translation>
 <translation id="4176463684765177261">Keelatud</translation>
 <translation id="2218918398178303658">DNS HTTPS-i kaudu</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Reklaamiblokeerija</translation>
-<translation id="1934885595886623674">Väldib reklaamide laadimist</translation>
-<translation id="7458422973722236530">Seadmetuvastuse kaitse</translation>
 <translation id="5787084571334399599">Kaitseb brauserit seadmetuvastuse eest</translation>
 <translation id="7459000603787995422">Sulge kaardid väljumisel</translation>
 <translation id="1680858055899097121">Ära säilita kaarte sirvimissessioonide vältel</translation>
-<translation id="6469509880167172749">Saada täielikult privaatne tooteanalüüs automaatselt Brave’ile</translation>
-<translation id="7090566321964540749">See anonüümne teave võimaldab Brave’il ainult hinnata teatud funktsioonide üldist kasutamist.</translation>
+<translation id="7142548388914389999">Saada täielikult privaatne tooteanalüüs automaatselt Brave’ile</translation>
+<translation id="5469408008145872264">See anonüümne teave võimaldab Brave’il ainult hinnata teatud funktsioonide üldist kasutamist.</translation>
 <translation id="7977176350719484850">Hin. andmed\nSalvestatud</translation>
 <translation id="9008534313521214777">Eeldatav\nsäästetud aeg</translation>
 <translation id="6572660632052512096">Arvutirežiim</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Eelista saitide arvutivaadet</translation>
 <translation id="1842747674580016420">Video taasesitus Brave'is</translation>
 <translation id="5368992950177874750">Lubamisel esitatakse videoid tavalise videoesitaja asemel Brave’is</translation>
-<translation id="2645380101799517405">Juhtnupud</translation>
 <translation id="5965081608816406060">Video taasesitus taustal</translation>
 <translation id="6332924730165919598">Kõikide kaartide sulgemine sulgeb Brave'i</translation>
 <translation id="1580125697191336644">Katsetamisel. Võimaldab esitada video heli taustal, kui vahekaardi sisu pole nähtaval või seadme ekraan on lülitatud välja. Selle võimaluse tõrgete puhul lülitu töölaua režiimi.</translation>
@@ -285,7 +276,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="6632345639591919543">Seda pilti vaadates teenite tokeneid.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Selle pildi vaatamise eest teenite tokeneid.</translation>
 <translation id="7877201489035217175">Lisateave tahastatud piltide kohta</translation>
-<translation id="828092975561478703">Iga  vaadatava rahastatud pildi eest saate 70% tulust tokenitena. Brave’i reklaamide abil saate alati kontrollida, milliseid reklaame näete.</translation>
+<translation id="828092975561478703">Iga vaadatava rahastatud pildi eest saate 70% tulust tokenitena. Brave’i reklaamide abil saate alati kontrollida, milliseid reklaame näete.</translation>
 <translation id="4941539331405513605">Blokeeri lehtedevahelised küpsised</translation>
 <translation id="3763681089644577874">Blokeeri küpsisefailid</translation>
 <translation id="614747795780742163">Takistab veebisaitidel eelmiste külastuste teabe salvestamist</translation>
@@ -293,11 +284,10 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="5657156137487675418">Luba kõik küpsised</translation>
 <translation id="3895527457258986253">Blokeeri sõrmejälje võtmine</translation>
 <translation id="184568144098869637">Takistab veebilehitsejal teie seadme tuvastamist</translation>
-<translation id="7396366757003005317">Seadmetuvastus blokeeritud (range, võib saite lõhkuda)</translation>
-<translation id="700453611199558021">Seadmetuvastus blokeeritud (tavaline)</translation>
+<translation id="7445306466605902444">Seadmetuvastus blokeeritud (range, võib saite lõhkuda)</translation>
+<translation id="5582686930349810484">Seadmetuvastus blokeeritud (tavaline)</translation>
 <translation id="769702552748212954">Luba seadmetuvastus igal pool</translation>
 <translation id="876424292214881779">Blokeeritud reklaamid ja muud koledused</translation>
-<translation id="5142293891785304489">Blokeeritud jälitajad, reklaamid\nja muu</translation>
 <translation id="6930134873084561197">Lehed sisaldavad tihti küpsiseid ja skripte, mis üritavad tuvastada teid ja teie seadet. Need soovivad teada, kes olete ja teid veebis jälitada ehk jälgida, mida igal lehel teete. \n\nBrave blokeerib need, et saaksite sirvida, ilma et keegi teid jälitaks.</translation>
 <translation id="8553998445606452168">Brave’i kaitsete kohta</translation>
 <translation id="8912304686498704084">ÜLES</translation>
@@ -310,7 +300,6 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="5299848999918506028">Täname!</translation>
 <translation id="76550953340008122">Täname, et andsite Brave’i arendajatele teada, et selle veebisaidiga on midagi valesti. Anname endast parima, et see korda teha!</translation>
 <translation id="650318023204990401">Täiustatud kontroll</translation>
-<translation id="7182293319417450928">Kinnitamiseks on vajalik vähemalt 25 BAT-i.</translation>
 <translation id="1275664486910646411">Näita automaatses täitmises tuntumaid lehti</translation>
 <translation id="5516010970279932133">Näita automaatse täitmise soovitustes soovitatud lehti</translation>
 <translation id="5370478469168390143">Salvesta andmed veebis</translation>
@@ -371,12 +360,12 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="7427567994475794038">Lülita sisse privaatsusaruanded, et näha, kui palju jälitajaid ja reklaame on blokeeritud viimase 3 tunni jooksul.</translation>
 <translation id="2053891538879944400">Salvestasid Brave'i brauseris <ph name="DATA"/> <ph name="DATA_TEXT"/> andmed.</translation>
 <translation id="8640064498452534195">Lülita sisse privaatsusaruanded, et näha, kui palju andmemahtu oled säästnud.</translation>
-<translation id="2252497442547961651">Brave'i brauser kasutab keskmiselt 40% vähem akut.&#128267;</translation>
+<translation id="2252497442547961651">Brave'i brauser kasutab keskmiselt 40% vähem akut.🔋</translation>
 <translation id="1945330434665345785">Blokeerisid eelmisel nädalal Brave'i brauseris <ph name="COUNT"/> jälitajat ja reklaami.</translation>
 <translation id="2883868922264431515">Teeni tokeneid privaatsust austavate reklaamide vaatamise eest ja toeta oma lemmikuid veebilehti.</translation>
-<translation id="5678925890616256956">Tubli! Oled Brave'i brauseris blokeerinud 250 jälitajat ja reklaami.&#128293;</translation>
-<translation id="9199047775708635708">Tubli! Oled Brave'i brauseris säästnud 10 MB andmemahtu.&#128267;</translation>
-<translation id="1880168210969863408">Tubli! Oled Brave'i brauseris säästnud 10 min laadimisaega.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Tubli! Oled Brave'i brauseris blokeerinud 250 jälitajat ja reklaami.🔥</translation>
+<translation id="9199047775708635708">Tubli! Oled Brave'i brauseris säästnud 10 MB andmemahtu.🔋</translation>
+<translation id="1880168210969863408">Tubli! Oled Brave'i brauseris säästnud 10 min laadimisaega.💨💨</translation>
 <translation id="7408493389591475748">Privaatsusaruannete vaatamiseks alusta sirvimist</translation>
 <translation id="9080777565335515917">Privaatseks ja turvaliseks sirvimiseks määra Brave vaikebrauseriks.</translation>
 <translation id="1390943217516275883">Võimaldab Brave'il kuvada sinu privaatsuse statistikat.</translation>
@@ -484,14 +473,6 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="3184805785843994538">Brave'i kaitse blokeerib jälitajad ja reklaamid, salvestab andmed ja hoiab aega kokku igal veebisaidil, mida külastate.</translation>
 <translation id="8722651357687610395">Määra Brave vaikebrauseriks</translation>
 <translation id="3479552764303398839">Mitte praegu</translation>
-<translation id="6232491755501685494">Brave Rewards läheb Jaapanis üle uuele süsteemile.</translation>
-<translation id="7444515017164572362">Alates 13. märtsist ei saa te enam BAPi kasutada. Aga kui te uuendate
-süsteemi aprillis uuele versioonile, siis alustate uute tokenitega!</translation>
-<translation id="8587285254008006694">Selle ülemineku osana pole teie brauseri jootraha saatmise ja panustamisfunktsioonid
- alates 13. märtsist
- ajutiselt saadaval ja teie BAP-saldo näitab 0,0, kuni olete aprillis uuele
- süsteemile värskendanud. Kui olete uue süsteemi kasutusele võtnud, alustate uute
- tokenitega!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -511,4 +492,32 @@ süsteemi aprillis uuele versioonile, siis alustate uute tokenitega!</translatio
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
 <translation id="3171931580569169744">Luba menüürühmad</translation>
+<translation id="5587305863196367357">Rahakoti kinnitamine laseb sul oma raha tõhusamalt hallata lisada ja välja võtta</translation>
+<translation id="5760671211380791582">Sul pole piisavalt BATi.</translation>
+<translation id="6960458596933484861">Kinnitatud Upholdi rahakoti loomiseks peab sul olema vähemalt 15 BATi. Proovi hiljem uuesti.</translation>
+<translation id="4389085954549744469">Kui sul juba on kinnitatud Upholdi rahakott, siis <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">jätka sisse logimisega</translation>
+<translation id="1506061864768559482">Otsingumootor</translation>
+<translation id="520895744850022668">HTTPS Kõikjal</translation>
+<translation id="8710614491157212477">Avab toetatud saidid võimalusel HTTPSiga HTTP asemel</translation>
+<translation id="4022987104439075738">IPFS-i lüüs</translation>
+<translation id="2688519859165248360">Võimaldab navigeerimist IPFS-i ressursside juurde IPFS-i lüüsi kaudu.</translation>
+<translation id="8387201461264842096">Reklaamiblokeerija</translation>
+<translation id="1934885595886623674">Väldib reklaamide laadimist</translation>
+<translation id="7458422973722236530">Seadmetuvastuse kaitse</translation>
+<translation id="6469509880167172749">Saada täielikult privaatne tooteanalüüs automaatselt Brave’ile</translation>
+<translation id="7090566321964540749">See anonüümne teave võimaldab Brave’il ainult hinnata teatud funktsioonide üldist kasutamist.</translation>
+<translation id="2645380101799517405">Juhtnupud</translation>
+<translation id="7396366757003005317">Seadmetuvastus blokeeritud (range, võib saite lõhkuda)</translation>
+<translation id="700453611199558021">Seadmetuvastus blokeeritud (tavaline)</translation>
+<translation id="5142293891785304489">Blokeeritud jälitajad, reklaamid\nja muu</translation>
+<translation id="7182293319417450928">Kinnitamiseks on vajalik vähemalt 25 BAT-i.</translation>
+<translation id="6232491755501685494">Brave Rewards läheb Jaapanis üle uuele süsteemile.</translation>
+<translation id="7444515017164572362">Alates 13. märtsist ei saa te enam BAPi kasutada. Aga kui te uuendate
+süsteemi aprillis uuele versioonile, siis alustate uute tokenitega!</translation>
+<translation id="8587285254008006694">Selle ülemineku osana pole teie brauseri jootraha saatmise ja panustamisfunktsioonid
+ alates 13. märtsist
+ ajutiselt saadaval ja teie BAP-saldo näitab 0,0, kuni olete aprillis uuele
+ süsteemile värskendanud. Kui olete uue süsteemi kasutusele võtnud, alustate uute
+ tokenitega!</translation>
 </translationbundle>

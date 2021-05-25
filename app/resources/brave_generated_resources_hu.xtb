@@ -69,15 +69,19 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4227945450504703638">Kiválasztott hangfájl</translation>
 <translation id="7895302206188277628">Kapcsolt tartalom</translation>
 <translation id="4322612543319315652">Kiválasztott szöveg importálása IPFS-be</translation>
+<translation id="8883166554766780543">Hivatkozás importálása és másolása az IPFS-pillanatképbe</translation>
+<translation id="3654831858282189202">Közzététel IPNS-kulccsal</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Új</translation>
 <translation id="4703780849509456860">Link megnyitása Tor használatával privát ablakban</translation>
 <translation id="3488584642074079080">Hivatkozás megnyitása Brave Privát Ablakkal a Torban</translation>
 <translation id="7475547933708221517">Helyi fájl megosztása IPFS használatával</translation>
+<translation id="2286177249736199435">Helyi mappa megosztása IPFS használatával</translation>
 <translation id="784573715436258741">Helyi fájl megosztása IPFS használatával</translation>
 <translation id="6313675821927505581">Új privát ablak a Tor böngészővel</translation>
 <translation id="2638041073279639246">Hivatkozás megnyitása privát ablakban a Tor böngészővel</translation>
 <translation id="3425600262621021599">Hivatkozás megnyitása Brave privát ablakban a Tor böngészővel</translation>
+<translation id="575838692088926391">Helyi mappa megosztása IPFS használatával</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT hirdetési szolgáltatás</translation>
 <translation id="7924918279836988121">Bat főkönyvi szolgáltatás</translation>
@@ -157,7 +161,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4112587618563511470">Érvénytelen szinkronizálási kód. Ellenőrizze, majd próbálja újra.</translation>
 <translation id="2339730291919608488">Szinkronizációs lánc elhagyása</translation>
 <translation id="115699408012835975">Ha újraállítja a Syncet, a szinkronizáláshoz újra meg kell adnia egy szinkronizálási kódot egy másik készülékről. Biztosan folytatni szeretné?</translation>
-<translation id="6092564993102418148">Biztosan törölni szeretnéd a megjelölt készülékeket a szinkronláncból?</translation>
+<translation id="6092564993102418148">Biztosan elvátolítja a kiválasztott készüléket a szinkronláncból?</translation>
 <translation id="3396347744975515056">A Brave Sync frissült, és be kell állítani</translation>
 <translation id="7473245612074035141">Beállítás indítása</translation>
 <translation id="3411013544209536575">Súgó tippek</translation>
@@ -177,15 +181,28 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="7090046810227878892">Ethereum szolgáltató a Dapps használatához</translation>
 <translation id="5913089932885076110">Crypto Wallets betöltése indításkor</translation>
 <translation id="757886143331967039">Elavult Crypto Wallets bővítmény betöltése bekapcsoláskor.</translation>
+<translation id="1834467296210148203">A Brave Wallet ikon megjelenítése az eszköztárban</translation>
 <translation id="6864914031231797928">Google bejelentkezés engedélyezése a bővítmények számára</translation>
 <translation id="5927916530277631319">Módszer az Unstoppable Domains megoldására</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Tudj meg többet<ph name="END_LINK"/> a DNS-ről a HTTPS helyett és az Ethereum adatvédelmi szempontjairól.</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Tudjon meg többet<ph name="END_LINK"/> a DNS-over-HTTPS-ről és az Ethereum adatvédelmi szempontjairól.</translation>
 <translation id="5248318250177143470">Módszer az Ethereum Name Service (ENS) megoldására</translation>
+<translation id="7024553202001112871">IPNS-kulcsok beállítása</translation>
+<translation id="951216659045543447">A tartalom aláírása a megfelelő privát kulccsal, és közzététel IPNS-en</translation>
+<translation id="7611728475758612204">A közzétételhez elérhető kulcsok</translation>
+<translation id="911363100236037920">Adjon nevet az új kulcsnak</translation>
+<translation id="6358469157239228181">Ez a név nem használható</translation>
+<translation id="8996633027318264334">Biztosan törli a következőt: <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">A csomópont nincs elindítva</translation>
+<translation id="616058968889448209">IPFS szolgáltatásindítási hiba, további információkat itt találhat: <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">A(z) '<ph name="KEY_NAME"/>' importálása sikertelen volt</translation>
+<translation id="8275038454117074363">Importálás</translation>
+<translation id="3654980960391973513">Generálás</translation>
+<translation id="5531501313997312487">Csomópont indítása</translation>
 <translation id="9170907049676078643">Módszer az IPFS források kezelésére</translation>
 <translation id="1327977588028644528">Átjáró</translation>
 <translation id="80225669816651290">Helyi node</translation>
 <translation id="4927734062756955434">IPFS nyilvános átjáró címe</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tudj meg többet<ph name="END_LINK_MPL"/> a helyi IPFS csomópontról és a gateway-adatvédelmi szempontokról.</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tudjon meg többet<ph name="END_LINK_MPL"/> a helyi IPFS csomópontról és a gateway-adatvédelmi szempontokról.</translation>
 <translation id="8425213833346101688">Módosítás</translation>
 <translation id="557281710253742286">IPFS átjáró beállítása</translation>
 <translation id="8571837315037233299">Átjáró címe</translation>
@@ -257,10 +274,13 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="1959966725083452288">Bonbon Royal avatár</translation>
 <translation id="2039034364578911089">Bonbon Ninja avatár</translation>
 <translation id="239760341987199724">A Brave beállítása alapértelmezett böngészőként</translation>
-<translation id="1391855377994926460">Böngéssz gyorsabban az interneten – a főbb híroldalakon akár 6x gyorsabban.</translation>
+<translation id="1391855377994926460">Böngésszen gyorsabban az interneten – a főbb híroldalakon akár 6x gyorsabban.</translation>
 <translation id="9218430445555521422">Beállítás alapértelmezettként</translation>
 <translation id="3479552764303398839">Ne most</translation>
+<translation id="6040143037577758943">Bezárás</translation>
+<translation id="5600566490506283344">Brave Ad értesítés</translation>
 <translation id="4877147287319222750">Hozzáadás az oldalsávhoz</translation>
+<translation id="4233010476457917696">Oldalsáv mutatása</translation>
 <translation id="5404213409401164238">Oldalsáv mutatása</translation>
 <translation id="7561196759112975576">Mindig</translation>
 <translation id="7060352228894039151">Rágördítésre</translation>

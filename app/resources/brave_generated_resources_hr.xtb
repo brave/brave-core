@@ -69,15 +69,19 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="4227945450504703638">Odabrani zvučni zapis</translation>
 <translation id="7895302206188277628">Povezani sadržaj</translation>
 <translation id="4322612543319315652">Uvezi odabrani tekst u sustav IPFS</translation>
+<translation id="8883166554766780543">Uvezi i kopiraj poveznicu za snimku sustava IPFS</translation>
+<translation id="3654831858282189202">Objavi upotrebom ključa IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="1434416574322382019">Novi privatni prozor s funkcijom Tor</translation>
 <translation id="4703780849509456860">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
 <translation id="3488584642074079080">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
 <translation id="7475547933708221517">Podijeli lokalnu datoteku putem sustava IPFS</translation>
+<translation id="2286177249736199435">Podijeli lokalnu mapu putem sustava IPFS</translation>
 <translation id="784573715436258741">Podijeli lokalnu datoteku putem sustava IPFS</translation>
 <translation id="6313675821927505581">Novi privatni prozor s funkcijom Tor</translation>
 <translation id="2638041073279639246">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
 <translation id="3425600262621021599">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
+<translation id="575838692088926391">Podijeli lokalnu mapu putem sustava IPFS</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Usluga Bat oglašavanja</translation>
 <translation id="7924918279836988121">Usluga bat registra</translation>
@@ -157,7 +161,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="4112587618563511470">Nevaljani kôd za sinkronizaciju. Provjerite i pokušajte ponovno.</translation>
 <translation id="2339730291919608488">Napusti lanac sinkronizacije</translation>
 <translation id="115699408012835975">Ako poništite stavku Sinkroniziranje, trebate ponovno upisati kôd za sinkronizaciju na drugom uređaju kako biste sinkronizirali s njim. Sigurno želite nastaviti?</translation>
-<translation id="6092564993102418148">Jeste li sigurni da želite izbrisati odabrani uređaj iz lanca sinkronizacije?</translation>
+<translation id="6092564993102418148">Jeste li sigurni da želite ukloniti odabrani uređaj iz lanca sinkronizacije?</translation>
 <translation id="3396347744975515056">Značajka Sinkronizacije preglednika Brave ažurirana je i potrebno ju je postaviti</translation>
 <translation id="7473245612074035141">Počni postavljanje</translation>
 <translation id="3411013544209536575">Savjeti za pomoć</translation>
@@ -177,10 +181,23 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="7090046810227878892">Pružatelj Ethereum za korištenje značajkom Dapps</translation>
 <translation id="5913089932885076110">Učitaj kriptovalutne novčanike na početku</translation>
 <translation id="757886143331967039">Učitaj zastarjelo proširenje kriptovalutnih novčanika pri pokretanju</translation>
+<translation id="1834467296210148203">Prikaži ikonu novčanika preglednika Brave na alatnoj traci</translation>
 <translation id="6864914031231797928">Dopusti prijavu uslugom Google za proširenja</translation>
 <translation id="5927916530277631319">Metoda za rješavanje značajke Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Doznajte više<ph name="END_LINK"/> o razmatranjima o privatnosti DNS-a putem HTTPS-a i Ethereuma.</translation>
 <translation id="5248318250177143470">Metoda za rješavanje sustava Ethereum Name Service (ENS)</translation>
+<translation id="7024553202001112871">Postavi svoje ključeve IPNS</translation>
+<translation id="951216659045543447">Potpiši sadržaj odgovarajućim privatnim ključem i objavi ga sustavu IPNS</translation>
+<translation id="7611728475758612204">Ključevi dostupni za objavljivanje</translation>
+<translation id="911363100236037920">Upiši naziv za novi ključ</translation>
+<translation id="6358469157239228181">Ne može se upotrijebiti ovaj naziv</translation>
+<translation id="8996633027318264334">Jeste li sigurni da želite izbrisati <ph name="KEY_NAME"/>?</translation>
+<translation id="910215077892371264">Nije se pokrenuo čvor</translation>
+<translation id="616058968889448209">Greška pri pokretanju usluge IPFS, više informacija dostupno je na dijagnostičkoj stranici <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
+<translation id="6912148685459054619">uvoz ključa '<ph name="KEY_NAME"/>' nije uspio</translation>
+<translation id="8275038454117074363">Uvezi</translation>
+<translation id="3654980960391973513">Generiraj</translation>
+<translation id="5531501313997312487">Pokreni čvor</translation>
 <translation id="9170907049676078643">Način rješavanja izvora IPFS</translation>
 <translation id="1327977588028644528">Pristupnik</translation>
 <translation id="80225669816651290">Lokalni čvor</translation>
@@ -260,7 +277,10 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1391855377994926460">Brže pregledavajte mrežu – do 6 puta brže na mrežnim mjestima poznatih novina.</translation>
 <translation id="9218430445555521422">Postavi kao zadano</translation>
 <translation id="3479552764303398839">Ne sada</translation>
+<translation id="6040143037577758943">Zatvori</translation>
+<translation id="5600566490506283344">Obavijest o oglasu u pregledniku Brave</translation>
 <translation id="4877147287319222750">Dodaj na bočnu traku</translation>
+<translation id="4233010476457917696">Prikaži bočnu traku</translation>
 <translation id="5404213409401164238">Prikaži bočnu traku</translation>
 <translation id="7561196759112975576">Uvijek</translation>
 <translation id="7060352228894039151">Na prijelazu miša</translation>

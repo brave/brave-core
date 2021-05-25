@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
 <translation id="6302422639282249274">נהל את Brave Rewards</translation>
-<translation id="1506061864768559482">מנוע חיפוש</translation>
 <translation id="1468415711258933398">כרטיסייה רגילה</translation>
 <translation id="3377025655491224618">כרטיסיית גלישה בסתר</translation>
 <translation id="9148058034647219655">יציאה</translation>
-<translation id="520895744850022668">HTTPS בכל מקום</translation>
-<translation id="8710614491157212477">פותח אתרים נתמכים באמצעות HTTPS במקום HTTP במידת האפשר</translation>
-<translation id="4022987104439075738">שער IPFS</translation>
-<translation id="2688519859165248360">מאפשר ניווט למשאבי IPFS  דרך IPFS Gateway.</translation>
 <translation id="7534079972563542000">דומיינים בלתי ניתנים לעצירה</translation>
 <translation id="6513892817556267573">שירות רישום שמות Ethereum</translation>
 <translation id="3894650624018948468">שיטת רזולוציה</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">מושבת</translation>
 <translation id="2218918398178303658">DNS על פני HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Ad Block</translation>
-<translation id="1934885595886623674">מונע טעינת פרסומות</translation>
-<translation id="7458422973722236530">הגנת טביעות אצבע</translation>
 <translation id="5787084571334399599">מונע מהדפדפן ליצור טביעת אצבע</translation>
 <translation id="7459000603787995422">סגור כרטיסיות ביציאה</translation>
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
-<translation id="6469509880167172749">שלח באופן אוטומטי אנליטיקות מוצר פרטיות לחלוטין אל Brave</translation>
-<translation id="7090566321964540749">מידע אנונימי זה רק מאפשר ל-Brave להעריך את השימוש הכולל בתכונות מסוימות.</translation>
+<translation id="7142548388914389999">שלח באופן אוטומטי אנליטיקות מוצר פרטיות לחלוטין אל Brave</translation>
+<translation id="5469408008145872264">מידע אנונימי זה רק מאפשר ל-Brave להעריך את השימוש הכולל בתכונות מסוימות.</translation>
 <translation id="7977176350719484850">הערכת נתונים/nשנחסכו</translation>
 <translation id="9008534313521214777">זמן מוערך\nשנחסך</translation>
 <translation id="6572660632052512096">מצב שולחן עבודה</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">העדף את גרסת שולחן העבודה של אתרים</translation>
 <translation id="1842747674580016420">ניגון וידאו ב-Brave</translation>
 <translation id="5368992950177874750">אם מופעל, סרטונים ינוגנו ב-Brave במקום באפליקציה המתאימה</translation>
-<translation id="2645380101799517405">בקרים</translation>
 <translation id="5965081608816406060">ניגון וידאו ברקע</translation>
 <translation id="6332924730165919598">סגירת כל הכרטיסיות סוגרת את Brave</translation>
 <translation id="1580125697191336644">ניסיוני. מאפשר השמעת אודיו מוידאו ברקע כאשר הכרטיסייה אינה פעילה או כאשר מסך המכשיר כבוי. נסה/י לעבור למצב שולחן עבודה אם פיצ'ר זה אינו עובד.</translation>
@@ -293,11 +284,10 @@
 <translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
 <translation id="3895527457258986253">חסום טביעות אצבע</translation>
 <translation id="184568144098869637">מונע מהדפדפן לזהות את המכשיר שלך</translation>
-<translation id="7396366757003005317">טביעות אצבע חסומות (מחמיר, עלול לקלקל אתרים)</translation>
-<translation id="700453611199558021">טביעות אצבע חסומות (סטנדרטי)</translation>
+<translation id="7445306466605902444">טביעות אצבע חסומות (מחמיר, עלול לקלקל אתרים)</translation>
+<translation id="5582686930349810484">טביעות אצבע חסומות (סטנדרטי)</translation>
 <translation id="769702552748212954">אפשר כל לקיחת טביעות אצבע</translation>
 <translation id="876424292214881779">פרסומות ומטרדים אחרים נחסמו</translation>
-<translation id="5142293891785304489">עוקבים, פרסומות\nועוד חסומים</translation>
 <translation id="6930134873084561197">אתרים כוללים לעתים קרובות קובצי עוגייה וסקריפטים שמנסים לזהות אותך ואת המכשיר שלך. הם רוצים להבין מי את/ה ולעקוב אחריך ברחבי האינטרנט - בעודם עוקבים אחר מה שאת/ה עושה בכל אתר.\n\n Braveחוסם את הדברים האלה כך שתוכל/י לגלוש בלי שיעקבו אחריך.</translation>
 <translation id="8553998445606452168">אודות Brave Shields</translation>
 <translation id="8912304686498704084">למעלה</translation>
@@ -310,7 +300,6 @@
 <translation id="5299848999918506028">תודה!</translation>
 <translation id="76550953340008122">תודה שהודעת למפתחים של Brave שמשהו לא תקין באתר זה. אנו נעשה כמיטב יכולתנו לתקן זאת!</translation>
 <translation id="650318023204990401">בקרות מתקדמות</translation>
-<translation id="7182293319417450928">יתרה מינימלית של 25 BAT נדרשת כדי לאמת.</translation>
 <translation id="1275664486910646411">הצג אתרים מובילים בהשלמה האוטומטית</translation>
 <translation id="5516010970279932133">הצג הצעות לאתרים בהשלמה האוטומטית</translation>
 <translation id="5370478469168390143">שמור נתונים באופן מקוון</translation>
@@ -371,12 +360,12 @@
 <translation id="7427567994475794038">הפעילו דוחות פרטיות כדי לראות כמה עוקבים &amp; פרסומות נחסמו ב-3 השעות האחרונות.</translation>
 <translation id="2053891538879944400">חסכתם <ph name="DATA"/> <ph name="DATA_TEXT"/> נתונים עם דפדפן Brave.</translation>
 <translation id="8640064498452534195">הפעילו דוחות פרטיות כדי לראות כמה נתונים חסכתם.</translation>
-<translation id="2252497442547961651">הדפדפן Brave משתמש בממוצא ב-40% פחות סוללה.&#128267;</translation>
+<translation id="2252497442547961651">הדפדפן Brave משתמש בממוצא ב-40% פחות סוללה.🔋</translation>
 <translation id="1945330434665345785">חסמתם <ph name="COUNT"/> עוקבים &amp; פרסומות עם דפדפן Brave בשבוע האחרון.</translation>
 <translation id="2883868922264431515">הרוויחו טוקנים על ידי הצגת מודעות השומרות על הפרטיות ותמכו באתרים האהובים עליכם.</translation>
-<translation id="5678925890616256956">יפה! חסמת 250 עוקבים ופרסומות amp;amp; באמצעות הדפדפן Brave.&#128293;</translation>
-<translation id="9199047775708635708">יפה! חסכת 10MB באמצעות הדפדפן Brave.&#128267;</translation>
-<translation id="1880168210969863408">יפה! חסכת 10 דקות של זמן טעינה באמצעות הדפדפן Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">יפה! חסמת 250 עוקבים ופרסומות amp;amp; באמצעות הדפדפן Brave.🔥</translation>
+<translation id="9199047775708635708">יפה! חסכת 10MB באמצעות הדפדפן Brave.🔋</translation>
+<translation id="1880168210969863408">יפה! חסכת 10 דקות של זמן טעינה באמצעות הדפדפן Brave.💨💨</translation>
 <translation id="7408493389591475748">התחל לגלוש כדי לראות דוחות פרטיות</translation>
 <translation id="9080777565335515917">הגדירו את Brave כדפדפן ברירת המחדל שלכם לגלישה פרטית ומאובטחת.</translation>
 <translation id="1390943217516275883">מאפשר ל-Brave להציג את סטטיסטיקת הפרטיות שלכם</translation>
@@ -484,9 +473,6 @@
 <translation id="3184805785843994538">Brave Shields חוסם כלי מעקב וamp;amp; פרסומות, חוסך בנתונים וחוסך לך זמן בכל אתר שתבקר/י בו.</translation>
 <translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
-<translation id="6232491755501685494">Brave Rewards ביפן עובר למערכת חדשה!</translation>
-<translation id="7444515017164572362">מ-13במרץ, לא ניתן יהיה להשתמש ב-BAP שלך. לאחר עדכון למערכת החדשה באפריל, תתחילו מחדש עם אסימונים חדשים!</translation>
-<translation id="8587285254008006694">במהלך מהמעבר, תכונות מתן הטיפים והתרומות בדפדפן יושבתו זמנית מ-13 במרץ, ויתרת ה-BAP שלכם תהיה 0.0 עד שתעודכנו למערכת החדשה באפריל. ברגע שתהיו במערכת החדשה, תתחילו מחדש עם אסימונים חדשים!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -506,4 +492,27 @@
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
 <translation id="3171931580569169744">הפיכת קבוצות של כרטיסיות לזמינה</translation>
+<translation id="5587305863196367357">אימות הארנק מאפשר לכם לנהל את הכספים שלכם בצורה יעילה יותר ולהוסיף ולמשוך כספים.</translation>
+<translation id="5760671211380791582">אין לכם מספיק BAT.</translation>
+<translation id="6960458596933484861">נדרשים לכם מינימום של 15 BAT כדי ליצור ארנק Uphold מאומת. נסו שוב מאוחר יותר.</translation>
+<translation id="4389085954549744469">אם יש לכם חשבון Uphold מאומת, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">המשיכו לכניסה</translation>
+<translation id="1506061864768559482">מנוע חיפוש</translation>
+<translation id="520895744850022668">HTTPS בכל מקום</translation>
+<translation id="8710614491157212477">פותח אתרים נתמכים באמצעות HTTPS במקום HTTP במידת האפשר</translation>
+<translation id="4022987104439075738">שער IPFS</translation>
+<translation id="2688519859165248360">מאפשר ניווט למשאבי IPFS  דרך IPFS Gateway.</translation>
+<translation id="8387201461264842096">Ad Block</translation>
+<translation id="1934885595886623674">מונע טעינת פרסומות</translation>
+<translation id="7458422973722236530">הגנת טביעות אצבע</translation>
+<translation id="6469509880167172749">שלח באופן אוטומטי אנליטיקות מוצר פרטיות לחלוטין אל Brave</translation>
+<translation id="7090566321964540749">מידע אנונימי זה רק מאפשר ל-Brave להעריך את השימוש הכולל בתכונות מסוימות.</translation>
+<translation id="2645380101799517405">בקרים</translation>
+<translation id="7396366757003005317">טביעות אצבע חסומות (מחמיר, עלול לקלקל אתרים)</translation>
+<translation id="700453611199558021">טביעות אצבע חסומות (סטנדרטי)</translation>
+<translation id="5142293891785304489">עוקבים, פרסומות\nועוד חסומים</translation>
+<translation id="7182293319417450928">יתרה מינימלית של 25 BAT נדרשת כדי לאמת.</translation>
+<translation id="6232491755501685494">Brave Rewards ביפן עובר למערכת חדשה!</translation>
+<translation id="7444515017164572362">מ-13במרץ, לא ניתן יהיה להשתמש ב-BAP שלך. לאחר עדכון למערכת החדשה באפריל, תתחילו מחדש עם אסימונים חדשים!</translation>
+<translation id="8587285254008006694">במהלך מהמעבר, תכונות מתן הטיפים והתרומות בדפדפן יושבתו זמנית מ-13 במרץ, ויתרת ה-BAP שלכם תהיה 0.0 עד שתעודכנו למערכת החדשה באפריל. ברגע שתהיו במערכת החדשה, תתחילו מחדש עם אסימונים חדשים!</translation>
 </translationbundle>

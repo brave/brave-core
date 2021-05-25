@@ -819,6 +819,18 @@
     "message": "ዋለትዎን በማረጋገጥ እና ከ bitFlyer መለያ ጋር በማገናኘት በ Brave Rewards ያገኙዋቸውን ቶከንዎችን የበለጠ በቀላሉ ለማከማቸት እና ለማስተዳደር ይችላሉ።",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "​$link_begin$ለተጨማሪ እውቀት​$link_end$ ​ስለ Brave አሳሽዎን ከቢትፍላየር መለያዎ ጋር እንዴት እንደሚያገናኙ።",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "በጃፓን ውስጥ የሚገኙ Brave ወሮታዎች ወደ አዲስ ስርዓት እየተቀየሩ ነው!",
     "description": "Header text for BAP deprecation warning message"

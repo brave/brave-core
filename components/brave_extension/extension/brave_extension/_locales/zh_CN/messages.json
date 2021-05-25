@@ -171,17 +171,13 @@
     "message": "更改全局屏蔽默认值",
     "description": "Message for the button action linking to the settings page"
   },
-  "addBlockElement": {
-    "message": "通过选择器拦截元素",
-    "description": "Message for context menu that adds a filter for the cosmetic filtering"
-  },
   "manageCustomFilters": {
     "message": "管理自定义过滤器",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "进入元素选择器模式",
-    "description": "Message for context menu that enables the element picker UI on the page."
+    "message": "拦截元素",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
     "message": "高级视图",

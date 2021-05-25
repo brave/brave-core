@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Eingebettete Twitter-Nachrichten erlauben</translation>
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
 <translation id="6302422639282249274">Brave Rewards verwalten</translation>
-<translation id="1506061864768559482">Suchmaschine</translation>
 <translation id="1468415711258933398">Standard-Registerkarte</translation>
 <translation id="3377025655491224618">Privater Tab</translation>
 <translation id="9148058034647219655">Beenden</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="8710614491157212477">Öffnet, wenn möglich, unterstütze Websites mit HTTPS anstatt HTTP</translation>
-<translation id="4022987104439075738">IPFS-Gateway</translation>
-<translation id="2688519859165248360">Ermöglicht die Navigation zum IPFS über ein IPFS-Gateway</translation>
 <translation id="7534079972563542000">Unaufhaltsame Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Lösungsmethoden</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Deaktiviert</translation>
 <translation id="2218918398178303658">DNS über HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Werbeblocker</translation>
-<translation id="1934885595886623674">Verhindert das Laden von Werbung</translation>
-<translation id="7458422973722236530">Fingerabdruckschutz</translation>
 <translation id="5787084571334399599">Verhindert, dass der Browser einen Fingerabdruck erstellt</translation>
 <translation id="7459000603787995422">Registerkarten beim Beenden schließen</translation>
 <translation id="1680858055899097121">Registerkarten zwischen Browsersitzungen nicht beibehalten</translation>
-<translation id="6469509880167172749">Automatisch vollständig private Produktanalysen an Brave senden</translation>
-<translation id="7090566321964540749">Mit dieser anonymen Information kann Brave nur die Gesamtnutzung bestimmter Funktionen einschätzen.</translation>
+<translation id="7142548388914389999">Automatisch vollständig private Produktanalysen an Brave senden</translation>
+<translation id="5469408008145872264">Mit dieser anonymen Information kann Brave nur die Gesamtnutzung bestimmter Funktionen einschätzen.</translation>
 <translation id="7977176350719484850">Geschätzte nicht heruntergeladene\nDatenmenge</translation>
 <translation id="9008534313521214777">Ca. Zeit\ngespart</translation>
 <translation id="6572660632052512096">Desktop-Modus</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Bevorzuge Desktop-Versionen von Websites</translation>
 <translation id="1842747674580016420">Videowiedergabe in Brave</translation>
 <translation id="5368992950177874750">Wenn aktiviert, werden Videos in Brave anstelle der entsprechenden App abgespielt</translation>
-<translation id="2645380101799517405">Steuerung</translation>
 <translation id="5965081608816406060">Videowiedergabe im Hintergrund</translation>
 <translation id="6332924730165919598">Das Schließen aller Registerkarten schließt Brave</translation>
 <translation id="1580125697191336644">Experimentell. Aktiviert die Audiowiedergabe von Videos im Hintergrund, wenn die Registerkarte nicht aktiv oder der Gerätebildschirm deaktiviert ist. Versuchen Sie, in den Desktop-Modus zu wechseln, wenn diese Funktion nicht wie erwartet läuft.</translation>
@@ -290,11 +281,10 @@
 <translation id="5657156137487675418">Alle Cookies erlauben</translation>
 <translation id="3895527457258986253">Fingerprinting blockieren</translation>
 <translation id="184568144098869637">Hindert den Browser, Ihr Gerät zu erkennen</translation>
-<translation id="7396366757003005317">Fingerprinting blockiert (stikt, könnte Seiten beschädigen)</translation>
-<translation id="700453611199558021">Fingerprinting blockiert (Standard)</translation>
+<translation id="7445306466605902444">Fingerprinting blockiert (stikt, könnte Seiten beschädigen)</translation>
+<translation id="5582686930349810484">Fingerprinting blockiert (Standard)</translation>
 <translation id="769702552748212954">Sämtliches Fingerprinting zulassen</translation>
 <translation id="876424292214881779">Anzeigen und andere gruselige Dinge blockiert</translation>
-<translation id="5142293891785304489">Tracker, Werbung und\nmehr blockiert</translation>
 <translation id="6930134873084561197">Sites beinhalten oft Cookies und Scripts, die versuchen, Sie und Ihr Gerät zu identifizieren. Sie wollen herausfinden, wer Sie sind und folgen Ihnen durch das Web-Tracking von dem, was Sie auf jeder Site machen.\n\nBrave blockiert diese Dinge, damit Sie browsen können, ohne verfolgt zu werden.</translation>
 <translation id="8553998445606452168">Über Brave Shields</translation>
 <translation id="8912304686498704084">HOCH</translation>
@@ -307,7 +297,6 @@
 <translation id="5299848999918506028">Vielen Dank!</translation>
 <translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
 <translation id="650318023204990401">Fortgeschrittene Steuerung</translation>
-<translation id="7182293319417450928">Ein Minimumguthaben von 25 BAT ist für die Verifizierung erforderlich.</translation>
 <translation id="1275664486910646411">Wichtigste Websites in Autovervollständigung anzeigen</translation>
 <translation id="5516010970279932133">Vorgeschlagene Websites in der Autovervollständigung anzeigen</translation>
 <translation id="5370478469168390143">Daten online speichern</translation>
@@ -368,12 +357,12 @@
 <translation id="7427567994475794038">Aktivieren Sie Privatsphäreberichte, um zu sehen, wie viele Tracker &amp; Werbeanzeigen in den letzten 3 Stunden blockiert wurden.</translation>
 <translation id="2053891538879944400">Sie haben <ph name="DATA"/> <ph name="DATA_TEXT"/> Daten mit dem Brave Browser gespart.</translation>
 <translation id="8640064498452534195">Aktivieren Sie die Privatsphäreberichte, um zu sehen, wie viele Daten Sie gespart haben.</translation>
-<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.&#128267;</translation>
+<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.🔋</translation>
 <translation id="1945330434665345785">Letzte Wochen haben Sie <ph name="COUNT"/> Tracker &amp; Werbeanzeigen mit dem Brave Browser blockiert.</translation>
 <translation id="2883868922264431515">Verdienen Sie Tokens, indem Sie Werbung ansehen, die die Privatsphäre respektiert, und unterstützen Sie Ihre Lieblingswebsites.</translation>
-<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.&#128293;</translation>
-<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.&#128267;</translation>
-<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.🔥</translation>
+<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.🔋</translation>
+<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.💨💨</translation>
 <translation id="7408493389591475748">Fangen Sie an, zu browsen, um den Privatsphärebericht zu sehen</translation>
 <translation id="9080777565335515917">Legen Sie für privates und sicheres Browsen Brave als Ihren Standardbrowser fest.</translation>
 <translation id="1390943217516275883">Brave erlauben, Ihre Privatsphärestatistik anzuzeigen</translation>
@@ -481,14 +470,6 @@
 <translation id="3184805785843994538">Brave Shields blockiert Trackers &amp; Werbung, spart Datenvolumen und spart dir bei jedem Websitebesuch Zeit.</translation>
 <translation id="8722651357687610395">Brave als Standard einrichten</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
-<translation id="6232491755501685494">Brave Rewards in Japan wechselt zu einem neuen System!</translation>
-<translation id="7444515017164572362">Ab 13. März können Sie Ihre BAP nicht mehr nutzen. Aber sobald Sie
-        im April auf das neue System aktualisieren, beginnen Sie mit neuen Tokens!</translation>
-<translation id="8587285254008006694">Als Teil dieses Übergangs werden die Trinkgeld- und Beitragsfunktionen in
-        Ihrem Browser ab 13. März vorübergehend nicht verfügbar sein und
-        Ihr BAP-Guthaben wird 0,0 anzeigen, bis Sie im April auf das neue System aktualisiert haben.
-        Sobald Sie im neuen System sind, beginnen Sie mit neuen
-        Tokens!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -508,4 +489,32 @@
 <translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
 <translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
 <translation id="3171931580569169744">Tabgruppen aktivieren</translation>
+<translation id="5587305863196367357">Wenn Sie ihre Wallet verifizieren, können Sie Ihr Guthaben ganz leicht verwalten, einzahlen und abheben.</translation>
+<translation id="5760671211380791582">Sie haben nicht genügend BAT.</translation>
+<translation id="6960458596933484861">Sie brauchen mindestens 15 BAT für eine verifizierte Uphold-Wallet. Bitte versuchen Sie es später erneut.</translation>
+<translation id="4389085954549744469">Wenn Sie bereits ein verifiziertes Uphold-Konto haben, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">melden Sie sich an</translation>
+<translation id="1506061864768559482">Suchmaschine</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="8710614491157212477">Öffnet, wenn möglich, unterstütze Websites mit HTTPS anstatt HTTP</translation>
+<translation id="4022987104439075738">IPFS-Gateway</translation>
+<translation id="2688519859165248360">Ermöglicht die Navigation zum IPFS über ein IPFS-Gateway</translation>
+<translation id="8387201461264842096">Werbeblocker</translation>
+<translation id="1934885595886623674">Verhindert das Laden von Werbung</translation>
+<translation id="7458422973722236530">Fingerabdruckschutz</translation>
+<translation id="6469509880167172749">Automatisch vollständig private Produktanalysen an Brave senden</translation>
+<translation id="7090566321964540749">Mit dieser anonymen Information kann Brave nur die Gesamtnutzung bestimmter Funktionen einschätzen.</translation>
+<translation id="2645380101799517405">Steuerung</translation>
+<translation id="7396366757003005317">Fingerprinting blockiert (stikt, könnte Seiten beschädigen)</translation>
+<translation id="700453611199558021">Fingerprinting blockiert (Standard)</translation>
+<translation id="5142293891785304489">Tracker, Werbung und\nmehr blockiert</translation>
+<translation id="7182293319417450928">Ein Minimumguthaben von 25 BAT ist für die Verifizierung erforderlich.</translation>
+<translation id="6232491755501685494">Brave Rewards in Japan wechselt zu einem neuen System!</translation>
+<translation id="7444515017164572362">Ab 13. März können Sie Ihre BAP nicht mehr nutzen. Aber sobald Sie
+        im April auf das neue System aktualisieren, beginnen Sie mit neuen Tokens!</translation>
+<translation id="8587285254008006694">Als Teil dieses Übergangs werden die Trinkgeld- und Beitragsfunktionen in
+        Ihrem Browser ab 13. März vorübergehend nicht verfügbar sein und
+        Ihr BAP-Guthaben wird 0,0 anzeigen, bis Sie im April auf das neue System aktualisiert haben.
+        Sobald Sie im neuen System sind, beginnen Sie mit neuen
+        Tokens!</translation>
 </translationbundle>

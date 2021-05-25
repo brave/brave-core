@@ -12,7 +12,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4798342026247191171">Set up your new Brave profile</translation>
 <translation id="113959764510199339">Brave is trying to show passwords.</translation>
 <translation id="8132634101975074716">You're signed in to Brave!</translation>
-<translation id="7370605478942575409">To use Rosetta to play protected media, you must restart Brave.</translation>
 <translation id="7419046106786626209">Chrome OS could not sync your data because Sync is not available for your domain.</translation>
 <translation id="5147525139567260139">Share a Brave tab</translation>
 <translation id="1530633922026945685">Brave needs permission to access your camera to create a 3D map of your surroundings</translation>
@@ -25,8 +24,8 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="1775322105159056176">Brave cannot determine or set the default browser</translation>
 <translation id="9220324636239049437">This will delete 1 item from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">To check if your other passwords are safe from data breaches and other security issues, <ph name="BEGIN_LINK"/>sign in to Brave<ph name="END_LINK"/>.</translation>
+<translation id="142389341645668510">Customise Brave</translation>
 <translation id="8745514854244955877">Brave – Network sign-in – <ph name="PAGE_TITLE"/></translation>
-<translation id="162629503687514352">Chrome OS could not sync your passwords.</translation>
 <translation id="5659384504794665581">If you share a computer, friends and family can browse separately and set up Brave just the way they want.</translation>
 <translation id="5997267581285668459">Optional: Help improve Chrome OS features and performance by automatically sending diagnostic and usage data to Brave.</translation>
 <translation id="9095263438435683933">To send a number from here to your Android phone, sign in to Brave on both devices.</translation>
@@ -40,10 +39,8 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7933006624150961626">To access your Brave stuff across all your devices, sign in so that you can turn on sync.</translation>
 <translation id="7291143854620707672">Any Brave data that is generated during the use of this profile (such as the creation of bookmarks, history, passwords and other settings) can be removed by the work profile administrator. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Chrome OS needs to be restarted to apply the update.</translation>
-<translation id="3913823837305937258">This computer will soon stop receiving Brave updates because its hardware is no longer supported.</translation>
 <translation id="7387051847644272380">An operating system error occurred during installation. Please download Brave again.</translation>
 <translation id="2648689842065142443">If you share a device, friends and family can browse separately and set up Brave just the way they want</translation>
-<translation id="3749489756681759571">Brave recommends disabling this extension because it does not currently meet Enhanced Safe Browsing standards.</translation>
 <translation id="6791166902140255175">Brave Tab</translation>
 <translation id="8372880274820509128">For added security, Brave will encrypt your data.</translation>
 <translation id="2770231113462710648">Change default browser to:</translation>
@@ -62,6 +59,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7365690458036015383">The installer failed to uncompress archive. Please download Brave again.</translation>
 <translation id="8919461291440820124">Brave is using your microphone.</translation>
 <translation id="4805806622840861220">Relaunch Brave</translation>
+<translation id="1742948938503172561">Customise your new Brave profile</translation>
 <translation id="1477146545787277177">Whoa! Brave has crashed. Relaunch now?</translation>
 <translation id="7503098128120083822">Brave wants to export your passwords.</translation>
 <translation id="2585240446624043880">Brave cannot read and write to its data directory:
@@ -76,6 +74,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2450003541323895471">With Brave profiles you can separate all of your Brave stuff. Create profiles for friends and family, or split between work and fun.</translation>
 <translation id="9216183508558772570">Brave will notify you when you sign in with a compromised password</translation>
 <translation id="5853262807109651878">This will delete <ph name="ITEMS_COUNT"/> items from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
+<translation id="2024972335338126423"><ph name="SHORTCUT"/> can switch between Brave profiles</translation>
 <translation id="8703492925273919597">Please close all Brave windows and try again.</translation>
 <translation id="1384923383737428730">There's harmful software on your computer. Brave can remove it, restore your settings and disable extensions to make your browser work normally again.</translation>
 <translation id="7029305463989165490">To send a number from <ph name="ORIGIN"/> to your Android phone, sign in to Brave on both devices.</translation>
@@ -132,11 +131,11 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="696826782632239602">Brave needs access to your location to share your location with this site</translation>
 <translation id="1744365871163268756">Please wait while Brave installs the latest system updates.</translation>
 <translation id="3861679447659630159">Brave is trying to edit passwords. Type your Windows password to allow this.</translation>
+<translation id="232381795826373334">Open PDFs in Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{A Brave update is available}=1{A Brave update is available}other{A Brave update has been available for # days}}</translation>
 <translation id="95624393026532554">Brave requires Windows 7 or higher.</translation>
 <translation id="5646769069113654257">Please restart Brave now</translation>
 <translation id="2335583906071111058">Display Brave in this language</translation>
-<translation id="3009727137063767373">To enable Brave to play protected media, you need to install Rosetta. Do you want to install it now?</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="5895138241574237353">Restart</translation>
@@ -152,10 +151,10 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="492209281555538239">Brave will save this password in your Brave sync chain. You won’t have to remember it.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> is dangerous, so Brave has blocked it.</translation>
 <translation id="7006260220514217183">Safe Browsing is off. Brave recommends turning it on.</translation>
+<translation id="4060970194201477024">You can switch between Brave profiles here</translation>
 <translation id="4368341489795135329">Make sure that you are signed in to Brave on your <ph name="TARGET_DEVICE_NAME"/> and then try sending again.</translation>
 <translation id="8320964054148936490">This computer already has a more recent version of Brave. If the software is not working, please uninstall Brave and try again.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave will relaunch now}=1{Brave will relaunch in 1 second}other{Brave will relaunch in # seconds}}</translation>
-<translation id="3127818369811890733">Chrome OS could not sync your data.</translation>
 <translation id="5019879183386042809">Make Brave the default browser</translation>
 <translation id="428541510811554120">Brave can't check for updates. Try checking your Internet connection.</translation>
 <translation id="7445061995866044926">Sign out of Brave?</translation>
@@ -188,17 +187,14 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copied to Brave)</translation>
 <translation id="2301993384336631869">Brave has been updated, but you haven't used it for 30 days or more.</translation>
-<translation id="8522287263361940593">Rosetta enables Brave to play the protected media on this page.</translation>
 <translation id="8828443087767259398">Brave needs Bluetooth access to continue pairing. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Weak passwords are easy to guess. Let Brave <ph name="BEGIN_LINK"/>create and remember strong passwords for you<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Brave needs permission to access your microphone for this site</translation>
 <translation id="1785833016412082453">Brave can't check your extensions. Try again later.</translation>
 <translation id="1705567146636171298">Update Brave</translation>
-<translation id="123620459398936149">Chrome OS could not sync your data. Please update your Sync passphrase.</translation>
 <translation id="5499063270485366718">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.</translation>
 <translation id="1197672524850678392">Couldn't launch Brave. Try again.</translation>
 <translation id="3405035915691517126">Brave can't check your passwords. Try again after 24 hours.</translation>
-<translation id="5660079256336839395">Hide in Brave Menu</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="61852838583753520">Update &amp;Chrome OS</translation>
 <translation id="1864557848095568223">Updating Brave</translation>
@@ -234,7 +230,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="6755885556185485672">Chrome OS didn't shut down correctly.</translation>
 <translation id="2925193881330501265">You were signed in to Brave as <ph name="USER_EMAIL_ADDRESS"/>. Please use the same account to sign in again.</translation>
 <translation id="6915252145142862992">This is a secondary installation of Brave, and cannot be made your default browser.</translation>
-<translation id="4054452651944170004">Hide in Brave menu</translation>
 <translation id="7685904775439037072">Once Brave has access, websites will be able to ask you for access.</translation>
 <translation id="9067428552314418522">This file is dangerous, so Brave has blocked it.</translation>
 <translation id="8207657266087451193">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave. You can turn this off in settings at any time.</translation>

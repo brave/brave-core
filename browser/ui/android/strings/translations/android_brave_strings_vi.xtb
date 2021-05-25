@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
 <translation id="6302422639282249274">Quản lý Phần thưởng Brave</translation>
-<translation id="1506061864768559482">Công cụ tìm kiếm</translation>
 <translation id="1468415711258933398">Tab tiêu chuẩn</translation>
 <translation id="3377025655491224618">Tab ẩn danh</translation>
 <translation id="9148058034647219655">Thoát</translation>
-<translation id="520895744850022668">HTTPS Everywhere (HTTPS Khắp mọi nơi)</translation>
-<translation id="8710614491157212477">Mở các trang web được hỗ trợ bằng HTTPS thay vì HTTP khi có thể</translation>
-<translation id="4022987104439075738">Cổng IPFS</translation>
-<translation id="2688519859165248360">Cho phép điều hướng đến các tài nguyên IPFS thông qua một Cổng IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Dịch vụ Cung cấp Tên miền Ethereum</translation>
 <translation id="3894650624018948468">Phương thức giải quyết</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Đã bị vô hiệu</translation>
 <translation id="2218918398178303658">DNS qua HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Chặn quảng cáo</translation>
-<translation id="1934885595886623674">Ngăn quảng cáo tải</translation>
-<translation id="7458422973722236530">Bảo vệ bằng dấu vân tay</translation>
 <translation id="5787084571334399599">Ngăn chặn trình duyệt lấy dấu vân tay</translation>
 <translation id="7459000603787995422">Đóng tab khi thoát</translation>
 <translation id="1680858055899097121">Đừng giữ nguyên các tab giữa các phiên duyệt</translation>
-<translation id="6469509880167172749">Tự động gửi dữ liệu phân tích sản phẩm hoàn toàn riêng tư đến Brave</translation>
-<translation id="7090566321964540749">Thông tin ẩn danh này chỉ cho phép Brave ước tính mức độ sử dụng tổng thể của một số tính năng nhất định.</translation>
+<translation id="7142548388914389999">Tự động gửi dữ liệu phân tích sản phẩm hoàn toàn riêng tư đến Brave</translation>
+<translation id="5469408008145872264">Thông tin ẩn danh này chỉ cho phép Brave ước tính mức độ sử dụng tổng thể của một số tính năng nhất định.</translation>
 <translation id="7977176350719484850">Dữ liệu ước tính\ntiết kiệm được</translation>
 <translation id="9008534313521214777">Thời gian Ước tính\nTiết kiệm được</translation>
 <translation id="6572660632052512096">Chế độ cho máy tính để bàn</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Thích phiên bản trang web cho máy tính để bàn</translation>
 <translation id="1842747674580016420">Phát lại video trong Brave</translation>
 <translation id="5368992950177874750">Nếu bật, các video sẽ được phát trong Brave thay vì ứng dụng tương ứng</translation>
-<translation id="2645380101799517405">Nút điều khiển</translation>
 <translation id="5965081608816406060">Phát lại video nền</translation>
 <translation id="6332924730165919598">Việc đóng tất cả các tab sẽ đóng Brave</translation>
 <translation id="1580125697191336644">Thử nghiệm. Cho phép phát audio từ video trên nền khi tab không hoạt động hoặc màn hình thiết bị đang tắt. Cố gắng chuyển sang chế độ cho máy tính nếu tính năng này không hoạt động.</translation>
@@ -291,11 +282,10 @@ tháng này...</translation>
 <translation id="5657156137487675418">Cho phép mọi cookie.</translation>
 <translation id="3895527457258986253">Chặn Vân tay</translation>
 <translation id="184568144098869637">Ngăn trình duyệt nhận ra thiết bị của bạn</translation>
-<translation id="7396366757003005317">Dấu vân tay bị chặn (nghiêm ngặt, có thể phá vỡ các trang)</translation>
-<translation id="700453611199558021">Vân tay bị chặn (tiêu chuẩn)</translation>
+<translation id="7445306466605902444">Dấu vân tay bị chặn (nghiêm ngặt, có thể phá vỡ các trang)</translation>
+<translation id="5582686930349810484">Vân tay bị chặn (tiêu chuẩn)</translation>
 <translation id="769702552748212954">Cho phép tất cả vân tay</translation>
 <translation id="876424292214881779">Quảng cáo và những thứ đáng sợ khác bị chặn</translation>
-<translation id="5142293891785304489">Trình theo dõi, quảng cáo và\nnhiều thứ khác bị chặn</translation>
 <translation id="6930134873084561197">Các trang web thường có các cookie và tập lệnh cố gắng xác định bạn và thiết bị của bạn. Họ muốn tìm ra bạn là ai và theo dõi bạn trên web - theo dõi những gì bạn làm trên mọi trang web.\n\nBrave chặn những thứ này để bạn có thể duyệt web mà không bị theo dõi.</translation>
 <translation id="8553998445606452168">Về Khiên của Brave</translation>
 <translation id="8912304686498704084">LÊN</translation>
@@ -308,7 +298,6 @@ tháng này...</translation>
 <translation id="5299848999918506028">Cảm ơn bạn!</translation>
 <translation id="76550953340008122">Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!</translation>
 <translation id="650318023204990401">Kiểm soát nâng cao</translation>
-<translation id="7182293319417450928">Cần có số dư tối thiểu 25 BAT để xác minh.</translation>
 <translation id="1275664486910646411">Hiển thị các website hàng đầu trong mục tự động hoàn thành</translation>
 <translation id="5516010970279932133">Hiển thị các website được đề xuất trong mục tự động hoàn thành</translation>
 <translation id="5370478469168390143">Lưu Dữ liệu Trực tuyến</translation>
@@ -369,12 +358,12 @@ tháng này...</translation>
 <translation id="7427567994475794038">Hãy bật Báo cáo Quyền riêng tư để xem số lượng trình theo dõi &amp; quảng cáo đã bị chặn trong 3 giờ qua.</translation>
 <translation id="2053891538879944400">Bạn đã tiết kiệm <ph name="DATA"/> <ph name="DATA_TEXT"/> dữ liệu bằng trình duyệt Brave.</translation>
 <translation id="8640064498452534195">Bật Báo cáo Quyền riêng tư để xem lượng dữ liệu mà bạn đã tiết kiệm được.</translation>
-<translation id="2252497442547961651">Trình duyệt Brave có mức sử dụng pin trung bình ít hơn 40%.&#128267;</translation>
+<translation id="2252497442547961651">Trình duyệt Brave có mức sử dụng pin trung bình ít hơn 40%.🔋</translation>
 <translation id="1945330434665345785">Tuần trước, bạn đã chặn <ph name="COUNT"/> trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.</translation>
 <translation id="2883868922264431515">Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư và hỗ trợ các trang web yêu thích của bạn.</translation>
-<translation id="5678925890616256956">Tuyệt! Bạn đã chặn 250 trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.&#128293;</translation>
-<translation id="9199047775708635708">Tuyệt! Bạn đã tiết kiệm được 10MB với trình duyệt Brave.&#128267;</translation>
-<translation id="1880168210969863408">Tuyệt! Bạn đã tiết kiệm được 10 Phút thời gian tải với trình duyệt Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Tuyệt! Bạn đã chặn 250 trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.🔥</translation>
+<translation id="9199047775708635708">Tuyệt! Bạn đã tiết kiệm được 10MB với trình duyệt Brave.🔋</translation>
+<translation id="1880168210969863408">Tuyệt! Bạn đã tiết kiệm được 10 Phút thời gian tải với trình duyệt Brave.💨💨</translation>
 <translation id="7408493389591475748">Bắt đầu duyệt web để xem báo cáo quyền riêng tư</translation>
 <translation id="9080777565335515917">Đặt Brave làm trình duyệt mặc định của bạn để duyệt web an toàn và bảo mật.</translation>
 <translation id="1390943217516275883">Cho phép Brave hiển thị số liệu thống kê về quyền riêng tư của bạn</translation>
@@ -482,9 +471,6 @@ tháng này...</translation>
 <translation id="3184805785843994538">Brave Shields chặn trình theo dõi &amp; quảng cáo, đồng thời giúp bạn tiết kiệm thời gian trên mỗi trang web mà bạn truy cập.</translation>
 <translation id="8722651357687610395">Đặt Brave làm trình duyệt mặc định</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
-<translation id="6232491755501685494">Brave Rewards ở Nhật Bản hiện đang chuyển sang hệ thống mới!</translation>
-<translation id="7444515017164572362">Bắt đầu từ ngày 13 tháng 3, bạn sẽ không thể sử dụng BAP của mình. Nhưng khi bạn cập nhật lên hệ thống mới vào tháng 4, bạn sẽ bắt đầu với các token mới!</translation>
-<translation id="8587285254008006694">Nằm trong quá trình chuyển đổi này, các tính năng tặng tiền thưởng và đóng góp trong trình duyệt của bạn sẽ tạm thời không thể sử dụng kể từ ngày 13 tháng 3, đồng thời số dư BAP của bạn sẽ hiển thị 0,0 cho đến khi bạn cập nhật lên hệ thống mới vào tháng 4. Khi bạn sử dụng hệ thống mới, bạn sẽ bắt đầu với các token mới!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -504,4 +490,27 @@ tháng này...</translation>
 <translation id="5825943197137337319">Chỉ giao diện công khai mặc định</translation>
 <translation id="1689062823386843231">Cho phép UDP không proxy</translation>
 <translation id="3171931580569169744">Bật Nhóm tab</translation>
+<translation id="5587305863196367357">Việc xác minh ví cho phép bạn quản lý tiền của mình một cách dễ dàng, thêm &amp; rút tiền</translation>
+<translation id="5760671211380791582">Bạn không có đủ BAT.</translation>
+<translation id="6960458596933484861">Bạn cần có tối thiểu 15 BAT để tạo một ví Uphold đã được xác minh. Vui lòng thử lại sau.</translation>
+<translation id="4389085954549744469">Nếu bạn đã có tài khoản Uphold được xác minh, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">tiếp tục đăng nhập</translation>
+<translation id="1506061864768559482">Công cụ tìm kiếm</translation>
+<translation id="520895744850022668">HTTPS Everywhere (HTTPS Khắp mọi nơi)</translation>
+<translation id="8710614491157212477">Mở các trang web được hỗ trợ bằng HTTPS thay vì HTTP khi có thể</translation>
+<translation id="4022987104439075738">Cổng IPFS</translation>
+<translation id="2688519859165248360">Cho phép điều hướng đến các tài nguyên IPFS thông qua một Cổng IPFS</translation>
+<translation id="8387201461264842096">Chặn quảng cáo</translation>
+<translation id="1934885595886623674">Ngăn quảng cáo tải</translation>
+<translation id="7458422973722236530">Bảo vệ bằng dấu vân tay</translation>
+<translation id="6469509880167172749">Tự động gửi dữ liệu phân tích sản phẩm hoàn toàn riêng tư đến Brave</translation>
+<translation id="7090566321964540749">Thông tin ẩn danh này chỉ cho phép Brave ước tính mức độ sử dụng tổng thể của một số tính năng nhất định.</translation>
+<translation id="2645380101799517405">Nút điều khiển</translation>
+<translation id="7396366757003005317">Dấu vân tay bị chặn (nghiêm ngặt, có thể phá vỡ các trang)</translation>
+<translation id="700453611199558021">Vân tay bị chặn (tiêu chuẩn)</translation>
+<translation id="5142293891785304489">Trình theo dõi, quảng cáo và\nnhiều thứ khác bị chặn</translation>
+<translation id="7182293319417450928">Cần có số dư tối thiểu 25 BAT để xác minh.</translation>
+<translation id="6232491755501685494">Brave Rewards ở Nhật Bản hiện đang chuyển sang hệ thống mới!</translation>
+<translation id="7444515017164572362">Bắt đầu từ ngày 13 tháng 3, bạn sẽ không thể sử dụng BAP của mình. Nhưng khi bạn cập nhật lên hệ thống mới vào tháng 4, bạn sẽ bắt đầu với các token mới!</translation>
+<translation id="8587285254008006694">Nằm trong quá trình chuyển đổi này, các tính năng tặng tiền thưởng và đóng góp trong trình duyệt của bạn sẽ tạm thời không thể sử dụng kể từ ngày 13 tháng 3, đồng thời số dư BAP của bạn sẽ hiển thị 0,0 cho đến khi bạn cập nhật lên hệ thống mới vào tháng 4. Khi bạn sử dụng hệ thống mới, bạn sẽ bắt đầu với các token mới!</translation>
 </translationbundle>

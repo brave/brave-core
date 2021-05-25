@@ -11,14 +11,9 @@
 <translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
 <translation id="6302422639282249274">Zarządzaj nagrodami Brave</translation>
-<translation id="1506061864768559482">Wyszukiwarka</translation>
 <translation id="1468415711258933398">Karta standardowa</translation>
 <translation id="3377025655491224618">Karta prywatna</translation>
 <translation id="9148058034647219655">Wyjście</translation>
-<translation id="520895744850022668">Aktualizacje HTTPS</translation>
-<translation id="8710614491157212477">Otwiera obsługiwane witryny za pomocą HTTPS zamiast HTTP, kiedy to możliwe</translation>
-<translation id="4022987104439075738">Brama IPFS</translation>
-<translation id="2688519859165248360">Umożliwia przejście do zasobów IPFS poprzez bramkę IPFS</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="3894650624018948468">Metoda rozwiązania</translation>
@@ -26,14 +21,11 @@
 <translation id="4176463684765177261">Wyłączone</translation>
 <translation id="2218918398178303658">DNS poprzez HTTPS</translation>
 <translation id="1448289340149908413">Ethereum</translation>
-<translation id="8387201461264842096">Blokada reklam</translation>
-<translation id="1934885595886623674">Zapobiega wczytywaniu reklam</translation>
-<translation id="7458422973722236530">Ochrona przed rozpoznawaniem urządzenia</translation>
 <translation id="5787084571334399599">Uniemożliwia rozpoznawanie urządzenia</translation>
 <translation id="7459000603787995422">Zamknij karty przy wyjściu</translation>
 <translation id="1680858055899097121">Nie utrzymuj kart między sesjami przeglądania</translation>
-<translation id="6469509880167172749">Automatycznie przesyłaj do Brave całkowicie prywatne analizy dotyczące produktu</translation>
-<translation id="7090566321964540749">Te anonimowe informacje pozwalają Brave oszacować jedynie ogólny poziom korzystania z określonych funkcji.</translation>
+<translation id="7142548388914389999">Automatycznie przesyłaj do Brave całkowicie prywatne analizy dotyczące produktu</translation>
+<translation id="5469408008145872264">Te anonimowe informacje pozwalają Brave oszacować jedynie ogólny poziom korzystania z określonych funkcji.</translation>
 <translation id="7977176350719484850">Szacowane dane\nie zapisane</translation>
 <translation id="9008534313521214777">Szacowany zaoszczędzony\nczas</translation>
 <translation id="6572660632052512096">Wersja na komputer</translation>
@@ -43,7 +35,6 @@
 <translation id="4479934682648362332">Preferowana wersja na komputer stron</translation>
 <translation id="1842747674580016420">Odtwarzanie wideo w Brave</translation>
 <translation id="5368992950177874750">Po włączeniu klipy wideo będą odtwarzane w Brave zamiast w odpowiedniej aplikacji</translation>
-<translation id="2645380101799517405">Elementy kontrolne</translation>
 <translation id="5965081608816406060">Odtwarzanie wideo w tle</translation>
 <translation id="6332924730165919598">Zamknięcie wszystkich kart zamyka Brave</translation>
 <translation id="1580125697191336644">Funkcja eksperymentalna. Umożliwia odtwarzanie audio z klipu wideo w tle, kiedy karta jest nieaktywna lub gdy ekran urządzenia jest wyłączony. Jeśli funkcja nie działa, spróbuj przełączyć do trybu desktopowego.</translation>
@@ -292,11 +283,10 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="5657156137487675418">Zezwalaj na wszystkie pliki cookie</translation>
 <translation id="3895527457258986253">Zablokuj rozpoznawanie urządzenia</translation>
 <translation id="184568144098869637">Uniemożliwia przeglądarce rozpoznanie Twojego urządzenia</translation>
-<translation id="7396366757003005317">Blokuj rozpoznawanie urządzenia (ściśle, strony mogą nie działać)</translation>
-<translation id="700453611199558021">Blokuj rozpoznawanie urządzenia (standardowo)</translation>
+<translation id="7445306466605902444">Blokuj rozpoznawanie urządzenia (ściśle, strony mogą nie działać)</translation>
+<translation id="5582686930349810484">Blokuj rozpoznawanie urządzenia (standardowo)</translation>
 <translation id="769702552748212954">Zezwalaj na rozpoznawanie urządzenia</translation>
 <translation id="876424292214881779">Reklamy i inne nieprzyjemne rzeczy zablokowane</translation>
-<translation id="5142293891785304489">Śledzenie, reklamy i/ninne zablokowane</translation>
 <translation id="6930134873084561197">Witryny często zawierają pliki cookies i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie. Chcą dowiedzieć się, kim jesteś, i śledzić Cię w sieci, monitorując wykonywane przez Ciebie czynności na każdej stronie.\n\nBrave blokuje to, dzięki czemu możesz przeglądać, i nikt nie będzie Cię śledzić.</translation>
 <translation id="8553998445606452168">O osłonach Brave</translation>
 <translation id="8912304686498704084">WŁĄCZONE</translation>
@@ -309,7 +299,6 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="5299848999918506028">Dziękujemy!</translation>
 <translation id="76550953340008122">Dziękujemy za poinformowanie deweloperów Brave, że coś jest nie tak z tą witryną. Dołożymy wszelkich starań, aby ją naprawić!</translation>
 <translation id="650318023204990401">Zaawansowane sterowanie</translation>
-<translation id="7182293319417450928">Do weryfikacji wymagane jest minimalne saldo w wysokości 25 BAT.</translation>
 <translation id="1275664486910646411">Pokaż popularne strony w autouzupełnieniu</translation>
 <translation id="5516010970279932133">Pokaż sugestie stron w autouzupełnieniu</translation>
 <translation id="5370478469168390143">Zapisz dane online</translation>
@@ -370,15 +359,15 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="7427567994475794038">Włącz raporty o prywatności, aby zobaczyć, ile narzędzi do monitorowania i reklam zablokowano w ciągu ostatnich trzech godzin.</translation>
 <translation id="2053891538879944400">Oszczędziłeś(-aś) <ph name="DATA"/> <ph name="DATA_TEXT"/> danych z użyciem przeglądarki Brave.</translation>
 <translation id="8640064498452534195">Włącz raporty o prywatności, aby zobaczyć, ile danych oszczędziłeś(-aś).</translation>
-<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.&#128267;</translation>
+<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.🔋</translation>
 <translation id="1945330434665345785">W ubiegłym tygodnia zablokowałeś z pomocą przeglądarki Brave <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
 <translation id="2883868922264431515">Zarabiaj tokeny, oglądając reklamy z poszanowaniem Twojej prywatności i wspieraj ulubione witryny internetowe.</translation>
-<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 skryptów śledzących i reklam.&#128293;</translation>
-<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 skryptów śledzących i reklam.🔥</translation>
+<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.🔋</translation>
+<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.💨💨</translation>
 <translation id="7408493389591475748">Zacznij przeglądać, aby zobaczyć raporty o prywatności.</translation>
 <translation id="9080777565335515917">Ustaw przeglądarkę Brave jako swoją domyślną do prywatnego i bezpiecznego przeglądania.</translation>
-<translation id="1390943217516275883">Umożliwia przeglądarce Brave pokazywanie Twoich statystyk prywatności.</translation>
+<translation id="1390943217516275883">Zezwala Brave na pokazywanie statystyk prywatności.</translation>
 <translation id="1763352720905582220">Wysyła cotygodniowy raport o prywatności</translation>
 <translation id="1811691435325545066">Wyczyść wszystkie dane dotyczące raportów o prywatności.</translation>
 <translation id="8089997572759938512">Resetuje Twoje raporty o prywatności do zera.</translation>
@@ -483,14 +472,6 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="3184805785843994538">Brave Shields blokuje pliki śledzące &amp; reklamy, zachowuje dane i pozwala oszczędzić czas na każdej odwiedzanej stronie.</translation>
 <translation id="8722651357687610395">Ustaw Brave jako domyślną</translation>
 <translation id="3479552764303398839">Nie teraz</translation>
-<translation id="6232491755501685494">Brave Rewards przechodzi na nowy system w Japonii!</translation>
-<translation id="7444515017164572362">Od 13 marca nie będziesz móc korzystać ze swoich punktów BAP, ale po
-        przejściu na nowy system w kwietniu zaczniesz z niego korzystać z nowymi tokenami!</translation>
-<translation id="8587285254008006694">W ramach tego przejścia funkcje dawania napiwków i wkładu w
-        Twojej przeglądarce staną się czasowo niedostępne, od 13 marca, a
-        na Twoim saldzie punktów BAP będzie wyświetlana wartość 0.0 do czasu, aż uaktualnisz system do nowego
-        w kwietniu. Kiedy będziesz w nowym systemie, zaczniesz z nowymi
-        tokenami!</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
 <translation id="7839580021124293374">3</translation>
@@ -510,4 +491,32 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="5825943197137337319">Tylko domyślny interfejs publiczny</translation>
 <translation id="1689062823386843231">Wyłącz UDP bez proxy</translation>
 <translation id="3171931580569169744">Włącz grupy zakładek</translation>
+<translation id="5587305863196367357">Weryfikacja portfela pozwala na łatwe zarządzanie swoimi środkami, dodawanie i wypłacanie</translation>
+<translation id="5760671211380791582">Masz za mało BAT.</translation>
+<translation id="6960458596933484861">Potrzebujesz minimum 15 BAT, aby utworzyć zweryfikowany portfel Uphold. Proszę spróbować ponownie później.</translation>
+<translation id="4389085954549744469">Jeśli masz już zweryfikowane konto Uphold, <ph name="CONTINUE_TO_LOGIN"/>.</translation>
+<translation id="6146966915297143881">kontynuuj logowanie</translation>
+<translation id="1506061864768559482">Wyszukiwarka</translation>
+<translation id="520895744850022668">Aktualizacje HTTPS</translation>
+<translation id="8710614491157212477">Otwiera obsługiwane witryny za pomocą HTTPS zamiast HTTP, kiedy to możliwe</translation>
+<translation id="4022987104439075738">Brama IPFS</translation>
+<translation id="2688519859165248360">Umożliwia przejście do zasobów IPFS poprzez bramkę IPFS</translation>
+<translation id="8387201461264842096">Blokada reklam</translation>
+<translation id="1934885595886623674">Zapobiega wczytywaniu reklam</translation>
+<translation id="7458422973722236530">Ochrona przed rozpoznawaniem urządzenia</translation>
+<translation id="6469509880167172749">Automatycznie przesyłaj do Brave całkowicie prywatne analizy dotyczące produktu</translation>
+<translation id="7090566321964540749">Te anonimowe informacje pozwalają Brave oszacować jedynie ogólny poziom korzystania z określonych funkcji.</translation>
+<translation id="2645380101799517405">Elementy kontrolne</translation>
+<translation id="7396366757003005317">Blokuj rozpoznawanie urządzenia (ściśle, strony mogą nie działać)</translation>
+<translation id="700453611199558021">Blokuj rozpoznawanie urządzenia (standardowo)</translation>
+<translation id="5142293891785304489">Śledzenie, reklamy i/ninne zablokowane</translation>
+<translation id="7182293319417450928">Do weryfikacji wymagane jest minimalne saldo w wysokości 25 BAT.</translation>
+<translation id="6232491755501685494">Brave Rewards przechodzi na nowy system w Japonii!</translation>
+<translation id="7444515017164572362">Od 13 marca nie będziesz móc korzystać ze swoich punktów BAP, ale po
+        przejściu na nowy system w kwietniu zaczniesz z niego korzystać z nowymi tokenami!</translation>
+<translation id="8587285254008006694">W ramach tego przejścia funkcje dawania napiwków i wkładu w
+        Twojej przeglądarce staną się czasowo niedostępne, od 13 marca, a
+        na Twoim saldzie punktów BAP będzie wyświetlana wartość 0.0 do czasu, aż uaktualnisz system do nowego
+        w kwietniu. Kiedy będziesz w nowym systemie, zaczniesz z nowymi
+        tokenami!</translation>
 </translationbundle>

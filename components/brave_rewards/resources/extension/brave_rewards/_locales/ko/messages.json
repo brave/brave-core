@@ -819,6 +819,18 @@
     "message": "월렛을 검증하여 bitFlyer 계정에 연결하면 Brave Rewards를 통해 적립된 토큰을 더욱 쉽게 저장하고 관리할 수 있습니다.",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "Brave 브라우저를 bitFlyer 계정에 연결하는 방법을 $link_begin$자세히 알아보세요$link_end$.",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "일본의 Brave 리워드가 새로운 시스템으로 전환 중입니다!",
     "description": "Header text for BAP deprecation warning message"

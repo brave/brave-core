@@ -819,6 +819,18 @@
     "message": "আপনার ওয়ালেট ভেরিফাই করে এবং সেটি একটি bitFlyer অ্যাকাউন্টের সাথে লিঙ্ক করে, Brave Rewards এর মাধ্যমে আপনার উপার্জিত টোকেনগুলো আপনি আরও সহজে সংরক্ষণ ও পরিচালনা করতে পারবেন",
     "description": ""
   },
+  "onboardingPanelBitflyerLearnMore": {
+    "message": "আপনার bitFlyer অ্যাকাউন্টের সাথে Brave ব্রাউজারটি কিভাবে সংযুত করবেন সে সম্বন্ধে $link_begin$আরো জানুন$link_end$।",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
   "bapDeprecationHeader": {
     "message": "জাপানে Brave পুরষ্কারগুলি একটি নতুন সিস্টেমে স্যুইচ করছে!",
     "description": "Header text for BAP deprecation warning message"
