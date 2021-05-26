@@ -60,20 +60,26 @@ struct VPNMenuButton: View {
     }
     
     var body: some View {
-        Button(action: { toggleVPN(!BraveVPN.isConnected) }) {
-            HStack {
-                MenuItemHeaderView(icon: #imageLiteral(resourceName: "vpn_menu_icon").template, title: "Brave VPN")
-                Spacer()
-                if isVPNStatusChanging {
-                    ActivityIndicatorView(isAnimating: true)
-                }
-                vpnToggle
-                    .labelsHidden()
+        HStack {
+            MenuItemHeaderView(icon: #imageLiteral(resourceName: "vpn_menu_icon").template, title: "Brave VPN")
+            Spacer()
+            if isVPNStatusChanging {
+                ActivityIndicatorView(isAnimating: true)
             }
-            .padding(.horizontal, 14)
-            .frame(maxWidth: .infinity, minHeight: 48.0, alignment: .leading)
+            vpnToggle
+                .labelsHidden()
         }
-        .buttonStyle(TableCellButtonStyle())
+        .padding(.horizontal, 14)
+        .frame(maxWidth: .infinity, minHeight: 48.0, alignment: .leading)
+        .background(
+            Button(action: { toggleVPN(!BraveVPN.isConnected) }) {
+                Color.clear
+            }
+            .buttonStyle(TableCellButtonStyle())
+        )
+        .accessibilityElement()
+        .accessibility(addTraits: .isButton)
+        .accessibility(label: Text("Brave VPN"))
         .alert(isPresented: $isErrorShowing) {
             Alert(
                 title: Text(verbatim: Strings.VPN.errorCantGetPricesTitle),
