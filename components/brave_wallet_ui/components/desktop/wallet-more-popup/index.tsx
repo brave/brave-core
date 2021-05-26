@@ -6,6 +6,7 @@ import {
   PopupButton,
   PopupButtonText,
   SettingsIcon,
+  BackupIcon,
   LockIcon
 } from './style'
 
@@ -26,6 +27,10 @@ const WalletMorePopup = (props: Props) => {
       <PopupButton buttonType='secondary' onClick={onClickSetting}>
         <SettingsIcon />
         <PopupButtonText>{locale.walletPopupSettings}</PopupButtonText>
+      </PopupButton>
+      <PopupButton buttonType='secondary' onClick={onClickLock}>
+        <BackupIcon />
+        <PopupButtonText>{locale.walletPopupBackup}</PopupButtonText>
       </PopupButton>
     </StyledWrapper>
   )

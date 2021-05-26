@@ -27,6 +27,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [view, setView] = React.useState<NavTypes>('crypto')
   const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
+  const [needsBackup, setNeedsBackup] = React.useState<boolean>(true)
   const [inputValue, setInputValue] = React.useState<string>('')
 
   // In the future these will be actual paths
@@ -35,9 +36,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setView(path)
   }
 
-  // recoveryVerified Prop will be used in a future PR.
   const completeWalletSetup = (recoveryVerified: boolean) => {
     setNeedsOnboarding(false)
+    setNeedsBackup(recoveryVerified)
   }
 
   const passwordProvided = (password: string) => {
@@ -73,7 +74,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                 {walletLocked ? (
                   <LockScreen onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
                 ) : (
-                  <CryptoView onLockWallet={lockWallet} />
+                  <CryptoView onLockWallet={lockWallet} needsBackup={needsBackup} />
                 )}
               </>
             ) : (

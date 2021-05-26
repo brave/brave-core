@@ -115,7 +115,11 @@ const locale = {
 
   // Wallet More Popup
   walletPopupSettings: 'Settings',
-  walletPopupLock: 'Lock Crypto Wallet'
+  walletPopupLock: 'Lock Crypto Wallet',
+  walletPopupBackup: 'Backup Wallet',
+
+  // Backup Warning
+  backupWarningText: 'Backup your wallet now to protect your crypto portfolio from loss of access.'
 }
 
 export default locale

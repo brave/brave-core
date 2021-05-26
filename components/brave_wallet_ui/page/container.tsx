@@ -94,10 +94,10 @@ function Container (props: Props) {
       <WalletSubViewLayout>
         {view === 'crypto' ? (
           <>
-            { props.wallet.isWalletLocked ? (
+            {props.wallet.isWalletLocked ? (
               <LockScreen onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
             ) : (
-              <CryptoView onLockWallet={lockWallet} />
+              <CryptoView onLockWallet={lockWallet} needsBackup={true} />
             )}
           </>
         ) : (
