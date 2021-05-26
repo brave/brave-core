@@ -147,29 +147,14 @@ extension BrowserViewController: OnboardingControllerDelegate {
             }
         }
         
-        // Present private browsing prompt if necessary when onboarding has been completed
-        onboardingController.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            
-            // NTP Education Load after onboarding screen
-            if self.shouldShowNTPEducation,
-               self.showNTPEducation().isEnabled,
-               let url = self.showNTPEducation().url {
-                self.tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
-            }
-            
-            self.presentDuckDuckGoCalloutIfNeeded()
-        }
+        dismissOnboarding(onboardingController)
     }
     
     func onboardingSkipped(_ onboardingController: OnboardingNavigationController) {
         Preferences.General.basicOnboardingCompleted.value = OnboardingState.skipped.rawValue
         Preferences.General.basicOnboardingNextOnboardingPrompt.value = Date(timeIntervalSinceNow: BrowserViewController.onboardingDaysInterval)
         
-        // Present private browsing prompt if necessary when onboarding has been skipped
-        onboardingController.dismiss(animated: true) {
-            self.presentDuckDuckGoCalloutIfNeeded()
-        }
+        dismissOnboarding(onboardingController)
     }
     
     func presentDuckDuckGoCalloutIfNeeded() {
@@ -177,6 +162,26 @@ extension BrowserViewController: OnboardingControllerDelegate {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 self.presentDuckDuckGoCallout()
             }
+        }
+    }
+    
+    private func presentEducationNTPIfNeeded() {
+        // NTP Education Load after onboarding screen
+        if shouldShowNTPEducation,
+           showNTPEducation().isEnabled,
+           let url = showNTPEducation().url {
+            tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+        }
+    }
+    
+    private func dismissOnboarding(_ onboardingController: OnboardingNavigationController) {
+        // Present NTP Education If Locale is JP and onboading is finished or skipped
+        // Present private browsing prompt if necessary when onboarding has been skipped
+        onboardingController.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            
+            self.presentEducationNTPIfNeeded()
+            self.presentDuckDuckGoCalloutIfNeeded()
         }
     }
     
