@@ -110,10 +110,6 @@
     <color name="brave_stats_empty_bg_color">#335DB5FC</color>
     <color name="brave_stats_empty_border_color">#5DB5FC</color>
     <color name="brave_stats_radio_button_active">@android:color/white</color>
-    <color name="brave_stats_share_data_save_no">#A1A5E6</color>
-    <color name="brave_stats_share_info">@android:color/white</color>
-    <color name="brave_stats_share_time_saved_no">@android:color/white</color>
-    <color name="brave_stats_share_trackers_ads_no">@color/onboarding_indicator_selected_color</color>
 
     <color name="topsite_bg_color">#DADCE8</color>
     <color name="spinner_bg_color">#DADCE8</color>
