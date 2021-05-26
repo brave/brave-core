@@ -115,7 +115,6 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_search/common:mojom",
   "//brave/components/brave_shields/common",
   "//brave/components/brave_sync/buildflags:buildflags",
-  "//brave/components/brave_vpn/buildflags:buildflags",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/brave_wayback_machine:buildflags",
   "//brave/components/brave_webtorrent/browser/buildflags",
@@ -304,12 +303,12 @@ if (enable_brave_perf_predictor) {
       [ "//brave/components/brave_perf_predictor/browser" ]
 }
 
-if (enable_brave_vpn) {
-  brave_chrome_browser_deps += [ "//brave/components/brave_vpn" ]
-}
-
 if (enable_ftx) {
   brave_chrome_browser_deps += [ "//brave/browser/ftx" ]
+}
+
+if (enable_brave_vpn) {
+  brave_chrome_browser_deps += [ "//brave/components/brave_vpn" ]
 }
 
 if (is_win && is_official_build) {

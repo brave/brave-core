@@ -13,10 +13,31 @@ source_set("brave_vpn") {
 
   deps = [ "//base" ]
 
+  libs = []
+
   if (is_win) {
     sources += [
       "brave_vpn_connection_manager_win.cc",
       "brave_vpn_connection_manager_win.h",
+      "utils_win.cc",
+      "utils_win.h",
     ]
+
+    libs += [
+      "rasapi32.lib",
+      "Ws2_32.lib",
+    ]
+  }
+}
+
+executable("vpntool") {
+  sources = []
+  deps = [
+    ":brave_vpn",
+    "//base",
+  ]
+
+  if (is_win) {
+    sources = [ "winvpntool.cc" ]
   }
 }
