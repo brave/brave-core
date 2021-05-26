@@ -109,7 +109,6 @@ IpfsService::IpfsService(content::BrowserContext* context,
   if (ipfs_client_updater_) {
     ipfs_client_updater_->AddObserver(this);
     OnExecutableReady(ipfs_client_updater_->GetExecutablePath());
-    RegisterIpfsClientUpdater();
   }
   ipns_keys_manager_ =
       std::make_unique<IpnsKeysManager>(context_, server_endpoint_);
@@ -255,6 +254,7 @@ void IpfsService::NotifyIpnsKeysLoaded(bool result) {
 void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
   if (result) {
     ipfs_pid_ = pid;
+    RegisterIpfsClientUpdater();
   } else {
     VLOG(0) << "Failed to launch IPFS";
     Shutdown();
