@@ -89,7 +89,7 @@ const locale = {
   // Backup Wallet Intro
   backupIntroTitle: 'Backup your wallet now!',
   backupIntroDescription: 'In the next step you will see 12 words that allows you to recover your crypto wallet.',
-  backupIntroTerms: 'I understnd that if I lose my recovery words, I will not be able to access my crypto wallet.',
+  backupIntroTerms: 'I understand that if I lose my recovery words, I will not be able to access my crypto wallet.',
 
   // Recovery Phrase Backup
   recoveryTitle: 'Your recovery phrase',
