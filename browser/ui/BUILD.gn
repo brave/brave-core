@@ -384,6 +384,7 @@ source_set("ui") {
       ]
 
       deps += [
+        "//brave/browser/extensions:component_loader",
         "//brave/components/ipfs/buildflags",
         "//third_party/widevine/cdm:buildflags",
       ]
@@ -420,6 +421,7 @@ source_set("ui") {
 
     deps += [
       "//brave/browser/extensions",
+      "//brave/browser/extensions:component_loader",
       "//brave/browser/resources/extensions:resources",
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",

@@ -260,6 +260,7 @@ if (enable_tor) {
 if (enable_extensions) {
   brave_chrome_browser_deps += [
     "//brave/browser/extensions",
+    "//brave/browser/extensions:component_loader",
     "//chrome/browser/extensions",
     "//extensions/browser",
     "//extensions/common:common_constants",
