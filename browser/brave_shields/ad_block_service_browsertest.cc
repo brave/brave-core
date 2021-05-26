@@ -68,6 +68,7 @@ const char kRegionalAdBlockComponentTest64PublicKey[] =
     "ieMF3JB9CZPr+qDKIap+RZUfsraV47QebRi/JA17nbDMlXOmK7mILfFU7Jhjx04F"
     "LwIDAQAB";
 
+using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using content::BrowserThread;
 
@@ -759,6 +760,97 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                             bad_resource_url.spec().c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
+
+  // Unset the host resolver so as not to interfere with later tests.
+  brave::SetAdblockCnameHostResolverForTesting(nullptr);
+}
+
+class CnameUncloakingFlagDisabledTest : public AdBlockServiceTest {
+ public:
+  CnameUncloakingFlagDisabledTest() {
+    feature_list_.InitAndDisableFeature(kBraveAdblockCnameUncloaking);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Make sure that CNAME uncloaking does not occur when the CNAME uncloaking
+// flag is disabled.
+IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
+  UpdateAdBlockInstanceWithRules("||cname-cloak-endpoint.tracking.com^");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL tab_url = embedded_test_server()->GetURL("a.com", kAdBlockTestPage);
+  GURL direct_resource_url =
+      embedded_test_server()->GetURL("a83idbka2e.a.com", "/logo.png");
+  GURL chain_resource_url =
+      embedded_test_server()->GetURL("b94jeclb3f.a.com", "/logo.png");
+  GURL safe_resource_url = embedded_test_server()->GetURL("a.com", "/logo.png");
+  GURL bad_resource_url = embedded_test_server()->GetURL(
+      "cname-cloak-endpoint.tracking.com", "/logo.png");
+
+  auto inner_resolver = std::make_unique<net::MockHostResolver>();
+
+  const std::vector<std::string> kDnsAliasesDirect(
+      {"cname-cloak-endpoint.tracking.com"});
+  const std::vector<std::string> kDnsAliasesChain(
+      {"cname-cloak-endpoint.tracking.com",
+       "cname-cloak-endpoint.tracking.com.redirectservice.net", "cname.a.com"});
+  const std::vector<std::string> kDnsAliasesSafe({"assets.cdn.net"});
+  inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
+      "a83idbka2e.a.com", "127.0.0.1", kDnsAliasesDirect);
+  inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
+      "b94jeclb3f.a.com", "127.0.0.1", kDnsAliasesChain);
+  inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases("a.com", "127.0.0.1",
+                                                          kDnsAliasesSafe);
+  inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
+      "cname-cloak-endpoint.tracking.com", "127.0.0.1", {});
+
+  network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
+
+  brave::SetAdblockCnameHostResolverForTesting(&resolver);
+
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  // Image request to an unblocked first-party endpoint that is CNAME cloaked
+  // with 1 alias. Nothing should be blocked.
+  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
+                                       "setExpectations(1, 0, 0, 0);"
+                                       "addImage('%s')",
+                                       direct_resource_url.spec().c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  // Note one resolution for the root document
+  ASSERT_EQ(0ULL, inner_resolver->num_resolve());
+
+  // Image request to an unblocked first-party endpoint that is CNAME cloaked
+  // with multiple intermediate aliases. Nothing should be blocked.
+  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
+                                       "setExpectations(2, 0, 0, 0);"
+                                       "addImage('%s')",
+                                       chain_resource_url.spec().c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  ASSERT_EQ(0ULL, inner_resolver->num_resolve());
+
+  // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
+  // Nothing should be blocked.
+  ASSERT_EQ(true, EvalJs(contents,
+                         base::StringPrintf("setExpectations(2, 0, 1, 0);"
+                                            "xhr('%s')",
+                                            safe_resource_url.spec().c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  ASSERT_EQ(0ULL, inner_resolver->num_resolve());
+
+  // XHR request directly to a blocked third-party endpoint. It should be
+  // blocked, but the resolver still should not be queried.
+  ASSERT_EQ(true, EvalJs(contents,
+                         base::StringPrintf("setExpectations(2, 0, 1, 1);"
+                                            "xhr('%s')",
+                                            bad_resource_url.spec().c_str())));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  ASSERT_EQ(0ULL, inner_resolver->num_resolve());
 
   // Unset the host resolver so as not to interfere with later tests.
   brave::SetAdblockCnameHostResolverForTesting(nullptr);

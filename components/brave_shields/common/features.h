@@ -12,6 +12,7 @@ struct Feature;
 
 namespace brave_shields {
 namespace features {
+extern const base::Feature kBraveAdblockCnameUncloaking;
 extern const base::Feature kBraveAdblockCosmeticFiltering;
 extern const base::Feature kBraveAdblockCosmeticFilteringNative;
 extern const base::Feature kBraveAdblockCspRules;

@@ -10,6 +10,11 @@
 namespace brave_shields {
 namespace features {
 
+// When enabled, Brave will issue DNS queries for requests that the adblock
+// engine has not blocked, then check them again with the original hostname
+// substituted for any canonical name found.
+const base::Feature kBraveAdblockCnameUncloaking{
+    "BraveAdblockCnameUncloaking", base::FEATURE_ENABLED_BY_DEFAULT};
 const base::Feature kBraveAdblockCosmeticFiltering{
     "BraveAdblockCosmeticFiltering",
     base::FEATURE_ENABLED_BY_DEFAULT};
