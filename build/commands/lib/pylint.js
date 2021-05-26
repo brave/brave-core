@@ -20,14 +20,34 @@ const deleteFile = (path) => {
   }
 }
 
+const ensureDepotToolsInPath = (options) => {
+  const depotToolsPath = path.resolve(__dirname, '../../../vendor/depot_tools')
+  if (!fs.existsSync(depotToolsPath)) {
+    console.warn('Depot Tools path [' + depotToolsPath + '] doesn\'t exist')
+    return
+  }
+  let newPath = options.env.path
+  if (!newPath) {
+    process.env.Path && (newPath = process.env.Path)
+    process.env.PATH && (newPath = process.env.PATH)
+  }
+  newPath = newPath.split(path.delimiter)
+  if (!newPath.includes(depotToolsPath)) {
+    console.info('Prepending [' + depotToolsPath + '] to the path')
+    newPath.unshift(depotToolsPath)
+  }
+  options.env.path = newPath.join(path.delimiter)
+}
+
 const getDefaultOptions = () => {
   let options = Object.assign({}, config.defaultOptions)
   options.cwd = path.resolve(__dirname, '../../..')
+  ensureDepotToolsInPath(options)
   return options
 }
 
 const getPylintInfo = () => {
-  let cmd_options = getDefaultOptions()
+  const cmd_options = getDefaultOptions()
   // Use runProcess here because `which` fails silently (so `run` would not
   // print anything) and we want to show the error.
   const prog = util.runProcess(process.platform !== 'win32' ? 'which' : 'where',
