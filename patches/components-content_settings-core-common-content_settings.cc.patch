@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index 5906e8452977cd100487f58874703f8766582ec8..5770fc9da0597aa71cc67eabcd3d174d7dd001d1 100644
+index 5906e8452977cd100487f58874703f8766582ec8..ddbfa12431a34e394088cc5686dd239c1b4db793 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
 @@ -94,6 +94,7 @@ constexpr HistogramValue kHistogramValue[] = {
@@ -10,11 +10,3 @@ index 5906e8452977cd100487f58874703f8766582ec8..5770fc9da0597aa71cc67eabcd3d174d
  };
  
  }  // namespace
-@@ -180,6 +181,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
-          content_type == ContentSettingsType::JAVASCRIPT ||
-          content_type == ContentSettingsType::CLIENT_HINTS ||
-          content_type == ContentSettingsType::POPUPS ||
-+         BRAVE_IS_RENDERER_CONTENT_SETTING
-          content_type == ContentSettingsType::MIXEDSCRIPT;
- }
- 

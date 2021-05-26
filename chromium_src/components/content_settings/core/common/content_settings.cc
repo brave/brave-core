@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "components/content_settings/core/common/content_settings.h"
+
 // Leave a gap between Chromium values and our values in the kHistogramValue
 // array so that we don't have to renumber when new content settings types are
 // added upstream.
@@ -30,21 +32,31 @@ constexpr int brave_value(int incr) {
   {ContentSettingsType::BRAVE_COOKIES, brave_value(7)},
 // clang-format on
 
-#define BRAVE_IS_RENDERER_CONTENT_SETTING \
-  content_type == ContentSettingsType::AUTOPLAY ||
-
 #define ContentSettingTypeToHistogramValue \
   ContentSettingTypeToHistogramValue_ChromiumImpl
 
+#define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
+
 #include "../../../../../../components/content_settings/core/common/content_settings.cc"
 
+#undef RendererContentSettingRules
 #undef ContentSettingTypeToHistogramValue
 #undef BRAVE_HISTOGRAM_VALUE_LIST
-#undef BRAVE_IS_RENDERER_CONTENT_SETTING
 
 int ContentSettingTypeToHistogramValue(ContentSettingsType content_setting,
                                        size_t* num_values) {
   DCHECK(static_cast<int>(ContentSettingsType::NUM_TYPES) < kBraveValuesStart);
   return ContentSettingTypeToHistogramValue_ChromiumImpl(content_setting,
                                                          num_values);
+}
+
+RendererContentSettingRules::RendererContentSettingRules() = default;
+RendererContentSettingRules::~RendererContentSettingRules() = default;
+
+// static
+bool RendererContentSettingRules::IsRendererContentSetting(
+    ContentSettingsType content_type) {
+  return RendererContentSettingRules_ChromiumImpl::IsRendererContentSetting(
+             content_type) ||
+         content_type == ContentSettingsType::AUTOPLAY;
 }
