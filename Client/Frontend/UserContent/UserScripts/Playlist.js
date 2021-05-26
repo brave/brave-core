@@ -261,8 +261,10 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                     return this.getAttribute('src')
                 },
                 set: function(value) {
+                    // Typically we'd call the original setter.
+                    // But since the property represents an attribute, this is okay.
                     this.setAttribute('src', value);
-                    $<notifyNode>(this);
+                    //$<notifyNode>(this); // Handled by `setVideoAttribute`
                 }
             });
             
@@ -273,10 +275,28 @@ window.__firefox__.includeOnce("$<Playlist>", function() {
                     return this.getAttribute('src')
                 },
                 set: function(value) {
+                    // Typically we'd call the original setter.
+                    // But since the property represents an attribute, this is okay.
                     this.setAttribute('src', value);
-                    $<notifyNode>(this);
+                    //$<notifyNode>(this); // Handled by `setAudioAttribute`
                 }
             });
+            
+            var setVideoAttribute = HTMLVideoElement.prototype.setAttribute;
+            HTMLVideoElement.prototype.setAttribute = function(key, value) {
+                setVideoAttribute.call(this, key, value);
+                if (key.toLowerCase() == 'src') {
+                    $<notifyNode>(this);
+                }
+            }
+            
+            var setAudioAttribute = HTMLAudioElement.prototype.setAttribute;
+            HTMLAudioElement.prototype.setAttribute = function(key, value) {
+                setAudioAttribute.call(this, key, value);
+                if (key.toLowerCase() == 'src') {
+                    $<notifyNode>(this);
+                }
+            }
         }
 
         $<observePage>();
