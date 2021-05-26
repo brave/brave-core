@@ -19,8 +19,7 @@ import {
   ModalDonation,
   ModalPending,
   ModalRedirect,
-  ModalShowAdsHistory,
-  ModalVerify
+  ModalShowAdsHistory
 } from '../components'
 
 const favicon = require('./img/brave-favicon.png')
@@ -335,17 +334,6 @@ storiesOf('Rewards/Modal', module)
         errorText={'Error explanation, more info here.'}
         onClick={doNothing}
       />
-    )
-  })
-  .add('Verify', () => {
-    return (
-      <div style={{ width: '373px', minHeight: '580px', position: 'relative', borderRadius: '5px', overflow: 'hidden' }}>
-        <ModalVerify
-          onVerifyClick={doNothing}
-          onClose={doNothing}
-          walletProvider={'Uphold'}
-        />
-      </div>
     )
   })
   .add('Show Ads History',() => {

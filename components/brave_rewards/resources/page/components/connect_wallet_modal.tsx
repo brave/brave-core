@@ -15,7 +15,7 @@ import connectWalletGraphic from '../assets/connect_wallet.svg'
 
 import * as style from './connect_wallet_modal.style'
 
-function getMinimumBalance (provider: string) {
+export function getMinimumBalance (provider: string) {
   switch (provider) {
     case 'uphold': return 15
     default: return 0
