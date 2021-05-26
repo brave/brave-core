@@ -1,0 +1,4 @@
+include_rules = [
+  "+../../../../../../content/browser/devtools/protocol",
+  "+content/browser/devtools/protocol",
+]
