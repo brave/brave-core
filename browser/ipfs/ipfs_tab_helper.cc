@@ -163,7 +163,13 @@ GURL IPFSTabHelper::GetIPFSResolvedURL() const {
   GURL::Replacements replacements;
   replacements.SetQueryStr(current.query_piece());
   replacements.SetRefStr(current.ref_piece());
-  return ipfs_resolved_url_.ReplaceComponents(replacements);
+  std::string cid;
+  std::string path;
+  ipfs::ParseCIDAndPathFromIPFSUrl(ipfs_resolved_url_, &cid, &path);
+  std::string current_ipfs_url =
+      ipfs_resolved_url_.scheme() + "://" + cid + current.path();
+  GURL resolved_url(current_ipfs_url);
+  return resolved_url.ReplaceComponents(replacements);
 }
 
 void IPFSTabHelper::ResolveIPFSLink() {
