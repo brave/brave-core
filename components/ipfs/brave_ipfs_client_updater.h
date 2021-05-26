@@ -89,6 +89,8 @@ class BraveIpfsClientUpdater : public BraveComponent,
     return task_runner_;
   }
 
+  bool IsRegistered() const { return registered_; }
+
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
   void Cleanup();
