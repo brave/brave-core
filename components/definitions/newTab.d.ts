@@ -143,7 +143,6 @@ declare namespace NewTab {
     enabledAds: boolean
     promotions: Promotion[]
     parameters: RewardsParameters
-    onlyAnonWallet: boolean
     totalContribution: number
   }
 

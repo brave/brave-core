@@ -1,7 +1,6 @@
 import { localeStrings as onboardingStrings } from '../../shared/components/onboarding/stories/locale_strings'
 
 export const localeStrings = {
-  bapFunds: 'BAP Funds',
   batFunds: 'BAT Funds',
   cancel: 'Cancel',
   cancelConfirmationText: 'Are you sure you want to stop supporting this creator?',
@@ -32,7 +31,6 @@ export const localeStrings = {
   oneTimeTip: 'One Time Tip',
   oneTimeTipAmount: 'One time tip amount:',
   optInRequired: 'Hold on, you can’t tip yet',
-  points: 'points',
   postHeader: '$1’s post',
   postHeaderTwitter: '$1’s tweet',
   rewardsBannerText1: 'You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.',

@@ -138,7 +138,6 @@ storiesOf('Rewards/Modal', module)
   .add('Activity', () => {
     return (
       <ModalActivity
-        onlyAnonWallet={false}
         activityRows={[
           {
             profile: {

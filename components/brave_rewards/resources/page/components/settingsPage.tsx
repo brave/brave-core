@@ -185,7 +185,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   getPromotionsClaims = () => {
-    const { promotions, ui } = this.props.rewardsData
+    const { promotions } = this.props.rewardsData
 
     if (!promotions || promotions.length === 0) {
       return null
@@ -200,7 +200,7 @@ class SettingsPage extends React.Component<Props, State> {
 
           return (
             <div key={`promotion-${index}`}>
-              <Promotion promotion={promotion} onlyAnonWallet={ui.onlyAnonWallet} />
+              <Promotion promotion={promotion} />
             </div>
           )
         })}
@@ -350,8 +350,7 @@ class SettingsPage extends React.Component<Props, State> {
       adsData,
       contributionMonthly,
       externalWallet,
-      parameters,
-      ui
+      parameters
     } = this.props.rewardsData
 
     const externalWalletType = externalWallet ? externalWallet.type : ''
@@ -384,7 +383,6 @@ class SettingsPage extends React.Component<Props, State> {
       <RewardsTourModal
         layout='wide'
         firstTimeSetup={this.state.firstTimeSetup}
-        onlyAnonWallet={ui.onlyAnonWallet}
         adsPerHour={adsData.adsPerHour}
         autoContributeAmount={contributionMonthly}
         autoContributeAmountOptions={autoContributeChoices}

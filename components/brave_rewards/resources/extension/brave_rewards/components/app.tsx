@@ -19,15 +19,13 @@ interface Props extends RewardsExtension.ComponentProps {
 
 interface State {
   tabId: number
-  onlyAnonWallet: boolean
 }
 
 export class RewardsPanel extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      tabId: -1,
-      onlyAnonWallet: false
+      tabId: -1
     }
   }
 
@@ -37,12 +35,6 @@ export class RewardsPanel extends React.Component<Props, State> {
         this.props.actions.initialized()
         this.startRewards()
       }
-    })
-
-    chrome.braveRewards.onlyAnonWallet((only: boolean) => {
-      this.setState({
-        onlyAnonWallet: !!only
-      })
     })
   }
 
@@ -174,12 +166,7 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   render () {
-    return (
-      <Panel
-        tabId={this.state.tabId}
-        onlyAnonWallet={this.state.onlyAnonWallet}
-      />
-    )
+    return <Panel tabId={this.state.tabId} />
   }
 }
 

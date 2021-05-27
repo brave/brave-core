@@ -477,10 +477,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         mTip_amount_spinner_data_adapter = new DonationsAdapter(ContextUtils.getApplicationContext());
         mTip_amount_spinner.setAdapter(mTip_amount_spinner_data_adapter);
 
-        boolean isAnonWallet = BraveRewardsHelper.isAnonWallet();
-        tvYourWalletTitle.setText(isAnonWallet
-                        ? rootViewGroup.getResources().getString(R.string.brave_ui_your_balance)
-                        : rootViewGroup.getResources().getString(R.string.brave_ui_your_wallet));
+        tvYourWalletTitle.setText(
+                rootViewGroup.getResources().getString(R.string.brave_ui_your_wallet));
 
         batText = BraveRewardsHelper.BAT_TEXT;
 
@@ -1100,7 +1098,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     private void ShowNotification(String id, int type, long timestamp,
                                   String[] args) {
-        boolean isAnonWallet = BraveRewardsHelper.isAnonWallet();
         if (mBraveRewardsNativeWorker == null) {
             return;
         }
@@ -1221,13 +1218,14 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                                 R.drawable.grant_icon : R.drawable.notification_icon;
             notification_icon.setImageResource(grant_icon_id);
 
-            title = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type ) ?
-                    (isAnonWallet ? root.getResources().getString(R.string.brave_ui_new_point_grant) : root.getResources().getString(R.string.brave_ui_new_token_grant)) :
-                    root.getResources().getString(R.string.notification_category_group_brave_ads);
+            title = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type)
+                    ? root.getResources().getString(R.string.brave_ui_new_token_grant)
+                    : root.getResources().getString(R.string.notification_category_group_brave_ads);
 
-            description = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type ) ?
-                          String.format(root.getResources().getString(R.string.brave_ui_new_grant), isAnonWallet ? root.getResources().getString(R.string.point) : root.getResources().getString(R.string.token)) :
-                          root.getResources().getString(R.string.brave_ads_you_earned);
+            description = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type)
+                    ? String.format(root.getResources().getString(R.string.brave_ui_new_grant),
+                            root.getResources().getString(R.string.token))
+                    : root.getResources().getString(R.string.brave_ads_you_earned);
             break;
         case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS:
             btClaimOk.setText(root.getResources().getString(R.string.ok));
@@ -1485,7 +1483,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             return;
         }
         boolean no_activity = true;
-        boolean isAnonWallet = BraveRewardsHelper.isAnonWallet();
         for (int i = 0; i < report.length; i++) {
             TextView tvTitle = null;
             TextView tv = null;
@@ -1506,7 +1503,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             switch (i) {
             case BALANCE_REPORT_GRANTS:
                 tvTitle = (TextView)root.findViewById(R.id.br_grants_claimed_title);
-                tvTitle.setText(isAnonWallet ? BraveRewardsPanelPopup.this.root.getResources().getString(R.string.brave_ui_point_grant_claimed) : BraveRewardsPanelPopup.this.root.getResources().getString(R.string.brave_ui_token_grant_claimed));
+                tvTitle.setText(BraveRewardsPanelPopup.this.root.getResources().getString(
+                        R.string.brave_ui_token_grant_claimed));
                 tv = (TextView)root.findViewById(R.id.br_grants_claimed_bat);
                 tvUSD = (TextView)root.findViewById(R.id.br_grants_claimed_usd);
                 text = "<font color=#8E2995>" + value + "</font><font color=#000000> " + batText + "</font>";
@@ -1740,7 +1738,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     private void SetVerifyWalletControl(@WalletStatus final int status) {
         Button btnVerifyWallet = (Button)root.findViewById(R.id.btn_verify_wallet);
-        boolean annonwallet = BraveRewardsHelper.isAnonWallet();
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor editor = sharedPref.edit();
             int rightDrawable = 0;

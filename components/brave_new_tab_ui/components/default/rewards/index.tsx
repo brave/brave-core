@@ -41,7 +41,6 @@ export interface RewardsProps {
   parameters: NewTab.RewardsParameters
   promotions: NewTab.Promotion[]
   totalContribution: number
-  onlyAnonWallet?: boolean
   adsSupported?: boolean
   isShowingBrandedWallpaper: boolean
   isNotification?: boolean
@@ -62,7 +61,6 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
       parameters,
       enabledAds,
       adsAccountStatement,
-      onlyAnonWallet,
       adsSupported
     } = this.props
 
@@ -70,7 +68,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const showEnableAds = !enabledAds && adsSupported
     const amount = adsAccountStatement ? adsAccountStatement.estimatedPendingRewards : 0
     const converted = convertBalance(amount, rate)
-    const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
+    const batFormatString = getLocale('rewardsWidgetBat')
 
     return (
       <AmountItem isActionPrompt={!!showEnableAds} isLast={false}>
@@ -102,7 +100,6 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const {
       enabledAds,
       parameters,
-      onlyAnonWallet,
       totalContribution
     } = this.props
 
@@ -113,7 +110,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const rate = parameters.rate || 0.0
     const amount = totalContribution
     const converted = convertBalance(amount, rate)
-    const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
+    const batFormatString = getLocale('rewardsWidgetBat')
 
     return (
       <AmountItem isLast={true}>

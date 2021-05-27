@@ -375,9 +375,9 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletStatus = (): WalletState | undefined => {
-    const { externalWallet, ui } = this.props.rewardsData
+    const { externalWallet } = this.props.rewardsData
 
-    if (ui.onlyAnonWallet || !externalWallet) {
+    if (!externalWallet) {
       return undefined
     }
 
@@ -457,12 +457,6 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getActions = () => {
-    const { ui } = this.props.rewardsData
-
-    if (ui.onlyAnonWallet) {
-      return []
-    }
-
     return [
       {
         name: getLocale('panelAddFunds'),
@@ -729,7 +723,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   generateMonthlyReport = () => {
-    const { monthlyReport, ui, externalWallet } = this.props.rewardsData
+    const { monthlyReport, externalWallet } = this.props.rewardsData
 
     if (!monthlyReport || monthlyReport.year === -1 || monthlyReport.month === -1) {
       return undefined
@@ -737,7 +731,6 @@ class PageWallet extends React.Component<Props, State> {
 
     return (
       <ModalActivity
-        onlyAnonWallet={ui.onlyAnonWallet}
         summary={this.generateSummaryRows()}
         activityRows={this.generateActivityRows()}
         transactionRows={this.generateTransactionRows()}
@@ -809,18 +802,13 @@ class PageWallet extends React.Component<Props, State> {
       externalWallet
     } = this.props.rewardsData
     const { total } = balance
-    const { emptyWallet, modalBackup, onlyAnonWallet } = ui
+    const { emptyWallet, modalBackup } = ui
 
     const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(3))
     const walletType = externalWallet ? externalWallet.type : undefined
     const walletProvider = utils.getWalletProviderName(externalWallet)
 
-    let onVerifyClick = undefined
-    let showCopy = false
-    if (!onlyAnonWallet) {
-      onVerifyClick = this.onVerifyClick.bind(this, false)
-      showCopy = true
-    }
+    const onVerifyClick = this.onVerifyClick.bind(this, false)
 
     return (
       <>
@@ -829,7 +817,7 @@ class PageWallet extends React.Component<Props, State> {
           converted={utils.formatConverted(this.getConversion())}
           actions={this.getActions()}
           onSettingsClick={this.onModalBackupOpen}
-          showCopy={showCopy}
+          showCopy={true}
           showSecActions={true}
           alert={this.walletAlerts()}
           walletType={walletType}
@@ -839,15 +827,13 @@ class PageWallet extends React.Component<Props, State> {
           onDisconnectClick={this.onDisconnectClick}
           goToExternalWallet={this.goToExternalWallet}
           greetings={this.getGreetings()}
-          onlyAnonWallet={onlyAnonWallet}
           showLoginMessage={this.showLoginMessage()}
         >
           {
             emptyWallet && pendingTotal === 0
-            ? <WalletEmpty onlyAnonWallet={onlyAnonWallet} />
+            ? <WalletEmpty />
             : <WalletSummary
               reservedAmount={pendingTotal}
-              onlyAnonWallet={onlyAnonWallet}
               reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
               onActivity={this.onModalActivityToggle}
               {...this.getWalletSummary()}
@@ -871,14 +857,12 @@ class PageWallet extends React.Component<Props, State> {
               onReset={this.onModalBackupOnReset}
               internalFunds={this.getInternalFunds()}
               error={this.getBackupErrorMessage()}
-              onlyAnonWallet={onlyAnonWallet}
             />
             : null
         }
         {
           this.state.modalPendingContribution
             ? <ModalPending
-              onlyAnonWallet={onlyAnonWallet}
               onClose={this.onModalPendingToggle}
               rows={this.getPendingRows()}
               onRemoveAll={this.removeAllPendingContribution}
@@ -886,7 +870,7 @@ class PageWallet extends React.Component<Props, State> {
             : null
         }
         {
-          !onlyAnonWallet && this.state.modalVerify
+          this.state.modalVerify
             ? <ModalVerify
               onVerifyClick={this.onVerifyClick.bind(this, true)}
               onClose={this.toggleVerifyModal}

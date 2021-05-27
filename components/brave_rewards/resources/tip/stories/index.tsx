@@ -90,7 +90,6 @@ function createHostState (): HostState {
     nextReconcileDate: new Date(Date.now() + 15 * 14 * 60 * 60 * 1000),
     adsPerHour: 3,
     autoContributeAmount: 15,
-    onlyAnonWallet: false,
     showOnboarding: false,
     tipProcessed: false,
     currentMonthlyTip: 0

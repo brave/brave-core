@@ -223,10 +223,6 @@ window.cr.define('brave_rewards', function () {
     getActions().disconnectWalletError()
   }
 
-  function onlyAnonWallet (only: boolean) {
-    getActions().onOnlyAnonWallet(only)
-  }
-
   function unblindedTokensReady () {
     getActions().getBalance()
   }
@@ -303,7 +299,6 @@ window.cr.define('brave_rewards', function () {
     externalWallet,
     processRewardsPageUrl,
     disconnectWallet,
-    onlyAnonWallet,
     unblindedTokensReady,
     monthlyReport,
     reconcileStampReset,

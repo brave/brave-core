@@ -602,13 +602,6 @@ void BraveRewardsNativeWorker::SetAutoContributionAmount(JNIEnv* env,
   }
 }
 
-bool BraveRewardsNativeWorker::IsAnonWallet(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    return brave_rewards_service_->OnlyAnonWallet();
-  }
-  return false;
-}
-
 bool BraveRewardsNativeWorker::IsRewardsEnabled(JNIEnv* env) {
   if (brave_rewards_service_) {
     return brave_rewards_service_->IsRewardsEnabled();

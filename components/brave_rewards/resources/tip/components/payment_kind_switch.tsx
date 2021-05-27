@@ -6,11 +6,11 @@ import * as React from 'react'
 
 import { BatColorIcon } from 'brave-ui/components/icons'
 
+import { LocaleContext } from '../../shared/lib/locale_context'
 import { PaymentKind } from '../lib/interfaces'
 
 import { TokenAmount } from './token_amount'
 import { ButtonSwitch, ButtonSwitchOption } from './button_switch'
-import { BatString } from './bat_string'
 
 import * as style from './payment_kind_switch.style'
 
@@ -21,13 +21,14 @@ interface Props {
 }
 
 export function PaymentKindSwitch (props: Props) {
+  const { getString } = React.useContext(LocaleContext)
+
   const options: ButtonSwitchOption<PaymentKind>[] = [
     {
       value: 'bat',
       content: (
         <>
-          <style.icon><BatColorIcon /></style.icon>&nbsp;
-          <BatString stringKey='batFunds' />
+          <style.icon><BatColorIcon /></style.icon> {getString('batFunds')}
         </>
       ),
       caption: <TokenAmount amount={props.userBalance} />

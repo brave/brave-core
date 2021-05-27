@@ -26,7 +26,6 @@ export interface Props {
   id?: string
   balance: string
   converted?: string
-  onlyAnonWallet?: boolean
   alert?: AlertWallet | null
   wallet?: Rewards.ExternalWallet
   onClick: () => void
@@ -40,8 +39,8 @@ export interface AlertWallet {
 
 export default class WalletInfoHeader extends React.PureComponent<Props, {}> {
   render () {
-    const { id, balance, converted, onlyAnonWallet, alert, onClick } = this.props
-    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
+    const { id, balance, converted, alert, onClick } = this.props
+    const batFormatString = getLocale('bat')
 
     return (
       <StyledWrapper

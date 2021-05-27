@@ -1062,23 +1062,6 @@ BraveRewardsDisconnectWalletFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsOnlyAnonWalletFunction::
-~BraveRewardsOnlyAnonWalletFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsOnlyAnonWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(OneArgument(base::Value(false)));
-  }
-
-  const auto only = rewards_service->OnlyAnonWallet();
-  return RespondNow(OneArgument(base::Value(only)));
-}
-
 BraveRewardsGetAdsEnabledFunction::
 ~BraveRewardsGetAdsEnabledFunction() {
 }

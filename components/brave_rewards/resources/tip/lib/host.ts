@@ -80,7 +80,6 @@ export function createHost (): Host {
       chrome.send('getAutoContributeAmount')
       chrome.send('getAdsPerHour')
       chrome.send('getExternalWallet')
-      chrome.send('getOnlyAnonWallet')
       chrome.send('getRecurringTips')
       chrome.send('getPublisherBanner', [publisherKey])
       chrome.send('getOnboardingStatus')
@@ -143,10 +142,6 @@ export function createHost (): Host {
           }
         })
       }
-    },
-
-    onlyAnonWalletUpdated (onlyAnonWallet: boolean) {
-      stateManager.update({ onlyAnonWallet })
     },
 
     recurringTipRemoved (success: boolean) {

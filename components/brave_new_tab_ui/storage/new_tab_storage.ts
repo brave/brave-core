@@ -67,7 +67,6 @@ export const defaultState: NewTab.State = {
     enabledAds: false,
     adsSupported: false,
     promotions: [],
-    onlyAnonWallet: false,
     totalContribution: 0.0,
     parameters: {
       rate: 0,

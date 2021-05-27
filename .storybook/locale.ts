@@ -32,8 +32,6 @@ let locale: Record<string, string> = {
   backupWalletTitle: 'Backup Wallet',
   balanceUnavailable: 'Unavailable',
   bat: 'BAT',
-  batPoints: 'BAT Points',
-  batPointsMessage: 'can be used in Brave Rewards to contribute to your favorite content creators. BAT Points cannot be exchanged for BAT.',
   braveAdsDesc: 'No action required. Just collect tokens. Your data is safe with our Shields.',
   braveAdsTitle: 'Brave Ads',
   braveAdsLaunchTitle: 'Brave Ads has arrived!',
@@ -324,7 +322,6 @@ let locale: Record<string, string> = {
   whyBraveRewardsDesc1: 'With conventional browsers, you pay to browse the web by viewing ads with your valuable attention, spending your valuable time downloading invasive ad technology, that transmits your valuable private data to advertisers — without your consent.',
   whyBraveRewardsDesc2: 'Well, you\'ve come to the right place. Brave welcomes you to the new internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.',
   whyHow: 'Why & How',
-  yourBalance: 'Your Balance',
   yourWallet: 'Your wallet',
   // New Tab Page
   adsTrackersBlocked: 'Ads and Trackers Blocked',

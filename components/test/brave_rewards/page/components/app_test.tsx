@@ -22,7 +22,6 @@ describe('rewardsPage component', () => {
       const wrapper = shallow(
         <App
           actions={{
-            onlyAnonWallet: () => false,
             isInitialized: () => false
           }}
           rewardsData={rewardsInitialState.rewardsData as Rewards.State}

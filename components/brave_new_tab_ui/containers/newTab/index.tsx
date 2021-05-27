@@ -70,7 +70,6 @@ interface Props {
 }
 
 interface State {
-  onlyAnonWallet: boolean
   showSettingsMenu: boolean
   showEditTopSite: boolean
   targetTopSiteForEditing?: NewTab.Site
@@ -108,7 +107,6 @@ function GetShouldShowBrandedWallpaperNotification (props: Props) {
 
 class NewTabPage extends React.Component<Props, State> {
   state: State = {
-    onlyAnonWallet: false,
     showSettingsMenu: false,
     showEditTopSite: false,
     backgroundHasLoaded: false,

@@ -45,17 +45,15 @@ export const handleContributionAmount = (amount: string) => {
   return result
 }
 
-export const getPromotion = (promotion: RewardsExtension.Promotion, onlyAnonWallet: boolean) => {
+export const getPromotion = (promotion: RewardsExtension.Promotion) => {
   if (!promotion) {
     return promotion
   }
 
-  const tokenString = onlyAnonWallet ? getMessage('point') : getMessage('token')
+  const tokenString = getMessage('token')
   promotion.finishTitle = getMessage('grantFinishTitleUGP')
   promotion.finishText = getMessage('grantFinishTextUGP', [tokenString])
-  promotion.finishTokenTitle = onlyAnonWallet
-    ? getMessage('grantFinishPointTitleUGP')
-    : getMessage('grantFinishTokenTitleUGP')
+  promotion.finishTokenTitle = getMessage('grantFinishTokenTitleUGP')
 
   if (promotion.type === 1) { // Rewards.PromotionTypes.ADS
     promotion.expiresAt = 0
