@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/user_script_manager.h b/extensions/browser/user_script_manager.h
-index 77838589f187be5bc7d349c1a17b172cca6f1eca..48b66937777014e8b28820939a2939d2bafc1660 100644
+index 77838589f187be5bc7d349c1a17b172cca6f1eca..08f15b1aad2dee7021b6f9ce57cd1f167d30339d 100644
 --- a/extensions/browser/user_script_manager.h
 +++ b/extensions/browser/user_script_manager.h
 @@ -22,7 +22,7 @@
@@ -7,7 +7,7 @@ index 77838589f187be5bc7d349c1a17b172cca6f1eca..48b66937777014e8b28820939a2939d2
  class BrowserContext;
  }
 -
-+class BraveWalletService;
++class EthereumRemoteClientService;
  namespace extensions {
  class UserScriptLoader;
  
@@ -15,7 +15,7 @@ index 77838589f187be5bc7d349c1a17b172cca6f1eca..48b66937777014e8b28820939a2939d2
    WebUIUserScriptLoader* GetUserScriptLoaderForWebUI(const GURL& url);
  
   private:
-+  friend class ::BraveWalletService;
++  friend class ::EthereumRemoteClientService;
    // ExtensionRegistryObserver implementation.
    void OnExtensionLoaded(content::BrowserContext* browser_context,
                           const Extension* extension) override;

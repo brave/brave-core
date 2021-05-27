@@ -10,12 +10,14 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/extensions/brave_wallet_util.h"
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
+#include "brave/browser/ethereum_remote_client/pref_names.h"
+#include "brave/browser/extensions/ethereum_remote_client_util.h"
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
 #include "brave/common/extensions/api/brave_wallet.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -32,13 +34,14 @@
 
 namespace {
 
-BraveWalletService* GetBraveWalletService(
+EthereumRemoteClientService* GetEthereumRemoteClientService(
     content::BrowserContext* context) {
-  return BraveWalletServiceFactory::GetInstance()->GetForContext(context);
+  return EthereumRemoteClientServiceFactory::GetInstance()->GetForContext(
+      context);
 }
 
 base::Value MakeSelectValue(const std::u16string& name,
-                            BraveWalletWeb3ProviderTypes value) {
+                            ::brave_wallet::Web3ProviderTypes value) {
   base::Value item(base::Value::Type::DICTIONARY);
   item.SetKey("value", base::Value(static_cast<int>(value)));
   item.SetKey("name", base::Value(name));
@@ -79,7 +82,7 @@ BraveWalletPromptToEnableWalletFunction::Run() {
   if (infobar_service) {
     CryptoWalletsInfoBarDelegate::InfobarSubType subtype =
         CryptoWalletsInfoBarDelegate::InfobarSubType::GENERIC_SETUP;
-    auto* service = GetBraveWalletService(browser_context());
+    auto* service = GetEthereumRemoteClientService(browser_context());
     if (service->ShouldShowLazyLoadInfobar()) {
       subtype = CryptoWalletsInfoBarDelegate::InfobarSubType::
           LOAD_CRYPTO_WALLETS;
@@ -96,14 +99,14 @@ BraveWalletReadyFunction::Run() {
     return RespondNow(Error("Not available in Tor context"));
   }
 
-  auto* service = GetBraveWalletService(browser_context());
+  auto* service = GetEthereumRemoteClientService(browser_context());
   service->CryptoWalletsExtensionReady();
   return RespondNow(NoArguments());
 }
 
 ExtensionFunction::ResponseAction
 BraveWalletLoadUIFunction::Run() {
-  auto* service = GetBraveWalletService(browser_context());
+  auto* service = GetEthereumRemoteClientService(browser_context());
   // If the extension is already ready, respond right away
   if (service->IsCryptoWalletsReady()) {
     return RespondNow(NoArguments());
@@ -113,15 +116,16 @@ BraveWalletLoadUIFunction::Run() {
   // the new Brave Wallet is not the default, then
   // set the Dapp provider to Crypto Wallets.
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
+  auto provider = static_cast<::brave_wallet::Web3ProviderTypes>(
       profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
   auto* registry = extensions::ExtensionRegistry::Get(profile);
   if (!registry->ready_extensions().Contains(metamask_extension_id) &&
-      provider != BraveWalletWeb3ProviderTypes::BRAVE_WALLET) {
-    profile->GetPrefs()->SetInteger(kBraveWalletWeb3Provider,
-        static_cast<int>(BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS));
+      provider != ::brave_wallet::Web3ProviderTypes::BRAVE_WALLET) {
+    profile->GetPrefs()->SetInteger(
+        kBraveWalletWeb3Provider,
+        static_cast<int>(::brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS));
   }
-  profile->GetPrefs()->SetBoolean(kOptedIntoCryptoWallets, true);
+  profile->GetPrefs()->SetBoolean(kERCOptedIntoCryptoWallets, true);
   service->MaybeLoadCryptoWalletsExtension(
       base::BindOnce(&BraveWalletLoadUIFunction::OnLoaded, this));
   return RespondLater();
@@ -134,9 +138,10 @@ void BraveWalletLoadUIFunction::OnLoaded() {
 ExtensionFunction::ResponseAction
 BraveWalletShouldPromptForSetupFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* service = GetBraveWalletService(browser_context());
-  bool should_prompt = !service->IsCryptoWalletsSetup() &&
-      !profile->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets);
+  auto* service = GetEthereumRemoteClientService(browser_context());
+  bool should_prompt =
+      !service->IsCryptoWalletsSetup() &&
+      !profile->GetPrefs()->GetBoolean(kERCOptedIntoCryptoWallets);
   return RespondNow(OneArgument(base::Value(should_prompt)));
 }
 
@@ -146,19 +151,19 @@ BraveWalletShouldCheckForDappsFunction::Run() {
   if (browser_context()->IsTor()) {
     return RespondNow(OneArgument(base::Value(false)));
   }
-  auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
+  auto provider = static_cast<::brave_wallet::Web3ProviderTypes>(
       profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  if (provider == BraveWalletWeb3ProviderTypes::BRAVE_WALLET) {
+  if (provider == ::brave_wallet::Web3ProviderTypes::BRAVE_WALLET) {
     return RespondNow(OneArgument(base::Value(false)));
   }
   auto* registry = extensions::ExtensionRegistry::Get(profile);
   bool has_metamask =
       registry->ready_extensions().Contains(metamask_extension_id);
 
-  auto* service = GetBraveWalletService(browser_context());
-  bool dappDetection = (
-      provider == BraveWalletWeb3ProviderTypes::ASK && !has_metamask) ||
-      (provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS &&
+  auto* service = GetEthereumRemoteClientService(browser_context());
+  bool dappDetection =
+      (provider == ::brave_wallet::Web3ProviderTypes::ASK && !has_metamask) ||
+      (provider == ::brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS &&
        !service->IsCryptoWalletsReady());
 
   return RespondNow(OneArgument(base::Value(dappDetection)));
@@ -173,7 +178,7 @@ BraveWalletGetWalletSeedFunction::Run() {
     return RespondNow(Error("Invalid input key size"));
   }
 
-  auto* service = GetBraveWalletService(browser_context());
+  auto* service = GetEthereumRemoteClientService(browser_context());
 
   base::Value::BlobStorage blob;
   std::string derived = service->GetWalletSeed(params->key);
@@ -196,7 +201,7 @@ BraveWalletGetBitGoSeedFunction::Run() {
     return RespondNow(Error("Invalid input key size"));
   }
 
-  auto* service = GetBraveWalletService(browser_context());
+  auto* service = GetEthereumRemoteClientService(browser_context());
 
   base::Value::BlobStorage blob;
   std::string derived = service->GetBitGoSeed(params->key);
@@ -224,7 +229,7 @@ BraveWalletGetBraveKeyFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveWalletResetWalletFunction::Run() {
-  auto* service = GetBraveWalletService(browser_context());
+  auto* service = GetEthereumRemoteClientService(browser_context());
   service->ResetCryptoWallets();
   return RespondNow(NoArguments());
 }
@@ -232,19 +237,19 @@ BraveWalletResetWalletFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveWalletGetWeb3ProviderFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
+  auto provider = static_cast<::brave_wallet::Web3ProviderTypes>(
       profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
   std::string extension_id;
-  if (provider == BraveWalletWeb3ProviderTypes::BRAVE_WALLET) {
+  if (provider == ::brave_wallet::Web3ProviderTypes::BRAVE_WALLET) {
     // This API is used so an extension can know when to prompt to
     // be the default Dapp provider. Since the new wallet is not an
     // extension at all, we can just re-use the Crypto Wallets ID.
     // We also don't want to prompt in Crypto Wallets when it's set
     // to Brave Wallet.
     extension_id = ethereum_remote_client_extension_id;
-  } else if (provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS) {
+  } else if (provider == ::brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS) {
     extension_id = ethereum_remote_client_extension_id;
-  } else if (provider == BraveWalletWeb3ProviderTypes::METAMASK) {
+  } else if (provider == ::brave_wallet::Web3ProviderTypes::METAMASK) {
     extension_id = metamask_extension_id;
   }
   return RespondNow(OneArgument(base::Value(extension_id)));
@@ -259,27 +264,27 @@ BraveWalletGetWeb3ProviderListFunction::Run() {
   if (new_wallet) {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
-        BraveWalletWeb3ProviderTypes::BRAVE_WALLET));
+        ::brave_wallet::Web3ProviderTypes::BRAVE_WALLET));
   } else {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_ASK),
-        BraveWalletWeb3ProviderTypes::ASK));
+        ::brave_wallet::Web3ProviderTypes::ASK));
   }
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(
           new_wallet ? IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS_DEPRECATED
                      : IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS),
-      BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS));
+      ::brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS));
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* registry = extensions::ExtensionRegistry::Get(profile);
   if (registry->ready_extensions().Contains(metamask_extension_id)) {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_METAMASK),
-        BraveWalletWeb3ProviderTypes::METAMASK));
+        ::brave_wallet::Web3ProviderTypes::METAMASK));
   }
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
-      BraveWalletWeb3ProviderTypes::NONE));
+      ::brave_wallet::Web3ProviderTypes::NONE));
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);
   return RespondNow(OneArgument(base::Value(json_string)));

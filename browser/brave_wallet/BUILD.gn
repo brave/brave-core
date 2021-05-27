@@ -7,8 +7,6 @@ source_set("brave_wallet") {
   sources = [
     "brave_wallet_context_utils.cc",
     "brave_wallet_context_utils.h",
-    "brave_wallet_delegate_impl.cc",
-    "brave_wallet_delegate_impl.h",
     "brave_wallet_service_factory.cc",
     "brave_wallet_service_factory.h",
   ]

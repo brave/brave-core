@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -30,6 +31,10 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+#include "brave/browser/ethereum_remote_client/pref_names.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -187,12 +192,15 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // IPFS Companion pref
   (*s_brave_allowlist)[kIPFSCompanionEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+  (*s_brave_allowlist)[kERCLoadCryptoWalletsOnStartup] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
   // Brave Wallet pref
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   (*s_brave_allowlist)[kBraveWalletWeb3Provider] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_allowlist)[kLoadCryptoWalletsOnStartup] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kShowWalletIconOnToolbar] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif

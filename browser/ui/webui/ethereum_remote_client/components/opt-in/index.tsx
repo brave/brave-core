@@ -21,7 +21,7 @@ import {
 } from './style'
 
 // Utils
-import { getLocale } from '../../../common/locale'
+import { getLocale } from '../../../../../../components/common/locale'
 
 interface Props {
   onWalletOptIn: () => void

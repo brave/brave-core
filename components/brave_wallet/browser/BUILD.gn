@@ -1,7 +1,7 @@
 import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/browser/config.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
-import("//extensions/buildflags/buildflags.gni")
 
 assert(brave_wallet_enabled)
 
@@ -12,7 +12,6 @@ source_set("browser") {
   sources = [
     "brave_wallet_constants.cc",
     "brave_wallet_constants.h",
-    "brave_wallet_delegate.h",
     "brave_wallet_provider_impl.cc",
     "brave_wallet_provider_impl.h",
     "brave_wallet_service.cc",
@@ -55,22 +54,15 @@ source_set("browser") {
     "//brave/third_party/bitcoin-core:secp256k1",
     "//brave/third_party/ethash",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
-    "//components/content_settings/core/browser",
-    "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
     "//crypto",
-    "//extensions/buildflags",
     "//services/network/public/cpp",
     "//third_party/boringssl",
     "//url",
   ]
-
-  if (enable_extensions) {
-    deps += [ "//extensions/browser" ]
-  }
 }
 
 config("infura_config") {

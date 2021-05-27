@@ -5,6 +5,7 @@
 
 #include "base/path_service.h"
 #include "base/scoped_observer.h"
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
@@ -179,7 +180,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, DappDetectionTestAccept) {
   if (brave_wallet::IsNativeWalletEnabled()) {
     browser()->profile()->GetPrefs()->SetInteger(
         kBraveWalletWeb3Provider,
-        static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+        static_cast<int>(brave_wallet::Web3ProviderTypes::ASK));
   }
   WaitForBraveExtensionAdded();
   InfoBarService* infobar_service =
@@ -189,9 +190,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, DappDetectionTestAccept) {
       NavigateToURLUntilLoadStop("a.com", "/dapp.html"));
   WaitForCryptoWalletsInfobarAdded();
   // Pref for Wallet should still be ask by default
-  auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
+  auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  ASSERT_EQ(provider, BraveWalletWeb3ProviderTypes::ASK);
+  ASSERT_EQ(provider, brave_wallet::Web3ProviderTypes::ASK);
   CryptoWalletsInfoBarAccept(
       ConfirmInfoBarDelegate::BUTTON_OK |
       ConfirmInfoBarDelegate::BUTTON_CANCEL);
@@ -203,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, InfoBarDontAsk) {
   if (brave_wallet::IsNativeWalletEnabled()) {
     browser()->profile()->GetPrefs()->SetInteger(
         kBraveWalletWeb3Provider,
-        static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+        static_cast<int>(brave_wallet::Web3ProviderTypes::ASK));
   }
   // Navigate to dapp
   WaitForBraveExtensionAdded();
@@ -214,17 +215,17 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, InfoBarDontAsk) {
       NavigateToURLUntilLoadStop("a.com", "/dapp.html"));
   WaitForCryptoWalletsInfobarAdded();
   // Provider type should be Ask by default
-  auto provider_before = static_cast<BraveWalletWeb3ProviderTypes>(
+  auto provider_before = static_cast<brave_wallet::Web3ProviderTypes>(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  ASSERT_EQ(provider_before, BraveWalletWeb3ProviderTypes::ASK);
+  ASSERT_EQ(provider_before, brave_wallet::Web3ProviderTypes::ASK);
   // Click "Don't ask again"
   CryptoWalletsInfoBarCancel(
       ConfirmInfoBarDelegate::BUTTON_OK |
       ConfirmInfoBarDelegate::BUTTON_CANCEL);
   // Provider type should now be none
-  auto provider_after = static_cast<BraveWalletWeb3ProviderTypes>(
+  auto provider_after = static_cast<brave_wallet::Web3ProviderTypes>(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  ASSERT_EQ(provider_after, BraveWalletWeb3ProviderTypes::NONE);
+  ASSERT_EQ(provider_after, brave_wallet::Web3ProviderTypes::NONE);
   RemoveInfoBarObserver(infobar_service);
 }
 
@@ -233,14 +234,14 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   if (brave_wallet::IsNativeWalletEnabled()) {
     browser()->profile()->GetPrefs()->SetInteger(
         kBraveWalletWeb3Provider,
-        static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+        static_cast<int>(brave_wallet::Web3ProviderTypes::ASK));
   }
   WaitForBraveExtensionAdded();
   AddFakeMetaMaskExtension(false);
   // Should auto select MetaMask
-  auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
+  auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  ASSERT_EQ(provider, BraveWalletWeb3ProviderTypes::METAMASK);
+  ASSERT_EQ(provider, brave_wallet::Web3ProviderTypes::METAMASK);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
@@ -249,12 +250,12 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   AddFakeMetaMaskExtension(false);
   RemoveFakeMetaMaskExtension();
   // Should revert back to Ask
-  auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
+  auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
   if (brave_wallet::IsNativeWalletEnabled()) {
-    ASSERT_EQ(provider, BraveWalletWeb3ProviderTypes::BRAVE_WALLET);
+    ASSERT_EQ(provider, brave_wallet::Web3ProviderTypes::BRAVE_WALLET);
   } else {
-    ASSERT_EQ(provider, BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS);
+    ASSERT_EQ(provider, brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS);
   }
 }
 
@@ -264,14 +265,15 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   // User installs MetaMask
   AddFakeMetaMaskExtension(false);
   // Then if the user explicitly manually sets it to Crypto Wallets
-  browser()->profile()->GetPrefs()->SetInteger(kBraveWalletWeb3Provider,
-      static_cast<int>(BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS));
+  browser()->profile()->GetPrefs()->SetInteger(
+      kBraveWalletWeb3Provider,
+      static_cast<int>(brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS));
   // Then the user updates MetaMask
   AddFakeMetaMaskExtension(true);
   // It should not toggle the setting
-  auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
+  auto provider = static_cast<brave_wallet::Web3ProviderTypes>(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
-  ASSERT_EQ(provider, BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS);
+  ASSERT_EQ(provider, brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS);
 }
 
 }  // namespace extensions

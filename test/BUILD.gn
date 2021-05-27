@@ -1,3 +1,4 @@
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
@@ -127,6 +128,7 @@ test("brave_unit_tests") {
     "//brave/browser",
     "//brave/browser/browsing_data",
     "//brave/browser/content_settings:unit_tests",
+    "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/first_run:unit_tests",
     "//brave/browser/metrics/test:brave_metrics_unit_tests",
     "//brave/browser/net",
@@ -395,13 +397,12 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (brave_wallet_enabled) {
-    sources += [ "//brave/browser/extensions/brave_wallet_unittest.cc" ]
+  if (ethereum_remote_client_enabled) {
+    sources +=
+        [ "//brave/browser/extensions/ethereum_remote_client_unittest.cc" ]
     deps += [
-      "//brave/browser/brave_wallet",
+      "//brave/browser/ethereum_remote_client",
       "//brave/common:pref_names",
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/common",
     ]
   }
 
@@ -678,14 +679,26 @@ if (!is_android) {
     if (brave_wallet_enabled) {
       sources += [
         "//brave/browser/brave_wallet/eth_json_rpc_controller_browsertest.cc",
-        "//brave/browser/extensions/api/brave_wallet_api_browsertest.cc",
-        "//brave/browser/extensions/brave_wallet_apitest.cc",
         "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
         "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
       ]
 
       deps += [
         "//brave/browser/brave_wallet",
+        "//brave/components/brave_wallet/browser",
+        "//brave/components/brave_wallet/common",
+      ]
+    }
+
+    if (ethereum_remote_client_enabled) {
+      sources += [
+        "//brave/browser/extensions/api/brave_wallet_api_browsertest.cc",
+        "//brave/browser/extensions/brave_wallet_apitest.cc",
+      ]
+
+      deps += [
+        "//brave/browser/brave_wallet",
+        "//brave/browser/ethereum_remote_client",
         "//brave/browser/infobars",
         "//brave/components/brave_wallet/browser",
         "//brave/components/brave_wallet/common",
@@ -800,6 +813,7 @@ if (!is_android) {
       "//brave/browser/brave_stats:stats_updater",
       "//brave/browser/devtools",
       "//brave/browser/ephemeral_storage:ephemeral_storage_tests",
+      "//brave/browser/ethereum_remote_client/buildflags",
       "//brave/browser/extensions",
       "//brave/browser/net",
       "//brave/browser/profiles",

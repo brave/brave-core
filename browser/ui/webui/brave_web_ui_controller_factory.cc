@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/common/brave_features.h"
@@ -39,10 +40,13 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
-#include "brave/browser/ui/webui/brave_wallet/deprecated_brave_wallet_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#endif
+
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+#include "brave/browser/ui/webui/ethereum_remote_client/ethereum_remote_client_ui.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -81,7 +85,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     if (brave_wallet::IsNativeWalletEnabled()) {
       return new WalletPageUI(web_ui);
     }
-    return new DeprecatedBraveWalletUI(web_ui, url.host());
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+    return new EthereumRemoteClientUI(web_ui, url.host());
+#endif
   } else if (host == kWalletPanelHost) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)

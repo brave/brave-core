@@ -19,14 +19,12 @@ mojom("mojo_bindings") {
 
 repack("resources") {
   deps = [
-    "deprecated_page:deprecated_brave_wallet_page_generated",
-    "page:brave_wallet_page_generated",
-    "panel:brave_wallet_panel_generated",
+    "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
+    "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
   ]
   sources = [
     "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_page_generated.pak",
     "$root_gen_dir/brave/components/brave_wallet_panel/resources/brave_wallet_panel_generated.pak",
-    "$root_gen_dir/brave/components/deprecated_brave_wallet_page/resources/deprecated_brave_wallet_page_generated.pak",
   ]
   output =
       "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak"

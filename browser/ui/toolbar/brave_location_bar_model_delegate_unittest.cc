@@ -11,7 +11,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #endif
 
 using BraveLocationBarModelDelegateTest = testing::Test;

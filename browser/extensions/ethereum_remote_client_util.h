@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_WALLET_UTIL_H_
-#define BRAVE_BROWSER_EXTENSIONS_BRAVE_WALLET_UTIL_H_
+#ifndef BRAVE_BROWSER_EXTENSIONS_ETHEREUM_REMOTE_CLIENT_UTIL_H_
+#define BRAVE_BROWSER_EXTENSIONS_ETHEREUM_REMOTE_CLIENT_UTIL_H_
 
 #include <string>
 
@@ -18,4 +18,4 @@ bool HasInfuraProjectID();
 
 }  // namespace extensions
 
-#endif  // BRAVE_BROWSER_EXTENSIONS_BRAVE_WALLET_UTIL_H_
+#endif  // BRAVE_BROWSER_EXTENSIONS_ETHEREUM_REMOTE_CLIENT_UTIL_H_

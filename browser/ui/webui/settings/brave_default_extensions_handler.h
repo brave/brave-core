@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
@@ -47,7 +47,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void SetHangoutsEnabled(const base::ListValue* args);
   void SetIPFSCompanionEnabled(const base::ListValue* args);
   void SetMediaRouterEnabled(const base::ListValue* args);
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   void SetBraveWalletEnabled(const base::ListValue* args);
 #endif
   void SetTorEnabled(const base::ListValue* args);
