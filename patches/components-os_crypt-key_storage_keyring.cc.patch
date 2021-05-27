@@ -1,21 +1,12 @@
 diff --git a/components/os_crypt/key_storage_keyring.cc b/components/os_crypt/key_storage_keyring.cc
-index 29720b8e8ff81791970e054050b37bbc5f338eb3..1b84b3e68ae2de2685224018226ea230877b17ef 100644
+index 3ad654cf4a893f497ac4567aea77f8d1f2e1525f..45b0c54dc83df1b37587dd60416c64ff4d355087 100644
 --- a/components/os_crypt/key_storage_keyring.cc
 +++ b/components/os_crypt/key_storage_keyring.cc
-@@ -18,7 +18,7 @@ namespace {
- #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
- const char kApplicationName[] = "chrome";
- #else
--const char kApplicationName[] = "chromium";
-+BRAVE_KEY_STORAGE_KEYRING_K_APPLICATION_NAME
- #endif
- 
- const GnomeKeyringPasswordSchema kSchema = {
-@@ -49,6 +49,7 @@ absl::optional<std::string> KeyStorageKeyring::GetKeyImpl() {
+@@ -45,6 +45,7 @@ absl::optional<std::string> KeyStorageKeyring::GetKeyImpl() {
    gchar* password_c = nullptr;
    GnomeKeyringResult result =
        GnomeKeyringLoader::gnome_keyring_find_password_sync_ptr(
 +          BRAVE_KEY_STORAGE_KEYRING_GET_KEY_IMPL
-           &kSchema, &password_c, "application", kApplicationName, nullptr);
+           &kSchema, &password_c, "application", application_name_.c_str(),
+           nullptr);
    if (result == GNOME_KEYRING_RESULT_OK) {
-     password = password_c;

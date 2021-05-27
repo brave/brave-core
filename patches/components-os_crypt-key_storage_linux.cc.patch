@@ -1,15 +1,23 @@
 diff --git a/components/os_crypt/key_storage_linux.cc b/components/os_crypt/key_storage_linux.cc
-index 8feb147c96baa2f853a647eb648297b4b747f515..e8ce499ab2ed43cf04c1b50ef184df7cf589d7f2 100644
+index 53b1903ff04043e2d058deda086e116a0e00fdca..cfd0c68ccda2c3b148fae13d292459e4a3568801 100644
 --- a/components/os_crypt/key_storage_linux.cc
 +++ b/components/os_crypt/key_storage_linux.cc
-@@ -32,8 +32,8 @@
+@@ -33,8 +33,7 @@
  const char KeyStorageLinux::kFolderName[] = "Chrome Keys";
  const char KeyStorageLinux::kKey[] = "Chrome Safe Storage";
  #else
 -const char KeyStorageLinux::kFolderName[] = "Chromium Keys";
 -const char KeyStorageLinux::kKey[] = "Chromium Safe Storage";
-+const char KeyStorageLinux::kFolderName[] = "Brave Keys";
-+const char KeyStorageLinux::kKey[] = "Brave Safe Storage";
++BRAVE_KEY_STORAGE_LINUX
  #endif
  
  namespace {
+@@ -151,7 +150,7 @@ std::unique_ptr<KeyStorageLinux> KeyStorageLinux::CreateServiceInternal(
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+   static const base::NoDestructor<std::string> kDefaultApplicationName("chrome");
+ #else
+-  static const base::NoDestructor<std::string> kDefaultApplicationName("chromium");
++  BRAVE_KEY_STORAGE_LINUX_CREATE_SERVICE_INTERNAL
+ #endif
+ 
+   std::unique_ptr<KeyStorageLinux> key_storage;

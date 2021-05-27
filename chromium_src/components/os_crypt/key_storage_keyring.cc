@@ -23,11 +23,7 @@ void Dummy(const GnomeKeyringPasswordSchema*,
   &kSchema, &password_c, "application", GetApplicationName(), nullptr); \
   if (false) Dummy(
 
-#define BRAVE_KEY_STORAGE_KEYRING_K_APPLICATION_NAME \
-  const char kApplicationName[] = "brave";
-
 #include "../../../../components/os_crypt/key_storage_keyring.cc"
-#undef BRAVE_KEY_STORAGE_KEYRING_K_APPLICATION_NAME
 #undef BRAVE_KEY_STORAGE_KEYRING_GET_KEY_IMPL
 
 namespace {
@@ -40,7 +36,7 @@ const char* GetApplicationName() {
              command_line->HasSwitch("import-brave")) {
     return "chromium";
   } else {
-    return kApplicationName;
+    return "brave";
   }
 }
 
