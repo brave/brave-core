@@ -7,7 +7,7 @@ from lib.config import SOURCE_ROOT, get_brave_version, get_chrome_version
 from lib.util import execute, parse_version, scoped_cwd
 
 
- def main():
+def main():
     if len(sys.argv) != 2 or sys.argv[1] == '-h':
         print 'Usage: bump-version.py [<version> | major | minor | patch]'
         return 1
