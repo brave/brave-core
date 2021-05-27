@@ -8,11 +8,17 @@
 #ifndef BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_EXTENSIONS_BRAVE_CERTIFICATE_EXTENSION_H_
 #define BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_EXTENSIONS_BRAVE_CERTIFICATE_EXTENSION_H_
 
+#if defined(BRAVE_CORE) // Compiling in Brave-Core
+  #import "brave/ios/browser/api/networking/common/brave_certificate_enums.h"
+#else
+  #import "brave_certificate_enums.h"
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface BraveCertificateExtensionModel: NSObject
-@property(nonatomic, assign, readonly) NSUInteger type;
+@property(nonatomic, assign, readonly) BraveExtensionType type;
 @property(nonatomic, assign, readonly) bool isCritical;
 @property(nonatomic, strong, readonly) NSString* onid;
 @property(nonatomic, assign, readonly) NSInteger nid;

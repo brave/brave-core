@@ -19,11 +19,13 @@
   #if TARGET_CPU_ARM
     #include "third_party/boringssl/src/include/openssl/arm_arch.h"
   #endif
+  #include "third_party/boringssl/src/include/openssl/nid.h"
 #else
   #include <openssl/opensslconf.h>
   #if TARGET_CPU_ARM
     #include <openssl/arm_arch.h>
   #endif
+  #include <openssl/nid.h>
 #endif
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -50,6 +52,81 @@ NSString* string_to_ns(const std::string& str) {
 
 NSDate* date_to_ns(double time_interval) {
   return [NSDate dateWithTimeIntervalSince1970:time_interval];
+}
+
+BraveExtensionType extension_nid_to_extension_type(int type) {
+  std::unordered_map<int, BraveExtensionType> mapping = {
+    //PKIX Certificate Extensions
+    {NID_basic_constraints, BraveExtensionType_BASIC_CONSTRAINTS},
+    {NID_key_usage, BraveExtensionType_KEY_USAGE},
+    {NID_ext_key_usage, BraveExtensionType_EXT_KEY_USAGE},
+    {NID_subject_key_identifier, BraveExtensionType_SUBJECT_KEY_IDENTIFIER},
+    {NID_authority_key_identifier, BraveExtensionType_AUTHORITY_KEY_IDENTIFIER},
+    #ifndef OPENSSL_IS_BORINGSSL    // Chromium's BoringSSL is missing so much stuff!
+    {NID_private_key_usage_period, BraveExtensionType_PRIVATE_KEY_USAGE_PERIOD},
+    #endif  //   OPENSSL_IS_BORINGSSL
+    {NID_subject_alt_name, BraveExtensionType_SUBJECT_ALT_NAME},
+    {NID_issuer_alt_name, BraveExtensionType_ISSUER_ALT_NAME},
+    {NID_info_access, BraveExtensionType_INFO_ACCESS},
+    {NID_sinfo_access, BraveExtensionType_SINFO_ACCESS},
+    {NID_name_constraints, BraveExtensionType_NAME_CONSTRAINTS},
+    {NID_certificate_policies, BraveExtensionType_CERTIFICATE_POLICIES},
+    {NID_policy_mappings, BraveExtensionType_POLICY_MAPPINGS},
+    {NID_policy_constraints, BraveExtensionType_POLICY_CONSTRAINTS},
+    {NID_inhibit_any_policy, BraveExtensionType_INHIBIT_ANY_POLICY},
+    #ifndef OPENSSL_IS_BORINGSSL    // Chromium's BoringSSL is missing so much stuff!
+    {NID_tlsfeature, BraveExtensionType_TLSFEATURE},
+    #endif  //   OPENSSL_IS_BORINGSSL
+
+    //Netscape Certificate Extensions - Largely Obsolete
+    {NID_netscape_cert_type, BraveExtensionType_NETSCAPE_CERT_TYPE},
+    {NID_netscape_base_url, BraveExtensionType_NETSCAPE_BASE_URL},
+    {NID_netscape_revocation_url, BraveExtensionType_NETSCAPE_REVOCATION_URL},
+    {NID_netscape_ca_revocation_url, BraveExtensionType_NETSCAPE_CA_REVOCATION_URL},
+    {NID_netscape_renewal_url, BraveExtensionType_NETSCAPE_RENEWAL_URL},
+    {NID_netscape_ca_policy_url, BraveExtensionType_NETSCAPE_CA_POLICY_URL},
+    {NID_netscape_ssl_server_name, BraveExtensionType_NETSCAPE_SSL_SERVER_NAME},
+    {NID_netscape_comment, BraveExtensionType_NETSCAPE_COMMENT},
+
+    //Miscellaneous Certificate Extensions
+    #ifndef OPENSSL_IS_BORINGSSL    // Chromium's BoringSSL is missing so much stuff!
+    {NID_sxnet, BraveExtensionType_SXNET},
+    #endif  //   OPENSSL_IS_BORINGSSL
+    {NID_proxyCertInfo, BraveExtensionType_PROXYCERTINFO},
+
+    //PKIX CRL Extensions
+    {NID_crl_number, BraveExtensionType_CRL_NUMBER},
+    {NID_crl_distribution_points, BraveExtensionType_CRL_DISTRIBUTION_POINTS},
+    {NID_delta_crl, BraveExtensionType_DELTA_CRL},
+    {NID_freshest_crl, BraveExtensionType_FRESHEST_CRL},
+    {NID_invalidity_date, BraveExtensionType_INVALIDITY_DATE},
+    {NID_issuing_distribution_point, BraveExtensionType_ISSUING_DISTRIBUTION_POINT},
+
+    //CRL entry extensions from PKIX standards such as RFC5280
+    {NID_crl_reason, BraveExtensionType_CRL_REASON},
+    {NID_certificate_issuer, BraveExtensionType_CERTIFICATE_ISSUER},
+
+    //OCSP Extensions
+    {NID_id_pkix_OCSP_Nonce, BraveExtensionType_ID_PKIX_OCSP_NONCE},
+    {NID_id_pkix_OCSP_CrlID, BraveExtensionType_ID_PKIX_OCSP_CRLID},
+    {NID_id_pkix_OCSP_acceptableResponses, BraveExtensionType_ID_PKIX_OCSP_ACCEPTABLERESPONSES},
+    {NID_id_pkix_OCSP_noCheck, BraveExtensionType_ID_PKIX_OCSP_NOCHECK},
+    {NID_id_pkix_OCSP_archiveCutoff, BraveExtensionType_ID_PKIX_OCSP_ARCHIVECUTOFF},
+    {NID_id_pkix_OCSP_serviceLocator, BraveExtensionType_ID_PKIX_OCSP_SERVICELOCATOR},
+    {NID_hold_instruction_code, BraveExtensionType_HOLD_INSTRUCTION_CODE},
+
+    //Certificate Transparency Extensions
+    #ifndef OPENSSL_IS_BORINGSSL    // Chromium's BoringSSL is missing so much stuff!
+    {NID_ct_precert_scts, BraveExtensionType_CT_PRECERT_SCTS},
+    {NID_ct_cert_scts, BraveExtensionType_CT_CERT_SCTS}
+    #endif  //   OPENSSL_IS_BORINGSSL
+  };
+  
+  auto it = mapping.find(type);
+  if (it != mapping.end()) {
+    return it->second;
+  }
+  return BraveExtensionType_UNKNOWN;
 }
 
 BraveKeyUsage convert_key_usage(ASN1_BIT_STRING* key_usage) {

@@ -9,7 +9,7 @@
 #import "BraveCertificateExtensionModel.h"
 
 @interface BraveCertificateExtensionModel(Private)
-- (instancetype)initWithType:(NSUInteger)type withExtension:(X509_EXTENSION*)extension;
+- (instancetype)initWithType:(int)type withExtension:(X509_EXTENSION*)extension;
 @end
 
 #endif  //  BRAVE_IOS_BROWSER_API_NETWORKING_MODELS_EXTENSIONS_BRAVE_CERTIFICATE_EXTENSION_PRIV_H_ 

@@ -114,4 +114,65 @@ typedef NS_ENUM(NSUInteger, BraveGenericExtensionType) {
   BraveGenericExtensionType_HEX_STRING
 };
 
+typedef NS_ENUM(NSUInteger, BraveExtensionType) {
+  BraveExtensionType_UNKNOWN,
+  
+  //PKIX Certificate Extensions
+  BraveExtensionType_BASIC_CONSTRAINTS,
+  BraveExtensionType_KEY_USAGE,
+  BraveExtensionType_EXT_KEY_USAGE,
+  BraveExtensionType_SUBJECT_KEY_IDENTIFIER,
+  BraveExtensionType_AUTHORITY_KEY_IDENTIFIER,
+  BraveExtensionType_PRIVATE_KEY_USAGE_PERIOD,
+  BraveExtensionType_SUBJECT_ALT_NAME,
+  BraveExtensionType_ISSUER_ALT_NAME,
+  BraveExtensionType_INFO_ACCESS,
+  BraveExtensionType_SINFO_ACCESS,
+  BraveExtensionType_NAME_CONSTRAINTS,
+  BraveExtensionType_CERTIFICATE_POLICIES,
+  BraveExtensionType_POLICY_MAPPINGS,
+  BraveExtensionType_POLICY_CONSTRAINTS,
+  BraveExtensionType_INHIBIT_ANY_POLICY,
+  BraveExtensionType_TLSFEATURE,
+
+  //Netscape Certificate Extensions - Largely Obsolete
+  BraveExtensionType_NETSCAPE_CERT_TYPE,
+  BraveExtensionType_NETSCAPE_BASE_URL,
+  BraveExtensionType_NETSCAPE_REVOCATION_URL,
+  BraveExtensionType_NETSCAPE_CA_REVOCATION_URL,
+  BraveExtensionType_NETSCAPE_RENEWAL_URL,
+  BraveExtensionType_NETSCAPE_CA_POLICY_URL,
+  BraveExtensionType_NETSCAPE_SSL_SERVER_NAME,
+  BraveExtensionType_NETSCAPE_COMMENT,
+
+  //Miscellaneous Certificate Extensions
+  BraveExtensionType_SXNET,
+  BraveExtensionType_PROXYCERTINFO,
+
+  //PKIX CRL Extensions
+  BraveExtensionType_CRL_NUMBER,
+  BraveExtensionType_CRL_DISTRIBUTION_POINTS,
+  BraveExtensionType_DELTA_CRL,
+  BraveExtensionType_FRESHEST_CRL,
+  BraveExtensionType_INVALIDITY_DATE,
+  BraveExtensionType_ISSUING_DISTRIBUTION_POINT,
+
+  //CRL entry extensions from PKIX standards such as RFC5280
+  BraveExtensionType_CRL_REASON,
+  BraveExtensionType_CERTIFICATE_ISSUER,
+
+  //OCSP Extensions
+  BraveExtensionType_ID_PKIX_OCSP_NONCE,
+  BraveExtensionType_ID_PKIX_OCSP_CRLID,
+  BraveExtensionType_ID_PKIX_OCSP_ACCEPTABLERESPONSES,
+  BraveExtensionType_ID_PKIX_OCSP_NOCHECK,
+  BraveExtensionType_ID_PKIX_OCSP_ARCHIVECUTOFF,
+  BraveExtensionType_ID_PKIX_OCSP_SERVICELOCATOR,
+  BraveExtensionType_HOLD_INSTRUCTION_CODE,
+
+  //Certificate Transparency Extensions
+  BraveExtensionType_CT_PRECERT_SCTS,
+  BraveExtensionType_CT_CERT_SCTS,
+};
+
 #endif /* BRAVE_IOS_BROWSER_API_NETWORKING_COMMON_BRAVE_CERTIFICATE_ENUMS_H_ */

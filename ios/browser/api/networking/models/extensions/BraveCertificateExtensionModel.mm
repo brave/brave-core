@@ -23,9 +23,9 @@
 #endif
 
 @implementation BraveCertificateExtensionModel
-- (instancetype)initWithType:(NSUInteger)type withExtension:(X509_EXTENSION*)extension {
+- (instancetype)initWithType:(int)type withExtension:(X509_EXTENSION*)extension {
   if ((self = [super init])) {
-    _type = type;
+    _type = brave::extension_nid_to_extension_type(type);
     _isCritical = X509_EXTENSION_get_critical(extension);
     
     ASN1_OBJECT* object = X509_EXTENSION_get_object(extension);

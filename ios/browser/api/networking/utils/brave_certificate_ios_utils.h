@@ -31,6 +31,7 @@ namespace brave {
 NSString* string_to_ns(const std::string& str);
 NSDate* date_to_ns(double time_interval);
 
+BraveExtensionType extension_nid_to_extension_type(int type);
 BraveKeyUsage convert_key_usage(ASN1_BIT_STRING* key_usage);
 BraveExtendedKeyUsage convert_extended_key_usage(int usage_nid);
 BraveNetscapeCertificateType convert_netscape_certificate_type(ASN1_BIT_STRING* cert_type);
