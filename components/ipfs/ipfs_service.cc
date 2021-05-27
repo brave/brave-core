@@ -116,6 +116,9 @@ IpfsService::IpfsService(content::BrowserContext* context,
 }
 
 IpfsService::~IpfsService() {
+  if (ipfs_client_updater_) {
+    ipfs_client_updater_->RemoveObserver(this);
+  }
   RemoveObserver(ipns_keys_manager_.get());
   Shutdown();
 }

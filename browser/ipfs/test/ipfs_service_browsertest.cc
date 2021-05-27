@@ -9,8 +9,10 @@
 #include "base/strings/strcat.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -1075,6 +1077,28 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, ImportFileAndPinToIpfsSuccess) {
       base::BindOnce(&IpfsServiceBrowserTest::OnPublishCompletedSuccess,
                      base::Unretained(this)));
   WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, UpdaterRegistration) {
+  base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+  auto* context = browser()->profile();
+  BraveIpfsClientUpdater* updater =
+      g_brave_browser_process->ipfs_client_updater();
+  {
+    std::unique_ptr<FakeIpfsService> fake_service(
+        new FakeIpfsService(context, updater, user_dir, chrome::GetChannel()));
+  }
+  {
+    std::unique_ptr<FakeIpfsService> fake_service(
+        new FakeIpfsService(context, updater, user_dir, chrome::GetChannel()));
+
+    ASSERT_FALSE(fake_service->IsDaemonLaunched());
+    ASSERT_FALSE(updater->IsRegistered());
+    fake_service->OnIpfsLaunched(false, 0);
+    ASSERT_FALSE(updater->IsRegistered());
+    fake_service->OnIpfsLaunched(true, 0);
+    ASSERT_TRUE(updater->IsRegistered());
+  }
 }
 
 }  // namespace ipfs

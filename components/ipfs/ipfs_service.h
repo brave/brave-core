@@ -147,6 +147,7 @@ class IpfsService : public KeyedService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
+  FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest, UpdaterRegistration);
   // BraveIpfsClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
   void OnInstallationEvent(ComponentUpdaterEvents event) override;
