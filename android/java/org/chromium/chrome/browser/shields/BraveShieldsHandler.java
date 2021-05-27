@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.shields;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
@@ -13,26 +12,20 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
-import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,7 +39,6 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
@@ -57,17 +49,12 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.widget.TextViewCompat;
-
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -78,9 +65,6 @@ import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -294,8 +278,11 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         Rect bgPadding = new Rect();
+        popupWindow.getBackground().getPadding(bgPadding);
+
         int popupWidth = wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
                          + bgPadding.left + bgPadding.right;
+
         popupWindow.setWidth(popupWidth);
 
         return popupWindow;
@@ -323,7 +310,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return blockersInfo.mAdsBlocked;
     }
 
-    public int getTrackersBlockedCount(int tabId) {
+    public int getTackersBlockedCount(int tabId) {
         if (!mTabsStat.containsKey(tabId)) {
             return 0;
         }
@@ -410,27 +397,23 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         Switch mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
 
-        ImageView helpImage = (ImageView) mMainLayout.findViewById(R.id.help);
-        ImageView shareImage = (ImageView) mMainLayout.findViewById(R.id.share);
-
-        helpImage.setOnClickListener(new View.OnClickListener() {
+        ClickableSpan mClickableSpan = new ClickableSpan() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View widget) {
                 mMainLayout.setVisibility(View.GONE);
                 mAboutLayout.setVisibility(View.VISIBLE);
                 setUpAboutLayout();
             }
-        });
+        };
 
-        shareImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMainLayout.setVisibility(View.GONE);
-                if (BraveStatsUtil.hasWritePermission(BraveActivity.getBraveActivity())) {
-                    BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
-                }
-            }
-        });
+        TextView mSiteBlockText = mMainLayout.findViewById(R.id.site_block_text);
+        mSiteBlockText.setMovementMethod(LinkMovementMethod.getInstance());
+        String mBlockText = mContext.getResources().getString(R.string.ads_and_other_things_blocked) + "   ";
+        SpannableString mSpannableString = new SpannableString(mBlockText);
+        ImageSpan mImageSpan = new ImageSpan(mContext, R.drawable.ic_help);
+        mSpannableString.setSpan(mImageSpan, mBlockText.length() - 1, mBlockText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mSpannableString.setSpan(mClickableSpan, mSpannableString.getSpanStart(mImageSpan), mSpannableString.getSpanEnd(mImageSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mSiteBlockText.setText(mSpannableString);
 
         mToggleIcon.setColorFilter(mContext.getResources().getColor(R.color.shield_toggle_button_tint));
         mToggleLayout.setOnClickListener(new View.OnClickListener() {
@@ -462,11 +445,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         setUpSecondaryLayout();
 
         setupMainSwitchClick(mShieldMainSwitch);
-    }
-
-    private void shareStats() {
-        View shareStatsLayout = BraveStatsUtil.getLayout(R.layout.brave_stats_share_layout);
-        BraveStatsUtil.updateBraveShareStatsLayoutAndShare(shareStatsLayout);
     }
 
     private void setToggleView(boolean shouldShow) {
