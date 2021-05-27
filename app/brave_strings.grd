@@ -535,6 +535,10 @@ Brave is unable to recover your settings.
         This file may be dangerous, so Brave has blocked it.
       </message>
 
+      <message name="IDS_PROMPT_CONFIRM_DANGEROUS_DOWNLOAD_ACCOUNT_COMPROMISE_BODY" desc="Body prompt text for the confirmation dialog asking whether the user really meant to keep a download deemed to be associated with account compromise by safebrowsing">
+        Brave recommends that you don't download or open this file.
+      </message>
+
       <!-- Abandon in-progress downloads confirmation dialog -->
       <if expr="not is_macosx">
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_BROWSER_MESSAGE" desc="Message on a dialog shown when the user closes the browser while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
@@ -1084,6 +1088,10 @@ Brave is unable to recover your settings.
           Chrome OS terms
         </message>
         <message name="IDS_OOBE_WELCOME_START_OS_INSTALL" desc="Label for button shown on the OOBE welcome screen to show the OS installation screens">
+          Install Chrome OS
+        </message>
+
+        <message name="IDS_OS_INSTALL_SCREEN_INTRO_TITLE" desc="Title of the introduction page in the OS install screen">
           Install Chrome OS
         </message>
       </if>

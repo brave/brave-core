@@ -757,9 +757,7 @@ are declared in tools/grit/grit_rule.gni.
         <if expr="chromeos">
           </if>
 
-        <if expr="not chromeos">
-          </if>
-      </if>
+        </if>
 
       <if expr="toolkit_views">
         <if expr="not use_titlecase">
