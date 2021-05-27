@@ -29,6 +29,52 @@ namespace {
 
 #define DEFAULT_PHONE_BOOK NULL
 
+// https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasdiala
+bool ConnectEntry(LPCTSTR entry_name) {
+  LPRASDIALPARAMS lp_ras_dial_params = NULL;
+  DWORD cb = sizeof(RASDIALPARAMS);
+
+  lp_ras_dial_params =
+      (LPRASDIALPARAMS)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, cb);
+  if (lp_ras_dial_params == NULL) {
+    wprintf(L"HeapAlloc failed!\n");
+    return false;
+  }
+  lp_ras_dial_params->dwSize = sizeof(RASDIALPARAMS);
+  wcscpy_s(lp_ras_dial_params->szEntryName, 256, entry_name);
+  wcscpy_s(lp_ras_dial_params->szDomain, 15, L"*");
+  // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgetcredentialsw
+  RASCREDENTIALS credentials;
+
+  ZeroMemory(&credentials, sizeof(RASCREDENTIALS));
+  credentials.dwSize = sizeof(RASCREDENTIALS);
+  credentials.dwMask = RASCM_UserName | RASCM_Password;
+  DWORD dw_ret =
+      RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name, &credentials);
+  if (dw_ret != ERROR_SUCCESS) {
+    HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
+    PrintRasError(dw_ret);
+    return false;
+  }
+  wcscpy_s(lp_ras_dial_params->szUserName, 256, credentials.szUserName);
+  wcscpy_s(lp_ras_dial_params->szPassword, 256, credentials.szPassword);
+
+  DVLOG(2) << "Connecting to " << entry_name;
+  HRASCONN h_ras_conn = NULL;
+  dw_ret = RasDial(NULL, DEFAULT_PHONE_BOOK, lp_ras_dial_params, NULL, NULL,
+                   &h_ras_conn);
+  if (dw_ret != ERROR_SUCCESS) {
+    HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
+    PrintRasError(dw_ret);
+    return false;
+  }
+  DVLOG(2) << "SUCCESS!";
+
+  HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
+
+  return ERROR_SUCCESS;
+}
+
 bool RemoveEntry(LPCTSTR entry_name) {
   DWORD dw_ret = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name);
   if (dw_ret != ERROR_SUCCESS) {
@@ -189,7 +235,8 @@ bool BraveVPNConnectionManagerWin::UpdateVPNConnection(
 }
 
 bool BraveVPNConnectionManagerWin::Connect(const std::string& name) {
-  NOTIMPLEMENTED();
+  const std::wstring w_name = base::UTF8ToWide(name);
+  ConnectEntry(w_name.c_str());
   return true;
 }
 

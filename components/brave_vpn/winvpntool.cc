@@ -40,6 +40,7 @@ constexpr char kDevicesCommand[] = "devices";
 constexpr char kEntriesCommand[] = "entries";
 constexpr char kCreateCommand[] = "create";
 constexpr char kRemoveCommand[] = "remove";
+constexpr char kConnectCommand[] = "connect";
 constexpr char kHostName[] = "host_name";
 constexpr char kVPNName[] = "vpn_name";
 constexpr char kUserName[] = "user_name";
@@ -680,6 +681,18 @@ int main(int argc, char* argv[]) {
 
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(kEntriesCommand)) {
     PrintEntries();
+    return 0;
+  }
+
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(kConnectCommand)) {
+    const std::string vpn_name =
+        base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kVPNName);
+    if (vpn_name.empty()) {
+      LOG(ERROR) << "missing parameters for remove!";
+      LOG(ERROR) << "usage: winvpntool.exe --connect --vpn_name=entry_name";
+      return 0;
+    }
+    vpn_manager->Connect(vpn_name);
     return 0;
   }
 
