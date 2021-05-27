@@ -12,11 +12,12 @@ import { PortfolioView } from '../'
 
 export interface Props {
   onLockWallet: () => void
+  onShowBackup: () => void
   needsBackup: boolean
 }
 
 const CryptoView = (props: Props) => {
-  const { onLockWallet, needsBackup } = props
+  const { onLockWallet, onShowBackup, needsBackup } = props
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
     AppsList[0].appList[0]
@@ -114,6 +115,7 @@ const CryptoView = (props: Props) => {
         <WalletMorePopup
           onClickLock={onLockWallet}
           onClickSetting={onShowSettings}
+          onClickBackup={onShowBackup}
         />
       }
     </StyledWrapper>
