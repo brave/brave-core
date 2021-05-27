@@ -22,7 +22,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.chromium.base.ContextUtils;
+import org.chromium.base.ActivityState;
+import org.chromium.base.ApplicationStatus;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
@@ -149,10 +150,19 @@ public class BraveAdsNotificationDialog {
     }
 
     @CalledByNative
-    public static void showAdNotification(final String notificationId, final String origin,
-            final String title, final String body) {
-        BraveAdsNotificationDialog.showAdNotification(
-                BraveActivity.getBraveActivity(), notificationId, origin, title, body);
+    public static void showAdNotification(final String notificationId,
+            final String origin, final String title, final String body) {
+        Activity activity = ApplicationStatus.getLastTrackedFocusedActivity();
+        assert activity != null;
+        // We want to show ads only when activity is in started or resumed
+        // state
+        int state = ApplicationStatus.getStateForActivity(activity);
+        if (activity == null || (state != ActivityState.STARTED &&
+                    state != ActivityState.RESUMED))
+            return;
+
+        BraveAdsNotificationDialog.showAdNotification(activity, notificationId,
+            origin, title, body);
     }
 
     @CalledByNative
