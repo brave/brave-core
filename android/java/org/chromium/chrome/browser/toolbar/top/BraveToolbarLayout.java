@@ -131,7 +131,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     private static final String JAPAN_COUNTRY_CODE = "JP";
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
-
+private static final String TAG = "Shields";
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
@@ -466,15 +466,15 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
         // double check if the shields button is shown to prevent situations like showing the
         // tooltip on new tabs
-        if (mBraveShieldsButton == null && !mBraveShieldsButton.isShown()
-                && UrlUtilities.isNTPUrl(
+        if ((mBraveShieldsButton == null && !mBraveShieldsButton.isShown())
+                || UrlUtilities.isNTPUrl(
                         BraveActivity.getBraveActivity().getActivityTab().getUrlString())) {
             return;
         }
-
+// int totalBlocked = 36;
         int totalBlocked =
                 Math.round(Float.parseFloat(BraveStatsUtil.getAdsTrackersBlocked().first.trim()));
-
+Log.d(TAG, "chooseStatsShareTier totalBlocked:"+totalBlocked);
         // show after BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF (20) blocked stuff above the TIER
         // threshold
         if (!BraveShieldsUtils.hasShieldsTooltipShown(
