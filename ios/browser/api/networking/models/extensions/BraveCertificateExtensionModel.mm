@@ -30,12 +30,14 @@
     
     ASN1_OBJECT* object = X509_EXTENSION_get_object(extension);
     if (object) {
-      _name = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(object, false));
+      _onid = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(object, true));
       _nid = OBJ_obj2nid(object);
+      _name = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(object, false));
       _title = brave::string_to_ns(OBJ_nid2ln(static_cast<int>(_nid)));
     } else {
-      _name = [[NSString alloc] init];
+      _onid = [[NSString alloc] init];
       _nid = NID_undef;
+      _onid = [[NSString alloc] init];
       _title = [[NSString alloc] init];
     }
 

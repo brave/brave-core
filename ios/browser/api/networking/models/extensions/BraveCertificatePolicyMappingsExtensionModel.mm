@@ -29,6 +29,9 @@
 
 
 @implementation BraveCertificatePolicyMappingExtensionModel
+@synthesize issuerDomainPolicy = _issuerDomainPolicy;
+@synthesize subjectDomainPolicy = _subjectDomainPolicy;
+
 - (instancetype)init {
   if ((self = [super init])) {
     _issuerDomainPolicy = [[NSString alloc] init];

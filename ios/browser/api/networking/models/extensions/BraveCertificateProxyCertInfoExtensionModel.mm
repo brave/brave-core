@@ -28,6 +28,9 @@
 @end
 
 @implementation BraveCertificateProxyPolicyExtensionModel
+@synthesize language = _language;
+@synthesize policyText = _policyText;
+
 - (instancetype)init {
   if ((self = [super init])) {
     _language = [[NSString alloc] init];

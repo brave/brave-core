@@ -14,8 +14,9 @@ OBJC_EXPORT
 @interface BraveCertificateExtensionModel: NSObject
 @property(nonatomic, assign, readonly) NSUInteger type;
 @property(nonatomic, assign, readonly) bool isCritical;
-@property(nonatomic, strong, readonly) NSString* name;
+@property(nonatomic, strong, readonly) NSString* onid;
 @property(nonatomic, assign, readonly) NSInteger nid;
+@property(nonatomic, strong, readonly) NSString* name;
 @property(nonatomic, strong, readonly) NSString* title;
 @end
 

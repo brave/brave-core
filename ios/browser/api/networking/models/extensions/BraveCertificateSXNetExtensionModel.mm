@@ -28,6 +28,19 @@
 @property(nonatomic, strong, readwrite) NSString* user;
 @end
 
+@implementation BraveCertificateSXNetIDExtensionModel
+@synthesize zone = _zone;
+@synthesize user = _user;
+
+- (instancetype)init {
+  if ((self = [super init])) {
+    _zone = [[NSString alloc] init];
+    _user = [[NSString alloc] init];
+  }
+  return self;
+}
+@end
+
 @implementation BraveCertificateSXNetExtensionModel
 - (void)parseExtension:(X509_EXTENSION*)extension {
   _version = -1;

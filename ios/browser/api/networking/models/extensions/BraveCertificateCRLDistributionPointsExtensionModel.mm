@@ -31,6 +31,12 @@
 @end
 
 @implementation BraveCertificateCRLDistPointExtensionModel
+@synthesize genDistPointName = _genDistPointName;
+@synthesize relativeDistPointNames = _relativeDistPointNames;
+@synthesize reasonFlags = _reasonFlags;
+@synthesize crlIssuer = _crlIssuer;
+@synthesize dpReason = _dpReason;
+
 - (instancetype)init {
   if ((self = [super init])) {
     _relativeDistPointNames = @{};

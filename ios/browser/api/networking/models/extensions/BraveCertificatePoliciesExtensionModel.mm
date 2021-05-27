@@ -42,6 +42,10 @@
 
 
 @implementation BraveCertificatePolicyInfoQualifierNoticeExtensionModel
+@synthesize organization = _organization;
+@synthesize noticeNumbers = _noticeNumbers;
+@synthesize explicitText = _explicitText;
+
 - (instancetype)init {
   if ((self = [super init])) {
     _organization = [[NSString alloc] init];
@@ -53,6 +57,11 @@
 @end
 
 @implementation BraveCertificatePolicyInfoQualifierExtensionModel
+@synthesize pqualId = _pqualId;
+@synthesize cps = _cps;
+@synthesize notice = _notice;
+@synthesize unknown = _unknown;
+
 - (instancetype)init {
   if ((self = [super init])) {
     _pqualId = 0;
@@ -65,6 +74,9 @@
 @end
 
 @implementation BraveCertificatePolicyInfoExtensionModel
+@synthesize oid = _oid;
+@synthesize qualifiers = _qualifiers;
+
 - (instancetype)init {
   if ((self = [super init])) {
     _oid = [[NSString alloc] init];

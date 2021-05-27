@@ -30,6 +30,10 @@
 @end
 
 @implementation BraveCertificateExtensionGeneralSubtreeModel
+@synthesize names = _names;
+@synthesize minimum = _minimum;
+@synthesize maximum = _maximum;
+
 - (instancetype)init {
   if ((self = [super init])) {
     _names = @[];

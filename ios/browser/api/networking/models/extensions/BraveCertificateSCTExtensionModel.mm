@@ -42,6 +42,16 @@
 @end
 
 @implementation BraveCertificateSCTModel
+@synthesize version = _version;
+@synthesize logEntryType = _logEntryType;
+@synthesize logId = _logId;
+@synthesize timestamp = _timestamp;
+@synthesize extensions = _extensions;
+@synthesize signatureNid = _signatureNid;
+@synthesize signatureName = _signatureName;
+@synthesize signature = _signature;
+@synthesize hexRepresentation = _hexRepresentation;
+
 - (instancetype)init {
   if ((self = [super init])) {
     _version = -1;
