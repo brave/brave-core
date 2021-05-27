@@ -15,7 +15,7 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
-#include "brave/components/brave_vpn/brave_vpn_connection_manager.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/utils_win.h"
 
 // Simple Windows VPN configuration tool (using RAS API)
@@ -47,7 +47,12 @@ constexpr char kVPNName[] = "vpn_name";
 constexpr char kUserName[] = "user_name";
 constexpr char kPassword[] = "password";
 
-using brave_vpn::PrintRasError;
+using brave_vpn::internal::ConnectEntry;
+using brave_vpn::internal::CreateEntry;
+using brave_vpn::internal::DisconnectEntry;
+using brave_vpn::internal::GetPhonebookPath;
+using brave_vpn::internal::PrintRasError;
+using brave_vpn::internal::RemoveEntry;
 
 int PrintConnectionDetails(HRASCONN connection) {
   DWORD dw_cb = 0;
@@ -415,7 +420,7 @@ void PrintOptions2(DWORD options) {
 }
 
 void PrintPolicyValue(LPCTSTR entry_name) {
-  std::wstring phone_book_path = brave_vpn::GetPhonebookPath();
+  std::wstring phone_book_path = GetPhonebookPath();
   if (phone_book_path.empty())
     return;
 
@@ -668,7 +673,6 @@ void Demo() {
 // Test program for create/remove Windows VPN entry.
 int main(int argc, char* argv[]) {
   base::CommandLine::Init(argc, argv);
-  auto* vpn_manager = brave_vpn::BraveVPNConnectionManager::GetInstance();
 
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(kConnectionsCommand)) {
     PrintConnections();
@@ -693,7 +697,9 @@ int main(int argc, char* argv[]) {
       LOG(ERROR) << "usage: winvpntool.exe --connect --vpn_name=entry_name";
       return 0;
     }
-    vpn_manager->Connect(vpn_name);
+
+    const std::wstring w_name = base::UTF8ToWide(vpn_name);
+    ConnectEntry(w_name.c_str());
     return 0;
   }
 
@@ -705,7 +711,9 @@ int main(int argc, char* argv[]) {
       LOG(ERROR) << "usage: winvpntool.exe --disconnect --vpn_name=entry_name";
       return 0;
     }
-    vpn_manager->Disconnect(vpn_name);
+
+    const std::wstring w_name = base::UTF8ToWide(vpn_name);
+    DisconnectEntry(w_name.c_str());
     return 0;
   }
 
@@ -717,7 +725,9 @@ int main(int argc, char* argv[]) {
       LOG(ERROR) << "usage: winvpntool.exe --remove --vpn_name=entry_name";
       return 0;
     }
-    vpn_manager->RemoveVPNConnection(vpn_name);
+
+    const std::wstring w_name = base::UTF8ToWide(vpn_name);
+    RemoveEntry(w_name.c_str());
     return 0;
   }
 
@@ -737,12 +747,13 @@ int main(int argc, char* argv[]) {
                     "--vpn_name=xxx --user_name=xxx --password=xxx";
       return 0;
     }
-    brave_vpn::BraveVPNConnectionInfo info;
-    info.url = host_name;
-    info.name = vpn_name;
-    info.id = user_name;
-    info.pwd = password;
-    vpn_manager->CreateVPNConnection(info);
+
+    const std::wstring w_name = base::UTF8ToWide(vpn_name);
+    const std::wstring w_host = base::UTF8ToWide(host_name);
+    const std::wstring w_user = base::UTF8ToWide(user_name);
+    const std::wstring w_password = base::UTF8ToWide(password);
+    CreateEntry(w_name.c_str(), w_host.c_str(), w_user.c_str(),
+                w_password.c_str());
     return 0;
   }
 

@@ -11,8 +11,19 @@
 
 namespace brave_vpn {
 
+namespace internal {
+
 void PrintRasError(DWORD error);
 std::wstring GetPhonebookPath();
+bool CreateEntry(LPCTSTR entry_name,
+                 LPCTSTR hostname,
+                 LPCTSTR username,
+                 LPCTSTR password);
+bool RemoveEntry(LPCTSTR entry_name);
+bool DisconnectEntry(LPCTSTR entry_name);
+bool ConnectEntry(LPCTSTR entry_name);
+
+}  // namespace internal
 
 }  // namespace brave_vpn
 

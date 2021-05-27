@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/observer_list.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 
 namespace brave_vpn {
@@ -15,11 +16,25 @@ namespace brave_vpn {
 // Interface for managing OS' vpn connection.
 class BraveVPNConnectionManager {
  public:
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnEntryAdded(const std::string& name) = 0;
+    virtual void OnEntryRemoved(const std::string& name) = 0;
+    virtual void OnEntryConnected(const std::string& name) = 0;
+    virtual void OnEntryDisconected(const std::string& name) = 0;
+
+   protected:
+    ~Observer() override = default;
+  };
+
   static BraveVPNConnectionManager* GetInstance();
 
   BraveVPNConnectionManager(const BraveVPNConnectionManager&) = delete;
   BraveVPNConnectionManager& operator=(const BraveVPNConnectionManager&) =
       delete;
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
 
   virtual bool CreateVPNConnection(const BraveVPNConnectionInfo& info) = 0;
   virtual bool UpdateVPNConnection(const BraveVPNConnectionInfo& info) = 0;
@@ -30,6 +45,8 @@ class BraveVPNConnectionManager {
  protected:
   BraveVPNConnectionManager();
   virtual ~BraveVPNConnectionManager();
+
+  base::ObserverList<Observer> observers_;
 };
 
 }  // namespace brave_vpn

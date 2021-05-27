@@ -10,4 +10,12 @@ namespace brave_vpn {
 BraveVPNConnectionManager::BraveVPNConnectionManager() = default;
 BraveVPNConnectionManager::~BraveVPNConnectionManager() = default;
 
+void BraveVPNConnectionManager::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void BraveVPNConnectionManager::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
 }  // namespace brave_vpn

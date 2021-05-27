@@ -11,7 +11,10 @@ source_set("brave_vpn") {
     "brave_vpn_connection_manager.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    ":brave_vpn_internal",
+    "//base",
+  ]
 
   libs = []
 
@@ -19,8 +22,6 @@ source_set("brave_vpn") {
     sources += [
       "brave_vpn_connection_manager_win.cc",
       "brave_vpn_connection_manager_win.h",
-      "utils_win.cc",
-      "utils_win.h",
     ]
 
     libs += [
@@ -30,10 +31,28 @@ source_set("brave_vpn") {
   }
 }
 
+source_set("brave_vpn_internal") {
+  visibility = [
+    ":brave_vpn",
+    ":vpntool",
+  ]
+
+  sources = []
+  deps = [ "//base" ]
+
+  if (is_win) {
+    sources += [
+      "utils_win.cc",
+      "utils_win.h",
+    ]
+  }
+}
+
 executable("vpntool") {
   sources = []
   deps = [
     ":brave_vpn",
+    ":brave_vpn_internal",
     "//base",
   ]
 
