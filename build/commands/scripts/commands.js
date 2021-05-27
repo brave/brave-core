@@ -19,6 +19,7 @@ const l10nDeleteTranslations = require('../lib/l10nDeleteTranslations')
 const createDist = require('../lib/createDist')
 const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
+const pylint = require('../lib/pylint')
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -234,6 +235,12 @@ program
   .command('lint')
   .option('--base <base branch>', 'set the destination branch for the PR')
   .action(util.lint)
+
+program
+  .command('pylint')
+  .option('--base <base_branch>', 'only analyse files changed relative to base_branch')
+  .option('--report', 'produce a parseable report file')
+  .action(pylint)
 
 program
   .command('format')
