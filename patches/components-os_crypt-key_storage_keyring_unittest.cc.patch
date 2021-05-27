@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/key_storage_keyring_unittest.cc b/components/os_crypt/key_storage_keyring_unittest.cc
-index aba31971dc33f4b60c2847fd037c419baf084eaa..4a9568ad393f99ac635ffc109059fcedc5fd1a78 100644
+index 93fc216d54168eb3fd7e9f1b23f71a77f6e6735d..dd6d38bcdfd9b7d35c1c77a3c71351eb55052a46 100644
 --- a/components/os_crypt/key_storage_keyring_unittest.cc
 +++ b/components/os_crypt/key_storage_keyring_unittest.cc
 @@ -18,7 +18,7 @@ namespace {

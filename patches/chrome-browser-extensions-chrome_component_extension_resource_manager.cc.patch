@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-index 7aa8e3ce3675e4a1d64cc5ae57a7963222a5177c..574fc98e2c7936e182b605d5576634b3596b88c4 100644
+index e56ca286b7d7a75e088e084be0558702753a0f9a..f301c4645867bd4ad9a78dfc1858c5314dc7a3b9 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-@@ -150,6 +150,7 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+@@ -145,6 +145,7 @@ ChromeComponentExtensionResourceManager::Data::Data() {
          std::move(pdf_viewer_replacements);
    }
  #endif

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index cff740a322920a66259b803e7cf7bc4b9c87f835..07b2d4ecacc2ee122ecde5049f4a79fb017f73bf 100644
+index 9ec6334caf60cab4b1a44eedbdc094cfc13ce673..1df12cd32b7730af936cf4975fb8abcef4ab6e45 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -44,6 +44,7 @@ if (optimize_webui) {
@@ -10,7 +10,7 @@ index cff740a322920a66259b803e7cf7bc4b9c87f835..07b2d4ecacc2ee122ecde5049f4a79fb
    }
  }
  
-@@ -91,6 +92,7 @@ generate_grd("build_grd") {
+@@ -93,6 +94,7 @@ generate_grd("build_grd") {
        "$target_gen_dir/$preprocess_gen_manifest",
      ]
    }
