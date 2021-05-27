@@ -29,10 +29,9 @@ CARGO_INCLUDE_PATHS = [
 
 # Ping security team before adding to ignored_npm_advisories
 ignored_npm_advisories = [
-    '1677',  # moderate DoS vector not yet fixed in Jest
-    '1556',  # low-sev DoS vector that isn't fixed in some upstream packages
-    '1693',   # moderate RxDoS vector, we don't use postcss, storybook not yet updated
-    '1700'   # high RxDoS vector, we don't use MDX in storybook, mdx-js in storybook not yet updated
+    1693,   # moderate RxDoS vector, we don't use postcss, storybook not yet updated
+    1700,   # high RxDoS vector, we don't use MDX in storybook
+    1747    # moderate RxDoS vector, not fixed in @storybook/react
 ]
 
 
@@ -80,6 +79,7 @@ def audit_path(path, args):
 
 def npm_audit_deps(path, args):
     """Run `npm audit' in the specified path."""
+    # pylint: disable=consider-using-with
 
     npm_cmd = 'npm'
     if sys.platform.startswith('win'):
@@ -95,7 +95,8 @@ def npm_audit_deps(path, args):
     try:
         # results from audit
         result = json.loads(output.decode('UTF-8'))
-        assert 'advisories' in result
+        # npm7 uses a different format from earlier versions
+        assert 'vulnerabilities' in result or 'advisories' in result
     except (ValueError, AssertionError):
         # This can happen in the case of an NPM network error
         print('Audit failed to return valid json')
@@ -106,7 +107,7 @@ def npm_audit_deps(path, args):
 
     resolutions = extract_resolutions(result)
 
-    if len(resolutions):
+    if len(resolutions) > 0:
         print('Result: Audit failed due to vulnerabilities')
         print(json.dumps(resolutions, indent=2))
         return 1
@@ -150,12 +151,26 @@ def cargo_audit_deps(path, args):
 def extract_resolutions(result):
     """Extract resolutions from advisories present in the result."""
 
-    if 'advisories' not in result:
-        return {}
-    advisories = result['advisories']
-    if len(advisories) == 0:
-        return {}
-    return {k: v for k, v in advisories.items() if k not in ignored_npm_advisories}
+    resolutions = []
+    # npm 7+
+    if 'vulnerabilities' in result:
+        advisories = result['vulnerabilities']
+        if len(advisories) == 0:
+            return resolutions
+        for _, v in advisories.items():
+            via = v['via']
+            for item in via:
+                if isinstance(item, dict) and item['source'] not in ignored_npm_advisories:
+                    resolutions.append(item)
+    # npm 6 and earlier
+    if 'advisories' in result:
+        advisories = result['advisories']
+        if len(advisories) == 0:
+            return resolutions
+        for k, v in advisories.items():
+            if int(k) not in ignored_npm_advisories:
+                resolutions.append(v)
+    return resolutions
 
 
 def parse_args():
