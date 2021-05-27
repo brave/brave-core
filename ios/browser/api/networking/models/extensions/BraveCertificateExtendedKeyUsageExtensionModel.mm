@@ -24,9 +24,10 @@
 
 
 @implementation BraveCertificateExtensionExtendedKeyUsageModel
-- (instancetype)initWithNID:(NSInteger)nid name:(NSString*)name keyUsage:(BraveExtendedKeyUsage)keyUsage {
+- (instancetype)initWithNID:(NSInteger)nid nidString:(NSString*)nidString name:(NSString*)name keyUsage:(BraveExtendedKeyUsage)keyUsage {
   if ((self = [super init])) {
     _nid = nid;
+    _nidString = nidString;
     _name = name;
     _keyUsage = keyUsage;
   }
@@ -43,10 +44,12 @@
       ASN1_OBJECT* value = sk_ASN1_OBJECT_value(key_usage, static_cast<int>(i));
       if (value) {
         int usage_nid = OBJ_obj2nid(value);
+        std::string nid_string = x509_utils::string_from_ASN1_OBJECT(value, true);
         const char* name = OBJ_nid2sn(usage_nid);
         BraveExtendedKeyUsage purpose = brave::convert_extended_key_usage(usage_nid);
         
         auto* usage = [[BraveCertificateExtensionExtendedKeyUsageModel alloc] initWithNID:usage_nid
+                                                      nidString:brave::string_to_ns(nid_string)
                                                           name:brave::string_to_ns(name)
                                                              keyUsage:purpose];
         [key_usages addObject:usage];

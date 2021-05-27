@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface BraveCertificateExtensionExtendedKeyUsageModel: NSObject
 @property(nonatomic, assign, readonly) NSInteger nid;
+@property(nonatomic, assign, readonly) NSString* nidString;
 @property(nonatomic, strong, readonly) NSString* name;
 @property(nonatomic, assign, readonly) BraveExtendedKeyUsage keyUsage;
 @end
