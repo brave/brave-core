@@ -137,15 +137,19 @@ bool CreateEntry(LPCTSTR entry_name,
   wchar_t app_data_path[1025] = {0};
   std::wstring phone_book_path;
 
+  // https://docs.microsoft.com/en-us/windows/win32/api/processenv/nf-processenv-expandenvironmentstringsa
   dw_ret = ExpandEnvironmentStrings(TEXT("%APPDATA%"), app_data_path, 1024);
-  if (dw_ret != ERROR_SUCCESS) {
+  if (dw_ret == 0) {
     LOG(ERROR) << "failed to get APPDATA path";
+    PrintRasError(GetLastError());
     RemoveEntry(entry_name);
     return false;
   }
 
   phone_book_path = base::StringPrintf(
       L"%s\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk", app_data_path);
+
+  // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-writeprivateprofilestringw
   BOOL wrote_entry =
       WritePrivateProfileString(entry_name, L"NumCustomPolicy",
                                 kNumCustomPolicy, phone_book_path.c_str());
