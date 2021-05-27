@@ -307,11 +307,10 @@ void ExtensionRewardsServiceObserver::OnUnblindedTokensReady(
     return;
   }
 
-  auto args = std::make_unique<base::ListValue>();
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnUnblindedTokensReady::kEventName,
-      std::move(args)));
+      std::vector<base::Value>()));
   event_router->BroadcastEvent(std::move(event));
 }
 
