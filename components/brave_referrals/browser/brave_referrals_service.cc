@@ -189,12 +189,17 @@ void BraveReferralsService::Start() {
   bool checked_for_promo_code_file =
       pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
   std::string download_id = pref_service_->GetString(kReferralDownloadID);
-  if (!checked_for_promo_code_file && !has_initialized && download_id.empty())
+  if (!checked_for_promo_code_file && !has_initialized && download_id.empty()) {
+#if !defined(OS_ANDROID)
     task_runner_->PostTaskAndReplyWithResult(
-        FROM_HERE,
-        base::BindOnce(&ReadPromoCode, GetPromoCodeFileName()),
+        FROM_HERE, base::BindOnce(&ReadPromoCode, GetPromoCodeFileName()),
         base::BindOnce(&BraveReferralsService::OnReadPromoCodeComplete,
-                   weak_factory_.GetWeakPtr()));
+                       weak_factory_.GetWeakPtr()));
+
+#else
+    InitAndroidReferrer();
+#endif
+  }
 
   initialized_ = true;
 }
@@ -752,6 +757,22 @@ std::string BraveReferralsService::FormatExtraHeaders(
 
   return extra_headers;
 }
+
+#if defined(OS_ANDROID)
+void BraveReferralsService::InitAndroidReferrer() {
+  android_brave_referrer::InitReferrerCallback init_referrer_callback =
+      base::BindOnce(&BraveReferralsService::OnAndroidBraveReferrerReady,
+                     weak_factory_.GetWeakPtr());
+  android_brave_referrer_.InitReferrer(std::move(init_referrer_callback));
+}
+
+void BraveReferralsService::OnAndroidBraveReferrerReady() {
+  task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&ReadPromoCode, GetPromoCodeFileName()),
+      base::BindOnce(&BraveReferralsService::OnReadPromoCodeComplete,
+                     weak_factory_.GetWeakPtr()));
+}
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
