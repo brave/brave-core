@@ -661,8 +661,8 @@ void AdsServiceImpl::Initialize() {
                           base::Unretained(this)));
 
   profile_pref_change_registrar_.Add(
-      kBraveTodayOptedIn,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+      kBraveTodayOptedIn, base::BindRepeating(&AdsServiceImpl::OnPrefsChanged,
+                                              base::Unretained(this)));
 
   MaybeStart(false);
 }
