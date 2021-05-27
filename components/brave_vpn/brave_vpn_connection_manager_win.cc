@@ -29,6 +29,62 @@ namespace {
 
 #define DEFAULT_PHONE_BOOK NULL
 
+// https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumconnectionsa
+bool DisconnectEntry(LPCTSTR entry_name) {
+  DWORD dw_cb = 0;
+  DWORD dw_ret = ERROR_SUCCESS;
+  DWORD dw_connections = 0;
+  LPRASCONN lp_ras_conn = NULL;
+
+  // Call RasEnumConnections with lp_ras_conn = NULL. dw_cb is returned with the
+  // required buffer size and a return code of ERROR_BUFFER_TOO_SMALL
+  dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+
+  if (dw_ret == ERROR_BUFFER_TOO_SMALL) {
+    // Allocate the memory needed for the array of RAS structure(s).
+    lp_ras_conn =
+        (LPRASCONN)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+    if (lp_ras_conn == NULL) {
+      LOG(ERROR) << "HeapAlloc failed!";
+      return false;
+    }
+    // The first RASCONN structure in the array must contain the RASCONN
+    // structure size
+    lp_ras_conn[0].dwSize = sizeof(RASCONN);
+
+    // Call RasEnumConnections to enumerate active connections
+    dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+
+    // If successful, print the names of the active connections.
+    if (ERROR_SUCCESS == dw_ret) {
+      DVLOG(2) << "The following RAS connections are currently active:";
+      for (DWORD i = 0; i < dw_connections; i++) {
+        std::wstring name(lp_ras_conn[i].szEntryName);
+        std::wstring type(lp_ras_conn[i].szDeviceType);
+        if (name.compare(entry_name) == 0 && type.compare(L"VPN") == 0) {
+          DVLOG(2) << "Disconnect... " << entry_name;
+          dw_ret = RasHangUpA(lp_ras_conn[i].hrasconn);
+          break;
+        }
+      }
+    }
+    // Deallocate memory for the connection buffer
+    HeapFree(GetProcessHeap(), 0, lp_ras_conn);
+    lp_ras_conn = NULL;
+    return dw_ret == ERROR_SUCCESS;
+  }
+
+  // There was either a problem with RAS or there are no connections to
+  // enumerate
+  if (dw_connections >= 1) {
+    LOG(ERROR) << "The operation failed to acquire the buffer size.";
+    return false;
+  }
+
+  DVLOG(2) << "There are no active RAS connections.";
+  return true;
+}
+
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasdiala
 bool ConnectEntry(LPCTSTR entry_name) {
   LPRASDIALPARAMS lp_ras_dial_params = NULL;
@@ -37,7 +93,7 @@ bool ConnectEntry(LPCTSTR entry_name) {
   lp_ras_dial_params =
       (LPRASDIALPARAMS)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, cb);
   if (lp_ras_dial_params == NULL) {
-    wprintf(L"HeapAlloc failed!\n");
+    LOG(ERROR) << "HeapAlloc failed!";
     return false;
   }
   lp_ras_dial_params->dwSize = sizeof(RASDIALPARAMS);
@@ -72,7 +128,7 @@ bool ConnectEntry(LPCTSTR entry_name) {
 
   HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
 
-  return ERROR_SUCCESS;
+  return true;
 }
 
 bool RemoveEntry(LPCTSTR entry_name) {
@@ -236,13 +292,12 @@ bool BraveVPNConnectionManagerWin::UpdateVPNConnection(
 
 bool BraveVPNConnectionManagerWin::Connect(const std::string& name) {
   const std::wstring w_name = base::UTF8ToWide(name);
-  ConnectEntry(w_name.c_str());
-  return true;
+  return ConnectEntry(w_name.c_str());
 }
 
 bool BraveVPNConnectionManagerWin::Disconnect(const std::string& name) {
-  NOTIMPLEMENTED();
-  return true;
+  const std::wstring w_name = base::UTF8ToWide(name);
+  return DisconnectEntry(w_name.c_str());
 }
 
 bool BraveVPNConnectionManagerWin::RemoveVPNConnection(
