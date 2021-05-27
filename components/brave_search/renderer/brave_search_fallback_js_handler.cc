@@ -55,6 +55,8 @@ void BraveSearchFallbackJSHandler::AddJavaScriptObject() {
     return;
 
   v8::Context::Scope context_scope(Context());
+  v8::MicrotasksScope microtasks(isolate_,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   BindFunctionsToObject();
 }
