@@ -26,7 +26,6 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday from '../../components/default/braveToday'
-import BAPDeprecationModal from '../../components/default/rewards/bapDeprecationModal'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 
 // Helpers
@@ -1272,7 +1271,6 @@ class NewTabPage extends React.Component<Props, State> {
               onSave={this.saveNewTopSite}
             /> : null
         }
-        <BAPDeprecationModal rewardsState={this.props.newTabData.rewardsState} />
       </Page.App>
     )
   }
