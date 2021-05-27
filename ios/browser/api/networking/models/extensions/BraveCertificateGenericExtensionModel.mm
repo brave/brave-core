@@ -34,6 +34,10 @@
 
 @implementation BraveCertificateGenericExtensionModel
 - (void)parseExtension:(X509_EXTENSION*)extension {
+  _extensionType = BraveGenericExtensionType_STRING;
+  _stringValue = nullptr;
+  _arrayValue = nullptr;
+  
   std::unique_ptr<x509_utils::X509_EXTENSION_INFO> info =
                                       x509_utils::decode_extension_info(extension);
   if (info) {

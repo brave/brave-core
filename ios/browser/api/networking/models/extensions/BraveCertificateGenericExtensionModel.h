@@ -26,7 +26,6 @@ OBJC_EXPORT
 OBJC_EXPORT
 @interface BraveCertificateGenericExtensionModel: BraveCertificateExtensionModel
 @property(nonatomic, assign, readonly) BraveGenericExtensionType extensionType;
-@property(nonatomic, strong, readonly) NSString* key;
 @property(nullable, nonatomic, strong, readonly) NSString* stringValue;
 @property(nullable, nonatomic, strong, readonly) NSArray<BraveCertificateGenericExtensionPairModel*>* arrayValue;
 @end
