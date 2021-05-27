@@ -17,7 +17,6 @@
 
 #include "base/logging.h"
 #include "base/notreached.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/utils_win.h"
 
@@ -134,20 +133,9 @@ bool CreateEntry(LPCTSTR entry_name,
   constexpr wchar_t kNumCustomPolicy[] = L"1";
   constexpr wchar_t kCustomIPSecPolicies[] =
       L"020000000600000005000000080000000500000000000000";
-  wchar_t app_data_path[1025] = {0};
-  std::wstring phone_book_path;
-
-  // https://docs.microsoft.com/en-us/windows/win32/api/processenv/nf-processenv-expandenvironmentstringsa
-  dw_ret = ExpandEnvironmentStrings(TEXT("%APPDATA%"), app_data_path, 1024);
-  if (dw_ret == 0) {
-    LOG(ERROR) << "failed to get APPDATA path";
-    PrintRasError(GetLastError());
-    RemoveEntry(entry_name);
+  std::wstring phone_book_path = GetPhonebookPath();
+  if (phone_book_path.empty())
     return false;
-  }
-
-  phone_book_path = base::StringPrintf(
-      L"%ls\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk", app_data_path);
 
   // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-writeprivateprofilestringw
   BOOL wrote_entry =

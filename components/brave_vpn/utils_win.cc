@@ -10,6 +10,7 @@
 #include <stdio.h>
 
 #include "base/logging.h"
+#include "base/strings/stringprintf.h"
 
 namespace brave_vpn {
 
@@ -45,6 +46,26 @@ void PrintRasError(DWORD error) {
   }
 
   PrintSystemError(error);
+}
+
+std::wstring GetPhonebookPath() {
+  wchar_t app_data_path[1025] = {0};
+  std::wstring phone_book_path;
+
+  // https://docs.microsoft.com/en-us/windows/win32/api/processenv/nf-processenv-expandenvironmentstringsa
+  DWORD dw_ret =
+      ExpandEnvironmentStrings(TEXT("%APPDATA%"), app_data_path, 1024);
+  if (dw_ret == 0) {
+    LOG(ERROR) << "failed to get APPDATA path";
+    PrintRasError(GetLastError());
+    return phone_book_path;
+  }
+
+  phone_book_path = base::StringPrintf(
+      L"%ls\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk",
+      app_data_path);
+
+  return phone_book_path;
 }
 
 }  // namespace brave_vpn

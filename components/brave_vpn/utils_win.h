@@ -7,10 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_VPN_UTILS_WIN_H_
 
 #include <windows.h>
+#include <string>
 
 namespace brave_vpn {
 
 void PrintRasError(DWORD error);
+std::wstring GetPhonebookPath();
 
 }  // namespace brave_vpn
 

@@ -412,6 +412,21 @@ void PrintOptions2(DWORD options) {
   wprintf(L"\t};");
 }
 
+void PrintPolicyValue(LPCTSTR entry_name) {
+  std::wstring phone_book_path = brave_vpn::GetPhonebookPath();
+  if (phone_book_path.empty())
+    return;
+
+  wchar_t policy_value[1024] = {0};
+  DWORD dw_ret =
+      GetPrivateProfileString(entry_name, L"CustomIPSecPolicies", L"",
+                              policy_value, 1024, phone_book_path.c_str());
+
+  if (dw_ret != 0) {
+    wprintf(L"\n\n\tCustomIPSecPolicies=%s", policy_value);
+  }
+}
+
 void PrintBytes(LPCWSTR name, LPBYTE bytes, DWORD len) {
   bool next_is_newline = false;
   constexpr int bytes_per_line = 12;
@@ -546,7 +561,7 @@ int PrintEntryDetails(LPCTSTR entry_name) {
         }
       }
     }
-
+    PrintPolicyValue(entry_name);
     wprintf(L"\n");
     // Deallocate memory for the entry buffer
     HeapFree(GetProcessHeap(), 0, lp_ras_entry);
