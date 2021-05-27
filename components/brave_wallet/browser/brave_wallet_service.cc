@@ -8,15 +8,15 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
-BraveWalletService::BraveWalletService(content::BrowserContext* context)
-    : context_(context) {
+BraveWalletService::BraveWalletService(
+    PrefService* prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   rpc_controller_ = std::make_unique<brave_wallet::EthJsonRpcController>(
-      context, brave_wallet::Network::kMainnet);
-  keyring_controller_ = std::make_unique<brave_wallet::KeyringController>(
-      user_prefs::UserPrefs::Get(context_));
+      brave_wallet::Network::kMainnet, url_loader_factory);
+  keyring_controller_ =
+      std::make_unique<brave_wallet::KeyringController>(prefs);
 }
 
 BraveWalletService::~BraveWalletService() {}
