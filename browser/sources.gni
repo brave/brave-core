@@ -31,7 +31,6 @@ import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -305,10 +304,6 @@ if (enable_brave_perf_predictor) {
 
 if (enable_ftx) {
   brave_chrome_browser_deps += [ "//brave/browser/ftx" ]
-}
-
-if (enable_brave_vpn) {
-  brave_chrome_browser_deps += [ "//brave/components/brave_vpn" ]
 }
 
 if (is_win && is_official_build) {

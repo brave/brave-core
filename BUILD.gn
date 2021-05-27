@@ -492,3 +492,7 @@ action("audit_deps") {
     args += [ "--audit_dev_deps" ]
   }
 }
+
+group("tools") {
+  deps = [ "//brave/components/brave_vpn:vpntool" ]
+}

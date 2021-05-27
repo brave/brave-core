@@ -48,150 +48,145 @@ constexpr char kPassword[] = "password";
 using brave_vpn::PrintRasError;
 
 int PrintConnectionDetails(HRASCONN connection) {
-  DWORD dwCb = 0;
-  DWORD dwRet = ERROR_SUCCESS;
-  PRAS_PROJECTION_INFO lpProjectionInfo = NULL;
+  DWORD dw_cb = 0;
+  DWORD dw_ret = ERROR_SUCCESS;
+  PRAS_PROJECTION_INFO lp_projection_info = NULL;
 
   // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgetprojectioninfoex
-  dwRet = RasGetProjectionInfoEx(connection, lpProjectionInfo, &dwCb);
-  if (dwRet == ERROR_BUFFER_TOO_SMALL) {
-    lpProjectionInfo = (PRAS_PROJECTION_INFO)HeapAlloc(GetProcessHeap(),
-                                                       HEAP_ZERO_MEMORY, dwCb);
-    lpProjectionInfo->version = RASAPIVERSION_CURRENT;
-    dwRet = RasGetProjectionInfoEx(connection, lpProjectionInfo, &dwCb);
-    if (dwRet != ERROR_SUCCESS) {
-      PrintRasError(dwRet);
-      if (lpProjectionInfo) {
-        HeapFree(GetProcessHeap(), 0, lpProjectionInfo);
-        lpProjectionInfo = NULL;
+  dw_ret = RasGetProjectionInfoEx(connection, lp_projection_info, &dw_cb);
+  if (dw_ret == ERROR_BUFFER_TOO_SMALL) {
+    lp_projection_info = (PRAS_PROJECTION_INFO)HeapAlloc(
+        GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+    lp_projection_info->version = RASAPIVERSION_CURRENT;
+    dw_ret = RasGetProjectionInfoEx(connection, lp_projection_info, &dw_cb);
+    if (dw_ret != ERROR_SUCCESS) {
+      PrintRasError(dw_ret);
+      if (lp_projection_info) {
+        HeapFree(GetProcessHeap(), 0, lp_projection_info);
+        lp_projection_info = NULL;
       }
-      return dwRet;
+      return dw_ret;
     }
 
-    if (lpProjectionInfo->type == PROJECTION_INFO_TYPE_IKEv2) {
+    if (lp_projection_info->type == PROJECTION_INFO_TYPE_IKEv2) {
       // See _RASIKEV2_PROJECTION_INFO in Ras.h for full list of fields.
       // Fields commented out are not implemented (ex: IPv6).
       wprintf(L"\ttype=PROJECTION_INFO_TYPE_IKEv2");
 
       // IPv4 Projection Parameters
       wprintf(L"\n\tdwIPv4NegotiationError=%d",
-              lpProjectionInfo->ikev2.dwIPv4NegotiationError);
+              lp_projection_info->ikev2.dwIPv4NegotiationError);
       wprintf(L"\n\tipv4Address=");
-      printf("%s", inet_ntoa(lpProjectionInfo->ikev2.ipv4Address));
+      printf("%s", inet_ntoa(lp_projection_info->ikev2.ipv4Address));
       wprintf(L"\n\tipv4ServerAddress=");
-      printf("%s", inet_ntoa(lpProjectionInfo->ikev2.ipv4ServerAddress));
-
-      // IPv6 Projection Parameters
-      // DWORD         dwIPv6NegotiationError;
-      // RASIPV6ADDR   ipv6Address;
-      // RASIPV6ADDR   ipv6ServerAddress;
-      // DWORD         dwPrefixLength;
+      printf("%s", inet_ntoa(lp_projection_info->ikev2.ipv4ServerAddress));
 
       // AUTH
       wprintf(L"\n\tdwAuthenticationProtocol=");
-      if (lpProjectionInfo->ikev2.dwAuthenticationProtocol ==
+      if (lp_projection_info->ikev2.dwAuthenticationProtocol ==
           RASIKEv2_AUTH_MACHINECERTIFICATES)
         wprintf(L"RASIKEv2_AUTH_MACHINECERTIFICATES");
-      else if (lpProjectionInfo->ikev2.dwAuthenticationProtocol ==
+      else if (lp_projection_info->ikev2.dwAuthenticationProtocol ==
                RASIKEv2_AUTH_EAP)
         wprintf(L"RASIKEv2_AUTH_EAP");
-      wprintf(L"\n\tdwEapTypeId=%d", lpProjectionInfo->ikev2.dwEapTypeId);
+      wprintf(L"\n\tdwEapTypeId=%d", lp_projection_info->ikev2.dwEapTypeId);
 
-      // -
       wprintf(L"\n\tdwFlags=");
-      if (lpProjectionInfo->ikev2.dwFlags & RASIKEv2_FLAGS_MOBIKESUPPORTED)
+      if (lp_projection_info->ikev2.dwFlags & RASIKEv2_FLAGS_MOBIKESUPPORTED)
         wprintf(L"RASIKEv2_FLAGS_MOBIKESUPPORTED, ");
-      if (lpProjectionInfo->ikev2.dwFlags & RASIKEv2_FLAGS_BEHIND_NAT)
+      if (lp_projection_info->ikev2.dwFlags & RASIKEv2_FLAGS_BEHIND_NAT)
         wprintf(L"RASIKEv2_FLAGS_BEHIND_NAT, ");
-      if (lpProjectionInfo->ikev2.dwFlags & RASIKEv2_FLAGS_SERVERBEHIND_NAT)
+      if (lp_projection_info->ikev2.dwFlags & RASIKEv2_FLAGS_SERVERBEHIND_NAT)
         wprintf(L"RASIKEv2_FLAGS_SERVERBEHIND_NAT");
       wprintf(L"\n\tdwEncryptionMethod=");
       // https://docs.microsoft.com/en-us/windows/win32/api/ipsectypes/ne-ipsectypes-ipsec_cipher_type
-      if (lpProjectionInfo->ikev2.dwEncryptionMethod == IPSEC_CIPHER_TYPE_DES)
+      if (lp_projection_info->ikev2.dwEncryptionMethod == IPSEC_CIPHER_TYPE_DES)
         wprintf(L"IPSEC_CIPHER_TYPE_DES");
-      else if (lpProjectionInfo->ikev2.dwEncryptionMethod ==
+      else if (lp_projection_info->ikev2.dwEncryptionMethod ==
                IPSEC_CIPHER_TYPE_3DES)
         wprintf(L"IPSEC_CIPHER_TYPE_3DES");
-      else if (lpProjectionInfo->ikev2.dwEncryptionMethod ==
+      else if (lp_projection_info->ikev2.dwEncryptionMethod ==
                IPSEC_CIPHER_TYPE_AES_128)
         wprintf(L"IPSEC_CIPHER_TYPE_AES_128");
-      else if (lpProjectionInfo->ikev2.dwEncryptionMethod ==
+      else if (lp_projection_info->ikev2.dwEncryptionMethod ==
                IPSEC_CIPHER_TYPE_AES_192)
         wprintf(L"IPSEC_CIPHER_TYPE_AES_192");
-      else if (lpProjectionInfo->ikev2.dwEncryptionMethod ==
+      else if (lp_projection_info->ikev2.dwEncryptionMethod ==
                IPSEC_CIPHER_TYPE_AES_256)
         wprintf(L"IPSEC_CIPHER_TYPE_AES_256");
       else
-        wprintf(L"unknown (%d)", lpProjectionInfo->ikev2.dwEncryptionMethod);
+        wprintf(L"unknown (%d)", lp_projection_info->ikev2.dwEncryptionMethod);
 
       // -
       wprintf(L"\n\tnumIPv4ServerAddresses=%d",
-              lpProjectionInfo->ikev2.numIPv4ServerAddresses);
+              lp_projection_info->ikev2.numIPv4ServerAddresses);
       wprintf(L"\n\tipv4ServerAddresses=");
-      for (DWORD j = 0; j < lpProjectionInfo->ikev2.numIPv4ServerAddresses;
+      for (DWORD j = 0; j < lp_projection_info->ikev2.numIPv4ServerAddresses;
            j++) {
-        printf("%s", inet_ntoa(lpProjectionInfo->ikev2.ipv4ServerAddresses[j]));
-        if ((j + 1) < lpProjectionInfo->ikev2.numIPv4ServerAddresses)
+        printf("%s",
+               inet_ntoa(lp_projection_info->ikev2.ipv4ServerAddresses[j]));
+        if ((j + 1) < lp_projection_info->ikev2.numIPv4ServerAddresses)
           wprintf(L", ");
       }
       wprintf(L"\n\tnumIPv6ServerAddresses=%d",
-              lpProjectionInfo->ikev2.numIPv6ServerAddresses);
-    } else if (lpProjectionInfo->type == PROJECTION_INFO_TYPE_PPP) {
+              lp_projection_info->ikev2.numIPv6ServerAddresses);
+    } else if (lp_projection_info->type == PROJECTION_INFO_TYPE_PPP) {
       wprintf(L"\ttype=PROJECTION_INFO_TYPE_PPP");
     }
 
-    HeapFree(GetProcessHeap(), 0, lpProjectionInfo);
-    lpProjectionInfo = NULL;
+    HeapFree(GetProcessHeap(), 0, lp_projection_info);
+    lp_projection_info = NULL;
   } else {
     wprintf(L"\tError calling RasGetProjectionInfoEx: ");
-    PrintRasError(dwRet);
+    PrintRasError(dw_ret);
   }
 
-  return dwRet;
+  return dw_ret;
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumconnectionsa
 int PrintConnections() {
-  DWORD dwCb = 0;
-  DWORD dwRet = ERROR_SUCCESS;
-  DWORD dwConnections = 0;
-  LPRASCONN lpRasConn = NULL;
+  DWORD dw_cb = 0;
+  DWORD dw_ret = dw_cb;
+  DWORD dw_connections = 0;
+  LPRASCONN lp_ras_conn = NULL;
 
-  // Call RasEnumConnections with lpRasConn = NULL. dwCb is returned with the
+  // Call RasEnumConnections with lp_ras_conn = NULL. dw_cb is returned with the
   // required buffer size and a return code of ERROR_BUFFER_TOO_SMALL
-  dwRet = RasEnumConnections(lpRasConn, &dwCb, &dwConnections);
-  if (dwRet == ERROR_BUFFER_TOO_SMALL) {
+  dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+  if (dw_ret == ERROR_BUFFER_TOO_SMALL) {
     // Allocate the memory needed for the array of RAS structure(s).
-    lpRasConn = (LPRASCONN)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dwCb);
-    if (lpRasConn == NULL) {
+    lp_ras_conn =
+        (LPRASCONN)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+    if (lp_ras_conn == NULL) {
       LOG(ERROR) << "HeapAlloc failed!";
       return 0;
     }
     // The first RASCONN structure in the array must contain the RASCONN
     // structure size
-    lpRasConn[0].dwSize = sizeof(RASCONN);
+    lp_ras_conn[0].dwSize = sizeof(RASCONN);
 
     // Call RasEnumConnections to enumerate active connections
-    dwRet = RasEnumConnections(lpRasConn, &dwCb, &dwConnections);
+    dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
 
     // If successful, print the names of the active connections.
-    if (ERROR_SUCCESS == dwRet) {
+    if (ERROR_SUCCESS == dw_ret) {
       wprintf(L"The following RAS connections are currently active:\n");
-      for (DWORD i = 0; i < dwConnections; i++) {
-        wprintf(L"%s\n", lpRasConn[i].szEntryName);
-        PrintConnectionDetails(lpRasConn[i].hrasconn);
+      for (DWORD i = 0; i < dw_connections; i++) {
+        wprintf(L"%s\n", lp_ras_conn[i].szEntryName);
+        PrintConnectionDetails(lp_ras_conn[i].hrasconn);
       }
     }
     wprintf(L"\n");
     // Deallocate memory for the connection buffer
-    HeapFree(GetProcessHeap(), 0, lpRasConn);
-    lpRasConn = NULL;
+    HeapFree(GetProcessHeap(), 0, lp_ras_conn);
+    lp_ras_conn = NULL;
     return 0;
   }
 
   // There was either a problem with RAS or there are no connections to
   // enumerate
-  if (dwConnections >= 1) {
+  if (dw_connections >= 1) {
     wprintf(L"The operation failed to acquire the buffer size.\n\n");
   } else {
     wprintf(L"There are no active RAS connections.\n\n");
@@ -202,47 +197,47 @@ int PrintConnections() {
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumdevicesa
 int PrintDevices() {
-  DWORD dwCb = 0;
-  DWORD dwRet = ERROR_SUCCESS;
-  DWORD dwDevices = 0;
-  LPRASDEVINFO lpRasDevInfo = NULL;
+  DWORD dw_cb = 0;
+  DWORD dw_ret = ERROR_SUCCESS;
+  DWORD dw_devices = 0;
+  LPRASDEVINFO lp_ras_dev_info = NULL;
 
-  // Call RasEnumDevices with lpRasDevInfo = NULL. dwCb is returned with the
+  // Call RasEnumDevices with lp_ras_dev_info = NULL. dw_cb is returned with the
   // required buffer size and a return code of ERROR_BUFFER_TOO_SMALL
-  dwRet = RasEnumDevices(lpRasDevInfo, &dwCb, &dwDevices);
+  dw_ret = RasEnumDevices(lp_ras_dev_info, &dw_cb, &dw_devices);
 
-  if (dwRet == ERROR_BUFFER_TOO_SMALL) {
+  if (dw_ret == ERROR_BUFFER_TOO_SMALL) {
     // Allocate the memory needed for the array of RAS structure(s).
-    lpRasDevInfo =
-        (LPRASDEVINFO)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dwCb);
-    if (lpRasDevInfo == NULL) {
+    lp_ras_dev_info =
+        (LPRASDEVINFO)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+    if (lp_ras_dev_info == NULL) {
       wprintf(L"HeapAlloc failed!\n");
       return 0;
     }
     // The first RASDEVINFO structure in the array must contain the structure
     // size
-    lpRasDevInfo[0].dwSize = sizeof(RASDEVINFO);
+    lp_ras_dev_info[0].dwSize = sizeof(RASDEVINFO);
 
     // Call RasEnumDevices to enumerate RAS devices
-    dwRet = RasEnumDevices(lpRasDevInfo, &dwCb, &dwDevices);
+    dw_ret = RasEnumDevices(lp_ras_dev_info, &dw_cb, &dw_devices);
 
     // If successful, print the names of the RAS devices
-    if (ERROR_SUCCESS == dwRet) {
+    if (ERROR_SUCCESS == dw_ret) {
       wprintf(L"The following RAS devices were found:\n");
-      for (DWORD i = 0; i < dwDevices; i++) {
-        wprintf(L"%s\n", lpRasDevInfo[i].szDeviceName);
+      for (DWORD i = 0; i < dw_devices; i++) {
+        wprintf(L"%s\n", lp_ras_dev_info[i].szDeviceName);
       }
     }
     wprintf(L"\n");
     // Deallocate memory for the connection buffer
-    HeapFree(GetProcessHeap(), 0, lpRasDevInfo);
-    lpRasDevInfo = NULL;
+    HeapFree(GetProcessHeap(), 0, lp_ras_dev_info);
+    lp_ras_dev_info = NULL;
     return 0;
   }
 
   // There was either a problem with RAS or there are no RAS devices to
   // enumerate
-  if (dwDevices >= 1) {
+  if (dw_devices >= 1) {
     wprintf(L"The operation failed to acquire the buffer size.\n\n");
   } else {
     wprintf(L"There were no RAS devices found.\n\n");
@@ -419,7 +414,7 @@ void PrintOptions2(DWORD options) {
 
 void PrintBytes(LPCWSTR name, LPBYTE bytes, DWORD len) {
   bool next_is_newline = false;
-  const int bytes_per_line = 12;
+  constexpr int bytes_per_line = 12;
   wprintf(L"\n\t[%s: %d bytes]\n\t\t", name, len);
   for (DWORD i = 0; i < len; i++) {
     if (i > 0 && !next_is_newline) {
@@ -435,181 +430,181 @@ void PrintBytes(LPCWSTR name, LPBYTE bytes, DWORD len) {
 }
 
 int PrintEntryDetails(LPCTSTR entry_name) {
-  DWORD dwCb = 0;
-  DWORD dwRet = ERROR_SUCCESS;
-  LPRASENTRY lpRasEntry = NULL;
+  DWORD dw_cb = 0;
+  DWORD dw_ret = ERROR_SUCCESS;
+  LPRASENTRY lp_ras_entry = NULL;
 
-  // Call RasGetEntryProperties with lpRasEntry = NULL. dwCb is returned with
+  // Call RasGetEntryProperties with lp_ras_entry = NULL. dw_cb is returned with
   // the required buffer size and a return code of ERROR_BUFFER_TOO_SMALL
-  dwRet = RasGetEntryProperties(DEFAULT_PHONE_BOOK, entry_name, lpRasEntry,
-                                &dwCb, NULL, NULL);
-  if (dwRet == ERROR_BUFFER_TOO_SMALL) {
-    lpRasEntry =
-        (LPRASENTRY)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dwCb);
-    if (lpRasEntry == NULL) {
+  dw_ret = RasGetEntryProperties(DEFAULT_PHONE_BOOK, entry_name, lp_ras_entry,
+                                 &dw_cb, NULL, NULL);
+  if (dw_ret == ERROR_BUFFER_TOO_SMALL) {
+    lp_ras_entry =
+        (LPRASENTRY)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+    if (lp_ras_entry == NULL) {
       wprintf(L"HeapAlloc failed!\n");
       return 0;
     }
 
-    // The first LPRASENTRY structure in the array must contain the structure
+    // The first lp_ras_entry structure in the array must contain the structure
     // size
-    lpRasEntry[0].dwSize = sizeof(RASENTRY);
-    dwRet = RasGetEntryProperties(DEFAULT_PHONE_BOOK, entry_name, lpRasEntry,
-                                  &dwCb, NULL, NULL);
-    switch (dwRet) {
+    lp_ras_entry[0].dwSize = sizeof(RASENTRY);
+    dw_ret = RasGetEntryProperties(DEFAULT_PHONE_BOOK, entry_name, lp_ras_entry,
+                                   &dw_cb, NULL, NULL);
+    switch (dw_ret) {
       case ERROR_INVALID_SIZE:
         wprintf(L"An incorrect structure size was detected.\n");
         break;
     }
 
     // great place to set debug breakpoint when inspecting existing connections
-    PrintOptions(lpRasEntry->dwfOptions);
-    PrintOptions2(lpRasEntry->dwfOptions2);
+    PrintOptions(lp_ras_entry->dwfOptions);
+    PrintOptions2(lp_ras_entry->dwfOptions2);
 
     // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgetcustomauthdataa
     LPBYTE custom_auth_data = NULL;
-    dwRet = RasGetCustomAuthData(DEFAULT_PHONE_BOOK, entry_name,
-                                 custom_auth_data, &dwCb);
-    if (dwRet == ERROR_BUFFER_TOO_SMALL && dwCb > 0) {
+    dw_ret = RasGetCustomAuthData(DEFAULT_PHONE_BOOK, entry_name,
+                                  custom_auth_data, &dw_cb);
+    if (dw_ret == ERROR_BUFFER_TOO_SMALL && dw_cb > 0) {
       custom_auth_data =
-          (LPBYTE)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dwCb);
-      dwRet = RasGetCustomAuthData(DEFAULT_PHONE_BOOK, entry_name,
-                                   custom_auth_data, &dwCb);
-      if (dwRet != ERROR_SUCCESS) {
-        PrintRasError(dwRet);
+          (LPBYTE)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+      dw_ret = RasGetCustomAuthData(DEFAULT_PHONE_BOOK, entry_name,
+                                    custom_auth_data, &dw_cb);
+      if (dw_ret != ERROR_SUCCESS) {
+        PrintRasError(dw_ret);
         if (custom_auth_data) {
           HeapFree(GetProcessHeap(), 0, custom_auth_data);
           custom_auth_data = NULL;
         }
-        return dwRet;
+        return dw_ret;
       }
-      PrintBytes(L"CustomAuthData", custom_auth_data, dwCb);
+      PrintBytes(L"CustomAuthData", custom_auth_data, dw_cb);
       HeapFree(GetProcessHeap(), 0, custom_auth_data);
-    } else if (dwCb > 0) {
+    } else if (dw_cb > 0) {
       wprintf(L"\n\tError calling RasGetCustomAuthData: ");
-      PrintRasError(dwRet);
+      PrintRasError(dw_ret);
     }
 
     // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgeteapuserdataa
     LPBYTE eap_user_data = NULL;
-    dwRet = RasGetEapUserData(NULL, DEFAULT_PHONE_BOOK, entry_name,
-                              eap_user_data, &dwCb);
-    if (dwRet == ERROR_BUFFER_TOO_SMALL && dwCb > 0) {
+    dw_ret = RasGetEapUserData(NULL, DEFAULT_PHONE_BOOK, entry_name,
+                               eap_user_data, &dw_cb);
+    if (dw_ret == ERROR_BUFFER_TOO_SMALL && dw_cb > 0) {
       eap_user_data =
-          (LPBYTE)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dwCb);
-      dwRet = RasGetEapUserData(NULL, DEFAULT_PHONE_BOOK, entry_name,
-                                eap_user_data, &dwCb);
-      if (dwRet != ERROR_SUCCESS) {
-        PrintRasError(dwRet);
+          (LPBYTE)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+      dw_ret = RasGetEapUserData(NULL, DEFAULT_PHONE_BOOK, entry_name,
+                                 eap_user_data, &dw_cb);
+      if (dw_ret != ERROR_SUCCESS) {
+        PrintRasError(dw_ret);
         if (eap_user_data) {
           HeapFree(GetProcessHeap(), 0, eap_user_data);
           eap_user_data = NULL;
         }
-        return dwRet;
+        return dw_ret;
       }
-      PrintBytes(L"EapUserData", eap_user_data, dwCb);
+      PrintBytes(L"EapUserData", eap_user_data, dw_cb);
       HeapFree(GetProcessHeap(), 0, eap_user_data);
-    } else if (dwCb > 0) {
+    } else if (dw_cb > 0) {
       wprintf(L"\n\tError calling RasGetEapUserData: ");
-      PrintRasError(dwRet);
+      PrintRasError(dw_ret);
     }
 
     // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgetsubentrypropertiesa
-    wprintf(L"\n\tdwSubEntries: %d", lpRasEntry->dwSubEntries);
-    if (lpRasEntry->dwSubEntries > 0) {
-      for (DWORD i = 0; i < lpRasEntry->dwSubEntries; i++) {
-        LPRASSUBENTRY lpRasSubEntry = NULL;
-        dwRet = RasGetSubEntryProperties(DEFAULT_PHONE_BOOK, entry_name, i + 1,
-                                         lpRasSubEntry, &dwCb, NULL, NULL);
-        if (dwRet == ERROR_BUFFER_TOO_SMALL && dwCb > 0) {
-          lpRasSubEntry = (LPRASSUBENTRY)HeapAlloc(GetProcessHeap(),
-                                                   HEAP_ZERO_MEMORY, dwCb);
-          dwRet =
+    wprintf(L"\n\tdwSubEntries: %d", lp_ras_entry->dwSubEntries);
+    if (lp_ras_entry->dwSubEntries > 0) {
+      for (DWORD i = 0; i < lp_ras_entry->dwSubEntries; i++) {
+        LPRASSUBENTRY lp_ras_sub_entry = NULL;
+        dw_ret = RasGetSubEntryProperties(DEFAULT_PHONE_BOOK, entry_name, i + 1,
+                                          lp_ras_sub_entry, &dw_cb, NULL, NULL);
+        if (dw_ret == ERROR_BUFFER_TOO_SMALL && dw_cb > 0) {
+          lp_ras_sub_entry = (LPRASSUBENTRY)HeapAlloc(GetProcessHeap(),
+                                                      HEAP_ZERO_MEMORY, dw_cb);
+          dw_ret =
               RasGetSubEntryProperties(DEFAULT_PHONE_BOOK, entry_name, i + 1,
-                                       lpRasSubEntry, &dwCb, NULL, NULL);
-          if (dwRet != ERROR_SUCCESS) {
-            PrintRasError(dwRet);
-            if (lpRasSubEntry) {
-              HeapFree(GetProcessHeap(), 0, lpRasSubEntry);
-              lpRasSubEntry = NULL;
+                                       lp_ras_sub_entry, &dw_cb, NULL, NULL);
+          if (dw_ret != ERROR_SUCCESS) {
+            PrintRasError(dw_ret);
+            if (lp_ras_sub_entry) {
+              HeapFree(GetProcessHeap(), 0, lp_ras_sub_entry);
+              lp_ras_sub_entry = NULL;
             }
-            return dwRet;
+            return dw_ret;
           }
-          wprintf(L"\n\t\tdwSize=%d", lpRasSubEntry->dwSize);
-          wprintf(L"\n\t\tdwfFlags=%d", lpRasSubEntry->dwfFlags);
-          wprintf(L"\n\t\tszDeviceType=%s", lpRasSubEntry->szDeviceType);
-          wprintf(L"\n\t\tszDeviceName=%s", lpRasSubEntry->szDeviceName);
+          wprintf(L"\n\t\tdwSize=%d", lp_ras_sub_entry->dwSize);
+          wprintf(L"\n\t\tdwfFlags=%d", lp_ras_sub_entry->dwfFlags);
+          wprintf(L"\n\t\tszDeviceType=%s", lp_ras_sub_entry->szDeviceType);
+          wprintf(L"\n\t\tszDeviceName=%s", lp_ras_sub_entry->szDeviceName);
           wprintf(L"\n\t\tszLocalPhoneNumber=%s",
-                  lpRasSubEntry->szLocalPhoneNumber);
+                  lp_ras_sub_entry->szLocalPhoneNumber);
           wprintf(L"\n\t\tdwAlternateOffset=%d",
-                  lpRasSubEntry->dwAlternateOffset);
-          HeapFree(GetProcessHeap(), 0, lpRasSubEntry);
-          lpRasSubEntry = NULL;
+                  lp_ras_sub_entry->dwAlternateOffset);
+          HeapFree(GetProcessHeap(), 0, lp_ras_sub_entry);
+          lp_ras_sub_entry = NULL;
         } else {
           wprintf(L"\n\tError calling RasGetSubEntryProperties: ");
-          PrintRasError(dwRet);
+          PrintRasError(dw_ret);
         }
       }
     }
 
     wprintf(L"\n");
     // Deallocate memory for the entry buffer
-    HeapFree(GetProcessHeap(), 0, lpRasEntry);
-    lpRasEntry = NULL;
+    HeapFree(GetProcessHeap(), 0, lp_ras_entry);
+    lp_ras_entry = NULL;
     return ERROR_SUCCESS;
   }
 
-  return dwRet;
+  return dw_ret;
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumentriesa
 int PrintEntries() {
-  DWORD dwCb = 0;
-  DWORD dwRet = ERROR_SUCCESS;
-  DWORD dwEntries = 0;
-  LPRASENTRYNAME lpRasEntryName = NULL;
+  DWORD dw_cb = 0;
+  DWORD dw_ret = ERROR_SUCCESS;
+  DWORD dw_entries = 0;
+  LPRASENTRYNAME lp_ras_entry_name = NULL;
 
-  // Call RasEnumEntries with lpRasEntryName = NULL. dwCb is returned with the
-  // required buffer size and a return code of ERROR_BUFFER_TOO_SMALL
-  dwRet = RasEnumEntries(NULL, NULL, lpRasEntryName, &dwCb, &dwEntries);
-  if (dwRet == ERROR_BUFFER_TOO_SMALL) {
+  // Call RasEnumEntries with lp_ras_entry_name = NULL. dw_cb is returned with
+  // the required buffer size and a return code of ERROR_BUFFER_TOO_SMALL
+  dw_ret = RasEnumEntries(NULL, NULL, lp_ras_entry_name, &dw_cb, &dw_entries);
+  if (dw_ret == ERROR_BUFFER_TOO_SMALL) {
     // Allocate the memory needed for the array of RAS entry names.
-    lpRasEntryName =
-        (LPRASENTRYNAME)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dwCb);
-    if (lpRasEntryName == NULL) {
+    lp_ras_entry_name =
+        (LPRASENTRYNAME)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+    if (lp_ras_entry_name == NULL) {
       LOG(ERROR) << "HeapAlloc failed!";
       return 0;
     }
     // The first RASENTRYNAME structure in the array must contain the structure
     // size
-    lpRasEntryName[0].dwSize = sizeof(RASENTRYNAME);
+    lp_ras_entry_name[0].dwSize = sizeof(RASENTRYNAME);
 
     // Call RasEnumEntries to enumerate all RAS entry names
-    dwRet = RasEnumEntries(NULL, NULL, lpRasEntryName, &dwCb, &dwEntries);
+    dw_ret = RasEnumEntries(NULL, NULL, lp_ras_entry_name, &dw_cb, &dw_entries);
 
     // If successful, print the RAS entry names
-    if (ERROR_SUCCESS == dwRet) {
+    if (ERROR_SUCCESS == dw_ret) {
       wprintf(L"The following RAS entry names were found:\n");
-      for (DWORD i = 0; i < dwEntries; i++) {
-        wprintf(L"%s\n", lpRasEntryName[i].szEntryName);
-        dwRet = PrintEntryDetails(lpRasEntryName[i].szEntryName);
+      for (DWORD i = 0; i < dw_entries; i++) {
+        wprintf(L"%s\n", lp_ras_entry_name[i].szEntryName);
+        dw_ret = PrintEntryDetails(lp_ras_entry_name[i].szEntryName);
       }
     }
     // Deallocate memory for the connection buffer
-    HeapFree(GetProcessHeap(), 0, lpRasEntryName);
-    lpRasEntryName = NULL;
+    HeapFree(GetProcessHeap(), 0, lp_ras_entry_name);
+    lp_ras_entry_name = NULL;
     return ERROR_SUCCESS;
   }
 
   // There was either a problem with RAS or there are RAS entry names to
   // enumerate
-  if (dwEntries >= 1) {
+  if (dw_entries >= 1) {
     wprintf(L"The operation failed to acquire the buffer size.\n\n");
   } else {
     wprintf(L"There were no RAS entry names found:.\n\n");
   }
 
-  return dwRet;
+  return dw_ret;
 }
 
 void copy_dword_bytes(BYTE* bytes, DWORD value) {
@@ -623,6 +618,8 @@ void copy_dword_bytes(BYTE* bytes, DWORD value) {
   }
 }
 
+// NOTE: This code is never called, but this is how the magic number set in
+// brave_vpn::CreateEntry() can be created for the `CustomIPSecPolicies` field.
 void Demo() {
   // These are the values set
   ROUTER_CUSTOM_IKEv2_POLICY0 policy;
@@ -696,7 +693,7 @@ int main(int argc, char* argv[]) {
         password.empty()) {
       LOG(ERROR) << "missing parameters for create!";
       LOG(ERROR) << "usage: winvpntool.exe --create --host_name=xxx "
-                    "--vpn_name=xxx --user_name=xxx --passowrd=xxx";
+                    "--vpn_name=xxx --user_name=xxx --password=xxx";
       return 0;
     }
     brave_vpn::BraveVPNConnectionInfo info;

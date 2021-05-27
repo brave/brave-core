@@ -17,14 +17,27 @@
 
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/utils_win.h"
+
+// Most of Windows implementations are based on Brian Clifton
+// (brian@clifton.me)'s work (https://github.com/bsclifton/winvpntool).
 
 namespace brave_vpn {
 
 namespace {
 
 #define DEFAULT_PHONE_BOOK NULL
+
+bool RemoveEntry(LPCTSTR entry_name) {
+  DWORD dw_ret = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name);
+  if (dw_ret != ERROR_SUCCESS) {
+    PrintRasError(dw_ret);
+    return false;
+  }
+  return true;
+}
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetcredentialsa
 DWORD SetCredentials(LPCTSTR entry_name, LPCTSTR username, LPCTSTR password) {
@@ -37,21 +50,21 @@ DWORD SetCredentials(LPCTSTR entry_name, LPCTSTR username, LPCTSTR password) {
   wcscpy_s(credentials.szUserName, 256, username);
   wcscpy_s(credentials.szPassword, 256, password);
 
-  DWORD dwRet =
+  DWORD dw_ret =
       RasSetCredentials(DEFAULT_PHONE_BOOK, entry_name, &credentials, FALSE);
-  if (dwRet != ERROR_SUCCESS) {
-    PrintRasError(dwRet);
-    return dwRet;
+  if (dw_ret != ERROR_SUCCESS) {
+    PrintRasError(dw_ret);
+    return dw_ret;
   }
 
   return ERROR_SUCCESS;
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetentrypropertiesa
-DWORD CreateEntry(LPCTSTR entry_name,
-                  LPCTSTR hostname,
-                  LPCTSTR username,
-                  LPCTSTR password) {
+bool CreateEntry(LPCTSTR entry_name,
+                 LPCTSTR hostname,
+                 LPCTSTR username,
+                 LPCTSTR password) {
   RASENTRY entry;
   ZeroMemory(&entry, sizeof(RASENTRY));
   // For descriptions of each field (including valid values) see:
@@ -77,14 +90,16 @@ DWORD CreateEntry(LPCTSTR entry_name,
   // this maps to "Type of sign-in info" => "User name and password"
   entry.dwCustomAuthKey = 26;
 
-  DWORD dwRet = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name, &entry,
-                                      entry.dwSize, NULL, NULL);
-  if (dwRet != ERROR_SUCCESS) {
-    PrintRasError(dwRet);
-    return dwRet;
+  DWORD dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name, &entry,
+                                       entry.dwSize, NULL, NULL);
+  if (dw_ret != ERROR_SUCCESS) {
+    PrintRasError(dw_ret);
+    return false;
   }
 
-  dwRet = SetCredentials(entry_name, username, password);
+  if (SetCredentials(entry_name, username, password) != ERROR_SUCCESS) {
+    return false;
+  }
 
   // Policy needs to be set, otherwise you'll see an error like this in
   // `eventvwr`:
@@ -116,49 +131,42 @@ DWORD CreateEntry(LPCTSTR entry_name,
   // Windows 8 and above; we need to check that.*
   //
 
-  wchar_t NumCustomPolicy[] = L"1";
-  wchar_t CustomIPSecPolicies[] =
+  constexpr wchar_t kNumCustomPolicy[] = L"1";
+  constexpr wchar_t kCustomIPSecPolicies[] =
       L"020000000600000005000000080000000500000000000000";
-  wchar_t AppDataPath[1025] = {0};
-  wchar_t PhonebookPath[2048] = {0};
+  wchar_t app_data_path[1025] = {0};
+  std::wstring phone_book_path;
 
-  dwRet = ExpandEnvironmentStrings(TEXT("%APPDATA%"), AppDataPath, 1024);
-  if (dwRet != ERROR_SUCCESS) {
-    PrintRasError(dwRet);
-    // TODO(simonhong): handle error here
+  dw_ret = ExpandEnvironmentStrings(TEXT("%APPDATA%"), app_data_path, 1024);
+  if (dw_ret != ERROR_SUCCESS) {
+    LOG(ERROR) << "failed to get APPDATA path";
+    RemoveEntry(entry_name);
+    return false;
   }
 
-  swprintf(PhonebookPath, 2048,
-           L"%s\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk",
-           AppDataPath);
-
-  BOOL wrote_entry = WritePrivateProfileString(entry_name, L"NumCustomPolicy",
-                                               NumCustomPolicy, PhonebookPath);
+  phone_book_path = base::StringPrintf(
+      L"%s\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk", app_data_path);
+  BOOL wrote_entry =
+      WritePrivateProfileString(entry_name, L"NumCustomPolicy",
+                                kNumCustomPolicy, phone_book_path.c_str());
   if (!wrote_entry) {
-    wprintf(
-        L"ERROR: failed to write \"NumCustomPolicy\" field to `rasphone.pbk`");
-    // TODO(simonhong): handle error here
+    LOG(ERROR)
+        << "ERROR: failed to write \"NumCustomPolicy\" field to `rasphone.pbk`";
+    RemoveEntry(entry_name);
+    return false;
   }
 
-  wrote_entry = WritePrivateProfileString(entry_name, L"CustomIPSecPolicies",
-                                          CustomIPSecPolicies, PhonebookPath);
+  wrote_entry =
+      WritePrivateProfileString(entry_name, L"CustomIPSecPolicies",
+                                kCustomIPSecPolicies, phone_book_path.c_str());
   if (!wrote_entry) {
-    wprintf(
-        L"ERROR: failed to write \"CustomIPSecPolicies\" field to "
-        L"`rasphone.pbk`");
-    // TODO(simonhong): handle error here
+    LOG(ERROR) << "ERROR: failed to write \"CustomIPSecPolicies\" field to "
+                  "`rasphone.pbk`";
+    RemoveEntry(entry_name);
+    return false;
   }
 
-  return ERROR_SUCCESS;
-}
-
-DWORD RemoveEntry(LPCTSTR entry_name) {
-  DWORD dwRet = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name);
-  if (dwRet != ERROR_SUCCESS) {
-    PrintRasError(dwRet);
-    return dwRet;
-  }
-  return dwRet;
+  return true;
 }
 
 }  // namespace
@@ -178,8 +186,8 @@ bool BraveVPNConnectionManagerWin::CreateVPNConnection(
   const std::wstring host = base::UTF8ToWide(info.url);
   const std::wstring user = base::UTF8ToWide(info.id);
   const std::wstring password = base::UTF8ToWide(info.pwd);
-  CreateEntry(name.c_str(), host.c_str(), user.c_str(), password.c_str());
-  return true;
+  return CreateEntry(name.c_str(), host.c_str(), user.c_str(),
+                     password.c_str());
 }
 
 bool BraveVPNConnectionManagerWin::UpdateVPNConnection(
@@ -201,8 +209,7 @@ bool BraveVPNConnectionManagerWin::Disconnect(const std::string& name) {
 bool BraveVPNConnectionManagerWin::RemoveVPNConnection(
     const std::string& name) {
   const std::wstring w_name = base::UTF8ToWide(name);
-  RemoveEntry(w_name.c_str());
-  return true;
+  return RemoveEntry(w_name.c_str());
 }
 
 }  // namespace brave_vpn

@@ -17,15 +17,15 @@ namespace {
 
 // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessage
 void PrintSystemError(DWORD error) {
-  DWORD cBufSize = 512;
-  TCHAR lpszErrorString[512];
+  DWORD c_buf_size = 512;
+  TCHAR lpsz_error_string[512];
 
-  DWORD bufLen =
+  DWORD buf_len =
       FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                     NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                    lpszErrorString, cBufSize, NULL);
-  if (bufLen) {
-    LOG(ERROR) << lpszErrorString;
+                    lpsz_error_string, c_buf_size, NULL);
+  if (buf_len) {
+    LOG(ERROR) << lpsz_error_string;
   }
 }
 
@@ -33,12 +33,13 @@ void PrintSystemError(DWORD error) {
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgeterrorstringa
 void PrintRasError(DWORD error) {
-  DWORD cBufSize = 512;
-  TCHAR lpszErrorString[512];
+  DWORD c_buf_size = 512;
+  TCHAR lpsz_error_string[512];
 
   if (error > RASBASE && error < RASBASEEND) {
-    if (RasGetErrorString(error, lpszErrorString, cBufSize) == ERROR_SUCCESS) {
-      LOG(ERROR) << lpszErrorString;
+    if (RasGetErrorString(error, lpsz_error_string, c_buf_size) ==
+        ERROR_SUCCESS) {
+      LOG(ERROR) << lpsz_error_string;
       return;
     }
   }
