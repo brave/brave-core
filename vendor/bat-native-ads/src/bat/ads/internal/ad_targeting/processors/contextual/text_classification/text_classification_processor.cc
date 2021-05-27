@@ -13,9 +13,6 @@
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-//DEBUGGIN
-#include <iostream>
-
 namespace ads {
 namespace ad_targeting {
 namespace processor {
@@ -66,19 +63,19 @@ void TextClassification::Process(const std::string& text) {
     return;
   }
 
-  const chrome_lang_id::NNetLanguageIdentifier::Result detected_lang = detect_page_language(text);
-  std::cerr << "LANGUAGE DETECTOR:"
-            << detected_lang.language << " " 
-            << detected_lang.probability << "\n";
+  const chrome_lang_id::NNetLanguageIdentifier::Result res_id = detect_page_language(text);
 
   const std::string locale = brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-  std::cerr << "LANGUAGE CODE FOR LOCALE:"
-            << language_code << "for " 
-            << locale << "\n";
+  const std::string locale_language = brave_l10n::GetLanguageCode(locale);
 
-  //TODO: Prevent classification if locale doesn't match detected language
-  // if detection confidence not enough bypass and go with locale
+  // NOTE: This holds as long as the resource is univocally matched to the locale 
+  if (res_id.is_reliable && locale_language != res_id.language) {
+    BLOG(1,
+         "Text not classified as locale language (" << locale_language
+         << ") does not match the language of the visited "
+         "webpage (" << res_id.language << ")");
+    return;
+  }
 
   ml::pipeline::TextProcessing* text_proc_pipeline = resource_->get();
 
