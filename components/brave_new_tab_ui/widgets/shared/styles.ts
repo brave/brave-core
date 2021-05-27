@@ -278,7 +278,7 @@ export const ListItem = styled('li')<StyleProps>`
 export const BackArrow = styled('div')<StyleProps>`
   width: 20px;
   cursor: pointer;
-  margin-left: ${p => p.marketView ? 60 : 0}px;
+  margin-left: ${p => p.marketView ? 137 : 0}px;
 `
 
 export const ActionButton = styled('button')<StyleProps>`
