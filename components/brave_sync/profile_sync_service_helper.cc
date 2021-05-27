@@ -30,6 +30,13 @@ void ResetSync(syncer::BraveProfileSyncService* sync_service,
   const syncer::DeviceInfo* local_device_info =
       device_info_service->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
 
+  // Remove DCHECK when will be found the reason of the issue
+  // https://github.com/brave/brave-browser/issues/16066 .
+  DCHECK(local_device_info);
+  if (!local_device_info) {
+    return;
+  }
+
   sync_service->SuspendDeviceObserverForOwnReset();
 
   tracker->DeleteDeviceInfo(
