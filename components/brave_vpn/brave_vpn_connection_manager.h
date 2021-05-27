@@ -18,10 +18,10 @@ class BraveVPNConnectionManager {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnEntryAdded(const std::string& name) = 0;
-    virtual void OnEntryRemoved(const std::string& name) = 0;
-    virtual void OnEntryConnected(const std::string& name) = 0;
-    virtual void OnEntryDisconected(const std::string& name) = 0;
+    virtual void OnCreated(const std::string& name) = 0;
+    virtual void OnRemoved(const std::string& name) = 0;
+    virtual void OnConnected(const std::string& name) = 0;
+    virtual void OnDisconnected(const std::string& name) = 0;
 
    protected:
     ~Observer() override = default;
@@ -36,11 +36,11 @@ class BraveVPNConnectionManager {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  virtual bool CreateVPNConnection(const BraveVPNConnectionInfo& info) = 0;
-  virtual bool UpdateVPNConnection(const BraveVPNConnectionInfo& info) = 0;
-  virtual bool Connect(const std::string& name) = 0;
-  virtual bool Disconnect(const std::string& name) = 0;
-  virtual bool RemoveVPNConnection(const std::string& name) = 0;
+  virtual void CreateVPNConnection(const BraveVPNConnectionInfo& info) = 0;
+  virtual void UpdateVPNConnection(const BraveVPNConnectionInfo& info) = 0;
+  virtual void Connect(const std::string& name) = 0;
+  virtual void Disconnect(const std::string& name) = 0;
+  virtual void RemoveVPNConnection(const std::string& name) = 0;
 
  protected:
   BraveVPNConnectionManager();

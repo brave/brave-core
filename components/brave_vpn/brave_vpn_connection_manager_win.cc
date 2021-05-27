@@ -18,6 +18,8 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/utils_win.h"
 
 // Most of Windows implementations are based on Brian Clifton
@@ -41,36 +43,89 @@ BraveVPNConnectionManager* BraveVPNConnectionManager::GetInstance() {
 BraveVPNConnectionManagerWin::BraveVPNConnectionManagerWin() = default;
 BraveVPNConnectionManagerWin::~BraveVPNConnectionManagerWin() = default;
 
-bool BraveVPNConnectionManagerWin::CreateVPNConnection(
+void BraveVPNConnectionManagerWin::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   const std::wstring name = base::UTF8ToWide(info.name);
   const std::wstring host = base::UTF8ToWide(info.url);
   const std::wstring user = base::UTF8ToWide(info.id);
   const std::wstring password = base::UTF8ToWide(info.pwd);
-  return CreateEntry(name.c_str(), host.c_str(), user.c_str(),
-                     password.c_str());
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&CreateEntry, name.c_str(), host.c_str(), user.c_str(),
+                     password.c_str()),
+      base::BindOnce(&BraveVPNConnectionManagerWin::OnCreated,
+                     weak_factory_.GetWeakPtr(), info.name));
 }
 
-bool BraveVPNConnectionManagerWin::UpdateVPNConnection(
+void BraveVPNConnectionManagerWin::UpdateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   NOTIMPLEMENTED();
-  return true;
 }
 
-bool BraveVPNConnectionManagerWin::Connect(const std::string& name) {
+void BraveVPNConnectionManagerWin::Connect(const std::string& name) {
   const std::wstring w_name = base::UTF8ToWide(name);
-  return ConnectEntry(w_name.c_str());
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&ConnectEntry, w_name.c_str()),
+      base::BindOnce(&BraveVPNConnectionManagerWin::OnConnected,
+                     weak_factory_.GetWeakPtr(), name));
 }
 
-bool BraveVPNConnectionManagerWin::Disconnect(const std::string& name) {
+void BraveVPNConnectionManagerWin::Disconnect(const std::string& name) {
   const std::wstring w_name = base::UTF8ToWide(name);
-  return DisconnectEntry(w_name.c_str());
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&DisconnectEntry, w_name.c_str()),
+      base::BindOnce(&BraveVPNConnectionManagerWin::OnDisconnected,
+                     weak_factory_.GetWeakPtr(), name));
 }
 
-bool BraveVPNConnectionManagerWin::RemoveVPNConnection(
+void BraveVPNConnectionManagerWin::RemoveVPNConnection(
     const std::string& name) {
   const std::wstring w_name = base::UTF8ToWide(name);
-  return RemoveEntry(w_name.c_str());
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&RemoveEntry, w_name.c_str()),
+      base::BindOnce(&BraveVPNConnectionManagerWin::OnRemoved,
+                     weak_factory_.GetWeakPtr(), name));
+  RemoveEntry(w_name.c_str());
+}
+
+void BraveVPNConnectionManagerWin::OnCreated(const std::string& name,
+                                             bool success) {
+  if (!success)
+    return;
+
+  for (Observer& obs : observers_)
+    obs.OnCreated(name);
+}
+
+void BraveVPNConnectionManagerWin::OnConnected(const std::string& name,
+                                               bool success) {
+  if (!success)
+    return;
+
+  for (Observer& obs : observers_)
+    obs.OnConnected(name);
+}
+
+void BraveVPNConnectionManagerWin::OnDisconnected(const std::string& name,
+                                                  bool success) {
+  if (!success)
+    return;
+
+  for (Observer& obs : observers_)
+    obs.OnDisconnected(name);
+}
+
+void BraveVPNConnectionManagerWin::OnRemoved(const std::string& name,
+                                             bool success) {
+  if (!success)
+    return;
+
+  for (Observer& obs : observers_)
+    obs.OnRemoved(name);
 }
 
 }  // namespace brave_vpn
