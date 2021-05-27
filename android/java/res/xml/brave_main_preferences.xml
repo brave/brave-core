@@ -113,7 +113,7 @@
         icon="@drawable/ic_languages"
         android:title="@string/language_settings"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.brave_downloads.settings.BraveDownloadSettings"
+        android:fragment="org.chromium.chrome.browser.download.settings.BraveDownloadSettings"
         android:key="brave_downloads"
         android:order="24"
         android:icon="@drawable/ic_downloads"
