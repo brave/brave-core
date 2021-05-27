@@ -89,9 +89,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      kLoadCryptoWalletsOnStartup));
+      kERCLoadCryptoWalletsOnStartup));
   EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets));
+      browser()->profile()->GetPrefs()->GetBoolean(kERCOptedIntoCryptoWallets));
 #endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_EQ(

@@ -125,7 +125,7 @@ BraveWalletLoadUIFunction::Run() {
         kBraveWalletWeb3Provider,
         static_cast<int>(::brave_wallet::Web3ProviderTypes::CRYPTO_WALLETS));
   }
-  profile->GetPrefs()->SetBoolean(kOptedIntoCryptoWallets, true);
+  profile->GetPrefs()->SetBoolean(kERCOptedIntoCryptoWallets, true);
   service->MaybeLoadCryptoWalletsExtension(
       base::BindOnce(&BraveWalletLoadUIFunction::OnLoaded, this));
   return RespondLater();
@@ -139,8 +139,9 @@ ExtensionFunction::ResponseAction
 BraveWalletShouldPromptForSetupFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* service = GetEthereumRemoteClientService(browser_context());
-  bool should_prompt = !service->IsCryptoWalletsSetup() &&
-      !profile->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets);
+  bool should_prompt =
+      !service->IsCryptoWalletsSetup() &&
+      !profile->GetPrefs()->GetBoolean(kERCOptedIntoCryptoWallets);
   return RespondNow(OneArgument(base::Value(should_prompt)));
 }
 

@@ -318,11 +318,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterListPref(kBraveTodayWeeklyCardVisitsCount);
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  registry->RegisterIntegerPref(kBraveWalletPrefVersion, 0);
-  registry->RegisterStringPref(kBraveWalletAES256GCMSivNonce, "");
-  registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
-  registry->RegisterBooleanPref(kLoadCryptoWalletsOnStartup, false);
-  registry->RegisterBooleanPref(kOptedIntoCryptoWallets, false);
+  registry->RegisterIntegerPref(kERCPrefVersion, 0);
+  registry->RegisterStringPref(kERCAES256GCMSivNonce, "");
+  registry->RegisterStringPref(kERCEncryptedSeed, "");
+  registry->RegisterBooleanPref(kERCLoadCryptoWalletsOnStartup, false);
+  registry->RegisterBooleanPref(kERCOptedIntoCryptoWallets, false);
 #endif
 
   // Brave Wallet

@@ -107,16 +107,14 @@ EthereumRemoteClientService::GetEthereumRemoteClientSeedFromRootSeed(
 bool EthereumRemoteClientService::LoadFromPrefs(PrefService* prefs,
                                                 std::string* cipher_seed,
                                                 std::string* nonce) {
-  if (!prefs->HasPrefPath(kBraveWalletAES256GCMSivNonce) ||
-      !prefs->HasPrefPath(kBraveWalletEncryptedSeed)) {
+  if (!prefs->HasPrefPath(kERCAES256GCMSivNonce) ||
+      !prefs->HasPrefPath(kERCEncryptedSeed)) {
     return false;
   }
-  if (!base::Base64Decode(prefs->GetString(kBraveWalletAES256GCMSivNonce),
-                          nonce)) {
+  if (!base::Base64Decode(prefs->GetString(kERCAES256GCMSivNonce), nonce)) {
     return false;
   }
-  if (!base::Base64Decode(prefs->GetString(kBraveWalletEncryptedSeed),
-                          cipher_seed)) {
+  if (!base::Base64Decode(prefs->GetString(kERCEncryptedSeed), cipher_seed)) {
     return false;
   }
   return true;
@@ -175,8 +173,8 @@ void EthereumRemoteClientService::SaveToPrefs(PrefService* prefs,
   base::Base64Encode(
       base::MakeStringPiece(cipher_seed.begin(), cipher_seed.end()),
       &base64_cipher_seed);
-  prefs->SetString(kBraveWalletAES256GCMSivNonce, base64_nonce);
-  prefs->SetString(kBraveWalletEncryptedSeed, base64_cipher_seed);
+  prefs->SetString(kERCAES256GCMSivNonce, base64_nonce);
+  prefs->SetString(kERCEncryptedSeed, base64_cipher_seed);
 }
 
 void EthereumRemoteClientService::ResetCryptoWallets() {
@@ -374,8 +372,8 @@ void EthereumRemoteClientService::CryptoWalletsExtensionReady() {
 
 bool EthereumRemoteClientService::IsCryptoWalletsSetup() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  return prefs->HasPrefPath(kBraveWalletAES256GCMSivNonce) &&
-         prefs->HasPrefPath(kBraveWalletEncryptedSeed);
+  return prefs->HasPrefPath(kERCAES256GCMSivNonce) &&
+         prefs->HasPrefPath(kERCEncryptedSeed);
 }
 
 bool EthereumRemoteClientService::IsCryptoWalletsReady() const {

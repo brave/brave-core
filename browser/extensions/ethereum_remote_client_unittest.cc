@@ -120,9 +120,9 @@ TEST_F(BraveWalletUnitTest, TestOpenSeed) {
 }
 
 TEST_F(BraveWalletUnitTest, TestLoadFromPrefs) {
-  GetPrefs()->SetString(kBraveWalletAES256GCMSivNonce, "yJngKDr5nCGYz7EM");
+  GetPrefs()->SetString(kERCAES256GCMSivNonce, "yJngKDr5nCGYz7EM");
   GetPrefs()->SetString(
-      kBraveWalletEncryptedSeed,
+      kERCEncryptedSeed,
       "IQu5fUMbXG6E7v8ITwcIKL3TI3rst0LU1US7ZxCKpgAGgLNAN6DbCN7nMF2Eg7Kx");
 
   std::string cipher_seed;
@@ -156,8 +156,7 @@ TEST_F(BraveWalletUnitTest, TestSaveToPrefs) {
       std::string(cipher_seed, base::size(cipher_seed)),
       std::string(nonce, base::size(nonce)));
 
-  ASSERT_EQ(GetPrefs()->GetString(kBraveWalletAES256GCMSivNonce),
-            "yJngKDr5nCGYz7EM");
-  ASSERT_EQ(GetPrefs()->GetString(kBraveWalletEncryptedSeed),
+  ASSERT_EQ(GetPrefs()->GetString(kERCAES256GCMSivNonce), "yJngKDr5nCGYz7EM");
+  ASSERT_EQ(GetPrefs()->GetString(kERCEncryptedSeed),
             "IQu5fUMbXG6E7v8ITwcIKL3TI3rst0LU1US7ZxCKpgAGgLNAN6DbCN7nMF2Eg7Kx");
 }

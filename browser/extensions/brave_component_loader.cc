@@ -172,7 +172,7 @@ void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
   // Only load if the eagerly load Crypto Wallets setting is on and there is a
   // project id configured in the build.
   if (HasInfuraProjectID() &&
-      profile_prefs_->GetBoolean(kLoadCryptoWalletsOnStartup)) {
+      profile_prefs_->GetBoolean(kERCLoadCryptoWalletsOnStartup)) {
     AddEthereumRemoteClientExtension();
   }
 }

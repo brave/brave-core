@@ -5,10 +5,9 @@
 
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 
-const char kBraveWalletAES256GCMSivNonce[] =
-    "brave.wallet.aes_256_gcm_siv_nonce";
-const char kBraveWalletEncryptedSeed[] = "brave.wallet.encrypted_seed";
-const char kBraveWalletEnabledDeprecated[] = "brave.wallet.enabled";
-const char kBraveWalletPrefVersion[] = "brave.wallet.pref_version";
-const char kLoadCryptoWalletsOnStartup[] = "brave.wallet.load_on_startup";
-const char kOptedIntoCryptoWallets[] = "brave.wallet.opted_in";
+const char kERCAES256GCMSivNonce[] = "brave.wallet.aes_256_gcm_siv_nonce";
+const char kERCEncryptedSeed[] = "brave.wallet.encrypted_seed";
+const char kERCEnabledDeprecated[] = "brave.wallet.enabled";
+const char kERCPrefVersion[] = "brave.wallet.pref_version";
+const char kERCLoadCryptoWalletsOnStartup[] = "brave.wallet.load_on_startup";
+const char kERCOptedIntoCryptoWallets[] = "brave.wallet.opted_in";

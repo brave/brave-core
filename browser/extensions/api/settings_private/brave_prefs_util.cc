@@ -194,7 +194,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  (*s_brave_allowlist)[kLoadCryptoWalletsOnStartup] =
+  (*s_brave_allowlist)[kERCLoadCryptoWalletsOnStartup] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Brave Wallet pref

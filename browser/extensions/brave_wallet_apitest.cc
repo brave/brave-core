@@ -63,8 +63,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletAPIKnownValuesTest) {
-  GetPrefs()->SetString(kBraveWalletAES256GCMSivNonce, "yJngKDr5nCGYz7EM");
-  GetPrefs()->SetString(kBraveWalletEncryptedSeed,
+  GetPrefs()->SetString(kERCAES256GCMSivNonce, "yJngKDr5nCGYz7EM");
+  GetPrefs()->SetString(
+      kERCEncryptedSeed,
       "IQu5fUMbXG6E7v8ITwcIKL3TI3rst0LU1US7ZxCKpgAGgLNAN6DbCN7nMF2Eg7Kx");
   ResultCatcher catcher;
   const Extension* extension =
@@ -78,8 +79,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletAPIBitGoKnownValuesTest) {
-  GetPrefs()->SetString(kBraveWalletAES256GCMSivNonce, "yJngKDr5nCGYz7EM");
-  GetPrefs()->SetString(kBraveWalletEncryptedSeed,
+  GetPrefs()->SetString(kERCAES256GCMSivNonce, "yJngKDr5nCGYz7EM");
+  GetPrefs()->SetString(
+      kERCEncryptedSeed,
       "IQu5fUMbXG6E7v8ITwcIKL3TI3rst0LU1US7ZxCKpgAGgLNAN6DbCN7nMF2Eg7Kx");
   ResultCatcher catcher;
   const Extension* extension =

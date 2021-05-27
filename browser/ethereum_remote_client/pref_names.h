@@ -6,12 +6,12 @@
 #ifndef BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_PREF_NAMES_H_
 #define BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_PREF_NAMES_H_
 
-extern const char kBraveWalletAES256GCMSivNonce[];
-extern const char kBraveWalletEncryptedSeed[];
+extern const char kERCAES256GCMSivNonce[];
+extern const char kERCEncryptedSeed[];
 // Deprecated in favor of kBraveWalletWeb3Provider
-extern const char kBraveWalletEnabledDeprecated[];
-extern const char kBraveWalletPrefVersion[];
-extern const char kLoadCryptoWalletsOnStartup[];
-extern const char kOptedIntoCryptoWallets[];
+extern const char kERCEnabledDeprecated[];
+extern const char kERCPrefVersion[];
+extern const char kERCLoadCryptoWalletsOnStartup[];
+extern const char kERCOptedIntoCryptoWallets[];
 
 #endif  // BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_PREF_NAMES_H_
