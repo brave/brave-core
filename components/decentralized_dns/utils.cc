@@ -88,6 +88,15 @@ bool IsENSResolveMethodDoH(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS);
 }
 
+bool IsENSResolveMethodEthereum(PrefService* local_state) {
+  if (!local_state || !IsDecentralizedDnsEnabled()) {
+    return false;  // Treat it as disabled.
+  }
+
+  return local_state->GetInteger(kENSResolveMethod) ==
+         static_cast<int>(ResolveMethodTypes::ETHEREUM);
+}
+
 base::Value GetResolveMethodList(Provider provider) {
   base::Value list(base::Value::Type::LIST);
   list.Append(MakeSelectValue(
@@ -102,12 +111,10 @@ base::Value GetResolveMethodList(Provider provider) {
       l10n_util::GetStringUTF16(
           IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_DNS_OVER_HTTPS)));
 
-  if (provider == Provider::UNSTOPPABLE_DOMAINS) {
-    list.Append(
-        MakeSelectValue(ResolveMethodTypes::ETHEREUM,
-                        l10n_util::GetStringUTF16(
-                            IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM)));
-  }
+  list.Append(
+      MakeSelectValue(ResolveMethodTypes::ETHEREUM,
+                      l10n_util::GetStringUTF16(
+                          IDS_DECENTRALIZED_DNS_RESOLVE_OPTION_ETHEREUM)));
 
   return list;
 }

@@ -63,6 +63,7 @@ bool IsValidNodeFilename(const std::string& filename);
 bool ParsePeerConnectionString(const std::string& value,
                                std::string* id,
                                std::string* address);
+GURL ContentHashToCIDv1URL(const std::string& contenthash);
 bool IsAPIGateway(const GURL& url, version_info::Channel channel);
 }  // namespace ipfs
 
