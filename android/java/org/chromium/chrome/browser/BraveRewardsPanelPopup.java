@@ -6,6 +6,8 @@
 
 package org.chromium.chrome.browser;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -51,6 +54,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.ListPopupWindow;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -84,6 +88,7 @@ import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorImpl;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.ui.base.DeviceFormFactor;
 
 import java.math.RoundingMode;
 import java.text.DateFormat;
@@ -193,6 +198,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private HeightWrappingViewPager braveRewardsViewPager;
     private View braveRewardsOnboardingView;
     private View braveRewardsWelcomeView;
+
+    private ViewGroup rootViewGroup;
+    private View loginPopupView;
 
     private boolean isVerifyWalletEnabled() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -460,9 +468,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         LayoutInflater inflater =
             (LayoutInflater) this.anchor.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel, null);
-        initViews(root);
-        setContentView(root);
+        rootViewGroup = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel, null);
+        initViews(rootViewGroup);
+        setContentView(rootViewGroup);
         initViewActionEvents();
 
         //setting Recurrent Donations spinner
@@ -470,7 +478,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         mTip_amount_spinner.setAdapter(mTip_amount_spinner_data_adapter);
 
         boolean isAnonWallet = BraveRewardsHelper.isAnonWallet();
-        tvYourWalletTitle.setText(isAnonWallet ? root.getResources().getString(R.string.brave_ui_your_balance) : root.getResources().getString(R.string.brave_ui_your_wallet));
+        tvYourWalletTitle.setText(isAnonWallet
+                        ? rootViewGroup.getResources().getString(R.string.brave_ui_your_balance)
+                        : rootViewGroup.getResources().getString(R.string.brave_ui_your_wallet));
 
         batText = BraveRewardsHelper.BAT_TEXT;
 
@@ -954,7 +964,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     }
 
     class PublisherFetchTimer extends TimerTask {
-
         private final int tabId;
         private final String url;
 
@@ -2012,7 +2021,15 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
         LayoutInflater inflater =
                 (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View loginPopupView = inflater.inflate(R.layout.uphold_login_popup_window, null);
+        loginPopupView = inflater.inflate(R.layout.uphold_login_popup_window, rootViewGroup);
+
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(mActivity);
+        if (isTablet) {
+            ViewGroup.LayoutParams params = loginPopupView.getLayoutParams();
+            params.width = dpToPx(mActivity, 320);
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            loginPopupView.setLayoutParams(params);
+        }
 
         TextView loginActionButton = loginPopupView.findViewById(R.id.login_action_button);
 
@@ -2056,8 +2073,12 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         loginActionButton.setMovementMethod(LinkMovementMethod.getInstance());
         loginActionButton.setText(verifiedAccountUpholdTextSS);
 
-        loginPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        loginPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        // Rect bgPadding = new Rect();
+        // int popupWidth = mActivity.getResources().getDimensionPixelSize(R.dimen.menu_width)
+        //                  + bgPadding.left + bgPadding.right;
+        rootViewGroup.measure(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int popupWidth = rootViewGroup.getMeasuredWidth();
         loginPopupWindow.setBackgroundDrawable(
                 new ColorDrawable(android.graphics.Color.TRANSPARENT));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -2067,7 +2088,17 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         loginPopupWindow.setTouchable(true);
         loginPopupWindow.setFocusable(true);
         loginPopupWindow.setOutsideTouchable(true);
-        loginPopupWindow.setContentView(loginPopupView);
+        loginPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    loginPopupWindow.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         view.post(new Runnable() {
             @Override
@@ -2075,7 +2106,17 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 if (SysUtils.isLowEndDevice()) {
                     loginPopupWindow.setAnimationStyle(0);
                 }
-                loginPopupWindow.showAsDropDown(view, 0, 0);
+
+                if (android.os.Build.VERSION.SDK_INT
+                        < android.os.Build.VERSION_CODES.N) { // Before 7.0
+                    loginPopupWindow.showAsDropDown(view, 0, 0);
+                } else {
+                    int[] location = new int[2];
+                    view.getLocationOnScreen(location);
+                    int x = location[0];
+                    int y = location[1];
+                    loginPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, 0, y);
+                }
             }
         });
     }
