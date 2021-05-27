@@ -147,7 +147,7 @@ bool CreateEntry(LPCTSTR entry_name,
   }
 
   phone_book_path = base::StringPrintf(
-      L"%s\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk", app_data_path);
+      L"%ls\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk", app_data_path);
 
   // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-writeprivateprofilestringw
   BOOL wrote_entry =
