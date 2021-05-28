@@ -35,13 +35,10 @@ std::string GetTopSegmentFromPageProbabilities(
   return iter->first;
 }
 
-chrome_lang_id::NNetLanguageIdentifier::Result detect_page_language(const std::string& text) {
-
-  const std::string contents = text;
-
-  chrome_lang_id::NNetLanguageIdentifier lang_id;
+chrome_lang_id::NNetLanguageIdentifier::Result DetectPageLanguage(const std::string& text) {
+  chrome_lang_id::NNetLanguageIdentifier language_detector;
   const chrome_lang_id::NNetLanguageIdentifier::Result lang_id_result =
-      lang_id.FindTopNMostFreqLangs(contents, /*num_langs=*/1).at(0);
+      language_detector.FindTopNMostFreqLangs(text, /* num_langs */1).at(0);
 
   return lang_id_result;
 }
@@ -63,17 +60,16 @@ void TextClassification::Process(const std::string& text) {
     return;
   }
 
-  const chrome_lang_id::NNetLanguageIdentifier::Result res_id = detect_page_language(text);
+  const chrome_lang_id::NNetLanguageIdentifier::Result language_id = DetectPageLanguage(text);
 
   const std::string locale = brave_l10n::LocaleHelper::GetInstance()->GetLocale();
   const std::string locale_language = brave_l10n::GetLanguageCode(locale);
 
-  // NOTE: This holds as long as the resource is univocally matched to the locale 
-  if (res_id.is_reliable && locale_language != res_id.language) {
+  if (!language_id.is_reliable || locale_language != language_id.language) {
     BLOG(1,
          "Text not classified as locale language (" << locale_language
          << ") does not match the language of the visited "
-         "webpage (" << res_id.language << ")");
+         "webpage (" << language_id.language << ")");
     return;
   }
 
