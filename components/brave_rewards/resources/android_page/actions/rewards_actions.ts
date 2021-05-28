@@ -16,6 +16,17 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
 
 export const getRewardsParameters = () => action(types.GET_REWARDS_PARAMETERS)
 
+export const disconnectWallet = () => action(types.DISCONNECT_WALLET)
+
+export const disconnectWalletError = () => action(types.DISCONNECT_WALLET_ERROR)
+
+export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
+
+export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+  result,
+  wallet
+})
+
 export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>
   action(types.ON_REWARDS_PARAMETERS, {
     properties

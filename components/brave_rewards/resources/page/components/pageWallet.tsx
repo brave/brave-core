@@ -254,7 +254,7 @@ class PageWallet extends React.Component<Props, State> {
     const { externalWallet } = this.props.rewardsData
     if (externalWallet && disconnectWalletError) {
       return {
-        node: <><b>{getLocale('uhOh')}</b><br />{getLocale('disconnectWalletFailed').replace('$1', utils.getWalletProviderName(externalWallet))}</>,
+        node: <><b>{getLocale('uhOh')}</b><br />{getLocale('disconnectWalletFailed').replace('$1', utils.getWalletProviderName(externalWallet))}<br /><br /><a href='https://support.brave.com/hc/en-us/articles/360062026432'>{getLocale('learnMore')}</a></>,
         type: 'error',
         onAlertClose: () => {
           this.actions.onClearAlert('disconnectWalletError')

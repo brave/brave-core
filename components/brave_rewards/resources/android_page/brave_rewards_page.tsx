@@ -107,6 +107,19 @@ window.cr.define('brave_rewards', function () {
     getActions().onStatement(data)
   }
 
+  function disconnectWallet (properties: {result: number}) {
+    if (properties.result === 0) {
+      getActions().getExternalWallet()
+      getActions().getBalance()
+      return
+    }
+    getActions().disconnectWalletError()
+  }
+
+  function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
+    getActions().onExternalWallet(properties.result, properties.wallet)
+  }
+
   function statementChanged () {
     getActions().onStatementChanged()
   }
@@ -163,6 +176,8 @@ window.cr.define('brave_rewards', function () {
   }
 
   return {
+    disconnectWallet,
+    externalWallet,
     initialize,
     rewardsParameters,
     promotions,

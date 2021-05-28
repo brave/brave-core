@@ -18,6 +18,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getAutoContributeProperties')
       break
     }
+    case types.DISCONNECT_WALLET : {
+      state = { ...state }
+      chrome.send('brave_rewards.disconnectWallet')
+      break
+    }
     case types.DISCONNECT_WALLET_ERROR: {
       state = { ...state }
       let ui = state.ui
@@ -46,6 +51,21 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         ui
       }
 
+      break
+    }
+    case types.GET_EXTERNAL_WALLET: {
+      chrome.send('brave_rewards.getExternalWallet')
+      break
+    }
+    case types.ON_EXTERNAL_WALLET: {
+      state = { ...state }
+
+      if (action.payload.result === 24) { // on ledger::type::Result::EXPIRED_TOKEN
+        chrome.send('brave_rewards.getExternalWallet')
+        break
+      }
+
+      state.externalWallet = action.payload.wallet
       break
     }
     case types.ON_SETTING_SAVE:
