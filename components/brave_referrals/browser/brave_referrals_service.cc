@@ -767,6 +767,7 @@ void BraveReferralsService::InitAndroidReferrer() {
 }
 
 void BraveReferralsService::OnAndroidBraveReferrerReady() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&ReadPromoCode, GetPromoCodeFileName()),
       base::BindOnce(&BraveReferralsService::OnReadPromoCodeComplete,
