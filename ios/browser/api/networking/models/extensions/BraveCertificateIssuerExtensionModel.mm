@@ -32,7 +32,10 @@
     for (std::size_t i = 0; i < sk_GENERAL_NAME_num(names); ++i) {
       GENERAL_NAME* name = sk_GENERAL_NAME_value(names, static_cast<int>(i));
       if (name) {
-        [result addObject:brave::convert_general_name(name)];
+        auto* converted_name = brave::convert_general_name(name);
+        if (converted_name) {
+          [result addObject:converted_name];
+        }
       }
     }
     GENERAL_NAMES_free(names);

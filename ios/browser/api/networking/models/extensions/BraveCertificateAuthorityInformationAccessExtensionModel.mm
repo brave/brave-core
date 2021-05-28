@@ -22,14 +22,29 @@
   #include <openssl/x509v3.h>
 #endif
 
+@interface BraveCertificateAuthorityInformationAccessDescriptionExtensionModel()
+@property(nonatomic, strong, readwrite) NSString* oidName;
+@property(nonatomic, strong, readwrite) NSString* oid;
+@property(nonatomic, strong, readwrite) NSArray<BraveCertificateExtensionGeneralNameModel*>* locations;
+@end
+
+@implementation BraveCertificateAuthorityInformationAccessDescriptionExtensionModel
+- (instancetype)init {
+  if ((self = [super init])) {
+    _oidName = [[NSString alloc] init];
+    _oid = [[NSString alloc] init];
+    _locations = @[];
+  }
+  return self;
+}
+@end
+
 
 @implementation BraveCertificateAuthorityInformationAccessExtensionModel
 - (void)parseExtension:(X509_EXTENSION*)extension {
   //NID_sinfo_access and NID_info_access share the same structures of ACCESS_DESCRIPTION stacks
-  
-  _oidName = [[NSString alloc] init];
-  _oid = [[NSString alloc] init];
-  NSMutableArray* locations = [[NSMutableArray alloc] init];
+
+  NSMutableArray* access_descriptions = [[NSMutableArray alloc] init];
   
   //STACK_OF(ACCESS_DESCRIPTION)
   AUTHORITY_INFO_ACCESS* info_access = static_cast<AUTHORITY_INFO_ACCESS*>(X509V3_EXT_d2i(extension));
@@ -37,16 +52,25 @@
     for (std::size_t i = 0; i < sk_ACCESS_DESCRIPTION_num(info_access); ++i) {
       ACCESS_DESCRIPTION* desc = sk_ACCESS_DESCRIPTION_value(info_access, static_cast<int>(i));
       if (desc) {
-        _oidName = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(desc->method, false));
-        _oid = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(desc->method, true));
+        auto* access_description = [[BraveCertificateAuthorityInformationAccessDescriptionExtensionModel alloc] init];
+
+        access_description.oidName = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(desc->method, false));
+        access_description.oid = brave::string_to_ns(x509_utils::string_from_ASN1_OBJECT(desc->method, true));
 
         if (desc->location) {
-          [locations addObject:brave::convert_general_name(desc->location)];
+          NSMutableArray* locations = [[NSMutableArray alloc] init];
+          auto* converted_name = brave::convert_general_name(desc->location);
+          if (converted_name) {
+            [locations addObject:converted_name];
+          }
+          access_description.locations = locations;
         }
+
+        [access_descriptions addObject:access_description];
       }
     }
     AUTHORITY_INFO_ACCESS_free(info_access);
   }
-  _locations = locations;
+  _accessDescriptions = access_descriptions;
 }
 @end

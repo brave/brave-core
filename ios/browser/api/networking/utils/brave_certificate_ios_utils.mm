@@ -430,15 +430,47 @@ BraveCertificateExtensionGeneralNameModel* convert_general_name(GENERAL_NAME* na
                                          name_assigner,
                                          party_name,
                                          dir_name);
-    
-    switch (type) {
+      
+    switch(type) {
+      case GEN_OTHERNAME: {
+        result.type = BraveGeneralNameType_OTHER_NAME;
+        result.other = brave::string_to_ns(other);
+      }
+        break;
+        
+      case GEN_X400: {
+        result.type = BraveGeneralNameType_X400;
+        result.other = brave::string_to_ns(other);
+      }
+        break;
+        
       case GEN_EDIPARTY: {
+        result.type = BraveGeneralNameType_EDIPARTY;
         result.nameAssigner = brave::string_to_ns(name_assigner);
         result.partyName = brave::string_to_ns(party_name);
       }
         break;
         
+      case GEN_EMAIL: {
+        result.type = BraveGeneralNameType_EMAIL;
+        result.other = brave::string_to_ns(other);
+      }
+        break;
+        
+      case GEN_DNS: {
+        result.type = BraveGeneralNameType_DNS;
+        result.other = brave::string_to_ns(other);
+      }
+        break;
+        
+      case GEN_URI: {
+        result.type = BraveGeneralNameType_URI;
+        result.other = brave::string_to_ns(other);
+      }
+        break;
+        
       case GEN_DIRNAME: {
+        result.type = BraveGeneralNameType_DIRNAME;
         if (!dir_name.empty()) {
           NSMutableDictionary* dirName = [[NSMutableDictionary alloc] init];
           for (auto it = dir_name.begin(); it != dir_name.end(); ++it) {
@@ -449,7 +481,20 @@ BraveCertificateExtensionGeneralNameModel* convert_general_name(GENERAL_NAME* na
       }
         break;
         
+      case GEN_IPADD: {
+        result.type = BraveGeneralNameType_IPADD;
+        result.other = brave::string_to_ns(other);
+      }
+        break;
+        
+      case GEN_RID: {
+        result.type = BraveGeneralNameType_RID;
+        result.other = brave::string_to_ns(other);
+      }
+        break;
+        
       default: {
+        result.type = BraveGeneralNameType_INVALID;
         result.other = brave::string_to_ns(other);
       }
         break;

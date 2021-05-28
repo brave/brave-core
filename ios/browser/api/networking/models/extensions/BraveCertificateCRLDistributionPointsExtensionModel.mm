@@ -66,7 +66,10 @@
             for (std::size_t j = 0; j < sk_GENERAL_NAME_num(dist_point_name->name.fullname); ++j) {
               GENERAL_NAME* name = sk_GENERAL_NAME_value(dist_point_name->name.fullname, static_cast<int>(j));
               if (name) {
-                [gen_dist_names addObject:brave::convert_general_name(name)];
+                auto* converted_name = brave::convert_general_name(name);
+                if (converted_name) {
+                  [gen_dist_names addObject:converted_name];
+                }
               }
             }
             dist_point.genDistPointName = gen_dist_names;
@@ -85,7 +88,10 @@
           for (std::size_t j = 0; j < sk_GENERAL_NAME_num(value->CRLissuer); ++j) {
             GENERAL_NAME* name = sk_GENERAL_NAME_value(value->CRLissuer, static_cast<int>(j));
             if (name) {
-              [crl_issuer_names addObject:brave::convert_general_name(name)];
+              auto* converted_name = brave::convert_general_name(name);
+              if (converted_name) {
+                [crl_issuer_names addObject:converted_name];
+              }
             }
           }
           dist_point.crlIssuer = crl_issuer_names;

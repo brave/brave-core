@@ -75,7 +75,10 @@
       
       NSMutableArray* names = [[NSMutableArray alloc] init];
       if (subtree->base) {
-        [names addObject:brave::convert_general_name(subtree->base)];
+        auto* converted_name = brave::convert_general_name(subtree->base);
+        if (converted_name) {
+          [names addObject:converted_name];
+        }
       }
       tree.names = names;
       

@@ -29,9 +29,6 @@
 @end
 
 @implementation BraveCertificateSXNetIDExtensionModel
-@synthesize zone = _zone;
-@synthesize user = _user;
-
 - (instancetype)init {
   if ((self = [super init])) {
     _zone = [[NSString alloc] init];

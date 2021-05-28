@@ -55,17 +55,17 @@ typedef NS_OPTIONS(NSUInteger, BraveNetscapeCertificateType) {
   BraveNetscapeCertificateType_ANY_CA     = 1 << 8
 };
 
-typedef NS_OPTIONS(NSUInteger, BraveGeneralNameType) {
-  BraveGeneralNameType_INVALID    = 1 << 0,
-  BraveGeneralNameType_OTHER_NAME = 1 << 1,
-  BraveGeneralNameType_EMAIL      = 1 << 2,
-  BraveGeneralNameType_DNS        = 1 << 3,
-  BraveGeneralNameType_X400       = 1 << 4,
-  BraveGeneralNameType_DIRNAME    = 1 << 5,
-  BraveGeneralNameType_EDIPARTY   = 1 << 6,
-  BraveGeneralNameType_URI        = 1 << 7,
-  BraveGeneralNameType_IPADD      = 1 << 8,
-  BraveGeneralNameType_RID        = 1 << 9
+typedef NS_ENUM(NSUInteger, BraveGeneralNameType) {
+  BraveGeneralNameType_INVALID,
+  BraveGeneralNameType_OTHER_NAME,
+  BraveGeneralNameType_EMAIL,
+  BraveGeneralNameType_DNS,
+  BraveGeneralNameType_X400,
+  BraveGeneralNameType_DIRNAME,
+  BraveGeneralNameType_EDIPARTY,
+  BraveGeneralNameType_URI,
+  BraveGeneralNameType_IPADD,
+  BraveGeneralNameType_RID
 };
 
 typedef NS_OPTIONS(NSUInteger, BraveCRLReasonFlags) {

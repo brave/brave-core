@@ -39,7 +39,10 @@
       for (std::size_t i = 0; i < sk_GENERAL_NAME_num(auth_key_id->issuer); ++i) {
         GENERAL_NAME* name = sk_GENERAL_NAME_value(auth_key_id->issuer, static_cast<int>(i));
         if (name) {
-          [issuer addObject:brave::convert_general_name(name)];
+          auto* converted_name = brave::convert_general_name(name);
+          if (converted_name) {
+            [issuer addObject:converted_name];
+          }
         }
       }
     }

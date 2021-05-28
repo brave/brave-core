@@ -43,7 +43,10 @@
         for (std::size_t i = 0; i < sk_GENERAL_NAME_num(dist_point_name->name.fullname); ++i) {
           GENERAL_NAME* name = sk_GENERAL_NAME_value(dist_point_name->name.fullname, static_cast<int>(i));
           if (name) {
-            [gen_dist_names addObject:brave::convert_general_name(name)];
+            auto* converted_name = brave::convert_general_name(name);
+            if (converted_name) {
+              [gen_dist_names addObject:converted_name];
+            }
           }
         }
         _genDistPointName = gen_dist_names;

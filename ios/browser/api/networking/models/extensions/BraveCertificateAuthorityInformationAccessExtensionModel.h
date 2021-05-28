@@ -14,10 +14,15 @@ NS_ASSUME_NONNULL_BEGIN
 @class BraveCertificateExtensionGeneralNameModel;
 
 OBJC_EXPORT
-@interface BraveCertificateAuthorityInformationAccessExtensionModel: BraveCertificateExtensionModel
+@interface BraveCertificateAuthorityInformationAccessDescriptionExtensionModel: NSObject
 @property(nonatomic, strong, readonly) NSString* oidName;
 @property(nonatomic, strong, readonly) NSString* oid;
 @property(nonatomic, strong, readonly) NSArray<BraveCertificateExtensionGeneralNameModel*>* locations;
+@end
+
+OBJC_EXPORT
+@interface BraveCertificateAuthorityInformationAccessExtensionModel: BraveCertificateExtensionModel
+@property(nonatomic, strong, readonly) NSArray<BraveCertificateAuthorityInformationAccessDescriptionExtensionModel*>* accessDescriptions;
 @end
 
 NS_ASSUME_NONNULL_END
