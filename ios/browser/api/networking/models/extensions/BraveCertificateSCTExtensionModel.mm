@@ -28,7 +28,6 @@
   #include <openssl/x509v3.h>
 #endif
 
-#ifndef OPENSSL_NO_CT
 @interface BraveCertificateSCTModel()
 @property(nonatomic, assign, readwrite) NSInteger version;
 @property(nonatomic, assign, readwrite) NSInteger logEntryType;
@@ -42,16 +41,6 @@
 @end
 
 @implementation BraveCertificateSCTModel
-@synthesize version = _version;
-@synthesize logEntryType = _logEntryType;
-@synthesize logId = _logId;
-@synthesize timestamp = _timestamp;
-@synthesize extensions = _extensions;
-@synthesize signatureNid = _signatureNid;
-@synthesize signatureName = _signatureName;
-@synthesize signature = _signature;
-@synthesize hexRepresentation = _hexRepresentation;
-
 - (instancetype)init {
   if ((self = [super init])) {
     _version = -1;
@@ -162,4 +151,3 @@
   _scts = result;
 }
 @end
-#endif

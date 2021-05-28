@@ -14,8 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 #ifndef OPENSSL_IS_BORINGSSL
 OBJC_EXPORT
 @interface BraveCertificateSXNetIDExtensionModel: NSObject
-@property(nonatomic, strong, readonly) NSString* zone;
-@property(nonatomic, strong, readonly) NSString* user;
+@property(nonatomic, strong, readonly) NSString* idZone;  // zone is reserved function name
+@property(nonatomic, strong, readonly) NSString* idUser;
 @end
 
 OBJC_EXPORT

@@ -11,7 +11,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#ifndef OPENSSL_NO_CT
 OBJC_EXPORT
 @interface BraveCertificateSCTModel: NSObject
 @property(nonatomic, assign, readonly) NSInteger version;
@@ -29,7 +28,6 @@ OBJC_EXPORT
 @interface BraveCertificateSCTExtensionModel: BraveCertificateExtensionModel
 @property(nonatomic, strong, readonly) NSArray<BraveCertificateSCTModel*>* scts;
 @end
-#endif
 
 NS_ASSUME_NONNULL_END
 

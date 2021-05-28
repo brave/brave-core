@@ -24,15 +24,15 @@
 
 #ifndef OPENSSL_IS_BORINGSSL
 @interface BraveCertificateSXNetIDExtensionModel: NSObject
-@property(nonatomic, strong, readwrite) NSString* zone;
-@property(nonatomic, strong, readwrite) NSString* user;
+@property(nonatomic, strong, readwrite) NSString* idZone;
+@property(nonatomic, strong, readwrite) NSString* idUser;
 @end
 
 @implementation BraveCertificateSXNetIDExtensionModel
 - (instancetype)init {
   if ((self = [super init])) {
-    _zone = [[NSString alloc] init];
-    _user = [[NSString alloc] init];
+    _idZone = [[NSString alloc] init];
+    _idUser = [[NSString alloc] init];
   }
   return self;
 }
@@ -57,13 +57,13 @@
           auto* zone_user_info = [[BraveCertificateSXNetIDExtensionModel alloc] init];
           
           if (net_id->zone) {
-            zone_user_info.zone = brave::string_to_ns(
-                                    x509_utils::string_from_ASN1INTEGER(net_id->zone));
+            zone_user_info.idZone = brave::string_to_ns(
+                                        x509_utils::string_from_ASN1INTEGER(net_id->zone));
           }
           
           if (net_id->user) {
-            zone_user_info.user = brave::string_to_ns(
-                                    x509_utils::string_from_ASN1STRING(net_id->user));
+            zone_user_info.idUser = brave::string_to_ns(
+                                        x509_utils::string_from_ASN1STRING(net_id->user));
           }
           [net_ids addObject:zone_user_info];
         }

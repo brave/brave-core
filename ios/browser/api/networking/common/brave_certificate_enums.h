@@ -82,7 +82,7 @@ typedef NS_OPTIONS(NSUInteger, BraveCRLReasonFlags) {
 };
 
 typedef NS_ENUM(NSInteger, BraveCRLReasonCode) {
-  BraveCRLReasonCode_NONE                = -1,
+  BraveCRLReasonCode_NONE                   = -1,
   BraveCRLReasonCode_UNSPECIFIED            = 0,
   BraveCRLReasonCode_KEY_COMPROMISED        = 1,
   BraveCRLReasonCode_CA_COMPROMISED         = 2,

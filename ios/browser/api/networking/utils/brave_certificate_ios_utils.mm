@@ -130,7 +130,7 @@ BraveExtensionType extension_nid_to_extension_type(int type) {
 }
 
 BraveKeyUsage convert_key_usage(ASN1_BIT_STRING* key_usage) {
-  BraveKeyUsage usage = BraveKeyUsage_INVALID;
+  BraveKeyUsage usage = 0;
   const unsigned char* data = key_usage ? ASN1_STRING_get0_data(key_usage) : nullptr;
   if (data && ASN1_STRING_length(key_usage) > 0) {
     if (data[0] & KU_DIGITAL_SIGNATURE) {
@@ -184,11 +184,11 @@ BraveKeyUsage convert_key_usage(ASN1_BIT_STRING* key_usage) {
       _keyUsage |= BravePublicKeyUsage_ENCRYPT;
     }*/
   }
-  return usage;
+  return usage != 0 ? usage : BraveKeyUsage_INVALID;
 }
 
 BraveExtendedKeyUsage convert_extended_key_usage(int usage_nid) {
-  BraveExtendedKeyUsage usage = BraveExtendedKeyUsage_INVALID;
+  BraveExtendedKeyUsage usage = 0;
   switch (usage_nid) {
     case NID_server_auth: {
       // XKU_SSL_SERVER
@@ -245,11 +245,11 @@ BraveExtendedKeyUsage convert_extended_key_usage(int usage_nid) {
     }
       break;
   }
-  return usage;
+  return usage != 0 ? usage : BraveExtendedKeyUsage_INVALID;
 }
 
 BraveNetscapeCertificateType convert_netscape_certificate_type(ASN1_BIT_STRING* cert_type) {
-  BraveNetscapeCertificateType type = BraveNetscapeCertificateType_INVALID;
+  BraveNetscapeCertificateType type = 0;
   const unsigned char* data = cert_type ? ASN1_STRING_get0_data(cert_type) : nullptr;
   if (data && ASN1_STRING_length(cert_type) > 0) {
     if (data[0] & NS_SSL_CLIENT) {
@@ -284,11 +284,11 @@ BraveNetscapeCertificateType convert_netscape_certificate_type(ASN1_BIT_STRING* 
       type |= BraveNetscapeCertificateType_ANY_CA;
     }
   }
-  return type;
+  return type != 0 ? type : BraveNetscapeCertificateType_INVALID;
 }
 
 BraveCRLReasonFlags convert_crl_dist_point_reason_flags(ASN1_BIT_STRING* reason_flags) {
-  BraveCRLReasonFlags reasons = BraveCRLReasonFlags_UNUSED;
+  BraveCRLReasonFlags reasons = 0;
 
   //RFC-5280
   //4.2.1.13.  CRL Distribution Points
@@ -338,7 +338,7 @@ BraveCRLReasonFlags convert_crl_dist_point_reason_flags(ASN1_BIT_STRING* reason_
   if (ASN1_BIT_STRING_get_bit(reason_flags, 8)) {
     reasons |= BraveCRLReasonFlags_AA_COMPROMISED;
   }
-  return reasons;
+  return reasons != 0 ? reasons : BraveCRLReasonFlags_INVALID;
 }
 
 BraveCRLReasonCode convert_crl_reason(ASN1_ENUMERATED* reason_code) {

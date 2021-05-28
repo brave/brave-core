@@ -263,7 +263,7 @@
   _subjectName = [[BraveCertificateSubjectModel alloc] initWithCertificate:x509_cert_];
   _issuerName = [[BraveCertificateIssuerName alloc] initWithCertificate:x509_cert_];
   _serialNumber = brave::string_to_ns(x509_utils::serial_number_from_certificate(x509_cert_));
-  _version = X509_get_version(x509_cert_) + 1;
+  _version = X509_get_version(x509_cert_);  // version + 1
   _signature = [[BraveCertificateSignature alloc] initWithCertificate:x509_cert_];
   _notValidBefore = brave::date_to_ns(x509_utils::date_from_ASN1TIME(X509_get0_notBefore(x509_cert_)));
   _notValidAfter = brave::date_to_ns(x509_utils::date_from_ASN1TIME(X509_get0_notAfter(x509_cert_)));
