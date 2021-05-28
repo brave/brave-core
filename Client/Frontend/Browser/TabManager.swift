@@ -262,6 +262,10 @@ class TabManager: NSObject {
             TabEvent.post(.didGainFocus, for: tab)
         }
         
+        if let tabID = tab?.id {
+            TabMO.touch(tabID: tabID)
+        }
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
             let newSelectedTab = tab, let previousTab = previous, let newTabUrl = newSelectedTab.url, let previousTabUrl = previousTab.url else { return }
         
