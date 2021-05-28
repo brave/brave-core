@@ -19,6 +19,7 @@
 #include "url/gurl.h"
 
 #if defined(OS_ANDROID)
+#include "brave/components/brave_referrals/browser/android_brave_referrer.h"
 #include "brave/components/safetynet/safetynet_check.h"
 #endif
 
@@ -106,6 +107,10 @@ class BraveReferralsService : public ProfileManagerObserver {
                                 const std::string& result_string,
                                 const bool attestation_passed);
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
+
+  void InitAndroidReferrer();
+  void OnAndroidBraveReferrerReady();
+  android_brave_referrer::BraveReferrer android_brave_referrer_;
 #endif
 
   bool initialized_;

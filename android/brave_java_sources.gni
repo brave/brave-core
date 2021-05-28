@@ -205,7 +205,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/NotificationIntent.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveDbUtil.java",
-  "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ConfigurationUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
@@ -230,6 +229,10 @@ brave_java_sources = [
 
 if (brave_rewards_enabled || enable_brave_referrals) {
   brave_java_sources += brave_rewards_java_sources
+}
+
+if (enable_brave_referrals) {
+  brave_java_sources += [ "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java", ]
 }
 
 if (brave_ads_enabled) {

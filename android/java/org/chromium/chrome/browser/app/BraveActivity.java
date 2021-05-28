@@ -267,7 +267,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     public void performPostInflationStartup() {
         super.performPostInflationStartup();
 
-        BraveReferrer.getInstance().initReferrer(this);
         createNotificationChannel();
         setupBraveSetDefaultBrowserNotification();
     }
