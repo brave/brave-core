@@ -13,6 +13,8 @@
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+namespace brave_wallet {
+
 // static
 BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
   return base::Singleton<BraveWalletServiceFactory>::get();
@@ -51,3 +53,5 @@ content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
 bool BraveWalletServiceFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
 }
+
+}  // namespace brave_wallet

@@ -18,8 +18,10 @@
 
 namespace {
 
-BraveWalletService* GetBraveWalletService(content::BrowserContext* context) {
-  return BraveWalletServiceFactory::GetInstance()->GetForContext(context);
+brave_wallet::BraveWalletService* GetBraveWalletService(
+    content::BrowserContext* context) {
+  return brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
+      context);
 }
 
 }  // namespace

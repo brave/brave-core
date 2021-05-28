@@ -9,6 +9,8 @@
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
+namespace brave_wallet {
+
 class BraveWalletService;
 
 class BraveWalletServiceFactory : public BrowserContextKeyedServiceFactory {
@@ -30,5 +32,7 @@ class BraveWalletServiceFactory : public BrowserContextKeyedServiceFactory {
 
   DISALLOW_COPY_AND_ASSIGN(BraveWalletServiceFactory);
 };
+
+}  // namespace brave_wallet
 
 #endif  // BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_FACTORY_H_

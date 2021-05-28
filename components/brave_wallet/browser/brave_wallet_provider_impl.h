@@ -18,9 +18,9 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
-class BraveWalletService;
-
 namespace brave_wallet {
+
+class BraveWalletService;
 
 class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
                                       public BraveWalletProviderEventsObserver {

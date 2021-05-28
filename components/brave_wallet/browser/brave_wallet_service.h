@@ -23,7 +23,6 @@ namespace brave_wallet {
 
 class KeyringController;
 class EthJsonRpcController;
-}  // namespace brave_wallet
 
 class BraveWalletService : public KeyedService,
                            public base::SupportsWeakPtr<BraveWalletService> {
@@ -44,5 +43,7 @@ class BraveWalletService : public KeyedService,
 
   DISALLOW_COPY_AND_ASSIGN(BraveWalletService);
 };
+
+}  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_SERVICE_H_

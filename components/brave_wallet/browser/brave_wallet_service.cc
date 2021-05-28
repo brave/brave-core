@@ -13,6 +13,8 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+namespace brave_wallet {
+
 BraveWalletService::BraveWalletService(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
@@ -45,3 +47,5 @@ brave_wallet::KeyringController* BraveWalletService::keyring_controller()
     const {
   return keyring_controller_.get();
 }
+
+}  // namespace brave_wallet
