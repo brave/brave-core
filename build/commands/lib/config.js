@@ -551,6 +551,10 @@ Config.prototype.update = function (options) {
     this.is_asan = false
   }
 
+  if (options.build_target) {
+    this.buildTarget = options.build_target
+  }
+
   if (options.use_goma) {
     this.use_goma = true
   } else {
