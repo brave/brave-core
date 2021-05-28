@@ -12,6 +12,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -82,7 +83,7 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
   }
 
   brave_wallet::EthJsonRpcController* GetEthJsonRpcController() {
-    return GetBraveWalletService()->controller();
+    return GetBraveWalletService()->rpc_controller();
   }
 
  private:

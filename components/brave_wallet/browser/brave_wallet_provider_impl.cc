@@ -20,8 +20,8 @@ BraveWalletProviderImpl::~BraveWalletProviderImpl() {
   if (!wallet_service_)
     return;
 
-  auto* controller = wallet_service_->controller();
-  controller->RemoveObserver(this);
+  auto* rpc_controller = wallet_service_->rpc_controller();
+  rpc_controller->RemoveObserver(this);
 }
 
 void BraveWalletProviderImpl::Request(const std::string& json_payload,
@@ -51,9 +51,9 @@ void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {
   if (!wallet_service_)
     return;
 
-  auto* controller = wallet_service_->controller();
-  std::move(callback).Run(
-      EthJsonRpcController::GetChainIDFromNetwork(controller->GetNetwork()));
+  auto* rpc_controller = wallet_service_->rpc_controller();
+  std::move(callback).Run(EthJsonRpcController::GetChainIDFromNetwork(
+      rpc_controller->GetNetwork()));
 }
 
 void BraveWalletProviderImpl::Init(
@@ -63,8 +63,8 @@ void BraveWalletProviderImpl::Init(
     if (!wallet_service_)
       return;
 
-    auto* controller = wallet_service_->controller();
-    controller->AddObserver(this);
+    auto* rpc_controller = wallet_service_->rpc_controller();
+    rpc_controller->AddObserver(this);
   }
 }
 

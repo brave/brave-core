@@ -66,6 +66,8 @@ void CallMethodOfObject(blink::WebLocalFrame* web_frame,
   v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(v8::Isolate::GetCurrent(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> object;
   v8::Local<v8::Value> method;
   if (!GetProperty(context, context->Global(), object_name).ToLocal(&object) ||
@@ -115,6 +117,8 @@ void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
     return;
 
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   CreateEthereumObject(isolate, context);
   InjectInitScript();
@@ -171,6 +175,8 @@ v8::Local<v8::Value> BraveWalletJSHandler::IsConnected() {
   v8::Local<v8::Context> context =
       render_frame_->GetWebFrame()->MainWorldScriptContext();
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   return v8::Boolean::New(isolate, is_connected_);
 }
@@ -224,6 +230,8 @@ void BraveWalletJSHandler::OnRequest(
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   bool reject = http_code != 200;
