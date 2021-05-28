@@ -674,27 +674,30 @@ void Demo() {
 int main(int argc, char* argv[]) {
   base::CommandLine::Init(argc, argv);
 
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(kConnectionsCommand)) {
+  auto* command_line = base::CommandLine::ForCurrentProcess();
+
+  if (command_line->GetSwitches().empty()) {
+    LOG(ERROR) << "usage: vpntool.exe [--connections] [--devices] [--entries] "
+                  "[--connect --vpn_name=xxx] [--disconnect --vpn_name=xxx] "
+                  "[--create --vpn_name=xxx --host_name=xxx user_name=xxx "
+                  "password=xxx] [--remove --vpn_name=xxx]";
+    return 0;
+  }
+
+  if (command_line->HasSwitch(kConnectionsCommand))
     PrintConnections();
-    return 0;
-  }
 
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(kDevicesCommand)) {
+  if (command_line->HasSwitch(kDevicesCommand))
     PrintDevices();
-    return 0;
-  }
 
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(kEntriesCommand)) {
+  if (command_line->HasSwitch(kEntriesCommand))
     PrintEntries();
-    return 0;
-  }
 
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(kConnectCommand)) {
-    const std::string vpn_name =
-        base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kVPNName);
+  if (command_line->HasSwitch(kConnectCommand)) {
+    const std::string vpn_name = command_line->GetSwitchValueASCII(kVPNName);
     if (vpn_name.empty()) {
       LOG(ERROR) << "missing parameters for remove!";
-      LOG(ERROR) << "usage: winvpntool.exe --connect --vpn_name=entry_name";
+      LOG(ERROR) << "usage: vpntool.exe --connect --vpn_name=entry_name";
       return 0;
     }
 
@@ -703,12 +706,11 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(kDisconnectCommand)) {
-    const std::string vpn_name =
-        base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kVPNName);
+  if (command_line->HasSwitch(kDisconnectCommand)) {
+    const std::string vpn_name = command_line->GetSwitchValueASCII(kVPNName);
     if (vpn_name.empty()) {
       LOG(ERROR) << "missing parameters for remove!";
-      LOG(ERROR) << "usage: winvpntool.exe --disconnect --vpn_name=entry_name";
+      LOG(ERROR) << "usage: vpntool.exe --disconnect --vpn_name=entry_name";
       return 0;
     }
 
@@ -717,12 +719,11 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(kRemoveCommand)) {
-    const std::string vpn_name =
-        base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kVPNName);
+  if (command_line->HasSwitch(kRemoveCommand)) {
+    const std::string vpn_name = command_line->GetSwitchValueASCII(kVPNName);
     if (vpn_name.empty()) {
       LOG(ERROR) << "missing parameters for remove!";
-      LOG(ERROR) << "usage: winvpntool.exe --remove --vpn_name=entry_name";
+      LOG(ERROR) << "usage: vpntool.exe --remove --vpn_name=entry_name";
       return 0;
     }
 
@@ -731,19 +732,15 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(kCreateCommand)) {
-    const std::string host_name =
-        base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kHostName);
-    const std::string vpn_name =
-        base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kVPNName);
-    const std::string user_name =
-        base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kUserName);
-    const std::string password =
-        base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(kPassword);
+  if (command_line->HasSwitch(kCreateCommand)) {
+    const std::string host_name = command_line->GetSwitchValueASCII(kHostName);
+    const std::string vpn_name = command_line->GetSwitchValueASCII(kVPNName);
+    const std::string user_name = command_line->GetSwitchValueASCII(kUserName);
+    const std::string password = command_line->GetSwitchValueASCII(kPassword);
     if (host_name.empty() || vpn_name.empty() || user_name.empty() ||
         password.empty()) {
       LOG(ERROR) << "missing parameters for create!";
-      LOG(ERROR) << "usage: winvpntool.exe --create --host_name=xxx "
+      LOG(ERROR) << "usage: vpntool.exe --create --host_name=xxx "
                     "--vpn_name=xxx --user_name=xxx --password=xxx";
       return 0;
     }

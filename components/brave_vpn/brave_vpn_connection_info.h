@@ -11,10 +11,10 @@
 namespace brave_vpn {
 
 struct BraveVPNConnectionInfo {
-  std::string name;
-  std::string url;
-  std::string id;
-  std::string pwd;
+  std::string connection_name;
+  std::string hostname;
+  std::string username;
+  std::string password;
 
   BraveVPNConnectionInfo();
   ~BraveVPNConnectionInfo();
