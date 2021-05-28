@@ -28,7 +28,7 @@ class BatAdsCatalogFrequencyCapTest : public UnitTestBase {
 TEST_F(BatAdsCatalogFrequencyCapTest, AllowAd) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v7/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -46,7 +46,7 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
        AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v7/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -67,7 +67,7 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
        DoNotAllowAdIfCatalogWasLastUpdated1DayAgo) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v7/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 

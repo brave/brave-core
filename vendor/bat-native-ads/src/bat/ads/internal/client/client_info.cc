@@ -79,24 +79,36 @@ Result ClientInfo::FromJson(const std::string& json) {
     }
   }
 
-  if (document.HasMember("adsUUIDSeen")) {
-    for (const auto& seen_ad_notification :
-         document["adsUUIDSeen"].GetObject()) {
-      seen_ad_notifications.insert({seen_ad_notification.name.GetString(),
-                                    seen_ad_notification.value.GetInt64()});
+  if (document.HasMember("seenAds")) {
+    for (const auto& seen_ad_list : document["seenAds"].GetObject()) {
+      const std::string ad_type = seen_ad_list.name.GetString();
+
+      for (const auto& seen_ad : seen_ad_list.value.GetObject()) {
+        const std::string creative_instance_id = seen_ad.name.GetString();
+        const bool has_seen = seen_ad.value.GetBool();
+
+        seen_ads[ad_type][creative_instance_id] = has_seen;
+      }
     }
   }
 
-  if (document.HasMember("advertisersUUIDSeen")) {
-    for (const auto& seen_advertiser :
-         document["advertisersUUIDSeen"].GetObject()) {
-      seen_advertisers.insert(
-          {seen_advertiser.name.GetString(), seen_advertiser.value.GetInt64()});
+  if (document.HasMember("seenAdvertisers")) {
+    for (const auto& seen_advertiser_list :
+         document["seenAdvertisers"].GetObject()) {
+      const std::string ad_type = seen_advertiser_list.name.GetString();
+
+      for (const auto& seen_advertiser :
+           seen_advertiser_list.value.GetObject()) {
+        const std::string advertiser_id = seen_advertiser.name.GetString();
+        const bool has_seen = seen_advertiser.value.GetBool();
+
+        seen_advertisers[ad_type][advertiser_id] = has_seen;
+      }
     }
   }
 
   if (document.HasMember("nextCheckServeAd")) {
-    next_ad_serving_interval_timestamp_ =
+    next_ad_serving_interval_timestamp =
         document["nextCheckServeAd"].GetUint64();
   }
 
@@ -150,24 +162,40 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
   }
   writer->EndObject();
 
-  writer->String("adsUUIDSeen");
+  writer->String("seenAds");
   writer->StartObject();
-  for (const auto& seen_ad_notification : state.seen_ad_notifications) {
-    writer->String(seen_ad_notification.first.c_str());
-    writer->Uint64(seen_ad_notification.second);
+  for (const auto& seen_ads : state.seen_ads) {
+    const std::string type = std::string(seen_ads.first);
+    writer->String(type.c_str());
+    writer->StartObject();
+
+    for (const auto& seen_ad : seen_ads.second) {
+      writer->String(seen_ad.first.c_str());
+      writer->Bool(seen_ad.second);
+    }
+
+    writer->EndObject();
   }
   writer->EndObject();
 
-  writer->String("advertisersUUIDSeen");
+  writer->String("seenAdvertisers");
   writer->StartObject();
-  for (const auto& seen_advertiser : state.seen_advertisers) {
-    writer->String(seen_advertiser.first.c_str());
-    writer->Uint64(seen_advertiser.second);
+  for (const auto& seen_advertisers : state.seen_advertisers) {
+    const std::string type = std::string(seen_advertisers.first);
+    writer->String(type.c_str());
+    writer->StartObject();
+
+    for (const auto& seen_advertiser : seen_advertisers.second) {
+      writer->String(seen_advertiser.first.c_str());
+      writer->Bool(seen_advertiser.second);
+    }
+
+    writer->EndObject();
   }
   writer->EndObject();
 
   writer->String("nextCheckServeAd");
-  writer->Uint64(state.next_ad_serving_interval_timestamp_);
+  writer->Uint64(state.next_ad_serving_interval_timestamp);
 
   writer->String("textClassificationProbabilitiesHistory");
   writer->StartArray();

@@ -27,6 +27,19 @@ struct CreativeAdNotificationInfo : CreativeAdInfo {
 
 using CreativeAdNotificationList = std::vector<CreativeAdNotificationInfo>;
 
+CreativeAdList ToCreativeAdList(
+    const CreativeAdNotificationList& creative_ad_notifications) {
+  CreativeAdList creative_ads;
+
+  for (const auto& creative_ad_notification : creative_ad_notifications) {
+    const CreativeAdInfo creative_ad =
+        static_cast<CreativeAdInfo>(creative_ad_notification);
+    creative_ads.push_back(creative_ad);
+  }
+
+  return creative_ads;
+}
+
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_NOTIFICATION_INFO_H_

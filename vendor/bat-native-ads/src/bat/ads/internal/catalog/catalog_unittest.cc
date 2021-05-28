@@ -118,6 +118,27 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_promoted_content_ads.push_back(
         catalog_creative_promoted_content_ad);
 
+    // Creative Inline Content Ads
+    CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
+
+    CatalogCreativeInlineContentAdInfo catalog_creative_inline_content_ad;
+    catalog_creative_inline_content_ad.creative_instance_id =
+        "30db5f7b-dba3-48a3-b299-c9bd9c67da65";
+    CatalogTypeInfo catalog_type_inline_content_ad_type;
+    catalog_type_inline_content_ad_type.code = "inline_content_all_v1";
+    catalog_type_inline_content_ad_type.name = "inline_content";
+    catalog_type_inline_content_ad_type.platform = "all";
+    catalog_type_inline_content_ad_type.version = 1;
+    catalog_creative_promoted_content_ad.type =
+        catalog_type_inline_content_ad_type;
+    catalog_creative_inline_content_ad.payload.title = "Inline Content 1";
+    catalog_creative_inline_content_ad.payload.description =
+        "Test Inline Content Ad Campaign 1";
+    catalog_creative_inline_content_ad.payload.target_url =
+        "https://brave.com/1/inline_content_ad";
+    catalog_creative_inline_content_ads.push_back(
+        catalog_creative_inline_content_ad);
+
     // Conversions
     ConversionList conversions;
 
@@ -144,6 +165,8 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_set.oses = catalog_oses;
     catalog_creative_set.creative_ad_notifications =
         catalog_creative_ad_notifications;
+    catalog_creative_set.creative_inline_content_ads =
+        catalog_creative_inline_content_ads;
     catalog_creative_set.creative_new_tab_page_ads =
         catalog_creative_new_tab_page_ads;
     catalog_creative_set.creative_promoted_content_ads =
@@ -274,6 +297,27 @@ class BatAdsCatalogTest : public UnitTestBase {
         "https://brave.com/2/promoted_content_ad";
     catalog_creative_promoted_content_ads.push_back(
         catalog_creative_promoted_content_ad);
+
+    // Creative Inline Content Ads
+    CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
+
+    CatalogCreativeInlineContentAdInfo catalog_creative_inline_content_ad;
+    catalog_creative_inline_content_ad.creative_instance_id =
+        "de54add5-ba76-469d-891f-b4d9f8e09b3d";
+    CatalogTypeInfo catalog_type_inline_content_ad_type;
+    catalog_type_inline_content_ad_type.code = "inline_content_all_v1";
+    catalog_type_inline_content_ad_type.name = "inline_content";
+    catalog_type_inline_content_ad_type.platform = "all";
+    catalog_type_inline_content_ad_type.version = 1;
+    catalog_creative_promoted_content_ad.type =
+        catalog_type_inline_content_ad_type;
+    catalog_creative_inline_content_ad.payload.title = "Inline Content 2";
+    catalog_creative_inline_content_ad.payload.description =
+        "Test Inline Content Ad Campaign 2";
+    catalog_creative_inline_content_ad.payload.target_url =
+        "https://brave.com/2/inline_content_ad";
+    catalog_creative_inline_content_ads.push_back(
+        catalog_creative_inline_content_ad);
 
     // Conversions
     ConversionList conversions;
@@ -456,7 +500,7 @@ TEST_F(BatAdsCatalogTest, GetVersion) {
   const int version = catalog.GetVersion();
 
   // Assert
-  EXPECT_EQ(7, version);
+  EXPECT_EQ(8, version);
 }
 
 TEST_F(BatAdsCatalogTest, GetPing) {

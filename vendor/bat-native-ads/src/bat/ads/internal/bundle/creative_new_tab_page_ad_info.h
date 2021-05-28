@@ -27,6 +27,19 @@ struct CreativeNewTabPageAdInfo : CreativeAdInfo {
 
 using CreativeNewTabPageAdList = std::vector<CreativeNewTabPageAdInfo>;
 
+CreativeAdList ToCreativeAdList(
+    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+  CreativeAdList creative_ads;
+
+  for (const auto& creative_new_tab_page_ad : creative_new_tab_page_ads) {
+    const CreativeAdInfo creative_ad =
+        static_cast<CreativeAdInfo>(creative_new_tab_page_ad);
+    creative_ads.push_back(creative_ad);
+  }
+
+  return creative_ads;
+}
+
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_NEW_TAB_PAGE_AD_INFO_H_

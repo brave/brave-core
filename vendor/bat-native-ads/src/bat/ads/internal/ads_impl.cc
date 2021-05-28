@@ -13,12 +13,15 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -26,6 +29,7 @@
 #include "bat/ads/internal/ad_transfer/ad_transfer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
+#include "bat/ads/internal/ads/inline_content_ads/inline_content_ad.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -71,9 +75,12 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
 AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
   ad_notification_->RemoveObserver(this);
+  ad_notification_serving_->RemoveObserver(this);
   ad_server_->RemoveObserver(this);
   ad_transfer_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
+  inline_content_ad_->RemoveObserver(this);
+  inline_content_ad_serving_->RemoveObserver(this);
   new_tab_page_ad_->RemoveObserver(this);
   promoted_content_ad_->RemoveObserver(this);
 }
@@ -269,6 +276,8 @@ void AdsImpl::OnWalletUpdated(const std::string& id, const std::string& seed) {
   }
 
   BLOG(1, "Successfully set wallet");
+
+  MaybeServeAdNotificationsAtRegularIntervals();
 }
 
 void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
@@ -297,6 +306,13 @@ void AdsImpl::OnAdNotificationEvent(const std::string& uuid,
 void AdsImpl::OnNewTabPageAdEvent(const std::string& uuid,
                                   const std::string& creative_instance_id,
                                   const NewTabPageAdEventType event_type) {
+  if (event_type == NewTabPageAdEventType::kViewed) {
+    // TODO(tmancey): We need to fire an ad served event until new tab page ads
+    // are served by the ads library
+    new_tab_page_ad_->FireEvent(uuid, creative_instance_id,
+                                NewTabPageAdEventType::kServed);
+  }
+
   new_tab_page_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
@@ -304,7 +320,29 @@ void AdsImpl::OnPromotedContentAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
     const PromotedContentAdEventType event_type) {
+  if (event_type == PromotedContentAdEventType::kViewed) {
+    // TODO(tmancey): We need to fire an ad served event until promoted content
+    // ads are served by the ads library
+    promoted_content_ad_->FireEvent(uuid, creative_instance_id,
+                                    PromotedContentAdEventType::kServed);
+  }
+
   promoted_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
+}
+
+void AdsImpl::GetInlineContentAd(const std::string& size,
+                                 GetInlineContentAdCallback callback) {
+  inline_content_ad_serving_->MaybeServeAd(
+      size,
+      [=](const bool success, const std::string& size,
+          const InlineContentAdInfo& ad) { callback(success, size, ad); });
+}
+
+void AdsImpl::OnInlineContentAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const InlineContentAdEventType event_type) {
+  inline_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
 void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
@@ -433,9 +471,11 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   ad_targeting_ = std::make_unique<AdTargeting>();
   subdivision_targeting_ =
       std::make_unique<ad_targeting::geographic::SubdivisionTargeting>();
+
   ad_notification_serving_ = std::make_unique<ad_notifications::AdServing>(
       ad_targeting_.get(), subdivision_targeting_.get(),
       anti_targeting_resource_.get());
+  ad_notification_serving_->AddObserver(this);
   ad_notification_ = std::make_unique<AdNotification>();
   ad_notification_->AddObserver(this);
   ad_notifications_ = std::make_unique<AdNotifications>();
@@ -445,6 +485,13 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   ad_transfer_ = std::make_unique<AdTransfer>();
   ad_transfer_->AddObserver(this);
+
+  inline_content_ad_serving_ = std::make_unique<inline_content_ads::AdServing>(
+      ad_targeting_.get(), subdivision_targeting_.get(),
+      anti_targeting_resource_.get());
+  inline_content_ad_serving_->AddObserver(this);
+  inline_content_ad_ = std::make_unique<InlineContentAd>();
+  inline_content_ad_->AddObserver(this);
 
   promoted_content_ad_ = std::make_unique<PromotedContentAd>();
   promoted_content_ad_->AddObserver(this);
@@ -594,7 +641,12 @@ void AdsImpl::MaybeServeAdNotification() {
     return;
   }
 
-  ad_notification_serving_->MaybeServe();
+  const WalletInfo wallet = account_->GetWallet();
+  if (!wallet.IsValid()) {
+    return;
+  }
+
+  ad_notification_serving_->MaybeServeAd();
 }
 
 void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
@@ -602,11 +654,16 @@ void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
     return;
   }
 
+  const WalletInfo wallet = account_->GetWallet();
+  if (!wallet.IsValid()) {
+    return;
+  }
+
   if (BrowserManager::Get()->IsActive() ||
       AdsClientHelper::Get()->CanShowBackgroundNotifications()) {
-    ad_notification_serving_->ServeAtRegularIntervals();
+    ad_notification_serving_->StartServingAdsAtRegularIntervals();
   } else {
-    ad_notification_serving_->StopServing();
+    ad_notification_serving_->StopServingAdsAtRegularIntervals();
   }
 }
 
@@ -622,7 +679,11 @@ void AdsImpl::OnCatalogUpdated(const Catalog& catalog) {
   account_->SetCatalogIssuers(catalog.GetIssuers());
   account_->TopUpUnblindedTokens();
 
-  epsilon_greedy_bandit_resource_->LoadFromDatabase();
+  epsilon_greedy_bandit_resource_->LoadFromCatalog(catalog);
+}
+
+void AdsImpl::OnDidServeAdNotification(const AdNotificationInfo& ad) {
+  ad_notification_->FireEvent(ad.uuid, AdNotificationEventType::kServed);
 }
 
 void AdsImpl::OnAdNotificationViewed(const AdNotificationInfo& ad) {
@@ -650,6 +711,13 @@ void AdsImpl::OnAdNotificationTimedOut(const AdNotificationInfo& ad) {
       {ad.segment, AdNotificationEventType::kTimedOut});
 }
 
+void AdsImpl::OnAdNotificationEventFailed(
+    const std::string& uuid,
+    const AdNotificationEventType event_type) {
+  BLOG(1, "Failed to fire ad notification " << event_type << " event for uuid "
+                                            << uuid);
+}
+
 void AdsImpl::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kViewed);
 }
@@ -660,6 +728,15 @@ void AdsImpl::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
 }
 
+void AdsImpl::OnNewTabPageAdEventFailed(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const NewTabPageAdEventType event_type) {
+  BLOG(1, "Failed to fire new tab page ad "
+              << event_type << " event for uuid " << uuid
+              << " and creative instance id " << creative_instance_id);
+}
+
 void AdsImpl::OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kViewed);
 }
@@ -668,6 +745,39 @@ void AdsImpl::OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) {
   ad_transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
+}
+
+void AdsImpl::OnPromotedContentAdEventFailed(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const PromotedContentAdEventType event_type) {
+  BLOG(1, "Failed to fire promoted content ad "
+              << event_type << " event for uuid " << uuid
+              << " and creative instance id " << creative_instance_id);
+}
+
+void AdsImpl::OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {
+  inline_content_ad_->FireEvent(ad.uuid, ad.creative_instance_id,
+                                InlineContentAdEventType::kServed);
+}
+
+void AdsImpl::OnInlineContentAdViewed(const InlineContentAdInfo& ad) {
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kViewed);
+}
+
+void AdsImpl::OnInlineContentAdClicked(const InlineContentAdInfo& ad) {
+  ad_transfer_->set_last_clicked_ad(ad);
+
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
+}
+
+void AdsImpl::OnInlineContentAdEventFailed(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const InlineContentAdEventType event_type) {
+  BLOG(1, "Failed to fire inline content ad "
+              << event_type << " event for uuid " << uuid
+              << " and creative instance id " << creative_instance_id);
 }
 
 void AdsImpl::OnAdTransfer(const AdInfo& ad) {

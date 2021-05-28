@@ -63,9 +63,9 @@ class Confirmations : public RedeemUnblindedTokenDelegate {
   void Retry();
 
   void NotifyConfirmAd(const double estimated_redemption_value,
-                       const ConfirmationInfo& confirmation);
+                       const ConfirmationInfo& confirmation) const;
 
-  void NotifyConfirmAdFailed(const ConfirmationInfo& confirmation);
+  void NotifyConfirmAdFailed(const ConfirmationInfo& confirmation) const;
 
   // RedeemUnblindedTokenDelegate implementation
   void OnDidRedeemUnblindedToken(

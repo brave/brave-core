@@ -1051,6 +1051,28 @@ void AdsServiceImpl::OnPromotedContentAdEvent(
   bat_ads_->OnPromotedContentAdEvent(uuid, creative_instance_id, event_type);
 }
 
+void AdsServiceImpl::GetInlineContentAd(const std::string& size,
+                                        OnGetInlineContentAdCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->GetInlineContentAd(
+      size, base::BindOnce(&AdsServiceImpl::OnGetInlineContentAd, AsWeakPtr(),
+                           std::move(callback)));
+}
+
+void AdsServiceImpl::OnInlineContentAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const ads::InlineContentAdEventType event_type) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
+}
+
 void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& uuid) {
   VLOG(1) << "Retry opening new tab for ad with uuid " << uuid;
   retry_opening_new_tab_for_ad_with_uuid_ = uuid;
@@ -1155,6 +1177,33 @@ void AdsServiceImpl::OnURLRequestComplete(
   url_response.headers = headers;
 
   callback(url_response);
+}
+
+void AdsServiceImpl::OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
+                                          const bool success,
+                                          const std::string& size,
+                                          const std::string& json) {
+  base::DictionaryValue dictionary;
+
+  if (success) {
+    ads::InlineContentAdInfo ad;
+    ad.FromJson(json);
+
+    dictionary.SetKey("creativeInstanceId",
+                      base::Value(ad.creative_instance_id));
+    dictionary.SetKey("creativeSetId", base::Value(ad.creative_set_id));
+    dictionary.SetKey("campaignId", base::Value(ad.campaign_id));
+    dictionary.SetKey("advertiserId", base::Value(ad.advertiser_id));
+    dictionary.SetKey("segment", base::Value(ad.segment));
+    dictionary.SetKey("title", base::Value(ad.title));
+    dictionary.SetKey("description", base::Value(ad.description));
+    dictionary.SetKey("imageUrl", base::Value(ad.image_url));
+    dictionary.SetKey("dimensions", base::Value(ad.dimensions));
+    dictionary.SetKey("ctaText", base::Value(ad.cta_text));
+    dictionary.SetKey("targetUrl", base::Value(ad.target_url));
+  }
+
+  std::move(callback).Run(success, size, dictionary);
 }
 
 void AdsServiceImpl::OnGetAdsHistory(OnGetAdsHistoryCallback callback,

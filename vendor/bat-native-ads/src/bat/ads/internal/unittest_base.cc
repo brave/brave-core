@@ -144,6 +144,8 @@ void UnitTestBase::Initialize() {
   MockRecordAdEvent(ads_client_mock_);
   MockGetAdEvents(ads_client_mock_);
 
+  MockGetBrowsingHistory(ads_client_mock_);
+
   MockLoad(ads_client_mock_);
   MockLoadAdsResource(ads_client_mock_);
   MockLoadResourceForId(ads_client_mock_);

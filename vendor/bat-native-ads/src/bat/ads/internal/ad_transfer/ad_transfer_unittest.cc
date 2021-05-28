@@ -159,7 +159,7 @@ TEST_F(BatAdsAdTransferTest, FailToTransferAdIfNotVisible) {
 TEST_F(BatAdsAdTransferTest,
        FailToTransferAdIfTheTabUrlIsNotTheSameAsTheDomainOrHost) {
   // Arrange
-  const AdInfo ad = GetAdForType(AdType::kNewTabPageAd);
+  const AdInfo ad = GetAdForType(AdType::kInlineContentAd);
   ad_transfer_->set_last_clicked_ad(ad);
 
   TabManager::Get()->OnUpdated(1, "https://brave.com", /* is_visible */ true,

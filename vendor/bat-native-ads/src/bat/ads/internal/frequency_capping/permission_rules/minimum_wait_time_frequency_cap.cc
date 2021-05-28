@@ -29,7 +29,7 @@ bool MinimumWaitTimeFrequencyCap::ShouldAllow() {
   }
 
   const std::deque<uint64_t> history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "Ad cannot be shown as minimum wait time has not passed";

@@ -54,7 +54,7 @@ TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
   const int count = features::GetMaximumPromotedContentAdsPerHour() - 1;
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kViewed, count);
+  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed, count);
 
   // Act
   PromotedContentAdsPerHourFrequencyCap frequency_cap;
@@ -68,7 +68,7 @@ TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
   const int count = features::GetMaximumPromotedContentAdsPerHour();
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kViewed, count);
+  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed, count);
 
   FastForwardClockBy(base::TimeDelta::FromHours(1));
 
@@ -84,7 +84,7 @@ TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
   const int count = features::GetMaximumPromotedContentAdsPerHour();
-  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kViewed, count);
+  RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed, count);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(59));
 

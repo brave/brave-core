@@ -28,6 +28,20 @@ struct CreativePromotedContentAdInfo : CreativeAdInfo {
 using CreativePromotedContentAdList =
     std::vector<CreativePromotedContentAdInfo>;
 
+CreativeAdList ToCreativeAdList(
+    const CreativePromotedContentAdList& creative_promoted_content_ads) {
+  CreativeAdList creative_ads;
+
+  for (const auto& creative_promoted_content_ad :
+       creative_promoted_content_ads) {
+    const CreativeAdInfo creative_ad =
+        static_cast<CreativeAdInfo>(creative_promoted_content_ad);
+    creative_ads.push_back(creative_ad);
+  }
+
+  return creative_ads;
+}
+
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_PROMOTED_CONTENT_AD_INFO_H_

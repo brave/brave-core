@@ -141,13 +141,13 @@ void AdTransfer::OnTransferAd(const int32_t tab_id, const std::string& url) {
   NotifyAdTransfer(ad);
 }
 
-void AdTransfer::NotifyAdTransfer(const AdInfo& ad) {
+void AdTransfer::NotifyAdTransfer(const AdInfo& ad) const {
   for (AdTransferObserver& observer : observers_) {
     observer.OnAdTransfer(ad);
   }
 }
 
-void AdTransfer::NotifyAdTransferFailed(const AdInfo& ad) {
+void AdTransfer::NotifyAdTransferFailed(const AdInfo& ad) const {
   for (AdTransferObserver& observer : observers_) {
     observer.OnAdTransferFailed(ad);
   }

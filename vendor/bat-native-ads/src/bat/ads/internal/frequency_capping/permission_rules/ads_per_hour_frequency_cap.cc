@@ -25,7 +25,7 @@ bool AdsPerHourFrequencyCap::ShouldAllow() {
   }
 
   const std::deque<uint64_t> history =
-      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kAdNotification, ConfirmationType::kServed);
 
   if (!DoesRespectCap(history)) {
     last_message_ = "You have exceeded the allowed ads per hour";

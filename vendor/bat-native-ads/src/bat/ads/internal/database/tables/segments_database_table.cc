@@ -60,8 +60,8 @@ void Segments::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
-    case 14: {
-      MigrateToV14(transaction);
+    case 15: {
+      MigrateToV15(transaction);
       break;
     }
 
@@ -103,7 +103,7 @@ std::string Segments::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void Segments::CreateTableV14(DBTransaction* transaction) {
+void Segments::CreateTableV15(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -121,12 +121,12 @@ void Segments::CreateTableV14(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void Segments::MigrateToV14(DBTransaction* transaction) {
+void Segments::MigrateToV15(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV14(transaction);
+  CreateTableV15(transaction);
 }
 
 }  // namespace table

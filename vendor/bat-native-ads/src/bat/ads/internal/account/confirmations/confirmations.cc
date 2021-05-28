@@ -292,15 +292,16 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
   NotifyConfirmAdFailed(confirmation);
 }
 
-void Confirmations::NotifyConfirmAd(const double estimated_redemption_value,
-                                    const ConfirmationInfo& confirmation) {
+void Confirmations::NotifyConfirmAd(
+    const double estimated_redemption_value,
+    const ConfirmationInfo& confirmation) const {
   for (ConfirmationsObserver& observer : observers_) {
     observer.OnConfirmAd(estimated_redemption_value, confirmation);
   }
 }
 
 void Confirmations::NotifyConfirmAdFailed(
-    const ConfirmationInfo& confirmation) {
+    const ConfirmationInfo& confirmation) const {
   for (ConfirmationsObserver& observer : observers_) {
     observer.OnConfirmAdFailed(confirmation);
   }

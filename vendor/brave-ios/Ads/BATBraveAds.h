@@ -7,20 +7,38 @@
 #import "ads.mojom.objc.h"
 
 typedef NS_ENUM(NSInteger, BATAdNotificationEventType) {
-  BATAdNotificationEventTypeViewed,       // = ads::AdNotificationEventType::kViewed
-  BATAdNotificationEventTypeClicked,      // = ads::AdNotificationEventType::kClicked
-  BATAdNotificationEventTypeDismissed,    // = ads::AdNotificationEventType::kDismissed
-  BATAdNotificationEventTypeTimedOut      // = ads::AdNotificationEventType::kTimedOut
+  BATAdNotificationEventTypeServed,   // = ads::AdNotificationEventType::kServed
+  BATAdNotificationEventTypeViewed,   // = ads::AdNotificationEventType::kViewed
+  BATAdNotificationEventTypeClicked,  // =
+                                      // ads::AdNotificationEventType::kClicked
+  BATAdNotificationEventTypeDismissed,  // =
+                                        // ads::AdNotificationEventType::kDismissed
+  BATAdNotificationEventTypeTimedOut  // =
+                                      // ads::AdNotificationEventType::kTimedOut
 } NS_SWIFT_NAME(AdNotificationEventType);
 
+typedef NS_ENUM(NSInteger, BATInlineContentAdEventType) {
+  BATInlineContentAdEventTypeServed,  // =
+                                      // ads::InlineContentAdEventType::kServed
+  BATInlineContentAdEventTypeViewed,  // =
+                                      // ads::InlineContentAdEventType::kViewed
+  BATInlineContentAdEventTypeClicked  // =
+                                      // ads::InlineContentAdEventType::kClicked
+} NS_SWIFT_NAME(InlineContentAdEventType);
+
 typedef NS_ENUM(NSInteger, BATNewTabPageAdEventType) {
-  BATNewTabPageAdEventTypeViewed,         // = ads::NewTabPageAdEventType::kViewed
-  BATNewTabPageAdEventTypeClicked         // = ads::NewTabPageAdEventType::kClicked
+  BATNewTabPageAdEventTypeServed,  // = ads::NewTabPageAdEventType::kServed
+  BATNewTabPageAdEventTypeViewed,  // = ads::NewTabPageAdEventType::kViewed
+  BATNewTabPageAdEventTypeClicked  // = ads::NewTabPageAdEventType::kClicked
 } NS_SWIFT_NAME(NewTabPageAdEventType);
 
 typedef NS_ENUM(NSInteger, BATPromotedContentAdEventType) {
-  BATPromotedContentAdEventTypeViewed,    // = ads::PromotedContentAdEventType::kViewed
-  BATPromotedContentAdEventTypeClicked    // = ads::PromotedContentAdEventType::kClicked
+  BATPromotedContentAdEventTypeServed,  // =
+                                        // ads::PromotedContentAdEventType::kServed
+  BATPromotedContentAdEventTypeViewed,  // =
+                                        // ads::PromotedContentAdEventType::kViewed
+  BATPromotedContentAdEventTypeClicked  // =
+                                        // ads::PromotedContentAdEventType::kClicked
 } NS_SWIFT_NAME(PromotedContentAdEventType);
 
 NS_ASSUME_NONNULL_BEGIN
@@ -142,6 +160,20 @@ NS_SWIFT_NAME(BraveAds)
 /// Report that an ad notification event type was triggered for a given id
 - (void)reportAdNotificationEvent:(NSString *)uuid
                         eventType:(BATAdNotificationEventType)eventType;
+
+/// Get inline content ad for a given size
+- (void)getInlineContentAd:(NSString* size,
+                            void (^)(BOOL success,
+                                     NSString* title,
+                                     NSString* description,
+                                     NSString* imageUrl,
+                                     NSString* ctaText))completion
+    NS_SWIFT_NAME(getInlineContentAd(_:));
+
+/// Report that an inline content ad event type was triggered for a given id
+- (void)reportInlineContentAdEvent:(NSString*)uuid
+                creativeInstanceId:(NSString*)creativeInstanceId
+                         eventType:(BATInlineContentAdEventType)eventType;
 
 /// Report that a new tab page ad event type was triggered for a given id
 - (void)reportNewTabPageAdEvent:(NSString *)wallpaperId

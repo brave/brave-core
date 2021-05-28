@@ -607,6 +607,31 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
                            static_cast<ads::NewTabPageAdEventType>(eventType));
 }
 
+- (void)getInlineContentAd:(NSString* size,
+                            void (^)(BOOL success,
+                                     NSString* title,
+                                     NSString* description,
+                                     NSString* imageUrl,
+                                     NSString* ctaText))completion {
+  if (![self isAdsServiceRunning]) {
+    return;
+  }
+  ads->GetInlineContentAd(size, ^(const bool success, const std::string& size,
+                                  const ads::InlineContentAdInfo& ad) {
+    completion(success, ad.title, ad.description, ad.image_url, ad.cta_text);
+  });
+}
+
+- (void)reportInlineContentAdEvent:(NSString*)uuid
+                creativeInstanceId:(NSString*)creativeInstanceId
+                         eventType:(BATInlineContentAdEventType)eventType {
+  if (![self isAdsServiceRunning]) {
+    return;
+  }
+  ads->OnInlineContentAdEvent(uuid.UTF8String, creativeInstanceId.UTF8String,
+                              static_cast<ads::BraveAdEventType>(eventType));
+}
+
 - (void)reportPromotedContentAdEvent:(NSString*)uuid
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:(BATPromotedContentAdEventType)eventType {
