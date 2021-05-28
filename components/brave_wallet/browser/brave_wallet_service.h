@@ -13,12 +13,14 @@
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefService;
+class PrefRegistrySimple;
 
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace brave_wallet {
+
 class KeyringController;
 class EthJsonRpcController;
 }  // namespace brave_wallet
@@ -30,6 +32,8 @@ class BraveWalletService : public KeyedService,
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BraveWalletService() override;
+
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   brave_wallet::EthJsonRpcController* rpc_controller() const;
   brave_wallet::KeyringController* keyring_controller() const;

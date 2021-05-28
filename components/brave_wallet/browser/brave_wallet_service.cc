@@ -6,8 +6,11 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 BraveWalletService::BraveWalletService(
@@ -20,6 +23,19 @@ BraveWalletService::BraveWalletService(
 }
 
 BraveWalletService::~BraveWalletService() {}
+
+void BraveWalletService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterIntegerPref(
+      kBraveWalletWeb3Provider,
+      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
+                           ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
+                           : brave_wallet::Web3ProviderTypes::ASK));
+  registry->RegisterStringPref(kBraveWalletPasswordEncryptorSalt, "");
+  registry->RegisterStringPref(kBraveWalletPasswordEncryptorNonce, "");
+  registry->RegisterStringPref(kBraveWalletEncryptedMnemonic, "");
+  registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
+  registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
+}
 
 brave_wallet::EthJsonRpcController* BraveWalletService::rpc_controller() const {
   return rpc_controller_.get();

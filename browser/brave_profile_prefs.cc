@@ -62,9 +62,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -155,7 +153,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::RegisterProfilePrefs(registry);
-  brave_perf_predictor::P3ABandwidthSavingsTracker::RegisterPrefs(registry);
+  brave_perf_predictor::P3ABandwidthSavingsTracker::RegisterProfilePrefs(
+      registry);
 #endif
 
   // appearance
@@ -192,7 +191,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 false);
 
 #if BUILDFLAG(IPFS_ENABLED)
-  ipfs::IpfsService::RegisterPrefs(registry);
+  ipfs::IpfsService::RegisterProfilePrefs(registry);
 #endif
 
   // WebTorrent
@@ -327,16 +326,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Brave Wallet
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  registry->RegisterIntegerPref(
-      kBraveWalletWeb3Provider,
-      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
-                           ? brave_wallet::Web3ProviderTypes::BRAVE_WALLET
-                           : brave_wallet::Web3ProviderTypes::ASK));
-  registry->RegisterStringPref(kBraveWalletPasswordEncryptorSalt, "");
-  registry->RegisterStringPref(kBraveWalletPasswordEncryptorNonce, "");
-  registry->RegisterStringPref(kBraveWalletEncryptedMnemonic, "");
-  registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
-  registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
+  brave_wallet::BraveWalletService::RegisterProfilePrefs(registry);
 #endif
 
   // Binance widget
@@ -369,27 +359,27 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader::SpeedreaderService::RegisterPrefs(registry);
+  speedreader::SpeedreaderService::RegisterProfilePrefs(registry);
 #endif
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  crypto_dot_com::RegisterPrefs(registry);
+  crypto_dot_com::RegisterProfilePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_FTX)
-  ftx::RegisterPrefs(registry);
+  ftx::RegisterProfilePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-  tor::TorProfileService::RegisterPrefs(registry);
+  tor::TorProfileService::RegisterProfilePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  sidebar::SidebarService::RegisterPrefs(registry);
+  sidebar::SidebarService::RegisterProfilePrefs(registry);
 #endif
 
 #if !defined(OS_ANDROID)
-  BraveOmniboxClientImpl::RegisterPrefs(registry);
+  BraveOmniboxClientImpl::RegisterProfilePrefs(registry);
 #endif
 
 #if !defined(OS_ANDROID)

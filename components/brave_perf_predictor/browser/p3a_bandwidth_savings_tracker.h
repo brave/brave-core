@@ -29,7 +29,7 @@ class P3ABandwidthSavingsTracker {
   P3ABandwidthSavingsTracker& operator=(const P3ABandwidthSavingsTracker&) =
       delete;
 
-  static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   void RecordSavings(uint64_t savings);
 
  private:

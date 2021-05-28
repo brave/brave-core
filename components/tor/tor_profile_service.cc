@@ -24,7 +24,7 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 // static
-void TorProfileService::RegisterPrefs(PrefRegistrySimple* registry) {
+void TorProfileService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAutoOnionRedirect, false);
 }
 

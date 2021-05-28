@@ -85,7 +85,7 @@ class IpfsService : public KeyedService,
   void RemoveObserver(IpfsServiceObserver* observer);
 
   bool IsDaemonLaunched() const;
-  static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
   void RegisterIpfsClientUpdater();
   IPFSResolveMethodTypes GetIPFSResolveMethodType() const;

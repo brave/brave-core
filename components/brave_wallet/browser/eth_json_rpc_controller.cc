@@ -66,7 +66,8 @@ namespace brave_wallet {
 EthJsonRpcController::EthJsonRpcController(
     Network network,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : network_(network), url_loader_factory_(url_loader_factory),
+    : network_(network),
+      url_loader_factory_(url_loader_factory),
       observers_(new base::ObserverListThreadSafe<
                  BraveWalletProviderEventsObserver>()) {
   SetNetwork(network);

@@ -54,7 +54,7 @@ std::vector<SidebarItem> GetDefaultSidebarItems() {
 }  // namespace
 
 // static
-void SidebarService::RegisterPrefs(PrefRegistrySimple* registry) {
+void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (!base::FeatureList::IsEnabled(kSidebarFeature))
     return;
 

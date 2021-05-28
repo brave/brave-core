@@ -60,7 +60,8 @@ void P3ABandwidthSavingsTracker::RecordSavings(uint64_t savings) {
 P3ABandwidthSavingsTracker::~P3ABandwidthSavingsTracker() = default;
 
 // static
-void P3ABandwidthSavingsTracker::RegisterPrefs(PrefRegistrySimple* registry) {
+void P3ABandwidthSavingsTracker::RegisterProfilePrefs(
+    PrefRegistrySimple* registry) {
   if (registry)
     registry->RegisterListPref(prefs::kBandwidthSavedDailyBytes);
 }
