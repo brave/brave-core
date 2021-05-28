@@ -157,8 +157,8 @@ def extract_resolutions(result):
         advisories = result['vulnerabilities']
         if len(advisories) == 0:
             return resolutions
-        for _, v in advisories.items():
-            via = v['via']
+        for _, value in advisories.items():
+            via = value['via']
             for item in via:
                 if isinstance(item, dict) and item['source'] not in ignored_npm_advisories:
                     resolutions.append(item)
@@ -167,9 +167,9 @@ def extract_resolutions(result):
         advisories = result['advisories']
         if len(advisories) == 0:
             return resolutions
-        for k, v in advisories.items():
-            if int(k) not in ignored_npm_advisories:
-                resolutions.append(v)
+        for key, value in advisories.items():
+            if int(key) not in ignored_npm_advisories:
+                resolutions.append(value)
     return resolutions
 
 
