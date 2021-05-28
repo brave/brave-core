@@ -67,11 +67,24 @@ namespace brave_wallet {
 
 EthJsonRpcController::EthJsonRpcController(content::BrowserContext* context,
                                            Network network)
-    : context_(context), network_(network) {
+    : context_(context),
+      network_(network),
+      observers_(new base::ObserverListThreadSafe<
+                 BraveWalletProviderEventsObserver>()) {
   SetNetwork(network);
 }
 
 EthJsonRpcController::~EthJsonRpcController() {}
+
+void EthJsonRpcController::AddObserver(
+    BraveWalletProviderEventsObserver* observer) {
+  observers_->AddObserver(observer);
+}
+
+void EthJsonRpcController::RemoveObserver(
+    BraveWalletProviderEventsObserver* observer) {
+  observers_->RemoveObserver(observer);
+}
 
 void EthJsonRpcController::Request(const std::string& json_payload,
                                    URLRequestCallback callback,
@@ -171,6 +184,10 @@ void EthJsonRpcController::SetNetwork(Network network) {
                              : "https://%s-infura.brave.com/%s",
                          subdomain.c_str(), GetInfuraProjectID().c_str());
   network_url_ = GURL(spec);
+
+  observers_->Notify(FROM_HERE,
+                     &BraveWalletProviderEventsObserver::ChainChangedEvent,
+                     GetChainIDFromNetwork(network_));
 }
 
 void EthJsonRpcController::SetCustomNetwork(const GURL& network_url) {

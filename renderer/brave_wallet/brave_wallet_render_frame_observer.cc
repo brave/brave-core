@@ -39,6 +39,7 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
     return;
 
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
+  native_javascript_handle_->ConnectEvent();
 }
 
 void BraveWalletRenderFrameObserver::OnDestruct() {

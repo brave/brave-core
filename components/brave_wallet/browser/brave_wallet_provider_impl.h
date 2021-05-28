@@ -11,14 +11,19 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 class BraveWalletService;
 
 namespace brave_wallet {
 
-class BraveWalletProviderImpl final
-    : public brave_wallet::mojom::BraveWalletProvider {
+class BraveWalletProviderImpl final : public mojom::BraveWalletProvider,
+                                      public BraveWalletProviderEventsObserver {
  public:
   BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
@@ -32,8 +37,14 @@ class BraveWalletProviderImpl final
                   const int http_code,
                   const std::string& response,
                   const std::map<std::string, std::string>& headers);
+  void GetChainId(GetChainIdCallback callback) override;
+  void Init(
+      mojo::PendingRemote<mojom::EventsListener> events_listener) override;
+
+  void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
+  mojo::Remote<mojom::EventsListener> events_listener_;
   base::WeakPtr<BraveWalletService> wallet_service_;
 
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;

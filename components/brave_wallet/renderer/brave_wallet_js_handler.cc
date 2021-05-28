@@ -63,8 +63,11 @@ void CallMethodOfObject(blink::WebLocalFrame* web_frame,
                         base::Value arguments) {
   if (web_frame->IsProvisional())
     return;
+  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(v8::Isolate::GetCurrent(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> object;
   v8::Local<v8::Value> method;
   if (!GetProperty(context, context->Global(), object_name).ToLocal(&object) ||
@@ -87,7 +90,7 @@ void CallMethodOfObject(blink::WebLocalFrame* web_frame,
 namespace brave_wallet {
 
 BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame)
-    : render_frame_(render_frame) {
+    : render_frame_(render_frame), is_connected_(false) {
   if (g_provider_script->empty()) {
     *g_provider_script =
         LoadDataResource(IDR_BRAVE_WALLET_SCRIPT_BRAVE_WALLET_SCRIPT_BUNDLE_JS);
@@ -100,6 +103,7 @@ bool BraveWalletJSHandler::EnsureConnected() {
   if (!brave_wallet_provider_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         brave_wallet_provider_.BindNewPipeAndPassReceiver());
+    brave_wallet_provider_->Init(receiver_.BindNewPipeAndPassRemote());
   }
 
   return brave_wallet_provider_.is_bound();
@@ -113,6 +117,8 @@ void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
     return;
 
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   CreateEthereumObject(isolate, context);
   InjectInitScript();
@@ -142,6 +148,9 @@ void BraveWalletJSHandler::BindFunctionsToObject(
   BindFunctionToObject(isolate, javascript_object, "request",
                        base::BindRepeating(&BraveWalletJSHandler::Request,
                                            base::Unretained(this), isolate));
+  BindFunctionToObject(isolate, javascript_object, "isConnected",
+                       base::BindRepeating(&BraveWalletJSHandler::IsConnected,
+                                           base::Unretained(this)));
 }
 
 template <typename Sig>
@@ -158,6 +167,18 @@ void BraveWalletJSHandler::BindFunctionToObject(
                 ->GetFunction(context)
                 .ToLocalChecked())
       .Check();
+}
+
+v8::Local<v8::Value> BraveWalletJSHandler::IsConnected() {
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context =
+      render_frame_->GetWebFrame()->MainWorldScriptContext();
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  return v8::Boolean::New(isolate, is_connected_);
 }
 
 v8::Local<v8::Promise> BraveWalletJSHandler::Request(
@@ -209,6 +230,8 @@ void BraveWalletJSHandler::OnRequest(
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   bool reject = http_code != 200;
@@ -248,30 +271,48 @@ void BraveWalletJSHandler::InjectInitScript() {
 }
 
 void BraveWalletJSHandler::FireEvent(const std::string& event,
-                                     const std::string& event_args) {
+                                     base::Value event_args) {
   base::Value args = base::Value(base::Value::Type::LIST);
   args.Append(event);
-  args.Append(event_args);
+  args.Append(std::move(event_args));
   CallMethodOfObject(render_frame_->GetWebFrame(),
                      u"ethereum",
                      u"emit",
                      std::move(args));
 }
 
-void BraveWalletJSHandler::ConnectEvent(const std::string& chain_id) {
-  FireEvent(kConnectEvent, chain_id);
+void BraveWalletJSHandler::ConnectEvent() {
+  if (!EnsureConnected())
+    return;
+
+  brave_wallet_provider_->GetChainId(base::BindOnce(
+      &BraveWalletJSHandler::OnGetChainId, base::Unretained(this)));
+}
+
+void BraveWalletJSHandler::OnGetChainId(const std::string& chain_id) {
+  base::DictionaryValue event_args;
+  event_args.SetStringKey("chainId", chain_id);
+  FireEvent(kConnectEvent, std::move(event_args));
+  is_connected_ = true;
+  chain_id_ = chain_id;
 }
 
 void BraveWalletJSHandler::DisconnectEvent(const std::string& message) {
-  FireEvent(kDisconnectEvent, message);
+  // FireEvent(kDisconnectEvent, message);
 }
 
 void BraveWalletJSHandler::ChainChangedEvent(const std::string& chain_id) {
-  FireEvent(kChainChangedEvent, chain_id);
+  if (chain_id_ == chain_id)
+    return;
+
+  base::DictionaryValue event_args;
+  event_args.SetStringKey("chainId", chain_id);
+  FireEvent(kChainChangedEvent, std::move(event_args));
+  chain_id_ = chain_id;
 }
 
 void BraveWalletJSHandler::AccountsChangedEvent(const std::string& accounts) {
-  FireEvent(kAccountsChangedEvent, accounts);
+  // FireEvent(kAccountsChangedEvent, accounts);
 }
 
 }  // namespace brave_wallet
