@@ -24,6 +24,11 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/system_network_context_manager.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
+#include "components/proxy_config/proxy_config_dictionary.h"
+#include "components/proxy_config/proxy_config_pref_names.h"
+#include "components/proxy_config/proxy_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
@@ -244,6 +249,17 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCnameUncloaking) &&
       ctx->browser_context && !ctx->browser_context->IsTor();
+
+  // Also, skip CNAME uncloaking if there is currently a configured proxy.
+  Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
+  ProxyConfigDictionary dict(
+      profile->GetPrefs()->GetDictionary(proxy_config::prefs::kProxy)->Clone());
+  ProxyPrefs::ProxyMode mode;
+
+  if (!dict.GetMode(&mode) || !(mode == ProxyPrefs::ProxyMode::MODE_DIRECT ||
+                                mode == ProxyPrefs::ProxyMode::MODE_SYSTEM)) {
+    should_check_uncloaked = false;
+  }
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
