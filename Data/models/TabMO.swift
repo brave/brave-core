@@ -120,6 +120,15 @@ public final class TabMO: NSManagedObject, CRUD {
         }
     }
     
+    // Updates Tab's last accesed time.
+    public class func touch(tabID: String) {
+        DataController.perform { context in
+            guard let tabToUpdate = getInternal(fromId: tabID, context: context) else { return }
+            tabToUpdate.lastUpdate = Date()
+        }
+        
+    }
+    
     // Deletes the Tab History by removing items except the last one from historysnapshot and setting current index
     public class func removeHistory(with tabID: String) {
         DataController.perform { context in
