@@ -5,16 +5,6 @@
 
 #include "brave/components/brave_vpn/brave_vpn_connection_manager_win.h"
 
-#include <windows.h>
-
-#include <MprApi.h>
-#include <ipsectypes.h>
-#include <ras.h>
-#include <raserror.h>
-#include <stdio.h>
-#include <winerror.h>
-#include <winsock.h>
-
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"

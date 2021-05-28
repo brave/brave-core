@@ -24,10 +24,7 @@ source_set("brave_vpn") {
       "brave_vpn_connection_manager_win.h",
     ]
 
-    libs += [
-      "rasapi32.lib",
-      "Ws2_32.lib",
-    ]
+    libs += [ "rasapi32.lib" ]
   }
 }
 
