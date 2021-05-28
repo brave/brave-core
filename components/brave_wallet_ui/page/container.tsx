@@ -32,6 +32,7 @@ import {
 import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
+import BackupWallet from '../stories/screens/backup-wallet'
 
 type Props = {
   wallet: WalletState
@@ -55,6 +56,10 @@ function Container (props: Props) {
     props.walletPageActions.walletSetupComplete()
   }
 
+  const onBackupWallet = () => {
+    // Logic to complete Backup
+  }
+
   const passwordProvided = (password: string) => {
     props.walletPageActions.createWallet({ password })
   }
@@ -65,6 +70,14 @@ function Container (props: Props) {
 
   const lockWallet = () => {
     props.walletActions.lockWallet()
+  }
+
+  const onShowBackup = () => {
+    props.walletPageActions.showRecoveryPhrase(true)
+  }
+
+  const onHideBackup = () => {
+    props.walletPageActions.showRecoveryPhrase(false)
   }
 
   const handlePasswordChanged = (value: string) => {
@@ -95,9 +108,28 @@ function Container (props: Props) {
         {view === 'crypto' ? (
           <>
             {props.wallet.isWalletLocked ? (
-              <LockScreen onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
+              <LockScreen
+                onSubmit={unlockWallet}
+                disabled={inputValue === ''}
+                onPasswordChanged={handlePasswordChanged}
+              />
             ) : (
-              <CryptoView onLockWallet={lockWallet} needsBackup={true} />
+              <>
+                {props.page.showRecoveryPhrase ? (
+                  <BackupWallet
+                    isOnboarding={false}
+                    onCancel={onHideBackup}
+                    onSubmit={onBackupWallet}
+                    recoveryPhrase={recoveryPhrase}
+                  />
+                ) : (
+                  <CryptoView
+                    onLockWallet={lockWallet}
+                    needsBackup={!props.wallet.isWalletRecoveryVerified}
+                    onShowBackup={onShowBackup}
+                  />
+                )}
+              </>
             )}
           </>
         ) : (

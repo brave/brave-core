@@ -10,6 +10,7 @@ export type InitializedPayloadType = {
   isWalletLocked: boolean
   favoriteApps: AppObjectType[]
   accounts: string[]
+  isWalletRecoveryVerified: boolean
 }
 
 export type UnlockWalletPayloadType = {

@@ -9,3 +9,4 @@ import { CreateWalletPayloadType, WalletCreatedPayloadType } from '../constants/
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const walletCreated = createAction<WalletCreatedPayloadType>('walletCreated')
 export const walletSetupComplete = createAction('waletSetupComplete')
+export const showRecoveryPhrase = createAction<boolean>('showRecoveryPhrase')

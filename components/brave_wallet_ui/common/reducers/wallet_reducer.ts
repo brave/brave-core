@@ -37,7 +37,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
     isWalletCreated: payload.isWalletCreated,
     isWalletLocked: payload.isWalletLocked,
     favoriteApps: payload.favoriteApps,
-    accounts
+    isWalletRecoveryVerified: payload.isWalletRecoveryVerified
   }
 })
 

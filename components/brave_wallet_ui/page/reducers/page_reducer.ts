@@ -10,7 +10,8 @@ import { PageState } from '../../constants/types'
 import { WalletCreatedPayloadType } from '../constants/action_types'
 
 const defaultState: PageState = {
-  hasInitialized: false
+  hasInitialized: false,
+  showRecoveryPhrase: false
 }
 
 const reducer = createReducer<PageState>({}, defaultState)
@@ -26,6 +27,13 @@ reducer.on(Actions.walletSetupComplete, (state: PageState) => {
   const newState = { ...state }
   delete newState.mnemonic
   return newState
+})
+
+reducer.on(Actions.showRecoveryPhrase, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    showRecoveryPhrase: payload
+  }
 })
 
 export default reducer

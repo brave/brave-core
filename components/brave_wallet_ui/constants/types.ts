@@ -135,6 +135,7 @@ export interface PanelState {
 
 export interface PageState {
   hasInitialized: boolean
+  showRecoveryPhrase: boolean
   mnemonic?: string
 }
 
@@ -150,8 +151,9 @@ export interface WalletPanelState {
 
 export interface WalletInfo {
   isWalletCreated: boolean,
-  isWalletLocked: boolean
-  favoriteApps: AppObjectType[]
+  isWalletLocked: boolean,
+  favoriteApps: AppObjectType[],
+  isWalletRecoveryVerified: boolean,
   accounts: string[]
 }
 
