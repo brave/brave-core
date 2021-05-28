@@ -5,13 +5,24 @@
 
 #include "components/content_settings/core/browser/cookie_settings.h"
 
+#include "net/base/features.h"
 #include "net/base/url_util.h"
+
+#define BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL      \
+  if (setting == CONTENT_SETTING_SESSION_ONLY && !block_third && \
+      ShouldBlockThirdPartyCookies() &&                          \
+      !first_party_url.SchemeIs(extension_scheme_) &&            \
+      base::FeatureList::IsEnabled(                              \
+          net::features::kBraveFirstPartyEphemeralStorage)) {    \
+    block_third = true;                                          \
+  }
 
 #define ShutdownOnUIThread ShutdownOnUIThread_ChromiumImpl
 
 #include "../../../../../../components/content_settings/core/browser/cookie_settings.cc"
 
 #undef ShutdownOnUIThread
+#undef BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL
 
 namespace content_settings {
 

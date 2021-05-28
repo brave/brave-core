@@ -5,7 +5,19 @@
 
 #include "services/network/cookie_settings.h"
 
+#include "net/base/features.h"
 #include "url/origin.h"
+
+#define BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL    \
+  if (cookie_setting == CONTENT_SETTING_SESSION_ONLY &&       \
+      base::FeatureList::IsEnabled(                           \
+          net::features::kBraveFirstPartyEphemeralStorage)) { \
+    /* Do nothing */                                          \
+  } else  // NOLINT
+
+#include "../../../../services/network/cookie_settings.cc"
+
+#undef BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL
 
 namespace network {
 
@@ -58,5 +70,3 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
 }
 
 }  // namespace network
-
-#include "../../../../services/network/cookie_settings.cc"
