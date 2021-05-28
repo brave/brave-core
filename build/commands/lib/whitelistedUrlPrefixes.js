@@ -10,14 +10,14 @@ module.exports = [
   'https://go-updater.brave.com/',
   'https://safebrowsing.brave.com/',
   'https://brave-core-ext.s3.brave.com/',
-  'https://laptop-updates.brave.com/',
+  'https://laptop-updates.brave.com/', // stats/referrals
   'https://static.brave.com/',
   'https://static1.brave.com/',
   'http://componentupdater.brave.com/service/update2', // allowed because it 307's to https://componentupdater.brave.com
   'https://componentupdater.brave.com/service/update2',
   'https://crlsets.brave.com/',
   'https://crxdownload.brave.com/crx/blobs/',
-  'https://updates.bravesoftware.com/',
+  'https://updates.bravesoftware.com/', // Omaha/Sparkle
   'https://p3a.brave.com/',
   'https://dns.google/dns-query', // needed for DoH on Mac build machines
   'https://chrome.cloudflare-dns.com/dns-query', // needed for DoH on Mac build machines
