@@ -35,11 +35,12 @@ public class BraveNewTabPage extends NewTabPage {
             Supplier<Tab> activityTabProvider, SnackbarManager snackbarManager,
             ActivityLifecycleDispatcher lifecycleDispatcher, TabModelSelector tabModelSelector,
             boolean isTablet, NewTabPageUma uma, boolean isInNightMode,
-            NativePageHost nativePageHost, Tab tab, BottomSheetController bottomSheetController,
+            NativePageHost nativePageHost, Tab tab, String url,
+            BottomSheetController bottomSheetController,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
-                tab, bottomSheetController, shareDelegateSupplier, windowAndroid);
+                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -52,9 +53,9 @@ public class BraveNewTabPage extends NewTabPage {
             SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
             BottomSheetController bottomSheetController,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
-            TabModelSelector tabModelSelector) {
+            TabModelSelector tabModelSelector, String url) {
         super.initializeMainView(activity, windowAndroid, snackbarManager, uma, isInNightMode,
-                bottomSheetController, shareDelegateSupplier, tabModelSelector);
+                bottomSheetController, shareDelegateSupplier, tabModelSelector, url);
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
@@ -65,6 +66,6 @@ public class BraveNewTabPage extends NewTabPage {
                 mNewTabPageManager.getNavigationDelegate(), profile,
                 /* isPlaceholderShownInitially= */ false, bottomSheetController,
                 shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
-                tabModelSelector);
+                tabModelSelector, NewTabPageUtils.decodeOriginFromNtpUrl(url));
     }
 }

@@ -49,8 +49,13 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
+    public <init>(...);
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
+}
+
+-keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
