@@ -22,9 +22,9 @@
   #include <openssl/x509v3.h>
 #endif
 
-#ifndef OPENSSL_IS_BORINGSSL
 @implementation BraveCertificatePrivateKeyUsagePeriodExtensionModel
 - (void)parseExtension:(X509_EXTENSION*)extension {
+  #ifndef OPENSSL_IS_BORINGSSL
   PKEY_USAGE_PERIOD* key_usage_period = static_cast<PKEY_USAGE_PERIOD*>(X509V3_EXT_d2i(extension));
   if (key_usage_period) {
     // OpenSSL documentation:
@@ -39,6 +39,6 @@
     }
     PKEY_USAGE_PERIOD_free(key_usage_period);
   }
+  #endif  //  OPENSSL_IS_BORINGSSL
 }
 @end
-#endif  //  OPENSSL_IS_BORINGSSL

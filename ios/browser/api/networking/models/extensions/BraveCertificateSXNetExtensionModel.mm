@@ -22,8 +22,7 @@
   #include <openssl/x509v3.h>
 #endif
 
-#ifndef OPENSSL_IS_BORINGSSL
-@interface BraveCertificateSXNetIDExtensionModel: NSObject
+@interface BraveCertificateSXNetIDExtensionModel()
 @property(nonatomic, strong, readwrite) NSString* idZone;
 @property(nonatomic, strong, readwrite) NSString* idUser;
 @end
@@ -43,6 +42,7 @@
   _version = -1;
   _ids = @[];
   
+  #ifndef OPENSSL_IS_BORINGSSL
   SXNET* sx_net = static_cast<SXNET*>(X509V3_EXT_d2i(extension));
   if (sx_net) {
     if (sx_net->version) {
@@ -73,6 +73,6 @@
     
     SXNET_free(sx_net);
   }
+  #endif
 }
 @end
-#endif

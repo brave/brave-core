@@ -22,11 +22,11 @@
   #include <openssl/x509v3.h>
 #endif
 
-#ifndef OPENSSL_IS_BORINGSSL
 @implementation BraveCertificateTLSFeatureExtensionModel
 - (void)parseExtension:(X509_EXTENSION*)extension {
   NSMutableArray* features = [[NSMutableArray alloc] init];
   
+  #ifndef OPENSSL_IS_BORINGSSL
   //STACK_OF(ASN1_INTEGER) //Must Staple
   TLS_FEATURE* tls_feature = static_cast<TLS_FEATURE*>(X509V3_EXT_d2i(extension));
   if (tls_feature) {
@@ -43,7 +43,7 @@
     }
     TLS_FEATURE_free(tls_feature);
   }
+  #endif
   _features = features;
 }
 @end
-#endif

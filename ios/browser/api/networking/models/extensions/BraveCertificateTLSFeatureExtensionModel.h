@@ -11,12 +11,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#ifndef OPENSSL_IS_BORINGSSL
 OBJC_EXPORT
 @interface BraveCertificateTLSFeatureExtensionModel: BraveCertificateExtensionModel
 @property(nonatomic, strong, readonly) NSArray<NSNumber*>* features; //array of long
 @end
-#endif
 
 NS_ASSUME_NONNULL_END
 

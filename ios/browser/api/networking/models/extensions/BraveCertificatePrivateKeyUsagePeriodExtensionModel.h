@@ -11,13 +11,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#ifndef OPENSSL_IS_BORINGSSL
 OBJC_EXPORT
 @interface BraveCertificatePrivateKeyUsagePeriodExtensionModel: BraveCertificateExtensionModel
 @property (nullable, nonatomic, strong, readonly) NSDate* notBefore;
 @property (nullable, nonatomic, strong, readonly) NSDate* notAfter;
 @end
-#endif  //  OPENSSL_IS_BORINGSSL
 
 NS_ASSUME_NONNULL_END
 
