@@ -57,8 +57,6 @@ source_set("browser") {
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/keyed_service/core",
     "//components/prefs",
-    "//components/user_prefs",
-    "//content/public/browser",
     "//crypto",
     "//services/network/public/cpp",
     "//third_party/boringssl",

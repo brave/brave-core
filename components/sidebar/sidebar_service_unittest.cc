@@ -26,7 +26,7 @@ class SidebarServiceTest : public testing::Test,
     EXPECT_FALSE(base::FeatureList::IsEnabled(kSidebarFeature));
 
     scoped_feature_list_.InitAndEnableFeature(kSidebarFeature);
-    SidebarService::RegisterPrefs(prefs_.registry());
+    SidebarService::RegisterProfilePrefs(prefs_.registry());
     service_.reset(new SidebarService(&prefs_));
     service_->AddObserver(this);
   }

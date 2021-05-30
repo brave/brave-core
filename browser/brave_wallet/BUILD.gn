@@ -15,8 +15,10 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common",
     "//chrome/browser/profiles:profiles",
     "//components/keyed_service/content:content",
+    "//components/user_prefs",
     "//content/public/browser",
     "//extensions/buildflags",
+    "//services/network/public/cpp",
   ]
   if (enable_extensions) {
     deps += [

@@ -10,7 +10,7 @@
 
 namespace ftx {
 
-void RegisterPrefs(PrefRegistrySimple* registry) {
+void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kFTXNewTabPageShowFTX, true);
   registry->RegisterStringPref(kFTXAccessToken, "");
   registry->RegisterStringPref(kFTXOauthHost, "ftx.com");

@@ -11,8 +11,6 @@
 #include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/browser/storage_partition.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -65,10 +63,11 @@ bool GetUseStagingInfuraEndpoint() {
 
 namespace brave_wallet {
 
-EthJsonRpcController::EthJsonRpcController(content::BrowserContext* context,
-                                           Network network)
-    : context_(context),
-      network_(network),
+EthJsonRpcController::EthJsonRpcController(
+    Network network,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : network_(network),
+      url_loader_factory_(url_loader_factory),
       observers_(new base::ObserverListThreadSafe<
                  BraveWalletProviderEventsObserver>()) {
   SetNetwork(network);
@@ -91,9 +90,9 @@ void EthJsonRpcController::Request(const std::string& json_payload,
                                    bool auto_retry_on_network_change) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = network_url_;
-  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
+  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
+                        net::LOAD_DO_NOT_SAVE_COOKIES;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
   request->method = "POST";
 
   auto url_loader = network::SimpleURLLoader::Create(
@@ -107,14 +106,8 @@ void EthJsonRpcController::Request(const std::string& json_payload,
           ? network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE
           : network::SimpleURLLoader::RetryMode::RETRY_NEVER);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-
-  auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(context_);
-  auto* url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
-
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory,
+      url_loader_factory_.get(),
       base::BindOnce(&EthJsonRpcController::OnURLLoaderComplete,
                      base::Unretained(this), iter, std::move(callback)));
 }

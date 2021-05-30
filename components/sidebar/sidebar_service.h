@@ -41,7 +41,7 @@ class SidebarService : public KeyedService {
     ~Observer() override = default;
   };
 
-  static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   explicit SidebarService(PrefService* prefs);
   ~SidebarService() override;

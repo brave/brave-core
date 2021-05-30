@@ -75,7 +75,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  BraveWalletServiceFactory::GetInstance();
+  brave_wallet::BraveWalletServiceFactory::GetInstance();
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

@@ -74,9 +74,9 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  BraveWalletService* GetBraveWalletService() {
-    BraveWalletService* service =
-        BraveWalletServiceFactory::GetInstance()->GetForContext(
+  brave_wallet::BraveWalletService* GetBraveWalletService() {
+    brave_wallet::BraveWalletService* service =
+        brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
             browser()->profile());
     EXPECT_TRUE(service);
     return service;

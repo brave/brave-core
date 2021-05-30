@@ -18,7 +18,7 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
   BraveOmniboxClientImpl(OmniboxEditController* controller, Profile* profile);
   ~BraveOmniboxClientImpl() override;
 
-  static void RegisterPrefs(PrefRegistrySimple* prefs);
+  static void RegisterProfilePrefs(PrefRegistrySimple* prefs);
 
   const AutocompleteSchemeClassifier& GetSchemeClassifier() const override;
   bool IsAutocompleteEnabled() const override;

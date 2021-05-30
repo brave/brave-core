@@ -18,11 +18,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_events_observer.h"
 #include "url/gurl.h"
 
-namespace content {
-class BrowserContext;
-}  // namespace content
-
 namespace network {
+class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
@@ -30,7 +27,9 @@ namespace brave_wallet {
 
 class EthJsonRpcController {
  public:
-  EthJsonRpcController(content::BrowserContext* context, Network network);
+  EthJsonRpcController(
+      Network network,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~EthJsonRpcController();
 
   using URLRequestCallback =
@@ -94,10 +93,10 @@ class EthJsonRpcController {
       const std::string& body,
       const std::map<std::string, std::string>& headers);
 
-  content::BrowserContext* context_;
   GURL network_url_;
   SimpleURLLoaderList url_loaders_;
   Network network_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   scoped_refptr<base::ObserverListThreadSafe<BraveWalletProviderEventsObserver>>
       observers_;
 };

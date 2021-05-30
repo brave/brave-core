@@ -8,6 +8,12 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+
+namespace brave_wallet {
 
 // static
 BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
@@ -31,7 +37,12 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() {}
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new BraveWalletService(context);
+  auto* default_storage_partition =
+      content::BrowserContext::GetDefaultStoragePartition(context);
+  auto shared_url_loader_factory =
+      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
+  return new BraveWalletService(user_prefs::UserPrefs::Get(context),
+                                shared_url_loader_factory);
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
@@ -42,3 +53,5 @@ content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
 bool BraveWalletServiceFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
 }
+
+}  // namespace brave_wallet

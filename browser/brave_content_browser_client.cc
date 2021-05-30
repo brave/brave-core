@@ -200,8 +200,9 @@ void MaybeBindBraveWalletProvider(
   if (!brave_wallet::IsAllowedForContext(context))
     return;
 
-  BraveWalletService* service =
-      BraveWalletServiceFactory::GetInstance()->GetForContext(context);
+  brave_wallet::BraveWalletService* service =
+      brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
+          context);
 
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(

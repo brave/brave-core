@@ -124,7 +124,7 @@ IpfsService::~IpfsService() {
 }
 
 // static
-void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
+void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kIPFSEnabled, true);
   registry->RegisterIntegerPref(
       kIPFSResolveMethod,
