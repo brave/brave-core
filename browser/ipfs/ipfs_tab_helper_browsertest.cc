@@ -37,6 +37,9 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
 
     embedded_test_server()->ServeFilesFromSourceDirectory("content/test/data");
     https_server_.ServeFilesFromSourceDirectory("content/test/data");
+    embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
+        &IpfsTabHelperBrowserTest::ResponseHandler, base::Unretained(this)));
+
     https_server_.RegisterRequestHandler(base::BindRepeating(
         &IpfsTabHelperBrowserTest::ResponseHandler, base::Unretained(this)));
     ASSERT_TRUE(https_server_.Start());
@@ -135,6 +138,24 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkLocal) {
   ASSERT_TRUE(WaitForLoadStop(active_contents()));
   ASSERT_FALSE(resolver_raw->resolve_called());
   result = "ipns://brave.eth/?query#ref";
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
+
+  SetXIpfsPathHeader("/ipfs/bafy");
+  test_url = embedded_test_server()->GetURL(
+      "a.com", "/ipfs/bafy/wiki/empty.html?query#ref");
+  ui_test_utils::NavigateToURL(browser(), test_url);
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  result = "ipfs://bafy/wiki/empty.html?query#ref";
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
+
+  SetXIpfsPathHeader("/ipns/bafyb");
+  test_url = embedded_test_server()->GetURL(
+      "a.com", "/ipns/bafyb/wiki/empty.html?query#ref");
+  ui_test_utils::NavigateToURL(browser(), test_url);
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  result = "ipns://bafyb/wiki/empty.html?query#ref";
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
 }
 

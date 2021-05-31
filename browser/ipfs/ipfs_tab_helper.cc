@@ -166,8 +166,17 @@ GURL IPFSTabHelper::GetIPFSResolvedURL() const {
   std::string cid;
   std::string path;
   ipfs::ParseCIDAndPathFromIPFSUrl(ipfs_resolved_url_, &cid, &path);
-  std::string current_ipfs_url =
-      ipfs_resolved_url_.scheme() + "://" + cid + current.path();
+  auto resolved_scheme = ipfs_resolved_url_.scheme();
+  std::string resolved_path = current.path();
+  std::vector<std::string> parts = base::SplitString(
+      current.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  // If public gateway like https://ipfs.io/ipfs/{cid}/..
+  // skip duplication for /{scheme}/{cid}/ and add the rest parts
+  if (parts.size() > 3 && parts[1] == resolved_scheme && parts[2] == cid) {
+    parts.erase(parts.begin() + 1, parts.begin() + 3);
+    resolved_path = base::JoinString(parts, "/");
+  }
+  std::string current_ipfs_url = resolved_scheme + "://" + cid + resolved_path;
   GURL resolved_url(current_ipfs_url);
   return resolved_url.ReplaceComponents(replacements);
 }
