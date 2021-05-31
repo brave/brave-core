@@ -4,7 +4,6 @@ group("android_deps") {
   public_deps = [
     ":com_airbnb_android_java",
     ":com_android_installreferrer_java",
-    ":com_github_PhilJay_java",
     ":google_play_services_safetynet_java",
   ]
 }
@@ -25,9 +24,4 @@ android_aar_prebuilt("com_airbnb_android_java") {
   aar_path = "libs/com_airbnb_android/lottie-3.0.3.aar"
   info_path = "libs/com_airbnb_android/com_airbnb_android.info"
   deps = [ "//third_party/androidx:androidx_appcompat_appcompat_java" ]
-}
-
-android_aar_prebuilt("com_github_PhilJay_java") {
-  aar_path = "libs/com_github_PhilJay/MPAndroidChart-3.1.0-alpha.aar"
-  info_path = "libs/com_github_PhilJay/com_github_PhilJay.info"
 }
