@@ -13,13 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.chrome.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.chromium.chrome.R;
-
-public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAdapter.RecoveryPhraseViewHolder> {
-
+public class RecoveryPhraseAdapter
+        extends RecyclerView.Adapter<RecoveryPhraseAdapter.RecoveryPhraseViewHolder> {
     List<String> recoveryPhraseList = new ArrayList<>();
 
     @NonNull
@@ -33,7 +33,10 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
     @Override
     public void onBindViewHolder(RecoveryPhraseViewHolder holder, int position) {
         final String recoveryPhrase = recoveryPhraseList.get(position);
-        holder.recoveryPhraseText.setText(String.format(holder.recoveryPhraseText.getContext().getResources().getString(R.string.recovery_phrase_item_text), (position + 1), recoveryPhrase));
+        holder.recoveryPhraseText.setText(
+                String.format(holder.recoveryPhraseText.getContext().getResources().getString(
+                                      R.string.recovery_phrase_item_text),
+                        (position + 1), recoveryPhrase));
     }
 
     public void setRecoveryPhraseList(List<String> recoveryPhraseList) {

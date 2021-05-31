@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 
 public class CryptoChildFragment extends Fragment {
     public static CryptoChildFragment newInstance() {
@@ -33,9 +33,7 @@ public class CryptoChildFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_crypto_child, container, false);
     }
@@ -46,16 +44,7 @@ public class CryptoChildFragment extends Fragment {
         assert getActivity() != null;
 
         SmoothLineChartEquallySpaced chartES = view.findViewById(R.id.line_chart);
-        chartES.setData(new float[]{
-                15,
-                21,
-                9,
-                21,
-                25,
-                35,
-                24,
-                28
-        });
+        chartES.setData(new float[] {15, 21, 9, 21, 25, 35, 24, 28});
 
         setUpCoinList(view);
     }

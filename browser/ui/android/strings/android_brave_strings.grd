@@ -1819,6 +1819,12 @@ until they verify, or until 90 days have passed.
     <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT">
       (<ph name="NUMBER">%1$s</ph>). <ph name="RECOVERY_PHRASE">%2$s</ph>
     </message>
+    <message name="IDS_ENABLE_FINGERPRINT_UNLOCK">
+      Enable fingerprint unlock?
+    </message>
+    <message name="IDS_ENABLE_FINGERPRINT_TEXT">
+      Enable biometrics to quickly unlock your wallet without entering your password.
+    </message>
     </messages>
   </release>
 </grit>

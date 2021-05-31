@@ -5,7 +5,10 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import android.content.DialogInterface;
+import android.hardware.biometrics.BiometricPrompt;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-// import androidx.biometric.BiometricManager;
-// import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -31,21 +32,24 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.AddAccountOnboardingDialog;
+import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
+import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import org.chromium.chrome.browser.crypto_wallet.AddAccountOnboardingDialog;
-import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
-import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
-
 public class CryptoFragment extends Fragment {
-    private final List<String> titles = new ArrayList<>(Arrays.asList("PORTFOLIO", "PRICES", "DEFI", "NFTS", "ACCOUNTS"));
+    private final List<String> titles =
+            new ArrayList<>(Arrays.asList("PORTFOLIO", "PRICES", "DEFI", "NFTS", "ACCOUNTS"));
 
-    private final List<String> recoveryPhrases = new ArrayList<>(Arrays.asList("Tomato", "Green", "Velvet", "Span", "Celery", "Atoms", "Parent", "Stop", "Bowl", "Wishful", "Stone", "Exercise"));
+    private final List<String> recoveryPhrases =
+            new ArrayList<>(Arrays.asList("Tomato", "Green", "Velvet", "Span", "Celery", "Atoms",
+                    "Parent", "Stop", "Bowl", "Wishful", "Stone", "Exercise"));
     private CryptoWalletActivity.OnFinishOnboarding onFinishOnboarding;
 
     private View rootView;
@@ -62,9 +66,7 @@ public class CryptoFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_crypto, container, false);
         return rootView;
@@ -134,14 +136,16 @@ public class CryptoFragment extends Fragment {
 
         Button secureCryptoButton = rootView.findViewById(R.id.btn_secure_crypto_continue);
         secureCryptoButton.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(passwordEdittext.getText()) || passwordEdittext.getText().toString().length() < 7) {
+            if (TextUtils.isEmpty(passwordEdittext.getText())
+                    || passwordEdittext.getText().toString().length() < 7) {
                 passwordEdittext.setError(getResources().getString(R.string.password_error));
-            } else if (TextUtils.isEmpty(retypePasswordEdittext.getText()) || !passwordEdittext.getText().toString().equals(retypePasswordEdittext.getText().toString())) {
-                retypePasswordEdittext.setError(getResources().getString(R.string.retype_password_error));
+            } else if (TextUtils.isEmpty(retypePasswordEdittext.getText())
+                    || !passwordEdittext.getText().toString().equals(
+                            retypePasswordEdittext.getText().toString())) {
+                retypePasswordEdittext.setError(
+                        getResources().getString(R.string.retype_password_error));
             } else {
-                // showBiometricsPrompt();
-                secureCryptoLayout.setVisibility(View.GONE);
-                backupWalletLayout.setVisibility(View.VISIBLE);
+                showFingerprintDialog(authenticationCallback);
             }
         });
 
@@ -157,7 +161,9 @@ public class CryptoFragment extends Fragment {
         AddAccountOnboardingDialog addAccountOnboardingDialog = new AddAccountOnboardingDialog();
         addAccountOnboardingDialog.setCancelable(false);
         assert getActivity() != null;
-        addAccountOnboardingDialog.show(((FragmentActivity)getActivity()).getSupportFragmentManager(), "AddAccountOnboardingDialog");
+        addAccountOnboardingDialog.show(
+                ((FragmentActivity) getActivity()).getSupportFragmentManager(),
+                "AddAccountOnboardingDialog");
     }
 
     View.OnClickListener onSkipClickListener = new View.OnClickListener() {
@@ -167,56 +173,69 @@ public class CryptoFragment extends Fragment {
         }
     };
 
-//     private void showBiometricsPrompt() {
-//         assert getActivity() != null;
-//         Executor executor = ContextCompat.getMainExecutor(getActivity());
-//         BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(),
-//                 executor, new BiometricPrompt.AuthenticationCallback() {
-//             @Override
-//             public void onAuthenticationError(int errorCode,
-//                                               @NonNull CharSequence errString) {
-//                 super.onAuthenticationError(errorCode, errString);
-//                 Toast.makeText(getActivity(),
-//                         "Authentication error: " + errString, Toast.LENGTH_SHORT)
-//                         .show();
-//             }
+    private void showFingerprintDialog(
+            @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
+        assert getActivity() != null;
+        Executor executor = ContextCompat.getMainExecutor(getActivity());
+        new BiometricPrompt.Builder(getActivity())
+                .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
+                .setDescription(getResources().getString(R.string.enable_fingerprint_text))
+                .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                secureCryptoLayout.setVisibility(View.GONE);
+                                backupWalletLayout.setVisibility(View.VISIBLE);
+                                authenticationCallback.onAuthenticationError(
+                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED,
+                                        "User canceled the scanning process by pressing the negative button");
+                            }
+                        })
+                .build()
+                .authenticate(new CancellationSignal(), executor, authenticationCallback);
+    }
 
-//             @Override
-//             public void onAuthenticationSucceeded(
-//                     @NonNull BiometricPrompt.AuthenticationResult result) {
-//                 super.onAuthenticationSucceeded(result);
-//                 Toast.makeText(getActivity(),
-//                         "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-//                 secureCryptoLayout.setVisibility(View.GONE);
-//                 backupWalletLayout.setVisibility(View.VISIBLE);
-//             }
+    BiometricPrompt.AuthenticationCallback
+            authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
+        @Override
+        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+            super.onAuthenticationSucceeded(result);
+            Toast.makeText(getActivity(), "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+            secureCryptoLayout.setVisibility(View.GONE);
+            backupWalletLayout.setVisibility(View.VISIBLE);
+        }
 
-//             @Override
-//             public void onAuthenticationFailed() {
-//                 super.onAuthenticationFailed();
-//                 Toast.makeText(getActivity(), "Authentication failed",
-//                         Toast.LENGTH_SHORT)
-//                         .show();
-//             }
-//         });
-
-//         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-//                 .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
-//                 .setDescription(getResources().getString(R.string.enable_fingerprint_text))
-// //                .setSubtitle(getResources().getString(R.string.enable_fingerprint_text))
-// //                .setNegativeButtonText("Use account password")
-// //                .setConfirmationRequired(true)
-//                 .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
-//                 .build();
-
-//         biometricPrompt.authenticate(promptInfo);
-//     }
+        @Override
+        public void onAuthenticationError(int errorCode, CharSequence errString) {
+            super.onAuthenticationError(errorCode, errString);
+            switch (errorCode) {
+                case BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED:
+                    Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+                    break;
+                case BiometricPrompt.BIOMETRIC_ERROR_HW_NOT_PRESENT:
+                case BiometricPrompt.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                    Toast.makeText(getActivity(),
+                                 "Device doesn't have the supported fingerprint hardware.",
+                                 Toast.LENGTH_SHORT)
+                            .show();
+                    break;
+                case BiometricPrompt.BIOMETRIC_ERROR_NO_BIOMETRICS:
+                    Toast.makeText(getActivity(), "User did not register any fingerprints.",
+                                 Toast.LENGTH_SHORT)
+                            .show();
+                    break;
+                default:
+                    Toast.makeText(getActivity(), "unrecoverable error", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     private void setupRecoveryPhraseRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
         recyclerView.setHasFixedSize(true);
         assert getActivity() != null;
-        recyclerView.addItemDecoration(new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));
+        recyclerView.addItemDecoration(
+                new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -233,8 +252,7 @@ public class CryptoFragment extends Fragment {
 
         ViewPager viewPager = rootView.findViewById(R.id.view_pager);
         CryptoFragmentPageAdapter adapter =
-                new CryptoFragmentPageAdapter(
-                        getChildFragmentManager());
+                new CryptoFragmentPageAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
         TabLayout tabLayout = rootView.findViewById(R.id.tabs);

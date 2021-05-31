@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 
 public class WalletNavigationFragmentPageAdapter extends FragmentPagerAdapter {
     private List<NavigationItem> navigationItems = new ArrayList<>();

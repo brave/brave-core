@@ -28,7 +28,9 @@ public class SwapBottomSheetDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void show(FragmentManager manager, String tag) {
         try {
-            SwapBottomSheetDialogFragment fragment = (SwapBottomSheetDialogFragment) manager.findFragmentByTag(SwapBottomSheetDialogFragment.TAG_FRAGMENT);
+            SwapBottomSheetDialogFragment fragment =
+                    (SwapBottomSheetDialogFragment) manager.findFragmentByTag(
+                            SwapBottomSheetDialogFragment.TAG_FRAGMENT);
             FragmentTransaction transaction = manager.beginTransaction();
             if (fragment != null) {
                 transaction.remove(fragment);
@@ -36,7 +38,7 @@ public class SwapBottomSheetDialogFragment extends BottomSheetDialogFragment {
             transaction.add(this, tag);
             transaction.commitAllowingStateLoss();
         } catch (IllegalStateException e) {
-//            Log.e("SwapBottomSheetDialogFragment", e.getMessage());
+            //            Log.e("SwapBottomSheetDialogFragment", e.getMessage());
         }
     }
 
@@ -44,7 +46,8 @@ public class SwapBottomSheetDialogFragment extends BottomSheetDialogFragment {
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
 
-        final View view = LayoutInflater.from(getContext()).inflate(R.layout.swap_bottom_sheet, null);
+        final View view =
+                LayoutInflater.from(getContext()).inflate(R.layout.swap_bottom_sheet, null);
         dialog.setContentView(view);
         ViewParent parent = view.getParent();
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;

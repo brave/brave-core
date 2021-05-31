@@ -21,7 +21,6 @@ import androidx.fragment.app.DialogFragment;
 import org.chromium.chrome.R;
 
 public class AddAccountOnboardingDialog extends DialogFragment implements View.OnClickListener {
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -36,13 +35,15 @@ public class AddAccountOnboardingDialog extends DialogFragment implements View.O
             if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
                 dismiss();
                 return true;
-            } else return false;
+            } else
+                return false;
         });
         setDialogParams();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_add_account_onboarding_dialog, container, false);
     }
 

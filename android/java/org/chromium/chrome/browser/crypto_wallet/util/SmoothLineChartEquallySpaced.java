@@ -5,9 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,6 +16,9 @@ import android.graphics.PointF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SmoothLineChartEquallySpaced extends View {
     private static final int CIRCLE_SIZE = 8;
@@ -33,7 +33,6 @@ public class SmoothLineChartEquallySpaced extends View {
 
     private float[] mValues;
     private float mMaxY;
-
 
     public SmoothLineChartEquallySpaced(Context context) {
         this(context, null, 0);
@@ -64,12 +63,11 @@ public class SmoothLineChartEquallySpaced extends View {
 
         if (values != null && values.length > 0) {
             mMaxY = values[0];
-            //mMinY = values[0].y;
+            // mMinY = values[0].y;
             for (float y : values) {
-                if (y > mMaxY)
-                    mMaxY = y;
-				/*if (y < mMinY)
-					mMinY = y;*/
+                if (y > mMaxY) mMaxY = y;
+                /*if (y < mMinY)
+                        mMinY = y;*/
             }
         }
 
@@ -79,8 +77,7 @@ public class SmoothLineChartEquallySpaced extends View {
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        if (mValues == null || mValues.length == 0)
-            return;
+        if (mValues == null || mValues.length == 0) return;
 
         int size = mValues.length;
 
@@ -105,16 +102,16 @@ public class SmoothLineChartEquallySpaced extends View {
         float lX = 0, lY = 0;
         mPath.moveTo(points.get(0).x, points.get(0).y);
         for (int i = 1; i < size; i++) {
-            PointF p = points.get(i);    // current point
+            PointF p = points.get(i); // current point
 
             // first control point
-            PointF p0 = points.get(i - 1);    // previous point
+            PointF p0 = points.get(i - 1); // previous point
             float x1 = p0.x + lX;
             float y1 = p0.y + lY;
 
             // second control point
-            PointF p1 = points.get(i + 1 < size ? i + 1 : i);    // next point
-            lX = (p1.x - p0.x) / 2 * SMOOTHNESS;        // (lX,lY) is the slope of the reference line
+            PointF p1 = points.get(i + 1 < size ? i + 1 : i); // next point
+            lX = (p1.x - p0.x) / 2 * SMOOTHNESS; // (lX,lY) is the slope of the reference line
             lY = (p1.y - p0.y) / 2 * SMOOTHNESS;
             float x2 = p.x - lX;
             float y2 = p.y - lY;
@@ -123,26 +120,22 @@ public class SmoothLineChartEquallySpaced extends View {
             mPath.cubicTo(x1, y1, x2, y2, p.x, p.y);
         }
 
-
         // draw path
         LinearGradient linearGradient = new LinearGradient(0, 0, width, height,
-                new int[]{
-                        0xFFF73A1C,
-                        0xFFBF14A2,
-                        0xFF6F4CD2}, //substitute the correct colors for these
-                new float[]{
-                        0, 0.60f, 0.90f},
-                Shader.TileMode.CLAMP);
+                new int[] {0xFFF73A1C, 0xFFBF14A2,
+                        0xFF6F4CD2}, // substitute the correct colors for these
+                new float[] {0, 0.60f, 0.90f}, Shader.TileMode.CLAMP);
         mPaint.setShader(linearGradient);
         mPaint.setStyle(Style.STROKE);
         canvas.drawPath(mPath, mPaint);
 
         // draw circles
         mPaint.setStyle(Style.FILL_AND_STROKE);
-        canvas.drawCircle(points.get(points.size() - 1).x, points.get(points.size() - 1).y, mCircleSize / 2, mPaint);
+        canvas.drawCircle(points.get(points.size() - 1).x, points.get(points.size() - 1).y,
+                mCircleSize / 2, mPaint);
         mPaint.setStyle(Style.FILL);
         mPaint.setColor(Color.WHITE);
-        canvas.drawCircle(points.get(points.size() - 1).x, points.get(points.size() - 1).y, (mCircleSize - mStrokeSize) / 2, mPaint);
+        canvas.drawCircle(points.get(points.size() - 1).x, points.get(points.size() - 1).y,
+                (mCircleSize - mStrokeSize) / 2, mPaint);
     }
 }
-
