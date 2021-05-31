@@ -26,7 +26,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       name: `Account ${idx + 1}`,
       address,
       balance: 0,
-      assset: 'eth'
+      asset: 'eth'
     }
   })
 
