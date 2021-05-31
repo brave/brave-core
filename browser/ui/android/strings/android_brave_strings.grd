@@ -1825,6 +1825,9 @@ until they verify, or until 90 days have passed.
     <message name="IDS_ENABLE_FINGERPRINT_TEXT">
       Enable biometrics to quickly unlock your wallet without entering your password.
     </message>
+    <message name="IDS_MENU_BRAVE_WALLET">
+      Brave Wallet
+    </message>
     </messages>
   </release>
 </grit>
