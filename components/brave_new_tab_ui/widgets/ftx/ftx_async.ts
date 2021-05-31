@@ -11,6 +11,9 @@ import * as Actions from './ftx_actions'
 import { FTXState } from './ftx_state'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
+// This is ok to be global and not in state since this is a global limit.
+let attemptCountForInitRetry = 5
+let expectingNewAuth = document.location.search.includes('ftxAuthSuccess')
 
 function getAccountBalancesAsync (): Promise<{ balances: chrome.ftx.Balances, authInvalid: boolean }> {
   return new Promise(resolve => chrome.ftx.getAccountBalances((balances, authInvalid) => {
@@ -92,6 +95,24 @@ handler.on(Actions.initialize.getType(), async (store) => {
       getMarketDataAsync(),
       new Promise<chrome.ftx.FTXOauthHost>(resolve => chrome.ftx.getOauthHost(resolve))
     ])
+    // Handle when auth is pending since we haven't completed the auth token network
+    // request yet. Re-check until connected state is there, or we've tried too many times.
+    // Don't show "disconnected" UI, prefer "loading" UI.
+    // TODO(petemill): Have ftx service be observable and our page handler fire JS events.
+    const authPending = (expectingNewAuth && authInvalid)
+    if (authPending && attemptCountForInitRetry > 0) {
+      console.debug(`FTX: expecting connected, but state doesn't represent that yet, so re-requesting in a few seconds`)
+      attemptCountForInitRetry--
+      setTimeout(function () {
+        // Recursive for the current action
+        store.dispatch(Actions.initialize())
+      }, 3000)
+      return
+    }
+    // Reset `expectingNewAuth` since we have auth status, and if we
+    // disconnect then we won't incorrectly be expecting to be
+    // authenticated.
+    expectingNewAuth = false
     store.dispatch(Actions.initialized({
       isConnected: !authInvalid,
       marketData,
