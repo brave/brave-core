@@ -28,6 +28,7 @@ export const CenterColumn = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 12px 0px 28px;
+  max-width: 300px;
 `
 
 export const AccountCircle = styled.div<Partial<StyleProps>>`
