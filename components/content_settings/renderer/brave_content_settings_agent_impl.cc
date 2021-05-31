@@ -150,7 +150,9 @@ BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync() {
     return ephemeral_storage_origin_it->second;
 
   auto top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
-  if (net::registry_controlled_domains::SameDomainOrHost(
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage) &&
+      net::registry_controlled_domains::SameDomainOrHost(
           top_origin, frame_origin,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     return {};
