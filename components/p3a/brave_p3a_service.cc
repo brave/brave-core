@@ -21,7 +21,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
@@ -36,7 +35,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "third_party/metrics_proto/reporting_info.pb.h"
 
 namespace brave {
 
@@ -299,10 +297,9 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
   //                                  &message);
 
   UpdatePyxisMeta();
-  brave_pyxis::RawP3AValue message;
-  prochlo::GenerateP3AMessage(histogram_name_hash, value, pyxis_meta_,
-                              &message);
-  return message.SerializeAsString();
+  std::string message =
+      prochlo::GenerateP3AMessage(histogram_name_hash, value, pyxis_meta_);
+  return message;
 }
 
 bool

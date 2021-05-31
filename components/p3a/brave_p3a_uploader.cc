@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/base64.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -79,7 +78,7 @@ BraveP3AUploader::BraveP3AUploader(
 
 BraveP3AUploader::~BraveP3AUploader() = default;
 
-void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
+void BraveP3AUploader::UploadLog(const std::string& log_data,
                                  const std::string& upload_type) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   if (upload_type == "p2a") {
@@ -98,9 +97,7 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request),
       GetNetworkTrafficAnnotation(upload_type));
-  std::string base64;
-  base::Base64Encode(compressed_log_data, &base64);
-  url_loader_->AttachStringForUpload(base64, "application/base64");
+  url_loader_->AttachStringForUpload(log_data, "text/plain");
 
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
