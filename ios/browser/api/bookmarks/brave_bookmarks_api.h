@@ -133,7 +133,7 @@ OBJC_EXPORT
 
 - (void)searchWithQuery:(NSString*)query
                maxCount:(NSUInteger)maxCount
-             completion:(void(^)(NSArray<IOSBookmarkNode*>*))completion;
+             completion:(void (^)(NSArray<IOSBookmarkNode*>*))completion;
 
 - (void)undo;
 @end
