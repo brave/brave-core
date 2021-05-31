@@ -111,6 +111,12 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   if (!first_party_url.is_valid())
     return false;
 
+  if (base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage) &&
+      IsCookieSessionOnly(first_party_url)) {
+    return true;
+  }
+
   if (net::registry_controlled_domains::SameDomainOrHost(
           first_party_url, url,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
