@@ -96,6 +96,7 @@ import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.bookmarks.BookmarkId;
@@ -193,7 +194,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         } else if (id == R.id.set_default_browser) {
             handleBraveSetDefaultBrowserDialog();
         } else if (id == R.id.brave_rewards_id) {
-            openNewOrSelectExistingTab(REWARDS_SETTINGS_URL);
+            // openNewOrSelectExistingTab(REWARDS_SETTINGS_URL);
+            openBraveWallet();
         } else {
             return false;
         }
@@ -409,6 +411,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                     calender.getTimeInMillis());
         }
         checkSetDefaultBrowserModal();
+    }
+
+    private void openBraveWallet() {
+        Intent cryptoWalletIntent = new Intent(this, CryptoWalletActivity.class);
+            cryptoWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(cryptoWalletIntent);
     }
 
     private void checkSetDefaultBrowserModal() {

@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Copyright 2021 The Brave Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+     
+<androidx.core.widget.NestedScrollView 
+	xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@android:color/white">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@color/wallet_text_color"
         android:text="@string/title_rewards" />
-</androidx.core.widget.NestedScrollView>
 
+</androidx.core.widget.NestedScrollView>

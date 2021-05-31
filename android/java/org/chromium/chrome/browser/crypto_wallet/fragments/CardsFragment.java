@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet;
+package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,17 +15,10 @@ import androidx.fragment.app.Fragment;
 
 import org.chromium.chrome.R;
 
-public class RewardsFragment extends Fragment {
+public class CardsFragment extends Fragment {
 
-  private static final String ARG_ID = "arg_id";
-
-  public static RewardsFragment newInstance() {
-    return new RewardsFragment();
-  }
-
-  @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  public static CardsFragment newInstance() {
+    return new CardsFragment();
   }
 
   @Nullable
@@ -34,11 +27,12 @@ public class RewardsFragment extends Fragment {
       @NonNull LayoutInflater inflater,
       @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_rewards, container, false);
+    return inflater.inflate(R.layout.fragment_cards, container, false);
   }
 
   @Override
-  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setHasOptionsMenu(true);
   }
 }

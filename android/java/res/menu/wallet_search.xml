@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2021 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:id="@+id/search"
-      android:title="@string/search"
+      android:title="@string/search_title"
       android:icon="@drawable/ic_search"
       app:showAsAction="collapseActionView|ifRoom"
       app:actionViewClass="androidx.appcompat.widget.SearchView" />

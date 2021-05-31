@@ -9,6 +9,7 @@ import android.app.SearchManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -16,14 +17,38 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import org.chromium.chrome.R;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class CryptoWalletActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
+import org.chromium.chrome.R;
+
+import org.chromium.chrome.browser.crypto_wallet.adapters.WalletNavigationFragmentPageAdapter;
+import org.chromium.chrome.browser.crypto_wallet.fragments.CardsFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.CryptoFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.RewardsFragment;
+import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
+
+public class CryptoWalletActivity extends AppCompatActivity {
     private BottomNavigationView navigation;
     private Toolbar toolbar;
+    private WalletNavigationFragmentPageAdapter walletNavigationFragmentPageAdapter;
+    private ViewPager viewPager;
+
+    public static boolean isOnboardingDone;
+
+    public interface OnFinishOnboarding {
+        void onFinish();
+    }
+
+    private final OnFinishOnboarding onFinishOnboarding = new OnFinishOnboarding() {
+        @Override
+        public void onFinish() {
+            isOnboardingDone = true;
+            setNavigationFragments();
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,13 +68,12 @@ public class CryptoWalletActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.black, null));
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
         setSupportActionBar(toolbar);
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        WalletNavigationFragmentPageAdapter adapter = new WalletNavigationFragmentPageAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
+        viewPager = findViewById(R.id.view_pager);
+        walletNavigationFragmentPageAdapter = new WalletNavigationFragmentPageAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(walletNavigationFragmentPageAdapter);
+        viewPager.setOffscreenPageLimit(walletNavigationFragmentPageAdapter.getCount() - 1);
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(item -> {
-            toolbar.setTitle(item.getTitle());
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_crypto) {
                 viewPager.setCurrentItem(0);
@@ -60,12 +84,17 @@ public class CryptoWalletActivity extends AppCompatActivity {
                 initTitle(1);
                 return true;
             } else if (itemId == R.id.navigation_swap) {
-                viewPager.setCurrentItem(2);
-                initTitle(2);
+                SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
+                        SwapBottomSheetDialogFragment.newInstance();
+                swapBottomSheetDialogFragment.show(getSupportFragmentManager(), SwapBottomSheetDialogFragment.TAG_FRAGMENT);
                 return true;
             } else if (itemId == R.id.navigation_cards) {
-                viewPager.setCurrentItem(3);
-                initTitle(3);
+                int position;
+                if (isOnboardingDone)
+                    position = 3;
+                else position = 2;
+                viewPager.setCurrentItem(position);
+                initTitle(position);
                 return true;
             } else if (itemId == R.id.navigation_lock) {
                 viewPager.setCurrentItem(4);
@@ -74,10 +103,38 @@ public class CryptoWalletActivity extends AppCompatActivity {
             }
             return false;
         });
-        initTitle(0);
+        setNavigationFragments();
+    }
+
+    private void setNavigationFragments() {
+        List<NavigationItem> navigationItems = new ArrayList<>();
+        int navigationMenu;
+        CryptoFragment cryptoFragment = (CryptoFragment) CryptoFragment.newInstance();
+        cryptoFragment.setOnLastPageClick(onFinishOnboarding);
+        navigationItems.add(new NavigationItem(getResources().getString(R.string.title_crypto), cryptoFragment));
+        navigationItems.add(new NavigationItem(getResources().getString(R.string.title_rewards), RewardsFragment.newInstance()));
+        navigationItems.add(new NavigationItem(getResources().getString(R.string.title_cards), CardsFragment.newInstance()));
+        if (isOnboardingDone) {
+            findViewById(R.id.swapActionButton).setVisibility(View.VISIBLE);
+            navigationItems.add(new NavigationItem(getResources().getString(R.string.title_cards), CardsFragment.newInstance()));
+            navigationItems.add(new NavigationItem(getResources().getString(R.string.title_lock), CardsFragment.newInstance()));
+            navigationMenu = R.menu.navigation;
+        } else {
+            findViewById(R.id.swapActionButton).setVisibility(View.GONE);
+            navigationMenu = R.menu.navigation_2;
+        }
+        if (navigation != null) {
+            navigation.getMenu().clear();
+            navigation.inflateMenu(navigationMenu);
+        }
+        if (walletNavigationFragmentPageAdapter != null) {
+            walletNavigationFragmentPageAdapter.setNavigationItems(navigationItems);
+            walletNavigationFragmentPageAdapter.notifyDataSetChanged();
+            initTitle(0);
+        }
     }
 
     private void initTitle(int position) {
-        toolbar.post(() -> toolbar.setTitle(String.format(getResources().getString(R.string.my), navigation.getMenu().getItem(position).getTitle())));
+        toolbar.post(() -> toolbar.setTitle(String.format(getResources().getString(R.string.my), walletNavigationFragmentPageAdapter.getPageTitle(position))));
     }
 }

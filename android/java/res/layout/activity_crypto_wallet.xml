@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="io.anycopy.googleplusdemo.CryptoWalletActivity"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -25,7 +24,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="#F8F9FA"
               android:translationZ="10dp"
-              app:titleTextColor="#212529"
+              app:titleTextColor="@color/wallet_text_color"
               app:collapseIcon="@drawable/ic_baseline_arrow_back_24"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -46,13 +45,12 @@
             android:background="#F8F9FA"
             app:labelVisibilityMode="labeled"
             app:itemTextColor="@color/bnv_tab_item_foreground"
-            app:itemIconTint="@color/bnv_tab_item_foreground"
-          app:menu="@menu/navigation" />
+            app:itemIconTint="@color/bnv_tab_item_foreground"/>
 
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/swapActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"

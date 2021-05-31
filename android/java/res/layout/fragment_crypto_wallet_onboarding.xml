@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2021 The Brave Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:fillViewport="true"
+    android:layout_gravity="center_vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".CryptoWalletOnboardingFragment">
+
+        <include
+            android:id="@+id/setup_crypto_layout_id"
+            layout="@layout/setup_crypto_layout" />
+
+        <include
+            android:id="@+id/secure_crypto_layout_id"
+            layout="@layout/secure_crypto_password_layout" />
+
+        <include
+            android:id="@+id/backup_wallet_layout_id"
+            layout="@layout/backup_wallet_layout" />
+
+        <include
+            android:id="@+id/recovery_phrase_layout_id"
+            layout="@layout/recovery_phrase_layout" />
+
+    </FrameLayout>
+
+</ScrollView>

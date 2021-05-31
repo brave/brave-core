@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet;
+package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,19 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.chrome.R;
 
 public class WalletCoinAdapter extends
-        RecyclerView.Adapter<WalletCoinAdapter.ViewHolder> {
+        RecyclerView.Adapter<WalletCoinAdapter.WalletCoinViewHolder> {
 
     @Override
     public @NonNull
-    WalletCoinAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    WalletCoinAdapter.WalletCoinViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View walletCoinView = inflater.inflate(R.layout.wallet_coin_list_item, parent, false);
-        return new ViewHolder(walletCoinView);
+        return new WalletCoinViewHolder(walletCoinView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WalletCoinAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WalletCoinAdapter.WalletCoinViewHolder holder, int position) {
         //TODO add holder view
     }
 
@@ -37,10 +37,11 @@ public class WalletCoinAdapter extends
         return 10;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class WalletCoinViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(View itemView) {
+        public WalletCoinViewHolder(View itemView) {
             super(itemView);
         }
     }
 }
+

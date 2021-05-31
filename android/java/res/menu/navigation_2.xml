@@ -18,17 +18,8 @@
         android:title="@string/title_rewards" />
 
     <item
-        android:id="@+id/navigation_swap"
-        android:title="@null" />
-
-    <item
         android:id="@+id/navigation_cards"
         android:icon="@drawable/ic_credit_card"
         android:title="@string/title_cards" />
-
-    <item
-        android:id="@+id/navigation_lock"
-        android:icon="@drawable/ic_lock_open"
-        android:title="@string/title_lock" />
 
 </menu>

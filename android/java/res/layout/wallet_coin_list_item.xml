@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Copyright 2021 The Brave Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+     
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/eth"
+        app:srcCompat="@drawable/ic_eth"
         android:contentDescription="@null"/>
 
     <TextView
@@ -18,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textSize="16sp"
-        android:textColor="#212529"
+        android:textColor="@color/wallet_text_color"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:text="Ethereum"
@@ -35,7 +43,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_gravity="end"
-            android:textColor="#212529"
+            android:textColor="@color/wallet_text_color"
             android:text="$872.48"/>
 
         <TextView
