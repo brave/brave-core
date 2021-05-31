@@ -72,8 +72,6 @@ function stateWithBalancesAndMarkets (state: FTXState, incomingMarketData: chrom
 }
 
 reducer.on(Actions.initialized, (state, payload) => {
-  console.log('ftx initialized', payload)
-
   return {
     ...stateWithBalancesAndMarkets(state, payload.marketData, payload.balances),
     hasInitialized: true,
