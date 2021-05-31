@@ -66,16 +66,18 @@
       <iron-list items="[[keys_]]" class="flex" id="keysList"
           preserve-focus risk-selection>
         <template>
-          <div class="settings-box">
-            <div class="flex cr-padded-text">
-              <div>{{item.name}}</div>
-              <div class="secondary">{{item.value}}</div>
+          <div>
+            <div class="settings-box">
+              <div class="flex cr-padded-text">
+                <div>{{item.name}}</div>
+                <div class="secondary">{{item.value}}</div>
+              </div>
+              <cr-icon-button class="icon-delete-gray"
+                  on-click="onKeyDeleteTapped_"
+                  itemName=[[item.name]]
+                  hidden="[[isDefaultKey_(item.name)]]">
+              </cr-icon-button>
             </div>
-            <cr-icon-button class="icon-delete-gray"
-                on-click="onKeyDeleteTapped_"
-                itemName=[[item.name]]
-                hidden="[[isDefaultKey_(item.name)]]">
-            </cr-icon-button>
           </div>
         </template>
       </iron-list>

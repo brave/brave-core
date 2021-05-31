@@ -75,9 +75,12 @@ Polymer({
         errorLabel.textContent = this.i18n('ipfsImporKeysError', key)
         return;
       }
-      this.keys_.push({ "name" : key, "value" : value});
-      this.notifyKeylist();
+      this.updateKeys();
     })
+    window.addEventListener('load', this.onLoad_.bind(this));
+  },
+  onLoad_: function() {
+    this.updateKeys();
   },
   notifyKeylist: function() {
     const keysList =
