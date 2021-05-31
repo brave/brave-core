@@ -66,7 +66,7 @@
                         android:paddingEnd="24dp"
                         android:layout_marginBottom="20dp"
                         android:textAllCaps="false"
-                        android:text="@string/brave_confirm_p3a_infobar_learn_more" 
+                        android:text="@string/menu_learn_more" 
                         android:textColor="@android:color/white" />
 
                     <TextView

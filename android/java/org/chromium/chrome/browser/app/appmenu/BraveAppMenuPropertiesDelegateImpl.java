@@ -17,6 +17,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
@@ -42,6 +43,7 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         super.prepareMenu(menu, handler);
 
         maybeReplaceIcons(menu);
+        updateBraveVPNMenuItem(menu, true);
     }
 
     private void maybeReplaceIcons(Menu menu) {
@@ -74,5 +76,20 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
                 }
             }
         }
+    }
+
+    protected void updateBraveVPNMenuItem(Menu menu, boolean canShowRequestBraveVpn) {
+        MenuItem requestMenuRow = menu.findItem(R.id.request_brave_vpn_row_menu_id);
+        MenuItem requestMenuLabel = menu.findItem(R.id.request_brave_vpn_id);
+        MenuItem requestMenuCheck = menu.findItem(R.id.request_brave_vpn_check_id);
+        // MenuItem braveVpnDividerLine = menu.findItem(R.id.divider_line_id);
+
+        boolean itemVisible = canShowRequestBraveVpn;
+        requestMenuRow.setVisible(itemVisible);
+        // braveVpnDividerLine.setVisible(itemVisible);
+        if (!itemVisible) return;
+
+        boolean isRequestBraveVpn = BraveActivity.isBraveVpnEnabled;
+        requestMenuCheck.setChecked(isRequestBraveVpn);
     }
 }

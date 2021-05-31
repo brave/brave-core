@@ -168,6 +168,18 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     private static final List<String> yandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
+    public static boolean isBraveVpnEnabled = false;
+
+    public final class DialogOption {
+        public static final int CLEAR_HISTORY = 0;
+        public static final int CLEAR_COOKIES_AND_SITE_DATA = 1;
+        public static final int CLEAR_CACHE = 2;
+        public static final int CLEAR_PASSWORDS = 3;
+        public static final int CLEAR_FORM_DATA = 4;
+        public static final int CLEAR_SITE_SETTINGS = 5;
+        public static final int NUM_ENTRIES = 6;
+    }
+
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
         SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
@@ -204,6 +216,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             openNewOrSelectExistingTab(REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet();
+        } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
+            isBraveVpnEnabled = !isBraveVpnEnabled;
         } else {
             return false;
         }
