@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
@@ -45,7 +46,24 @@ class UpholdAuthorization {
       const std::string& address,
       ledger::ExternalWalletAuthorizationCallback callback);
 
+  void GetAnonFunds(
+      endpoint::promotion::GetWalletBalanceCallback callback);
+
+  void OnGetAnonFunds(
+      const type::Result result,
+      type::BalancePtr balance,
+      ledger::ExternalWalletAuthorizationCallback callback);
+
+  void TransferAnonFunds(
+      const double user_funds,
+      endpoint::promotion::PostClaimUpholdCallback callback);
+
+  void OnTransferAnonFunds(
+      const type::Result result,
+      ledger::ExternalWalletAuthorizationCallback callback);
+
   LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
 };
 

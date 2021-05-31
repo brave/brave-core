@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/option_keys.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -24,6 +25,7 @@ namespace uphold {
 
 UpholdAuthorization::UpholdAuthorization(LedgerImpl* ledger) :
     ledger_(ledger),
+    promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)),
     uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
@@ -229,12 +231,101 @@ void UpholdAuthorization::OnCardCreate(
             address.substr(0, 5));
   }
 
-  base::flat_map<std::string, std::string> args;
   if (wallet_ptr->status != type::WalletStatus::VERIFIED) {
+    base::flat_map<std::string, std::string> args{};
     args["redirect_url"] = GetSecondStepVerify();
+    callback(type::Result::LEDGER_OK, args);
   }
 
-  callback(type::Result::LEDGER_OK, args);
+  GetAnonFunds(std::bind(&UpholdAuthorization::OnGetAnonFunds, this, _1, _2, callback));
+}
+
+void UpholdAuthorization::GetAnonFunds(
+    endpoint::promotion::GetWalletBalanceCallback callback) {
+  if (ledger_->ledger_client()->GetBooleanOption(
+      option::kContributionsDisabledForBAPMigration)) {
+    BLOG(1, "Fetch balance disabled for BAP migration.");
+    callback(type::Result::LEDGER_OK, type::Balance::New());
+    return;
+  }
+
+  // if we don't have user funds in anon card anymore
+  // we can skip balance server ping
+  if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
+    callback(type::Result::LEDGER_OK, type::Balance::New());
+    return;
+  }
+
+  const auto wallet = ledger_->wallet()->GetWallet();
+  if (!wallet) {
+    BLOG(1, "Wallet is not created!");
+    ledger_->state()->SetFetchOldBalanceEnabled(false);
+    callback(type::Result::LEDGER_OK, type::Balance::New());
+    return;
+  }
+
+  if (wallet->payment_id.empty()) {
+    BLOG(0, "Payment ID is empty!");
+    callback(type::Result::LEDGER_ERROR, type::Balance::New());
+    return;
+  }
+
+  promotion_server_->get_wallet_balance()->Request(callback);
+}
+
+void UpholdAuthorization::OnGetAnonFunds(
+    const type::Result result,
+    type::BalancePtr balance,
+    ledger::ExternalWalletAuthorizationCallback callback) {
+  if (result != type::Result::LEDGER_OK) {
+    BLOG(0, "Couldn't get anonymous funds!");
+    callback(type::Result::LEDGER_ERROR, {});
+    return;
+  }
+
+  if (balance->user_funds == 0.0) { // TODO: floating-point comparison
+    ledger_->state()->SetFetchOldBalanceEnabled(false);
+  }
+
+  TransferAnonFunds(balance->user_funds, std::bind(&UpholdAuthorization::OnTransferAnonFunds, this, _1, callback));
+}
+
+void UpholdAuthorization::TransferAnonFunds(
+    const double user_funds,
+    ledger::endpoint::promotion::PostClaimUpholdCallback callback) {
+  auto wallet_ptr = uphold::GetWallet(ledger_);
+
+  if (!wallet_ptr) {
+    BLOG(0, "Wallet is null!");
+    callback(type::Result::LEDGER_ERROR);
+    return;
+  }
+
+  promotion_server_->post_claim_uphold()->Request(user_funds, callback);
+}
+
+void UpholdAuthorization::OnTransferAnonFunds(
+    const type::Result result,
+    ledger::ExternalWalletAuthorizationCallback callback) {
+  if (result == type::Result::LEDGER_OK) {
+    callback(type::Result::LEDGER_OK, {});
+    return;
+  }
+
+  if (result == type::Result::ALREADY_EXISTS) {
+    ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached", {}, [](type::Result) {});
+
+    std::string event_text = "uphold";
+    if (auto wallet_ptr = uphold::GetWallet(ledger_))
+      event_text += "/" + wallet_ptr->address.substr(0, 5);
+
+    ledger_->database()->SaveEventLog(log::kDeviceLimitReached, event_text);
+
+    callback(type::Result::ALREADY_EXISTS, {});
+    return;
+  }
+
+  callback(type::Result::LEDGER_ERROR, {});
 }
 
 }  // namespace uphold
