@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -16,6 +17,7 @@
 #include "components/version_info/channel.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
+#include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -613,4 +615,16 @@ TEST_F(IpfsUtilsUnitTest, ValidateNodeFilename) {
   ASSERT_FALSE(ipfs::IsValidNodeFilename(""));
   ASSERT_FALSE(ipfs::IsValidNodeFilename("ipfs.exe"));
   ASSERT_FALSE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_linux"));
+}
+
+TEST_F(IpfsUtilsUnitTest, IsAPIGatewayTest) {
+  auto channel = version_info::Channel::UNKNOWN;
+  GURL api_server = ipfs::GetAPIServer(channel);
+  ASSERT_TRUE(ipfs::IsAPIGateway(api_server, channel));
+  ASSERT_TRUE(net::IsLocalhost(api_server));
+  auto port = ipfs::GetAPIPort(channel);
+  ASSERT_TRUE(ipfs::IsAPIGateway(GURL("https://127.0.0.1:" + port), channel));
+  ASSERT_TRUE(ipfs::IsAPIGateway(GURL("https://localhost:" + port), channel));
+  ASSERT_FALSE(ipfs::IsAPIGateway(GURL("https://brave.com"), channel));
+  ASSERT_FALSE(ipfs::IsAPIGateway(GURL(), channel));
 }

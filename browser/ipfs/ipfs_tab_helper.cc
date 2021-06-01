@@ -17,6 +17,7 @@
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/shell_integration.h"
+#include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -230,6 +231,10 @@ void IPFSTabHelper::MaybeShowDNSLinkButton(content::NavigationHandle* handle) {
   if (ipfs_resolved_url_.is_valid() || !current.SchemeIsHTTPOrHTTPS() ||
       IsDefaultGatewayURL(current, web_contents()->GetBrowserContext()))
     return;
+
+  if (IsAPIGateway(current.GetOrigin(), chrome::GetChannel()))
+    return;
+
   int response_code = handle->GetResponseHeaders()->response_code();
   if (response_code >= net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR &&
       response_code <= net::HttpStatusCode::HTTP_VERSION_NOT_SUPPORTED) {
