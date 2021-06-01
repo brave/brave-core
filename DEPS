@@ -9,7 +9,7 @@ deps = {
   "vendor/omaha":  "https://github.com/brave/omaha.git@f1407b11524f110d87fdb7496e153724a9f8d9e4",
   "vendor/sparkle": "https://github.com/brave/Sparkle.git@07933da3e178265d0f0ba86e02bbde38e701a04d",
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@86aafe2ef89835ae71c9ed7c2527e3bb3000930e",
-  "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@f5676241d4fdb01807708f0ac67b809d739905bd",
+  "vendor/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@f5676241d4fdb01807708f0ac67b809d739905bd",
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@e3742ba3e8942eea9e4755d91532491871bd3116",
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@f2eff7aca4ea04564e3647b93eb72f33ebdbf683",
