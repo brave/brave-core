@@ -328,6 +328,33 @@ const util = {
     }
     if (config.targetOS === 'android') {
 
+      let braveOverwrittenFiles = new Set();
+      const removeUnlistedAndroidResources = (braveOverwrittenFiles) => {
+        const suspectedDir = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
+
+        let untrackedChromiumFiles = util.runGit(suspectedDir, ['ls-files', '--others', '--exclude-standard'], true).split('\n')
+        let untrackedChromiumPaths = [];
+        for (const untrackedChromiumFile of untrackedChromiumFiles) {
+          untrackedChromiumPath = path.join(suspectedDir, untrackedChromiumFile)
+
+          if (!fs.statSync(untrackedChromiumPath).isDirectory()) {
+            untrackedChromiumPaths.push(untrackedChromiumPath);
+          }
+        }
+
+        const isChildOf = (child, parent) => {
+          const relative = path.relative(parent, child);
+          return relative && !relative.startsWith('..') && !path.isAbsolute(relative);
+        }
+
+        for (const untrackedChromiumPath of untrackedChromiumPaths) {
+          if (isChildOf(untrackedChromiumPath, suspectedDir) && !braveOverwrittenFiles.has(untrackedChromiumPath)) {
+            fs.removeSync(untrackedChromiumPath);
+            console.log(`Deleted not listed file: ${untrackedChromiumPath}`);
+          }
+        }
+      }
+
       let androidIconSet = ''
       if (config.channel === 'development') {
         androidIconSet = 'res_brave_default'
@@ -388,9 +415,11 @@ const util = {
             if (!fs.existsSync(destinationFile) || util.calculateFileChecksum(androidSourceFile) != util.calculateFileChecksum(destinationFile)) {
               fs.copySync(androidSourceFile, destinationFile)
             }
+            braveOverwrittenFiles.add(destinationFile);
           }
         }
       })
+      removeUnlistedAndroidResources(braveOverwrittenFiles)
     }
   },
 
