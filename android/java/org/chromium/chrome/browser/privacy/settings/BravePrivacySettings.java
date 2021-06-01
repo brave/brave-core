@@ -71,6 +71,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_SOCIAL_BLOCKING_LINKEDIN = "social_blocking_linkedin";
     private static final String PREF_WEBRTC_POLICY = "webrtc_policy";
     private static final String PREF_UNSTOPPABLE_DOMAINS = "unstoppable_domains";
+    private static final String PREF_ETH_NAMED_SERVICE = "ens";
 
     private static final String PREF_BLOCK_TRACKERS_ADS = "block_trackers_ads";
     private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";
@@ -79,8 +80,8 @@ public class BravePrivacySettings extends PrivacySettings {
 
     private static final String[] NEW_PRIVACY_PREFERENCE_ORDER = {
             PREF_BRAVE_SHIELDS_GLOBALS_SECTION, //  shields globals  section
-            PREF_BLOCK_TRACKERS_ADS, PREF_HTTPSE, PREF_BLOCK_SCRIPTS, PREF_BLOCK_CROSS_SITE_COOKIES,
-            PREF_FINGERPRINTING_PROTECTION, PREF_SHIELDS_SUMMARY,
+            PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_HTTPSE, PREF_BLOCK_SCRIPTS,
+            PREF_BLOCK_CROSS_SITE_COOKIES, PREF_FINGERPRINTING_PROTECTION,
             PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
             PREF_CLEAR_ON_EXIT, PREF_CLEAR_BROWSING_DATA,
             PREF_BRAVE_SOCIAL_BLOCKING_SECTION, // social blocking section
@@ -88,9 +89,10 @@ public class BravePrivacySettings extends PrivacySettings {
             PREF_SOCIAL_BLOCKING_TWITTER, PREF_SOCIAL_BLOCKING_LINKEDIN,
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
             PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_CAN_MAKE_PAYMENT, PREF_NETWORK_PREDICTIONS,
-            PREF_SECURE_DNS, PREF_DO_NOT_TRACK, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A,
-            PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES,
-            PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX
+            PREF_UNSTOPPABLE_DOMAINS, PREF_ETH_NAMED_SERVICE, PREF_IPFS_GATEWAY, PREF_SECURE_DNS,
+            PREF_DO_NOT_TRACK, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEARCH_SUGGESTIONS,
+            PREF_AUTOCOMPLETE_TOP_SITES, PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS,
+            PREF_PRIVACY_SANDBOX
 
     };
 
@@ -108,6 +110,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mBlockScriptsPref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
     private ChromeSwitchPreference mSendP3A;
+    private ChromeBaseCheckBoxPreference mIpfsGatewayPref;
     private PreferenceCategory mSocialBlockingCategory;
     private ChromeSwitchPreference mSocialBlockingGoogle;
     private ChromeSwitchPreference mHttpsEverywhere;
@@ -116,6 +119,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mSocialBlockingLinkedin;
     private ChromeBasePreference mWebrtcPolicy;
     private ChromeSwitchPreference mClearBrowsingDataOnExit;
+    private Preference mUstoppableDomains;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -134,6 +138,12 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mAdsTrakersBlockPref = (BraveDialogPreference) findPreference(PREF_BLOCK_TRACKERS_ADS);
         mAdsTrakersBlockPref.setOnPreferenceChangeListener(this);
+
+        mIpfsGatewayPref = (ChromeBaseCheckBoxPreference) findPreference(PREF_IPFS_GATEWAY);
+        mIpfsGatewayPref.setOnPreferenceChangeListener(this);
+
+        mUstoppableDomains = (Preference) findPreference(PREF_UNSTOPPABLE_DOMAINS);
+        mUstoppableDomains.setOnPreferenceChangeListener(this);
 
         mBlockCrosssiteCookies =
                 (BraveDialogPreference) findPreference(PREF_BLOCK_CROSS_SITE_COOKIES);
@@ -186,9 +196,9 @@ public class BravePrivacySettings extends PrivacySettings {
         updatePreferences();
 
         removePreferenceIfPresent(PREF_AD_BLOCK);
-        removePreferenceIfPresent(PREF_IPFS_GATEWAY);
+        // removePreferenceIfPresent(PREF_IPFS_GATEWAY);
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
-        removePreferenceIfPresent(PREF_UNSTOPPABLE_DOMAINS);
+        // removePreferenceIfPresent(PREF_UNSTOPPABLE_DOMAINS);
     }
 
     // used for displaying BraveDialogPreference
