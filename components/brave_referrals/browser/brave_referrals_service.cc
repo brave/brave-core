@@ -70,8 +70,8 @@ namespace brave {
 
 namespace {
 
-BraveReferralsService::ReferralInitializedCallback
-    g_testing_referral_initialized_callback;
+BraveReferralsService::ReferralInitializedCallback*
+    g_testing_referral_initialized_callback = nullptr;
 
 base::FilePath g_promo_file_path;
 
@@ -213,7 +213,7 @@ void BraveReferralsService::Stop() {
 
 // static
 void BraveReferralsService::SetReferralInitializedCallbackForTesting(
-    ReferralInitializedCallback referral_initialized_callback) {
+    ReferralInitializedCallback* referral_initialized_callback) {
   g_testing_referral_initialized_callback = referral_initialized_callback;
 }
 // static
@@ -347,7 +347,7 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   if (initialization_timer_)
     initialization_timer_.reset();
   if (g_testing_referral_initialized_callback) {
-    g_testing_referral_initialized_callback.Run(download_id->GetString());
+    g_testing_referral_initialized_callback->Run(download_id->GetString());
   }
 
   const base::Value* offer_page_url = root.value->FindKey("offer_page_url");
@@ -426,7 +426,7 @@ void BraveReferralsService::OnReadPromoCodeComplete(
     // No referral code or it's the default, no point of reporting it.
     pref_service_->SetBoolean(kReferralInitialization, true);
     if (g_testing_referral_initialized_callback) {
-      g_testing_referral_initialized_callback.Run(std::string());
+      g_testing_referral_initialized_callback->Run(std::string());
     }
   }
 }
