@@ -18,8 +18,8 @@ class Sidebar;
 }  // namespace sidebar
 
 namespace speedreader {
-class SpeedreaderBubbleController;
 class SpeedreaderBubbleView;
+class SpeedreaderTabHelper;
 }  // namespace speedreader
 
 class BraveBrowserWindow : public BrowserWindow {
@@ -30,7 +30,7 @@ class BraveBrowserWindow : public BrowserWindow {
 
   virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       content::WebContents* contents,
-      speedreader::SpeedreaderBubbleController* controller,
+      speedreader::SpeedreaderTabHelper* tab_helper,
       bool is_enabled) = 0;
 
 #if BUILDFLAG(ENABLE_SIDEBAR)

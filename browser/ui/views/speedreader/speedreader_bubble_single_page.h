@@ -27,7 +27,7 @@ class StyledLabel;
 namespace speedreader {
 
 class ReaderButton;
-class SpeedreaderBubbleController;
+class SpeedreaderTabHelper;
 
 // SpeedreaderBubbleSinglePage is the bubble shown when the user has enabled
 // reader mode but has not enabled Speedreader globally
@@ -37,7 +37,7 @@ class SpeedreaderBubbleSinglePage : public SpeedreaderBubbleView,
   METADATA_HEADER(SpeedreaderBubbleSinglePage);
   SpeedreaderBubbleSinglePage(views::View* anchor_view,
                               content::WebContents* web_contents,
-                              SpeedreaderBubbleController* controller);
+                              SpeedreaderTabHelper* tab_helper);
   SpeedreaderBubbleSinglePage(const SpeedreaderBubbleSinglePage&) = delete;
   SpeedreaderBubbleSinglePage& operator=(const SpeedreaderBubbleSinglePage&) =
       delete;
@@ -62,7 +62,7 @@ class SpeedreaderBubbleSinglePage : public SpeedreaderBubbleView,
   void OnLinkClicked(const ui::Event& event);
 
   content::WebContents* web_contents_;
-  SpeedreaderBubbleController* controller_;  // weak.
+  SpeedreaderTabHelper* tab_helper_;  // weak.
 
   views::Label* heading_label_ = nullptr;              // weak.
   views::StyledLabel* global_toggle_label_ = nullptr;  // weak.

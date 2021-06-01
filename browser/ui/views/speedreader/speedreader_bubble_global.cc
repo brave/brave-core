@@ -12,7 +12,7 @@
 #include "base/bind.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/speedreader/speedreader_bubble_controller.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
 #include "brave/common/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -50,10 +50,10 @@ namespace speedreader {
 SpeedreaderBubbleGlobal::SpeedreaderBubbleGlobal(
     views::View* anchor_view,
     content::WebContents* web_contents,
-    SpeedreaderBubbleController* controller)
+    SpeedreaderTabHelper* tab_helper)
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
       web_contents_(web_contents),
-      controller_(controller) {
+      tab_helper_(tab_helper) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
 }
 
@@ -62,9 +62,9 @@ void SpeedreaderBubbleGlobal::Show() {
 }
 
 void SpeedreaderBubbleGlobal::Hide() {
-  if (controller_) {
-    controller_->OnBubbleClosed();
-    controller_ = nullptr;
+  if (tab_helper_) {
+    tab_helper_->OnBubbleClosed();
+    tab_helper_ = nullptr;
   }
   CloseBubble();
 }
@@ -80,9 +80,9 @@ bool SpeedreaderBubbleGlobal::ShouldShowCloseButton() const {
 }
 
 void SpeedreaderBubbleGlobal::WindowClosing() {
-  if (controller_) {
-    controller_->OnBubbleClosed();
-    controller_ = nullptr;
+  if (tab_helper_) {
+    tab_helper_->OnBubbleClosed();
+    tab_helper_ = nullptr;
   }
 }
 

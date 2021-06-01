@@ -29,7 +29,7 @@ class StyledLabel;
 
 namespace speedreader {
 
-class SpeedreaderBubbleController;
+class SpeedreaderTabHelper;
 
 // SpeedreaderBubbleGlobal is the bubble shown when Speedreader is enabled for
 // all pages
@@ -39,7 +39,7 @@ class SpeedreaderBubbleGlobal : public SpeedreaderBubbleView,
   METADATA_HEADER(SpeedreaderBubbleGlobal);
   SpeedreaderBubbleGlobal(views::View* anchor_view,
                           content::WebContents* web_contents,
-                          SpeedreaderBubbleController* controller);
+                          SpeedreaderTabHelper* controller);
   SpeedreaderBubbleGlobal(const SpeedreaderBubbleGlobal&) = delete;
   SpeedreaderBubbleGlobal& operator=(const SpeedreaderBubbleGlobal&) = delete;
   ~SpeedreaderBubbleGlobal() override = default;
@@ -63,7 +63,7 @@ class SpeedreaderBubbleGlobal : public SpeedreaderBubbleView,
   void OnLinkClicked(const ui::Event& event);
 
   content::WebContents* web_contents_;
-  SpeedreaderBubbleController* controller_;  // weak.
+  SpeedreaderTabHelper* tab_helper_;  // weak.
 
   views::StyledLabel* site_title_label_ = nullptr;         // weak.
   views::ToggleButton* site_toggle_button_ = nullptr;      // weak.

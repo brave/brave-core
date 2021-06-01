@@ -126,8 +126,6 @@ source_set("ui") {
 
   if (toolkit_views) {
     sources += [
-      "speedreader/speedreader_bubble_controller.cc",
-      "speedreader/speedreader_bubble_controller.h",
       "speedreader/speedreader_bubble_view.h",
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",

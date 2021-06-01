@@ -20,7 +20,7 @@ class SidebarContainerView;
 
 namespace speedreader {
 class SpeedreaderBubbleView;
-class SpeedreaderBubbleController;
+class SpeedreaderTabHelper;
 }  // namespace speedreader
 
 namespace content {
@@ -45,7 +45,7 @@ class BraveBrowserView : public BrowserView {
       bool is_user_gesture) override;
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       content::WebContents* contents,
-      speedreader::SpeedreaderBubbleController* controller,
+      speedreader::SpeedreaderTabHelper* tab_helper,
       bool is_enabled) override;
   void CreateWalletBubble();
   void CloseWalletBubble();

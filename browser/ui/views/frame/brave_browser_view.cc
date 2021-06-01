@@ -32,7 +32,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/speedreader/speedreader_bubble_controller.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_global.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_single_page.h"
@@ -229,18 +229,18 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
 
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
     content::WebContents* contents,
-    speedreader::SpeedreaderBubbleController* controller,
+    speedreader::SpeedreaderTabHelper* tab_helper,
     bool is_enabled) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderBubbleView* bubble;
   if (is_enabled) {
     auto* global_bubble = new speedreader::SpeedreaderBubbleGlobal(
-        GetLocationBarView(), contents, controller);
+        GetLocationBarView(), contents, tab_helper);
     views::BubbleDialogDelegateView::CreateBubble(global_bubble);
     bubble = global_bubble;
   } else {
     auto* single_page_bubble = new speedreader::SpeedreaderBubbleSinglePage(
-        GetLocationBarView(), contents, controller);
+        GetLocationBarView(), contents, tab_helper);
     views::BubbleDialogDelegateView::CreateBubble(single_page_bubble);
     bubble = single_page_bubble;
   }
