@@ -12,8 +12,10 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/events/event_observer.h"
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -27,6 +29,13 @@
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/views/update_recommended_message_box_mac.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/speedreader/speedreader_bubble_controller.h"
+#include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
+#include "brave/browser/ui/views/speedreader/speedreader_bubble_global.h"
+#include "brave/browser/ui/views/speedreader/speedreader_bubble_single_page.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
@@ -215,6 +224,27 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
   }
 #endif
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
+}
+
+speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
+    content::WebContents* contents,
+    speedreader::SpeedreaderBubbleController* controller,
+    bool is_enabled) {
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderBubbleView* bubble;
+  if (is_enabled)
+    bubble = new speedreader::SpeedreaderBubbleGlobal(GetLocationBarView(),
+                                                      contents, controller);
+  else
+    bubble = new speedreader::SpeedreaderBubbleSinglePage(GetLocationBarView(),
+                                                          contents, controller);
+  views::BubbleDialogDelegateView::CreateBubble(bubble);
+  bubble->Show();
+
+  return bubble;
+#else
+  return nullptr;
+#endif
 }
 
 WalletButton* BraveBrowserView::GetWalletButton() {
