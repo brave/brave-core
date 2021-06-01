@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { getLocale } from '../../common/locale'
 
 // Components
 import { AdBlockItem } from './adBlockItem'
@@ -28,13 +29,15 @@ export class AdBlockItemList extends React.Component<Props, {}> {
     return (
       <div>
         <div
-          i18n-content='additionalFiltersTitle'
           style={{ fontSize: '18px', marginTop: '20px' }}
-        />
+        >
+          {getLocale('additionalFiltersTitle')}
+        </div>
         <div
-          i18n-content='additionalFiltersWarning'
           style={{ fontWeight: 'bold' }}
-        />
+        >
+          {getLocale('additionalFiltersWarning')}
+        </div>
         <div style={{ marginTop: '10px' }} >
           {regionalLists}
         </div>
