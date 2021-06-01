@@ -38,6 +38,7 @@ class WalletPageHandler : public wallet_ui::mojom::PageHandler,
 
   // wallet_ui::mojom::PageHandler:
   void CreateWallet(const std::string& password, CreateWalletCallback) override;
+  void GetRecoveryWords(GetRecoveryWordsCallback) override;
 
  private:
   bool webui_hidden_ = false;

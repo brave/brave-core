@@ -9,8 +9,13 @@ export interface CreateWalletReturnInfo {
   mnemonic: string
 }
 
+export interface GetRecoveryWordsReturnInfo {
+  mnemonic: string
+}
+
 export default class APIProxy {
   static getInstance: () => APIProxy
   getWalletHandler: () => WalletAPIHandler
   createWallet: (password: string) => Promise<CreateWalletReturnInfo>
+  getRecoveryWords: () => Promise<GetRecoveryWordsReturnInfo>
 }

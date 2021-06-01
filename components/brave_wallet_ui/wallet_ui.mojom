@@ -33,6 +33,7 @@ interface PanelHandler {
 interface PageHandler {
   // Create a wallet via the Keyring controller
   CreateWallet(string password) => (string mnemonic);
+  GetRecoveryWords() => (string mnemonic);
 };
 
 struct AppItem {

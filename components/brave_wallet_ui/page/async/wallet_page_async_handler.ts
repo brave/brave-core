@@ -37,7 +37,17 @@ handler.on(WalletPageActions.createWallet.getType(), async (store, payload: Crea
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
 
+handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store, payload: boolean) => {
+  const apiProxy = await getAPIProxy()
+  const result = await apiProxy.getRecoveryWords()
+  store.dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: result.mnemonic }))
+})
+
 handler.on(WalletPageActions.walletSetupComplete.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
   await refreshWalletInfo(store)
 })
 

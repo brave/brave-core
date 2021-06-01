@@ -57,7 +57,7 @@ function Container (props: Props) {
   }
 
   const onBackupWallet = () => {
-    // Logic to complete Backup
+    props.walletPageActions.walletBackupComplete()
   }
 
   const passwordProvided = (password: string) => {
