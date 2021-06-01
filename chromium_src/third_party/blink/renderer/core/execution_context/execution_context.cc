@@ -140,7 +140,7 @@ AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
       case BraveFarblingLevel::BALANCED: {
         const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
         const double maxUInt64AsDouble = UINT64_MAX;
-        double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
+        double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 50);
         VLOG(1) << "audio fudge factor (based on session token) = "
                 << fudge_factor;
         return base::BindRepeating(&ConstantMultiplier, fudge_factor);
