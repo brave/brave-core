@@ -918,34 +918,51 @@ if (!is_android) {
         "${target_gen_dir}/brave_browser_tests_manifest/AndroidManifest.xml"
     android_manifest_dep = ":brave_browser_tests_manifest"
 
-    # Skip for now because of non-public deps in //chrome/test
-    check_includes = false
-
     deps = [
-      ":brave_browser_tests_assets",
-      ":brave_browser_tests_java",
-      ":sync_integration_test_support",
-      ":sync_integration_test_support_java",
-      ":test_support_java",
-      "//build:chromeos_buildflags",
+      "//brave/app/theme:brave_theme_resources_grit",
+      "//brave/app/theme:brave_unscaled_resources_grit",
+      "//brave/browser/brave_ads",
+      "//brave/browser/brave_stats:stats_updater",
+      "//brave/browser/ethereum_remote_client/buildflags",
+      "//brave/browser/net",
+      "//brave/browser/themes",
+      "//brave/common:pref_names",
+      "//brave/common:switches",
+      "//brave/components/brave_referrals/browser",
+      "//brave/components/brave_referrals/common",
+      "//brave/components/brave_rewards/common",
+      "//brave/components/brave_shields/browser",
+      "//brave/components/brave_shields/common",
+      "//brave/components/brave_sync:prefs",
+      "//brave/components/brave_wayback_machine",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/ipfs",
+      "//brave/components/ipfs/buildflags",
+      "//brave/components/l10n/browser",
+      "//brave/components/tor",
+      "//brave/components/tor/buildflags",
+      "//brave/components/tor:utils",
       "//chrome:chrome_android_core",
       "//chrome/android:app_hooks_java",
+      "//chrome/browser:browser_process",
       "//chrome/browser/flags:flags_android",
       "//chrome/browser/metrics:test_support",
-      "//chrome/browser/payments:browser_tests",
-      "//chrome/browser/privacy_budget:browser_tests",
-      "//chrome/browser/profiling_host:profiling_browsertests",
-      "//chrome/browser/webaudio:browser_tests",
+      "//chrome/test:android_browsertests_assets",
+      "//chrome/test:android_browsertests_java",
       "//chrome/test:browser_tests_runner",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui_android",
+      "//components/bookmarks/browser",
       "//components/browser_ui/widget/android:java",
-      "//components/crash/android:crashpad_main",
+      "//components/content_settings/core/browser",
+      "//components/content_settings/renderer",
+      "//components/embedder_support",
       "//components/externalauth/android:google_delegate_public_impl_java",
-      "//components/metrics/demographics:test_support",
-      "//components/page_load_metrics/browser:test_support",
-      "//components/page_load_metrics/browser/observers/ad_metrics:test_support",
-      "//components/ukm:ukm_test_helper",
+      "//components/federated_learning",
+      "//components/language/core/common",
+      "//components/network_time",
+      "//components/spellcheck/browser",
+      "//services/device/public/cpp:device_features",
 
       # TODO(crbug.com/961849): This is needed for ShellManager which is what
       # the ChromeBrowserTestsActivity is using to build the java UI. It's
@@ -956,121 +973,40 @@ if (!is_android) {
       "//testing/android/native_test:native_test_support",
     ]
 
+    # There are three types of tests that need to be rewritten for Android:
+    # 1. using extensions
+    # 2. using desktop specific UI elements (e.g. TabStripModelObserver)
+    # 3. using ui_test_utils.h
     sources = [
-      "//chrome/browser/android/customtabs/custom_tabs_browsertest.cc",
-      "//chrome/browser/android/tab_android_browsertest.cc",
-      "//chrome/browser/android/webapk/webapk_icon_hasher_browsertest.cc",
-      "//chrome/browser/browsing_data/access_context_audit_browsertest.cc",
-      "//chrome/browser/engagement/important_sites_util_browsertest.cc",
-      "//chrome/browser/metrics/metrics_service_user_demographics_browsertest.cc",
-      "//chrome/browser/metrics/ukm_browsertest.cc",
-      "//chrome/browser/net/cert_verify_proc_browsertest.cc",
-      "//chrome/browser/page_load_metrics/observers/ad_metrics/ad_density_intervention_android_browsertest.cc",
-      "//chrome/browser/profiles/profile_browsertest_android.cc",
-      "//chrome/browser/safe_browsing/test_safe_browsing_database_helper.cc",
-      "//chrome/browser/safe_browsing/test_safe_browsing_database_helper.h",
-      "//chrome/browser/ssl/chrome_security_state_client_browsertest.cc",
-      "//chrome/browser/ssl/crlset_browsertest.cc",
-      "//chrome/browser/subresource_filter/subresource_filter_browser_test_harness.cc",
-      "//chrome/browser/subresource_filter/subresource_filter_browser_test_harness.h",
-      "//chrome/browser/ui/autofill/payments/offer_notification_infobar_controller_impl_browsertest.cc",
+      "//brave/app/brave_main_delegate_browsertest.cc",
+      "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
+      "//brave/browser/brave_prefs_browsertest.cc",
+      "//brave/browser/brave_resources_browsertest.cc",
+      "//brave/browser/brave_shields/cookie_pref_service_browsertest.cc",
+      "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc",
+      "//brave/browser/net/brave_system_request_handler_browsertest.cc",
+      "//brave/browser/profiles/brave_bookmark_model_loaded_observer_browsertest.cc",
+      "//brave/browser/profiles/brave_profile_manager_browsertest.cc",
+      "//brave/browser/themes/brave_dark_mode_prefs_migration_browsertest.cc",
+      "//brave/chromium_src/components/content_settings/core/browser/brave_content_settings_registry_browsertest.cc",
+      "//brave/common/brave_channel_info_browsertest.cc",
+      "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_autoplay_browsertest.cc",
+      "//brave/components/l10n/browser/locale_helper_mock.cc",
+      "//brave/components/l10n/browser/locale_helper_mock.h",
       "//chrome/test/android/browsertests_apk/android_browsertests_jni_onload.cc",
       "//chrome/test/base/android/android_browser_test_browsertest_android.cc",
     ]
 
-    # Add unwind tables in android_browsertests apk to support enabling
-    # sampling profiler. The unwind tables are generated from debug info in the
-    # binary. Removing "default_symbols" and adding symbols config removes the
-    # "strip_debug" config that strips the debug info, on android_browsertests
-    # apk.
-    if (enable_arm_cfi_table) {
-      sources += [ "//chrome/common/profiler/thread_profiler_browsertest.cc" ]
-      deps += [
-        "//chrome/android/modules/stack_unwinder/internal:java",
-        "//chrome/android/modules/stack_unwinder/internal:stack_unwinder_for_testing",
-      ]
-      configs -= [ "//build/config/compiler:default_symbols" ]
-      if (symbol_level == 2) {
-        configs += [ "//build/config/compiler:symbols" ]
-      } else {
-        configs += [ "//build/config/compiler:minimal_symbols" ]
-      }
-      add_unwind_tables_in_apk = true
-    }
-
-    if (enable_arcore) {
-      # If AR is supported, we should also include WebXR's AR enterprise policy
-      # browsertest. The test should not be enabled when AR features are not
-      # enabled, since we won't be able to distinguish whether the test cases
-      # are failing due to absence of AR, or due to an issue with propagating
-      # the enterprise policy setting.
-      sources += [ "../browser/android/vr/webxr_policy_browsertest.cc" ]
-    }
-
     data = [
+      "$root_out_dir/brave_100_percent.pak",
+      "$root_out_dir/brave_resources.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/chrome_100_percent.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/locales/en-US.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/resources.pak",
       "$root_gen_dir/components/components_resources.pak",
       "$root_gen_dir/components/dev_ui_components_resources.pak",
       "$root_out_dir/browser_tests.pak",
-      "//components/test/data/ads_observer/",
-      "//components/test/data/payments/",
-      "//chrome/test/data/android/customtabs/",
-      "//chrome/test/data/banners/",
-      "//chrome/test/data/ssl/",
-      "//content/test/data/",
-    ]
-  }
-
-  android_assets("brave_browser_tests_assets") {
-    testonly = true
-    disable_compression = true
-    sources = []
-    deps = []
-
-    # These are grit() rules so they are in $root_gen_dir.
-    deps += [ "//components/resources" ]
-    sources += [
-      "$root_gen_dir/components/components_resources.pak",
-      "$root_gen_dir/components/dev_ui_components_resources.pak",
-    ]
-
-    # These are repack() rules so they are in $root_out_dir.
-    deps += [ "//chrome:browser_tests_pak" ]
-    sources += [ "$root_out_dir/browser_tests.pak" ]
-
-    # These are assets rules so we can just depend on them.
-    deps += [
-      "//chrome/android:chrome_apk_pak_assets",
-      "//third_party/icu:icu_assets",
-    ]
-
-    deps += [ "//v8:v8_external_startup_data_assets" ]
-  }
-
-  android_library("brave_browser_tests_java") {
-    testonly = true
-    deps = [
-      "//base:base_java",
-      "//base:base_java_test_support",
-      "//build/android/gtest_apk:native_test_instrumentation_test_runner_java",
-      "//chrome/android:base_module_java",
-      "//chrome/android:chrome_all_java",
-      "//chrome/browser/tabmodel:java",
-      "//components/crash/android:handler_java",
-      "//components/crash/android:java",
-      "//components/module_installer/android:module_installer_java",
-      "//content/public/android:content_java",
-      "//content/public/test/android:android_test_message_pump_support_java",
-      "//content/shell/android:content_shell_browsertests_java",
-      "//testing/android/native_test:native_test_java",
-      "//ui/android:ui_full_java",
-    ]
-    sources = [
-      "//chrome/test/android/browsertests_apk/src/org/chromium/android_browsertests_apk/ChromeBrowserTestsActivity.java",
-      "//chrome/test/android/browsertests_apk/src/org/chromium/android_browsertests_apk/ChromeBrowserTestsApplication.java",
-      "//chrome/test/android/browsertests_apk/src/org/chromium/android_browsertests_apk/ChromeBrowserTestsInstrumentationTestRunner.java",
+      "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
     ]
   }
 
@@ -1079,136 +1015,6 @@ if (!is_android) {
     input = "//chrome/test/android/browsertests_apk/AndroidManifest.xml.jinja2"
     output =
         "${target_gen_dir}/brave_browser_tests_manifest/AndroidManifest.xml"
-  }
-
-  android_library("test_support_java") {
-    testonly = true
-    deps = [
-      "//base:base_java",
-      "//chrome/android:chrome_all_java",
-      "//components/autofill/android:autofill_java",
-      "//components/payments/content/android:java",
-      "//components/payments/mojom:mojom_java",
-      "//content/public/android:content_java",
-      "//third_party/androidx:androidx_annotation_annotation_java",
-      "//third_party/blink/public/mojom:android_mojo_bindings_java",
-    ]
-    sources = [ "//chrome/test/android/test_support/src/org/chromium/chrome/test_support/PaymentRequestTestBridge.java" ]
-  }
-
-  generate_jni("test_support_jni_headers") {
-    testonly = true
-    sources = [ "//chrome/test/android/test_support/src/org/chromium/chrome/test_support/PaymentRequestTestBridge.java" ]
-  }
-
-  android_library("sync_integration_test_support_java") {
-    testonly = true
-    deps = [
-      "//base:base_java",
-      "//chrome/android:chrome_all_java",
-      "//chrome/browser/profiles/android:java",
-      "//chrome/test/android:chrome_java_test_support",
-      "//components/signin/public/android:java",
-      "//components/sync/android:sync_java",
-      "//content/public/test/android:content_java_test_support",
-      "//third_party/androidx:androidx_annotation_annotation_java",
-      "//third_party/junit",
-    ]
-    sources = [
-      "//chrome/android/javatests/src/org/chromium/chrome/browser/sync/AndroidSyncSettingsTestUtils.java",
-      "//chrome/android/javatests/src/org/chromium/chrome/browser/sync/MockSyncContentResolverDelegate.java",
-      "//chrome/android/javatests/src/org/chromium/chrome/browser/sync/SyncTestSigninUtils.java",
-    ]
-  }
-
-  source_set("sync_integration_test_support") {
-    testonly = true
-
-    # Skip for now because of non-public deps in //chrome/test
-    check_includes = false
-    sources = [
-      "//chrome/browser/sync/test/integration/autofill_helper.cc",
-      "//chrome/browser/sync/test/integration/autofill_helper.h",
-      "//chrome/browser/sync/test/integration/bookmarks_helper.cc",
-      "//chrome/browser/sync/test/integration/bookmarks_helper.h",
-      "//chrome/browser/sync/test/integration/configuration_refresher.cc",
-      "//chrome/browser/sync/test/integration/configuration_refresher.h",
-      "//chrome/browser/sync/test/integration/device_info_helper.cc",
-      "//chrome/browser/sync/test/integration/device_info_helper.h",
-      "//chrome/browser/sync/test/integration/encryption_helper.cc",
-      "//chrome/browser/sync/test/integration/encryption_helper.h",
-      "//chrome/browser/sync/test/integration/fake_server_invalidation_sender.cc",
-      "//chrome/browser/sync/test/integration/fake_server_invalidation_sender.h",
-      "//chrome/browser/sync/test/integration/fake_server_sync_invalidation_sender.cc",
-      "//chrome/browser/sync/test/integration/fake_server_sync_invalidation_sender.h",
-      "//chrome/browser/sync/test/integration/multi_client_status_change_checker.cc",
-      "//chrome/browser/sync/test/integration/multi_client_status_change_checker.h",
-      "//chrome/browser/sync/test/integration/offer_helper.cc",
-      "//chrome/browser/sync/test/integration/offer_helper.h",
-      "//chrome/browser/sync/test/integration/passwords_helper.cc",
-      "//chrome/browser/sync/test/integration/passwords_helper.h",
-      "//chrome/browser/sync/test/integration/profile_sync_service_harness.cc",
-      "//chrome/browser/sync/test/integration/profile_sync_service_harness.h",
-      "//chrome/browser/sync/test/integration/quiesce_status_change_checker.cc",
-      "//chrome/browser/sync/test/integration/quiesce_status_change_checker.h",
-      "//chrome/browser/sync/test/integration/retry_verifier.cc",
-      "//chrome/browser/sync/test/integration/retry_verifier.h",
-      "//chrome/browser/sync/test/integration/secondary_account_helper.cc",
-      "//chrome/browser/sync/test/integration/secondary_account_helper.h",
-      "//chrome/browser/sync/test/integration/single_client_status_change_checker.cc",
-      "//chrome/browser/sync/test/integration/single_client_status_change_checker.h",
-      "//chrome/browser/sync/test/integration/status_change_checker.cc",
-      "//chrome/browser/sync/test/integration/status_change_checker.h",
-      "//chrome/browser/sync/test/integration/sync_datatype_helper.cc",
-      "//chrome/browser/sync/test/integration/sync_datatype_helper.h",
-      "//chrome/browser/sync/test/integration/sync_disabled_checker.cc",
-      "//chrome/browser/sync/test/integration/sync_disabled_checker.h",
-      "//chrome/browser/sync/test/integration/sync_signin_delegate.cc",
-      "//chrome/browser/sync/test/integration/sync_signin_delegate.h",
-      "//chrome/browser/sync/test/integration/sync_test.cc",
-      "//chrome/browser/sync/test/integration/sync_test.h",
-      "//chrome/browser/sync/test/integration/typed_urls_helper.cc",
-      "//chrome/browser/sync/test/integration/typed_urls_helper.h",
-      "//chrome/browser/sync/test/integration/updated_progress_marker_checker.cc",
-      "//chrome/browser/sync/test/integration/updated_progress_marker_checker.h",
-      "//chrome/browser/sync/test/integration/wallet_helper.cc",
-      "//chrome/browser/sync/test/integration/wallet_helper.h",
-    ]
-    sources += [
-      "//chrome/browser/sync/test/integration/sync_signin_delegate_android.cc",
-      "//chrome/browser/sync/test/integration/sync_signin_delegate_android.h",
-      "//chrome/browser/sync/test/integration/sync_test_utils_android.cc",
-      "//chrome/browser/sync/test/integration/sync_test_utils_android.h",
-    ]
-    public_deps = [ "//chrome/browser" ]
-    deps = [
-      ":sync_integration_test_support_jni_headers",
-      "//base",
-      "//build:chromeos_buildflags",
-      "//chrome/test:test_support",
-      "//components/bookmarks/browser:test_support",
-      "//components/invalidation/impl",
-      "//components/invalidation/impl:test_support",
-      "//components/signin/public/identity_manager:test_support",
-      "//components/sync",
-      "//components/sync:test_support_model",
-      "//components/sync:test_support_nigori",
-      "//components/sync/test/fake_server",
-      "//components/sync/trusted_vault:test_support",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//net",
-      "//services/network/public/mojom",
-      "//skia",
-    ]
-  }
-
-  generate_jni("sync_integration_test_support_jni_headers") {
-    testonly = true
-    sources = [
-      "//chrome/android/javatests/src/org/chromium/chrome/browser/sync/AndroidSyncSettingsTestUtils.java",
-      "//chrome/android/javatests/src/org/chromium/chrome/browser/sync/SyncTestSigninUtils.java",
-    ]
   }
 }
 

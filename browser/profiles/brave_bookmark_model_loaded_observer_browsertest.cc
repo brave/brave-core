@@ -8,11 +8,16 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+
+#if defined(OS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
 
 // This test to mainly testing whether migration only runs once,
 // granular testing for is in BookmarkModelTest
@@ -36,10 +41,10 @@ void CreateBraveSyncV1MetaInfo(bookmarks::BookmarkModel* model) {
 }  // namespace
 
 class BraveBookmarkModelLoadedObserverBrowserTest
-    : public InProcessBrowserTest {
+    : public PlatformBrowserTest {
  public:
   void SetUpOnMainThread() override {
-    profile_ = browser()->profile();
+    profile_ = chrome_test_utils::GetProfile(this);
     bookmark_model_ = BookmarkModelFactory::GetForBrowserContext(profile_);
   }
 

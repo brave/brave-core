@@ -8,7 +8,6 @@
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/simple_url_loader_test_helper.h"
@@ -19,8 +18,14 @@
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if defined(OS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
+
 // Test to check if key is added for brave apis
-class SystemNetworkContextManagerBrowsertest : public InProcessBrowserTest {
+class SystemNetworkContextManagerBrowsertest : public PlatformBrowserTest {
  public:
   SystemNetworkContextManagerBrowsertest()
       : https_server_(net::test_server::EmbeddedTestServer::TYPE_HTTPS) {

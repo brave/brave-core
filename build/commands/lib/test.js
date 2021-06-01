@@ -71,34 +71,21 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
   if (suite === 'brave_unit_tests' || suite === 'brave_browser_tests')
     buildTarget = "brave/test:" + suite
 
-  let num_compile_failure = 1
-  if (config.ignore_compile_failure)
-    num_compile_failure = 0
-
-  let ninjaOpts = [
-    '-C', config.outputDir, buildTarget,
-    '-k', num_compile_failure,
-    ...config.extraNinjaOpts
-  ]
-
-  if (config.use_goma) {
-      const gomaLoginInfo = util.runProcess('goma_auth', ['info'], config.defaultOptions)
-      if (gomaLoginInfo.status !== 0) {
-        console.log('Login required for using Goma. This is only needed once')
-        util.run('goma_auth', ['login'], config.defaultOptions)
-      }
-      util.run('goma_ctl', ['ensure_start'], config.defaultOptions)
-      ninjaOpts.push('-j', config.gomaJValue)
-    }
+  config.buildTarget = buildTarget
 
   // Build the tests
-  util.run('ninja', ninjaOpts, config.defaultOptions)
+  if (config.targetOS === 'android' && suite === 'brave_browser_tests') {
+    // Only android browser tests use this standard build function, to minimize impact on other tests
+    build(buildConfig, options)
+  } else {
+    util.run('ninja', ['-C', config.outputDir, buildTarget], config.defaultOptions)
+  }
 
   if (config.targetOS === 'ios') {
     util.run(path.join(config.outputDir, "iossim"), [
       path.join(config.outputDir, `${suite}.app`),
       path.join(config.outputDir, `${suite}.app/PlugIns/${suite}_module.xctest`)
-    ], options)
+    ], config.defaultOptions)
   } else {
     // Run the tests
     getTestsToRun(config, suite).forEach((testSuite) => {
