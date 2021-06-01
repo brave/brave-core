@@ -293,9 +293,7 @@ void UpholdAuthorization::OnGetAnonFunds(
 void UpholdAuthorization::TransferAnonFunds(
     const double user_funds,
     ledger::endpoint::promotion::PostClaimUpholdCallback callback) {
-  auto wallet_ptr = uphold::GetWallet(ledger_);
-
-  if (!wallet_ptr) {
+  if (!uphold::GetWallet(ledger_)) {
     BLOG(0, "Wallet is null!");
     callback(type::Result::LEDGER_ERROR);
     return;

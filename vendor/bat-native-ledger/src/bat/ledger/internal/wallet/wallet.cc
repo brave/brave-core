@@ -32,7 +32,6 @@ Wallet::Wallet(LedgerImpl* ledger) :
     create_(std::make_unique<WalletCreate>(ledger)),
     recover_(std::make_unique<WalletRecover>(ledger)),
     balance_(std::make_unique<WalletBalance>(ledger)),
-    claim_(std::make_unique<WalletClaim>(ledger)),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
 }
 
@@ -162,27 +161,18 @@ void Wallet::DisconnectWallet(
 }
 
 void Wallet::ClaimFunds(ledger::ResultCallback callback) {
-  // Anonymous funds claim
-  claim_->Start([this, callback](const type::Result result) {
-    if (result != type::Result::LEDGER_OK &&
-        result != type::Result::ALREADY_EXISTS) {
-      BLOG(0, "Claiming anon funds failed");
-      callback(type::Result::CONTINUE);
-      return;
+  // tokens claim
+  ledger_->promotion()->TransferTokens(
+    [callback](const type::Result result, std::string drain_id) {
+      if (result != type::Result::LEDGER_OK) {
+        BLOG(0, "Claiming tokens failed");
+        callback(type::Result::CONTINUE);
+        return;
+      }
+    
+      callback(type::Result::LEDGER_OK);
     }
-
-    // tokens claim
-    ledger_->promotion()->TransferTokens(
-        [callback](const type::Result result, std::string drain_id) {
-          if (result != type::Result::LEDGER_OK) {
-            BLOG(0, "Claiming tokens failed");
-            callback(type::Result::CONTINUE);
-            return;
-          }
-
-          callback(type::Result::LEDGER_OK);
-        });
-  });
+  );
 }
 
 void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {

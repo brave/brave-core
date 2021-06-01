@@ -515,8 +515,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/wallet/wallet.h",
     "src/bat/ledger/internal/wallet/wallet_balance.cc",
     "src/bat/ledger/internal/wallet/wallet_balance.h",
-    "src/bat/ledger/internal/wallet/wallet_claim.cc",
-    "src/bat/ledger/internal/wallet/wallet_claim.h",
     "src/bat/ledger/internal/wallet/wallet_create.cc",
     "src/bat/ledger/internal/wallet/wallet_create.h",
     "src/bat/ledger/internal/wallet/wallet_recover.cc",
