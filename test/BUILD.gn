@@ -388,7 +388,6 @@ test("brave_unit_tests") {
       # This is only used in the unit test, not the browser test.
       # TODO(keur): Reminder to move this out when we migrate
       # stats browser tests into unit tests.
-      "//brave/browser/brave_stats:stats_updater",
       "//brave/components/brave_ads/browser:testutil",
       "//brave/components/brave_stats/browser",
       "//brave/vendor/bat-native-ads",
@@ -828,7 +827,6 @@ if (!is_android) {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser",
-      "//brave/browser/brave_stats:stats_updater",
       "//brave/browser/devtools",
       "//brave/browser/ephemeral_storage:ephemeral_storage_tests",
       "//brave/browser/ethereum_remote_client/buildflags",

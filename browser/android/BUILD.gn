@@ -9,13 +9,11 @@ source_set("android_browser_process") {
     "brave_relaunch_utils.cc",
     "brave_shields_content_settings.cc",
     "brave_shields_content_settings.h",
-    "brave_stats_updater_android.cc",
   ]
 
   deps = [
     "//base",
     "//brave/browser/android/preferences",
-    "//brave/browser/brave_stats:stats_updater",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_shields/browser",
     "//chrome/android:jni_headers",

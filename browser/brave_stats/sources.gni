@@ -1,0 +1,54 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+
+declare_args() {
+  brave_stats_updater_url = ""
+}
+
+if (is_official_build) {
+  assert(brave_stats_updater_url != "")
+}
+
+brave_browser_brave_stats_updater_defines =
+    [ "BRAVE_USAGE_SERVER=\"$brave_stats_updater_url\"" ]
+
+brave_browser_brave_stats_updater_sources = [
+  "//brave/browser/brave_stats/brave_stats_tab_helper.cc",
+  "//brave/browser/brave_stats/brave_stats_tab_helper.h",
+  "//brave/browser/brave_stats/brave_stats_updater.cc",
+  "//brave/browser/brave_stats/brave_stats_updater.h",
+  "//brave/browser/brave_stats/brave_stats_updater_params.cc",
+  "//brave/browser/brave_stats/brave_stats_updater_params.h",
+  "//brave/browser/brave_stats/switches.h",
+]
+
+brave_browser_brave_stats_updater_deps = [
+  "//base",
+  "//brave/browser:browser_process",
+  "//brave/common",
+  "//brave/common:network_constants",
+  "//brave/common:pref_names",
+  "//brave/components/brave_referrals/buildflags",
+  "//brave/components/brave_stats/browser",
+  "//brave/components/rpill/common",
+  "//brave/components/version_info",
+  "//brave/vendor/bat-native-ads",
+  "//chrome/browser:browser_process",
+  "//chrome/browser/profiles:profile",
+  "//chrome/browser/ui",
+  "//chrome/common",
+  "//components/prefs",
+  "//content/public/browser",
+  "//net",
+  "//services/network/public/cpp",
+  "//ui/base",
+]
+
+if (enable_brave_referrals) {
+  brave_browser_brave_stats_updater_deps +=
+      [ "//brave/components/brave_referrals/common" ]
+}
