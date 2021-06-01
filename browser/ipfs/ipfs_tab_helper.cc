@@ -223,16 +223,16 @@ void IPFSTabHelper::UpdateDnsLinkButtonState() {
   }
 }
 
+bool IPFSTabHelper::CanResolveURL(const GURL& url) const {
+  return url.SchemeIsHTTPOrHTTPS() &&
+         !IsAPIGateway(url.GetOrigin(), chrome::GetChannel());
+}
+
 void IPFSTabHelper::MaybeShowDNSLinkButton(content::NavigationHandle* handle) {
   UpdateDnsLinkButtonState();
   if (!IsDNSLinkCheckEnabled() || !handle->GetResponseHeaders())
     return;
-  GURL current = web_contents()->GetURL();
-  if (ipfs_resolved_url_.is_valid() || !current.SchemeIsHTTPOrHTTPS() ||
-      IsDefaultGatewayURL(current, web_contents()->GetBrowserContext()))
-    return;
-
-  if (IsAPIGateway(current.GetOrigin(), chrome::GetChannel()))
+  if (ipfs_resolved_url_.is_valid() && !CanResolveURL(web_contents()->GetURL()))
     return;
 
   int response_code = handle->GetResponseHeaders()->response_code();

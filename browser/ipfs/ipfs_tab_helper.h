@@ -49,9 +49,12 @@ class IPFSTabHelper : public content::WebContentsObserver,
   }
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
+
   friend class content::WebContentsUserData<IPFSTabHelper>;
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
+  bool CanResolveURL(const GURL& url) const;
   bool IsDNSLinkCheckEnabled() const;
   void IPFSLinkResolved(const GURL& ipfs);
   void MaybeShowDNSLinkButton(content::NavigationHandle* handle);
