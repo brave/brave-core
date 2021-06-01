@@ -64,7 +64,7 @@ public class CryptoWalletActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crypto_wallet);
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(android.R.color.black, null));
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
         toolbar.setOverflowIcon(
                 ContextCompat.getDrawable(this, R.drawable.ic_baseline_more_vert_24));
         setSupportActionBar(toolbar);

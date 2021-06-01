@@ -14,5 +14,5 @@
       app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
   <item android:id="@+id/settings"
-      android:title="Settings" />
+      android:title="@string/brave_ui_settings" />
 </menu>

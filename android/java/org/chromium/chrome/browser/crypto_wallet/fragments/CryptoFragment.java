@@ -232,7 +232,6 @@ public class CryptoFragment extends Fragment {
 
     private void setupRecoveryPhraseRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
-        recyclerView.setHasFixedSize(true);
         assert getActivity() != null;
         recyclerView.addItemDecoration(
                 new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));
