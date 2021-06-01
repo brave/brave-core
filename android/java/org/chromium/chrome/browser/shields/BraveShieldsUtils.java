@@ -59,28 +59,17 @@ public class BraveShieldsUtils {
         public static final List<String> videoSitesListJp =
                 Arrays.asList("nicovideo.jp", "tiktok.com", "instagram.com");
 
-        // public static final int BRAVE_BLOCKED_TIER1 = 1000;
-        // public static final int BRAVE_BLOCKED_TIER2 = 5000;
-        // public static final int BRAVE_BLOCKED_TIER3 = 10000;
-        // public static final int BRAVE_BLOCKED_TIER4 = 25000;
-        // public static final int BRAVE_BLOCKED_TIER5 = 75000;
-        // public static final int BRAVE_BLOCKED_TIER6 = 100000;
-        // public static final int BRAVE_BLOCKED_TIER7 = 250000;
-        // public static final int BRAVE_BLOCKED_TIER8 = 500000;
-        // public static final int BRAVE_BLOCKED_TIER9 = 1000000;
+        public static final int BRAVE_BLOCKED_TIER1 = 1000;
+        public static final int BRAVE_BLOCKED_TIER2 = 5000;
+        public static final int BRAVE_BLOCKED_TIER3 = 10000;
+        public static final int BRAVE_BLOCKED_TIER4 = 25000;
+        public static final int BRAVE_BLOCKED_TIER5 = 75000;
+        public static final int BRAVE_BLOCKED_TIER6 = 100000;
+        public static final int BRAVE_BLOCKED_TIER7 = 250000;
+        public static final int BRAVE_BLOCKED_TIER8 = 500000;
+        public static final int BRAVE_BLOCKED_TIER9 = 1000000;
 
-        // public static final int BRAVE_BLOCKED_SHOW_DIFF = 20;
-
-                public static final int BRAVE_BLOCKED_TIER1 = 30;
-        public static final int BRAVE_BLOCKED_TIER2 = 60;
-        public static final int BRAVE_BLOCKED_TIER3 = 90;
-        public static final int BRAVE_BLOCKED_TIER4 = 110;
-        public static final int BRAVE_BLOCKED_TIER5 = 130;
-        public static final int BRAVE_BLOCKED_TIER6 = 160;
-        public static final int BRAVE_BLOCKED_TIER7 = 190;
-        public static final int BRAVE_BLOCKED_TIER8 = 220;
-        public static final int BRAVE_BLOCKED_TIER9 = 250;
-        public static final int BRAVE_BLOCKED_SHOW_DIFF = 5;
+        public static final int BRAVE_BLOCKED_SHOW_DIFF = 20;
 
         public static boolean isTooltipShown;
 
@@ -90,12 +79,6 @@ public class BraveShieldsUtils {
 
         public static boolean hasShieldsTooltipShown(String tooltipType) {
             SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-                   Log.d(TAG, "hasShieldsTooltipShown tooltipType:"+tooltipType);
-            setShieldsTooltipShown(PREF_SHARE_SHIELDS_TOOLTIP_TIER1, false);
-            setShieldsTooltipShown(PREF_SHARE_SHIELDS_TOOLTIP_TIER2, false);
-            setShieldsTooltipShown(PREF_SHARE_SHIELDS_TOOLTIP_TIER3, false);
-            setShieldsTooltipShown(PREF_SHARE_SHIELDS_TOOLTIP_TIER4, false);
-            Log.d(TAG, "hasShieldsTooltipShown tooltipType shown:"+mSharedPreferences.getBoolean(tooltipType, false));
             return mSharedPreferences.getBoolean(tooltipType, false);
         }
 
