@@ -805,9 +805,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE_DESC" desc="The ipfs peers page link description on IPFS settings page">
         Set up ipfs peers description
       </message>
-      <message name="IDS_SETTINGS_IPFS_PEERS_LIST_TITLE" desc="The title for peers list on IPFS settings page">
-        The peers list
-      </message>
       <message name="IDS_SETTINGS_IPFS_DELETE_PEER_CONFIRMATION" desc="Confirmation text for deleting a peer from IPFS peers manager page">
         Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomPeerId</ex></ph>?
       </message>
