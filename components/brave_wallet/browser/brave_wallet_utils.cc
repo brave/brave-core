@@ -51,15 +51,13 @@ std::string ToHex(const std::string& data) {
   if (data.empty()) {
     return "0x0";
   }
-  return base::StringPrintf(
-      "0x%s",
-      base::ToLowerASCII(base::HexEncode(data.data(), data.size())).c_str());
+  return "0x" + base::ToLowerASCII(base::HexEncode(data.data(), data.size()));
 }
 
 std::string KeccakHash(const std::string& input, bool to_hex) {
   std::vector<uint8_t> bytes(input.begin(), input.end());
   std::vector<uint8_t> result = KeccakHash(bytes);
-  std::string result_str(std::string(result.begin(), result.end()));
+  std::string result_str(result.begin(), result.end());
   return to_hex ? ToHex(result_str) : result_str;
 }
 
@@ -82,14 +80,15 @@ bool PadHexEncodedParameter(const std::string& hex_input, std::string* out) {
   if (!IsValidHexString(hex_input)) {
     return false;
   }
-  if (hex_input.length() >= 64) {
+  if (hex_input.length() >= 64 + 2) {
     *out = hex_input;
     return true;
   }
-  std::string hex_substr = hex_input.substr(2, hex_input.length() - 2);
+  std::string hex_substr = hex_input.substr(2);
   size_t padding_len = 64 - hex_substr.length();
   std::string padding(padding_len, '0');
-  *out = base::StringPrintf("0x%s%s", padding.c_str(), hex_substr.c_str());
+
+  *out = "0x" + padding + hex_substr;
   return true;
 }
 
@@ -98,16 +97,11 @@ bool IsValidHexString(const std::string& hex_input) {
   if (hex_input.length() < 3) {
     return false;
   }
-  if (hex_input.substr(0, 2) != "0x") {
+  if (!base::StartsWith(hex_input, "0x")) {
     return false;
   }
-  for (const auto& c : hex_input.substr(3, hex_input.length() - 1)) {
-    if (isalnum(c)) {
-      if (c > 'F' && c <= 'Z')
-        return false;
-      if (c > 'f' && c <= 'z')
-        return false;
-    } else {
+  for (const auto& c : hex_input.substr(2)) {
+    if (!base::IsHexDigit(c)) {
       return false;
     }
   }
@@ -125,9 +119,7 @@ bool ConcatHexStrings(const std::string& hex_input1,
   if (!IsValidHexString(hex_input1) || !IsValidHexString(hex_input2)) {
     return false;
   }
-  *out =
-      base::StringPrintf("%s%s", hex_input1.c_str(),
-                         hex_input2.substr(2, hex_input2.length() - 2).c_str());
+  *out = hex_input1 + hex_input2.substr(2);
   return true;
 }
 
@@ -148,7 +140,7 @@ bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
     if (!IsValidHexString(hex_inputs[i])) {
       return false;
     }
-    *out += hex_inputs[i].substr(2, hex_inputs[i].size() - 2);
+    *out += hex_inputs[i].substr(2);
   }
 
   return true;
@@ -163,42 +155,28 @@ bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
     return false;
   }
   *out = 0;
-  std::string hex_substr =
-      base::ToLowerASCII(hex_input.substr(2, hex_input.length() - 2));
-  for (size_t i = 0; i < hex_substr.length(); i++) {
+  for (char c : hex_input.substr(2)) {
     (*out) <<= 4;
-    if (hex_substr[i] >= '0' && hex_substr[i] <= '9') {
-      (*out) += static_cast<uint256_t>(hex_substr[i] - '0');
-    } else if (hex_substr[i] >= 'a' && hex_substr[i] <= 'f') {
-      (*out) += static_cast<uint256_t>(10 + hex_substr[i] - 'a');
-    } else {
-      return false;
-    }
+    (*out) += static_cast<uint256_t>(base::HexDigitToInt(c));
   }
   return true;
 }
 
 // Takes a uint256_t and converts it to a hex string
 std::string Uint256ValueToHex(uint256_t input) {
-  std::ostringstream ss;
-  while (input > static_cast<uint256_t>(0)) {
-    char i = static_cast<char>(input & static_cast<uint256_t>(0xF));
-    char sz[2] = {'\0'};
-    if (i <= 9) {
-      sz[0] = '0' + i;
-    } else {
-      sz[0] = 'a' + (i - 10);
-    }
-    ss << sz;
+  std::string result;
+  result.reserve(32);
+
+  static constexpr char kHexChars[] = "0123456789abcdef";
+  while (input) {
+    uint8_t i = static_cast<uint8_t>(input & static_cast<uint256_t>(0x0F));
+    result.insert(result.begin(), kHexChars[i]);
     input >>= 4;
   }
-  if (ss.str().length() == 0) {
-    ss << "0";
+  if (result.empty()) {
+    return "0x0";
   }
-  ss << "x0";
-  std::string reversed_hex = ss.str();
-  std::string out(reversed_hex.rbegin(), reversed_hex.rend());
-  return out;
+  return "0x" + result;
 }
 
 std::string GenerateMnemonic(size_t entropy_size) {
@@ -277,7 +255,7 @@ bool EncodeStringArray(const std::vector<std::string>& input,
       PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
   if (!success)
     return false;
-  *output += encoded_offset.substr(2, encoded_offset.size() - 2);
+  *output += encoded_offset.substr(2);
 
   for (size_t i = 1; i < input.size(); i++) {
     // Offset for ith element =
@@ -291,7 +269,7 @@ bool EncodeStringArray(const std::vector<std::string>& input,
         PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
     if (!success)
       return false;
-    *output += encoded_offset.substr(2, encoded_offset.size() - 2);
+    *output += encoded_offset.substr(2);
   }
 
   // Write count and encoding for array elements.
@@ -300,7 +278,7 @@ bool EncodeStringArray(const std::vector<std::string>& input,
     success = EncodeString(input[i], &encoded_string);
     if (!success)
       return false;
-    *output += encoded_string.substr(2, encoded_string.size() - 2);
+    *output += encoded_string.substr(2);
   }
 
   return true;
