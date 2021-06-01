@@ -72,6 +72,14 @@ handler.on(PanelActions.setupWallet.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet' })
 })
 
+handler.on(PanelActions.expandWallet.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://wallet' })
+})
+
+handler.on(PanelActions.openWalletApps.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://wallet#apps' })
+})
+
 handler.on(PanelActions.restoreWallet.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://wallet#restore' })
 })

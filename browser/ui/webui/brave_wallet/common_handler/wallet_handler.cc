@@ -48,8 +48,15 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
     accounts = default_keyring->GetAccounts();
   }
 
+  std::vector<wallet_ui::mojom::AppItemPtr> favorite_apps_copy(
+      favorite_apps.size());
+  std::transform(
+      favorite_apps.begin(), favorite_apps.end(), favorite_apps_copy.begin(),
+      [](const wallet_ui::mojom::AppItemPtr& favorite_app)
+          -> wallet_ui::mojom::AppItemPtr { return favorite_app.Clone(); });
   std::move(callback).Run(keyring_controller->IsDefaultKeyringCreated(),
-                          keyring_controller->IsLocked(), accounts);
+                          keyring_controller->IsLocked(),
+                          std::move(favorite_apps_copy), accounts);
 }
 
 void WalletHandler::LockWallet() {
@@ -66,4 +73,17 @@ void WalletHandler::UnlockWallet(const std::string& password,
       GetBraveWalletService(profile)->keyring_controller();
   bool result = keyring_controller->Unlock(password);
   std::move(callback).Run(result);
+}
+
+void WalletHandler::AddFavoriteApp(
+    const wallet_ui::mojom::AppItemPtr app_item) {
+  favorite_apps.push_back(app_item->Clone());
+}
+
+void WalletHandler::RemoveFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) {
+  favorite_apps.erase(
+      remove_if(favorite_apps.begin(), favorite_apps.end(),
+                [&app_item](const wallet_ui::mojom::AppItemPtr& it) -> bool {
+                  return it->name == app_item->name;
+                }));
 }

@@ -35,11 +35,21 @@ interface PageHandler {
   CreateWallet(string password) => (string mnemonic);
 };
 
+struct AppItem {
+  string description;
+  string icon;
+  string name;
+  string url;
+};
+
 // Browser-side handler for common panel / page things
 interface WalletHandler {
-  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked, array<string> accounts);
+  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
+                      array<AppItem> favoriteApps, array<string> accounts);
   LockWallet();
   UnlockWallet(string password) => (bool isWalletUnlocked);
+  AddFavoriteApp(AppItem appItem);
+  RemoveFavoriteApp(AppItem appItem);
 };
 
 // WebUI-side handler for requests from the browser.

@@ -121,6 +121,7 @@ export interface WalletState {
   isWalletCreated: boolean
   isWalletLocked: boolean
   isWalletRecoveryVerified: boolean
+  favoriteApps: AppObjectType[]
   accounts: WalletAccountType[]
 }
 
@@ -128,6 +129,8 @@ export interface PanelState {
   hasInitialized: boolean
   isConnected: boolean
   connectedSiteOrigin: string
+  selectedPanel: string
+  panelTitle: string
 }
 
 export interface PageState {
@@ -148,6 +151,7 @@ export interface WalletPanelState {
 export interface WalletInfo {
   isWalletCreated: boolean,
   isWalletLocked: boolean
+  favoriteApps: AppObjectType[]
   accounts: string[]
 }
 
@@ -155,6 +159,8 @@ export interface WalletAPIHandler {
   getWalletInfo: () => Promise<WalletInfo>
   lockWallet: () => Promise<void>
   unlockWallet: (password: string) => Promise<void>
+  addFavoriteApp: (appItem: AppObjectType) => Promise<void>
+  removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
 }
 
 export interface RecoveryObject {

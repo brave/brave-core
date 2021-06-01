@@ -7,7 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import { UnlockWalletPayloadType } from '../constants/action_types'
-import { WalletAPIHandler } from '../../constants/types'
+import { WalletAPIHandler, AppObjectType } from '../../constants/types'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
 
@@ -42,6 +42,18 @@ handler.on(WalletActions.lockWallet.getType(), async (store) => {
 handler.on(WalletActions.unlockWallet.getType(), async (store, payload: UnlockWalletPayloadType) => {
   const walletHandler = await getWalletHandler()
   await walletHandler.unlockWallet(payload.password)
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.addFavoriteApp.getType(), async (store, appItem: AppObjectType) => {
+  const walletHandler = await getWalletHandler()
+  await walletHandler.addFavoriteApp(appItem)
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.removeFavoriteApp.getType(), async (store, appItem: AppObjectType) => {
+  const walletHandler = await getWalletHandler()
+  await walletHandler.removeFavoriteApp(appItem)
   await refreshWalletInfo(store)
 })
 
