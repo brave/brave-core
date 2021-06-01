@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_SPEEDREADER_SPEEDREADER_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_SPEEDREADER_SPEEDREADER_BUBBLE_VIEW_H_
 
-#include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "ui/views/controls/styled_label.h"
 
 namespace views {
@@ -17,12 +16,9 @@ namespace speedreader {
 
 // Interface to display a Speedreader info bubble.
 // This object is responsible for its own lifetime.
-class SpeedreaderBubbleView : public LocationBarBubbleDelegateView {
+class SpeedreaderBubbleView {
  public:
-  explicit SpeedreaderBubbleView(views::View* anchor_view)
-      : LocationBarBubbleDelegateView(anchor_view, nullptr) {}
-
-  ~SpeedreaderBubbleView() override = default;
+  virtual ~SpeedreaderBubbleView() = default;
 
   // Shows the bubble
   virtual void Show() = 0;

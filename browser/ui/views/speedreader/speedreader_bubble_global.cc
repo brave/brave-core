@@ -51,7 +51,7 @@ SpeedreaderBubbleGlobal::SpeedreaderBubbleGlobal(
     views::View* anchor_view,
     content::WebContents* web_contents,
     SpeedreaderBubbleController* controller)
-    : SpeedreaderBubbleView(anchor_view),
+    : LocationBarBubbleDelegateView(anchor_view, nullptr),
       web_contents_(web_contents),
       controller_(controller) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);

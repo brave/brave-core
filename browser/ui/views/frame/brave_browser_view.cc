@@ -36,6 +36,7 @@
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_global.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_single_page.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
@@ -232,13 +233,18 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
     bool is_enabled) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderBubbleView* bubble;
-  if (is_enabled)
-    bubble = new speedreader::SpeedreaderBubbleGlobal(GetLocationBarView(),
-                                                      contents, controller);
-  else
-    bubble = new speedreader::SpeedreaderBubbleSinglePage(GetLocationBarView(),
-                                                          contents, controller);
-  views::BubbleDialogDelegateView::CreateBubble(bubble);
+  if (is_enabled) {
+    auto* global_bubble = new speedreader::SpeedreaderBubbleGlobal(
+        GetLocationBarView(), contents, controller);
+    views::BubbleDialogDelegateView::CreateBubble(global_bubble);
+    bubble = global_bubble;
+  } else {
+    auto* single_page_bubble = new speedreader::SpeedreaderBubbleSinglePage(
+        GetLocationBarView(), contents, controller);
+    views::BubbleDialogDelegateView::CreateBubble(single_page_bubble);
+    bubble = single_page_bubble;
+  }
+
   bubble->Show();
 
   return bubble;
