@@ -131,7 +131,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     private static final String JAPAN_COUNTRY_CODE = "JP";
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
-private static final String TAG = "Shields";
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
