@@ -71,8 +71,10 @@
 #include "net/cookies/site_for_cookies.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
+#include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
 
+using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
 using brave_shields::ControlType;
 using brave_shields::GetBraveShieldsEnabled;
@@ -635,4 +637,24 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(domain_block_navigation_throttle));
 
   return throttles;
+}
+
+bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
+    WebContents* web_contents,
+    WebPreferences* prefs) {
+  bool changed =
+      ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
+          web_contents, prefs);
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile),
+      web_contents->GetLastCommittedURL());
+  // https://github.com/brave/brave-browser/issues/15265
+  // Always use color scheme Light if fingerprinting mode strict
+  if (fingerprinting_type == ControlType::BLOCK) {
+    prefs->preferred_color_scheme = blink::mojom::PreferredColorScheme::kLight;
+    changed = true;
+  }
+  return changed;
 }

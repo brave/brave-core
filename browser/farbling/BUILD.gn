@@ -10,6 +10,7 @@ if (!is_android) {
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
     sources = [
+      "brave_dark_mode_fingerprint_protection_browsertest.cc",
       "brave_enumeratedevices_farbling_browsertest.cc",
       "brave_navigator_devicememory_farbling_browsertest.cc",
       "brave_navigator_hardwareconcurrency_farbling_browsertest.cc",
@@ -21,17 +22,22 @@ if (!is_android) {
     ]
 
     deps = [
+      "//base",
       "//brave/browser",
       "//brave/common:pref_names",
       "//brave/components/brave_component_updater/browser:browser",
       "//brave/components/brave_shields/browser:browser",
       "//chrome/browser",
       "//chrome/browser/ui",
+      "//chrome/common",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//components/embedder_support:browser_util",
       "//components/permissions:permissions",
+      "//components/prefs",
+      "//content/public/browser",
       "//content/test:test_support",
+      "//ui/native_theme:test_support",
     ]
   }
 }
