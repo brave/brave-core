@@ -63,7 +63,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_browser_main_parts.cc",
   "//brave/browser/brave_browser_main_parts.h",
   "//brave/browser/brave_browser_process.cc",
-  "//brave/browser/brave_browser_process.h",
   "//brave/browser/brave_browser_process_impl.cc",
   "//brave/browser/brave_browser_process_impl.h",
   "//brave/browser/brave_content_browser_client.cc",
@@ -313,6 +312,7 @@ if (is_win && is_official_build) {
 }
 
 brave_chrome_browser_public_deps = [
+  "//brave/browser:browser_process",
   "//brave/components/brave_sync:constants",
   "//brave/components/variations:constants",
 ]
