@@ -73,3 +73,16 @@ index e5a9fd2d98b65ff7bb54ded343d1de3891b232a8..69079c604543de01500a7ec99e999a85
        {% endif %}
  
        <!-- Cast support -->
+diff --git a/chrome/test/android/browsertests_apk/AndroidManifest.xml.jinja2 b/chrome/test/android/browsertests_apk/AndroidManifest.xml.jinja2
+index 6912b0853fec2..979650ebd1914 100644
+--- a/chrome/test/android/browsertests_apk/AndroidManifest.xml.jinja2
++++ b/chrome/test/android/browsertests_apk/AndroidManifest.xml.jinja2
+@@ -137,6 +137,8 @@
+                  android:isolatedProcess="false"
+                  android:exported="false" />
+         {% endfor %}
++
++        {% include "//brave/android/java/AndroidManifest.xml" %}
+     </application>
+ 
+     <instrumentation android:name="org.chromium.android_browsertests_apk.ChromeBrowserTestsInstrumentationTestRunner"
