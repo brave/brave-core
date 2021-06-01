@@ -92,17 +92,22 @@ repack("resources") {
     ]
   }
 
-  if (brave_wallet_enabled) {
-    if (!is_android && !is_ios) {
+  if (brave_wallet_enabled && !is_ios) {
+    if (!is_android) {
       deps += [
-        "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
         "//brave/components/brave_wallet_ui:resources",
       ]
       sources += [
         "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
-        "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak",
       ]
     }
+
+    deps += [
+      "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+    ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak",
+    ]
   }
 
   if (ethereum_remote_client_enabled) {
