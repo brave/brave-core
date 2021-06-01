@@ -51,6 +51,7 @@ interface WalletHandler {
   UnlockWallet(string password) => (bool isWalletUnlocked);
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
+  NotifyWalletBackupComplete();
 };
 
 // WebUI-side handler for requests from the browser.

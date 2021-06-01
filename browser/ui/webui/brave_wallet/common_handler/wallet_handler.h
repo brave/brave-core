@@ -38,6 +38,7 @@ class WalletHandler : public wallet_ui::mojom::WalletHandler {
   void UnlockWallet(const std::string& password, UnlockWalletCallback) override;
   void AddFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) override;
   void RemoveFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) override;
+  void WalletBackupComplete() override;
 
  private:
   // TODO(bbondy): This needs to be persisted in prefs

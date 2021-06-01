@@ -11,13 +11,15 @@
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
 
 BraveWalletService::BraveWalletService(
     PrefService* prefs,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : prefs_(prefs) {
   rpc_controller_ = std::make_unique<brave_wallet::EthJsonRpcController>(
       brave_wallet::Network::kMainnet, url_loader_factory);
   keyring_controller_ =
@@ -37,6 +39,7 @@ void BraveWalletService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kBraveWalletEncryptedMnemonic, "");
   registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
+  registry->RegisterBooleanPref(kBraveWalletBackupComplete, false);
 }
 
 brave_wallet::EthJsonRpcController* BraveWalletService::rpc_controller() const {
@@ -46,6 +49,10 @@ brave_wallet::EthJsonRpcController* BraveWalletService::rpc_controller() const {
 brave_wallet::KeyringController* BraveWalletService::keyring_controller()
     const {
   return keyring_controller_.get();
+}
+
+void BraveWalletService::NotifyWalletBackupComplete() {
+  prefs_->SetBoolean(kBraveWalletBackupComplete, true);
 }
 
 }  // namespace brave_wallet
