@@ -46,7 +46,8 @@ struct AppItem {
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
-                      array<AppItem> favoriteApps, array<string> accounts);
+                      array<AppItem> favoriteApps,
+                      bool isWalletBackedUp, array<string> accounts);
   LockWallet();
   UnlockWallet(string password) => (bool isWalletUnlocked);
   AddFavoriteApp(AppItem appItem);

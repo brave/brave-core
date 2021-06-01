@@ -18,6 +18,8 @@ class WalletPageApiProxy {
 
   getRecoveryWords(password) {}
 
+  notifyWalletBackupComplete() {}
+
   /** @return {!walletUi.mojom.PageCallbackRouter} */
   getCallbackRouter() {}
 
@@ -50,6 +52,11 @@ export default class WalletPageApiProxyImpl {
   /** @override */
   getRecoveryWords(password) {
     return this.page_handler.getRecoveryWords();
+  }
+
+  /** @override */
+  notifyWalletBackupComplete() {
+    return this.wallet_handler.notifyWalletBackupComplete();
   }
 
   /** @override */

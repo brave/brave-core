@@ -48,6 +48,8 @@ handler.on(WalletPageActions.walletSetupComplete.getType(), async (store) => {
 })
 
 handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
+  const apiProxy = await getAPIProxy()
+  await apiProxy.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
 })
 

@@ -51,6 +51,10 @@ brave_wallet::KeyringController* BraveWalletService::keyring_controller()
   return keyring_controller_.get();
 }
 
+bool BraveWalletService::IsWalletBackedUp() const {
+  return prefs_->GetBoolean(kBraveWalletBackupComplete);
+}
+
 void BraveWalletService::NotifyWalletBackupComplete() {
   prefs_->SetBoolean(kBraveWalletBackupComplete, true);
 }

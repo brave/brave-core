@@ -85,7 +85,7 @@ const CryptoView = (props: Props) => {
             hasMoreButton={true}
             onClickMoreButton={onShowPopup}
           />
-          {showBackupWarning &&
+          {needsBackup && showBackupWarning &&
             <BackupWarningBanner onDismiss={onDismissBackupWarning} />
           }
         </>

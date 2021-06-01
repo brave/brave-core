@@ -53,6 +53,9 @@ function Container (props: Props) {
 
   // recoveryVerified Prop will be used in a future PR.
   const completeWalletSetup = (recoveryVerified: boolean) => {
+    if (recoveryVerified) {
+      props.walletPageActions.walletBackupComplete()
+    }
     props.walletPageActions.walletSetupComplete()
   }
 
@@ -125,7 +128,7 @@ function Container (props: Props) {
                 ) : (
                   <CryptoView
                     onLockWallet={lockWallet}
-                    needsBackup={!props.wallet.isWalletRecoveryVerified}
+                    needsBackup={!props.wallet.isWalletBackedUp}
                     onShowBackup={onShowBackup}
                   />
                 )}

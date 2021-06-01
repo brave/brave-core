@@ -13,8 +13,8 @@ const defaultState: WalletState = {
   hasInitialized: false,
   isWalletCreated: false,
   isWalletLocked: true,
-  isWalletRecoveryVerified: false,
   favoriteApps: [],
+  isWalletBackedUp: false,
   accounts: []
 }
 
@@ -37,7 +37,8 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
     isWalletCreated: payload.isWalletCreated,
     isWalletLocked: payload.isWalletLocked,
     favoriteApps: payload.favoriteApps,
-    isWalletRecoveryVerified: payload.isWalletRecoveryVerified
+    accounts,
+    isWalletBackedUp: payload.isWalletBackedUp
   }
 })
 

@@ -120,8 +120,8 @@ export interface WalletState {
   hasInitialized: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
-  isWalletRecoveryVerified: boolean
   favoriteApps: AppObjectType[]
+  isWalletBackedUp: boolean
   accounts: WalletAccountType[]
 }
 
@@ -153,7 +153,7 @@ export interface WalletInfo {
   isWalletCreated: boolean,
   isWalletLocked: boolean,
   favoriteApps: AppObjectType[],
-  isWalletRecoveryVerified: boolean,
+  isWalletBackedUp: boolean,
   accounts: string[]
 }
 

@@ -37,6 +37,7 @@ class BraveWalletService : public KeyedService,
   brave_wallet::EthJsonRpcController* rpc_controller() const;
   brave_wallet::KeyringController* keyring_controller() const;
 
+  bool IsWalletBackedUp() const;
   void NotifyWalletBackupComplete();
 
  private:
