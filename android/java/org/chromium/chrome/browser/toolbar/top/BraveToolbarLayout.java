@@ -471,10 +471,9 @@ private static final String TAG = "Shields";
                         BraveActivity.getBraveActivity().getActivityTab().getUrlString())) {
             return;
         }
-// int totalBlocked = 36;
+
         int totalBlocked =
                 Math.round(Float.parseFloat(BraveStatsUtil.getAdsTrackersBlocked().first.trim()));
-Log.d(TAG, "chooseStatsShareTier totalBlocked:"+totalBlocked);
         // show after BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF (20) blocked stuff above the TIER
         // threshold
         if (!BraveShieldsUtils.hasShieldsTooltipShown(
