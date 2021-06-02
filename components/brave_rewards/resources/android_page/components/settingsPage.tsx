@@ -19,6 +19,9 @@ import {
   WalletInfoHeader
 } from '../../ui/components/mobile'
 
+import { getLocale } from 'brave-ui/helpers'
+import { AlertWallet } from '../../ui/components/mobile/walletInfoHeader'
+
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
@@ -64,6 +67,7 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.getStatement()
     this.actions.getAdsData()
     this.actions.getExcludedSites()
+    this.actions.getExternalWallet()
   }
 
   componentDidMount () {
@@ -116,6 +120,7 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.getContributionAmount()
     this.actions.getAutoContributeProperties()
     this.actions.getBalance()
+    this.actions.getExternalWallet()
     this.balanceTimerId = setInterval(() => {
       this.actions.getBalance()
     }, 60000)
@@ -148,6 +153,22 @@ class SettingsPage extends React.Component<Props, State> {
     })
   }
 
+  walletAlerts = (): AlertWallet | null => {
+    const { externalWallet } = this.props.rewardsData
+    const { disconnectWalletError } = this.props.rewardsData.ui
+
+    if (disconnectWalletError) {
+      return {
+        node: <><b>{getLocale('uhOh')}</b><br />{getLocale('disconnectWalletFailed').replace('$1', utils.getWalletProviderName(externalWallet))}<br /><br /><a href='https://support.brave.com/hc/en-us/articles/360062026432'>{getLocale('learnMore')}</a></>,
+        type: 'error',
+        onAlertClose: () => {
+          this.actions.onClearAlert('disconnectWalletError')
+        }
+      }
+    }
+    return null
+  }
+
   getPromotionsClaims = () => {
     const { promotions, ui } = this.props.rewardsData
 
@@ -177,7 +198,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   render () {
-    const { parameters, balance } = this.props.rewardsData
+    const { externalWallet, parameters, balance } = this.props.rewardsData
     const { onlyAnonWallet } = this.props.rewardsData.ui
     const { total } = balance
     const convertedBalance = utils.convertBalance((total || 0), parameters.rate)
@@ -191,6 +212,8 @@ class SettingsPage extends React.Component<Props, State> {
           balance={total.toFixed(3).toString()}
           id={'mobile-wallet'}
           onlyAnonWallet={onlyAnonWallet}
+          alert={this.walletAlerts()}
+          wallet={externalWallet}
           converted={`${convertedBalance} USD`}
         />
         <AdsBox />

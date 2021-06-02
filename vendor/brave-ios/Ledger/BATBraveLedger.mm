@@ -1703,11 +1703,11 @@ BATLedgerBridge(BOOL,
 
 - (void)loadURL:(ledger::type::UrlRequestPtr)request callback:(ledger::client::LoadURLCallback)callback
 {
-  std::map<ledger::type::UrlMethod, std::string> methodMap {
-    {ledger::type::UrlMethod::GET, "GET"},
-    {ledger::type::UrlMethod::POST, "POST"},
-    {ledger::type::UrlMethod::PUT, "PUT"}
-  };
+  std::map<ledger::type::UrlMethod, std::string> methodMap{
+      {ledger::type::UrlMethod::GET, "GET"},
+      {ledger::type::UrlMethod::POST, "POST"},
+      {ledger::type::UrlMethod::PUT, "PUT"},
+      {ledger::type::UrlMethod::DEL, "DELETE"}};
 
   if (!request) {
     request = ledger::type::UrlRequest::New();

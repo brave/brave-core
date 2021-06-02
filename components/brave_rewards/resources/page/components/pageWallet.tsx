@@ -59,6 +59,7 @@ class PageWallet extends React.Component<Props, State> {
 
   componentDidMount () {
     this.isBackupUrl()
+    this.isDisconnectUrl()
     this.isVerifyUrl()
     this.actions.getMonthlyReportIds()
   }
@@ -200,6 +201,12 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
+  isDisconnectUrl = () => {
+    if (this.urlHashIs('#disconnect-wallet')) {
+      this.actions.disconnectWallet()
+    }
+  }
+
   toggleVerifyModal = () => {
     if (this.state.modalVerify) {
       window.history.replaceState({}, 'Rewards', '/')
@@ -222,6 +229,7 @@ class PageWallet extends React.Component<Props, State> {
 
   walletAlerts = (): AlertWallet | null => {
     const {
+      disconnectWalletError,
       walletRecoveryStatus,
       walletServerProblem
     } = this.props.rewardsData.ui
@@ -239,6 +247,17 @@ class PageWallet extends React.Component<Props, State> {
         type: 'success',
         onAlertClose: () => {
           this.actions.onClearAlert('walletRecoveryStatus')
+        }
+      }
+    }
+
+    const { externalWallet } = this.props.rewardsData
+    if (externalWallet && disconnectWalletError) {
+      return {
+        node: <><b>{getLocale('uhOh')}</b><br />{getLocale('disconnectWalletFailed').replace('$1', utils.getWalletProviderName(externalWallet))}<br /><br /><a href='https://support.brave.com/hc/en-us/articles/360062026432'>{getLocale('learnMore')}</a></>,
+        type: 'error',
+        onAlertClose: () => {
+          this.actions.onClearAlert('disconnectWalletError')
         }
       }
     }

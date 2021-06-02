@@ -130,14 +130,30 @@ void Wallet::DisconnectWallet(
       const std::string& wallet_type,
       ledger::ResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
-    ledger_->uphold()->DisconnectWallet(true);
-    callback(type::Result::LEDGER_OK);
+    promotion_server_->delete_claim()->Request(
+        constant::kWalletUphold, [this, callback](const type::Result result) {
+          if (result != type::Result::LEDGER_OK) {
+            BLOG(0, "Wallet unlinking failed");
+            callback(result);
+            return;
+          }
+          ledger_->uphold()->DisconnectWallet(true);
+          callback(type::Result::LEDGER_OK);
+        });
     return;
   }
 
   if (wallet_type == constant::kWalletBitflyer) {
-    ledger_->bitflyer()->DisconnectWallet(true);
-    callback(type::Result::LEDGER_OK);
+    promotion_server_->delete_claim()->Request(
+        constant::kWalletBitflyer, [this, callback](const type::Result result) {
+          if (result != type::Result::LEDGER_OK) {
+            BLOG(0, "Wallet unlinking failed");
+            callback(result);
+            return;
+          }
+          ledger_->bitflyer()->DisconnectWallet(true);
+          callback(type::Result::LEDGER_OK);
+        });
     return;
   }
 

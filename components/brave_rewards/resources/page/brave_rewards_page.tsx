@@ -218,7 +218,9 @@ window.cr.define('brave_rewards', function () {
     if (properties.result === 0) {
       getActions().getExternalWallet()
       getActions().getBalance()
+      return
     }
+    getActions().disconnectWalletError()
   }
 
   function onlyAnonWallet (only: boolean) {

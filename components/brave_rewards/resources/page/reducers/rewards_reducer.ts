@@ -26,6 +26,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getAutoContributeProperties')
       break
     }
+    case types.DISCONNECT_WALLET_ERROR: {
+      state = { ...state }
+      let ui = state.ui
+      ui.disconnectWalletError = true
+      break
+    }
     case types.ON_AUTO_CONTRIBUTE_PROPERTIES: {
       state = { ...state }
       let properties = action.payload.properties

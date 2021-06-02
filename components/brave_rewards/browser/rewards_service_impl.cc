@@ -114,6 +114,8 @@ std::string URLMethodToRequestType(ledger::type::UrlMethod method) {
       return "PUT";
     case ledger::type::UrlMethod::PATCH:
       return "PATCH";
+    case ledger::type::UrlMethod::DEL:
+      return "DELETE";
     default:
       NOTREACHED();
       return "GET";

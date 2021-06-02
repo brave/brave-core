@@ -596,7 +596,9 @@ export class Panel extends React.Component<Props, State> {
   }
 
   onDisconnectClick = () => {
-    chrome.braveRewards.disconnectWallet()
+    chrome.tabs.create({
+      url: 'chrome://rewards#disconnect-wallet'
+    })
   }
 
   shouldShowConnectedMessage = () => {

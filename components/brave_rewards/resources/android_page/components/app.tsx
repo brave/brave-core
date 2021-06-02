@@ -16,8 +16,23 @@ interface Props extends Rewards.ComponentProps {
 }
 
 export class App extends React.Component<Props> {
+  urlHashIs = (hash: string) => {
+    return (
+      window &&
+      window.location &&
+      window.location.hash &&
+      window.location.hash === hash
+    )
+  }
+
+  isDisconnectUrl () {
+    if (this.urlHashIs('#disconnect-wallet')) {
+      this.actions.disconnectWallet()
+    }
+  }
 
   componentDidMount () {
+    this.isDisconnectUrl()
     this.actions.isInitialized()
 
     if (!this.props.rewardsData.enabledAdsMigrated) {

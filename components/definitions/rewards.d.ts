@@ -66,6 +66,7 @@ declare namespace Rewards {
     tipsList: Publisher[]
     tipsLoad: boolean
     ui: {
+      disconnectWalletError: boolean
       emptyWallet: boolean
       modalBackup: boolean
       modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed' | 'batLimit'
