@@ -54,19 +54,33 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequestForStats(
 class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
  public:
   void SetUp() override {
+    auto referral_initialized_callback = base::BindRepeating(
+        &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
+        base::Unretained(this));
     brave::BraveReferralsService::SetReferralInitializedCallbackForTesting(
-        base::BindRepeating(
-            &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
-            base::Unretained(this)));
+        &referral_initialized_callback);
+
+    auto stats_updated_callback = base::BindRepeating(
+        &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
+        base::Unretained(this));
     brave_stats::BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(
-        base::BindRepeating(
-            &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
-            base::Unretained(this)));
+        &stats_updated_callback);
+
+    auto stats_threshold_callback = base::BindRepeating(
+        &BraveStatsUpdaterBrowserTest::OnThresholdStatsUpdated,
+        base::Unretained(this));
     brave_stats::BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
-        base::BindRepeating(
-            &BraveStatsUpdaterBrowserTest::OnThresholdStatsUpdated,
-            base::Unretained(this)));
+        &stats_threshold_callback);
     InProcessBrowserTest::SetUp();
+  }
+
+  void TearDown() override {
+    brave::BraveReferralsService::SetReferralInitializedCallbackForTesting(
+        nullptr);
+    brave_stats::BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(nullptr);
+    brave_stats::BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
+        nullptr);
+    InProcessBrowserTest::TearDown();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
