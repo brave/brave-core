@@ -19,7 +19,8 @@ import {
   OnboardingBackup,
   OnboardingRecovery,
   OnboardingVerify,
-  OnboardingCreatePassword
+  OnboardingCreatePassword,
+  OnboardingRestore
 } from './wallet-onboarding'
 
 export {
@@ -44,5 +45,6 @@ export {
   OnboardingCreatePassword,
   LockScreen,
   WalletMorePopup,
-  BackupWarningBanner
+  BackupWarningBanner,
+  OnboardingRestore
 }

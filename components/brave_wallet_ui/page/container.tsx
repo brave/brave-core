@@ -63,6 +63,11 @@ function Container (props: Props) {
     props.walletPageActions.walletBackupComplete()
   }
 
+  // Need to wire up restore wallet
+  const restoreWallet = (phrase: string, password: string) => {
+    // Logic here to restore wallet and set password
+  }
+
   const passwordProvided = (password: string) => {
     props.walletPageActions.createWallet({ password })
   }
@@ -95,6 +100,7 @@ function Container (props: Props) {
           recoveryPhrase={recoveryPhrase}
           onPasswordProvided={passwordProvided}
           onSubmit={completeWalletSetup}
+          onRestore={restoreWallet}
         />
       </WalletPageLayout>
     )

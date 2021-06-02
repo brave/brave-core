@@ -107,9 +107,12 @@ const locale = {
   verifyError: 'Phrases did not match, please try again.',
 
   // Create Password
-  createPasswordTitle: 'Secure your crypto with a password',
+  createPasswordTitle: 'Secure Brave Wallet with a password',
+  createPasswordDescription: 'Password must be at least 7 characters containg at least one number and a special character',
   createPasswordInput: 'Password',
   createPasswordInput2: 'Re-Type Password',
+  createPasswordError: 'Password must be 7 or more characters',
+  createPasswordError2: 'Re-typed password does not match',
 
   // Lock Screen
   lockScreenTitle: 'Enter password to unlock wallet',
@@ -121,7 +124,15 @@ const locale = {
   walletPopupBackup: 'Backup Wallet',
 
   // Backup Warning
-  backupWarningText: 'Backup your wallet now to protect your crypto portfolio from loss of access.'
+  backupWarningText: 'Backup your wallet now to protect your crypto portfolio from loss of access.',
+
+  // Restore Screen
+  restoreTite: 'Restore Crypto Account',
+  restoreDescription: 'Enter your recovery phrase to restore your Brave Wallet crypto account.',
+  restoreError: 'The recovery phrase entered is invalid.',
+  restorePlaceholder: 'Paste recovery phrase from clipboard',
+  restoreShowPhrase: 'Show recovery phrase',
+  restoreFormText: 'New Password'
 }
 
 export default locale
