@@ -10,11 +10,11 @@ import Shared
 
 enum OptInCardAction {
     case closedButtonTapped
-    case turnOnBraveTodayButtonTapped
+    case turnOnBraveNewsButtonTapped
     case learnMoreButtonTapped
 }
 
-class BraveTodayOptInView: UIView, FeedCardContent {
+class BraveNewsOptInView: UIView, FeedCardContent {
     private let backgroundView = FeedCardBackgroundView()
     
     private let stackView = UIStackView().then {
@@ -35,11 +35,11 @@ class BraveTodayOptInView: UIView, FeedCardContent {
         $0.accessibilityLabel = Strings.close
     }
     
-    let turnOnBraveTodayButton = ActionButton().then {
+    let turnOnBraveNewsButton = ActionButton().then {
         $0.layer.borderWidth = 0
         $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
         $0.setTitleColor(.white, for: .normal)
-        $0.setTitle(Strings.BraveToday.turnOnBraveToday, for: .normal)
+        $0.setTitle(Strings.BraveNews.turnOnBraveNews, for: .normal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
         $0.backgroundColor = .braveLighterBlurple
         $0.loaderView = LoaderView(size: .small).then {
@@ -48,7 +48,7 @@ class BraveTodayOptInView: UIView, FeedCardContent {
     }
     
     private let learnMoreButton = UIButton(type: .system).then {
-        $0.setTitle(Strings.BraveToday.learnMoreTitle, for: .normal)
+        $0.setTitle(Strings.BraveNews.learnMoreTitle, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
         $0.setTitleColor(.white, for: .normal)
     }
@@ -70,14 +70,14 @@ class BraveTodayOptInView: UIView, FeedCardContent {
             .view(graphicAnimationView),
             .customSpace(30),
             .view(UILabel().then {
-                $0.text = Strings.BraveToday.introCardTitle
+                $0.text = Strings.BraveNews.introCardTitle
                 $0.textAlignment = .center
                 $0.textColor = .white
                 $0.font = .systemFont(ofSize: 18, weight: .semibold)
                 $0.numberOfLines = 0
             }),
             .view(UILabel().then {
-                $0.text = Strings.BraveToday.introCardBody
+                $0.text = Strings.BraveNews.introCardBody
                 $0.textAlignment = .center
                 $0.textColor = .white
                 $0.font = .systemFont(ofSize: 14)
@@ -90,7 +90,7 @@ class BraveTodayOptInView: UIView, FeedCardContent {
                 $0.addStackViewItems(
                     .view(MaskedNewLabel()),
                     .view(UILabel().then {
-                        $0.text = Strings.BraveToday.introCardNewTextBody
+                        $0.text = Strings.BraveNews.introCardNewTextBody
                         $0.textAlignment = .center
                         $0.textColor = .white
                         $0.font = .systemFont(ofSize: 13)
@@ -99,7 +99,7 @@ class BraveTodayOptInView: UIView, FeedCardContent {
                 )
             }),
             .customSpace(24),
-            .view(turnOnBraveTodayButton),
+            .view(turnOnBraveNewsButton),
             .view(learnMoreButton)
         )
         
@@ -109,7 +109,7 @@ class BraveTodayOptInView: UIView, FeedCardContent {
         
         closeButton.addTarget(self, action: #selector(tappedCloseButton), for: .touchUpInside)
         learnMoreButton.addTarget(self, action: #selector(tappedLearnMoreButton), for: .touchUpInside)
-        turnOnBraveTodayButton.addTarget(self, action: #selector(tappedTurnOnBraveButton), for: .touchUpInside)
+        turnOnBraveNewsButton.addTarget(self, action: #selector(tappedTurnOnBraveButton), for: .touchUpInside)
     }
     
     // MARK: - Actions
@@ -123,7 +123,7 @@ class BraveTodayOptInView: UIView, FeedCardContent {
     }
     
     @objc private func tappedTurnOnBraveButton() {
-        optInCardActionHandler?(.turnOnBraveTodayButtonTapped)
+        optInCardActionHandler?(.turnOnBraveNewsButtonTapped)
     }
     
     @available(*, unavailable)
@@ -152,7 +152,7 @@ private class MaskedNewLabel: UIView {
         $0.overrideUserInterfaceStyle = .light
     }
     private let label = UILabel().then {
-        $0.text = Strings.BraveToday.introCardNew.uppercased()
+        $0.text = Strings.BraveNews.introCardNew.uppercased()
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 12, weight: .bold)
     }

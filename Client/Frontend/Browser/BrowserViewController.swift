@@ -1616,7 +1616,7 @@ class BrowserViewController: UIViewController {
             }
             activities.append(requestDesktopSiteActivity)
             
-            if Preferences.BraveToday.isEnabled.value, let metadata = tab?.pageMetadata,
+            if Preferences.BraveNews.isEnabled.value, let metadata = tab?.pageMetadata,
                !metadata.feeds.isEmpty {
                 let feeds: [RSSFeedLocation] = metadata.feeds.compactMap { feed in
                     if let url = URL(string: feed.href) {
@@ -1625,9 +1625,9 @@ class BrowserViewController: UIViewController {
                     return nil
                 }
                 if !feeds.isEmpty {
-                    let addToBraveToday = AddFeedToBraveTodayActivity() { [weak self] in
+                    let addToBraveNews = AddFeedToBraveNewsActivity() { [weak self] in
                         guard let self = self else { return }
-                        let controller = BraveTodayAddSourceResultsViewController(
+                        let controller = BraveNewsAddSourceResultsViewController(
                             dataSource: self.feedDataSource,
                             searchedURL: url,
                             rssFeedLocations: feeds,
@@ -1642,7 +1642,7 @@ class BrowserViewController: UIViewController {
                         }
                         self.present(container, animated: true)
                     }
-                    activities.append(addToBraveToday)
+                    activities.append(addToBraveNews)
                 }
             }
             
@@ -1680,9 +1680,9 @@ class BrowserViewController: UIViewController {
                let tabURL = selectedTab.url {
                 let parser = FeedParser(URL: url)
                 if case .success(let feed) = parser.parse() {
-                    let addToBraveToday = AddFeedToBraveTodayActivity() { [weak self] in
+                    let addToBraveNews = AddFeedToBraveNewsActivity() { [weak self] in
                         guard let self = self else { return }
-                        let controller = BraveTodayAddSourceResultsViewController(
+                        let controller = BraveNewsAddSourceResultsViewController(
                             dataSource: self.feedDataSource,
                             searchedURL: tabURL,
                             rssFeedLocations: [.init(title: feed.title, url: tabURL)],
@@ -1697,7 +1697,7 @@ class BrowserViewController: UIViewController {
                         }
                         self.present(container, animated: true)
                     }
-                    activities.append(addToBraveToday)
+                    activities.append(addToBraveNews)
                 }
             }
         }

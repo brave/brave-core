@@ -9,11 +9,11 @@ import Shared
 import BraveShared
 import Data
 
-/// Displays relevant Brave Today settings such as toggling the feature on/off, and selecting sources
+/// Displays relevant Brave News settings such as toggling the feature on/off, and selecting sources
 ///
 /// This controller may be presented in an isolated environment outside of the main settings pages from the
-/// Brave Today header on the NTP
-class BraveTodaySettingsViewController: TableViewController {
+/// Brave News header on the NTP
+class BraveNewsSettingsViewController: TableViewController {
     
     private let feedDataSource: FeedDataSource
     
@@ -30,7 +30,7 @@ class BraveTodaySettingsViewController: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = Strings.BraveToday.braveToday
+        title = Strings.BraveNews.braveNews
         
         if navigationController?.viewControllers.first === self {
             // Isolated presentation, add close button
@@ -41,22 +41,22 @@ class BraveTodaySettingsViewController: TableViewController {
     }
     
     private func reloadSections() {
-        // If a user hasn't opted in, they must do so before using Brave Today's features
-        if !Preferences.BraveToday.userOptedIn.value {
+        // If a user hasn't opted in, they must do so before using Brave News's features
+        if !Preferences.BraveNews.userOptedIn.value {
             dataSource.sections = [
                 .init(
                     rows: [
                         .init(
-                            text: Strings.BraveToday.braveToday,
-                            detailText: Strings.BraveToday.introCardBody,
+                            text: Strings.BraveNews.braveNews,
+                            detailText: Strings.BraveNews.introCardBody,
                             cellClass: MultilineSubtitleCell.self
                         ),
                         .init(
-                            text: Strings.BraveToday.turnOnBraveToday,
+                            text: Strings.BraveNews.turnOnBraveNews,
                             selection: { [unowned self] in
-                                Preferences.BraveToday.isShowingOptIn.value = false
-                                Preferences.BraveToday.userOptedIn.value = true
-                                Preferences.BraveToday.isEnabled.value = true
+                                Preferences.BraveNews.isShowingOptIn.value = false
+                                Preferences.BraveNews.userOptedIn.value = true
+                                Preferences.BraveNews.isEnabled.value = true
                                 if self.feedDataSource.shouldLoadContent {
                                     self.feedDataSource.load()
                                 }
@@ -73,13 +73,13 @@ class BraveTodaySettingsViewController: TableViewController {
             .init(
                 rows: [
                     .boolRow(
-                        title: Strings.BraveToday.isEnabledToggleLabel,
-                        option: Preferences.BraveToday.isEnabled
+                        title: Strings.BraveNews.isEnabledToggleLabel,
+                        option: Preferences.BraveNews.isEnabled
                     )
                 ]
             ),
             .init(
-                header: .title(Strings.BraveToday.yourSources),
+                header: .title(Strings.BraveNews.yourSources),
                 rows: feedDataSource.rssFeedLocations.map { location in
                     let enabled = self.feedDataSource.isRSSFeedEnabled(location)
                     return Row(
@@ -89,15 +89,15 @@ class BraveTodaySettingsViewController: TableViewController {
                             self.feedDataSource.toggleRSSFeedEnabled(location, enabled: newValue)
                         }),
                         cellClass: SubtitleCell.self,
-                        editActions: [.init(title: Strings.BraveToday.deleteUserSourceTitle, style: .destructive, selection: { [unowned self] indexPath in
+                        editActions: [.init(title: Strings.BraveNews.deleteUserSourceTitle, style: .destructive, selection: { [unowned self] indexPath in
                             guard let location = feedDataSource.rssFeedLocations[safe: indexPath.row] else { return }
                             self.feedDataSource.removeRSSFeed(location)
                             self.reloadSections()
                         })]
                     )
                 } + [
-                    Row(text: Strings.BraveToday.addSource, selection: { [unowned self] in
-                        let controller = BraveTodayAddSourceViewController(dataSource: self.feedDataSource)
+                    Row(text: Strings.BraveNews.addSource, selection: { [unowned self] in
+                        let controller = BraveNewsAddSourceViewController(dataSource: self.feedDataSource)
                         controller.sourcesAdded = { [weak self] _ in
                             self?.reloadSections()
                         }
@@ -117,9 +117,9 @@ class BraveTodaySettingsViewController: TableViewController {
         if !feedDataSource.sources.isEmpty {
             dataSource.sections.append(
                 .init(
-                    header: .title(Strings.BraveToday.settingsSourceHeaderTitle),
+                    header: .title(Strings.BraveNews.settingsSourceHeaderTitle),
                     rows: [
-                        Row(text: Strings.BraveToday.allSources, selection: { [unowned self] in
+                        Row(text: Strings.BraveNews.allSources, selection: { [unowned self] in
                             let controller = FeedSourceListViewController(dataSource: self.feedDataSource, category: nil)
                             self.navigationController?.pushViewController(controller, animated: true)
                         }, accessory: .disclosureIndicator)
@@ -128,7 +128,7 @@ class BraveTodaySettingsViewController: TableViewController {
             )
             dataSource.sections.append(
                 .init(rows: [
-                    Row(text: Strings.BraveToday.resetSourceSettingsButtonTitle, selection: { [unowned self] in
+                    Row(text: Strings.BraveNews.resetSourceSettingsButtonTitle, selection: { [unowned self] in
                         self.feedDataSource.resetSourcesToDefault()
                     }, cellClass: ButtonCell.self)
                 ])

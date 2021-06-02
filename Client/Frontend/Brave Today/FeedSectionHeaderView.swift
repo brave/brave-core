@@ -7,11 +7,11 @@ import UIKit
 import BraveUI
 import Shared
 
-/// The header which is shown when the user scrolls down into the Brave Today feed
+/// The header which is shown when the user scrolls down into the Brave News feed
 class FeedSectionHeaderView: UIView {
     private let backgroundView: UIVisualEffectView
     private let label = UILabel().then {
-        $0.text = Strings.BraveToday.braveToday
+        $0.text = Strings.BraveNews.braveNews
         $0.textColor = .white
         $0.font = .systemFont(ofSize: 18, weight: .semibold)
     }
@@ -19,7 +19,7 @@ class FeedSectionHeaderView: UIView {
         $0.setImage(UIImage(imageLiteralResourceName: "brave-today-settings"), for: .normal)
         $0.tintColor = .white
         $0.setContentHuggingPriority(.required, for: .horizontal)
-        $0.accessibilityLabel = Strings.BraveToday.sourcesAndSettings
+        $0.accessibilityLabel = Strings.BraveNews.sourcesAndSettings
     }
     
     private let shadowLine = UIView().then {

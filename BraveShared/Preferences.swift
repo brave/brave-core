@@ -51,7 +51,7 @@ extension Preferences {
         public static let ntpCheckDate = Option<TimeInterval?>(key: "ntp.next-check-date", default: nil)
     }
     
-    public final class BraveToday {
+    public final class BraveNews {
         public static let isShowingOptIn = Option<Bool>(key: "brave-today.showing-opt-in", default: false)
         public static let userOptedIn = Option<Bool>(key: "brave-today.user-opted-in", default: false)
         public static let isEnabled = Option<Bool>(key: "brave-today.enabled", default: true)

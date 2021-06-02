@@ -167,7 +167,7 @@ class DownloadsClearable: Clearable {
     }
 }
 
-class BraveTodayClearable: Clearable {
+class BraveNewsClearable: Clearable {
     
     let feedDataSource: FeedDataSource
     
@@ -176,7 +176,7 @@ class BraveTodayClearable: Clearable {
     }
     
     var label: String {
-        return Strings.BraveToday.braveToday
+        return Strings.BraveNews.braveNews
     }
     
     func clear() -> Success {

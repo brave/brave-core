@@ -9,7 +9,7 @@ import BraveShared
 import SnapKit
 import Shared
 
-/// A set of feed related components that overlay the New Tab Page when Brave Today is enabled
+/// A set of feed related components that overlay the New Tab Page when Brave News is enabled
 class NewTabPageFeedOverlayView: UIView {
     
     let headerView = FeedSectionHeaderView().then {
@@ -89,7 +89,7 @@ class NewTabPageFeedOverlayView: UIView {
 class NewContentAvailableButton: SpringButton {
     private let textLabel = UILabel().then {
         $0.textAlignment = .center
-        $0.text = Strings.BraveToday.contentAvailableButtonTitle
+        $0.text = Strings.BraveNews.contentAvailableButtonTitle
         $0.numberOfLines = 0
         $0.textColor = .white
         $0.font = .systemFont(ofSize: 14.0, weight: .semibold)

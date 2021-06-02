@@ -5,7 +5,7 @@
 
 import Foundation
 
-/// The content of a card placed in the Brave Today section on the NTP
+/// The content of a card placed in the Brave News section on the NTP
 protocol FeedCardContent {
     /// The content's view
     var view: UIView { get }

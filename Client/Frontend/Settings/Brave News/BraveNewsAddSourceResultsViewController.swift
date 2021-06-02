@@ -7,7 +7,7 @@ import Foundation
 import BraveUI
 import Shared
 
-class BraveTodayAddSourceResultsViewController: UITableViewController {
+class BraveNewsAddSourceResultsViewController: UITableViewController {
     
     let feedDataSource: FeedDataSource
     let searchedURL: URL
@@ -43,7 +43,7 @@ class BraveTodayAddSourceResultsViewController: UITableViewController {
     }
     
     private lazy var doneButton = UIBarButtonItem(
-        title: Strings.BraveToday.addSourceAddButtonTitle,
+        title: Strings.BraveNews.addSourceAddButtonTitle,
         style: .done,
         target: self,
         action: #selector(tappedAdd)
@@ -65,22 +65,7 @@ class BraveTodayAddSourceResultsViewController: UITableViewController {
         }
     }
     
-    private func showMaximumReachedAlert() {
-        let alert = UIAlertController(
-            title: Strings.BraveToday.rssFeedLimitExceededAlertTitle,
-            message: Strings.BraveToday.rssFeedLimitExceededAlertMessage,
-            preferredStyle: .alert
-        )
-        alert.addAction(.init(title: Strings.OKString, style: .default))
-        present(alert, animated: true)
-    }
-    
     @objc private func tappedAdd() {
-        let numberOfAddedFeeds = feedDataSource.rssFeedLocations.count
-        if numberOfAddedFeeds + selectedLocations.count > FeedDataSource.maximumNumberOfRSSFeeds {
-            showMaximumReachedAlert()
-            return
-        }
         // Add selected sources to feed
         for location in selectedLocations {
             feedDataSource.addRSSFeedLocation(location)
@@ -135,15 +120,7 @@ class BraveTodayAddSourceResultsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 1 {
-            return Strings.BraveToday.insecureSourcesHeader
-        }
-        return nil
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == tableView.numberOfSections - 1 {
-            let feedCount = feedDataSource.rssFeedLocations.count
-            return String.localizedStringWithFormat(Strings.BraveToday.rssFeedLimitRemainingFooter, feedCount)
+            return Strings.BraveNews.insecureSourcesHeader
         }
         return nil
     }

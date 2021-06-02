@@ -129,19 +129,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             class_addMethod(clazz, MenuHelper.selectorFindInPage, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
         }
         
-        #if !NO_BRAVE_TODAY
-        if Preferences.BraveToday.isEnabled.value && !Preferences.BraveToday.userOptedIn.value {
+        #if !NO_BRAVE_NEWS
+        if Preferences.BraveNews.isEnabled.value && !Preferences.BraveNews.userOptedIn.value {
             // Opt-out any user that has not explicitly opted-in
-            Preferences.BraveToday.isEnabled.value = false
+            Preferences.BraveNews.isEnabled.value = false
             // User now has to explicitly opt-in
-            Preferences.BraveToday.isShowingOptIn.value = true
+            Preferences.BraveNews.isShowingOptIn.value = true
         }
         
-        if !Preferences.BraveToday.languageChecked.value,
+        if !Preferences.BraveNews.languageChecked.value,
            let languageCode = Locale.preferredLanguages.first?.prefix(2) {
-            Preferences.BraveToday.languageChecked.value = true
+            Preferences.BraveNews.languageChecked.value = true
             // Base opt-in visibility on whether or not the user's language is supported in BT
-            Preferences.BraveToday.isShowingOptIn.value = FeedDataSource.supportedLanguages.contains(String(languageCode))
+            Preferences.BraveNews.isShowingOptIn.value = FeedDataSource.supportedLanguages.contains(String(languageCode))
         }
         #endif
 

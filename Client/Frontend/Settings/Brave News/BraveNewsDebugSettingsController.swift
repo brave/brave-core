@@ -48,7 +48,7 @@ extension FeedDataSource {
     }
 }
 
-class BraveTodayDebugSettingsController: TableViewController {
+class BraveNewsDebugSettingsController: TableViewController {
     private let feedDataSource: FeedDataSource
     
     init(dataSource: FeedDataSource) {
@@ -64,7 +64,7 @@ class BraveTodayDebugSettingsController: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Brave Today QA Settings"
+        title = "Brave News QA Settings"
         
         reloadData()
         

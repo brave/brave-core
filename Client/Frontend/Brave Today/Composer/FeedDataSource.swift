@@ -13,7 +13,7 @@ import FeedKit
 // Named `logger` because we are using math function `log`
 private let logger = Logger.browserLogger
 
-/// Powers Brave Today's feed.
+/// Powers the Brave News feed.
 class FeedDataSource {
     /// The current view state of the data source
     enum State {
@@ -72,7 +72,7 @@ class FeedDataSource {
     init() {
         restoreCachedSources()
         if !AppConstants.buildChannel.isPublic,
-           let savedEnvironment = Preferences.BraveToday.debugEnvironment.value,
+           let savedEnvironment = Preferences.BraveNews.debugEnvironment.value,
            let environment = Environment(rawValue: savedEnvironment) {
             self.environment = environment
         }
@@ -91,14 +91,14 @@ class FeedDataSource {
         return decoder
     }()
     
-    /// A Brave Today environment
+    /// A Brave News environment
     enum Environment: String, CaseIterable {
         case dev = "brave.software"
         case staging = "bravesoftware.com"
         case production = "brave.com"
     }
     
-    /// The current Brave Today environment.
+    /// The current Brave News environment.
     ///
     /// Updating the environment automatically clears the current cached items if any exist.
     ///
@@ -108,7 +108,7 @@ class FeedDataSource {
             if oldValue == environment { return }
             assert(!AppConstants.buildChannel.isPublic,
                    "Environment cannot be changed on non-public build channels")
-            Preferences.BraveToday.debugEnvironment.value = environment.rawValue
+            Preferences.BraveNews.debugEnvironment.value = environment.rawValue
             clearCachedFiles()
         }
     }
@@ -119,12 +119,12 @@ class FeedDataSource {
         "ja",
     ]
     
-    private struct TodayBucket {
+    private struct NewsBucket {
         var name: String
         var path: String = ""
     }
     
-    private func resourceUrl(for bucket: TodayBucket) -> URL? {
+    private func resourceUrl(for bucket: NewsBucket) -> URL? {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "\(bucket.name).\(environment.rawValue)"
@@ -132,22 +132,22 @@ class FeedDataSource {
         return components.url
     }
     
-    private struct TodayResource {
-        var bucket: TodayBucket
+    private struct NewsResource {
+        var bucket: NewsBucket
         var name: String
         var type: String
         var isLocalized: Bool
         var cacheLifetime: TimeInterval
         
-        static let sources = TodayResource(
-            bucket: TodayBucket(name: "brave-today-cdn"),
+        static let sources = NewsResource(
+            bucket: NewsBucket(name: "brave-today-cdn"),
             name: "sources",
             type: "json",
             isLocalized: true,
             cacheLifetime: 1.days
         )
-        static let feed = TodayResource(
-            bucket: TodayBucket(name: "brave-today-cdn", path: "brave-today"),
+        static let feed = NewsResource(
+            bucket: NewsBucket(name: "brave-today-cdn", path: "brave-today"),
             name: "feed",
             type: "json",
             isLocalized: true,
@@ -155,9 +155,9 @@ class FeedDataSource {
         )
     }
     
-    /// Get the full name of a file for a given Brave Today resource, taking into account whether
+    /// Get the full name of a file for a given Brave News resource, taking into account whether
     /// or not the resource can be localized for supported languages
-    private func resourceFilename(for resource: TodayResource) -> String {
+    private func resourceFilename(for resource: NewsResource) -> String {
         // "en" is the default language and thus does not get the language code inserted into the
         // file name.
         if resource.isLocalized, let languageCode = Locale.preferredLanguages.first?.prefix(2),
@@ -172,7 +172,7 @@ class FeedDataSource {
     /// Determine whether or not some cached resource is expired
     ///
     /// - Note: If no file can be found, this returns `true`
-    private func isResourceExpired(_ resource: TodayResource) -> Bool {
+    private func isResourceExpired(_ resource: NewsResource) -> Bool {
         let fileManager = FileManager.default
         let filename = resourceFilename(for: resource)
         let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(filename).path
@@ -184,14 +184,14 @@ class FeedDataSource {
         return true
     }
     
-    /// A set of Brave Today specific errors that could occur outside of JSON decoding or network errors
-    enum BraveTodayError: Error {
+    /// A set of Brave News specific errors that could occur outside of JSON decoding or network errors
+    enum BraveNewsError: Error {
         /// The resource data that was loaded was empty after parsing
         case resourceEmpty
     }
     
-    /// Get a cached Brave Today resource file, optionally allowing expired data to be returned
-    private func cachedResource(_ resource: TodayResource, loadExpiredData: Bool = false) -> Deferred<Data?> {
+    /// Get a cached Brave News resource file, optionally allowing expired data to be returned
+    private func cachedResource(_ resource: NewsResource, loadExpiredData: Bool = false) -> Deferred<Data?> {
         let name = resourceFilename(for: resource)
         let fileManager = FileManager.default
         let deferred = Deferred<Data?>(value: nil, defaultQueue: .main)
@@ -212,7 +212,7 @@ class FeedDataSource {
         return deferred
     }
     
-    /// Load a Brave Today resource either from a file cache or the web
+    /// Load a Brave News resource either from a file cache or the web
     ///
     /// The `filename` provided will be appended as a path component to the request URL, and be used to
     /// fetch the cache and save the response so it should include the full path for the endpoint (For
@@ -221,7 +221,7 @@ class FeedDataSource {
     /// Cache lifetime will be based on the modification date of the cached file. Data downloaded from the web
     /// will only be cached if it is successfully decoded into the given `DataType`.
     private func loadResource<DataType>(
-        _ resource: TodayResource,
+        _ resource: NewsResource,
         decodedTo: DataType.Type
     ) -> Deferred<Result<DataType, Error>> where DataType: Decodable {
         let filename = resourceFilename(for: resource)
@@ -284,7 +284,7 @@ class FeedDataSource {
     private func loadSources() -> Deferred<Result<[FeedItem.Source], Error>> {
         loadResource(.sources, decodedTo: [FailableDecodable<FeedItem.Source>].self).map { result in
             if case .success(let sources) = result, sources.isEmpty {
-                return .failure(BraveTodayError.resourceEmpty)
+                return .failure(BraveNewsError.resourceEmpty)
             }
             return result.map {
                 $0.compactMap(\.wrappedValue)
@@ -295,7 +295,7 @@ class FeedDataSource {
     private func loadFeed() -> Deferred<Result<[FeedItem.Content], Error>> {
         loadResource(.feed, decodedTo: [FailableDecodable<FeedItem.Content>].self).map { result in
             if case .success(let sources) = result, sources.isEmpty {
-                return .failure(BraveTodayError.resourceEmpty)
+                return .failure(BraveNewsError.resourceEmpty)
             }
             return result.map {
                 $0.compactMap(\.wrappedValue)
@@ -303,7 +303,7 @@ class FeedDataSource {
         }
     }
     
-    /// Describes a single RSS feed's loaded data set converted into Brave Today based data
+    /// Describes a single RSS feed's loaded data set converted into Brave News based data
     private struct RSSDataFeed {
         var source: FeedItem.Source
         var items: [FeedItem.Content]
@@ -354,7 +354,7 @@ class FeedDataSource {
         return all(locations.map(loadRSSLocation))
     }
     
-    /// Scores RSS items similar to how the backend scores regular Brave Today sources
+    /// Scores RSS items similar to how the backend scores regular Brave News sources
     private func scored(rssItems: [FeedItem.Content]) -> [FeedItem.Content] {
         var varianceBySource: [String: Double] = [:]
         return rssItems.map {
@@ -391,7 +391,7 @@ class FeedDataSource {
         isResourceExpired(.sources)
     }
     
-    /// Loads Brave Today resources and generates cards for the loaded data. The result will be placed in
+    /// Loads Brave News resources and generates cards for the loaded data. The result will be placed in
     /// the `state` property.
     ///
     /// Resources are loaded either from cache (if the cache is valid for said resource) or from the web,
@@ -435,10 +435,10 @@ class FeedDataSource {
     func clearCachedFiles() -> Bool {
         do {
             let fileManager = FileManager.default
-            if let braveTodayPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName) {
-                let filePaths = try fileManager.contentsOfDirectory(atPath: braveTodayPath.path)
+            if let braveNewsPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName) {
+                let filePaths = try fileManager.contentsOfDirectory(atPath: braveNewsPath.path)
                 try filePaths.forEach {
-                    var fileUrl = braveTodayPath
+                    var fileUrl = braveNewsPath
                     fileUrl.appendPathComponent($0)
                     try fileManager.removeItem(atPath: fileUrl.path)
                 }
@@ -642,7 +642,7 @@ class FeedDataSource {
             case .deals:
                 return fillStrategy.next(3, from: &deals).map {
                     let title = $0.first?.content.offersCategory
-                    return [.deals($0, title: title ?? Strings.BraveToday.deals)]
+                    return [.deals($0, title: title ?? Strings.BraveNews.deals)]
                 }
             case .partner:
                 let imageExists = { (item: FeedItem) -> Bool in

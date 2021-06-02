@@ -144,7 +144,7 @@ class DealsFeedGroupView: FeedGroupView, FeedCardContent {
                 $0.isAccessibilityElement = false
             }),
             .view(FeedCardFooterButton().then {
-                $0.label.text = Strings.BraveToday.moreBraveOffers
+                $0.label.text = Strings.BraveNews.moreBraveOffers
                 $0.addTarget(self, action: #selector(tappedMoreOffers), for: .touchUpInside)
             })
         )

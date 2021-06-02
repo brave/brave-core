@@ -10,7 +10,7 @@ import BraveUI
 import Fuzi
 import FeedKit
 
-class BraveTodayAddSourceViewController: UITableViewController {
+class BraveNewsAddSourceViewController: UITableViewController {
     
     private let feedDataSource: FeedDataSource
     var sourcesAdded: ((Set<RSSFeedLocation>) -> Void)?
@@ -49,7 +49,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = Strings.BraveToday.addSource
+        title = Strings.BraveNews.addSource
         
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
@@ -103,7 +103,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
     }()
     
     private func displayError(_ error: FindFeedsError) {
-        let alert = UIAlertController(title: Strings.BraveToday.addSourceFailureTitle, message: error.localizedDescription, preferredStyle: .alert)
+        let alert = UIAlertController(title: Strings.BraveNews.addSourceFailureTitle, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
         present(alert, animated: true)
     }
@@ -120,7 +120,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
             self.isLoading = false
             switch result {
             case .success(let data):
-                let resultsController = BraveTodayAddSourceResultsViewController(
+                let resultsController = BraveNewsAddSourceResultsViewController(
                     dataSource: self.feedDataSource,
                     searchedURL: url,
                     rssFeedLocations: data,
@@ -148,11 +148,11 @@ class BraveTodayAddSourceViewController: UITableViewController {
             case .dataTaskError(let error as URLError) where error.code == .notConnectedToInternet:
                 return error.localizedDescription
             case .dataTaskError:
-                return Strings.BraveToday.addSourceNetworkFailureMessage
+                return Strings.BraveNews.addSourceNetworkFailureMessage
             case .invalidData, .parserError:
-                return Strings.BraveToday.addSourceInvalidDataMessage
+                return Strings.BraveNews.addSourceInvalidDataMessage
             case .noFeedsFound:
-                return Strings.BraveToday.addSourceNoFeedsFoundMessage
+                return Strings.BraveNews.addSourceNoFeedsFoundMessage
             }
         }
     }
@@ -188,13 +188,11 @@ class BraveTodayAddSourceViewController: UITableViewController {
                 return
             }
             
-            if FeedDataSource.isOPMLParsingAvailable {
-                // Check if `data` is actually an OPML list
-                if let opml = OPMLParser.parse(data: data), !opml.outlines.isEmpty {
-                    let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
-                    completion(locations.isEmpty ? .failure(.noFeedsFound) : .success(locations))
-                    return
-                }
+            // Check if `data` is actually an OPML list
+            if let opml = OPMLParser.parse(data: data), !opml.outlines.isEmpty {
+                let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
+                completion(locations.isEmpty ? .failure(.noFeedsFound) : .success(locations))
+                return
             }
             
             // Ensure page is reloaded to final landing page before looking for
@@ -234,7 +232,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
     
     private let textField = UITextField().then {
         $0.attributedPlaceholder = NSAttributedString(
-            string: Strings.BraveToday.searchTextFieldPlaceholder,
+            string: Strings.BraveNews.searchTextFieldPlaceholder,
             attributes: [.foregroundColor: UIColor.lightGray]
         )
         $0.font = .preferredFont(forTextStyle: .body)
@@ -285,7 +283,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(for: indexPath) as CenteredButtonCell
-                cell.textLabel?.text = Strings.BraveToday.searchButtonTitle
+                cell.textLabel?.text = Strings.BraveNews.searchButtonTitle
                 cell.tintColor = isSearchEnabled && !isLoading ? .braveOrange : .braveDisabled
                 return cell
             default:
@@ -293,7 +291,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
             }
         case 1:
             let cell = tableView.dequeueReusableCell(for: indexPath) as CenteredButtonCell
-            cell.textLabel?.text = Strings.BraveToday.importOPML
+            cell.textLabel?.text = Strings.BraveNews.importOPML
             cell.tintColor = .braveOrange
             return cell
         default:
@@ -302,7 +300,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        FeedDataSource.isOPMLParsingAvailable ? 2 : 1
+        2
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -314,7 +312,7 @@ class BraveTodayAddSourceViewController: UITableViewController {
     }
 }
 
-extension BraveTodayAddSourceViewController: UIDocumentPickerDelegate {
+extension BraveNewsAddSourceViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first, url.isFileURL, let data = try? Data(contentsOf: url) else {
             controller.dismiss(animated: true) {
@@ -338,7 +336,7 @@ extension BraveTodayAddSourceViewController: UIDocumentPickerDelegate {
                     }
                     return
                 }
-                let resultsController = BraveTodayAddSourceResultsViewController(
+                let resultsController = BraveNewsAddSourceResultsViewController(
                     dataSource: self.feedDataSource,
                     searchedURL: url,
                     rssFeedLocations: locations,
@@ -353,7 +351,7 @@ extension BraveTodayAddSourceViewController: UIDocumentPickerDelegate {
     }
 }
 
-extension BraveTodayAddSourceViewController: UITextFieldDelegate {
+extension BraveNewsAddSourceViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if isSearchEnabled {
             textField.resignFirstResponder()

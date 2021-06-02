@@ -126,8 +126,8 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
             [(PlayListCacheClearable(), false),
              (PlayListDataClearable(), false)]
         
-        #if !NO_BRAVE_TODAY
-        alwaysVisible.append((BraveTodayClearable(feedDataSource: self.feedDataSource), true))
+        #if !NO_BRAVE_NEWS
+        alwaysVisible.append((BraveNewsClearable(feedDataSource: self.feedDataSource), true))
         #endif
         
         alwaysVisible.append(contentsOf: playlist)

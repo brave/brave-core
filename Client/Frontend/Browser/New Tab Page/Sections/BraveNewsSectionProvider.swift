@@ -19,9 +19,9 @@ struct FeedItemActionContext {
     var indexPath: IndexPath
 }
 
-/// The section provider for Brave Today. 
-class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
-    /// Set of actions that can occur from the Brave Today section
+/// The section provider for Brave News.
+class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
+    /// Set of actions that can occur from the Brave News section
     enum Action {
         /// The user interacted with the welcome card
         case optInCardAction(OptInCardAction)
@@ -53,9 +53,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func registerCells(to collectionView: UICollectionView) {
-        collectionView.register(FeedCardCell<BraveTodayOptInView>.self)
-        collectionView.register(FeedCardCell<BraveTodayErrorView>.self)
-        collectionView.register(FeedCardCell<BraveTodayEmptyFeedView>.self)
+        collectionView.register(FeedCardCell<BraveNewsOptInView>.self)
+        collectionView.register(FeedCardCell<BraveNewsErrorView>.self)
+        collectionView.register(FeedCardCell<BraveNewsEmptyFeedView>.self)
         collectionView.register(FeedCardCell<HeadlineCardView>.self)
         collectionView.register(FeedCardCell<SmallHeadlinePairCardView>.self)
         collectionView.register(FeedCardCell<VerticalFeedGroupView>.self)
@@ -71,14 +71,14 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     private var isShowingOptInCard: Bool {
-        Preferences.BraveToday.isShowingOptIn.value
+        Preferences.BraveNews.isShowingOptIn.value
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if isShowingOptInCard {
             return 1
         }
-        if !Preferences.BraveToday.isEnabled.value {
+        if !Preferences.BraveNews.isEnabled.value {
             return 0
         }
         switch dataSource.state {
@@ -118,7 +118,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveTodayOptInView> {
+        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveNewsOptInView> {
             cell.content.graphicAnimationView.play()
         }
         if let card = dataSource.state.cards?[safe: indexPath.item] {
@@ -134,20 +134,20 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveTodayOptInView> {
+        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveNewsOptInView> {
             cell.content.graphicAnimationView.stop()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let error = dataSource.state.error {
-            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayErrorView>
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveNewsErrorView>
             if let urlError = error as? URLError, urlError.code == .notConnectedToInternet {
-                cell.content.titleLabel.text = Strings.BraveToday.errorNoInternetTitle
-                cell.content.errorMessageLabel.text = Strings.BraveToday.errorNoInternetBody
+                cell.content.titleLabel.text = Strings.BraveNews.errorNoInternetTitle
+                cell.content.errorMessageLabel.text = Strings.BraveNews.errorNoInternetBody
             } else {
-                cell.content.titleLabel.text = Strings.BraveToday.errorGeneralTitle
-                cell.content.errorMessageLabel.text = Strings.BraveToday.errorGeneralBody
+                cell.content.titleLabel.text = Strings.BraveNews.errorGeneralTitle
+                cell.content.errorMessageLabel.text = Strings.BraveNews.errorGeneralBody
             }
             if case .loading = dataSource.state {
                 cell.content.refreshButton.isLoading = true
@@ -164,10 +164,10 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         }
         
         if isShowingOptInCard && indexPath.item == 0 {
-            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayOptInView>
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveNewsOptInView>
             cell.content.optInCardActionHandler = { [weak self] action in
-                if action == .turnOnBraveTodayButtonTapped && !cell.content.turnOnBraveTodayButton.isLoading {
-                    cell.content.turnOnBraveTodayButton.isLoading = true
+                if action == .turnOnBraveNewsButtonTapped && !cell.content.turnOnBraveNewsButton.isLoading {
+                    cell.content.turnOnBraveNewsButton.isLoading = true
                 }
                 self?.actionHandler(.optInCardAction(action))
             }
@@ -175,7 +175,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         }
         
         if let cards = dataSource.state.cards, cards.isEmpty {
-            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayEmptyFeedView>
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveNewsEmptyFeedView>
             cell.content.sourcesAndSettingsButtonTapped = { [weak self] in
                 self?.actionHandler(.emptyCardTappedSourcesAndSettings)
             }
@@ -322,16 +322,16 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             }
             
             var disableSource: UIAction {
-                .init(title: String(format: Strings.BraveToday.disablePublisherContent, item.source.name), image: UIImage(named: "disable.feed.source"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
+                .init(title: String(format: Strings.BraveNews.disablePublisherContent, item.source.name), image: UIImage(named: "disable.feed.source"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
             }
             
             var enableSource: UIAction {
-                .init(title: String(format: Strings.BraveToday.enablePublisherContent, item.source.name), image: UIImage(named: "enable.feed.source"), handler: mapDeferredHandler(toggleSourceHandler))
+                .init(title: String(format: Strings.BraveNews.enablePublisherContent, item.source.name), image: UIImage(named: "enable.feed.source"), handler: mapDeferredHandler(toggleSourceHandler))
             }
             
             let openActions: [UIAction] = [
                 openInNewTab,
-                // Brave Today is only available in normal tabs, so this isn't technically required
+                // Brave News is only available in normal tabs, so this isn't technically required
                 // but good to be on the safe side
                 !PrivateBrowsingManager.shared.isPrivateBrowsing ?
                     openInNewPrivateTab :
