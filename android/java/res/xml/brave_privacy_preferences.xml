@@ -93,7 +93,7 @@
             defaultValue="false"
             android:title="@string/close_tabs_on_exit_title"
             android:summary="@string/close_tabs_on_exit_summary" />
-        <org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="ipfs_gateway"
             android:order="25"
             android:title="@string/ipfs_gateway_title"
