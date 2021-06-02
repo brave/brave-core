@@ -91,6 +91,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_ads/notifications",
   "//brave/browser/brave_stats:stats_updater",
   "//brave/browser/browsing_data",
+  "//brave/browser/component_updater",
   "//brave/browser/content_settings",
   "//brave/browser/ephemeral_storage",
   "//brave/browser/gcm_driver",
