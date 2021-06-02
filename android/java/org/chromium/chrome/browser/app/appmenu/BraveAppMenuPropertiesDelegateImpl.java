@@ -51,8 +51,8 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
                 if (item.hasSubMenu()) {
                     maybeReplaceIcons(item.getSubMenu());
                 } else if (item.getItemId() == R.id.new_tab_menu_id) {
-                    item.setIcon(AppCompatResources.getDrawable(
-                            mContext, R.drawable.ic_new_tab_page));
+                    item.setIcon(
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_new_tab_page));
                 } else if (item.getItemId() == R.id.new_incognito_tab_menu_id) {
                     item.setIcon(AppCompatResources.getDrawable(
                             mContext, R.drawable.brave_menu_new_private_tab));
