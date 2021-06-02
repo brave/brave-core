@@ -138,6 +138,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -207,9 +208,13 @@ void MaybeBindBraveWalletProvider(
       brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
           context);
 
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
-          service->AsWeakPtr()),
+          service->AsWeakPtr(),
+          std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
+              web_contents)),
       std::move(receiver));
 }
 #endif
