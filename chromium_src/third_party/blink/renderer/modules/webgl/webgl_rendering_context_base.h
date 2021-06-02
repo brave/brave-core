@@ -14,7 +14,7 @@
   getSupportedExtensions_ChromiumImpl(); \
   absl::optional<Vector<String>> getSupportedExtensions
 
-#include "../../../../../../third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h"
+#include "../../../../../../../third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h"
 
 #undef getSupportedExtensions
 #undef getExtension
