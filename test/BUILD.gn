@@ -370,7 +370,6 @@ test("brave_unit_tests") {
     ]
 
     deps += [
-      "//brave/browser/extensions",
       "//brave/common/importer",
       "//chrome/browser/extensions",
       "//components/crx_file",
@@ -830,7 +829,6 @@ if (!is_android) {
       "//brave/browser/devtools",
       "//brave/browser/ephemeral_storage:ephemeral_storage_tests",
       "//brave/browser/ethereum_remote_client/buildflags",
-      "//brave/browser/extensions",
       "//brave/browser/net",
       "//brave/browser/profiles",
       "//brave/browser/themes",

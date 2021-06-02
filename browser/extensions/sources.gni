@@ -1,0 +1,214 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/components/binance/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_together/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+brave_browser_extensions_sources = []
+brave_browser_extensions_deps = []
+
+if (enable_extensions) {
+  brave_browser_extensions_sources = [
+    "//brave/browser/extensions/api/brave_action_api.cc",
+    "//brave/browser/extensions/api/brave_action_api.h",
+    "//brave/browser/extensions/api/brave_extensions_api_client.cc",
+    "//brave/browser/extensions/api/brave_extensions_api_client.h",
+    "//brave/browser/extensions/api/brave_shields_api.cc",
+    "//brave/browser/extensions/api/brave_shields_api.h",
+    "//brave/browser/extensions/api/brave_theme_api.cc",
+    "//brave/browser/extensions/api/brave_theme_api.h",
+    "//brave/browser/extensions/api/brave_today_api.cc",
+    "//brave/browser/extensions/api/brave_today_api.h",
+    "//brave/browser/extensions/api/greaselion_api.cc",
+    "//brave/browser/extensions/api/greaselion_api.h",
+    "//brave/browser/extensions/api/settings_private/brave_prefs_util.cc",
+    "//brave/browser/extensions/api/settings_private/brave_prefs_util.h",
+    "//brave/browser/extensions/brave_extension_management.cc",
+    "//brave/browser/extensions/brave_extension_management.h",
+    "//brave/browser/extensions/brave_extension_provider.cc",
+    "//brave/browser/extensions/brave_extension_provider.h",
+    "//brave/browser/extensions/brave_extension_service.cc",
+    "//brave/browser/extensions/brave_extension_service.h",
+    "//brave/browser/extensions/brave_extensions_browser_api_provider.cc",
+    "//brave/browser/extensions/brave_extensions_browser_api_provider.h",
+    "//brave/browser/extensions/brave_extensions_browser_client_impl.cc",
+    "//brave/browser/extensions/brave_extensions_browser_client_impl.h",
+    "//brave/browser/extensions/brave_theme_event_router.cc",
+    "//brave/browser/extensions/brave_theme_event_router.h",
+    "//brave/browser/extensions/updater/brave_update_client_config.cc",
+    "//brave/browser/extensions/updater/brave_update_client_config.h",
+  ]
+
+  brave_browser_extensions_deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/component_updater",
+    "//brave/browser/extensions:resources",
+    "//brave/browser/profiles",
+    "//brave/browser/webcompat_reporter",
+    "//brave/common",
+    "//brave/common:pref_names",
+    "//brave/common/extensions/api",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_rewards/browser/buildflags",
+    "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/common",
+    "//brave/components/brave_today/browser",
+    "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/decentralized_dns/buildflags",
+    "//brave/components/ipfs/buildflags",
+    "//brave/components/sidebar/buildflags",
+    "//brave/components/tor/buildflags",
+    "//chrome/browser/extensions",
+    "//chrome/common",
+    "//components/gcm_driver:gcm_buildflags",
+    "//components/gcm_driver:gcm_driver",
+    "//components/omnibox/browser:browser",
+    "//components/prefs",
+    "//components/services/patch/content",
+    "//components/services/unzip/content",
+    "//components/update_client:patch_impl",
+    "//components/update_client:unzip_impl",
+    "//content/public/browser",
+    "//extensions/browser",
+    "//extensions/common",
+    "//third_party/re2",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (enable_sidebar) {
+    brave_browser_extensions_deps += [ "//brave/components/sidebar" ]
+  }
+
+  # It seems like this brave_wallet_api should be renamed to ethereum_remote_client_api.
+  # However this is not possible right now because the ethereum-remote-client extension
+  # uses chrome.braveWallet, so the API is intentionally not being renamed now.
+  if (ethereum_remote_client_enabled) {
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/api/brave_wallet_api.cc",
+      "//brave/browser/extensions/api/brave_wallet_api.h",
+    ]
+    brave_browser_extensions_deps += [
+      "//brave/browser/extensions:ethereum_remote_client_util",
+      "//brave/components/brave_wallet/browser",
+    ]
+  }
+
+  if (ipfs_enabled) {
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/api/ipfs_api.cc",
+      "//brave/browser/extensions/api/ipfs_api.h",
+    ]
+    brave_browser_extensions_deps += [ "//brave/components/ipfs" ]
+  }
+
+  if (decentralized_dns_enabled) {
+    brave_browser_extensions_deps += [ "//brave/components/decentralized_dns" ]
+  }
+
+  if (brave_rewards_enabled) {
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/api/brave_rewards_api.cc",
+      "//brave/browser/extensions/api/brave_rewards_api.h",
+      "//brave/browser/extensions/api/rewards_notifications_api.cc",
+      "//brave/browser/extensions/api/rewards_notifications_api.h",
+    ]
+
+    brave_browser_extensions_deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/browser",
+      "//brave/components/brave_rewards/browser",
+      "//brave/vendor/bat-native-ledger:headers",
+    ]
+  }
+  if (enable_brave_webtorrent) {
+    brave_browser_extensions_deps +=
+        [ "//brave/components/brave_webtorrent/browser" ]
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/brave_webtorrent_navigation_throttle.cc",
+      "//brave/browser/extensions/brave_webtorrent_navigation_throttle.h",
+    ]
+  }
+  if (enable_brave_wayback_machine) {
+    brave_browser_extensions_deps +=
+        [ "//brave/components/brave_wayback_machine" ]
+  }
+  if (gemini_enabled) {
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/api/gemini_api.cc",
+      "//brave/browser/extensions/api/gemini_api.h",
+    ]
+    brave_browser_extensions_deps += [
+      "//brave/components/gemini/browser",
+      "//brave/components/ntp_widget_utils/browser",
+    ]
+  }
+
+  if (enable_ftx) {
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/api/ftx_api.cc",
+      "//brave/browser/extensions/api/ftx_api.h",
+    ]
+    brave_browser_extensions_deps += [
+      "//brave/components/ftx/browser",
+      "//brave/components/ftx/common",
+      "//brave/components/ntp_widget_utils/browser",
+    ]
+  }
+
+  if (binance_enabled) {
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/api/binance_api.cc",
+      "//brave/browser/extensions/api/binance_api.h",
+    ]
+
+    brave_browser_extensions_deps += [
+      "//brave/components/binance/browser",
+      "//brave/components/ntp_widget_utils/browser",
+    ]
+  }
+
+  if (brave_together_enabled) {
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/api/brave_together_api.cc",
+      "//brave/browser/extensions/api/brave_together_api.h",
+    ]
+
+    brave_browser_extensions_deps += [
+      "//brave/components/brave_together/browser",
+      "//brave/components/ntp_widget_utils/browser",
+    ]
+  }
+  if (crypto_dot_com_enabled) {
+    brave_browser_extensions_sources += [
+      "//brave/browser/extensions/api/crypto_dot_com_api.cc",
+      "//brave/browser/extensions/api/crypto_dot_com_api.h",
+    ]
+    brave_browser_extensions_deps += [
+      "//brave/browser/profiles",
+      "//brave/common",
+      "//brave/components/crypto_dot_com/browser",
+      "//brave/components/crypto_dot_com/common/",
+      "//brave/components/ntp_widget_utils/browser",
+      "//chrome/browser/extensions",
+      "//components/prefs",
+      "//extensions/browser",
+      "//extensions/common:common_constants",
+    ]
+  }
+}

@@ -14,6 +14,7 @@ import("//brave/browser/crypto_dot_com/sources.gni")
 import("//brave/browser/decentralized_dns/sources.gni")
 import("//brave/browser/download/sources.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/browser/extensions/sources.gni")
 import("//brave/browser/gemini/sources.gni")
 import("//brave/browser/greaselion/sources.gni")
 import("//brave/browser/importer/sources.gni")
@@ -259,7 +260,6 @@ if (enable_tor) {
 
 if (enable_extensions) {
   brave_chrome_browser_deps += [
-    "//brave/browser/extensions",
     "//brave/browser/extensions:component_loader",
     "//chrome/browser/extensions",
     "//extensions/browser",
@@ -336,6 +336,7 @@ brave_chrome_browser_sources += brave_browser_component_updater_sources
 brave_chrome_browser_sources += brave_browser_crypto_dot_com_sources
 brave_chrome_browser_sources += brave_browser_decentralized_dns_sources
 brave_chrome_browser_sources += brave_browser_download_sources
+brave_chrome_browser_sources += brave_browser_extensions_sources
 brave_chrome_browser_sources += brave_browser_gemini_sources
 brave_chrome_browser_sources += brave_browser_greaselion_sources
 brave_chrome_browser_sources += brave_browser_importer_sources
@@ -356,6 +357,7 @@ brave_chrome_browser_deps += brave_browser_component_updater_deps
 brave_chrome_browser_deps += brave_browser_crypto_dot_com_deps
 brave_chrome_browser_deps += brave_browser_decentralized_dns_deps
 brave_chrome_browser_deps += brave_browser_download_deps
+brave_chrome_browser_deps += brave_browser_extensions_deps
 brave_chrome_browser_deps += brave_browser_gemini_deps
 brave_chrome_browser_deps += brave_browser_greaselion_deps
 brave_chrome_browser_deps += brave_browser_importer_deps
