@@ -40,9 +40,8 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   if (IsUnstoppableDomainsTLD(ctx->request_url) &&
       IsUnstoppableDomainsResolveMethodEthereum(
           g_browser_process->local_state())) {
-    auto* service =
-        brave_wallet::BraveWalletServiceFactory::GetForContext(
-            ctx->browser_context);
+    auto* service = brave_wallet::BraveWalletServiceFactory::GetForContext(
+        ctx->browser_context);
     if (!service) {
       return net::OK;
     }
@@ -59,9 +58,8 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
 
   if (IsENSTLD(ctx->request_url) &&
       IsENSResolveMethodEthereum(g_browser_process->local_state())) {
-    auto* service =
-        brave_wallet::BraveWalletServiceFactory::GetForContext(
-            ctx->browser_context);
+    auto* service = brave_wallet::BraveWalletServiceFactory::GetForContext(
+        ctx->browser_context);
     if (!service) {
       return net::OK;
     }

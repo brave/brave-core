@@ -278,24 +278,24 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
                                      true, "");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-  std::string result =
+  std::string hash =
       "0x0000000000000000000000000000000000000000000000000000000000000020"
       "0000000000000000000000000000000000000000000000000000000000000026e7"
       "0101701220f073be187e8e06039796c432a5bdd6da3f403c2f93fa5d9dbdc5547c"
       "7fe0e3bc0000000000000000000000000000000000000000000000000000";
 
-  OnBeforeURLRequest_EnsRedirectWork(
-      ResponseCallback(), brave_request_info, true, result);
+  OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
+                                     true, hash);
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
-  result =
+  hash =
       "0x0000000000000000000000000000000000000000000000000000000000000020"
       "0000000000000000000000000000000000000000000000000000000000000026e5"
       "0101701220f073be187e8e06039796c432a5bdd6da3f403c2f93fa5d9dbdc5547c"
       "7fe0e3bc0000000000000000000000000000000000000000000000000000";
 
   OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
-                                     true, result);
+                                     true, hash);
   EXPECT_EQ(
       brave_request_info->new_url_spec,
       "ipns://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq");

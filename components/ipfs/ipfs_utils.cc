@@ -27,6 +27,9 @@
 
 namespace {
 
+// Decodes a varint from the given string piece into the given int64_t. Returns
+// if the  string had a valid varint (where a byte was found with it's top bit
+// set).
 bool DecodeVarInt(base::StringPiece* from, int64_t* into) {
   base::StringPiece::const_iterator it = from->begin();
   int shift = 0;

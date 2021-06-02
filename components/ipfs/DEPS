@@ -1,6 +1,7 @@
 include_rules = [
   "+content/public/browser",
   "+content/public/common",
+  "+components/base32",
   "+extensions/browser",
   "+extensions/buildflags",
   "+extensions/common",

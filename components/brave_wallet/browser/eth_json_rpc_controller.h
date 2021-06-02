@@ -101,7 +101,7 @@ class EthJsonRpcController {
 
   void OnEnsProxyReaderResolveAddress(
       UnstoppableDomainsProxyReaderGetManyCallback callback,
-      const int status,
+      int status,
       const std::string& body,
       const std::map<std::string, std::string>& headers);
 
