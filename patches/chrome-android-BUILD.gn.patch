@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index f131e4b93f60674e0dd32c4fc4839e95c122e71d..1b948378047102063a2b7f4c0018d943e7cde245 100644
+index f131e4b93f60674e0dd32c4fc4839e95c122e71d..01960ff86d853a752419b1bd0ee7d9d89e9e7c48 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -239,6 +239,7 @@ android_resources("chrome_app_java_resources") {
@@ -26,7 +26,15 @@ index f131e4b93f60674e0dd32c4fc4839e95c122e71d..1b948378047102063a2b7f4c0018d943
  
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -732,6 +735,7 @@ group("jni_headers") {
+@@ -696,6 +699,7 @@ java_group("chrome_all_java") {
+       "//chrome/android/features/tab_ui:module_desc_java",
+     ]
+   }
++  deps += brave_chrome_all_java_deps
+ }
+ 
+ # This is a list of all base module jni headers. New features should add their
+@@ -732,6 +736,7 @@ group("jni_headers") {
      "//components/ukm/android:jni_headers",
      "//components/webauthn/android:jni_headers",
    ]
@@ -34,7 +42,7 @@ index f131e4b93f60674e0dd32c4fc4839e95c122e71d..1b948378047102063a2b7f4c0018d943
  }
  
  # TODO(crbug.com/1112471): Get this to run cleanly under Python 3.
-@@ -1969,6 +1973,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1969,6 +1974,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -42,7 +50,7 @@ index f131e4b93f60674e0dd32c4fc4839e95c122e71d..1b948378047102063a2b7f4c0018d943
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2359,6 +2364,7 @@ android_library("base_module_java") {
+@@ -2359,6 +2365,7 @@ android_library("base_module_java") {
      "//components/payments/content/android:service_java",
      "//third_party/androidx:androidx_browser_browser_java",
    ]

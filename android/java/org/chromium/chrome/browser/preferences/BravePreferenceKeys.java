@@ -21,4 +21,6 @@ public final class BravePreferenceKeys {
             "org.chromium.chrome.browser.downloads.Automatically_Open_When_Possible";
     public static final String BRAVE_DOUBLE_RESTART =
             "org.chromium.chrome.browser.Brave_Double_Restart";
+    public static final String BRAVE_TAB_GROUPS_ENABLED =
+            "org.chromium.chrome.browser.Brave_Tab_Groups_Enabled";
 }

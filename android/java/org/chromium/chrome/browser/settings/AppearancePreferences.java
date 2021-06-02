@@ -18,11 +18,13 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
+import org.chromium.chrome.browser.app.flags.ChromeCachedFlags;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -102,7 +104,7 @@ public class AppearancePreferences extends BravePreferenceFragment
         enableTabGroups.setOnPreferenceChangeListener(this);
         if (enableTabGroups instanceof ChromeSwitchPreference) {
             ((ChromeSwitchPreference) enableTabGroups)
-                    .setChecked(ChromeFeatureList.isEnabled(ChromeFeatureList.TAB_GROUPS_ANDROID));
+                    .setChecked(TabUiFeatureUtilities.isTabGroupsAndroidEnabled());
         }
     }
 
@@ -145,12 +147,14 @@ public class AppearancePreferences extends BravePreferenceFragment
                     BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
-            BraveFeatureList.enableFeature(
-                    BraveFeatureList.ENABLE_TAB_GROUPS, (boolean) newValue, false);
-            BraveFeatureList.enableFeature(
-                    BraveFeatureList.ENABLE_TAB_GRID, (boolean) newValue, false);
+            if ((boolean) newValue) {
+                // Revert these features to default values, we will not rely on them anymore.
+                BraveFeatureList.enableFeature(BraveFeatureList.ENABLE_TAB_GROUPS, false, true);
+                BraveFeatureList.enableFeature(BraveFeatureList.ENABLE_TAB_GRID, false, true);
+                ChromeCachedFlags.getInstance().cacheNativeFlags();
+            }
             SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_DOUBLE_RESTART, true);
+                    BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         }
 
