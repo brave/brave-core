@@ -186,7 +186,7 @@ void FtxGetAccountBalancesFunction::OnGetAccountBalances(
 ExtensionFunction::ResponseAction FtxIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   bool is_supported = ntp_widget_utils::IsRegionSupported(
-      profile->GetPrefs(), ::ftx::unsupported_regions, false);
+      profile->GetPrefs(), *(::ftx::unsupported_regions), false);
   return RespondNow(OneArgument(base::Value(is_supported)));
 }
 

@@ -132,7 +132,7 @@ bool BinanceService::GetAccessToken(GetAccessTokenCallback callback) {
 bool BinanceService::IsSupportedRegion() {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   bool is_supported = ntp_widget_utils::IsRegionSupported(
-      prefs, ::binance::unsupported_regions, false);
+      prefs, *(::binance::unsupported_regions), false);
   return is_supported;
 }
 

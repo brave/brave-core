@@ -9,11 +9,12 @@
 #include <string>
 #include <vector>
 
+#include "base/no_destructor.h"
+
 namespace brave_together {
 
 // Brave Together is supported for all :)
-const std::vector<std::string> unsupported_regions = {
-};
+const base::NoDestructor<std::vector<std::string>> unsupported_regions({});
 
 }  // namespace brave_together
 

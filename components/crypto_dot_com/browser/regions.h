@@ -9,13 +9,12 @@
 #include <string>
 #include <vector>
 
+#include "base/no_destructor.h"
+
 namespace crypto_dot_com {
 
-const std::vector<std::string> unsupported_regions = {
-  "JP", "DZ", "BD", "BO", "EC",
-  "EG", "ID", "MA", "NP", "PK",
-  "AE", "VN"
-};
+const base::NoDestructor<std::vector<std::string>> unsupported_regions(
+    {"JP", "DZ", "BD", "BO", "EC", "EG", "ID", "MA", "NP", "PK", "AE", "VN"});
 
 }  // namespace crypto_dot_com
 
