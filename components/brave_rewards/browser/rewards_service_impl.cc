@@ -1755,7 +1755,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
   std::string path = parsed_url.PathForRequest();
 #if BUILDFLAG(IPFS_ENABLED)
-  if (ipfs::IsIpfsEnabled(profile_) && parsed_url.SchemeIs(ipfs::kIPNSScheme)) {
+  if (ipfs::IsIpfsEnabled(profile_->GetPrefs()) && parsed_url.SchemeIs(ipfs::kIPNSScheme)) {
     std::string cid;
     if (!ipfs::ParseCIDAndPathFromIPFSUrl(parsed_url, &cid, &path) ||
         cid.empty())

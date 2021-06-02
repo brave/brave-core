@@ -18,7 +18,6 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/ipfs/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -51,6 +50,7 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ui/webui/ipfs_ui.h"
+#include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
 
@@ -70,14 +70,15 @@ typedef WebUIController* (*WebUIFactoryFunction)(WebUI* web_ui,
 
 WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
+  Profile* profile = Profile::FromBrowserContext(
+    web_ui->GetWebContents()->GetBrowserContext());
   if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
   } else if (host == kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
 #if BUILDFLAG(IPFS_ENABLED)
   } else if (host == kIPFSWebUIHost &&
-             ipfs::IsIpfsEnabled(
-                 web_ui->GetWebContents()->GetBrowserContext())) {
+             ipfs::IsIpfsEnabled(profile->GetPrefs())) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)

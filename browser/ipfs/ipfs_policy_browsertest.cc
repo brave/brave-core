@@ -93,15 +93,15 @@ using IpfsEnabledPolicyTest = IpfsPolicyTest<true>;
 using IpfsDisabledPolicyTest = IpfsPolicyTest<false>;
 
 IN_PROC_BROWSER_TEST_F(IpfsEnabledPolicyTest, IsIpfsDisabledByPolicy) {
-  EXPECT_FALSE(ipfs::IsIpfsDisabledByPolicy(browser_context()));
   auto* prefs = user_prefs::UserPrefs::Get(browser_context());
+  EXPECT_FALSE(ipfs::IsIpfsDisabledByPolicy(prefs));
   EXPECT_TRUE(prefs->FindPreference(kIPFSEnabled));
   EXPECT_TRUE(prefs->GetBoolean(kIPFSEnabled));
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, IsIpfsDisabledByPolicy) {
-  EXPECT_TRUE(ipfs::IsIpfsDisabledByPolicy(browser_context()));
   auto* prefs = user_prefs::UserPrefs::Get(browser_context());
+  EXPECT_TRUE(ipfs::IsIpfsDisabledByPolicy(prefs));
   EXPECT_TRUE(prefs->FindPreference(kIPFSEnabled));
   EXPECT_FALSE(prefs->GetBoolean(kIPFSEnabled));
 }

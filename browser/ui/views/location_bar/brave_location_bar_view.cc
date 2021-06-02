@@ -107,8 +107,8 @@ void BraveLocationBarView::Init() {
 bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
 #if BUILDFLAG(IPFS_ENABLED)
   const GURL& url = GetLocationBarModel()->GetURL();
-  if (!ipfs::IsIPFSScheme(url) || !ipfs::IsIpfsEnabled(profile_) ||
-      !ipfs::IsLocalGatewayConfigured(profile_))
+  if (!ipfs::IsIPFSScheme(url) || !ipfs::IsIpfsEnabled(profile_->GetPrefs()) ||
+      !ipfs::IsLocalGatewayConfigured(profile_->GetPrefs()))
     return false;
 
   return true;

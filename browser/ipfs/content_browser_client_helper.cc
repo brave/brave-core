@@ -36,8 +36,7 @@ namespace {
 constexpr char kIpfsLocalhost[] = ".ipfs.localhost";
 constexpr char kIpnsLocalhost[] = ".ipns.localhost";
 
-bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
+bool IsIPFSLocalGateway(PrefService* prefs) {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
   return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
@@ -62,10 +61,11 @@ bool HandleIPFSURLRewrite(
     *url = url->ReplaceComponents(host_replacements);
     return true;
   }
-  if (!IsIpfsResolveMethodDisabled(browser_context) &&
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
+  if (!IsIpfsResolveMethodDisabled(prefs) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
       // We instead will translate the URL later.
-      IsIPFSLocalGateway(browser_context) &&
+      IsIPFSLocalGateway(prefs) &&
       (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
     return TranslateIPFSURI(
         *url, url, GetDefaultIPFSLocalGateway(chrome::GetChannel()), false);
@@ -75,7 +75,7 @@ bool HandleIPFSURLRewrite(
     GURL::Replacements replacements;
     replacements.SetHostStr(kLocalhostDomain);
     if (IsDefaultGatewayURL(url->ReplaceComponents(replacements),
-                            browser_context)) {
+                            prefs)) {
       *url = url->ReplaceComponents(replacements);
       return true;
     }
@@ -109,7 +109,8 @@ bool HandleIPFSURLReverseRewrite(
     return false;
 
   GURL configured_gateway =
-      GetConfiguredBaseGateway(browser_context, chrome::GetChannel());
+      GetConfiguredBaseGateway(user_prefs::UserPrefs::Get(browser_context),
+                               chrome::GetChannel());
   if (configured_gateway.port() != url->port())
     return false;
   GURL::Replacements scheme_replacements;

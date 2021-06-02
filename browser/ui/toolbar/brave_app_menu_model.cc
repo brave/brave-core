@@ -306,7 +306,7 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
     case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FILE:
     case IDC_APP_MENU_IPFS:
     case IDC_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER:
-      return ipfs::IsIpfsMenuEnabled(browser_context) &&
+      return ipfs::IsIpfsMenuEnabled(browser()->profile()->GetPrefs()) &&
              IsIpfsServiceLaunched(browser_context);
   }
 #endif

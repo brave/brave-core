@@ -8,6 +8,9 @@
 #include <string>
 
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
 
 namespace ipfs {
@@ -15,14 +18,15 @@ namespace ipfs {
 int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (!ctx->browser_context ||
-      IsIpfsResolveMethodDisabled(ctx->browser_context)) {
+  auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context);
+  if (!ctx->browser_context || IsIpfsResolveMethodDisabled(prefs)) {
     return net::OK;
   }
 
   GURL new_url;
   if (ipfs::TranslateIPFSURI(ctx->request_url, &new_url, ctx->ipfs_gateway_url,
                              false)) {
+    
     // We only allow translating ipfs:// and ipns:// URIs if the initiator_url
     // is from the same Brave ipfs/ipns gateway.
     // For the local case, we don't want a normal site to be able to populate
@@ -32,8 +36,8 @@ int OnBeforeURLRequest_IPFSRedirectWork(
     // the same as the local case.
     if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame ||
         (IsLocalGatewayURL(new_url) && IsLocalGatewayURL(ctx->initiator_url)) ||
-        (IsDefaultGatewayURL(new_url, ctx->browser_context) &&
-         IsDefaultGatewayURL(ctx->initiator_url, ctx->browser_context))) {
+        (IsDefaultGatewayURL(new_url, prefs) &&
+         IsDefaultGatewayURL(ctx->initiator_url, prefs))) {
       ctx->new_url_spec = new_url.spec();
     } else {
       ctx->blocked_by = brave::kOtherBlocked;
@@ -48,8 +52,8 @@ int OnHeadersReceived_IPFSRedirectWork(
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (!ctx->browser_context ||
-      IsIpfsResolveMethodDisabled(ctx->browser_context)) {
+  auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context);
+  if (!ctx->browser_context || IsIpfsResolveMethodDisabled(prefs)) {
     return net::OK;
   }
 

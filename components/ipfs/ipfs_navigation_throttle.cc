@@ -228,7 +228,7 @@ void IpfsNavigationThrottle::LoadPublicGatewayURL() {
     return;
 
   const GURL url = ToPublicGatewayURL(navigation_handle()->GetURL(),
-                                      web_contents->GetBrowserContext());
+                                      pref_service_);
   if (url.is_empty())
     return;
 

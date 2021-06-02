@@ -253,9 +253,8 @@ void IPFSTabHelper::MaybeShowDNSLinkButton(content::NavigationHandle* handle) {
 void IPFSTabHelper::MaybeSetupIpfsProtocolHandlers(const GURL& url) {
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       pref_service_->GetInteger(kIPFSResolveMethod));
-  auto* browser_context = web_contents()->GetBrowserContext();
   if (resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_ASK &&
-      IsDefaultGatewayURL(url, browser_context)) {
+      IsDefaultGatewayURL(url, pref_service_)) {
     auto infobar_count = pref_service_->GetInteger(kIPFSInfobarCount);
     if (!infobar_count) {
       pref_service_->SetInteger(kIPFSInfobarCount, infobar_count + 1);

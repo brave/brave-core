@@ -32,6 +32,7 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "components/user_prefs/user_prefs.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -93,7 +94,7 @@ void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
 
 #if BUILDFLAG(IPFS_ENABLED)
   // Remove ipfs executable if it is disabled by GPO.
-  if (ipfs::IsIpfsDisabledByPolicy(context))
+  if (ipfs::IsIpfsDisabledByPolicy(user_prefs::UserPrefs::Get(context)))
     g_brave_browser_process->ipfs_client_updater()->Cleanup();
 #endif
 }

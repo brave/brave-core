@@ -208,8 +208,8 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
   gateway_url = gateway_url.ReplaceComponents(replacements);
 
   ASSERT_EQ(
-      ipfs::GetConfiguredBaseGateway(browser_context(), chrome::GetChannel()),
-      gateway_url);
+      ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                     chrome::GetChannel()), gateway_url);
 
   std::string source = "http://test.com.ipns.localhost:8000/";
   GURL ipns_uri(source);
@@ -225,7 +225,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
-  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(browser_context(),
+  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                            version_info::Channel::UNKNOWN),
             GURL("https://dweb.link/"));
 
@@ -241,7 +241,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
 
   profile()->GetPrefs()->SetString(kIPFSPublicGatewayAddress,
                                    "http://localhost:8080");
-  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(browser_context(),
+  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                            version_info::Channel::UNKNOWN),
             GURL("http://localhost:8080"));
 

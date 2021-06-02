@@ -13,6 +13,7 @@
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/user_prefs/user_prefs.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -32,7 +33,8 @@ IpfsServiceFactory* IpfsServiceFactory::GetInstance() {
 // static
 IpfsService* IpfsServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  if (!brave::IsRegularProfile(context) || !IsIpfsEnabled(context))
+  auto* prefs = user_prefs::UserPrefs::Get(context);
+  if (!brave::IsRegularProfile(context) || !IsIpfsEnabled(prefs))
     return nullptr;
 
   return static_cast<IpfsService*>(

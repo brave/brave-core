@@ -18,8 +18,6 @@
 #include "brave/components/ipfs/pref_names.h"
 #include "components/base32/base32.h"
 #include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -89,36 +87,38 @@ bool IsValidCID(const std::string& cid) {
   return base::StartsWith(cid, kCIDv0Prefix);
 }
 
-bool IsIpfsDisabledByPolicy(content::BrowserContext* context) {
-  DCHECK(context);
-  PrefService* prefs = user_prefs::UserPrefs::Get(context);
-  return prefs->FindPreference(kIPFSEnabled) &&
-         prefs->IsManagedPreference(kIPFSEnabled) &&
-         !prefs->GetBoolean(kIPFSEnabled);
-}
-
-bool IsIpfsEnabled(content::BrowserContext* context) {
-  DCHECK(context);
-  if (context->IsOffTheRecord() || IsIpfsDisabledByPolicy(context) ||
-      !base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
-    return false;
-  }
-
-  return true;
-}
-
-bool IsIpfsResolveMethodDisabled(content::BrowserContext* context) {
-  DCHECK(context);
+bool IsIpfsResolveMethodDisabled(PrefService* prefs) {
+  DCHECK(prefs);
 
   // Ignore the actual pref value if IPFS feature is disabled.
-  if (!IsIpfsEnabled(context)) {
+  if (!IsIpfsEnabled(prefs)) {
     return true;
   }
 
-  PrefService* prefs = user_prefs::UserPrefs::Get(context);
   return prefs->FindPreference(kIPFSResolveMethod) &&
          prefs->GetInteger(kIPFSResolveMethod) ==
              static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
+}
+
+bool IsIpfsMenuEnabled(PrefService* prefs) {
+  return ipfs::IsIpfsEnabled(prefs) &&
+         ipfs::IsLocalGatewayConfigured(prefs);
+}
+
+bool IsIpfsEnabled(PrefService* prefs) {
+  DCHECK(prefs);
+  if (IsIpfsDisabledByPolicy(prefs) ||
+      !base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    return false;
+  }
+  return true;
+}
+
+bool IsIpfsDisabledByPolicy(PrefService* prefs) {
+  DCHECK(prefs);
+  return prefs->FindPreference(kIPFSEnabled) &&
+         prefs->IsManagedPreference(kIPFSEnabled) &&
+         !prefs->GetBoolean(kIPFSEnabled);
 }
 
 bool HasIPFSPath(const GURL& gurl) {
@@ -130,9 +130,9 @@ bool HasIPFSPath(const GURL& gurl) {
       [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 
-bool IsDefaultGatewayURL(const GURL& url, content::BrowserContext* context) {
-  DCHECK(context);
-  std::string gateway_host = GetDefaultIPFSGateway(context).host();
+bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {
+  DCHECK(prefs);
+  std::string gateway_host = GetDefaultIPFSGateway(prefs).host();
   return url.DomainIs(gateway_host) &&
          (HasIPFSPath(url) ||
           url.DomainIs(std::string("ipfs.") + gateway_host) ||
@@ -162,14 +162,14 @@ bool IsIPFSScheme(const GURL& url) {
   return url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
 }
 
-GURL ToPublicGatewayURL(const GURL& url, content::BrowserContext* context) {
-  DCHECK(context);
+GURL ToPublicGatewayURL(const GURL& url, PrefService* prefs) {
+  DCHECK(prefs);
   DCHECK(IsIPFSScheme(url) || IsLocalGatewayURL(url));
   GURL new_url;
-
+  GURL gateway_url = GetDefaultIPFSGateway(prefs);
   // For ipfs/ipns schemes, use TranslateIPFSURI directly.
   if (IsIPFSScheme(url) &&
-      TranslateIPFSURI(url, &new_url, GetDefaultIPFSGateway(context), false)) {
+      TranslateIPFSURI(url, &new_url, gateway_url, false)) {
     return new_url;
   }
 
@@ -177,7 +177,6 @@ GURL ToPublicGatewayURL(const GURL& url, content::BrowserContext* context) {
   // public gateway URL.
   if (IsLocalGatewayURL(url)) {
     GURL::Replacements replacements;
-    GURL gateway_url = GetDefaultIPFSGateway(context);
     replacements.ClearPort();
     replacements.SetSchemeStr(gateway_url.scheme_piece());
     replacements.SetHostStr(gateway_url.host_piece());
@@ -212,26 +211,25 @@ GURL GetIPNSGatewayURL(const std::string& cid,
   return GetGatewayURL(cid, path, base_gateway_url, false);
 }
 
-bool IsLocalGatewayConfigured(content::BrowserContext* context) {
-  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+bool IsLocalGatewayConfigured(PrefService* prefs) {
   return static_cast<IPFSResolveMethodTypes>(prefs->GetInteger(
              kIPFSResolveMethod)) == IPFSResolveMethodTypes::IPFS_LOCAL;
 }
 
-GURL GetConfiguredBaseGateway(content::BrowserContext* context,
+GURL GetConfiguredBaseGateway(PrefService* prefs,
                               version_info::Channel channel) {
-  return IsLocalGatewayConfigured(context)
+  return IsLocalGatewayConfigured(prefs)
              ? ::ipfs::GetDefaultIPFSLocalGateway(channel)
-             : ::ipfs::GetDefaultIPFSGateway(context);
+             : ::ipfs::GetDefaultIPFSGateway(prefs);
 }
 
-bool ResolveIPFSURI(content::BrowserContext* context,
+bool ResolveIPFSURI(PrefService* prefs,
                     version_info::Channel channel,
                     const GURL& ipfs_uri,
                     GURL* resolved_url) {
   CHECK(resolved_url);
   return ::ipfs::TranslateIPFSURI(
-      ipfs_uri, resolved_url, GetConfiguredBaseGateway(context, channel), true);
+      ipfs_uri, resolved_url, GetConfiguredBaseGateway(prefs, channel), true);
 }
 
 GURL ipfs_default_gateway_for_test;
@@ -244,13 +242,12 @@ GURL GetDefaultIPFSLocalGateway(version_info::Channel channel) {
   return AppendLocalPort(GetGatewayPort(channel));
 }
 
-GURL GetDefaultIPFSGateway(content::BrowserContext* context) {
+GURL GetDefaultIPFSGateway(PrefService* prefs) {
   if (!ipfs_default_gateway_for_test.is_empty()) {
     return GURL(ipfs_default_gateway_for_test);
   }
 
-  DCHECK(context);
-  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  DCHECK(prefs);
   GURL gateway_url(prefs->GetString(kIPFSPublicGatewayAddress));
   if (gateway_url.DomainIs(kLocalhostIP)) {
     GURL::Replacements replacements;
@@ -342,11 +339,6 @@ GURL ResolveWebUIFilesLocation(const std::string& directory,
   std::string webui_files_ref = std::string("/files") + directory;
   replacements.SetRefStr(webui_files_ref);
   return url.ReplaceComponents(replacements);
-}
-
-bool IsIpfsMenuEnabled(content::BrowserContext* browser_context) {
-  return ipfs::IsIpfsEnabled(browser_context) &&
-         ipfs::IsLocalGatewayConfigured(browser_context);
 }
 
 // Extracts Address and PeerID from peer connection strings like:
