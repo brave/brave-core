@@ -111,6 +111,18 @@ bool IsDefaultGatewayURL(const GURL& url, content::BrowserContext* context) {
           url.DomainIs(std::string("ipns.") + gateway_host));
 }
 
+bool IsAPIGateway(const GURL& url, version_info::Channel channel) {
+  if (!url.is_valid())
+    return false;
+  auto api_origin = ipfs::GetAPIServer(channel).GetOrigin();
+  if (api_origin == url)
+    return true;
+  if (net::IsLocalhost(api_origin) && net::IsLocalhost(url)) {
+    return api_origin.port() == url.port();
+  }
+  return false;
+}
+
 bool IsLocalGatewayURL(const GURL& url) {
   return url.SchemeIsHTTPOrHTTPS() &&
          ((net::IsLocalhost(url) && HasIPFSPath(url)) ||
