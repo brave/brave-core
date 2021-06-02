@@ -91,19 +91,6 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     if (secure_dns_config.mode() == net::SecureDnsMode::kSecure)
       optional_parameters->source = net::HostResolverSource::DNS;
 
-    auto* web_contents =
-        content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
-    if (!web_contents) {
-      start_time_ = base::TimeTicks::Now();
-      this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(), base::nullopt);
-      return;
-    }
-
-    network::mojom::NetworkContext* network_context =
-        content::BrowserContext::GetDefaultStoragePartition(
-            web_contents->GetBrowserContext())
-            ->GetNetworkContext();
-
     start_time_ = base::TimeTicks::Now();
 
     if (g_testing_host_resolver) {
@@ -111,6 +98,20 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
           net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
           std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
     } else {
+      auto* web_contents =
+          content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
+      if (!web_contents) {
+        start_time_ = base::TimeTicks::Now();
+        this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(),
+                         base::nullopt);
+        return;
+      }
+
+      network::mojom::NetworkContext* network_context =
+          content::BrowserContext::GetDefaultStoragePartition(
+              web_contents->GetBrowserContext())
+              ->GetNetworkContext();
+
       network_context->ResolveHost(
           net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
           std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
@@ -237,14 +238,12 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
-  DCHECK(ctx->browser_context);
-
   // DoH or standard DNS queries won't be routed through Tor, so we need to
   // skip it.
   bool should_check_uncloaked =
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCnameUncloaking) &&
-      !ctx->browser_context->IsTor();
+      ctx->browser_context && !ctx->browser_context->IsTor();
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,

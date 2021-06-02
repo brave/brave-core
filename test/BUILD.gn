@@ -29,6 +29,21 @@ if (is_android) {
   import("//chrome/android/chrome_public_apk_tmpl.gni")
 }
 
+static_library("test_support") {
+  testonly = true
+  sources = [
+    "//brave/test/base/testing_brave_browser_process.cc",
+    "//brave/test/base/testing_brave_browser_process.h",
+  ]
+
+  deps = [
+    "//brave/browser",
+    "//brave/components/brave_shields/browser",
+    "//brave/components/ipfs/buildflags",
+    "//brave/components/tor/buildflags",
+  ]
+}
+
 static_library("brave_test_support_unit") {
   testonly = true
 
@@ -50,6 +65,7 @@ static_library("brave_test_support_unit") {
   ]
 
   deps = [
+    ":test_support",
     "//brave/browser/profiles",
     "//brave/common:pref_names",
     "//components/gcm_driver",
@@ -122,6 +138,7 @@ test("brave_unit_tests") {
   defines = brave_service_key_defines
 
   deps = [
+    ":test_support",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources_grit",
     "//brave/base:base_unittests",
@@ -160,6 +177,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/child_process_monitor:unittests",
+    "//brave/components/ipfs/buildflags",
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",

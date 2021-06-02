@@ -22,6 +22,7 @@
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 class AdBlockServiceTest;
+class BraveAdBlockTPNetworkDelegateHelperTest;
 
 using brave_component_updater::BraveComponent;
 namespace adblock {
@@ -64,6 +65,8 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
  protected:
   friend class ::AdBlockServiceTest;
+  friend class ::BraveAdBlockTPNetworkDelegateHelperTest;
+
   bool Init() override;
 
   void GetDATFileData(const base::FilePath& dat_file_path);
