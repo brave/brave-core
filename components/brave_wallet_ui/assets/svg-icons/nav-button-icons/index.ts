@@ -9,6 +9,7 @@ import PuzzleIconD from './puzzle-icon-d.svg'
 import LockIconL from './lock-icon-l.svg'
 import LockIconD from './lock-icon-d.svg'
 import GeminiIcon from './gemini-icon.svg'
+import SafeIcon from './safe-icon.svg'
 
 export {
   WalletIconL,
@@ -21,5 +22,6 @@ export {
   PuzzleIconD,
   LockIconL,
   LockIconD,
-  GeminiIcon
+  GeminiIcon,
+  SafeIcon
 }

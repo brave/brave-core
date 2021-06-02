@@ -32,6 +32,7 @@ import {
 import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../components/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
+import BackupWallet from '../stories/screens/backup-wallet'
 
 type Props = {
   wallet: WalletState
@@ -52,7 +53,14 @@ function Container (props: Props) {
 
   // recoveryVerified Prop will be used in a future PR.
   const completeWalletSetup = (recoveryVerified: boolean) => {
+    if (recoveryVerified) {
+      props.walletPageActions.walletBackupComplete()
+    }
     props.walletPageActions.walletSetupComplete()
+  }
+
+  const onBackupWallet = () => {
+    props.walletPageActions.walletBackupComplete()
   }
 
   const passwordProvided = (password: string) => {
@@ -65,6 +73,14 @@ function Container (props: Props) {
 
   const lockWallet = () => {
     props.walletActions.lockWallet()
+  }
+
+  const onShowBackup = () => {
+    props.walletPageActions.showRecoveryPhrase(true)
+  }
+
+  const onHideBackup = () => {
+    props.walletPageActions.showRecoveryPhrase(false)
   }
 
   const handlePasswordChanged = (value: string) => {
@@ -94,10 +110,29 @@ function Container (props: Props) {
       <WalletSubViewLayout>
         {view === 'crypto' ? (
           <>
-            { props.wallet.isWalletLocked ? (
-              <LockScreen onSubmit={unlockWallet} disabled={inputValue === ''} onPasswordChanged={handlePasswordChanged} />
+            {props.wallet.isWalletLocked ? (
+              <LockScreen
+                onSubmit={unlockWallet}
+                disabled={inputValue === ''}
+                onPasswordChanged={handlePasswordChanged}
+              />
             ) : (
-              <CryptoView onLockWallet={lockWallet} />
+              <>
+                {props.page.showRecoveryPhrase ? (
+                  <BackupWallet
+                    isOnboarding={false}
+                    onCancel={onHideBackup}
+                    onSubmit={onBackupWallet}
+                    recoveryPhrase={recoveryPhrase}
+                  />
+                ) : (
+                  <CryptoView
+                    onLockWallet={lockWallet}
+                    needsBackup={!props.wallet.isWalletBackedUp}
+                    onShowBackup={onShowBackup}
+                  />
+                )}
+              </>
             )}
           </>
         ) : (

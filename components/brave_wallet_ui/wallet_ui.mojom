@@ -33,6 +33,7 @@ interface PanelHandler {
 interface PageHandler {
   // Create a wallet via the Keyring controller
   CreateWallet(string password) => (string mnemonic);
+  GetRecoveryWords() => (string mnemonic);
 };
 
 struct AppItem {
@@ -45,11 +46,13 @@ struct AppItem {
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
-                      array<AppItem> favoriteApps, array<string> accounts);
+                      array<AppItem> favoriteApps,
+                      bool isWalletBackedUp, array<string> accounts);
   LockWallet();
   UnlockWallet(string password) => (bool isWalletUnlocked);
   AddFavoriteApp(AppItem appItem);
   RemoveFavoriteApp(AppItem appItem);
+  NotifyWalletBackupComplete();
 };
 
 // WebUI-side handler for requests from the browser.

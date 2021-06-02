@@ -15,3 +15,4 @@ const char kBraveWalletDefaultKeyringAccountNum[] =
     "brave.wallet.default_keyring_account_num";
 const char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
+const char kBraveWalletBackupComplete[] = "brave.wallet.wallet_backup_complete";

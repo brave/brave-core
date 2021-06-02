@@ -1,6 +1,6 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// License, v. 2.0. If a copy of the MPL was not distributed with this file, //
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
@@ -40,9 +40,8 @@ WalletHandler::~WalletHandler() = default;
 void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   auto* profile = Profile::FromWebUI(web_ui_);
   std::vector<std::string> accounts;
-  auto* keyring_controller =
-      GetBraveWalletService(profile)->keyring_controller();
-
+  auto* service = GetBraveWalletService(profile);
+  auto* keyring_controller = service->keyring_controller();
   auto* default_keyring = keyring_controller->GetDefaultKeyring();
   if (default_keyring) {
     accounts = default_keyring->GetAccounts();
@@ -56,7 +55,8 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
           -> wallet_ui::mojom::AppItemPtr { return favorite_app.Clone(); });
   std::move(callback).Run(keyring_controller->IsDefaultKeyringCreated(),
                           keyring_controller->IsLocked(),
-                          std::move(favorite_apps_copy), accounts);
+                          std::move(favorite_apps_copy),
+                          service->IsWalletBackedUp(), accounts);
 }
 
 void WalletHandler::LockWallet() {
@@ -86,4 +86,10 @@ void WalletHandler::RemoveFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) {
                 [&app_item](const wallet_ui::mojom::AppItemPtr& it) -> bool {
                   return it->name == app_item->name;
                 }));
+}
+
+void WalletHandler::NotifyWalletBackupComplete() {
+  auto* profile = Profile::FromWebUI(web_ui_);
+  auto* service = GetBraveWalletService(profile);
+  service->NotifyWalletBackupComplete();
 }

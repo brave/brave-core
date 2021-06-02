@@ -51,6 +51,14 @@ void WalletPageHandler::CreateWallet(const std::string& password,
   std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
 }
 
+void WalletPageHandler::GetRecoveryWords(GetRecoveryWordsCallback callback) {
+  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
+  auto* keyring_controller =
+      GetBraveWalletService(browser_context)->keyring_controller();
+  keyring_controller->GetMnemonicForDefaultKeyring();
+  std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
+}
+
 void WalletPageHandler::OnVisibilityChanged(content::Visibility visibility) {
   webui_hidden_ = visibility == content::Visibility::HIDDEN;
 }
