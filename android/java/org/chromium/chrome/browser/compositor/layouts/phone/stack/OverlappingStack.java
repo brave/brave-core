@@ -243,7 +243,7 @@ public class OverlappingStack extends Stack {
                     float t = (tab1ScreenBefore == tab0ScreenBefore)
                             ? 1
                             : ((screenBefore - tab0ScreenBefore)
-                                      / (tab1ScreenBefore - tab0ScreenBefore));
+                                    / (tab1ScreenBefore - tab0ScreenBefore));
                     float screenAfter = (1 - t) * tab0ScreenAfter + t * tab1ScreenAfter;
                     screenAfter = Math.max(minScreen, screenAfter);
                     screenAfter = Math.min(maxScreen, screenAfter);
@@ -447,8 +447,8 @@ public class OverlappingStack extends Stack {
                 float clipScale = 1.0f;
                 if (layoutTab.getTiltX() > 0
                         || ((!portrait && LocalizationUtils.isLayoutRtl())
-                                           ? layoutTab.getTiltY() < 0
-                                           : layoutTab.getTiltY() > 0)) {
+                                        ? layoutTab.getTiltY() < 0
+                                        : layoutTab.getTiltY() > 0)) {
                     final float tilt =
                             Math.max(layoutTab.getTiltX(), Math.abs(layoutTab.getTiltY()));
                     clipScale += (tilt / mMaxOverScrollAngle) * 0.60f;
