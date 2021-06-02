@@ -44,6 +44,15 @@ TEST(BraveWalletUtilsUnitTest, PadHexEncodedParameter) {
   ASSERT_EQ(
       out,
       "0x0000000000000000000000004e02f254184E904300e0775E4b8eeCB14a1b29f0");
+
+  // Corner case: 62
+  ASSERT_TRUE(PadHexEncodedParameter(
+      "0x11111111112222222222333333333344444444445555555555666666666600",
+      &out));
+  ASSERT_EQ(
+      out,
+      "0x0011111111112222222222333333333344444444445555555555666666666600");
+
   ASSERT_TRUE(PadHexEncodedParameter("0x0", &out));
   ASSERT_EQ(
       out,
@@ -58,6 +67,7 @@ TEST(BraveWalletUtilsUnitTest, IsValidHexString) {
   ASSERT_TRUE(IsValidHexString("0x0"));
   ASSERT_TRUE(IsValidHexString("0x4e02f254184E904300e0775E4b8eeCB14a1b29f0"));
   ASSERT_FALSE(IsValidHexString("0x"));
+  ASSERT_FALSE(IsValidHexString("0xZ"));
   ASSERT_FALSE(IsValidHexString("123"));
   ASSERT_FALSE(IsValidHexString("0"));
   ASSERT_FALSE(IsValidHexString(""));
