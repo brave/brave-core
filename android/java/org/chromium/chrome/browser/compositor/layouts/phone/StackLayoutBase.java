@@ -755,14 +755,12 @@ public abstract class StackLayoutBase extends Layout {
     /**
      * Called when layout-specific actions are needed after the animation finishes.
      */
-    protected void onAnimationStarted() {
-    }
+    protected void onAnimationStarted() {}
 
     /**
      * Called when layout-specific actions are needed after the animation finishes.
      */
-    protected void onAnimationFinished() {
-    }
+    protected void onAnimationFinished() {}
 
     /**
      * Called when a UI element is attempting to select a tab.  This will perform the animation
@@ -821,8 +819,8 @@ public abstract class StackLayoutBase extends Layout {
         // (this is the last tab), the tab closure cannot be undone.
         canUndo &= !(HomepageManager.shouldCloseAppWithZeroTabs()
                 && (mTabModelSelector.getModel(true).getCount()
-                                   + mTabModelSelector.getModel(false).getCount()
-                           < 2));
+                                + mTabModelSelector.getModel(false).getCount()
+                        < 2));
 
         // Propagate the tab closure to the model.
         TabModelUtils.closeTabById(mTabModelSelector.getModel(incognito), id, canUndo);
