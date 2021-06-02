@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 9f3de13de1a1ce59af991c432822cc7cece5bdc6..2d21536fdcd5b6a4cf4a56b6f3c89ed30e279ec8 100644
+index 9f3de13de1a1ce59af991c432822cc7cece5bdc6..ff0470e80e26cd048a9ca735a672a162f58c4290 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -244,6 +244,7 @@ android_resources("chrome_app_java_resources") {
@@ -26,7 +26,7 @@ index 9f3de13de1a1ce59af991c432822cc7cece5bdc6..2d21536fdcd5b6a4cf4a56b6f3c89ed3
  
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -696,6 +699,7 @@ java_group("chrome_all_java") {
+@@ -726,6 +729,7 @@ java_group("chrome_all_java") {
        "//chrome/android/features/tab_ui:module_desc_java",
      ]
    }

@@ -1,8 +1,8 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index bbcab809474e0885b92c339e0e4bb9af2e1a92a4..00398c95971fc35534d03ba2e8c68b1c34f58c04 100644
+index b013fd695b27050956da5b67a7c873ef444ae92a..502d34fe8386c7ac06a6afd7650a44879a85575b 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -1016,6 +1016,7 @@ if (!is_android) {
+@@ -1017,6 +1017,7 @@ if (!is_android) {
        "//v8",
      ]
  
