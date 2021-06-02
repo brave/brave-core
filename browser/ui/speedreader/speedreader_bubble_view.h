@@ -6,12 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_SPEEDREADER_SPEEDREADER_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_SPEEDREADER_SPEEDREADER_BUBBLE_VIEW_H_
 
-#include "ui/views/controls/styled_label.h"
-
-namespace views {
-class View;
-}  // namespace views
-
 namespace speedreader {
 
 // Interface to display a Speedreader info bubble.

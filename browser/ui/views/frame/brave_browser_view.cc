@@ -232,7 +232,7 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
     speedreader::SpeedreaderTabHelper* tab_helper,
     bool is_enabled) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader::SpeedreaderBubbleView* bubble;
+  speedreader::SpeedreaderBubbleView* bubble = nullptr;
   if (is_enabled) {
     auto* global_bubble = new speedreader::SpeedreaderBubbleGlobal(
         GetLocationBarView(), contents, tab_helper);

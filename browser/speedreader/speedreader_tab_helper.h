@@ -34,7 +34,7 @@ class SpeedreaderTabHelper
 
   bool IsSpeedreaderEnabled() const;
 
-  // returns nullptr if no bubble corruntly shown
+  // returns nullptr if no bubble currently shown
   SpeedreaderBubbleView* speedreader_bubble_view() const;
 
   // Displays speedreader information

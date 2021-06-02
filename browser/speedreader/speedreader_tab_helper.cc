@@ -28,7 +28,9 @@ SpeedreaderTabHelper* SpeedreaderTabHelper::Get(
   return tab_helper;
 }
 
-SpeedreaderTabHelper::~SpeedreaderTabHelper() = default;
+SpeedreaderTabHelper::~SpeedreaderTabHelper() {
+  HideBubble();
+}
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents) {}
