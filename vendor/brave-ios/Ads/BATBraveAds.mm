@@ -269,9 +269,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       for (NSNumber* number in wallet.recoverySeed) {
         seed.push_back(static_cast<uint8_t>(number.unsignedCharValue));
       }
-      ads->OnWalletUpdated(wallet.paymentId.UTF8String,
-                           base::Base64Encode(seed));
-      ads->Initialize(^(bool) {
+      self->ads->OnWalletUpdated(wallet.paymentId.UTF8String,
+                                 base::Base64Encode(seed));
+      self->ads->Initialize(^(bool) {
         [self periodicallyCheckForAdsResourceUpdates];
         [self registerAdsResources];
       });
@@ -297,22 +297,22 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if ([self isAdsServiceRunning]) {
     dispatch_group_notify(self.prefsWriteGroup, dispatch_get_main_queue(), ^{
       self->ads->Shutdown(^(bool) {
-        if (ads != nil) {
-          delete ads;
+        if (self->ads != nil) {
+          delete self->ads;
         }
-        if (adsClient != nil) {
-          delete adsClient;
+        if (self->adsClient != nil) {
+          delete self->adsClient;
         }
-        if (adsDatabase != nil) {
-          delete adsDatabase;
+        if (self->adsDatabase != nil) {
+          delete self->adsDatabase;
         }
-        if (adEventHistory != nil) {
-          delete adEventHistory;
+        if (self->adEventHistory != nil) {
+          delete self->adEventHistory;
         }
-        ads = nil;
-        adsClient = nil;
-        adsDatabase = nil;
-        adEventHistory = nil;
+        self->ads = nil;
+        self->adsClient = nil;
+        self->adsDatabase = nil;
+        self->adEventHistory = nil;
         if (completion) {
           completion();
         }
