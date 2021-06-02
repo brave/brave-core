@@ -10,7 +10,9 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "content/public/browser/navigation_throttle.h"
-#include "extensions/browser/test_extension_registry_observer.h"
+#include "extensions/browser/extension_registry.h"
+#include "extensions/browser/extension_registry_observer.h"
+#include "url/gurl.h"
 
 namespace content {
 class NavigationHandle;
