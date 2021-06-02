@@ -240,7 +240,7 @@ if (brave_rewards_enabled || enable_brave_referrals) {
 }
 
 if (enable_brave_referrals) {
-  brave_java_sources += [ "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java", ]
+  brave_java_sources += [ "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
 }
 
 if (brave_ads_enabled) {

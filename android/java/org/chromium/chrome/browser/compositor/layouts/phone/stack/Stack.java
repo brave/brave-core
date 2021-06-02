@@ -911,10 +911,10 @@ public abstract class Stack {
     private void scroll(float x, float y, float amountX, float amountY, boolean isTilt) {
         if ((!mScroller.isFinished() && isTilt) || mStackTabs == null
                 || (mOverviewAnimationType != OverviewAnimationType.NONE
-                           && mOverviewAnimationType != OverviewAnimationType.DISCARD
-                           && mOverviewAnimationType != OverviewAnimationType.UNDISCARD
-                           && mOverviewAnimationType != OverviewAnimationType.DISCARD_ALL
-                           && mOverviewAnimationType != OverviewAnimationType.ENTER_STACK)) {
+                        && mOverviewAnimationType != OverviewAnimationType.DISCARD
+                        && mOverviewAnimationType != OverviewAnimationType.UNDISCARD
+                        && mOverviewAnimationType != OverviewAnimationType.DISCARD_ALL
+                        && mOverviewAnimationType != OverviewAnimationType.ENTER_STACK)) {
             return;
         }
 
@@ -951,7 +951,7 @@ public abstract class Stack {
             // sure the end value is not too far from the linear case.
             amountScroll = Math.signum(amountScreen)
                     * MathUtils.clamp(Math.abs(amountScroll), Math.abs(amountScreen) * 0.5f,
-                              Math.abs(amountScreen) * 2.0f);
+                            Math.abs(amountScreen) * 2.0f);
         }
 
         // Evens out the tabs and correct the scroll amount if needed.
