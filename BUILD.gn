@@ -450,7 +450,6 @@ if (is_mac) {
     args = [
       "--brave_channel=" + brave_channel,
       "--brave_product_dir_name=" + brave_product_dir_name,
-      "--brave_feed_url=" + brave_feed_url,
       "--brave_version=" + brave_version,
       "--brave_eddsa_key=" + sparkle_eddsa_public_key,
     ]
