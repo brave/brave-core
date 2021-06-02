@@ -371,16 +371,5 @@ uint64_t State::GetPromotionLastFetchStamp() {
   return ledger_->ledger_client()->GetUint64State(kPromotionLastFetchStamp);
 }
 
-void State::SetAnonTransferChecked(const bool checked) {
-  ledger_->database()->SaveEventLog(
-      kAnonTransferChecked,
-      std::to_string(checked));
-  ledger_->ledger_client()->SetBooleanState(kAnonTransferChecked, checked);
-}
-
-bool State::GetAnonTransferChecked() {
-  return ledger_->ledger_client()->GetBooleanState(kAnonTransferChecked);
-}
-
 }  // namespace state
 }  // namespace ledger

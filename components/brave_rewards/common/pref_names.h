@@ -28,7 +28,7 @@ extern const char kServerPublisherListStamp[];
 extern const char kUpholdAnonAddress[];  // DEPRECATED
 extern const char kPromotionLastFetchStamp[];
 extern const char kPromotionCorruptedMigrated[];
-extern const char kAnonTransferChecked[];
+extern const char kAnonTransferChecked[];  // DEPRECATED
 extern const char kVersion[];
 extern const char kMinVisitTime[];
 extern const char kMinVisits[];

@@ -154,11 +154,6 @@ void UpholdAuthorization::OnAuthorize(
       break;
   }
 
-  // After a login, we want to attempt to relink the user's payment ID to their
-  // Uphold wallet address. Clear the flag that will cause relinking to be
-  // skipped.
-  ledger_->state()->SetAnonTransferChecked(false);
-
   ledger_->uphold()->SetWallet(wallet_ptr->Clone());
 
   auto user_callback = std::bind(&UpholdAuthorization::OnGetUser,
