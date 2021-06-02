@@ -442,6 +442,8 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/exclusion_rules/transferred_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/transferred_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/frequency_capping_aliases.h",
+    "src/bat/ads/internal/frequency_capping/frequency_capping_features.cc",
+    "src/bat/ads/internal/frequency_capping/frequency_capping_features.h",
     "src/bat/ads/internal/frequency_capping/frequency_capping_util.cc",
     "src/bat/ads/internal/frequency_capping/frequency_capping_util.h",
     "src/bat/ads/internal/frequency_capping/new_tab_page_ads/new_tab_page_ads_frequency_capping.cc",

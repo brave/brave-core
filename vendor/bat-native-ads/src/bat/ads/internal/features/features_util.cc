@@ -6,6 +6,7 @@
 #include "bat/ads/internal/features/features_util.h"
 
 #include "base/optional.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -37,6 +38,12 @@ base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
   base::Optional<base::TimeDelta> time_delta =
       base::TimeDelta::FromString(value_as_string);
   if (!time_delta.has_value()) {
+    BLOG(1, "Failed to parse field trial param "
+                << param_name << " with string value " << value_as_string
+                << " under feature " << feature.name
+                << " into a base::TimeDelta. Falling back to default value of "
+                << default_value);
+
     return default_value;
   }
 

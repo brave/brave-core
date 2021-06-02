@@ -9,8 +9,8 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/ads_history/sorts/ads_history_sort_factory.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 
 namespace ads {
 
@@ -50,7 +50,7 @@ bool DismissedFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
 
   if (count >= 2) {
     // An ad was dismissed two or more times in a row without being clicked, so
-    // do not show another ad from the same campaign for 48 hours
+    // do not show another ad from the same campaign for the specified hours
     return false;
   }
 
@@ -60,16 +60,17 @@ bool DismissedFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
 AdEventList DismissedFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events,
     const CreativeAdInfo& ad) const {
-  const int64_t time_constraint =
-      2 * base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
-
   const int64_t now = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+
+  const int64_t time_constraint =
+      features::frequency_capping::ExcludeAdIfDismissedWithinTimeWindow()
+          .InSeconds();
 
   AdEventList filtered_ad_events = ad_events;
 
   const auto iter =
       std::remove_if(filtered_ad_events.begin(), filtered_ad_events.end(),
-                     [&ad, now](const AdEventInfo& ad_event) {
+                     [&ad, now, time_constraint](const AdEventInfo& ad_event) {
                        return ad_event.type != AdType::kAdNotification ||
                               ad_event.campaign_id != ad.campaign_id ||
                               now - ad_event.timestamp >= time_constraint;
