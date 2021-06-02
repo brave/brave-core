@@ -92,8 +92,8 @@ class SettingsViewController: TableViewController {
         navigationController?.pushViewController(settings, animated: true)
     }
     
-    private func displayBraveTodayDebugMenu() {
-        let settings = BraveTodayDebugSettingsController(dataSource: feedDataSource)
+    private func displayBraveNewsDebugMenu() {
+        let settings = BraveNewsDebugSettingsController(dataSource: feedDataSource)
         navigationController?.pushViewController(settings, animated: true)
     }
     
@@ -182,10 +182,10 @@ class SettingsViewController: TableViewController {
             ]
         }
         
-        #if !NO_BRAVE_TODAY
+        #if !NO_BRAVE_NEWS
         section.rows.append(
-            Row(text: Strings.BraveToday.braveToday, selection: {
-                let todaySettings = BraveTodaySettingsViewController(dataSource: self.feedDataSource)
+            Row(text: Strings.BraveNews.braveNews, selection: {
+                let todaySettings = BraveNewsSettingsViewController(dataSource: self.feedDataSource)
                 self.navigationController?.pushViewController(todaySettings, animated: true)
             }, image: #imageLiteral(resourceName: "settings-brave-today").template, accessory: .disclosureIndicator)
         )
@@ -501,8 +501,8 @@ class SettingsViewController: TableViewController {
                 Row(text: "View Rewards Debug Menu", selection: { [unowned self] in
                     self.displayRewardsDebugMenu()
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
-                Row(text: "View Brave Today Debug Menu", selection: { [unowned self] in
-                    self.displayBraveTodayDebugMenu()
+                Row(text: "View Brave News Debug Menu", selection: { [unowned self] in
+                    self.displayBraveNewsDebugMenu()
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "VPN Logs", selection: { [unowned self] in
                     self.navigationController?.pushViewController(VPNLogsViewController(), animated: true)

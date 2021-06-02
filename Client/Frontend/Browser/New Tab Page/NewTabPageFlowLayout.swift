@@ -10,10 +10,10 @@ import Foundation
 /// Handles correcting center-aligned single items in a flow layout while using
 /// automatic sizing cells
 class NewTabPageFlowLayout: UICollectionViewFlowLayout {    
-    /// Brave Today section acts a little differently, as it is pushed to the bottom of the screen despite
+    /// Brave News section acts a little differently, as it is pushed to the bottom of the screen despite
     /// there being space between, therefore additional space has to be given to the overall content size
-    /// when Brave Today is enabled
-    var braveTodaySection: Int? {
+    /// when Brave News is enabled
+    var braveNewsSection: Int? {
         didSet {
             invalidateLayout()
         }
@@ -35,18 +35,18 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     
     override func prepare() {
         super.prepare()
-        if let braveTodaySection = braveTodaySection,
+        if let braveNewsSection = braveNewsSection,
             let collectionView = collectionView,
-            collectionView.numberOfItems(inSection: braveTodaySection) != 0,
-            let attribute = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) {
+            collectionView.numberOfItems(inSection: braveNewsSection) != 0,
+            let attribute = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveNewsSection)) {
             let diff = collectionView.frame.height - attribute.frame.minY
             gapLength = diff - gapPadding
             
-            // Obtain the total height of the Brave Today section to calculate any extra height to be added
+            // Obtain the total height of the Brave News section to calculate any extra height to be added
             // to the content size. The extra height will ensure that there is always enough space to scroll
             // the header into full-visibility
-            let numberOfItems = collectionView.numberOfItems(inSection: braveTodaySection)
-            if let lastItemAttribute = super.layoutAttributesForItem(at: IndexPath(item: numberOfItems - 1, section: braveTodaySection)) {
+            let numberOfItems = collectionView.numberOfItems(inSection: braveNewsSection)
+            if let lastItemAttribute = super.layoutAttributesForItem(at: IndexPath(item: numberOfItems - 1, section: braveNewsSection)) {
                 if lastItemAttribute.frame.maxY - attribute.frame.minY < collectionView.bounds.height - gapPadding {
                     extraHeight = (collectionView.bounds.height - gapPadding) - (lastItemAttribute.frame.maxY - attribute.frame.minY)
                 }
@@ -98,7 +98,7 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
             }
         }
         
-        if let braveTodaySection = braveTodaySection, indexPath.section == braveTodaySection {
+        if let section = braveNewsSection, indexPath.section == section {
             attribute.frame.origin.y += gapLength
         }
 
@@ -122,16 +122,16 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     
     override var collectionViewContentSize: CGSize {
         var size = super.collectionViewContentSize
-        if braveTodaySection != nil {
+        if braveNewsSection != nil {
             size.height += gapLength + extraHeight
         }
         return size
     }
     
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
-        guard let braveTodaySection = braveTodaySection,
-            collectionView?.numberOfItems(inSection: braveTodaySection) != 0,
-            let item = layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) else {
+        guard let section = braveNewsSection,
+            collectionView?.numberOfItems(inSection: section) != 0,
+            let item = layoutAttributesForItem(at: IndexPath(item: 0, section: section)) else {
                 return proposedContentOffset
         }
         var offset = proposedContentOffset
@@ -148,9 +148,9 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
         forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes,
         withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes
     ) -> Bool {
-        if let braveTodaySection = braveTodaySection,
+        if let section = braveNewsSection,
             preferredAttributes.representedElementCategory == .cell,
-            preferredAttributes.indexPath.section == braveTodaySection {
+            preferredAttributes.indexPath.section == section {
             return preferredAttributes.size.height.rounded() != originalAttributes.size.height.rounded()
         }
         return super.shouldInvalidateLayout(
@@ -168,7 +168,7 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
             withOriginalAttributes: originalAttributes
         )
         
-        guard let collectionView = collectionView, let _ = braveTodaySection else {
+        guard let collectionView = collectionView, let _ = braveNewsSection else {
             return context
         }
         

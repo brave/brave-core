@@ -8,7 +8,7 @@ import BraveUI
 import BraveShared
 import Shared
 
-class BraveTodayErrorView: UIView, FeedCardContent {
+class BraveNewsErrorView: UIView, FeedCardContent {
     
     var refreshButtonTapped: (() -> Void)?
     
@@ -22,7 +22,7 @@ class BraveTodayErrorView: UIView, FeedCardContent {
     
     let refreshButton = ActionButton().then {
         $0.backgroundColor = .braveOrange
-        $0.setTitle(Strings.BraveToday.refresh, for: .normal)
+        $0.setTitle(Strings.BraveNews.refresh, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
         $0.layer.borderWidth = 0
         $0.loaderView = LoaderView(size: .small).then {

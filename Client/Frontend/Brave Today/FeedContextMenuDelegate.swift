@@ -8,7 +8,7 @@ import Shared
 
 /// Handles context menu related interactions on an item in the feed
 class FeedContextMenuDelegate: NSObject, UIContextMenuInteractionDelegate {
-    /// The identifier given to context menus created for Brave Today feed items
+    /// The identifier given to context menus created for Brave News feed items
     static let identifier = "feed-item"
     /// Called when a user performs a preview action
     ///

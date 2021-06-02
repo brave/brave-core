@@ -80,7 +80,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        Preferences.BraveToday.isEnabled.observe(from: self)
+        Preferences.BraveNews.isEnabled.observe(from: self)
         
         backgroundColor = .clear
         addLayoutGuide(collectionViewSafeAreaLayoutGuide)
@@ -104,22 +104,22 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         
         let isLandscape = frame.width > frame.height
         
-        #if NO_BRAVE_TODAY
-        let braveTodayVisible = false
+        #if NO_BRAVE_NEWS
+        let braveNewsVisible = false
         #else
-        let braveTodayVisible =
+        let braveNewsVisible =
             !PrivateBrowsingManager.shared.isPrivateBrowsing &&
-            (Preferences.BraveToday.isEnabled.value || Preferences.BraveToday.isShowingOptIn.value)
+            (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
         #endif
         
         imageCreditButton.snp.remakeConstraints {
             $0.leading.equalTo(collectionViewSafeAreaLayoutGuide).inset(16)
-            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide).inset(16 + (braveTodayVisible ? 30 : 0))
+            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide).inset(16 + (braveNewsVisible ? 30 : 0))
         }
         
         sponsorLogoButton.snp.remakeConstraints {
             $0.size.equalTo(170)
-            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(10 + (braveTodayVisible ? 30 : 0))
+            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(10 + (braveNewsVisible ? 30 : 0))
             
             if isLandscape {
                 $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(20)
@@ -130,7 +130,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         
         qrCodeButton.snp.remakeConstraints {
             $0.size.equalTo(48)
-            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(24 + (braveTodayVisible ? 30 : 0))
+            $0.bottom.equalTo(collectionViewSafeAreaLayoutGuide.snp.bottom).inset(24 + (braveNewsVisible ? 30 : 0))
             
             if isLandscape {
                 $0.left.equalTo(collectionViewSafeAreaLayoutGuide.snp.left).offset(48)

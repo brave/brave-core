@@ -10,7 +10,7 @@ import Shared
 
 /// Displays a list of sources that may be optionally filtered down to a specific category
 class FeedSourceListViewController: UITableViewController {
-    /// The Brave Today feed data source
+    /// The Brave News feed data source
     let dataSource: FeedDataSource
     /// A category to filter the list of sources down to
     let category: String?
@@ -77,7 +77,7 @@ class FeedSourceListViewController: UITableViewController {
         tableView.dataSource = self
         tableView.sectionIndexColor = .braveOrange
         
-        title = category ?? Strings.BraveToday.allSources
+        title = category ?? Strings.BraveNews.allSources
         if category != nil {
             // TODO(iOS14): Replace with context menu primary action
             navigationItem.rightBarButtonItem = .init(
@@ -90,7 +90,7 @@ class FeedSourceListViewController: UITableViewController {
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
-        searchController.searchBar.placeholder = Strings.BraveToday.sourceSearchPlaceholder
+        searchController.searchBar.placeholder = Strings.BraveNews.sourceSearchPlaceholder
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.hidesSearchBarWhenScrolling = true
         navigationItem.searchController = searchController
@@ -99,10 +99,10 @@ class FeedSourceListViewController: UITableViewController {
     @objc private func tappedMenu(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.popoverPresentationController?.barButtonItem = sender
-        alert.addAction(UIAlertAction(title: Strings.BraveToday.enableAll, style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: Strings.BraveNews.enableAll, style: .default, handler: { [weak self] _ in
             self?.toggleCategory(enabled: true)
         }))
-        alert.addAction(UIAlertAction(title: Strings.BraveToday.disableAll, style: .destructive, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: Strings.BraveNews.disableAll, style: .destructive, handler: { [weak self] _ in
             self?.toggleCategory(enabled: false)
         }))
         alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))

@@ -8,7 +8,7 @@ import BraveUI
 import BraveShared
 import Shared
 
-class BraveTodayEmptyFeedView: UIView, FeedCardContent {
+class BraveNewsEmptyFeedView: UIView, FeedCardContent {
     
     var sourcesAndSettingsButtonTapped: (() -> Void)?
     
@@ -23,7 +23,7 @@ class BraveTodayEmptyFeedView: UIView, FeedCardContent {
     private let sourcesAndSettingsButton = ActionButton(type: .system).then {
         $0.layer.borderWidth = 0
         $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
-        $0.setTitle(Strings.BraveToday.sourcesAndSettings, for: .normal)
+        $0.setTitle(Strings.BraveNews.sourcesAndSettings, for: .normal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
         $0.backgroundColor = UIColor.white.withAlphaComponent(0.2)
     }
@@ -33,7 +33,7 @@ class BraveTodayEmptyFeedView: UIView, FeedCardContent {
         $0.textColor = .white
         $0.font = .systemFont(ofSize: 22, weight: .semibold)
         $0.numberOfLines = 0
-        $0.text = Strings.BraveToday.emptyFeedTitle
+        $0.text = Strings.BraveNews.emptyFeedTitle
     }
     
     private let messageLabel = UILabel().then {
@@ -41,7 +41,7 @@ class BraveTodayEmptyFeedView: UIView, FeedCardContent {
         $0.textColor = .white
         $0.font = .systemFont(ofSize: 16)
         $0.numberOfLines = 0
-        $0.text = Strings.BraveToday.emptyFeedBody
+        $0.text = Strings.BraveNews.emptyFeedBody
     }
     
     required init() {

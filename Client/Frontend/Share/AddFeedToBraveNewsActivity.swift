@@ -6,7 +6,7 @@
 import Foundation
 import Shared
 
-class AddFeedToBraveTodayActivity: UIActivity {
+class AddFeedToBraveNewsActivity: UIActivity {
     fileprivate let callback: () -> Void
     
     init(callback: @escaping () -> Void) {
@@ -14,7 +14,7 @@ class AddFeedToBraveTodayActivity: UIActivity {
     }
     
     override var activityTitle: String? {
-        return Strings.BraveToday.addSourceShareTitle
+        return Strings.BraveNews.addSourceShareTitle
     }
     
     override var activityImage: UIImage? {

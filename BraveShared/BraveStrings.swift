@@ -1995,11 +1995,11 @@ extension Strings {
 }
 
 extension Strings {
-    public struct BraveToday {
-        public static let braveToday = NSLocalizedString(
+    public struct BraveNews {
+        public static let braveNews = NSLocalizedString(
             "today.braveToday",
             bundle: .braveShared,
-            value: "Brave Today",
+            value: "Brave News",
             comment: "The name of the feature"
         )
         public static let sourcesAndSettings = NSLocalizedString(
@@ -2008,10 +2008,10 @@ extension Strings {
             value: "Sources & Settings",
             comment: ""
         )
-        public static let turnOnBraveToday = NSLocalizedString(
+        public static let turnOnBraveNews = NSLocalizedString(
             "today.turnOnBraveToday",
             bundle: .braveShared,
-            value: "Turn on Brave Today",
+            value: "Turn on Brave News",
             comment: ""
         )
         public static let learnMoreTitle = NSLocalizedString(
@@ -2029,7 +2029,7 @@ extension Strings {
         public static let introCardBody = NSLocalizedString(
             "today.introCardBody",
             bundle: .braveShared,
-            value: "Brave Today is ad-supported with completely private and anonymized ads matched on your device.",
+            value: "Brave News is ad-supported with completely private and anonymized ads matched on your device.",
             comment: ""
         )
         public static let introCardNew = NSLocalizedString(
@@ -2041,7 +2041,7 @@ extension Strings {
         public static let introCardNewTextBody = NSLocalizedString(
             "today.introCardNewTextBody",
             bundle: .braveShared,
-            value: "Customize Brave Today with up to 5 RSS feeds and get new content from your favorite publishers throughout the day.",
+            value: "Customize your feed using hundreds of leading content sources delivered through our private CDN, and add RSS feeds from your favorite publishers to make a feed that works just for you.",
             comment: ""
         )
         public static let refresh = NSLocalizedString(
@@ -2107,7 +2107,7 @@ extension Strings {
         public static let errorGeneralBody = NSLocalizedString(
             "today.errorGeneralBody",
             bundle: .braveShared,
-            value: "Brave Today is experiencing some issues. Try again.",
+            value: "Brave News is experiencing some issues. Try again.",
             comment: ""
         )
         public static let disablePublisherContent = NSLocalizedString(
@@ -2131,13 +2131,13 @@ extension Strings {
         public static let disabledAlertBody = NSLocalizedString(
             "today.disabledAlertBody",
             bundle: .braveShared,
-            value: "Brave Today will stop showing content from %@",
+            value: "Brave News will stop showing content from %@",
             comment: "'%@' will turn into the name of a publisher (verbatim), for example: Brave Blog"
         )
         public static let isEnabledToggleLabel = NSLocalizedString(
             "today.isEnabledToggleLabel",
             bundle: .braveShared,
-            value: "Show Brave Today",
+            value: "Show Brave News",
             comment: ""
         )
         public static let settingsSourceHeaderTitle = NSLocalizedString(
@@ -2179,7 +2179,7 @@ extension Strings {
         public static let addSourceShareTitle = NSLocalizedString(
             "today.addSourceShareTitle",
             bundle: .braveShared,
-            value: "Add Source to Brave Today",
+            value: "Add Source to Brave News",
             comment: "The action title displayed in the iOS share menu"
         )
         public static let addSourceFailureTitle = NSLocalizedString(
@@ -2211,24 +2211,6 @@ extension Strings {
             bundle: .braveShared,
             value: "Add",
             comment: "To add a list of 1 or more rss feeds"
-        )
-        public static let rssFeedLimitExceededAlertTitle = NSLocalizedString(
-            "today.rssFeedLimitExceededAlertTitle",
-            bundle: .braveShared,
-            value: "Feed limit exceeded",
-            comment: ""
-        )
-        public static let rssFeedLimitExceededAlertMessage = NSLocalizedString(
-            "today.rssFeedLimitExceededAlertMessage",
-            bundle: .braveShared,
-            value: "The free ad-supported version of Brave Today includes 5 RSS feeds. You can customize your feed selections from the Sources list.",
-            comment: ""
-        )
-        public static let rssFeedLimitRemainingFooter = NSLocalizedString(
-            "today.rssFeedLimitRemainingFooter",
-            bundle: .braveShared,
-            value: "You currently have %d RSS feeds in your Sources list. The free ad-supported version of Brave Today includes 5 RSS feeds. Support for unlimited feeds and OPML import will be coming soon. You can customize your feed selections from the Sources list.",
-            comment: "%d will be a number (i.e. 4)"
         )
         public static let insecureSourcesHeader = NSLocalizedString(
             "today.insecureSourcesHeader",

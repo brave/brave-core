@@ -98,7 +98,7 @@ class NewTabPageViewController: UIViewController {
     
     private let feedDataSource: FeedDataSource
     private let feedOverlayView = NewTabPageFeedOverlayView()
-    private var preventReloadOnBraveTodayEnabledChange = false
+    private var preventReloadOnBraveNewsEnabledChange = false
     
     private let notifications: NewTabPageNotifications
     
@@ -135,18 +135,18 @@ class NewTabPageViewController: UIViewController {
             sections.insert(NTPDefaultBrowserCalloutProvider(), at: 0)
         }
         
-        #if !NO_BRAVE_TODAY
+        #if !NO_BRAVE_NEWS
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             sections.append(
-                BraveTodaySectionProvider(
+                BraveNewsSectionProvider(
                     dataSource: feedDataSource,
                     ads: rewards.ads,
                     actionHandler: { [weak self] in
-                        self?.handleBraveTodayAction($0)
+                        self?.handleBraveNewsAction($0)
                     }
                 )
             )
-            layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
+            layout.braveNewsSection = sections.firstIndex(where: { $0 is BraveNewsSectionProvider })
         }
         #endif
         
@@ -157,8 +157,8 @@ class NewTabPageViewController: UIViewController {
             self?.setupBackgroundImage()
         }
         
-        #if !NO_BRAVE_TODAY
-        Preferences.BraveToday.isEnabled.observe(from: self)
+        #if !NO_BRAVE_NEWS
+        Preferences.BraveNews.isEnabled.observe(from: self)
         feedDataSource.observeState(from: self) { [weak self] in
             self?.handleFeedStateChange($0, $1)
         }
@@ -184,9 +184,9 @@ class NewTabPageViewController: UIViewController {
         
         collectionView.backgroundView = backgroundButtonsView
         
-        feedOverlayView.headerView.settingsButton.addTarget(self, action: #selector(tappedBraveTodaySettings), for: .touchUpInside)
+        feedOverlayView.headerView.settingsButton.addTarget(self, action: #selector(tappedBraveNewsSettings), for: .touchUpInside)
         if !AppConstants.buildChannel.isPublic {
-            feedOverlayView.headerView.settingsButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressedBraveTodaySettingsButton)))
+            feedOverlayView.headerView.settingsButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressedBraveNewsSettingsButton)))
         }
         feedOverlayView.newContentAvailableButton.addTarget(self, action: #selector(tappedNewContentAvailable), for: .touchUpInside)
         
@@ -456,13 +456,13 @@ class NewTabPageViewController: UIViewController {
         notificationController = nil
     }
     
-    // MARK: - Brave Today
+    // MARK: - Brave News
     
-    private func handleBraveTodayAction(_ action: BraveTodaySectionProvider.Action) {
+    private func handleBraveNewsAction(_ action: BraveNewsSectionProvider.Action) {
         switch action {
         case .optInCardAction(.closedButtonTapped):
-            Preferences.BraveToday.isShowingOptIn.value = false
-            if let section = layout.braveTodaySection, collectionView.numberOfItems(inSection: section) != 0 {
+            Preferences.BraveNews.isShowingOptIn.value = false
+            if let section = layout.braveNewsSection, collectionView.numberOfItems(inSection: section) != 0 {
                 collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
             }
             collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
@@ -472,15 +472,15 @@ class NewTabPageViewController: UIViewController {
                 self.backgroundButtonsView.alpha = 1.0
             }
         case .optInCardAction(.learnMoreButtonTapped):
-            delegate?.navigateToInput(BraveUX.braveTodayPrivacyURL.absoluteString, inNewTab: false, switchingToPrivateMode: false)
-        case .optInCardAction(.turnOnBraveTodayButtonTapped):
-            preventReloadOnBraveTodayEnabledChange = true
-            Preferences.BraveToday.userOptedIn.value = true
-            Preferences.BraveToday.isShowingOptIn.value = false
-            Preferences.BraveToday.isEnabled.value = true
+            delegate?.navigateToInput(BraveUX.braveNewsPrivacyURL.absoluteString, inNewTab: false, switchingToPrivateMode: false)
+        case .optInCardAction(.turnOnBraveNewsButtonTapped):
+            preventReloadOnBraveNewsEnabledChange = true
+            Preferences.BraveNews.userOptedIn.value = true
+            Preferences.BraveNews.isShowingOptIn.value = false
+            Preferences.BraveNews.isEnabled.value = true
             loadFeedContents()
         case .emptyCardTappedSourcesAndSettings:
-            tappedBraveTodaySettings()
+            tappedBraveNewsSettings()
         case .errorCardTappedRefresh:
             loadFeedContents()
         case .moreBraveOffersTapped:
@@ -491,7 +491,7 @@ class NewTabPageViewController: UIViewController {
             )
         case .bravePartnerLearnMoreTapped:
             delegate?.navigateToInput(
-                BraveUX.braveTodayPartnersURL.absoluteString,
+                BraveUX.braveNewsPartnersURL.absoluteString,
                 inNewTab: false,
                 switchingToPrivateMode: false
             )
@@ -517,8 +517,8 @@ class NewTabPageViewController: UIViewController {
             if isEnabled {
                 let alert = FeedActionAlertView(
                     image: UIImage(imageLiteralResourceName: "disable.feed.source.alert"),
-                    title: Strings.BraveToday.disabledAlertTitle,
-                    message: String(format: Strings.BraveToday.disabledAlertBody, context.item.source.name)
+                    title: Strings.BraveNews.disabledAlertTitle,
+                    message: String(format: Strings.BraveNews.disabledAlertBody, context.item.source.name)
                 )
                 alert.present(on: self)
             }
@@ -535,7 +535,7 @@ class NewTabPageViewController: UIViewController {
         _ oldValue: FeedDataSource.State,
         _ newValue: FeedDataSource.State
     ) {
-        guard let braveTodaySection = layout.braveTodaySection else { return }
+        guard let section = layout.braveNewsSection else { return }
         
         func _completeLoading() {
             UIView.animate(withDuration: 0.2, animations: {
@@ -549,7 +549,7 @@ class NewTabPageViewController: UIViewController {
                 collectionView.reloadData()
                 collectionView.layoutIfNeeded()
                 let cells = collectionView.indexPathsForVisibleItems
-                    .filter { $0.section == braveTodaySection }
+                    .filter { $0.section == section }
                     .compactMap(collectionView.cellForItem(at:))
                 cells.forEach { cell in
                     cell.transform = .init(translationX: 0, y: 200)
@@ -558,7 +558,7 @@ class NewTabPageViewController: UIViewController {
                     }, completion: nil)
                 }
             } else {
-                collectionView.reloadSections(IndexSet(integer: braveTodaySection))
+                collectionView.reloadSections(IndexSet(integer: section))
             }
         }
         
@@ -572,18 +572,18 @@ class NewTabPageViewController: UIViewController {
             break
         case (.loading(.failure(let error1 as NSError)),
               .failure(let error2 as NSError)) where error1 == error2:
-            if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: braveTodaySection)) as? FeedCardCell<BraveTodayErrorView> {
+            if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section)) as? FeedCardCell<BraveNewsErrorView> {
                 cell.content.refreshButton.isLoading = false
             } else {
                 _completeLoading()
             }
         case (_, .loading):
             if collectionView.contentOffset.y == collectionView.contentInset.top ||
-                collectionView.numberOfItems(inSection: braveTodaySection) == 0 {
+                collectionView.numberOfItems(inSection: section) == 0 {
                 feedOverlayView.loaderView.isHidden = false
                 feedOverlayView.loaderView.start()
                 
-                if let section = layout.braveTodaySection {
+                if let section = layout.braveNewsSection {
                     let numberOfItems = collectionView.numberOfItems(inSection: section)
                     if numberOfItems > 0 {
                         collectionView.deleteItems(
@@ -595,13 +595,13 @@ class NewTabPageViewController: UIViewController {
         case (.loading, _):
             _completeLoading()
         default:
-            collectionView.reloadSections(IndexSet(integer: braveTodaySection))
+            collectionView.reloadSections(IndexSet(integer: section))
         }
     }
     
     @objc private func checkForUpdatedFeed() {
-        #if !NO_BRAVE_TODAY
-        if !isBraveTodayVisible || Preferences.BraveToday.isShowingOptIn.value { return }
+        #if !NO_BRAVE_NEWS
+        if !isBraveNewsVisible || Preferences.BraveNews.isShowingOptIn.value { return }
         if collectionView.contentOffset.y == collectionView.contentInset.top {
             // Reload contents if the user is not currently scrolled into the feed
             loadFeedContents()
@@ -643,8 +643,8 @@ class NewTabPageViewController: UIViewController {
         }
     }
     
-    @objc private func tappedBraveTodaySettings() {
-        let controller = BraveTodaySettingsViewController(dataSource: feedDataSource)
+    @objc private func tappedBraveNewsSettings() {
+        let controller = BraveNewsSettingsViewController(dataSource: feedDataSource)
         let container = UINavigationController(rootViewController: controller)
         present(container, animated: true)
     }
@@ -709,10 +709,10 @@ class NewTabPageViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @objc private func longPressedBraveTodaySettingsButton() {
+    @objc private func longPressedBraveNewsSettingsButton() {
         assert(!AppConstants.buildChannel.isPublic,
                "Debug settings are not accessible on public builds")
-        let settings = BraveTodayDebugSettingsController(dataSource: feedDataSource)
+        let settings = BraveNewsDebugSettingsController(dataSource: feedDataSource)
         let container = UINavigationController(rootViewController: settings)
         present(container, animated: true)
     }
@@ -720,35 +720,35 @@ class NewTabPageViewController: UIViewController {
 
 extension NewTabPageViewController: PreferencesObserver {
     func preferencesDidChange(for key: String) {
-        if !preventReloadOnBraveTodayEnabledChange {
+        if !preventReloadOnBraveNewsEnabledChange {
             collectionView.reloadData()
         }
-        if !isBraveTodayVisible {
+        if !isBraveNewsVisible {
             collectionView.verticalScrollIndicatorInsets = .zero
             feedOverlayView.headerView.alpha = 0.0
             backgroundButtonsView.alpha = 1.0
         }
-        preventReloadOnBraveTodayEnabledChange = false
+        preventReloadOnBraveNewsEnabledChange = false
     }
 }
 
 // MARK: - UIScrollViewDelegate
 extension NewTabPageViewController {
-    var isBraveTodayVisible: Bool {
-        #if NO_BRAVE_TODAY
+    var isBraveNewsVisible: Bool {
+        #if NO_BRAVE_NEWS
         return false
         #else
         return !PrivateBrowsingManager.shared.isPrivateBrowsing &&
-            (Preferences.BraveToday.isEnabled.value || Preferences.BraveToday.isShowingOptIn.value)
+            (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
         #endif
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard isBraveTodayVisible, let braveTodaySection = layout.braveTodaySection else { return }
-        if collectionView.numberOfItems(inSection: braveTodaySection) > 0 {
-            // Hide the buttons as BraveToday feeds appear
+        guard isBraveNewsVisible, let newsSection = layout.braveNewsSection else { return }
+        if collectionView.numberOfItems(inSection: newsSection) > 0 {
+            // Hide the buttons as Brave News feeds appear
             backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
-            // Show the header as BraveToday feeds appear
-            // Offset of where Brave Today starts
+            // Show the header as Brave News feeds appear
+            // Offset of where Brave News starts
             let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
             // Offset of where the header should begin becoming visible
             let alphaInStart = collectionView.frame.height / 2.0

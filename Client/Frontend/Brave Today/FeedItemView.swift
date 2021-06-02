@@ -153,7 +153,7 @@ extension FeedItemView {
             $0.tintColor = UIColor(white: 1.0, alpha: 0.8)
         }
         private let label = UILabel().then {
-            $0.text = Strings.BraveToday.promoted
+            $0.text = Strings.BraveNews.promoted
             $0.numberOfLines = 1
             $0.font = .systemFont(ofSize: 12)
             $0.textColor = UIColor(white: 1.0, alpha: 0.8)

@@ -19,11 +19,6 @@ struct RSSFeedLocation: Hashable {
 }
 
 extension FeedDataSource {
-    /// The maximum number of RSS sources that can be added
-    static let maximumNumberOfRSSFeeds = 5
-    /// Whether or not OPML parsing is avaialable
-    static let isOPMLParsingAvailable = false
-    
     // MARK: - RSS Sources
     
     var rssFeedLocations: [RSSFeedLocation] {
@@ -40,9 +35,6 @@ extension FeedDataSource {
     @discardableResult
     func addRSSFeedLocation(_ location: RSSFeedLocation) -> Bool {
         if !location.url.isWebPage(includeDataURIs: false) {
-            return false
-        }
-        if rssFeedLocations.count >= Self.maximumNumberOfRSSFeeds {
             return false
         }
         let feedUrl = location.url.absoluteString
