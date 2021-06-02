@@ -42,16 +42,18 @@ constexpr int kBubbleWidth = 324;  // width is 324 pixels
 
 constexpr int kFontSizeSiteTitle = 14;  // site title font size
 
+constexpr SkColor kColorButtonTrack = SkColorSetRGB(0xe1, 0xe2, 0xf6);
+
+constexpr SkColor kColorButtonThumb = SkColorSetRGB(0x4c, 0x54, 0xd2);
+
 }  // anonymous namespace
 
 namespace speedreader {
 
 SpeedreaderBubbleGlobal::SpeedreaderBubbleGlobal(
     views::View* anchor_view,
-    content::WebContents* web_contents,
     SpeedreaderTabHelper* tab_helper)
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
-      web_contents_(web_contents),
       tab_helper_(tab_helper) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
 }
@@ -96,7 +98,8 @@ void SpeedreaderBubbleGlobal::Init() {
       site_toggle_view->SetLayoutManager(std::make_unique<views::BoxLayout>());
 
   // Extract site title from webcontents, bolden it
-  const auto host = web_contents_->GetLastCommittedURL().host();
+  // fixme: for boldness we can do a style range on a label
+  const auto host = tab_helper_->web_contents()->GetLastCommittedURL().host();
   DCHECK(!host.empty());
   auto site = base::ASCIIToUTF16(host);
   auto offset = site.length();
@@ -125,6 +128,10 @@ void SpeedreaderBubbleGlobal::Init() {
   auto site_toggle_button =
       std::make_unique<views::ToggleButton>(base::BindRepeating(
           &SpeedreaderBubbleGlobal::OnButtonPressed, base::Unretained(this)));
+  // TODO(keur): We shoud be able to remove these once brave overrides
+  // views::ToggleButton globally with our own theme
+  site_toggle_button->SetThumbOnColor(kColorButtonThumb);
+  site_toggle_button->SetTrackOnColor(kColorButtonTrack);
   site_toggle_button_ =
       site_toggle_view->AddChildView(std::move(site_toggle_button));
 
@@ -145,7 +152,7 @@ void SpeedreaderBubbleGlobal::OnButtonPressed(const ui::Event& event) {
 }
 
 void SpeedreaderBubbleGlobal::OnLinkClicked(const ui::Event& event) {
-  web_contents_->OpenURL(
+  tab_helper_->web_contents()->OpenURL(
       content::OpenURLParams(GURL("chrome://settings"), content::Referrer(),
                              WindowOpenDisposition::NEW_FOREGROUND_TAB,
                              ui::PAGE_TRANSITION_LINK, false));

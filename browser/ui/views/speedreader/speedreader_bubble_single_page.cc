@@ -60,10 +60,8 @@ class ReaderButton : public views::MdTextButton {
 
 SpeedreaderBubbleSinglePage::SpeedreaderBubbleSinglePage(
     views::View* anchor_view,
-    content::WebContents* web_contents,
     SpeedreaderTabHelper* tab_helper)
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
-      web_contents_(web_contents),
       tab_helper_(tab_helper) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
 }
@@ -137,7 +135,7 @@ void SpeedreaderBubbleSinglePage::OnButtonPressed(const ui::Event& event) {
 }
 
 void SpeedreaderBubbleSinglePage::OnLinkClicked(const ui::Event& event) {
-  web_contents_->OpenURL(content::OpenURLParams(
+  tab_helper_->web_contents()->OpenURL(content::OpenURLParams(
       GURL(kSpeedreaderLearnMoreUrl), content::Referrer(),
       WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
       false));

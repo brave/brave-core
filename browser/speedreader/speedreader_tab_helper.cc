@@ -97,7 +97,7 @@ void SpeedreaderTabHelper::ShowBubble() {
   DCHECK(browser);
   speedreader_bubble_ =
       static_cast<BraveBrowserWindow*>(browser->window())
-          ->ShowSpeedreaderBubble(contents, this, IsSpeedreaderEnabled());
+          ->ShowSpeedreaderBubble(this, IsSpeedreaderEnabled());
 }
 
 // Hides speedreader information

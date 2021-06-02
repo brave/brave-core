@@ -228,19 +228,18 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
 }
 
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
-    content::WebContents* contents,
     speedreader::SpeedreaderTabHelper* tab_helper,
     bool is_enabled) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderBubbleView* bubble = nullptr;
   if (is_enabled) {
     auto* global_bubble = new speedreader::SpeedreaderBubbleGlobal(
-        GetLocationBarView(), contents, tab_helper);
+        GetLocationBarView(), tab_helper);
     views::BubbleDialogDelegateView::CreateBubble(global_bubble);
     bubble = global_bubble;
   } else {
     auto* single_page_bubble = new speedreader::SpeedreaderBubbleSinglePage(
-        GetLocationBarView(), contents, tab_helper);
+        GetLocationBarView(), tab_helper);
     views::BubbleDialogDelegateView::CreateBubble(single_page_bubble);
     bubble = single_page_bubble;
   }

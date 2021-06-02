@@ -22,13 +22,16 @@ class StyledLabel;
 namespace speedreader {
 
 // Line height for multiline labels.
-extern const int kLineHeight;
+constexpr int kLineHeight = 16;
 
 // Spacing between child nodes in box layout
-extern const int kBoxLayoutChildSpacing;
+constexpr int kBoxLayoutChildSpacing = 10;
 
 // Separator used in StyledLabel
-extern const char kSpeedreaderSeparator[];
+constexpr char kSpeedreaderSeparator[] = " ";
+
+// Reader Mode blurple color
+constexpr SkColor kColorReaderBlurple = SkColorSetRGB(0x4c, 0x54, 0xd2);
 
 // Get fonts for Speedreader views
 gfx::FontList GetFont(int font_size,

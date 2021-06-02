@@ -38,8 +38,7 @@ class SpeedreaderBubbleGlobal : public SpeedreaderBubbleView,
  public:
   METADATA_HEADER(SpeedreaderBubbleGlobal);
   SpeedreaderBubbleGlobal(views::View* anchor_view,
-                          content::WebContents* web_contents,
-                          SpeedreaderTabHelper* controller);
+                          SpeedreaderTabHelper* tab_helper);
   SpeedreaderBubbleGlobal(const SpeedreaderBubbleGlobal&) = delete;
   SpeedreaderBubbleGlobal& operator=(const SpeedreaderBubbleGlobal&) = delete;
   ~SpeedreaderBubbleGlobal() override = default;
@@ -62,7 +61,6 @@ class SpeedreaderBubbleGlobal : public SpeedreaderBubbleView,
   void OnButtonPressed(const ui::Event& event);
   void OnLinkClicked(const ui::Event& event);
 
-  content::WebContents* web_contents_;
   SpeedreaderTabHelper* tab_helper_;  // weak.
 
   views::StyledLabel* site_title_label_ = nullptr;         // weak.

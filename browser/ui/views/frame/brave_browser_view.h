@@ -44,7 +44,6 @@ class BraveBrowserView : public BrowserView {
       translate::TranslateErrors::Type error_type,
       bool is_user_gesture) override;
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
-      content::WebContents* contents,
       speedreader::SpeedreaderTabHelper* tab_helper,
       bool is_enabled) override;
   void CreateWalletBubble();

@@ -10,30 +10,14 @@
 
 #include "ui/views/controls/styled_label.h"
 
-namespace {
-
-const std::vector<std::string> kReaderFontFamilies = {
-    "Georgia",
-    "Times New Roman",
-    "Times"
-    "serif",
-};
-
-}  // anonymous namespace
-
 namespace speedreader {
-
-const int kLineHeight = 16;
-
-const int kBoxLayoutChildSpacing = 10;
-
-const char kSpeedreaderSeparator[] = " ";
 
 constexpr int kFontSizeLabel = 12;
 
 gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
-  return gfx::FontList(kReaderFontFamilies, gfx::Font::NORMAL, font_size,
-                       weight);
+  auto font = gfx::FontList();
+  return font.DeriveWithSizeDelta(std::abs(font_size - font.GetFontSize()))
+      .DeriveWithWeight(weight);
 }
 
 // Create a StyledLabel that ends with a link.
@@ -51,6 +35,8 @@ std::unique_ptr<views::StyledLabel> BuildLabelWithEndingLink(
   // Setup styles
   views::StyledLabel::RangeStyleInfo style_link =
       views::StyledLabel::RangeStyleInfo::CreateForLink(callback);
+  style_link.override_color = kColorReaderBlurple;
+
   views::StyledLabel::RangeStyleInfo style_default;
   style_default.custom_font = GetFont(kFontSizeLabel);
 

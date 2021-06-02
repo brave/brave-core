@@ -36,7 +36,6 @@ class SpeedreaderBubbleSinglePage : public SpeedreaderBubbleView,
  public:
   METADATA_HEADER(SpeedreaderBubbleSinglePage);
   SpeedreaderBubbleSinglePage(views::View* anchor_view,
-                              content::WebContents* web_contents,
                               SpeedreaderTabHelper* tab_helper);
   SpeedreaderBubbleSinglePage(const SpeedreaderBubbleSinglePage&) = delete;
   SpeedreaderBubbleSinglePage& operator=(const SpeedreaderBubbleSinglePage&) =
@@ -61,7 +60,6 @@ class SpeedreaderBubbleSinglePage : public SpeedreaderBubbleView,
   void OnButtonPressed(const ui::Event& event);
   void OnLinkClicked(const ui::Event& event);
 
-  content::WebContents* web_contents_;
   SpeedreaderTabHelper* tab_helper_;  // weak.
 
   views::Label* heading_label_ = nullptr;              // weak.
