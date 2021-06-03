@@ -33,8 +33,7 @@ IpfsServiceFactory* IpfsServiceFactory::GetInstance() {
 // static
 IpfsService* IpfsServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  auto* prefs = user_prefs::UserPrefs::Get(context);
-  if (!brave::IsRegularProfile(context) || !IsIpfsEnabled(prefs))
+  if (!IpfsServiceFactory::IsIpfsEnabled(context))
     return nullptr;
 
   return static_cast<IpfsService*>(
@@ -63,6 +62,12 @@ KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
                              ? g_brave_browser_process->ipfs_client_updater()
                              : nullptr,
                          user_data_dir, chrome::GetChannel());
+}
+
+// static
+bool IpfsServiceFactory::IsIpfsEnabled(content::BrowserContext* context) {
+  auto* prefs = user_prefs::UserPrefs::Get(context);
+  return (brave::IsRegularProfile(context) && !IsIpfsDisabled(prefs));
 }
 
 }  // namespace ipfs

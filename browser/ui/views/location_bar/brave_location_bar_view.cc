@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -107,7 +108,8 @@ void BraveLocationBarView::Init() {
 bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
 #if BUILDFLAG(IPFS_ENABLED)
   const GURL& url = GetLocationBarModel()->GetURL();
-  if (!ipfs::IsIPFSScheme(url) || !ipfs::IsIpfsEnabled(profile_->GetPrefs()) ||
+  if (!ipfs::IpfsServiceFactory::IsIpfsEnabled(profile_) ||
+      !ipfs::IsIPFSScheme(url) ||
       !ipfs::IsLocalGatewayConfigured(profile_->GetPrefs()))
     return false;
 

@@ -88,8 +88,7 @@ namespace extensions {
 namespace api {
 
 ExtensionFunction::ResponseAction IpfsRemoveIpfsPeerFunction::Run() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs))
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context()))
     return RespondNow(Error("IPFS not enabled"));
   ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
   if (!ipfs_service) {
@@ -135,8 +134,7 @@ void IpfsRemoveIpfsPeerFunction::OnConfigUpdated(bool success) {
 }
 
 ExtensionFunction::ResponseAction IpfsAddIpfsPeerFunction::Run() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs))
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context()))
     return RespondNow(Error("IPFS not enabled"));
   ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
   if (!ipfs_service) {
@@ -180,8 +178,7 @@ void IpfsAddIpfsPeerFunction::OnConfigUpdated(bool success) {
 }
 
 ExtensionFunction::ResponseAction IpfsGetIpfsPeersListFunction::Run() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs))
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context()))
     return RespondNow(Error("IPFS not enabled"));
   ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
   if (!ipfs_service) {
@@ -208,8 +205,7 @@ void IpfsGetIpfsPeersListFunction::OnConfigLoaded(bool success,
 }
 
 ExtensionFunction::ResponseAction IpfsRemoveIpnsKeyFunction::Run() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs))
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context()))
     return RespondNow(Error("IPFS not enabled"));
   ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
   if (!ipfs_service) {
@@ -239,8 +235,7 @@ void IpfsRemoveIpnsKeyFunction::OnKeyRemoved(::ipfs::IpnsKeysManager* manager,
 }
 
 ExtensionFunction::ResponseAction IpfsAddIpnsKeyFunction::Run() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs))
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context()))
     return RespondNow(Error("IPFS not enabled"));
   ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
   if (!ipfs_service) {
@@ -273,8 +268,7 @@ void IpfsAddIpnsKeyFunction::OnKeyCreated(::ipfs::IpnsKeysManager* manager,
 }
 
 ExtensionFunction::ResponseAction IpfsGetIpnsKeysListFunction::Run() {
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs))
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context()))
     return RespondNow(Error("IPFS not enabled"));
   ::ipfs::IpfsService* ipfs_service = GetIpfsService(browser_context());
   if (!ipfs_service) {
@@ -325,15 +319,13 @@ ExtensionFunction::ResponseAction IpfsGetResolveMethodListFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction IpfsGetIPFSEnabledFunction::Run() {
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context());
-  bool enabled = ::ipfs::IsIpfsEnabled(prefs);
+  bool enabled = ::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context());
   return RespondNow(OneArgument(base::Value(enabled)));
 }
 
 ExtensionFunction::ResponseAction IpfsGetResolveMethodTypeFunction::Run() {
   std::string value = "invalid";
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (::ipfs::IsIpfsEnabled(prefs)) {
+  if (::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
     switch (GetIpfsService(browser_context())->GetIPFSResolveMethodType()) {
       case IPFSResolveMethodTypes::IPFS_ASK:
         value = "ask";
@@ -353,8 +345,7 @@ ExtensionFunction::ResponseAction IpfsGetResolveMethodTypeFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction IpfsLaunchFunction::Run() {
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs)) {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
 
@@ -377,8 +368,7 @@ void IpfsLaunchFunction::OnLaunch(bool launched) {
 }
 
 ExtensionFunction::ResponseAction IpfsShutdownFunction::Run() {
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs)) {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
   GetIpfsService(browser_context())
@@ -392,8 +382,7 @@ void IpfsShutdownFunction::OnShutdown(bool shutdown) {
 }
 
 ExtensionFunction::ResponseAction IpfsGetConfigFunction::Run() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs)) {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
   GetIpfsService(browser_context())
@@ -408,8 +397,7 @@ void IpfsGetConfigFunction::OnGetConfig(bool success,
 }
 
 ExtensionFunction::ResponseAction IpfsGetExecutableAvailableFunction::Run() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs)) {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
   bool avail = GetIpfsService(browser_context())->IsIPFSExecutableAvailable();
@@ -417,8 +405,7 @@ ExtensionFunction::ResponseAction IpfsGetExecutableAvailableFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction IpfsResolveIPFSURIFunction::Run() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
-  if (!::ipfs::IsIpfsEnabled(prefs)) {
+  if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
 
@@ -427,7 +414,7 @@ ExtensionFunction::ResponseAction IpfsResolveIPFSURIFunction::Run() {
   EXTENSION_FUNCTION_VALIDATE(params.get());
   GURL uri(params->uri);
   GURL ipfs_gateway_url;
-  
+  PrefService* prefs = user_prefs::UserPrefs::Get(browser_context());
   if (!::ipfs::ResolveIPFSURI(prefs, chrome::GetChannel(), uri,
                               &ipfs_gateway_url)) {
     return RespondNow(Error("Could not translate IPFS URI"));

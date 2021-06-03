@@ -26,7 +26,6 @@ int OnBeforeURLRequest_IPFSRedirectWork(
   GURL new_url;
   if (ipfs::TranslateIPFSURI(ctx->request_url, &new_url, ctx->ipfs_gateway_url,
                              false)) {
-    
     // We only allow translating ipfs:// and ipns:// URIs if the initiator_url
     // is from the same Brave ipfs/ipns gateway.
     // For the local case, we don't want a normal site to be able to populate

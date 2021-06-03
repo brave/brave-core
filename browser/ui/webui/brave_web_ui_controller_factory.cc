@@ -49,6 +49,7 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/webui/ipfs_ui.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -78,7 +79,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new WebcompatReporterUI(web_ui, url.host());
 #if BUILDFLAG(IPFS_ENABLED)
   } else if (host == kIPFSWebUIHost &&
-             ipfs::IsIpfsEnabled(profile->GetPrefs())) {
+             ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)

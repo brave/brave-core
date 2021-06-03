@@ -91,7 +91,7 @@ bool IsIpfsResolveMethodDisabled(PrefService* prefs) {
   DCHECK(prefs);
 
   // Ignore the actual pref value if IPFS feature is disabled.
-  if (!IsIpfsEnabled(prefs)) {
+  if (IsIpfsDisabled(prefs)) {
     return true;
   }
 
@@ -101,17 +101,14 @@ bool IsIpfsResolveMethodDisabled(PrefService* prefs) {
 }
 
 bool IsIpfsMenuEnabled(PrefService* prefs) {
-  return ipfs::IsIpfsEnabled(prefs) &&
+  return !ipfs::IsIpfsDisabled(prefs) &&
          ipfs::IsLocalGatewayConfigured(prefs);
 }
 
-bool IsIpfsEnabled(PrefService* prefs) {
+bool IsIpfsDisabled(PrefService* prefs) {
   DCHECK(prefs);
-  if (IsIpfsDisabledByPolicy(prefs) ||
-      !base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
-    return false;
-  }
-  return true;
+  return (IsIpfsDisabledByPolicy(prefs) ||
+      !base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature));
 }
 
 bool IsIpfsDisabledByPolicy(PrefService* prefs) {
