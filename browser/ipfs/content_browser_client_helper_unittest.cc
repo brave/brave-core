@@ -12,6 +12,9 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/decentralized_dns/constants.h"
+#include "brave/components/decentralized_dns/pref_names.h"
+#include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_ports.h"
@@ -93,6 +96,7 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
   }
 
   Profile* profile() { return profile_; }
+  PrefService* local_state() { return profile_manager_->local_state()->Get(); }
 
   content::BrowserContext* browser_context() {
     return web_contents()->GetBrowserContext();
@@ -171,6 +175,19 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteLocal) {
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
   GURL ipfs_uri(GetIPFSURI());
   ASSERT_TRUE(HandleIPFSURLRewrite(&ipfs_uri, browser_context()));
+}
+
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteENS) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+  EXPECT_FALSE(decentralized_dns::IsENSResolveMethodEthereum(local_state()));
+  GURL ens_uri("https://brave.eth");
+  ASSERT_FALSE(HandleIPFSURLRewrite(&ens_uri, browser_context()));
+  local_state()->SetInteger(
+      decentralized_dns::kENSResolveMethod,
+      static_cast<int>(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+  EXPECT_TRUE(decentralized_dns::IsENSResolveMethodEthereum(local_state()));
+  ASSERT_TRUE(HandleIPFSURLRewrite(&ens_uri, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPNSURLRewriteLocal) {

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/environment.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_call_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
@@ -237,6 +238,42 @@ void EthJsonRpcController::OnGetERC20TokenBalance(
     const int status,
     const std::string& body,
     const std::map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::string result;
+  if (!ParseEthCall(body, &result)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::move(callback).Run(true, result);
+}
+
+bool EthJsonRpcController::EnsProxyReaderResolveAddress(
+    const std::string& contract_address,
+    const std::string& domain,
+    const std::vector<std::string>& keys,
+    UnstoppableDomainsProxyReaderGetManyCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnEnsProxyReaderResolveAddress,
+                     base::Unretained(this), std::move(callback));
+  std::string data;
+  if (!ens::GetContentHashAddress(domain, &data)) {
+    return false;
+  }
+
+  Request(eth_call("", contract_address, "", "", "", data, "latest"),
+          std::move(internal_callback), true);
+  return true;
+}
+
+void EthJsonRpcController::OnEnsProxyReaderResolveAddress(
+    UnstoppableDomainsProxyReaderGetManyCallback callback,
+    int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  DCHECK(callback);
   if (status < 200 || status > 299) {
     std::move(callback).Run(false, "");
     return;

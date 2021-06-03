@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_context.h"
 
@@ -39,9 +40,8 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   if (IsUnstoppableDomainsTLD(ctx->request_url) &&
       IsUnstoppableDomainsResolveMethodEthereum(
           g_browser_process->local_state())) {
-    auto* service =
-        brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
-            ctx->browser_context);
+    auto* service = brave_wallet::BraveWalletServiceFactory::GetForContext(
+        ctx->browser_context);
     if (!service) {
       return net::OK;
     }
@@ -56,7 +56,53 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     return net::ERR_IO_PENDING;
   }
 
+  if (IsENSTLD(ctx->request_url) &&
+      IsENSResolveMethodEthereum(g_browser_process->local_state())) {
+    auto* service = brave_wallet::BraveWalletServiceFactory::GetForContext(
+        ctx->browser_context);
+    if (!service) {
+      return net::OK;
+    }
+
+    service->rpc_controller()->EnsProxyReaderResolveAddress(
+        kEnsRegistryContractAddress, ctx->request_url.host(),
+        std::vector<std::string>(std::begin(kRecordKeys),
+                                 std::end(kRecordKeys)),
+        base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
+                       ctx));
+
+    return net::ERR_IO_PENDING;
+  }
+
   return net::OK;
+}
+
+void OnBeforeURLRequest_EnsRedirectWork(
+    const brave::ResponseCallback& next_callback,
+    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    bool success,
+    const std::string& result) {
+  if (!success) {
+    if (!next_callback.is_null())
+      next_callback.Run();
+    return;
+  }
+  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
+  std::string contenthash;
+  if (offset > result.size() ||
+      !brave_wallet::DecodeString(offset, result, &contenthash)) {
+    if (!next_callback.is_null())
+      next_callback.Run();
+    return;
+  }
+
+  GURL ipfs_uri = ipfs::ContentHashToCIDv1URL(contenthash);
+  if (ipfs_uri.is_valid()) {
+    ctx->new_url_spec = ipfs_uri.spec();
+  }
+
+  if (!next_callback.is_null())
+    next_callback.Run();
 }
 
 void OnBeforeURLRequest_DecentralizedDnsRedirectWork(

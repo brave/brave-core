@@ -28,6 +28,12 @@ bool GetMany(const std::vector<std::string>& keys,
 
 }  // namespace unstoppable_domains
 
+namespace ens {
+
+bool GetContentHashAddress(const std::string& domain, std::string* data);
+
+}  // namespace ens
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_CALL_DATA_BUILDER_H_

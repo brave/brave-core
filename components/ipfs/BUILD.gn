@@ -55,6 +55,7 @@ source_set("ipfs") {
     "//brave/components/resources:strings",
     "//brave/components/services/ipfs/public/mojom",
     "//brave/extensions:common",
+    "//components/base32",
     "//components/component_updater:component_updater",
     "//components/infobars/core",
     "//components/keyed_service/core",

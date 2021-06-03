@@ -58,6 +58,12 @@ class EthJsonRpcController {
       const std::vector<std::string>& keys,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
 
+  bool EnsProxyReaderResolveAddress(
+      const std::string& contract_address,
+      const std::string& domain,
+      const std::vector<std::string>& keys,
+      UnstoppableDomainsProxyReaderGetManyCallback callback);
+
   Network GetNetwork() const;
   GURL GetNetworkURL() const;
   void SetNetwork(Network network);
@@ -90,6 +96,12 @@ class EthJsonRpcController {
   void OnUnstoppableDomainsProxyReaderGetMany(
       UnstoppableDomainsProxyReaderGetManyCallback callback,
       const int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
+
+  void OnEnsProxyReaderResolveAddress(
+      UnstoppableDomainsProxyReaderGetManyCallback callback,
+      int status,
       const std::string& body,
       const std::map<std::string, std::string>& headers);
 

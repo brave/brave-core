@@ -26,6 +26,12 @@ void OnBeforeURLRequest_DecentralizedDnsRedirectWork(
     bool success,
     const std::string& result);
 
+void OnBeforeURLRequest_EnsRedirectWork(
+    const brave::ResponseCallback& next_callback,
+    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    bool success,
+    const std::string& ipfs_uri);
+
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_BROWSER_NET_DECENTRALIZED_DNS_NETWORK_DELEGATE_HELPER_H_

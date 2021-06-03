@@ -21,6 +21,7 @@ source_set("unittests") {
     "//brave/browser",
     "//brave/browser/net:net",
     "//brave/browser/tor",
+    "//brave/components/decentralized_dns:decentralized_dns",
     "//brave/components/ipfs",
     "//brave/components/tor/buildflags",
     "//chrome/common:channel_info",

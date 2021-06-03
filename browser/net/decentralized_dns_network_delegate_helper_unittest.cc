@@ -90,6 +90,23 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(ResponseCallback(),
                                                           brave_request_info);
   EXPECT_EQ(rc, net::ERR_IO_PENDING);
+
+  // No redirect if ENS resolve method is not set to Ethereum.
+  EXPECT_FALSE(IsENSResolveMethodEthereum(local_state()));
+  brave_request_info->request_url = GURL("http://brave.eth");
+  rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(ResponseCallback(),
+                                                          brave_request_info);
+  EXPECT_EQ(rc, net::OK);
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+
+  local_state()->SetInteger(kENSResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+  EXPECT_TRUE(IsENSResolveMethodEthereum(local_state()));
+  brave_request_info->request_url = GURL("http://brave.eth");
+  rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(ResponseCallback(),
+                                                          brave_request_info);
+  EXPECT_EQ(rc, net::ERR_IO_PENDING);
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 }
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
@@ -247,6 +264,41 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   OnBeforeURLRequest_DecentralizedDnsRedirectWork(
       ResponseCallback(), brave_request_info, true, result);
   EXPECT_EQ("https://fallback2.test.com/", brave_request_info->new_url_spec);
+}
+
+TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
+  GURL url("http://brave.eth");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+
+  // No redirect for failed requests.
+  OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
+                                     false, "");
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+
+  OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
+                                     true, "");
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+  std::string hash =
+      "0x0000000000000000000000000000000000000000000000000000000000000020"
+      "0000000000000000000000000000000000000000000000000000000000000026e7"
+      "0101701220f073be187e8e06039796c432a5bdd6da3f403c2f93fa5d9dbdc5547c"
+      "7fe0e3bc0000000000000000000000000000000000000000000000000000";
+
+  OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
+                                     true, hash);
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+
+  hash =
+      "0x0000000000000000000000000000000000000000000000000000000000000020"
+      "0000000000000000000000000000000000000000000000000000000000000026e5"
+      "0101701220f073be187e8e06039796c432a5bdd6da3f403c2f93fa5d9dbdc5547c"
+      "7fe0e3bc0000000000000000000000000000000000000000000000000000";
+
+  OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
+                                     true, hash);
+  EXPECT_EQ(
+      brave_request_info->new_url_spec,
+      "ipns://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq");
 }
 
 }  // namespace decentralized_dns

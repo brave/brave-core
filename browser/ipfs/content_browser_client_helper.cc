@@ -14,9 +14,11 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/decentralized_dns/utils.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
@@ -79,6 +81,12 @@ bool HandleIPFSURLRewrite(
     }
   }
 
+  if (decentralized_dns::IsENSTLD(*url) &&
+      decentralized_dns::IsENSResolveMethodEthereum(
+          g_browser_process->local_state()) &&
+      IsLocalGatewayConfigured(browser_context)) {
+    return true;
+  }
   return false;
 }
 
