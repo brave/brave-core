@@ -19,6 +19,7 @@
 
 namespace ads {
 
+class Account;
 class AdRewards;
 class ConfirmationsState;
 class RedeemUnblindedToken;
@@ -27,7 +28,8 @@ struct UnblindedTokenInfo;
 
 class Confirmations : public RedeemUnblindedTokenDelegate {
  public:
-  Confirmations(privacy::TokenGeneratorInterface* token_generator,
+  Confirmations(Account* account,
+                privacy::TokenGeneratorInterface* token_generator,
                 AdRewards* ad_rewards);
 
   ~Confirmations() override;
@@ -45,6 +47,7 @@ class Confirmations : public RedeemUnblindedTokenDelegate {
  private:
   base::ObserverList<ConfirmationsObserver> observers_;
 
+  Account* account_;  // NOT OWNED
   privacy::TokenGeneratorInterface* token_generator_;  // NOT OWNED
 
   std::unique_ptr<ConfirmationsState> confirmations_state_;

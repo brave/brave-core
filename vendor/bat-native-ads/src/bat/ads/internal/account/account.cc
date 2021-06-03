@@ -24,8 +24,8 @@ namespace ads {
 Account::Account(privacy::TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator),
       ad_rewards_(std::make_unique<AdRewards>()),
-      confirmations_(
-          std::make_unique<Confirmations>(token_generator, ad_rewards_.get())),
+      confirmations_(std::make_unique<Confirmations>(this, token_generator,
+          ad_rewards_.get())),
       redeem_unblinded_payment_tokens_(
           std::make_unique<RedeemUnblindedPaymentTokens>()),
       refill_unblinded_tokens_(

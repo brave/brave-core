@@ -14,7 +14,9 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/account/account.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
@@ -31,11 +33,14 @@ namespace {
 const int64_t kRetryAfterSeconds = 5 * base::Time::kSecondsPerMinute;
 }  // namespace
 
-Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator,
+Confirmations::Confirmations(Account* account,
+                             privacy::TokenGeneratorInterface* token_generator,
                              AdRewards* ad_rewards)
-    : token_generator_(token_generator),
+    : account_(account),
+      token_generator_(token_generator),
       confirmations_state_(std::make_unique<ConfirmationsState>(ad_rewards)),
       redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>()) {
+  DCHECK(account_);
   DCHECK(token_generator_);
 
   redeem_unblinded_token_->set_delegate(this);
@@ -88,7 +93,10 @@ void Confirmations::ConfirmAd(const std::string& creative_instance_id,
                         << " ad for creative instance id "
                         << creative_instance_id);
 
-  if (ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
+  const WalletInfo wallet = account_->GetWallet();
+
+  if (wallet.IsValid() &&
+      ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
     BLOG(1, "There are no unblinded tokens");
 
     BLOG(3, "Failed to confirm " << std::string(confirmation_type)
@@ -105,7 +113,7 @@ void Confirmations::ConfirmAd(const std::string& creative_instance_id,
         user_data.GetAsDictionary(&user_data_dictionary);
         const ConfirmationInfo confirmation = CreateConfirmation(
             creative_instance_id, confirmation_type, *user_data_dictionary);
-        redeem_unblinded_token_->Redeem(confirmation);
+        redeem_unblinded_token_->Redeem(wallet, confirmation);
       });
 }
 
@@ -135,6 +143,7 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
 
+  // TODO(Moritz Haller): Is this safe?
   const privacy::UnblindedTokenInfo unblinded_token =
       ConfirmationsState::Get()->get_unblinded_tokens()->GetToken();
   confirmation.unblinded_token = unblinded_token;
@@ -227,7 +236,7 @@ void Confirmations::Retry() {
   ConfirmationInfo confirmation = failed_confirmations.front();
   RemoveFromRetryQueue(confirmation);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  redeem_unblinded_token_->Redeem(account_->GetWallet(), confirmation);
 
   RetryAfterDelay();
 }

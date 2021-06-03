@@ -31,6 +31,7 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
 
   dto.SetKey("payload", base::Value(base::Value::Type::DICTIONARY));
 
+  // TODO(Moritz Haller): Is this safe?
   const std::string blinded_payment_token_base64 =
       confirmation.blinded_payment_token.encode_base64();
   dto.SetKey("blindedPaymentToken", base::Value(blinded_payment_token_base64));

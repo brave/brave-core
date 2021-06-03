@@ -47,8 +47,8 @@ UrlRequestPtr CreateConfirmationUrlRequestBuilder::Build() {
 
 std::string CreateConfirmationUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf(
-      "%s/v1/confirmation/%s/%s", confirmations::server::GetHost().c_str(),
-      confirmation_.id.c_str(), confirmation_.credential.c_str());
+      "%s/v1/confirmation/%s", confirmations::server::GetHost().c_str(),
+      confirmation_.id.c_str());
 }
 
 std::vector<std::string> CreateConfirmationUrlRequestBuilder::BuildHeaders()

@@ -15,6 +15,7 @@ namespace ads {
 
 class ConfirmationType;
 struct ConfirmationInfo;
+struct WalletInfo;
 
 namespace privacy {
 struct UnblindedTokenInfo;
@@ -28,11 +29,14 @@ class RedeemUnblindedToken {
 
   void set_delegate(RedeemUnblindedTokenDelegate* delegate);
 
-  void Redeem(const ConfirmationInfo& confirmation);
+  void Redeem(const WalletInfo& wallet,
+      const ConfirmationInfo& confirmation);
 
  private:
-  void CreateConfirmation(const ConfirmationInfo& confirmation);
+  void CreateConfirmation(const WalletInfo& wallet,
+                          const ConfirmationInfo& confirmation);
   void OnCreateConfirmation(const UrlResponse& url_response,
+                            const WalletInfo& wallet,
                             const ConfirmationInfo& confirmation);
 
   void FetchPaymentToken(const ConfirmationInfo& confirmation);

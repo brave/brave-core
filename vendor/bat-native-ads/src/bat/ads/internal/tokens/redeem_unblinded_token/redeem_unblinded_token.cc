@@ -16,6 +16,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
@@ -46,11 +47,12 @@ void RedeemUnblindedToken::set_delegate(
   delegate_ = delegate;
 }
 
-void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
+void RedeemUnblindedToken::Redeem(const WalletInfo& wallet,
+    const ConfirmationInfo& confirmation) {
   BLOG(1, "Redeem unblinded token");
 
   if (!confirmation.created) {
-    CreateConfirmation(confirmation);
+    CreateConfirmation(wallet, confirmation);
     return;
   }
 
@@ -59,7 +61,7 @@ void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void RedeemUnblindedToken::CreateConfirmation(
+void RedeemUnblindedToken::CreateConfirmation(const WalletInfo& wallet,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "CreateConfirmation");
   BLOG(2, "POST /v1/confirmation/{confirmation_id}/{credential}");
@@ -70,12 +72,13 @@ void RedeemUnblindedToken::CreateConfirmation(
   BLOG(7, UrlRequestHeadersToString(url_request));
 
   auto callback = std::bind(&RedeemUnblindedToken::OnCreateConfirmation, this,
-                            std::placeholders::_1, confirmation);
+                            std::placeholders::_1, wallet, confirmation);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
 void RedeemUnblindedToken::OnCreateConfirmation(
     const UrlResponse& url_response,
+    const WalletInfo& wallet,
     const ConfirmationInfo& confirmation) {
   DCHECK(!confirmation.id.empty());
 
@@ -90,6 +93,13 @@ void RedeemUnblindedToken::OnCreateConfirmation(
     // not, i.e. after an internal server error 500
     BLOG(1, "Duplicate/bad confirmation");
   }
+
+  if (!wallet.IsValid()) {
+    BLOG(1, "Non-wallet confirmation");
+    return;
+  }
+
+  // TODO(Moritz Haller): what else don't we have to load w/o wallet?
 
   ConfirmationInfo new_confirmation = confirmation;
   new_confirmation.created = true;

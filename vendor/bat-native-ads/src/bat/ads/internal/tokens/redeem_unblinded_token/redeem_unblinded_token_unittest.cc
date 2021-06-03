@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "bat/ads/internal/account/wallet/wallet.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
@@ -38,6 +39,14 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
 
   privacy::UnblindedTokens* get_unblinded_tokens() {
     return ConfirmationsState::Get()->get_unblinded_tokens();
+  }
+
+  WalletInfo GetWallet() {
+    Wallet wallet;
+    wallet.Set("27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
+               "x5uBvgI5MTTVY6sjGv65e9EHr8v7i+UxkFB9qVc5fP0=");
+
+    return wallet.Get();
   }
 
   void SetUnblindedTokens() {
@@ -143,7 +152,8 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedToken) {
               OnFailedToRedeemUnblindedToken(_, _))
       .Times(0);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  const WalletInfo wallet = GetWallet();
+  redeem_unblinded_token_->Redeem(wallet, confirmation);
 
   // Assert
 }
@@ -188,7 +198,8 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RetryRedeemingUnblindedToken) {
               OnFailedToRedeemUnblindedToken(_, _))
       .Times(0);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  const WalletInfo wallet = GetWallet();
+  redeem_unblinded_token_->Redeem(wallet, confirmation);
 
   // Assert
 }
@@ -223,7 +234,8 @@ TEST_F(
               OnFailedToRedeemUnblindedToken(expected_confirmation, true))
       .Times(1);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  const WalletInfo wallet = GetWallet();
+  redeem_unblinded_token_->Redeem(wallet, confirmation);
 
   // Assert
 }
@@ -258,9 +270,12 @@ TEST_F(
               OnFailedToRedeemUnblindedToken(expected_confirmation, true))
       .Times(1);
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  const WalletInfo wallet = GetWallet();
+  redeem_unblinded_token_->Redeem(wallet, confirmation);
 
   // Assert
 }
+
+// TODO(Moritz Haller): Add tests for non-wallet calls?
 
 }  // namespace ads
