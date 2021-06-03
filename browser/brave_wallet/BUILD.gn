@@ -20,6 +20,12 @@ source_set("brave_wallet") {
     "//extensions/buildflags",
     "//services/network/public/cpp",
   ]
+  if (is_android) {
+    sources += [
+      "./android/brave_wallet_native_worker.cc",
+      "./android/brave_wallet_native_worker.h",
+    ]
+  }
   if (enable_extensions) {
     deps += [
       "//brave/browser/extensions",

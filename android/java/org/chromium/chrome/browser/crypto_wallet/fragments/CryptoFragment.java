@@ -34,6 +34,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AddAccountOnboardingDialog;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.CryptoWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
@@ -150,6 +151,9 @@ public class CryptoFragment extends Fragment {
         });
 
         recoveryPhraseButton.setOnClickListener(v -> {
+            // TODO(sergz): do something with a mnemonic string that CreateWallet returns
+            BraveWalletNativeWorker.getInstance().CreateWallet(
+                passwordEdittext.getText().toString());
             onFinishOnboarding.onFinish();
             showAddAccountDialog();
         });
@@ -221,8 +225,8 @@ public class CryptoFragment extends Fragment {
                     break;
                 case BiometricPrompt.BIOMETRIC_ERROR_NO_BIOMETRICS:
                     Toast.makeText(getActivity(), "User did not register any fingerprints.",
-                                 Toast.LENGTH_SHORT)
-                            .show();
+                                Toast.LENGTH_SHORT)
+                           .show();
                     break;
                 default:
                     Toast.makeText(getActivity(), "unrecoverable error", Toast.LENGTH_SHORT).show();

@@ -55,6 +55,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackTab.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/StackViewAnimation.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AddAccountOnboardingDialog.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletNativeWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/CryptoWalletActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/RecoveryPhraseAdapter.java",

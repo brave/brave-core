@@ -20,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletNativeWorker;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletNavigationFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CardsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CryptoFragment;
@@ -102,6 +103,7 @@ public class CryptoWalletActivity extends AppCompatActivity {
             } else if (itemId == R.id.navigation_lock) {
                 viewPager.setCurrentItem(4);
                 initTitle(4);
+                BraveWalletNativeWorker.getInstance().LockWallet();
                 return true;
             }
             return false;
