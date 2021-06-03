@@ -123,8 +123,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
 
   // ipfs:// navigations have no tab origin set, but we want it to be the tab
   // origin of the gateway so that ad-block in particular won't give up early.
-  if (ipfs::IsLocalGatewayConfigured(prefs) &&
-      ctx->tab_origin.is_empty() &&
+  if (ipfs::IsLocalGatewayConfigured(prefs) && ctx->tab_origin.is_empty() &&
       ipfs::IsLocalGatewayURL(ctx->initiator_url)) {
     ctx->tab_url = ctx->initiator_url;
     ctx->tab_origin = ctx->initiator_url.GetOrigin();

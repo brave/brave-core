@@ -67,7 +67,8 @@ KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
 // static
 bool IpfsServiceFactory::IsIpfsEnabled(content::BrowserContext* context) {
   auto* prefs = user_prefs::UserPrefs::Get(context);
-  return (brave::IsRegularProfile(context) && !IsIpfsDisabled(prefs));
+  return (brave::IsRegularProfile(context) &&
+          !IsIpfsDisabledByFeatureOrPolicy(prefs));
 }
 
 }  // namespace ipfs

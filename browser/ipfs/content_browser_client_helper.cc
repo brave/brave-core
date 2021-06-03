@@ -74,8 +74,7 @@ bool HandleIPFSURLRewrite(
   if (url->DomainIs(kLocalhostIP)) {
     GURL::Replacements replacements;
     replacements.SetHostStr(kLocalhostDomain);
-    if (IsDefaultGatewayURL(url->ReplaceComponents(replacements),
-                            prefs)) {
+    if (IsDefaultGatewayURL(url->ReplaceComponents(replacements), prefs)) {
       *url = url->ReplaceComponents(replacements);
       return true;
     }
@@ -84,7 +83,7 @@ bool HandleIPFSURLRewrite(
   if (decentralized_dns::IsENSTLD(*url) &&
       decentralized_dns::IsENSResolveMethodEthereum(
           g_browser_process->local_state()) &&
-      IsLocalGatewayConfigured(browser_context)) {
+      IsLocalGatewayConfigured(prefs)) {
     return true;
   }
   return false;
@@ -108,9 +107,8 @@ bool HandleIPFSURLReverseRewrite(
   if (!ipfs::IsValidCID(url->host().substr(0, cid_end)))
     return false;
 
-  GURL configured_gateway =
-      GetConfiguredBaseGateway(user_prefs::UserPrefs::Get(browser_context),
-                               chrome::GetChannel());
+  GURL configured_gateway = GetConfiguredBaseGateway(
+      user_prefs::UserPrefs::Get(browser_context), chrome::GetChannel());
   if (configured_gateway.port() != url->port())
     return false;
   GURL::Replacements scheme_replacements;

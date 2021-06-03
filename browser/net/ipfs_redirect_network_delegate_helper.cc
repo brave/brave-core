@@ -18,8 +18,10 @@ namespace ipfs {
 int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  if (!ctx->browser_context)
+    return net::OK;
   auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context);
-  if (!ctx->browser_context || IsIpfsResolveMethodDisabled(prefs)) {
+  if (IsIpfsResolveMethodDisabled(prefs)) {
     return net::OK;
   }
 
@@ -51,8 +53,10 @@ int OnHeadersReceived_IPFSRedirectWork(
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  if (!ctx->browser_context)
+    return net::OK;
   auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context);
-  if (!ctx->browser_context || IsIpfsResolveMethodDisabled(prefs)) {
+  if (IsIpfsResolveMethodDisabled(prefs)) {
     return net::OK;
   }
 

@@ -24,9 +24,11 @@
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/channel_info.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "components/user_prefs/user_prefs.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ipfs::IPFSResolveMethodTypes;

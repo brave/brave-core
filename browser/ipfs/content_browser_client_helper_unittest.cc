@@ -207,9 +207,9 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
   replacements.SetPortStr(port);
   gateway_url = gateway_url.ReplaceComponents(replacements);
 
-  ASSERT_EQ(
-      ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
-                                     chrome::GetChannel()), gateway_url);
+  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                           chrome::GetChannel()),
+            gateway_url);
 
   std::string source = "http://test.com.ipns.localhost:8000/";
   GURL ipns_uri(source);

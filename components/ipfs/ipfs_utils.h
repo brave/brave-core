@@ -15,7 +15,7 @@ class PrefService;
 
 namespace ipfs {
 
-bool IsIpfsDisabled(PrefService* prefs);
+bool IsIpfsDisabledByFeatureOrPolicy(PrefService* prefs);
 bool IsIpfsMenuEnabled(PrefService* prefs);
 bool IsIpfsDisabledByPolicy(PrefService* prefs);
 bool IsValidCID(const std::string& cid);

@@ -72,7 +72,7 @@ typedef WebUIController* (*WebUIFactoryFunction)(WebUI* web_ui,
 WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   Profile* profile = Profile::FromBrowserContext(
-    web_ui->GetWebContents()->GetBrowserContext());
+      web_ui->GetWebContents()->GetBrowserContext());
   if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
   } else if (host == kWebcompatReporterHost) {

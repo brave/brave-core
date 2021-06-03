@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -35,6 +34,7 @@
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/views/location_bar/ipfs_location_view.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"

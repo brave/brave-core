@@ -265,9 +265,9 @@ GURL IpfsImportController::CreateAndCopyShareableLink(
       ipfs = ipfs::kIPNSScheme + std::string("://") + key;
     }
   }
-  auto shareable_link =
-      ipfs::ToPublicGatewayURL(GURL(ipfs),
-        user_prefs::UserPrefs::Get(web_contents_->GetBrowserContext()));
+  auto shareable_link = ipfs::ToPublicGatewayURL(
+      GURL(ipfs),
+      user_prefs::UserPrefs::Get(web_contents_->GetBrowserContext()));
   if (!shareable_link.is_valid())
     return GURL();
   if (!data.filename.empty())

@@ -820,14 +820,14 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
   ASSERT_TRUE(result.error.empty());
   // Make sure main frame URL didn't change
   auto* prefs = browser()->profile()->GetPrefs();
-  EXPECT_EQ(contents->GetURL(), ipfs::GetIPFSGatewayURL(
-      "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content",
-      GetDefaultIPFSGateway(prefs)));
   EXPECT_EQ(
-      ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
+      contents->GetLastCommittedURL(),
       ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
-                              "simple_content_2",
-                              GetDefaultIPFSGateway(prefs)));
+                              "simple_content", GetDefaultIPFSGateway(prefs)));
+  EXPECT_EQ(ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
+            ipfs::GetIPFSGatewayURL(
+                "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
+                "simple_content_2", GetDefaultIPFSGateway(prefs)));
 }
 
 // Make sure an <img src="ipfs://..."> can load within another ipfs:// scheme

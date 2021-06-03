@@ -223,8 +223,7 @@ TEST_F(IpfsUtilsUnitTest, GetConfiguredBaseGateway) {
       ipfs::GetConfiguredBaseGateway(prefs(), version_info::Channel::UNKNOWN);
   ASSERT_EQ(url, GURL("https://dweb.link/"));
   SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
-  url =
-      ipfs::GetConfiguredBaseGateway(prefs(), version_info::Channel::UNKNOWN);
+  url = ipfs::GetConfiguredBaseGateway(prefs(), version_info::Channel::UNKNOWN);
   ASSERT_EQ(url, GURL("http://localhost:48080/"));
 }
 
@@ -249,8 +248,7 @@ TEST_F(IpfsUtilsUnitTest, ResolveIPFSURI) {
 
 TEST_F(IpfsUtilsUnitTest, GetDefaultIPFSGateway) {
   prefs()->SetString(kIPFSPublicGatewayAddress, "https://example.com/");
-  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(prefs()),
-            GURL("https://example.com/"));
+  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(prefs()), GURL("https://example.com/"));
   prefs()->SetString(kIPFSPublicGatewayAddress, "https://127.0.0.1:8888/");
   EXPECT_EQ(ipfs::GetDefaultIPFSGateway(prefs()),
             GURL("https://localhost:8888/"));
