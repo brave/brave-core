@@ -11,6 +11,7 @@ source_set("unittests") {
   sources = [
     "//brave/browser/ipfs/content_browser_client_helper_unittest.cc",
     "//brave/browser/ipfs/ipfs_host_resolver_unittest.cc",
+    "//brave/browser/ipfs/ipfs_tab_helper_unittest.cc",
     "//brave/browser/ipfs/test/ipfs_navigation_throttle_unittest.cc",
     "//brave/browser/net/ipfs_redirect_network_delegate_helper_unittest.cc",
   ]
@@ -22,6 +23,7 @@ source_set("unittests") {
     "//brave/browser/tor",
     "//brave/components/ipfs",
     "//brave/components/tor/buildflags",
+    "//chrome/common:channel_info",
     "//chrome/test:test_support",
     "//content/test:test_support",
     "//net",
