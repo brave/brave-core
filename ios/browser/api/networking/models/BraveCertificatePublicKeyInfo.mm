@@ -46,6 +46,7 @@
             if (n && e) {
               _exponent = BN_get_word(e);
               //_keySizeInBits = BN_num_bits(n);
+              _keyHexEncoded = brave::string_to_ns(x509_utils::hex_string_from_BIGNUM(n));  // The modulus is the raw key
             }
           }
         }
@@ -61,6 +62,13 @@
             if (p) {
               _keySizeInBits = BN_num_bits(p);
             }
+            
+            const BIGNUM* pub_key = nullptr;
+            const BIGNUM* priv_key = nullptr;
+            DSA_get0_key(dsa_key, &pub_key, &priv_key);  // Decode the key by removing its ASN1 sequence
+            if (pub_key) {
+              _keyHexEncoded = brave::string_to_ns(x509_utils::hex_string_from_BIGNUM(pub_key));
+            }
           }
         }
           break;
@@ -74,6 +82,13 @@
             DH_get0_pqg(dh_key, &p, &q, &g);
             if (p) {
               _keySizeInBits = BN_num_bits(p);
+            }
+            
+            const BIGNUM* pub_key = nullptr;
+            const BIGNUM* priv_key = nullptr;
+            DH_get0_key(dh_key, &pub_key, &priv_key);  // Decode the key by removing its ASN1 sequence
+            if (pub_key) {
+              _keyHexEncoded = brave::string_to_ns(x509_utils::hex_string_from_BIGNUM(pub_key));
             }
           }
         }
@@ -90,6 +105,19 @@
               _curveName = brave::string_to_ns(OBJ_nid2sn(name_nid));
               _nistCurveName = brave::string_to_ns(
                                                 x509_utils::EC_curve_nid2nist(name_nid));
+              
+              #ifndef OPENSSL_IS_BORINGSSL  // BoringSSL missing support for EC_GROUP_get_point_conversion_form
+              unsigned char* ec_pub_key = nullptr;
+              std::size_t length = EC_KEY_key2buf(ec_key, EC_GROUP_get_point_conversion_form(group), &ec_pub_key, nullptr);
+              if (ec_pub_key) {
+                if (length > 0) {
+                  std::vector<std::uint8_t> buffer = std::vector<std::uint8_t>(length);
+                  std::memcpy(&buffer[0], ec_pub_key, length);
+                  _keyHexEncoded = brave::string_to_ns(x509_utils::hex_string_from_bytes(buffer));
+                }
+                OPENSSL_free(ec_pub_key);
+              }
+              #endif
             }
           }
         }
@@ -99,10 +127,13 @@
     }
     
     // X509_PUB_KEY->public_key != EVP_PKEY
-    ASN1_BIT_STRING* key_bits = X509_get0_pubkey_bitstr(certificate);
-    if (key_bits) {
-      _keyHexEncoded = brave::string_to_ns(
-                                    x509_utils::hex_string_from_ASN1_BIT_STRING(key_bits));
+    if (![_keyHexEncoded length]) {
+      // When the key type cannot be decoded, the best we can do is display the ASN1 DER encoded key as hexadecimal
+      ASN1_BIT_STRING* key_bits = X509_get0_pubkey_bitstr(certificate);
+      if (key_bits) {
+        _keyHexEncoded = brave::string_to_ns(
+                                      x509_utils::hex_string_from_ASN1_BIT_STRING(key_bits));
+      }
     }
     
     X509_PUBKEY* pub_key = X509_get_X509_PUBKEY(certificate);

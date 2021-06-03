@@ -217,7 +217,7 @@ std::string hex_string_from_ASN1STRING(const ASN1_STRING* string)
   return std::string();
 }
 
-std::string hex_string_from_ASN1_BIT_STRING(ASN1_BIT_STRING* string) {
+std::string hex_string_from_ASN1_BIT_STRING(const ASN1_BIT_STRING* string) {
   std::size_t length = ASN1_STRING_length(string);
   const unsigned char* data = ASN1_STRING_get0_data(string);
   
@@ -246,7 +246,7 @@ std::string hex_string_from_ASN1_BIT_STRING(ASN1_BIT_STRING* string) {
   return std::string();
 }
 
-std::string string_from_ASN1INTEGER(ASN1_INTEGER* integer)
+std::string string_from_ASN1INTEGER(const ASN1_INTEGER* integer)
 {
   std::string result;
   if (integer) {
@@ -259,7 +259,7 @@ std::string string_from_ASN1INTEGER(ASN1_INTEGER* integer)
   return result;
 }
 
-std::string hex_string_from_ASN1INTEGER(ASN1_INTEGER* integer)
+std::string hex_string_from_ASN1INTEGER(const ASN1_INTEGER* integer)
 {
   std::string result;
   if (integer) {
@@ -270,6 +270,23 @@ std::string hex_string_from_ASN1INTEGER(ASN1_INTEGER* integer)
         result += hex_characters[(data[i] & 0xF0) >> 4];
         result += hex_characters[(data[i] & 0x0F) >> 0];
       }
+    }
+  }
+  return result;
+}
+
+std::string hex_string_from_BIGNUM(const BIGNUM* big_num)
+{
+  std::string result;
+  if (big_num) {
+    char* hex = BN_bn2hex(big_num);
+    if (hex) {
+      result = hex;
+      OPENSSL_free(hex);
+      std::transform(result.begin(),
+                     result.end(),
+                     result.begin(),
+                     [](unsigned char c) -> unsigned char { return std::toupper(c); });
     }
   }
   return result;
@@ -658,18 +675,9 @@ std::string serial_number_from_certificate(X509* certificate) {
       }
       
       // Could not convert to decimal, so we convert to hex
-      char* hex = BN_bn2hex(big_num_serial);
-      if (hex) {
-        std::string result = hex;
-        OPENSSL_free(hex);
-        BN_free(big_num_serial);
-        std::transform(result.begin(),
-                       result.end(),
-                       result.begin(),
-                       [](unsigned char c) -> unsigned char { return std::toupper(c); });
-        return result;
-      }
+      std::string result = x509_utils::hex_string_from_BIGNUM(big_num_serial);
       BN_free(big_num_serial);
+      return result;
     }
   }
   return std::string();
