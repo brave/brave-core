@@ -50,6 +50,7 @@
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/resources/language_components.h"
 #include "bat/ads/internal/search_engine/search_providers.h"
+#include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/internal/string_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
@@ -130,8 +131,12 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   conversions_resource_->Load();
 }
 
-void AdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
-  subdivision_targeting_->MaybeFetchForCurrentLocale();
+void AdsImpl::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kAdsPerHour) {
+    ad_notification_serving_->OnAdsPerHourChanged();
+  } else if (path == prefs::kAdsSubdivisionTargetingCode) {
+    subdivision_targeting_->MaybeFetchForCurrentLocale();
+  }
 }
 
 void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
@@ -602,8 +607,9 @@ void AdsImpl::MaybeServeAdNotificationsAtRegularIntervals() {
     return;
   }
 
-  if (BrowserManager::Get()->IsActive() ||
-      AdsClientHelper::Get()->CanShowBackgroundNotifications()) {
+  if ((BrowserManager::Get()->IsActive() ||
+       AdsClientHelper::Get()->CanShowBackgroundNotifications()) &&
+      settings::GetAdsPerHour() > 0) {
     ad_notification_serving_->ServeAtRegularIntervals();
   } else {
     ad_notification_serving_->StopServing();

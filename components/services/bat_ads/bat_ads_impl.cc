@@ -66,8 +66,8 @@ void BatAdsImpl::ChangeLocale(
   ads_->ChangeLocale(locale);
 }
 
-void BatAdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
-  ads_->OnAdsSubdivisionTargetingCodeHasChanged();
+void BatAdsImpl::OnPrefChanged(const std::string& path) {
+  ads_->OnPrefChanged(path);
 }
 
 void BatAdsImpl::OnHtmlLoaded(const int32_t tab_id,

@@ -383,7 +383,7 @@ void MockClearPref(const std::unique_ptr<AdsClientMock>& mock) {
 void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   mock->SetBooleanPref(prefs::kEnabled, true);
 
-  mock->SetUint64Pref(prefs::kAdsPerHour, 0);
+  mock->SetInt64Pref(prefs::kAdsPerHour, -1);
 
   mock->SetIntegerPref(prefs::kIdleTimeThreshold, 15);
 

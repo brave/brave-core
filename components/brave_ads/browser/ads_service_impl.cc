@@ -271,28 +271,16 @@ void AdsServiceImpl::SetAllowConversionTracking(const bool should_allow) {
   SetBooleanPref(ads::prefs::kShouldAllowConversionTracking, should_allow);
 }
 
-void AdsServiceImpl::SetAdsPerHour(const uint64_t ads_per_hour) {
+void AdsServiceImpl::SetAdsPerHour(const int64_t ads_per_hour) {
   DCHECK(ads_per_hour >= ads::kMinimumAdNotificationsPerHour &&
          ads_per_hour <= ads::kMaximumAdNotificationsPerHour);
-  SetUint64Pref(ads::prefs::kAdsPerHour, ads_per_hour);
+  SetInt64Pref(ads::prefs::kAdsPerHour, ads_per_hour);
 }
 
 void AdsServiceImpl::SetAdsSubdivisionTargetingCode(
     const std::string& subdivision_targeting_code) {
-  const auto last_subdivision_targeting_code = GetAdsSubdivisionTargetingCode();
-
   SetStringPref(ads::prefs::kAdsSubdivisionTargetingCode,
                 subdivision_targeting_code);
-
-  if (last_subdivision_targeting_code == subdivision_targeting_code) {
-    return;
-  }
-
-  if (!connected()) {
-    return;
-  }
-
-  bat_ads_->OnAdsSubdivisionTargetingCodeHasChanged();
 }
 
 void AdsServiceImpl::SetAutoDetectedAdsSubdivisionTargetingCode(
@@ -309,6 +297,14 @@ void AdsServiceImpl::ChangeLocale(const std::string& locale) {
   RegisterResourceComponentsForLocale(locale);
 
   bat_ads_->ChangeLocale(locale);
+}
+
+void AdsServiceImpl::OnPrefChanged(const std::string& path) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->OnPrefChanged(path);
 }
 
 void AdsServiceImpl::OnHtmlLoaded(const SessionID& tab_id,
@@ -522,9 +518,9 @@ bool AdsServiceImpl::IsEnabled() const {
   return GetBooleanPref(ads::prefs::kEnabled);
 }
 
-uint64_t AdsServiceImpl::GetAdsPerHour() const {
-  uint64_t ads_per_hour = GetUint64Pref(ads::prefs::kAdsPerHour);
-  if (ads_per_hour == 0) {
+int64_t AdsServiceImpl::GetAdsPerHour() const {
+  int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+  if (ads_per_hour == -1) {
     const base::Feature kAdServing{"AdServing",
                                    base::FEATURE_ENABLED_BY_DEFAULT};
 
@@ -534,8 +530,8 @@ uint64_t AdsServiceImpl::GetAdsPerHour() const {
   }
 
   return base::ClampToRange(
-      ads_per_hour, static_cast<uint64_t>(ads::kMinimumAdNotificationsPerHour),
-      static_cast<uint64_t>(ads::kMaximumAdNotificationsPerHour));
+      ads_per_hour, static_cast<int64_t>(ads::kMinimumAdNotificationsPerHour),
+      static_cast<int64_t>(ads::kMaximumAdNotificationsPerHour));
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
@@ -1579,8 +1575,8 @@ void AdsServiceImpl::MigratePrefsVersion8To9() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion9To10() {
-  const uint64_t ads_per_hour = GetUint64Pref(ads::prefs::kAdsPerHour);
-  if (ads_per_hour == 0) {
+  const int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
+  if (ads_per_hour == -1) {
     // Default value
     return;
   }
@@ -1590,7 +1586,7 @@ void AdsServiceImpl::MigratePrefsVersion9To10() {
     return;
   }
 
-  SetUint64Pref(ads::prefs::kAdsPerHour, 0);
+  SetInt64Pref(ads::prefs::kAdsPerHour, -1);
 }
 
 bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
@@ -2072,6 +2068,7 @@ bool AdsServiceImpl::GetBooleanPref(const std::string& path) const {
 
 void AdsServiceImpl::SetBooleanPref(const std::string& path, const bool value) {
   profile_->GetPrefs()->SetBoolean(path, value);
+  OnPrefChanged(path);
 }
 
 int AdsServiceImpl::GetIntegerPref(const std::string& path) const {
@@ -2080,6 +2077,7 @@ int AdsServiceImpl::GetIntegerPref(const std::string& path) const {
 
 void AdsServiceImpl::SetIntegerPref(const std::string& path, const int value) {
   profile_->GetPrefs()->SetInteger(path, value);
+  OnPrefChanged(path);
 }
 
 double AdsServiceImpl::GetDoublePref(const std::string& path) const {
@@ -2089,6 +2087,7 @@ double AdsServiceImpl::GetDoublePref(const std::string& path) const {
 void AdsServiceImpl::SetDoublePref(const std::string& path,
                                    const double value) {
   profile_->GetPrefs()->SetDouble(path, value);
+  OnPrefChanged(path);
 }
 
 std::string AdsServiceImpl::GetStringPref(const std::string& path) const {
@@ -2098,6 +2097,7 @@ std::string AdsServiceImpl::GetStringPref(const std::string& path) const {
 void AdsServiceImpl::SetStringPref(const std::string& path,
                                    const std::string& value) {
   profile_->GetPrefs()->SetString(path, value);
+  OnPrefChanged(path);
 }
 
 int64_t AdsServiceImpl::GetInt64Pref(const std::string& path) const {
@@ -2112,6 +2112,7 @@ int64_t AdsServiceImpl::GetInt64Pref(const std::string& path) const {
 void AdsServiceImpl::SetInt64Pref(const std::string& path,
                                   const int64_t value) {
   profile_->GetPrefs()->SetInt64(path, value);
+  OnPrefChanged(path);
 }
 
 uint64_t AdsServiceImpl::GetUint64Pref(const std::string& path) const {
@@ -2126,10 +2127,12 @@ uint64_t AdsServiceImpl::GetUint64Pref(const std::string& path) const {
 void AdsServiceImpl::SetUint64Pref(const std::string& path,
                                    const uint64_t value) {
   profile_->GetPrefs()->SetUint64(path, value);
+  OnPrefChanged(path);
 }
 
 void AdsServiceImpl::ClearPref(const std::string& path) {
   profile_->GetPrefs()->ClearPref(path);
+  OnPrefChanged(path);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

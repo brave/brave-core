@@ -81,8 +81,8 @@ class ADS_EXPORT Ads {
   // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format
   virtual void ChangeLocale(const std::string& locale) = 0;
 
-  // Should be called when the ads subdivision targeting code has changed
-  virtual void OnAdsSubdivisionTargetingCodeHasChanged() = 0;
+  // Should be called when a pref changes. |path| contains the pref path
+  virtual void OnPrefChanged(const std::string& path) = 0;
 
   // Should be called when a page has loaded and the content is available for
   // analysis. |redirect_chain| contains the chain of redirects, including

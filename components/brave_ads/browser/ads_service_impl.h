@@ -89,8 +89,8 @@ class AdsServiceImpl : public AdsService,
 
   void SetAllowConversionTracking(const bool should_allow) override;
 
-  uint64_t GetAdsPerHour() const override;
-  void SetAdsPerHour(const uint64_t ads_per_hour) override;
+  int64_t GetAdsPerHour() const override;
+  void SetAdsPerHour(const int64_t ads_per_hour) override;
 
   bool ShouldAllowAdsSubdivisionTargeting() const override;
   std::string GetAdsSubdivisionTargetingCode() const override;
@@ -106,6 +106,8 @@ class AdsServiceImpl : public AdsService,
   void OnClickAdNotification(const std::string& notification_id) override;
 
   void ChangeLocale(const std::string& locale) override;
+
+  void OnPrefChanged(const std::string& path);
 
   void OnHtmlLoaded(const SessionID& tab_id,
                     const std::vector<GURL>& redirect_chain,
@@ -405,8 +407,6 @@ class AdsServiceImpl : public AdsService,
   // BackgroundHelper::Observer implementation
   void OnBackground() override;
   void OnForeground() override;
-
-  ///////////////////////////////////////////////////////////////////////////////
 
   Profile* profile_;  // NOT OWNED
 

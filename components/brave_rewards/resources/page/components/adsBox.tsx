@@ -174,7 +174,7 @@ class AdsBox extends React.Component<Props, State> {
               value={adsPerHour.toString()}
               onChange={this.onAdsSettingChange.bind(this, 'adsPerHour')}
             >
-              {['1', '2', '3', '4', '5'].map((num: string) => {
+              {['0', '1', '2', '3', '4', '5', '10'].map((num: string) => {
                 return (
                   <div key={`num-per-hour-${num}`} data-value={num}>
                     {getLocale(`adsPerHour${num}`)}

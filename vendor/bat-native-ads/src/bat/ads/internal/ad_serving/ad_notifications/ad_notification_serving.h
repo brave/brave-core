@@ -44,10 +44,10 @@ class AdServing {
   ~AdServing();
 
   void ServeAtRegularIntervals();
-
   void StopServing();
-
   void MaybeServe();
+
+  void OnAdsPerHourChanged();
 
  private:
   // TODO(https://github.com/brave/brave-browser/issues/12315): Update
@@ -63,6 +63,8 @@ class AdServing {
                            PacingAndPrioritization);
 
   bool NextIntervalHasElapsed();
+
+  void MaybeServeNextAd();
 
   base::Time MaybeServeAfter(const base::TimeDelta delay);
 
