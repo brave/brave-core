@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/speedreader/speedreader_bubble_single_page.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
 
 #include <memory>
 #include <string>
@@ -58,19 +58,18 @@ class ReaderButton : public views::MdTextButton {
   ~ReaderButton() override = default;
 };
 
-SpeedreaderBubbleSinglePage::SpeedreaderBubbleSinglePage(
-    views::View* anchor_view,
-    SpeedreaderTabHelper* tab_helper)
+ReaderModeBubble::ReaderModeBubble(views::View* anchor_view,
+                                   SpeedreaderTabHelper* tab_helper)
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
       tab_helper_(tab_helper) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
 }
 
-void SpeedreaderBubbleSinglePage::Show() {
+void ReaderModeBubble::Show() {
   ShowForReason(USER_GESTURE);
 }
 
-void SpeedreaderBubbleSinglePage::Hide() {
+void ReaderModeBubble::Hide() {
   if (tab_helper_) {
     tab_helper_->OnBubbleClosed();
     tab_helper_ = nullptr;
@@ -78,24 +77,24 @@ void SpeedreaderBubbleSinglePage::Hide() {
   CloseBubble();
 }
 
-gfx::Size SpeedreaderBubbleSinglePage::CalculatePreferredSize() const {
+gfx::Size ReaderModeBubble::CalculatePreferredSize() const {
   return gfx::Size(
       kBubbleWidth,
       LocationBarBubbleDelegateView::CalculatePreferredSize().height());
 }
 
-bool SpeedreaderBubbleSinglePage::ShouldShowCloseButton() const {
+bool ReaderModeBubble::ShouldShowCloseButton() const {
   return true;
 }
 
-void SpeedreaderBubbleSinglePage::WindowClosing() {
+void ReaderModeBubble::WindowClosing() {
   if (tab_helper_) {
     tab_helper_->OnBubbleClosed();
     tab_helper_ = nullptr;
   }
 }
 
-void SpeedreaderBubbleSinglePage::Init() {
+void ReaderModeBubble::Init() {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(),
       kBoxLayoutChildSpacing));
@@ -113,7 +112,7 @@ void SpeedreaderBubbleSinglePage::Init() {
   auto global_toggle_label = BuildLabelWithEndingLink(
       l10n_util::GetStringUTF16(IDS_SPEEDREADER_EXPLANATION),
       l10n_util::GetStringUTF16(IDS_LEARN_MORE),
-      base::BindRepeating(&SpeedreaderBubbleSinglePage::OnLinkClicked,
+      base::BindRepeating(&ReaderModeBubble::OnLinkClicked,
                           base::Unretained(this)));
   global_toggle_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   global_toggle_label->SetLineHeight(kLineHeight);
@@ -121,27 +120,27 @@ void SpeedreaderBubbleSinglePage::Init() {
 
   // Enable Speedreader button
   auto enable_speedreader_button = std::make_unique<ReaderButton>(
-      base::BindRepeating(&SpeedreaderBubbleSinglePage::OnButtonPressed,
+      base::BindRepeating(&ReaderModeBubble::OnButtonPressed,
                           base::Unretained(this)),
       l10n_util::GetStringUTF16(IDS_SPEEDREADER_ENABLE_BUTTON));
   enable_speedreader_button_ =
       AddChildView(std::move(enable_speedreader_button));
 }
 
-void SpeedreaderBubbleSinglePage::OnButtonPressed(const ui::Event& event) {
+void ReaderModeBubble::OnButtonPressed(const ui::Event& event) {
   // FIXME: Tie up this logic to the speedreader service. Enable Speedreader
   // globally.
   NOTIMPLEMENTED();
 }
 
-void SpeedreaderBubbleSinglePage::OnLinkClicked(const ui::Event& event) {
+void ReaderModeBubble::OnLinkClicked(const ui::Event& event) {
   tab_helper_->web_contents()->OpenURL(content::OpenURLParams(
       GURL(kSpeedreaderLearnMoreUrl), content::Referrer(),
       WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
       false));
 }
 
-BEGIN_METADATA(SpeedreaderBubbleSinglePage, LocationBarBubbleDelegateView)
+BEGIN_METADATA(ReaderModeBubble, LocationBarBubbleDelegateView)
 END_METADATA
 
 }  // namespace speedreader

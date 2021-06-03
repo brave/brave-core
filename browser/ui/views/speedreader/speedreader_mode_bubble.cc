@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/speedreader/speedreader_bubble_global.h"
+#include "brave/browser/ui/views/speedreader/speedreader_mode_bubble.h"
 
 #include <memory>
 #include <string>
@@ -50,19 +50,18 @@ constexpr SkColor kColorButtonThumb = SkColorSetRGB(0x4c, 0x54, 0xd2);
 
 namespace speedreader {
 
-SpeedreaderBubbleGlobal::SpeedreaderBubbleGlobal(
-    views::View* anchor_view,
-    SpeedreaderTabHelper* tab_helper)
+SpeedreaderModeBubble::SpeedreaderModeBubble(views::View* anchor_view,
+                                             SpeedreaderTabHelper* tab_helper)
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
       tab_helper_(tab_helper) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
 }
 
-void SpeedreaderBubbleGlobal::Show() {
+void SpeedreaderModeBubble::Show() {
   ShowForReason(USER_GESTURE);
 }
 
-void SpeedreaderBubbleGlobal::Hide() {
+void SpeedreaderModeBubble::Hide() {
   if (tab_helper_) {
     tab_helper_->OnBubbleClosed();
     tab_helper_ = nullptr;
@@ -70,24 +69,24 @@ void SpeedreaderBubbleGlobal::Hide() {
   CloseBubble();
 }
 
-gfx::Size SpeedreaderBubbleGlobal::CalculatePreferredSize() const {
+gfx::Size SpeedreaderModeBubble::CalculatePreferredSize() const {
   return gfx::Size(
       kBubbleWidth,
       LocationBarBubbleDelegateView::CalculatePreferredSize().height());
 }
 
-bool SpeedreaderBubbleGlobal::ShouldShowCloseButton() const {
+bool SpeedreaderModeBubble::ShouldShowCloseButton() const {
   return true;
 }
 
-void SpeedreaderBubbleGlobal::WindowClosing() {
+void SpeedreaderModeBubble::WindowClosing() {
   if (tab_helper_) {
     tab_helper_->OnBubbleClosed();
     tab_helper_ = nullptr;
   }
 }
 
-void SpeedreaderBubbleGlobal::Init() {
+void SpeedreaderModeBubble::Init() {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(),
       kBoxLayoutChildSpacing));
@@ -127,7 +126,7 @@ void SpeedreaderBubbleGlobal::Init() {
       views::BoxLayout::MainAxisAlignment::kEnd);
   auto site_toggle_button =
       std::make_unique<views::ToggleButton>(base::BindRepeating(
-          &SpeedreaderBubbleGlobal::OnButtonPressed, base::Unretained(this)));
+          &SpeedreaderModeBubble::OnButtonPressed, base::Unretained(this)));
   // TODO(keur): We shoud be able to remove these once brave overrides
   // views::ToggleButton globally with our own theme
   site_toggle_button->SetThumbOnColor(kColorButtonThumb);
@@ -140,25 +139,25 @@ void SpeedreaderBubbleGlobal::Init() {
   auto site_toggle_explanation = BuildLabelWithEndingLink(
       l10n_util::GetStringUTF16(IDS_SPEEDREADER_DISABLE_THIS_SITE),
       l10n_util::GetStringUTF16(IDS_SETTINGS_TITLE),
-      base::BindRepeating(&SpeedreaderBubbleGlobal::OnLinkClicked,
+      base::BindRepeating(&SpeedreaderModeBubble::OnLinkClicked,
                           base::Unretained(this)));
   site_toggle_explanation_ = AddChildView(std::move(site_toggle_explanation));
 }
 
-void SpeedreaderBubbleGlobal::OnButtonPressed(const ui::Event& event) {
+void SpeedreaderModeBubble::OnButtonPressed(const ui::Event& event) {
   // FIXME: Tie up this logic to the speedreader service. Disable just this
   // domain.
   NOTIMPLEMENTED();
 }
 
-void SpeedreaderBubbleGlobal::OnLinkClicked(const ui::Event& event) {
+void SpeedreaderModeBubble::OnLinkClicked(const ui::Event& event) {
   tab_helper_->web_contents()->OpenURL(
       content::OpenURLParams(GURL("chrome://settings"), content::Referrer(),
                              WindowOpenDisposition::NEW_FOREGROUND_TAB,
                              ui::PAGE_TRANSITION_LINK, false));
 }
 
-BEGIN_METADATA(SpeedreaderBubbleGlobal, LocationBarBubbleDelegateView)
+BEGIN_METADATA(SpeedreaderModeBubble, LocationBarBubbleDelegateView)
 END_METADATA
 
 }  // namespace speedreader

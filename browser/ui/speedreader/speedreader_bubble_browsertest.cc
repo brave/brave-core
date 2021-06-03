@@ -6,7 +6,6 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
-#include "brave/browser/ui/views/speedreader/speedreader_bubble_global.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -49,7 +48,7 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
-                       InvokeUi_speedreader_single_page_basic) {
+                       InvokeUi_reader_mode_bubble_basic) {
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::Get(ActiveWebContents());
   EXPECT_FALSE(tab_helper->IsSpeedreaderEnabled());
@@ -57,7 +56,7 @@ IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
-                       InvokeUi_speedreader_global_basic) {
+                       InvokeUi_speedreader_mode_bubble_basic) {
   ToggleSpeedreader();
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::Get(ActiveWebContents());

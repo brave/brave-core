@@ -34,8 +34,8 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
-#include "brave/browser/ui/views/speedreader/speedreader_bubble_global.h"
-#include "brave/browser/ui/views/speedreader/speedreader_bubble_single_page.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
+#include "brave/browser/ui/views/speedreader/speedreader_mode_bubble.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #endif
 
@@ -233,15 +233,15 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderBubbleView* bubble = nullptr;
   if (is_enabled) {
-    auto* global_bubble = new speedreader::SpeedreaderBubbleGlobal(
+    auto* speedreader_mode_bubble = new speedreader::SpeedreaderModeBubble(
         GetLocationBarView(), tab_helper);
-    views::BubbleDialogDelegateView::CreateBubble(global_bubble);
-    bubble = global_bubble;
+    views::BubbleDialogDelegateView::CreateBubble(speedreader_mode_bubble);
+    bubble = speedreader_mode_bubble;
   } else {
-    auto* single_page_bubble = new speedreader::SpeedreaderBubbleSinglePage(
-        GetLocationBarView(), tab_helper);
-    views::BubbleDialogDelegateView::CreateBubble(single_page_bubble);
-    bubble = single_page_bubble;
+    auto* reader_mode_bubble =
+        new speedreader::ReaderModeBubble(GetLocationBarView(), tab_helper);
+    views::BubbleDialogDelegateView::CreateBubble(reader_mode_bubble);
+    bubble = reader_mode_bubble;
   }
 
   bubble->Show();

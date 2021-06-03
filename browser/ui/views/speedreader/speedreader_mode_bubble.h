@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_BUBBLE_SINGLE_PAGE_H_
-#define BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_BUBBLE_SINGLE_PAGE_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_MODE_BUBBLE_H_
+#define BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_MODE_BUBBLE_H_
+
+#include <memory>
 
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
@@ -21,26 +23,27 @@ class Event;
 namespace views {
 class View;
 class Label;
+class ToggleButton;
 class StyledLabel;
 }  // namespace views
 
 namespace speedreader {
 
-class ReaderButton;
 class SpeedreaderTabHelper;
 
-// SpeedreaderBubbleSinglePage is the bubble shown when the user has enabled
-// reader mode but has not enabled Speedreader globally
-class SpeedreaderBubbleSinglePage : public SpeedreaderBubbleView,
-                                    public LocationBarBubbleDelegateView {
+// SpeedreaderModeBubble is shown when Speedreader is enabled, a page has been
+// automatically distilled, and the user clicked the reader icon in the omnibox.
+// The bubble shows the website name and allows the user to disable future
+// automatic distillations for just this domain.
+class SpeedreaderModeBubble : public SpeedreaderBubbleView,
+                              public LocationBarBubbleDelegateView {
  public:
-  METADATA_HEADER(SpeedreaderBubbleSinglePage);
-  SpeedreaderBubbleSinglePage(views::View* anchor_view,
-                              SpeedreaderTabHelper* tab_helper);
-  SpeedreaderBubbleSinglePage(const SpeedreaderBubbleSinglePage&) = delete;
-  SpeedreaderBubbleSinglePage& operator=(const SpeedreaderBubbleSinglePage&) =
-      delete;
-  ~SpeedreaderBubbleSinglePage() override = default;
+  METADATA_HEADER(SpeedreaderModeBubble);
+  SpeedreaderModeBubble(views::View* anchor_view,
+                        SpeedreaderTabHelper* tab_helper);
+  SpeedreaderModeBubble(const SpeedreaderModeBubble&) = delete;
+  SpeedreaderModeBubble& operator=(const SpeedreaderModeBubble&) = delete;
+  ~SpeedreaderModeBubble() override = default;
 
   // SpeedreaderBubbleView:
   void Show() override;
@@ -62,11 +65,11 @@ class SpeedreaderBubbleSinglePage : public SpeedreaderBubbleView,
 
   SpeedreaderTabHelper* tab_helper_;  // weak.
 
-  views::Label* heading_label_ = nullptr;              // weak.
-  views::StyledLabel* global_toggle_label_ = nullptr;  // weak.
-  ReaderButton* enable_speedreader_button_ = nullptr;  // weak.
+  views::StyledLabel* site_title_label_ = nullptr;         // weak.
+  views::ToggleButton* site_toggle_button_ = nullptr;      // weak.
+  views::StyledLabel* site_toggle_explanation_ = nullptr;  // weak.
 };
 
 }  // namespace speedreader
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_BUBBLE_SINGLE_PAGE_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_SPEEDREADER_MODE_BUBBLE_H_
