@@ -14,6 +14,7 @@ let locale: Record<string, string> = {
   addFundsText: 'Be sure to use the address below that matches the type of cryto you own. It will be converted automatically to BAT by Uphold and appear as an increased balance in your Brave Rewards wallet. Please allow up to one hour for your wallet balance to update.',
   addFundsTitle: 'Send cryptocurrency from your external account to your Brave Rewards wallet.',
   ads: 'Ads',
+  ad: 'Ad',
   adsCurrentlyViewing: 'Your setting: maximum ads per hour: ',
   adsEarnings: 'earned from ads',
   adsHistoryFilterAll: 'All',

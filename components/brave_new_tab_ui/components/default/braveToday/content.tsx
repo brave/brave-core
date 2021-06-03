@@ -7,7 +7,7 @@ import * as React from 'react'
 import CardLoading from './cards/cardLoading'
 import CardError from './cards/cardError'
 import CardLarge from './cards/_articles/cardArticleLarge'
-import CardDeals from './cards/cardDeals'
+import CardDisplayAd from './cards/displayAd'
 import CardsGroup, { groupItemCount } from './cardsGroup'
 import Customize from './options/customize'
 import { attributeNameCardCount, Props } from './'
@@ -140,9 +140,8 @@ export default function BraveTodayContent (props: Props) {
     console.error('Brave Today: should have shown error or loading state, but ran in to an unintended code path.')
     return null
   }
-
   const displayedPageCount = Math.min(props.displayedPageCount, feed.pages.length)
-  const introCount = feed.featuredDeals ? 2 : 1
+  const introCount = 2
   return (
     <>
     {/* featured item */}
@@ -155,20 +154,18 @@ export default function BraveTodayContent (props: Props) {
         onReadFeedItem={props.onReadFeedItem}
       />
       <div {...{ [attributeNameCardCount]: 1 }} ref={registerCardCountTriggerElement} />
-      {/* deals */}
-      {feed.featuredDeals &&
       <>
-        <CardDeals
-          content={feed.featuredDeals}
-          articleToScrollTo={props.articleToScrollTo}
-          onReadFeedItem={props.onReadFeedItem}
+        <CardDisplayAd
+          onVisitDisplayAd={props.onVisitDisplayAd}
+          onViewedDisplayAd={props.onViewedDisplayAd}
+          getContent={props.getDisplayAd}
         />
-        <div {...{ [attributeNameCardCount]: 2 }} ref={registerCardCountTriggerElement} />
+        <div {...{ [attributeNameCardCount]: introCount }} ref={registerCardCountTriggerElement} />
       </>
-      }
       {
         /* Infinitely repeating collections of content. */
         Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
+          const shouldScrollToDisplayAd = props.displayAdToScrollTo === (index + 1)
           return (
             <CardsGroup
               key={index}
@@ -176,10 +173,14 @@ export default function BraveTodayContent (props: Props) {
               content={feed.pages[index]}
               publishers={publishers}
               articleToScrollTo={props.articleToScrollTo}
+              shouldScrollToDisplayAd={shouldScrollToDisplayAd}
               onReadFeedItem={props.onReadFeedItem}
               onPeriodicCardViews={registerCardCountTriggerElement}
               onSetPublisherPref={props.onSetPublisherPref}
               onPromotedItemViewed={props.onPromotedItemViewed}
+              onVisitDisplayAd={props.onVisitDisplayAd}
+              onViewedDisplayAd={props.onViewedDisplayAd}
+              getDisplayAdContent={props.getDisplayAd}
             />
           )
         })

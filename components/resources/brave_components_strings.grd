@@ -285,6 +285,9 @@
       <message name="IDS_BRAVE_TODAY_PROMOTED" desc="Label for promoted content">
         Promoted
       </message>
+      <message name="IDS_BRAVE_TODAY_DISPLAY_AD_LABEL" desc="Label for an advertisement">
+        Ad
+      </message>
 
       <message name="IDS_BRAVE_NEW_TAB_STATS_TAB" desc="Brave Stats title">Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_TAB" desc="Clock title">Clock</message>

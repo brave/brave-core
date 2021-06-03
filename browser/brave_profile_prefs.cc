@@ -319,6 +319,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterListPref(kBraveTodayWeeklySessionCount);
   registry->RegisterListPref(kBraveTodayWeeklyCardViewsCount);
   registry->RegisterListPref(kBraveTodayWeeklyCardVisitsCount);
+  registry->RegisterListPref(kBraveTodayWeeklyDisplayAdViewedCount);
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   registry->RegisterIntegerPref(kERCPrefVersion, 0);
