@@ -8,8 +8,8 @@
 #ifndef BRAVE_IOS_BROWSER_API_HISTORY_HISTORY_SERVICE_LISTENER_IOS_H_
 #define BRAVE_IOS_BROWSER_API_HISTORY_HISTORY_SERVICE_LISTENER_IOS_H_
 
-#include "components/history/core/browser/history_service_observer.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
+#include "components/history/core/browser/history_service_observer.h"
 
 @interface HistoryServiceListenerImpl : NSObject <HistoryServiceListener>
 - (instancetype)init:(id<HistoryServiceObserver>)observer

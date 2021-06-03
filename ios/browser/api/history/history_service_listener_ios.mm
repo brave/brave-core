@@ -4,11 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/history/history_service_listener_ios.h"
-
-#include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "brave/ios/browser/api/history/brave_history_api.h"
-
-#include <memory>
+#include "brave/ios/browser/api/history/brave_history_observer.h"
 
 #include "base/check.h"
 #include "base/compiler_specific.h"
@@ -16,7 +13,6 @@
 
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_service_observer.h"
-#include "components/history/core/browser/history_types.h"
 
 #import "net/base/mac/url_conversions.h"
 #import "url/gurl.h"
@@ -35,9 +31,9 @@ namespace brave {
 namespace ios {
 
 HistoryServiceListenerIOS::HistoryServiceListenerIOS(
-                                                     id<HistoryServiceObserver> observer,
-                                                     history::HistoryService* service)
-: observer_(observer), service_(service) {
+    id<HistoryServiceObserver> observer,
+    history::HistoryService* service)
+    : observer_(observer), service_(service) {
   DCHECK(observer_);
   DCHECK(service_);
   service_->AddObserver(this);
@@ -49,73 +45,73 @@ HistoryServiceListenerIOS::~HistoryServiceListenerIOS() {
 }
 
 void HistoryServiceListenerIOS::OnHistoryServiceLoaded(
-                                                       history::HistoryService* service) {
+    history::HistoryService* service) {
   if ([observer_ respondsToSelector:@selector(historyServiceLoaded)]) {
     [observer_ historyServiceLoaded];
   }
 }
 
 void HistoryServiceListenerIOS::HistoryServiceBeingDeleted(
-                                                           history::HistoryService* service) {
+    history::HistoryService* service) {
   if ([observer_ respondsToSelector:@selector(historyServiceBeingDeleted)]) {
     [observer_ historyServiceBeingDeleted];
   }
 }
 
 void HistoryServiceListenerIOS::OnURLVisited(
-                                             history::HistoryService* service,
-                                             ui::PageTransition transition,
-                                             const history::URLRow& row,
-                                             const history::RedirectList& redirects,
-                                             base::Time visit_time) {
+    history::HistoryService* service,
+    ui::PageTransition transition,
+    const history::URLRow& row,
+    const history::RedirectList& redirects,
+    base::Time visit_time) {
   IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
-                                 initWithURL:net::NSURLWithGURL(row.url())
-                                 title:base::SysUTF16ToNSString(row.title())
-                                 dateAdded:[NSDate
-                                            dateWithTimeIntervalSince1970:visit_time.ToDoubleT()]];
-  
+      initWithURL:net::NSURLWithGURL(row.url())
+            title:base::SysUTF16ToNSString(row.title())
+        dateAdded:[NSDate
+                      dateWithTimeIntervalSince1970:visit_time.ToDoubleT()]];
+
   if ([observer_ respondsToSelector:@selector(historyNodeVisited:)]) {
     [observer_ historyNodeVisited:historyNode];
   }
 }
 
 void HistoryServiceListenerIOS::OnURLsModified(
-                                               history::HistoryService* history_service,
-                                               const history::URLRows& changed_urls) {
+    history::HistoryService* history_service,
+    const history::URLRows& changed_urls) {
   NSMutableArray<IOSHistoryNode*>* nodes = [[NSMutableArray alloc] init];
   for (const history::URLRow& row : changed_urls) {
     IOSHistoryNode* node = [[IOSHistoryNode alloc]
-                            initWithURL:net::NSURLWithGURL(row.url())
-                            title:base::SysUTF16ToNSString(row.title())
-                            dateAdded:[NSDate dateWithTimeIntervalSince1970:row.last_visit()
-                                       .ToDoubleT()]];
+        initWithURL:net::NSURLWithGURL(row.url())
+              title:base::SysUTF16ToNSString(row.title())
+          dateAdded:[NSDate dateWithTimeIntervalSince1970:row.last_visit()
+                     .ToDoubleT()]];
     [nodes addObject:node];
   }
-  
+
   if ([observer_ respondsToSelector:@selector(historyNodesModified:)]) {
     [observer_ historyNodesModified:nodes];
   }
 }
 
 void HistoryServiceListenerIOS::OnURLsDeleted(
-                                              history::HistoryService* history_service,
-                                              const history::DeletionInfo& deletion_info) {
+    history::HistoryService* history_service,
+    const history::DeletionInfo& deletion_info) {
   bool isAllHistory = false;
   NSMutableArray<IOSHistoryNode*>* nodes = [[NSMutableArray alloc] init];
-  
+
   if (deletion_info.IsAllHistory()) {
     isAllHistory = true;
   } else {
     for (const history::URLRow& row : deletion_info.deleted_rows()) {
       IOSHistoryNode* node = [[IOSHistoryNode alloc]
-                              initWithURL:net::NSURLWithGURL(row.url())
-                              title:base::SysUTF16ToNSString(row.title())
-                              dateAdded:[NSDate dateWithTimeIntervalSince1970:row.last_visit()
-                                         .ToDoubleT()]];
+          initWithURL:net::NSURLWithGURL(row.url())
+                title:base::SysUTF16ToNSString(row.title())
+            dateAdded:[NSDate dateWithTimeIntervalSince1970:row.last_visit()
+                       .ToDoubleT()]];
       [nodes addObject:node];
     }
   }
-  
+
   if ([observer_ respondsToSelector:@selector(historyNodesDeleted:
                                               isAllHistory:)]) {
     [observer_ historyNodesDeleted:nodes isAllHistory:isAllHistory];
@@ -136,8 +132,8 @@ void HistoryServiceListenerIOS::OnURLsDeleted(
       historyService:(void*)service {
   if ((self = [super init])) {
     observer_ = std::make_unique<brave::ios::HistoryServiceListenerIOS>(
-                                                                        observer, static_cast<history::HistoryService*>(service));
-    
+        observer, static_cast<history::HistoryService*>(service));
+
     history_service_ = static_cast<history::HistoryService*>(service);
   }
   return self;
