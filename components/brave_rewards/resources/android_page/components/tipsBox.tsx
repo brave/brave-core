@@ -92,10 +92,8 @@ class TipBox extends React.Component<Props, State> {
   render () {
     const {
       parameters,
-      ui,
       tipsList
     } = this.props.rewardsData
-    const { onlyAnonWallet } = ui
     const tipRows = this.getTipsRows()
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
@@ -121,7 +119,7 @@ class TipBox extends React.Component<Props, State> {
         }
         <List title={<StyledListContent>{getLocale('donationTotalDonations')}</StyledListContent>}>
           <StyledTotalContent>
-            <Tokens onlyAnonWallet={onlyAnonWallet} value={total.toFixed(3)} converted={converted} />
+            <Tokens value={total.toFixed(3)} converted={converted} />
           </StyledTotalContent>
         </List>
         <StyledListContent>
@@ -130,7 +128,6 @@ class TipBox extends React.Component<Props, State> {
             allItems={allSites}
             numItems={numRows}
             headerColor={true}
-            onlyAnonWallet={onlyAnonWallet}
             onShowAll={this.onModalToggle}
           >
             {getLocale('donationVisitSome')}

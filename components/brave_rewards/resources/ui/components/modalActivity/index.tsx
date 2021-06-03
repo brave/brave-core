@@ -58,7 +58,6 @@ export interface Props {
   transactionRows: TransactionRow[]
   id?: string
   summary: SummaryItem[]
-  onlyAnonWallet?: boolean
   walletType?: string
 }
 
@@ -79,7 +78,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
   private summary: Record<SummaryType, {color: TokenType, translation: string}> = {
     grant: {
       color: 'earning',
-      translation: this.props.onlyAnonWallet ? 'pointGrantClaimed' : 'tokenGrantClaimed'
+      translation: 'tokenGrantClaimed'
     },
     ads: {
       color: 'earning',

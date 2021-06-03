@@ -43,7 +43,6 @@ export interface Props {
   funds?: string
   onReset: () => void
   internalFunds: number
-  onlyAnonWallet?: boolean
 }
 
 interface State {
@@ -117,8 +116,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
       onPrint,
       onSaveFile,
       onVerify,
-      walletProvider,
-      onlyAnonWallet
+      walletProvider
     } = this.props
 
     return (
@@ -177,15 +175,12 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
           </StyledSafe>
           {getLocale('rewardsBackupText4')}
         </StyledContent>
-        {
-          !onlyAnonWallet &&
-            <StyledContent>
-                {getLocale('rewardsBackupText5')}
-              <StyledLink onClick={onVerify}>
-                {getLocale('rewardsBackupText6').replace('$1', walletProvider)}
-              </StyledLink>
-            </StyledContent>
-        }
+        <StyledContent>
+            {getLocale('rewardsBackupText5')}
+          <StyledLink onClick={onVerify}>
+            {getLocale('rewardsBackupText6').replace('$1', walletProvider)}
+          </StyledLink>
+        </StyledContent>
         <StyledDoneWrapper>
           <Button
             text={getLocale('done')}
@@ -202,8 +197,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
     const {
       onClose,
       onVerify,
-      walletProvider,
-      onlyAnonWallet
+      walletProvider
     } = this.props
 
     return (
@@ -211,15 +205,12 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
         <StyledContent>
           {getLocale('rewardsBackupNoticeText1')}
         </StyledContent>
-        {
-          !onlyAnonWallet &&
-            <StyledContent>
-              {getLocale('rewardsBackupNoticeText2')}
-              <StyledLink onClick={onVerify} id={'backup-verify-link'}>
-                {getLocale('rewardsBackupNoticeText3').replace('$1', walletProvider)}
-              </StyledLink>
-            </StyledContent>
-        }
+        <StyledContent>
+          {getLocale('rewardsBackupNoticeText2')}
+          <StyledLink onClick={onVerify} id={'backup-verify-link'}>
+            {getLocale('rewardsBackupNoticeText3').replace('$1', walletProvider)}
+          </StyledLink>
+        </StyledContent>
         <StyledDoneWrapper>
           <Button
             text={getLocale('done')}

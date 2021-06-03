@@ -150,12 +150,6 @@ void Contribution::ResetReconcileStamp() {
 }
 
 void Contribution::StartMonthlyContribution() {
-  if (ledger_->ledger_client()->GetBooleanOption(
-          option::kContributionsDisabledForBAPMigration)) {
-    BLOG(1, "Monthly contributions disabled for BAP migration");
-    return;
-  }
-
   const auto reconcile_stamp = ledger_->state()->GetReconcileStamp();
   ResetReconcileStamp();
 
@@ -280,12 +274,6 @@ void Contribution::OneTimeTip(
     const std::string& publisher_key,
     const double amount,
     ledger::ResultCallback callback) {
-  if (ledger_->ledger_client()->GetBooleanOption(
-          option::kContributionsDisabledForBAPMigration)) {
-    BLOG(1, "One-time tips disabled for BAP migration");
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
   tip_->Process(publisher_key, amount, callback);
 }
 

@@ -317,8 +317,6 @@ class RewardsService : public KeyedService {
 
   virtual void DisconnectWallet() = 0;
 
-  virtual bool OnlyAnonWallet() const = 0;
-
   virtual void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) = 0;
 
   virtual void GetMonthlyReport(

@@ -1512,20 +1512,6 @@ bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
   if (name == ledger::option::kIsBitflyerRegion)
     return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
 
-  if (name == ledger::option::kContributionsDisabledForBAPMigration) {
-    if (OnlyAnonWallet()) {
-      base::Time::Exploded cutoff_exploded{
-          .year = 2021, .month = 3, .day_of_month = 13};
-      base::Time cutoff;
-      bool ok = base::Time::FromUTCExploded(cutoff_exploded, &cutoff);
-      DCHECK(ok);
-      if (ok && base::Time::Now() >= cutoff) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   const auto it = kBoolOptions.find(name);
   DCHECK(it != kBoolOptions.end());
 
@@ -2898,7 +2884,7 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
     query_map[it.GetKey()] = it.GetUnescapedValue();
   }
 
-  if (action == "authorization" && !OnlyAnonWallet()) {
+  if (action == "authorization") {
     if (wallet_type == ledger::constant::kWalletUphold ||
         wallet_type == ledger::constant::kWalletBitflyer) {
       ExternalWalletAuthorization(
@@ -2957,22 +2943,6 @@ void RewardsServiceImpl::ShowNotification(
       notification_args,
       "rewards_notification_general_ledger_" + type);
     callback(ledger::type::Result::LEDGER_OK);
-}
-
-// OnlyAnonWallet is used to indicate that a particular region does not support
-// external wallets, and specifically it was used to modify the UI for users in
-// JP to show "BAP" instead of "BAT". When we are sure that those branches are
-// no longer needed, this function should be removed.
-bool RewardsServiceImpl::OnlyAnonWallet() const {
-#if defined(OS_ANDROID)
-  // Android should no longer show "BAP" or have any BAP-related restrictions.
-  return false;
-#else
-  if (base::FeatureList::IsEnabled(features::kBitflyerFeature))
-    return false;
-
-  return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
-#endif
 }
 
 void RewardsServiceImpl::RecordBackendP3AStats() {

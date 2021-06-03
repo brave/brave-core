@@ -275,12 +275,6 @@ export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
 
 export const disconnectWallet = () => action(types.DISCONNECT_WALLET)
 
-export const onlyAnonWallet = () => action(types.ONLY_ANON_WALLET)
-
-export const onOnlyAnonWallet = (only: boolean) => action(types.ON_ONLY_ANON_WALLET, {
-  only
-})
-
 export const getMonthlyReport = (month?: number, year?: number) => action(types.GET_MONTHLY_REPORT, {
   month,
   year

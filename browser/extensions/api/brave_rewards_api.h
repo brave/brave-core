@@ -379,16 +379,6 @@ class BraveRewardsDisconnectWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsOnlyAnonWalletFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.onlyAnonWallet", UNKNOWN)
-
- protected:
-  ~BraveRewardsOnlyAnonWalletFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsGetAdsEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsEnabled", UNKNOWN)

@@ -14,8 +14,7 @@ import {
   StyledNoActivityWrapper,
   StyledReservedWrapper,
   StyledReservedLink,
-  StyledAllReserved,
-  StyledBatPoints
+  StyledAllReserved
 } from './style'
 import ListToken from '../listToken'
 import { Type } from '../tokens'
@@ -42,18 +41,17 @@ export interface Props {
   compact?: boolean
   reservedAmount?: number
   reservedMoreLink?: string
-  onlyAnonWallet?: boolean
   onSeeAllReserved?: () => void
 }
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
   generateList = () => {
-    const { onlyAnonWallet, compact } = this.props
+    const { compact } = this.props
     const tokenSize = compact ? 'small' : 'normal'
     const list = [
       {
         key: 'grant',
-        translation: onlyAnonWallet ? 'pointGrantClaimed' : 'tokenGrantClaimed',
+        translation: 'tokenGrantClaimed',
         color: 'earning'
       },
       {
@@ -104,7 +102,6 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             color={item.color as Type}
             title={getLocale(item.translation)}
             isNegative={item.negative}
-            onlyAnonWallet={onlyAnonWallet}
             border={all === current ? 'last' : undefined}
           />
         ))
@@ -127,30 +124,21 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
   generateInfo = () => {
     const {
       reservedAmount,
-      onlyAnonWallet,
       onSeeAllReserved,
       reservedMoreLink
     } = this.props
     const showReserved = reservedAmount && reservedAmount > 0
-
-    if (!onlyAnonWallet && !showReserved) {
+    if (!showReserved) {
       return null
     }
 
     console.log('show reserved', showReserved, reservedAmount)
 
     const amount = (reservedAmount && reservedAmount.toFixed(3)) || '0.000'
-    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
+    const batFormatString = getLocale('bat')
 
     return (
       <StyledReservedWrapper data-test-id={'pending-contribution-box'}>
-        {
-          onlyAnonWallet
-          ? <p>
-              <StyledBatPoints>{getLocale('batPoints')}</StyledBatPoints> {getLocale('batPointsMessage')}
-            </p>
-          : null
-        }
         {
           showReserved
           ? <>

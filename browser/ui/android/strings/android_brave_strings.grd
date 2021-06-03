@@ -835,17 +835,8 @@ until they verify, or until 90 days have passed.
        <message name="IDS_BRAVE_UI_YOUR_BALANCE" desc="Your balance title">
         Your balance
       </message>
-       <message name="IDS_BRAVE_UI_POINT_GRANT_CLAIMED" desc="A message about points being claimed">
-        Point Grants Claimed
-      </message>
-      <message name="IDS_BRAVE_UI_NEW_POINT_GRANT" desc="A notification about free point grant">
-        Free Point Grant
-      </message>
       <message name="IDS_TOKEN" desc="Text for token">
         token
-      </message>
-      <message name="IDS_POINT" desc="Text for point">
-        point
       </message>
       <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
         New Tab Page

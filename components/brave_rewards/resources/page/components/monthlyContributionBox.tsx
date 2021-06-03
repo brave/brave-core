@@ -96,8 +96,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
       parameters,
       firstLoad,
       recurringList,
-      reconcileStamp,
-      ui
+      reconcileStamp
     } = this.props.rewardsData
     const showDisabled = firstLoad !== false
     const tipRows = this.getRows()
@@ -106,7 +105,6 @@ class MonthlyContributionBox extends React.Component<Props, State> {
     const allSites = !(numRows > 5)
     const total = utils.tipsListTotal(recurringList)
     const converted = utils.convertBalance(total, parameters.rate)
-    const { onlyAnonWallet } = ui
 
     return (
       <Box
@@ -125,7 +123,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalMonthlyContribution')}>
-          <Tokens onlyAnonWallet={onlyAnonWallet} value={total.toFixed(3)} converted={converted} />
+          <Tokens value={total.toFixed(3)} converted={converted} />
         </List>
         <List title={getLocale('donationNextDate')}>
           <NextContribution>
@@ -139,7 +137,6 @@ class MonthlyContributionBox extends React.Component<Props, State> {
           numItems={numRows}
           headerColor={true}
           onShowAll={this.onModalToggle}
-          onlyAnonWallet={onlyAnonWallet}
         >
           {getLocale('monthlyContributionEmpty')}
         </TableDonation>

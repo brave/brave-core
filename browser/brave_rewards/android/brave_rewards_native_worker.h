@@ -181,8 +181,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnGetRecurringTips(ledger::type::PublisherInfoList list);
 
-    bool IsAnonWallet(JNIEnv* env);
-
     bool IsRewardsEnabled(JNIEnv* env);
 
     void OnClaimPromotion(

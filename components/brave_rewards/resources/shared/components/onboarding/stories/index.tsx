@@ -48,7 +48,6 @@ function StoryWrapper (props: StoryWrapperProps) {
 function getRewardsTourProps () {
   return {
     firstTimeSetup: true,
-    onlyAnonWallet: false,
     adsPerHour: 3,
     externalWalletProvider: 'bitflyer',
     autoContributeAmount: 15,

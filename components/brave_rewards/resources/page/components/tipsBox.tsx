@@ -157,7 +157,6 @@ class TipBox extends React.Component<Props, State> {
     const {
       parameters,
       firstLoad,
-      ui,
       tipsList
     } = this.props.rewardsData
     const showDisabled = firstLoad !== false
@@ -167,7 +166,6 @@ class TipBox extends React.Component<Props, State> {
     const allSites = !(numRows > 5)
     const total = utils.tipsListTotal(tipsList)
     const converted = utils.convertBalance(total, parameters.rate)
-    const { onlyAnonWallet } = ui
 
     return (
       <Box
@@ -189,7 +187,7 @@ class TipBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens id={'tip-box-total'} onlyAnonWallet={onlyAnonWallet} value={total.toFixed(3)} converted={converted} />
+          <Tokens id={'tip-box-total'} value={total.toFixed(3)} converted={converted} />
         </List>
         <TableDonation
           id={'tips-table'}
@@ -197,7 +195,6 @@ class TipBox extends React.Component<Props, State> {
           allItems={allSites}
           numItems={numRows}
           headerColor={true}
-          onlyAnonWallet={onlyAnonWallet}
           onShowAll={this.onModalToggle}
         >
           {getLocale('donationVisitSome')}

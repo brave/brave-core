@@ -15,7 +15,6 @@ import { HostContext } from '../lib/host_context'
 
 import { BatTipForm } from './bat_tip_form'
 import { PaymentKindSwitch } from './payment_kind_switch'
-import { BatString } from './bat_string'
 import { ExchangeAmount } from './exchange_amount'
 
 import * as style from './one_time_tip_form.style'
@@ -84,7 +83,7 @@ export function OneTimeTipForm () {
 
   const tipAmountOptions = tipOptions.map((value) => ({
     value,
-    currency: <BatString />,
+    currency: 'BAT',
     exchangeAmount: (
       <ExchangeAmount amount={value} rate={rewardsParameters.rate} />
     )

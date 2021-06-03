@@ -137,8 +137,6 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (properties: {result: number, walletType: string}) => void) => void
   }
 
-  const onlyAnonWallet: (callback: (only: boolean) => void) => {}
-
   const openBrowserActionUI: (path?: string) => {}
 
   const onUnblindedTokensReady: {

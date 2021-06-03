@@ -69,10 +69,6 @@ const char kBraveRewardsVerboseLoggingDescription[] =
     "information such as browsing history and credentials such as passwords "
     "and access tokens depending on your activity. Please do not share it "
     "unless asked to by Brave staff.";
-const char kBraveRewardsBitflyerName[] = "Enable bitFlyer for Brave Rewards";
-const char kBraveRewardsBitflyerDescription[] =
-    "Enables support for bitFlyer as an external wallet provider for Brave "
-    "Rewards users in Japan";
 const char kNativeBraveWalletName[] = "Enable experimental Brave native wallet";
 const char kNativeBraveWalletDescription[] =
     "Experimental native cryptocurrency wallet support without the use of "

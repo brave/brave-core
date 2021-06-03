@@ -160,8 +160,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void DisconnectWallet(const base::ListValue* args);
 
-  void OnlyAnonWallet(const base::ListValue* args);
-
   void GetBalanceReport(const base::ListValue* args);
 
   void OnGetBalanceReport(
@@ -449,9 +447,6 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.disconnectWallet",
       base::BindRepeating(&RewardsDOMHandler::DisconnectWallet,
-      base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.onlyAnonWallet",
-      base::BindRepeating(&RewardsDOMHandler::OnlyAnonWallet,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getBalanceReport",
       base::BindRepeating(&RewardsDOMHandler::GetBalanceReport,
@@ -1688,18 +1683,6 @@ void RewardsDOMHandler::OnAdsEnabled(
   GetAdsData(emptyArgs);
   GetAutoContributeProperties(emptyArgs);
   GetOnboardingStatus(emptyArgs);
-}
-
-void RewardsDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-
-  const bool allow = rewards_service_->OnlyAnonWallet();
-
-  CallJavascriptFunction("brave_rewards.onlyAnonWallet", base::Value(allow));
 }
 
 void RewardsDOMHandler::OnUnblindedTokensReady(
