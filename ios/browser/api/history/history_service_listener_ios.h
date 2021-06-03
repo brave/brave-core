@@ -19,12 +19,11 @@
 namespace brave {
 namespace ios {
 class HistoryServiceListenerIOS : public history::HistoryServiceObserver {
-public:
+ public:
   explicit HistoryServiceListenerIOS(id<HistoryServiceObserver> observer,
                                      history::HistoryService* service);
   ~HistoryServiceListenerIOS() override;
-  
-private:
+ private:
   void OnHistoryServiceLoaded(history::HistoryService* service) override;
   void HistoryServiceBeingDeleted(history::HistoryService* service) override;
   void OnURLVisited(history::HistoryService* service,
@@ -36,7 +35,7 @@ private:
                       const history::URLRows& changed_urls) override;
   void OnURLsDeleted(history::HistoryService* history_service,
                      const history::DeletionInfo& deletion_info) override;
-  
+
   id<HistoryServiceObserver> observer_;
   history::HistoryService* service_;
 };

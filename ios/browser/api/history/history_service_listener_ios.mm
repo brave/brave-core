@@ -84,7 +84,7 @@ void HistoryServiceListenerIOS::OnURLsModified(
         initWithURL:net::NSURLWithGURL(row.url())
               title:base::SysUTF16ToNSString(row.title())
           dateAdded:[NSDate dateWithTimeIntervalSince1970:row.last_visit()
-                     .ToDoubleT()]];
+                                                              .ToDoubleT()]];
     [nodes addObject:node];
   }
 
@@ -107,13 +107,13 @@ void HistoryServiceListenerIOS::OnURLsDeleted(
           initWithURL:net::NSURLWithGURL(row.url())
                 title:base::SysUTF16ToNSString(row.title())
             dateAdded:[NSDate dateWithTimeIntervalSince1970:row.last_visit()
-                       .ToDoubleT()]];
+                                                                .ToDoubleT()]];
       [nodes addObject:node];
     }
   }
 
   if ([observer_ respondsToSelector:@selector(historyNodesDeleted:
-                                              isAllHistory:)]) {
+                                                     isAllHistory:)]) {
     [observer_ historyNodesDeleted:nodes isAllHistory:isAllHistory];
   }
 }
