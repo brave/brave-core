@@ -1928,9 +1928,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         String verified_text = "";
         TextView publisherVerified = (TextView) root.findViewById(R.id.publisher_verified);
         publisherVerified.setAlpha(1f);
-        TextView publisherDelimiter = (TextView) root.findViewById(R.id.publisher_delimiter);
-        publisherDelimiter.setAlpha(1f);
-        publisherDelimiter.setText(" | ");
         TextView refreshPublisher = (TextView) root.findViewById(R.id.refresh_publisher);
         refreshPublisher.setAlpha(1f);
         refreshPublisher.setEnabled(true);
@@ -1943,8 +1940,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 refreshStatusProgress.setVisibility(View.VISIBLE);
                 refreshPublisher.setEnabled(false);
                 publisherVerified.setAlpha(.3f);
-                publisherDelimiter.setAlpha(.3f);
-                refreshPublisher.setAlpha(.3f);
                 mBraveRewardsNativeWorker.RefreshPublisher(pubId);
             }
         }));
@@ -1953,14 +1948,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             verified_text = root.getResources().getString(R.string.brave_ui_verified_publisher);
             publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.bat_verified, 0, 0, 0);
-            publisherDelimiter.setVisibility(View.GONE);
-            refreshPublisher.setVisibility(View.GONE);
         } else {
             verified_text = root.getResources().getString(R.string.brave_ui_not_verified_publisher);
             publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.bat_unverified, 0, 0, 0);
-            publisherDelimiter.setVisibility(View.VISIBLE);
-            refreshPublisher.setVisibility(View.VISIBLE);
         }
         publisherVerified.setText(verified_text);
         publisherVerified.setVisibility(View.VISIBLE);
