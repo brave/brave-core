@@ -23,6 +23,7 @@ class HistoryServiceListenerIOS : public history::HistoryServiceObserver {
   explicit HistoryServiceListenerIOS(id<HistoryServiceObserver> observer,
                                      history::HistoryService* service);
   ~HistoryServiceListenerIOS() override;
+
  private:
   void OnHistoryServiceLoaded(history::HistoryService* service) override;
   void HistoryServiceBeingDeleted(history::HistoryService* service) override;
