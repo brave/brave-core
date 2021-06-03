@@ -15,7 +15,8 @@ source_set("history") {
     "brave_history_api.h",
     "brave_history_api.mm",
     "brave_history_observer.h",
-    "brave_history_observer.mm",
+    "history_service_listener_ios.h",
+    "history_service_listener_ios.mm",
   ]
 
   deps = [

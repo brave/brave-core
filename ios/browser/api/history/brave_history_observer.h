@@ -44,12 +44,6 @@ OBJC_EXPORT
 - (void)destroy;
 @end
 
-OBJC_EXPORT
-@interface HistoryServiceListenerImpl : NSObject <HistoryServiceListener>
-- (instancetype)init:(id<HistoryServiceObserver>)observer
-      historyService:(void*)service;
-@end
-
 NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_HISTORY_OBSERVER_H_

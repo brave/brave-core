@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/history/brave_history_api.h"
 #include "brave/ios/browser/api/history/brave_browsing_history_driver_ios.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
+#include "brave/ios/browser/api/history/history_service_listener_ios.h"
 
 #include "base/bind.h"
 #include "base/compiler_specific.h"
