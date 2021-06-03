@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.py b/chrome/browser/resources/tools/optimize_webui.py
-index f41a89bf816fe8cdba73d3700399ce55e94a7e99..8381a1b5be429ef32861c2e9ea36655fd0e114c7 100755
+index f41a89bf816fe8cdba73d3700399ce55e94a7e99..6ee5dee93a04bf1bb7a26346d47b3cf8a9c9ba40 100755
 --- a/chrome/browser/resources/tools/optimize_webui.py
 +++ b/chrome/browser/resources/tools/optimize_webui.py
 @@ -26,6 +26,7 @@ import node_modules
@@ -10,11 +10,12 @@ index f41a89bf816fe8cdba73d3700399ce55e94a7e99..8381a1b5be429ef32861c2e9ea36655f
  for excluded_file in [
    'resources/polymer/v1_0/web-animations-js/web-animations-next-lite.min.js',
    'resources/css/roboto.css',
-@@ -70,6 +71,7 @@ def _update_dep_file(in_folder, args, manifest):
-   # that we can map it to the correct source file path below.
-   request_list = map(lambda dep: _get_dep_path(dep, args.host_url, in_path),
-                      request_list)
-+  for (redirect_url, file_path) in [ ('chrome://brave-resources/', _BR_RESOURCES_PATH), ('//brave-resources/', _BR_RESOURCES_PATH) ]: request_list = map(lambda dep: _get_dep_path(dep, redirect_url, file_path), request_list)
+@@ -50,6 +51,8 @@ def _request_list_path(out_path, host_url):
+   return os.path.join(out_path, host + '_requestlist.txt')
  
-   deps = map(os.path.normpath, request_list)
- 
+ def _get_dep_path(dep, host_url, in_path):
++  for brave_host_url in ['chrome://brave-resources/', '//brave-resources/']:
++    if dep.startswith(brave_host_url): return dep.replace(brave_host_url, os.path.relpath(_BR_RESOURCES_PATH, _CWD))
+   if dep.startswith(host_url):
+     return dep.replace(host_url, os.path.relpath(in_path, _CWD))
+   elif not (dep.startswith('chrome://') or dep.startswith('//')):
