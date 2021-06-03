@@ -11,7 +11,7 @@
 
 #include "base/callback.h"
 #include "base/files/file_enumerator.h"
-#include "content/public/browser/browser_context.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
@@ -55,19 +55,19 @@ using ResourceRequestGetter =
     base::OnceCallback<void(std::unique_ptr<network::ResourceRequest>)>;
 
 void CreateRequestForFile(const base::FilePath& upload_file_path,
-                          content::BrowserContext::BlobContextGetter storage,
+                          BlobContextGetterFactory* blob_context_getter_factory,
                           const std::string& mime_type,
                           const std::string& filename,
                           ResourceRequestGetter request_callback,
                           size_t file_size);
 
 void CreateRequestForFolder(const base::FilePath& folder_path,
-                            content::BrowserContext::BlobContextGetter storage,
+                            BlobContextGetterFactory* context_getter_factory,
                             ResourceRequestGetter request_callback);
 
 void CreateRequestForText(const std::string& text,
                           const std::string& filename,
-                          content::BrowserContext::BlobContextGetter storage,
+                          BlobContextGetterFactory* blob_context_getter_factory,
                           ResourceRequestGetter request_callback);
 }  // namespace ipfs
 

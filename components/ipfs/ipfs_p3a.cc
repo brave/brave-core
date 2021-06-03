@@ -12,25 +12,9 @@
 #include "components/user_prefs/user_prefs.h"
 #include "extensions/buildflags/buildflags.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "extensions/browser/extension_registry.h"
-#endif
-
 namespace ipfs {
 
 constexpr size_t kP3ATimerInterval = 1;
-
-// IPFS companion installed?
-// i) No, ii) Yes
-void RecordIPFSCompanionInstalled(extensions::ExtensionRegistry* registry) {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
-  DCHECK(registry);
-  bool installed =
-      registry->enabled_extensions().Contains(ipfs_companion_extension_id);
-  UMA_HISTOGRAM_BOOLEAN("Brave.IPFS.IPFSCompanionInstalled", installed);
-#endif
-}
 
 int GetIPFSDetectionPromptBucket(PrefService* prefs) {
   int bucket = 0;
@@ -82,9 +66,8 @@ void RecordIPFSDaemonRunTime(base::TimeDelta elapsed_time) {
 }
 
 IpfsP3A::IpfsP3A(IpfsService* service,
-                 extensions::ExtensionRegistry* registry,
                  PrefService* pref_service)
-    : service_(service), registry_(registry), pref_service_(pref_service) {
+    : service_(service), pref_service_(pref_service) {
   RecordInitialIPFSP3AState();
   service->AddObserver(this);
 }
@@ -94,7 +77,6 @@ IpfsP3A::~IpfsP3A() {
 }
 
 void IpfsP3A::RecordInitialIPFSP3AState() {
-  RecordIPFSCompanionInstalled(registry_);
   RecordIPFSDetectionPromptCount(pref_service_);
   RecordIPFSGatewaySetting(pref_service_);
 }

@@ -4,6 +4,7 @@ source_set("ipfs") {
   sources = [
     "addresses_config.cc",
     "addresses_config.h",
+    "blob_context_getter_factory.h",
     "brave_ipfs_client_updater.cc",
     "brave_ipfs_client_updater.h",
     "features.cc",
@@ -69,6 +70,7 @@ source_set("ipfs") {
     "//extensions/buildflags",
     "//net",
     "//services/network/public/cpp",
+    "//storage/browser",
     "//third_party/re2",
     "//ui/base",
     "//ui/native_theme:native_theme",
