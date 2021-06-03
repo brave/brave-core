@@ -500,6 +500,21 @@ const util = {
     util.run(msBuild, msBuildArgs)
   },
 
+  runGnGen: (options) => {
+    const buildArgsStr = util.buildArgsToString(config.buildArgs())
+    const buildArgsFile = path.join(config.outputDir, 'brave_build_args.txt')
+    const buildNinjaFile = path.join(config.outputDir, 'build.ninja')
+
+    const shouldRunGnGen = !config.auto_gn_gen ||
+        !fs.existsSync(buildNinjaFile) || !fs.existsSync(buildArgsFile) ||
+        fs.readFileSync(buildArgsFile) != buildArgsStr
+
+    if (shouldRunGnGen) {
+      util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"'], options)
+      fs.writeFileSync(buildArgsFile, buildArgsStr)
+    }
+  },
+
   buildTarget: (options = config.defaultOptions) => {
     console.log('building ' + config.buildTarget + '...')
 
@@ -507,13 +522,11 @@ const util = {
       util.updateOmahaMidlFiles()
       util.buildRedirectCCTool()
     }
+    util.runGnGen(options)
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
       num_compile_failure = 0
-
-    const args = util.buildArgsToString(config.buildArgs())
-    util.run('gn', ['gen', config.outputDir, '--args="' + args + '"'], options)
 
     let ninjaOpts = [
       '-C', config.outputDir, config.buildTarget,
