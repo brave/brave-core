@@ -1,0 +1,13 @@
+diff --git a/device/fido/authenticator_get_assertion_response.cc b/device/fido/authenticator_get_assertion_response.cc
+index 833dbe83c042d035616a92f223e88f89c343dcec..55361ece642e244ae68134858d6ca72b24b0e7f9 100644
+--- a/device/fido/authenticator_get_assertion_response.cc
++++ b/device/fido/authenticator_get_assertion_response.cc
+@@ -54,7 +54,7 @@ AuthenticatorGetAssertionResponse::CreateFromU2fSignResponse(
+ 
+   bssl::UniquePtr<ECDSA_SIG> parsed_sig(
+       ECDSA_SIG_from_bytes(signature.data(), signature.size()));
+-  if (!parsed_sig) {
++  if (false && !parsed_sig) {
+     FIDO_LOG(ERROR)
+         << "Rejecting U2F assertion response with invalid signature";
+     return base::nullopt;
