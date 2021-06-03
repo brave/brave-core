@@ -8,6 +8,7 @@
 #include <sys/mount.h>
 #include <sys/stat.h>
 
+#include "base/command_line.h"
 #include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
 #import "base/mac/scoped_nsautorelease_pool.h"
@@ -20,6 +21,7 @@
 #import "brave/browser/mac/su_updater.h"
 #include "brave/browser/update_util.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/common/brave_switches.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_constants.h"
 
@@ -476,6 +478,12 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 }
 
 - (NSString*)feedURLStringForUpdater:(id)__unused updater {
+  auto* command = base::CommandLine::ForCurrentProcess();
+  if (command->HasSwitch(switches::kUpdateFeedURL)) {
+    return base::SysUTF8ToNSString(
+        command->GetSwitchValueASCII(switches::kUpdateFeedURL));
+  }
+
   return [NSString stringWithFormat:@"https://updates.bravesoftware.com/"
                                     @"sparkle/Brave-Browser/%s/appcast.xml",
                                     GetUpdateChannel().c_str()];
