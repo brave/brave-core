@@ -24,12 +24,12 @@
 	    android:textStyle="bold"
 	    android:layout_marginEnd="16dp"
 	    android:gravity="center"
-		android:layout_weight="1"
+		  android:layout_weight="1"
 	    android:fontFamily="sans-serif"
 	    app:autoSizeMaxTextSize="34sp"
-        app:autoSizeMinTextSize="12sp"
-        app:autoSizeStepGranularity="2sp"
-        app:autoSizeTextType="uniform"
+      app:autoSizeMinTextSize="12sp"
+      app:autoSizeStepGranularity="2sp"
+      app:autoSizeTextType="uniform"
 	    android:textColor="@color/shield_title_color"/>
 
     <TextView

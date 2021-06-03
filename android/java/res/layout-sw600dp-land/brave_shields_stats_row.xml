@@ -22,14 +22,14 @@
 	    android:layout_height="40dp"
 	    android:textSize="34sp"
 	    android:textStyle="bold"
-	    android:layout_marginEnd="16dp"
 	    android:gravity="center"
-		android:layout_weight="1"
+		  android:layout_weight="0.8"
 	    android:fontFamily="sans-serif"
+      android:layout_gravity="center_vertical|end"
 	    app:autoSizeMaxTextSize="34sp"
-        app:autoSizeMinTextSize="12sp"
-        app:autoSizeStepGranularity="2sp"
-        app:autoSizeTextType="uniform"
+      app:autoSizeMinTextSize="12sp"
+      app:autoSizeStepGranularity="2sp"
+      app:autoSizeTextType="uniform"
 	    android:textColor="@color/shield_title_color"/>
 
     <TextView
@@ -47,7 +47,8 @@
         android:id="@+id/help"
         android:layout_width="0dp"
         android:layout_height="24dp"
-        android:layout_weight="1"
+        android:layout_weight="0.6"
+        android:layout_gravity="center_vertical|end"
         android:src="@drawable/ic_help"
         android:contentDescription="@null"/>
 
@@ -55,7 +56,8 @@
         android:id="@+id/share"
         android:layout_width="0dp"
         android:layout_height="24dp"
-        android:layout_weight="1"
+        android:layout_weight="0.6"
+        android:layout_gravity="center_vertical|start"
         android:src="@drawable/ic_share"
         android:contentDescription="@null"/>
 

@@ -9,7 +9,7 @@
   	android:id="@+id/site_block_layout"
   	android:layout_width="match_parent"
   	android:layout_height="wrap_content"
-  	android:gravity="center_vertical|center_horizontal"
+  	android:gravity="center"
   	android:layout_marginTop="16dp"
   	android:layout_marginEnd="70dp"
   	android:layout_marginStart="70dp"
@@ -22,14 +22,14 @@
 	    android:layout_height="40dp"
 	    android:textSize="34sp"
 	    android:textStyle="bold"
-	    android:layout_marginEnd="16dp"
+	    android:layout_marginEnd="10dp"
 	    android:gravity="center"
-		android:layout_weight="1"
+		  android:layout_weight="0.8"
 	    android:fontFamily="sans-serif"
 	    app:autoSizeMaxTextSize="34sp"
-        app:autoSizeMinTextSize="12sp"
-        app:autoSizeStepGranularity="2sp"
-        app:autoSizeTextType="uniform"
+      app:autoSizeMinTextSize="12sp"
+      app:autoSizeStepGranularity="2sp"
+      app:autoSizeTextType="uniform"
 	    android:textColor="@color/shield_title_color"/>
 
     <TextView
@@ -40,14 +40,13 @@
 	    android:gravity="center"
 	    android:layout_weight="3"
 	    android:text="@string/ads_and_other_things_blocked"
-	    android:layout_gravity="center_vertical"
 	    android:textColor="@color/shield_title_color"/>
 
 	<ImageView
         android:id="@+id/help"
         android:layout_width="0dp"
         android:layout_height="24dp"
-        android:layout_weight="1"
+        android:layout_weight="0.6"
         android:src="@drawable/ic_help"
         android:contentDescription="@null"/>
 
@@ -55,7 +54,7 @@
         android:id="@+id/share"
         android:layout_width="0dp"
         android:layout_height="24dp"
-        android:layout_weight="1"
+        android:layout_weight="0.6"
         android:src="@drawable/ic_share"
         android:contentDescription="@null" />
 
