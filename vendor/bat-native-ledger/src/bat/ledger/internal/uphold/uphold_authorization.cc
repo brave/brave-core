@@ -33,7 +33,7 @@ UpholdAuthorization::~UpholdAuthorization() = default;
 
 void UpholdAuthorization::Authorize(
     const base::flat_map<std::string, std::string>& args,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   auto wallet = GetWallet(ledger_);
 
   if (!wallet) {
@@ -113,7 +113,7 @@ void UpholdAuthorization::Authorize(
 void UpholdAuthorization::OnAuthorize(
     const type::Result result,
     const std::string& token,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, {});
@@ -167,7 +167,7 @@ void UpholdAuthorization::OnAuthorize(
 void UpholdAuthorization::OnGetUser(
     const type::Result result,
     const User& user,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   auto wallet_ptr = GetWallet(ledger_);
   base::flat_map<std::string, std::string> args;
 
@@ -208,7 +208,7 @@ void UpholdAuthorization::OnGetUser(
 void UpholdAuthorization::OnCardCreate(
     const type::Result result,
     const std::string& address,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   if (result == type::Result::LEDGER_ERROR) {
     BLOG(0, "Card creation");
     callback(type::Result::LEDGER_ERROR, {});
@@ -236,7 +236,7 @@ void UpholdAuthorization::OnCardCreate(
 }
 
 void UpholdAuthorization::GetAnonFunds(
-    endpoint::promotion::GetWalletBalanceCallback callback) {
+    endpoint::promotion::GetWalletBalanceCallback callback) const {
   if (ledger_->ledger_client()->GetBooleanOption(
       option::kContributionsDisabledForBAPMigration)) {
     BLOG(1, "Fetch balance disabled for BAP migration.");
@@ -271,7 +271,7 @@ void UpholdAuthorization::GetAnonFunds(
 void UpholdAuthorization::OnGetAnonFunds(
     const type::Result result,
     type::BalancePtr balance,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get anonymous funds!");
     callback(type::Result::LEDGER_ERROR, {});
@@ -287,7 +287,7 @@ void UpholdAuthorization::OnGetAnonFunds(
 
 void UpholdAuthorization::TransferAnonFunds(
     const double user_funds,
-    ledger::endpoint::promotion::PostClaimUpholdCallback callback) {
+    ledger::endpoint::promotion::PostClaimUpholdCallback callback) const {
   if (!uphold::GetWallet(ledger_)) {
     BLOG(0, "Wallet is null!");
     callback(type::Result::LEDGER_ERROR);
@@ -299,7 +299,7 @@ void UpholdAuthorization::TransferAnonFunds(
 
 void UpholdAuthorization::OnTransferAnonFunds(
     const type::Result result,
-    ledger::ExternalWalletAuthorizationCallback callback) {
+    ledger::ExternalWalletAuthorizationCallback callback) const {
   if (result == type::Result::LEDGER_OK) {
     callback(type::Result::LEDGER_OK, {});
     return;

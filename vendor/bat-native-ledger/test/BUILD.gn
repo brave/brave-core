@@ -98,6 +98,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/promotion/promotion_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/prefix_list_reader_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/publisher_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_authorization_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_util_unittest.cc",
   ]

@@ -28,39 +28,39 @@ class UpholdAuthorization {
 
   void Authorize(
       const base::flat_map<std::string, std::string>& args,
-      ledger::ExternalWalletAuthorizationCallback callback);
+      ledger::ExternalWalletAuthorizationCallback callback) const;
+
+  void GetAnonFunds(
+      endpoint::promotion::GetWalletBalanceCallback callback) const;
+
+  void TransferAnonFunds(
+      const double user_funds,
+      endpoint::promotion::PostClaimUpholdCallback callback) const;
 
  private:
   void OnAuthorize(
       const type::Result result,
       const std::string& token,
-      ledger::ExternalWalletAuthorizationCallback callback);
+      ledger::ExternalWalletAuthorizationCallback callback) const;
 
   void OnGetUser(
       const type::Result result,
       const User& user,
-      ledger::ExternalWalletAuthorizationCallback callback);
+      ledger::ExternalWalletAuthorizationCallback callback) const;
 
   void OnCardCreate(
       const type::Result result,
       const std::string& address,
-      ledger::ExternalWalletAuthorizationCallback callback);
-
-  void GetAnonFunds(
-      endpoint::promotion::GetWalletBalanceCallback callback);
+      ledger::ExternalWalletAuthorizationCallback callback) const;
 
   void OnGetAnonFunds(
       const type::Result result,
       type::BalancePtr balance,
-      ledger::ExternalWalletAuthorizationCallback callback);
-
-  void TransferAnonFunds(
-      const double user_funds,
-      endpoint::promotion::PostClaimUpholdCallback callback);
+      ledger::ExternalWalletAuthorizationCallback callback) const;
 
   void OnTransferAnonFunds(
       const type::Result result,
-      ledger::ExternalWalletAuthorizationCallback callback);
+      ledger::ExternalWalletAuthorizationCallback callback) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
