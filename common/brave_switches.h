@@ -28,8 +28,6 @@ extern const char kDisableMachineId[];
 
 extern const char kDisableEncryptionWin[];
 
-extern const char kFastWidevineBundleUpdate[];
-
 extern const char kComponentUpdateIntervalInSec[];
 
 extern const char kDisableDnsOverHttps[];
