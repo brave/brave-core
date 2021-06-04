@@ -45,6 +45,13 @@ FocusRingTheme* GetFocusRingTheme() {
 
 }  // namespace
 
-#define GetNativeTheme GetFocusRingTheme
+#define BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_VALIDITY \
+  paint.setColor(color_.value_or(                    \
+      GetFocusRingTheme()->GetSystemColor(ColorIdForValidity(!invalid_))));
+
+#define BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_FOCUS_AURA \
+  flags.setColor(GetFocusRingTheme()->GetSystemColor(  \
+      ui::NativeTheme::kColorId_FocusAuraColor));
 #include "../../../../../ui/views/controls/focus_ring.cc"
-#undef GetNativeTheme
+#undef BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_FOCUS_AURA
+#undef BRAVE_FOCUS_RING_ON_PAINT_SET_COLOR_VALIDITY
